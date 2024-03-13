@@ -2,6 +2,8 @@
 import {
   linearScaleControlTester,
   LinearScaleControl,
+  PointControl,
+  pointControlTester,
   inputControlTester,
   InputControl,
   textAreaControlTester,
@@ -100,6 +102,10 @@ export const selectRenderers = (formType: 'default' | 'input' | 'survey') => {
     {
       tester: singleAttachmentControlTester,
       renderer: SingleAttachmentControl,
+    },
+    {
+      tester: pointControlTester,
+      renderer: PointControl,
     },
     ...commonRenderers,
   ];

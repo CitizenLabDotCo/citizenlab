@@ -59,9 +59,11 @@ const FormResults = () => {
                 questionResponseCount,
                 required,
                 customFieldId,
+                mapConfigId,
                 textResponses,
                 files,
                 multilocs,
+                pointResponses,
               },
               index
             ) => {
@@ -77,8 +79,10 @@ const FormResults = () => {
                   questionResponseCount={questionResponseCount}
                   totalSubmissions={totalSubmissions}
                   required={required}
+                  mapConfigId={mapConfigId}
                   customFieldId={customFieldId}
                   textResponses={textResponses}
+                  pointResponses={pointResponses}
                   files={files}
                   multilocs={multilocs}
                 />
