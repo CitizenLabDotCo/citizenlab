@@ -6,8 +6,6 @@ import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 
-import HasPermission from 'components/HasPermission';
-
 import clHistory from 'utils/cl-router/history';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { usePermission } from 'utils/permissions';
@@ -146,18 +144,14 @@ const AdminPage = memo<Props & WithRouterProps>(
       isProjectPage;
 
     return (
-      <HasPermission item={{ type: 'route', path: '/admin' }} action="access">
-        <Container className={className}>
-          <Sidebar />
-          <RightColumn
-            className={`${fullWidth && 'fullWidth'} ${
-              noPadding && 'noPadding'
-            }`}
-          >
-            <RouterOutlet />
-          </RightColumn>
-        </Container>
-      </HasPermission>
+      <Container className={className}>
+        <Sidebar />
+        <RightColumn
+          className={`${fullWidth && 'fullWidth'} ${noPadding && 'noPadding'}`}
+        >
+          <RouterOutlet />
+        </RightColumn>
+      </Container>
     );
   }
 );

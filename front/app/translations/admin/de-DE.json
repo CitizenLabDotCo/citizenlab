@@ -1206,7 +1206,6 @@
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "{orgName, select, München {Liste der Bezirke im Mängelmelder} other {Liste der Projekte auf der Plattform}}",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "{orgName, select, München {Bezirke-Dashboard} other {Projekte-Dashboard}}",
   "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitle": "Erstellen Sie neue Projekte oder verwalten Sie bestehende Projekte.",
-  "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator": "Hier sind die Projekte, die Sie auf der Plattform verwalten.",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "Projekte",
   "app.containers.AdminPage.ProjectDashboard.published": "Veröffentlicht",
   "app.containers.AdminPage.ProjectDescription.a11y_closeSettingsPanel": "Einstellungsfeld schließen",

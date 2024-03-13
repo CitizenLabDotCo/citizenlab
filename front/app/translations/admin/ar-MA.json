@@ -706,7 +706,6 @@
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "قائمة بالمشاريع على المنصة",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "اللوحة الرئيسية للمشاريع",
   "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitle": "أنشئ مشاريع جديدة أو إدِر المشاريع الحالية.",
-  "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator": "ها هي المشاريع التي تديرها على المنصة.",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "المشاريع",
   "app.containers.AdminPage.ProjectDashboard.published": "تم النشر",
   "app.containers.AdminPage.ProjectDescription.a11y_closeSettingsPanel": "إغلاق لوحة الإعدادات",
