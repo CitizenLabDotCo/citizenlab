@@ -1,6 +1,6 @@
 import { IFlatCustomField } from 'api/custom_fields/types';
 
-import { resetOptionsIfNotPersisted } from './utils';
+import { resetCopiedForm, resetOptionsIfNotPersisted } from './utils';
 
 describe('resetOptionsIfNotPersisted', () => {
   const customFields: IFlatCustomField[] = [
@@ -54,7 +54,7 @@ describe('resetOptionsIfNotPersisted', () => {
     expect(resultCustomFields[0].options[1].temp_id).toMatch(/^TEMP-ID-/);
   });
 });
-/*
+
 describe('resetCopiedForm', () => {
   const customFields: IFlatCustomField[] = [
     {
@@ -221,26 +221,36 @@ describe('resetCopiedForm', () => {
       updated_at: '2024-01-01T00:00:00.000Z',
       created_at: '2024-01-01T00:00:00.000Z',
     },
+    {
+      id: 'b3ff26bd-0857-4bce-b2fa-f11f760e101b',
+      type: 'custom_field',
+      input_type: 'point',
+      key: 'point_ghj',
+      logic: {},
+      map_config: {
+        data: {
+          id: '62f8c48f-dde7-48b5-b9b5-15110033b5bd',
+          type: 'map_config',
+        },
+      },
+      required: false,
+      enabled: true,
+      title_multiloc: { en: 'Map question' },
+      description_multiloc: {},
+      ordering: 9,
+      updated_at: '2024-01-01T00:00:00.000Z',
+      created_at: '2024-01-01T00:00:00.000Z',
+    },
   ];
 
-  const duplicateMapConfigs: DuplicateMapConfigs = {
-    data: {
-      id: 'bc61309f-9ad6-4051-81ee-f24365aeee79',
-      type: 'map_config',
-      attributes: {
-        zoom_level: '14.0',
-        tile_provider: null,
-        center_geojson: {
-          type: 'Point',
-          coordinates: [4.3517103, 50.8503396],
-        },
-        layers: [],
-        legend: [],
-      },
-    },
+  const duplicateMapConfigIds = {
+    '62f8c48f-dde7-48b5-b9b5-15110033b5bd': 'NEW-MAP-ID-459f-9149-dca2e4d58c6e',
   };
 
-  const resultCustomFields = resetCopiedForm(customFields, duplicateMapConfigs);
+  const resultCustomFields = resetCopiedForm(
+    customFields,
+    duplicateMapConfigIds
+  );
 
   it('should reset all IDs with a numeric ID', () => {
     resultCustomFields.forEach((field) => {
@@ -301,5 +311,12 @@ describe('resetCopiedForm', () => {
       }
     });
   });
+
+  it('should add map_config_ids with the duplicated map config ID', () => {
+    const mapField = resultCustomFields[8];
+    expect(mapField.map_config_id).toEqual('NEW-MAP-ID-459f-9149-dca2e4d58c6e');
+    expect(mapField.map_config).toEqual({
+      data: { id: 'NEW-MAP-ID-459f-9149-dca2e4d58c6e', type: 'map_config' },
+    });
+  });
 });
-*/

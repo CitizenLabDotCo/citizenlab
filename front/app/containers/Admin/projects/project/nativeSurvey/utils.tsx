@@ -98,7 +98,7 @@ export const getFormActionsConfig = (
   };
 };
 
-// If copying another form, reset IDs for fields and add temp-ids to options
+// If copying another form, reset IDs for fields, add temp-ids to options & replace map configs
 export const resetCopiedForm = (
   customFields: IFlatCustomField[],
   duplicateMapConfigIds: Record<string, string>
@@ -124,13 +124,13 @@ export const resetCopiedForm = (
       });
     }
 
-    // Duplicate the map config if this is a mapping question & and it has an ID
+    // Replace map config IDs with duplicates if this is a mapping question
     const mapConfigId = field.map_config?.data?.id;
     if (field.input_type === 'point' && mapConfigId) {
-      console.log(duplicateMapConfigIds);
-      console.log('old map config ID:', mapConfigId);
       newField.map_config_id = duplicateMapConfigIds[mapConfigId];
-      console.log('new map config ID:', duplicateMapConfigIds[mapConfigId]);
+      newField.map_config = {
+        data: { id: duplicateMapConfigIds[mapConfigId], type: 'map_config' },
+      };
     }
 
     return newField;
