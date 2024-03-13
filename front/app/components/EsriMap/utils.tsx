@@ -399,7 +399,7 @@ export const createEsriFeatureLayers = (
       const title = localize(layer.title_multiloc);
 
       // Extract number of sublayers if present
-      const titleSplit = title.indexOf('(');
+      const titleSplit = title.lastIndexOf('(');
       const subLayerCount =
         titleSplit >= 0
           ? parseInt(title.substring(titleSplit + 1, title.length - 1), 10)

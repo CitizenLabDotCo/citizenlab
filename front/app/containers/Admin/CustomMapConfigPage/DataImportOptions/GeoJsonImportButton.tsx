@@ -107,10 +107,9 @@ const GeoJsonImportButton = memo<Props>(({ mapConfig, className }) => {
             },
             {
               onError: () => {
-                setIsLoading(false);
                 setImportError(true);
               },
-              onSuccess: () => {
+              onSettled: () => {
                 setIsLoading(false);
               },
             }
