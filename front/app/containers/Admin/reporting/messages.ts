@@ -35,8 +35,8 @@ export default defineMessages({
     defaultMessage: 'DEPRECATED',
   },
   warningBanner: {
-    id: 'app.containers.Admin.reporting.warningBanner2',
+    id: 'app.containers.Admin.reporting.warningBanner3',
     defaultMessage:
-      "Graphs and numbers in this report don't automatically update for end users. Save the report to update the numbers.",
+      'Graphs and numbers in this report only update automatically on this page. Save the report to update them on other pages.',
   },
 });
