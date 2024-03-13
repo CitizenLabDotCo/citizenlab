@@ -8,7 +8,6 @@ import {
   IOptionsType,
   QuestionRuleType,
 } from 'api/custom_fields/types';
-import { DuplicateMapConfigs } from 'api/map_config/useDuplicateMapConfigs';
 import { IPhaseData, UpdatePhaseObject } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
@@ -102,11 +101,11 @@ export const getFormActionsConfig = (
 // If copying another form, reset IDs for fields and add temp-ids to options
 export const resetCopiedForm = (
   customFields: IFlatCustomField[],
-  duplicateMapConfigs: DuplicateMapConfigs
+  duplicateMapConfigIds: Record<string, string>
 ) => {
   // Set the field IDs
   const logicIdMap = { survey_end: 'survey_end' };
-  const newFields = customFields?.map((field: IFlatCustomField, index) => {
+  const newFields = customFields?.map((field: IFlatCustomField) => {
     const sourceFieldId = field.id;
     const { ...newField } = field;
     newField.id = `${Math.floor(Date.now() * Math.random())}`;
@@ -125,9 +124,13 @@ export const resetCopiedForm = (
       });
     }
 
-    // Duplicate the map config if this is a mapping question
-    if (field.input_type === 'point') {
-      newField.map_config_id = duplicateMapConfigs.at(index)?.data?.data.id;
+    // Duplicate the map config if this is a mapping question & and it has an ID
+    const mapConfigId = field.map_config?.data?.id;
+    if (field.input_type === 'point' && mapConfigId) {
+      console.log(duplicateMapConfigIds);
+      console.log('old map config ID:', mapConfigId);
+      newField.map_config_id = duplicateMapConfigIds[mapConfigId];
+      console.log('new map config ID:', duplicateMapConfigIds[mapConfigId]);
     }
 
     return newField;

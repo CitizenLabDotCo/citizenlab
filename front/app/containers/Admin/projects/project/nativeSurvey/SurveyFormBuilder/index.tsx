@@ -39,27 +39,39 @@ const SurveyFormBuilder = () => {
     projectId,
     phaseId: copyFrom ? copyFrom : phaseId,
   });
-  const mapConfigIds = customFields?.map((field) => field.map_config?.data?.id);
-  const customFieldsNewMapConfigs = useDuplicateMapConfigs(mapConfigIds || []);
 
-  const goBackUrl = `/admin/projects/${projectId}/phases/${phaseId}/native-survey`;
-  const downloadPdfLink = `${API_PATH}/phases/${phaseId}/custom_fields/to_pdf`;
-
-  const handleDownloadPDF = () => setExportModalOpen(true);
+  // Duplicate the map configs if this survey is being copied from another phase
+  const mapConfigIds = customFields
+    ?.map((field) => field.map_config?.data?.id)
+    .filter((x) => x); // remove nulls
+  const customFieldsNewMapConfigs = useDuplicateMapConfigs(
+    copyFrom && mapConfigIds ? mapConfigIds : []
+  );
 
   if (!phase || !customFields || !customFieldsNewMapConfigs) return null;
 
+  // Create lookup of existing map config IDs to new IDs
+  const newMapConfigIds = {};
+  mapConfigIds?.forEach((oldId: string, index) => {
+    newMapConfigIds[oldId] = customFieldsNewMapConfigs.at(index)?.data?.data.id;
+  });
+
+  // Copy fields from another survey if provided or reset options if form not yet persisted
   const surveyFormPersisted =
     phase.data.attributes.custom_form_persisted || false;
-
   const formCustomFields = copyFrom
-    ? resetCopiedForm(customFields, customFieldsNewMapConfigs)
+    ? resetCopiedForm(customFields, newMapConfigIds)
     : resetOptionsIfNotPersisted(customFields, surveyFormPersisted);
 
+  // PDF downloading
+  const downloadPdfLink = `${API_PATH}/phases/${phaseId}/custom_fields/to_pdf`;
+  const handleDownloadPDF = () => setExportModalOpen(true);
   const handleExportPDF = async ({ personal_data }: FormValues) => {
     if (isNilOrError(locale)) return;
     await saveSurveyAsPDF({ downloadPdfLink, locale, personal_data });
   };
+
+  const goBackUrl = `/admin/projects/${projectId}/phases/${phaseId}/native-survey`;
 
   return (
     <>

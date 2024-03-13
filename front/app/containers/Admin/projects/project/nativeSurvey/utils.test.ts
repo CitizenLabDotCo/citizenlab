@@ -54,7 +54,6 @@ describe('resetOptionsIfNotPersisted', () => {
     expect(resultCustomFields[0].options[1].temp_id).toMatch(/^TEMP-ID-/);
   });
 });
-
 /*
 describe('resetCopiedForm', () => {
   const customFields: IFlatCustomField[] = [
@@ -224,7 +223,24 @@ describe('resetCopiedForm', () => {
     },
   ];
 
-  const resultCustomFields = resetCopiedForm(customFields);
+  const duplicateMapConfigs: DuplicateMapConfigs = {
+    data: {
+      id: 'bc61309f-9ad6-4051-81ee-f24365aeee79',
+      type: 'map_config',
+      attributes: {
+        zoom_level: '14.0',
+        tile_provider: null,
+        center_geojson: {
+          type: 'Point',
+          coordinates: [4.3517103, 50.8503396],
+        },
+        layers: [],
+        legend: [],
+      },
+    },
+  };
+
+  const resultCustomFields = resetCopiedForm(customFields, duplicateMapConfigs);
 
   it('should reset all IDs with a numeric ID', () => {
     resultCustomFields.forEach((field) => {
@@ -286,5 +302,4 @@ describe('resetCopiedForm', () => {
     });
   });
 });
-
- */
+*/
