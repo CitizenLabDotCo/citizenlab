@@ -1206,7 +1206,6 @@
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "Platformdaki projelerin listesi",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Projeler panosu",
   "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitle": "Yeni projeler oluşturun veya mevcut projeleri yönetin.",
-  "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator": "Bunlar, platformda yönettiğiniz projelerdir.",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "Projeler",
   "app.containers.AdminPage.ProjectDashboard.published": "Yayımlandı",
   "app.containers.AdminPage.ProjectDescription.a11y_closeSettingsPanel": "Ayarlar panelini kapatın",

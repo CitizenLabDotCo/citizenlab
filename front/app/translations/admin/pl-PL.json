@@ -1206,7 +1206,6 @@
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "Lista projektów na platformie",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Panel projektów",
   "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitle": "Utwórz nowy projekt lub zarządzaj istniejącymi.",
-  "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator": "Poniżej znajdują się projekty, którymi zarządzasz.",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "Projekty",
   "app.containers.AdminPage.ProjectDashboard.published": "Opublikowane",
   "app.containers.AdminPage.ProjectDescription.a11y_closeSettingsPanel": "Zamknij panel ustawień",

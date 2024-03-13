@@ -1206,7 +1206,6 @@
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "Popis projekata na ovoj platformi",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Nadzorna ploča s projektima",
   "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitle": "Kreirajte novi projekt ili upravljajte postojećima.",
-  "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator": "Ovdje se nalaze projekti kojima upravljate na platformi.",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "Projekti",
   "app.containers.AdminPage.ProjectDashboard.published": "Objavljeno",
   "app.containers.AdminPage.ProjectDescription.a11y_closeSettingsPanel": "Zatvorite ploču postavki",
