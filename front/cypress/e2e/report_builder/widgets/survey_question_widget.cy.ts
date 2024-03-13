@@ -357,57 +357,44 @@ describe('Survey question widget', () => {
           .first()
           .select(surveyFields[4].id);
 
-        cy.wait(15000);
-
         // Check if values are correct
-        // cy.get('.e2e-survey-question-ungrouped-bars')
-        //   .first()
-        //   .contains('50% (4 choices)');
+        cy.get('.e2e-survey-question-ungrouped-bars')
+          .first()
+          .contains('100% (4 choices)');
 
-        // cy.get('svg.e2e-progress-bar').should('have.length', 3);
-        // cy.get('svg.e2e-progress-bar')
-        //   .first()
-        //   .should('have.attr', 'width', '50%');
-        // cy.get('svg.e2e-progress-bar')
-        //   .eq(1)
-        //   .should('have.attr', 'width', '50%');
-        // cy.get('svg.e2e-progress-bar').eq(2).should('have.attr', 'width', '0%');
+        cy.get('svg.e2e-progress-bar').should('have.length', 3);
+        cy.get('svg.e2e-progress-bar')
+          .first()
+          .should('have.attr', 'width', '100%');
+        cy.get('svg.e2e-progress-bar').eq(1).should('have.attr', 'width', '0%');
+        cy.get('svg.e2e-progress-bar').eq(2).should('have.attr', 'width', '0%');
 
         // Group by gender and confirm correctness
-        // cy.get('#e2e-group-mode-select').select('user_field');
-        // cy.get('#e2e-user-field-select').select('Gender');
+        cy.get('#e2e-group-mode-select').select('user_field');
+        cy.get('#e2e-user-field-select').select('Gender');
 
-        // const ensureCorrectGrouping = () => {
-        //   cy.get('svg.e2e-progress-bar').should('have.length', 5);
-        //   cy.get('svg.e2e-progress-bar')
-        //     .first()
-        //     .should('have.attr', 'width', '25%');
-        //   cy.get('svg.e2e-progress-bar')
-        //     .eq(1)
-        //     .should('have.attr', 'width', '25%');
-        //   cy.get('svg.e2e-progress-bar')
-        //     .eq(2)
-        //     .should('have.attr', 'width', '25%');
-        //   cy.get('svg.e2e-progress-bar')
-        //     .eq(3)
-        //     .should('have.attr', 'width', '25%');
-        //   cy.get('svg.e2e-progress-bar')
-        //     .eq(4)
-        //     .should('have.attr', 'width', '0%');
-        // };
+        const ensureCorrectGrouping = () => {
+          cy.get('svg.e2e-progress-bar').should('have.length', 4);
+          cy.get('svg.e2e-progress-bar')
+            .first()
+            .should('have.attr', 'width', '50%');
+          cy.get('svg.e2e-progress-bar')
+            .eq(1)
+            .should('have.attr', 'width', '50%');
+        };
 
-        // ensureCorrectGrouping();
+        ensureCorrectGrouping();
 
-        // // Save
-        // cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
-        //   'saveReportLayout'
-        // );
-        // cy.get('#e2e-content-builder-topbar-save').click();
-        // cy.wait('@saveReportLayout');
+        // Save
+        cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
+          'saveReportLayout'
+        );
+        cy.get('#e2e-content-builder-topbar-save').click();
+        cy.wait('@saveReportLayout');
 
-        // // Reload page and check if values are still correct
-        // cy.reload();
-        // ensureCorrectGrouping();
+        // Reload page and check if values are still correct
+        cy.reload();
+        ensureCorrectGrouping();
 
         cy.apiRemoveReportBuilder(reportId);
       });
