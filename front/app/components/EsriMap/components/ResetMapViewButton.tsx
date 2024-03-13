@@ -1,14 +1,16 @@
 import React from 'react';
 
+import Point from '@arcgis/core/geometry/Point';
 import MapView from '@arcgis/core/views/MapView';
 import { Box, Button, colors } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IMapConfig } from 'api/map_config/types';
 
 import messages from 'containers/Admin/CustomMapConfigPage/messages';
 
-import { goToMapLocation } from 'components/EsriMap/utils';
+import { esriPointToGeoJson, goToMapLocation } from 'components/EsriMap/utils';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -19,14 +21,30 @@ type Props = {
 
 const ResetMapViewButton = ({ mapConfig, mapView }: Props) => {
   const { formatMessage } = useIntl();
+  const { data: appConfig } = useAppConfiguration();
 
   const goToDefaultMapView = () => {
-    const centerPoint = mapConfig?.data.attributes.center_geojson;
+    // Get global values for fallback
+    const globalDefaultCenterPoint =
+      appConfig?.data.attributes.settings.maps?.map_center;
+    const globalDefaultZoom =
+      appConfig?.data.attributes.settings.maps?.zoom_level;
+
+    // Get the center point from the map config or use the global default
+    const centerPoint =
+      mapConfig?.data.attributes.center_geojson ||
+      esriPointToGeoJson(
+        new Point({
+          latitude: Number(globalDefaultCenterPoint?.lat),
+          longitude: Number(globalDefaultCenterPoint?.long),
+        })
+      );
+
     if (mapView && centerPoint) {
       goToMapLocation(
         centerPoint,
         mapView,
-        Number(mapConfig.data.attributes.zoom_level)
+        Number(mapConfig?.data.attributes.zoom_level || globalDefaultZoom)
       );
     }
   };
