@@ -7,10 +7,12 @@ import IdeaPreviewIndex from 'components/admin/PostManager/components/IdeaPrevie
 const AdminProjectIdeaPreviewIndex = () => {
   const { projectId, phaseId } = useParams() as {
     projectId: string;
+    // We don't have phaseId where this component is rendered
     phaseId: string;
   };
   return (
     <IdeaPreviewIndex
+      // Broken link
       goBackUrl={`/admin/projects/${projectId}/ideas/${phaseId}`}
     />
   );
