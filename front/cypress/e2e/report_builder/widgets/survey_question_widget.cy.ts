@@ -1,13 +1,29 @@
 import { ICustomFieldResponse } from '../../../../app/api/custom_fields/types';
+import { IIdeaJsonFormSchemas } from '../../../../app/api/idea_json_form_schema/types';
 import { randomString, randomEmail } from '../../../support/commands';
 import moment = require('moment');
 import { base64 } from '../../../fixtures/base64img';
 
+const getSchema = (phaseId: string) => {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'GET',
+      url: `web_api/v1/phases/${phaseId}/custom_fields/json_forms_schema`,
+    });
+  });
+};
+
 describe('Survey question widget', () => {
   let projectId: string;
   let surveyPhaseId: string;
-  let surveyIncluded: any;
   let surveyFields: ICustomFieldResponse[];
+  let surveySchema: IIdeaJsonFormSchemas;
 
   let informationPhaseId: string;
 
@@ -62,8 +78,37 @@ describe('Survey question widget', () => {
         );
       })
       .then((response) => {
-        surveyIncluded = response.body.included;
         surveyFields = response.body.data;
+        return getSchema(surveyPhaseId);
+      })
+      .then((response) => {
+        surveySchema = response.body;
+
+        const selectKey = surveyFields[1].attributes.key;
+        const multiSelectKey = surveyFields[2].attributes.key;
+        const linearScaleKey = surveyFields[3].attributes.key;
+        const multiselectImageKey = surveyFields[4].attributes.key;
+
+        const fieldConfigs: any =
+          surveySchema.data.attributes.json_schema_multiloc.en?.properties;
+
+        const getAnswerKeys = (fieldKey: string) => {
+          const fieldConfig = fieldConfigs[fieldKey];
+
+          if (fieldConfig.items) {
+            return fieldConfig.items.oneOf.map((x: any) => x.const);
+          }
+
+          if (fieldConfig.enum) {
+            return fieldConfig.enum;
+          }
+
+          return undefined;
+        };
+
+        const selectAnswerKeys = getAnswerKeys(selectKey);
+        const multiSelectAnswerKeys = getAnswerKeys(multiSelectKey);
+        const multiselectImageAnswerKeys = getAnswerKeys(multiselectImageKey);
 
         users.forEach(({ firstName, lastName, email, password, gender }, i) => {
           let jwt: any;
@@ -88,16 +133,13 @@ describe('Survey question widget', () => {
                 password,
                 projectId,
                 {
-                  [surveyFields[1].attributes.key]:
-                    surveyIncluded[0].attributes.key,
-                  [surveyFields[2].attributes.key]: [
-                    surveyIncluded[2].attributes.key,
-                    surveyIncluded[3].attributes.key,
+                  [selectKey]: selectAnswerKeys[0],
+                  [multiSelectKey]: [
+                    multiSelectAnswerKeys[0],
+                    multiSelectAnswerKeys[1],
                   ],
-                  [surveyFields[3].attributes.key]: i > 1 ? 3 : 2,
-                  [surveyFields[4].attributes.key]: [
-                    surveyIncluded[4].attributes.key,
-                  ],
+                  [linearScaleKey]: i > 1 ? 3 : 2,
+                  [multiselectImageKey]: [multiselectImageAnswerKeys[0]],
                 },
                 jwt
               );
@@ -290,7 +332,7 @@ describe('Survey question widget', () => {
       });
     });
 
-    it.only('works for image question', () => {
+    it('works for image question', () => {
       cy.setAdminLoginCookie();
       cy.apiCreateReportBuilder().then((report) => {
         const reportId = report.body.data.id;
