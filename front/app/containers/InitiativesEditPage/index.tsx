@@ -47,8 +47,6 @@ const InitiativesEditPage = ({ initiative }: Props) => {
   const { data: authUser } = useAuthUser();
   const locale = useLocale();
   const previousPathName = React.useContext(PreviousPathnameContext);
-  // Needs to be removed when isUnauthorizedRQ correctly returns an error when I don't
-  // have permission to edit the initiative (e.g. when only a project moderator)
   const canEditInitiative = usePermission({
     action: 'edit',
     item: initiative.data,
@@ -67,14 +65,11 @@ const InitiativesEditPage = ({ initiative }: Props) => {
     }
   }, [authUser, previousPathName]);
 
-  // Needs to be removed when isUnauthorizedRQ correctly returns an error when I don't
-  // have permission to edit the initiative (e.g. when only a project moderator)
   if (!canEditInitiative) return <Unauthorized />;
 
   if (!authUser) {
     return null;
   }
-
   const onPublished = () => {
     clHistory.push(`/initiatives/${initiative.data.attributes.slug}`);
   };
@@ -83,7 +78,7 @@ const InitiativesEditPage = ({ initiative }: Props) => {
     <>
       <InitiativesEditMeta />
       <PageLayout
-        isAdmin={isAdmin({ data: authUser.data })}
+        isAdmin={isAdmin(authUser)}
         className="e2e-initiative-edit-page"
       >
         <StyledInitiativesEditFormWrapper
