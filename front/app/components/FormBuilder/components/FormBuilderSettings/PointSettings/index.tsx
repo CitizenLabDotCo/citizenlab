@@ -50,7 +50,6 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
   const { data: projectMapConfig } = useProjectMapConfig(projectId);
   const { data: rawCustomFields } = useRawCustomFields({ phaseId });
 
-  // const { mutateAsync: createProjectMapConfig } = useAddMapConfig();
   const { mutateAsync: duplicateMapConfig } = useDuplicateMapConfig();
   const [mapView, setMapView] = useState<MapView | null>(null);
 

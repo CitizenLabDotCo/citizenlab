@@ -5,11 +5,6 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import mapConfigKeys from './keys';
 import { IMapConfig } from './types';
 
-export type DuplicateMapConfigs = UseQueryResult<
-  Omit<IMapConfig, 'included'>,
-  unknown
->[];
-
 export const fetchDuplicateConfig = async (id: string | null | undefined) =>
   fetcher<IMapConfig>({
     path: `/map_configs/${id}/duplicate_map_config_and_layers`,
