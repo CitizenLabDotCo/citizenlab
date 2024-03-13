@@ -15,7 +15,6 @@ import useAuthUser from 'api/me/useAuthUser';
 import useProjects from 'api/projects/useProjects';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
@@ -72,7 +71,6 @@ const ReportBuilderToolbox = ({
   const { projectId } = useReportContext();
   const appConfigurationLocales = useAppConfigurationLocales();
   const { data: authUser } = useAuthUser();
-  const isAnalysisEnabled = useFeatureFlag({ name: 'analysis' });
 
   const userIsModerator = !!authUser && isModerator(authUser);
 
@@ -125,28 +123,26 @@ const ReportBuilderToolbox = ({
           transition: 'all 0.5s ease',
         }}
       >
-        {isAnalysisEnabled && (
-          <Box display="flex" alignItems="center" justifyContent="center">
-            <Box flex="1">
-              <Button
-                onClick={() => setSelectedTab('widgets')}
-                buttonStyle={selectedTab === 'widgets' ? 'text' : 'secondary'}
-              >
-                {formatMessage(messages.widgets)}
-              </Button>
-            </Box>
-
-            <Box flex="1">
-              <Button
-                onClick={() => setSelectedTab('ai')}
-                buttonStyle={selectedTab === 'ai' ? 'text' : 'secondary'}
-                icon="flash"
-              >
-                {formatMessage(messages.ai)}
-              </Button>
-            </Box>
+        <Box display="flex" alignItems="center" justifyContent="center">
+          <Box flex="1">
+            <Button
+              onClick={() => setSelectedTab('widgets')}
+              buttonStyle={selectedTab === 'widgets' ? 'text' : 'secondary'}
+            >
+              {formatMessage(messages.widgets)}
+            </Button>
           </Box>
-        )}
+
+          <Box flex="1">
+            <Button
+              onClick={() => setSelectedTab('ai')}
+              buttonStyle={selectedTab === 'ai' ? 'text' : 'secondary'}
+              icon="flash"
+            >
+              {formatMessage(messages.ai)}
+            </Button>
+          </Box>
+        </Box>
         <Box p="8px" display={selectedTab === 'ai' ? 'block' : 'none'}>
           <Analysis selectedLocale={selectedLocale} />
         </Box>

@@ -14,4 +14,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.ideas.addOfflineInputs',
     defaultMessage: 'Add offline inputs',
   },
+  analysisUpsellTooltip: {
+    id: 'app.containers.Admin.projects.project.ideas.analysisUpsellTooltip',
+    defaultMessage:
+      'This feature is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
+  },
 });
