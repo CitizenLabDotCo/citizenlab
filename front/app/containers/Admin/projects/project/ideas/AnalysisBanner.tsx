@@ -37,7 +37,10 @@ const AnalysisBanner = () => {
   const { mutate: createAnalysis, isLoading } = useAddAnalysis();
   const { formatMessage } = useIntl();
 
-  const isAnalysisEnabled = useFeatureFlag({ name: 'analysis' });
+  const isAnalysisEnabled = useFeatureFlag({
+    name: 'analysis',
+    onlyCheckAllowed: true,
+  });
 
   const handleGoToAnalysis = () => {
     if (analyses?.data.length) {
@@ -81,21 +84,23 @@ const AnalysisBanner = () => {
       </Box>
       <Tippy
         content={<p>{formatMessage(messages.analysisUpsellTooltip)}</p>}
-        disabled={!isAnalysisEnabled}
+        disabled={isAnalysisEnabled}
       >
-        <Button
-          buttonStyle="text"
-          textColor={colors.orange}
-          onClick={handleGoToAnalysis}
-          fontWeight="bold"
-          icon={isAnalysisEnabled ? 'flash' : 'lock'}
-          iconColor={colors.orange}
-          id="e2e-analysis-banner-button"
-          processing={isLoading}
-          disabled={!isAnalysisEnabled}
-        >
-          {formatMessage(messages.analysisButton)}
-        </Button>
+        <Box>
+          <Button
+            buttonStyle="text"
+            textColor={colors.orange}
+            onClick={handleGoToAnalysis}
+            fontWeight="bold"
+            icon={isAnalysisEnabled ? 'flash' : 'lock'}
+            iconColor={colors.orange}
+            id="e2e-analysis-banner-button"
+            processing={isLoading}
+            disabled={!isAnalysisEnabled}
+          >
+            {formatMessage(messages.analysisButton)}
+          </Button>
+        </Box>
       </Tippy>
     </Box>
   );

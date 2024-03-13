@@ -63,8 +63,8 @@ const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
 
   return (
     <>
-      {isAnalysisEnabled && (
-        <Box>
+      {!isAnalysisEnabled && (
+        <Box p="12px">
           <Title variant="h3">{formatMessage(messages.upsellTitle)}</Title>
           <Text>{formatMessage(messages.upsellDescription)}</Text>
           <Tippy content={<p>{formatMessage(messages.upsellTooltip)}</p>}>

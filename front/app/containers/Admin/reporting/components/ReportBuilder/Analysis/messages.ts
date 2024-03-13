@@ -24,7 +24,7 @@ export default defineMessages({
   },
   upsellDescription: {
     id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.upsellDescription',
-    defaultMessage: 'Pull AI-generated insights into your report',
+    defaultMessage: 'Pull AI-generated insights into your report.',
   },
   upsellButton: {
     id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.upsellButton',
