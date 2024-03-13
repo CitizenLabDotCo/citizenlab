@@ -9,6 +9,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
 
 import { IProjectData } from 'api/projects/types';
 
@@ -18,6 +19,14 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
+
+const StyledSurveyTitle = styled(Text)`
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+`;
 
 type Props = {
   project: IProjectData;
@@ -88,9 +97,14 @@ const SurveyHeading = ({
             p="14px 24px"
             borderBottom={`1px solid ${colors.divider}`}
           >
-            <Text color={'tenantPrimary'} variant="bodyS" fontSize="m" my="0px">
+            <StyledSurveyTitle
+              color={'tenantPrimary'}
+              variant="bodyS"
+              fontSize="m"
+              my="0px"
+            >
               {titleText}
-            </Text>
+            </StyledSurveyTitle>
             <Box display="flex">
               {showEditSurveyButton && (
                 <Button
