@@ -60,7 +60,7 @@ const SurveyQuestionResult = ({
       </Title>
       <Text mt="0px" mb="8px" color="textSecondary" variant="bodyS">
         {formatMessage(messages.numberOfResponses, {
-          count: attributes.totalResponses,
+          count: attributes.totalResponseCount,
         })}
       </Text>
       {attributes.grouped && colorScheme && (
