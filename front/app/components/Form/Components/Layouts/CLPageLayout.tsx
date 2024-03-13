@@ -75,6 +75,8 @@ const CLPageLayout = memo(
     const hasPreviousPage = currentStep !== 0;
     const useTopAnchor =
       isSmallerThanPhone && !isNilOrError(topAnchorRef) && topAnchorRef.current;
+    const pagesRef = useRef<HTMLDivElement>(null);
+    const [hasScrollBars, setHasScrollBars] = useState(false);
 
     useEffect(() => {
       // We can cast types because the tester made sure we only get correct values
@@ -102,6 +104,14 @@ const CLPageLayout = memo(
         setScrollToError(false);
       }
     }, [scrollToError]);
+
+    useEffect(() => {
+      if (pagesRef.current) {
+        const isScrollBarVisible =
+          pagesRef.current.scrollHeight > pagesRef.current.clientHeight;
+        setHasScrollBars(isScrollBarVisible);
+      }
+    }, [currentStep]);
 
     const scrollToTop = () => {
       if (useTopAnchor) {
@@ -200,7 +210,14 @@ const CLPageLayout = memo(
           margin="auto"
           position="relative"
         >
-          <Box display="flex" flex="1" height="100%" overflowY="auto" w="100%">
+          <Box
+            display="flex"
+            flex="1"
+            height="100%"
+            overflowY="auto"
+            w="100%"
+            ref={pagesRef}
+          >
             {uiPages.map((page, index) => {
               const pageElements = extractElementsByOtherOptionLogic(
                 page,
@@ -209,55 +226,62 @@ const CLPageLayout = memo(
               return (
                 currentStep === index && (
                   <StyledFormSection key={index}>
-                    {page.options.title && (
-                      <Title
-                        variant="h2"
-                        mt="0"
-                        mb="24px"
-                        color="tenantPrimary"
-                      >
-                        {page.options.title}
-                      </Title>
-                    )}
-                    {page.options.description && (
-                      <Box mb={pageElements.length >= 1 ? '48px' : '28px'}>
-                        <QuillEditedContent
-                          fontWeight={400}
-                          textColor={theme.colors.tenantText}
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      h={hasScrollBars ? 'fit-content' : '100%'}
+                      flexDirection="column"
+                    >
+                      {page.options.title && (
+                        <Title
+                          variant="h2"
+                          mt="0"
+                          mb="24px"
+                          color="tenantPrimary"
                         >
-                          <div
-                            dangerouslySetInnerHTML={{
-                              __html: page.options.description,
-                            }}
-                          />
-                        </QuillEditedContent>
-                      </Box>
-                    )}
-                    {pageElements.map((elementUiSchema, index) => {
-                      const key = elementUiSchema.scope.split('/').pop();
-                      const hasOtherFieldBelow =
-                        key &&
-                        (Array.isArray(data[key])
-                          ? data[key].includes('other')
-                          : data[key] === 'other');
-
-                      return (
-                        <Box
-                          width="100%"
-                          mb={hasOtherFieldBelow ? undefined : '28px'}
-                          key={index}
-                        >
-                          <JsonFormsDispatch
-                            renderers={renderers}
-                            cells={cells}
-                            uischema={elementUiSchema}
-                            schema={schema}
-                            path={path}
-                            enabled={enabled}
-                          />
+                          {page.options.title}
+                        </Title>
+                      )}
+                      {page.options.description && (
+                        <Box mb={pageElements.length >= 1 ? '48px' : '28px'}>
+                          <QuillEditedContent
+                            fontWeight={400}
+                            textColor={theme.colors.tenantText}
+                          >
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: page.options.description,
+                              }}
+                            />
+                          </QuillEditedContent>
                         </Box>
-                      );
-                    })}
+                      )}
+                      {pageElements.map((elementUiSchema, index) => {
+                        const key = elementUiSchema.scope.split('/').pop();
+                        const hasOtherFieldBelow =
+                          key &&
+                          (Array.isArray(data[key])
+                            ? data[key].includes('other')
+                            : data[key] === 'other');
+
+                        return (
+                          <Box
+                            width="100%"
+                            mb={hasOtherFieldBelow ? undefined : '28px'}
+                            key={index}
+                          >
+                            <JsonFormsDispatch
+                              renderers={renderers}
+                              cells={cells}
+                              uischema={elementUiSchema}
+                              schema={schema}
+                              path={path}
+                              enabled={enabled}
+                            />
+                          </Box>
+                        );
+                      })}
+                    </Box>
                   </StyledFormSection>
                 )
               );
