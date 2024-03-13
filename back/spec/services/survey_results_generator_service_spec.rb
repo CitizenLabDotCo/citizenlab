@@ -908,12 +908,14 @@ RSpec.describe SurveyResultsGeneratorService do
           inputType: 'point',
           question: { 'en' => 'Where should the new nursery be located?' },
           required: false,
-          totalResponses: 2,
+          grouped: false,
+          questionResponseCount: 2,
+          totalResponseCount: 22,
           customFieldId: point_field.id,
           mapConfigId: map_config.id,
           pointResponses: a_collection_containing_exactly(
-            { answer: { 'coordinates' => [42.42, 24.24], 'type' => 'Point' } },
-            { answer: { 'coordinates' => [11.22, 33.44], 'type' => 'Point' } }
+            { response: { 'coordinates' => [42.42, 24.24], 'type' => 'Point' } },
+            { response: { 'coordinates' => [11.22, 33.44], 'type' => 'Point' } }
           )
         }
       end
