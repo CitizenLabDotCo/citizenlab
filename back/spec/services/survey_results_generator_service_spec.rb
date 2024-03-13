@@ -901,7 +901,7 @@ RSpec.describe SurveyResultsGeneratorService do
         expect(generated_results[:results][7]).to match expected_result_file_upload
       end
     end
-    
+
     describe 'point fields' do
       let(:expected_result_point) do
         {
