@@ -417,5 +417,17 @@ describe LocalProjectCopyService do
         })
       end
     end
+
+    describe 'when source project has phase with non-zero baskets_count or votes_count' do
+      let(:phase) { create(:budgeting_phase, baskets_count: 42, votes_count: 53) }
+      let!(:source_project) { create(:project, phases: [phase]) }
+
+      it 'sets baskets_count and votes_count to zero' do
+        copied_project = service.copy(source_project)
+
+        expect(copied_project.phases.first.baskets_count).to eq 0
+        expect(copied_project.phases.first.votes_count).to eq 0
+      end
+    end
   end
 end
