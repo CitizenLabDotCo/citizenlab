@@ -37,6 +37,7 @@ interface Props {
   onChange: (formData: FormData) => void;
   setFormData?: (formData: FormData) => void;
   onSubmit?: (formData: FormData) => Promise<any>;
+  setCompletionPercentage?: (percentage: number) => void;
 }
 
 const Fields = ({
@@ -55,6 +56,7 @@ const Fields = ({
   onChange,
   setFormData,
   onSubmit,
+  setCompletionPercentage,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -98,6 +100,7 @@ const Fields = ({
           setShowAllErrors,
           setFormData,
           locale,
+          setCompletionPercentage,
         }}
       >
         <JsonForms

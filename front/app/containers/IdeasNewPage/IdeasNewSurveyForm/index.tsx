@@ -20,13 +20,8 @@ import { IProject } from 'api/projects/types';
 import useInputSchema from 'hooks/useInputSchema';
 import useLocalize from 'hooks/useLocalize';
 
-import Form, { customAjv } from 'components/Form';
-import {
-  AjvErrorGetter,
-  ApiErrorGetter,
-  FormData,
-} from 'components/Form/typings';
-import { getFormSchemaAndData } from 'components/Form/utils';
+import Form from 'components/Form';
+import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import PageContainer from 'components/UI/PageContainer';
 import Warning from 'components/UI/Warning';
@@ -223,25 +218,6 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     }
   };
 
-  function onChange(data: FormData) {
-    if (!schema || !uiSchema) {
-      return;
-    }
-
-    const [, dataWithoutHiddenFields] = getFormSchemaAndData(
-      schema,
-      uiSchema,
-      data,
-      customAjv
-    );
-
-    const totalKeys = Object.keys(dataWithoutHiddenFields).length;
-    const keysWithValues = Object.values(dataWithoutHiddenFields).filter(
-      (value) => value !== undefined
-    ).length;
-    setPercentageAnswered((keysWithValues / totalKeys) * 100);
-  }
-
   return (
     <PageContainer id="e2e-idea-new-page" overflow="hidden">
       {!loadingDraftIdea && schema && uiSchema && participationMethodConfig ? (
@@ -266,7 +242,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
               getAjvErrorMessage={getAjvErrorMessage}
               getApiErrorMessage={getApiErrorMessage}
               inputId={ideaId}
-              onChange={onChange}
+              setCompletionPercentage={setPercentageAnswered}
               hideOverflowContent
               title={
                 <>

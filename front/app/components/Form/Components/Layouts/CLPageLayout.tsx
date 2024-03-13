@@ -22,6 +22,7 @@ import {
   isPageCategorization,
   PageType,
   getFilteredDataForUserPath,
+  getFormCompletionPercentage,
 } from 'components/Form/Components/Layouts/utils';
 import { FormContext } from 'components/Form/contexts';
 import { FormSection } from 'components/UI/FormComponents';
@@ -56,7 +57,8 @@ const CLPageLayout = memo(
     enabled,
     data,
   }: LayoutProps) => {
-    const { onSubmit, setShowAllErrors, setFormData } = useContext(FormContext);
+    const { onSubmit, setShowAllErrors, setFormData, setCompletionPercentage } =
+      useContext(FormContext);
     const topAnchorRef = useRef<HTMLInputElement>(null);
     const [currentStep, setCurrentStep] = useState<number>(0);
     const [isLoading, setIsLoading] = useState(false);
@@ -112,6 +114,31 @@ const CLPageLayout = memo(
         setHasScrollBars(isScrollBarVisible);
       }
     }, [currentStep]);
+
+    useEffect(() => {
+      if (!setCompletionPercentage) return;
+
+      if (currentStep === uiPages.length - 1) {
+        setCompletionPercentage(100);
+        return;
+      }
+
+      const percentage = getFormCompletionPercentage(
+        schema,
+        uiPages,
+        formState.core?.data,
+        currentStep
+      );
+
+      setCompletionPercentage(percentage);
+    }, [
+      formState.core?.data,
+      uischema,
+      schema,
+      currentStep,
+      uiPages,
+      setCompletionPercentage,
+    ]);
 
     const scrollToTop = () => {
       if (useTopAnchor) {

@@ -81,6 +81,7 @@ interface Props {
   layout?: 'inline' | 'fullpage';
   footer?: React.ReactNode;
   hideOverflowContent?: boolean;
+  setCompletionPercentage?: (percentage: number) => void;
 }
 
 interface InnerProps extends Props {
@@ -104,6 +105,7 @@ const Form = memo(
     onChange,
     onSubmit,
     hideOverflowContent,
+    setCompletionPercentage,
   }: InnerProps) => {
     const { formatMessage } = useIntl();
 
@@ -198,6 +200,7 @@ const Form = memo(
             setFormData={setData}
             onChange={handleChange}
             onSubmit={handleSubmit}
+            setCompletionPercentage={setCompletionPercentage}
           />
           {footer && (
             <Box display="flex" flexDirection="row" justifyContent="center">

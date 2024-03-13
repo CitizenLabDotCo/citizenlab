@@ -13,6 +13,7 @@ export const FormContext = createContext<{
   onSubmit?: (formData?: FormData) => void | Promise<void>;
   setFormData?: (formData?: FormData) => void;
   setShowAllErrors?: (showAllErrors: boolean) => void;
+  setCompletionPercentage?: (percentage: number) => void;
   locale?: Locale;
 }>({
   showAllErrors: false,
@@ -20,6 +21,7 @@ export const FormContext = createContext<{
   onSubmit: async () => undefined,
   setFormData: async () => undefined,
   setShowAllErrors: () => undefined,
+  setCompletionPercentage: () => undefined,
   inputId: undefined,
   locale: undefined,
 });
