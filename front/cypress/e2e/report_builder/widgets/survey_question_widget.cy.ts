@@ -223,7 +223,7 @@ describe('Survey question widget', () => {
         cy.get('#e2e-phase-filter').select(surveyPhaseId);
         cy.get('.e2e-question-select select')
           .first()
-          .select(surveyFields[2].id);
+          .select(surveyFields[3].id);
 
         // Check if values are correct
         cy.get('.e2e-survey-question-ungrouped-bars')
@@ -232,12 +232,12 @@ describe('Survey question widget', () => {
 
         cy.get('svg.e2e-progress-bar').should('have.length', 6);
         cy.get('svg.e2e-progress-bar')
-          .eq(3)
+          .eq(2)
           .should('have.attr', 'width', '50%');
         cy.get('svg.e2e-progress-bar')
-          .eq(4)
+          .eq(3)
           .should('have.attr', 'width', '50%');
-        cy.get('svg.e2e-progress-bar').eq(5).should('have.attr', 'width', '0%');
+        cy.get('svg.e2e-progress-bar').eq(4).should('have.attr', 'width', '0%');
 
         // Group by gender and confirm correctness
         cy.get('#e2e-group-mode-select').select('user_field');
@@ -245,6 +245,9 @@ describe('Survey question widget', () => {
 
         const ensureCorrectGrouping = () => {
           cy.get('svg.e2e-progress-bar').should('have.length', 8);
+          cy.get('svg.e2e-progress-bar')
+            .eq(2)
+            .should('have.attr', 'width', '25%');
           cy.get('svg.e2e-progress-bar')
             .eq(3)
             .should('have.attr', 'width', '25%');
@@ -256,9 +259,6 @@ describe('Survey question widget', () => {
             .should('have.attr', 'width', '25%');
           cy.get('svg.e2e-progress-bar')
             .eq(6)
-            .should('have.attr', 'width', '25%');
-          cy.get('svg.e2e-progress-bar')
-            .eq(7)
             .should('have.attr', 'width', '0%');
         };
 
