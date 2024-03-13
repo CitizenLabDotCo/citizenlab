@@ -1267,7 +1267,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layersTooltip": "Wir unterstützen derzeit GeoJSON-Dateien. Lesen Sie den {supportArticle} für Tipps zum Konvertieren und Gestalten von Kartenebenen.",
   "app.containers.AdminPage.ProjectEdit.MapTab.lngLabel": "Standard-Längengrad",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom": "Standard-Kartenmittelpunkt und -Zoom",
-  "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "Der Standard-Mittelpunkt und die Standard-Zoomstufe der Karte. Passen Sie die Werte unten manuell an, oder klicken Sie auf den Button {button} in der oberen rechten Ecke der Karte, um den aktuellen Mittelpunkt und die Zoomstufe der Karte als Standardwerte zu speichern.",
+  "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "The default center point and zoom level of the map. Manually adjust the values below, or click on the {button} button in the top right corner of the map to save the current center point and zoom level of the map as the default values.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationDescription": "Passen Sie die Kartenansicht an, einschließlich des Hochladens und Gestaltens von Kartenebenen und des Festlegens des Kartenmittelpunkts und der Zoomstufe.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationTitle": "Konfiguration der Karte",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapLocationWarning": "Die Kartenkonfiguration wird derzeit von allen Phasen gemeinsam genutzt. Sie können keine unterschiedlichen Kartenkonfigurationen pro Phase erstellen.",
