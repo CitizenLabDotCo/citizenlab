@@ -47,9 +47,9 @@ module PublicApi
       return scope unless @type
 
       if @type == 'survey'
-        scope.where.not(creation_phase_id: nil)
+        scope.native_survey
       elsif @type == 'idea'
-        scope.where(creation_phase_id: nil)
+        scope.ideation
       else
         scope
       end
