@@ -90,7 +90,6 @@ const CommentHeader = ({
           authorHash={commentAttributes.author_hash}
           isLinkToProfile={typeof authorId === 'string'}
           size={30}
-          showModeration={userCanModerate}
           createdAt={commentAttributes.created_at}
           avatarBadgeBgColor={commentType === 'child' ? '#fbfbfb' : '#fff'}
           horizontalLayout={true}

@@ -8,8 +8,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import useUserById from 'api/users/useUserById';
-
 import useLocale from 'hooks/useLocale';
 
 import Avatar from 'components/Avatar';
@@ -19,8 +17,6 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 import { timeAgo } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import messages from './messages';
 
@@ -104,10 +100,8 @@ export interface Props {
   createdAt: string;
   size: number;
   isLinkToProfile?: boolean;
-  projectId?: string | null;
   showAvatar?: boolean;
   avatarBadgeBgColor?: string;
-  showModeration?: boolean; // will show red styling on admins and moderators of projectId
   fontWeight?: number;
   fontSize?: number;
   className?: string;
@@ -116,7 +110,7 @@ export interface Props {
   color?: string;
   authorHash?: string;
   anonymous?: boolean;
-  postType: 'idea' | 'initiative';
+  userCanModerate: boolean;
 }
 
 const Author = memo(
@@ -126,9 +120,7 @@ const Author = memo(
     createdAt,
     size,
     isLinkToProfile,
-    projectId,
     showAvatar = true,
-    showModeration,
     className,
     avatarBadgeBgColor,
     fontWeight,
@@ -137,18 +129,9 @@ const Author = memo(
     color,
     underline,
     anonymous,
-    postType,
+    userCanModerate,
   }: Props) => {
     const locale = useLocale();
-    const { data: author } = useUserById(authorId);
-    // Ideally this is managed outside of this component.
-    const canModerate = author
-      ? {
-          idea: canModerateProject(projectId, author),
-          initiative: canModerateInitiative(author),
-        }[postType]
-      : false;
-    const showModerationStyles = showModeration && canModerate;
 
     if (!isNilOrError(locale)) {
       return (
@@ -160,7 +143,7 @@ const Author = memo(
                 authorHash={authorHash}
                 size={size}
                 isLinkToProfile={isLinkToProfile}
-                moderator={showModerationStyles}
+                moderator={userCanModerate}
                 bgColor={avatarBadgeBgColor}
               />
             )}
@@ -175,7 +158,7 @@ const Author = memo(
                 <UserName
                   userId={authorId}
                   isLinkToProfile={isLinkToProfile}
-                  canModerate={showModerationStyles}
+                  canModerate={userCanModerate}
                   fontWeight={fontWeight}
                   fontSize={fontSize}
                   color={color}

@@ -87,7 +87,6 @@ const InternalCommentHeader = ({
           authorId={authorId}
           isLinkToProfile={typeof authorId === 'string'}
           size={30}
-          showModeration
           createdAt={commentAttributes.created_at}
           avatarBadgeBgColor={commentType === 'child' ? '#fbfbfb' : '#fff'}
           horizontalLayout={true}
