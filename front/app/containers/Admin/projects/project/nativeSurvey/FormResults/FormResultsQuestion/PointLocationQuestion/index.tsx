@@ -31,7 +31,7 @@ import messages from '../../messages';
 import HeatmapTooltipContent from './HeatmapTooltipContent';
 
 type Props = {
-  pointResponses: { answer: GeoJSON.Point }[];
+  pointResponses: { response: GeoJSON.Point }[];
   mapConfigId?: string;
   customFieldId?: string;
 };
@@ -86,8 +86,8 @@ const PointLocationQuestion = ({
       return {
         type: 'Point',
         coordinates: [
-          response.answer.coordinates[0],
-          response.answer.coordinates[1],
+          response?.response?.coordinates[0],
+          response?.response?.coordinates[1],
         ],
       };
     });

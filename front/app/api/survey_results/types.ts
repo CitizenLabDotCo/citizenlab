@@ -38,7 +38,7 @@ export interface Result {
   answers?: Answer[];
   textResponses?: { answer: string }[];
   files?: { name: string; url: string }[];
-  pointResponses?: { answer: GeoJSON.Point }[];
+  pointResponses?: { response: GeoJSON.Point }[];
   multilocs?: AnswerMultilocs;
 }
 
