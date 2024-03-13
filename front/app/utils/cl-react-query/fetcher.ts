@@ -168,7 +168,10 @@ async function fetcher({
           });
         }
       } else if (action === 'get' || action === 'post' || action === 'patch') {
-        if (data.data.id) {
+        if (
+          data.data !== null && // TODO fix this in the backend
+          data.data.id
+        ) {
           queryClient.setQueryData(
             [
               {

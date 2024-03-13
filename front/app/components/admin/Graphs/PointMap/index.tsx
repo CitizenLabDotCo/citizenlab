@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 
-import { when as reactiveUtilsWhen } from '@arcgis/core/core/reactiveUtils.js';
+// import { when as reactiveUtilsWhen } from '@arcgis/core/core/reactiveUtils.js';
 import Point from '@arcgis/core/geometry/Point';
 import Graphic from '@arcgis/core/Graphic';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
@@ -74,10 +74,6 @@ const PointMap = ({
           type: 'oid',
         },
       ],
-      // Set the symbol used to render the graphics
-      renderer: new Renderer({
-        symbol: circleSymbol,
-      }),
     });
   }, [graphics, layerId, layerTitle]);
 
@@ -92,8 +88,8 @@ const PointMap = ({
       onInit: setMapView,
       showLegend: true,
       showLayerVisibilityControl: true,
-      zoom: Number(mapConfig?.data.attributes.zoom_level),
-      center: mapConfig?.data.attributes.center_geojson,
+      zoom: Number(mapConfig?.data?.attributes.zoom_level),
+      center: mapConfig?.data?.attributes.center_geojson,
     }),
     [mapConfig]
   );
@@ -110,21 +106,24 @@ const PointMap = ({
     }
   }, [mapView, heatmap, responsesLayer]);
 
-  useEffect(() => {
-    reactiveUtilsWhen(
-      () => mapView?.stationary === true,
-      () => {
-        if (mapView?.extent && responsesLayer?.renderer.type === 'heatmap') {
-          applyHeatMapRenderer(responsesLayer, mapView);
-        }
-      }
-    );
-  }, [mapView, responsesLayer]);
+  // useEffect(() => {
+  //    if (!mapView) return;
+
+  //   console.log('reactive utils shit')
+  //   reactiveUtilsWhen(
+  //     () => mapView?.stationary === true,
+  //     () => {
+  //       if (mapView?.extent && responsesLayer?.renderer.type === 'heatmap') {
+  //         applyHeatMapRenderer(responsesLayer, mapView);
+  //       }
+  //     }
+  //   );
+  // }, [mapView, responsesLayer]);
 
   return (
     <EsriMap
       initialData={initialData}
-      webMapId={mapConfig?.data.attributes.esri_web_map_id}
+      webMapId={mapConfig?.data?.attributes.esri_web_map_id}
       height="440px"
       layers={layers}
     />
