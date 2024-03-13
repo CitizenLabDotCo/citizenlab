@@ -28,7 +28,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { geocode, reverseGeocode } from 'utils/locationTools';
 import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import { Heading } from '../components/Heading';
 import IdeasNewMeta from '../IdeasNewMeta';
@@ -230,10 +229,6 @@ const IdeasNewIdeationForm = ({ project }: Props) => {
     return null;
   }
 
-  const canUserEditProject =
-    !isNilOrError(authUser) &&
-    canModerateProject(project.data.id, { data: authUser.data });
-
   return (
     <PageContainer id="e2e-idea-new-page" overflow="hidden">
       {!processingLocation &&
@@ -264,8 +259,6 @@ const IdeasNewIdeationForm = ({ project }: Props) => {
                       <></>
                     )
                   }
-                  isSurvey={false}
-                  canUserEditProject={canUserEditProject}
                 />
               </>
             }
