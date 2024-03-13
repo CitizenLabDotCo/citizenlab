@@ -27,7 +27,7 @@ const Bar = styled.div`
 `;
 interface Props {
   project: IProjectData;
-  event?: IEventData;
+  event: IEventData;
 }
 
 const TopBar = ({ project, event }: Props) => {
@@ -49,7 +49,7 @@ const TopBar = ({ project, event }: Props) => {
               : clHistory.push(`/projects/${project.attributes.slug}`);
           }}
         />
-        {canModerate && event && (
+        {canModerate && (
           <Button
             buttonStyle="secondary"
             m="0px"
