@@ -1,6 +1,7 @@
 import { ICustomFieldResponse } from '../../../../app/api/custom_fields/types';
 import { randomString, randomEmail } from '../../../support/commands';
 import moment = require('moment');
+import { base64 } from '../../../fixtures/base64img';
 
 describe('Survey question widget', () => {
   let projectId: string;
@@ -45,14 +46,20 @@ describe('Survey question widget', () => {
       })
       .then((phase) => {
         surveyPhaseId = phase.body.data.id;
-
-        cy.apiCreateSurveyQuestions(surveyPhaseId, [
-          'page',
-          'select',
-          'multiselect',
-          'linear_scale',
-          'multiselect_image',
-        ]);
+        return cy.uploadSurveyImageQuestionImage(base64);
+      })
+      .then((questionImage) => {
+        cy.apiCreateSurveyQuestions(
+          surveyPhaseId,
+          [
+            'page',
+            'select',
+            'multiselect',
+            'linear_scale',
+            'multiselect_image',
+          ],
+          questionImage.body.data.id
+        );
       })
       .then((response) => {
         surveyIncluded = response.body.included;

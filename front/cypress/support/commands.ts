@@ -82,6 +82,7 @@ declare global {
       apiCreateSurveyQuestions: typeof apiCreateSurveyQuestions;
       apiUpdateUserCustomFields: typeof apiUpdateUserCustomFields;
       apiCreateSurveyResponse: typeof apiCreateSurveyResponse;
+      uploadSurveyImageQuestionImage: typeof uploadSurveyImageQuestionImage;
     }
   }
 }
@@ -1646,40 +1647,40 @@ function apiRemoveSmartGroup(smartGroupId: string) {
   });
 }
 
-const createBaseCustomField = (
-  input_type: ICustomFieldInputType,
-  i: number
-) => ({
-  title_multiloc:
-    input_type === 'page' ? {} : { en: `Question: ${input_type}` },
-  description_multiloc: {},
-  enabled: true,
-  id: randomString(),
-  key: input_type === 'page' ? 'page_1' : randomString(),
-  logic: {},
-  required: false,
-  input_type,
-  options: getOptions(input_type),
-  ordering: i,
-  ...(input_type === 'linear_scale'
-    ? {
-        maximum: 5,
-        minimum_label_multiloc: { en: 'Min label' },
-        maximum_label_multiloc: { en: 'Max label' },
-      }
-    : {}),
-});
+const createBaseCustomField =
+  (imageId?: string) => (input_type: ICustomFieldInputType, i: number) => ({
+    title_multiloc:
+      input_type === 'page' ? {} : { en: `Question: ${input_type}` },
+    description_multiloc: {},
+    enabled: true,
+    id: randomString(),
+    key: input_type === 'page' ? 'page_1' : randomString(),
+    logic: {},
+    required: false,
+    input_type,
+    options: getOptions(input_type, imageId),
+    ordering: i,
+    ...(input_type === 'linear_scale'
+      ? {
+          maximum: 5,
+          minimum_label_multiloc: { en: 'Min label' },
+          maximum_label_multiloc: { en: 'Max label' },
+        }
+      : {}),
+  });
 
-const getOptions = (input_type: string) => {
+const getOptions = (input_type: string, imageId?: string) => {
   if (['select', 'multiselect', 'multiselect_image'].indexOf(input_type) > -1) {
     return [
       {
         temp_id: `TEMP-ID-${randomString()}`,
         title_multiloc: { en: `${input_type}: Option 1` },
+        ...(imageId ? { image_id: imageId } : {}),
       },
       {
         temp_id: `TEMP-ID-${randomString()}`,
         title_multiloc: { en: `${input_type}: Option 2` },
+        ...(imageId ? { image_id: imageId } : {}),
       },
     ];
   }
@@ -1689,7 +1690,8 @@ const getOptions = (input_type: string) => {
 
 function apiCreateSurveyQuestions(
   phaseId: string,
-  inputTypes: ICustomFieldInputType[]
+  inputTypes: ICustomFieldInputType[],
+  imageId?: string
 ) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1702,7 +1704,7 @@ function apiCreateSurveyQuestions(
       method: 'PATCH',
       url: `web_api/v1/admin/phases/${phaseId}/custom_fields/update_all`,
       body: {
-        custom_fields: inputTypes.map(createBaseCustomField),
+        custom_fields: inputTypes.map(createBaseCustomField(imageId)),
       },
     });
   });
@@ -1741,6 +1743,24 @@ function apiCreateSurveyResponse(
       return makeRequest(jwt);
     });
   }
+}
+
+function uploadSurveyImageQuestionImage(base64: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: 'web_api/v1/custom_field_option_images',
+      body: {
+        image: { image: base64 },
+      },
+    });
+  });
 }
 
 // https://stackoverflow.com/a/16012490
@@ -1883,3 +1903,7 @@ Cypress.Commands.add(
 Cypress.Commands.add('apiCreateSurveyQuestions', apiCreateSurveyQuestions);
 Cypress.Commands.add('apiUpdateUserCustomFields', apiUpdateUserCustomFields);
 Cypress.Commands.add('apiCreateSurveyResponse', apiCreateSurveyResponse);
+Cypress.Commands.add(
+  'uploadSurveyImageQuestionImage',
+  uploadSurveyImageQuestionImage
+);
