@@ -32,7 +32,6 @@ import Authentication from 'containers/Authentication';
 import MainHeader from 'containers/MainHeader';
 
 import ErrorBoundary from 'components/ErrorBoundary';
-import HasPermission from 'components/HasPermission';
 
 import { trackPage } from 'utils/analytics';
 import Navigate from 'utils/cl-router/Navigate';
@@ -45,6 +44,7 @@ import {
   isPage,
 } from 'utils/helperUtils';
 import { localeStream } from 'utils/localeStream';
+import { usePermission } from 'utils/permissions';
 
 import Meta from './Meta';
 import UserSessionRecordingModal from './UserSessionRecordingModal';
@@ -264,6 +264,13 @@ const App = ({ children }: Props) => {
   const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
   const disableScroll = fullscreenModalEnabled && signUpInModalOpened;
   const isAuthenticationPending = !authUser && isLoading;
+  const canAccessRoute = usePermission({
+    item: {
+      type: 'route',
+      path: pathname,
+    },
+    action: 'access',
+  });
 
   const showFrontOfficeNavbar = () => {
     if (isAdminPage) {
@@ -361,18 +368,11 @@ const App = ({ children }: Props) => {
                       : undefined
                   }
                 >
-                  <HasPermission
-                    item={{
-                      type: 'route',
-                      path: pathname,
-                    }}
-                    action="access"
-                  >
+                  {canAccessRoute ? (
                     <ErrorBoundary>{children}</ErrorBoundary>
-                    <HasPermission.No>
-                      <Navigate to="/" />
-                    </HasPermission.No>
-                  </HasPermission>
+                  ) : (
+                    <Navigate to="/" />
+                  )}
                 </Box>
               )}
               {showFooter && (

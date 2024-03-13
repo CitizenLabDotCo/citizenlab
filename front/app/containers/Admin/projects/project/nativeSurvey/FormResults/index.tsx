@@ -47,43 +47,48 @@ const FormResults = () => {
           {surveyResponseMessage}
         </Text>
       </Box>
-
       <Box>
-        {results.map(
-          (
-            {
-              question,
-              inputType,
-              answers,
-              totalResponses,
-              required,
-              customFieldId,
-              mapConfigId,
-              textResponses,
-              files,
-              pointResponses,
-            },
-            index
-          ) => {
-            return (
-              <FormResultsQuestion
-                key={index}
-                locale={locale}
-                question={question}
-                inputType={inputType}
-                answers={answers}
-                totalResponses={totalResponses}
-                totalSubmissions={totalSubmissions}
-                required={required}
-                mapConfigId={mapConfigId}
-                customFieldId={customFieldId}
-                textResponses={textResponses}
-                pointResponses={pointResponses}
-                files={files}
-              />
-            );
-          }
-        )}
+        {totalSubmissions > 0 &&
+          results.map(
+            (
+              {
+                question,
+                inputType,
+                answers,
+                totalResponseCount,
+                questionResponseCount,
+                required,
+                customFieldId,
+                mapConfigId,
+                textResponses,
+                files,
+                multilocs,
+                pointResponses,
+              },
+              index
+            ) => {
+              return (
+                <FormResultsQuestion
+                  key={index}
+                  questionNumber={index + 1}
+                  locale={locale}
+                  question={question}
+                  inputType={inputType}
+                  answers={answers}
+                  totalResponseCount={totalResponseCount}
+                  questionResponseCount={questionResponseCount}
+                  totalSubmissions={totalSubmissions}
+                  required={required}
+                  mapConfigId={mapConfigId}
+                  customFieldId={customFieldId}
+                  textResponses={textResponses}
+                  pointResponses={pointResponses}
+                  files={files}
+                  multilocs={multilocs}
+                />
+              );
+            }
+          )}
       </Box>
     </Box>
   );
