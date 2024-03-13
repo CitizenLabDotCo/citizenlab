@@ -94,7 +94,7 @@ const InternalCommentHeader = ({
           fontSize={fontSizes.base}
           fontWeight={400}
           underline={true}
-          // We assume that if you can see an internal comment, you can moderate it
+          // We assume that if you can see an internal comment, you are a moderator or admin
           userCanModerate
         />
       </Left>
