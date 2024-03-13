@@ -94,6 +94,20 @@ class SurveyResultsGeneratorService < FieldVisitorService
     })
   end
 
+  def visit_point(field)
+    responses = inputs
+      .select("custom_field_values->'#{field.key}' as value")
+      .where("custom_field_values->'#{field.key}' IS NOT NULL")
+      .map do |response|
+        { response: response.value }
+      end
+    response_count = responses.size
+
+    core_field_attributes(field, response_count).merge({
+      mapConfigId: field&.map_config&.id, pointResponses: responses
+    })
+  end
+
   private
 
   attr_reader :fields, :inputs, :locales

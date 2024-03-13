@@ -44,7 +44,7 @@ describe 'db/seeds.rb' do
       expect(Invite.count).to be > 0
       # expect(IdIdCardLookup::IdCard.count).to be 10
       expect(EmailCampaigns::UnsubscriptionToken.count).to be > 0
-      expect(CustomMaps::MapConfig.count).to be 1
+      expect(CustomMaps::MapConfig.count).to be 2
       expect(CustomMaps::Layer.count).to be 2
       expect(Volunteering::Cause.count).to be 5
       expect(Volunteering::Volunteer.count).to be > 10

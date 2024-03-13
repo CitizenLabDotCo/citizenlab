@@ -61,8 +61,10 @@ class UiSchemaGeneratorService < FieldVisitorService
     end
   end
 
-  def visit_point(_field)
-    nil
+  def visit_point(field)
+    default(field).tap do |ui_field|
+      ui_field[:options][:map_config_id] = field&.map_config&.id
+    end
   end
 
   def visit_linear_scale(field)

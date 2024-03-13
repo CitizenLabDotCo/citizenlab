@@ -54,7 +54,7 @@ module Verification
 
     def verify_sync(user:, method_name:, verification_parameters:)
       method = method_by_name(method_name)
-      response = method.verify_sync verification_parameters
+      response = method.verify_sync(**verification_parameters)
       uid = response[:uid]
       user_attributes = response[:attributes] || {}
       user.update_merging_custom_fields!(

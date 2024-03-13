@@ -17,6 +17,7 @@ import ConfigSelectWithLocaleSwitcher from './components/FormBuilderSettings/Con
 import FieldGroupSettings from './components/FormBuilderSettings/FieldGroupSettings';
 import LinearScaleSettings from './components/FormBuilderSettings/LinearScaleSettings';
 import MultiselectSettings from './components/FormBuilderSettings/MultiselectSettings';
+import PointSettings from './components/FormBuilderSettings/PointSettings';
 import SelectSettings from './components/FormBuilderSettings/SelectSettings';
 import messages from './components/messages';
 
@@ -145,6 +146,13 @@ export function getAdditionalSettings(
           locales={locales}
         />
       );
+    case 'point':
+      return (
+        <PointSettings
+          mapConfigIdName={`customFields.${field.index}.map_config_id`}
+          field={field}
+        />
+      );
     default:
       return null;
   }
@@ -218,6 +226,9 @@ const getInputTypeStringKey = (
       break;
     case 'file_upload':
       translatedStringKey = messages.fileUpload;
+      break;
+    case 'point':
+      translatedStringKey = messages.locationAnswer;
       break;
   }
 
