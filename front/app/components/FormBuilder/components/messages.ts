@@ -6,11 +6,11 @@ export default defineMessages({
     defaultMessage: 'Save',
   },
   ai: {
-    id: 'app.components.formBuilder.ai',
+    id: 'app.components.formBuilder.ai1',
     defaultMessage: 'AI',
   },
   aiUpsellText: {
-    id: 'app.components.formBuilder.aiUpsellText',
+    id: 'app.components.formBuilder.aiUpsellText1',
     defaultMessage:
       'If you have access to our AI package, you will be able to summarise and categorise text responses with AI',
   },
