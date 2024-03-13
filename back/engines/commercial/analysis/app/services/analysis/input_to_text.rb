@@ -11,13 +11,14 @@ module Analysis
       @memoized_field_values = Hash.new { |h, k| h[k] = {} } # Hash with empty hash as default values
     end
 
-    def execute(input, include_id: false, truncate_values: nil, override_field_labels: {})
+    def execute(input, include_id: false, truncate_values: nil, override_field_labels: {}, short_inputs: false)
       initial_object = if include_id
         { 'ID' => input.id }
       else
         {}
       end
-      @custom_fields.each_with_object(initial_object) do |field, obj|
+      fields = short_inputs ? minimal_fields : @custom_fields
+      fields.each_with_object(initial_object) do |field, obj|
         add_field(field, input, obj, truncate_values: truncate_values, override_field_labels: override_field_labels)
         if field.other_option_text_field
           add_field(field.other_option_text_field, input, obj, truncate_values: truncate_values, override_field_labels: override_field_labels)
@@ -92,6 +93,11 @@ module Analysis
 
       value = truncate_values ? full_value&.truncate(truncate_values) : full_value
       obj[label] = value
+    end
+
+    def minimal_fields
+      # Select the title for ideation and the main field (the first one) for surveys
+      @custom_fields.select { |field| field.code == 'title_multiloc' }.presence || [@custom_fields.first]
     end
   end
 end

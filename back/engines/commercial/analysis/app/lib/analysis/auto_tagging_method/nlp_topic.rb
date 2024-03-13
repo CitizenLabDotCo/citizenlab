@@ -3,6 +3,8 @@
 module Analysis
   class AutoTaggingMethod::NLPTopic < AutoTaggingMethod::Base
     TAG_TYPE = 'nlp_topic'
+    MAX_TOPICS = 20
+    SHORT_INPUTS_TEXTS_THRESHOLD = 1000
 
     def topic_modeling(project_title, inputs)
       response = run_topic_modeling_prompt(project_title, inputs)
@@ -33,7 +35,8 @@ module Analysis
     private
 
     def run_topic_modeling_prompt(project_title, inputs)
-      inputs_text = input_to_text.format_all(inputs)
+      short_inputs = inputs.size * analysis.associated_custom_fields.size > SHORT_INPUTS_TEXTS_THRESHOLD
+      inputs_text = input_to_text.format_all(inputs, short_inputs: short_inputs)
       prompt = LLM::Prompt.new.fetch('topic_modeling', project_title: project_title, inputs_text: inputs_text, max_topics: max_topics(inputs.size))
       gpt4.chat(prompt)
     end
@@ -47,7 +50,7 @@ module Analysis
     end
 
     def max_topics(inputs_count)
-      [inputs_count, (Math.log(inputs_count, 5) * 6).ceil].min
+      [inputs_count, MAX_TOPICS, (Math.log(inputs_count, 5) * 6).ceil].min
     end
   end
 end

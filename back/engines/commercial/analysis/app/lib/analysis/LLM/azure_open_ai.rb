@@ -68,12 +68,13 @@ module Analysis
 
       def chat_with_retry(retries: MAX_RETRIES, **params)
         @client.chat(**params)
-      rescue Faraday::ServerError => e
-        if e.response[:status] != 429 || retries <= 1
+      rescue Faraday::TooManyRequestsError => e
+        if retries <= 1
           ErrorReporter.report_msg('API request to Azure OpenAI failed', extra: { response: e.response })
           raise
         end
 
+        puts("Sleeping")
         # Retry after waiting between 20 and 60 seconds
         sleep_time = rand(20..60)
         sleep(sleep_time)

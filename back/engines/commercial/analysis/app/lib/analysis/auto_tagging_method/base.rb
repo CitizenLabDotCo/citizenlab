@@ -82,7 +82,7 @@ module Analysis
     def classify(input, topics)
       inputs_text = input_to_text.format_all([input])
       prompt = LLM::Prompt.new.fetch('fully_automated_classifier', inputs_text: inputs_text, topics: topics)
-      gpt3.chat(prompt)
+      gpt3.chat(prompt).presence || 'Other'
     end
 
     protected
@@ -106,8 +106,11 @@ module Analysis
       inputs.each do |input|
         pool.post do
           Rails.application.executor.wrap do
-            ErrorReporter.handle do
+            begin
               results[input.id] = classify(input, topics)
+            rescue StandardError => e
+              ErrorReporter.report(e)
+              raise
             end
           end
         end
