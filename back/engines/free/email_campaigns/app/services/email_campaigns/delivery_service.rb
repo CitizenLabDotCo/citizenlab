@@ -122,12 +122,12 @@ module EmailCampaigns
     end
 
     def filter_valid_campaigns_before_send(campaigns, options)
-      campaigns.select { |campaign| campaign.run_before_send_hooks(options) }
+      campaigns.select { |campaign| campaign.run_before_send_hooks(**options) }
     end
 
     def assign_campaigns_recipients(campaigns, options)
       campaigns.flat_map do |campaign|
-        recipients = campaign.apply_recipient_filters(options)
+        recipients = campaign.apply_recipient_filters(**options)
         recipients.zip([campaign].cycle)
       end
     end
