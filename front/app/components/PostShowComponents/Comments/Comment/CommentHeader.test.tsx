@@ -13,7 +13,7 @@ describe('CommentHeader', () => {
         commentType="parent"
         commentAttributes={mockCommentDataAttributes1}
         authorId={null}
-        postType="idea"
+        userCanModerate={false}
       />
     );
 

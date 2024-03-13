@@ -58,6 +58,7 @@ interface Props {
   hasChildComments?: boolean;
   last?: boolean;
   className?: string;
+  userCanModerate: boolean;
 }
 
 const Comment = ({
@@ -70,6 +71,7 @@ const Comment = ({
   hasChildComments,
   last,
   className,
+  userCanModerate,
 }: Props) => {
   const { data: comment } = useComment(commentId);
   const { data: author } = useUserById(
@@ -113,12 +115,11 @@ const Comment = ({
           {comment.data.attributes.publication_status === 'published' && (
             <>
               <CommentHeader
-                projectId={projectId}
                 commentAttributes={comment.data.attributes}
                 commentType={commentType}
                 className={commentType === 'parent' ? 'marginBottom' : ''}
                 authorId={authorId}
-                postType={postType}
+                userCanModerate={userCanModerate}
               />
 
               <Content>

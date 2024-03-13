@@ -10,13 +10,10 @@ import { lighten } from 'polished';
 import styled from 'styled-components';
 
 import { IPresentComment } from 'api/comments/types';
-import useUserById from 'api/users/useUserById';
 
 import Author from 'components/Author';
 
 import { useIntl } from 'utils/cl-intl';
-import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import messages from '../messages';
 
@@ -67,36 +64,24 @@ const AdminBadge = styled.span`
 
 interface Props {
   className?: string;
-  projectId?: string | null;
   commentType: 'parent' | 'child';
   commentAttributes: IPresentComment;
   authorId: string | null;
-  postType: 'idea' | 'initiative';
+  userCanModerate: boolean;
 }
 
 const CommentHeader = ({
-  projectId,
   commentType,
   className,
   commentAttributes,
   authorId,
-  postType,
+  userCanModerate,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: author } = useUserById(authorId);
-
-  // Ideally this is managed outside of this component.
-  const isModerator = author
-    ? {
-        idea: canModerateProject(projectId, author),
-        initiative: canModerateInitiative(author),
-      }[postType]
-    : false;
 
   // With the current implementation, this needs to always render,
   // even if author is null/undefined.
   // Otherwise we won't render CommentHeader in comments of deleted users.
-
   return (
     <Container className={className || ''}>
       <Left>
@@ -105,8 +90,7 @@ const CommentHeader = ({
           authorHash={commentAttributes.author_hash}
           isLinkToProfile={typeof authorId === 'string'}
           size={30}
-          projectId={projectId}
-          showModeration={isModerator}
+          showModeration={userCanModerate}
           createdAt={commentAttributes.created_at}
           avatarBadgeBgColor={commentType === 'child' ? '#fbfbfb' : '#fff'}
           horizontalLayout={true}
@@ -115,11 +99,11 @@ const CommentHeader = ({
           fontWeight={400}
           underline={true}
           anonymous={commentAttributes.anonymous}
-          postType={postType}
+          userCanModerate={userCanModerate}
         />
       </Left>
       <Right>
-        {isModerator && (
+        {userCanModerate && (
           <AdminBadge>{formatMessage(messages.official)}</AdminBadge>
         )}
       </Right>

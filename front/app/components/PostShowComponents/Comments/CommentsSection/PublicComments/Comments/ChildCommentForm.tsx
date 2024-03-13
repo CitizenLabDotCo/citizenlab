@@ -23,8 +23,6 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clickOutside from 'utils/containers/clickOutside';
 import { isNilOrError } from 'utils/helperUtils';
-import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import { commentReplyButtonClicked$, commentAdded } from '../../../events';
 import messages from '../../../messages';
@@ -71,6 +69,7 @@ interface Props {
   parentId: string;
   className?: string;
   allowAnonymousParticipation?: boolean;
+  userCanModerate: boolean;
 }
 
 const ChildCommentForm = ({
@@ -81,6 +80,7 @@ const ChildCommentForm = ({
   projectId,
   className,
   allowAnonymousParticipation,
+  userCanModerate,
 }: Props) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
@@ -309,12 +309,6 @@ const ChildCommentForm = ({
   };
 
   if (focused) {
-    // Ideally this is managed outside of this component.
-    const isModerator = {
-      idea: canModerateProject(projectId, authUser),
-      initiative: canModerateInitiative(authUser),
-    }[postType];
-
     return (
       <Box
         display="flex"
@@ -324,7 +318,7 @@ const ChildCommentForm = ({
           userId={authUser?.data.id}
           size={30}
           isLinkToProfile={!!authUser?.data.id}
-          moderator={isModerator}
+          moderator={userCanModerate}
         />
         <FormContainer
           onClickOutside={onCancel}
