@@ -1267,7 +1267,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layersTooltip": "We currently support GeoJSON files and importing Feature Layers and Web Maps from ArcGIS Online. Read the {supportArticle} for tips on how to add, convert and style map layers.",
   "app.containers.AdminPage.ProjectEdit.MapTab.lngLabel": "Default longitude",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom": "Map default center and zoom",
-  "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "The default center point and zoom level of the map. Manually adjust the values below, or click on the {button} button in the top right corner of the map to save the current center point and zoom level of the map as the default values.",
+  "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "De Standardzentrum an den Zoomniveau vun der Kaart. Manuell d'Wäerter hei drënner upassen, oder klickt op de {button} Knäppchen an der oberer rechter Ecke vun der Kaart fir den aktuellen Mëttelpunkt an den Zoomniveau vun der Kaart als Standardwäerter ze späicheren.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationDescription": "Customize the map view, including uploading and styling map layers and setting the map center and zoom level.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationTitle": "Map configuration",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapLocationWarning": "D'Kaartkonfiguratioun gëtt momentan iwwer Phasen gedeelt, Dir kënnt net verschidde Kaartkonfiguratiounen pro Phase erstellen.",
