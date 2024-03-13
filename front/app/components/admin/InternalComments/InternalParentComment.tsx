@@ -102,7 +102,6 @@ const InternalParentComment = ({
             commentId={commentId}
             commentType="parent"
             hasChildComments={hasChildComments}
-            postType={postType}
           />
         </ParentCommentContainer>
 
@@ -137,7 +136,6 @@ const InternalParentComment = ({
               commentId={childCommentId}
               commentType="child"
               last={index === modifiedChildCommentIds.length - 1}
-              postType={postType}
             />
           ))}
 
