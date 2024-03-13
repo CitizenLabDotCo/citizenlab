@@ -75,7 +75,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     answer_titles[field.maximum][:title_multiloc].merge! maximum_labels
 
     field_attributes = visit_select_base field
-    field_attributes[:multilocs] = { answers: answer_titles }
+    field_attributes[:multilocs] = { answer: answer_titles }
     field_attributes
   end
 

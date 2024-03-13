@@ -748,7 +748,6 @@
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "Quppernermi suliniutinik allattorsimaffik",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Suliniutinut dashboardi",
   "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitle": "Suliniutinik nutaanik pilersitsigit imaluunniit suliniutit pioreersut allanngortitikkit.",
-  "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator": "Aajuku quppernermi suliniutit aqutsisuuffigisatit.",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "Suliniutit ",
   "app.containers.AdminPage.ProjectDashboard.published": "Published",
   "app.containers.AdminPage.ProjectDescription.a11y_closeSettingsPanel": "Indstillingspanel matujuk",

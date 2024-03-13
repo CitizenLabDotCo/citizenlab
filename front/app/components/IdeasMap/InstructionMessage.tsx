@@ -7,7 +7,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
-import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import messages from './messages';
 
@@ -21,7 +21,7 @@ const InstructionMessage = ({ projectId }: Props) => {
   const isTabletOrSmaller = useBreakpoint('tablet');
 
   const isAdminOrModerator = authUser
-    ? isAdmin(authUser) || isProjectModerator(authUser, projectId)
+    ? canModerateProject(projectId, authUser)
     : false;
 
   const getInstructionMessage = () => {
