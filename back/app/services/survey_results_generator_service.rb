@@ -94,22 +94,17 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def visit_point(field)
-    answers = inputs
+    responses = inputs
       .select("custom_field_values->'#{field.key}' as value")
       .where("custom_field_values->'#{field.key}' IS NOT NULL")
-      .map do |answer|
-        { answer: answer.value }
+      .map do |response|
+        { response: response.value }
       end
-    answer_count = answers.size
-    {
-      inputType: field.input_type,
-      question: field.title_multiloc,
-      required: field.required,
-      totalResponses: answer_count,
-      customFieldId: field.id,
-      mapConfigId: field&.map_config&.id,
-      pointResponses: answers
-    }
+    response_count = responses.size
+
+    core_field_attributes(field, response_count).merge({
+      mapConfigId: field&.map_config&.id, pointResponses: responses
+    })
   end
 
   private
