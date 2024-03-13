@@ -4,21 +4,6 @@ import { randomString, randomEmail } from '../../../support/commands';
 import moment = require('moment');
 import { base64 } from '../../../fixtures/base64img';
 
-const getSchema = (phaseId: string) => {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
-    const adminJwt = response.body.jwt;
-
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
-      },
-      method: 'GET',
-      url: `web_api/v1/phases/${phaseId}/custom_fields/json_forms_schema`,
-    });
-  });
-};
-
 describe('Survey question widget', () => {
   let projectId: string;
   let surveyPhaseId: string;
@@ -65,7 +50,7 @@ describe('Survey question widget', () => {
         return cy.uploadSurveyImageQuestionImage(base64);
       })
       .then((questionImage) => {
-        cy.apiCreateSurveyQuestions(
+        return cy.apiCreateSurveyQuestions(
           surveyPhaseId,
           [
             'page',
@@ -79,7 +64,7 @@ describe('Survey question widget', () => {
       })
       .then((response) => {
         surveyFields = response.body.data;
-        return getSchema(surveyPhaseId);
+        return cy.apiGetSurveySchema(surveyPhaseId);
       })
       .then((response) => {
         surveySchema = response.body;

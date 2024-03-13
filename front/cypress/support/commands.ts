@@ -83,6 +83,7 @@ declare global {
       apiUpdateUserCustomFields: typeof apiUpdateUserCustomFields;
       apiCreateSurveyResponse: typeof apiCreateSurveyResponse;
       uploadSurveyImageQuestionImage: typeof uploadSurveyImageQuestionImage;
+      apiGetSurveySchema: typeof apiGetSurveySchema;
     }
   }
 }
@@ -1763,6 +1764,21 @@ function uploadSurveyImageQuestionImage(base64: string) {
   });
 }
 
+function apiGetSurveySchema(phaseId: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'GET',
+      url: `web_api/v1/phases/${phaseId}/custom_fields/json_forms_schema`,
+    });
+  });
+}
+
 // https://stackoverflow.com/a/16012490
 interface Bbox {
   left: number;
@@ -1907,3 +1923,4 @@ Cypress.Commands.add(
   'uploadSurveyImageQuestionImage',
   uploadSurveyImageQuestionImage
 );
+Cypress.Commands.add('apiGetSurveySchema', apiGetSurveySchema);
