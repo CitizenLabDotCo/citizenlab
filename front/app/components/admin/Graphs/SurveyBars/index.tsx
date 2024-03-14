@@ -48,6 +48,10 @@ const SurveyBars = (props: Props) => {
             ? formatMessage(messages.noAnswer)
             : localize(multilocs.answer[answer].title_multiloc);
 
+        const values = props.grouped
+          ? props.answers[index].groups.map((group) => group.count)
+          : [count];
+
         return (
           <Box
             key={index}
@@ -67,7 +71,7 @@ const SurveyBars = (props: Props) => {
               </Box>
             )}
             <BarsPerOption
-              values={[count]}
+              values={values}
               total={totalResponses}
               colorScheme={colorScheme}
               label={label}
