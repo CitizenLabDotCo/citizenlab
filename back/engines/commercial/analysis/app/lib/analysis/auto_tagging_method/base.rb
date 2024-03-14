@@ -107,13 +107,15 @@ module Analysis
     def classify_many!(inputs, topics, tag_type)
       pool = Concurrent::FixedThreadPool.new(POOL_SIZE)
       results = Concurrent::Hash.new
+      failure = Concurrent::AtomicBoolean.new(false)
 
       inputs.each do |input|
         pool.post do
           Rails.application.executor.wrap do
             begin
-              results[input.id] = classify(input, topics)
+              results[input.id] = classify(input, topics) if failure.false?
             rescue StandardError => e
+              failure.make_true
               ErrorReporter.report(e)
               raise # TODO: Abort the whole process
             end
@@ -122,6 +124,8 @@ module Analysis
       end
       processed_inputs = []
       do_while_pool_is_running(pool) do
+        raise 'Something went wrong!' if failure.true?
+
         (results.keys - processed_inputs).each do |input_id|
           topic = results[input_id]
           assign_topic!(input_id, topic, tag_type)
