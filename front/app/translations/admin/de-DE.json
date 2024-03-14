@@ -1337,7 +1337,7 @@
   "app.containers.AdminPage.ProjectEdit.adminProjectFolderSelectTooltip": "Sie können Ihr Projekt zu einem bestehenden Ordner hinzufügen. Sie können dies auch später über der Registerkarte \"Projekte\" tun.",
   "app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab": "Themen",
   "app.containers.AdminPage.ProjectEdit.anonymousPolling": "Anonyme Umfragen",
-  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip": "Wenn diese Funktion aktiviert ist, ist es unmöglich zu sehen, wer über was abgestimmt hat. Die NutzerInnen benötigen weiterhin ein Konto und können nur einmal abstimmen.",
+  "app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip": "Wenn diese Funktion aktiviert ist, ist es unmöglich zu sehen, wer wie abgestimmt hat. Die Nutzer*innen benötigen weiterhin ein Konto und können nur einmal abstimmen.",
   "app.containers.AdminPage.ProjectEdit.archived": "Archiviert",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Archiviert",
   "app.containers.AdminPage.ProjectEdit.areaIsLinkedToStaticPage": "Dieses Gebiet kann nicht gelöscht werden, da er zur Anzeige von Projekten auf der/den folgenden benutzerdefinierten Seite(n) verwendet wird. Sie müssen die Verknüpfung des Gebiets mit der Seite aufheben oder die Seite löschen, bevor Sie das Gebiet löschen können.",
