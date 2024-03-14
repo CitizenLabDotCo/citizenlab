@@ -72,6 +72,7 @@ const SurveyHeading = ({
         alignItems="center"
         top={isSmallerThanPhone ? '0px' : undefined}
         zIndex="3"
+        maxWidth="700px"
       >
         <Box w="100%" background={colors.background}>
           <Box

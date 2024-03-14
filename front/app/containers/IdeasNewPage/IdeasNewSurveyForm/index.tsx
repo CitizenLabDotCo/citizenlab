@@ -24,9 +24,7 @@ import Form from 'components/Form';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import PageContainer from 'components/UI/PageContainer';
-import Warning from 'components/UI/Warning';
 
-import { useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
 import { getElementType, getFieldNameFromPath } from 'utils/JSONFormUtils';
@@ -67,7 +65,6 @@ interface Props {
 const IdeasNewSurveyForm = ({ project }: Props) => {
   const { mutateAsync: addIdea } = useAddIdea();
   const { mutateAsync: updateIdea } = useUpdateIdea();
-  const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
   const [queryParams] = useSearchParams();
   const phaseId = queryParams.get('phase_id') || undefined;
@@ -245,7 +242,15 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
               setCompletionPercentage={setPercentageAnswered}
               hideOverflowContent
               title={
-                <>
+                <Box
+                  top={isSmallerThanPhone ? '0px' : '40px'}
+                  position="absolute"
+                  zIndex="99999"
+                  width="100%"
+                  maxWidth="700px"
+                  left="50%"
+                  style={{ transform: 'translateX(-50%)' }}
+                >
                   <SurveyHeading
                     project={project.data}
                     titleText={localize(
@@ -255,14 +260,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
                     loggedIn={!isNilOrError(authUser)}
                     percentageAnswered={percentageAnswered}
                   />
-                  {allowAnonymousPosting && (
-                    <Box mx="auto" p="20px" maxWidth="700px">
-                      <Warning icon="shield-checkered">
-                        {formatMessage(messages.anonymousSurveyMessage)}
-                      </Warning>
-                    </Box>
-                  )}
-                </>
+                </Box>
               }
               config={'survey'}
             />
