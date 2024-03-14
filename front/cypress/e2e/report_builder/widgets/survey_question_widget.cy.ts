@@ -6,6 +6,7 @@ import { base64 } from '../../../fixtures/base64img';
 
 describe('Survey question widget', () => {
   let projectId: string;
+  let projectSlug: string;
   let surveyPhaseId: string;
   let surveyFields: ICustomFieldResponse[];
   let surveySchema: IIdeaJsonFormSchemas;
@@ -41,6 +42,8 @@ describe('Survey question widget', () => {
     })
       .then((project) => {
         projectId = project.body.data.id;
+        projectSlug = project.body.data.attributes.slug;
+
         return cy.apiCreatePhase({
           projectId,
           title: randomString(),
@@ -250,6 +253,7 @@ describe('Survey question widget', () => {
   });
 
   describe('phase report builder', () => {
+    // https://www.notion.so/citizenlab/Add-more-e2e-tests-47e6e8567e8b4ba2b60ed81834c32456
     //   it('works for select question', () => {
     //     // TODO
     //   });
@@ -426,14 +430,25 @@ describe('Survey question widget', () => {
           .first()
           .select(surveyFields[5].id);
 
-        // TODO assert something about map
+        // Expect map to render
+        cy.get('div.esri-view-root').contains('Responses');
 
-        // TODO check it's visible in the frontend
+        // Save
+        cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
+          'saveReportLayout'
+        );
+        cy.get('#e2e-content-builder-topbar-save').click();
+        cy.wait('@saveReportLayout');
+
+        // Check if it's visible in the frontend
+        cy.visit(`/projects/${projectSlug}`);
+        cy.get('div.esri-view-root').contains('Responses');
 
         cy.apiRemoveReportBuilder(reportId);
       });
     });
 
+    // https://www.notion.so/citizenlab/Add-more-e2e-tests-47e6e8567e8b4ba2b60ed81834c32456
     //   it('is initialized with correct phase', () => {
 
     //   });
