@@ -133,6 +133,7 @@ const Analysis = ({
             top="-40px"
             right="0"
             zIndex="1000"
+            id="e2e-analysis-actions"
           >
             <IconButton
               iconName="dots-horizontal"
@@ -150,6 +151,7 @@ const Analysis = ({
               content={
                 <>
                   <StyledDropdownListItem
+                    id="e2e-hide-summaries"
                     onClick={() => {
                       updateAnalysis(
                         {
@@ -181,6 +183,7 @@ const Analysis = ({
       {hideAnalysisInsights && (
         <Box display="flex">
           <Button
+            id="e2e-show-summaries"
             processing={isLoading}
             onClick={() =>
               updateAnalysis({

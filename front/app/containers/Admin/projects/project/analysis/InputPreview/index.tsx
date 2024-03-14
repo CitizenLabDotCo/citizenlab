@@ -99,6 +99,7 @@ const InputListItem = () => {
       )}
       {isSurveyAnalysis && (
         <Button
+          id="e2e-analysis-toggle-show-all-questions-button"
           onClick={() =>
             setShowAllQuestions((showAllQuestions) => !showAllQuestions)
           }
@@ -139,6 +140,7 @@ const InputListItem = () => {
               }
               px="8px"
               py="16px"
+              data-cy="e2e-analysis-custom-field-item"
             >
               {isSurveyAnalysis && (
                 <Box mb="8px">
@@ -161,6 +163,9 @@ const InputListItem = () => {
                   ) : (
                     <Box display="flex">
                       <Button
+                        data-cy={
+                          'e2e-analysis-add-remove-additional-custom-field'
+                        }
                         onClick={() =>
                           handleAddRemoveAdditionalCustomField(customField.id)
                         }

@@ -43,7 +43,12 @@ const Question = ({
   }
 
   return (
-    <Box display="flex" flexDirection="column" justifyContent="space-between">
+    <Box
+      display="flex"
+      flexDirection="column"
+      justifyContent="space-between"
+      data-cy="e2e-report-builder-analysis-question"
+    >
       <Box
         border={`1px solid ${colors.borderLight}`}
         padding="8px"

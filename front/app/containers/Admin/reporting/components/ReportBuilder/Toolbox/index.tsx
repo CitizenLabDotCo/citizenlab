@@ -133,6 +133,7 @@ const ReportBuilderToolbox = ({
         <Box display="flex" alignItems="center" justifyContent="center">
           <Box flex="1">
             <Button
+              id="e2e-report-builder-widgets-tab"
               onClick={() => setSelectedTab('widgets')}
               buttonStyle={selectedTab === 'widgets' ? 'text' : 'secondary'}
             >
@@ -141,6 +142,8 @@ const ReportBuilderToolbox = ({
           </Box>
           <Box flex="1">
             <Button
+              icon="flash"
+              id="e2e-report-builder-ai-tab"
               onClick={() => setSelectedTab('ai')}
               buttonStyle={selectedTab === 'ai' ? 'text' : 'secondary'}
             >
@@ -148,7 +151,7 @@ const ReportBuilderToolbox = ({
             </Button>
           </Box>
         </Box>
-        <Box>
+        <Box display={selectedTab === 'widgets' ? 'block' : 'none'}>
           <Section>
             <DraggableElement
               id="e2e-draggable-text"
@@ -212,90 +215,6 @@ const ReportBuilderToolbox = ({
                   showVotes={true}
                   projectId={selectedProjectId}
                   phaseId={ideationPhaseId}
-                />
-              }
-              icon="idea"
-              label={formatMessage(WIDGET_TITLES.SingleIdeaWidget)}
-            />
-          </Section>
-
-          <Box flex="1">
-            <Button
-              onClick={() => setSelectedTab('ai')}
-              buttonStyle={selectedTab === 'ai' ? 'text' : 'secondary'}
-              icon="flash"
-            >
-              {formatMessage(messages.ai)}
-            </Button>
-          </Box>
-        </Box>
-        <Box p="8px" display={selectedTab === 'ai' ? 'block' : 'none'}>
-          <Analysis selectedLocale={selectedLocale} />
-        </Box>
-
-        <Box display={selectedTab === 'widgets' ? 'block' : 'none'}>
-          <Section>
-            <DraggableElement
-              id="e2e-draggable-text"
-              component={<TextMultiloc />}
-              icon="text"
-              label={formatMessage(WIDGET_TITLES.TextMultiloc)}
-            />
-            <DraggableElement
-              id="e2e-draggable-image"
-              component={<ImageMultiloc />}
-              icon="image"
-              label={formatMessage(WIDGET_TITLES.ImageMultiloc)}
-            />
-            <DraggableElement
-              id="e2e-draggable-two-column"
-              component={<TwoColumn columnLayout="1-1" />}
-              icon="layout-2column-1"
-              label={formatMessage(WIDGET_TITLES.TwoColumn)}
-            />
-            <DraggableElement
-              id="e2e-draggable-white-space"
-              component={<WhiteSpace size="small" />}
-              icon="layout-white-space"
-              label={formatMessage(WIDGET_TITLES.WhiteSpace)}
-            />
-          </Section>
-          <Section>
-            {
-              // TODO: CL-2307 Only show this if there are surveys in the platform
-              // TODO: Add in the default project / phase
-            }
-            <DraggableElement
-              id="e2e-draggable-survey-question-result-widget"
-              component={
-                <SurveyQuestionResultWidget projectId={selectedProjectId} />
-              }
-              icon="survey"
-              label={formatMessage(WIDGET_TITLES.SurveyQuestionResultWidget)}
-            />
-            <DraggableElement
-              id="e2e-draggable-most-reacted-ideas-widget"
-              component={
-                <MostReactedIdeasWidget
-                  title={toMultiloc(WIDGET_TITLES.MostReactedIdeasWidget)}
-                  numberOfIdeas={5}
-                  collapseLongText={false}
-                  projectId={selectedProjectId}
-                />
-              }
-              icon="vote-up"
-              label={formatMessage(WIDGET_TITLES.MostReactedIdeasWidget)}
-            />
-            <DraggableElement
-              id="e2e-single-idea-widget"
-              component={
-                <SingleIdeaWidget
-                  collapseLongText={false}
-                  showAuthor={true}
-                  showContent={true}
-                  showReactions={true}
-                  showVotes={true}
-                  projectId={selectedProjectId}
                 />
               }
               icon="idea"
@@ -420,6 +339,9 @@ const ReportBuilderToolbox = ({
               label={formatMessage(WIDGET_TITLES.ReactionsByTimeWidget)}
             />
           </Section>
+        </Box>
+        <Box p="8px" display={selectedTab === 'ai' ? 'block' : 'none'}>
+          <Analysis selectedLocale={selectedLocale} />
         </Box>
       </Container>
     </Transition>
