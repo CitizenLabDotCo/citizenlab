@@ -282,7 +282,7 @@ const IdeasNewSurveyFormWrapperModal = (props: Props) => {
           display="flex"
           flexDirection="column"
           w="100%"
-          zIndex="10000"
+          zIndex="1100"
           position="fixed"
           bgColor={colors.grey100}
           h="100vh"

@@ -33,7 +33,7 @@ const FullscreenImage = ({ src, altText }: Props) => {
         width="100vw"
         height="100%"
         background="rgba(0, 0, 0, 0.8)"
-        zIndex="2"
+        zIndex="1105"
         display="flex"
         justifyContent="center"
         alignItems="center"
