@@ -14,6 +14,10 @@ module OmniauthMethods
       {}
     end
 
+    def profile_to_user_attrs_for_update(auth)
+      profile_to_user_attrs(auth)
+    end
+
     def profile_to_uid(auth)
       auth['uid']
     end
@@ -25,11 +29,6 @@ module OmniauthMethods
     # @return [Array<Symbol>] Returns a list of user attributes that can be updated from the auth response hash
     def updateable_user_attrs
       []
-    end
-
-    # @return [Boolean] If existing user attributes should be overwritten
-    def overwrite_user_attrs?
-      true
     end
 
     def can_merge?(_user, _user_attrs, _sso_verification_param_value)

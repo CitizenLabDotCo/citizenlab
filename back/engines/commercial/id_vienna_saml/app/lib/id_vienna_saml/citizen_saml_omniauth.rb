@@ -36,6 +36,20 @@ module IdViennaSaml
       }
     end
 
+    def profile_to_user_attrs_for_update(auth)
+      attrs = auth.dig(:extra, :raw_info).to_h
+      email = attrs.fetch('urn:oid:0.9.2342.19200300.100.1.3').first.presence
+      # first_name and last_name should be empty, but keeping it
+      first_name = attrs['urn:oid:2.5.4.42']&.first.presence
+      last_name = attrs['urn:oid:1.2.40.0.10.2.1.1.261.20']&.first.presence
+
+      {
+        email: email,
+        first_name: first_name,
+        last_name: last_name
+      }.compact
+    end
+
     def profile_to_uid(auth)
       auth.dig(:extra, :raw_info).to_h[USERID_KEY].first
     end
@@ -60,12 +74,9 @@ module IdViennaSaml
 
     # @return [Array<Symbol>] Returns a list of attributes that can be updated from the auth response hash
     def updateable_user_attrs
-      %i[first_name last_name]
-    end
-
-    # @return [Boolean] If existing user attributes should be overwritten
-    def overwrite_user_attrs?
-      false
+      # If password_login is disabled, users cannot update their emails on UI,
+      # but we still want to keep their emails up to date.
+      %i[email first_name last_name]
     end
 
     # Removes the response object because it produces a Stacklevel too deep error when converting to JSON
