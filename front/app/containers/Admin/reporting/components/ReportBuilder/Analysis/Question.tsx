@@ -58,7 +58,13 @@ const Question = ({
         <DraggableInsight
           id="e2e-draggable-insight"
           component={
-            <TextMultiloc text={{ [selectedLocale]: removeRefs(answer) }} />
+            <TextMultiloc
+              text={{
+                [selectedLocale]: `<p><strong>${question}</strong></p><p>${removeRefs(
+                  answer
+                ).replace(/(\r\n|\n|\r)/gm, '</p><p>')}</p>`,
+              }}
+            />
           }
         >
           <Icon name="menu" fill={colors.textSecondary} />
