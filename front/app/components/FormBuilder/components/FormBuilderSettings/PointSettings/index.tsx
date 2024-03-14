@@ -10,7 +10,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import customFieldsKeys from 'api/custom_fields/keys';
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
-import useAddProjectMapConfig from 'api/map_config/useAddProjectMapConfig';
+import useAddMapConfig from 'api/map_config/useAddMapConfig';
 import useDuplicateMapConfig from 'api/map_config/useDuplicateMapConfig';
 import useMapConfigById from 'api/map_config/useMapConfigById';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
@@ -53,7 +53,7 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
   const { data: projectMapConfig } = useProjectMapConfig(projectId);
   const { data: rawCustomFields } = useRawCustomFields({ phaseId });
 
-  const { mutateAsync: createProjectMapConfig } = useAddProjectMapConfig();
+  const { mutateAsync: createMapConfig } = useAddMapConfig();
   const { mutateAsync: duplicateMapConfig } = useDuplicateMapConfig();
   const [mapView, setMapView] = useState<MapView | null>(null);
 
@@ -97,9 +97,8 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
         // Create a default project map config if it doesn't exist
         const defaultLatLng = getCenter(undefined, appConfig?.data, undefined);
         const defaultZoom = getZoomLevel(undefined, appConfig?.data, undefined);
-        createProjectMapConfig(
+        createMapConfig(
           {
-            projectId,
             center_geojson: {
               type: 'Point',
               coordinates: [defaultLatLng[1], defaultLatLng[0]],
@@ -118,8 +117,7 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
       setShowModal(true);
     }
   }, [
-    createProjectMapConfig,
-    projectId,
+    createMapConfig,
     appConfig?.data,
     mapConfigId,
     projectMapConfig?.data?.id,
