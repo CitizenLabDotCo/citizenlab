@@ -14,6 +14,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 import GroupedBars from './GroupedBars';
+import PointLocationQuestion from './PointLocationQuestion';
 import UngroupedBars from './UngroupedBars';
 import { getColorScheme, getLegendLabels } from './utils';
 
@@ -63,19 +64,31 @@ const SurveyQuestionResult = ({
           count: attributes.totalResponseCount,
         })}
       </Text>
-      {attributes.grouped && colorScheme && (
-        <Box>
-          <GroupedBars attributes={attributes} colorScheme={colorScheme} />
-          <Box mt="20px">
-            <Legend
-              labels={getLegendLabels(attributes, localize, formatMessage)}
-              colors={colorScheme}
-            />
-          </Box>
-        </Box>
-      )}
+      {attributes.grouped === false && attributes.pointResponses ? (
+        <PointLocationQuestion
+          pointResponses={attributes.pointResponses}
+          mapConfigId={attributes.mapConfigId}
+          customFieldId={attributes.customFieldId}
+          projectId={phaseId}
+          heatmap={false}
+        />
+      ) : (
+        <>
+          {attributes.grouped && colorScheme && (
+            <Box>
+              <GroupedBars attributes={attributes} colorScheme={colorScheme} />
+              <Box mt="20px">
+                <Legend
+                  labels={getLegendLabels(attributes, localize, formatMessage)}
+                  colors={colorScheme}
+                />
+              </Box>
+            </Box>
+          )}
 
-      {!attributes.grouped && <UngroupedBars attributes={attributes} />}
+          {!attributes.grouped && <UngroupedBars attributes={attributes} />}
+        </>
+      )}
     </Box>
   );
 };

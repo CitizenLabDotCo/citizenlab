@@ -73,6 +73,9 @@ export type AttributesUngrouped = BaseAttributes & {
   grouped: false;
   answers: Answer[];
   multilocs: AnswerMultilocs;
+  // For point (map) questions
+  mapConfigId?: string;
+  pointResponses?: { response: GeoJSON.Point }[];
 };
 
 export type SurveyQuestionResultAttributes =
