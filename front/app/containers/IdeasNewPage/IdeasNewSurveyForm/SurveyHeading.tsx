@@ -94,7 +94,7 @@ const SurveyHeading = ({
             width="100%"
             alignItems="center"
             justifyContent="space-between"
-            p="14px 24px"
+            p={isSmallerThanPhone ? '14px 16px' : '14px 24px'}
             borderBottom={`1px solid ${colors.divider}`}
           >
             <StyledSurveyTitle
