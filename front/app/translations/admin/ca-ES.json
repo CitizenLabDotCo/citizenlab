@@ -1678,6 +1678,7 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet1": "La compartició de resultats d'alguns mètodes (com ara els resultats de la votació) no s'activarà fins que no se seleccioneu una data de finalització.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "Tan bon punt afegiu una fase després d'aquesta, afegirà una data de finalització a aquesta fase.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "No seleccionar una data de finalització per a això implica que:",
+  "app.containers.AdminPage.ProjectTimeline.previewSurveyCTALabel": "Vista prèvia",
   "app.containers.AdminPage.ProjectTimeline.saveChangesLabel": "Guardar canvis",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "There was an error submitting the form, please try again.",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessLabel": "Saved!",
