@@ -2126,6 +2126,7 @@
   "app.containers.AdminPage.projects.project.analysis.Tags.renameTagModalNameLabel": "Name",
   "app.containers.AdminPage.projects.project.analysis.Tags.renameTagModalSave": "Save",
   "app.containers.AdminPage.projects.project.analysis.Tags.renameTagModalTitle": "Rename tag",
+  "app.containers.AdminPage.projects.project.analysis.Tags.selectAll": "Select all",
   "app.containers.AdminPage.projects.project.analysis.Tags.sentimentTagDescription": "Assign a positive or negative sentiment to each input, derived from the text",
   "app.containers.AdminPage.projects.project.analysis.Tags.sentimentTagTitle": "Sentiment",
   "app.containers.AdminPage.projects.project.analysis.Tags.tagDetection": "Tag detection",
