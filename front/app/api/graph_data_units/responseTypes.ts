@@ -49,7 +49,7 @@ export type GroupedAnswer = Answer & {
   groups: { group: string | null; count: number }[];
 };
 
-export type SurveyQuestionMultilocsGrouped = AnswerMultilocs & {
+export type AnswerMultilocsGrouped = AnswerMultilocs & {
   group: Record<string, MultilocAnswer>;
 };
 
@@ -65,7 +65,7 @@ type BaseAttributes = {
 export type AttributesGrouped = BaseAttributes & {
   grouped: true;
   answers: GroupedAnswer[];
-  multilocs: SurveyQuestionMultilocsGrouped;
+  multilocs: AnswerMultilocsGrouped;
   legend: (string | null)[];
 };
 

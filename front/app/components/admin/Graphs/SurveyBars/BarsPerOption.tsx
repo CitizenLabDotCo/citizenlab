@@ -6,9 +6,9 @@ import { round } from 'lodash-es';
 import { useIntl } from 'utils/cl-intl';
 import { sum } from 'utils/math';
 
-import Bar from '../SurveyBars/Bar';
-import messages from '../SurveyBars/messages';
-import { getRoundedPercentages, getType } from '../SurveyBars/utils';
+import Bar from './Bar';
+import messages from './messages';
+import { getRoundedPercentages, getType } from './utils';
 
 interface Props {
   values: number[];
@@ -17,7 +17,7 @@ interface Props {
   label: string;
 }
 
-const ProgressBars2 = ({ values, total, label, colorScheme }: Props) => {
+const BarsPerOption = ({ values, total, label, colorScheme }: Props) => {
   const { formatMessage } = useIntl();
   const percentages = getRoundedPercentages(values, total);
   const valueSum = sum(values);
@@ -60,4 +60,4 @@ const ProgressBars2 = ({ values, total, label, colorScheme }: Props) => {
   );
 };
 
-export default ProgressBars2;
+export default BarsPerOption;
