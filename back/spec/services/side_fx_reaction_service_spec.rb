@@ -16,18 +16,24 @@ describe SideFxReactionService do
     it "logs a 'liked' action when a like on an initiative is created" do
       reaction = create(:reaction, mode: 'up', reactable: create(:initiative))
       expect { service.after_create(reaction, user) }
-        .to(have_enqueued_job(LogActivityJob).with do |reaction_arg, action, *_args, **kwargs|
+        .to(have_enqueued_job(LogActivityJob)
+        .with do |reaction_arg, action, user_arg, _acted_at, options|
           expect(reaction_arg).to be_a(String)
           expect(action).to eq('initiative_liked')
-          expect(kwargs[:project_id]).to be_blank
+          expect(user_arg).to eq(user)
+          expect(options[:project_id]).to be_blank
         end)
     end
 
     it "logs a 'disliked' action when a dislike is created" do
       reaction = create(:reaction, mode: 'down', reactable: create(:idea))
       expect { service.after_create(reaction, user) }
-        .to(have_enqueued_job(LogActivityJob).with do |*_args, **kwargs|
-          expect(kwargs[:project_id]).to be_present
+        .to(have_enqueued_job(LogActivityJob)
+        .with do |reaction_arg, action, user_arg, _acted_at, options|
+          expect(reaction_arg).to be_a(String)
+          expect(action).to eq('idea_disliked')
+          expect(user_arg).to eq(user)
+          expect(options[:project_id]).to be_present
         end)
     end
 
@@ -72,9 +78,12 @@ describe SideFxReactionService do
       freeze_time do
         frozen_reaction = reaction.destroy
         expect { service.after_destroy(frozen_reaction, user) }
-          .to(have_enqueued_job(LogActivityJob).with do |_reaction, action, *_args, **kwargs|
+          .to(have_enqueued_job(LogActivityJob)
+          .with do |reaction_arg, action, user_arg, _acted_at, options|
+            expect(reaction_arg).to be_a(String)
             expect(action).to eq('canceled_idea_liked')
-            expect(kwargs[:project_id]).to be_present
+            expect(user_arg).to eq(user)
+            expect(options[:project_id]).to be_present
           end)
       end
     end
@@ -84,10 +93,12 @@ describe SideFxReactionService do
       freeze_time do
         frozen_reaction = reaction.destroy
         expect { service.after_destroy(frozen_reaction, user) }
-          .to(have_enqueued_job(LogActivityJob).with do |_reaction, action, *_args, **kwargs|
-                expect(action).to eq('canceled_idea_disliked')
-                expect(kwargs[:project_id]).to be_present
-              end)
+          .to(have_enqueued_job(LogActivityJob)
+          .with do |reaction_arg, action, _user, _acted_at, options|
+            expect(reaction_arg).to be_a(String)
+            expect(action).to eq('canceled_idea_disliked')
+            expect(options[:project_id]).to be_present
+          end)
       end
     end
   end

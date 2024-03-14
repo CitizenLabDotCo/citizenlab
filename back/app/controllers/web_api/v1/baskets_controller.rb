@@ -16,7 +16,7 @@ class WebApi::V1::BasketsController < ApplicationController
 
     save_params = {}
     save_params[:context] = [:basket_submission] if basket.submitted?
-    if basket.save save_params
+    if basket.save(**save_params)
       SideFxBasketService.new.after_create basket, current_user
       render json: WebApi::V1::BasketSerializer.new(
         basket,
@@ -34,7 +34,7 @@ class WebApi::V1::BasketsController < ApplicationController
     if basket_update_attributes.include? 'submitted_at'
       Factory.instance.voting_method_for(basket.phase).update_before_submission_change! basket
     end
-    if basket.save(save_params)
+    if basket.save(**save_params)
       SideFxBasketService.new.after_update basket, current_user
       render json: WebApi::V1::BasketSerializer.new(
         basket,

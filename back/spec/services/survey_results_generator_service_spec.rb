@@ -152,6 +152,20 @@ RSpec.describe SurveyResultsGeneratorService do
       required: false
     )
   end
+
+  let_it_be(:point_field) do
+    create(
+      :custom_field_point,
+      resource: form,
+      title_multiloc: {
+        'en' => 'Where should the new nursery be located?'
+      },
+      description_multiloc: {}
+    )
+  end
+
+  let_it_be(:map_config) { create(:map_config, mappable: point_field) }
+
   let_it_be(:user_custom_field) do
     create(:custom_field_gender, :with_options)
   end
@@ -172,6 +186,7 @@ RSpec.describe SurveyResultsGeneratorService do
         multiselect_field.key => %w[cat dog],
         select_field.key => 'ny',
         file_upload_field.key => { 'id' => idea_file.id, 'name' => idea_file.name },
+        point_field.key => { type: 'Point', coordinates: [42.42, 24.24] },
         linear_scale_field.key => 3
       },
       idea_files: [idea_file],
@@ -185,6 +200,7 @@ RSpec.describe SurveyResultsGeneratorService do
         text_field.key => 'Blue',
         multiselect_field.key => %w[cow pig cat],
         select_field.key => 'la',
+        point_field.key => { type: 'Point', coordinates: [11.22, 33.44] },
         linear_scale_field.key => 4
       },
       author: male_user
@@ -275,7 +291,7 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       it 'returns the correct fields and structure' do
-        expect(generated_results[:results].count).to eq 8
+        expect(generated_results[:results].count).to eq 9
         expect(generated_results[:results].pluck(:customFieldId)).not_to include page_field.id
         expect(generated_results[:results].pluck(:customFieldId)).not_to include disabled_multiselect_field.id
       end
@@ -883,6 +899,29 @@ RSpec.describe SurveyResultsGeneratorService do
 
       it 'returns the results for file upload field' do
         expect(generated_results[:results][7]).to match expected_result_file_upload
+      end
+    end
+
+    describe 'point fields' do
+      let(:expected_result_point) do
+        {
+          inputType: 'point',
+          question: { 'en' => 'Where should the new nursery be located?' },
+          required: false,
+          grouped: false,
+          questionResponseCount: 2,
+          totalResponseCount: 22,
+          customFieldId: point_field.id,
+          mapConfigId: map_config.id,
+          pointResponses: a_collection_containing_exactly(
+            { response: { 'coordinates' => [42.42, 24.24], 'type' => 'Point' } },
+            { response: { 'coordinates' => [11.22, 33.44], 'type' => 'Point' } }
+          )
+        }
+      end
+
+      it 'returns the results for a point field' do
+        expect(generated_results[:results][8]).to match expected_result_point
       end
     end
   end

@@ -996,7 +996,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "Capes del mapa",
   "app.containers.AdminPage.ProjectEdit.MapTab.lngLabel": "Longitud per defecte",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom": "Centre i zoom per defecte del mapa",
-  "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "El punt central i el nivell de zoom predeterminats del mapa. Ajusteu manualment els valors següents o feu clic al botó {button} de l'extrem superior dret del mapa per desar el punt central actual i el nivell de zoom del mapa com a valors predeterminats.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationDescription": "Personalitzeu la vista del mapa, inclòs la càrrega i l'estil de les capes del mapa i la configuració del centre del mapa i el nivell de zoom.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationTitle": "Configuració del mapa",
   "app.containers.AdminPage.ProjectEdit.MapTab.remove": "Eliminar la capa",

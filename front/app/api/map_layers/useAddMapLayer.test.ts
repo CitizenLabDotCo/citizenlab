@@ -7,7 +7,7 @@ import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { mapLayerData } from './__mocks__/mapLayerData';
 import useAddMapLayer from './useAddMapLayer';
 
-const apiPath = '*/projects/:projectId/map_config/layers';
+const apiPath = `*/map_configs/:mapConfigId/layers`;
 
 const server = setupServer(
   rest.post(apiPath, (_req, res, ctx) => {
@@ -27,7 +27,7 @@ describe('useAddMapLayer', () => {
     act(() => {
       result.current.mutate({
         type: 'CustomMaps::GeojsonLayer',
-        projectId: '1',
+        mapConfigId: '1',
         id: 'id',
         title_multiloc: {
           en: 'test',
@@ -54,7 +54,7 @@ describe('useAddMapLayer', () => {
     act(() => {
       result.current.mutate({
         type: 'CustomMaps::GeojsonLayer',
-        projectId: '1',
+        mapConfigId: '1',
         id: 'id',
         title_multiloc: {
           en: 'test',
