@@ -10,6 +10,8 @@ import {
 import { useNode } from '@craftjs/core';
 import { IOption } from 'typings';
 
+import { ICustomFields } from 'api/custom_fields/types';
+import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
 import { GroupMode } from 'api/graph_data_units/requestTypes';
 
 import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey/messages';
@@ -31,6 +33,10 @@ import messages from './messages';
 import QuestionSelect from './QuestionSelect';
 import UserFieldSelect from './UserFieldSelect';
 
+const findQuestion = (questions: ICustomFields, questionId: string) => {
+  return questions.data.find((question) => question.id === questionId);
+};
+
 const Settings = () => {
   const { formatMessage } = useIntl();
 
@@ -49,6 +55,21 @@ const Settings = () => {
     groupMode: node.data.props.groupMode,
     groupFieldId: node.data.props.groupFieldId,
   }));
+
+  const { data: questions } = useRawCustomFields({ phaseId });
+
+  const selectedQuestion =
+    questions && questionId ? findQuestion(questions, questionId) : undefined;
+
+  const showGroupingSettings =
+    questionId &&
+    selectedQuestion &&
+    selectedQuestion.attributes.input_type !== 'point';
+
+  const showHeatmapSettings =
+    questionId &&
+    selectedQuestion &&
+    selectedQuestion.attributes.input_type === 'point';
 
   const handleProjectFilter = useCallback(
     ({ value }: IOption) => {
@@ -154,30 +175,34 @@ const Settings = () => {
         />
       )}
 
-      {questionId && (
-        <GroupModeSelect mode={groupMode} onChange={handleGroupMode} />
+      {showGroupingSettings && (
+        <>
+          <GroupModeSelect mode={groupMode} onChange={handleGroupMode} />
+
+          {groupMode === 'user_field' && (
+            <UserFieldSelect
+              userFieldId={groupFieldId}
+              onChange={handleGroupField}
+            />
+          )}
+
+          {phaseId && groupMode === 'survey_question' && (
+            <QuestionSelect
+              phaseId={phaseId}
+              questionId={groupFieldId}
+              filterQuestion={({ attributes: { input_type }, id }) => {
+                const supportedInputType =
+                  SLICE_SURVEY_QUESTION_INPUT_TYPES.has(input_type);
+                return supportedInputType && id !== questionId;
+              }}
+              label={formatMessage(messages.groupBySurveyQuestion)}
+              onChange={handleGroupField}
+            />
+          )}
+        </>
       )}
 
-      {groupMode === 'user_field' && (
-        <UserFieldSelect
-          userFieldId={groupFieldId}
-          onChange={handleGroupField}
-        />
-      )}
-
-      {phaseId && groupMode === 'survey_question' && (
-        <QuestionSelect
-          phaseId={phaseId}
-          questionId={groupFieldId}
-          filterQuestion={({ attributes: { input_type }, id }) => {
-            const supportedInputType =
-              SLICE_SURVEY_QUESTION_INPUT_TYPES.has(input_type);
-            return supportedInputType && id !== questionId;
-          }}
-          label={formatMessage(messages.groupBySurveyQuestion)}
-          onChange={handleGroupField}
-        />
-      )}
+      {showHeatmapSettings && <Text>Heatmap settings!</Text>}
     </Box>
   );
 };

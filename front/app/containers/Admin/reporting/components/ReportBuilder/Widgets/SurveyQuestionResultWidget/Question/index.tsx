@@ -24,6 +24,7 @@ interface Props {
   questionId: string;
   groupMode?: GroupMode;
   groupFieldId?: string;
+  heatmap?: boolean;
 }
 
 const SurveyQuestionResult = ({
@@ -32,6 +33,7 @@ const SurveyQuestionResult = ({
   questionId,
   groupMode,
   groupFieldId,
+  heatmap,
 }: Props) => {
   const response = useSurveyQuestionResult({
     phase_id: phaseId,
@@ -72,7 +74,7 @@ const SurveyQuestionResult = ({
           mapConfigId={attributes.mapConfigId}
           customFieldId={attributes.customFieldId}
           projectId={projectId}
-          heatmap={false}
+          heatmap={heatmap}
         />
       ) : (
         <>
