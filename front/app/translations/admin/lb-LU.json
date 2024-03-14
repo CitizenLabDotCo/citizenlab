@@ -1678,6 +1678,7 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet1": "E puer Methoden d'Resultater deelen (wéi Wahlresultater) ginn net ausgeléist bis en Enndatum ausgewielt gëtt.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "Soubal Dir eng Phas no dëser bäidréit, gëtt et en Enndatum fir dës Phase.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "Net en Enndatum auswielen fir dëst implizéiert datt:",
+  "app.containers.AdminPage.ProjectTimeline.previewSurveyCTALabel": "Virschau",
   "app.containers.AdminPage.ProjectTimeline.saveChangesLabel": "Ännerungen späicheren",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "There was an error submitting the form, please try again.",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessLabel": "Saved!",
