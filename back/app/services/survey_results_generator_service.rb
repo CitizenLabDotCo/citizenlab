@@ -9,10 +9,6 @@ class SurveyResultsGeneratorService < FieldVisitorService
     @locales = AppConfiguration.instance.settings('core', 'locales')
   end
 
-  def generate_submission_count
-    { totalSubmissions: inputs.size }
-  end
-
   def generate_results(field_id: nil, group_mode: nil, group_field_id: nil)
     if !field_id
       # Return all results (ungrouped)

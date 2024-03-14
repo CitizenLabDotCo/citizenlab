@@ -271,12 +271,6 @@ RSpec.describe SurveyResultsGeneratorService do
     end
   end
 
-  describe '#generate_submission_count' do
-    it 'returns the count' do
-      expect(generator.generate_submission_count).to eq({ totalSubmissions: 22 })
-    end
-  end
-
   describe 'generate_results' do
     let(:generated_results) { generator.generate_results }
 
