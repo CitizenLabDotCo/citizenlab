@@ -48,7 +48,8 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
   const { setValue, watch } = useFormContext();
   const [showModal, setShowModal] = useState(false);
   const { data: projectMapConfig } = useProjectMapConfig(projectId);
-  const { data: rawCustomFields } = useRawCustomFields({ phaseId });
+  const { data: rawCustomFields, isLoading: isLoadingRawFields } =
+    useRawCustomFields({ phaseId });
 
   const { mutateAsync: createProjectMapConfig } = useAddMapConfig();
   const [mapView, setMapView] = useState<MapView | null>(null);
@@ -132,7 +133,7 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
     setMapView(mapView);
   }, []);
 
-  if (isLoadingFieldConfig && mapConfigId) {
+  if ((isLoadingFieldConfig && mapConfigId) || isLoadingRawFields) {
     return null;
   }
 
