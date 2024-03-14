@@ -201,7 +201,7 @@ const AuthProviders = memo<Props>(
           <StyledAuthProviderButton
             icon="microsoft-windows"
             flow={flow}
-            authProvider="azureactivedirectory"
+            authProvider="azure_activedirectory_b2c"
             onContinue={onSelectAuthProvider}
           >
             <FormattedMessage

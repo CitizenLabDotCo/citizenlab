@@ -59,7 +59,7 @@ export const lightFlow = (
           case 'facebook':
             setCurrentStep('light-flow:facebook-policies');
             break;
-          case 'azureactivedirectory':
+          case 'azure_activedirectory_b2c':
             setCurrentStep('light-flow:azure-ad-policies');
             break;
           case 'franceconnect':
@@ -127,7 +127,7 @@ export const lightFlow = (
           requirements.special.verification === 'require';
 
         handleOnSSOClick(
-          'azureactivedirectory',
+          'azure_activedirectory_b2c',
           { ...getAuthenticationData(), flow: 'signin' },
           verificationRequired
         );
