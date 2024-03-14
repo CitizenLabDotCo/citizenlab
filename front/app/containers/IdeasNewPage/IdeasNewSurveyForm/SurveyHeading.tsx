@@ -129,6 +129,7 @@ const SurveyHeading = ({
                 iconColor={colors.textSecondary}
                 iconColorOnHover={colors.black}
                 a11y_buttonActionMessage={formatMessage(messages.leaveSurvey)}
+                p="0px"
               />
             </Box>
           </Box>
