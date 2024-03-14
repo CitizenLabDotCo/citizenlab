@@ -15,10 +15,10 @@ import { ICustomFields } from 'api/custom_fields/types';
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
 import { GroupMode } from 'api/graph_data_units/requestTypes';
 
+import HeatmapTooltipContent from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/PointLocationQuestion/HeatmapTooltipContent';
 import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey/messages';
 
 import PhaseFilter from 'components/UI/PhaseFilter';
-import HeatmapTooltipContent from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/PointLocationQuestion/HeatmapTooltipContent';
 
 import { useIntl } from 'utils/cl-intl';
 
