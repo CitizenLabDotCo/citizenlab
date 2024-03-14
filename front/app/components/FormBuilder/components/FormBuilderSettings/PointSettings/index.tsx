@@ -70,7 +70,7 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
   // Load map config
   const { data: fieldMapConfig, isLoading: isLoadingFieldConfig } =
     useMapConfigById(mapConfigId);
-  const mapConfig = mapConfigId ? fieldMapConfig : projectMapConfig;
+  const mapConfig = fieldMapConfig || projectMapConfig;
 
   // Load map state from mapConfig
   const mapLayers = useMemo(() => {
