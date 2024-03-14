@@ -10,11 +10,7 @@ module Analysis
     end
 
     def execute
-      inputs = if analysis.participation_method == 'native_survey'
-        analysis.inputs.native_survey
-      else
-        analysis.inputs.ideation
-      end
+      inputs = analysis.inputs
 
       inputs = filter_tags(inputs)
       inputs = filter_input_custom_field_no_empty_values(inputs)

@@ -39,11 +39,10 @@ module Analysis
     # the form definition of the project or phase assigned to the analysis, that
     # also are part of the phase.
     def inputs
-      scope = Idea.published
       if phase_id
-        scope.where(creation_phase_id: phase_id)
+        phase.ideas.native_survey.published
       elsif project_id
-        scope.where(project_id: project_id, creation_phase: nil)
+        project.ideas.ideation.published
       end
     end
 
