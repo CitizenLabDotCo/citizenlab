@@ -89,7 +89,7 @@ const IframeSettings = () => {
             handleChange(value);
           }}
         />
-        {isValidUrl(url) && (
+        {!isValidUrl(url) && (
           <Error
             marginTop="4px"
             text={formatMessage(messages.iframeInvalidUrlErrorMessage)}
