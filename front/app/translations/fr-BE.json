@@ -1050,7 +1050,7 @@
   "app.containers.IdeasNewPage.issueFormTitle": "Ajoutez un nouveau problème",
   "app.containers.IdeasNewPage.issueMetaTitle": "Ajoutez un nouveau problème | {projectName}",
   "app.containers.IdeasNewPage.leaveFormConfirmationQuestion": "Êtes-vous sûr de vouloir quitter ?",
-  "app.containers.IdeasNewPage.leaveFormTextLoggedIn": "Votre projet de réponse a été sauvegardé en privé et vous pouvez revenir le compléter plus tard.",
+  "app.containers.IdeasNewPage.leaveFormTextLoggedIn": "Vos réponses ont été enregistrées en tant que brouillon (privé). Vous pouvez revenir plus tard pour les terminer.",
   "app.containers.IdeasNewPage.leaveSurvey": "Quitter l'enquête",
   "app.containers.IdeasNewPage.leaveSurveyText": "Vos réponses ne seront pas enregistrées.",
   "app.containers.IdeasNewPage.optionFormTitle": "Ajoutez une nouvelle option",
