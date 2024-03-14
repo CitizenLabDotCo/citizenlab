@@ -3,7 +3,6 @@
 module Analysis
   class AutoTaggingMethod::NLPTopic < AutoTaggingMethod::Base
     TAG_TYPE = 'nlp_topic'
-    SHORT_INPUTS_TEXTS_THRESHOLD = 1000
 
     def topic_modeling(project_title, inputs)
       response = run_topic_modeling_prompt(project_title, inputs)

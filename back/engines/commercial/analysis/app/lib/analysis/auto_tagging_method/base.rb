@@ -124,7 +124,7 @@ module Analysis
       end
       processed_inputs = []
       do_while_pool_is_running(pool) do
-        raise 'Something went wrong!' if failure.true?
+        raise 'Something went wrong with a thread during classification!' if failure.true?
 
         (results.keys - processed_inputs).each do |input_id|
           topic = results[input_id]
