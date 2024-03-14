@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { lighten } from 'polished';
+
 import {
   Box,
   colors,
@@ -7,6 +7,7 @@ import {
   Text,
   Image,
 } from '@citizenlab/cl2-component-library';
+import { lighten } from 'polished';
 
 type Props = {
   selected: boolean;

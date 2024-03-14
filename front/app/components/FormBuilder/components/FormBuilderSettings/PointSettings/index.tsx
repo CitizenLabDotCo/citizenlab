@@ -6,9 +6,11 @@ import { useFormContext } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import customFieldsKeys from 'api/custom_fields/keys';
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
+import useAddProjectMapConfig from 'api/map_config/useAddProjectMapConfig';
 import useDuplicateMapConfig from 'api/map_config/useDuplicateMapConfig';
 import useMapConfigById from 'api/map_config/useMapConfigById';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
@@ -23,6 +25,7 @@ import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
+import { getCenter, getZoomLevel } from 'utils/mapUtils/map';
 
 import messages from './messages';
 
@@ -50,8 +53,12 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
   const { data: projectMapConfig } = useProjectMapConfig(projectId);
   const { data: rawCustomFields } = useRawCustomFields({ phaseId });
 
+  const { mutateAsync: createProjectMapConfig } = useAddProjectMapConfig();
   const { mutateAsync: duplicateMapConfig } = useDuplicateMapConfig();
   const [mapView, setMapView] = useState<MapView | null>(null);
+
+  // Default project map settings if not present
+  const { data: appConfig } = useAppConfiguration();
 
   // Get current map config ID for this field
   const mapConfigId =
@@ -72,10 +79,7 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
   const onConfigureMapClick = useCallback(() => {
     // Create a new map config by duplicating the project config if we don't have one for this field
     if (!mapConfigId) {
-      const projectMapConfigId = projectMapConfig?.data?.id;
-
-      // TODO: What should happen if we don't have a project map config? Should this ever happen?
-      if (projectMapConfigId) {
+      const duplicateAndOpenModal = (projectMapConfigId: string) => {
         duplicateMapConfig(projectMapConfigId, {
           onSuccess: (data) => {
             // Set the form value to the map config ID
@@ -84,16 +88,43 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
             setShowModal(true);
           },
         });
+      };
+
+      const projectMapConfigId = projectMapConfig?.data?.id;
+      if (projectMapConfigId) {
+        duplicateAndOpenModal(projectMapConfigId);
+      } else {
+        // Create a default project map config if it doesn't exist
+        const defaultLatLng = getCenter(undefined, appConfig?.data, undefined);
+        const defaultZoom = getZoomLevel(undefined, appConfig?.data, undefined);
+        createProjectMapConfig(
+          {
+            projectId,
+            center_geojson: {
+              type: 'Point',
+              coordinates: [defaultLatLng[1], defaultLatLng[0]],
+            },
+            zoom_level: defaultZoom.toString(),
+          },
+          {
+            onSuccess: (newProjectMapConfig) => {
+              duplicateAndOpenModal(newProjectMapConfig.data.id);
+            },
+          }
+        );
       }
     } else {
       // Otherwise we already have a map config, so we just open the modal
       setShowModal(true);
     }
   }, [
-    duplicateMapConfig,
+    createProjectMapConfig,
+    projectId,
+    appConfig?.data,
     mapConfigId,
-    mapConfigIdName,
     projectMapConfig?.data?.id,
+    duplicateMapConfig,
+    mapConfigIdName,
     setValue,
   ]);
 
