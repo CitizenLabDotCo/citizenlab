@@ -17,11 +17,13 @@ import Divider from 'components/admin/Divider';
 import Avatar from 'components/Avatar';
 import Button from 'components/UI/Button';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
 import { useSelectedInputContext } from '../SelectedInputContext';
 import Taggings from '../Taggings';
+import tracks from '../tracks';
 
 import LongFieldValue from './LongFieldValue';
 import messages from './messages';
@@ -75,10 +77,21 @@ const InputListItem = () => {
       ? additionalCustomFieldIds.filter((id) => id !== customFieldId)
       : [...(additionalCustomFieldIds || []), customFieldId];
 
-    updateAnalysis({
-      id: analysisId,
-      additional_custom_field_ids: newAdditionalCustomFieldIds,
-    });
+    updateAnalysis(
+      {
+        id: analysisId,
+        additional_custom_field_ids: newAdditionalCustomFieldIds,
+      },
+      {
+        onSuccess: () => {
+          trackEventByName(
+            additionalCustomFieldIds?.includes(customFieldId)
+              ? tracks.removeQuestionFromAIAnalysis.name
+              : tracks.addQuestionToAIAnalysis.name
+          );
+        },
+      }
+    );
   };
 
   return (
