@@ -18,7 +18,7 @@ const AnalysisUpsell = () => {
   const { formatMessage } = useIntl();
   return (
     <Box px="20px">
-      <Icon name="flash" width="40px" height="40px" fill={colors.primary} />
+      <Icon name="stars" width="40px" height="40px" fill={colors.primary} />
       <Title as="h3">{formatMessage(messages.title)}</Title>
       <ul>
         <Text as="li" color="textSecondary">

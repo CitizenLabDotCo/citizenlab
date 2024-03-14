@@ -142,7 +142,7 @@ const ReportBuilderToolbox = ({
           </Box>
           <Box flex="1">
             <Button
-              icon="flash"
+              icon="stars"
               id="e2e-report-builder-ai-tab"
               onClick={() => setSelectedTab('ai')}
               buttonStyle={selectedTab === 'ai' ? 'text' : 'secondary'}
