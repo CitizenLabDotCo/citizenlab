@@ -4,6 +4,7 @@ import {
   Box,
   Text,
   Icon,
+  Toggle,
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
@@ -17,6 +18,7 @@ import { GroupMode } from 'api/graph_data_units/requestTypes';
 import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey/messages';
 
 import PhaseFilter from 'components/UI/PhaseFilter';
+import HeatmapTooltipContent from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/PointLocationQuestion/HeatmapTooltipContent';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -47,6 +49,7 @@ const Settings = () => {
     questionId,
     groupMode,
     groupFieldId,
+    heatmap,
   } = useNode<Props>((node) => ({
     title: node.data.props.title,
     projectId: node.data.props.projectId,
@@ -54,6 +57,7 @@ const Settings = () => {
     questionId: node.data.props.questionId,
     groupMode: node.data.props.groupMode,
     groupFieldId: node.data.props.groupFieldId,
+    heatmap: node.data.props.heatmap,
   }));
 
   const { data: questions } = useRawCustomFields({ phaseId });
@@ -122,6 +126,12 @@ const Settings = () => {
     },
     [setProp]
   );
+
+  const handleHeatmap = useCallback(() => {
+    setProp((props: Props) => {
+      props.heatmap = !heatmap;
+    });
+  }, [setProp, heatmap]);
 
   return (
     <Box>
@@ -205,7 +215,15 @@ const Settings = () => {
         </>
       )}
 
-      {showHeatmapSettings && <Text>Heatmap settings!</Text>}
+      {showHeatmapSettings && (
+        <Box my="32px">
+          <Toggle
+            label={<HeatmapTooltipContent />}
+            checked={!!heatmap}
+            onChange={handleHeatmap}
+          />
+        </Box>
+      )}
     </Box>
   );
 };
