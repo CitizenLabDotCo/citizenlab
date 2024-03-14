@@ -27,7 +27,6 @@ const PointLocationQuestion = ({
   mapConfigId,
   customFieldId,
 }: Props) => {
-  // const localize = useLocalize();
   const { formatMessage } = useIntl();
 
   // Get project from URL
