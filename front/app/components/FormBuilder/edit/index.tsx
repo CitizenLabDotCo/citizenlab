@@ -182,6 +182,9 @@ export const FormEdit = ({
         title_multiloc: field.title_multiloc || {},
         key: field.key,
         code: field.code,
+        ...(field.map_config_id && {
+          map_config_id: field.map_config_id,
+        }),
         description_multiloc: field.description_multiloc || {},
         ...(['select', 'multiselect', 'multiselect_image'].includes(
           field.input_type

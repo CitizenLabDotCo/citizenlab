@@ -13,20 +13,33 @@ export type IParameters = {
 };
 
 export interface Answer {
-  answer: Multiloc;
-  responses: number;
+  answer: string | number | null;
+  count: number;
+}
+
+export type MultilocAnswer = {
+  title_multiloc: Multiloc;
   image?: ImageSizes;
+};
+
+export interface AnswerMultilocs {
+  answer: Record<string, MultilocAnswer>;
 }
 
 export interface Result {
   inputType: ICustomFieldInputType;
   question: Multiloc;
-  totalResponses: number;
-  answers?: Answer[];
   required: boolean;
+  mapConfigId?: string;
   customFieldId: string;
+  totalResponseCount: number;
+  questionResponseCount: number;
+  totalPickCount?: number;
+  answers?: Answer[];
   textResponses?: { answer: string }[];
   files?: { name: string; url: string }[];
+  pointResponses?: { response: GeoJSON.Point }[];
+  multilocs?: AnswerMultilocs;
 }
 
 export interface SurveyResultAttributes {

@@ -15,6 +15,7 @@ import Renderer from '@arcgis/core/renderers/SimpleRenderer';
 import MapView from '@arcgis/core/views/MapView';
 import {
   Box,
+  colors,
   media,
   useBreakpoint,
   useWindowSize,
@@ -31,17 +32,17 @@ import usePhase from 'api/phases/usePhase';
 
 import useLocalize from 'hooks/useLocalize';
 
+import LayerHoverLabel from 'components/ConfigurationMap/components/LayerHoverLabel';
 import EsriMap from 'components/EsriMap';
 import {
-  createEsriGeoJsonLayers,
-  getMapPinSymbol,
   getClusterConfiguration,
   showAddInputPopup,
   goToMapLocation,
   esriPointToGeoJson,
   changeCursorOnHover,
+  parseLayers,
+  getShapeSymbol,
 } from 'components/EsriMap/utils';
-import LayerHoverLabel from 'components/IdeationConfigurationMap/components/LayerHoverLabel';
 
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
@@ -163,6 +164,27 @@ const IdeasMap = memo<Props>(
       string[] | null
     >(null);
 
+    // Map icon for ideas
+    const ideaIcon = useMemo(() => {
+      return getShapeSymbol({
+        shape: 'circle',
+        color: theme.colors.tenantPrimary,
+        outlineColor: colors.white,
+        outlineWidth: 2,
+        sizeInPx: 18,
+      });
+    }, [theme.colors.tenantPrimary]);
+
+    const ideaIconSecondary = useMemo(() => {
+      return getShapeSymbol({
+        shape: 'circle',
+        color: theme.colors.tenantSecondary,
+        outlineColor: colors.white,
+        outlineWidth: 2,
+        sizeInPx: 18,
+      });
+    }, [theme.colors.tenantSecondary]);
+
     // Existing handling for dynamic container width
     const { windowWidth } = useWindowSize();
     const tablet = useMemo(() => {
@@ -191,13 +213,9 @@ const IdeasMap = memo<Props>(
       );
     }, [windowWidth, containerWidth, tablet]);
 
-    // Create Esri GeoJSON layers from mapConfig layers
-    const geoJsonLayers = useMemo(() => {
-      const layers = mapConfig?.data?.attributes?.layers;
-      if (layers) {
-        return createEsriGeoJsonLayers(layers, localize);
-      }
-      return [];
+    // Create Esri layers from mapConfig layers
+    const mapLayers = useMemo(() => {
+      return parseLayers(mapConfig, localize);
     }, [mapConfig, localize]);
 
     // Create a point graphics layer for idea pins
@@ -227,6 +245,7 @@ const IdeasMap = memo<Props>(
           source: graphics, // Array of idea graphics
           title: formatMessage(messages.userInputs),
           id: 'ideasLayer',
+          outFields: ['*'],
           objectIdField: 'ID',
           fields: [
             {
@@ -240,10 +259,7 @@ const IdeasMap = memo<Props>(
           ],
           // Set the symbol used to render the graphics
           renderer: new Renderer({
-            symbol: getMapPinSymbol({
-              color: theme.colors.tenantPrimary,
-              sizeInPx: 42,
-            }),
+            symbol: ideaIcon,
           }),
           legendEnabled: false,
           // Add cluster display to this layer
@@ -263,11 +279,12 @@ const IdeasMap = memo<Props>(
       graphics,
       ideasAtLocationNode,
       theme.colors.tenantPrimary,
+      ideaIcon,
     ]);
 
     const layers = useMemo(() => {
-      return ideasLayer ? [...geoJsonLayers, ideasLayer] : geoJsonLayers;
-    }, [ideasLayer, geoJsonLayers]);
+      return ideasLayer ? [...mapLayers, ideasLayer] : mapLayers;
+    }, [ideasLayer, mapLayers]);
 
     const onMapInit = useCallback(
       (mapView: MapView) => {
@@ -323,10 +340,7 @@ const IdeasMap = memo<Props>(
                 );
               } else if (graphicId) {
                 // User clicked an idea pin or layer.
-                const ideaId =
-                  topElement.layer.id === 'ideasLayer'
-                    ? graphics?.at(graphicId - 1)?.attributes.ideaId
-                    : undefined;
+                const ideaId = topElement?.graphic?.attributes?.ideaId;
 
                 const ideasAtClickCount = elements.filter(
                   (element) =>
@@ -343,10 +357,8 @@ const IdeasMap = memo<Props>(
                     const ideaIds = elements.map((element) => {
                       // Get list of idea ids at this location
                       if (element.type === 'graphic') {
-                        const graphicId = element?.graphic?.attributes?.ID;
                         const layerId = element?.graphic?.layer?.id;
-                        const ideaId = graphics?.at(graphicId - 1)?.attributes
-                          .ideaId;
+                        const ideaId = element?.graphic?.attributes?.ideaId;
                         if (ideaId && layerId === 'ideasLayer') {
                           return ideaId;
                         }
@@ -372,10 +384,7 @@ const IdeasMap = memo<Props>(
                       if (geometry.type === 'point') {
                         const graphic = new Graphic({
                           geometry,
-                          symbol: getMapPinSymbol({
-                            color: theme.colors.tenantSecondary,
-                            sizeInPx: 42,
-                          }),
+                          symbol: ideaIconSecondary,
                         });
                         mapView.graphics.removeAll();
 
@@ -416,13 +425,12 @@ const IdeasMap = memo<Props>(
         });
       },
       [
-        graphics,
         setSelectedIdea,
-        theme.colors.tenantSecondary,
         authUser,
         phase?.data.attributes.posting_enabled,
         startIdeaButtonNode,
         formatMessage,
+        ideaIconSecondary,
       ]
     );
 
@@ -462,10 +470,7 @@ const IdeasMap = memo<Props>(
                 latitude: ideaPoint.coordinates[1],
                 longitude: ideaPoint.coordinates[0],
               }),
-              symbol: getMapPinSymbol({
-                color: theme.colors.tenantSecondary,
-                sizeInPx: 42,
-              }),
+              symbol: ideaIconSecondary,
             });
             esriMapView.graphics.removeAll();
             // Show the graphic on the map for a few seconds to highlight the selected point
@@ -480,7 +485,7 @@ const IdeasMap = memo<Props>(
         }
         setSelectedIdea(selectedIdeaId);
       },
-      [ideaMarkers, esriMapView, theme.colors.tenantSecondary, setSelectedIdea]
+      [ideaMarkers, esriMapView, ideaIconSecondary, setSelectedIdea]
     );
 
     return (
@@ -500,6 +505,7 @@ const IdeasMap = memo<Props>(
                 zoomWidgetLocation: 'right',
                 onInit: onMapInit,
               }}
+              webMapId={mapConfig?.data?.attributes?.esri_web_map_id}
               height={isMobileOrSmaller ? '68vh' : '80vh'}
               layers={layers}
               onHover={onMapHover}

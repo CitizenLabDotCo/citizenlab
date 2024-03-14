@@ -7,7 +7,6 @@ import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
 
 import SpamReportForm from 'containers/SpamReport';
 
-import HasPermission from 'components/HasPermission';
 import Modal from 'components/UI/Modal';
 import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 import WarningModal from 'components/WarningModal';
@@ -15,6 +14,7 @@ import warningMessages from 'components/WarningModal/messages';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { usePermission } from 'utils/permissions';
 
 import messages from '../messages';
 
@@ -35,6 +35,11 @@ interface Props {
 
 const InitiativeMoreActions = ({ initiative, className, color, id }: Props) => {
   const { formatMessage } = useIntl();
+  const canEditInitiative = usePermission({
+    action: 'edit',
+    item: initiative,
+    context: initiative,
+  });
 
   const [spamModalVisible, setSpamModalVisible] = useState(false);
   const [warningModalOpen, setWarningModalOpen] = useState(false);
@@ -78,46 +83,31 @@ const InitiativeMoreActions = ({ initiative, className, color, id }: Props) => {
     <>
       <Container className={className}>
         <MoreActionsMenuWrapper>
-          <HasPermission item={initiative} action="edit" context={initiative}>
-            <MoreActionsMenu
-              labelAndTitle={<FormattedMessage {...messages.moreOptions} />}
-              color={color}
-              id={id}
-              actions={[
-                {
-                  label: <FormattedMessage {...messages.reportAsSpam} />,
-                  handler: openSpamModal,
-                },
-                ...(initiative.attributes.editing_locked
-                  ? []
-                  : [
-                      {
-                        label: (
-                          <FormattedMessage {...messages.editInitiative} />
-                        ),
-                        handler: onEditInitiative,
-                      },
-                    ]),
-                {
-                  label: <FormattedMessage {...messages.deleteInitiative} />,
-                  handler: openWarningModal,
-                },
-              ]}
-            />
-            <HasPermission.No>
-              <MoreActionsMenu
-                labelAndTitle={<FormattedMessage {...messages.moreOptions} />}
-                color={color}
-                id={id}
-                actions={[
-                  {
-                    label: <FormattedMessage {...messages.reportAsSpam} />,
-                    handler: openSpamModal,
-                  },
-                ]}
-              />
-            </HasPermission.No>
-          </HasPermission>
+          <MoreActionsMenu
+            labelAndTitle={<FormattedMessage {...messages.moreOptions} />}
+            color={color}
+            id={id}
+            actions={[
+              {
+                label: <FormattedMessage {...messages.reportAsSpam} />,
+                handler: openSpamModal,
+              },
+              ...(!initiative.attributes.editing_locked && canEditInitiative
+                ? [
+                    {
+                      label: <FormattedMessage {...messages.editInitiative} />,
+                      handler: onEditInitiative,
+                    },
+                    {
+                      label: (
+                        <FormattedMessage {...messages.deleteInitiative} />
+                      ),
+                      handler: openWarningModal,
+                    },
+                  ]
+                : []),
+            ]}
+          />
         </MoreActionsMenuWrapper>
         <Modal
           opened={spamModalVisible}

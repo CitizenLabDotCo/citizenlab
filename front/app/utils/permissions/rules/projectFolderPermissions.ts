@@ -14,7 +14,7 @@ import {
 } from 'utils/permissions/rules/routePermissions';
 
 export function userModeratesFolder(
-  user: IUserData | null,
+  user: IUserData | undefined,
   projectFolderId: string
 ) {
   if (isNilOrError(user)) {
@@ -32,8 +32,8 @@ export function userModeratesFolder(
   );
 }
 
-export function isProjectFolderModerator(user: IUserData) {
-  return !!user.attributes?.roles?.find((role: TRole) => {
+export function isProjectFolderModerator(user: IUserData | undefined) {
+  return !!user?.attributes?.roles?.find((role: TRole) => {
     return role.type === 'project_folder_moderator';
   });
 }
@@ -41,7 +41,7 @@ export function isProjectFolderModerator(user: IUserData) {
 // rules
 const canUserAccessAdminFolderRoute = (
   item: IRouteItem,
-  user: IUser | null,
+  user: IUser | undefined,
   tenant: IAppConfigurationData
 ) => {
   const hasAdminFolderRouteAccess =
@@ -60,7 +60,7 @@ definePermissionRule('route', 'access', canUserAccessAdminFolderRoute);
 definePermissionRule(
   'project_folder',
   'create',
-  (_folder: IProjectFolderData, user: IUser) => {
+  (_folder: IProjectFolderData, user) => {
     return isAdmin(user);
   }
 );
@@ -68,7 +68,7 @@ definePermissionRule(
 definePermissionRule(
   'project_folder',
   'delete',
-  (_folder: IProjectFolderData, user: IUser) => {
+  (_folder: IProjectFolderData, user) => {
     return isAdmin(user);
   }
 );
@@ -76,7 +76,7 @@ definePermissionRule(
 definePermissionRule(
   'project_folder',
   'reorder',
-  (_folder: IProjectFolderData, user: IUser) => {
+  (_folder: IProjectFolderData, user) => {
     return isAdmin(user);
   }
 );
@@ -84,15 +84,15 @@ definePermissionRule(
 definePermissionRule(
   'project_folder',
   'moderate',
-  (folder: IProjectFolderData, user: IUser) => {
-    return userModeratesFolder(user.data, folder.id);
+  (folder: IProjectFolderData, user) => {
+    return user ? userModeratesFolder(user.data, folder.id) : false;
   }
 );
 
 definePermissionRule(
   'project_folder',
   'create_project_in_folder_only',
-  (_folder, user: IUser) => {
-    return !isAdmin(user) && isProjectFolderModerator(user.data);
+  (_folder, user) => {
+    return user ? !isAdmin(user) && isProjectFolderModerator(user.data) : false;
   }
 );

@@ -30,6 +30,7 @@ class ProjectCopyService < TemplateService
     new_publication_status: nil
   )
     include_ideas = false if local_copy
+    @include_ideas = include_ideas
     @local_copy = local_copy
     @project = project
     @template = { 'models' => {} }
@@ -297,8 +298,8 @@ class ProjectCopyService < TemplateService
         'poll_anonymous' => phase.poll_anonymous,
         'ideas_order' => phase.ideas_order,
         'input_term' => phase.input_term,
-        'baskets_count' => phase.baskets_count,
-        'votes_count' => phase.votes_count
+        'baskets_count' => @local_copy || !@include_ideas ? 0 : phase.baskets_count,
+        'votes_count' => @local_copy || !@include_ideas ? 0 : phase.votes_count
       }
       if yml_phase['participation_method'] == 'voting'
         yml_phase['voting_method'] = phase.voting_method
@@ -315,6 +316,11 @@ class ProjectCopyService < TemplateService
 
       if yml_phase['participation_method'] == 'document_annotation'
         yml_phase['document_annotation_embed_url'] = phase.document_annotation_embed_url
+      end
+
+      if yml_phase['participation_method'] == 'native_survey'
+        yml_phase['native_survey_title_multiloc'] = phase.native_survey_title_multiloc
+        yml_phase['native_survey_button_multiloc'] = phase.native_survey_button_multiloc
       end
 
       store_ref yml_phase, phase.id, :phase
@@ -382,9 +388,13 @@ class ProjectCopyService < TemplateService
   end
 
   def yml_maps_map_configs(shift_timestamps: 0)
-    CustomMaps::MapConfig.where(project_id: @project.id).map do |map_config|
+    map_configs = CustomMaps::MapConfig.where(mappable: @project)
+      .or(CustomMaps::MapConfig.where(mappable: @project&.custom_form&.custom_fields))
+      .or(CustomMaps::MapConfig.where(mappable: @project&.phases&.map(&:custom_form)&.compact&.map(&:custom_fields)))
+
+    map_configs.map do |map_config|
       yml_map_config = {
-        'project_ref' => lookup_ref(map_config.project_id, :project),
+        'mappable_ref' => lookup_ref(map_config.mappable_id, %i[project custom_field]),
         'center_geojson' => map_config.center_geojson,
         'zoom_level' => map_config.zoom_level&.to_f,
         'tile_provider' => map_config.tile_provider,

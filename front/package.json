@@ -9,7 +9,9 @@
     "node": "16.15.0",
     "npm": ">=8"
   },
-  "author": "CitizenLab",
+  "author": {
+    "name": "CitizenLab"
+  },
   "scripts": {
     "extract-intl": "tsc --skipLibCheck app/containers/App/constants && babel-node --presets @babel/env -- ./internals/scripts/extract-intl.js",
     "prebuild": "npm run build:clean",
@@ -35,7 +37,8 @@
     "detect-deadcode": "ts-prune -p app/tsconfig.json -i '(node_modules|utils/testUtils/rtl.tsx|utils/permissions|i18n|/*/*/__mocks__)' | (! grep -v 'used in module')",
     "dependency-cruiser": "depcruise app  --validate",
     "storybook": "storybook dev -p 6006",
-    "storybook:build": "storybook build"
+    "build-storybook": "storybook build",
+    "chromatic": "chromatic --exit-once-uploaded"
   },
   "jest-junit": {
     "addFileAttribute": "true"
@@ -55,6 +58,7 @@
     "@citizenlab/cl2-component-library": "file:../cl2-component-library/dist",
     "@craftjs/core": "^0.2.0-beta.5",
     "@craftjs/utils": "^0.2.0-beta.5",
+    "@esri/arcgis-rest-request": "^4.2.0",
     "@hookform/resolvers": "^3.1.0",
     "@jsonforms/core": "3.0.0-beta.0",
     "@jsonforms/react": "3.0.0-beta.1",
@@ -80,6 +84,7 @@
     "file-saver": "^2.0.5",
     "focus-visible": "5.2.0",
     "formatcoords": "1.1.3",
+    "geojson-flatten": "^1.1.1",
     "graphql": "^16.8.1",
     "history": "^5.3.0",
     "https-browserify": "^1.0.0",
@@ -198,6 +203,7 @@
     "babel-plugin-react-intl": "2.4.0",
     "babel-plugin-styled-components": "^2.0.7",
     "chalk": "4.1.2",
+    "chromatic": "^10.2.1",
     "clean-webpack-plugin": "4.0.0",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.3",

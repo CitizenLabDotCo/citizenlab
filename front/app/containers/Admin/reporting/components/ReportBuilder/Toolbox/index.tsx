@@ -2,39 +2,35 @@ import React, { useState } from 'react';
 
 import {
   Box,
-  Title,
-  Accordion,
   Spinner,
   stylingConsts,
   Button,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import Transition from 'react-transition-group/Transition';
 import { Locale } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
+import usePhases from 'api/phases/usePhases';
 import useProjects from 'api/projects/useProjects';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 
-import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 import {
-  FormattedMessage,
   useIntl,
   useFormatMessageWithLocale,
   MessageDescriptor,
 } from 'utils/cl-intl';
 import { isModerator } from 'utils/permissions/roles';
 
-import reportBuilderMessages from '../../../messages';
 import Analysis from '../Analysis';
 import { WIDGET_TITLES } from '../Widgets';
 import AboutReportWidget from '../Widgets/AboutReportWidget';
@@ -54,24 +50,17 @@ import TextMultiloc from '../Widgets/TextMultiloc';
 import TwoColumn from '../Widgets/TwoColumn';
 
 import messages from './messages';
+import { findSurveyPhaseId, findIdeationPhaseId } from './utils';
 
 type ReportBuilderToolboxProps = {
   reportId: string;
   selectedLocale: Locale;
 };
 
-const SectionTitle = ({ children }) => (
-  <Title
-    fontWeight="normal"
-    ml="10px"
-    variant="h6"
-    as="h3"
-    mb="8px"
-    mt="8px"
-    color="textSecondary"
-  >
+const Section = ({ children }) => (
+  <Box borderTop={`1px solid ${colors.divider}`} pt="12px" mb="12px">
     {children}
-  </Title>
+  </Box>
 );
 
 const ReportBuilderToolbox = ({
@@ -84,7 +73,6 @@ const ReportBuilderToolbox = ({
   const { projectId } = useReportContext();
   const appConfigurationLocales = useAppConfigurationLocales();
   const { data: authUser } = useAuthUser();
-  const isAnalysisEnabled = useFeatureFlag({ name: 'analysis' });
 
   const userIsModerator = !!authUser && isModerator(authUser);
 
@@ -97,6 +85,8 @@ const ReportBuilderToolbox = ({
       enabled: userIsModerator,
     }
   );
+
+  const { data: phases } = usePhases(projectId);
 
   if (!appConfigurationLocales || !authUser || (userIsModerator && !projects)) {
     return (
@@ -129,49 +119,49 @@ const ReportBuilderToolbox = ({
   const selectedProjectId =
     projectId ?? (userIsModerator ? projects?.data[0]?.id : undefined);
 
+  const surveyPhaseId = phases ? findSurveyPhaseId(phases) : undefined;
+  const ideationPhaseId = phases ? findIdeationPhaseId(phases) : undefined;
+
   return (
     <Transition in={selectedTab === 'ai'} timeout={1000}>
       <Container
         w={selectedTab === 'ai' ? '330px' : '220px'}
         style={{
-          transition: 'all 0.5s ease',
+          transition: 'all 0.2s ease',
         }}
       >
-        {isAnalysisEnabled && (
-          <Box display="flex" alignItems="center" justifyContent="center">
-            <Box flex="1">
-              <Button
-                onClick={() => setSelectedTab('widgets')}
-                buttonStyle={selectedTab === 'widgets' ? 'text' : 'secondary'}
-              >
-                {formatMessage(messages.widgets)}
-              </Button>
-            </Box>
-
-            <Box flex="1">
-              <Button
-                onClick={() => setSelectedTab('ai')}
-                buttonStyle={selectedTab === 'ai' ? 'text' : 'secondary'}
-                icon="flash"
-              >
-                {formatMessage(messages.ai)}
-              </Button>
-            </Box>
+        <Box display="flex" alignItems="center" justifyContent="center">
+          <Box flex="1">
+            <Button
+              onClick={() => setSelectedTab('widgets')}
+              buttonStyle={selectedTab === 'widgets' ? 'text' : 'secondary'}
+            >
+              {formatMessage(messages.widgets)}
+            </Button>
           </Box>
-        )}
-        <Box p="8px" display={selectedTab === 'ai' ? 'block' : 'none'}>
-          <Analysis selectedLocale={selectedLocale} />
+          <Box flex="1">
+            <Button
+              onClick={() => setSelectedTab('ai')}
+              buttonStyle={selectedTab === 'ai' ? 'text' : 'secondary'}
+            >
+              {formatMessage(messages.ai)}
+            </Button>
+          </Box>
         </Box>
-
-        <Box display={selectedTab === 'widgets' ? 'block' : 'none'}>
-          <Accordion
-            isOpenByDefault={true}
-            title={
-              <SectionTitle>
-                <FormattedMessage {...contentBuilderMessages.layout} />
-              </SectionTitle>
-            }
-          >
+        <Box>
+          <Section>
+            <DraggableElement
+              id="e2e-draggable-text"
+              component={<TextMultiloc />}
+              icon="text"
+              label={formatMessage(WIDGET_TITLES.TextMultiloc)}
+            />
+            <DraggableElement
+              id="e2e-draggable-image"
+              component={<ImageMultiloc />}
+              icon="image"
+              label={formatMessage(WIDGET_TITLES.ImageMultiloc)}
+            />
             <DraggableElement
               id="e2e-draggable-two-column"
               component={<TwoColumn columnLayout="1-1" />}
@@ -184,32 +174,70 @@ const ReportBuilderToolbox = ({
               icon="layout-white-space"
               label={formatMessage(WIDGET_TITLES.WhiteSpace)}
             />
-          </Accordion>
-
-          <Accordion
-            isOpenByDefault={true}
-            title={
-              <SectionTitle>
-                <FormattedMessage {...contentBuilderMessages.content} />
-              </SectionTitle>
-            }
-          >
+          </Section>
+          <Section>
             <DraggableElement
-              id="e2e-draggable-about-report"
+              id="e2e-draggable-survey-question-result-widget"
               component={
-                <AboutReportWidget
-                  reportId={reportId}
+                <SurveyQuestionResultWidget
                   projectId={selectedProjectId}
+                  phaseId={surveyPhaseId}
                 />
               }
-              icon="section-image-text"
-              label={formatMessage(WIDGET_TITLES.AboutReportWidget)}
+              icon="survey"
+              label={formatMessage(WIDGET_TITLES.SurveyQuestionResultWidget)}
             />
             <DraggableElement
-              id="e2e-draggable-text"
+              id="e2e-draggable-most-reacted-ideas-widget"
               component={
-                <TextMultiloc text={toMultiloc(WIDGET_TITLES.TextMultiloc)} />
+                <MostReactedIdeasWidget
+                  title={toMultiloc(WIDGET_TITLES.MostReactedIdeasWidget)}
+                  numberOfIdeas={5}
+                  collapseLongText={false}
+                  projectId={selectedProjectId}
+                  phaseId={ideationPhaseId}
+                />
               }
+              icon="vote-up"
+              label={formatMessage(WIDGET_TITLES.MostReactedIdeasWidget)}
+            />
+            <DraggableElement
+              id="e2e-single-idea-widget"
+              component={
+                <SingleIdeaWidget
+                  collapseLongText={false}
+                  showAuthor={true}
+                  showContent={true}
+                  showReactions={true}
+                  showVotes={true}
+                  projectId={selectedProjectId}
+                  phaseId={ideationPhaseId}
+                />
+              }
+              icon="idea"
+              label={formatMessage(WIDGET_TITLES.SingleIdeaWidget)}
+            />
+          </Section>
+
+          <Box flex="1">
+            <Button
+              onClick={() => setSelectedTab('ai')}
+              buttonStyle={selectedTab === 'ai' ? 'text' : 'secondary'}
+              icon="flash"
+            >
+              {formatMessage(messages.ai)}
+            </Button>
+          </Box>
+        </Box>
+        <Box p="8px" display={selectedTab === 'ai' ? 'block' : 'none'}>
+          <Analysis selectedLocale={selectedLocale} />
+        </Box>
+
+        <Box display={selectedTab === 'widgets' ? 'block' : 'none'}>
+          <Section>
+            <DraggableElement
+              id="e2e-draggable-text"
+              component={<TextMultiloc />}
               icon="text"
               label={formatMessage(WIDGET_TITLES.TextMultiloc)}
             />
@@ -219,16 +247,20 @@ const ReportBuilderToolbox = ({
               icon="image"
               label={formatMessage(WIDGET_TITLES.ImageMultiloc)}
             />
-          </Accordion>
-
-          <Accordion
-            isOpenByDefault={true}
-            title={
-              <SectionTitle>
-                <FormattedMessage {...reportBuilderMessages.resultsSection} />
-              </SectionTitle>
-            }
-          >
+            <DraggableElement
+              id="e2e-draggable-two-column"
+              component={<TwoColumn columnLayout="1-1" />}
+              icon="layout-2column-1"
+              label={formatMessage(WIDGET_TITLES.TwoColumn)}
+            />
+            <DraggableElement
+              id="e2e-draggable-white-space"
+              component={<WhiteSpace size="small" />}
+              icon="layout-white-space"
+              label={formatMessage(WIDGET_TITLES.WhiteSpace)}
+            />
+          </Section>
+          <Section>
             {
               // TODO: CL-2307 Only show this if there are surveys in the platform
               // TODO: Add in the default project / phase
@@ -269,16 +301,20 @@ const ReportBuilderToolbox = ({
               icon="idea"
               label={formatMessage(WIDGET_TITLES.SingleIdeaWidget)}
             />
-          </Accordion>
+          </Section>
 
-          <Accordion
-            isOpenByDefault={true}
-            title={
-              <SectionTitle>
-                <FormattedMessage {...reportBuilderMessages.chartsSection} />
-              </SectionTitle>
-            }
-          >
+          <Section>
+            <DraggableElement
+              id="e2e-draggable-about-report"
+              component={
+                <AboutReportWidget
+                  reportId={reportId}
+                  projectId={selectedProjectId}
+                />
+              }
+              icon="section-image-text"
+              label={formatMessage(WIDGET_TITLES.AboutReportWidget)}
+            />
             <DraggableElement
               id="e2e-draggable-visitors-timeline-widget"
               component={
@@ -383,7 +419,7 @@ const ReportBuilderToolbox = ({
               icon="chart-bar"
               label={formatMessage(WIDGET_TITLES.ReactionsByTimeWidget)}
             />
-          </Accordion>
+          </Section>
         </Box>
       </Container>
     </Transition>

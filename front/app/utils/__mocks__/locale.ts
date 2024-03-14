@@ -20,3 +20,7 @@ export function removeUrlLocale(pathname: string): string {
   }
   return urlSegments.length === 1 ? '/' : urlSegments.join('/');
 }
+
+export function hasTextInSpecifiedLocale() {
+  return true;
+}

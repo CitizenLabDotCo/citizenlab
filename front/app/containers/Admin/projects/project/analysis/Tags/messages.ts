@@ -254,4 +254,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.recommended',
     defaultMessage: 'Recommended',
   },
+  selectAll: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Tags.selectAll',
+    defaultMessage: 'Select all',
+  },
 });
