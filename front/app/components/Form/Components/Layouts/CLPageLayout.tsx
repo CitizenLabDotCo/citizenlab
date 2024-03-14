@@ -45,6 +45,7 @@ const StyledFormSection = styled(FormSection)`
   ${media.phone`
     padding: 16px;
   `}
+  box-shadow: none;
 `;
 
 const CLPageLayout = memo(
