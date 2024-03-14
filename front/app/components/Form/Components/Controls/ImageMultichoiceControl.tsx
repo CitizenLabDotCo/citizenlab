@@ -136,10 +136,12 @@ const ImageMultichoiceControl = ({
                   style={{ borderRadius: '3px 3px 0 0' }}
                 />
               ) : (
-                <FullscreenImage
-                  src={option.image?.large || imageFile}
-                  altText={option.label}
-                />
+                <Box minHeight="200px">
+                  <FullscreenImage
+                    src={option.image?.large || imageFile}
+                    altText={option.label}
+                  />
+                </Box>
               )}
 
               <Box position="absolute" top="18px" right="12px">
