@@ -14,9 +14,9 @@ describe('Input form builder', () => {
   let phaseId: string;
 
   beforeEach(() => {
-    // if (projectId) {
-    //   cy.apiRemoveProject(projectId);
-    // }
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+    }
 
     cy.setAdminLoginCookie();
     questionTitle = randomString();
