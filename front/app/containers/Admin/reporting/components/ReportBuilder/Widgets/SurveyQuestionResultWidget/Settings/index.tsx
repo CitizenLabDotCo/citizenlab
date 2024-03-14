@@ -96,6 +96,9 @@ const Settings = () => {
     (questionId: string) => {
       setProp((props: Props) => {
         props.questionId = questionId;
+        props.groupMode = undefined;
+        props.groupFieldId = undefined;
+        props.heatmap = undefined;
       });
     },
     [setProp]
