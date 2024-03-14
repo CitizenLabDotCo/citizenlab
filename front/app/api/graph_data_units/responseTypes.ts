@@ -60,6 +60,7 @@ type BaseAttributes = {
   required: boolean;
   totalResponseCount: number;
   totalPickCount: number;
+  questionResponseCount: number;
 };
 
 export type AttributesGrouped = BaseAttributes & {
