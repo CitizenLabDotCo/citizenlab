@@ -27,6 +27,7 @@ const SurveyQuestionResultWidget = ({
     <PageBreakBox px={px}>
       {hasEverything ? (
         <Question
+          projectId={projectId}
           phaseId={phaseId}
           questionId={questionId}
           groupMode={groupFieldId ? groupMode : undefined}

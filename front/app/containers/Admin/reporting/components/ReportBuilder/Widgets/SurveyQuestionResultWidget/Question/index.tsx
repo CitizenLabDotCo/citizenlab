@@ -19,6 +19,7 @@ import UngroupedBars from './UngroupedBars';
 import { getColorScheme, getLegendLabels } from './utils';
 
 interface Props {
+  projectId: string;
   phaseId: string;
   questionId: string;
   groupMode?: GroupMode;
@@ -26,6 +27,7 @@ interface Props {
 }
 
 const SurveyQuestionResult = ({
+  projectId,
   phaseId,
   questionId,
   groupMode,
@@ -69,7 +71,7 @@ const SurveyQuestionResult = ({
           pointResponses={attributes.pointResponses}
           mapConfigId={attributes.mapConfigId}
           customFieldId={attributes.customFieldId}
-          projectId={phaseId}
+          projectId={projectId}
           heatmap={false}
         />
       ) : (
