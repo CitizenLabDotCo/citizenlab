@@ -12,6 +12,13 @@ describe('Survey question widget', () => {
 
   let informationPhaseId: string;
 
+  const locations = [
+    [4.349371842575076, 50.85428103529364],
+    [4.369558682598269, 50.85155093085792],
+    [4.328887676753199, 50.81779337536646],
+    [4.409667095102465, 50.81558358138426],
+  ];
+
   const users = Array(4)
     .fill(0)
     .map((_, i) => ({
@@ -20,6 +27,7 @@ describe('Survey question widget', () => {
       email: randomEmail(),
       password: randomString(),
       gender: i % 2 ? 'male' : 'female',
+      location: locations[i],
     }));
 
   const userIds: string[] = [];
@@ -58,6 +66,7 @@ describe('Survey question widget', () => {
             'multiselect',
             'linear_scale',
             'multiselect_image',
+            'point',
           ],
           questionImage.body.data.id
         );
@@ -73,6 +82,7 @@ describe('Survey question widget', () => {
         const multiSelectKey = surveyFields[2].attributes.key;
         const linearScaleKey = surveyFields[3].attributes.key;
         const multiselectImageKey = surveyFields[4].attributes.key;
+        const pointKey = surveyFields[5].attributes.key;
 
         const fieldConfigs: any =
           surveySchema.data.attributes.json_schema_multiloc.en?.properties;
@@ -125,6 +135,10 @@ describe('Survey question widget', () => {
                   ],
                   [linearScaleKey]: i > 1 ? 3 : 2,
                   [multiselectImageKey]: [multiselectImageAnswerKeys[0]],
+                  [pointKey]: {
+                    type: 'Point',
+                    coordinates: [4.349371842575076, 50.85428103529364],
+                  },
                 },
                 jwt
               );
@@ -319,7 +333,7 @@ describe('Survey question widget', () => {
 
     it('works for image question', () => {
       cy.setAdminLoginCookie();
-      cy.apiCreateReportBuilder().then((report) => {
+      cy.apiCreateReportBuilder(informationPhaseId).then((report) => {
         const reportId = report.body.data.id;
 
         cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
@@ -380,6 +394,39 @@ describe('Survey question widget', () => {
         // Reload page and check if values are still correct
         cy.reload();
         ensureCorrectGrouping();
+
+        cy.apiRemoveReportBuilder(reportId);
+      });
+    });
+
+    it('works for point question', () => {
+      cy.setAdminLoginCookie();
+      cy.apiCreateReportBuilder(informationPhaseId).then((report) => {
+        const reportId = report.body.data.id;
+
+        cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
+
+        cy.get('#e2e-draggable-survey-question-result-widget').dragAndDrop(
+          '#e2e-content-builder-frame',
+          {
+            position: 'inside',
+          }
+        );
+
+        cy.wait(1000);
+
+        // Select project, phase and question
+        cy.get('#e2e-report-builder-project-filter-box select').select(
+          projectId
+        );
+        cy.get('#e2e-phase-filter').select(surveyPhaseId);
+        cy.get('.e2e-question-select select')
+          .first()
+          .select(surveyFields[5].id);
+
+        // TODO assert something about map
+
+        // TODO check it's visible in the frontend
 
         cy.apiRemoveReportBuilder(reportId);
       });
