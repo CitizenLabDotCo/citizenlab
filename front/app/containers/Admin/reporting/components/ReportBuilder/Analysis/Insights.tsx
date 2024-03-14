@@ -26,6 +26,10 @@ const Insights = ({
     analysisId,
   });
 
+  if (!projectId || !phaseId) {
+    return null;
+  }
+
   if (!insights?.data.length && !isLoading) {
     return <Text>{formatMessage(messages.noInsights)}</Text>;
   }

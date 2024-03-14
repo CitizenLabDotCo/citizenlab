@@ -219,7 +219,8 @@ DROP INDEX IF EXISTS public.index_nav_bar_items_on_code;
 DROP INDEX IF EXISTS public.index_memberships_on_user_id;
 DROP INDEX IF EXISTS public.index_memberships_on_group_id_and_user_id;
 DROP INDEX IF EXISTS public.index_memberships_on_group_id;
-DROP INDEX IF EXISTS public.index_maps_map_configs_on_project_id;
+DROP INDEX IF EXISTS public.index_maps_map_configs_on_mappable_id;
+DROP INDEX IF EXISTS public.index_maps_map_configs_on_mappable;
 DROP INDEX IF EXISTS public.index_maps_layers_on_map_config_id;
 DROP INDEX IF EXISTS public.index_invites_on_token;
 DROP INDEX IF EXISTS public.index_invites_on_inviter_id;
@@ -763,6 +764,7 @@ WITH (fillfactor='90');
 --
 -- Name: TABLE que_jobs; Type: COMMENT; Schema: public; Owner: -
 --
+
 
 COMMENT ON TABLE public.que_jobs IS '6';
 
@@ -2630,14 +2632,15 @@ CREATE TABLE public.maps_layers (
 
 CREATE TABLE public.maps_map_configs (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    project_id uuid NOT NULL,
     center shared_extensions.geography(Point,4326),
     zoom_level numeric(4,2),
     tile_provider character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     esri_web_map_id character varying,
-    esri_base_map_id character varying
+    esri_base_map_id character varying,
+    mappable_type character varying,
+    mappable_id uuid
 );
 
 
@@ -5403,10 +5406,17 @@ CREATE INDEX index_maps_layers_on_map_config_id ON public.maps_layers USING btre
 
 
 --
--- Name: index_maps_map_configs_on_project_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_maps_map_configs_on_mappable; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_maps_map_configs_on_project_id ON public.maps_map_configs USING btree (project_id);
+CREATE INDEX index_maps_map_configs_on_mappable ON public.maps_map_configs USING btree (mappable_type, mappable_id);
+
+
+--
+-- Name: index_maps_map_configs_on_mappable_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_maps_map_configs_on_mappable_id ON public.maps_map_configs USING btree (mappable_id);
 
 
 --
@@ -7425,6 +7435,5 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240227092300'),
 ('20240228145938'),
 ('20240229195843'),
-('20240301120023');
-
-
+('20240301120023'),
+('20240305122502');

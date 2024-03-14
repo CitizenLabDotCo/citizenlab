@@ -63,6 +63,7 @@ import LinearScaleControl, {
 import MultiSelectCheckboxControl, {
   multiSelectCheckboxControlTester,
 } from './MultiSelectCheckboxControl';
+import PointControl, { pointControlTester } from './PointControl/PointControl';
 import SingleAttachmentControl, {
   singleAttachmentControlTester,
 } from './SingleAttachmentControl';
@@ -85,6 +86,8 @@ export {
   orderedLayoutTester,
   InputControl,
   inputControlTester,
+  PointControl,
+  pointControlTester,
   TextAreaControl,
   textAreaControlTester,
   WYSIWYGControl,

@@ -24,7 +24,9 @@ const generateOptions = (
 ) => {
   const options = questions.data.filter(filterQuestion).map((question) => ({
     value: question.id,
-    label: localize(question.attributes.title_multiloc),
+    label: `${question.attributes.ordering + 1}. ${localize(
+      question.attributes.title_multiloc
+    )}`,
   }));
 
   return [{ value: '', label: '' }, ...options];

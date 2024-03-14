@@ -9,7 +9,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import PageWrapper from 'components/admin/PageWrapper';
 import { SectionDescription } from 'components/admin/Section';
-import HasPermission from 'components/HasPermission';
 import Outlet from 'components/Outlet';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -63,7 +62,6 @@ const AdminProjectsList = memo(({ className }: Props) => {
     ? isProjectFolderModerator(authUser.data)
     : false;
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
-
   const [containerOutletRendered, setContainerOutletRendered] = useState(false);
   const handleContainerOutletOnRender = (hasRendered: boolean) => {
     setContainerOutletRendered(hasRendered);
@@ -79,15 +77,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
         </Title>
 
         <SectionDescription>
-          <HasPermission
-            item={{ type: 'route', path: '/admin/projects' }}
-            action="access"
-          >
-            <FormattedMessage {...messages.overviewPageSubtitle} />
-            <HasPermission.No>
-              <FormattedMessage {...messages.overviewPageSubtitleModerator} />
-            </HasPermission.No>
-          </HasPermission>
+          <FormattedMessage {...messages.overviewPageSubtitle} />
         </SectionDescription>
 
         <CreateProjectWrapper>

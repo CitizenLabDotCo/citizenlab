@@ -12,10 +12,10 @@ import Transition from 'react-transition-group/Transition';
 import { Locale } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
+import usePhases from 'api/phases/usePhases';
 import useProjects from 'api/projects/useProjects';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
@@ -50,6 +50,7 @@ import TextMultiloc from '../Widgets/TextMultiloc';
 import TwoColumn from '../Widgets/TwoColumn';
 
 import messages from './messages';
+import { findSurveyPhaseId, findIdeationPhaseId } from './utils';
 
 type ReportBuilderToolboxProps = {
   reportId: string;
@@ -72,7 +73,6 @@ const ReportBuilderToolbox = ({
   const { projectId } = useReportContext();
   const appConfigurationLocales = useAppConfigurationLocales();
   const { data: authUser } = useAuthUser();
-  const isAnalysisEnabled = useFeatureFlag({ name: 'analysis' });
 
   const userIsModerator = !!authUser && isModerator(authUser);
 
@@ -85,6 +85,8 @@ const ReportBuilderToolbox = ({
       enabled: userIsModerator,
     }
   );
+
+  const { data: phases } = usePhases(projectId);
 
   if (!appConfigurationLocales || !authUser || (userIsModerator && !projects)) {
     return (
@@ -117,38 +119,116 @@ const ReportBuilderToolbox = ({
   const selectedProjectId =
     projectId ?? (userIsModerator ? projects?.data[0]?.id : undefined);
 
+  const surveyPhaseId = phases ? findSurveyPhaseId(phases) : undefined;
+  const ideationPhaseId = phases ? findIdeationPhaseId(phases) : undefined;
+
   return (
     <Transition in={selectedTab === 'ai'} timeout={1000}>
       <Container
         w={selectedTab === 'ai' ? '330px' : '220px'}
         style={{
-          transition: 'all 0.5s ease',
+          transition: 'all 0.2s ease',
         }}
       >
-        {isAnalysisEnabled && (
-          <Box display="flex" alignItems="center" justifyContent="center">
-            <Box flex="1">
-              <Button
-                id="e2e-report-builder-widgets-tab"
-                onClick={() => setSelectedTab('widgets')}
-                buttonStyle={selectedTab === 'widgets' ? 'text' : 'secondary'}
-              >
-                {formatMessage(messages.widgets)}
-              </Button>
-            </Box>
-
-            <Box flex="1">
-              <Button
-                id="e2e-report-builder-ai-tab"
-                onClick={() => setSelectedTab('ai')}
-                buttonStyle={selectedTab === 'ai' ? 'text' : 'secondary'}
-                icon="flash"
-              >
-                {formatMessage(messages.ai)}
-              </Button>
-            </Box>
+        <Box display="flex" alignItems="center" justifyContent="center">
+          <Box flex="1">
+            <Button
+              onClick={() => setSelectedTab('widgets')}
+              buttonStyle={selectedTab === 'widgets' ? 'text' : 'secondary'}
+            >
+              {formatMessage(messages.widgets)}
+            </Button>
           </Box>
-        )}
+          <Box flex="1">
+            <Button
+              onClick={() => setSelectedTab('ai')}
+              buttonStyle={selectedTab === 'ai' ? 'text' : 'secondary'}
+            >
+              {formatMessage(messages.ai)}
+            </Button>
+          </Box>
+        </Box>
+        <Box>
+          <Section>
+            <DraggableElement
+              id="e2e-draggable-text"
+              component={<TextMultiloc />}
+              icon="text"
+              label={formatMessage(WIDGET_TITLES.TextMultiloc)}
+            />
+            <DraggableElement
+              id="e2e-draggable-image"
+              component={<ImageMultiloc />}
+              icon="image"
+              label={formatMessage(WIDGET_TITLES.ImageMultiloc)}
+            />
+            <DraggableElement
+              id="e2e-draggable-two-column"
+              component={<TwoColumn columnLayout="1-1" />}
+              icon="layout-2column-1"
+              label={formatMessage(WIDGET_TITLES.TwoColumn)}
+            />
+            <DraggableElement
+              id="e2e-draggable-white-space"
+              component={<WhiteSpace size="small" />}
+              icon="layout-white-space"
+              label={formatMessage(WIDGET_TITLES.WhiteSpace)}
+            />
+          </Section>
+          <Section>
+            <DraggableElement
+              id="e2e-draggable-survey-question-result-widget"
+              component={
+                <SurveyQuestionResultWidget
+                  projectId={selectedProjectId}
+                  phaseId={surveyPhaseId}
+                />
+              }
+              icon="survey"
+              label={formatMessage(WIDGET_TITLES.SurveyQuestionResultWidget)}
+            />
+            <DraggableElement
+              id="e2e-draggable-most-reacted-ideas-widget"
+              component={
+                <MostReactedIdeasWidget
+                  title={toMultiloc(WIDGET_TITLES.MostReactedIdeasWidget)}
+                  numberOfIdeas={5}
+                  collapseLongText={false}
+                  projectId={selectedProjectId}
+                  phaseId={ideationPhaseId}
+                />
+              }
+              icon="vote-up"
+              label={formatMessage(WIDGET_TITLES.MostReactedIdeasWidget)}
+            />
+            <DraggableElement
+              id="e2e-single-idea-widget"
+              component={
+                <SingleIdeaWidget
+                  collapseLongText={false}
+                  showAuthor={true}
+                  showContent={true}
+                  showReactions={true}
+                  showVotes={true}
+                  projectId={selectedProjectId}
+                  phaseId={ideationPhaseId}
+                />
+              }
+              icon="idea"
+              label={formatMessage(WIDGET_TITLES.SingleIdeaWidget)}
+            />
+          </Section>
+
+          <Box flex="1">
+            <Button
+              onClick={() => setSelectedTab('ai')}
+              buttonStyle={selectedTab === 'ai' ? 'text' : 'secondary'}
+              icon="flash"
+            >
+              {formatMessage(messages.ai)}
+            </Button>
+          </Box>
+        </Box>
         <Box p="8px" display={selectedTab === 'ai' ? 'block' : 'none'}>
           <Analysis selectedLocale={selectedLocale} />
         </Box>

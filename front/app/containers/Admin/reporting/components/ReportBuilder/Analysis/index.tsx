@@ -1,9 +1,12 @@
 import React, { useCallback, useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Button, Title, Text } from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
 import { IOption } from 'typings';
 
 import usePhase from 'api/phases/usePhase';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 
@@ -19,6 +22,10 @@ import Analyses from './Analyses';
 import messages from './messages';
 
 const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
+  const isAnalysisEnabled = useFeatureFlag({
+    name: 'analysis',
+    onlyCheckAllowed: true,
+  });
   const { projectId: contextProjectId, phaseId: contextPhaseId } =
     useReportContext();
 
@@ -54,46 +61,69 @@ const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
     ? projectId && phaseId && questionId
     : projectId && phaseId;
 
+  const isIdeationPhase =
+    phase?.data.attributes.participation_method === 'ideation';
+
   return (
-    <Box>
-      <ProjectFilter
-        id="e2e-report-builder-analysis-project-filter-box"
-        projectId={projectId}
-        emptyOptionMessage={widgetMessages.noProject}
-        onProjectFilter={handleProjectFilter}
-      />
+    <>
+      {!isAnalysisEnabled && (
+        <Box p="12px">
+          <Title variant="h3">{formatMessage(messages.upsellTitle)}</Title>
+          <Text>{formatMessage(messages.upsellDescription)}</Text>
+          <Tippy content={<p>{formatMessage(messages.upsellTooltip)}</p>}>
+            <Box>
+              <Button disabled icon="lock">
+                {formatMessage(messages.upsellButton)}
+              </Button>
+            </Box>
+          </Tippy>
+        </Box>
+      )}
+      {isAnalysisEnabled && (
+        <Box>
+          <ProjectFilter
+            projectId={projectId}
+            emptyOptionMessage={widgetMessages.noProject}
+            onProjectFilter={handleProjectFilter}
+          />
 
-      {projectId !== undefined && (
-        <PhaseFilter
-          label={formatMessage(messages.selectPhase)}
-          projectId={projectId}
-          phaseId={phaseId}
-          participationMethods={['native_survey', 'ideation']}
-          onPhaseFilter={handlePhaseFilter}
-        />
-      )}
+          {projectId !== undefined && (
+            <PhaseFilter
+              label={formatMessage(messages.selectPhase)}
+              projectId={projectId}
+              phaseId={phaseId}
+              participationMethods={['native_survey', 'ideation']}
+              onPhaseFilter={handlePhaseFilter}
+            />
+          )}
 
-      {phaseId && (
-        <QuestionSelect
-          phaseId={phaseId}
-          questionId={questionId}
-          filterQuestion={({ attributes }) => {
-            return ['text', 'multiline_text'].includes(attributes.input_type);
-          }}
-          label={formatMessage(messages.question)}
-          onChange={handleQuestion}
-        />
+          {phaseId && (
+            <QuestionSelect
+              phaseId={phaseId}
+              questionId={questionId}
+              filterQuestion={({ attributes }) => {
+                return ['text', 'multiline_text'].includes(
+                  attributes.input_type
+                );
+              }}
+              label={formatMessage(messages.question)}
+              onChange={handleQuestion}
+            />
+          )}
+          {showAnalyses && (
+            <Analyses
+              projectId={projectId}
+              phaseId={
+                isNativeSurveyPhase || isIdeationPhase ? phaseId : undefined
+              }
+              questionId={questionId}
+              selectedLocale={selectedLocale}
+              participationMethod={phase?.data.attributes.participation_method}
+            />
+          )}
+        </Box>
       )}
-      {showAnalyses && (
-        <Analyses
-          projectId={projectId}
-          phaseId={phaseId}
-          questionId={questionId}
-          selectedLocale={selectedLocale}
-          participationMethod={phase?.data.attributes.participation_method}
-        />
-      )}
-    </Box>
+    </>
   );
 };
 

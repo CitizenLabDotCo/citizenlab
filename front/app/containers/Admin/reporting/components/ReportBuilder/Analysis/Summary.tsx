@@ -62,7 +62,14 @@ const Summary = ({
         <DraggableInsight
           id="e2e-draggable-insight"
           component={
-            <TextMultiloc text={{ [selectedLocale]: removeRefs(summary) }} />
+            <TextMultiloc
+              text={{
+                [selectedLocale]: `<p>${removeRefs(summary).replace(
+                  /(\r\n|\n|\r)/gm,
+                  '</p><p>'
+                )}</p>`,
+              }}
+            />
           }
         >
           <Icon name="menu" fill={colors.textSecondary} />
