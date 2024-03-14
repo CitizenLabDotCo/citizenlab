@@ -34,8 +34,7 @@ module Analysis
     private
 
     def run_topic_modeling_prompt(project_title, inputs)
-      # short_inputs = inputs.size * analysis.associated_custom_fields.size > SHORT_INPUTS_TEXTS_THRESHOLD
-      inputs_text = input_to_text.format_all(inputs) # , short_inputs: short_inputs)
+      inputs_text = input_to_text.format_all(inputs)
       prompt = LLM::Prompt.new.fetch('topic_modeling', project_title: project_title, inputs_text: inputs_text, max_topics: max_topics(inputs.size))
       gpt4.chat(prompt)
     end

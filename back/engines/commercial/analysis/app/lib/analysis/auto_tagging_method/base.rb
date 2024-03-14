@@ -82,7 +82,12 @@ module Analysis
     def classify(input, topics)
       inputs_text = input_to_text.format_all([input])
       prompt = LLM::Prompt.new.fetch('fully_automated_classifier', inputs_text: inputs_text, topics: topics)
-      gpt3.chat(prompt).presence || 'Other'
+      chosen_topic = gpt3.chat(prompt)
+      if topics.include? chosen_topic
+        chosen_topic
+      else
+        'Other'
+      end
     end
 
     protected
@@ -110,7 +115,7 @@ module Analysis
               results[input.id] = classify(input, topics)
             rescue StandardError => e
               ErrorReporter.report(e)
-              raise
+              raise # TODO: Abort the whole process
             end
           end
         end

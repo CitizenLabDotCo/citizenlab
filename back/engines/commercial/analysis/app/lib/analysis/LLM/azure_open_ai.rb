@@ -16,7 +16,7 @@ module Analysis
           uri_base: [ENV.fetch('AZURE_OPENAI_URI'), '/openai/deployments/', azure_deployment_name].join,
           api_type: :azure,
           api_version: '2023-09-01-preview',
-          request_timeout: 480
+          request_timeout: 900
         }.merge(params))
       end
 
@@ -74,7 +74,6 @@ module Analysis
           raise
         end
 
-        puts("Sleeping")
         # Retry after waiting between 20 and 60 seconds
         sleep_time = rand(20..60)
         sleep(sleep_time)
