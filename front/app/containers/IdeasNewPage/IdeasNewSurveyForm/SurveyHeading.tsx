@@ -157,13 +157,9 @@ const SurveyHeading = ({
               flexDirection={isSmallerThanPhone ? 'column' : 'row'}
               width="100%"
               alignItems="center"
+              gap="20px"
             >
-              <Button
-                buttonStyle="secondary"
-                width="100%"
-                onClick={closeModal}
-                mr={!isSmallerThanPhone ? '20px' : undefined}
-              >
+              <Button buttonStyle="secondary" width="100%" onClick={closeModal}>
                 <FormattedMessage {...messages.cancelLeaveSurveyButtonText} />
               </Button>
               <Button
