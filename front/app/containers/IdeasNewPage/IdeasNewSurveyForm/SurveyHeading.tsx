@@ -9,7 +9,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
 import { IProjectData } from 'api/projects/types';
 
@@ -43,6 +43,7 @@ const SurveyHeading = ({
   loggedIn,
   percentageAnswered,
 }: Props) => {
+  const theme = useTheme();
   const { formatMessage } = useIntl();
   const [searchParams] = useSearchParams();
   const phaseId =
@@ -78,7 +79,7 @@ const SurveyHeading = ({
           <Box
             w={`${percentageAnswered}%`}
             h="4px"
-            background={colors.textSecondary}
+            background={theme.colors.tenantSecondary}
             style={{ transition: 'width 0.3s ease-in-out' }}
           />
         </Box>
