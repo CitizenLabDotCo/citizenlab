@@ -133,6 +133,7 @@ const ReportBuilderToolbox = ({
         <Box display="flex" alignItems="center" justifyContent="center">
           <Box flex="1">
             <Button
+              id="e2e-report-builder-widgets-tab"
               onClick={() => setSelectedTab('widgets')}
               buttonStyle={selectedTab === 'widgets' ? 'text' : 'secondary'}
             >
@@ -141,6 +142,7 @@ const ReportBuilderToolbox = ({
           </Box>
           <Box flex="1">
             <Button
+              id="e2e-report-builder-ai-tab"
               onClick={() => setSelectedTab('ai')}
               buttonStyle={selectedTab === 'ai' ? 'text' : 'secondary'}
             >
