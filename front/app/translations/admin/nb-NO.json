@@ -228,7 +228,7 @@
   "app.components.admin.PostManager.webMapAlreadyExists": "Du kan bare legge til ett nettkart om gangen. Fjern den gjeldende for å importere en annen.",
   "app.components.admin.PostManager.webMapRemoveGeojsonTooltip": "Du kan bare laste opp kartdata som enten GeoJSON-lag eller import fra ArcGIS Online. Vennligst fjern eventuelle gjeldende GeoJSON-lag hvis du ønsker å koble til et nettkart.",
   "app.components.admin.PostManager.webMapTooltip": "Du finner webkartportal-ID-en på ArcGIS Online-varesiden din, på høyre side.",
-  "app.components.admin.PostManager.xDaysLeft": "{x, plural, =0 {Mindre enn en dag} one {En dag} other {# dager}} venstre",
+  "app.components.admin.PostManager.xDaysLeft": "{x, plural, =0 {Mindre enn en dag} one {En dag} other {# dager}} tilbage",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "fra",
   "app.components.admin.ReportExportMenu.FileName.groupFilter": "gruppe",
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "prosjekt",
