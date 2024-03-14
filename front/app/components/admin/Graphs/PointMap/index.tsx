@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 
-// import { when as reactiveUtilsWhen } from '@arcgis/core/core/reactiveUtils.js';
+import { when as reactiveUtilsWhen } from '@arcgis/core/core/reactiveUtils.js';
 import Point from '@arcgis/core/geometry/Point';
 import Graphic from '@arcgis/core/Graphic';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
@@ -22,6 +22,7 @@ interface Props {
   mapConfig?: IMapConfig;
   layerId?: string;
   heatmap?: boolean;
+  onInit?: (mapView: MapView) => void;
 }
 
 const circleSymbol = new SimpleMarkerSymbol({
@@ -40,6 +41,7 @@ const PointMap = ({
   layerTitle,
   layerId,
   heatmap = false,
+  onInit,
 }: Props) => {
   const localize = useLocalize();
   const [mapView, setMapView] = useState<MapView | null>(null);
@@ -85,13 +87,16 @@ const PointMap = ({
 
   const initialData = useMemo(
     () => ({
-      onInit: setMapView,
+      onInit: (mapView: MapView) => {
+        setMapView(mapView);
+        onInit?.(mapView);
+      },
       showLegend: true,
       showLayerVisibilityControl: true,
       zoom: Number(mapConfig?.data?.attributes.zoom_level),
       center: mapConfig?.data?.attributes.center_geojson,
     }),
-    [mapConfig]
+    [mapConfig, onInit]
   );
 
   useEffect(() => {
@@ -106,19 +111,21 @@ const PointMap = ({
     }
   }, [mapView, heatmap, responsesLayer]);
 
-  // useEffect(() => {
-  //    if (!mapView) return;
+  useEffect(() => {
+    if (!mapView) return;
 
-  //   console.log('reactive utils shit')
-  //   reactiveUtilsWhen(
-  //     () => mapView?.stationary === true,
-  //     () => {
-  //       if (mapView?.extent && responsesLayer?.renderer.type === 'heatmap') {
-  //         applyHeatMapRenderer(responsesLayer, mapView);
-  //       }
-  //     }
-  //   );
-  // }, [mapView, responsesLayer]);
+    // Update heatmap when map extent changes
+    const handle = reactiveUtilsWhen(
+      () => mapView?.stationary === true,
+      () => {
+        if (mapView?.extent && responsesLayer?.renderer.type === 'heatmap') {
+          applyHeatMapRenderer(responsesLayer, mapView);
+        }
+      }
+    );
+
+    return () => handle.remove();
+  }, [mapView, responsesLayer]);
 
   return (
     <EsriMap
