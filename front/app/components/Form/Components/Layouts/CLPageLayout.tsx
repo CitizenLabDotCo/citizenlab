@@ -12,7 +12,10 @@ import {
   withJsonFormsLayoutProps,
   useJsonForms,
 } from '@jsonforms/react';
+import { useSearchParams } from 'react-router-dom';
 import styled, { useTheme } from 'styled-components';
+
+import usePhase from 'api/phases/usePhase';
 
 import { customAjv } from 'components/Form';
 import {
@@ -27,7 +30,9 @@ import {
 import { FormContext } from 'components/Form/contexts';
 import { FormSection } from 'components/UI/FormComponents';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+import Warning from 'components/UI/Warning';
 
+import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import {
@@ -35,6 +40,7 @@ import {
   isVisible,
 } from '../Controls/visibilityUtils';
 
+import messages from './messages';
 import PageControlButtons from './PageControlButtons';
 
 const StyledFormSection = styled(FormSection)`
@@ -61,6 +67,7 @@ const CLPageLayout = memo(
     const { onSubmit, setShowAllErrors, setFormData, setCompletionPercentage } =
       useContext(FormContext);
     const topAnchorRef = useRef<HTMLInputElement>(null);
+    const { formatMessage } = useIntl();
     const [currentStep, setCurrentStep] = useState<number>(0);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -80,6 +87,11 @@ const CLPageLayout = memo(
       isSmallerThanPhone && !isNilOrError(topAnchorRef) && topAnchorRef.current;
     const pagesRef = useRef<HTMLDivElement>(null);
     const [hasScrollBars, setHasScrollBars] = useState(false);
+    const [queryParams] = useSearchParams();
+    const phaseId = queryParams.get('phase_id') || undefined;
+    const { data: phase } = usePhase(phaseId);
+    const allowAnonymousPosting =
+      phase?.data.attributes.allow_anonymous_participation;
 
     useEffect(() => {
       // We can cast types because the tester made sure we only get correct values
@@ -223,13 +235,14 @@ const CLPageLayout = memo(
           marginTop={'-140px'} // TODO: Find cleaner solution for mobile scrollTo behaviour.
           marginBottom={'140px'}
           id="top-anchor"
+          my="0px"
         />
 
         <Box
           width="100%"
           height="100%"
-          pt="24px"
-          pb="190px"
+          pt="80px"
+          pb="100px"
           maxWidth="700px"
           display="flex"
           flexDirection="column"
@@ -238,6 +251,13 @@ const CLPageLayout = memo(
           margin="auto"
           position="relative"
         >
+          {allowAnonymousPosting && (
+            <Box w="100%" px={isSmallerThanPhone ? '16px' : '24px'} mt="16px">
+              <Warning icon="shield-checkered">
+                {formatMessage(messages.anonymousSurveyMessage)}
+              </Warning>
+            </Box>
+          )}
           <Box
             display="flex"
             flex="1"
