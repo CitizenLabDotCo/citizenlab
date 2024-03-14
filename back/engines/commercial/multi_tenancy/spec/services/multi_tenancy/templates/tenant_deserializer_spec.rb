@@ -47,7 +47,7 @@ describe MultiTenancy::Templates::TenantDeserializer do
               code: title_multiloc
       YAML
 
-      template = YAML.safe_load(yml, aliases: true)
+      template = YAML.load(yml, aliases: true)
 
       service.deserialize(template)
 
@@ -78,7 +78,7 @@ describe MultiTenancy::Templates::TenantDeserializer do
                 parent_attributes_ref: *1
       YAML
 
-      template = YAML.safe_load(yml, aliases: true)
+      template = YAML.load(yml, aliases: true)
 
       service.deserialize(template)
 
@@ -90,7 +90,7 @@ describe MultiTenancy::Templates::TenantDeserializer do
     describe 'filtering of template multiloc attributes' do
       let(:platform_locales) { ['en'] }
       let(:template) do
-        YAML.safe_load(<<~YAML, permitted_classes: [Time], aliases: true)
+        YAML.load(<<~YAML, permitted_classes: [Time], aliases: true)
           models:
             project:
               - &project

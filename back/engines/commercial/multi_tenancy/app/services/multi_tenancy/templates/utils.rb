@@ -267,7 +267,7 @@ module MultiTenancy
         end
 
         def parse_yml(content)
-          YAML.safe_load(content, aliases: true, permitted_classes: [Date, Symbol, Time]) # rubocop:disable Security/YAMLLoad
+          YAML.load(content, aliases: true, permitted_classes: [Date, Symbol, Time])
         end
         alias parse_yaml parse_yml
 
