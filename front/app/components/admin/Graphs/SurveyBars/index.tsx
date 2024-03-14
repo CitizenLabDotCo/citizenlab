@@ -10,7 +10,10 @@ import { Answer, AnswerMultilocs } from 'api/survey_results/types';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { useIntl } from 'utils/cl-intl';
+
 import BarsPerOption from './BarsPerOption';
+import messages from './messages';
 
 interface UngroupedProps {
   grouped: false;
@@ -32,16 +35,18 @@ type Props = UngroupedProps | GroupedProps;
 
 const SurveyBars = (props: Props) => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
 
   return (
     <>
       {props.answers.map(({ answer, count }, index) => {
         const { multilocs, totalResponses, colorScheme } = props;
 
-        if (!multilocs || answer === null) return null;
-
-        const label = localize(multilocs.answer[answer].title_multiloc);
-        const image = multilocs.answer[answer].image;
+        const image = answer ? multilocs.answer[answer].image : undefined;
+        const label =
+          answer === null
+            ? formatMessage(messages.noAnswer)
+            : localize(multilocs.answer[answer].title_multiloc);
 
         return (
           <Box

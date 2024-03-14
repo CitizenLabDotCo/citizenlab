@@ -7,10 +7,9 @@ import { AttributesGrouped } from 'api/graph_data_units/responseTypes';
 import useLocalize from 'hooks/useLocalize';
 
 import ProgressBars2 from 'components/admin/Graphs/ProgressBars2';
+import messages from 'components/admin/Graphs/SurveyBars/messages';
 
 import { useIntl } from 'utils/cl-intl';
-
-import messages from '../messages';
 
 interface Props {
   attributes: AttributesGrouped;
