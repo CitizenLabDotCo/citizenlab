@@ -151,11 +151,6 @@ const ReportBuilderToolbox = ({
             </Button>
           </Box>
         </Box>
-
-        <Box p="8px" display={selectedTab === 'ai' ? 'block' : 'none'}>
-          <Analysis selectedLocale={selectedLocale} />
-        </Box>
-
         <Box display={selectedTab === 'widgets' ? 'block' : 'none'}>
           <Section>
             <DraggableElement
@@ -184,14 +179,13 @@ const ReportBuilderToolbox = ({
             />
           </Section>
           <Section>
-            {
-              // TODO: CL-2307 Only show this if there are surveys in the platform
-              // TODO: Add in the default project / phase
-            }
             <DraggableElement
               id="e2e-draggable-survey-question-result-widget"
               component={
-                <SurveyQuestionResultWidget projectId={selectedProjectId} />
+                <SurveyQuestionResultWidget
+                  projectId={selectedProjectId}
+                  phaseId={surveyPhaseId}
+                />
               }
               icon="survey"
               label={formatMessage(WIDGET_TITLES.SurveyQuestionResultWidget)}
@@ -204,6 +198,7 @@ const ReportBuilderToolbox = ({
                   numberOfIdeas={5}
                   collapseLongText={false}
                   projectId={selectedProjectId}
+                  phaseId={ideationPhaseId}
                 />
               }
               icon="vote-up"
@@ -219,6 +214,7 @@ const ReportBuilderToolbox = ({
                   showReactions={true}
                   showVotes={true}
                   projectId={selectedProjectId}
+                  phaseId={ideationPhaseId}
                 />
               }
               icon="idea"
@@ -343,6 +339,9 @@ const ReportBuilderToolbox = ({
               label={formatMessage(WIDGET_TITLES.ReactionsByTimeWidget)}
             />
           </Section>
+        </Box>
+        <Box p="8px" display={selectedTab === 'ai' ? 'block' : 'none'}>
+          <Analysis selectedLocale={selectedLocale} />
         </Box>
       </Container>
     </Transition>
