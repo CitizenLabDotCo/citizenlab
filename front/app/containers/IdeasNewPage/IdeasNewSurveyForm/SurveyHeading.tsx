@@ -79,6 +79,7 @@ const SurveyHeading = ({
             w={`${percentageAnswered}%`}
             h="4px"
             background={colors.textSecondary}
+            style={{ transition: 'width 0.3s ease-in-out' }}
           />
         </Box>
         <Box
