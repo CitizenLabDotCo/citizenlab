@@ -1678,6 +1678,7 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet1": "La condivisione dei risultati di alcuni metodi (come i risultati delle votazioni) non verrà attivata fino a quando non verrà selezionata una data di scadenza.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "Non appena aggiungerai una fase dopo questa, verrà aggiunta una data di fine a questa fase.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "Non selezionare una data di fine per questo implica che:",
+  "app.containers.AdminPage.ProjectTimeline.previewSurveyCTALabel": "Anteprima",
   "app.containers.AdminPage.ProjectTimeline.saveChangesLabel": "Salva le modifiche",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "There was an error submitting the form, please try again.",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessLabel": "Saved!",
