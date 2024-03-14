@@ -139,7 +139,7 @@ describe('Admin: survey analysis', () => {
     );
   });
 
-  // after(() => {
-  //   cy.apiRemoveProject(projectId);
-  // });
+  after(() => {
+    cy.apiRemoveProject(projectId);
+  });
 });
