@@ -105,45 +105,47 @@ describe('Survey question widget', () => {
         const multiSelectAnswerKeys = getAnswerKeys(multiSelectKey);
         const multiselectImageAnswerKeys = getAnswerKeys(multiselectImageKey);
 
-        users.forEach(({ firstName, lastName, email, password, gender }, i) => {
-          let jwt: any;
+        users.forEach(
+          ({ firstName, lastName, email, password, gender, location }, i) => {
+            let jwt: any;
 
-          cy.apiSignup(firstName, lastName, email, password)
-            .then((response) => {
-              jwt = response._jwt;
-              userIds.push(response.body.data.id);
+            cy.apiSignup(firstName, lastName, email, password)
+              .then((response) => {
+                jwt = response._jwt;
+                userIds.push(response.body.data.id);
 
-              cy.apiUpdateUserCustomFields(
-                email,
-                password,
-                {
-                  gender,
-                },
-                jwt
-              );
-            })
-            .then(() => {
-              cy.apiCreateSurveyResponse(
-                email,
-                password,
-                projectId,
-                {
-                  [selectKey]: selectAnswerKeys[0],
-                  [multiSelectKey]: [
-                    multiSelectAnswerKeys[0],
-                    multiSelectAnswerKeys[1],
-                  ],
-                  [linearScaleKey]: i > 1 ? 3 : 2,
-                  [multiselectImageKey]: [multiselectImageAnswerKeys[0]],
-                  [pointKey]: {
-                    type: 'Point',
-                    coordinates: [4.349371842575076, 50.85428103529364],
+                cy.apiUpdateUserCustomFields(
+                  email,
+                  password,
+                  {
+                    gender,
                   },
-                },
-                jwt
-              );
-            });
-        });
+                  jwt
+                );
+              })
+              .then(() => {
+                cy.apiCreateSurveyResponse(
+                  email,
+                  password,
+                  projectId,
+                  {
+                    [selectKey]: selectAnswerKeys[0],
+                    [multiSelectKey]: [
+                      multiSelectAnswerKeys[0],
+                      multiSelectAnswerKeys[1],
+                    ],
+                    [linearScaleKey]: i > 1 ? 3 : 2,
+                    [multiselectImageKey]: [multiselectImageAnswerKeys[0]],
+                    [pointKey]: {
+                      type: 'Point',
+                      coordinates: location,
+                    },
+                  },
+                  jwt
+                );
+              });
+          }
+        );
       })
       .then(() => {
         return cy.apiCreatePhase({
