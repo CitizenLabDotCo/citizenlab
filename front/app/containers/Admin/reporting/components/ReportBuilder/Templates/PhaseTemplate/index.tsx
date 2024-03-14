@@ -26,16 +26,20 @@ import messages from './messages';
 
 interface Props {
   phaseId: string;
+  initializeContent?: boolean;
 }
 
-const PhaseTemplate = ({ phaseId }: Props) => {
+const PhaseTemplate = ({ phaseId, initializeContent }: Props) => {
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
   const { data: phase } = usePhase(phaseId);
   const participationMethod = phase?.data.attributes.participation_method;
 
   const { data: surveyQuestions } = useRawCustomFields({
-    phaseId: participationMethod === 'native_survey' ? phaseId : undefined,
+    phaseId:
+      initializeContent && participationMethod === 'native_survey'
+        ? phaseId
+        : undefined,
   });
 
   if (!phase || !appConfigurationLocales) return null;
@@ -48,7 +52,11 @@ const PhaseTemplate = ({ phaseId }: Props) => {
       )
     : undefined;
 
-  if (participationMethod === 'native_survey' && !filteredSurveyQuestions) {
+  if (
+    participationMethod === 'native_survey' &&
+    !filteredSurveyQuestions &&
+    initializeContent
+  ) {
     return null;
   }
 

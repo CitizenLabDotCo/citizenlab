@@ -40,9 +40,10 @@ import messages from './messages';
 export interface Props {
   reportId: string;
   projectId: string;
+  initializeContent?: boolean;
 }
 
-const ProjectTemplate = ({ reportId, projectId }: Props) => {
+const ProjectTemplate = ({ reportId, projectId, initializeContent }: Props) => {
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
   const { data: project } = useProjectById(projectId);
@@ -52,7 +53,7 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
 
   const { data: surveyQuestions } = useRawCustomFields({
     phaseId:
-      templateData?.participationMethod === 'native_survey'
+      initializeContent && templateData?.participationMethod === 'native_survey'
         ? templateData?.phaseId
         : undefined,
   });
@@ -60,7 +61,13 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
   if (!project || !phases || !templateData) return null;
 
   const { participationMethod, phaseId } = templateData;
-  if (participationMethod === 'native_survey' && !surveyQuestions) return null;
+  if (
+    participationMethod === 'native_survey' &&
+    !surveyQuestions &&
+    initializeContent
+  ) {
+    return null;
+  }
 
   const hasPhases = phases.data.length > 0;
 
