@@ -106,6 +106,7 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'VisitorsTrafficSourcesWidget',
   'VisitorsWidget',
   'SurveyQuestionResultWidget',
+  'IframeMultiloc',
 
   // Deprecated
   'SurveyResultsWidget',
