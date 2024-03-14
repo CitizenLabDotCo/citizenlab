@@ -12,6 +12,8 @@ import { useParams } from 'react-router-dom';
 
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 
+import Divider from 'components/admin/Divider';
+
 import { useIntl } from 'utils/cl-intl';
 
 import AddTag from '../AddTag';
@@ -41,6 +43,23 @@ const Step2LabelClassification = ({ onLaunch }: Props) => {
       <Text>{formatMessage(messages.byLabelSubtitle)}</Text>
       <Text>{formatMessage(messages.byLabelSubtitle2)}</Text>
       <Box>
+        <Divider />
+        <Checkbox
+          indeterminate={
+            selectedTagIds.length > 0 &&
+            selectedTagIds.length !== customTags?.length
+          }
+          checked={selectedTagIds.length === customTags?.length}
+          onChange={() =>
+            setSelectedTagIds(
+              selectedTagIds.length === customTags?.length
+                ? []
+                : customTags?.map((t) => t.id) || []
+            )
+          }
+          label={formatMessage(messages.selectAll)}
+        />
+        <Divider />
         {customTags?.map((tag) => (
           <Box key={tag.id} display="flex" justifyContent="flex-start" mb="8px">
             <Checkbox
@@ -58,7 +77,8 @@ const Step2LabelClassification = ({ onLaunch }: Props) => {
           </Box>
         ))}
       </Box>
-      <Box ml="34px">
+      <Divider />
+      <Box>
         <AddTag />
       </Box>
       <Box mt="32px">
