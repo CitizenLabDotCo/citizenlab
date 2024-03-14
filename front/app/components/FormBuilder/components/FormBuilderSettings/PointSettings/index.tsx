@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
-import { Box, Button, Label } from '@citizenlab/cl2-component-library';
+import { Box, Button, Label, Spinner } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -48,7 +48,8 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
   const { setValue, watch } = useFormContext();
   const [showModal, setShowModal] = useState(false);
   const { data: projectMapConfig } = useProjectMapConfig(projectId);
-  const { data: rawCustomFields } = useRawCustomFields({ phaseId });
+  const { data: rawCustomFields, isLoading: isLoadingRawFields } =
+    useRawCustomFields({ phaseId });
 
   const { mutateAsync: createProjectMapConfig } = useAddMapConfig();
   const [mapView, setMapView] = useState<MapView | null>(null);
@@ -62,7 +63,7 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
   // Load map config
   const { data: fieldMapConfig, isLoading: isLoadingFieldConfig } =
     useMapConfigById(mapConfigId);
-  const mapConfig = fieldMapConfig || projectMapConfig;
+  const mapConfig = mapConfigId ? fieldMapConfig : projectMapConfig;
 
   // Load map state from mapConfig
   const mapLayers = useMemo(() => {
@@ -132,8 +133,12 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
     setMapView(mapView);
   }, []);
 
-  if (isLoadingFieldConfig && mapConfigId) {
-    return null;
+  if ((isLoadingFieldConfig && mapConfigId) || isLoadingRawFields) {
+    return (
+      <Box my="24px">
+        <Spinner />
+      </Box>
+    );
   }
 
   return (
