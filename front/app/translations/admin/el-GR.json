@@ -1678,6 +1678,7 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet1": "Η κοινοποίηση αποτελεσμάτων ορισμένων μεθόδων (όπως τα αποτελέσματα ψηφοφορίας) δεν θα ενεργοποιηθεί μέχρι να επιλεγεί μια ημερομηνία λήξης.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "Μόλις προσθέσετε μια φάση μετά από αυτή, θα προσθέσει μια ημερομηνία λήξης σε αυτή τη φάση.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "Η μη επιλογή ημερομηνίας λήξης για αυτό σημαίνει ότι:",
+  "app.containers.AdminPage.ProjectTimeline.previewSurveyCTALabel": "Προεπισκόπηση",
   "app.containers.AdminPage.ProjectTimeline.saveChangesLabel": "Αποθήκευση αλλαγών",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "There was an error submitting the form, please try again.",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessLabel": "Saved!",
