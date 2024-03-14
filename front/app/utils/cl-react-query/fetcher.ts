@@ -136,6 +136,11 @@ async function fetcher({
       return null;
     }
 
+    if (response.status === 204) {
+      // No content
+      return null;
+    }
+
     reportError('Unsupported case. No valid JSON.');
     throw new Error('Unsupported case. No valid JSON.');
   }
@@ -168,10 +173,7 @@ async function fetcher({
           });
         }
       } else if (action === 'get' || action === 'post' || action === 'patch') {
-        if (
-          data.data !== null && // TODO fix this in the backend
-          data.data.id
-        ) {
+        if (data.data.id) {
           queryClient.setQueryData(
             [
               {

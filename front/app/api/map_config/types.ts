@@ -30,5 +30,5 @@ export interface IMapConfigData {
 }
 
 export interface IMapConfig {
-  data: IMapConfigData | null; // TODO fix this in the backend (should never be null!)
+  data: IMapConfigData;
 }
