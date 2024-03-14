@@ -92,7 +92,7 @@ const SummarizeButton = () => {
     >
       <Box h="100%">
         <Button
-          icon="flash"
+          icon="stars"
           mb="4px"
           size="s"
           w="100%"

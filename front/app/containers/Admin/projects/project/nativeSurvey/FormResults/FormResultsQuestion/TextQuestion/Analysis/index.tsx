@@ -117,7 +117,7 @@ const Analysis = ({
               )
             }
             buttonStyle="secondary"
-            icon="flash"
+            icon="stars"
           >
             {formatMessage(messages.createAIAnalysis)}
           </Button>
@@ -192,7 +192,7 @@ const Analysis = ({
               })
             }
             buttonStyle="secondary"
-            icon="flash"
+            icon="stars"
           >
             {formatMessage(messages.showSummaries)}
           </Button>

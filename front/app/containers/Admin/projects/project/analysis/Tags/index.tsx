@@ -195,7 +195,7 @@ const Tags = () => {
           <Button
             id="auto-tag-button"
             onClick={() => setAutotaggingModalIsOpened(true)}
-            icon="flash"
+            icon="stars"
             mb="12px"
             size="s"
             buttonStyle="admin-dark"

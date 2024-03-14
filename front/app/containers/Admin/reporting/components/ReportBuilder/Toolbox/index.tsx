@@ -17,6 +17,7 @@ import useProjects from 'api/projects/useProjects';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
+import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 
@@ -24,6 +25,7 @@ import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
+import { trackEventByName } from 'utils/analytics';
 import {
   useIntl,
   useFormatMessageWithLocale,
@@ -142,9 +144,12 @@ const ReportBuilderToolbox = ({
           </Box>
           <Box flex="1">
             <Button
-              icon="flash"
+              icon="stars"
               id="e2e-report-builder-ai-tab"
-              onClick={() => setSelectedTab('ai')}
+              onClick={() => {
+                setSelectedTab('ai');
+                trackEventByName(tracks.openReportBuilderAITab.name);
+              }}
               buttonStyle={selectedTab === 'ai' ? 'text' : 'secondary'}
             >
               {formatMessage(messages.ai)}

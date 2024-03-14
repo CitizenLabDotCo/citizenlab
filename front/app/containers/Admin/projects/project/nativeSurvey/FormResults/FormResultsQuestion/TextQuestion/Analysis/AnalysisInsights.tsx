@@ -27,9 +27,11 @@ import InsightBody from 'containers/Admin/projects/project/analysis/Insights/Ins
 import InsightFooter from 'containers/Admin/projects/project/analysis/Insights/InsightFooter';
 import QuestionHeader from 'containers/Admin/projects/project/analysis/Insights/QuestionHeader';
 import SummaryHeader from 'containers/Admin/projects/project/analysis/Insights/SummaryHeader';
+import tracks from 'containers/Admin/projects/project/analysis/tracks';
 
 import Button from 'components/UI/Button';
 
+import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../../../messages';
@@ -129,6 +131,7 @@ const Summary = ({
             icon="refresh"
             onClick={() => {
               regenerateSummary({ analysisId, summaryId });
+              trackEventByName(tracks.regenerateAIInsights.name);
             }}
             processing={isLoadingRegenerateSummary}
           >
