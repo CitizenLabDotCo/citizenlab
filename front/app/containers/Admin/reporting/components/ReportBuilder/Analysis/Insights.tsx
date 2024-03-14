@@ -26,7 +26,6 @@ const Insights = ({
     analysisId,
   });
 
-  console.log({ projectId, phaseId });
   if (!projectId || !phaseId) {
     return null;
   }
