@@ -1070,7 +1070,7 @@
   "app.containers.AdminPage.DashboardPage.previous30Days": "Letzte 30 Tage",
   "app.containers.AdminPage.DashboardPage.previous90Days": "Letzte 90 Tage",
   "app.containers.AdminPage.DashboardPage.previousWeek": "Letzte Woche",
-  "app.containers.AdminPage.DashboardPage.previousYear": "Voriges Jahr",
+  "app.containers.AdminPage.DashboardPage.previousYear": "Letzte 12 Monate",
   "app.containers.AdminPage.DashboardPage.projectType": "Projekttyp : {projectType}",
   "app.containers.AdminPage.DashboardPage.reactions": "Reaktionen",
   "app.containers.AdminPage.DashboardPage.representativeness.betaLabel": "BETA",
