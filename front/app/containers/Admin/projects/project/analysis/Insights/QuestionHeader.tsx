@@ -24,11 +24,15 @@ const QuestionHeader = ({ question }: { question: string }) => {
         mb="12px"
         w="fit-content"
       >
-        <Icon name="alert-circle" fill={colors.orange} />
+        <Box>
+          <Icon name="alert-circle" fill={colors.orange} />
+        </Box>
         <Text fontWeight="bold" m="0px">
           {question}
         </Text>
-        <Icon name="question-bubble" width="18px" height="18px" />
+        <Box>
+          <Icon name="question-bubble" width="18px" height="18px" />
+        </Box>
       </Box>
     </Tippy>
   );

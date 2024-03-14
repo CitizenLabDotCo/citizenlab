@@ -120,7 +120,7 @@ const ReportBuilderToolbox = ({
       <Container
         w={selectedTab === 'ai' ? '330px' : '220px'}
         style={{
-          transition: 'all 0.5s ease',
+          transition: 'all 0.2s ease',
         }}
       >
         <Box display="flex" alignItems="center" justifyContent="center">
