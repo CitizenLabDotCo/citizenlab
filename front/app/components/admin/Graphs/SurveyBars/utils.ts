@@ -1,6 +1,6 @@
 import { roundPercentages, sum } from 'utils/math';
 
-import { BarType } from '../ProgressBars2/typings';
+import { BarType } from './typings';
 
 export const getType = (index: number, length: number) => {
   if (length === 1) return 'single';
