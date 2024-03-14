@@ -65,4 +65,19 @@ export default {
   inputPreviewedFromSummary: {
     name: 'Input previewed from summary',
   },
+  addQuestionToAIAnalysis: {
+    name: 'Add question to AI analysis',
+  },
+  removeQuestionFromAIAnalysis: {
+    name: 'Remove question from AI analysis',
+  },
+  regenerateAIInsights: {
+    name: 'Regenerate AI insights',
+  },
+  openReportBuilderAITab: {
+    name: 'Open report builder AI tab',
+  },
+  dragAndDropInsightInReportBuilder: {
+    name: 'Drag and drop insight in report builder',
+  },
 };
