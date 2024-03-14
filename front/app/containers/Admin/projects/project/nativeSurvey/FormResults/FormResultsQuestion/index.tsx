@@ -16,16 +16,18 @@ import PointLocationQuestion from './PointLocationQuestion';
 import TextQuestion from './TextQuestion';
 
 type FormResultsQuestionProps = Result & {
+  questionNumber: number;
   locale: Locale;
   totalSubmissions: number;
 };
 
 const FormResultsQuestion = ({
+  questionNumber,
   locale,
   question,
   inputType,
   answers,
-  totalResponses,
+  questionResponseCount,
   totalSubmissions,
   pointResponses = [],
   required,
@@ -33,6 +35,7 @@ const FormResultsQuestion = ({
   mapConfigId,
   textResponses = [],
   files = [],
+  multilocs,
 }: FormResultsQuestionProps) => {
   const isMultipleChoiceAndHasAnswers = !!answers;
   const hasTextResponses = textResponses && textResponses.length > 0;
@@ -43,18 +46,19 @@ const FormResultsQuestion = ({
     <>
       <Box data-cy={`e2e-${snakeCase(question[locale])}`} mb="56px">
         <Title variant="h3" mt="12px" mb="12px">
-          <T value={question} />
+          {questionNumber}. <T value={question} />
         </Title>
         <InputType
           inputType={inputType}
           required={required}
           totalSubmissions={totalSubmissions}
-          totalResponses={totalResponses}
+          totalResponses={questionResponseCount}
         />
         {isMultipleChoiceAndHasAnswers && (
           <MultipleChoice
             multipleChoiceAnswers={answers}
-            totalResponses={totalResponses}
+            totalResponses={questionResponseCount}
+            multilocs={multilocs}
           />
         )}
         {hasTextResponses && (

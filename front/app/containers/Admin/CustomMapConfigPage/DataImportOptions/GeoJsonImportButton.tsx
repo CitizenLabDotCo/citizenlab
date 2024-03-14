@@ -1,6 +1,7 @@
 import React, { memo, useState } from 'react';
 
 import Tippy from '@tippyjs/react';
+import flatten from 'geojson-flatten';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -62,6 +63,8 @@ interface Props {
 }
 
 const GeoJsonImportButton = memo<Props>(({ mapConfig, className }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const { projectId } = useParams() as {
     projectId: string;
   };
@@ -82,26 +85,39 @@ const GeoJsonImportButton = memo<Props>(({ mapConfig, className }) => {
     fileReader.readAsText(event.target.files[0], 'UTF-8');
     event.target.value = null;
     fileReader.onload = (event: any) => {
-      const geojson = JSON.parse(event.target.result);
+      const rawGeojson = JSON.parse(event.target.result);
 
       setImportError(false);
 
       if (mapConfig.data.id && !isNilOrError(tenantLocales)) {
-        createProjectMapLayer(
-          {
-            type: 'CustomMaps::GeojsonLayer',
-            geojson,
-            mapConfigId: mapConfig.data.id,
-            title_multiloc: getUnnamedLayerTitleMultiloc(tenantLocales),
-            default_enabled: true,
-            id: mapConfig.data.id,
-          },
-          {
-            onError: () => {
-              setImportError(true);
+        try {
+          setIsLoading(true);
+
+          // Normalize the geojson
+          const geojson = flatten(rawGeojson);
+
+          createProjectMapLayer(
+            {
+              type: 'CustomMaps::GeojsonLayer',
+              geojson,
+              mapConfigId: mapConfig.data.id,
+              title_multiloc: getUnnamedLayerTitleMultiloc(tenantLocales),
+              default_enabled: true,
+              id: mapConfig.data.id,
             },
-          }
-        );
+            {
+              onError: () => {
+                setImportError(true);
+              },
+              onSettled: () => {
+                setIsLoading(false);
+              },
+            }
+          );
+        } catch (e) {
+          setIsLoading(false);
+          setImportError(true);
+        }
       }
     };
   };
@@ -130,6 +146,7 @@ const GeoJsonImportButton = memo<Props>(({ mapConfig, className }) => {
               icon="upload-file"
               buttonStyle="secondary"
               disabled={geoJsonImportDisabled}
+              processing={isLoading}
             >
               <StyledLabel aria-hidden htmlFor="file-attachment-uploader" />
               <FormattedMessage {...messages.import} />

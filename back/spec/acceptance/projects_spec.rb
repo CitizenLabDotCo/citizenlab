@@ -458,9 +458,8 @@ resource 'Projects' do
       end
       let(:native_survey_phase) do
         create(
-          :phase,
+          :native_survey_phase,
           project: project,
-          participation_method: 'native_survey',
           title_multiloc: { 'en' => 'Phase 2: Native survey' },
           start_at: (Time.zone.today - 30.days),
           end_at: (Time.zone.today - 21.days)
