@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe UserCustomFields::FieldValueCounter do
-  subject(:counts) { described_class.counts_by_field_option(users, custom_field, options) }
+  subject(:counts) { described_class.counts_by_field_option(users, custom_field, **options) }
 
   let(:users) { User.active }
   let(:options) { {} }

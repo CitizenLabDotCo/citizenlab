@@ -30,9 +30,9 @@ import GenderWidget from '../../Widgets/ChartWidgets/GenderWidget';
 import VisitorsWidget from '../../Widgets/ChartWidgets/VisitorsWidget';
 import MostReactedIdeasWidget from '../../Widgets/MostReactedIdeasWidget';
 import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget';
-import { SUPPORTED_INPUT_TYPES } from '../../Widgets/SurveyQuestionResultWidget/constants';
 import TextMultiloc from '../../Widgets/TextMultiloc';
 import TwoColumn from '../../Widgets/TwoColumn';
+import { SUPPORTED_INPUT_TYPES } from '../constants';
 
 import { getTemplateData } from './getTemplateData';
 import messages from './messages';
