@@ -5,7 +5,7 @@ import { setupServer } from 'msw/node';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
 import useDeleteMapLayer from './useDeleteMapLayer';
-const apiPath = '*/projects/:projectId/map_config/layers/:id';
+const apiPath = '*/map_configs/:mapConfigId/layers/:id';
 
 const server = setupServer(
   rest.delete(apiPath, (_req, res, ctx) => {
@@ -23,7 +23,7 @@ describe('useDeleteMapLayer', () => {
     });
 
     act(() => {
-      result.current.mutate({ id: 'id', projectId: 'projectId' });
+      result.current.mutate({ id: 'id', mapConfigId: 'mapConfigId' });
     });
 
     await waitFor(() => expect(result.current.data).not.toBe(undefined));
@@ -41,7 +41,7 @@ describe('useDeleteMapLayer', () => {
     });
 
     act(() => {
-      result.current.mutate({ id: 'id', projectId: 'projectId' });
+      result.current.mutate({ id: 'id', mapConfigId: 'mapConfigId' });
     });
 
     await waitFor(() => expect(result.current.isError).toBe(true));

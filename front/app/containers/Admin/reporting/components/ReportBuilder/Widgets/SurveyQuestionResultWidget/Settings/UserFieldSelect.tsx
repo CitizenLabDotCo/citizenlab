@@ -10,8 +10,6 @@ import useLocalize, { Localize } from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { SUPPORTED_INPUT_TYPES_ARRAY } from '../constants';
-
 import messages from './messages';
 
 interface Props {
@@ -30,7 +28,7 @@ const generateOptions = (questions: IUserCustomFields, localize: Localize) => {
 
 const UserFieldSelect = ({ userFieldId, onChange }: Props) => {
   const { data: userFields } = useUserCustomFields({
-    inputTypes: SUPPORTED_INPUT_TYPES_ARRAY,
+    inputTypes: ['select'],
   });
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -47,7 +45,7 @@ const UserFieldSelect = ({ userFieldId, onChange }: Props) => {
     <Box width="100%" mb="20px">
       <Select
         id="e2e-user-field-select"
-        label={formatMessage(messages.groupByUserField)}
+        label={formatMessage(messages.groupByRegistrationField)}
         value={userFieldId}
         options={userFieldOptions}
         onChange={handleChange}

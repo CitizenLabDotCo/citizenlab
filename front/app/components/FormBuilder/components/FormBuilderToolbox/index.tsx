@@ -47,6 +47,9 @@ const FormBuilderToolbox = ({
   const isInputFormCustomFieldsFlagEnabled = useFeatureFlag({
     name: 'input_form_custom_fields',
   });
+  const isLocationAnswerEnabled = useFeatureFlag({
+    name: 'input_form_mapping_question',
+  });
   const { watch } = useFormContext();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
   const isCustomFieldsDisabled =
@@ -218,6 +221,16 @@ const FormBuilderToolbox = ({
           inputType="file_upload"
           disabled={isCustomFieldsDisabled}
         />
+        {isLocationAnswerEnabled && (
+          <ToolboxItem
+            icon="map"
+            label={formatMessage(messages.locationAnswer)}
+            onClick={() => addField('point')}
+            fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+            inputType="point"
+            disabled={isCustomFieldsDisabled}
+          />
+        )}
       </Box>
     </Box>
   );

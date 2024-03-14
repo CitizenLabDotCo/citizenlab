@@ -23,7 +23,6 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import clickOutside from 'utils/containers/clickOutside';
 import { isNilOrError, isPage } from 'utils/helperUtils';
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import Actions from '../../CommentForm/Actions';
 import { commentAdded } from '../../events';
@@ -79,6 +78,7 @@ interface Props {
   postingComment: (arg: boolean) => void;
   className?: string;
   allowAnonymousParticipation?: boolean;
+  userCanModerate: boolean;
 }
 
 const ParentCommentForm = ({
@@ -87,6 +87,7 @@ const ParentCommentForm = ({
   postType,
   className,
   allowAnonymousParticipation,
+  userCanModerate,
 }: Props) => {
   const locale = useLocale();
   const { data: authUser } = useAuthUser();
@@ -277,8 +278,6 @@ const ParentCommentForm = ({
     textareaElement.current = element;
   };
 
-  const isModerator = canModerateProject(projectId, authUser);
-
   const placeholderMessage: MessageDescriptor = isAdminPage
     ? messages.visibleToUsersPlaceholder
     : messages[`${postType}CommentBodyPlaceholder`];
@@ -290,7 +289,7 @@ const ParentCommentForm = ({
         userId={authUser.data.id}
         size={30}
         isLinkToProfile={!!authUser.data.id}
-        moderator={isModerator}
+        moderator={userCanModerate}
       />
       <FormContainer
         className="ideaCommentForm"

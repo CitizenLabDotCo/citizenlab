@@ -75,7 +75,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     answer_titles[field.maximum][:title_multiloc].merge! maximum_labels
 
     field_attributes = visit_select_base field
-    field_attributes[:multilocs] = { answers: answer_titles }
+    field_attributes[:multilocs] = { answer: answer_titles }
     field_attributes
   end
 
@@ -90,6 +90,20 @@ class SurveyResultsGeneratorService < FieldVisitorService
     response_count = files.size
     core_field_attributes(field, response_count).merge({
       files: files
+    })
+  end
+
+  def visit_point(field)
+    responses = inputs
+      .select("custom_field_values->'#{field.key}' as value")
+      .where("custom_field_values->'#{field.key}' IS NOT NULL")
+      .map do |response|
+        { response: response.value }
+      end
+    response_count = responses.size
+
+    core_field_attributes(field, response_count).merge({
+      mapConfigId: field&.map_config&.id, pointResponses: responses
     })
   end
 
