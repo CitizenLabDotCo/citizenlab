@@ -16,7 +16,7 @@ module IdCriipto
           custom_field_values[birthday_key] = birthdate
         end
         if (birthyear_key = config[:birthyear_custom_field_key]) && birthdate
-          custom_field_values[birthyear_key] = Time.new(birthdate).year
+          custom_field_values[birthyear_key] = Date.parse(birthdate).year
         end
 
         # Handle municipality_code
