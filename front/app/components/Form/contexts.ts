@@ -10,7 +10,10 @@ export const FormContext = createContext<{
   showAllErrors: boolean;
   getApiErrorMessage: ApiErrorGetter;
   inputId?: string | undefined;
-  onSubmit?: (formData?: FormData) => void | Promise<void>;
+  onSubmit?: (
+    formData?: FormData,
+    showErrors?: boolean
+  ) => void | Promise<void>;
   setFormData?: (formData?: FormData) => void;
   setShowAllErrors?: (showAllErrors: boolean) => void;
   setCompletionPercentage?: (percentage: number) => void;

@@ -169,7 +169,7 @@ const CLPageLayout = memo(
       if (showSubmit && onSubmit) {
         setIsLoading(true);
         data.publication_status = 'published';
-        await onSubmit(getFilteredDataForUserPath(userPagePath, data));
+        await onSubmit(getFilteredDataForUserPath(userPagePath, data), true);
         return;
       }
 
@@ -186,11 +186,11 @@ const CLPageLayout = memo(
           getSanitizedFormData(data)
         )
       ) {
-        setShowAllErrors?.(false);
+        // setShowAllErrors?.(false);
         scrollToTop();
         data.publication_status = 'draft';
         data.latest_complete_page = currentStep;
-        onSubmit?.(data);
+        onSubmit?.(data, false);
         setCurrentStep(currentStep + 1);
 
         setIsLoading(false);

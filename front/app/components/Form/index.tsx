@@ -145,14 +145,14 @@ const Form = memo(
       onChange?.(data);
     };
 
-    const handleSubmit = async (formData?: any) => {
+    const handleSubmit = async (formData?: any, showErrors = true) => {
       // Any specified formData has priority over data attribute
       const submissionData = formData && formData.data ? formData.data : data;
       const sanitizedFormData = sanitizeFormData(submissionData);
 
       setData(sanitizedFormData);
       onChange?.(sanitizedFormData);
-      setShowAllErrors(true);
+      setShowAllErrors(showErrors);
 
       if (isValidData(schema, uiSchema, submissionData, customAjv, isSurvey)) {
         setLoading(true);
