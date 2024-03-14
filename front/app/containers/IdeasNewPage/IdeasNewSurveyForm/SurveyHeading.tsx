@@ -102,6 +102,7 @@ const SurveyHeading = ({
               variant="bodyS"
               fontSize="m"
               my="0px"
+              textAlign="left"
             >
               {titleText}
             </StyledSurveyTitle>
