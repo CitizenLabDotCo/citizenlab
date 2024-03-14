@@ -23,34 +23,36 @@ export const Heading = ({ project, titleText }: Props) => {
   }, [project]);
 
   return (
-    <Box
-      width="100%"
-      display="flex"
-      flexDirection="column"
-      justifyContent="flex-start"
-      alignItems="center"
-      pt="40px"
-      zIndex="3"
-    >
-      <Box w="100%">
-        <GoBackButtonSolid
-          text={localize(project.attributes.title_multiloc)}
-          onClick={goBackToProject}
-        />
-      </Box>
+    <Box w="100%" display="flex" justifyContent="center">
+      <Box
+        width="100%"
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        maxWidth="700px"
+        pt="40px"
+      >
+        <Box w="100%" ml="0px" display="flex" justifyContent="flex-start">
+          <GoBackButtonSolid
+            text={localize(project.attributes.title_multiloc)}
+            onClick={goBackToProject}
+          />
+        </Box>
 
-      <Box width="100%">
-        <Text
-          width="100%"
-          color={'tenantPrimary'}
-          variant="bodyL"
-          style={{ fontWeight: 500 }}
-          fontSize={'xxxxl'}
-          ml={'0px'}
-          my={'8px'}
-        >
-          {titleText}
-        </Text>
+        <Box width="100%">
+          <Text
+            width="100%"
+            color={'tenantPrimary'}
+            variant="bodyL"
+            style={{ fontWeight: 500 }}
+            fontSize={'xxxxl'}
+            ml={'0px'}
+            my={'8px'}
+          >
+            {titleText}
+          </Text>
+        </Box>
       </Box>
     </Box>
   );
