@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
-import { Box, Button, Label } from '@citizenlab/cl2-component-library';
+import { Box, Button, Label, Spinner } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -134,7 +134,11 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
   }, []);
 
   if ((isLoadingFieldConfig && mapConfigId) || isLoadingRawFields) {
-    return null;
+    return (
+      <Box my="24px">
+        <Spinner />
+      </Box>
+    );
   }
 
   return (
