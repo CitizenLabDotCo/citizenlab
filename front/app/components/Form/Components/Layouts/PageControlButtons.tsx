@@ -46,7 +46,7 @@ const PageControlButtons = ({
           flexDirection="row"
           justifyContent="center"
           w="100%"
-          zIndex="10000"
+          zIndex="1010"
           position="fixed"
           borderRadius="2px"
         >

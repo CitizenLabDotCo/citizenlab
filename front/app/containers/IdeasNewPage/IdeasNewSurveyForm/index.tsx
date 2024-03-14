@@ -245,7 +245,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
                 <Box
                   top={isSmallerThanPhone ? '0px' : '40px'}
                   position="absolute"
-                  zIndex="99999"
+                  zIndex="1010"
                   width="100%"
                   maxWidth="700px"
                   left="50%"
@@ -282,7 +282,7 @@ const IdeasNewSurveyFormWrapperModal = (props: Props) => {
           display="flex"
           flexDirection="column"
           w="100%"
-          zIndex="1100"
+          zIndex="1010"
           position="fixed"
           bgColor={colors.grey100}
           h="100vh"
