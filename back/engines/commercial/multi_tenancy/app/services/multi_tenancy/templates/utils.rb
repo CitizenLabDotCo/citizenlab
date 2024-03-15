@@ -267,7 +267,11 @@ module MultiTenancy
         end
 
         def parse_yml(content)
-          YAML.load(content, aliases: true, permitted_classes: [Date, Symbol, Time])
+          YAML.load(
+            content,
+            aliases: true,
+            permitted_classes: [Date, Project, Symbol, Time]
+          )
         end
         alias parse_yaml parse_yml
 
