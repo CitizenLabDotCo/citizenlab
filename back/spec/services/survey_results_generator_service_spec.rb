@@ -512,17 +512,19 @@ RSpec.describe SurveyResultsGeneratorService do
         end
 
         it 'groups multiselect by user field' do
-          expect(generator.generate_results(
-            field_id: multiselect_field.id,
+          generator = described_class.new(survey_phase,
             group_mode: 'user_field',
-            group_field_id: user_custom_field.id
+            group_field_id: user_custom_field.id)
+          expect(generator.generate_results(
+            field_id: multiselect_field.id
           )).to match expected_result_multiselect_with_user_field_grouping
         end
 
         it 'groups multiselect by select field' do
+          generator = described_class.new(survey_phase,
+            group_field_id: select_field.id)
           expect(generator.generate_results(
-            field_id: multiselect_field.id,
-            group_field_id: select_field.id
+            field_id: multiselect_field.id
           )).to match expected_result_multiselect_with_select_field_grouping
         end
       end
@@ -656,10 +658,11 @@ RSpec.describe SurveyResultsGeneratorService do
         end
 
         it 'returns a grouped result for a linear scale field' do
-          result = generator.generate_results(
-            field_id: linear_scale_field.id,
+          generator = described_class.new(survey_phase,
             group_mode: 'survey_question',
-            group_field_id: select_field.id
+            group_field_id: select_field.id)
+          result = generator.generate_results(
+            field_id: linear_scale_field.id
           )
           expect(result).to match grouped_linear_scale_results
         end
@@ -834,10 +837,11 @@ RSpec.describe SurveyResultsGeneratorService do
         end
 
         it 'groups select by user field' do
-          expect(generator.generate_results(
-            field_id: select_field.id,
+          generator = described_class.new(survey_phase,
             group_mode: 'user_field',
-            group_field_id: user_custom_field.id
+            group_field_id: user_custom_field.id)
+          expect(generator.generate_results(
+            field_id: select_field.id
           )).to match expected_result_select_with_user_field_grouping
         end
 
@@ -850,10 +854,11 @@ RSpec.describe SurveyResultsGeneratorService do
         # end
 
         it 'groups by linear scale' do
-          result = generator.generate_results(
-            field_id: select_field.id,
+          generator = described_class.new(survey_phase,
             group_mode: 'survey_question',
-            group_field_id: linear_scale_field.id
+            group_field_id: linear_scale_field.id)
+          result = generator.generate_results(
+            field_id: select_field.id
           )
 
           expect(result).to match expected_result_select_sliced_by_linear_scale
@@ -912,10 +917,11 @@ RSpec.describe SurveyResultsGeneratorService do
 
       context 'with grouping' do
         it 'groups multiselect image by survey question' do
-          result = generator.generate_results(
-            field_id: multiselect_image_field.id,
+          generator = described_class.new(survey_phase,
             group_mode: 'survey_question',
-            group_field_id: select_field.id
+            group_field_id: select_field.id)
+          result = generator.generate_results(
+            field_id: multiselect_image_field.id
           )
 
           expect(result[:answers]).to match [
