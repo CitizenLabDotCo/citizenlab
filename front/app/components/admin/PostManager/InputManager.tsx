@@ -225,7 +225,13 @@ const InputManager = ({
   };
 
   const onResetParams = () => {
-    setQueryParameters({});
+    setQueryParameters(
+      type === 'ProjectIdeas' && typeof projectId === 'string'
+        ? {
+            projects: [projectId],
+          }
+        : {}
+    );
   };
 
   const onChangePage = (pageNumber: number) => {
