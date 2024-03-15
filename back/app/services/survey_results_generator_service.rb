@@ -17,11 +17,9 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
   def generate_results(field_id: nil)
     if field_id
-      # Return single ungrouped result
       field = find_question(field_id)
       visit field
     else
-      # Return all results (ungrouped)
       results = fields.filter_map do |field_|
         visit field_
       end
