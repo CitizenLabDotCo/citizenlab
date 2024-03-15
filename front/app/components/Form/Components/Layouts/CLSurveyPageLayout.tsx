@@ -12,10 +12,16 @@ import {
   withJsonFormsLayoutProps,
   useJsonForms,
 } from '@jsonforms/react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useParams } from 'react-router-dom';
 import styled, { useTheme } from 'styled-components';
 
+import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
+import useProjectBySlug from 'api/projects/useProjectBySlug';
+
+import useLocalize from 'hooks/useLocalize';
+
+import SurveyHeading from 'containers/IdeasNewPage/IdeasNewSurveyForm/SurveyHeading';
 
 import { customAjv } from 'components/Form';
 import {
@@ -34,6 +40,7 @@ import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import {
   extractElementsByOtherOptionLogic,
@@ -54,11 +61,11 @@ const StyledFormSection = styled(FormSection)`
   box-shadow: none;
 `;
 
-// TODO: Edwin. Make this a survey page layout. The more things that we have added to it,
+// Handling survey pages in here. The more things that we have added to it,
 // the more it has become a survey page layout. It also becomes extremely hard to understand
 // if we continue to try and overload it to handle other scenarios. Survey headers are different
-// and handling them here would make it easy style the entire page. That among other things.
-const CLPageLayout = memo(
+// and handling them here makes it easy style the entire page. That among other things.
+const CLSurveyPageLayout = memo(
   ({
     schema,
     uischema,
@@ -68,12 +75,12 @@ const CLPageLayout = memo(
     enabled,
     data,
   }: LayoutProps) => {
-    const { onSubmit, setShowAllErrors, setFormData, setCompletionPercentage } =
-      useContext(FormContext);
+    const { onSubmit, setShowAllErrors, setFormData } = useContext(FormContext);
     const topAnchorRef = useRef<HTMLInputElement>(null);
     const { formatMessage } = useIntl();
     const [currentStep, setCurrentStep] = useState<number>(0);
     const [isLoading, setIsLoading] = useState(false);
+    const localize = useLocalize();
 
     // We can cast types because the tester made sure we only get correct values
     const pageTypeElements = (uischema as PageCategorization)
@@ -96,6 +103,13 @@ const CLPageLayout = memo(
     const { data: phase } = usePhase(phaseId);
     const allowAnonymousPosting =
       phase?.data.attributes.allow_anonymous_participation;
+    const { slug } = useParams();
+    const { data: project } = useProjectBySlug(slug);
+    const { data: authUser } = useAuthUser();
+    const userIsModerator =
+      !isNilOrError(authUser) &&
+      canModerateProject(project?.data.id, { data: authUser.data });
+    const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
 
     useEffect(() => {
       // We can cast types because the tester made sure we only get correct values
@@ -119,7 +133,11 @@ const CLPageLayout = memo(
         // Scroll to the first field with an error
         document
           .getElementById('error-display')
-          ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          ?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'start',
+          });
         setScrollToError(false);
       }
     }, [scrollToError]);
@@ -133,10 +151,8 @@ const CLPageLayout = memo(
     }, [currentStep]);
 
     useEffect(() => {
-      if (!setCompletionPercentage) return;
-
       if (currentStep === uiPages.length - 1) {
-        setCompletionPercentage(100);
+        setPercentageAnswered(100);
         return;
       }
 
@@ -147,14 +163,14 @@ const CLPageLayout = memo(
         currentStep
       );
 
-      setCompletionPercentage(percentage);
+      setPercentageAnswered(percentage);
     }, [
       formState.core?.data,
       uischema,
       schema,
       currentStep,
       uiPages,
-      setCompletionPercentage,
+      setPercentageAnswered,
     ]);
 
     const scrollToTop = () => {
@@ -232,6 +248,10 @@ const CLPageLayout = memo(
       scrollToTop();
     };
 
+    if (!project) {
+      return null;
+    }
+
     return (
       <>
         <Box
@@ -245,16 +265,24 @@ const CLPageLayout = memo(
         <Box
           width="100%"
           height="100%"
-          pt="80px"
+          pt={isSmallerThanPhone ? '80px' : '100px'}
           pb="100px"
           maxWidth="700px"
           display="flex"
           flexDirection="column"
           justifyContent="center"
           alignItems="center"
-          margin="auto"
-          position="relative"
         >
+          <SurveyHeading
+            project={project.data}
+            titleText={localize(
+              phase?.data.attributes.native_survey_title_multiloc
+            )}
+            canUserEditProject={userIsModerator}
+            loggedIn={!isNilOrError(authUser)}
+            percentageAnswered={percentageAnswered}
+          />
+
           {allowAnonymousPosting && (
             <Box w="100%" px={isSmallerThanPhone ? '16px' : '24px'} mt="16px">
               <Warning icon="shield-checkered">
@@ -354,6 +382,6 @@ const CLPageLayout = memo(
   }
 );
 
-export default withJsonFormsLayoutProps(CLPageLayout);
+export default withJsonFormsLayoutProps(CLSurveyPageLayout);
 
 export const clPageTester: RankedTester = rankWith(5, isPageCategorization);

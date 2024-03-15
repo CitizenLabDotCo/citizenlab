@@ -18,7 +18,6 @@ import { getCurrentPhase } from 'api/phases/utils';
 import { IProject } from 'api/projects/types';
 
 import useInputSchema from 'hooks/useInputSchema';
-import useLocalize from 'hooks/useLocalize';
 
 import Form from 'components/Form';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
@@ -33,8 +32,6 @@ import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import { getFormValues } from '../../IdeasEditPage/utils';
 import IdeasNewMeta from '../IdeasNewMeta';
 import messages from '../messages';
-
-import SurveyHeading from './SurveyHeading';
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,
@@ -75,13 +72,11 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     phaseId,
   });
   const isSmallerThanPhone = useBreakpoint('phone');
-  const localize = useLocalize();
 
   const { data: draftIdea, status: draftIdeaStatus } =
     useDraftIdeaByPhaseId(phaseId);
   const [loadingDraftIdea, setLoadingDraftIdea] = useState(true);
   const [ideaId, setIdeaId] = useState<string | undefined>();
-  const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
 
   const [initialFormData, setInitialFormData] = useState({});
   const participationMethodConfig = getConfig(phaseFromUrl?.data, phases);
@@ -239,29 +234,6 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
               getAjvErrorMessage={getAjvErrorMessage}
               getApiErrorMessage={getApiErrorMessage}
               inputId={ideaId}
-              setCompletionPercentage={setPercentageAnswered}
-              hideOverflowContent
-              title={
-                <Box
-                  top={isSmallerThanPhone ? '0px' : '40px'}
-                  position="absolute"
-                  zIndex="1010"
-                  width="100%"
-                  maxWidth="700px"
-                  left="50%"
-                  style={{ transform: 'translateX(-50%)' }}
-                >
-                  <SurveyHeading
-                    project={project.data}
-                    titleText={localize(
-                      phase?.attributes.native_survey_title_multiloc
-                    )}
-                    canUserEditProject={userIsModerator}
-                    loggedIn={!isNilOrError(authUser)}
-                    percentageAnswered={percentageAnswered}
-                  />
-                </Box>
-              }
               config={'survey'}
             />
           </Box>
@@ -280,10 +252,11 @@ const IdeasNewSurveyFormWrapperModal = (props: Props) => {
     ? createPortal(
         <Box
           display="flex"
-          flexDirection="column"
+          // flexDirection="column"
           w="100%"
           zIndex="1010"
           position="fixed"
+          // position="sticky"
           bgColor={colors.grey100}
           h="100vh"
           borderRadius="2px"

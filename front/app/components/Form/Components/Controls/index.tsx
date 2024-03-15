@@ -47,9 +47,9 @@ import WYSIWYGControl, {
 import CLCategoryLayout, {
   clCategoryTester,
 } from 'components/Form/Components/Layouts/CLCategoryLayout';
-import CLPageLayout, {
+import CLSurveyPageLayout, {
   clPageTester,
-} from 'components/Form/Components/Layouts/CLPageLayout';
+} from 'components/Form/Components/Layouts/CLSurveyPageLayout';
 import OrderedLayout, {
   orderedLayoutTester,
 } from 'components/Form/Components/Layouts/OrderedLayout';
@@ -80,7 +80,7 @@ import SingleSelectRadioEnumControl, {
 export {
   CLCategoryLayout,
   clCategoryTester,
-  CLPageLayout,
+  CLSurveyPageLayout,
   clPageTester,
   OrderedLayout,
   orderedLayoutTester,

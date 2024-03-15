@@ -8,6 +8,7 @@ import {
   IconButton,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { createPortal } from 'react-dom';
 import { useSearchParams } from 'react-router-dom';
 import styled, { useTheme } from 'styled-components';
 
@@ -55,6 +56,7 @@ const SurveyHeading = ({
   const canEditSurvey = canUserEditProject;
   const isSmallerThanPhone = useBreakpoint('phone');
   const showEditSurveyButton = !isSmallerThanPhone && canEditSurvey;
+  const modalPortalElement = document.getElementById('modal-portal');
   const [showLeaveModal, setShowLeaveModal] = useState(false);
   const openModal = () => {
     setShowLeaveModal(true);
@@ -63,121 +65,148 @@ const SurveyHeading = ({
     setShowLeaveModal(false);
   };
 
-  return (
-    <>
-      <Box
-        width="100%"
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        top={isSmallerThanPhone ? '0px' : undefined}
-        zIndex="3"
-        maxWidth="700px"
-      >
-        <Box w="100%" background={colors.background}>
-          <Box
-            w={`${percentageAnswered}%`}
-            h="4px"
-            background={theme.colors.tenantSecondary}
-            style={{ transition: 'width 0.3s ease-in-out' }}
-          />
-        </Box>
+  return modalPortalElement
+    ? createPortal(
         <Box
           display="flex"
-          width="100%"
           flexDirection="row"
-          justifyContent={showEditSurveyButton ? 'flex-end' : 'space-between'}
-          alignItems="center"
-          maxWidth="700px"
+          justifyContent="center"
+          w="100%"
+          zIndex="1010"
+          position="fixed"
+          borderRadius="2px"
         >
           <Box
-            display="flex"
-            flexDirection="row"
+            position="fixed"
+            top={isSmallerThanPhone ? '0px' : '40px'}
             width="100%"
+            bgColor={colors.white}
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
             alignItems="center"
-            justifyContent="space-between"
-            p={isSmallerThanPhone ? '14px 16px' : '14px 24px'}
-            borderBottom={`1px solid ${colors.divider}`}
+            zIndex="1010"
+            maxWidth="700px"
           >
-            <StyledSurveyTitle
-              color={'tenantPrimary'}
-              variant="bodyS"
-              fontSize="m"
-              my="0px"
-              textAlign="left"
-            >
-              {titleText}
-            </StyledSurveyTitle>
-            <Box display="flex">
-              {showEditSurveyButton && (
-                <Button
-                  data-cy="e2e-edit-survey-link"
-                  icon="edit"
-                  linkTo={linkToSurveyBuilder}
-                  buttonStyle="primary-inverse"
-                  textDecorationHover="underline"
-                  hidden={!canUserEditProject}
-                  mr="12px"
-                >
-                  <FormattedMessage {...messages.editSurvey} />
-                </Button>
-              )}
-              <IconButton
-                iconName="close"
-                onClick={(event) => {
-                  event?.preventDefault();
-                  openModal();
-                }}
-                iconColor={colors.textSecondary}
-                iconColorOnHover={colors.black}
-                a11y_buttonActionMessage={formatMessage(messages.leaveSurvey)}
-                p="0px"
+            <Box w="100%" background={colors.background}>
+              <Box
+                w={`${percentageAnswered}%`}
+                h="4px"
+                background={theme.colors.tenantSecondary}
+                style={{ transition: 'width 0.3s ease-in-out' }}
               />
-            </Box>
-          </Box>
-        </Box>
-
-        <Modal opened={showLeaveModal} close={closeModal}>
-          <Box display="flex" flexDirection="column" width="100%" p="20px">
-            <Box mb="40px">
-              <Title variant="h3" color="primary">
-                <FormattedMessage {...messages.leaveFormConfirmationQuestion} />
-              </Title>
-              <Text color="primary" fontSize="l">
-                <FormattedMessage
-                  {...(loggedIn
-                    ? messages.leaveFormTextLoggedIn
-                    : messages.leaveSurveyText)}
-                />
-              </Text>
             </Box>
             <Box
               display="flex"
-              flexDirection={isSmallerThanPhone ? 'column' : 'row'}
               width="100%"
+              flexDirection="row"
+              justifyContent={
+                showEditSurveyButton ? 'flex-end' : 'space-between'
+              }
               alignItems="center"
-              gap="20px"
+              maxWidth="700px"
             >
-              <Button buttonStyle="secondary" width="100%" onClick={closeModal}>
-                <FormattedMessage {...messages.cancelLeaveSurveyButtonText} />
-              </Button>
-              <Button
-                icon={loggedIn ? 'arrow-left-circle' : 'delete'}
-                data-cy="e2e-confirm-delete-survey-results"
-                buttonStyle={loggedIn ? 'primary' : 'delete'}
+              <Box
+                display="flex"
+                flexDirection="row"
                 width="100%"
-                mb={isSmallerThanPhone ? '16px' : undefined}
-                linkTo={`/projects/${project.attributes.slug}`}
+                alignItems="center"
+                justifyContent="space-between"
+                p={isSmallerThanPhone ? '14px 16px' : '14px 24px'}
+                borderBottom={`1px solid ${colors.divider}`}
               >
-                <FormattedMessage {...messages.confirmLeaveFormButtonText} />
-              </Button>
+                <StyledSurveyTitle
+                  color={'tenantPrimary'}
+                  variant="bodyS"
+                  fontSize="m"
+                  my="0px"
+                  textAlign="left"
+                >
+                  {titleText}
+                </StyledSurveyTitle>
+                <Box display="flex">
+                  {showEditSurveyButton && (
+                    <Button
+                      data-cy="e2e-edit-survey-link"
+                      icon="edit"
+                      linkTo={linkToSurveyBuilder}
+                      buttonStyle="primary-inverse"
+                      textDecorationHover="underline"
+                      hidden={!canUserEditProject}
+                      mr="12px"
+                    >
+                      <FormattedMessage {...messages.editSurvey} />
+                    </Button>
+                  )}
+                  <IconButton
+                    iconName="close"
+                    onClick={(event) => {
+                      event?.preventDefault();
+                      openModal();
+                    }}
+                    iconColor={colors.textSecondary}
+                    iconColorOnHover={colors.black}
+                    a11y_buttonActionMessage={formatMessage(
+                      messages.leaveSurvey
+                    )}
+                    p="0px"
+                  />
+                </Box>
+              </Box>
             </Box>
+
+            <Modal opened={showLeaveModal} close={closeModal}>
+              <Box display="flex" flexDirection="column" width="100%" p="20px">
+                <Box mb="40px">
+                  <Title variant="h3" color="primary">
+                    <FormattedMessage
+                      {...messages.leaveFormConfirmationQuestion}
+                    />
+                  </Title>
+                  <Text color="primary" fontSize="l">
+                    <FormattedMessage
+                      {...(loggedIn
+                        ? messages.leaveFormTextLoggedIn
+                        : messages.leaveSurveyText)}
+                    />
+                  </Text>
+                </Box>
+                <Box
+                  display="flex"
+                  flexDirection={isSmallerThanPhone ? 'column' : 'row'}
+                  width="100%"
+                  alignItems="center"
+                  gap="20px"
+                >
+                  <Button
+                    buttonStyle="secondary"
+                    width="100%"
+                    onClick={closeModal}
+                  >
+                    <FormattedMessage
+                      {...messages.cancelLeaveSurveyButtonText}
+                    />
+                  </Button>
+                  <Button
+                    icon={loggedIn ? 'arrow-left-circle' : 'delete'}
+                    data-cy="e2e-confirm-delete-survey-results"
+                    buttonStyle={loggedIn ? 'primary' : 'delete'}
+                    width="100%"
+                    mb={isSmallerThanPhone ? '16px' : undefined}
+                    linkTo={`/projects/${project.attributes.slug}`}
+                  >
+                    <FormattedMessage
+                      {...messages.confirmLeaveFormButtonText}
+                    />
+                  </Button>
+                </Box>
+              </Box>
+            </Modal>
           </Box>
-        </Modal>
-      </Box>
-    </>
-  );
+        </Box>,
+        modalPortalElement
+      )
+    : null;
 };
 
 export default SurveyHeading;
