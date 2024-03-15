@@ -17,7 +17,6 @@ import Frame from 'components/admin/ContentBuilder/Frame';
 import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
-import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -71,26 +70,6 @@ const ReportBuilder = ({
   const [selectedLocale, setSelectedLocale] = useState<Locale>(platformLocale);
 
   const [saved, setSaved] = useState(true);
-  const [contentBuilderErrors, setContentBuilderErrors] =
-    useState<ContentBuilderErrors>({});
-
-  const handleErrors = (newErrors: ContentBuilderErrors) => {
-    setContentBuilderErrors((contentBuilderErrors) => ({
-      ...contentBuilderErrors,
-      ...newErrors,
-    }));
-  };
-
-  const handleDeleteElement = (id: string) => {
-    setContentBuilderErrors((contentBuilderErrors) => {
-      const { [id]: _id, ...rest } = contentBuilderErrors;
-      return rest;
-    });
-  };
-
-  const hasError =
-    Object.values(contentBuilderErrors).filter((node) => node.hasError).length >
-    0;
 
   const handleSetSaved = () => {
     setSaved(true);
@@ -98,11 +77,7 @@ const ReportBuilder = ({
 
   return (
     <ReportContextProvider width="pdf" reportId={reportId} phaseId={phaseId}>
-      <FullscreenContentBuilder
-        onErrors={handleErrors}
-        onDeleteElement={handleDeleteElement}
-        onUploadImage={setImageUploading}
-      >
+      <FullscreenContentBuilder onUploadImage={setImageUploading}>
         <Editor
           isPreview={false}
           // onNodesChange is called twice on initial load.
@@ -133,7 +108,6 @@ const ReportBuilder = ({
           }}
         >
           <TopBar
-            hasError={hasError}
             hasPendingState={imageUploading}
             selectedLocale={selectedLocale}
             reportId={reportId}
