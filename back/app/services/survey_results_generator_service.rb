@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 class SurveyResultsGeneratorService < FieldVisitorService
-  def initialize(phase)
+  def initialize(phase, group_mode: nil, group_field_id: nil)
     super()
+    @group_mode = group_mode
+    @group_field_id = group_field_id
     form = phase.custom_form || CustomForm.new(participation_context: phase)
     @fields = IdeaCustomFieldsService.new(form).enabled_fields # It would be nice if we could use reportable_fields instead
     @inputs = phase.ideas.native_survey.published
@@ -13,30 +15,20 @@ class SurveyResultsGeneratorService < FieldVisitorService
     { totalSubmissions: inputs.size }
   end
 
-  def generate_results(field_id: nil, group_mode: nil, group_field_id: nil)
-    if !field_id
+  def generate_results(field_id: nil)
+    if field_id
+      # Return single ungrouped result
+      field = find_question(field_id)
+      visit field
+    else
       # Return all results (ungrouped)
-      results = fields.filter_map do |field|
-        visit field
+      results = fields.filter_map do |field_|
+        visit field_
       end
       {
         results: results,
         totalSubmissions: inputs.size
       }
-    elsif group_field_id
-      # Return single grouped result - select, multiselect & linearscale only
-      field = find_question(field_id)
-      raise "Unsupported question type: #{field.input_type}" unless %w[select multiselect linear_scale multiselect_image].include?(field.input_type)
-
-      if field.input_type == 'linear_scale'
-        visit_linear_scale_grouped(field, group_mode, group_field_id)
-      else
-        visit_select_base field, group_mode: group_mode, group_field_id: group_field_id
-      end
-    else
-      # Return single ungrouped result
-      field = find_question(field_id)
-      visit field
     end
   end
 
@@ -68,14 +60,6 @@ class SurveyResultsGeneratorService < FieldVisitorService
     answer_titles = build_linear_scale_multilocs(field)
 
     field_attributes = visit_select_base field
-    field_attributes[:multilocs][:answer] = answer_titles
-    field_attributes
-  end
-
-  def visit_linear_scale_grouped(field, group_mode, group_field_id)
-    answer_titles = build_linear_scale_multilocs(field)
-
-    field_attributes = visit_select_base field, group_mode: group_mode, group_field_id: group_field_id
     field_attributes[:multilocs][:answer] = answer_titles
     field_attributes
   end
@@ -124,18 +108,19 @@ class SurveyResultsGeneratorService < FieldVisitorService
     }
   end
 
-  def visit_select_base(field, group_mode: nil, group_field_id: nil)
+  def visit_select_base(field)
     query = inputs
-    if group_field_id
-      if group_mode == 'user_field'
+    if @group_field_id
+      if @group_mode == 'user_field'
         # Single user field grouped result
-        group_field = CustomField.find(group_field_id)
+        group_field = CustomField.find(@group_field_id)
         query = query.joins(:author)
       else
         # Single form field grouped result
-        group_field = find_question(group_field_id)
+        group_field = find_question(@group_field_id)
       end
       raise "Unsupported group field type: #{group_field.input_type}" unless %w[select linear_scale].include?(group_field.input_type)
+      raise "Unsupported question type: #{field.input_type}" unless %w[select multiselect linear_scale multiselect_image].include?(field.input_type)
 
       query = query.select(
         select_field_query(field, as: 'answer'),
