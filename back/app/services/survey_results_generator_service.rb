@@ -20,8 +20,8 @@ class SurveyResultsGeneratorService < FieldVisitorService
       field = find_question(field_id)
       visit field
     else
-      results = fields.filter_map do |field_|
-        visit field_
+      results = fields.filter_map do |f|
+        visit f
       end
       {
         results: results,
@@ -92,7 +92,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
   private
 
-  attr_reader :fields, :inputs, :locales
+  attr_reader :group_mode, :group_field_id, :fields, :inputs, :locales
 
   def core_field_attributes(field, response_count)
     {
@@ -108,14 +108,14 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
   def visit_select_base(field)
     query = inputs
-    if @group_field_id
-      if @group_mode == 'user_field'
+    if group_field_id
+      if group_mode == 'user_field'
         # Single user field grouped result
-        group_field = CustomField.find(@group_field_id)
+        group_field = CustomField.find(group_field_id)
         query = query.joins(:author)
       else
         # Single form field grouped result
-        group_field = find_question(@group_field_id)
+        group_field = find_question(group_field_id)
       end
       raise "Unsupported group field type: #{group_field.input_type}" unless %w[select linear_scale].include?(group_field.input_type)
       raise "Unsupported question type: #{field.input_type}" unless %w[select multiselect linear_scale multiselect_image].include?(field.input_type)
