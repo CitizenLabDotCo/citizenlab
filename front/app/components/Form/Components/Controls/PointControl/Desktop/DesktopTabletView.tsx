@@ -83,6 +83,7 @@ const DesktopView = ({
         </Box>
         <>
           <EsriMap
+            id="e2e-point-control-map"
             height="400px"
             layers={mapLayers}
             initialData={{
