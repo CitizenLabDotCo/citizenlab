@@ -25,15 +25,12 @@ RSpec.describe ReportBuilder::Queries::SurveyQuestionResult do
       )
     end
 
-    before do
+    before_all do
       create(
         :native_survey_response,
         project: project,
         phases: phases_of_inputs,
-        custom_field_values: {
-          select_field.key => 'la'
-        }
-        # author: male_user
+        custom_field_values: { select_field.key => 'la' }
       )
     end
 
