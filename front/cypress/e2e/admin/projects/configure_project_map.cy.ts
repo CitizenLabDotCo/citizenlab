@@ -54,7 +54,7 @@ describe('Configure a project-level map', () => {
     cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/map`);
     const initialZoomValue = cy.get('#e2e-zoom-input').invoke('val');
     // Change map extent
-    cy.get('.esri-zoom').click().click();
+    cy.get('.esri-zoom').dblclick();
     // Save using the map helper options
     cy.get('#e2e-save-current-extent').click();
     // Zoom text input should have changed
@@ -107,6 +107,7 @@ describe('Configure a project-level map', () => {
     cy.get('#e2e-zoom-input').click().clear().type('9');
     cy.get('[data-cy="e2e-map-extent-save-btn"]').click();
     cy.wait(2000);
+    cy.get('#e2e-map-config-error').should('not.exist');
   });
 
   after(() => {

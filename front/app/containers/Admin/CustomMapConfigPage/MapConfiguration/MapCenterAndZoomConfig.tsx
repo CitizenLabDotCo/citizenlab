@@ -300,7 +300,11 @@ const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
         </ButtonWrapper>
 
         {!isEmpty(errors) && (
-          <Error text={formatMessage(messages.errorMessage)} marginTop="20px" />
+          <Error
+            id="e2e-map-config-error"
+            text={formatMessage(messages.errorMessage)}
+            marginTop="20px"
+          />
         )}
       </Container>
     );
