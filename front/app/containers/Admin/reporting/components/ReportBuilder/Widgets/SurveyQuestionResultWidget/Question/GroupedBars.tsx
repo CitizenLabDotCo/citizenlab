@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Image } from '@citizenlab/cl2-component-library';
 
 import { AttributesGrouped } from 'api/graph_data_units/responseTypes';
 
@@ -24,6 +24,14 @@ const GroupedBars = ({ attributes, colorScheme }: Props) => {
   return (
     <>
       {attributes.answers.map(({ answer, groups }, index) => {
+        const image = answer
+          ? attributes.multilocs.answer[answer].image
+          : undefined;
+        const label =
+          answer === null
+            ? formatMessage(messages.noAnswer)
+            : localize(attributes.multilocs.answer[answer].title_multiloc);
+
         return (
           <Box
             key={index}
@@ -32,15 +40,21 @@ const GroupedBars = ({ attributes, colorScheme }: Props) => {
             alignItems="flex-end"
             justifyContent="center"
           >
+            {image?.small && (
+              <Box mr="12px">
+                <Image
+                  width="48px"
+                  height="48px"
+                  src={image.small}
+                  alt={label}
+                />
+              </Box>
+            )}
             <ProgressBars2
               values={groups.map((group) => group.count)}
               total={attributes.totalPickCount}
               colorScheme={colorScheme}
-              label={
-                answer === null
-                  ? formatMessage(messages.noAnswer)
-                  : localize(attributes.multilocs.answer[answer].title_multiloc)
-              }
+              label={label}
             />
           </Box>
         );
