@@ -6,7 +6,7 @@ namespace :fix_templates do
   desc 'Fix overlap in phases in templates.'
   task overlapping_phases: [:environment] do |_t, _args|
     Dir[Rails.root.join('config/tenant_templates/*.yml')].map do |file|
-      template = YAML.load(File.read(file)) # rubocop:disable Security/YAMLLoad
+      template = MultiTenancy::Templates::Utils.parse_yml_file(file)
 
       if template.dig('models', 'phase')
         template['models']['phase'] = fix_overlapping_phases template['models']['phase'], file
