@@ -28,7 +28,7 @@ interface Props {
   phaseId: string;
 }
 
-const PhaseTemplate = ({ phaseId }: Props) => {
+const PhaseTemplateContent = ({ phaseId }: Props) => {
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
   const { data: phase } = usePhase(phaseId);
@@ -103,17 +103,17 @@ const PhaseTemplate = ({ phaseId }: Props) => {
   );
 };
 
-const PhaseTemplateWrapper = ({ phaseId }: Props) => {
+const PhaseTemplate = ({ phaseId }: Props) => {
   const { enabled } = useEditor((state) => {
     return {
       enabled: state.options.enabled,
     };
   });
   if (enabled) {
-    return <PhaseTemplate phaseId={phaseId} />;
+    return <PhaseTemplateContent phaseId={phaseId} />;
   } else {
     return <Element id="phase-report-template" is={Box} canvas />;
   }
 };
 
-export default PhaseTemplateWrapper;
+export default PhaseTemplate;

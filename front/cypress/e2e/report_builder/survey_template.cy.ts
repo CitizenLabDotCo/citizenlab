@@ -80,10 +80,12 @@ describe('Survey template', () => {
     cy.apiRemoveUser(userId);
   });
 
+  beforeEach(() => {
+    cy.setAdminLoginCookie();
+  });
+
   describe('Global report builder', () => {
     it('should create a survey template', () => {
-      cy.setAdminLoginCookie();
-
       // Create report from template
       cy.visit(`/admin/reporting/report-builder`);
       cy.get('#e2e-create-report-button').click();
@@ -127,8 +129,6 @@ describe('Survey template', () => {
 
   describe('Phase report builder', () => {
     it('should create a survey template', () => {
-      cy.setAdminLoginCookie();
-
       // Create report inside of phase
       cy.visit(`/en/admin/projects/${projectId}/phases/${phaseId}/report`);
       cy.get('#e2e-create-report-button').click();
