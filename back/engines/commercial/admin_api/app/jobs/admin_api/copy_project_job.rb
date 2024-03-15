@@ -13,7 +13,7 @@ module AdminApi
     def run(template_yaml, folder_id = nil)
       check_in_tenant!
       folder = ProjectFolders::Folder.find(folder_id) if folder_id
-      template = YAML.load(template_yaml) # rubocop:disable Security/YAMLLoad
+      template = ::MultiTenancy::Templates::Utils.parse_yml(template_yaml)
       ProjectCopyService.new.import(template, folder: folder)
 
       # Wait before destroying the job record to allow clients to poll the job status via
