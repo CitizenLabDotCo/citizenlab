@@ -3,7 +3,7 @@ PATH
   specs:
     admin_api (0.1.0)
       active_model_serializers (~> 0.10.7)
-      graphql (~> 1.11.10)
+      graphql (~> 1.12.24)
       kaminari (~> 1.2)
       multi_tenancy
       rails (~> 7.0)
@@ -674,7 +674,7 @@ GEM
       multi_json (~> 1.11)
       os (>= 0.9, < 2.0)
       signet (>= 0.16, < 2.a)
-    graphql (1.11.10)
+    graphql (1.12.24)
     groupdate (4.3.0)
       activesupport (>= 5)
     grpc (1.56.2)
@@ -1360,7 +1360,7 @@ DEPENDENCIES
   webmock (~> 3.18)
 
 RUBY VERSION
-   ruby 3.1.4p223
+   ruby 3.2.3p157
 
 BUNDLED WITH
    2.4.20
