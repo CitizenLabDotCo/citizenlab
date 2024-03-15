@@ -6,7 +6,7 @@ namespace :cl2back do
     tenant_deserializer = MultiTenancy::Templates::TenantDeserializer.new
 
     template_path = Rails.root.join('config/tenant_templates/base.yml')
-    template = YAML.load(File.read(template_path)) # rubocop:disable Security/YAMLLoad
+    template = MultiTenancy::Templates::Utils.parse_yml_file(template_path)
     template['models'].slice!('custom_field', 'custom_field_option')
 
     Tenant.all.each do |tenant|

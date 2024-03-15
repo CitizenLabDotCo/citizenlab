@@ -17,7 +17,8 @@ end
 
 class MissingLocaleFixer
   def fix(locale)
-    template = YAML.safe_load(open('config/tenant_templates/base.yml').read, [Time], [], true)
+    yaml_template = open('config/tenant_templates/base.yml').read
+    template = MultiTenancy::Templates::Utils.parse_yml(yaml_template)
     template['models'].each do |model_name, fields|
       fields.each do |attributes|
         attributes.each do |field_name, _field_value|
