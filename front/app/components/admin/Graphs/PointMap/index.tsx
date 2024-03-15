@@ -101,15 +101,40 @@ const PointMap = ({
 
   useEffect(() => {
     if (!mapView) return;
+    if (responsesLayer.renderer) return;
 
-    if (heatmap) {
+    // Set initial renderer when map is ready
+    const handle = reactiveUtilsWhen(
+      () => mapView?.ready === true,
+      () => {
+        if (heatmap) {
+          applyHeatMapRenderer(responsesLayer, mapView);
+        } else {
+          responsesLayer.renderer = new Renderer({
+            symbol: circleSymbol,
+          });
+        }
+      }
+    );
+
+    return () => handle.remove();
+  }, [mapView, heatmap, responsesLayer]);
+
+  useEffect(() => {
+    if (!mapView) return;
+    if (!responsesLayer.renderer) return;
+
+    const isCurrentlyHeatmap = responsesLayer.renderer.type === 'heatmap';
+
+    // Handle updates to heatmap variable
+    if (heatmap && !isCurrentlyHeatmap) {
       applyHeatMapRenderer(responsesLayer, mapView);
-    } else {
+    } else if (!heatmap && isCurrentlyHeatmap) {
       responsesLayer.renderer = new Renderer({
         symbol: circleSymbol,
       });
     }
-  }, [mapView, heatmap, responsesLayer]);
+  }, [mapView, responsesLayer, heatmap]);
 
   useEffect(() => {
     if (!mapView) return;
@@ -118,7 +143,7 @@ const PointMap = ({
     const handle = reactiveUtilsWhen(
       () => mapView?.stationary === true,
       () => {
-        if (mapView?.extent && responsesLayer?.renderer.type === 'heatmap') {
+        if (mapView?.extent && responsesLayer.renderer?.type === 'heatmap') {
           applyHeatMapRenderer(responsesLayer, mapView);
         }
       }
