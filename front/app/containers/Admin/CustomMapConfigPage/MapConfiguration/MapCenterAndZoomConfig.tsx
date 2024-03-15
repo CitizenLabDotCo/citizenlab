@@ -256,6 +256,7 @@ const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
         </SubSectionTitleWrapper>
 
         <CenterLatInput
+          id="e2e-lat-input"
           type="text"
           value={formValues.defaultLat}
           onChange={handleCenterLatOnChange}
@@ -265,6 +266,7 @@ const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
         />
 
         <CenterLngInput
+          id="e2e-long-input"
           type="text"
           value={formValues.defaultLng}
           onChange={handleCenterLngOnChange}
@@ -274,6 +276,7 @@ const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
         />
 
         <ZoomInput
+          id="e2e-zoom-input"
           type="number"
           value={formValues.defaultZoom?.toString()}
           min="1"
@@ -285,6 +288,7 @@ const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
 
         <ButtonWrapper>
           <SaveButton
+            data-cy="e2e-map-extent-save-btn"
             icon="save"
             buttonStyle="admin-dark"
             onClick={handleOnSave}

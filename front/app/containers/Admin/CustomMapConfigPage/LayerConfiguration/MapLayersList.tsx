@@ -243,6 +243,7 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
                             >
                               <div>
                                 <RemoveButton
+                                  data-cy="e2e-admin-layer-remove-btn"
                                   icon="delete"
                                   iconSize="16px"
                                   buttonStyle="text"

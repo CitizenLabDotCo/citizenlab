@@ -143,6 +143,7 @@ const GeoJsonImportButton = memo<Props>(({ mapConfig, className }) => {
         >
           <div>
             <StyledButton
+              data-cy="e2e-geojson-upload-btn"
               icon="upload-file"
               buttonStyle="secondary"
               disabled={geoJsonImportDisabled}

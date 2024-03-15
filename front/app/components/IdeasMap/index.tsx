@@ -510,6 +510,7 @@ const IdeasMap = memo<Props>(
               layers={layers}
               onHover={onMapHover}
               onClick={onMapClick}
+              id="e2e-ideas-map"
             />
             <LayerHoverLabel
               layer={mapConfig?.data.attributes.layers.find(
