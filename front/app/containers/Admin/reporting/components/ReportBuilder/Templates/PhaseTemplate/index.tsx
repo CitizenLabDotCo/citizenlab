@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { Element } from '@craftjs/core';
+import { Element, useEditor } from '@craftjs/core';
 
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
 import usePhase from 'api/phases/usePhase';
@@ -26,20 +26,16 @@ import messages from './messages';
 
 interface Props {
   phaseId: string;
-  initializeContent?: boolean;
 }
 
-const PhaseTemplate = ({ phaseId, initializeContent }: Props) => {
+const PhaseTemplate = ({ phaseId }: Props) => {
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
   const { data: phase } = usePhase(phaseId);
   const participationMethod = phase?.data.attributes.participation_method;
 
   const { data: surveyQuestions } = useRawCustomFields({
-    phaseId:
-      initializeContent && participationMethod === 'native_survey'
-        ? phaseId
-        : undefined,
+    phaseId: participationMethod === 'native_survey' ? phaseId : undefined,
   });
 
   if (!phase || !appConfigurationLocales) return null;
@@ -52,11 +48,7 @@ const PhaseTemplate = ({ phaseId, initializeContent }: Props) => {
       )
     : undefined;
 
-  if (
-    participationMethod === 'native_survey' &&
-    !filteredSurveyQuestions &&
-    initializeContent
-  ) {
+  if (participationMethod === 'native_survey' && !filteredSurveyQuestions) {
     return null;
   }
 
@@ -111,4 +103,17 @@ const PhaseTemplate = ({ phaseId, initializeContent }: Props) => {
   );
 };
 
-export default PhaseTemplate;
+const PhaseTemplateWrapper = ({ phaseId }: Props) => {
+  const { enabled } = useEditor((state) => {
+    return {
+      enabled: state.options.enabled,
+    };
+  });
+  if (enabled) {
+    return <PhaseTemplate phaseId={phaseId} />;
+  } else {
+    return <Element id="phase-report-template" is={Box} canvas />;
+  }
+};
+
+export default PhaseTemplateWrapper;

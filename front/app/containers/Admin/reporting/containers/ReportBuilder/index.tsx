@@ -164,13 +164,9 @@ const ReportBuilder = ({
                       <ProjectTemplate
                         reportId={reportId}
                         projectId={templateProjectId}
-                        initializeContent={true}
                       />
                     ) : emptyReportOnInit && templatePhaseId ? (
-                      <PhaseTemplate
-                        phaseId={templatePhaseId}
-                        initializeContent={true}
-                      />
+                      <PhaseTemplate phaseId={templatePhaseId} />
                     ) : null}
                   </Frame>
                 </ViewContainer>
