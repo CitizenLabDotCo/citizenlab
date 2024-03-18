@@ -1544,7 +1544,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.existingSubmissionsWarning": "Tähän kyselyyn on alkanut saapua palautetta. Kyselyyn tehdyt muutokset voivat johtaa tietojen katoamiseen ja epätäydellisiin tietoihin viedyissä tiedostoissa.",
   "app.containers.AdminPage.ProjectEdit.survey.file_upload": "Tiedoston lataus",
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Mene takaisin",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText2": "Vastaukset lyhyisiin ja pitkiin vastauskysymyksiin ovat tällä hetkellä saatavilla vain kyselyn latauksessa",
+  "app.containers.AdminPage.ProjectEdit.survey.informationText3": "Tekoälyyhteenvedot lyhyistä ja pitkistä vastauskysymyksistä ovat käytettävissä vasemman sivupalkin AI-välilehdellä.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Lineaarinen asteikko",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Pitkä vastaus",
   "app.containers.AdminPage.ProjectEdit.survey.multiselectText2": "Monivalinta - valitse monta",
