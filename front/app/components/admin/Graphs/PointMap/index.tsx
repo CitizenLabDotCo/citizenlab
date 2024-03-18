@@ -104,6 +104,7 @@ const PointMap = ({
 
   useEffect(() => {
     if (!mapView) return;
+    if (!mapView.ready) return;
 
     // Update renderer if heatmap variable changes
     applyMapRenderer(responsesLayer, mapView, heatmap);
