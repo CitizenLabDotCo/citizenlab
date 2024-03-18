@@ -36,24 +36,3 @@ export const getBorderRadius = (type: BarType) => {
       return '3px';
   }
 };
-
-export const filterZeroes = ({
-  percentages,
-  colorScheme,
-}: {
-  percentages: number[];
-  colorScheme: string[];
-}) => {
-  const nonZeroPercentages: number[] = [];
-  const nonZeroColorScheme: string[] = [];
-
-  for (let i = 0; i < percentages.length; i++) {
-    const percentage = percentages[i];
-    if (percentage === 0) continue;
-
-    nonZeroPercentages.push(percentage);
-    nonZeroColorScheme.push(colorScheme[i % colorScheme.length]);
-  }
-
-  return { nonZeroPercentages, nonZeroColorScheme };
-};

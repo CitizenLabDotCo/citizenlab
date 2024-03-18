@@ -23,6 +23,8 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import clickOutside from 'utils/containers/clickOutside';
 import { isNilOrError, isPage } from 'utils/helperUtils';
+import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import Actions from '../../CommentForm/Actions';
 import { commentAdded } from '../../events';
@@ -78,7 +80,6 @@ interface Props {
   postingComment: (arg: boolean) => void;
   className?: string;
   allowAnonymousParticipation?: boolean;
-  userCanModerate: boolean;
 }
 
 const ParentCommentForm = ({
@@ -87,7 +88,6 @@ const ParentCommentForm = ({
   postType,
   className,
   allowAnonymousParticipation,
-  userCanModerate,
 }: Props) => {
   const locale = useLocale();
   const { data: authUser } = useAuthUser();
@@ -282,6 +282,10 @@ const ParentCommentForm = ({
     ? messages.visibleToUsersPlaceholder
     : messages[`${postType}CommentBodyPlaceholder`];
   const placeholder = formatMessage(placeholderMessage);
+  const userCanModerate = {
+    idea: canModerateProject(projectId, authUser),
+    initiative: canModerateInitiative(authUser),
+  }[postType];
 
   return (
     <Box display="flex" className={className || ''} my="12px">

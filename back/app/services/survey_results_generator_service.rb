@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 class SurveyResultsGeneratorService < FieldVisitorService
-  def initialize(phase)
+  def initialize(phase, group_mode: nil, group_field_id: nil)
     super()
+    @group_mode = group_mode
+    @group_field_id = group_field_id
     form = phase.custom_form || CustomForm.new(participation_context: phase)
     @fields = IdeaCustomFieldsService.new(form).enabled_fields # It would be nice if we could use reportable_fields instead
     @inputs = phase.ideas.native_survey.published
@@ -13,26 +15,18 @@ class SurveyResultsGeneratorService < FieldVisitorService
     { totalSubmissions: inputs.size }
   end
 
-  def generate_results(field_id: nil, group_mode: nil, group_field_id: nil)
-    if !field_id
-      # Return all results (ungrouped)
-      results = fields.filter_map do |field|
-        visit field
+  def generate_results(field_id: nil)
+    if field_id
+      field = find_question(field_id)
+      visit field
+    else
+      results = fields.filter_map do |f|
+        visit f
       end
       {
         results: results,
         totalSubmissions: inputs.size
       }
-    elsif group_field_id
-      # Return single grouped result - select, multiselect & linearscale only
-      field = find_question(field_id)
-      raise "Unsupported question type: #{field.input_type}" unless %w[select multiselect linear_scale multiselect_image].include?(field.input_type)
-
-      visit_select_base field, group_mode: group_mode, group_field_id: group_field_id
-    else
-      # Return single ungrouped result
-      field = find_question(field_id)
-      visit field
     end
   end
 
@@ -61,21 +55,10 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def visit_linear_scale(field)
-    # Construct the multiloc values
-    answer_titles = (1..field.maximum).index_with do |value|
-      { title_multiloc: locales.index_with { |_locale| value.to_s } }
-    end
-    minimum_labels = field.minimum_label_multiloc.transform_values do |label|
-      label.present? ? "1 - #{label}" : '1'
-    end
-    answer_titles[1][:title_multiloc].merge! minimum_labels
-    maximum_labels = field.maximum_label_multiloc.transform_values do |label|
-      label.present? ? "#{field.maximum} - #{label}" : field.maximum.to_s
-    end
-    answer_titles[field.maximum][:title_multiloc].merge! maximum_labels
+    answer_titles = build_linear_scale_multilocs(field)
 
     field_attributes = visit_select_base field
-    field_attributes[:multilocs] = { answer: answer_titles }
+    field_attributes[:multilocs][:answer] = answer_titles
     field_attributes
   end
 
@@ -109,7 +92,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
   private
 
-  attr_reader :fields, :inputs, :locales
+  attr_reader :group_mode, :group_field_id, :fields, :inputs, :locales
 
   def core_field_attributes(field, response_count)
     {
@@ -123,7 +106,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     }
   end
 
-  def visit_select_base(field, group_mode: nil, group_field_id: nil)
+  def visit_select_base(field)
     query = inputs
     if group_field_id
       if group_mode == 'user_field'
@@ -135,6 +118,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
         group_field = find_question(group_field_id)
       end
       raise "Unsupported group field type: #{group_field.input_type}" unless %w[select linear_scale].include?(group_field.input_type)
+      raise "Unsupported question type: #{field.input_type}" unless %w[select multiselect linear_scale multiselect_image].include?(field.input_type)
 
       query = query.select(
         select_field_query(field, as: 'answer'),
@@ -281,5 +265,21 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
   def generate_answer_keys(field)
     (field.input_type == 'linear_scale' ? (1..field.maximum).reverse_each.to_a : field.options.map(&:key)) + [nil]
+  end
+
+  def build_linear_scale_multilocs(field)
+    answer_titles = (1..field.maximum).index_with do |value|
+      { title_multiloc: locales.index_with { |_locale| value.to_s } }
+    end
+    minimum_labels = field.minimum_label_multiloc.transform_values do |label|
+      label.present? ? "1 - #{label}" : '1'
+    end
+    answer_titles[1][:title_multiloc].merge! minimum_labels
+    maximum_labels = field.maximum_label_multiloc.transform_values do |label|
+      label.present? ? "#{field.maximum} - #{label}" : field.maximum.to_s
+    end
+    answer_titles[field.maximum][:title_multiloc].merge! maximum_labels
+
+    answer_titles
   end
 end
