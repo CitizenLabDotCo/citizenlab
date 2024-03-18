@@ -4,10 +4,7 @@ import { when as reactiveUtilsWhen } from '@arcgis/core/core/reactiveUtils.js';
 import Point from '@arcgis/core/geometry/Point';
 import Graphic from '@arcgis/core/Graphic';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
-import Renderer from '@arcgis/core/renderers/SimpleRenderer';
-import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
 import MapView from '@arcgis/core/views/MapView';
-import { colors } from '@citizenlab/cl2-component-library';
 
 import { IMapConfig } from 'api/map_config/types';
 
@@ -15,6 +12,8 @@ import useLocalize from 'hooks/useLocalize';
 
 import EsriMap from 'components/EsriMap';
 import { applyHeatMapRenderer, parseLayers } from 'components/EsriMap/utils';
+
+import { applyMapRenderer } from './utils';
 
 interface Props {
   points: GeoJSON.Point[];
@@ -24,16 +23,6 @@ interface Props {
   heatmap?: boolean;
   onInit?: (mapView: MapView) => void;
 }
-
-const circleSymbol = new SimpleMarkerSymbol({
-  color: colors.primary,
-  style: 'circle',
-  size: '18px',
-  outline: {
-    color: colors.white,
-    width: 2,
-  },
-});
 
 const PointMap = ({
   points,
@@ -101,19 +90,12 @@ const PointMap = ({
 
   useEffect(() => {
     if (!mapView) return;
-    if (responsesLayer.renderer) return;
 
     // Set initial renderer when map is ready
     const handle = reactiveUtilsWhen(
-      () => mapView?.ready === true,
+      () => mapView.ready === true,
       () => {
-        if (heatmap) {
-          applyHeatMapRenderer(responsesLayer, mapView);
-        } else {
-          responsesLayer.renderer = new Renderer({
-            symbol: circleSymbol,
-          });
-        }
+        applyMapRenderer(responsesLayer, mapView, heatmap);
       }
     );
 
@@ -122,18 +104,9 @@ const PointMap = ({
 
   useEffect(() => {
     if (!mapView) return;
-    if (!responsesLayer.renderer) return;
 
-    const isCurrentlyHeatmap = responsesLayer.renderer.type === 'heatmap';
-
-    // Handle updates to heatmap variable
-    if (heatmap && !isCurrentlyHeatmap) {
-      applyHeatMapRenderer(responsesLayer, mapView);
-    } else if (!heatmap && isCurrentlyHeatmap) {
-      responsesLayer.renderer = new Renderer({
-        symbol: circleSymbol,
-      });
-    }
+    // Update renderer if heatmap variable changes
+    applyMapRenderer(responsesLayer, mapView, heatmap);
   }, [mapView, responsesLayer, heatmap]);
 
   useEffect(() => {
