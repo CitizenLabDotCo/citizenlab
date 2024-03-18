@@ -774,7 +774,7 @@ RSpec.describe SurveyResultsGeneratorService do
               'nl-NL' => 'Welke stad vind jij het leukst?'
             },
             required: true,
-            grouped: false,
+            grouped: true,
             totalResponseCount: 22,
             questionResponseCount: 6,
             totalPickCount: 22,

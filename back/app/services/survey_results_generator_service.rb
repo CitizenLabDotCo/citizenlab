@@ -100,7 +100,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
       question: field.title_multiloc,
       customFieldId: field.id,
       required: field.required,
-      grouped: false,
+      grouped: !!group_field_id,
       totalResponseCount: @inputs.count,
       questionResponseCount: response_count
     }
@@ -168,19 +168,24 @@ class SurveyResultsGeneratorService < FieldVisitorService
       answers: answers,
       multilocs: get_multilocs(field, group_field)
     })
+
     attributes[:textResponses] = get_text_responses("#{field.key}_other") if field.other_option_text_field
-    attributes[:legend] = group_field.options.map(&:key) + [nil] if group_field.present?
+    attributes[:legend] = generate_answer_keys(group_field) if group_field.present?
 
     attributes
   end
 
   def get_multilocs(field, group_field)
-    multilocs = { answer: get_option_details(field) }
-    multilocs[:group] = get_option_details(group_field) if group_field
+    multilocs = { answer: get_option_multilocs(field) }
+    multilocs[:group] = get_option_multilocs(group_field) if group_field
     multilocs
   end
 
-  def get_option_details(field)
+  def get_option_multilocs(field)
+    if field.input_type == 'linear_scale'
+      return build_linear_scale_multilocs(field)
+    end
+
     field.options.each_with_object({}) do |option, accu|
       option_detail = { title_multiloc: option.title_multiloc }
       option_detail[:image] = option.image&.image&.versions&.transform_values(&:url) if field.support_option_images?
