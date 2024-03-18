@@ -176,7 +176,10 @@ const AdminProjectEventEdit = () => {
 
   // When address 1 is updated, geocode the location point to match
   useEffect(() => {
-    if (eventAttrs.address_1 !== event?.data.attributes.address_1) {
+    if (
+      eventAttrs.address_1 &&
+      eventAttrs.address_1 !== event?.data.attributes.address_1
+    ) {
       const delayDebounceFn = setTimeout(async () => {
         const point = await geocode(eventAttrs.address_1);
         setGeocodedPoint(point);
