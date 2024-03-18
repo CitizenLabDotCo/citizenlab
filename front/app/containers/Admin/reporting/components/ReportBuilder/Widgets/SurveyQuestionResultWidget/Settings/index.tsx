@@ -18,6 +18,10 @@ import PhaseFilter from 'components/UI/PhaseFilter';
 
 import { useIntl } from 'utils/cl-intl';
 
+import {
+  SURVEY_QUESTION_INPUT_TYPES,
+  SLICE_SURVEY_QUESTION_INPUT_TYPES,
+} from '../../../constants';
 import ProjectFilter from '../../_shared/ProjectFilter';
 import widgetMessages from '../../messages';
 import { Props } from '../typings';
@@ -143,7 +147,7 @@ const Settings = () => {
           phaseId={phaseId}
           questionId={questionId}
           filterQuestion={({ attributes }) => {
-            return ['select', 'multiselect'].includes(attributes.input_type);
+            return SURVEY_QUESTION_INPUT_TYPES.has(attributes.input_type);
           }}
           label={formatMessage(messages.question)}
           onChange={handleQuestion}
@@ -165,8 +169,10 @@ const Settings = () => {
         <QuestionSelect
           phaseId={phaseId}
           questionId={groupFieldId}
-          filterQuestion={({ attributes, id }) => {
-            return attributes.input_type === 'select' && id !== questionId;
+          filterQuestion={({ attributes: { input_type }, id }) => {
+            const supportedInputType =
+              SLICE_SURVEY_QUESTION_INPUT_TYPES.has(input_type);
+            return supportedInputType && id !== questionId;
           }}
           label={formatMessage(messages.groupBySurveyQuestion)}
           onChange={handleGroupField}
