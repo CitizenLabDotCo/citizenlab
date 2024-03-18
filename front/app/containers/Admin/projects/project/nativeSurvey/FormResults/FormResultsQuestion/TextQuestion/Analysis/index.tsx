@@ -146,17 +146,16 @@ const Analysis = ({
           </Button>
         </Box>
       )}
-
       {showAnalysisInsights && (
         <>
           <Box
-            display="flex"
             justifyContent="flex-end"
             position="absolute"
             top="-40px"
             right="0"
             zIndex="1000"
             id="e2e-analysis-actions"
+            display={noInsights ? 'none' : 'flex'}
           >
             <IconButton
               iconName="dots-horizontal"
