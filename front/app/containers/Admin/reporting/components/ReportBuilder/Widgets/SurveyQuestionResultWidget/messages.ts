@@ -17,8 +17,4 @@ export default defineMessages({
     id: 'app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.untilNow',
     defaultMessage: '{date} until now',
   },
-  noAnswer: {
-    id: 'app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer',
-    defaultMessage: 'No answer',
-  },
 });

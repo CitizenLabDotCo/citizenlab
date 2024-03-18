@@ -6,4 +6,5 @@ export interface Props {
   questionId?: string;
   groupMode?: GroupMode;
   groupFieldId?: string;
+  heatmap?: boolean;
 }

@@ -1544,7 +1544,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.existingSubmissionsWarning": "Les réponses à ce sondage commencent à arriver. Des modifications apportées au sondage pourraient entraîner des pertes de données et des données incomplètes dans les fichiers exportés.",
   "app.containers.AdminPage.ProjectEdit.survey.file_upload": "Téléchargement de fichier",
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Retour",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText2": "Les réponses aux questions à réponse courte et longue ne sont actuellement disponibles que dans le téléchargement de l'enquête",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Échelle linéaire",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Réponse longue",
   "app.containers.AdminPage.ProjectEdit.survey.multiselectText2": "Choix multiple - choisissez-en plusieurs",

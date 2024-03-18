@@ -1544,7 +1544,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.existingSubmissionsWarning": "Submissions to this survey have started to come in. Changes to the survey may result in data loss and incomplete data in the exported files.",
   "app.containers.AdminPage.ProjectEdit.survey.file_upload": "File upload",
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Go back",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText2": "Odgovori na pitanja sa kratkim i dugačkim odgovorima trenutno su dostupni samo u preuzimanju ankete",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Linearna skala",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Long answer",
   "app.containers.AdminPage.ProjectEdit.survey.multiselectText2": "Višestruki izbor - izaberi više",

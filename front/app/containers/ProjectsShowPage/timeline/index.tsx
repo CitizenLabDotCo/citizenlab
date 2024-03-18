@@ -29,13 +29,14 @@ import { isValidPhase } from '../phaseParam';
 import PhaseIdeas from './Ideas';
 import PhaseDocumentAnnotation from './PhaseDocumentAnnotation';
 import PhaseNavigation from './PhaseNavigation';
-import PhaseReport from './PhaseReport';
 import PhasePoll from './Poll';
 import setPhaseURL from './setPhaseURL';
 import PhaseSurvey from './Survey';
 import Timeline from './Timeline';
 import PhaseVolunteering from './Volunteering';
 import VotingResults from './VotingResults';
+
+const PhaseReport = React.lazy(() => import('./PhaseReport'));
 
 const StyledSectionContainer = styled(SectionContainer)`
   display: flex;

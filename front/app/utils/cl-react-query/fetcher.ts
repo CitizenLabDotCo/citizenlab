@@ -136,6 +136,11 @@ async function fetcher({
       return null;
     }
 
+    if (response.status === 204) {
+      // No content
+      return null;
+    }
+
     reportError('Unsupported case. No valid JSON.');
     throw new Error('Unsupported case. No valid JSON.');
   }

@@ -433,18 +433,14 @@ export const parseLayers = (
   mapConfig: IMapConfig | null | undefined,
   localize: Localize
 ) => {
-  const mapConfigLayers = mapConfig?.data.attributes.layers;
+  const mapConfigLayers = mapConfig?.data?.attributes.layers;
+  if (!mapConfigLayers) return [];
+
   // All layers are either of type Esri or GeoJSON, so we can check just the first layer
-  if (
-    mapConfigLayers &&
-    mapConfigLayers[0]?.type === 'CustomMaps::GeojsonLayer'
-  ) {
-    return createEsriGeoJsonLayers(mapConfig?.data.attributes.layers, localize);
-  } else if (
-    mapConfigLayers &&
-    mapConfigLayers[0]?.type === 'CustomMaps::EsriFeatureLayer'
-  ) {
-    return createEsriFeatureLayers(mapConfig?.data.attributes.layers, localize);
+  if (mapConfigLayers[0]?.type === 'CustomMaps::GeojsonLayer') {
+    return createEsriGeoJsonLayers(mapConfigLayers, localize);
+  } else if (mapConfigLayers[0]?.type === 'CustomMaps::EsriFeatureLayer') {
+    return createEsriFeatureLayers(mapConfigLayers, localize);
   }
   return [];
 };

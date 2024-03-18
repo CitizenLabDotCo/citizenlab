@@ -49,7 +49,7 @@ export type GroupedAnswer = Answer & {
   groups: { group: string | null; count: number }[];
 };
 
-export type SurveyQuestionMultilocsGrouped = AnswerMultilocs & {
+export type AnswerMultilocsGrouped = AnswerMultilocs & {
   group: Record<string, MultilocAnswer>;
 };
 
@@ -60,12 +60,13 @@ type BaseAttributes = {
   required: boolean;
   totalResponseCount: number;
   totalPickCount: number;
+  questionResponseCount: number;
 };
 
 export type AttributesGrouped = BaseAttributes & {
   grouped: true;
   answers: GroupedAnswer[];
-  multilocs: SurveyQuestionMultilocsGrouped;
+  multilocs: AnswerMultilocsGrouped;
   legend: (string | null)[];
 };
 
@@ -73,6 +74,9 @@ export type AttributesUngrouped = BaseAttributes & {
   grouped: false;
   answers: Answer[];
   multilocs: AnswerMultilocs;
+  // For point (map) questions
+  mapConfigId?: string;
+  pointResponses?: { response: GeoJSON.Point }[];
 };
 
 export type SurveyQuestionResultAttributes =

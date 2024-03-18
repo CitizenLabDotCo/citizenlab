@@ -6,11 +6,19 @@ import { base64 } from '../../../fixtures/base64img';
 
 describe('Survey question widget', () => {
   let projectId: string;
+  let projectSlug: string;
   let surveyPhaseId: string;
   let surveyFields: ICustomFieldResponse[];
   let surveySchema: IIdeaJsonFormSchemas;
 
   let informationPhaseId: string;
+
+  const locations = [
+    [4.349371842575076, 50.85428103529364],
+    [4.369558682598269, 50.85155093085792],
+    [4.328887676753199, 50.81779337536646],
+    [4.409667095102465, 50.81558358138426],
+  ];
 
   const users = Array(4)
     .fill(0)
@@ -20,6 +28,7 @@ describe('Survey question widget', () => {
       email: randomEmail(),
       password: randomString(),
       gender: i % 2 ? 'male' : 'female',
+      location: locations[i],
     }));
 
   const userIds: string[] = [];
@@ -33,6 +42,8 @@ describe('Survey question widget', () => {
     })
       .then((project) => {
         projectId = project.body.data.id;
+        projectSlug = project.body.data.attributes.slug;
+
         return cy.apiCreatePhase({
           projectId,
           title: randomString(),
@@ -58,6 +69,7 @@ describe('Survey question widget', () => {
             'multiselect',
             'linear_scale',
             'multiselect_image',
+            'point',
           ],
           questionImage.body.data.id
         );
@@ -73,6 +85,7 @@ describe('Survey question widget', () => {
         const multiSelectKey = surveyFields[2].attributes.key;
         const linearScaleKey = surveyFields[3].attributes.key;
         const multiselectImageKey = surveyFields[4].attributes.key;
+        const pointKey = surveyFields[5].attributes.key;
 
         const fieldConfigs: any =
           surveySchema.data.attributes.json_schema_multiloc.en?.properties;
@@ -95,41 +108,47 @@ describe('Survey question widget', () => {
         const multiSelectAnswerKeys = getAnswerKeys(multiSelectKey);
         const multiselectImageAnswerKeys = getAnswerKeys(multiselectImageKey);
 
-        users.forEach(({ firstName, lastName, email, password, gender }, i) => {
-          let jwt: any;
+        users.forEach(
+          ({ firstName, lastName, email, password, gender, location }, i) => {
+            let jwt: any;
 
-          cy.apiSignup(firstName, lastName, email, password)
-            .then((response) => {
-              jwt = response._jwt;
-              userIds.push(response.body.data.id);
+            cy.apiSignup(firstName, lastName, email, password)
+              .then((response) => {
+                jwt = response._jwt;
+                userIds.push(response.body.data.id);
 
-              cy.apiUpdateUserCustomFields(
-                email,
-                password,
-                {
-                  gender,
-                },
-                jwt
-              );
-            })
-            .then(() => {
-              cy.apiCreateSurveyResponse(
-                email,
-                password,
-                projectId,
-                {
-                  [selectKey]: selectAnswerKeys[0],
-                  [multiSelectKey]: [
-                    multiSelectAnswerKeys[0],
-                    multiSelectAnswerKeys[1],
-                  ],
-                  [linearScaleKey]: i > 1 ? 3 : 2,
-                  [multiselectImageKey]: [multiselectImageAnswerKeys[0]],
-                },
-                jwt
-              );
-            });
-        });
+                cy.apiUpdateUserCustomFields(
+                  email,
+                  password,
+                  {
+                    gender,
+                  },
+                  jwt
+                );
+              })
+              .then(() => {
+                cy.apiCreateSurveyResponse(
+                  email,
+                  password,
+                  projectId,
+                  {
+                    [selectKey]: selectAnswerKeys[0],
+                    [multiSelectKey]: [
+                      multiSelectAnswerKeys[0],
+                      multiSelectAnswerKeys[1],
+                    ],
+                    [linearScaleKey]: i > 1 ? 3 : 2,
+                    [multiselectImageKey]: [multiselectImageAnswerKeys[0]],
+                    [pointKey]: {
+                      type: 'Point',
+                      coordinates: location,
+                    },
+                  },
+                  jwt
+                );
+              });
+          }
+        );
       })
       .then(() => {
         return cy.apiCreatePhase({
@@ -234,6 +253,7 @@ describe('Survey question widget', () => {
   });
 
   describe('phase report builder', () => {
+    // https://www.notion.so/citizenlab/Add-more-e2e-tests-47e6e8567e8b4ba2b60ed81834c32456
     //   it('works for select question', () => {
     //     // TODO
     //   });
@@ -319,7 +339,7 @@ describe('Survey question widget', () => {
 
     it('works for image question', () => {
       cy.setAdminLoginCookie();
-      cy.apiCreateReportBuilder().then((report) => {
+      cy.apiCreateReportBuilder(informationPhaseId).then((report) => {
         const reportId = report.body.data.id;
 
         cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
@@ -385,6 +405,119 @@ describe('Survey question widget', () => {
       });
     });
 
+    it('works for point question', () => {
+      cy.setAdminLoginCookie();
+      cy.apiCreateReportBuilder(informationPhaseId).then((report) => {
+        const reportId = report.body.data.id;
+
+        cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
+
+        cy.get('#e2e-draggable-survey-question-result-widget').dragAndDrop(
+          '#e2e-content-builder-frame',
+          {
+            position: 'inside',
+          }
+        );
+
+        cy.wait(1000);
+
+        // Select project, phase and question
+        cy.get('#e2e-report-builder-project-filter-box select').select(
+          projectId
+        );
+        cy.get('#e2e-phase-filter').select(surveyPhaseId);
+        cy.get('.e2e-question-select select')
+          .first()
+          .select(surveyFields[5].id);
+
+        // Expect map to render
+        cy.get('div.esri-view-root').contains('Responses');
+
+        // Save
+        cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
+          'saveReportLayout'
+        );
+        cy.get('#e2e-content-builder-topbar-save').click();
+        cy.wait('@saveReportLayout');
+
+        // Check if it's visible in the frontend
+        cy.visit(`/projects/${projectSlug}`);
+        cy.get('div.esri-view-root').contains('Responses');
+
+        cy.apiRemoveReportBuilder(reportId);
+      });
+    });
+
+    it('allows slicing multiselect by linear scale', () => {
+      cy.setAdminLoginCookie();
+      cy.apiCreateReportBuilder().then((report) => {
+        const reportId = report.body.data.id;
+
+        cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
+
+        cy.get('#e2e-draggable-survey-question-result-widget').dragAndDrop(
+          '#e2e-content-builder-frame',
+          {
+            position: 'inside',
+          }
+        );
+
+        cy.wait(1000);
+
+        // Select project, phase and question
+        cy.get('#e2e-report-builder-project-filter-box select').select(
+          projectId
+        );
+        cy.get('#e2e-phase-filter').select(surveyPhaseId);
+        cy.get('.e2e-question-select select')
+          .first()
+          .select(surveyFields[2].id);
+
+        // Group by linear scale
+        cy.get('#e2e-group-mode-select').select('survey_question');
+        cy.get('.e2e-question-select select')
+          .eq(1)
+          .select('Question: linear_scale');
+
+        const ensureCorrectGrouping = () => {
+          cy.get('svg.e2e-progress-bar').should('have.length', 5);
+          cy.get('svg.e2e-progress-bar')
+            .first()
+            .should('have.attr', 'width', '25%');
+          cy.get('svg.e2e-progress-bar')
+            .eq(1)
+            .should('have.attr', 'width', '25%');
+          cy.get('svg.e2e-progress-bar')
+            .eq(4)
+            .should('have.attr', 'width', '0%');
+
+          // Check colors
+          cy.get('svg.e2e-progress-bar > rect')
+            .first()
+            .should('have.attr', 'fill', '#2F478A');
+          cy.get('svg.e2e-progress-bar > rect')
+            .eq(1)
+            .should('have.attr', 'fill', '#4D85C6');
+        };
+
+        ensureCorrectGrouping();
+
+        // Save
+        cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
+          'saveReportLayout'
+        );
+        cy.get('#e2e-content-builder-topbar-save').click();
+        cy.wait('@saveReportLayout');
+
+        // Reload page and check if values are still correct
+        cy.reload();
+        ensureCorrectGrouping();
+
+        cy.apiRemoveReportBuilder(reportId);
+      });
+    });
+
+    // https://www.notion.so/citizenlab/Add-more-e2e-tests-47e6e8567e8b4ba2b60ed81834c32456
     //   it('is initialized with correct phase', () => {
 
     //   });

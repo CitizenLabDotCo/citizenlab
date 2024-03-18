@@ -6,4 +6,8 @@ export default defineMessages({
     defaultMessage:
       '{percentage}% ({choiceCount, plural, no {# choices} one {# choice} other {# choices}})',
   },
+  noAnswer: {
+    id: 'app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer',
+    defaultMessage: 'No answer',
+  },
 });
