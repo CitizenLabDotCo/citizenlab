@@ -210,6 +210,7 @@ describe('Phase report', () => {
 
         // Make sure report is visible for logged out users
         cy.logout();
+        cy.reload();
         reportShouldBeVisible();
 
         // Make sure widget is also there
@@ -243,6 +244,7 @@ describe('Phase report', () => {
 
         // Make sure report is visible for logged out users
         cy.logout();
+        cy.reload();
         reportShouldBeVisible();
         cy.contains('Total inputs: 1').should('exist');
 
@@ -267,12 +269,13 @@ describe('Phase report', () => {
         cy.wait('@saveReportLayout');
 
         reportShouldBeVisible();
-        cy.contains('0 responses').should('exist');
+        cy.contains('0/0 - Multiple choice').should('exist');
 
         // Make sure report is visible for logged out users
         cy.logout();
+        cy.reload();
         reportShouldBeVisible();
-        cy.contains('0 responses').should('exist');
+        cy.contains('0/0 - Multiple choice').should('exist');
 
         // Clean up
         cy.apiRemoveReportBuilder(reportId);
