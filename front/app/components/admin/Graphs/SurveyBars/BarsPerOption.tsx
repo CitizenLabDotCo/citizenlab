@@ -17,7 +17,7 @@ interface Props {
   label: string;
 }
 
-const ProgressBars2 = ({ values, total, label, colorScheme }: Props) => {
+const BarsPerOption = ({ values, total, label, colorScheme }: Props) => {
   const { formatMessage } = useIntl();
   const percentages = getRoundedPercentages(values, total);
   const valueSum = sum(values);
@@ -60,4 +60,4 @@ const ProgressBars2 = ({ values, total, label, colorScheme }: Props) => {
   );
 };
 
-export default ProgressBars2;
+export default BarsPerOption;
