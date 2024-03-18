@@ -155,7 +155,6 @@ class SurveyResultsGeneratorService < FieldVisitorService
     question_response_count = inputs.where("custom_field_values->'#{field.key}' IS NOT NULL").count
 
     attributes = core_field_attributes(field, question_response_count).merge({
-      grouped: !!group_field,
       totalPickCount: answers.pluck(:count).sum,
       answers: answers,
       multilocs: get_multilocs(field, group_field)
