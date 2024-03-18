@@ -1,11 +1,9 @@
 import React from 'react';
 
-// components
 import Box, { BoxProps } from '../Box';
 import Icon from '../Icon';
 import IconTooltip from '../IconTooltip';
 
-// styling
 import styled from 'styled-components';
 import { colors } from '../../utils/styleUtils';
 

@@ -1,12 +1,10 @@
 import React, { PureComponent, FormEvent, KeyboardEvent } from 'react';
 import { isNil, isEmpty, size as lodashSize, isBoolean } from 'lodash-es';
 
-// components
 import Error from '../Error';
 import Label from '../Label';
 import IconTooltip from '../IconTooltip';
 
-// style
 import styled from 'styled-components';
 import {
   colors,
@@ -17,7 +15,6 @@ import {
 } from '../../utils/styleUtils';
 import { ScreenReaderOnly } from '../../utils/a11y';
 
-// typings
 import { Locale, InputSize } from '../../utils/typings';
 
 interface ContainerProps {

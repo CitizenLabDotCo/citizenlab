@@ -1,10 +1,8 @@
 import React from 'react';
 
-// components
 import Box, { BoxProps } from '../Box';
 import { colors } from '../../utils/styleUtils';
 
-// styling
 import styled from 'styled-components';
 
 const StyledBox = styled(Box)`

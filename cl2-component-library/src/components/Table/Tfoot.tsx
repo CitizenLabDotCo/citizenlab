@@ -1,6 +1,5 @@
 import React from 'react';
 
-// styling
 import styled from 'styled-components';
 import { colors } from '../../utils/styleUtils';
 

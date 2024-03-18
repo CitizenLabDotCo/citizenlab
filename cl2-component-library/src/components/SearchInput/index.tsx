@@ -8,20 +8,16 @@ import React, {
 import { isEmpty } from 'lodash-es';
 import debounceFn from 'lodash/debounce';
 
-// components
 import Input from '../Input';
 import Box from '../Box';
 import IconButton from '../IconButton';
 import Icon from '../Icon';
 
-// styling
 import styled from 'styled-components';
 import { colors, isRtl, defaultStyles } from '../../utils/styleUtils';
 
-// typings
 import { InputSize } from '../../utils/typings';
 
-// utils
 import testEnv from '../../utils/testUtils/testEnv';
 
 const StyledInput = styled(Input)`

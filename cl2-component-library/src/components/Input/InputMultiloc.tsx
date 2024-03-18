@@ -1,17 +1,13 @@
 import React, { PureComponent } from 'react';
 
-// components
 import Input, { InputProps } from './';
 import IconTooltip from '../IconTooltip';
 import Label from '../Label';
 
-// utils
 import { isNilOrError } from '../../utils/helperUtils';
 
-// style
 import styled from 'styled-components';
 
-// typings
 import { Locale, Multiloc } from '../../utils/typings';
 
 const Container = styled.div``;

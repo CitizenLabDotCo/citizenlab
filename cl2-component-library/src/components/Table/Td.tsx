@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import Box, { BoxProps } from '../Box';
 
 export interface Props extends BoxProps {

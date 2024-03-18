@@ -1,10 +1,8 @@
 import React, { PureComponent } from 'react';
 
-// components
 import Icon from '../Icon';
 import { CSSTransition } from 'react-transition-group';
 
-// style
 import styled from 'styled-components';
 import { fontSizes, colors } from '../../utils/styleUtils';
 

@@ -1,16 +1,13 @@
 import React, { memo, useState, useCallback, useEffect } from 'react';
 import { isNilOrError } from '../../utils/helperUtils';
 
-// components
 import Input, { InputProps } from './';
 import IconTooltip from '../IconTooltip';
 import LocaleSwitcher from '../LocaleSwitcher';
 import Label from '../Label';
 
-// style
 import styled from 'styled-components';
 
-// typings
 import { Locale, Multiloc } from '../../utils/typings';
 import Box from '../Box';
 

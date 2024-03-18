@@ -1,9 +1,7 @@
 import React from 'react';
 
-// components
 import Box, { BoxProps } from '../Box';
 
-// styling
 import styled from 'styled-components';
 import { colors, fontSizes } from '../../utils/styleUtils';
 

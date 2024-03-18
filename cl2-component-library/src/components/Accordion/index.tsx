@@ -1,11 +1,9 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 
-// Styling
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 import { colors, isRtl } from '../../utils/styleUtils';
 
-// Components
 import ListItem from '../ListItem';
 import Box, { BoxMarginProps, BoxPaddingProps, BoxWidthProps } from '../Box';
 import Icon from '../Icon';
