@@ -164,6 +164,9 @@ gem 'cloudfront-rails', '~> 0.4'
 gem 'google-cloud-document_ai'
 gem 'combine_pdf'
 
+# Anti-virus for uploads
+gem 'clamby'
+
 free_engines = %w[
   document_annotation
   email_campaigns

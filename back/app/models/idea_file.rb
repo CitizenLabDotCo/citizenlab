@@ -22,6 +22,8 @@
 #
 class IdeaFile < ApplicationRecord
   mount_base64_file_uploader :file, IdeaFileUploader
+  # TODO: fails on seeding / restore from template
+  validates_with AntiVirusValidator, attribute_name: 'file'
   belongs_to :idea, inverse_of: :idea_files
 
   validates :idea, :name, presence: true

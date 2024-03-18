@@ -37,7 +37,9 @@ RUN apt-get update                                        \
    jpegoptim                                              \
    optipng                                                \
    pngquant                                               \
-   # tiktoken_ruby
+    # For anti-virus
+    clamav                                                \
+    # tiktoken_ruby
    clang                                                  \
    && curl -sL https://deb.nodesource.com/setup_18.x  | bash - \
    && apt-get -y --no-install-recommends install nodejs        \

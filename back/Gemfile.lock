@@ -528,6 +528,7 @@ GEM
       mime-types (~> 3.0)
     case_transform (0.2)
       activesupport
+    clamby (1.6.11)
     cloudfront-rails (0.4.0)
       railties (> 4.0)
     coderay (1.1.3)
@@ -1229,6 +1230,7 @@ DEPENDENCIES
   capybara (~> 3.39)
   carrierwave (~> 3.0.5)
   carrierwave-base64 (~> 2.10)
+  clamby
   cloudfront-rails (~> 0.4)
   combine_pdf
   content_builder!
