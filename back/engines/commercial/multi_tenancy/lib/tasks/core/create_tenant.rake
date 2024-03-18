@@ -34,6 +34,14 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           },
           zoom_level: 12
         },
+        custom_maps: {
+          enabled: true,
+          allowed: true
+        },
+        esri_integration: {
+          enabled: true,
+          allowed: true
+        },
         private_projects: {
           enabled: true,
           allowed: true
@@ -318,6 +326,10 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           allowed: true
         },
         input_form_custom_fields: {
+          enabled: true,
+          allowed: true
+        },
+        input_form_mapping_question: {
           enabled: true,
           allowed: true
         },
