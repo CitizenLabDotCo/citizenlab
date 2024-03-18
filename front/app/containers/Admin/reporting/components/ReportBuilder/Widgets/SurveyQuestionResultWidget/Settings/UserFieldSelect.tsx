@@ -10,6 +10,8 @@ import useLocalize, { Localize } from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { SLICE_REGISTRATION_FIELD_INPUT_TYPES } from '../../../constants';
+
 import messages from './messages';
 
 interface Props {
@@ -28,7 +30,7 @@ const generateOptions = (questions: IUserCustomFields, localize: Localize) => {
 
 const UserFieldSelect = ({ userFieldId, onChange }: Props) => {
   const { data: userFields } = useUserCustomFields({
-    inputTypes: ['select'],
+    inputTypes: SLICE_REGISTRATION_FIELD_INPUT_TYPES,
   });
   const localize = useLocalize();
   const { formatMessage } = useIntl();

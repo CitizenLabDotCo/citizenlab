@@ -506,17 +506,19 @@ RSpec.describe SurveyResultsGeneratorService do
         end
 
         it 'groups multiselect by user field' do
-          expect(generator.generate_results(
-            field_id: multiselect_field.id,
+          generator = described_class.new(survey_phase,
             group_mode: 'user_field',
-            group_field_id: user_custom_field.id
+            group_field_id: user_custom_field.id)
+          expect(generator.generate_results(
+            field_id: multiselect_field.id
           )).to match expected_result_multiselect_with_user_field_grouping
         end
 
         it 'groups multiselect by select field' do
+          generator = described_class.new(survey_phase,
+            group_field_id: select_field.id)
           expect(generator.generate_results(
-            field_id: multiselect_field.id,
-            group_field_id: select_field.id
+            field_id: multiselect_field.id
           )).to match expected_result_multiselect_with_select_field_grouping
         end
       end
@@ -594,39 +596,69 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       context 'with grouping' do
-        let(:grouped_linear_scale_answers) do
-          [
-            { answer: 5, count: 1, groups: [
-              { count: 1, group: nil }
-            ] },
-            { answer: 4, count: 1, groups: [
-              { count: 1, group: 'la' }
-            ] },
-            { answer: 3, count: 8, groups: [
-              { count: 1, group: 'ny' },
-              { count: 7, group: nil }
-            ] },
-            { answer: 2, count: 5, groups: [
-              { count: 5, group: nil }
-            ] },
-            { answer: 1, count: 2, groups: [
-              { count: 2, group: nil }
-            ] },
-            { answer: nil, count: 5, groups: [
-              { count: 1, group: 'la' },
-              { count: 3, group: 'other' },
-              { count: 1, group: nil }
-            ] }
-          ]
+        let(:grouped_linear_scale_results) do
+          {
+            customFieldId: linear_scale_field.id,
+            inputType: 'linear_scale',
+            question: {
+              'en' => 'Do you agree with the vision?',
+              'fr-FR' => "Êtes-vous d'accord avec la vision ?",
+              'nl-NL' => 'Ben je het eens met de visie?'
+            },
+            required: true,
+            grouped: true,
+            totalResponseCount: 22,
+            questionResponseCount: 17,
+            totalPickCount: 22,
+            answers: [
+              { answer: 5, count: 1, groups: [
+                { count: 1, group: nil }
+              ] },
+              { answer: 4, count: 1, groups: [
+                { count: 1, group: 'la' }
+              ] },
+              { answer: 3, count: 8, groups: [
+                { count: 1, group: 'ny' },
+                { count: 7, group: nil }
+              ] },
+              { answer: 2, count: 5, groups: [
+                { count: 5, group: nil }
+              ] },
+              { answer: 1, count: 2, groups: [
+                { count: 2, group: nil }
+              ] },
+              { answer: nil, count: 5, groups: [
+                { count: 1, group: 'la' },
+                { count: 3, group: 'other' },
+                { count: 1, group: nil }
+              ] }
+            ],
+            multilocs: {
+              answer: {
+                1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => "1 - Pas du tout d'accord", 'nl-NL' => '1 - Helemaal niet mee eens' } },
+                2 => { title_multiloc: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' } },
+                3 => { title_multiloc: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' } },
+                4 => { title_multiloc: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' } },
+                5 => { title_multiloc: { 'en' => '5 - Strongly agree', 'fr-FR' => "5 - Tout à fait d'accord", 'nl-NL' => '5 - Strerk mee eens' } }
+              },
+              group: {
+                'la' => { title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' } },
+                'ny' => { title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' } },
+                'other' => { title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' } }
+              }
+            },
+            legend: ['la', 'ny', 'other', nil]
+          }
         end
 
         it 'returns a grouped result for a linear scale field' do
-          result = generator.generate_results(
-            field_id: linear_scale_field.id,
+          generator = described_class.new(survey_phase,
             group_mode: 'survey_question',
-            group_field_id: select_field.id
+            group_field_id: select_field.id)
+          result = generator.generate_results(
+            field_id: linear_scale_field.id
           )
-          expect(result[:answers]).to match grouped_linear_scale_answers
+          expect(result).to match grouped_linear_scale_results
         end
       end
     end
@@ -727,10 +759,11 @@ RSpec.describe SurveyResultsGeneratorService do
         end
 
         it 'groups select by user field' do
-          expect(generator.generate_results(
-            field_id: select_field.id,
+          generator = described_class.new(survey_phase,
             group_mode: 'user_field',
-            group_field_id: user_custom_field.id
+            group_field_id: user_custom_field.id)
+          expect(generator.generate_results(
+            field_id: select_field.id
           )).to match expected_result_select_with_user_field_grouping
         end
 
@@ -743,10 +776,11 @@ RSpec.describe SurveyResultsGeneratorService do
         # end
 
         it 'groups by linear scale' do
-          result = generator.generate_results(
-            field_id: select_field.id,
+          generator = described_class.new(survey_phase,
             group_mode: 'survey_question',
-            group_field_id: linear_scale_field.id
+            group_field_id: linear_scale_field.id)
+          result = generator.generate_results(
+            field_id: select_field.id
           )
 
           expect(result[:answers]).to match [
@@ -839,10 +873,11 @@ RSpec.describe SurveyResultsGeneratorService do
 
       context 'with grouping' do
         it 'groups multiselect image by survey question' do
-          result = generator.generate_results(
-            field_id: multiselect_image_field.id,
+          generator = described_class.new(survey_phase,
             group_mode: 'survey_question',
-            group_field_id: select_field.id
+            group_field_id: select_field.id)
+          result = generator.generate_results(
+            field_id: multiselect_image_field.id
           )
 
           expect(result[:answers]).to match [

@@ -31,7 +31,7 @@ resource 'Project', admin_api: true do
       example_request 'it exports a project' do
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        template = YAML.load(json_response[:template_yaml])
+        template = YAML.load(json_response[:template_yaml], aliases: true)
 
         expect(template['models']['project'].first.dig('title_multiloc', 'en')).to eq project.title_multiloc['en']
         expect(template['models']['phase'].size).to eq project.phases.count

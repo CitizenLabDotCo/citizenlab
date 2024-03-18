@@ -20,7 +20,7 @@ import { withoutSpacing } from 'utils/textUtils';
 import MostReactedIdeasWidget from '../../Widgets/MostReactedIdeasWidget';
 import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget';
 import TextMultiloc from '../../Widgets/TextMultiloc';
-import { SUPPORTED_INPUT_TYPES } from '../constants';
+import { SURVEY_QUESTION_INPUT_TYPES } from '../../constants';
 
 import messages from './messages';
 
@@ -44,7 +44,7 @@ const PhaseTemplate = ({ phaseId }: Props) => {
 
   const filteredSurveyQuestions = surveyQuestions
     ? surveyQuestions.data.filter((field) =>
-        SUPPORTED_INPUT_TYPES.has(field.attributes.input_type)
+        SURVEY_QUESTION_INPUT_TYPES.has(field.attributes.input_type)
       )
     : undefined;
 
