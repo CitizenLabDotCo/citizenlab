@@ -7,8 +7,9 @@ const useCustomFields = ({
   projectId,
   phaseId,
   inputTypes,
+  copy,
 }: ICustomFieldsParameters) => {
-  const result = useRawCustomFields({ projectId, phaseId, inputTypes });
+  const result = useRawCustomFields({ projectId, phaseId, inputTypes, copy });
 
   const options = useCustomFieldOptions({
     projectId,

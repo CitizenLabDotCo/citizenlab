@@ -40,6 +40,10 @@
 class CustomField < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0, scope: [:resource_id]
 
+  # Non persisted attributes for form copying
+  attribute :temp_id
+  attribute :copied, :boolean, default: false
+
   has_many :options, -> { order(:ordering) }, dependent: :destroy, class_name: 'CustomFieldOption', inverse_of: :custom_field
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images

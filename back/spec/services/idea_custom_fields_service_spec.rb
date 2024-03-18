@@ -549,5 +549,19 @@ describe IdeaCustomFieldsService do
         expect(errors['1']).not_to be_nil
       end
     end
+
+    describe '#reset_copy_fields' do
+      let(:survey_project) { create(:single_phase_native_survey_project) }
+      let(:custom_form) { create(:custom_form, participation_context: survey_project.phases.first) }
+
+      it 'replaces IDs with number' do
+        create(:custom_field_page, resource: custom_form)
+        fields = service.all_fields_reset
+        binding.pry
+        expect(fields.count).to eq 1
+      end
+
+      # If not persisted just it returns default form
+    end
   end
 end

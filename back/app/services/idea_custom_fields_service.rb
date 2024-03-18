@@ -141,6 +141,45 @@ class IdeaCustomFieldsService
     end
   end
 
+  def all_fields_reset
+    fields = all_fields
+    logic_id_map = { survey_end: 'survey_end' }
+    fields.map do |field|
+      # Set the ID in the serializer? If temp_id then set the ID
+      # field.id = SecureRandom.uuid # Will this work for front end?
+
+      field.copied = true # to use in the serializer
+      if field.input_type == 'page'
+        field.temp_id = generate_temp_id
+        logic_id_map[field.id] = field.temp_id
+      end
+
+      # field.options = field.options.map do |option|
+      #   option.temp_id = generate_temp_id
+      # end
+
+      # if (newField.options && newField.options.length > 0) {
+      #   newField.options = newField.options?.map((option: IOptionsType) => {
+      #     const sourceOptionId = option.id;
+      # const { ...newOption } = option;
+      # delete newOption.id;
+      # newOption.temp_id = generateTempId();
+      # if (sourceOptionId) logicIdMap[sourceOptionId] = newOption.temp_id;
+      # return newOption;
+      # });
+      # }
+      #
+      # TODO: Also do this resetOptionsIfNotPersisted - in fact maybe just do the one function for not persisted
+      # If it's a copy then the not_persisted flag is set on the form and that is then used to reset everything in a single method
+
+      field
+    end
+  end
+
+  def generate_temp_id
+    "TEMP-ID-#{SecureRandom.uuid}"
+  end
+
   private
 
   # Replace a point field with two fields, one for latitude and one for longitude,
