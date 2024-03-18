@@ -1544,7 +1544,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.existingSubmissionsWarning": "Os envios para esta pesquisa começaram a chegar. Alterações na pesquisa podem resultar em perda de dados e dados incompletos nos arquivos exportados.",
   "app.containers.AdminPage.ProjectEdit.survey.file_upload": "Carregamento de arquivos",
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Voltar",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText2": "As respostas a perguntas de resposta curta e longa estão atualmente disponíveis apenas no download da pesquisa",
+  "app.containers.AdminPage.ProjectEdit.survey.informationText3": "Os resumos de IA das perguntas de resposta curta e longa podem ser acessados na guia IA na barra lateral esquerda.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Escala linear",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Resposta longa",
   "app.containers.AdminPage.ProjectEdit.survey.multiselectText2": "Escolha múltipla - escolha muitos",
