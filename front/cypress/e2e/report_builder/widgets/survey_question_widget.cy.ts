@@ -475,10 +475,31 @@ describe('Survey question widget', () => {
 
         // Group by linear scale
         cy.get('#e2e-group-mode-select').select('survey_question');
-        cy.get('#e2e-user-field-select').select('Question: linear_scale');
+        cy.get('.e2e-question-select select')
+          .eq(1)
+          .select('Question: linear_scale');
 
-        // TODO ensure correct grouping
-        const ensureCorrectGrouping = () => {};
+        const ensureCorrectGrouping = () => {
+          cy.get('svg.e2e-progress-bar').should('have.length', 5);
+          cy.get('svg.e2e-progress-bar')
+            .first()
+            .should('have.attr', 'width', '25%');
+          cy.get('svg.e2e-progress-bar')
+            .eq(1)
+            .should('have.attr', 'width', '25%');
+          cy.get('svg.e2e-progress-bar')
+            .eq(4)
+            .should('have.attr', 'width', '0%');
+
+          // Check colors
+          cy.get('svg.e2e-progress-bar > rect')
+            .first()
+            .should('have.attr', 'fill', '#2F478A');
+          cy.get('svg.e2e-progress-bar > rect')
+            .eq(1)
+            .should('have.attr', 'fill', '#4D85C6');
+        };
+
         ensureCorrectGrouping();
 
         // Save

@@ -49,8 +49,6 @@ const SurveyQuestionResult = ({
 
   const { attributes } = response.data;
 
-  console.log(attributes);
-
   const colorScheme = attributes.grouped
     ? getColorScheme(attributes.legend.length)
     : undefined;
