@@ -28,8 +28,6 @@ export const applyMapRenderer = (
   // no need to do anything
   if (hasRenderer && hasHeatmap === showHeatmap) return;
 
-  console.log('applying renderer');
-
   if (showHeatmap) {
     applyHeatMapRenderer(layer, mapView);
   } else {
