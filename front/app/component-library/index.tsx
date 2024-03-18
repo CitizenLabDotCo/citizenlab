@@ -35,9 +35,7 @@ import IconTooltip, {
 } from './components/IconTooltip';
 import Image, { ImageProps } from './components/Image';
 import Input, { InputProps } from './components/Input';
-import InputMultiloc, {
-  Props as InputMultilocProps,
-} from './components/Input/InputMultiloc';
+import InputMultiloc from './components/Input/InputMultiloc';
 import InputMultilocWithLocaleSwitcher, {
   Props as InputMultilocWithLocaleSwitcherProps,
 } from './components/Input/InputMultilocWithLocaleSwitcher';
@@ -58,19 +56,13 @@ import StatusLabel from './components/StatusLabel';
 import Success from './components/Success';
 import {
   Table,
-  TableProps,
   Thead,
-  TheadProps,
   Tbody,
-  TbodyProps,
   Tr,
   TrProps,
   Td,
-  TdProps,
   Th,
-  ThProps,
   Tfoot,
-  TfootProps,
 } from './components/Table';
 import Text, { TextProps } from './components/Text';
 import Title, { TitleProps } from './components/Title';
@@ -94,7 +86,6 @@ import {
   remCalc,
   calculateContrastRatio,
   hexToRgb,
-  MainThemeProps,
   Color,
   isRtl,
 } from './utils/styleUtils';
@@ -104,13 +95,7 @@ export type {
   RadioProps,
   IconProps,
   IconNames,
-  TableProps,
-  TheadProps,
-  TbodyProps,
   TrProps,
-  TdProps,
-  ThProps,
-  TfootProps,
   BoxProps,
   BoxColorProps,
   BoxBackgroundProps,
@@ -131,9 +116,7 @@ export type {
   ImageProps,
   TextProps,
   TitleProps,
-  MainThemeProps as CitizenlabThemeProps,
   Color,
-  InputMultilocProps,
   InputMultilocWithLocaleSwitcherProps,
   InputProps,
   SelectProps,
