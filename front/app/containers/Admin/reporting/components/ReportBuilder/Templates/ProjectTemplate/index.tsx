@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { Element } from '@craftjs/core';
+import { Element, useEditor } from '@craftjs/core';
 import moment from 'moment';
 
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
@@ -40,10 +40,9 @@ import messages from './messages';
 export interface Props {
   reportId: string;
   projectId: string;
-  initializeContent?: boolean;
 }
 
-const ProjectTemplate = ({ reportId, projectId, initializeContent }: Props) => {
+const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
   const { data: project } = useProjectById(projectId);
@@ -53,7 +52,7 @@ const ProjectTemplate = ({ reportId, projectId, initializeContent }: Props) => {
 
   const { data: surveyQuestions } = useRawCustomFields({
     phaseId:
-      initializeContent && templateData?.participationMethod === 'native_survey'
+      templateData?.participationMethod === 'native_survey'
         ? templateData?.phaseId
         : undefined,
   });
@@ -61,11 +60,7 @@ const ProjectTemplate = ({ reportId, projectId, initializeContent }: Props) => {
   if (!project || !phases || !templateData) return null;
 
   const { participationMethod, phaseId } = templateData;
-  if (
-    participationMethod === 'native_survey' &&
-    !surveyQuestions &&
-    initializeContent
-  ) {
+  if (participationMethod === 'native_survey' && !surveyQuestions) {
     return null;
   }
 
@@ -185,6 +180,19 @@ const ProjectTemplate = ({ reportId, projectId, initializeContent }: Props) => {
       />
     </Element>
   );
+};
+
+const ProjectTemplate = ({ reportId, projectId }: Props) => {
+  const { enabled } = useEditor((state) => {
+    return {
+      enabled: state.options.enabled,
+    };
+  });
+  if (enabled) {
+    return <ProjectTemplateContent reportId={reportId} projectId={projectId} />;
+  } else {
+    return <Element id="phase-report-template" is={Box} canvas />;
+  }
 };
 
 export default ProjectTemplate;
