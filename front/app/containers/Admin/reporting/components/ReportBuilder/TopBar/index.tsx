@@ -36,7 +36,6 @@ import messages from './messages';
 import QuitModal from './QuitModal';
 
 type ContentBuilderTopBarProps = {
-  hasError: boolean;
   hasPendingState: boolean;
   selectedLocale: Locale;
   reportId: string;
@@ -49,7 +48,6 @@ type ContentBuilderTopBarProps = {
 };
 
 const ContentBuilderTopBar = ({
-  hasError,
   selectedLocale,
   hasPendingState,
   reportId,
@@ -71,8 +69,8 @@ const ContentBuilderTopBar = ({
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  const disableSave = !!hasError || !!hasPendingState || saved;
-  const disablePrint = !!hasError || !!hasPendingState || !saved;
+  const disableSave = !!hasPendingState || saved;
+  const disablePrint = !!hasPendingState || !saved;
 
   const closeModal = () => {
     setShowQuitModal(false);

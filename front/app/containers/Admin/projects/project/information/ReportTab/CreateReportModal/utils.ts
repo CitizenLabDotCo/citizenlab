@@ -10,7 +10,7 @@ export const PARTICIPATION_METHODS: ParticipationMethod[] = [
 export const findInitialPhase = (phases: IPhaseData[]) => {
   for (const phase of phases) {
     const isPastOrOngoing =
-      pastPresentOrFuture(phase.attributes.start_at) === 'past';
+      pastPresentOrFuture(phase.attributes.start_at) !== 'future';
 
     if (
       isPastOrOngoing &&
