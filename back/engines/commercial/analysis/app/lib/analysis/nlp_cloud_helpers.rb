@@ -16,6 +16,7 @@ module Analysis
       'el-GR' => 'ell_Grek',
       'en-CA' => nil,   # English is the default
       'en-GB' => nil,   # English is the default
+      'en-IE' => nil,   # English is the default
       'es-CL' => 'spa_Latn',   # Spanish (Chile) is not present
       'es-ES' => 'spa_Latn',
       'fi-FI' => 'fin_Latn',

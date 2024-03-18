@@ -17,13 +17,10 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
 import { withoutSpacing } from 'utils/textUtils';
 
-// shared widgets
-
-// report builder widgets
 import MostReactedIdeasWidget from '../../Widgets/MostReactedIdeasWidget';
 import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget';
-import { SUPPORTED_INPUT_TYPES } from '../../Widgets/SurveyQuestionResultWidget/constants';
 import TextMultiloc from '../../Widgets/TextMultiloc';
+import { SURVEY_QUESTION_INPUT_TYPES } from '../../constants';
 
 import messages from './messages';
 
@@ -47,7 +44,7 @@ const PhaseTemplate = ({ phaseId }: Props) => {
 
   const filteredSurveyQuestions = surveyQuestions
     ? surveyQuestions.data.filter((field) =>
-        SUPPORTED_INPUT_TYPES.has(field.attributes.input_type)
+        SURVEY_QUESTION_INPUT_TYPES.has(field.attributes.input_type)
       )
     : undefined;
 
