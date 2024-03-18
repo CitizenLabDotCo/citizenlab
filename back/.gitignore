@@ -43,3 +43,6 @@ secrets/*
 # VSCode settings files
 .vscode/
 .devcontainer/
+
+# Antivirus
+config/clamav/definitions/*
