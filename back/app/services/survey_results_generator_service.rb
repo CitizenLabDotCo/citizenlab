@@ -51,11 +51,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def visit_linear_scale(field)
-    answer_titles = build_linear_scale_multilocs(field)
-
-    field_attributes = visit_select_base field
-    field_attributes[:multilocs][:answer] = answer_titles
-    field_attributes
+    visit_select_base(field)
   end
 
   def visit_file_upload(field)
