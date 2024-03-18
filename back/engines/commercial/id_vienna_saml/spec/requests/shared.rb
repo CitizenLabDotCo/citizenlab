@@ -124,6 +124,27 @@ RSpec.shared_examples 'authenticates when the user was already registered with V
           end.to(change { User.first.email }.from('philipp.test@extern.wien.gv.at').to('test393@citizenlab.co'))
         end
       end
+
+      context 'when password login is enabled' do
+        before do
+          configuration = AppConfiguration.instance
+          configuration.settings['password_login'] = {
+            allowed: true,
+            enabled: true,
+            minimum_length: 8,
+            phone: false,
+            enable_signup: true
+          }
+          configuration.save!
+        end
+
+        it "doesn't updates user's email" do
+          expect do
+            send_auth_request
+          end.not_to(change { User.first.email })
+          expect(User.first.email).to eq('philipp.test@extern.wien.gv.at')
+        end
+      end
     end
   end
 end
