@@ -74,9 +74,7 @@ module IdViennaSaml
 
     # @return [Array<Symbol>] Returns a list of attributes that can be updated from the auth response hash
     def updateable_user_attrs
-      # If password_login is disabled, users cannot update their emails on UI,
-      # but we still want to keep their emails up to date.
-      %i[email first_name last_name]
+      %i[first_name last_name]
     end
 
     # Removes the response object because it produces a Stacklevel too deep error when converting to JSON
