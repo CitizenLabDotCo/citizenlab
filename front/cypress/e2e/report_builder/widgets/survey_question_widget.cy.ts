@@ -448,6 +448,54 @@ describe('Survey question widget', () => {
       });
     });
 
+    it('allows slicing multiselect by linear scale', () => {
+      cy.setAdminLoginCookie();
+      cy.apiCreateReportBuilder().then((report) => {
+        const reportId = report.body.data.id;
+
+        cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
+
+        cy.get('#e2e-draggable-survey-question-result-widget').dragAndDrop(
+          '#e2e-content-builder-frame',
+          {
+            position: 'inside',
+          }
+        );
+
+        cy.wait(1000);
+
+        // Select project, phase and question
+        cy.get('#e2e-report-builder-project-filter-box select').select(
+          projectId
+        );
+        cy.get('#e2e-phase-filter').select(surveyPhaseId);
+        cy.get('.e2e-question-select select')
+          .first()
+          .select(surveyFields[2].id);
+
+        // Group by linear scale
+        cy.get('#e2e-group-mode-select').select('survey_question');
+        cy.get('#e2e-user-field-select').select('Question: linear_scale');
+
+        // TODO ensure correct grouping
+        const ensureCorrectGrouping = () => {};
+        ensureCorrectGrouping();
+
+        // Save
+        cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
+          'saveReportLayout'
+        );
+        cy.get('#e2e-content-builder-topbar-save').click();
+        cy.wait('@saveReportLayout');
+
+        // Reload page and check if values are still correct
+        cy.reload();
+        ensureCorrectGrouping();
+
+        cy.apiRemoveReportBuilder(reportId);
+      });
+    });
+
     // https://www.notion.so/citizenlab/Add-more-e2e-tests-47e6e8567e8b4ba2b60ed81834c32456
     //   it('is initialized with correct phase', () => {
 

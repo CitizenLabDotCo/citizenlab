@@ -26,6 +26,7 @@ import VisitorsTrafficSourcesWidget, {
   visitorsTrafficSourcesTitle,
 } from './ChartWidgets/VisitorsTrafficSourcesWidget';
 import VisitorsWidget, { visitorsTitle } from './ChartWidgets/VisitorsWidget';
+import IframeMultiloc, { iframeMultilocTitle } from './IframeMultiloc';
 import ImageMultiloc, { imageMultilocTitle } from './ImageMultiloc';
 import MostReactedIdeasWidget, {
   mostReactedIdeasTitle,
@@ -54,6 +55,7 @@ export const WIDGETS = {
   PostsByTimeWidget,
   CommentsByTimeWidget,
   ReactionsByTimeWidget,
+  IframeMultiloc,
 
   // Deprecated
   TitleMultiloc, // TODO: remove this widget (TAN-1022)
@@ -79,6 +81,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   PostsByTimeWidget: postsByTimeTitle,
   CommentsByTimeWidget: commentsByTimeTitle,
   ReactionsByTimeWidget: reactionsByTimeTitle,
+  IframeMultiloc: iframeMultilocTitle,
 
   // Deprecated
   TitleMultiloc: titleMultilocTitle,
@@ -103,6 +106,7 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'VisitorsTrafficSourcesWidget',
   'VisitorsWidget',
   'SurveyQuestionResultWidget',
+  'IframeMultiloc',
 
   // Deprecated
   'SurveyResultsWidget',

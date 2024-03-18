@@ -17,10 +17,10 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
 import { withoutSpacing } from 'utils/textUtils';
 
+import { SURVEY_QUESTION_INPUT_TYPES } from '../../constants';
 import MostReactedIdeasWidget from '../../Widgets/MostReactedIdeasWidget';
 import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget';
 import TextMultiloc from '../../Widgets/TextMultiloc';
-import { SURVEY_QUESTION_INPUT_TYPES } from '../../constants';
 
 import messages from './messages';
 
