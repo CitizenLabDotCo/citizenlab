@@ -25,6 +25,7 @@ const FormResultsQuestion = ({
   required,
   totalSubmissions,
   multilocs,
+  totalPickCount,
 }: FormResultsQuestionProps) => {
   const isMultipleChoiceAndHasAnswers = !!answers;
 
@@ -40,10 +41,10 @@ const FormResultsQuestion = ({
           totalSubmissions={totalSubmissions}
           totalResponses={questionResponseCount}
         />
-        {isMultipleChoiceAndHasAnswers && multilocs && (
+        {isMultipleChoiceAndHasAnswers && multilocs && totalPickCount && (
           <MultipleChoice
             multipleChoiceAnswers={answers}
-            totalResponses={questionResponseCount}
+            totalResponses={totalPickCount}
             multilocs={multilocs}
           />
         )}
