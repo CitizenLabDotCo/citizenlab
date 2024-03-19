@@ -1,8 +1,18 @@
-import { colors } from '../../utils/styleUtils';
+import { Color, colors } from '../../utils/styleUtils';
 
 import { getColor } from './utils';
 
-describe('Checkbox getColor utility function', () => {
+jest.mock('polished', () => ({
+  // Mock the 'darken' function
+  darken: (color: Color, amount: number) => `darkened_${color}_${amount}`,
+  // Mock the 'lighten' function
+  lighten: (color: Color, amount: number) => `lightened_${color}_${amount}`,
+  // Mock the 'transparentize' function
+  transparentize: (color: Color, amount: number) =>
+    `transparent_${color}_${amount}`,
+}));
+
+describe('getColor', () => {
   it('returns correct colors when checkbox is not checked or indeterminate', () => {
     const borderColor = getColor({
       checkedOrIndeterminate: false,
@@ -43,9 +53,9 @@ describe('Checkbox getColor utility function', () => {
       element: 'hoverBackground',
     });
     expect(borderColor).toEqual('#04884C');
-    expect(hoverBorderColor).toEqual('#036f3e');
+    expect(hoverBorderColor).toEqual('darkened_0.05_#04884C');
     expect(backgroundColor).toEqual('#04884C');
-    expect(hoverBackgroundColor).toEqual('#036f3e');
+    expect(hoverBackgroundColor).toEqual('darkened_0.05_#04884C');
   });
   it('returns correct colors when checkbox is checked, and a custom color provided', () => {
     const borderColor = getColor({
@@ -69,8 +79,8 @@ describe('Checkbox getColor utility function', () => {
       element: 'hoverBackground',
     });
     expect(borderColor).toEqual('#147985');
-    expect(hoverBorderColor).toEqual('#11656f');
+    expect(hoverBorderColor).toEqual('darkened_0.05_#147985');
     expect(backgroundColor).toEqual('#147985');
-    expect(hoverBackgroundColor).toEqual('#11656f');
+    expect(hoverBackgroundColor).toEqual('darkened_0.05_#147985');
   });
 });

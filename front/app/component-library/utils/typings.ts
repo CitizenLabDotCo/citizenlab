@@ -20,15 +20,6 @@ export type MultilocFormValues = {
   [field: string]: Multiloc | null | undefined;
 };
 
-export interface CLError {
-  error: string;
-  raw_error?: string;
-  value?: number | string;
-  row?: number;
-  rows?: number[];
-  ideas_count?: number;
-}
-
 export type IGraphPoint = {
   name: string;
   value: number;
