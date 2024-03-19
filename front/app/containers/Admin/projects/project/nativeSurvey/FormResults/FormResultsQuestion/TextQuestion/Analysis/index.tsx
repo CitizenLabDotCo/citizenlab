@@ -15,6 +15,7 @@ import styled from 'styled-components';
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
 import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';
+import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
 
 import Button from 'components/UI/Button';
 
@@ -47,7 +48,7 @@ const Analysis = ({
     phaseId: string;
   };
 
-  const { data: analyses } = useAnalyses({
+  const { data: analyses, isLoading: isAnalysesLoading } = useAnalyses({
     projectId: phaseId ? undefined : projectId,
     phaseId,
   });
@@ -58,6 +59,9 @@ const Analysis = ({
       (analysis) =>
         analysis.relationships.main_custom_field?.data.id === customFieldId
     );
+  const { data: insights, isLoading: isInsightsLoading } = useAnalysisInsights({
+    analysisId: relevantAnalysis?.id,
+  });
 
   // Create an analysis if there are no analyses yet
   useEffect(() => {
@@ -89,50 +93,69 @@ const Analysis = ({
 
   const showAnalysisInsights =
     relevantAnalysis && relevantAnalysis.attributes.show_insights;
+
   const hideAnalysisInsights =
     relevantAnalysis && !relevantAnalysis.attributes.show_insights;
 
+  const noInsights = !relevantAnalysis || insights?.data.length === 0;
+
+  const goToAnalysis = () => {
+    if (relevantAnalysis?.id) {
+      clHistory.push(
+        `/admin/projects/${projectId}/analysis/${
+          relevantAnalysis.id
+        }?${stringify({
+          phase_id: phaseId,
+        })}`
+      );
+    } else {
+      addAnalysis(
+        {
+          projectId: phaseId ? undefined : projectId,
+          phaseId,
+          mainCustomField: customFieldId,
+        },
+        {
+          onSuccess: (response) => {
+            clHistory.push(
+              `/admin/projects/${projectId}/analysis/${
+                response.data.id
+              }?${stringify({ phase_id: phaseId })}`
+            );
+          },
+        }
+      );
+    }
+  };
+
+  if (isAnalysesLoading || isInsightsLoading) {
+    return <Spinner />;
+  }
+
   return (
     <Box position="relative">
-      {!relevantAnalysis && (
+      {noInsights && (
         <Box display="flex">
           <Button
             processing={isAddAnalysisLoading}
-            onClick={() =>
-              addAnalysis(
-                {
-                  projectId: phaseId ? undefined : projectId,
-                  phaseId,
-                  mainCustomField: customFieldId,
-                },
-                {
-                  onSuccess: (response) => {
-                    clHistory.push(
-                      `/admin/projects/${projectId}/analysis/${
-                        response.data.id
-                      }?${stringify({ phase_id: phaseId })}`
-                    );
-                  },
-                }
-              )
-            }
+            onClick={goToAnalysis}
             buttonStyle="secondary"
-            icon="flash"
+            icon="stars"
           >
             {formatMessage(messages.createAIAnalysis)}
           </Button>
         </Box>
       )}
-
       {showAnalysisInsights && (
         <>
           <Box
-            display="flex"
             justifyContent="flex-end"
             position="absolute"
             top="-40px"
             right="0"
             zIndex="1000"
+            id="e2e-analysis-actions"
+            display={noInsights ? 'none' : 'flex'}
           >
             <IconButton
               iconName="dots-horizontal"
@@ -150,6 +173,7 @@ const Analysis = ({
               content={
                 <>
                   <StyledDropdownListItem
+                    id="e2e-hide-summaries"
                     onClick={() => {
                       updateAnalysis(
                         {
@@ -181,6 +205,7 @@ const Analysis = ({
       {hideAnalysisInsights && (
         <Box display="flex">
           <Button
+            id="e2e-show-summaries"
             processing={isLoading}
             onClick={() =>
               updateAnalysis({
@@ -189,7 +214,7 @@ const Analysis = ({
               })
             }
             buttonStyle="secondary"
-            icon="flash"
+            icon="stars"
           >
             {formatMessage(messages.showSummaries)}
           </Button>

@@ -89,7 +89,12 @@ const Question = ({ insight }: Props) => {
   const answer = question.data.attributes.answer;
 
   return (
-    <Box key={question.data.id} mb="24px" position="relative">
+    <Box
+      key={question.data.id}
+      mb="24px"
+      position="relative"
+      data-cy="e2e-analysis-question"
+    >
       <Divider />
 
       <Box>

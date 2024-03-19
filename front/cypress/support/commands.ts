@@ -1682,31 +1682,38 @@ function apiCreateSurveyQuestions(
   });
 }
 
-function apiCreateSurveyResponse(
-  email: string,
-  password: string,
-  project_id: string,
-  fields: Record<string, any>
-) {
-  return cy.apiLogin(email, password).then((response) => {
-    const jwt = response.body.jwt;
+function apiCreateSurveyResponse({
+  email,
+  password,
+  project_id,
+  fields,
+}: {
+  email?: string;
+  password?: string;
+  project_id: string;
+  fields: Record<string, any>;
+}) {
+  return cy
+    .apiLogin(email || 'admin@citizenlab.co', password || 'democracy2.0')
+    .then((response) => {
+      const jwt = response.body.jwt;
 
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${jwt}`,
-      },
-      method: 'POST',
-      url: 'web_api/v1/ideas',
-      body: {
-        idea: {
-          publication_status: 'published',
-          project_id,
-          ...fields,
+      return cy.request({
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwt}`,
         },
-      },
+        method: 'POST',
+        url: 'web_api/v1/ideas',
+        body: {
+          idea: {
+            publication_status: 'published',
+            project_id,
+            ...fields,
+          },
+        },
+      });
     });
-  });
 }
 
 // https://stackoverflow.com/a/16012490

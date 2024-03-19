@@ -46,7 +46,7 @@ const Analyses = ({
 
   if (relevantAnalyses?.length === 0 && !isLoading) {
     return (
-      <Box>
+      <Box id="e2e-report-buider-ai-no-analyses">
         <Divider />
         <Text>{formatMessage(messages.noInsights)}</Text>
         <Box display="flex">

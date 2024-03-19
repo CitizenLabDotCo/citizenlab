@@ -42,7 +42,12 @@ const Summary = ({
   }
 
   return (
-    <Box display="flex" flexDirection="column" justifyContent="space-between">
+    <Box
+      display="flex"
+      flexDirection="column"
+      justifyContent="space-between"
+      data-cy="e2e-report-builder-analysis-summary"
+    >
       <Box
         border={`1px solid ${colors.borderLight}`}
         padding="8px"

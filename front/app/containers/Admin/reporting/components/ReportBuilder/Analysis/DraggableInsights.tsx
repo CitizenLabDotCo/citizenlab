@@ -3,6 +3,10 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { useEditor } from '@craftjs/core';
 
+import tracks from 'containers/Admin/projects/project/analysis/tracks';
+
+import { trackEventByName } from 'utils/analytics';
+
 const DraggableInsight = ({
   id,
   component,
@@ -25,6 +29,7 @@ const DraggableInsight = ({
         connectors.create(ref, component, {
           onCreate: (node) => {
             selectNode(node.rootNodeId);
+            trackEventByName(tracks.dragAndDropInsightInReportBuilder.name);
           },
         })
       }

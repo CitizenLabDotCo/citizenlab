@@ -121,7 +121,7 @@ const AutoTagOption = ({
               alignItems="center"
             >
               <Icon
-                name="flash"
+                name="stars"
                 fill={colors.white}
                 width="16px"
                 height="16px"
@@ -197,7 +197,7 @@ const Step1 = ({
   return (
     <>
       <Title mb="32px">
-        <Icon name="flash" height="32px" width="32px" />{' '}
+        <Icon name="stars" height="32px" width="32px" />{' '}
         {formatMessage(messages.autoTagTitle)}
       </Title>
       <Text mb="32px">{formatMessage(messages.autoTagDescription)}</Text>

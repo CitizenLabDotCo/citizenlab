@@ -82,6 +82,7 @@ const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
       {isAnalysisEnabled && (
         <Box>
           <ProjectFilter
+            id="e2e-report-builder-analysis-project-filter-box"
             projectId={projectId}
             emptyOptionMessage={widgetMessages.noProject}
             onProjectFilter={handleProjectFilter}

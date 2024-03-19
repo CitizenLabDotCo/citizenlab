@@ -28,7 +28,7 @@ const SummaryHeader = () => {
         <Text m="0px" fontWeight="bold">
           {formatMessage(messages.aiSummary)}
         </Text>
-        <Icon name="flash" />
+        <Icon name="stars" />
       </Box>
     </Tippy>
   );

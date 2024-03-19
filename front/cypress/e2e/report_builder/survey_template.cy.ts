@@ -55,13 +55,18 @@ describe('Survey template', () => {
             cy.apiUpdateUserCustomFields(email, password, { gender });
           })
           .then(() => {
-            cy.apiCreateSurveyResponse(email, password, projectId, {
-              [surveyFields[1].attributes.key]:
-                surveyIncluded[0].attributes.key,
-              [surveyFields[2].attributes.key]: [
-                surveyIncluded[2].attributes.key,
-                surveyIncluded[3].attributes.key,
-              ],
+            cy.apiCreateSurveyResponse({
+              email,
+              password,
+              project_id: projectId,
+              fields: {
+                [surveyFields[1].attributes.key]:
+                  surveyIncluded[0].attributes.key,
+                [surveyFields[2].attributes.key]: [
+                  surveyIncluded[2].attributes.key,
+                  surveyIncluded[3].attributes.key,
+                ],
+              },
             });
           });
       })
