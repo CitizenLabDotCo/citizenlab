@@ -3,8 +3,6 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 
-import Button from 'components/UI/Button';
-
 import { colors, isRtl } from '../../utils/styleUtils';
 import Box, { BoxMarginProps, BoxPaddingProps, BoxWidthProps } from '../Box';
 import Icon from '../Icon';
@@ -125,7 +123,6 @@ const Accordion = ({
 
   return (
     <ListItem className={className} {...rest}>
-      <Button>hi</Button>
       <TitleButton
         as="button"
         padding="0"

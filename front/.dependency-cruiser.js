@@ -14,23 +14,27 @@ module.exports = {
       },
     },
     {
-      name: 'no-import-from-component-library',
-      severity: 'error',
-      comment: 'Direct imports from the component library are not allowed',
-      from: { pathNot: 'app/component-library/' },
-      to: {
-        path: 'app/component-library/',
-      },
-    },
-    {
       name: 'no-import-to-component-library',
       severity: 'error',
-      comment: 'Direct imports from the component library are not allowed',
-      from: { path: 'app/component-library/' },
+      comment:
+        'Direct imports to the component library from the rest of the codebase are not allowed',
+      from: {
+        path: 'app/component-library/',
+      },
       to: {
+        path: 'app/',
         pathNot: 'app/component-library/',
       },
     },
+    // {
+    //   name: 'no-import-to-component-library',
+    //   severity: 'error',
+    //   comment: 'Direct imports to the component library are not allowed',
+    //   from: { path: 'app/component-library/' },
+    //   to: {
+    //     pathNot: 'app/component-library/',
+    //   },
+    // },
 
     /* rules from the 'recommended' preset: */
     {
