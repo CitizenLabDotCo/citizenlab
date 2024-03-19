@@ -8,12 +8,11 @@ const config: StorybookConfig = {
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
-
+    '@storybook/addon-knobs',
     // This plugin was causing a peer dependency conflict.
     // We first need to upgrade our main app to react-router-dom >=6.4.0
     // This upgrade has breaking changes so those need to be dealt with first.
     // 'storybook-addon-react-router-v6',
-
     'storybook-react-intl',
   ],
   framework: {
