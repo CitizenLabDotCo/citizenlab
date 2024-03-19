@@ -57,6 +57,7 @@ const FormResults = () => {
                 answers,
                 totalResponseCount,
                 questionResponseCount,
+                totalPickCount,
                 required,
                 customFieldId,
                 mapConfigId,
@@ -77,6 +78,7 @@ const FormResults = () => {
                   answers={answers}
                   totalResponseCount={totalResponseCount}
                   questionResponseCount={questionResponseCount}
+                  totalPickCount={totalPickCount}
                   totalSubmissions={totalSubmissions}
                   required={required}
                   mapConfigId={mapConfigId}
