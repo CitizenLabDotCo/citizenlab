@@ -1516,7 +1516,6 @@
   "app.containers.AdminPage.ProjectEdit.selectGroups": "Velg gruppe(r)",
   "app.containers.AdminPage.ProjectEdit.setup": "Oppsett",
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Del informasjon",
-  "app.containers.AdminPage.ProjectEdit.shareInformationDescription": "Gi informasjon til deltakerne.",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",
   "app.containers.AdminPage.ProjectEdit.snap_survey": "Snap Survey",
   "app.containers.AdminPage.ProjectEdit.statusLabel": "Prosjektstatus",

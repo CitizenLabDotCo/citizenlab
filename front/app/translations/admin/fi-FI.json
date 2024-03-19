@@ -1516,7 +1516,6 @@
   "app.containers.AdminPage.ProjectEdit.selectGroups": "Valitse ryhmä(t)",
   "app.containers.AdminPage.ProjectEdit.setup": "Perustaa",
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Jakaa tietoa",
-  "app.containers.AdminPage.ProjectEdit.shareInformationDescription": "Tarjoa tietoa osallistujille.",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",
   "app.containers.AdminPage.ProjectEdit.snap_survey": "Snap Survey",
   "app.containers.AdminPage.ProjectEdit.statusLabel": "Projektin tila",

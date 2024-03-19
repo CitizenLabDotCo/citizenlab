@@ -1516,7 +1516,6 @@
   "app.containers.AdminPage.ProjectEdit.selectGroups": "Izabrane grupe",
   "app.containers.AdminPage.ProjectEdit.setup": "Setup",
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Delite informacije",
-  "app.containers.AdminPage.ProjectEdit.shareInformationDescription": "Informišite učesnike",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",
   "app.containers.AdminPage.ProjectEdit.snap_survey": "Brza anketa",
   "app.containers.AdminPage.ProjectEdit.statusLabel": "Status projekta",

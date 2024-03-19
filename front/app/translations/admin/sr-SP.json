@@ -1516,7 +1516,6 @@
   "app.containers.AdminPage.ProjectEdit.selectGroups": "Изаберите групу(е)",
   "app.containers.AdminPage.ProjectEdit.setup": "Подесити",
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Делите информације",
-  "app.containers.AdminPage.ProjectEdit.shareInformationDescription": "Пружити информације учесницима.",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "СмартСурвеи",
   "app.containers.AdminPage.ProjectEdit.snap_survey": "Снап Сурвеи",
   "app.containers.AdminPage.ProjectEdit.statusLabel": "Статус пројекта",

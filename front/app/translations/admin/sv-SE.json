@@ -1516,7 +1516,6 @@
   "app.containers.AdminPage.ProjectEdit.selectGroups": "Välj grupp(er)",
   "app.containers.AdminPage.ProjectEdit.setup": "Inställning",
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Dela information",
-  "app.containers.AdminPage.ProjectEdit.shareInformationDescription": "Ge information till deltagare.",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",
   "app.containers.AdminPage.ProjectEdit.snap_survey": "Fäst undersökning",
   "app.containers.AdminPage.ProjectEdit.statusLabel": "Projektstatus",

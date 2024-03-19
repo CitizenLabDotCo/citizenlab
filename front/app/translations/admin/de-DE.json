@@ -1516,7 +1516,6 @@
   "app.containers.AdminPage.ProjectEdit.selectGroups": "Gruppe(n) auswählen",
   "app.containers.AdminPage.ProjectEdit.setup": "Einstellungen",
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Informationen teilen",
-  "app.containers.AdminPage.ProjectEdit.shareInformationDescription": "Stellen Sie den Teilnehmenden Informationen zur Verfügung.",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",
   "app.containers.AdminPage.ProjectEdit.snap_survey": "Snap Survey",
   "app.containers.AdminPage.ProjectEdit.statusLabel": "Projektstatus",
