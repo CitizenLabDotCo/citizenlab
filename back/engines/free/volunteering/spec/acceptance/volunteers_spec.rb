@@ -78,7 +78,8 @@ resource 'Volunteering Volunteers' do
       before do
         @phase = create(:volunteering_phase)
         @cause1 = create(:cause, title_multiloc: { en: 'For sure works with very long titles too!!!' }, phase: @phase)
-        @volunteers1 = create_list(:volunteer, 3, cause: @cause1)
+        @volunteer1 = create(:volunteer, cause: @cause1)
+        @other_volunteers = create_list(:volunteer, 2, cause: @cause1)
         @cause2 = create(:cause, phase: @phase)
         @volunteers2 = create_list(:volunteer, 3, cause: @cause2)
         create(:cause)
@@ -96,10 +97,10 @@ resource 'Volunteering Volunteers' do
         expect(worksheets[1].sheet_name).to eq @cause2.title_multiloc['en']
 
         expect(worksheets[0].count).to eq 4
-        expect(worksheets[0][1][0].value).to eq @volunteers1[0].user.first_name
-        expect(worksheets[0][1][1].value).to eq @volunteers1[0].user.last_name
-        expect(worksheets[0][1][2].value).to eq @volunteers1[0].user.email
-        expect(worksheets[0][1][3].value.to_i).to eq @volunteers1[0].created_at.to_i
+        expect(worksheets[0][1][0].value).to eq @volunteer1.user.first_name
+        expect(worksheets[0][1][1].value).to eq @volunteer1.user.last_name
+        expect(worksheets[0][1][2].value).to eq @volunteer1.user.email
+        expect(worksheets[0][1][3].value.to_i).to eq @volunteer1.created_at.to_i
       end
 
       describe 'when resident' do
