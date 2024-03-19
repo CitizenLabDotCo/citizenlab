@@ -43,6 +43,9 @@ const config: StorybookConfig = {
         'react-transition-group': path.resolve(
           './node_modules/react-transition-group'
         ),
+        '@citizenlab/cl2-component-library': path.resolve(
+          'app/component-library'
+        ),
         ...(config?.resolve?.alias ?? {}),
       },
     };
