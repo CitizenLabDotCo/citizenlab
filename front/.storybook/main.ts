@@ -1,5 +1,5 @@
 const path = require('path');
-import type { StorybookConfig } from '@storybook/react-webpack5';
+import { StorybookConfig } from '@storybook/react-webpack5';
 const webpack = require('webpack');
 import mockModules from './mockModules';
 const { EsbuildPlugin } = require('esbuild-loader');
@@ -60,6 +60,42 @@ const config: StorybookConfig = {
       minimize: true,
       minimizer: [new EsbuildPlugin()],
     };
+
+    if (!config.module) {
+      config.module = {};
+    }
+
+    config.module.rules = [
+      {
+        test: /\.[tj]sx?$/,
+        include: [
+          path.join(process.cwd(), 'app'),
+          path.join(process.cwd(), '.storybook'),
+        ],
+        loader: 'esbuild-loader',
+      },
+      {
+        test: /\.css$/i,
+        use: [
+          'style-loader',
+          'css-loader',
+          {
+            loader: 'esbuild-loader',
+            options: {
+              minify: true,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(svg|jpg|png|gif)$/,
+        type: 'asset/resource',
+      },
+      {
+        test: /\.(eot|ttf|woff|woff2)$/,
+        type: 'asset',
+      },
+    ]
 
     return config;
   },

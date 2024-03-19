@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Preview } from '@storybook/react';
+import { Preview } from '@storybook/react';
 import contexts from './contexts';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
 import mockServer from './mockServer';
