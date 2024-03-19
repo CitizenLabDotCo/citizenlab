@@ -7,6 +7,8 @@ import styled from 'styled-components';
 import { IEventFileData } from 'api/event_files/types';
 import { IIdeaFileData } from 'api/idea_files/types';
 import { IPhaseFileData } from 'api/phase_files/types';
+import messages from './messages';
+import { useIntl } from 'utils/cl-intl';
 
 const Container = styled.div`
   display: flex;
@@ -30,6 +32,17 @@ const FileDownloadLink = styled.a`
   `}
 `;
 
+const DisabledDownload = styled.span`
+  color: ${colors.textSecondary};
+  display: inline-block;
+  margin-right: 10px;
+  hyphens: auto;
+
+  ${media.phone`
+    margin-right: 0;
+  `}
+`;
+
 const PaperclipIcon = styled(Icon)`
   fill: ${colors.textSecondary};
   margin-right: 10px;
@@ -41,17 +54,24 @@ export interface Props {
 }
 
 const Attachment = memo<Props>(({ className, file }) => {
+  const { formatMessage } = useIntl();
   return (
     <Container className={className}>
       <PaperclipIcon name="paperclip" ariaHidden />
-      <FileDownloadLink
-        href={file.attributes.file.url}
-        download={file.attributes.name}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {file.attributes.name}
-      </FileDownloadLink>
+      {file.attributes.size === 0 ? (
+        <DisabledDownload>
+          {file.attributes.name} ({formatMessage(messages.attachments)})
+        </DisabledDownload>
+      ) : (
+        <FileDownloadLink
+          href={file.attributes.file.url}
+          download={file.attributes.name}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {file.attributes.name}
+        </FileDownloadLink>
+      )}
     </Container>
   );
 });

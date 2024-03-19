@@ -25,4 +25,8 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.MetaInformation.byUserOnDate',
     defaultMessage: '{userName} on {date}',
   },
+  removed: {
+    id: 'app.containers.IdeasShow.MetaInformation.removed',
+    defaultMessage: 'removed',
+  },
 });

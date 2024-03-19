@@ -34,6 +34,14 @@ resource 'IdeaFile' do
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :attributes, :file)).to be_present
     end
+
+    example 'The file has been deleted' do
+      File.delete(IdeaFile.first.file.file.file)
+      do_request
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+      expect(json_response.dig(:data, :attributes, :size)).to be 0
+    end
   end
 
   post 'web_api/v1/ideas/:idea_id/files' do
