@@ -3,6 +3,7 @@
 module Analysis
   class AutoTaggingMethod::Base
     POOL_SIZE = 3
+    TASK_INTERVAL = 0.1
     OTHER_TERMS = %w[
       other
       otro
@@ -113,33 +114,21 @@ module Analysis
 
     def classify_many!(inputs, topics, tag_type)
       pool = Concurrent::FixedThreadPool.new(POOL_SIZE)
-      results = Concurrent::Hash.new
-      failure = Concurrent::AtomicBoolean.new(false)
-
-      inputs.each do |input|
-        sleep 0.1 # Avoid 429 Too Many Requests
-        pool.post do
+      tasks = inputs.map.with_index do |input, idx|
+        wait = idx * TASK_INTERVAL # Avoid 429 Too Many Requests
+        Concurrent::ScheduledTask.execute(wait, executor: pool) do
           Rails.application.executor.wrap do
-            begin
-              results[input.id] = classify(input, topics) if failure.false?
-            rescue StandardError => e
-              failure.make_true
-              ErrorReporter.report(e)
-              raise # TODO: Abort the whole process
-            end
+            [input.id, classify(input, topics)]
           end
         end
       end
-      processed_inputs = []
-      do_while_pool_is_running(pool) do
-        raise 'Something went wrong with a thread during classification!' if failure.true?
-
-        (results.keys - processed_inputs).each do |input_id|
-          topic = results[input_id]
-          assign_topic!(input_id, topic, tag_type)
-          processed_inputs << input_id
-          yield(input_id)
+      tasks.map do |task|
+        input_id, topic = task.value # Blocks until task either succeeds or fails
+        if task.rejected? # Abort the whole process when one task fails
+          pool.kill
+          raise task.reason
         end
+        assign_topic!(input_id, topic, tag_type)
       end
     end
 
@@ -168,16 +157,6 @@ module Analysis
         input.title_multiloc&.keys&.first ||
         input.body_multiloc&.keys&.first ||
         AppConfiguration.instance.settings('core', 'locales').first
-    end
-
-    def do_while_pool_is_running(pool, wait_interval: 0.1)
-      while pool.running?
-        pool.wait_for_termination(wait_interval)
-        yield
-        pool.shutdown if pool.running? && pool.queue_length.zero?
-      end
-      pool.wait_for_termination
-      yield
     end
   end
 end

@@ -5,7 +5,7 @@ module Analysis
   # passed list of custom fields
   class InputToText
     def initialize(custom_fields, app_configuration = AppConfiguration.instance)
-      @custom_fields = custom_fields # .select { |field| field.code == 'title_multiloc' }
+      @custom_fields = custom_fields
       @app_configuration = app_configuration
       @multiloc_service = MultilocService.new(app_configuration: @app_configuration)
       @memoized_field_values = Hash.new { |h, k| h[k] = {} } # Hash with empty hash as default values
