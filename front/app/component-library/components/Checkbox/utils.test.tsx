@@ -53,7 +53,6 @@ describe('getColor', () => {
       element: 'hoverBackground',
     });
     expect(borderColor).toEqual('#04884C');
-    // failing
     expect(hoverBorderColor).toEqual('darkened_0.05_#04884C');
     expect(backgroundColor).toEqual('#04884C');
     expect(hoverBackgroundColor).toEqual('darkened_0.05_#04884C');
@@ -80,7 +79,6 @@ describe('getColor', () => {
       element: 'hoverBackground',
     });
     expect(borderColor).toEqual('#147985');
-    // failing
     expect(hoverBorderColor).toEqual('darkened_0.05_#147985');
     expect(backgroundColor).toEqual('#147985');
     expect(hoverBackgroundColor).toEqual('darkened_0.05_#147985');
