@@ -108,9 +108,9 @@ module Analysis
     def classify_many!(inputs, topics, tag_type)
       pool = Concurrent::FixedThreadPool.new(POOL_SIZE)
       tasks = inputs.map.with_index do |input, idx|
-        wait = idx * TASK_INTERVAL # Avoid 429 Too Many Requests
         input_id = input.id
         inputs_text = input_to_text.format_all([input])
+        wait = idx * TASK_INTERVAL # Avoid 429 Too Many Requests
         Concurrent::ScheduledTask.execute(wait, executor: pool) do
           [input_id, classify_input_text(inputs_text, topics)]
         end
@@ -122,6 +122,7 @@ module Analysis
           raise task.reason
         end
         assign_topic!(input_id, topic, tag_type)
+        yield(input_id)
       end
     end
 
