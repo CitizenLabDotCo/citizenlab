@@ -541,7 +541,7 @@ GEM
     crack (0.4.5)
       rexml
     crass (1.0.6)
-    crawler_detect (1.2.2)
+    crawler_detect (1.2.3)
       qonfig (~> 0.24)
     css_parser (1.14.0)
       addressable
