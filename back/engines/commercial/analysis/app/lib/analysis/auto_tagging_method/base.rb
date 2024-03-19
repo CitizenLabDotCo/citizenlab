@@ -80,29 +80,15 @@ module Analysis
       end
     end
 
-    def classify(input, topics)
-      inputs_text = input_to_text.format_all([input])
-      prompt = LLM::Prompt.new.fetch('fully_automated_classifier', inputs_text: inputs_text, topics: topics)
+    def classify_input_text(input_text, topics)
+      prompt = LLM::Prompt.new.fetch('fully_automated_classifier', inputs_text: input_text, topics: topics)
       chosen_topic = begin
         gpt3.chat(prompt)
       rescue Faraday::BadRequestError => e # TODO: Turn off filtering https://go.microsoft.com/fwlink/?linkid=2198766
         ErrorReporter.report(e) # e.response[:body]['error']['innererror']['content_filter_result'].select{ |key, val| val['filtered'] }.map{|key, val| val['severity']}
         'Other'
       end
-      if topics.include? chosen_topic
-        chosen_topic
-      else
-        if chosen_topic != 'Other'
-          LogActivityJob.perform_later( # This can help us monitor when unexpected topics are returned without polluting Sentry
-            input,
-            'was_assigned_topic_outside_of_the_list',
-            nil,
-            Time.now.to_i,
-            payload: { topic: chosen_topic, allowed_topics: topics, analysis_id: @analysis.id, task_id: @task.id }
-          )
-        end
-        'Other'
-      end
+      topics.include?(chosen_topic) ? chosen_topic : 'Other'
     end
 
     protected
@@ -120,25 +106,22 @@ module Analysis
     end
 
     def classify_many!(inputs, topics, tag_type)
-      # pool = Concurrent::FixedThreadPool.new(POOL_SIZE)
-      # tasks = inputs.map.with_index do |input, idx|
-      #   wait = idx * TASK_INTERVAL # Avoid 429 Too Many Requests
-      #   Concurrent::ScheduledTask.execute(wait, executor: pool) do
-      #     Rails.application.executor.wrap do
-      #       [input.id, classify(input, topics)]
-      #     end
-      #   end
-      # end
-      # tasks.each do |task|
-      #   input_id, topic = task.value # Blocks until task either succeeds or fails
-      #   if task.rejected? # Abort the whole process when one task fails
-      #     pool.kill
-      #     raise task.reason
-      #   end
-      #   assign_topic!(input_id, topic, tag_type)
-      # end
-      inputs.each do |input|
-        assign_topic!(input.id, classify(input, topics), tag_type)
+      pool = Concurrent::FixedThreadPool.new(POOL_SIZE)
+      tasks = inputs.map.with_index do |input, idx|
+        wait = idx * TASK_INTERVAL # Avoid 429 Too Many Requests
+        input_id = input.id
+        inputs_text = input_to_text.format_all([input])
+        Concurrent::ScheduledTask.execute(wait, executor: pool) do
+          [input_id, classify_input_text(inputs_text, topics)]
+        end
+      end
+      tasks.each do |task|
+        input_id, topic = task.value # Blocks until task either succeeds or fails
+        if task.rejected? # Abort the whole process when one task fails
+          pool.kill
+          raise task.reason
+        end
+        assign_topic!(input_id, topic, tag_type)
       end
     end
 
@@ -152,13 +135,10 @@ module Analysis
     end
 
     def assign_topic!(input_id, topic, tag_type)
-      byebug
       return if other_term?(topic)
 
       tag = Tag.find_or_create_by!(name: topic, tag_type: tag_type, analysis: analysis)
-      byebug
       find_or_create_tagging!(input_id: input_id, tag_id: tag.id)
-      byebug
     end
 
     def update_progress(progress)

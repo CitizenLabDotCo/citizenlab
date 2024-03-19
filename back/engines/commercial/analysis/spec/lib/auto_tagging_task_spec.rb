@@ -140,7 +140,7 @@ RSpec.describe Analysis::AutoTaggingTask do
     end
   end
 
-  describe 'NlpTopic auto_tagging' do
+  describe 'NlpTopic auto_tagging', use_transactional_fixtures: false do
     it 'works' do
       project = create(:single_phase_ideation_project)
       custom_form = create(:custom_form, :with_default_fields, participation_context: project)
