@@ -1,4 +1,4 @@
-import { MainThemeProps } from 'src/utils/styleUtils';
+import { MainThemeProps } from '../utils/styleUtils';
 import 'styled-components';
 
 declare module 'styled-components' {
