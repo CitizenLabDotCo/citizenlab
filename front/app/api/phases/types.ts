@@ -68,6 +68,8 @@ export interface IPhaseAttributes {
    * with the idea's baskets_count, then sum all those to get the total idea votes for the phase  */
   votes_count: number;
   report_public: boolean;
+  native_survey_title_multiloc?: Multiloc;
+  native_survey_button_multiloc?: Multiloc;
 }
 
 export interface IPhases {
@@ -105,6 +107,8 @@ export interface IUpdatedPhaseProperties {
   campaigns_settings?: {
     [key in CampaignName]?: boolean;
   };
+  native_survey_title_multiloc?: Multiloc;
+  native_survey_button_multiloc?: Multiloc;
 }
 export interface AddPhaseObject extends IUpdatedPhaseProperties {
   projectId: string;

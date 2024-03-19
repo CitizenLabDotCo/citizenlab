@@ -46,6 +46,9 @@ const useUpdateCustomField = () => {
         }),
       });
       queryClient.invalidateQueries({
+        queryKey: customFieldsKeys.lists(),
+      });
+      queryClient.invalidateQueries({
         queryKey: customFieldOptionKeys.items(),
       });
     },

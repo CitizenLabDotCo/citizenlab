@@ -26,6 +26,8 @@ import useProjectImages, {
 import useProjectById from 'api/projects/useProjectById';
 import { getProjectUrl } from 'api/projects/utils';
 
+import useLocalize from 'hooks/useLocalize';
+
 import AvatarBubbles from 'components/AvatarBubbles';
 import FollowUnfollow from 'components/FollowUnfollow';
 import { TLayout } from 'components/ProjectAndFolderCards';
@@ -423,6 +425,7 @@ const ProjectCard = memo<InputProps>(
     const currentPhaseId =
       project?.data?.relationships?.current_phase?.data?.id ?? null;
     const { data: phase } = usePhase(currentPhaseId);
+    const localize = useLocalize();
 
     // We only need the phases for the input term, and only
     // in case there is no current phase in a timeline project.
@@ -499,7 +502,6 @@ const ProjectCard = memo<InputProps>(
         ? moment.duration(moment(endAt).endOf('day').diff(moment())).humanize()
         : null;
       let countdown: JSX.Element | null = null;
-      let ctaMessage: JSX.Element | null = null;
       const inputTerm = getInputTerm(phases?.data);
 
       if (isArchived) {
@@ -542,52 +544,79 @@ const ProjectCard = memo<InputProps>(
         );
       }
 
-      if (participationMethod === 'voting' && votingMethod === 'budgeting') {
-        ctaMessage = <FormattedMessage {...messages.allocateYourBudget} />;
-      } else if (participationMethod === 'voting') {
-        ctaMessage = <FormattedMessage {...messages.vote} />;
-      } else if (participationMethod === 'information') {
-        ctaMessage = <FormattedMessage {...messages.learnMore} />;
-      } else if (
-        participationMethod === 'survey' ||
-        participationMethod === 'native_survey'
-      ) {
-        ctaMessage = <FormattedMessage {...messages.takeTheSurvey} />;
-      } else if (participationMethod === 'document_annotation') {
-        ctaMessage = <FormattedMessage {...messages.reviewDocument} />;
-      } else if (participationMethod === 'poll') {
-        ctaMessage = <FormattedMessage {...messages.takeThePoll} />;
-      } else if (participationMethod === 'ideation' && canPost) {
-        ctaMessage = (
-          <FormattedMessage
-            {...getInputTermMessage(inputTerm, {
-              idea: messages.submitYourIdea,
-              option: messages.addYourOption,
-              project: messages.submitYourProject,
-              question: messages.joinDiscussion,
-              issue: messages.submitAnIssue,
-              contribution: messages.contributeYourInput,
-            })}
-          />
-        );
-      } else if (participationMethod === 'ideation' && canReact) {
-        ctaMessage = <FormattedMessage {...messages.reaction} />;
-      } else if (participationMethod === 'ideation' && canComment) {
-        ctaMessage = <FormattedMessage {...messages.comment} />;
-      } else if (participationMethod === 'ideation') {
-        ctaMessage = (
-          <FormattedMessage
-            {...getInputTermMessage(inputTerm, {
-              idea: messages.viewTheIdeas,
-              option: messages.viewTheOptions,
-              project: messages.viewTheProjects,
-              question: messages.viewTheQuestions,
-              issue: messages.viewTheIssues,
-              contribution: messages.viewTheContributions,
-            })}
-          />
-        );
-      }
+      const getCTAMessage = () => {
+        let ctaMessage: JSX.Element | null = null;
+
+        switch (participationMethod) {
+          case 'voting':
+            if (votingMethod === 'budgeting') {
+              ctaMessage = (
+                <FormattedMessage {...messages.allocateYourBudget} />
+              );
+            } else {
+              ctaMessage = <FormattedMessage {...messages.vote} />;
+            }
+            break;
+          case 'information':
+            ctaMessage = <FormattedMessage {...messages.learnMore} />;
+            break;
+          case 'survey':
+            ctaMessage = <FormattedMessage {...messages.takeTheSurvey} />;
+            break;
+          case 'native_survey':
+            ctaMessage = (
+              <>
+                {localize(phase?.data.attributes.native_survey_button_multiloc)}
+              </>
+            );
+            break;
+          case 'document_annotation':
+            ctaMessage = <FormattedMessage {...messages.reviewDocument} />;
+            break;
+          case 'poll':
+            ctaMessage = <FormattedMessage {...messages.takeThePoll} />;
+            break;
+          case 'ideation':
+            if (canPost) {
+              ctaMessage = (
+                <FormattedMessage
+                  {...getInputTermMessage(inputTerm, {
+                    idea: messages.submitYourIdea,
+                    option: messages.addYourOption,
+                    project: messages.submitYourProject,
+                    question: messages.joinDiscussion,
+                    issue: messages.submitAnIssue,
+                    contribution: messages.contributeYourInput,
+                  })}
+                />
+              );
+            } else if (canReact) {
+              ctaMessage = <FormattedMessage {...messages.reaction} />;
+            } else if (canComment) {
+              ctaMessage = <FormattedMessage {...messages.comment} />;
+            } else {
+              ctaMessage = (
+                <FormattedMessage
+                  {...getInputTermMessage(inputTerm, {
+                    idea: messages.viewTheIdeas,
+                    option: messages.viewTheOptions,
+                    project: messages.viewTheProjects,
+                    question: messages.viewTheQuestions,
+                    issue: messages.viewTheIssues,
+                    contribution: messages.viewTheContributions,
+                  })}
+                />
+              );
+            }
+            break;
+          default:
+            ctaMessage = null;
+        }
+
+        return ctaMessage;
+      };
+
+      const ctaMessage: JSX.Element | null = getCTAMessage();
 
       const contentHeader = (
         <ContentHeader

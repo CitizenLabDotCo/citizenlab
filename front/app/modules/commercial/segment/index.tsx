@@ -10,9 +10,9 @@ import { isNilOrError } from 'utils/helperUtils';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import {
   isRegularUser,
-  isProjectModerator,
   isAdmin,
   isSuperAdmin,
+  isModerator,
 } from 'utils/permissions/roles';
 
 const CL_SEGMENT_API_KEY = process.env.SEGMENT_API_KEY;
@@ -96,7 +96,7 @@ const configuration: ModuleConfiguration = {
                 locale: user.data.attributes.locale,
                 isSuperAdmin: isSuperAdmin(user),
                 isAdmin: isAdmin(user),
-                isProjectModerator: isProjectModerator(user),
+                isProjectModerator: isModerator(user),
                 highestRole: user.data.attributes.highest_role,
               },
               {

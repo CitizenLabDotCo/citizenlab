@@ -47,9 +47,9 @@ import WYSIWYGControl, {
 import CLCategoryLayout, {
   clCategoryTester,
 } from 'components/Form/Components/Layouts/CLCategoryLayout';
-import CLPageLayout, {
+import CLSurveyPageLayout, {
   clPageTester,
-} from 'components/Form/Components/Layouts/CLPageLayout';
+} from 'components/Form/Components/Layouts/CLSurveyPageLayout';
 import OrderedLayout, {
   orderedLayoutTester,
 } from 'components/Form/Components/Layouts/OrderedLayout';
@@ -63,6 +63,7 @@ import LinearScaleControl, {
 import MultiSelectCheckboxControl, {
   multiSelectCheckboxControlTester,
 } from './MultiSelectCheckboxControl';
+import PointControl, { pointControlTester } from './PointControl/PointControl';
 import SingleAttachmentControl, {
   singleAttachmentControlTester,
 } from './SingleAttachmentControl';
@@ -79,12 +80,14 @@ import SingleSelectRadioEnumControl, {
 export {
   CLCategoryLayout,
   clCategoryTester,
-  CLPageLayout,
+  CLSurveyPageLayout,
   clPageTester,
   OrderedLayout,
   orderedLayoutTester,
   InputControl,
   inputControlTester,
+  PointControl,
+  pointControlTester,
   TextAreaControl,
   textAreaControlTester,
   WYSIWYGControl,

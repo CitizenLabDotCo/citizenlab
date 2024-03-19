@@ -1,54 +1,32 @@
 import React from 'react';
 
-import { Box, colors, Image } from '@citizenlab/cl2-component-library';
+import { colors } from '@citizenlab/cl2-component-library';
 
-import { Answer } from 'api/survey_results/types';
+import { Answer, AnswerMultilocs } from 'api/survey_results/types';
 
-import useLocalize from 'hooks/useLocalize';
-
-import ProgressBars2 from 'components/admin/Graphs/ProgressBars2';
+import SurveyBars from 'components/admin/Graphs/SurveyBars';
 
 interface Props {
   multipleChoiceAnswers: Answer[];
   totalResponses: number;
+  multilocs: AnswerMultilocs;
 }
 
 const COLOR_SCHEME = [colors.primary];
 
-const MultipleChoice = ({ multipleChoiceAnswers, totalResponses }: Props) => {
-  const localize = useLocalize();
-
+const MultipleChoice = ({
+  multipleChoiceAnswers,
+  totalResponses,
+  multilocs,
+}: Props) => {
   return (
-    <>
-      {multipleChoiceAnswers.map(({ answer, responses, image }, index) => {
-        return (
-          <Box
-            key={index}
-            maxWidth="524px"
-            display="flex"
-            alignItems="flex-end"
-            justifyContent="center"
-          >
-            {image?.small && (
-              <Box mr="12px">
-                <Image
-                  width="48px"
-                  height="48px"
-                  src={image.small}
-                  alt={localize(answer)}
-                />
-              </Box>
-            )}
-            <ProgressBars2
-              values={[responses]}
-              total={totalResponses}
-              colorScheme={COLOR_SCHEME}
-              label={localize(answer)}
-            />
-          </Box>
-        );
-      })}
-    </>
+    <SurveyBars
+      grouped={false}
+      answers={multipleChoiceAnswers}
+      totalResponses={totalResponses}
+      multilocs={multilocs}
+      colorScheme={COLOR_SCHEME}
+    />
   );
 };
 

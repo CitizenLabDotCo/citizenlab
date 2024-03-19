@@ -58,9 +58,7 @@ formEditor: We currently have 2 UIs for admins to edit the form definition. This
 onFormSubmission: Called after input form submission.
 getFormTitle?:  Gets the title of the input form
 getModalContent: Returns modal content to be displayed on project page.
-getMethodPickerMessage: Returns the message to be displayed in the admin participation method picker.
 showInputManager: Returns whether the input manager should be shown in the admin view.
-isMethodLocked: Returns whether a method can be selected in the participation method picker.
 postType: Returns the type of input that is being posted.
 renderCTABar: Returns whether the CTA bar should be rendered.
 postSortingOptions?: Returns the sorting options for posts.
@@ -76,9 +74,7 @@ export type ParticipationMethodConfig = {
     props: ModalContentMethodProps
   ) => ReactNode | JSX.Element | null;
   getFormTitle?: (props: FormTitleMethodProps) => React.ReactNode;
-  getMethodPickerMessage: () => ReactNode | JSX.Element | null;
   showInputManager: boolean;
-  isMethodLocked: boolean;
   postType: 'defaultInput' | 'nativeSurvey';
   renderCTABar: (props: CTABarProps) => ReactNode | JSX.Element | null;
   postSortingOptions?: PostSortingOptionType[];
@@ -93,9 +89,6 @@ const ideationConfig: ParticipationMethodConfig = {
   showIdeaFilters: true,
   formEditor: 'simpleFormEditor',
   inputsPageSize: 24,
-  getMethodPickerMessage: () => {
-    return <FormattedMessage {...messages.inputAndFeedback} />;
-  },
   onFormSubmission: (props: FormSubmissionMethodProps) => {
     if (props.ideaId && props.idea) {
       const urlParameters = `?new_idea_id=${props.ideaId}`;
@@ -138,7 +131,6 @@ const ideationConfig: ParticipationMethodConfig = {
     );
   },
   showInputManager: true,
-  isMethodLocked: false,
   renderCTABar: (props: CTABarProps) => {
     return <IdeationCTABar project={props.project} phases={props.phases} />;
   },
@@ -149,9 +141,6 @@ const ideationConfig: ParticipationMethodConfig = {
 const nativeSurveyConfig: ParticipationMethodConfig = {
   showInputCount: true,
   formEditor: 'surveyEditor',
-  getMethodPickerMessage: () => {
-    return <FormattedMessage {...messages.createNativeSurvey} />;
-  },
   onFormSubmission: (props: FormSubmissionMethodProps) => {
     if (props.project) {
       clHistory.push({
@@ -172,11 +161,7 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
       />
     );
   },
-  getFormTitle: (props: FormTitleMethodProps) => {
-    return <FormattedMessage {...messages.surveyTitle} {...props} />;
-  },
   showInputManager: false,
-  isMethodLocked: true,
   renderCTABar: (props: CTABarProps) => {
     return <NativeSurveyCTABar project={props.project} phases={props.phases} />;
   },
@@ -185,9 +170,6 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
 const informationConfig: ParticipationMethodConfig = {
   showInputCount: false,
   formEditor: null,
-  getMethodPickerMessage: () => {
-    return <FormattedMessage {...messages.shareInformation} />;
-  },
   getModalContent: () => {
     return null;
   },
@@ -196,7 +178,6 @@ const informationConfig: ParticipationMethodConfig = {
   },
   postType: 'defaultInput',
   showInputManager: false,
-  isMethodLocked: false,
   renderCTABar: (props: CTABarProps) => (
     <EventsCTABar project={props.project} phases={props.phases} />
   ),
@@ -205,9 +186,6 @@ const informationConfig: ParticipationMethodConfig = {
 const surveyConfig: ParticipationMethodConfig = {
   showInputCount: false,
   formEditor: null,
-  getMethodPickerMessage: () => {
-    return <FormattedMessage {...messages.createSurveyText} />;
-  },
   getModalContent: () => {
     return null;
   },
@@ -216,7 +194,6 @@ const surveyConfig: ParticipationMethodConfig = {
   },
   postType: 'defaultInput',
   showInputManager: false,
-  isMethodLocked: false,
   renderCTABar: (props: CTABarProps) => {
     return (
       <EmbeddedSurveyCTABar project={props.project} phases={props.phases} />
@@ -227,9 +204,6 @@ const surveyConfig: ParticipationMethodConfig = {
 const documentAnnotationConfig: ParticipationMethodConfig = {
   showInputCount: false,
   formEditor: null,
-  getMethodPickerMessage: () => {
-    return <FormattedMessage {...messages.createDocumentAnnotation} />;
-  },
   getModalContent: () => {
     return null;
   },
@@ -238,7 +212,6 @@ const documentAnnotationConfig: ParticipationMethodConfig = {
   },
   postType: 'defaultInput',
   showInputManager: false,
-  isMethodLocked: false,
   renderCTABar: (props: CTABarProps) => {
     return (
       <DocumentAnnotationCTABar project={props.project} phases={props.phases} />
@@ -251,9 +224,6 @@ const votingConfig: ParticipationMethodConfig = {
   formEditor: 'simpleFormEditor',
   showIdeaFilters: false,
   inputsPageSize: 100,
-  getMethodPickerMessage: () => {
-    return <FormattedMessage {...messages.conductParticipatoryBudgetingText} />;
-  },
   getModalContent: () => {
     return null;
   },
@@ -286,7 +256,6 @@ const votingConfig: ParticipationMethodConfig = {
     );
   },
   showInputManager: true,
-  isMethodLocked: false,
   renderCTABar: (props: CTABarProps) => {
     return <VotingCTABar project={props.project} phases={props.phases} />;
   },
@@ -299,9 +268,6 @@ const votingConfig: ParticipationMethodConfig = {
 const pollConfig: ParticipationMethodConfig = {
   showInputCount: false,
   formEditor: null,
-  getMethodPickerMessage: () => {
-    return <FormattedMessage {...messages.createPoll} />;
-  },
   getModalContent: () => {
     return null;
   },
@@ -310,7 +276,6 @@ const pollConfig: ParticipationMethodConfig = {
   },
   postType: 'defaultInput',
   showInputManager: false,
-  isMethodLocked: false,
   renderCTABar: (props: CTABarProps) => {
     return <PollCTABar project={props.project} phases={props.phases} />;
   },
@@ -319,9 +284,6 @@ const pollConfig: ParticipationMethodConfig = {
 const volunteeringConfig: ParticipationMethodConfig = {
   showInputCount: false,
   formEditor: null,
-  getMethodPickerMessage: () => {
-    return <FormattedMessage {...messages.findVolunteers} />;
-  },
   getModalContent: () => {
     return null;
   },
@@ -330,7 +292,6 @@ const volunteeringConfig: ParticipationMethodConfig = {
   },
   postType: 'defaultInput',
   showInputManager: false,
-  isMethodLocked: false,
   renderCTABar: (props: CTABarProps) => {
     return <VolunteeringCTABar project={props.project} phases={props.phases} />;
   },

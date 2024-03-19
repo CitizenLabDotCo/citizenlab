@@ -39,7 +39,7 @@ const AdminAllowedTopicsComponent = React.lazy(
   () => import('./project/topics')
 );
 const AdminCustomMapConfigComponent = React.lazy(
-  () => import('containers/Admin/ProjectCustomMapConfigPage')
+  () => import('containers/Admin/CustomMapConfigPage')
 );
 
 const AdminProjectAnalysis = lazy(() => import('./project/analysis'));
@@ -163,7 +163,12 @@ const createAdminProjectsRoutes = () => {
             path: 'phases/:phaseId/setup',
             element: (
               <PageLoading>
-                <AdminPhaseNewAndEdit />
+                {/* We use the key here to make sure that the component is treated as a different instance
+                to differentiate between the new and edit phase. This distinction is especially important
+                when the component is already visible and the route changes to the same component.
+                For example, from phase setup to creating a new phase.
+                */}
+                <AdminPhaseNewAndEdit key="setup" />
               </PageLoading>
             ),
           },
@@ -171,7 +176,12 @@ const createAdminProjectsRoutes = () => {
             path: 'phases/new',
             element: (
               <PageLoading>
-                <AdminPhaseNewAndEdit />
+                {/* We use the key here to make sure that the component is treated as a different instance
+                to differentiate between the new and edit phase. This distinction is especially important
+                when the component is already visible and the route changes to the same component.
+                For example, from phase setup to creating a new phase.
+                */}
+                <AdminPhaseNewAndEdit key="new" />
               </PageLoading>
             ),
           },

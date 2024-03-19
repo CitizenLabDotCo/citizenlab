@@ -102,9 +102,19 @@ const ListItem = styled.button`
 
 interface Props {
   className?: string;
+  top?: string;
+  mobileRight?: string;
+  mobileLeft?: string;
+  right?: string;
 }
 
-const LanguageSelector = ({ className }: Props) => {
+const LanguageSelector = ({
+  className,
+  top,
+  mobileRight,
+  mobileLeft,
+  right,
+}: Props) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const isPhoneOrSmaller = useBreakpoint('phone');
   const { data: appConfig } = useAppConfiguration();
@@ -150,10 +160,10 @@ const LanguageSelector = ({ className }: Props) => {
         <Dropdown
           width="180px"
           mobileWidth="160px"
-          top="68px"
-          right={!isRtl ? '0px' : undefined}
-          mobileRight={!isRtl ? '5px' : undefined}
-          mobileLeft={isRtl ? '5px' : undefined}
+          top={top || '68px'}
+          right={right ? right : !isRtl ? '0px' : undefined}
+          mobileRight={mobileRight ? mobileRight : !isRtl ? '5px' : undefined}
+          mobileLeft={mobileLeft ? mobileLeft : isRtl ? '5px' : undefined}
           opened={dropdownOpened}
           onClickOutside={toggleDropdown}
           content={

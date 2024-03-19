@@ -13,7 +13,7 @@ export interface IMapLayerAttributes {
 
 export interface IMapLayerUpdateAttributes {
   id: string;
-  projectId: string;
+  mapConfigId: string;
   layer_url?: string;
   title_multiloc?: Multiloc;
   geojson?: GeoJSON.FeatureCollection;

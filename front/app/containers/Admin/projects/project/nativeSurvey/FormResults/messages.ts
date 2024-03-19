@@ -100,4 +100,31 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.survey.allFiles',
     defaultMessage: 'All files',
   },
+  responses: {
+    id: 'app.containers.Admin.projects.project.survey.responses',
+    defaultMessage: 'Responses',
+  },
+  heatMap: {
+    id: 'app.containers.Admin.projects.project.survey.heatMap',
+    defaultMessage: 'Heat map',
+  },
+  heatmapView: {
+    id: 'app.containers.Admin.projects.project.survey.heatmapView',
+    defaultMessage: 'Heat map view',
+  },
+  heatmapToggleTooltip: {
+    id: 'app.containers.Admin.projects.project.survey.heatmapToggleTooltip',
+    defaultMessage:
+      'The heat map is generated using Esri Smart Mapping. Heat maps are useful when there is a large amount of data points. For fewer points, it may be better to look at only the location points directly. {heatmapToggleEsriLinkText}',
+  },
+  heatmapToggleEsriLinkText: {
+    id: 'app.containers.Admin.projects.project.survey.heatmapToggleEsriLinkText',
+    defaultMessage:
+      'Learn more about heat maps generated using Esri Smart Mapping.',
+  },
+  heatmapToggleEsriLink: {
+    id: 'app.containers.Admin.projects.project.survey.heatmapToggleEsriLink',
+    defaultMessage:
+      'https://storymaps.arcgis.com/collections/9dd9f03ac2554da4af78b42020fb40c1?item=13',
+  },
 });

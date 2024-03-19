@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState, MouseEvent } from 'react';
 
 import {
   Text,
@@ -25,7 +25,9 @@ import useAddPhase from 'api/phases/useAddPhase';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
+import useProjectById from 'api/projects/useProjectById';
 
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useLocalize from 'hooks/useLocalize';
 
@@ -39,6 +41,7 @@ import {
   SubSectionTitle,
 } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import FileUploader from 'components/UI/FileUploader';
 import { FileType } from 'components/UI/FileUploader/FileDisplay';
@@ -46,7 +49,11 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import Warning from 'components/UI/Warning';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import {
+  FormattedMessage,
+  useIntl,
+  useFormatMessageWithLocale,
+} from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
@@ -89,6 +96,7 @@ const AdminPhaseEdit = () => {
     projectId: string;
     phaseId?: string;
   };
+  const { data: project } = useProjectById(projectId);
   const { data: phaseFiles } = usePhaseFiles(phaseId || null);
   const { data: phaseData } = usePhase(phaseId || null);
   const phase = phaseId ? phaseData : undefined;
@@ -111,9 +119,11 @@ const AdminPhaseEdit = () => {
   );
   const localize = useLocalize();
   const { formatMessage } = useIntl();
+  const formatMessageWithLocale = useFormatMessageWithLocale();
   const [hasEndDate, setHasEndDate] = useState<boolean>(false);
   const [disableNoEndDate, setDisableNoEndDate] = useState<boolean>(false);
   const { width, containerRef } = useContainerWidthAndHeight();
+  const tenantLocales = useAppConfigurationLocales();
 
   useEffect(() => {
     setHasEndDate(phase?.data.attributes.end_at ? true : false);
@@ -146,6 +156,22 @@ const AdminPhaseEdit = () => {
     setAttributeDiff({
       ...attributeDiff,
       title_multiloc,
+    });
+  };
+
+  const handleSurveyTitleChange = (surveyTitle: Multiloc) => {
+    setSubmitState('enabled');
+    setAttributeDiff({
+      ...attributeDiff,
+      native_survey_title_multiloc: surveyTitle,
+    });
+  };
+
+  const handleSurveyCTAChange = (CTATitle: Multiloc) => {
+    setSubmitState('enabled');
+    setAttributeDiff({
+      ...attributeDiff,
+      native_survey_button_multiloc: CTATitle,
     });
   };
 
@@ -236,8 +262,36 @@ const AdminPhaseEdit = () => {
   const handlePhaseParticipationConfigChange = (
     participationContextConfig: IPhaseParticipationConfig
   ) => {
+    const surveyCTALabel = tenantLocales?.reduce((acc, locale) => {
+      acc[locale] = formatMessageWithLocale(
+        locale,
+        messages.defaultSurveyCTALabel
+      );
+      return acc;
+    }, {});
+
+    const surveyTitle = tenantLocales?.reduce((acc, locale) => {
+      acc[locale] = formatMessageWithLocale(
+        locale,
+        messages.defaultSurveyTitleLabel
+      );
+      return acc;
+    }, {});
+
     setSubmitState('enabled');
-    setAttributeDiff(getAttributeDiff(participationContextConfig));
+    setAttributeDiff({
+      ...getAttributeDiff(participationContextConfig),
+      ...(participationContextConfig.participation_method === 'native_survey' &&
+        !attributeDiff.native_survey_button_multiloc &&
+        !phase?.data.attributes.native_survey_button_multiloc && {
+          native_survey_button_multiloc: surveyCTALabel,
+        }),
+      ...(participationContextConfig.participation_method === 'native_survey' &&
+        !attributeDiff.native_survey_title_multiloc &&
+        !phase?.data.attributes.native_survey_button_multiloc && {
+          native_survey_title_multiloc: surveyTitle,
+        }),
+    });
   };
 
   const handlePhaseParticipationConfigSubmit = (
@@ -506,6 +560,59 @@ const AdminPhaseEdit = () => {
             apiErrors={errors}
             appConfig={appConfig}
           />
+          {phaseAttrs.participation_method === 'native_survey' && (
+            <>
+              <SectionField>
+                <SubSectionTitle>
+                  <FormattedMessage {...messages.surveyTitleLabel} />
+                </SubSectionTitle>
+                <InputMultilocWithLocaleSwitcher
+                  id="title"
+                  type="text"
+                  valueMultiloc={phaseAttrs.native_survey_title_multiloc}
+                  onChange={handleSurveyTitleChange}
+                />
+                <Error
+                  apiErrors={errors && errors.native_survey_title_multiloc}
+                />
+              </SectionField>
+
+              <SectionField>
+                <SubSectionTitle>
+                  <FormattedMessage {...messages.surveyCTALabel} />
+                </SubSectionTitle>
+                <InputMultilocWithLocaleSwitcher
+                  id="title"
+                  type="text"
+                  valueMultiloc={phaseAttrs.native_survey_button_multiloc}
+                  onChange={handleSurveyCTAChange}
+                />
+                <Error
+                  apiErrors={errors && errors.native_survey_button_multiloc}
+                />
+              </SectionField>
+
+              <SectionField>
+                <SubSectionTitle>
+                  <FormattedMessage {...messages.previewSurveyCTALabel} />
+                </SubSectionTitle>
+                <Button
+                  width="fit-content"
+                  onClick={(event: MouseEvent) => {
+                    if (phase) {
+                      window.open(
+                        `/projects/${project?.data.attributes.slug}/ideas/new?phase_id=${phaseId}`,
+                        '_blank'
+                      );
+                    }
+                    event.preventDefault();
+                  }}
+                >
+                  {localize(phaseAttrs.native_survey_button_multiloc)}
+                </Button>
+              </SectionField>
+            </>
+          )}
           <SectionField className="fullWidth">
             <Box display="flex">
               <SubSectionTitle>

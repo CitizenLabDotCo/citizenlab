@@ -6,8 +6,7 @@ import { AttributesGrouped } from 'api/graph_data_units/responseTypes';
 import { Localize } from 'hooks/useLocalize';
 
 import { DEFAULT_CATEGORICAL_COLORS } from 'components/admin/Graphs/styling';
-
-import messages from '../messages';
+import messages from 'components/admin/Graphs/SurveyBars/messages';
 
 const EMPTY_COLOR = colors.coolGrey300;
 
@@ -25,6 +24,6 @@ export const getLegendLabels = (
       return formatMessage(messages.noAnswer);
     }
 
-    return localize(attributes.multilocs.group[key]);
+    return localize(attributes.multilocs.group[key].title_multiloc);
   });
 };

@@ -13,7 +13,7 @@ import { CLErrors, Locale } from 'typings';
 
 import { parseRequiredMultilocsSchema } from 'components/Form/parseRequiredMultilocs';
 
-import { useIntl, MessageDescriptor } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
 
 import { APIErrorsContext, FormContext } from '../../contexts';
@@ -32,7 +32,6 @@ interface Props {
   getApiErrorMessage?: ApiErrorGetter;
   getAjvErrorMessage?: AjvErrorGetter;
   inputId?: string;
-  formSubmitText?: MessageDescriptor;
   config?: 'default' | 'input' | 'survey';
   locale: Locale;
   onChange: (formData: FormData) => void;
@@ -49,7 +48,6 @@ const Fields = ({
   schema,
   uiSchema,
   inputId,
-  formSubmitText,
   getAjvErrorMessage,
   getApiErrorMessage,
   config,
@@ -98,7 +96,6 @@ const Fields = ({
           getApiErrorMessage: safeApiErrorMessages(),
           onSubmit,
           setShowAllErrors,
-          formSubmitText,
           setFormData,
           locale,
         }}

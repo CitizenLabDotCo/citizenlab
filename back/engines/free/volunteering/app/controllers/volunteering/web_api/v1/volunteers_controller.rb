@@ -25,6 +25,7 @@ module Volunteering
           authorize %i[volunteering volunteer], :index_xlsx?
 
           @volunteers = policy_scope(Volunteer)
+            .order(:created_at)
             .joins(:cause)
             .where(volunteering_causes: { phase_id: @phase })
             .includes(:user, :cause)

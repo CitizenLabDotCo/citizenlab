@@ -170,7 +170,6 @@ const InternalComment = ({
           {comment.data.attributes.publication_status === 'published' && (
             <>
               <InternalCommentHeader
-                projectId={projectId}
                 commentAttributes={comment.data.attributes}
                 commentType={commentType}
                 className={commentType === 'parent' ? 'marginBottom' : ''}

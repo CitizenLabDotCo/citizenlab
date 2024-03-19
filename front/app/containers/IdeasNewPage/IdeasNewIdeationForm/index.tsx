@@ -27,10 +27,9 @@ import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { geocode, reverseGeocode } from 'utils/locationTools';
-import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
-import { Heading } from '../components/Heading';
+import { NewIdeaHeading } from '../components/NewIdeaHeading';
 import IdeasNewMeta from '../IdeasNewMeta';
 import messages from '../messages';
 import { getLocationGeojson } from '../utils';
@@ -161,8 +160,7 @@ const IdeasNewIdeationForm = ({ project }: Props) => {
     const phase_ids =
       phaseId &&
       !isNilOrError(authUser) &&
-      (isAdmin({ data: authUser.data }) ||
-        isProjectModerator({ data: authUser.data }, project.data.id))
+      canModerateProject(project.data.id, { data: authUser.data })
         ? [phaseId]
         : null;
 
@@ -230,10 +228,6 @@ const IdeasNewIdeationForm = ({ project }: Props) => {
     return null;
   }
 
-  const canUserEditProject =
-    !isNilOrError(authUser) &&
-    canModerateProject(project.data.id, { data: authUser.data });
-
   return (
     <PageContainer id="e2e-idea-new-page" overflow="hidden">
       {!processingLocation &&
@@ -251,7 +245,7 @@ const IdeasNewIdeationForm = ({ project }: Props) => {
             getApiErrorMessage={getApiErrorMessage}
             title={
               <>
-                <Heading
+                <NewIdeaHeading
                   project={project.data}
                   titleText={
                     participationMethodConfig.getFormTitle ? (
@@ -264,8 +258,6 @@ const IdeasNewIdeationForm = ({ project }: Props) => {
                       <></>
                     )
                   }
-                  isSurvey={false}
-                  canUserEditProject={canUserEditProject}
                 />
               </>
             }

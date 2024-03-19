@@ -105,6 +105,7 @@ const InitiativeCard = ({
             createdAt={initiative.data.attributes.proposed_at}
             size={34}
             anonymous={initiative.data.attributes.anonymous}
+            showModeratorStyles={false}
           />
         </Box>
       }

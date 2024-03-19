@@ -20,7 +20,7 @@ RSpec.describe ReportBuilder::Queries::UsersByCustomField::Gender do
 
     it 'returns users by gender' do
       params = { start_at: date - 1.day, end_at: date + 1.day }
-      expect(query.run_query(params)).to eq({ '_blank' => 0, 'female' => 1, 'other' => 0 })
+      expect(query.run_query(**params)).to eq({ '_blank' => 0, 'female' => 1, 'other' => 0 })
     end
   end
 end

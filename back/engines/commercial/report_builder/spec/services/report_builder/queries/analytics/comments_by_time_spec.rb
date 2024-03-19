@@ -21,7 +21,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::CommentsByTime do
 
     it 'returns comments by time' do
       params = { start_at: date - 1.day, end_at: date + 1.day, project_id: idea.project_id }
-      expect(query.run_query(params)).to eq(
+      expect(query.run_query(**params)).to eq(
         [
           [{
             'count' => 1,

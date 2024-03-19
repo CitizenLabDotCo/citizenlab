@@ -1,12 +1,14 @@
 import { ICustomFieldResponse } from '../../../app/api/custom_fields/types';
+import { IIdeaJsonFormSchemas } from '../../../app/api/idea_json_form_schema/types';
 import { randomString, randomEmail } from '../../support/commands';
 import moment = require('moment');
+import { base64 } from '../../fixtures/base64img';
 
 describe('Survey template', () => {
   let projectId: string;
   let phaseId: string;
-  let surveyIncluded: any;
   let surveyFields: ICustomFieldResponse[];
+  let surveySchema: IIdeaJsonFormSchemas;
 
   let userId: string;
 
@@ -26,6 +28,8 @@ describe('Survey template', () => {
           title: randomString(),
           startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
           participationMethod: 'native_survey',
+          nativeSurveyButtonMultiloc: { en: 'Take the survey' },
+          nativeSurveyTitleMultiloc: { en: 'Survey' },
           canPost: true,
           canComment: true,
           canReact: true,
@@ -33,12 +37,55 @@ describe('Survey template', () => {
       })
       .then((phase) => {
         phaseId = phase.body.data.id;
-
-        cy.apiCreateSurveyQuestions(phaseId, ['page', 'select', 'multiselect']);
+        return cy.uploadSurveyImageQuestionImage(base64);
+      })
+      .then((questionImage) => {
+        return cy.apiCreateSurveyQuestions(
+          phaseId,
+          [
+            'page',
+            'select',
+            'multiselect',
+            'linear_scale',
+            'multiselect_image',
+            'point',
+          ],
+          questionImage.body.data.id
+        );
       })
       .then((response) => {
-        surveyIncluded = response.body.included;
         surveyFields = response.body.data;
+        return cy.apiGetSurveySchema(phaseId);
+      })
+      .then((response) => {
+        surveySchema = response.body;
+
+        const selectKey = surveyFields[1].attributes.key;
+        const multiSelectKey = surveyFields[2].attributes.key;
+        const linearScaleKey = surveyFields[3].attributes.key;
+        const multiselectImageKey = surveyFields[4].attributes.key;
+        const pointKey = surveyFields[5].attributes.key;
+
+        const fieldConfigs: any =
+          surveySchema.data.attributes.json_schema_multiloc.en?.properties;
+
+        const getAnswerKeys = (fieldKey: string) => {
+          const fieldConfig = fieldConfigs[fieldKey];
+
+          if (fieldConfig.items) {
+            return fieldConfig.items.oneOf.map((x: any) => x.const);
+          }
+
+          if (fieldConfig.enum) {
+            return fieldConfig.enum;
+          }
+
+          return undefined;
+        };
+
+        const selectAnswerKeys = getAnswerKeys(selectKey);
+        const multiSelectAnswerKeys = getAnswerKeys(multiSelectKey);
+        const multiselectImageAnswerKeys = getAnswerKeys(multiselectImageKey);
 
         const firstName = randomString();
         const lastName = randomString();
@@ -54,12 +101,17 @@ describe('Survey template', () => {
           })
           .then(() => {
             cy.apiCreateSurveyResponse(email, password, projectId, {
-              [surveyFields[1].attributes.key]:
-                surveyIncluded[0].attributes.key,
-              [surveyFields[2].attributes.key]: [
-                surveyIncluded[2].attributes.key,
-                surveyIncluded[3].attributes.key,
+              [selectKey]: selectAnswerKeys[0],
+              [multiSelectKey]: [
+                multiSelectAnswerKeys[0],
+                multiSelectAnswerKeys[1],
               ],
+              [linearScaleKey]: 2,
+              [multiselectImageKey]: [multiselectImageAnswerKeys[0]],
+              [pointKey]: {
+                type: 'Point',
+                coordinates: [4.349371842575076, 50.85428103529364],
+              },
             });
           });
       })
@@ -78,10 +130,12 @@ describe('Survey template', () => {
     cy.apiRemoveUser(userId);
   });
 
+  beforeEach(() => {
+    cy.setAdminLoginCookie();
+  });
+
   describe('Global report builder', () => {
     it('should create a survey template', () => {
-      cy.setAdminLoginCookie();
-
       // Create report from template
       cy.visit(`/admin/reporting/report-builder`);
       cy.get('#e2e-create-report-button').click();
@@ -98,13 +152,22 @@ describe('Survey template', () => {
       cy.get('#e2e-content-builder-frame').should('exist');
 
       // Ensure correct amount of questions
-      cy.get('.e2e-survey-question-widget-title').should('have.length', 2);
+      cy.get('.e2e-survey-question-widget-title').should('have.length', 5);
       cy.get('.e2e-survey-question-widget-title')
         .first()
         .contains('Question: select');
       cy.get('.e2e-survey-question-widget-title')
         .eq(1)
         .contains('Question: multiselect');
+      cy.get('.e2e-survey-question-widget-title')
+        .eq(2)
+        .contains('Question: linear_scale');
+      cy.get('.e2e-survey-question-widget-title')
+        .eq(3)
+        .contains('Question: multiselect_image');
+      cy.get('.e2e-survey-question-widget-title')
+        .eq(4)
+        .contains('Question: point');
 
       // Ensure correct values
       cy.get('.e2e-survey-question-ungrouped-bars')
@@ -125,8 +188,6 @@ describe('Survey template', () => {
 
   describe('Phase report builder', () => {
     it('should create a survey template', () => {
-      cy.setAdminLoginCookie();
-
       // Create report inside of phase
       cy.visit(`/en/admin/projects/${projectId}/phases/${phaseId}/report`);
       cy.get('#e2e-create-report-button').click();
@@ -143,13 +204,22 @@ describe('Survey template', () => {
       cy.get('#e2e-content-builder-frame').should('exist');
 
       // Ensure correct amount of questions
-      cy.get('.e2e-survey-question-widget-title').should('have.length', 2);
+      cy.get('.e2e-survey-question-widget-title').should('have.length', 5);
       cy.get('.e2e-survey-question-widget-title')
         .first()
         .contains('Question: select');
       cy.get('.e2e-survey-question-widget-title')
         .eq(1)
         .contains('Question: multiselect');
+      cy.get('.e2e-survey-question-widget-title')
+        .eq(2)
+        .contains('Question: linear_scale');
+      cy.get('.e2e-survey-question-widget-title')
+        .eq(3)
+        .contains('Question: multiselect_image');
+      cy.get('.e2e-survey-question-widget-title')
+        .eq(4)
+        .contains('Question: point');
 
       // Ensure correct values
       cy.get('.e2e-survey-question-ungrouped-bars')

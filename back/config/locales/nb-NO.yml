@@ -98,6 +98,8 @@
       <p> Passer ikke ideen din innenfor en av de eksisterende prosjektene? Legg den til her!</p><p><strong>Målet?</strong> Hvordan sette din idé på den politiske dagsorden?</p><p><strong>How?</strong> Samle støtte til ideen din, minst 100 stemmer innen 3 måneder. You can do that by first making your idea 'attractive'. Write it in a clear and engaging way, add images, give strong arguments based on facts, add attachments with further details or background information, ... Dei ideen din i sosiale medier og via e-post. Inviter andre til å bli med i diskusjonen, eller overbevis dem om å støtte ideen ved å stemme.</p><p><strong>Hva kan ideen være?t?</strong> Ideen kan handle om mye forskjellig, men må være relatert til kommunen og deres ansvarsområder. Det kan være et problem, en erfaring, en løsning en visjon, eller en kombinasjon. Ideen kan være  vill og langsiktig, eller håndfast og lett å løse.</p><p><strong> Hva skjer videre? </strong>Fikk ideen 100 stemmer inn 3 måneder?? Gratulerer! Kommunen vil nå vurdere ideen din. Hvis ideen din er gjennomførbarn og ikke skalder en spesiell gruppe mennesker eller individer, du vil få sjansen til å presentere forslag på et politisk møte.  Politikerne vil gi en tilbakemelding om hva de vil gjøre med ideen og hvorfor. Forslaget blir ikke vurdert, hvis du ikke får 100 stemmer innen 3 måneder..</p><p>Vil er nysgjerrig på dine ideer</p>
   phases:
     open_idea_phase_title: Nåværende fase
+    native_survey_title: undersøkelse
+    native_survey_button: Ta undersøkelsen
   events:
     council_meeting_title: Politisk møte
     council_meeting_description: >
@@ -226,9 +228,9 @@
       title: 'Ditt spørsmål'
       option1: 'Alternativ 1'
       option2: 'Alternativ 2'
-    survey_end_page:
-      title: 'Slutt på spørreundersøkelse'
-      description: "Send inn svarene dine ved å velge «Send inn spørreundersøkelse» nedenfor."
+    form_end_page:
+      title: 'Takk for at du deltar'
+      description: "Send inn svarene dine ved å velge 'Send' nedenfor."
     pdf_export:
       personal_data: 'Personlig informasjon'
       personal_data_explanation_ideation: "Vi vil sende inn dine innspill til %{organizationName}sin online deltakelsesplattform. Hvis du vil at navnet ditt skal vises som forfatter av dette innspillet og motta oppdateringer som er relevante for innspillet ditt på e-post, vennligst fyll ut følgende felt på denne siden, så oppretter vi en konto for deg. E-posten din vil ikke være offentlig og vil kun bli brukt av %{organizationName}. Hvis du ønsker å være anonym, eller ikke godtar at vi bruker dine personopplysninger på denne måten, kan du la dem stå tomme."

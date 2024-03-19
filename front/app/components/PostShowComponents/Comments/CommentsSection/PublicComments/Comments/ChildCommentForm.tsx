@@ -23,6 +23,7 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clickOutside from 'utils/containers/clickOutside';
 import { isNilOrError } from 'utils/helperUtils';
+import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import { commentReplyButtonClicked$, commentAdded } from '../../../events';
@@ -307,9 +308,12 @@ const ChildCommentForm = ({
     }
   };
 
-  if (focused) {
-    const isModerator = canModerateProject(projectId, authUser);
+  const userCanModerate = {
+    idea: canModerateProject(projectId, authUser),
+    initiative: canModerateInitiative(authUser),
+  }[postType];
 
+  if (focused) {
     return (
       <Box
         display="flex"
@@ -319,7 +323,7 @@ const ChildCommentForm = ({
           userId={authUser?.data.id}
           size={30}
           isLinkToProfile={!!authUser?.data.id}
-          moderator={isModerator}
+          moderator={userCanModerate}
         />
         <FormContainer
           onClickOutside={onCancel}

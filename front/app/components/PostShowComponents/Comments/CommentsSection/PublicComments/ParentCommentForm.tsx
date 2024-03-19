@@ -23,6 +23,7 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import clickOutside from 'utils/containers/clickOutside';
 import { isNilOrError, isPage } from 'utils/helperUtils';
+import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import Actions from '../../CommentForm/Actions';
@@ -277,12 +278,14 @@ const ParentCommentForm = ({
     textareaElement.current = element;
   };
 
-  const isModerator = canModerateProject(projectId, authUser);
-
   const placeholderMessage: MessageDescriptor = isAdminPage
     ? messages.visibleToUsersPlaceholder
     : messages[`${postType}CommentBodyPlaceholder`];
   const placeholder = formatMessage(placeholderMessage);
+  const userCanModerate = {
+    idea: canModerateProject(projectId, authUser),
+    initiative: canModerateInitiative(authUser),
+  }[postType];
 
   return (
     <Box display="flex" className={className || ''} my="12px">
@@ -290,7 +293,7 @@ const ParentCommentForm = ({
         userId={authUser.data.id}
         size={30}
         isLinkToProfile={!!authUser.data.id}
-        moderator={isModerator}
+        moderator={userCanModerate}
       />
       <FormContainer
         className="ideaCommentForm"

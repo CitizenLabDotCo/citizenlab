@@ -95,7 +95,7 @@ const RenderNode = ({ render }) => {
     if (isHover && isChildOfComplexComponent) {
       parentNodeElement?.setAttribute(
         'style',
-        `border: 1px solid ${colors.primary} `
+        `outline: 1px solid ${colors.primary} `
       );
     } else {
       parentNodeElement?.removeAttribute('style');
@@ -129,7 +129,9 @@ const RenderNode = ({ render }) => {
   const nodeIsHovered = isHover && id !== ROOT_NODE && !isContainer;
 
   const solidBorderIsVisible =
-    isSelectable && (nodeLabelIsVisible || nodeIsHovered || hasError);
+    isSelectable &&
+    (nodeLabelIsVisible || nodeIsHovered || hasError) &&
+    !invisible;
 
   return (
     <StyledBox
@@ -139,7 +141,6 @@ const RenderNode = ({ render }) => {
       position="relative"
       minHeight={id === ROOT_NODE ? '160px' : '0px'}
       background="#fff"
-      borderWidth={invisible ? '0px' : '1px'}
       outlineColor={
         hasError
           ? colors.red600

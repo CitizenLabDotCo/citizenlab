@@ -11,11 +11,11 @@ import useAuthUser from 'api/me/useAuthUser';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { showOnboarding } from 'containers/Authentication/useSteps/stepConfig/utils';
 
-import HasPermission from 'components/HasPermission';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import { usePermission } from 'utils/permissions';
 
 import messages from './messages';
 
@@ -31,6 +31,10 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
   const { data: authUser } = useAuthUser();
   const { data: authenticationRequirementsResponse } =
     useAuthenticationRequirements(GLOBAL_CONTEXT);
+  const canAccessAdmin = usePermission({
+    item: { type: 'route', path: '/admin' },
+    action: 'access',
+  });
 
   const isRegisteredUser =
     !isNilOrError(authUser) &&
@@ -70,10 +74,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
       onClickOutside={handleToggleDropdown}
       content={
         <>
-          <HasPermission
-            item={{ type: 'route', path: '/admin' }}
-            action="access"
-          >
+          {canAccessAdmin && (
             <DropdownListItem
               id="admin-link"
               linkTo={'/admin'}
@@ -88,7 +89,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
             >
               <FormattedMessage {...messages.admin} />
             </DropdownListItem>
-          </HasPermission>
+          )}
 
           {isConfirmedUser && (
             <DropdownListItem

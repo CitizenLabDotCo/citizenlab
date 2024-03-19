@@ -98,6 +98,8 @@ ach:
       crwdns207850:0crwdne207850:0
   phases:
     open_idea_phase_title: crwdns1443018:0crwdne1443018:0
+    native_survey_title: crwdns1930452:0crwdne1930452:0
+    native_survey_button: crwdns1930454:0crwdne1930454:0
   events:
     council_meeting_title: crwdns207852:0crwdne207852:0
     council_meeting_description: >
@@ -226,9 +228,9 @@ ach:
       title: 'crwdns207994:0crwdne207994:0'
       option1: 'crwdns207996:0crwdne207996:0'
       option2: 'crwdns207998:0crwdne207998:0'
-    survey_end_page:
-      title: 'crwdns208000:0crwdne208000:0'
-      description: "crwdns208002:0crwdne208002:0"
+    form_end_page:
+      title: 'crwdns1963126:0crwdne1963126:0'
+      description: "crwdns1963128:0crwdne1963128:0"
     pdf_export:
       personal_data: 'crwdns1160094:0crwdne1160094:0'
       personal_data_explanation_ideation: "crwdns1160096:0%{organizationName}crwdnd1160096:0%{organizationName}crwdne1160096:0"

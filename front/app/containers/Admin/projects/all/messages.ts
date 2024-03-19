@@ -10,10 +10,6 @@ export default defineMessages({
     defaultMessage:
       'Create as many projects as you want and edit them at any time. Drag and drop them to change the order in which you want to see them on your homepage.',
   },
-  overviewPageSubtitleModerator: {
-    id: 'app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator',
-    defaultMessage: 'Here are the projects on the platform you are moderating.',
-  },
   createAProject: {
     id: 'app.containers.AdminPage.ProjectEdit.createAProject',
     defaultMessage: 'Create a project',

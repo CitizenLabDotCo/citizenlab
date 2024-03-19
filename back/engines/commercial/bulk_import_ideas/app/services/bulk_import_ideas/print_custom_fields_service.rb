@@ -93,7 +93,7 @@ class BulkImportIdeas::PrintCustomFieldsService
     logo = @app_configuration.logo&.medium
     return if logo.blank? || logo.url&.include?('.gif')
 
-    pdf.image open logo.to_s
+    pdf.image URI.open logo.to_s
     pdf.move_down 10.mm
   end
 
@@ -159,7 +159,7 @@ class BulkImportIdeas::PrintCustomFieldsService
     pdf.text I18n.with_locale(@locale) {
       I18n.t(
         personal_data_explanation_key,
-        { organizationName: organization_name }
+        organizationName: organization_name
       )
     }
 
@@ -185,7 +185,7 @@ class BulkImportIdeas::PrintCustomFieldsService
       pdf.text I18n.with_locale(@locale) {
         I18n.t(
           'form_builder.pdf_export.by_checking_this_box',
-          { organizationName: organization_name }
+          organizationName: organization_name
         )
       }
     end

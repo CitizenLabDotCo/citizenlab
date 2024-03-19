@@ -18,15 +18,17 @@ export const surveyResultsResponse: SurveyResultsType = {
             en: 'Your question',
           },
           required: false,
-          totalResponses: 1,
+          totalResponseCount: 1,
+          questionResponseCount: 1,
           answers: [
             {
-              answer: {
-                en: 'Option 1',
-              },
-              responses: 1,
+              answer: 'option1',
+              count: 1,
             },
           ],
+          multilocs: {
+            answer: { option1: { title_multiloc: { en: 'Option 1' } } },
+          },
           customFieldId: '654c3a46-9e64-44a0-96e5-f350b471fc23',
         },
         {
@@ -35,15 +37,17 @@ export const surveyResultsResponse: SurveyResultsType = {
             en: 'Single choice',
           },
           required: true,
-          totalResponses: 1,
+          totalResponseCount: 1,
+          questionResponseCount: 1,
           answers: [
             {
-              answer: {
-                en: 'Option A',
-              },
-              responses: 1,
+              answer: 'option_a',
+              count: 1,
             },
           ],
+          multilocs: {
+            answer: { option_a: { title_multiloc: { en: 'Option A' } } },
+          },
           customFieldId: '548f7849-837f-447e-831a-51050a403a3b',
         },
         {
@@ -52,7 +56,8 @@ export const surveyResultsResponse: SurveyResultsType = {
             en: 'question',
           },
           required: false,
-          totalResponses: 1,
+          totalResponseCount: 1,
+          questionResponseCount: 1,
           customFieldId: '052befb9-b096-4ded-ba1d-3ee2541bde31',
         },
       ],

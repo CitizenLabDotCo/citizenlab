@@ -18,6 +18,8 @@ export type InitialData = {
   showFullscreenOption?: boolean;
   showLegend?: boolean;
   showLayerVisibilityControl?: boolean;
+  showZoomControls?: boolean;
   zoomWidgetLocation?: 'left' | 'right';
+  showLegendExpanded?: boolean;
   onInit?: (mapView: MapView) => void;
 };

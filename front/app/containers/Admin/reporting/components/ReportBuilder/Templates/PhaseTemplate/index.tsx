@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { Element } from '@craftjs/core';
+import { Element, useEditor } from '@craftjs/core';
 
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
 import usePhase from 'api/phases/usePhase';
@@ -17,12 +17,9 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
 import { withoutSpacing } from 'utils/textUtils';
 
-// shared widgets
-
-// report builder widgets
+import { SURVEY_QUESTION_INPUT_TYPES } from '../../constants';
 import MostReactedIdeasWidget from '../../Widgets/MostReactedIdeasWidget';
 import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget';
-import { SUPPORTED_INPUT_TYPES } from '../../Widgets/SurveyQuestionResultWidget/constants';
 import TextMultiloc from '../../Widgets/TextMultiloc';
 
 import messages from './messages';
@@ -31,7 +28,7 @@ interface Props {
   phaseId: string;
 }
 
-const PhaseTemplate = ({ phaseId }: Props) => {
+const PhaseTemplateContent = ({ phaseId }: Props) => {
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
   const { data: phase } = usePhase(phaseId);
@@ -47,7 +44,7 @@ const PhaseTemplate = ({ phaseId }: Props) => {
 
   const filteredSurveyQuestions = surveyQuestions
     ? surveyQuestions.data.filter((field) =>
-        SUPPORTED_INPUT_TYPES.has(field.attributes.input_type)
+        SURVEY_QUESTION_INPUT_TYPES.has(field.attributes.input_type)
       )
     : undefined;
 
@@ -104,6 +101,19 @@ const PhaseTemplate = ({ phaseId }: Props) => {
       )}
     </Element>
   );
+};
+
+const PhaseTemplate = ({ phaseId }: Props) => {
+  const { enabled } = useEditor((state) => {
+    return {
+      enabled: state.options.enabled,
+    };
+  });
+  if (enabled) {
+    return <PhaseTemplateContent phaseId={phaseId} />;
+  } else {
+    return <Element id="phase-report-template" is={Box} canvas />;
+  }
 };
 
 export default PhaseTemplate;

@@ -24,7 +24,7 @@ module Analysis
       end
 
       def chat(prompt, **params)
-        resp = @client.invoke_model invoke_params(prompt, params)
+        resp = @client.invoke_model invoke_params(prompt, **params)
         body_completion resp.body.string
       end
 
@@ -33,7 +33,7 @@ module Analysis
         chunk_handler.on_chunk_event do |event|
           puts body_completion(event.bytes)
         end
-        @client.invoke_model_with_response_stream(**invoke_params(prompt, params), event_stream_handler: chunk_handler)
+        @client.invoke_model_with_response_stream(**invoke_params(prompt, **params), event_stream_handler: chunk_handler)
       end
 
       protected

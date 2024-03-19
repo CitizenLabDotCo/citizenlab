@@ -11,7 +11,6 @@ import useProjectById from 'api/projects/useProjectById';
 
 import SpamReportForm from 'containers/SpamReport';
 
-import HasPermission from 'components/HasPermission';
 import Modal from 'components/UI/Modal';
 import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 import WarningModal from 'components/WarningModal';
@@ -20,6 +19,7 @@ import warningMessages from 'components/WarningModal/messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
+import { usePermission } from 'utils/permissions';
 
 import messages from '../messages';
 
@@ -50,6 +50,11 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
   const { mutate: deleteIdea, isLoading: isLoadingDeleteIdea } =
     useDeleteIdea();
   const { data: phases } = usePhases(projectId);
+  const canEditIdea = usePermission({
+    item: idea,
+    action: 'edit',
+    context: idea,
+  });
 
   const openSpamModal = () => {
     setIsSpamModalVisible(true);
@@ -85,9 +90,8 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
         label: <FormattedMessage {...messages.reportAsSpam} />,
         handler: openSpamModal,
       },
-      ...(!isIdeationPhase
-        ? []
-        : [
+      ...(isIdeationPhase && canEditIdea
+        ? [
             {
               label: <FormattedMessage {...messages.editPost} />,
               handler: onEditIdea,
@@ -96,34 +100,20 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
               label: <FormattedMessage {...messages.deletePost} />,
               handler: openWarningModal,
             },
-          ]),
+          ]
+        : []),
     ];
 
     return (
       <>
         <Container className={className}>
           <MoreActionsMenuWrapper>
-            <HasPermission item={idea} action="edit" context={idea}>
-              <MoreActionsMenu
-                labelAndTitle={<FormattedMessage {...messages.moreOptions} />}
-                showLabel={false}
-                id="e2e-idea-more-actions"
-                actions={actions}
-              />
-              <HasPermission.No>
-                <MoreActionsMenu
-                  id="e2e-idea-more-actions"
-                  actions={[
-                    {
-                      label: <FormattedMessage {...messages.reportAsSpam} />,
-                      handler: openSpamModal,
-                    },
-                  ]}
-                  labelAndTitle={<FormattedMessage {...messages.moreOptions} />}
-                  showLabel={false}
-                />
-              </HasPermission.No>
-            </HasPermission>
+            <MoreActionsMenu
+              id="e2e-idea-more-actions"
+              labelAndTitle={<FormattedMessage {...messages.moreOptions} />}
+              showLabel={false}
+              actions={actions}
+            />
           </MoreActionsMenuWrapper>
           <Modal
             opened={isSpamModalVisible}

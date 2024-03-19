@@ -27,9 +27,11 @@ const InputType = ({
     ? formatMessage(messages.required)
     : formatMessage(messages.optional);
 
-  const inputTypeLabel = `${totalResponses}/${totalSubmissions} - ${formatMessage(
-    inputTypeText
-  )} - ${requiredOrOptionalText.toLowerCase()}`;
+  const inputTypeLabel = inputTypeText
+    ? `${totalResponses}/${totalSubmissions} - ${formatMessage(
+        inputTypeText
+      )} - ${requiredOrOptionalText.toLowerCase()}`
+    : '';
 
   return (
     <Text variant="bodyS" color="textSecondary" mt="12px" mb="12px">

@@ -8,6 +8,8 @@ module MultiTenancy
 
       attr_reader :internal_template_dir
 
+      delegate :parse_yml, :parse_yml_file, to: :class
+
       def initialize(
         internal_template_dir: Rails.root.join('config/tenant_templates'),
         template_bucket: ENV.fetch('TEMPLATE_BUCKET', nil),
@@ -77,7 +79,7 @@ module MultiTenancy
 
       def fetch_internal_template_models(template_name)
         template_path = internal_template_dir.join("#{template_name}.yml")
-        parse_yml(File.read(template_path))
+        parse_yml_file(template_path)
       rescue Errno::ENOENT
         raise UnknownTemplateError, "Unknown template: '#{template_name}'."
       end
@@ -264,7 +266,29 @@ module MultiTenancy
           users.pluck('locale').uniq.sort
         end
 
+        def parse_yml(content)
+          YAML.load(
+            content,
+            aliases: true,
+            permitted_classes: [Date, Time, Symbol, *ar_classes]
+          )
+        end
+        alias parse_yaml parse_yml
+
+        def parse_yml_file(file)
+          content = File.read(file)
+          parse_yml(content)
+        end
+        alias parse_yaml_file parse_yml_file
+
         private
+
+        def ar_classes
+          @ar_classes ||= begin
+            Rails.application.eager_load! # Make sure all model classes are loaded.
+            ApplicationRecord.descendants
+          end
+        end
 
         def template_locales(serialized_models)
           locales = Set.new
@@ -289,11 +313,6 @@ module MultiTenancy
       end
 
       private
-
-      def parse_yml(content)
-        # We have to use YAML.load because templates use yaml aliases.
-        YAML.load(content) # rubocop:disable Security/YAMLLoad
-      end
 
       def raise_if_duplicates(template_names)
         duplicates = template_names.group_by(&:itself)

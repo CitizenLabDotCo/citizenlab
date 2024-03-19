@@ -7,6 +7,8 @@ import useComment from 'api/comments/useComment';
 import useUserById from 'api/users/useUserById';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import messages from '../messages';
 
@@ -90,6 +92,13 @@ const Comment = ({
     setEditing(false);
   };
 
+  const authorCanModerate = author
+    ? {
+        idea: canModerateProject(projectId, author),
+        initiative: canModerateInitiative(author),
+      }[postType]
+    : false;
+
   if (comment) {
     const commentId = comment.data.id;
     const authorId = author ? author.data.id : null;
@@ -113,11 +122,11 @@ const Comment = ({
           {comment.data.attributes.publication_status === 'published' && (
             <>
               <CommentHeader
-                projectId={projectId}
                 commentAttributes={comment.data.attributes}
                 commentType={commentType}
                 className={commentType === 'parent' ? 'marginBottom' : ''}
                 authorId={authorId}
+                userCanModerate={authorCanModerate}
               />
 
               <Content>

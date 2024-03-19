@@ -2,14 +2,14 @@ import React from 'react';
 
 import {
   Box,
-  Title,
-  Accordion,
   Spinner,
   stylingConsts,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 
 import useAuthUser from 'api/me/useAuthUser';
+import usePhases from 'api/phases/usePhases';
 import useProjects from 'api/projects/useProjects';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -19,20 +19,17 @@ import TitleWidget from 'containers/Admin/reporting/components/ReportBuilder/Wid
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 
-import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 import {
-  FormattedMessage,
   useIntl,
   useFormatMessageWithLocale,
   MessageDescriptor,
 } from 'utils/cl-intl';
 import { isModerator } from 'utils/permissions/roles';
 
-import reportBuilderMessages from '../../../messages';
 import { WIDGET_TITLES } from '../Widgets';
 import AboutReportWidget from '../Widgets/AboutReportWidget';
 import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
@@ -43,6 +40,7 @@ import PostsByTimeWidget from '../Widgets/ChartWidgets/PostsByTimeWidget';
 import ReactionsByTimeWidget from '../Widgets/ChartWidgets/ReactionsByTimeWidget';
 import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
 import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
+import IframeMultiloc from '../Widgets/IframeMultiloc';
 import ImageMultiloc from '../Widgets/ImageMultiloc';
 import MostReactedIdeasWidget from '../Widgets/MostReactedIdeasWidget';
 import SingleIdeaWidget from '../Widgets/SingleIdeaWidget';
@@ -50,22 +48,16 @@ import SurveyQuestionResultWidget from '../Widgets/SurveyQuestionResultWidget';
 import TextMultiloc from '../Widgets/TextMultiloc';
 import TwoColumn from '../Widgets/TwoColumn';
 
+import { findSurveyPhaseId, findIdeationPhaseId } from './utils';
+
 type ReportBuilderToolboxProps = {
   reportId: string;
 };
 
-const SectionTitle = ({ children }) => (
-  <Title
-    fontWeight="normal"
-    ml="10px"
-    variant="h6"
-    as="h3"
-    mb="8px"
-    mt="8px"
-    color="textSecondary"
-  >
+const Section = ({ children }) => (
+  <Box borderTop={`1px solid ${colors.divider}`} pt="12px" mb="12px">
     {children}
-  </Title>
+  </Box>
 );
 
 const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
@@ -85,6 +77,8 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
       enabled: userIsModerator,
     }
   );
+
+  const { data: phases } = usePhases(projectId);
 
   if (!appConfigurationLocales || !authUser || (userIsModerator && !projects)) {
     return (
@@ -117,50 +111,13 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
   const selectedProjectId =
     projectId ?? (userIsModerator ? projects?.data[0]?.id : undefined);
 
+  const surveyPhaseId = phases ? findSurveyPhaseId(phases) : undefined;
+  const ideationPhaseId = phases ? findIdeationPhaseId(phases) : undefined;
+
   return (
     <Container>
       <Box>
-        <Accordion
-          isOpenByDefault={true}
-          title={
-            <SectionTitle>
-              <FormattedMessage {...contentBuilderMessages.layout} />
-            </SectionTitle>
-          }
-        >
-          <DraggableElement
-            id="e2e-draggable-two-column"
-            component={<TwoColumn columnLayout="1-1" />}
-            icon="layout-2column-1"
-            label={formatMessage(WIDGET_TITLES.TwoColumn)}
-          />
-          <DraggableElement
-            id="e2e-draggable-white-space"
-            component={<WhiteSpace size="small" />}
-            icon="layout-white-space"
-            label={formatMessage(WIDGET_TITLES.WhiteSpace)}
-          />
-        </Accordion>
-
-        <Accordion
-          isOpenByDefault={true}
-          title={
-            <SectionTitle>
-              <FormattedMessage {...contentBuilderMessages.content} />
-            </SectionTitle>
-          }
-        >
-          <DraggableElement
-            id="e2e-draggable-about-report"
-            component={
-              <AboutReportWidget
-                reportId={reportId}
-                projectId={selectedProjectId}
-              />
-            }
-            icon="section-image-text"
-            label={formatMessage(WIDGET_TITLES.AboutReportWidget)}
-          />
+        <Section>
           <DraggableElement
             id="e2e-draggable-text"
             component={<TextMultiloc />}
@@ -185,24 +142,33 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             icon="image"
             label={formatMessage(WIDGET_TITLES.ImageMultiloc)}
           />
-        </Accordion>
-
-        <Accordion
-          isOpenByDefault={true}
-          title={
-            <SectionTitle>
-              <FormattedMessage {...reportBuilderMessages.resultsSection} />
-            </SectionTitle>
-          }
-        >
-          {
-            // TODO: CL-2307 Only show this if there are surveys in the platform
-            // TODO: Add in the default project / phase
-          }
+          <DraggableElement
+            id="e2e-draggable-two-column"
+            component={<TwoColumn columnLayout="1-1" />}
+            icon="layout-2column-1"
+            label={formatMessage(WIDGET_TITLES.TwoColumn)}
+          />
+          <DraggableElement
+            id="e2e-draggable-white-space"
+            component={<WhiteSpace size="small" />}
+            icon="layout-white-space"
+            label={formatMessage(WIDGET_TITLES.WhiteSpace)}
+          />
+          <DraggableElement
+            id="e2e-draggable-iframe"
+            component={<IframeMultiloc url="" height={500} />}
+            icon="code"
+            label={formatMessage(WIDGET_TITLES.IframeMultiloc)}
+          />
+        </Section>
+        <Section>
           <DraggableElement
             id="e2e-draggable-survey-question-result-widget"
             component={
-              <SurveyQuestionResultWidget projectId={selectedProjectId} />
+              <SurveyQuestionResultWidget
+                projectId={selectedProjectId}
+                phaseId={surveyPhaseId}
+              />
             }
             icon="survey"
             label={formatMessage(WIDGET_TITLES.SurveyQuestionResultWidget)}
@@ -215,6 +181,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
                 numberOfIdeas={5}
                 collapseLongText={false}
                 projectId={selectedProjectId}
+                phaseId={ideationPhaseId}
               />
             }
             icon="vote-up"
@@ -230,21 +197,26 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
                 showReactions={true}
                 showVotes={true}
                 projectId={selectedProjectId}
+                phaseId={ideationPhaseId}
               />
             }
             icon="idea"
             label={formatMessage(WIDGET_TITLES.SingleIdeaWidget)}
           />
-        </Accordion>
+        </Section>
 
-        <Accordion
-          isOpenByDefault={true}
-          title={
-            <SectionTitle>
-              <FormattedMessage {...reportBuilderMessages.chartsSection} />
-            </SectionTitle>
-          }
-        >
+        <Section>
+          <DraggableElement
+            id="e2e-draggable-about-report"
+            component={
+              <AboutReportWidget
+                reportId={reportId}
+                projectId={selectedProjectId}
+              />
+            }
+            icon="section-image-text"
+            label={formatMessage(WIDGET_TITLES.AboutReportWidget)}
+          />
           <DraggableElement
             id="e2e-draggable-visitors-timeline-widget"
             component={
@@ -349,7 +321,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             icon="chart-bar"
             label={formatMessage(WIDGET_TITLES.ReactionsByTimeWidget)}
           />
-        </Accordion>
+        </Section>
       </Box>
     </Container>
   );

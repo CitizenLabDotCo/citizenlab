@@ -23,6 +23,8 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
+import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import messages from './messages';
 
@@ -140,6 +142,10 @@ const PostCommentGroup = ({ postType, comments, userId, postId }: Props) => {
     postType === 'idea' && 'project' in post.data.relationships
       ? post.data.relationships.project.data.id
       : null;
+  const userCanModerate = {
+    idea: canModerateProject(projectId, user),
+    initiative: canModerateInitiative(user),
+  }[postType];
 
   return (
     <Container>
@@ -173,10 +179,10 @@ const PostCommentGroup = ({ postType, comments, userId, postId }: Props) => {
           return (
             <CommentContainer key={comment.id}>
               <CommentHeader
-                projectId={projectId}
                 authorId={userId}
                 commentType="parent"
                 commentAttributes={comment.attributes}
+                userCanModerate={userCanModerate}
               />
               <CommentBody
                 commentId={comment.id}

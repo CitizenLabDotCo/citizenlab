@@ -7,7 +7,7 @@ import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { mapConfigData } from './__mocks__/useMapConfig';
 import useUpdateMapConfig from './useUpdateMapConfig';
 
-const apiPath = '*/projects/:projectId/map_config';
+const apiPath = '*/map_configs/:mapConfigId';
 
 const server = setupServer(
   rest.patch(apiPath, (_req, res, ctx) => {
@@ -20,14 +20,16 @@ describe('useUpdateMapConfig', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useUpdateMapConfig(), {
-      wrapper: createQueryClientWrapper(),
-    });
+    const { result, waitFor } = renderHook(
+      () => useUpdateMapConfig('projectId'),
+      {
+        wrapper: createQueryClientWrapper(),
+      }
+    );
 
     act(() => {
       result.current.mutate({
-        id: 'id',
-        projectId: '1',
+        mapConfigId: '1',
       });
     });
 
@@ -42,13 +44,15 @@ describe('useUpdateMapConfig', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useUpdateMapConfig(), {
-      wrapper: createQueryClientWrapper(),
-    });
+    const { result, waitFor } = renderHook(
+      () => useUpdateMapConfig('projectId'),
+      {
+        wrapper: createQueryClientWrapper(),
+      }
+    );
     act(() => {
       result.current.mutate({
-        id: 'id',
-        projectId: '1',
+        mapConfigId: '1',
       });
     });
     await waitFor(() => expect(result.current.isError).toBe(true));

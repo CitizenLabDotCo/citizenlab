@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import '@arcgis/core/assets/esri/themes/light/main.css';
 import Basemap from '@arcgis/core/Basemap';
 import esriConfig from '@arcgis/core/config';
 import Collection from '@arcgis/core/core/Collection';
 import Graphic from '@arcgis/core/Graphic';
-import * as intl from '@arcgis/core/intl.js';
+import { setLocale as setEsriLocale } from '@arcgis/core/intl/locale.js';
 import Layer from '@arcgis/core/layers/Layer';
 import Map from '@arcgis/core/Map';
 import MapView from '@arcgis/core/views/MapView';
@@ -30,7 +29,7 @@ const MapContainer = styled(Box)`
   }
 
   .esri-legend {
-    max-height: 200px !important;
+    max-height: 120px !important;
   }
 
   .esri-layer-list {
@@ -123,6 +122,11 @@ const EsriMap = ({
     };
   }, [mapRefAvailable, webMapId, globalMapSettings.tile_provider]);
 
+  // If the webMapId changes, reset the initialized state
+  useEffect(() => {
+    setInitialized(false);
+  }, [webMapId]);
+
   // Load initial map configuration data that was passed in.
   // This will run on initial render and whenever the
   // webMapId changes
@@ -167,7 +171,9 @@ const EsriMap = ({
 
     // If we're not using a Web Map, add the layers to the default Map object
     if (isRegularMap) {
+      // Remove all layers
       map.removeAll();
+      // Add layers back if passed in
       layers.forEach((layer) => {
         map.add(layer);
       });
@@ -190,7 +196,9 @@ const EsriMap = ({
 
         // Now, add any additional layers that passed in as props to the Web Map
         layers.forEach((layer) => {
-          layer.id = `${layer.id}_internal`;
+          layer.id = layer.id.includes('internal')
+            ? layer.id
+            : `${layer.id}_internal`;
           map.add(layer);
         });
 
@@ -233,7 +241,7 @@ const EsriMap = ({
 
   useEffect(() => {
     // Sets the locale of the map
-    intl.setLocale(locale);
+    setEsriLocale(locale);
   }, [locale]);
 
   useEffect(() => {
