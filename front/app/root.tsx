@@ -58,6 +58,8 @@ function Routes() {
     modules.afterMountApplication();
   }, []);
 
+  console.log('Generated routes: ', { routes });
+
   return useSentryRoutes(routes);
 }
 
