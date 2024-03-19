@@ -55,7 +55,6 @@
     "@apollo/client": "^3.5.6",
     "@arcgis/core": "^4.28.10",
     "@babel/runtime": "7.x",
-    "@citizenlab/cl2-component-library": "file:../cl2-component-library/dist",
     "@craftjs/core": "^0.2.0-beta.5",
     "@craftjs/utils": "^0.2.0-beta.5",
     "@esri/arcgis-rest-request": "^4.2.0",
