@@ -83,17 +83,24 @@ module Analysis
     def classify(input, topics)
       inputs_text = input_to_text.format_all([input])
       prompt = LLM::Prompt.new.fetch('fully_automated_classifier', inputs_text: inputs_text, topics: topics)
-      chosen_topic =  begin
+      chosen_topic = begin
         gpt3.chat(prompt)
       rescue Faraday::BadRequestError => e # TODO: Turn off filtering https://go.microsoft.com/fwlink/?linkid=2198766
         ErrorReporter.report(e)
-        return 'Other'
+        'Other'
       end
-      puts chosen_topic ###
       if topics.include? chosen_topic
         chosen_topic
       else
-        # TODO: Log something if chosen_topic != 'Other'?
+        if chosen_topic != 'Other'
+          LogActivityJob.perform_later( # This can help us monitor when unexpected topics are returned without polluting Sentry
+            input,
+            'was_assigned_topic_outside_of_the_list',
+            nil,
+            Time.now.to_i,
+            payload: { topic: chosen_topic, allowed_topics: topics, analysis_id: @analysis.id, task_id: @task.id }
+          )
+        end
         'Other'
       end
     end
