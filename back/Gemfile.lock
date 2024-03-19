@@ -815,8 +815,8 @@ GEM
     nio4r (2.7.0)
     nlpcloud (1.0.43)
       rest-client (~> 2.1)
-    nokogiri (1.14.5)
-      mini_portile2 (~> 2.8.0)
+    nokogiri (1.15.6)
+      mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     nori (2.6.0)
     oauth2 (1.4.9)
@@ -1279,7 +1279,7 @@ DEPENDENCIES
   mjml-rails (~> 4.9)
   moderation!
   multi_tenancy!
-  nokogiri (~> 1.14.3)
+  nokogiri (~> 1.15.6)
   okcomputer
   omniauth (~> 1.9.1)
   omniauth-facebook
