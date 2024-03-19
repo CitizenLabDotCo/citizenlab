@@ -28,10 +28,7 @@ module Analysis
         end
 
         def create
-          @summary = Summary.new(
-            background_task: SummarizationTask.new(analysis: @analysis),
-            insight_attributes: insight_attributes
-          )
+          @summary = Summary.new(insight_attributes: insight_attributes)
           plan = plan_task
           if !plan.possible?
             render json: { errors: { base: [{ error: plan.impossible_reason }] } }, status: :unprocessable_entity

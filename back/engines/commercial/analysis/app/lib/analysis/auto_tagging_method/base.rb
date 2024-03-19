@@ -2,7 +2,7 @@
 
 module Analysis
   class AutoTaggingMethod::Base
-    POOL_SIZE = 8
+    POOL_SIZE = 3
     OTHER_TERMS = %w[
       other
       otro
@@ -82,10 +82,17 @@ module Analysis
     def classify(input, topics)
       inputs_text = input_to_text.format_all([input])
       prompt = LLM::Prompt.new.fetch('fully_automated_classifier', inputs_text: inputs_text, topics: topics)
-      chosen_topic = gpt3.chat(prompt)
+      chosen_topic =  begin
+        gpt3.chat(prompt)
+      rescue Faraday::BadRequestError => e # TODO: Turn off filtering https://go.microsoft.com/fwlink/?linkid=2198766
+        ErrorReporter.report(e)
+        return 'Other'
+      end
+      puts chosen_topic ###
       if topics.include? chosen_topic
         chosen_topic
       else
+        # TODO: Log something if chosen_topic != 'Other'?
         'Other'
       end
     end
@@ -110,6 +117,7 @@ module Analysis
       failure = Concurrent::AtomicBoolean.new(false)
 
       inputs.each do |input|
+        sleep 0.1 # Avoid 429 Too Many Requests
         pool.post do
           Rails.application.executor.wrap do
             begin
