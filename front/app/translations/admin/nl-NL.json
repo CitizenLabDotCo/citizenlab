@@ -1544,7 +1544,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.existingSubmissionsWarning": "De inzendingen voor deze vragenlijst beginnen binnen te komen. Wijzigingen aan de vragenlijst kunnen leiden tot gegevensverlies en onvolledige gegevens in de geëxporteerde bestanden.",
   "app.containers.AdminPage.ProjectEdit.survey.file_upload": "Bestand uploaden",
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Ga terug",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText3": "AI samenvattingen van korte en lange antwoordvragen kun je openen via de AI tab in de linker zijbalk.",
+  "app.containers.AdminPage.ProjectEdit.survey.informationText3": "AI-samenvattingen van korte en lange antwoordvragen kun je openen via het AI-tabblad in de linker zijbalk.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Lineaire schaal",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Lang antwoord",
   "app.containers.AdminPage.ProjectEdit.survey.multiselectText2": "Meerkeuze - kies er veel",
