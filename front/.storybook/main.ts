@@ -2,6 +2,7 @@ const path = require('path');
 import type { StorybookConfig } from '@storybook/react-webpack5';
 const webpack = require('webpack');
 import mockModules from './mockModules';
+const { EsbuildPlugin } = require('esbuild-loader');
 
 const config: StorybookConfig = {
   stories: ['../app/**/*.mdx', '../app/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
@@ -53,6 +54,12 @@ const config: StorybookConfig = {
         process: 'process/browser',
       }),
     ];
+
+    config.optimization = {
+      runtimeChunk: 'single',
+      minimize: true,
+      minimizer: [new EsbuildPlugin()],
+    };
 
     return config;
   },
