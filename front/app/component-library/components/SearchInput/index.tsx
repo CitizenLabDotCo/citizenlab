@@ -6,8 +6,7 @@ import React, {
   KeyboardEvent,
 } from 'react';
 
-import debounceFn from 'lodash/debounce';
-import { isEmpty } from 'lodash-es';
+import { isEmpty, debounce as debounceFn } from 'lodash-es';
 import styled from 'styled-components';
 
 import { colors, isRtl, defaultStyles } from '../../utils/styleUtils';
