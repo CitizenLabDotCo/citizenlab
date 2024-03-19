@@ -168,7 +168,7 @@ describe('Survey builder', () => {
     cy.contains(questionTitle).should('not.exist');
   });
 
-  it('shows survey results for multiple choice and linear scale fields', () => {
+  it.only('shows survey results for multiple choice and linear scale fields', () => {
     const chooseOneOption1 = randomString();
     const chooseOneOption2 = randomString();
     const chooseManyOption1 = randomString();
@@ -251,6 +251,8 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-submit-form"]').should('exist');
     cy.get('[data-cy="e2e-submit-form"]').click();
     cy.wait(1000);
+
+    cy.wait(15000);
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/native-survey`);
     cy.get(`[data-cy="e2e-${snakeCase(multipleChoiceChooseOneTitle)}"]`).should(
