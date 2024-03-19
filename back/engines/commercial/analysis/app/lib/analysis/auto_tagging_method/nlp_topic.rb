@@ -17,7 +17,7 @@ module Analysis
 
       # Topic modeling
       project_title = analysis.participation_context.project.title_multiloc.values.first
-      topics = topic_modeling(project_title, filtered_inputs) ### ['Gratis', 'Huisdieren', 'Feestdagen', 'Veiligheid', 'Evenementen', 'Diensten']
+      topics = topic_modeling(project_title, filtered_inputs)
       topic_modeling_progress_weight = filtered_inputs.size / 3 # The first phase represents roughly one quarter of the total progress
       update_progress(topic_modeling_progress_weight / (filtered_inputs.size + topic_modeling_progress_weight).to_f)
 
