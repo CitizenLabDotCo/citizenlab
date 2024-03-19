@@ -26,15 +26,16 @@ module.exports = {
         pathNot: 'app/component-library/',
       },
     },
-    // {
-    //   name: 'no-import-to-component-library',
-    //   severity: 'error',
-    //   comment: 'Direct imports to the component library are not allowed',
-    //   from: { path: 'app/component-library/' },
-    //   to: {
-    //     pathNot: 'app/component-library/',
-    //   },
-    // },
+    {
+      name: 'no-imports-from-component-library-without-using-an-alias',
+      comment: 'Imports from the component library should use an alias',
+      severity: 'error',
+      from: { pathNot: 'app/component-library/' },
+      to: {
+        path: 'app/component-library/',
+        dependencyTypesNot: ['aliased'],
+      },
+    },
 
     /* rules from the 'recommended' preset: */
     {
