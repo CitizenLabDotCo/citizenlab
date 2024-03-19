@@ -228,9 +228,9 @@ hr:
       title: 'Vaše pitanje'
       option1: '1. opcija'
       option2: '2. opcija'
-    survey_end_page:
-      title: 'Završetak upitnika'
-      description: "Pošaljite svoje odgovore tako da odaberete „Pošalji anketu“ u nastavku."
+    form_end_page:
+      title: 'Hvala na sudjelovanju'
+      description: "Pošaljite svoje odgovore odabirom opcije 'Pošalji' ispod."
     pdf_export:
       personal_data: 'Osobni podaci'
       personal_data_explanation_ideation: "Poslat ćemo vaš unos na online platformu za sudjelovanje %{organizationName}. Ako želite da se vaše ime prikazuje kao autor ovog unosa i da putem e-pošte primate ažuriranja relevantna za vaš unos, ispunite sljedeća polja na ovoj stranici i mi ćemo za vas stvoriti račun. Vaša e-pošta neće biti javna i koristit će je samo %{organizationName}. Ukoliko želite ostati anonimni ili ne pristajete na korištenje Vaših osobnih podataka na ovaj način, možete ih ostaviti prazne."

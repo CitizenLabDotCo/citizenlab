@@ -1,34 +1,39 @@
 import React from 'react';
 
-import { Title, Text, Box } from '@citizenlab/cl2-component-library';
+import { Title, Box } from '@citizenlab/cl2-component-library';
 
 import { useSurveyQuestionResult } from 'api/graph_data_units';
 import { GroupMode } from 'api/graph_data_units/requestTypes';
 
 import useLocalize from 'hooks/useLocalize';
 
+import InputType from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/InputType';
+
 import Legend from 'components/admin/Graphs/Legend';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../messages';
-
 import GroupedBars from './GroupedBars';
+import PointLocationQuestion from './PointLocationQuestion';
 import UngroupedBars from './UngroupedBars';
 import { getColorScheme, getLegendLabels } from './utils';
 
 interface Props {
+  projectId: string;
   phaseId: string;
   questionId: string;
   groupMode?: GroupMode;
   groupFieldId?: string;
+  heatmap?: boolean;
 }
 
 const SurveyQuestionResult = ({
+  projectId,
   phaseId,
   questionId,
   groupMode,
   groupFieldId,
+  heatmap,
 }: Props) => {
   const response = useSurveyQuestionResult({
     phase_id: phaseId,
@@ -58,24 +63,37 @@ const SurveyQuestionResult = ({
       >
         {localize(attributes.question)}
       </Title>
-      <Text mt="0px" mb="8px" color="textSecondary" variant="bodyS">
-        {formatMessage(messages.numberOfResponses, {
-          count: attributes.totalResponseCount,
-        })}
-      </Text>
-      {attributes.grouped && colorScheme && (
-        <Box>
-          <GroupedBars attributes={attributes} colorScheme={colorScheme} />
-          <Box mt="20px">
-            <Legend
-              labels={getLegendLabels(attributes, localize, formatMessage)}
-              colors={colorScheme}
-            />
-          </Box>
-        </Box>
-      )}
+      <InputType
+        inputType={attributes.inputType}
+        required={attributes.required}
+        totalSubmissions={attributes.totalResponseCount}
+        totalResponses={attributes.questionResponseCount}
+      />
+      {attributes.grouped === false && attributes.pointResponses ? (
+        <PointLocationQuestion
+          pointResponses={attributes.pointResponses}
+          mapConfigId={attributes.mapConfigId}
+          customFieldId={attributes.customFieldId}
+          projectId={projectId}
+          heatmap={heatmap}
+        />
+      ) : (
+        <>
+          {attributes.grouped && colorScheme && (
+            <Box>
+              <GroupedBars attributes={attributes} colorScheme={colorScheme} />
+              <Box mt="20px">
+                <Legend
+                  labels={getLegendLabels(attributes, localize, formatMessage)}
+                  colors={colorScheme}
+                />
+              </Box>
+            </Box>
+          )}
 
-      {!attributes.grouped && <UngroupedBars attributes={attributes} />}
+          {!attributes.grouped && <UngroupedBars attributes={attributes} />}
+        </>
+      )}
     </Box>
   );
 };

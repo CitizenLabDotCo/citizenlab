@@ -6,8 +6,7 @@ import { AttributesGrouped } from 'api/graph_data_units/responseTypes';
 import { Localize } from 'hooks/useLocalize';
 
 import { DEFAULT_CATEGORICAL_COLORS } from 'components/admin/Graphs/styling';
-
-import messages from '../messages';
+import messages from 'components/admin/Graphs/SurveyBars/messages';
 
 const EMPTY_COLOR = colors.coolGrey300;
 

@@ -48,6 +48,7 @@ describe('Survey template', () => {
             'multiselect',
             'linear_scale',
             'multiselect_image',
+            'point',
           ],
           questionImage.body.data.id
         );
@@ -63,6 +64,7 @@ describe('Survey template', () => {
         const multiSelectKey = surveyFields[2].attributes.key;
         const linearScaleKey = surveyFields[3].attributes.key;
         const multiselectImageKey = surveyFields[4].attributes.key;
+        const pointKey = surveyFields[5].attributes.key;
 
         const fieldConfigs: any =
           surveySchema.data.attributes.json_schema_multiloc.en?.properties;
@@ -106,6 +108,10 @@ describe('Survey template', () => {
               ],
               [linearScaleKey]: 2,
               [multiselectImageKey]: [multiselectImageAnswerKeys[0]],
+              [pointKey]: {
+                type: 'Point',
+                coordinates: [4.349371842575076, 50.85428103529364],
+              },
             });
           });
       })
@@ -146,7 +152,7 @@ describe('Survey template', () => {
       cy.get('#e2e-content-builder-frame').should('exist');
 
       // Ensure correct amount of questions
-      cy.get('.e2e-survey-question-widget-title').should('have.length', 4);
+      cy.get('.e2e-survey-question-widget-title').should('have.length', 5);
       cy.get('.e2e-survey-question-widget-title')
         .first()
         .contains('Question: select');
@@ -159,6 +165,9 @@ describe('Survey template', () => {
       cy.get('.e2e-survey-question-widget-title')
         .eq(3)
         .contains('Question: multiselect_image');
+      cy.get('.e2e-survey-question-widget-title')
+        .eq(4)
+        .contains('Question: point');
 
       // Ensure correct values
       cy.get('.e2e-survey-question-ungrouped-bars')
@@ -195,7 +204,7 @@ describe('Survey template', () => {
       cy.get('#e2e-content-builder-frame').should('exist');
 
       // Ensure correct amount of questions
-      cy.get('.e2e-survey-question-widget-title').should('have.length', 4);
+      cy.get('.e2e-survey-question-widget-title').should('have.length', 5);
       cy.get('.e2e-survey-question-widget-title')
         .first()
         .contains('Question: select');
@@ -208,6 +217,9 @@ describe('Survey template', () => {
       cy.get('.e2e-survey-question-widget-title')
         .eq(3)
         .contains('Question: multiselect_image');
+      cy.get('.e2e-survey-question-widget-title')
+        .eq(4)
+        .contains('Question: point');
 
       // Ensure correct values
       cy.get('.e2e-survey-question-ungrouped-bars')
