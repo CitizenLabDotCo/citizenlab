@@ -228,9 +228,9 @@ pl:
       title: 'Twoje pytanie'
       option1: 'Opcja 1'
       option2: 'Opcja 2'
-    survey_end_page:
-      title: 'Koniec ankiety'
-      description: "Odpowiedzi prosimy przesyłać wybierając poniżej opcję \"Prześlij ankietę\"."
+    form_end_page:
+      title: 'Dziękujemy za udział'
+      description: "Prześlij swoje odpowiedzi, wybierając \"Wyślij\" poniżej."
     pdf_export:
       personal_data: 'Dane osobowe'
       personal_data_explanation_ideation: "Prześlemy Twój wkład na platformę uczestnictwa online %{organizationName}. Jeśli chcesz, aby Twoje imię i nazwisko było wyświetlane jako autor tego wkładu i otrzymywać aktualizacje dotyczące Twojego wkładu pocztą elektroniczną, wypełnij poniższe pola na tej stronie, a my utworzymy dla Ciebie konto. Twój adres e-mail nie będzie publiczny i będzie używany wyłącznie przez %{organizationName}. Jeśli chcesz pozostać anonimowy lub nie zgadzasz się na wykorzystanie przez nas Twoich danych osobowych w ten sposób, możesz pozostawić je puste."
