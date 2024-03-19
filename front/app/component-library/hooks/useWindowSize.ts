@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import debounce from 'lodash/debounce';
+import { debounce } from 'lodash-es';
 
 function useWindowSize() {
   const [windowSize, setWindowSize] = useState({
