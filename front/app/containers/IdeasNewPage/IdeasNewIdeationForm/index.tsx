@@ -29,7 +29,7 @@ import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { geocode, reverseGeocode } from 'utils/locationTools';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
-import { Heading } from '../components/Heading';
+import { NewIdeaHeading } from '../components/NewIdeaHeading';
 import IdeasNewMeta from '../IdeasNewMeta';
 import messages from '../messages';
 import { getLocationGeojson } from '../utils';
@@ -245,7 +245,7 @@ const IdeasNewIdeationForm = ({ project }: Props) => {
             getApiErrorMessage={getApiErrorMessage}
             title={
               <>
-                <Heading
+                <NewIdeaHeading
                   project={project.data}
                   titleText={
                     participationMethodConfig.getFormTitle ? (

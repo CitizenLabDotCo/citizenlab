@@ -15,7 +15,7 @@ type Props = {
   titleText: string | React.ReactNode;
 };
 
-export const Heading = ({ project, titleText }: Props) => {
+export const NewIdeaHeading = ({ project, titleText }: Props) => {
   const localize = useLocalize();
 
   const goBackToProject = useCallback(() => {
