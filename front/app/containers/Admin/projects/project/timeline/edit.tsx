@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState, MouseEvent } from 'react';
 
 import {
   Text,
@@ -25,6 +25,7 @@ import useAddPhase from 'api/phases/useAddPhase';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
+import useProjectById from 'api/projects/useProjectById';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
@@ -40,6 +41,7 @@ import {
   SubSectionTitle,
 } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import FileUploader from 'components/UI/FileUploader';
 import { FileType } from 'components/UI/FileUploader/FileDisplay';
@@ -94,6 +96,7 @@ const AdminPhaseEdit = () => {
     projectId: string;
     phaseId?: string;
   };
+  const { data: project } = useProjectById(projectId);
   const { data: phaseFiles } = usePhaseFiles(phaseId || null);
   const { data: phaseData } = usePhase(phaseId || null);
   const phase = phaseId ? phaseData : undefined;
@@ -587,6 +590,26 @@ const AdminPhaseEdit = () => {
                 <Error
                   apiErrors={errors && errors.native_survey_button_multiloc}
                 />
+              </SectionField>
+
+              <SectionField>
+                <SubSectionTitle>
+                  <FormattedMessage {...messages.previewSurveyCTALabel} />
+                </SubSectionTitle>
+                <Button
+                  width="fit-content"
+                  onClick={(event: MouseEvent) => {
+                    if (phase) {
+                      window.open(
+                        `/projects/${project?.data.attributes.slug}/ideas/new?phase_id=${phaseId}`,
+                        '_blank'
+                      );
+                    }
+                    event.preventDefault();
+                  }}
+                >
+                  {localize(phaseAttrs.native_survey_button_multiloc)}
+                </Button>
               </SectionField>
             </>
           )}

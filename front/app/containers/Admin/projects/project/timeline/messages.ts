@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.surveyCTALabel',
     defaultMessage: 'Button',
   },
+  previewSurveyCTALabel: {
+    id: 'app.containers.AdminPage.ProjectTimeline.previewSurveyCTALabel',
+    defaultMessage: 'Preview',
+  },
   defaultSurveyTitleLabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel',
     defaultMessage: 'Survey',

@@ -866,8 +866,8 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Page',
                 options: {
                   id: 'survey_end',
-                  title: 'Survey end',
-                  description: "Please submit your answers by selecting 'Submit survey' below."
+                  title: 'Thanks for participating',
+                  description: "Please submit your answers by selecting 'Submit' below."
                 },
                 elements: []
               }
@@ -1065,8 +1065,8 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Page',
                 options: {
                   id: 'survey_end',
-                  title: 'Survey end',
-                  description: "Please submit your answers by selecting 'Submit survey' below."
+                  title: 'Thanks for participating',
+                  description: "Please submit your answers by selecting 'Submit' below."
                 },
                 elements: []
               }

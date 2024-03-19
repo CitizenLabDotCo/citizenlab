@@ -19,7 +19,7 @@ import { CLErrors, Locale } from 'typings';
 import useLocale from 'hooks/useLocale';
 import useObserveEvent from 'hooks/useObserveEvent';
 
-import { useIntl, MessageDescriptor } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import ButtonBar from './Components/ButtonBar';
@@ -77,7 +77,6 @@ interface Props {
    * Idea id for update form, used to load and udpate image and files.
    */
   inputId?: string | undefined;
-  formSubmitText?: MessageDescriptor;
   config?: 'default' | 'input' | 'survey';
   layout?: 'inline' | 'fullpage';
   footer?: React.ReactNode;
@@ -95,7 +94,6 @@ const Form = memo(
     initialFormData,
     title,
     inputId,
-    formSubmitText,
     submitOnEvent,
     getAjvErrorMessage,
     getApiErrorMessage,
@@ -143,14 +141,14 @@ const Form = memo(
       onChange?.(data);
     };
 
-    const handleSubmit = async (formData?: any) => {
+    const handleSubmit = async (formData?: any, showErrors = true) => {
       // Any specified formData has priority over data attribute
       const submissionData = formData && formData.data ? formData.data : data;
       const sanitizedFormData = sanitizeFormData(submissionData);
 
       setData(sanitizedFormData);
       onChange?.(sanitizedFormData);
-      setShowAllErrors(true);
+      setShowAllErrors(showErrors);
 
       if (isValidData(schema, uiSchema, submissionData, customAjv, isSurvey)) {
         setLoading(true);
@@ -192,7 +190,6 @@ const Form = memo(
             getApiErrorMessage={getApiErrorMessage}
             getAjvErrorMessage={getAjvErrorMessage}
             inputId={inputId}
-            formSubmitText={formSubmitText}
             config={config}
             locale={locale}
             setFormData={setData}
