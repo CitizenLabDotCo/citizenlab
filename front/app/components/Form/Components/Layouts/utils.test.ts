@@ -1,4 +1,4 @@
-import { JsonSchema, RuleEffect } from '@jsonforms/core';
+import { RuleEffect } from '@jsonforms/core';
 
 import { customAjv } from 'components/Form';
 import {
