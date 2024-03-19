@@ -86,7 +86,7 @@ module Analysis
       chosen_topic = begin
         gpt3.chat(prompt)
       rescue Faraday::BadRequestError => e # TODO: Turn off filtering https://go.microsoft.com/fwlink/?linkid=2198766
-        ErrorReporter.report(e)
+        ErrorReporter.report(e) # e.response[:body]['error']['innererror']['content_filter_result'].select{ |key, val| val['filtered'] }.map{|key, val| val['severity']}
         'Other'
       end
       if topics.include? chosen_topic
@@ -120,22 +120,25 @@ module Analysis
     end
 
     def classify_many!(inputs, topics, tag_type)
-      pool = Concurrent::FixedThreadPool.new(POOL_SIZE)
-      tasks = inputs.map.with_index do |input, idx|
-        wait = idx * TASK_INTERVAL # Avoid 429 Too Many Requests
-        Concurrent::ScheduledTask.execute(wait, executor: pool) do
-          Rails.application.executor.wrap do
-            [input.id, classify(input, topics)]
-          end
-        end
-      end
-      tasks.map do |task|
-        input_id, topic = task.value # Blocks until task either succeeds or fails
-        if task.rejected? # Abort the whole process when one task fails
-          pool.kill
-          raise task.reason
-        end
-        assign_topic!(input_id, topic, tag_type)
+      # pool = Concurrent::FixedThreadPool.new(POOL_SIZE)
+      # tasks = inputs.map.with_index do |input, idx|
+      #   wait = idx * TASK_INTERVAL # Avoid 429 Too Many Requests
+      #   Concurrent::ScheduledTask.execute(wait, executor: pool) do
+      #     Rails.application.executor.wrap do
+      #       [input.id, classify(input, topics)]
+      #     end
+      #   end
+      # end
+      # tasks.each do |task|
+      #   input_id, topic = task.value # Blocks until task either succeeds or fails
+      #   if task.rejected? # Abort the whole process when one task fails
+      #     pool.kill
+      #     raise task.reason
+      #   end
+      #   assign_topic!(input_id, topic, tag_type)
+      # end
+      inputs.each do |input|
+        assign_topic!(input.id, classify(input, topics), tag_type)
       end
     end
 
@@ -149,10 +152,13 @@ module Analysis
     end
 
     def assign_topic!(input_id, topic, tag_type)
+      byebug
       return if other_term?(topic)
 
       tag = Tag.find_or_create_by!(name: topic, tag_type: tag_type, analysis: analysis)
+      byebug
       find_or_create_tagging!(input_id: input_id, tag_id: tag.id)
+      byebug
     end
 
     def update_progress(progress)
