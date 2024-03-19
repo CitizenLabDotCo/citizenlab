@@ -47,6 +47,8 @@ namespace :single_use do
               project = Project.find_by(id: node['props']['projectId'])
               if phase.nil? || project.nil?
                 Rails.logger.info "Phase or project not found for SurveyResultsWidget. layout.id: #{layout.id}, projectId: #{node['props']['projectId']} phaseId: #{node['props']['phaseId']}"
+                layout.craftjs_json.delete(node_id)
+                layout.craftjs_json[node['parent']]['nodes'].delete(node_id)
                 next
               end
 
