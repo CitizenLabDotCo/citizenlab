@@ -42,7 +42,12 @@ module CustomMaps
           @project = Project.includes(map_config: %i[layers]).find(params[:project_id])
           authorize @project
           @map_config = @project.map_config
-          render json: serialized_map_config, status: :ok
+
+          if @map_config.nil?
+            head :no_content
+          else
+            render json: serialized_map_config, status: :ok
+          end
         end
 
         private

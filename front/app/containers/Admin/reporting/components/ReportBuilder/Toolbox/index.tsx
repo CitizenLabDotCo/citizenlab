@@ -38,6 +38,7 @@ import PostsByTimeWidget from '../Widgets/ChartWidgets/PostsByTimeWidget';
 import ReactionsByTimeWidget from '../Widgets/ChartWidgets/ReactionsByTimeWidget';
 import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
 import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
+import IframeMultiloc from '../Widgets/IframeMultiloc';
 import ImageMultiloc from '../Widgets/ImageMultiloc';
 import MostReactedIdeasWidget from '../Widgets/MostReactedIdeasWidget';
 import SingleIdeaWidget from '../Widgets/SingleIdeaWidget';
@@ -138,6 +139,12 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={<WhiteSpace size="small" />}
             icon="layout-white-space"
             label={formatMessage(WIDGET_TITLES.WhiteSpace)}
+          />
+          <DraggableElement
+            id="e2e-draggable-iframe"
+            component={<IframeMultiloc url="" height={500} />}
+            icon="code"
+            label={formatMessage(WIDGET_TITLES.IframeMultiloc)}
           />
         </Section>
         <Section>
