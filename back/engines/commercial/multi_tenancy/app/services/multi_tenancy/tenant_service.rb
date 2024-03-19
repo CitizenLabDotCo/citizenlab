@@ -93,7 +93,7 @@ module MultiTenancy
       # third-party services.
       tenant.switch { User.destroy_all_async }
       job_opts = { retry_interval: retry_interval }.compact
-      MultiTenancy::Tenants::DeleteJob.perform_later(tenant, job_opts)
+      MultiTenancy::Tenants::DeleteJob.perform_later(tenant, **job_opts)
     end
 
     def shift_timestamps(num_days)

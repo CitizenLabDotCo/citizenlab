@@ -54,7 +54,7 @@ const FormResultsQuestion = ({
           totalSubmissions={totalSubmissions}
           totalResponses={questionResponseCount}
         />
-        {isMultipleChoiceAndHasAnswers && (
+        {isMultipleChoiceAndHasAnswers && multilocs && (
           <MultipleChoice
             multipleChoiceAnswers={answers}
             totalResponses={questionResponseCount}

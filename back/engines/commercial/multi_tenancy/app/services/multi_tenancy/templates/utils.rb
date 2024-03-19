@@ -267,7 +267,11 @@ module MultiTenancy
         end
 
         def parse_yml(content)
-          YAML.load(content, aliases: true, permitted_classes: [Date, Symbol, Time])
+          YAML.load(
+            content,
+            aliases: true,
+            permitted_classes: [Date, Time, Symbol, *ar_classes]
+          )
         end
         alias parse_yaml parse_yml
 
@@ -278,6 +282,13 @@ module MultiTenancy
         alias parse_yaml_file parse_yml_file
 
         private
+
+        def ar_classes
+          @ar_classes ||= begin
+            Rails.application.eager_load! # Make sure all model classes are loaded.
+            ApplicationRecord.descendants
+          end
+        end
 
         def template_locales(serialized_models)
           locales = Set.new

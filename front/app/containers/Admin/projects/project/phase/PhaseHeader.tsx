@@ -183,40 +183,40 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
               </Text>
             </Button>
             {participationRequirementsMessage && (
-              <Text color="coolGrey600" my="0px" variant="bodyS">
-                <Tippy
-                  disabled={false}
-                  interactive={true}
-                  placement="bottom"
-                  content={
-                    <PermissionTooltipMessage permissions={permissions?.data} />
-                  }
-                >
-                  <Box display="flex" alignItems="center">
-                    <Box px="8px">·</Box>
-                    <Button
-                      buttonStyle="text"
-                      fontSize="14px"
-                      onClick={() => {
-                        clHistory.push(
-                          `/admin/projects/${projectId}/phases/${phase.id}/access-rights`
-                        );
-                      }}
-                      padding="0"
-                    >
-                      <Box display="flex" alignItems="center">
-                        <Icon
-                          name="key"
-                          width="16px"
-                          mr="2px"
-                          fill={colors.coolGrey600}
-                        />
+              <Tippy
+                disabled={false}
+                interactive={true}
+                placement="bottom"
+                content={
+                  <PermissionTooltipMessage permissions={permissions?.data} />
+                }
+              >
+                <Box display="flex" alignItems="center">
+                  <Box px="8px">·</Box>
+                  <Button
+                    buttonStyle="text"
+                    fontSize="14px"
+                    onClick={() => {
+                      clHistory.push(
+                        `/admin/projects/${projectId}/phases/${phase.id}/access-rights`
+                      );
+                    }}
+                    padding="0"
+                  >
+                    <Box display="flex" alignItems="center">
+                      <Icon
+                        name="key"
+                        width="16px"
+                        mr="2px"
+                        fill={colors.coolGrey600}
+                      />
+                      <Text color="coolGrey600" my="0px" variant="bodyS">
                         {participationRequirementsMessage}
-                      </Box>
-                    </Button>
-                  </Box>
-                </Tippy>
-              </Text>
+                      </Text>
+                    </Box>
+                  </Button>
+                </Box>
+              </Tippy>
             )}
           </Box>
         </Box>

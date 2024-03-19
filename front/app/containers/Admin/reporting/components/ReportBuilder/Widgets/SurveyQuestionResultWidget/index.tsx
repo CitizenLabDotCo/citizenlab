@@ -18,6 +18,7 @@ const SurveyQuestionResultWidget = ({
   questionId,
   groupMode,
   groupFieldId,
+  heatmap,
 }: Props) => {
   const px = useReportDefaultPadding();
   const hasEverything = projectId && phaseId && questionId;
@@ -27,10 +28,12 @@ const SurveyQuestionResultWidget = ({
     <PageBreakBox px={px}>
       {hasEverything ? (
         <Question
+          projectId={projectId}
           phaseId={phaseId}
           questionId={questionId}
           groupMode={groupFieldId ? groupMode : undefined}
           groupFieldId={groupFieldId}
+          heatmap={heatmap}
         />
       ) : (
         <NoData message={projectOrPhaseEmptyMessage ?? messages.emptyField} />
@@ -46,6 +49,7 @@ SurveyQuestionResultWidget.craft = {
     questionId: undefined,
     groupMode: undefined,
     groupFieldId: undefined,
+    heatmap: undefined,
   },
   related: {
     settings: Settings,

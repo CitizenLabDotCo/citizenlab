@@ -46,7 +46,7 @@ const PhaseReport = ({ reportId, phaseId }: Props) => {
         bgColor="white"
         borderRadius={stylingConsts.borderRadius}
         boxShadow="0px 2px 4px -1px rgba(0,0,0,0.06)"
-        px={smallerThanTablet ? '0px' : '30px'}
+        px={smallerThanPhone ? '20px' : '30px'}
         py={smallerThanPhone ? '20px' : '30px'}
       >
         <ReportContextProvider
