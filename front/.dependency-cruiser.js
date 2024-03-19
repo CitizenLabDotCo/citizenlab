@@ -13,6 +13,25 @@ module.exports = {
         pathNot: 'app/modules/index.ts',
       },
     },
+    {
+      name: 'no-import-from-component-library',
+      severity: 'error',
+      comment: 'Direct imports from the component library are not allowed',
+      from: { pathNot: 'app/component-library/' },
+      to: {
+        path: 'app/component-library/',
+      },
+    },
+    {
+      name: 'no-import-to-component-library',
+      severity: 'error',
+      comment: 'Direct imports from the component library are not allowed',
+      from: { path: 'app/component-library/' },
+      to: {
+        pathNot: 'app/component-library/',
+      },
+    },
+
     /* rules from the 'recommended' preset: */
     {
       name: 'no-circular',
