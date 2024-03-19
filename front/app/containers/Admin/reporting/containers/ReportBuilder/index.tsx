@@ -76,7 +76,7 @@ const ReportBuilder = ({
   };
 
   return (
-    <ReportContextProvider width="pdf" reportId={reportId} phaseId={phaseId}>
+    <ReportContextProvider width={view} reportId={reportId} phaseId={phaseId}>
       <FullscreenContentBuilder onUploadImage={setImageUploading}>
         <Editor
           isPreview={false}
