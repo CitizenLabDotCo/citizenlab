@@ -498,10 +498,10 @@ describe('Survey question widget', () => {
           // Check colors
           cy.get('svg.e2e-progress-bar > rect')
             .first()
-            .should('have.attr', 'fill', '#2F478A');
+            .should('have.attr', 'fill', '#EE7041');
           cy.get('svg.e2e-progress-bar > rect')
             .eq(1)
-            .should('have.attr', 'fill', '#4D85C6');
+            .should('have.attr', 'fill', '#F3A675');
         };
 
         ensureCorrectGrouping();
