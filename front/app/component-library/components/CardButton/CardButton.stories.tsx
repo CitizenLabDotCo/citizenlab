@@ -1,58 +1,34 @@
-import React from 'react';
-
-import { action } from '@storybook/addon-actions';
-
 import CardButton from '.';
 
-export default {
+import type { Meta, StoryObj } from '@storybook/react';
+
+const meta = {
   title: 'Components/CardButton',
   component: CardButton,
+  parameters: {
+    layout: 'centered',
+  },
+} satisfies Meta<typeof CardButton>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+  args: {
+    iconName: 'close',
+    title: 'Close',
+    subtitle: 'close',
+    mr: '8px',
+    selected: true,
+  },
 };
 
-export const Default = {
-  render: () => (
-    <div
-      style={{
-        display: 'flex',
-      }}
-    >
-      <CardButton
-        iconName="close"
-        title="Close"
-        subtitle="close"
-        onClick={action('Close CardButton clicked')}
-        mr="8px"
-        selected
-      />
-      <CardButton
-        iconName="copy"
-        title="Copy"
-        subtitle="copy"
-        onClick={action('Copy CardButton clicked')}
-      />
-    </div>
-  ),
-
-  name: 'default',
-};
-
-export const LongTitle = {
-  render: () => (
-    <div
-      style={{
-        display: 'flex',
-      }}
-    >
-      <CardButton
-        iconName="close"
-        title="Looong title with many words and such"
-        subtitle="close"
-        onClick={action('Close CardButton clicked')}
-        mr="8px"
-        selected
-      />
-    </div>
-  ),
-
-  name: 'long title',
+export const LongTitle: Story = {
+  args: {
+    iconName: 'close',
+    title: 'Looong title with many words and such',
+    subtitle: 'close',
+    mr: '8px',
+    selected: true,
+  },
 };

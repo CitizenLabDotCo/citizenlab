@@ -1,50 +1,33 @@
-import React from 'react';
+import ColorPickerInput from '.';
 
-import { action } from '@storybook/addon-actions';
+import type { Meta, StoryObj } from '@storybook/react';
 
-import ColorPickerInput from './';
-
-export default {
+const meta = {
   title: 'Components/ColorPickerInput',
   component: ColorPickerInput,
-};
+  parameters: {
+    layout: 'centered',
+  },
+} satisfies Meta<typeof ColorPickerInput>;
 
-export const Default = {
-  render: () => (
-    <div
-      style={{
-        display: 'flex',
-      }}
-    >
-      <ColorPickerInput
-        id="color-picker"
-        type="text"
-        value="#000"
-        onChange={action('color picked')}
-        label="Color picker"
-      />
-    </div>
-  ),
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-  name: 'default',
+export const Default: Story = {
+  args: {
+    type: 'text',
+    value: '#000',
+    onChange: () => {},
+    label: 'Color picker',
+  },
 };
 
 export const WithLabelAnbdLabelTooptip = {
-  render: () => (
-    <div
-      style={{
-        display: 'flex',
-      }}
-    >
-      <ColorPickerInput
-        type="text"
-        value="#000"
-        label="This is a very long and unnecessary label"
-        labelTooltipText="this is a tooltip"
-        onChange={action('color picked')}
-      />
-    </div>
-  ),
-
-  name: 'with label anbd label tooptip',
+  args: {
+    type: 'text',
+    value: '#000',
+    onChange: () => {},
+    label: 'This is a very long and unnecessary label',
+    labelTooltipText: 'this is a tooltip',
+  },
 };

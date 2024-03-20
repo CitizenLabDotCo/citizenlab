@@ -1,314 +1,115 @@
-import React from 'react';
-
-import { action } from '@storybook/addon-actions';
-import { boolean } from '@storybook/addon-knobs';
-
 import Button from '.';
 
-export default {
+import type { Meta, StoryObj } from '@storybook/react';
+
+const meta = {
   title: 'Components/Button',
   component: Button,
-};
+  parameters: {
+    layout: 'centered',
+  },
+} satisfies Meta<typeof Button>;
 
-export const Primary = {
-  render: () => (
-    <div
-      style={{
-        display: 'flex',
-      }}
-    >
-      <Button
-        buttonStyle="primary"
-        disabled={boolean('Disabled', false)}
-        processing={boolean('Processing', false)}
-        onClick={action('button clicked')}
-      >
-        Button
-      </Button>
-    </div>
-  ),
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-  name: 'primary',
+export const Primary: Story = {
+  args: {
+    buttonStyle: 'primary',
+    children: 'Button',
+  },
 };
 
 export const PrimaryWithIcon = {
-  render: () => (
-    <div
-      style={{
-        display: 'flex',
-      }}
-    >
-      <Button
-        buttonStyle="primary"
-        icon="info-outline"
-        disabled={boolean('Disabled', false)}
-        processing={boolean('Processing', false)}
-        onClick={action('button clicked')}
-      >
-        Button
-      </Button>
-    </div>
-  ),
-
-  name: 'primary with icon',
+  args: {
+    buttonStyle: 'primary',
+    icon: 'info-outline',
+    children: 'Button',
+  },
 };
 
 export const PrimaryOutlined = {
-  render: () => (
-    <div
-      style={{
-        display: 'flex',
-      }}
-    >
-      <Button
-        buttonStyle="primary-outlined"
-        disabled={boolean('Disabled', false)}
-        processing={boolean('Processing', false)}
-        onClick={action('button clicked')}
-      >
-        Button
-      </Button>
-    </div>
-  ),
-
-  name: 'primary-outlined',
+  args: {
+    buttonStyle: 'primary-outlined',
+    children: 'Button',
+  },
 };
 
 export const PrimaryInverse = {
-  render: () => (
-    <div
-      style={{
-        display: 'flex',
-      }}
-    >
-      <Button
-        buttonStyle="primary-inverse"
-        disabled={boolean('Disabled', false)}
-        processing={boolean('Processing', false)}
-        onClick={action('button clicked')}
-      >
-        Button
-      </Button>
-    </div>
-  ),
-
-  name: 'primary-inverse',
+  args: {
+    buttonStyle: 'primary-inverse',
+    children: 'Button',
+  },
 };
 
 export const Secondary = {
-  render: () => (
-    <div
-      style={{
-        display: 'flex',
-      }}
-    >
-      <Button
-        buttonStyle="secondary"
-        disabled={boolean('Disabled', false)}
-        processing={boolean('Processing', false)}
-        onClick={action('button clicked')}
-      >
-        Button
-      </Button>
-    </div>
-  ),
-
-  name: 'secondary',
+  args: {
+    buttonStyle: 'secondary',
+    children: 'Button',
+  },
 };
 
 export const SecondaryOutlined = {
-  render: () => (
-    <div
-      style={{
-        display: 'flex',
-      }}
-    >
-      <Button
-        buttonStyle="secondary-outlined"
-        disabled={boolean('Disabled', false)}
-        processing={boolean('Processing', false)}
-        onClick={action('button clicked')}
-      >
-        Button
-      </Button>
-    </div>
-  ),
-
-  name: 'secondary-outlined',
+  args: {
+    buttonStyle: 'secondary-outlined',
+    children: 'Button',
+  },
 };
 
 export const Success = {
-  render: () => (
-    <div
-      style={{
-        display: 'flex',
-      }}
-    >
-      <Button
-        buttonStyle="success"
-        disabled={boolean('Disabled', false)}
-        processing={boolean('Processing', false)}
-        onClick={action('button clicked')}
-      >
-        Button
-      </Button>
-    </div>
-  ),
-
-  name: 'success',
+  args: {
+    buttonStyle: 'success',
+    children: 'Button',
+  },
 };
 
 export const TextStyle = {
-  render: () => (
-    <div
-      style={{
-        display: 'flex',
-      }}
-    >
-      <Button
-        buttonStyle="text"
-        disabled={boolean('Disabled', false)}
-        processing={boolean('Processing', false)}
-        onClick={action('button clicked')}
-      >
-        Button
-      </Button>
-    </div>
-  ),
-
-  name: 'text style',
+  args: {
+    buttonStyle: 'text',
+    children: 'Button',
+  },
 };
 
-export const ClBlue = {
-  render: () => (
-    <div
-      style={{
-        display: 'flex',
-      }}
-    >
-      <Button
-        buttonStyle="cl-blue"
-        disabled={boolean('Disabled', false)}
-        processing={boolean('Processing', false)}
-        onClick={action('button clicked')}
-      >
-        Button
-      </Button>
-    </div>
-  ),
-
-  name: 'cl-blue',
+export const CLBlue = {
+  args: {
+    buttonStyle: 'cl-blue',
+    children: 'Button',
+  },
 };
 
 export const AdminDark = {
-  render: () => (
-    <div
-      style={{
-        display: 'flex',
-      }}
-    >
-      <Button
-        buttonStyle="admin-dark"
-        disabled={boolean('Disabled', false)}
-        processing={boolean('Processing', false)}
-        onClick={action('button clicked')}
-      >
-        Button
-      </Button>
-    </div>
-  ),
-
-  name: 'admin-dark',
+  args: {
+    buttonStyle: 'admin-dark',
+    children: 'Button',
+  },
 };
 
 export const AdminDarkText = {
-  render: () => (
-    <div
-      style={{
-        display: 'flex',
-      }}
-    >
-      <Button
-        buttonStyle="admin-dark-text"
-        disabled={boolean('Disabled', false)}
-        processing={boolean('Processing', false)}
-        onClick={action('button clicked')}
-      >
-        Button
-      </Button>
-    </div>
-  ),
-
-  name: 'admin-dark-text',
+  args: {
+    buttonStyle: 'admin-dark-text',
+    children: 'Button',
+  },
 };
 
 export const Delete = {
-  render: () => (
-    <div
-      style={{
-        display: 'flex',
-      }}
-    >
-      <Button
-        buttonStyle="delete"
-        disabled={boolean('Disabled', false)}
-        processing={boolean('Processing', false)}
-        onClick={action('button clicked')}
-      >
-        Button
-      </Button>
-    </div>
-  ),
-
-  name: 'delete',
+  args: {
+    buttonStyle: 'delete',
+    children: 'Button',
+  },
 };
 
 export const White = {
-  render: () => (
-    <div
-      style={{
-        display: 'flex',
-        background: '#f4f4f4',
-        padding: '10px',
-      }}
-    >
-      <Button
-        buttonStyle="white"
-        disabled={boolean('Disabled', false)}
-        processing={boolean('Processing', false)}
-        onClick={action('button clicked')}
-      >
-        Button
-      </Button>
-    </div>
-  ),
-
-  name: 'white',
+  args: {
+    buttonStyle: 'white',
+    children: 'Button',
+  },
 };
 
 export const ButtonLink = {
-  render: () => (
-    <div
-      style={{
-        display: 'flex',
-      }}
-    >
-      <Button
-        buttonStyle="primary"
-        disabled={boolean('Disabled', false)}
-        processing={boolean('Processing', false)}
-        as={(props) => {
-          return (
-            <a {...props} href="https://citizenlab.co/">
-              {props.children}
-            </a>
-          );
-        }}
-      >
-        Button that is actually a link
-      </Button>
-    </div>
-  ),
-
-  name: 'button-link',
+  args: {
+    buttonStyle: 'primary',
+    as: 'a',
+    href: 'https://citizenlab.co/',
+    children: 'Button that is actually a link',
+  },
 };
