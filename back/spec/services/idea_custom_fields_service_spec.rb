@@ -603,8 +603,6 @@ describe IdeaCustomFieldsService do
         expect(fields[6].id).not_to eq map_field.id
         expect(fields[6].map_config.id).not_to eq map_field.map_config.id
       end
-
-      # TODO: If not persisted just it returns default form
     end
   end
 end

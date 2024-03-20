@@ -48,7 +48,7 @@ const useRawCustomFields = ({
       projectId,
       phaseId,
       inputTypes,
-      // copy, // TODO: Needs to cache correctly
+      // copy, // TODO: JS Needs to cache correctly
     }),
     queryFn: () => fetchCustomFields({ projectId, phaseId, inputTypes, copy }),
     enabled: !!(projectId ?? phaseId),
