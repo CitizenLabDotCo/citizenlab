@@ -141,30 +141,37 @@ class IdeaCustomFieldsService
     end
   end
 
-  def all_fields_reset
+  def duplicate_all_fields
     fields = all_fields
     logic_id_map = { survey_end: 'survey_end' }
     new_fields = fields.map do |field|
-      # if field.input_type == 'page'
-      #   field.temp_id = generate_temp_id
-      #   logic_id_map[field.id] = field.temp_id
-      # end
+      # Give all fields a new id
       old_field_id = field.id
       field.new_id = SecureRandom.uuid
       logic_id_map[old_field_id] = field.new_id
 
-      # TODO: Could it be the options that are problematic because they have an ID?
+      # Give all options a temp id
       field.options = field.options.map do |option|
-        old_option_id = option.id
-        option.new_id = SecureRandom.uuid
-        # option.temp_id = generate_temp_id
-        logic_id_map[old_option_id] = option.new_id
-        # option.copy = true
+        option.temp_id = "TEMP-ID-#{SecureRandom.uuid}"
+        logic_id_map[option.id] = option.temp_id
         option
       end
 
-      # TODO: Also do this resetOptionsIfNotPersisted - in fact maybe just do the one function for not persisted
-      # If it's a copy then the not_persisted flag is set on the form and that is then used to reset everything in a single method
+      # Duplicate map config if it's a point field
+      if field.input_type == 'point'
+        original_map_config = CustomMaps::MapConfig.find(field.map_config.id)
+        new_map_config = original_map_config.dup
+        new_map_config.mappable = nil
+
+        if new_map_config.save
+          new_map_config_layers = original_map_config.layers.map(&:dup)
+          new_map_config_layers.each do |layer|
+            layer.map_config = new_map_config
+            layer.save!
+          end
+          field.map_config = new_map_config
+        end
+      end
 
       field
     end
@@ -173,20 +180,15 @@ class IdeaCustomFieldsService
     new_fields.map do |field|
       if field.logic['rules']
         field.logic['rules'].map! do |rule|
-          # binding.pry # TODO: need to do the options now
-          rule['if'] = logic_id_map[rule['if']] # if field.input_type == 'select' # TODO: NEEDED?
+          rule['if'] = logic_id_map[rule['if']]
           rule['goto_page_id'] = logic_id_map[rule['goto_page_id']]
           rule
         end
       elsif field.logic['next_page_id']
-        field.logic['next_page_id'] = logic_id_map[field.logic['next_page_id']]
+        field.logic['next_page_id'] = logic_id_map[field.logic['next_page_id']] unless field.logic['next_page_id'] == 'survey_end'
       end
       field
     end
-  end
-
-  def generate_temp_id
-    "TEMP-ID-#{SecureRandom.uuid}"
   end
 
   private

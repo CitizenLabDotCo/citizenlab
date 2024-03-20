@@ -91,78 +91,17 @@ export const getFormActionsConfig = (
   };
 };
 
-// // If copying another form, reset IDs for fields, add temp-ids to options & replace map configs
-// export const resetCopiedForm = (
-//   customFields: IFlatCustomField[],
-//   duplicateMapConfigIds: Record<string, string>
-// ) => {
-//   // Set the field IDs
-//   const logicIdMap = { survey_end: 'survey_end' };
-//   const newFields = customFields?.map((field: IFlatCustomField) => {
-//     const sourceFieldId = field.id;
-//     const { ...newField } = field;
-//     newField.id = `${Math.floor(Date.now() * Math.random())}`;
-//     if (newField.input_type === 'page') {
-//       newField.temp_id = generateTempId();
-//       logicIdMap[sourceFieldId] = newField.temp_id;
-//     }
-//     if (newField.options && newField.options.length > 0) {
-//       newField.options = newField.options?.map((option: IOptionsType) => {
-//         const sourceOptionId = option.id;
-//         const { ...newOption } = option;
-//         delete newOption.id;
-//         newOption.temp_id = generateTempId();
-//         if (sourceOptionId) logicIdMap[sourceOptionId] = newOption.temp_id;
-//         return newOption;
-//       });
-//     }
-//
-//     // Replace map config IDs with duplicates if this is a mapping question
-//     const mapConfigId = field.map_config?.data?.id;
-//     if (field.input_type === 'point' && mapConfigId) {
-//       newField.map_config_id = duplicateMapConfigIds[mapConfigId];
-//       newField.map_config = {
-//         data: { id: duplicateMapConfigIds[mapConfigId], type: 'map_config' },
-//       };
-//     }
-//
-//     return newField;
-//   });
-//
-//   // Update the logic
-//   return newFields?.map((field: IFlatCustomField) => {
-//     const { ...newField } = field;
-//     if (newField.logic?.rules) {
-//       const newRules = newField.logic.rules.map((rule: QuestionRuleType) => {
-//         return {
-//           if: newField.input_type === 'select' ? logicIdMap[rule.if] : rule.if,
-//           goto_page_id: logicIdMap[rule.goto_page_id],
-//         };
-//       });
-//       newField.logic = { rules: newRules };
-//     } else if (newField.logic?.next_page_id) {
-//       newField.logic = {
-//         next_page_id: logicIdMap[newField.logic.next_page_id],
-//       };
-//     }
-//     return newField;
-//   });
-// };
-//
-// // If the form is not yet persisted, set temp_ids for the options
-export const resetOptionsIfNotPersisted = (
-  customFields: any,
-  formPersisted: boolean
-) => {
-  if (formPersisted) return customFields;
-
+// Remove the IDs from the options - for when the form is not persisted
+export const clearOptionIds = (customFields: IFlatCustomField[]) => {
   return customFields?.map((field: IFlatCustomField) => {
     if (field.options && field.options.length > 0) {
       field.options = field.options.map((option: IOptionsType) => {
-        const { ...newOption } = option;
-        delete newOption.id;
-        // newOption.temp_id = generateTempId();
-        return newOption;
+        // const { ...newOption } = option;
+        // delete newOption.id;
+        // return newOption;
+
+        delete option.id;
+        return option;
       });
     }
     return field;
