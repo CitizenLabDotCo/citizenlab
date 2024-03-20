@@ -15,7 +15,7 @@ import MultipleChoice from './MultipleChoice';
 import PointLocationQuestion from './PointLocationQuestion';
 import TextQuestion from './TextQuestion';
 
-type FormResultsQuestionProps = ResultUngrouped & {
+type FormResultsQuestionProps = Omit<ResultUngrouped, 'grouped'> & {
   questionNumber: number;
   locale: Locale;
   totalSubmissions: number;

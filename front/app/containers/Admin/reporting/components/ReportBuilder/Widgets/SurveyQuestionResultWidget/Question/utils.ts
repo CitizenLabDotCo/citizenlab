@@ -1,7 +1,7 @@
 import { colors } from '@citizenlab/cl2-component-library';
 import { FormatMessage } from 'typings';
 
-import { AttributesGrouped } from 'api/graph_data_units/responseTypes';
+import { ResultGrouped } from 'api/survey_results/types';
 
 import { Localize } from 'hooks/useLocalize';
 
@@ -15,7 +15,7 @@ export const getColorScheme = (length: number) => {
 };
 
 export const getLegendLabels = (
-  attributes: AttributesGrouped,
+  attributes: ResultGrouped,
   localize: Localize,
   formatMessage: FormatMessage
 ) => {
