@@ -1,18 +1,22 @@
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
-import { ArgsTable } from '@storybook/addon-docs';
-import Button from './';
-import { text, boolean } from '@storybook/addon-knobs';
+import React from 'react';
+
 import { action } from '@storybook/addon-actions';
+import { boolean } from '@storybook/addon-knobs';
 
-<Meta title="Components/Button" component={Button} />
+import Button from '.';
 
-# Button
+export default {
+  title: 'Components/Button',
+  component: Button,
+};
 
-<ArgsTable of={Button} />
-
-<Canvas>
-  <Story name="primary">
-    <div style={{ display: 'flex' }}>
+export const Primary = {
+  render: () => (
+    <div
+      style={{
+        display: 'flex',
+      }}
+    >
       <Button
         buttonStyle="primary"
         disabled={boolean('Disabled', false)}
@@ -22,12 +26,18 @@ import { action } from '@storybook/addon-actions';
         Button
       </Button>
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="primary with icon">
-    <div style={{ display: 'flex' }}>
+  name: 'primary',
+};
+
+export const PrimaryWithIcon = {
+  render: () => (
+    <div
+      style={{
+        display: 'flex',
+      }}
+    >
       <Button
         locale="en"
         buttonStyle="primary"
@@ -39,12 +49,18 @@ import { action } from '@storybook/addon-actions';
         Button
       </Button>
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="primary-outlined">
-    <div style={{ display: 'flex' }}>
+  name: 'primary with icon',
+};
+
+export const PrimaryOutlined = {
+  render: () => (
+    <div
+      style={{
+        display: 'flex',
+      }}
+    >
       <Button
         locale="en"
         buttonStyle="primary-outlined"
@@ -55,12 +71,18 @@ import { action } from '@storybook/addon-actions';
         Button
       </Button>
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="primary-inverse">
-    <div style={{ display: 'flex' }}>
+  name: 'primary-outlined',
+};
+
+export const PrimaryInverse = {
+  render: () => (
+    <div
+      style={{
+        display: 'flex',
+      }}
+    >
       <Button
         locale="en"
         buttonStyle="primary-inverse"
@@ -71,12 +93,18 @@ import { action } from '@storybook/addon-actions';
         Button
       </Button>
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="secondary">
-    <div style={{ display: 'flex' }}>
+  name: 'primary-inverse',
+};
+
+export const Secondary = {
+  render: () => (
+    <div
+      style={{
+        display: 'flex',
+      }}
+    >
       <Button
         locale="en"
         buttonStyle="secondary"
@@ -87,12 +115,18 @@ import { action } from '@storybook/addon-actions';
         Button
       </Button>
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="secondary-outlined">
-    <div style={{ display: 'flex' }}>
+  name: 'secondary',
+};
+
+export const SecondaryOutlined = {
+  render: () => (
+    <div
+      style={{
+        display: 'flex',
+      }}
+    >
       <Button
         locale="en"
         buttonStyle="secondary-outlined"
@@ -103,12 +137,18 @@ import { action } from '@storybook/addon-actions';
         Button
       </Button>
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="success">
-    <div style={{ display: 'flex' }}>
+  name: 'secondary-outlined',
+};
+
+export const Success = {
+  render: () => (
+    <div
+      style={{
+        display: 'flex',
+      }}
+    >
       <Button
         locale="en"
         buttonStyle="success"
@@ -119,12 +159,18 @@ import { action } from '@storybook/addon-actions';
         Button
       </Button>
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="text style">
-    <div style={{ display: 'flex' }}>
+  name: 'success',
+};
+
+export const TextStyle = {
+  render: () => (
+    <div
+      style={{
+        display: 'flex',
+      }}
+    >
       <Button
         locale="en"
         buttonStyle="text"
@@ -135,12 +181,18 @@ import { action } from '@storybook/addon-actions';
         Button
       </Button>
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="cl-blue">
-    <div style={{ display: 'flex' }}>
+  name: 'text style',
+};
+
+export const ClBlue = {
+  render: () => (
+    <div
+      style={{
+        display: 'flex',
+      }}
+    >
       <Button
         locale="en"
         buttonStyle="cl-blue"
@@ -151,12 +203,18 @@ import { action } from '@storybook/addon-actions';
         Button
       </Button>
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="admin-dark">
-    <div style={{ display: 'flex' }}>
+  name: 'cl-blue',
+};
+
+export const AdminDark = {
+  render: () => (
+    <div
+      style={{
+        display: 'flex',
+      }}
+    >
       <Button
         locale="en"
         buttonStyle="admin-dark"
@@ -167,12 +225,18 @@ import { action } from '@storybook/addon-actions';
         Button
       </Button>
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="admin-dark-text">
-    <div style={{ display: 'flex' }}>
+  name: 'admin-dark',
+};
+
+export const AdminDarkText = {
+  render: () => (
+    <div
+      style={{
+        display: 'flex',
+      }}
+    >
       <Button
         locale="en"
         buttonStyle="admin-dark-text"
@@ -183,12 +247,18 @@ import { action } from '@storybook/addon-actions';
         Button
       </Button>
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="delete">
-    <div style={{ display: 'flex' }}>
+  name: 'admin-dark-text',
+};
+
+export const Delete = {
+  render: () => (
+    <div
+      style={{
+        display: 'flex',
+      }}
+    >
       <Button
         locale="en"
         buttonStyle="delete"
@@ -199,12 +269,20 @@ import { action } from '@storybook/addon-actions';
         Button
       </Button>
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="white">
-    <div style={{ display: 'flex', background: '#f4f4f4', padding: '10px' }}>
+  name: 'delete',
+};
+
+export const White = {
+  render: () => (
+    <div
+      style={{
+        display: 'flex',
+        background: '#f4f4f4',
+        padding: '10px',
+      }}
+    >
       <Button
         locale="en"
         buttonStyle="white"
@@ -215,12 +293,18 @@ import { action } from '@storybook/addon-actions';
         Button
       </Button>
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="button-link">
-    <div style={{ display: 'flex' }}>
+  name: 'white',
+};
+
+export const ButtonLink = {
+  render: () => (
+    <div
+      style={{
+        display: 'flex',
+      }}
+    >
       <Button
         buttonStyle="primary"
         disabled={boolean('Disabled', false)}
@@ -236,5 +320,7 @@ import { action } from '@storybook/addon-actions';
         Button that is actually a link
       </Button>
     </div>
-  </Story>
-</Canvas>
+  ),
+
+  name: 'button-link',
+};

@@ -1,18 +1,22 @@
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
-import { ArgsTable } from '@storybook/addon-docs';
-import { text, number, boolean } from '@storybook/addon-knobs';
+import React from 'react';
+
 import { action } from '@storybook/addon-actions';
+import { text, number, boolean } from '@storybook/addon-knobs';
+
 import SearchInput from './';
 
-<Meta title="Components/SearchInput" component={SearchInput} />
+export default {
+  title: 'Components/SearchInput',
+  component: SearchInput,
+};
 
-# SearchInput
-
-<ArgsTable of={SearchInput} />
-
-<Canvas>
-  <Story name="default">
-    <div style={{ maxWidth: '400px' }}>
+export const Default = {
+  render: () => (
+    <div
+      style={{
+        maxWidth: '400px',
+      }}
+    >
       <SearchInput
         debounce={number('Debounce', 500)}
         placeholder={text('Placeholder', 'placeholder')}
@@ -21,12 +25,18 @@ import SearchInput from './';
         size={boolean('Small', false) ? 'small' : 'medium'}
       />
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="with default value">
-    <div style={{ maxWidth: '400px' }}>
+  name: 'default',
+};
+
+export const WithDefaultValue = {
+  render: () => (
+    <div
+      style={{
+        maxWidth: '400px',
+      }}
+    >
       <SearchInput
         defaultValue="Default search value"
         debounce={number('Debounce', 500)}
@@ -36,5 +46,7 @@ import SearchInput from './';
         size={boolean('Small', false) ? 'small' : 'medium'}
       />
     </div>
-  </Story>
-</Canvas>
+  ),
+
+  name: 'with default value',
+};

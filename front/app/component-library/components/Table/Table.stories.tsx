@@ -1,14 +1,14 @@
-import { Meta, Story, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
+import React from 'react';
+
 import { Table, Thead, Tbody, Tr, Th, Td } from './';
 
-<Meta title="Components/Table" component={Table} />
+export default {
+  title: 'Components/Table',
+  component: Table,
+};
 
-# Table
-
-<ArgsTable of={Table} />
-
-<Canvas>
-  <Story name="Default">
+export const Default = {
+  render: () => (
     <Table>
       <Thead>
         <Tr>
@@ -27,11 +27,13 @@ import { Table, Thead, Tbody, Tr, Th, Td } from './';
         </Tr>
       </Tbody>
     </Table>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="With inner borders">
+  name: 'Default',
+};
+
+export const WithInnerBorders = {
+  render: () => (
     <Table
       innerBorders={{
         headerCells: true,
@@ -55,11 +57,13 @@ import { Table, Thead, Tbody, Tr, Th, Td } from './';
         </Tr>
       </Tbody>
     </Table>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="With sortable and tooltip icons">
+  name: 'With inner borders',
+};
+
+export const WithSortableAndTooltipIcons = {
+  render: () => (
     <Table>
       <Thead>
         <Tr>
@@ -80,11 +84,13 @@ import { Table, Thead, Tbody, Tr, Th, Td } from './';
         </Tr>
       </Tbody>
     </Table>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="With Tr backgrounds">
+  name: 'With sortable and tooltip icons',
+};
+
+export const WithTrBackgrounds = {
+  render: () => (
     <Table>
       <Thead>
         <Tr background="lightGrey">
@@ -103,5 +109,7 @@ import { Table, Thead, Tbody, Tr, Th, Td } from './';
         </Tr>
       </Tbody>
     </Table>
-  </Story>
-</Canvas>
+  ),
+
+  name: 'With Tr backgrounds',
+};

@@ -1,17 +1,21 @@
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
-import { ArgsTable } from '@storybook/addon-docs';
-import CardButton from './';
+import React from 'react';
+
 import { action } from '@storybook/addon-actions';
 
-<Meta title="Components/CardButton" component={CardButton} />
+import CardButton from '.';
 
-# CardButton
+export default {
+  title: 'Components/CardButton',
+  component: CardButton,
+};
 
-<ArgsTable of={CardButton} />
-
-<Canvas>
-  <Story name="default">
-    <div style={{ display: 'flex' }}>
+export const Default = {
+  render: () => (
+    <div
+      style={{
+        display: 'flex',
+      }}
+    >
       <CardButton
         iconName="close"
         title="Close"
@@ -27,12 +31,18 @@ import { action } from '@storybook/addon-actions';
         onClick={action('Copy CardButton clicked')}
       />
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="long title">
-    <div style={{ display: 'flex' }}>
+  name: 'default',
+};
+
+export const LongTitle = {
+  render: () => (
+    <div
+      style={{
+        display: 'flex',
+      }}
+    >
       <CardButton
         iconName="close"
         title="Looong title with many words and such"
@@ -42,5 +52,7 @@ import { action } from '@storybook/addon-actions';
         selected
       />
     </div>
-  </Story>
-</Canvas>
+  ),
+
+  name: 'long title',
+};

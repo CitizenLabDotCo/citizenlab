@@ -1,18 +1,18 @@
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
-import { ArgsTable } from '@storybook/addon-docs';
+import React from 'react';
+
 import { select, boolean, text, number } from '@storybook/addon-knobs';
+
 import { colors } from '../../utils/styleUtils';
 
-import Box from './';
+import Box from '.';
 
-<Meta title="Components/Box" component={Box} />
+export default {
+  title: 'Components/Box',
+  component: Box,
+};
 
-# Box
-
-<ArgsTable of={Box} />
-
-<Canvas>
-  <Story name="default">
+export const Default = {
+  render: () => (
     <Box
       bgColor={select('Background color', colors, '#fff')}
       color={select('Color', colors, '#333')}
@@ -93,5 +93,7 @@ import Box from './';
       <div>Hi, I am the first child of this Box!</div>
       <div>Hi, I am the second child of this Box!</div>
     </Box>
-  </Story>
-</Canvas>
+  ),
+
+  name: 'default',
+};

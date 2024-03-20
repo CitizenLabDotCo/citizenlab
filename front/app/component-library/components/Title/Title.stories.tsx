@@ -1,13 +1,14 @@
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
-import { ArgsTable } from '@storybook/addon-docs';
-import { text, number, boolean, select } from '@storybook/addon-knobs';
+import React from 'react';
+
+import { text, select } from '@storybook/addon-knobs';
+
 import { colors, fontSizes } from '../../utils/styleUtils';
+
 import Title from './';
-export const colorOptions = [...Object.keys(colors)];
-export const fontSizeOptions = [undefined, ...Object.keys(fontSizes)];
-export const variants = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
-export const selectGroupId = 'TitleComponent';
-export const textAlignOptions = [
+const colorOptions = [...Object.keys(colors)];
+const fontSizeOptions = [undefined, ...Object.keys(fontSizes)];
+
+const textAlignOptions = [
   'left',
   'right',
   'center',
@@ -16,14 +17,13 @@ export const textAlignOptions = [
   'inherit',
 ];
 
-<Meta title="Components/Title" component={Title} />
+export default {
+  title: 'Components/Title',
+  component: Title,
+};
 
-# Title
-
-<ArgsTable of={Title} />
-
-<Canvas>
-  <Story name="h1">
+export const H1 = {
+  render: () => (
     <div>
       <Title
         color={select('Title color', colorOptions, 'adminTextColor')}
@@ -34,11 +34,13 @@ export const textAlignOptions = [
         {text('Text', 'The quick brown fox jumps over the lazy dog')}
       </Title>
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="h2">
+  name: 'h1',
+};
+
+export const H2 = {
+  render: () => (
     <div>
       <Title
         color={select('Title color', colorOptions, 'adminTextColor')}
@@ -49,11 +51,13 @@ export const textAlignOptions = [
         {text('Text', 'The quick brown fox jumps over the lazy dog')}
       </Title>
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="h3">
+  name: 'h2',
+};
+
+export const H3 = {
+  render: () => (
     <div>
       <Title
         color={select('Title color', colorOptions, 'adminTextColor')}
@@ -64,11 +68,13 @@ export const textAlignOptions = [
         {text('Text', 'The quick brown fox jumps over the lazy dog')}
       </Title>
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="h4">
+  name: 'h3',
+};
+
+export const H4 = {
+  render: () => (
     <div>
       <Title
         color={select('Title color', colorOptions, 'adminTextColor')}
@@ -79,11 +85,13 @@ export const textAlignOptions = [
         {text('Text', 'The quick brown fox jumps over the lazy dog')}
       </Title>
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="h5">
+  name: 'h4',
+};
+
+export const H5 = {
+  render: () => (
     <div>
       <Title
         color={select('Title color', colorOptions, 'adminTextColor')}
@@ -94,11 +102,13 @@ export const textAlignOptions = [
         {text('Text', 'The quick brown fox jumps over the lazy dog')}
       </Title>
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="h6">
+  name: 'h5',
+};
+
+export const H6 = {
+  render: () => (
     <div>
       <Title
         color={select('Title color', colorOptions, 'adminTextColor')}
@@ -109,5 +119,7 @@ export const textAlignOptions = [
         {text('Text', 'The quick brown fox jumps over the lazy dog')}
       </Title>
     </div>
-  </Story>
-</Canvas>
+  ),
+
+  name: 'h6',
+};

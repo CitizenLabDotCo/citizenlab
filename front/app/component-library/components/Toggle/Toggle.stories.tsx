@@ -1,47 +1,53 @@
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
-import { ArgsTable } from '@storybook/addon-docs';
-import { text, number as numberKnob, boolean } from '@storybook/addon-knobs';
+import React from 'react';
+
 import { action } from '@storybook/addon-actions';
-import Toggle from './';
+import { text, boolean } from '@storybook/addon-knobs';
+
 import { colors } from '../../utils/styleUtils';
 
-<Meta title="Components/Toggle" component={Toggle} />
+import Toggle from './';
 
-# Toggle
+export default {
+  title: 'Components/Toggle',
+  component: Toggle,
+};
 
-<ArgsTable of={Toggle} />
-
-<Canvas>
-  <Story name="default">
+export const Default = {
+  render: () => (
     <Toggle
       checked={boolean('Checked', false)}
       onChange={action('toggle changed')}
     />
-  </Story>
-</Canvas>
+  ),
+  name: 'default',
+};
 
-<Canvas>
-  <Story name="with label">
+export const WithLabel = {
+  render: () => (
     <Toggle
       checked={boolean('Checked', false)}
       label={text('Label', 'A toggle with label')}
       onChange={action('toggle changed')}
     />
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="disabled">
+  name: 'with label',
+};
+
+export const Disabled = {
+  render: () => (
     <Toggle
       checked={boolean('Checked', false)}
       disabled={boolean('Disabled', true)}
       onChange={action('toggle changed')}
     />
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="with label text color">
+  name: 'disabled',
+};
+
+export const WithLabelTextColor = {
+  render: () => (
     <Toggle
       checked={boolean('Checked', false)}
       disabled={boolean('Disabled', false)}
@@ -49,5 +55,7 @@ import { colors } from '../../utils/styleUtils';
       label={text('Label', 'A toggle with colored label')}
       labelTextColor={text('Label Color', colors.textSecondary)}
     />
-  </Story>
-</Canvas>
+  ),
+
+  name: 'with label text color',
+};

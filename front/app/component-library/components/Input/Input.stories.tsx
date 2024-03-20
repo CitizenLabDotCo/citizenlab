@@ -1,18 +1,22 @@
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
-import { ArgsTable } from '@storybook/addon-docs';
-import { text, number as numberKnob, boolean } from '@storybook/addon-knobs';
+import React from 'react';
+
 import { action } from '@storybook/addon-actions';
-import Input from './';
+import { text, number as numberKnob, boolean } from '@storybook/addon-knobs';
 
-<Meta title="Components/Input" component={Input} />
+import Input from '.';
 
-# Input
+export default {
+  title: 'Components/Input',
+  component: Input,
+};
 
-<ArgsTable of={Input} />
-
-<Canvas>
-  <Story name="default">
-    <div style={{ maxWidth: '400px' }}>
+export const Default = {
+  render: () => (
+    <div
+      style={{
+        maxWidth: '400px',
+      }}
+    >
       <Input
         type="text"
         value={text('Value', 'Some random text')}
@@ -22,12 +26,18 @@ import Input from './';
         size={boolean('Small', false) ? 'small' : 'normal'}
       />
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="with placeholder">
-    <div style={{ maxWidth: '400px' }}>
+  name: 'default',
+};
+
+export const WithPlaceholder = {
+  render: () => (
+    <div
+      style={{
+        maxWidth: '400px',
+      }}
+    >
       <Input
         type="text"
         placeholder={text('Placeholder', 'placeholder')}
@@ -36,12 +46,18 @@ import Input from './';
         size={boolean('Small', false) ? 'small' : 'normal'}
       />
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="with label">
-    <div style={{ maxWidth: '400px' }}>
+  name: 'with placeholder',
+};
+
+export const WithLabel = {
+  render: () => (
+    <div
+      style={{
+        maxWidth: '400px',
+      }}
+    >
       <Input
         type="text"
         value={text('Value', 'Some random text')}
@@ -50,12 +66,18 @@ import Input from './';
         size={boolean('Small', false) ? 'small' : 'normal'}
       />
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="with max. char">
-    <div style={{ maxWidth: '400px' }}>
+  name: 'with label',
+};
+
+export const WithMaxChar = {
+  render: () => (
+    <div
+      style={{
+        maxWidth: '400px',
+      }}
+    >
       <Input
         type="text"
         value={text('Value', 'Some random text')}
@@ -66,12 +88,18 @@ import Input from './';
         size={boolean('Small', false) ? 'small' : 'normal'}
       />
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="date">
-    <div style={{ maxWidth: '400px' }}>
+  name: 'with max. char',
+};
+
+export const Date = {
+  render: () => (
+    <div
+      style={{
+        maxWidth: '400px',
+      }}
+    >
       <Input
         type="date"
         value={text('Date', '2019-07-17')}
@@ -80,12 +108,18 @@ import Input from './';
         size={boolean('Small', false) ? 'small' : 'normal'}
       />
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="email">
-    <div style={{ maxWidth: '400px' }}>
+  name: 'date',
+};
+
+export const Email = {
+  render: () => (
+    <div
+      style={{
+        maxWidth: '400px',
+      }}
+    >
       <Input
         type="email"
         value={text('Email', 'email@example.com')}
@@ -94,12 +128,18 @@ import Input from './';
         size={boolean('Small', false) ? 'small' : 'normal'}
       />
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="password">
-    <div style={{ maxWidth: '400px' }}>
+  name: 'email',
+};
+
+export const Password = {
+  render: () => (
+    <div
+      style={{
+        maxWidth: '400px',
+      }}
+    >
       <Input
         type="password"
         value={text('Password', 'password')}
@@ -107,12 +147,18 @@ import Input from './';
         size={boolean('Small', false) ? 'small' : 'normal'}
       />
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="number">
-    <div style={{ maxWidth: '400px' }}>
+  name: 'password',
+};
+
+export const Number = {
+  render: () => (
+    <div
+      style={{
+        maxWidth: '400px',
+      }}
+    >
       <Input
         type="number"
         value={numberKnob('Number', 42)}
@@ -121,5 +167,7 @@ import Input from './';
         size={boolean('Small', false) ? 'small' : 'normal'}
       />
     </div>
-  </Story>
-</Canvas>
+  ),
+
+  name: 'number',
+};

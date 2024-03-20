@@ -1,18 +1,22 @@
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
-import { ArgsTable } from '@storybook/addon-docs';
-import { text, number as numberKnob, boolean } from '@storybook/addon-knobs';
+import React from 'react';
+
 import { action } from '@storybook/addon-actions';
+import { boolean } from '@storybook/addon-knobs';
+
 import Select from './';
 
-<Meta title="Components/Select" component={Select} />
+export default {
+  title: 'Components/Select',
+  component: Select,
+};
 
-# Select
-
-<ArgsTable of={Select} />
-
-<Canvas>
-  <Story name="default">
-    <div style={{ maxWidth: '400px' }}>
+export const Default = {
+  render: () => (
+    <div
+      style={{
+        maxWidth: '400px',
+      }}
+    >
       <Select
         options={[
           {
@@ -28,12 +32,18 @@ import Select from './';
         size={boolean('Small', false) ? 'small' : 'normal'}
       />
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="with selected option">
-    <div style={{ maxWidth: '400px' }}>
+  name: 'default',
+};
+
+export const WithSelectedOption = {
+  render: () => (
+    <div
+      style={{
+        maxWidth: '400px',
+      }}
+    >
       <Select
         options={[
           {
@@ -53,12 +63,18 @@ import Select from './';
         size={boolean('Small', false) ? 'small' : 'normal'}
       />
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="with label">
-    <div style={{ maxWidth: '400px' }}>
+  name: 'with selected option',
+};
+
+export const WithLabel = {
+  render: () => (
+    <div
+      style={{
+        maxWidth: '400px',
+      }}
+    >
       <Select
         label="This is a label"
         options={[
@@ -79,12 +95,18 @@ import Select from './';
         size={boolean('Small', false) ? 'small' : 'normal'}
       />
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="disabled">
-    <div style={{ maxWidth: '400px' }}>
+  name: 'with label',
+};
+
+export const Disabled = {
+  render: () => (
+    <div
+      style={{
+        maxWidth: '400px',
+      }}
+    >
       <Select
         options={[
           {
@@ -105,12 +127,18 @@ import Select from './';
         disabled={true}
       />
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="with number values">
-    <div style={{ maxWidth: '400px' }}>
+  name: 'disabled',
+};
+
+export const WithNumberValues = {
+  render: () => (
+    <div
+      style={{
+        maxWidth: '400px',
+      }}
+    >
       <Select
         options={[
           {
@@ -131,12 +159,18 @@ import Select from './';
         value={2}
       />
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="with placeholder">
-    <div style={{ maxWidth: '400px' }}>
+  name: 'with number values',
+};
+
+export const WithPlaceholder = {
+  render: () => (
+    <div
+      style={{
+        maxWidth: '400px',
+      }}
+    >
       <Select
         options={[
           {
@@ -153,5 +187,7 @@ import Select from './';
         placeholder={'Placeholder'}
       />
     </div>
-  </Story>
-</Canvas>
+  ),
+
+  name: 'with placeholder',
+};

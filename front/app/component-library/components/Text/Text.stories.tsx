@@ -1,13 +1,14 @@
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
-import { ArgsTable } from '@storybook/addon-docs';
-import { text, number, boolean, select } from '@storybook/addon-knobs';
+import React from 'react';
+
+import { text, select } from '@storybook/addon-knobs';
+
 import { colors, fontSizes } from '../../utils/styleUtils';
+
 import Text from './';
-export const colorOptions = [...Object.keys(colors)];
-export const fontSizeOptions = [undefined, ...Object.keys(fontSizes)];
-export const fontWeights = ['bold', 'normal'];
-export const asOptions = ['p', 'span'];
-export const textAlignOptions = [
+const fontSizeOptions = [undefined, ...Object.keys(fontSizes)];
+const fontWeights = ['bold', 'normal'];
+
+const textAlignOptions = [
   'left',
   'right',
   'center',
@@ -16,14 +17,13 @@ export const textAlignOptions = [
   'inherit',
 ];
 
-<Meta title="Components/Text" component={Text} />
+export default {
+  title: 'Components/Text',
+  component: Text,
+};
 
-# Text
-
-<ArgsTable of={Text} />
-
-<Canvas>
-  <Story name="bodyL">
+export const BodyL = {
+  render: () => (
     <div>
       <Text
         color={select('Text color', [...Object.keys(colors)], 'text')}
@@ -35,11 +35,13 @@ export const textAlignOptions = [
         {text('Text', 'The quick brown fox jumps over the lazy dog')}
       </Text>
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="bodyM">
+  name: 'bodyL',
+};
+
+export const BodyM = {
+  render: () => (
     <div>
       <Text
         color={select('Text color', [...Object.keys(colors)], 'text')}
@@ -51,11 +53,13 @@ export const textAlignOptions = [
         {text('Text', 'The quick brown fox jumps over the lazy dog')}
       </Text>
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="bodyS">
+  name: 'bodyM',
+};
+
+export const BodyS = {
+  render: () => (
     <div>
       <Text
         color={select('Text color', [...Object.keys(colors)], 'text')}
@@ -67,11 +71,13 @@ export const textAlignOptions = [
         {text('Text', 'The quick brown fox jumps over the lazy dog')}
       </Text>
     </div>
-  </Story>
-</Canvas>
+  ),
 
-<Canvas>
-  <Story name="bodyXs">
+  name: 'bodyS',
+};
+
+export const BodyXs = {
+  render: () => (
     <div>
       <Text
         color={select('Text color', [...Object.keys(colors)], 'text')}
@@ -83,5 +89,7 @@ export const textAlignOptions = [
         {text('Text', 'The quick brown fox jumps over the lazy dog')}
       </Text>
     </div>
-  </Story>
-</Canvas>
+  ),
+
+  name: 'bodyXs',
+};
