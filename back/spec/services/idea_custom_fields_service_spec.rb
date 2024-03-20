@@ -554,14 +554,52 @@ describe IdeaCustomFieldsService do
       let(:survey_project) { create(:single_phase_native_survey_project) }
       let(:custom_form) { create(:custom_form, participation_context: survey_project.phases.first) }
 
-      it 'replaces IDs with number' do
-        create(:custom_field_page, resource: custom_form)
+      it 'replaces resets everything correctly' do
+        _page1 = create(:custom_field_page, resource: custom_form)
+        select_field = create(:custom_field_select, resource: custom_form)
+        option = create(:custom_field_option, custom_field: select_field)
+        page2 = create(:custom_field_page, resource: custom_form)
+        _text_field = create(:custom_field_text, resource: custom_form)
+        page3 = create(:custom_field_page, resource: custom_form)
+        _text_field2 = create(:custom_field_text, resource: custom_form)
+
+        select_field.update!(logic: { rules: [{ if: option.id, goto_page_id: page3.id }] })
+        page2.update!(logic: { next_page_id: page3.id })
+
         fields = service.all_fields_reset
-        binding.pry
-        expect(fields.count).to eq 1
+
+        expect(fields.count).to eq 6
+
+        # page 1
+        expect(fields[0].id.class).to eq Integer
+        expect(fields[0].temp_id).to match 'TEMP-ID-'
+
+        # select field
+        expect(fields[1].logic).to match({
+          'rules' => [
+            { 'if' => fields[1].options[0].temp_id, 'goto_page_id' => fields[4].temp_id }
+          ]
+        })
+        expect(fields[0].id.class).to eq Integer
+        expect(fields[1].options[0].temp_id).to match 'TEMP-ID-'
+
+        # page 2
+        expect(fields[2].temp_id).to match 'TEMP-ID-'
+        expect(fields[2].logic).to match({
+          'next_page_id' => fields[4].temp_id
+        })
+
+        # text field
+        expect(fields[3].temp_id).to be_nil
+
+        # page 3
+        expect(fields[4].temp_id).to match 'TEMP-ID-'
+
+        # text field 2
+        expect(fields[5].temp_id).to be_nil
       end
 
-      # If not persisted just it returns default form
+      # TODO: If not persisted just it returns default form
     end
   end
 end

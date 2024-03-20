@@ -15,7 +15,7 @@ import { API_PATH } from 'containers/App/constants';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { saveSurveyAsPDF } from '../saveSurveyAsPDF';
-import { nativeSurveyConfig } from '../utils';
+import { nativeSurveyConfig, resetOptionsIfNotPersisted } from '../utils';
 
 const FormBuilder = lazy(() => import('components/FormBuilder/edit'));
 
@@ -59,6 +59,9 @@ const SurveyFormBuilder = () => {
   //   ? resetCopiedForm(customFields, newMapConfigIds)
   //   : resetOptionsIfNotPersisted(customFields, surveyFormPersisted);
 
+  const newCustomFields = resetOptionsIfNotPersisted(formCustomFields, true);
+  console.log('formCustomFields', newCustomFields);
+
   // PDF downloading
   const downloadPdfLink = `${API_PATH}/phases/${phaseId}/custom_fields/to_pdf`;
   const handleDownloadPDF = () => setExportModalOpen(true);
@@ -74,7 +77,7 @@ const SurveyFormBuilder = () => {
       <FormBuilder
         builderConfig={{
           ...nativeSurveyConfig,
-          formCustomFields,
+          formCustomFields: newCustomFields,
           goBackUrl,
           onDownloadPDF: handleDownloadPDF,
         }}

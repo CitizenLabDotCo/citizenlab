@@ -144,34 +144,43 @@ class IdeaCustomFieldsService
   def all_fields_reset
     fields = all_fields
     logic_id_map = { survey_end: 'survey_end' }
-    fields.map do |field|
-      # Set the ID in the serializer? If temp_id then set the ID
-      # field.id = SecureRandom.uuid # Will this work for front end?
+    new_fields = fields.map do |field|
+      # if field.input_type == 'page'
+      #   field.temp_id = generate_temp_id
+      #   logic_id_map[field.id] = field.temp_id
+      # end
+      old_field_id = field.id
+      field.new_id = SecureRandom.uuid
+      logic_id_map[old_field_id] = field.new_id
 
-      field.copied = true # to use in the serializer
-      if field.input_type == 'page'
-        field.temp_id = generate_temp_id
-        logic_id_map[field.id] = field.temp_id
+      # TODO: Could it be the options that are problematic because they have an ID?
+      field.options = field.options.map do |option|
+        old_option_id = option.id
+        option.new_id = SecureRandom.uuid
+        # option.temp_id = generate_temp_id
+        logic_id_map[old_option_id] = option.new_id
+        # option.copy = true
+        option
       end
 
-      # field.options = field.options.map do |option|
-      #   option.temp_id = generate_temp_id
-      # end
-
-      # if (newField.options && newField.options.length > 0) {
-      #   newField.options = newField.options?.map((option: IOptionsType) => {
-      #     const sourceOptionId = option.id;
-      # const { ...newOption } = option;
-      # delete newOption.id;
-      # newOption.temp_id = generateTempId();
-      # if (sourceOptionId) logicIdMap[sourceOptionId] = newOption.temp_id;
-      # return newOption;
-      # });
-      # }
-      #
       # TODO: Also do this resetOptionsIfNotPersisted - in fact maybe just do the one function for not persisted
       # If it's a copy then the not_persisted flag is set on the form and that is then used to reset everything in a single method
 
+      field
+    end
+
+    # Update the logic
+    new_fields.map do |field|
+      if field.logic['rules']
+        field.logic['rules'].map! do |rule|
+          # binding.pry # TODO: need to do the options now
+          rule['if'] = logic_id_map[rule['if']] # if field.input_type == 'select' # TODO: NEEDED?
+          rule['goto_page_id'] = logic_id_map[rule['goto_page_id']]
+          rule
+        end
+      elsif field.logic['next_page_id']
+        field.logic['next_page_id'] = logic_id_map[field.logic['next_page_id']]
+      end
       field
     end
   end

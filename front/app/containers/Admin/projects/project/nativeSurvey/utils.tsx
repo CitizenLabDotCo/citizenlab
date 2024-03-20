@@ -15,6 +15,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import AccessRightsNotice from './AccessRightsNotice';
 import messages from './messages';
+import { IFlatCustomField, IOptionsType } from 'api/custom_fields/types';
 
 export const nativeSurveyConfig: FormBuilderConfig = {
   formBuilderTitle: messages.survey,
@@ -149,21 +150,21 @@ export const getFormActionsConfig = (
 // };
 //
 // // If the form is not yet persisted, set temp_ids for the options
-// export const resetOptionsIfNotPersisted = (
-//   customFields: any,
-//   formPersisted: boolean
-// ) => {
-//   if (formPersisted) return customFields;
-//
-//   return customFields?.map((field: IFlatCustomField) => {
-//     if (field.options && field.options.length > 0) {
-//       field.options = field.options.map((option: IOptionsType) => {
-//         const { ...newOption } = option;
-//         delete newOption.id;
-//         newOption.temp_id = generateTempId();
-//         return newOption;
-//       });
-//     }
-//     return field;
-//   });
-// };
+export const resetOptionsIfNotPersisted = (
+  customFields: any,
+  formPersisted: boolean
+) => {
+  if (formPersisted) return customFields;
+
+  return customFields?.map((field: IFlatCustomField) => {
+    if (field.options && field.options.length > 0) {
+      field.options = field.options.map((option: IOptionsType) => {
+        const { ...newOption } = option;
+        delete newOption.id;
+        // newOption.temp_id = generateTempId();
+        return newOption;
+      });
+    }
+    return field;
+  });
+};

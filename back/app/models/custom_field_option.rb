@@ -23,6 +23,8 @@
 #  fk_rails_...  (custom_field_id => custom_fields.id)
 #
 class CustomFieldOption < ApplicationRecord
+  include CustomFieldCopy
+
   acts_as_list column: :ordering, top_of_list: 0, scope: :custom_field
 
   belongs_to :custom_field

@@ -10,6 +10,7 @@ resource 'Idea Custom Fields' do
 
   get 'web_api/v1/admin/phases/:phase_id/custom_fields' do
     parameter :support_free_text_value, 'Only return custom fields that have a freely written textual answer', type: :boolean, required: false
+    parameter :copy, 'Copy this form (resets all fields)', type: :boolean, required: false
 
     let(:context) { create(:native_survey_phase) }
     let(:phase_id) { context.id }
@@ -38,6 +39,14 @@ resource 'Idea Custom Fields' do
         expect(json_response[:data].map { |d| d.dig(:attributes, :key) }).to eq [
           custom_field1.key
         ]
+      end
+
+      example 'List all custom fields for a phase reset for copying', document: false do
+        do_request(copy: true)
+        assert_status 200
+
+        binding.pry
+        expect(response_data.size).to eq 1
       end
     end
   end
