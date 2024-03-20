@@ -24,7 +24,7 @@ const Container = styled.div`
   color: white;
   background: ${colors.primary};
   font-size: ${fontSizes.base}px;
-  z-index: 1001;
+  z-index: 1100;
   width: 100%;
   display: flex;
   align-items: center;

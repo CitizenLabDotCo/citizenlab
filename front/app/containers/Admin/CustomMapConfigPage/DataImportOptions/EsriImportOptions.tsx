@@ -61,6 +61,7 @@ const EsriImportOptions = memo<Props>(({ setView, mapConfig }) => {
         >
           <div>
             <Button
+              data-cy="e2e-feature-layer-upload-btn"
               icon="location-simple"
               buttonStyle="secondary"
               onClick={() => {
@@ -85,6 +86,7 @@ const EsriImportOptions = memo<Props>(({ setView, mapConfig }) => {
         >
           <div>
             <Button
+              data-cy="e2e-web-map-upload-btn"
               icon="map"
               buttonStyle="secondary"
               onClick={() => {

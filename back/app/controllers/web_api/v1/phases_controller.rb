@@ -65,8 +65,13 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def submission_count
-    count = SurveyResultsGeneratorService.new(@phase).generate_submission_count
-    render json: raw_json(count)
+    count = if @phase.native_survey?
+      @phase.ideas.native_survey.published.count
+    else
+      @phase.ideas.ideation.published.count
+    end
+
+    render json: raw_json({ totalSubmissions: count })
   end
 
   def index_xlsx

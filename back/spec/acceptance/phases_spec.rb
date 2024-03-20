@@ -65,6 +65,33 @@ resource 'Phases' do
     end
   end
 
+  get 'web_api/v1/phases/:id/submission_count' do
+    let(:phase) { create(:native_survey_phase) }
+    let(:id) { phase.id }
+
+    before do
+      create_list(:native_survey_response, 2, creation_phase: phase, project: phase.project, phases: [phase])
+      create_list(:idea, 3, project: phase.project, phases: [phase])
+    end
+
+    context 'native survey' do
+      example 'Get count when native survey phase (ignores ideas)' do
+        do_request
+        assert_status 200
+        expect(response_data[:attributes]).to eq({ totalSubmissions: 2 })
+      end
+    end
+
+    context 'ideation' do
+      example 'Get count for ideation phase (ignores native survey responses)' do
+        phase.update!(participation_method: 'ideation')
+        do_request
+        assert_status 200
+        expect(response_data[:attributes]).to eq({ totalSubmissions: 3 })
+      end
+    end
+  end
+
   get 'web_api/v1/phases/:id/as_xlsx' do
     describe do
       let(:id) { create(:project_with_active_ideation_phase).phases.first.id }

@@ -20,8 +20,8 @@ type ContentBuilderErrors = Record<
 >;
 
 interface Props {
-  onErrors: (errors: ContentBuilderErrors) => void;
-  onDeleteElement: (id: string) => void;
+  onErrors?: (errors: ContentBuilderErrors) => void;
+  onDeleteElement?: (id: string) => void;
   onUploadImage: (imageUploading: boolean) => void;
   children: React.ReactNode;
 }
@@ -33,6 +33,8 @@ export const ContentBuilder = ({
   children,
 }: Props) => {
   useEffect(() => {
+    if (!onErrors) return;
+
     const subscription = eventEmitter
       .observeEvent(CONTENT_BUILDER_ERROR_EVENT)
       .subscribe(({ eventValue }) => {
@@ -44,6 +46,8 @@ export const ContentBuilder = ({
   }, [onErrors]);
 
   useEffect(() => {
+    if (!onDeleteElement) return;
+
     const subscription = eventEmitter
       .observeEvent(CONTENT_BUILDER_DELETE_ELEMENT_EVENT)
       .subscribe(({ eventValue }) => {

@@ -7,6 +7,8 @@ import useComment from 'api/comments/useComment';
 import useUserById from 'api/users/useUserById';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import messages from '../messages';
 
@@ -58,7 +60,6 @@ interface Props {
   hasChildComments?: boolean;
   last?: boolean;
   className?: string;
-  userCanModerate: boolean;
 }
 
 const Comment = ({
@@ -71,7 +72,6 @@ const Comment = ({
   hasChildComments,
   last,
   className,
-  userCanModerate,
 }: Props) => {
   const { data: comment } = useComment(commentId);
   const { data: author } = useUserById(
@@ -91,6 +91,13 @@ const Comment = ({
   const onCommentSaved = () => {
     setEditing(false);
   };
+
+  const authorCanModerate = author
+    ? {
+        idea: canModerateProject(projectId, author),
+        initiative: canModerateInitiative(author),
+      }[postType]
+    : false;
 
   if (comment) {
     const commentId = comment.data.id;
@@ -119,7 +126,7 @@ const Comment = ({
                 commentType={commentType}
                 className={commentType === 'parent' ? 'marginBottom' : ''}
                 authorId={authorId}
-                userCanModerate={userCanModerate}
+                userCanModerate={authorCanModerate}
               />
 
               <Content>

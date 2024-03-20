@@ -16,6 +16,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { ControlProps } from '@jsonforms/core';
+import { createPortal } from 'react-dom';
 import { useTheme } from 'styled-components';
 
 import { IMapConfig } from 'api/map_config/types';
@@ -54,6 +55,7 @@ const FullscreenMapInput = memo<Props>(
     ...props
   }: ControlProps & Props) => {
     const { uischema, path, id, schema, required } = props;
+    const modalPortalElement = document.getElementById('modal-portal');
 
     const theme = useTheme();
     const locale = useLocale();
@@ -114,93 +116,96 @@ const FullscreenMapInput = memo<Props>(
       setShowFullscreenMap(false);
     };
 
-    return (
-      <Box
-        width="100vw"
-        height="100%"
-        position="fixed"
-        top="0"
-        left="0"
-        display="block"
-        background="white"
-        zIndex="99999999"
-      >
-        <Box display="flex" flexDirection="column">
-          <EsriMap
-            id="fullscreenMap"
-            height={`${getMapHeight()}px`}
-            layers={mapLayers}
-            initialData={{
-              zoom: Number(mapConfig?.data.attributes.zoom_level),
-              center: data || mapConfig?.data.attributes.center_geojson,
-              showLegend: true,
-              showLegendExpanded: true,
-              showLayerVisibilityControl: true,
-              showZoomControls: true,
-              onInit: onMapInit,
-            }}
-            onClick={onMapClick}
-            webMapId={mapConfig?.data.attributes.esri_web_map_id}
-          />
-          <ResetMapViewButton mapConfig={mapConfig} mapView={mapView} />
+    return modalPortalElement
+      ? createPortal(
           <Box
-            p="16px"
-            pb="0px"
-            background="white"
             width="100vw"
-            zIndex="99999"
-            ref={bottomSectionRef}
-            position="sticky"
+            height="100%"
+            position="fixed"
+            top="0"
+            left="0"
+            display="block"
+            background="white"
+            zIndex="99999999"
           >
-            <Box>
-              <FormLabel
-                htmlFor={sanitizeForClassname(id)}
-                labelValue={getLabel(uischema, schema, path)}
-                optional={!required}
-              />
-              <Label>
-                <Box display="flex">
-                  <Icon
-                    name="info-outline"
-                    fill={colors.coolGrey600}
-                    mr="4px"
-                  />
-                  <Box my="auto">
-                    {formatMessage(messages.tapOnFullscreenMapToAdd)}
-                  </Box>
-                </Box>
-              </Label>
-            </Box>
-            <Box
-              borderTop={`1px solid ${colors.grey400}`}
-              mt="20px"
-              p="20px"
-              gap="16px"
-              display="flex"
-              width="100vw"
-              justifyContent="flex-end"
-            >
-              <Button
-                icon="arrow-left"
-                buttonStyle="secondary"
-                onClick={handleBack}
-              >
-                {formatMessage(messages.back)}
-              </Button>
-              <Button
-                mr="20px"
-                onClick={() => {
-                  setShowFullscreenMap(false);
+            <Box display="flex" flexDirection="column">
+              <EsriMap
+                id="fullscreenMap"
+                height={`${getMapHeight()}px`}
+                layers={mapLayers}
+                initialData={{
+                  zoom: Number(mapConfig?.data.attributes.zoom_level),
+                  center: data || mapConfig?.data.attributes.center_geojson,
+                  showLegend: true,
+                  showLegendExpanded: true,
+                  showLayerVisibilityControl: true,
+                  showZoomControls: true,
+                  onInit: onMapInit,
                 }}
-                disabled={!data || data?.address === ''}
+                onClick={onMapClick}
+                webMapId={mapConfig?.data.attributes.esri_web_map_id}
+              />
+              <ResetMapViewButton mapConfig={mapConfig} mapView={mapView} />
+              <Box
+                p="16px"
+                pb="0px"
+                background="white"
+                width="100vw"
+                zIndex="99999"
+                ref={bottomSectionRef}
+                position="sticky"
               >
-                {formatMessage(messages.confirm)}
-              </Button>
+                <Box>
+                  <FormLabel
+                    htmlFor={sanitizeForClassname(id)}
+                    labelValue={getLabel(uischema, schema, path)}
+                    optional={!required}
+                  />
+                  <Label>
+                    <Box display="flex">
+                      <Icon
+                        name="info-outline"
+                        fill={colors.coolGrey600}
+                        mr="4px"
+                      />
+                      <Box my="auto">
+                        {formatMessage(messages.tapOnFullscreenMapToAdd)}
+                      </Box>
+                    </Box>
+                  </Label>
+                </Box>
+                <Box
+                  borderTop={`1px solid ${colors.grey400}`}
+                  mt="20px"
+                  p="20px"
+                  gap="16px"
+                  display="flex"
+                  width="100vw"
+                  justifyContent="flex-end"
+                >
+                  <Button
+                    icon="arrow-left"
+                    buttonStyle="secondary"
+                    onClick={handleBack}
+                  >
+                    {formatMessage(messages.back)}
+                  </Button>
+                  <Button
+                    mr="20px"
+                    onClick={() => {
+                      setShowFullscreenMap(false);
+                    }}
+                    disabled={!data || data?.address === ''}
+                  >
+                    {formatMessage(messages.confirm)}
+                  </Button>
+                </Box>
+              </Box>
             </Box>
-          </Box>
-        </Box>
-      </Box>
-    );
+          </Box>,
+          modalPortalElement
+        )
+      : null;
   }
 );
 

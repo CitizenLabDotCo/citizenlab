@@ -29,6 +29,7 @@ const FormResultsQuestion = ({
   answers,
   questionResponseCount,
   totalSubmissions,
+  totalPickCount,
   pointResponses = [],
   required,
   customFieldId,
@@ -54,10 +55,10 @@ const FormResultsQuestion = ({
           totalSubmissions={totalSubmissions}
           totalResponses={questionResponseCount}
         />
-        {isMultipleChoiceAndHasAnswers && (
+        {isMultipleChoiceAndHasAnswers && multilocs && totalPickCount && (
           <MultipleChoice
             multipleChoiceAnswers={answers}
-            totalResponses={questionResponseCount}
+            totalResponses={totalPickCount}
             multilocs={multilocs}
           />
         )}
