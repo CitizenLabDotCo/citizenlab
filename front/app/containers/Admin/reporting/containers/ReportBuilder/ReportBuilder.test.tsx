@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, screen, waitFor } from 'utils/testUtils/rtl';
+import { render, waitFor } from 'utils/testUtils/rtl';
 
 import ReportBuilder from '.';
 
@@ -72,19 +72,19 @@ const surveyResultsNodes = {
   },
   pEOdj46oZz: {
     type: {
-      resolvedName: 'SurveyResultsWidget',
+      resolvedName: 'TextMultiloc',
     },
-    isCanvas: false,
+    nodes: [],
     props: {
-      title: {
-        en: 'Survey results',
+      text: {
+        en: '<p>sdfsdf</p>',
       },
     },
-    displayName: 'SurveyResultsWidget',
     custom: {},
-    parent: 'ROOT',
     hidden: false,
-    nodes: [],
+    parent: 'ROOT',
+    isCanvas: false,
+    displayName: 'm',
     linkedNodes: {},
   },
 };
@@ -116,10 +116,10 @@ jest.mock(
 describe('<ReportBuilder />', () => {
   it('renders layout to canvas if it exists', async () => {
     mockReportLayout = { data: surveyResultsLayout };
-    render(<ReportBuilder />);
+    const { container } = render(<ReportBuilder />);
 
     await waitFor(() => {
-      expect(screen.getByTestId('survey-results-widget')).toBeInTheDocument();
+      expect(container.querySelector('.e2e-text-box')).toBeInTheDocument();
     });
   });
 });
