@@ -1,6 +1,51 @@
+import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
+
+import { Localize } from 'hooks/useLocalize';
+
 import { roundPercentages, sum } from 'utils/math';
 
-import { BarType } from './typings';
+import { BarType, Option } from './typings';
+
+export const parseQuestion = (
+  result: ResultUngrouped | ResultGrouped,
+  colorScheme: string[],
+  localize: Localize,
+  noAnswerCopy: string
+): Option[] => {
+  if (result.grouped) {
+    // TODO
+    return [];
+  }
+
+  const { multilocs, answers } = result;
+  if (!multilocs) throw new Error('Multilocs are missing');
+
+  const optionPercentages = roundPercentages(
+    answers.map(({ count }) => count),
+    1
+  );
+
+  return answers.map(({ answer }, i) => {
+    const label =
+      answer === null
+        ? noAnswerCopy
+        : localize(multilocs.answer[answer].title_multiloc);
+
+    const percentage = optionPercentages[i];
+
+    return {
+      label,
+      percentage: 1,
+      bars: [
+        {
+          type: 'single',
+          percentage,
+          color: colorScheme[0],
+        },
+      ],
+    };
+  });
+};
 
 export const getType = (index: number, length: number) => {
   if (length === 1) return 'single';
