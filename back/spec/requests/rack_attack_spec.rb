@@ -299,8 +299,27 @@ describe 'Rack::Attack' do
 
     freeze_time do
       10.times do
+        post('/web_api/v1/user/resend_code', headers: headers)
+      end
+      expect(status).to eq(401) # Unauthorized
+
+      post('/web_api/v1/user/resend_code', headers: headers)
+      expect(status).to eq(429) # Too many requests
+    end
+
+    travel_to(5.minutes.from_now) do
+      post('/web_api/v1/user/resend_code', headers: headers)
+      expect(status).to eq(401) # Unauthorized
+    end
+  end
+
+  it 'limits confirmation requests from same IP to 5 in 20 seconds' do
+    headers = { 'CONTENT_TYPE' => 'application/json' }
+
+    freeze_time do
+      5.times do
         post(
-          '/web_api/v1/user/resend_code',
+          '/web_api/v1/user/confirm',
           params: '{ "confirmation": { "code": "1234" } }',
           headers: headers
         )
@@ -308,16 +327,16 @@ describe 'Rack::Attack' do
       expect(status).to eq(401) # Unauthorized
 
       post(
-        '/web_api/v1/user/resend_code',
+        '/web_api/v1/user/confirm',
         params: '{ "confirmation": { "code": "1234" } }',
         headers: headers
       )
       expect(status).to eq(429) # Too many requests
     end
 
-    travel_to(5.minutes.from_now) do
+    travel_to(20.seconds.from_now) do
       post(
-        '/web_api/v1/user/resend_code',
+        '/web_api/v1/user/confirm',
         params: '{ "confirmation": { "code": "1234" } }',
         headers: headers
       )
