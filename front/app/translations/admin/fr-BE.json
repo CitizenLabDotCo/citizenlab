@@ -1544,7 +1544,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.existingSubmissionsWarning": "Les réponses à ce sondage commencent à arriver. Des modifications apportées au sondage pourraient entraîner des pertes de données et des données incomplètes dans les fichiers exportés.",
   "app.containers.AdminPage.ProjectEdit.survey.file_upload": "Téléchargement de fichier",
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Retour",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText3": "Les résumés AI des questions à réponse courte et longue sont accessibles à partir de l'onglet AI dans la barre latérale gauche.",
+  "app.containers.AdminPage.ProjectEdit.survey.informationText3": "Les résumés générés par l'IA pour les questions ouvertes courtes et longues sont accessibles depuis l'onglet IA dans la barre latérale gauche.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Échelle linéaire",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Réponse longue",
   "app.containers.AdminPage.ProjectEdit.survey.multiselectText2": "Choix multiple - choisissez-en plusieurs",
