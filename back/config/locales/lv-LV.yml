@@ -228,9 +228,9 @@ lv:
       title: 'Jūsu jautājums'
       option1: '1. variants'
       option2: '2. variants'
-    survey_end_page:
-      title: 'Aptaujas beigas'
-      description: "Lūdzu, iesniedziet savas atbildes, izvēloties \"Iesniegt aptauju\"."
+    form_end_page:
+      title: 'Paldies par dalību'
+      description: "Lūdzu, iesniedziet savas atbildes, izvēloties \"Iesniegt\" zemāk."
     pdf_export:
       personal_data: 'Personas dati'
       personal_data_explanation_ideation: "Mēs iesniegsim jūsu viedokli tiešsaistes līdzdalības platformā %{organizationName}. Ja vēlaties, lai jūsu vārds un uzvārds būtu redzams kā šī ieguldījuma autors un jūs saņemtu jauninājumus, kas saistīti ar jūsu ieguldījumu, pa e-pastu, lūdzu, aizpildiet turpmāk norādītos laukus šajā lapā, un mēs izveidosim jums kontu. Jūsu e-pasts nebūs publiski pieejams, un to izmantos tikai %{organizationName}. Ja vēlaties palikt anonīms vai nepiekrītat, ka mēs šādā veidā izmantojam jūsu personas datus, varat tos atstāt tukšus."
