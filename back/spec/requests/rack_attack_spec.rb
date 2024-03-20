@@ -331,13 +331,14 @@ describe 'Rack::Attack' do
 
   it 'limits login requests from same IP to 4000 in 1 day', skip: 'Too slow to include in CI' do
     headers = { 'CONTENT_TYPE' => 'application/json' }
+    start_time = Time.zone.now.midnight
 
     # Use a different email for each request, to avoid testing limit by email
     800.times do |i|
-      # Move time forward, each 10 requests, to avoid testing shorter time-limited rule
-      travel_to((i * 60).seconds.from_now) do
+      # Move time forward, each 5 requests, to avoid testing shorter time-limited rule
+      travel_to(start_time + i.minutes) do
         5.times do |j|
-          iter = (10 * i) + (j + 1)
+          iter = (5 * i) + (j + 1)
           post(
             '/web_api/v1/user_token',
             params: '{ "auth": { "email": "INSERT", "password": "test123456" } }'.gsub('INSERT', "a#{iter}@b.com"),
@@ -350,7 +351,7 @@ describe 'Rack::Attack' do
     end
     expect(status).to eq(404) # Not found
 
-    travel_to(134.minutes.from_now) do
+    travel_to(start_time + 800.minutes) do
       post(
         '/web_api/v1/user_token',
         params: '{ "auth": { "email": "a11@b.com", "password": "test123456" } }',
@@ -359,7 +360,7 @@ describe 'Rack::Attack' do
       expect(status).to eq(429) # Too many requests
     end
 
-    travel_to(27.hours.from_now) do
+    travel_to(start_time + 25.hours) do
       post(
         '/web_api/v1/user_token',
         params: '{ "auth": { "INSERT": "a12@b.com", "password": "test123456" } }',
@@ -375,7 +376,7 @@ describe 'Rack::Attack' do
       # Move time forward, each 10 requests, to avoid testing shorter time-limited rule
       travel_to((i * 60).seconds.from_now) do
         5.times do |j|
-          iter = (10 * i) + (j + 1)
+          iter = (5 * i) + (j + 1)
           headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => "1.2.3.#{iter}" }
           post(
             '/web_api/v1/user_token',
