@@ -33,15 +33,24 @@ export const parseQuestionResult = (
         image,
         count,
         percentage: roundPercentage(count, totalPickCount, 1),
-        bars: groups.map(({ group, count }) => {
-          const type = getType(i, groups.length);
+        bars:
+          groups.length === 0
+            ? [
+                {
+                  type: 'single',
+                  percentage: 0,
+                  color: EMPTY_COLOR,
+                },
+              ]
+            : groups.map(({ group, count }) => {
+                const type = getType(i, groups.length);
 
-          return {
-            type,
-            percentage: roundPercentage(count, totalPickCount, 1),
-            color: colorSchemeMap.get(group) ?? EMPTY_COLOR,
-          };
-        }),
+                return {
+                  type,
+                  percentage: roundPercentage(count, totalPickCount, 1),
+                  color: colorSchemeMap.get(group) ?? EMPTY_COLOR,
+                };
+              }),
       };
     });
   }
@@ -75,7 +84,7 @@ export const parseQuestionResult = (
   });
 };
 
-const EMPTY_COLOR = colors.coolGrey300;
+export const EMPTY_COLOR = colors.coolGrey300;
 
 const constructColorSchemeMap = (
   legend: (string | null)[],
