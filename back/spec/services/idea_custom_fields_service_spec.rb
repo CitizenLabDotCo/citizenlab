@@ -550,53 +550,58 @@ describe IdeaCustomFieldsService do
       end
     end
 
-    describe '#reset_copy_fields' do
+    describe '#duplicate_all_fields' do
       let(:survey_project) { create(:single_phase_native_survey_project) }
       let(:custom_form) { create(:custom_form, participation_context: survey_project.phases.first) }
 
-      it 'replaces resets everything correctly' do
-        _page1 = create(:custom_field_page, resource: custom_form)
+      it 'resets everything correctly' do
+        page1 = create(:custom_field_page, resource: custom_form)
         select_field = create(:custom_field_select, resource: custom_form)
-        option = create(:custom_field_option, custom_field: select_field)
+        select_option = create(:custom_field_option, custom_field: select_field)
         page2 = create(:custom_field_page, resource: custom_form)
-        _text_field = create(:custom_field_text, resource: custom_form)
+        text_field = create(:custom_field_text, resource: custom_form)
         page3 = create(:custom_field_page, resource: custom_form)
-        _text_field2 = create(:custom_field_text, resource: custom_form)
-
-        select_field.update!(logic: { rules: [{ if: option.id, goto_page_id: page3.id }] })
+        multi_select_field = create(:custom_field_multiselect, resource: custom_form)
+        _multi_select_option = create(:custom_field_option, custom_field: multi_select_field)
+        map_field = create(:custom_field_point, resource: custom_form, map_config: create(:map_config))
+        select_field.update!(logic: { rules: [{ if: select_option.id, goto_page_id: page3.id }] })
         page2.update!(logic: { next_page_id: page3.id })
 
-        fields = service.all_fields_reset
+        fields = service.duplicate_all_fields
 
-        expect(fields.count).to eq 6
+        expect(fields.count).to eq 7
 
         # page 1
-        expect(fields[0].id.class).to eq Integer
-        expect(fields[0].temp_id).to match 'TEMP-ID-'
+        expect(fields[0].id).not_to eq page1.id
 
         # select field
+        expect(fields[1].id).not_to eq select_field.id
         expect(fields[1].logic).to match({
           'rules' => [
-            { 'if' => fields[1].options[0].temp_id, 'goto_page_id' => fields[4].temp_id }
+            { 'if' => fields[1].options[0].temp_id, 'goto_page_id' => fields[4].id }
           ]
         })
-        expect(fields[0].id.class).to eq Integer
         expect(fields[1].options[0].temp_id).to match 'TEMP-ID-'
 
         # page 2
-        expect(fields[2].temp_id).to match 'TEMP-ID-'
+        expect(fields[2].id).not_to eq page2.id
         expect(fields[2].logic).to match({
-          'next_page_id' => fields[4].temp_id
+          'next_page_id' => fields[4].id
         })
 
         # text field
-        expect(fields[3].temp_id).to be_nil
+        expect(fields[3].id).not_to eq text_field.id
 
         # page 3
-        expect(fields[4].temp_id).to match 'TEMP-ID-'
+        expect(fields[4].id).not_to eq page3.id
 
-        # text field 2
-        expect(fields[5].temp_id).to be_nil
+        # multi select field
+        expect(fields[5].id).not_to eq multi_select_field.id
+        expect(fields[5].options[0].temp_id).to match 'TEMP-ID-'
+
+        # map field - duplicates map config
+        expect(fields[6].id).not_to eq map_field.id
+        expect(fields[6].map_config.id).not_to eq map_field.map_config.id
       end
 
       # TODO: If not persisted just it returns default form
