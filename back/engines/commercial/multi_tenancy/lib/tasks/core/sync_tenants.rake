@@ -90,7 +90,7 @@ namespace :sync_tenants do
   task :apply_updates, [:sheet] => [:environment] do |_t, args|
     template_path = Rails.root.join('config/tenant_templates/base.yml')
     template = MultiTenancy::Templates::Utils.parse_yml_file(template_path)
-    instructions = CSV.parse(open(args[:sheet]).read, { headers: true, col_sep: ',', converters: [] })
+    instructions = CSV.parse(open(args[:sheet]).read, headers: true, col_sep: ',', converters: [])
 
     Tenant.where(host: instructions.pluck('Tenant host').uniq).each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
