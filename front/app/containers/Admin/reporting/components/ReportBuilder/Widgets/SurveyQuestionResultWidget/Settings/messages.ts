@@ -14,9 +14,9 @@ export default defineMessages({
     defaultMessage: 'Group mode',
   },
   groupModeTooltip: {
-    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupModeTooltip',
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupModeTooltip1',
     defaultMessage:
-      'Group survey responses by any user field (gender, location, age, etc) or other survey questions.',
+      'Group survey responses by registration fields (gender, location, age, etc) or other survey questions.',
   },
   featureLockedReason: {
     id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.featureLockedReason1',

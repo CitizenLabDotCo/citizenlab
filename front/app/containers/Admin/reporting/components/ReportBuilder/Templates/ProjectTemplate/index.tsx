@@ -23,6 +23,7 @@ import { withoutSpacing } from 'utils/textUtils';
 // shared widgets
 
 // report builder widgets
+import { SURVEY_QUESTION_INPUT_TYPES } from '../../constants';
 import AboutReportWidget from '../../Widgets/AboutReportWidget';
 import ActiveUsersWidget from '../../Widgets/ChartWidgets/ActiveUsersWidget';
 import AgeWidget from '../../Widgets/ChartWidgets/AgeWidget';
@@ -32,7 +33,6 @@ import MostReactedIdeasWidget from '../../Widgets/MostReactedIdeasWidget';
 import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget';
 import TextMultiloc from '../../Widgets/TextMultiloc';
 import TwoColumn from '../../Widgets/TwoColumn';
-import { SURVEY_QUESTION_INPUT_TYPES } from '../../constants';
 
 import { getTemplateData } from './getTemplateData';
 import messages from './messages';

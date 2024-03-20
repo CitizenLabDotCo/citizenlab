@@ -14,6 +14,7 @@ import styled from 'styled-components';
 import { ICustomFieldInputType } from 'api/custom_fields/types';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+
 import messages from '../messages';
 
 interface Props {

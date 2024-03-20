@@ -133,10 +133,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.shareInformation',
     defaultMessage: 'Share information',
   },
-  shareInformationDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.shareInformationDescription',
-    defaultMessage: 'Provide information to participants.',
-  },
   inputAndFeedback: {
     id: 'app.containers.AdminPage.ProjectEdit.inputAndFeedback',
     defaultMessage: 'Collect input and feedback',
