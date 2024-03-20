@@ -2,11 +2,7 @@ import { IIdeaImageData } from 'api/idea_images/types';
 import { IIdeaData } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
-import {
-  SurveyResultAttributes,
-  ResultGrouped,
-  ResultUngrouped,
-} from 'api/survey_results/types';
+import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
 import { GenderOption } from 'api/users_by_gender/types';
 
 import {
@@ -31,14 +27,6 @@ import {
   TimeSeriesResponseRow as ReactionsTimeSeriesResponseRow,
 } from 'components/admin/GraphCards/ReactionsByTimeCard/useReactionsByTime/typings';
 import { TrafficSourcesRow } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/typings';
-
-// Survey results (whole survey, deprecated)
-export type SurveyResultsResponse = {
-  data: {
-    type: 'report_builder_data_units';
-    attributes: SurveyResultAttributes;
-  };
-};
 
 // Survey question results
 export type SurveyQuestionResultResponse = {
