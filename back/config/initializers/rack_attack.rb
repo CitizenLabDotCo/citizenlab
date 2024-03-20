@@ -94,7 +94,7 @@ class Rack::Attack
 
   # Accept invite by IP.
   throttle('accept_invite/ip', limit: 5, period: 60.seconds) do |req|
-    if req.path.starts_with?('/web_api/v1/invites/by_token') &&  req.path.ends_with?('accept') && req.post?
+    if req.path.starts_with?('/web_api/v1/invites/by_token') && req.path.ends_with?('accept') && req.post?
       req.remote_ip
     end
   end

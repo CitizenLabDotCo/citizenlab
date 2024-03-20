@@ -15,6 +15,8 @@ describe 'Rack::Attack' do
     Rack::Attack.enabled = false
   end
 
+  let!(:user) { create(:user) }
+
   it 'limits login requests from same IP to 5 in 60 seconds' do
     headers = { 'CONTENT_TYPE' => 'application/json' }
 
@@ -197,31 +199,32 @@ describe 'Rack::Attack' do
   end
 
   it 'limits password reset email requests for same email to 5 in 60 seconds' do
-    headers = { 'CONTENT_TYPE' => 'application/json' }
-    users = create_list(:user, 7)
-
+    # Use a different IP for each request, to avoid testing limit by IP
     freeze_time do
       5.times do |i|
+        headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => "1.2.3.#{i + 1}" }
         post(
           '/web_api/v1/users/reset_password_email',
-          params: '{ "user": { "email": "a@b.com" } }'.gsub('INSERT', users[i].email.to_s),
+          params: '{ "user": { "email": "INSERT" } }'.gsub('INSERT', user.email.to_s),
           headers: headers
         )
       end
       expect(status).to eq(202) # Accepted
 
+      headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.11' }
       post(
         '/web_api/v1/users/reset_password_email',
-        params: '{ "user": { "email": "a@b.com" } }'.gsub('INSERT', users[5].email.to_s),
+        params: '{ "user": { "email": "INSERT" } }'.gsub('INSERT', user.email.to_s),
         headers: headers
       )
       expect(status).to eq(429) # Too many requests
     end
 
     travel_to(60.seconds.from_now) do
+      headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.12' }
       post(
         '/web_api/v1/users/reset_password_email',
-        params: '{ "user": { "email": "a@b.com" } }'.gsub('INSERT', users[6].email.to_s),
+        params: '{ "user": { "email": "INSERT" } }'.gsub('INSERT', user.email.to_s),
         headers: headers
       )
       expect(status).to eq(202) # Accepted
