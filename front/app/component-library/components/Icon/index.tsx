@@ -8,16 +8,14 @@ import Svg, { SvgProps } from './Svg';
 
 export type IconNames = keyof typeof icons;
 
-type ariaHiddenTrue = {
-  ariaHidden?: true;
-};
-
-type ariaHiddenFalse = {
-  ariaHidden: false;
-  title: string | JSX.Element;
-};
-
-type ariaHiddenProps = ariaHiddenTrue | ariaHiddenFalse;
+type ariaHiddenProps =
+  | {
+      ariaHidden?: true;
+    }
+  | {
+      ariaHidden: false;
+      title: string | JSX.Element;
+    };
 
 type IconPropsWithoutName = ariaHiddenProps &
   SvgProps & {
