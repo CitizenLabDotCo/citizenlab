@@ -8,6 +8,8 @@ import {
 import Tippy from '@tippyjs/react';
 import styled, { css } from 'styled-components';
 
+import { initiativeRouteTypes } from 'containers/Admin/initiatives/routes';
+
 import Link from 'utils/cl-router/Link';
 
 import {
@@ -76,7 +78,8 @@ type TabProps = {
   className?: string;
   'data-cy'?: string;
   label: string;
-  url: string;
+  // url: string;
+  url: initiativeRouteTypes;
   active: boolean;
   badge?: React.ReactNode;
   handleClick?: (event: MouseEvent<HTMLAnchorElement>) => void;

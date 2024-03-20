@@ -16,7 +16,9 @@ import { usePermission } from 'utils/permissions';
 
 import createDashboardRoutes from './dashboard/routes';
 import ideasRoutes from './ideas/routes';
-import createAdminInitiativesRoutes from './initiatives/routes';
+import createAdminInitiativesRoutes, {
+  initiativeRouteTypes,
+} from './initiatives/routes';
 import invitationsRoutes from './invitations/routes';
 import createAdminMessagingRoutes from './messaging/routes';
 import pagesAndMenuRoutes from './pagesAndMenu/routes';
@@ -29,6 +31,9 @@ import createAdminUsersRoutes from './users/routes';
 
 const AdminContainer = lazy(() => import('containers/Admin'));
 const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
+
+export type AdminRoute<T extends string = string> = `/admin/${T}`;
+export type AdminRouteTypes = initiativeRouteTypes;
 
 const isTemplatePreviewPage = (urlSegments: string[]) =>
   urlSegments.length === 4 &&

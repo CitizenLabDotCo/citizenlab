@@ -34,6 +34,9 @@ import segmentConfiguration from './commercial/segment';
 import smartGroupsConfiguration from './commercial/smart_groups';
 import widgetsConfiguration from './commercial/widgets';
 
+// Add all module routes here
+export type ModuleRouteTypes = '/module';
+
 export default loadModules([
   {
     configuration: smartGroupsConfiguration,

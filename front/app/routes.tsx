@@ -1,13 +1,13 @@
 import React, { lazy } from 'react';
 
-import moduleConfiguration from 'modules';
+import moduleConfiguration, { ModuleRouteTypes } from 'modules';
 
 import {
   REPORTING,
   REPORT_BUILDER,
   PRINT,
 } from 'containers/Admin/reporting/routes';
-import createAdminRoutes from 'containers/Admin/routes';
+import createAdminRoutes, { AdminRouteTypes } from 'containers/Admin/routes';
 import userProfileRoutes from 'containers/UsersShowPage/routes';
 
 import PageLoading from 'components/UI/PageLoading';
@@ -55,6 +55,8 @@ const ReportPrintPage = lazy(
   () => import('containers/Admin/reporting/containers/PrintReport')
 );
 const DisabledAccount = lazy(() => import('containers/DisabledAccount'));
+
+export type RouteType = AdminRouteTypes | ModuleRouteTypes;
 
 export default function createRoutes() {
   return [
