@@ -44,7 +44,7 @@ group :development, :test do
   gem 'rack-mini-profiler', require: %w[prepend_net_http_patch rack-mini-profiler]
   gem 'rspec_api_documentation'
   gem 'rspec_junit_formatter'
-  gem 'rspec-rails', '~> 6.0.2'
+  gem 'rspec-rails', '~> 6.1.2'
   gem 'rspec-parameterized'
   gem 'rspec-sqlimit'
   gem 'rspec-its'
@@ -74,7 +74,7 @@ end
 
 group :test do
   gem 'rubyXL'
-  gem 'shoulda-matchers', '~> 5.3.0'
+  gem 'shoulda-matchers', '~> 6.2.0'
   gem 'webmock', '~> 3.18'
 
   # Adds rspec matchers and helpers for testing html structure and styling.
@@ -102,7 +102,7 @@ gem 'fog-aws', '~> 3.19'
 
 gem 'api-pagination', '~> 5.0.0'
 gem 'kaminari', '~> 1.2'
-gem 'rails-i18n', '~> 7.0.7'
+gem 'rails-i18n', '~> 7.0.9'
 
 gem 'awesome_nested_set', '~> 3.5.0'
 gem 'axlsx', '3.0.0.pre'
