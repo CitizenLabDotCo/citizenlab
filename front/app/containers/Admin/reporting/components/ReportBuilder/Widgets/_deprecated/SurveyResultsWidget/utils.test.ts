@@ -1,8 +1,6 @@
-import { Result } from 'api/survey_results/types';
-
 import { createResultRows } from './utils';
 
-const results: Result[] = [
+const results: any[] = [
   {
     inputType: 'text',
     question: { en: 'q0' },

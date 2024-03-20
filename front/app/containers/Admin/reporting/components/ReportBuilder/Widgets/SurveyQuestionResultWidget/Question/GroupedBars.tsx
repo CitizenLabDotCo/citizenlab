@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { AttributesGrouped } from 'api/graph_data_units/responseTypes';
+import { ResultGrouped } from 'api/survey_results/types';
 
 import SurveyBars from 'components/admin/Graphs/SurveyBars';
 
 interface Props {
-  attributes: AttributesGrouped;
+  attributes: ResultGrouped;
   colorScheme: string[];
 }
 

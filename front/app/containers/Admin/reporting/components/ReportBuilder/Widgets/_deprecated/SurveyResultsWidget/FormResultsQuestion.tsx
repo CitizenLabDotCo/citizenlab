@@ -4,14 +4,14 @@ import { Box, Title } from '@citizenlab/cl2-component-library';
 import { snakeCase } from 'lodash-es';
 import { Locale } from 'typings';
 
-import { Result } from 'api/survey_results/types';
+import { ResultUngrouped } from 'api/survey_results/types';
 
 import InputType from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/InputType';
 import MultipleChoice from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/MultipleChoice';
 
 import T from 'components/T';
 
-type FormResultsQuestionProps = Result & {
+type FormResultsQuestionProps = ResultUngrouped & {
   locale: Locale;
   totalSubmissions: number;
 };

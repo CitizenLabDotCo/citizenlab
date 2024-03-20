@@ -1,7 +1,7 @@
-import { Result } from 'api/survey_results/types';
+import { ResultUngrouped } from 'api/survey_results/types';
 
 export const createResultRows = (
-  results: Result[],
+  results: ResultUngrouped[],
   shownQuestions?: boolean[]
 ) => {
   const shownResults = shownQuestions

@@ -3,10 +3,11 @@ import React from 'react';
 import { Box, Image } from '@citizenlab/cl2-component-library';
 
 import {
+  Answer,
+  AnswerMultilocs,
   GroupedAnswer,
   AnswerMultilocsGrouped,
-} from 'api/graph_data_units/responseTypes';
-import { Answer, AnswerMultilocs } from 'api/survey_results/types';
+} from 'api/survey_results/types';
 
 import useLocalize from 'hooks/useLocalize';
 
