@@ -90,6 +90,7 @@ const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
 
           {projectId !== undefined && (
             <PhaseFilter
+              id="e2e-report-builder-analysis-phase-filter-box"
               label={formatMessage(messages.selectPhase)}
               projectId={projectId}
               phaseId={phaseId}
