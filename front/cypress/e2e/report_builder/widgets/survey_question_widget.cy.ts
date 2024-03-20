@@ -70,6 +70,7 @@ describe('Survey question widget', () => {
             'linear_scale',
             'multiselect_image',
             'point',
+            'select',
           ],
           questionImage.body.data.id
         );
@@ -86,6 +87,7 @@ describe('Survey question widget', () => {
         const linearScaleKey = surveyFields[3].attributes.key;
         const multiselectImageKey = surveyFields[4].attributes.key;
         const pointKey = surveyFields[5].attributes.key;
+        const select2Key = surveyFields[6].attributes.key;
 
         const fieldConfigs: any =
           surveySchema.data.attributes.json_schema_multiloc.en?.properties;
@@ -107,6 +109,7 @@ describe('Survey question widget', () => {
         const selectAnswerKeys = getAnswerKeys(selectKey);
         const multiSelectAnswerKeys = getAnswerKeys(multiSelectKey);
         const multiselectImageAnswerKeys = getAnswerKeys(multiselectImageKey);
+        const select2AnswerKeys = getAnswerKeys(select2Key);
 
         users.forEach(
           ({ firstName, lastName, email, password, gender, location }, i) => {
@@ -143,6 +146,7 @@ describe('Survey question widget', () => {
                       type: 'Point',
                       coordinates: location,
                     },
+                    [select2Key]: select2AnswerKeys[i % 2 ? 0 : 1],
                   },
                   jwt
                 );
@@ -450,7 +454,7 @@ describe('Survey question widget', () => {
 
     it('allows slicing multiselect by linear scale', () => {
       cy.setAdminLoginCookie();
-      cy.apiCreateReportBuilder().then((report) => {
+      cy.apiCreateReportBuilder(informationPhaseId).then((report) => {
         const reportId = report.body.data.id;
 
         cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
@@ -501,6 +505,60 @@ describe('Survey question widget', () => {
         };
 
         ensureCorrectGrouping();
+
+        // Save
+        cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
+          'saveReportLayout'
+        );
+        cy.get('#e2e-content-builder-topbar-save').click();
+        cy.wait('@saveReportLayout');
+
+        // Reload page and check if values are still correct
+        cy.reload();
+        ensureCorrectGrouping();
+
+        cy.apiRemoveReportBuilder(reportId);
+      });
+    });
+
+    it.only('has correct color scheme', () => {
+      cy.setAdminLoginCookie();
+      cy.apiCreateReportBuilder(informationPhaseId).then((report) => {
+        const reportId = report.body.data.id;
+
+        cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
+
+        cy.get('#e2e-draggable-survey-question-result-widget').dragAndDrop(
+          '#e2e-content-builder-frame',
+          {
+            position: 'inside',
+          }
+        );
+
+        cy.wait(1000);
+
+        // Select project, phase and question
+        cy.get('#e2e-report-builder-project-filter-box select').select(
+          projectId
+        );
+        cy.get('#e2e-phase-filter').select(surveyPhaseId);
+        cy.get('.e2e-question-select select')
+          .first()
+          .select(surveyFields[6].id);
+
+        cy.get('#e2e-group-mode-select').select('user_field');
+        cy.get('#e2e-user-field-select').select('Gender');
+
+        const ensureCorrectGrouping = () => {
+          cy.get('svg.e2e-progress-bar').should('have.length', 3);
+          const firstBar = cy.get('svg.e2e-progress-bar').first();
+          firstBar.should('have.attr', 'width', '50%');
+          firstBar.should('have.attr', 'fill', '#2F478A');
+
+          const secondBar = cy.get('svg.e2e-progress-bar').eq(1);
+          secondBar.should('have.attr', 'width', '50%');
+          secondBar.should('have.attr', 'fill', '#4D85C6');
+        };
 
         // Save
         cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
