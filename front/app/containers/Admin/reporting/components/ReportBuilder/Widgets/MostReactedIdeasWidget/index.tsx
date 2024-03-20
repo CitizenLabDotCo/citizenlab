@@ -40,9 +40,7 @@ const MostReactedIdeasWidget = ({
     );
   }
 
-  if (!response) {
-    return <MissingData />;
-  }
+  if (!response) return <MissingData />;
 
   const {
     ideas,
@@ -51,9 +49,7 @@ const MostReactedIdeasWidget = ({
     idea_images: ideaImages,
   } = response.data.attributes;
 
-  if (!project || !phase) {
-    return <MissingData />;
-  }
+  if (!project || !phase) return <MissingData />;
 
   return (
     <Card title={title}>
