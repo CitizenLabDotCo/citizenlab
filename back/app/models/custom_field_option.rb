@@ -23,7 +23,8 @@
 #  fk_rails_...  (custom_field_id => custom_fields.id)
 #
 class CustomFieldOption < ApplicationRecord
-  include CustomFieldCopy
+  # non-persisted attribute to enable form copying
+  attribute :temp_id, :string, default: nil
 
   acts_as_list column: :ordering, top_of_list: 0, scope: :custom_field
 

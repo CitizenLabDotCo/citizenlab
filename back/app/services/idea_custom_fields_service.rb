@@ -145,35 +145,37 @@ class IdeaCustomFieldsService
     fields = all_fields
     logic_id_map = { survey_end: 'survey_end' }
     new_fields = fields.map do |field|
-      # Give all fields a new id
-      old_field_id = field.id
-      field.new_id = SecureRandom.uuid
-      logic_id_map[old_field_id] = field.new_id
+      # Duplicate fields with a new id
+      copied_field = field.dup
+      copied_field.id = SecureRandom.uuid
+      logic_id_map[field.id] = copied_field.id
 
-      # Give all options a temp id
-      field.options = field.options.map do |option|
-        option.temp_id = "TEMP-ID-#{SecureRandom.uuid}"
-        logic_id_map[option.id] = option.temp_id
-        option
+      # Duplicate options with an id and temp_id
+      copied_options = field.options.map do |option|
+        copied_option = option.dup
+        copied_option.id = SecureRandom.uuid
+        copied_option.temp_id = "TEMP-ID-#{SecureRandom.uuid}"
+        logic_id_map[option.id] = copied_option.temp_id
+        copied_option
       end
+      copied_field.options = copied_options
 
-      # Duplicate map config if it's a point field
-      if field.input_type == 'point'
+      # Duplicate and persist map config if it is a point field
+      if copied_field.input_type == 'point'
         original_map_config = CustomMaps::MapConfig.find(field.map_config.id)
         new_map_config = original_map_config.dup
         new_map_config.mappable = nil
-
         if new_map_config.save
           new_map_config_layers = original_map_config.layers.map(&:dup)
           new_map_config_layers.each do |layer|
             layer.map_config = new_map_config
             layer.save!
           end
-          field.map_config = new_map_config
+          copied_field.map_config = new_map_config
         end
       end
 
-      field
+      copied_field
     end
 
     # Update the logic
