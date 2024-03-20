@@ -15,6 +15,14 @@ resource 'Map Configs' do
     header 'Content-Type', 'application/json'
   end
 
+  shared_examples 'unsuccessful GET map config' do
+    get 'web_api/v1/projects/:project_id/map_config' do
+      example_request 'Cannot get the map config of a project' do
+        expect(status).to eq 204
+      end
+    end
+  end
+
   shared_examples 'successful GET map config' do
     get 'web_api/v1/projects/:project_id/map_config' do
       let!(:map_config) do
@@ -59,6 +67,11 @@ resource 'Map Configs' do
         expect(status).to eq 401
       end
     end
+  end
+
+  context 'when no map config' do
+    include_examples 'unsuccessful GET map config'
+    include_examples 'unauthorized POST, PATCH and DELETE map config'
   end
 
   context 'when not logged in' do

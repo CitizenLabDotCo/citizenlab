@@ -92,7 +92,7 @@ const MapHelperOptions = ({ mapConfig, mapView }: Props) => {
           content={formatMessage(messages.setAsDefaultMapView)}
           hideOnClick={true}
         >
-          <div>
+          <div id="e2e-save-current-extent">
             <Button
               icon="save"
               buttonStyle="white"

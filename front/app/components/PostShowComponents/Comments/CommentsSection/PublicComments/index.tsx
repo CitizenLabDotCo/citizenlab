@@ -16,7 +16,6 @@ import { CommentsSort } from 'api/comments/types';
 import useComments from 'api/comments/useComments';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
-import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
@@ -24,8 +23,6 @@ import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isPage } from 'utils/helperUtils';
-import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import messages from '../../messages';
 import tracks from '../../tracks';
@@ -80,7 +77,6 @@ const PublicComments = ({
   const ideaId = postType === 'idea' ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: idea } = useIdeaById(ideaId);
-  const { data: authUser } = useAuthUser();
   const { pathname } = useLocation();
   const [sortOrder, setSortOrder] = useState<CommentsSort>('new');
   const {
@@ -130,12 +126,6 @@ const PublicComments = ({
       !commentingPermissionInitiative?.disabledReason &&
       !commentingPermissionInitiative?.authenticationRequirements,
   }[postType];
-  const userCanModerate = authUser
-    ? {
-        idea: canModerateProject(projectId, authUser),
-        initiative: canModerateInitiative(authUser),
-      }[postType]
-    : false;
 
   return (
     <Box className={className || ''}>
@@ -178,7 +168,6 @@ const PublicComments = ({
             postType={postType}
             postingComment={handleCommentPosting}
             allowAnonymousParticipation={allowAnonymousParticipation}
-            userCanModerate={userCanModerate}
           />
         </Box>
       )}
@@ -189,7 +178,6 @@ const PublicComments = ({
         allComments={commentsList}
         loading={isLoading}
         allowAnonymousParticipation={allowAnonymousParticipation}
-        userCanModerate={userCanModerate}
       />
 
       {hasNextPage && !isFetchingNextPage && <Box ref={ref} w="100%" />}

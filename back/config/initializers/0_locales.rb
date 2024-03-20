@@ -10,12 +10,13 @@ CL2_SUPPORTED_LOCALES = %i[
   ar-MA
   ar-SA
   ca-ES
+  cy-GB
   da-DK
   de-DE
   el-GR
   en-CA
-  cy-GB
   en-GB
+  en-IE
   es-CL
   es-ES
   fi-FI

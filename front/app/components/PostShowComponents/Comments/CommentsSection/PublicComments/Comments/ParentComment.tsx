@@ -47,7 +47,6 @@ interface Props {
   childCommentIds: string[];
   className?: string;
   allowAnonymousParticipation?: boolean;
-  userCanModerate: boolean;
 }
 
 const ParentComment = ({
@@ -58,7 +57,6 @@ const ParentComment = ({
   className,
   childCommentIds,
   allowAnonymousParticipation,
-  userCanModerate,
 }: Props) => {
   const commentingPermissionInitiative = useInitiativesPermissions(
     'commenting_initiative'
@@ -114,7 +112,6 @@ const ParentComment = ({
             commentId={commentId}
             commentType="parent"
             hasChildComments={hasChildComments}
-            userCanModerate={userCanModerate}
           />
         </ParentCommentContainer>
 
@@ -150,7 +147,6 @@ const ParentComment = ({
               commentId={childCommentId}
               commentType="child"
               last={index === modifiedChildCommentIds.length - 1}
-              userCanModerate={userCanModerate}
             />
           ))}
 
@@ -162,7 +158,6 @@ const ParentComment = ({
             projectId={projectId}
             parentId={commentId}
             allowAnonymousParticipation={allowAnonymousParticipation}
-            userCanModerate={userCanModerate}
           />
         )}
       </Container>

@@ -144,6 +144,7 @@ const FeatureLayerUpload = ({ mapConfigId, setView }: Props) => {
         {formatMessage(messages.addFeatureLayerInstruction)}
       </Text>
       <Input
+        id="e2e-feature-layer-url-input"
         type="text"
         value={url}
         onChange={(value) => {
@@ -164,6 +165,7 @@ const FeatureLayerUpload = ({ mapConfigId, setView }: Props) => {
           {formatMessage(messages.cancel2)}
         </Button>
         <Button
+          data-cy="e2e-feature-layer-import-btn"
           disabled={!url || url === ''}
           onClick={addEsriFeatureLayer}
           processing={apiCallLoading || loading}
@@ -175,7 +177,12 @@ const FeatureLayerUpload = ({ mapConfigId, setView }: Props) => {
         <Success text={formatMessage(messages.layerAdded)} showIcon={true} />
       )}
       {importError && (
-        <Error text={errorMessage} marginTop="10px" showIcon={true} />
+        <Error
+          id="e2e-feature-layer-error"
+          text={errorMessage}
+          marginTop="10px"
+          showIcon={true}
+        />
       )}
     </>
   );

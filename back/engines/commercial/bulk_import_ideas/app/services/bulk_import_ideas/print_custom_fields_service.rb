@@ -93,7 +93,7 @@ class BulkImportIdeas::PrintCustomFieldsService
     logo = @app_configuration.logo&.medium
     return if logo.blank? || logo.url&.include?('.gif')
 
-    pdf.image open logo.to_s
+    pdf.image URI.open logo.to_s
     pdf.move_down 10.mm
   end
 
