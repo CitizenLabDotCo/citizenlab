@@ -554,7 +554,7 @@ describe IdeaCustomFieldsService do
       let(:survey_project) { create(:single_phase_native_survey_project) }
       let(:custom_form) { create(:custom_form, participation_context: survey_project.phases.first) }
 
-      it 'resets everything correctly' do
+      it 'creates non-persisted duplicates of all fields' do
         page1 = create(:custom_field_page, resource: custom_form)
         select_field = create(:custom_field_select, resource: custom_form)
         select_option = create(:custom_field_option, custom_field: select_field)
@@ -567,10 +567,13 @@ describe IdeaCustomFieldsService do
         select_field.update!(logic: { rules: [{ if: select_option.id, goto_page_id: page3.id }] })
         page2.update!(logic: { next_page_id: page3.id })
 
+        expect(CustomField.count).to eq 7
         expect(CustomMaps::MapConfig.count).to eq 1
 
         fields = service.duplicate_all_fields
 
+        expect(CustomField.count).to eq 7
+        expect(CustomMaps::MapConfig.count).to eq 2
         expect(fields.count).to eq 7
 
         # page 1
@@ -604,7 +607,6 @@ describe IdeaCustomFieldsService do
         # map field - duplicates map config
         expect(fields[6].id).not_to eq map_field.id
         expect(fields[6].map_config.id).not_to eq map_field.map_config.id
-        expect(CustomMaps::MapConfig.count).to eq 2
       end
     end
   end
