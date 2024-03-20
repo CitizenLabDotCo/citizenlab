@@ -114,7 +114,7 @@ class Rack::Attack
     end
   end
 
-  # Confirming by IP.
+  # Confirm by IP.
   throttle('user/confirm', limit: 5, period: 20.seconds) do |req|
     if req.path == '/web_api/v1/user/confirm' && req.post?
       req.ip
