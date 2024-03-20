@@ -33,7 +33,7 @@ const useAnalysisFilterParams = () => {
   const [searchParams] = useSearchParams();
 
   const allParams = Object.fromEntries(searchParams.entries());
-  console.log(searchParams.entries());
+
   const filters = Object.entries(allParams).reduce(
     (accumulator, [key, value]) => {
       if (STATIC_BOOLEAN_FILTERS.includes(key)) {
