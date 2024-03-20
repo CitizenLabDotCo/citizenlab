@@ -2,8 +2,8 @@
 
 module Analysis
   class AutoTaggingMethod::Base
-    POOL_SIZE = 3
-    TASK_INTERVAL = 0.1
+    POOL_SIZE = 5
+    TASK_INTERVAL = 0.3
     OTHER_TERMS = %w[
       other
       otro
