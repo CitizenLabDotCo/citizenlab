@@ -9,9 +9,7 @@ module ReportBuilder
     )
       return {} if phase_id.blank? || question_id.blank?
 
-      phase = Phase.find_by(id: phase_id)
-      return {} if phase.blank?
-
+      phase = Phase.find(phase_id)
       service = SurveyResultsGeneratorService.new(phase,
         group_mode: group_mode,
         group_field_id: group_field_id)

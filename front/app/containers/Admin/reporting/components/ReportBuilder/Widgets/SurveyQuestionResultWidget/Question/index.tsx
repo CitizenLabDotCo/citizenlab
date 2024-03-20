@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Title, Box, Text } from '@citizenlab/cl2-component-library';
+import { Title, Box } from '@citizenlab/cl2-component-library';
 
 import { useSurveyQuestionResult } from 'api/graph_data_units';
 import { GroupMode } from 'api/graph_data_units/requestTypes';
@@ -13,7 +13,7 @@ import Legend from 'components/admin/Graphs/Legend';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
+import MissingData from '../../_shared/MissingData';
 
 import GroupedBars from './GroupedBars';
 import PointLocationQuestion from './PointLocationQuestion';
@@ -47,7 +47,7 @@ const SurveyQuestionResult = ({
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  if (!response) return <Text>{formatMessage(messages.noData)}</Text>;
+  if (!response) return <MissingData />;
 
   const { attributes } = response.data;
 

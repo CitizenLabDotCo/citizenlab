@@ -1,14 +1,10 @@
 import React from 'react';
 
-import { Text } from '@citizenlab/cl2-component-library';
-
 import { useMostReactedIdeas } from 'api/graph_data_units';
 
-import { useIntl } from 'utils/cl-intl';
-
 import Card from '../_shared/Card';
+import MissingData from '../_shared/MissingData';
 import NoData from '../_shared/NoData';
-import widgetMessages from '../messages';
 import { getEmptyMessage } from '../utils';
 
 import Ideas from './Ideas';
@@ -33,7 +29,6 @@ const MostReactedIdeasWidget = ({
       enabled: !!phaseId,
     }
   );
-  const { formatMessage } = useIntl();
 
   const emptyMessage = getEmptyMessage({ projectId, phaseId });
 
@@ -46,7 +41,7 @@ const MostReactedIdeasWidget = ({
   }
 
   if (!response) {
-    return <Text>{formatMessage(widgetMessages.noData)}</Text>;
+    return <MissingData />;
   }
 
   const {
@@ -57,7 +52,7 @@ const MostReactedIdeasWidget = ({
   } = response.data.attributes;
 
   if (!project || !phase) {
-    return <Text>{formatMessage(widgetMessages.noData)}</Text>;
+    return <MissingData />;
   }
 
   return (

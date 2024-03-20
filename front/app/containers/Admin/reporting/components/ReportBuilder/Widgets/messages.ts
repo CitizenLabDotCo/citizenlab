@@ -17,8 +17,4 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.noPhaseSelected',
     defaultMessage: 'No phase selected. Please select a phase first.',
   },
-  noData: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.noData',
-    defaultMessage: 'No data',
-  },
 });
