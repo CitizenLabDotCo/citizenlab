@@ -10,8 +10,7 @@ require 'active_support/core_ext/integer/time'
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  # If config.allow_cors_origins is false, the `allow` block in the cors.rb initiailzer file is skipped.
-  # This effectively means no cross-origin requests are allowed.
+  # Cross-origin requests are NOT allowed.
   config.allow_cors_origins = false
 
   # Turn false under Spring and add config.action_view.cache_template_loading = true.

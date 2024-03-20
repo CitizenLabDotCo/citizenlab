@@ -16,8 +16,7 @@ require 'active_support/core_ext/integer/time'
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  # If config.allow_cors_origins is false, the `allow` block in the cors.rb initiailzer file is skipped.
-  # This effectively means no cross-origin requests are allowed.
+  # Cross-origin requests are allowed.
   config.allow_cors_origins = true
 
   # In the development environment your application's code is reloaded any time
