@@ -160,6 +160,8 @@ describe('Broken report', () => {
       cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
       cy.get('.e2e-survey-question-ungrouped-bars').should('not.exist');
       cy.get('.e2e-widget-missing-data').should('exist');
+
+      cy.apiRemoveReportBuilder(reportId);
     });
   });
 });
