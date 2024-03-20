@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { action } from '@storybook/addon-actions';
-import { boolean } from '@storybook/addon-knobs';
 
 import Select from './';
 
@@ -29,7 +28,6 @@ export const Default = {
           },
         ]}
         onChange={action('Select onChange triggered')}
-        size={boolean('Small', false) ? 'small' : 'normal'}
       />
     </div>
   ),
@@ -60,7 +58,6 @@ export const WithSelectedOption = {
           label: 'Option 1',
         }}
         onChange={action('Select onChange triggered')}
-        size={boolean('Small', false) ? 'small' : 'normal'}
       />
     </div>
   ),
@@ -92,7 +89,6 @@ export const WithLabel = {
           label: 'Option 1',
         }}
         onChange={action('Select onChange triggered')}
-        size={boolean('Small', false) ? 'small' : 'normal'}
       />
     </div>
   ),
@@ -123,7 +119,6 @@ export const Disabled = {
           label: 'Option 1',
         }}
         onChange={action('Select onChange triggered')}
-        size={boolean('Small', false) ? 'small' : 'normal'}
         disabled={true}
       />
     </div>
@@ -155,8 +150,6 @@ export const WithNumberValues = {
           label: 'Option 1',
         }}
         onChange={action('Select onChange triggered')}
-        size={boolean('Small', false) ? 'small' : 'normal'}
-        value={2}
       />
     </div>
   ),
@@ -183,7 +176,6 @@ export const WithPlaceholder = {
           },
         ]}
         onChange={action('Select onChange triggered')}
-        size={boolean('Small', false) ? 'small' : 'normal'}
         placeholder={'Placeholder'}
       />
     </div>

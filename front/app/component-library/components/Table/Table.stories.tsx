@@ -28,8 +28,6 @@ export const Default = {
       </Tbody>
     </Table>
   ),
-
-  name: 'Default',
 };
 
 export const WithInnerBorders = {
@@ -58,7 +56,6 @@ export const WithInnerBorders = {
       </Tbody>
     </Table>
   ),
-
   name: 'With inner borders',
 };
 
