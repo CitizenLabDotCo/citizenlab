@@ -15,7 +15,7 @@ export default function useActiveUsers({
 }: QueryParameters) {
   const [currentResolution, setCurrentResolution] = useState(resolution);
 
-  const analytics = useActiveUsersData(
+  const { data: analytics } = useActiveUsersData(
     {
       project_id: projectId,
       start_at: startAt,

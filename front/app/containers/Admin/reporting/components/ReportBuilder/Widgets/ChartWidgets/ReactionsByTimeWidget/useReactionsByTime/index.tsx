@@ -21,7 +21,7 @@ export default function useReactionsByTime({
 }: QueryParameters) {
   const [currentResolution] = useState(resolution);
 
-  const analytics = useReactionsByTimeData({
+  const { data: analytics } = useReactionsByTimeData({
     project_id: projectId,
     start_at: startAt,
     end_at: endAt,

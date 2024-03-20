@@ -37,7 +37,7 @@ const SurveyQuestionResult = ({
   groupFieldId,
   heatmap,
 }: Props) => {
-  const response = useSurveyQuestionResult({
+  const { data } = useSurveyQuestionResult({
     phase_id: phaseId,
     question_id: questionId,
     group_mode: groupMode,
@@ -47,9 +47,9 @@ const SurveyQuestionResult = ({
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  if (!response) return <MissingData />;
+  if (!data) return <MissingData />;
 
-  const { attributes } = response.data;
+  const { attributes } = data.data;
 
   const colorScheme = attributes.grouped
     ? getColorScheme(attributes.legend.length)

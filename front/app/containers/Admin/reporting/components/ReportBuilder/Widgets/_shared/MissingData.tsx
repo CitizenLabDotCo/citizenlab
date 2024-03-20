@@ -10,7 +10,7 @@ const MissingData = () => {
   const { formatMessage } = useIntl();
 
   return (
-    <Text variant="bodyM" color="red600">
+    <Text variant="bodyM" color="red600" className="e2e-widget-missing-data">
       {formatMessage(messages.missingData)}
     </Text>
   );
