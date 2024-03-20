@@ -893,6 +893,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Visitors",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.cannotPrint": "This report contains unsaved changes. Please save before printing.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "No appropriate phases found in this project",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noData": "No data",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noPhaseSelected": "No phase selected. Please select a phase first.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProject": "No project",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProjectSelected": "No project selected. Please select a project first.",
