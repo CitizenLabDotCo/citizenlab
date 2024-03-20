@@ -294,6 +294,37 @@ describe 'Rack::Attack' do
     end
   end
 
+  it 'limits resend code requests from same IP to 10 in 5 minutes' do
+    headers = { 'CONTENT_TYPE' => 'application/json' }
+
+    freeze_time do
+      10.times do
+        post(
+          '/web_api/v1/user/resend_code',
+          params: '{ "confirmation": { "code": "1234" } }',
+          headers: headers
+        )
+      end
+      expect(status).to eq(401) # Unauthorized
+
+      post(
+        '/web_api/v1/user/resend_code',
+        params: '{ "confirmation": { "code": "1234" } }',
+        headers: headers
+      )
+      expect(status).to eq(429) # Too many requests
+    end
+
+    travel_to(5.minutes.from_now) do
+      post(
+        '/web_api/v1/user/resend_code',
+        params: '{ "confirmation": { "code": "1234" } }',
+        headers: headers
+      )
+      expect(status).to eq(401) # Unauthorized
+    end
+  end
+
   # ==================================================================================================================
   # These tests are too slow to include in the CI, due to the number of requests they make, and are therefore skipped.
   # Remove skip statement to run in local dev environment, but do not push/merge that change to master.
