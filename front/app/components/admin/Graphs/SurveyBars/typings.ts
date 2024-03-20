@@ -1,10 +1,9 @@
-export interface Props {
-  data: Option[];
-  colorScheme: string[];
-}
+import { ImageSizes } from 'typings';
 
-export type Option = {
+export type Answer = {
   label: string;
+  image?: ImageSizes;
+  count: number;
   percentage: number;
   bars: Bar[];
 };

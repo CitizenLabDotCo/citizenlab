@@ -1,41 +1,69 @@
+import { colors } from '@citizenlab/cl2-component-library';
+
 import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
 
 import { Localize } from 'hooks/useLocalize';
 
-import { roundPercentages, sum } from 'utils/math';
+import { roundPercentage } from 'utils/math';
 
-import { BarType, Option } from './typings';
+import { BarType, Answer } from './typings';
 
-export const parseQuestion = (
+export const parseQuestionResult = (
   result: ResultUngrouped | ResultGrouped,
   colorScheme: string[],
   localize: Localize,
   noAnswerCopy: string
-): Option[] => {
+): Answer[] => {
   if (result.grouped) {
-    // TODO
-    return [];
+    const { multilocs, answers, totalPickCount } = result;
+    if (!multilocs) throw new Error('Multilocs are missing');
+
+    const colorSchemeMap = constructColorSchemeMap(result.legend, colorScheme);
+
+    return answers.map(({ answer, count, groups }, i) => {
+      const label =
+        answer === null
+          ? noAnswerCopy
+          : localize(multilocs.answer[answer].title_multiloc);
+
+      const image = answer ? multilocs.answer[answer].image : undefined;
+
+      return {
+        label,
+        image,
+        count,
+        percentage: roundPercentage(count, totalPickCount, 1),
+        bars: groups.map(({ group, count }) => {
+          const type = getType(i, groups.length);
+
+          return {
+            type,
+            percentage: roundPercentage(count, totalPickCount, 1),
+            color: colorSchemeMap.get(group) ?? EMPTY_COLOR,
+          };
+        }),
+      };
+    });
   }
 
-  const { multilocs, answers } = result;
+  const { multilocs, answers, totalPickCount } = result;
   if (!multilocs) throw new Error('Multilocs are missing');
 
-  const optionPercentages = roundPercentages(
-    answers.map(({ count }) => count),
-    1
-  );
-
-  return answers.map(({ answer }, i) => {
+  return answers.map(({ count, answer }) => {
     const label =
       answer === null
         ? noAnswerCopy
         : localize(multilocs.answer[answer].title_multiloc);
 
-    const percentage = optionPercentages[i];
+    const image = answer ? multilocs.answer[answer].image : undefined;
+
+    const percentage = roundPercentage(count, totalPickCount, 1);
 
     return {
       label,
-      percentage: 1,
+      image,
+      count,
+      percentage,
       bars: [
         {
           type: 'single',
@@ -47,26 +75,29 @@ export const parseQuestion = (
   });
 };
 
+const EMPTY_COLOR = colors.coolGrey300;
+
+const constructColorSchemeMap = (
+  legend: (string | null)[],
+  colorScheme: string[]
+) => {
+  return legend.reduce((acc, value, i) => {
+    if (value === null) {
+      acc.set(null, EMPTY_COLOR);
+    } else {
+      acc.set(value, colorScheme[i % colorScheme.length]);
+    }
+
+    return acc;
+  }, new Map<string | null, string>());
+};
+
 export const getType = (index: number, length: number) => {
   if (length === 1) return 'single';
   if (index === 0) return 'first';
   if (index === length - 1) return 'last';
 
   return 'middle';
-};
-
-export const getRoundedPercentages = (values: number[], total: number) => {
-  const valuesSum = sum(values);
-  const remainder = total - valuesSum;
-
-  if (remainder < 0) {
-    throw new Error('Total is smaller than the sum of the values');
-  }
-
-  const valuesWithRemainder = [...values, remainder];
-  const roundedPercentages = roundPercentages(valuesWithRemainder, 1);
-
-  return roundedPercentages.slice(0, values.length);
 };
 
 export const getBorderRadius = (type: BarType) => {
