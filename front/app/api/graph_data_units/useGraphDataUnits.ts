@@ -90,8 +90,8 @@ const useGraphDataUnits = <Response extends BaseResponseData>(
       { enabled: enabled && !showLiveData }
     );
 
-  const data = dataLive ?? dataPublished;
-  const error = errorLive ?? errorPublished;
+  const data = showLiveData ? dataLive : dataPublished;
+  const error = showLiveData ? errorLive : errorPublished;
 
   return { data, error };
 };

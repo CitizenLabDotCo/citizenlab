@@ -150,7 +150,8 @@ describe('Broken report', () => {
         'removePhase'
       );
       cy.apiRemovePhase(surveyPhaseId);
-      cy.wait('@removePhase');
+      // This phase deleting is insanely slow and for some reason the intercept doesn't work
+      cy.wait(5000);
 
       // Make sure report tab still looks good
       cy.reload();
