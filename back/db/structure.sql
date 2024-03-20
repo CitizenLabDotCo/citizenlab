@@ -765,7 +765,6 @@ WITH (fillfactor='90');
 -- Name: TABLE que_jobs; Type: COMMENT; Schema: public; Owner: -
 --
 
-
 COMMENT ON TABLE public.que_jobs IS '6';
 
 
@@ -7437,3 +7436,5 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240229195843'),
 ('20240301120023'),
 ('20240305122502');
+
+

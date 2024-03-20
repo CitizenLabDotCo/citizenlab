@@ -18,13 +18,14 @@ module Analysis
       # Topic modeling
       project_title = analysis.participation_context.project.title_multiloc.values.first
       topics = topic_modeling(project_title, filtered_inputs)
-      update_progress(10 / (filtered_inputs.size + 10).to_f)
+      topic_modeling_progress_weight = filtered_inputs.size / 3 # The first phase represents roughly one quarter of the total progress
+      update_progress(topic_modeling_progress_weight / (filtered_inputs.size + topic_modeling_progress_weight).to_f)
 
       # Classification
       processed_inputs = 0
       classify_many!(filtered_inputs, topics, TAG_TYPE) do |_input_id|
         processed_inputs += 1
-        update_progress([(processed_inputs + 10) / (filtered_inputs.size + 10).to_f, 0.99].min)
+        update_progress([(processed_inputs + topic_modeling_progress_weight) / (filtered_inputs.size + topic_modeling_progress_weight).to_f, 0.99].min)
       end
     rescue StandardError => e
       raise AutoTaggingFailedError, e

@@ -6,6 +6,8 @@ require 'tiktoken_ruby'
 module Analysis
   module LLM
     class AzureOpenAI < Base
+      MAX_RETRIES = 20
+
       def initialize(**params)
         super
 
@@ -14,12 +16,12 @@ module Analysis
           uri_base: [ENV.fetch('AZURE_OPENAI_URI'), '/openai/deployments/', azure_deployment_name].join,
           api_type: :azure,
           api_version: '2023-09-01-preview',
-          request_timeout: 480
+          request_timeout: 900
         }.merge(params))
       end
 
       def chat(prompt, **params)
-        response = @client.chat(**default_prompt_params(prompt).deep_merge(params))
+        response = chat_with_retry(**default_prompt_params(prompt).deep_merge(params))
         response.dig('choices', 0, 'message', 'content')
       end
 
@@ -29,7 +31,7 @@ module Analysis
           new_text = chunk.dig('choices', 0, 'delta', 'content')
           yield new_text
         end
-        @client.chat(**params_with_stream.deep_merge(params))
+        chat_with_retry(**params_with_stream.deep_merge(params))
       end
 
       def gpt_model
@@ -60,6 +62,22 @@ module Analysis
             frequency_penalty: 0.1
           }
         }
+      end
+
+      private
+
+      def chat_with_retry(retries: MAX_RETRIES, **params)
+        @client.chat(**params)
+      rescue Faraday::TooManyRequestsError => e
+        if retries <= 1
+          ErrorReporter.report_msg('API request to Azure OpenAI failed', extra: { response: e.response })
+          raise
+        end
+
+        # Retry after waiting between 20 and 60 seconds
+        sleep_time = rand(20..60)
+        sleep(sleep_time)
+        chat_with_retry(retries: retries - 1, **params)
       end
     end
   end

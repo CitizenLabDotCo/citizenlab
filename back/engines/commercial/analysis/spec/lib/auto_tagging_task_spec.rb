@@ -140,7 +140,7 @@ RSpec.describe Analysis::AutoTaggingTask do
     end
   end
 
-  describe 'NlpTopic auto_tagging' do
+  describe 'NlpTopic auto_tagging', use_transactional_fixtures: false do
     it 'works' do
       project = create(:single_phase_ideation_project)
       custom_form = create(:custom_form, :with_default_fields, participation_context: project)
@@ -204,6 +204,26 @@ RSpec.describe Analysis::AutoTaggingTask do
 
       expect(idea1.tags).to eq([tags[0]])
       expect(idea1.taggings.first.background_task).to eq(att)
+    end
+
+    it 'propagates errors and aborts' do
+      project = create(:single_phase_ideation_project)
+      custom_form = create(:custom_form, :with_default_fields, participation_context: project)
+      analysis = create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)
+      tags = create_list(:tag, 3, analysis: analysis)
+      att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'label_classification', tags_ids: [tags[0].id, tags[1].id])
+      create_list(:idea, 2, project: project)
+
+      expect_any_instance_of(Analysis::LLM::GPT35Turbo)
+        .to receive(:chat).at_least(:once)
+        .and_raise(StandardError.new('Some error'))
+
+      expect { att.execute }
+        .not_to change(Analysis::Tagging, :count)
+      expect(att.reload).to have_attributes({
+        state: 'failed',
+        progress: nil
+      })
     end
   end
 
