@@ -228,9 +228,9 @@ da:
       title: 'Dit spørgsmål'
       option1: 'Mulighed 1'
       option2: 'Mulighed 2'
-    survey_end_page:
-      title: 'Undersøgelse slut'
-      description: "Indsend dine svar ved at vælge \"Indsend undersøgelse\" nedenfor."
+    form_end_page:
+      title: 'Tak for din deltagelse'
+      description: "Send venligst dine svar ved at vælge 'Send' nedenfor."
     pdf_export:
       personal_data: 'Personlige data'
       personal_data_explanation_ideation: "Vi sender dit input til %{organizationName}'s online borgerinddragelsesplatform. Hvis du ønsker, at dit navn skal vises som forfatter til dette input og modtage opdateringer, der er relevante for dit input via e-mail, bedes du udfylde følgende felter på denne side, så opretter vi en konto til dig. Din e-mail vil ikke være offentlig og vil kun blive brugt af %{organizationName}. Hvis du ønsker at forblive anonym eller ikke accepterer, at vi bruger dine personlige data på denne måde, kan du lade dem være tomme."
