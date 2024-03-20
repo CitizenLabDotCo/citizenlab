@@ -521,7 +521,7 @@ describe('Survey question widget', () => {
       });
     });
 
-    it.only('has correct color scheme', () => {
+    it('has correct color scheme', () => {
       cy.setAdminLoginCookie();
       cy.apiCreateReportBuilder(informationPhaseId).then((report) => {
         const reportId = report.body.data.id;
@@ -551,13 +551,19 @@ describe('Survey question widget', () => {
 
         const ensureCorrectGrouping = () => {
           cy.get('svg.e2e-progress-bar').should('have.length', 3);
-          const firstBar = cy.get('svg.e2e-progress-bar').first();
-          firstBar.should('have.attr', 'width', '50%');
-          firstBar.should('have.attr', 'fill', '#2F478A');
+          cy.get('svg.e2e-progress-bar')
+            .first()
+            .should('have.attr', 'width', '50%');
+          cy.get('svg.e2e-progress-bar > rect')
+            .first()
+            .should('have.attr', 'fill', '#2F478A');
 
-          const secondBar = cy.get('svg.e2e-progress-bar').eq(1);
-          secondBar.should('have.attr', 'width', '50%');
-          secondBar.should('have.attr', 'fill', '#4D85C6');
+          cy.get('svg.e2e-progress-bar')
+            .eq(1)
+            .should('have.attr', 'width', '50%');
+          cy.get('svg.e2e-progress-bar > rect')
+            .eq(1)
+            .should('have.attr', 'fill', '#4D85C6');
         };
 
         // Save

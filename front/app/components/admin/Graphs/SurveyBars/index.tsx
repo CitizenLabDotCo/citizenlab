@@ -31,7 +31,11 @@ const SurveyBars = ({ questionResult, colorScheme }: Props) => {
   }, [questionResult, colorScheme, localize, formatMessage]);
 
   return (
-    <>
+    <Box
+      className={`e2e-survey-question-${
+        questionResult.grouped ? 'grouped' : 'ungrouped'
+      }-bars`}
+    >
       {answers.map(({ label, count, percentage, image, bars }, index) => (
         <Box
           key={index}
@@ -69,7 +73,7 @@ const SurveyBars = ({ questionResult, colorScheme }: Props) => {
           </Box>
         </Box>
       ))}
-    </>
+    </Box>
   );
 };
 
