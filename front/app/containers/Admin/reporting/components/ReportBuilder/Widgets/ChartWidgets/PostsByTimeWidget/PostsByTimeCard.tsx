@@ -41,8 +41,8 @@ const PostsByTime = ({ projectId, startAt, endAt, resolution }: Props) => {
     >
       <Chart
         timeSeries={timeSeries}
-        startAtMoment={moment(startAt)}
-        endAtMoment={moment(endAt)}
+        startAtMoment={startAt ? moment(startAt) : null}
+        endAtMoment={endAt ? moment(endAt) : null}
         resolution={currentResolution}
       />
     </Box>
