@@ -20,7 +20,7 @@ const MostReactedIdeasWidget = ({
   numberOfIdeas,
   collapseLongText,
 }: Props) => {
-  const { data } = useMostReactedIdeas(
+  const { data, error } = useMostReactedIdeas(
     {
       phase_id: phaseId,
       number_of_ideas: numberOfIdeas,
@@ -40,7 +40,8 @@ const MostReactedIdeasWidget = ({
     );
   }
 
-  if (!data) return <MissingData />;
+  if (error) return <MissingData />;
+  if (!data) return null;
 
   const {
     ideas,
@@ -49,7 +50,7 @@ const MostReactedIdeasWidget = ({
     idea_images: ideaImages,
   } = data.data.attributes;
 
-  if (!project || !phase) return <MissingData />;
+  if (!project || !phase) return null;
 
   return (
     <Card title={title}>
