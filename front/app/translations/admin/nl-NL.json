@@ -2154,7 +2154,7 @@
   "app.containers.AdminPage.projects.project.analysis.TopBar.gender": "Geslacht",
   "app.containers.AdminPage.projects.project.analysis.TopBar.input": "Bijdragen",
   "app.containers.AdminPage.projects.project.analysis.TopBar.numberOfComments": "Aantal opmerkingen",
-  "app.containers.AdminPage.projects.project.analysis.TopBar.numberOfReactions": "Aantal reacties",
+  "app.containers.AdminPage.projects.project.analysis.TopBar.numberOfReactions": "Aantal likes/dislikes",
   "app.containers.AdminPage.projects.project.analysis.TopBar.numberOfVotes": "Aantal stemmen",
   "app.containers.AdminPage.projects.project.analysis.TopBar.to": "Aan",
   "app.containers.AdminPage.projects.project.analysis.anonymous": "Anonieme bijdragen",
