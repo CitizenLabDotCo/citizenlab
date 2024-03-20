@@ -144,7 +144,7 @@ class IdeaCustomFieldsService
   def duplicate_all_fields
     fields = all_fields
     logic_id_map = { survey_end: 'survey_end' }
-    new_fields = fields.map do |field|
+    copied_fields = fields.map do |field|
       # Duplicate fields with a new id
       copied_field = field.dup
       copied_field.id = SecureRandom.uuid
@@ -179,7 +179,7 @@ class IdeaCustomFieldsService
     end
 
     # Update the logic
-    new_fields.map do |field|
+    copied_fields.map do |field|
       if field.logic['rules']
         field.logic['rules'].map! do |rule|
           rule['if'] = logic_id_map[rule['if']]
