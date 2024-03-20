@@ -5,8 +5,8 @@ require 'active_support/core_ext/integer/time'
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  # Cross-origin requests are NOT allowed.
-  config.allow_cors_origins = false
+  # Cross-origin requests are NOT allowed from any origin.
+  config.allowed_cors_origins = []
 
   # Code is not reloaded between requests.
   config.cache_classes = true

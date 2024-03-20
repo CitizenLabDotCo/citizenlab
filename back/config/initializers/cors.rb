@@ -8,13 +8,11 @@
 # Read more: https://github.com/cyu/rack-cors
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
-  if Rails.application.config.allow_cors_origins
-    allow do
-      origins '*'
+  allow do
+    origins Rails.application.config.allowed_cors_origins
 
-      resource '*',
-        headers: :any,
-        methods: %i[get post put patch delete options head]
-    end
+    resource '*',
+      headers: :any,
+      methods: %i[get post put patch delete options head]
   end
 end
