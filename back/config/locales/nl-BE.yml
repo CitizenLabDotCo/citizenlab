@@ -228,9 +228,9 @@ nl-BE:
       title: 'Jouw vraag'
       option1: 'Optie 1'
       option2: 'Optie 2'
-    survey_end_page:
-      title: 'Einde enquête'
-      description: "Dien uw antwoorden in door hieronder 'Enquête indienen' te selecteren."
+    form_end_page:
+      title: 'Bedankt voor je deelname'
+      description: "Stuur je antwoorden in door hieronder op 'Verzenden' te klikken."
     pdf_export:
       personal_data: 'Persoonlijke gegevens'
       personal_data_explanation_ideation: "We zullen je bijdrage versturen naar het online participatieplatform van %{organizationName}. Als je wilt dat je naam wordt weergegeven als auteur van deze bijdrage en als je per e-mail updates wilt ontvangen die relevant zijn voor je bijdrage, vul dan de volgende velden op deze pagina in en we maken een account voor je aan. Je e-mailadres is niet openbaar en wordt alleen gebruikt door %{organizationName}. Als je anoniem wilt blijven of er niet mee akkoord gaat dat we je persoonlijke gegevens op deze manier gebruiken, kun je ze leeg laten."
