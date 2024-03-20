@@ -20,6 +20,7 @@ const meta = {
   ),
   parameters: {
     layout: 'centered',
+    chromatic: { disableSnapshot: false },
   },
 } satisfies Meta<typeof IdeaCard>;
 
