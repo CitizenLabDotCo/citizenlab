@@ -39,7 +39,6 @@ export const PrimaryWithIcon = {
       }}
     >
       <Button
-        locale="en"
         buttonStyle="primary"
         icon="info-outline"
         disabled={boolean('Disabled', false)}
@@ -62,7 +61,6 @@ export const PrimaryOutlined = {
       }}
     >
       <Button
-        locale="en"
         buttonStyle="primary-outlined"
         disabled={boolean('Disabled', false)}
         processing={boolean('Processing', false)}
@@ -84,7 +82,6 @@ export const PrimaryInverse = {
       }}
     >
       <Button
-        locale="en"
         buttonStyle="primary-inverse"
         disabled={boolean('Disabled', false)}
         processing={boolean('Processing', false)}
@@ -106,7 +103,6 @@ export const Secondary = {
       }}
     >
       <Button
-        locale="en"
         buttonStyle="secondary"
         disabled={boolean('Disabled', false)}
         processing={boolean('Processing', false)}
@@ -128,7 +124,6 @@ export const SecondaryOutlined = {
       }}
     >
       <Button
-        locale="en"
         buttonStyle="secondary-outlined"
         disabled={boolean('Disabled', false)}
         processing={boolean('Processing', false)}
@@ -150,7 +145,6 @@ export const Success = {
       }}
     >
       <Button
-        locale="en"
         buttonStyle="success"
         disabled={boolean('Disabled', false)}
         processing={boolean('Processing', false)}
@@ -172,7 +166,6 @@ export const TextStyle = {
       }}
     >
       <Button
-        locale="en"
         buttonStyle="text"
         disabled={boolean('Disabled', false)}
         processing={boolean('Processing', false)}
@@ -194,7 +187,6 @@ export const ClBlue = {
       }}
     >
       <Button
-        locale="en"
         buttonStyle="cl-blue"
         disabled={boolean('Disabled', false)}
         processing={boolean('Processing', false)}
@@ -216,7 +208,6 @@ export const AdminDark = {
       }}
     >
       <Button
-        locale="en"
         buttonStyle="admin-dark"
         disabled={boolean('Disabled', false)}
         processing={boolean('Processing', false)}
@@ -238,7 +229,6 @@ export const AdminDarkText = {
       }}
     >
       <Button
-        locale="en"
         buttonStyle="admin-dark-text"
         disabled={boolean('Disabled', false)}
         processing={boolean('Processing', false)}
@@ -260,7 +250,6 @@ export const Delete = {
       }}
     >
       <Button
-        locale="en"
         buttonStyle="delete"
         disabled={boolean('Disabled', false)}
         processing={boolean('Processing', false)}
@@ -284,7 +273,6 @@ export const White = {
       }}
     >
       <Button
-        locale="en"
         buttonStyle="white"
         disabled={boolean('Disabled', false)}
         processing={boolean('Processing', false)}
@@ -311,7 +299,7 @@ export const ButtonLink = {
         processing={boolean('Processing', false)}
         as={(props) => {
           return (
-            <a {...props} href="#">
+            <a {...props} href="https://citizenlab.co/">
               {props.children}
             </a>
           );
