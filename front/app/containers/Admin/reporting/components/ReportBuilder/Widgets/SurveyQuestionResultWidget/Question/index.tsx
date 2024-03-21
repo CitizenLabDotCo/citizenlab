@@ -15,6 +15,8 @@ import SurveyBars from 'components/admin/Graphs/SurveyBars';
 
 import { useIntl } from 'utils/cl-intl';
 
+import MissingData from '../../_shared/MissingData';
+
 import PointLocationQuestion from './PointLocationQuestion';
 import { getLegendLabels } from './utils';
 
