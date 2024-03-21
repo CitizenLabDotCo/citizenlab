@@ -2,11 +2,7 @@ import React, { lazy } from 'react';
 
 import moduleConfiguration, { ModuleRouteTypes } from 'modules';
 
-import {
-  REPORTING,
-  REPORT_BUILDER,
-  PRINT,
-} from 'containers/Admin/reporting/routes';
+import { reportingEnumRoutes } from 'containers/Admin/reporting/routes';
 import createAdminRoutes, { AdminRouteTypes } from 'containers/Admin/routes';
 import userProfileRoutes from 'containers/UsersShowPage/routes';
 
@@ -334,7 +330,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: `admin/${REPORTING}/${REPORT_BUILDER}/:reportId/${PRINT}`,
+          path: `admin/${reportingEnumRoutes.reporting}/${reportingEnumRoutes.reportBuilder}/:reportId/${reportingEnumRoutes.print}`,
           element: (
             <PageLoading>
               <ReportPrintPage />

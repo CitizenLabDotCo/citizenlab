@@ -26,7 +26,7 @@ import projectFoldersRoutes, {
   projectFolderRouteTypes,
 } from './projectFolders/routes';
 import createAdminProjectsRoutes from './projects/routes';
-import reportingRoutes from './reporting/routes';
+import reportingRoutes, { reportingRouteTypes } from './reporting/routes';
 import settingsRoutes, { settingRouteTypes } from './settings/routes';
 import toolsRoutes, { toolRouteTypes } from './tools/routes';
 import createAdminUsersRoutes, { userRouteTypes } from './users/routes';
@@ -43,6 +43,7 @@ export type AdminRouteTypes =
   | dashboardRouteTypes
   | projectFolderRouteTypes
   | toolRouteTypes
+  | reportingRouteTypes
   | settingRouteTypes;
 
 const isTemplatePreviewPage = (urlSegments: string[]) =>
