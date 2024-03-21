@@ -3,7 +3,7 @@
 module Analysis
   class AutoTaggingMethod::NLPTopic < AutoTaggingMethod::Base
     TAG_TYPE = 'nlp_topic'
-    TOKENS_FOR_RESPONSE = 600 ### TODO?
+    TOKENS_PER_TOPIC = 11 # Token size of "Efficiënte afvalverwerking en recycling"
 
     def topic_modeling(project_title, inputs)
       response = run_topic_modeling_prompt(project_title, inputs)
@@ -58,7 +58,8 @@ module Analysis
 
     def fit_inputs_in_context_window(inputs, project_title)
       prompt = inputs_prompt(inputs, project_title)
-      tokens = LLM::AzureOpenAI.token_count(prompt) + TOKENS_FOR_RESPONSE
+      tokens_for_response = TOKENS_PER_TOPIC * max_topics(inputs.size)
+      tokens = LLM::AzureOpenAI.token_count(prompt) + tokens_for_response
       exceeded_tokens = tokens - gpt4.context_window
       return inputs if exceeded_tokens < 0
 
