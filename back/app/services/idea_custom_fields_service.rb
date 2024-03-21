@@ -161,7 +161,7 @@ class IdeaCustomFieldsService
       copied_field.options = copied_options
 
       # Duplicate and persist map config if it is a point field
-      if copied_field.input_type == 'point'
+      if copied_field.input_type == 'point' && field.map_config
         original_map_config = CustomMaps::MapConfig.find(field.map_config.id)
         new_map_config = original_map_config.dup
         new_map_config.mappable = nil

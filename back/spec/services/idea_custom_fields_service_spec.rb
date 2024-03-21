@@ -564,17 +564,18 @@ describe IdeaCustomFieldsService do
         multi_select_field = create(:custom_field_multiselect, resource: custom_form)
         _multi_select_option = create(:custom_field_option, custom_field: multi_select_field)
         map_field = create(:custom_field_point, resource: custom_form, map_config: create(:map_config))
+        map_field_no_config = create(:custom_field_point, resource: custom_form)
         select_field.update!(logic: { rules: [{ if: select_option.id, goto_page_id: page3.id }] })
         page2.update!(logic: { next_page_id: page3.id })
 
-        expect(CustomField.count).to eq 7
+        expect(CustomField.count).to eq 8
         expect(CustomMaps::MapConfig.count).to eq 1
 
         fields = service.duplicate_all_fields
 
-        expect(CustomField.count).to eq 7
+        expect(CustomField.count).to eq 8
         expect(CustomMaps::MapConfig.count).to eq 2
-        expect(fields.count).to eq 7
+        expect(fields.count).to eq 8
 
         # page 1
         expect(fields[0].id).not_to eq page1.id
@@ -607,6 +608,10 @@ describe IdeaCustomFieldsService do
         # map field - duplicates map config
         expect(fields[6].id).not_to eq map_field.id
         expect(fields[6].map_config.id).not_to eq map_field.map_config.id
+
+        # map field 2 - has no map config
+        expect(fields[7].id).not_to eq map_field_no_config.id
+        expect(fields[7].map_config).to be_nil
       end
     end
   end
