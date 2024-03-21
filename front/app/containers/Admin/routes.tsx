@@ -27,7 +27,7 @@ import createAdminProjectsRoutes from './projects/routes';
 import reportingRoutes from './reporting/routes';
 import settingsRoutes, { settingRouteTypes } from './settings/routes';
 import toolsRoutes from './tools/routes';
-import createAdminUsersRoutes from './users/routes';
+import createAdminUsersRoutes, { userRouteTypes } from './users/routes';
 
 const AdminContainer = lazy(() => import('containers/Admin'));
 const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
@@ -36,6 +36,7 @@ export type AdminRoute<T extends string = string> = `/admin/${T}`;
 export type AdminRouteTypes =
   | initiativeRouteTypes
   | ideaRouteTypes
+  | userRouteTypes
   | settingRouteTypes;
 
 const isTemplatePreviewPage = (urlSegments: string[]) =>
