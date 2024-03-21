@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { text, boolean, number } from '@storybook/addon-knobs';
+import { Meta, StoryObj } from '@storybook/react';
 
 import Box from '../Box';
 import IconTooltip from '../IconTooltip';
@@ -8,32 +8,30 @@ import Title from '../Title';
 
 import Accordion from '.';
 
-export default {
+const meta = {
   title: 'Components/Accordion',
   component: Accordion,
-};
+} satisfies Meta<typeof Accordion>;
 
-export const Default = {
-  render: () => (
-    <Accordion
-      timeoutMilliseconds={number('TimeoutMilliseconds', 1500)}
-      transitionHeightPx={number('TransitionHeightPx', 600)}
-      title={
-        <Box display="flex">
-          <Title variant="h3">{text('Title', 'Section Title')}</Title>
-          <IconTooltip
-            m="8px"
-            mt="16px"
-            icon="info-solid"
-            content="Tooltip content."
-          />
-        </Box>
-      }
-      isOpenByDefault={boolean('isOpenByDefault', false)}
-    >
-      {text('Text', 'Content for the section.')}
-    </Accordion>
-  ),
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-  name: 'default',
+export const Default: Story = {
+  args: {
+    timeoutMilliseconds: 1500,
+    transitionHeightPx: 600,
+    title: (
+      <Box display="flex">
+        <Title variant="h3">Section Title</Title>
+        <IconTooltip
+          m="8px"
+          mt="16px"
+          icon="info-solid"
+          content="Tooltip content."
+        />
+      </Box>
+    ),
+    isOpenByDefault: false,
+    children: 'Content for the section.',
+  },
 };

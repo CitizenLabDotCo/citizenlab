@@ -1,22 +1,24 @@
-import React from 'react';
-
-import { text } from '@storybook/addon-knobs';
+import { Meta, StoryObj } from '@storybook/react';
 
 import Badge from '.';
 
-export default {
+const meta = {
   title: 'Components/Badge',
   component: Badge,
+} satisfies Meta<typeof Badge>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+  args: {
+    children: 'A Badge with label',
+  },
 };
 
-export const Default = {
-  render: () => <Badge>{text('Label', 'A Badge with label')}</Badge>,
-  name: 'default',
-};
-
-export const Inverted = {
-  render: () => (
-    <Badge className="inverse">{text('Label', 'A Badge with label')}</Badge>
-  ),
-  name: 'inverted',
+export const Inverted: Story = {
+  args: {
+    ...Default.args,
+    className: 'inverse',
+  },
 };

@@ -1,13 +1,10 @@
-import React from 'react';
-
-import { text, boolean } from '@storybook/addon-knobs';
-
 import Input from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   title: 'Components/Input',
+  component: Input,
   parameters: {
     layout: 'centered',
   },
@@ -17,144 +14,56 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: () => (
-    <div
-      style={{
-        maxWidth: '400px',
-      }}
-    >
-      <Input
-        type="text"
-        value={text('Value', 'Some random text')}
-        placeholder={text('Placeholder', 'placeholder')}
-        disabled={boolean('Disabled', false)}
-        onChange={() => {}}
-        size={'small'}
-      />
-    </div>
-  ),
-
-  name: 'default',
+  args: {
+    type: 'text',
+    disabled: false,
+    onChange: () => {},
+    size: 'small',
+    value: 'Some random text',
+  },
 };
 
-export const WithPlaceholder = {
-  render: () => (
-    <div
-      style={{
-        maxWidth: '400px',
-      }}
-    >
-      <Input
-        type="text"
-        placeholder={text('Placeholder', 'placeholder')}
-        disabled={boolean('Disabled', false)}
-        onChange={() => {}}
-        size={'small'}
-      />
-    </div>
-  ),
-
-  name: 'with placeholder',
+export const WithPlaceholder: Story = {
+  args: {
+    ...Default.args,
+    placeholder: 'placeholder',
+  },
 };
 
-export const WithLabel = {
-  render: () => (
-    <div
-      style={{
-        maxWidth: '400px',
-      }}
-    >
-      <Input
-        type="text"
-        value={text('Value', 'Some random text')}
-        disabled={boolean('Disabled', false)}
-        onChange={() => {}}
-        size={'small'}
-      />
-    </div>
-  ),
-
-  name: 'with label',
+export const WithLabel: Story = {
+  args: {
+    ...Default.args,
+    label: 'A label',
+  },
 };
 
-export const WithMaxChar = {
-  render: () => (
-    <div
-      style={{
-        maxWidth: '400px',
-      }}
-    >
-      <Input
-        type="text"
-        value={text('Value', 'Some random text')}
-        label={text('Label', 'A label')}
-        disabled={boolean('Disabled', false)}
-        onChange={() => {}}
-        size={'small'}
-        maxCharCount={20}
-      />
-    </div>
-  ),
-
-  name: 'with max. char',
+export const WithMaxChar: Story = {
+  args: {
+    ...Default.args,
+    maxCharCount: 20,
+  },
 };
 
-export const Date = {
-  render: () => (
-    <div
-      style={{
-        maxWidth: '400px',
-      }}
-    >
-      <Input
-        type="date"
-        value={text('Date', '2019-07-17')}
-        disabled={boolean('Disabled', false)}
-        onChange={() => {}}
-        size={'small'}
-      />
-    </div>
-  ),
-
-  name: 'date',
+export const Date: Story = {
+  args: {
+    ...Default.args,
+    type: 'date',
+    value: '2019-07-17',
+  },
 };
 
-export const Email = {
-  render: () => (
-    <div
-      style={{
-        maxWidth: '400px',
-      }}
-    >
-      <Input
-        type="email"
-        value={text('Email', 'email@example.com')}
-        disabled={boolean('Disabled', false)}
-        onChange={() => {}}
-        size={'small'}
-      />
-    </div>
-  ),
-
-  name: 'email',
+export const Email: Story = {
+  args: {
+    ...Default.args,
+    type: 'email',
+    value: 'email@example.com',
+  },
 };
 
-export const Password = {
-  render: () => (
-    <div
-      style={{
-        maxWidth: '400px',
-      }}
-    >
-      <Input
-        type="password"
-        value={text('Password', 'password')}
-        disabled={boolean('Disabled', false)}
-        onChange={() => {}}
-        size={'small'}
-      />
-    </div>
-  ),
-
-  name: 'password',
+export const Password: Story = {
+  args: {
+    ...Default.args,
+    type: 'password',
+    value: 'password',
+  },
 };
