@@ -28,7 +28,7 @@ import projectFoldersRoutes, {
 import createAdminProjectsRoutes from './projects/routes';
 import reportingRoutes from './reporting/routes';
 import settingsRoutes, { settingRouteTypes } from './settings/routes';
-import toolsRoutes from './tools/routes';
+import toolsRoutes, { toolRouteTypes } from './tools/routes';
 import createAdminUsersRoutes, { userRouteTypes } from './users/routes';
 
 const AdminContainer = lazy(() => import('containers/Admin'));
@@ -42,6 +42,7 @@ export type AdminRouteTypes =
   | invitationRouteTypes
   | dashboardRouteTypes
   | projectFolderRouteTypes
+  | toolRouteTypes
   | settingRouteTypes;
 
 const isTemplatePreviewPage = (urlSegments: string[]) =>
