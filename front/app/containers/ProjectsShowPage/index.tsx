@@ -41,6 +41,7 @@ import { isValidPhase } from './phaseParam';
 import ProjectCTABar from './ProjectCTABar';
 import ProjectHeader from './shared/header/ProjectHeader';
 import ProjectHelmet from './shared/header/ProjectHelmet';
+import { maxPageWidth } from './styles';
 import SuccessModal from './SucessModal';
 import TimelineContainer from './timeline';
 
@@ -149,7 +150,7 @@ const ProjectsShowPage = ({ project }: Props) => {
             gap="48px"
             mx="auto"
             my="48px"
-            maxWidth="1166px"
+            maxWidth={`${maxPageWidth}px`}
             padding={isSmallerThanTablet ? '20px' : '0px'}
           >
             <EventsViewer
