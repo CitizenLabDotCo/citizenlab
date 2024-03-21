@@ -102,7 +102,7 @@ gem 'fog-aws', '~> 3.19'
 
 gem 'api-pagination', '~> 5.0.0'
 gem 'kaminari', '~> 1.2'
-gem 'rails-i18n', '~> 7.0.7'
+gem 'rails-i18n', '~> 7.0.9'
 
 gem 'awesome_nested_set', '~> 3.5.0'
 gem 'axlsx', '3.0.0.pre'
