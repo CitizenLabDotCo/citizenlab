@@ -1,46 +1,43 @@
-import React from 'react';
-
-import { colors } from '../../utils/styleUtils';
+import { Meta, StoryObj } from '@storybook/react';
 
 import StatusLabel from './';
 
-export default {
+const meta = {
   title: 'Components/StatusLabel',
   component: StatusLabel,
+  parameters: {
+    layout: 'centered',
+  },
+} satisfies Meta<typeof StatusLabel>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+  args: {
+    text: 'In consideration',
+    backgroundColor: 'blue700',
+  },
 };
 
-export const Default = {
-  render: () => <StatusLabel text="In consideration" backgroundColor="navy" />,
-  name: 'default',
+export const WithIconProp: Story = {
+  args: {
+    ...Default.args,
+    icon: 'lock',
+  },
 };
 
-export const WithIconProp = {
-  render: () => (
-    <StatusLabel text="In consideration" icon="lock" backgroundColor="navy" />
-  ),
-  name: 'with icon prop',
+export const VariantOutlined: Story = {
+  args: {
+    ...Default.args,
+    variant: 'outlined',
+  },
 };
 
-export const VariantOutlined = {
-  render: () => (
-    <StatusLabel
-      text="Beta"
-      backgroundColor={colors.adminBackground}
-      variant={'outlined'}
-    />
-  ),
-  name: 'variant - outlined',
-};
-
-export const VariantOutlinedWithIcon = {
-  render: () => (
-    <StatusLabel
-      text="Beta"
-      backgroundColor={colors.adminBackground}
-      icon="lock"
-      variant={'outlined'}
-    />
-  ),
-
-  name: 'variant - outlined with icon',
+export const VariantOutlinedWithIcon: Story = {
+  args: {
+    ...Default.args,
+    icon: 'lock',
+    variant: 'outlined',
+  },
 };

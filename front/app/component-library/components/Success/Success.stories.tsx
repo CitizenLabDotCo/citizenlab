@@ -1,17 +1,21 @@
-import React from 'react';
-
-import { text } from '@storybook/addon-knobs';
+import { Meta, StoryObj } from '@storybook/react';
 
 import Success from './';
 
-export default {
+const meta = {
   title: 'Components/Success',
   component: Success,
-};
+  parameters: {
+    layout: 'centered',
+  },
+} satisfies Meta<typeof Success>;
 
-export const WithShortStrings = {
-  render: () => (
-    <Success text={text('Label', 'A Badge with label')} animate={true} />
-  ),
-  name: 'With short strings',
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const WithShortStrings: Story = {
+  args: {
+    text: 'A Badge with label',
+    animate: true,
+  },
 };

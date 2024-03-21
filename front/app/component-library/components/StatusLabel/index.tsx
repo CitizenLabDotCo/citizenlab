@@ -2,7 +2,7 @@ import React, { FC, memo } from 'react';
 
 import styled, { css } from 'styled-components';
 
-import { fontSizes, colors } from '../../utils/styleUtils';
+import { fontSizes, colors, Color } from '../../utils/styleUtils';
 import Box, { BoxWidthProps } from '../Box';
 import Icon, { IconProps } from '../Icon';
 
@@ -40,7 +40,7 @@ type Variant = 'default' | 'outlined';
 type Props = {
   className?: string;
   text: JSX.Element | string;
-  backgroundColor: string;
+  backgroundColor: Color;
   icon?: IconProps['name'];
   variant?: Variant;
 } & BoxWidthProps;

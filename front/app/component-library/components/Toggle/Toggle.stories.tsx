@@ -1,61 +1,49 @@
-import React from 'react';
-
-import { action } from '@storybook/addon-actions';
-import { text, boolean } from '@storybook/addon-knobs';
+import { Meta, StoryObj } from '@storybook/react';
 
 import { colors } from '../../utils/styleUtils';
 
 import Toggle from './';
 
-export default {
+const meta = {
   title: 'Components/Toggle',
   component: Toggle,
+  parameters: {
+    layout: 'centered',
+  },
+} satisfies Meta<typeof Toggle>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+  args: {
+    checked: false,
+    onChange: () => {},
+  },
 };
 
-export const Default = {
-  render: () => (
-    <Toggle
-      checked={boolean('Checked', false)}
-      onChange={action('toggle changed')}
-    />
-  ),
-  name: 'default',
+export const WithLabel: Story = {
+  args: {
+    checked: false,
+    label: 'A toggle with label',
+    onChange: () => {},
+  },
 };
 
-export const WithLabel = {
-  render: () => (
-    <Toggle
-      checked={boolean('Checked', false)}
-      label={text('Label', 'A toggle with label')}
-      onChange={action('toggle changed')}
-    />
-  ),
-
-  name: 'with label',
+export const Disabled: Story = {
+  args: {
+    checked: false,
+    disabled: true,
+    onChange: () => {},
+  },
 };
 
-export const Disabled = {
-  render: () => (
-    <Toggle
-      checked={boolean('Checked', false)}
-      disabled={boolean('Disabled', true)}
-      onChange={action('toggle changed')}
-    />
-  ),
-
-  name: 'disabled',
-};
-
-export const WithLabelTextColor = {
-  render: () => (
-    <Toggle
-      checked={boolean('Checked', false)}
-      disabled={boolean('Disabled', false)}
-      onChange={action('toggle changed')}
-      label={text('Label', 'A toggle with colored label')}
-      labelTextColor={text('Label Color', colors.textSecondary)}
-    />
-  ),
-
-  name: 'with label text color',
+export const WithLabelTextColor: Story = {
+  args: {
+    checked: false,
+    disabled: false,
+    label: 'A toggle with colored label',
+    labelTextColor: colors.textSecondary,
+    onChange: () => {},
+  },
 };
