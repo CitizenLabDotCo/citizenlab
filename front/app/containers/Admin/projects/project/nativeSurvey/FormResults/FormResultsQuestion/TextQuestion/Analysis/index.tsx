@@ -128,7 +128,7 @@ const Analysis = ({
     }
   };
 
-  if (isAnalysesLoading || isInsightsLoading) {
+  if (isAnalysesLoading || (relevantAnalysis?.id && isInsightsLoading)) {
     return <Spinner />;
   }
 
