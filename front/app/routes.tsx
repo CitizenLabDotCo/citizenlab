@@ -8,7 +8,9 @@ import {
   PRINT,
 } from 'containers/Admin/reporting/routes';
 import createAdminRoutes, { AdminRouteTypes } from 'containers/Admin/routes';
-import userProfileRoutes from 'containers/UsersShowPage/routes';
+import userProfileRoutes, {
+  useShowPageRouteTypes,
+} from 'containers/UsersShowPage/routes';
 
 import PageLoading from 'components/UI/PageLoading';
 
@@ -56,12 +58,92 @@ const ReportPrintPage = lazy(
 );
 const DisabledAccount = lazy(() => import('containers/DisabledAccount'));
 
-export type RouteType = AdminRouteTypes | ModuleRouteTypes;
+export type RouteType =
+  | AdminRouteTypes
+  | ModuleRouteTypes
+  | useShowPageRouteTypes
+  | mainRouteTypes;
+
+enum mainRoutes {
+  locale = '/:locale',
+  profile = 'profile',
+  signIn = 'sign-in',
+  signUp = 'sign-up',
+  invite = 'invite',
+  completeSignUp = 'complete-signup',
+  authenticationError = 'authentication-error',
+  siteMap = 'site-map',
+  profileEdit = `${profile}/edit`,
+  changePassword = `${profile}/change-password`,
+  changeEmail = `${profile}/change-email`,
+  ideas = 'ideas',
+  ideasEditIdea = `${ideas}/edit/:ideaId`,
+  ideasSlug = `${ideas}/:slug`,
+  initiatives = 'initiatives',
+  initiativeEdit = `${initiatives}/edit/:initiativeId`,
+  initiativesNew = `${initiatives}/new`,
+  initiativesSlug = `${initiatives}/:slug`,
+  projects = 'projects',
+  projectIdeaNew = `${projects}/:slug/${ideas}/new`,
+  projectSlug = `${projects}/:slug`,
+  phaseNumber = ':phaseNumber',
+  folders = 'folders',
+  foldersSlug = `${folders}/:slug`,
+  wildcard = '*',
+  events = 'events',
+  eventId = `${events}/:eventId`,
+  pages = 'pages',
+  cookiePolicy = `${pages}/cookie-policy`,
+  AccessibilityStatement = `${pages}/accessibility-statement`,
+  customPage = `${pages}/:slug`,
+  passwordRecovery = 'password-recovery',
+  resetPassword = 'reset-password',
+  subscriptionEnded = 'subscription-ended',
+  emailSettings = 'email-settings',
+  disabledAccount = 'disabled-account',
+  reportPrintPage = `admin/${REPORTING}/${REPORT_BUILDER}/:reportId/${PRINT}`,
+}
+
+export type mainRouteTypes =
+  | `/${string}/`
+  | `sign-in`
+  | `sign-up`
+  | `invite`
+  | `complete-signup`
+  | `authentication-error`
+  | `site-map`
+  | `${mainRoutes.profile}/edit`
+  | `${mainRoutes.profile}/change-password`
+  | `${mainRoutes.profile}/change-email`
+  | `ideas`
+  | `${mainRoutes.ideas}/edit/${string}`
+  | `${mainRoutes.ideas}/${string}`
+  | `initiatives`
+  | `${mainRoutes.initiatives}/edit/${string}`
+  | `${mainRoutes.initiatives}/new`
+  | `${mainRoutes.initiatives}/${string}`
+  | `${mainRoutes.projects}`
+  | `${mainRoutes.projects}/${string}/${mainRoutes.ideas}/new`
+  | `${mainRoutes.projects}/${string}`
+  | `${mainRoutes.folders}`
+  | `${mainRoutes.folders}/${string}`
+  | `${mainRoutes.events}`
+  | `${mainRoutes.events}/${string}`
+  | `${mainRoutes.pages}`
+  | `${mainRoutes.pages}/cookie-policy`
+  | `${mainRoutes.pages}/accessibility-statement`
+  | `${mainRoutes.pages}/${string}`
+  | `${mainRoutes.passwordRecovery}`
+  | `${mainRoutes.resetPassword}`
+  | `${mainRoutes.subscriptionEnded}`
+  | `${mainRoutes.emailSettings}`
+  | `${mainRoutes.disabledAccount}`
+  | `admin/reporting/report-builder/${string}/print`;
 
 export default function createRoutes() {
   return [
     {
-      path: '/:locale',
+      path: mainRoutes.locale,
       children: [
         {
           index: true,
@@ -72,7 +154,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'sign-in',
+          path: mainRoutes.signIn,
           element: (
             <PageLoading>
               <HomePage />
@@ -80,7 +162,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'sign-up',
+          path: mainRoutes.signUp,
           element: (
             <PageLoading>
               <HomePage />
@@ -88,7 +170,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'invite',
+          path: mainRoutes.invite,
           element: (
             <PageLoading>
               <HomePage />
@@ -96,7 +178,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'complete-signup',
+          path: mainRoutes.completeSignUp,
           element: (
             <PageLoading>
               <HomePage />
@@ -104,7 +186,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'authentication-error',
+          path: mainRoutes.authenticationError,
           element: (
             <PageLoading>
               <HomePage />
@@ -112,7 +194,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'site-map',
+          path: mainRoutes.siteMap,
           element: (
             <PageLoading>
               <SiteMap />
@@ -120,7 +202,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'profile/edit',
+          path: mainRoutes.profileEdit,
           element: (
             <PageLoading>
               <UsersEditPage />
@@ -128,7 +210,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'profile/change-password',
+          path: mainRoutes.changePassword,
           element: (
             <PageLoading>
               <PasswordChange />
@@ -136,7 +218,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'profile/change-email',
+          path: mainRoutes.changeEmail,
           element: (
             <PageLoading>
               <EmailChange />
@@ -145,7 +227,7 @@ export default function createRoutes() {
         },
         userProfileRoutes(),
         {
-          path: 'ideas/edit/:ideaId',
+          path: mainRoutes.ideasEditIdea,
           element: (
             <PageLoading>
               <IdeasEditPage />
@@ -153,7 +235,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'ideas',
+          path: mainRoutes.ideas,
           element: (
             <PageLoading>
               <IdeasIndexPage />
@@ -161,7 +243,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'ideas/:slug',
+          path: mainRoutes.ideasSlug,
           element: (
             <PageLoading>
               <IdeasShowPage />
@@ -169,7 +251,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'initiatives',
+          path: mainRoutes.initiatives,
           element: (
             <PageLoading>
               <InitiativesIndexPage />
@@ -177,7 +259,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'initiatives/edit/:initiativeId',
+          path: mainRoutes.initiativeEdit,
           element: (
             <PageLoading>
               <InitiativesEditPage />
@@ -185,7 +267,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'initiatives/new',
+          path: mainRoutes.initiativesNew,
           element: (
             <PageLoading>
               <InitiativesNewPage />
@@ -194,7 +276,7 @@ export default function createRoutes() {
         },
         // super important that this comes AFTER initiatives/new, if it comes before, new is interpreted as a slug
         {
-          path: 'initiatives/:slug',
+          path: mainRoutes.initiativesSlug,
           element: (
             <PageLoading>
               <InitiativesShowPage />
@@ -202,7 +284,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'projects/:slug/ideas/new',
+          path: mainRoutes.projectIdeaNew,
           element: (
             <PageLoading>
               <IdeasNewPage />
@@ -211,7 +293,7 @@ export default function createRoutes() {
         },
         createAdminRoutes(),
         {
-          path: 'projects',
+          path: mainRoutes.projects,
           element: (
             <PageLoading>
               <ProjectsIndexPage />
@@ -219,7 +301,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'projects/:slug',
+          path: mainRoutes.projectSlug,
           element: (
             <PageLoading>
               <ProjectsShowPage />
@@ -235,7 +317,7 @@ export default function createRoutes() {
               ),
             },
             {
-              path: ':phaseNumber',
+              path: mainRoutes.phaseNumber,
               element: (
                 <PageLoading>
                   <ProjectsShowPage />
@@ -243,7 +325,7 @@ export default function createRoutes() {
               ),
             },
             {
-              path: '*',
+              path: mainRoutes.wildcard,
               element: (
                 <PageLoading>
                   <ProjectsShowPage />
@@ -253,7 +335,7 @@ export default function createRoutes() {
           ],
         },
         {
-          path: 'folders/:slug',
+          path: mainRoutes.foldersSlug,
           element: (
             <PageLoading>
               <ProjectFolderShowPage />
@@ -261,7 +343,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'events',
+          path: mainRoutes.events,
           element: (
             <PageLoading>
               <EventsPage />
@@ -269,7 +351,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'events/:eventId',
+          path: mainRoutes.eventId,
           element: (
             <PageLoading>
               <EventsShowPage />
@@ -277,7 +359,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'pages/cookie-policy',
+          path: mainRoutes.cookiePolicy,
           element: (
             <PageLoading>
               <CookiePolicy />
@@ -285,7 +367,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'pages/accessibility-statement',
+          path: mainRoutes.AccessibilityStatement,
           element: (
             <PageLoading>
               <AccessibilityStatement />
@@ -293,7 +375,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'pages/:slug',
+          path: mainRoutes.customPage,
           element: (
             <PageLoading>
               <CustomPageShow />
@@ -301,7 +383,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'password-recovery',
+          path: mainRoutes.passwordRecovery,
           element: (
             <PageLoading>
               <PasswordRecovery />
@@ -310,7 +392,7 @@ export default function createRoutes() {
         },
         {
           // Used as link in email received for password recovery
-          path: 'reset-password',
+          path: mainRoutes.resetPassword,
           element: (
             <PageLoading>
               <PasswordReset />
@@ -318,7 +400,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'subscription-ended',
+          path: mainRoutes.subscriptionEnded,
           element: (
             <PageLoading>
               <SubscriptionEndedPage />
@@ -326,7 +408,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'email-settings',
+          path: mainRoutes.emailSettings,
           element: (
             <PageLoading>
               <EmailSettingsPage />
@@ -334,7 +416,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: `admin/${REPORTING}/${REPORT_BUILDER}/:reportId/${PRINT}`,
+          path: mainRoutes.reportPrintPage,
           element: (
             <PageLoading>
               <ReportPrintPage />
@@ -342,7 +424,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'disabled-account',
+          path: mainRoutes.disabledAccount,
           element: (
             <PageLoading>
               <DisabledAccount />

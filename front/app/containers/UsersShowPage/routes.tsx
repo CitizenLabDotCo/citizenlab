@@ -11,8 +11,35 @@ import UserEvents from './UserEvents';
 
 import UsersShowPage from './';
 
-export default () => ({
-  path: 'profile/:userSlug',
+enum userShowPageRoutes {
+  profile = 'profile',
+  default = '',
+  profileUserSlug = `${profile}/:userSlug`,
+  submissions = 'submissions',
+  comments = 'comments',
+  following = 'following',
+  events = 'events',
+}
+
+export type useShowPageRouteTypes =
+  | `${string}${userShowPageRoutes.profile}/${string}`
+  | `${string}`
+  | `${string}${userShowPageRoutes.profile}/${userShowPageRoutes.submissions}`
+  | `${string}${userShowPageRoutes.profile}/${userShowPageRoutes.comments}`
+  | `${string}${userShowPageRoutes.profile}/${userShowPageRoutes.following}`
+  | `${string}${userShowPageRoutes.profile}/${userShowPageRoutes.events}`;
+
+type RoutesTypes = {
+  path: userShowPageRoutes;
+  element: JSX.Element;
+  children: {
+    path: userShowPageRoutes;
+    element: JSX.Element;
+  }[];
+};
+
+export default (): RoutesTypes => ({
+  path: userShowPageRoutes.profileUserSlug,
   element: (
     <PageLoading>
       <UsersShowPage />
@@ -20,23 +47,23 @@ export default () => ({
   ),
   children: [
     {
-      path: '',
+      path: userShowPageRoutes.default,
       element: <Navigate to="submissions" replace />,
     },
     {
-      path: 'submissions',
+      path: userShowPageRoutes.submissions,
       element: <Submissions />,
     },
     {
-      path: 'comments',
+      path: userShowPageRoutes.comments,
       element: <UserComments />,
     },
     {
-      path: 'following',
+      path: userShowPageRoutes.following,
       element: <Following />,
     },
     {
-      path: 'events',
+      path: userShowPageRoutes.events,
       element: <UserEvents />,
     },
   ],
