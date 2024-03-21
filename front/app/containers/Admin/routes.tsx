@@ -15,7 +15,7 @@ import { isNilOrError, isUUID } from 'utils/helperUtils';
 import { usePermission } from 'utils/permissions';
 
 import createDashboardRoutes from './dashboard/routes';
-import ideasRoutes from './ideas/routes';
+import ideasRoutes, { ideaRouteTypes } from './ideas/routes';
 import createAdminInitiativesRoutes, {
   initiativeRouteTypes,
 } from './initiatives/routes';
@@ -33,7 +33,7 @@ const AdminContainer = lazy(() => import('containers/Admin'));
 const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
 
 export type AdminRoute<T extends string = string> = `/admin/${T}`;
-export type AdminRouteTypes = initiativeRouteTypes;
+export type AdminRouteTypes = initiativeRouteTypes | ideaRouteTypes;
 
 const isTemplatePreviewPage = (urlSegments: string[]) =>
   urlSegments.length === 4 &&
