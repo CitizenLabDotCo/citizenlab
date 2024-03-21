@@ -20,7 +20,7 @@ declare module 'components/UI/Error' {
 
 export enum insightsRoutes {
   reports = 'reports',
-  reportId = `${reports}/:projectId`,
+  reportId = `reports/:projectId`,
 }
 
 // TODO: Replace "reporting" with link to route in main app once converted.

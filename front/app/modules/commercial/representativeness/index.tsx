@@ -14,7 +14,7 @@ const ReferenceDataInterface = React.lazy(
 
 export enum representativenessRoutes {
   representation = 'representation',
-  editBaseData = `${representation}/edit-base-data`,
+  editBaseData = `representation/edit-base-data`,
 }
 
 // TODO: Replace "dashboards" with link to route in main app once converted.

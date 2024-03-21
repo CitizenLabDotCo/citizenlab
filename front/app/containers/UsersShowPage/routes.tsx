@@ -14,14 +14,14 @@ import UsersShowPage from './';
 enum userShowPageRoutes {
   profile = 'profile',
   default = '',
-  profileUserSlug = `${profile}/:userSlug`,
+  profileUserSlug = `profile/:userSlug`,
   submissions = 'submissions',
   comments = 'comments',
   following = 'following',
   events = 'events',
 }
 
-export type useShowPageRouteTypes =
+export type UserShowPageRouteTypes =
   | `${string}${userShowPageRoutes.profile}/${string}`
   | `${string}`
   | `${string}${userShowPageRoutes.profile}/${userShowPageRoutes.submissions}`
