@@ -12,6 +12,7 @@
   "author": {
     "name": "CitizenLab"
   },
+  "type": "module",
   "scripts": {
     "extract-intl": "tsc --skipLibCheck app/containers/App/constants && babel-node --presets @babel/env -- ./internals/scripts/extract-intl.js",
     "prebuild": "npm run build:clean",
@@ -38,7 +39,8 @@
     "dependency-cruiser": "depcruise app  --validate",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "chromatic": "chromatic --exit-once-uploaded"
+    "chromatic": "chromatic --exit-once-uploaded",
+    "build-component-library": "rimraf ./dist && rollup -c --bundleConfigAsCjs"
   },
   "jest-junit": {
     "addFileAttribute": "true"
@@ -156,6 +158,10 @@
     "@cypress/skip-test": "^2.6.1",
     "@cypress/webpack-preprocessor": "^6.0.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^9.0.2",
     "@sentry/webpack-plugin": "^1.18.8",
     "@storybook/react": "^7.5.1",
     "@storybook/react-webpack5": "^7.5.2",
@@ -237,6 +243,10 @@
     "request": "2.88.2",
     "resize-observer-polyfill": "^1.5.1",
     "rimraf": "5.0.1",
+    "rollup": "^3.29.4",
+    "rollup-plugin-dts": "^6.1.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-postcss": "^4.0.2",
     "shelljs": "0.8.5",
     "storybook": "^7.5.1",
     "storybook-react-intl": "^2.0.3",
