@@ -3,6 +3,7 @@
 module Analysis
   class AutoTaggingMethod::NLPTopic < AutoTaggingMethod::Base
     TAG_TYPE = 'nlp_topic'
+    TOKENS_FOR_RESPONSE = 600 ### TODO?
 
     def topic_modeling(project_title, inputs)
       response = run_topic_modeling_prompt(project_title, inputs)
@@ -34,9 +35,13 @@ module Analysis
     private
 
     def run_topic_modeling_prompt(project_title, inputs)
+      inputs = fit_inputs_in_context_window(inputs, project_title)
+      gpt4.chat(inputs_prompt(inputs, project_title))
+    end
+
+    def inputs_prompt(inputs, project_title)
       inputs_text = input_to_text.format_all(inputs)
       prompt = LLM::Prompt.new.fetch('topic_modeling', project_title: project_title, inputs_text: inputs_text, max_topics: max_topics(inputs.size))
-      gpt4.chat(prompt)
     end
 
     def parse_topic_modeling_response(response)
@@ -49,6 +54,18 @@ module Analysis
 
     def max_topics(inputs_count)
       [inputs_count, (Math.log(inputs_count, 5) * 6).ceil].min
+    end
+
+    def fit_inputs_in_context_window(inputs, project_title)
+      prompt = inputs_prompt(inputs, project_title)
+      tokens = LLM::AzureOpenAI.token_count(prompt) + TOKENS_FOR_RESPONSE
+      exceeded_tokens = tokens - gpt4.context_window
+      return inputs if exceeded_tokens < 0
+      
+      tokens_per_input = (LLM::AzureOpenAI.token_count(input_to_text.format_all(inputs)) / inputs.size.to_f).ceil
+      inputs_excess = (exceeded_tokens / tokens_per_input.to_f).ceil
+      inputs_excess = [inputs_excess, 1].max # Avoid infinite loop
+      fit_inputs_in_context_window(inputs.shuffle.drop(inputs_excess), project_title)
     end
   end
 end
