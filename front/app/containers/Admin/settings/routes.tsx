@@ -5,6 +5,8 @@ import { Navigate } from 'react-router-dom';
 
 import PageLoading from 'components/UI/PageLoading';
 
+import { AdminRoute } from '../routes';
+
 import registrationRoutes from './registration/routes';
 
 const AdminSettingsIndex = lazy(() => import('containers/Admin/settings'));
@@ -27,8 +29,36 @@ const AdminTopicsIndexComponent = lazy(() => import('./topics/all'));
 const AdminTopicsNewComponent = lazy(() => import('./topics/New'));
 const AdminTopicsEditComponent = lazy(() => import('./topics/Edit'));
 
+enum settingsRoutes {
+  settings = 'settings',
+  settingsDefault = '',
+  general = 'general',
+  branding = 'branding',
+  policies = 'policies',
+  areas = 'areas',
+  new = 'new',
+  areaId = ':areaId',
+  topics = 'topics',
+  topicEdit = ':topicId/edit',
+}
+
+type AreaRoute<T extends string = string> = `/areas/${T}`;
+type TopicRoute<T extends string = string> = `/areas/${T}`;
+
+export type settingRouteTypes =
+  | AdminRoute<settingsRoutes.settings>
+  | AdminRoute<settingsRoutes.general>
+  | AdminRoute<settingsRoutes.branding>
+  | AdminRoute<settingsRoutes.policies>
+  | AdminRoute<settingsRoutes.areas>
+  | AdminRoute<AreaRoute<settingsRoutes.new>>
+  | AdminRoute<AreaRoute<settingsRoutes.areaId>>
+  | AdminRoute<settingsRoutes.topics>
+  | AdminRoute<TopicRoute<settingsRoutes.new>>
+  | AdminRoute<`${settingsRoutes.topics}/${string}/edit`>;
+
 export default () => ({
-  path: 'settings',
+  path: settingsRoutes.settings,
   element: (
     <PageLoading>
       <AdminSettingsIndex />
@@ -36,11 +66,11 @@ export default () => ({
   ),
   children: [
     {
-      path: '',
+      path: settingsRoutes.settingsDefault,
       element: <Navigate to="general" replace />,
     },
     {
-      path: 'general',
+      path: settingsRoutes.general,
       element: (
         <PageLoading>
           <AdminSettingsGeneral />
@@ -48,7 +78,7 @@ export default () => ({
       ),
     },
     {
-      path: 'branding',
+      path: settingsRoutes.branding,
       element: (
         <PageLoading>
           <AdminSettingsCustomize />
@@ -56,7 +86,7 @@ export default () => ({
       ),
     },
     {
-      path: 'policies',
+      path: settingsRoutes.policies,
       element: (
         <PageLoading>
           <AdminSettingsPolicies />
@@ -65,7 +95,7 @@ export default () => ({
     },
     registrationRoutes(),
     {
-      path: 'areas',
+      path: settingsRoutes.areas,
       children: [
         {
           index: true,
@@ -76,7 +106,7 @@ export default () => ({
           ),
         },
         {
-          path: 'new',
+          path: settingsRoutes.new,
           element: (
             <PageLoading>
               <AdminAreasNew />
@@ -84,7 +114,7 @@ export default () => ({
           ),
         },
         {
-          path: ':areaId',
+          path: settingsRoutes.areaId,
           element: (
             <PageLoading>
               <AdminAreasEdit />
@@ -94,7 +124,7 @@ export default () => ({
       ],
     },
     {
-      path: 'topics',
+      path: settingsRoutes.topics,
       children: [
         {
           index: true,
@@ -105,7 +135,7 @@ export default () => ({
           ),
         },
         {
-          path: 'new',
+          path: settingsRoutes.new,
           element: (
             <PageLoading>
               <AdminTopicsNewComponent />
@@ -113,7 +143,7 @@ export default () => ({
           ),
         },
         {
-          path: ':topicId/edit',
+          path: settingsRoutes.topicEdit,
           element: (
             <PageLoading>
               <AdminTopicsEditComponent />
