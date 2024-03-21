@@ -20,7 +20,9 @@ import createAdminInitiativesRoutes, {
   initiativeRouteTypes,
 } from './initiatives/routes';
 import invitationsRoutes, { invitationRouteTypes } from './invitations/routes';
-import createAdminMessagingRoutes from './messaging/routes';
+import createAdminMessagingRoutes, {
+  messagingRouteTypes,
+} from './messaging/routes';
 import pagesAndMenuRoutes from './pagesAndMenu/routes';
 import projectFoldersRoutes, {
   projectFolderRouteTypes,
@@ -44,6 +46,7 @@ export type AdminRouteTypes =
   | projectFolderRouteTypes
   | toolRouteTypes
   | reportingRouteTypes
+  | messagingRouteTypes
   | settingRouteTypes;
 
 const isTemplatePreviewPage = (urlSegments: string[]) =>
