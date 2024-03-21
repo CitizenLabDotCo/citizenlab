@@ -12,8 +12,10 @@ resource 'Summaries' do
   end
 
   get 'web_api/v1/analyses/:analysis_id/summaries/:id' do
-    let(:summary) { create(:summary) }
-    let(:analysis_id) { summary.analysis_id }
+    let(:analysis) { create(:analysis) }
+    let(:ideas) { create_list(:idea, 2, project: analysis.project) }
+    let(:summary) { create(:summary, insight_attributes: { analysis: analysis, inputs_ids: ideas.map(&:id) }) }
+    let(:analysis_id) { analysis.id }
     let(:id) { summary.id }
 
     example 'Get one summary by id' do
@@ -28,9 +30,12 @@ resource 'Summaries' do
         attributes: {
           summary: kind_of(String),
           filters: {},
+          inputs_count: 2,
+          custom_field_ids: {},
           accuracy: nil,
           created_at: kind_of(String),
           updated_at: kind_of(String),
+          generated_at: nil,
           missing_inputs_count: 2
         },
         relationships: {
@@ -65,7 +70,9 @@ resource 'Summaries' do
       parameter :comments_to, 'Filter by number of comments on the input, smaller than or equal to', type: :integer
     end
 
-    let(:analysis) { create(:analysis) }
+    let(:main_field) { create(:custom_field_text) }
+    let(:additional_field) { create(:custom_field) }
+    let(:analysis) { create(:analysis, main_custom_field: main_field, additional_custom_fields: [additional_field]) }
     let(:analysis_id) { analysis.id }
     let(:tag) { create(:tag, analysis: analysis) }
 
@@ -74,6 +81,7 @@ resource 'Summaries' do
         .to have_enqueued_job(Analysis::SummarizationJob)
         .and change(Analysis::BackgroundTask, :count).from(0).to(1)
       expect(status).to eq 201
+      background_task = Analysis::BackgroundTask.first
       expect(response_data).to match({
         id: kind_of(String),
         type: 'summary',
@@ -83,21 +91,23 @@ resource 'Summaries' do
             reactions_from: 7,
             tag_ids: [tag.id]
           },
+          inputs_count: 0,
+          custom_field_ids: { main_custom_field_id: main_field.id, additional_custom_field_ids: [additional_field.id] },
           accuracy: 0.8,
           missing_inputs_count: 0,
           created_at: kind_of(String),
-          updated_at: kind_of(String)
+          updated_at: kind_of(String),
+          generated_at: nil
         },
         relationships: {
           background_task: {
             data: {
               type: 'background_task',
-              id: kind_of(String)
+              id: background_task.id
             }
           }
         }
       })
-      background_task = Analysis::BackgroundTask.first
       expect(json_response_body[:included].pluck(:id)).to include(background_task.id)
 
       expect(background_task).to have_attributes({
@@ -114,6 +124,77 @@ resource 'Summaries' do
       do_request(summary: { filters: { tag_ids: [nil] } })
       expect(status).to eq 201
       expect(response_data.dig(:attributes, :filters, :tag_ids)).to eq([nil])
+    end
+  end
+
+  post 'web_api/v1/analyses/:analysis_id/summaries/:id/regenerate' do
+    let(:state) { 'succeeded' }
+    let(:background_task) { create(:summarization_task, state: state, ended_at: Time.now) }
+    let(:analysis) { create(:analysis) }
+    let(:filters) { { reactions_from: 5 } }
+    let!(:summary) { create(:summary, summary: nil, insight_attributes: { filters: filters, analysis: analysis }, background_task: background_task) }
+    let(:analysis_id) { analysis.id }
+    let(:id) { summary.id }
+
+    example 'Regenerate a summary' do
+      expect { do_request }
+        .to have_enqueued_job(Analysis::SummarizationJob)
+        .and change(Analysis::BackgroundTask, :count).from(1).to(2)
+      expect(status).to eq 201
+      new_background_task = Analysis::BackgroundTask.find_by(state: 'queued')
+      expect(response_data).to match({
+        id: kind_of(String),
+        type: 'summary',
+        attributes: {
+          summary: nil,
+          filters: { reactions_from: 5 },
+          inputs_count: 0,
+          custom_field_ids: {},
+          accuracy: 0.8,
+          missing_inputs_count: 0,
+          created_at: kind_of(String),
+          updated_at: kind_of(String),
+          generated_at: nil
+        },
+        relationships: {
+          background_task: {
+            data: {
+              type: 'background_task',
+              id: new_background_task.id
+            }
+          }
+        }
+      })
+      expect(json_response_body[:included].pluck(:id)).to include(new_background_task.id)
+
+      expect(new_background_task).to have_attributes({
+        progress: nil,
+        type: 'Analysis::SummarizationTask',
+        state: 'queued',
+        created_at: be_present,
+        updated_at: be_present,
+        ended_at: nil
+      })
+    end
+
+    describe 'when the current task is queued or in progress' do
+      let(:state) { 'in_progress' }
+
+      example_request '[error] returns previous_task_not_yet_finished' do
+        expect(status).to eq 422
+        expect(json_response_body).to eq({ errors: { base: [{ error: 'previous_task_not_yet_finished' }] } })
+      end
+    end
+
+    example '[error] too many inputs' do
+      allow(Analysis::SummarizationMethod::Base)
+        .to receive(:plan)
+        .and_return(Analysis::SummarizationPlan.new(impossible_reason: :too_many_inputs))
+
+      do_request
+
+      expect(status).to eq 422
+      expect(json_response_body).to eq({ errors: { base: [{ error: 'too_many_inputs' }] } })
     end
   end
 

@@ -1711,13 +1711,15 @@ function apiCreateSurveyQuestions(
   });
 }
 
-function apiCreateSurveyResponse(
-  email: string,
-  password: string,
+function apiCreateSurveyResponse({
+  email, password, project_id, fields
+}: {
+  email?: string,
+  password?: string,
   project_id: string,
-  fields: Record<string, any>,
-  jwt?: any
-) {
+  fields: Record<string, any>
+}, jwt?: any) 
+   {
   const makeRequest = (jwt: any) => {
     return cy.request({
       headers: {
@@ -1732,14 +1734,23 @@ function apiCreateSurveyResponse(
           project_id,
           ...fields,
         },
-      },
+        method: 'POST',
+        url: 'web_api/v1/ideas',
+        body: {
+          idea: {
+            publication_status: 'published',
+            project_id,
+            ...fields,
+          },
+        },
+      }
     });
   };
 
   if (jwt) {
     return makeRequest(jwt);
   } else {
-    return cy.apiLogin(email, password).then((response) => {
+    return cy.apiLogin(email || "admin@citizenlab.co", password || "democracy2.0").then((response) => {
       const jwt = response.body.jwt;
       return makeRequest(jwt);
     });

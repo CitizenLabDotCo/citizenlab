@@ -9,10 +9,8 @@ module Analysis
     ]
 
     LLMS = [
-      LLM::GPT48k.new,
-      LLM::GPT432k.new,
       LLM::GPT4Turbo.new,
-      LLM::GPT3516k.new
+      LLM::GPT35Turbo.new
     ]
 
     class SummarizationFailedError < StandardError; end
@@ -28,19 +26,30 @@ module Analysis
       @summary = summary
       @task = summary.background_task
       @analysis = summary.analysis
-      @input_to_text = InputToText.new(@analysis.custom_fields)
+      @input_to_text = InputToText.new(@analysis.associated_custom_fields)
     end
 
     def execute(plan)
       task.set_in_progress!
-      summary.update!(accuracy: plan.accuracy)
-      summary.insight.update!(inputs_ids: filtered_inputs.ids)
+      old_summary = summary.summary
+      old_accuracy = summary.accuracy
+      old_input_ids = summary.insight.inputs_ids
+      old_custom_field_ids = summary.insight.custom_field_ids
+      summary.update!(accuracy: plan.accuracy, summary: '')
+      custom_field_ids = {
+        main_custom_field_id: analysis.main_custom_field_id,
+        additional_custom_field_ids: analysis.additional_custom_field_ids
+      }
+      summary.insight.update!(inputs_ids: filtered_inputs.ids, custom_field_ids: custom_field_ids)
+
       begin
         run(plan)
         task.set_succeeded!
       rescue SummarizationFailedError => e
         ErrorReporter.report(e)
         task.set_failed!
+        summary.update!(accuracy: old_accuracy, summary: old_summary)
+        summary.insight.update!(inputs_ids: old_input_ids, custom_field_ids: old_custom_field_ids)
       end
     end
 
@@ -74,7 +83,7 @@ module Analysis
 
     # For now, we assume GPT tokenization for all llms
     def token_count(str)
-      LLM::OpenAIGPT.token_count(str)
+      LLM::AzureOpenAI.token_count(str)
     end
   end
 end
