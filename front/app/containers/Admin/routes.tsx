@@ -14,7 +14,7 @@ import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import { isNilOrError, isUUID } from 'utils/helperUtils';
 import { usePermission } from 'utils/permissions';
 
-import createDashboardRoutes from './dashboard/routes';
+import createDashboardRoutes, { dashboardRouteTypes } from './dashboard/routes';
 import ideasRoutes, { ideaRouteTypes } from './ideas/routes';
 import createAdminInitiativesRoutes, {
   initiativeRouteTypes,
@@ -38,6 +38,7 @@ export type AdminRouteTypes =
   | ideaRouteTypes
   | userRouteTypes
   | invitationRouteTypes
+  | dashboardRouteTypes
   | settingRouteTypes;
 
 const isTemplatePreviewPage = (urlSegments: string[]) =>
