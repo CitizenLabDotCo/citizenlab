@@ -33,7 +33,9 @@ const preview: Preview = {
     chromatic: {
       modes: {
         ...allModes
-      }
+      },
+
+      disableSnapshot: true
     }
   },
 

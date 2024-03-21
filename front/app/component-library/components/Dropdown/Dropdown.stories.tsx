@@ -1,35 +1,31 @@
 import React from 'react';
 
-import { action } from '@storybook/addon-actions';
-import { boolean } from '@storybook/addon-knobs';
+import Dropdown, { DropdownListItem } from '.';
 
-import Dropdown, { DropdownListItem } from './';
+import type { Meta, StoryObj } from '@storybook/react';
 
-export default {
+const meta = {
   title: 'Components/Dropdown',
-  component: Dropdown,
-};
+  parameters: {
+    layout: 'centered',
+  },
+} satisfies Meta<typeof Dropdown>;
 
-export const Default = {
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
   render: () => (
-    <div
-      style={{
-        position: 'relative',
-      }}
-    >
-      <Dropdown
-        opened={boolean('Opened', true)}
-        onClickOutside={action('clicked outside')}
-        content={
-          <>
-            <DropdownListItem key={1}>Item 1</DropdownListItem>
-            <DropdownListItem key={2}>Item 2</DropdownListItem>
-            <DropdownListItem key={3}>Item 3</DropdownListItem>
-          </>
-        }
-      />
-    </div>
+    <Dropdown
+      opened={true}
+      onClickOutside={() => {}}
+      content={
+        <>
+          <DropdownListItem key={1}>Item 1</DropdownListItem>
+          <DropdownListItem key={2}>Item 2</DropdownListItem>
+          <DropdownListItem key={3}>Item 3</DropdownListItem>
+        </>
+      }
+    />
   ),
-
-  name: 'default',
 };

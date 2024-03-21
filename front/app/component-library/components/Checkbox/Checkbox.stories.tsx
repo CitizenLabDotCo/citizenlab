@@ -1,52 +1,36 @@
-import React from 'react';
-
-import { action } from '@storybook/addon-actions';
-
 import Checkbox from '.';
 
-export default {
+import type { Meta, StoryObj } from '@storybook/react';
+
+const meta = {
   title: 'Components/Checkbox',
   component: Checkbox,
+  parameters: {
+    layout: 'centered',
+  },
+} satisfies Meta<typeof Checkbox>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+  args: {
+    checked: false,
+    onChange: () => {},
+  },
 };
 
-export const Default = {
-  render: () => (
-    <div
-      style={{
-        display: 'flex',
-      }}
-    >
-      <Checkbox onChange={action('checkbox clicked')} />
-    </div>
-  ),
-
-  name: 'default',
+export const Checked: Story = {
+  args: {
+    checked: true,
+    onChange: () => {},
+  },
 };
 
-export const Checked = {
-  render: () => (
-    <div
-      style={{
-        display: 'flex',
-      }}
-    >
-      <Checkbox checked={true} onChange={action('checkbox clicked')} />
-    </div>
-  ),
-
-  name: 'checked',
-};
-
-export const Indeterminate = {
-  render: () => (
-    <div
-      style={{
-        display: 'flex',
-      }}
-    >
-      <Checkbox indeterminate={true} onChange={action('checkbox clicked')} />
-    </div>
-  ),
-
-  name: 'indeterminate',
+export const Indeterminate: Story = {
+  args: {
+    checked: false,
+    indeterminate: true,
+    onChange: () => {},
+  },
 };

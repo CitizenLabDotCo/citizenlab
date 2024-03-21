@@ -1,16 +1,22 @@
 import React from 'react';
 
-import { action } from '@storybook/addon-actions';
-import { text, number as numberKnob, boolean } from '@storybook/addon-knobs';
+import { text, boolean } from '@storybook/addon-knobs';
 
 import Input from '.';
 
-export default {
-  title: 'Components/Input',
-  component: Input,
-};
+import type { Meta, StoryObj } from '@storybook/react';
 
-export const Default = {
+const meta = {
+  title: 'Components/Input',
+  parameters: {
+    layout: 'centered',
+  },
+} satisfies Meta<typeof Input>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
   render: () => (
     <div
       style={{
@@ -22,8 +28,8 @@ export const Default = {
         value={text('Value', 'Some random text')}
         placeholder={text('Placeholder', 'placeholder')}
         disabled={boolean('Disabled', false)}
-        onChange={action('input changed')}
-        size={boolean('Small', false) ? 'small' : 'normal'}
+        onChange={() => {}}
+        size={'small'}
       />
     </div>
   ),
@@ -42,8 +48,8 @@ export const WithPlaceholder = {
         type="text"
         placeholder={text('Placeholder', 'placeholder')}
         disabled={boolean('Disabled', false)}
-        onChange={action('input changed')}
-        size={boolean('Small', false) ? 'small' : 'normal'}
+        onChange={() => {}}
+        size={'small'}
       />
     </div>
   ),
@@ -62,8 +68,8 @@ export const WithLabel = {
         type="text"
         value={text('Value', 'Some random text')}
         disabled={boolean('Disabled', false)}
-        onChange={action('input changed')}
-        size={boolean('Small', false) ? 'small' : 'normal'}
+        onChange={() => {}}
+        size={'small'}
       />
     </div>
   ),
@@ -83,9 +89,9 @@ export const WithMaxChar = {
         value={text('Value', 'Some random text')}
         label={text('Label', 'A label')}
         disabled={boolean('Disabled', false)}
-        onChange={action('input changed')}
+        onChange={() => {}}
+        size={'small'}
         maxCharCount={20}
-        size={boolean('Small', false) ? 'small' : 'normal'}
       />
     </div>
   ),
@@ -104,8 +110,8 @@ export const Date = {
         type="date"
         value={text('Date', '2019-07-17')}
         disabled={boolean('Disabled', false)}
-        onChange={action('input changed')}
-        size={boolean('Small', false) ? 'small' : 'normal'}
+        onChange={() => {}}
+        size={'small'}
       />
     </div>
   ),
@@ -124,8 +130,8 @@ export const Email = {
         type="email"
         value={text('Email', 'email@example.com')}
         disabled={boolean('Disabled', false)}
-        onChange={action('input changed')}
-        size={boolean('Small', false) ? 'small' : 'normal'}
+        onChange={() => {}}
+        size={'small'}
       />
     </div>
   ),
@@ -144,30 +150,11 @@ export const Password = {
         type="password"
         value={text('Password', 'password')}
         disabled={boolean('Disabled', false)}
-        size={boolean('Small', false) ? 'small' : 'normal'}
+        onChange={() => {}}
+        size={'small'}
       />
     </div>
   ),
 
   name: 'password',
-};
-
-export const Number = {
-  render: () => (
-    <div
-      style={{
-        maxWidth: '400px',
-      }}
-    >
-      <Input
-        type="number"
-        value={numberKnob('Number', 42)}
-        disabled={boolean('Disabled', false)}
-        onChange={action('input changed')}
-        size={boolean('Small', false) ? 'small' : 'normal'}
-      />
-    </div>
-  ),
-
-  name: 'number',
 };

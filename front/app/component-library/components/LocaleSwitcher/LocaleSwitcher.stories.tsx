@@ -1,58 +1,42 @@
-import React from 'react';
+import LocaleSwitcher from '.';
 
-import { action } from '@storybook/addon-actions';
+import type { Meta, StoryObj } from '@storybook/react';
 
-import LocaleSwitcher from './';
-
-export default {
+const meta = {
   title: 'Components/LocaleSwitcher',
   component: LocaleSwitcher,
+  parameters: {
+    layout: 'centered',
+  },
+} satisfies Meta<typeof LocaleSwitcher>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+  args: {
+    onSelectedLocaleChange: () => {},
+    locales: ['en-GB', 'nl-BE'],
+    selectedLocale: 'en-GB',
+    values: {
+      bleh: {
+        'en-GB': '',
+        'nl-BE': '',
+      },
+    },
+  },
 };
 
-export const Default = {
-  render: () => (
-    <div
-      style={{
-        maxWidth: '150px',
-      }}
-    >
-      <LocaleSwitcher
-        onSelectedLocaleChange={action('selected locale changed')}
-        locales={['en-GB', 'nl-BE']}
-        selectedLocale="en-GB"
-        values={{
-          bleh: {
-            'en-GB': '',
-            'nl-BE': '',
-          },
-        }}
-      />
-    </div>
-  ),
-
-  name: 'default',
-};
-
-export const WithANoneEmptyValue = {
-  render: () => (
-    <div
-      style={{
-        maxWidth: '150px',
-      }}
-    >
-      <LocaleSwitcher
-        onSelectedLocaleChange={action('selected locale changed')}
-        locales={['en-GB', 'nl-BE']}
-        selectedLocale="en-GB"
-        values={{
-          bleh: {
-            'en-GB': '',
-            'nl-BE': 'Een willekeurige waarde',
-          },
-        }}
-      />
-    </div>
-  ),
-
-  name: 'with a none-empty value',
+export const WithANoneEmptyValue: Story = {
+  args: {
+    onSelectedLocaleChange: () => {},
+    locales: ['en-GB', 'nl-BE'],
+    selectedLocale: 'en-GB',
+    values: {
+      bleh: {
+        'en-GB': '',
+        'nl-BE': 'Een willekeurige waarde',
+      },
+    },
+  },
 };

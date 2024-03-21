@@ -1,40 +1,36 @@
-import React from 'react';
+import Radio from '.';
 
-import { action } from '@storybook/addon-actions';
-import { text, boolean } from '@storybook/addon-knobs';
+import type { Meta, StoryObj } from '@storybook/react';
 
-import Radio from './';
-
-export default {
+const meta = {
   title: 'Components/Radio',
   component: Radio,
+  parameters: {
+    layout: 'centered',
+  },
+} satisfies Meta<typeof Radio>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+  args: {
+    value: true,
+    currentValue: true,
+    disabled: false,
+    onChange: () => {},
+    name: 'name 1',
+  },
 };
 
-export const Default = {
-  render: () => (
-    <Radio
-      value={true}
-      currentValue={boolean('Selected', true)}
-      disabled={boolean('Disabled', false)}
-      onChange={action('radio changed')}
-      name={text('name 1')}
-    />
-  ),
-
-  name: 'default',
-};
-
-export const WithLabel = {
-  render: () => (
-    <Radio
-      value={true}
-      currentValue={boolean('Selected', true)}
-      disabled={boolean('Disabled', false)}
-      onChange={action('radio changed')}
-      name={text('name 1')}
-      label={text('Label', 'A radio with label')}
-    />
-  ),
-
-  name: 'with label',
+export const WithLabel: Story = {
+  args: {
+    id: 'id',
+    value: true,
+    currentValue: true,
+    disabled: false,
+    onChange: () => {},
+    name: 'name 1',
+    label: 'A radio with label',
+  },
 };
