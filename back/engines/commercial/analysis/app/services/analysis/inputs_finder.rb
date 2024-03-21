@@ -22,6 +22,7 @@ module Analysis
       inputs = filter_author_custom_field_range(inputs)
       inputs = filter_input_custom_field_in(inputs)
       inputs = filter_input_custom_field_range(inputs)
+      inputs = filter_limit(inputs)
       search(inputs)
     end
 
@@ -48,9 +49,7 @@ module Analysis
     def filter_input_custom_field_no_empty_values(inputs)
       scope = inputs
       if params[:input_custom_field_no_empty_values]
-        analysis.custom_fields.pluck(:key).each do |key|
-          scope = scope.where.not("ideas.custom_field_values->>'#{key}' IS NULL")
-        end
+        scope = scope.where.not("ideas.custom_field_values->>'#{analysis.main_custom_field.key}' IS NULL")
       end
       scope
     end
@@ -217,6 +216,13 @@ module Analysis
         end
       end
       scope
+    end
+
+    def filter_limit(inputs)
+      return inputs unless params[:limit]
+      raise ArgumentError, 'limit must be a positive integer' unless params[:limit].to_i.positive?
+
+      inputs.where(id: inputs.limit(params[:limit]))
     end
 
     def decode_input_in_custom_keys

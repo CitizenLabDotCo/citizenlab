@@ -2180,7 +2180,10 @@
   "app.containers.AdminPage.projects.project.analysis.comments": "Høringssvar",
   "app.containers.AdminPage.projects.project.analysis.demographicsTitle": "Demografi",
   "app.containers.AdminPage.projects.project.analysis.domicileChartTooLarge": "Bopælskortet er for stort til at blive vist",
+<<<<<<< HEAD
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldFilter": "Skjul tomme svar",
+=======
+>>>>>>> master
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsLabel": "Besvarelser",
   "app.containers.AdminPage.projects.project.analysis.end": "Slut",
   "app.containers.AdminPage.projects.project.analysis.filter": "Vis kun input med denne værdi",

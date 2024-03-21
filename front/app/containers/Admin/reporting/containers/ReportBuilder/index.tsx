@@ -76,7 +76,7 @@ const ReportBuilder = ({
   };
 
   return (
-    <ReportContextProvider width="pdf" reportId={reportId} phaseId={phaseId}>
+    <ReportContextProvider width={view} reportId={reportId} phaseId={phaseId}>
       <FullscreenContentBuilder onUploadImage={setImageUploading}>
         <Editor
           isPreview={false}
@@ -119,7 +119,7 @@ const ReportBuilder = ({
             setSelectedLocale={setSelectedLocale}
           />
           <Box mt={`${stylingConsts.menuHeight}px`}>
-            <Toolbox reportId={reportId} />
+            <Toolbox reportId={reportId} selectedLocale={selectedLocale} />
             <LanguageProvider
               contentBuilderLocale={selectedLocale}
               platformLocale={platformLocale}

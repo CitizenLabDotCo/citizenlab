@@ -34,7 +34,7 @@ const StyledBox = styled(Box)<{ isRoot: boolean; outlineColor?: string }>`
     `
       : 'outline: none;'}
 
-  margin-bottom: 1px;
+  margin-bottom: 3px;
 `;
 
 const CONTAINER = 'Container';
