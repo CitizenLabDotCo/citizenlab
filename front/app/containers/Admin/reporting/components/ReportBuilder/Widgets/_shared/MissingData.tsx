@@ -1,6 +1,8 @@
 import React from 'react';
 
-import { Text } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
+
+import Error from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -10,9 +12,9 @@ const MissingData = () => {
   const { formatMessage } = useIntl();
 
   return (
-    <Text variant="bodyM" color="red600">
-      {formatMessage(messages.missingData)}
-    </Text>
+    <Box className="e2e-widget-missing-data">
+      <Error text={formatMessage(messages.missingData)} />
+    </Box>
   );
 };
 

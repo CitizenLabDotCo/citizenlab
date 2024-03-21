@@ -34,7 +34,7 @@ const MARGINS: Record<Layout, Margin | undefined> = {
 type Props = ProjectId & DatesStrings;
 
 const AgeCard = ({ startAt, endAt, projectId }: Props) => {
-  const usersByBirthyear = useUsersByAge({
+  const { data: usersByBirthyear } = useUsersByAge({
     project_id: projectId,
     start_at: startAt,
     end_at: endAt,

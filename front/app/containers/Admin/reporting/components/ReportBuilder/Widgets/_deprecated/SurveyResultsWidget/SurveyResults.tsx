@@ -36,14 +36,14 @@ const SurveyResults = ({ phaseId, shownQuestions }: Props) => {
     phase?.data.relationships.project.data.id
   );
 
-  const formResults = useSurveyResults({
+  const { data } = useSurveyResults({
     phase_id: phaseId,
   });
 
   const resultRows = useMemo(() => {
-    if (isNilOrError(formResults)) return null;
+    if (isNilOrError(data)) return null;
 
-    const { results } = formResults.data.attributes;
+    const { results } = data.data.attributes;
     // Filtering out qualitative questions
     const filteredResults = results.filter((result) => {
       return (
@@ -51,13 +51,13 @@ const SurveyResults = ({ phaseId, shownQuestions }: Props) => {
       );
     });
     return createResultRows(filteredResults, shownQuestions);
-  }, [formResults, shownQuestions]);
+  }, [data, shownQuestions]);
 
   if (
-    isNilOrError(formResults) ||
+    isNilOrError(data) ||
     isNilOrError(locale) ||
     !project ||
-    formResults.data.attributes.results.length === 0
+    data.data.attributes.results.length === 0
   ) {
     return <NoData message={messages.surveyNoQuestions} />;
   }
@@ -65,7 +65,7 @@ const SurveyResults = ({ phaseId, shownQuestions }: Props) => {
   if (resultRows === null) return null;
 
   const surveyResponseMessage = formatMessage(messages.totalParticipants, {
-    numberOfParticipants: formResults.data.attributes.totalSubmissions,
+    numberOfParticipants: data.data.attributes.totalSubmissions,
   });
 
   return (
@@ -109,7 +109,7 @@ const SurveyResults = ({ phaseId, shownQuestions }: Props) => {
             >
               <FormResultsQuestion
                 locale={locale}
-                totalSubmissions={formResults.data.attributes.totalSubmissions}
+                totalSubmissions={data.data.attributes.totalSubmissions}
                 {...result}
               />
             </Box>

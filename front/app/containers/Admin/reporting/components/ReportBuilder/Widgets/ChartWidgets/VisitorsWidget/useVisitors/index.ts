@@ -18,7 +18,7 @@ export default function useVisitors({
   const [currentResolution, setCurrentResolution] =
     useState<IResolution>(resolution);
 
-  const analytics = useVisitorsData(
+  const { data: analytics } = useVisitorsData(
     {
       project_id: projectId,
       start_at: startAt,
