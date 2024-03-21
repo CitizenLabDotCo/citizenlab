@@ -39,23 +39,21 @@ enum settingsRoutes {
   new = 'new',
   areaId = ':areaId',
   topics = 'topics',
+  edit = 'edit',
   topicEdit = ':topicId/edit',
 }
 
-type AreaRoute<T extends string = string> = `/areas/${T}`;
-type TopicRoute<T extends string = string> = `/areas/${T}`;
-
 export type settingRouteTypes =
   | AdminRoute<settingsRoutes.settings>
-  | AdminRoute<settingsRoutes.general>
-  | AdminRoute<settingsRoutes.branding>
-  | AdminRoute<settingsRoutes.policies>
-  | AdminRoute<settingsRoutes.areas>
-  | AdminRoute<AreaRoute<settingsRoutes.new>>
-  | AdminRoute<AreaRoute<settingsRoutes.areaId>>
-  | AdminRoute<settingsRoutes.topics>
-  | AdminRoute<TopicRoute<settingsRoutes.new>>
-  | AdminRoute<`${settingsRoutes.topics}/${string}/edit`>;
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.general}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.branding}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.policies}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.areas}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.areas}/${settingsRoutes.new}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.areas}/${settingsRoutes.areaId}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${settingsRoutes.new}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${string}/${settingsRoutes.edit}`>;
 
 export default () => ({
   path: settingsRoutes.settings,
