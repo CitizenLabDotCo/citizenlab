@@ -8,6 +8,7 @@ import {
   omitBy,
   cloneDeep,
 } from 'lodash-es';
+import { ModuleRoutes } from 'modules';
 import { Moment } from 'moment';
 import { IntlFormatters } from 'react-intl';
 import { GetLocaleChildProps } from 'resources/GetLocale';
@@ -236,7 +237,7 @@ export type Outlets = OutletComponents<OutletsPropertyMap>;
 export type OutletId = keyof Outlets;
 
 export type RouteConfiguration = {
-  path?: string;
+  path?: ModuleRoutes;
   name?: string;
   element?: ReactElement;
   type?: string;
