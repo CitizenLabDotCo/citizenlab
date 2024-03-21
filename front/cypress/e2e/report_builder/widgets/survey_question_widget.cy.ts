@@ -44,48 +44,50 @@ describe('Survey question widget', () => {
         projectId = project.body.data.id;
         projectSlug = project.body.data.attributes.slug;
 
-        return cy
-          .apiCreatePhase({
-            projectId,
-            title: randomString(),
-            startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
-            participationMethod: 'native_survey',
-            nativeSurveyButtonMultiloc: { en: 'Take the survey' },
-            nativeSurveyTitleMultiloc: { en: 'Survey' },
-            canPost: true,
-            canComment: true,
-            canReact: true,
-          })
-          .then((phase) => {
-            surveyPhaseId = phase.body.data.id;
-            return cy.uploadSurveyImageQuestionImage(base64);
-          })
-          .then((questionImage) => {
-            return cy.apiCreateSurveyQuestions(
-              surveyPhaseId,
-              [
-                'page',
-                'select',
-                'multiselect',
-                'linear_scale',
-                'multiselect_image',
-                'point',
-              ],
-              questionImage.body.data.id
-            );
-          })
-          .then((response) => {
-            surveyFields = response.body.data;
-            return cy.apiGetSurveySchema(surveyPhaseId);
-          })
-          .then((response) => {
-            surveySchema = response.body;
+        return cy.apiCreatePhase({
+          projectId,
+          title: randomString(),
+          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+          participationMethod: 'native_survey',
+          nativeSurveyButtonMultiloc: { en: 'Take the survey' },
+          nativeSurveyTitleMultiloc: { en: 'Survey' },
+          canPost: true,
+          canComment: true,
+          canReact: true,
+        });
+      })
+      .then((phase) => {
+        surveyPhaseId = phase.body.data.id;
+        return cy.uploadSurveyImageQuestionImage(base64);
+      })
+      .then((questionImage) => {
+        return cy.apiCreateSurveyQuestions(
+          surveyPhaseId,
+          [
+            'page',
+            'select',
+            'multiselect',
+            'linear_scale',
+            'multiselect_image',
+            'point',
+            'select',
+          ],
+          questionImage.body.data.id
+        );
+      })
+      .then((response) => {
+        surveyFields = response.body.data;
+        return cy.apiGetSurveySchema(surveyPhaseId);
+      })
+      .then((response) => {
+        surveySchema = response.body;
 
-            const selectKey = surveyFields[1].attributes.key;
-            const multiSelectKey = surveyFields[2].attributes.key;
-            const linearScaleKey = surveyFields[3].attributes.key;
-            const multiselectImageKey = surveyFields[4].attributes.key;
-            const pointKey = surveyFields[5].attributes.key;
+        const selectKey = surveyFields[1].attributes.key;
+        const multiSelectKey = surveyFields[2].attributes.key;
+        const linearScaleKey = surveyFields[3].attributes.key;
+        const multiselectImageKey = surveyFields[4].attributes.key;
+        const pointKey = surveyFields[5].attributes.key;
+        const select2Key = surveyFields[6].attributes.key;
 
             const fieldConfigs: any =
               surveySchema.data.attributes.json_schema_multiloc.en?.properties;
@@ -104,10 +106,10 @@ describe('Survey question widget', () => {
               return undefined;
             };
 
-            const selectAnswerKeys = getAnswerKeys(selectKey);
-            const multiSelectAnswerKeys = getAnswerKeys(multiSelectKey);
-            const multiselectImageAnswerKeys =
-              getAnswerKeys(multiselectImageKey);
+        const selectAnswerKeys = getAnswerKeys(selectKey);
+        const multiSelectAnswerKeys = getAnswerKeys(multiSelectKey);
+        const multiselectImageAnswerKeys = getAnswerKeys(multiselectImageKey);
+        const select2AnswerKeys = getAnswerKeys(select2Key);
 
             users.forEach(
               (
@@ -121,38 +123,38 @@ describe('Survey question widget', () => {
                     jwt = response._jwt;
                     userIds.push(response.body.data.id);
 
-                    cy.apiUpdateUserCustomFields(
-                      email,
-                      password,
-                      {
-                        gender,
-                      },
-                      jwt
-                    );
-                  })
-                  .then(() => {
-                    cy.apiCreateSurveyResponse({
-                      email,
-                      password,
-                      project_id: projectId,
-                      fields: {
-                        [selectKey]: selectAnswerKeys[0],
-                        [multiSelectKey]: [
-                          multiSelectAnswerKeys[0],
-                          multiSelectAnswerKeys[1],
-                        ],
-                        [linearScaleKey]: i > 1 ? 3 : 2,
-                        [multiselectImageKey]: [multiselectImageAnswerKeys[0]],
-                        [pointKey]: {
-                          type: 'Point',
-                          coordinates: location,
-                        },
-                      },
-                    });
-                  });
-              }
-            );
-          });
+                cy.apiUpdateUserCustomFields(
+                  email,
+                  password,
+                  {
+                    gender,
+                  },
+                  jwt
+                );
+              })
+              .then(() => {
+                cy.apiCreateSurveyResponse({
+                  email,
+                  password,
+                  project_id: projectId,
+                  fields: {
+                    [selectKey]: selectAnswerKeys[0],
+                    [multiSelectKey]: [
+                      multiSelectAnswerKeys[0],
+                      multiSelectAnswerKeys[1],
+                    ],
+                    [linearScaleKey]: i > 1 ? 3 : 2,
+                    [multiselectImageKey]: [multiselectImageAnswerKeys[0]],
+                    [pointKey]: {
+                      type: 'Point',
+                      coordinates: location,
+                    },
+                    [select2Key]: select2AnswerKeys[i % 2 ? 0 : 1],
+                  },
+                }, jwt);
+              });
+          }
+        );
       })
       .then(() => {
         return cy.apiCreatePhase({
@@ -454,7 +456,7 @@ describe('Survey question widget', () => {
 
     it('allows slicing multiselect by linear scale', () => {
       cy.setAdminLoginCookie();
-      cy.apiCreateReportBuilder().then((report) => {
+      cy.apiCreateReportBuilder(informationPhaseId).then((report) => {
         const reportId = report.body.data.id;
 
         cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
@@ -498,13 +500,73 @@ describe('Survey question widget', () => {
           // Check colors
           cy.get('svg.e2e-progress-bar > rect')
             .first()
+            .should('have.attr', 'fill', '#EE7041');
+          cy.get('svg.e2e-progress-bar > rect')
+            .eq(1)
+            .should('have.attr', 'fill', '#F3A675');
+        };
+
+        ensureCorrectGrouping();
+
+        // Save
+        cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
+          'saveReportLayout'
+        );
+        cy.get('#e2e-content-builder-topbar-save').click();
+        cy.wait('@saveReportLayout');
+
+        // Reload page and check if values are still correct
+        cy.reload();
+        ensureCorrectGrouping();
+
+        cy.apiRemoveReportBuilder(reportId);
+      });
+    });
+
+    it('has correct color scheme', () => {
+      cy.setAdminLoginCookie();
+      cy.apiCreateReportBuilder(informationPhaseId).then((report) => {
+        const reportId = report.body.data.id;
+
+        cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
+
+        cy.get('#e2e-draggable-survey-question-result-widget').dragAndDrop(
+          '#e2e-content-builder-frame',
+          {
+            position: 'inside',
+          }
+        );
+
+        cy.wait(1000);
+
+        // Select project, phase and question
+        cy.get('#e2e-report-builder-project-filter-box select').select(
+          projectId
+        );
+        cy.get('#e2e-phase-filter').select(surveyPhaseId);
+        cy.get('.e2e-question-select select')
+          .first()
+          .select(surveyFields[6].id);
+
+        cy.get('#e2e-group-mode-select').select('user_field');
+        cy.get('#e2e-user-field-select').select('Gender');
+
+        const ensureCorrectGrouping = () => {
+          cy.get('svg.e2e-progress-bar').should('have.length', 3);
+          cy.get('svg.e2e-progress-bar')
+            .first()
+            .should('have.attr', 'width', '50%');
+          cy.get('svg.e2e-progress-bar > rect')
+            .first()
             .should('have.attr', 'fill', '#2F478A');
+
+          cy.get('svg.e2e-progress-bar')
+            .eq(1)
+            .should('have.attr', 'width', '50%');
           cy.get('svg.e2e-progress-bar > rect')
             .eq(1)
             .should('have.attr', 'fill', '#4D85C6');
         };
-
-        ensureCorrectGrouping();
 
         // Save
         cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(

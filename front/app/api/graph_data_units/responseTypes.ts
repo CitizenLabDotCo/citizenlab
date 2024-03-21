@@ -1,16 +1,8 @@
-import { Multiloc } from 'typings';
-
-import { ICustomFieldInputType } from 'api/custom_fields/types';
 import { IIdeaImageData } from 'api/idea_images/types';
 import { IIdeaData } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
-import {
-  SurveyResultAttributes,
-  Answer,
-  AnswerMultilocs,
-  MultilocAnswer,
-} from 'api/survey_results/types';
+import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
 import { GenderOption } from 'api/users_by_gender/types';
 
 import {
@@ -36,57 +28,11 @@ import {
 } from 'components/admin/GraphCards/ReactionsByTimeCard/useReactionsByTime/typings';
 import { TrafficSourcesRow } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/typings';
 
-// Survey results (whole survey, deprecated)
-export type SurveyResultsResponse = {
-  data: {
-    type: 'report_builder_data_units';
-    attributes: SurveyResultAttributes;
-  };
-};
-
 // Survey question results
-export type GroupedAnswer = Answer & {
-  groups: { group: string | null; count: number }[];
-};
-
-export type AnswerMultilocsGrouped = AnswerMultilocs & {
-  group: Record<string, MultilocAnswer>;
-};
-
-type BaseAttributes = {
-  inputType: ICustomFieldInputType;
-  question: Multiloc;
-  customFieldId: string;
-  required: boolean;
-  totalResponseCount: number;
-  totalPickCount: number;
-  questionResponseCount: number;
-};
-
-export type AttributesGrouped = BaseAttributes & {
-  grouped: true;
-  answers: GroupedAnswer[];
-  multilocs: AnswerMultilocsGrouped;
-  legend: (string | null)[];
-};
-
-export type AttributesUngrouped = BaseAttributes & {
-  grouped: false;
-  answers: Answer[];
-  multilocs: AnswerMultilocs;
-  // For point (map) questions
-  mapConfigId?: string;
-  pointResponses?: { response: GeoJSON.Point }[];
-};
-
-export type SurveyQuestionResultAttributes =
-  | AttributesGrouped
-  | AttributesUngrouped;
-
 export type SurveyQuestionResultResponse = {
   data: {
     type: 'report_builder_data_units';
-    attributes: SurveyQuestionResultAttributes;
+    attributes: ResultGrouped | ResultUngrouped;
   };
 };
 

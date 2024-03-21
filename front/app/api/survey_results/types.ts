@@ -26,24 +26,52 @@ export interface AnswerMultilocs {
   answer: Record<string, MultilocAnswer>;
 }
 
-export interface Result {
+export type GroupedAnswer = Answer & {
+  groups: { group: string | null; count: number }[];
+};
+
+export type AnswerMultilocsGrouped = AnswerMultilocs & {
+  group: Record<string, MultilocAnswer>;
+};
+
+type BaseResult = {
   inputType: ICustomFieldInputType;
   question: Multiloc;
-  required: boolean;
-  mapConfigId?: string;
   customFieldId: string;
+  required: boolean;
   totalResponseCount: number;
+  totalPickCount: number;
   questionResponseCount: number;
-  totalPickCount?: number;
-  answers?: Answer[];
+
+  // Defined for text questions,
+  // and for select questions with "other" option
   textResponses?: { answer: string }[];
-  files?: { name: string; url: string }[];
-  pointResponses?: { response: GeoJSON.Point }[];
+};
+
+export type ResultUngrouped = BaseResult & {
+  grouped: false;
+  answers: Answer[];
+
+  // Undefined for text and file upload questions
   multilocs?: AnswerMultilocs;
-}
+
+  // Defined point (map) questions
+  mapConfigId?: string;
+  pointResponses?: { response: GeoJSON.Point }[];
+
+  // Defined for file upload questions
+  files?: { name: string; url: string }[];
+};
+
+export type ResultGrouped = BaseResult & {
+  grouped: true;
+  answers: GroupedAnswer[];
+  multilocs: AnswerMultilocsGrouped;
+  legend: (string | null)[];
+};
 
 export interface SurveyResultAttributes {
-  results: Result[];
+  results: ResultUngrouped[];
   totalSubmissions: number;
 }
 
