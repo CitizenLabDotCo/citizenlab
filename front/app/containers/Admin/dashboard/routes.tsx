@@ -3,13 +3,26 @@ import React, { lazy } from 'react';
 import moduleConfiguration from 'modules';
 
 import PageLoading from 'components/UI/PageLoading';
+
+import { AdminRoute } from '../routes';
 const DashboardWrapper = lazy(() => import('.'));
 const Overview = lazy(() => import('./overview'));
 const Users = lazy(() => import('./users'));
 
+enum dashboardRoutes {
+  dashboard = 'dashboard',
+  overview = 'overview',
+  users = 'users',
+}
+
+export type dashboardRouteTypes =
+  | AdminRoute<dashboardRoutes.dashboard>
+  | AdminRoute<`${dashboardRoutes.dashboard}/${dashboardRoutes.overview}`>
+  | AdminRoute<`${dashboardRoutes.dashboard}/${dashboardRoutes.users}`>;
+
 const createAdminDashboardRoutes = () => {
   return {
-    path: 'dashboard',
+    path: dashboardRoutes.dashboard,
     element: (
       <PageLoading>
         <DashboardWrapper />
@@ -17,7 +30,7 @@ const createAdminDashboardRoutes = () => {
     ),
     children: [
       {
-        path: 'overview',
+        path: dashboardRoutes.overview,
         element: (
           <PageLoading>
             <Overview />
@@ -25,7 +38,7 @@ const createAdminDashboardRoutes = () => {
         ),
       },
       {
-        path: 'users',
+        path: dashboardRoutes.users,
         element: (
           <PageLoading>
             <Users />
