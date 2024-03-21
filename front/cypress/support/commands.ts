@@ -1712,10 +1712,17 @@ function apiCreateSurveyQuestions(
 }
 
 function apiCreateSurveyResponse(
-  email: string,
-  password: string,
-  project_id: string,
-  fields: Record<string, any>,
+  {
+    email,
+    password,
+    project_id,
+    fields,
+  }: {
+    email?: string;
+    password?: string;
+    project_id: string;
+    fields: Record<string, any>;
+  },
   jwt?: any
 ) {
   const makeRequest = (jwt: any) => {
@@ -1732,6 +1739,15 @@ function apiCreateSurveyResponse(
           project_id,
           ...fields,
         },
+        method: 'POST',
+        url: 'web_api/v1/ideas',
+        body: {
+          idea: {
+            publication_status: 'published',
+            project_id,
+            ...fields,
+          },
+        },
       },
     });
   };
@@ -1739,10 +1755,12 @@ function apiCreateSurveyResponse(
   if (jwt) {
     return makeRequest(jwt);
   } else {
-    return cy.apiLogin(email, password).then((response) => {
-      const jwt = response.body.jwt;
-      return makeRequest(jwt);
-    });
+    return cy
+      .apiLogin(email || 'admin@citizenlab.co', password || 'democracy2.0')
+      .then((response) => {
+        const jwt = response.body.jwt;
+        return makeRequest(jwt);
+      });
   }
 }
 

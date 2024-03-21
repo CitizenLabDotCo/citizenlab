@@ -24,7 +24,7 @@ namespace :complex_migrations do
   task :migrate_topic_codes, [:url] => [:environment] do |_t, args|
     errors = []
     puts 'Processing topic mapping'
-    data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
+    data = CSV.parse(open(args[:url]).read, headers: true, col_sep: ',', converters: [])
     is_mapping = {}
     conditions = ['is', 'synonym of']
     data.each do |d|

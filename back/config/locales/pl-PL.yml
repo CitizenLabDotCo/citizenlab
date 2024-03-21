@@ -149,7 +149,7 @@ pl:
         title: Szczegóły
         description:
       other:
-        title: Wpisz swoją odpowiedź
+        title: Skoro wybrałeś "inne", o czym myślisz?
   custom_forms:
     categories:
       main_content:

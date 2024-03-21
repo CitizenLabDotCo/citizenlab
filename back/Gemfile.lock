@@ -13,9 +13,10 @@ PATH
   remote: engines/commercial/analysis
   specs:
     analysis (0.1.0)
+      concurrent-ruby (~> 1.2.3)
       nlpcloud (~> 1.0)
       rails (~> 7.0)
-      ruby-openai (~> 4.2)
+      ruby-openai (~> 6.3)
       tiktoken_ruby (~> 0.0.7)
 
 PATH
@@ -490,6 +491,7 @@ GEM
       rubyzip (~> 1.2, >= 1.2.1)
     base64 (0.2.0)
     bcrypt (3.1.18)
+    bigdecimal (3.1.7)
     bindata (2.5.0)
     binding_of_caller (1.0.0)
       debug_inspector (>= 0.0.1)
@@ -541,7 +543,7 @@ GEM
     crack (0.4.5)
       rexml
     crass (1.0.6)
-    crawler_detect (1.2.2)
+    crawler_detect (1.2.3)
       qonfig (~> 0.24)
     css_parser (1.14.0)
       addressable
@@ -562,6 +564,7 @@ GEM
       thread
       thread_safe
     erubi (1.12.0)
+    event_stream_parser (1.0.0)
     excon (0.99.0)
     factory_bot (6.2.1)
       activesupport (>= 5.0.0)
@@ -959,7 +962,7 @@ GEM
     rails-html-sanitizer (1.6.0)
       loofah (~> 2.21)
       nokogiri (~> 1.14)
-    rails-i18n (7.0.7)
+    rails-i18n (7.0.9)
       i18n (>= 0.7, < 2)
       railties (>= 6.0.0, < 8)
     rails_semantic_logger (4.12.0)
@@ -1069,7 +1072,8 @@ GEM
       rubocop (>= 1.33.0, < 2.0)
     rubocop-rspec (2.17.1)
       rubocop (~> 1.33)
-    ruby-openai (4.2.0)
+    ruby-openai (6.3.1)
+      event_stream_parser (>= 0.3.0, < 2.0.0)
       faraday (>= 1)
       faraday-multipart (>= 1)
     ruby-progressbar (1.13.0)
@@ -1100,10 +1104,11 @@ GEM
       railties (>= 4.0.0)
     semantic_logger (4.13.0)
       concurrent-ruby (~> 1.0)
-    sentry-rails (5.8.0)
+    sentry-rails (5.17.1)
       railties (>= 5.0)
-      sentry-ruby (~> 5.8.0)
-    sentry-ruby (5.8.0)
+      sentry-ruby (~> 5.17.1)
+    sentry-ruby (5.17.1)
+      bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
     set (1.0.3)
     shoulda-matchers (6.2.0)
@@ -1313,7 +1318,7 @@ DEPENDENCIES
   rack-cors (= 2.0.0)
   rack-mini-profiler
   rails (~> 7.0)
-  rails-i18n (~> 7.0.7)
+  rails-i18n (~> 7.0.9)
   rails_semantic_logger
   redcarpet
   remove_vendor_branding!

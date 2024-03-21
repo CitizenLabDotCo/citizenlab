@@ -149,7 +149,7 @@ el:
         title: Λεπτομέρειες
         description:
       other:
-        title: Πληκτρολογήστε την απάντησή σας
+        title: Αφού επιλέξατε το "άλλο", τι σκέφτεστε;
   custom_forms:
     categories:
       main_content:
