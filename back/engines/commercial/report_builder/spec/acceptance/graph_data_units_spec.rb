@@ -42,6 +42,9 @@ resource 'Graph data units' do
       project: project)
     @report = create(:report, layout: build(:layout, craftjs_json: craftjs_json), phase: phase)
 
+    # Make TimeBoundariesParser work as expected
+    AppConfiguration.instance.update!(created_at: filtered_date - 2.days)
+
     # This is used if the data query is implemented with Analytics API
     # create(:dimension_date, date: filtered_date)
     # create(:dimension_type, name: 'idea', parent: 'post')
