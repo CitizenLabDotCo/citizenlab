@@ -6,10 +6,6 @@ import mockModules from './mockModules';
 const config: StorybookConfig = {
   stories: ['../app/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
   addons: [
-    '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@storybook/addon-knobs',
-    '@storybook/addon-actions',
     // This plugin was causing a peer dependency conflict.
     // We first need to upgrade our main app to react-router-dom >=6.4.0
     // This upgrade has breaking changes so those need to be dealt with first.
