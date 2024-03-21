@@ -1,18 +1,19 @@
-import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import Label from '.';
 
-export default {
+const meta = {
   title: 'Components/Label',
   component: Label,
-};
+} satisfies Meta<typeof Label>;
 
-export const Default = {
-  render: () => <Label>This is a label</Label>,
-  name: 'default',
-};
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const WithValueProp = {
-  render: () => <Label value="This is a label that uses the value prop" />,
-  name: 'with value prop',
+export const Default: Story = {};
+
+export const WithValueProp: Story = {
+  args: {
+    value: 'This is a label that uses the value prop',
+  },
 };

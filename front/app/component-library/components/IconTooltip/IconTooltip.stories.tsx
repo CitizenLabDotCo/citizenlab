@@ -1,34 +1,35 @@
 import React from 'react';
 
+import { Meta, StoryObj } from '@storybook/react';
+
 import IconTooltip from '.';
 
-export default {
+const meta = {
   title: 'Components/IconTooltip',
   component: IconTooltip,
+} satisfies Meta<typeof IconTooltip>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+  args: {
+    content: 'Some text',
+  },
 };
 
-export const Default = {
-  render: () => <IconTooltip content="Some text" />,
-  name: 'default',
+export const WithJsxElement: Story = {
+  args: { content: <div>A div with some text</div> },
 };
 
-export const WithJsxElement = {
-  render: () => <IconTooltip content={<div>A div with some text</div>} />,
-  name: 'With JSX element',
+export const FixedBottomPlacement: Story = {
+  args: { ...Default.args, placement: 'bottom' },
 };
 
-export const FixedBottomPlacement = {
-  render: () => <IconTooltip content="Some text" placement="bottom" />,
-  name: 'Fixed bottom placement',
-};
-
-export const WithTransformTranslate = {
-  render: () => (
-    <IconTooltip
-      content="Some text"
-      placement="bottom"
-      transform="translate(10,10)"
-    />
-  ),
-  name: 'With transform: translate',
+export const WithTransformTranslate: Story = {
+  args: {
+    ...Default.args,
+    placement: 'bottom',
+    transform: 'translate(10,10)',
+  },
 };

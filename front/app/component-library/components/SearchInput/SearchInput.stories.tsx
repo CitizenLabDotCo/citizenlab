@@ -1,52 +1,30 @@
-import React from 'react';
-
-import { action } from '@storybook/addon-actions';
-import { text, number, boolean } from '@storybook/addon-knobs';
+import { Meta, StoryObj } from '@storybook/react';
 
 import SearchInput from './';
 
-export default {
+const meta = {
   title: 'Components/SearchInput',
   component: SearchInput,
+} satisfies Meta<typeof SearchInput>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+  args: {
+    id: 'search-input',
+    a11y_closeIconTitle: 'Close search',
+    debounce: 500,
+    placeholder: 'placeholder',
+    ariaLabel: 'aria label',
+    onChange: () => {},
+    size: 'medium',
+  },
 };
 
-export const Default = {
-  render: () => (
-    <div
-      style={{
-        maxWidth: '400px',
-      }}
-    >
-      <SearchInput
-        debounce={number('Debounce', 500)}
-        placeholder={text('Placeholder', 'placeholder')}
-        ariaLabel={text('ARIA Label', 'aria label')}
-        onChange={action('input changed')}
-        size={boolean('Small', false) ? 'small' : 'medium'}
-      />
-    </div>
-  ),
-
-  name: 'default',
-};
-
-export const WithDefaultValue = {
-  render: () => (
-    <div
-      style={{
-        maxWidth: '400px',
-      }}
-    >
-      <SearchInput
-        defaultValue="Default search value"
-        debounce={number('Debounce', 500)}
-        placeholder={text('Placeholder', 'placeholder')}
-        ariaLabel={text('ARIA Label', 'aria label')}
-        onChange={action('input changed')}
-        size={boolean('Small', false) ? 'small' : 'medium'}
-      />
-    </div>
-  ),
-
-  name: 'with default value',
+export const WithDefaultValue: Story = {
+  args: {
+    ...Default.args,
+    defaultValue: 'Default search value',
+  },
 };

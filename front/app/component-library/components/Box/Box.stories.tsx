@@ -1,26 +1,26 @@
 import React from 'react';
 
-import { select } from '@storybook/addon-knobs';
-
-import { colors } from '../../utils/styleUtils';
+import { Meta, StoryObj } from '@storybook/react';
 
 import Box from '.';
 
-export default {
+const meta = {
   title: 'Components/Box',
   component: Box,
-};
+} satisfies Meta<typeof Box>;
 
-export const Default = {
-  render: () => (
-    <Box
-      bgColor={select('Background color', colors, '#fff')}
-      color={select('Color', colors, '#333')}
-    >
-      <div>Hi, I am the first child of this Box!</div>
-      <div>Hi, I am the second child of this Box!</div>
-    </Box>
-  ),
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-  name: 'default',
+export const Default: Story = {
+  args: {
+    bgColor: '#fff',
+    color: '#333',
+    children: (
+      <>
+        <div>Hi, I am the first child of this Box!</div>
+        <div>Hi, I am the second child of this Box!</div>
+      </>
+    ),
+  },
 };

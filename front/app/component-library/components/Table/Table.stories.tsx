@@ -1,112 +1,100 @@
 import React from 'react';
 
+import { Meta, StoryObj } from '@storybook/react';
+
 import { Table, Thead, Tbody, Tr, Th, Td } from './';
 
-export default {
+const meta = {
   title: 'Components/Table',
   component: Table,
+} satisfies Meta<typeof Table>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+  args: {
+    children: (
+      <>
+        <Thead>
+          <Tr>
+            <Th>107 ideas</Th>
+            <Th>Tags</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          <Tr>
+            <Td>Some title</Td>
+            <Td>Some tag</Td>
+          </Tr>
+          <Tr>
+            <Td>Idea title</Td>
+            <Td>Another tag</Td>
+          </Tr>
+        </Tbody>
+      </>
+    ),
+  },
 };
 
-export const Default = {
-  render: () => (
-    <Table>
-      <Thead>
-        <Tr>
-          <Th>107 ideas</Th>
-          <Th>Tags</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
-        <Tr>
-          <Td>Some title</Td>
-          <Td>Some tag</Td>
-        </Tr>
-        <Tr>
-          <Td>Idea title</Td>
-          <Td>Another tag</Td>
-        </Tr>
-      </Tbody>
-    </Table>
-  ),
+export const WithInnerBorders: Story = {
+  args: {
+    ...Default.args,
+    innerBorders: {
+      headerCells: true,
+      bodyRows: true,
+    },
+  },
 };
 
-export const WithInnerBorders = {
-  render: () => (
-    <Table
-      innerBorders={{
-        headerCells: true,
-        bodyRows: true,
-      }}
-    >
-      <Thead>
-        <Tr>
-          <Th>107 ideas</Th>
-          <Th>Tags</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
-        <Tr>
-          <Td>Some title</Td>
-          <Td>Some tag</Td>
-        </Tr>
-        <Tr>
-          <Td>Idea title</Td>
-          <Td>Another tag</Td>
-        </Tr>
-      </Tbody>
-    </Table>
-  ),
-  name: 'With inner borders',
+export const WithSortableAndTooltipIcons: Story = {
+  args: {
+    children: (
+      <>
+        <Thead>
+          <Tr>
+            <Th sortDirection="ascending" clickable>
+              107 ideas
+            </Th>
+            <Th infoTooltip="Some info">Tags</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          <Tr>
+            <Td>Some title</Td>
+            <Td>Some tag</Td>
+          </Tr>
+          <Tr>
+            <Td>Idea title</Td>
+            <Td>Another tag</Td>
+          </Tr>
+        </Tbody>
+      </>
+    ),
+  },
 };
 
-export const WithSortableAndTooltipIcons = {
-  render: () => (
-    <Table>
-      <Thead>
-        <Tr>
-          <Th sortDirection="ascending" clickable>
-            107 ideas
-          </Th>
-          <Th infoTooltip="Some info">Tags</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
-        <Tr>
-          <Td>Some title</Td>
-          <Td>Some tag</Td>
-        </Tr>
-        <Tr>
-          <Td>Idea title</Td>
-          <Td>Another tag</Td>
-        </Tr>
-      </Tbody>
-    </Table>
-  ),
-
-  name: 'With sortable and tooltip icons',
-};
-
-export const WithTrBackgrounds = {
-  render: () => (
-    <Table>
-      <Thead>
-        <Tr background="lightGrey">
-          <Th>107 ideas</Th>
-          <Th>Tags</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
-        <Tr background="yellow">
-          <Td>Some title</Td>
-          <Td>Some tag</Td>
-        </Tr>
-        <Tr background="pink">
-          <Td>Idea title</Td>
-          <Td>Another tag</Td>
-        </Tr>
-      </Tbody>
-    </Table>
-  ),
-
-  name: 'With Tr backgrounds',
+export const WithTrBackgrounds: Story = {
+  args: {
+    children: (
+      <>
+        <Thead>
+          <Tr background="lightGrey">
+            <Th>107 ideas</Th>
+            <Th>Tags</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          <Tr background="yellow">
+            <Td>Some title</Td>
+            <Td>Some tag</Td>
+          </Tr>
+          <Tr background="pink">
+            <Td>Idea title</Td>
+            <Td>Another tag</Td>
+          </Tr>
+        </Tbody>
+      </>
+    ),
+  },
 };
