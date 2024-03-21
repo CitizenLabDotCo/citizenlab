@@ -41,7 +41,7 @@ module Analysis
 
     def inputs_prompt(inputs, project_title)
       inputs_text = input_to_text.format_all(inputs)
-      prompt = LLM::Prompt.new.fetch('topic_modeling', project_title: project_title, inputs_text: inputs_text, max_topics: max_topics(inputs.size))
+      LLM::Prompt.new.fetch('topic_modeling', project_title: project_title, inputs_text: inputs_text, max_topics: max_topics(inputs.size))
     end
 
     def parse_topic_modeling_response(response)
@@ -61,7 +61,7 @@ module Analysis
       tokens = LLM::AzureOpenAI.token_count(prompt) + TOKENS_FOR_RESPONSE
       exceeded_tokens = tokens - gpt4.context_window
       return inputs if exceeded_tokens < 0
-      
+
       tokens_per_input = (LLM::AzureOpenAI.token_count(input_to_text.format_all(inputs)) / inputs.size.to_f).ceil
       inputs_excess = (exceeded_tokens / tokens_per_input.to_f).ceil
       inputs_excess = [inputs_excess, 1].max # Avoid infinite loop

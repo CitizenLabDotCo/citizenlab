@@ -111,7 +111,6 @@ module Analysis
       tasks = inputs.map.with_index do |input, idx|
         input_id = input.id
         inputs_text = input_to_text_classify.format_all([input])
-        byebug
         wait = idx * TASK_INTERVAL # Avoid 429 Too Many Requests
         Concurrent::ScheduledTask.execute(wait, executor: pool) do
           [input_id, classify_input_text(inputs_text, topics)]
