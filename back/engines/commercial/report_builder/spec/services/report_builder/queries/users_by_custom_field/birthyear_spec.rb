@@ -7,6 +7,8 @@ RSpec.describe ReportBuilder::Queries::UsersByCustomField::Birthyear do
 
   describe '#run_query' do
     let(:date) { Date.new(2022, 9, 1) }
+    let(:start_at) { (date - 1.day).to_s }
+    let(:end_at) { (date + 1.day).to_s }
 
     before do
       options = []
@@ -17,9 +19,18 @@ RSpec.describe ReportBuilder::Queries::UsersByCustomField::Birthyear do
       AppConfiguration.instance.update!(created_at: date - 2.days)
     end
 
-    it 'returns users by birthyear' do
-      params = { start_at: date - 1.day, end_at: date + 1.day }
+    it 'returns users by gender' do
+      params = { start_at: start_at, end_at: end_at }
       expect(query.run_query(**params)).to eq({ '_blank' => 0, 1977 => 1 })
+    end
+
+    context 'when end_at is blank' do
+      let(:end_at) { '' }
+
+      it 'returns the same users by gender' do
+        params = { start_at: start_at, end_at: end_at }
+        expect(query.run_query(**params)).to eq({ '_blank' => 0, 1977 => 1 })
+      end
     end
   end
 end

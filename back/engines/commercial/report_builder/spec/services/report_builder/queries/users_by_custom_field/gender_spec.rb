@@ -7,6 +7,8 @@ RSpec.describe ReportBuilder::Queries::UsersByCustomField::Gender do
 
   describe '#run_query' do
     let(:date) { Date.new(2022, 9, 1) }
+    let(:start_at) { (date - 1.day).to_s }
+    let(:end_at) { (date + 1.day).to_s }
 
     before do
       options = [
@@ -21,8 +23,17 @@ RSpec.describe ReportBuilder::Queries::UsersByCustomField::Gender do
     end
 
     it 'returns users by gender' do
-      params = { start_at: date - 1.day, end_at: date + 1.day }
+      params = { start_at: start_at, end_at: end_at }
       expect(query.run_query(**params)).to eq({ '_blank' => 0, 'female' => 1, 'other' => 0 })
+    end
+
+    context 'when end_at is blank' do
+      let(:end_at) { '' }
+
+      it 'returns the same users by gender' do
+        params = { start_at: start_at, end_at: end_at }
+        expect(query.run_query(**params)).to eq({ '_blank' => 0, 'female' => 1, 'other' => 0 })
+      end
     end
   end
 end
