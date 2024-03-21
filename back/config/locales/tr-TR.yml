@@ -149,7 +149,7 @@ tr:
         title: Detaylar
         description:
       other:
-        title: Cevabınızı yazın
+        title: '''Diğer''i seçtiğinize göre, ne düşünüyorsunuz?'
   custom_forms:
     categories:
       main_content:
