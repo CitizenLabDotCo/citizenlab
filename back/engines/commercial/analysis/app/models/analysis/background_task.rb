@@ -42,10 +42,21 @@ module Analysis
 
     before_validation :set_default_state
 
+    def insightable
+      [Summary, Question].find do |insightable_class|
+        insightable_class.find_by(background_task_id: id)
+      end
+    end
+
+    def finished?
+      %w[succeeded failed].include?(state)
+    end
+
     def set_in_progress!
       self.state = 'in_progress'
       self.started_at = Time.now
       save!
+      insightable&.update!(generated_at: nil)
     end
 
     def set_succeeded!
@@ -53,6 +64,7 @@ module Analysis
       self.progress = nil
       self.ended_at = Time.now
       save!
+      insightable&.update!(generated_at: Time.now)
     end
 
     def set_failed!
