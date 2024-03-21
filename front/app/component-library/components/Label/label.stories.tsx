@@ -10,9 +10,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
-
-export const WithValueProp: Story = {
+export const Default: Story = {
   args: {
     value: 'This is a label that uses the value prop',
   },

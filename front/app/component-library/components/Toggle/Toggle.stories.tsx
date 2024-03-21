@@ -22,6 +22,13 @@ export const Default: Story = {
   },
 };
 
+export const Checked: Story = {
+  args: {
+    checked: true,
+    onChange: () => {},
+  },
+};
+
 export const WithLabel: Story = {
   args: {
     checked: false,

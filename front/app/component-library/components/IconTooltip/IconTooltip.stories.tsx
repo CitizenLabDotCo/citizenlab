@@ -16,6 +16,7 @@ export const Default: Story = {
   args: {
     content: 'Some text',
   },
+  name: 'IconTooltip (hover me)',
 };
 
 export const WithJsxElement: Story = {

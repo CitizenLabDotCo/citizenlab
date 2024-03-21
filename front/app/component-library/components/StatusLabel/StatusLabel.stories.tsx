@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
+import { colors } from 'component-library/utils/styleUtils';
 
 import StatusLabel from './';
 
@@ -16,7 +17,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     text: 'In consideration',
-    backgroundColor: 'blue700',
+    backgroundColor: colors.blue700,
   },
 };
 
@@ -24,20 +25,5 @@ export const WithIconProp: Story = {
   args: {
     ...Default.args,
     icon: 'lock',
-  },
-};
-
-export const VariantOutlined: Story = {
-  args: {
-    ...Default.args,
-    variant: 'outlined',
-  },
-};
-
-export const VariantOutlinedWithIcon: Story = {
-  args: {
-    ...Default.args,
-    icon: 'lock',
-    variant: 'outlined',
   },
 };

@@ -26,6 +26,7 @@ export const Default: Story = {
 export const WithPlaceholder: Story = {
   args: {
     ...Default.args,
+    value: '',
     placeholder: 'placeholder',
   },
 };
