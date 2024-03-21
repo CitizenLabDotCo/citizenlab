@@ -21,24 +21,15 @@ enum userShowPageRoutes {
   events = 'events',
 }
 
-export type UserShowPageRouteTypes =
-  | `${string}${userShowPageRoutes.profile}/${string}`
-  | `${string}`
-  | `${string}${userShowPageRoutes.profile}/${userShowPageRoutes.submissions}`
-  | `${string}${userShowPageRoutes.profile}/${userShowPageRoutes.comments}`
-  | `${string}${userShowPageRoutes.profile}/${userShowPageRoutes.following}`
-  | `${string}${userShowPageRoutes.profile}/${userShowPageRoutes.events}`;
+export type userShowPageRouteTypes =
+  | `${userShowPageRoutes.profile}/${string}`
+  | ``
+  | `${userShowPageRoutes.profile}/${userShowPageRoutes.submissions}`
+  | `${userShowPageRoutes.profile}/${userShowPageRoutes.comments}`
+  | `${userShowPageRoutes.profile}/${userShowPageRoutes.following}`
+  | `${userShowPageRoutes.profile}/${userShowPageRoutes.events}`;
 
-type RoutesTypes = {
-  path: userShowPageRoutes;
-  element: JSX.Element;
-  children: {
-    path: userShowPageRoutes;
-    element: JSX.Element;
-  }[];
-};
-
-export default (): RoutesTypes => ({
+export default () => ({
   path: userShowPageRoutes.profileUserSlug,
   element: (
     <PageLoading>

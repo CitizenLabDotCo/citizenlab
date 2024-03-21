@@ -61,7 +61,7 @@ import widgetsConfiguration, {
   widgetsRoutes,
 } from './commercial/widgets';
 
-export type ModuleRouteTypes =
+export type moduleRouteTypes =
   | projectTemplateRouteTypes
   | analyticsRouteTypes
   | bulkIdeaImportRouteTypes
@@ -72,7 +72,7 @@ export type ModuleRouteTypes =
   | representativenessRouteTypes
   | widgetsRouteTypes;
 
-export type ModuleRoutes =
+export type moduleRoutes =
   | projectTemplateRoutes
   | analyticsRoutes
   | bulkIdeaImportRoutes

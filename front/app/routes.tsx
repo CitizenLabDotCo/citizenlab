@@ -1,10 +1,10 @@
 import React, { lazy } from 'react';
 
-import moduleConfiguration, { ModuleRouteTypes } from 'modules';
+import moduleConfiguration, { moduleRouteTypes } from 'modules';
 
 import createAdminRoutes, { AdminRouteTypes } from 'containers/Admin/routes';
 import userProfileRoutes, {
-  UserShowPageRouteTypes,
+  userShowPageRouteTypes,
 } from 'containers/UsersShowPage/routes';
 
 import PageLoading from 'components/UI/PageLoading';
@@ -55,11 +55,11 @@ const DisabledAccount = lazy(() => import('containers/DisabledAccount'));
 
 export type RouteType =
   | AdminRouteTypes
-  | ModuleRouteTypes
-  | UserShowPageRouteTypes
-  | CitizenRouteTypes;
+  | moduleRouteTypes
+  | userShowPageRouteTypes
+  | citizenRouteTypes;
 
-export enum CitizenRoutes {
+export enum citizenRoutes {
   locale = '/:locale',
   profile = 'profile',
   signIn = 'sign-in',
@@ -99,7 +99,7 @@ export enum CitizenRoutes {
   reportPrintPage = `admin/reporting/report-builder/:reportId/print`,
 }
 
-type CitizenRouteTypes =
+type citizenRouteTypes =
   | `/${string}/`
   | `sign-in`
   | `sign-up`
@@ -107,40 +107,40 @@ type CitizenRouteTypes =
   | `complete-signup`
   | `authentication-error`
   | `site-map`
-  | `${CitizenRoutes.profile}/edit`
-  | `${CitizenRoutes.profile}/change-password`
-  | `${CitizenRoutes.profile}/change-email`
+  | `${citizenRoutes.profile}/edit`
+  | `${citizenRoutes.profile}/change-password`
+  | `${citizenRoutes.profile}/change-email`
   | `ideas`
-  | `${CitizenRoutes.ideas}/edit/${string}`
-  | `${CitizenRoutes.ideas}/${string}`
+  | `${citizenRoutes.ideas}/edit/${string}`
+  | `${citizenRoutes.ideas}/${string}`
   | `initiatives`
-  | `${CitizenRoutes.initiatives}/edit/${string}`
-  | `${CitizenRoutes.initiatives}/new`
-  | `${CitizenRoutes.initiatives}/${string}`
-  | `${CitizenRoutes.projects}`
-  | `${CitizenRoutes.projects}/${string}/${CitizenRoutes.ideas}/new`
-  | `${CitizenRoutes.projects}/${string}`
-  | `${CitizenRoutes.folders}`
-  | `${CitizenRoutes.folders}/${string}`
-  | `${CitizenRoutes.events}`
-  | `${CitizenRoutes.events}/${string}`
-  | `${CitizenRoutes.pages}`
-  | `${CitizenRoutes.pages}/cookie-policy`
-  | `${CitizenRoutes.pages}/accessibility-statement`
-  | `${CitizenRoutes.pages}/${string}`
-  | `${CitizenRoutes.passwordRecovery}`
-  | `${CitizenRoutes.resetPassword}`
-  | `${CitizenRoutes.subscriptionEnded}`
-  | `${CitizenRoutes.emailSettings}`
-  | `${CitizenRoutes.disabledAccount}`
+  | `${citizenRoutes.initiatives}/edit/${string}`
+  | `${citizenRoutes.initiatives}/new`
+  | `${citizenRoutes.initiatives}/${string}`
+  | `${citizenRoutes.projects}`
+  | `${citizenRoutes.projects}/${string}/${citizenRoutes.ideas}/new`
+  | `${citizenRoutes.projects}/${string}`
+  | `${citizenRoutes.folders}`
+  | `${citizenRoutes.folders}/${string}`
+  | `${citizenRoutes.events}`
+  | `${citizenRoutes.events}/${string}`
+  | `${citizenRoutes.pages}`
+  | `${citizenRoutes.pages}/cookie-policy`
+  | `${citizenRoutes.pages}/accessibility-statement`
+  | `${citizenRoutes.pages}/${string}`
+  | `${citizenRoutes.passwordRecovery}`
+  | `${citizenRoutes.resetPassword}`
+  | `${citizenRoutes.subscriptionEnded}`
+  | `${citizenRoutes.emailSettings}`
+  | `${citizenRoutes.disabledAccount}`
   | `admin/reporting/report-builder/${string}/print`;
 
 export default function createRoutes() {
-  return [CitizenRoutesObject];
+  return [citizenRoutesObject];
 }
 
-const CitizenRoutesObject = {
-  path: CitizenRoutes.locale,
+const citizenRoutesObject = {
+  path: citizenRoutes.locale,
   children: [
     {
       index: true,
@@ -151,7 +151,7 @@ const CitizenRoutesObject = {
       ),
     },
     {
-      path: CitizenRoutes.signIn,
+      path: citizenRoutes.signIn,
       element: (
         <PageLoading>
           <HomePage />
@@ -159,7 +159,7 @@ const CitizenRoutesObject = {
       ),
     },
     {
-      path: CitizenRoutes.signUp,
+      path: citizenRoutes.signUp,
       element: (
         <PageLoading>
           <HomePage />
@@ -167,7 +167,7 @@ const CitizenRoutesObject = {
       ),
     },
     {
-      path: CitizenRoutes.invite,
+      path: citizenRoutes.invite,
       element: (
         <PageLoading>
           <HomePage />
@@ -175,7 +175,7 @@ const CitizenRoutesObject = {
       ),
     },
     {
-      path: CitizenRoutes.completeSignUp,
+      path: citizenRoutes.completeSignUp,
       element: (
         <PageLoading>
           <HomePage />
@@ -183,7 +183,7 @@ const CitizenRoutesObject = {
       ),
     },
     {
-      path: CitizenRoutes.authenticationError,
+      path: citizenRoutes.authenticationError,
       element: (
         <PageLoading>
           <HomePage />
@@ -191,7 +191,7 @@ const CitizenRoutesObject = {
       ),
     },
     {
-      path: CitizenRoutes.siteMap,
+      path: citizenRoutes.siteMap,
       element: (
         <PageLoading>
           <SiteMap />
@@ -199,7 +199,7 @@ const CitizenRoutesObject = {
       ),
     },
     {
-      path: CitizenRoutes.profileEdit,
+      path: citizenRoutes.profileEdit,
       element: (
         <PageLoading>
           <UsersEditPage />
@@ -207,7 +207,7 @@ const CitizenRoutesObject = {
       ),
     },
     {
-      path: CitizenRoutes.changePassword,
+      path: citizenRoutes.changePassword,
       element: (
         <PageLoading>
           <PasswordChange />
@@ -215,7 +215,7 @@ const CitizenRoutesObject = {
       ),
     },
     {
-      path: CitizenRoutes.changeEmail,
+      path: citizenRoutes.changeEmail,
       element: (
         <PageLoading>
           <EmailChange />
@@ -224,7 +224,7 @@ const CitizenRoutesObject = {
     },
     userProfileRoutes(),
     {
-      path: CitizenRoutes.ideasEditIdea,
+      path: citizenRoutes.ideasEditIdea,
       element: (
         <PageLoading>
           <IdeasEditPage />
@@ -232,7 +232,7 @@ const CitizenRoutesObject = {
       ),
     },
     {
-      path: CitizenRoutes.ideas,
+      path: citizenRoutes.ideas,
       element: (
         <PageLoading>
           <IdeasIndexPage />
@@ -240,7 +240,7 @@ const CitizenRoutesObject = {
       ),
     },
     {
-      path: CitizenRoutes.ideasSlug,
+      path: citizenRoutes.ideasSlug,
       element: (
         <PageLoading>
           <IdeasShowPage />
@@ -248,7 +248,7 @@ const CitizenRoutesObject = {
       ),
     },
     {
-      path: CitizenRoutes.initiatives,
+      path: citizenRoutes.initiatives,
       element: (
         <PageLoading>
           <InitiativesIndexPage />
@@ -256,7 +256,7 @@ const CitizenRoutesObject = {
       ),
     },
     {
-      path: CitizenRoutes.initiativeEdit,
+      path: citizenRoutes.initiativeEdit,
       element: (
         <PageLoading>
           <InitiativesEditPage />
@@ -264,7 +264,7 @@ const CitizenRoutesObject = {
       ),
     },
     {
-      path: CitizenRoutes.initiativesNew,
+      path: citizenRoutes.initiativesNew,
       element: (
         <PageLoading>
           <InitiativesNewPage />
@@ -273,7 +273,7 @@ const CitizenRoutesObject = {
     },
     // super important that this comes AFTER initiatives/new, if it comes before, new is interpreted as a slug
     {
-      path: CitizenRoutes.initiativesSlug,
+      path: citizenRoutes.initiativesSlug,
       element: (
         <PageLoading>
           <InitiativesShowPage />
@@ -281,7 +281,7 @@ const CitizenRoutesObject = {
       ),
     },
     {
-      path: CitizenRoutes.projectIdeaNew,
+      path: citizenRoutes.projectIdeaNew,
       element: (
         <PageLoading>
           <IdeasNewPage />
@@ -290,7 +290,7 @@ const CitizenRoutesObject = {
     },
     createAdminRoutes(),
     {
-      path: CitizenRoutes.projects,
+      path: citizenRoutes.projects,
       element: (
         <PageLoading>
           <ProjectsIndexPage />
@@ -298,7 +298,7 @@ const CitizenRoutesObject = {
       ),
     },
     {
-      path: CitizenRoutes.projectSlug,
+      path: citizenRoutes.projectSlug,
       element: (
         <PageLoading>
           <ProjectsShowPage />
@@ -314,7 +314,7 @@ const CitizenRoutesObject = {
           ),
         },
         {
-          path: CitizenRoutes.phaseNumber,
+          path: citizenRoutes.phaseNumber,
           element: (
             <PageLoading>
               <ProjectsShowPage />
@@ -322,7 +322,7 @@ const CitizenRoutesObject = {
           ),
         },
         {
-          path: CitizenRoutes.wildcard,
+          path: citizenRoutes.wildcard,
           element: (
             <PageLoading>
               <ProjectsShowPage />
@@ -332,7 +332,7 @@ const CitizenRoutesObject = {
       ],
     },
     {
-      path: CitizenRoutes.foldersSlug,
+      path: citizenRoutes.foldersSlug,
       element: (
         <PageLoading>
           <ProjectFolderShowPage />
@@ -340,7 +340,7 @@ const CitizenRoutesObject = {
       ),
     },
     {
-      path: CitizenRoutes.events,
+      path: citizenRoutes.events,
       element: (
         <PageLoading>
           <EventsPage />
@@ -348,7 +348,7 @@ const CitizenRoutesObject = {
       ),
     },
     {
-      path: CitizenRoutes.eventId,
+      path: citizenRoutes.eventId,
       element: (
         <PageLoading>
           <EventsShowPage />
@@ -356,7 +356,7 @@ const CitizenRoutesObject = {
       ),
     },
     {
-      path: CitizenRoutes.cookiePolicy,
+      path: citizenRoutes.cookiePolicy,
       element: (
         <PageLoading>
           <CookiePolicy />
@@ -364,7 +364,7 @@ const CitizenRoutesObject = {
       ),
     },
     {
-      path: CitizenRoutes.AccessibilityStatement,
+      path: citizenRoutes.AccessibilityStatement,
       element: (
         <PageLoading>
           <AccessibilityStatement />
@@ -372,7 +372,7 @@ const CitizenRoutesObject = {
       ),
     },
     {
-      path: CitizenRoutes.customPage,
+      path: citizenRoutes.customPage,
       element: (
         <PageLoading>
           <CustomPageShow />
@@ -380,7 +380,7 @@ const CitizenRoutesObject = {
       ),
     },
     {
-      path: CitizenRoutes.passwordRecovery,
+      path: citizenRoutes.passwordRecovery,
       element: (
         <PageLoading>
           <PasswordRecovery />
@@ -389,7 +389,7 @@ const CitizenRoutesObject = {
     },
     {
       // Used as link in email received for password recovery
-      path: CitizenRoutes.resetPassword,
+      path: citizenRoutes.resetPassword,
       element: (
         <PageLoading>
           <PasswordReset />
@@ -397,7 +397,7 @@ const CitizenRoutesObject = {
       ),
     },
     {
-      path: CitizenRoutes.subscriptionEnded,
+      path: citizenRoutes.subscriptionEnded,
       element: (
         <PageLoading>
           <SubscriptionEndedPage />
@@ -405,7 +405,7 @@ const CitizenRoutesObject = {
       ),
     },
     {
-      path: CitizenRoutes.emailSettings,
+      path: citizenRoutes.emailSettings,
       element: (
         <PageLoading>
           <EmailSettingsPage />
@@ -413,7 +413,7 @@ const CitizenRoutesObject = {
       ),
     },
     {
-      path: CitizenRoutes.reportPrintPage,
+      path: citizenRoutes.reportPrintPage,
       element: (
         <PageLoading>
           <ReportPrintPage />
@@ -421,7 +421,7 @@ const CitizenRoutesObject = {
       ),
     },
     {
-      path: CitizenRoutes.disabledAccount,
+      path: citizenRoutes.disabledAccount,
       element: (
         <PageLoading>
           <DisabledAccount />
