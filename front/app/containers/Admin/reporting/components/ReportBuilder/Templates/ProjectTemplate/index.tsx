@@ -186,7 +186,7 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
   if (enabled) {
     return <ProjectTemplateContent reportId={reportId} projectId={projectId} />;
   } else {
-    return <Element id="phase-report-template" is={Box} canvas />;
+    return <Element id="project-report-template" is={Box} canvas />;
   }
 };
 

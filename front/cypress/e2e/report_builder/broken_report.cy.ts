@@ -86,12 +86,17 @@ describe('Broken report', () => {
             cy.apiUpdateUserCustomFields(email, password, { gender });
           })
           .then(() => {
-            cy.apiCreateSurveyResponse(email, password, projectId, {
-              [selectKey]: selectAnswerKeys[0],
-              [multiSelectKey]: [
-                multiSelectAnswerKeys[0],
-                multiSelectAnswerKeys[1],
-              ],
+            cy.apiCreateSurveyResponse({
+              email,
+              password,
+              project_id: projectId,
+              fields: {
+                [selectKey]: selectAnswerKeys[0],
+                [multiSelectKey]: [
+                  multiSelectAnswerKeys[0],
+                  multiSelectAnswerKeys[1],
+                ],
+              },
             });
           });
       })
