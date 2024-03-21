@@ -4,35 +4,35 @@ import { randomString, randomEmail } from '../../../support/commands';
 import moment = require('moment');
 import { base64 } from '../../../fixtures/base64img';
 
+let projectId: string;
+let projectSlug: string;
+let surveyPhaseId: string;
+let surveyFields: ICustomFieldResponse[];
+let surveySchema: IIdeaJsonFormSchemas;
+
+let informationPhaseId: string;
+
+const locations = [
+  [4.349371842575076, 50.85428103529364],
+  [4.369558682598269, 50.85155093085792],
+  [4.328887676753199, 50.81779337536646],
+  [4.409667095102465, 50.81558358138426],
+];
+
+const users = Array(4)
+  .fill(0)
+  .map((_, i) => ({
+    firstName: randomString(),
+    lastName: randomString(),
+    email: randomEmail(),
+    password: randomString(),
+    gender: i % 2 ? 'male' : 'female',
+    location: locations[i],
+  }));
+
+const userIds: string[] = [];
+
 describe('Survey question widget', () => {
-  let projectId: string;
-  let projectSlug: string;
-  let surveyPhaseId: string;
-  let surveyFields: ICustomFieldResponse[];
-  let surveySchema: IIdeaJsonFormSchemas;
-
-  let informationPhaseId: string;
-
-  const locations = [
-    [4.349371842575076, 50.85428103529364],
-    [4.369558682598269, 50.85155093085792],
-    [4.328887676753199, 50.81779337536646],
-    [4.409667095102465, 50.81558358138426],
-  ];
-
-  const users = Array(4)
-    .fill(0)
-    .map((_, i) => ({
-      firstName: randomString(),
-      lastName: randomString(),
-      email: randomEmail(),
-      password: randomString(),
-      gender: i % 2 ? 'male' : 'female',
-      location: locations[i],
-    }));
-
-  const userIds: string[] = [];
-
   before(() => {
     cy.apiCreateProject({
       title: randomString(),
@@ -89,36 +89,39 @@ describe('Survey question widget', () => {
         const pointKey = surveyFields[5].attributes.key;
         const select2Key = surveyFields[6].attributes.key;
 
-        const fieldConfigs: any =
-          surveySchema.data.attributes.json_schema_multiloc.en?.properties;
+            const fieldConfigs: any =
+              surveySchema.data.attributes.json_schema_multiloc.en?.properties;
 
-        const getAnswerKeys = (fieldKey: string) => {
-          const fieldConfig = fieldConfigs[fieldKey];
+            const getAnswerKeys = (fieldKey: string) => {
+              const fieldConfig = fieldConfigs[fieldKey];
 
-          if (fieldConfig.items) {
-            return fieldConfig.items.oneOf.map((x: any) => x.const);
-          }
+              if (fieldConfig.items) {
+                return fieldConfig.items.oneOf.map((x: any) => x.const);
+              }
 
-          if (fieldConfig.enum) {
-            return fieldConfig.enum;
-          }
+              if (fieldConfig.enum) {
+                return fieldConfig.enum;
+              }
 
-          return undefined;
-        };
+              return undefined;
+            };
 
         const selectAnswerKeys = getAnswerKeys(selectKey);
         const multiSelectAnswerKeys = getAnswerKeys(multiSelectKey);
         const multiselectImageAnswerKeys = getAnswerKeys(multiselectImageKey);
         const select2AnswerKeys = getAnswerKeys(select2Key);
 
-        users.forEach(
-          ({ firstName, lastName, email, password, gender, location }, i) => {
-            let jwt: any;
+            users.forEach(
+              (
+                { firstName, lastName, email, password, gender, location },
+                i
+              ) => {
+                let jwt: any;
 
-            cy.apiSignup(firstName, lastName, email, password)
-              .then((response) => {
-                jwt = response._jwt;
-                userIds.push(response.body.data.id);
+                cy.apiSignup(firstName, lastName, email, password)
+                  .then((response) => {
+                    jwt = response._jwt;
+                    userIds.push(response.body.data.id);
 
                 cy.apiUpdateUserCustomFields(
                   email,
@@ -130,11 +133,11 @@ describe('Survey question widget', () => {
                 );
               })
               .then(() => {
-                cy.apiCreateSurveyResponse(
+                cy.apiCreateSurveyResponse({
                   email,
                   password,
-                  projectId,
-                  {
+                  project_id: projectId,
+                  fields: {
                     [selectKey]: selectAnswerKeys[0],
                     [multiSelectKey]: [
                       multiSelectAnswerKeys[0],
@@ -148,8 +151,7 @@ describe('Survey question widget', () => {
                     },
                     [select2Key]: select2AnswerKeys[i % 2 ? 0 : 1],
                   },
-                  jwt
-                );
+                }, jwt);
               });
           }
         );
@@ -481,7 +483,7 @@ describe('Survey question widget', () => {
         cy.get('#e2e-group-mode-select').select('survey_question');
         cy.get('.e2e-question-select select')
           .eq(1)
-          .select('Question: linear_scale');
+          .select('4. Question: linear_scale');
 
         const ensureCorrectGrouping = () => {
           cy.get('svg.e2e-progress-bar').should('have.length', 5);

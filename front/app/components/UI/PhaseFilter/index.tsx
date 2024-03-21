@@ -13,6 +13,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
+  id?: string;
   label: string;
   projectId: string;
   phaseId?: string;
@@ -26,6 +27,7 @@ const isCorrectPhase =
   };
 
 const PhaseFilter = ({
+  id,
   label,
   projectId,
   phaseId,
@@ -71,7 +73,7 @@ const PhaseFilter = ({
   return (
     <Box width="100%" mb="20px">
       <Select
-        id="e2e-phase-filter"
+        id={id || 'e2e-phase-filter'}
         label={label}
         onChange={onPhaseFilter}
         value={phaseId}

@@ -5,7 +5,7 @@
 namespace :demos do
   desc 'Update Ideas titles and body multilocs.'
   task :update_ideas_titles_and_bodies, %i[url host locale] => [:environment] do |_t, args|
-    data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
+    data = CSV.parse(open(args[:url]).read, headers: true, col_sep: ',', converters: [])
     locale = args[:locale]
     count = 0
 
