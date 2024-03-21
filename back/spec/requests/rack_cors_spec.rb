@@ -8,7 +8,7 @@ describe 'Rack::Cors' do
     let(:app) do
       Rack::Cors.new(Cl2Back::Application) do
         allow do
-          origins '*'
+          origins ['*']
           resource '*', headers: :any, methods: %i[get post put patch delete options head]
         end
       end
@@ -29,7 +29,7 @@ describe 'Rack::Cors' do
     let(:app) do
       Rack::Cors.new(Cl2Back::Application) do
         allow do
-          origins 'https://www.allowed-origin.com'
+          origins ['https://www.allowed-origin.com']
           resource '*', headers: :any, methods: %i[get post put patch delete options head]
         end
       end
