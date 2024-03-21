@@ -1,19 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import { colors, fontSizes } from '../../utils/styleUtils';
-
 import Title from './';
-const colorOptions = [...Object.keys(colors)];
-const fontSizeOptions = [undefined, ...Object.keys(fontSizes)];
-
-const textAlignOptions = [
-  'left',
-  'right',
-  'center',
-  'justify',
-  'initial',
-  'inherit',
-];
 
 const meta = {
   title: 'Components/Title',
