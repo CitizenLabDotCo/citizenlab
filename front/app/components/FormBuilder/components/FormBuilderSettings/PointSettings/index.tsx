@@ -84,7 +84,7 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
         duplicateMapConfig(projectMapConfigId, {
           onSuccess: (data) => {
             // Set the form value to the map config ID
-            setValue(mapConfigIdName, data.data.id);
+            setValue(mapConfigIdName, data.data.id, { shouldDirty: true });
             // Open the modal
             setShowModal(true);
           },
