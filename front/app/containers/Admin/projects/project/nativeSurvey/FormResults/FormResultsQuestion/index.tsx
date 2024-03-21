@@ -1,51 +1,57 @@
 import React from 'react';
 
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Box, Title, colors } from '@citizenlab/cl2-component-library';
 import { snakeCase } from 'lodash-es';
-import { Locale } from 'typings';
 
-import { Result } from 'api/survey_results/types';
+import { ResultUngrouped } from 'api/survey_results/types';
 
+import useLocalize from 'hooks/useLocalize';
+
+import SurveyBars from 'components/admin/Graphs/SurveyBars';
 import T from 'components/T';
 
 import Files from '../Files';
 
 import InputType from './InputType';
-import MultipleChoice from './MultipleChoice';
 import PointLocationQuestion from './PointLocationQuestion';
 import TextQuestion from './TextQuestion';
 
-type FormResultsQuestionProps = Result & {
+type FormResultsQuestionProps = {
   questionNumber: number;
-  locale: Locale;
+  result: ResultUngrouped;
   totalSubmissions: number;
 };
 
+const COLOR_SCHEME = [colors.primary];
+
 const FormResultsQuestion = ({
   questionNumber,
-  locale,
-  question,
-  inputType,
-  answers,
-  questionResponseCount,
+  result,
   totalSubmissions,
-  totalPickCount,
-  pointResponses = [],
-  required,
-  customFieldId,
-  mapConfigId,
-  textResponses = [],
-  files = [],
-  multilocs,
 }: FormResultsQuestionProps) => {
+  const localize = useLocalize();
+
+  const {
+    answers,
+    textResponses,
+    pointResponses,
+    inputType,
+    question,
+    required,
+    questionResponseCount,
+    customFieldId,
+    mapConfigId,
+    files,
+  } = result;
+
   const isMultipleChoiceAndHasAnswers = !!answers;
   const hasTextResponses = textResponses && textResponses.length > 0;
   const isPointAndHasAnswers =
-    inputType === 'point' && pointResponses?.length > 0;
+    inputType === 'point' && pointResponses && pointResponses?.length > 0;
 
   return (
     <>
-      <Box data-cy={`e2e-${snakeCase(question[locale])}`} mb="56px">
+      <Box data-cy={`e2e-${snakeCase(localize(question))}`} mb="56px">
         <Title variant="h3" mt="12px" mb="12px">
           {questionNumber}. <T value={question} />
         </Title>
@@ -55,12 +61,8 @@ const FormResultsQuestion = ({
           totalSubmissions={totalSubmissions}
           totalResponses={questionResponseCount}
         />
-        {isMultipleChoiceAndHasAnswers && multilocs && totalPickCount && (
-          <MultipleChoice
-            multipleChoiceAnswers={answers}
-            totalResponses={totalPickCount}
-            multilocs={multilocs}
-          />
+        {isMultipleChoiceAndHasAnswers && (
+          <SurveyBars questionResult={result} colorScheme={COLOR_SCHEME} />
         )}
         {hasTextResponses && (
           <TextQuestion

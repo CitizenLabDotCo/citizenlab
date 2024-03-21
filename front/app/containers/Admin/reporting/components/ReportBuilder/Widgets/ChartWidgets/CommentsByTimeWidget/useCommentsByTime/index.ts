@@ -38,8 +38,8 @@ export default function useCommentsByTime({
       dataUnits?.data
         ? parseTimeSeries(
             dataUnits.data.attributes[0],
-            moment(startAt),
-            moment(endAt),
+            startAt ? moment(startAt) : null,
+            endAt ? moment(endAt) : null,
             currentResolution,
             dataUnits.data.attributes[1]
           )

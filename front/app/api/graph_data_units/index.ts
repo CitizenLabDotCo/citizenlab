@@ -4,7 +4,6 @@ import {
   GenderProps,
   MostReactedIdeasProps,
   SingleIdeaProps,
-  SurveyResultsProps,
   SurveyQuestionResultProps,
   VisitorsTrafficSourcesProps,
 } from './requestTypes';
@@ -15,7 +14,6 @@ import {
   PostsByTimeResponse,
   ReactionsByTimeResponse,
   SingleIdeaResponse,
-  SurveyResultsResponse,
   SurveyQuestionResultResponse,
   UsersByBirthyearResponse,
   UsersByGenderResponse,
@@ -24,13 +22,6 @@ import {
 } from './responseTypes';
 import useGraphDataUnits from './useGraphDataUnits';
 import useGraphDataUnitsLive from './useGraphDataUnitsLive';
-
-export const useSurveyResults = (props: SurveyResultsProps) => {
-  return useGraphDataUnits<SurveyResultsResponse>({
-    resolved_name: 'SurveyResultsWidget',
-    props,
-  });
-};
 
 export const useSurveyQuestionResult = (props: SurveyQuestionResultProps) => {
   return useGraphDataUnits<SurveyQuestionResultResponse>({

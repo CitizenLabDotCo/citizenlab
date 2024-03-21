@@ -167,7 +167,8 @@ const Tags = () => {
       flexDirection="column"
       height="100%"
       overflow="auto"
-      p="12px"
+      pb="12px"
+      px="12px"
     >
       <TagAssistance
         tagId={tagAssistanceTagId}
@@ -176,6 +177,7 @@ const Tags = () => {
       <Modal
         opened={autotaggingModalIsOpened}
         close={() => setAutotaggingModalIsOpened(false)}
+        width="1000px"
       >
         <AutotaggingModal
           onCloseModal={() => setAutotaggingModalIsOpened(false)}
@@ -187,12 +189,13 @@ const Tags = () => {
         zIndex="2"
         ref={measuredRef}
         w="265px"
+        pt="12px"
       >
         <Box>
           <Button
             id="auto-tag-button"
             onClick={() => setAutotaggingModalIsOpened(true)}
-            icon="flash"
+            icon="stars"
             mb="12px"
             size="s"
             buttonStyle="admin-dark"
