@@ -160,7 +160,7 @@ module Analysis
         fields
       else
         project_fields = IdeaCustomFieldsService.new(analysis.project.custom_form).submittable_fields
-        fields + [project_fields.find { |field| field.code == 'topic_ids' }]
+        fields + [project_fields.find { |field| field.code == 'topic_ids' }].compact
       end 
     end
   end
