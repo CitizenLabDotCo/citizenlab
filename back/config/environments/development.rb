@@ -16,8 +16,10 @@ require 'active_support/core_ext/integer/time'
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  # Cross-origin requests from any origin are allowed.
-  config.allowed_cors_origins = '*'
+  # [] => Cross-origin requests are NOT allowed from any origin.
+  # ['*'] => Cross-origin requests from any origin are allowed.
+  # ['http://some-domain.com', 'https://other-domain.com'] => Cross-origin requests are allowed from specified origins.
+  config.allowed_cors_origins = ['*']
 
   # In the development environment your application's code is reloaded any time
   # it changes. This slows down response time but is perfect for development
