@@ -2,7 +2,6 @@ import { IResolution } from 'components/admin/ResolutionControl';
 
 // live
 export type ResolvedName =
-  | 'SurveyResultsWidget'
   | 'SurveyQuestionResultWidget'
   | 'MostReactedIdeasWidget'
   | 'SingleIdeaWidget'
@@ -21,7 +20,6 @@ export interface BaseParams {
 }
 
 export type ParametersLive =
-  | SurveyResultsParams
   | SurveyQuestionResultParams
   | MostReactedIdeasParams
   | SingleIdeaParams
@@ -33,14 +31,6 @@ export type ParametersLive =
   | PostsByTimeParams
   | CommentsByTimeParams
   | ReactionsByTimeParams;
-
-export interface SurveyResultsProps {
-  phase_id?: string | null;
-}
-export interface SurveyResultsParams extends BaseParams {
-  resolved_name: 'SurveyResultsWidget';
-  props: SurveyResultsProps;
-}
 
 export type GroupMode = 'user_field' | 'survey_question';
 

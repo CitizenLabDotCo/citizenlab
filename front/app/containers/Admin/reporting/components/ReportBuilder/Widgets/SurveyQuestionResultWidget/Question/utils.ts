@@ -1,21 +1,13 @@
-import { colors } from '@citizenlab/cl2-component-library';
 import { FormatMessage } from 'typings';
 
-import { AttributesGrouped } from 'api/graph_data_units/responseTypes';
+import { ResultGrouped } from 'api/survey_results/types';
 
 import { Localize } from 'hooks/useLocalize';
 
-import { DEFAULT_CATEGORICAL_COLORS } from 'components/admin/Graphs/styling';
 import messages from 'components/admin/Graphs/SurveyBars/messages';
 
-const EMPTY_COLOR = colors.coolGrey300;
-
-export const getColorScheme = (length: number) => {
-  return [...DEFAULT_CATEGORICAL_COLORS.slice(0, length - 1), EMPTY_COLOR];
-};
-
 export const getLegendLabels = (
-  attributes: AttributesGrouped,
+  attributes: ResultGrouped,
   localize: Localize,
   formatMessage: FormatMessage
 ) => {
