@@ -1,3 +1,4 @@
+import { RouteType } from 'routes';
 import { first } from 'rxjs/operators';
 
 import history from 'utils/browserHistory';
@@ -13,7 +14,7 @@ type Options = {
 // overrides push and replace methods so they update the location with the current locale from the locale stream
 function historyMethod(
   method: 'push' | 'replace',
-  location: Partial<Location> | string,
+  location: Partial<Location> | RouteType,
   options?: Options
 ): void {
   // 'gets' current locale
@@ -31,9 +32,9 @@ function historyMethod(
 
 export default {
   ...history,
-  push: (location: Partial<Location> | string, options?: Options): void =>
+  push: (location: Partial<Location> | RouteType, options?: Options): void =>
     historyMethod('push', location, { scrollToTop: options?.scrollToTop }),
-  replace: (location: Partial<Location> | string, options?: Options): void =>
+  replace: (location: Partial<Location> | RouteType, options?: Options): void =>
     historyMethod('replace', location, { scrollToTop: options?.scrollToTop }),
   goBack: () => history.back(),
 };
