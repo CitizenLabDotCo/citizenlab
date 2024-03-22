@@ -1,9 +1,9 @@
-FROM cypress/browsers:node16.14.0-chrome99-ff97
+FROM cypress/browsers:node-20.11.1-chrome-123.0.6312.58-1-ff-124.0-edge-122.0.2365.92-1
 
 WORKDIR /
 
 # Install jq for version parsing
-RUN apt-get update && apt-get install -y jq
+RUN apt-get update && apt-get install -y jq curl
 
 # Change the working directory to /front
 WORKDIR /front
