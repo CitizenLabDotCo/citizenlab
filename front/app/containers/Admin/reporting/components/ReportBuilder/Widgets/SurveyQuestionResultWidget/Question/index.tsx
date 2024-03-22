@@ -15,6 +15,8 @@ import SurveyBars from 'components/admin/Graphs/SurveyBars';
 
 import { useIntl } from 'utils/cl-intl';
 
+import MissingData from '../../_shared/MissingData';
+
 import PointLocationQuestion from './PointLocationQuestion';
 import { getLegendLabels } from './utils';
 
@@ -35,7 +37,7 @@ const SurveyQuestionResult = ({
   groupFieldId,
   heatmap,
 }: Props) => {
-  const response = useSurveyQuestionResult({
+  const { data, error } = useSurveyQuestionResult({
     phase_id: phaseId,
     question_id: questionId,
     group_mode: groupMode,
@@ -45,9 +47,10 @@ const SurveyQuestionResult = ({
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  if (!response) return null;
+  if (error) return <MissingData />;
+  if (!data) return null;
 
-  const { attributes } = response.data;
+  const { attributes } = data.data;
 
   return (
     <Box mb="8px">

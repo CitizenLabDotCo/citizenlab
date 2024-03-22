@@ -55,6 +55,7 @@ declare global {
       apiCreateFolder: typeof apiCreateFolder;
       apiRemoveFolder: typeof apiRemoveFolder;
       apiRemoveProject: typeof apiRemoveProject;
+      apiRemovePhase: typeof apiRemovePhase;
       apiRemoveCustomPage: typeof apiRemoveCustomPage;
       apiCreateCustomPage: typeof apiCreateCustomPage;
       apiAddProjectsToFolder: typeof apiAddProjectsToFolder;
@@ -1071,6 +1072,21 @@ function apiRemoveProject(projectId: string) {
   });
 }
 
+function apiRemovePhase(phaseId: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'DELETE',
+      url: `web_api/v1/phases/${phaseId}`,
+    });
+  });
+}
+
 function apiRemoveFolder(folderId: string) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1887,6 +1903,7 @@ Cypress.Commands.add('apiEditProject', apiEditProject);
 Cypress.Commands.add('apiCreateFolder', apiCreateFolder);
 Cypress.Commands.add('apiRemoveFolder', apiRemoveFolder);
 Cypress.Commands.add('apiRemoveProject', apiRemoveProject);
+Cypress.Commands.add('apiRemovePhase', apiRemovePhase);
 Cypress.Commands.add('apiAddProjectsToFolder', apiAddProjectsToFolder);
 Cypress.Commands.add('apiCreatePhase', apiCreatePhase);
 Cypress.Commands.add('apiCreateCustomField', apiCreateCustomField);

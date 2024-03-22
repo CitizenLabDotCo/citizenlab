@@ -28,9 +28,8 @@ class ReportBuilder::PermissionsService
 
       # see this discussion for details
       # https://github.com/CitizenLabDotCo/citizenlab/pull/6910/files#r1474778771
-      if phase_id.present?
-        phase = Phase.find(phase_id)
-
+      phase = phase_id.present? ? Phase.find_by(id: phase_id) : nil
+      if phase
         if project_ids.exclude?(phase.project_id)
           return true
         end
