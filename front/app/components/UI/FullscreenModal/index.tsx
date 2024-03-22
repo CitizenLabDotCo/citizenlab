@@ -2,14 +2,14 @@ import React, { PureComponent } from 'react';
 
 import { Box, media } from '@citizenlab/cl2-component-library';
 import { isFunction, compact } from 'lodash-es';
-import { adopt } from 'react-adopt';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import { Subscription, fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import styled from 'styled-components';
+
+import useLocale from 'hooks/useLocale';
 
 import { trackPage } from 'utils/analytics';
 import clHistory from 'utils/cl-router/history';
@@ -78,7 +78,7 @@ const Content = styled.div`
   transform: translate3d(0, 0, 0);
 `;
 
-interface InputProps {
+interface Props {
   className?: string;
   opened: boolean;
   close: () => void;
@@ -93,13 +93,8 @@ interface InputProps {
   modalPortalElement?: HTMLElement;
   disableFocusOn?: boolean;
   zIndex?: number;
+  locale: string;
 }
-
-interface DataProps {
-  locale: GetLocaleChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
 
 interface State {
   windowHeight: number;
@@ -277,14 +272,8 @@ class FullscreenModal extends PureComponent<Props, State> {
   }
 }
 
-const Data = adopt<DataProps>({
-  locale: <GetLocale />,
-});
+export default (inputProps: Props) => {
+  const locale = useLocale();
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps: DataProps) => (
-      <FullscreenModal {...inputProps} {...dataProps} />
-    )}
-  </Data>
-);
+  return <FullscreenModal {...inputProps} locale={locale} />;
+};
