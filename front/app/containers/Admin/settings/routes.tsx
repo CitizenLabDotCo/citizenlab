@@ -31,7 +31,7 @@ const AdminTopicsIndexComponent = lazy(() => import('./topics/all'));
 const AdminTopicsNewComponent = lazy(() => import('./topics/New'));
 const AdminTopicsEditComponent = lazy(() => import('./topics/Edit'));
 
-enum settingsRoutes {
+export enum settingsRoutes {
   settings = 'settings',
   settingsDefault = '',
   general = 'general',

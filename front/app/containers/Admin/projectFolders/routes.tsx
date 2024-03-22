@@ -11,7 +11,7 @@ const FolderContainer = lazy(() => import('./containers'));
 const FolderProjects = lazy(() => import('./containers/projects'));
 const FolderPermissions = lazy(() => import('./containers/permissions'));
 
-enum projectFolderRoutes {
+export enum projectFolderRoutes {
   projectFolders = 'projects/folders',
   new = 'new',
   projectFolderId = `:projectFolderId`,

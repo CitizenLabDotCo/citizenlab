@@ -52,7 +52,7 @@ export function adminProjectsProjectPath(projectId: string): RouteType {
   return `/admin/projects/${projectId}`;
 }
 
-enum projectsRoutes {
+export enum projectsRoutes {
   projects = 'projects',
   projectIdeaId = ':projectId/ideas/:ideaId',
   projectSettings = ':projectId/settings',

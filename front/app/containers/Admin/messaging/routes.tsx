@@ -15,7 +15,7 @@ const NewSMS = lazy(() => import('./texting/NewSMSCampaign'));
 const PreviewSMS = lazy(() => import('./texting/SMSCampaignPreview'));
 const ExistingSMS = lazy(() => import('./texting/ExistingSMSCampaign'));
 
-enum messagingRoutes {
+export enum messagingRoutes {
   messaging = 'messaging',
   emailsCustom = `emails/custom`,
   emailsCustomNew = `emails/custom/new`,

@@ -9,7 +9,7 @@ import PageLoading from 'components/UI/PageLoading';
 
 import { AdminRoute } from '../routes';
 
-enum usersRoutes {
+export enum usersRoutes {
   users = 'users',
   adminsManagers = 'admins-managers',
   groupId = `:groupId`,

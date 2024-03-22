@@ -8,7 +8,7 @@ const AdminInvitationsContainer = lazy(() => import('.'));
 const AdminInvitationsInvite = lazy(() => import('./invite'));
 const AdminInvitationsAll = lazy(() => import('./all'));
 
-enum invitationRoutes {
+export enum invitationRoutes {
   invitations = 'users/invitations',
   all = 'all',
 }

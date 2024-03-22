@@ -53,7 +53,7 @@ export const adminCustomPageSettingsPath = (pageId: string): RouteType => {
   return `/admin/pages-menu/pages/${pageId}/settings`;
 };
 
-enum pagesAndMenuRoutes {
+export enum pagesAndMenuRoutes {
   pagesAndMenu = 'pages-menu',
   pagesAndMenuDefault = '',
   homepageBuilder = 'homepage-builder',

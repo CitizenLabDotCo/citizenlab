@@ -10,7 +10,7 @@ import { AdminRoute } from '../routes';
 const AdminIdeasContainer = lazy(() => import('./index'));
 const AdminIdeasAll = lazy(() => import('./all'));
 
-enum ideaRoutes {
+export enum ideaRoutes {
   ideas = 'ideas',
   ideaId = `:ideaId`,
 }

@@ -15,7 +15,7 @@ import PublicAPITokens from './PublicAPI/PublicAPITokens';
 
 import Tools from './';
 
-enum toolRoutes {
+export enum toolRoutes {
   tools = 'tools',
   toolsDefault = '',
   publicApiTokens = `public-api-tokens`,

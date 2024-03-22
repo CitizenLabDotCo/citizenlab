@@ -24,7 +24,7 @@ const AdminCustomFieldRegistrationOptionsEditComponent = React.lazy(
     import('./RegistrationCustomFieldEdit/RegistrationCustomFieldOptionsEdit')
 );
 
-enum customFieldRouteEnum {
+export enum customFieldRouteEnum {
   customFields = 'custom-fields',
   new = 'new',
   customFieldsId = ':userCustomFieldId',

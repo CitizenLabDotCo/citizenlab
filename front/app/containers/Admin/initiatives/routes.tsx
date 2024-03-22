@@ -13,7 +13,7 @@ const AdminGranularPermissionsComponent = lazy(
     )
 );
 
-enum initiativeRoutes {
+export enum initiativeRoutes {
   initiatives = 'initiatives',
   initiativesDefault = '',
   initiativeId = `:initiativeId`,

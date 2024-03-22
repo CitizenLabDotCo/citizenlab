@@ -9,7 +9,7 @@ const DashboardWrapper = lazy(() => import('.'));
 const Overview = lazy(() => import('./overview'));
 const Users = lazy(() => import('./users'));
 
-enum dashboardRoutes {
+export enum dashboardRoutes {
   dashboard = 'dashboard',
   overview = 'overview',
   users = 'users',
