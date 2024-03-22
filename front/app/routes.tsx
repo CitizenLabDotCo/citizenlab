@@ -136,298 +136,298 @@ type citizenRouteTypes =
   | `admin/reporting/report-builder/${string}/print`;
 
 export default function createRoutes() {
-  return [citizenRoutesObject];
-}
-
-const citizenRoutesObject = {
-  path: citizenRoutes.locale,
-  children: [
+  return [
     {
-      index: true,
-      element: (
-        <PageLoading>
-          <HomePage />
-        </PageLoading>
-      ),
-    },
-    {
-      path: citizenRoutes.signIn,
-      element: (
-        <PageLoading>
-          <HomePage />
-        </PageLoading>
-      ),
-    },
-    {
-      path: citizenRoutes.signUp,
-      element: (
-        <PageLoading>
-          <HomePage />
-        </PageLoading>
-      ),
-    },
-    {
-      path: citizenRoutes.invite,
-      element: (
-        <PageLoading>
-          <HomePage />
-        </PageLoading>
-      ),
-    },
-    {
-      path: citizenRoutes.completeSignUp,
-      element: (
-        <PageLoading>
-          <HomePage />
-        </PageLoading>
-      ),
-    },
-    {
-      path: citizenRoutes.authenticationError,
-      element: (
-        <PageLoading>
-          <HomePage />
-        </PageLoading>
-      ),
-    },
-    {
-      path: citizenRoutes.siteMap,
-      element: (
-        <PageLoading>
-          <SiteMap />
-        </PageLoading>
-      ),
-    },
-    {
-      path: citizenRoutes.profileEdit,
-      element: (
-        <PageLoading>
-          <UsersEditPage />
-        </PageLoading>
-      ),
-    },
-    {
-      path: citizenRoutes.changePassword,
-      element: (
-        <PageLoading>
-          <PasswordChange />
-        </PageLoading>
-      ),
-    },
-    {
-      path: citizenRoutes.changeEmail,
-      element: (
-        <PageLoading>
-          <EmailChange />
-        </PageLoading>
-      ),
-    },
-    userProfileRoutes(),
-    {
-      path: citizenRoutes.ideasEditIdea,
-      element: (
-        <PageLoading>
-          <IdeasEditPage />
-        </PageLoading>
-      ),
-    },
-    {
-      path: citizenRoutes.ideas,
-      element: (
-        <PageLoading>
-          <IdeasIndexPage />
-        </PageLoading>
-      ),
-    },
-    {
-      path: citizenRoutes.ideasSlug,
-      element: (
-        <PageLoading>
-          <IdeasShowPage />
-        </PageLoading>
-      ),
-    },
-    {
-      path: citizenRoutes.initiatives,
-      element: (
-        <PageLoading>
-          <InitiativesIndexPage />
-        </PageLoading>
-      ),
-    },
-    {
-      path: citizenRoutes.initiativeEdit,
-      element: (
-        <PageLoading>
-          <InitiativesEditPage />
-        </PageLoading>
-      ),
-    },
-    {
-      path: citizenRoutes.initiativesNew,
-      element: (
-        <PageLoading>
-          <InitiativesNewPage />
-        </PageLoading>
-      ),
-    },
-    // super important that this comes AFTER initiatives/new, if it comes before, new is interpreted as a slug
-    {
-      path: citizenRoutes.initiativesSlug,
-      element: (
-        <PageLoading>
-          <InitiativesShowPage />
-        </PageLoading>
-      ),
-    },
-    {
-      path: citizenRoutes.projectIdeaNew,
-      element: (
-        <PageLoading>
-          <IdeasNewPage />
-        </PageLoading>
-      ),
-    },
-    createAdminRoutes(),
-    {
-      path: citizenRoutes.projects,
-      element: (
-        <PageLoading>
-          <ProjectsIndexPage />
-        </PageLoading>
-      ),
-    },
-    {
-      path: citizenRoutes.projectSlug,
-      element: (
-        <PageLoading>
-          <ProjectsShowPage />
-        </PageLoading>
-      ),
+      path: citizenRoutes.locale,
       children: [
         {
           index: true,
           element: (
             <PageLoading>
-              <ProjectsShowPage />
+              <HomePage />
             </PageLoading>
           ),
         },
         {
-          path: citizenRoutes.phaseNumber,
+          path: citizenRoutes.signIn,
+          element: (
+            <PageLoading>
+              <HomePage />
+            </PageLoading>
+          ),
+        },
+        {
+          path: citizenRoutes.signUp,
+          element: (
+            <PageLoading>
+              <HomePage />
+            </PageLoading>
+          ),
+        },
+        {
+          path: citizenRoutes.invite,
+          element: (
+            <PageLoading>
+              <HomePage />
+            </PageLoading>
+          ),
+        },
+        {
+          path: citizenRoutes.completeSignUp,
+          element: (
+            <PageLoading>
+              <HomePage />
+            </PageLoading>
+          ),
+        },
+        {
+          path: citizenRoutes.authenticationError,
+          element: (
+            <PageLoading>
+              <HomePage />
+            </PageLoading>
+          ),
+        },
+        {
+          path: citizenRoutes.siteMap,
+          element: (
+            <PageLoading>
+              <SiteMap />
+            </PageLoading>
+          ),
+        },
+        {
+          path: citizenRoutes.profileEdit,
+          element: (
+            <PageLoading>
+              <UsersEditPage />
+            </PageLoading>
+          ),
+        },
+        {
+          path: citizenRoutes.changePassword,
+          element: (
+            <PageLoading>
+              <PasswordChange />
+            </PageLoading>
+          ),
+        },
+        {
+          path: citizenRoutes.changeEmail,
+          element: (
+            <PageLoading>
+              <EmailChange />
+            </PageLoading>
+          ),
+        },
+        userProfileRoutes(),
+        {
+          path: citizenRoutes.ideasEditIdea,
+          element: (
+            <PageLoading>
+              <IdeasEditPage />
+            </PageLoading>
+          ),
+        },
+        {
+          path: citizenRoutes.ideas,
+          element: (
+            <PageLoading>
+              <IdeasIndexPage />
+            </PageLoading>
+          ),
+        },
+        {
+          path: citizenRoutes.ideasSlug,
+          element: (
+            <PageLoading>
+              <IdeasShowPage />
+            </PageLoading>
+          ),
+        },
+        {
+          path: citizenRoutes.initiatives,
+          element: (
+            <PageLoading>
+              <InitiativesIndexPage />
+            </PageLoading>
+          ),
+        },
+        {
+          path: citizenRoutes.initiativeEdit,
+          element: (
+            <PageLoading>
+              <InitiativesEditPage />
+            </PageLoading>
+          ),
+        },
+        {
+          path: citizenRoutes.initiativesNew,
+          element: (
+            <PageLoading>
+              <InitiativesNewPage />
+            </PageLoading>
+          ),
+        },
+        // super important that this comes AFTER initiatives/new, if it comes before, new is interpreted as a slug
+        {
+          path: citizenRoutes.initiativesSlug,
+          element: (
+            <PageLoading>
+              <InitiativesShowPage />
+            </PageLoading>
+          ),
+        },
+        {
+          path: citizenRoutes.projectIdeaNew,
+          element: (
+            <PageLoading>
+              <IdeasNewPage />
+            </PageLoading>
+          ),
+        },
+        createAdminRoutes(),
+        {
+          path: citizenRoutes.projects,
+          element: (
+            <PageLoading>
+              <ProjectsIndexPage />
+            </PageLoading>
+          ),
+        },
+        {
+          path: citizenRoutes.projectSlug,
           element: (
             <PageLoading>
               <ProjectsShowPage />
             </PageLoading>
           ),
+          children: [
+            {
+              index: true,
+              element: (
+                <PageLoading>
+                  <ProjectsShowPage />
+                </PageLoading>
+              ),
+            },
+            {
+              path: citizenRoutes.phaseNumber,
+              element: (
+                <PageLoading>
+                  <ProjectsShowPage />
+                </PageLoading>
+              ),
+            },
+            {
+              path: citizenRoutes.wildcard,
+              element: (
+                <PageLoading>
+                  <ProjectsShowPage />
+                </PageLoading>
+              ),
+            },
+          ],
         },
         {
-          path: citizenRoutes.wildcard,
+          path: citizenRoutes.foldersSlug,
           element: (
             <PageLoading>
-              <ProjectsShowPage />
+              <ProjectFolderShowPage />
             </PageLoading>
           ),
         },
+        {
+          path: citizenRoutes.events,
+          element: (
+            <PageLoading>
+              <EventsPage />
+            </PageLoading>
+          ),
+        },
+        {
+          path: citizenRoutes.eventId,
+          element: (
+            <PageLoading>
+              <EventsShowPage />
+            </PageLoading>
+          ),
+        },
+        {
+          path: citizenRoutes.cookiePolicy,
+          element: (
+            <PageLoading>
+              <CookiePolicy />
+            </PageLoading>
+          ),
+        },
+        {
+          path: citizenRoutes.AccessibilityStatement,
+          element: (
+            <PageLoading>
+              <AccessibilityStatement />
+            </PageLoading>
+          ),
+        },
+        {
+          path: citizenRoutes.customPage,
+          element: (
+            <PageLoading>
+              <CustomPageShow />
+            </PageLoading>
+          ),
+        },
+        {
+          path: citizenRoutes.passwordRecovery,
+          element: (
+            <PageLoading>
+              <PasswordRecovery />
+            </PageLoading>
+          ),
+        },
+        {
+          // Used as link in email received for password recovery
+          path: citizenRoutes.resetPassword,
+          element: (
+            <PageLoading>
+              <PasswordReset />
+            </PageLoading>
+          ),
+        },
+        {
+          path: citizenRoutes.subscriptionEnded,
+          element: (
+            <PageLoading>
+              <SubscriptionEndedPage />
+            </PageLoading>
+          ),
+        },
+        {
+          path: citizenRoutes.emailSettings,
+          element: (
+            <PageLoading>
+              <EmailSettingsPage />
+            </PageLoading>
+          ),
+        },
+        {
+          path: citizenRoutes.reportPrintPage,
+          element: (
+            <PageLoading>
+              <ReportPrintPage />
+            </PageLoading>
+          ),
+        },
+        {
+          path: citizenRoutes.disabledAccount,
+          element: (
+            <PageLoading>
+              <DisabledAccount />
+            </PageLoading>
+          ),
+        },
+        ...moduleConfiguration.routes.citizen,
       ],
     },
-    {
-      path: citizenRoutes.foldersSlug,
-      element: (
-        <PageLoading>
-          <ProjectFolderShowPage />
-        </PageLoading>
-      ),
-    },
-    {
-      path: citizenRoutes.events,
-      element: (
-        <PageLoading>
-          <EventsPage />
-        </PageLoading>
-      ),
-    },
-    {
-      path: citizenRoutes.eventId,
-      element: (
-        <PageLoading>
-          <EventsShowPage />
-        </PageLoading>
-      ),
-    },
-    {
-      path: citizenRoutes.cookiePolicy,
-      element: (
-        <PageLoading>
-          <CookiePolicy />
-        </PageLoading>
-      ),
-    },
-    {
-      path: citizenRoutes.AccessibilityStatement,
-      element: (
-        <PageLoading>
-          <AccessibilityStatement />
-        </PageLoading>
-      ),
-    },
-    {
-      path: citizenRoutes.customPage,
-      element: (
-        <PageLoading>
-          <CustomPageShow />
-        </PageLoading>
-      ),
-    },
-    {
-      path: citizenRoutes.passwordRecovery,
-      element: (
-        <PageLoading>
-          <PasswordRecovery />
-        </PageLoading>
-      ),
-    },
-    {
-      // Used as link in email received for password recovery
-      path: citizenRoutes.resetPassword,
-      element: (
-        <PageLoading>
-          <PasswordReset />
-        </PageLoading>
-      ),
-    },
-    {
-      path: citizenRoutes.subscriptionEnded,
-      element: (
-        <PageLoading>
-          <SubscriptionEndedPage />
-        </PageLoading>
-      ),
-    },
-    {
-      path: citizenRoutes.emailSettings,
-      element: (
-        <PageLoading>
-          <EmailSettingsPage />
-        </PageLoading>
-      ),
-    },
-    {
-      path: citizenRoutes.reportPrintPage,
-      element: (
-        <PageLoading>
-          <ReportPrintPage />
-        </PageLoading>
-      ),
-    },
-    {
-      path: citizenRoutes.disabledAccount,
-      element: (
-        <PageLoading>
-          <DisabledAccount />
-        </PageLoading>
-      ),
-    },
-    ...moduleConfiguration.routes.citizen,
-  ],
-};
+  ];
+}
