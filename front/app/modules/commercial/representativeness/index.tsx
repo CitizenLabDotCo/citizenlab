@@ -19,8 +19,8 @@ export enum representativenessRoutes {
 
 // TODO: Replace "dashboards" with link to route in main app once converted.
 export type representativenessRouteTypes =
-  | AdminRoute<`dashboards/${representativenessRoutes.representation}`>
-  | AdminRoute<`dashboards/${representativenessRoutes.editBaseData}`>;
+  | AdminRoute<`dashboard/${representativenessRoutes.representation}`>
+  | AdminRoute<`dashboard/${representativenessRoutes.editBaseData}`>;
 
 const configuration: ModuleConfiguration = {
   routes: {

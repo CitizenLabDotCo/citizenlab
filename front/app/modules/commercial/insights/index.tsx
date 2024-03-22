@@ -26,7 +26,7 @@ export enum insightsRoutes {
 // TODO: Replace "reporting" with link to route in main app once converted.
 export type insightsRouteTypes =
   | AdminRoute<`reporting/${insightsRoutes.reports}`>
-  | AdminRoute<`reporting/${insightsRoutes.reports}${string}`>;
+  | AdminRoute<`reporting/${insightsRoutes.reports}/${string}`>;
 
 const configuration: ModuleConfiguration = {
   routes: {

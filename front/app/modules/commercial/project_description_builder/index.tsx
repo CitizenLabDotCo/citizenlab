@@ -36,7 +36,7 @@ export enum descriptionBuilderRoutes {
 
 export type descriptionBuilderRouteTypes =
   | AdminRoute<`${descriptionBuilderRoutes.projectdescriptionBuilder}/projects/${string}/description`>
-  | AdminRoute<`${descriptionBuilderRoutes.projectdescriptionBuilder}/projects/${string}/description`>;
+  | AdminRoute<`${descriptionBuilderRoutes.projectdescriptionBuilder}/projects/${string}/preview`>;
 
 const configuration: ModuleConfiguration = {
   routes: {

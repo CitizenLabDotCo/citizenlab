@@ -20,7 +20,7 @@ export enum customIdeaStatusesRoutes {
 export type customIdeaStatusesRouteTypes =
   | AdminRoute<`settings/${customIdeaStatusesRoutes.statuses}`>
   | AdminRoute<`settings/${customIdeaStatusesRoutes.new}`>
-  | AdminRoute<`settings/${customIdeaStatusesRoutes.statuses}${string}`>;
+  | AdminRoute<`settings/${customIdeaStatusesRoutes.statuses}/${string}`>;
 
 const configuration: ModuleConfiguration = {
   routes: {
