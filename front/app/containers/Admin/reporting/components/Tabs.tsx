@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { Box, Badge, colors } from '@citizenlab/cl2-component-library';
 import { useLocation } from 'react-router-dom';
+import { ITab } from 'typings';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
@@ -40,13 +41,13 @@ const DashboardTabs = ({
   const [redirected, setRedirected] = useState(false);
 
   const [tabs] = useState(() => {
-    const reportBuilderTab = {
+    const reportBuilderTab: ITab = {
       label: formatMessage(messages.reportBuilder),
       url: '/admin/reporting/report-builder',
       name: 'report_builder',
     };
 
-    const projectReportsTab = {
+    const projectReportsTab: ITab = {
       label: formatMessage(messages.tabReports),
       url: '/admin/reporting/reports',
       name: 'project_reports',
