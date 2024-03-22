@@ -13,14 +13,17 @@ module OmniauthMethods
 
       # options[:discovery] = true
 
-      options[:response_type] = 'code'
+      options[:response_type] = 'id_token'
+      options[:response_mode] = 'form_post'
       options[:state] = true
       options[:nonce] = true
       options[:scope] = %i[openid]
       # options[:send_scope_to_token_endpoint] = false
-      options[:issuer] = 'https://citizenlabdevdemo.b2clogin.com/citizenlabdevdemo.onmicrosoft.com/B2C_1_default_signup_signin_flow/'
+      # Configured in Azure AD B2C -> Select the user flow -> Settings -> Properties -> Token compatibility settings
+      options[:issuer] = "https://citizenlabdevdemo.b2clogin.com/#{ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_TENANT_ID')}/v2.0/"
       # options[:issuer] = 'https://citizenlabdevdemo.b2clogin.com/citizenlabdevdemo.onmicrosoft.com/B2C_1_default_signup_signin_flow/v2.0/'
       options[:client_options] = {
+        # do we need ID and secret if we use form_post?
         identifier: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_CLIENT_ID'),
         secret: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_CLIENT_SECRET'),
         port: 443,
@@ -34,30 +37,20 @@ module OmniauthMethods
         authorization_endpoint: '/citizenlabdevdemo.onmicrosoft.com/b2c_1_default_signup_signin_flow/oauth2/v2.0/authorize',
         token_endpoint: '/citizenlabdevdemo.onmicrosoft.com/b2c_1_default_signup_signin_flow/oauth2/v2.0/token',
         # userinfo_endpoint: '/openid/userinfo',
-        jwks_uri: '/citizenlabdevdemo.onmicrosoft.com/b2c_1_default_signup_signin_flow/discovery/v2.0/keys'
+
+        # has to have the origin
+        jwks_uri: 'https://citizenlabdevdemo.b2clogin.com/citizenlabdevdemo.onmicrosoft.com/b2c_1_default_signup_signin_flow/discovery/v2.0/keys'
       }
     end
 
     def profile_to_user_attrs(auth)
+      raw_info = auth.extra.raw_info
       {
-        first_name: auth.info['first_name'],
-        last_name: auth.info['last_name'],
-        email: auth.info['email'],
-        remote_avatar_url: remote_avatar_url(auth),
-        locale: AppConfiguration.instance.closest_locale_to(auth.extra.raw_info.locale)
+        first_name: raw_info['given_name'],
+        last_name: raw_info['family_name'],
+        email: raw_info['emails'].first,
+        locale: AppConfiguration.instance.settings('core', 'locales').first
       }
     end
-
-    private
-
-    def remote_avatar_url(auth)
-      return unless AppConfiguration.instance.feature_activated?('user_avatars')
-
-      auth.info['image']
-    end
-  end
-
-  def updateable_user_attrs
-    [:remote_avatar_url]
   end
 end
