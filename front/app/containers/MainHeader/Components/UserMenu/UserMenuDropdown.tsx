@@ -77,7 +77,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
           {canAccessAdmin && (
             <DropdownListItem
               id="admin-link"
-              linkTo={'admin'}
+              linkTo={'/admin'}
               onClick={handleCloseDropdown}
               buttonStyle="text"
               bgHoverColor={colors.grey300}
