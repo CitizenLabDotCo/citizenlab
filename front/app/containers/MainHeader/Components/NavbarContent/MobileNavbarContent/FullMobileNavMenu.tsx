@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Box, media, colors } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
@@ -159,7 +158,7 @@ const FullMobileNavMenu = ({
                 );
               })}
               <FullMobileNavMenuItem
-                linkTo={'/projects?focusSearch=true' as RouteType} // TODO: Remove casting once merged with feature branch
+                linkTo={'/projects?focusSearch=true'}
                 navigationItemTitle={formatMessage(messages.search)}
                 onClick={handleOnMenuItemClick('/projects?focusSearch=true')}
                 iconName="search"
