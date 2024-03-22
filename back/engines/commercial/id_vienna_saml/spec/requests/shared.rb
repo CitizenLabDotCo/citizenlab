@@ -138,7 +138,7 @@ RSpec.shared_examples 'authenticates when the user was already registered with V
           configuration.save!
         end
 
-        it "doesn't updates user's email" do
+        it "doesn't update user's email" do
           expect do
             send_auth_request
           end.not_to(change { User.first.email })
