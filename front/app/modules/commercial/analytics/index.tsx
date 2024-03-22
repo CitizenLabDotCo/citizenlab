@@ -31,7 +31,7 @@ export enum analyticsRoutes {
 }
 
 // TODO: Replace "dashboards" with link to route in main app once converted.
-export type analyticsRouteTypes = AdminRoute<'dashboards/visitors'>;
+export type analyticsRouteTypes = AdminRoute<'dashboard/visitors'>;
 
 const configuration: ModuleConfiguration = {
   routes: {

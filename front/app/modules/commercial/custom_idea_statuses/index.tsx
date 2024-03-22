@@ -13,14 +13,14 @@ const StatusShowComponent = React.lazy(() => import('./admin/containers/edit'));
 export enum customIdeaStatusesRoutes {
   statuses = 'statuses',
   new = 'new',
-  id = `${statuses}/:id`,
+  id = `statuses/:id`,
 }
 
 // TODO: Replace "settings" with link to route in main app once converted.
 export type customIdeaStatusesRouteTypes =
   | AdminRoute<`settings/${customIdeaStatusesRoutes.statuses}`>
   | AdminRoute<`settings/${customIdeaStatusesRoutes.new}`>
-  | AdminRoute<`settings/${customIdeaStatusesRoutes.statuses}${string}`>;
+  | AdminRoute<`settings/${customIdeaStatusesRoutes.statuses}/${string}`>;
 
 const configuration: ModuleConfiguration = {
   routes: {

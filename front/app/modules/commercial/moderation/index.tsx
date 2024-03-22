@@ -12,7 +12,7 @@ export enum moderationRoutes {
 
 // TODO: Replace "dashboards" with link to route in main app once converted.
 export type moderationRouteTypes =
-  AdminRoute<`dashboards/${moderationRoutes.moderation}`>;
+  AdminRoute<`dashboard/${moderationRoutes.moderation}`>;
 
 const configuration: ModuleConfiguration = {
   routes: {

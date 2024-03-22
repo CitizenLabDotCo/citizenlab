@@ -30,13 +30,13 @@ const ProjectDescriptionBuilderToggle = React.lazy(
 
 export enum descriptionBuilderRoutes {
   projectdescriptionBuilder = 'project-description-builder',
-  description = `${projectdescriptionBuilder}/projects/:projectId/description`,
-  preview = `${projectdescriptionBuilder}/projects/:projectId/preview`,
+  description = `project-description-builder/projects/:projectId/description`,
+  preview = `project-description-builder/projects/:projectId/preview`,
 }
 
 export type descriptionBuilderRouteTypes =
   | AdminRoute<`${descriptionBuilderRoutes.projectdescriptionBuilder}/projects/${string}/description`>
-  | AdminRoute<`${descriptionBuilderRoutes.projectdescriptionBuilder}/projects/${string}/description`>;
+  | AdminRoute<`${descriptionBuilderRoutes.projectdescriptionBuilder}/projects/${string}/preview`>;
 
 const configuration: ModuleConfiguration = {
   routes: {
