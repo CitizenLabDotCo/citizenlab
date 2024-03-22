@@ -5,6 +5,8 @@ import { Navigate } from 'react-router-dom';
 
 import PageLoading from 'components/UI/PageLoading';
 
+import { AdminRoute } from '../routes';
+
 import AdminProjectIdeaPreviewIndex from './AdminProjectIdeaPreviewIndex';
 import IdeaFormBuilder from './project/inputForm/IdeaFormBuilder';
 import SurveyFormBuilder from './project/nativeSurvey/SurveyFormBuilder';
@@ -49,9 +51,68 @@ export function adminProjectsProjectPath(projectId: string) {
   return `/admin/projects/${projectId}`;
 }
 
+enum projectsRoutes {
+  projects = 'projects',
+  projectIdeaId = ':projectId/ideas/:ideaId',
+  projectSettings = ':projectId/settings',
+  projectSettingsDescription = 'description',
+  projectSettingsEvents = 'events',
+  projectSettingsEventsNew = 'events/new',
+  projectSettingsEventsId = 'events/:id',
+  projectSettingsTags = 'tags',
+  projectSettingsAccessRights = 'access-rights',
+  projectId = ':projectId',
+  projectPhasesSetup = 'phases/setup',
+  projectPhaseSetup = 'phases/:phaseId/setup',
+  projectNewPhase = 'phases/new',
+  projectPhase = 'phases/:phaseId',
+  projectPhaseSurveyResults = 'phases/:phaseId/survey-results',
+  projectPhasePolls = 'phases/:phaseId/polls',
+  projectPhaseAccessRights = 'phases/:phaseId/access-rights',
+  projectPhaseIdeas = 'phases/:phaseId/ideas',
+  projectPhaseIdeaForm = 'phases/:phaseId/ideaform',
+  projectPhaseVolunteering = 'phases/:phaseId/volunteering',
+  projectPhaseMap = 'phases/:phaseId/map',
+  projectPhaseNativeSurvey = 'phases/:phaseId/native-survey',
+  projectPhaseVolunteeringNewCause = 'phases/:phaseId/volunteering/causes/new',
+  projectPhaseIdeaFormEdit = 'phases/:phaseId/ideaform/edit',
+  projectPhaseNativeSurveyEdit = 'phases/:phaseId/native-survey/edit',
+  projectPhaseVolunteeringCause = 'phases/:phaseId/volunteering/causes/:causeId',
+  projectAnalysis = 'analysis/:analysisId',
+  projectPhaseOfflineInputs = 'phases/:phaseId/offline-inputs',
+  projectPhaseReport = 'phases/:phaseId/report',
+}
+
+export type projectsRouteTypes =
+  | AdminRoute<projectsRoutes.projects>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/ideas/${string}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/settings`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectSettingsEvents}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectSettingsDescription}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectSettingsEvents}/${string}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectSettingsTags}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectPhasesSetup}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/setup`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectNewPhase}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-results`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/polls`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/access-rights`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/ideas`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/ideaform`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/map`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/new`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/new`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/ideaform/edit`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/native-survey/edit`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/${string}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/analysis/${string}`>;
+
 const createAdminProjectsRoutes = () => {
   return {
-    path: 'projects',
+    path: projectsRoutes.projects,
     element: (
       <PageLoading>
         <AdminProjectsAndFolders />
@@ -69,7 +130,7 @@ const createAdminProjectsRoutes = () => {
       ...moduleConfiguration.routes['admin.project_templates'],
       ...moduleConfiguration.routes['admin.projects'],
       {
-        path: ':projectId/ideas/:ideaId',
+        path: projectsRoutes.projectIdeaId,
         element: (
           <PageLoading>
             <AdminProjectIdeaPreviewIndex />
@@ -77,7 +138,7 @@ const createAdminProjectsRoutes = () => {
         ),
       },
       {
-        path: ':projectId/settings',
+        path: projectsRoutes.projectSettings,
         element: (
           <PageLoading>
             <AdminProjectsProjectSettings />
@@ -93,7 +154,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'description',
+            path: projectsRoutes.projectSettingsDescription,
             element: (
               <PageLoading>
                 <AdminProjectDescription />
@@ -101,7 +162,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'events',
+            path: projectsRoutes.projectSettingsEvents,
             element: (
               <PageLoading>
                 <AdminProjectEvents />
@@ -109,7 +170,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'events/new',
+            path: projectsRoutes.projectSettingsEventsNew,
             element: (
               <PageLoading>
                 <AdminProjectEventsEdit />
@@ -117,7 +178,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'events/:id',
+            path: projectsRoutes.projectSettingsEventsId,
             element: (
               <PageLoading>
                 <AdminProjectEventsEdit />
@@ -125,11 +186,11 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'tags',
+            path: projectsRoutes.projectSettingsTags,
             element: <AdminAllowedTopicsComponent />,
           },
           {
-            path: 'access-rights',
+            path: projectsRoutes.projectSettingsAccessRights,
             element: (
               <PageLoading>
                 <AdminProjectPermissions />
@@ -139,7 +200,7 @@ const createAdminProjectsRoutes = () => {
         ],
       },
       {
-        path: ':projectId',
+        path: projectsRoutes.projectId,
         element: (
           <PageLoading>
             <AdminProjectsProjectIndex />
@@ -152,7 +213,7 @@ const createAdminProjectsRoutes = () => {
             element: <Navigate to="phases/setup" replace />,
           },
           {
-            path: 'phases/setup',
+            path: projectsRoutes.projectPhasesSetup,
             element: (
               <PageLoading>
                 <AdminPhaseNewAndEdit />
@@ -160,7 +221,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'phases/:phaseId/setup',
+            path: projectsRoutes.projectPhaseSetup,
             element: (
               <PageLoading>
                 {/* We use the key here to make sure that the component is treated as a different instance
@@ -173,7 +234,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'phases/new',
+            path: projectsRoutes.projectNewPhase,
             element: (
               <PageLoading>
                 {/* We use the key here to make sure that the component is treated as a different instance
@@ -186,7 +247,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'phases/:phaseId',
+            path: projectsRoutes.projectPhase,
             element: (
               <PageLoading>
                 <AdminPhaseNewAndEdit />
@@ -194,7 +255,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'phases/:phaseId/survey-results',
+            path: projectsRoutes.projectPhaseSurveyResults,
             element: (
               <PageLoading>
                 <AdminProjectSurveyResults />
@@ -202,7 +263,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'phases/:phaseId/polls',
+            path: projectsRoutes.projectPhasePolls,
             element: (
               <PageLoading>
                 <AdminProjectPoll />
@@ -210,7 +271,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'phases/:phaseId/access-rights',
+            path: projectsRoutes.projectPhaseAccessRights,
             element: (
               <PageLoading>
                 <AdminProjectPermissions />
@@ -218,7 +279,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'phases/:phaseId/ideas',
+            path: projectsRoutes.projectPhaseIdeas,
             element: (
               <PageLoading>
                 <AdminProjectIdeas />
@@ -226,7 +287,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'phases/:phaseId/ideaform',
+            path: projectsRoutes.projectPhaseIdeaForm,
             element: (
               <PageLoading>
                 <AdminProjectIdeaForm />
@@ -234,7 +295,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'phases/:phaseId/volunteering',
+            path: projectsRoutes.projectPhaseVolunteering,
             element: (
               <PageLoading>
                 <AdminProjectVolunteering />
@@ -242,7 +303,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'phases/:phaseId/map',
+            path: projectsRoutes.projectPhaseMap,
             element: (
               <PageLoading>
                 <AdminCustomMapConfigComponent />
@@ -250,7 +311,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'phases/:phaseId/volunteering/causes/new',
+            path: projectsRoutes.projectPhaseVolunteeringNewCause,
             element: (
               <PageLoading>
                 <AdminProjectVolunteeringNew />
@@ -258,35 +319,19 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'phases/:phaseId/native-survey',
+            path: projectsRoutes.projectPhaseNativeSurvey,
             element: <AdminProjectsSurvey />,
           },
           {
-            path: 'phases/:phaseId/volunteering/causes/new',
-            element: (
-              <PageLoading>
-                <AdminProjectVolunteeringNew />
-              </PageLoading>
-            ),
-          },
-          {
-            path: 'ideaform/edit',
+            path: projectsRoutes.projectPhaseIdeaFormEdit,
             element: <IdeaFormBuilder />,
           },
           {
-            path: 'phases/:phaseId/ideaform/edit',
-            element: <IdeaFormBuilder />,
-          },
-          {
-            path: 'native-survey/edit',
+            path: projectsRoutes.projectPhaseNativeSurveyEdit,
             element: <SurveyFormBuilder />,
           },
           {
-            path: 'phases/:phaseId/native-survey/edit',
-            element: <SurveyFormBuilder />,
-          },
-          {
-            path: 'phases/:phaseId/volunteering/causes/:causeId',
+            path: projectsRoutes.projectPhaseVolunteeringCause,
             element: (
               <PageLoading>
                 <AdminProjectVolunteeringEdit />
@@ -298,7 +343,7 @@ const createAdminProjectsRoutes = () => {
           //   element: <AdminAllowedTopicsComponent />,
           // },
           {
-            path: 'analysis/:analysisId',
+            path: projectsRoutes.projectAnalysis,
             element: (
               <PageLoading>
                 <AdminProjectAnalysis />
@@ -306,7 +351,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'phases/:phaseId/offline-inputs',
+            path: projectsRoutes.projectPhaseOfflineInputs,
             element: (
               <PageLoading>
                 <OfflineInputImporter />
@@ -314,7 +359,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'phases/:phaseId/report',
+            path: projectsRoutes.projectPhaseReport,
             element: (
               <PageLoading>
                 <ReportTab />
