@@ -3,6 +3,7 @@ import React, { lazy } from 'react';
 import moduleConfiguration, { moduleRouteTypes } from 'modules';
 
 import createAdminRoutes, { AdminRouteTypes } from 'containers/Admin/routes';
+import { settingsRegistrationRouteTypes } from 'containers/Admin/settings/registration/CustomFieldRoutes/routes';
 import userProfileRoutes, {
   userShowPageRouteTypes,
 } from 'containers/UsersShowPage/routes';
@@ -57,6 +58,7 @@ export type RouteType =
   | AdminRouteTypes
   | moduleRouteTypes
   | userShowPageRouteTypes
+  | settingsRegistrationRouteTypes
   | citizenRouteTypes
   | ExternalRouteTypes;
 
