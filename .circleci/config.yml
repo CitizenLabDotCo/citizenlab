@@ -26,9 +26,7 @@ install-front-dependencies: &install-front-dependencies
         apt-get update
         apt-get install -y jq
         cd ~/citizenlab/front
-        CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
         npm ci
-        npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
 
 parameters:
   # This parameter is used to trigger the main workflow
@@ -483,8 +481,6 @@ jobs:
             source ~/.nvm/nvm.sh
             nvm install 16.15.0
             nvm use 16.15.0
-            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
-            npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
             npm ci
             /bin/bash -lc "cd ~/citizenlab/front && license_finder"
       - save_cache:
