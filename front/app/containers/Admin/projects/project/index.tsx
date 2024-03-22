@@ -6,7 +6,6 @@ import {
   useParams,
   useLocation,
 } from 'react-router-dom';
-import { RouteType } from 'routes';
 
 import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
