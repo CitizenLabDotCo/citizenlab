@@ -5,7 +5,6 @@ import { TableCellProps } from 'semantic-ui-react';
 
 import { TAppConfigurationSetting } from 'api/app_configuration/types';
 
-import { initiativeRouteTypes } from 'containers/Admin/initiatives/routes';
 import {
   appGraphqlLocalePairs,
   appLocalePairs,
@@ -54,8 +53,7 @@ export type ILocationInfo =
 export interface ITab {
   name: string;
   label: string;
-  // url: string;
-  url: initiativeRouteTypes;
+  url: string;
   active?: boolean | ((pathname: string) => boolean);
   feature?: TAppConfigurationSetting;
   statusLabel?: string;

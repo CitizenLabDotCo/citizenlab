@@ -41,6 +41,7 @@ const AdminContainer = lazy(() => import('containers/Admin'));
 const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
 
 export type AdminRoute<T extends string = string> = `/admin/${T}`;
+
 export type AdminRouteTypes =
   | initiativeRouteTypes
   | ideaRouteTypes
