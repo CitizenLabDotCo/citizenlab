@@ -14,7 +14,7 @@
 
 build:
 	docker-compose build
-	npm run install:all
+	cd front && npm install
 
 reset-dev-env:
 	# -v removes volumes with all the data inside https://docs.docker.com/compose/reference/down/
