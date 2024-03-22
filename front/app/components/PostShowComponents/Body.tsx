@@ -3,12 +3,8 @@ import React, { memo } from 'react';
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 
-import useLocale from 'hooks/useLocale';
-
 import Outlet from 'components/Outlet';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-
-import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div``;
 
@@ -23,13 +19,8 @@ interface Props {
 
 const Body = memo<Props>(
   ({ postId, body, translateButtonClicked, className, postType, color }) => {
-    const locale = useLocale();
     const smallerThanSmallTablet = useBreakpoint('tablet');
     const theme = useTheme();
-
-    if (isNilOrError(locale)) {
-      return null;
-    }
 
     return (
       <Container id={`e2e-${postType}-description`} className={className}>
@@ -42,7 +33,6 @@ const Body = memo<Props>(
             <Outlet
               id="app.components.PostShowComponents.Body.translation"
               postId={postId}
-              locale={locale}
               postType={postType}
               body={body}
               translateButtonClicked={translateButtonClicked}
