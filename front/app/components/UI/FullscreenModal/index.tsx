@@ -78,7 +78,7 @@ const Content = styled.div`
   transform: translate3d(0, 0, 0);
 `;
 
-interface Props {
+interface InputProps {
   className?: string;
   opened: boolean;
   close: () => void;
@@ -93,6 +93,9 @@ interface Props {
   modalPortalElement?: HTMLElement;
   disableFocusOn?: boolean;
   zIndex?: number;
+}
+
+interface Props extends InputProps {
   locale: string;
 }
 
@@ -272,7 +275,7 @@ class FullscreenModal extends PureComponent<Props, State> {
   }
 }
 
-export default (inputProps: Props) => {
+export default (inputProps: InputProps) => {
   const locale = useLocale();
 
   return <FullscreenModal {...inputProps} locale={locale} />;
