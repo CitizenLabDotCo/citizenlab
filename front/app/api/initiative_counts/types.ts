@@ -11,7 +11,7 @@ export interface IQueryParameters {
   areas?: string[];
   initiative_status?: string;
   bounding_box?: number[];
-  assignee?: string;
+  assignee?: string | null;
   feedback_needed?: boolean;
 }
 
