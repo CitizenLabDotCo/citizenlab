@@ -24,6 +24,7 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 import Editor from '../../components/ReportBuilder/Editor';
 import Settings from '../../components/ReportBuilder/Settings';
+import { TemplateContext } from '../../components/ReportBuilder/Templates/context';
 import PhaseTemplate from '../../components/ReportBuilder/Templates/PhaseTemplate';
 import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTemplate';
 import Toolbox from '../../components/ReportBuilder/Toolbox';
@@ -179,12 +180,14 @@ const ReportBuilderWrapper = () => {
   if (!renderReportBuilder) return null;
 
   return (
-    <ReportBuilder
-      report={report}
-      reportLayout={reportLayout.data}
-      templateProjectId={templateProjectId}
-      templatePhaseId={templatePhaseId}
-    />
+    <TemplateContext.Provider value={!!(templateProjectId || templatePhaseId)}>
+      <ReportBuilder
+        report={report}
+        reportLayout={reportLayout.data}
+        templateProjectId={templateProjectId}
+        templatePhaseId={templatePhaseId}
+      />
+    </TemplateContext.Provider>
   );
 };
 
