@@ -27,7 +27,7 @@ interface Props {
 const InitiativesCount = (inputProps: Props) => {
   const [queryParameters, setQueryParameters] = useState<IQueryParameters>({
     feedback_needed: inputProps.feedbackNeeded,
-    assignee: inputProps.assignee !== 'all' ? inputProps.assignee : undefined,
+    assignee: inputProps.assignee || undefined,
     topics: inputProps.topics || undefined,
     initiative_status: inputProps.initiativeStatus || undefined,
   });
@@ -44,6 +44,7 @@ const InitiativesCount = (inputProps: Props) => {
 
   const initiativesMatchingFiltersCount =
     initiativesCount.data.attributes.count;
+  console.log(initiativesMatchingFiltersCount);
 
   return (
     <Container>

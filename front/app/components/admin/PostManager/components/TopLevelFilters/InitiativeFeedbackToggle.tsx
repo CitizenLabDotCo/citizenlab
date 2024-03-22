@@ -26,7 +26,7 @@ const InitiativeFeedbackToggle = ({
 }: Props) => {
   const [queryParameters, setQueryParameters] = useState<IQueryParameters>({
     feedback_needed: true,
-    assignee,
+    assignee: assignee || undefined,
     topics: topics || undefined,
     initiative_status: status || undefined,
   });
