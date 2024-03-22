@@ -6,6 +6,7 @@ import {
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
+import { RouteType } from 'routes';
 import styled, { css } from 'styled-components';
 
 import Link from 'utils/cl-router/Link';
@@ -76,7 +77,7 @@ type TabProps = {
   className?: string;
   'data-cy'?: string;
   label: string;
-  url: string;
+  url: RouteType;
   active: boolean;
   badge?: React.ReactNode;
   handleClick?: (event: MouseEvent<HTMLAnchorElement>) => void;

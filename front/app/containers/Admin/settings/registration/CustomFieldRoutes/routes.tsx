@@ -24,51 +24,51 @@ const AdminCustomFieldRegistrationOptionsEditComponent = React.lazy(
     import('./RegistrationCustomFieldEdit/RegistrationCustomFieldOptionsEdit')
 );
 
-export enum settingsRegistrationRoutes {
-  import = 'import',
+enum customFieldRouteEnum {
+  customFields = 'custom-fields',
   new = 'new',
-  userCustomFieldId = ':userCustomFieldId',
+  customFieldsId = ':userCustomFieldId',
   fieldSettings = 'field-settings',
   options = 'options',
   optionsNew = 'options/new',
-  optionsUserCustomFieldOptionId = 'options/:userCustomFieldOptionId',
-  customFields = 'custom-fields',
+  userCustomFieldOptionId = 'options/:userCustomFieldOptionId',
 }
 
-export type settingsRegistrationRouteTypes =
-  | AdminRoute<`settings/registration/${settingsRegistrationRoutes.customFields}/new`>
-  | AdminRoute<`settings/registration/${settingsRegistrationRoutes.customFields}/${string}`>
-  | AdminRoute<`settings/registration/${settingsRegistrationRoutes.customFields}/${string}/${settingsRegistrationRoutes.fieldSettings}`>
-  | AdminRoute<`settings/registration/${settingsRegistrationRoutes.customFields}/${string}/${settingsRegistrationRoutes.options}`>
-  | AdminRoute<`settings/registration/${settingsRegistrationRoutes.customFields}/${string}/${settingsRegistrationRoutes.optionsNew}`>
-  | AdminRoute<`settings/registration/${settingsRegistrationRoutes.customFields}/${string}/${settingsRegistrationRoutes.options}/${string}`>;
+export type customFieldRouteTypes =
+  | AdminRoute<`settings/registration/${customFieldRouteEnum.customFields}`>
+  | AdminRoute<`settings/registration/${customFieldRouteEnum.customFields}/${customFieldRouteEnum.new}`>
+  | AdminRoute<`settings/registration/${customFieldRouteEnum.customFields}/${string}`>
+  | AdminRoute<`settings/registration/${customFieldRouteEnum.customFields}/${string}/${customFieldRouteEnum.fieldSettings}`>
+  | AdminRoute<`settings/registration/${customFieldRouteEnum.customFields}/${string}/${customFieldRouteEnum.options}`>
+  | AdminRoute<`settings/registration/${customFieldRouteEnum.customFields}/${string}/${customFieldRouteEnum.optionsNew}`>
+  | AdminRoute<`settings/registration/${customFieldRouteEnum.customFields}/${string}/${customFieldRouteEnum.options}/${string}`>;
 
 export default () => ({
-  path: settingsRegistrationRoutes.customFields,
+  path: customFieldRouteEnum.customFields,
   element: <AdminCustomFieldsContainer />,
   children: [
     {
-      path: settingsRegistrationRoutes.new,
+      path: customFieldRouteEnum.new,
       element: <AdminNewCustomFieldComponent />,
     },
     {
-      path: settingsRegistrationRoutes.userCustomFieldId,
+      path: customFieldRouteEnum.customFieldsId,
       element: <AdminCustomFieldEditComponent />,
       children: [
         {
-          path: settingsRegistrationRoutes.fieldSettings,
+          path: customFieldRouteEnum.fieldSettings,
           element: <AdminCustomFieldRegistrationSettingsComponent />,
         },
         {
-          path: settingsRegistrationRoutes.options,
+          path: customFieldRouteEnum.options,
           element: <AdminCustomFieldRegistrationOptionsComponent />,
         },
         {
-          path: settingsRegistrationRoutes.optionsNew,
+          path: customFieldRouteEnum.optionsNew,
           element: <AdminCustomFieldRegistrationOptionsNewComponent />,
         },
         {
-          path: settingsRegistrationRoutes.optionsUserCustomFieldOptionId,
+          path: customFieldRouteEnum.userCustomFieldOptionId,
           element: <AdminCustomFieldRegistrationOptionsEditComponent />,
         },
       ],
