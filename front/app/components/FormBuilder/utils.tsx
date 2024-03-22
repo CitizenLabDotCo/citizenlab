@@ -2,6 +2,7 @@ import React from 'react';
 
 import { uuid4 } from '@sentry/utils';
 import { MessageDescriptor } from 'react-intl';
+import { RouteType } from 'routes';
 import { Locale } from 'typings';
 
 import {
@@ -40,7 +41,7 @@ export type FormBuilderConfig = {
   alwaysShowCustomFields: boolean;
   isFormPhaseSpecific: boolean;
 
-  viewFormLink?: string;
+  viewFormLink?: RouteType;
 
   getDeletionNotice?: (projectId: string) => void;
   getWarningNotice?: () => void;
@@ -50,7 +51,6 @@ export type FormBuilderConfig = {
     handleClose: () => void
   ) => void;
 
-  goBackUrl?: string;
   groupingType: 'page' | 'section';
 
   onDownloadPDF?: () => void;

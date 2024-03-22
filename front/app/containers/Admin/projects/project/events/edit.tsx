@@ -14,6 +14,7 @@ import {
 import { isEmpty, get, isError } from 'lodash-es';
 import moment from 'moment';
 import { useParams } from 'react-router-dom';
+import { RouteType } from 'routes';
 import { useTheme } from 'styled-components';
 import { Multiloc, CLError, UploadFile } from 'typings';
 
@@ -269,7 +270,7 @@ const AdminProjectEventEdit = () => {
     setSubmitState('enabled');
     setAttributeDiff({
       ...attributeDiff,
-      using_url: url,
+      using_url: url as RouteType,
     });
     setErrors({});
   };

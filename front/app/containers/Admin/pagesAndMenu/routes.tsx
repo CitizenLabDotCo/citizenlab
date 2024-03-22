@@ -1,6 +1,7 @@
 import React, { lazy } from 'react';
 
 import { Navigate } from 'react-router-dom';
+import { RouteType } from 'routes';
 
 import PageLoading from 'components/UI/PageLoading';
 
@@ -46,7 +47,7 @@ export const ADMIN_PAGES_MENU_PATH = `/admin/pages-menu`;
 const CUSTOM_PAGES_PATH = 'pages';
 const ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH = `${ADMIN_PAGES_MENU_PATH}/${CUSTOM_PAGES_PATH}`;
 
-export const adminCustomPageContentPath = (pageId: string) => {
+export const adminCustomPageContentPath = (pageId: string): RouteType => {
   return `${ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH}/${pageId}/content`;
 };
 

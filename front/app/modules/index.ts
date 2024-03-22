@@ -2,19 +2,15 @@ import { loadModules } from 'utils/moduleUtils';
 
 import adminProjectTemplatesConfiguration, {
   projectTemplateRouteTypes,
-  projectTemplateRoutes,
 } from './commercial/admin_project_templates';
 import analyticsConfiguration, {
   analyticsRouteTypes,
-  analyticsRoutes,
 } from './commercial/analytics';
 import bulkIdeaImportConfiguration, {
   bulkIdeaImportRouteTypes,
-  bulkIdeaImportRoutes,
 } from './commercial/bulk_idea_import';
 import customIdeaStatusesConfiguration, {
   customIdeaStatusesRouteTypes,
-  customIdeaStatusesRoutes,
 } from './commercial/custom_idea_statuses';
 import flagInappropriateContentConfiguration from './commercial/flag_inappropriate_content';
 import googleAnalyticsConfiguration from './commercial/google_analytics';
@@ -35,31 +31,24 @@ import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import impactTrackingConfiguration from './commercial/impact_tracking';
 import insightsConfiguration, {
   insightsRouteTypes,
-  insightsRoutes,
 } from './commercial/insights';
 import intercomConfiguration from './commercial/intercom';
 import machineTranslationsConfiguration from './commercial/machine_translations';
 import matomoConfiguration from './commercial/matomo';
 import moderationConfiguration, {
   moderationRouteTypes,
-  moderationRoutes,
 } from './commercial/moderation';
 import posthogConfiguration from './commercial/posthog_integration';
 import projectDescriptionBuilderConfiguration, {
   descriptionBuilderRouteTypes,
-  descriptionBuilderRoutes,
 } from './commercial/project_description_builder';
 import representativenessConfiguration, {
   representativenessRouteTypes,
-  representativenessRoutes,
 } from './commercial/representativeness';
 import satismeterConfiguration from './commercial/satismeter';
 import segmentConfiguration from './commercial/segment';
 import smartGroupsConfiguration from './commercial/smart_groups';
-import widgetsConfiguration, {
-  widgetsRouteTypes,
-  widgetsRoutes,
-} from './commercial/widgets';
+import widgetsConfiguration, { widgetsRouteTypes } from './commercial/widgets';
 
 export type moduleRouteTypes =
   | projectTemplateRouteTypes
@@ -71,17 +60,6 @@ export type moduleRouteTypes =
   | descriptionBuilderRouteTypes
   | representativenessRouteTypes
   | widgetsRouteTypes;
-
-export type moduleRoutes =
-  | projectTemplateRoutes
-  | analyticsRoutes
-  | bulkIdeaImportRoutes
-  | customIdeaStatusesRoutes
-  | insightsRoutes
-  | moderationRoutes
-  | descriptionBuilderRoutes
-  | representativenessRoutes
-  | widgetsRoutes;
 
 export default loadModules([
   {

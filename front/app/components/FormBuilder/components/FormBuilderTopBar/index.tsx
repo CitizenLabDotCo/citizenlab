@@ -80,7 +80,7 @@ const FormBuilderTopBar = ({
     if (isDirty) {
       setShowLeaveModal(true);
     } else {
-      clHistory.push(builderConfig.goBackUrl || `/admin/projects/${projectId}`);
+      clHistory.push(`/admin/projects/${projectId}`);
     }
   };
 
@@ -193,7 +193,7 @@ const FormBuilderTopBar = ({
             <Button
               buttonStyle="delete"
               width="100%"
-              linkTo={builderConfig.goBackUrl || `/admin/projects/${projectId}`}
+              linkTo={`/admin/projects/${projectId}`}
             >
               <FormattedMessage {...messages.confirmLeaveBuilderButtonText} />
             </Button>
