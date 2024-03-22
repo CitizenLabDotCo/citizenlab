@@ -24,10 +24,10 @@ enum userShowPageRoutes {
 export type userShowPageRouteTypes =
   | `${userShowPageRoutes.profile}/${string}`
   | ``
-  | `${userShowPageRoutes.profile}/${userShowPageRoutes.submissions}`
-  | `${userShowPageRoutes.profile}/${userShowPageRoutes.comments}`
-  | `${userShowPageRoutes.profile}/${userShowPageRoutes.following}`
-  | `${userShowPageRoutes.profile}/${userShowPageRoutes.events}`;
+  | `${userShowPageRoutes.profile}/${string}/${userShowPageRoutes.submissions}`
+  | `${userShowPageRoutes.profile}/${string}/${userShowPageRoutes.comments}`
+  | `${userShowPageRoutes.profile}/${string}/${userShowPageRoutes.following}`
+  | `${userShowPageRoutes.profile}/${string}/${userShowPageRoutes.events}`;
 
 export default () => ({
   path: userShowPageRoutes.profileUserSlug,
