@@ -1,6 +1,7 @@
 import React, { useState, lazy } from 'react';
 
 import { useParams } from 'react-router-dom';
+import { RouteType } from 'routes';
 
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
 
@@ -30,7 +31,7 @@ const IdeaFormBuilder = () => {
   });
   const locale = useLocale();
 
-  const goBackUrl = `/admin/projects/${projectId}/phases/${phaseId}/ideaform`;
+  const goBackUrl: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/ideaform`;
 
   const handleDownloadPDF = () => setExportModalOpen(true);
 

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
+import { RouteType } from 'routes';
 import { Multiloc } from 'typings';
 
 import {
@@ -66,7 +67,7 @@ export const nativeSurveyConfig: FormBuilderConfig = {
 type FormActionsConfig = {
   phaseId?: string;
   editFormLink: string;
-  viewFormLink: string;
+  viewFormLink: RouteType;
   offlineInputsLink: string;
   downloadExcelLink: string;
   downloadPdfLink: string;
