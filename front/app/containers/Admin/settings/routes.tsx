@@ -52,7 +52,7 @@ export type settingRouteTypes =
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.policies}`>
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.areas}`>
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.areas}/${settingsRoutes.new}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.areas}/${settingsRoutes.areaId}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.areas}/${string}`>
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}`>
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${settingsRoutes.new}`>
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${string}/${settingsRoutes.edit}`>

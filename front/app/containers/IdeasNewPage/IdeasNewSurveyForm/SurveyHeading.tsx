@@ -10,6 +10,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 import { useSearchParams } from 'react-router-dom';
+import { RouteType } from 'routes';
 import styled, { useTheme } from 'styled-components';
 
 import { IProjectData } from 'api/projects/types';
@@ -50,7 +51,7 @@ const SurveyHeading = ({
   const phaseId =
     searchParams.get('phase_id') ||
     project.relationships.current_phase?.data?.id;
-  const linkToSurveyBuilder = `/admin/projects/${project.id}/phases/${phaseId}/native-survey/edit`;
+  const linkToSurveyBuilder: RouteType = `/admin/projects/${project.id}/phases/${phaseId}/native-survey/edit`;
   const canEditSurvey = canUserEditProject;
   const isSmallerThanPhone = useBreakpoint('phone');
   const showEditSurveyButton = !isSmallerThanPhone && canEditSurvey;

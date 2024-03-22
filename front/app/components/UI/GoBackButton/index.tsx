@@ -1,5 +1,6 @@
 import React, { FormEvent } from 'react';
 
+import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import Button from 'components/UI/Button';
@@ -16,7 +17,7 @@ type Props = {
   onClick?: (arg: FormEvent) => void;
   className?: string;
   customMessage?: MessageDescriptor;
-  linkTo?: string;
+  linkTo?: RouteType;
   showGoBackText?: boolean;
 };
 

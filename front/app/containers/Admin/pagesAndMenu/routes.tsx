@@ -1,6 +1,7 @@
 import React, { lazy } from 'react';
 
 import { Navigate } from 'react-router-dom';
+import { RouteType } from 'routes';
 
 import PageLoading from 'components/UI/PageLoading';
 
@@ -43,15 +44,13 @@ const CustomPageHeroBannerForm = lazy(
 
 // path utils
 export const ADMIN_PAGES_MENU_PATH = `/admin/pages-menu`;
-const CUSTOM_PAGES_PATH = 'pages';
-const ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH = `${ADMIN_PAGES_MENU_PATH}/${CUSTOM_PAGES_PATH}`;
 
-export const adminCustomPageContentPath = (pageId: string) => {
-  return `${ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH}/${pageId}/content`;
+export const adminCustomPageContentPath = (pageId: string): RouteType => {
+  return `/admin/pages-menu/pages/${pageId}/content`;
 };
 
 export const adminCustomPageSettingsPath = (pageId: string) => {
-  return `${ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH}/${pageId}/settings`;
+  return `/admin/pages-menu/pages/${pageId}/settings`;
 };
 
 enum pagesAndMenuRoutes {
@@ -123,7 +122,7 @@ export default () => ({
       ),
     },
     {
-      path: CUSTOM_PAGES_PATH, // pages
+      path: pagesAndMenuRoutes.pages,
       element: <CustomPagesIndex />,
       children: [
         {

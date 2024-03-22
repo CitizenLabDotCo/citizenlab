@@ -2,6 +2,7 @@ import React, { lazy } from 'react';
 
 import moduleConfiguration from 'modules';
 import { Navigate } from 'react-router-dom';
+import { RouteType } from 'routes';
 
 import PageLoading from 'components/UI/PageLoading';
 
@@ -47,7 +48,7 @@ const AdminCustomMapConfigComponent = React.lazy(
 const AdminProjectAnalysis = lazy(() => import('./project/analysis'));
 const ReportTab = lazy(() => import('./project/information/ReportTab'));
 
-export function adminProjectsProjectPath(projectId: string) {
+export function adminProjectsProjectPath(projectId: string): RouteType {
   return `/admin/projects/${projectId}`;
 }
 

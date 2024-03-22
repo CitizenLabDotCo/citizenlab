@@ -3,6 +3,7 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
+import { RouteType } from 'routes';
 import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 import { object } from 'yup';
@@ -33,7 +34,7 @@ interface Props {
     top_info_section_multiloc: Multiloc;
   }) => Promise<any>;
   breadcrumbs: TBreadcrumbs;
-  linkToViewPage?: string;
+  linkToViewPage?: RouteType;
 }
 
 interface FormValues {

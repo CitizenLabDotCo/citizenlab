@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { RouteType } from 'routes';
+
 import Button from 'components/UI/Button';
 
 import { render, screen } from 'utils/testUtils/rtl';
@@ -20,7 +22,7 @@ describe('Button', () => {
     );
   });
   it('should render correctly as internal link', () => {
-    render(<Button linkTo="/test">Test</Button>);
+    render(<Button linkTo={'/test' as RouteType}>Test</Button>);
     expect(screen.getByText('Test')).toBeInTheDocument();
     expect(screen.getByRole('link')).toHaveTextContent('Test');
     expect(screen.getByRole('link')).toHaveAttribute('href', '/en/test');
@@ -28,7 +30,7 @@ describe('Button', () => {
 
   it('should not render a link when disabled', () => {
     render(
-      <Button linkTo="/test" disabled>
+      <Button linkTo={'/test' as RouteType} disabled>
         Test
       </Button>
     );

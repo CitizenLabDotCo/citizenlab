@@ -57,7 +57,15 @@ export type RouteType =
   | AdminRouteTypes
   | moduleRouteTypes
   | userShowPageRouteTypes
-  | citizenRouteTypes;
+  | citizenRouteTypes
+  | ExternalRouteTypes;
+
+type ExternalRouteTypes =
+  | `https${string}`
+  | `http${string}`
+  | `www${string}`
+  | `mailto${string}`
+  | `tel${string}`;
 
 export enum citizenRoutes {
   locale = '/:locale',

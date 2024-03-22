@@ -10,6 +10,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { get, set } from 'js-cookie';
 import { useParams, useSearchParams } from 'react-router-dom';
+import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useAnalysis from 'api/analyses/useAnalysis';
@@ -168,7 +169,7 @@ const TopBar = () => {
           icon="info-solid"
           buttonStyle="text"
           openLinkInNewTab
-          linkTo={formatMessage(messages.supportArticleLink)}
+          linkTo={formatMessage(messages.supportArticleLink) as RouteType}
           iconColor={colors.grey800}
         />
         {isFiltersOpen && <Filters onClose={() => setIsFiltersOpen(false)} />}
