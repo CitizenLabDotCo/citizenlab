@@ -155,7 +155,7 @@ module Analysis
 
     def classification_fields
       fields = analysis.associated_custom_fields
-      if fields.map(&:code).include?('topics_ids') || analysis.participation_method != 'ideation'
+      if fields.map(&:code).include?('topic_ids') || analysis.participation_method != 'ideation'
         fields
       else
         custom_form = analysis.project.custom_form || CustomForm.new(participation_context: analysis.project)
