@@ -108,6 +108,7 @@ export type projectsRouteTypes =
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/new`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/ideaform/edit`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/native-survey/edit`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/native-survey/edit?${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/analysis/${string}`>;
 

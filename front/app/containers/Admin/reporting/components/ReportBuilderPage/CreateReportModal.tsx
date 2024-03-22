@@ -9,6 +9,7 @@ import {
   Radio,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { RouteType } from 'routes';
 import { IOption } from 'typings';
 
 import useAddReport from 'api/reports/useAddReport';
@@ -80,8 +81,9 @@ const CreateReportModal = ({ open, onClose }: Props) => {
             template === 'project' && selectedProject
               ? `?templateProjectId=${selectedProject}`
               : '';
+          const url = `${path}${params}` as RouteType;
 
-          clHistory.push(path + params);
+          clHistory.push(url);
         },
         onError: (e) => {
           if (reportTitleIsTaken(e)) {
