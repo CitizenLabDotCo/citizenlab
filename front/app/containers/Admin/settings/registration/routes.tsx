@@ -6,7 +6,9 @@ import { AdminRoute } from 'containers/Admin/routes';
 
 import PageLoading from 'components/UI/PageLoading';
 
-import customFieldRoutes from './CustomFieldRoutes/routes';
+import customFieldRoutes, {
+  customFieldRouteTypes,
+} from './CustomFieldRoutes/routes';
 
 const AdminSettingsRegistration = lazy(() => import('.'));
 
@@ -15,7 +17,8 @@ enum registrationRoutes {
 }
 
 export type registrationRouteTypes =
-  AdminRoute<`settings/${registrationRoutes.registration}`>;
+  | AdminRoute<`settings/${registrationRoutes.registration}`>
+  | customFieldRouteTypes;
 
 export default () => ({
   path: 'registration',

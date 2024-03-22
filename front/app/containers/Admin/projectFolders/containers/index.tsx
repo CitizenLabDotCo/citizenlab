@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
+import { ITab } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
@@ -31,6 +31,13 @@ const TopContainer = styled.div`
   position: relative;
 `;
 
+type TabbedPropsType = {
+  resource: {
+    title: string;
+  };
+  tabs: ITab[];
+};
+
 const AdminProjectFolderEdition = () => {
   const { projectFolderId } = useParams() as { projectFolderId: string };
   const { data: projectFolder } = useProjectFolderById(projectFolderId);
@@ -44,19 +51,19 @@ const AdminProjectFolderEdition = () => {
     clHistory.push('/admin/projects');
   };
 
-  let tabbedProps = {
+  let tabbedProps: TabbedPropsType = {
     resource: {
       title: localize(projectFolder.data.attributes.title_multiloc),
     },
     tabs: [
       {
         label: formatMessage(messages.projectFolderProjectsTab),
-        url: `/admin/projects/folders/${projectFolderId}/projects` as RouteType,
+        url: `/admin/projects/folders/${projectFolderId}/projects`,
         name: 'projects',
       },
       {
         label: formatMessage(messages.projectFolderSettingsTab),
-        url: `/admin/projects/folders/${projectFolderId}/settings` as RouteType,
+        url: `/admin/projects/folders/${projectFolderId}/settings`,
         name: 'settings',
       },
     ],
@@ -67,7 +74,7 @@ const AdminProjectFolderEdition = () => {
       ...tabbedProps,
       tabs: tabbedProps.tabs.concat({
         label: formatMessage(messages.projectFolderPermissionsTab),
-        url: `/admin/projects/folders/${projectFolderId}/permissions` as RouteType,
+        url: `/admin/projects/folders/${projectFolderId}/permissions`,
         name: 'permissions',
       }),
     };

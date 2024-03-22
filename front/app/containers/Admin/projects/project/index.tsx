@@ -61,11 +61,10 @@ const AdminProjectsProjectIndex = ({
   const isNewPhaseLink = pathname.endsWith(
     `admin/projects/${project.id}/phases/new`
   );
-  const baseTabsUrl = `/admin/projects/${project.id}`;
   const tabs: IPhaseTab[] = selectedPhase
     ? getTabs(selectedPhase, featureFlags, formatMessage).map((tab) => ({
         ...tab,
-        url: `${baseTabsUrl}/phases/${selectedPhase.id}/${tab.url}` as RouteType,
+        url: `/admin/projects/${project.id}/phases/${selectedPhase.id}/${tab.url}`,
       }))
     : [];
 

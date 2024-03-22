@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { useLocation, Outlet as RouterOutlet } from 'react-router-dom';
-import { RouteType } from 'routes';
+import { ITab } from 'typings';
 
 import TabbedResource from 'components/admin/TabbedResource';
 import HelmetIntl from 'components/HelmetIntl';
@@ -16,15 +16,15 @@ import messages from './messages';
 const InvitationsPage = () => {
   const { formatMessage } = useIntl();
   const location = useLocation();
-  const tabs = [
+  const tabs: ITab[] = [
     {
       label: formatMessage(messages.tabInviteUsers),
-      url: '/admin/users/invitations' as RouteType,
+      url: '/admin/users/invitations',
       name: 'index',
     },
     {
       label: formatMessage(messages.tabAllInvitations),
-      url: '/admin/users/invitations/all' as RouteType,
+      url: '/admin/users/invitations/all',
       name: 'all',
     },
   ];
