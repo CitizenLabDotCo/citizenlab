@@ -11,7 +11,10 @@ import HelmetIntl from 'components/HelmetIntl';
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
+import {
+  pagesAndMenuBreadcrumb,
+  pagesAndMenuBreadcrumbLinkTo,
+} from '../../breadcrumbs';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
 import ShownOnPageBadge from '../../components/ShownOnPageBadge';
 import { adminCustomPageContentPath } from '../../routes';
@@ -44,7 +47,7 @@ const ProjectList = () => {
         breadcrumbs={[
           {
             label: formatMessage(pagesAndMenuBreadcrumb.label),
-            linkTo: pagesAndMenuBreadcrumb.linkTo,
+            linkTo: pagesAndMenuBreadcrumbLinkTo,
           },
           {
             label: localize(customPage.data.attributes.title_multiloc),

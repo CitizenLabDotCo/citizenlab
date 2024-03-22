@@ -73,22 +73,27 @@ const useGraphDataUnits = <Response extends BaseResponseData>(
     hasPreviewParam: search.get('preview') === 'true',
   });
 
-  const { data: dataLive } = useGraphDataUnitsLive<Response>(parameters, {
-    enabled: enabled && showLiveData,
-    onSuccess,
-  });
-
-  const { data: dataPublished } = useGraphDataUnitsPublished<Response>(
+  const { data: dataLive, error: errorLive } = useGraphDataUnitsLive<Response>(
+    parameters,
     {
-      reportId,
-      graphId,
-    },
-    { enabled: enabled && !showLiveData }
+      enabled: enabled && showLiveData,
+      onSuccess,
+    }
   );
 
-  const data = dataLive ?? dataPublished;
+  const { data: dataPublished, error: errorPublished } =
+    useGraphDataUnitsPublished<Response>(
+      {
+        reportId,
+        graphId,
+      },
+      { enabled: enabled && !showLiveData }
+    );
 
-  return data;
+  const data = showLiveData ? dataLive : dataPublished;
+  const error = showLiveData ? errorLive : errorPublished;
+
+  return { data, error };
 };
 
 export default useGraphDataUnits;

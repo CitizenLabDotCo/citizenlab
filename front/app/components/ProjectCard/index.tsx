@@ -14,6 +14,7 @@ import { isEmpty, round } from 'lodash-es';
 import moment from 'moment';
 import { rgba, darken } from 'polished';
 import { useInView } from 'react-intersection-observer';
+import { RouteType } from 'routes';
 import styled, { useTheme } from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -477,7 +478,7 @@ const ProjectCard = memo<InputProps>(
         ? null
         : projectImages.data[0]?.attributes.versions?.large;
 
-      const projectUrl = getProjectUrl(project.data);
+      const projectUrl: RouteType = getProjectUrl(project.data);
       const isFinished = project.data.attributes.timeline_active === 'past';
       const isArchived =
         project.data.attributes.publication_status === 'archived';

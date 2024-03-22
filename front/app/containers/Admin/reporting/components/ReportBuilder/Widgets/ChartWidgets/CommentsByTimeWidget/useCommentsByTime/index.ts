@@ -21,7 +21,7 @@ export default function useCommentsByTime({
 }: QueryParameters) {
   const [currentResolution, setCurrentResolution] = useState(resolution);
 
-  const dataUnits = useCommentsByTimeData(
+  const { data: dataUnits } = useCommentsByTimeData(
     {
       project_id: projectId,
       start_at: startAt,
@@ -38,8 +38,8 @@ export default function useCommentsByTime({
       dataUnits?.data
         ? parseTimeSeries(
             dataUnits.data.attributes[0],
-            moment(startAt),
-            moment(endAt),
+            startAt ? moment(startAt) : null,
+            endAt ? moment(endAt) : null,
             currentResolution,
             dataUnits.data.attributes[1]
           )

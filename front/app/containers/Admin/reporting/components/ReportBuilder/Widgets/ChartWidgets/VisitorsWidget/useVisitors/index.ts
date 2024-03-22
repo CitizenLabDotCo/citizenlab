@@ -18,7 +18,7 @@ export default function useVisitors({
   const [currentResolution, setCurrentResolution] =
     useState<IResolution>(resolution);
 
-  const analytics = useVisitorsData(
+  const { data: analytics } = useVisitorsData(
     {
       project_id: projectId,
       start_at: startAt,
@@ -37,8 +37,8 @@ export default function useVisitors({
       analytics?.data
         ? parseTimeSeries(
             analytics.data.attributes[1],
-            moment(startAt),
-            moment(endAt),
+            startAt ? moment(startAt) : null,
+            endAt ? moment(endAt) : null,
             currentResolution
           )
         : null,

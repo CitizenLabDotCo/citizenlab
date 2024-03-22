@@ -15,7 +15,7 @@ export default function useActiveUsers({
 }: QueryParameters) {
   const [currentResolution, setCurrentResolution] = useState(resolution);
 
-  const analytics = useActiveUsersData(
+  const { data: analytics } = useActiveUsersData(
     {
       project_id: projectId,
       start_at: startAt,
@@ -34,8 +34,8 @@ export default function useActiveUsers({
       analytics?.data
         ? parseTimeSeries(
             analytics.data.attributes[0],
-            moment(startAt),
-            moment(endAt),
+            startAt ? moment(startAt) : null,
+            endAt ? moment(endAt) : null,
             currentResolution
           )
         : null,
