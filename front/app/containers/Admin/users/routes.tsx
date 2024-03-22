@@ -17,10 +17,10 @@ enum usersRoutes {
 }
 
 type UsersRoute<T extends string = string> =
-  AdminRoute<`${usersRoutes.users}/${T}/`>;
+  AdminRoute<`${usersRoutes.users}/${T}`>;
 
 export type userRouteTypes =
-  | UsersRoute<usersRoutes.users>
+  | AdminRoute<`${usersRoutes.users}`>
   | UsersRoute<`${usersRoutes.adminsManagers}`>
   | UsersRoute<`${usersRoutes.blocked}`>
   | UsersRoute<`${string}`>;

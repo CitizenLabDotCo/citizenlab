@@ -20,7 +20,10 @@ import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
-import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
+import {
+  pagesAndMenuBreadcrumb,
+  pagesAndMenuBreadcrumbLinkTo,
+} from '../../breadcrumbs';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
 import ShownOnPageBadge from '../../components/ShownOnPageBadge';
 import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
@@ -97,7 +100,7 @@ const GenericTopInfoSection = ({
             breadcrumbs={[
               {
                 label: formatMessage(pagesAndMenuBreadcrumb.label),
-                linkTo: pagesAndMenuBreadcrumb.linkTo,
+                linkTo: pagesAndMenuBreadcrumbLinkTo,
               },
               ...breadcrumbs,
               { label: formatMessage(messages.topInfoPageTitle) },

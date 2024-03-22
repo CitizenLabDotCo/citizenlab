@@ -49,7 +49,7 @@ export const adminCustomPageContentPath = (pageId: string): RouteType => {
   return `/admin/pages-menu/pages/${pageId}/content`;
 };
 
-export const adminCustomPageSettingsPath = (pageId: string) => {
+export const adminCustomPageSettingsPath = (pageId: string): RouteType => {
   return `/admin/pages-menu/pages/${pageId}/settings`;
 };
 
