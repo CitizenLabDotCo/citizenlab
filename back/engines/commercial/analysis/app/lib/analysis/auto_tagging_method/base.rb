@@ -38,7 +38,7 @@ module Analysis
       altul
     ]
 
-    attr_reader :analysis, :task, :input_to_text_classify
+    attr_reader :analysis, :task, :input_to_text
 
     class AutoTaggingFailedError < StandardError; end
 
@@ -66,7 +66,7 @@ module Analysis
     def initialize(auto_tagging_task)
       @analysis = auto_tagging_task.analysis
       @task = auto_tagging_task
-      @input_to_text_classify = InputToText.new(classify_fields)
+      @input_to_text = InputToText.new(analysis.associated_custom_fields)
     end
 
     def execute
@@ -151,6 +151,16 @@ module Analysis
         input.title_multiloc&.keys&.first ||
         input.body_multiloc&.keys&.first ||
         AppConfiguration.instance.settings('core', 'locales').first
+    end
+
+    def input_to_text_classify
+      fields = analysis.associated_custom_fields
+      if fields.map(&:code).exclude?('topics_ids') && analysis.participation_method == 'ideation'
+        custom_form = analysis.project.custom_form || CustomForm.new(participation_context: analysis.project)
+        project_fields = IdeaCustomFieldsService.new(custom_form).submittable_fields
+        fields += [project_fields.find { |field| field.code == 'topic_ids' }].compact
+      end
+      @input_to_text_classify ||= InputToText.new(fields)
     end
 
     def classify_fields
