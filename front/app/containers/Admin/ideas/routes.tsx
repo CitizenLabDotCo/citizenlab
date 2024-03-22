@@ -12,7 +12,6 @@ const AdminIdeasAll = lazy(() => import('./all'));
 
 enum ideaRoutes {
   ideas = 'ideas',
-  initiativesDefault = '',
   ideaId = `:ideaId`,
 }
 
