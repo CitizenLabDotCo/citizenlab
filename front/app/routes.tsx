@@ -127,6 +127,7 @@ type citizenRouteTypes =
   | `/${citizenRoutes.initiatives}/new`
   | `/${citizenRoutes.initiatives}/${string}`
   | `/${citizenRoutes.projects}`
+  | `/${citizenRoutes.projects}?focusSearch=${string}`
   | `/${citizenRoutes.projects}/${string}/${citizenRoutes.ideas}/new`
   | `/${citizenRoutes.projects}/${string}`
   | `/${citizenRoutes.folders}`
@@ -141,7 +142,7 @@ type citizenRouteTypes =
   | `/${citizenRoutes.resetPassword}`
   | `/${citizenRoutes.subscriptionEnded}`
   | `/${citizenRoutes.emailSettings}`
-  | `/${citizenRoutes.disabledAccount}`
+  | `/${citizenRoutes.disabledAccount}?${string}`
   | `/admin/reporting/report-builder/${string}/print`;
 
 export default function createRoutes() {

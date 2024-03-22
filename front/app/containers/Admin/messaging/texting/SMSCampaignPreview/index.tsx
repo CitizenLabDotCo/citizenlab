@@ -189,8 +189,7 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
   };
 
   const goBackToCampaignView = () => {
-    const url = `/admin/messaging/texting/${campaignId}/`;
-    clHistory.replace(url);
+    clHistory.replace(`/admin/messaging/texting/${campaignId}/`);
   };
 
   // actual error state when campaign not found

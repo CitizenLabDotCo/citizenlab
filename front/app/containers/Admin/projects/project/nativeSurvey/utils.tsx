@@ -66,9 +66,9 @@ export const nativeSurveyConfig: FormBuilderConfig = {
 
 type FormActionsConfig = {
   phaseId?: string;
-  editFormLink: string;
+  editFormLink: RouteType;
   viewFormLink: RouteType;
-  offlineInputsLink: string;
+  offlineInputsLink: RouteType;
   downloadExcelLink: string;
   downloadPdfLink: string;
   heading?: Multiloc;

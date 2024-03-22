@@ -1,3 +1,5 @@
+import { RouteType } from 'routes';
+
 import { getJwt, removeJwt, decode } from 'utils/auth/jwt';
 import {
   invalidateQueryCache,
@@ -33,7 +35,7 @@ export default async function signOut() {
       }
 
       if (pathname && endsWith(pathname, '/ideas/new')) {
-        clHistory.push(pathname.split('/ideas/new')[0]);
+        clHistory.push(pathname.split('/ideas/new')[0] as RouteType);
       }
     }
   }

@@ -77,7 +77,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
           {canAccessAdmin && (
             <DropdownListItem
               id="admin-link"
-              linkTo={'admin'}
+              linkTo={'/admin'}
               onClick={handleCloseDropdown}
               buttonStyle="text"
               bgHoverColor={colors.grey300}
@@ -87,6 +87,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
               padding="11px 11px"
               justify="space-between"
             >
+              klklkl
               <FormattedMessage {...messages.admin} />
             </DropdownListItem>
           )}
