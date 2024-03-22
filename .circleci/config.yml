@@ -460,33 +460,18 @@ jobs:
 
   front-license-check:
     docker:
-      - image: licensefinder/license_finder
+      - image: cimg/ruby:3.3-node
     working_directory: ~/citizenlab/front
     resource_class: small
     steps:
       - shallow-clone
-      - restore_cache:
-          keys:
-            - v2-npm-cache-{{ checksum "package-lock.json" }}
       - run:
-          name: Install jq
+          name: Install dependencies and run license_finder
           command: |
-            curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-            apt-get update
-            apt-get install -y jq
-      - run:
-          name: Install node, dependencies and run license_finder
-          command: |
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-            source ~/.nvm/nvm.sh
-            nvm install 16.15.0
-            nvm use 16.15.0
+            echo "Node version: $(node -v)"
             npm ci
-            /bin/bash -lc "cd ~/citizenlab/front && license_finder"
-      - save_cache:
-          paths:
-            - /root/.npm
-          key: v2-npm-cache-{{ checksum "package-lock.json" }}
+            gem install license_finder -v 7.1.0
+            cd ~/citizenlab/front && license_finder
 
   front-build:
     docker:
