@@ -45,41 +45,11 @@ class LanguageProvider extends React.PureComponent<Props, State> {
   }
 
   loadLocales = () => {
-    const { locale, tenantLocales } = this.props;
-
-    if (!isNilOrError(locale) && !this.state.messages[locale]) {
-      this.importLocale(locale);
-    }
+    const { tenantLocales } = this.props;
 
     if (!isNilOrError(tenantLocales)) {
       this.importTenantLocales(tenantLocales);
     }
-  };
-
-  importLocale = (locale: Locale) => {
-    import(`i18n/${locale}`).then((translationMessages) => {
-      const intlCache = createIntlCache();
-
-      const intlShape = createIntl(
-        {
-          locale,
-          messages: translationMessages.default,
-        },
-        intlCache
-      );
-
-      this.setState((prevState) => ({
-        messages: {
-          ...prevState.messages,
-          [locale]: translationMessages.default,
-        },
-
-        intlShapes: {
-          ...prevState.intlShapes,
-          [locale]: intlShape,
-        },
-      }));
-    });
   };
 
   importTenantLocales = (tenantLocales: Locale[]) => {
