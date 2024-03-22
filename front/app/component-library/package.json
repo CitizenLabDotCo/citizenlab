@@ -1,0 +1,10 @@
+{
+    
+    "name": "@citizenlab/cl2-component-library",
+    "version": "0.11.35",
+    "description": "CitizenLab's component library",
+    "files":[
+      "../../dist"
+    ]
+  }
+  

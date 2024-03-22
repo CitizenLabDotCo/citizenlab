@@ -12,7 +12,8 @@
   "author": {
     "name": "CitizenLab"
   },
-  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/cl2-component-library.esm.js",
   "scripts": {
     "extract-intl": "tsc --skipLibCheck app/containers/App/constants && babel-node --presets @babel/env -- ./internals/scripts/extract-intl.js",
     "prebuild": "npm run build:clean",
@@ -40,7 +41,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "chromatic": "chromatic --exit-once-uploaded",
-    "build-component-library": "rimraf ./dist && rollup -c --bundleConfigAsCjs"
+    "generate-component-library-types": "tsc app/component-library/index.tsx --jsx react --esModuleInterop true --skipLibCheck --emitDeclarationOnly --declaration --declarationDir dist",
+    "build-component-library": "rimraf ./dist && npm run generate-component-library-types && rollup -c --bundleConfigAsCjs"
   },
   "jest-junit": {
     "addFileAttribute": "true"
@@ -183,6 +185,7 @@
     "@types/qs": "6.9.7",
     "@types/quill": "2.0.10",
     "@types/react": "17.x",
+    "@types/react-color": "^3.0.12",
     "@types/react-datepicker": "^4.19.1",
     "@types/react-dom": "^17.0.11",
     "@types/react-helmet": "^6.1.6",
@@ -247,6 +250,7 @@
     "rollup-plugin-dts": "^6.1.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-typescript": "^1.0.1",
     "shelljs": "0.8.5",
     "storybook": "^7.5.1",
     "storybook-react-intl": "^2.0.3",
@@ -254,6 +258,7 @@
     "ts-jest": "^29.1.0",
     "ts-loader": "^9.4.4",
     "ts-prune": "^0.10.1",
+    "tslib": "^2.6.2",
     "typescript": "4.9.3",
     "typescript-styled-plugin": "0.18.3",
     "webpack": "5.85.0",

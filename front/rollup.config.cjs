@@ -1,40 +1,48 @@
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
-import typescript from '@rollup/plugin-typescript';
+import typescript from 'rollup-plugin-typescript';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import postcss from 'rollup-plugin-postcss';
-import external from 'rollup-plugin-peer-deps-external';
 import terser from '@rollup/plugin-terser';
+import { dts } from 'rollup-plugin-dts';
+
+const packageJson = require('./package.json');
+
+const external = Object.keys(packageJson.dependencies || {});
 
 const config = [
   {
     input: 'app/component-library/index.tsx',
     output: [
       {
+        file: packageJson.main,
+        format: 'cjs',
+        sourcemap: false,
+      },
+      {
+        file: packageJson.module,
         format: 'esm',
         sourcemap: false,
-        dir: 'dist',
       },
     ],
+    external,
     plugins: [
-      external(),
       peerDepsExternal(),
       postcss(),
       resolve({ preferBuiltins: true }),
       commonjs(),
-      terser(),
       typescript({
         tsconfig: './app/tsconfig.json',
-        exclude: [
-          '**/*.test.ts',
-          '**/*.test.tsx',
-          '**/*.stories.tsx',
-          '**/*.stories.ts',
-        ],
-        declarationDir: 'dist',
-        sourceMap: false,
+        exclude: ['**/*.test.ts', '**/*.test.tsx'],
       }),
+      terser(),
     ],
+  },
+  {
+    input: 'dist/index.d.ts',
+    output: [{ file: 'dist/index.d.ts', format: 'esm' }],
+    external: [/\.css$/],
+    plugins: [dts()],
   },
 ];
 
