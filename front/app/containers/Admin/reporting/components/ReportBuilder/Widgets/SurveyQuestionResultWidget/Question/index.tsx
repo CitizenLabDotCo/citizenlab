@@ -10,13 +10,15 @@ import useLocalize from 'hooks/useLocalize';
 import InputType from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/InputType';
 
 import Legend from 'components/admin/Graphs/Legend';
+import { DEFAULT_CATEGORICAL_COLORS } from 'components/admin/Graphs/styling';
+import SurveyBars from 'components/admin/Graphs/SurveyBars';
 
 import { useIntl } from 'utils/cl-intl';
 
-import GroupedBars from './GroupedBars';
+import MissingData from '../../_shared/MissingData';
+
 import PointLocationQuestion from './PointLocationQuestion';
-import UngroupedBars from './UngroupedBars';
-import { getColorScheme, getLegendLabels } from './utils';
+import { getLegendLabels } from './utils';
 
 interface Props {
   projectId: string;
@@ -35,7 +37,7 @@ const SurveyQuestionResult = ({
   groupFieldId,
   heatmap,
 }: Props) => {
-  const response = useSurveyQuestionResult({
+  const { data, error } = useSurveyQuestionResult({
     phase_id: phaseId,
     question_id: questionId,
     group_mode: groupMode,
@@ -45,13 +47,10 @@ const SurveyQuestionResult = ({
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  if (!response) return null;
+  if (error) return <MissingData />;
+  if (!data) return null;
 
-  const { attributes } = response.data;
-
-  const colorScheme = attributes.grouped
-    ? getColorScheme(attributes.legend.length)
-    : undefined;
+  const { attributes } = data.data;
 
   return (
     <Box mb="8px">
@@ -79,19 +78,18 @@ const SurveyQuestionResult = ({
         />
       ) : (
         <>
-          {attributes.grouped && colorScheme && (
-            <Box>
-              <GroupedBars attributes={attributes} colorScheme={colorScheme} />
-              <Box mt="20px">
-                <Legend
-                  labels={getLegendLabels(attributes, localize, formatMessage)}
-                  colors={colorScheme}
-                />
-              </Box>
+          <SurveyBars
+            questionResult={attributes}
+            colorScheme={DEFAULT_CATEGORICAL_COLORS}
+          />
+          {attributes.grouped && (
+            <Box mt="20px">
+              <Legend
+                labels={getLegendLabels(attributes, localize, formatMessage)}
+                colors={DEFAULT_CATEGORICAL_COLORS}
+              />
             </Box>
           )}
-
-          {!attributes.grouped && <UngroupedBars attributes={attributes} />}
         </>
       )}
     </Box>

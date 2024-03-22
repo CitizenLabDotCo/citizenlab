@@ -1,0 +1,115 @@
+{
+  "data": [
+    {
+      "id": "33929458-72df-448b-9d93-1659421396f9",
+      "type": "insight",
+      "relationships": {
+        "insightable": {
+          "data": {
+            "id": "843f07fd-9a4e-4de3-952b-e74ae8dfba0a",
+            "type": "summary"
+          }
+        }
+      }
+    },
+    {
+      "id": "eb5b97cb-4d63-4619-a791-3983eb7ef7c9",
+      "type": "insight",
+      "relationships": {
+        "insightable": {
+          "data": {
+            "id": "24257d46-8d68-42c8-8856-2f68b21fc279",
+            "type": "analysis_question"
+          }
+        }
+      }
+    }
+  ],
+  "included": [
+    {
+      "id": "631ff1b0-444c-42aa-bf08-65b6718c759a",
+      "type": "background_task",
+      "attributes": {
+        "progress": null,
+        "state": "succeeded",
+        "started_at": "2024-03-12T11:43:54.311Z",
+        "ended_at": "2024-03-12T11:44:06.387Z",
+        "updated_at": "2024-03-12T11:44:06.388Z",
+        "created_at": "2024-03-12T11:43:54.010Z",
+        "type": "summarization_task",
+        "auto_tagging_method": null
+      }
+    },
+    {
+      "id": "843f07fd-9a4e-4de3-952b-e74ae8dfba0a",
+      "type": "summary",
+      "attributes": {
+        "summary": "Respondents provided a series of survey responses, sequentially numbered from the first to the twelfth. Each response appears to be a simple statement indicating its position in the sequence. There is no substantive content provided beyond this numerical ordering. The trend across responses is that each is self-referential, acknowledging its own place in the lineup of survey submissions.",
+        "filters": {
+          "input_custom_field_no_empty_values": true
+        },
+        "custom_field_ids": {
+          "main_custom_field_id": "dbad67c0-e812-41a1-99f2-17d3b6a2bdde",
+          "additional_custom_field_ids": []
+        },
+        "accuracy": 0.8,
+        "created_at": "2024-03-12T11:43:54.023Z",
+        "updated_at": "2024-03-12T11:44:06.467Z",
+        "missing_inputs_count": 0,
+        "generated_at": "2024-03-12T11:44:06.401Z",
+        "inputs_count": 12
+      },
+      "relationships": {
+        "background_task": {
+          "data": {
+            "id": "631ff1b0-444c-42aa-bf08-65b6718c759a",
+            "type": "background_task"
+          }
+        }
+      }
+    },
+    {
+      "id": "4f064803-02af-484f-bc23-00695879b8fc",
+      "type": "background_task",
+      "attributes": {
+        "progress": null,
+        "state": "succeeded",
+        "started_at": "2024-03-12T11:43:02.911Z",
+        "ended_at": "2024-03-12T11:43:50.616Z",
+        "updated_at": "2024-03-12T11:43:50.619Z",
+        "created_at": "2024-03-12T11:43:02.402Z",
+        "type": "q_and_a_task",
+        "auto_tagging_method": null
+      }
+    },
+    {
+      "id": "24257d46-8d68-42c8-8856-2f68b21fc279",
+      "type": "analysis_question",
+      "attributes": {
+        "filters": {
+          "input_custom_field_no_empty_values": true
+        },
+        "custom_field_ids": {
+          "main_custom_field_id": "dbad67c0-e812-41a1-99f2-17d3b6a2bdde",
+          "additional_custom_field_ids": []
+        },
+        "question": "Tell me more about the answers?",
+        "answer": "The responses provided are sequential statements indicating their order in the survey for the online participation project. Each response is identified by a unique ID and simply states its position in the sequence of survey responses.",
+        "accuracy": 0.8,
+        "created_at": "2024-03-12T11:43:02.412Z",
+        "updated_at": "2024-03-12T11:43:50.640Z",
+        "missing_inputs_count": 0,
+        "generated_at": "2024-03-12T11:43:50.628Z",
+        "inputs_count": 12
+      },
+      "relationships": {
+        "background_task": {
+          "data": {
+            "id": "4f064803-02af-484f-bc23-00695879b8fc",
+            "type": "background_task"
+          }
+        }
+      }
+    }
+  ]
+}

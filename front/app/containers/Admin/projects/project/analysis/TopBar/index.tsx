@@ -5,7 +5,6 @@ import {
   stylingConsts,
   colors,
   Title,
-  Badge,
   Text,
 } from '@citizenlab/cl2-component-library';
 import { get, set } from 'js-cookie';
@@ -137,9 +136,6 @@ const TopBar = () => {
             <Text m="0px" color="textSecondary">
               {formatMessage(messages.AIAnalysis)}
             </Text>
-            <Badge color={colors.textSecondary} className="inverse">
-              BETA
-            </Badge>
           </Box>
 
           <TruncatedTitle variant="h4" m="0px">
@@ -154,7 +150,7 @@ const TopBar = () => {
         >
           {formatMessage(messages.filters)}
         </Button>
-        <FilterItems filters={filters} isEditable />
+        <FilterItems filters={filters} isEditable analysisId={analysisId} />
         <Box marginLeft="auto">
           <SearchInput
             key={urlParams.get('reset_filters')}

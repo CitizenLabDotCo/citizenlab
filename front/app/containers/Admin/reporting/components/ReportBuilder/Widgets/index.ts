@@ -3,10 +3,6 @@ import whiteSpaceMessages from 'components/admin/ContentBuilder/Widgets/WhiteSpa
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
-import SurveyResultsWidget, {
-  surveyResultsTitle,
-} from './_deprecated/SurveyResultsWidget';
-import TitleMultiloc, { titleMultilocTitle } from './_deprecated/TitleMultiloc';
 import AboutReportWidget, { aboutReportTitle } from './AboutReportWidget';
 import ActiveUsersWidget, {
   activeUsersTitle,
@@ -56,10 +52,6 @@ export const WIDGETS = {
   CommentsByTimeWidget,
   ReactionsByTimeWidget,
   IframeMultiloc,
-
-  // Deprecated
-  TitleMultiloc, // TODO: remove this widget (TAN-1022)
-  SurveyResultsWidget, // TODO: remove this widget (TAN-1022)
 };
 
 type WidgetName = keyof typeof WIDGETS;
@@ -82,10 +74,6 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   CommentsByTimeWidget: commentsByTimeTitle,
   ReactionsByTimeWidget: reactionsByTimeTitle,
   IframeMultiloc: iframeMultilocTitle,
-
-  // Deprecated
-  TitleMultiloc: titleMultilocTitle,
-  SurveyResultsWidget: surveyResultsTitle,
 };
 
 const WIDGETS_WITH_CHILDREN = new Set<string>([
@@ -107,9 +95,6 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'VisitorsWidget',
   'SurveyQuestionResultWidget',
   'IframeMultiloc',
-
-  // Deprecated
-  'SurveyResultsWidget',
 ] satisfies WidgetName[]);
 
 export const hasNoPointerEvents = (nodeName: string) => {

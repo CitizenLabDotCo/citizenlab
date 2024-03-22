@@ -21,7 +21,7 @@ export default function usePostsByTime({
 }: QueryParameters) {
   const [currentResolution] = useState(resolution);
 
-  const analytics = usePostsByTimeData({
+  const { data: analytics } = usePostsByTimeData({
     project_id: projectId,
     start_at: startAt,
     end_at: endAt,
@@ -33,8 +33,8 @@ export default function usePostsByTime({
       analytics?.data
         ? parseTimeSeries(
             analytics.data.attributes[0],
-            moment(startAt),
-            moment(endAt),
+            startAt ? moment(startAt) : null,
+            endAt ? moment(endAt) : null,
             currentResolution,
             analytics.data.attributes[1]
           )
