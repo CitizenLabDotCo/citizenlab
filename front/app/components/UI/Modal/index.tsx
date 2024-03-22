@@ -413,7 +413,7 @@ const ModalContentContainerSwitch = ({
   );
 };
 
-export interface Props {
+export interface InputProps {
   opened: boolean;
   fixedHeight?: boolean;
   width?: number | string;
@@ -430,6 +430,9 @@ export interface Props {
   fullScreen?: boolean;
   zIndex?: number;
   hideCloseButton?: boolean;
+}
+
+interface Props extends InputProps {
   smallerThanSmallTablet: boolean;
 }
 
@@ -662,7 +665,7 @@ class Modal extends PureComponent<Props, State> {
   }
 }
 
-export default (inputProps: Props) => {
+export default (inputProps: InputProps) => {
   const smallerThanSmallTablet = useBreakpoint('tablet');
 
   return (
