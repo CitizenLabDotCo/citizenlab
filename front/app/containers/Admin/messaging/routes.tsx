@@ -32,13 +32,13 @@ export type messagingRouteTypes =
   | AdminRoute<messagingRoutes.messaging>
   | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.emailsCustom}`>
   | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.emailsCustomNew}`>
-  | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.emailsCustomCampaignId}`>
-  | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.emailsCustomCampaignIdEdit}`>
+  | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.emailsCustom}/${string}`>
+  | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.emailsCustom}/${string}/edit`>
   | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.emailsAutomated}`>
   | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.texting}`>
   | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.textingNew}`>
-  | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.textingCampaignId}`>
-  | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.textingCampaignIdPreview}`>;
+  | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.texting}/${string}`>
+  | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.texting}/${string}/preview`>;
 
 const createAdminMessagingRoutes = () => ({
   path: messagingRoutes.messaging,
