@@ -87,7 +87,6 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
               padding="11px 11px"
               justify="space-between"
             >
-              klklkl
               <FormattedMessage {...messages.admin} />
             </DropdownListItem>
           )}
