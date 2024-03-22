@@ -43,6 +43,8 @@ export type FormBuilderConfig = {
 
   viewFormLink?: RouteType;
 
+  goBackUrl?: RouteType;
+
   getDeletionNotice?: (projectId: string) => void;
   getWarningNotice?: () => void;
   getAccessRightsNotice?: (
