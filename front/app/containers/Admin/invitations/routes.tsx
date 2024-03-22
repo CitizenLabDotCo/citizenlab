@@ -3,7 +3,6 @@ import React, { lazy } from 'react';
 import PageLoading from 'components/UI/PageLoading';
 
 import { AdminRoute } from '../routes';
-import { UsersRoute } from '../users/routes';
 
 const AdminInvitationsContainer = lazy(() => import('.'));
 const AdminInvitationsInvite = lazy(() => import('./invite'));
@@ -16,7 +15,7 @@ enum invitationRoutes {
 
 export type invitationRouteTypes =
   | AdminRoute<invitationRoutes.invitations>
-  | UsersRoute<`${invitationRoutes.all}`>;
+  | AdminRoute<`${invitationRoutes.invitations}/${invitationRoutes.all}`>;
 
 export default () => ({
   path: invitationRoutes.invitations,

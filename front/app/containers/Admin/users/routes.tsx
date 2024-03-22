@@ -16,7 +16,7 @@ enum usersRoutes {
   blocked = 'blocked',
 }
 
-export type UsersRoute<T extends string = string> =
+type UsersRoute<T extends string = string> =
   AdminRoute<`${usersRoutes.users}/${T}/`>;
 
 export type userRouteTypes =
