@@ -255,6 +255,20 @@ RSpec.describe Analysis::AutoTaggingTask do
         progress: nil
       })
     end
+
+    it 'includes the topics field for ideation' do
+      topic = create(:topic, title_multiloc: { 'en' => 'Bananas' })
+      project = create(:single_phase_ideation_project)
+      custom_form = create(:custom_form, :with_default_fields, participation_context: project)
+      analysis = create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)
+      tags = create_list(:tag, 3, analysis: analysis)
+      task = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'label_classification', tags_ids: [tags[0].id, tags[1].id])
+      create(:idea, project: project, topics: [topic])
+
+      expect_any_instance_of(Analysis::AutoTaggingMethod::Base)
+        .to receive(:classify_input_text).with(/Bananas/, anything).and_return(tags.first.name)
+      task.execute
+    end
   end
 
   describe 'FewShotClassification auto_tagging' do

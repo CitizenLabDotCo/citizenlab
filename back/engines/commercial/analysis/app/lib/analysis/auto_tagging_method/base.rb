@@ -153,17 +153,7 @@ module Analysis
         AppConfiguration.instance.settings('core', 'locales').first
     end
 
-    def input_to_text_classify
-      fields = analysis.associated_custom_fields
-      if fields.map(&:code).exclude?('topics_ids') && analysis.participation_method == 'ideation'
-        custom_form = analysis.project.custom_form || CustomForm.new(participation_context: analysis.project)
-        project_fields = IdeaCustomFieldsService.new(custom_form).submittable_fields
-        fields += [project_fields.find { |field| field.code == 'topic_ids' }].compact
-      end
-      @input_to_text_classify ||= InputToText.new(fields)
-    end
-
-    def classify_fields
+    def classification_fields
       fields = analysis.associated_custom_fields
       if fields.map(&:code).include?('topics_ids') || analysis.participation_method != 'ideation'
         fields
@@ -172,6 +162,10 @@ module Analysis
         project_fields = IdeaCustomFieldsService.new(custom_form).submittable_fields
         fields + [project_fields.find { |field| field.code == 'topic_ids' }].compact
       end
+    end
+
+    def input_to_text_classify
+      @input_to_text_classify ||= InputToText.new(classification_fields)
     end
   end
 end
