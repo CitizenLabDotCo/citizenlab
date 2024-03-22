@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 
 import { WrappedComponentProps } from 'react-intl';
 import { Outlet as RouterOutlet } from 'react-router-dom';
+import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import {
@@ -52,7 +53,7 @@ const RegistrationCustomFieldEdit = memo(
       const tabs = [
         {
           label: formatMessage(messages.fieldSettingsTab),
-          url: `${baseTabsUrl}/field-settings`,
+          url: `${baseTabsUrl}/field-settings` as RouteType,
           className: 'field-settings',
           name: 'fieldSettings',
         },
@@ -64,7 +65,7 @@ const RegistrationCustomFieldEdit = memo(
       ) {
         tabs.push({
           label: formatMessage(messages.answerOptionsTab),
-          url: `${baseTabsUrl}/options`,
+          url: `${baseTabsUrl}/options` as RouteType,
           className: 'options',
           name: 'options',
         });

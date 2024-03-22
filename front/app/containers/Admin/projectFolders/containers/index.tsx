@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
+import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -50,12 +51,12 @@ const AdminProjectFolderEdition = () => {
     tabs: [
       {
         label: formatMessage(messages.projectFolderProjectsTab),
-        url: `/admin/projects/folders/${projectFolderId}/projects`,
+        url: `/admin/projects/folders/${projectFolderId}/projects` as RouteType,
         name: 'projects',
       },
       {
         label: formatMessage(messages.projectFolderSettingsTab),
-        url: `/admin/projects/folders/${projectFolderId}/settings`,
+        url: `/admin/projects/folders/${projectFolderId}/settings` as RouteType,
         name: 'settings',
       },
     ],
@@ -66,7 +67,7 @@ const AdminProjectFolderEdition = () => {
       ...tabbedProps,
       tabs: tabbedProps.tabs.concat({
         label: formatMessage(messages.projectFolderPermissionsTab),
-        url: `/admin/projects/folders/${projectFolderId}/permissions`,
+        url: `/admin/projects/folders/${projectFolderId}/permissions` as RouteType,
         name: 'permissions',
       }),
     };

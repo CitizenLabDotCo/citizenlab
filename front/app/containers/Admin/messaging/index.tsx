@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
+import { RouteType } from 'routes';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -73,7 +74,7 @@ const MessagingDashboard = () => {
     const tabs: {
       name: string;
       label: string;
-      url: string;
+      url: RouteType;
       statusLabel?: string;
     }[] = [];
 

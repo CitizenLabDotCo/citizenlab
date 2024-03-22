@@ -6,6 +6,7 @@ import {
   useParams,
   useLocation,
 } from 'react-router-dom';
+import { RouteType } from 'routes';
 
 import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
@@ -64,7 +65,7 @@ const AdminProjectsProjectIndex = ({
   const tabs: IPhaseTab[] = selectedPhase
     ? getTabs(selectedPhase, featureFlags, formatMessage).map((tab) => ({
         ...tab,
-        url: `${baseTabsUrl}/phases/${selectedPhase.id}/${tab.url}`,
+        url: `${baseTabsUrl}/phases/${selectedPhase.id}/${tab.url}` as RouteType,
       }))
     : [];
 
