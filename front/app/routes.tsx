@@ -100,40 +100,41 @@ export enum citizenRoutes {
 }
 
 type citizenRouteTypes =
+  | '/'
   | `/${string}/`
-  | `sign-in`
-  | `sign-up`
-  | `invite`
-  | `complete-signup`
-  | `authentication-error`
-  | `site-map`
-  | `${citizenRoutes.profile}/edit`
-  | `${citizenRoutes.profile}/change-password`
-  | `${citizenRoutes.profile}/change-email`
-  | `ideas`
-  | `${citizenRoutes.ideas}/edit/${string}`
-  | `${citizenRoutes.ideas}/${string}`
-  | `initiatives`
-  | `${citizenRoutes.initiatives}/edit/${string}`
-  | `${citizenRoutes.initiatives}/new`
-  | `${citizenRoutes.initiatives}/${string}`
-  | `${citizenRoutes.projects}`
-  | `${citizenRoutes.projects}/${string}/${citizenRoutes.ideas}/new`
-  | `${citizenRoutes.projects}/${string}`
-  | `${citizenRoutes.folders}`
-  | `${citizenRoutes.folders}/${string}`
-  | `${citizenRoutes.events}`
-  | `${citizenRoutes.events}/${string}`
-  | `${citizenRoutes.pages}`
-  | `${citizenRoutes.pages}/cookie-policy`
-  | `${citizenRoutes.pages}/accessibility-statement`
-  | `${citizenRoutes.pages}/${string}`
-  | `${citizenRoutes.passwordRecovery}`
-  | `${citizenRoutes.resetPassword}`
-  | `${citizenRoutes.subscriptionEnded}`
-  | `${citizenRoutes.emailSettings}`
-  | `${citizenRoutes.disabledAccount}`
-  | `admin/reporting/report-builder/${string}/print`;
+  | `/sign-in`
+  | `/sign-up`
+  | `/invite`
+  | `/complete-signup`
+  | `/authentication-error`
+  | `/site-map`
+  | `/${citizenRoutes.profile}/edit`
+  | `/${citizenRoutes.profile}/change-password`
+  | `/${citizenRoutes.profile}/change-email`
+  | `/ideas`
+  | `/${citizenRoutes.ideas}/edit/${string}`
+  | `/${citizenRoutes.ideas}/${string}`
+  | `/initiatives`
+  | `/${citizenRoutes.initiatives}/edit/${string}`
+  | `/${citizenRoutes.initiatives}/new`
+  | `/${citizenRoutes.initiatives}/${string}`
+  | `/${citizenRoutes.projects}`
+  | `/${citizenRoutes.projects}/${string}/${citizenRoutes.ideas}/new`
+  | `/${citizenRoutes.projects}/${string}`
+  | `/${citizenRoutes.folders}`
+  | `/${citizenRoutes.folders}/${string}`
+  | `/${citizenRoutes.events}`
+  | `/${citizenRoutes.events}/${string}`
+  | `/${citizenRoutes.pages}`
+  | `/${citizenRoutes.pages}/cookie-policy`
+  | `/${citizenRoutes.pages}/accessibility-statement`
+  | `/${citizenRoutes.pages}/${string}`
+  | `/${citizenRoutes.passwordRecovery}`
+  | `/${citizenRoutes.resetPassword}`
+  | `/${citizenRoutes.subscriptionEnded}`
+  | `/${citizenRoutes.emailSettings}`
+  | `/${citizenRoutes.disabledAccount}`
+  | `/admin/reporting/report-builder/${string}/print`;
 
 export default function createRoutes() {
   return [
