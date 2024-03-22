@@ -149,7 +149,7 @@ fr-BE:
         title: Détails
         description:
       other:
-        title: Saisissez votre réponse
+        title: Puisque vous avez choisi « autre », à quoi pensez-vous ?
   custom_forms:
     categories:
       main_content:

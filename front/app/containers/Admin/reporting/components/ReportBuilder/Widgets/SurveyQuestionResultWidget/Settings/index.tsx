@@ -27,12 +27,12 @@ import {
   SLICE_SURVEY_QUESTION_INPUT_TYPES,
 } from '../../../constants';
 import ProjectFilter from '../../_shared/ProjectFilter';
+import QuestionSelect from '../../_shared/QuestionSelect';
 import widgetMessages from '../../messages';
 import { Props } from '../typings';
 
 import GroupModeSelect from './GroupModeSelect';
 import messages from './messages';
-import QuestionSelect from './QuestionSelect';
 import UserFieldSelect from './UserFieldSelect';
 
 const findQuestion = (questions: ICustomFields, questionId: string) => {

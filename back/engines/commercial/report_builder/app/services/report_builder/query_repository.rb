@@ -12,7 +12,6 @@ module ReportBuilder
       'ActiveUsersWidget' => Queries::Analytics::ActiveUsers,
       'VisitorsWidget' => Queries::Analytics::Visitors,
       'VisitorsTrafficSourcesWidget' => Queries::Analytics::TrafficSources,
-      'SurveyResultsWidget' => Queries::SurveyResults,
       'SurveyQuestionResultWidget' => Queries::SurveyQuestionResult,
       'MostReactedIdeasWidget' => Queries::MostReactedIdeas,
       'SingleIdeaWidget' => Queries::SingleIdea

@@ -149,7 +149,7 @@ hr:
         title: Pojedinosti
         description:
       other:
-        title: Upišite svoj odgovor
+        title: Budući da ste odabrali 'drugo', o čemu razmišljate?
   custom_forms:
     categories:
       main_content:

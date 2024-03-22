@@ -149,7 +149,7 @@ sr-Cyrl:
         title: Детаљи
         description:
       other:
-        title: Type your answer
+        title: Since you picked 'other', what are you thinking of?
   custom_forms:
     categories:
       main_content:
