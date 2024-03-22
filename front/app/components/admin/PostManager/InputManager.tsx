@@ -24,7 +24,7 @@ import FilterSidebar from './components/FilterSidebar';
 import IdeasCount from './components/IdeasCount';
 import InfoSidebar from './components/InfoSidebar';
 import PostTable from './components/PostTable';
-import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
+import IdeaFeedbackToggle from './components/TopLevelFilters/IdeaFeedbackToggle';
 
 import {
   LeftColumn,
@@ -271,8 +271,7 @@ const InputManager = ({
           handleAssigneeFilterChange={onChangeAssignee}
           type={type}
         />
-        <FeedbackToggle
-          type={type}
+        <IdeaFeedbackToggle
           value={feedbackNeeded}
           onChange={onChangeFeedbackFilter}
           project={selectedProjectId}

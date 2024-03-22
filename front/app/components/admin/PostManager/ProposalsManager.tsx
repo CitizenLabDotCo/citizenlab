@@ -17,7 +17,7 @@ import FilterSidebar from './components/FilterSidebar';
 import InitiativesCount from './components/InitiativesCount';
 import PostTable from './components/PostTable';
 import LazyStatusChangeModal from './components/StatusChangeModal/LazyStatusChangeModal';
-import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
+import InitiativeFeedbackToggle from './components/TopLevelFilters/InitiativeFeedbackToggle';
 
 import {
   LeftColumn,
@@ -168,8 +168,7 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
           handleAssigneeFilterChange={onChangeAssignee}
           type={'Initiatives'}
         />
-        <FeedbackToggle
-          type={'Initiatives'}
+        <InitiativeFeedbackToggle
           value={feedbackNeeded}
           onChange={onChangeFeedbackFilter}
           topics={selectedTopics}
