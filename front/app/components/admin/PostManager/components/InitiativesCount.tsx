@@ -44,7 +44,6 @@ const InitiativesCount = (inputProps: Props) => {
 
   const initiativesMatchingFiltersCount =
     initiativesCount.data.attributes.count;
-  console.log(initiativesMatchingFiltersCount);
 
   return (
     <Container>
