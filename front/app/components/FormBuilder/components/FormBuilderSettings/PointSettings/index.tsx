@@ -78,14 +78,12 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
   }, [localize, mapConfig]);
 
   const onConfigureMapClick = useCallback(() => {
-    // Create a new map config by duplicating the project config if we don't have one for this field
     if (!mapConfigId) {
+      // Create a new map config if we don't have one for this field
       const duplicateAndOpenModal = (projectMapConfigId: string) => {
         duplicateMapConfig(projectMapConfigId, {
           onSuccess: (data) => {
-            // Set the form value to the map config ID
             setValue(mapConfigIdName, data.data.id, { shouldDirty: true });
-            // Open the modal
             setShowModal(true);
           },
         });
@@ -93,9 +91,10 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
 
       const projectMapConfigId = projectMapConfig?.data?.id;
       if (projectMapConfigId) {
+        // Duplicate the project map config if it exists
         duplicateAndOpenModal(projectMapConfigId);
       } else {
-        // Create a default project map config if it doesn't exist
+        // Create a new map config with default application values if there is no project map config
         const defaultLatLng = getCenter(undefined, appConfig?.data, undefined);
         const defaultZoom = getZoomLevel(undefined, appConfig?.data, undefined);
         createMapConfig(
@@ -108,7 +107,10 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
           },
           {
             onSuccess: (newProjectMapConfig) => {
-              duplicateAndOpenModal(newProjectMapConfig.data.id);
+              setValue(mapConfigIdName, newProjectMapConfig.data.id, {
+                shouldDirty: true,
+              });
+              setShowModal(true);
             },
           }
         );
