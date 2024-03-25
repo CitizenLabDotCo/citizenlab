@@ -112,7 +112,7 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
     setQueryParameters({ ...queryParameters, pageNumber: 1, topics });
   };
 
-  const onChangeStatus = (initiativeStatus: string | null) => {
+  const onChangeStatus = (initiativeStatus: string) => {
     setQueryParameters({
       ...queryParameters,
       pageNumber: 1,
@@ -171,10 +171,7 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
         <InitiativeFeedbackToggle
           value={feedbackNeeded}
           onChange={onChangeFeedbackFilter}
-          topics={selectedTopics}
-          status={selectedStatus}
-          assignee={selectedAssignee}
-          searchTerm={queryParameters.search}
+          queryParameters={queryParameters}
         />
         <StyledExportMenu type={'Initiatives'} selection={selection} />
       </TopActionBar>
@@ -189,13 +186,7 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
           />
         </LeftColumn>
         <MiddleColumnTop>
-          <InitiativesCount
-            feedbackNeeded={feedbackNeeded}
-            topics={selectedTopics}
-            initiativeStatus={selectedStatus}
-            searchTerm={queryParameters.search}
-            assignee={selectedAssignee}
-          />
+          <InitiativesCount queryParameters={queryParameters} />
           <StyledInput icon="search" onChange={onChangeSearchTerm} />
         </MiddleColumnTop>
       </ThreeColumns>

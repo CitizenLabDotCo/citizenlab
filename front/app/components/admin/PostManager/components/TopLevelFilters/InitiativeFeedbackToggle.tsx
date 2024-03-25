@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
+import { IQueryParameters } from 'api/initiative_counts/types';
 import useInitiativesCount from 'api/initiative_counts/useInitiativesCount';
 
 import FeedbackToggle from './FeedbackToggle';
@@ -7,38 +8,29 @@ import FeedbackToggle from './FeedbackToggle';
 interface Props {
   value: boolean;
   onChange: (feedbackNeeded: boolean | undefined) => void;
-  assignee?: string | null;
-  project?: string | null;
-  phase?: string | null;
-  topics?: string[] | null;
-  status?: string | null;
-  searchTerm?: string | null;
+  queryParameters: IQueryParameters;
 }
 
 const InitiativeFeedbackToggle = ({
   value,
-  assignee,
-  topics,
-  status,
-  searchTerm,
   onChange,
+  queryParameters,
 }: Props) => {
-  const [currentSearch, setCurrentSearch] = useState(searchTerm);
   const { data: ideasCount } = useInitiativesCount({
     feedback_needed: true,
-    assignee: assignee || undefined,
-    topics: topics || undefined,
-    initiative_status: status || undefined,
-    search: currentSearch || undefined,
+    assignee: queryParameters.assignee,
+    topics: queryParameters.topics,
+    initiative_status: queryParameters.initiative_status,
+    search: queryParameters.search,
   });
 
-  useEffect(() => {
-    setCurrentSearch(searchTerm);
-  }, [searchTerm]);
-
-  const count = ideasCount?.data.attributes.count;
-
-  return <FeedbackToggle value={value} count={count} onChange={onChange} />;
+  return (
+    <FeedbackToggle
+      value={value}
+      count={ideasCount?.data.attributes.count}
+      onChange={onChange}
+    />
+  );
 };
 
 export default InitiativeFeedbackToggle;

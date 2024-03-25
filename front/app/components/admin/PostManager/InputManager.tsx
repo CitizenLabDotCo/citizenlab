@@ -188,7 +188,7 @@ const InputManager = ({
     setQueryParameters({ ...queryParameters, 'page[number]': 1, topics });
   };
 
-  const onChangeStatus = (ideaStatus: string | null) => {
+  const onChangeStatus = (ideaStatus: string) => {
     setQueryParameters({
       ...queryParameters,
       'page[number]': 1,
@@ -275,11 +275,7 @@ const InputManager = ({
           value={feedbackNeeded}
           onChange={onChangeFeedbackFilter}
           project={selectedProjectId}
-          phase={selectedPhaseId}
-          topics={selectedTopics}
-          status={selectedStatus}
-          assignee={selectedAssignee}
-          searchTerm={queryParameters.search}
+          queryParameters={queryParameters}
         />
         <StyledExportMenu
           type={type}
@@ -305,6 +301,7 @@ const InputManager = ({
             project={selectedProjectId}
             phase={selectedPhaseId ?? undefined}
             topics={selectedTopics ?? undefined}
+            // bug?
             ideaStatusId={selectedStatus ?? undefined}
             search={queryParameters.search}
             assignee={selectedAssignee ?? undefined}

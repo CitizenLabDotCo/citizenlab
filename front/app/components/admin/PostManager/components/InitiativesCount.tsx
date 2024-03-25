@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import styled from 'styled-components';
 
@@ -17,28 +17,17 @@ const Container = styled.div`
 `;
 
 interface Props {
-  feedbackNeeded: boolean;
-  assignee: string | null | undefined;
-  topics: string[] | null | undefined;
-  initiativeStatus: string | null | undefined;
-  searchTerm: string | null | undefined;
+  queryParameters: IQueryParameters;
 }
 
-const InitiativesCount = (inputProps: Props) => {
-  const [queryParameters, setQueryParameters] = useState<IQueryParameters>({
-    feedback_needed: inputProps.feedbackNeeded,
-    assignee: inputProps.assignee || undefined,
-    topics: inputProps.topics || undefined,
-    initiative_status: inputProps.initiativeStatus || undefined,
+const InitiativesCount = ({ queryParameters }: Props) => {
+  const { data: initiativesCount } = useInitiativesCount({
+    feedback_needed: queryParameters.feedback_needed,
+    assignee: queryParameters.assignee,
+    topics: queryParameters.topics,
+    initiative_status: queryParameters.initiative_status,
+    search: queryParameters.search,
   });
-  const { data: initiativesCount } = useInitiativesCount(queryParameters);
-
-  useEffect(() => {
-    setQueryParameters({
-      ...queryParameters,
-      search: inputProps.searchTerm || undefined,
-    });
-  }, [inputProps.searchTerm, queryParameters]);
 
   if (!initiativesCount) return null;
 

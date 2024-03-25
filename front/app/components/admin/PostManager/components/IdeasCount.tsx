@@ -35,14 +35,15 @@ const IdeasCount = ({
     projects: project ? [project] : undefined,
   });
 
+  if (!ideasCount) return null;
+
   return (
     <Container>
       {/*
           If there are no ideas, we have an 'empty container' to indicate there are no ideas matching the filters.
           Hence we only show this count when there's at least 1 idea.
         */}
-      {ideasCount &&
-        ideasCount.data.attributes.count > 0 &&
+      {ideasCount.data.attributes.count > 0 &&
         (ideasCount.data.attributes.count === 1 ? (
           <FormattedMessage {...messages.oneInput} />
         ) : (
