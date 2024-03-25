@@ -34,7 +34,7 @@ import Link from 'utils/cl-router/Link';
 import messages from './messages';
 
 interface Props {
-  appConfig: IAppConfiguration;
+  appConfig: IAppConfiguration | undefined;
   formatMessage: FormatMessage;
 }
 
@@ -92,7 +92,9 @@ class PasswordReset extends React.PureComponent<Props, State> {
     return typeof password === 'string'
       ? hasPasswordMinimumLength(
           password,
-          appConfig.data.attributes.settings.password_login?.minimum_length
+          appConfig
+            ? appConfig.data.attributes.settings.password_login?.minimum_length
+            : undefined
         )
       : true;
   };
@@ -241,8 +243,6 @@ class PasswordReset extends React.PureComponent<Props, State> {
 export default () => {
   const { data: appConfig } = useAppConfiguration();
   const { formatMessage } = useIntl();
-
-  if (!appConfig) return null;
 
   return <PasswordReset appConfig={appConfig} formatMessage={formatMessage} />;
 };
