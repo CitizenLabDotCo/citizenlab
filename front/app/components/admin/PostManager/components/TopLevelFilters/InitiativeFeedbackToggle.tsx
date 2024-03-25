@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import { IQueryParameters } from 'api/initiative_counts/types';
 import useInitiativesCount from 'api/initiative_counts/useInitiativesCount';
 
 import FeedbackToggle from './FeedbackToggle';
@@ -24,20 +23,18 @@ const InitiativeFeedbackToggle = ({
   searchTerm,
   onChange,
 }: Props) => {
-  const [queryParameters, setQueryParameters] = useState<IQueryParameters>({
+  const [currentSearch, setCurrentSearch] = useState(searchTerm);
+  const { data: ideasCount } = useInitiativesCount({
     feedback_needed: true,
     assignee: assignee || undefined,
     topics: topics || undefined,
     initiative_status: status || undefined,
+    search: currentSearch || undefined,
   });
-  const { data: ideasCount } = useInitiativesCount(queryParameters);
 
   useEffect(() => {
-    setQueryParameters({
-      ...queryParameters,
-      search: searchTerm || undefined,
-    });
-  }, [searchTerm, queryParameters]);
+    setCurrentSearch(searchTerm);
+  }, [searchTerm]);
 
   const count = ideasCount?.data.attributes.count;
 

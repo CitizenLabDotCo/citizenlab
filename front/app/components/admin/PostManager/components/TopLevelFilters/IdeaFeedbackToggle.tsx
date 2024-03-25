@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import { IQueryParameters } from 'api/idea_count/types';
 import useIdeasCount from 'api/idea_count/useIdeasCount';
 
 import FeedbackToggle from './FeedbackToggle';
@@ -27,23 +26,20 @@ const IdeaFeedbackToggle = ({
   onChange,
 }: Props) => {
   const projectIds = project ? [project] : undefined;
-  const [queryParameters, setQueryParameters] = useState<IQueryParameters>({
+  const [currentSearch, setCurrentSearch] = useState(searchTerm);
+  const { data: ideasCount } = useIdeasCount({
     feedback_needed: true,
     assignee: assignee || undefined,
     projects: projectIds,
     phase,
     topics: topics || undefined,
     idea_status_id: status || undefined,
-    search: searchTerm || undefined,
+    search: currentSearch || undefined,
   });
-  const { data: ideasCount } = useIdeasCount(queryParameters);
 
   useEffect(() => {
-    setQueryParameters({
-      ...queryParameters,
-      search: searchTerm || undefined,
-    });
-  }, [searchTerm, queryParameters]);
+    setCurrentSearch(searchTerm);
+  }, [searchTerm]);
 
   const count = ideasCount?.data.attributes.count;
 
