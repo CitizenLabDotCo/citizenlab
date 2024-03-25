@@ -6,12 +6,16 @@ import {
   colors,
   fontSizes,
   defaultOutline,
+  viewportWidths,
   isRtl,
-  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import { adopt } from 'react-adopt';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
+import GetWindowSize, {
+  GetWindowSizeChildProps,
+} from 'resources/GetWindowSize';
 import { Subscription, fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import styled from 'styled-components';
@@ -413,6 +417,10 @@ const ModalContentContainerSwitch = ({
   );
 };
 
+interface DataProps {
+  windowSize: GetWindowSizeChildProps;
+}
+
 export interface InputProps {
   opened: boolean;
   fixedHeight?: boolean;
@@ -432,9 +440,7 @@ export interface InputProps {
   hideCloseButton?: boolean;
 }
 
-interface Props extends InputProps {
-  smallerThanSmallTablet: boolean;
-}
+interface Props extends InputProps, DataProps {}
 
 interface State {
   windowHeight: number;
@@ -524,6 +530,7 @@ class Modal extends PureComponent<Props, State> {
   render() {
     const { windowHeight } = this.state;
     const {
+      windowSize,
       width,
       children,
       opened,
@@ -535,9 +542,11 @@ class Modal extends PureComponent<Props, State> {
       fullScreen,
       zIndex,
       hideCloseButton,
-      smallerThanSmallTablet,
     } = this.props;
     const hasFixedHeight = this.props.fixedHeight;
+    const smallerThanSmallTablet = windowSize
+      ? windowSize <= viewportWidths.tablet
+      : false;
     const modalPortalElement = document?.getElementById('modal-portal');
     let padding: string | undefined = undefined;
 
@@ -665,10 +674,12 @@ class Modal extends PureComponent<Props, State> {
   }
 }
 
-export default (inputProps: InputProps) => {
-  const smallerThanSmallTablet = useBreakpoint('tablet');
+const Data = adopt<DataProps, InputProps>({
+  windowSize: <GetWindowSize />,
+});
 
-  return (
-    <Modal {...inputProps} smallerThanSmallTablet={smallerThanSmallTablet} />
-  );
-};
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {(dataProps) => <Modal {...inputProps} {...dataProps} />}
+  </Data>
+);
