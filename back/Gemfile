@@ -44,7 +44,7 @@ group :development, :test do
   gem 'rack-mini-profiler', require: %w[prepend_net_http_patch rack-mini-profiler]
   gem 'rspec_api_documentation'
   gem 'rspec_junit_formatter'
-  gem 'rspec-rails', '~> 6.0.2'
+  gem 'rspec-rails', '~> 6.1.2'
   gem 'rspec-parameterized'
   gem 'rspec-sqlimit'
   gem 'rspec-its'
@@ -74,7 +74,7 @@ end
 
 group :test do
   gem 'rubyXL'
-  gem 'shoulda-matchers', '~> 5.3.0'
+  gem 'shoulda-matchers', '~> 6.2.0'
   gem 'webmock', '~> 3.18'
 
   # Adds rspec matchers and helpers for testing html structure and styling.
@@ -102,7 +102,7 @@ gem 'fog-aws', '~> 3.19'
 
 gem 'api-pagination', '~> 5.0.0'
 gem 'kaminari', '~> 1.2'
-gem 'rails-i18n', '~> 7.0.7'
+gem 'rails-i18n', '~> 7.0.9'
 
 gem 'awesome_nested_set', '~> 3.5.0'
 gem 'axlsx', '3.0.0.pre'
@@ -113,7 +113,7 @@ gem 'interactor'
 gem 'interactor-rails'
 gem 'liquid', '~> 5.4'
 gem 'mini_magick', '~> 4.12'
-gem 'nokogiri', '~> 1.14.3'
+gem 'nokogiri', '~> 1.16.3'
 gem 'pg_search', '~> 2.3.5'
 gem 'premailer-rails', '~> 1.12.0'
 gem 'rest-client'
@@ -149,7 +149,7 @@ gem 'aws-sdk-s3', '~> 1'
 gem 'aws-sdk-bedrockruntime', '~> 1'
 gem 'bootsnap', '~> 1', require: false
 gem 'dalli', '~> 3.2.4'
-gem 'mailgun-ruby', '~>1.2.8'
+gem 'mailgun-ruby', '~>1.2.14'
 gem 'rails_semantic_logger'
 gem 'rinku', '~> 2'
 gem 'jsonapi-serializer'
@@ -162,7 +162,7 @@ gem 'intercom', '~> 4.2'
 gem 'mjml-rails', '~> 4.9'
 gem 'cloudfront-rails', '~> 0.4'
 gem 'google-cloud-document_ai'
-gem 'combine_pdf'
+gem 'combine_pdf', '~> 1.0.26'
 
 free_engines = %w[
   document_annotation

@@ -34,9 +34,9 @@ export default defineMessages({
     defaultMessage: 'Download survey as pdf',
   },
   informationText: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.informationText2',
+    id: 'app.containers.AdminPage.ProjectEdit.survey.informationText3',
     defaultMessage:
-      'Responses to short and long answer questions are currently only available in the survey download',
+      'AI summaries of short and long answer questions can be accessed from the AI tab in the left sidebar.',
   },
   required: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.required2',

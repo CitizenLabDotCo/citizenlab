@@ -271,12 +271,6 @@ RSpec.describe SurveyResultsGeneratorService do
     end
   end
 
-  describe '#generate_submission_count' do
-    it 'returns the count' do
-      expect(generator.generate_submission_count).to eq({ totalSubmissions: 22 })
-    end
-  end
-
   describe 'generate_results' do
     let(:generated_results) { generator.generate_results }
 
@@ -764,6 +758,78 @@ RSpec.describe SurveyResultsGeneratorService do
           end
         end
 
+        let(:expected_result_select_sliced_by_linear_scale) do
+          {
+            customFieldId: select_field.id,
+            inputType: 'select',
+            question: {
+              'en' => 'What city do you like best?',
+              'fr-FR' => 'Quelle ville préférez-vous ?',
+              'nl-NL' => 'Welke stad vind jij het leukst?'
+            },
+            required: true,
+            grouped: true,
+            totalResponseCount: 22,
+            questionResponseCount: 6,
+            totalPickCount: 22,
+            answers: [
+              {
+                answer: nil,
+                count: 16,
+                groups: [
+                  { count: 1, group: 5 },
+                  { count: 7, group: 3 },
+                  { count: 5, group: 2 },
+                  { count: 2, group: 1 },
+                  { count: 1, group: nil }
+                ]
+              },
+              {
+                answer: 'la',
+                count: 2,
+                groups: [
+                  { count: 1, group: 4 },
+                  { count: 1, group: nil }
+                ]
+              },
+              {
+                answer: 'ny',
+                count: 1,
+                groups: [
+                  { count: 1, group: 3 }
+                ]
+              },
+              {
+                answer: 'other',
+                count: 3,
+                groups: [
+                  { count: 3, group: nil }
+                ]
+              }
+            ],
+            multilocs: {
+              answer: {
+                'la' => { title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' } },
+                'ny' => { title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' } },
+                'other' => { title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' } }
+              },
+              group: {
+                1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => "1 - Pas du tout d'accord", 'nl-NL' => '1 - Helemaal niet mee eens' } },
+                2 => { title_multiloc: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' } },
+                3 => { title_multiloc: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' } },
+                4 => { title_multiloc: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' } },
+                5 => { title_multiloc: { 'en' => '5 - Strongly agree', 'fr-FR' => "5 - Tout à fait d'accord", 'nl-NL' => '5 - Strerk mee eens' } }
+              }
+            },
+            legend: [5, 4, 3, 2, 1, nil],
+            textResponses: [
+              { answer: 'Austin' },
+              { answer: 'Miami' },
+              { answer: 'Seattle' }
+            ]
+          }
+        end
+
         it 'groups select by user field' do
           generator = described_class.new(survey_phase,
             group_mode: 'user_field',
@@ -781,41 +847,7 @@ RSpec.describe SurveyResultsGeneratorService do
             field_id: select_field.id
           )
 
-          expect(result[:answers]).to match [
-            {
-              answer: nil,
-              count: 16,
-              groups: [
-                { count: 1, group: 5 },
-                { count: 7, group: 3 },
-                { count: 5, group: 2 },
-                { count: 2, group: 1 },
-                { count: 1, group: nil }
-              ]
-            },
-            {
-              answer: 'la',
-              count: 2,
-              groups: [
-                { count: 1, group: 4 },
-                { count: 1, group: nil }
-              ]
-            },
-            {
-              answer: 'ny',
-              count: 1,
-              groups: [
-                { count: 1, group: 3 }
-              ]
-            },
-            {
-              answer: 'other',
-              count: 3,
-              groups: [
-                { count: 3, group: nil }
-              ]
-            }
-          ]
+          expect(result).to match expected_result_select_sliced_by_linear_scale
         end
       end
     end

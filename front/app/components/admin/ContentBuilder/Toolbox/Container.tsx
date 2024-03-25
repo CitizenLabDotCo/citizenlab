@@ -1,12 +1,17 @@
 import React from 'react';
 
-import { Box, stylingConsts, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  stylingConsts,
+  colors,
+  BoxProps,
+} from '@citizenlab/cl2-component-library';
 
-interface Props {
+type Props = {
   children: React.ReactNode;
-}
+} & BoxProps;
 
-const Container = ({ children }: Props) => (
+const Container = ({ children, ...rest }: Props) => (
   <Box
     position="fixed"
     zIndex="99999"
@@ -19,6 +24,7 @@ const Container = ({ children }: Props) => (
     bgColor="#ffffff"
     overflowY="auto"
     borderRight={`1px solid ${colors.grey500}`}
+    {...rest}
   >
     <Box w="100%" display="inline" pb="20px">
       {children}

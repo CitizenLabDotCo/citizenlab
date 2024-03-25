@@ -3,11 +3,13 @@
 namespace :fix_existing_tenants do
   desc 'Add the missing permissions.'
   task update_permissions: [:environment] do |_t, _args|
+    Rails.logger.info 'fix_existing_tenants:update_permissions started'
     Tenant.creation_finalized.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         PermissionsService.new.update_all_permissions
       end
     end
+    Rails.logger.info 'fix_existing_tenants:update_permissions finished'
   end
 
   desc 'Migrate changes in action names'

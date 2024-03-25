@@ -6,7 +6,6 @@ import {
   colors,
   IconButton,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
@@ -34,11 +33,12 @@ const clauseToPredicate = (clause?: string): '>' | '<' | '=' => {
 type FilterItemsProps = {
   filters: IInputsFilterParams;
   isEditable: boolean;
+  analysisId: string;
 };
 
 const translationKeys: Record<
   string,
-  { translationKey: MessageDescriptor; predicate: '>' | '<' | '=' }
+  { translationKey: MessageDescriptor; predicate?: '>' | '<' | '=' }
 > = {
   search: {
     translationKey: messages.search,
@@ -78,13 +78,16 @@ const translationKeys: Record<
   },
   input_custom_field_no_empty_values: {
     translationKey: messages.emptyCustomFields,
+  },
+  limit: {
+    translationKey: messages.limit,
     predicate: '=',
   },
 };
 
-const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
+const FilterItems = ({ filters, isEditable, analysisId }: FilterItemsProps) => {
   const { formatMessage } = useIntl();
-  const { analysisId } = useParams() as { analysisId: string };
+
   const { data: tags } = useAnalysisTags({ analysisId });
 
   return (
@@ -156,8 +159,12 @@ const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
               display="flex"
             >
               <Box>{formatMessage(translationKeys[key].translationKey)}</Box>
-              <Box mx="3px">{translationKeys[key].predicate}</Box>
-              <EllipsisFilterValue>{value?.toString()}</EllipsisFilterValue>
+              {translationKeys[key].predicate && (
+                <>
+                  <Box mx="3px">{translationKeys[key].predicate}</Box>
+                  <EllipsisFilterValue>{value?.toString()}</EllipsisFilterValue>
+                </>
+              )}
               {isEditable && (
                 <IconButton
                   iconName="close"

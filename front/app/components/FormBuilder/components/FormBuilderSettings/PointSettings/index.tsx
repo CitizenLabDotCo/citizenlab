@@ -187,6 +187,7 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
           webMapId={mapConfig?.data.attributes.esri_web_map_id}
         />
         <Button
+          data-cy="e2e-configure-map-button"
           mt="16px"
           iconPos="left"
           icon="edit"

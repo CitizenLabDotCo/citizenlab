@@ -198,7 +198,7 @@ const MapIdeasList = memo<Props>(
           </Header>
         )}
 
-        <IdeaMapCards>
+        <IdeaMapCards id="e2e-idea-map-cards">
           {ideaMarkers === undefined && (
             <Centerer>
               <Spinner />
