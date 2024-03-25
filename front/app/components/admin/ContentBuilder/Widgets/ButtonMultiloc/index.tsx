@@ -74,8 +74,11 @@ const Button = ({ text, url, type, alignment }: ButtonProps) => {
           id="e2e-button"
           width={alignment === 'fullWidth' ? '100%' : 'auto'}
           buttonStyle={type}
-          text={localize(text)}
-        />
+        >
+          <span style={{ whiteSpace: 'normal', maxWidth: '100vw !important' }}>
+            {localize(text)}
+          </span>
+        </ButtonComponent>
       )}
     </Box>
   );
