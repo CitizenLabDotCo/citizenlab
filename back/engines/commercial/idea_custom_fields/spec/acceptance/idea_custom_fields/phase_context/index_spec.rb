@@ -10,7 +10,7 @@ resource 'Idea Custom Fields' do
 
   get 'web_api/v1/admin/phases/:phase_id/custom_fields' do
     parameter :support_free_text_value, 'Only return custom fields that have a freely written textual answer', type: :boolean, required: false
-    parameter :copy, 'Copy this form (resets all fields)', type: :boolean, required: false
+    parameter :copy, 'Return non-persisted copies of all custom fields with new IDs', type: :boolean, required: false
 
     let(:context) { create(:native_survey_phase) }
     let(:phase_id) { context.id }

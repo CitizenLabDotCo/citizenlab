@@ -145,12 +145,12 @@ class IdeaCustomFieldsService
     fields = all_fields
     logic_id_map = { survey_end: 'survey_end' }
     copied_fields = fields.map do |field|
-      # Duplicate fields with a new id
+      # Duplicate fields to return with a new id
       copied_field = field.dup
       copied_field.id = SecureRandom.uuid
       logic_id_map[field.id] = copied_field.id
 
-      # Duplicate options with an id and temp_id
+      # Duplicate options to return them with a new id and a temp_id to enable logic copying
       copied_options = field.options.map do |option|
         copied_option = option.dup
         copied_option.id = SecureRandom.uuid
