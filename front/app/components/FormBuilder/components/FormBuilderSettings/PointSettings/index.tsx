@@ -6,10 +6,12 @@ import { useFormContext } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import customFieldsKeys from 'api/custom_fields/keys';
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
 import useAddMapConfig from 'api/map_config/useAddMapConfig';
+import useDuplicateMapConfig from 'api/map_config/useDuplicateMapConfig';
 import useMapConfigById from 'api/map_config/useMapConfigById';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
 
@@ -23,6 +25,7 @@ import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
+import { getCenter, getZoomLevel } from 'utils/mapUtils/map';
 
 import messages from './messages';
 
@@ -51,8 +54,12 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
   const { data: rawCustomFields, isLoading: isLoadingRawFields } =
     useRawCustomFields({ phaseId });
 
-  const { mutateAsync: createProjectMapConfig } = useAddMapConfig();
+  const { mutateAsync: createMapConfig } = useAddMapConfig();
+  const { mutateAsync: duplicateMapConfig } = useDuplicateMapConfig();
   const [mapView, setMapView] = useState<MapView | null>(null);
+
+  // Default project map settings if not present
+  const { data: appConfig } = useAppConfiguration();
 
   // Get current map config ID for this field
   const mapConfigId =
@@ -71,35 +78,54 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
   }, [localize, mapConfig]);
 
   const onConfigureMapClick = useCallback(() => {
-    // Create a new map config if we don't have one for this field
     if (!mapConfigId) {
-      // Initial data is from existing project map config
-      const initialData = projectMapConfig?.data?.attributes
-        ? projectMapConfig.data.attributes
-        : {};
-
-      createProjectMapConfig(
-        {
-          ...initialData,
-        },
-        {
+      // Create a new map config if we don't have one for this field
+      const duplicateAndOpenModal = (projectMapConfigId: string) => {
+        duplicateMapConfig(projectMapConfigId, {
           onSuccess: (data) => {
-            // Set the form value to the map config ID
-            setValue(mapConfigIdName, data.data.id);
-            // Open the modal
+            setValue(mapConfigIdName, data.data.id, { shouldDirty: true });
             setShowModal(true);
           },
-        }
-      );
+        });
+      };
+
+      const projectMapConfigId = projectMapConfig?.data?.id;
+      if (projectMapConfigId) {
+        // Duplicate the project map config if it exists
+        duplicateAndOpenModal(projectMapConfigId);
+      } else {
+        // Create a new map config with default application values if there is no project map config
+        const defaultLatLng = getCenter(undefined, appConfig?.data, undefined);
+        const defaultZoom = getZoomLevel(undefined, appConfig?.data, undefined);
+        createMapConfig(
+          {
+            center_geojson: {
+              type: 'Point',
+              coordinates: [defaultLatLng[1], defaultLatLng[0]],
+            },
+            zoom_level: defaultZoom.toString(),
+          },
+          {
+            onSuccess: (newProjectMapConfig) => {
+              setValue(mapConfigIdName, newProjectMapConfig.data.id, {
+                shouldDirty: true,
+              });
+              setShowModal(true);
+            },
+          }
+        );
+      }
     } else {
-      // Otherwise we aready have a map config, so we open the modal
+      // Otherwise we already have a map config, so we just open the modal
       setShowModal(true);
     }
   }, [
-    createProjectMapConfig,
+    createMapConfig,
+    appConfig?.data,
     mapConfigId,
+    projectMapConfig?.data?.id,
+    duplicateMapConfig,
     mapConfigIdName,
-    projectMapConfig?.data?.attributes,
     setValue,
   ]);
 

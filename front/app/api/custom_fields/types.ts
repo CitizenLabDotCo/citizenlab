@@ -1,5 +1,7 @@
 import { IRelationship, Multiloc } from 'typings';
 
+import { IMapConfig } from 'api/map_config/types';
+
 import { Keys } from 'utils/cl-react-query/types';
 
 import customFieldsKeys from './keys';
@@ -10,6 +12,7 @@ export interface ICustomFieldsParameters {
   projectId: string;
   phaseId?: string;
   inputTypes?: ICustomFieldInputType[];
+  copy?: boolean;
 }
 
 export type ICustomFieldInputType =
@@ -101,7 +104,9 @@ export type IFlatCustomField = Omit<
 > &
   IAttributes & {
     isLocalOnly?: boolean;
+    mapConfig?: IMapConfig;
     options?: IOptionsType[];
+    map_config?: { data: IRelationship };
   };
 
 export type IFlatCustomFieldWithIndex = IFlatCustomField & {

@@ -7,8 +7,9 @@ const useCustomFields = ({
   projectId,
   phaseId,
   inputTypes,
+  copy,
 }: ICustomFieldsParameters) => {
-  const result = useRawCustomFields({ projectId, phaseId, inputTypes });
+  const result = useRawCustomFields({ projectId, phaseId, inputTypes, copy });
 
   const options = useCustomFieldOptions({
     projectId,
@@ -31,6 +32,8 @@ const useCustomFields = ({
       return {
         ...customField,
         ...customField.attributes,
+        map_config: customField.relationships?.map_config,
+        map_config_id: customField.relationships?.map_config?.data?.id,
         options:
           optionsForCustomField.length > 0
             ? optionsForCustomField.map((option) => ({
@@ -39,6 +42,7 @@ const useCustomFields = ({
                   option.data?.data.attributes.title_multiloc || {},
                 other: option.data?.data.attributes.other || false,
                 image_id: option.data?.data.relationships.image?.data?.id,
+                temp_id: option.data?.data.attributes.temp_id,
               }))
             : [],
       };

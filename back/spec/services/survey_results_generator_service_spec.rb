@@ -839,14 +839,6 @@ RSpec.describe SurveyResultsGeneratorService do
           )).to match expected_result_select_with_user_field_grouping
         end
 
-        # TODO: JS - No other select fields to group by
-        # it 'groups select by other select question' do
-        #   expect(generator.generator.generator.generate_results(
-        #     field_id: select_field.id,
-        #     group_field: food_survey_question.id
-        #   )).to match {}
-        # end
-
         it 'groups by linear scale' do
           generator = described_class.new(survey_phase,
             group_mode: 'survey_question',

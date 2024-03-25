@@ -11,6 +11,7 @@ const customFieldsKeys = {
     projectId?: string;
     phaseId?: string;
     inputTypes?: ICustomFieldInputType[];
+    copy?: boolean;
   }) => [{ ...baseKey, operation: 'list', parameters: params }],
 } satisfies QueryKeys;
 
