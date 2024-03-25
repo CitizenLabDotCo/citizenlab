@@ -75,9 +75,7 @@ const Button = ({ text, url, type, alignment }: ButtonProps) => {
           width={alignment === 'fullWidth' ? '100%' : 'auto'}
           buttonStyle={type}
         >
-          <span style={{ whiteSpace: 'normal', maxWidth: '100vw !important' }}>
-            {localize(text)}
-          </span>
+          <span style={{ whiteSpace: 'normal' }}>{localize(text)}</span>
         </ButtonComponent>
       )}
     </Box>
