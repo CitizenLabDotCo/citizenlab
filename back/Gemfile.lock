@@ -547,7 +547,7 @@ GEM
       qonfig (~> 0.24)
     css_parser (1.14.0)
       addressable
-    dalli (3.2.4)
+    dalli (3.2.8)
     database_cleaner (2.0.2)
       database_cleaner-active_record (>= 2, < 3)
     database_cleaner-active_record (2.1.0)
@@ -1251,7 +1251,7 @@ DEPENDENCIES
   counter_culture (~> 3.3)
   custom_idea_statuses!
   custom_maps!
-  dalli (~> 3.2.4)
+  dalli (~> 3.2.8)
   database_cleaner (~> 2.0.2)
   document_annotation!
   email_campaigns!
