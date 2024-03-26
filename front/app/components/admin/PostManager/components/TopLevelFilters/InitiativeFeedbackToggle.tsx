@@ -16,7 +16,7 @@ const InitiativeFeedbackToggle = ({
   onChange,
   queryParameters,
 }: Props) => {
-  const { data: ideasCount } = useInitiativesCount({
+  const { data: initiativesCount } = useInitiativesCount({
     feedback_needed: true,
     assignee: queryParameters.assignee,
     topics: queryParameters.topics,
@@ -27,7 +27,7 @@ const InitiativeFeedbackToggle = ({
   return (
     <FeedbackToggle
       value={value}
-      count={ideasCount?.data.attributes.count}
+      count={initiativesCount?.data.attributes.count}
       onChange={onChange}
     />
   );
