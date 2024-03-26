@@ -295,15 +295,8 @@ const InputManager = ({
         </LeftColumn>
         <MiddleColumnTop>
           <IdeasCount
-            feedbackNeeded={
-              feedbackNeeded === true ? feedbackNeeded : undefined
-            }
             project={selectedProjectId}
-            phase={selectedPhaseId ?? undefined}
-            topics={selectedTopics ?? undefined}
-            ideaStatusId={selectedStatus ?? undefined}
-            search={queryParameters.search}
-            assignee={selectedAssignee ?? undefined}
+            queryParameters={queryParameters}
           />
           <StyledInput icon="search" onChange={onChangeSearchTerm} />
         </MiddleColumnTop>
