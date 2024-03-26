@@ -1,3 +1,4 @@
+import { RouteType } from 'routes';
 import { Multiloc, ILinks, IRelationship } from 'typings';
 
 import { PublicationStatus } from 'api/projects/types';
@@ -23,7 +24,7 @@ export interface IEventData {
     updated_at: string;
     attendees_count: number;
     attend_button_multiloc?: Multiloc;
-    using_url?: string;
+    using_url?: RouteType;
     online_link?: string | null;
   };
   relationships: {
@@ -82,7 +83,7 @@ export interface IEventProperties {
   start_at?: string;
   end_at?: string;
   attend_button_multiloc?: Multiloc;
-  using_url?: string;
+  using_url?: RouteType;
 }
 
 export interface IAddEventProperties {

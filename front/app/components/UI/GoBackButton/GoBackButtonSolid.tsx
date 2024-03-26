@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { RouteType } from 'routes';
 
 import Button from 'components/UI/Button';
 
@@ -13,7 +14,7 @@ interface Props {
   text?: string;
   iconSize?: string;
   onClick?: (event: React.MouseEvent) => void;
-  linkTo?: string;
+  linkTo?: RouteType;
 }
 
 const GoBackButtonSolid = ({

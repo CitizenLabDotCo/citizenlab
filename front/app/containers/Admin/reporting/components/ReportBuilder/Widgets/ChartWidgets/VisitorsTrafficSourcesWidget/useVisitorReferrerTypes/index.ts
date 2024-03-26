@@ -13,7 +13,7 @@ export default function useVisitorsReferrerTypes({
   startAt,
   endAt,
 }: QueryParameters) {
-  const analytics = useVisitorsTrafficSources({
+  const { data: analytics } = useVisitorsTrafficSources({
     project_id: projectId,
     start_at: startAt,
     end_at: endAt,

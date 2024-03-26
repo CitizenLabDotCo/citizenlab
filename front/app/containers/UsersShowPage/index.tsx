@@ -4,6 +4,7 @@ import { media, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { PreviousPathnameContext } from 'context';
 import { Helmet } from 'react-helmet';
 import { useParams, Outlet as RouterOutlet } from 'react-router-dom';
+import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import { IUserData } from 'api/users/types';
@@ -92,7 +93,7 @@ const UsersShowPageOuter = ({ className }: Props) => {
   const { userSlug } = useParams() as { userSlug: string };
   const { formatMessage } = useIntl();
   const { data: user } = useUserBySlug(userSlug);
-  const previousPathName = useContext(PreviousPathnameContext);
+  const previousPathName = useContext(PreviousPathnameContext) as RouteType;
 
   if (!user) return null;
 
