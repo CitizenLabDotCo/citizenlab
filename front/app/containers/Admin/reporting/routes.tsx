@@ -10,9 +10,6 @@ const ReportingWrapper = lazy(() => import('.'));
 const ReportBuilderPage = lazy(() => import('./containers/ReportBuilderPage'));
 const ReportBuilder = lazy(() => import('./containers/ReportBuilder'));
 
-export const REPORT_BUILDER = 'report-builder';
-export const EDITOR = 'editor';
-
 export enum reportingEnumRoutes {
   reporting = 'reporting',
   reportBuilder = `report-builder`,
