@@ -114,7 +114,8 @@ describe('Survey template', () => {
                 [multiselectImageKey]: [multiselectImageAnswerKeys[0]],
                 [pointKey]: {
                   type: 'Point',
-                  coordinates: [4.349371842575076, 50.85428103529364],}
+                  coordinates: [4.349371842575076, 50.85428103529364],
+                },
               },
             });
           });

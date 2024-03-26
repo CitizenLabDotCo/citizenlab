@@ -55,6 +55,7 @@ declare global {
       apiCreateFolder: typeof apiCreateFolder;
       apiRemoveFolder: typeof apiRemoveFolder;
       apiRemoveProject: typeof apiRemoveProject;
+      apiRemovePhase: typeof apiRemovePhase;
       apiRemoveCustomPage: typeof apiRemoveCustomPage;
       apiCreateCustomPage: typeof apiCreateCustomPage;
       apiAddProjectsToFolder: typeof apiAddProjectsToFolder;
@@ -1071,6 +1072,21 @@ function apiRemoveProject(projectId: string) {
   });
 }
 
+function apiRemovePhase(phaseId: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'DELETE',
+      url: `web_api/v1/phases/${phaseId}`,
+    });
+  });
+}
+
 function apiRemoveFolder(folderId: string) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1711,15 +1727,20 @@ function apiCreateSurveyQuestions(
   });
 }
 
-function apiCreateSurveyResponse({
-  email, password, project_id, fields
-}: {
-  email?: string,
-  password?: string,
-  project_id: string,
-  fields: Record<string, any>
-}, jwt?: any) 
-   {
+function apiCreateSurveyResponse(
+  {
+    email,
+    password,
+    project_id,
+    fields,
+  }: {
+    email?: string;
+    password?: string;
+    project_id: string;
+    fields: Record<string, any>;
+  },
+  jwt?: any
+) {
   const makeRequest = (jwt: any) => {
     return cy.request({
       headers: {
@@ -1743,17 +1764,19 @@ function apiCreateSurveyResponse({
             ...fields,
           },
         },
-      }
+      },
     });
   };
 
   if (jwt) {
     return makeRequest(jwt);
   } else {
-    return cy.apiLogin(email || "admin@citizenlab.co", password || "democracy2.0").then((response) => {
-      const jwt = response.body.jwt;
-      return makeRequest(jwt);
-    });
+    return cy
+      .apiLogin(email || 'admin@citizenlab.co', password || 'democracy2.0')
+      .then((response) => {
+        const jwt = response.body.jwt;
+        return makeRequest(jwt);
+      });
   }
 }
 
@@ -1880,6 +1903,7 @@ Cypress.Commands.add('apiEditProject', apiEditProject);
 Cypress.Commands.add('apiCreateFolder', apiCreateFolder);
 Cypress.Commands.add('apiRemoveFolder', apiRemoveFolder);
 Cypress.Commands.add('apiRemoveProject', apiRemoveProject);
+Cypress.Commands.add('apiRemovePhase', apiRemovePhase);
 Cypress.Commands.add('apiAddProjectsToFolder', apiAddProjectsToFolder);
 Cypress.Commands.add('apiCreatePhase', apiCreatePhase);
 Cypress.Commands.add('apiCreateCustomField', apiCreateCustomField);

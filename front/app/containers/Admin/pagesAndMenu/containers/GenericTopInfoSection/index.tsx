@@ -3,6 +3,7 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
+import { RouteType } from 'routes';
 import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 import { object } from 'yup';
@@ -19,7 +20,10 @@ import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
-import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
+import {
+  pagesAndMenuBreadcrumb,
+  pagesAndMenuBreadcrumbLinkTo,
+} from '../../breadcrumbs';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
 import ShownOnPageBadge from '../../components/ShownOnPageBadge';
 import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
@@ -33,7 +37,7 @@ interface Props {
     top_info_section_multiloc: Multiloc;
   }) => Promise<any>;
   breadcrumbs: TBreadcrumbs;
-  linkToViewPage?: string;
+  linkToViewPage?: RouteType;
 }
 
 interface FormValues {
@@ -96,7 +100,7 @@ const GenericTopInfoSection = ({
             breadcrumbs={[
               {
                 label: formatMessage(pagesAndMenuBreadcrumb.label),
-                linkTo: pagesAndMenuBreadcrumb.linkTo,
+                linkTo: pagesAndMenuBreadcrumbLinkTo,
               },
               ...breadcrumbs,
               { label: formatMessage(messages.topInfoPageTitle) },

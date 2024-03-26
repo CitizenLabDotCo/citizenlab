@@ -57,7 +57,7 @@ const Analysis = ({
     analyses?.data &&
     analyses?.data?.find(
       (analysis) =>
-        analysis.relationships.main_custom_field?.data.id === customFieldId
+        analysis.relationships.main_custom_field?.data?.id === customFieldId
     );
   const { data: insights, isLoading: isInsightsLoading } = useAnalysisInsights({
     analysisId: relevantAnalysis?.id,

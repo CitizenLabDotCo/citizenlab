@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { useLocation } from 'react-router-dom';
+import { RouteType } from 'routes';
 
 import { InputTerm } from 'api/phases/types';
 
@@ -15,7 +16,7 @@ import tracks from '../tracks';
 import messages from './../messages';
 
 interface Props {
-  linkTo: string;
+  linkTo: RouteType;
   inputTerm: InputTerm;
 }
 

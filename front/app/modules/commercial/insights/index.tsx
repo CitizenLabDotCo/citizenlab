@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { AdminRoute } from 'containers/Admin/routes';
+
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 const AdminInsightsReportsComponent = React.lazy(
@@ -16,15 +18,25 @@ declare module 'components/UI/Error' {
   }
 }
 
+export enum insightsRoutes {
+  reports = 'reports',
+  reportId = `reports/:projectId`,
+}
+
+// TODO: Replace "reporting" with link to route in main app once converted.
+export type insightsRouteTypes =
+  | AdminRoute<`reporting/${insightsRoutes.reports}`>
+  | AdminRoute<`reporting/${insightsRoutes.reports}/${string}`>;
+
 const configuration: ModuleConfiguration = {
   routes: {
     'admin.reporting': [
       {
-        path: 'reports',
+        path: insightsRoutes.reports,
         element: <AdminInsightsReportsComponent />,
       },
       {
-        path: 'reports/:projectId',
+        path: insightsRoutes.reportId,
         element: <AdminInsightsProjectReportComponent />,
       },
     ],

@@ -14,38 +14,34 @@ import IdeaCard, { Props } from '.';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const IdeaCards = (props: Props) => {
-  const smallerThanPhone = useBreakpoint('phone')
+  const smallerThanPhone = useBreakpoint('phone');
 
-    return (
+  return (
+    <Box w="100%" maxWidth="1166px" display="flex" flexWrap="wrap">
       <Box
-        w="100%"
-        maxWidth="1166px"
-        display="flex"
-        flexWrap="wrap"
+        flex-grow="0"
+        margin="10px"
+        width={smallerThanPhone ? '100%' : 'calc(50% - 20px)'}
       >
-        <Box
-          flex-grow="0"
-          margin="10px"
-          width={smallerThanPhone ? '100%' : 'calc(50% - 20px)'}
-        >
-          <IdeaCard {...props} />
-        </Box>
-        <Box
-          flex-grow="0"
-          margin="10px"
-          width={smallerThanPhone ? '100%' : 'calc(50% - 20px)'}
-        >
-          <IdeaCard {...props} />
-        </Box>
+        <IdeaCard {...props} />
       </Box>
-    )
-}
+      <Box
+        flex-grow="0"
+        margin="10px"
+        width={smallerThanPhone ? '100%' : 'calc(50% - 20px)'}
+      >
+        <IdeaCard {...props} />
+      </Box>
+    </Box>
+  );
+};
 
 const meta = {
   title: 'Example/IdeaCard',
   component: IdeaCard,
   parameters: {
     layout: 'centered',
+    chromatic: { disableSnapshot: false },
   },
 } satisfies Meta<typeof IdeaCard>;
 
@@ -53,9 +49,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Standard: Story = {
-  render: (props) => (
-    <IdeaCards {...props} />
-  ),
+  render: (props) => <IdeaCards {...props} />,
   args: {
     ideaId: '1',
     showFollowButton: false,
@@ -72,10 +66,8 @@ export const Voting: Story = {
     </VotingContext>
   ),
   args: {
-    ideaId: '1',
+    ...Standard.args,
     phaseId: 'ph1',
-    hideImage: false,
-    hideImagePlaceholder: false,
   },
   parameters: {
     msw: mockEndpoints({

@@ -10,6 +10,7 @@ import {
 import JSConfetti from 'js-confetti';
 import { isError } from 'lodash-es';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
+import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -254,7 +255,7 @@ const ProjectsShowPageWrapper = () => {
     !isTimelineProjectAndHasValidPhaseParam
   ) {
     // Redirect old childRoutes (e.g. /info, /process, ...) to the project index location
-    const projectRoot = `/${urlSegments.slice(1, 3).join('/')}`;
+    const projectRoot = `/${urlSegments.slice(1, 3).join('/')}` as RouteType;
     return <Navigate to={projectRoot} replace />;
   }
 
