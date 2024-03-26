@@ -12,8 +12,8 @@
   "author": {
     "name": "CitizenLab"
   },
-  "main": "dist/index.js",
-  "module": "dist/cl2-component-library.esm.js",
+  "main": "app/component-library/dist/index.js",
+  "module": "app/component-library/dist/cl2-component-library.esm.js",
   "scripts": {
     "extract-intl": "tsc --skipLibCheck app/containers/App/constants && babel-node --presets @babel/env -- ./internals/scripts/extract-intl.js",
     "prebuild": "npm run build:clean",
@@ -41,8 +41,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "chromatic": "chromatic --exit-once-uploaded",
-    "generate-component-library-types": "tsc app/component-library/index.tsx --jsx react --esModuleInterop true --skipLibCheck --emitDeclarationOnly --declaration --declarationDir dist",
-    "build-component-library": "rimraf ./dist && npm run generate-component-library-types && rollup -c --bundleConfigAsCjs"
+    "generate-component-library-types": "tsc app/component-library/index.tsx --jsx react --esModuleInterop true --skipLibCheck --emitDeclarationOnly --declaration --declarationDir app/component-library/dist",
+    "build-component-library": "rimraf ./app/component-library/dist && npm run generate-component-library-types && rollup -c --bundleConfigAsCjs"
   },
   "jest-junit": {
     "addFileAttribute": "true"

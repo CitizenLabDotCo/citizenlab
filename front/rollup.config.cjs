@@ -39,8 +39,8 @@ const config = [
     ],
   },
   {
-    input: 'dist/index.d.ts',
-    output: [{ file: 'dist/index.d.ts', format: 'esm' }],
+    input: 'app/component-library/dist/index.d.ts',
+    output: [{ file: 'app/component-library/dist/index.d.ts', format: 'esm' }],
     external: [/\.css$/],
     plugins: [dts()],
   },
