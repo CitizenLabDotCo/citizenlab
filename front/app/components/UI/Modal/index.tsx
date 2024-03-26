@@ -9,13 +9,9 @@ import {
   viewportWidths,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import { adopt } from 'react-adopt';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
 import { Subscription, fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import styled from 'styled-components';
@@ -417,11 +413,7 @@ const ModalContentContainerSwitch = ({
   );
 };
 
-interface DataProps {
-  windowSize: GetWindowSizeChildProps;
-}
-
-export interface InputProps {
+export interface Props {
   opened: boolean;
   fixedHeight?: boolean;
   width?: number | string;
@@ -440,9 +432,8 @@ export interface InputProps {
   hideCloseButton?: boolean;
 }
 
-interface Props extends InputProps, DataProps {}
-
 interface State {
+  windowWidth: number;
   windowHeight: number;
 }
 
@@ -457,6 +448,7 @@ class Modal extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
+      windowWidth: window.innerWidth,
       windowHeight: window.innerHeight,
     };
     this.subscription = null;
@@ -468,7 +460,8 @@ class Modal extends PureComponent<Props, State> {
       .subscribe((event) => {
         if (event.target) {
           const height = event.target['innerHeight'] as number;
-          this.setState({ windowHeight: height });
+          const width = event.target['innerWidth'] as number;
+          this.setState({ windowWidth: width, windowHeight: height });
         }
       });
   }
@@ -528,9 +521,8 @@ class Modal extends PureComponent<Props, State> {
   };
 
   render() {
-    const { windowHeight } = this.state;
+    const { windowHeight, windowWidth } = this.state;
     const {
-      windowSize,
       width,
       children,
       opened,
@@ -544,8 +536,8 @@ class Modal extends PureComponent<Props, State> {
       hideCloseButton,
     } = this.props;
     const hasFixedHeight = this.props.fixedHeight;
-    const smallerThanSmallTablet = windowSize
-      ? windowSize <= viewportWidths.tablet
+    const smallerThanSmallTablet = windowWidth
+      ? windowWidth <= viewportWidths.tablet
       : false;
     const modalPortalElement = document?.getElementById('modal-portal');
     let padding: string | undefined = undefined;
@@ -674,12 +666,4 @@ class Modal extends PureComponent<Props, State> {
   }
 }
 
-const Data = adopt<DataProps, InputProps>({
-  windowSize: <GetWindowSize />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <Modal {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default Modal;
