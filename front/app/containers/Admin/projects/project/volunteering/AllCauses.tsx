@@ -3,6 +3,7 @@ import React, { useCallback, useState, MouseEvent, useMemo } from 'react';
 import { clone } from 'lodash-es';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import { ICauseData } from 'api/causes/types';
@@ -95,7 +96,7 @@ const AllCauses = ({ phaseId, projectId }: Props) => {
     }
   };
 
-  const newCauseLink = `/admin/projects/${projectId}/phases/${phaseId}/volunteering/causes/new`;
+  const newCauseLink: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/volunteering/causes/new`;
 
   if (isNilOrError(causes)) return null;
 

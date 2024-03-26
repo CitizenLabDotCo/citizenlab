@@ -109,8 +109,7 @@ const SMSCampaignForm = ({
             phone_numbers: splitNumbers,
           });
       const { id } = result.data;
-      const url = `/admin/messaging/texting/${id}/preview`;
-      clHistory.replace(url);
+      clHistory.replace(`/admin/messaging/texting/${id}/preview`);
     } catch (e) {
       setIsLoading(false);
       // This error is added to the response in back/engines/commercial/texting/app/models/texting/campaign.rb

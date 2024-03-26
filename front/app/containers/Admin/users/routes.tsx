@@ -7,8 +7,26 @@ const AdminUsersGroup = lazy(() => import('./UsersGroup'));
 const AdminBlockedUsers = lazy(() => import('./BlockedUsers'));
 import PageLoading from 'components/UI/PageLoading';
 
+import { AdminRoute } from '../routes';
+
+export enum usersRoutes {
+  users = 'users',
+  adminsManagers = 'admins-managers',
+  groupId = `:groupId`,
+  blocked = 'blocked',
+}
+
+type UsersRoute<T extends string = string> =
+  AdminRoute<`${usersRoutes.users}/${T}`>;
+
+export type userRouteTypes =
+  | AdminRoute<`${usersRoutes.users}`>
+  | UsersRoute<`${usersRoutes.adminsManagers}`>
+  | UsersRoute<`${usersRoutes.blocked}`>
+  | UsersRoute<`${string}`>;
+
 const createAdminUsersRoutes = () => ({
-  path: 'users',
+  path: usersRoutes.users,
   element: (
     <PageLoading>
       <AdminUsersIndex />
@@ -24,7 +42,7 @@ const createAdminUsersRoutes = () => ({
       ),
     },
     {
-      path: 'admins-managers',
+      path: usersRoutes.adminsManagers,
       element: (
         <PageLoading>
           <AdminAdminsAndManagers />
@@ -32,7 +50,7 @@ const createAdminUsersRoutes = () => ({
       ),
     },
     {
-      path: ':groupId',
+      path: usersRoutes.groupId,
       element: (
         <PageLoading>
           <AdminUsersGroup />
@@ -40,7 +58,7 @@ const createAdminUsersRoutes = () => ({
       ),
     },
     {
-      path: 'blocked',
+      path: usersRoutes.blocked,
       element: (
         <PageLoading>
           <AdminBlockedUsers />
