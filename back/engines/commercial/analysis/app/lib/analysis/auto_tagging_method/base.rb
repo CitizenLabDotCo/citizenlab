@@ -141,7 +141,7 @@ module Analysis
     def assign_topic!(input_id, topic, tag_type)
       return if other_term?(topic)
 
-      tag = Tag.find_by!(name: topic, tag_type: tag_type, analysis: analysis)
+      tag = Tag.find_by(name: topic, tag_type: tag_type, analysis: analysis)
       if !tag
         tag = Tag.create(name: topic, tag_type: tag_type, analysis: analysis)
         tag_service.after_create(tag, nil)
