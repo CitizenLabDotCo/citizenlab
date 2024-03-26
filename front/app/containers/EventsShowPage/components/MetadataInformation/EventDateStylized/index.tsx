@@ -18,14 +18,14 @@ const EventDateStylized = ({ event }: Props) => {
   const theme = useTheme();
   const startAtMoment = moment(event.attributes.start_at);
   const endAtMoment = moment(event.attributes.end_at);
-  const startDateMonth = toThreeLetterMonth(event.attributes.start_at, 'month');
-  const endDateMonth = toThreeLetterMonth(event.attributes.end_at, 'month');
+  const startDateMonth = toThreeLetterMonth(startAtMoment.toISOString(), 'month');
+  const endDateMonth = toThreeLetterMonth(endAtMoment.toISOString(), 'month');
   const isEventMultipleDays =
     startAtMoment.dayOfYear() !== endAtMoment.dayOfYear();
   const oneDayEventTime = `${startAtMoment.format('LT')} - ${endAtMoment.format(
     'LT'
   )}`;
-
+  
   return (
     <Box
       display="flex"
