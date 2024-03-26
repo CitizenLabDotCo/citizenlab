@@ -17,6 +17,9 @@ const Container = styled.div`
 `;
 
 interface Props {
+  // We are using initiatives, not initiatives_count query parameter types.
+  // This is because the InitiativesCount component is used in the PostManager,
+  // which uses the initiatives query parameter types.
   queryParameters: IQueryParameters;
 }
 

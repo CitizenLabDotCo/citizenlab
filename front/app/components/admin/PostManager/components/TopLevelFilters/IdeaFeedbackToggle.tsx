@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { IQueryParameters } from 'api/idea_count/types';
 import useIdeasCount from 'api/idea_count/useIdeasCount';
+import { IQueryParameters } from 'api/ideas/types';
 
 import FeedbackToggle from './FeedbackToggle';
 
@@ -9,6 +9,9 @@ interface Props {
   value: boolean;
   onChange: (feedbackNeeded: boolean | undefined) => void;
   project?: string | null;
+  // We are using ideas, not ideas_count query parameter types.
+  // This is because the IdeasCount component is used in the PostManager,
+  // which uses the ideas query parameter types.
   queryParameters: IQueryParameters;
 }
 
@@ -24,7 +27,7 @@ const IdeaFeedbackToggle = ({
     projects: project ? [project] : undefined,
     phase: queryParameters.phase,
     topics: queryParameters.topics,
-    idea_status_id: queryParameters.idea_status_id,
+    idea_status_id: queryParameters.idea_status,
     search: queryParameters.search,
   });
 

@@ -1,13 +1,16 @@
 import React from 'react';
 
-import { IQueryParameters } from 'api/initiative_counts/types';
 import useInitiativesCount from 'api/initiative_counts/useInitiativesCount';
+import { IQueryParameters } from 'api/initiatives/types';
 
 import FeedbackToggle from './FeedbackToggle';
 
 interface Props {
   value: boolean;
   onChange: (feedbackNeeded: boolean | undefined) => void;
+  // We are using initiatives, not initiatives_count query parameter types.
+  // This is because the InitiativesCount component is used in the PostManager,
+  // which uses the initiatives query parameter types.
   queryParameters: IQueryParameters;
 }
 

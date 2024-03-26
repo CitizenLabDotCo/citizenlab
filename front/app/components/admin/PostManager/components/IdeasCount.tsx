@@ -19,7 +19,8 @@ const Container = styled.div`
 interface Props {
   project?: string | null;
   // We are using ideas, not ideas_count query parameter types.
-  // This is because the IdeasCount component is used in the PostManager, which uses the ideas query parameter types.
+  // This is because the IdeasCount component is used in the PostManager,
+  // which uses the ideas query parameter types.
   queryParameters: IQueryParameters;
 }
 
