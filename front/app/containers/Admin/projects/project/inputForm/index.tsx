@@ -4,9 +4,9 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { saveAs } from 'file-saver';
 import { useParams } from 'react-router-dom';
 
-import { IPhaseData, ParticipationMethod } from 'api/phases/types';
-import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase } from 'api/phases/utils';
+// import { ParticipationMethod } from 'api/phases/types';
+// import usePhases from 'api/phases/usePhases';
+// import { getCurrentPhase } from 'api/phases/utils';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
@@ -32,25 +32,23 @@ export const IdeaForm = () => {
   });
 
   const [exportModalOpen, setExportModalOpen] = useState(false);
-  const { projectId } = useParams() as {
+  const { projectId, phaseId } = useParams() as {
     projectId: string;
+    phaseId: string;
   };
 
   const locale = useLocale();
-  const { data: phases } = usePhases(projectId);
-
-  const phaseToUse = phases ? getCurrentOrLastIdeationPhase(phases.data) : null;
 
   const handleDownloadPDF = () => setExportModalOpen(true);
 
-  const handleExportPDF = async ({ personal_data, phase_id }: FormValues) => {
+  const handleExportPDF = async ({ personal_data }: FormValues) => {
     if (isNilOrError(locale)) return;
-    await saveIdeaFormAsPDF({ projectId, locale, personal_data, phase_id });
+    await saveIdeaFormAsPDF({ phaseId, locale, personal_data });
   };
 
-  const downloadExampleFile = async () => {
+  const downloadExampleXlsxFile = async () => {
     const blob = await requestBlob(
-      `${API_PATH}/projects/${projectId}/import_ideas/example_xlsx`,
+      `${API_PATH}/phases/${phaseId}/import_ideas/example_xlsx`,
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     );
     saveAs(blob, 'example.xlsx');
@@ -69,7 +67,7 @@ export const IdeaForm = () => {
         </Box>
         <Box display="flex" flexDirection="row">
           <Button
-            linkTo={`/admin/projects/${projectId}/phases/${phaseToUse?.id}/ideaform/edit`}
+            linkTo={`/admin/projects/${projectId}/phases/${phaseId}/ideaform/edit`}
             width="auto"
             icon="edit"
             data-cy="e2e-edit-input-form"
@@ -91,7 +89,7 @@ export const IdeaForm = () => {
               <Button
                 buttonStyle="secondary"
                 icon="download"
-                onClick={downloadExampleFile}
+                onClick={downloadExampleXlsxFile}
               >
                 <FormattedMessage {...messages.downloadExcelTemplate} />
               </Button>
@@ -107,28 +105,6 @@ export const IdeaForm = () => {
       />
     </>
   );
-};
-
-const isIdeationContext = (
-  participationContext: ParticipationMethod | undefined
-) => {
-  return (
-    participationContext === 'ideation' || participationContext === 'voting'
-  );
-};
-
-const getCurrentOrLastIdeationPhase = (phases: IPhaseData[]) => {
-  const currentPhase = getCurrentPhase(phases);
-  if (isIdeationContext(currentPhase?.attributes.participation_method)) {
-    return currentPhase;
-  }
-  const ideationPhases = phases.filter((phase) =>
-    isIdeationContext(phase.attributes.participation_method)
-  );
-  if (ideationPhases.length > 0) {
-    return ideationPhases.pop();
-  }
-  return undefined;
 };
 
 export default IdeaForm;
