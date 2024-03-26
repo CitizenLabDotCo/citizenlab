@@ -75,32 +75,28 @@ interface Props {
   onChange: (feedbackNeeded: boolean | undefined) => void;
 }
 
-interface State {}
-
-class FeedbackToggle extends React.PureComponent<Props, State> {
-  handleOnClick = () => {
-    this.props.onChange(!this.props.value || undefined);
+const FeedbackToggle = ({ onChange, value, count }: Props) => {
+  const handleOnClick = () => {
+    // If the value is true, we want to set it to undefined, so that the filter is removed
+    // If it's undefined, we want to set it to true, so that the filter is added
+    onChange(!value || undefined);
   };
 
-  render() {
-    const { value, count } = this.props;
-
-    return (
-      <Container
-        id="e2e-feedback_needed_filter_toggle"
-        className="feedback_needed_filter_toggle"
-      >
-        <ToggleContainer onClick={this.handleOnClick} checked={value}>
-          <input type="checkbox" role="checkbox" aria-checked={value} />
-          <i />
-        </ToggleContainer>
-        <StyledLabel onClick={this.handleOnClick}>
-          <FormattedMessage {...messages.inputsNeedFeedbackToggle} />
-          {typeof count === 'number' && <CountBadge count={count} />}
-        </StyledLabel>
-      </Container>
-    );
-  }
-}
+  return (
+    <Container
+      id="e2e-feedback_needed_filter_toggle"
+      className="feedback_needed_filter_toggle"
+    >
+      <ToggleContainer onClick={handleOnClick} checked={value}>
+        <input type="checkbox" role="checkbox" aria-checked={value} />
+        <i />
+      </ToggleContainer>
+      <StyledLabel onClick={handleOnClick}>
+        <FormattedMessage {...messages.inputsNeedFeedbackToggle} />
+        {typeof count === 'number' && <CountBadge count={count} />}
+      </StyledLabel>
+    </Container>
+  );
+};
 
 export default FeedbackToggle;
