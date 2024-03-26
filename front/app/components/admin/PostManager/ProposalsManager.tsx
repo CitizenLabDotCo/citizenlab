@@ -124,7 +124,7 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
     setQueryParameters({ ...queryParameters, pageNumber: 1, assignee });
   };
 
-  const onChangeFeedbackFilter = (feedbackNeeded: boolean) => {
+  const onChangeFeedbackFilter = (feedbackNeeded: boolean | undefined) => {
     setQueryParameters({
       ...queryParameters,
       pageNumber: 1,
@@ -154,22 +154,18 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
 
   const currentPage = getPageNumberFromUrl(initiatives.links.self);
   const lastPage = getPageNumberFromUrl(initiatives.links.last);
-  const selectedTopics = queryParameters.topics;
-  const selectedAssignee = queryParameters.assignee;
-  const feedbackNeeded = queryParameters.feedback_needed || false;
-  const selectedStatus = queryParameters.initiative_status;
 
   return (
     <>
       <TopActionBar>
         <Outlet
           id="app.components.admin.PostManager.topActionBar"
-          assignee={selectedAssignee}
+          assignee={queryParameters.assignee}
           handleAssigneeFilterChange={onChangeAssignee}
           type={'Initiatives'}
         />
         <InitiativeFeedbackToggle
-          value={feedbackNeeded}
+          value={queryParameters.feedback_needed || false}
           onChange={onChangeFeedbackFilter}
           queryParameters={queryParameters}
         />
@@ -200,8 +196,8 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
               onChangeActiveFilterMenu={handleChangeActiveFilterMenu}
               statuses={initiativeStatuses?.data ?? []}
               topics={initiativeTopics.data}
-              selectedTopics={selectedTopics}
-              selectedStatus={selectedStatus}
+              selectedTopics={queryParameters.topics}
+              selectedStatus={queryParameters.initiative_status}
               onChangeTopicsFilter={onChangeTopics}
               onChangeStatusFilter={onChangeStatus}
             />

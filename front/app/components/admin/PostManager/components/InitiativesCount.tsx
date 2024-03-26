@@ -2,8 +2,8 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { IQueryParameters } from 'api/initiative_counts/types';
 import useInitiativesCount from 'api/initiative_counts/useInitiativesCount';
+import { IQueryParameters } from 'api/initiatives/types';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

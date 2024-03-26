@@ -254,25 +254,21 @@ const InputManager = ({
 
   const currentPage = getPageNumberFromUrl(ideas.links.self);
   const lastPage = getPageNumberFromUrl(ideas.links.last);
-  const selectedTopics = queryParameters.topics;
-  const selectedAssignee = queryParameters.assignee;
-  const feedbackNeeded = queryParameters.feedback_needed || false;
   const selectedProjectId = getSelectedProject();
   const selectedPhaseId = queryParameters.phase;
-  const selectedStatus = queryParameters.idea_status;
 
   return (
     <>
       <TopActionBar>
         <Outlet
           id="app.components.admin.PostManager.topActionBar"
-          assignee={selectedAssignee}
+          assignee={queryParameters.assignee}
           projectId={type === 'ProjectIdeas' ? projectId : null}
           handleAssigneeFilterChange={onChangeAssignee}
           type={type}
         />
         <IdeaFeedbackToggle
-          value={feedbackNeeded}
+          value={queryParameters.feedback_needed || false}
           onChange={onChangeFeedbackFilter}
           project={selectedProjectId}
           queryParameters={queryParameters}
@@ -314,8 +310,8 @@ const InputManager = ({
               statuses={ideaStatuses?.data ?? []}
               topics={topicsData}
               selectedPhase={selectedPhaseId}
-              selectedTopics={selectedTopics}
-              selectedStatus={selectedStatus}
+              selectedTopics={queryParameters.topics}
+              selectedStatus={queryParameters.idea_status}
               selectedProject={selectedProjectId}
               onChangePhaseFilter={onChangePhase}
               onChangeTopicsFilter={onChangeTopics}
