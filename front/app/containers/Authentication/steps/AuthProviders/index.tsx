@@ -59,6 +59,9 @@ const AuthProviders = memo<Props>(
     const googleLoginEnabled = useFeatureFlag({ name: 'google_login' });
     const facebookLoginEnabled = useFeatureFlag({ name: 'facebook_login' });
     const azureAdLoginEnabled = useFeatureFlag({ name: 'azure_ad_login' });
+    const azureAdB2cLoginEnabled = useFeatureFlag({
+      name: 'azure_ad_b2c_login',
+    });
     const franceconnectLoginEnabled = useFeatureFlag({
       name: 'franceconnect_login',
     });
@@ -74,6 +77,8 @@ const AuthProviders = memo<Props>(
 
     const azureProviderName =
       tenantSettings?.azure_ad_login?.login_mechanism_name;
+    const azureB2cProviderName =
+      tenantSettings?.azure_ad_b2c_login?.login_mechanism_name;
 
     const handleOnFranceConnectSelected = useCallback(
       (event: React.FormEvent) => {
@@ -105,6 +110,7 @@ const AuthProviders = memo<Props>(
       isPasswordSigninOrSignupAllowed ||
       facebookLoginEnabled ||
       azureAdLoginEnabled ||
+      azureAdB2cLoginEnabled ||
       viennaCitizenLoginEnabled ||
       claveUnicaLoginEnabled ||
       hoplrLoginEnabled;
@@ -201,12 +207,26 @@ const AuthProviders = memo<Props>(
           <StyledAuthProviderButton
             icon="microsoft-windows"
             flow={flow}
-            authProvider="azure_activedirectory_b2c"
+            authProvider="azureactivedirectory"
             onContinue={onSelectAuthProvider}
           >
             <FormattedMessage
               {...messages.continueWithAzure}
               values={{ azureProviderName }}
+            />
+          </StyledAuthProviderButton>
+        )}
+
+        {azureAdB2cLoginEnabled && (
+          <StyledAuthProviderButton
+            icon="microsoft-windows"
+            flow={flow}
+            authProvider="azureactivedirectory_b2c"
+            onContinue={onSelectAuthProvider}
+          >
+            <FormattedMessage
+              {...messages.continueWithAzure}
+              values={{ azureProviderName: azureB2cProviderName }}
             />
           </StyledAuthProviderButton>
         )}

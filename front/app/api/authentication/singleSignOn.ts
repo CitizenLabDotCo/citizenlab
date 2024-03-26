@@ -10,7 +10,8 @@ import {
 } from 'containers/Authentication/typings';
 
 export interface SSOProviderMap {
-  azure_activedirectory_b2c: 'azure_activedirectory_b2c';
+  azureactivedirectory: 'azureactivedirectory';
+  azureactivedirectory_b2c: 'azureactivedirectory_b2c';
   facebook: 'facebook';
   franceconnect: 'franceconnect';
   google: 'google';

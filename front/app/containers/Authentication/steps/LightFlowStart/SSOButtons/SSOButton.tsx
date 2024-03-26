@@ -40,11 +40,13 @@ const ICON_MAP = {
   facebook: 'facebook',
   google: 'google',
   azureactivedirectory: 'microsoft-windows',
+  azureactivedirectory_b2c: 'microsoft-windows',
 } as const;
 
 const COLOR_MAP = {
   facebook: colors.facebook,
   azureactivedirectory: colors.teal400,
+  azureactivedirectory_b2c: colors.teal400,
 };
 
 const MESSAGE_MAP = {
@@ -83,6 +85,10 @@ const SSOButton = ({ ssoProvider, onClickSSO }: Props) => {
     appConfiguration.data.attributes.settings.azure_ad_login
       ?.login_mechanism_name ?? 'Azure Active Directory';
 
+  const azureB2cProviderName =
+    appConfiguration.data.attributes.settings.azure_ad_login
+      ?.login_mechanism_name ?? 'Azure Active Directory B2C';
+
   return (
     <Container>
       <Button
@@ -99,6 +105,10 @@ const SSOButton = ({ ssoProvider, onClickSSO }: Props) => {
       >
         {ssoProvider === 'azureactivedirectory'
           ? formatMessage(oldMessages.continueWithAzure, { azureProviderName })
+          : ssoProvider === 'azureactivedirectory_b2c'
+          ? formatMessage(oldMessages.continueWithAzure, {
+              azureProviderName: azureB2cProviderName,
+            })
           : formatMessage(MESSAGE_MAP[ssoProvider])}
       </Button>
     </Container>
