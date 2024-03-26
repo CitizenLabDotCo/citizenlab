@@ -294,7 +294,7 @@ const Overlay = styled.div<{
   }
 `;
 
-export const HeaderContainer = styled.div`
+const HeaderContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -313,7 +313,7 @@ export const HeaderContainer = styled.div`
   `}
 `;
 
-export const HeaderTitle = styled.h1`
+const HeaderTitle = styled.h1`
   color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.xl}px;
   font-weight: 600;
@@ -413,7 +413,7 @@ const ModalContentContainerSwitch = ({
   );
 };
 
-export interface Props {
+interface Props {
   opened: boolean;
   fixedHeight?: boolean;
   width?: number | string;
