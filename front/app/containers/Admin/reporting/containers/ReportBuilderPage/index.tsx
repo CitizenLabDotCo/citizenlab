@@ -37,7 +37,7 @@ const ReportBuilderPage = () => {
 
   return (
     <>
-      <Title variant="h1" color="primary" mt="0px" mb="32px">
+      <Title variant="h1" color="primary" mb="32px">
         <FormattedMessage {...sharedMessages.reportBuilder} />
       </Title>
       {showEmptyState ? (
