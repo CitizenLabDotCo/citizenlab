@@ -7,6 +7,7 @@ module OmniauthMethods
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
       return unless configuration.feature_activated?('azure_ad_b2c_login')
+
       feature = configuration.settings('azure_ad_b2c_login')
 
       options = env['omniauth.strategy'].options
@@ -38,7 +39,7 @@ module OmniauthMethods
         port: 443,
         scheme: 'https',
         host: "#{tenant_name}.b2clogin.com",
-        redirect_uri: "#{configuration.base_backend_uri}/auth/azureactivedirectory_b2c/callback",
+        redirect_uri: "#{configuration.base_backend_uri}/auth/azureactivedirectory_b2c/callback"
       }
     end
 
