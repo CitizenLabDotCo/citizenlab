@@ -21,13 +21,13 @@ module OmniauthMethods
       options[:nonce] = true
       options[:send_scope_to_token_endpoint] = false
       options[:scope] = %i[openid]
-      # options[:issuer] = "https://citizenlabdevdemo.b2clogin.com/#{TENANT_ID}/v2.0/" # works only with manually configured endpoints. Discovery returns 404
+
+      # options[:issuer] = "https://citizenlabdevdemo.b2clogin.com/#{TENANT_ID}/v2.0/" # default, but works only with manually configured endpoints. Discovery returns 404 because it's not 100% compatible with OIDC spec.
+      # So, the issuer should be configured in Azure AD B2C -> Select the user flow -> Settings -> Properties -> Token compatibility settings
+
       # options[:issuer] = "https://citizenlabdevdemo.b2clogin.com/#{TENANT_ID}/B2C_1_default_signup_signin_flow/v2.0/" # During discovery, it gives "Issuer mismatch" error
       # options[:issuer] = 'https://citizenlabdevdemo.b2clogin.com/citizenlabdevdemo.onmicrosoft.com/B2C_1_default_signup_signin_flow/v2.0/' # tenant domain name can be used instead of tenant id, but it doesn't work with tfp
 
-      # We don't use the default Azure AD B2C issuer to make it 100% compatible with OIDC spec
-      # (and make auto discovery work).
-      # It should be configured in Azure AD B2C -> Select the user flow -> Settings -> Properties -> Token compatibility settings
       tenant_name = feature['tenant_name']
       tenant_id   = feature['tenant_id']
       policy_name = feature['policy_name'].downcase
