@@ -38,7 +38,7 @@ const reportingRoutes = () => {
         ),
       },
       {
-        path: `${reportingEnumRoutes.reportBuilder}/:reportId/${reportingEnumRoutes.editor}`,
+        path: `:reportId/${reportingEnumRoutes.editor}`,
         element: (
           <PageLoading>
             <ReportBuilder />
