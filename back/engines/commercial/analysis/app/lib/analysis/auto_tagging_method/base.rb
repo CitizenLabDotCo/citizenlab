@@ -133,7 +133,7 @@ module Analysis
     def find_or_create_tagging!(input_id:, tag_id:)
       tagging = Tagging.find_by(input_id: input_id, tag_id: tag_id)
       if !tagging
-        Tagging.create(input_id: input_id, tag_id: tag_id, background_task: task)
+        tagging = Tagging.create(input_id: input_id, tag_id: tag_id, background_task: task)
         tagging_service.after_create(tagging, nil)
       end
     end
