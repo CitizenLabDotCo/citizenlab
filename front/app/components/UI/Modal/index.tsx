@@ -534,8 +534,8 @@ class Modal extends PureComponent<Props, State> {
       fullScreen,
       zIndex,
       hideCloseButton,
+      fixedHeight,
     } = this.props;
-    const hasFixedHeight = this.props.fixedHeight;
     const smallerThanSmallTablet = windowWidth
       ? windowWidth <= viewportWidths.tablet
       : false;
@@ -572,9 +572,7 @@ class Modal extends PureComponent<Props, State> {
             <ModalContentContainerSwitch width={width} fullScreen={fullScreen}>
               <ModalContainer
                 fullScreen={fullScreen}
-                className={`modalcontent ${
-                  hasFixedHeight ? 'fixedHeight' : ''
-                }`}
+                className={`modalcontent ${fixedHeight ? 'fixedHeight' : ''}`}
                 onClickOutside={this.clickOutsideModal}
                 windowHeight={windowHeight}
                 ariaLabelledBy={header ? 'modal-header' : undefined}
