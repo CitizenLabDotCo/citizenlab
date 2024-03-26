@@ -301,7 +301,6 @@ const InputManager = ({
             project={selectedProjectId}
             phase={selectedPhaseId ?? undefined}
             topics={selectedTopics ?? undefined}
-            // bug?
             ideaStatusId={selectedStatus ?? undefined}
             search={queryParameters.search}
             assignee={selectedAssignee ?? undefined}
