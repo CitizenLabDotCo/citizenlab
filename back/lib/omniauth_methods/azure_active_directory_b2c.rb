@@ -2,44 +2,43 @@
 
 module OmniauthMethods
   class AzureActiveDirectoryB2c < OmniauthMethods::Base
+    # Azure AD B2C endpoints are specific to the user flow ("policy") that an application wishes to use to authenticate users.
+    # The endpoints can be found in "Azure AD B2C | App registrations" -> Endpoints.
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
-      # return unless configuration.feature_activated?('azure_ad_login')
+      return unless configuration.feature_activated?('azure_ad_b2c_login')
+      feature = configuration.settings('azure_ad_b2c_login')
 
       options = env['omniauth.strategy'].options
 
-      # options[:client_id] = configuration.settings('azure_ad_login', 'client_id')
-      # options[:tenant] = configuration.settings('azure_ad_login', 'tenant')
-
-      # options[:discovery] = true
+      # Fetches config from #{issuer}/.well-known/openid-configuration
+      options[:discovery] = true
 
       options[:response_type] = 'id_token'
       options[:response_mode] = 'form_post'
       options[:state] = true
       options[:nonce] = true
+      options[:send_scope_to_token_endpoint] = false
       options[:scope] = %i[openid]
-      # options[:send_scope_to_token_endpoint] = false
-      # Configured in Azure AD B2C -> Select the user flow -> Settings -> Properties -> Token compatibility settings
-      options[:issuer] = "https://citizenlabdevdemo.b2clogin.com/#{ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_TENANT_ID')}/v2.0/"
-      # options[:issuer] = 'https://citizenlabdevdemo.b2clogin.com/citizenlabdevdemo.onmicrosoft.com/B2C_1_default_signup_signin_flow/v2.0/'
+      # options[:issuer] = "https://citizenlabdevdemo.b2clogin.com/#{TENANT_ID}/v2.0/" # works only with manually configured endpoints. Discovery returns 404
+      # options[:issuer] = "https://citizenlabdevdemo.b2clogin.com/#{TENANT_ID}/B2C_1_default_signup_signin_flow/v2.0/" # During discovery, it gives "Issuer mismatch" error
+      # options[:issuer] = 'https://citizenlabdevdemo.b2clogin.com/citizenlabdevdemo.onmicrosoft.com/B2C_1_default_signup_signin_flow/v2.0/' # tenant domain name can be used instead of tenant id, but it doesn't work with tfp
+
+      # We don't use the default Azure AD B2C issuer to make it 100% compatible with OIDC spec
+      # (and make auto discovery work).
+      # It should be configured in Azure AD B2C -> Select the user flow -> Settings -> Properties -> Token compatibility settings
+      tenant_name = feature['tenant_name']
+      tenant_id   = feature['tenant_id']
+      policy_name = feature['policy_name'].downcase
+      options[:issuer] = "https://#{tenant_name}.b2clogin.com/tfp/#{tenant_id}/#{policy_name}/v2.0/"
+
       options[:client_options] = {
-        # do we need ID and secret if we use form_post?
-        identifier: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_CLIENT_ID'),
-        secret: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_CLIENT_SECRET'),
+        # We don't need secret if we use form_post
+        identifier: configuration.settings('azure_ad_b2c_login', 'client_id'),
         port: 443,
         scheme: 'https',
-        host: 'citizenlabdevdemo.b2clogin.com',
-        redirect_uri: "#{configuration.base_backend_uri}/auth/azure_activedirectory_b2c/callback",
-
-        # try to tell OIDC gem to use only id_token
-        # try to configure userinfo_endpoint
-        # try to make Azure return token
-        authorization_endpoint: '/citizenlabdevdemo.onmicrosoft.com/b2c_1_default_signup_signin_flow/oauth2/v2.0/authorize',
-        token_endpoint: '/citizenlabdevdemo.onmicrosoft.com/b2c_1_default_signup_signin_flow/oauth2/v2.0/token',
-        # userinfo_endpoint: '/openid/userinfo',
-
-        # has to have the origin
-        jwks_uri: 'https://citizenlabdevdemo.b2clogin.com/citizenlabdevdemo.onmicrosoft.com/b2c_1_default_signup_signin_flow/discovery/v2.0/keys'
+        host: "#{tenant_name}.b2clogin.com",
+        redirect_uri: "#{configuration.base_backend_uri}/auth/azureactivedirectory_b2c/callback",
       }
     end
 

@@ -5,7 +5,7 @@ class AuthenticationService
     'facebook' => OmniauthMethods::Facebook.new,
     'google' => OmniauthMethods::Google.new,
     'azureactivedirectory' => OmniauthMethods::AzureActiveDirectory.new,
-    'azure_activedirectory_b2c' => OmniauthMethods::AzureActiveDirectoryB2c.new,
+    'azureactivedirectory_b2c' => OmniauthMethods::AzureActiveDirectoryB2c.new,
   }
 
   class << self
