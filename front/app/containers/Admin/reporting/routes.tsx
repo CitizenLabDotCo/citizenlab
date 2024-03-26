@@ -1,7 +1,5 @@
 import React, { lazy } from 'react';
 
-import moduleConfiguration from 'modules';
-
 import PageLoading from 'components/UI/PageLoading';
 
 import { AdminRoute } from '../routes';
@@ -48,7 +46,6 @@ const reportingRoutes = () => {
           </PageLoading>
         ),
       },
-      ...moduleConfiguration.routes['admin.reporting'],
     ],
   };
 };
