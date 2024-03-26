@@ -61,6 +61,7 @@ const navItems: NavItem[] = [
     link: `/admin/reporting/report-builder`,
     iconName: 'reports',
     message: 'reporting',
+    featureNames: ['report_builder'],
   },
   {
     name: 'tools',
