@@ -200,7 +200,7 @@ const InputManager = ({
     setQueryParameters({ ...queryParameters, 'page[number]': 1, assignee });
   };
 
-  const onChangeFeedbackFilter = (feedbackNeeded: boolean) => {
+  const onChangeFeedbackFilter = (feedbackNeeded: boolean | undefined) => {
     setQueryParameters({
       ...queryParameters,
       'page[number]': 1,
