@@ -80,7 +80,7 @@ describe('AddModeratorsModal', () => {
 
   describe('when seat_based_billing is off', () => {
     beforeEach(() => {
-      mockFeatureFlagData = true;
+      mockFeatureFlagData = false;
     });
 
     it('shows confirm in button when seats are not full and admin is adding another moderator', () => {
