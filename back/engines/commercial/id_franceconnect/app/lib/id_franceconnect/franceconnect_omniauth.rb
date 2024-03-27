@@ -96,7 +96,7 @@ module IdFranceconnect
     end
 
     def updateable_user_attrs
-      %i[first_name last_name birthyear gender remote_avatar_url]
+      super + %i[first_name last_name birthyear gender remote_avatar_url]
     end
 
     # To make this method return false and so to reproduce merging error, you need:
