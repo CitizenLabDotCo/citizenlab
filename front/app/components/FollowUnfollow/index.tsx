@@ -36,7 +36,7 @@ interface Props extends BoxWidthProps, BoxPaddingProps {
   iconSize?: string;
   followableSlug?: string;
   buttonStyle?: ButtonStyles;
-  toolTipType?: 'input' | 'projectPage';
+  toolTipType?: 'input' | 'projectOrFolder';
 }
 
 const FollowUnfollow = ({
@@ -158,24 +158,26 @@ const FollowUnfollow = ({
           }}
         />
       );
+    } else if (toolTipType === 'projectOrFolder') {
+      return (
+        <FormattedMessage
+          {...messages.followTooltipProjects}
+          values={{
+            unsubscribeLink: (
+              <a
+                href={'/profile/edit'}
+                target="_blank"
+                rel="noreferrer"
+                style={{ textDecoration: 'underline', color: colors.white }}
+              >
+                <FormattedMessage {...messages.unsubscribe} />
+              </a>
+            ),
+          }}
+        />
+      );
     }
-    return (
-      <FormattedMessage
-        {...messages.followTooltip}
-        values={{
-          unsubscribeLink: (
-            <a
-              href={'/profile/edit'}
-              target="_blank"
-              rel="noreferrer"
-              style={{ textDecoration: 'underline', color: colors.white }}
-            >
-              <FormattedMessage {...messages.unsubscribe} />
-            </a>
-          ),
-        }}
-      />
-    );
+    return null;
   };
 
   return (

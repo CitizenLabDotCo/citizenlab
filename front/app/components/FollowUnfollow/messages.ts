@@ -14,14 +14,14 @@ export default defineMessages({
     defaultMessage: 'Follow the discussion',
   },
   followTooltipInputPage: {
-    id: 'app.components.followUnfollow.followTooltipInputPage',
+    id: 'app.components.followUnfollow.followTooltipInputPage2',
     defaultMessage:
-      'Following will trigger email updates about status changes, official updates, and comments. You can {unsubscribeLink} at any time.',
+      'Following triggers email updates about status changes, official updates, and comments. You can {unsubscribeLink} at any time.',
   },
-  followTooltip: {
-    id: 'app.components.followUnfollow.followTooltip',
+  followTooltipProjects: {
+    id: 'app.components.followUnfollow.followTooltipProjects2',
     defaultMessage:
-      'Following will trigger email updates about changes. You can {unsubscribeLink} at any time.',
+      'Following triggers email updates about project changes. You can {unsubscribeLink} at any time.',
   },
   unsubscribe: {
     id: 'app.components.followUnfollow.unsubscribe',
