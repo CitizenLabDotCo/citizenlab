@@ -90,6 +90,7 @@ describe('Homepage builder', () => {
     );
     cy.intercept('GET', '**/pages-menu').as('getPages');
     cy.intercept('GET', '**/nav_bar_items').as('getNavbarItems');
+    cy.intercept('GET', '**/admin_publications**').as('getAdminPublications');
     // go to admin page
     cy.visit('/admin/pages-menu/');
 
@@ -138,6 +139,7 @@ describe('Homepage builder', () => {
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveHomePage');
     cy.visit(`/`);
+    cy.wait('@getAdminPublications');
     cy.get('#e2e-two-column').should('exist');
     cy.get('div.e2e-text-box').should('have.length', 2);
     cy.get('div.e2e-text-box').first().should('contain', 'first text');
@@ -200,6 +202,7 @@ describe('Homepage builder', () => {
     cy.get('[data-cy="e2e-events"]').should('not.exist');
     cy.get('[data-cy="e2e-proposals"]').should('not.exist');
 
+    cy.wait('@getAdminPublications');
     const regex = /currently working on/gi;
     cy.get('[data-cy="e2e-projects"]').should(($el) => {
       const text = $el.text();

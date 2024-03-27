@@ -6,8 +6,6 @@ import { useTheme } from 'styled-components';
 
 import { IEventData } from 'api/events/types';
 
-import { toThreeLetterMonth } from 'utils/dateUtils';
-
 import SingleDateStylized from './SingleDateStylized';
 
 interface Props {
@@ -18,14 +16,14 @@ const EventDateStylized = ({ event }: Props) => {
   const theme = useTheme();
   const startAtMoment = moment(event.attributes.start_at);
   const endAtMoment = moment(event.attributes.end_at);
-  const startDateMonth = toThreeLetterMonth(startAtMoment.toISOString(), 'month');
-  const endDateMonth = toThreeLetterMonth(endAtMoment.toISOString(), 'month');
+  const startDateMonth = startAtMoment.format('MMM');
+  const endDateMonth = endAtMoment.format('MMM');
   const isEventMultipleDays =
     startAtMoment.dayOfYear() !== endAtMoment.dayOfYear();
   const oneDayEventTime = `${startAtMoment.format('LT')} - ${endAtMoment.format(
     'LT'
   )}`;
-  
+
   return (
     <Box
       display="flex"
