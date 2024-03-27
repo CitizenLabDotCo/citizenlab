@@ -3,10 +3,6 @@ import whiteSpaceMessages from 'components/admin/ContentBuilder/Widgets/WhiteSpa
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
-import SurveyResultsWidget, {
-  surveyResultsTitle,
-} from './_deprecated/SurveyResultsWidget';
-import TitleMultiloc, { titleMultilocTitle } from './_deprecated/TitleMultiloc';
 import AboutReportWidget, { aboutReportTitle } from './AboutReportWidget';
 import ActiveUsersWidget, {
   activeUsersTitle,
@@ -26,6 +22,7 @@ import VisitorsTrafficSourcesWidget, {
   visitorsTrafficSourcesTitle,
 } from './ChartWidgets/VisitorsTrafficSourcesWidget';
 import VisitorsWidget, { visitorsTitle } from './ChartWidgets/VisitorsWidget';
+import IframeMultiloc, { iframeMultilocTitle } from './IframeMultiloc';
 import ImageMultiloc, { imageMultilocTitle } from './ImageMultiloc';
 import MostReactedIdeasWidget, {
   mostReactedIdeasTitle,
@@ -54,10 +51,7 @@ export const WIDGETS = {
   PostsByTimeWidget,
   CommentsByTimeWidget,
   ReactionsByTimeWidget,
-
-  // Deprecated
-  TitleMultiloc, // TODO: remove this widget (TAN-1022)
-  SurveyResultsWidget, // TODO: remove this widget (TAN-1022)
+  IframeMultiloc,
 };
 
 type WidgetName = keyof typeof WIDGETS;
@@ -79,10 +73,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   PostsByTimeWidget: postsByTimeTitle,
   CommentsByTimeWidget: commentsByTimeTitle,
   ReactionsByTimeWidget: reactionsByTimeTitle,
-
-  // Deprecated
-  TitleMultiloc: titleMultilocTitle,
-  SurveyResultsWidget: surveyResultsTitle,
+  IframeMultiloc: iframeMultilocTitle,
 };
 
 const WIDGETS_WITH_CHILDREN = new Set<string>([
@@ -103,9 +94,7 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'VisitorsTrafficSourcesWidget',
   'VisitorsWidget',
   'SurveyQuestionResultWidget',
-
-  // Deprecated
-  'SurveyResultsWidget',
+  'IframeMultiloc',
 ] satisfies WidgetName[]);
 
 export const hasNoPointerEvents = (nodeName: string) => {

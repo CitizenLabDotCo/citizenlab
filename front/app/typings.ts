@@ -1,6 +1,7 @@
 import { MouseEvent, FC } from 'react';
 
 import { WrappedComponentProps } from 'react-intl';
+import { RouteType } from 'routes';
 import { TableCellProps } from 'semantic-ui-react';
 
 import { TAppConfigurationSetting } from 'api/app_configuration/types';
@@ -53,7 +54,7 @@ export type ILocationInfo =
 export interface ITab {
   name: string;
   label: string;
-  url: string;
+  url: RouteType;
   active?: boolean | ((pathname: string) => boolean);
   feature?: TAppConfigurationSetting;
   statusLabel?: string;

@@ -21,7 +21,7 @@ import Chart from './Chart';
 type Props = ProjectId & DatesStrings;
 
 const GenderCard = ({ startAt, endAt, projectId }: Props) => {
-  const usersByGender = useUsersByGender({
+  const { data: usersByGender } = useUsersByGender({
     project_id: projectId,
     start_at: startAt,
     end_at: endAt,

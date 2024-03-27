@@ -149,7 +149,7 @@ sv:
         title: Detaljer
         description:
       other:
-        title: Skriv ditt svar
+        title: Eftersom du valde "annat", vad tänker du på?
   custom_forms:
     categories:
       main_content:
@@ -228,9 +228,9 @@ sv:
       title: 'Din fråga'
       option1: 'Alternativ 1'
       option2: 'Alternativ 2'
-    survey_end_page:
-      title: 'Undersökningens slut'
-      description: "Skicka in dina svar genom att klicka på Skicka undersökning nedan."
+    form_end_page:
+      title: 'Tack för ditt deltagande'
+      description: "Skicka in dina svar genom att klicka på \"Skicka\" nedan."
     pdf_export:
       personal_data: 'Personuppgifter'
       personal_data_explanation_ideation: "Vi kommer att skicka in ditt bidrag till %{organizationName}:s onlineplattform för deltagande. Om du vill att ditt namn ska visas som författare till detta bidrag och få uppdateringar som är relevanta för ditt bidrag via e-post, fyll i följande fält på denna sida så skapar vi ett konto åt dig. Din e-postadress kommer inte att vara offentlig och kommer endast att användas av %{organizationName}. Om du vill vara anonym eller inte samtycker till att vi använder dina personuppgifter på detta sätt kan du lämna dem tomma."

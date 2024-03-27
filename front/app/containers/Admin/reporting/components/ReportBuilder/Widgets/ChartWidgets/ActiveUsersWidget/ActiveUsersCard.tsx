@@ -63,8 +63,8 @@ const ActiveUsers = ({ projectId, startAt, endAt, resolution }: Props) => {
           <Box pt="8px" width="100%" maxWidth="800px">
             <Chart
               timeSeries={timeSeries}
-              startAtMoment={moment(startAt)}
-              endAtMoment={moment(endAt)}
+              startAtMoment={startAt ? moment(startAt) : null}
+              endAtMoment={endAt ? moment(endAt) : null}
               resolution={currentResolution}
               layout={layout}
             />

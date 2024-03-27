@@ -14,6 +14,7 @@ import {
 import { isEmpty, get, isError } from 'lodash-es';
 import moment from 'moment';
 import { useParams } from 'react-router-dom';
+import { RouteType } from 'routes';
 import { useTheme } from 'styled-components';
 import { Multiloc, CLError, UploadFile } from 'typings';
 
@@ -178,7 +179,9 @@ const AdminProjectEventEdit = () => {
   useEffect(() => {
     if (eventAttrs.address_1 !== event?.data.attributes.address_1) {
       const delayDebounceFn = setTimeout(async () => {
-        const point = await geocode(eventAttrs.address_1);
+        const point = eventAttrs.address_1
+          ? await geocode(eventAttrs.address_1)
+          : null;
         setGeocodedPoint(point);
         setLocationPoint(point);
         setSuccessfulGeocode(!!point);
@@ -267,7 +270,7 @@ const AdminProjectEventEdit = () => {
     setSubmitState('enabled');
     setAttributeDiff({
       ...attributeDiff,
-      using_url: url,
+      using_url: url as RouteType,
     });
     setErrors({});
   };

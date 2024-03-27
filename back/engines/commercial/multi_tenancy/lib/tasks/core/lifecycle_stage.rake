@@ -42,6 +42,6 @@ namespace :fix_existing_tenants do
   end
 
   def ls_read_csv(args)
-    CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
+    CSV.parse(open(args[:url]).read, headers: true, col_sep: ',', converters: [])
   end
 end

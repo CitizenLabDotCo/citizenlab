@@ -3,6 +3,7 @@ import React, { memo } from 'react';
 import { WrappedComponentProps } from 'react-intl';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 import styled from 'styled-components';
+import { ITab } from 'typings';
 
 import {
   IUserCustomFieldData,
@@ -31,6 +32,8 @@ export interface Props {
   children?: React.ReactNode;
 }
 
+type TabType = ITab & { className: string };
+
 const RegistrationCustomFieldEdit = memo(
   ({
     intl: { formatMessage },
@@ -47,12 +50,10 @@ const RegistrationCustomFieldEdit = memo(
     };
 
     const getTabs = (customField: IUserCustomFieldData) => {
-      const baseTabsUrl = `/admin/settings/registration/custom-fields/${customField.id}`;
-
-      const tabs = [
+      const tabs: TabType[] = [
         {
           label: formatMessage(messages.fieldSettingsTab),
-          url: `${baseTabsUrl}/field-settings`,
+          url: `/admin/settings/registration/custom-fields/${customField.id}/field-settings`,
           className: 'field-settings',
           name: 'fieldSettings',
         },
@@ -64,7 +65,7 @@ const RegistrationCustomFieldEdit = memo(
       ) {
         tabs.push({
           label: formatMessage(messages.answerOptionsTab),
-          url: `${baseTabsUrl}/options`,
+          url: `/admin/settings/registration/custom-fields/${customField.id}/options`,
           className: 'options',
           name: 'options',
         });

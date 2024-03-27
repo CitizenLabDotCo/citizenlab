@@ -149,7 +149,7 @@ it:
         title: Dettagli
         description:
       other:
-        title: Scrivi la tua risposta
+        title: Visto che hai scelto "altro", a cosa stai pensando?
   custom_forms:
     categories:
       main_content:
@@ -228,9 +228,9 @@ it:
       title: 'La vostra domanda'
       option1: 'Opzione 1'
       option2: 'Opzione 2'
-    survey_end_page:
-      title: 'Fine del sondaggio'
-      description: "Inviate le vostre risposte selezionando \"Invia sondaggio\" qui sotto."
+    form_end_page:
+      title: 'Grazie per aver partecipato'
+      description: "Invia le tue risposte selezionando \"Invia\" qui sotto."
     pdf_export:
       personal_data: 'Dati personali'
       personal_data_explanation_ideation: "Invieremo il tuo contributo alla piattaforma di partecipazione online di %{organizationName}. Se vuoi che il tuo nome venga visualizzato come autore di questo contributo e ricevere via e-mail gli aggiornamenti relativi al tuo contributo, compila i seguenti campi in questa pagina e creeremo un account per te. Il tuo indirizzo e-mail non sarà pubblico e sarà utilizzato solo da %{organizationName}. Se vuoi rimanere anonimo o non sei d'accordo che i tuoi dati personali vengano utilizzati in questo modo, puoi lasciarli vuoti."

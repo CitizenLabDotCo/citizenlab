@@ -1,12 +1,9 @@
-FROM cypress/browsers:node16.14.0-chrome99-ff97
+FROM cypress/browsers:node-20.11.1-chrome-123.0.6312.58-1-ff-124.0-edge-122.0.2365.92-1
 
 WORKDIR /
 
-# Copy the necessary files from the parent directory
-COPY /cl2-component-library/package.json ./front/cl2-component-library-package.json
-
 # Install jq for version parsing
-RUN apt-get update && apt-get install -y jq
+RUN apt-get update && apt-get install -y jq curl
 
 # Change the working directory to /front
 WORKDIR /front
@@ -14,10 +11,8 @@ WORKDIR /front
 ADD front/package.json front/package-lock.json ./
 ADD front/internals internals
 
-# Install CL2 Component Library and dependencies
-RUN CL2_VERSION=$(cat cl2-component-library-package.json | jq -r .version) \
-    && npm i --save @citizenlab/cl2-component-library@${CL2_VERSION} \
-    && npm install
+# Install dependencies
+RUN npm install
 
 ADD front/. .
 

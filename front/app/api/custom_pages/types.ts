@@ -1,3 +1,4 @@
+import { RouteType } from 'routes';
 import { ImageSizes, IRelationship, Multiloc } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
@@ -62,7 +63,7 @@ export interface ICustomPageAttributes extends ICustomPageEnabledSettings {
   banner_cta_button_multiloc: Multiloc;
   // check if this can be null
   banner_cta_button_type: 'customized_button' | 'no_button';
-  banner_cta_button_url: string | null;
+  banner_cta_button_url: RouteType | null;
   banner_header_multiloc: Multiloc;
   banner_subheader_multiloc: Multiloc;
   bottom_info_section_multiloc?: Multiloc;

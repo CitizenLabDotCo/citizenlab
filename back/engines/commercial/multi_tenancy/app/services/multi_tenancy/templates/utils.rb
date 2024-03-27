@@ -267,11 +267,17 @@ module MultiTenancy
         end
 
         def parse_yml(content)
-          YAML.load(
-            content,
-            aliases: true,
-            permitted_classes: [Date, Project, Symbol, Time]
-          )
+          # [TODO] Ideally, we should use `YAML.load` instead of `YAML.unsafe_load`.
+          # Currently, the tenant templates contain references to ActiveRecord model
+          # classes. If we were to use `YAML.load`, we would need to provide a whitelist
+          # of classes that are allowed to be deserialized. The list can be obtained by
+          # calling `ApplicationRecord.descendants`, but the application has to be eager
+          # loaded for this to return the complete list. The eager loading is causing
+          # issues in some CI workflows where the DB is not completely set up. Therefore,
+          # we resort to `YAML.unsafe_load` for now.
+          # One possible solution would be to rework the template format to encode AR
+          # model class names as strings instead of actual class references.
+          YAML.unsafe_load(content)
         end
         alias parse_yaml parse_yml
 

@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 
 import { WrappedComponentProps } from 'react-intl';
+import { RouteType } from 'routes';
 
 import { ICustomPageData, TCustomPageCode } from 'api/custom_pages/types';
 import useCustomPages from 'api/custom_pages/useCustomPages';
@@ -82,7 +83,7 @@ const HiddenNavbarItemList = ({
     }
   };
 
-  const getViewButtonLink = (item: IItemNotInNavbar) => {
+  const getViewButtonLink = (item: IItemNotInNavbar): RouteType | null => {
     return (
       getNavbarItemSlug(
         item.type === 'default_item' ? item.navbarCode : 'custom',
@@ -108,7 +109,7 @@ const HiddenNavbarItemList = ({
               isDefaultPage={item.type === 'default_item'}
               showEditButton={item.type !== 'default_item'}
               showAddButton
-              viewButtonLink={getViewButtonLink(item)}
+              viewButtonLink={getViewButtonLink(item) || undefined}
               onClickEditButton={handleClickEditButton(item)}
               onClickAddButton={handleClickAdd(item)}
               addButtonDisabled={navbarItems.data.length >= 7}

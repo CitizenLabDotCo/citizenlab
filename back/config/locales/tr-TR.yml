@@ -149,7 +149,7 @@ tr:
         title: Detaylar
         description:
       other:
-        title: Cevabınızı yazın
+        title: '''Diğer''i seçtiğinize göre, ne düşünüyorsunuz?'
   custom_forms:
     categories:
       main_content:
@@ -228,9 +228,9 @@ tr:
       title: 'Sizin sorunuz'
       option1: 'Seçenek 1'
       option2: 'Seçenek 2'
-    survey_end_page:
-      title: 'Anket sonu'
-      description: "Lütfen cevaplarınızı aşağıdaki 'Anketi gönder' seçeneğini seçerek gönderin."
+    form_end_page:
+      title: 'Katıldığınız için teşekkürler'
+      description: "Lütfen cevaplarınızı aşağıdaki 'Gönder' butonuna basarak gönderiniz."
     pdf_export:
       personal_data: 'Kişisel veriler'
       personal_data_explanation_ideation: "Girdinizi %{organizationName}'un çevrimiçi katılım platformuna göndereceğiz. Adınızın bu girdinin yazarı olarak görüntülenmesini ve girdinizle ilgili güncellemeleri e-posta ile almak istiyorsanız, lütfen bu sayfadaki aşağıdaki alanları doldurun ve sizin için bir hesap oluşturalım. E-postanız herkese açık olmayacak ve sadece %{organizationName}tarafından kullanılacaktır. Anonim kalmak istiyorsanız veya kişisel verilerinizi bu şekilde kullanmamızı kabul etmiyorsanız, bu alanları boş bırakabilirsiniz."

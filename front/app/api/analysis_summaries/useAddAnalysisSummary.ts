@@ -21,7 +21,7 @@ const useAddAnalysisSummary = () => {
   return useMutation<ISummary, CLErrors, ISummaryAdd>({
     mutationFn: addAnalysisSummary,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: insightsKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: insightsKeys.all() });
       queryClient.invalidateQueries({ queryKey: backgroundTasksKeys.lists() });
     },
   });

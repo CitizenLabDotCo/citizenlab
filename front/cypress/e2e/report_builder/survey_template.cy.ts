@@ -48,6 +48,7 @@ describe('Survey template', () => {
             'multiselect',
             'linear_scale',
             'multiselect_image',
+            'point',
           ],
           questionImage.body.data.id
         );
@@ -63,6 +64,7 @@ describe('Survey template', () => {
         const multiSelectKey = surveyFields[2].attributes.key;
         const linearScaleKey = surveyFields[3].attributes.key;
         const multiselectImageKey = surveyFields[4].attributes.key;
+        const pointKey = surveyFields[5].attributes.key;
 
         const fieldConfigs: any =
           surveySchema.data.attributes.json_schema_multiloc.en?.properties;
@@ -98,14 +100,23 @@ describe('Survey template', () => {
             cy.apiUpdateUserCustomFields(email, password, { gender });
           })
           .then(() => {
-            cy.apiCreateSurveyResponse(email, password, projectId, {
-              [selectKey]: selectAnswerKeys[0],
-              [multiSelectKey]: [
-                multiSelectAnswerKeys[0],
-                multiSelectAnswerKeys[1],
-              ],
-              [linearScaleKey]: 2,
-              [multiselectImageKey]: [multiselectImageAnswerKeys[0]],
+            cy.apiCreateSurveyResponse({
+              email,
+              password,
+              project_id: projectId,
+              fields: {
+                [selectKey]: selectAnswerKeys[0],
+                [multiSelectKey]: [
+                  multiSelectAnswerKeys[0],
+                  multiSelectAnswerKeys[1],
+                ],
+                [linearScaleKey]: 2,
+                [multiselectImageKey]: [multiselectImageAnswerKeys[0]],
+                [pointKey]: {
+                  type: 'Point',
+                  coordinates: [4.349371842575076, 50.85428103529364],
+                },
+              },
             });
           });
       })
@@ -124,10 +135,12 @@ describe('Survey template', () => {
     cy.apiRemoveUser(userId);
   });
 
+  beforeEach(() => {
+    cy.setAdminLoginCookie();
+  });
+
   describe('Global report builder', () => {
     it('should create a survey template', () => {
-      cy.setAdminLoginCookie();
-
       // Create report from template
       cy.visit(`/admin/reporting/report-builder`);
       cy.get('#e2e-create-report-button').click();
@@ -144,7 +157,7 @@ describe('Survey template', () => {
       cy.get('#e2e-content-builder-frame').should('exist');
 
       // Ensure correct amount of questions
-      cy.get('.e2e-survey-question-widget-title').should('have.length', 4);
+      cy.get('.e2e-survey-question-widget-title').should('have.length', 5);
       cy.get('.e2e-survey-question-widget-title')
         .first()
         .contains('Question: select');
@@ -157,6 +170,9 @@ describe('Survey template', () => {
       cy.get('.e2e-survey-question-widget-title')
         .eq(3)
         .contains('Question: multiselect_image');
+      cy.get('.e2e-survey-question-widget-title')
+        .eq(4)
+        .contains('Question: point');
 
       // Ensure correct values
       cy.get('.e2e-survey-question-ungrouped-bars')
@@ -177,8 +193,6 @@ describe('Survey template', () => {
 
   describe('Phase report builder', () => {
     it('should create a survey template', () => {
-      cy.setAdminLoginCookie();
-
       // Create report inside of phase
       cy.visit(`/en/admin/projects/${projectId}/phases/${phaseId}/report`);
       cy.get('#e2e-create-report-button').click();
@@ -195,7 +209,7 @@ describe('Survey template', () => {
       cy.get('#e2e-content-builder-frame').should('exist');
 
       // Ensure correct amount of questions
-      cy.get('.e2e-survey-question-widget-title').should('have.length', 4);
+      cy.get('.e2e-survey-question-widget-title').should('have.length', 5);
       cy.get('.e2e-survey-question-widget-title')
         .first()
         .contains('Question: select');
@@ -208,6 +222,9 @@ describe('Survey template', () => {
       cy.get('.e2e-survey-question-widget-title')
         .eq(3)
         .contains('Question: multiselect_image');
+      cy.get('.e2e-survey-question-widget-title')
+        .eq(4)
+        .contains('Question: point');
 
       // Ensure correct values
       cy.get('.e2e-survey-question-ungrouped-bars')

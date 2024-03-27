@@ -23,7 +23,10 @@
         "name": "typescript-styled-plugin"
       }
     ],
-    "isolatedModules": true
+    "isolatedModules": true,
+    "paths": {
+      "@citizenlab/cl2-component-library": ["./component-library"]
+    }
   },
   "files": ["custom.d.ts"],
   "include": ["**/*", "../playwright.config.ts"],

@@ -5,7 +5,7 @@ const baseKey = { type: 'background_task' };
 const backgroundTasksKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
-  list: ({ analysisId }: { analysisId: string }) => [
+  list: ({ analysisId }: { analysisId?: string }) => [
     { ...baseKey, operation: 'list', parameters: { analysisId } },
   ],
   items: () => [{ ...baseKey, operation: 'item' }],

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { Element } from '@craftjs/core';
@@ -17,10 +17,11 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
 import { withoutSpacing } from 'utils/textUtils';
 
+import { SURVEY_QUESTION_INPUT_TYPES } from '../../constants';
 import MostReactedIdeasWidget from '../../Widgets/MostReactedIdeasWidget';
 import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget';
 import TextMultiloc from '../../Widgets/TextMultiloc';
-import { SURVEY_QUESTION_INPUT_TYPES } from '../../constants';
+import { TemplateContext } from '../context';
 
 import messages from './messages';
 
@@ -28,7 +29,7 @@ interface Props {
   phaseId: string;
 }
 
-const PhaseTemplate = ({ phaseId }: Props) => {
+const PhaseTemplateContent = ({ phaseId }: Props) => {
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
   const { data: phase } = usePhase(phaseId);
@@ -101,6 +102,16 @@ const PhaseTemplate = ({ phaseId }: Props) => {
       )}
     </Element>
   );
+};
+
+const PhaseTemplate = ({ phaseId }: Props) => {
+  const enabled = useContext(TemplateContext);
+
+  if (enabled) {
+    return <PhaseTemplateContent phaseId={phaseId} />;
+  } else {
+    return <Element id="phase-report-template" is={Box} canvas />;
+  }
 };
 
 export default PhaseTemplate;

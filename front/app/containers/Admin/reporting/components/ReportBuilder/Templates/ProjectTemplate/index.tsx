@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { Element } from '@craftjs/core';
@@ -20,9 +20,7 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
 import { withoutSpacing } from 'utils/textUtils';
 
-// shared widgets
-
-// report builder widgets
+import { SURVEY_QUESTION_INPUT_TYPES } from '../../constants';
 import AboutReportWidget from '../../Widgets/AboutReportWidget';
 import ActiveUsersWidget from '../../Widgets/ChartWidgets/ActiveUsersWidget';
 import AgeWidget from '../../Widgets/ChartWidgets/AgeWidget';
@@ -32,7 +30,7 @@ import MostReactedIdeasWidget from '../../Widgets/MostReactedIdeasWidget';
 import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget';
 import TextMultiloc from '../../Widgets/TextMultiloc';
 import TwoColumn from '../../Widgets/TwoColumn';
-import { SURVEY_QUESTION_INPUT_TYPES } from '../../constants';
+import { TemplateContext } from '../context';
 
 import { getTemplateData } from './getTemplateData';
 import messages from './messages';
@@ -42,7 +40,7 @@ export interface Props {
   projectId: string;
 }
 
-const ProjectTemplate = ({ reportId, projectId }: Props) => {
+const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
   const { data: project } = useProjectById(projectId);
@@ -60,7 +58,9 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
   if (!project || !phases || !templateData) return null;
 
   const { participationMethod, phaseId } = templateData;
-  if (participationMethod === 'native_survey' && !surveyQuestions) return null;
+  if (participationMethod === 'native_survey' && !surveyQuestions) {
+    return null;
+  }
 
   const hasPhases = phases.data.length > 0;
 
@@ -178,6 +178,16 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
       />
     </Element>
   );
+};
+
+const ProjectTemplate = ({ reportId, projectId }: Props) => {
+  const enabled = useContext(TemplateContext);
+
+  if (enabled) {
+    return <ProjectTemplateContent reportId={reportId} projectId={projectId} />;
+  } else {
+    return <Element id="project-report-template" is={Box} canvas />;
+  }
 };
 
 export default ProjectTemplate;

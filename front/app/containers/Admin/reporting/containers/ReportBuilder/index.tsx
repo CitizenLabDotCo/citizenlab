@@ -17,7 +17,6 @@ import Frame from 'components/admin/ContentBuilder/Frame';
 import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
-import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -25,6 +24,7 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 import Editor from '../../components/ReportBuilder/Editor';
 import Settings from '../../components/ReportBuilder/Settings';
+import { TemplateContext } from '../../components/ReportBuilder/Templates/context';
 import PhaseTemplate from '../../components/ReportBuilder/Templates/PhaseTemplate';
 import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTemplate';
 import Toolbox from '../../components/ReportBuilder/Toolbox';
@@ -71,38 +71,14 @@ const ReportBuilder = ({
   const [selectedLocale, setSelectedLocale] = useState<Locale>(platformLocale);
 
   const [saved, setSaved] = useState(true);
-  const [contentBuilderErrors, setContentBuilderErrors] =
-    useState<ContentBuilderErrors>({});
-
-  const handleErrors = (newErrors: ContentBuilderErrors) => {
-    setContentBuilderErrors((contentBuilderErrors) => ({
-      ...contentBuilderErrors,
-      ...newErrors,
-    }));
-  };
-
-  const handleDeleteElement = (id: string) => {
-    setContentBuilderErrors((contentBuilderErrors) => {
-      const { [id]: _id, ...rest } = contentBuilderErrors;
-      return rest;
-    });
-  };
-
-  const hasError =
-    Object.values(contentBuilderErrors).filter((node) => node.hasError).length >
-    0;
 
   const handleSetSaved = () => {
     setSaved(true);
   };
 
   return (
-    <ReportContextProvider width="pdf" reportId={reportId} phaseId={phaseId}>
-      <FullscreenContentBuilder
-        onErrors={handleErrors}
-        onDeleteElement={handleDeleteElement}
-        onUploadImage={setImageUploading}
-      >
+    <ReportContextProvider width={view} reportId={reportId} phaseId={phaseId}>
+      <FullscreenContentBuilder onUploadImage={setImageUploading}>
         <Editor
           isPreview={false}
           // onNodesChange is called twice on initial load.
@@ -133,7 +109,6 @@ const ReportBuilder = ({
           }}
         >
           <TopBar
-            hasError={hasError}
             hasPendingState={imageUploading}
             selectedLocale={selectedLocale}
             reportId={reportId}
@@ -145,7 +120,7 @@ const ReportBuilder = ({
             setSelectedLocale={setSelectedLocale}
           />
           <Box mt={`${stylingConsts.menuHeight}px`}>
-            <Toolbox reportId={reportId} />
+            <Toolbox reportId={reportId} selectedLocale={selectedLocale} />
             <LanguageProvider
               contentBuilderLocale={selectedLocale}
               platformLocale={platformLocale}
@@ -205,12 +180,14 @@ const ReportBuilderWrapper = () => {
   if (!renderReportBuilder) return null;
 
   return (
-    <ReportBuilder
-      report={report}
-      reportLayout={reportLayout.data}
-      templateProjectId={templateProjectId}
-      templatePhaseId={templatePhaseId}
-    />
+    <TemplateContext.Provider value={!!(templateProjectId || templatePhaseId)}>
+      <ReportBuilder
+        report={report}
+        reportLayout={reportLayout.data}
+        templateProjectId={templateProjectId}
+        templatePhaseId={templatePhaseId}
+      />
+    </TemplateContext.Provider>
   );
 };
 
