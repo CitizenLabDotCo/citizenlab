@@ -184,12 +184,9 @@ class OmniauthCallbackController < ApplicationController
   # @param [User] user
   def update_user!(auth, user, authver_method)
     attrs = authver_method.updateable_user_attrs
-    # If password_login is disabled, users cannot update their emails on UI,
-    # but we still want to keep their emails up to date.
-    attrs << :email if !AppConfiguration.instance.feature_activated?('password_login') && attrs.exclude?(:email)
     return if attrs.empty?
 
-    update_hash = authver_method.profile_to_user_attrs_for_update(auth).slice(*attrs).compact
+    update_hash = authver_method.profile_to_user_attrs(auth).slice(*attrs).compact
     update_hash.delete(:remote_avatar_url) if user.avatar.present? # don't overwrite avatar if already present
     user.confirm! if authver_method.email_confirmed?(auth) # confirm user email if not already confirmed
 

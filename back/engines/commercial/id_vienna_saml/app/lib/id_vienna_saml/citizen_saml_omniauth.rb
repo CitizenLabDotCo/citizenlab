@@ -36,11 +36,6 @@ module IdViennaSaml
       }
     end
 
-    def profile_to_user_attrs_for_update(auth)
-      # Don't update first and last name which are probably generated from email
-      profile_to_user_attrs(auth).slice(:email).transform_values(&:presence).compact
-    end
-
     def profile_to_uid(auth)
       auth.dig(:extra, :raw_info).to_h[USERID_KEY].first
     end
@@ -61,11 +56,6 @@ module IdViennaSaml
       metadata = idp_metadata.merge({ issuer: issuer })
 
       env['omniauth.strategy'].options.merge!(metadata)
-    end
-
-    # @return [Array<Symbol>] Returns a list of attributes that can be updated from the auth response hash
-    def updateable_user_attrs
-      %i[first_name last_name]
     end
 
     # Removes the response object because it produces a Stacklevel too deep error when converting to JSON
