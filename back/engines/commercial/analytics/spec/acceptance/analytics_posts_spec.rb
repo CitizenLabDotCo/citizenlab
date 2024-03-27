@@ -75,6 +75,7 @@ resource 'Analytics - FactPosts model' do
     example 'correctly filters initiatives by status', document: false do
       create(:initiative, created_at: @dates[0])
       create(:initiative, created_at: @dates[1])
+      create(:initiative, created_at: @dates[2])
 
       do_request({
         query: {
