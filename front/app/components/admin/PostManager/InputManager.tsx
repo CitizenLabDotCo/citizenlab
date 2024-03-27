@@ -188,7 +188,7 @@ const InputManager = ({
     setQueryParameters({ ...queryParameters, 'page[number]': 1, topics });
   };
 
-  const onChangeStatus = (ideaStatus: string) => {
+  const onChangeStatus = (ideaStatus: string | undefined) => {
     setQueryParameters({
       ...queryParameters,
       'page[number]': 1,
