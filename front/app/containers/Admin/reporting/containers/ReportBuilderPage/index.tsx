@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 
-import { colors, Box, Title, Text } from '@citizenlab/cl2-component-library';
+import {
+  colors,
+  Box,
+  Title,
+  Text,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
 import useReports from 'api/reports/useReports';
@@ -44,7 +50,13 @@ const ReportBuilderPage = () => {
         <EmptyState onOpenModal={openModal} />
       ) : (
         <>
-          <Box background="white" px="56px" py="40px">
+          <Box
+            background="white"
+            px="56px"
+            py="40px"
+            border={stylingConsts.border}
+            borderRadius={stylingConsts.borderRadius}
+          >
             <Title
               variant="h3"
               as="h2"
@@ -84,7 +96,14 @@ const ReportBuilderPage = () => {
             </Box>
           </Box>
           {isReportBuilderAllowed && (
-            <Box background="white" px="56px" py="40px" mt="20px">
+            <Box
+              background="white"
+              px="56px"
+              py="40px"
+              mt="20px"
+              border={stylingConsts.border}
+              borderRadius={stylingConsts.borderRadius}
+            >
               <Title
                 variant="h3"
                 as="h2"
