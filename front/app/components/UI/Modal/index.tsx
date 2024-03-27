@@ -534,7 +534,6 @@ class Modal extends PureComponent<Props, State> {
     const smallerThanSmallTablet = windowWidth
       ? windowWidth <= viewportWidths.tablet
       : false;
-    const modalPortalElement = document?.getElementById('modal-portal');
     let padding: string | undefined = undefined;
 
     if (header !== undefined || footer !== undefined) {
@@ -543,8 +542,8 @@ class Modal extends PureComponent<Props, State> {
       padding = this.props.padding;
     }
 
-    if (modalPortalElement && width) {
-      return createPortal(
+    if (width) {
+      return (
         <CSSTransition
           classNames="modal"
           in={opened}
@@ -650,8 +649,7 @@ class Modal extends PureComponent<Props, State> {
               </ModalContainer>
             </ModalContentContainerSwitch>
           </Overlay>
-        </CSSTransition>,
-        modalPortalElement
+        </CSSTransition>
       );
     }
 
@@ -659,4 +657,10 @@ class Modal extends PureComponent<Props, State> {
   }
 }
 
-export default Modal;
+export default (props: Props) => {
+  const modalPortalElement = document.getElementById('modal-portal');
+
+  return modalPortalElement
+    ? createPortal(<Modal {...props} />, modalPortalElement)
+    : null;
+};
