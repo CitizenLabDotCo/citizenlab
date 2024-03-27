@@ -56,7 +56,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
 
   const { projectId, phaseId } = useParams() as {
     projectId: string;
-    phaseId?: string;
+    phaseId: string;
   };
 
   const [userFormStatePerIdea, setUserFormStatePerIdea] = useState<
@@ -85,9 +85,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
 
   const locale = ideaMetadata?.data.attributes.locale;
 
-  const selectedPhaseId =
-    phaseId ?? idea?.data.relationships.phases.data[0]?.id;
-  const { data: phase } = usePhase(selectedPhaseId);
+  const { data: phase } = usePhase(phaseId);
 
   const { mutateAsync: updateIdea, isLoading: loadingApproveIdea } =
     useUpdateIdea();
@@ -173,7 +171,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
       locale
     ) {
       newUser = await createOfflineUser({
-        projectId,
+        phaseId,
         email: userFormData.email,
         locale,
         first_name: userFormData.first_name,

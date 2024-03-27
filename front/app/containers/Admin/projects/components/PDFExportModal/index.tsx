@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Box, Button, Text, Title } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
-import { object, boolean, string } from 'yup';
+import { object, boolean } from 'yup';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -11,21 +11,19 @@ import Checkbox from 'components/HookForm/Checkbox';
 import Feedback from 'components/HookForm/Feedback';
 import Modal from 'components/UI/Modal';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
-import PhaseSelector from '../PhaseSelector';
+// import PhaseSelector from '../PhaseSelector';
 
 import messages from './messages';
 
 export interface FormValues {
   personal_data: boolean;
-  phase_id?: string;
 }
 
 const DEFAULT_VALUES = {
   personal_data: false,
-  phase_id: undefined,
 } satisfies FormValues;
 
 interface Props {
@@ -46,8 +44,6 @@ const IT_IS_POSSIBLE_MESSAGES = {
 };
 
 const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
-  const { formatMessage } = useIntl();
-
   const importPrintedFormsEnabled = useFeatureFlag({
     name: 'import_printed_forms',
   });
@@ -55,10 +51,6 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
 
   const schema = object({
     personal_data: boolean(),
-    phase_id:
-      formType === 'idea_form'
-        ? string().required(formatMessage(messages.selectIdeationPhase))
-        : string(),
   });
 
   const methods = useForm({
@@ -123,13 +115,6 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
                   </Box>
                 </>
               </>
-            )}
-            {formType === 'idea_form' && (
-              <Box mb="24px">
-                <PhaseSelector
-                  label={<FormattedMessage {...messages.phase} />}
-                />
-              </Box>
             )}
             <Box w="100%" display="flex">
               <Button width="auto" type="submit" processing={loading}>

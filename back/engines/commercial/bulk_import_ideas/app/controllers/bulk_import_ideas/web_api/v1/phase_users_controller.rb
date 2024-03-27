@@ -4,7 +4,7 @@
 # in the bulk importer - but without sending the usual emails
 
 module BulkImportIdeas
-  class WebApi::V1::ProjectUsersController < ApplicationController
+  class WebApi::V1::PhaseUsersController < ApplicationController
     before_action :authorize_project, only: %i[create_user]
 
     def create_user
@@ -25,7 +25,7 @@ module BulkImportIdeas
     end
 
     def authorize_project
-      project = Project.find(params[:id])
+      project = Phase.find(params[:id]).project
       authorize project
     end
 

@@ -35,9 +35,9 @@ const IdeaFormBuilder = () => {
 
   const handleDownloadPDF = () => setExportModalOpen(true);
 
-  const handleExportPDF = async ({ personal_data, phase_id }: FormValues) => {
+  const handleExportPDF = async ({ personal_data }: FormValues) => {
     if (isNilOrError(locale)) return;
-    await saveIdeaFormAsPDF({ projectId, locale, personal_data, phase_id });
+    await saveIdeaFormAsPDF({ phaseId, locale, personal_data });
   };
 
   return (

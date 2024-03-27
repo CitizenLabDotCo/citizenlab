@@ -7,7 +7,7 @@ import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { ideasData } from './__mocks__/useAddOfflineIdeas';
 import useAddOfflineIdeas from './useAddOfflineIdeas';
 
-const apiPath = '*projects/:projectId/import_ideas/bulk_create';
+const apiPath = '*phases/:phaseId/import_ideas/bulk_create';
 
 const server = setupServer(
   rest.post(apiPath, (_req, res, ctx) => {
@@ -26,7 +26,7 @@ describe('useAddOfflineIdeas', () => {
 
     act(() => {
       result.current.mutate({
-        project_id: 'project1',
+        phase_id: 'phase1',
         pdf: 'data:application/pdf;base64,abc123',
         locale: 'en',
         personal_data: false,
