@@ -10,7 +10,6 @@ import { object, string, mixed, boolean } from 'yup';
 import useAddOfflineIdeas from 'api/import_ideas/useAddOfflineIdeas';
 import { IPhases } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
-import { canContainIdeas, getCurrentPhase } from 'api/phases/utils';
 import { IProject } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 
@@ -27,7 +26,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import LocalePicker from './LocalePicker';
 import messages from './messages';
-import PhaseSelector from './PhaseSelector';
 
 interface OuterProps {
   onFinishImport: () => void;
@@ -47,55 +45,12 @@ interface FormValues {
   google_consent: false;
 }
 
-const getInitialPhaseId = (phases: IPhases) => {
-  const currentPhase = getCurrentPhase(phases.data);
-  const phasesThatCanContainIdeas = phases.data
-    .filter(canContainIdeas)
-    .map((phase) => phase.id);
-
-  const currentPhaseId = currentPhase?.id;
-
-  if (currentPhaseId && phasesThatCanContainIdeas.includes(currentPhaseId)) {
-    return currentPhase.id;
-  }
-
-  if (phasesThatCanContainIdeas.length === 1) {
-    return phasesThatCanContainIdeas[0];
-  }
-
-  return;
-};
-
-const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
+const ImportSection = ({ onFinishImport, locale, project }: Props) => {
   const { formatMessage } = useIntl();
   const { mutateAsync: addOfflineIdeas, isLoading } = useAddOfflineIdeas();
   const { phaseId } = useParams();
 
-  const isTimelineProject = !!phases;
-
-  // We need to know if the user wants to import ideas in a timeline
-  // project, because in this case we need to show the PhaseSelector.
-  // For survey timeline imports we don't need to do this because we
-  // already know in to which survey phase the user wants to import
-  // because of the phaseId URL parameter.
-  // So, if we know we are in a timeline project, and we don't detect
-  // this phase parameter, we know that the user is trying to import
-  // ideas to a timeline project.
-  // Is this confusing? Yup. Should be made more clear in the future.
-  const isSurveyImporter = !!phaseId;
-  const isTimelineIdeaImporter = isTimelineProject && !isSurveyImporter;
-
-  const initialPhaseId = isTimelineProject
-    ? isTimelineIdeaImporter
-      ? getInitialPhaseId(phases) // for timeline ideation projects we
-      : // initialize this field with the first phase that can contain
-        // ideas
-        phaseId // for timeline survey projects we can just use the
-    : // phase found in the URL
-      undefined; // for continuous projects there is no phase obviously
-
   const defaultValues: FormValues = {
-    phase_id: initialPhaseId,
     locale,
     file: undefined,
     personal_data: false,
@@ -103,9 +58,6 @@ const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
   };
 
   const schema = object({
-    ...(isTimelineProject
-      ? { phase_id: string().required(formatMessage(messages.selectAPhase)) }
-      : {}),
     locale: string().required(),
     file: mixed().required(formatMessage(messages.pleaseUploadFile)),
     personal_data: boolean(),
@@ -135,11 +87,11 @@ const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
     google_consent: _,
     ...rest
   }: FormValues) => {
-    if (!file) return;
+    if (!file || !phaseId) return;
 
     try {
       await addOfflineIdeas({
-        project_id: projectId,
+        phase_id: phaseId,
         pdf: file.base64,
         ...rest,
       });
@@ -175,7 +127,6 @@ const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
           </Box>
 
           <LocalePicker />
-          {isTimelineIdeaImporter && <PhaseSelector />}
 
           <Box>
             <SingleFileUploader name="file" />
@@ -220,6 +171,7 @@ const ImportSectionWrapper = (props: OuterProps) => {
 
   if (!project || isNilOrError(locale)) return null;
 
+  // TODO: JS - Remove all this
   if (phases) {
     return (
       <ImportSection

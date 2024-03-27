@@ -8,24 +8,22 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import { importedIdeasKeys } from './keys';
 
 interface RequestParams {
-  project_id: string;
+  phase_id: string;
   pdf: string;
   locale: Locale;
   personal_data: boolean;
-  phase_id?: string;
 }
 
 const addOfflineIdeas = async ({
-  project_id,
+  phase_id,
   pdf,
   locale,
   personal_data,
-  phase_id,
 }: RequestParams) =>
   fetcher<IIdeas>({
-    path: `/projects/${project_id}/import_ideas/bulk_create`,
+    path: `/phases/${phase_id}/import_ideas/bulk_create`,
     action: 'post',
-    body: { import_ideas: { pdf, locale, phase_id, personal_data } },
+    body: { import_ideas: { pdf, locale, personal_data } },
   });
 
 const useAddOfflineIdeas = () => {
@@ -35,7 +33,7 @@ const useAddOfflineIdeas = () => {
     mutationFn: addOfflineIdeas,
     onSuccess: (_, params) => {
       queryClient.invalidateQueries({
-        queryKey: importedIdeasKeys.list({ projectId: params.project_id }),
+        queryKey: importedIdeasKeys.list({ phaseId: params.phase_id }),
       });
     },
   });

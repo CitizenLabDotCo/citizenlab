@@ -8,7 +8,7 @@ export type ImportedIdeasKeys = Keys<typeof importedIdeasKeys>;
 export type ImportedIdeaMetadataKeys = Keys<typeof importedIdeaMetadataKeys>;
 
 export interface QueryParams {
-  projectId: string;
+  projectId?: string;
   phaseId?: string;
 }
 

@@ -65,16 +65,13 @@ module BulkImportIdeas
     def bulk_create_params
       params
         .require(:import_ideas)
-        .permit(%i[xlsx pdf locale phase_id personal_data])
+        .permit(%i[xlsx pdf locale personal_data])
     end
 
     def import_ideas_service
       locale = params[:import_ideas] ? bulk_create_params[:locale] : current_user.locale
       personal_data_enabled = params[:import_ideas] ? bulk_create_params[:personal_data] || false : false
-      @import_ideas_service ||= if import_scope == :project
-        phase_id = params[:import_ideas] ? bulk_create_params[:phase_id] : nil
-        ImportProjectIdeasService.new(current_user, @project.id, locale, phase_id, personal_data_enabled)
-      elsif import_scope == :phase
+      @import_ideas_service ||= if import_scope == :phase
         phase_id = params[:id]
         ImportProjectIdeasService.new(current_user, @project.id, locale, phase_id, personal_data_enabled)
       else
@@ -83,7 +80,6 @@ module BulkImportIdeas
     end
 
     def import_scope
-      return :project if request.path.include? 'projects'
       return :phase if request.path.include? 'phases'
 
       :global
@@ -91,9 +87,7 @@ module BulkImportIdeas
 
     def authorize_bulk_import_ideas
       @project = nil
-      if import_scope == :project
-        @project = Project.find(params[:id])
-      elsif import_scope == :phase
+      if import_scope == :phase
         @project = Phase.find(params[:id]).project
       end
 
