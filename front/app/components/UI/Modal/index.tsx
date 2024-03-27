@@ -440,11 +440,6 @@ interface State {
 class Modal extends PureComponent<Props, State> {
   subscription: Subscription | null;
 
-  static defaultProps = {
-    fixedHeight: false,
-    width: 650,
-  };
-
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -523,7 +518,7 @@ class Modal extends PureComponent<Props, State> {
   render() {
     const { windowHeight, windowWidth } = this.state;
     const {
-      width,
+      width = 650,
       children,
       opened,
       header,
@@ -534,7 +529,7 @@ class Modal extends PureComponent<Props, State> {
       fullScreen,
       zIndex,
       hideCloseButton,
-      fixedHeight,
+      fixedHeight = false,
     } = this.props;
     const smallerThanSmallTablet = windowWidth
       ? windowWidth <= viewportWidths.tablet
