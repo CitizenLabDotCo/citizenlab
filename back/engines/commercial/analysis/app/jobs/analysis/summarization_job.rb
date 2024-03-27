@@ -2,7 +2,7 @@
 
 module Analysis
   class SummarizationJob < ApplicationJob
-    queue_as :default
+    self.priority = 45 # Slighltly more important than emails (50)
 
     def run(summary)
       # even though the plan was normally already generated once in

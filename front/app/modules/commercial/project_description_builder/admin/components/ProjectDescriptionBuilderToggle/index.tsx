@@ -9,6 +9,7 @@ import {
 import useAddProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useAddProjectDescriptionBuilderLayout';
 import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout';
 import { WrappedComponentProps } from 'react-intl';
+import { RouteType } from 'routes';
 import styled from 'styled-components';
 import { Locale, Multiloc } from 'typings';
 
@@ -61,7 +62,7 @@ const ProjectDescriptionBuilderToggle = ({
   const { data: projectDescriptionBuilderLayout } =
     useProjectDescriptionBuilderLayout(params.projectId);
 
-  const route = `/admin/project-description-builder/projects/${params.projectId}/description`;
+  const route: RouteType = `/admin/project-description-builder/projects/${params.projectId}/description`;
   const [
     projectDescriptionBuilderLinkVisible,
     setProjectDescriptionBuilderLinkVisible,

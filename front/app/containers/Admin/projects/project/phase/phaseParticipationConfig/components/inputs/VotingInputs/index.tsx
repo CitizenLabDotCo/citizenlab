@@ -7,7 +7,7 @@ import {
   Box,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Multiloc } from 'typings';
 
 import { VotingMethod } from 'api/phases/types';
@@ -82,7 +82,10 @@ export default ({
   handleVotingMethodOnChange,
 }: VotingInputsProps) => {
   const { formatMessage } = useIntl();
-  const { pathname } = useLocation();
+  const { projectId, phaseId } = useParams() as {
+    projectId: string;
+    phaseId: string;
+  };
 
   const getVoteTypeDescription = () => {
     switch (voting_method) {
@@ -134,7 +137,10 @@ export default ({
             {...messages.optionsToVoteOnDescription}
             values={{
               optionsPageLink: (
-                <Link to={`${pathname}/ideas`} rel="noreferrer">
+                <Link
+                  to={`/admin/projects/${projectId}/phases/${phaseId}/ideas`}
+                  rel="noreferrer"
+                >
                   <FormattedMessage {...messages.optionsPageText} />
                 </Link>
               ),

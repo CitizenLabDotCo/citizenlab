@@ -10,6 +10,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useEditor } from '@craftjs/core';
 import Tippy from '@tippyjs/react';
+import { RouteType } from 'routes';
 import { Locale } from 'typings';
 
 import usePhase from 'api/phases/usePhase';
@@ -86,7 +87,7 @@ const ContentBuilderTopBar = ({
     }
   };
   const doGoBack = () => {
-    const goBackUrl =
+    const goBackUrl: RouteType =
       projectId && phaseId
         ? `/admin/projects/${projectId}/phases/${phaseId}/report`
         : '/admin/reporting/report-builder';

@@ -8,6 +8,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 import { darken } from 'polished';
+import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import { IUserData } from 'api/users/types';
@@ -151,7 +152,7 @@ const UserName = ({
       return `${firstName} ${!hideLastName && lastName ? lastName : ''}`;
     };
     const name = getName(user.data);
-    const profileLink = `/profile/${user.data.attributes.slug}`;
+    const profileLink: RouteType = `/profile/${user.data.attributes.slug}`;
 
     const classNames = `
       ${className || ''}

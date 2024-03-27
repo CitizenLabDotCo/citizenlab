@@ -31,6 +31,7 @@
 // -----------------------------------------------------------------------------
 // imports and definitions
 import { includes, get } from 'lodash-es';
+import { RouteType } from 'routes';
 import { combineLatest } from 'rxjs';
 import { first, map, distinctUntilChanged } from 'rxjs/operators';
 import { Locale, Multiloc } from 'typings';
@@ -161,7 +162,7 @@ function setUrlLocale(locale: Locale): void {
     location.pathname,
     locale,
     location.search
-  );
+  ) as RouteType;
   clHistory.replace(newLocalizedUrl);
 }
 
@@ -176,7 +177,7 @@ function replaceUrlLocale(locale: Locale) {
     location.pathname,
     locale,
     location.search
-  );
+  ) as RouteType;
   // replaces current location with updated url
   clHistory.replace(newLocalizedUrl);
 }

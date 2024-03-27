@@ -7,6 +7,7 @@ import {
   colors,
   Icon,
 } from '@citizenlab/cl2-component-library';
+import { RouteType } from 'routes';
 
 import Modal from 'components/UI/Modal';
 
@@ -18,7 +19,7 @@ import messages from './messages';
 type Props = {
   showEditWarningModal: boolean;
   setShowEditWarningModal: (show: boolean) => void;
-  editFormLink: string;
+  editFormLink: RouteType;
   handleDownloadResults: () => void;
 };
 

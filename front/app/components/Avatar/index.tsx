@@ -8,6 +8,7 @@ import React, { memo } from 'react';
 import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 import BoringAvatar from 'boring-avatars';
 import { lighten } from 'polished';
+import { RouteType } from 'routes';
 import styled, { useTheme } from 'styled-components';
 
 import useUserById from 'api/users/useUserById';
@@ -134,7 +135,7 @@ const Avatar = memo(
     }
 
     const slug = user?.data.attributes.slug;
-    const profileLink = `/profile/${slug}`;
+    const profileLink: RouteType = `/profile/${slug}`;
     const hasValidProfileLink = profileLink !== '/profile/undefined';
 
     if (isLinkToProfile && hasValidProfileLink) {
