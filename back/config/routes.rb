@@ -240,7 +240,6 @@ Rails.application.routes.draw do
           get 'active_users_by_time_cumulative'
 
           get 'users_by_time_as_xlsx'
-          get 'users_by_time_cumulative_as_xlsx'
           get 'active_users_by_time_as_xlsx'
         end
 
