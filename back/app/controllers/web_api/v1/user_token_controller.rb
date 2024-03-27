@@ -3,6 +3,14 @@
 class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
   TOKEN_LIFETIME = 1.day
 
+  def create
+    # if feature_enabled?...
+    entity.reset_confirmation_and_counts
+    entity.save!
+    RequestConfirmationCodeJob.perform_now(entity)
+    super
+  end
+
   private
 
   def auth_token
