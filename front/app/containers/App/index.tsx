@@ -17,6 +17,7 @@ import { includes, uniq } from 'lodash-es';
 import 'moment-timezone';
 import moment from 'moment';
 import { useLocation } from 'react-router-dom';
+import { RouteType } from 'routes';
 import { ThemeProvider } from 'styled-components';
 import { Locale } from 'typings';
 
@@ -63,7 +64,9 @@ const App = ({ children }: Props) => {
   const location = useLocation();
   const { mutate: signOutAndDeleteAccount } = useDeleteSelf();
   const [isAppInitialized, setIsAppInitialized] = useState(false);
-  const [previousPathname, setPreviousPathname] = useState<string | null>(null);
+  const [previousPathname, setPreviousPathname] = useState<RouteType | null>(
+    null
+  );
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser, isLoading } = useAuthUser();
 
@@ -174,7 +177,7 @@ const App = ({ children }: Props) => {
       }
     };
 
-    const newPreviousPathname = location.pathname;
+    const newPreviousPathname = location.pathname as RouteType;
     const pathsToIgnore = [
       'sign-up',
       'sign-in',

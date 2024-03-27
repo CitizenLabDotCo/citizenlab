@@ -1,5 +1,7 @@
 import React, { MouseEvent, KeyboardEvent } from 'react';
 
+import { RouteType } from 'routes';
+
 import Button from 'components/UI/Button';
 
 export type BannerButtonStyle = 'primary-inverse' | 'primary';
@@ -8,7 +10,7 @@ type Props = {
   className?: string;
   buttonStyle: BannerButtonStyle;
   text: string;
-  linkTo?: string | null;
+  linkTo?: RouteType | null;
   onClick?: (event: MouseEvent | KeyboardEvent) => void;
   openLinkInNewTab?: boolean;
 };
