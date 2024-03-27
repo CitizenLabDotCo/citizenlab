@@ -4,6 +4,7 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 import { Menu, Divider } from 'semantic-ui-react';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
+import { IQueryParameters } from 'api/ideas/types';
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import useAuthUser from 'api/me/useAuthUser';
 
@@ -22,13 +23,15 @@ interface Props {
   type: ManagerType;
   statuses?: IIdeaStatusData[] | IInitiativeStatusData[] | null;
   selectedStatus?: string | null;
-  onChangeStatusFilter?: (status: string | null) => void;
+  onChangeStatusFilter: (status: string | undefined) => void;
+  onChangeQueryParameters: (newQueryParameters: IQueryParameters) => void;
 }
 
 const FilterSidebarStatuses = ({
   statuses,
   selectedStatus,
   onChangeStatusFilter,
+  onChangeQueryParameters,
   type,
 }: Props) => {
   const { data: authUser } = useAuthUser();
@@ -38,11 +41,13 @@ const FilterSidebarStatuses = ({
   }
 
   const handleItemClick = (id: string) => () => {
-    onChangeStatusFilter && onChangeStatusFilter(id);
+    onChangeStatusFilter(id);
+    onChangeQueryParameters({ idea_status: id });
   };
 
   const clearFilter = () => {
-    onChangeStatusFilter && onChangeStatusFilter(null);
+    onChangeStatusFilter(undefined);
+    onChangeQueryParameters({ idea_status: undefined });
   };
 
   const isActive = (id: string) => {

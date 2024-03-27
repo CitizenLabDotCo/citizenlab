@@ -208,7 +208,7 @@ const InputManager = ({
     });
   };
 
-  const onChangePhase = (phase: string) => {
+  const onChangePhase = (phase: string | undefined) => {
     setQueryParameters({
       ...queryParameters,
       'page[number]': 1,
@@ -246,6 +246,14 @@ const InputManager = ({
       'page[number]': 1,
       search: event.target.value,
     });
+  };
+
+  const onChangeQueryParameters = (newQueryParameters: IQueryParameters) => {
+    setQueryParameters((queryParameters) => ({
+      ...queryParameters,
+      'page[number]': 1,
+      ...newQueryParameters,
+    }));
   };
 
   const onChangeSorting = (sort: Sort) => {
@@ -333,6 +341,7 @@ const InputManager = ({
               onChangeTopicsFilter={onChangeTopics}
               onChangeStatusFilter={onChangeStatus}
               onChangeProjectFilter={handleOnChangeProjects}
+              onChangeQueryParameters={onChangeQueryParameters}
             />
           </Sticky>
         </LeftColumn>

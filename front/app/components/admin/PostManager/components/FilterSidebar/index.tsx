@@ -8,6 +8,7 @@ import { Segment, Menu, Popup } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
+import { IQueryParameters } from 'api/ideas/types';
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData } from 'api/phases/types';
@@ -46,10 +47,11 @@ interface Props {
   selectedPhase?: string | null;
   selectedProject?: string | null;
   selectedStatus?: string | null;
-  onChangePhaseFilter?: (arg: string | null) => void;
+  onChangePhaseFilter?: (arg: string | undefined) => void;
   onChangeTopicsFilter?: (topics: string[]) => void;
   onChangeProjectFilter?: (projects: string[] | undefined) => void;
-  onChangeStatusFilter?: (arg: string) => void;
+  onChangeStatusFilter: (arg: string | undefined) => void;
+  onChangeQueryParameters: (newQueryParameters: IQueryParameters) => void;
   activeFilterMenu: string | null;
   onChangeActiveFilterMenu: (arg: string) => void;
   visibleFilterMenus: string[];
@@ -73,6 +75,7 @@ const FilterSidebar = ({
   onChangeStatusFilter,
   visibleFilterMenus,
   type,
+  onChangeQueryParameters,
 }: Props) => {
   const { projectId } = useParams();
   const { data: authUser } = useAuthUser();
@@ -180,6 +183,7 @@ const FilterSidebar = ({
           statuses={statuses}
           selectedStatus={selectedStatus}
           onChangeStatusFilter={onChangeStatusFilter}
+          onChangeQueryParameters={onChangeQueryParameters}
         />
       ),
     }),

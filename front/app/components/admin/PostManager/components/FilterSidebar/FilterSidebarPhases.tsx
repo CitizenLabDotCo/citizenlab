@@ -13,7 +13,7 @@ import FilterSidebarPhasesItem from './FilterSidebarPhasesItem';
 type Props = {
   phases?: IPhaseData[];
   selectedPhase?: string | null;
-  onChangePhaseFilter?: (phase: string | null) => void;
+  onChangePhaseFilter?: (phase: string | undefined) => void;
 };
 
 export default class FilterSidebarPhases extends React.PureComponent<Props> {
@@ -22,7 +22,7 @@ export default class FilterSidebarPhases extends React.PureComponent<Props> {
   };
 
   clearFilter = () => {
-    this.props.onChangePhaseFilter?.(null);
+    this.props.onChangePhaseFilter?.(undefined);
   };
 
   isActive = (id: string) => {
