@@ -71,5 +71,28 @@ resource 'Analytics - FactPosts model' do
         { 'dimension_date_created.month': '2022-09', count: 1 }
       ])
     end
+
+    example 'correctly filters initiatives by status', document: false do
+      create(:initiative, created_at: @dates[0])
+      create(:initiative, created_at: @dates[1])
+
+      do_request({
+        query: {
+          fact: 'post',
+          filters: {
+            'dimension_type.name': 'initiative',
+            publication_status: 'published',
+            'dimension_status.code': 'threshold_reached'
+          },
+          aggregations: {
+            all: 'count'
+          }
+        }
+      })
+      assert_status 200
+      expect(response_data[:attributes]).to match_array([
+        { count: 0 }
+      ])
+    end
   end
 end
