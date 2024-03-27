@@ -6,6 +6,16 @@ import { render, screen } from 'utils/testUtils/rtl';
 
 import AddModeratorsModal from '.';
 
+jest.mock('react-dom', () => ({
+  ...jest.requireActual('react-dom'),
+  createPortal: (content) => content,
+}));
+
+const getElementById = document.getElementById.bind(document);
+document.getElementById = (id, ...args) => {
+  if (id === 'modal-portal') return true;
+  return getElementById(id, ...args);
+};
 type MockAppConfigurationType = {
   data: {
     id: string;
@@ -70,7 +80,7 @@ describe('AddModeratorsModal', () => {
 
   describe('when seat_based_billing is off', () => {
     beforeEach(() => {
-      mockFeatureFlagData = false;
+      mockFeatureFlagData = true;
     });
 
     it('shows confirm in button when seats are not full and admin is adding another moderator', () => {
