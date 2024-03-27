@@ -248,8 +248,6 @@ Rails.application.routes.draw do
 
           get 'ideas_by_topic'
           get 'ideas_by_project'
-          get 'ideas_by_status'
-          get 'ideas_by_status_as_xlsx'
 
           get 'ideas_by_topic_as_xlsx'
           get 'ideas_by_project_as_xlsx'
