@@ -8,8 +8,8 @@ import {
 import styled from 'styled-components';
 
 import { Section, SectionField } from 'components/admin/Section';
-import Error from 'components/UI/Error';
-import Warning from 'components/UI/Warning';
+import Error, { Props as ErrorProps } from 'components/UI/Error';
+import Warning, { Props as WarningProps } from 'components/UI/Warning';
 
 export const Container = styled.div``;
 
@@ -47,7 +47,7 @@ export const BudgetingAmountInput = styled(Input)`
   max-width: 288px;
 `;
 
-export const VotingAmountInputError = styled(Error)`
+export const VotingAmountInputError = styled(Error)<ErrorProps>`
   max-width: 400px;
 `;
 
@@ -80,7 +80,7 @@ export const LabelText = styled.div`
   }
 `;
 
-export const StyledWarning = styled(Warning)`
+export const StyledWarning = styled(Warning)<WarningProps>`
   margin-bottom: 20px;
 `;
 

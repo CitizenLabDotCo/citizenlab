@@ -125,7 +125,7 @@ const Bullet = styled.span`
   margin-right: 8px;
 `;
 
-interface Props {
+export interface Props {
   marginTop?: string;
   marginBottom?: string;
   showIcon?: boolean;
