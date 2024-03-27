@@ -11,7 +11,7 @@ BulkImportIdeas::Engine.routes.draw do
         post 'import_ideas/bulk_create', on: :member, to: 'import_ideas#bulk_create'
         get 'import_ideas/example_xlsx', on: :member, to: 'import_ideas#example_xlsx'
         get 'import_ideas/draft_ideas', on: :member, to: 'import_ideas#draft_ideas'
-        post 'create_user', on: :member, to: 'project_users#create_user'
+        post 'create_user', on: :member, to: 'phase_users#create_user'
         resources :custom_fields, controller: 'phase_custom_fields', only: %i[] do
           get 'to_pdf', on: :collection
         end

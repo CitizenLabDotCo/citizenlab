@@ -9,7 +9,7 @@ resource 'Creating users for a project import' do
 
   let(:project) { create(:single_phase_ideation_project) }
 
-  post 'web_api/v1/projects/:project_id/create_user' do
+  post 'web_api/v1/phases/:phase_id/create_user' do
     parameter :project_id, 'ID of the project.', required: true
     with_options scope: 'user' do
       parameter :first_name, 'User first name', required: false
@@ -18,7 +18,7 @@ resource 'Creating users for a project import' do
       parameter :locale, 'Locale. Should be one of the tenants locales', required: true
     end
 
-    let(:project_id) { project.id }
+    let(:phase_id) { project.phases.first.id }
     let(:first_name) { Faker::Name.first_name }
     let(:last_name) { Faker::Name.last_name }
     let(:locale) { 'en' }
