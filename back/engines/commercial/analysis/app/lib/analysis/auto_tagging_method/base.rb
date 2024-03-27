@@ -66,7 +66,7 @@ module Analysis
     def initialize(auto_tagging_task)
       @analysis = auto_tagging_task.analysis
       @task = auto_tagging_task
-      @input_to_text = InputToText.new(@analysis.associated_custom_fields)
+      @input_to_text = InputToText.new(analysis.associated_custom_fields)
     end
 
     def execute
@@ -84,8 +84,8 @@ module Analysis
       prompt = LLM::Prompt.new.fetch('fully_automated_classifier', inputs_text: input_text, topics: topics)
       chosen_topic = begin
         gpt3.chat(prompt)
-      rescue Faraday::BadRequestError => e # TODO: Turn off filtering https://go.microsoft.com/fwlink/?linkid=2198766
-        ErrorReporter.report(e) # e.response[:body]['error']['innererror']['content_filter_result'].select{ |key, val| val['filtered'] }.map{|key, val| val['severity']}
+      rescue Faraday::BadRequestError => e # https://go.microsoft.com/fwlink/?linkid=2198766
+        ErrorReporter.report(e)
         'Other'
       end
       topics.include?(chosen_topic) ? chosen_topic : 'Other'
@@ -109,7 +109,7 @@ module Analysis
       pool = Concurrent::FixedThreadPool.new(POOL_SIZE)
       tasks = inputs.map.with_index do |input, idx|
         input_id = input.id
-        inputs_text = input_to_text.format_all([input])
+        inputs_text = input_to_text_classify.format_all([input])
         wait = idx * TASK_INTERVAL # Avoid 429 Too Many Requests
         Concurrent::ScheduledTask.execute(wait, executor: pool) do
           [input_id, classify_input_text(inputs_text, topics)]
@@ -127,7 +127,7 @@ module Analysis
     end
 
     def filtered_inputs
-      @filtered_inputs ||= InputsFinder.new(analysis, task.filters.symbolize_keys).execute
+      @filtered_inputs ||= InputsFinder.new(analysis, task.filters.symbolize_keys).execute.includes(:topics)
     end
 
     def find_or_create_tagging!(input_id:, tag_id:)
@@ -151,6 +151,21 @@ module Analysis
         input.title_multiloc&.keys&.first ||
         input.body_multiloc&.keys&.first ||
         AppConfiguration.instance.settings('core', 'locales').first
+    end
+
+    def classification_fields
+      fields = analysis.associated_custom_fields
+      if fields.map(&:code).include?('topic_ids') || analysis.participation_method != 'ideation'
+        fields
+      else
+        custom_form = analysis.project.custom_form || CustomForm.new(participation_context: analysis.project)
+        project_fields = IdeaCustomFieldsService.new(custom_form).submittable_fields
+        fields + [project_fields.find { |field| field.code == 'topic_ids' }].compact
+      end
+    end
+
+    def input_to_text_classify
+      @input_to_text_classify ||= InputToText.new(classification_fields)
     end
   end
 end
