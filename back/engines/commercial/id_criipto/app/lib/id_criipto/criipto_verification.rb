@@ -22,6 +22,7 @@ module IdCriipto
       %i[
         identity_source
         birthday_custom_field_key
+        birthyear_custom_field_key
         municipality_code_custom_field_key
         domain
         client_id
@@ -32,10 +33,10 @@ module IdCriipto
 
     def config_parameters_schema
       {
-        method_name_multiloc: {
-          '$ref': '#/definitions/multiloc_string',
-          description: 'The name this verification method will have in the UI'
-        },
+        # method_name_multiloc: {
+        #   '$ref': '#/definitions/multiloc_string',
+        #   description: 'The name this verification method will have in the UI'
+        # },
         identity_source: {
           private: true,
           type: 'string',
