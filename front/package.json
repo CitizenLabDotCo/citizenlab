@@ -38,7 +38,7 @@
     "build-storybook": "storybook build",
     "chromatic": "chromatic --exit-once-uploaded",
     "generate-component-library-types": "tsc app/component-library/index.tsx --jsx react --esModuleInterop true --skipLibCheck --emitDeclarationOnly --declaration --declarationDir app/component-library/dist",
-    "build-component-library": "rimraf ./app/component-library/dist && npm run generate-component-library-types && rollup -c --bundleConfigAsCjs"
+    "build-component-library": "rimraf ./app/component-library/dist && npm run generate-component-library-types && rollup -c ./app/component-library/rollup.config.cjs --bundleConfigAsCjs"
   },
   "jest-junit": {
     "addFileAttribute": "true"
