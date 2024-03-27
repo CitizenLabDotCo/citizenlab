@@ -293,6 +293,7 @@ resource 'Stats - Ideas' do
       end
     end
   end
+
   get 'web_api/v1/stats/ideas_by_project_as_xlsx' do
     time_boundary_parameters self
     topic_filter_parameter self
