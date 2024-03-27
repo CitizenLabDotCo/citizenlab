@@ -24,7 +24,7 @@ import FilterSidebar from './components/FilterSidebar';
 import IdeasCount from './components/IdeasCount';
 import InfoSidebar from './components/InfoSidebar';
 import PostTable from './components/PostTable';
-import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
+import IdeaFeedbackToggle from './components/TopLevelFilters/IdeaFeedbackToggle';
 
 import {
   LeftColumn,
@@ -188,7 +188,7 @@ const InputManager = ({
     setQueryParameters({ ...queryParameters, 'page[number]': 1, topics });
   };
 
-  const onChangeStatus = (ideaStatus: string | null) => {
+  const onChangeStatus = (ideaStatus: string | undefined) => {
     setQueryParameters({
       ...queryParameters,
       'page[number]': 1,
@@ -200,7 +200,7 @@ const InputManager = ({
     setQueryParameters({ ...queryParameters, 'page[number]': 1, assignee });
   };
 
-  const onChangeFeedbackFilter = (feedbackNeeded: boolean) => {
+  const onChangeFeedbackFilter = (feedbackNeeded: boolean | undefined) => {
     setQueryParameters({
       ...queryParameters,
       'page[number]': 1,
@@ -254,33 +254,24 @@ const InputManager = ({
 
   const currentPage = getPageNumberFromUrl(ideas.links.self);
   const lastPage = getPageNumberFromUrl(ideas.links.last);
-  const selectedTopics = queryParameters.topics;
-  const selectedAssignee = queryParameters.assignee;
-  const feedbackNeeded = queryParameters.feedback_needed || false;
   const selectedProjectId = getSelectedProject();
   const selectedPhaseId = queryParameters.phase;
-  const selectedStatus = queryParameters.idea_status;
 
   return (
     <>
       <TopActionBar>
         <Outlet
           id="app.components.admin.PostManager.topActionBar"
-          assignee={selectedAssignee}
+          assignee={queryParameters.assignee}
           projectId={type === 'ProjectIdeas' ? projectId : null}
           handleAssigneeFilterChange={onChangeAssignee}
           type={type}
         />
-        <FeedbackToggle
-          type={type}
-          value={feedbackNeeded}
+        <IdeaFeedbackToggle
+          value={queryParameters.feedback_needed || false}
           onChange={onChangeFeedbackFilter}
           project={selectedProjectId}
-          phase={selectedPhaseId}
-          topics={selectedTopics}
-          status={selectedStatus}
-          assignee={selectedAssignee}
-          searchTerm={queryParameters.search}
+          queryParameters={queryParameters}
         />
         <StyledExportMenu
           type={type}
@@ -300,15 +291,8 @@ const InputManager = ({
         </LeftColumn>
         <MiddleColumnTop>
           <IdeasCount
-            feedbackNeeded={
-              feedbackNeeded === true ? feedbackNeeded : undefined
-            }
             project={selectedProjectId}
-            phase={selectedPhaseId ?? undefined}
-            topics={selectedTopics ?? undefined}
-            ideaStatusId={selectedStatus ?? undefined}
-            search={queryParameters.search}
-            assignee={selectedAssignee ?? undefined}
+            queryParameters={queryParameters}
           />
           <StyledInput icon="search" onChange={onChangeSearchTerm} />
         </MiddleColumnTop>
@@ -326,8 +310,8 @@ const InputManager = ({
               statuses={ideaStatuses?.data ?? []}
               topics={topicsData}
               selectedPhase={selectedPhaseId}
-              selectedTopics={selectedTopics}
-              selectedStatus={selectedStatus}
+              selectedTopics={queryParameters.topics}
+              selectedStatus={queryParameters.idea_status}
               selectedProject={selectedProjectId}
               onChangePhaseFilter={onChangePhase}
               onChangeTopicsFilter={onChangeTopics}

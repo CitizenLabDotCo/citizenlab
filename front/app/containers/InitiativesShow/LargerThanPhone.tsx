@@ -9,7 +9,6 @@ import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useI
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useAuthUser from 'api/me/useAuthUser';
 
-import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import useShowCosponsorshipReminder from 'containers/InitiativesShow/hooks/useShowCosponsorshipReminder';
@@ -156,7 +155,6 @@ const LargerThanPhone = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const locale = useLocale();
   const { data: authUser } = useAuthUser();
   const { data: initiativeImages } = useInitiativeImages(initiativeId);
   const { data: initiative } = useInitiativeById(initiativeId);
@@ -179,7 +177,7 @@ const LargerThanPhone = ({
     ? initiative?.data.attributes.public
     : true;
 
-  if (!initiative || isNilOrError(locale) || !initiativeImages) {
+  if (!initiative || !initiativeImages) {
     return null;
   }
 
@@ -229,7 +227,6 @@ const LargerThanPhone = ({
                 postType="initiative"
                 postId={initiativeId}
                 title={initiativeTitle}
-                locale={locale}
                 translateButtonClicked={translateButtonClicked}
               />
             </InitiativeHeader>
@@ -250,7 +247,6 @@ const LargerThanPhone = ({
               translateButtonClicked={translateButtonClicked}
               onClick={onTranslateInitiative}
               initiative={initiative.data}
-              locale={locale}
             />
             {initiativeGeoPosition && initiativeAddress && (
               <StyledDropdownMap

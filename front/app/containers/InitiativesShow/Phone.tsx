@@ -8,7 +8,6 @@ import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
 import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 
-import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import useShowCosponsorshipReminder from 'containers/InitiativesShow/hooks/useShowCosponsorshipReminder';
@@ -102,7 +101,6 @@ const Phone = ({
   const localize = useLocalize();
   const isSmallerThanTablet = useBreakpoint('tablet');
 
-  const locale = useLocale();
   const showCosponsorShipReminder = useShowCosponsorshipReminder(initiativeId);
   const { data: initiativeImages } = useInitiativeImages(initiativeId);
   const { data: initiative } = useInitiativeById(initiativeId);
@@ -120,7 +118,7 @@ const Phone = ({
     initiativeFeedbacks?.pages.flatMap((page) => page.data) || [];
   const hasOfficialFeedback = officialFeedbacksList.length > 0;
 
-  if (!initiative || isNilOrError(locale) || !initiativeImages) {
+  if (!initiative || !initiativeImages) {
     return null;
   }
 
@@ -164,7 +162,6 @@ const Phone = ({
                 postId={initiativeId}
                 postType="initiative"
                 title={initiativeTitle}
-                locale={locale}
                 translateButtonClicked={translateButtonClicked}
                 color="white"
                 align="left"
@@ -199,7 +196,6 @@ const Phone = ({
           translateButtonClicked={translateButtonClicked}
           onClick={onTranslateInitiative}
           initiative={initiative.data}
-          locale={locale}
         />
         {initiativeGeoPosition && initiativeAddress && (
           <StyledDropdownMap
