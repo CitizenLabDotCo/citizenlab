@@ -717,6 +717,7 @@ class User < ApplicationRecord
 end
 
 User.include(IdeaAssignment::Extensions::User)
+User.include(ReportBuilder::Patches::User)
 User.include(Verification::Patches::User)
 
 User.prepend(MultiTenancy::Patches::User)
