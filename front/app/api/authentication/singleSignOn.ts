@@ -11,6 +11,7 @@ import {
 
 export interface SSOProviderMap {
   azureactivedirectory: 'azureactivedirectory';
+  azureactivedirectory_b2c: 'azureactivedirectory_b2c';
   facebook: 'facebook';
   franceconnect: 'franceconnect';
   google: 'google';

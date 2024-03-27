@@ -4,6 +4,7 @@ export default function useAnySSOEnabled() {
   const googleLoginEnabled = useFeatureFlag({ name: 'google_login' });
   const facebookLoginEnabled = useFeatureFlag({ name: 'facebook_login' });
   const azureAdLoginEnabled = useFeatureFlag({ name: 'azure_ad_login' });
+  const azureAdB2cLoginEnabled = useFeatureFlag({ name: 'azure_ad_b2c_login' });
   const franceconnectLoginEnabled = useFeatureFlag({
     name: 'franceconnect_login',
   });
@@ -23,6 +24,7 @@ export default function useAnySSOEnabled() {
     googleLoginEnabled ||
     facebookLoginEnabled ||
     azureAdLoginEnabled ||
+    azureAdB2cLoginEnabled ||
     franceconnectLoginEnabled ||
     viennaCitizenLoginEnabled ||
     claveUnicaLoginEnabled ||

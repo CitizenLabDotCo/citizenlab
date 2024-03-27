@@ -112,6 +112,16 @@ export interface IAppConfigurationSettings {
     logo_url: string;
     login_mechanism_name: string;
   };
+  azure_ad_b2c_login?: {
+    allowed: boolean;
+    enabled: boolean;
+    tenant_name: string;
+    tenant_id: string;
+    policy_name: string;
+    client_id: string;
+    logo_url: string;
+    login_mechanism_name: string;
+  };
   franceconnect_login?: {
     allowed: boolean;
     enabled: boolean;
