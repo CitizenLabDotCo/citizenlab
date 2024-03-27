@@ -37,14 +37,6 @@ class StatIdeaPolicy < ApplicationPolicy
     show_stats?
   end
 
-  def ideas_by_status?
-    show_stats?
-  end
-
-  def ideas_by_status_as_xlsx?
-    show_stats?
-  end
-
   def ideas_by_project?
     show_stats?
   end

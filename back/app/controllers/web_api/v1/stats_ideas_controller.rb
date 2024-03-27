@@ -83,38 +83,6 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas_by_project.xlsx'
   end
 
-  def ideas_by_status_serie
-    ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
-    ideas = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records
-
-    ideas
-      .where(published_at: @start_at..@end_at)
-      .group(:idea_status_id)
-      .order(:idea_status_id)
-      .count
-  end
-
-  def ideas_by_status
-    serie = ideas_by_status_serie
-    idea_statuses = IdeaStatus.all.select(:id, :title_multiloc, :color, :ordering).order(:ordering)
-    render json: raw_json({ series: { ideas: serie }, idea_status: idea_statuses.to_h { |a| [a.id, a.attributes.except('id')] } })
-  end
-
-  def ideas_by_status_as_xlsx
-    res = []
-    ideas_by_status_serie.each do |status_id, count|
-      res.push({
-        'status' => @@multiloc_service.t(IdeaStatus.find(status_id).title_multiloc, current_user&.locale),
-        'status_id' => status_id,
-        'ideas' => count
-      })
-    end
-
-    xlsx = XlsxService.new.generate_res_stats_xlsx res, 'ideas', 'status'
-
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas_by_status.xlsx'
-  end
-
   private
 
   def do_authorize

@@ -11,7 +11,6 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   ]
   before_action :render_no_data_as_xlsx, only: %i[
     users_by_time_as_xlsx
-    users_by_time_cumulative_as_xlsx
     active_users_by_time_as_xlsx
   ]
 
@@ -91,16 +90,6 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
   def users_by_time_cumulative
     render json: { series: { users: users_by_time_cumulative_serie } }
-  end
-
-  def users_by_time_cumulative_as_xlsx
-    xlsx = XlsxService.new.generate_time_stats_xlsx users_by_time_cumulative_serie, 'users_by_time_cumulative'
-
-    send_data(
-      xlsx,
-      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      filename: 'users_by_time_cumulative.xlsx'
-    )
   end
 
   def active_users_by_time_cumulative_serie
