@@ -817,6 +817,7 @@ const ProjectCard = memo<InputProps>(
                     project.data.relationships.user_follower?.data?.id
                   }
                   w="100%"
+                  toolTipType="projectOrFolder"
                 />
               </Box>
             )}

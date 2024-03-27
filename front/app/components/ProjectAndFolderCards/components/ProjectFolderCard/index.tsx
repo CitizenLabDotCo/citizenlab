@@ -575,6 +575,7 @@ const ProjectFolderCard = memo<Props>(
                   projectFolder.data.relationships.user_follower?.data?.id
                 }
                 w="100%"
+                toolTipType="projectOrFolder"
               />
             </Box>
           )}
