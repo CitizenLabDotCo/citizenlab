@@ -14,7 +14,7 @@ RSpec.describe ReportBuilder::Report do
       report = create(:report)
       user = report.owner
       expect(user.destroy).to be_truthy
-      expect(ReportBuilder::Report.find_by(id: report.id)).to be_nil
+      expect(described_class.find_by(id: report.id)).to be_nil
     end
   end
 end
