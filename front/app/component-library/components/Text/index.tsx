@@ -19,6 +19,7 @@ import Box, {
   BoxDisplayProps,
   BoxOverflowProps,
   BoxVisibilityProps,
+  BoxProps,
 } from '../Box';
 
 type Variant = 'bodyL' | 'bodyM' | 'bodyS' | 'bodyXs';
@@ -64,7 +65,7 @@ export type TextProps = {
   BoxVisibilityProps &
   React.HTMLAttributes<HTMLParagraphElement>;
 
-const StyledText = styled(Box)`
+const StyledText = styled(Box)<BoxProps & TextProps>`
   line-height: 1.5;
   ${isRtl`direction: rtl;`}
   ${({
