@@ -14,8 +14,6 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
-// import PhaseSelector from '../PhaseSelector';
-
 import messages from './messages';
 
 export interface FormValues {

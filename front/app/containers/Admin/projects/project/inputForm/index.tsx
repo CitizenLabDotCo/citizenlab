@@ -4,10 +4,6 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { saveAs } from 'file-saver';
 import { useParams } from 'react-router-dom';
 
-// import { ParticipationMethod } from 'api/phases/types';
-// import usePhases from 'api/phases/usePhases';
-// import { getCurrentPhase } from 'api/phases/utils';
-
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
