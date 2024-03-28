@@ -64,7 +64,7 @@
     "@jsonforms/vanilla-renderers": "3.0.0-beta.1",
     "@segment/snippet": "4.16.2",
     "@sentry/integrations": "7.50.0",
-    "@sentry/react": "^7.50.0",
+    "@sentry/react": "^7.108.0",
     "@sentry/tracing": "^7.50.0",
     "@sentry/utils": "^7.51.0",
     "@tanstack/react-query": "^4.22.4",
