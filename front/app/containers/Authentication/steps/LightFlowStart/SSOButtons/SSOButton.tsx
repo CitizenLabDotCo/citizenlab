@@ -86,8 +86,23 @@ const SSOButton = ({ ssoProvider, onClickSSO }: Props) => {
       ?.login_mechanism_name ?? 'Azure Active Directory';
 
   const azureB2cProviderName =
-    appConfiguration.data.attributes.settings.azure_ad_login
+    appConfiguration.data.attributes.settings.azure_ad_b2c_login
       ?.login_mechanism_name ?? 'Azure Active Directory B2C';
+
+  const getButtonText = () => {
+    switch (ssoProvider) {
+      case 'azureactivedirectory':
+        return formatMessage(oldMessages.continueWithAzure, {
+          azureProviderName,
+        });
+      case 'azureactivedirectory_b2c':
+        return formatMessage(oldMessages.continueWithAzure, {
+          azureProviderName: azureB2cProviderName,
+        });
+      default:
+        return formatMessage(MESSAGE_MAP[ssoProvider]);
+    }
+  };
 
   return (
     <Container>
@@ -103,13 +118,7 @@ const SSOButton = ({ ssoProvider, onClickSSO }: Props) => {
         padding="10px 18px"
         onClick={handleClickSSO}
       >
-        {ssoProvider === 'azureactivedirectory'
-          ? formatMessage(oldMessages.continueWithAzure, { azureProviderName })
-          : ssoProvider === 'azureactivedirectory_b2c'
-          ? formatMessage(oldMessages.continueWithAzure, {
-              azureProviderName: azureB2cProviderName,
-            })
-          : formatMessage(MESSAGE_MAP[ssoProvider])}
+        {getButtonText()}
       </Button>
     </Container>
   );
