@@ -3,7 +3,7 @@
 module SmartGroups
   module Patches
     module Group
-      CREATION_SOURCE = %w[user automatic].freeze
+      CREATION_SOURCES = %w[user automatic].freeze
 
       def self.prepended(base)
         base.singleton_class.prepend(ClassMethods)
@@ -11,6 +11,7 @@ module SmartGroups
           validates :rules, if: :rules?, json: {
             schema: -> { SmartGroups::RulesService.new.generate_rules_json_schema }
           }
+          validates :creation_source, presence: true, inclusion: { in: CREATION_SOURCES }
 
           scope :using_custom_field, lambda { |custom_field|
             subquery = ::Group.select('jsonb_array_elements(rules) as rule, id')

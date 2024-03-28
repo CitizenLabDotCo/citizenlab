@@ -9,6 +9,20 @@ RSpec.describe Group do
     end
   end
 
+  describe 'creation_source' do
+    it 'is required' do
+      expect(build(:group, creation_source: nil)).to be_invalid
+    end
+
+    it 'is invalid when value not in the CREATION_SOURCES list' do
+      expect(build(:group, creation_source: 'invalid')).to be_invalid
+    end
+
+    it 'is valid when value is in the CREATION_SOURCES list' do
+      expect(build(:group, creation_source: 'automatic')).to be_valid
+    end
+  end
+
   describe 'users (members)' do
     it 'can not be added to rules groups' do
       g = create(:smart_group)
