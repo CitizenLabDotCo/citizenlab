@@ -21,7 +21,7 @@ module Rubocop
         find_each find_in_batches in_batches
         select reselect order in_order_of reorder limit offset
         where rewhere invert_where
-      ].freeze
+      ].to_set.freeze
 
       MSG = '`AppConfiguration.instance` should be used to access the app configuration.'
 
