@@ -2,6 +2,17 @@ const wp = require('@cypress/webpack-preprocessor');
 const path = require('path');
 const { rmdir } = require('fs');
 
+module.exports = (on, config) => {
+  on('before:browser:launch', (browser = {}, launchOptions) => {
+    if (browser.family === 'chromium') {
+      launchOptions.args.push(
+        '--js-flags="--max_old_space_size=1024 --max_semi_space_size=1024"'
+      );
+    }
+    return launchOptions;
+  });
+};
+
 module.exports = (on) => {
   on(
     'file:preprocessor',

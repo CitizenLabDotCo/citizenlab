@@ -97,6 +97,7 @@ describe('Idea creation', () => {
     cy.get('.e2e-idea-form-location-input-field input');
 
     // save the form
+    cy.get('.e2e-submit-idea-form').should('exist');
     cy.get('.e2e-submit-idea-form').click();
     cy.wait(3000);
 
