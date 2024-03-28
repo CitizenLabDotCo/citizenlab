@@ -12,7 +12,7 @@ import messages from './messages';
 interface Props {
   createdAt: string;
   updatedAt: string;
-  userId: string;
+  userId: string | undefined;
 }
 
 const EditedText = ({ createdAt, updatedAt, userId }: Props) => {
