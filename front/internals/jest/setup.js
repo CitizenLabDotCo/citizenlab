@@ -40,3 +40,15 @@ jest.mock('utils/localeStream');
 jest.mock('api/app_configuration/useAppConfiguration');
 jest.mock('modules');
 jest.mock('js-confetti', () => jest.fn(() => ({ addConfetti: jest.fn() })));
+/* Start of mocking react-dom createPortal */
+jest.mock('react-dom', () => ({
+  ...jest.requireActual('react-dom'),
+  createPortal: (content) => content,
+}));
+
+const getElementById = document.getElementById.bind(document);
+document.getElementById = (id, ...args) => {
+  if (id === 'modal-portal') return true;
+  return getElementById(id, ...args);
+};
+/* End of mocking react-dom createPortal */
