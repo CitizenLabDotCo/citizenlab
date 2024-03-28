@@ -70,7 +70,7 @@ module IdNemlogIn
     end
 
     def updateable_user_attrs
-      super + %i[custom_field_values]
+      %i[custom_field_values]
     end
 
     def locked_custom_fields
