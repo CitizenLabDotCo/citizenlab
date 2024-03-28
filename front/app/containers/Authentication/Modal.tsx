@@ -31,6 +31,7 @@ import Invitation from './steps/Invitation';
 import LightFlowStart from './steps/LightFlowStart';
 import Onboarding from './steps/Onboarding';
 import Password from './steps/Password';
+import AzureAdB2cPolicies from './steps/Policies/AzureAdB2cPolicies';
 import AzureAdPolicies from './steps/Policies/AzureAdPolicies';
 import EmailPolicies from './steps/Policies/EmailPolicies';
 import FacebookPolicies from './steps/Policies/FacebookPolicies';
@@ -71,6 +72,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'light-flow:google-policies': messages.beforeYouParticipate,
   'light-flow:facebook-policies': messages.beforeYouParticipate,
   'light-flow:azure-ad-policies': messages.beforeYouParticipate,
+  'light-flow:azure-ad-b2c-policies': messages.beforeYouParticipate,
   'light-flow:france-connect-login': messages.beforeYouParticipate,
   'light-flow:email-confirmation': messages.confirmYourEmail,
   'light-flow:password': messages.logIn,
@@ -104,6 +106,7 @@ const getHeaderMessage = (
       'light-flow:google-policies',
       'light-flow:facebook-policies',
       'light-flow:azure-ad-policies',
+      'light-flow:azure-ad-b2c-policies',
       'light-flow:france-connect-login',
     ].includes(step)
   ) {
@@ -336,6 +339,12 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
         )}
         {currentStep === 'light-flow:azure-ad-policies' && (
           <AzureAdPolicies
+            loading={loading}
+            onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
+          />
+        )}
+        {currentStep === 'light-flow:azure-ad-b2c-policies' && (
+          <AzureAdB2cPolicies
             loading={loading}
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
