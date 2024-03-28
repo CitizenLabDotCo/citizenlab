@@ -2329,7 +2329,8 @@ CREATE TABLE public.groups (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     membership_type character varying,
-    rules jsonb DEFAULT '[]'::jsonb
+    rules jsonb DEFAULT '[]'::jsonb,
+    creation_source character varying DEFAULT 'user'::character varying NOT NULL
 );
 
 
@@ -7435,6 +7436,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240228145938'),
 ('20240229195843'),
 ('20240301120023'),
-('20240305122502');
+('20240305122502'),
+('20240328134312');
 
 

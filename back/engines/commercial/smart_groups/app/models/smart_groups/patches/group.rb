@@ -3,6 +3,8 @@
 module SmartGroups
   module Patches
     module Group
+      CREATION_SOURCE = %w[user automatic].freeze
+
       def self.prepended(base)
         base.singleton_class.prepend(ClassMethods)
         base.class_eval do

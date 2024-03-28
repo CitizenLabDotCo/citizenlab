@@ -12,6 +12,7 @@
 #  updated_at        :datetime         not null
 #  membership_type   :string
 #  rules             :jsonb
+#  creation_source   :string           default("user"), not null
 #
 # Indexes
 #
