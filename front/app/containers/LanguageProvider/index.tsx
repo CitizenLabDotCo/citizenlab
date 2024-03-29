@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { IntlProvider, createIntlCache, createIntl } from 'react-intl';
+import { Locale } from 'typings';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
@@ -11,39 +12,37 @@ import { AllMessages, IntlShapes } from './types';
 
 interface Props {
   children: React.ReactNode;
-  locale: string;
+  locale: Locale;
+  tenantLocales: Locale[];
 }
 
-const LanguageProvider = ({ children, locale }: Props) => {
-  const tenantLocales = useAppConfigurationLocales();
+const LanguageProvider = ({ children, locale, tenantLocales }: Props) => {
   const [messages, setMessages] = useState<AllMessages>({} as AllMessages);
   const [intlShapes, setIntlShapes] = useState<IntlShapes>({} as IntlShapes);
 
   useEffect(() => {
-    if (tenantLocales) {
-      for (const locale of tenantLocales) {
-        if (!messages[locale]) {
-          import(`i18n/${locale}`).then((translationMessages) => {
-            const intlCache = createIntlCache();
+    for (const locale of tenantLocales) {
+      if (!messages[locale]) {
+        import(`i18n/${locale}`).then((translationMessages) => {
+          const intlCache = createIntlCache();
 
-            const intlShape = createIntl(
-              {
-                locale,
-                messages: translationMessages.default,
-              },
-              intlCache
-            );
+          const intlShape = createIntl(
+            {
+              locale,
+              messages: translationMessages.default,
+            },
+            intlCache
+          );
 
-            setMessages((prevState) => ({
-              ...prevState,
-              [locale]: translationMessages.default,
-            }));
-            setIntlShapes((prevState) => ({
-              ...prevState,
-              [locale]: intlShape,
-            }));
-          });
-        }
+          setMessages((prevState) => ({
+            ...prevState,
+            [locale]: translationMessages.default,
+          }));
+          setIntlShapes((prevState) => ({
+            ...prevState,
+            [locale]: intlShape,
+          }));
+        });
       }
     }
   }, [tenantLocales, messages]);
@@ -62,7 +61,8 @@ const LanguageProvider = ({ children, locale }: Props) => {
 };
 
 export default ({ children }: { children: React.ReactNode }) => {
-  const [locale, setLocale] = useState<string | null>(null);
+  const tenantLocales = useAppConfigurationLocales();
+  const [locale, setLocale] = useState<Locale | null>(null);
 
   useEffect(() => {
     const sub = localeStream().observable.subscribe((locale) => {
@@ -72,7 +72,11 @@ export default ({ children }: { children: React.ReactNode }) => {
     return () => sub.unsubscribe();
   });
 
-  if (!locale) return null;
+  if (!locale || !tenantLocales) return null;
 
-  return <LanguageProvider locale={locale}>{children}</LanguageProvider>;
+  return (
+    <LanguageProvider locale={locale} tenantLocales={tenantLocales}>
+      {children}
+    </LanguageProvider>
+  );
 };
