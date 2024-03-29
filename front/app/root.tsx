@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import 'assets/css/reset.min.css';
 import 'assets/fonts/fonts.css';
@@ -29,7 +29,6 @@ import OutletsProvider from 'containers/OutletsProvider';
 
 import history from 'utils/browserHistory';
 import { queryClient } from 'utils/cl-react-query/queryClient';
-import { localeStream } from 'utils/localeStream';
 
 import createRoutes from './routes';
 
@@ -63,21 +62,10 @@ function Routes() {
 }
 
 const Root = () => {
-  const [locale, setLocale] = useState<string | null>(null);
-
-  useEffect(() => {
-    const sub = localeStream().observable.subscribe((locale) => {
-      setLocale(locale);
-    });
-
-    return () => sub.unsubscribe();
-  });
-
-  if (!locale) return null;
   return (
     <QueryClientProvider client={queryClient}>
       <OutletsProvider>
-        <LanguageProvider locale={locale}>
+        <LanguageProvider>
           <HistoryRouter history={history as any}>
             <App>
               <Routes />

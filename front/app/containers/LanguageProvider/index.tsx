@@ -4,6 +4,8 @@ import { IntlProvider, createIntlCache, createIntl } from 'react-intl';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
+import { localeStream } from 'utils/localeStream';
+
 import CustomIntlContext from './CustomIntlContext';
 import { AllMessages, IntlShapes } from './types';
 
@@ -59,4 +61,18 @@ const LanguageProvider = ({ children, locale }: Props) => {
   return null;
 };
 
-export default LanguageProvider;
+export default ({ children }: { children: React.ReactNode }) => {
+  const [locale, setLocale] = useState<string | null>(null);
+
+  useEffect(() => {
+    const sub = localeStream().observable.subscribe((locale) => {
+      setLocale(locale);
+    });
+
+    return () => sub.unsubscribe();
+  });
+
+  if (!locale) return null;
+
+  return <LanguageProvider locale={locale}>{children}</LanguageProvider>;
+};
