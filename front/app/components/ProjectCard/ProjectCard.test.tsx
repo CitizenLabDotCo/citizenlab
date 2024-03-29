@@ -5,7 +5,6 @@ import { render, screen } from 'utils/testUtils/rtl';
 import ProjectCard from '.';
 
 // mock
-jest.mock('api/phases/usePhase');
 jest.mock('api/projects/useProjectById');
 
 describe('ProjectCard', () => {
