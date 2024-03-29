@@ -9,7 +9,7 @@ import {
   isRtl,
 } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
-import { Locale } from 'typings';
+import { CLLocale } from 'typings';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
@@ -126,7 +126,7 @@ const LanguageSelector = ({
     setDropdownOpened((dropdownOpened) => !dropdownOpened);
   };
 
-  const handleLanguageSelect = (selectedLocale: Locale) => () => {
+  const handleLanguageSelect = (selectedLocale: CLLocale) => () => {
     if (appConfig) {
       updateLocale(selectedLocale, appConfig);
     }

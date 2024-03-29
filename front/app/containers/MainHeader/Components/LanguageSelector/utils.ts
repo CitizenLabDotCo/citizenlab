@@ -1,6 +1,6 @@
-import { Locale } from 'typings';
+import { CLLocale } from 'typings';
 
-export const getSelectedLocale = (locale: Locale) => {
+export const getSelectedLocale = (locale: CLLocale) => {
   if (locale === 'sr-SP') {
     return 'CP';
   } else {

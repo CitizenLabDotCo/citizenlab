@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { pick } from 'lodash-es';
-import { Multiloc, Locale } from 'typings';
+import { Multiloc, CLLocale } from 'typings';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
@@ -30,7 +30,7 @@ export default ({ value, onChange }: Props) => {
 
   const handleBodyOnChange = (
     valueMultiloc: Multiloc,
-    locale: Locale | undefined
+    locale: CLLocale | undefined
   ) => {
     if (locale) {
       onChange(pick(valueMultiloc, appConfigurationLocales));

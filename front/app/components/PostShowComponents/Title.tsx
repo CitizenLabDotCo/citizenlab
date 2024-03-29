@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 import { media, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { Locale } from 'typings';
+import { CLLocale } from 'typings';
 
 import Outlet from 'components/Outlet';
 
@@ -35,7 +35,7 @@ interface Props {
   postId: string;
   postType: 'idea' | 'initiative';
   title: string;
-  locale?: Locale;
+  locale?: CLLocale;
   translateButtonClicked?: boolean;
   className?: string;
   color?: string;

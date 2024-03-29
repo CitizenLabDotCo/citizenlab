@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
-import { Locale } from 'typings';
+import { CLLocale } from 'typings';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -9,7 +9,7 @@ import messages from '../messages';
 
 interface Props {
   phaseName?: string;
-  locale?: Locale;
+  locale?: CLLocale;
 }
 
 const MetaBox = ({ phaseName, locale }: Props) => {

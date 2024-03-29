@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { useFormContext } from 'react-hook-form';
-import { Locale } from 'typings';
+import { CLLocale } from 'typings';
 
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 
@@ -22,7 +22,7 @@ import messages from '../../messages';
 
 type ContentSettingsProps = {
   field: IFlatCustomFieldWithIndex;
-  locales: Locale[];
+  locales: CLLocale[];
 };
 
 export const ContentSettings = ({ field, locales }: ContentSettingsProps) => {

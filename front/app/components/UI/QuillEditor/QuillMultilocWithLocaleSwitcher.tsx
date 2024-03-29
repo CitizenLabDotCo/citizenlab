@@ -6,7 +6,7 @@ import {
   Label,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { Locale, Multiloc } from 'typings';
+import { CLLocale, Multiloc } from 'typings';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
@@ -49,7 +49,7 @@ export interface Props
   > {
   valueMultiloc: Multiloc | null | undefined;
   labelTooltipText?: string | JSX.Element | null;
-  onChange: (value: Multiloc, locale: Locale) => void;
+  onChange: (value: Multiloc, locale: CLLocale) => void;
 }
 
 const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
@@ -62,7 +62,7 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
     ...quillProps
   } = props;
 
-  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
+  const [selectedLocale, setSelectedLocale] = useState<CLLocale | null>(null);
 
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
@@ -72,7 +72,7 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
   }, [locale]);
 
   const handleValueOnChange = useCallback(
-    (value: string, locale: Locale) => {
+    (value: string, locale: CLLocale) => {
       const newValueMultiloc = {
         ...(valueMultiloc || {}),
         [locale]: value,
@@ -84,7 +84,7 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
   );
 
   const handleOnSelectedLocaleChange = useCallback(
-    (newSelectedLocale: Locale) => {
+    (newSelectedLocale: CLLocale) => {
       setSelectedLocale(newSelectedLocale);
     },
     []

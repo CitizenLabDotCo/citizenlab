@@ -1,13 +1,13 @@
 import { includes } from 'lodash-es';
-import { Locale } from 'typings';
+import { CLLocale } from 'typings';
 
 import { locales } from 'containers/App/constants';
 
-export const getLocale = (): Locale => 'en-GB';
+export const getLocale = (): CLLocale => 'en-GB';
 
 export function setPathnameLocale(
   pathname: string,
-  locale: Locale,
+  locale: CLLocale,
   search?: string
 ) {
   return `/${locale}${pathname}${search || ''}`;

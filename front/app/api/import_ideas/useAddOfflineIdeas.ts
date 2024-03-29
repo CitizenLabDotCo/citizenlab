@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { CLErrors, Locale } from 'typings';
+import { CLErrors, CLLocale } from 'typings';
 
 import { IIdeas } from 'api/ideas/types';
 
@@ -10,7 +10,7 @@ import { importedIdeasKeys } from './keys';
 interface RequestParams {
   project_id: string;
   pdf: string;
-  locale: Locale;
+  locale: CLLocale;
   personal_data: boolean;
   phase_id?: string;
 }

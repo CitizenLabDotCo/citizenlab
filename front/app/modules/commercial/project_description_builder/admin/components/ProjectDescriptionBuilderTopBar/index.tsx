@@ -4,7 +4,7 @@ import { Box, Spinner, Text, Title } from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
 import useAddProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useAddProjectDescriptionBuilderLayout';
 import { useParams } from 'react-router-dom';
-import { Locale } from 'typings';
+import { CLLocale } from 'typings';
 
 import useProjectById from 'api/projects/useProjectById';
 
@@ -27,9 +27,9 @@ type ProjectDescriptionBuilderTopBarProps = {
   hasError?: boolean;
   previewEnabled: boolean;
   setPreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedLocale: Locale | undefined;
+  selectedLocale: CLLocale | undefined;
   onSelectLocale: (args: {
-    locale: Locale;
+    locale: CLLocale;
     editorData: SerializedNodes;
   }) => void;
 };
@@ -68,7 +68,7 @@ const ProjectDescriptionBuilderTopBar = ({
     }
   };
 
-  const handleSelectLocale = (locale: Locale) => {
+  const handleSelectLocale = (locale: CLLocale) => {
     const editorData = query.getSerializedNodes();
     onSelectLocale({ locale, editorData });
   };

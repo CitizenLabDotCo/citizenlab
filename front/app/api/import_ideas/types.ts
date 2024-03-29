@@ -1,4 +1,4 @@
-import { Locale } from 'typings';
+import { CLLocale } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -25,7 +25,7 @@ export interface ImportedIdeaMetadata {
       url: string;
     };
     import_type: 'pdf' | 'xlsx';
-    locale: Locale;
+    locale: CLLocale;
     updated_at: string;
     page_range: string[];
     user_consent: boolean;
@@ -40,7 +40,7 @@ export interface ImportedIdeaMetadataResponse {
 export interface CreateOfflineIdeasParams {
   projectId: string;
   email: string;
-  locale: Locale;
+  locale: CLLocale;
   first_name?: string;
   last_name?: string;
 }

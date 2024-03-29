@@ -1,7 +1,7 @@
 import React from 'react';
 
 import get from 'lodash-es/get';
-import { Locale } from 'typings';
+import { CLLocale } from 'typings';
 
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 
@@ -15,7 +15,7 @@ import messages from './messages';
 
 type Props = {
   field: IFlatCustomFieldWithIndex;
-  locale: Locale;
+  locale: CLLocale;
 };
 
 const FieldGroupSettings = ({ field, locale }: Props) => {

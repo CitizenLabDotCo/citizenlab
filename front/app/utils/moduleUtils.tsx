@@ -11,7 +11,7 @@ import {
 import { Moment } from 'moment';
 import { IntlFormatters } from 'react-intl';
 import { GetLocaleChildProps } from 'resources/GetLocale';
-import { InsertConfigurationOptions, ITab, Locale, Multiloc } from 'typings';
+import { InsertConfigurationOptions, ITab, CLLocale, Multiloc } from 'typings';
 
 import { IGroupDataAttributes, MembershipType } from 'api/groups/types';
 import { IIdeaData } from 'api/ideas/types';
@@ -60,7 +60,7 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.projects.edit.description.projectDescriptionBuilder': {
     onMount: () => void;
     valueMultiloc: Multiloc | null | undefined;
-    onChange: (description_multiloc: Multiloc, _locale: Locale) => void;
+    onChange: (description_multiloc: Multiloc, _locale: CLLocale) => void;
     label: string;
     labelTooltipText: string;
   };
@@ -166,7 +166,7 @@ export interface OutletsPropertyMap {
     translateButtonClicked: boolean;
     onClick: () => void;
     idea: IIdeaData;
-    locale: Locale;
+    locale: CLLocale;
   };
   'app.components.PostShowComponents.CommentBody.translation': {
     translateButtonClicked: boolean;

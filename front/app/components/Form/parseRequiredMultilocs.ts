@@ -1,5 +1,5 @@
 import { JsonSchema7 } from '@jsonforms/core';
-import { Locale } from 'typings';
+import { CLLocale } from 'typings';
 
 import { FormData } from './typings';
 
@@ -8,7 +8,7 @@ import { FormData } from './typings';
 
 export const parseRequiredMultilocsSchema = (
   schema: JsonSchema7,
-  locale: Locale
+  locale: CLLocale
 ) => {
   const requiredMultilocFields = schema.required?.filter((req) =>
     req.endsWith('_multiloc')
@@ -32,7 +32,7 @@ export const parseRequiredMultilocsSchema = (
 
 export const parseRequiredMultilocsData = (
   schema: JsonSchema7,
-  locale: Locale,
+  locale: CLLocale,
   data: FormData
 ) => {
   const requiredMultilocFields = schema.required?.filter((req) =>

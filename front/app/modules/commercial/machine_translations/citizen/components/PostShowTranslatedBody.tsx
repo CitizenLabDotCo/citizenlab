@@ -1,14 +1,14 @@
 import React from 'react';
 
 import useTranslation from 'modules/commercial/machine_translations/hooks/useTranslation';
-import { Locale } from 'typings';
+import { CLLocale } from 'typings';
 
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   postId: string;
   body: string;
-  locale: Locale;
+  locale: CLLocale;
   translateButtonClicked?: boolean;
   postType: 'idea' | 'initiative';
 }

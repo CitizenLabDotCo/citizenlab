@@ -109,17 +109,17 @@ export function isIOption(
   return maybeOption !== null;
 }
 
-export type Locale = keyof typeof appLocalePairs;
+export type CLLocale = keyof typeof appLocalePairs;
 
 export type GraphqlLocale = keyof typeof appGraphqlLocalePairs;
 
 export type Multiloc = {
-  [key in Locale]?: string;
+  [key in CLLocale]?: string;
 };
 
 export type GraphqlMultiloc = {
   content: string;
-  locale: Locale;
+  locale: CLLocale;
 }[];
 
 export type MultilocFormValues = {

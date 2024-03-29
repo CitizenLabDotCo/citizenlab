@@ -4,7 +4,7 @@ import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 import { isEmpty } from 'lodash-es';
 import { useTheme } from 'styled-components';
-import { Locale } from 'typings';
+import { CLLocale } from 'typings';
 
 import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
 
@@ -29,7 +29,7 @@ import HomepageBuilderTopBar from '../components/HomepageBuilderTopBar';
 
 const HomepageBuilderPage = () => {
   const [previewEnabled, setPreviewEnabled] = useState(false);
-  const [selectedLocale, setSelectedLocale] = useState<Locale | undefined>();
+  const [selectedLocale, setSelectedLocale] = useState<CLLocale | undefined>();
 
   const theme = useTheme();
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
@@ -91,7 +91,7 @@ const HomepageBuilderPage = () => {
   const handleSelectedLocaleChange = ({
     locale,
   }: {
-    locale: Locale;
+    locale: CLLocale;
     editorData: SerializedNodes;
   }) => {
     setSelectedLocale(locale);

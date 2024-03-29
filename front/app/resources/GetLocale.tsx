@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Subscription } from 'rxjs';
-import { Locale } from 'typings';
+import { CLLocale } from 'typings';
 
 import { localeStream } from 'utils/localeStream';
 
@@ -14,10 +14,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  locale: Locale | undefined | null;
+  locale: CLLocale | undefined | null;
 }
 
-export type GetLocaleChildProps = Locale | undefined | null;
+export type GetLocaleChildProps = CLLocale | undefined | null;
 
 export default class GetLocale extends React.Component<Props, State> {
   private subscriptions: Subscription[];

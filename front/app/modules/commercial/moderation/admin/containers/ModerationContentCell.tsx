@@ -8,7 +8,7 @@ import {
 import { truncate } from 'lodash-es';
 import { darken } from 'polished';
 import styled from 'styled-components';
-import { Multiloc, Locale } from 'typings';
+import { Multiloc, CLLocale } from 'typings';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
@@ -58,13 +58,13 @@ interface Props {
 
 const ModerationContentCell = memo<Props>(
   ({ contentTitle, contentBody, className }) => {
-    const contentBodyLocales = Object.keys(contentBody) as Locale[];
+    const contentBodyLocales = Object.keys(contentBody) as CLLocale[];
 
     const [selectedLocale, setSelectedLocale] = useState(contentBodyLocales[0]);
     const [expanded, setExpanded] = useState(false);
 
     const handleOnSelectedLocaleChange = useCallback(
-      (newSelectedLocale: Locale) => {
+      (newSelectedLocale: CLLocale) => {
         setSelectedLocale(newSelectedLocale);
       },
       []
