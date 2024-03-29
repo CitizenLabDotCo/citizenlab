@@ -2,33 +2,7 @@ import ideasKeys from 'api/ideas/keys';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
-import {
-  extractIdeaSlug,
-  getProjectId,
-  isOnAdminProjectPage,
-} from './getProjectId';
-
-describe('extractIdeaSlug', () => {
-  it('works for /ideas/:slug', () => {
-    expect(extractIdeaSlug('/ideas/some-slug')).toEqual('some-slug');
-  });
-});
-
-describe('isOnAdminProjectPage', () => {
-  it('returns true when the link is a project admin page', () => {
-    const isAdminLink = isOnAdminProjectPage(
-      '/en/admin/projects/e20f63ae-1fe4-49be-8bf9-599cc34e6515'
-    );
-    expect(isAdminLink).toEqual(true);
-  });
-
-  it('returns false when the link is a project admin page', () => {
-    const isAdminLink = isOnAdminProjectPage(
-      '/en/projects/e20f63ae-1fe4-49be-8bf9-599cc34e6515'
-    );
-    expect(isAdminLink).toEqual(false);
-  });
-});
+import { getProjectId } from './getProjectId';
 
 const mockProject = {
   data: { id: 'project-id' },
