@@ -30,7 +30,7 @@ export const getProjectId = async (path: string) => {
 
   return null;
 };
-const slugRegExSource = slugRegEx.source.slice(1, slugRegEx.source.length - 2);
+const slugRegExSource = slugRegEx.source.slice(1, -1);
 
 const adminProjectPageDetectRegex = RegExp(
   `admin/projects/(${slugRegExSource})`
