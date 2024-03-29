@@ -2,17 +2,12 @@ import React, { PureComponent } from 'react';
 
 // components
 import styled from 'styled-components';
+import { Locale } from 'typings';
 
 import { isNilOrError } from '../../utils/helperUtils';
-import { Locale, Multiloc } from '../../utils/typings';
+import { Multiloc } from '../../utils/typings';
 import IconTooltip from '../IconTooltip';
 import Label from '../Label';
-
-// utils
-
-// style
-
-// typings
 
 import Input, { InputProps } from '.';
 
