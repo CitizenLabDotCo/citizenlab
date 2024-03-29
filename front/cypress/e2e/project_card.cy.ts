@@ -27,11 +27,9 @@ describe('Project card component', () => {
     });
   });
 
-  beforeEach(() => {
-    cy.goToLandingPage();
-  });
-
   it('shows the title, description, progress bar and cta', () => {
+    cy.goToLandingPage();
+
     const projectCard = cy.get('.e2e-project-card').first();
 
     projectCard.contains(projectTitle);
