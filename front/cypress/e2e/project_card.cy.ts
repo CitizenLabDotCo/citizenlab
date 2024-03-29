@@ -1,6 +1,5 @@
 import { randomString } from '../support/commands';
 import moment = require('moment');
-import project from '../fixtures/project';
 
 describe('Project card component', () => {
   const projectTitle = randomString();
@@ -25,8 +24,11 @@ describe('Project card component', () => {
         canPost: true,
         canReact: true,
       });
-      cy.goToLandingPage();
     });
+  });
+
+  beforeEach(() => {
+    cy.goToLandingPage();
   });
 
   it('shows the title, description, progress bar and cta', () => {
