@@ -1,7 +1,10 @@
 import React from 'react';
-import { screen, render } from 'utils/testUtils/rtl';
-import Error from './';
+
 import translationMessages from 'i18n/en';
+
+import { screen, render } from 'utils/testUtils/rtl';
+
+import Error from './';
 
 jest.mock('react-transition-group/CSSTransition', () => ({ children }) => (
   <>{children}</>
@@ -30,16 +33,16 @@ describe('Error', () => {
       <Error
         apiErrors={[
           { error: 'taken', value: '' },
-          { error: 'view_name', value: 'value' },
+          { error: 'tag_name', value: 'value' },
         ]}
-        fieldName="view_name"
+        fieldName="tag_name"
       />
     );
     expect(screen.getByTestId('error-message-text')).toBeInTheDocument();
     expect(
       screen.getByText(
         (translationMessages as Record<string, string>)[
-          'app.errors.view_name_taken'
+          'app.errors.tag_name_taken'
         ]
       )
     ).toBeInTheDocument();

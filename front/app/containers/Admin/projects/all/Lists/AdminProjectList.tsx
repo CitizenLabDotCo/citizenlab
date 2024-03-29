@@ -1,26 +1,24 @@
 import React, { Fragment, memo } from 'react';
 
-// style
 import styled from 'styled-components';
 
-// utils
+import { IAdminPublicationData } from 'api/admin_publications/types';
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
+import useReorderAdminPublication from 'api/admin_publications/useReorderAdminPublication';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { SortableList, SortableRow } from 'components/admin/ResourceList';
+import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
-import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import ProjectRow from '../../components/ProjectRow';
-import { ListHeader, HeaderTitle } from '../StyledComponents';
-import Button from 'components/UI/Button';
-import SortableFolderRow from './SortableFolderRow';
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+import { ListHeader, HeaderTitle } from '../StyledComponents';
 
-// services
-import useAdminPublications from 'api/admin_publications/useAdminPublications';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import { IAdminPublicationData } from 'api/admin_publications/types';
-import useReorderAdminPublication from 'api/admin_publications/useReorderAdminPublication';
+import SortableFolderRow from './SortableFolderRow';
 
 const StyledSortableRow = styled(SortableRow)`
   & .sortablerow-draghandle {

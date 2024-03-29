@@ -1,48 +1,47 @@
 import React, { useEffect } from 'react';
 
-// hooks
-import useSteps from './useSteps';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
-// components
-import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
-import Modal from 'components/UI/Modal';
-import AuthProviders from './steps/AuthProviders';
-import EmailAndPasswordSignUp from './steps/EmailAndPasswordSignUp';
-import EmailAndPassword from './steps/EmailAndPassword';
-import EmailConfirmation from './steps/EmailConfirmation';
-import Verification from './steps/Verification';
-import CustomFields from './steps/CustomFields';
-import Onboarding from './steps/Onboarding';
-import Invitation from './steps/Invitation';
-import ChangeEmail from './steps/ChangeEmail';
-import LightFlowStart from './steps/LightFlowStart';
-import EmailPolicies from './steps/Policies/EmailPolicies';
-import GooglePolicies from './steps/Policies/GooglePolicies';
-import FacebookPolicies from './steps/Policies/FacebookPolicies';
-import AzureAdPolicies from './steps/Policies/AzureAdPolicies';
-import FranceConnectLogin from './steps/Policies/FranceConnectLogin';
-import BuiltInFields from './steps/BuiltInFields';
-import Password from './steps/Password';
-import Success from './steps/Success';
-import ClaveUnicaEmail from './steps/ClaveUnicaEmail';
-import Error from 'components/UI/Error';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-
-// i18n
-import { MessageDescriptor, useIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import errorMessages from 'components/UI/Error/messages';
-
-// typings
-import { ModalProps, ErrorCode } from './typings';
-import VerificationSuccess from './steps/VerificationSuccess';
-import T from 'components/T';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { IFollowingAction } from 'api/authentication/authentication_requirements/types';
 import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
 import { IPhasePermissionAction } from 'api/permissions/types';
-import { IFollowingAction } from 'api/authentication/authentication_requirements/types';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import T from 'components/T';
+import Error from 'components/UI/Error';
+import errorMessages from 'components/UI/Error/messages';
+import Modal from 'components/UI/Modal';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+
+import { MessageDescriptor, useIntl, FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
+import AuthProviders from './steps/AuthProviders';
+import BuiltInFields from './steps/BuiltInFields';
+import ChangeEmail from './steps/ChangeEmail';
+import ClaveUnicaEmail from './steps/ClaveUnicaEmail';
+import CustomFields from './steps/CustomFields';
+import EmailAndPassword from './steps/EmailAndPassword';
+import EmailAndPasswordSignUp from './steps/EmailAndPasswordSignUp';
+import EmailConfirmation from './steps/EmailConfirmation';
+import Invitation from './steps/Invitation';
+import LightFlowStart from './steps/LightFlowStart';
+import Onboarding from './steps/Onboarding';
+import Password from './steps/Password';
+import AzureAdB2cPolicies from './steps/Policies/AzureAdB2cPolicies';
+import AzureAdPolicies from './steps/Policies/AzureAdPolicies';
+import EmailPolicies from './steps/Policies/EmailPolicies';
+import FacebookPolicies from './steps/Policies/FacebookPolicies';
+import FranceConnectLogin from './steps/Policies/FranceConnectLogin';
+import GooglePolicies from './steps/Policies/GooglePolicies';
+import Success from './steps/Success';
+import Verification from './steps/Verification';
+import VerificationSuccess from './steps/VerificationSuccess';
+import { ModalProps, ErrorCode } from './typings';
+import useSteps from './useSteps';
 
 type Step = ReturnType<typeof useSteps>['currentStep'];
 
@@ -73,6 +72,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'light-flow:google-policies': messages.beforeYouParticipate,
   'light-flow:facebook-policies': messages.beforeYouParticipate,
   'light-flow:azure-ad-policies': messages.beforeYouParticipate,
+  'light-flow:azure-ad-b2c-policies': messages.beforeYouParticipate,
   'light-flow:france-connect-login': messages.beforeYouParticipate,
   'light-flow:email-confirmation': messages.confirmYourEmail,
   'light-flow:password': messages.logIn,
@@ -106,6 +106,7 @@ const getHeaderMessage = (
       'light-flow:google-policies',
       'light-flow:facebook-policies',
       'light-flow:azure-ad-policies',
+      'light-flow:azure-ad-b2c-policies',
       'light-flow:france-connect-login',
     ].includes(step)
   ) {
@@ -232,7 +233,6 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             />
           </Box>
         )}
-
         {helperText && (
           <Box mb="16px">
             <QuillEditedContent
@@ -244,14 +244,12 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             </QuillEditedContent>
           </Box>
         )}
-
         {currentStep === 'success' && (
           <Success
             loading={loading}
             onContinue={transition(currentStep, 'CONTINUE')}
           />
         )}
-
         {/* old sign in flow */}
         {currentStep === 'sign-in:auth-providers' && (
           <AuthProviders
@@ -264,7 +262,6 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             )}
           />
         )}
-
         {currentStep === 'sign-in:email-password' && (
           <EmailAndPassword
             loading={loading}
@@ -275,7 +272,6 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             closeModal={transition(currentStep, 'CLOSE')}
           />
         )}
-
         {/* old sign up flow */}
         {currentStep === 'sign-up:auth-providers' && (
           <AuthProviders
@@ -288,7 +284,6 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             )}
           />
         )}
-
         {currentStep === 'sign-up:email-password' && (
           <EmailAndPasswordSignUp
             state={state}
@@ -299,7 +294,6 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             onSubmit={transition(currentStep, 'SUBMIT')}
           />
         )}
-
         {currentStep === 'sign-up:invite' && (
           <Invitation
             loading={loading}
@@ -307,7 +301,6 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             onSubmit={transition(currentStep, 'SUBMIT')}
           />
         )}
-
         {currentStep === 'clave-unica:email' && (
           <ClaveUnicaEmail
             loading={loading}
@@ -315,7 +308,6 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}
           />
         )}
-
         {/* light flow */}
         {currentStep === 'light-flow:email' && (
           <LightFlowStart
@@ -325,7 +317,6 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             onSwitchToSSO={transition(currentStep, 'CONTINUE_WITH_SSO')}
           />
         )}
-
         {currentStep === 'light-flow:email-policies' && (
           <EmailPolicies
             state={state}
@@ -334,32 +325,33 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
         )}
-
         {currentStep === 'light-flow:google-policies' && (
           <GooglePolicies
             loading={loading}
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
         )}
-
         {currentStep === 'light-flow:facebook-policies' && (
           <FacebookPolicies
             loading={loading}
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
         )}
-
         {currentStep === 'light-flow:azure-ad-policies' && (
           <AzureAdPolicies
             loading={loading}
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
         )}
-
+        {currentStep === 'light-flow:azure-ad-b2c-policies' && (
+          <AzureAdB2cPolicies
+            loading={loading}
+            onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
+          />
+        )}
         {currentStep === 'light-flow:france-connect-login' && (
           <FranceConnectLogin onLogin={transition(currentStep, 'LOGIN')} />
         )}
-
         {currentStep === 'light-flow:password' && (
           <Password
             state={state}
@@ -378,7 +370,6 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             onSubmit={transition(currentStep, 'SUBMIT')}
           />
         )}
-
         {(currentStep === 'sign-up:email-confirmation' ||
           currentStep === 'light-flow:email-confirmation' ||
           currentStep === 'missing-data:email-confirmation' ||
@@ -411,7 +402,6 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             authenticationData={authenticationData}
           />
         )}
-
         {(currentStep === 'missing-data:custom-fields' ||
           currentStep === 'sign-up:custom-fields') && (
           <CustomFields

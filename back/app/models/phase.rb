@@ -32,15 +32,17 @@
 #  reacting_dislike_limited_max  :integer          default(10)
 #  posting_method                :string           default("unlimited"), not null
 #  posting_limited_max           :integer          default(1)
-#  document_annotation_embed_url :string
 #  allow_anonymous_participation :boolean          default(FALSE), not null
-#  campaigns_settings            :jsonb
+#  document_annotation_embed_url :string
 #  voting_method                 :string
 #  voting_max_votes_per_idea     :integer
 #  voting_term_singular_multiloc :jsonb
 #  voting_term_plural_multiloc   :jsonb
 #  baskets_count                 :integer          default(0), not null
 #  votes_count                   :integer          default(0), not null
+#  campaigns_settings            :jsonb
+#  native_survey_title_multiloc  :jsonb
+#  native_survey_button_multiloc :jsonb
 #
 # Indexes
 #
@@ -99,7 +101,6 @@ class Phase < ApplicationRecord
   validate :validate_campaigns_settings_keys_and_values
 
   validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
-  validate :validate_participation_method_change, on: :update
 
   # ideation? or voting?
   with_options if: :can_contain_ideas? do
@@ -162,6 +163,12 @@ class Phase < ApplicationRecord
     where(start_at: date)
   }
 
+  # native_survey?
+  with_options if: :native_survey? do
+    validates :native_survey_title_multiloc, presence: true, multiloc: { presence: true }
+    validates :native_survey_button_multiloc, presence: true, multiloc: { presence: true }
+  end
+
   scope :published, lambda {
     joined = includes(project: { admin_publication: :parent })
     joined.where(
@@ -184,6 +191,8 @@ class Phase < ApplicationRecord
   }
 
   def ends_before?(date)
+    return false if end_at.blank?
+
     end_at.iso8601 < date.to_date.iso8601
   end
 
@@ -228,6 +237,10 @@ class Phase < ApplicationRecord
 
   def uses_input_form?
     native_survey?
+  end
+
+  def custom_form_persisted?
+    custom_form.present?
   end
 
   def posting_limited?
@@ -344,14 +357,6 @@ class Phase < ApplicationRecord
 
   def set_input_term
     self.input_term ||= DEFAULT_INPUT_TERM
-  end
-
-  def validate_participation_method_change
-    return unless participation_method_changed?
-
-    return if participation_method_was != 'native_survey' && participation_method != 'native_survey'
-
-    errors.add :participation_method, :change_not_permitted, message: 'change is not permitted'
   end
 
   def validate_voting

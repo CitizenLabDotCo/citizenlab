@@ -1,6 +1,6 @@
-import { DEFAULT_LOCALE } from 'containers/App/constants';
-
 import { Locale } from 'typings';
+
+import { DEFAULT_LOCALE } from 'containers/App/constants';
 
 const enTranslationMessages = require('translations/en.json');
 

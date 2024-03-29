@@ -1,19 +1,16 @@
 import React from 'react';
 
-// components
 import {
   Box,
   BoxProps,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-
-// craft
 import { Element } from '@craftjs/core';
+
+import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 import Container from '../Container';
 
-// i18n
 import messages from './messages';
-import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
 export const ThreeColumnWrapper = ({
   children,

@@ -1,6 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
-import { darken } from 'polished';
+
 import {
   Icon,
   IconNames,
@@ -8,6 +7,8 @@ import {
   fontSizes,
   isRtl,
 } from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
+import styled from 'styled-components';
 
 const Container = styled.div`
   display: flex;
@@ -68,7 +69,7 @@ const Text = styled.div`
   }
 `;
 
-interface Props {
+export interface Props {
   children: string | JSX.Element;
   icon?: IconNames;
   className?: string;

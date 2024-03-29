@@ -5,10 +5,10 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateTitle',
     defaultMessage: 'Create your first project report',
   },
-  emptyStateDescription: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateDescription',
+  customizeReport: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.customizeReport',
     defaultMessage:
-      'Customise your report and share it with internal stakeholders or community with a web link.',
+      'Customise your report and share it with internal stakeholders or community as a PDF file.',
   },
   emptyStateButtonText: {
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateButtonText',
@@ -17,11 +17,6 @@ export default defineMessages({
   createReportModalTitle: {
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalTitle',
     defaultMessage: 'Create a project report',
-  },
-  createReportModalDescription: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalDescription',
-    defaultMessage:
-      'Customise your report and share it with internal stakeholders or community with a web link.',
   },
   createReportModalInputLabel: {
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel',
@@ -51,10 +46,6 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.shareAsWebLinkDesc',
     defaultMessage: 'This web link is only accessible to admin users.',
   },
-  copyLink: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.copyLink',
-    defaultMessage: 'Copy link',
-  },
   shareAsPdf: {
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.shareAsPdf',
     defaultMessage: 'Share as PDF',
@@ -76,5 +67,9 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.anErrorOccurred',
     defaultMessage:
       'An error occurred when trying to create this report. Please try again later.',
+  },
+  noProjectSelected: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.noProjectSelected',
+    defaultMessage: 'No project selected',
   },
 });

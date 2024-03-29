@@ -1,7 +1,12 @@
 import React, { FormEvent } from 'react';
+
+import { RouteType } from 'routes';
 import styled from 'styled-components';
+
 import Button from 'components/UI/Button';
+
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+
 import messages from './messages';
 
 const Container = styled.div`
@@ -12,7 +17,7 @@ type Props = {
   onClick?: (arg: FormEvent) => void;
   className?: string;
   customMessage?: MessageDescriptor;
-  linkTo?: string;
+  linkTo?: RouteType;
   showGoBackText?: boolean;
 };
 

@@ -1,8 +1,14 @@
 import React from 'react';
+
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import { RouteType } from 'routes';
+
 import Button from 'components/UI/Button';
+
 import { useIntl } from 'utils/cl-intl';
+
 import messages from '../messages';
+
 import workshopsImage from './workshops.png';
 
 export const Workshops = () => {
@@ -10,7 +16,7 @@ export const Workshops = () => {
 
   return (
     <Box background={colors.white} display="flex" p="20px">
-      <Box w="320px" h="240px">
+      <Box w="320px" h="240px" borderRadius="3px">
         <img
           src={workshopsImage}
           alt={formatMessage(messages.workshopsImage)}
@@ -30,16 +36,17 @@ export const Workshops = () => {
             icon="arrow-right"
             iconColor={colors.white}
             iconPos="right"
-            linkTo={`${window.location.origin}/workshops`}
+            linkTo={`${window.location.origin}/workshops` as RouteType}
             openLinkInNewTab
             textColor="white"
+            bgColor={colors.primary}
           >
             {formatMessage(messages.manageWorkshops)}
           </Button>
           <Button
             height="45px"
             buttonStyle="text"
-            linkTo={formatMessage(messages.workshopsSupportLink)}
+            linkTo={formatMessage(messages.workshopsSupportLink) as RouteType}
             openLinkInNewTab
             textColor={colors.primary}
           >

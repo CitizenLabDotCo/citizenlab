@@ -1,68 +1,53 @@
 import React, { lazy, Suspense, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { adopt } from 'react-adopt';
+
+import { Box, Badge } from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
+import styled from 'styled-components';
+
+import { IIdeaImages } from 'api/idea_images/types';
+import useIdeaImages from 'api/idea_images/useIdeaImages';
+import { IIdea } from 'api/ideas/types';
+import useIdeaById from 'api/ideas/useIdeaById';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase, getInputTerm } from 'api/phases/utils';
+import { IProjectData } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 
-// components
-import Container from './components/Container';
-import IdeaMeta from './components/IdeaMeta';
-import DesktopTopBar from './components/DesktopTopBar';
-import IdeaTitle from './components/IdeaTitle';
-import ProposedBudget from './components/ProposedBudget';
+import useLocalize from 'hooks/useLocalize';
+
+import ProjectLink from 'containers/EventsShowPage/components/ProjectLink';
+
+import ErrorToast from 'components/ErrorToast';
+import FollowUnfollow from 'components/FollowUnfollow';
 import Body from 'components/PostShowComponents/Body';
+import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
 import Image from 'components/PostShowComponents/Image';
-import TranslateButton from './components/TranslateButton';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
-import { Box, Badge } from '@citizenlab/cl2-component-library';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { usePermission } from 'utils/permissions';
+
+import Container from './components/Container';
+import DesktopTopBar from './components/DesktopTopBar';
+import IdeaMeta from './components/IdeaMeta';
+import IdeaTitle from './components/IdeaTitle';
+import MetaInformation from './components/MetaInformation';
+import ProposedBudget from './components/ProposedBudget';
+import RightColumnDesktop from './components/RightColumnDesktop';
+import TranslateButton from './components/TranslateButton';
+import messages from './messages';
+import { columnsGapDesktop } from './styleConstants';
+
 const LazyCommentsSection = lazy(
   () => import('components/PostShowComponents/Comments/CommentsSection')
 );
-import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
-import MetaInformation from './components/MetaInformation';
-import RightColumnDesktop from './components/RightColumnDesktop';
-import ErrorToast from 'components/ErrorToast';
-import FollowUnfollow from 'components/FollowUnfollow';
-import Tippy from '@tippyjs/react';
-
-// resources
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPermission, {
-  GetPermissionChildProps,
-} from 'resources/GetPermission';
-
-// i18n
-import useLocalize from 'hooks/useLocalize';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// style
-import styled from 'styled-components';
-import { columnsGapDesktop } from './styleConstants';
-
-// hooks
-import usePhases from 'api/phases/usePhases';
-import useIdeaById from 'api/ideas/useIdeaById';
-import useIdeaImages from 'api/idea_images/useIdeaImages';
-
-// types
-import { IIdea } from 'api/ideas/types';
-import { IProjectData } from 'api/projects/types';
-import { IIdeaImages } from 'api/idea_images/types';
-
-// utils
-import { getCurrentPhase, getInputTerm } from 'api/phases/utils';
-import ProjectLink from 'containers/EventsShowPage/components/ProjectLink';
 
 const StyledRightColumnDesktop = styled(RightColumnDesktop)`
   margin-left: ${columnsGapDesktop}px;
 `;
 
-interface DataProps {
-  project: GetProjectChildProps;
-  postOfficialFeedbackPermission: GetPermissionChildProps;
-}
-
-interface InputProps {
+interface Props {
   ideaId: string;
   projectId: string;
   setRef?: (element: HTMLDivElement) => void;
@@ -70,11 +55,8 @@ interface InputProps {
   className?: string;
 }
 
-interface Props extends DataProps, InputProps {}
-
 export const IdeasShow = ({
   className,
-  postOfficialFeedbackPermission,
   projectId,
   compact,
   ideaId,
@@ -83,6 +65,10 @@ export const IdeasShow = ({
   const { data: ideaImages } = useIdeaImages(ideaId);
   const { data: idea } = useIdeaById(ideaId);
   const { data: project } = useProjectById(projectId);
+  const postOfficialFeedbackPermission = usePermission({
+    item: !isNilOrError(project) ? project.data : null,
+    action: 'moderate',
+  });
 
   const isLoaded = !!(idea && ideaImages && project);
 
@@ -111,7 +97,7 @@ export const IdeasShow = ({
 };
 
 interface ContentProps {
-  postOfficialFeedbackPermission: GetPermissionChildProps;
+  postOfficialFeedbackPermission: boolean;
   idea: IIdea;
   project: IProjectData;
   ideaImages: IIdeaImages;
@@ -261,22 +247,4 @@ const Content = ({
   );
 };
 
-const Data = adopt<DataProps, InputProps>({
-  project: ({ projectId, render }) => (
-    <GetProject projectId={projectId}>{render}</GetProject>
-  ),
-  postOfficialFeedbackPermission: ({ project, render }) => (
-    <GetPermission
-      item={!isNilOrError(project) ? project : null}
-      action="moderate"
-    >
-      {render}
-    </GetPermission>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <IdeasShow {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default IdeasShow;

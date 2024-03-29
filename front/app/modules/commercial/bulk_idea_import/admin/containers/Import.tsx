@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
 
-// components
-import FileUploader from 'components/UI/FileUploader';
-import { SectionField } from 'components/admin/Section';
-import Button from 'components/UI/Button';
 import {
   Box,
   Text,
@@ -11,22 +7,22 @@ import {
   colors,
   Error,
 } from '@citizenlab/cl2-component-library';
+import { saveAs } from 'file-saver';
+import { CLErrorsWrapper, UploadFile } from 'typings';
 
-// hooks
+import { API_PATH } from 'containers/App/constants';
+
+import { SectionField } from 'components/admin/Section';
+import Button from 'components/UI/Button';
+import FileUploader from 'components/UI/FileUploader';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isCLErrorsWrapper } from 'utils/errorUtils';
+import { requestBlob } from 'utils/requestBlob';
+
 import useImportIdeas from '../../api/import_ideas/useImportIdeas';
 
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
-
-// utils
-import { API_PATH } from 'containers/App/constants';
-import { saveAs } from 'file-saver';
-import { requestBlob } from 'utils/requestBlob';
-import { isCLErrorsWrapper } from 'utils/errorUtils';
-
-// typings
-import { CLErrorsWrapper, UploadFile } from 'typings';
 
 const Import = () => {
   const { formatMessage } = useIntl();

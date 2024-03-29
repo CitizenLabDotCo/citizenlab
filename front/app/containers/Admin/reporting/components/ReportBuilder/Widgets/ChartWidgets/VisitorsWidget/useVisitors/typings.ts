@@ -1,30 +1,21 @@
 import {
   ProjectId,
-  Dates,
+  DatesStrings,
   Resolution,
 } from 'components/admin/GraphCards/typings';
 
-export type QueryParameters = ProjectId & Dates & Resolution;
-
-// Response
-export type Response = {
-  data: {
-    type: 'analytics';
-    attributes: [[TotalsRow] | [], TimeSeriesResponse | []];
-  };
-};
+export type QueryParameters = ProjectId & DatesStrings & Resolution;
 
 interface BaseRow {
   count: number;
   count_visitor_id: number;
 }
 
-interface TotalsRow extends BaseRow {
+export interface TotalsRow extends BaseRow {
   avg_duration: string | null;
   avg_pages_visited: string | null;
 }
 
-export type TimeSeriesResponse = TimeSeriesResponseRow[];
 export interface TimeSeriesResponseRow extends BaseRow {
   first_dimension_date_first_action_date: string;
 }

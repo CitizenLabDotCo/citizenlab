@@ -1,5 +1,6 @@
-import { IQueryParameters } from './types';
 import { QueryKeys } from 'utils/cl-react-query/types';
+
+import { IQueryParameters } from './types';
 
 const baseKey = { type: 'custom_field' };
 

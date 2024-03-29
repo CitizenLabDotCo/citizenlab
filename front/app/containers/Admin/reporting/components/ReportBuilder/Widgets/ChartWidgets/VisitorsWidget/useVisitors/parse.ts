@@ -1,17 +1,13 @@
 import moment, { Moment } from 'moment';
 
-// utils
+import { VisitorsResponse } from 'api/graph_data_units/responseTypes';
+
 import { timeSeriesParser } from 'components/admin/GraphCards/_utils/timeSeries';
+import { IResolution } from 'components/admin/ResolutionControl';
+
 import { get } from 'utils/helperUtils';
 
-// typings
-import { IResolution } from 'components/admin/ResolutionControl';
-import {
-  Response,
-  TimeSeries,
-  TimeSeriesResponseRow,
-  TimeSeriesRow,
-} from './typings';
+import { TimeSeries, TimeSeriesResponseRow, TimeSeriesRow } from './typings';
 
 export const getEmptyRow = (date: Moment) => ({
   date: date.format('YYYY-MM-DD'),
@@ -36,7 +32,7 @@ const getDate = (row: TimeSeriesResponseRow) => {
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
 
 export const parseTimeSeries = (
-  responseTimeSeries: Response['data']['attributes'][1],
+  responseTimeSeries: VisitorsResponse['data']['attributes'][1],
   startAtMoment: Moment | null | undefined,
   endAtMoment: Moment | null,
   resolution: IResolution
@@ -51,7 +47,7 @@ export const parseTimeSeries = (
 
 export const parseStats = ([
   totalsWholePeriodRows,
-]: Response['data']['attributes']) => {
+]: VisitorsResponse['data']['attributes']) => {
   const wholePeriod = totalsWholePeriodRows[0];
 
   return {

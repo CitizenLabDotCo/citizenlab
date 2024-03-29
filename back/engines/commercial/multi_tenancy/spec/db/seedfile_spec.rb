@@ -7,7 +7,7 @@ describe 'db/seeds.rb' do
   # seem to work the straightforward way after multiple runs, seems to be due to
   # the schema created by apartment for the seedfile tenant. It's not getting
   # deleted after the tests
-  it 'generates a localhost tenant with a couple of records' do
+  it 'generates a localhost tenant with some records' do
     expect(Tenant.count).to be(1)
 
     load Rails.root.join('db/seeds.rb')
@@ -27,7 +27,9 @@ describe 'db/seeds.rb' do
       expect(Area.count).to be > 0
       expect(Project.count).to be > 0
       expect(Phase.count).to be > 0
-      expect(Event.count).to be >= 4
+      expect(Event.count).to be > 4
+      expect(EventImage.count).to be > 0
+      expect(Events::Attendance.count).to be > 0
       expect(Idea.count).to be > 0
       expect(IdeaImage.count).to be > 0
       expect(ProjectImage.count).to be > 0
@@ -42,9 +44,8 @@ describe 'db/seeds.rb' do
       expect(Invite.count).to be > 0
       # expect(IdIdCardLookup::IdCard.count).to be 10
       expect(EmailCampaigns::UnsubscriptionToken.count).to be > 0
-      expect(CustomMaps::MapConfig.count).to be 1
+      expect(CustomMaps::MapConfig.count).to be 2
       expect(CustomMaps::Layer.count).to be 2
-      expect(CustomMaps::LegendItem.count).to be 7
       expect(Volunteering::Cause.count).to be 5
       expect(Volunteering::Volunteer.count).to be > 10
       expect(Analytics::DimensionDate.count).to be > 0

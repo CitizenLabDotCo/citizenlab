@@ -1,20 +1,27 @@
-import { ModuleConfiguration } from 'utils/moduleUtils';
 import React from 'react';
-const NavItem = React.lazy(() => import('./admin/components/NavItem'));
+
+import { AdminRoute } from 'containers/Admin/routes';
+
+import { ModuleConfiguration } from 'utils/moduleUtils';
 
 const AdminModerationComponent = React.lazy(() => import('./admin/containers'));
+
+export enum moderationRoutes {
+  moderation = 'moderation',
+}
+
+// TODO: Replace "dashboards" with link to route in main app once converted.
+export type moderationRouteTypes =
+  AdminRoute<`dashboard/${moderationRoutes.moderation}`>;
 
 const configuration: ModuleConfiguration = {
   routes: {
     'admin.dashboards': [
       {
-        path: 'moderation',
+        path: moderationRoutes.moderation,
         element: <AdminModerationComponent />,
       },
     ],
-  },
-  outlets: {
-    'app.containers.Admin.dashboards.tabs': (props) => <NavItem {...props} />,
   },
 };
 

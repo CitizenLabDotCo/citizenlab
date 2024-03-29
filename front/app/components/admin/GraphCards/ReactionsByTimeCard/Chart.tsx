@@ -1,25 +1,20 @@
 import React, { useMemo } from 'react';
 
-// styling
-import { MARGINS } from 'components/admin/GraphCards/_utils/style';
-import { legacyColors } from 'components/admin/Graphs/styling';
+import messages from 'containers/Admin/dashboard/messages';
 
-// components
+import { MARGINS } from 'components/admin/GraphCards/_utils/style';
+import { Dates, Resolution, Layout } from 'components/admin/GraphCards/typings';
+import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import LineBarChart from 'components/admin/Graphs/LineBarChart';
+import { legacyColors } from 'components/admin/Graphs/styling';
 
 // i18
 import { useIntl } from 'utils/cl-intl';
-import { getTranslations } from './useReactionsByTime/translations';
-import messages from 'containers/Admin/dashboard/messages';
-
-// utils
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { toThreeLetterMonth } from 'utils/dateUtils';
-import { generateEmptyData } from './generateEmptyData';
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
-// typings
-import { Dates, Resolution, Layout } from 'components/admin/GraphCards/typings';
-import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
+import { generateEmptyData } from './generateEmptyData';
+import { getTranslations } from './useReactionsByTime/translations';
 import { TimeSeries } from './useReactionsByTime/typings';
 
 type Props = Dates &

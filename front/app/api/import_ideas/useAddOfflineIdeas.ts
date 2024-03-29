@@ -1,7 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors, Locale } from 'typings';
-import fetcher from 'utils/cl-react-query/fetcher';
+
 import { IIdeas } from 'api/ideas/types';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+
 import { importedIdeasKeys } from './keys';
 
 interface RequestParams {

@@ -35,7 +35,7 @@ module ContentBuilder
           when 'Project'
             Project.find params[:project_id]
           when 'HomePage'
-            HomePage.first
+            nil
           end
         end
 
@@ -80,16 +80,7 @@ module ContentBuilder
         end
 
         def params_for_upsert
-          params.require(
-            :content_builder_layout
-          ).permit(
-            :enabled,
-            {
-              # TODO: clean up after fully migrated
-              craftjs_json: {},
-              craftjs_jsonmultiloc: CL2_SUPPORTED_LOCALES.map { |locale| { locale => {} } }
-            }
-          )
+          params.require(:content_builder_layout).permit(:enabled, { craftjs_json: {} })
         end
 
         def params_for_create
@@ -97,32 +88,19 @@ module ContentBuilder
           { code: params[:code] }.tap do |attributes|
             attributes[:enabled] = to_boolean(layout_params[:enabled]) if layout_params.key? :enabled
             attributes[:craftjs_json] = layout_params[:craftjs_json] if layout_params.key? :craftjs_json
-            attributes[:craftjs_jsonmultiloc] = clean(layout_params[:craftjs_jsonmultiloc]) if layout_params.key? :craftjs_jsonmultiloc
           end
         end
 
         def params_for_update
           layout_params = params_for_upsert
-          attributes = {}
-          attributes[:enabled] = to_boolean(layout_params[:enabled]) if layout_params.key? :enabled
-          attributes[:craftjs_json] = layout_params[:craftjs_json] if layout_params.key? :craftjs_json
-          return attributes unless layout_params.key? :craftjs_jsonmultiloc
-
-          attributes[:craftjs_jsonmultiloc] = (
-            @layout.craftjs_jsonmultiloc || {}
-          ).merge(
-            clean(layout_params[:craftjs_jsonmultiloc])
-          )
-          attributes
+          {}.tap do |attributes|
+            attributes[:enabled] = to_boolean(layout_params[:enabled]) if layout_params.key? :enabled
+            attributes[:craftjs_json] = layout_params[:craftjs_json] if layout_params.key? :craftjs_json
+          end
         end
 
         def to_boolean(value)
           ActiveModel::Type::Boolean.new.cast(value)
-        end
-
-        def clean(craftjs_jsonmultiloc)
-          allowed_locale_keys = CL2_SUPPORTED_LOCALES.map(&:to_s)
-          craftjs_jsonmultiloc.to_hash.slice(*allowed_locale_keys)
         end
       end
     end

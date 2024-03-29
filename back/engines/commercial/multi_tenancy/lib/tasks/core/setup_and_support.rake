@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-namespace :setup_and_support do # rubocop:disable Metrics/BlockLength
+namespace :setup_and_support do
   desc 'Mass official feedback'
   task :mass_official_feedback, %i[url host locale] => [:environment] do |_t, args|
     # ID, Feedback, Feedback Author Name, Feedback Email, New Status
-    data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
+    data = CSV.parse(open(args[:url]).read, headers: true, col_sep: ',', converters: [])
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       data.each do |d|
         idea = Idea.find d['ID']
@@ -99,7 +99,7 @@ namespace :setup_and_support do # rubocop:disable Metrics/BlockLength
   desc 'Change the slugs of the project through a provided mapping'
   task :map_project_slugs, %i[url host] => [:environment] do |_t, args|
     issues = []
-    data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
+    data = CSV.parse(open(args[:url]).read, headers: true, col_sep: ',', converters: [])
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       data.each do |d|
         pj = Project.find_by slug: d['old_slug'].strip
@@ -215,27 +215,6 @@ namespace :setup_and_support do # rubocop:disable Metrics/BlockLength
     end
   end
 
-  desc 'Add one map legend to a project'
-  task :add_map_legend, %i[host project_slug legend_title color] => [:environment] do |_t, args|
-    Apartment::Tenant.switch(args[:host].tr('.', '_')) do
-      project = Project.find_by slug: args[:project_slug]
-      config = project.map_config || CustomMaps::MapConfig.create!(project: project)
-      config.legend_items.create!(
-        title_multiloc: { AppConfiguration.instance.settings('core', 'locales').first => args[:legend_title] },
-        color: args[:color]
-      )
-    end
-  end
-
-  desc 'Delete map legends of a project'
-  task :delete_map_legends, %i[host project_slug] => [:environment] do |_t, args|
-    Apartment::Tenant.switch(args[:host].tr('.', '_')) do
-      project = Project.find_by slug: args[:project_slug]
-      config = project.map_config || CustomMaps::MapConfig.create!(project: project)
-      config.legend_items.each(&:destroy!)
-    end
-  end
-
   desc 'Create a new manual group, given a list of user emails'
   task :create_group_from_email_list, %i[host url title] => [:environment] do |_t, args|
     emails = open(args[:url]).readlines.map(&:strip)
@@ -258,7 +237,7 @@ namespace :setup_and_support do # rubocop:disable Metrics/BlockLength
 
   desc 'Add areas'
   task :add_areas, %i[host url] => [:environment] do |_t, args|
-    data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
+    data = CSV.parse(open(args[:url]).read, headers: true, col_sep: ',', converters: [])
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       data.each do |d|
         Area.create!(title_multiloc: d.to_h)
@@ -278,7 +257,7 @@ namespace :setup_and_support do # rubocop:disable Metrics/BlockLength
 
   desc 'Add anonymous likes/dislikes to ideas'
   task :add_idea_reactions, %i[host url] => [:environment] do |_t, args|
-    data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
+    data = CSV.parse(open(args[:url]).read, headers: true, col_sep: ',', converters: [])
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       errors = []
       data.each do |d|
@@ -380,6 +359,19 @@ namespace :setup_and_support do # rubocop:disable Metrics/BlockLength
       puts "Initial amount of users: #{User.count}"
       service.reduce! skip_users: scope
       puts "Final amount of users: #{User.count}"
+    end
+  end
+
+  desc 'Change the default assignee for proposals'
+  task :proposals_default_assignee, %i[host email] => [:environment] do |_, args|
+    Apartment::Tenant.switch(args[:host].tr('.', '_')) do
+      user = User.find_by email: args[:email]
+      raise "No user found for email #{args[:email]}" if !user
+      raise "#{user.email} is not an admin" if !user.admin?
+      raise "#{user.email} is a super admin" if user.super_admin?
+
+      new_created_at = User.admin.order(:created_at).first.created_at - 1.day
+      user.update!(created_at: new_created_at)
     end
   end
 

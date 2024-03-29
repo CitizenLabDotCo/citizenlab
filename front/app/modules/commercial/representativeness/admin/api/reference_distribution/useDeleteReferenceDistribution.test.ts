@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeleteReferenceDistribution from './useDeleteReferenceDistribution';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useDeleteReferenceDistribution from './useDeleteReferenceDistribution';
 const apiPath = '*/users/custom_fields/:id/reference_distribution';
 
 const server = setupServer(

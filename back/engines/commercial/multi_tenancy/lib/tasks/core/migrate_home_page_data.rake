@@ -26,7 +26,7 @@ namespace :fix_existing_tenants do
 
       Apartment::Tenant.switch(tenant.schema_name) do
         host = tenant.schema_name.tr('_', '.')
-        config = AppConfiguration.first
+        config = AppConfiguration.instance
         settings = config.settings
         style = config.style
 
@@ -34,10 +34,6 @@ namespace :fix_existing_tenants do
           home_page = HomePage.first || HomePage.new
 
           home_page.events_widget_enabled = settings['events_widget']['enabled'] if settings['events_widget']
-
-          if settings['core']['currently_working_on_text']
-            home_page.projects_header_multiloc = settings['core']['currently_working_on_text']
-          end
 
           home_page.banner_avatars_enabled = !!settings['core']['display_header_avatars']
 

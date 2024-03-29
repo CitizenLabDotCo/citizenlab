@@ -1,9 +1,14 @@
 import React from 'react';
+
 import { Text, Box } from '@citizenlab/cl2-component-library';
+
 import Warning from 'components/UI/Warning';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import ImageCropper, { ImageCropperProps } from '.';
+
 import messages from './messages';
+
+import ImageCropper, { ImageCropperProps } from '.';
 
 const Container = ({
   aspectRatioWidth,

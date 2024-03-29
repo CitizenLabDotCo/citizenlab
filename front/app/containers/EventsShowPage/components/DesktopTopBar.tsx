@@ -1,27 +1,20 @@
 import React from 'react';
 
-// components
 import { Box, Button, isRtl } from '@citizenlab/cl2-component-library';
-import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
-
-// router
-import clHistory from 'utils/cl-router/history';
-
-// styling
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
-// typings
-import { IProjectData } from 'api/projects/types';
-import { useLocation } from 'react-router-dom';
-
-// intl
-import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
-// api
-import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
-import useAuthUser from 'api/me/useAuthUser';
 import { IEventData } from 'api/events/types';
+import useAuthUser from 'api/me/useAuthUser';
+import { IProjectData } from 'api/projects/types';
+
+import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
+
+import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+
+import messages from '../messages';
 
 const Bar = styled.div`
   display: flex;
@@ -34,15 +27,15 @@ const Bar = styled.div`
 `;
 interface Props {
   project: IProjectData;
-  event?: IEventData;
+  event: IEventData;
 }
 
 const TopBar = ({ project, event }: Props) => {
   const location = useLocation();
-  const user = useAuthUser();
+  const { data: user } = useAuthUser();
   const { formatMessage } = useIntl();
-  const isAdminUser = isAdmin(user.data);
-  const isModerator = isProjectModerator(user.data, project.id);
+  const projectId = project.id;
+  const canModerate = user ? canModerateProject(projectId, user) : false;
 
   return (
     <Bar>
@@ -56,7 +49,7 @@ const TopBar = ({ project, event }: Props) => {
               : clHistory.push(`/projects/${project.attributes.slug}`);
           }}
         />
-        {(isAdminUser || isModerator) && event && (
+        {canModerate && (
           <Button
             buttonStyle="secondary"
             m="0px"
@@ -66,7 +59,7 @@ const TopBar = ({ project, event }: Props) => {
             text={formatMessage(messages.editEvent)}
             onClick={() => {
               clHistory.push(
-                `/admin/projects/${project.id}/settings/events/${event.id}`
+                `/admin/projects/${projectId}/settings/events/${event.id}`
               );
             }}
           />

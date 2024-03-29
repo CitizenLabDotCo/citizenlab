@@ -1,13 +1,15 @@
-import { Keys } from 'utils/cl-react-query/types';
-import appConfigurationKeys from './keys';
-
-export type AppConfigurationKeys = Keys<typeof appConfigurationKeys>;
+import { ImageSizes, Multiloc, Locale, UploadFile } from 'typings';
 
 import { API_PATH } from 'containers/App/constants';
-import { ImageSizes, Multiloc, Locale, UploadFile } from 'typings';
+
 import { TCategory } from 'components/ConsentManager/destinations';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import appConfigurationKeys from './keys';
 export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
-import { THomepageSettingKeyMap } from 'api/home_page/types';
+
+export type AppConfigurationKeys = Keys<typeof appConfigurationKeys>;
 
 interface AppConfigurationFeature {
   allowed: boolean;
@@ -40,7 +42,6 @@ export type IAppConfigurationSettingsCore = {
   color_menu_bg?: string | null;
   currency: TCurrency;
   reply_to_email: string;
-  currently_working_on_text?: Multiloc | null;
   segment_destinations_blacklist: string[] | null;
   areas_term?: Multiloc;
   area_term?: Multiloc;
@@ -111,6 +112,16 @@ export interface IAppConfigurationSettings {
     logo_url: string;
     login_mechanism_name: string;
   };
+  azure_ad_b2c_login?: {
+    allowed: boolean;
+    enabled: boolean;
+    tenant_name: string;
+    tenant_id: string;
+    policy_name: string;
+    client_id: string;
+    logo_url: string;
+    login_mechanism_name: string;
+  };
   franceconnect_login?: {
     allowed: boolean;
     enabled: boolean;
@@ -137,6 +148,7 @@ export interface IAppConfigurationSettings {
   maps?: AppConfigurationMapSettings;
   initiatives: ProposalsSettings;
   initiative_review?: AppConfigurationFeature;
+  input_form_mapping_question?: AppConfigurationFeature;
   initiative_cosponsors?: AppConfigurationFeature;
   fragments?: {
     allowed: boolean;
@@ -152,8 +164,6 @@ export interface IAppConfigurationSettings {
   workshops?: AppConfigurationFeature;
   smart_groups?: AppConfigurationFeature;
   manual_emailing?: AppConfigurationFeature;
-  insights_manual_flow?: AppConfigurationFeature;
-  insights_nlp_flow?: AppConfigurationFeature;
   automated_emailing_control?: AppConfigurationFeature;
   typeform_surveys?: {
     allowed: boolean;
@@ -177,7 +187,6 @@ export interface IAppConfigurationSettings {
   initiativeflow_social_sharing?: AppConfigurationFeature;
   machine_translations?: AppConfigurationFeature;
   custom_maps?: AppConfigurationFeature;
-  similar_ideas?: AppConfigurationFeature;
   polls?: AppConfigurationFeature;
   moderation?: AppConfigurationFeature;
   flag_inappropriate_content?: AppConfigurationFeature;
@@ -215,6 +224,9 @@ export interface IAppConfigurationSettings {
       target: string;
     }[];
   };
+  esri_integration?: AppConfigurationFeature & {
+    api_key: string;
+  };
   disable_user_bios?: AppConfigurationFeature;
   texting?: AppConfigurationFeature;
   project_description_builder?: AppConfigurationFeature;
@@ -228,6 +240,7 @@ export interface IAppConfigurationSettings {
   permissions_custom_fields?: AppConfigurationFeature;
   input_form_custom_fields?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
+  report_data_grouping?: AppConfigurationFeature;
   posthog_integration?: AppConfigurationFeature;
   user_blocking?: AppConfigurationFeature & {
     duration: boolean;
@@ -239,15 +252,19 @@ export interface IAppConfigurationSettings {
   public_api_tokens?: AppConfigurationFeature;
   power_bi?: AppConfigurationFeature;
   analysis?: AppConfigurationFeature;
+  large_summaries?: AppConfigurationFeature;
+  ask_a_question?: AppConfigurationFeature;
+  advanced_autotagging?: AppConfigurationFeature;
   import_printed_forms?: AppConfigurationFeature;
-  homepage_builder?: AppConfigurationFeature;
+  user_session_recording?: AppConfigurationFeature;
+  user_avatars?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
 
 export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
 
-interface AppConfigurationMapSettings extends AppConfigurationFeature {
+export interface AppConfigurationMapSettings extends AppConfigurationFeature {
   map_center: {
     lat: string;
     long: string;
@@ -266,11 +283,6 @@ export interface IAppConfigurationStyle {
   navbarBorderColor?: string;
   signedOutHeaderTitleFontSize?: number;
   signedOutHeaderTitleFontWeight?: number;
-  // These signed in variables are used via the theme in the
-  // component library and can be set via AdminHQ.
-  signedInHeaderOverlayColor?: string;
-  // Number between 0 and 100, inclusive
-  signedInHeaderOverlayOpacity?: number;
   customFontName?: string;
   customFontAdobeId?: string;
   customFontURL?: string;
@@ -295,16 +307,6 @@ export interface IAppConfigurationData {
   type: string;
   attributes: IAppConfigurationAttributes;
 }
-
-// Settings that have their enabled values in homepageSettings.
-// Their allowed value is still in appConfiguration.
-export type THomepageSetting = keyof THomepageSettingKeyMap;
-
-// All appConfig setting names except those in THomepageSetting
-export type TAppConfigurationSettingWithEnabled = Exclude<
-  TAppConfigurationSetting,
-  THomepageSetting
->;
 
 export type TCurrency = TCustomCurrency | TCountryCurrency;
 type TCustomCurrency =

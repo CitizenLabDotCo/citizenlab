@@ -1,19 +1,5 @@
 import React, { useState } from 'react';
 
-// routing
-import { useParams } from 'react-router-dom';
-
-// api
-import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
-import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
-import useIdeaById from 'api/ideas/useIdeaById';
-import useDeleteIdea from 'api/ideas/useDeleteIdea';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// components
 import {
   Box,
   Title,
@@ -21,13 +7,21 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
+
+import useDeleteIdea from 'api/ideas/useDeleteIdea';
+import useIdeaById from 'api/ideas/useIdeaById';
+import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
+import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
 import EmptyState from './EmptyState';
-import IdeaList from './IdeaList';
 import IdeaEditor from './IdeaEditor';
+import IdeaList from './IdeaList';
+import messages from './messages';
 import PDFPageControl from './PDFPageControl';
 import PDFViewer from './PDFViewer';
-
-// styling
 
 const ReviewSection = () => {
   const { projectId, phaseId } = useParams() as {

@@ -1,23 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-// services
-import { coreSettings } from 'api/app_configuration/utils';
-
-// hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useTopics from 'api/topics/useTopics';
-import useAreas from 'api/areas/useAreas';
-import useLocalize from 'hooks/useLocalize';
-
-// components
-import Tabs from './Tabs';
-import { ScreenReaderOnly } from 'utils/a11y';
-import SelectTopics from './SelectTopics';
-import SelectAreas from './SelectAreas';
-import SearchInput from 'components/UI/SearchInput';
-
-// styling
-import styled from 'styled-components';
 import {
   useBreakpoint,
   media,
@@ -25,23 +7,32 @@ import {
   fontSizes,
   colors,
 } from '@citizenlab/cl2-component-library';
-
-// i18n
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
+import { useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { getShowFilters, getShowFiltersLabel } from './show';
+import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAreas from 'api/areas/useAreas';
+import useTopics from 'api/topics/useTopics';
+
+import useLocalize from 'hooks/useLocalize';
+
+import SearchInput from 'components/UI/SearchInput';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { injectIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-
-// typings
+import { isNilOrError } from 'utils/helperUtils';
 
 import { PublicationTab } from '../..';
-import { useSearchParams } from 'react-router-dom';
-import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
-import { Multiloc } from 'typings';
+
+import messages from './messages';
+import SelectAreas from './SelectAreas';
+import SelectTopics from './SelectTopics';
+import { getShowFilters, getShowFiltersLabel } from './show';
+import Tabs from './Tabs';
 
 const Title = styled.h2<{ hasPublications: boolean }>`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -193,11 +184,8 @@ const Header = ({
 
   if (isNilOrError(appConfiguration)) return null;
 
-  const customCurrentlyWorkingOn =
-    currentlyWorkingOnText ||
-    coreSettings(appConfiguration.data).currently_working_on_text;
   const fallback = formatMessage(messages.currentlyWorkingOn);
-  const currentlyWorkingOn = localize(customCurrentlyWorkingOn, {
+  const currentlyWorkingOn = localize(currentlyWorkingOnText, {
     fallback,
   });
 

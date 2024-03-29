@@ -28,7 +28,7 @@ namespace :migrate_craftjson do
   desc 'Analyze'
   task :analyze, %i[file] => [:environment] do |_t, args|
     filename = args[:file] || 'craftjsons.csv'
-    data = CSV.parse(open(filename).read, { headers: true, col_sep: ',', converters: [] })
+    data = CSV.parse(open(filename).read, headers: true, col_sep: ',', converters: [])
     good = 0
     bad = 0
     data.each do |d|

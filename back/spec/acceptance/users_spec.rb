@@ -175,6 +175,16 @@ resource 'Users' do
           end
         end
 
+        context 'when the user_avatars module is inactive' do
+          before { SettingsService.new.deactivate_feature!('user_avatars') }
+
+          example_request 'Create a user without avatar' do
+            assert_status 201
+            user = User.find(response_data[:id])
+            expect(user.avatar).to be_blank
+          end
+        end
+
         describe 'Creating an admin user' do
           before do
             settings = AppConfiguration.instance.settings
@@ -1117,12 +1127,32 @@ resource 'Users' do
           end
         end
 
-        describe do
+        describe 'when user_avatars is enabled' do
+          before { SettingsService.new.activate_feature!('user_avatars') }
+
           example 'The user avatar can be removed' do
             @user.update!(avatar: Rails.root.join('spec/fixtures/male_avatar_1.jpg').open)
             expect(@user.reload.avatar_url).to be_present
             do_request user: { avatar: nil }
             expect(@user.reload.avatar_url).to be_nil
+          end
+        end
+
+        describe 'when user_avatars is disabled' do
+          before { SettingsService.new.deactivate_feature!('user_avatars') }
+
+          example 'The user avatar can be removed' do
+            @user.update!(avatar: Rails.root.join('spec/fixtures/male_avatar_1.jpg').open)
+            expect(@user.reload.avatar_url).to be_present
+            do_request user: { avatar: nil }
+            expect(@user.reload.avatar_url).to be_nil
+          end
+
+          example 'The user avatar cannot be updated', document: false do
+            @user.remove_avatar!
+            avatar = png_image_as_base64('lorem-ipsum.jpg')
+            do_request(user: { avatar: avatar })
+            expect(@user.reload.avatar).to be_blank
           end
         end
 

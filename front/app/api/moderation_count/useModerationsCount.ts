@@ -1,9 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
+import { InputParameters } from '../moderations/types';
+
 import ideasCountKeys from './keys';
 import { ModerationsCountKeys, IModerationsCount } from './types';
-import { InputParameters } from '../moderations/types';
 
 const fetchModerationsCount = (queryParams: InputParameters) =>
   fetcher<IModerationsCount>({

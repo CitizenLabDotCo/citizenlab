@@ -1,11 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useImportedIdeas from './useImportedIdeas';
-import { ideasData } from './__mocks__/useAddOfflineIdeas';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
+
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { ideasData } from './__mocks__/useAddOfflineIdeas';
+import useImportedIdeas from './useImportedIdeas';
 
 const apiPath = '*ideas';
 

@@ -1,11 +1,10 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useProjectFolderModerators from './useProjectFolderModerators';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useProjectFolderModerators from './useProjectFolderModerators';
 
 const apiPath = '*project_folders/:projectFolderId/moderators';
 

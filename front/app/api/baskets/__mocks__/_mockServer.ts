@@ -1,4 +1,5 @@
 import { rest } from 'msw';
+
 import { IBasketData } from '../types';
 
 export const basketData: IBasketData = {

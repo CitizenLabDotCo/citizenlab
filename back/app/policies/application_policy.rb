@@ -66,4 +66,8 @@ class ApplicationPolicy
   def active?
     user&.active?
   end
+
+  def active_admin?
+    admin? && active?
+  end
 end

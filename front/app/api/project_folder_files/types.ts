@@ -1,5 +1,6 @@
-import projectFolderFilesKeys from './keys';
 import { Keys } from 'utils/cl-react-query/types';
+
+import projectFolderFilesKeys from './keys';
 
 export type ProjectFolderFilesKeys = Keys<typeof projectFolderFilesKeys>;
 

@@ -1,10 +1,11 @@
-import useReactionsByProject from './useReactionsByProject';
-
 import { renderHook } from '@testing-library/react-hooks';
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
+
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { IReactionsByProject } from './types';
+import useReactionsByProject from './useReactionsByProject';
 
 const apiPath = `*stats/reactions_by_project`;
 

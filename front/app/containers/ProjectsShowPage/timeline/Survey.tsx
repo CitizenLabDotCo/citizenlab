@@ -1,19 +1,16 @@
 import React, { memo } from 'react';
 
-// components
-import Survey from '../shared/survey';
+import styled from 'styled-components';
 
-// hooks
 import usePhase from 'api/phases/usePhase';
+import { IProjectData } from 'api/projects/types';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 
-// styling
-import styled from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { IProjectData } from 'api/projects/types';
+import { FormattedMessage } from 'utils/cl-intl';
+
+import Survey from '../shared/survey';
 
 const Container = styled.div`
   position: relative;

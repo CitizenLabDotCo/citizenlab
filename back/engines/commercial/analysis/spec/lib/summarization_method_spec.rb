@@ -5,12 +5,12 @@ require 'rails_helper'
 RSpec.describe Analysis::SummarizationMethod do
   describe 'Bogus summarization' do
     it 'works' do
-      analysis = create(:analysis, custom_fields: [create(
+      analysis = create(:analysis, main_custom_field: create(
         :custom_field,
         :for_custom_form,
         code: 'title_multiloc',
         key: 'title_multiloc'
-      )])
+      ))
 
       summarization_task = create(
         :summarization_task,
@@ -44,12 +44,12 @@ RSpec.describe Analysis::SummarizationMethod do
 
   describe 'OnePassLLM summarization' do
     it 'works' do
-      analysis = create(:analysis, custom_fields: [create(
+      analysis = create(:analysis, main_custom_field: create(
         :custom_field,
         :for_custom_form,
         code: 'title_multiloc',
         key: 'title_multiloc'
-      )])
+      ))
 
       summarization_task = create(
         :summarization_task,
@@ -66,7 +66,7 @@ RSpec.describe Analysis::SummarizationMethod do
         ]
       end
 
-      mock_llm = instance_double(Analysis::LLM::GPT48k)
+      mock_llm = instance_double(Analysis::LLM::GPT4Turbo)
       plan = Analysis::SummarizationMethod::OnePassLLM.new(summary).generate_plan
 
       expect(plan).to have_attributes({

@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeleteIdeaFile from './useDeleteIdeaFile';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useDeleteIdeaFile from './useDeleteIdeaFile';
 const apiPath = '*ideas/:ideaId/files/:fileId';
 
 const server = setupServer(

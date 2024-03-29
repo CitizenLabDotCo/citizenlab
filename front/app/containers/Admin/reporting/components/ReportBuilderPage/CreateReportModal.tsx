@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-// components
-import Modal from 'components/UI/Modal';
 import {
   Box,
   Title,
@@ -11,19 +9,21 @@ import {
   Radio,
   colors,
 } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import Error from 'components/UI/Error';
-import ProjectFilter from 'containers/Admin/dashboard/components/filters/ProjectFilter';
-
-// utils
-import clHistory from 'utils/cl-router/history';
-
-// i18n
-import messages from './messages';
-import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { RouteType } from 'routes';
 import { IOption } from 'typings';
 
 import useAddReport from 'api/reports/useAddReport';
+
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+import Modal from 'components/UI/Modal';
+import ProjectFilter from 'components/UI/ProjectFilter';
+
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+
+import messages from './messages';
+
 interface Props {
   open: boolean;
   onClose: () => void;
@@ -81,8 +81,9 @@ const CreateReportModal = ({ open, onClose }: Props) => {
             template === 'project' && selectedProject
               ? `?templateProjectId=${selectedProject}`
               : '';
+          const url = `${path}${params}` as RouteType;
 
-          clHistory.push(path + params);
+          clHistory.push(url);
         },
         onError: (e) => {
           if (reportTitleIsTaken(e)) {
@@ -108,9 +109,10 @@ const CreateReportModal = ({ open, onClose }: Props) => {
           mt="0px"
           mb="32px"
         >
-          {formatMessage(messages.createReportModalDescription)}
+          {formatMessage(messages.customizeReport)}
         </Text>
         <Input
+          className="e2e-create-report-modal-title-input"
           value={reportTitle}
           type="text"
           label={formatMessage(messages.createReportModalInputLabel)}
@@ -141,9 +143,9 @@ const CreateReportModal = ({ open, onClose }: Props) => {
         {template === 'project' && (
           <Box width="100%" mt="12px">
             <ProjectFilter
-              currentProjectFilter={selectedProject}
+              projectId={selectedProject}
+              emptyOptionMessage={messages.noProjectSelected}
               onProjectFilter={handleProjectFilter}
-              width="100%"
             />
           </Box>
         )}

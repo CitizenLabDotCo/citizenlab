@@ -1,39 +1,34 @@
 import React, { ReactElement } from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
+import { RouteType } from 'routes';
+
 import { Section } from 'components/admin/Section';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
+import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
+import Warning from 'components/UI/Warning';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
 import SectionFormWrapper from '../../components/SectionFormWrapper';
 import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-
-// typings
-import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
-
-// constants
-import Warning from 'components/UI/Warning';
 
 interface Props {
   breadcrumbs: TBreadcrumbs;
-  title?: string | JSX.Element;
+  title: string | JSX.Element;
   formStatus: ISubmitState;
   setFormStatus: (submitState: ISubmitState) => void;
   onSave: () => void;
   onSaveAndEnable?: () => void | undefined;
   isLoading: boolean;
-  layoutSettingFieldComponent?: ReactElement;
+  layoutSettingFieldComponent: ReactElement;
   bannerImageFieldsComponent: ReactElement;
   bannerHeaderFieldsComponent: ReactElement;
-  bannerMultilocFieldComponent?: ReactElement;
-  avatarsFieldComponent?: ReactElement;
-  ctaButtonFieldsComponent?: ReactElement;
-  ctaSettingsComponent?: ReactElement;
-  badge?: JSX.Element;
-  linkToViewPage?: string;
+  ctaButtonFieldsComponent: ReactElement;
+  badge: JSX.Element;
+  linkToViewPage: RouteType;
 }
 
 const GenericHeroBannerForm = ({
@@ -43,9 +38,6 @@ const GenericHeroBannerForm = ({
   isLoading,
   title,
   breadcrumbs,
-  avatarsFieldComponent,
-  ctaSettingsComponent,
-  bannerMultilocFieldComponent,
   bannerHeaderFieldsComponent,
   bannerImageFieldsComponent,
   layoutSettingFieldComponent,
@@ -95,11 +87,8 @@ const GenericHeroBannerForm = ({
             {layoutSettingFieldComponent}
             {bannerImageFieldsComponent}
             {bannerHeaderFieldsComponent}
-            {bannerMultilocFieldComponent}
-            {avatarsFieldComponent}
             {/* The custom page hero banner form has the CTA button fields inserted via the core */}
             {ctaButtonFieldsComponent}
-            {ctaSettingsComponent}
           </Box>
         </Section>
       </SectionFormWrapper>

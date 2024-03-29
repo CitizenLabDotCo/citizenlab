@@ -1,22 +1,16 @@
 import React from 'react';
 
-// components
 import Card from '../../_shared/Card';
-import AgeCard from './AgeCard';
-
-// messages
-import messages from '../messages';
-
-// settings
 import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
-
-// types
+import messages from '../messages';
 import { ChartWidgetProps } from '../typings';
 
-const AgeWidget = ({ title, projectId, startAt, endAt }: ChartWidgetProps) => {
+import AgeCard from './AgeCard';
+
+const AgeWidget = ({ title, ...props }: ChartWidgetProps) => {
   return (
     <Card title={title} pagebreak>
-      <AgeCard projectId={projectId} startAt={startAt} endAt={endAt ?? null} />
+      <AgeCard {...props} />
     </Card>
   );
 };
@@ -31,10 +25,8 @@ AgeWidget.craft = {
   related: {
     settings: ChartWidgetSettings,
   },
-  custom: {
-    title: messages.usersByAge,
-    noPointerEvents: true,
-  },
 };
+
+export const ageTitle = messages.usersByAge;
 
 export default AgeWidget;

@@ -114,6 +114,11 @@ class WebApi::V1::IdeasController < ApplicationController
     render_show Idea.find_by!(slug: params[:slug])
   end
 
+  # Return a single draft idea for a phase - for native survey autosave
+  def draft_by_phase
+    render_show Idea.find_by!(creation_phase_id: params[:phase_id], author: current_user, publication_status: 'draft')
+  end
+
   #   Normal users always post in an active phase. They should never provide a phase id.
   #   Users who can moderate projects post in an active phase if no phase id is given.
   #   Users who can moderate projects post in the given phase if a phase id is given.
@@ -139,7 +144,6 @@ class WebApi::V1::IdeasController < ApplicationController
 
     extract_custom_field_values_from_params! participation_method.custom_form
     params_for_create = idea_params participation_method.custom_form, is_moderator
-    params_for_file_upload_fields = extract_params_for_file_upload_fields participation_method.custom_form, params_for_create
     input = Idea.new params_for_create
     input.creation_phase = (phase if participation_method.creation_phase?)
     input.phase_ids = [phase.id] if phase_ids.empty?
@@ -161,18 +165,8 @@ class WebApi::V1::IdeasController < ApplicationController
     save_options = {}
     save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
-      if input.save save_options
-        params_for_file_upload_fields.each do |key, params_for_files_field|
-          idea_file = FileUpload.create!(
-            idea: input,
-            file_by_content: {
-              name: params_for_files_field['name'],
-              content: params_for_files_field['content']
-            }
-          )
-          input.custom_field_values[key] = idea_file.id
-        end
-        input.save!
+      if input.save(**save_options)
+        update_file_upload_fields input, participation_method.custom_form, params_for_create
         service.after_create(input, current_user)
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
@@ -183,13 +177,6 @@ class WebApi::V1::IdeasController < ApplicationController
         render json: { errors: input.errors.details }, status: :unprocessable_entity
       end
     end
-  end
-
-  def extract_params_for_file_upload_fields(custom_form, params_for_create)
-    return {} if params_for_create['custom_field_values'].blank?
-
-    file_upload_field_keys = IdeaCustomFieldsService.new(custom_form).all_fields.select(&:file_upload?).map(&:key)
-    params_for_create['custom_field_values'].extract!(*file_upload_field_keys)
   end
 
   def update
@@ -211,7 +198,7 @@ class WebApi::V1::IdeasController < ApplicationController
     user_can_moderate_project = UserRoleService.new.can_moderate_project?(project, current_user)
     update_params = idea_params(input.custom_form, user_can_moderate_project).to_h
     update_params[:custom_field_values] = input.custom_field_values.merge(update_params[:custom_field_values] || {})
-    CustomFieldService.new.cleanup_custom_field_values! update_params[:custom_field_values]
+    CustomFieldService.new.compact_custom_field_values! update_params[:custom_field_values]
     input.assign_attributes update_params
     authorize input
     if anonymous_not_allowed?(phase)
@@ -225,8 +212,9 @@ class WebApi::V1::IdeasController < ApplicationController
     save_options = {}
     save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
-      if input.save save_options
+      if input.save(**save_options)
         service.after_update(input, current_user)
+        update_file_upload_fields input, input.custom_form, update_params
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
           params: jsonapi_serializer_params,
@@ -264,7 +252,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def extract_custom_field_values_from_params!(custom_form)
     return unless custom_form
 
-    all_fields = IdeaCustomFieldsService.new(custom_form).all_fields
+    all_fields = IdeaCustomFieldsService.new(custom_form).submittable_fields_with_other_options
     extra_field_values = all_fields.each_with_object({}) do |field, accu|
       next if field.built_in?
 
@@ -275,7 +263,53 @@ class WebApi::V1::IdeasController < ApplicationController
     end
     return if extra_field_values.empty?
 
+    extra_field_values = reject_other_text_values(extra_field_values)
     params[:idea][:custom_field_values] = extra_field_values
+  end
+
+  def extract_params_for_file_upload_fields(custom_form, params)
+    return {} if params['custom_field_values'].blank?
+
+    file_upload_field_keys = IdeaCustomFieldsService.new(custom_form).all_fields.select(&:file_upload?).map(&:key)
+    params['custom_field_values'].extract!(*file_upload_field_keys)
+  end
+
+  def update_file_upload_fields(input, custom_form, params)
+    file_uploads_exist = false
+    params_for_file_upload_fields = extract_params_for_file_upload_fields custom_form, params
+    params_for_file_upload_fields.each do |key, params_for_files_field|
+      if params_for_files_field['id']
+        idea_file = FileUpload.find(params_for_files_field['id'])
+        if idea_file
+          input.custom_field_values[key] = { id: idea_file.id, name: idea_file.name }
+          file_uploads_exist = true
+        end
+      elsif params_for_files_field['content']
+        idea_file = FileUpload.create!(
+          idea: input,
+          file_by_content: {
+            name: params_for_files_field['name'],
+            content: params_for_files_field['content']
+          }
+        )
+        input.custom_field_values[key] = { id: idea_file.id, name: idea_file.name }
+        file_uploads_exist = true
+      end
+    end
+    input.save! if file_uploads_exist
+  end
+
+  # Do not save any 'other' text values if the select field does not include 'other' as an option
+  def reject_other_text_values(extra_field_values)
+    extra_field_values.each do |key, _value|
+      if key.end_with? '_other'
+        parent_field_key = key.delete_suffix '_other'
+        parent_field_values = extra_field_values[parent_field_key].is_a?(Array) ? extra_field_values[parent_field_key] : [extra_field_values[parent_field_key]]
+        if parent_field_values.exclude? 'other'
+          extra_field_values.delete key
+        end
+      end
+    end
   end
 
   def service
@@ -283,7 +317,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def idea_attributes(custom_form, user_can_moderate_project)
-    submittable_field_keys = IdeaCustomFieldsService.new(custom_form).submittable_fields.map { |field| field.key.to_sym }
+    submittable_field_keys = IdeaCustomFieldsService.new(custom_form).submittable_fields_with_other_options.map { |field| field.key.to_sym }
     attributes = idea_simple_attributes(submittable_field_keys)
     complex_attributes = idea_complex_attributes(custom_form, submittable_field_keys)
     attributes << complex_attributes if complex_attributes.any?

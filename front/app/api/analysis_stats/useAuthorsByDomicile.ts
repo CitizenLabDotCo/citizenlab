@@ -1,12 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
+import { authorsByDomicileKeys } from './keys';
 import {
   IAuthorsByDomicile,
   AuthorsByDomicileKeys,
   AuthorsByDomicileQueryParams,
 } from './types';
-import { authorsByDomicileKeys } from './keys';
 
 const fetchUsersByDomicile = (
   analysisId: string,

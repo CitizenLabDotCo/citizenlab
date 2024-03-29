@@ -1,10 +1,8 @@
 ---
 models:
-  home_page:
-    -
-      remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/header.jpg
-      banner_signed_out_header_overlay_color: '#0A5159'
-      banner_signed_out_header_overlay_opacity: 90
+  content_builder/layout:
+    - code: homepage
+      enabled: true
   idea_status:
     -
       title_multiloc: idea_statuses.proposed
@@ -7267,6 +7265,10 @@ models:
         project_phase_started: true
       start_at: '2018-03-28'
       end_at:
+      native_survey_title_multiloc:
+        en: "Survey"
+      native_survey_button_multiloc:
+        en: "Take the survey"
       project_ref: *custom_idea_fields_project
     - &project1current
       title_multiloc:
@@ -8294,7 +8296,7 @@ models:
   #   - card_id: "i999"
   custom_maps/map_config:
   - &map_config1
-    project_ref: *76
+    mappable_ref: *76
     center_geojson:
       type: Point
       coordinates:
@@ -8306,6 +8308,7 @@ models:
   custom_maps/layer:
   - &layer1
     map_config_ref: *map_config1
+    type: CustomMaps::GeojsonLayer
     title_multiloc:
       en: Districts
       nl-BE: Districten
@@ -15749,6 +15752,7 @@ models:
     created_at: 2020-03-18 13:32:07 UTC
     updated_at: 2020-03-18 13:32:07 UTC
   - map_config_ref: *map_config1
+    type: CustomMaps::GeojsonLayer
     title_multiloc:
       en: Public toilets
       nl-BE: Publieke toiletten
@@ -15844,49 +15848,6 @@ models:
           description: Toilette Square de l'Atomium
           marker-color: "#DDCA6A"
           marker-symbol: toilets
-    created_at: 2020-03-18 13:32:07 UTC
-    updated_at: 2020-03-18 13:32:07 UTC
-  custom_maps/legend_item:
-  - map_config_ref: *map_config1
-    title_multiloc:
-      fr-BE: Laeken
-    color: "#3b7d6c"
-    created_at: 2020-03-18 13:32:07 UTC
-    updated_at: 2020-03-18 13:32:07 UTC
-  - map_config_ref: *map_config1
-    title_multiloc:
-      fr-BE: Neder-Over-Heembeek
-    color: "#2816b8"
-    created_at: 2020-03-18 13:32:07 UTC
-    updated_at: 2020-03-18 13:32:07 UTC
-  - map_config_ref: *map_config1
-    title_multiloc:
-      fr-BE: Nord
-    color: "#df2397"
-    created_at: 2020-03-18 13:32:07 UTC
-    updated_at: 2020-03-18 13:32:07 UTC
-  - map_config_ref: *map_config1
-    title_multiloc:
-      fr-BE: Louise
-    color: "#06149e"
-    created_at: 2020-03-18 13:32:07 UTC
-    updated_at: 2020-03-18 13:32:07 UTC
-  - map_config_ref: *map_config1
-    title_multiloc:
-      fr-BE: Haren
-    color: "#e90303"
-    created_at: 2020-03-18 13:32:07 UTC
-    updated_at: 2020-03-18 13:32:07 UTC
-  - map_config_ref: *map_config1
-    title_multiloc:
-      fr-BE: Nord-Est
-    color: "#54b1e4"
-    created_at: 2020-03-18 13:32:07 UTC
-    updated_at: 2020-03-18 13:32:07 UTC
-  - map_config_ref: *map_config1
-    title_multiloc:
-      fr-BE: Pentagone
-    color: "#249e0c"
     created_at: 2020-03-18 13:32:07 UTC
     updated_at: 2020-03-18 13:32:07 UTC
   custom_form:

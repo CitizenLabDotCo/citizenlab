@@ -1,23 +1,21 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
-import { get } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import clHistory from 'utils/cl-router/history';
 
-// components
+import { get } from 'lodash-es';
+import styled from 'styled-components';
+
+import tracks from 'containers/Admin/projects/all/tracks';
+
 import Button from 'components/UI/Button';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+
 import ProjectTemplatePreview from '../../components/ProjectTemplatePreview';
 import UseTemplateModal from '../components/UseTemplateModal';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from 'containers/Admin/projects/all/tracks';
-
-// styling
-import styled from 'styled-components';
 
 const Container = styled.div`
   width: 100%;

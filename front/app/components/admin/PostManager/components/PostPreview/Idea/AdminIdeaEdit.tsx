@@ -1,38 +1,33 @@
 import React from 'react';
 
-// components
+import { Box, Button, Spinner } from '@citizenlab/cl2-component-library';
+import { omit } from 'lodash-es';
+import { useTheme } from 'styled-components';
+
+import useIdeaFiles from 'api/idea_files/useIdeaFiles';
+import useDeleteIdeaImage from 'api/idea_images/useDeleteIdeaImage';
+import useIdeaImages from 'api/idea_images/useIdeaImages';
+import useIdeaById from 'api/ideas/useIdeaById';
+import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import useProjectById from 'api/projects/useProjectById';
+
+import useInputSchema from 'hooks/useInputSchema';
+
+import { getLocationGeojson } from 'containers/IdeasEditPage/utils';
+import ideaFormMessages from 'containers/IdeasNewPage/messages';
+
 import {
   Content,
   Top,
 } from 'components/admin/PostManager/components/PostPreview';
-import { Box, Button, Spinner } from '@citizenlab/cl2-component-library';
-import ideaFormMessages from 'containers/IdeasNewPage/messages';
 import Form from 'components/Form';
+import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 
-// services
-import useUpdateIdea from 'api/ideas/useUpdateIdea';
-import useDeleteIdeaImage from 'api/idea_images/useDeleteIdeaImage';
-
-// hooks
-import useIdeaById from 'api/ideas/useIdeaById';
-import useProjectById from 'api/projects/useProjectById';
-import useInputSchema from 'hooks/useInputSchema';
-import useIdeaImages from 'api/idea_images/useIdeaImages';
-import useIdeaFiles from 'api/idea_files/useIdeaFiles';
-
-// intl
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
-// utils
-import { getLocationGeojson } from 'containers/IdeasEditPage/utils';
-import { omit } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
-import { useTheme } from 'styled-components';
 
-// typings
-import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
+import messages from '../messages';
 
 const AdminIdeaEdit = ({
   ideaId,

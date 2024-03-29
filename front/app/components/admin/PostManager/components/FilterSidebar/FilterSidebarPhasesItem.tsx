@@ -1,8 +1,11 @@
 import React from 'react';
-import { canContainIdeas } from 'api/phases/utils';
-import { IPhaseData } from 'api/phases/types';
-import { Menu, Label } from 'semantic-ui-react';
+
 import { useDrop } from 'react-dnd';
+import { Menu, Label } from 'semantic-ui-react';
+
+import { IPhaseData } from 'api/phases/types';
+import { canContainIdeas } from 'api/phases/utils';
+
 import T from 'components/T';
 
 interface Props {

@@ -1,6 +1,8 @@
 import React from 'react';
-import { Locale } from 'typings';
+
 import useMachineTranslationByCommentId from 'modules/commercial/machine_translations/api/useMachineTranslationByCommentId';
+import { Locale } from 'typings';
+
 import { CommentText } from 'components/PostShowComponents/Comments/Comment/CommentBody';
 
 interface Props {

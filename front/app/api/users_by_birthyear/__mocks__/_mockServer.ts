@@ -1,5 +1,7 @@
 import { rest } from 'msw';
+
 import { API_PATH } from 'containers/App/constants';
+
 import { IUsersByBirthyear } from '../types';
 
 export const apiPath = `${API_PATH}/stats/users_by_birthyear`;
@@ -20,8 +22,6 @@ export const usersByBirthyear: IUsersByBirthyear = {
           2010: 1,
           _blank: 42,
         },
-        expected_users: null,
-        reference_population: null,
       },
     },
   },

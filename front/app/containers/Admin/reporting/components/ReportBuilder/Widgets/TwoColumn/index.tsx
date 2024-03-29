@@ -1,24 +1,20 @@
 import React from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
-
-// styles
-import styled from 'styled-components';
-import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
-import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
-
-// craft
-import { twoColumnCraftConfig } from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import { Element } from '@craftjs/core';
-import Container from 'components/admin/ContentBuilder/Widgets/Container';
-import useLayout from 'containers/Admin/reporting/hooks/useLayout';
+import styled from 'styled-components';
 
-// typings
+import useLayout from 'containers/Admin/reporting/hooks/useLayout';
+import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
+
+import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 import { ColumnLayout } from 'components/admin/ContentBuilder/typings';
+import Container from 'components/admin/ContentBuilder/Widgets/Container';
+import { TwoColumnSettings } from 'components/admin/ContentBuilder/Widgets/TwoColumn';
+import messages from 'components/admin/ContentBuilder/Widgets/TwoColumn/messages';
 import { Layout } from 'components/admin/GraphCards/typings';
 
-type TwoColumnProps = {
+export type TwoColumnProps = {
   columnLayout: ColumnLayout;
   children?: React.ReactNode;
 };
@@ -80,6 +76,15 @@ export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
   );
 };
 
-TwoColumn.craft = twoColumnCraftConfig;
+TwoColumn.craft = {
+  props: {
+    columnLayout: '',
+  },
+  related: {
+    settings: TwoColumnSettings,
+  },
+};
+
+export const twoColumnTitle = messages.twoColumn;
 
 export default TwoColumn;

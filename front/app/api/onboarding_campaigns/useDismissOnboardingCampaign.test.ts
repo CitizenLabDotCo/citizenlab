@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDismissOnboardingCampaign from './useDismissOnboardingCampaign';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useDismissOnboardingCampaign from './useDismissOnboardingCampaign';
 
 const apiPath = '*/onboarding_campaigns/verification/dismissal';
 

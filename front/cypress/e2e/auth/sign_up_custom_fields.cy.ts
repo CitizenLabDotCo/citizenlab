@@ -1,4 +1,4 @@
-import { randomString, randomEmail, logout } from '../../support/commands';
+import { randomString, randomEmail } from '../../support/commands';
 
 describe('Sign up - custom fields step', () => {
   describe('No custom fields', () => {
@@ -12,7 +12,7 @@ describe('Sign up - custom fields step', () => {
     });
 
     after(() => {
-      logout();
+      cy.logout();
     });
 
     it('does not show it when no custom fields are enabled', () => {
@@ -33,7 +33,8 @@ describe('Sign up - custom fields step', () => {
 
     it('shows the custom field step and can skip it', () => {
       cy.goToLandingPage();
-      cy.get('#e2e-navbar-signup-menu-item').click();
+      cy.get('#e2e-navbar-login-menu-item').click();
+      cy.get('#e2e-goto-signup').click();
       cy.get('#e2e-sign-up-email-password-container');
 
       const firstName = randomString();

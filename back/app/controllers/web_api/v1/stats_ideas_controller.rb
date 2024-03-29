@@ -38,7 +38,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     res = []
     serie.each do |topic_id, count|
       res.push({
-        'topic' => @@multiloc_service.t(topics.find(topic_id).title_multiloc),
+        'topic' => @@multiloc_service.t(topics.find(topic_id).title_multiloc, current_user&.locale),
         'topic_id' => topic_id,
         'ideas' => count
       })
@@ -72,7 +72,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
     res = serie.map do |project_id, count|
       {
-        'project' => @@multiloc_service.t(projects.find(project_id).title_multiloc),
+        'project' => @@multiloc_service.t(projects.find(project_id).title_multiloc, current_user&.locale),
         'project_id' => project_id,
         'ideas' => count
       }
@@ -104,7 +104,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     res = []
     ideas_by_status_serie.each do |status_id, count|
       res.push({
-        'status' => @@multiloc_service.t(IdeaStatus.find(status_id).title_multiloc),
+        'status' => @@multiloc_service.t(IdeaStatus.find(status_id).title_multiloc, current_user&.locale),
         'status_id' => status_id,
         'ideas' => count
       })

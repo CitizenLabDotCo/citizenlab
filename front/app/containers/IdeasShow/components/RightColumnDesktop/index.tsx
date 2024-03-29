@@ -1,28 +1,27 @@
 import React from 'react';
 
-// api
-import usePhases from 'api/phases/usePhases';
-import useIdeaById from 'api/ideas/useIdeaById';
-
-// components
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import MetaInformation from '../MetaInformation';
-import ReactionControl from 'components/ReactionControl';
-import IdeaSharingButton from '../Buttons/IdeaSharingButton';
-import SharingButtonComponent from '../Buttons/SharingButtonComponent';
-import FollowUnfollow from 'components/FollowUnfollow';
-import GoToCommentsButton from '../Buttons/GoToCommentsButton';
 
-// styling
-import { rightColumnWidthDesktop } from '../../styleConstants';
-
-// utils
-import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
+import useIdeaById from 'api/ideas/useIdeaById';
+import usePhases from 'api/phases/usePhases';
 import {
   getCurrentPhase,
   isIdeaInParticipationContext,
 } from 'api/phases/utils';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import FollowUnfollow from 'components/FollowUnfollow';
+import ReactionControl from 'components/ReactionControl';
+
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
+
+import { rightColumnWidthDesktop } from '../../styleConstants';
+import GoToCommentsButton from '../Buttons/GoToCommentsButton';
+import IdeaSharingButton from '../Buttons/IdeaSharingButton';
+import SharingButtonComponent from '../Buttons/SharingButtonComponent';
+import MetaInformation from '../MetaInformation';
 
 interface Props {
   ideaId: string;
@@ -41,6 +40,9 @@ const RightColumnDesktop = ({
 }: Props) => {
   const { data: phases } = usePhases(projectId);
   const { data: idea } = useIdeaById(ideaId);
+  const followEnabled = useFeatureFlag({
+    name: 'follow',
+  });
 
   if (!idea) return null;
 
@@ -72,6 +74,9 @@ const RightColumnDesktop = ({
       likesCount > 0 ||
       dislikesCount > 0);
 
+  const showInteractionsContainer =
+    ideaIsInParticipationContext || commentingEnabled || followEnabled;
+
   return (
     <Box
       flex={`0 0 ${rightColumnWidthDesktop}px`}
@@ -82,46 +87,41 @@ const RightColumnDesktop = ({
       className={className}
     >
       <Box display="flex" flexDirection="column">
-        <Box
-          padding="20px"
-          borderRadius="3px"
-          background={colors.background}
-          mb="12px"
-        >
-          {(ideaIsInParticipationContext || commentingEnabled) && (
-            <>
-              {showReactionControl && (
-                <Box pb="23px" mb="23px">
-                  <ReactionControl
-                    styleType="shadow"
-                    ideaId={ideaId}
-                    size="4"
-                  />
-                </Box>
-              )}
-              <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
-                {phase &&
-                  ideaIsInParticipationContext &&
-                  votingConfig?.getIdeaPageVoteInput({
-                    ideaId,
-                    phase,
-                    compact: false,
-                  })}
+        {showInteractionsContainer && (
+          <Box
+            padding="20px"
+            borderRadius="3px"
+            background={colors.background}
+            mb="12px"
+          >
+            {showReactionControl && (
+              <Box pb="23px" mb="23px">
+                <ReactionControl styleType="shadow" ideaId={ideaId} size="4" />
               </Box>
-              {commentingEnabled && (
-                <Box mb="10px">
-                  <GoToCommentsButton />
-                </Box>
-              )}
-            </>
-          )}
-          <FollowUnfollow
-            followableType="ideas"
-            followableId={ideaId}
-            followersCount={idea.data.attributes.followers_count}
-            followerId={idea.data.relationships.user_follower?.data?.id}
-          />
-        </Box>
+            )}
+            {phase && ideaIsInParticipationContext && (
+              <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
+                {votingConfig?.getIdeaPageVoteInput({
+                  ideaId,
+                  phase,
+                  compact: false,
+                })}
+              </Box>
+            )}
+
+            {commentingEnabled && (
+              <Box mb="10px">
+                <GoToCommentsButton />
+              </Box>
+            )}
+            <FollowUnfollow
+              followableType="ideas"
+              followableId={ideaId}
+              followersCount={idea.data.attributes.followers_count}
+              followerId={idea.data.relationships.user_follower?.data?.id}
+            />
+          </Box>
+        )}
         <Box mb="16px">
           <IdeaSharingButton
             ideaId={ideaId}

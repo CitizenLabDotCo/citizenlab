@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
+
 import AsyncSelect from 'react-select/async';
-import selectStyles from 'components/UI/MultipleSelect/styles';
-import fetcher from 'utils/cl-react-query/fetcher';
+
 import useLocale from 'hooks/useLocale';
+
+import selectStyles from 'components/UI/MultipleSelect/styles';
+
 import { useIntl } from 'utils/cl-intl';
+import fetcher from 'utils/cl-react-query/fetcher';
+
 import messages from './messages';
 import { isValidCoordinate } from './utils';
 
@@ -88,9 +93,10 @@ const LocationInput = (
 
   return (
     <AsyncSelect
+      id="e2e-location-input"
       defaultOptions={defaultOptions}
       loadOptions={promiseOptions}
-      styles={selectStyles}
+      styles={selectStyles()}
       noOptionsMessage={() => formatMessage(messages.noOptions)}
       blurInputOnSelect
       menuShouldScrollIntoView={false}

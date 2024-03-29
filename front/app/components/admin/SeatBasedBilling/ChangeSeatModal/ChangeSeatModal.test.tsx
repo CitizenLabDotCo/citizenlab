@@ -1,8 +1,10 @@
 import React from 'react';
+
+import { makeAdmin, makeUser } from 'api/users/__mocks__/useUsers';
+
 import { render, screen } from 'utils/testUtils/rtl';
 
 import ChangeSeatModal from '.';
-import { makeAdmin, makeUser } from 'api/users/__mocks__/useUsers';
 
 type MockAppConfigurationType = {
   data: {

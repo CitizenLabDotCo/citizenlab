@@ -1,17 +1,18 @@
 import React from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
-import { QuestionRuleDisplay } from './QuestionRuleDisplay';
-import { PageRuleDisplay } from './PageRuleDisplay';
 
-// i18n
-import { MessageDescriptor, useIntl } from 'utils/cl-intl';
-import messages from '../../../messages';
+import { IFlatCustomField } from 'api/custom_fields/types';
+
 import useLocale from 'hooks/useLocale';
 
-// utils
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { isPageRuleValid, isRuleValid } from 'utils/yup/validateLogic';
+
+import messages from '../../../messages';
+
+import { PageRuleDisplay } from './PageRuleDisplay';
+import { QuestionRuleDisplay } from './QuestionRuleDisplay';
 import {
   getOptionRule,
   getLinearScaleRule,
@@ -19,9 +20,6 @@ import {
   getTitleFromAnswerId,
   getTitleFromPageId,
 } from './utils';
-
-// typings
-import { IFlatCustomField } from 'api/custom_fields/types';
 
 interface Props {
   field: IFlatCustomField;
@@ -51,9 +49,12 @@ const Logic = ({
         field.options &&
         field.options.map((option) => {
           const optionRule = getOptionRule(option, field);
+          const key = `${field.temp_id || field.id}_${
+            option.id || option.temp_id
+          }`;
 
           return (
-            <Box key={option.id}>
+            <Box key={key}>
               <QuestionRuleDisplay
                 isRuleValid={isRuleValid(
                   optionRule,
@@ -79,9 +80,10 @@ const Logic = ({
         field.maximum &&
         getLinearScaleOptions(field.maximum).map((option) => {
           const linearScaleRule = getLinearScaleRule(option, field);
+          const key = `${field.temp_id || field.id}_${option.key}`;
 
           return (
-            <Box key={option.key}>
+            <Box key={key}>
               <QuestionRuleDisplay
                 isRuleValid={isRuleValid(
                   linearScaleRule,

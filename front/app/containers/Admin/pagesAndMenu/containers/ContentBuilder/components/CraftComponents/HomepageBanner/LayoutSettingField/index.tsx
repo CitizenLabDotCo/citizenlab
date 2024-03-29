@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   fontSizes,
@@ -8,7 +7,14 @@ import {
   IconTooltip,
   Text,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
 import { SectionField } from 'components/admin/Section';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import { THomepageBannerLayout } from '..';
+import messages from '../messages';
 
 import FullWidthBannerLayoutActive from './layout_previews/full_width_banner_layout_active.jpg';
 import FullWidthBannerLayoutInactive from './layout_previews/full_width_banner_layout_inactive.jpg';
@@ -16,21 +22,6 @@ import TwoColumnLayoutActive from './layout_previews/two_column_layout_active.jp
 import TwoColumnLayoutInactive from './layout_previews/two_column_layout_inactive.jpg';
 import TwoRowLayoutActive from './layout_previews/two_row_layout_active.jpg';
 import TwoRowLayoutInactive from './layout_previews/two_row_layout_inactive.jpg';
-
-// style
-import styled from 'styled-components';
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
-import {
-  ICustomPageAttributes,
-  TCustomPageBannerLayout,
-} from 'api/custom_pages/types';
-import {
-  IHomepageSettingsAttributes,
-  THomepageBannerLayout,
-} from 'api/home_page/types';
 
 const LayoutPreview = styled.img`
   width: 100%;
@@ -46,12 +37,8 @@ const LayoutOption = styled.label`
 `;
 
 export interface Props {
-  bannerLayout:
-    | ICustomPageAttributes['banner_layout']
-    | IHomepageSettingsAttributes['banner_layout'];
-  onChange: (
-    bannerLayout: THomepageBannerLayout | TCustomPageBannerLayout
-  ) => void;
+  bannerLayout: THomepageBannerLayout;
+  onChange: (bannerLayout: THomepageBannerLayout) => void;
 }
 
 const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {

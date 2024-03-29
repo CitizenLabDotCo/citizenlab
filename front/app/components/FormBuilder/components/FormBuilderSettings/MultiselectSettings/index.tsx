@@ -1,15 +1,15 @@
 import React from 'react';
 
-// components
 import { Box, IconTooltip, Label } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
-import Toggle from 'components/HookForm/Toggle';
-import Input from 'components/HookForm/Input';
-
-// intl
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
 import { useFormContext } from 'react-hook-form';
+import styled from 'styled-components';
+
+import Input from 'components/HookForm/Input';
+import Toggle from 'components/HookForm/Toggle';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 
 const StyledLabel = styled(Label)`
   height: 100%;
@@ -32,6 +32,13 @@ const MultiselectSettings = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const { watch } = useFormContext();
+
+  const handleKeyDown = (event: React.KeyboardEvent<Element>) => {
+    // We want to prevent the form builder from being closed when enter is pressed
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  };
 
   return (
     <Box mb="24px">
@@ -65,6 +72,7 @@ const MultiselectSettings = ({
               max={watch(selectOptionsName).length}
               min="0"
               size="small"
+              onKeyDown={handleKeyDown}
             />
           </Box>
           <Box display="flex">
@@ -81,6 +89,7 @@ const MultiselectSettings = ({
               size="small"
               min={watch(minimumSelectCountName)}
               max={watch(selectOptionsName).length}
+              onKeyDown={handleKeyDown}
             />
           </Box>
         </Box>

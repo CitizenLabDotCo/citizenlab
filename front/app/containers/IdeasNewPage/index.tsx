@@ -1,47 +1,46 @@
 import React from 'react';
-import { createPortal } from 'react-dom';
+
+import { Spinner } from '@citizenlab/cl2-component-library';
 import { parse } from 'qs';
-
-// components
-import {
-  Box,
-  useBreakpoint,
-  Spinner,
-  colors,
-} from '@citizenlab/cl2-component-library';
-import Unauthorized from 'components/Unauthorized';
-import PageNotFound from 'components/PageNotFound';
-import VerticalCenterer from 'components/VerticalCenterer';
-import SurveySubmittedNotice from './components/SurveySubmittedNotice';
-import IdeasNewForm from './IdeasNewForm';
-
-// hooks
-import useProjectBySlug from 'api/projects/useProjectBySlug';
-import usePhases from 'api/phases/usePhases';
-import { getParticipationMethod } from 'utils/configs/participationMethodConfig';
-
-// utils
-import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { useParams } from 'react-router-dom';
-import { getIdeaPostingRules } from 'utils/actionTakingRules';
+
 import useAuthUser from 'api/me/useAuthUser';
+import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
+import useProjectBySlug from 'api/projects/useProjectBySlug';
+
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+
+import PageNotFound from 'components/PageNotFound';
+import Unauthorized from 'components/Unauthorized';
+import VerticalCenterer from 'components/VerticalCenterer';
+
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { getIdeaPostingRules } from 'utils/actionTakingRules';
+import { getParticipationMethod } from 'utils/configs/participationMethodConfig';
+import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+
+import SurveyNotActiveNotice from './components/SurveyNotActiveNotice';
+import SurveySubmittedNotice from './components/SurveySubmittedNotice';
+import IdeasNewIdeationForm from './IdeasNewIdeationForm';
+import IdeasNewSurveyForm from './IdeasNewSurveyForm';
 
 const NewIdeaPage = () => {
   const { slug } = useParams();
-
-  const isSmallerThanPhone = useBreakpoint('phone');
-  const { data: project, status, error } = useProjectBySlug(slug);
+  const {
+    data: project,
+    status: projectStatus,
+    error,
+  } = useProjectBySlug(slug);
   const { data: authUser } = useAuthUser();
-  const { data: phases } = usePhases(project?.data.id);
+  const { data: phases, status: phasesStatus } = usePhases(project?.data.id);
   const { phase_id } = parse(location.search, {
     ignoreQueryPrefix: true,
   }) as { [key: string]: string };
 
-  if (status === 'loading') {
+  if (projectStatus === 'loading' || phasesStatus === 'loading') {
     return (
       <VerticalCenterer>
         <Spinner />
@@ -57,23 +56,38 @@ const NewIdeaPage = () => {
     return <PageNotFound />;
   }
 
+  if (!phases || !project) {
+    return null;
+  }
+
+  const currentPhase = getCurrentPhase(phases?.data);
   const participationMethod = getParticipationMethod(
-    project?.data,
+    project.data,
     phases?.data,
     phase_id
   );
-  const portalElement = document?.getElementById('modal-portal');
   const isSurvey = participationMethod === 'native_survey';
 
   const { enabled, disabledReason, authenticationRequirements } =
     getIdeaPostingRules({
-      project: project?.data,
-      phase: getCurrentPhase(phases?.data),
+      project: project.data,
+      phase: currentPhase,
       authUser: authUser?.data,
     });
 
-  if (project && isSurvey && disabledReason === 'postingLimitedMaxReached') {
-    return <SurveySubmittedNotice project={project.data} />;
+  const userIsModerator =
+    !isNilOrError(authUser) &&
+    canModerateProject(project.data.id, { data: authUser.data });
+
+  const userCannotViewSurvey =
+    !userIsModerator && phase_id !== currentPhase?.id;
+
+  if (isSurvey) {
+    if (disabledReason === 'postingLimitedMaxReached') {
+      return <SurveySubmittedNotice project={project.data} />;
+    } else if (userCannotViewSurvey) {
+      return <SurveyNotActiveNotice project={project.data} />;
+    }
   }
 
   if ((enabled === 'maybe' && authenticationRequirements) || disabledReason) {
@@ -100,25 +114,11 @@ const NewIdeaPage = () => {
     );
   }
 
-  if (isSurvey && portalElement && isSmallerThanPhone) {
-    return createPortal(
-      <Box
-        display="flex"
-        flexDirection="column"
-        w="100%"
-        zIndex="10000"
-        position="fixed"
-        bgColor={colors.background}
-        h="100vh"
-        overflowY="scroll"
-      >
-        <IdeasNewForm />
-      </Box>,
-      portalElement
-    );
+  if (isSurvey) {
+    return <IdeasNewSurveyForm project={project} />;
+  } else {
+    return <IdeasNewIdeationForm project={project} />;
   }
-
-  return <IdeasNewForm />;
 };
 
 export default NewIdeaPage;

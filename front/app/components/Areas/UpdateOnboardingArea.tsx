@@ -1,11 +1,16 @@
 import React from 'react';
+
 import { Badge, colors, Button } from '@citizenlab/cl2-component-library';
-import T from 'components/T';
+
 import { IAreaData } from 'api/areas/types';
 import useUpdateArea from 'api/areas/useUpdateArea';
+
+import T from 'components/T';
 import Error from 'components/UI/Error';
-import messages from './messages';
+
 import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 
 interface Props {
   area: IAreaData;

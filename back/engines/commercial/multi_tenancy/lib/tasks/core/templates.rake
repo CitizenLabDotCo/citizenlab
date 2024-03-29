@@ -23,7 +23,7 @@ namespace :templates do
 
   task :import, %i[host file] => [:environment] do |_t, args|
     Tenant.find_by(host: args[:host]).switch do
-      serialized_models = YAML.load(File.read(args[:file]))
+      serialized_models = MultiTenancy::Templates::Utils.parse_yml_file(args[:file])
       MultiTenancy::Templates::TenantDeserializer.new.deserialize(serialized_models)
     end
   end
@@ -49,7 +49,7 @@ namespace :templates do
 
   task :verify, [:output_file] => [:environment] do |_t, args|
     test_prefix = MultiTenancy::Templates::Utils.new.test_prefix
-    templates = MultiTenancy::Templates::Utils.new.available_external_templates(prefix: test_prefix)
+    templates = MultiTenancy::Templates::Utils.new.external_template_names(prefix: test_prefix)
     puts({ event: 'templates_verification', prefix: test_prefix, nb_templates: templates.size }.to_json)
     next if templates.empty?
 
@@ -99,7 +99,7 @@ namespace :templates do
 
   task :change_locale, %i[template_name locale_from locale_to] => [:environment] do |_t, args|
     template_path = Rails.root.join('config/tenant_templates', "#{args[:template_name]}.yml")
-    serialized_models = YAML.load(File.read(template_path))
+    serialized_models = MultiTenancy::Templates::Utils.parse_yml_file(template_path)
 
     serialized_models = MultiTenancy::Templates::Utils.change_locales(
       serialized_models,

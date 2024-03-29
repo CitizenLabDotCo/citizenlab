@@ -1,9 +1,12 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
-import Tabs from './';
+
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
+
+import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
+
+import Tabs from './';
 
 const schema = object({
   selectedTab: string().required('Error message'),

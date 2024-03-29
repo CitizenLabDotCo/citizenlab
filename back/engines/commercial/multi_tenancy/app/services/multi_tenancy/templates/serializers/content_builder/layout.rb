@@ -7,7 +7,7 @@ module MultiTenancy
         class Layout < Base
           ref_attribute :content_buildable
 
-          attributes %i[code content_buildable_type craftjs_jsonmultiloc craftjs_json enabled]
+          attributes %i[code craftjs_json enabled]
         end
       end
     end

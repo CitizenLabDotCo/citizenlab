@@ -1,7 +1,10 @@
 import { IRelationship, Multiloc } from 'typings';
-import { Keys } from 'utils/cl-react-query/types';
-import phasesKeys from './keys';
+
 import { CampaignName } from 'api/campaigns/types';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import phasesKeys from './keys';
 
 export type PhasesKeys = Keys<typeof phasesKeys>;
 
@@ -52,6 +55,7 @@ export interface IPhaseAttributes {
   poll_anonymous?: boolean;
   ideas_order?: IdeaDefaultSortMethod;
   document_annotation_embed_url?: string | null;
+  custom_form_persisted?: boolean;
   voting_method?: VotingMethod | null;
   voting_term_singular_multiloc?: Multiloc | null;
   voting_term_plural_multiloc?: Multiloc | null;
@@ -59,8 +63,13 @@ export interface IPhaseAttributes {
   voting_max_total?: number | null;
   voting_max_votes_per_idea?: number | null;
   ideas_count: number;
-  baskets_count?: number | null;
-  votes_count?: number | null;
+  baskets_count: number;
+  /** For budgeting it's: for each idea multiply price of the idea
+   * with the idea's baskets_count, then sum all those to get the total idea votes for the phase  */
+  votes_count: number;
+  report_public: boolean;
+  native_survey_title_multiloc?: Multiloc;
+  native_survey_button_multiloc?: Multiloc;
 }
 
 export interface IPhases {
@@ -95,7 +104,11 @@ export interface IUpdatedPhaseProperties {
   poll_anonymous?: boolean;
   ideas_order?: IdeaDefaultSortMethod;
   document_annotation_embed_url?: string | null;
-  campaigns_settings?: object;
+  campaigns_settings?: {
+    [key in CampaignName]?: boolean;
+  };
+  native_survey_title_multiloc?: Multiloc;
+  native_survey_button_multiloc?: Multiloc;
 }
 export interface AddPhaseObject extends IUpdatedPhaseProperties {
   projectId: string;

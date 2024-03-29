@@ -18,9 +18,7 @@ class TimelineService
   def current_phase(project, time = Time.now)
     date = time.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
 
-    project.phases.find do |phase|
-      phase.start_at <= date && (phase.end_at.nil? || phase.end_at >= date)
-    end
+    project.phases.find { |phase| phase.start_at <= date && (phase.end_at.nil? || phase.end_at >= date) }
   end
 
   def phase_is_complete?(phase, time = Time.now)
@@ -79,6 +77,7 @@ class TimelineService
   end
 
   def timeline_active_on_collection(projects)
+    projects = projects.to_a
     today = Time.now.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     starts = Phase.where(project: projects).group(:project_id).minimum(:start_at)
     ends = Phase.where(project: projects).group(:project_id).maximum(:end_at)

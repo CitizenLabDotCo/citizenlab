@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { render, waitFor } from 'utils/testUtils/rtl';
+
 import PagesMenu from '.';
 
 const metaTitle = 'Pages & Menu';

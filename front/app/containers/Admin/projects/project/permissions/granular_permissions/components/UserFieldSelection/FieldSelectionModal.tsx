@@ -1,19 +1,19 @@
 import React from 'react';
 
-// components
 import { Box, Title } from '@citizenlab/cl2-component-library';
-import Modal from 'components/UI/Modal';
 
-// services
+import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 
-// intl
-import { SelectionScreen } from './screens/SelectionScreen';
-import { AddFieldScreen } from './screens/AddFieldScreen';
-import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
+import { generateTempId } from 'components/FormBuilder/utils';
+import Modal from 'components/UI/Modal';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
 import messages from '../../containers/Granular/messages';
-import { generateTempId } from 'components/FormBuilder/components/FormBuilderSettings/utils';
+
+import { AddFieldScreen } from './screens/AddFieldScreen';
+import { SelectionScreen } from './screens/SelectionScreen';
 
 type FieldSelectionModalProps = {
   showSelectionModal: boolean;

@@ -1,4 +1,5 @@
 import { omit } from 'lodash-es';
+
 import { Series } from './typings';
 
 const join = (data1: Series, data2: Series, { by }: { by: string }) => {

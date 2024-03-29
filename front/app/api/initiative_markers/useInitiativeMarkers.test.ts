@@ -1,11 +1,10 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useInitiativeMarkers from './useInitiativeMarkers';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useInitiativeMarkers from './useInitiativeMarkers';
 
 const apiPath = '*initiatives/as_markers';
 

@@ -93,6 +93,10 @@ module BulkImportIdeas
       location = ENV.fetch('GOOGLE_DOCUMENT_AI_LOCATION')
       client = Google::Cloud::DocumentAI.document_processor_service do |config|
         config.endpoint = "#{location}-documentai.googleapis.com"
+        config.channel_args = {
+          'grpc.max_receive_message_length' => 8 * 1024 * 1024,
+          'grpc.max_send_message_length' => 8 * 1024 * 1024
+        }
       end
 
       name = client.processor_path(

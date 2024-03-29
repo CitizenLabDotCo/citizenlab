@@ -1,9 +1,12 @@
 import React from 'react';
+
 import {
   ICustomPageData,
   TCustomPageBannerLayout,
 } from 'api/custom_pages/types';
+
 import { render, screen } from 'utils/testUtils/rtl';
+
 import CustomPageHeader from '.';
 
 const headerBgUrl = 'https://example.com/image.png';

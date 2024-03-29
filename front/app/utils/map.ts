@@ -1,14 +1,13 @@
-import { isNilOrError } from 'utils/helperUtils';
-import { IAppConfigurationData } from 'api/app_configuration/types';
-import {
-  DEFAULT_TILE_PROVIDER,
-  DEFAULT_TILE_OPTIONS,
-  DEFAULT_CENTER,
-  DEFAULT_ZOOM,
-} from 'components/UI/LeafletMap/config';
-import { LatLngTuple } from 'leaflet';
-import { isNil } from 'lodash-es';
 import formatcoords from 'formatcoords';
+import { isNil } from 'lodash-es';
+
+import { IAppConfigurationData } from 'api/app_configuration/types';
+
+import { DEFAULT_TILE_PROVIDER } from 'components/EsriMap/constants';
+
+import { isNilOrError } from 'utils/helperUtils';
+
+import { LatLngTuple } from './mapUtils/map';
 
 export const getCenter = (
   centerLatLng?: LatLngTuple | null,
@@ -28,7 +27,7 @@ export const getCenter = (
     ] as LatLngTuple;
   }
 
-  return DEFAULT_CENTER;
+  return [0, 0];
 };
 
 export const getZoomLevel = (
@@ -38,7 +37,7 @@ export const getZoomLevel = (
   const tenantZoomLevel =
     !isNilOrError(appConfig) &&
     (appConfig?.attributes?.settings?.maps?.zoom_level as any);
-  return parseInt(zoom || tenantZoomLevel || DEFAULT_ZOOM, 10);
+  return parseInt(zoom || tenantZoomLevel || 13, 10);
 };
 
 export const getTileProvider = (
@@ -48,10 +47,6 @@ export const getTileProvider = (
     !isNilOrError(appConfig) &&
     (appConfig?.attributes?.settings?.maps?.tile_provider as string);
   return tileProvider || DEFAULT_TILE_PROVIDER;
-};
-
-export const getTileOptions = () => {
-  return DEFAULT_TILE_OPTIONS;
 };
 
 export const convertLatLngToDMS = (lat: any, lng: any) => {

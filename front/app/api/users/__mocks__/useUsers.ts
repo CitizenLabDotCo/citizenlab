@@ -1,5 +1,6 @@
-import { usersData } from './_mockServer';
 import { IUser } from '../types';
+
+import { usersData } from './_mockServer';
 
 export const makeUser = (attributes = {}, id?: string): IUser => {
   return {
@@ -18,7 +19,9 @@ export const makeUser = (attributes = {}, id?: string): IUser => {
         },
         roles: [],
         highest_role: 'user',
-        bio_multiloc: {},
+        bio_multiloc: {
+          en: 'I am a test user',
+        },
         registration_completed_at: '2018-11-26T15:40:54.355Z',
         invite_status: null,
         created_at: '2018-11-26T15:41:19.782Z',

@@ -1,4 +1,7 @@
 import React from 'react';
+
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+
 import {
   Container,
   Header,
@@ -6,12 +9,12 @@ import {
   HeaderImageBackground,
   HeaderImageOverlay,
 } from 'components/LandingPages/citizen/FullWidthBannerLayout';
+
 import HeaderContent from './HeaderContent';
-import { IHomepageSettingsAttributes } from 'api/home_page/types';
 
 interface Props {
   className?: string;
-  homepageSettings: Partial<IHomepageSettingsAttributes>;
+  homepageSettings: Partial<IHomepageBannerSettings>;
 }
 
 const FullWidthBannerLayout = ({ className, homepageSettings }: Props) => {

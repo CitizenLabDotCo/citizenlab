@@ -1,12 +1,13 @@
+import { groupBy } from 'lodash-es';
 import moment, { Moment } from 'moment';
 
-// utils
-import { groupBy } from 'lodash-es';
+import { getInterval } from 'components/admin/GraphCards/_utils/query';
 import { timeSeriesParser } from 'components/admin/GraphCards/_utils/timeSeries';
-import { keys, get } from 'utils/helperUtils';
-
-// typings
 import { IResolution } from 'components/admin/ResolutionControl';
+
+import { keys } from 'utils/helperUtils';
+
+import { Translations } from './translations';
 import {
   Response,
   Stats,
@@ -16,10 +17,14 @@ import {
   PreparedTimeSeriesResponse,
   PreparedTimeSeriesResponseRow,
 } from './typings';
-import { Translations } from './translations';
 
-export const mergeTimeSeries = (timeSeriesQuery: TimeSeriesResponseRow[]) => {
-  const dateColumn = 'first_dimension_date_sent_date';
+export const mergeTimeSeries = (
+  timeSeriesQuery: TimeSeriesResponseRow[],
+  currentResolution: IResolution
+) => {
+  const dateColumn = `first_dimension_date_sent_${getInterval(
+    currentResolution
+  )}`;
   const groupedTimeSerie = groupBy(timeSeriesQuery, dateColumn);
 
   return Object.values(groupedTimeSerie).map((values) => ({
@@ -53,7 +58,12 @@ const parseRow = (
 };
 
 const getDate = (row: PreparedTimeSeriesResponseRow) => {
-  return moment(get(row, 'first_dimension_date_sent_date'));
+  const dateAttribute =
+    row.first_dimension_date_sent_date ||
+    row.first_dimension_date_sent_week ||
+    row.first_dimension_date_sent_month;
+
+  return moment(dateAttribute);
 };
 
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);

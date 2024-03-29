@@ -14,6 +14,14 @@ module OmniauthMethods
       {}
     end
 
+    def profile_to_uid(auth)
+      auth['uid']
+    end
+
+    def filter_auth_to_persist(auth)
+      auth
+    end
+
     # @return [Array<Symbol>] Returns a list of user attributes that can be updated from the auth response hash
     def updateable_user_attrs
       []
@@ -26,10 +34,6 @@ module OmniauthMethods
 
     def can_merge?(_user, _user_attrs, _sso_verification_param_value)
       true
-    end
-
-    def redirect_callback_to_get_cookies(_controller)
-      false
     end
 
     # It never runs if #can_merge? always returns true.

@@ -9,13 +9,9 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.edit',
     defaultMessage: 'Edit',
   },
-  view: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.view',
-    defaultMessage: 'View',
-  },
-  share: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.share',
-    defaultMessage: 'Share',
+  print: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.print',
+    defaultMessage: 'Print',
   },
   confirmDeleteReport: {
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport',
@@ -33,5 +29,10 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.lastUpdate',
     defaultMessage:
       'Last update: {days, plural, no {# days} one {# day} other {# days}} ago by {author}',
+  },
+  cannotEditReport: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport2',
+    defaultMessage:
+      "You cannot edit this report because it contains data that you don't have access to.",
   },
 });

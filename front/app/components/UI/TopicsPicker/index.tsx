@@ -1,22 +1,21 @@
 import React, { memo, MouseEvent } from 'react';
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
-// styles
-import styled from 'styled-components';
+
 import { colors, fontSizes, isRtl } from '@citizenlab/cl2-component-library';
-import { ScreenReaderOnly } from 'utils/a11y';
 import { darken, lighten } from 'polished';
+import styled from 'styled-components';
 
-// types
 import { ITopicData } from 'api/topics/types';
-
-// intl
-import T from 'components/T';
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// hooks
 import useTopics from 'api/topics/useTopics';
+
 import useLocalize from 'hooks/useLocalize';
+
+import T from 'components/T';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
+
+import messages from './messages';
 
 const TopicsContainer = styled.div`
   display: flex;

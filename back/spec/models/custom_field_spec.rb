@@ -35,8 +35,16 @@ class TestVisitor < FieldVisitorService
     'select from visitor'
   end
 
+  def visit_select_image(_field)
+    'select_image from visitor'
+  end
+
   def visit_multiselect(_field)
     'multiselect from visitor'
+  end
+
+  def visit_multiselect_image(_field)
+    'multiselect_image from visitor'
   end
 
   def visit_checkbox(_field)
@@ -446,6 +454,52 @@ RSpec.describe CustomField do
     it 'cannot be less than 0' do
       field.minimum_select_count = -1
       expect(field.valid?).to be false
+    end
+  end
+
+  describe '#other_option_text_field' do
+    let(:field) { create(:custom_field_multiselect, :with_options, key: 'select_field') }
+
+    it 'returns a text field when the field has an other option' do
+      create(:custom_field_option, custom_field: field, key: 'other', other: true)
+      expect(field.other_option_text_field).not_to be_nil
+      expect(field.other_option_text_field.key).to eq 'select_field_other'
+      expect(field.other_option_text_field.input_type).to eq 'text'
+    end
+
+    it 'returns nil otherwise' do
+      expect(field.other_option_text_field).to be_nil
+    end
+  end
+
+  context 'when point field methods are called' do
+    let(:point_field) { create(:custom_field_point, title_multiloc: { en: 'Where is it?', 'nl-NL': 'Waar is het?' }) }
+    let(:text_field) { create(:custom_field_text) }
+
+    describe '#point_latitude_field' do
+      it "returns a point field when the field has input_type: 'point'" do
+        expect(point_field.point_latitude_field).not_to be_nil
+        expect(point_field.point_latitude_field.key).to eq "#{point_field.key}_latitude"
+        expect(point_field.point_latitude_field.title_multiloc)
+          .to eq({ 'en' => 'Where is it? - Latitude', 'nl-NL' => 'Waar is het? - Breedtegraad' })
+      end
+
+      it 'returns nil otherwise' do
+        expect(text_field.point_latitude_field).to be_nil
+      end
+    end
+
+    describe '#point_longitude_field' do
+      it "returns a point field when the field has input_type: 'point'" do
+        expect(point_field.point_longitude_field).not_to be_nil
+        expect(point_field.point_longitude_field.key).to eq "#{point_field.key}_longitude"
+        expect(point_field.point_longitude_field.title_multiloc)
+          .to eq({ 'en' => 'Where is it? - Longitude', 'nl-NL' => 'Waar is het? - Lengtegraad' })
+      end
+
+      it 'returns nil otherwise' do
+        expect(text_field.point_longitude_field).to be_nil
+      end
     end
   end
 end

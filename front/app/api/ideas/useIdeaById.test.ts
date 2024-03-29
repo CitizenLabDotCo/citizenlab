@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useIdeaById from './useIdeaById';
-import endpoints, { ideaData, apiPathById } from './__mocks__/_mockServer';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import endpoints, { ideaData, apiPathById } from './__mocks__/_mockServer';
+import useIdeaById from './useIdeaById';
 
 const server = setupServer(endpoints['GET ideas/:id']);
 

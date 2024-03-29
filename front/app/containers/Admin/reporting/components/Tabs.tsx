@@ -1,30 +1,27 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
-// hooks
+import { Box, Badge, colors } from '@citizenlab/cl2-component-library';
 import { useLocation } from 'react-router-dom';
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import { ITab } from 'typings';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-// components
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import NavigationTabs, {
   Tab,
   TabsPageLayout,
 } from 'components/admin/NavigationTabs';
-import Outlet from 'components/Outlet';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
-// utils
-import { isNilOrError, isTopBarNavActive } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
+import { isNilOrError, isTopBarNavActive } from 'utils/helperUtils';
 
-// typings
-import { ITab } from 'typings';
+import messages from '../messages';
 
 interface Props {
   showReportBuilderTab: boolean;
+  showProjectReportsTab: boolean;
   children?: React.ReactNode;
 }
 
@@ -33,28 +30,34 @@ const removeTrailingSlash = (str: string) => {
   return str;
 };
 
-const DashboardTabs = ({ showReportBuilderTab, children }: Props) => {
+const DashboardTabs = ({
+  showReportBuilderTab,
+  showProjectReportsTab,
+  children,
+}: Props) => {
   const { pathname } = useLocation();
   const { formatMessage } = useIntl();
 
-  const [additionalTabs, setAdditionalTabs] = useState<ITab[]>([]);
   const [redirected, setRedirected] = useState(false);
 
-  const tabs = useMemo(
-    () => [
-      ...(showReportBuilderTab
-        ? [
-            {
-              label: formatMessage(messages.reportBuilder),
-              url: '/admin/reporting/report-builder',
-              name: 'report_builder',
-            },
-          ]
-        : []),
-      ...additionalTabs,
-    ],
-    [showReportBuilderTab, additionalTabs, formatMessage]
-  );
+  const [tabs] = useState(() => {
+    const reportBuilderTab: ITab = {
+      label: formatMessage(messages.reportBuilder),
+      url: '/admin/reporting/report-builder',
+      name: 'report_builder',
+    };
+
+    const projectReportsTab: ITab = {
+      label: formatMessage(messages.tabReports),
+      url: '/admin/reporting/reports',
+      name: 'project_reports',
+    };
+
+    return [
+      ...(showReportBuilderTab ? [reportBuilderTab] : []),
+      ...(showProjectReportsTab ? [projectReportsTab] : []),
+    ];
+  });
 
   useEffect(() => {
     if (redirected) return;
@@ -69,31 +72,37 @@ const DashboardTabs = ({ showReportBuilderTab, children }: Props) => {
   return (
     <>
       <NavigationTabs>
-        {tabs.map(({ url, label }) => (
+        {tabs.map(({ url, label, name }) => (
           <Tab
             label={label}
             url={url}
             key={url}
             active={isTopBarNavActive('/admin/reporting', pathname, url)}
+            badge={
+              name === 'project_reports' ? (
+                <Box display="inline" ml="12px">
+                  <Badge color={colors.textSecondary} className="inverse">
+                    {formatMessage(messages.deprecated)}
+                  </Badge>
+                </Box>
+              ) : null
+            }
           />
         ))}
       </NavigationTabs>
       <TabsPageLayout>{children}</TabsPageLayout>
-      <Outlet
-        id="app.containers.Admin.reporting.components.Tabs"
-        onData={setAdditionalTabs}
-      />
     </>
   );
 };
 
 const DashboardTabsWrapper = ({ children }: { children: React.ReactNode }) => {
   const appConfig = useAppConfiguration();
-  const isFeatureEnabled = useFeatureFlag({ name: 'report_builder' });
-  const isFeatureAllowed = useFeatureFlag({
+  const isReportBuilderEnabled = useFeatureFlag({ name: 'report_builder' });
+  const isReportBuilderAllowed = useFeatureFlag({
     name: 'report_builder',
     onlyCheckAllowed: true,
   });
+  const projectReportsEnabled = useFeatureFlag({ name: 'project_reports' });
 
   // We need to wait for the appConfig to be loaded before we can check for allowed and enabled
   // This is particularly important for the first load of the page where we don't want a wrong url set
@@ -103,11 +112,14 @@ const DashboardTabsWrapper = ({ children }: { children: React.ReactNode }) => {
 
   // If the feature is not allowed by the pricing plan,
   // we want to show an info message about this, which requires seeing the tab
-  const showPlanUpgradeTease = !isFeatureAllowed;
-  const showReportBuilderTab = showPlanUpgradeTease || isFeatureEnabled;
+  const showPlanUpgradeTease = !isReportBuilderAllowed;
+  const showReportBuilderTab = showPlanUpgradeTease || isReportBuilderEnabled;
 
   return (
-    <DashboardTabs showReportBuilderTab={showReportBuilderTab}>
+    <DashboardTabs
+      showReportBuilderTab={showReportBuilderTab}
+      showProjectReportsTab={projectReportsEnabled}
+    >
       {children}
     </DashboardTabs>
   );

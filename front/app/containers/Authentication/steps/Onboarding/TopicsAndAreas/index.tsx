@@ -1,14 +1,19 @@
 import React from 'react';
+
 import { Box, Title, Accordion } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import Topics from 'components/Topics';
-import Areas from 'components/Areas';
-import { useIntl } from 'utils/cl-intl';
-import useAuthUser from 'api/me/useAuthUser';
-import messages from '../messages';
-import { OnboardingType } from 'api/authentication/authentication_requirements/types';
+
 import useAreas from 'api/areas/useAreas';
+import { OnboardingType } from 'api/authentication/authentication_requirements/types';
+import useAuthUser from 'api/me/useAuthUser';
 import useTopics from 'api/topics/useTopics';
+
+import Areas from 'components/Areas';
+import Topics from 'components/Topics';
+import Button from 'components/UI/Button';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
 
 interface Props {
   onSubmit: (id: string, onboarding: OnboardingType) => void;

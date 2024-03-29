@@ -5,8 +5,6 @@ module ContentBuilder
     include SideFxHelper
 
     def before_create(layout, _user)
-      # TODO: clean up after fully migrated
-      layout.craftjs_jsonmultiloc = OldLayoutImageService.new.swap_data_images_multiloc layout.craftjs_jsonmultiloc
       layout.craftjs_json = LayoutImageService.new.swap_data_images layout.craftjs_json
     end
 
@@ -15,8 +13,6 @@ module ContentBuilder
     end
 
     def before_update(layout, _user)
-      # TODO: clean up after fully migrated
-      layout.craftjs_jsonmultiloc = OldLayoutImageService.new.swap_data_images_multiloc layout.craftjs_jsonmultiloc
       layout.craftjs_json = LayoutImageService.new.swap_data_images layout.craftjs_json
     end
 

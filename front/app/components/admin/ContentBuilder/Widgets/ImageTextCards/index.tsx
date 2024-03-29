@@ -1,18 +1,15 @@
 import React from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
-
-// craft
 import { UserComponent, Element } from '@craftjs/core';
-import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 
-// widgets
-import TwoColumn from '../TwoColumn';
-import Container from '../Container';
+import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+
+import Container from '../Container';
+import TwoColumn from '../TwoColumn';
 
 const ImageTextCards: UserComponent = () => {
   const craftComponentDefaultPadding = useCraftComponentDefaultPadding();

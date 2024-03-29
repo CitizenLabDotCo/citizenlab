@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useUpdatePhasePermission from './useUpdatePhasePermission';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { IPCPermissionData } from './types';
+import useUpdatePhasePermission from './useUpdatePhasePermission';
 
 export const data: IPCPermissionData = {
   id: '5d14ece5feb0',

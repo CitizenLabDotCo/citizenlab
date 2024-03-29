@@ -1,5 +1,6 @@
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { Locale } from 'typings';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 type children = (
   renderProps: GetAppConfigurationLocalesChildProps

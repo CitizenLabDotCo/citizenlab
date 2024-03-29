@@ -1,19 +1,15 @@
 import React, { useMemo, FC, useEffect } from 'react';
+
+import { Box } from '@citizenlab/cl2-component-library';
+import { debounce } from 'lodash-es';
 import ReactSelect from 'react-select';
 
-// components
-import { Box } from '@citizenlab/cl2-component-library';
+import { IUserData } from 'api/users/types';
 
-// styling
 import selectStyles from 'components/UI/MultipleSelect/styles';
 
-// utils
-import { debounce } from 'lodash-es';
-import { getOptionId } from './utils';
-
-// typings
-import { IUserData } from 'api/users/types';
 import { Option } from './typings';
+import { getOptionId } from './utils';
 
 interface Props {
   id?: string;
@@ -86,7 +82,7 @@ const BaseUserSelect = ({
         getOptionValue={getOptionId}
         getOptionLabel={getOptionLabel}
         menuPlacement="auto"
-        styles={selectStyles}
+        styles={selectStyles()}
         filterOption={() => true}
         components={components}
         onMenuOpen={onMenuOpen}

@@ -1,18 +1,17 @@
 import React from 'react';
 
-// styles
-import styled from 'styled-components';
 import {
   colors,
   Icon,
   IconButton,
   Box,
 } from '@citizenlab/cl2-component-library';
-import { ScreenReaderOnly } from 'utils/a11y';
+import styled from 'styled-components';
 
-// i18n
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from 'components/UI/FileUploader/messages';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 
 const Container = styled.div`
   display: flex;

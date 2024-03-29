@@ -1,26 +1,24 @@
 import React from 'react';
 
-// components
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Moment } from 'moment';
+import { IOption } from 'typings';
+
 import ResolutionControl, {
   IResolution,
 } from 'components/admin/ResolutionControl';
-import ProjectFilter from '../components/filters/ProjectFilter';
-import TimeControl from '../components/TimeControl';
 
-// i18n
-import messages from '../messages';
 import { useIntl } from 'utils/cl-intl';
 
-// typings
-import { IOption } from 'typings';
-import { Moment } from 'moment';
+import ProjectFilter from '../components/filters/ProjectFilter';
+import TimeControl from '../components/TimeControl';
+import messages from '../messages';
 
 interface Props {
   startAtMoment?: Moment | null | undefined;
   endAtMoment: Moment | null;
   minDate?: Moment;
-  currentProjectFilter: string | undefined;
+  projectId: string | undefined;
   resolution: IResolution;
   onChangeTimeRange: (
     startAtMoment: Moment | null,
@@ -35,7 +33,7 @@ const ChartFilters = ({
   startAtMoment,
   endAtMoment,
   minDate,
-  currentProjectFilter,
+  projectId,
   resolution,
   onChangeTimeRange,
   onProjectFilter,
@@ -64,10 +62,9 @@ const ChartFilters = ({
         />
         <Box ml="12px" maxWidth="350px">
           <ProjectFilter
-            currentProjectFilter={currentProjectFilter}
+            projectId={projectId}
             hideLabel
             placeholder={formatMessage(messages.selectProject)}
-            padding="11px"
             onProjectFilter={onProjectFilter}
           />
         </Box>

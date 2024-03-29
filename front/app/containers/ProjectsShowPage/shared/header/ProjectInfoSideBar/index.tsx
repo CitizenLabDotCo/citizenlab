@@ -5,25 +5,7 @@ import React, {
   useState,
   FormEvent,
 } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { isNumber } from 'lodash-es';
-import moment from 'moment';
 
-// hooks
-import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
-import useEvents from 'api/events/useEvents';
-import useAuthUser from 'api/me/useAuthUser';
-import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
-import { isAdmin } from 'utils/permissions/roles';
-
-// services
-import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
-import { IPhaseData } from 'api/phases/types';
-
-// components
-import ProjectSharingModal from '../ProjectSharingModal';
-import ProjectActionButtons from '../ProjectActionButtons';
 import {
   Box,
   Icon,
@@ -33,22 +15,32 @@ import {
   isRtl,
   media,
 } from '@citizenlab/cl2-component-library';
+import moment from 'moment';
+import styled from 'styled-components';
 
-// utils
-import { pastPresentOrFuture } from 'utils/dateUtils';
-import { scrollToElement } from 'utils/scroll';
-import { hasEmbeddedSurvey, hasNativeSurvey } from '../utils';
+import useEvents from 'api/events/useEvents';
+import useAuthUser from 'api/me/useAuthUser';
+import { IPhaseData } from 'api/phases/types';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
+
+import messages from 'containers/ProjectsShowPage/messages';
 import setPhaseUrl from 'containers/ProjectsShowPage/timeline/setPhaseURL';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from 'containers/ProjectsShowPage/messages';
-import { getInputTermMessage } from 'utils/i18n';
-import FormattedBudget from 'utils/currency/FormattedBudget';
-
-// style
-import styled from 'styled-components';
 import Link from 'utils/cl-router/Link';
+import FormattedBudget from 'utils/currency/FormattedBudget';
+import { pastPresentOrFuture } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { getInputTermMessage } from 'utils/i18n';
+import { isAdmin } from 'utils/permissions/roles';
+import { scrollToElement } from 'utils/scroll';
+
+import ProjectActionButtons from '../ProjectActionButtons';
+import ProjectSharingModal from '../ProjectSharingModal';
+import { hasEmbeddedSurvey, hasNativeSurvey } from '../utils';
 
 const Container = styled.div``;
 
@@ -83,7 +75,7 @@ const ListItem = styled.li`
   line-height: normal;
   font-weight: 400;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -231,41 +223,36 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   />
                 </ListItem>
               )}
-            {isNumber(projectParticipantsCount) &&
-              projectParticipantsCount > 0 && (
-                <ListItem id="e2e-project-sidebar-participants-count">
-                  <ListItemIcon ariaHidden name="user" />
-                  <FormattedMessage
-                    {...messages.xParticipants}
-                    values={{ participantsCount: projectParticipantsCount }}
-                  />
-                  {hasNativeSurvey(phases?.data) && isAdminUser && (
-                    <Box mb="4px" ml="4px">
-                      <IconTooltip
-                        placement="top-start"
-                        maxTooltipWidth={200}
-                        iconColor={colors.coolGrey300}
-                        content={
-                          <FormattedMessage
-                            {...messages.participantsTooltip}
-                            values={{
-                              accessRightsLink: (
-                                <Link
-                                  to={`/admin/projects/${projectId}/permissions`}
-                                >
-                                  <FormattedMessage
-                                    {...messages.accessRights}
-                                  />
-                                </Link>
-                              ),
-                            }}
-                          />
-                        }
+            <ListItem id="e2e-project-sidebar-participants-count">
+              <ListItemIcon ariaHidden name="user" />
+              <FormattedMessage
+                {...messages.xParticipants}
+                values={{ participantsCount: projectParticipantsCount }}
+              />
+              {isAdminUser && hasNativeSurvey(phases?.data) && (
+                <Box ml="4px">
+                  <IconTooltip
+                    placement="auto"
+                    maxTooltipWidth={200}
+                    iconColor={colors.coolGrey500}
+                    content={
+                      <FormattedMessage
+                        {...messages.participantsTooltip}
+                        values={{
+                          accessRightsLink: (
+                            <Link
+                              to={`/admin/projects/${projectId}/settings/access-rights`}
+                            >
+                              <FormattedMessage {...messages.accessRights} />
+                            </Link>
+                          ),
+                        }}
                       />
-                    </Box>
-                  )}
-                </ListItem>
+                    }
+                  />
+                </Box>
               )}
+            </ListItem>
             {phases && phases.data.length > 1 && (
               <ListItem>
                 <ListItemIcon ariaHidden name="timeline" className="timeline" />
@@ -285,7 +272,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                 hasProjectEnded &&
                 currentPhase?.attributes.participation_method ===
                   'ideation')) &&
-              isNumber(ideasCount) &&
+              typeof ideasCount === 'number' &&
               ideasCount > 0 && (
                 <ListItem id="e2e-project-sidebar-ideas-count">
                   <ListItemIcon ariaHidden name="idea" />

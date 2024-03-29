@@ -1,6 +1,8 @@
-import { Keys } from 'utils/cl-react-query/types';
-import analysesKeys from './keys';
 import { ILinks, IRelationship } from 'typings';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import analysesKeys from './keys';
 
 export type AnalysesKeys = Keys<typeof analysesKeys>;
 
@@ -16,11 +18,14 @@ export interface IAnalysisData {
     created_at: string;
     updated_at: string;
     participation_method: 'native_survey' | 'ideation';
+    show_insights: boolean;
   };
   relationships: {
     project?: { data: IRelationship } | null;
     phase?: { data: IRelationship } | null;
-    custom_fields: { data: IRelationship[] };
+    all_custom_fields: { data: IRelationship[] };
+    additional_custom_fields?: { data: IRelationship[] };
+    main_custom_field?: { data: IRelationship };
   };
 }
 
@@ -38,5 +43,6 @@ export interface IAnalysesQueryParams {
 export interface IAddAnalysis {
   projectId?: string;
   phaseId?: string;
-  customFieldIds?: string[];
+  additionalCustomFields?: string[];
+  mainCustomField?: string;
 }

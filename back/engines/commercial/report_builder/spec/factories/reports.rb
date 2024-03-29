@@ -5,5 +5,6 @@ FactoryBot.define do
     sequence(:name) { |i| "report-name-#{i}" }
     owner factory: :user
     layout { association :layout, content_buildable: instance, code: 'report' }
+    visible { true }
   end
 end

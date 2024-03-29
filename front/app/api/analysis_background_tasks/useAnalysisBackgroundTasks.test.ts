@@ -1,11 +1,10 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useAnalysisBackgroundTasks from './useAnalysisBackgroundTasks';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useAnalysisBackgroundTasks from './useAnalysisBackgroundTasks';
 
 const apiPath = '*analyses/:analysisId/background_tasks';
 

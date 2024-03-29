@@ -1,5 +1,7 @@
-import { API_PATH } from 'containers/App/constants';
 import { rest } from 'msw';
+
+import { API_PATH } from 'containers/App/constants';
+
 import { SurveyResultsType } from '../types';
 
 export const projectApiPath = `${API_PATH}/projects/:projectId/survey_results`;
@@ -16,15 +18,19 @@ export const surveyResultsResponse: SurveyResultsType = {
             en: 'Your question',
           },
           required: false,
-          totalResponses: 1,
+          grouped: false,
+          totalResponseCount: 1,
+          questionResponseCount: 1,
+          totalPickCount: 1,
           answers: [
             {
-              answer: {
-                en: 'Option 1',
-              },
-              responses: 1,
+              answer: 'option1',
+              count: 1,
             },
           ],
+          multilocs: {
+            answer: { option1: { title_multiloc: { en: 'Option 1' } } },
+          },
           customFieldId: '654c3a46-9e64-44a0-96e5-f350b471fc23',
         },
         {
@@ -33,25 +39,20 @@ export const surveyResultsResponse: SurveyResultsType = {
             en: 'Single choice',
           },
           required: true,
-          totalResponses: 1,
+          grouped: false,
+          totalResponseCount: 1,
+          questionResponseCount: 1,
+          totalPickCount: 1,
           answers: [
             {
-              answer: {
-                en: 'Option A',
-              },
-              responses: 1,
+              answer: 'option_a',
+              count: 1,
             },
           ],
-          customFieldId: '548f7849-837f-447e-831a-51050a403a3b',
-        },
-        {
-          inputType: 'multiline_text',
-          question: {
-            en: 'question',
+          multilocs: {
+            answer: { option_a: { title_multiloc: { en: 'Option A' } } },
           },
-          required: false,
-          totalResponses: 1,
-          customFieldId: '052befb9-b096-4ded-ba1d-3ee2541bde31',
+          customFieldId: '548f7849-837f-447e-831a-51050a403a3b',
         },
       ],
       totalSubmissions: 1,

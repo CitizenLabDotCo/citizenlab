@@ -1,5 +1,6 @@
 import { JsonSchema7 } from '@jsonforms/core';
 import { Locale } from 'typings';
+
 import { FormData } from './typings';
 
 // To handle multilocs we had the two options of adding one control for each multiloc thing : InputMultiloc, WYSIWYGMultiloc, or have the top-level multiloc object be a custom layout that shows the appropriate field and render the controls inside normally. I went for the second option.

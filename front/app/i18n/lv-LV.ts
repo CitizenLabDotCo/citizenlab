@@ -1,10 +1,11 @@
-import { formatTranslationMessages } from './';
-import { registerLocale } from 'react-datepicker';
 import lv from 'date-fns/locale/lv';
+import { registerLocale } from 'react-datepicker';
+
+import { formatTranslationMessages } from './';
 
 registerLocale('lv-LV', lv);
-const lvLVTranslationMessages = require('translations/lv-LV.json');
 const lvLVAdminTranslationMessages = require('translations/admin/lv-LV.json');
+const lvLVTranslationMessages = require('translations/lv-LV.json');
 const translationMessages = formatTranslationMessages('lv-LV', {
   ...lvLVTranslationMessages,
   ...lvLVAdminTranslationMessages,

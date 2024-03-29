@@ -1,4 +1,5 @@
 import { rest } from 'msw';
+
 import { IInitiativeStatusData } from '../types';
 
 export const initiativeStatusesData: IInitiativeStatusData[] = [

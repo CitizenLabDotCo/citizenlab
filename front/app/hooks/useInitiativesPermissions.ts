@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IInitiativeActionDescriptorName } from 'api/initiative_action_descriptors/types';
 import useInitativeActionDescriptors from 'api/initiative_action_descriptors/useInitiativeActionDescriptors';
-import { ActionPermission } from 'utils/actionTakingRules';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
+
+import { ActionPermission } from 'utils/actionTakingRules';
 
 export type InitiativePermissionsDisabledReason =
   // Only the ones set below via setActionPermissions's disabledReason

@@ -1,13 +1,5 @@
 import React from 'react';
 
-// routing
-import { useParams } from 'react-router-dom';
-
-// api
-import useProjectById from 'api/projects/useProjectById';
-import usePhase from 'api/phases/usePhase';
-
-// components
 import {
   Box,
   Title,
@@ -17,14 +9,19 @@ import {
   stylingConsts,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
+import { RouteType } from 'routes';
+
+import usePhase from 'api/phases/usePhase';
+import useProjectById from 'api/projects/useProjectById';
+
+import useLocalize from 'hooks/useLocalize';
+
 import GoBackButton from 'components/UI/GoBackButton';
 
-// i18n
-import useLocalize from 'hooks/useLocalize';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
 
-// styling
+import messages from '../messages';
 
 interface Props {
   onClickPDFImport: () => void;
@@ -47,7 +44,7 @@ const TopBar = ({ onClickPDFImport }: Props) => {
   const isSurvey =
     phase?.data.attributes.participation_method === 'native_survey';
 
-  const backPath = isSurvey
+  const backPath: RouteType = isSurvey
     ? `/admin/projects/${projectId}/phases/${phaseId}/native-survey`
     : `/admin/projects/${projectId}/phases/${phaseId}/ideas`;
 

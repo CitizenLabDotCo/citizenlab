@@ -1,13 +1,12 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useAnalysisInsights from './useAnalysisInsights';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { insightsData } from './__mocks__/useAnalysisInsights';
 import { IInsightsParams } from './types';
+import useAnalysisInsights from './useAnalysisInsights';
 
 const apiPath = '*/analyses/:analysisId/insights';
 

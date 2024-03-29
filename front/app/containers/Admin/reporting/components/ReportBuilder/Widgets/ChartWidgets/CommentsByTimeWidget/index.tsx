@@ -1,37 +1,17 @@
 import React from 'react';
 
-// components
-import Card from '../../_shared/Card';
-import CommentsByTimeCard from './CommentsByTimeCard';
-import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
-
-// utils
-import moment from 'moment';
-
-// settings
 import messages from 'containers/Admin/dashboard/messages';
 
-// types
-import { IResolution } from 'components/admin/ResolutionControl';
+import Card from '../../_shared/Card';
+import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
 import { ChartWidgetProps } from '../typings';
 
-const CommentsByTimeWidget = ({
-  title,
-  projectId,
-  startAt,
-  endAt,
-}: ChartWidgetProps) => {
-  const resolution: IResolution = 'month';
-  const analyticsChartProps = {
-    startAtMoment: startAt ? moment(startAt) : null,
-    endAtMoment: endAt ? moment(endAt) : null,
-    projectId,
-    resolution,
-  };
+import CommentsByTimeCard from './CommentsByTimeCard';
 
+const CommentsByTimeWidget = ({ title, ...props }: ChartWidgetProps) => {
   return (
-    <Card title={title} pagebreak>
-      <CommentsByTimeCard {...analyticsChartProps} />
+    <Card title={title} className="e2e-comments-by-time-widget" pagebreak>
+      <CommentsByTimeCard {...props} resolution="month" />
     </Card>
   );
 };
@@ -46,10 +26,8 @@ CommentsByTimeWidget.craft = {
   related: {
     settings: ChartWidgetSettings,
   },
-  custom: {
-    title: messages.comments,
-    noPointerEvents: true,
-  },
 };
+
+export const commentsByTimeTitle = messages.comments;
 
 export default CommentsByTimeWidget;

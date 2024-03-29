@@ -54,7 +54,7 @@ module Verification
 
     def verify_sync(user:, method_name:, verification_parameters:)
       method = method_by_name(method_name)
-      response = method.verify_sync verification_parameters
+      response = method.verify_sync(**verification_parameters)
       uid = response[:uid]
       user_attributes = response[:attributes] || {}
       user.update_merging_custom_fields!(
@@ -67,11 +67,7 @@ module Verification
       method = method_by_name(auth.provider)
       raise NotEntitledError if method.respond_to?(:entitled?) && !method.entitled?(auth)
 
-      uid = if method.respond_to?(:profile_to_uid)
-        method.profile_to_uid(auth)
-      else
-        auth['uid']
-      end
+      uid = method.profile_to_uid(auth)
       make_verification(user: user, method_name: method.name, uid: uid)
     end
 

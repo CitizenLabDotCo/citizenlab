@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useSendTextingCampaign from './useSendTextingCampaign';
-import { campaignsData } from './__mocks__/useTextingCampaigns';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { campaignsData } from './__mocks__/useTextingCampaigns';
+import useSendTextingCampaign from './useSendTextingCampaign';
 
 const apiPath = '*texting_campaigns/:id/send';
 const server = setupServer(

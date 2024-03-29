@@ -47,7 +47,7 @@ describe TimelineService do
     it 'respects the tenant timezone' do
       phase = create(:phase, project: project, start_at: Date.new(2019, 9, 2), end_at: Date.new(2019, 9, 9))
 
-      t = Time.new(2019, 9, 9, 23) # 11 pm utc = 1 am Brussels == 8pm Santiage
+      t = Time.utc(2019, 9, 9, 23) # 11 pm utc = 1 am Brussels == 8pm Santiage
 
       settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = 'Europe/Brussels'
@@ -159,7 +159,7 @@ describe TimelineService do
       phase = create(:phase, start_at: Date.new(2019, 9, 2), end_at: Date.new(2019, 9, 9))
       project = phase.project
 
-      t = Time.new(2019, 9, 9, 23) # 11 pm utc = 1 am Brussels == 8pm Santiage
+      t = Time.utc(2019, 9, 9, 23) # 11 pm utc = 1 am Brussels == 8pm Santiage
 
       settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = 'Europe/Brussels'
@@ -231,7 +231,7 @@ describe TimelineService do
       phase = create(:phase, start_at: Date.new(2019, 9, 2), end_at: Date.new(2019, 9, 9))
       project = phase.project
 
-      travel_to Time.new(2019, 9, 9, 23) do # 11 pm utc = 1 am Brussels == 8pm Santiage
+      travel_to Time.utc(2019, 9, 9, 23) do # 11 pm utc = 1 am Brussels == 8pm Santiage
         settings = AppConfiguration.instance.settings
         settings['core']['timezone'] = 'Europe/Brussels'
         AppConfiguration.instance.update!(settings: settings)
@@ -250,8 +250,14 @@ describe TimelineService do
       past_project = create(:project_with_past_phases)
       present_project = create(:project_with_current_phase)
       future_project = create(:project_with_future_phases)
-      projects = [past_project, present_project, future_project]
-      expect(service.timeline_active_on_collection(projects)).to match_array(
+      projects = Project.where(id: [past_project, present_project, future_project])
+
+      result = nil
+      expect do
+        result = service.timeline_active_on_collection(projects)
+      end.not_to exceed_query_limit(3).with(/SELECT.*projects/)
+
+      expect(result).to match_array(
         past_project.id => :past,
         present_project.id => :present,
         future_project.id => :future

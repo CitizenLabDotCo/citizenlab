@@ -22,6 +22,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.inputFormTab',
     defaultMessage: 'Input form',
   },
+  mapTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.mapTab',
+    defaultMessage: 'Map',
+  },
   volunteeringTab: {
     id: 'app.containers.AdminPage.ProjectEdit.volunteeringTab',
     defaultMessage: 'Volunteering',
@@ -120,16 +124,6 @@ export default defineMessages({
   participationMethodTitleText: {
     id: 'app.containers.AdminPage.ProjectEdit.participationMethodTitleText',
     defaultMessage: 'What do you want to do?',
-  },
-  phaseMethodChangeWarning: {
-    id: 'app.containers.AdminPage.ProjectEdit.phaseMethodChangeWarning',
-    defaultMessage:
-      "Some participation methods aren't available for existing phases. A new phase will have to be created in these cases.",
-  },
-  projectMethodChangeWarning: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectMethodChangeWarning',
-    defaultMessage:
-      "Some participation methods aren't available for existing projects. A new project will have to be created in these cases.",
   },
   participationMethodTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.participationMethodTooltip',
@@ -366,9 +360,9 @@ export default defineMessages({
     defaultMessage: 'Survey Service',
   },
   surveyServiceTooltipLink: {
-    id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink',
+    id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink1',
     defaultMessage:
-      'http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step/faq-s/how-do-i-add-a-survey-to-my-platform',
+      'https://support.citizenlab.co/en/articles/7025887-creating-an-external-survey-project',
   },
   surveyServiceTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltip',
@@ -574,5 +568,14 @@ export default defineMessages({
   optionsPageText: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2',
     defaultMessage: 'Input Manager tab',
+  },
+  reportTab: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.report',
+    defaultMessage: 'Report',
+  },
+  lockedTooltip: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.lockedTooltip',
+    defaultMessage:
+      'This is not included in your current plan. Reach out to your Government Success Manager or admin to unlock it.',
   },
 });

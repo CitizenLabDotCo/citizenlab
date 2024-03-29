@@ -21,7 +21,7 @@ describe MultiTenancy::Templates::TenantSerializer do
 
       tenant.switch do
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
-        expect(HomePage.count).to be 1
+        expect(ContentBuilder::Layout.where(code: 'homepage').count).to be 1
         expect(Area.count).to be > 0
         expect(Comment.count).to be > 0
         expect(InternalComment.count).to be > 0
@@ -29,14 +29,16 @@ describe MultiTenancy::Templates::TenantSerializer do
         expect(CustomFieldOption.count).to be > 0
         expect(CustomForm.count).to be > 0
         expect(Event.count).to be > 0
+        expect(EventImage.count).to be > 0
+        expect(Events::Attendance.count).to be > 0
         expect(IdeaStatus.count).to be > 0
         expect(Reaction.count).to be > 0
         expect(EmailCampaigns::UnsubscriptionToken.count).to be > 0
         expect(Volunteering::Cause.count).to be 5
         expect(Volunteering::Volunteer.count).to be > 0
-        expect(CustomMaps::MapConfig.count).to be 1
+        expect(CustomMaps::MapConfig.count).to be 2
         expect(CustomMaps::Layer.count).to be 2
-        expect(CustomMaps::LegendItem.count).to be 7
+        expect(StaticPage.count).to be > 0
       end
     end
 
@@ -75,15 +77,6 @@ describe MultiTenancy::Templates::TenantSerializer do
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
         expect(Comment.count).to eq 1
       end
-    end
-
-    it 'includes a reference to an existing home_page header_bg' do
-      create(:home_page, header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
-
-      template = tenant_serializer.run(deserializer_format: true)
-
-      expect(template['models']).to be_present
-      expect(template.dig('models', 'home_page', 0, 'remote_header_bg_url')).to match(%r{/uploads/.*/home_page/header_bg/.*.jpg})
     end
 
     it 'includes a reference to an existing static_page header_bg' do
@@ -162,7 +155,45 @@ describe MultiTenancy::Templates::TenantSerializer do
         'key' => field.key,
         'input_type' => field.input_type,
         'title_multiloc' => field.title_multiloc,
+        'random_option_ordering' => field.random_option_ordering,
         'description_multiloc' => field.description_multiloc
+      )
+    end
+
+    it 'successfully exports map config & layers related to a custom field' do
+      field = create(:custom_field_point, :for_custom_form)
+      map_config = create(:map_config, :with_positioning, :with_geojson_layers, mappable: field)
+      layer = map_config.layers.first
+
+      template = tenant_serializer.run(deserializer_format: true)
+
+      expect(template['models']['custom_field'].size).to eq 1
+      expect(template['models']['custom_maps/map_config'].first).to match hash_including(
+        'created_at' => an_instance_of(String),
+        'updated_at' => an_instance_of(String),
+        'mappable_ref' => hash_including('resource_ref' => an_instance_of(Hash)),
+        'center_geojson' => map_config.center_geojson
+      )
+      expect(template['models']['custom_maps/layer'].first).to match hash_including(
+        'created_at' => an_instance_of(String),
+        'updated_at' => an_instance_of(String),
+        'map_config_ref' => hash_including('mappable_ref' => an_instance_of(Hash)),
+        'geojson' => layer.geojson
+      )
+    end
+
+    it 'successfully exports custom field option images' do
+      field = create(:custom_field_select, :for_custom_form)
+      option = create(:custom_field_option, custom_field: field, image: create(:custom_field_option_image))
+      template = tenant_serializer.run(deserializer_format: true)
+
+      expect(template['models']['custom_field_option_image'].size).to eq 1
+      expect(template['models']['custom_field_option_image'].first).to match hash_including(
+        'created_at' => an_instance_of(String),
+        'updated_at' => an_instance_of(String),
+        'custom_field_option_ref' => hash_including('custom_field_ref' => an_instance_of(Hash)),
+        'remote_image_url' => an_instance_of(String),
+        'ordering' => option.image.ordering
       )
     end
 

@@ -1,14 +1,14 @@
 import React, { memo } from 'react';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import styled, { useTheme } from 'styled-components';
+
+import useLocale from 'hooks/useLocale';
+
+import Outlet from 'components/Outlet';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-// styling
-import styled, { useTheme } from 'styled-components';
-import Outlet from 'components/Outlet';
-import useLocale from 'hooks/useLocale';
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div``;
 

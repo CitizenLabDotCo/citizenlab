@@ -168,7 +168,7 @@ RSpec.describe ParticipationMethod::Voting do
   its(:validate_built_in_fields?) { is_expected.to be true }
   its(:never_show?) { is_expected.to be false }
   its(:posting_allowed?) { is_expected.to be false }
-  its(:never_update?) { is_expected.to be false }
+  its(:update_if_published?) { is_expected.to be true }
   its(:creation_phase?) { is_expected.to be false }
   its(:edit_custom_form_allowed?) { is_expected.to be true }
   its(:delete_inputs_on_pc_deletion?) { is_expected.to be false }

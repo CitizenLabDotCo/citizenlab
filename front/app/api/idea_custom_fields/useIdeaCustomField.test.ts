@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useIdeaCustomField from './useIdeaCustomField';
-import { ideaCustomFieldsData } from './__mocks__/useIdeaCustomFields';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { ideaCustomFieldsData } from './__mocks__/useIdeaCustomFields';
+import useIdeaCustomField from './useIdeaCustomField';
 
 const apiPath = '*/admin/projects/:projectId/custom_fields/:customFieldId';
 

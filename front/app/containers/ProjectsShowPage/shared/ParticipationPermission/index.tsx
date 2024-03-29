@@ -1,20 +1,16 @@
 import React, { ReactNode } from 'react';
 
-// components
-import Warning from 'components/UI/Warning';
-
-// i18n
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-import messages from './messages';
-
-// events
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-
-// styling
 import styled from 'styled-components';
 
-// utils
 import { IPhasePermissionAction } from 'api/permissions/types';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+
+import Warning from 'components/UI/Warning';
+
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+
+import messages from './messages';
 
 const Container = styled.div`
   position: relative;

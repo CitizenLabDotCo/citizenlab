@@ -41,13 +41,14 @@ module MultiTenancy
           AreasProject => serialize_records(AreasProject),
           AreasStaticPage => serialize_records(AreasStaticPage),
           Basket => serialize_records(Basket),
-          ContentBuilder::Layout => serialize_records(ContentBuilder::Layout.where.not(content_buildable_type: 'HomePage')),
+          ContentBuilder::Layout => serialize_records(ContentBuilder::Layout),
           ContentBuilder::LayoutImage => serialize_records(ContentBuilder::LayoutImage),
           CustomField => serialize_records(CustomField),
           CustomForm => serialize_records(CustomForm),
           Event => serialize_records(Event),
           EventFile => serialize_records(EventFile),
-          HomePage => serialize_records(HomePage),
+          EventImage => serialize_records(EventImage),
+          Events::Attendance => serialize_records(Events::Attendance),
           IdeaStatus => serialize_records(IdeaStatus),
           InitiativeStatus => serialize_records(InitiativeStatus),
           NavBarItem => serialize_records(NavBarItem),
@@ -76,10 +77,10 @@ module MultiTenancy
               custom_field: CustomField.where.not(code: 'domicile').or(CustomField.where(code: nil))
             )
           ),
+          CustomFieldOptionImage => serialize_records(CustomFieldOptionImage),
 
           # Custom maps
           CustomMaps::Layer => serialize_records(CustomMaps::Layer),
-          CustomMaps::LegendItem => serialize_records(CustomMaps::LegendItem),
           CustomMaps::MapConfig => serialize_records(CustomMaps::MapConfig),
 
           # Polls
@@ -203,7 +204,7 @@ module MultiTenancy
         return {} if record_class.nil? && scope.size == 0 # rubocop:disable Style/ZeroLengthPredicate
 
         serializer_class = MultiTenancy::Templates::Serializers.const_get(record_class.name)
-        serializer = serializer_class.new(@serialization_params)
+        serializer = serializer_class.new(**@serialization_params)
         scope.to_h { |record| [record.id, serializer.serialize(record)] }
       end
 

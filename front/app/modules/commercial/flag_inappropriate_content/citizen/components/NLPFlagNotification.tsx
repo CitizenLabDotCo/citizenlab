@@ -1,14 +1,12 @@
 import React, { memo } from 'react';
 
-// i18n
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { INLPFlagNotificationData } from 'api/notifications/types';
 
-// components
 import NotificationWrapper from 'containers/MainHeader/Components/NotificationMenu/components/NotificationWrapper';
 
-// services
-import { INLPFlagNotificationData } from 'api/notifications/types';
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
 
 interface Props {
   notification: INLPFlagNotificationData;

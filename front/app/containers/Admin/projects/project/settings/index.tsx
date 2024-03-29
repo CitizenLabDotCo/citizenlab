@@ -1,31 +1,26 @@
 import React, { useState } from 'react';
-import clHistory from 'utils/cl-router/history';
-import { isTopBarNavActive } from 'utils/helperUtils';
+
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import {
   Outlet as RouterOutlet,
   useLocation,
   useParams,
 } from 'react-router-dom';
+import { InsertConfigurationOptions, ITab } from 'typings';
 
-// components
-import GoBackButton from 'components/UI/GoBackButton';
-import { Box, Title, colors } from '@citizenlab/cl2-component-library';
-import NavigationTabs, { Tab } from 'components/admin/NavigationTabs';
-import Outlet from 'components/Outlet';
-
-// hooks
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import NavigationTabs, { Tab } from 'components/admin/NavigationTabs';
+import Outlet from 'components/Outlet';
+import GoBackButton from 'components/UI/GoBackButton';
 
-// utils
+import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { isTopBarNavActive } from 'utils/helperUtils';
 import { insertConfiguration } from 'utils/moduleUtils';
 
-// typings
-import { InsertConfigurationOptions, ITab } from 'typings';
+import messages from './messages';
 
 const Settings = () => {
   const { formatMessage } = useIntl();
@@ -84,12 +79,7 @@ const Settings = () => {
             width="100%"
             pr="24px"
           >
-            <Box display="flex">
-              <GoBackButton onClick={goBack} showGoBackText={false} />
-              <Title color="primary" variant="h4" my="0px" ml="8px">
-                {formatMessage(messages.back)}
-              </Title>
-            </Box>
+            <GoBackButton onClick={goBack} customMessage={messages.back} />
           </Box>
         </NavigationTabs>
         <Box mt="58px">

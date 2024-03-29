@@ -58,7 +58,7 @@ module AdminApi
     end
 
     def templates
-      render json: MultiTenancy::Templates::Utils.new.available_templates
+      render json: MultiTenancy::Templates::Utils.new.template_manifest
     end
 
     private

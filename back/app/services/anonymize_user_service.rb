@@ -64,7 +64,7 @@ class AnonymizeUserService
   def load_csv(filename)
     CSV.read(
       Rails.root.join('config', 'anonymize_users', filename),
-      { headers: true, col_sep: ',', converters: [] }
+      headers: true, col_sep: ',', converters: []
     ).map(&:to_h)
   end
 

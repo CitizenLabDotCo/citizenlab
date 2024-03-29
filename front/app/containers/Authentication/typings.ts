@@ -1,10 +1,11 @@
-import { getStepConfig } from './useSteps/stepConfig';
 import {
   AuthenticationRequirements,
   AuthenticationContext,
 } from 'api/authentication/authentication_requirements/types';
 import { SSOProvider } from 'api/authentication/singleSignOn';
+
 import { SuccessAction } from './SuccessActions/actions';
+import { getStepConfig } from './useSteps/stepConfig';
 
 export interface ModalProps {
   setModalOpen?: (bool: boolean) => void;

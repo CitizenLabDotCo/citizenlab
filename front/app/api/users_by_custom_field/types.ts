@@ -1,6 +1,8 @@
-import { Keys } from 'utils/cl-react-query/types';
-import usersByCustomFieldKeys from './keys';
 import { Multiloc } from 'typings';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import usersByCustomFieldKeys from './keys';
 
 export type UsersByCustomFieldKeys = Keys<typeof usersByCustomFieldKeys>;
 
@@ -24,6 +26,7 @@ export interface IUsersByCustomField {
           [key: string]: number;
         } | null;
       };
+      // Not used for gender and age
       options: {
         [key: string]: {
           title_multiloc: Multiloc;

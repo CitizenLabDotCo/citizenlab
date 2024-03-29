@@ -1,14 +1,14 @@
 import React from 'react';
-import { stringify } from 'qs';
+
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import { omitBy, isNil } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
+import { stringify } from 'qs';
+import styled from 'styled-components';
+
 import useAuthUser from 'api/me/useAuthUser';
 
-// components
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import { isNilOrError } from 'utils/helperUtils';
 
-// styling
-import styled from 'styled-components';
 const surveyHeightDesktop = '600px';
 const surveyHeightMobile = '500px';
 

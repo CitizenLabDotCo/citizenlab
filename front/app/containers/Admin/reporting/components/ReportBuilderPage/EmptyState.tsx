@@ -1,9 +1,5 @@
 import React from 'react';
 
-// images
-import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
-
-// components
 import {
   Box,
   Image,
@@ -11,19 +7,19 @@ import {
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
 import Tippy from '@tippyjs/react';
-
-// styling
+import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
 import styled from 'styled-components';
 
-// i18n
-import messages from './messages';
-import sharedMessages from '../../messages';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import Button from 'components/UI/Button';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import sharedMessages from '../../messages';
+
+import messages from './messages';
 
 const StyledBackgroundImage = styled(Image)`
   opacity: 0.5;
@@ -57,7 +53,7 @@ const EmptyState = ({ onOpenModal }: Props) => {
             <FormattedMessage {...messages.emptyStateTitle} />
           </Title>
           <Text>
-            <FormattedMessage {...messages.emptyStateDescription} />
+            <FormattedMessage {...messages.customizeReport} />
           </Text>
           <Tippy
             maxWidth="250px"
@@ -73,6 +69,7 @@ const EmptyState = ({ onOpenModal }: Props) => {
                 bgColor={colors.primary}
                 onClick={onOpenModal}
                 disabled={!isReportBuilderAllowed}
+                id="e2e-create-report-button"
               >
                 <FormattedMessage {...messages.emptyStateButtonText} />
               </Button>

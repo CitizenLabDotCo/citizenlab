@@ -1,7 +1,9 @@
 import { UseMutateAsyncFunction } from '@tanstack/react-query';
 import { CLErrors, UploadFile } from 'typings';
+
 import { getFilesToAdd, getFilesToRemove } from 'utils/fileUtils';
 import { isNilOrError, isString } from 'utils/helperUtils';
+
 import { AddPageFileObject, IPageFile } from './types';
 
 function getPageFilesToRemovePromises(

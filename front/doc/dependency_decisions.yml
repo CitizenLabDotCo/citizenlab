@@ -107,12 +107,6 @@
     :why:
     :versions: []
     :when: 2020-11-17 22:22:52.085784129 Z
-- - :approve
-  - leaflet-active-area
-  - :who:
-    :why:
-    :versions: []
-    :when: 2021-05-12 12:10:21.670858900 Z
 - - :permit
   - Unlicense
   - :who:
@@ -187,3 +181,16 @@
     :why:
     :versions: []
     :when: 2023-10-13 14:01:10.806750000 Z
+- - :permit
+  - MLA
+  - :who:
+    :why:
+    :versions: []
+    :when: 2024-01-31 16:22:31.533727078 Z
+- - :license
+  - '@arcgis/core'
+  - MLA
+  - :who:
+    :why:
+    :versions: []
+    :when: 2024-02-01 10:14:52.518099594 Z

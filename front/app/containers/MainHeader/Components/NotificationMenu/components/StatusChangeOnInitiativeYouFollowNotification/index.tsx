@@ -1,8 +1,12 @@
 import React, { memo } from 'react';
+
 import { IStatusChangeOnInitiativeYouFollowNotificationData } from 'api/notifications/types';
-import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+
 import T from 'components/T';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../../messages';
 import NotificationWrapper from '../NotificationWrapper';
 
 interface Props {

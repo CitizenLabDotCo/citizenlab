@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
 
-// components
 import {
   Box,
   colors,
@@ -10,20 +8,21 @@ import {
   Select,
   Text,
 } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import Error from 'components/UI/Error';
+import { Controller, useFormContext } from 'react-hook-form';
 
-// intl
-import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
-import { isRuleValid } from 'utils/yup/validateLogic';
-
-// Services
 import {
   IFlatCustomField,
   LogicType,
   QuestionRuleType,
 } from 'api/custom_fields/types';
+
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isRuleValid } from 'utils/yup/validateLogic';
+
+import messages from '../../messages';
 
 type QuestionRuleInputProps = {
   fieldId: string;
@@ -88,7 +87,7 @@ export const QuestionRuleInput = ({
       // Update rule variable
       const required =
         logic.rules && logic.rules.length > 0 ? true : field.required;
-      setValue(name, { ...field, logic, required });
+      setValue(name, { ...field, logic, required }, { shouldDirty: true });
       trigger();
     }
   };
@@ -101,7 +100,7 @@ export const QuestionRuleInput = ({
     // Update rule variable
     const required =
       logic.rules && logic.rules.length > 0 ? true : field.required;
-    setValue(name, { ...field, logic, required });
+    setValue(name, { ...field, logic, required }, { shouldDirty: true });
     trigger();
   };
 

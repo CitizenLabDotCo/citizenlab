@@ -22,6 +22,7 @@ RSpec.describe ReportBuilder::LiveGraphDataUnitPolicy do
 
   context 'when user is moderator' do
     let_it_be(:user) { build(:project_moderator, projects: [project]) }
+    let_it_be(:another_project) { create(:project) }
 
     it { is_expected.not_to permit(:live) }
 
@@ -32,7 +33,21 @@ RSpec.describe ReportBuilder::LiveGraphDataUnitPolicy do
     end
 
     context 'when another project_id is present' do
-      let(:props) { { project_id: create(:project).id } }
+      let(:props) { { project_id: another_project.id } }
+
+      it { is_expected.not_to permit(:live) }
+    end
+
+    context 'when phase_id is present' do
+      let_it_be(:phase) { create(:phase, project: project) }
+      let(:props) { { phase_id: phase.id } }
+
+      it { is_expected.to permit(:live) }
+    end
+
+    context 'when another phase_id is present' do
+      let_it_be(:phase) { create(:phase, project: another_project) }
+      let(:props) { { phase_id: phase.id } }
 
       it { is_expected.not_to permit(:live) }
     end

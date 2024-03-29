@@ -1,9 +1,4 @@
 import React from 'react';
-import { isEmpty } from 'lodash-es';
-
-// components
-import Error from 'components/UI/Error';
-import TextareaAutosize from 'react-textarea-autosize';
 
 import {
   IconTooltip,
@@ -12,11 +7,12 @@ import {
   defaultInputStyle,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-
-// style
+import { isEmpty } from 'lodash-es';
+import TextareaAutosize from 'react-textarea-autosize';
 import styled from 'styled-components';
-// typings
 import { Locale } from 'typings';
+
+import Error from 'components/UI/Error';
 
 const Container = styled.div``;
 

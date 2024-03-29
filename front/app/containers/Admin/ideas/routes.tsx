@@ -1,13 +1,26 @@
 import React, { lazy } from 'react';
-import PageLoading from 'components/UI/PageLoading';
+
 import moduleConfiguration from 'modules';
+
+import IdeaPreviewIndex from 'components/admin/PostManager/components/IdeaPreviewIndex';
+import PageLoading from 'components/UI/PageLoading';
+
+import { AdminRoute } from '../routes';
 
 const AdminIdeasContainer = lazy(() => import('./index'));
 const AdminIdeasAll = lazy(() => import('./all'));
-import IdeaPreviewIndex from 'components/admin/PostManager/components/IdeaPreviewIndex';
+
+export enum ideaRoutes {
+  ideas = 'ideas',
+  ideaId = `:ideaId`,
+}
+
+export type ideaRouteTypes =
+  | AdminRoute<ideaRoutes.ideas>
+  | AdminRoute<`${ideaRoutes.ideas}/${string}`>;
 
 export default () => ({
-  path: 'ideas',
+  path: ideaRoutes.ideas,
   element: (
     <PageLoading>
       <AdminIdeasContainer />
@@ -23,7 +36,7 @@ export default () => ({
       ),
     },
     {
-      path: ':ideaId',
+      path: ideaRoutes.ideaId,
       element: (
         <PageLoading>
           <IdeaPreviewIndex goBackUrl="/admin/ideas" />

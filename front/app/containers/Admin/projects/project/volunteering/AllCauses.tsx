@@ -1,22 +1,25 @@
 import React, { useCallback, useState, MouseEvent, useMemo } from 'react';
-import styled from 'styled-components';
+
 import { clone } from 'lodash-es';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { isNilOrError } from 'utils/helperUtils';
+import { RouteType } from 'routes';
+import styled from 'styled-components';
 
-import useCauses from 'api/causes/useCauses';
 import { ICauseData } from 'api/causes/types';
+import useCauses from 'api/causes/useCauses';
+import useDeleteCause from 'api/causes/useDeleteCause';
+import useReorderCause from 'api/causes/useReorderCause';
 
-import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
+import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
+import T from 'components/T';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
 import messages from './messages';
-import T from 'components/T';
-import useDeleteCause from 'api/causes/useDeleteCause';
-import useReorderCause from 'api/causes/useReorderCause';
 
 const Container = styled.div``;
 
@@ -93,7 +96,7 @@ const AllCauses = ({ phaseId, projectId }: Props) => {
     }
   };
 
-  const newCauseLink = `/admin/projects/${projectId}/phases/${phaseId}/volunteering/causes/new`;
+  const newCauseLink: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/volunteering/causes/new`;
 
   if (isNilOrError(causes)) return null;
 

@@ -15,6 +15,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     # Custom fields
     create(:custom_field, resource: custom_form, key: 'a_text_field', title_multiloc: { 'en' => 'A text field' }, enabled: true)
     create(:custom_field, resource: custom_form, key: 'number_field', title_multiloc: { 'en' => 'Number field' }, input_type: 'number', enabled: true)
+    create(:custom_field_point, resource: custom_form, key: 'a_point_field', title_multiloc: { 'en' => 'Point field' }, enabled: true)
     select_field = create(:custom_field, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => 'Select field' }, input_type: 'select', enabled: true)
     create(:custom_field_option, custom_field: select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
     create(:custom_field_option, custom_field: select_field, key: 'no', title_multiloc: { 'en' => 'No' })
@@ -62,6 +63,8 @@ describe BulkImportIdeas::ImportProjectIdeasService do
         'Location',
         'A text field',
         'Number field',
+        'Point field - Latitude',
+        'Point field - Longitude',
         'Select field',
         'Multi select field',
         'Another select field',

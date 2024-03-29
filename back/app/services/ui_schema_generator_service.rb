@@ -61,8 +61,10 @@ class UiSchemaGeneratorService < FieldVisitorService
     end
   end
 
-  def visit_point(_field)
-    nil
+  def visit_point(field)
+    default(field).tap do |ui_field|
+      ui_field[:options][:map_config_id] = field&.map_config&.id
+    end
   end
 
   def visit_linear_scale(field)
@@ -97,9 +99,9 @@ class UiSchemaGeneratorService < FieldVisitorService
     }.tap do |options|
       unless field.multiloc?
         options[:input_type] = field.input_type
-        field.options.map { |option| multiloc_service.t(option.title_multiloc) }
+        field.ordered_options.map { |option| multiloc_service.t(option.title_multiloc) }
         if field.input_type == 'select'
-          options[:enumNames] = field.options.map { |option| multiloc_service.t(option.title_multiloc) }
+          options[:enumNames] = field.ordered_options.map { |option| multiloc_service.t(option.title_multiloc) }
         end
       end
     end

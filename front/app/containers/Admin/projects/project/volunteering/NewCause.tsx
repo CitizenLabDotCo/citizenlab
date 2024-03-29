@@ -1,15 +1,16 @@
 import React from 'react';
+
+import { useParams } from 'react-router-dom';
+
+import useAddCause from 'api/causes/useAddCause';
+
+import { SectionTitle, SectionDescription } from 'components/admin/Section';
+
+import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
-// Components
-import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import CauseForm, { SubmitValues } from './CauseForm';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { useParams } from 'react-router-dom';
-import useAddCause from 'api/causes/useAddCause';
 
 const NewCause = () => {
   const { projectId, phaseId } = useParams();

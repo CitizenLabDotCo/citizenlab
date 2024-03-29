@@ -1,28 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// hooks
-import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
-import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../tracks';
-
-// components
-import FiltersModal from './FiltersModal';
-import FiltersSideBar from './FiltersSideBar';
-import SortFilterDropdown, { Sort } from '../shared/Filters/SortFilterDropdown';
-import SearchInput from 'components/UI/SearchInput';
-import Button from 'components/UI/Button';
-import IdeasView from '../shared/IdeasView';
-
-// i18n
-import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// style
-import styled from 'styled-components';
 import {
   media,
   fontSizes,
@@ -32,9 +9,27 @@ import {
   Spinner,
   useWindowSize,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
-// typings
+import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
+import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
+
 import { QueryParameters } from 'containers/IdeasIndexPage';
+
+import Button from 'components/UI/Button';
+import SearchInput from 'components/UI/SearchInput';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from '../messages';
+import SortFilterDropdown, { Sort } from '../shared/Filters/SortFilterDropdown';
+import IdeasView from '../shared/IdeasView';
+import tracks from '../tracks';
+
+import FiltersModal from './FiltersModal';
+import FiltersSideBar from './FiltersSideBar';
 
 const gapWidth = 35;
 

@@ -13,8 +13,4 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.allProjects',
     defaultMessage: 'All Projects',
   },
-  labelProjectFilter: {
-    id: 'app.containers.AdminPage.DashboardPage.labelProjectFilter',
-    defaultMessage: 'Select project',
-  },
 });

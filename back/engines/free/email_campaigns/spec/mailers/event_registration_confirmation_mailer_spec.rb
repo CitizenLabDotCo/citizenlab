@@ -40,17 +40,19 @@ RSpec.describe EmailCampaigns::EventRegistrationConfirmationMailer do
     end
 
     it 'has the correct ics attachment' do
-      expected_content = Events::IcsGenerator
-        .new.generate_ics(event, recipient.locale)
-        # Remove the UID line as a different one is generated when serializing the event.
-        .gsub(/^UID:.*$/, '')
+      freeze_time do
+        expected_content = Events::IcsGenerator
+          .new.generate_ics(event, recipient.locale)
+          # Remove the UID line as a different one is generated when serializing the event.
+          .gsub(/^UID:.*$/, '')
 
-      content = mail
-        .attachments['event.ics']
-        .body.raw_source
-        .gsub(/^UID:.*$/, '')
+        content = mail
+          .attachments['event.ics']
+          .body.raw_source
+          .gsub(/^UID:.*$/, '')
 
-      expect(content).to eq(expected_content)
+        expect(content).to eq(expected_content)
+      end
     end
 
     describe 'body' do

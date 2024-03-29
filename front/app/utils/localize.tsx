@@ -1,18 +1,15 @@
-// Libraries
 import React from 'react';
 
-// Services
-
-// hooks
-import { Localize } from 'hooks/useLocalize';
-
-// i18n
-import { getLocalizedWithFallback } from 'utils/i18n';
+import { Locale } from 'typings';
 
 // Typing
-import { Locale } from 'typings';
-import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import useLocale from 'hooks/useLocale';
+import { Localize } from 'hooks/useLocalize';
+
+import { getLocalizedWithFallback } from 'utils/i18n';
+
 import { isNilOrError } from './helperUtils';
 
 export interface InjectedLocalized {

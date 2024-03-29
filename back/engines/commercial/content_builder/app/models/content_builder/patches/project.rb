@@ -10,14 +10,10 @@ module ContentBuilder
       CRAFTJS_TEXT_QUERY = <<-SQL.squish
         (
           SELECT
-            ARRAY_AGG(CONCAT_WS('. ', text, title, alt, url, multiloc_text, multiloc_title, multiloc_alt, multiloc_url))
+            ARRAY_AGG(CONCAT_WS('. ', text, title, alt, url))
           FROM
             (
               SELECT
-                JSONB_PATH_QUERY("craftjs_jsonmultiloc", '$.**.props.text') AS multiloc_text,
-                JSONB_PATH_QUERY("craftjs_jsonmultiloc", '$.**.props.title') AS multiloc_title,
-                JSONB_PATH_QUERY("craftjs_jsonmultiloc", '$.**.props.alt') AS multiloc_alt,
-                JSONB_PATH_QUERY("craftjs_jsonmultiloc", '$.**.props.url') AS multiloc_url,
                 JSONB_PATH_QUERY("craftjs_json", '$.**.props.text.*') AS text,
                 JSONB_PATH_QUERY("craftjs_json", '$.**.props.title.*') AS title,
                 JSONB_PATH_QUERY("craftjs_json", '$.**.props.alt.*') AS alt,

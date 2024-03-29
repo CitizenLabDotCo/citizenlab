@@ -1,14 +1,15 @@
 import React from 'react';
-import SuccessImageSrc from './SuccessImage.svg';
 
-// components
 import { Box, Image, Title, Text } from '@citizenlab/cl2-component-library';
+
 import Button from 'components/UI/Button';
 
-// i18n
-import stepMessages from '../messages';
-import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
+
+import stepMessages from '../messages';
+
+import messages from './messages';
+import SuccessImageSrc from './SuccessImage.svg';
 
 interface Props {
   loading: boolean;

@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   IconTooltip,
@@ -8,27 +7,23 @@ import {
   Text,
   Label,
 } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
-
-// intl
-import messages from './messages';
-import sharedMessages from '../../messages';
-import { injectIntl } from 'utils/cl-intl';
-
-// craft
 import { useNode } from '@craftjs/core';
-import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
-
-// events
-import eventEmitter from 'utils/eventEmitter';
-import { CONTENT_BUILDER_ERROR_EVENT } from 'components/admin/ContentBuilder/constants';
-
-// types
 import { Locale, Multiloc } from 'typings';
 
-import { isValidUrl } from 'utils/validate';
 import useLocalize from 'hooks/useLocalize';
+
+import { CONTENT_BUILDER_ERROR_EVENT } from 'components/admin/ContentBuilder/constants';
+import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcherWrapper from 'components/UI/InputMultilocWithLocaleSwitcher';
+
+import { injectIntl } from 'utils/cl-intl';
+import eventEmitter from 'utils/eventEmitter';
+import { isValidUrl } from 'utils/validate';
+
+import sharedMessages from '../../messages';
+import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
+
+import messages from './messages';
 
 interface Props {
   url: string;

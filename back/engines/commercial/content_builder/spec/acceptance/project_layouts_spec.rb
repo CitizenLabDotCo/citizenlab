@@ -111,7 +111,6 @@ resource 'ContentBuilderLayouts' do
     describe 'POST' do
       with_options scope: :content_builder_layout do
         parameter :enabled, 'Indicates that the layout is enabled.'
-        parameter :craftjs_jsonmultiloc, 'The craftjs layout configuration, as a multiloc string.'
         parameter :craftjs_json, 'The craftjs layout configuration'
       end
 
@@ -152,7 +151,6 @@ resource 'ContentBuilderLayouts' do
                   id: be_a(String),
                   type: 'content_builder_layout',
                   attributes: {
-                    craftjs_jsonmultiloc: {},
                     craftjs_json: {
                       ROOT: {
                         type: {
@@ -203,7 +201,6 @@ resource 'ContentBuilderLayouts' do
                     id: layout.id,
                     type: 'content_builder_layout',
                     attributes: {
-                      craftjs_jsonmultiloc: {},
                       craftjs_json: {
                         ROOT: {
                           type: {
@@ -211,63 +208,6 @@ resource 'ContentBuilderLayouts' do
                           }
                         }
                       },
-                      enabled: true,
-                      code: code,
-                      created_at: match(time_regex),
-                      updated_at: match(time_regex)
-                    }
-                  }
-                }
-              )
-              created_at = json_response.dig(:data, :attributes, :created_at)
-              updated_at = json_response.dig(:data, :attributes, :updated_at)
-              expect(updated_at).to be > created_at
-            end
-          end
-        end
-
-        describe 'updating multiple locales' do
-          let! :layout do
-            create(:layout)
-          end
-          let :craftjs_jsonmultiloc do
-            {
-              'nl-BE': {
-                ROOT: {
-                  type: {
-                    resolvedName: 'Container'
-                  }
-                }
-              },
-              'kl-GL': {
-                ROOT: {}
-              }
-            }
-          end
-
-          post 'web_api/v1/projects/:project_id/content_builder_layouts/:code/upsert' do
-            example_request 'Update multiple locales of a layout of a project' do
-              assert_status 200
-              json_response = json_parse(response_body)
-              expect(json_response).to include(
-                {
-                  data: {
-                    id: layout.id,
-                    type: 'content_builder_layout',
-                    attributes: {
-                      craftjs_jsonmultiloc: {
-                        'nl-BE': {
-                          ROOT: {
-                            type: {
-                              resolvedName: 'Container'
-                            }
-                          }
-                        },
-                        'kl-GL': {
-                          ROOT: {}
-                        }
-                      },
-                      craftjs_json: {},
                       enabled: true,
                       code: code,
                       created_at: match(time_regex),
@@ -303,7 +243,6 @@ resource 'ContentBuilderLayouts' do
                     type: 'content_builder_layout',
                     attributes: {
                       craftjs_json: { ROOT: {} },
-                      craftjs_jsonmultiloc: {},
                       enabled: false,
                       code: code,
                       created_at: match(time_regex),
@@ -340,7 +279,6 @@ resource 'ContentBuilderLayouts' do
                     type: 'content_builder_layout',
                     attributes: {
                       craftjs_json: { ROOT: {} },
-                      craftjs_jsonmultiloc: {},
                       enabled: true,
                       code: code,
                       created_at: match(time_regex),

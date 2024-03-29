@@ -1,14 +1,16 @@
 import React from 'react';
+
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+
+import FixedRatioLayout from './FixedRatioLayout';
 import FullWidthBannerLayout from './FullWidthBannerLayout';
 import TwoColumnLayout from './TwoColumnLayout';
 import TwoRowLayout from './TwoRowLayout';
-import FixedRatioLayout from './FixedRatioLayout';
-import { IHomepageSettingsAttributes } from 'api/home_page/types';
 
 const SignedOutHeaderIndex = ({
   homepageSettings,
 }: {
-  homepageSettings: Partial<IHomepageSettingsAttributes>;
+  homepageSettings: Partial<IHomepageBannerSettings>;
 }) => {
   const layoutSetting = homepageSettings.banner_layout;
 

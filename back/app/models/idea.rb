@@ -123,7 +123,7 @@ class Idea < ApplicationRecord
   after_update :fix_comments_count_on_projects
 
   pg_search_scope :search_by_all,
-    against: %i[title_multiloc body_multiloc custom_field_values],
+    against: %i[title_multiloc body_multiloc custom_field_values slug],
     using: { tsearch: { prefix: true } }
 
   scope :with_some_topics, (proc do |topics|
@@ -149,9 +149,22 @@ class Idea < ApplicationRecord
       .order("idea_statuses.ordering #{direction}, ideas.id")
   }
 
+  scope :activity_after, lambda { |time_ago|
+    left_joins(:comments, :reactions)
+      .where('ideas.updated_at >= ? OR comments.updated_at >= ? OR reactions.created_at >= ?', time_ago, time_ago, time_ago)
+  }
+
   scope :feedback_needed, lambda {
     joins(:idea_status).where(idea_statuses: { code: 'proposed' })
       .where('ideas.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
+  }
+
+  scope :native_survey, -> { where.not creation_phase_id: nil }
+  scope :ideation, -> { where creation_phase_id: nil }
+
+  scope :draft_surveys, lambda {
+    where(publication_status: 'draft')
+      .where.not(creation_phase_id: nil)
   }
 
   def just_published?
@@ -264,7 +277,6 @@ end
 
 Idea.include(SmartGroups::Concerns::ValueReferenceable)
 Idea.include(FlagInappropriateContent::Concerns::Flaggable)
-Idea.include(Insights::Concerns::Input)
 Idea.include(Moderation::Concerns::Moderatable)
 Idea.include(MachineTranslations::Concerns::Translatable)
 Idea.include(IdeaAssignment::Extensions::Idea)

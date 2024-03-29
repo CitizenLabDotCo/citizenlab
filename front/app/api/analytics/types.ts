@@ -24,7 +24,7 @@ export interface QuerySchema {
         };
   };
   groups?: string | string[];
-  aggregations?: AggregationsConfig;
+  aggregations?: AggregationsConfig | AggregationsConfig[];
   sort?: {
     [k: string]: 'ASC' | 'DESC';
   };

@@ -1,16 +1,20 @@
 import React from 'react';
-import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { Text, Input } from '@citizenlab/cl2-component-library';
-import Warning from 'components/UI/Warning';
-import Error from 'components/UI/Error';
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import slugInputMessages from 'components/HookForm/SlugInput/messages';
-import messages from './messages';
 
-// typings
+import { Text, Input } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import useLocale from 'hooks/useLocale';
+
+import slugInputMessages from 'components/HookForm/SlugInput/messages';
+import Error from 'components/UI/Error';
+import Warning from 'components/UI/Warning';
+
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+
+import messages from './messages';
 
 type TApiErrors = CLErrors | null;
 

@@ -1,19 +1,19 @@
-import { useReportContext } from '../context/ReportContext';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import { ROOT_NODE, useNode, useEditor } from '@craftjs/core';
+
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
+
+import { useReportContext } from '../context/ReportContext';
 
 // Based on useCraftComponentDefaultPadding hook in
 // app/components/admin/ContentBuilder/useCraftComponentDefaultPadding.ts
 // This one also needs to handle pdf reports and report templates
 // so it's a bit more complex. Maybe eventually we can combine them.
 const useReportDefaultPadding = () => {
-  const isSmallerThanTablet = useBreakpoint('tablet');
   const {
     query: { node },
   } = useEditor();
   const { parentId } = useNode((node) => ({
-    parentId: node.data.parent,
+    parentId: node?.data?.parent,
   }));
 
   const { width } = useReportContext();
@@ -32,9 +32,10 @@ const useReportDefaultPadding = () => {
       ? node(greatGrandParentId).isRoot()
       : false;
 
+  const isSmall = width === 'phone' || width === 'tablet';
   const inRoot = parentIsRoot || grandParentIsTemplateAndGreatGrandparentIsRoot;
 
-  return isSmallerThanTablet && inRoot ? DEFAULT_PADDING : '0px';
+  return isSmall && inRoot ? DEFAULT_PADDING : '0px';
 };
 
 export default useReportDefaultPadding;

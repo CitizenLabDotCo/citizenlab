@@ -1,4 +1,5 @@
 import { Keys } from 'utils/cl-react-query/types';
+
 import eventsAttendancesKeys from './keys';
 
 export type EventAttendanceKeys = Keys<typeof eventsAttendancesKeys>;

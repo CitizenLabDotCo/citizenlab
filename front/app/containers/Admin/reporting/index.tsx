@@ -1,11 +1,10 @@
 import React from 'react';
+
 import { Outlet as RouterOutlet } from 'react-router-dom';
 
-// components
 import HelmetIntl from 'components/HelmetIntl';
-import Tabs from './components/Tabs';
 
-// i18n
+import Tabs from './components/Tabs';
 import messages from './messages';
 
 export const ReportingPage = () => (

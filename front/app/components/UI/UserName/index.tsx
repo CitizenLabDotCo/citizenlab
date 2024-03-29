@@ -1,28 +1,23 @@
 import React from 'react';
-import Link from 'utils/cl-router/Link';
 
-// styles
-import { darken } from 'polished';
 import {
   colors,
   fontSizes,
   Box,
   Text,
 } from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
+import { darken } from 'polished';
+import { RouteType } from 'routes';
 import styled from 'styled-components';
 
-// hooks
+import { IUserData } from 'api/users/types';
 import useUserById from 'api/users/useUserById';
 
-// services
-import { IUserData } from 'api/users/types';
-
-// i18n
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import Link from 'utils/cl-router/Link';
 
-// components
-import Tippy from '@tippyjs/react';
+import messages from './messages';
 
 const Name = styled.span<{
   color?: string;
@@ -157,7 +152,7 @@ const UserName = ({
       return `${firstName} ${!hideLastName && lastName ? lastName : ''}`;
     };
     const name = getName(user.data);
-    const profileLink = `/profile/${user.data.attributes.slug}`;
+    const profileLink: RouteType = `/profile/${user.data.attributes.slug}`;
 
     const classNames = `
       ${className || ''}

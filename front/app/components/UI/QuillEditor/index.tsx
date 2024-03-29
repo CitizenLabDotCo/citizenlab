@@ -1,13 +1,5 @@
 import React, { memo, useEffect, useRef, useState, useCallback } from 'react';
-import usePrevious from 'hooks/usePrevious';
-import { debounce } from 'lodash-es';
 
-// quill
-import Quill, { Sources, QuillOptionsStatic, RangeStatic } from 'quill';
-import BlotFormatter from 'quill-blot-formatter';
-import 'quill/dist/quill.snow.css';
-
-// components
 import {
   Label,
   IconTooltip,
@@ -18,17 +10,19 @@ import {
   defaultStyles,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// styling
+import Tippy from '@tippyjs/react';
+import { debounce } from 'lodash-es';
+import Quill, { Sources, QuillOptionsStatic, RangeStatic } from 'quill';
+import BlotFormatter from 'quill-blot-formatter';
 import styled from 'styled-components';
+import { Locale } from 'typings';
+
+import usePrevious from 'hooks/usePrevious';
+
+import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
+
+import 'quill/dist/quill.snow.css';
 
 import {
   ImageBlot,
@@ -36,9 +30,8 @@ import {
   KeepHTML,
   attributes,
 } from './altTextToImagesModule';
-// typings
-import { Locale } from 'typings';
-import Tippy from '@tippyjs/react';
+import messages from './messages';
+import tracks from './tracks';
 
 const DropdownList = styled.div`
   display: flex;
@@ -232,6 +225,14 @@ const Container = styled.div<{
     box-shadow: inset ${defaultStyles.boxShadowError};
   }
 
+  // This fixes a wierd scroll to the top after pasting. See https://github.com/quilljs/quill/issues/1374
+  .ql-clipboard {
+    position: fixed;
+    display: none;
+    left: 50%;
+    top: 50%;
+  }
+
   .ql-toolbar.ql-snow + .ql-container.ql-snow {
     width: 100%;
     height: 100%;
@@ -333,6 +334,11 @@ class CustomLink extends Link {
   static create(url: string) {
     const node = super.create(url);
     node.setAttribute('rel', 'noreferrer noopener nofollow');
+
+    // if the href of node starts with www., add https://
+    if (url.startsWith('www.')) {
+      node.setAttribute('href', `https://${url}`);
+    }
 
     // The default behavior of the Link is to add a target="_blank" attribute
     // So for internal urls we have to remove this

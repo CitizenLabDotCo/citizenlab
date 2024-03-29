@@ -50,6 +50,7 @@ el:
       "assignee_digest": Εβδομαδιαία επισκόπηση των ιδεών που έχουν ανατεθεί
       "user_digest": Εβδομαδιαία επισκόπηση
       "voting_basket_submitted": Επιβεβαίωση της ψηφοφορίας
+      "native_survey_not_submitted": Έρευνα που δεν υποβλήθηκε
       "voting_basket_not_submitted": Ψήφοι που δεν υποβλήθηκαν
       "voting_last_chance": Τελευταία ευκαιρία να ψηφίσετε
       "voting_phase_started": Νέα φάση έργου με ψηφοφορία
@@ -505,6 +506,13 @@ el:
       event_description: 'Ευχαριστώ για τη συμμετοχή σας. Οι ψήφοι σας έχουν καταγραφεί. Επισκεφθείτε την πλατφόρμα %{organizationName} για να δείτε και να διαχειριστείτε τις ψήφους σας.'
       cta_see_votes_submitted: 'Δείτε τις υποβληθείσες ψήφους'
       cta_message: 'Κάντε κλικ στο παρακάτω κουμπί για να συμμετάσχετε'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Σχεδόν φτάσαμε! Υποβάλετε τις απαντήσεις σας'
+      preheader: 'Δεν ολοκληρώσατε την απάντησή σας στην έρευνα στην πλατφόρμα συμμετοχής του %{organizationName}.'
+      title_native_survey_not_submitted: 'Σχεδόν φτάσαμε! Υποβάλετε τις απαντήσεις σας'
+      body_native_survey_not_submitted: 'Αρχίσατε να μοιράζεστε τις απαντήσεις σας στο %{phaseTitle} αλλά δεν τις υποβάλατε. Οι υποβολές θα κλείσουν στις %{phaseEndDate}. Κάντε κλικ στο παρακάτω κουμπί για να συνεχίσετε από εκεί που σταματήσατε.'
+      body_native_survey_not_submitted_no_date: 'Αρχίσατε να μοιράζεστε τις απαντήσεις σας στο %{phaseTitle} αλλά δεν τις υποβάλατε. Κάντε κλικ στο παρακάτω κουμπί για να συνεχίσετε από εκεί που σταματήσατε.'
+      cta_complete_your_survey_response: 'Συνεχίστε την απάντησή σας στην έρευνα'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Δεν υποβάλατε τις ψήφους σας'
       preheader: 'Δεν καταθέσατε την ψήφο σας στην πλατφόρμα συμμετοχής του %{organizationName}'
@@ -574,12 +582,13 @@ el:
         user_who_registers: 'Χρήστης που εγγράφεται'
         user_who_was_invited: 'Χρήστης που προσκλήθηκε'
         users_who_engaged_with_the_project: 'Χρήστες που ασχολήθηκαν με το έργο'
-        users_who_follow_the_proposal: 'Χρήστης που ακολουθεί την πρόταση'
-        users_who_follow_the_input: 'Χρήστης που ακολουθεί την είσοδο'
+        users_who_follow_the_proposal: 'Χρήστες που ακολουθούν την πρόταση'
+        users_who_follow_the_input: 'Χρήστες που ακολουθούν την εισαγωγή'
         users_who_follow_the_project: 'Χρήστες που ακολουθούν το έργο'
         user_who_voted: 'Χρήστης που ψήφισε'
         user_with_unsubmitted_votes: 'Χρήστης που δεν έχει υποβάλει την ψήφο του'
         users_who_engaged_but_not_voted: 'Χρήστες που ασχολήθηκαν με το έργο αλλά δεν ψήφισαν'
+        user_with_unsubmitted_survey: 'Χρήστης που έχει ξεκινήσει αλλά δεν έχει υποβάλει την έρευνά του'
       content_type:
         comments: 'Σχόλια'
         content_moderation: 'Μετριασμός περιεχομένου'
@@ -592,6 +601,7 @@ el:
         proposals: 'Προτάσεις'
         reactions: 'Αντιδράσεις'
         voting: 'Ψηφοφορία'
+        surveys: 'Έρευνες'
       trigger:
         comment_is_deleted: 'Το σχόλιο διαγράφεται'
         comment_is_flagged_as_spam: 'Το σχόλιο επισημαίνεται ως spam'
@@ -640,3 +650,4 @@ el:
         7_days_after_invite_is_sent: '7 ημέρες μετά την αποστολή της πρόσκλησης'
         7_days_before_the_project_changes_phase: '7 ημέρες πριν από τη φάση αλλαγής του έργου'
         registration_to_event: 'Εγγραφή σε μια εκδήλωση'
+        survey_1_day_after_draft_saved: '1 ημέρα μετά την τελευταία αποθήκευση της έρευνας σε προσχέδιο'

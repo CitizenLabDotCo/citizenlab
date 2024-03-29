@@ -1,7 +1,7 @@
-import { Locale } from 'typings';
-import useMachineTranslationByInitiativeId from 'modules/commercial/machine_translations/api/useMachineTranslationByInitiativeId';
-import useMachineTranslationByIdeaId from 'modules/commercial/machine_translations/api/useMachineTranslationByIdeaId';
 import useMachineTranslationByCommentId from 'modules/commercial/machine_translations/api/useMachineTranslationByCommentId';
+import useMachineTranslationByIdeaId from 'modules/commercial/machine_translations/api/useMachineTranslationByIdeaId';
+import useMachineTranslationByInitiativeId from 'modules/commercial/machine_translations/api/useMachineTranslationByInitiativeId';
+import { Locale } from 'typings';
 
 interface Parameters {
   attributeName: 'body_multiloc' | 'title_multiloc';

@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useRScore from './useRScore';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { IRScore } from './types';
+import useRScore from './useRScore';
 
 const apiPath = '*/users/custom_fields/:id/rscore';
 

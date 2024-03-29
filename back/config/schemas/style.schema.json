@@ -31,10 +31,6 @@
       "description": "The color of the full-width bottom border of the navbar",
       "$ref": "#/definitions/color"
     },
-    "signedOutHeaderOverlayColor": {
-      "description": "The overlay color of the signed-out header",
-      "$ref": "#/definitions/color"
-    },
     "signedOutHeaderTitleFontSize": {
       "description": "The font size of the title of the signed-out header (in pixels)",
       "type": "integer"
@@ -42,18 +38,6 @@
     "signedOutHeaderTitleFontWeight": {
       "description": "The font weight of the title of the signed-out header (200, 300, 400, 500, 600 or 800)",
       "$ref": "#/definitions/weight"
-    },
-    "signedOutHeaderOverlayOpacity": {
-      "description": "The opacity of the overlay of the signed-out header (0 (no color) to 100 (full color))",
-      "$ref": "#/definitions/opacity"
-    },
-    "signedInHeaderOverlayColor": {
-      "description": "The color of the overlay of the signed-in header",
-      "$ref": "#/definitions/color"
-    },
-    "signedInHeaderOverlayOpacity": {
-      "description": "The opacity of the overlay of the signed-in header (0 (no color) to 100 (full color)). Does not affect the signed-in header opacity when the signed-out header layout is fixed-ratio. In this case the signed-in header overlay defaults to 100 opacity (no image visible)",
-      "$ref": "#/definitions/opacity"
     },
     "customFontName": {
       "description": "The name or family of the configured custom font for the platform",

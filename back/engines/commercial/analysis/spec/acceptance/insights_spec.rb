@@ -43,6 +43,19 @@ resource 'Insights' do
       })
       expect(json_response_body[:included].pluck(:id)).to match_array([summary.id, summary.background_task.id, question.id, question.background_task.id])
     end
+
+    example_request 'Listing insights does not cause N+1 queries' do
+      create_list(:summary, 3, insight_attributes: { analysis: analysis })
+
+      # It would be better to lower the query limit to 1 and fix the other performance issues,
+      # but this at least helps to ensure that the missing_inputs_count part does not trigger
+      # N+1 queries.
+      expect do
+        do_request
+      end.not_to exceed_query_limit(3).with(/SELECT.*analysis_insights/)
+
+      assert_status 200
+    end
   end
 
   delete 'web_api/v1/analyses/:analysis_id/insights/:id' do
@@ -57,20 +70,6 @@ resource 'Insights' do
       expect(response_status).to eq 200
       expect { Analysis::Insight.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       expect { Analysis::Summary.find(summary.id) }.to raise_error(ActiveRecord::RecordNotFound)
-    end
-  end
-
-  post 'web_api/v1/analyses/:analysis_id/insights/:id/toggle_bookmark' do
-    let!(:summary) { create(:summary) }
-    let(:analysis_id) { summary.analysis.id }
-    let(:id) { summary.insight_id }
-
-    example 'Toggle bookmarked attribute on an insight' do
-      expect { do_request }.to change { Analysis::Insight.find(id).bookmarked }.from(false).to(true)
-      expect(response_status).to eq 200
-
-      expect { do_request }.to change { Analysis::Insight.find(id).bookmarked }.from(true).to(false)
-      expect(response_status).to eq 200
     end
   end
 

@@ -1,9 +1,5 @@
 import React, { useState, useCallback } from 'react';
 
-import { isNilOrError } from 'utils/helperUtils';
-import { insertConfiguration } from 'utils/moduleUtils';
-
-// components
 import {
   Table,
   Thead,
@@ -17,39 +13,36 @@ import {
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import ModerationRow from './ModerationRow';
-import Pagination from 'components/Pagination';
-import Checkbox from 'components/UI/Checkbox';
-import Button from 'components/UI/Button';
-import Tabs, { ITabItem } from 'components/UI/Tabs';
-import { PageTitle } from 'components/admin/Section';
-import SelectType from './SelectType';
-import SelectProject from './SelectProject';
-import SearchInput from 'components/UI/SearchInput';
-import Outlet from 'components/Outlet';
+import styled from 'styled-components';
+import { IOption, InsertConfigurationOptions } from 'typings';
 
-// hooks
-import useModerations from 'api/moderations/useModerations';
-import useModerationsCount from 'api/moderation_count/useModerationsCount';
 import useRemoveInappropriateContentFlag from 'api/inappropriate_content_flags/useRemoveInappropriateContentFlag';
+import useAuthUser from 'api/me/useAuthUser';
+import useModerationsCount from 'api/moderation_count/useModerationsCount';
+import { IModerationData, TModeratableType } from 'api/moderations/types';
+import useModerations from 'api/moderations/useModerations';
 import useUpdateModerationStatus from 'api/moderations/useUpdateModerationStatus';
 
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import { PageTitle } from 'components/admin/Section';
+import Outlet from 'components/Outlet';
+import Pagination from 'components/Pagination';
+import Button from 'components/UI/Button';
+import Checkbox from 'components/UI/Checkbox';
+import SearchInput from 'components/UI/SearchInput';
+import Tabs, { ITabItem } from 'components/UI/Tabs';
 
-// analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// styling
-import styled from 'styled-components';
-
-// typings
-import { IOption, InsertConfigurationOptions } from 'typings';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { insertConfiguration } from 'utils/moduleUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
+import { isAdmin } from 'utils/permissions/roles';
 
-import { IModerationData, TModeratableType } from 'api/moderations/types';
+import messages from './messages';
+import ModerationRow from './ModerationRow';
+import SelectProject from './SelectProject';
+import SelectType from './SelectType';
+import tracks from './tracks';
 
 const Container = styled.div`
   display: flex;
@@ -196,6 +189,8 @@ const pageSizes = [
 ];
 
 const Moderation = () => {
+  const { data: authUser } = useAuthUser();
+
   const { formatMessage } = useIntl();
   const { mutateAsync: updateModerationStatus } = useUpdateModerationStatus();
   const { mutateAsync: removeInappropriateContentFlag } =
@@ -229,6 +224,12 @@ const Moderation = () => {
     },
   ]);
 
+  const handleData = useCallback(
+    (data: InsertConfigurationOptions<ITabItem>) =>
+      setTabs((tabs) => insertConfiguration(data)(tabs)),
+    []
+  );
+
   const moderationStatus = selectedTab === 'warnings' ? undefined : selectedTab;
 
   const { data: moderations } = useModerations({
@@ -244,6 +245,10 @@ const Moderation = () => {
   const { data: moderationsWithActiveFlagCount } = useModerationsCount({
     isFlagged: true,
   });
+
+  if (!authUser || !isAdmin(authUser)) {
+    return null;
+  }
 
   const handleOnSelectAll = (_event: React.ChangeEvent) => {
     if (!processing && !isNilOrError(moderations)) {
@@ -381,12 +386,6 @@ const Moderation = () => {
       }
     }
   };
-
-  const handleData = useCallback(
-    (data: InsertConfigurationOptions<ITabItem>) =>
-      setTabs((tabs) => insertConfiguration(data)(tabs)),
-    []
-  );
 
   if (moderations) {
     const lastPage = getPageNumberFromUrl(moderations.links?.last) || 1;

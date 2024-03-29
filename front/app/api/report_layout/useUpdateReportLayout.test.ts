@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useUpdateReportLayout from './useUpdateReportLayout';
-import { reportLayout, apiPathUpdate } from './__mocks__/_mockServer';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { reportLayout, apiPathUpdate } from './__mocks__/_mockServer';
+import useUpdateReportLayout from './useUpdateReportLayout';
 
 const server = setupServer(
   rest.patch(apiPathUpdate, (_req, res, ctx) => {

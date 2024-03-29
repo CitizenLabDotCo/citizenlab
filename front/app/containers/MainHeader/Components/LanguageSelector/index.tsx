@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
-// components
 import {
   Icon,
   Dropdown,
@@ -10,22 +8,18 @@ import {
   fontSizes,
   isRtl,
 } from '@citizenlab/cl2-component-library';
+import styled, { useTheme } from 'styled-components';
+import { Locale } from 'typings';
 
-// services
-import { updateLocale } from 'utils/locale';
-
-// hooks
-import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-// style
-import styled, { useTheme } from 'styled-components';
+import useLocale from 'hooks/useLocale';
 
-// i18n
 import { shortenedAppLocalePairs } from 'containers/App/constants';
 
-// typings
-import { Locale } from 'typings';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { updateLocale } from 'utils/locale';
+
 import { getSelectedLocale } from './utils';
 
 const DropdownButtonText = styled.div`
@@ -108,9 +102,19 @@ const ListItem = styled.button`
 
 interface Props {
   className?: string;
+  top?: string;
+  mobileRight?: string;
+  mobileLeft?: string;
+  right?: string;
 }
 
-const LanguageSelector = ({ className }: Props) => {
+const LanguageSelector = ({
+  className,
+  top,
+  mobileRight,
+  mobileLeft,
+  right,
+}: Props) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const isPhoneOrSmaller = useBreakpoint('phone');
   const { data: appConfig } = useAppConfiguration();
@@ -156,10 +160,10 @@ const LanguageSelector = ({ className }: Props) => {
         <Dropdown
           width="180px"
           mobileWidth="160px"
-          top="68px"
-          right={!isRtl ? '0px' : undefined}
-          mobileRight={!isRtl ? '5px' : undefined}
-          mobileLeft={isRtl ? '5px' : undefined}
+          top={top || '68px'}
+          right={right ? right : !isRtl ? '0px' : undefined}
+          mobileRight={mobileRight ? mobileRight : !isRtl ? '5px' : undefined}
+          mobileLeft={mobileLeft ? mobileLeft : isRtl ? '5px' : undefined}
           opened={dropdownOpened}
           onClickOutside={toggleDropdown}
           content={

@@ -24,7 +24,8 @@ function signUp() {
 describe('Sign up - Email + password step', () => {
   beforeEach(() => {
     cy.goToLandingPage();
-    cy.get('#e2e-navbar-signup-menu-item').click();
+    cy.get('#e2e-navbar-login-menu-item').click();
+    cy.get('#e2e-goto-signup').click();
     cy.get('#e2e-authentication-modal').should('exist');
   });
 

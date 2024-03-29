@@ -1,68 +1,77 @@
 import React, { useState, useEffect } from 'react';
 
-// hooks
+import {
+  Box,
+  Text,
+  Title,
+  colors,
+  IconButton,
+  TooltipContentWrapper,
+} from '@citizenlab/cl2-component-library';
 import { useEditor } from '@craftjs/core';
+import Tippy from '@tippyjs/react';
+import { RouteType } from 'routes';
+import { Locale } from 'typings';
+
+import usePhase from 'api/phases/usePhase';
+import useProjectById from 'api/projects/useProjectById';
 import useUpdateReportLayout from 'api/report_layout/useUpdateReportLayout';
 
-// context
+import useLocalize from 'hooks/useLocalize';
+
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 
-// components
+import { CONTENT_BUILDER_Z_INDEX } from 'components/admin/ContentBuilder/constants';
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
-import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
-import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
-import LocaleSwitcher from 'components/admin/ContentBuilder/TopBar/LocaleSwitcher';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
-import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
-import Modal from 'components/UI/Modal';
 import Button from 'components/UI/Button';
-import ShareReportButton from '../../ReportBuilderPage/ReportRow/Buttons/ShareReportButton';
 
-// i18n
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// routing
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
-// types
-import { Locale } from 'typings';
-import { CraftJson } from 'components/admin/ContentBuilder/typings';
+import { View } from '../ViewContainer/typings';
+import ViewPicker from '../ViewContainer/ViewPicker';
+
+import LocaleSelect from './LocaleSelect';
+import messages from './messages';
+import QuitModal from './QuitModal';
 
 type ContentBuilderTopBarProps = {
-  hasError: boolean;
   hasPendingState: boolean;
   selectedLocale: Locale;
-  draftEditorData?: CraftJson;
   reportId: string;
-  templateProjectId?: string;
+  isTemplate: boolean;
   saved: boolean;
-  previewEnabled: boolean;
-  setSaved: React.Dispatch<React.SetStateAction<boolean>>;
-  setPreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
+  view: View;
+  setView: (view: View) => void;
+  setSaved: () => void;
   setSelectedLocale: React.Dispatch<React.SetStateAction<Locale>>;
 };
 
 const ContentBuilderTopBar = ({
-  hasError,
-  draftEditorData,
   selectedLocale,
   hasPendingState,
   reportId,
-  templateProjectId,
+  isTemplate,
   saved,
-  previewEnabled,
+  view,
+  setView,
   setSaved,
-  setPreviewEnabled,
   setSelectedLocale,
 }: ContentBuilderTopBarProps) => {
   const [initialized, setInitialized] = useState(false);
   const [showQuitModal, setShowQuitModal] = useState(false);
   const { query } = useEditor();
   const { mutate: updateReportLayout, isLoading } = useUpdateReportLayout();
-  const reportContext = useReportContext();
+  const { projectId, phaseId } = useReportContext();
+  const { data: project } = useProjectById(projectId);
+  const { data: phase } = usePhase(phaseId);
 
-  const disableSave = !!hasError || !!hasPendingState || saved;
+  const localize = useLocalize();
+  const { formatMessage } = useIntl();
+
+  const disableSave = !!hasPendingState || saved;
+  const disablePrint = !!hasPendingState || !saved;
 
   const closeModal = () => {
     setShowQuitModal(false);
@@ -78,11 +87,9 @@ const ContentBuilderTopBar = ({
     }
   };
   const doGoBack = () => {
-    const { projectId, phaseId } = reportContext;
-
-    const goBackUrl =
+    const goBackUrl: RouteType =
       projectId && phaseId
-        ? `/admin/projects/${projectId}/phases/${phaseId}/setup`
+        ? `/admin/projects/${projectId}/phases/${phaseId}/report`
         : '/admin/reporting/report-builder';
 
     clHistory.push(goBackUrl);
@@ -93,11 +100,11 @@ const ContentBuilderTopBar = ({
       {
         id: reportId,
         craftjs_json: query.getSerializedNodes(),
-        projectId: reportContext.projectId,
+        projectId,
       },
       {
         onSuccess: () => {
-          setSaved(true);
+          setSaved();
         },
       }
     );
@@ -114,106 +121,126 @@ const ContentBuilderTopBar = ({
     };
   }, [saved]);
 
+  // This useEffect handles autosave for templates
   useEffect(() => {
     if (initialized) return;
 
-    if (!templateProjectId) {
+    if (!isTemplate) {
       setInitialized(true);
       return;
     }
 
-    const nodes = query.getSerializedNodes();
-    const firstNode = nodes.ROOT?.nodes[0];
-    const numberOfNodes = Object.keys(nodes).length;
+    const interval = setInterval(() => {
+      const nodes = query.getSerializedNodes();
+      const firstNode = nodes.ROOT?.nodes[0];
+      if (!firstNode) return;
 
-    if (!firstNode || numberOfNodes < 5) return;
+      const displayName = nodes?.[firstNode].displayName;
 
-    if (nodes?.[firstNode].displayName === 'ProjectTemplate') {
-      setTimeout(() => {
-        updateReportLayout(
-          {
-            id: reportId,
-            craftjs_json: query.getSerializedNodes(),
-            projectId: reportContext.projectId,
+      if (!['ProjectTemplate', 'PhaseTemplate'].includes(displayName)) {
+        // In theory this should not be possible, but handling
+        // it gracefully just in case
+        setInitialized(true);
+        clearInterval(interval);
+        return;
+      }
+
+      const numberOfNodes = Object.keys(nodes).length;
+      if (displayName === 'ProjectTemplate' && numberOfNodes < 5) return;
+
+      updateReportLayout(
+        {
+          id: reportId,
+          craftjs_json: nodes,
+          projectId,
+        },
+        {
+          onSuccess: () => {
+            setSaved();
           },
-          {
-            onSuccess: () => {
-              setSaved(true);
-            },
-          }
-        );
-      }, 5000);
-    }
+        }
+      );
 
-    setInitialized(true);
+      setInitialized(true);
+      clearInterval(interval);
+    }, 3000);
+
+    return () => clearInterval(interval);
   }, [
-    templateProjectId,
+    isTemplate,
     query,
-    draftEditorData,
     initialized,
     reportId,
     updateReportLayout,
-    reportContext.projectId,
+    projectId,
     setSaved,
   ]);
 
-  const handleTogglePreview = () => {
-    setPreviewEnabled((previewEnabled) => !previewEnabled);
-  };
-
   return (
-    <Container>
-      <Modal opened={showQuitModal} close={closeModal}>
-        <Box display="flex" flexDirection="column" width="100%" p="20px">
-          <Box mb="40px">
-            <Title variant="h3" color="primary">
-              <FormattedMessage {...messages.quitReportConfirmationQuestion} />
-            </Title>
-            <Text color="primary" fontSize="l">
-              <FormattedMessage {...messages.quitReportInfo} />
-            </Text>
-          </Box>
-          <Box
-            display="flex"
-            flexDirection="row"
-            width="100%"
-            alignItems="center"
-          >
-            <Button
-              icon="delete"
-              data-cy="e2e-confirm-delete-survey-results"
-              buttonStyle="delete"
-              width="auto"
-              mr="20px"
-              onClick={doGoBack}
-            >
-              <FormattedMessage {...messages.confirmQuitButtonText} />
-            </Button>
-            <Button buttonStyle="secondary" width="auto" onClick={closeModal}>
-              <FormattedMessage {...messages.cancelQuitButtonText} />
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
-      <GoBackButton onClick={goBack} />
-      <Box display="flex" p="15px" flexGrow={1} alignItems="center">
+    <Container id="e2e-report-builder-topbar">
+      <QuitModal
+        open={showQuitModal}
+        onCloseModal={closeModal}
+        onGoBack={doGoBack}
+      />
+      <IconButton
+        iconName="arrow-left"
+        onClick={goBack}
+        buttonType="button"
+        iconColor={colors.textSecondary}
+        iconColorOnHover={colors.primary}
+        iconWidth="20px"
+        a11y_buttonActionMessage={formatMessage(messages.goBackButtonMessage)}
+        ml="8px"
+      />
+      <Box display="flex" p="15px" pl="8px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
-          <Text mb="0px" color="textSecondary">
+          <Title variant="h3" as="h1" mb="0px" mt="0px">
             <FormattedMessage {...messages.reportBuilder} />
-          </Text>
+          </Title>
+          {project && phase && (
+            <Text m="0" color="textSecondary">
+              {localize(project.data.attributes.title_multiloc)}{' '}
+              <span style={{ color: colors.black, fontWeight: '700' }}>
+                ({localize(phase.data.attributes.title_multiloc)})
+              </span>
+            </Text>
+          )}
         </Box>
-        <LocaleSwitcher
-          selectedLocale={selectedLocale}
-          onSelectLocale={setSelectedLocale}
-        />
-        <Box mx="24px">
-          <PreviewToggle
-            checked={previewEnabled}
-            onChange={handleTogglePreview}
-          />
+        <Box>
+          <LocaleSelect locale={selectedLocale} setLocale={setSelectedLocale} />
         </Box>
-        <Box mr="20px">
-          <ShareReportButton reportId={reportId} />
+        {!!phaseId && (
+          <Box ml="32px">
+            <ViewPicker view={view} setView={setView} />
+          </Box>
+        )}
+        <Box ml="32px">
+          <Tippy
+            interactive={false}
+            placement="bottom"
+            disabled={!disablePrint}
+            zIndex={CONTENT_BUILDER_Z_INDEX.tooltip}
+            content={
+              <TooltipContentWrapper tippytheme="light">
+                {formatMessage(messages.cannotPrint)}
+              </TooltipContentWrapper>
+            }
+          >
+            <div>
+              <Button
+                icon="print"
+                buttonStyle="secondary"
+                iconColor={colors.textPrimary}
+                iconSize="16px"
+                px="12px"
+                py="8px"
+                linkTo={`/admin/reporting/report-builder/${reportId}/print`}
+                openLinkInNewTab
+                disabled={disablePrint}
+              />
+            </div>
+          </Tippy>
         </Box>
         <SaveButton
           disabled={disableSave}
@@ -221,6 +248,11 @@ const ContentBuilderTopBar = ({
           bgColor={saved ? colors.success : undefined}
           icon={saved ? 'check' : undefined}
           onClick={handleSave}
+          fontSize="14px"
+          ml="8px"
+          px="12px"
+          pb="3px"
+          pt="4px"
         />
       </Box>
     </Container>

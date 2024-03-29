@@ -1,24 +1,21 @@
 import React, { useCallback } from 'react';
 
-// hooks
-import { useNode } from '@craftjs/core';
-
-// components
 import { Box } from '@citizenlab/cl2-component-library';
-import ProjectFilter from '../../_shared/ProjectFilter';
-import PhaseFilter from '../../_shared/PhaseFilter';
-import NumberOfIdeasDropdown from './NumberOfIdeasDropdown';
-import CollapseLongTextToggle from './CollapseLongTextToggle';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import { useNode } from '@craftjs/core';
+import { IOption, Multiloc } from 'typings';
 
-// i18n
-import messages from '../messages';
-import widgetMessages from '../../messages';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import PhaseFilter from 'components/UI/PhaseFilter';
+
 import { useIntl } from 'utils/cl-intl';
 
-// typings
+import ProjectFilter from '../../_shared/ProjectFilter';
+import widgetMessages from '../../messages';
+import CollapseLongTextToggle from '../../SingleIdeaWidget/Settings/CollapseLongTextToggle';
+import messages from '../messages';
 import { Props } from '../typings';
-import { IOption, Multiloc } from 'typings';
+
+import NumberOfIdeasDropdown from './NumberOfIdeasDropdown';
 
 const Settings = () => {
   const { formatMessage } = useIntl();
@@ -97,16 +94,16 @@ const Settings = () => {
 
       <ProjectFilter
         projectId={projectId}
-        emptyValueMessage={widgetMessages.noProject}
+        emptyOptionMessage={widgetMessages.noProject}
         onProjectFilter={handleProjectFilter}
       />
 
       {projectId !== undefined && (
         <PhaseFilter
-          label={formatMessage(messages.ideationPhases)}
+          label={formatMessage(messages.ideationPhase)}
           projectId={projectId}
           phaseId={phaseId}
-          participationMethod="ideation"
+          participationMethods={['ideation']}
           onPhaseFilter={handlePhaseFilter}
         />
       )}

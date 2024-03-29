@@ -1,27 +1,22 @@
 import React, { useState } from 'react';
 
-// hooks
-import useReports from 'api/reports/useReports';
-
-// styling
 import { colors, Box, Title, Text } from '@citizenlab/cl2-component-library';
-
-// components
-import EmptyState from '../../components/ReportBuilderPage/EmptyState';
-import Button from 'components/UI/Button';
-import ReportRow from '../../components/ReportBuilderPage/ReportRow';
-import CreateReportModal from '../../components/ReportBuilderPage/CreateReportModal';
 import Tippy from '@tippyjs/react';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import sharedMessages from '../../messages';
-import messages from './messages';
+import useReports from 'api/reports/useReports';
 
-// utils
-
-// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import CreateReportModal from '../../components/ReportBuilderPage/CreateReportModal';
+import EmptyState from '../../components/ReportBuilderPage/EmptyState';
+import ReportRow from '../../components/ReportBuilderPage/ReportRow';
+import sharedMessages from '../../messages';
+
+import messages from './messages';
 
 const ReportBuilderPage = () => {
   const { data: reports } = useReports();
@@ -88,21 +83,23 @@ const ReportBuilderPage = () => {
               </Tippy>
             </Box>
           </Box>
-          <Box background="white" px="56px" py="40px" mt="20px">
-            <Title
-              variant="h3"
-              as="h2"
-              color="primary"
-              mt="0px"
-              mb="32px"
-              fontWeight="normal"
-            >
-              <FormattedMessage {...messages.viewReports} />
-            </Title>
-            {reports.data.map((report) => (
-              <ReportRow key={report.id} report={report} />
-            ))}
-          </Box>
+          {isReportBuilderAllowed && (
+            <Box background="white" px="56px" py="40px" mt="20px">
+              <Title
+                variant="h3"
+                as="h2"
+                color="primary"
+                mt="0px"
+                mb="32px"
+                fontWeight="normal"
+              >
+                <FormattedMessage {...messages.viewReports} />
+              </Title>
+              {reports.data.map((report) => (
+                <ReportRow key={report.id} report={report} />
+              ))}
+            </Box>
+          )}
         </>
       )}
       <CreateReportModal open={modalOpen} onClose={closeModal} />

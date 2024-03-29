@@ -1,184 +1,155 @@
-import React, { useState, useCallback } from 'react';
-import { useLocation, useParams, useSearchParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
+import { isEmpty } from 'lodash-es';
+import { useLocation, useParams, useSearchParams } from 'react-router-dom';
+import { Locale } from 'typings';
+
+import { ReportLayout } from 'api/report_layout/types';
 import useReportLayout from 'api/report_layout/useReportLayout';
+import { ReportResponse } from 'api/reports/types';
+import useReport from 'api/reports/useReport';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
-// context
-import { ReportContextProvider } from '../../context/ReportContext';
-import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
-
-// components
-import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
-
-// craft
-import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
-import Editor from '../../components/ReportBuilder/Editor';
-import TopBar from '../../components/ReportBuilder/TopBar';
-import Toolbox from '../../components/ReportBuilder/Toolbox';
-import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import Frame from 'components/admin/ContentBuilder/Frame';
-import Settings from 'components/admin/ContentBuilder/Settings';
+import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
+import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
+import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
+import Warning from 'components/UI/Warning';
 
-// templates
+import { FormattedMessage } from 'utils/cl-intl';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+
+import Editor from '../../components/ReportBuilder/Editor';
+import Settings from '../../components/ReportBuilder/Settings';
+import { TemplateContext } from '../../components/ReportBuilder/Templates/context';
+import PhaseTemplate from '../../components/ReportBuilder/Templates/PhaseTemplate';
 import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTemplate';
-
-// constants
+import Toolbox from '../../components/ReportBuilder/Toolbox';
+import TopBar from '../../components/ReportBuilder/TopBar';
+import ViewContainer from '../../components/ReportBuilder/ViewContainer';
+import { View } from '../../components/ReportBuilder/ViewContainer/typings';
 import { A4_WIDTH } from '../../constants';
-
-// typings
-import {
-  CraftJson,
-  ContentBuilderErrors,
-} from 'components/admin/ContentBuilder/typings';
-import { SerializedNodes } from '@craftjs/core';
-import { Locale } from 'typings';
-import { ReportLayout } from 'api/report_layout/types';
-import { isEmpty } from 'lodash-es';
+import { ReportContextProvider } from '../../context/ReportContext';
+import messages from '../../messages';
+import areCraftjsObjectsEqual from '../../utils/areCraftjsObjectsEqual';
 
 interface Props {
-  reportId: string;
+  report: ReportResponse;
   reportLayout: ReportLayout;
+  templateProjectId: string | null;
+  templatePhaseId: string | null;
 }
 
-const ReportBuilder = ({ reportId, reportLayout }: Props) => {
-  const platformLocale = useLocale();
-  const [search] = useSearchParams();
-  const templateProjectId = search.get('templateProjectId');
+const ReportBuilder = ({
+  report,
+  reportLayout,
+  templateProjectId,
+  templatePhaseId,
+}: Props) => {
+  const reportId = report.data.id;
+  const phaseId = report.data.relationships.phase?.data?.id;
 
-  const [previewEnabled, setPreviewEnabled] = useState(false);
+  const platformLocale = useLocale();
+  const [view, setView] = useState<View>('pdf');
+
+  const [initialData] = useState(() => {
+    const { craftjs_json } = reportLayout.attributes;
+
+    if (isEmpty(craftjs_json)) {
+      return undefined;
+    }
+
+    return craftjs_json;
+  });
+
+  const emptyReportOnInit = initialData === undefined;
+
   const [imageUploading, setImageUploading] = useState(false);
   const [selectedLocale, setSelectedLocale] = useState<Locale>(platformLocale);
-  const [draftData, setDraftData] = useState<CraftJson>(
-    reportLayout.attributes.craftjs_json
-  );
 
-  // Absolutely no idea why we need this initial data stuff.
-  // But without it the whole report builder crashes. Seems to be weird
-  // behaviour from the craftjs library.
-  const [initialData] = useState(isEmpty(draftData) ? undefined : draftData);
+  const [saved, setSaved] = useState(true);
 
-  const [saved, setSaved] = useState(!templateProjectId);
-  const [contentBuilderErrors, setContentBuilderErrors] =
-    useState<ContentBuilderErrors>({});
-
-  const handleEditorChange = useCallback((nodes: SerializedNodes) => {
-    if (Object.keys(nodes).length === 1 && nodes.ROOT) return;
-    setDraftData(nodes);
-    setSaved(false);
-  }, []);
-
-  const handleErrors = (newErrors: ContentBuilderErrors) => {
-    setContentBuilderErrors((contentBuilderErrors) => ({
-      ...contentBuilderErrors,
-      ...newErrors,
-    }));
+  const handleSetSaved = () => {
+    setSaved(true);
   };
-
-  const handleDeleteElement = (id: string) => {
-    setContentBuilderErrors((contentBuilderErrors) => {
-      const { [id]: _id, ...rest } = contentBuilderErrors;
-      return rest;
-    });
-  };
-
-  const previewData = isEmpty(draftData) ? undefined : draftData;
-
-  const hasError =
-    Object.values(contentBuilderErrors).filter((node) => node.hasError).length >
-    0;
 
   return (
-    <ReportContextProvider width="pdf" reportId={reportId}>
-      <FullscreenContentBuilder
-        onErrors={handleErrors}
-        onDeleteElement={handleDeleteElement}
-        onUploadImage={setImageUploading}
-      >
+    <ReportContextProvider width={view} reportId={reportId} phaseId={phaseId}>
+      <FullscreenContentBuilder onUploadImage={setImageUploading}>
         <Editor
           isPreview={false}
-          onNodesChange={handleEditorChange}
-          key={selectedLocale}
+          // onNodesChange is called twice on initial load.
+          onNodesChange={(query) => {
+            // This comparison is still not perfect.
+            // E.g., if you add a node with rich text editor, save the report,
+            // and then modify the default text and revert the change,
+            // areCraftjsObjectsEqual may still return false, because the default text may not have
+            // a wrapping <p> tag, which is added as soon as you start typing.
+            // But it's good enough for now.
+            // Also, see reactions_by_time_widget.cy.ts#getReportLayout
+            // for the current pitfalls of the `saved` state.
+            //
+            // Ideally, we should detected this `saved` state in only one way.
+            // Either always via areCraftjsObjectsEqual (probably,
+            // storing `currentNodes` state instead or `saved` state)
+            // or always via setSaved(true) (and then without detecting
+            // when nodes were changed and then changed back w/o saving).
+            // Also, we could move the states from ContentBuilderTopBar
+            // here to manage the entire state in one place and get rid of
+            // `setInterval`.
+            setSaved(
+              areCraftjsObjectsEqual(
+                query.getSerializedNodes(),
+                reportLayout.attributes.craftjs_json
+              )
+            );
+          }}
         >
           <TopBar
-            hasError={hasError}
             hasPendingState={imageUploading}
-            previewEnabled={previewEnabled}
             selectedLocale={selectedLocale}
-            draftEditorData={previewData}
             reportId={reportId}
-            templateProjectId={templateProjectId ?? undefined}
+            isTemplate={!!templateProjectId || !!templatePhaseId}
             saved={saved}
-            setSaved={setSaved}
-            setPreviewEnabled={setPreviewEnabled}
+            view={view}
+            setView={setView}
+            setSaved={handleSetSaved}
             setSelectedLocale={setSelectedLocale}
           />
-          <Box
-            mt={`${stylingConsts.menuHeight}px`}
-            display={previewEnabled ? 'none' : 'flex'}
-          >
-            <Toolbox reportId={reportId} />
-            <StyledRightColumn>
-              <Box width={A4_WIDTH}>
-                <Box
-                  background="white"
-                  px="30px"
-                  py="30px"
-                  width="100%"
-                  height="100%"
-                >
-                  <LanguageProvider
-                    contentBuilderLocale={selectedLocale}
-                    platformLocale={platformLocale}
-                  >
-                    <Frame editorData={initialData}>
-                      {templateProjectId && (
-                        <ProjectTemplate
-                          reportId={reportId}
-                          projectId={templateProjectId}
-                        />
-                      )}
-                    </Frame>
-                  </LanguageProvider>
-                </Box>
-              </Box>
-            </StyledRightColumn>
+          <Box mt={`${stylingConsts.menuHeight}px`}>
+            <Toolbox reportId={reportId} selectedLocale={selectedLocale} />
+            <LanguageProvider
+              contentBuilderLocale={selectedLocale}
+              platformLocale={platformLocale}
+            >
+              <StyledRightColumn>
+                {!!phaseId && (
+                  <Box maxWidth={A4_WIDTH} mb="20px">
+                    <Warning>
+                      <FormattedMessage {...messages.warningBanner} />
+                    </Warning>
+                  </Box>
+                )}
+                <ViewContainer view={view}>
+                  <Frame editorData={initialData}>
+                    {emptyReportOnInit && templateProjectId ? (
+                      <ProjectTemplate
+                        reportId={reportId}
+                        projectId={templateProjectId}
+                      />
+                    ) : emptyReportOnInit && templatePhaseId ? (
+                      <PhaseTemplate phaseId={templatePhaseId} />
+                    ) : null}
+                  </Frame>
+                </ViewContainer>
+              </StyledRightColumn>
+            </LanguageProvider>
             <Settings />
           </Box>
         </Editor>
-        {previewEnabled && (
-          <Box
-            width="100%"
-            height="100%"
-            display="flex"
-            justifyContent="center"
-            mt={`${stylingConsts.menuHeight}px`}
-            pb="100px"
-          >
-            <StyledRightColumn>
-              <Box width={A4_WIDTH}>
-                <Box
-                  background="white"
-                  px="30px"
-                  py="30px"
-                  width="100%"
-                  height="100%"
-                >
-                  <Editor isPreview={true}>
-                    <LanguageProvider
-                      contentBuilderLocale={selectedLocale}
-                      platformLocale={platformLocale}
-                    >
-                      <Frame editorData={previewData} />
-                    </LanguageProvider>
-                  </Editor>
-                </Box>
-              </Box>
-            </StyledRightColumn>
-          </Box>
-        )}
       </FullscreenContentBuilder>
     </ReportContextProvider>
   );
@@ -188,17 +159,36 @@ const ReportBuilderWrapper = () => {
   const reportBuilderEnabled = useFeatureFlag({ name: 'report_builder' });
   const { pathname } = useLocation();
   const { reportId } = useParams();
+  const { data: report } = useReport(reportId);
   const { data: reportLayout } = useReportLayout(reportId);
+
+  const [search] = useSearchParams();
+  const [templateProjectId] = useState(search.get('templateProjectId'));
+  const [templatePhaseId] = useState(search.get('templatePhaseId'));
+
+  useEffect(() => {
+    removeSearchParams(['templateProjectId', 'templatePhaseId']);
+  }, []);
 
   const renderReportBuilder =
     reportBuilderEnabled &&
     pathname.includes('admin/reporting/report-builder') &&
     reportId !== undefined &&
+    report &&
     reportLayout;
 
   if (!renderReportBuilder) return null;
 
-  return <ReportBuilder reportId={reportId} reportLayout={reportLayout.data} />;
+  return (
+    <TemplateContext.Provider value={!!(templateProjectId || templatePhaseId)}>
+      <ReportBuilder
+        report={report}
+        reportLayout={reportLayout.data}
+        templateProjectId={templateProjectId}
+        templatePhaseId={templatePhaseId}
+      />
+    </TemplateContext.Provider>
+  );
 };
 
 export default ReportBuilderWrapper;

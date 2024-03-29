@@ -1,25 +1,19 @@
 import React, { memo, useEffect, useMemo, useState } from 'react';
 
-// components
-import ParentComment from './ParentComment';
 import { Spinner } from '@citizenlab/cl2-component-library';
-import Centerer from 'components/UI/Centerer';
-
-// services
-import { ICommentData } from 'api/comments/types';
-
-// events
-import { commentAdded$, commentDeleted$ } from '../../../events';
-
-// style
 import styled from 'styled-components';
 
-// i18n
+import { ICommentData } from 'api/comments/types';
+
+import Centerer from 'components/UI/Centerer';
+
+import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
+
+import { commentAdded$, commentDeleted$ } from '../../../events';
 import messages from '../../../messages';
 
-// a11y
-import { ScreenReaderOnly } from 'utils/a11y';
+import ParentComment from './ParentComment';
 
 const Container = styled.div`
   position: relative;

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import useAnalysisBackgroundTasks from 'api/analysis_background_tasks/useAnalysisBackgroundTasks';
-import { useParams } from 'react-router-dom';
+
 import {
   Box,
   colors,
@@ -10,20 +9,27 @@ import {
   Text,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-import ProgressBar from 'components/UI/ProgressBar';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import Divider from 'components/admin/Divider';
-import { TagTypeColorMap } from '../Tags/Tag';
-import { timeAgo } from 'utils/dateUtils';
-import useLocale from 'hooks/useLocale';
-import { isNilOrError } from 'utils/helperUtils';
 
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
 import {
   AutoTaggingMethod,
   IBackgroundTaskData,
 } from 'api/analysis_background_tasks/types';
+import useAnalysisBackgroundTasks from 'api/analysis_background_tasks/useAnalysisBackgroundTasks';
+
+import useLocale from 'hooks/useLocale';
+
+import Divider from 'components/admin/Divider';
+import ProgressBar from 'components/UI/ProgressBar';
+
+import { useIntl } from 'utils/cl-intl';
+import { timeAgo } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
+
+import { TagTypeColorMap } from '../Tags/Tag';
+
+import messages from './messages';
 
 const StyledProgressBar = styled(ProgressBar)`
   height: 8px;
@@ -167,7 +173,7 @@ const Tasks = () => {
                       </Box>
                     )}
                   </Box>
-                  {task.attributes.progress && (
+                  {!!task.attributes.progress && (
                     <StyledProgressBar
                       progress={task.attributes.progress}
                       color={colors.green400}

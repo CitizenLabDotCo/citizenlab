@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { render, screen, waitFor, fireEvent } from 'utils/testUtils/rtl';
+
 import ChartCard from './';
 
 const generateData = (n: number) => {

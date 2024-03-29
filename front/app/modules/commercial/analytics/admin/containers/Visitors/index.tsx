@@ -1,19 +1,19 @@
 import React from 'react';
+
 import moment from 'moment';
 
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import { Query } from 'api/analytics/types';
 import useAnalytics from 'api/analytics/useAnalytics';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 
-// typings
-import { Query } from 'api/analytics/types';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { isAdmin } from 'utils/permissions/roles';
+
 import { Response } from '../../components/VisitorsLanguageCard/useVisitorLanguages/typings';
 
-// components
 import VisitorsOverview from './VisitorsOverview';
-import { isAdmin } from 'utils/permissions/roles';
 
 const query: Query = {
   query: {
@@ -38,7 +38,15 @@ const Visitors = () => {
     name: 'visitors_dashboard',
   });
 
-  if (!visitorsDashboardEnabled || !appConfig || !analytics) return null;
+  if (
+    !visitorsDashboardEnabled ||
+    !appConfig ||
+    !analytics ||
+    !authUser ||
+    !isAdmin(authUser)
+  ) {
+    return null;
+  }
 
   const [countData] = analytics.data.attributes;
   if (!countData) return null;

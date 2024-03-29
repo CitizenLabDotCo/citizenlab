@@ -1,11 +1,14 @@
+import { RouteType } from 'routes';
+
 import { getJwt, removeJwt, decode } from 'utils/auth/jwt';
-import { endsWith } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
-import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import {
   invalidateQueryCache,
   resetMeQuery,
 } from 'utils/cl-react-query/resetQueryCache';
+import clHistory from 'utils/cl-router/history';
+import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import { endsWith } from 'utils/helperUtils';
+
 import logoutUrl from './logoutUrl';
 
 export default async function signOut() {
@@ -32,7 +35,7 @@ export default async function signOut() {
       }
 
       if (pathname && endsWith(pathname, '/ideas/new')) {
-        clHistory.push(pathname.split('/ideas/new')[0]);
+        clHistory.push(pathname.split('/ideas/new')[0] as RouteType);
       }
     }
   }

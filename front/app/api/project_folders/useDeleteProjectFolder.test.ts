@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeleteProjectFolder from './useDeleteProjectFolder';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useDeleteProjectFolder from './useDeleteProjectFolder';
 const apiPath = '*project_folders/:folderId';
 
 const server = setupServer(

@@ -1,8 +1,5 @@
-// libraries
 import React, { useCallback, useEffect, useState } from 'react';
-import { forOwn, isEmpty } from 'lodash-es';
 
-// components
 import {
   Box,
   Input,
@@ -10,35 +7,31 @@ import {
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import MentionsTextArea from 'components/UI/MentionsTextArea';
-import { Section } from 'components/admin/Section';
-import Error from 'components/UI/Error';
-import Button from 'components/UI/Button';
-
-// utils
-import { isPage, isNilOrError } from 'utils/helperUtils';
-
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// typings
+import { forOwn, isEmpty } from 'lodash-es';
+import styled from 'styled-components';
 import { Multiloc, Locale } from 'typings';
 
-// stylings
-import styled from 'styled-components';
-import useAddIdeaOfficialFeedback from 'api/idea_official_feedback/useAddIdeaOfficialFeedback';
-import useAddInitiativeOfficialFeedback from 'api/initiative_official_feedback/useAddInitiativeOfficialFeedback';
 import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_official_feedback/types';
-import { IOfficialFeedbackData as IInitiativeOfficialFeedbackData } from 'api/initiative_official_feedback/types';
+import useAddIdeaOfficialFeedback from 'api/idea_official_feedback/useAddIdeaOfficialFeedback';
 import useUpdateIdeaOfficialFeedback from 'api/idea_official_feedback/useUpdateIdeaOfficialFeedback';
+import { IOfficialFeedbackData as IInitiativeOfficialFeedbackData } from 'api/initiative_official_feedback/types';
+import useAddInitiativeOfficialFeedback from 'api/initiative_official_feedback/useAddInitiativeOfficialFeedback';
 import useUpdateInitiativeOfficialFeedback from 'api/initiative_official_feedback/useUpdateInitiativeOfficialFeedback';
-import useLocale from 'hooks/useLocale';
+
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocale from 'hooks/useLocale';
+
+import { Section } from 'components/admin/Section';
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+import MentionsTextArea from 'components/UI/MentionsTextArea';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isPage, isNilOrError } from 'utils/helperUtils';
+
+import messages from './messages';
+import tracks from './tracks';
 
 const Container = styled.div``;
 

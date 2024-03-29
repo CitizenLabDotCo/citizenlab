@@ -8,8 +8,6 @@ class SideFxPhaseService
   def before_create(phase, user); end
 
   def after_create(phase, user)
-    participation_method = Factory.instance.participation_method_for(phase)
-    participation_method.create_default_form! if participation_method.auto_create_default_form?
     phase.update!(description_multiloc: TextImageService.new.swap_data_images_multiloc(phase.description_multiloc, field: :description_multiloc, imageable: phase))
     LogActivityJob.perform_later(phase, 'created', user, phase.created_at.to_i)
 
@@ -41,7 +39,7 @@ class SideFxPhaseService
     %i[
       description_multiloc voting_method voting_max_votes_per_idea voting_max_total voting_min_total
       posting_enabled posting_method posting_limited_max commenting_enabled reacting_enabled
-      reacting_like_method reacting_like_limited_max reacting_dislike_enabled presentation_mode
+      reacting_like_method reacting_like_limited_max reacting_dislike_enabled presentation_mode participation_method
     ].each do |attribute|
       if phase.send "#{attribute}_previously_changed?"
         LogActivityJob.perform_later(

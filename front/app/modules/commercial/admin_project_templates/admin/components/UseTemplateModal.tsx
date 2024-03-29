@@ -1,30 +1,6 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
-import { get, isEmpty, transform } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { convertToGraphqlLocale, isNilOrError } from 'utils/helperUtils';
-import bowser from 'bowser';
-import moment from 'moment';
 
-// utils
-import eventEmitter from 'utils/eventEmitter';
-
-// graphql
 import { gql, useQuery, useMutation } from '@apollo/client';
-import { client } from '../../utils/apolloUtils';
-
-// hooks
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
-import useAuthUser from 'api/me/useAuthUser';
-import useProjectFolders from 'api/project_folders/useProjectFolders';
-import {
-  userModeratesFolder,
-  isProjectFolderModerator,
-} from 'utils/permissions/rules/projectFolderPermissions';
-import { isAdmin } from 'utils/permissions/roles';
-import useLocalize from 'hooks/useLocalize';
-
-// components
 import {
   Input,
   Icon,
@@ -33,34 +9,46 @@ import {
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import Modal from 'components/UI/Modal';
-import Error from 'components/UI/Error';
-import Link from 'utils/cl-router/Link';
-import T from 'components/T';
-
-// i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../../tracks';
-
-// styling
-import styled from 'styled-components';
+import { get, isEmpty, transform } from 'lodash-es';
+import moment from 'moment';
 import { darken } from 'polished';
-
-// api
-import projectsKeys from 'api/projects/keys';
-import { queryClient } from 'utils/cl-react-query/queryClient';
-
-// typings
+import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 import { Locale, Multiloc, IOption } from 'typings';
+
 import adminPublicationsKeys from 'api/admin_publications/keys';
 import meKeys from 'api/me/keys';
+import useAuthUser from 'api/me/useAuthUser';
+import useProjectFolders from 'api/project_folders/useProjectFolders';
+import projectsKeys from 'api/projects/keys';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
+import useLocalize from 'hooks/useLocalize';
+
+import T from 'components/T';
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import Modal from 'components/UI/Modal';
+
+import { trackEventByName } from 'utils/analytics';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import Link from 'utils/cl-router/Link';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import eventEmitter from 'utils/eventEmitter';
+import { convertToGraphqlLocale, isNilOrError } from 'utils/helperUtils';
+import { isAdmin } from 'utils/permissions/roles';
+import {
+  userModeratesFolder,
+  isProjectFolderModerator,
+} from 'utils/permissions/rules/projectFolderPermissions';
+
+import tracks from '../../tracks';
+import { client } from '../../utils/apolloUtils';
+
+import messages from './messages';
 
 const Content = styled.div`
   padding-left: 30px;
@@ -418,7 +406,6 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
                   onChange={onStartDateChange}
                   value={startDate}
                   error={startDateError}
-                  placeholder={bowser.msie ? 'YYYY-MM-DD' : undefined}
                 />
               </Box>
               <Select

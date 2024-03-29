@@ -1,17 +1,17 @@
 import React from 'react';
 
-// components
 import {
   IconTooltip,
   Toggle,
   Box,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { Row } from 'components/admin/ResourceList';
-import AdminEditButton from './AdminEditButton';
 
-import { IHomepageSectionToggleData } from '../../containers/EditHomepage';
+import { Row } from 'components/admin/ResourceList';
+
 import { ICustomPageSectionToggleData } from '../../containers/CustomPages/Edit/Content';
+
+import AdminEditButton from './AdminEditButton';
 
 export interface ISectionToggleData {
   titleMessage: string;
@@ -21,7 +21,7 @@ export interface ISectionToggleData {
 }
 
 interface Props {
-  sectionToggleData: IHomepageSectionToggleData | ICustomPageSectionToggleData;
+  sectionToggleData: ICustomPageSectionToggleData;
   onChangeSectionToggle: () => void;
   onClickEditButton?: (editLinkPath: string) => void;
   checked: boolean;

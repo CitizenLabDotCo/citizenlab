@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeleteNavbarItem from './useDeleteNavbarItem';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useDeleteNavbarItem from './useDeleteNavbarItem';
 const apiPath = '*nav_bar_items/:id';
 
 const server = setupServer(

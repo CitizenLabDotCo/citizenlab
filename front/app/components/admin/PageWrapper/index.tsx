@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
-import styled from 'styled-components';
+
 import { media } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 const Wrapper = styled.div<{ flatTopBorder: boolean }>`
   background: #fff;

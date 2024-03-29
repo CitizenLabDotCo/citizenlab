@@ -1,8 +1,11 @@
 import React from 'react';
-import { render, fireEvent, waitFor } from 'utils/testUtils/rtl';
-import BlockUserModal from './BlockUser';
+
 import { makeUser } from 'api/users/__mocks__/useUsers';
 import { IUser } from 'api/users/types';
+
+import { render, fireEvent, waitFor } from 'utils/testUtils/rtl';
+
+import BlockUserModal from './BlockUser';
 
 const user: IUser = makeUser();
 

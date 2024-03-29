@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useReorderCause from './useReorderCause';
-import { causesData } from './__mocks__/useCauses';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { causesData } from './__mocks__/useCauses';
+import useReorderCause from './useReorderCause';
 
 const apiPath = '*causes/:id/reorder';
 const server = setupServer(

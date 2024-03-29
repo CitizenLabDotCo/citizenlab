@@ -33,7 +33,6 @@ class WebApi::V1::AvatarsController < ApplicationController
       authorize initiative, :show?
       avatars_service.avatars_for_initiative(initiative, users: users, limit: limit)
     when nil
-      users = User.none if !HomePage.first.banner_avatars_enabled && !AppConfiguration.instance.feature_activated?('homepage_builder') # TODO: clean up after migrating homepage craftjs
       avatars_service.some_avatars(users: users, limit: limit)
     end
 

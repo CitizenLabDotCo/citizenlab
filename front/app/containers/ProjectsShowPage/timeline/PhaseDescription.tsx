@@ -1,28 +1,24 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty } from 'lodash-es';
 
-// components
-import FileAttachments from 'components/UI/FileAttachments';
-import PhaseTitle from './PhaseTitle';
-import ReadMoreWrapper from 'components/ReadMoreWrapper/ReadMoreWrapper';
-import EventPreviews from 'components/EventPreviews';
-
-// hooks
-import useLocalize from 'hooks/useLocalize';
-import usePhases from 'api/phases/usePhases';
-import usePhase from 'api/phases/usePhase';
-
-// style
-import styled from 'styled-components';
 import { defaultCardStyle, media } from '@citizenlab/cl2-component-library';
+import { isEmpty } from 'lodash-es';
+import styled from 'styled-components';
+
 import usePhaseFiles from 'api/phase_files/usePhaseFiles';
-
-// utils
-import { pastPresentOrFuture } from 'utils/dateUtils';
-
-// typings
 import { IPhases } from 'api/phases/types';
+import usePhase from 'api/phases/usePhase';
+import usePhases from 'api/phases/usePhases';
+
+import useLocalize from 'hooks/useLocalize';
+
+import EventPreviews from 'components/EventPreviews';
+import ReadMoreWrapper from 'components/ReadMoreWrapper/ReadMoreWrapper';
+import FileAttachments from 'components/UI/FileAttachments';
+
+import { pastPresentOrFuture } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
+
+import PhaseTitle from './PhaseTitle';
 
 const Container = styled.div<{ hasBottomMargin: boolean }>`
   padding: 30px;

@@ -50,6 +50,7 @@ tr:
       "assignee_digest": Atanmış fikirlere haftalık genel bakış
       "user_digest": Haftalık genel bakış
       "voting_basket_submitted": Oylamanın onaylanması
+      "native_survey_not_submitted": Anket gönderilmedi
       "voting_basket_not_submitted": Gönderilmeyen oylar
       "voting_last_chance": Oy vermek için son şans
       "voting_phase_started": Oylama ile yeni proje aşaması
@@ -505,6 +506,13 @@ tr:
       event_description: 'Katıldığınız için teşekkürler. Oylarınız kaydedilmiştir. Oylarınızı görmek ve yönetmek için %{organizationName} platformunu ziyaret edin.'
       cta_see_votes_submitted: 'Verilen oyları görün'
       cta_message: 'Katılmak için aşağıdaki butona tıklayın'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Neredeyse bitti! Cevaplarınızı gönderin'
+      preheader: 'Anket yanıtınızı %{organizationName}katılım platformunda tamamlamadınız'
+      title_native_survey_not_submitted: 'Neredeyse bitti! Cevaplarınızı gönderin'
+      body_native_survey_not_submitted: 'Cevaplarınızı %{phaseTitle} adresinde paylaşmaya başladınız ancak göndermediniz. Gönderimler %{phaseEndDate}adresinde sona erecektir. Kaldığınız yerden devam etmek için aşağıdaki düğmeye tıklayın.'
+      body_native_survey_not_submitted_no_date: 'Cevaplarınızı %{phaseTitle} adresinde paylaşmaya başladınız ancak göndermediniz. Kaldığınız yerden devam etmek için aşağıdaki butona tıklayın.'
+      cta_complete_your_survey_response: 'Anket yanıtınıza devam edin'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Oylarınızı teslim etmediniz'
       preheader: 'Oylarınızı %{organizationName}katılım platformuna göndermediniz'
@@ -574,12 +582,13 @@ tr:
         user_who_registers: 'Kayıt olan kullanıcı'
         user_who_was_invited: 'Davet edilen kullanıcı'
         users_who_engaged_with_the_project: 'Proje ile etkileşime geçen kullanıcılar'
-        users_who_follow_the_proposal: 'Teklifi takip eden kullanıcı'
-        users_who_follow_the_input: 'Girdiyi takip eden kullanıcı'
+        users_who_follow_the_proposal: 'Teklifi takip eden kullanıcılar'
+        users_who_follow_the_input: 'Girişi takip eden kullanıcılar'
         users_who_follow_the_project: 'Projeyi takip eden kullanıcılar'
         user_who_voted: 'Oy veren kullanıcı'
         user_with_unsubmitted_votes: 'Oylarını göndermemiş olan kullanıcı'
         users_who_engaged_but_not_voted: 'Proje ile ilgilenen ancak oy kullanmayan kullanıcılar'
+        user_with_unsubmitted_survey: 'Anketini başlatmış ancak göndermemiş kullanıcı'
       content_type:
         comments: 'Yorumlar'
         content_moderation: 'İçerik moderasyonu'
@@ -592,6 +601,7 @@ tr:
         proposals: 'Teklifler'
         reactions: 'Tepkiler'
         voting: 'Oylama'
+        surveys: 'Anketler'
       trigger:
         comment_is_deleted: 'Yorum silindi'
         comment_is_flagged_as_spam: 'Yorum spam olarak işaretlendi'
@@ -640,3 +650,4 @@ tr:
         7_days_after_invite_is_sent: 'Davetiye gönderildikten 7 gün sonra'
         7_days_before_the_project_changes_phase: 'Proje değişiklik aşamasından 7 gün önce'
         registration_to_event: 'Bir etkinliğe kayıt'
+        survey_1_day_after_draft_saved: 'Kullanıcı anketi en son taslak olarak kaydettikten 1 gün sonra'

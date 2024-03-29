@@ -1,6 +1,7 @@
 import React from 'react';
-import { screen, render, userEvent } from 'utils/testUtils/rtl';
+
 import clHistory from 'utils/cl-router/history';
+import { screen, render, userEvent } from 'utils/testUtils/rtl';
 
 import { PasswordResetSuccess } from './PasswordResetSuccess';
 

@@ -1,11 +1,12 @@
 import React from 'react';
+
 import { Label } from '@citizenlab/cl2-component-library';
+import { Controller, useFormContext } from 'react-hook-form';
+
+import Error from 'components/UI/Error';
 import ImagesDropzoneComponent, {
   Props as ImagesDropzoneComponentProps,
 } from 'components/UI/ImagesDropzone';
-
-import Error from 'components/UI/Error';
-import { Controller, useFormContext } from 'react-hook-form';
 
 interface Props
   extends Omit<

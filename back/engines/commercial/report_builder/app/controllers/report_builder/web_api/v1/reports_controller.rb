@@ -29,7 +29,10 @@ module ReportBuilder
         def update
           report.attributes = update_params
           side_fx_service.before_update(report, current_user)
-          return send_unprocessable_entity(report) unless report.save
+
+          unless ReportSaver.new(report, current_user).save
+            return send_unprocessable_entity(report)
+          end
 
           side_fx_service.after_update(report, current_user)
           render json: serialize_report(report), status: :ok
@@ -86,6 +89,7 @@ module ReportBuilder
             .permit(
               :name,
               :phase_id,
+              :visible,
               layout: [craftjs_json: {}]
             )
 

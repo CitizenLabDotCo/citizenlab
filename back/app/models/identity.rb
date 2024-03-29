@@ -25,22 +25,23 @@ class Identity < ApplicationRecord
 
   validates :uid, :provider, presence: true
 
-  def self.find_with_omniauth(auth)
-    find_by(uid: auth['uid'], provider: auth['provider'])
-  end
+  class << self
+    def find_or_build_with_omniauth(auth, authver_method)
+      auth_to_persist = authver_method.filter_auth_to_persist(auth)
 
-  def self.build_with_omniauth(auth)
-    new(uid: auth['uid'], provider: auth['provider'], auth_hash: auth)
-  end
-
-  def self.find_or_build_with_omniauth(auth, authver_method)
-    auth_to_persist = if authver_method.respond_to?(:filter_auth_to_persist)
-      authver_method.filter_auth_to_persist(auth)
-    else
-      auth
+      uid = authver_method.profile_to_uid(auth)
+      find_with_omniauth(uid, auth) || build_with_omniauth(uid, auth_to_persist)
     end
 
-    find_with_omniauth(auth) || build_with_omniauth(auth_to_persist)
+    private
+
+    def find_with_omniauth(uid, auth)
+      find_by(uid: uid, provider: auth['provider'])
+    end
+
+    def build_with_omniauth(uid, auth)
+      new(uid: uid, provider: auth['provider'], auth_hash: auth)
+    end
   end
 
   def email_always_present?

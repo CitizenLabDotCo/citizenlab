@@ -1,9 +1,12 @@
-import { Icon } from '@citizenlab/cl2-component-library';
 import React from 'react';
+
+import { Icon } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
 import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
+
 import messages from './messages';
 
 const RemoveIcon = styled(Icon)`

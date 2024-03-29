@@ -18,10 +18,6 @@ export default defineMessages({
     id: 'app.containers.app.navbar.logIn',
     defaultMessage: 'Log in',
   },
-  signUp: {
-    id: 'app.containers.app.navbar.signUp',
-    defaultMessage: 'Sign up',
-  },
   allProjects: {
     id: 'app.containers.app.navbar.allProjects',
     defaultMessage: 'All projects',

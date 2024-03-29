@@ -114,10 +114,10 @@ export default defineMessages({
     defaultMessage:
       'https://support.citizenlab.co/en/articles/5481527-adding-events-to-your-platform',
   },
-  mapSelectionLabel: {
-    id: 'app.containers.AdminPage.ProjectEvents.mapSelectionLabel2',
+  refineOnMapInstructions: {
+    id: 'app.containers.AdminPage.ProjectEvents.refineOnMapInstructions',
     defaultMessage:
-      'Refine where your event location marker is shown by clicking on the map:',
+      'You can refine where your event location marker is shown by clicking on the map below.',
   },
   eventImage: {
     id: 'app.containers.AdminPage.ProjectEvents.eventImage',

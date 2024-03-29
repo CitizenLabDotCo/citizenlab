@@ -1,7 +1,9 @@
-import ideaJsonFormSchemaKeys from './keys';
-import { Keys } from 'utils/cl-react-query/types';
-import { Locale } from 'typings';
 import { Layout } from '@jsonforms/core';
+import { Locale } from 'typings';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import ideaJsonFormSchemaKeys from './keys';
 
 export type IdeaJsonFormSchemaKeys = Keys<typeof ideaJsonFormSchemaKeys>;
 

@@ -88,7 +88,7 @@ describe ContentBuilder::SideFxLayoutService do
         payload: hash_including(
           layout: hash_including(
             'id' => layout.id,
-            'craftjs_jsonmultiloc' => {},
+            'craftjs_json' => {},
             'content_buildable_type' => layout.content_buildable_type,
             'content_buildable_id' => layout.content_buildable_id,
             'code' => layout.code,

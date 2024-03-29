@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { render, screen, waitFor } from 'utils/testUtils/rtl';
+
 import FullScreenPreview from '.';
 
 let mockLocale = 'en';

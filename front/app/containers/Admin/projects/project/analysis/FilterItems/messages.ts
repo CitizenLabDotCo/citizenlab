@@ -33,4 +33,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.inputsWIthoutTags',
     defaultMessage: 'Inputs without tags',
   },
+  emptyCustomFields: {
+    id: 'app.containers.AdminPage.projects.project.analysis.emptyCustomFieldFilter',
+    defaultMessage: 'Hide empty answers',
+  },
+  limit: {
+    id: 'app.containers.AdminPage.projects.project.analysis.limit',
+    defaultMessage: 'Limit',
+  },
 });

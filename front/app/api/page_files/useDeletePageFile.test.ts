@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeletePageFile from './useDeletePageFile';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useDeletePageFile from './useDeletePageFile';
 const apiPath = '*static_pages/:pageId/files/:fileId';
 
 const server = setupServer(

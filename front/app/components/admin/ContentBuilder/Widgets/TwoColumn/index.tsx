@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   Radio,
@@ -9,21 +8,16 @@ import {
   colors,
   media,
 } from '@citizenlab/cl2-component-library';
-
-// styles
+import { useNode, Element } from '@craftjs/core';
 import styled from 'styled-components';
 
-// craft
-import { useNode, Element } from '@craftjs/core';
-import Container from '../Container';
-
-// intl
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
-// typings
 import { ColumnLayout } from '../../typings';
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
+import Container from '../Container';
+
+import messages from './messages';
 
 type TwoColumnProps = {
   columnLayout: ColumnLayout;
@@ -146,7 +140,7 @@ export const TwoColumnSettings = () => {
   );
 };
 
-export const twoColumnCraftConfig = {
+const twoColumnCraftConfig = {
   props: {
     columnLayout: '',
   },

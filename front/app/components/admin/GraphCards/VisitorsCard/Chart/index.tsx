@@ -1,32 +1,24 @@
 import React, { useMemo } from 'react';
 
-// styling
+import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
+import LineChart from 'components/admin/Graphs/LineChart';
 import { colors } from 'components/admin/Graphs/styling';
 
-// components
-import LineChart from 'components/admin/Graphs/LineChart';
-import renderTooltip from './renderTooltip';
-
-// i18n
-import messages from '../messages';
 import { useIntl } from 'utils/cl-intl';
-
-// utils
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { toThreeLetterMonth } from 'utils/dateUtils';
-import { generateEmptyData } from './generateEmptyData';
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
-// typings
-import { Dates, Layout, Resolution } from '../../typings';
-import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
+import { Dates, Resolution } from '../../typings';
+import messages from '../messages';
 import { TimeSeries } from '../useVisitors/typings';
-import { MARGINS } from '../../_utils/style';
+
+import { generateEmptyData } from './generateEmptyData';
+import renderTooltip from './renderTooltip';
 
 type Props = Dates &
   Resolution & {
     timeSeries: TimeSeries | NilOrError;
     innerRef: React.RefObject<any>;
-    layout?: Layout;
   };
 
 const emptyLineConfig = { strokeWidths: [0, 0] };
@@ -41,7 +33,6 @@ const Chart = ({
   endAtMoment,
   resolution,
   innerRef,
-  layout = 'wide',
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -83,7 +74,6 @@ const Chart = ({
         x: 'date',
         y: ['visitors', 'visits'],
       }}
-      margin={layout === 'narrow' ? MARGINS[layout] : undefined}
       lines={noData ? emptyLineConfig : lineConfig}
       grid={{ vertical: true }}
       xaxis={{ tickFormatter: formatTick }}

@@ -1,11 +1,10 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useInitiativeAllowedTransitions from './useInitiativeAllowedTransitions';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useInitiativeAllowedTransitions from './useInitiativeAllowedTransitions';
 
 const apiPath = '*initiatives/:id/allowed_transitions';
 

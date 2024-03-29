@@ -1,5 +1,7 @@
 import { rest } from 'msw';
+
 import { API_PATH } from 'containers/App/constants';
+
 import { IIdeaData } from '../types';
 
 export const ideaData: IIdeaData[] = [
@@ -34,6 +36,7 @@ export const ideaData: IIdeaData[] = [
       budget: 60,
       proposed_budget: 45,
       baskets_count: 0,
+      votes_count: 0,
       action_descriptor: {
         reacting_idea: {
           enabled: true,
@@ -144,6 +147,7 @@ export const ideaData: IIdeaData[] = [
       published_at: '2019-03-19T00: 00: 00.000Z',
       budget: 60,
       proposed_budget: 45,
+      votes_count: 0,
       baskets_count: 0,
       action_descriptor: {
         reacting_idea: {

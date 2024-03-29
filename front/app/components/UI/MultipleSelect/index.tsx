@@ -1,9 +1,11 @@
 import React from 'react';
+
+import { Label } from '@citizenlab/cl2-component-library';
 import { isBoolean, isString, isArray } from 'lodash-es';
 import ReactSelect from 'react-select';
 import { IOption } from 'typings';
+
 import selectStyles from 'components/UI/MultipleSelect/styles';
-import { Label } from '@citizenlab/cl2-component-library';
 
 export type Props = {
   id?: string;
@@ -91,8 +93,10 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
           options={options}
           onChange={this.handleOnChange}
           isDisabled={disabled}
-          styles={selectStyles}
+          styles={selectStyles()}
+          menuPosition="fixed"
           menuPlacement="auto"
+          hideSelectedOptions
         />
       </div>
     );

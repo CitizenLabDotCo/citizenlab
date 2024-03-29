@@ -1,43 +1,72 @@
-import * as React from 'react';
-import { isEmpty, isNil } from 'lodash-es';
-import { adopt } from 'react-adopt';
-import clHistory from 'utils/cl-router/history';
-import { useIntl } from 'utils/cl-intl';
-import HelmetIntl from 'components/HelmetIntl';
+import React, { useEffect } from 'react';
+
 import { Box } from '@citizenlab/cl2-component-library';
-import messages from './messages';
-import GetPermission, {
-  GetPermissionChildProps,
-} from 'resources/GetPermission';
-import GetFeatureFlag from 'resources/GetFeatureFlag';
 import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
+import { RouteType } from 'routes';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import NavigationTabs, {
   Tab,
   TabsPageLayout,
 } from 'components/admin/NavigationTabs';
+import HelmetIntl from 'components/HelmetIntl';
+
+import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import { isTopBarNavActive } from 'utils/helperUtils';
+import { usePermission } from 'utils/permissions';
 
-interface DataProps {
-  canManageAutomatedCampaigns: GetPermissionChildProps;
-  canManageManualCampaigns: GetPermissionChildProps;
-  manualEmailingEnabled: boolean;
-  automatedEmailingEnabled: boolean;
-  textingEnabled: boolean;
-}
+import messages from './messages';
 
-interface Props extends DataProps {}
-
-const MessagingDashboard = ({
-  canManageAutomatedCampaigns,
-  canManageManualCampaigns,
-  manualEmailingEnabled,
-  automatedEmailingEnabled,
-  textingEnabled,
-}: Props) => {
+const MessagingDashboard = () => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
+  const canManageAutomatedCampaigns = usePermission({
+    action: 'manage',
+    item: 'automatedCampaign',
+  });
+  const canManageManualCampaigns = usePermission({
+    action: 'manage',
+    item: 'manualCampaign',
+  });
+  const manualEmailingEnabled = useFeatureFlag({ name: 'manual_emailing' });
+  const automatedEmailingEnabled = useFeatureFlag({
+    name: 'automated_emailing_control',
+  });
+  const textingEnabled = useFeatureFlag({ name: 'texting' });
 
-  if (isNil(canManageAutomatedCampaigns) || isNil(canManageManualCampaigns)) {
+  useEffect(() => {
+    if (!pathname.match(/\/admin\/messaging$/)) {
+      return;
+    }
+
+    const redirect = (url: string) => {
+      clHistory.replace({
+        pathname: url,
+        search: window.location.search,
+      });
+    };
+
+    if (canManageManualCampaigns && manualEmailingEnabled) {
+      return redirect('/admin/messaging/emails/custom');
+    }
+    if (canManageAutomatedCampaigns && automatedEmailingEnabled) {
+      return redirect('/admin/messaging/emails/automated');
+    }
+    if (textingEnabled) {
+      return redirect('/admin/messaging/texting');
+    }
+  }, [
+    pathname,
+    canManageManualCampaigns,
+    manualEmailingEnabled,
+    canManageAutomatedCampaigns,
+    automatedEmailingEnabled,
+    textingEnabled,
+  ]);
+
+  if (!canManageAutomatedCampaigns || !canManageManualCampaigns) {
     return null;
   }
 
@@ -45,7 +74,7 @@ const MessagingDashboard = ({
     const tabs: {
       name: string;
       label: string;
-      url: string;
+      url: RouteType;
       statusLabel?: string;
     }[] = [];
 
@@ -68,14 +97,6 @@ const MessagingDashboard = ({
         name: 'texting',
         label: formatMessage(messages.tabTexting),
         url: '/admin/messaging/texting',
-        statusLabel: 'Beta',
-      });
-    }
-
-    if (pathname.match(/\/admin\/messaging$/) && !isEmpty(tabs)) {
-      clHistory.replace({
-        pathname: tabs[0].url,
-        search: window.location.search,
       });
     }
 
@@ -87,13 +108,12 @@ const MessagingDashboard = ({
   return (
     <>
       <NavigationTabs>
-        {tabs.map(({ url, label, statusLabel }) => (
+        {tabs.map(({ url, label }) => (
           <Tab
             label={label}
             url={url}
             key={url}
             active={isTopBarNavActive('/admin/messaging', pathname, url)}
-            statusLabel={statusLabel}
           />
         ))}
       </NavigationTabs>
@@ -111,20 +131,4 @@ const MessagingDashboard = ({
   );
 };
 
-const Data = adopt({
-  canManageAutomatedCampaigns: (
-    <GetPermission item="automatedCampaign" action="manage" />
-  ),
-  canManageManualCampaigns: (
-    <GetPermission item="manualCampaign" action="manage" />
-  ),
-  manualEmailingEnabled: <GetFeatureFlag name="manual_emailing" />,
-  automatedEmailingEnabled: (
-    <GetFeatureFlag name="automated_emailing_control" />
-  ),
-  textingEnabled: <GetFeatureFlag name="texting" />,
-});
-
-export default () => (
-  <Data>{(dataProps: DataProps) => <MessagingDashboard {...dataProps} />}</Data>
-);
+export default MessagingDashboard;

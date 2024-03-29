@@ -1,28 +1,6 @@
 import 'focus-visible';
-import GlobalStyle from 'global-styles';
-import 'intersection-observer';
-import { includes, uniq } from 'lodash-es';
-import moment from 'moment';
-import 'moment-timezone';
 import React, { lazy, Suspense, useEffect, useState } from 'react';
-import {
-  endsWith,
-  isIdeaShowPage,
-  isInitiativeShowPage,
-  isPage,
-} from 'utils/helperUtils';
 
-// constants
-import { appLocalesMomentPairs, locales } from 'containers/App/constants';
-
-// context
-import { PreviousPathnameContext } from 'context';
-import { trackPage } from 'utils/analytics';
-
-// analytics
-const ConsentManager = lazy(() => import('components/ConsentManager'));
-
-// components
 import {
   Box,
   Spinner,
@@ -31,40 +9,50 @@ import {
   getTheme,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import ErrorBoundary from 'components/ErrorBoundary';
-import Navigate from 'utils/cl-router/Navigate';
-import Authentication from 'containers/Authentication';
-import MainHeader from 'containers/MainHeader';
-import Meta from './Meta';
-const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
-const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
-
-// auth
-import HasPermission from 'components/HasPermission';
-
-// services
-import { IAppConfigurationStyle } from 'api/app_configuration/types';
-import useDeleteSelf from 'api/users/useDeleteSelf';
-import { localeStream } from 'utils/locale';
-
-// hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import { configureScope } from '@sentry/react';
+import { PreviousPathnameContext } from 'context';
+import GlobalStyle from 'global-styles';
+import 'intersection-observer';
+import { includes, uniq } from 'lodash-es';
+import 'moment-timezone';
+import moment from 'moment';
 import { useLocation } from 'react-router-dom';
-
-// events
-import eventEmitter from 'utils/eventEmitter';
-
-// style
+import { RouteType } from 'routes';
 import { ThemeProvider } from 'styled-components';
-
-// typings
 import { Locale } from 'typings';
 
-// utils
-import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import { IAppConfigurationStyle } from 'api/app_configuration/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
-import { configureScope } from '@sentry/react';
+import useDeleteSelf from 'api/users/useDeleteSelf';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { appLocalesMomentPairs, locales } from 'containers/App/constants';
+import Authentication from 'containers/Authentication';
+import MainHeader from 'containers/MainHeader';
+
+import ErrorBoundary from 'components/ErrorBoundary';
+
+import { trackPage } from 'utils/analytics';
+import Navigate from 'utils/cl-router/Navigate';
+import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import eventEmitter from 'utils/eventEmitter';
+import {
+  endsWith,
+  isIdeaShowPage,
+  isInitiativeShowPage,
+  isPage,
+} from 'utils/helperUtils';
+import { localeStream } from 'utils/localeStream';
+import { usePermission } from 'utils/permissions';
+
+import Meta from './Meta';
+import UserSessionRecordingModal from './UserSessionRecordingModal';
+
+const ConsentManager = lazy(() => import('components/ConsentManager'));
+const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
+const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
 
 interface Props {
   children: React.ReactNode;
@@ -76,7 +64,9 @@ const App = ({ children }: Props) => {
   const location = useLocation();
   const { mutate: signOutAndDeleteAccount } = useDeleteSelf();
   const [isAppInitialized, setIsAppInitialized] = useState(false);
-  const [previousPathname, setPreviousPathname] = useState<string | null>(null);
+  const [previousPathname, setPreviousPathname] = useState<RouteType | null>(
+    null
+  );
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser, isLoading } = useAuthUser();
 
@@ -187,7 +177,7 @@ const App = ({ children }: Props) => {
       }
     };
 
-    const newPreviousPathname = location.pathname;
+    const newPreviousPathname = location.pathname as RouteType;
     const pathsToIgnore = [
       'sign-up',
       'sign-in',
@@ -275,6 +265,15 @@ const App = ({ children }: Props) => {
     !isInitiativeEditPage;
   const { pathname } = removeLocale(location.pathname);
   const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
+  const disableScroll = fullscreenModalEnabled && signUpInModalOpened;
+  const isAuthenticationPending = !authUser && isLoading;
+  const canAccessRoute = usePermission({
+    item: {
+      type: 'route',
+      path: pathname,
+    },
+    action: 'access',
+  });
 
   const showFrontOfficeNavbar = () => {
     if (isAdminPage) {
@@ -295,25 +294,19 @@ const App = ({ children }: Props) => {
     return true;
   };
 
-  // Ensure authUser is loaded before rendering the app
-  if (!authUser && isLoading) {
-    return (
-      <Box
-        display="flex"
-        w="100%"
-        h="100%"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Spinner />
-      </Box>
-    );
-  }
-
-  const disableScroll = fullscreenModalEnabled && signUpInModalOpened;
-
   return (
     <>
+      {isAuthenticationPending && (
+        <Box
+          display="flex"
+          w="100%"
+          h="100%"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Spinner />
+        </Box>
+      )}
       {appConfiguration && (
         <PreviousPathnameContext.Provider value={previousPathname}>
           <ThemeProvider
@@ -336,6 +329,7 @@ const App = ({ children }: Props) => {
               minHeight="100vh"
             >
               <Meta />
+              <UserSessionRecordingModal />
               <ErrorBoundary>
                 <Suspense fallback={null}>
                   <UserDeletedModal
@@ -364,31 +358,26 @@ const App = ({ children }: Props) => {
                   <MainHeader />
                 </ErrorBoundary>
               )}
-              <Box
-                display="flex"
-                flexDirection="column"
-                alignItems="stretch"
-                flex="1"
-                overflowY="auto"
-                pt={
-                  showFrontOfficeNavbar()
-                    ? `${stylingConsts.menuHeight}px`
-                    : undefined
-                }
-              >
-                <HasPermission
-                  item={{
-                    type: 'route',
-                    path: pathname,
-                  }}
-                  action="access"
+              {!isAuthenticationPending && (
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  alignItems="stretch"
+                  flex="1"
+                  overflowY="auto"
+                  pt={
+                    showFrontOfficeNavbar()
+                      ? `${stylingConsts.menuHeight}px`
+                      : undefined
+                  }
                 >
-                  <ErrorBoundary>{children}</ErrorBoundary>
-                  <HasPermission.No>
+                  {canAccessRoute ? (
+                    <ErrorBoundary>{children}</ErrorBoundary>
+                  ) : (
                     <Navigate to="/" />
-                  </HasPermission.No>
-                </HasPermission>
-              </Box>
+                  )}
+                </Box>
+              )}
               {showFooter && (
                 <Suspense fallback={null}>
                   <PlatformFooter />

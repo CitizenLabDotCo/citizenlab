@@ -1,22 +1,15 @@
-// services
+import { useMemo, useState } from 'react';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import { getTranslations } from './translations';
+import { usePostsByTimeLive } from 'api/graph_data_units';
 
-// query
-import { query } from './query';
-
-// parse
-import { parseTimeSeries, parseExcelData } from './parse';
-
-// utils
 import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
 
-// typings
-import { QueryParameters, Response } from './typings';
-import useAnalytics from 'api/analytics/useAnalytics';
-import { useMemo, useState } from 'react';
+import { useIntl } from 'utils/cl-intl';
+import { momentToIsoDate } from 'utils/dateUtils';
+
+import { parseTimeSeries, parseExcelData } from './parse';
+import { getTranslations } from './translations';
+import { QueryParameters } from './typings';
 
 export default function usePostsByTime({
   projectId,
@@ -26,14 +19,16 @@ export default function usePostsByTime({
 }: QueryParameters) {
   const { formatMessage } = useIntl();
   const [currentResolution, setCurrentResolution] = useState(resolution);
-  const { data: analytics } = useAnalytics<Response>(
-    query({
-      projectId,
-      startAtMoment,
-      endAtMoment,
+  const { data: analytics } = usePostsByTimeLive(
+    {
+      project_id: projectId,
+      start_at: momentToIsoDate(startAtMoment),
+      end_at: momentToIsoDate(endAtMoment),
       resolution,
-    }),
-    () => setCurrentResolution(resolution)
+    },
+    {
+      onSuccess: () => setCurrentResolution(resolution),
+    }
   );
 
   const timeSeries = useMemo(

@@ -1,34 +1,26 @@
 import React, { useEffect, useState } from 'react';
 
-// components
-import TopBar from './TopBar';
-import EventsMessage from './EventsMessage';
-import EventsSpinner from './EventsSpinner';
-import EventCard from 'components/EventCard';
-import Pagination from 'components/Pagination';
 import { Box, media } from '@citizenlab/cl2-component-library';
-
-// i18n
-import messages from '../messages';
+import moment from 'moment';
 import { MessageDescriptor } from 'react-intl';
-
-// hooks
-import useEvents from 'api/events/useEvents';
-
-// styling
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { getPageNumberFromUrl } from 'utils/paginationUtils';
-import moment from 'moment';
-
-// types
+import useEvents from 'api/events/useEvents';
 import { PublicationStatus } from 'api/projects/types';
 
-// router
-import { useSearchParams } from 'react-router-dom';
+import EventCard from 'components/EventCard';
+import Pagination from 'components/Pagination';
+
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { isNilOrError } from 'utils/helperUtils';
+import { getPageNumberFromUrl } from 'utils/paginationUtils';
+
+import messages from '../messages';
+
+import EventsMessage from './EventsMessage';
+import EventsSpinner from './EventsSpinner';
+import TopBar from './TopBar';
 
 interface IStyledEventCard {
   last: boolean;
@@ -86,7 +78,6 @@ interface Props {
   eventsTime: 'past' | 'currentAndFuture';
   className?: string;
   projectId?: string;
-  hideSectionIfNoEvents?: boolean;
   showProjectFilter: boolean;
   showDateFilter?: boolean;
   projectPublicationStatuses: PublicationStatus[];
@@ -99,7 +90,6 @@ const EventsViewer = ({
   eventsTime,
   className,
   projectId,
-  hideSectionIfNoEvents,
   showProjectFilter,
   projectPublicationStatuses,
   attendeeId,
@@ -132,7 +122,7 @@ const EventsViewer = ({
   const [projectIdList, setProjectIdList] = useState<string[] | undefined>(
     projectIdsFromUrl || (projectId ? [projectId] : [])
   );
-  const [dateFilter, setDateFilter] = useState<dateFilterKey[] | undefined>(
+  const [dateFilter, setDateFilter] = useState<dateFilterKey[]>(
     dateFilterFromUrl || []
   );
 
@@ -186,7 +176,8 @@ const EventsViewer = ({
 
   // Update date filter URL params based on state, events time will not change after initial render
   useEffect(() => {
-    const hasDateFilter = dateFilter?.length && dateFilter[0] !== 'all';
+    const hasDateFilter =
+      dateFilter.length > 0 ? dateFilter[0] !== 'all' : false;
     if (eventsTime === 'currentAndFuture') {
       updateSearchParams({
         time_period: hasDateFilter ? dateFilter : null,
@@ -200,15 +191,6 @@ const EventsViewer = ({
 
   const lastPageNumber =
     (events && getPageNumberFromUrl(events.links?.last)) ?? 1;
-
-  const shouldHideSection =
-    (events && events.data.length === 0 && hideSectionIfNoEvents) ||
-    (isLoading && hideSectionIfNoEvents) ||
-    (isNilOrError(events) && hideSectionIfNoEvents);
-
-  if (shouldHideSection) {
-    return null;
-  }
 
   return (
     <Box className={className} id="project-events">

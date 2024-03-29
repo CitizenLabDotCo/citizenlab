@@ -1,4 +1,5 @@
 import { Keys } from 'utils/cl-react-query/types';
+
 import usersByBirthyearKeys from './keys';
 
 export type UsersByBirthyearKeys = Keys<typeof usersByBirthyearKeys>;
@@ -11,8 +12,6 @@ export interface IUsersByBirthyear {
         users: {
           [key: string]: number;
         };
-        expected_users: null;
-        reference_population: null;
       };
     };
   };

@@ -1,11 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import useInfiniteInitiatives from './useInfiniteInitiatives';
+
 import { initiativesData, links } from './__mocks__/_mockServer';
+import useInfiniteInitiatives from './useInfiniteInitiatives';
 
 const apiPath = '*initiatives';
 const server = setupServer(

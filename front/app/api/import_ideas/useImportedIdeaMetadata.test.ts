@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useImportedIdeaMetadata from './useImportedIdeaMetadata';
-import { ideaImport } from './__mocks__/useImportedIdeaMetadata';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { ideaImport } from './__mocks__/useImportedIdeaMetadata';
+import useImportedIdeaMetadata from './useImportedIdeaMetadata';
 
 const apiPath = '*idea_imports/:id';
 

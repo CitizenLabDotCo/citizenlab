@@ -1,11 +1,14 @@
 import React from 'react';
-import VerificationSteps from './VerificationSteps';
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+
 import {
   AuthenticationData,
   SetError,
 } from 'containers/Authentication/typings';
+
+import { trackEventByName } from 'utils/analytics';
+
+import tracks from './tracks';
+import VerificationSteps from './VerificationSteps';
 
 interface Props {
   setError: SetError;

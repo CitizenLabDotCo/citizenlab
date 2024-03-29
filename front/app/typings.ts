@@ -1,15 +1,17 @@
 import { MouseEvent, FC } from 'react';
-import { TFieldName } from 'components/UI/Error';
+
+import { WrappedComponentProps } from 'react-intl';
+import { RouteType } from 'routes';
+import { TableCellProps } from 'semantic-ui-react';
+
+import { TAppConfigurationSetting } from 'api/app_configuration/types';
+
 import {
   appGraphqlLocalePairs,
   appLocalePairs,
 } from 'containers/App/constants';
-import { TableCellProps } from 'semantic-ui-react';
-import {
-  TAppConfigurationSetting,
-  TAppConfigurationSettingWithEnabled,
-} from 'api/app_configuration/types';
-import { WrappedComponentProps } from 'react-intl';
+
+import { TFieldName } from 'components/UI/Error';
 
 declare global {
   interface Function {
@@ -52,9 +54,9 @@ export type ILocationInfo =
 export interface ITab {
   name: string;
   label: string;
-  url: string;
+  url: RouteType;
   active?: boolean | ((pathname: string) => boolean);
-  feature?: TAppConfigurationSettingWithEnabled;
+  feature?: TAppConfigurationSetting;
   statusLabel?: string;
 }
 

@@ -1,33 +1,34 @@
 import React from 'react';
 
-// hooks
-import useGenderSerie from 'containers/Admin/dashboard/users/Charts/GenderChart/useGenderSerie';
+import { Box } from '@citizenlab/cl2-component-library';
+
+import { useUsersByGender } from 'api/graph_data_units';
+
+import convertToGraphFormat from 'containers/Admin/dashboard/users/Charts/GenderChart/convertToGraphFormat';
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
-// components
-import { Box } from '@citizenlab/cl2-component-library';
-import Chart from 'containers/Admin/dashboard/users/Charts/GenderChart/Chart';
-import NoData from '../../_shared/NoData';
+import { ProjectId, DatesStrings } from 'components/admin/GraphCards/typings';
 
-// i18n
-import messages from '../messages';
-
-// utils
+import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+
+import NoData from '../../_shared/NoData';
+import messages from '../messages';
 import { serieHasValues } from '../utils';
 
-interface Props {
-  startAt: string | null | undefined;
-  endAt: string | null;
-  projectId: string | undefined;
-}
+import Chart from './Chart';
+
+type Props = ProjectId & DatesStrings;
 
 const GenderCard = ({ startAt, endAt, projectId }: Props) => {
-  const genderSerie = useGenderSerie({
-    startAt,
-    endAt,
-    projectId,
+  const { data: usersByGender } = useUsersByGender({
+    project_id: projectId,
+    start_at: startAt,
+    end_at: endAt,
   });
+  const { formatMessage } = useIntl();
+
+  const genderSerie = convertToGraphFormat(usersByGender, formatMessage);
 
   const layout = useLayout();
 

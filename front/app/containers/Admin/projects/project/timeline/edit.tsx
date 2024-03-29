@@ -1,36 +1,5 @@
-// Libraries
-import React, { FormEvent, useEffect, useState } from 'react';
-import moment, { Moment } from 'moment';
-import { isEmpty } from 'lodash-es';
-import clHistory from 'utils/cl-router/history';
+import React, { FormEvent, useEffect, useState, MouseEvent } from 'react';
 
-// Api
-import { IPhaseFiles } from 'api/phase_files/types';
-import eventEmitter from 'utils/eventEmitter';
-import useAddPhaseFile from 'api/phase_files/useAddPhaseFile';
-import useDeletePhaseFile from 'api/phase_files/useDeletePhaseFile';
-import usePhaseFiles from 'api/phase_files/usePhaseFiles';
-import usePhases from 'api/phases/usePhases';
-import usePhase from 'api/phases/usePhase';
-import useAddPhase from 'api/phases/useAddPhase';
-import useUpdatePhase from 'api/phases/useUpdatePhase';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
-// Components
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import Error from 'components/UI/Error';
-import DateRangePicker from 'components/admin/DateRangePicker';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
-import {
-  Section,
-  SectionField,
-  SubSectionTitle,
-} from 'components/admin/Section';
-import PhaseParticipationConfig, {
-  IPhaseParticipationConfig,
-} from '../phase/phaseParticipationConfig';
-import FileUploader from 'components/UI/FileUploader';
 import {
   Text,
   Checkbox,
@@ -39,32 +8,64 @@ import {
   IconTooltip,
   colors,
 } from '@citizenlab/cl2-component-library';
-import Warning from 'components/UI/Warning';
-import ReportSection from '../information/ReportSection';
-
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// Typings
-import { CLErrors, UploadFile, Multiloc } from 'typings';
-import { IPhase, IPhaseData, IUpdatedPhaseProperties } from 'api/phases/types';
-
-// Resources
-import { FileType } from 'components/UI/FileUploader/FileDisplay';
+import { isEmpty } from 'lodash-es';
+import moment, { Moment } from 'moment';
 import { useParams } from 'react-router-dom';
+import { CLErrors, UploadFile, Multiloc } from 'typings';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import useCampaigns from 'api/campaigns/useCampaigns';
-import CampaignRow from './CampaignRow';
-import useLocalize from 'hooks/useLocalize';
-import { stringifyCampaignFields } from 'containers/Admin/messaging/AutomatedEmails/utils';
-import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { CampaignName } from 'api/campaigns/types';
-import { getExcludedDates, getMaxEndDate, getTimelineTab } from './utils';
-import { defaultAdminCardPadding } from 'utils/styleConstants';
+import useCampaigns from 'api/campaigns/useCampaigns';
+import { IPhaseFiles } from 'api/phase_files/types';
+import useAddPhaseFile from 'api/phase_files/useAddPhaseFile';
+import useDeletePhaseFile from 'api/phase_files/useDeletePhaseFile';
+import usePhaseFiles from 'api/phase_files/usePhaseFiles';
+import { IPhase, IPhaseData, IUpdatedPhaseProperties } from 'api/phases/types';
+import useAddPhase from 'api/phases/useAddPhase';
+import usePhase from 'api/phases/usePhase';
+import usePhases from 'api/phases/usePhases';
+import useUpdatePhase from 'api/phases/useUpdatePhase';
+import useProjectById from 'api/projects/useProjectById';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
+import useLocalize from 'hooks/useLocalize';
+
+import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
+import { stringifyCampaignFields } from 'containers/Admin/messaging/AutomatedEmails/utils';
+
+import DateRangePicker from 'components/admin/DateRangePicker';
+import {
+  Section,
+  SectionField,
+  SubSectionTitle,
+} from 'components/admin/Section';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+import FileUploader from 'components/UI/FileUploader';
+import { FileType } from 'components/UI/FileUploader/FileDisplay';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+import Warning from 'components/UI/Warning';
+
+import {
+  FormattedMessage,
+  useIntl,
+  useFormatMessageWithLocale,
+} from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import eventEmitter from 'utils/eventEmitter';
+import { isNilOrError } from 'utils/helperUtils';
+import { defaultAdminCardPadding } from 'utils/styleConstants';
+
+import PhaseParticipationConfig, {
+  IPhaseParticipationConfig,
+} from '../phase/phaseParticipationConfig';
+
+import CampaignRow from './CampaignRow';
+import messages from './messages';
+import { getExcludedDates, getMaxEndDate, getTimelineTab } from './utils';
 
 type SubmitStateType = 'disabled' | 'enabled' | 'error' | 'success';
 
@@ -95,6 +96,7 @@ const AdminPhaseEdit = () => {
     projectId: string;
     phaseId?: string;
   };
+  const { data: project } = useProjectById(projectId);
   const { data: phaseFiles } = usePhaseFiles(phaseId || null);
   const { data: phaseData } = usePhase(phaseId || null);
   const phase = phaseId ? phaseData : undefined;
@@ -117,9 +119,11 @@ const AdminPhaseEdit = () => {
   );
   const localize = useLocalize();
   const { formatMessage } = useIntl();
+  const formatMessageWithLocale = useFormatMessageWithLocale();
   const [hasEndDate, setHasEndDate] = useState<boolean>(false);
   const [disableNoEndDate, setDisableNoEndDate] = useState<boolean>(false);
   const { width, containerRef } = useContainerWidthAndHeight();
+  const tenantLocales = useAppConfigurationLocales();
 
   useEffect(() => {
     setHasEndDate(phase?.data.attributes.end_at ? true : false);
@@ -152,6 +156,22 @@ const AdminPhaseEdit = () => {
     setAttributeDiff({
       ...attributeDiff,
       title_multiloc,
+    });
+  };
+
+  const handleSurveyTitleChange = (surveyTitle: Multiloc) => {
+    setSubmitState('enabled');
+    setAttributeDiff({
+      ...attributeDiff,
+      native_survey_title_multiloc: surveyTitle,
+    });
+  };
+
+  const handleSurveyCTAChange = (CTATitle: Multiloc) => {
+    setSubmitState('enabled');
+    setAttributeDiff({
+      ...attributeDiff,
+      native_survey_button_multiloc: CTATitle,
     });
   };
 
@@ -242,8 +262,36 @@ const AdminPhaseEdit = () => {
   const handlePhaseParticipationConfigChange = (
     participationContextConfig: IPhaseParticipationConfig
   ) => {
+    const surveyCTALabel = tenantLocales?.reduce((acc, locale) => {
+      acc[locale] = formatMessageWithLocale(
+        locale,
+        messages.defaultSurveyCTALabel
+      );
+      return acc;
+    }, {});
+
+    const surveyTitle = tenantLocales?.reduce((acc, locale) => {
+      acc[locale] = formatMessageWithLocale(
+        locale,
+        messages.defaultSurveyTitleLabel
+      );
+      return acc;
+    }, {});
+
     setSubmitState('enabled');
-    setAttributeDiff(getAttributeDiff(participationContextConfig));
+    setAttributeDiff({
+      ...getAttributeDiff(participationContextConfig),
+      ...(participationContextConfig.participation_method === 'native_survey' &&
+        !attributeDiff.native_survey_button_multiloc &&
+        !phase?.data.attributes.native_survey_button_multiloc && {
+          native_survey_button_multiloc: surveyCTALabel,
+        }),
+      ...(participationContextConfig.participation_method === 'native_survey' &&
+        !attributeDiff.native_survey_title_multiloc &&
+        !phase?.data.attributes.native_survey_button_multiloc && {
+          native_survey_title_multiloc: surveyTitle,
+        }),
+    });
   };
 
   const handlePhaseParticipationConfigSubmit = (
@@ -505,29 +553,66 @@ const AdminPhaseEdit = () => {
           {/* TODO: After PhaseParticipationConfig refactor, it doesn't refetch phase service anymore
             This caused a bug where phase data was not being used after fetching. This is a temporary fix.
             PhaseParticipationConfig needs to be refactored to functional component. */}
-          {phase && (
-            <PhaseParticipationConfig
-              phase={phase}
-              onSubmit={handlePhaseParticipationConfigSubmit}
-              onChange={handlePhaseParticipationConfigChange}
-              apiErrors={errors}
-              appConfig={appConfig}
-            />
-          )}
-          {!phase && (
-            <PhaseParticipationConfig
-              phase={undefined}
-              onSubmit={handlePhaseParticipationConfigSubmit}
-              onChange={handlePhaseParticipationConfigChange}
-              apiErrors={errors}
-              appConfig={appConfig}
-            />
-          )}
+          <PhaseParticipationConfig
+            phase={phase}
+            onSubmit={handlePhaseParticipationConfigSubmit}
+            onChange={handlePhaseParticipationConfigChange}
+            apiErrors={errors}
+            appConfig={appConfig}
+          />
+          {phaseAttrs.participation_method === 'native_survey' && (
+            <>
+              <SectionField>
+                <SubSectionTitle>
+                  <FormattedMessage {...messages.surveyTitleLabel} />
+                </SubSectionTitle>
+                <InputMultilocWithLocaleSwitcher
+                  id="title"
+                  type="text"
+                  valueMultiloc={phaseAttrs.native_survey_title_multiloc}
+                  onChange={handleSurveyTitleChange}
+                />
+                <Error
+                  apiErrors={errors && errors.native_survey_title_multiloc}
+                />
+              </SectionField>
 
-          {phase?.data.attributes.participation_method === 'information' && (
-            <ReportSection phaseId={phase.data.id} />
-          )}
+              <SectionField>
+                <SubSectionTitle>
+                  <FormattedMessage {...messages.surveyCTALabel} />
+                </SubSectionTitle>
+                <InputMultilocWithLocaleSwitcher
+                  id="title"
+                  type="text"
+                  valueMultiloc={phaseAttrs.native_survey_button_multiloc}
+                  onChange={handleSurveyCTAChange}
+                />
+                <Error
+                  apiErrors={errors && errors.native_survey_button_multiloc}
+                />
+              </SectionField>
 
+              <SectionField>
+                <SubSectionTitle>
+                  <FormattedMessage {...messages.previewSurveyCTALabel} />
+                </SubSectionTitle>
+                <Button
+                  width="fit-content"
+                  onClick={(event: MouseEvent) => {
+                    if (phase) {
+                      window.open(
+                        `/projects/${project?.data.attributes.slug}/ideas/new?phase_id=${phaseId}`,
+                        '_blank'
+                      );
+                    }
+                    event.preventDefault();
+                  }}
+                >
+                  {localize(phaseAttrs.native_survey_button_multiloc)}
+                </Button>
+              </SectionField>
+            </>
+          )}
           <SectionField className="fullWidth">
             <Box display="flex">
               <SubSectionTitle>

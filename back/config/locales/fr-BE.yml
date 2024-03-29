@@ -98,6 +98,8 @@ fr-BE:
       <p>Ici, vous pouvez lancer votre propre idée si elle ne correspond pas à un des projets existants.</p><p><strong>L’objectif?</strong> Voir votre idée arriver dans l’agenda politique.</p><p><strong>Comment?</strong> En obtenant le support d’au moins 100 votes dans les 3 mois. Vous pouvez y arriver en rendant votre idée plus attractive: donnez un titre clair, ajoutez une image, donnez des arguments forts basés sur des faits et attachez des fichiers contenant plus de détails. Ensuite, partagez votre idée sur les réseaux sociaux ou par e-mail et invitez des gens à rejoindre la discussion sur votre idée ou simplement pour le convaincre de voter en votre faveur.</p><p><strong>A propos de quoi?</strong> Votre idée peut être à propos de pleins de choses, tant que c’est lié à votre ville. Cela peut être un problème que vous experiencez, une solution ou même une combinaison des deux. Cela peut être vague et à long terme ou bien au contraire tangible et à court terme.</p><p><strong>Et ensuite?</strong> Vous avez obtenu 100 votes en 3 mois? Félicitations! La ville pourra maintenant tenir votre idée en consideration. Si votre idée est évaluée comme faisable, vous aurez la chance de la proposer pendant le conseil communal. Durant cette même réunion, les membres du conseil vous donnerons des avis direct sur ce qu’ils peuvent faire ou non avec votre idée, et pourquoi. Si vous n’obtenez pas 100 votes dans les 3 mois, votre proposition ne sera pas considerée.</p><p>Nous sommes curieux d’en savoir plus à propos de votre idée!</p>
   phases:
     open_idea_phase_title: Phase en cours
+    native_survey_title: Enquête
+    native_survey_button: Répondre à l'enquête
   events:
     council_meeting_title: Conseil Communal
     council_meeting_description: >
@@ -146,6 +148,8 @@ fr-BE:
       section3:
         title: Détails
         description:
+      other:
+        title: Puisque vous avez choisi « autre », à quoi pensez-vous ?
   custom_forms:
     categories:
       main_content:
@@ -224,9 +228,9 @@ fr-BE:
       title: 'Votre question'
       option1: 'Option 1'
       option2: 'Option 2'
-    survey_end_page:
-      title: 'Fin de l''enquête'
-      description: "Veuillez soumettre vos réponses en sélectionnant « Envoyer l'enquête » ci-dessous."
+    form_end_page:
+      title: 'Merci pour votre participation'
+      description: "Veuillez soumettre vos réponses en cliquant sur « Soumettre » ci-dessous."
     pdf_export:
       personal_data: 'Données personnelles'
       personal_data_explanation_ideation: "Cette contribution sera soumise sur la plateforme de participation en ligne de %{organizationName}. Si vous souhaitez que votre nom soit affiché en tant qu'auteur et recevoir par e-mail des mises à jours concernant votre soumission, veuillez remplir les champs suivants et nous créerons un compte pour vous. Votre adresse e-mail ne sera pas publique et ne sera uniquement utilisée par %{organizationName}. Si vous préférez rester anonyme ou ne souhaitez pas que nous utilisions vos données personnelles à cette fin, vous pouvez laisser ces champs vides."

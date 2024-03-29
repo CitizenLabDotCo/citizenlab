@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import ProjectTemplatePreviewAdmin from './ProjectTemplatePreviewAdmin';
-import eventEmitter from 'utils/eventEmitter';
+
 import useLocale from 'hooks/useLocale';
-import { isNilOrError } from 'utils/helperUtils';
+
 import { trackPage } from 'utils/analytics';
 import clHistory from 'utils/cl-router/history';
+import eventEmitter from 'utils/eventEmitter';
+import { isNilOrError } from 'utils/helperUtils';
+
+import ProjectTemplatePreviewAdmin from './ProjectTemplatePreviewAdmin';
 
 interface Props {
   onRender: (hasRendered: boolean) => void;

@@ -1,29 +1,25 @@
-// authentication
-import createEmailOnlyAccount from 'api/authentication/sign_up/createEmailOnlyAccount';
-import signIn from 'api/authentication/sign_in_out/signIn';
+import { Locale } from 'typings';
+
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
+import signIn from 'api/authentication/sign_in_out/signIn';
+import createEmailOnlyAccount from 'api/authentication/sign_up/createEmailOnlyAccount';
 import { handleOnSSOClick } from 'api/authentication/singleSignOn';
 import checkUser from 'api/users/checkUser';
 
-// cache
-import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
-
-// tracks
-import tracks from '../../tracks';
-import { trackEventByName } from 'utils/analytics';
-
-// events
 import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 
-// typings
+import { trackEventByName } from 'utils/analytics';
+import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
+
+import tracks from '../../tracks';
 import {
   GetRequirements,
   UpdateState,
   SSOProviderWithoutVienna,
   AuthenticationData,
 } from '../../typings';
+
 import { Step } from './typings';
-import { Locale } from 'typings';
 import { askCustomFields, requiredCustomFields, showOnboarding } from './utils';
 
 export const lightFlow = (
@@ -65,6 +61,9 @@ export const lightFlow = (
             break;
           case 'azureactivedirectory':
             setCurrentStep('light-flow:azure-ad-policies');
+            break;
+          case 'azureactivedirectory_b2c':
+            setCurrentStep('light-flow:azure-ad-b2c-policies');
             break;
           case 'franceconnect':
             setCurrentStep('light-flow:france-connect-login');
@@ -132,6 +131,22 @@ export const lightFlow = (
 
         handleOnSSOClick(
           'azureactivedirectory',
+          { ...getAuthenticationData(), flow: 'signin' },
+          verificationRequired
+        );
+      },
+    },
+
+    'light-flow:azure-ad-b2c-policies': {
+      CLOSE: () => setCurrentStep('closed'),
+      ACCEPT_POLICIES: async () => {
+        const { requirements } = await getRequirements();
+
+        const verificationRequired =
+          requirements.special.verification === 'require';
+
+        handleOnSSOClick(
+          'azureactivedirectory_b2c',
           { ...getAuthenticationData(), flow: 'signin' },
           verificationRequired
         );

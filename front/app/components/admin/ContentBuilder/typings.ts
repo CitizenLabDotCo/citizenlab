@@ -1,5 +1,5 @@
-import { Locale } from 'typings';
 import { SerializedNode } from '@craftjs/core';
+import { Locale } from 'typings';
 
 export type ContentBuilderErrors = Record<
   string,

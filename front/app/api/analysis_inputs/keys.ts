@@ -1,4 +1,5 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
+
 import { IInputsQueryParams } from './types';
 
 const baseKey = { type: 'analysis_input' };

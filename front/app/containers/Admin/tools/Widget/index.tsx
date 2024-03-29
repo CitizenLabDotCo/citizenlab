@@ -1,8 +1,13 @@
 import React from 'react';
+
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+
 import Button from 'components/UI/Button';
+
 import { useIntl } from 'utils/cl-intl';
+
 import messages from '../messages';
+
 import widgetImage from './widget.png';
 
 export const Widget = () => {
@@ -24,6 +29,7 @@ export const Widget = () => {
         display="flex"
         alignItems="flex-end"
         justifyContent="center"
+        borderRadius="3px"
       >
         <img src={widgetImage} alt={formatMessage(messages.widgetImage)} />
       </Box>
@@ -42,6 +48,7 @@ export const Widget = () => {
           width="fit-content"
           linkTo="/admin/tools/widgets"
           textColor="white"
+          bgColor={colors.primary}
         >
           {formatMessage(messages.manageWidget)}
         </Button>

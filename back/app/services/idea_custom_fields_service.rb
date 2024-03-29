@@ -10,16 +10,18 @@ class IdeaCustomFieldsService
     if @custom_form.custom_field_ids.empty?
       @participation_method.default_fields @custom_form
     else
-      @custom_form.custom_fields
+      @custom_form.custom_fields.includes(%i[options])
     end
   end
 
   def reportable_fields
     # idea_images_attributes is not supported by XlsxService.
     # Page and section fields do not capture data, so they are excluded.
-    all_fields.select do |field|
+    filtered_fields = all_fields.select do |field|
       field.code != 'idea_images_attributes' && field.input_type != 'page' && field.input_type != 'section'
     end
+
+    replace_point_fields_with_lat_and_lon_point_fields(filtered_fields)
   end
 
   def visible_fields
@@ -31,18 +33,31 @@ class IdeaCustomFieldsService
     enabled_fields.reject { |field| unsubbmittable_input_types.include? field.input_type }
   end
 
+  def submittable_fields_with_other_options
+    insert_other_option_text_fields(submittable_fields)
+  end
+
   def printable_fields
     ignore_field_types = %w[section date files image_files point linear_scale file_upload]
     enabled_fields.reject { |field| ignore_field_types.include? field.input_type }
   end
 
   def importable_fields
-    ignore_field_types = %w[page section date files image_files point linear_scale file_upload]
-    enabled_fields.reject { |field| ignore_field_types.include? field.input_type }
+    ignore_field_types = %w[page section date files image_files linear_scale file_upload]
+    filtered_fields = enabled_fields.reject { |field| ignore_field_types.include? field.input_type }
+
+    # Importing of latitude and longitude for point fields is not yet implemented, but the fields are still
+    # included in the importable fields list. This is because this list is used to generate the example template
+    # XLSX file, where we want to show the latitude and longitude fields as separate columns.
+    replace_point_fields_with_lat_and_lon_point_fields(filtered_fields)
   end
 
   def enabled_fields
     all_fields.select(&:enabled?)
+  end
+
+  def enabled_fields_with_other_options
+    insert_other_option_text_fields(enabled_fields)
   end
 
   def enabled_public_fields
@@ -56,12 +71,14 @@ class IdeaCustomFieldsService
   def allowed_extra_field_keys
     fields_with_simple_keys = []
     fields_with_array_keys = {}
-    submittable_fields.reject(&:built_in?).each do |field|
+    submittable_fields_with_other_options.reject(&:built_in?).each do |field|
       case field.input_type
-      when 'multiselect'
+      when 'multiselect', 'multiselect_image'
         fields_with_array_keys[field.key.to_sym] = []
       when 'file_upload'
-        fields_with_array_keys[field.key.to_sym] = %i[content name]
+        fields_with_array_keys[field.key.to_sym] = %i[id content name]
+      when 'point'
+        fields_with_array_keys[field.key.to_sym] = [:type, { coordinates: [] }]
       else
         fields_with_simple_keys << field.key.to_sym
       end
@@ -125,6 +142,28 @@ class IdeaCustomFieldsService
   end
 
   private
+
+  # Replace a point field with two fields, one for latitude and one for longitude,
+  # so that the XlsxExport::InputSheetGenerator and BulkImportIdeas::ImportProjectIdeasService#generate_example_xlsx
+  # can produce separate columns for latitude and longitude.
+  def replace_point_fields_with_lat_and_lon_point_fields(fields)
+    fields.map do |field|
+      if field.input_type == 'point'
+        [field.point_latitude_field, field.point_longitude_field]
+      else
+        field
+      end
+    end.flatten
+  end
+
+  def insert_other_option_text_fields(fields)
+    all_fields = []
+    fields.each do |field|
+      all_fields << field
+      all_fields << field.other_option_text_field if field.other_option_text_field
+    end
+    all_fields
+  end
 
   # Check required as it doesn't matter what is saved in title for section 1
   # Constraints required for the front-end but response will always return input specific method

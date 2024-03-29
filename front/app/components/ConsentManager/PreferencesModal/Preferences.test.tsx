@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { fireEvent, render } from 'utils/testUtils/rtl';
+
 import { CategorizedDestinations } from '../typings';
 
 // component to test

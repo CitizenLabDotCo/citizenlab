@@ -1,14 +1,14 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useSurveyResults from './useSurveyResults';
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import endpoints, {
   phaseApiPath,
   surveyResultsResponse,
 } from './__mocks__/_mockServer';
+import useSurveyResults from './useSurveyResults';
 
 const server = setupServer(
   endpoints['GET projects/:id/survey_results'],
@@ -19,25 +19,9 @@ describe('useSurveyResults', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
-  it('returns data correctly for project', async () => {
-    const { result, waitFor } = renderHook(
-      () => useSurveyResults({ projectId: 'projectId' }),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
-
-    expect(result.current.isLoading).toBe(true);
-
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
-
-    expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.data).toEqual(surveyResultsResponse.data);
-  });
-
   it('returns data correctly for phase', async () => {
     const { result, waitFor } = renderHook(
-      () => useSurveyResults({ projectId: 'projectId', phaseId: 'phaseId' }),
+      () => useSurveyResults({ phaseId: 'phaseId' }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -58,7 +42,7 @@ describe('useSurveyResults', () => {
     );
 
     const { result, waitFor } = renderHook(
-      () => useSurveyResults({ projectId: 'projectId', phaseId: 'phaseId' }),
+      () => useSurveyResults({ phaseId: 'phaseId' }),
       {
         wrapper: createQueryClientWrapper(),
       }

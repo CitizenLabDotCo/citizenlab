@@ -1,11 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useCampaignDeliveries from './useCampaignDeliveries';
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { IDeliveryData } from './types';
+import useCampaignDeliveries from './useCampaignDeliveries';
 
 const apiPath = '*campaigns/:id/deliveries';
 

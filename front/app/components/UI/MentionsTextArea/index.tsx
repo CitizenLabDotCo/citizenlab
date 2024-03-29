@@ -1,29 +1,22 @@
 import React, { useRef } from 'react';
-import { isString, isEmpty, capitalize } from 'lodash-es';
 
-// libraries
-import { MentionsInput, Mention, MentionItem } from 'react-mentions';
-
-// components
-import Error from 'components/UI/Error';
-
-// style
-import styled, { useTheme } from 'styled-components';
 import {
   colors,
   fontSizes,
   defaultStyles,
 } from '@citizenlab/cl2-component-library';
+import { isString, isEmpty, capitalize } from 'lodash-es';
 import { transparentize } from 'polished';
-
-// Utils
-import { extractIdsFromValue } from './utils';
-
-// typings
+import { MentionsInput, Mention, MentionItem } from 'react-mentions';
+import styled, { useTheme } from 'styled-components';
 import { Locale } from 'typings';
-import { MentionRoles } from 'api/mentions/types';
 
 import getMentions from 'api/mentions/getMentions';
+import { MentionRoles } from 'api/mentions/types';
+
+import Error from 'components/UI/Error';
+
+import { extractIdsFromValue } from './utils';
 
 const Container = styled.div`
   position: relative;
@@ -195,7 +188,7 @@ const MentionsTextArea = ({
     return style;
   };
 
-  const mentionDisplayTransform = (_id, display) => {
+  const mentionDisplayTransform = (_id: string, display: string) => {
     // If `allowSpaceInQuery` is not used, `appendSpaceOnAdd` adds a space after a mention and then
     // the space is preserved when a new mention is added.
     // But if `allowSpaceInQuery` is used, a space is added after adding a mention, but then

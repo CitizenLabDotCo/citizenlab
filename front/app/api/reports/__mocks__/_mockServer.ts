@@ -1,5 +1,7 @@
-import { API_PATH } from 'containers/App/constants';
 import { rest } from 'msw';
+
+import { API_PATH } from 'containers/App/constants';
+
 import { Report } from '../types';
 
 export const apiPathReport = `${API_PATH}/reports/:id`;
@@ -24,6 +26,13 @@ export const reportsData: Report[] = [
       name: 'Report 1',
       created_at: '2020-10-20T09:00:00.000Z',
       updated_at: '2020-10-20T09:00:00.000Z',
+      action_descriptor: {
+        editing_report: {
+          enabled: true,
+          disabled_reason: null,
+        },
+      },
+      visible: false,
     },
     relationships: {
       layout: {
@@ -47,6 +56,13 @@ export const reportsData: Report[] = [
       name: 'Report 1',
       created_at: '2020-10-20T09:00:00.000Z',
       updated_at: '2020-10-20T09:00:00.000Z',
+      action_descriptor: {
+        editing_report: {
+          enabled: true,
+          disabled_reason: null,
+        },
+      },
+      visible: false,
     },
     relationships: {
       layout: {

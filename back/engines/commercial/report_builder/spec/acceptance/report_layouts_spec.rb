@@ -26,7 +26,6 @@ resource 'Report layouts' do
             code: 'report',
             created_at: be_a(String),
             updated_at: be_a(String),
-            craftjs_jsonmultiloc: {},
             craftjs_json: {}
           }
         )

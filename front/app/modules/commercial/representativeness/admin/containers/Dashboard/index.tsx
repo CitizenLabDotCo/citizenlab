@@ -1,30 +1,30 @@
 import React, { useState } from 'react';
 
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import { Box } from '@citizenlab/cl2-component-library';
+
+import useAuthUser from 'api/me/useAuthUser';
+import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
-// typings
-import { IUserCustomFieldData } from 'api/user_custom_fields/types';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// components
-import { Box } from '@citizenlab/cl2-component-library';
-import Header from './Header';
-import ChartFilters from '../../components/ChartFilters';
-import EmptyState from './EmptyState';
-import ChartCards from './ChartCards';
-
-// utils
-import { hasReferenceData } from './utils';
-
-// tracks
 import { trackEventByName } from 'utils/analytics';
+import { isAdmin } from 'utils/permissions/roles';
+
+import ChartFilters from '../../components/ChartFilters';
+
+import ChartCards from './ChartCards';
+import EmptyState from './EmptyState';
+import Header from './Header';
 import tracks from './tracks';
+import { hasReferenceData } from './utils';
 
 const hasAnyReferenceData = (userCustomFields: IUserCustomFieldData[]) =>
   userCustomFields.some(hasReferenceData);
 
 const RepresentativenessDashboard = () => {
+  const { data: authUser } = useAuthUser();
+
   const { data: userCustomFields } = useUserCustomFields({
     inputTypes: ['select', 'number'],
   });
@@ -39,7 +39,7 @@ const RepresentativenessDashboard = () => {
     setCurrentProjectFilter(value);
   };
 
-  if (!userCustomFields) {
+  if (!userCustomFields || !authUser || !isAdmin(authUser)) {
     return null;
   }
 
@@ -50,7 +50,7 @@ const RepresentativenessDashboard = () => {
       <Box width="100%" mb="36px">
         <Header />
         <ChartFilters
-          currentProjectFilter={currentProjectFilter}
+          projectId={currentProjectFilter}
           onProjectFilter={onProjectFilter}
           noData={!anyReferenceData}
         />

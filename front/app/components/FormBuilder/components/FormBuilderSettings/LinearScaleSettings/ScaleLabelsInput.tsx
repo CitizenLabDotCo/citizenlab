@@ -1,9 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-// react hook form
-import { Controller, useFormContext } from 'react-hook-form';
-
-// components
 import {
   Box,
   Label,
@@ -11,14 +7,15 @@ import {
   Input,
   LocaleSwitcher,
 } from '@citizenlab/cl2-component-library';
-
-// i18n
-import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
+import { Controller, useFormContext } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
-import { Locale } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
+import { Locale } from 'typings';
+
+import { injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from './messages';
 
 const StyledLabel = styled(Label)`
   margin-top: auto;
@@ -62,6 +59,13 @@ const ScaleLabelsInput = ({
     },
     [onSelectedLocaleChange]
   );
+
+  const handleKeyDown = (event: React.KeyboardEvent<Element>) => {
+    // We want to prevent the form builder from being closed when enter is pressed
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  };
 
   if (selectedLocale) {
     return (
@@ -114,8 +118,11 @@ const ScaleLabelsInput = ({
                         onChange={(value) => {
                           const updatedMultiloc = minLabelMultiloc;
                           updatedMultiloc[selectedLocale] = value;
-                          setValue(minimumLabelName, updatedMultiloc);
+                          setValue(minimumLabelName, updatedMultiloc, {
+                            shouldDirty: true,
+                          });
                         }}
+                        onKeyDown={handleKeyDown}
                       />
                     </Box>
                     <Box display="flex" gap="36px" marginBottom="16px">
@@ -128,8 +135,11 @@ const ScaleLabelsInput = ({
                         onChange={(value) => {
                           const updatedMultiloc = maxLabelMultiloc;
                           updatedMultiloc[selectedLocale] = value;
-                          setValue(maximumLabelName, updatedMultiloc);
+                          setValue(maximumLabelName, updatedMultiloc, {
+                            shouldDirty: true,
+                          });
                         }}
+                        onKeyDown={handleKeyDown}
                       />
                     </Box>
                   </>

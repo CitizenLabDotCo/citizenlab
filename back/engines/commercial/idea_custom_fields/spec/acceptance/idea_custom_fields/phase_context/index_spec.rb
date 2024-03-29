@@ -11,7 +11,7 @@ resource 'Idea Custom Fields' do
   get 'web_api/v1/admin/phases/:phase_id/custom_fields' do
     parameter :support_free_text_value, 'Only return custom fields that have a freely written textual answer', type: :boolean, required: false
 
-    let(:context) { create(:phase, participation_method: 'native_survey') }
+    let(:context) { create(:native_survey_phase) }
     let(:phase_id) { context.id }
     let(:form) { create(:custom_form, participation_context: context) }
     let!(:custom_field1) { create(:custom_field_text, resource: form, key: 'extra_field1') }

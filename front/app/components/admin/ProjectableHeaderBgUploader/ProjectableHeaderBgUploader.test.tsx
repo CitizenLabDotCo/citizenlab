@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { screen, render, waitFor, fireEvent } from 'utils/testUtils/rtl';
+
 import HeaderBgUploader from './';
 
 const file = new File(['file'], 'file.jpeg', {

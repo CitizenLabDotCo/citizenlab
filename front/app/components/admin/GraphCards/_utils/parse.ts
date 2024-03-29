@@ -1,6 +1,7 @@
-import { roundPercentage } from 'utils/math';
 import { TimeSeriesTotalRow } from 'components/admin/GraphCards/typings';
+
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { roundPercentage } from 'utils/math';
 
 // Replace zeroes with '-' by convention & return strings
 export const formatCountValue = (count: number): string => {

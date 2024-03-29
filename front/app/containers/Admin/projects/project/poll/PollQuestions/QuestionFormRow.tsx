@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// Components
 import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
+import { Multiloc, Locale } from 'typings';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocale from 'hooks/useLocale';
+
 import { TextCell, Row } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
 import messages from '../messages';
-
-// Typings
-import { Multiloc, Locale } from 'typings';
-
-// Hooks
-import useLocale from 'hooks/useLocale';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 interface Props {
   titleMultiloc: Multiloc;

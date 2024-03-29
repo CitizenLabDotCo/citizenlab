@@ -65,6 +65,33 @@ resource 'Phases' do
     end
   end
 
+  get 'web_api/v1/phases/:id/submission_count' do
+    let(:phase) { create(:native_survey_phase) }
+    let(:id) { phase.id }
+
+    before do
+      create_list(:native_survey_response, 2, creation_phase: phase, project: phase.project, phases: [phase])
+      create_list(:idea, 3, project: phase.project, phases: [phase])
+    end
+
+    context 'native survey' do
+      example 'Get count when native survey phase (ignores ideas)' do
+        do_request
+        assert_status 200
+        expect(response_data[:attributes]).to eq({ totalSubmissions: 2 })
+      end
+    end
+
+    context 'ideation' do
+      example 'Get count for ideation phase (ignores native survey responses)' do
+        phase.update!(participation_method: 'ideation')
+        do_request
+        assert_status 200
+        expect(response_data[:attributes]).to eq({ totalSubmissions: 3 })
+      end
+    end
+  end
+
   get 'web_api/v1/phases/:id/as_xlsx' do
     describe do
       let(:id) { create(:project_with_active_ideation_phase).phases.first.id }
@@ -123,6 +150,8 @@ resource 'Phases' do
         parameter :ideas_order, 'The default order of ideas.'
         parameter :input_term, 'The input term for something.'
         parameter :campaigns_settings, "A hash, only including keys in #{Phase::CAMPAIGNS} and with only boolean values", required: true
+        parameter :native_survey_title_multiloc, 'A title for the native survey.'
+        parameter :native_survey_button_multiloc, 'Text for native survey call to action button.'
       end
 
       ValidationErrorHelper.new.error_fields(self, Phase)
@@ -244,6 +273,8 @@ resource 'Phases' do
 
       context 'native survey' do
         let(:phase) { build(:native_survey_phase) }
+        let(:native_survey_title_multiloc) { { 'en' => 'Planning survey' } }
+        let(:native_survey_button_multiloc) { { 'en' => 'Fill in the form' } }
 
         example 'Create a native survey phase', document: false do
           do_request
@@ -251,39 +282,18 @@ resource 'Phases' do
           phase_id = json_response.dig(:data, :id)
           phase_in_db = Phase.find(phase_id)
 
-          # A new native survey phase has a default form.
-          fields = phase_in_db.custom_form.custom_fields
-          expect(fields.size).to eq 2
-          expect(fields.map(&:ordering)).to eq([0, 1])
-          field1 = fields[0]
-          expect(field1.input_type).to eq 'page'
-          field2 = fields[1]
-          expect(field2.input_type).to eq 'select'
-          expect(field2.title_multiloc).to match({
-            'en' => an_instance_of(String),
-            'fr-FR' => an_instance_of(String),
-            'nl-NL' => an_instance_of(String)
-          })
-          options = field2.options
-          expect(options.size).to eq 2
-          expect(options[0].key).to eq 'option1'
-          expect(options[1].key).to eq 'option2'
-          expect(options[0].title_multiloc).to match({
-            'en' => an_instance_of(String),
-            'fr-FR' => an_instance_of(String),
-            'nl-NL' => an_instance_of(String)
-          })
-          expect(options[1].title_multiloc).to match({
-            'en' => an_instance_of(String),
-            'fr-FR' => an_instance_of(String),
-            'nl-NL' => an_instance_of(String)
-          })
+          # A new native survey phase does not have a default form.
+          expect(phase_in_db.custom_form).to be_nil
 
           expect(phase_in_db.participation_method).to eq 'native_survey'
           expect(phase_in_db.title_multiloc).to match title_multiloc
           expect(phase_in_db.description_multiloc).to match description_multiloc
           expect(phase_in_db.start_at).to eq start_at
           expect(phase_in_db.end_at).to eq end_at
+          expect(phase_in_db.native_survey_title_multiloc['en']).to eq 'Planning survey'
+          expect(phase_in_db.native_survey_button_multiloc['en']).to eq 'Fill in the form'
+          expect(json_response.dig(:data, :attributes, :native_survey_title_multiloc, :en)).to eq 'Planning survey'
+          expect(json_response.dig(:data, :attributes, :native_survey_button_multiloc, :en)).to eq 'Fill in the form'
 
           # A native survey phase still has some ideation-related state, all column defaults.
           expect(phase_in_db.input_term).to eq 'idea'
@@ -473,7 +483,8 @@ resource 'Phases' do
         let(:phase) { create(:phase, project: @project, participation_method: 'ideation', ideas: ideas) }
         let(:participation_method) { 'information' }
 
-        example 'Make a phase with ideas an information phase' do
+        example 'Change a phase with ideas into an information phase' do
+          expect_any_instance_of(PermissionsService).to receive(:update_permissions_for_scope).with(phase)
           do_request
           assert_status 200
         end
@@ -510,7 +521,7 @@ resource 'Phases' do
       end
 
       context 'on a native survey phase' do
-        let(:phase) { create(:phase, participation_method: 'native_survey', project: @project) }
+        let(:phase) { create(:native_survey_phase, project: @project) }
 
         example 'Deleting a phase deletes all survey responses', document: false do
           ideation_phase = create(:phase, participation_method: 'ideation', project: @project, start_at: (phase.start_at - 7.days), end_at: (phase.start_at - 1.day))
@@ -582,25 +593,28 @@ resource 'Phases' do
         do_request
         expect(status).to eq 200
 
-        expect(json_response).to eq(
+        expect(response_data[:type]).to eq 'survey_results'
+        expect(response_data.dig(:attributes, :totalSubmissions)).to eq 2
+        expect(response_data.dig(:attributes, :results).count).to eq 1
+        expect(response_data.dig(:attributes, :results, 0)).to match(
           {
-            data: {
-              type: 'survey_results',
-              attributes: {
-                results: [
-                  {
-                    inputType: 'multiselect',
-                    question: { en: 'What are your favourite pets?' },
-                    required: true,
-                    totalResponses: 3,
-                    answers: [
-                      { answer: { en: 'Cat' }, responses: 2 },
-                      { answer: { en: 'Dog' }, responses: 1 }
-                    ],
-                    customFieldId: multiselect_field.id
-                  }
-                ],
-                totalSubmissions: 2
+            customFieldId: multiselect_field.id,
+            inputType: 'multiselect',
+            question: { en: 'What are your favourite pets?' },
+            required: true,
+            grouped: false,
+            totalResponseCount: 2,
+            questionResponseCount: 2,
+            totalPickCount: 3,
+            answers: [
+              { answer: 'cat', count: 2 },
+              { answer: 'dog', count: 1 },
+              { answer: nil, count: 0 }
+            ],
+            multilocs: {
+              answer: {
+                cat: { title_multiloc: { en: 'Cat' } },
+                dog: { title_multiloc: { en: 'Dog' } }
               }
             }
           }

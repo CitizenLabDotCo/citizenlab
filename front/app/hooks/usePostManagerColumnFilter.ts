@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 
-// hooks
 import usePhases from '../api/phases/usePhase';
 
 export default function usePostManagerColumnFilter(

@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useAddInternalCommentToIdea from './useAddInternalCommentToIdea';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { commentsData } from './__mocks__/useInternalComments';
+import useAddInternalCommentToIdea from './useAddInternalCommentToIdea';
 
 const apiPath = '*/ideas/:ideaId/internal_comments';
 

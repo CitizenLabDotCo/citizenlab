@@ -30,31 +30,31 @@
 
 // -----------------------------------------------------------------------------
 // imports and definitions
-import { BehaviorSubject, combineLatest } from 'rxjs';
-import { first, map, distinctUntilChanged, filter } from 'rxjs/operators';
 import { includes, get } from 'lodash-es';
-import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
-import authUserStream from 'api/me/authUserStream';
-import { updateUser } from 'api/users/useUpdateUser';
+import { RouteType } from 'routes';
+import { combineLatest } from 'rxjs';
+import { first, map, distinctUntilChanged } from 'rxjs/operators';
 import { Locale, Multiloc } from 'typings';
-import { locales } from 'containers/App/constants';
-import { setCookieLocale, getCookieLocale } from 'utils/localeCookie';
-import clHistory from 'utils/cl-router/history';
-import { IAppConfiguration } from 'api/app_configuration/types';
-import { queryClient } from 'utils/cl-react-query/queryClient';
-import meKeys from 'api/me/keys';
 
-export const LocaleSubject: BehaviorSubject<Locale> = new BehaviorSubject(
-  null as any
-);
+import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
+import { IAppConfiguration } from 'api/app_configuration/types';
+import authUserStream from 'api/me/authUserStream';
+import meKeys from 'api/me/keys';
+import { updateUser } from 'api/users/useUpdateUser';
+
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import clHistory from 'utils/cl-router/history';
+import { setCookieLocale, getCookieLocale } from 'utils/localeCookie';
+
+import { getUrlLocale } from './getUrlLocale';
+import { $locale, LocaleSubject } from './localeStream';
+import { replacePathnameLocale } from './replacePathnameLocale';
+import { setPathnameLocale } from './setPathnameLocale';
+
 const $tenantLocales = appConfigurationStream.pipe(
   map((tenant) => get(tenant, 'data.attributes.settings.core.locales'))
 );
 const $authUser = authUserStream.pipe(distinctUntilChanged());
-const $locale = LocaleSubject.pipe(
-  distinctUntilChanged(),
-  filter((locale) => locale !== null)
-);
 
 // -----------------------------------------------------------------------------
 // main functionalities - 3 parts
@@ -125,7 +125,7 @@ export function updateLocale(locale: Locale, appConfig: IAppConfiguration) {
         setCookieLocale(locale);
         // and push the locale to the stream, which will trigger
         // 3 which will change the url accordingly
-        LocaleSubject.next(locale);
+        LocaleSubject.next(locale as any);
       }
     }
   });
@@ -153,34 +153,6 @@ $locale.subscribe((locale) => {
 // -----------------------------------------------------------------------------
 // helper functions
 
-/*  @param location : the pathname you want to extract the locale from
- *   gets the first part of the url if it resembles a locale enough (cf constants.ts: locales)
- *   returns null or a string in locales (cf constants.ts)
- *   is insenitive to additional/missing '/' at pathname start and end
- */
-export function getUrlLocale(pathname: string): string | null {
-  // strips beginning and ending '/', breaks down the string at '/'
-  const firstUrlSegment = pathname.replace(/^\/|\/$/g, '').split('/')[0];
-  // check first items appartenance to predefined locales obj
-  const isLocale = includes(locales, firstUrlSegment);
-  return isLocale && firstUrlSegment ? firstUrlSegment : null;
-}
-
-/*  @param pathname : the pathname you want to extract the locale from
- *   removes the first part of the url if it resembles a locale enough (cf constants.ts: locales)
- *   returns the remaining string
- *   is insenitive to additional/missing '/' at pathname start and end
- */
-export function removeUrlLocale(pathname: string): string {
-  // strips beginning and ending '/', breaks down the string at '/'
-  const urlSegments = pathname.replace(/^\/|\/$/g, '').split('/');
-  // if first segment resembles a locale enough replace it with an empty string
-  if (includes(locales, urlSegments[0])) {
-    urlSegments[0] = '';
-  }
-  return urlSegments.length === 1 ? '/' : urlSegments.join('/');
-}
-
 /*  @param: locale : the locale you want to add in front of current pathname
  *   prerequisite NO LOCALE : the current pathname should not already include a locale
  *   !! this function should not leave this component (no importing it except for tests)
@@ -190,22 +162,8 @@ function setUrlLocale(locale: Locale): void {
     location.pathname,
     locale,
     location.search
-  );
+  ) as RouteType;
   clHistory.replace(newLocalizedUrl);
-}
-
-/*  @param pathname: a string representing a pathname, without a starting locale. pathname must tart with /, and final / will not be moved
- *   @param locale: the locale you want to add to the pathname
- *   @param search: optional string representing query parameters, starting with '?'
- *
- *   @returns a valid pathname starting with a locale
- */
-export function setPathnameLocale(
-  pathname: string,
-  locale: Locale,
-  search?: string
-): string {
-  return `/${locale}${pathname}${search || ''}`;
 }
 
 /*  @param: locale : the locale you want to replace the one in the current pathname with
@@ -219,43 +177,9 @@ function replaceUrlLocale(locale: Locale) {
     location.pathname,
     locale,
     location.search
-  );
+  ) as RouteType;
   // replaces current location with updated url
   clHistory.replace(newLocalizedUrl);
-}
-
-/*  @param pathname: a string representing a pathname, with a first part we want to replace
- *     starting and/or finishing and/or not starting and/or not finishing with '/'
- *     ie resembling (/|''){gottaGo}( /{aValidRoute} | (/|'') )
- *   @param locale: the locale you want to replace the one in the pathname with
- *   @param search: optional string representing query parameters, starting with '?'
- *
- *   @returns a valid pathname with the first part replaced by the locale parameter, without a dangling '/'
- */
-export function replacePathnameLocale(
-  pathname: string,
-  locale: Locale,
-  search?: string
-) {
-  // strips beginning and ending '/', breaks down the string at '/'
-  const urlSegments = pathname.replace(/^\/|\/$/g, '').split('/');
-  // replaces first segment (the old url locale) with the url we want
-  urlSegments[0] = locale;
-  // puts back the pieces together
-  const newPathname = urlSegments.join('/');
-
-  // if the route is '/'...
-  return urlSegments.length === 1
-    ? `/${newPathname}/` // adds a dangling '/' after the locale, for consistency
-    : `/${newPathname}${search || ''}`; // else adds a first '/' and other query arguments if any
-}
-
-// -----------------------------------------------------------------------------
-// A function that returns the stream defined here
-export function localeStream() {
-  return {
-    observable: $locale,
-  };
 }
 
 export function hasTextInSpecifiedLocale(

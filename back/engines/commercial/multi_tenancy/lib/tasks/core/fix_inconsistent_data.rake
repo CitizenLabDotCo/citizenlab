@@ -150,7 +150,7 @@ namespace :inconsistent_data do
       Apartment::Tenant.switch(tenant.schema_name) do
         affected_users = User.where("custom_field_values::text LIKE '%null%'")
         affected_users.each do |user|
-          user.update_columns custom_field_values: service.cleanup_custom_field_values!(user.custom_field_values)
+          user.update_columns custom_field_values: service.compact_custom_field_values!(user.custom_field_values)
         end
       end
     end

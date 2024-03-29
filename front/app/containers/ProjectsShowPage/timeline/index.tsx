@@ -1,47 +1,42 @@
 import React, { useMemo } from 'react';
 
-// components
-import Timeline from './Timeline';
-import PhaseSurvey from './Survey';
-import PhasePoll from './Poll';
-import PhaseVolunteering from './Volunteering';
-import PhaseIdeas from './Ideas';
-import ContentContainer from 'components/ContentContainer';
-import PhaseNavigation from './PhaseNavigation';
+import { Box, colors, isRtl } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
+import { IPhaseData } from 'api/phases/types';
+import usePhases from 'api/phases/usePhases';
+import { getLatestRelevantPhase, hideTimelineUI } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+
+import useLocale from 'hooks/useLocale';
+
+import messages from 'containers/ProjectsShowPage/messages';
 import {
   ProjectPageSectionTitle,
   maxPageWidth,
 } from 'containers/ProjectsShowPage/styles';
+
+import ContentContainer from 'components/ContentContainer';
 import SectionContainer from 'components/SectionContainer';
-import PhaseDocumentAnnotation from './PhaseDocumentAnnotation';
 import StatusModule from 'components/StatusModule';
-import VotingResults from './VotingResults';
-import PhaseReport from './PhaseReport';
-import { Box, colors, isRtl } from '@citizenlab/cl2-component-library';
 
-// router
-import setPhaseURL from './setPhaseURL';
-import { useParams } from 'react-router-dom';
-
-// hooks
-import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
-import useLocale from 'hooks/useLocale';
-
-// i18n
-import messages from 'containers/ProjectsShowPage/messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
-// style
-import styled from 'styled-components';
-
-// utils
-import { getLatestRelevantPhase, hideTimelineUI } from 'api/phases/utils';
 import { isValidPhase } from '../phaseParam';
 
-// typings
-import { IPhaseData } from 'api/phases/types';
-import { pastPresentOrFuture } from 'utils/dateUtils';
+import PhaseIdeas from './Ideas';
+import PhaseDocumentAnnotation from './PhaseDocumentAnnotation';
+import PhaseNavigation from './PhaseNavigation';
+import PhasePoll from './Poll';
+import setPhaseURL from './setPhaseURL';
+import PhaseSurvey from './Survey';
+import Timeline from './Timeline';
+import PhaseVolunteering from './Volunteering';
+import VotingResults from './VotingResults';
+
+const PhaseReport = React.lazy(() => import('./PhaseReport'));
 
 const StyledSectionContainer = styled(SectionContainer)`
   display: flex;
@@ -100,6 +95,7 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
   if (selectedPhase) {
     const selectedPhaseId = selectedPhase.id;
     const participationMethod = selectedPhase.attributes.participation_method;
+    const votingMethod = selectedPhase.attributes.voting_method;
     const isPastPhase =
       !!selectedPhase.attributes.end_at &&
       pastPresentOrFuture(selectedPhase.attributes.end_at) === 'past';
@@ -109,9 +105,11 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
     const showVotingResults = isVotingPhase && isPastPhase;
 
     const reportId = selectedPhase.relationships.report?.data?.id;
+
     const showReport =
       selectedPhase.attributes.participation_method === 'information' &&
-      !!reportId;
+      !!reportId &&
+      selectedPhase.attributes.report_public;
 
     return (
       <StyledSectionContainer
@@ -139,7 +137,7 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
             <StatusModule
               phase={selectedPhase}
               project={project.data}
-              votingMethod={selectedPhase?.attributes.voting_method}
+              votingMethod={votingMethod}
             />
           )}
           <PhaseSurvey project={project.data} phaseId={selectedPhaseId} />
@@ -154,9 +152,16 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
           {showIdeas && (
             <PhaseIdeas projectId={projectId} phaseId={selectedPhaseId} />
           )}
-          {showVotingResults && <VotingResults phaseId={selectedPhaseId} />}
+          {showVotingResults && votingMethod && (
+            <VotingResults
+              phaseId={selectedPhaseId}
+              votingMethod={votingMethod}
+            />
+          )}
         </ContentContainer>
-        {showReport && <PhaseReport reportId={reportId} />}
+        {showReport && (
+          <PhaseReport reportId={reportId} phaseId={selectedPhaseId} />
+        )}
       </StyledSectionContainer>
     );
   }

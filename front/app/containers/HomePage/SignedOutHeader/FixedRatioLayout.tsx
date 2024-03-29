@@ -1,20 +1,21 @@
 import React from 'react';
 
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+
+import {
+  Container,
+  Header,
+} from 'components/LandingPages/citizen/FixedRatioLayout';
 import {
   HeaderImage,
   HeaderImageBackground,
   HeaderImageOverlay,
 } from 'components/LandingPages/citizen/FullWidthBannerLayout';
-import {
-  Container,
-  Header,
-} from 'components/LandingPages/citizen/FixedRatioLayout';
+
 import HeaderContent from './HeaderContent';
 
-import { IHomepageSettingsAttributes } from 'api/home_page/types';
-
 interface Props {
-  homepageSettings: Partial<IHomepageSettingsAttributes>;
+  homepageSettings: Partial<IHomepageBannerSettings>;
 }
 
 const FixedRatioLayout = ({ homepageSettings }: Props) => {

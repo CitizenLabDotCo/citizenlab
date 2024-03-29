@@ -1,21 +1,28 @@
 import React from 'react';
+
 import { Box, Title } from '@citizenlab/cl2-component-library';
-import { useIntl } from 'utils/cl-intl';
-import { isAdmin } from 'utils/permissions/roles';
+
 import useAuthUser from 'api/me/useAuthUser';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import { isAdmin } from 'utils/permissions/roles';
+
+import Esri from './Esri';
 import messages from './messages';
-import Workshops from './Workshops';
-import Widget from './Widget';
-import PublicAPI from './PublicAPI';
 import PowerBI from './PowerBI';
+import PublicAPI from './PublicAPI';
+import Widget from './Widget';
+import Workshops from './Workshops';
 
 export const Tools = () => {
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
+  const isEsriIntegrationEnabled = useFeatureFlag({ name: 'esri_integration' }); // TODO: Remove this when releasing esri integration
 
   if (isNilOrError(authUser)) return null;
-
   const isUserAdmin = isAdmin({ data: authUser.data });
 
   return (
@@ -23,6 +30,7 @@ export const Tools = () => {
       <Box maxWidth="800px">
         <Title color="primary">{formatMessage(messages.toolsLabel)}</Title>
         <Workshops />
+        {isUserAdmin && isEsriIntegrationEnabled && <Esri />}
         {isUserAdmin && <Widget />}
         {isUserAdmin && <PublicAPI />}
         {isUserAdmin && <PowerBI />}

@@ -1,7 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
 
-// components
 import {
   Box,
   useBreakpoint,
@@ -10,27 +8,25 @@ import {
   media,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
+import { VotingContext } from 'api/baskets_ideas/useVoting';
+import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+
 import IdeasShow from 'containers/IdeasShow';
-import IdeaShowPageTopBar from './IdeaShowPageTopBar';
+import ProjectCTABar from 'containers/ProjectsShowPage/ProjectCTABar';
+
 import PageNotFound from 'components/PageNotFound';
 import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
 
-// context
-import { VotingContext } from 'api/baskets_ideas/useVoting';
-
-// hooks
-import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
-import useProjectById from 'api/projects/useProjectById';
-
-// style
-import styled from 'styled-components';
-
-// utils
 import { isUnauthorizedRQ } from 'utils/errorUtils';
-import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase } from 'api/phases/utils';
-import ProjectCTABar from 'containers/ProjectsShowPage/ProjectCTABar';
+
+import IdeaShowPageTopBar from './IdeaShowPageTopBar';
 
 const StyledIdeaShowPageTopBar = styled(IdeaShowPageTopBar)`
   position: fixed;
@@ -71,7 +67,7 @@ const IdeasShowPage = () => {
   );
   const { data: phases } = usePhases(project?.data.id);
 
-  const phase = getCurrentPhase(phases?.data);
+  if (!project) return null;
 
   if (status === 'loading') {
     return (
@@ -89,51 +85,45 @@ const IdeasShowPage = () => {
     return <PageNotFound />;
   }
 
-  if (idea && project) {
-    const isIdeaInCurrentPhase =
-      idea.data.relationships.phases.data.filter(
-        (iteratedPhase) => iteratedPhase.id === phase?.id
-      ).length > 0;
-    const showCTABar =
-      isIdeaInCurrentPhase &&
-      phase?.attributes.participation_method === 'voting';
-    const showCTABarAtTopOfPage = !isSmallerThanTablet && showCTABar;
+  const phase = getCurrentPhase(phases?.data);
+  const isIdeaInCurrentPhase =
+    idea.data.relationships.phases.data.filter(
+      (iteratedPhase) => iteratedPhase.id === phase?.id
+    ).length > 0;
+  const showCTABar =
+    isIdeaInCurrentPhase && phase?.attributes.participation_method === 'voting';
+  const showCTABarAtTopOfPage = !isSmallerThanTablet && showCTABar;
 
-    return (
-      <VotingContext projectId={project.data.id}>
-        <Box
-          background={colors.white}
-          pt={
-            showCTABarAtTopOfPage ? `${stylingConsts.menuHeight}px` : undefined
-          }
-        >
-          {isSmallerThanTablet && (
-            <StyledIdeaShowPageTopBar
-              projectId={idea.data.relationships.project.data.id}
-              ideaId={idea.data.id}
-              phase={phase}
-            />
-          )}
-          <StyledIdeasShow
-            ideaId={idea.data.id}
+  return (
+    <VotingContext projectId={project.data.id}>
+      <Box
+        background={colors.white}
+        pt={showCTABarAtTopOfPage ? `${stylingConsts.menuHeight}px` : undefined}
+      >
+        {isSmallerThanTablet && (
+          <StyledIdeaShowPageTopBar
             projectId={idea.data.relationships.project.data.id}
-            compact={isSmallerThanTablet}
+            ideaId={idea.data.id}
+            phase={phase}
           />
-        </Box>
-        {showCTABar && (
-          <Box
-            position="fixed"
-            bottom={isSmallerThanTablet ? '0px' : undefined} // Show CTA at bottom of screen on mobile
-            width="100vw"
-          >
-            <ProjectCTABar projectId={project.data.id} />
-          </Box>
         )}
-      </VotingContext>
-    );
-  }
-
-  return null;
+        <StyledIdeasShow
+          ideaId={idea.data.id}
+          projectId={idea.data.relationships.project.data.id}
+          compact={isSmallerThanTablet}
+        />
+      </Box>
+      {showCTABar && (
+        <Box
+          position="fixed"
+          bottom={isSmallerThanTablet ? '0px' : undefined} // Show CTA at bottom of screen on mobile
+          width="100vw"
+        >
+          <ProjectCTABar projectId={project.data.id} />
+        </Box>
+      )}
+    </VotingContext>
+  );
 };
 
 export default IdeasShowPage;

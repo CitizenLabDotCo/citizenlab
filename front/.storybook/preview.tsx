@@ -5,6 +5,7 @@ import { initialize, mswDecorator } from 'msw-storybook-addon';
 import mockServer from './mockServer';
 import { reactIntl } from './reactIntl';
 import { MemoryRouter } from 'react-router-dom';
+import { allModes } from './modes';
 
 initialize();
 
@@ -23,13 +24,16 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
-
     msw: Object.values(mockServer),
     reactIntl,
+    chromatic: {
+      modes: {
+        ...allModes
+      },
+      disableSnapshot: true
+    }
   },
-
   decorators: [mswDecorator, routerDecorator, contexts],
-
   globals: {
     locale: reactIntl.defaultLocale,
   },

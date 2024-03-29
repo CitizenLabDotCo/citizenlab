@@ -1,7 +1,9 @@
-import schemaKeys from './keys';
-import { Keys } from 'utils/cl-react-query/types';
-import { Locale } from 'typings';
 import { JsonSchema7, Layout } from '@jsonforms/core';
+import { Locale } from 'typings';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import schemaKeys from './keys';
 
 export type SchemaKeys = Keys<typeof schemaKeys>;
 

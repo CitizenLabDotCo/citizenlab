@@ -659,6 +659,50 @@ resource 'Ideas' do
       end
     end
 
+    get 'web_api/v1/ideas/draft/:phase_id' do
+      let(:phase) { create(:native_survey_phase) }
+      let(:phase_id) { phase.id }
+
+      context 'idea authored by user' do
+        let!(:idea) do
+          create(:idea, project: phase.project, phases: [phase], creation_phase: phase, author: @user, publication_status: 'draft')
+        end
+
+        example_request 'Get a single draft idea by phase' do
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :id)).to eq idea.id
+        end
+      end
+
+      context 'Idea authored by another user' do
+        let!(:idea) { create(:idea, project: phase.project, phases: [phase], creation_phase: phase, publication_status: 'draft') }
+
+        example '[error] No draft ideas for current user', document: false do
+          do_request
+          expect(status).to eq 404
+        end
+      end
+
+      context 'Idea is not draft' do
+        let!(:idea) { create(:idea, project: phase.project, phases: [phase], creation_phase: phase, author: @user) }
+
+        example '[error] No draft ideas', document: false do
+          do_request
+          expect(status).to eq 404
+        end
+      end
+
+      context 'Idea is not native survey' do
+        let!(:idea) { create(:idea, project: phase.project, phases: [phase], author: @user, publication_status: 'draft') }
+
+        example '[error] No native survey idea found', document: false do
+          do_request
+          expect(status).to eq 404
+        end
+      end
+    end
+
     get 'web_api/v1/ideas/:idea_id/json_forms_schema' do
       let(:project) { create(:project_with_active_ideation_phase) }
       let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
@@ -767,6 +811,17 @@ resource 'Ideas' do
           expect(idea.assignee_id).to be_nil
           expect(idea.assigned_at).to be_nil
         end
+
+        context 'creating a draft survey response' do
+          let(:publication_status) { 'draft' }
+
+          example 'sets the publication status to draft' do
+            do_request
+            assert_status 201
+            idea = Idea.find(json_parse(response_body).dig(:data, :id))
+            expect(idea.publication_status).to eq 'draft'
+          end
+        end
       end
 
       describe 'when posting an idea in an active ideation phase, the correct form is used' do
@@ -808,6 +863,10 @@ resource 'Ideas' do
           expect(response_data.dig(:attributes, :anonymous)).to be true
           expect(response_data.dig(:attributes, :author_name)).to be_nil
           expect(response_data.dig(:relationships, :author, :data)).to be_nil
+        end
+
+        example 'Does not add the author as a follower', document: false do
+          expect { do_request }.not_to change(Follower, :count)
         end
 
         example 'Does not log activities for the author', document: false do
@@ -1190,6 +1249,19 @@ resource 'Ideas' do
           end
         end
 
+        describe 'Submitting a final native survey response' do
+          let(:project) { create(:single_phase_native_survey_project) }
+          let(:idea) { create(:native_survey_response, project: project, publication_status: 'draft', author: @user) }
+
+          let(:id) { idea.id }
+          let(:publication_status) { 'published' }
+
+          example_request 'Can change a survey response from draft to published (as the author)' do
+            assert_status 200
+            expect(response_data[:attributes][:publication_status]).to eq 'published'
+          end
+        end
+
         context 'when admin' do
           before do
             @user = create(:admin)
@@ -1277,7 +1349,6 @@ resource 'Ideas' do
 
               let(:id) { idea.id }
 
-              # TODO: Baskets_ideas
               before do
                 basket = create(:basket, phase: project.phases.last)
                 basket.update!(ideas: [idea], submitted_at: Time.zone.now)

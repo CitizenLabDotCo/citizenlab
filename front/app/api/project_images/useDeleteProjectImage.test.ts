@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeleteProjectImage from './useDeleteProjectImage';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import endpoints, { projectImagePath } from './__mocks__/_mockServer';
+import useDeleteProjectImage from './useDeleteProjectImage';
 
 const server = setupServer(
   endpoints['DELETE projects/:projectId/images/:imageId']

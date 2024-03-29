@@ -1,19 +1,29 @@
-import { useSearchParams } from 'react-router-dom';
-import { handleArraySearchParam } from '../util';
 import { useMemo } from 'react';
+
+import { useSearchParams } from 'react-router-dom';
+
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
 
-const STATIC_SCALAR_FILTERS = [
-  'search',
-  'published_at_from',
-  'published_at_to',
+import { handleArraySearchParam } from '../util';
+
+const STATIC_NUMBER_FILTERS = [
   'reactions_from',
   'reactions_to',
   'votes_from',
   'votes_to',
   'comments_from',
   'comments_to',
+  'limit',
 ];
+
+const STATIC_SCALAR_FILTERS = [
+  ...STATIC_NUMBER_FILTERS,
+  'search',
+  'published_at_from',
+  'published_at_to',
+];
+
+const STATIC_BOOLEAN_FILTERS = ['input_custom_field_no_empty_values'];
 
 const STATIC_ARRAY_FILTERS = ['tag_ids'];
 
@@ -26,7 +36,9 @@ const useAnalysisFilterParams = () => {
 
   const filters = Object.entries(allParams).reduce(
     (accumulator, [key, value]) => {
-      if (
+      if (STATIC_BOOLEAN_FILTERS.includes(key)) {
+        accumulator[key] = value === 'true' ? true : false;
+      } else if (
         key.match(/^(author|input)_custom_([a-f0-9-]+)$/) ||
         STATIC_ARRAY_FILTERS.includes(key)
       ) {
@@ -35,7 +47,9 @@ const useAnalysisFilterParams = () => {
         key.match(/^(author|input)_custom_([a-f0-9-]+)_(from|to)$/) ||
         STATIC_SCALAR_FILTERS.includes(key)
       ) {
-        accumulator[key] = value;
+        accumulator[key] = STATIC_NUMBER_FILTERS.includes(key)
+          ? Number(value)
+          : value;
       }
       return accumulator;
     },

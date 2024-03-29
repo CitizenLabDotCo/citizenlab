@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   Button,
@@ -8,22 +7,18 @@ import {
   Text,
   Title,
 } from '@citizenlab/cl2-component-library';
-import GoBackButton from 'components/UI/GoBackButton';
 
-// intl
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
+import GoBackButton from 'components/UI/GoBackButton';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
 
+import messages from './messages';
 import { saveTemplateFile } from './saveTemplateFile';
-import { API_HOST, API_PORT } from 'containers/App/constants';
 
 const PowerBITemplates = () => {
   const isPowerBIEnabled = useFeatureFlag({ name: 'power_bi' });
@@ -42,11 +37,10 @@ const PowerBITemplates = () => {
     handleDownloadTemplate('dataflow', 'json');
   };
 
-  const hostName = API_HOST;
   const baseUrl =
-    hostName === 'localhost'
-      ? `http://localhost:${API_PORT}/api/v2/`
-      : `https://${hostName}/api/v2/`;
+    window.location.host === 'localhost'
+      ? `http://localhost:4000/api/v2/`
+      : `${window.location.origin}/api/v2/`;
 
   if (!isPowerBIEnabled) return null;
 

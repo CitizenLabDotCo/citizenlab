@@ -1,9 +1,5 @@
 import React from 'react';
 
-// craft
-import { useNode, useEditor } from '@craftjs/core';
-
-// components
 import {
   Radio,
   Box,
@@ -11,27 +7,27 @@ import {
   Label,
   colors,
 } from '@citizenlab/cl2-component-library';
-import ButtonComponent from 'components/UI/Button';
-
-// styles
-
+import { useNode, useEditor } from '@craftjs/core';
 import { darken } from 'polished';
-
-// hooks
+import { RouteType } from 'routes';
 import { useTheme } from 'styled-components';
+import { Multiloc } from 'typings';
+
+import useLocalize from 'hooks/useLocalize';
+
+import ButtonComponent from 'components/UI/Button';
+import InputMultilocWithLocaleSwitcherWrapper from 'components/UI/InputMultilocWithLocaleSwitcher';
+
+import { injectIntl } from 'utils/cl-intl';
+
+import sharedMessages from '../../messages';
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
-// intl
 import messages from './messages';
-import sharedMessages from '../../messages';
-import { injectIntl } from 'utils/cl-intl';
-import { Multiloc } from 'typings';
-import useLocalize from 'hooks/useLocalize';
-import InputMultilocWithLocaleSwitcherWrapper from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 type ButtonProps = {
   text: Multiloc;
-  url: string;
+  url: RouteType;
   type: 'primary' | 'secondary';
   alignment: string;
 };
@@ -79,8 +75,9 @@ const Button = ({ text, url, type, alignment }: ButtonProps) => {
           id="e2e-button"
           width={alignment === 'fullWidth' ? '100%' : 'auto'}
           buttonStyle={type}
-          text={localize(text)}
-        />
+        >
+          <span style={{ whiteSpace: 'normal' }}>{localize(text)}</span>
+        </ButtonComponent>
       )}
     </Box>
   );
@@ -123,7 +120,7 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
           placeholder={formatMessage(sharedMessages.urlPlaceholder)}
           type="text"
           value={url}
-          onChange={(value) => {
+          onChange={(value: RouteType) => {
             setProp((props: ButtonProps) => (props.url = value));
           }}
         />

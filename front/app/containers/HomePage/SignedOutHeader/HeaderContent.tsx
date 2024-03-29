@@ -1,3 +1,14 @@
+import React from 'react';
+
+import { useBreakpoint, media } from '@citizenlab/cl2-component-library';
+import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
+
+import useLocalize from 'hooks/useLocalize';
+
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+
 import AvatarBubbles from 'components/AvatarBubbles';
 import {
   Container,
@@ -6,19 +17,15 @@ import {
   HeaderTitle,
   TAlign,
 } from 'components/LandingPages/citizen/HeaderContent';
-import { WrappedComponentProps } from 'react-intl';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import useLocalize from 'hooks/useLocalize';
-import React from 'react';
-import styled from 'styled-components';
+
 import { trackEventByName } from 'utils/analytics';
 import { injectIntl } from 'utils/cl-intl';
 import { isEmptyMultiloc, isNilOrError } from 'utils/helperUtils';
+
 import messages from '../messages';
 import tracks from '../tracks';
+
 import CTA from './CTA';
-import { useBreakpoint, media } from '@citizenlab/cl2-component-library';
-import { IHomepageSettingsAttributes } from 'api/home_page/types';
 
 const StyledAvatarBubbles = styled(AvatarBubbles)`
   min-height: 40px;
@@ -32,7 +39,7 @@ const StyledAvatarBubbles = styled(AvatarBubbles)`
 interface Props {
   fontColors: 'light' | 'dark';
   align?: TAlign;
-  homepageSettings: Partial<IHomepageSettingsAttributes>;
+  homepageSettings: Partial<IHomepageBannerSettings>;
 }
 
 export const getButtonStyle = (fontColors: 'light' | 'dark') => {

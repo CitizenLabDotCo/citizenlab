@@ -1,10 +1,10 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useAdminPublicationsStatusCounts from './useAdminPublicationsStatusCounts';
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useAdminPublicationsStatusCounts from './useAdminPublicationsStatusCounts';
 
 const apiPath = '*/admin_publications/status_counts';
 

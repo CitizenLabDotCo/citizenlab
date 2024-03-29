@@ -1,15 +1,13 @@
-// services
-
-// utils
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { zipObject } from 'lodash-es';
-import { sum, roundPercentage, roundPercentages } from 'utils/math';
-import { forEachBin } from '../utils/bins';
-
-// typings
 import { Multiloc, Locale } from 'typings';
+
 import { IUsersByAge } from 'api/users_by_age/types';
 import { IUsersByCustomField } from 'api/users_by_custom_field/types';
+
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { sum, roundPercentage, roundPercentages } from 'utils/math';
+
+import { forEachBin } from '../utils/bins';
 
 interface RepresentativenessRowBase {
   actualPercentage: number;

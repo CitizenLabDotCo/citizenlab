@@ -1,26 +1,21 @@
 import React, { useState, useEffect } from 'react';
 
-// hooks
-import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
-
-// router
-import { useSearchParams } from 'react-router-dom';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-
-// styling
-import rocket from 'assets/img/rocket.png';
-
-// components
 import { Box, Title, Image } from '@citizenlab/cl2-component-library';
+import rocket from 'assets/img/rocket.png';
+import { useSearchParams } from 'react-router-dom';
+
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+
 import Modal from 'components/UI/Modal';
 
-// utils
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import {
   getMethodConfig,
   getPhase,
 } from 'utils/configs/participationMethodConfig';
-import { getCurrentPhase } from 'api/phases/utils';
+
 import { isReady } from './utils';
 
 interface Props {

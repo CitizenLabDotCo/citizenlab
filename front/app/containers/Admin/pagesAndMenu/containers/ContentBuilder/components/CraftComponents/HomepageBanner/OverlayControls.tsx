@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import styled, { useTheme } from 'styled-components';
+
 import {
   Box,
   Text,
@@ -9,9 +9,13 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import styled, { useTheme } from 'styled-components';
+
 import RangeInput from 'components/UI/RangeInput';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 
 const StyledBox = styled(Box)`
   position: relative;
@@ -45,16 +49,15 @@ interface Props {
   bannerOverlayOpacity: number | null;
   bannerOverlayColor: string;
   onOverlayChange: (opacity: number | null, color: string | null) => void;
-  variant: 'signedIn' | 'signedOut';
-  noOpacitySlider?: boolean;
 }
+
+const defaultOpacity = 90;
+const defaultOverlayColor = colors.primary;
 
 const OverlayControls = ({
   bannerOverlayOpacity,
   bannerOverlayColor,
   onOverlayChange,
-  variant,
-  noOpacitySlider,
 }: Props) => {
   const [overlayEnabled, setOverlayEnabled] = useState(
     typeof bannerOverlayOpacity === 'number' && bannerOverlayOpacity !== 0
@@ -67,15 +70,8 @@ const OverlayControls = ({
       onOverlayChange(0, theme.colors.tenantPrimary);
     } else {
       onOverlayChange(
-        bannerOverlayOpacity ||
-          (variant === 'signedOut'
-            ? theme.signedOutHeaderOverlayOpacity
-            : theme.signedInHeaderOverlayOpacity),
-        bannerOverlayColor ||
-          (variant === 'signedIn'
-            ? theme.colors.tenantPrimary
-            : theme.signedInHeaderOverlayColor) ||
-          null
+        defaultOpacity,
+        bannerOverlayColor || theme.colors.tenantPrimary || defaultOverlayColor
       );
     }
 
@@ -85,17 +81,14 @@ const OverlayControls = ({
   const handleOverlayOpacityOnChange = (
     opacity: Props['bannerOverlayOpacity']
   ) => {
-    onOverlayChange(opacity, bannerOverlayColor || theme.colors.tenantPrimary);
+    onOverlayChange(
+      opacity,
+      bannerOverlayColor || theme.colors.tenantPrimary || defaultOverlayColor
+    );
   };
 
   const handleOverlayColorOnChange = (color: Props['bannerOverlayColor']) => {
-    onOverlayChange(
-      bannerOverlayOpacity ||
-        (variant === 'signedOut'
-          ? theme.signedOutHeaderOverlayOpacity
-          : theme.signedInHeaderOverlayOpacity),
-      color
-    );
+    onOverlayChange(bannerOverlayOpacity || defaultOpacity, color);
   };
 
   const debounceHandleOverlayOpacityOnChange = debounce(
@@ -134,24 +127,20 @@ const OverlayControls = ({
               id="image-overlay-color"
               label={formatMessage(messages.imageOverlayColor)}
               type="text"
-              value={bannerOverlayColor}
+              value={bannerOverlayColor || defaultOverlayColor}
               onChange={handleOverlayColorOnChange}
             />
           </Box>
-          {!noOpacitySlider && (
-            <>
-              <Label>
-                <FormattedMessage {...messages.imageOverlayOpacity} />
-              </Label>
-              <RangeInput
-                step={1}
-                min={0}
-                max={100}
-                value={bannerOverlayOpacity}
-                onChange={debouncedHandleOverlayOpacityOnChange}
-              />
-            </>
-          )}
+          <Label>
+            <FormattedMessage {...messages.imageOverlayOpacity} />
+          </Label>
+          <RangeInput
+            step={1}
+            min={0}
+            max={100}
+            value={bannerOverlayOpacity}
+            onChange={debouncedHandleOverlayOpacityOnChange}
+          />
         </StyledBox>
       )}
     </>

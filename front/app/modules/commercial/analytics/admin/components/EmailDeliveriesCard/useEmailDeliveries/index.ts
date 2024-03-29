@@ -1,24 +1,18 @@
-// services
+import { useState } from 'react';
 
-// i18n
+import useAnalytics from 'api/analytics/useAnalytics';
+
 import { useIntl } from 'utils/cl-intl';
-import { getTranslations } from './translations';
 
-// query
-import { query } from './query';
-
-// parse
 import {
   parseStats,
   parseTimeSeries,
   mergeTimeSeries,
   parseExcelData,
 } from './parse';
-
-// typings
+import { query } from './query';
+import { getTranslations } from './translations';
 import { QueryParameters, Response } from './typings';
-import useAnalytics from 'api/analytics/useAnalytics';
-import { useState } from 'react';
 
 export default function useEmailDeliveriesData({
   startAtMoment,
@@ -39,9 +33,9 @@ export default function useEmailDeliveriesData({
 
   const translations = getTranslations(formatMessage);
   const stats = analytics ? parseStats(analytics.data.attributes) : null;
-
   const preparedTimeSeries =
-    analytics && mergeTimeSeries(analytics.data.attributes[3]);
+    analytics &&
+    mergeTimeSeries(analytics.data.attributes[3], currentResolution);
   const timeSeries =
     analytics?.data && preparedTimeSeries
       ? parseTimeSeries(

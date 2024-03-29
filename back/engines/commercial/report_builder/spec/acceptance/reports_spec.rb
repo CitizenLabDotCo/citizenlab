@@ -46,9 +46,16 @@ resource 'Reports' do
           id: report.id,
           type: 'report',
           attributes: {
+            action_descriptor: {
+              editing_report: {
+                enabled: true,
+                disabled_reason: nil
+              }
+            },
             name: report.name,
             created_at: report.created_at.iso8601(3),
-            updated_at: report.updated_at.iso8601(3)
+            updated_at: report.updated_at.iso8601(3),
+            visible: true
           },
           relationships: {
             layout: { data: { id: layout.id, type: 'content_builder_layout' } },
@@ -99,9 +106,16 @@ resource 'Reports' do
           id: be_a(String),
           type: 'report',
           attributes: {
+            action_descriptor: {
+              editing_report: {
+                enabled: true,
+                disabled_reason: nil
+              }
+            },
             name: name,
             created_at: be_a(String),
-            updated_at: be_a(String)
+            updated_at: be_a(String),
+            visible: false
           },
           relationships: {
             layout: { data: { id: be_a(String), type: 'content_builder_layout' } },
@@ -131,6 +145,17 @@ resource 'Reports' do
 
           report = ReportBuilder::Report.find(response_data[:id])
           expect(report.phase_id).to eq(@phase.id)
+        end
+      end
+
+      context 'when the report cannot be saved (e.g., if name is duplicated)' do
+        before do
+          create(:report, name: name)
+        end
+
+        example_request '[error] Does not create the report' do
+          assert_status 422
+          expect(ReportBuilder::Report.count).to eq(1)
         end
       end
 
@@ -188,6 +213,17 @@ resource 'Reports' do
           do_request(id: 'do-not-exist')
           assert_status 404
         end
+
+        context 'when the report cannot be saved (e.g., if name is duplicated)' do
+          before do
+            create(:report, name: name)
+          end
+
+          example_request '[error] Does not update the report' do
+            assert_status 422
+            expect(report).not_to eq(name)
+          end
+        end
       end
 
       describe 'updating the layout of a report' do
@@ -201,6 +237,15 @@ resource 'Reports' do
           expect(report.reload.layout.craftjs_json).to match(
             craftjs_json
           )
+        end
+      end
+
+      describe 'updating the visibility of a report' do
+        example 'Visibility successfully updates by report id' do
+          expect(report.reload.visible).to be(true)
+          do_request(report: { visible: false })
+          assert_status 200
+          expect(report.reload.visible).to be(false)
         end
       end
 

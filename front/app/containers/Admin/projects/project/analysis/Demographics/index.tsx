@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+
 import {
   Accordion,
   Box,
@@ -7,13 +8,16 @@ import {
   Title,
   colors,
 } from '@citizenlab/cl2-component-library';
-import AuthorsByDomicile from './AuthorsByDomicile';
-import AuthorsByAge from './AuthorsByAge';
-import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
-import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 import { isEmpty } from 'lodash-es';
-import messages from './messages';
+
+import { IUserCustomFieldData } from 'api/user_custom_fields/types';
+import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
+
 import { FormattedMessage } from 'utils/cl-intl';
+
+import AuthorsByAge from './AuthorsByAge';
+import AuthorsByDomicile from './AuthorsByDomicile';
+import messages from './messages';
 
 const SUPPORTED_CODES: IUserCustomFieldData['attributes']['code'][] = [
   'birthyear',

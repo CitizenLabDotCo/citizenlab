@@ -1,6 +1,8 @@
 import moment from 'moment';
+
+import { ActiveUsersResponse } from 'api/graph_data_units/responseTypes';
+
 import { parseTimeSeries, parseStats } from './parse';
-import { Response } from './typings';
 
 describe('parseTimeSeries', () => {
   it('works', () => {
@@ -51,7 +53,7 @@ describe('parseTimeSeries', () => {
 
 describe('parseStats', () => {
   it('works', () => {
-    const responseData: Response['data']['attributes'] = [
+    const responseData: ActiveUsersResponse['data']['attributes'] = [
       [
         {
           first_dimension_date_created_date: '2022-09-02',
@@ -79,7 +81,7 @@ describe('parseStats', () => {
   });
 
   it('works with last query response as empty array', () => {
-    const responseData: Response['data']['attributes'] = [
+    const responseData: ActiveUsersResponse['data']['attributes'] = [
       [
         {
           first_dimension_date_created_date: '2022-11-09',

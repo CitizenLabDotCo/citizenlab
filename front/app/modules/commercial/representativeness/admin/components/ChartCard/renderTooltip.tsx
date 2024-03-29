@@ -1,15 +1,13 @@
 import React from 'react';
 
-// components
 import { Box, Text, TextProps } from '@citizenlab/cl2-component-library';
 import { Tooltip } from 'recharts';
-import TooltipOutline from 'components/admin/Graphs/utilities/TooltipOutline';
 
-// utils
-import { formatPercentage } from './utils';
+import TooltipOutline from 'components/admin/Graphs/_components/TooltipOutline';
 
-// typings
 import { RepresentativenessRow } from '../../hooks/parseReferenceData';
+
+import { formatPercentage } from './utils';
 
 interface CustomTooltipProps {
   label?: string;

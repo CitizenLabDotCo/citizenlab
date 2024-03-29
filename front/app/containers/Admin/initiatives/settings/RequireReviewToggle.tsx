@@ -1,15 +1,19 @@
 import React from 'react';
 
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import {
   Box,
   Toggle,
   Text,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../messages';
 
 interface Props {
   value: boolean;

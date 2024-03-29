@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react';
 
-// hooks
+import { IUserCustomFieldData } from 'api/user_custom_fields/types';
+import useUsersByAge from 'api/users_by_age/useUsersByAge';
+import useUsersByCustomField from 'api/users_by_custom_field/useUsersByCustomField';
+import useUsersByGender from 'api/users_by_gender/useUsersByGender';
+
 import useLocale from 'hooks/useLocale';
 
-// utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
+
 import {
   RepresentativenessRowMultiloc,
   IncludedUsers,
@@ -12,12 +16,6 @@ import {
   ageFieldToIncludedUsers,
   handleRegFieldResponse,
 } from './parseReferenceData';
-
-// typings
-import { IUserCustomFieldData } from 'api/user_custom_fields/types';
-import useUsersByAge from 'api/users_by_age/useUsersByAge';
-import useUsersByGender from 'api/users_by_gender/useUsersByGender';
-import useUsersByCustomField from 'api/users_by_custom_field/useUsersByCustomField';
 
 function useReferenceData(
   userCustomField: IUserCustomFieldData,

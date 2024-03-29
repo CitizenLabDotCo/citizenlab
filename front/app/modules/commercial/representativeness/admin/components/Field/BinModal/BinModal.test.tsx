@@ -1,6 +1,8 @@
 import React from 'react';
-import BinModal from '.';
+
 import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
+
+import BinModal from '.';
 
 describe('<BinModal />', () => {
   describe('No initial bins', () => {

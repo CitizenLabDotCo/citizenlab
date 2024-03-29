@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeleteEventFile from './useDeleteEventFile';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useDeleteEventFile from './useDeleteEventFile';
 const apiPath = '*/events/:eventId/files/:fileId';
 
 const server = setupServer(

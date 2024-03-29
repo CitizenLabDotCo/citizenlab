@@ -1,30 +1,24 @@
 import React, { useMemo } from 'react';
 
-// router
-import { useSearchParams } from 'react-router-dom';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-
-// components
-import ContentContainer from 'components/ContentContainer';
-import { IdeaCardsWithFiltersSidebar } from 'components/IdeaCards';
-import CityLogoSection from 'components/CityLogoSection';
-import IdeasIndexMeta from './IdeaIndexMeta';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// style
-import styled from 'styled-components';
 import {
   media,
   fontSizes,
   colors,
   isRtl,
 } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
 
-// typings
+import CityLogoSection from 'components/CityLogoSection';
+import ContentContainer from 'components/ContentContainer';
+import { IdeaCardsWithFiltersSidebar } from 'components/IdeaCards';
 import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
+import IdeasIndexMeta from './IdeaIndexMeta';
+import messages from './messages';
 
 const Container = styled.main`
   min-height: calc(
@@ -80,7 +74,6 @@ const PageTitle = styled.h1`
 `;
 
 export interface QueryParameters {
-  // constants
   'page[number]': number;
   'page[size]': number;
   project_publication_status: 'published';

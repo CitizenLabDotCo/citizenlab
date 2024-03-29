@@ -1,13 +1,16 @@
 import { ILinks, Multiloc, IRelationship } from 'typings';
-import {
-  PermissionsDisabledReason,
-  ActionDescriptorFutureEnabled,
-} from 'utils/actionDescriptors';
+
 import {
   CommentingDisabledReason,
   PublicationStatus as ProjectPublicationStatus,
 } from 'api/projects/types';
+
+import {
+  PermissionsDisabledReason,
+  ActionDescriptorFutureEnabled,
+} from 'utils/actionDescriptors';
 import { Keys } from 'utils/cl-react-query/types';
+
 import ideasKeys from './keys';
 
 export type IdeasKeys = Keys<typeof ideasKeys>;
@@ -81,8 +84,14 @@ export interface IIdeaData {
     comments_count: number;
     internal_comments_count: number;
     official_feedbacks_count: number;
-    baskets_count?: number | null;
-    votes_count?: number | null;
+    /** Defined for all ideas regardless of participation method.
+     * For participation_method voting, this is used for all voting_methods,
+     * even single_voting.
+     */
+    baskets_count: number;
+    /** For voting_method budgeting we use the budget of the idea
+     * times the number of picks/baskets */
+    votes_count: number;
     location_point_geojson: GeoJSON.Point | null;
     location_description: string | null;
     budget: number | null;
@@ -155,8 +164,8 @@ export interface IIdeaAdd {
   // Required
   project_id: string;
   publication_status: IdeaPublicationStatus;
-  title_multiloc: Multiloc;
   // Optional
+  title_multiloc?: Multiloc;
   author_id?: string | null;
   assignee_id?: string | null;
   idea_status_id?: string | null;

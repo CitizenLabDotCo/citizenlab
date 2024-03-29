@@ -1,5 +1,6 @@
-import styled from 'styled-components';
 import { colors, fontSizes } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
 import Link from 'utils/cl-router/Link';
 
 const ProjectsListItem = styled(Link)`

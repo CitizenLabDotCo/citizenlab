@@ -1,48 +1,40 @@
-import React, { useCallback } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import React, { useCallback, useMemo } from 'react';
 
-// hooks
-import useLocale from 'hooks/useLocale';
 import {
   Spinner,
   useBreakpoint,
   media,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import useProjectById from 'api/projects/useProjectById';
-import useIdeaCustomFieldsSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
-import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
-
-// router
 import { useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
 
-// tracks
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../tracks';
+import useIdeaCustomFieldsSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
+import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
+import { IQueryParameters } from 'api/ideas/types';
+import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
+import { IdeaDefaultSortMethod } from 'api/phases/types';
+import usePhase from 'api/phases/usePhase';
+import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
 
-// components
-import TopicFilterDropdown from '../shared/Filters/TopicFilterDropdown';
-import SelectSort, { Sort } from '../shared/Filters/SortFilterDropdown';
+import useLocale from 'hooks/useLocale';
+
+import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
-import ViewButtons from 'components/PostCardsComponents/ViewButtons';
-import IdeasView from '../shared/IdeasView';
 
-// i18n
-import messages from '../messages';
+import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
-
-// style
-import styled from 'styled-components';
-// constants
-
-// typings
-import { isFieldEnabled } from 'utils/projectUtils';
-import { IQueryParameters } from 'api/ideas/types';
-import usePhase from 'api/phases/usePhase';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { IdeaDefaultSortMethod } from 'api/phases/types';
-import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
+import { isNilOrError } from 'utils/helperUtils';
+import { isFieldEnabled } from 'utils/projectUtils';
+
+import messages from '../messages';
+import SelectSort, { Sort } from '../shared/Filters/SortFilterDropdown';
+import TopicFilterDropdown from '../shared/Filters/TopicFilterDropdown';
+import IdeasView from '../shared/IdeasView';
+import tracks from '../tracks';
 
 const Container = styled.div`
   width: 100%;
@@ -190,8 +182,15 @@ const IdeasWithoutFiltersSidebar = ({
 
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } =
     useInfiniteIdeas(ideaQueryParameters);
-  const list = data?.pages.map((page) => page.data).flat();
+  const list = useMemo(() => {
+    return data?.pages.map((page) => page.data).flat();
+  }, [data?.pages]);
   const { data: phase } = usePhase(phaseId);
+  const { data: ideaMarkers } = useIdeaMarkers({
+    projectIds: projectId ? [projectId] : null,
+    phaseId,
+    ...ideaQueryParameters,
+  });
 
   const handleSearchOnChange = useCallback(
     (search: string) => {
@@ -324,6 +323,7 @@ const IdeasWithoutFiltersSidebar = ({
           view={selectedView}
           projectId={projectId}
           phaseId={phaseId}
+          ideaMarkers={ideaMarkers}
         />
       </Container>
     );

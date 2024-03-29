@@ -1,15 +1,5 @@
 import React, { PureComponent, ReactElement } from 'react';
-import { createPortal } from 'react-dom';
-import { adopt } from 'react-adopt';
-import { Subscription, fromEvent } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import eventEmitter from 'utils/eventEmitter';
-import { FocusOn } from 'react-focus-on';
 
-// i18n
-import messages from './messages';
-
-// components
 import {
   Box,
   media,
@@ -19,23 +9,25 @@ import {
   viewportWidths,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import CloseIconButton from 'components/UI/CloseIconButton';
-import clickOutside from 'utils/containers/clickOutside';
-
-// resources
+import { adopt } from 'react-adopt';
+import { createPortal } from 'react-dom';
+import { FocusOn } from 'react-focus-on';
+import CSSTransition from 'react-transition-group/CSSTransition';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
-
-// animations
-import CSSTransition from 'react-transition-group/CSSTransition';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// style
+import { Subscription, fromEvent } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import styled from 'styled-components';
+
+import CloseIconButton from 'components/UI/CloseIconButton';
+
+import { trackEventByName } from 'utils/analytics';
+import clickOutside from 'utils/containers/clickOutside';
+import eventEmitter from 'utils/eventEmitter';
+
+import messages from './messages';
+import tracks from './tracks';
 
 const desktopOpacityTimeout = 500;
 const mobileOpacityTimeout = 250;

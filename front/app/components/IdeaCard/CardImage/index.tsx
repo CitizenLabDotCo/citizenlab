@@ -1,15 +1,13 @@
 import React from 'react';
 
-// components
-import Image from 'components/UI/Image';
-import ImagePlaceholder from './ImagePlaceholder';
-
-// styling
-import styled from 'styled-components';
 import { media } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
-// typings
 import { IPhaseData } from 'api/phases/types';
+
+import Image from 'components/UI/Image';
+
+import ImagePlaceholder from './ImagePlaceholder';
 
 const IdeaCardImageWrapper = styled.div<{ $cardInnerHeight: string }>`
   flex: 0 0 ${(props) => props.$cardInnerHeight};

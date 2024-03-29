@@ -1,30 +1,28 @@
 import React from 'react';
 
-// libraries
 import { Helmet } from 'react-helmet';
 
-// resources
-import useHomepageSettings from 'api/home_page/useHomepageSettings';
-
-// i18n
-import messages from './messages';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { imageSizes } from 'utils/fileUtils';
-import { API_PATH } from 'containers/App/constants';
-import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
-import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
-import useLocalize from 'hooks/useLocalize';
-import { useIntl } from 'utils/cl-intl';
-import useLocale from 'hooks/useLocale';
-import useAuthUser from 'api/me/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
+import useAuthUser from 'api/me/useAuthUser';
+
+import useLocale from 'hooks/useLocale';
+import useLocalize from 'hooks/useLocalize';
+
+import { API_PATH } from 'containers/App/constants';
+
+import { useIntl } from 'utils/cl-intl';
+import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
+import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import { imageSizes } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from './messages';
 
 const Meta = () => {
   const locale = useLocale();
   const { data: tenant } = useAppConfiguration();
-  const { data: homepageSettings } = useHomepageSettings();
+  const { data: homepageLayout } = useHomepageLayout();
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -32,14 +30,16 @@ const Meta = () => {
   if (
     !isNilOrError(locale) &&
     !isNilOrError(tenant) &&
-    !isNilOrError(homepageSettings)
+    !isNilOrError(homepageLayout)
   ) {
     const tenantLocales = tenant.data.attributes.settings.core.locales;
-    const headerBg =
-      homepageSettings.data.attributes.header_bg &&
-      homepageSettings.data.attributes.header_bg.large
-        ? homepageSettings.data.attributes.header_bg.large
-        : '';
+
+    const headerBg = homepageLayout.data.attributes.craftjs_json
+      ? Object.values(homepageLayout.data.attributes.craftjs_json).find(
+          (node) => node.displayName === 'HomepageBanner'
+        )?.props.image?.imageUrl
+      : '';
+
     const organizationNameMultiLoc =
       tenant.data.attributes.settings.core.organization_name;
     const organizationName = localize(organizationNameMultiLoc);

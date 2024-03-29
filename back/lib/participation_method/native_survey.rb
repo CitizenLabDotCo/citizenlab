@@ -25,28 +25,51 @@ module ParticipationMethod
       'page'
     end
 
+    def default_fields(custom_form)
+      return [] if custom_form.persisted?
+
+      multiloc_service = MultilocService.new
+      [
+        CustomField.new(
+          id: SecureRandom.uuid,
+          key: 'page1',
+          resource: custom_form,
+          input_type: 'page'
+        ),
+        CustomField.new(
+          id: SecureRandom.uuid,
+          key: CustomFieldService.new.generate_key(
+            multiloc_service.i18n_to_multiloc('form_builder.default_select_field.title').values.first,
+            false
+          ),
+          resource: custom_form,
+          input_type: 'select',
+          title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.default_select_field.title'),
+          options: [
+            CustomFieldOption.new(
+              id: SecureRandom.uuid,
+              key: 'option1',
+              title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.default_select_field.option1')
+            ),
+            CustomFieldOption.new(
+              id: SecureRandom.uuid,
+              key: 'option2',
+              title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.default_select_field.option2')
+            )
+          ]
+        )
+      ]
+    end
+
+    # NOTE: This is only ever used by the analyses controller - otherwise the front-end always persists the form
     def create_default_form!
       form = CustomForm.create(participation_context: phase)
-      CustomField.create(
-        resource: form,
-        input_type: 'page',
-        key: 'page_1'
-      )
-      field = CustomField.create(
-        resource: form,
-        input_type: 'select',
-        title_multiloc: MultilocService.new.i18n_to_multiloc('form_builder.default_select_field.title')
-      )
-      CustomFieldOption.create(
-        custom_field: field,
-        key: 'option1',
-        title_multiloc: MultilocService.new.i18n_to_multiloc('form_builder.default_select_field.option1')
-      )
-      CustomFieldOption.create(
-        custom_field: field,
-        key: 'option2',
-        title_multiloc: MultilocService.new.i18n_to_multiloc('form_builder.default_select_field.option2')
-      )
+
+      default_fields(form).reverse_each do |field|
+        field.save!
+        field.move_to_top
+      end
+
       phase.reload
 
       form
@@ -60,8 +83,8 @@ module ParticipationMethod
       true
     end
 
-    def never_update?
-      true
+    def update_if_published?
+      false
     end
 
     def creation_phase?

@@ -58,6 +58,8 @@ en:
       section3:
         title: Details
         description:
+      other:
+        title: Since you picked 'other', what are you thinking of?
   custom_forms:
     categories:
       main_content:

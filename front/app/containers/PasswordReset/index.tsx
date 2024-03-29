@@ -1,22 +1,20 @@
 import React, { FormEvent } from 'react';
-import { adopt } from 'react-adopt';
-import { isString } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 
-// router
-import clHistory from 'utils/cl-router/history';
-import Link from 'utils/cl-router/Link';
-import { parse } from 'qs';
-
-// components
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
-import PasswordInput, {
-  hasPasswordMinimumLength,
-} from 'components/UI/PasswordInput';
+import { isString } from 'lodash-es';
+import { parse } from 'qs';
+import { adopt } from 'react-adopt';
 import { Helmet } from 'react-helmet';
-import { FormLabel } from 'components/UI/FormComponents';
-import Error from 'components/UI/Error';
+import { WrappedComponentProps } from 'react-intl';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
+import { CLError } from 'typings';
+
+import resetPassword from 'api/authentication/reset_password/resetPassword';
+
 import { PasswordResetSuccess } from 'containers/PasswordReset/PasswordResetSuccess';
+
 import {
   StyledContentContainer,
   Title,
@@ -25,24 +23,18 @@ import {
   LabelContainer,
   StyledPasswordIconTooltip,
 } from 'components/smallForm';
+import Error from 'components/UI/Error';
+import { FormLabel } from 'components/UI/FormComponents';
+import PasswordInput, {
+  hasPasswordMinimumLength,
+} from 'components/UI/PasswordInput';
 
-// services
-import resetPassword from 'api/authentication/reset_password/resetPassword';
-
-// i18n
-import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
 
-// style
 import messages from './messages';
-
-// resources
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-
-// typings
-import { CLError } from 'typings';
 
 interface DataProps {
   tenant: GetAppConfigurationChildProps;

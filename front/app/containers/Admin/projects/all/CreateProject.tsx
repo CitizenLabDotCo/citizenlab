@@ -1,34 +1,28 @@
 import React, { memo, useState, useCallback, useEffect } from 'react';
-import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
-import { removeFocusAfterMouseClick } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
-import { insertConfiguration } from 'utils/moduleUtils';
-import { InsertConfigurationOptions } from 'typings';
-// components
-import Outlet from 'components/Outlet';
+
 import { Icon, colors } from '@citizenlab/cl2-component-library';
+import { transparentize } from 'polished';
+import { WrappedComponentProps } from 'react-intl';
+import CSSTransition from 'react-transition-group/CSSTransition';
+import styled from 'styled-components';
+import { InsertConfigurationOptions } from 'typings';
+
 import AdminProjectsProjectGeneral from 'containers/Admin/projects/project/general';
-import { HeaderTitle } from './StyledComponents';
+import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
+
+import Outlet from 'components/Outlet';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
 
-// utils
-import eventEmitter from 'utils/eventEmitter';
-
-// analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import clHistory from 'utils/cl-router/history';
+import eventEmitter from 'utils/eventEmitter';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { insertConfiguration } from 'utils/moduleUtils';
+
 import messages from './messages';
-
-// style
-import styled from 'styled-components';
-import { transparentize } from 'polished';
-
-// animations
-import CSSTransition from 'react-transition-group/CSSTransition';
+import { HeaderTitle } from './StyledComponents';
+import tracks from './tracks';
 
 const duartion = 350;
 const easing = 'cubic-bezier(0.19, 1, 0.22, 1)';

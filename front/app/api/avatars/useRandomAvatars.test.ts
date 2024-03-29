@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useRandomAvatars from './useRandomAvatars';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import endpoints, { avatarsPath, avatarsData } from './__mocks__/_mockServer';
+import useRandomAvatars from './useRandomAvatars';
 
 const server = setupServer(endpoints['GET /avatars']);
 

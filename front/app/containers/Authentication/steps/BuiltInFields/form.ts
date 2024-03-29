@@ -1,13 +1,11 @@
-// i18n
-import sharedMessages from '../messages';
-import passwordInputMessages from 'components/UI/PasswordInput/messages';
-
-// form
+import { FormatMessage } from 'typings';
 import { string, object } from 'yup';
 
-// typings
-import { FormatMessage } from 'typings';
 import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
+
+import passwordInputMessages from 'components/UI/PasswordInput/messages';
+
+import sharedMessages from '../messages';
 
 export const DEFAULT_VALUES = {
   first_name: undefined,

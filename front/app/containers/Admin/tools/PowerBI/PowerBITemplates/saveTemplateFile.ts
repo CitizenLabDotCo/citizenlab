@@ -1,10 +1,9 @@
-// utils
-import { requestBlob } from 'utils/requestBlob';
 import { saveAs } from 'file-saver';
-import { reportError } from 'utils/loggingUtils';
 
-// typings
 import { API_PATH } from 'containers/App/constants';
+
+import { reportError } from 'utils/loggingUtils';
+import { requestBlob } from 'utils/requestBlob';
 
 interface Params {
   fileName: string;

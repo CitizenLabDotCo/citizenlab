@@ -2,14 +2,13 @@ import React, { memo } from 'react';
 
 import { IOfficialFeedbackOnInitiativeYouFollowNotificationData } from 'api/notifications/types';
 
-// i18n
-import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// components
-import NotificationWrapper from '../NotificationWrapper';
-import Link from 'utils/cl-router/Link';
 import T from 'components/T';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+
+import messages from '../../messages';
+import NotificationWrapper from '../NotificationWrapper';
 
 interface Props {
   notification: IOfficialFeedbackOnInitiativeYouFollowNotificationData;

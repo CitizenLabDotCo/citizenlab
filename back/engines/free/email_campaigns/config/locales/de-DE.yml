@@ -50,6 +50,7 @@ de:
       "assignee_digest": Wöchentliche Übersicht über die zugewiesenen Beiträge
       "user_digest": Wöchentliche Übersicht
       "voting_basket_submitted": Bestätigung der Abstimmung
+      "native_survey_not_submitted": Umfrage nicht eingereicht
       "voting_basket_not_submitted": Nicht abgegebene Stimmen
       "voting_last_chance": Letzte Chance zur Abstimmung
       "voting_phase_started": Neue Projektphase mit Abstimmung
@@ -505,6 +506,13 @@ de:
       event_description: 'Vielen Dank für Ihre Teilnahme. Ihre Stimmen wurden aufgezeichnet. Besuchen Sie die Plattform von %{organizationName}, um Ihre Stimmen zu sehen und zu verwalten.'
       cta_see_votes_submitted: 'Siehe abgegebene Stimmen'
       cta_message: 'Klicken Sie auf die Schaltfläche unten, um teilzunehmen'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Fast geschafft! Reichen Sie Ihre Antworten ein'
+      preheader: 'Sie haben Ihre Umfrageantwort nicht auf der Teilnahmeplattform von %{organizationName}ausgefüllt.'
+      title_native_survey_not_submitted: 'Fast geschafft! Reichen Sie Ihre Antworten ein'
+      body_native_survey_not_submitted: 'Sie haben begonnen, Ihre Antworten zu %{phaseTitle} zu teilen, haben sie aber nicht eingereicht. Die Einsendungen wird am %{phaseEndDate} geschlossen. Klicken Sie auf den Button unten, um dort fortzufahren, wo Sie aufgehört haben.'
+      body_native_survey_not_submitted_no_date: 'Sie haben begonnen, Ihre Antworten zu %{phaseTitle} zu teilen, haben sie aber nicht abgeschickt. Klicken Sie auf den BUtton unten, um dort fortzufahren, wo Sie aufgehört haben.'
+      cta_complete_your_survey_response: 'Umfrage fortsetzen'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Sie haben Ihre Stimmen nicht abgegeben'
       preheader: 'Sie haben Ihre Stimme nicht auf der Beteiligungsplattform von %{organizationName} abgegeben'
@@ -580,6 +588,7 @@ de:
         user_who_voted: 'Nutzer*innen, die abgestimmt haben'
         user_with_unsubmitted_votes: 'Nutzer*innen, die Ihre Stimme(n) nicht abgeschickt haben'
         users_who_engaged_but_not_voted: 'Nutzer*innen, die sich mit dem Projekt beschäftigt, aber nicht abgestimmt haben'
+        user_with_unsubmitted_survey: 'Nutzer*innen, die ihre Umfrage begonnen, aber noch nicht abgeschickt haben'
       content_type:
         comments: 'Kommentare'
         content_moderation: 'Inhaltsmoderation'
@@ -592,6 +601,7 @@ de:
         proposals: 'Vorschläge'
         reactions: 'Reaktionen'
         voting: 'Abstimmung'
+        surveys: 'Umfragen'
       trigger:
         comment_is_deleted: 'Kommentar wird gelöscht'
         comment_is_flagged_as_spam: 'Kommentar wird als Spam markiert'
@@ -640,3 +650,4 @@ de:
         7_days_after_invite_is_sent: '7 Tage nach Versand der 1. Einladung'
         7_days_before_the_project_changes_phase: '7 Tage bevor das Projekt die Phase wechselt'
         registration_to_event: 'Anmeldung zu einer Veranstaltung'
+        survey_1_day_after_draft_saved: '1 Tag, nachdem der Nutzer / die Nutzer*in die Umfrage zuletzt als Entwurf gespeichert hat'

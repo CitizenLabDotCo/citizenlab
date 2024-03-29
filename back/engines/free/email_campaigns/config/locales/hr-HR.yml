@@ -50,6 +50,7 @@ hr:
       "assignee_digest": Tjedni pregled dodijeljenih ideja
       "user_digest": Tjedni pregled
       "voting_basket_submitted": Potvrda glasovanja
+      "native_survey_not_submitted": Anketa nije poslana
       "voting_basket_not_submitted": Glasovi nisu poslani
       "voting_last_chance": Zadnja prilika za glasanje
       "voting_phase_started": Nova faza projekta s glasovanjem
@@ -505,6 +506,13 @@ hr:
       event_description: 'Hvala na sudjelovanju. Vaši glasovi su zabilježeni. Posjetite platformu %{organizationName} da vidite i upravljate svojim glasovima.'
       cta_see_votes_submitted: 'Pogledajte poslane glasove'
       cta_message: 'Za sudjelovanje kliknite gumb ispod'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Još malo pa smo stigli! Pošaljite svoje odgovore'
+      preheader: 'Niste ispunili svoj odgovor na anketu na platformi za sudjelovanje %{organizationName}'
+      title_native_survey_not_submitted: 'Skoro tamo! Pošaljite svoje odgovore'
+      body_native_survey_not_submitted: 'Počeli ste dijeliti svoje odgovore na %{phaseTitle} , ali ih niste poslali. Prijave se zatvaraju %{phaseEndDate}. Kliknite gumb ispod kako biste nastavili gdje ste stali.'
+      body_native_survey_not_submitted_no_date: 'Počeli ste dijeliti svoje odgovore na %{phaseTitle} , ali ih niste poslali. Kliknite gumb ispod kako biste nastavili gdje ste stali.'
+      cta_complete_your_survey_response: 'Nastavite odgovarati na anketu'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Niste predali svoje glasove'
       preheader: 'Niste poslali svoje glasove na platformi za sudjelovanje od %{organizationName}'
@@ -574,12 +582,13 @@ hr:
         user_who_registers: 'Korisnik koji se registrira'
         user_who_was_invited: 'Korisnik koji je pozvan'
         users_who_engaged_with_the_project: 'Korisnici koji su sudjelovali u projektu'
-        users_who_follow_the_proposal: 'Korisnik koji prati prijedlog'
-        users_who_follow_the_input: 'Korisnik koji prati unos'
+        users_who_follow_the_proposal: 'Korisnici koji prate prijedlog'
+        users_who_follow_the_input: 'Korisnici koji prate unos'
         users_who_follow_the_project: 'Korisnici koji prate projekt'
         user_who_voted: 'Korisnik koji je glasao'
         user_with_unsubmitted_votes: 'Korisnik koji nije predao svoje glasove'
         users_who_engaged_but_not_voted: 'Korisnici koji su sudjelovali u projektu, ali nisu glasali'
+        user_with_unsubmitted_survey: 'Korisnik koji je započeo, ali nije poslao svoju anketu'
       content_type:
         comments: 'Komentari'
         content_moderation: 'Moderiranje sadržaja'
@@ -592,6 +601,7 @@ hr:
         proposals: 'Prijedlozi'
         reactions: 'Reakcije'
         voting: 'Glasovanje'
+        surveys: 'Ankete'
       trigger:
         comment_is_deleted: 'Komentar je izbrisan'
         comment_is_flagged_as_spam: 'Komentar je označen kao neželjena pošta'
@@ -640,3 +650,4 @@ hr:
         7_days_after_invite_is_sent: '7 dana nakon slanja poziva'
         7_days_before_the_project_changes_phase: '7 dana prije promjene faze projekta'
         registration_to_event: 'Prijava na događaj'
+        survey_1_day_after_draft_saved: '1 dan nakon što je korisnik posljednji put spremio anketu u skicu'

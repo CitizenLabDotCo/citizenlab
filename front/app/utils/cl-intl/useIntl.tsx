@@ -1,16 +1,19 @@
 import { useCallback, useState, useEffect } from 'react';
+
 import {
   // eslint-disable-next-line no-restricted-imports
   useIntl as useOriginalUseIntl,
   MessageDescriptor,
   IntlShape,
 } from 'react-intl';
-import { isNilOrError } from 'utils/helperUtils';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { localeStream } from 'utils/locale';
-import { getLocalizedWithFallback } from 'utils/i18n';
 import { Locale } from 'typings';
+
 import { IAppConfiguration } from 'api/app_configuration/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import { isNilOrError } from 'utils/helperUtils';
+import { getLocalizedWithFallback } from 'utils/i18n';
+import { localeStream } from 'utils/localeStream';
 
 export type FormatMessageValues =
   | { [key: string]: string | number | boolean | Date }

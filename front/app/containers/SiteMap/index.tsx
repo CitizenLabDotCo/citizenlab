@@ -1,39 +1,33 @@
 import React, { KeyboardEvent, MouseEvent, RefObject, useRef } from 'react';
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
-// hooks
-import useLocalize from 'hooks/useLocalize';
-import useNavbarItems from 'api/navbar/useNavbarItems';
-import useCustomPages from 'api/custom_pages/useCustomPages';
-
-// intl
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// components
 import {
   Spinner,
   colors,
   fontSizes,
   media,
 } from '@citizenlab/cl2-component-library';
-import ContentContainer from 'components/ContentContainer';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-import Link from 'utils/cl-router/Link';
-import ProjectsAndFoldersSection from './ProjectsAndFoldersSection';
-import SiteMapMeta from './SiteMapMeta';
-
-// styles
 import styled from 'styled-components';
 
-// resources
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
-// services
 import { TCustomPageCode } from 'api/custom_pages/types';
+import useCustomPages from 'api/custom_pages/useCustomPages';
 import useAuthUser from 'api/me/useAuthUser';
-import useProjects from 'api/projects/useProjects';
+import useNavbarItems from 'api/navbar/useNavbarItems';
 import { DEFAULT_PAGE_SLUGS } from 'api/navbar/util';
+import useProjects from 'api/projects/useProjects';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocalize from 'hooks/useLocalize';
+
+import ContentContainer from 'components/ContentContainer';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
+
+import messages from './messages';
+import ProjectsAndFoldersSection from './ProjectsAndFoldersSection';
+import SiteMapMeta from './SiteMapMeta';
 
 const Container = styled.div`
   min-height: calc(

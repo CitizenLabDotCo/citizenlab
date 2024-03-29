@@ -1,8 +1,11 @@
 import React, { createElement } from 'react';
+
 import { Multiloc } from 'typings';
-import { getLocalizedWithFallback } from 'utils/i18n';
+
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
+
+import { getLocalizedWithFallback } from 'utils/i18n';
 
 type children = (localizedText: string) => JSX.Element | null;
 

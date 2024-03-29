@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useAddEventFile from './useAddEventFile';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { eventFileData } from './__mocks__/useAddEvent';
+import useAddEventFile from './useAddEventFile';
 
 const apiPath = '*/events/:eventId/files';
 const server = setupServer(

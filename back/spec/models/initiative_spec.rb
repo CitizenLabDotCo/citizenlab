@@ -312,4 +312,52 @@ RSpec.describe Initiative do
       expect(initiative.reload.cosponsors).to be_present
     end
   end
+
+  describe 'activity after' do
+    let_it_be(:initiative) { create(:initiative) }
+    let_it_be(:proposed) { create(:initiative_status_proposed) }
+    let_it_be(:threshold_reached) { create(:initiative_status_threshold_reached) }
+
+    let(:recent_initiatives) { described_class.activity_after(7.days.ago) }
+
+    it 'returns initiatives that have been proposed since after time specified' do
+      create(
+        :initiative_status_change,
+        initiative: initiative,
+        initiative_status: proposed,
+        created_at: 1.day.ago
+      )
+      expect(recent_initiatives).to include(initiative)
+    end
+
+    it 'returns initiatives that where the threshold has been reached after the time specified' do
+      create(
+        :initiative_status_change,
+        initiative: initiative,
+        initiative_status: threshold_reached,
+        created_at: 1.day.ago
+      )
+      expect(recent_initiatives).to include(initiative)
+    end
+
+    it 'does not return initiatives that have been proposed before the time specified' do
+      create(
+        :initiative_status_change,
+        initiative: initiative,
+        initiative_status: proposed,
+        created_at: 8.days.ago
+      )
+      expect(recent_initiatives).not_to include(initiative)
+    end
+
+    it 'does not return initiatives that where the threshold has been reached before the time specified' do
+      create(
+        :initiative_status_change,
+        initiative: initiative,
+        initiative_status: threshold_reached,
+        created_at: 8.days.ago
+      )
+      expect(recent_initiatives).not_to include(initiative)
+    end
+  end
 end

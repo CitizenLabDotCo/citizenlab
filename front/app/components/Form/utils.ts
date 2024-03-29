@@ -1,9 +1,11 @@
 import { Layout, JsonSchema7 } from '@jsonforms/core';
 import Ajv from 'ajv';
 import { isEmpty, forOwn } from 'lodash-es';
+
+import { FormData } from 'components/Form/typings';
+
 import { isVisible } from './Components/Controls/visibilityUtils';
 import { PageCategorization, PageType } from './Components/Layouts/utils';
-import { FormData } from 'components/Form/typings';
 
 const iterateSchema = (
   uischema,
@@ -25,7 +27,7 @@ const iterateSchema = (
 export const getFormSchemaAndData = (
   schema: JsonSchema7,
   uiSchema: Layout | PageCategorization,
-  data: Record<string, any>,
+  data: FormData,
   ajv: Ajv
 ) => {
   const dataWithoutHiddenElements = {};
@@ -46,7 +48,7 @@ export const getFormSchemaAndData = (
         ? isPageVisible && isElementVisible
         : isElementVisible;
 
-    if (showInData) {
+    if (showInData && data) {
       dataWithoutHiddenElements[key] = data[key];
       visibleElements.push(key);
     }
@@ -90,3 +92,15 @@ export const isValidData = (
 
   return ajv.validate(schemaToUse, isSurvey ? dataWithoutHiddenFields : data);
 };
+
+// The scope of the element that is used as the other field will have _other appended to it. The corresponding field key can also be found by using this function.
+export function getOtherControlKey(scope: string = ''): string | undefined {
+  const regex = /^#\/properties\/(\w+)_other$/;
+  const match = scope.match(regex);
+
+  if (match) {
+    return match[1];
+  }
+
+  return undefined;
+}

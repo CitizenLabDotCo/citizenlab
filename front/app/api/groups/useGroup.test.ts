@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useGroup from './useGroup';
-import { groupsData } from './__mocks__/useGroups';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { groupsData } from './__mocks__/useGroups';
+import useGroup from './useGroup';
 
 const apiPath = '*groups/:id';
 

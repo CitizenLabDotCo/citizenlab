@@ -1,6 +1,8 @@
-import { Keys } from 'utils/cl-react-query/types';
-import questionsKeys from './keys';
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import questionsKeys from './keys';
 
 export type QuestionsKeys = Keys<typeof questionsKeys>;
 
@@ -21,7 +23,12 @@ export interface IQuestionData {
     accuracy: number | null;
     created_at: string;
     updated_at: string;
-    bookmarked: boolean;
+    generated_at: string;
+    missing_inputs_count: number;
+    custom_field_ids: {
+      main_custom_field_id: string | null;
+      additional_custom_field_ids?: string[];
+    };
   };
   relationships: {
     background_task: {

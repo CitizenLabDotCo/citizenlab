@@ -1,30 +1,24 @@
 import React from 'react';
 
-// components
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
-import { Box } from '@citizenlab/cl2-component-library';
-
-// craft
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
-import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
-
-// i18n
-import messages from 'components/admin/ContentBuilder/Widgets/TextMultiloc/messages';
-
-// hooks
-import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
+
 import useLocalize from 'hooks/useLocalize';
 
-interface Props {
+import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
+
+import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
+import messages from 'components/admin/ContentBuilder/Widgets/TextMultiloc/messages';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+
+export interface Props {
   text?: Multiloc;
 }
 
 const TextMultiloc = ({ text }: Props) => {
   const craftComponentDefaultPadding = useReportDefaultPadding();
-  const theme = useTheme();
   const localize = useLocalize();
 
   const value = localize(text);
@@ -37,7 +31,7 @@ const TextMultiloc = ({ text }: Props) => {
       margin="0 auto"
       px={craftComponentDefaultPadding}
     >
-      <QuillEditedContent textColor={theme.colors.tenantText}>
+      <QuillEditedContent textColor={colors.textPrimary}>
         <div dangerouslySetInnerHTML={{ __html: value }} />
       </QuillEditedContent>
     </PageBreakBox>
@@ -75,9 +69,8 @@ TextMultiloc.craft = {
   related: {
     settings: TextMultilocSettings,
   },
-  custom: {
-    title: messages.textMultiloc,
-  },
 };
+
+export const textMultilocTitle = messages.textMultiloc;
 
 export default TextMultiloc;

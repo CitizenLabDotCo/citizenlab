@@ -1,8 +1,10 @@
+import { Locale } from 'typings';
+
 import {
   IIdeaJsonFormSchemas,
   CustomFieldCodes,
 } from 'api/idea_json_form_schema/types';
-import { Locale } from 'typings';
+
 import { isNilOrError } from './helperUtils';
 
 export function isFieldEnabled(

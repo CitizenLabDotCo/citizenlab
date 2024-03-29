@@ -1,6 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
-import { darken } from 'polished';
+
 import {
   Icon,
   IconNames,
@@ -8,17 +7,18 @@ import {
   colors,
   media,
 } from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
+import { RouteType } from 'routes';
+import styled from 'styled-components';
 
-// utils
-
-import { timeAgo } from 'utils/dateUtils';
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../../tracks';
-
-// hooks
 import useLocale from 'hooks/useLocale';
-import { isNilOrError } from 'utils/helperUtils';
+
+import { trackEventByName } from 'utils/analytics';
 import Link from 'utils/cl-router/Link';
+import { timeAgo } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
+
+import tracks from '../../tracks';
 
 const Container = styled(Link)`
   display: flex;
@@ -99,7 +99,7 @@ type Props = {
   icon?: IconNames;
   timing?: string;
   children: React.ReactNode;
-  linkTo: string;
+  linkTo: RouteType;
   isRead: boolean;
 };
 

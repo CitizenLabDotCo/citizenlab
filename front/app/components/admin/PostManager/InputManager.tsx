@@ -1,11 +1,31 @@
 import React, { ChangeEvent, Suspense, lazy, useEffect, useState } from 'react';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+
 import { DndProvider } from 'react-dnd';
-import { isNilOrError } from 'utils/helperUtils';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { useSearchParams } from 'react-router-dom';
+
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
-import useTopics from 'api/topics/useTopics';
+import { IQueryParameters, Sort } from 'api/ideas/types';
+import useIdeas from 'api/ideas/useIdeas';
+import { TPhases } from 'api/phases/types';
 import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
 import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
+import { IProjectData } from 'api/projects/types';
+import useTopics from 'api/topics/useTopics';
+
+import Outlet from 'components/Outlet';
+
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { isNilOrError } from 'utils/helperUtils';
+import { getPageNumberFromUrl, getSortDirection } from 'utils/paginationUtils';
+
+import ActionBar from './components/ActionBar';
+import FilterSidebar from './components/FilterSidebar';
+import IdeasCount from './components/IdeasCount';
+import InfoSidebar from './components/InfoSidebar';
+import PostTable from './components/PostTable';
+import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
+
 import {
   LeftColumn,
   MiddleColumn,
@@ -17,23 +37,10 @@ import {
   ThreeColumns,
   TopActionBar,
 } from '.';
-import ActionBar from './components/ActionBar';
-import FilterSidebar from './components/FilterSidebar';
-import PostTable from './components/PostTable';
-import InfoSidebar from './components/InfoSidebar';
-import IdeasCount from './components/IdeasCount';
-import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
+
 const LazyPostPreview = lazy(
   () => import('components/admin/PostManager/components/PostPreview')
 );
-import Outlet from 'components/Outlet';
-import { useSearchParams } from 'react-router-dom';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-import { IProjectData } from 'api/projects/types';
-import { TPhases } from 'api/phases/types';
-import useIdeas from 'api/ideas/useIdeas';
-import { IQueryParameters, Sort } from 'api/ideas/types';
-import { getPageNumberFromUrl, getSortDirection } from 'utils/paginationUtils';
 
 interface Props {
   // When the PostManager is used in /admin/projects, we pass down the current project id as a prop
@@ -218,7 +225,15 @@ const InputManager = ({
   };
 
   const onResetParams = () => {
-    setQueryParameters({});
+    setQueryParameters(
+      // Don't reset the project filter if we're in the project input manager
+      // or all ideas (including from other projects) will be visible.
+      type === 'ProjectIdeas' && typeof projectId === 'string'
+        ? {
+            projects: [projectId],
+          }
+        : {}
+    );
   };
 
   const onChangePage = (pageNumber: number) => {

@@ -50,6 +50,7 @@
       "assignee_digest": Ukentlig oversikt over tildelte ideer
       "user_digest": Ukentlig oversikt
       "voting_basket_submitted": Bekreftelse på stemmegivning
+      "native_survey_not_submitted": Undersøkelse ikke sendt inn
       "voting_basket_not_submitted": Stemmer ikke levert
       "voting_last_chance": Siste sjanse til å stemme
       "voting_phase_started": Ny prosjektfase med avstemming
@@ -505,6 +506,13 @@
       event_description: 'Takk for at du deltar. Stemmene dine er registrert. Besøk plattformen til %{organizationName} for å se og administrere stemmene dine.'
       cta_see_votes_submitted: 'Se innsendte stemmer'
       cta_message: 'Klikk på knappen nedenfor for å delta'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Nesten der! Send inn svarene dine'
+      preheader: 'Du fullførte ikke undersøkelsessvaret på deltakelsesplattformen til %{organizationName}'
+      title_native_survey_not_submitted: 'Nesten der! Send inn svarene dine'
+      body_native_survey_not_submitted: 'Du begynte å dele svarene dine på %{phaseTitle} , men sendte dem ikke inn. Innleveringer avsluttes %{phaseEndDate}. Klikk på knappen nedenfor for å fortsette der du slapp.'
+      body_native_survey_not_submitted_no_date: 'Du begynte å dele svarene dine på %{phaseTitle} , men sendte dem ikke inn. Klikk på knappen nedenfor for å fortsette der du slapp.'
+      cta_complete_your_survey_response: 'Fortsett svaret på undersøkelsen'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Du sendte ikke inn stemmene dine'
       preheader: 'Du sendte ikke inn stemmene dine på deltakelsesplattformen til %{organizationName}'
@@ -574,12 +582,13 @@
         user_who_registers: 'Bruker som registrerer seg'
         user_who_was_invited: 'Bruker som ble invitert'
         users_who_engaged_with_the_project: 'Brukere som engasjerte seg i prosjektet'
-        users_who_follow_the_proposal: 'Bruker som følger forslaget'
-        users_who_follow_the_input: 'Bruker som følger innspillet'
+        users_who_follow_the_proposal: 'Brukere som følger forslaget'
+        users_who_follow_the_input: 'Brukere som følger innspillet'
         users_who_follow_the_project: 'Brukere som følger prosjektet'
         user_who_voted: 'Bruker som har stemt'
         user_with_unsubmitted_votes: 'Bruker som ikke har sendt inn sine stemmer'
         users_who_engaged_but_not_voted: 'Brukere som har engasjert seg i prosjektet, men ikke har stemt'
+        user_with_unsubmitted_survey: 'Bruker som har startet, men ikke levert undersøkelsen'
       content_type:
         comments: 'Kommentarer'
         content_moderation: 'Moderering av innhold'
@@ -592,6 +601,7 @@
         proposals: 'Forslag'
         reactions: 'Reaksjoner'
         voting: 'Stemmegivning'
+        surveys: 'Undersøkelser'
       trigger:
         comment_is_deleted: 'Kommentaren er slettet'
         comment_is_flagged_as_spam: 'Kommentar er merket som spam'
@@ -640,3 +650,4 @@
         7_days_after_invite_is_sent: '7 dager etter at invitasjonen er sendt'
         7_days_before_the_project_changes_phase: '7 dager før prosjektet endrer fase'
         registration_to_event: 'Påmelding til et arrangement'
+        survey_1_day_after_draft_saved: '1 dag etter at brukeren sist lagret undersøkelsen i utkast'

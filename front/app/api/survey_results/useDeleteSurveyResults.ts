@@ -1,7 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import fetcher from 'utils/cl-react-query/fetcher';
-import surveyResultsKeys from './keys';
+
 import submissionsCountKeys from 'api/submission_count/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+
+import surveyResultsKeys from './keys';
 
 const deleteSurveyResults = ({ phaseId }: { phaseId?: string }) => {
   const deleteApiEndpoint = `phases/${phaseId}/inputs`;

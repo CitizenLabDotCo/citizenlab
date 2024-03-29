@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useUpdateInitiative from './useUpdateInitiative';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { IInitiativeData } from './types';
+import useUpdateInitiative from './useUpdateInitiative';
 
 export const data: IInitiativeData = {
   id: '1',

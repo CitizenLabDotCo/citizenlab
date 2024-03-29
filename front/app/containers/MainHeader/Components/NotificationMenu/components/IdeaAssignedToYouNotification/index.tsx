@@ -1,22 +1,16 @@
 import React, { MouseEvent, KeyboardEvent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+
+import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
 import { IIdeaAssignedToYouNotificationData } from 'api/notifications/types';
 
-// i18n
-import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// permissions
-import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
-
-// components
-import NotificationWrapper from '../NotificationWrapper';
-import Link from 'utils/cl-router/Link';
 import T from 'components/T';
 
-// resources
-import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
-import useAuthUser from 'api/me/useAuthUser';
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from '../../messages';
+import NotificationWrapper from '../NotificationWrapper';
 
 interface Props {
   notification: IIdeaAssignedToYouNotificationData;
@@ -24,11 +18,12 @@ interface Props {
 
 const IdeaAssignedToYouNotification = ({ notification }: Props) => {
   const { data: idea } = useIdeaBySlug(notification.attributes.post_slug);
+
+  if (!idea) return null;
+
   const onClickUserName = (event: MouseEvent | KeyboardEvent) => {
     event.stopPropagation();
   };
-  const { data: authUser } = useAuthUser();
-  const projectId = idea ? idea.data.relationships.project.data.id : null;
 
   const getNotificationMessage = (): JSX.Element => {
     const sharedValues = {
@@ -64,34 +59,19 @@ const IdeaAssignedToYouNotification = ({ notification }: Props) => {
     }
   };
 
-  const getLinkTo = () => {
-    if (!isNilOrError(authUser)) {
-      if (isAdmin(authUser)) {
-        return '/admin/ideas';
-      } else if (projectId && isProjectModerator(authUser, projectId)) {
-        return `/admin/projects/${projectId}/ideas`;
-      }
-    }
+  const projectId = idea.data.relationships.project.data.id;
+  const ideaId = idea.data.id;
 
-    return null;
-  };
-
-  const linkTo = getLinkTo();
-
-  if (linkTo) {
-    return (
-      <NotificationWrapper
-        linkTo={linkTo}
-        timing={notification.attributes.created_at}
-        icon="idea"
-        isRead={!!notification.attributes.read_at}
-      >
-        {getNotificationMessage()}
-      </NotificationWrapper>
-    );
-  }
-
-  return null;
+  return (
+    <NotificationWrapper
+      linkTo={`/admin/projects/${projectId}/ideas/${ideaId}`}
+      timing={notification.attributes.created_at}
+      icon="idea"
+      isRead={!!notification.attributes.read_at}
+    >
+      {getNotificationMessage()}
+    </NotificationWrapper>
+  );
 };
 
 export default IdeaAssignedToYouNotification;

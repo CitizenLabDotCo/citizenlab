@@ -1,16 +1,20 @@
+import React, { KeyboardEvent, MouseEvent } from 'react';
+
+import useLocalize from 'hooks/useLocalize';
+
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+import SignUpButton from 'containers/HomePage/SignUpButton';
+
 import BannerButton, {
   BannerButtonStyle,
 } from 'components/LandingPages/citizen/BannerButton';
-import SignUpButton from 'containers/HomePage/SignUpButton';
-import useLocalize from 'hooks/useLocalize';
-import React, { KeyboardEvent, MouseEvent } from 'react';
+
 import { isNilOrError } from 'utils/helperUtils';
-import { IHomepageSettingsAttributes } from 'api/home_page/types';
 
 interface Props {
   buttonStyle: BannerButtonStyle;
   signUpIn: (event: MouseEvent | KeyboardEvent) => void;
-  homepageSettings: Partial<IHomepageSettingsAttributes>;
+  homepageSettings: Partial<IHomepageBannerSettings>;
 }
 
 const CTA = ({ buttonStyle, signUpIn, homepageSettings }: Props) => {

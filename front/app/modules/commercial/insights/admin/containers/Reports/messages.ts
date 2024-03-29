@@ -145,4 +145,9 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Reports.seeReportButton',
     defaultMessage: 'Summary',
   },
+  deprecatedMessage: {
+    id: 'app.containers.Admin.Insights.Reports.deprecatedMessage',
+    defaultMessage:
+      'This feature will be removed in the future. Please use the existing dashboards and the new reporting feature instead.',
+  },
 });

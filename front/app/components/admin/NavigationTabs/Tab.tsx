@@ -1,15 +1,16 @@
 import React, { MouseEvent } from 'react';
 
 import {
-  Box,
-  StatusLabel,
+  TooltipContentWrapper,
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
+import { RouteType } from 'routes';
+import styled, { css } from 'styled-components';
+
 import Link from 'utils/cl-router/Link';
 
-// style
-import styled, { css } from 'styled-components';
 import {
   tabLineHeight,
   tabPadding,
@@ -19,13 +20,13 @@ import {
 
 type ContainerProps = {
   active: boolean;
+  disable?: boolean;
 };
 
 // very similar to front/app/components/admin/TabbedResource/Tab.tsx
 const Container = styled.div`
-  ${({ active }: ContainerProps) => css`
+  ${({ active, disable }: ContainerProps) => css`
     list-style: none;
-    cursor: pointer;
     display: flex;
     align-items: center;
     margin-bottom: calc(${tabBorderSize}px * -1);
@@ -39,7 +40,10 @@ const Container = styled.div`
       margin-right: 40px;
     }
 
+    ${disable ? 'cursor: not-allowed;' : 'cursor: pointer;'}
+
     a {
+      ${disable ? 'pointer-events: none;' : ''}
       color: ${colors.textSecondary};
       font-size: ${fontSizes.base}px;
       font-weight: 400;
@@ -64,41 +68,48 @@ const Container = styled.div`
     // border-color: ${colors.primary}; TODO : set accent color in component library
 
     a {
-        color: ${colors.primary};
+      color: ${colors.primary};
     }`}
   `}
 `;
 
 type TabProps = {
+  className?: string;
+  'data-cy'?: string;
   label: string;
-  url: string;
+  url: RouteType;
   active: boolean;
-  statusLabel?: string;
+  badge?: React.ReactNode;
   handleClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
-} & React.HTMLAttributes<HTMLDivElement>;
+  disabledTooltipText?: string;
+};
 
 const Tab = ({
   label,
   url,
-  active,
-  statusLabel,
+  badge,
   handleClick,
+  disabledTooltipText,
   ...props
 }: TabProps) => (
-  <Container active={active} {...props}>
-    <Link to={url} onClick={handleClick}>
-      {label}
-      {statusLabel && (
-        <Box ml="12px" display="inline">
-          <StatusLabel
-            text={statusLabel}
-            backgroundColor={colors.background}
-            variant="outlined"
-          />
-        </Box>
-      )}
-    </Link>
-  </Container>
+  <Tippy
+    interactive={false}
+    placement="bottom"
+    theme={''}
+    disabled={!disabledTooltipText}
+    maxWidth={350}
+    content={
+      <TooltipContentWrapper tippytheme="light">
+        {disabledTooltipText}
+      </TooltipContentWrapper>
+    }
+  >
+    <Container disable={!!disabledTooltipText} {...props}>
+      <Link to={url} onClick={handleClick}>
+        {label}
+        {badge && <>{badge}</>}
+      </Link>
+    </Container>
+  </Tippy>
 );
-
 export default Tab;

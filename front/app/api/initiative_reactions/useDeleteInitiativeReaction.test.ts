@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeleteInitiativeReaction from './useDeleteInitiativeReaction';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useDeleteInitiativeReaction from './useDeleteInitiativeReaction';
 const apiPath = '*reactions/:reactionId';
 
 const server = setupServer(
@@ -20,7 +19,7 @@ describe('useDeleteInitiativeReaction', () => {
 
   it('mutates data correctly', async () => {
     const { result, waitFor } = renderHook(
-      () => useDeleteInitiativeReaction(),
+      () => useDeleteInitiativeReaction({ initiativeId: 'initiativeId' }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -28,7 +27,6 @@ describe('useDeleteInitiativeReaction', () => {
 
     act(() => {
       result.current.mutate({
-        initiativeId: 'initiativeId',
         reactionId: 'reactionId',
       });
     });
@@ -44,7 +42,7 @@ describe('useDeleteInitiativeReaction', () => {
     );
 
     const { result, waitFor } = renderHook(
-      () => useDeleteInitiativeReaction(),
+      () => useDeleteInitiativeReaction({ initiativeId: 'initiativeId' }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -52,7 +50,6 @@ describe('useDeleteInitiativeReaction', () => {
 
     act(() => {
       result.current.mutate({
-        initiativeId: 'initiativeId',
         reactionId: 'reactionId',
       });
     });

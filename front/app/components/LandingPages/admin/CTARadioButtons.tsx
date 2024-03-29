@@ -1,12 +1,21 @@
-import { Box, Input, Label, Radio } from '@citizenlab/cl2-component-library';
-import Error, { TFieldName } from 'components/UI/Error';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import React from 'react';
-import { CTASignedInType, CTASignedOutType } from 'api/home_page/types';
-import { TCustomPageCTAType } from 'api/custom_pages/types';
+
+import { Box, Input, Label, Radio } from '@citizenlab/cl2-component-library';
+import { RouteType } from 'routes';
 import { CLErrors, Multiloc } from 'typings';
 
+import { TCustomPageCTAType } from 'api/custom_pages/types';
+
+import {
+  CTASignedInType,
+  CTASignedOutType,
+} from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+
+import Error, { TFieldName } from 'components/UI/Error';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+
 import messages from './messages';
 
 type CTAType = TCustomPageCTAType | CTASignedInType | CTASignedOutType;
@@ -18,7 +27,7 @@ export interface Props {
   ctaTypes: TCustomPageCTAType[] | CTASignedInType[] | CTASignedOutType[];
   handleCTAButtonTypeOnChange: (ctaType: CTAType) => void;
   handleCTAButtonTextMultilocOnChange: (buttonTextMultiloc: Multiloc) => void;
-  handleCTAButtonUrlOnChange: (url: string) => void;
+  handleCTAButtonUrlOnChange: (url: RouteType) => void;
   apiErrors: CLErrors | null;
   buttonTextMultilocFieldName: TFieldName;
   buttonUrlFieldName: TFieldName;
