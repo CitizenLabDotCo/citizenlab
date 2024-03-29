@@ -69,4 +69,14 @@ describe('getProjectId', () => {
     const projectId = await getProjectId('/en/ideas/some-idea');
     expect(projectId).toEqual('project-id2');
   });
+
+  it.each([
+    '/en/',
+    '/en/initiatives/lorem-ipsum',
+    '/initiatives/lorem-ipsum',
+    '/en/pages/cookie-policy',
+  ])('returns null when the path is %s', async (path) => {
+    const projectId = await getProjectId(path);
+    expect(projectId).toBeNull();
+  });
 });
