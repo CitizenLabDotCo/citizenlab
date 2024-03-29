@@ -11,9 +11,9 @@ class OmniauthCallbackController < ApplicationController
     verification_method = get_verification_method(auth_provider)
 
     if auth_method && verification_method
-      auth_or_verification_callback(verify: verification_method, authver_method: auth_method)
+      auth_or_verification_callback(auth_method, verification_method)
     elsif auth_method
-      auth_callback(verify: verification_method, authver_method: auth_method)
+      auth_callback(verify: false, authver_method: auth_method)
     elsif verification_method
       verification_callback(verification_method)
     else
@@ -36,19 +36,32 @@ class OmniauthCallbackController < ApplicationController
   private
 
   # Only methods that support both verification and authentication use it.
-  def auth_or_verification_callback(verify:, authver_method:)
+  def auth_or_verification_callback(authver_method, verification_method)
     # If token is present, the user is already logged in, which means they try to verify not authenticate.
     if request.env['omniauth.params']['token'].present? && authver_method.verification_prioritized?
       # We need it only for providers that support both auth and ver except FC.
       # For FC, we never verify, only authenticate (even when user clicks "verify").
-      verification_callback(verify)
+      verification_callback(verification_method)
       # Apart from verification, we also create an identity to be able to authenticate with this provider.
+      #
       auth = request.env['omniauth.auth']
       @identity = Identity.find_or_build_with_omniauth(auth, authver_method)
-      @identity.update(user: @user) unless @identity.user
+      @identity.update!(user: @user) unless @identity.user
     else
-      auth_callback(verify: verify, authver_method: authver_method)
+      auth_callback(verify: true, authver_method: authver_method)
     end
+  end
+
+  def find_existing_user(authver_method, auth, user_attrs)
+    @identity = Identity.find_or_build_with_omniauth(auth, authver_method)
+    return @identity.user if @identity.user
+
+    @user = User.find_by_cimail(user_attrs.fetch(:email)) if user_attrs.key?(:email) # some providers (e.g, ClaveUnica) don't return email
+    return @user if @user
+
+    uid = authver_method.profile_to_uid(auth)
+    verification = Verification::VerificationService.new.verifications_by_uid(uid, authver_method.name).first
+    verification&.user
   end
 
   def auth_callback(verify:, authver_method:)
@@ -57,11 +70,7 @@ class OmniauthCallbackController < ApplicationController
     provider = auth['provider']
     user_attrs = authver_method.profile_to_user_attrs(auth)
 
-    @identity = Identity.find_or_build_with_omniauth(auth, authver_method)
-
-    @user = @identity.user
-    @user = User.find_by_cimail(user_attrs.fetch(:email)) if @user.nil? && user_attrs.key?(:email) # some providers (ClaveUnica) don't return email
-
+    @user = find_existing_user(authver_method, auth, user_attrs)
     @user = authentication_service.prevent_user_account_hijacking @user
 
     # https://github.com/CitizenLabDotCo/citizenlab/pull/3055#discussion_r1019061643

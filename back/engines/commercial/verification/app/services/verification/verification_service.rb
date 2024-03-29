@@ -97,9 +97,16 @@ module Verification
       custom_fields.uniq
     end
 
+    def verifications_by_uid(uid, method_name)
+      ::Verification::Verification.where(
+        active: true,
+        hashed_uid: hashed_uid(uid, method_name)
+      )
+    end
+
     private
 
-    def make_verification(user:, method_name:, uid:)
+    def make_verification(user:, uid:, method_name:)
       existing_users = existing_verified_users(user, uid, method_name)
       taken = existing_users.present?
 
@@ -129,10 +136,7 @@ module Verification
     end
 
     def existing_verified_users(user, uid, method_name)
-      ::Verification::Verification.where(
-        active: true,
-        hashed_uid: hashed_uid(uid, method_name)
-      )
+      verifications_by_uid(uid, method_name)
         .where.not(user: user)
         .includes(:user).map(&:user)
     end
