@@ -123,7 +123,6 @@ function unregisterServiceWorkers() {
 
 function goToLandingPage() {
   cy.visit('/');
-  cy.get('#e2e-landing-page');
 }
 
 function login(email: string, password: string) {

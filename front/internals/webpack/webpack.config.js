@@ -148,6 +148,7 @@ const config = {
       async: isDev,
       typescript: {
         configFile: path.join(process.cwd(), 'app/tsconfig.json'),
+        memoryLimit: 4096,
       },
       logger: { infrastructure: !!argv.json ? 'silent' : 'console' }, // silent when trying to profile the chunks sizes
     }),
