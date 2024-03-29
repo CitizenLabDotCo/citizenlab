@@ -1,5 +1,5 @@
-import { Locale } from '@citizenlab/cl2-component-library';
 import { includes } from 'lodash-es';
+import { Locale } from 'typings';
 
 import { locales } from 'containers/App/constants';
 

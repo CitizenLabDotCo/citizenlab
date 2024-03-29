@@ -1,4 +1,4 @@
-import { Locale } from '@citizenlab/cl2-component-library';
+import { Locale } from 'typings';
 
 export type CreateAccountWithPasswordProperties = {
   [x: string]: {

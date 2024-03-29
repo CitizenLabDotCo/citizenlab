@@ -7,10 +7,10 @@ import {
   Box,
   colors,
   Toggle,
-  Locale,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
+import { Locale } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { IPermissionData } from 'api/permissions/types';
