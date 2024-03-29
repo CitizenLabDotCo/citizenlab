@@ -25,7 +25,11 @@ module IdCriipto
           custom_field_values[municipality_code_key] = municipality_code
         end
 
+        first_name, *last_name = auth.extra.raw_info.name.split
         {
+          first_name: first_name,
+          last_name: last_name.join(' '),
+          locale: AppConfiguration.instance.closest_locale_to('da-DK'),
           custom_field_values: custom_field_values
         }
       end
@@ -56,6 +60,20 @@ module IdCriipto
         redirect_uri: "#{configuration.base_backend_uri}/auth/criipto/callback"
       }
     end
+
+    def email_always_present?
+      false
+    end
+
+    def verification_prioritized?
+      true
+    end
+
+    def email_confirmed?(_auth)
+      false
+    end
+
+    private
 
     # See https://docs.criipto.com/verify/guides/authorize-url-builder/#auth-methods--acr-values
     def acr_values
