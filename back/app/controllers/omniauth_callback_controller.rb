@@ -42,16 +42,18 @@ class OmniauthCallbackController < ApplicationController
 
   private
 
-  def find_existing_user(authver_method, auth, user_attrs)
+  def find_existing_user(authver_method, auth, user_attrs, verify:)
     @identity = Identity.find_or_build_with_omniauth(auth, authver_method)
     return @identity.user if @identity.user
 
     @user = User.find_by_cimail(user_attrs.fetch(:email)) if user_attrs.key?(:email) # some providers (e.g, ClaveUnica) don't return email
     return @user if @user
 
-    uid = authver_method.profile_to_uid(auth)
-    verification = Verification::VerificationService.new.verifications_by_uid(uid, authver_method.name).first
-    verification&.user
+    if verify # only for verification methods
+      uid = authver_method.profile_to_uid(auth)
+      verification = Verification::VerificationService.new.verifications_by_uid(uid, authver_method.name).first
+      verification&.user
+    end
   end
 
   def auth_callback(verify:, authver_method:)
@@ -60,7 +62,7 @@ class OmniauthCallbackController < ApplicationController
     provider = auth['provider']
     user_attrs = authver_method.profile_to_user_attrs(auth)
 
-    @user = find_existing_user(authver_method, auth, user_attrs)
+    @user = find_existing_user(authver_method, auth, user_attrs, verify: verify)
     @user = authentication_service.prevent_user_account_hijacking @user
 
     # https://github.com/CitizenLabDotCo/citizenlab/pull/3055#discussion_r1019061643
