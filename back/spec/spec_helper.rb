@@ -8,7 +8,7 @@ require 'rspec_api_documentation'
 require 'rspec-parameterized'
 require 'webmock/rspec'
 
-WebMock.allow_net_connect!
+# WebMock.allow_net_connect!
 
 if ActiveRecord::Type::Boolean.new.cast(ENV.fetch('COVERAGE', nil))
   require 'simplecov'
@@ -229,4 +229,9 @@ RspecApiDocumentation.configure do |config|
   config.request_body_formatter = :json
   config.html_embedded_css_file = 'doc/style.css'
   config.configurations_dir = Pathname.new(ENV['CONFIGURATIONS_DIR']) if ENV['CONFIGURATIONS_DIR']
+end
+
+# Speed up tests
+silence_warnings do
+  BCrypt::Engine::DEFAULT_COST = BCrypt::Engine::MIN_COST
 end

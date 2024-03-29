@@ -10,7 +10,8 @@ FactoryBot.define do
       name, domain = Faker::Internet.email.split('@')
       "#{name}#{n}@#{domain}"
     end
-    password_digest { "$2a$12$GSuO5NGoXRWOMWfwaobnI.c14wB.PUEl8/5/OB1yES3QAEi.HnKna" }
+    password { 'democracy2.0' }
+    # password_digest { "$2a$12$GSuO5NGoXRWOMWfwaobnI.c14wB.PUEl8/5/OB1yES3QAEi.HnKna" }
     roles { [] }
     locale { 'en' }
     registration_completed_at { Time.now }
