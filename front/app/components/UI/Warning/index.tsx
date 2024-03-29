@@ -69,7 +69,7 @@ const Text = styled.div`
   }
 `;
 
-interface Props {
+export interface Props {
   children: string | JSX.Element;
   icon?: IconNames;
   className?: string;
