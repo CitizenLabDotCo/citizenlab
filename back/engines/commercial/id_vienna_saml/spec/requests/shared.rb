@@ -123,6 +123,20 @@ RSpec.shared_examples 'authenticates when the user was already registered with V
             send_auth_request
           end.to(change { User.first.email }.from('philipp.test@extern.wien.gv.at').to('test393@citizenlab.co'))
         end
+
+        context 'when email confirmation is enabled' do
+          before do
+            configuration = AppConfiguration.instance
+            configuration.settings['user_confirmation'] = { allowed: true, enabled: true }
+            configuration.save!
+          end
+
+          it "updates user's email" do
+            expect do
+              send_auth_request
+            end.to(change { User.first.email }.from('philipp.test@extern.wien.gv.at').to('test393@citizenlab.co'))
+          end
+        end
       end
 
       context 'when password login is enabled' do
