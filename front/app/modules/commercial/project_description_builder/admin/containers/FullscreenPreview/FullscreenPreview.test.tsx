@@ -65,6 +65,17 @@ jest.mock('api/projects/useProjectById', () => {
   }));
 });
 
+jest.mock('react-dom', () => ({
+  ...jest.requireActual('react-dom'),
+  createPortal: (content) => content,
+}));
+
+const getElementById = document.getElementById.bind(document);
+document.getElementById = (id, ...args) => {
+  if (id === 'modal-portal') return true;
+  return getElementById(id, ...args);
+};
+
 describe('Preview Content', () => {
   it('should render', async () => {
     render(<FullScreenPreview />);
