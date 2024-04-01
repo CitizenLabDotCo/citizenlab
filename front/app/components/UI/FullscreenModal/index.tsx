@@ -8,7 +8,6 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import { Subscription, fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import styled from 'styled-components';
-import { SupportedLocale } from 'typings';
 
 import useLocale from 'hooks/useLocale';
 
@@ -16,6 +15,7 @@ import { trackPage } from 'utils/analytics';
 import clHistory from 'utils/cl-router/history';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import { isNilOrError } from 'utils/helperUtils';
+import { SupportedLocale } from 'typings';
 
 // resource
 
@@ -97,7 +97,7 @@ interface InputProps {
 }
 
 interface Props extends InputProps {
-  locale: Locale;
+  locale: SupportedLocale;
 }
 
 interface State {

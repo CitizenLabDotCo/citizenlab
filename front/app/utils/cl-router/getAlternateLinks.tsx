@@ -6,7 +6,9 @@ import { isPage } from 'utils/helperUtils';
 import { replacePathnameLocale } from 'utils/replacePathnameLocale';
 
 // https://github.com/nfl/react-helmet/issues/279 href comes first!
-export default function getAlternateLinks(tenantLocales: Locale[] | undefined) {
+export default function getAlternateLinks(
+  tenantLocales: SupportedLocale[] | undefined
+) {
   const pathName = location.pathname;
 
   if (
