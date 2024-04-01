@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { IntlProvider, createIntlCache, createIntl } from 'react-intl';
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
@@ -20,7 +20,7 @@ const LanguageProvider = ({ children }: Props) => {
   const tenantLocales = useAppConfigurationLocales();
   const [messages, setMessages] = useState<AllMessages>({} as AllMessages);
   const [intlShapes, setIntlShapes] = useState<IntlShapes>({} as IntlShapes);
-  const [locale, setLocale] = useState<Locale | null>(null);
+  const [locale, setLocale] = useState<SupportedLocale | null>(null);
 
   useEffect(() => {
     const sub = locale$.subscribe((locale) => {

@@ -9,7 +9,7 @@ import {
 } from '@jsonforms/core';
 import { JsonForms } from '@jsonforms/react';
 import Ajv, { ErrorObject } from 'ajv';
-import { CLErrors, Locale } from 'typings';
+import { CLErrors, SupportedLocale } from 'typings';
 
 import { parseRequiredMultilocsSchema } from 'components/Form/parseRequiredMultilocs';
 
@@ -33,7 +33,7 @@ interface Props {
   getAjvErrorMessage?: AjvErrorGetter;
   inputId?: string;
   config?: 'default' | 'input' | 'survey';
-  locale: Locale;
+  locale: SupportedLocale;
   onChange: (formData: FormData) => void;
   setFormData?: (formData: FormData) => void;
   onSubmit?: (formData: FormData) => Promise<any>;
