@@ -1135,6 +1135,7 @@
   "app.containers.InitiativesNewPage.orgName": "{orgName}",
   "app.containers.InitiativesNewPage.tipsTitle": "Неки конкретни савети за објављивање вашег предлога",
   "app.containers.InitiativesNewPage.unkownAddress": "Непозната адреса",
+  "app.containers.InitiativesShow.VoteControl.a11y_timeLeft": "Time left to vote:",
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{xVotes} од {votingThreshold} потребних гласова",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} Гласање остаје отворено.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "{orgName} је примио предлог и дао званичан одговор.",
