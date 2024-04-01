@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, screen } from '../../utils/testUtils/rtl';
+import { render, screen, fireEvent } from '../../utils/testUtils/rtl';
 
 import { Table, Thead, Tbody, Tr, Th, Td } from '.';
 
@@ -45,6 +45,11 @@ describe('<Table />', () => {
     );
 
     expect(screen.getByText('Test header cell')).toBeInTheDocument();
+    const tooltipIcon = screen.getByTestId('tooltip-icon-button');
+    expect(tooltipIcon).toBeInTheDocument();
+    expect(screen.queryByText('Info tooltip copy')).not.toBeInTheDocument();
+
+    fireEvent.mouseEnter(tooltipIcon);
     expect(screen.getByText('Info tooltip copy')).toBeInTheDocument();
   });
 
