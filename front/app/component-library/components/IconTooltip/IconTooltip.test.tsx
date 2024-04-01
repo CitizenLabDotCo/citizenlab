@@ -14,6 +14,7 @@ describe('<IconTooltip />', () => {
   it('renders content on mouseEnter', () => {
     render(<IconTooltip content={<div>{tooltipText}</div>} />);
 
+    expect(screen.queryByText(tooltipText)).not.toBeInTheDocument();
     fireEvent.mouseEnter(screen.getByTestId('tooltip-icon-button'));
     expect(screen.getByText(tooltipText)).toBeInTheDocument();
   });
@@ -22,6 +23,8 @@ describe('<IconTooltip />', () => {
     render(<IconTooltip content={<div>{tooltipText}</div>} />);
 
     fireEvent.mouseOver(screen.getByTestId('tooltip-icon-button'));
+    expect(screen.getByText(tooltipText)).toBeInTheDocument();
+
     fireEvent.mouseOut(screen.getByTestId('tooltip-icon-button'));
     await waitFor(() => {
       expect(screen.queryByText(tooltipText)).not.toBeInTheDocument();
