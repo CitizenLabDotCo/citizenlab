@@ -12,7 +12,9 @@ import styled, { keyframes } from 'styled-components';
 import T from 'components/T';
 
 import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
 
+import messages from '../messages';
 import { StatusComponentProps } from '../StatusWrapper';
 
 import CountDown from './components/CountDown';
@@ -96,9 +98,9 @@ const Status = ({
     <Box display="flex" flexDirection="column">
       {showCountDown && (
         <Box ml="auto" mb="24px">
-          {/* Translation is still coming in a later PR. This is not visible. */}
-          <ScreenReaderOnly>Time left to vote:</ScreenReaderOnly>
-          {/* Still add (hidden) heading */}
+          <ScreenReaderOnly>
+            <FormattedMessage {...messages.a11y_timeLeft} />
+          </ScreenReaderOnly>
           <CountDown targetTime={initiative.attributes.expires_at} />
         </Box>
       )}
