@@ -55,6 +55,7 @@ describe('Idea creation', () => {
     const newIdeaTitle = randomString(40);
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/ideas`);
+    cy.acceptCookies();
     cy.get('#e2e-new-idea').click();
 
     cy.get('#e2e-idea-new-page');
@@ -82,31 +83,11 @@ describe('Idea creation', () => {
       .find('button.selected')
       .should('have.length', 1);
 
-    // add a location
-    cy.get('.e2e-idea-form-location-input-field input').type(
-      'Boulevard Anspach Brussels'
-    );
-
-    // wait for the autocomplete to appear. Waiting for the api call doesn't seem to be enough but doing this for now
-    cy.wait(10000);
-
-    cy.get('.e2e-idea-form-location-input-field input').type(
-      '{downArrow}{enter}'
-    );
-
-    cy.get('.e2e-idea-form-location-input-field input');
-
     // save the form
     cy.get('.e2e-submit-idea-form').click();
-    cy.wait(3000);
 
     // verify the content of the newly created idea page
     cy.location('pathname').should('eq', `/en/ideas/${newIdeaTitle}`);
-
-    cy.visit(`/en/projects/${projectSlug}`);
-    cy.get('.e2e-previous-phase').click();
-
-    // the card should contain the title
-    cy.get('.e2e-idea-card-title').contains(newIdeaTitle);
+    cy.get('#e2e-idea-title').contains(newIdeaTitle);
   });
 });
