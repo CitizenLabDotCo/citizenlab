@@ -1135,6 +1135,7 @@
   "app.containers.InitiativesNewPage.orgName": "{orgName}",
   "app.containers.InitiativesNewPage.tipsTitle": "Siunnersuutippit nassiutinnginnerani siunnersuutitsialaat",
   "app.containers.InitiativesNewPage.unkownAddress": "Unknown address",
+  "app.containers.InitiativesShow.VoteControl.a11y_timeLeft": "Time left to vote:",
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{xVotes} taasinernit {votingThreshold} pisariaqartinneqartunit",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} Taasineq ammaannassaaq",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "{orgName} innuttaasutut siunnersuutit tigusimavaa pisortatigoortumillu akissummik nassiussilluni. ",
