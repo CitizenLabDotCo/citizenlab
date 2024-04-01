@@ -6,7 +6,7 @@ import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import { CLLocale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -56,7 +56,7 @@ class LanguageProvider extends React.PureComponent<Props, State> {
     }
   };
 
-  importLocale = (locale: CLLocale) => {
+  importLocale = (locale: SupportedLocale) => {
     import(`i18n/${locale}`).then((translationMessages) => {
       const intlCache = createIntlCache();
 
@@ -82,7 +82,7 @@ class LanguageProvider extends React.PureComponent<Props, State> {
     });
   };
 
-  importTenantLocales = (tenantLocales: CLLocale[]) => {
+  importTenantLocales = (tenantLocales: SupportedLocale[]) => {
     for (const locale of tenantLocales) {
       if (!this.state.messages[locale]) {
         import(`i18n/${locale}`).then((translationMessages) => {

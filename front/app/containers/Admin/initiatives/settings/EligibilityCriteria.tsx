@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Multiloc, CLLocale } from 'typings';
+import { Multiloc, SupportedLocale } from 'typings';
 
 import {
   SectionField,
@@ -22,7 +22,7 @@ interface Props {
 export default ({ value, onChange }: Props) => {
   const handleEligibilityCriteriaOnChange = (
     valueMultiloc: Multiloc,
-    locale: CLLocale | undefined
+    locale: SupportedLocale | undefined
   ) => {
     if (locale) {
       onChange(valueMultiloc);

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import styled from 'styled-components';
-import { CLLocale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import { IIdeaData } from 'api/ideas/types';
 
@@ -17,7 +17,7 @@ interface Props {
   translateButtonClicked: boolean;
   onClick: () => void;
   idea: IIdeaData;
-  locale: CLLocale;
+  locale: SupportedLocale;
 }
 
 const IdeasShowTranslateButton = ({

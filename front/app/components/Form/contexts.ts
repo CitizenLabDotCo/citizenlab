@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-import { CLErrors, CLLocale } from 'typings';
+import { CLErrors, SupportedLocale } from 'typings';
 
 import { ApiErrorGetter, FormData } from './typings';
 
@@ -16,7 +16,7 @@ export const FormContext = createContext<{
   ) => void | Promise<void>;
   setFormData?: (formData?: FormData) => void;
   setShowAllErrors?: (showAllErrors: boolean) => void;
-  locale?: CLLocale;
+  locale?: SupportedLocale;
 }>({
   showAllErrors: false,
   getApiErrorMessage: () => undefined,

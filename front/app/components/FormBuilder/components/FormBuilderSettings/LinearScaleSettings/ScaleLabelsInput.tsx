@@ -10,7 +10,7 @@ import {
 import { Controller, useFormContext } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
-import { CLLocale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -25,9 +25,9 @@ interface Props {
   minimumLabelName: string;
   maximumLabelName: string;
   maximumName: string;
-  onSelectedLocaleChange?: (locale: CLLocale) => void;
-  locales: CLLocale[];
-  platformLocale: CLLocale;
+  onSelectedLocaleChange?: (locale: SupportedLocale) => void;
+  locales: SupportedLocale[];
+  platformLocale: SupportedLocale;
 }
 
 const ScaleLabelsInput = ({
@@ -40,7 +40,7 @@ const ScaleLabelsInput = ({
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
   const { control, setValue, getValues } = useFormContext();
-  const [selectedLocale, setSelectedLocale] = useState<CLLocale | null>(
+  const [selectedLocale, setSelectedLocale] = useState<SupportedLocale | null>(
     platformLocale
   );
 
@@ -53,7 +53,7 @@ const ScaleLabelsInput = ({
   const defaultValues = [{}];
 
   const handleOnSelectedLocaleChange = useCallback(
-    (newSelectedLocale: CLLocale) => {
+    (newSelectedLocale: SupportedLocale) => {
       setSelectedLocale(newSelectedLocale);
       onSelectedLocaleChange?.(newSelectedLocale);
     },

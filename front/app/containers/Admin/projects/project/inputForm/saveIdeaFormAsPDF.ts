@@ -1,5 +1,5 @@
 import { saveAs } from 'file-saver';
-import { CLLocale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import { API_PATH } from 'containers/App/constants';
 
@@ -7,7 +7,7 @@ import { reportError } from 'utils/loggingUtils';
 import { requestBlob } from 'utils/requestBlob';
 
 interface Params {
-  locale: CLLocale;
+  locale: SupportedLocale;
   projectId: string;
   personal_data: boolean;
   phase_id?: string;

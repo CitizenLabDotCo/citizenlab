@@ -1,4 +1,4 @@
-import { ImageSizes, Multiloc, CLLocale, UploadFile } from 'typings';
+import { ImageSizes, Multiloc, SupportedLocale, UploadFile } from 'typings';
 
 import { API_PATH } from 'containers/App/constants';
 
@@ -19,7 +19,7 @@ interface AppConfigurationFeature {
 export type IAppConfigurationSettingsCore = {
   allowed: boolean;
   enabled: boolean;
-  locales: CLLocale[];
+  locales: SupportedLocale[];
   weglot_api_key: string | null;
   timezone: string;
   organization_name: Multiloc;

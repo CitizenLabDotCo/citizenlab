@@ -1,7 +1,7 @@
-import { Multiloc, CLLocale } from 'typings';
+import { Multiloc, SupportedLocale } from 'typings';
 
 export default function validateTitle(
-  appConfigLocales: CLLocale[],
+  appConfigLocales: SupportedLocale[],
   titleMultiloc: Multiloc | undefined,
   errorMessage: string
 ) {

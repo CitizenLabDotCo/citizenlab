@@ -1,4 +1,4 @@
-import { CLLocale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
@@ -10,7 +10,9 @@ interface Props {
   children?: children;
 }
 
-export type GetAppConfigurationLocalesChildProps = CLLocale[] | undefined;
+export type GetAppConfigurationLocalesChildProps =
+  | SupportedLocale[]
+  | undefined;
 
 const GetAppConfigurationLocales = (props: Props) => {
   const { data: appConfiguration } = useAppConfiguration();

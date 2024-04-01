@@ -1,4 +1,4 @@
-import { CLLocale } from 'typings';
+import { SupportedLocale } from 'typings';
 /*  @param pathname: a string representing a pathname, without a starting locale. pathname must tart with /, and final / will not be moved
  *   @param locale: the locale you want to add to the pathname
  *   @param search: optional string representing query parameters, starting with '?'
@@ -7,7 +7,7 @@ import { CLLocale } from 'typings';
  */
 export function setPathnameLocale(
   pathname: string,
-  locale: CLLocale,
+  locale: SupportedLocale,
   search?: string
 ): string {
   return `/${locale}${pathname}${search || ''}`;

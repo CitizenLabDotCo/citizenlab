@@ -1,8 +1,8 @@
-import { Multiloc, CLLocale } from 'typings';
+import { Multiloc, SupportedLocale } from 'typings';
 
 export const createMultiloc = (
-  locales: CLLocale[],
-  getValue: (locale: CLLocale) => string
+  locales: SupportedLocale[],
+  getValue: (locale: SupportedLocale) => string
 ): Multiloc => {
   return locales.reduce((acc, locale) => {
     return {

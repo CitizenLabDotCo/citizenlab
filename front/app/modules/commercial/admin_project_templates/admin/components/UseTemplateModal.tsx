@@ -14,7 +14,7 @@ import moment from 'moment';
 import { darken } from 'polished';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
-import { CLLocale, Multiloc, IOption } from 'typings';
+import { SupportedLocale, Multiloc, IOption } from 'typings';
 
 import adminPublicationsKeys from 'api/admin_publications/keys';
 import meKeys from 'api/me/keys';
@@ -146,7 +146,8 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
     const [startDate, setStartDate] = useState<string | null>(null);
     const [folderId, setFolderId] = useState<string | null>(null);
     const [folderOptions, setFolderOptions] = useState<IOption[] | null>(null);
-    const [selectedLocale, setSelectedLocale] = useState<CLLocale | null>(null);
+    const [selectedLocale, setSelectedLocale] =
+      useState<SupportedLocale | null>(null);
     const [titleError, setTitleError] = useState<string | null>(null);
     const [startDateError, setStartDateError] = useState<string | null>(null);
     const [processing, setProcessing] = useState(false);
@@ -233,7 +234,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
             variables: {
               titleMultiloc: transform(
                 titleMultiloc,
-                (result: Multiloc, val, key: CLLocale) => {
+                (result: Multiloc, val, key: SupportedLocale) => {
                   result[convertToGraphqlLocale(key)] = val;
                 }
               ),
@@ -274,7 +275,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
     }, []);
 
     const onSelectedLocaleChange = useCallback(
-      (newSelectedLocale: CLLocale) => {
+      (newSelectedLocale: SupportedLocale) => {
         setSelectedLocale(newSelectedLocale);
       },
       []

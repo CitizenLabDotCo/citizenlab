@@ -9,7 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import Transition from 'react-transition-group/Transition';
-import { CLLocale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
@@ -57,7 +57,7 @@ import { findSurveyPhaseId, findIdeationPhaseId } from './utils';
 
 type ReportBuilderToolboxProps = {
   reportId: string;
-  selectedLocale: CLLocale;
+  selectedLocale: SupportedLocale;
 };
 
 const Section = ({ children }) => (

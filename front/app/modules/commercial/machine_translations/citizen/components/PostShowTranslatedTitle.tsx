@@ -1,7 +1,7 @@
 import React from 'react';
 
 import useTranslation from 'modules/commercial/machine_translations/hooks/useTranslation';
-import { CLLocale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import { Title } from 'components/PostShowComponents/Title';
 
@@ -9,7 +9,7 @@ interface Props {
   postId: string;
   postType: 'idea' | 'initiative';
   title: string;
-  locale?: CLLocale;
+  locale?: SupportedLocale;
   translateButtonClicked?: boolean;
   color?: string;
   align: 'left' | 'center';

@@ -1,5 +1,5 @@
 import { IntlShape } from 'react-intl';
-import { CLLocale } from 'typings';
+import { SupportedLocale } from 'typings';
 
-export type AllMessages = Record<CLLocale, Record<string, string>>;
-export type IntlShapes = Record<CLLocale, IntlShape>;
+export type AllMessages = Record<SupportedLocale, Record<string, string>>;
+export type IntlShapes = Record<SupportedLocale, IntlShape>;

@@ -1,15 +1,15 @@
-import { CLLocale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 export type CreateAccountWithPasswordProperties = {
   [x: string]: {
     email: string;
     password: string;
-    locale: CLLocale;
+    locale: SupportedLocale;
     first_name: string;
     last_name: string;
   };
 };
 
 export type CreateEmailOnlyAccountProperties = {
-  user: { email: string; locale: CLLocale };
+  user: { email: string; locale: SupportedLocale };
 };

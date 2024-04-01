@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
-import { CLLocale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import { ReportLayout } from 'api/report_layout/types';
 import useReportLayout from 'api/report_layout/useReportLayout';
@@ -69,7 +69,7 @@ const ReportBuilder = ({
 
   const [imageUploading, setImageUploading] = useState(false);
   const [selectedLocale, setSelectedLocale] =
-    useState<CLLocale>(platformLocale);
+    useState<SupportedLocale>(platformLocale);
 
   const [saved, setSaved] = useState(true);
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { CLLocale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 // Typing
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -14,8 +14,8 @@ import { isNilOrError } from './helperUtils';
 
 export interface InjectedLocalized {
   localize: Localize;
-  locale: CLLocale;
-  tenantLocales: CLLocale[];
+  locale: SupportedLocale;
+  tenantLocales: SupportedLocale[];
 }
 
 export default function injectLocalize<P>(

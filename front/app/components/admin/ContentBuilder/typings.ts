@@ -1,9 +1,9 @@
 import { SerializedNode } from '@craftjs/core';
-import { CLLocale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 export type ContentBuilderErrors = Record<
   string,
-  { hasError: boolean; selectedLocale?: CLLocale }
+  { hasError: boolean; selectedLocale?: SupportedLocale }
 >;
 
 export type CraftJson = Record<string, SerializedNode>;

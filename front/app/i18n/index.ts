@@ -1,11 +1,11 @@
-import { CLLocale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import { DEFAULT_LOCALE } from 'containers/App/constants';
 
 const enTranslationMessages = require('translations/en.json');
 
 export const formatTranslationMessages = (
-  locale: CLLocale,
+  locale: SupportedLocale,
   messages: { translateId: string }
 ) => {
   const defaultFormattedMessages =

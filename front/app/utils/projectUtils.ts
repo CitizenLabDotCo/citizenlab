@@ -1,4 +1,4 @@
-import { CLLocale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import {
   IIdeaJsonFormSchemas,
@@ -14,7 +14,7 @@ export function isFieldEnabled(
     | undefined
     | null
     | Error,
-  locale: CLLocale | undefined | Error | null
+  locale: SupportedLocale | undefined | Error | null
 ): boolean {
   if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
     return !!ideaCustomFieldsSchemas.json_schema_multiloc?.[locale]

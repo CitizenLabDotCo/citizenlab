@@ -3,7 +3,7 @@ import React from 'react';
 import { uuid4 } from '@sentry/utils';
 import { MessageDescriptor } from 'react-intl';
 import { RouteType } from 'routes';
-import { CLLocale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import {
   ICustomFieldInputType,
@@ -92,8 +92,8 @@ export const formEndOption = 'survey_end';
 // Function to return additional settings based on input type
 export function getAdditionalSettings(
   field: IFlatCustomFieldWithIndex,
-  locales: CLLocale[],
-  platformLocale: CLLocale
+  locales: SupportedLocale[],
+  platformLocale: SupportedLocale
 ) {
   if (builtInFieldKeys.includes(field.key)) {
     return null;

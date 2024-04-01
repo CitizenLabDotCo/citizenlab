@@ -10,7 +10,7 @@ import React, {
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import { isString, isEmpty } from 'lodash-es';
 import styled from 'styled-components';
-import { CLLocale, IOption } from 'typings';
+import { SupportedLocale, IOption } from 'typings';
 
 import {
   IInviteError,
@@ -74,7 +74,9 @@ const Invitations = () => {
     useState<boolean>(false);
   const [inviteesWillHaveModeratorRights, setInviteesWillHaveModeratorRights] =
     useState<boolean>(false);
-  const [selectedLocale, setSelectedLocale] = useState<CLLocale | null>(null);
+  const [selectedLocale, setSelectedLocale] = useState<SupportedLocale | null>(
+    null
+  );
   const [selectedProjects, setSelectedProjects] = useState<IOption[] | null>(
     null
   );
@@ -160,7 +162,7 @@ const Invitations = () => {
     setInviteesWillHaveModeratorRights(!inviteesWillHaveModeratorRights);
   };
 
-  const handleLocaleOnChange = (selectedLocale: CLLocale) => {
+  const handleLocaleOnChange = (selectedLocale: SupportedLocale) => {
     resetErrorAndSuccessState();
     setSelectedLocale(selectedLocale);
   };

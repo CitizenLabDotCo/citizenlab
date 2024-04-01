@@ -1,8 +1,8 @@
 import { BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
-import { CLLocale } from 'typings';
+import { SupportedLocale } from 'typings';
 
-const LocaleSubject: BehaviorSubject<CLLocale> = new BehaviorSubject(
+const LocaleSubject: BehaviorSubject<SupportedLocale> = new BehaviorSubject(
   null as any
 );
 const $locale = LocaleSubject.pipe(

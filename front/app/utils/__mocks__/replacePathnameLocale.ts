@@ -1,8 +1,8 @@
-import { CLLocale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 export function replacePathnameLocale(
   pathname: string,
-  locale: CLLocale,
+  locale: SupportedLocale,
   search?: string
 ) {
   const urlSegments = pathname.replace(/^\/|\/$/g, '').split('/');
