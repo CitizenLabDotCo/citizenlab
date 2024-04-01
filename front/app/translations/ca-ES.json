@@ -1135,6 +1135,7 @@
   "app.containers.InitiativesNewPage.orgName": "{orgName}",
   "app.containers.InitiativesNewPage.tipsTitle": "Alguns consells específics per publicar la vostra proposta",
   "app.containers.InitiativesNewPage.unkownAddress": "Adreça desconeguda",
+  "app.containers.InitiativesShow.VoteControl.a11y_timeLeft": "Temps restant per votar:",
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{xVotes} de {votingThreshold} vots necessaris",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} La votació continua oberta.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "{orgName} va rebre la proposta i va donar una resposta oficial.",
