@@ -54,7 +54,6 @@ const IdeaTitle = ({
       />
       {showActions && (
         <Box ml="30px">
-          {' '}
           <IdeaMoreActions idea={idea.data} projectId={projectId} />
         </Box>
       )}
