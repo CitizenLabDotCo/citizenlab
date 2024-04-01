@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import { isPage } from 'utils/helperUtils';
 import { replacePathnameLocale } from 'utils/replacePathnameLocale';

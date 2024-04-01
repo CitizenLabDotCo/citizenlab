@@ -8,7 +8,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import { Subscription, fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import styled from 'styled-components';
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import useLocale from 'hooks/useLocale';
 
