@@ -8,6 +8,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import { Subscription, fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import styled from 'styled-components';
+import { Locale } from 'typings';
 
 import useLocale from 'hooks/useLocale';
 
@@ -96,7 +97,7 @@ interface InputProps {
 }
 
 interface Props extends InputProps {
-  locale: string;
+  locale: Locale;
 }
 
 interface State {

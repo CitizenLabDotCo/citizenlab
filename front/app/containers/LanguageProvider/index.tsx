@@ -12,15 +12,25 @@ import { AllMessages, IntlShapes } from './types';
 
 interface Props {
   children: React.ReactNode;
-  locale: SupportedLocale;
-  tenantLocales: SupportedLocale[];
 }
 
-const LanguageProvider = ({ children, locale, tenantLocales }: Props) => {
+const LanguageProvider = ({ children }: Props) => {
   const [messages, setMessages] = useState<AllMessages>({} as AllMessages);
   const [intlShapes, setIntlShapes] = useState<IntlShapes>({} as IntlShapes);
+  const tenantLocales = useAppConfigurationLocales();
+  const [locale, setLocale] = useState<SupportedLocale | null>(null);
 
   useEffect(() => {
+    const sub = localeStream().observable.subscribe((locale) => {
+      setLocale(locale);
+    });
+
+    return () => sub.unsubscribe();
+  });
+
+  useEffect(() => {
+    if (!tenantLocales) return;
+
     for (const locale of tenantLocales) {
       if (!messages[locale]) {
         import(`i18n/${locale}`).then((translationMessages) => {
@@ -60,23 +70,4 @@ const LanguageProvider = ({ children, locale, tenantLocales }: Props) => {
   return null;
 };
 
-export default ({ children }: { children: React.ReactNode }) => {
-  const tenantLocales = useAppConfigurationLocales();
-  const [locale, setLocale] = useState<Locale | null>(null);
-
-  useEffect(() => {
-    const sub = localeStream().observable.subscribe((locale) => {
-      setLocale(locale);
-    });
-
-    return () => sub.unsubscribe();
-  });
-
-  if (!locale || !tenantLocales) return null;
-
-  return (
-    <LanguageProvider locale={locale} tenantLocales={tenantLocales}>
-      {children}
-    </LanguageProvider>
-  );
-};
+export default LanguageProvider;
