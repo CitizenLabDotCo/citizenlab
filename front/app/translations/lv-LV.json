@@ -1135,6 +1135,7 @@
   "app.containers.InitiativesNewPage.orgName": "{orgName}",
   "app.containers.InitiativesNewPage.tipsTitle": "Daži konkrēti padomi par priekšlikuma publicēšanu",
   "app.containers.InitiativesNewPage.unkownAddress": "Nezināma adrese",
+  "app.containers.InitiativesShow.VoteControl.a11y_timeLeft": "Atlikušais laiks balsošanai:",
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{xVotes} no {votingThreshold} nepieciešamajām balsīm",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} Balsošana paliek atvērta.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "{orgName} saņēma priekšlikumu un sniedza oficiālu atbildi.",
