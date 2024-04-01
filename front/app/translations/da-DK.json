@@ -1135,6 +1135,7 @@
   "app.containers.InitiativesNewPage.orgName": "{orgName}",
   "app.containers.InitiativesNewPage.tipsTitle": "Nogle gode tip inden du sender dit forslag",
   "app.containers.InitiativesNewPage.unkownAddress": "Ukendt adresse",
+  "app.containers.InitiativesShow.VoteControl.a11y_timeLeft": "Der er tid tilbage til at stemme:",
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{xVotes} ud af {votingThreshold} nødvendige stemmer",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} Afstemning forbliver åben.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "{orgName} modtog forslag og gav et officielt svar.",
