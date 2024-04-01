@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { IntlProvider, createIntlCache, createIntl } from 'react-intl';
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
@@ -12,8 +12,8 @@ import { AllMessages, IntlShapes } from './types';
 
 interface Props {
   children: React.ReactNode;
-  locale: Locale;
-  tenantLocales: Locale[];
+  locale: SupportedLocale;
+  tenantLocales: SupportedLocale[];
 }
 
 const LanguageProvider = ({ children, locale, tenantLocales }: Props) => {

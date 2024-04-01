@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 
 import { media, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+import { SupportedLocale } from 'typings';
 
 import Outlet from 'components/Outlet';
 

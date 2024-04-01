@@ -1,5 +1,5 @@
 import { zipObject } from 'lodash-es';
-import { Multiloc, Locale } from 'typings';
+import { Multiloc, SupportedLocale } from 'typings';
 
 import { IUsersByAge } from 'api/users_by_age/types';
 import { IUsersByCustomField } from 'api/users_by_custom_field/types';
@@ -141,7 +141,7 @@ export const regFieldToIncludedUsers = (
 
 export const ageFieldToReferenceData = (
   data: IUsersByAge,
-  locale: Locale
+  locale: SupportedLocale
 ): RepresentativenessRowMultiloc[] => {
   const {
     series: { user_counts, reference_population, bins },

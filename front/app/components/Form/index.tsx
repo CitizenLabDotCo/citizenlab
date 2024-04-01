@@ -14,7 +14,7 @@ import {
   Layout,
 } from '@jsonforms/core';
 import styled from 'styled-components';
-import { CLErrors, Locale } from 'typings';
+import { CLErrors, SupportedLocale } from 'typings';
 
 import useLocale from 'hooks/useLocale';
 import useObserveEvent from 'hooks/useObserveEvent';
@@ -83,7 +83,7 @@ interface Props {
 }
 
 interface InnerProps extends Props {
-  locale: Locale;
+  locale: SupportedLocale;
 }
 
 const Form = memo(

@@ -9,7 +9,7 @@ import { isString, isEmpty, capitalize } from 'lodash-es';
 import { transparentize } from 'polished';
 import { MentionsInput, Mention, MentionItem } from 'react-mentions';
 import styled, { useTheme } from 'styled-components';
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import getMentions from 'api/mentions/getMentions';
 import { MentionRoles } from 'api/mentions/types';
@@ -56,13 +56,13 @@ export interface Props {
   className?: string;
   name: string;
   value?: string | null;
-  locale?: Locale;
+  locale?: SupportedLocale;
   placeholder?: string;
   rows: number;
   postId?: string;
   postType?: 'idea' | 'initiative';
   error?: JSX.Element | string | null;
-  onChange?: (arg: string, locale: Locale | undefined) => void;
+  onChange?: (arg: string, locale: SupportedLocale | undefined) => void;
   onFocus?: () => void;
   onBlur?: () => void;
   getTextareaRef?: (element: HTMLTextAreaElement) => void;
