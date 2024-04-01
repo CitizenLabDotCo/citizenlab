@@ -14,16 +14,14 @@ interface Props {
   children: React.ReactNode;
 }
 
-const locale$ = localeStream().observable;
-
 const LanguageProvider = ({ children }: Props) => {
-  const tenantLocales = useAppConfigurationLocales();
   const [messages, setMessages] = useState<AllMessages>({} as AllMessages);
   const [intlShapes, setIntlShapes] = useState<IntlShapes>({} as IntlShapes);
+  const tenantLocales = useAppConfigurationLocales();
   const [locale, setLocale] = useState<SupportedLocale | null>(null);
 
   useEffect(() => {
-    const sub = locale$.subscribe((locale) => {
+    const sub = localeStream().observable.subscribe((locale) => {
       setLocale(locale);
     });
 
@@ -31,30 +29,30 @@ const LanguageProvider = ({ children }: Props) => {
   });
 
   useEffect(() => {
-    if (tenantLocales) {
-      for (const locale of tenantLocales) {
-        if (!messages[locale]) {
-          import(`i18n/${locale}`).then((translationMessages) => {
-            const intlCache = createIntlCache();
+    if (!tenantLocales) return;
 
-            const intlShape = createIntl(
-              {
-                locale,
-                messages: translationMessages.default,
-              },
-              intlCache
-            );
+    for (const locale of tenantLocales) {
+      if (!messages[locale]) {
+        import(`i18n/${locale}`).then((translationMessages) => {
+          const intlCache = createIntlCache();
 
-            setMessages((prevState) => ({
-              ...prevState,
-              [locale]: translationMessages.default,
-            }));
-            setIntlShapes((prevState) => ({
-              ...prevState,
-              [locale]: intlShape,
-            }));
-          });
-        }
+          const intlShape = createIntl(
+            {
+              locale,
+              messages: translationMessages.default,
+            },
+            intlCache
+          );
+
+          setMessages((prevState) => ({
+            ...prevState,
+            [locale]: translationMessages.default,
+          }));
+          setIntlShapes((prevState) => ({
+            ...prevState,
+            [locale]: intlShape,
+          }));
+        });
       }
     }
   }, [tenantLocales, messages]);

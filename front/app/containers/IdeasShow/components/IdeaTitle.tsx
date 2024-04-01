@@ -45,7 +45,7 @@ const IdeaTitle = ({
   const ideaTitle = localize(idea.data.attributes.title_multiloc);
 
   return (
-    <IdeaHeader>
+    <IdeaHeader id="e2e-idea-title">
       <Title
         postType="idea"
         postId={idea.data.id}
@@ -54,7 +54,6 @@ const IdeaTitle = ({
       />
       {showActions && (
         <Box ml="30px">
-          {' '}
           <IdeaMoreActions idea={idea.data} projectId={projectId} />
         </Box>
       )}
