@@ -159,7 +159,7 @@
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
-    "@rollup/plugin-typescript": "^9.0.2",
+    "@rollup/plugin-typescript": "^11.1.6",
     "@sentry/webpack-plugin": "^1.18.8",
     "@storybook/react": "^7.5.1",
     "@storybook/react-webpack5": "^7.5.2",
