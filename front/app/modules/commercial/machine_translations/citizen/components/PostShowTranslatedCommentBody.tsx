@@ -1,14 +1,14 @@
 import React from 'react';
 
 import useMachineTranslationByCommentId from 'modules/commercial/machine_translations/api/useMachineTranslationByCommentId';
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import { CommentText } from 'components/PostShowComponents/Comments/Comment/CommentBody';
 
 interface Props {
   translateButtonClicked: boolean;
   commentContent: string;
-  locale: Locale;
+  locale: SupportedLocale;
   commentId: string;
 }
 

@@ -1,4 +1,4 @@
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
@@ -11,7 +11,7 @@ export interface Parameters {
   lastName: string;
   email: string;
   password: string;
-  locale: Locale;
+  locale: SupportedLocale;
   isInvitation?: boolean | null | undefined;
   token?: string | undefined | null;
 }
