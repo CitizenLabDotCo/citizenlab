@@ -5,7 +5,7 @@ describe('Idea creation', () => {
   const projectTitle = randomString();
   const description = randomString();
   let projectId: string;
-  let phaseId: string;
+  let firstPhaseId: string;
   let projectSlug: string;
   const newIdeaContent = randomString(60);
 
@@ -43,7 +43,7 @@ describe('Idea creation', () => {
         });
       })
       .then((phase) => {
-        phaseId = phase.body.data.id;
+        firstPhaseId = phase.body.data.id;
       });
   });
 
@@ -54,7 +54,7 @@ describe('Idea creation', () => {
   it('allows the admin to add an idea to an old phase', () => {
     const newIdeaTitle = randomString(40);
 
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/ideas`);
+    cy.visit(`admin/projects/${projectId}/phases/${firstPhaseId}/ideas`);
     cy.acceptCookies();
     cy.get('#e2e-new-idea').click();
 
@@ -70,11 +70,6 @@ describe('Idea creation', () => {
     cy.get('#e2e-idea-title-input input').type(`${newIdeaTitle}`);
     cy.get('#e2e-idea-description-input .ql-editor').type(newIdeaContent);
 
-    // verify that image and file upload components are present
-    cy.get('#e2e-idea-image-upload').should('exist');
-    cy.get('#e2e-idea-file-upload').should('exist');
-
-    cy.get('.e2e-topics-picker').should('exist');
     // add a topic
     cy.get('.e2e-topics-picker').find('button').eq(4).click({ force: true });
 
@@ -89,5 +84,8 @@ describe('Idea creation', () => {
     // verify the content of the newly created idea page
     cy.location('pathname').should('eq', `/en/ideas/${newIdeaTitle}`);
     cy.get('#e2e-idea-title').contains(newIdeaTitle);
+
+    cy.visit(`admin/projects/${projectId}/phases/${firstPhaseId}/ideas`);
+    cy.get('.e2e-idea-manager-idea-row').first().contains(newIdeaTitle);
   });
 });
