@@ -490,7 +490,7 @@ GEM
       nokogiri (~> 1.8, >= 1.8.2)
       rubyzip (~> 1.2, >= 1.2.1)
     base64 (0.2.0)
-    bcrypt (3.1.18)
+    bcrypt (3.1.20)
     bigdecimal (3.1.7)
     bindata (2.5.0)
     binding_of_caller (1.0.0)
@@ -1236,7 +1236,7 @@ DEPENDENCIES
   aws-sdk-bedrockruntime (~> 1)
   aws-sdk-s3 (~> 1)
   axlsx (= 3.0.0.pre)
-  bcrypt (~> 3.1.7)
+  bcrypt (~> 3.1.20)
   bootsnap (~> 1)
   bulk_import_ideas!
   bullet
