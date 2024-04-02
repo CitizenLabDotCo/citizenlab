@@ -165,7 +165,6 @@ class User < ApplicationRecord
 
   attr_reader :highest_role_after_initialize
 
-  before_validation :set_cl1_migrated, on: :create
   before_validation :generate_slug
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :assign_email_or_phone, if: :email_changed?
@@ -631,10 +630,6 @@ class User < ApplicationRecord
     )
     self.bio_multiloc = service.remove_multiloc_empty_trailing_tags(bio_multiloc)
     self.bio_multiloc = service.linkify_multiloc(bio_multiloc)
-  end
-
-  def set_cl1_migrated
-    self.cl1_migrated ||= false
   end
 
   def validate_email_domains_blacklist
