@@ -76,6 +76,7 @@ const ReviewSection = () => {
     approveIdeas(phaseId, {
       onSuccess: (data) => {
         setApprovals(data.data.attributes);
+        setIdeaId(null);
         refetchIdeas();
       },
     });
