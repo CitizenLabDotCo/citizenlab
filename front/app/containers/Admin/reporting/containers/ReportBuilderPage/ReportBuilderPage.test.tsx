@@ -1,6 +1,8 @@
 import React from 'react';
-import ReportBuilderPage from '.';
+
 import { render, screen, fireEvent, userEvent, act } from 'utils/testUtils/rtl';
+
+import ReportBuilderPage from '.';
 
 // hook mocks
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => true));

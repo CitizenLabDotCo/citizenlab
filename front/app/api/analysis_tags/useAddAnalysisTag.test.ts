@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useAddAnalysisTag from './useAddAnalysisTag';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { tagsData } from './__mocks__/useAnalysisTags';
+import useAddAnalysisTag from './useAddAnalysisTag';
 
 const apiPath = '*analyses/:analysisId/tags';
 

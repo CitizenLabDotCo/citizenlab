@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
 
-// Utils
-import { IntlProvider } from 'react-intl';
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import moment from 'moment';
+import { IntlProvider } from 'react-intl';
+import { SupportedLocale } from 'typings';
 
-// Typings
-import { Locale } from 'typings';
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 type Props = {
-  contentBuilderLocale: Locale | NilOrError;
-  platformLocale: Locale | NilOrError;
+  contentBuilderLocale: SupportedLocale | NilOrError;
+  platformLocale: SupportedLocale | NilOrError;
   children: React.ReactNode;
 };
 

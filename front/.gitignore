@@ -25,6 +25,7 @@ browserstack.err
 .babel-cache/*
 .cache-loader/*
 app/tsconfig.tsbuildinfo
+build-storybook.log
 
 cypress/videos/
 cypress/screenshots/
@@ -37,5 +38,6 @@ storybook-static/*
 
 cypress.env
 
-# Component library src copy for unit tests
-internals/jest/cl2-component-library/*
+# Rollup generated output
+.rollup.cache
+dist

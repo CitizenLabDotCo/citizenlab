@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useUpdateInitiativeStatus from './useUpdateInitiativeStatus';
-import { initiativeStatusesData } from './__mocks__/_mockServer';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { initiativeStatusesData } from './__mocks__/_mockServer';
+import useUpdateInitiativeStatus from './useUpdateInitiativeStatus';
 
 const apiPath = '*/initiatives/:initiativeId/initiative_status_changes';
 const server = setupServer(

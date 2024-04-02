@@ -1,7 +1,9 @@
-import { queryClient } from 'utils/cl-react-query/queryClient';
-import { IPollQuestionParameters } from '../types';
-import questionKeys from '../keys';
 import phasesKeys from 'api/phases/keys';
+
+import { queryClient } from 'utils/cl-react-query/queryClient';
+
+import questionKeys from '../keys';
+import { IPollQuestionParameters } from '../types';
 
 const invalidatePollQuestionsCache = (variables: IPollQuestionParameters) => {
   queryClient.invalidateQueries({

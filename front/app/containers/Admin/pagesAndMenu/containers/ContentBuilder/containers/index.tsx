@@ -1,41 +1,37 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-// styles
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
+import { SerializedNodes } from '@craftjs/core';
+import { isEmpty } from 'lodash-es';
+import { useTheme } from 'styled-components';
+import { SupportedLocale } from 'typings';
 
-// components
-import HomepageBuilderEditModePreview from '../components/HomepageBuilderEditModePreview';
+import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
 
-// craft
-import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
-import Editor from '../components/Editor';
-import HomepageBuilderToolbox from '../components/HomepageBuilderToolbox';
-import HomepageBuilderTopBar from '../components/HomepageBuilderTopBar';
-import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
-import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
-import ContentBuilderSettings from 'components/admin/ContentBuilder/Settings';
-
-// hooks
-import useLocale from 'hooks/useLocale';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocale from 'hooks/useLocale';
 
-// utils
+import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
+import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
+import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
+import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
+import ContentBuilderSettings from 'components/admin/ContentBuilder/Settings';
+import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
+
 import { isNilOrError } from 'utils/helperUtils';
 
-// typings
-import { SerializedNodes } from '@craftjs/core';
-import { Locale } from 'typings';
-import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
-import { isEmpty } from 'lodash-es';
-import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import HomepageBanner from '../components/CraftComponents/HomepageBanner';
 import Projects from '../components/CraftComponents/Projects';
-import { useTheme } from 'styled-components';
-import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
+import Editor from '../components/Editor';
+import HomepageBuilderEditModePreview from '../components/HomepageBuilderEditModePreview';
+import HomepageBuilderToolbox from '../components/HomepageBuilderToolbox';
+import HomepageBuilderTopBar from '../components/HomepageBuilderTopBar';
 
 const HomepageBuilderPage = () => {
   const [previewEnabled, setPreviewEnabled] = useState(false);
-  const [selectedLocale, setSelectedLocale] = useState<Locale | undefined>();
+  const [selectedLocale, setSelectedLocale] = useState<
+    SupportedLocale | undefined
+  >();
 
   const theme = useTheme();
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
@@ -97,7 +93,7 @@ const HomepageBuilderPage = () => {
   const handleSelectedLocaleChange = ({
     locale,
   }: {
-    locale: Locale;
+    locale: SupportedLocale;
     editorData: SerializedNodes;
   }) => {
     setSelectedLocale(locale);

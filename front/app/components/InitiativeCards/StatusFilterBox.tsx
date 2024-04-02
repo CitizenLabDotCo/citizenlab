@@ -1,15 +1,12 @@
 import React, { memo, useCallback } from 'react';
 
-// components
-import StatusFilter from 'components/FilterBoxes/StatusFilter';
-
-// styling
 import styled from 'styled-components';
 
-// typings
+import useInitiativeStatuses from 'api/initiative_statuses/useInitiativeStatuses';
 import { IQueryParameters } from 'api/initiatives/types';
 import useInitiativesFilterCounts from 'api/initiatives_filter_counts/useInitiativesFilterCounts';
-import useInitiativeStatuses from 'api/initiative_statuses/useInitiativeStatuses';
+
+import StatusFilter from 'components/FilterBoxes/StatusFilter';
 
 const Container = styled.div``;
 

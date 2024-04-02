@@ -1,6 +1,5 @@
 import React from 'react';
 
-// styling
 import {
   colors,
   stylingConsts,
@@ -9,12 +8,11 @@ import {
   Icon,
 } from '@citizenlab/cl2-component-library';
 
-// components
-import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
-
-// i18n
-import { useIntl } from 'utils/cl-intl';
 import activeUsersMessages from 'components/admin/GraphCards/ActiveUsersCard/messages';
+
+import { useIntl } from 'utils/cl-intl';
+
+import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
 
 const _ChartWidgetSettings = () => {
   const { formatMessage } = useIntl();

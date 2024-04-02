@@ -155,7 +155,7 @@ class WebApi::V1::UsersController < ApplicationController
     authorize(@user)
 
     save_params = update_params.key?(:custom_field_values) ? { context: :form_submission } : {}
-    if @user.save save_params
+    if @user.save(**save_params)
       SideFxUserService.new.after_update(@user, current_user)
       render json: WebApi::V1::UserSerializer.new(
         @user,

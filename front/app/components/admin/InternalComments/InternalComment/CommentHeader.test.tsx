@@ -1,7 +1,10 @@
 import React from 'react';
-import { screen, render } from 'utils/testUtils/rtl';
-import InternalCommentHeader from './InternalCommentHeader';
+
 import { mockCommentDataAttributes1 } from 'api/internal_comments/__mocks__/useInternalComments';
+
+import { screen, render } from 'utils/testUtils/rtl';
+
+import InternalCommentHeader from './InternalCommentHeader';
 
 describe('CommentHeader', () => {
   it("Shows 'unknown author' when user is deleted (authorId is null)", () => {

@@ -1,5 +1,6 @@
-import { resetOptionsIfNotPersisted, resetCopiedForm } from './utils';
 import { IFlatCustomField } from 'api/custom_fields/types';
+
+import { resetOptionsIfNotPersisted, resetCopiedForm } from './utils';
 
 describe('resetOptionsIfNotPersisted', () => {
   const customFields: IFlatCustomField[] = [

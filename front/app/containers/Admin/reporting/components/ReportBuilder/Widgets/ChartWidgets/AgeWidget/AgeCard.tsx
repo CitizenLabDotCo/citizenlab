@@ -1,25 +1,25 @@
 import React from 'react';
 
-// hooks
-import useLayout from 'containers/Admin/reporting/hooks/useLayout';
+import { Box } from '@citizenlab/cl2-component-library';
+
 import { useUsersByAge } from 'api/graph_data_units';
 
-// components
-import { Box } from '@citizenlab/cl2-component-library';
-import NoData from '../../_shared/NoData';
-import BarChart from 'components/admin/Graphs/BarChart';
+import convertToGraphFormat from 'containers/Admin/dashboard/users/Charts/AgeChart/convertToGraphFormat';
+import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
-// i18n
-import messages from '../messages';
+import {
+  ProjectId,
+  DatesStrings,
+  Layout,
+} from 'components/admin/GraphCards/typings';
+import BarChart from 'components/admin/Graphs/BarChart';
+import { Margin } from 'components/admin/Graphs/typings';
+
 import { useIntl } from 'utils/cl-intl';
 
-// utils
+import NoData from '../../_shared/NoData';
+import messages from '../messages';
 import { serieHasValues, formatLargeNumber } from '../utils';
-import convertToGraphFormat from 'containers/Admin/dashboard/users/Charts/AgeChart/convertToGraphFormat';
-
-// typings
-import { ProjectId, Dates, Layout } from 'components/admin/GraphCards/typings';
-import { Margin } from 'components/admin/Graphs/typings';
 
 const MARGINS: Record<Layout, Margin | undefined> = {
   wide: {
@@ -31,13 +31,13 @@ const MARGINS: Record<Layout, Margin | undefined> = {
   },
 };
 
-type Props = ProjectId & Dates;
+type Props = ProjectId & DatesStrings;
 
-const AgeCard = ({ startAtMoment, endAtMoment, projectId }: Props) => {
-  const usersByBirthyear = useUsersByAge({
-    startAtMoment,
-    endAtMoment,
-    projectId,
+const AgeCard = ({ startAt, endAt, projectId }: Props) => {
+  const { data: usersByBirthyear } = useUsersByAge({
+    project_id: projectId,
+    start_at: startAt,
+    end_at: endAt,
   });
   const { formatMessage } = useIntl();
 

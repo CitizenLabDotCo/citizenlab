@@ -27,17 +27,17 @@ export default defineMessages({
     id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.none',
     defaultMessage: 'None',
   },
-  userField: {
-    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.userField',
-    defaultMessage: 'User field',
+  registrationField: {
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.registrationField',
+    defaultMessage: 'Registration field',
   },
   surveyQuestion: {
     id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion',
     defaultMessage: 'Survey question',
   },
-  groupByUserField: {
-    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupByUserField',
-    defaultMessage: 'Group by user field',
+  groupByRegistrationField: {
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupByRegistrationField',
+    defaultMessage: 'Group by registration field',
   },
   groupBySurveyQuestion: {
     id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupBySurveyQuestion',

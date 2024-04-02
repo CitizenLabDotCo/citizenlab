@@ -1,51 +1,46 @@
-import React from 'react';
+import React, { useContext } from 'react';
+
+import { Box } from '@citizenlab/cl2-component-library';
+import { Element } from '@craftjs/core';
 import moment from 'moment';
 
-// hooks
-import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
+import usePhases from 'api/phases/usePhases';
+import useProjectById from 'api/projects/useProjectById';
 
-// craft
-import { Element } from '@craftjs/core';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
-// components
-import { Box } from '@citizenlab/cl2-component-library';
-
-// shared widgets
-import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
-import Container from 'components/admin/ContentBuilder/Widgets/Container';
-
-// report builder widgets
-import TextMultiloc from '../../Widgets/TextMultiloc';
-import AboutReportWidget from '../../Widgets/AboutReportWidget';
-import TwoColumn from '../../Widgets/TwoColumn';
-import GenderWidget from '../../Widgets/ChartWidgets/GenderWidget';
-import AgeWidget from '../../Widgets/ChartWidgets/AgeWidget';
-import VisitorsWidget from '../../Widgets/ChartWidgets/VisitorsWidget';
-import ActiveUsersWidget from '../../Widgets/ChartWidgets/ActiveUsersWidget';
-import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget';
-import MostReactedIdeasWidget from '../../Widgets/MostReactedIdeasWidget';
-
-// i18n
-import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
-import messages from './messages';
 import { WIDGET_TITLES } from 'containers/Admin/reporting/components/ReportBuilder/Widgets';
-
-// utils
 import getProjectPeriod from 'containers/Admin/reporting/utils/getProjectPeriod';
-import { getTemplateData } from './getTemplateData';
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
+
+import Container from 'components/admin/ContentBuilder/Widgets/Container';
+import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+
+import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
 import { withoutSpacing } from 'utils/textUtils';
-import { SUPPORTED_INPUT_TYPES } from '../../Widgets/SurveyQuestionResultWidget/constants';
+
+import { SURVEY_QUESTION_INPUT_TYPES } from '../../constants';
+import AboutReportWidget from '../../Widgets/AboutReportWidget';
+import ActiveUsersWidget from '../../Widgets/ChartWidgets/ActiveUsersWidget';
+import AgeWidget from '../../Widgets/ChartWidgets/AgeWidget';
+import GenderWidget from '../../Widgets/ChartWidgets/GenderWidget';
+import VisitorsWidget from '../../Widgets/ChartWidgets/VisitorsWidget';
+import MostReactedIdeasWidget from '../../Widgets/MostReactedIdeasWidget';
+import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget';
+import TextMultiloc from '../../Widgets/TextMultiloc';
+import TwoColumn from '../../Widgets/TwoColumn';
+import { TemplateContext } from '../context';
+
+import { getTemplateData } from './getTemplateData';
+import messages from './messages';
 
 export interface Props {
   reportId: string;
   projectId: string;
 }
 
-const ProjectTemplate = ({ reportId, projectId }: Props) => {
+const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
   const { data: project } = useProjectById(projectId);
@@ -63,7 +58,9 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
   if (!project || !phases || !templateData) return null;
 
   const { participationMethod, phaseId } = templateData;
-  if (participationMethod === 'native_survey' && !surveyQuestions) return null;
+  if (participationMethod === 'native_survey' && !surveyQuestions) {
+    return null;
+  }
 
   const hasPhases = phases.data.length > 0;
 
@@ -93,7 +90,7 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
 
   const filteredSurveyQuestions = surveyQuestions
     ? surveyQuestions.data.filter((field) =>
-        SUPPORTED_INPUT_TYPES.has(field.attributes.input_type)
+        SURVEY_QUESTION_INPUT_TYPES.has(field.attributes.input_type)
       )
     : undefined;
 
@@ -181,6 +178,16 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
       />
     </Element>
   );
+};
+
+const ProjectTemplate = ({ reportId, projectId }: Props) => {
+  const enabled = useContext(TemplateContext);
+
+  if (enabled) {
+    return <ProjectTemplateContent reportId={reportId} projectId={projectId} />;
+  } else {
+    return <Element id="project-report-template" is={Box} canvas />;
+  }
 };
 
 export default ProjectTemplate;

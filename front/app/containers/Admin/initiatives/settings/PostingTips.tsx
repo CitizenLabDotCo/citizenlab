@@ -1,19 +1,18 @@
 import React from 'react';
 
-// components
+import { Multiloc, SupportedLocale } from 'typings';
+
 import {
   SectionField,
   SubSectionTitleWithDescription,
 } from 'components/admin/Section';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import { StyledSectionDescription } from '.';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
+
 import messages from '../messages';
 
-// typings
-import { Multiloc, Locale } from 'typings';
+import { StyledSectionDescription } from '.';
 
 interface Props {
   postingTips: Multiloc;
@@ -23,7 +22,7 @@ interface Props {
 export default ({ postingTips, onChangePostingTips }: Props) => {
   const handlePostingTipsOnChange = (
     valueMultiloc: Multiloc,
-    locale: Locale | undefined
+    locale: SupportedLocale | undefined
   ) => {
     if (locale) {
       onChangePostingTips(valueMultiloc);

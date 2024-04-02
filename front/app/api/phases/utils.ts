@@ -1,11 +1,14 @@
+import { first, last, sortBy } from 'lodash-es';
+import { SupportedLocale } from 'typings';
+
+import { IIdea } from 'api/ideas/types';
+import { IProjectData } from 'api/projects/types';
+
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { first, last, sortBy } from 'lodash-es';
-import { IPhaseData } from './types';
-import { IProjectData } from 'api/projects/types';
-import { IIdea } from 'api/ideas/types';
-import { Locale } from 'typings';
 import { hasTextInSpecifiedLocale } from 'utils/locale';
+
+import { IPhaseData } from './types';
 
 export function canContainIdeas(phase: IPhaseData) {
   const pm = phase.attributes.participation_method;
@@ -119,7 +122,7 @@ export const isIdeaInParticipationContext = (
 // no end date and only one phase, we don't show the multiple phase ui (timeline)
 export const hideTimelineUI = (
   phasesData: IPhaseData[] | undefined,
-  currentLocale: Locale
+  currentLocale: SupportedLocale
 ) => {
   const hasOnePhase = phasesData?.length === 1;
   const phaseDescription = hasOnePhase

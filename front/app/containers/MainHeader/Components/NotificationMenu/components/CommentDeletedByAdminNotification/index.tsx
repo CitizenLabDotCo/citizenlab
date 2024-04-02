@@ -1,8 +1,14 @@
 import React from 'react';
+
+import { RouteType } from 'routes';
+
 import { ICommentDeletedByAdminNotificationData } from 'api/notifications/types';
-import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+
 import T from 'components/T';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../../messages';
 import NotificationWrapper from '../NotificationWrapper';
 
 interface Props {
@@ -11,7 +17,7 @@ interface Props {
 
 const mapPostTypeToLink = (
   notification: ICommentDeletedByAdminNotificationData
-): string => {
+): RouteType => {
   switch (notification.attributes.post_type) {
     case 'Idea':
       return `/ideas/${notification.attributes.post_slug}`;

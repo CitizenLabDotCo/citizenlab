@@ -6,51 +6,45 @@ import React, {
   Suspense,
   ChangeEvent,
 } from 'react';
-import { isString, isEmpty } from 'lodash-es';
-import { getBase64FromFile } from 'utils/fileUtils';
 
-// components
-import Error from 'components/UI/Error';
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
-import Tabs from 'components/UI/Tabs';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Section, SectionField } from 'components/admin/Section';
-import HelmetIntl from 'components/HelmetIntl';
+import { isString, isEmpty } from 'lodash-es';
+import styled from 'styled-components';
+import { SupportedLocale, IOption } from 'typings';
 
-const InviteUsersWithSeatsModal = lazy(
-  () => import('components/admin/SeatBasedBilling/InviteUsersWithSeatsModal')
-);
-import TemplateTab from './TemplateTab';
-import ManualTab from './ManualTab';
-const InvitationOptions = lazy(() => import('./InvitationOptions'));
-
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useExceedsSeats from 'hooks/useExceedsSeats';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
-// services
 import {
   IInviteError,
   INewBulkInvite,
   IInvitesNewSeats,
 } from 'api/invites/types';
-
-import useBulkInviteEmails from 'api/invites/useBulkInviteEmails';
 import useBulkInviteCountNewSeatsEmails from 'api/invites/useBulkInviteCountNewSeatsEmails';
-import useBulkInviteXLSX from 'api/invites/useBulkInviteXLSX';
 import useBulkInviteCountNewSeatsXLSX from 'api/invites/useBulkInviteCountNewSeatsXLSX';
+import useBulkInviteEmails from 'api/invites/useBulkInviteEmails';
+import useBulkInviteXLSX from 'api/invites/useBulkInviteXLSX';
 
-// i18n
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useExceedsSeats from 'hooks/useExceedsSeats';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { Section, SectionField } from 'components/admin/Section';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
+import HelmetIntl from 'components/HelmetIntl';
+import Error from 'components/UI/Error';
+import Tabs from 'components/UI/Tabs';
+import Warning from 'components/UI/Warning';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { getBase64FromFile } from 'utils/fileUtils';
+
 import messages from '../messages';
 
-// styling
-import styled from 'styled-components';
+import ManualTab from './ManualTab';
+import TemplateTab from './TemplateTab';
 
-// typings
-import { Locale, IOption } from 'typings';
-import Warning from 'components/UI/Warning';
+const InviteUsersWithSeatsModal = lazy(
+  () => import('components/admin/SeatBasedBilling/InviteUsersWithSeatsModal')
+);
+const InvitationOptions = lazy(() => import('./InvitationOptions'));
 
 const StyledTabs = styled(Tabs)`
   margin-bottom: 35px;
@@ -80,7 +74,9 @@ const Invitations = () => {
     useState<boolean>(false);
   const [inviteesWillHaveModeratorRights, setInviteesWillHaveModeratorRights] =
     useState<boolean>(false);
-  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
+  const [selectedLocale, setSelectedLocale] = useState<SupportedLocale | null>(
+    null
+  );
   const [selectedProjects, setSelectedProjects] = useState<IOption[] | null>(
     null
   );
@@ -166,7 +162,7 @@ const Invitations = () => {
     setInviteesWillHaveModeratorRights(!inviteesWillHaveModeratorRights);
   };
 
-  const handleLocaleOnChange = (selectedLocale: Locale) => {
+  const handleLocaleOnChange = (selectedLocale: SupportedLocale) => {
     resetErrorAndSuccessState();
     setSelectedLocale(selectedLocale);
   };

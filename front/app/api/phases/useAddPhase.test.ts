@@ -1,14 +1,12 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useAddPhase from './useAddPhase';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { phasesData } from './__mocks__/_mockServer';
 
+import { phasesData } from './__mocks__/_mockServer';
 import { IUpdatedPhaseProperties } from './types';
+import useAddPhase from './useAddPhase';
 
 const phasesMutationData: IUpdatedPhaseProperties = {
   commenting_enabled: false,

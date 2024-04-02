@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from 'react';
 
-// hooks
+import { Box, Badge, colors } from '@citizenlab/cl2-component-library';
 import { useLocation } from 'react-router-dom';
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import { ITab } from 'typings';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-// components
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import NavigationTabs, {
   Tab,
   TabsPageLayout,
 } from 'components/admin/NavigationTabs';
-import { Box, Badge, colors } from '@citizenlab/cl2-component-library';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
-// utils
-import { isNilOrError, isTopBarNavActive } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
+import { isNilOrError, isTopBarNavActive } from 'utils/helperUtils';
+
+import messages from '../messages';
 
 interface Props {
   showReportBuilderTab: boolean;
@@ -42,13 +41,13 @@ const DashboardTabs = ({
   const [redirected, setRedirected] = useState(false);
 
   const [tabs] = useState(() => {
-    const reportBuilderTab = {
+    const reportBuilderTab: ITab = {
       label: formatMessage(messages.reportBuilder),
       url: '/admin/reporting/report-builder',
       name: 'report_builder',
     };
 
-    const projectReportsTab = {
+    const projectReportsTab: ITab = {
       label: formatMessage(messages.tabReports),
       url: '/admin/reporting/reports',
       name: 'project_reports',
@@ -82,7 +81,7 @@ const DashboardTabs = ({
             badge={
               name === 'project_reports' ? (
                 <Box display="inline" ml="12px">
-                  <Badge color={colors.background}>
+                  <Badge color={colors.textSecondary} className="inverse">
                     {formatMessage(messages.deprecated)}
                   </Badge>
                 </Box>

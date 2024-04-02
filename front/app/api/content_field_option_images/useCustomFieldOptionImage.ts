@@ -1,8 +1,10 @@
 import { useQuery, useQueries } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
-import { CustomFieldOptionKeys, ICustomFieldOptionImage } from './types';
+
 import customFieldOptionKeys from './keys';
+import { CustomFieldOptionKeys, ICustomFieldOptionImage } from './types';
 
 const fetchCustomFieldOptionImage = ({ imageId }: { imageId?: string }) =>
   fetcher<ICustomFieldOptionImage>({

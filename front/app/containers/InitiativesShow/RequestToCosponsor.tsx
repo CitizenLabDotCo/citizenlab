@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   Box,
   Button,
@@ -6,15 +7,19 @@ import {
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { StatusHeading, StatusExplanation } from './ReactionControl/Status';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAcceptInitiativeCosponsorshipInvite from 'api/cosponsors_initiatives/useAcceptInitiativeCosponsorshipInvite';
-import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useAuthUser from 'api/me/useAuthUser';
-import BorderContainer from './BorderContainer';
+
+import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
+
 import { useIntl } from 'utils/cl-intl';
+
+import BorderContainer from './BorderContainer';
 import messages from './messages';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { StatusHeading, StatusExplanation } from './ReactionControl/Status';
 
 interface Props {
   initiativeId: string;

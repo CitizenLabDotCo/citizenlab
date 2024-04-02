@@ -1,11 +1,14 @@
 import React, { useRef, KeyboardEvent } from 'react';
-import { ScreenReaderOnly } from 'utils/a11y';
-import styled from 'styled-components';
+
 import { fontSizes, colors, media } from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
-import { FormattedMessage } from 'utils/cl-intl';
 import { MessageDescriptor } from 'react-intl';
+import styled from 'styled-components';
+
 import HorizontalScroll from 'components/HorizontalScroll';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
 
 const Tab = styled.button<{ active: boolean }>`
   box-sizing: content-box;

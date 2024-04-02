@@ -1,12 +1,12 @@
 import React, { memo } from 'react';
+
 import { IVotingResultsNotificationData } from 'api/notifications/types';
 
-// i18n
-import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 
-// components
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../../messages';
 import NotificationWrapper from '../NotificationWrapper';
 
 type Props = {

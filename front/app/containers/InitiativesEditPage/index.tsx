@@ -1,33 +1,31 @@
 import React, { useEffect } from 'react';
 
-// libraries
-import clHistory from 'utils/cl-router/history';
-
-// services
-import { isAdmin, isSuperAdmin, isRegularUser } from 'utils/permissions/roles';
-
-// resources
-import HasPermission from 'components/HasPermission';
+import { Spinner, media } from '@citizenlab/cl2-component-library';
 import { PreviousPathnameContext } from 'context';
-
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
 import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
+import { IInitiative } from 'api/initiatives/types';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
-
-// components
-import PageNotFound from 'components/PageNotFound';
-import InitiativesEditMeta from './InitiativesEditMeta';
-import InitiativesEditFormWrapper from './InitiativesEditFormWrapper';
-import PageLayout from 'components/InitiativeForm/PageLayout';
-
-// style
-import { media } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 import useAuthUser from 'api/me/useAuthUser';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
+
+import PageLayout from 'components/InitiativeForm/PageLayout';
+import PageNotFound from 'components/PageNotFound';
+import Unauthorized from 'components/Unauthorized';
+import VerticalCenterer from 'components/VerticalCenterer';
+
+import clHistory from 'utils/cl-router/history';
+import { isUnauthorizedRQ } from 'utils/errorUtils';
+import { usePermission } from 'utils/permissions';
+import { isAdmin, isSuperAdmin, isRegularUser } from 'utils/permissions/roles';
+
+import InitiativesEditFormWrapper from './InitiativesEditFormWrapper';
+import InitiativesEditMeta from './InitiativesEditMeta';
 
 const StyledInitiativesEditFormWrapper = styled(InitiativesEditFormWrapper)`
   width: 100%;
@@ -38,16 +36,22 @@ const StyledInitiativesEditFormWrapper = styled(InitiativesEditFormWrapper)`
   `}
 `;
 
-const InitiativesEditPage = () => {
-  const { initiativeId } = useParams() as {
-    initiativeId: string;
-  };
-  const { data: initiative } = useInitiativeById(initiativeId);
+interface Props {
+  initiative: IInitiative;
+}
+
+const InitiativesEditPage = ({ initiative }: Props) => {
+  const initiativeId = initiative.data.id;
   const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
   const { data: initiativeImages } = useInitiativeImages(initiativeId);
   const { data: authUser } = useAuthUser();
   const locale = useLocale();
   const previousPathName = React.useContext(PreviousPathnameContext);
+  const canEditInitiative = usePermission({
+    action: 'edit',
+    item: initiative.data,
+    context: initiative,
+  });
 
   useEffect(() => {
     const isPrivilegedUser =
@@ -61,19 +65,20 @@ const InitiativesEditPage = () => {
     }
   }, [authUser, previousPathName]);
 
-  if (!authUser || !initiative) {
+  if (!canEditInitiative) return <Unauthorized />;
+
+  if (!authUser) {
     return null;
   }
-
   const onPublished = () => {
     clHistory.push(`/initiatives/${initiative.data.attributes.slug}`);
   };
 
   return (
-    <HasPermission item={initiative.data} action="edit" context={initiative}>
+    <>
       <InitiativesEditMeta />
       <PageLayout
-        isAdmin={isAdmin({ data: authUser.data })}
+        isAdmin={isAdmin(authUser)}
         className="e2e-initiative-edit-page"
       >
         <StyledInitiativesEditFormWrapper
@@ -84,16 +89,36 @@ const InitiativesEditPage = () => {
           initiativeFiles={initiativeFiles}
         />
       </PageLayout>
-    </HasPermission>
+    </>
   );
 };
 
 export default () => {
+  const { initiativeId } = useParams() as {
+    initiativeId: string;
+  };
   const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
+  const { data: initiative, status, error } = useInitiativeById(initiativeId);
+
+  if (status === 'loading') {
+    return (
+      <VerticalCenterer>
+        <Spinner />
+      </VerticalCenterer>
+    );
+  }
 
   if (!initiativesEnabled) {
     return <PageNotFound />;
   }
 
-  return <InitiativesEditPage />;
+  if (status === 'error') {
+    if (isUnauthorizedRQ(error)) {
+      return <Unauthorized />;
+    }
+
+    return <PageNotFound />;
+  }
+
+  return <InitiativesEditPage initiative={initiative} />;
 };

@@ -72,10 +72,12 @@ describe('Idea template', () => {
     cy.apiRemoveUser(userId);
   });
 
+  beforeEach(() => {
+    cy.setAdminLoginCookie();
+  });
+
   describe('Global report builder', () => {
     it('should create an idea template', () => {
-      cy.setAdminLoginCookie();
-
       // Create report from template
       cy.visit(`/admin/reporting/report-builder`);
       cy.get('#e2e-create-report-button').click();
@@ -107,47 +109,50 @@ describe('Idea template', () => {
     });
 
     it('creates a report from a template and allows editing it', () => {
-      cy.setAdminLoginCookie();
       cy.apiCreateReportBuilder().then((report) => {
         const reportId = report.body.data.id;
         cy.visit(
           `/admin/reporting/report-builder/${reportId}/editor?templateProjectId=${projectId}`
         );
 
-        cy.wait(1000);
+        cy.wait(2000);
 
         // Edit text
         cy.get('.e2e-text-box').eq(2).click('center');
         cy.get('.ql-editor').click();
         const text = randomString();
 
-        cy.wait(1000);
+        cy.wait(2000);
 
         cy.get('.ql-editor').clear().type(text, { force: true });
-
-        cy.wait(1000);
 
         // Expect this to be visible on screen
         cy.get('.e2e-text-box').eq(2).should('contain.text', text);
 
-        cy.wait(1000);
+        cy.wait(2000);
 
         // Switch locale
-        cy.get('#e2e-report-builder-topbar .e2e-localeswitcher.nl-BE').click();
+        cy.get('#e2e-locale-select').select('nl-BE');
 
         // Validate that text for other locale is present
         cy.get('.e2e-text-box')
           .eq(2)
           .should('contain.text', 'Samenvatting van het verslag');
 
+        cy.wait(2000);
+
         // Switch back
-        cy.get('#e2e-report-builder-topbar .e2e-localeswitcher.en').click();
+        cy.get('#e2e-locale-select').select('en');
 
         // Previous edited text should still be there
         cy.get('.e2e-text-box').eq(2).should('contain.text', text);
 
         // Save report
+        cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
+          'saveReportLayout'
+        );
         cy.get('#e2e-content-builder-topbar-save').click();
+        cy.wait('@saveReportLayout');
 
         // Refresh page
         cy.reload();
@@ -159,12 +164,39 @@ describe('Idea template', () => {
         cy.apiRemoveReportBuilder(reportId);
       });
     });
+
+    it('autosaves report created from template', () => {
+      cy.apiCreateReportBuilder().then((report) => {
+        const reportId = report.body.data.id;
+
+        cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
+          'saveReportLayout'
+        );
+
+        cy.visit(
+          `/admin/reporting/report-builder/${reportId}/editor?templateProjectId=${projectId}`
+        );
+
+        // This tests that initially, the save button indicates that the report is unsaved (does not have svg icon)
+        cy.get('#e2e-content-builder-topbar-save > button').should('exist');
+        cy.get('#e2e-content-builder-topbar-save > button > svg').should(
+          'not.exist'
+        );
+
+        // Then, when we intercept the autosave...
+        cy.wait(2000);
+        cy.wait('@saveReportLayout');
+
+        // We expect the save button to indicate that the report is saved (has svg icon)
+        cy.get('#e2e-content-builder-topbar-save > button > svg').should(
+          'exist'
+        );
+      });
+    });
   });
 
   describe('Phase report builder', () => {
     it('should create an idea template', () => {
-      cy.setAdminLoginCookie();
-
       // Create report inside of phase
       cy.visit(`/en/admin/projects/${projectId}/phases/${phaseId}/report`);
       cy.get('#e2e-create-report-button').click();
@@ -193,6 +225,34 @@ describe('Idea template', () => {
 
       // Ensure we're back to the empty state
       cy.get('#e2e-create-report-button').should('exist');
+    });
+
+    it('autosaves report created from template', () => {
+      cy.apiCreateReportBuilder(phaseId).then((report) => {
+        const reportId = report.body.data.id;
+
+        cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
+          'saveReportLayout'
+        );
+        cy.visit(
+          `/admin/reporting/report-builder/${reportId}/editor?templatePhaseId=${phaseId}`
+        );
+
+        // This tests that initially, the save button indicates that the report is unsaved (does not have svg icon)
+        cy.get('#e2e-content-builder-topbar-save > button').should('exist');
+        cy.get('#e2e-content-builder-topbar-save > button > svg').should(
+          'not.exist'
+        );
+
+        // Then, when we intercept the autosave...
+        cy.wait(2000);
+        cy.wait('@saveReportLayout');
+
+        // We expect the save button to indicate that the report is saved (has svg icon)
+        cy.get('#e2e-content-builder-topbar-save > button > svg').should(
+          'exist'
+        );
+      });
     });
   });
 });

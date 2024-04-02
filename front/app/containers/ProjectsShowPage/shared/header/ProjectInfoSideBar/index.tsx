@@ -5,24 +5,7 @@ import React, {
   useState,
   FormEvent,
 } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import moment from 'moment';
 
-// hooks
-import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
-import useEvents from 'api/events/useEvents';
-import useAuthUser from 'api/me/useAuthUser';
-import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
-import { isAdmin } from 'utils/permissions/roles';
-
-// services
-import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
-import { IPhaseData } from 'api/phases/types';
-
-// components
-import ProjectSharingModal from '../ProjectSharingModal';
-import ProjectActionButtons from '../ProjectActionButtons';
 import {
   Box,
   Icon,
@@ -32,23 +15,32 @@ import {
   isRtl,
   media,
 } from '@citizenlab/cl2-component-library';
+import moment from 'moment';
+import styled from 'styled-components';
 
-// utils
-import { pastPresentOrFuture } from 'utils/dateUtils';
-import { scrollToElement } from 'utils/scroll';
-import { hasEmbeddedSurvey, hasNativeSurvey } from '../utils';
+import useEvents from 'api/events/useEvents';
+import useAuthUser from 'api/me/useAuthUser';
+import { IPhaseData } from 'api/phases/types';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
+
+import messages from 'containers/ProjectsShowPage/messages';
 import setPhaseUrl from 'containers/ProjectsShowPage/timeline/setPhaseURL';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from 'containers/ProjectsShowPage/messages';
-import { getInputTermMessage } from 'utils/i18n';
-import FormattedBudget from 'utils/currency/FormattedBudget';
-
-// style
-import styled from 'styled-components';
 import Link from 'utils/cl-router/Link';
-import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
+import FormattedBudget from 'utils/currency/FormattedBudget';
+import { pastPresentOrFuture } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { getInputTermMessage } from 'utils/i18n';
+import { isAdmin } from 'utils/permissions/roles';
+import { scrollToElement } from 'utils/scroll';
+
+import ProjectActionButtons from '../ProjectActionButtons';
+import ProjectSharingModal from '../ProjectSharingModal';
+import { hasEmbeddedSurvey, hasNativeSurvey } from '../utils';
 
 const Container = styled.div``;
 
@@ -249,9 +241,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                         values={{
                           accessRightsLink: (
                             <Link
-                              to={`${adminProjectsProjectPath(
-                                projectId
-                              )}/settings/access-rights`}
+                              to={`/admin/projects/${projectId}/settings/access-rights`}
                             >
                               <FormattedMessage {...messages.accessRights} />
                             </Link>

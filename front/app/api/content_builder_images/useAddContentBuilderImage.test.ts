@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useAddContentBuilderImage from './useAddContentBuilderImage';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { contentBuilderImageData } from './__mocks__/contentBuilderImage';
+import useAddContentBuilderImage from './useAddContentBuilderImage';
 
 const apiPath = '*content_builder_layout_images';
 

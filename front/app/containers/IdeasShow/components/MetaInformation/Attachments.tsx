@@ -1,17 +1,20 @@
 import React from 'react';
+
+import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
-import Attachment from './Attachment';
+
+import useIdeaFiles from 'api/idea_files/useIdeaFiles';
+
 import {
   Header,
   Item,
 } from 'containers/IdeasShow/components/MetaInformation/MetaInfoStyles';
+
+import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import Attachment from './Attachment';
 import messages from './messages';
-import useIdeaFiles from 'api/idea_files/useIdeaFiles';
 
 const Container = styled.div``;
 const StyledAttachment = styled(Attachment)<{ isLastItem: boolean }>`

@@ -1,13 +1,12 @@
 import React from 'react';
 
-// api
-import useIdeas from 'api/ideas/useIdeas';
-
-// components
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import VotingResultCard from './VotingResultCard';
-import { VotingMethod } from 'api/phases/types';
+
 import { IIdeas } from 'api/ideas/types';
+import useIdeas from 'api/ideas/useIdeas';
+import { VotingMethod } from 'api/phases/types';
+
+import VotingResultCard from './VotingResultCard';
 
 interface Props {
   phaseId: string;

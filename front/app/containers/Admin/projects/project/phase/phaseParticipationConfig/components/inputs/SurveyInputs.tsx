@@ -1,18 +1,17 @@
 import React from 'react';
 
-// components
 import { Input, IconTooltip, Box } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import { StyledA, StyledWarning, SurveyServiceRadio } from '../shared/styling';
 
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../../../../messages';
-
-// typings
-import { ApiErrors } from '../..';
 import { TSurveyService } from 'api/phases/types';
+
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import Error from 'components/UI/Error';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import { ApiErrors } from '../..';
+import messages from '../../../../messages';
+import { StyledA, StyledWarning, SurveyServiceRadio } from '../shared/styling';
 
 interface Props {
   survey_service: TSurveyService | null | undefined;

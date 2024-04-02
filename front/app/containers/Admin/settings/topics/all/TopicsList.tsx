@@ -1,12 +1,11 @@
 import React from 'react';
 
-// components
-import { List } from 'components/admin/ResourceList';
-import DefaultTopicRow from './DefaultTopicRow';
-import CustomTopicRow from './CustomTopicRow';
-
-// typings
 import { ITopicData } from 'api/topics/types';
+
+import { List } from 'components/admin/ResourceList';
+
+import CustomTopicRow from './CustomTopicRow';
+import DefaultTopicRow from './DefaultTopicRow';
 
 interface Props {
   topics: ITopicData[];

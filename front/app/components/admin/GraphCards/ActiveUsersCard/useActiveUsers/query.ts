@@ -1,4 +1,5 @@
-// utils
+import { Query, QuerySchema } from 'api/analytics/types';
+
 import {
   getProjectFilter,
   getDateFilter,
@@ -6,8 +7,6 @@ import {
   getInterval,
 } from 'components/admin/GraphCards/_utils/query';
 
-// typings
-import { Query, QuerySchema } from 'api/analytics/types';
 import { QueryParameters } from './typings';
 
 export const query = ({

@@ -1,35 +1,33 @@
 import React, { memo } from 'react';
 
-import { isNilOrError } from 'utils/helperUtils';
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
+import { Box, media, isRtl } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
-// components
+import useAuthUser from 'api/me/useAuthUser';
+import useProjectById from 'api/projects/useProjectById';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
+import messages from 'containers/ProjectsShowPage/messages';
+import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
+
 import ContentContainer from 'components/ContentContainer';
-import ProjectInfo from './ProjectInfo';
-import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
-import Button from 'components/UI/Button';
+import FollowUnfollow from 'components/FollowUnfollow';
 import Outlet from 'components/Outlet';
-import ProjectFolderGoBackButton from './ProjectFolderGoBackButton';
 import {
   HeaderImage,
   HeaderImageContainer,
 } from 'components/ProjectableHeader';
-import FollowUnfollow from 'components/FollowUnfollow';
-import { Box, media, isRtl } from '@citizenlab/cl2-component-library';
+import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
+import Button from 'components/UI/Button';
 
-// hooks
-import useProjectById from 'api/projects/useProjectById';
-import useAuthUser from 'api/me/useAuthUser';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
-// i18n
-import messages from 'containers/ProjectsShowPage/messages';
-
-// style
-import styled from 'styled-components';
-import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
+import ProjectFolderGoBackButton from './ProjectFolderGoBackButton';
+import ProjectInfo from './ProjectInfo';
 
 const Container = styled.div`
   padding-top: 30px;

@@ -1,4 +1,5 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
+
 import { IIdeasByTopicParams } from './types';
 
 const baseKey = { type: 'ideas_by_topic' };

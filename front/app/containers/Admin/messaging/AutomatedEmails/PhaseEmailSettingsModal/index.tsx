@@ -1,11 +1,17 @@
 import React from 'react';
-import Modal from 'components/UI/Modal';
+
 import { Title, Button, Text, Box } from '@citizenlab/cl2-component-library';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-import { CampaignData } from '../types';
-import Warning from 'components/UI/Warning';
+
 import useLocalize from 'hooks/useLocalize';
+
+import Modal from 'components/UI/Modal';
+import Warning from 'components/UI/Warning';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import { CampaignData } from '../types';
+
+import messages from './messages';
 
 type Props = {
   open: boolean;

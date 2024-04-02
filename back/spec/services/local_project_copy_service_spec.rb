@@ -120,7 +120,8 @@ describe LocalProjectCopyService do
     end
 
     it 'copies associated maps configs and layers' do
-      map_config = create(:map_config, project_id: open_ended_project.id, tile_provider: 'https://groovy_map_tiles')
+      map_config = create(:map_config, mappable: open_ended_project, tile_provider: 'https://groovy_map_tiles')
+
       create_list(:layer, 2, map_config_id: map_config.id)
       copied_project = service.copy(open_ended_project)
 
@@ -414,6 +415,29 @@ describe LocalProjectCopyService do
             'linkedNodes' => {}
           }
         })
+      end
+    end
+
+    describe 'when source project has non-zero baskets_count or votes_count' do
+      let!(:source_project) { create(:project, baskets_count: 42, votes_count: 53) }
+
+      it 'sets baskets_count and votes_count to zero' do
+        copied_project = service.copy(source_project)
+
+        expect(copied_project.baskets_count).to eq 0
+        expect(copied_project.votes_count).to eq 0
+      end
+    end
+
+    describe 'when source project has phase with non-zero baskets_count or votes_count' do
+      let(:phase) { create(:budgeting_phase, baskets_count: 42, votes_count: 53) }
+      let!(:source_project) { create(:project, phases: [phase]) }
+
+      it 'sets baskets_count and votes_count to zero' do
+        copied_project = service.copy(source_project)
+
+        expect(copied_project.phases.first.baskets_count).to eq 0
+        expect(copied_project.phases.first.votes_count).to eq 0
       end
     end
   end

@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useUpdateReport from './useUpdateReport';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { reportsData } from './__mocks__/_mockServer';
+import useUpdateReport from './useUpdateReport';
 
 const apiPath = '*reports/:id';
 

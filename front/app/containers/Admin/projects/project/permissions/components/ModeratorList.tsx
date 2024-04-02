@@ -1,10 +1,15 @@
 import React, { memo } from 'react';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import { List } from 'components/admin/ResourceList';
-import ModeratorListRow from './ModeratorListRow';
-import useProjectModerators from 'api/project_moderators/useProjectModerators';
+
 import { Box } from '@citizenlab/cl2-component-library';
+
+import useProjectModerators from 'api/project_moderators/useProjectModerators';
+
+import { List } from 'components/admin/ResourceList';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
+import ModeratorListRow from './ModeratorListRow';
 
 interface Props {
   projectId: string;

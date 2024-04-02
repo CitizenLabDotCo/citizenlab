@@ -1,14 +1,14 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useReorderMapLayer from './useReorderMapLayer';
-import { mapLayerData } from './__mocks__/mapLayerData';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = '*projects/:projectId/map_config/layers/:id/reorder';
+import { mapLayerData } from './__mocks__/mapLayerData';
+import useReorderMapLayer from './useReorderMapLayer';
+
+const apiPath = '*/map_configs/:mapConfigId/layers/:id/reorder';
+
 const server = setupServer(
   rest.patch(apiPath, (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json({ data: mapLayerData }));
@@ -28,7 +28,7 @@ describe('useReorderMapLayer', () => {
       result.current.mutate({
         id: 'id',
         ordering: 1,
-        projectId: 'projectId',
+        mapConfigId: 'mapConfigId',
       });
     });
 
@@ -50,7 +50,7 @@ describe('useReorderMapLayer', () => {
       result.current.mutate({
         id: 'id',
         ordering: 1,
-        projectId: 'projectId',
+        mapConfigId: 'mapConfigId',
       });
     });
     await waitFor(() => expect(result.current.isError).toBe(true));

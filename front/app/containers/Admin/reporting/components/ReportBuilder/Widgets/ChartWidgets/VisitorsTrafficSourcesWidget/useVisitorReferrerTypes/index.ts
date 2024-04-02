@@ -1,24 +1,22 @@
-// i18n
-import { useIntl } from 'utils/cl-intl';
+import { useVisitorsTrafficSources } from 'api/graph_data_units';
+
+import { ProjectId, DatesStrings } from 'components/admin/GraphCards/typings';
+import { parsePieData } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/parse';
 import { getTranslations } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/translations';
 
-// parse
-import { parsePieData } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/parse';
+import { useIntl } from 'utils/cl-intl';
 
-// typings
-import { QueryParameters } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/typings';
-
-import { useVisitorsTrafficSources } from 'api/graph_data_units';
+type QueryParameters = ProjectId & DatesStrings;
 
 export default function useVisitorsReferrerTypes({
   projectId,
-  startAtMoment,
-  endAtMoment,
+  startAt,
+  endAt,
 }: QueryParameters) {
-  const analytics = useVisitorsTrafficSources({
-    projectId,
-    startAtMoment,
-    endAtMoment,
+  const { data: analytics } = useVisitorsTrafficSources({
+    project_id: projectId,
+    start_at: startAt,
+    end_at: endAt,
   });
 
   const { formatMessage } = useIntl();

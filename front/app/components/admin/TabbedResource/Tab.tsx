@@ -1,13 +1,15 @@
+import React from 'react';
+
 import {
   Box,
   StatusLabel,
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import React from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { ITab } from 'typings';
+
 import Link from 'utils/cl-router/Link';
 
 // very similar to front/app/components/admin/NavigationTabs/Tab.tsx

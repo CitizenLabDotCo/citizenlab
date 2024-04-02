@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Toggle,
   IconTooltip,
@@ -8,32 +7,32 @@ import {
   Box,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
+import { Multiloc } from 'typings';
+
+import { VotingMethod } from 'api/phases/types';
+
+import { StyledSectionDescription } from 'containers/Admin/initiatives/settings';
+
 import {
   SectionField,
   SubSectionTitleWithDescription,
 } from 'components/admin/Section';
 import Error from 'components/UI/Error';
+import Warning from 'components/UI/Warning';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+
+import { ApiErrors } from '../../..';
+import messages from '../../../../../messages';
 import DefaultViewPicker from '../../shared/DefaultViewPicker';
 import { ToggleRow } from '../../shared/styling';
-import VotingMethodSelector from './VotingMethodSelector';
+
 import BudgetingInputs from './votingMethodInputs/BudgetingInputs';
-import { StyledSectionDescription } from 'containers/Admin/initiatives/settings';
 import MultipleVotingInputs from './votingMethodInputs/MultipleVotingInputs';
-import Link from 'utils/cl-router/Link';
-import Warning from 'components/UI/Warning';
 import SingleVotingInputs from './votingMethodInputs/SingleVotingInputs';
-
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../../../../../messages';
-
-// typings
-import { ApiErrors } from '../../..';
-import { Multiloc } from 'typings';
-
-// hooks
-import { useLocation } from 'react-router-dom';
-import { VotingMethod } from 'api/phases/types';
+import VotingMethodSelector from './VotingMethodSelector';
 
 export interface VotingInputsProps {
   voting_method: VotingMethod | null | undefined;
@@ -83,7 +82,10 @@ export default ({
   handleVotingMethodOnChange,
 }: VotingInputsProps) => {
   const { formatMessage } = useIntl();
-  const { pathname } = useLocation();
+  const { projectId, phaseId } = useParams() as {
+    projectId: string;
+    phaseId: string;
+  };
 
   const getVoteTypeDescription = () => {
     switch (voting_method) {
@@ -135,7 +137,10 @@ export default ({
             {...messages.optionsToVoteOnDescription}
             values={{
               optionsPageLink: (
-                <Link to={`${pathname}/ideas`} rel="noreferrer">
+                <Link
+                  to={`/admin/projects/${projectId}/phases/${phaseId}/ideas`}
+                  rel="noreferrer"
+                >
                   <FormattedMessage {...messages.optionsPageText} />
                 </Link>
               ),

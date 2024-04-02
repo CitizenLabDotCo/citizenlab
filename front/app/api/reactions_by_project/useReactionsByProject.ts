@@ -1,12 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
+import reactionsByProjectKeys from './keys';
 import {
   IReactionsByProject,
   ReactionsByProjectKeys,
   IReactionsByProjectParams,
 } from './types';
-import reactionsByProjectKeys from './keys';
 
 const fetchReactionsByProject = (params: IReactionsByProjectParams) =>
   fetcher<IReactionsByProject>({

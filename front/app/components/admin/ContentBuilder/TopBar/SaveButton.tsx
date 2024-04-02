@@ -1,30 +1,19 @@
 import React from 'react';
 
-// components
-import Button, { Props as ButtonProps } from 'components/UI/Button';
-
-// styling
 import { colors } from '@citizenlab/cl2-component-library';
 
-// i18n
-import messages from './messages';
+import Button, { Props as ButtonProps } from 'components/UI/Button';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
-interface Props {
-  disabled: boolean;
-  processing: boolean;
-  bgColor?: string;
-  icon?: ButtonProps['icon'];
-  onClick: () => void;
-}
+import messages from './messages';
 
-const SaveButton = ({ bgColor = colors.primary, icon, ...props }: Props) => (
+const SaveButton = ({ bgColor = colors.primary, ...props }: ButtonProps) => (
   <Button
     {...props}
     id="e2e-content-builder-topbar-save"
     buttonStyle="primary"
     bgColor={bgColor}
-    icon={icon}
     data-testid="contentBuilderTopBarSaveButton"
   >
     <FormattedMessage {...messages.contentBuilderSave} />

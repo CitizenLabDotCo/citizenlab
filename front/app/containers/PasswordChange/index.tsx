@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
 
-// components
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
-import PasswordInput from 'components/HookForm/PasswordInput';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { Helmet } from 'react-helmet';
-import { FormLabel } from 'components/UI/FormComponents';
-import ChangePasswordSuccess from './ChangePasswordSuccess';
+import { useForm, FormProvider } from 'react-hook-form';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
+import { string, object } from 'yup';
+
+import meKeys from 'api/me/keys';
+import useAuthUser from 'api/me/useAuthUser';
+import useChangePassword from 'api/users/useChangePassword';
+
+import PasswordInput from 'components/HookForm/PasswordInput';
 import {
   StyledContentContainer,
   Title,
@@ -14,32 +22,17 @@ import {
   LabelContainer,
   StyledPasswordIconTooltip,
 } from 'components/smallForm';
-
-// form
-import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object } from 'yup';
-
-// style
-import messages from './messages';
-
-// i18n
-import { useIntl } from 'utils/cl-intl';
-
-// services
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import useAuthUser from 'api/me/useAuthUser';
+import { FormLabel } from 'components/UI/FormComponents';
 import GoBackButton from 'components/UI/GoBackButton';
-import clHistory from 'utils/cl-router/history';
+
+import { useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
-import meKeys from 'api/me/keys';
-import useChangePassword from 'api/users/useChangePassword';
+import clHistory from 'utils/cl-router/history';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { isNilOrError } from 'utils/helperUtils';
+
+import ChangePasswordSuccess from './ChangePasswordSuccess';
+import messages from './messages';
 
 type FormValues = {
   current_password: string;

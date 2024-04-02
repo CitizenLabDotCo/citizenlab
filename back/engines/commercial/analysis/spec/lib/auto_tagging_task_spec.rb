@@ -60,7 +60,7 @@ RSpec.describe Analysis::AutoTaggingTask do
     it 'works' do
       project = create(:single_phase_ideation_project)
       custom_form = create(:custom_form, :with_default_fields, participation_context: project)
-      analysis = create(:analysis, custom_fields: custom_form.custom_fields, project: project)
+      analysis = create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)
       att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'sentiment')
       idea = create(:idea, author: create(:user, locale: 'nl-NL'), project: project, title_multiloc: { 'nl-NL' => 'Heel erg slecht' })
 
@@ -98,7 +98,7 @@ RSpec.describe Analysis::AutoTaggingTask do
     it 'works' do
       project = create(:single_phase_ideation_project)
       custom_form = create(:custom_form, :with_default_fields, participation_context: project)
-      analysis = create(:analysis, custom_fields: custom_form.custom_fields, project: project)
+      analysis = create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)
       att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'language')
       idea = create(:idea, project: project, title_multiloc: { en: 'Dit is niet echt in het Engels, mais en Nederlands' })
       fr_tag = create(:tag, name: 'fr', tag_type: 'language', analysis: analysis)
@@ -140,25 +140,27 @@ RSpec.describe Analysis::AutoTaggingTask do
     end
   end
 
-  describe 'NlpTopic auto_tagging' do
+  describe 'NlpTopic auto_tagging', use_transactional_fixtures: false do
     it 'works' do
       project = create(:single_phase_ideation_project)
       custom_form = create(:custom_form, :with_default_fields, participation_context: project)
-      analysis = create(:analysis, custom_fields: custom_form.custom_fields, project: project)
+      analysis = create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)
       att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'nlp_topic')
-      idea = create(:idea, project: project, title_multiloc: { en: 'Footbal is the greatest sport in the world' })
+      ideas = create_list(:idea, 2, project: project)
 
-      mock_nlp_client = instance_double(NLPCloud::Client)
+      topics_response = <<-RESPONSE
+        - planets
+        - bananas
+      RESPONSE
+      classification_response1 = 'bananas'
+      classification_response2 = 'other'
 
-      expect(mock_nlp_client).to receive(:classification).and_return({
-        'labels' => %w[job space sport],
-        'scores' => [0.2258800745010376, 0.1938474327325821, 0.910988450609147549]
-      })
-      expect_any_instance_of(Analysis::AutoTaggingMethod::NLPTopic)
-        .to receive(:nlp_cloud_client_for)
-        .and_return(
-          mock_nlp_client
-        )
+      expect_any_instance_of(Analysis::LLM::GPT4Turbo)
+        .to receive(:chat)
+        .and_return(topics_response)
+      expect_any_instance_of(Analysis::LLM::GPT35Turbo)
+        .to receive(:chat)
+        .and_return(classification_response1, classification_response2)
 
       expect { att.execute }
         .to change(Analysis::Tag, :count).from(0).to(1)
@@ -168,11 +170,11 @@ RSpec.describe Analysis::AutoTaggingTask do
         progress: nil
       })
 
-      sport_tag = Analysis::Tag.find_by(analysis: analysis, name: 'sport')
-      expect(sport_tag).to be_present
-
-      expect(idea.tags).to eq([sport_tag])
-      expect(idea.taggings.first.background_task).to eq att
+      bananas_tag = Analysis::Tag.find_by(analysis: analysis, name: 'bananas')
+      other_tag = Analysis::Tag.find_by(analysis: analysis, name: 'other')
+      expect(bananas_tag).to be_present
+      expect(other_tag).not_to be_present
+      expect(ideas.map(&:tags)).to match_array [[bananas_tag], []]
     end
   end
 
@@ -180,7 +182,7 @@ RSpec.describe Analysis::AutoTaggingTask do
     it 'works' do
       project = create(:single_phase_ideation_project)
       custom_form = create(:custom_form, :with_default_fields, participation_context: project)
-      analysis = create(:analysis, custom_fields: custom_form.custom_fields, project: project)
+      analysis = create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)
       tags = create_list(:tag, 3, analysis: analysis)
       att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'label_classification', tags_ids: [tags[0].id, tags[1].id], filters: { search: 'world' })
       idea1 = create(:idea, project: project, title_multiloc: { en: 'Footbal is the greatest sport in the world' })
@@ -188,17 +190,9 @@ RSpec.describe Analysis::AutoTaggingTask do
       create(:tagging, input: idea2, tag: tags[0])
       _idea3 = create(:idea, project: project, title_multiloc: { en: 'This does not contain w o r l d, so it should not be auto-tagged' })
 
-      mock_nlp_client = instance_double(NLPCloud::Client)
-
-      expect(mock_nlp_client).to receive(:classification).once.and_return({
-        'labels' => [tags[0].name, tags[1].name],
-        'scores' => [0.9258800745010376, 0.1938474327325821]
-      })
-      expect_any_instance_of(Analysis::AutoTaggingMethod::LabelClassification)
-        .to receive(:nlp_cloud_client_for)
-        .and_return(
-          mock_nlp_client
-        )
+      expect_any_instance_of(Analysis::LLM::GPT35Turbo)
+        .to receive(:chat)
+        .and_return(tags[0].name)
 
       expect { att.execute }
         .to change(Analysis::Tagging, :count).from(1).to(2)
@@ -211,13 +205,33 @@ RSpec.describe Analysis::AutoTaggingTask do
       expect(idea1.tags).to eq([tags[0]])
       expect(idea1.taggings.first.background_task).to eq(att)
     end
+
+    it 'propagates errors and aborts' do
+      project = create(:single_phase_ideation_project)
+      custom_form = create(:custom_form, :with_default_fields, participation_context: project)
+      analysis = create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)
+      tags = create_list(:tag, 3, analysis: analysis)
+      att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'label_classification', tags_ids: [tags[0].id, tags[1].id])
+      create_list(:idea, 2, project: project)
+
+      expect_any_instance_of(Analysis::LLM::GPT35Turbo)
+        .to receive(:chat).at_least(:once)
+        .and_raise(StandardError.new('Some error'))
+
+      expect { att.execute }
+        .not_to change(Analysis::Tagging, :count)
+      expect(att.reload).to have_attributes({
+        state: 'failed',
+        progress: nil
+      })
+    end
   end
 
   describe 'FewShotClassification auto_tagging' do
     it 'works' do
       project = create(:single_phase_ideation_project)
       custom_form = create(:custom_form, :with_default_fields, participation_context: project)
-      analysis = create(:analysis, custom_fields: custom_form.custom_fields, project: project)
+      analysis = create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)
       tags = create_list(:tag, 3, analysis: analysis)
       att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'few_shot_classification', tags_ids: [tags[0].id, tags[1].id])
       idea1 = create(:idea, project: project, title_multiloc: { en: 'Footbal is the greatest sport in the world' })
@@ -225,9 +239,9 @@ RSpec.describe Analysis::AutoTaggingTask do
       idea3 = create(:idea, project: project, title_multiloc: { en: 'We need more houses' })
       create(:tagging, input: idea3, tag: tags[0])
 
-      mock_llm = instance_double(Analysis::LLM::GPT48k)
+      mock_llm = instance_double(Analysis::LLM::GPT4Turbo)
 
-      expect_any_instance_of(Analysis::AutoTaggingMethod::FewShotClassification).to receive(:llm).and_return(mock_llm)
+      expect_any_instance_of(Analysis::AutoTaggingMethod::FewShotClassification).to receive(:gpt4).and_return(mock_llm)
       expect(mock_llm).to receive(:chat) do |prompt|
         expect(prompt).to include(tags[0].name, tags[1].name, 'other')
         expect(prompt).to include('other')

@@ -1,21 +1,15 @@
 import React from 'react';
 
-// hooks
 import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 
-// components
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
+
 import NoData from '../_shared/NoData';
-import Question from './Question';
-import Settings from './Settings';
-
-// i18n
-import messages from './messages';
-
-// utils
 import { getEmptyMessage } from '../utils';
 
-//  typings
+import messages from './messages';
+import Question from './Question';
+import Settings from './Settings';
 import { Props } from './typings';
 
 const SurveyQuestionResultWidget = ({
@@ -24,6 +18,7 @@ const SurveyQuestionResultWidget = ({
   questionId,
   groupMode,
   groupFieldId,
+  heatmap,
 }: Props) => {
   const px = useReportDefaultPadding();
   const hasEverything = projectId && phaseId && questionId;
@@ -38,6 +33,7 @@ const SurveyQuestionResultWidget = ({
           questionId={questionId}
           groupMode={groupFieldId ? groupMode : undefined}
           groupFieldId={groupFieldId}
+          heatmap={heatmap}
         />
       ) : (
         <NoData message={projectOrPhaseEmptyMessage ?? messages.emptyField} />
@@ -53,6 +49,7 @@ SurveyQuestionResultWidget.craft = {
     questionId: undefined,
     groupMode: undefined,
     groupFieldId: undefined,
+    heatmap: undefined,
   },
   related: {
     settings: Settings,

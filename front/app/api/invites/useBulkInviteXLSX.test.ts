@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useBulkInviteXLSX from './useBulkInviteXLSX';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { invitesData } from './__mocks__/useInvites';
+import useBulkInviteXLSX from './useBulkInviteXLSX';
 
 const apiPath = '*/invites/bulk_create_xlsx';
 

@@ -1,6 +1,7 @@
+import useCustomFieldOptions from 'api/custom_field_options/useCustomFieldOptions';
+
 import { ICustomFieldsParameters, IFlatCustomField } from './types';
 import useRawCustomFields from './useRawCustomFields';
-import useCustomFieldOptions from 'api/custom_field_options/useCustomFieldOptions';
 
 const useCustomFields = ({
   projectId,

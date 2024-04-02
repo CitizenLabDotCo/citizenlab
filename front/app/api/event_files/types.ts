@@ -1,5 +1,6 @@
-import eventFilesKeys from './keys';
 import { Keys } from 'utils/cl-react-query/types';
+
+import eventFilesKeys from './keys';
 
 export type EventFilesKeys = Keys<typeof eventFilesKeys>;
 

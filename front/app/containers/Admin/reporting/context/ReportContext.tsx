@@ -1,4 +1,5 @@
 import React, { createContext, useContext } from 'react';
+
 import usePhase from 'api/phases/usePhase';
 
 type ReportWidth = 'phone' | 'tablet' | 'desktop' | 'pdf';

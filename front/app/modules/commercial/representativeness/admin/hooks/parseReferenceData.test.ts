@@ -1,4 +1,6 @@
+import { IUsersByAge } from 'api/users_by_age/types';
 import { IUsersByCustomField } from 'api/users_by_custom_field/types';
+
 import {
   regFieldToReferenceData,
   regFieldToIncludedUsers,
@@ -6,7 +8,6 @@ import {
   ageFieldToIncludedUsers,
   RepresentativenessRowMultiloc,
 } from './parseReferenceData';
-import { IUsersByAge } from 'api/users_by_age/types';
 
 describe('regFieldToReferenceData', () => {
   it('works if users and reference_population have same keys', () => {

@@ -1,24 +1,18 @@
 import React, { useState } from 'react';
 
-// components
-import OptionLabel from './OptionLabel';
 import { Box, Label, Spinner, Text } from '@citizenlab/cl2-component-library';
-import BaseIdeaSelect from './BaseIdeaSelect';
 
-// typings
-import { Option } from './typings';
 import { IIdeaData } from 'api/ideas/types';
+import useIdeaById from 'api/ideas/useIdeaById';
+import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 
-// utils
-import { optionIsIdea } from './utils';
 import { useIntl } from 'utils/cl-intl';
 
-// hooks
-import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
-import useIdeaById from 'api/ideas/useIdeaById';
-
-// i18n
+import BaseIdeaSelect from './BaseIdeaSelect';
 import messages from './messages';
+import OptionLabel from './OptionLabel';
+import { Option } from './typings';
+import { optionIsIdea } from './utils';
 
 interface Props {
   selectedIdeaId?: string | null;

@@ -1,41 +1,38 @@
 import React from 'react';
 
-// components
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
-import GoBackButton from 'components/UI/GoBackButton';
-import { SectionField } from 'components/admin/Section';
-
-// hook form
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
+import { Multiloc } from 'typings';
 import { object, string } from 'yup';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import Feedback from 'components/HookForm/Feedback';
-import validateMultiloc from 'utils/yup/validateMultilocForEveryLocale';
-import Select from 'components/HookForm/Select';
+
+import { IOptionsType } from 'api/custom_fields/types';
+import useAddUserCustomField from 'api/user_custom_fields/useAddUserCustomField';
+import useAddUserCustomFieldOption from 'api/user_custom_fields_options/useAddUserCustomFieldOption';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocale from 'hooks/useLocale';
+
 import {
   FieldType,
   fieldTypes,
 } from 'containers/Admin/settings/registration/CustomFieldRoutes/RegistrationCustomFieldForm';
-import OptionList from 'components/HookForm/OptionList';
+
+import { SectionField } from 'components/admin/Section';
+import Feedback from 'components/HookForm/Feedback';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import OptionList from 'components/HookForm/OptionList';
+import Select from 'components/HookForm/Select';
+import GoBackButton from 'components/UI/GoBackButton';
 
-// hooks
-import useLocale from 'hooks/useLocale';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
-// intls
 import { useIntl } from 'utils/cl-intl';
-import messages from '../../../containers/Granular/messages';
-import { Multiloc } from 'typings';
-
-// utils
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import validateMultiloc from 'utils/yup/validateMultilocForEveryLocale';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
+
+import messages from '../../../containers/Granular/messages';
 import { getLabelForInputType } from '../../../containers/Granular/utils';
-import { IOptionsType } from 'api/custom_fields/types';
-import useAddUserCustomFieldOption from 'api/user_custom_fields_options/useAddUserCustomFieldOption';
-import useAddUserCustomField from 'api/user_custom_fields/useAddUserCustomField';
 
 type AddFieldScreenProps = {
   setShowAddFieldPage: (show: boolean) => void;

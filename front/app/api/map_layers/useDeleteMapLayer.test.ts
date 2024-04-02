@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeleteMapLayer from './useDeleteMapLayer';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-const apiPath = '*/projects/:projectId/map_config/layers/:id';
+
+import useDeleteMapLayer from './useDeleteMapLayer';
+const apiPath = '*/map_configs/:mapConfigId/layers/:id';
 
 const server = setupServer(
   rest.delete(apiPath, (_req, res, ctx) => {
@@ -24,7 +23,7 @@ describe('useDeleteMapLayer', () => {
     });
 
     act(() => {
-      result.current.mutate({ id: 'id', projectId: 'projectId' });
+      result.current.mutate({ id: 'id', mapConfigId: 'mapConfigId' });
     });
 
     await waitFor(() => expect(result.current.data).not.toBe(undefined));
@@ -42,7 +41,7 @@ describe('useDeleteMapLayer', () => {
     });
 
     act(() => {
-      result.current.mutate({ id: 'id', projectId: 'projectId' });
+      result.current.mutate({ id: 'id', mapConfigId: 'mapConfigId' });
     });
 
     await waitFor(() => expect(result.current.isError).toBe(true));

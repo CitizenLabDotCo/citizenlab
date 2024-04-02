@@ -1,33 +1,30 @@
 import React from 'react';
 
-// hooks
-import useLayout from 'containers/Admin/reporting/hooks/useLayout';
-
-// components
 import { Box } from '@citizenlab/cl2-component-library';
-import Chart from './Chart';
-import NoData from '../../_shared/NoData';
 
-// i18n
-import messages from '../messages';
-import { useIntl } from 'utils/cl-intl';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { serieHasValues } from '../utils';
-import convertToGraphFormat from 'containers/Admin/dashboard/users/Charts/GenderChart/convertToGraphFormat';
-
-// types
-import { ProjectId, Dates } from 'components/admin/GraphCards/typings';
 import { useUsersByGender } from 'api/graph_data_units';
 
-type Props = ProjectId & Dates;
+import convertToGraphFormat from 'containers/Admin/dashboard/users/Charts/GenderChart/convertToGraphFormat';
+import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
-const GenderCard = ({ startAtMoment, endAtMoment, projectId }: Props) => {
-  const usersByGender = useUsersByGender({
-    startAtMoment,
-    endAtMoment,
-    projectId,
+import { ProjectId, DatesStrings } from 'components/admin/GraphCards/typings';
+
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import NoData from '../../_shared/NoData';
+import messages from '../messages';
+import { serieHasValues } from '../utils';
+
+import Chart from './Chart';
+
+type Props = ProjectId & DatesStrings;
+
+const GenderCard = ({ startAt, endAt, projectId }: Props) => {
+  const { data: usersByGender } = useUsersByGender({
+    project_id: projectId,
+    start_at: startAt,
+    end_at: endAt,
   });
   const { formatMessage } = useIntl();
 

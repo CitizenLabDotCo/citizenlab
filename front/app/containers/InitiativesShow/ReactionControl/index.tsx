@@ -1,19 +1,16 @@
 import React from 'react';
 
-// components
+import { IInitiative } from 'api/initiatives/types';
+
 import FollowUnfollow from 'components/FollowUnfollow';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// utils
 import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
 
-// typings
 import BorderContainer from '../BorderContainer';
+
+import messages from './messages';
 import StatusWrapper from './StatusWrapper';
-import { IInitiative } from 'api/initiatives/types';
 
 interface Props {
   initiative: IInitiative;

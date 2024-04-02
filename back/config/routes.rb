@@ -231,47 +231,50 @@ Rails.application.routes.draw do
       resources :experiments, only: %i[index create]
 
       scope 'stats' do
-        route_params = { controller: 'stats_users' }
-        get 'users_count', **route_params
+        with_options controller: 'stats_users' do
+          get 'users_count'
 
-        get 'users_by_time', **route_params
-        get 'users_by_time_cumulative', **route_params
-        get 'active_users_by_time', **route_params
-        get 'active_users_by_time_cumulative', **route_params
+          get 'users_by_time'
+          get 'users_by_time_cumulative'
+          get 'active_users_by_time'
+          get 'active_users_by_time_cumulative'
 
-        get 'users_by_time_as_xlsx', **route_params
-        get 'users_by_time_cumulative_as_xlsx', **route_params
-        get 'active_users_by_time_as_xlsx', **route_params
+          get 'users_by_time_as_xlsx'
+          get 'users_by_time_cumulative_as_xlsx'
+          get 'active_users_by_time_as_xlsx'
+        end
 
-        route_params = { controller: 'stats_ideas' }
-        get 'ideas_count', **route_params
+        with_options controller: 'stats_ideas' do
+          get 'ideas_count'
 
-        get 'ideas_by_topic', **route_params
-        get 'ideas_by_project', **route_params
-        get 'ideas_by_status', **route_params
-        get 'ideas_by_status_as_xlsx', **route_params
+          get 'ideas_by_topic'
+          get 'ideas_by_project'
+          get 'ideas_by_status'
+          get 'ideas_by_status_as_xlsx'
 
-        get 'ideas_by_topic_as_xlsx', **route_params
-        get 'ideas_by_project_as_xlsx', **route_params
+          get 'ideas_by_topic_as_xlsx'
+          get 'ideas_by_project_as_xlsx'
+        end
 
-        route_params = { controller: 'stats_initiatives' }
-        get 'initiatives_count', **route_params
+        get 'initiatives_count', controller: 'stats_initiatives'
 
-        route_params = { controller: 'stats_comments' }
-        get 'comments_count', **route_params
-        get 'comments_by_topic', **route_params
-        get 'comments_by_project', **route_params
+        with_options controller: 'stats_comments' do
+          get 'comments_count'
+          get 'comments_by_topic'
+          get 'comments_by_project'
 
-        get 'comments_by_topic_as_xlsx', **route_params
-        get 'comments_by_project_as_xlsx', **route_params
+          get 'comments_by_topic_as_xlsx'
+          get 'comments_by_project_as_xlsx'
+        end
 
-        route_params = { controller: 'stats_reactions' }
-        get 'reactions_count', **route_params
-        get 'reactions_by_topic', **route_params
-        get 'reactions_by_project', **route_params
+        with_options controller: 'stats_reactions' do
+          get 'reactions_count'
+          get 'reactions_by_topic'
+          get 'reactions_by_project'
 
-        get 'reactions_by_topic_as_xlsx', **route_params
-        get 'reactions_by_project_as_xlsx', **route_params
+          get 'reactions_by_topic_as_xlsx'
+          get 'reactions_by_project_as_xlsx'
+        end
       end
 
       scope 'mentions', controller: 'mentions' do

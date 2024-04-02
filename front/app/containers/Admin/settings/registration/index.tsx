@@ -1,41 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import getSubmitState from 'utils/getSubmitState';
-import { Multiloc } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
 
-// hooks
+import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
+
+import {
+  IAppConfigurationSettings,
+  IUpdatedAppConfigurationProperties,
+  TAppConfigurationSettingCore,
+} from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
 
-// components
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import messages from 'containers/Admin/settings/messages';
+
 import {
   SectionTitle,
   SubSectionTitle,
   SectionField,
   SectionDescription,
 } from 'components/admin/Section';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import CustomFieldSettings from './CustomFieldSettings';
-import ToggleUserConfirmation from './ToggleUserConfirmation';
-import ToggleShowFollowPreferences from './ToggleShowFollowPreferences';
-import CustomFieldsSignupText from './CustomFieldsSignupText';
-import Topics from 'components/Topics';
 import Areas from 'components/Areas';
+import Topics from 'components/Topics';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
-// i18n
-import messages from 'containers/Admin/settings/messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import getSubmitState from 'utils/getSubmitState';
+import { isNilOrError } from 'utils/helperUtils';
 
-// typings
-import {
-  IAppConfigurationSettings,
-  IUpdatedAppConfigurationProperties,
-  TAppConfigurationSettingCore,
-} from 'api/app_configuration/types';
+import CustomFieldSettings from './CustomFieldSettings';
+import CustomFieldsSignupText from './CustomFieldsSignupText';
+import ToggleShowFollowPreferences from './ToggleShowFollowPreferences';
+import ToggleUserConfirmation from './ToggleUserConfirmation';
 
 export const LabelTooltip = styled.div`
   display: flex;

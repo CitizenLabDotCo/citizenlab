@@ -1,23 +1,21 @@
 import React, { useEffect, useState } from 'react';
+
+import { Box, colors } from '@citizenlab/cl2-component-library';
+import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
 import styled from 'styled-components';
 
-// components
-import { Box, colors } from '@citizenlab/cl2-component-library';
-
-// craft
-import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
-
-// intl
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from 'components/admin/ContentBuilder/Editor/RenderNode/messages';
 import {
   WIDGET_TITLES,
   hasNoPointerEvents,
   hasChildren,
 } from 'containers/Admin/reporting/components/ReportBuilder/Widgets';
 
-const StyledBox = styled(Box)`
-  ${({ isRoot }: { isRoot: boolean }) =>
+import messages from 'components/admin/ContentBuilder/Editor/RenderNode/messages';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+const StyledBox = styled(Box)<{ isRoot: boolean; outlineColor?: string }>`
+  ${({ isRoot }) =>
     isRoot
       ? `
         cursor: auto;
@@ -28,6 +26,15 @@ const StyledBox = styled(Box)`
         box-sizing: content-box;
       `
       : 'cursor: move;'}
+
+  ${({ outlineColor }) =>
+    outlineColor
+      ? `
+      outline: 1px solid ${outlineColor};
+    `
+      : 'outline: none;'}
+
+  margin-bottom: 3px;
 `;
 
 const CONTAINER = 'Container';
@@ -88,7 +95,7 @@ const RenderNode = ({ render }) => {
     if (isHover && isChildOfComplexComponent) {
       parentNodeElement?.setAttribute(
         'style',
-        `border: 1px solid ${colors.primary} `
+        `outline: 1px solid ${colors.primary} `
       );
     } else {
       parentNodeElement?.removeAttribute('style');
@@ -122,7 +129,9 @@ const RenderNode = ({ render }) => {
   const nodeIsHovered = isHover && id !== ROOT_NODE && !isContainer;
 
   const solidBorderIsVisible =
-    isSelectable && (nodeLabelIsVisible || nodeIsHovered || hasError);
+    isSelectable &&
+    (nodeLabelIsVisible || nodeIsHovered || hasError) &&
+    !invisible;
 
   return (
     <StyledBox
@@ -130,24 +139,22 @@ const RenderNode = ({ render }) => {
       ref={(ref) => ref && connect(drag(ref))}
       id={id}
       position="relative"
-      borderStyle="solid"
       minHeight={id === ROOT_NODE ? '160px' : '0px'}
       background="#fff"
-      borderWidth={invisible ? '0px' : '1px'}
-      borderColor={
+      outlineColor={
         hasError
           ? colors.red600
           : solidBorderIsVisible
           ? colors.primary
-          : isSelectable
-          ? 'transparent'
           : 'transparent'
       }
       isRoot={id === ROOT_NODE}
-      onMouseOver={() => {
+      onMouseOver={(e) => {
+        e.stopPropagation();
         setIsHover(true);
       }}
-      onMouseOut={() => {
+      onMouseOut={(e) => {
+        e.stopPropagation();
         setIsHover(false);
       }}
     >

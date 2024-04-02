@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-import { useFormContext, useFieldArray } from 'react-hook-form';
-import { get } from 'lodash-es';
 
-// components
 import {
   Box,
   Title,
@@ -10,35 +7,34 @@ import {
   colors,
   Button,
 } from '@citizenlab/cl2-component-library';
-import MoreActionsMenu from 'components/UI/MoreActionsMenu';
-import Modal from 'components/UI/Modal';
-import FieldTitle from './FieldTitle';
-import Logic from './Logic';
-import IconsAndBadges from './IconsAndBadges';
-import { FlexibleRow } from '../../FlexibleRow';
-
-// styling
-import styled from 'styled-components';
+import { get } from 'lodash-es';
 import { rgba } from 'polished';
+import { useFormContext, useFieldArray } from 'react-hook-form';
+import styled from 'styled-components';
 
-// utils
-import { getFieldBackgroundColor } from '../utils';
-import {
-  FormBuilderConfig,
-  builtInFieldKeys,
-  generateTempId,
-} from 'components/FormBuilder/utils';
-
-// Translation
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// typings
 import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
   IOptionsType,
 } from 'api/custom_fields/types';
+
+import {
+  FormBuilderConfig,
+  builtInFieldKeys,
+  generateTempId,
+} from 'components/FormBuilder/utils';
+import Modal from 'components/UI/Modal';
+import MoreActionsMenu from 'components/UI/MoreActionsMenu';
+
+import { useIntl } from 'utils/cl-intl';
+
+import { FlexibleRow } from '../../FlexibleRow';
+import { getFieldBackgroundColor } from '../utils';
+
+import FieldTitle from './FieldTitle';
+import IconsAndBadges from './IconsAndBadges';
+import Logic from './Logic';
+import messages from './messages';
 
 const FormFieldsContainer = styled(Box)`
   &:hover {

@@ -1,15 +1,14 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useIdeaImages from './useIdeaImages';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import endpoints, {
   apiPathImages,
   ideaImagesData,
 } from './__mocks__/_mockServer';
+import useIdeaImages from './useIdeaImages';
 
 const server = setupServer(endpoints['GET ideas/:ideaId/images']);
 

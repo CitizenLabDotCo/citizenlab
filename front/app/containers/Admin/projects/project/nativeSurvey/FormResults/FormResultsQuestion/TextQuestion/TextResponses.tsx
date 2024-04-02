@@ -1,9 +1,13 @@
+import React from 'react';
+
 import { Box, colors, Text } from '@citizenlab/cl2-component-library';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import Divider from 'components/admin/Divider';
-import React from 'react';
 import styled from 'styled-components';
+
+import Divider from 'components/admin/Divider';
+
 import { useIntl } from 'utils/cl-intl';
+
 import messages from '../../messages';
 
 const Item = styled.div<{ start: number }>`
@@ -36,8 +40,8 @@ const TextResponses = ({
   });
 
   return (
-    <Box bg={colors.background}>
-      <Box borderBottom={`1px solid ${colors.divider}`} p="24px">
+    <Box bg={colors.background} height="460px">
+      <Box borderBottom={`1px solid ${colors.divider}`} p="24px" height="60px">
         <Text fontWeight="bold" m="0px">
           {hasOtherResponses
             ? formatMessage(messages.otherResponses)
@@ -46,7 +50,7 @@ const TextResponses = ({
         </Text>
       </Box>
 
-      <Box ref={parentRef} height="400px" overflow="auto" pt="12px">
+      <Box ref={parentRef} overflow="auto" pt="12px" height="400px">
         <Box height={`${getTotalSize()}px`} width="100%" position="relative">
           {getVirtualItems().map((virtualItem) => (
             <Item

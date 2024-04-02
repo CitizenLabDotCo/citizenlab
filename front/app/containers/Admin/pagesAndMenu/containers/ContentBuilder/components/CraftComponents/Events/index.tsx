@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   colors,
@@ -8,11 +7,12 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 
-// hooks
-import messages from './messages';
-import EventsWidget from 'components/LandingPages/citizen/EventsWidget';
-import { useIntl } from 'utils/cl-intl';
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
+import EventsWidget from 'components/LandingPages/citizen/EventsWidget';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 
 const Events = () => {
   const isSmallerThanTablet = useBreakpoint('tablet');

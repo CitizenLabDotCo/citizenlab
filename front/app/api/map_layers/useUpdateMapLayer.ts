@@ -1,28 +1,36 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
-import { IMapLayer, IMapLayerUpdateAttributes } from './types';
+
 import mapConfigKeys from '../map_config/keys';
+
+import { IMapLayer, IMapLayerUpdateAttributes } from './types';
 
 const updateMapLayer = ({
   id,
-  projectId,
+  mapConfigId,
   ...layer
 }: IMapLayerUpdateAttributes) =>
   fetcher<IMapLayer>({
-    path: `/projects/${projectId}/map_config/layers/${id}`,
+    path: `/map_configs/${mapConfigId}/layers/${id}`,
     action: 'patch',
     body: { layer },
   });
 
-const useUpdateMapLayer = () => {
+const useUpdateMapLayer = (projectId?: string) => {
   const queryClient = useQueryClient();
   return useMutation<IMapLayer, CLErrors, IMapLayerUpdateAttributes>({
     mutationFn: updateMapLayer,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: mapConfigKeys.item({ projectId: variables.projectId }),
+        queryKey: mapConfigKeys.item({ mapConfigId: variables.mapConfigId }),
       });
+      if (projectId) {
+        queryClient.invalidateQueries({
+          queryKey: mapConfigKeys.item({ projectId }),
+        });
+      }
     },
   });
 };

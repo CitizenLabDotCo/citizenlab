@@ -1,16 +1,21 @@
 import React from 'react';
+
 import { Text, Box } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import useAuthUser from 'api/me/useAuthUser';
+import useDeleteProjectModerator from 'api/project_moderators/useDeleteProjectModerator';
+import { IUserData } from 'api/users/types';
+
+import { Row } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';
 import Button from 'components/UI/Button';
-import { Row } from 'components/admin/ResourceList';
+
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-import { isAdmin } from 'utils/permissions/roles';
-import { IUserData } from 'api/users/types';
-import styled from 'styled-components';
-import useAuthUser from 'api/me/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
-import useDeleteProjectModerator from 'api/project_moderators/useDeleteProjectModerator';
+import { isAdmin } from 'utils/permissions/roles';
+
+import messages from './messages';
 
 interface Props {
   isLastItem: boolean;

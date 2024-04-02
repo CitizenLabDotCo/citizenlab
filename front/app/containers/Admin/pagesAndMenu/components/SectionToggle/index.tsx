@@ -1,16 +1,17 @@
 import React from 'react';
 
-// components
 import {
   IconTooltip,
   Toggle,
   Box,
   Title,
 } from '@citizenlab/cl2-component-library';
+
 import { Row } from 'components/admin/ResourceList';
-import AdminEditButton from './AdminEditButton';
 
 import { ICustomPageSectionToggleData } from '../../containers/CustomPages/Edit/Content';
+
+import AdminEditButton from './AdminEditButton';
 
 export interface ISectionToggleData {
   titleMessage: string;

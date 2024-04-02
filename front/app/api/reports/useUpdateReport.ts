@@ -1,8 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
-import fetcher from 'utils/cl-react-query/fetcher';
-import reportsKeys from './keys';
+
 import phasesKeys from 'api/phases/keys';
+import reportLayoutKeys from 'api/report_layout/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+
+import reportsKeys from './keys';
 import { ReportResponse } from './types';
 
 type UpdateReport = {
@@ -23,6 +27,11 @@ const useUpdateReport = () => {
     mutationFn: updateReport,
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: reportsKeys.lists() });
+
+      const layoutId = data.data.relationships.layout.data.id;
+      queryClient.invalidateQueries({
+        queryKey: reportLayoutKeys.item({ id: layoutId }),
+      });
 
       const phaseId = data.data.relationships.phase?.data?.id;
 

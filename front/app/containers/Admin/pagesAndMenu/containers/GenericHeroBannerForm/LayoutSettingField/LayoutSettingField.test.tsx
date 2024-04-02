@@ -1,6 +1,8 @@
 import React from 'react';
-import LayoutSettingField from './';
+
 import { render, screen, waitFor } from 'utils/testUtils/rtl';
+
+import LayoutSettingField from './';
 
 describe('LayoutSettingField', () => {
   it('renders with the proper radio button checked', () => {

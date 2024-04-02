@@ -1,10 +1,9 @@
-// utils
-import { getEmptyRow } from './useRegistrations/parse';
-import { emptyDateRange } from 'components/admin/GraphCards/_utils/timeSeries';
-
-// typings
 import { Moment } from 'moment';
+
+import { emptyDateRange } from 'components/admin/GraphCards/_utils/timeSeries';
 import { IResolution } from 'components/admin/ResolutionControl';
+
+import { getEmptyRow } from './useRegistrations/parse';
 import { Stats } from './useRegistrations/typings';
 
 export const generateEmptyData = (

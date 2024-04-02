@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { clone, find } from 'lodash-es';
 
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { List } from 'components/admin/ResourceList';
-// import { itemOrderWasUpdated, orderingIsValid } from './utils';
-import { itemOrderWasUpdated } from './utils';
+
 import usePrevious from 'hooks/usePrevious';
+
+import { List } from 'components/admin/ResourceList';
+
+import { itemOrderWasUpdated } from './utils';
 
 export interface Item {
   id: string;
@@ -44,15 +45,13 @@ const SortableList = ({
   const [itemsWhileDragging, setItemsWhileDragging] = useState<Item[] | null>(
     null
   );
-  const [updating, setUpdating] = useState(false);
   const prevItems = usePrevious(items);
 
   useEffect(() => {
-    if (updating && itemOrderWasUpdated(prevItems, items)) {
+    if (prevItems && itemOrderWasUpdated(prevItems, items)) {
       setItemsWhileDragging(null);
-      setUpdating(false);
     }
-  }, [updating, prevItems, items]);
+  }, [items, prevItems]);
 
   const getLocalIndex = (externalIndex: number) => {
     return externalIndex - lockFirstNItems;
@@ -64,20 +63,16 @@ const SortableList = ({
 
   const handleDragRow = (fromIndex: number, toIndex: number) => {
     const listItems = getListItems();
-    if (!listItems) return;
-
-    const itemsWhileDragging = clone(listItems);
+    const itemsWhileDragging = [...listItems];
     itemsWhileDragging.splice(fromIndex, 1);
     itemsWhileDragging.splice(toIndex, 0, listItems[fromIndex]);
+
     setItemsWhileDragging(itemsWhileDragging);
   };
 
   const handleDropRow = (itemId: string, toIndex: number) => {
     const listItems = getListItems();
-
-    if (!listItems) return;
-
-    const item = find(listItems, { id: itemId });
+    const item = listItems.find((item) => item.id === itemId);
 
     if (item && getLocalIndex(item.attributes.ordering) !== toIndex) {
       onReorder(itemId, getExternalIndex(toIndex));
@@ -97,18 +92,15 @@ const SortableList = ({
     }
 
     return (
-      itemsWhileDragging || clone(items).splice(lockFirstNItems, items.length)
+      itemsWhileDragging || [...items].splice(lockFirstNItems, items.length)
     );
   };
-
-  const lockedItemsList = lockedItems();
-  const itemsList = getListItems() || [];
 
   return (
     <List id={id} className={className}>
       {children({
-        lockedItemsList,
-        itemsList,
+        lockedItemsList: lockedItems(),
+        itemsList: getListItems(),
         handleDragRow,
         handleDropRow,
       })}

@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
+
 import { BehaviorSubject } from 'rxjs';
-import { getAction, SuccessAction } from './actions';
+
 import authUserStream from 'api/me/authUserStream';
 import { IUserData } from 'api/users/types';
+
 import FullPageSpinner from 'components/UI/FullPageSpinner';
+
+import { getAction, SuccessAction } from './actions';
 
 const successAction$ = new BehaviorSubject<SuccessAction | null>(null);
 

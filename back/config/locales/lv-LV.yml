@@ -98,6 +98,8 @@ lv:
       <p>Jūs varat sākt savu ideju, ja tā neiederas kādā no esošajiem projektiem.</p><p><strong> Mērķis?</strong> Iekļaut jūsu ideju politiskajā darba kārtībā.</p><p><strong>Kā?</strong>Iegūstot atbalstu, proti, vismaz 100 balsis 3 mēnešu laikā. To var izdarīt, vispirms padarot savu ideju "pievilcīgu". Rakstiet to skaidri un saistoši, pievienojiet attēlus, sniedziet spēcīgus argumentus, kas balstīti uz faktiem, pievienojiet pielikumus ar papildu informāciju vai pamatinformāciju, ... Pēc tam, kad esat to izdarījis, sāciet dalīties ar savu ideju sociālajos plašsaziņas līdzekļos vai pa e-pastu. Aiciniet cilvēkus iesaistīties diskusijā par jūsu ideju vai vienkārši pārlieciniet viņus atbalstīt šo ideju, balsojot par to.</p><p><strong>Par ko?</strong> Jūsu ideja var būt par daudz ko, ja vien tā ir saistīta ar jūsu pilsētu un tās politiku. Tā var būt problēma, ar kuru jūs saskaraties, risinājums, ko jūs paredzat, vai pat abu šo veidu kombinācija. Tā var būt neparasta un ilgtermiņa, vai arī reāla un ātra uzvara.</p><p><strong>Un tad? </strong>Vai 3 mēnešu laikā jūs sasniedzāt 100 balsis? Apsveicam! Pilsēta tagad ņems vērā jūsu ideju. Ja jūsu ideja tiks uzskatīta par īstenojamu un nekaitēs konkrētām grupām vai indivīdiem, jums tiks dota iespēja prezentēt savu priekšlikumu padomes sēdē. Tās pašas sēdes laikā padomes locekļi sniegs jums tiešu atgriezenisku saiti par to, ko viņi darīs vai nedarīs ar jūsu ideju un kāpēc. Ja 3 mēnešu laikā nesavāksiet 100 balsis, jūsu priekšlikums netiks izskatīts.</p><p>Mēs esam ieinteresēti uzzināt par jūsu idejām!</p>
   phases:
     open_idea_phase_title: Pašreizējā fāze
+    native_survey_title: Aptauja
+    native_survey_button: Veiciet aptauju
   events:
     council_meeting_title: Padomes sēde
     council_meeting_description: >
@@ -147,7 +149,7 @@ lv:
         title: Sīkāka informācija
         description:
       other:
-        title: Ierakstiet savu atbildi
+        title: Tā kā jūs izvēlējāties "cits", par ko jūs domājat?
   custom_forms:
     categories:
       main_content:
@@ -226,9 +228,9 @@ lv:
       title: 'Jūsu jautājums'
       option1: '1. variants'
       option2: '2. variants'
-    survey_end_page:
-      title: 'Aptaujas beigas'
-      description: "Lūdzu, iesniedziet savas atbildes, izvēloties \"Iesniegt aptauju\"."
+    form_end_page:
+      title: 'Paldies par dalību'
+      description: "Lūdzu, iesniedziet savas atbildes, izvēloties \"Iesniegt\" zemāk."
     pdf_export:
       personal_data: 'Personas dati'
       personal_data_explanation_ideation: "Mēs iesniegsim jūsu viedokli tiešsaistes līdzdalības platformā %{organizationName}. Ja vēlaties, lai jūsu vārds un uzvārds būtu redzams kā šī ieguldījuma autors un jūs saņemtu jauninājumus, kas saistīti ar jūsu ieguldījumu, pa e-pastu, lūdzu, aizpildiet turpmāk norādītos laukus šajā lapā, un mēs izveidosim jums kontu. Jūsu e-pasts nebūs publiski pieejams, un to izmantos tikai %{organizationName}. Ja vēlaties palikt anonīms vai nepiekrītat, ka mēs šādā veidā izmantojam jūsu personas datus, varat tos atstāt tukšus."

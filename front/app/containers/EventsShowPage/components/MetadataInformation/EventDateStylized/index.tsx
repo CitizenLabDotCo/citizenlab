@@ -1,18 +1,12 @@
 import React from 'react';
-import moment from 'moment';
 
-// typing
+import { Box, Text } from '@citizenlab/cl2-component-library';
+import moment from 'moment';
+import { useTheme } from 'styled-components';
+
 import { IEventData } from 'api/events/types';
 
-// components
-import { Box, Text } from '@citizenlab/cl2-component-library';
 import SingleDateStylized from './SingleDateStylized';
-
-// utils
-import { toThreeLetterMonth } from 'utils/dateUtils';
-
-// hooks
-import { useTheme } from 'styled-components';
 
 interface Props {
   event: IEventData;
@@ -22,8 +16,8 @@ const EventDateStylized = ({ event }: Props) => {
   const theme = useTheme();
   const startAtMoment = moment(event.attributes.start_at);
   const endAtMoment = moment(event.attributes.end_at);
-  const startDateMonth = toThreeLetterMonth(event.attributes.start_at, 'month');
-  const endDateMonth = toThreeLetterMonth(event.attributes.end_at, 'month');
+  const startDateMonth = startAtMoment.format('MMM');
+  const endDateMonth = endAtMoment.format('MMM');
   const isEventMultipleDays =
     startAtMoment.dayOfYear() !== endAtMoment.dayOfYear();
   const oneDayEventTime = `${startAtMoment.format('LT')} - ${endAtMoment.format(

@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useUpdatePollQuestion from './useUpdatePollQuestion';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { pollQuestionsData } from './__mocks__/usePollQuestions';
+import useUpdatePollQuestion from './useUpdatePollQuestion';
 
 const apiPath = '*/poll_questions/:questionId';
 

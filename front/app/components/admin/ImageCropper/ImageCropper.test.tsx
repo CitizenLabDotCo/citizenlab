@@ -1,8 +1,11 @@
 import React from 'react';
-import { screen, render } from 'utils/testUtils/rtl';
-import ImageCropper from './';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
+
 import { UploadFile } from 'typings';
+
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { screen, render } from 'utils/testUtils/rtl';
+
+import ImageCropper from './';
 
 const getImage = async () =>
   await convertUrlToUploadFile(

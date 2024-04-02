@@ -1,6 +1,8 @@
 import React, { memo } from 'react';
-import TopicsFilter from 'components/FilterBoxes/TopicsFilter';
+
 import useTopics from 'api/topics/useTopics';
+
+import TopicsFilter from 'components/FilterBoxes/TopicsFilter';
 
 interface Props {
   selectedTopicIds: string[] | null | undefined;

@@ -1,33 +1,29 @@
 import React, { useState, useEffect } from 'react';
+
+import { Box, colors, Spinner } from '@citizenlab/cl2-component-library';
 import {
   Outlet as RouterOutlet,
   useParams,
   useLocation,
 } from 'react-router-dom';
-import clHistory from 'utils/cl-router/history';
 
-// components
-import { Box, colors, Spinner } from '@citizenlab/cl2-component-library';
-import { PhaseHeader } from './phase/PhaseHeader';
-import ProjectHeader from './projectHeader';
-
-// i18n
-import { useIntl } from 'utils/cl-intl';
-
-// typings
+import { IPhaseData } from 'api/phases/types';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
+import useProjectById from 'api/projects/useProjectById';
 
-// utils
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
+
+import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
-// hooks
-import { IPhaseData } from 'api/phases/types';
-import { getCurrentPhase } from 'api/phases/utils';
+import { PhaseHeader } from './phase/PhaseHeader';
+import ProjectHeader from './projectHeader';
 import { FeatureFlags, getTabs, IPhaseTab } from './tabs';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
 import { getTimelineTab } from './timeline/utils';
 
 interface DataProps {
@@ -64,11 +60,10 @@ const AdminProjectsProjectIndex = ({
   const isNewPhaseLink = pathname.endsWith(
     `admin/projects/${project.id}/phases/new`
   );
-  const baseTabsUrl = `/admin/projects/${project.id}`;
   const tabs: IPhaseTab[] = selectedPhase
     ? getTabs(selectedPhase, featureFlags, formatMessage).map((tab) => ({
         ...tab,
-        url: `${baseTabsUrl}/phases/${selectedPhase.id}/${tab.url}`,
+        url: `/admin/projects/${project.id}/phases/${selectedPhase.id}/${tab.url}`,
       }))
     : [];
 

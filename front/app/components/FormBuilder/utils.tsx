@@ -1,25 +1,26 @@
 import React from 'react';
 
+import { uuid4 } from '@sentry/utils';
+import { MessageDescriptor } from 'react-intl';
+import { RouteType } from 'routes';
+import { SupportedLocale } from 'typings';
+
 import {
   ICustomFieldInputType,
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 import { IPhaseData } from 'api/phases/types';
-import { Locale } from 'typings';
-import messages from './components/messages';
-import { MessageDescriptor } from 'react-intl';
 
-// Components
-import ConfigSelectWithLocaleSwitcher from './components/FormBuilderSettings/ConfigSelectWithLocaleSwitcher';
-import LinearScaleSettings from './components/FormBuilderSettings/LinearScaleSettings';
-import FieldGroupSettings from './components/FormBuilderSettings/FieldGroupSettings';
-import MultiselectSettings from './components/FormBuilderSettings/MultiselectSettings';
-import SelectSettings from './components/FormBuilderSettings/SelectSettings';
-
-// utils
-import { uuid4 } from '@sentry/utils';
 import { isNilOrError } from 'utils/helperUtils';
+
+import ConfigSelectWithLocaleSwitcher from './components/FormBuilderSettings/ConfigSelectWithLocaleSwitcher';
+import FieldGroupSettings from './components/FormBuilderSettings/FieldGroupSettings';
+import LinearScaleSettings from './components/FormBuilderSettings/LinearScaleSettings';
+import MultiselectSettings from './components/FormBuilderSettings/MultiselectSettings';
+import PointSettings from './components/FormBuilderSettings/PointSettings';
+import SelectSettings from './components/FormBuilderSettings/SelectSettings';
+import messages from './components/messages';
 
 export type FormBuilderConfig = {
   formBuilderTitle: MessageDescriptor;
@@ -40,7 +41,9 @@ export type FormBuilderConfig = {
   alwaysShowCustomFields: boolean;
   isFormPhaseSpecific: boolean;
 
-  viewFormLink?: string;
+  viewFormLink?: RouteType;
+
+  goBackUrl?: RouteType;
 
   getDeletionNotice?: (projectId: string) => void;
   getWarningNotice?: () => void;
@@ -50,7 +53,6 @@ export type FormBuilderConfig = {
     handleClose: () => void
   ) => void;
 
-  goBackUrl?: string;
   groupingType: 'page' | 'section';
 
   onDownloadPDF?: () => void;
@@ -90,8 +92,8 @@ export const formEndOption = 'survey_end';
 // Function to return additional settings based on input type
 export function getAdditionalSettings(
   field: IFlatCustomFieldWithIndex,
-  locales: Locale[],
-  platformLocale: Locale
+  locales: SupportedLocale[],
+  platformLocale: SupportedLocale
 ) {
   if (builtInFieldKeys.includes(field.key)) {
     return null;
@@ -144,6 +146,13 @@ export function getAdditionalSettings(
           minimumLabelName={`customFields.${field.index}.minimum_label_multiloc`}
           maximumLabelName={`customFields.${field.index}.maximum_label_multiloc`}
           locales={locales}
+        />
+      );
+    case 'point':
+      return (
+        <PointSettings
+          mapConfigIdName={`customFields.${field.index}.map_config_id`}
+          field={field}
         />
       );
     default:
@@ -219,6 +228,9 @@ const getInputTypeStringKey = (
       break;
     case 'file_upload':
       translatedStringKey = messages.fileUpload;
+      break;
+    case 'point':
+      translatedStringKey = messages.locationAnswer;
       break;
   }
 

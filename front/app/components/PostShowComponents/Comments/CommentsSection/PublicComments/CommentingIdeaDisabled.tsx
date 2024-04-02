@@ -1,23 +1,19 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
-import Warning from 'components/UI/Warning';
+import { Box } from '@citizenlab/cl2-component-library';
 
-// hooks
+import { IIdea, IdeaCommentingDisabledReason } from 'api/ideas/types';
 import useAuthUser from 'api/me/useAuthUser';
 
-// services
-import { IIdea, IdeaCommentingDisabledReason } from 'api/ideas/types';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
-// i18n
-import messages from '../../messages';
+import Warning from 'components/UI/Warning';
+
 import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 import globalMessages from 'utils/messages';
 
-// events
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import { Box } from '@citizenlab/cl2-component-library';
+import messages from '../../messages';
 
 interface Props {
   phaseId: string | undefined;

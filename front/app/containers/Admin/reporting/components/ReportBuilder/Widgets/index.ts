@@ -1,51 +1,45 @@
-// report builder widgets
-import TitleMultiloc, { titleMultilocTitle } from './TitleMultiloc';
-import TextMultiloc, { textMultilocTitle } from './TextMultiloc';
-import ImageMultiloc, { imageMultilocTitle } from './ImageMultiloc';
-import TwoColumn, { twoColumnTitle } from './TwoColumn';
+import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import whiteSpaceMessages from 'components/admin/ContentBuilder/Widgets/WhiteSpace/messages';
+
+import { MessageDescriptor } from 'utils/cl-intl';
+
 import AboutReportWidget, { aboutReportTitle } from './AboutReportWidget';
-import SurveyResultsWidget, { surveyResultsTitle } from './SurveyResultsWidget';
-import SurveyQuestionResultWidget, {
-  surveyQuestionResultTitle,
-} from './SurveyQuestionResultWidget';
-import VisitorsWidget, { visitorsTitle } from './ChartWidgets/VisitorsWidget';
-import VisitorsTrafficSourcesWidget, {
-  visitorsTrafficSourcesTitle,
-} from './ChartWidgets/VisitorsTrafficSourcesWidget';
-import AgeWidget, { ageTitle } from './ChartWidgets/AgeWidget';
-import GenderWidget, { genderTitle } from './ChartWidgets/GenderWidget';
 import ActiveUsersWidget, {
   activeUsersTitle,
 } from './ChartWidgets/ActiveUsersWidget';
+import AgeWidget, { ageTitle } from './ChartWidgets/AgeWidget';
+import CommentsByTimeWidget, {
+  commentsByTimeTitle,
+} from './ChartWidgets/CommentsByTimeWidget';
+import GenderWidget, { genderTitle } from './ChartWidgets/GenderWidget';
+import PostsByTimeWidget, {
+  postsByTimeTitle,
+} from './ChartWidgets/PostsByTimeWidget';
+import ReactionsByTimeWidget, {
+  reactionsByTimeTitle,
+} from './ChartWidgets/ReactionsByTimeWidget';
+import VisitorsTrafficSourcesWidget, {
+  visitorsTrafficSourcesTitle,
+} from './ChartWidgets/VisitorsTrafficSourcesWidget';
+import VisitorsWidget, { visitorsTitle } from './ChartWidgets/VisitorsWidget';
+import IframeMultiloc, { iframeMultilocTitle } from './IframeMultiloc';
+import ImageMultiloc, { imageMultilocTitle } from './ImageMultiloc';
 import MostReactedIdeasWidget, {
   mostReactedIdeasTitle,
 } from './MostReactedIdeasWidget';
 import SingleIdeaWidget, { singleIdeaTitle } from './SingleIdeaWidget';
-import PostsByTimeWidget, {
-  postsByTimeTitle,
-} from './ChartWidgets/PostsByTimeWidget';
-import CommentsByTimeWidget, {
-  commentsByTimeTitle,
-} from './ChartWidgets/CommentsByTimeWidget';
-import ReactionsByTimeWidget, {
-  reactionsByTimeTitle,
-} from './ChartWidgets/ReactionsByTimeWidget';
-
-// shared widgets
-import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
-import whiteSpaceMessages from 'components/admin/ContentBuilder/Widgets/WhiteSpace/messages';
-
-// typings
-import { MessageDescriptor } from 'utils/cl-intl';
+import SurveyQuestionResultWidget, {
+  surveyQuestionResultTitle,
+} from './SurveyQuestionResultWidget';
+import TextMultiloc, { textMultilocTitle } from './TextMultiloc';
+import TwoColumn, { twoColumnTitle } from './TwoColumn';
 
 export const WIDGETS = {
   TwoColumn,
-  TitleMultiloc, // TODO: remove this widget (TAN-1022)
   TextMultiloc,
   ImageMultiloc,
   WhiteSpace,
   AboutReportWidget,
-  SurveyResultsWidget, // TODO: remove this widget (TAN-1022)
   SurveyQuestionResultWidget,
   VisitorsWidget,
   VisitorsTrafficSourcesWidget,
@@ -57,6 +51,7 @@ export const WIDGETS = {
   PostsByTimeWidget,
   CommentsByTimeWidget,
   ReactionsByTimeWidget,
+  IframeMultiloc,
 };
 
 type WidgetName = keyof typeof WIDGETS;
@@ -65,10 +60,8 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   WhiteSpace: whiteSpaceMessages.whiteSpace,
   TextMultiloc: textMultilocTitle,
   TwoColumn: twoColumnTitle,
-  TitleMultiloc: titleMultilocTitle,
   ImageMultiloc: imageMultilocTitle,
   AboutReportWidget: aboutReportTitle,
-  SurveyResultsWidget: surveyResultsTitle,
   SurveyQuestionResultWidget: surveyQuestionResultTitle,
   MostReactedIdeasWidget: mostReactedIdeasTitle,
   SingleIdeaWidget: singleIdeaTitle,
@@ -80,6 +73,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   PostsByTimeWidget: postsByTimeTitle,
   CommentsByTimeWidget: commentsByTimeTitle,
   ReactionsByTimeWidget: reactionsByTimeTitle,
+  IframeMultiloc: iframeMultilocTitle,
 };
 
 const WIDGETS_WITH_CHILDREN = new Set<string>([
@@ -99,8 +93,8 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'ReactionsByTimeWidget',
   'VisitorsTrafficSourcesWidget',
   'VisitorsWidget',
-  'SurveyResultsWidget',
   'SurveyQuestionResultWidget',
+  'IframeMultiloc',
 ] satisfies WidgetName[]);
 
 export const hasNoPointerEvents = (nodeName: string) => {

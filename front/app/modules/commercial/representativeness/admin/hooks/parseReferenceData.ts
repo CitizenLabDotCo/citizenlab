@@ -1,15 +1,13 @@
-// services
-
-// utils
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { zipObject } from 'lodash-es';
-import { sum, roundPercentage, roundPercentages } from 'utils/math';
-import { forEachBin } from '../utils/bins';
+import { Multiloc, SupportedLocale } from 'typings';
 
-// typings
-import { Multiloc, Locale } from 'typings';
 import { IUsersByAge } from 'api/users_by_age/types';
 import { IUsersByCustomField } from 'api/users_by_custom_field/types';
+
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { sum, roundPercentage, roundPercentages } from 'utils/math';
+
+import { forEachBin } from '../utils/bins';
 
 interface RepresentativenessRowBase {
   actualPercentage: number;
@@ -143,7 +141,7 @@ export const regFieldToIncludedUsers = (
 
 export const ageFieldToReferenceData = (
   data: IUsersByAge,
-  locale: Locale
+  locale: SupportedLocale
 ): RepresentativenessRowMultiloc[] => {
   const {
     series: { user_counts, reference_population, bins },

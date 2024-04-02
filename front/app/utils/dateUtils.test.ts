@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import {
   pastPresentOrFuture,
   getIsoDateUtc,
@@ -7,7 +9,6 @@ import {
   roundToNearestMultipleOfFive,
   calculateRoundedEndDate,
 } from './dateUtils';
-import moment from 'moment';
 import 'moment-timezone';
 
 // test date is 1AM June 15 2020 UTC time (Z)

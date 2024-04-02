@@ -1,10 +1,10 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useIdeaJsonFormSchema from './useIdeaJsonFormSchema';
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useIdeaJsonFormSchema from './useIdeaJsonFormSchema';
 
 const projectPath = '*projects/:projectId/custom_fields/json_forms_schema';
 const phasePath = '*phases/:phaseId/custom_fields/json_forms_schema';

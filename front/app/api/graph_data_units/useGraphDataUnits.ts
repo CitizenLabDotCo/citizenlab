@@ -1,19 +1,16 @@
-// craft
 import { useNode } from '@craftjs/core';
-import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
-
-// routing
 import { useLocation, useSearchParams } from 'react-router-dom';
-import { isPage } from 'utils/helperUtils';
-import { REPORT_BUILDER, EDITOR } from 'containers/Admin/reporting/routes';
 
-// hooks
-import useGraphDataUnitsLive from './useGraphDataUnitsLive';
 import useGraphDataUnitsPublished from 'api/graph_data_units/useGraphDataUnitsPublished';
 
-// typins
+import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
+import { REPORT_BUILDER, EDITOR } from 'containers/Admin/reporting/routes';
+
 import { BaseResponseData } from 'utils/cl-react-query/fetcher';
+import { isPage } from 'utils/helperUtils';
+
 import { ParametersLive, Options } from './requestTypes';
+import useGraphDataUnitsLive from './useGraphDataUnitsLive';
 
 type Params = {
   isPhaseContext: boolean;
@@ -76,22 +73,27 @@ const useGraphDataUnits = <Response extends BaseResponseData>(
     hasPreviewParam: search.get('preview') === 'true',
   });
 
-  const { data: dataLive } = useGraphDataUnitsLive<Response>(parameters, {
-    enabled: enabled && showLiveData,
-    onSuccess,
-  });
-
-  const { data: dataPublished } = useGraphDataUnitsPublished<Response>(
+  const { data: dataLive, error: errorLive } = useGraphDataUnitsLive<Response>(
+    parameters,
     {
-      reportId,
-      graphId,
-    },
-    { enabled: enabled && !showLiveData }
+      enabled: enabled && showLiveData,
+      onSuccess,
+    }
   );
 
-  const data = dataLive ?? dataPublished;
+  const { data: dataPublished, error: errorPublished } =
+    useGraphDataUnitsPublished<Response>(
+      {
+        reportId,
+        graphId,
+      },
+      { enabled: enabled && !showLiveData }
+    );
 
-  return data;
+  const data = showLiveData ? dataLive : dataPublished;
+  const error = showLiveData ? errorLive : errorPublished;
+
+  return { data, error };
 };
 
 export default useGraphDataUnits;

@@ -1,34 +1,26 @@
 import React, { useEffect, useState } from 'react';
 
-// components
-import TopBar from './TopBar';
-import EventsMessage from './EventsMessage';
-import EventsSpinner from './EventsSpinner';
-import EventCard from 'components/EventCard';
-import Pagination from 'components/Pagination';
 import { Box, media } from '@citizenlab/cl2-component-library';
-
-// i18n
-import messages from '../messages';
+import moment from 'moment';
 import { MessageDescriptor } from 'react-intl';
-
-// hooks
-import useEvents from 'api/events/useEvents';
-
-// styling
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { getPageNumberFromUrl } from 'utils/paginationUtils';
-import moment from 'moment';
-
-// types
+import useEvents from 'api/events/useEvents';
 import { PublicationStatus } from 'api/projects/types';
 
-// router
-import { useSearchParams } from 'react-router-dom';
+import EventCard from 'components/EventCard';
+import Pagination from 'components/Pagination';
+
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { isNilOrError } from 'utils/helperUtils';
+import { getPageNumberFromUrl } from 'utils/paginationUtils';
+
+import messages from '../messages';
+
+import EventsMessage from './EventsMessage';
+import EventsSpinner from './EventsSpinner';
+import TopBar from './TopBar';
 
 interface IStyledEventCard {
   last: boolean;

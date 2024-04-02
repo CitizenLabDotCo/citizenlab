@@ -28,6 +28,8 @@ describe('Form builder page element', () => {
           title: 'firstPhaseTitle',
           startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
           participationMethod: 'native_survey',
+          nativeSurveyButtonMultiloc: { en: 'Take the survey' },
+          nativeSurveyTitleMultiloc: { en: 'Survey' },
           canPost: true,
           canComment: true,
           canReact: true,
@@ -44,6 +46,7 @@ describe('Form builder page element', () => {
     cy.visit(
       `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
     );
+    cy.acceptCookies();
     cy.get('[data-cy="e2e-page"]').click();
     cy.get('#e2e-field-group-title-multiloc').type('Page title', {
       force: true,

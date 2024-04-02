@@ -1,4 +1,5 @@
 import { Keys } from 'utils/cl-react-query/types';
+
 import userLockedAttributes from './keys';
 
 export type UserLockedAttributesKeys = Keys<typeof userLockedAttributes>;

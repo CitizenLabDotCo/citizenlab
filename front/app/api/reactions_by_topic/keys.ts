@@ -1,4 +1,5 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
+
 import { IReactionsByTopicParams } from './types';
 
 const baseKey = { type: 'reactions_by_topic' };

@@ -1,4 +1,3 @@
-// components
 import {
   Input,
   Radio,
@@ -6,12 +5,11 @@ import {
   fontSizes,
   colors,
 } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
-import Warning from 'components/UI/Warning';
-import { Section, SectionField } from 'components/admin/Section';
-
-// style
 import styled from 'styled-components';
+
+import { Section, SectionField } from 'components/admin/Section';
+import Error, { Props as ErrorProps } from 'components/UI/Error';
+import Warning, { Props as WarningProps } from 'components/UI/Warning';
 
 export const Container = styled.div``;
 
@@ -49,7 +47,7 @@ export const BudgetingAmountInput = styled(Input)`
   max-width: 288px;
 `;
 
-export const VotingAmountInputError = styled(Error)`
+export const VotingAmountInputError = styled(Error)<ErrorProps>`
   max-width: 400px;
 `;
 
@@ -57,10 +55,6 @@ export const StyledA = styled.a`
   &:hover {
     text-decoration: underline;
   }
-`;
-
-export const ParticipationMethodRadio = styled(Radio)`
-  margin-bottom: 25px;
 `;
 
 export const LabelText = styled.div`
@@ -86,7 +80,7 @@ export const LabelText = styled.div`
   }
 `;
 
-export const StyledWarning = styled(Warning)`
+export const StyledWarning = styled(Warning)<WarningProps>`
   margin-bottom: 20px;
 `;
 

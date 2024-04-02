@@ -1,7 +1,10 @@
 import React from 'react';
-import EmptyState from './EmptyState';
-import { render, screen } from 'utils/testUtils/rtl';
+
 import * as FeatureFlag from 'hooks/useFeatureFlag';
+
+import { render, screen } from 'utils/testUtils/rtl';
+
+import EmptyState from './EmptyState';
 
 const mockFeatureFlag = FeatureFlag as { default: () => boolean };
 

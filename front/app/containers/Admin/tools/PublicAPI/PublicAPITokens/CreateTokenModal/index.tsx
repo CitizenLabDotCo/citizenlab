@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
 
-// form
-import { object, string } from 'yup';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-import { FormProvider, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import Feedback from 'components/HookForm/Feedback';
-import Input from 'components/HookForm/Input';
 import {
   Box,
   Button,
@@ -15,10 +7,21 @@ import {
   Title,
   colors,
 } from '@citizenlab/cl2-component-library';
-import useAddApiClient from 'api/api_clients/useAddApiClient';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { FormProvider, useForm } from 'react-hook-form';
 import styled from 'styled-components';
+import { object, string } from 'yup';
+
+import useAddApiClient from 'api/api_clients/useAddApiClient';
+
+import Feedback from 'components/HookForm/Feedback';
+import Input from 'components/HookForm/Input';
 import Warning from 'components/UI/Warning';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
+
+import messages from '../messages';
 
 interface FormValues {
   name: string;

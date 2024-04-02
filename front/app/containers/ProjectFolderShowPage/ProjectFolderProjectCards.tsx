@@ -1,19 +1,15 @@
 import React from 'react';
-import { isEmpty } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
+import { media } from '@citizenlab/cl2-component-library';
+import { isEmpty } from 'lodash-es';
+import styled from 'styled-components';
+
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
+import { PublicationStatus } from 'api/projects/types';
+
 import ProjectCard from 'components/ProjectCard';
 
-// hooks
-import useAdminPublications from 'api/admin_publications/useAdminPublications';
-
-// style
-import styled from 'styled-components';
-import { media } from '@citizenlab/cl2-component-library';
-
-// typings
-import { PublicationStatus } from 'api/projects/types';
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
   display: flex;

@@ -1,7 +1,11 @@
 import React from 'react';
-import { render, screen } from 'utils/testUtils/rtl';
-import TabbedResource from '.';
+
+import { RouteType } from 'routes';
+
 import { WithRouterProps } from 'utils/cl-router/withRouter';
+import { render, screen } from 'utils/testUtils/rtl';
+
+import TabbedResource from '.';
 
 const getRouterProps = (tabId, tabName?: string) =>
   ({
@@ -23,17 +27,17 @@ const fakeTabs = [
   {
     name: 'FirstTab',
     label: 'First Tab',
-    url: '/first',
+    url: '/first' as RouteType,
   },
   {
     name: 'SecondTab',
     label: 'Second Tab',
-    url: '/second',
+    url: '/second' as RouteType,
   },
   {
     name: 'ThirdTab',
     label: 'Third Tab',
-    url: '/third',
+    url: '/third' as RouteType,
     active: true,
   },
 ];
@@ -68,7 +72,7 @@ describe('<TabbedResource />', () => {
       {
         name: 'FourthTab',
         label: 'Fourth Tab',
-        url: '/fourth',
+        url: '/fourth' as RouteType,
         statusLabel: 'Beta Tag',
       },
     ];

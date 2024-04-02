@@ -1,12 +1,9 @@
 import React from 'react';
 
-// components
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
-// hooks
 import useLocale from 'hooks/useLocale';
 
-// utils
 import { showDotAfterDay } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 

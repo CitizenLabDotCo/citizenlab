@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 
-// components
-import PieChart from 'components/admin/Graphs/PieChart';
+import { Layout } from 'components/admin/GraphCards/typings';
 import renderTooltip from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/renderTooltip';
-
-// typings
 import { PieRow } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
-import { Layout } from 'components/admin/GraphCards/typings';
+import PieChart from 'components/admin/Graphs/PieChart';
 
 interface Props {
   pieData: PieRow[];

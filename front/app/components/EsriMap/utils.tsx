@@ -1,27 +1,30 @@
-import { colors } from '@citizenlab/cl2-component-library';
-
-// ArcGIS
+import Basemap from '@arcgis/core/Basemap';
+import Collection from '@arcgis/core/core/Collection';
+import Point from '@arcgis/core/geometry/Point';
+import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
+import GeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer';
+import Layer from '@arcgis/core/layers/Layer';
+import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductionCluster';
 import VectorTileLayer from '@arcgis/core/layers/VectorTileLayer';
 import WebTileLayer from '@arcgis/core/layers/WebTileLayer';
-import Layer from '@arcgis/core/layers/Layer';
-import GeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer';
 import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
+import { createRenderer } from '@arcgis/core/smartMapping/renderers/heatmap.js';
 import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
-import Popup from '@arcgis/core/widgets/Popup';
-import Point from '@arcgis/core/geometry/Point';
-import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
-import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductionCluster';
-import MapView from '@arcgis/core/views/MapView';
 import SimpleLineSymbol from '@arcgis/core/symbols/SimpleLineSymbol';
+import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
+import MapView from '@arcgis/core/views/MapView';
+import WebMap from '@arcgis/core/WebMap';
+import Popup from '@arcgis/core/widgets/Popup';
+import { colors } from '@citizenlab/cl2-component-library';
+import { uuid4 } from '@sentry/utils';
 
-// utils
-import { hexToRGBA } from 'utils/helperUtils';
-
-// types
-import { Localize } from 'hooks/useLocalize';
+import { IMapConfig } from 'api/map_config/types';
 import { IMapLayerAttributes } from 'api/map_layers/types';
 
-// constants
+import { Localize } from 'hooks/useLocalize';
+
+import { hexToRGBA } from 'utils/helperUtils';
+
 import {
   BASEMAP_AT_ATTRIBUTION,
   DEFAULT_TILE_PROVIDER,
@@ -83,7 +86,9 @@ export const getMapPinSymbol = ({ color, sizeInPx }: MapPinSymbolProps) => {
 export const getEsriMakiSymbol = (iconName: MakiIconName, color: string) => {
   return fetch(
     // Fetch the SVG from the maki icons endpoint
-    `https://unpkg.com/@icon/maki-icons/icons/${iconName.toLowerCase()}.svg`
+    `https://unpkg.com/@icon/maki-icons/icons/${
+      iconName === 'toilets' ? 'toilet' : iconName.toLowerCase() // Specific handling for a backwards compatibility issue
+    }.svg`
   )
     .then((response) => response.text())
     .then((svg) => {
@@ -221,16 +226,27 @@ type MakiIconName =
 // getShapeSymbol
 // Description: Get a simple shape symbol (with an optional outline width & color value)
 type SimpleShape = 'circle' | 'square' | 'cross' | 'diamond' | 'triangle' | 'x';
-export const getShapeSymbol = (
-  shape: SimpleShape,
-  color?: string,
-  outlineWidth?: number
-) => {
+type SimpleShapeProps = {
+  shape: SimpleShape;
+  color?: string;
+  outlineColor?: string;
+  outlineWidth?: number;
+  sizeInPx?: number;
+};
+
+export const getShapeSymbol = ({
+  shape,
+  color,
+  outlineColor,
+  outlineWidth,
+  sizeInPx,
+}: SimpleShapeProps) => {
   return new SimpleMarkerSymbol({
     style: shape,
     color: color || colors.white,
+    size: sizeInPx,
     outline: {
-      color: hexToRGBA(colors.white, 0.2),
+      color: outlineColor || hexToRGBA(colors.white, 0.2),
       width: outlineWidth || 1,
     },
   });
@@ -269,7 +285,6 @@ export const goToMapLocation = async (
       },
       {
         duration: 1000,
-        easing: 'ease-in-out',
       }
     )
     .catch(() => {
@@ -292,11 +307,11 @@ export const getClusterConfiguration = (clusterSymbolColor?: string) => {
   return new FeatureReductionCluster({
     maxScale: 600, // Stop clustering once fully zoomed in
     clusterMinSize: '20',
-    symbol: getShapeSymbol(
-      'circle',
-      clusterSymbolColor || colors.coolGrey700,
-      3
-    ),
+    symbol: getShapeSymbol({
+      shape: 'circle',
+      color: clusterSymbolColor || colors.coolGrey700,
+      outlineWidth: 3,
+    }),
     labelingInfo: [
       // Cluster configuration from Esri sample
       // src: https://developers.arcgis.com/javascript/latest/sample-code/featurereduction-cluster-filter/
@@ -371,6 +386,65 @@ export const showAddInputPopup = ({
   });
 };
 
+// createEsriFeatureLayers
+// Description: Create list of Esri Feature layers from a list of IMapLayerAttributes
+export const createEsriFeatureLayers = (
+  layers: IMapLayerAttributes[],
+  localize: Localize
+) => {
+  // create new Feature Layers from the Map Config layers
+  const esriLayers: Layer[] = [];
+  layers.forEach((layer) => {
+    if (localize(layer.title_multiloc)) {
+      const title = localize(layer.title_multiloc);
+
+      // Extract number of sublayers if present
+      const titleSplit = title.lastIndexOf('(');
+      const subLayerCount =
+        titleSplit >= 0
+          ? parseInt(title.substring(titleSplit + 1, title.length - 1), 10)
+          : 0;
+
+      // If we have sublayers, add a feature layer for each
+      if (subLayerCount > 1) {
+        for (let i = 0; i < subLayerCount; i++) {
+          esriLayers.push(
+            new FeatureLayer({
+              url: `${layer.layer_url}/${i + 1}`,
+            })
+          );
+        }
+      } else {
+        // Otherwise, just add the single feature layer
+        esriLayers.push(
+          new FeatureLayer({
+            url: layer.layer_url,
+          })
+        );
+      }
+    }
+  });
+  return esriLayers;
+};
+
+// parseLayers
+// Description: Parse the layers from the map config and create Esri layers
+export const parseLayers = (
+  mapConfig: IMapConfig | null | undefined,
+  localize: Localize
+) => {
+  const mapConfigLayers = mapConfig?.data?.attributes.layers;
+  if (!mapConfigLayers) return [];
+
+  // All layers are either of type Esri or GeoJSON, so we can check just the first layer
+  if (mapConfigLayers[0]?.type === 'CustomMaps::GeojsonLayer') {
+    return createEsriGeoJsonLayers(mapConfigLayers, localize);
+  } else if (mapConfigLayers[0]?.type === 'CustomMaps::EsriFeatureLayer') {
+    return createEsriFeatureLayers(mapConfigLayers, localize);
+  }
+  return [];
+};
+
 // createEsriGeoJsonLayers
 // Description: Create list of Esri GeoJSON layers from a list of IMapLayerAttributes
 export const createEsriGeoJsonLayers = (
@@ -388,6 +462,7 @@ export const createEsriGeoJsonLayers = (
 
     // create new geojson layer using the created url
     const geoJsonLayer = new GeoJSONLayer({
+      id: `${uuid4()}`,
       url,
       customParameters: {
         layerId: layer.id,
@@ -451,4 +526,40 @@ export const createEsriGeoJsonLayers = (
 
     return geoJsonLayer;
   });
+};
+
+// handleWebMapReferenceLayers
+// Description: Re-order any reference layers which are part of the WebMap's basemap
+// These need to be re-ordered so they appear underneath any additional layers we create (E.g. Idea pins)
+// API doc: https://developers.arcgis.com/javascript/latest/api-reference/esri-Basemap.html#referenceLayers
+export const handleWebMapReferenceLayers = (
+  webMap: WebMap,
+  referenceLayers: Collection<Layer>
+) => {
+  // Add current basemap layers to new variable
+  const newBasemapLayers = webMap.basemap?.baseLayers;
+  // Append the reference layers to the new basemap layers list
+  webMap.addMany(referenceLayers.toArray());
+  // Set the WebMap basemap to this new list of layers
+  webMap.basemap = new Basemap({
+    baseLayers: newBasemapLayers,
+  });
+};
+
+// applyHeatMapRenderer
+// Description: Apply a heat map renderer to a point Feature layer
+export const applyHeatMapRenderer = (layer: FeatureLayer, mapView: MapView) => {
+  if (layer && mapView) {
+    // Set up the parameters for the heatmapRendererCreator
+    const heatmapParams = {
+      layer,
+      view: mapView,
+    };
+
+    // Esri heatmapRendererCreator creates a statistical heatmap configuration based on the data
+    createRenderer(heatmapParams).then(function (response) {
+      // Apply generated heatmap renderer to the layer
+      layer.renderer = response.renderer;
+    });
+  }
 };

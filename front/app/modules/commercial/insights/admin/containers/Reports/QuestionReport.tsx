@@ -1,12 +1,17 @@
-import { IGraphPoint } from '@citizenlab/cl2-component-library';
-import useLocalize from 'hooks/useLocalize';
-import usePollOptions from 'api/poll_options/usePollOptions';
-import usePollResponses from 'api/poll_responses/usePollResponses';
 import React, { memo } from 'react';
+
+import { IGraphPoint } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
+
+import usePollOptions from 'api/poll_options/usePollOptions';
 import { IPollQuestionData } from 'api/poll_questions/types';
+import usePollResponses from 'api/poll_responses/usePollResponses';
+
+import useLocalize from 'hooks/useLocalize';
+
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+
 import ResponseGraph from './Charts/ResponseGraph';
 
 interface Props {

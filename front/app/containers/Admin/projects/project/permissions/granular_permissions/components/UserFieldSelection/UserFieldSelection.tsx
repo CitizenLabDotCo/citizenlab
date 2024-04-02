@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
 
-// intl
-import messages from '../../containers/Granular/messages';
-
-// components
 import {
   Title,
   Text,
@@ -11,35 +7,33 @@ import {
   Box,
   colors,
   Toggle,
-  Locale,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
-import { FieldSelectionModal } from './FieldSelectionModal';
 import Tippy from '@tippyjs/react';
+import { SupportedLocale } from 'typings';
 
-// api
+import useAuthUser from 'api/me/useAuthUser';
+import { IPermissionData } from 'api/permissions/types';
+import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
 import useAddPermissionCustomField from 'api/permissions_custom_fields/useAddPermissionsCustomField';
-import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
 import useDeletePermissionsCustomField from 'api/permissions_custom_fields/useDeletePermissionsCustomField';
+import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
 import useUpdatePermissionsCustomField from 'api/permissions_custom_fields/useUpdatePermissionsCustomField';
+import { IUserCustomFieldData } from 'api/user_custom_fields/types';
+import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
-// utils
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import FormattedMessageComponent from 'utils/cl-intl/FormattedMessage';
 import { isNilOrError } from 'utils/helperUtils';
-
-// services
-import { IPermissionData } from 'api/permissions/types';
-import { IUserCustomFieldData } from 'api/user_custom_fields/types';
-import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
-import { HandlePermissionChangeProps } from '../../containers/Granular/utils';
 import { isAdmin } from 'utils/permissions/roles';
 
-// hooks
-import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
-import useLocale from 'hooks/useLocale';
-import useAuthUser from 'api/me/useAuthUser';
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import messages from '../../containers/Granular/messages';
+import { HandlePermissionChangeProps } from '../../containers/Granular/utils';
+
+import { FieldSelectionModal } from './FieldSelectionModal';
 
 type UserFieldSelectionProps = {
   permission: IPermissionData;
@@ -101,7 +95,7 @@ const UserFieldSelection = ({
 
   const getTitleFromGlobalFieldId = (
     field: IPermissionsCustomFieldData,
-    locale: Locale
+    locale: SupportedLocale
   ) => {
     return globalRegistrationFields?.data.find(
       (globalField) =>

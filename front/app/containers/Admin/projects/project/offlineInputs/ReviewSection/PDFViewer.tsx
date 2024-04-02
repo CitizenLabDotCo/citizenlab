@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
 
-// react-pdf
+import { Box } from '@citizenlab/cl2-component-library';
 import { pdfjs, Document, Page } from 'react-pdf';
 import 'react-pdf/dist/Page/TextLayer.css';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 
-// components
-import { Box } from '@citizenlab/cl2-component-library';
-
-// utils
 import { getJwt } from 'utils/auth/jwt';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;

@@ -43,6 +43,8 @@ module BulkImportIdeas
           @project.allowed_input_topics.map { |t| t.title_multiloc[@locale] }.join '; '
         when 'number'
           5
+        when 'point'
+          rand(0.1..89.9).round(5)
         else
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
         end

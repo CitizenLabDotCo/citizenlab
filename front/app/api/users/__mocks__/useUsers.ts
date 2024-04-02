@@ -1,5 +1,6 @@
-import { usersData } from './_mockServer';
 import { IUser } from '../types';
+
+import { usersData } from './_mockServer';
 
 export const makeUser = (attributes = {}, id?: string): IUser => {
   return {

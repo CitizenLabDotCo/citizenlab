@@ -1,9 +1,11 @@
 import React from 'react';
-import { parse, stringify } from 'qs';
 
 import { Box } from '@citizenlab/cl2-component-library';
+import { parse, stringify } from 'qs';
 import styled from 'styled-components';
+
 import useAuthUser from 'api/me/useAuthUser';
+
 import { getFullName } from 'utils/textUtils';
 
 const StyledIframe = styled.iframe`

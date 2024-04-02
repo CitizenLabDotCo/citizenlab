@@ -1,19 +1,20 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// i18n
+import useIdeaById from 'api/ideas/useIdeaById';
+import useAuthUser from 'api/me/useAuthUser';
+import usePhases from 'api/phases/usePhases';
+import { getInputTerm } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+
+import useLocalize from 'hooks/useLocalize';
+
+import SharingButtons from 'components/Sharing/SharingButtons';
+
 import { useIntl } from 'utils/cl-intl';
-import messages from '../../messages';
+import { isNilOrError } from 'utils/helperUtils';
 import { getInputTermMessage } from 'utils/i18n';
 
-// hooks
-import useIdeaById from 'api/ideas/useIdeaById';
-import useLocalize from 'hooks/useLocalize';
-import useAuthUser from 'api/me/useAuthUser';
-import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
-import SharingButtons from 'components/Sharing/SharingButtons';
-import { getInputTerm } from 'api/phases/utils';
+import messages from '../../messages';
 
 interface Props {
   className?: string;

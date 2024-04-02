@@ -1,11 +1,9 @@
 import React, { ReactNode } from 'react';
-// components
+
 import { Box, Text, stylingConsts } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
-
-// styling
-import { useTheme } from 'styled-components';
 import { transparentize } from 'polished';
+import { useTheme } from 'styled-components';
 
 interface Props {
   votesPercentage: number;

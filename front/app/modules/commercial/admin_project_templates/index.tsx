@@ -1,10 +1,14 @@
 import React, { ReactNode } from 'react';
+
+import { TTabName } from 'containers/Admin/projects/all/CreateProject';
+import { AdminRoute } from 'containers/Admin/routes';
+
 import { ModuleConfiguration } from 'utils/moduleUtils';
+
 const CreateProjectFromTemplate = React.lazy(
   () => import('./admin/containers/CreateProjectFromTemplate')
 );
 const Tab = React.lazy(() => import('./admin/components/Tab'));
-import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 const ProjectTemplatePreviewAdminWithEventWrapper = React.lazy(
   () => import('./admin/containers/ProjectTemplatePreviewAdminWithEventWrapper')
 );
@@ -36,17 +40,26 @@ const RenderOnSelectedTabValue = ({
   return <>{children}</>;
 };
 
+export enum projectTemplateRoutes {
+  projectTemplate = 'templates/:projectTemplateId',
+}
+
+// TODO: Replace "project_templates" with link to route in main app once converted.
+export type projectTemplateRouteTypes =
+  | `${projectTemplateRoutes.projectTemplate}/${string}`
+  | AdminRoute<`project_templates/${projectTemplateRoutes.projectTemplate}/${string}`>;
+
 const configuration: ModuleConfiguration = {
   routes: {
     citizen: [
       {
-        path: 'templates/:projectTemplateId',
+        path: projectTemplateRoutes.projectTemplate,
         element: <CitizenTemplatePreviewComponent />,
       },
     ],
     'admin.project_templates': [
       {
-        path: 'templates/:projectTemplateId',
+        path: projectTemplateRoutes.projectTemplate,
         element: <AdminTemplatePreviewComponent />,
       },
     ],

@@ -1,13 +1,5 @@
 import React from 'react';
-import { get } from 'lodash-es';
-import { useFormContext } from 'react-hook-form';
 
-// intl
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
-// components
-import ToolboxItem from './ToolboxItem';
 import {
   Box,
   IconTooltip,
@@ -15,26 +7,31 @@ import {
   Title,
   colors,
 } from '@citizenlab/cl2-component-library';
-import BuiltInFields from './BuiltInFields';
-import LayoutFields from './LayoutFields';
+import { get } from 'lodash-es';
+import { useFormContext } from 'react-hook-form';
 
-// types
 import {
   ICustomFieldInputType,
   IFlatCreateCustomField,
   IFlatCustomField,
 } from 'api/custom_fields/types';
 
-// hooks
-import useLocale from 'hooks/useLocale';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
 import {
   generateTempId,
   FormBuilderConfig,
 } from 'components/FormBuilder/utils';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from '../messages';
+
+import BuiltInFields from './BuiltInFields';
+import LayoutFields from './LayoutFields';
+import ToolboxItem from './ToolboxItem';
 
 interface FormBuilderToolboxProps {
   onAddField: (field: IFlatCreateCustomField, index: number) => void;
@@ -49,6 +46,9 @@ const FormBuilderToolbox = ({
 }: FormBuilderToolboxProps) => {
   const isInputFormCustomFieldsFlagEnabled = useFeatureFlag({
     name: 'input_form_custom_fields',
+  });
+  const isLocationAnswerEnabled = useFeatureFlag({
+    name: 'input_form_mapping_question',
   });
   const { watch } = useFormContext();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
@@ -155,6 +155,7 @@ const FormBuilderToolbox = ({
           fieldsToExclude={builderConfig.toolboxFieldsToExclude}
           inputType="text"
           disabled={isCustomFieldsDisabled}
+          showAIUpsell
         />
         <ToolboxItem
           icon="survey-long-answer-2"
@@ -164,6 +165,7 @@ const FormBuilderToolbox = ({
           fieldsToExclude={builderConfig.toolboxFieldsToExclude}
           inputType="multiline_text"
           disabled={isCustomFieldsDisabled}
+          showAIUpsell
         />
         <ToolboxItem
           icon="survey-single-choice"
@@ -219,6 +221,17 @@ const FormBuilderToolbox = ({
           inputType="file_upload"
           disabled={isCustomFieldsDisabled}
         />
+        {isLocationAnswerEnabled && (
+          <ToolboxItem
+            icon="map"
+            label={formatMessage(messages.locationAnswer)}
+            onClick={() => addField('point')}
+            data-cy="e2e-point-field"
+            fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+            inputType="point"
+            disabled={isCustomFieldsDisabled}
+          />
+        )}
       </Box>
     </Box>
   );

@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
+
+import { Box, Text } from '@citizenlab/cl2-component-library';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { IInitiativeCosponsorship } from 'api/initiatives/types';
+
+import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
+
 import { SectionField } from 'components/admin/Section';
+import MentionsTextArea from 'components/HookForm/MentionsTextArea';
 import {
   FormSection,
   FormSectionTitle,
   FormLabel,
 } from 'components/UI/FormComponents';
-import { Box, Text } from '@citizenlab/cl2-component-library';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Warning from 'components/UI/Warning';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
 import messages from './messages';
-import MentionsTextArea from 'components/HookForm/MentionsTextArea';
-import { IInitiativeCosponsorship } from 'api/initiatives/types';
 
 interface Props {
   cosponsorships?: IInitiativeCosponsorship[];

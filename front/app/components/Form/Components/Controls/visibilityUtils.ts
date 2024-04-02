@@ -3,7 +3,6 @@
  * 
 */
 
-import Ajv from 'ajv';
 import {
   UISchemaElement,
   Rule,
@@ -17,9 +16,12 @@ import {
   composeWithUi,
   resolveData,
 } from '@jsonforms/core';
+import Ajv from 'ajv';
 import { has } from 'lodash-es';
-import { PageType } from '../Layouts/utils';
+
 import { getOtherControlKey } from 'components/Form/utils';
+
+import { PageType } from '../Layouts/utils';
 
 interface ConditionWithPageId
   extends Condition,

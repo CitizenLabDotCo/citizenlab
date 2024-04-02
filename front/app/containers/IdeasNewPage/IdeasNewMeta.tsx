@@ -1,24 +1,22 @@
-// libraries
 import React from 'react';
+
 import { Helmet } from 'react-helmet';
+import { useParams } from 'react-router-dom';
 
-// i18n
-import messages from './messages';
+import useAuthUser from 'api/me/useAuthUser';
+import usePhases from 'api/phases/usePhases';
+import { getInputTerm } from 'api/phases/utils';
+import useProjectBySlug from 'api/projects/useProjectBySlug';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocalize from 'hooks/useLocalize';
+
 import { useIntl } from 'utils/cl-intl';
-import { getInputTermMessage } from 'utils/i18n';
-
-// utils
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import { getInputTermMessage } from 'utils/i18n';
 
-// services
-import useLocalize from 'hooks/useLocalize';
-import usePhases from 'api/phases/usePhases';
-import useProjectBySlug from 'api/projects/useProjectBySlug';
-import useAuthUser from 'api/me/useAuthUser';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import { useParams } from 'react-router-dom';
-import { getInputTerm } from 'api/phases/utils';
+import messages from './messages';
 
 interface Props {
   isSurvey?: boolean;

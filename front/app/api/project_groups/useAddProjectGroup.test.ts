@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useAddProjectGroup from './useAddProjectGroup';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { projectGroups } from './__mocks__/useProjectGroups';
+import useAddProjectGroup from './useAddProjectGroup';
 
 const apiPath = '*projects/:projectId/groups_projects';
 

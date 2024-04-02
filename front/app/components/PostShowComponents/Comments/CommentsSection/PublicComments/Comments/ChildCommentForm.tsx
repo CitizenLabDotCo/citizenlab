@@ -1,42 +1,36 @@
-// libraries
 import React, { useEffect, useRef, useState } from 'react';
+
+import { Box, colors, defaultStyles } from '@citizenlab/cl2-component-library';
+import { hideVisually } from 'polished';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
-import { isNilOrError } from 'utils/helperUtils';
-
-// services
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-
-// components
-import TextArea from 'components/PostShowComponents/Comments/CommentForm/TextArea';
-import ErrorMessage from 'components/PostShowComponents/Comments/CommentForm/ErrorMessage';
-import Actions from 'components/PostShowComponents/Comments/CommentForm/Actions';
-import Avatar from 'components/Avatar';
-import clickOutside from 'utils/containers/clickOutside';
-import { Box, colors, defaultStyles } from '@citizenlab/cl2-component-library';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../../../tracks';
-
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../../../messages';
-
-// events
-import { commentReplyButtonClicked$, commentAdded } from '../../../events';
-
-// style
 import styled from 'styled-components';
-import { hideVisually } from 'polished';
-import useLocale from 'hooks/useLocale';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useAuthUser from 'api/me/useAuthUser';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
-import OldAnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal/OldAnonymousParticipationConfirmationModal';
+import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
+
+import useLocale from 'hooks/useLocale';
+
+import OldAnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal/OldAnonymousParticipationConfirmationModal';
+import Avatar from 'components/Avatar';
+import Actions from 'components/PostShowComponents/Comments/CommentForm/Actions';
+import ErrorMessage from 'components/PostShowComponents/Comments/CommentForm/ErrorMessage';
+import TextArea from 'components/PostShowComponents/Comments/CommentForm/TextArea';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import clickOutside from 'utils/containers/clickOutside';
+import { isNilOrError } from 'utils/helperUtils';
 import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
+import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+
+import { commentReplyButtonClicked$, commentAdded } from '../../../events';
+import messages from '../../../messages';
+import tracks from '../../../tracks';
 
 const StyledAvatar = styled(Avatar)`
   margin-left: -4px;
@@ -317,13 +311,12 @@ const ChildCommentForm = ({
     }
   };
 
-  if (focused) {
-    // Ideally this is managed outside of this component.
-    // If projectId is provided, we assume this component is used in a project context
-    const isModerator = project
-      ? canModerateProject(project.data, authUser)
-      : canModerateInitiative(authUser);
+  const userCanModerate = {
+    idea: project ? canModerateProject(project.data, authUser) : false,
+    initiative: canModerateInitiative(authUser),
+  }[postType];
 
+  if (focused) {
     return (
       <Box
         display="flex"
@@ -333,7 +326,7 @@ const ChildCommentForm = ({
           userId={authUser?.data.id}
           size={30}
           isLinkToProfile={!!authUser?.data.id}
-          showModeratorStyles={isModerator}
+          showModeratorStyles={userCanModerate}
         />
         <FormContainer
           onClickOutside={onCancel}

@@ -1,30 +1,23 @@
 import React, { useCallback } from 'react';
 
-// components
 import {
   Image as ImageComponent,
   colors,
   Icon,
 } from '@citizenlab/cl2-component-library';
-import { ImageSettings } from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
-import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
-
-// image upload
+import { useEditor } from '@craftjs/core';
 import { Multiloc } from 'typings';
 
-// craft
-import { useEditor } from '@craftjs/core';
+import useLocalize from 'hooks/useLocalize';
+
 import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 
-// i18n
-import messages from 'components/admin/ContentBuilder/Widgets/ImageMultiloc/messages';
-
-// events
-import eventEmitter from 'utils/eventEmitter';
 import { IMAGE_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
+import { ImageSettings } from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
+import messages from 'components/admin/ContentBuilder/Widgets/ImageMultiloc/messages';
+import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
-// hooks
-import useLocalize from 'hooks/useLocalize';
+import eventEmitter from 'utils/eventEmitter';
 
 export interface Props {
   image?: {

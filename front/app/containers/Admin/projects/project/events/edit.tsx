@@ -1,15 +1,5 @@
 import React, { useState, useEffect, FormEvent, lazy } from 'react';
-import moment from 'moment';
-import { isEmpty, get, isError } from 'lodash-es';
 
-// components
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import ErrorComponent from 'components/UI/Error';
-import DateTimePicker from 'components/admin/DateTimePicker';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Section, SectionTitle, SectionField } from 'components/admin/Section';
-import FileUploader from 'components/UI/FileUploader';
 import {
   Box,
   IconTooltip,
@@ -21,46 +11,52 @@ import {
   Toggle,
   colors,
 } from '@citizenlab/cl2-component-library';
-import LocationInput, { Option } from 'components/UI/LocationInput';
-const EventMap = lazy(() => import('./components/EventMap'));
-import Button from 'components/UI/Button';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
+import { isEmpty, get, isError } from 'lodash-es';
+import moment from 'moment';
+import { useParams } from 'react-router-dom';
+import { RouteType } from 'routes';
+import { useTheme } from 'styled-components';
+import { Multiloc, CLError, UploadFile } from 'typings';
 
-// router
-import clHistory from 'utils/cl-router/history';
-
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// hooks
-import useAddEvent from 'api/events/useAddEvent';
-import useUpdateEvent from 'api/events/useUpdateEvent';
-import useEvent from 'api/events/useEvent';
-import useEventFiles from 'api/event_files/useEventFiles';
 import useAddEventFile from 'api/event_files/useAddEventFile';
 import useDeleteEventFile from 'api/event_files/useDeleteEventFile';
-import useEventImage from 'api/event_images/useEventImage';
+import useEventFiles from 'api/event_files/useEventFiles';
 import useAddEventImage from 'api/event_images/useAddEventImage';
 import useDeleteEventImage from 'api/event_images/useDeleteEventImage';
-import useLocale from 'hooks/useLocale';
-import { useTheme } from 'styled-components';
-import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
-
-// typings
-import { Multiloc, CLError, UploadFile } from 'typings';
+import useEventImage from 'api/event_images/useEventImage';
 import { IEvent, IEventProperties } from 'api/events/types';
+import useAddEvent from 'api/events/useAddEvent';
+import useEvent from 'api/events/useEvent';
+import useUpdateEvent from 'api/events/useUpdateEvent';
 
-// utils
-import { convertUrlToUploadFile } from 'utils/fileUtils';
-import { isNilOrError } from 'utils/helperUtils';
-import { useParams } from 'react-router-dom';
-import { geocode } from 'utils/locationTools';
-import { defaultAdminCardPadding } from 'utils/styleConstants';
+import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
+import useLocale from 'hooks/useLocale';
+
+import DateTimePicker from 'components/admin/DateTimePicker';
+import { Section, SectionTitle, SectionField } from 'components/admin/Section';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
+import Button from 'components/UI/Button';
+import ErrorComponent from 'components/UI/Error';
+import FileUploader from 'components/UI/FileUploader';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import LocationInput, { Option } from 'components/UI/LocationInput';
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import {
   roundToNearestMultipleOfFive,
   calculateRoundedEndDate,
 } from 'utils/dateUtils';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { geocode } from 'utils/locationTools';
+import { defaultAdminCardPadding } from 'utils/styleConstants';
+
+import messages from './messages';
+
+const EventMap = lazy(() => import('./components/EventMap'));
 
 export type SubmitState = 'disabled' | 'enabled' | 'error' | 'success';
 type ErrorType =
@@ -86,7 +82,6 @@ const AdminProjectEventEdit = () => {
   const theme = useTheme();
   const locale = useLocale();
 
-  // api
   const { mutate: addEvent } = useAddEvent();
   const { data: event, isInitialLoading } = useEvent(id);
   const { mutate: updateEvent } = useUpdateEvent();
@@ -184,7 +179,9 @@ const AdminProjectEventEdit = () => {
   useEffect(() => {
     if (eventAttrs.address_1 !== event?.data.attributes.address_1) {
       const delayDebounceFn = setTimeout(async () => {
-        const point = await geocode(eventAttrs.address_1);
+        const point = eventAttrs.address_1
+          ? await geocode(eventAttrs.address_1)
+          : null;
         setGeocodedPoint(point);
         setLocationPoint(point);
         setSuccessfulGeocode(!!point);
@@ -273,7 +270,7 @@ const AdminProjectEventEdit = () => {
     setSubmitState('enabled');
     setAttributeDiff({
       ...attributeDiff,
-      using_url: url,
+      using_url: url as RouteType,
     });
     setErrors({});
   };

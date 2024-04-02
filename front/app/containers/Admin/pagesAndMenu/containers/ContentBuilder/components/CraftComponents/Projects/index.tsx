@@ -1,18 +1,18 @@
 import React from 'react';
 
-// components
 import { Box, colors, media, Text } from '@citizenlab/cl2-component-library';
-
-// hooks
-import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
-import messages from './messages';
+import { useNode } from '@craftjs/core';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
-import { useNode } from '@craftjs/core';
+
+import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
+import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
+
+import messages from './messages';
 
 const ProjectSection = styled.div`
   width: 100%;

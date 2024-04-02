@@ -3,6 +3,7 @@ import { Multiloc, UploadFile } from 'typings';
 export interface IMapLayerAttributes {
   id: string;
   type: 'CustomMaps::GeojsonLayer' | 'CustomMaps::EsriFeatureLayer';
+  layer_url?: string;
   title_multiloc: Multiloc;
   geojson?: GeoJSON.FeatureCollection;
   default_enabled: boolean;
@@ -12,9 +13,10 @@ export interface IMapLayerAttributes {
 
 export interface IMapLayerUpdateAttributes {
   id: string;
-  projectId: string;
+  mapConfigId: string;
+  layer_url?: string;
   title_multiloc?: Multiloc;
-  geojson: GeoJSON.FeatureCollection;
+  geojson?: GeoJSON.FeatureCollection;
   default_enabled?: boolean;
   geojson_file?: UploadFile;
   marker_svg_url?: string;

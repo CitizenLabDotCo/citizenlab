@@ -1,6 +1,8 @@
-import { Keys } from 'utils/cl-react-query/types';
-import usersByDomicileKeys from './keys';
 import { Multiloc } from 'typings';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import usersByDomicileKeys from './keys';
 
 export type UsersByDomicileKeys = Keys<typeof usersByDomicileKeys>;
 

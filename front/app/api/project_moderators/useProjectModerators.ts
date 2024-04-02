@@ -1,9 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
+import { IUsers } from 'api/users/types';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import projectModeratorsKeys from './keys';
 import { ProjectModeratorsKeys, ProjectForderParams } from './types';
-import { IUsers } from 'api/users/types';
 
 const fetchProjectModerators = ({ projectId }: ProjectForderParams) => {
   return fetcher<IUsers>({

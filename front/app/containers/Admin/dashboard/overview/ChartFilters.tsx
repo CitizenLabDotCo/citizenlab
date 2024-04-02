@@ -1,20 +1,18 @@
 import React from 'react';
 
-// components
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Moment } from 'moment';
+import { IOption } from 'typings';
+
 import ResolutionControl, {
   IResolution,
 } from 'components/admin/ResolutionControl';
-import ProjectFilter from '../components/filters/ProjectFilter';
-import TimeControl from '../components/TimeControl';
 
-// i18n
-import messages from '../messages';
 import { useIntl } from 'utils/cl-intl';
 
-// typings
-import { IOption } from 'typings';
-import { Moment } from 'moment';
+import ProjectFilter from '../components/filters/ProjectFilter';
+import TimeControl from '../components/TimeControl';
+import messages from '../messages';
 
 interface Props {
   startAtMoment?: Moment | null | undefined;

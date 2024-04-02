@@ -1,11 +1,14 @@
 import React from 'react';
-import CustomPageSettingsForm from '../CustomPageSettingsForm';
-import { FormValues } from 'containers/Admin/pagesAndMenu/containers/CustomPages/CustomPageSettingsForm';
 
-import clHistory from 'utils/cl-router/history';
 import { omit } from 'lodash-es';
 
 import useAddCustomPage from 'api/custom_pages/useAddCustomPage';
+
+import { FormValues } from 'containers/Admin/pagesAndMenu/containers/CustomPages/CustomPageSettingsForm';
+
+import clHistory from 'utils/cl-router/history';
+
+import CustomPageSettingsForm from '../CustomPageSettingsForm';
 
 const NewCustomPage = () => {
   const { mutateAsync: createCustomPage } = useAddCustomPage();

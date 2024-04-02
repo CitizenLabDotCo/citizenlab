@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
 
-// components
 import {
   Box,
   Toggle,
@@ -11,36 +10,38 @@ import {
   Input,
   Text,
 } from '@citizenlab/cl2-component-library';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import Error from 'components/UI/Error';
-import homepageMessages from 'containers/HomePage/messages';
-
-// craft
 import { useNode } from '@craftjs/core';
+import { useLocation, useSearchParams } from 'react-router-dom';
+import { RouteType } from 'routes';
+import { ImageSizes, Multiloc, UploadFile } from 'typings';
 
-// hooks
+import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
+import useAuthUser from 'api/me/useAuthUser';
+
+import useLocale from 'hooks/useLocale';
+
+import homepageMessages from 'containers/HomePage/messages';
+import SignedInHeader from 'containers/HomePage/SignedInHeader';
 import SignedOutHeader from 'containers/HomePage/SignedOutHeader';
 
-import messages from './messages';
-import SignedInHeader from 'containers/HomePage/SignedInHeader';
-import { useLocation, useSearchParams } from 'react-router-dom';
-import { ImageSizes, Multiloc, UploadFile } from 'typings';
-import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
-import { isValidUrl } from 'utils/validate';
 import {
   CONTENT_BUILDER_ERROR_EVENT,
   IMAGE_UPLOADING_EVENT,
 } from 'components/admin/ContentBuilder/constants';
-import eventEmitter from 'utils/eventEmitter';
-import LayoutSettingField from './LayoutSettingField';
-import OverlayControls from './OverlayControls';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
-import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
-import useAuthUser from 'api/me/useAuthUser';
 import Fragment from 'components/Fragment';
-import useLocale from 'hooks/useLocale';
+import Error from 'components/UI/Error';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import eventEmitter from 'utils/eventEmitter';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { isValidUrl } from 'utils/validate';
+
+import LayoutSettingField from './LayoutSettingField';
+import messages from './messages';
+import OverlayControls from './OverlayControls';
 
 export type THomepageBannerLayout =
   THomepageBannerLayoutMap[keyof THomepageBannerLayoutMap];
@@ -89,7 +90,7 @@ export interface IHomepageBannerSettings {
   // cta_signed_out
   banner_cta_signed_out_text_multiloc: Multiloc;
   banner_cta_signed_out_type: CTASignedOutType;
-  banner_cta_signed_out_url: string | null;
+  banner_cta_signed_out_url: RouteType | null;
   // signed_in
   banner_signed_in_header_multiloc: Multiloc;
   banner_signed_in_header_overlay_color?: string | null;
@@ -98,7 +99,7 @@ export interface IHomepageBannerSettings {
   // cta_signed_in
   banner_cta_signed_in_text_multiloc: Multiloc;
   banner_cta_signed_in_type: CTASignedInType;
-  banner_cta_signed_in_url: string | null;
+  banner_cta_signed_in_url: RouteType | null;
   header_bg?: ImageSizes | null;
 }
 
@@ -262,7 +263,9 @@ const HomepageBannerSettings = () => {
     field: 'banner_cta_signed_out_url' | 'banner_cta_signed_in_url'
   ) => {
     const validation = isValidUrl(value);
-    setProp((props: Props) => (props.homepageSettings[field] = value));
+    setProp(
+      (props: Props) => (props.homepageSettings[field] = value as RouteType)
+    );
 
     if (!validation) {
       const newErrorTypes = errors?.includes(field)

@@ -1,51 +1,48 @@
 import React, { useEffect } from 'react';
 
-// components
 import {
   Box,
   Button,
   IconTooltip,
   Label,
 } from '@citizenlab/cl2-component-library';
-import { SectionField } from 'components/admin/Section';
-import ShownOnPageBadge from '../../components/ShownOnPageBadge';
-import SectionFormWrapper from '../../components/SectionFormWrapper';
-import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
-
-// i18n
-import HelmetIntl from 'components/HelmetIntl';
-import useLocalize from 'hooks/useLocalize';
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// form
 import { yupResolver } from '@hookform/resolvers/yup';
-import Feedback from 'components/HookForm/Feedback';
-import FileUploader from 'components/HookForm/FileUploader';
 import { FormProvider, useForm } from 'react-hook-form';
+import { WrappedComponentProps } from 'react-intl';
+import { useParams } from 'react-router-dom';
+import { UploadFile } from 'typings';
 import { mixed, object } from 'yup';
 
-// typings
-import { UploadFile } from 'typings';
-
-// hooks
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
-import { useParams } from 'react-router-dom';
-
-// constants
-import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
-import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
-
-// utils
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import { isNilOrError } from 'utils/helperUtils';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
 import useAddPagesFile from 'api/page_files/useAddPageFile';
 import useDeletePageFile from 'api/page_files/useDeletePageFile';
 import usePageFiles from 'api/page_files/usePageFiles';
 import { handleAddPageFiles, handleRemovePageFiles } from 'api/page_files/util';
+
+import useLocalize from 'hooks/useLocalize';
+
+import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
+
+import { SectionField } from 'components/admin/Section';
+import HelmetIntl from 'components/HelmetIntl';
+import Feedback from 'components/HookForm/Feedback';
+import FileUploader from 'components/HookForm/FileUploader';
+
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+
+import {
+  pagesAndMenuBreadcrumb,
+  pagesAndMenuBreadcrumbLinkTo,
+} from '../../breadcrumbs';
+import SectionFormWrapper from '../../components/SectionFormWrapper';
+import ShownOnPageBadge from '../../components/ShownOnPageBadge';
+import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
+
+import messages from './messages';
 
 type FormValues = {
   local_page_files: UploadFile[] | null;
@@ -163,7 +160,7 @@ const AttachmentsForm = ({
             breadcrumbs={[
               {
                 label: formatMessage(pagesAndMenuBreadcrumb.label),
-                linkTo: pagesAndMenuBreadcrumb.linkTo,
+                linkTo: pagesAndMenuBreadcrumbLinkTo,
               },
               {
                 label: localize(customPage.data.attributes.title_multiloc),

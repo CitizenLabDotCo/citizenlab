@@ -1,9 +1,5 @@
 import React, { memo } from 'react';
-import styled from 'styled-components';
-import useIdeaById from 'api/ideas/useIdeaById';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import {
   Box,
   Icon,
@@ -12,18 +8,22 @@ import {
   isRtl,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import useIdeaById from 'api/ideas/useIdeaById';
+
 import {
   Header,
   Item,
 } from 'containers/IdeasShow/components/MetaInformation/MetaInfoStyles';
-import Button from 'components/UI/Button';
-import IdeaLocationMap from './IdeaLocationMap';
 
-// utils
+import Button from 'components/UI/Button';
+
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 import { getAddressOrFallbackDMS } from 'utils/map';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
+import IdeaLocationMap from './IdeaLocationMap';
 import messages from './messages';
 
 const Container = styled.div`
@@ -101,11 +101,13 @@ const Location = memo<Props>(({ ideaId, compact, className }) => {
                 </Button>
               </Box>
 
-              <Box width="100%" mt="8px" id="e2e-location-map">
-                <IdeaLocationMap
-                  location={idea?.data.attributes?.location_point_geojson}
-                />
-              </Box>
+              {!compact && (
+                <Box width="100%" mt="8px" id="e2e-location-map">
+                  <IdeaLocationMap
+                    location={idea?.data.attributes?.location_point_geojson}
+                  />
+                </Box>
+              )}
             </Box>
           )}
 

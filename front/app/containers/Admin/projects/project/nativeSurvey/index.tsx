@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
-import { useIntl } from 'utils/cl-intl';
-import { useParams } from 'react-router-dom';
-import { saveAs } from 'file-saver';
 
-// components
 import {
   Box,
   Title,
@@ -15,40 +11,38 @@ import {
   Spinner,
   colors,
 } from '@citizenlab/cl2-component-library';
-import Modal from 'components/UI/Modal';
-import FormResults from './FormResults';
-import Button from 'components/UI/Button';
-import EditWarningModal from './EditWarningModal';
+import { saveAs } from 'file-saver';
+import { useParams } from 'react-router-dom';
+
+import usePhase from 'api/phases/usePhase';
+import useUpdatePhase from 'api/phases/useUpdatePhase';
+import useProjectById from 'api/projects/useProjectById';
+import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
+import useDeleteSurveyResults from 'api/survey_results/useDeleteSurveyResults';
+import { downloadSurveyResults } from 'api/survey_results/utils';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useInputSchema from 'hooks/useInputSchema';
+import useLocale from 'hooks/useLocale';
+
 import PDFExportModal, {
   FormValues,
 } from 'containers/Admin/projects/components/PDFExportModal';
 
-// i18n
-import messages from './messages';
+import Button from 'components/UI/Button';
+import Modal from 'components/UI/Modal';
 
-// hooks
-import useProjectById from 'api/projects/useProjectById';
-import usePhase from 'api/phases/usePhase';
-import useLocale from 'hooks/useLocale';
-import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
-import useInputSchema from 'hooks/useInputSchema';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useDeleteSurveyResults from 'api/survey_results/useDeleteSurveyResults';
-
-// Utils
-import { isNilOrError } from 'utils/helperUtils';
-import { getFormActionsConfig } from './utils';
+import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
 import { requestBlob } from 'utils/requestBlob';
 
-import { saveSurveyAsPDF } from './saveSurveyAsPDF';
-
-// Styles
-
-// Services
-import { downloadSurveyResults } from 'api/survey_results/utils';
-import useUpdatePhase from 'api/phases/useUpdatePhase';
 import CopySurveyModal from './CopySurveyModal';
+import EditWarningModal from './EditWarningModal';
+import FormResults from './FormResults';
+import messages from './messages';
+import { saveSurveyAsPDF } from './saveSurveyAsPDF';
+import { getFormActionsConfig } from './utils';
 
 const Forms = () => {
   const { projectId, phaseId } = useParams() as {

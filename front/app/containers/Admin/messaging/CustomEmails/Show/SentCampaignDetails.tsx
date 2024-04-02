@@ -1,16 +1,20 @@
 import * as React from 'react';
+import { useState } from 'react';
+
 import styled from 'styled-components';
 
+import useCampaignDeliveries from 'api/campaign_deliveries/useCampaignDeliveries';
+
 import PageWrapper from 'components/admin/PageWrapper';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { getPageNumberFromUrl } from 'utils/paginationUtils';
+
+import messages from '../../messages';
+
 import CampaignStats from './CampaignStats';
 import PreviewFrame from './PreviewFrame';
 import RecipientsTable from './RecipientsTable';
-
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
-import useCampaignDeliveries from 'api/campaign_deliveries/useCampaignDeliveries';
-import { useState } from 'react';
-import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 const PaddedCampaignStats = styled(CampaignStats)`
   padding-bottom: 20px;

@@ -1,8 +1,12 @@
 import React from 'react';
+
 import { IOption } from 'typings';
-import MultipleSelect from 'components/UI/MultipleSelect';
+
 import useAreas from 'api/areas/useAreas';
+
 import useLocalize from 'hooks/useLocalize';
+
+import MultipleSelect from 'components/UI/MultipleSelect';
 
 export interface Props {
   value: string;

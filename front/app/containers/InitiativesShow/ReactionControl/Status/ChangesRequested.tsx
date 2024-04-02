@@ -1,7 +1,10 @@
 import React from 'react';
-import messages from '../messages';
+
 import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../messages';
 import { StatusComponentProps } from '../StatusWrapper';
+
 import Status from '.';
 
 const ChangesRequested = (props: StatusComponentProps) => {

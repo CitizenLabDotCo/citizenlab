@@ -546,16 +546,21 @@ RSpec.describe UiSchemaGeneratorService do
   describe '#visit_point' do
     let(:field) do
       create(
-        :custom_field,
-        input_type: 'point',
+        :custom_field_point,
         key: field_key,
         title_multiloc: { 'en' => 'Point field title' },
         description_multiloc: { 'en' => 'Point field description' }
       )
     end
+    let!(:map_config) { create(:map_config, mappable: field) }
 
     it 'returns the schema for the given field' do
-      expect(generator.visit_point(field)).to be_nil
+      expect(generator.visit_point(field)).to eq({
+        type: 'Control',
+        scope: "#/properties/#{field_key}",
+        label: 'Point field title',
+        options: { input_type: field.input_type, description: 'Point field description', map_config_id: map_config.id }
+      })
     end
   end
 

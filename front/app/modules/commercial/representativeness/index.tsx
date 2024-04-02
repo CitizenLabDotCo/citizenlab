@@ -1,6 +1,7 @@
 import React from 'react';
 
-// typings
+import { AdminRoute } from 'containers/Admin/routes';
+
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 const DashboardContainer = React.lazy(
@@ -11,15 +12,25 @@ const ReferenceDataInterface = React.lazy(
   () => import('./admin/containers/ReferenceDataInterface')
 );
 
+export enum representativenessRoutes {
+  representation = 'representation',
+  editBaseData = `representation/edit-base-data`,
+}
+
+// TODO: Replace "dashboards" with link to route in main app once converted.
+export type representativenessRouteTypes =
+  | AdminRoute<`dashboard/${representativenessRoutes.representation}`>
+  | AdminRoute<`dashboard/${representativenessRoutes.editBaseData}`>;
+
 const configuration: ModuleConfiguration = {
   routes: {
     'admin.dashboards': [
       {
-        path: 'representation',
+        path: representativenessRoutes.representation,
         element: <DashboardContainer />,
       },
       {
-        path: 'representation/edit-base-data',
+        path: representativenessRoutes.editBaseData,
         element: <ReferenceDataInterface />,
       },
     ],

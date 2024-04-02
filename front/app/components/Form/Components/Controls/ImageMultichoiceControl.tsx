@@ -1,15 +1,5 @@
-import { withJsonFormsControlProps } from '@jsonforms/react';
-import { ControlProps } from '@jsonforms/core';
 import React, { useState } from 'react';
 
-// utils
-import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-import { getOptions, getSubtextElement } from './controlUtils';
-import imageFile from './emptyImage.png';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import VerificationIcon from '../VerificationIcon';
 import {
   Box,
   Checkbox,
@@ -18,17 +8,24 @@ import {
   Image,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { FormLabel } from 'components/UI/FormComponents';
-import ErrorDisplay from '../ErrorDisplay';
-import FullscreenImage from 'components/FullscreenImage';
-
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// style
+import { ControlProps } from '@jsonforms/core';
+import { withJsonFormsControlProps } from '@jsonforms/react';
 import { darken } from 'polished';
 import styled from 'styled-components';
+
+import FullscreenImage from 'components/FullscreenImage';
+import { FormLabel } from 'components/UI/FormComponents';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+
+import ErrorDisplay from '../ErrorDisplay';
+import VerificationIcon from '../VerificationIcon';
+
+import { getOptions, getSubtextElement } from './controlUtils';
+import imageFile from './emptyImage.png';
+import messages from './messages';
 
 const StyledBox = styled(Box)`
   background-color: ${colors.grey100};
@@ -37,6 +34,7 @@ const StyledBox = styled(Box)`
   &:hover {
     background-color: ${darken(0.05, colors.grey100)};
   }
+  cursor: pointer;
 `;
 
 const ImageMultichoiceControl = ({
@@ -111,68 +109,82 @@ const ImageMultichoiceControl = ({
             justifyContent: 'center',
           }}
         >
-          {options?.map((option, index: number) => (
-            <StyledBox
-              mb="12px"
-              key={option.value}
-              borderRadius="3px"
-              onBlur={() => {
-                setTimeout(() => {
-                  setDidBlur(true);
-                }, 300);
-              }}
-              display="flex"
-              flexDirection="column"
-              alignItems="center"
-              p="8px"
-              border={
-                dataArray.includes(option.value)
-                  ? `2px solid ${colors.primary}`
-                  : undefined
+          {options?.map((option, index: number) => {
+            const onChange = () => {
+              if (dataArray.includes(option.value)) {
+                dataArray.length === 1
+                  ? handleChange(path, undefined)
+                  : handleChange(
+                      path,
+                      dataArray.filter((value) => value !== option.value)
+                    );
+              } else {
+                handleChange(path, [...dataArray, option.value]);
               }
-            >
-              {option.value === 'other' ? (
-                <Image
-                  width="100%"
-                  src={option.image?.medium || imageFile}
-                  alt={option.label}
-                  style={{ borderRadius: '3px 3px 0 0' }}
-                />
-              ) : (
-                <FullscreenImage
-                  src={option.image?.large || imageFile}
-                  altText={option.label}
-                />
-              )}
+            };
+            return (
+              <StyledBox
+                mb="12px"
+                key={option.value}
+                borderRadius="3px"
+                onBlur={() => {
+                  setTimeout(() => {
+                    setDidBlur(true);
+                  }, 300);
+                }}
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                p="8px"
+                border={
+                  dataArray.includes(option.value)
+                    ? `2px solid ${colors.primary}`
+                    : undefined
+                }
+                onClick={onChange}
+              >
+                {option.value === 'other' ? (
+                  <Image
+                    width="100%"
+                    src={option.image?.medium || imageFile}
+                    alt={option.label}
+                    style={{ borderRadius: '3px 3px 0 0' }}
+                  />
+                ) : (
+                  <Box minHeight="200px">
+                    <FullscreenImage
+                      src={option.image?.large || imageFile}
+                      altText={option.label}
+                    />
+                  </Box>
+                )}
 
-              <Box position="absolute" top="18px" right="12px">
-                <Checkbox
-                  size="20px"
-                  checkedColor="tenantSecondary"
-                  id={`${path}-checkbox-${index}`}
-                  label=""
-                  checked={dataArray.includes(option.value)}
-                  onChange={() => {
-                    if (dataArray.includes(option.value)) {
-                      dataArray.length === 1
-                        ? handleChange(path, undefined)
-                        : handleChange(
-                            path,
-                            dataArray.filter((value) => value !== option.value)
-                          );
-                    } else {
-                      handleChange(path, [...dataArray, option.value]);
-                    }
+                <Box
+                  position="absolute"
+                  top="18px"
+                  right="12px"
+                  onClick={(event) => {
+                    event.stopPropagation();
                   }}
-                />
-              </Box>
-              <Box display="flex" w="100%" alignSelf="flex-start">
-                <Text my="12px" mx="4px">
-                  {option.label}
-                </Text>
-              </Box>
-            </StyledBox>
-          ))}
+                >
+                  <Checkbox
+                    size="20px"
+                    checkedColor="tenantSecondary"
+                    id={`${path}-checkbox-${index}`}
+                    label=""
+                    data-cy="e2e-image-multichoice-control-checkbox"
+                    checked={dataArray.includes(option.value)}
+                    onChange={onChange}
+                  />
+                </Box>
+                <Box display="flex" w="100%" alignSelf="flex-start">
+                  <Text my="12px" mx="4px">
+                    {option.label}
+                  </Text>
+                </Box>
+              </StyledBox>
+            );
+          })}
         </Box>
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>

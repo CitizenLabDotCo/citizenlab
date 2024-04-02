@@ -1,6 +1,5 @@
 import React from 'react';
-import Tippy from '@tippyjs/react';
-import styled, { keyframes } from 'styled-components';
+
 import {
   colors,
   fontSizes,
@@ -9,20 +8,26 @@ import {
   Icon,
   IconNames,
 } from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
 import { lighten } from 'polished';
-import messages from './messages';
-import globalMessages from 'utils/messages';
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
-import { FormattedMessage } from 'utils/cl-intl';
-import { IdeaReactingDisabledReason } from 'api/ideas/types';
-import useAuthUser from 'api/me/useAuthUser';
-import useIdeaById from 'api/ideas/useIdeaById';
 import { FormattedDate } from 'react-intl';
-import useLocalize from 'hooks/useLocalize';
-import useProjectById from 'api/projects/useProjectById';
-import { ScreenReaderOnly } from 'utils/a11y';
+import styled, { keyframes } from 'styled-components';
+
 import { TReactionMode } from 'api/idea_reactions/types';
+import { IdeaReactingDisabledReason } from 'api/ideas/types';
+import useIdeaById from 'api/ideas/useIdeaById';
+import useAuthUser from 'api/me/useAuthUser';
+import useProjectById from 'api/projects/useProjectById';
+
+import useLocalize from 'hooks/useLocalize';
+
+import { ScreenReaderOnly } from 'utils/a11y';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
+import globalMessages from 'utils/messages';
+
+import messages from './messages';
 
 type TSize = '1' | '2' | '3' | '4';
 type TStyleType = 'border' | 'shadow';

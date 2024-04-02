@@ -1,5 +1,7 @@
-import { API_PATH } from 'containers/App/constants';
 import { rest } from 'msw';
+
+import { API_PATH } from 'containers/App/constants';
+
 import { ReportLayoutResponse } from '../types';
 
 export const apiPath = `${API_PATH}/reports/:id/layout`;

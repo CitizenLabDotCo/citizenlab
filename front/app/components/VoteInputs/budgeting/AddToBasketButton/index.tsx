@@ -1,41 +1,29 @@
 import React, { FormEvent } from 'react';
 
-// api
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useIdeaById from 'api/ideas/useIdeaById';
-import useBasket from 'api/baskets/useBasket';
-import useVoting from 'api/baskets_ideas/useVoting';
-
-// components
 import { Button, Icon, colors } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
-
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// styling
-
-// tracks
-import tracks from './tracks';
-import { trackEventByName } from 'utils/analytics';
-
-// routing
 import { useSearchParams } from 'react-router-dom';
 
-// events
-import eventEmitter from 'utils/eventEmitter';
-import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-
-// utils
-import { isButtonEnabled } from './utils';
-import { isNil } from 'utils/helperUtils';
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
-
-// typings
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useBasket from 'api/baskets/useBasket';
+import useVoting from 'api/baskets_ideas/useVoting';
+import useIdeaById from 'api/ideas/useIdeaById';
 import { IPhaseData } from 'api/phases/types';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+
+import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
+
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import eventEmitter from 'utils/eventEmitter';
+import { isNil } from 'utils/helperUtils';
+
+import messages from './messages';
+import tracks from './tracks';
+import { isButtonEnabled } from './utils';
 
 interface Props {
   ideaId: string;

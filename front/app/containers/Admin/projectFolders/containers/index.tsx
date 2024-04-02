@@ -1,27 +1,25 @@
-// Libraries
 import React from 'react';
-import clHistory from 'utils/cl-router/history';
 
-// Services
-import { isAdmin } from 'utils/permissions/roles';
+import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
+import styled from 'styled-components';
+import { ITab } from 'typings';
 
-// Components
-import GoBackButton from 'components/UI/GoBackButton';
+import useAuthUser from 'api/me/useAuthUser';
+import useProjectFolderById from 'api/project_folders/useProjectFolderById';
+
+import useLocalize from 'hooks/useLocalize';
+
 import TabbedResource from 'components/admin/TabbedResource';
 import Button from 'components/UI/Button';
-import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
+import GoBackButton from 'components/UI/GoBackButton';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { isAdmin } from 'utils/permissions/roles';
 
 // Localisation
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
 import messages from './messages';
-
-// style
-import styled from 'styled-components';
-
-// hooks
-import useLocalize from 'hooks/useLocalize';
-import useProjectFolderById from 'api/project_folders/useProjectFolderById';
-import useAuthUser from 'api/me/useAuthUser';
 
 const TopContainer = styled.div`
   width: 100%;
@@ -32,6 +30,13 @@ const TopContainer = styled.div`
   justify-content: space-between;
   position: relative;
 `;
+
+type TabbedPropsType = {
+  resource: {
+    title: string;
+  };
+  tabs: ITab[];
+};
 
 const AdminProjectFolderEdition = () => {
   const { projectFolderId } = useParams() as { projectFolderId: string };
@@ -46,7 +51,7 @@ const AdminProjectFolderEdition = () => {
     clHistory.push('/admin/projects');
   };
 
-  let tabbedProps = {
+  let tabbedProps: TabbedPropsType = {
     resource: {
       title: localize(projectFolder.data.attributes.title_multiloc),
     },

@@ -1,4 +1,5 @@
 import moment from 'moment';
+
 import { RawData } from './typings';
 
 type BinFunction = (birthYear: string) => string | null;

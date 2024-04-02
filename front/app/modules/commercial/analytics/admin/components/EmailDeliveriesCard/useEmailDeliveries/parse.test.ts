@@ -1,4 +1,5 @@
 import moment from 'moment';
+
 import { mergeTimeSeries, parseTimeSeries } from './parse';
 
 describe('mergeTimeSeries', () => {

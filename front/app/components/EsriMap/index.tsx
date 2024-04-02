@@ -1,33 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react';
-import '@arcgis/core/assets/esri/themes/light/main.css';
 
-// hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
-// components
+import Basemap from '@arcgis/core/Basemap';
+import esriConfig from '@arcgis/core/config';
+import Collection from '@arcgis/core/core/Collection';
+import Graphic from '@arcgis/core/Graphic';
+import { setLocale as setEsriLocale } from '@arcgis/core/intl/locale.js';
+import Layer from '@arcgis/core/layers/Layer';
 import Map from '@arcgis/core/Map';
 import MapView from '@arcgis/core/views/MapView';
-import Basemap from '@arcgis/core/Basemap';
-import Layer from '@arcgis/core/layers/Layer';
-import Graphic from '@arcgis/core/Graphic';
+import WebMap from '@arcgis/core/WebMap';
 import { Box, media, useBreakpoint } from '@citizenlab/cl2-component-library';
-import Fullscreen from '@arcgis/core/widgets/Fullscreen';
-import Point from '@arcgis/core/geometry/Point';
-import Expand from '@arcgis/core/widgets/Expand';
-import Legend from '@arcgis/core/widgets/Legend';
-import LayerList from '@arcgis/core/widgets/LayerList';
-
-// utils
-import { getDefaultBasemap } from './utils';
-import { isNil } from 'utils/helperUtils';
 import { debounce } from 'lodash-es';
 import styled from 'styled-components';
-import * as intl from '@arcgis/core/intl.js';
 
-// typings
-import { EsriUiElement } from './types';
 import { AppConfigurationMapSettings } from 'api/app_configuration/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import useLocale from 'hooks/useLocale';
+
+import { configureMapView } from './config';
+import { InitialData } from './types';
+import { getDefaultBasemap, handleWebMapReferenceLayers } from './utils';
 
 // Custom Esri styles
 const MapContainer = styled(Box)`
@@ -36,8 +29,9 @@ const MapContainer = styled(Box)`
   }
 
   .esri-legend {
-    max-height: 200px !important;
+    max-height: 120px !important;
   }
+
   .esri-layer-list {
     max-height: 200px !important;
   }
@@ -59,21 +53,10 @@ export type EsriMapProps = {
   initialData?: InitialData;
   layers?: Layer[];
   graphics?: Graphic[];
+  webMapId?: string | null;
   onClick?: (event: any, mapView: MapView) => void;
   onHover?: (event: any, mapView: MapView) => void;
   globalMapSettings: AppConfigurationMapSettings;
-};
-
-type InitialData = {
-  center?: GeoJSON.Point | null;
-  zoom?: number;
-  maxZoom?: number;
-  uiElements?: EsriUiElement[];
-  showFullscreenOption?: boolean;
-  showLegend?: boolean;
-  showLayerVisibilityControl?: boolean;
-  zoomWidgetLocation?: 'left' | 'right';
-  onInit?: (mapView: MapView) => void;
 };
 
 const EsriMap = ({
@@ -84,143 +67,146 @@ const EsriMap = ({
   graphics,
   onClick,
   onHover,
+  webMapId,
   initialData,
   globalMapSettings,
 }: EsriMapProps) => {
-  const isMobileOrSmaller = useBreakpoint('phone');
   const locale = useLocale();
-  const [map, setMap] = useState<Map | null>(null);
+  const isMobileOrSmaller = useBreakpoint('phone');
+  const { data: appConfig } = useAppConfiguration();
+
+  const [map, setMap] = useState<Map | WebMap | null>(null);
   const [mapView, setMapView] = useState<MapView | null>(null);
+  const [referenceLayers, setReferenceLayers] =
+    useState<Collection<Layer> | null>(null);
+
   const mapRef = useRef<HTMLDivElement | null>(null);
+  const [updateMapViewConfig, setUpdateMapViewConfig] = useState(false);
+  const [initialized, setInitialized] = useState(false);
 
-  const initialValuesLoaded = useRef(false);
+  const mapRefAvailable = !!mapRef.current;
 
-  // Sets the locale of the map
-  intl.setLocale(locale);
-
-  // On initial render, create a new map and map view and save them to state variables
   useEffect(() => {
-    if (mapRef.current) {
-      const newMap = new Map();
-      const mapView = new MapView({
-        container: mapRef.current, // Reference to DOM node that will contain the view
-        map: newMap,
-        popupEnabled: false,
-        popup: {
-          dockEnabled: false,
-          dockOptions: {
-            breakpoint: false,
-          },
-        },
-      });
+    if (!mapRefAvailable) return;
 
-      setMap(newMap);
-      setMapView(mapView);
-      return () => {
-        mapView.destroy();
-      };
-    }
+    let map: Map | WebMap;
 
-    return;
-  }, []);
-
-  // Load initial map configuration data that was passed in.
-  // Note: This data is static and will not change.
-  useEffect(() => {
-    if (!initialValuesLoaded.current && mapView && map) {
-      // Set map center
-      mapView.center = !isNil(initialData?.center)
-        ? new Point({
-            latitude: initialData?.center.coordinates[1],
-            longitude: initialData?.center.coordinates[0],
-          })
-        : new Point({
-            latitude: Number(globalMapSettings.map_center?.lat) || 0,
-            longitude: Number(globalMapSettings.map_center?.long) || 0,
-          });
-
-      // Set the basemap
+    if (webMapId) {
+      map = new WebMap({ portalItem: { id: webMapId } });
+    } else {
+      map = new Map();
       map.basemap = new Basemap({
         baseLayers: [getDefaultBasemap(globalMapSettings.tile_provider)],
       });
-      mapView.zoom = initialData?.zoom || globalMapSettings.zoom_level || 18;
-      mapView.constraints = {
-        maxZoom: initialData?.maxZoom || 22,
-        minZoom: 5,
-      };
-
-      // Change location of zoom widget if specified
-      if (initialData?.zoomWidgetLocation === 'right') {
-        const zoom = mapView.ui.find('zoom');
-        mapView.ui.add(zoom, 'top-right');
-      }
-
-      // Add fullscreen widget if set
-      if (initialData?.showFullscreenOption) {
-        const fullscreen = new Fullscreen({
-          view: mapView,
-        });
-        mapView.ui.add(fullscreen, 'top-right');
-      }
-
-      // Add map legend if set
-      if (initialData?.showLegend) {
-        const legend = new Expand({
-          content: new Legend({
-            view: mapView,
-            hideLayersNotInCurrentView: false,
-            style: { type: 'classic', layout: 'stack' },
-          }),
-          view: mapView,
-          expanded: isMobileOrSmaller ? false : true,
-          mode: 'floating',
-        });
-
-        mapView.ui.add(legend, 'bottom-right');
-      }
-
-      // Show layer visibility controls if set
-      if (initialData?.showLayerVisibilityControl) {
-        const layerList = new Expand({
-          content: new LayerList({
-            view: mapView,
-          }),
-          view: mapView,
-          expanded: false,
-          mode: 'floating',
-        });
-        mapView.ui.add(layerList, {
-          position: 'bottom-right',
-        });
-      }
-
-      // Add any ui elements that were passed in
-      if (initialData?.uiElements && mapView) {
-        initialData?.uiElements.forEach((uiElement) => {
-          mapView.ui.add(uiElement.element, uiElement.position);
-        });
-      }
-
-      // Run onInit function if it was provided
-      if (initialData?.onInit) {
-        initialData.onInit(mapView);
-      }
-
-      initialValuesLoaded.current = true;
     }
-  }, [globalMapSettings, initialData, isMobileOrSmaller, map, mapView]);
 
-  // Load dynamic data that was passed in.
-  // Note: This data is dynamic and may change.
+    setMap(map);
+
+    const mapView = new MapView({
+      container: mapRef.current as HTMLDivElement, // Reference to DOM node that will contain the view
+      map,
+      popupEnabled: false,
+      popup: {
+        dockEnabled: false,
+        dockOptions: {
+          breakpoint: false,
+        },
+      },
+    });
+
+    setMapView(mapView);
+    setUpdateMapViewConfig(true);
+
+    return () => {
+      mapView.destroy();
+    };
+  }, [mapRefAvailable, webMapId, globalMapSettings.tile_provider]);
+
+  // If the webMapId changes, reset the initialized state
+  useEffect(() => {
+    setInitialized(false);
+  }, [webMapId]);
+
+  // Load initial map configuration data that was passed in.
+  // This will run on initial render and whenever the
+  // webMapId changes
+  useEffect(() => {
+    if (!mapView || !updateMapViewConfig) return;
+
+    configureMapView(
+      mapView,
+      initialData,
+      globalMapSettings,
+      isMobileOrSmaller
+    );
+
+    setUpdateMapViewConfig(false);
+  }, [
+    mapView,
+    updateMapViewConfig,
+    globalMapSettings,
+    initialData,
+    isMobileOrSmaller,
+  ]);
+
+  // Run onInit function once on init if it was provided
+  useEffect(() => {
+    if (!mapView || initialized) return;
+
+    if (initialData?.onInit) {
+      initialData.onInit(mapView);
+    }
+
+    setInitialized(true);
+  }, [initialData, initialized, mapView]);
+
+  // The following useEffects are used for handling dynamic data that is passed in.
+  // Description: This data is dynamic and may change during runtime.
   useEffect(() => {
     // Add any map layers which were passed in
-    if (map && layers) {
-      map?.removeAll();
+    if (!layers || !mapView) return;
+
+    const isWebMap = map instanceof WebMap;
+    const isRegularMap = map instanceof Map && !isWebMap;
+
+    // If we're not using a Web Map, add the layers to the default Map object
+    if (isRegularMap) {
+      // Remove all layers
+      map.removeAll();
+      // Add layers back if passed in
       layers.forEach((layer) => {
         map.add(layer);
       });
     }
-  }, [layers, map]);
+
+    // Otherwise add the layers into the WebMap
+    if (isWebMap) {
+      map.when(() => {
+        // If the Web Map has any reference layers, re-order them so the layer hierarchy is correct
+        if (referenceLayers && referenceLayers.length > 0) {
+          handleWebMapReferenceLayers(map, referenceLayers);
+        }
+
+        // Remove any internal layers that were passed in as props to the Web Map
+        map.layers?.forEach((layer) => {
+          if (layer.id?.includes('_internal')) {
+            map.remove(layer);
+          }
+        });
+
+        // Now, add any additional layers that passed in as props to the Web Map
+        layers.forEach((layer) => {
+          layer.id = layer.id.includes('internal')
+            ? layer.id
+            : `${layer.id}_internal`;
+          map.add(layer);
+        });
+
+        // If the WebMap has reference layers, save them in state
+        setReferenceLayers(map.basemap?.referenceLayers || null);
+      });
+    }
+  }, [layers, map, mapView, referenceLayers]);
 
   useEffect(() => {
     // Add any graphics which were passed in
@@ -252,6 +238,20 @@ const EsriMap = ({
       mapView.on('pointer-move', debouncedHover);
     }
   }, [onHover, mapView]);
+
+  useEffect(() => {
+    // Sets the locale of the map
+    setEsriLocale(locale);
+  }, [locale]);
+
+  useEffect(() => {
+    // Set the Esri API key
+    const esriApiKey =
+      appConfig?.data.attributes.settings.esri_integration?.api_key;
+    if (esriApiKey) {
+      esriConfig.apiKey = esriApiKey;
+    }
+  }, [appConfig?.data.attributes.settings.esri_integration?.api_key]);
 
   return (
     <>

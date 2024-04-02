@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react';
 
-// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// intl
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 type ProjectDescriptionBuilderLayoutProps = {

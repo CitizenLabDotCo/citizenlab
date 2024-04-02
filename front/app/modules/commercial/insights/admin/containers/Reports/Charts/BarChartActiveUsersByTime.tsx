@@ -1,14 +1,14 @@
-// libraries
 import React, { useRef } from 'react';
+
+import { Icon } from '@citizenlab/cl2-component-library';
 import { map, isEmpty } from 'lodash-es';
+import { Popup } from 'semantic-ui-react';
+import styled from 'styled-components';
 
-// intl
-import { useIntl } from 'utils/cl-intl';
+import { IActiveUsersByTime } from 'api/active_users_by_time/types';
+import useActiveUsersByTime from 'api/active_users_by_time/useActiveUsersByTime';
 
-// typings
-
-// components
-import ReportExportMenu from 'components/admin/ReportExportMenu';
+import BarChart from 'components/admin/Graphs/BarChart';
 import {
   IGraphUnit,
   GraphCard,
@@ -16,17 +16,11 @@ import {
   GraphCardHeader,
   GraphCardTitle,
 } from 'components/admin/GraphWrappers';
-import BarChart from 'components/admin/Graphs/BarChart';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import { IResolution } from 'components/admin/ResolutionControl';
-import { Popup } from 'semantic-ui-react';
-import { Icon } from '@citizenlab/cl2-component-library';
 
-// styling
-import styled from 'styled-components';
-
+import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import useActiveUsersByTime from 'api/active_users_by_time/useActiveUsersByTime';
-import { IActiveUsersByTime } from 'api/active_users_by_time/types';
 
 const InfoIcon = styled(Icon)`
   display: flex;

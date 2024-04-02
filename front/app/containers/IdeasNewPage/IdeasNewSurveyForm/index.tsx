@@ -1,42 +1,36 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
-// api
-import useAuthUser from 'api/me/useAuthUser';
-import usePhases from 'api/phases/usePhases';
-import usePhase from 'api/phases/usePhase';
-import useInputSchema from 'hooks/useInputSchema';
+import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { createPortal } from 'react-dom';
 import { useSearchParams } from 'react-router-dom';
+
+import { IdeaPublicationStatus } from 'api/ideas/types';
 import useAddIdea from 'api/ideas/useAddIdea';
-import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useDraftIdeaByPhaseId, {
   clearDraftIdea,
 } from 'api/ideas/useDraftIdeaByPhaseId';
-
-// i18n
-import messages from '../messages';
-import { useIntl } from 'utils/cl-intl';
-
-// components
-import Form from 'components/Form';
-import IdeasNewMeta from '../IdeasNewMeta';
-import PageContainer from 'components/UI/PageContainer';
-import FullPageSpinner from 'components/UI/FullPageSpinner';
-import { Heading } from '../components/Heading';
-import { Box } from '@citizenlab/cl2-component-library';
-import Warning from 'components/UI/Warning';
-
-// utils
-import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import useAuthUser from 'api/me/useAuthUser';
+import { IPhases, IPhaseData } from 'api/phases/types';
+import usePhase from 'api/phases/usePhase';
+import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
+import { IProject } from 'api/projects/types';
+
+import useInputSchema from 'hooks/useInputSchema';
+
+import Form from 'components/Form';
+import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
+import FullPageSpinner from 'components/UI/FullPageSpinner';
+import PageContainer from 'components/UI/PageContainer';
+
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { getElementType, getFieldNameFromPath } from 'utils/JSONFormUtils';
-import { getFormValues } from '../../IdeasEditPage/utils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
-// types
-import { IPhases, IPhaseData } from 'api/phases/types';
-import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
-import { IProject } from 'api/projects/types';
-import { IdeaPublicationStatus } from 'api/ideas/types';
+import { getFormValues } from '../../IdeasEditPage/utils';
+import IdeasNewMeta from '../IdeasNewMeta';
+import messages from '../messages';
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,
@@ -67,7 +61,6 @@ interface Props {
 const IdeasNewSurveyForm = ({ project }: Props) => {
   const { mutateAsync: addIdea } = useAddIdea();
   const { mutateAsync: updateIdea } = useUpdateIdea();
-  const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
   const [queryParams] = useSearchParams();
   const phaseId = queryParams.get('phase_id') || undefined;
@@ -77,6 +70,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     projectId: project.data.id,
     phaseId,
   });
+  const isSmallerThanPhone = useBreakpoint('phone');
 
   const { data: draftIdea, status: draftIdeaStatus } =
     useDraftIdeaByPhaseId(phaseId);
@@ -84,10 +78,15 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   const [ideaId, setIdeaId] = useState<string | undefined>();
 
   const [initialFormData, setInitialFormData] = useState({});
-  const participationContext = getCurrentPhase(phases?.data);
   const participationMethodConfig = getConfig(phaseFromUrl?.data, phases);
-  const allowAnonymousPosting =
-    participationContext?.attributes.allow_anonymous_participation;
+  const phase = phaseFromUrl
+    ? phaseFromUrl.data
+    : getCurrentPhase(phases?.data);
+  const allowAnonymousPosting = phase?.attributes.allow_anonymous_participation;
+
+  const canUserModerate = authUser
+    ? canModerateProject(project.data, { data: authUser.data })
+    : false;
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
     (error) => {
@@ -154,7 +153,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     const requestBody = {
       ...data,
       project_id: project.data.id,
-      phase_ids: [phaseId],
+      ...(canUserModerate ? { phase_ids: [phaseId] } : {}), // Moderators can submit survey responses for inactive phases, in which case the backend cannot infer the correct phase (the current phase).
       publication_status: data.publication_status || 'published',
     };
 
@@ -205,55 +204,34 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     }
   };
 
-  const canUserEditProject = authUser
-    ? canModerateProject(project.data, { data: authUser.data })
-    : false;
-
   return (
     <PageContainer id="e2e-idea-new-page" overflow="hidden">
       {!loadingDraftIdea && schema && uiSchema && participationMethodConfig ? (
-        <>
-          <IdeasNewMeta isSurvey={true} />
-          <Form
-            schema={schema}
-            uiSchema={uiSchema}
-            onSubmit={handleDraftIdeas}
-            initialFormData={initialFormData}
-            getAjvErrorMessage={getAjvErrorMessage}
-            getApiErrorMessage={getApiErrorMessage}
-            inputId={ideaId}
-            title={
-              <>
-                <Heading
-                  project={project.data}
-                  titleText={
-                    participationMethodConfig.getFormTitle ? (
-                      participationMethodConfig.getFormTitle({
-                        project: project.data,
-                        phases: phases?.data,
-                        phaseFromUrl: phaseFromUrl?.data,
-                      })
-                    ) : (
-                      <></>
-                    )
-                  }
-                  isSurvey={true}
-                  canUserEditProject={canUserEditProject}
-                  loggedIn={authUser !== undefined}
-                />
-                {allowAnonymousPosting && (
-                  <Box mx="auto" p="20px" maxWidth="700px">
-                    <Warning icon="shield-checkered">
-                      {formatMessage(messages.anonymousSurveyMessage)}
-                    </Warning>
-                  </Box>
-                )}
-              </>
-            }
-            config={'survey'}
-            formSubmitText={messages.submitSurvey}
-          />
-        </>
+        <Box
+          width="100%"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Box
+            background={colors.white}
+            width="700px"
+            h={isSmallerThanPhone ? '100vh' : `calc(100vh - 80px)`}
+            my={isSmallerThanPhone ? '0px' : '40px'}
+          >
+            <IdeasNewMeta isSurvey={true} />
+            <Form
+              schema={schema}
+              uiSchema={uiSchema}
+              onSubmit={handleDraftIdeas}
+              initialFormData={initialFormData}
+              getAjvErrorMessage={getAjvErrorMessage}
+              getApiErrorMessage={getApiErrorMessage}
+              inputId={ideaId}
+              config={'survey'}
+            />
+          </Box>
+        </Box>
       ) : inputSchemaError ? null : (
         <FullPageSpinner />
       )}
@@ -261,4 +239,27 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   );
 };
 
-export default IdeasNewSurveyForm;
+const IdeasNewSurveyFormWrapperModal = (props: Props) => {
+  const modalPortalElement = document.getElementById('modal-portal');
+
+  return modalPortalElement
+    ? createPortal(
+        <Box
+          display="flex"
+          // flexDirection="column"
+          w="100%"
+          zIndex="1010"
+          position="fixed"
+          // position="sticky"
+          bgColor={colors.grey100}
+          h="100vh"
+          borderRadius="2px"
+        >
+          <IdeasNewSurveyForm {...props} />
+        </Box>,
+        modalPortalElement
+      )
+    : null;
+};
+
+export default IdeasNewSurveyFormWrapperModal;

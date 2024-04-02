@@ -64,7 +64,7 @@ module ReportBuilder
         true
       elsif user.project_or_folder_moderator?
         if record.phase?
-          PhasePolicy.new(user, record.phase).show? && access_to_data?
+          PhasePolicy.new(user, record.phase).update? && access_to_data?
         else
           record.owner == user && access_to_data?
         end

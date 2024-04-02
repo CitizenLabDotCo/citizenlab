@@ -1,6 +1,7 @@
 import React from 'react';
-import SuccessActions from './SuccessActions';
+
 import Modal from './Modal';
+import SuccessActions from './SuccessActions';
 
 export interface Props {
   setModalOpen: (bool: boolean) => void;

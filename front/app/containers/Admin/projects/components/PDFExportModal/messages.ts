@@ -15,9 +15,9 @@ export default defineMessages({
       "Click 'Export as pdf' below to download a pdf version of the input form. Be aware that at the moment the Images, File Upload, Tags and Linear Scale fields are not supported for the pdf version.",
   },
   clickExportToPDFSurvey: {
-    id: 'app.containers.Admin.projects.all.clickExportToPDFSurvey2',
+    id: 'app.containers.Admin.projects.all.clickExportToPDFSurvey3',
     defaultMessage:
-      "Click 'Export as pdf' below to download a pdf version of the survey. Be aware that at the moment the Linear Scale and File Upload fields are not supported for the pdf version.",
+      "Click 'Export as pdf' below to download a pdf version of the survey. Be aware that at the moment the Location Answer, Linear Scale and File Upload fields are not supported for the pdf version.",
   },
   itIsAlsoPossibleIdeation: {
     id: 'app.containers.Admin.projects.all.itIsAlsoPossible',

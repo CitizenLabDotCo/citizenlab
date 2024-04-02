@@ -1,9 +1,11 @@
 import React from 'react';
 
-// components
 import { Success, Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { Helmet } from 'react-helmet';
-import { FormLabel } from 'components/UI/FormComponents';
+import { WrappedComponentProps } from 'react-intl';
+
+import sendPasswordResetMail from 'api/authentication/reset_password/sendPasswordResetEmail';
+
 import {
   StyledContentContainer,
   Title,
@@ -12,18 +14,11 @@ import {
   Subtitle,
   StyledInput,
 } from 'components/smallForm';
+import { FormLabel } from 'components/UI/FormComponents';
 
-// services
-import sendPasswordResetMail from 'api/authentication/reset_password/sendPasswordResetEmail';
-
-// utils
+import { injectIntl } from 'utils/cl-intl';
 import { isValidEmail } from 'utils/validate';
 
-// i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-
-// style
 import messages from './messages';
 
 interface Props {}

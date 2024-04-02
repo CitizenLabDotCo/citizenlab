@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   Select,
@@ -12,15 +11,13 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// typings
 import { GroupMode } from 'api/graph_data_units/requestTypes';
 
-// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 
 type Option = { value: GroupMode | ''; label: string };
 
@@ -39,7 +36,7 @@ const GroupModeSelect = ({ mode, onChange }: Props) => {
 
   const options: Option[] = [
     { value: '', label: formatMessage(messages.none) },
-    { value: 'user_field', label: formatMessage(messages.userField) },
+    { value: 'user_field', label: formatMessage(messages.registrationField) },
     { value: 'survey_question', label: formatMessage(messages.surveyQuestion) },
   ];
 

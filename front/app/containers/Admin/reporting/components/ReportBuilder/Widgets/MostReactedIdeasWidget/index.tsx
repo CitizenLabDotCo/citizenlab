@@ -1,21 +1,17 @@
 import React from 'react';
 
-// components
-import Card from '../_shared/Card';
-import ProjectInfo from './ProjectInfo';
-import Ideas from './Ideas';
-import NoData from '../_shared/NoData';
-import Settings from './Settings';
-
-// i18n
-import messages from './messages';
-
-// typings
-import { Props } from './typings';
-
-// hooks
 import { useMostReactedIdeas } from 'api/graph_data_units';
+
+import Card from '../_shared/Card';
+import MissingData from '../_shared/MissingData';
+import NoData from '../_shared/NoData';
 import { getEmptyMessage } from '../utils';
+
+import Ideas from './Ideas';
+import messages from './messages';
+import ProjectInfo from './ProjectInfo';
+import Settings from './Settings';
+import { Props } from './typings';
 
 const MostReactedIdeasWidget = ({
   title,
@@ -24,10 +20,10 @@ const MostReactedIdeasWidget = ({
   numberOfIdeas,
   collapseLongText,
 }: Props) => {
-  const response = useMostReactedIdeas(
+  const { data, error } = useMostReactedIdeas(
     {
-      phaseId,
-      numberOfIdeas,
+      phase_id: phaseId,
+      number_of_ideas: numberOfIdeas,
     },
     {
       enabled: !!phaseId,
@@ -44,14 +40,17 @@ const MostReactedIdeasWidget = ({
     );
   }
 
-  if (!response) return null;
+  if (error) return <MissingData />;
+  if (!data) return null;
 
   const {
     ideas,
     project,
     phase,
     idea_images: ideaImages,
-  } = response.data.attributes;
+  } = data.data.attributes;
+
+  if (!project || !phase) return null;
 
   return (
     <Card title={title}>

@@ -1,35 +1,34 @@
 import React, { useEffect, useState } from 'react';
 
-// types
-import { ISubmitState } from 'components/admin/SubmitWrapper';
+import { WrappedComponentProps } from 'react-intl';
+import { useParams } from 'react-router-dom';
 import { CLErrors } from 'typings';
 
-// components
+import { ICustomPageAttributes } from 'api/custom_pages/types';
+import useCustomPageById from 'api/custom_pages/useCustomPageById';
+import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
+
+import useLocalize from 'hooks/useLocalize';
+
+import {
+  pagesAndMenuBreadcrumb,
+  pagesAndMenuBreadcrumbLinkTo,
+} from 'containers/Admin/pagesAndMenu/breadcrumbs';
+import ShownOnPageBadge from 'containers/Admin/pagesAndMenu/components/ShownOnPageBadge';
 import CTAButtonFields from 'containers/Admin/pagesAndMenu/containers/CustomPages/Edit/HeroBanner/CTAButtonFields';
 import BannerHeaderFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerHeaderFields';
 import BannerImageFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields';
 import LayoutSettingField from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/LayoutSettingField';
-import GenericHeroBannerForm from '../../../GenericHeroBannerForm';
-import ShownOnPageBadge from 'containers/Admin/pagesAndMenu/components/ShownOnPageBadge';
+import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
 
-// utils
-import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
+import { ISubmitState } from 'components/admin/SubmitWrapper';
+import HelmetIntl from 'components/HelmetIntl';
+
+import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError, isNil } from 'utils/helperUtils';
 
-// resources
-import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
-import { WrappedComponentProps } from 'react-intl';
-import { useParams } from 'react-router-dom';
-import useCustomPageById from 'api/custom_pages/useCustomPageById';
-import { ICustomPageAttributes } from 'api/custom_pages/types';
-
-// i18n
+import GenericHeroBannerForm from '../../../GenericHeroBannerForm';
 import messages from '../../../GenericHeroBannerForm/messages';
-import HelmetIntl from 'components/HelmetIntl';
-import useLocalize from 'hooks/useLocalize';
-import { injectIntl } from 'utils/cl-intl';
-
-import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
 
 export type CustomPageBannerSettingKeyType = Extract<
   keyof ICustomPageAttributes,
@@ -222,7 +221,7 @@ const EditCustomPageHeroBannerForm = ({
           breadcrumbs={[
             {
               label: formatMessage(pagesAndMenuBreadcrumb.label),
-              linkTo: pagesAndMenuBreadcrumb.linkTo,
+              linkTo: pagesAndMenuBreadcrumbLinkTo,
             },
             {
               label: localize(customPage.data.attributes.title_multiloc),

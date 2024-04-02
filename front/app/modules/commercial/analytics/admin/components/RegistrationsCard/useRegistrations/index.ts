@@ -1,17 +1,13 @@
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import { getTranslations } from './translations';
-
-// query
-import { query } from './query';
-
-// parse
-import { parseTimeSeries, parseStats, parseExcelData } from './parse';
-
-// typings
-import { QueryParameters, Response } from './typings';
-import useAnalytics from 'api/analytics/useAnalytics';
 import { useMemo, useState } from 'react';
+
+import useAnalytics from 'api/analytics/useAnalytics';
+
+import { useIntl } from 'utils/cl-intl';
+
+import { parseTimeSeries, parseStats, parseExcelData } from './parse';
+import { query } from './query';
+import { getTranslations } from './translations';
+import { QueryParameters, Response } from './typings';
 
 export default function useRegistrations({
   startAtMoment,

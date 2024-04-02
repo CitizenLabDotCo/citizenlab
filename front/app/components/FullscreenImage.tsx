@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createPortal } from 'react-dom';
+
 import {
   Box,
   IconButton,
@@ -7,6 +7,7 @@ import {
   colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import { createPortal } from 'react-dom';
 
 interface Props {
   src: string;
@@ -15,6 +16,7 @@ interface Props {
 
 const FullscreenImage = ({ src, altText }: Props) => {
   const [fullscreen, setFullscreen] = useState(false);
+  const [isImagedLoaded, setIsImageLoaded] = useState(false);
   const isSmallerThanPhone = useBreakpoint('phone');
 
   const toggleFullscreen = () => {
@@ -32,7 +34,7 @@ const FullscreenImage = ({ src, altText }: Props) => {
         width="100vw"
         height="100%"
         background="rgba(0, 0, 0, 0.8)"
-        zIndex="2"
+        zIndex="1105"
         display="flex"
         justifyContent="center"
         alignItems="center"
@@ -67,9 +69,13 @@ const FullscreenImage = ({ src, altText }: Props) => {
             alt={altText}
             maxHeight={isSmallerThanPhone ? 'auto' : '200px'}
             maxWidth="100%"
+            onLoad={() => {
+              setIsImageLoaded(true);
+            }}
+            onDoubleClick={toggleFullscreen}
           />
         </Box>
-        {!fullscreen && (
+        {!fullscreen && isImagedLoaded && (
           <Box
             position="absolute"
             right="8px"

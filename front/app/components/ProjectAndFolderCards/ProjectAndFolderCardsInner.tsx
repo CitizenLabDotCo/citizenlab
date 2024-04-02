@@ -1,32 +1,25 @@
 import React, { useEffect, useState } from 'react';
 
-// components
-import Topbar from './components/Topbar';
-import EmptyContainer from './components/EmptyContainer';
-import PublicationStatusTabs from './components/PublicationStatusTabs';
-import LoadingBox from './components/LoadingBox';
-import Footer from './components/Footer';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// style
 import styled from 'styled-components';
+import { Multiloc } from 'typings';
 
-// i18n
-import messages from './messages';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { getAvailableTabs, getCurrentTab } from './utils';
-
-// typings
-import { PublicationTab, Props as BaseProps } from '.';
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
-import { Multiloc } from 'typings';
 import { PublicationStatus } from 'api/projects/types';
+
+import { trackEventByName } from 'utils/analytics';
+import { isNilOrError } from 'utils/helperUtils';
+
+import EmptyContainer from './components/EmptyContainer';
+import Footer from './components/Footer';
+import LoadingBox from './components/LoadingBox';
+import PublicationStatusTabs from './components/PublicationStatusTabs';
+import Topbar from './components/Topbar';
+import messages from './messages';
+import tracks from './tracks';
+import { getAvailableTabs, getCurrentTab } from './utils';
+
+import { PublicationTab, Props as BaseProps } from '.';
 
 const Container = styled.div`
   display: flex;

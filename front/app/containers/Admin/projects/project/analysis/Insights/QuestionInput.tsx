@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+
 import {
   Input,
   Box,
@@ -5,15 +7,17 @@ import {
   stylingConsts,
   Button,
 } from '@citizenlab/cl2-component-library';
-import useAddAnalysisQuestion from 'api/analysis_questions/useAddAnalysisQuestion';
-import React, { useState } from 'react';
-import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import { useParams } from 'react-router-dom';
 
-import tracks from 'containers/Admin/projects/project/analysis/tracks';
-import { trackEventByName } from 'utils/analytics';
+import useAddAnalysisQuestion from 'api/analysis_questions/useAddAnalysisQuestion';
 
+import tracks from 'containers/Admin/projects/project/analysis/tracks';
+
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+
+import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
+
 import messages from './messages';
 
 const QuestionInput = ({ onClose }: { onClose: () => void }) => {

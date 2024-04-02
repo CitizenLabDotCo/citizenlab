@@ -1,22 +1,18 @@
 import React from 'react';
 
-// libraries
-import clHistory from 'utils/cl-router/history';
-
-// components
-import GoBackButton from 'components/UI/GoBackButton';
-import TipsBox from './TipsBox';
-import ContentContainer from 'components/ContentContainer';
-import CollapsibleTipsAndInfo from './CollapsibleTipsAndInfo';
-import Fragment from 'components/Fragment';
-
-// style
 import { media, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-// intl
+import ContentContainer from 'components/ContentContainer';
+import Fragment from 'components/Fragment';
+import GoBackButton from 'components/UI/GoBackButton';
+
 import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+
+import CollapsibleTipsAndInfo from './CollapsibleTipsAndInfo';
 import messages from './messages';
+import TipsBox from './TipsBox';
 
 const Container = styled.main`
   background: ${colors.background};

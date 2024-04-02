@@ -1,9 +1,5 @@
 import React from 'react';
-import { rgba } from 'polished';
-import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
 
-// Components
 import {
   Box,
   Icon,
@@ -11,21 +7,23 @@ import {
   IconTooltip,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { rgba } from 'polished';
+import { useLocation } from 'react-router-dom';
+import { RouteType } from 'routes';
+import styled from 'styled-components';
 
-// Hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useSeats from 'api/seats/useSeats';
 
-// types
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNil } from 'utils/helperUtils';
+
+import messages from './messages';
+
 import { SeatInfoProps, SeatNumbersType, SeatTypeMessageDescriptor } from '.';
 
 // Intl
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// Utils
-import { isNil } from 'utils/helperUtils';
-import Link from 'utils/cl-router/Link';
 
 const StyledLink = styled(Link)`
   text-decoration: underline;
@@ -40,7 +38,7 @@ const BillingInfo = ({ seatType }: SeatInfoProps) => {
   const { pathname } = useLocation();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
-  const adminsAndMangersLink = '/admin/users/admins-managers';
+  const adminsAndMangersLink: RouteType = '/admin/users/admins-managers';
   const isOnAdminsAndManagersPage = pathname.includes(adminsAndMangersLink);
 
   const maximumSeatNumbers: SeatNumbersType = {

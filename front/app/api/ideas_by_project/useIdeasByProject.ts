@@ -1,12 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
+import ideasByProjectKeys from './keys';
 import {
   IIdeasByProject,
   IdeasByProjectKeys,
   IIdeasByProjectParams,
 } from './types';
-import ideasByProjectKeys from './keys';
 
 const fetchIdeasByProject = (params: IIdeasByProjectParams) =>
   fetcher<IIdeasByProject>({

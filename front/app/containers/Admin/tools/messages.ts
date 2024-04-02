@@ -97,9 +97,9 @@ export default defineMessages({
     defaultMessage: 'Esri integration',
   },
   esriIntegrationDescription: {
-    id: 'app.containers.Admin.tools.esriIntegrationDescription2',
+    id: 'app.containers.Admin.tools.esriIntegrationDescription3',
     defaultMessage:
-      'Connect your Esri account and import your layers from ArcGIS Online directly into your mapping projects.',
+      'Connect your Esri account and import data from ArcGIS Online directly into your mapping projects.',
   },
   esriIntegrationButton: {
     id: 'app.containers.Admin.tools.esriIntegrationButton',

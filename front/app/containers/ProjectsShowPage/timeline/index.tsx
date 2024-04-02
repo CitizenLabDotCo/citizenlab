@@ -1,47 +1,42 @@
 import React, { useMemo } from 'react';
 
-// components
-import Timeline from './Timeline';
-import PhaseSurvey from './Survey';
-import PhasePoll from './Poll';
-import PhaseVolunteering from './Volunteering';
-import PhaseIdeas from './Ideas';
-import ContentContainer from 'components/ContentContainer';
-import PhaseNavigation from './PhaseNavigation';
+import { Box, colors, isRtl } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
+import { IPhaseData } from 'api/phases/types';
+import usePhases from 'api/phases/usePhases';
+import { getLatestRelevantPhase, hideTimelineUI } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+
+import useLocale from 'hooks/useLocale';
+
+import messages from 'containers/ProjectsShowPage/messages';
 import {
   ProjectPageSectionTitle,
   maxPageWidth,
 } from 'containers/ProjectsShowPage/styles';
+
+import ContentContainer from 'components/ContentContainer';
 import SectionContainer from 'components/SectionContainer';
-import PhaseDocumentAnnotation from './PhaseDocumentAnnotation';
 import StatusModule from 'components/StatusModule';
-import VotingResults from './VotingResults';
-import PhaseReport from './PhaseReport';
-import { Box, colors, isRtl } from '@citizenlab/cl2-component-library';
 
-// router
-import setPhaseURL from './setPhaseURL';
-import { useParams } from 'react-router-dom';
-
-// hooks
-import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
-import useLocale from 'hooks/useLocale';
-
-// i18n
-import messages from 'containers/ProjectsShowPage/messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
-// style
-import styled from 'styled-components';
-
-// utils
-import { getLatestRelevantPhase, hideTimelineUI } from 'api/phases/utils';
-import { isValidPhase } from '../phaseParam';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
-// typings
-import { IPhaseData } from 'api/phases/types';
+import { isValidPhase } from '../phaseParam';
+
+import PhaseIdeas from './Ideas';
+import PhaseDocumentAnnotation from './PhaseDocumentAnnotation';
+import PhaseNavigation from './PhaseNavigation';
+import PhasePoll from './Poll';
+import setPhaseURL from './setPhaseURL';
+import PhaseSurvey from './Survey';
+import Timeline from './Timeline';
+import PhaseVolunteering from './Volunteering';
+import VotingResults from './VotingResults';
+
+const PhaseReport = React.lazy(() => import('./PhaseReport'));
 
 const StyledSectionContainer = styled(SectionContainer)`
   display: flex;

@@ -1,65 +1,81 @@
 import React from 'react';
 
-// components
-import { Box, Title } from '@citizenlab/cl2-component-library';
-import InputType from './InputType';
-import MultipleChoice from './MultipleChoice';
-import TextQuestion from './TextQuestion';
-import Files from '../Files';
-
-// i18n
-import T from 'components/T';
-
-// utils
+import { Box, Title, colors } from '@citizenlab/cl2-component-library';
 import { snakeCase } from 'lodash-es';
 
-// typings
-import { Locale } from 'typings';
-import { Result } from 'api/survey_results/types';
+import { ResultUngrouped } from 'api/survey_results/types';
 
-type FormResultsQuestionProps = Result & {
-  locale: Locale;
+import useLocalize from 'hooks/useLocalize';
+
+import SurveyBars from 'components/admin/Graphs/SurveyBars';
+import T from 'components/T';
+
+import Files from '../Files';
+
+import InputType from './InputType';
+import PointLocationQuestion from './PointLocationQuestion';
+import TextQuestion from './TextQuestion';
+
+type FormResultsQuestionProps = {
+  questionNumber: number;
+  result: ResultUngrouped;
   totalSubmissions: number;
 };
 
+const COLOR_SCHEME = [colors.primary];
+
 const FormResultsQuestion = ({
-  locale,
-  question,
-  inputType,
-  answers,
-  totalResponses,
+  questionNumber,
+  result,
   totalSubmissions,
-  required,
-  customFieldId,
-  textResponses = [],
-  files = [],
 }: FormResultsQuestionProps) => {
+  const localize = useLocalize();
+
+  const {
+    answers,
+    textResponses,
+    pointResponses,
+    inputType,
+    question,
+    required,
+    questionResponseCount,
+    customFieldId,
+    mapConfigId,
+    files,
+  } = result;
+
   const isMultipleChoiceAndHasAnswers = !!answers;
   const hasTextResponses = textResponses && textResponses.length > 0;
+  const isPointAndHasAnswers =
+    inputType === 'point' && pointResponses && pointResponses?.length > 0;
 
   return (
     <>
-      <Box data-cy={`e2e-${snakeCase(question[locale])}`} mb="56px">
+      <Box data-cy={`e2e-${snakeCase(localize(question))}`} mb="56px">
         <Title variant="h3" mt="12px" mb="12px">
-          <T value={question} />
+          {questionNumber}. <T value={question} />
         </Title>
         <InputType
           inputType={inputType}
           required={required}
           totalSubmissions={totalSubmissions}
-          totalResponses={totalResponses}
+          totalResponses={questionResponseCount}
         />
         {isMultipleChoiceAndHasAnswers && (
-          <MultipleChoice
-            multipleChoiceAnswers={answers}
-            totalResponses={totalResponses}
-          />
+          <SurveyBars questionResult={result} colorScheme={COLOR_SCHEME} />
         )}
         {hasTextResponses && (
           <TextQuestion
             textResponses={textResponses}
             customFieldId={customFieldId}
             hasOtherResponses={isMultipleChoiceAndHasAnswers}
+          />
+        )}
+        {isPointAndHasAnswers && (
+          <PointLocationQuestion
+            pointResponses={pointResponses}
+            mapConfigId={mapConfigId}
+            customFieldId={customFieldId}
           />
         )}
         {files && files.length > 0 && (

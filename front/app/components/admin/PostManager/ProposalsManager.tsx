@@ -1,11 +1,24 @@
 import React, { ChangeEvent, Suspense, lazy, useEffect, useState } from 'react';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+
 import { DndProvider } from 'react-dnd';
-import { IQueryParameters, Sort } from 'api/initiatives/types';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+
 import useInitiativeStatuses from 'api/initiative_statuses/useInitiativeStatuses';
-import useTopics from 'api/topics/useTopics';
-import { getPageNumberFromUrl, getSortDirection } from 'utils/paginationUtils';
+import { IQueryParameters, Sort } from 'api/initiatives/types';
 import useInitiatives from 'api/initiatives/useInitiatives';
+import useTopics from 'api/topics/useTopics';
+
+import Outlet from 'components/Outlet';
+
+import { getPageNumberFromUrl, getSortDirection } from 'utils/paginationUtils';
+
+import ActionBar from './components/ActionBar';
+import FilterSidebar from './components/FilterSidebar';
+import InitiativesCount from './components/InitiativesCount';
+import PostTable from './components/PostTable';
+import LazyStatusChangeModal from './components/StatusChangeModal/LazyStatusChangeModal';
+import InitiativeFeedbackToggle from './components/TopLevelFilters/InitiativeFeedbackToggle';
+
 import {
   LeftColumn,
   MiddleColumn,
@@ -17,17 +30,10 @@ import {
   ThreeColumns,
   TopActionBar,
 } from '.';
-import ActionBar from './components/ActionBar';
-import FilterSidebar from './components/FilterSidebar';
-import PostTable from './components/PostTable';
-import InitiativesCount from './components/InitiativesCount';
-import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
+
 const LazyPostPreview = lazy(
   () => import('components/admin/PostManager/components/PostPreview')
 );
-import LazyStatusChangeModal from './components/StatusChangeModal/LazyStatusChangeModal';
-import Outlet from 'components/Outlet';
-
 type TFilterMenu = 'topics' | 'statuses';
 
 interface Props {
@@ -106,7 +112,7 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
     setQueryParameters({ ...queryParameters, pageNumber: 1, topics });
   };
 
-  const onChangeStatus = (initiativeStatus: string | null) => {
+  const onChangeStatus = (initiativeStatus: string) => {
     setQueryParameters({
       ...queryParameters,
       pageNumber: 1,
@@ -118,7 +124,7 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
     setQueryParameters({ ...queryParameters, pageNumber: 1, assignee });
   };
 
-  const onChangeFeedbackFilter = (feedbackNeeded: boolean) => {
+  const onChangeFeedbackFilter = (feedbackNeeded: boolean | undefined) => {
     setQueryParameters({
       ...queryParameters,
       pageNumber: 1,
@@ -148,28 +154,20 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
 
   const currentPage = getPageNumberFromUrl(initiatives.links.self);
   const lastPage = getPageNumberFromUrl(initiatives.links.last);
-  const selectedTopics = queryParameters.topics;
-  const selectedAssignee = queryParameters.assignee;
-  const feedbackNeeded = queryParameters.feedback_needed || false;
-  const selectedStatus = queryParameters.initiative_status;
 
   return (
     <>
       <TopActionBar>
         <Outlet
           id="app.components.admin.PostManager.topActionBar"
-          assignee={selectedAssignee}
+          assignee={queryParameters.assignee}
           handleAssigneeFilterChange={onChangeAssignee}
           type={'Initiatives'}
         />
-        <FeedbackToggle
-          type={'Initiatives'}
-          value={feedbackNeeded}
+        <InitiativeFeedbackToggle
+          value={queryParameters.feedback_needed || false}
           onChange={onChangeFeedbackFilter}
-          topics={selectedTopics}
-          status={selectedStatus}
-          assignee={selectedAssignee}
-          searchTerm={queryParameters.search}
+          queryParameters={queryParameters}
         />
         <StyledExportMenu type={'Initiatives'} selection={selection} />
       </TopActionBar>
@@ -184,13 +182,7 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
           />
         </LeftColumn>
         <MiddleColumnTop>
-          <InitiativesCount
-            feedbackNeeded={feedbackNeeded}
-            topics={selectedTopics}
-            initiativeStatus={selectedStatus}
-            searchTerm={queryParameters.search}
-            assignee={selectedAssignee}
-          />
+          <InitiativesCount queryParameters={queryParameters} />
           <StyledInput icon="search" onChange={onChangeSearchTerm} />
         </MiddleColumnTop>
       </ThreeColumns>
@@ -204,8 +196,8 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
               onChangeActiveFilterMenu={handleChangeActiveFilterMenu}
               statuses={initiativeStatuses?.data ?? []}
               topics={initiativeTopics.data}
-              selectedTopics={selectedTopics}
-              selectedStatus={selectedStatus}
+              selectedTopics={queryParameters.topics}
+              selectedStatus={queryParameters.initiative_status}
               onChangeTopicsFilter={onChangeTopics}
               onChangeStatusFilter={onChangeStatus}
             />

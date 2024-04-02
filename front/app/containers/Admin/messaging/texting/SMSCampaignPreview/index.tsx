@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
 
-// components
-import Button from 'components/UI/Button';
-import HelmetIntl from 'components/HelmetIntl';
-import TextingHeader from '../components/TextingHeader';
-import Modal from 'components/UI/Modal';
 import {
   Box,
   Text,
@@ -12,21 +7,21 @@ import {
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
-// utils
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import clHistory from 'utils/cl-router/history';
-
-// hooks
-import useTextingCampaign from 'api/texting_campaigns/useTextingCampaign';
-
-// services
 import useDeleteTextingCampaign from 'api/texting_campaigns/useDeleteTextingCampaign';
 import useSendTextingCampaign from 'api/texting_campaigns/useSendTextingCampaign';
+import useTextingCampaign from 'api/texting_campaigns/useTextingCampaign';
 
-// styling
-import styled from 'styled-components';
+import HelmetIntl from 'components/HelmetIntl';
+import Button from 'components/UI/Button';
+import Modal from 'components/UI/Modal';
+
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
+
+import TextingHeader from '../components/TextingHeader';
 
 const StyledModalButton = styled(Button)`
   margin-right: 10px;
@@ -194,8 +189,7 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
   };
 
   const goBackToCampaignView = () => {
-    const url = `/admin/messaging/texting/${campaignId}/`;
-    clHistory.replace(url);
+    clHistory.replace(`/admin/messaging/texting/${campaignId}/`);
   };
 
   // actual error state when campaign not found

@@ -1,7 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
 
-// components
 import {
   Box,
   useBreakpoint,
@@ -10,27 +8,25 @@ import {
   media,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
+import { VotingContext } from 'api/baskets_ideas/useVoting';
+import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+
 import IdeasShow from 'containers/IdeasShow';
-import IdeaShowPageTopBar from './IdeaShowPageTopBar';
+import ProjectCTABar from 'containers/ProjectsShowPage/ProjectCTABar';
+
 import PageNotFound from 'components/PageNotFound';
 import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
 
-// context
-import { VotingContext } from 'api/baskets_ideas/useVoting';
-
-// hooks
-import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
-import useProjectById from 'api/projects/useProjectById';
-
-// style
-import styled from 'styled-components';
-
-// utils
 import { isUnauthorizedRQ } from 'utils/errorUtils';
-import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase } from 'api/phases/utils';
-import ProjectCTABar from 'containers/ProjectsShowPage/ProjectCTABar';
+
+import IdeaShowPageTopBar from './IdeaShowPageTopBar';
 
 const StyledIdeaShowPageTopBar = styled(IdeaShowPageTopBar)`
   position: fixed;

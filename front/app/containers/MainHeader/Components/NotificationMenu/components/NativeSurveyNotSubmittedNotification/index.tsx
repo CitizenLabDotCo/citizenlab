@@ -1,11 +1,10 @@
 import React, { memo } from 'react';
+
 import { INativeSurveyNotSubmittedNotificationData } from 'api/notifications/types';
 
-// i18n
-import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// components
+import messages from '../../messages';
 import NotificationWrapper from '../NotificationWrapper';
 
 type Props = {

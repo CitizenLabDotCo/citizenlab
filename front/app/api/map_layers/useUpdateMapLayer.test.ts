@@ -1,14 +1,14 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useUpdateMapLayer from './useUpdateMapLayer';
-import { mapLayerData } from './__mocks__/mapLayerData';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = '*projects/:projectId/map_config/layers/:id';
+import { mapLayerData } from './__mocks__/mapLayerData';
+import useUpdateMapLayer from './useUpdateMapLayer';
+
+const apiPath = '*/map_configs/:mapConfigId/layers/:id';
+
 const server = setupServer(
   rest.patch(apiPath, (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json({ data: mapLayerData }));
@@ -27,7 +27,7 @@ describe('useUpdateMapLayer', () => {
     act(() => {
       result.current.mutate({
         id: 'id',
-        projectId: 'projectId',
+        mapConfigId: 'mapConfigId',
         title_multiloc: { en: 'name' },
         geojson: { type: 'FeatureCollection', features: [] },
       });
@@ -51,7 +51,7 @@ describe('useUpdateMapLayer', () => {
     act(() => {
       result.current.mutate({
         id: 'id',
-        projectId: 'projectId',
+        mapConfigId: 'mapConfigId',
         title_multiloc: { en: 'name' },
         geojson: { type: 'FeatureCollection', features: [] },
       });

@@ -65,8 +65,13 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def submission_count
-    count = SurveyResultsGeneratorService.new(@phase).generate_submission_count
-    render json: raw_json(count)
+    count = if @phase.native_survey?
+      @phase.ideas.native_survey.published.count
+    else
+      @phase.ideas.ideation.published.count
+    end
+
+    render json: raw_json({ totalSubmissions: count })
   end
 
   def index_xlsx
@@ -127,6 +132,8 @@ class WebApi::V1::PhasesController < ApplicationController
         description_multiloc: CL2_SUPPORTED_LOCALES,
         voting_term_singular_multiloc: CL2_SUPPORTED_LOCALES,
         voting_term_plural_multiloc: CL2_SUPPORTED_LOCALES,
+        native_survey_title_multiloc: CL2_SUPPORTED_LOCALES,
+        native_survey_button_multiloc: CL2_SUPPORTED_LOCALES,
         campaigns_settings: Phase::CAMPAIGNS
       }
     ]

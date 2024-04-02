@@ -1,25 +1,23 @@
 import React, { useCallback } from 'react';
 
-// hooks
+import { Box, Toggle, colors } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
+import { IOption } from 'typings';
+
+import { IIdeaData } from 'api/ideas/types';
 import usePhases from 'api/phases/usePhases';
 
-// components
-import { Box, Toggle, colors } from '@citizenlab/cl2-component-library';
-import ProjectFilter from '../../_shared/ProjectFilter';
+import IdeaSelect from 'components/UI/IdeaSelect';
 import PhaseFilter from 'components/UI/PhaseFilter';
-import CollapseLongTextToggle from './CollapseLongTextToggle';
 
-// i18n
-import messages from '../messages';
-import widgetMessages from '../../messages';
 import { useIntl } from 'utils/cl-intl';
 
-// typings
+import ProjectFilter from '../../_shared/ProjectFilter';
+import widgetMessages from '../../messages';
+import messages from '../messages';
 import { Props } from '../typings';
-import { IOption } from 'typings';
-import IdeaSelect from 'components/UI/IdeaSelect';
-import { IIdeaData } from 'api/ideas/types';
+
+import CollapseLongTextToggle from './CollapseLongTextToggle';
 
 const Settings = () => {
   const { formatMessage } = useIntl();

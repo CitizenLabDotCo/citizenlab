@@ -1,11 +1,11 @@
 import React from 'react';
 
-// components
 import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
+
 import Toggle from 'components/HookForm/Toggle';
 
-// intl
 import { useIntl } from 'utils/cl-intl';
+
 import messages from './messages';
 
 type Props = {

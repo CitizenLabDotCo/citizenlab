@@ -1,25 +1,24 @@
 import React from 'react';
 
-// api
+import { Title, Box } from '@citizenlab/cl2-component-library';
+
 import { useSurveyQuestionResult } from 'api/graph_data_units';
-
-// components
-import { Title, Text, Box } from '@citizenlab/cl2-component-library';
-import GroupedBars from './GroupedBars';
-import UngroupedBars from './UngroupedBars';
-import Source from './Source';
-
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import useLocalize from 'hooks/useLocalize';
-import messages from '../messages';
-
-// utils
-import { getColorScheme, getLegendLabels } from './utils';
-
-// typings
 import { GroupMode } from 'api/graph_data_units/requestTypes';
+
+import useLocalize from 'hooks/useLocalize';
+
+import InputType from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/InputType';
+
 import Legend from 'components/admin/Graphs/Legend';
+import { DEFAULT_CATEGORICAL_COLORS } from 'components/admin/Graphs/styling';
+import SurveyBars from 'components/admin/Graphs/SurveyBars';
+
+import { useIntl } from 'utils/cl-intl';
+
+import MissingData from '../../_shared/MissingData';
+
+import PointLocationQuestion from './PointLocationQuestion';
+import { getLegendLabels } from './utils';
 
 interface Props {
   projectId: string;
@@ -27,6 +26,7 @@ interface Props {
   questionId: string;
   groupMode?: GroupMode;
   groupFieldId?: string;
+  heatmap?: boolean;
 }
 
 const SurveyQuestionResult = ({
@@ -35,27 +35,25 @@ const SurveyQuestionResult = ({
   questionId,
   groupMode,
   groupFieldId,
+  heatmap,
 }: Props) => {
-  const response = useSurveyQuestionResult({
-    phaseId,
-    questionId,
-    groupMode,
-    groupFieldId,
+  const { data, error } = useSurveyQuestionResult({
+    phase_id: phaseId,
+    question_id: questionId,
+    group_mode: groupMode,
+    group_field_id: groupFieldId,
   });
 
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  if (!response) return null;
+  if (error) return <MissingData />;
+  if (!data) return null;
 
-  const { attributes } = response.data;
-
-  const colorScheme = attributes.grouped
-    ? getColorScheme(attributes.legend.length)
-    : undefined;
+  const { attributes } = data.data;
 
   return (
-    <>
+    <Box mb="8px">
       <Title
         variant="h4"
         mt="0px"
@@ -64,26 +62,37 @@ const SurveyQuestionResult = ({
       >
         {localize(attributes.question)}
       </Title>
-      <Text mt="0px" mb="8px" color="textSecondary" variant="bodyS">
-        {formatMessage(messages.numberOfResponses, {
-          count: attributes.totalResponses,
-        })}
-      </Text>
-      {attributes.grouped && colorScheme && (
-        <Box>
-          <GroupedBars attributes={attributes} colorScheme={colorScheme} />
-          <Box mt="20px">
-            <Legend
-              labels={getLegendLabels(attributes, localize, formatMessage)}
-              colors={colorScheme}
-            />
-          </Box>
-        </Box>
+      <InputType
+        inputType={attributes.inputType}
+        required={attributes.required}
+        totalSubmissions={attributes.totalResponseCount}
+        totalResponses={attributes.questionResponseCount}
+      />
+      {attributes.grouped === false && attributes.pointResponses ? (
+        <PointLocationQuestion
+          pointResponses={attributes.pointResponses}
+          mapConfigId={attributes.mapConfigId}
+          customFieldId={attributes.customFieldId}
+          projectId={projectId}
+          heatmap={heatmap}
+        />
+      ) : (
+        <>
+          <SurveyBars
+            questionResult={attributes}
+            colorScheme={DEFAULT_CATEGORICAL_COLORS}
+          />
+          {attributes.grouped && (
+            <Box mt="20px">
+              <Legend
+                labels={getLegendLabels(attributes, localize, formatMessage)}
+                colors={DEFAULT_CATEGORICAL_COLORS}
+              />
+            </Box>
+          )}
+        </>
       )}
-
-      {!attributes.grouped && <UngroupedBars attributes={attributes} />}
-      <Source projectId={projectId} phaseId={phaseId} />
-    </>
+    </Box>
   );
 };
 

@@ -2,19 +2,23 @@ import React from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import Warning from 'components/UI/Warning';
-import Link from 'utils/cl-router/Link';
+
+import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
+import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
+import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
+
+import useLocalize from 'hooks/useLocalize';
+
 import CloseIconButton from 'components/UI/CloseIconButton';
+import Warning from 'components/UI/Warning';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 
 // hooks
-import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
-import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
-import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
-import useLocalize from 'hooks/useLocalize';
 
 // intl
 import messages from './messages';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 type AccessRightsNoticeProps = {
   projectId: string;
@@ -104,7 +108,7 @@ const AccessRightsNotice = ({
                       <FormattedMessage
                         {...messages.userFieldsOutro}
                         values={{
-                          accessRightsSettingsLink: accessRightsSettingsLink,
+                          accessRightsSettingsLink,
                         }}
                       />
                     </p>

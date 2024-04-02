@@ -1,9 +1,11 @@
 import { Layout, JsonSchema7 } from '@jsonforms/core';
 import Ajv from 'ajv';
 import { isEmpty, forOwn } from 'lodash-es';
+
+import { FormData } from 'components/Form/typings';
+
 import { isVisible } from './Components/Controls/visibilityUtils';
 import { PageCategorization, PageType } from './Components/Layouts/utils';
-import { FormData } from 'components/Form/typings';
 
 const iterateSchema = (
   uischema,
@@ -25,7 +27,7 @@ const iterateSchema = (
 export const getFormSchemaAndData = (
   schema: JsonSchema7,
   uiSchema: Layout | PageCategorization,
-  data: Record<string, any>,
+  data: FormData,
   ajv: Ajv
 ) => {
   const dataWithoutHiddenElements = {};
@@ -46,7 +48,7 @@ export const getFormSchemaAndData = (
         ? isPageVisible && isElementVisible
         : isElementVisible;
 
-    if (showInData) {
+    if (showInData && data) {
       dataWithoutHiddenElements[key] = data[key];
       visibleElements.push(key);
     }

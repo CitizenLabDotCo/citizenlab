@@ -1,10 +1,14 @@
 import React from 'react';
+
+import { Text } from '@citizenlab/cl2-component-library';
+
 import { FormattedMessage } from 'utils/cl-intl';
+import { getPeriodRemainingUntil } from 'utils/dateUtils';
+
 import messages from '../messages';
 import { StatusComponentProps } from '../StatusWrapper';
+
 import Status from '.';
-import { getPeriodRemainingUntil } from 'utils/dateUtils';
-import { Text } from '@citizenlab/cl2-component-library';
 
 const Proposed = (props: StatusComponentProps) => {
   const daysLeft = getPeriodRemainingUntil(

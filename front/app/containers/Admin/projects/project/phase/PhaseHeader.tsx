@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+
 import {
   Box,
   Title,
@@ -11,24 +11,31 @@ import {
   defaultCardStyle,
   colors,
 } from '@citizenlab/cl2-component-library';
-import useDeletePhase from 'api/phases/useDeletePhase';
-import useLocalize from 'hooks/useLocalize';
-import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import Tippy from '@tippyjs/react';
 import moment from 'moment';
 import { useLocation, useParams } from 'react-router-dom';
-import { isTopBarNavActive } from 'utils/helperUtils';
+import styled from 'styled-components';
+
+import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
-import messages from './messages';
+import useDeletePhase from 'api/phases/useDeletePhase';
+
+import useLocalize from 'hooks/useLocalize';
+
 import { Tab } from 'components/admin/NavigationTabs';
 import Modal from 'components/UI/Modal';
-import clHistory from 'utils/cl-router/history';
-import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
-import Tippy from '@tippyjs/react';
-import { getParticipantMessage } from './utils';
-import PermissionTooltipMessage from './PermissionTooltipMessage';
 import NewBadge from 'components/UI/NewBadge';
 import { isExpired } from 'components/UI/NewBadge/utils';
+
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { isTopBarNavActive } from 'utils/helperUtils';
+
 import { IPhaseTab } from '../tabs';
+
+import messages from './messages';
+import PermissionTooltipMessage from './PermissionTooltipMessage';
+import { getParticipantMessage } from './utils';
 
 const Container = styled(Box)`
   ${defaultCardStyle};
@@ -176,40 +183,40 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
               </Text>
             </Button>
             {participationRequirementsMessage && (
-              <Text color="coolGrey600" my="0px" variant="bodyS">
-                <Tippy
-                  disabled={false}
-                  interactive={true}
-                  placement="bottom"
-                  content={
-                    <PermissionTooltipMessage permissions={permissions?.data} />
-                  }
-                >
-                  <Box display="flex" alignItems="center">
-                    <Box px="8px">·</Box>
-                    <Button
-                      buttonStyle="text"
-                      fontSize="14px"
-                      onClick={() => {
-                        clHistory.push(
-                          `/admin/projects/${projectId}/phases/${phase.id}/access-rights`
-                        );
-                      }}
-                      padding="0"
-                    >
-                      <Box display="flex" alignItems="center">
-                        <Icon
-                          name="key"
-                          width="16px"
-                          mr="2px"
-                          fill={colors.coolGrey600}
-                        />
+              <Tippy
+                disabled={false}
+                interactive={true}
+                placement="bottom"
+                content={
+                  <PermissionTooltipMessage permissions={permissions?.data} />
+                }
+              >
+                <Box display="flex" alignItems="center">
+                  <Box px="8px">·</Box>
+                  <Button
+                    buttonStyle="text"
+                    fontSize="14px"
+                    onClick={() => {
+                      clHistory.push(
+                        `/admin/projects/${projectId}/phases/${phase.id}/access-rights`
+                      );
+                    }}
+                    padding="0"
+                  >
+                    <Box display="flex" alignItems="center">
+                      <Icon
+                        name="key"
+                        width="16px"
+                        mr="2px"
+                        fill={colors.coolGrey600}
+                      />
+                      <Text color="coolGrey600" my="0px" variant="bodyS">
                         {participationRequirementsMessage}
-                      </Box>
-                    </Button>
-                  </Box>
-                </Tippy>
-              </Text>
+                      </Text>
+                    </Box>
+                  </Button>
+                </Box>
+              </Tippy>
             )}
           </Box>
         </Box>

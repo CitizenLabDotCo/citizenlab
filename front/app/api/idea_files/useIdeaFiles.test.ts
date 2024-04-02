@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useIdeaFiles from './useIdeaFiles';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { ideaFilesData } from './__mocks__/useIdeaFiles';
+import useIdeaFiles from './useIdeaFiles';
 
 const apiPath = '*ideas/:ideaId/files';
 

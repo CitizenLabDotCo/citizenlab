@@ -7265,6 +7265,10 @@ models:
         project_phase_started: true
       start_at: '2018-03-28'
       end_at:
+      native_survey_title_multiloc:
+        en: "Survey"
+      native_survey_button_multiloc:
+        en: "Take the survey"
       project_ref: *custom_idea_fields_project
     - &project1current
       title_multiloc:
@@ -8292,7 +8296,7 @@ models:
   #   - card_id: "i999"
   custom_maps/map_config:
   - &map_config1
-    project_ref: *76
+    mappable_ref: *76
     center_geojson:
       type: Point
       coordinates:

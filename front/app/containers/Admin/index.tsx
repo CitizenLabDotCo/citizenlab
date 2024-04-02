@@ -1,20 +1,17 @@
 import React, { memo, useEffect } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { Outlet as RouterOutlet } from 'react-router-dom';
 
-// permissions
-import useAuthUser from 'api/me/useAuthUser';
-import { usePermission } from 'utils/permissions';
-import HasPermission from 'components/HasPermission';
-
-// components
-import Sidebar from './sideBar/';
-import styled from 'styled-components';
 import { colors, media } from '@citizenlab/cl2-component-library';
+import { Outlet as RouterOutlet } from 'react-router-dom';
+import styled from 'styled-components';
 
-// utils
+import useAuthUser from 'api/me/useAuthUser';
+
 import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { usePermission } from 'utils/permissions';
 import { isAdmin, isModerator } from 'utils/permissions/roles';
+
+import Sidebar from './sideBar/';
 
 // stlying
 import 'assets/semantic/semantic.min.css';
@@ -150,18 +147,14 @@ const AdminPage = memo<Props & WithRouterProps>(
       isProjectPage;
 
     return (
-      <HasPermission item={{ type: 'route', path: '/admin' }} action="access">
-        <Container className={className}>
-          <Sidebar />
-          <RightColumn
-            className={`${fullWidth && 'fullWidth'} ${
-              noPadding && 'noPadding'
-            }`}
-          >
-            <RouterOutlet />
-          </RightColumn>
-        </Container>
-      </HasPermission>
+      <Container className={className}>
+        <Sidebar />
+        <RightColumn
+          className={`${fullWidth && 'fullWidth'} ${noPadding && 'noPadding'}`}
+        >
+          <RouterOutlet />
+        </RightColumn>
+      </Container>
     );
   }
 );

@@ -1,20 +1,29 @@
-import React, { memo } from 'react';
+import React from 'react';
+
+import { Box } from '@citizenlab/cl2-component-library';
+
+import useAuthUser from 'api/me/useAuthUser';
 
 import {
   SectionTitle,
   SectionDescription,
   StyledLink,
 } from 'components/admin/Section';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isAdmin } from 'utils/permissions/roles';
+
+import messages from './messages';
 import ProjectTopicSelector from './ProjectTopicSelector';
 import SortableProjectTopicList from './SortableProjectTopicList';
-import HasPermission from 'components/HasPermission';
-import { Box } from '@citizenlab/cl2-component-library';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+const ProjectAllowedInputTopics = () => {
+  const { data: authUser } = useAuthUser();
 
-const ProjectAllowedInputTopics = memo(() => {
+  if (!authUser) return null;
+
+  const canAccessPlatformTopicsSettingsRoute = isAdmin(authUser);
+
   return (
     <Box minHeight="80vh" mb="40px">
       <SectionTitle>
@@ -22,11 +31,8 @@ const ProjectAllowedInputTopics = memo(() => {
       </SectionTitle>
       <SectionDescription>
         <FormattedMessage {...messages.projectTopicsDescription} />
-        <span>
-          <HasPermission
-            item={{ type: 'route', path: '/admin/settings/topics' }}
-            action="access"
-          >
+        {canAccessPlatformTopicsSettingsRoute && (
+          <span>
             &nbsp;
             <FormattedMessage
               {...messages.topicManagerInfo}
@@ -38,13 +44,13 @@ const ProjectAllowedInputTopics = memo(() => {
                 ),
               }}
             />
-          </HasPermission>
-        </span>
+          </span>
+        )}
       </SectionDescription>
       <ProjectTopicSelector />
       <SortableProjectTopicList />
     </Box>
   );
-});
+};
 
 export default ProjectAllowedInputTopics;

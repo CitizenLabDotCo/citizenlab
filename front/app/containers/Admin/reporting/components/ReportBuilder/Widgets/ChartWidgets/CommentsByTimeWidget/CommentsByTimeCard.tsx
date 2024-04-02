@@ -1,38 +1,29 @@
 import React from 'react';
 
-// hooks
-import useCommentsByTime from './useCommentsByTime';
-
-// components
 import { Box } from '@citizenlab/cl2-component-library';
-import NoData from '../../_shared/NoData';
+import moment from 'moment';
+
 import Chart from 'components/admin/GraphCards/CommentsByTimeCard/Chart';
-
-// i18n
-import messages from '../messages';
-
-// typings
 import {
   ProjectId,
-  Dates,
+  DatesStrings,
   Resolution,
 } from 'components/admin/GraphCards/typings';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-type Props = ProjectId & Dates & Resolution;
+import NoData from '../../_shared/NoData';
+import messages from '../messages';
 
-const CommentsByTime = ({
-  projectId,
-  startAtMoment,
-  endAtMoment,
-  resolution,
-}: Props) => {
+import useCommentsByTime from './useCommentsByTime';
+
+type Props = ProjectId & DatesStrings & Resolution;
+
+const CommentsByTime = ({ projectId, startAt, endAt, resolution }: Props) => {
   const { currentResolution, timeSeries } = useCommentsByTime({
     projectId,
-    startAtMoment,
-    endAtMoment,
+    startAt,
+    endAt,
     resolution,
   });
 
@@ -50,8 +41,8 @@ const CommentsByTime = ({
     >
       <Chart
         timeSeries={timeSeries}
-        startAtMoment={startAtMoment}
-        endAtMoment={endAtMoment}
+        startAtMoment={startAt ? moment(startAt) : null}
+        endAtMoment={endAt ? moment(endAt) : null}
         resolution={currentResolution}
       />
     </Box>

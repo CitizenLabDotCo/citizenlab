@@ -1,8 +1,7 @@
-import useCustomFieldsSchema from './useCustomFieldsSchema';
-
-import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 import { renderHook } from '@testing-library/react-hooks';
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
+
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
 import {
@@ -10,6 +9,7 @@ import {
   phaseResponse,
   ideaResponse,
 } from './__mocks__/useCustomFieldsSchema';
+import useCustomFieldsSchema from './useCustomFieldsSchema';
 
 const initiativesPath = '*permissions/posting_initiative/schema';
 const phasePath = '*phases/456/permissions/posting_idea/schema';

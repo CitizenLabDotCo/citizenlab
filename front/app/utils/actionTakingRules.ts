@@ -1,7 +1,9 @@
-import { pastPresentOrFuture } from 'utils/dateUtils';
+import { IPhaseData } from 'api/phases/types';
 import { IProjectData, PostingDisabledReason } from 'api/projects/types';
 import { IUserData } from 'api/users/types';
-import { IPhaseData } from 'api/phases/types';
+
+import { pastPresentOrFuture } from 'utils/dateUtils';
+
 import { canModerateProject } from './permissions/rules/projectPermissions';
 
 interface ActionPermissionHide {

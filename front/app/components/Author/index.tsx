@@ -1,31 +1,23 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
-import Avatar from 'components/Avatar';
-import UserName from 'components/UI/UserName';
-
-// services
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-
-// hooks
-import useUserById from 'api/users/useUserById';
-import useLocale from 'hooks/useLocale';
-
-// style
-import styled from 'styled-components';
 import {
   media,
   colors,
   fontSizes,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import styled from 'styled-components';
+
+import useLocale from 'hooks/useLocale';
+
+import Avatar from 'components/Avatar';
+import UserName from 'components/UI/UserName';
+
 import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
 import { timeAgo } from 'utils/dateUtils';
-import useProjectById from 'api/projects/useProjectById';
-import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
+
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;
@@ -102,15 +94,12 @@ const TimeAgo = styled.div`
   }
 `;
 
-export interface Props {
+interface Props {
   authorId: string | null;
   createdAt: string;
   size: number;
   isLinkToProfile?: boolean;
-  projectId?: string | null;
-  showAvatar?: boolean;
   avatarBadgeBgColor?: string;
-  showModeration?: boolean; // will show red styling on admins and moderators of projectId
   fontWeight?: number;
   fontSize?: number;
   className?: string;
@@ -119,6 +108,7 @@ export interface Props {
   color?: string;
   authorHash?: string;
   anonymous?: boolean;
+  showModeratorStyles: boolean;
 }
 
 const Author = memo(
@@ -128,9 +118,6 @@ const Author = memo(
     createdAt,
     size,
     isLinkToProfile,
-    projectId,
-    showAvatar = true,
-    showModeration,
     className,
     avatarBadgeBgColor,
     fontWeight,
@@ -139,62 +126,47 @@ const Author = memo(
     color,
     underline,
     anonymous,
+    showModeratorStyles,
   }: Props) => {
     const locale = useLocale();
-    const { data: author } = useUserById(authorId);
-    const { data: project } = useProjectById(projectId);
 
-    const showModeratorStyles =
-      showModeration &&
-      author &&
-      // Ideally this is managed outside of this component.
-      // If projectId is provided, we assume this component is used in a project context
-      (project
-        ? canModerateProject(project.data, { data: author.data })
-        : canModerateInitiative({ data: author.data }));
+    return (
+      <Container className={className}>
+        <AuthorContainer>
+          <StyledAvatar
+            userId={authorId}
+            authorHash={authorHash}
+            size={size}
+            isLinkToProfile={isLinkToProfile}
+            showModeratorStyles={showModeratorStyles}
+            bgColor={avatarBadgeBgColor}
+          />
 
-    if (!isNilOrError(locale)) {
-      return (
-        <Container className={className}>
-          <AuthorContainer>
-            {showAvatar && (
-              <StyledAvatar
+          <AuthorMeta className={horizontalLayout ? 'horizontalLayout' : ''}>
+            <AuthorNameContainer
+              className={horizontalLayout ? 'horizontalLayout' : ''}
+            >
+              <ScreenReaderOnly>
+                <FormattedMessage {...messages.a11y_postedBy} />:
+              </ScreenReaderOnly>
+              <UserName
                 userId={authorId}
-                authorHash={authorHash}
-                size={size}
                 isLinkToProfile={isLinkToProfile}
                 showModeratorStyles={showModeratorStyles}
-                bgColor={avatarBadgeBgColor}
+                fontWeight={fontWeight}
+                fontSize={fontSize}
+                color={color}
+                underline={underline}
+                anonymous={anonymous}
               />
-            )}
-
-            <AuthorMeta className={horizontalLayout ? 'horizontalLayout' : ''}>
-              <AuthorNameContainer
-                className={horizontalLayout ? 'horizontalLayout' : ''}
-              >
-                <ScreenReaderOnly>
-                  <FormattedMessage {...messages.a11y_postedBy} />:
-                </ScreenReaderOnly>
-                <UserName
-                  userId={authorId}
-                  isLinkToProfile={isLinkToProfile}
-                  showModeratorStyles={showModeratorStyles}
-                  fontWeight={fontWeight}
-                  fontSize={fontSize}
-                  color={color}
-                  underline={underline}
-                  anonymous={anonymous}
-                />
-              </AuthorNameContainer>
-              <TimeAgo className={horizontalLayout ? 'horizontalLayout' : ''}>
-                {timeAgo(Date.parse(createdAt), locale)}
-              </TimeAgo>
-            </AuthorMeta>
-          </AuthorContainer>
-        </Container>
-      );
-    }
-    return null;
+            </AuthorNameContainer>
+            <TimeAgo className={horizontalLayout ? 'horizontalLayout' : ''}>
+              {timeAgo(Date.parse(createdAt), locale)}
+            </TimeAgo>
+          </AuthorMeta>
+        </AuthorContainer>
+      </Container>
+    );
   }
 );
 

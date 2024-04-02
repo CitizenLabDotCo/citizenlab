@@ -1,7 +1,10 @@
 import React from 'react';
-import { render, screen } from 'utils/testUtils/rtl';
-import SignedOutHeader from '.';
+
 import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+
+import { render, screen } from 'utils/testUtils/rtl';
+
+import SignedOutHeader from '.';
 
 const mockHomepageSettings: IHomepageBannerSettings = {
   banner_layout: 'full_width_banner_layout',

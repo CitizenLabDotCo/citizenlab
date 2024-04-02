@@ -1,22 +1,15 @@
 import React from 'react';
 
-// i18n
-import useLocale from 'hooks/useLocale';
-import useLocalize from 'hooks/useLocalize';
-
-// components
-import Title from 'components/PostShowComponents/Title';
 import { Box, isRtl, media } from '@citizenlab/cl2-component-library';
-import IdeaMoreActions from './IdeaMoreActions';
-
-// styling
 import styled from 'styled-components';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// typings
 import { IIdea } from 'api/ideas/types';
+
+import useLocalize from 'hooks/useLocalize';
+
+import Title from 'components/PostShowComponents/Title';
+
+import IdeaMoreActions from './IdeaMoreActions';
 
 const IdeaHeader = styled.div`
   display: flex;
@@ -47,24 +40,20 @@ const IdeaTitle = ({
   translateButtonClicked,
   showActions,
 }: Props) => {
-  const locale = useLocale();
   const localize = useLocalize();
-  if (isNilOrError(locale)) return null;
 
   const ideaTitle = localize(idea.data.attributes.title_multiloc);
 
   return (
-    <IdeaHeader>
+    <IdeaHeader id="e2e-idea-title">
       <Title
         postType="idea"
         postId={idea.data.id}
         title={ideaTitle}
-        locale={locale}
         translateButtonClicked={translateButtonClicked}
       />
       {showActions && (
         <Box ml="30px">
-          {' '}
           <IdeaMoreActions idea={idea.data} projectId={projectId} />
         </Box>
       )}

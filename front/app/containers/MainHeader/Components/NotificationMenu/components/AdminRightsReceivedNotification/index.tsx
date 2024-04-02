@@ -1,7 +1,10 @@
 import React from 'react';
+
 import { IAdminRightsReceivedNotificationData } from 'api/notifications/types';
-import messages from '../../messages';
+
 import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../../messages';
 import NotificationWrapper from '../NotificationWrapper';
 
 interface Props {

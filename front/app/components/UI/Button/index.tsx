@@ -1,16 +1,20 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import useLocale from 'hooks/useLocale';
+
 import {
   Button,
   ButtonProps,
   ButtonContainerProps as ComponentLibraryButtonContainerProps,
   ButtonStyles,
 } from '@citizenlab/cl2-component-library';
+import { RouteType } from 'routes';
+
+import useLocale from 'hooks/useLocale';
 
 import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
+
 interface Props extends ButtonProps {
-  linkTo?: string | null;
+  linkTo?: RouteType | null;
   openLinkInNewTab?: boolean;
   scrollToTop?: boolean;
 }

@@ -5,6 +5,15 @@ export default defineMessages({
     id: 'app.components.formBuilder.save',
     defaultMessage: 'Save',
   },
+  ai: {
+    id: 'app.components.formBuilder.ai1',
+    defaultMessage: 'AI',
+  },
+  aiUpsellText: {
+    id: 'app.components.formBuilder.aiUpsellText1',
+    defaultMessage:
+      'If you have access to our AI package, you will be able to summarise and categorise text responses with AI',
+  },
   shortAnswer: {
     id: 'app.components.formBuilder.shortAnswer',
     defaultMessage: 'Short answer',
@@ -60,6 +69,10 @@ export default defineMessages({
   fileUpload: {
     id: 'app.components.formBuilder.fileUpload',
     defaultMessage: 'File upload',
+  },
+  locationAnswer: {
+    id: 'app.components.formBuilder.locationAnswer',
+    defaultMessage: 'Location answer',
   },
   proposedBudget: {
     id: 'app.components.formBuilder.proposedBudget',

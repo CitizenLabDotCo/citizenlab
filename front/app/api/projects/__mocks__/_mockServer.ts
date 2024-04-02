@@ -1,4 +1,5 @@
 import { rest } from 'msw';
+
 import { IProjects, IProjectData, IProject } from '../types';
 
 export const project1: IProjectData = {

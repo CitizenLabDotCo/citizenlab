@@ -12,7 +12,6 @@ module ReportBuilder
       'ActiveUsersWidget' => Queries::Analytics::ActiveUsers,
       'VisitorsWidget' => Queries::Analytics::Visitors,
       'VisitorsTrafficSourcesWidget' => Queries::Analytics::TrafficSources,
-      'SurveyResultsWidget' => Queries::SurveyResults,
       'SurveyQuestionResultWidget' => Queries::SurveyQuestionResult,
       'MostReactedIdeasWidget' => Queries::MostReactedIdeas,
       'SingleIdeaWidget' => Queries::SingleIdea
@@ -26,8 +25,8 @@ module ReportBuilder
       klass = GRAPH_RESOLVED_NAMES_CLASSES[graph_resolved_name]
       return unless klass
 
-      kargs = props.to_h.transform_keys(&:snakecase).symbolize_keys
-      klass.new(@current_user).run_query(**kargs)
+      kwargs = props.to_h.transform_keys(&:snakecase).symbolize_keys
+      klass.new(@current_user).run_query(**kwargs)
     end
   end
 end

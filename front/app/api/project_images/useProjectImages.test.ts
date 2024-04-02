@@ -1,15 +1,14 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useProjectImages from './useProjectImages';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import endpoints, {
   projectImagesPath,
   projectImagesData,
 } from './__mocks__/_mockServer';
+import useProjectImages from './useProjectImages';
 
 const server = setupServer(endpoints['GET projects/:projectId/images']);
 

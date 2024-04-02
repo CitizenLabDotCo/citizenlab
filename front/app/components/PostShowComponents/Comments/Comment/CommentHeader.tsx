@@ -1,20 +1,21 @@
 import React from 'react';
-import Author from 'components/Author';
-import { lighten } from 'polished';
-import styled from 'styled-components';
+
 import {
   media,
   colors,
   fontSizes,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
+import { lighten } from 'polished';
+import styled from 'styled-components';
+
 import { IPresentComment } from 'api/comments/types';
-import useUserById from 'api/users/useUserById';
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-import useProjectById from 'api/projects/useProjectById';
-import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
+
+import Author from 'components/Author';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
 
 const Container = styled.div`
   display: flex;
@@ -63,30 +64,20 @@ const AdminBadge = styled.span`
 
 interface Props {
   className?: string;
-  projectId?: string | null;
   commentType: 'parent' | 'child';
   commentAttributes: IPresentComment;
   authorId: string | null;
+  userCanModerate: boolean;
 }
 
 const CommentHeader = ({
-  projectId,
   commentType,
   className,
   commentAttributes,
   authorId,
+  userCanModerate,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: author } = useUserById(authorId);
-  const { data: project } = useProjectById(projectId);
-
-  const isModerator =
-    author &&
-    // Ideally this is managed outside of this component.
-    // If projectId is provided, we assume this component is used in a project context
-    (project
-      ? canModerateProject(project.data, { data: author.data })
-      : canModerateInitiative({ data: author.data }));
 
   // With the current implementation, this needs to always render,
   // even if author is null/undefined.
@@ -99,8 +90,6 @@ const CommentHeader = ({
           authorHash={commentAttributes.author_hash}
           isLinkToProfile={typeof authorId === 'string'}
           size={30}
-          projectId={projectId}
-          showModeration={isModerator}
           createdAt={commentAttributes.created_at}
           avatarBadgeBgColor={commentType === 'child' ? '#fbfbfb' : '#fff'}
           horizontalLayout={true}
@@ -109,10 +98,11 @@ const CommentHeader = ({
           fontWeight={400}
           underline={true}
           anonymous={commentAttributes.anonymous}
+          showModeratorStyles={userCanModerate}
         />
       </Left>
       <Right>
-        {isModerator && (
+        {userCanModerate && (
           <AdminBadge>{formatMessage(messages.official)}</AdminBadge>
         )}
       </Right>

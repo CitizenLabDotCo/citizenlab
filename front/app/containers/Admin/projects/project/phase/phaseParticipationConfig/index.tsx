@@ -1,27 +1,18 @@
 import React, { PureComponent } from 'react';
-import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { isEqual } from 'lodash-es';
 
-// components
-import ParticipationMethodPicker from './components/ParticipationMethodPicker';
-import VotingInputs from './components/inputs/VotingInputs';
-import PollInputs from './components/inputs/PollInputs';
-import SurveyInputs from './components/inputs/SurveyInputs';
-import NativeSurveyInputs from './components/inputs/NativeSurveyInputs';
-import IdeationInputs from './components/inputs/IdeationInputs';
-import { Container, StyledSection } from './components/shared/styling';
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import {
   Box,
   IconTooltip,
   Input,
   IOption,
 } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
+import { isEqual } from 'lodash-es';
+import { WrappedComponentProps } from 'react-intl';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { CLErrors, Multiloc } from 'typings';
 
-// services
-import { IProject } from 'api/projects/types';
+import { IAppConfiguration } from 'api/app_configuration/types';
 import {
   IdeaDefaultSortMethod,
   InputTerm,
@@ -30,25 +21,29 @@ import {
   TSurveyService,
   VotingMethod,
 } from 'api/phases/types';
-import eventEmitter from 'utils/eventEmitter';
+import { getDefaultSortMethodFallback } from 'api/phases/utils';
+import { IProject } from 'api/projects/types';
 
-// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from '../../messages';
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import Error from 'components/UI/Error';
 
-// utils
-import getOutput from './utils/getOutput';
-import validate from './utils/validate';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import eventEmitter from 'utils/eventEmitter';
 import { anyIsDefined } from 'utils/helperUtils';
 
-// typings
-import { CLErrors, Multiloc } from 'typings';
-import { IAppConfiguration } from 'api/app_configuration/types';
-import { getDefaultSortMethodFallback } from 'api/phases/utils';
+import messages from '../../messages';
+
+import IdeationInputs from './components/inputs/IdeationInputs';
+import NativeSurveyInputs from './components/inputs/NativeSurveyInputs';
+import PollInputs from './components/inputs/PollInputs';
+import SurveyInputs from './components/inputs/SurveyInputs';
+import VotingInputs from './components/inputs/VotingInputs';
+import ParticipationMethodPicker from './components/ParticipationMethodPicker';
+import { Container, StyledSection } from './components/shared/styling';
+import getOutput from './utils/getOutput';
+import validate from './utils/validate';
 
 export interface IPhaseParticipationConfig {
   participation_method: ParticipationMethod;
@@ -526,7 +521,6 @@ class PhaseParticipationConfig extends PureComponent<
           <StyledSection>
             <ParticipationMethodPicker
               phase={this.props.phase}
-              project={this.props.project?.data}
               participation_method={participation_method}
               showSurveys={showSurveys}
               apiErrors={apiErrors}

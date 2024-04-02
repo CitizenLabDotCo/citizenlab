@@ -1,4 +1,5 @@
 import { array, object, string } from 'yup';
+
 import validateLogic from './validateLogic';
 
 const validSchema = {

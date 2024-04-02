@@ -1,17 +1,19 @@
-import { events$, pageChanges$, tenantInfo } from 'utils/analytics';
+import { get, isFunction, isNil } from 'lodash-es';
+import { combineLatest } from 'rxjs';
+
 import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 import authUserStream from 'api/me/authUserStream';
-import { combineLatest } from 'rxjs';
-import { isNilOrError } from 'utils/helperUtils';
-import { get, isFunction, isNil } from 'lodash-es';
 import { IUser } from 'api/users/types';
+
+import { events$, pageChanges$, tenantInfo } from 'utils/analytics';
+import { isNilOrError } from 'utils/helperUtils';
+import { ModuleConfiguration } from 'utils/moduleUtils';
 import {
   isRegularUser,
   isAdmin,
   isSuperAdmin,
   isModerator,
 } from 'utils/permissions/roles';
-import { ModuleConfiguration } from 'utils/moduleUtils';
 
 const CL_SEGMENT_API_KEY = process.env.SEGMENT_API_KEY;
 

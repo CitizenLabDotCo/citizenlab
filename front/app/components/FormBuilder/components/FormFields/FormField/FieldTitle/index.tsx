@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   Icon,
@@ -9,13 +8,13 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-// i18n
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../messages';
+import { IFlatCustomField } from 'api/custom_fields/types';
+
 import T from 'components/T';
 
-// utils
-import { IFlatCustomField } from 'api/custom_fields/types';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../../../messages';
 
 interface Props {
   hasErrors: boolean;

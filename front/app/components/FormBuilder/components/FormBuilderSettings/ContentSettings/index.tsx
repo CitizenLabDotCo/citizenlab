@@ -1,30 +1,28 @@
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
 
-// components
 import { Box, Text } from '@citizenlab/cl2-component-library';
+import { get } from 'lodash-es';
+import { useFormContext } from 'react-hook-form';
+import { SupportedLocale } from 'typings';
+
+import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
+
+import useLocale from 'hooks/useLocale';
+
 import { SectionField } from 'components/admin/Section';
+import { getAdditionalSettings } from 'components/FormBuilder/utils';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Toggle from 'components/HookForm/Toggle';
 
-// Typings
-import { Locale } from 'typings';
-
-// intl
-import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
-// utils
-import { getAdditionalSettings } from 'components/FormBuilder/utils';
-import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
-import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
-import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
-import { get } from 'lodash-es';
+
+import messages from '../../messages';
 
 type ContentSettingsProps = {
   field: IFlatCustomFieldWithIndex;
-  locales: Locale[];
+  locales: SupportedLocale[];
 };
 
 export const ContentSettings = ({ field, locales }: ContentSettingsProps) => {

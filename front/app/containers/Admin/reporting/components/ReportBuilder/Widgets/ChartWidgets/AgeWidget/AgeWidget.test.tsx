@@ -1,6 +1,8 @@
 import React from 'react';
-import AgeWidget from '.';
+
 import { render } from 'utils/testUtils/rtl';
+
+import AgeWidget from '.';
 
 const mockUsersByBirthyear: any = null;
 jest.mock('api/users_by_birthyear/useUsersByBirthyear', () =>

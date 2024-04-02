@@ -148,6 +148,17 @@ resource 'Reports' do
         end
       end
 
+      context 'when the report cannot be saved (e.g., if name is duplicated)' do
+        before do
+          create(:report, name: name)
+        end
+
+        example_request '[error] Does not create the report' do
+          assert_status 422
+          expect(ReportBuilder::Report.count).to eq(1)
+        end
+      end
+
       describe 'side effects', document: false do
         let(:side_fx_service) do
           instance_spy(ReportBuilder::SideFxReportService, 'side_fx_service')
@@ -201,6 +212,17 @@ resource 'Reports' do
         example '[error] Update a report that do not exist' do
           do_request(id: 'do-not-exist')
           assert_status 404
+        end
+
+        context 'when the report cannot be saved (e.g., if name is duplicated)' do
+          before do
+            create(:report, name: name)
+          end
+
+          example_request '[error] Does not update the report' do
+            assert_status 422
+            expect(report).not_to eq(name)
+          end
         end
       end
 

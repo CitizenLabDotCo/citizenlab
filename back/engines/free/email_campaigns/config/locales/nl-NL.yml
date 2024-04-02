@@ -9,7 +9,7 @@ nl:
       "comment_on_idea_you_follow": Een reactie op een idee dat je volgt
       "comment_on_initiative_you_follow": Een reactie op een voorstel dat je volgt
       "cosponsor_of_your_initiative": Een gebruiker accepteert mijn uitnodiging om mijn voorstel te steunen
-      "event_registration_confirmation": Bevestiging registratie event
+      "event_registration_confirmation": Bevestiging registratie activiteit
       "first_idea_published": Posten van mijn eerste idee
       "idea_marked_as_spam": Idee spammelding
       "idea_published": Posten van mijn idee
@@ -592,7 +592,7 @@ nl:
       content_type:
         comments: 'Reacties'
         content_moderation: 'Inhoudelijke moderatie'
-        events: 'Evenementen'
+        events: 'Activiteiten'
         general: 'Algemeen'
         inputs: 'Bijdragen'
         internal_comments: 'Interne reacties'
@@ -649,5 +649,5 @@ nl:
         voting_basket_submitted: 'Stemmen zijn ingediend'
         7_days_after_invite_is_sent: '7 dagen na verzending van de uitnodiging'
         7_days_before_the_project_changes_phase: '7 dagen voor het project van fase verandert'
-        registration_to_event: 'Registratie voor een evenement'
+        registration_to_event: 'Registratie voor een activiteit'
         survey_1_day_after_draft_saved: '1 dag nadat de gebruiker de vragenlijst voor het laatst in concept heeft opgeslagen'

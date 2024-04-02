@@ -1,8 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
 
-// components
 import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 const StyledIcon = styled(Icon)`
   transform: translateY(-1px);

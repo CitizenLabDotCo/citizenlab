@@ -1,10 +1,11 @@
+import React, { useEffect, useState } from 'react';
+
 import {
   Box,
   Button,
   useBreakpoint,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import React, { useEffect, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 
 const StyledContainer = styled(Box)`

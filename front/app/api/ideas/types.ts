@@ -1,13 +1,16 @@
 import { ILinks, Multiloc, IRelationship } from 'typings';
-import {
-  PermissionsDisabledReason,
-  ActionDescriptorFutureEnabled,
-} from 'utils/actionDescriptors';
+
 import {
   CommentingDisabledReason,
   PublicationStatus as ProjectPublicationStatus,
 } from 'api/projects/types';
+
+import {
+  PermissionsDisabledReason,
+  ActionDescriptorFutureEnabled,
+} from 'utils/actionDescriptors';
 import { Keys } from 'utils/cl-react-query/types';
+
 import ideasKeys from './keys';
 
 export type IdeasKeys = Keys<typeof ideasKeys>;
@@ -208,17 +211,17 @@ export interface IQueryParameters {
   sort?: Sort;
   'page[number]'?: number;
   'page[size]'?: number;
-  projects?: string[] | null;
-  phase?: string | null;
-  author?: string | null;
+  projects?: string[];
+  phase?: string;
+  author?: string;
   search?: string;
-  topics?: string[] | null;
-  idea_status?: string | null;
-  publication_status?: IdeaPublicationStatus | null;
-  project_publication_status?: ProjectPublicationStatus | null;
-  bounding_box?: number[] | null;
-  assignee?: string | null;
-  feedback_needed?: boolean | null;
-  filter_can_moderate?: boolean | null;
+  topics?: string[];
+  idea_status?: string;
+  publication_status?: IdeaPublicationStatus;
+  project_publication_status?: ProjectPublicationStatus;
+  bounding_box?: number[];
+  assignee?: string;
+  feedback_needed?: boolean;
+  filter_can_moderate?: boolean;
   basket_id?: string;
 }

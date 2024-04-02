@@ -1,22 +1,18 @@
 import React from 'react';
 
-// components
-import { Box, Button } from '@citizenlab/cl2-component-library';
 import MapView from '@arcgis/core/views/MapView';
-import { Spacer } from 'components/UI/FormComponents';
+import { Box, Button } from '@citizenlab/cl2-component-library';
+import { createPortal } from 'react-dom';
 
-// hooks
+import { IIdeaMarkerData } from 'api/idea_markers/types';
+
 import useLocalize from 'hooks/useLocalize';
 
-// types
-import { IIdeaData } from 'api/ideas/types';
-
-// utils
-import { createPortal } from 'react-dom';
+import { Spacer } from 'components/UI/FormComponents';
 
 type Props = {
   portalElement: HTMLDivElement;
-  ideas: IIdeaData[];
+  ideas: IIdeaMarkerData[] | undefined;
   setSelectedIdea: (ideaId: string) => void;
   mapView: MapView | null;
 };
@@ -34,10 +30,11 @@ const IdeasAtLocationPopup = ({
   // A portal is needed here as we're inserting our React component into the Esri Map popup as its content
   return createPortal(
     <Box maxHeight="100px">
-      {ideas.map((idea) => (
+      {ideas?.map((idea) => (
         <Button
+          fontSize="s"
           key={idea.id}
-          width="100%"
+          width="fit-content"
           mb="12px"
           onClick={() => {
             setSelectedIdea(idea.id);

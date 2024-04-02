@@ -1,5 +1,7 @@
-import { Keys } from 'utils/cl-react-query/types';
 import { ImageSizes } from 'typings';
+
+import { Keys } from 'utils/cl-react-query/types';
+
 import customFieldOptionKeys from './keys';
 
 export type CustomFieldOptionKeys = Keys<typeof customFieldOptionKeys>;

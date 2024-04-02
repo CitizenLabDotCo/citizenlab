@@ -1,14 +1,16 @@
-import { isNilOrError } from 'utils/helperUtils';
-import { IAppConfigurationData } from 'api/app_configuration/types';
-import { Locale } from 'typings';
 import { isNumber } from 'lodash-es';
+import { SupportedLocale } from 'typings';
+
+import { IAppConfigurationData } from 'api/app_configuration/types';
+import { IMapConfigData } from 'api/map_config/types';
+import { IMapLayerAttributes } from 'api/map_layers/types';
+
+import { isNilOrError } from 'utils/helperUtils';
 import {
   getCenter as baseGetCenter,
   getZoomLevel as baseGetZoomLevel,
   getTileProvider as baseGetTileProvider,
 } from 'utils/map';
-import { IMapLayerAttributes } from 'api/map_layers/types';
-import { IMapConfigData } from 'api/map_config/types';
 
 export type LatLngTuple = [number, number, number?];
 
@@ -66,12 +68,14 @@ export const getTileProvider = (
   return baseGetTileProvider(appConfig);
 };
 
-export const getLayerType = (mapLayer: IMapLayerAttributes | undefined) => {
+export const getGeojsonLayerType = (
+  mapLayer: IMapLayerAttributes | undefined
+) => {
   return mapLayer?.geojson?.features?.[0]?.geometry?.type || 'Point';
 };
 
 export const getLayerColor = (mapLayer: IMapLayerAttributes | undefined) => {
-  const type = getLayerType(mapLayer);
+  const type = getGeojsonLayerType(mapLayer);
   const fillColor: string | undefined =
     mapLayer?.geojson?.features?.[0]?.properties?.fill;
   const markerColor: string | undefined =
@@ -86,7 +90,7 @@ export const getLayerColor = (mapLayer: IMapLayerAttributes | undefined) => {
 };
 
 export const getLayerIcon = (mapLayer: IMapLayerAttributes | undefined) => {
-  const layerType = getLayerType(mapLayer);
+  const layerType = getGeojsonLayerType(mapLayer);
   let iconName: 'location-simple' | 'line' | 'rectangle' = 'rectangle';
 
   if (layerType === 'Point') {
@@ -98,7 +102,9 @@ export const getLayerIcon = (mapLayer: IMapLayerAttributes | undefined) => {
   return iconName;
 };
 
-export const getUnnamedLayerTitleMultiloc = (tenantLocales: Locale[]) => {
+export const getUnnamedLayerTitleMultiloc = (
+  tenantLocales: SupportedLocale[]
+) => {
   const newUnnamedLayerTitle = 'Unnamed layer';
   const title_multiloc = {};
   tenantLocales.forEach(

@@ -1,15 +1,13 @@
 import React from 'react';
 
-// components
-import Button from 'components/UI/Button';
-
-// styling
-import styled, { useTheme } from 'styled-components';
 import { media } from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
+import styled, { useTheme } from 'styled-components';
 
-// i18n
+import Button from 'components/UI/Button';
+
 import { FormattedMessage } from 'utils/cl-intl';
+
 import messages from '../messages';
 
 const Container = styled.div`

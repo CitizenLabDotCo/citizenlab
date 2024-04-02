@@ -1,13 +1,5 @@
 import React, { memo, useEffect, useRef, useState, useCallback } from 'react';
-import usePrevious from 'hooks/usePrevious';
-import { debounce } from 'lodash-es';
 
-// quill
-import Quill, { Sources, QuillOptionsStatic, RangeStatic } from 'quill';
-import BlotFormatter from 'quill-blot-formatter';
-import 'quill/dist/quill.snow.css';
-
-// components
 import {
   Label,
   IconTooltip,
@@ -18,17 +10,19 @@ import {
   defaultStyles,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// styling
+import Tippy from '@tippyjs/react';
+import { debounce } from 'lodash-es';
+import Quill, { Sources, QuillOptionsStatic, RangeStatic } from 'quill';
+import BlotFormatter from 'quill-blot-formatter';
 import styled from 'styled-components';
+import { SupportedLocale } from 'typings';
+
+import usePrevious from 'hooks/usePrevious';
+
+import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
+
+import 'quill/dist/quill.snow.css';
 
 import {
   ImageBlot,
@@ -36,9 +30,8 @@ import {
   KeepHTML,
   attributes,
 } from './altTextToImagesModule';
-// typings
-import { Locale } from 'typings';
-import Tippy from '@tippyjs/react';
+import messages from './messages';
+import tracks from './tracks';
 
 const DropdownList = styled.div`
   display: flex;
@@ -232,6 +225,14 @@ const Container = styled.div<{
     box-shadow: inset ${defaultStyles.boxShadowError};
   }
 
+  // This fixes a wierd scroll to the top after pasting. See https://github.com/quilljs/quill/issues/1374
+  .ql-clipboard {
+    position: fixed;
+    display: none;
+    left: 50%;
+    top: 50%;
+  }
+
   .ql-toolbar.ql-snow + .ql-container.ql-snow {
     width: 100%;
     height: 100%;
@@ -268,7 +269,7 @@ export interface Props {
   value?: string;
   label?: string | JSX.Element | null;
   labelTooltipText?: string | JSX.Element | null;
-  locale?: Locale;
+  locale?: SupportedLocale;
   placeholder?: string;
   noToolbar?: boolean;
   noImages?: boolean;
@@ -279,7 +280,7 @@ export interface Props {
   className?: string;
   maxHeight?: string;
   minHeight?: string;
-  onChange?: (html: string, locale: Locale | undefined) => void;
+  onChange?: (html: string, locale: SupportedLocale | undefined) => void;
   onFocus?: () => void;
   onBlur?: () => void;
   setRef?: (arg: HTMLDivElement) => void | undefined;

@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeleteTextingCampaign from './useDeleteTextingCampaign';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useDeleteTextingCampaign from './useDeleteTextingCampaign';
 const apiPath = '*texting_campaigns/:id';
 
 const server = setupServer(

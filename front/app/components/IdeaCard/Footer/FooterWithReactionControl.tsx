@@ -1,13 +1,13 @@
 import React from 'react';
 
-// components
-import StatusBadge from 'components/StatusBadge';
-import ReactionControl from 'components/ReactionControl';
-import CommentCount from './CommentCount';
-
-// styles
 import styled from 'styled-components';
+
 import { IIdeaData } from 'api/ideas/types';
+
+import ReactionControl from 'components/ReactionControl';
+import StatusBadge from 'components/StatusBadge';
+
+import CommentCount from './CommentCount';
 
 const Container = styled.footer`
   display: flex;

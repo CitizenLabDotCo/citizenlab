@@ -1,5 +1,6 @@
-import { Option } from './typings';
 import { IUserData } from 'api/users/types';
+
+import { Option } from './typings';
 
 export const optionIsUser = (option: Option): option is IUserData => {
   return 'id' in option;

@@ -1,6 +1,7 @@
 import { IRelationship, Multiloc } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
+
 import customFieldsKeys from './keys';
 
 export type CustomFieldsKeys = Keys<typeof customFieldsKeys>;
@@ -26,7 +27,8 @@ export type ICustomFieldInputType =
   | 'files'
   | 'image_files'
   | 'topic_ids'
-  | 'multiselect_image';
+  | 'multiselect_image'
+  | 'point';
 
 export type IOptionsType = {
   id?: string;
@@ -51,6 +53,7 @@ export interface IAttributes {
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
   input_type: ICustomFieldInputType;
+  map_config_id?: string | null;
   required: boolean;
   isRequiredEditable?: boolean;
   isEnabledEditable?: boolean;
@@ -84,6 +87,9 @@ export interface ICustomFieldResponse {
   relationships: {
     options: {
       data: IRelationship[];
+    };
+    map_config?: {
+      data: IRelationship;
     };
   };
 }

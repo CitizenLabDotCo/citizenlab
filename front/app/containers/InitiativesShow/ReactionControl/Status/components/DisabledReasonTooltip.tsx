@@ -1,13 +1,18 @@
+import React from 'react';
+
 import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
-import React from 'react';
-import styled from 'styled-components';
-import { InitiativePermissionsDisabledReason } from 'hooks/useInitiativesPermissions';
-import messages from '../../messages';
-import globalMessages from 'utils/messages';
 import { MessageDescriptor } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
+import styled from 'styled-components';
+
 import { InitiativeDisabledReason } from 'api/initiative_action_descriptors/types';
+
+import { InitiativePermissionsDisabledReason } from 'hooks/useInitiativesPermissions';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import globalMessages from 'utils/messages';
+
+import messages from '../../messages';
 
 const TooltipContent = styled.div<{ inMap?: boolean }>`
   display: flex;

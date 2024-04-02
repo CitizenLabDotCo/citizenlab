@@ -1,24 +1,21 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import OnboardingStep from './OnboardingStep';
-import SkipButton from './SkipButton';
-import AcceptButton from './AcceptButton';
-import { Left, Right, Text, HeaderContent, Icons, StyledAvatar } from './';
-// components
+
 import { Icon } from '@citizenlab/cl2-component-library';
-
-// services
-import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
-
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
-// style
 import styled from 'styled-components';
 
-// hooks
 import useAuthUser from 'api/me/useAuthUser';
+import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from '../messages';
+
+import AcceptButton from './AcceptButton';
+import OnboardingStep from './OnboardingStep';
+import SkipButton from './SkipButton';
+
+import { Left, Right, Text, HeaderContent, Icons, StyledAvatar } from './';
 
 const CompleteProfileIcon = styled(Icon)`
   width: 48px;

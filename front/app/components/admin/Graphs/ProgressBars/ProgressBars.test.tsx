@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { render, screen } from 'utils/testUtils/rtl';
+
 import ProgressBars from './';
 
 describe('<ProgressBars />', () => {

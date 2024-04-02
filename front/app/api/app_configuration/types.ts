@@ -1,12 +1,15 @@
-import { Keys } from 'utils/cl-react-query/types';
-import appConfigurationKeys from './keys';
-
-export type AppConfigurationKeys = Keys<typeof appConfigurationKeys>;
+import { ImageSizes, Multiloc, SupportedLocale, UploadFile } from 'typings';
 
 import { API_PATH } from 'containers/App/constants';
-import { ImageSizes, Multiloc, Locale, UploadFile } from 'typings';
+
 import { TCategory } from 'components/ConsentManager/destinations';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import appConfigurationKeys from './keys';
 export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
+
+export type AppConfigurationKeys = Keys<typeof appConfigurationKeys>;
 
 interface AppConfigurationFeature {
   allowed: boolean;
@@ -16,7 +19,7 @@ interface AppConfigurationFeature {
 export type IAppConfigurationSettingsCore = {
   allowed: boolean;
   enabled: boolean;
-  locales: Locale[];
+  locales: SupportedLocale[];
   weglot_api_key: string | null;
   timezone: string;
   organization_name: Multiloc;
@@ -109,6 +112,16 @@ export interface IAppConfigurationSettings {
     logo_url: string;
     login_mechanism_name: string;
   };
+  azure_ad_b2c_login?: {
+    allowed: boolean;
+    enabled: boolean;
+    tenant_name: string;
+    tenant_id: string;
+    policy_name: string;
+    client_id: string;
+    logo_url: string;
+    login_mechanism_name: string;
+  };
   franceconnect_login?: {
     allowed: boolean;
     enabled: boolean;
@@ -135,6 +148,7 @@ export interface IAppConfigurationSettings {
   maps?: AppConfigurationMapSettings;
   initiatives: ProposalsSettings;
   initiative_review?: AppConfigurationFeature;
+  input_form_mapping_question?: AppConfigurationFeature;
   initiative_cosponsors?: AppConfigurationFeature;
   fragments?: {
     allowed: boolean;
@@ -238,6 +252,9 @@ export interface IAppConfigurationSettings {
   public_api_tokens?: AppConfigurationFeature;
   power_bi?: AppConfigurationFeature;
   analysis?: AppConfigurationFeature;
+  large_summaries?: AppConfigurationFeature;
+  ask_a_question?: AppConfigurationFeature;
+  advanced_autotagging?: AppConfigurationFeature;
   import_printed_forms?: AppConfigurationFeature;
   user_session_recording?: AppConfigurationFeature;
   user_avatars?: AppConfigurationFeature;

@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   Button,
@@ -9,38 +8,29 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
-import NumberInput from './NumberInput';
-
-// api
-import useBasket from 'api/baskets/useBasket';
-import useIdeaById from 'api/ideas/useIdeaById';
-import useVoting from 'api/baskets_ideas/useVoting';
-
-// events
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-
-// styling
+import { useSearchParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
+import useBasket from 'api/baskets/useBasket';
+import useVoting from 'api/baskets_ideas/useVoting';
+import useIdeaById from 'api/ideas/useIdeaById';
+import { IPhaseData } from 'api/phases/types';
+
 import useLocalize from 'hooks/useLocalize';
-import messages from './messages';
 
-// routing
-import { useSearchParams } from 'react-router-dom';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
-// utils
-import { isNil } from 'utils/helperUtils';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { useIntl } from 'utils/cl-intl';
+import { isNil } from 'utils/helperUtils';
+
+import messages from './messages';
+import NumberInput from './NumberInput';
 import {
   getMinusButtonDisabledMessage,
   getPlusButtonDisabledMessage,
 } from './utils';
-
-// typings
-import { IPhaseData } from 'api/phases/types';
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 interface Props {
   ideaId: string;
@@ -64,7 +54,6 @@ const AssignMultipleVotesInput = ({
   // participation context
   const basketId = phase.relationships?.user_basket?.data?.id;
 
-  // api
   const { data: basket } = useBasket(basketId);
   const { data: idea } = useIdeaById(ideaId);
 

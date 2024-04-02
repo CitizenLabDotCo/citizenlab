@@ -1,7 +1,9 @@
 import React from 'react';
-import { render, screen, waitFor } from 'utils/testUtils/rtl';
-import PieChart from './';
+
 import { NilOrError } from 'utils/helperUtils';
+import { render, screen, waitFor } from 'utils/testUtils/rtl';
+
+import PieChart from './';
 
 type Row = { a: number; name: string };
 

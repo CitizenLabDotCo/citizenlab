@@ -1,27 +1,20 @@
 import React from 'react';
 
-// components
 import { Box, Button, isRtl } from '@citizenlab/cl2-component-library';
-import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
-
-// router
-import clHistory from 'utils/cl-router/history';
-
-// styling
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
-// typings
-import { IProjectData } from 'api/projects/types';
-import { useLocation } from 'react-router-dom';
-
-// intl
-import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
-// api
-import useAuthUser from 'api/me/useAuthUser';
 import { IEventData } from 'api/events/types';
+import useAuthUser from 'api/me/useAuthUser';
+import { IProjectData } from 'api/projects/types';
+
+import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
+
+import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+
+import messages from '../messages';
 
 const Bar = styled.div`
   display: flex;
@@ -41,6 +34,7 @@ const TopBar = ({ project, event }: Props) => {
   const location = useLocation();
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
+  const canModerate = authUser ? canModerateProject(project, authUser) : false;
 
   return (
     <Bar>
@@ -54,7 +48,7 @@ const TopBar = ({ project, event }: Props) => {
               : clHistory.push(`/projects/${project.attributes.slug}`);
           }}
         />
-        {authUser && canModerateProject(project, authUser) && (
+        {canModerate && (
           <Button
             buttonStyle="secondary"
             m="0px"

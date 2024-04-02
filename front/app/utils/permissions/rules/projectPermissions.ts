@@ -1,32 +1,23 @@
-import { definePermissionRule } from 'utils/permissions/permissions';
-import { isAdmin, isProjectModerator } from '../roles';
-import { IUser } from 'api/users/types';
 import { IProjectData } from 'api/projects/types';
+import { IUser } from 'api/users/types';
+
+import { definePermissionRule } from 'utils/permissions/permissions';
+
+import { isAdmin, isProjectModerator } from '../roles';
+
 import { userModeratesFolder } from './projectFolderPermissions';
 
-definePermissionRule(
-  'project',
-  'create',
-  (_project: IProjectData, user: IUser) => {
-    return isAdmin(user);
-  }
-);
+definePermissionRule('project', 'create', (_project: IProjectData, user) => {
+  return user ? isAdmin(user) : false;
+});
 
-definePermissionRule(
-  'project',
-  'delete',
-  (_project: IProjectData, user: IUser) => {
-    return isAdmin(user);
-  }
-);
+definePermissionRule('project', 'delete', (_project: IProjectData, user) => {
+  return user ? isAdmin(user) : false;
+});
 
-definePermissionRule(
-  'project',
-  'reorder',
-  (_project: IProjectData, user: IUser) => {
-    return isAdmin(user);
-  }
-);
+definePermissionRule('project', 'reorder', (_project: IProjectData, user) => {
+  return user ? isAdmin(user) : false;
+});
 
 export function canModerateProject(project: IProjectData, user: IUser) {
   const projectId = project.id;
@@ -40,10 +31,6 @@ export function canModerateProject(project: IProjectData, user: IUser) {
   );
 }
 
-definePermissionRule(
-  'project',
-  'moderate',
-  (project: IProjectData, user: IUser) => {
-    return canModerateProject(project, user);
-  }
-);
+definePermissionRule('project', 'moderate', (project: IProjectData, user) => {
+  return user ? canModerateProject(project, user) : false;
+});

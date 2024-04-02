@@ -1,10 +1,15 @@
 import React from 'react';
-import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
-import styled from 'styled-components';
-import { TextCell } from 'components/admin/ResourceList';
+
 import { IconTooltip, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
 import usePollOptions from 'api/poll_options/usePollOptions';
+
+import { TextCell } from 'components/admin/ResourceList';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../messages';
 
 const Indicator = styled(TextCell)`
   display: flex;

@@ -1,12 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+
+import { importedIdeaMetadataKeys } from './keys';
 import {
   ImportedIdeaMetadataQueryParams,
   ImportedIdeaMetadataResponse,
   ImportedIdeaMetadataKeys,
 } from './types';
-import fetcher from 'utils/cl-react-query/fetcher';
-import { importedIdeaMetadataKeys } from './keys';
 
 const fetchImportedIdeaMetadata = ({ id }: ImportedIdeaMetadataQueryParams) =>
   fetcher<ImportedIdeaMetadataResponse>({

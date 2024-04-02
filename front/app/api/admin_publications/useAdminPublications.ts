@@ -1,13 +1,15 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+import { getPageNumberFromUrl } from 'utils/paginationUtils';
+
 import adminPublicationsKeys from './keys';
 import {
   IAdminPublications,
   AdminPublicationsKeys,
   IQueryParameters,
 } from './types';
-import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 const fetchAdminPublications = (filters: IQueryParameters) => {
   const {

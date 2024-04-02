@@ -1,7 +1,8 @@
 import React from 'react';
+
+import { stylingConsts, media } from '@citizenlab/cl2-component-library';
 import { isNumber } from 'lodash-es';
 import styled from 'styled-components';
-import { stylingConsts, media } from '@citizenlab/cl2-component-library';
 
 const Outer = styled.div`
   width: 100%;

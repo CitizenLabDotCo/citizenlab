@@ -1,14 +1,18 @@
 import React from 'react';
-import messages from './messages';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
 import {
   Text,
   Label,
   IconTooltip,
   Box,
 } from '@citizenlab/cl2-component-library';
-import Warning from 'components/UI/Warning';
+
 import Input from 'components/HookForm/Input';
+import Warning from 'components/UI/Warning';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 
 interface Props {
   showWarningMessage: boolean;

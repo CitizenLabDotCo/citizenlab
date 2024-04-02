@@ -1,13 +1,5 @@
 import React, { Fragment } from 'react';
 
-// hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
-// styling
-import styled from 'styled-components';
-import { transparentize } from 'polished';
-
-// components
 import {
   Radio,
   Title,
@@ -15,17 +7,17 @@ import {
   fontSizes,
   media,
 } from '@citizenlab/cl2-component-library';
+import { transparentize } from 'polished';
+import styled from 'styled-components';
 
-// i18n
-import messages from '../messages';
+import { IAppConfigurationData } from 'api/app_configuration/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import { FormattedMessage } from 'utils/cl-intl';
-
-// utils
-import { getDestinationConfig, IDestination, TCategory } from '../destinations';
 import { isNilOrError } from 'utils/helperUtils';
 
-// typings
-import { IAppConfigurationData } from 'api/app_configuration/types';
+import { getDestinationConfig, IDestination, TCategory } from '../destinations';
+import messages from '../messages';
 
 const Container = styled.div`
   display: flex;

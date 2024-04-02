@@ -2,6 +2,8 @@
 import {
   linearScaleControlTester,
   LinearScaleControl,
+  PointControl,
+  pointControlTester,
   inputControlTester,
   InputControl,
   textAreaControlTester,
@@ -29,7 +31,7 @@ import {
   clCategoryTester,
   clPageTester,
   CLCategoryLayout,
-  CLPageLayout,
+  CLSurveyPageLayout,
   locationControlTester,
   LocationControl,
   dateControlTester,
@@ -67,7 +69,7 @@ const commonRenderers = [
   { tester: imageControlTester, renderer: ImageControl },
   { tester: attachmentsControlTester, renderer: AttachmentsControl },
   { tester: clCategoryTester, renderer: CLCategoryLayout },
-  { tester: clPageTester, renderer: CLPageLayout },
+  { tester: clPageTester, renderer: CLSurveyPageLayout },
   { tester: orderedLayoutTester, renderer: OrderedLayout },
   { tester: locationControlTester, renderer: LocationControl },
   { tester: dateControlTester, renderer: DateControl },
@@ -100,6 +102,10 @@ export const selectRenderers = (formType: 'default' | 'input' | 'survey') => {
     {
       tester: singleAttachmentControlTester,
       renderer: SingleAttachmentControl,
+    },
+    {
+      tester: pointControlTester,
+      renderer: PointControl,
     },
     ...commonRenderers,
   ];

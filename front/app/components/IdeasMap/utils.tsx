@@ -1,6 +1,7 @@
 import { colors, media } from '@citizenlab/cl2-component-library';
-import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import styled from 'styled-components';
+
+import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 // BELOW: Custom handling for idea map width
 // Description: This was existing styling prior to Esri migration.

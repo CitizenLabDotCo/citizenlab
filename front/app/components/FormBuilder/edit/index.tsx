@@ -1,56 +1,54 @@
 import React, { useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
-import { FocusOn } from 'react-focus-on';
-import { useParams } from 'react-router-dom';
-import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
-import { object, boolean, array, string, number } from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
 
-// components
 import {
   Box,
   Spinner,
   stylingConsts,
   colors,
 } from '@citizenlab/cl2-component-library';
-import FormBuilderTopBar from 'components/FormBuilder/components/FormBuilderTopBar';
-import FormBuilderToolbox from 'components/FormBuilder/components/FormBuilderToolbox';
-import FormBuilderSettings from 'components/FormBuilder/components/FormBuilderSettings';
-import FormFields from 'components/FormBuilder/components/FormFields';
-import Error from 'components/UI/Error';
-import Feedback from 'components/HookForm/Feedback';
-import Warning from 'components/UI/Warning';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
-import validateElementTitle from 'utils/yup/validateElementTitle';
-import validateLogic from 'utils/yup/validateLogic';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import {
-  NestedGroupingStructure,
-  getReorderedFields,
-  DragAndDropResult,
-} from './utils';
-
-// hooks
-import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
-import useUpdateCustomField from 'api/custom_fields/useUpdateCustomFields';
-import useFormCustomFields from 'api/custom_fields/useCustomFields';
-
-// intl
+import { yupResolver } from '@hookform/resolvers/yup';
+import { createPortal } from 'react-dom';
+import { FocusOn } from 'react-focus-on';
+import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
-import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-import { FormBuilderConfig } from '../utils';
-import HelmetIntl from 'components/HelmetIntl';
+import { useParams } from 'react-router-dom';
+import { object, boolean, array, string, number } from 'yup';
+
 import {
   IFlatCreateCustomField,
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
+import useFormCustomFields from 'api/custom_fields/useCustomFields';
+import useUpdateCustomField from 'api/custom_fields/useUpdateCustomFields';
 import { isNewCustomFieldObject } from 'api/custom_fields/util';
+import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
+
+import FormBuilderSettings from 'components/FormBuilder/components/FormBuilderSettings';
+import FormBuilderToolbox from 'components/FormBuilder/components/FormBuilderToolbox';
+import FormBuilderTopBar from 'components/FormBuilder/components/FormBuilderTopBar';
+import FormFields from 'components/FormBuilder/components/FormFields';
+import HelmetIntl from 'components/HelmetIntl';
+import Feedback from 'components/HookForm/Feedback';
 import SuccessFeedback from 'components/HookForm/Feedback/SuccessFeedback';
+import Error from 'components/UI/Error';
+import Warning from 'components/UI/Warning';
+
+import { useIntl } from 'utils/cl-intl';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import validateElementTitle from 'utils/yup/validateElementTitle';
+import validateLogic from 'utils/yup/validateLogic';
+import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
+
+import messages from '../messages';
+import { FormBuilderConfig } from '../utils';
+
+import {
+  NestedGroupingStructure,
+  getReorderedFields,
+  DragAndDropResult,
+} from './utils';
 
 interface FormValues {
   customFields: IFlatCustomField[];
@@ -184,6 +182,9 @@ export const FormEdit = ({
         title_multiloc: field.title_multiloc || {},
         key: field.key,
         code: field.code,
+        ...(field.map_config_id && {
+          map_config_id: field.map_config_id,
+        }),
         description_multiloc: field.description_multiloc || {},
         ...(['select', 'multiselect', 'multiselect_image'].includes(
           field.input_type

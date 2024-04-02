@@ -3,7 +3,7 @@
 module ReportBuilder
   class PublishedGraphDataUnitPolicy < ::ApplicationPolicy
     def published?
-      record.report.phase.started? && PhasePolicy.new(user, record.report.phase).show?
+      ReportPolicy.new(user, record.report).layout?
     end
   end
 end

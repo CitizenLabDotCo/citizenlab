@@ -1,9 +1,14 @@
 import React from 'react';
-import FilterTabs, { TabData } from 'components/UI/FilterTabs';
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-import { PublicationTab } from '../..';
+
 import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
+
+import FilterTabs, { TabData } from 'components/UI/FilterTabs';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import { PublicationTab } from '../..';
+
+import messages from './messages';
 
 interface Props {
   currentTab: PublicationTab;

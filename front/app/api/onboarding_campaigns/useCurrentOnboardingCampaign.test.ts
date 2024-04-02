@@ -1,11 +1,11 @@
-import { IOnboardingCampaign } from './types';
-
 import { renderHook } from '@testing-library/react-hooks';
-
-import useCurrentOnboardingCampaign from './useCurrentOnboardingCampaign';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
+
+import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { IOnboardingCampaign } from './types';
+import useCurrentOnboardingCampaign from './useCurrentOnboardingCampaign';
 
 export const data: IOnboardingCampaign = {
   data: {
@@ -19,7 +19,6 @@ export const data: IOnboardingCampaign = {
     },
   },
 };
-import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
 const apiPath = '*/onboarding_campaigns/current';
 const server = setupServer(

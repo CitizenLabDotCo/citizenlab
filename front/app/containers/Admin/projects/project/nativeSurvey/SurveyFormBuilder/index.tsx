@@ -1,27 +1,26 @@
 import React, { useState, lazy } from 'react';
 
-// components
+import { useParams, useSearchParams } from 'react-router-dom';
+import { RouteType } from 'routes';
+
+import useFormCustomFields from 'api/custom_fields/useCustomFields';
+import usePhase from 'api/phases/usePhase';
+
+import useLocale from 'hooks/useLocale';
+
 import PDFExportModal, {
   FormValues,
 } from 'containers/Admin/projects/components/PDFExportModal';
+import { API_PATH } from 'containers/App/constants';
 
-// router
-import { useParams, useSearchParams } from 'react-router-dom';
+import { isNilOrError } from 'utils/helperUtils';
 
-// hooks
-import useFormCustomFields from 'api/custom_fields/useCustomFields';
-import useLocale from 'hooks/useLocale';
-import usePhase from 'api/phases/usePhase';
-
-// utils
+import { saveSurveyAsPDF } from '../saveSurveyAsPDF';
 import {
   nativeSurveyConfig,
   resetCopiedForm,
   resetOptionsIfNotPersisted,
 } from '../utils';
-import { saveSurveyAsPDF } from '../saveSurveyAsPDF';
-import { isNilOrError } from 'utils/helperUtils';
-import { API_PATH } from 'containers/App/constants';
 
 const FormBuilder = lazy(() => import('components/FormBuilder/edit'));
 
@@ -41,7 +40,7 @@ const SurveyFormBuilder = () => {
     phaseId: copyFrom ? copyFrom : phaseId,
   });
 
-  const goBackUrl = `/admin/projects/${projectId}/phases/${phaseId}/native-survey`;
+  const goBackUrl: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/native-survey`;
   const downloadPdfLink = `${API_PATH}/phases/${phaseId}/custom_fields/to_pdf`;
 
   const handleDownloadPDF = () => setExportModalOpen(true);

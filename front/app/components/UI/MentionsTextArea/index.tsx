@@ -1,29 +1,22 @@
 import React, { useRef } from 'react';
-import { isString, isEmpty, capitalize } from 'lodash-es';
 
-// libraries
-import { MentionsInput, Mention, MentionItem } from 'react-mentions';
-
-// components
-import Error from 'components/UI/Error';
-
-// style
-import styled, { useTheme } from 'styled-components';
 import {
   colors,
   fontSizes,
   defaultStyles,
 } from '@citizenlab/cl2-component-library';
+import { isString, isEmpty, capitalize } from 'lodash-es';
 import { transparentize } from 'polished';
-
-// Utils
-import { extractIdsFromValue } from './utils';
-
-// typings
-import { Locale } from 'typings';
-import { MentionRoles } from 'api/mentions/types';
+import { MentionsInput, Mention, MentionItem } from 'react-mentions';
+import styled, { useTheme } from 'styled-components';
+import { SupportedLocale } from 'typings';
 
 import getMentions from 'api/mentions/getMentions';
+import { MentionRoles } from 'api/mentions/types';
+
+import Error from 'components/UI/Error';
+
+import { extractIdsFromValue } from './utils';
 
 const Container = styled.div`
   position: relative;
@@ -63,13 +56,13 @@ export interface Props {
   className?: string;
   name: string;
   value?: string | null;
-  locale?: Locale;
+  locale?: SupportedLocale;
   placeholder?: string;
   rows: number;
   postId?: string;
   postType?: 'idea' | 'initiative';
   error?: JSX.Element | string | null;
-  onChange?: (arg: string, locale: Locale | undefined) => void;
+  onChange?: (arg: string, locale: SupportedLocale | undefined) => void;
   onFocus?: () => void;
   onBlur?: () => void;
   getTextareaRef?: (element: HTMLTextAreaElement) => void;

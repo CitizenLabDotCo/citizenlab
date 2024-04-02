@@ -1,31 +1,26 @@
-// Libraries
 import React, { useState } from 'react';
+
 import { find } from 'lodash-es';
-
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// Components
-import Button from 'components/UI/Button';
-import MultipleSelect from 'components/UI/MultipleSelect';
-import GroupAvatar from './GroupAvatar';
-import { List, Row } from 'components/admin/ResourceList';
-
-// Style
 import styled from 'styled-components';
-
-// Typings
 import { IOption } from 'typings';
 
-// Api
-import useProjectGroups from 'api/project_groups/useProjectGroups';
-import useGroups from 'api/groups/useGroups';
-import useAddProjectGroup from 'api/project_groups/useAddProjectGroup';
-import { IProjectGroupData } from 'api/project_groups/types';
 import { IGroups, IGroupData } from 'api/groups/types';
+import useGroups from 'api/groups/useGroups';
+import { IProjectGroupData } from 'api/project_groups/types';
+import useAddProjectGroup from 'api/project_groups/useAddProjectGroup';
 import useDeleteProjectGroup from 'api/project_groups/useDeleteProjectGroup';
+import useProjectGroups from 'api/project_groups/useProjectGroups';
+
 import useLocalize from 'hooks/useLocalize';
+
+import { List, Row } from 'components/admin/ResourceList';
+import Button from 'components/UI/Button';
+import MultipleSelect from 'components/UI/MultipleSelect';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import GroupAvatar from './GroupAvatar';
+import messages from './messages';
 
 const Container = styled.div`
   width: 100%;

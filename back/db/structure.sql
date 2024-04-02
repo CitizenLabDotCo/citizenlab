@@ -70,7 +70,7 @@ ALTER TABLE IF EXISTS ONLY public.areas_projects DROP CONSTRAINT IF EXISTS fk_ra
 ALTER TABLE IF EXISTS ONLY public.static_pages_topics DROP CONSTRAINT IF EXISTS fk_rails_8e3f01dacd;
 ALTER TABLE IF EXISTS ONLY public.user_custom_fields_representativeness_ref_distributions DROP CONSTRAINT IF EXISTS fk_rails_8cabeff294;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaigns DROP CONSTRAINT IF EXISTS fk_rails_87e592c9f5;
-ALTER TABLE IF EXISTS ONLY public.analysis_analyses_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_857115261d;
+ALTER TABLE IF EXISTS ONLY public.analysis_additional_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_857115261d;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_849e0c7eb7;
 ALTER TABLE IF EXISTS ONLY public.ideas_phases DROP CONSTRAINT IF EXISTS fk_rails_845d7ca944;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_828a073a04;
@@ -84,7 +84,7 @@ ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXIS
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaign_email_commands DROP CONSTRAINT IF EXISTS fk_rails_7f284a4f09;
 ALTER TABLE IF EXISTS ONLY public.activities DROP CONSTRAINT IF EXISTS fk_rails_7e11bb717f;
 ALTER TABLE IF EXISTS ONLY public.analysis_questions DROP CONSTRAINT IF EXISTS fk_rails_74e779db86;
-ALTER TABLE IF EXISTS ONLY public.analysis_analyses_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_74744744a6;
+ALTER TABLE IF EXISTS ONLY public.analysis_additional_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_74744744a6;
 ALTER TABLE IF EXISTS ONLY public.groups_projects DROP CONSTRAINT IF EXISTS fk_rails_73e1dee5fd;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_730408dafc;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaigns_groups DROP CONSTRAINT IF EXISTS fk_rails_712f4ad915;
@@ -121,6 +121,7 @@ ALTER TABLE IF EXISTS ONLY public.areas_static_pages DROP CONSTRAINT IF EXISTS f
 ALTER TABLE IF EXISTS ONLY public.idea_import_files DROP CONSTRAINT IF EXISTS fk_rails_229b6de93f;
 ALTER TABLE IF EXISTS ONLY public.project_images DROP CONSTRAINT IF EXISTS fk_rails_2119c24213;
 ALTER TABLE IF EXISTS ONLY public.areas_static_pages DROP CONSTRAINT IF EXISTS fk_rails_1fc601f42c;
+ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS fk_rails_16b3d1e637;
 ALTER TABLE IF EXISTS ONLY public.spam_reports DROP CONSTRAINT IF EXISTS fk_rails_121f3a2011;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_0e5b472696;
 ALTER TABLE IF EXISTS ONLY public.invites DROP CONSTRAINT IF EXISTS fk_rails_0b6ac3e1da;
@@ -133,8 +134,8 @@ DROP TRIGGER IF EXISTS que_job_notify ON public.que_jobs;
 DROP INDEX IF EXISTS public.users_unique_lower_email_idx;
 DROP INDEX IF EXISTS public.spam_reportable_index;
 DROP INDEX IF EXISTS public.report_builder_published_data_units_report_id_idx;
-DROP INDEX IF EXISTS public.que_poll_idx_with_job_schema_version;
 DROP INDEX IF EXISTS public.que_poll_idx;
+DROP INDEX IF EXISTS public.que_jobs_kwargs_gin_idx;
 DROP INDEX IF EXISTS public.que_jobs_data_gin_idx;
 DROP INDEX IF EXISTS public.que_jobs_args_gin_idx;
 DROP INDEX IF EXISTS public.moderation_statuses_moderatable;
@@ -218,7 +219,8 @@ DROP INDEX IF EXISTS public.index_nav_bar_items_on_code;
 DROP INDEX IF EXISTS public.index_memberships_on_user_id;
 DROP INDEX IF EXISTS public.index_memberships_on_group_id_and_user_id;
 DROP INDEX IF EXISTS public.index_memberships_on_group_id;
-DROP INDEX IF EXISTS public.index_maps_map_configs_on_project_id;
+DROP INDEX IF EXISTS public.index_maps_map_configs_on_mappable_id;
+DROP INDEX IF EXISTS public.index_maps_map_configs_on_mappable;
 DROP INDEX IF EXISTS public.index_maps_layers_on_map_config_id;
 DROP INDEX IF EXISTS public.index_invites_on_token;
 DROP INDEX IF EXISTS public.index_invites_on_inviter_id;
@@ -349,9 +351,10 @@ DROP INDEX IF EXISTS public.index_analysis_insights_on_analysis_id;
 DROP INDEX IF EXISTS public.index_analysis_background_tasks_on_analysis_id;
 DROP INDEX IF EXISTS public.index_analysis_analyses_on_project_id;
 DROP INDEX IF EXISTS public.index_analysis_analyses_on_phase_id;
-DROP INDEX IF EXISTS public.index_analysis_analyses_custom_fields_on_custom_field_id;
-DROP INDEX IF EXISTS public.index_analysis_analyses_custom_fields_on_analysis_id;
+DROP INDEX IF EXISTS public.index_analysis_analyses_on_main_custom_field_id;
 DROP INDEX IF EXISTS public.index_analysis_analyses_custom_fields;
+DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_custom_field_id;
+DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_analysis_id;
 DROP INDEX IF EXISTS public.index_admin_publications_on_rgt;
 DROP INDEX IF EXISTS public.index_admin_publications_on_publication_type_and_publication_id;
 DROP INDEX IF EXISTS public.index_admin_publications_on_parent_id;
@@ -492,7 +495,7 @@ ALTER TABLE IF EXISTS ONLY public.analysis_questions DROP CONSTRAINT IF EXISTS a
 ALTER TABLE IF EXISTS ONLY public.analysis_insights DROP CONSTRAINT IF EXISTS analysis_insights_pkey;
 ALTER TABLE IF EXISTS ONLY public.analysis_background_tasks DROP CONSTRAINT IF EXISTS analysis_background_tasks_pkey;
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS analysis_analyses_pkey;
-ALTER TABLE IF EXISTS ONLY public.analysis_analyses_custom_fields DROP CONSTRAINT IF EXISTS analysis_analyses_custom_fields_pkey;
+ALTER TABLE IF EXISTS ONLY public.analysis_additional_custom_fields DROP CONSTRAINT IF EXISTS analysis_analyses_custom_fields_pkey;
 ALTER TABLE IF EXISTS ONLY public.admin_publications DROP CONSTRAINT IF EXISTS admin_publications_pkey;
 ALTER TABLE IF EXISTS ONLY public.activities DROP CONSTRAINT IF EXISTS activities_pkey;
 ALTER TABLE IF EXISTS public.que_jobs ALTER COLUMN id DROP DEFAULT;
@@ -629,8 +632,8 @@ DROP TABLE IF EXISTS public.analysis_summaries;
 DROP TABLE IF EXISTS public.analysis_questions;
 DROP TABLE IF EXISTS public.analysis_insights;
 DROP TABLE IF EXISTS public.analysis_background_tasks;
-DROP TABLE IF EXISTS public.analysis_analyses_custom_fields;
 DROP TABLE IF EXISTS public.analysis_analyses;
+DROP TABLE IF EXISTS public.analysis_additional_custom_fields;
 DROP TABLE IF EXISTS public.admin_publications;
 DROP TABLE IF EXISTS public.activities;
 DROP FUNCTION IF EXISTS public.que_state_notify();
@@ -743,7 +746,8 @@ CREATE TABLE public.que_jobs (
     expired_at timestamp with time zone,
     args jsonb DEFAULT '[]'::jsonb NOT NULL,
     data jsonb DEFAULT '{}'::jsonb NOT NULL,
-    job_schema_version integer DEFAULT 1,
+    job_schema_version integer NOT NULL,
+    kwargs jsonb DEFAULT '{}'::jsonb NOT NULL,
     CONSTRAINT error_length CHECK (((char_length(last_error_message) <= 500) AND (char_length(last_error_backtrace) <= 10000))),
     CONSTRAINT job_class_length CHECK ((char_length(
 CASE job_class
@@ -761,7 +765,7 @@ WITH (fillfactor='90');
 -- Name: TABLE que_jobs; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON TABLE public.que_jobs IS '5';
+COMMENT ON TABLE public.que_jobs IS '6';
 
 
 --
@@ -955,6 +959,19 @@ CREATE TABLE public.admin_publications (
 
 
 --
+-- Name: analysis_additional_custom_fields; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.analysis_additional_custom_fields (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    analysis_id uuid NOT NULL,
+    custom_field_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: analysis_analyses; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -963,20 +980,9 @@ CREATE TABLE public.analysis_analyses (
     project_id uuid,
     phase_id uuid,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: analysis_analyses_custom_fields; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.analysis_analyses_custom_fields (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    analysis_id uuid,
-    custom_field_id uuid,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    show_insights boolean DEFAULT true NOT NULL,
+    main_custom_field_id uuid
 );
 
 
@@ -1012,7 +1018,8 @@ CREATE TABLE public.analysis_insights (
     filters jsonb DEFAULT '{}'::jsonb NOT NULL,
     inputs_ids jsonb,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    custom_field_ids jsonb DEFAULT '{}'::jsonb NOT NULL
 );
 
 
@@ -1029,7 +1036,8 @@ CREATE TABLE public.analysis_questions (
     q_and_a_method character varying NOT NULL,
     accuracy double precision,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    generated_at timestamp without time zone
 );
 
 
@@ -1045,7 +1053,8 @@ CREATE TABLE public.analysis_summaries (
     summarization_method character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    accuracy double precision
+    accuracy double precision,
+    generated_at timestamp without time zone
 );
 
 
@@ -1586,7 +1595,9 @@ CREATE TABLE public.phases (
     voting_term_plural_multiloc jsonb DEFAULT '{}'::jsonb,
     baskets_count integer DEFAULT 0 NOT NULL,
     votes_count integer DEFAULT 0 NOT NULL,
-    campaigns_settings jsonb DEFAULT '{}'::jsonb
+    campaigns_settings jsonb DEFAULT '{}'::jsonb,
+    native_survey_title_multiloc jsonb DEFAULT '{}'::jsonb,
+    native_survey_button_multiloc jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -2620,14 +2631,15 @@ CREATE TABLE public.maps_layers (
 
 CREATE TABLE public.maps_map_configs (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    project_id uuid NOT NULL,
     center shared_extensions.geography(Point,4326),
     zoom_level numeric(4,2),
     tile_provider character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     esri_web_map_id character varying,
-    esri_base_map_id character varying
+    esri_base_map_id character varying,
+    mappable_type character varying,
+    mappable_id uuid
 );
 
 
@@ -3352,10 +3364,10 @@ ALTER TABLE ONLY public.admin_publications
 
 
 --
--- Name: analysis_analyses_custom_fields analysis_analyses_custom_fields_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: analysis_additional_custom_fields analysis_analyses_custom_fields_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.analysis_analyses_custom_fields
+ALTER TABLE ONLY public.analysis_additional_custom_fields
     ADD CONSTRAINT analysis_analyses_custom_fields_pkey PRIMARY KEY (id);
 
 
@@ -4455,24 +4467,31 @@ CREATE INDEX index_admin_publications_on_rgt ON public.admin_publications USING 
 
 
 --
+-- Name: index_analysis_additional_custom_fields_on_analysis_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_analysis_additional_custom_fields_on_analysis_id ON public.analysis_additional_custom_fields USING btree (analysis_id);
+
+
+--
+-- Name: index_analysis_additional_custom_fields_on_custom_field_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_analysis_additional_custom_fields_on_custom_field_id ON public.analysis_additional_custom_fields USING btree (custom_field_id);
+
+
+--
 -- Name: index_analysis_analyses_custom_fields; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_analysis_analyses_custom_fields ON public.analysis_analyses_custom_fields USING btree (analysis_id, custom_field_id);
+CREATE UNIQUE INDEX index_analysis_analyses_custom_fields ON public.analysis_additional_custom_fields USING btree (analysis_id, custom_field_id);
 
 
 --
--- Name: index_analysis_analyses_custom_fields_on_analysis_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_analysis_analyses_on_main_custom_field_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_analysis_analyses_custom_fields_on_analysis_id ON public.analysis_analyses_custom_fields USING btree (analysis_id);
-
-
---
--- Name: index_analysis_analyses_custom_fields_on_custom_field_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_analysis_analyses_custom_fields_on_custom_field_id ON public.analysis_analyses_custom_fields USING btree (custom_field_id);
+CREATE INDEX index_analysis_analyses_on_main_custom_field_id ON public.analysis_analyses USING btree (main_custom_field_id);
 
 
 --
@@ -5386,10 +5405,17 @@ CREATE INDEX index_maps_layers_on_map_config_id ON public.maps_layers USING btre
 
 
 --
--- Name: index_maps_map_configs_on_project_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_maps_map_configs_on_mappable; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_maps_map_configs_on_project_id ON public.maps_map_configs USING btree (project_id);
+CREATE INDEX index_maps_map_configs_on_mappable ON public.maps_map_configs USING btree (mappable_type, mappable_id);
+
+
+--
+-- Name: index_maps_map_configs_on_mappable_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_maps_map_configs_on_mappable_id ON public.maps_map_configs USING btree (mappable_id);
 
 
 --
@@ -5974,17 +6000,17 @@ CREATE INDEX que_jobs_data_gin_idx ON public.que_jobs USING gin (data jsonb_path
 
 
 --
+-- Name: que_jobs_kwargs_gin_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX que_jobs_kwargs_gin_idx ON public.que_jobs USING gin (kwargs jsonb_path_ops);
+
+
+--
 -- Name: que_poll_idx; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX que_poll_idx ON public.que_jobs USING btree (queue, priority, run_at, id) WHERE ((finished_at IS NULL) AND (expired_at IS NULL));
-
-
---
--- Name: que_poll_idx_with_job_schema_version; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX que_poll_idx_with_job_schema_version ON public.que_jobs USING btree (job_schema_version, queue, priority, run_at, id) WHERE ((finished_at IS NULL) AND (expired_at IS NULL));
+CREATE INDEX que_poll_idx ON public.que_jobs USING btree (job_schema_version, queue, priority, run_at, id) WHERE ((finished_at IS NULL) AND (expired_at IS NULL));
 
 
 --
@@ -6076,6 +6102,14 @@ ALTER TABLE ONLY public.ideas
 
 ALTER TABLE ONLY public.spam_reports
     ADD CONSTRAINT fk_rails_121f3a2011 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: analysis_analyses fk_rails_16b3d1e637; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.analysis_analyses
+    ADD CONSTRAINT fk_rails_16b3d1e637 FOREIGN KEY (main_custom_field_id) REFERENCES public.custom_fields(id);
 
 
 --
@@ -6367,10 +6401,10 @@ ALTER TABLE ONLY public.groups_projects
 
 
 --
--- Name: analysis_analyses_custom_fields fk_rails_74744744a6; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: analysis_additional_custom_fields fk_rails_74744744a6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.analysis_analyses_custom_fields
+ALTER TABLE ONLY public.analysis_additional_custom_fields
     ADD CONSTRAINT fk_rails_74744744a6 FOREIGN KEY (analysis_id) REFERENCES public.analysis_analyses(id);
 
 
@@ -6479,10 +6513,10 @@ ALTER TABLE ONLY public.notifications
 
 
 --
--- Name: analysis_analyses_custom_fields fk_rails_857115261d; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: analysis_additional_custom_fields fk_rails_857115261d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.analysis_analyses_custom_fields
+ALTER TABLE ONLY public.analysis_additional_custom_fields
     ADD CONSTRAINT fk_rails_857115261d FOREIGN KEY (custom_field_id) REFERENCES public.custom_fields(id);
 
 
@@ -7389,10 +7423,18 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240126122702'),
 ('20240130142750'),
 ('20240130170644'),
+('20240201141520'),
 ('20240206165004'),
+('20240212133704'),
 ('20240214125557'),
+('20240219104430'),
+('20240219104431'),
+('20240221145522'),
 ('20240226170510'),
 ('20240227092300'),
-('20240229195843');
+('20240228145938'),
+('20240229195843'),
+('20240301120023'),
+('20240305122502');
 
 

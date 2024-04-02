@@ -98,6 +98,8 @@ it:
       <p>Qui, puoi iniziare la tua idea se non rientra in uno dei progetti esistenti.</p><p><strong>L'obiettivo?</strong> Far entrare la tua idea nell'agenda politica.</p><p><strong>Come?</strong> Raccogliendo supporto, cioè almeno 100 voti in 3 mesi. Potete farlo rendendo prima la vostra idea "attraente". Scrivi in modo chiaro e accattivante, aggiungi immagini, dai argomenti forti basati sui fatti, aggiungi allegati con ulteriori dettagli o informazioni di base, ... Dopo aver fatto questo, inizia a condividere la tua idea sui social media o tramite e-mail. Invita le persone a partecipare alla discussione sulla tua idea, o semplicemente convincile a sostenerla votando a favore.</p><p><strong>Su cosa?</strong> La tua idea può riguardare un sacco di cose, purché sia collegata alla tua città e alla sua politica. Può essere un problema che sperimenti, una soluzione che immagini o anche una combinazione di entrambi. Può essere selvaggia e a lungo termine, o molto tangibile e una vittoria veloce.</p><p><strong>E poi? </strong>Hai raggiunto 100 voti in 3 mesi? Congratulazioni! La città prenderà ora in considerazione la tua idea. Se la tua idea è considerata fattibile e non danneggia specifici gruppi o individui, avrai la possibilità di presentare la tua proposta durante la riunione del consiglio. Durante la stessa riunione, i membri del consiglio ti daranno un feedback diretto su cosa faranno o non faranno con la tua idea e perché. Se non raccogliete 100 voti in 3 mesi, la vostra proposta non sarà considerata.</p><p>Siamo curiosi di conoscere le tue idee!</p>
   phases:
     open_idea_phase_title: Fase attuale
+    native_survey_title: Sondaggio
+    native_survey_button: Partecipa al sondaggio
   events:
     council_meeting_title: Riunione del Consiglio
     council_meeting_description: >
@@ -147,7 +149,7 @@ it:
         title: Dettagli
         description:
       other:
-        title: Scrivi la tua risposta
+        title: Visto che hai scelto "altro", a cosa stai pensando?
   custom_forms:
     categories:
       main_content:
@@ -226,9 +228,9 @@ it:
       title: 'La vostra domanda'
       option1: 'Opzione 1'
       option2: 'Opzione 2'
-    survey_end_page:
-      title: 'Fine del sondaggio'
-      description: "Inviate le vostre risposte selezionando \"Invia sondaggio\" qui sotto."
+    form_end_page:
+      title: 'Grazie per aver partecipato'
+      description: "Invia le tue risposte selezionando \"Invia\" qui sotto."
     pdf_export:
       personal_data: 'Dati personali'
       personal_data_explanation_ideation: "Invieremo il tuo contributo alla piattaforma di partecipazione online di %{organizationName}. Se vuoi che il tuo nome venga visualizzato come autore di questo contributo e ricevere via e-mail gli aggiornamenti relativi al tuo contributo, compila i seguenti campi in questa pagina e creeremo un account per te. Il tuo indirizzo e-mail non sarà pubblico e sarà utilizzato solo da %{organizationName}. Se vuoi rimanere anonimo o non sei d'accordo che i tuoi dati personali vengano utilizzati in questo modo, puoi lasciarli vuoti."

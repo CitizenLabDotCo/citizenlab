@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import {
   IconButton,
   Text,
@@ -6,12 +7,13 @@ import {
   Box,
   Icon,
 } from '@citizenlab/cl2-component-library';
-
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import { useParams } from 'react-router-dom';
 
 import useRateAnalysisInsight from 'api/analysis_insights/useRateAnalysisInsight';
-import { useParams } from 'react-router-dom';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 
 const Rate = ({ insightId }: { insightId: string }) => {
   const { formatMessage } = useIntl();

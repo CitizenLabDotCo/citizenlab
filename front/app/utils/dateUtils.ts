@@ -1,8 +1,10 @@
-import moment, { unitOfTime } from 'moment';
 import { isString } from 'lodash-es';
-import { Locale } from 'typings';
-import { IResolution } from 'components/admin/ResolutionControl';
+import moment, { unitOfTime, Moment } from 'moment';
+import { SupportedLocale } from 'typings';
+
 import { IEventData } from 'api/events/types';
+
+import { IResolution } from 'components/admin/ResolutionControl';
 
 export function getIsoDateForToday(): string {
   // this is based on the user's timezone in moment, so
@@ -32,7 +34,7 @@ type RelativeTimeFormatUnit =
 // this function returns a string representing "time since" the input date in the appropriate format.
 // Relative Time Format is used for internationalization.
 // Adapted from: Stas Parshin https://jsfiddle.net/tv9701uf
-export function timeAgo(dateInput: number, locale: Locale) {
+export function timeAgo(dateInput: number, locale: SupportedLocale) {
   const date = new Date(dateInput);
   const formatter = new Intl.RelativeTimeFormat(locale);
 
@@ -134,6 +136,10 @@ export function getIsoDateUtc(date: string) {
   return moment.utc(new Date(date)).format('YYYY-MM-DD');
 }
 
+export const momentToIsoDate = (moment: Moment | null | undefined) => {
+  return moment?.format('yyyy-MM-DD');
+};
+
 export function getPeriodRemainingUntil(
   date: string,
   timeUnit: unitOfTime.Diff = 'days'
@@ -188,7 +194,7 @@ export function toFullMonth(date: string, resolution: IResolution) {
 // Function used to determine whether a dot should be shown after the day in short date formats
 // as this is can't be determined for a 3-day month by the moment.js library.
 // Currently only used for German. Other locales can be added if needed.
-export function showDotAfterDay(locale: Locale) {
+export function showDotAfterDay(locale: SupportedLocale) {
   return locale === 'de-DE';
 }
 

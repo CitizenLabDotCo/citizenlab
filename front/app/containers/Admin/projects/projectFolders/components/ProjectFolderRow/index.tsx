@@ -1,31 +1,27 @@
 import React, { memo, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import { Icon, Box, Spinner, colors } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
+import styled from 'styled-components';
+
+import { IAdminPublicationData } from 'api/admin_publications/types';
+import useAuthUser from 'api/me/useAuthUser';
+
+import PublicationStatusLabel from 'containers/Admin/projects/components/PublicationStatusLabel';
 import {
   RowContent,
   RowContentInner,
   RowTitle,
   RowButton,
 } from 'containers/Admin/projects/components/StyledComponents';
-import FolderMoreActionsMenu from './FolderMoreActionsMenu';
-import PublicationStatusLabel from 'containers/Admin/projects/components/PublicationStatusLabel';
 
-// styles
-import styled from 'styled-components';
+import Error from 'components/UI/Error';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// hooks
-import useAuthUser from 'api/me/useAuthUser';
-
-// services
+import { isNilOrError } from 'utils/helperUtils';
 import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
-import { IAdminPublicationData } from 'api/admin_publications/types';
+
+import FolderMoreActionsMenu from './FolderMoreActionsMenu';
+import messages from './messages';
 
 const FolderIcon = styled(Icon)`
   margin-right: 10px;
@@ -91,7 +87,7 @@ const ProjectFolderRow = memo<Props>(
               <FolderRowContent
                 className="e2e-admin-adminPublications-list-item"
                 hasProjects={hasProjects}
-                role="button"
+                as="button"
                 onClick={handleClick}
               >
                 <RowContentInner className="expand primary">

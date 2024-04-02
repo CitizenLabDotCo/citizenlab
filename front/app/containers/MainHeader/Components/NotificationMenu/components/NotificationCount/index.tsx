@@ -1,22 +1,20 @@
 import React from 'react';
-import useAuthUser from 'api/me/useAuthUser';
-import { isNilOrError } from 'utils/helperUtils';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from '../../messages';
-
-// components
 import {
   IconButton,
   Box,
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-
-// style
-import styled, { useTheme } from 'styled-components';
 import { darken } from 'polished';
+import styled, { useTheme } from 'styled-components';
+
+import useAuthUser from 'api/me/useAuthUser';
+
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from '../../messages';
 
 const Container = styled.div`
   position: relative;

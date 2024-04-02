@@ -1,24 +1,28 @@
 import React, { useCallback, useState } from 'react';
 
 // intl
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
 
 // components
 import { Text, Box, Button } from '@citizenlab/cl2-component-library';
-import Modal from 'components/UI/Modal';
-import Warning from 'components/UI/Warning';
-import PhaseFilter from 'components/UI/PhaseFilter';
+import { RouteType } from 'routes';
+import { IOption } from 'typings';
+
 import ProjectFilter from 'containers/Admin/reporting/components/ReportBuilder/Widgets/_shared/ProjectFilter';
 
+import Modal from 'components/UI/Modal';
+import PhaseFilter from 'components/UI/PhaseFilter';
+import Warning from 'components/UI/Warning';
+
 // routing
+import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { IOption } from 'typings';
+
+import messages from './messages';
 
 type Props = {
   showCopySurveyModal: boolean;
   setShowCopySurveyModal: (show: boolean) => void;
-  editFormLink: string;
+  editFormLink: RouteType;
   surveyFormPersisted: boolean;
 };
 
@@ -100,7 +104,8 @@ const CopySurveyModal = ({
             buttonStyle="cl-blue"
             disabled={!phaseId}
             onClick={() => {
-              clHistory.push(`${editFormLink}?copy_from=${phaseId}`);
+              const url = `${editFormLink}?copy_from=${phaseId}` as RouteType;
+              clHistory.push(url);
             }}
             data-cy="e2e-copy-survey-modal-duplicate"
           >

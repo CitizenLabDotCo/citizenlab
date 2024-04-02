@@ -1,20 +1,18 @@
 import React, { useMemo } from 'react';
 
-// components
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import { StyledSelect } from './styling';
-
-// i18n
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../../messages';
-
-// constants
-
-// typings
-import { FormatMessage, IOption } from 'typings';
 import { MessageDescriptor } from 'react-intl';
+import { FormatMessage, IOption } from 'typings';
+
 import { InputTerm } from 'api/phases/types';
 import { INPUT_TERMS } from 'api/phases/utils';
+
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
+
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../../../../messages';
+
+import { StyledSelect } from './styling';
 
 const LABEL_MESSAGES: {
   [key in InputTerm]: MessageDescriptor;

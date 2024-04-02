@@ -165,7 +165,7 @@ class WebApi::V1::IdeasController < ApplicationController
     save_options = {}
     save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
-      if input.save save_options
+      if input.save(**save_options)
         update_file_upload_fields input, participation_method.custom_form, params_for_create
         service.after_create(input, current_user)
         render json: WebApi::V1::IdeaSerializer.new(
@@ -212,7 +212,7 @@ class WebApi::V1::IdeasController < ApplicationController
     save_options = {}
     save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
-      if input.save save_options
+      if input.save(**save_options)
         service.after_update(input, current_user)
         update_file_upload_fields input, input.custom_form, update_params
         render json: WebApi::V1::IdeaSerializer.new(

@@ -1,13 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useMemberships from './useMemberships';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
 import { IParameters } from './types';
+import useMemberships from './useMemberships';
 
 const apiPath = '*groups/:groupId/memberships';
 

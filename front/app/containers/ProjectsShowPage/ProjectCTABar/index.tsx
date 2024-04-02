@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
+
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 
-// Components
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import MainHeader from 'containers/MainHeader';
-
-// hooks
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
-// utils
+import MainHeader from 'containers/MainHeader';
+
 import {
   getMethodConfig,
   getParticipationMethod,

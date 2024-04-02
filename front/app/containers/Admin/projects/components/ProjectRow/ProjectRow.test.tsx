@@ -1,8 +1,11 @@
 import React from 'react';
-import ProjectRow, { Props } from '.';
-import { render, screen } from 'utils/testUtils/rtl';
-import { IUserData } from 'api/users/types';
+
 import { IAdminPublicationData } from 'api/admin_publications/types';
+import { IUserData } from 'api/users/types';
+
+import { render, screen } from 'utils/testUtils/rtl';
+
+import ProjectRow, { Props } from '.';
 
 const publication: IAdminPublicationData = {
   id: '1',

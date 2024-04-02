@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useAddProjectFile from './useAddProjectFile';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { projectFilesData } from './__mocks__/useProjectFiles';
+import useAddProjectFile from './useAddProjectFile';
 
 const apiPath = '*projects/:projectId/files';
 

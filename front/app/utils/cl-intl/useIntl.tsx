@@ -1,16 +1,19 @@
 import { useCallback, useState, useEffect } from 'react';
+
 import {
   // eslint-disable-next-line no-restricted-imports
   useIntl as useOriginalUseIntl,
   MessageDescriptor,
   IntlShape,
 } from 'react-intl';
-import { isNilOrError } from 'utils/helperUtils';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { localeStream } from 'utils/locale';
-import { getLocalizedWithFallback } from 'utils/i18n';
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
+
 import { IAppConfiguration } from 'api/app_configuration/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import { isNilOrError } from 'utils/helperUtils';
+import { getLocalizedWithFallback } from 'utils/i18n';
+import { localeStream } from 'utils/localeStream';
 
 export type FormatMessageValues =
   | { [key: string]: string | number | boolean | Date }
@@ -19,7 +22,7 @@ export type FormatMessageValues =
 export const handleFormatMessage = (
   intl: IntlShape,
   appConfig: IAppConfiguration | undefined,
-  locale: Locale | undefined,
+  locale: SupportedLocale | undefined,
   messageDescriptor: MessageDescriptor,
   values?: FormatMessageValues
 ) => {
@@ -43,7 +46,7 @@ export const handleFormatMessage = (
 
 const useIntl = () => {
   const intl = useOriginalUseIntl();
-  const [locale, setLocale] = useState<Locale | undefined>(undefined);
+  const [locale, setLocale] = useState<SupportedLocale | undefined>(undefined);
 
   useEffect(() => {
     const subscription = localeStream().observable.subscribe((locale) => {

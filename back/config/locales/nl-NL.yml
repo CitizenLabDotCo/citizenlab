@@ -98,6 +98,8 @@ nl:
       <p>Hier kan je je eigen idee starten als het niet past in een van de bestaande projecten.</p><p><strong>Het doel?</strong> Jouw idee op de politieke agenda krijgen.</p><p><strong>Hoe?</strong> Door steun te verzamelen, namelijk 100 stemmen in 3 maanden tijd. Dit doe je door je idee eerst 'aantrekkelijk' te maken. Schrijf op een heldere en overtuigende manier, voeg afbeeldingen toe, geef sterke op feiten gebaseerde argumenten, sluit bijlagen in die verdere details geven, ... Daarna kun je je idee delen op sociale media of via e-mail. Nodig mensen uit om feedback te geven op jouw idee of om je idee te steunen door hun stem uit te brengen.</p><p><strong>Waarover?</strong> Je idee kan over zowat van alles en nog wat gaan, zolang het maar een link heeft met je gemeente en haar beleid. Het kan een probleem zijn dat je ervaart, een oplossing die je voor ogen hebt, of zelfs een combinatie van beide. Het kan een wild plan zijn, op de lange termijn, of net zeer tastbaar en op korte termijn te realiseren.</p><p><strong>En daarna?</strong> Heb je 100 stemmen verzameld in 3 maanden? Gefeliciteerd! De gemeente zal je idee overwegen. Als geoordeeld wordt dat je idee haalbaar is en geen personen of groepen schade berokkent, krijg je de kans om je idee te komen voorstellen op de gemeenteraad. Tijdens dezelfde vergadering zullen de leden van de gemeenteraad ook aangeven of ze al dan niet aan de slag gaan met je idee, en waarom. Als je geen 100 stemmen verzameld in 3 maanden wordt je idee automatisch verworpen.</p><p>We kijken ernaar uit om je ideeën te horen!</p>
   phases:
     open_idea_phase_title: Huidige fase
+    native_survey_title: Vragenlijst
+    native_survey_button: Vul de vragenlijst in
   events:
     council_meeting_title: Gemeenteraad
     council_meeting_description: >
@@ -147,7 +149,7 @@ nl:
         title: Details
         description:
       other:
-        title: Typ je antwoord
+        title: Aangezien je 'andere' hebt gekozen, waar denk je dan aan?
   custom_forms:
     categories:
       main_content:
@@ -226,9 +228,9 @@ nl:
       title: 'Jouw vraag'
       option1: 'Optie 1'
       option2: 'Optie 2'
-    survey_end_page:
-      title: 'Einde vragenlijst'
-      description: "Dien je antwoorden in door hieronder 'Vragenlijst indienen' te selecteren."
+    form_end_page:
+      title: 'Bedankt voor je deelname'
+      description: "Stuur je antwoorden in door hieronder op 'Verzenden' te klikken."
     pdf_export:
       personal_data: 'Persoonlijke gegevens'
       personal_data_explanation_ideation: "We zullen je bijdrage versturen naar het online participatieplatform van %{organizationName}. Als je wilt dat je naam wordt weergegeven als auteur van deze bijdrage en als je per e-mail updates wilt ontvangen die relevant zijn voor je bijdrage, vul dan de volgende velden op deze pagina in en we maken een account voor je aan. Je e-mailadres is niet openbaar en wordt alleen gebruikt door %{organizationName}. Als je anoniem wilt blijven of er niet mee akkoord gaat dat we je persoonlijke gegevens op deze manier gebruiken, kun je ze leeg laten."

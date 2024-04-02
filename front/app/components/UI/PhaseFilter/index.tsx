@@ -1,21 +1,19 @@
 import React, { useMemo } from 'react';
 
-// hooks
+import { Box, Select, Spinner, Text } from '@citizenlab/cl2-component-library';
+import { IOption } from 'typings';
+
+import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 
-// components
-import { Box, Select, Spinner, Text } from '@citizenlab/cl2-component-library';
-
-// i18n
 import useLocalize from 'hooks/useLocalize';
+
 import { FormattedMessage } from 'utils/cl-intl';
+
 import messages from './messages';
 
-// typings
-import { IOption } from 'typings';
-import { IPhaseData, ParticipationMethod } from 'api/phases/types';
-
 interface Props {
+  id?: string;
   label: string;
   projectId: string;
   phaseId?: string;
@@ -29,6 +27,7 @@ const isCorrectPhase =
   };
 
 const PhaseFilter = ({
+  id,
   label,
   projectId,
   phaseId,
@@ -74,7 +73,7 @@ const PhaseFilter = ({
   return (
     <Box width="100%" mb="20px">
       <Select
-        id="e2e-phase-filter"
+        id={id || 'e2e-phase-filter'}
         label={label}
         onChange={onPhaseFilter}
         value={phaseId}

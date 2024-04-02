@@ -1,44 +1,36 @@
 import React, { memo, useCallback } from 'react';
 
-// components
 import {
   Icon,
   Spinner,
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import TopicFilterDropdown from 'components/IdeaCards/shared/Filters/TopicFilterDropdown';
+import { useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
+
+import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
+import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
+import usePhase from 'api/phases/usePhase';
+import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
+
+import useLocale from 'hooks/useLocale';
+
 import SelectSort, {
   Sort,
 } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
-import SearchInput from 'components/UI/SearchInput';
-import IdeaMapCard from '../IdeaMapCard';
+import TopicFilterDropdown from 'components/IdeaCards/shared/Filters/TopicFilterDropdown';
 import Centerer from 'components/UI/Centerer';
+import SearchInput from 'components/UI/SearchInput';
 
-// hooks
-import useLocale from 'hooks/useLocale';
-import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
-import usePhase from 'api/phases/usePhase';
-
-// router
-import { useSearchParams } from 'react-router-dom';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-
-// services
-
-// i18n
-import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
-// style
-import styled from 'styled-components';
-
-// utils
-import { isFieldEnabled } from 'utils/projectUtils';
-import { isNilOrError } from 'utils/helperUtils';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
-import useIdeas from 'api/ideas/useIdeas';
+import { isNilOrError } from 'utils/helperUtils';
+import { isFieldEnabled } from 'utils/projectUtils';
+
+import IdeaMapCard from '../IdeaMapCard';
+import messages from '../messages';
 
 const Container = styled.div`
   width: 100%;
@@ -139,11 +131,11 @@ const MapIdeasList = memo<Props>(
     const topicsParam = searchParams.get('topics');
     const topics: string[] = topicsParam ? JSON.parse(topicsParam) : [];
 
-    const { data: ideaMarkers } = useIdeas({
-      projects: [projectId],
-      phase: phaseId,
+    const { data: ideaMarkers } = useIdeaMarkers({
+      projectIds: [projectId],
+      phaseId,
       sort,
-      search: search || undefined,
+      search,
       topics,
     });
 
@@ -206,7 +198,7 @@ const MapIdeasList = memo<Props>(
           </Header>
         )}
 
-        <IdeaMapCards>
+        <IdeaMapCards id="e2e-idea-map-cards">
           {ideaMarkers === undefined && (
             <Centerer>
               <Spinner />

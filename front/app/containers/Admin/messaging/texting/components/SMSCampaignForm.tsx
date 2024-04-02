@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 
-// components
-import TextArea from 'components/UI/TextArea';
-import Button from 'components/UI/Button';
 import { Label, Box, Error } from '@citizenlab/cl2-component-library';
-import RemainingCharacters from '../components/RemainingCharacters';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
 
 import { ITextingCampaignData } from 'api/texting_campaigns/types';
 import useAddTextingCampaign from 'api/texting_campaigns/useAddTextingCampaign';
 import useUpdateTextingCampaign from 'api/texting_campaigns/useUpdateTextingCampaign';
+
+import Button from 'components/UI/Button';
+import TextArea from 'components/UI/TextArea';
+
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
+
+import RemainingCharacters from '../components/RemainingCharacters';
 
 interface Props {
   className?: string;
@@ -109,8 +109,7 @@ const SMSCampaignForm = ({
             phone_numbers: splitNumbers,
           });
       const { id } = result.data;
-      const url = `/admin/messaging/texting/${id}/preview`;
-      clHistory.replace(url);
+      clHistory.replace(`/admin/messaging/texting/${id}/preview`);
     } catch (e) {
       setIsLoading(false);
       // This error is added to the response in back/engines/commercial/texting/app/models/texting/campaign.rb

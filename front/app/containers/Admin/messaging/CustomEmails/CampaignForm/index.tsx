@@ -1,44 +1,38 @@
 import * as React from 'react';
-import { Multiloc } from 'typings';
-import styled from 'styled-components';
 
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../../messages';
-
-// utils
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
-
-// components
 import {
   IconTooltip,
   Box,
   Button,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import { Section, SectionField, SectionTitle } from 'components/admin/Section';
-
-// form
-import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
 import { string, object, array } from 'yup';
-import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
-import Input from 'components/HookForm/Input';
-import Feedback from 'components/HookForm/Feedback';
-import Select from 'components/HookForm/Select';
-import MultipleSelect from 'components/HookForm/MultipleSelect';
 
-// resources
-
-// hooks
-import useLocalize from 'hooks/useLocalize';
-import useAuthUser from 'api/me/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IGroupData } from 'api/groups/types';
 import useGroups from 'api/groups/useGroups';
+import useAuthUser from 'api/me/useAuthUser';
+
+import useLocalize from 'hooks/useLocalize';
+
+import { Section, SectionField, SectionTitle } from 'components/admin/Section';
+import Feedback from 'components/HookForm/Feedback';
+import Input from 'components/HookForm/Input';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import MultipleSelect from 'components/HookForm/MultipleSelect';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import Select from 'components/HookForm/Select';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { getFullName } from 'utils/textUtils';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+
+import messages from '../../messages';
 
 const StyledSection = styled(Section)`
   margin-bottom: 2.5rem;

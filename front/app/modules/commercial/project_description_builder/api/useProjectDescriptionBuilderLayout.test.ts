@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useProjectDescriptionBuilderLayout from './useProjectDescriptionBuilderLayout';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { projectDescriptionBuilderLayoutData } from './__mocks__/projectDescriptionBuilderLayout';
+import useProjectDescriptionBuilderLayout from './useProjectDescriptionBuilderLayout';
 
 const mockProjectData = {
   id: '2',

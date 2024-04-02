@@ -16,20 +16,21 @@
 #  expired_at           :timestamptz
 #  args                 :jsonb            not null
 #  data                 :jsonb            not null
-#  job_schema_version   :integer          default(1)
+#  job_schema_version   :integer          not null
+#  kwargs               :jsonb            not null
 #
 # Indexes
 #
-#  que_jobs_args_gin_idx                 (args) USING gin
-#  que_jobs_data_gin_idx                 (data) USING gin
-#  que_poll_idx                          (queue,priority,run_at,id) WHERE ((finished_at IS NULL) AND (expired_at IS NULL))
-#  que_poll_idx_with_job_schema_version  (job_schema_version,queue,priority,run_at,id) WHERE ((finished_at IS NULL) AND (expired_at IS NULL))
+#  que_jobs_args_gin_idx    (args) USING gin
+#  que_jobs_data_gin_idx    (data) USING gin
+#  que_jobs_kwargs_gin_idx  (kwargs) USING gin
+#  que_poll_idx             (job_schema_version,queue,priority,run_at,id) WHERE ((finished_at IS NULL) AND (expired_at IS NULL))
 #
 require 'que/active_record/model'
 
 class QueJob < Que::ActiveRecord::Model
   def self.find(id)
-    by_args(job_id: id).sole
+    by_args({ job_id: id }, {}).sole
   end
 
   def args

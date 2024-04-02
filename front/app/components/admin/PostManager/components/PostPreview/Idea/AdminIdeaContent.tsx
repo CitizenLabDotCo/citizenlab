@@ -1,55 +1,51 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
-import Title from 'components/PostShowComponents/Title';
-import PostedBy from 'containers/IdeasShow/components/MetaInformation/PostedBy';
-import Body from 'components/PostShowComponents/Body';
-import IdeaProposedBudget from 'containers/IdeasShow/components/ProposedBudget/IdeaProposedBudget';
-import DropdownMap from 'components/PostShowComponents/DropdownMap';
-import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
-import CommentsSection from 'components/PostShowComponents/Comments/CommentsSection';
-import FileAttachments from 'components/UI/FileAttachments';
-import FeedbackSettings from './FeedbackSettings';
-import ReactionPreview from './ReactionPreview';
 import {
   IconTooltip,
   Box,
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import Link from 'utils/cl-router/Link';
-import T from 'components/T';
+import { darken } from 'polished';
+import styled from 'styled-components';
+
+import useIdeaFiles from 'api/idea_files/useIdeaFiles';
+import useIdeaImages from 'api/idea_images/useIdeaImages';
+import useDeleteIdea from 'api/ideas/useDeleteIdea';
+import useIdeaById from 'api/ideas/useIdeaById';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+
+import useLocalize from 'hooks/useLocalize';
+
+import PostedBy from 'containers/IdeasShow/components/MetaInformation/PostedBy';
+import IdeaProposedBudget from 'containers/IdeasShow/components/ProposedBudget/IdeaProposedBudget';
+
 import {
   Top,
   Content,
   Container,
 } from 'components/admin/PostManager/components/PostPreview';
+import Body from 'components/PostShowComponents/Body';
+import CommentsSection from 'components/PostShowComponents/Comments/CommentsSection';
+import DropdownMap from 'components/PostShowComponents/DropdownMap';
+import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
+import Title from 'components/PostShowComponents/Title';
+import T from 'components/T';
+import Button from 'components/UI/Button';
+import FileAttachments from 'components/UI/FileAttachments';
 
-// services
-
-// resources
-import useIdeaImages from 'api/idea_images/useIdeaImages';
-import useDeleteIdea from 'api/ideas/useDeleteIdea';
-
-// utils
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import FormattedBudget from 'utils/currency/FormattedBudget';
+import { isNilOrError } from 'utils/helperUtils';
 import { getAddressOrFallbackDMS } from 'utils/map';
 
-// i18n
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import FormattedBudget from 'utils/currency/FormattedBudget';
-import useLocalize from 'hooks/useLocalize';
 
-// style
-import styled from 'styled-components';
-import { darken } from 'polished';
-import useIdeaFiles from 'api/idea_files/useIdeaFiles';
-import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase } from 'api/phases/utils';
-import useIdeaById from 'api/ideas/useIdeaById';
-import useProjectById from 'api/projects/useProjectById';
+import FeedbackSettings from './FeedbackSettings';
+import ReactionPreview from './ReactionPreview';
 
 const StyledTitle = styled(Title)`
   margin-bottom: 20px;

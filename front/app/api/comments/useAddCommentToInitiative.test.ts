@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useAddCommentToInitiative from './useAddCommentToInitiative';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { commentsData } from './__mocks__/useComments';
+import useAddCommentToInitiative from './useAddCommentToInitiative';
 
 const apiPath = '*/initiatives/:initiativeId/comments';
 

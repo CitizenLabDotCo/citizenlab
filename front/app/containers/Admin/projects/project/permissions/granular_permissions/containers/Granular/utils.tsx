@@ -1,11 +1,14 @@
+import { MessageDescriptor } from 'react-intl';
+
 import {
   IGlobalPermissionAction,
   IPermissionData,
   IPhasePermissionAction,
 } from 'api/permissions/types';
-import messages from './messages';
+
 import { FieldType } from 'containers/Admin/settings/registration/CustomFieldRoutes/RegistrationCustomFieldForm';
-import { MessageDescriptor } from 'react-intl';
+
+import messages from './messages';
 
 type GetPermissionActionMessageProps = {
   permissionAction: IPhasePermissionAction | IGlobalPermissionAction;

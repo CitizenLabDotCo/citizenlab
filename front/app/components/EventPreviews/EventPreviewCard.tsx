@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   defaultCardHoverStyle,
@@ -8,20 +7,16 @@ import {
   Text,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import DayAndMonth from 'components/EventCard/DateBlocks/DayAndMonth';
+import moment from 'moment';
+import styled, { useTheme } from 'styled-components';
 
-// api
+import { IEventData } from 'api/events/types';
+
 import useLocalize from 'hooks/useLocalize';
 
-// style
-import styled, { useTheme } from 'styled-components';
-import moment from 'moment';
+import DayAndMonth from 'components/EventCard/DateBlocks/DayAndMonth';
 
-// utils
 import clHistory from 'utils/cl-router/history';
-
-// typing
-import { IEventData } from 'api/events/types';
 
 const EventCard = styled(Box)`
   ${defaultCardStyle};

@@ -1,19 +1,14 @@
 import React from 'react';
 
-// routing
 import { useLocation } from 'react-router-dom';
+import { ITab } from 'typings';
 
-// components
 import NavigationTabs, {
   Tab,
   TabsPageLayout,
 } from 'components/admin/NavigationTabs';
 
-// utils
 import { isTopBarNavActive } from 'utils/helperUtils';
-
-// typings
-import { ITab } from 'typings';
 
 interface Props {
   children?: React.ReactNode;

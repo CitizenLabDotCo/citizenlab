@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+
 import {
   Box,
   Icon,
@@ -7,13 +7,18 @@ import {
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
+import styled, { keyframes } from 'styled-components';
+
 import T from 'components/T';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+
 import { StatusComponentProps } from '../StatusWrapper';
+
+import CountDown from './components/CountDown';
+import ReactionCounter from './components/ReactionCounter';
 import ReadAnswerButton from './components/ReadAnswerButton';
 import VoteButtons from './components/VoteButtons';
-import ReactionCounter from './components/ReactionCounter';
-import CountDown from './components/CountDown';
-import { ScreenReaderOnly } from 'utils/a11y';
 
 const scaleIn = keyframes`
   0% {

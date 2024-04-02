@@ -1,10 +1,11 @@
-import useIdeasByStatus from './useIdeasByStatus';
-
 import { renderHook } from '@testing-library/react-hooks';
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
+
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { IIdeasByStatus } from './types';
+import useIdeasByStatus from './useIdeasByStatus';
 
 const apiPath = `*stats/ideas_by_status`;
 

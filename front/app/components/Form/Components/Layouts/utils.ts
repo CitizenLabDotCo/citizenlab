@@ -8,6 +8,8 @@ import {
 } from '@jsonforms/core';
 import Ajv from 'ajv';
 import { forOwn, isEmpty } from 'lodash-es';
+
+import { FormData } from '../../typings';
 import {
   ExtendedRule,
   ExtendedUISchema,
@@ -136,3 +138,43 @@ export const isPageCategorization: Tester = and(
     return hasPage(uischema as PageCategorization);
   }
 );
+
+export function getFormCompletionPercentage(
+  schema: JsonSchema,
+  pages: PageType[],
+  data: FormData,
+  currentPageIndex: number
+) {
+  const filteredData = {};
+
+  pages.forEach((page) => {
+    if (page.elements) {
+      page.elements.forEach((element) => {
+        const scope = element.scope.split('/').pop();
+        if (!scope) {
+          return;
+        }
+        const isRequired = (schema.required || []).includes(scope);
+        const isPastCurrentPage = pages.indexOf(page) < currentPageIndex;
+
+        if (isRequired) {
+          filteredData[scope] = data ? data[scope] : undefined;
+        } else {
+          filteredData[scope] = isPastCurrentPage
+            ? 'filled'
+            : data
+            ? data[scope]
+            : undefined;
+        }
+      });
+    }
+  });
+
+  const totalKeys = Object.keys(filteredData).length;
+  const keysWithValues = Object.values(filteredData).filter(
+    (value) => value !== undefined
+  ).length;
+  const percentage = (keysWithValues / totalKeys) * 100;
+
+  return percentage;
+}

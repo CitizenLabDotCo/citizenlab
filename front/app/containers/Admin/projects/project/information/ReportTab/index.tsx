@@ -1,24 +1,26 @@
 import React from 'react';
 
-// routing
+import { Box, Title, Toggle } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import usePhase from 'api/phases/usePhase';
-import useReport from 'api/reports/useReport';
 import useDeleteReport from 'api/reports/useDeleteReport';
+import useReport from 'api/reports/useReport';
 import useUpdateReport from 'api/reports/useUpdateReport';
 
-// i18n
-import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// components
-import { Box, Title, Toggle } from '@citizenlab/cl2-component-library';
-import EmptyState from './EmptyState';
-import ReportPreview from './ReportPreview';
 import Buttons from 'containers/Admin/reporting/components/ReportBuilderPage/ReportRow/Buttons';
+import { MAX_REPORT_WIDTH } from 'containers/Admin/reporting/constants';
+
+import Warning from 'components/UI/Warning';
+
+import { useIntl } from 'utils/cl-intl';
+import { pastPresentOrFuture } from 'utils/dateUtils';
+
+import EmptyState from './EmptyState';
+import messages from './messages';
+import ReportPreview from './ReportPreview';
 
 const ReportTab = () => {
   const { phaseId } = useParams();
@@ -28,12 +30,13 @@ const ReportTab = () => {
   );
 
   const phaseReportsEnabled = useFeatureFlag({ name: 'phase_reports' });
+  const reportBuilderEnabled = useFeatureFlag({ name: 'report_builder' });
   const { formatMessage } = useIntl();
 
   const { mutate: deleteReport, isLoading } = useDeleteReport();
   const { mutate: updateReport } = useUpdateReport();
 
-  if (!phaseReportsEnabled || !phase) return null;
+  if (!(phaseReportsEnabled && reportBuilderEnabled) || !phase) return null;
 
   const handleDeleteReport = async () => {
     if (!report) return;
@@ -44,6 +47,28 @@ const ReportTab = () => {
 
   const reportId = phase.data.relationships.report?.data?.id;
   const hasReport = !!reportId;
+
+  const getWarningMessage = () => {
+    if (!report) return '';
+
+    const reportVisible = report.data.attributes.visible;
+    const phaseStarted =
+      pastPresentOrFuture(phase.data.attributes.start_at) !== 'future';
+
+    if (!reportVisible && !phaseStarted) {
+      return formatMessage(messages.notVisibleNotStarted);
+    }
+
+    if (reportVisible && !phaseStarted) {
+      return formatMessage(messages.visibleNotStarted);
+    }
+
+    if (!reportVisible && phaseStarted) {
+      return formatMessage(messages.notVisibleStarted);
+    }
+
+    return formatMessage(messages.visibleStarted);
+  };
 
   return (
     <Box w="100%">
@@ -67,7 +92,7 @@ const ReportTab = () => {
                     visible: !report.data.attributes.visible,
                   });
                 }}
-                label={formatMessage(messages.reportVisible)}
+                label={formatMessage(messages.visible)}
               />
             </Box>
             <Buttons
@@ -79,9 +104,14 @@ const ReportTab = () => {
         )}
       </Box>
       {hasReport ? (
-        <Box mt="32px">
-          <ReportPreview reportId={reportId} phaseId={phase.data.id} />
-        </Box>
+        <>
+          <Box maxWidth={MAX_REPORT_WIDTH}>
+            <Warning>{getWarningMessage()}</Warning>
+          </Box>
+          <Box mt="32px">
+            <ReportPreview reportId={reportId} phaseId={phase.data.id} />
+          </Box>
+        </>
       ) : (
         <EmptyState
           projectId={phase.data.relationships.project.data.id}

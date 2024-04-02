@@ -1,4 +1,5 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
+
 import { QueryParams, ImportedIdeaMetadataQueryParams } from './types';
 
 const baseImportedIdeaKey = {

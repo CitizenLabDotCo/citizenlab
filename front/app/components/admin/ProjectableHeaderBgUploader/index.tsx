@@ -2,15 +2,17 @@ import React, { useEffect, useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { UploadFile } from 'typings';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
 
-import { convertUrlToUploadFile } from 'utils/fileUtils';
 import {
   PROJECTABLE_HEADER_BG_ASPECT_RATIO,
   PROJECTABLE_HEADER_BG_ASPECT_RATIO_HEIGHT,
   PROJECTABLE_HEADER_BG_ASPECT_RATIO_WIDTH,
 } from 'api/projects/constants';
+
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
+
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 interface Props {
   imageUrl: string | null | undefined;
