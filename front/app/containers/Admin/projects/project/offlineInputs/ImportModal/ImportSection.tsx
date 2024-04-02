@@ -26,6 +26,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import LocalePicker from './LocalePicker';
 import messages from './messages';
+import usePhase from 'api/phases/usePhase';
 
 interface OuterProps {
   onFinishImport: () => void;
@@ -49,6 +50,7 @@ const ImportSection = ({ onFinishImport, locale, project }: Props) => {
   const { formatMessage } = useIntl();
   const { mutateAsync: addOfflineIdeas, isLoading } = useAddOfflineIdeas();
   const { phaseId } = useParams();
+  const { data: phase } = usePhase(phaseId);
 
   const defaultValues: FormValues = {
     locale,
@@ -81,6 +83,11 @@ const ImportSection = ({ onFinishImport, locale, project }: Props) => {
   });
 
   const projectId = project.data.id;
+
+  const downloadFormPath =
+    phase?.data.attributes.participation_method === 'native_survey'
+      ? `/admin/projects/${projectId}/phases/${phaseId}/native-survey`
+      : `/admin/projects/${projectId}/phases/${phaseId}/ideaform`;
 
   const submitFile = async ({
     file,
@@ -117,7 +124,7 @@ const ImportSection = ({ onFinishImport, locale, project }: Props) => {
                     <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
                   ),
                   hereLink: (
-                    <Link to={`/admin/projects/${projectId}/ideaform`}>
+                    <Link to={{ pathname: downloadFormPath }}>
                       <FormattedMessage {...messages.here} />
                     </Link>
                   ),
