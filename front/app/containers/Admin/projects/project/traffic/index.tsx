@@ -13,8 +13,9 @@ import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../messages';
 import ProjectHeader from '../projectHeader';
+
+import messages from './messages';
 
 const ReportPreview = () => {
   const locale = useLocale();
@@ -22,7 +23,7 @@ const ReportPreview = () => {
   const editorData = {
     ROOT: {
       type: 'div',
-      nodes: ['FQjdSolK2y', 'qqJ_LZcgJ6'],
+      nodes: ['qqJ_LZcgJ6', 'A0fn6wghdA'],
       props: {
         id: 'e2e-content-builder-frame',
       },
@@ -31,57 +32,9 @@ const ReportPreview = () => {
       isCanvas: true,
       displayName: 'div',
       linkedNodes: {},
+      parent: '',
     },
-    FQjdSolK2y: {
-      type: {
-        resolvedName: 'PhaseTemplate',
-      },
-      nodes: [],
-      props: {
-        phaseId: 'acccb9f1-dd26-4bad-858d-80c95b598d1f',
-      },
-      custom: {},
-      hidden: false,
-      parent: 'ROOT',
-      isCanvas: false,
-      displayName: 'PhaseTemplate',
-      linkedNodes: {
-        'phase-report-template': 'RM3m3FX-Rz',
-      },
-    },
-    'RM3m3FX-Rz': {
-      type: {
-        resolvedName: 'Box',
-      },
-      nodes: ['WSumAL5x9v'],
-      props: {},
-      custom: {},
-      hidden: false,
-      parent: 'FQjdSolK2y',
-      isCanvas: true,
-      displayName: 'Box',
-      linkedNodes: {},
-    },
-    WSumAL5x9v: {
-      type: {
-        resolvedName: 'WhiteSpace',
-      },
-      nodes: [],
-      props: {
-        size: '',
-      },
-      custom: {
-        title: {
-          id: 'app.containers.AdminPage.ProjectDescription.whiteSpace',
-          defaultMessage: 'White space',
-        },
-      },
-      hidden: false,
-      parent: 'RM3m3FX-Rz',
-      isCanvas: false,
-      displayName: 'WhiteSpace',
-      linkedNodes: {},
-    },
+
     qqJ_LZcgJ6: {
       type: {
         resolvedName: 'VisitorsWidget',
@@ -90,7 +43,7 @@ const ReportPreview = () => {
       props: {
         endAt: '2024-04-02',
         title: {
-          [locale]: formatMessage(messages.addNewInput),
+          [locale]: formatMessage(messages.visitorsTimeline),
         },
         projectId: '40e45b89-8351-46af-89d1-5fee6566c138',
       },
@@ -99,6 +52,27 @@ const ReportPreview = () => {
       parent: 'ROOT',
       isCanvas: false,
       displayName: 'VisitorsWidget',
+      linkedNodes: {},
+    },
+
+    A0fn6wghdA: {
+      type: {
+        resolvedName: 'VisitorsTrafficSourcesWidget',
+      },
+      nodes: [],
+      props: {
+        endAt: '2024-04-02',
+        title: {
+          en: 'Traffic sources',
+          'fr-BE': 'Sources de trafic',
+          'nl-BE': 'Kanalen',
+        },
+      },
+      custom: {},
+      hidden: false,
+      parent: 'ROOT',
+      isCanvas: false,
+      displayName: 'VisitorsTrafficSourcesWidget',
       linkedNodes: {},
     },
   };
@@ -126,7 +100,7 @@ const ProjectTraffic = () => {
   return (
     <div>
       <ProjectHeader projectId={projectId} />
-      <Box bg="white">
+      <Box p="32px" bg="white">
         <ReportPreview />
       </Box>
     </div>
