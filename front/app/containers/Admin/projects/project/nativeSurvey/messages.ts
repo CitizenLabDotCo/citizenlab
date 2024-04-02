@@ -167,9 +167,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1',
     defaultMessage: 'Download an excel template',
   },
-  addOfflineInputs: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.addOfflineInputs',
-    defaultMessage: 'Add offline inputs',
+  importInputs: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.importInputs',
+    defaultMessage: 'Import inputs',
   },
   duplicateAnotherSurvey: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey',

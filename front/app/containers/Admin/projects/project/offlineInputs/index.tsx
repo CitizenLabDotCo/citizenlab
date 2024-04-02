@@ -81,10 +81,10 @@ const OfflineInputImporter = () => {
 };
 
 const OfflineInputImporterWrapper = () => {
-  const importPrintedFormsEnabled = useFeatureFlag({
-    name: 'import_printed_forms',
+  const inputImporterEnabled = useFeatureFlag({
+    name: 'input_importer',
   });
-  if (!importPrintedFormsEnabled) return null;
+  if (!inputImporterEnabled) return null;
 
   const modalPortalElement = document.getElementById('modal-portal');
   if (!modalPortalElement) return null;

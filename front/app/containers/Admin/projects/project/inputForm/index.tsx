@@ -26,6 +26,9 @@ export const IdeaForm = () => {
   const printedFormsEnabled = useFeatureFlag({
     name: 'import_printed_forms',
   });
+  const inputImporterEnabled = useFeatureFlag({
+    name: 'input_importer',
+  });
 
   const [exportModalOpen, setExportModalOpen] = useState(false);
   const { projectId, phaseId } = useParams() as {
@@ -63,6 +66,7 @@ export const IdeaForm = () => {
         </Box>
         <Box display="flex" flexDirection="row">
           <Button
+            mr="8px"
             linkTo={`/admin/projects/${projectId}/phases/${phaseId}/ideaform/edit`}
             width="auto"
             icon="edit"
@@ -71,25 +75,26 @@ export const IdeaForm = () => {
             <FormattedMessage {...messages.editInputForm} />
           </Button>
           {printedFormsEnabled && (
-            <>
-              <Box m="8px">
-                <Button
-                  onClick={handleDownloadPDF}
-                  width="auto"
-                  icon="download"
-                  data-cy="e2e-save-input-form-pdf"
-                >
-                  <FormattedMessage {...messages.downloadInputForm} />
-                </Button>
-              </Box>
+            <Box mr="8px">
               <Button
-                buttonStyle="secondary"
+                onClick={handleDownloadPDF}
+                width="auto"
                 icon="download"
-                onClick={downloadExampleXlsxFile}
+                data-cy="e2e-save-input-form-pdf"
               >
-                <FormattedMessage {...messages.downloadExcelTemplate} />
+                <FormattedMessage {...messages.downloadInputForm} />
               </Button>
-            </>
+            </Box>
+          )}
+          {inputImporterEnabled && (
+            <Button
+              mr="8px"
+              buttonStyle="secondary"
+              icon="download"
+              onClick={downloadExampleXlsxFile}
+            >
+              <FormattedMessage {...messages.downloadExcelTemplate} />
+            </Button>
           )}
         </Box>
       </Box>

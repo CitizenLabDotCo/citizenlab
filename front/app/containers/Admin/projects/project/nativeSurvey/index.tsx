@@ -67,6 +67,9 @@ const Forms = () => {
   const importPrintedFormsEnabled = useFeatureFlag({
     name: 'import_printed_forms',
   });
+  const inputImporterEnabled = useFeatureFlag({
+    name: 'input_importer',
+  });
   const { mutate: deleteFormResults } = useDeleteSurveyResults();
 
   if (!project || isNilOrError(locale) || !phase || !submissionCount) {
@@ -250,7 +253,7 @@ const Forms = () => {
                             </Text>
                           </Box>
                         </DropdownListItem>
-                        {importPrintedFormsEnabled && (
+                        {inputImporterEnabled && (
                           <>
                             <DropdownListItem
                               onClick={() => {
@@ -258,23 +261,29 @@ const Forms = () => {
                               }}
                             >
                               <Box display="flex" gap="4px" alignItems="center">
-                                <Icon name="plus" fill={colors.coolGrey600} />
+                                <Icon name="page" fill={colors.coolGrey600} />
                                 <Text my="0px">
-                                  {formatMessage(messages.addOfflineInputs)}
+                                  {formatMessage(messages.importInputs)}
                                 </Text>
                               </Box>
                             </DropdownListItem>
-                            <DropdownListItem onClick={handleDownloadPDF}>
-                              <Box display="flex" gap="4px" alignItems="center">
-                                <Icon
-                                  name="download"
-                                  fill={colors.coolGrey600}
-                                />
-                                <Text my="0px">
-                                  {formatMessage(messages.downloadSurvey)}
-                                </Text>
-                              </Box>
-                            </DropdownListItem>
+                            {importPrintedFormsEnabled && (
+                              <DropdownListItem onClick={handleDownloadPDF}>
+                                <Box
+                                  display="flex"
+                                  gap="4px"
+                                  alignItems="center"
+                                >
+                                  <Icon
+                                    name="download"
+                                    fill={colors.coolGrey600}
+                                  />
+                                  <Text my="0px">
+                                    {formatMessage(messages.downloadSurvey)}
+                                  </Text>
+                                </Box>
+                              </DropdownListItem>
+                            )}
                             <DropdownListItem onClick={downloadExampleFile}>
                               <Box display="flex" gap="4px" alignItems="center">
                                 <Icon
