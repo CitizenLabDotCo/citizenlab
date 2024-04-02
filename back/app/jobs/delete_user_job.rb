@@ -12,4 +12,6 @@ class DeleteUserJob < ApplicationJob
     user.destroy!
     service.after_destroy(user, current_user)
   end
+
+  # retry_on ActiveRecord::Deadlocked
 end
