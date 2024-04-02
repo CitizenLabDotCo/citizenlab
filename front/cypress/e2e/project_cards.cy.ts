@@ -18,18 +18,20 @@ describe('Project and folder cards on front page', () => {
       publicationStatus: 'published',
     }).then((project) => {
       publishedProjectId = project.body.data.id;
-
-      cy.apiCreateProject({
-        title: archivedProjectTitle,
-        descriptionPreview: archivedProjectDescriptionPreview,
-        description: randomString(),
-        publicationStatus: 'archived',
-      }).then((project) => {
-        archivedProjectId = project.body.data.id;
-
-        cy.goToLandingPage();
-      });
     });
+
+    cy.apiCreateProject({
+      title: archivedProjectTitle,
+      descriptionPreview: archivedProjectDescriptionPreview,
+      description: randomString(),
+      publicationStatus: 'archived',
+    }).then((project) => {
+      archivedProjectId = project.body.data.id;
+    });
+  });
+
+  beforeEach(() => {
+    cy.goToLandingPage();
   });
 
   it('shows published project but not archived project if tab === Active', () => {

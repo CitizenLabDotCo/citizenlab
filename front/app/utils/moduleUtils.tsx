@@ -10,7 +10,6 @@ import {
 } from 'lodash-es';
 import { Moment } from 'moment';
 import { IntlFormatters } from 'react-intl';
-import { GetLocaleChildProps } from 'resources/GetLocale';
 import {
   InsertConfigurationOptions,
   ITab,
@@ -159,7 +158,6 @@ export interface OutletsPropertyMap {
     translateButtonClicked: boolean;
     onClick: () => void;
     initiative: IInitiativeData;
-    locale: GetLocaleChildProps;
   };
   'app.components.PostShowComponents.CommentFooter.left': {
     commentId: string;
@@ -168,7 +166,6 @@ export interface OutletsPropertyMap {
     translateButtonClicked: boolean;
     onClick: () => void;
     initiative: IInitiativeData;
-    locale: GetLocaleChildProps;
   };
   'app.containers.IdeasShow.left': {
     translateButtonClicked: boolean;
@@ -179,13 +176,11 @@ export interface OutletsPropertyMap {
   'app.components.PostShowComponents.CommentBody.translation': {
     translateButtonClicked: boolean;
     commentContent: string;
-    locale: GetLocaleChildProps;
     commentId: string;
   };
   'app.components.PostShowComponents.Body.translation': {
     postId: string;
     body: string;
-    locale: GetLocaleChildProps;
     translateButtonClicked?: boolean;
     postType: 'idea' | 'initiative';
   };
@@ -193,7 +188,6 @@ export interface OutletsPropertyMap {
     postId: string;
     postType: 'idea' | 'initiative';
     title: string;
-    locale?: GetLocaleChildProps;
     translateButtonClicked?: boolean;
     color?: string;
     align: 'left' | 'center';
