@@ -18,6 +18,7 @@ import ProjectHeader from '../projectHeader';
 import messages from './messages';
 
 const ReportPreview = () => {
+  const { projectId } = useParams() as { projectId: string };
   const locale = useLocale();
   const { formatMessage } = useIntl();
   const editorData = {
@@ -45,7 +46,7 @@ const ReportPreview = () => {
         title: {
           [locale]: formatMessage(messages.visitorsTimeline),
         },
-        projectId: '40e45b89-8351-46af-89d1-5fee6566c138',
+        projectId,
       },
       custom: {},
       hidden: false,
@@ -63,10 +64,9 @@ const ReportPreview = () => {
       props: {
         endAt: '2024-04-02',
         title: {
-          en: 'Traffic sources',
-          'fr-BE': 'Sources de trafic',
-          'nl-BE': 'Kanalen',
+          [locale]: formatMessage(messages.trafficSources),
         },
+        projectId,
       },
       custom: {},
       hidden: false,
