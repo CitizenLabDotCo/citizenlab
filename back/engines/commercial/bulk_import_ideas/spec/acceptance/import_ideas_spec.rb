@@ -14,13 +14,15 @@ resource 'BulkImportIdeasImportIdeas' do
   let!(:project) { create(:single_phase_ideation_project, title_multiloc: { en: 'Project 1' }) }
 
   context 'when not authorized' do
-    get 'web_api/v1/import_ideas/example_xlsx' do
+    let(:phase_id) { project.phases.first.id }
+
+    get 'web_api/v1/phases/:phase_id/import_ideas/example_xlsx' do
       example_request 'Get the example xlsx' do
         assert_status 401
       end
     end
 
-    post 'web_api/v1/import_ideas/bulk_create_xlsx' do
+    post 'web_api/v1/phases/:phase_id/import_ideas/bulk_create' do
       parameter(
         :xlsx,
         'Base64 encoded xlsx file with ideas details. See web_api/v1/import_ideas/example_xlsx for the format',
@@ -38,182 +40,148 @@ resource 'BulkImportIdeasImportIdeas' do
   end
 
   context 'when admin' do
-    before { admin_header_token }
+    before do
+      admin_header_token
+    end
 
-    context 'global import' do
-      get 'web_api/v1/import_ideas/example_xlsx' do
-        example_request 'Get the example xlsx' do
-          assert_status 200
-        end
+    parameter(:phase_id, 'ID of the phase to import these ideas to', required: true)
+
+    let(:phase_id) { project.phases.first.id }
+
+    get 'web_api/v1/phases/:phase_id/import_ideas/example_xlsx' do
+      example_request 'Get the example xlsx for a project' do
+        assert_status 200
       end
+    end
 
-      post 'web_api/v1/import_ideas/bulk_create_xlsx' do
-        parameter(
-          :xlsx,
-          'Base64 encoded xlsx file with ideas details. See web_api/v1/import_ideas/example_xlsx for the format',
-          scope: :import_ideas,
-          required: true
-        )
+    post 'web_api/v1/phases/:phase_id/import_ideas/bulk_create' do
+      parameter(
+        :xlsx,
+        'Base64 encoded xlsx file with ideas details. See web_api/v1/projects/:id/import_ideas/example_xlsx for the format',
+        scope: :import_ideas
+      )
+      parameter(
+        :pdf,
+        'Base64 encoded scanned PDF of ideas. Must be from the version of the form downloaded from the site.',
+        scope: :import_ideas
+      )
+      parameter(:locale, 'Locale of the ideas being imported.', scope: :import_ideas)
+      parameter(:personal_data, 'Has the uploaded form got the personal data section in it', scope: :import_ideas)
 
-        let(:xlsx) { create_bulk_import_ideas_xlsx }
+      context 'xlsx import' do
+        let(:xlsx) { create_project_bulk_import_ideas_xlsx }
 
-        example 'Bulk import ideas globally' do
+        example 'Bulk import ideas to current phase from .xlsx' do
           do_request
+
           assert_status 201
           expect(response_data.count).to eq 2
           expect(Idea.count).to eq 2
-          expect(Idea.all.pluck(:title_multiloc)).to match_array [{ 'en' => 'My idea title 1' }, { 'en' => 'My idea title 2' }]
+          expect(IdeasPhase.count).to eq 2
+          expect(Idea.all.pluck(:title_multiloc)).to match_array [{ 'en' => 'My project idea title 1' }, { 'en' => 'My project idea title 2' }]
           expect(User.count).to eq 2
           expect(User.all.pluck(:email)).to include 'dave@citizenlab.co'
           expect(User.all.pluck(:email)).not_to include 'bob@citizenlab.co'
           expect(BulkImportIdeas::IdeaImport.count).to eq 2
           expect(BulkImportIdeas::IdeaImportFile.count).to eq 1
-          expect(project.reload.ideas_count).to eq 2
-        end
-      end
-    end
-
-    context 'project import' do
-      parameter(:phase_id, 'ID of the phase to import these ideas to', required: true)
-
-      let(:phase_id) { project.phases.first.id }
-
-      get 'web_api/v1/phases/:phase_id/import_ideas/example_xlsx' do
-        example_request 'Get the example xlsx for a project' do
-          assert_status 200
         end
       end
 
-      post 'web_api/v1/phases/:phase_id/import_ideas/bulk_create' do
-        parameter(
-          :xlsx,
-          'Base64 encoded xlsx file with ideas details. See web_api/v1/projects/:id/import_ideas/example_xlsx for the format',
-          scope: :import_ideas
-        )
-        parameter(
-          :pdf,
-          'Base64 encoded scanned PDF of ideas. Must be from the version of the form downloaded from the site.',
-          scope: :import_ideas
-        )
-        parameter(:locale, 'Locale of the ideas being imported.', scope: :import_ideas)
-        parameter(:personal_data, 'Has the uploaded form got the personal data section in it', scope: :import_ideas)
+      context 'pdf import' do
+        let(:locale) { 'en' }
+        let(:pdf) { create_project_bulk_import_ideas_pdf 1 }
 
-        context 'xlsx import' do
-          let(:xlsx) { create_project_bulk_import_ideas_xlsx }
+        # NOTE: GoogleFormParserService is stubbed to avoid calls to google APIs
+        example 'Bulk import ideas to phase from .pdf' do
+          stub_google_form_parser_api
 
-          example 'Bulk import ideas to current phase from .xlsx' do
-            do_request
-
-            assert_status 201
-            expect(response_data.count).to eq 2
-            expect(Idea.count).to eq 2
-            expect(IdeasPhase.count).to eq 2
-            expect(Idea.all.pluck(:title_multiloc)).to match_array [{ 'en' => 'My project idea title 1' }, { 'en' => 'My project idea title 2' }]
-            expect(User.count).to eq 2
-            expect(User.all.pluck(:email)).to include 'dave@citizenlab.co'
-            expect(User.all.pluck(:email)).not_to include 'bob@citizenlab.co'
-            expect(BulkImportIdeas::IdeaImport.count).to eq 2
-            expect(BulkImportIdeas::IdeaImportFile.count).to eq 1
-          end
-        end
-
-        context 'pdf import' do
-          let(:locale) { 'en' }
-          let(:pdf) { create_project_bulk_import_ideas_pdf 1 }
-
-          # NOTE: GoogleFormParserService is stubbed to avoid calls to google APIs
-          example 'Bulk import ideas to phase from .pdf' do
-            stub_google_form_parser_api
-
-            do_request
-            assert_status 201
-            expect(response_data.count).to eq 1
-            expect(response_data.first[:attributes][:title_multiloc][:en]).to eq 'My very good idea'
-            expect(response_data.first[:attributes][:location_description]).to eq 'Somewhere'
-            expect(response_data.first[:attributes][:publication_status]).to eq 'draft'
-            expect(User.all.count).to eq 1 # No new users created
-            expect(BulkImportIdeas::IdeaImport.all.count).to eq 1
-            expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 1
-            expect(Idea.all.first.phases.count).to eq 1
-            expect(Idea.all.first.phases.first).to eq project.phases.first
-            expect(project.reload.ideas_count).to eq 0 # Draft ideas should not be counted
-
-            # Relationships
-            expect(response_data.first.dig(:relationships, :idea_import, :data)).not_to be_nil
-            expect(json_response_body[:included].pluck(:type)).to include 'idea_import'
-          end
-        end
-      end
-
-      get 'web_api/v1/phases/:id/import_ideas/draft_ideas' do
-        let(:project) { create(:project_with_active_native_survey_phase) }
-        let(:phase) { project.phases.first }
-        let!(:draft_ideas) do
-          create_list(:idea, 5, project: project, publication_status: 'draft').each do |idea|
-            idea.update! idea_import: create(:idea_import, idea: idea)
-          end
-        end
-
-        let(:id) { phase.id }
-
-        before do
-          draft_ideas[0].update! creation_phase: phase
-          draft_ideas[1].update! creation_phase: phase
-        end
-
-        example_request 'Get the imported draft ideas for a phase' do
-          assert_status 200
-
-          # Should return only the 2 draft ideas added to the phase
-          expect(response_data.count).to eq 2
-          expect(response_data.pluck(:id)).to match_array [draft_ideas[0][:id], draft_ideas[1][:id]]
+          do_request
+          assert_status 201
+          expect(response_data.count).to eq 1
+          expect(response_data.first[:attributes][:title_multiloc][:en]).to eq 'My very good idea'
+          expect(response_data.first[:attributes][:location_description]).to eq 'Somewhere'
+          expect(response_data.first[:attributes][:publication_status]).to eq 'draft'
+          expect(User.all.count).to eq 1 # No new users created
+          expect(BulkImportIdeas::IdeaImport.all.count).to eq 1
+          expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 1
+          expect(Idea.all.first.phases.count).to eq 1
+          expect(Idea.all.first.phases.first).to eq project.phases.first
+          expect(project.reload.ideas_count).to eq 0 # Draft ideas should not be counted
 
           # Relationships
           expect(response_data.first.dig(:relationships, :idea_import, :data)).not_to be_nil
           expect(json_response_body[:included].pluck(:type)).to include 'idea_import'
         end
       end
+    end
 
-      get 'web_api/v1/phases/:id/import_ideas/example_xlsx' do
-        let(:project) { create(:project_with_active_native_survey_phase) }
-        let(:phase) { project.phases.first }
-        let(:id) { phase.id }
-
-        example_request 'Get the example xlsx for a phase' do
-          assert_status 200
+    get 'web_api/v1/phases/:id/import_ideas/draft_ideas' do
+      let(:project) { create(:project_with_active_native_survey_phase) }
+      let(:phase) { project.phases.first }
+      let!(:draft_ideas) do
+        create_list(:idea, 5, project: project, publication_status: 'draft').each do |idea|
+          idea.update! idea_import: create(:idea_import, idea: idea)
         end
       end
 
-      patch 'web_api/v1/phases/:phase_id/import_ideas/approve_all' do
-        let(:phase) { create(:phase) }
-        let!(:draft_ideas) do
-          create_list(:idea, 3, project: phase.project, publication_status: 'draft').each do |idea|
-            idea.update! idea_import: create(:idea_import, idea: idea)
-          end
+      let(:id) { phase.id }
+
+      before do
+        draft_ideas[0].update! creation_phase: phase
+        draft_ideas[1].update! creation_phase: phase
+      end
+
+      example_request 'Get the imported draft ideas for a phase' do
+        assert_status 200
+
+        # Should return only the 2 draft ideas added to the phase
+        expect(response_data.count).to eq 2
+        expect(response_data.pluck(:id)).to match_array [draft_ideas[0][:id], draft_ideas[1][:id]]
+
+        # Relationships
+        expect(response_data.first.dig(:relationships, :idea_import, :data)).not_to be_nil
+        expect(json_response_body[:included].pluck(:type)).to include 'idea_import'
+      end
+    end
+
+    get 'web_api/v1/phases/:id/import_ideas/example_xlsx' do
+      let(:project) { create(:project_with_active_native_survey_phase) }
+      let(:phase) { project.phases.first }
+      let(:id) { phase.id }
+
+      example_request 'Get the example xlsx for a phase' do
+        assert_status 200
+      end
+    end
+
+    patch 'web_api/v1/phases/:phase_id/import_ideas/approve_all' do
+      let(:phase) { create(:phase) }
+      let!(:draft_ideas) do
+        create_list(:idea, 3, project: phase.project, publication_status: 'draft').each do |idea|
+          idea.update! idea_import: create(:idea_import, idea: idea)
         end
+      end
 
-        let(:phase_id) { phase.id }
+      let(:phase_id) { phase.id }
 
-        example 'Approves all the ideas for a phase' do
-          expect(draft_ideas.map(&:publication_status)).to eq %w[draft draft draft]
-          expect(draft_ideas.map { |idea| idea.idea_import.approved_at }).to all(be_nil)
+      example 'Approves all the ideas for a phase' do
+        expect(draft_ideas.map(&:publication_status)).to eq %w[draft draft draft]
+        expect(draft_ideas.map { |idea| idea.idea_import.approved_at }).to all(be_nil)
 
-          binding.pry
-          do_request
-          assert_status 200
-          expect(response_data).to eq({ type: "approve_all", attributes: { approved: 3, notApproved: 0 } })
-          expect(draft_ideas.map { |idea| idea.reload.publication_status }).to eq %w[published published published]
-          expect(draft_ideas.map { |idea| idea.idea_import.approved_at }).to all(be_a(ActiveSupport::TimeWithZone))
-        end
+        do_request
+        assert_status 200
+        expect(response_data).to eq({ type: 'approve_all', attributes: { approved: 3, notApproved: 0 } })
+        expect(draft_ideas.map { |idea| idea.reload.publication_status }).to eq %w[published published published]
+        expect(draft_ideas.map { |idea| idea.idea_import.approved_at }).to all(be_a(ActiveSupport::TimeWithZone))
+      end
 
-        example 'Does not approve any ideas that fail validation' do
-          draft_ideas[0].update!(title_multiloc: { en: '' })
+      example 'Does not approve any ideas that fail validation' do
+        draft_ideas[0].update!(title_multiloc: { en: '' })
 
-          do_request
-          assert_status 200
-          expect(response_data).to eq({ type: "approve_all", attributes: { approved: 2, notApproved: 1 } })
-          expect(draft_ideas.map { |idea| idea.reload.publication_status }).to eq %w[draft published published]
-        end
+        do_request
+        assert_status 200
+        expect(response_data).to eq({ type: 'approve_all', attributes: { approved: 2, notApproved: 1 } })
+        expect(draft_ideas.map { |idea| idea.reload.publication_status }).to eq %w[draft published published]
       end
     end
 
@@ -248,88 +216,68 @@ resource 'BulkImportIdeasImportIdeas' do
   context 'when moderator' do
     before { header_token_for create(:project_moderator, projects: [project]) }
 
-    context 'global import' do
-      post 'web_api/v1/import_ideas/bulk_create_xlsx' do
-        parameter(
-          :xlsx,
-          'Base64 encoded xlsx file with ideas details. See web_api/v1/import_ideas/example_xlsx for the format',
-          scope: :import_ideas,
-          required: true
-        )
+    context 'project can be moderated' do
+      let(:survey_project) { create(:project_with_active_native_survey_phase) }
+      let(:phase) { survey_project.phases.first }
+      let(:phase_id) { phase.id }
 
-        let(:xlsx) { create_bulk_import_ideas_xlsx }
+      before { header_token_for create(:project_moderator, projects: [survey_project]) }
 
-        example 'Bulk import ideas returns unauthorized' do
-          do_request
-          assert_status 401
+      get 'web_api/v1/phases/:phase_id/import_ideas/example_xlsx' do
+        example_request 'Getting example xlsx is authorized' do
+          assert_status 200
+        end
+      end
+
+      get 'web_api/v1/phases/:phase_id/import_ideas/draft_ideas' do
+        example_request 'Getting draft ideas is authorized' do
+          assert_status 200
+        end
+      end
+
+      get 'web_api/v1/idea_imports/:id' do
+        let(:id) { create(:idea_import, idea: create(:idea, project: survey_project)).id }
+
+        example_request 'Getting idea import metadata is authorized' do
+          assert_status 200
         end
       end
     end
 
-    context 'project/phase import' do
-      context 'project can be moderated' do
+    context 'project can NOT be moderated' do
+      let(:unauthorized_project) { create(:project) }
+      let(:id) { unauthorized_project.id }
+
+      post 'web_api/v1/projects/:id/import_ideas/bulk_create' do
+        parameter(
+          :xlsx,
+          'Base64 encoded xlsx file with ideas details. See web_api/v1/projects/:id/import_ideas/example_xlsx for the format',
+          scope: :import_ideas
+        )
+
+        let(:xlsx) { create_project_bulk_import_ideas_xlsx }
+
         let(:survey_project) { create(:project_with_active_native_survey_phase) }
         let(:phase) { survey_project.phases.first }
-        let(:phase_id) { phase.id }
+        let(:id) { phase.id }
 
-        before { header_token_for create(:project_moderator, projects: [survey_project]) }
-
-        get 'web_api/v1/phases/:phase_id/import_ideas/example_xlsx' do
-          example_request 'Getting example xlsx is authorized' do
-            assert_status 200
+        get 'web_api/v1/phases/:id/import_ideas/example_xlsx' do
+          example_request 'Getting example xlsx is NOT authorized' do
+            assert_status 401
           end
         end
 
-        get 'web_api/v1/phases/:phase_id/import_ideas/draft_ideas' do
-          example_request 'Getting draft ideas is authorized' do
-            assert_status 200
+        get 'web_api/v1/phases/:id/import_ideas/draft_ideas' do
+          example_request 'Getting draft ideas is NOT authorized' do
+            assert_status 401
           end
         end
 
         get 'web_api/v1/idea_imports/:id' do
-          let(:id) { create(:idea_import, idea: create(:idea, project: survey_project)).id }
+          let(:id) { create(:idea_import, idea: create(:idea, project: unauthorized_project)).id }
 
-          example_request 'Getting idea import metadata is authorized' do
-            assert_status 200
-          end
-        end
-      end
-
-      context 'project can NOT be moderated' do
-        let(:unauthorized_project) { create(:project) }
-        let(:id) { unauthorized_project.id }
-
-        post 'web_api/v1/projects/:id/import_ideas/bulk_create' do
-          parameter(
-            :xlsx,
-            'Base64 encoded xlsx file with ideas details. See web_api/v1/projects/:id/import_ideas/example_xlsx for the format',
-            scope: :import_ideas
-          )
-
-          let(:xlsx) { create_project_bulk_import_ideas_xlsx }
-
-          let(:survey_project) { create(:project_with_active_native_survey_phase) }
-          let(:phase) { survey_project.phases.first }
-          let(:id) { phase.id }
-
-          get 'web_api/v1/phases/:id/import_ideas/example_xlsx' do
-            example_request 'Getting example xlsx is NOT authorized' do
-              assert_status 401
-            end
-          end
-
-          get 'web_api/v1/phases/:id/import_ideas/draft_ideas' do
-            example_request 'Getting draft ideas is NOT authorized' do
-              assert_status 401
-            end
-          end
-
-          get 'web_api/v1/idea_imports/:id' do
-            let(:id) { create(:idea_import, idea: create(:idea, project: unauthorized_project)).id }
-
-            example_request 'Getting idea import metadata is NOT authorized' do
-              assert_status 401
-            end
+          example_request 'Getting idea import metadata is NOT authorized' do
+            assert_status 401
           end
         end
       end
