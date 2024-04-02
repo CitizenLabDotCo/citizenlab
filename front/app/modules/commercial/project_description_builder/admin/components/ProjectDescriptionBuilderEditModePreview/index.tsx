@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import useLocale from 'hooks/useLocale';
 
@@ -8,7 +8,7 @@ import EditModePreview from 'components/admin/ContentBuilder/EditModePreview';
 
 type ProjectDescriptionBuilderPreviewProps = {
   projectId: string;
-  selectedLocale?: Locale | null;
+  selectedLocale?: SupportedLocale | null;
 };
 
 const ProjectDescriptionBuilderEditModePreview = React.forwardRef<

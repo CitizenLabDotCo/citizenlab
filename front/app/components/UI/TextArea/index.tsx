@@ -10,7 +10,7 @@ import {
 import { isEmpty } from 'lodash-es';
 import TextareaAutosize from 'react-textarea-autosize';
 import styled from 'styled-components';
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import Error from 'components/UI/Error';
 
@@ -50,13 +50,13 @@ export type Props = {
   name?: string;
   label?: string | JSX.Element | null | undefined;
   labelTooltipText?: string | JSX.Element | null;
-  locale?: Locale;
+  locale?: SupportedLocale;
   value?: string | null;
   placeholder?: string | null | undefined;
   rows?: number | undefined;
   maxRows?: number | undefined;
   error?: string | null | undefined;
-  onChange?: (value: string, locale: Locale | undefined) => void;
+  onChange?: (value: string, locale: SupportedLocale | undefined) => void;
   onFocus?: () => void | undefined;
   onBlur?: () => void | undefined;
   autofocus?: boolean | undefined;

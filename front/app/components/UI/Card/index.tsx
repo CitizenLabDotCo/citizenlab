@@ -6,6 +6,7 @@ import {
   defaultCardStyle,
   defaultCardHoverStyle,
 } from '@citizenlab/cl2-component-library';
+import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import Image from 'components/UI/Image';
@@ -91,7 +92,7 @@ const Footer = styled.div`
 `;
 
 interface Props {
-  to: string;
+  to: RouteType;
   imageUrl?: string | null;
   header?: JSX.Element;
   title: JSX.Element | string;

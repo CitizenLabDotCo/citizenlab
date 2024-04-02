@@ -49,9 +49,6 @@ const AdminProjectsProjectIndex = ({
     granular_permissions_enabled: useFeatureFlag({
       name: 'granular_permissions',
     }),
-    phase_reports_enabled: useFeatureFlag({
-      name: 'phase_reports',
-    }),
     report_builder_enabled: useFeatureFlag({
       name: 'report_builder',
     }),
@@ -60,11 +57,10 @@ const AdminProjectsProjectIndex = ({
   const isNewPhaseLink = pathname.endsWith(
     `admin/projects/${project.id}/phases/new`
   );
-  const baseTabsUrl = `/admin/projects/${project.id}`;
   const tabs: IPhaseTab[] = selectedPhase
     ? getTabs(selectedPhase, featureFlags, formatMessage).map((tab) => ({
         ...tab,
-        url: `${baseTabsUrl}/phases/${selectedPhase.id}/${tab.url}`,
+        url: `/admin/projects/${project.id}/phases/${selectedPhase.id}/${tab.url}`,
       }))
     : [];
 

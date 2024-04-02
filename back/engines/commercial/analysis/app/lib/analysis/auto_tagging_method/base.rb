@@ -131,14 +131,21 @@ module Analysis
     end
 
     def find_or_create_tagging!(input_id:, tag_id:)
-      Tagging.find_by(input_id: input_id, tag_id: tag_id) ||
-        Tagging.create!(input_id: input_id, tag_id: tag_id, background_task: task)
+      tagging = Tagging.find_by(input_id: input_id, tag_id: tag_id)
+      if !tagging
+        tagging = Tagging.create(input_id: input_id, tag_id: tag_id, background_task: task)
+        tagging_service.after_create(tagging, nil)
+      end
     end
 
     def assign_topic!(input_id, topic, tag_type)
       return if other_term?(topic)
 
-      tag = Tag.find_or_create_by!(name: topic, tag_type: tag_type, analysis: analysis)
+      tag = Tag.find_by(name: topic, tag_type: tag_type, analysis: analysis)
+      if !tag
+        tag = Tag.create(name: topic, tag_type: tag_type, analysis: analysis)
+        tag_service.after_create(tag, nil)
+      end
       find_or_create_tagging!(input_id: input_id, tag_id: tag.id)
     end
 
@@ -166,6 +173,14 @@ module Analysis
 
     def input_to_text_classify
       @input_to_text_classify ||= InputToText.new(classification_fields)
+    end
+
+    def tag_service
+      @tag_service ||= SideFxTagService.new
+    end
+
+    def tagging_service
+      @tagging_service ||= SideFxTaggingService.new
     end
   end
 end

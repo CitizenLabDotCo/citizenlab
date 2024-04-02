@@ -94,7 +94,7 @@ class Rack::Attack
 
   # Accept invite by IP.
   throttle('accept_invite/ip', limit: 10, period: 20.seconds) do |req|
-    if req.path.starts_with?('/web_api/v1/invites/by_token') &&  req.path.ends_with?('accept') && req.post?
+    if req.path.starts_with?('/web_api/v1/invites/by_token') && req.path.ends_with?('accept') && req.post?
       req.remote_ip
     end
   end
@@ -107,14 +107,14 @@ class Rack::Attack
     end
   end
 
-  # For all requests.
+  # Resend code by IP.
   throttle('user/resend_code', limit: 10, period: 5.minutes) do |req|
     if req.path == '/web_api/v1/user/resend_code' && req.post?
       req.ip
     end
   end
 
-  # Signing in by IP.
+  # Confirm by IP.
   throttle('user/confirm', limit: 5, period: 20.seconds) do |req|
     if req.path == '/web_api/v1/user/confirm' && req.post?
       req.ip

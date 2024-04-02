@@ -26,7 +26,6 @@ import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 
-import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 import messages from 'containers/ProjectsShowPage/messages';
 import setPhaseUrl from 'containers/ProjectsShowPage/timeline/setPhaseURL';
 
@@ -242,9 +241,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                         values={{
                           accessRightsLink: (
                             <Link
-                              to={`${adminProjectsProjectPath(
-                                projectId
-                              )}/settings/access-rights`}
+                              to={`/admin/projects/${projectId}/settings/access-rights`}
                             >
                               <FormattedMessage {...messages.accessRights} />
                             </Link>

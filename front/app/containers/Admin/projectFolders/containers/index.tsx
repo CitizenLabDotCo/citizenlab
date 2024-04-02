@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { ITab } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
@@ -30,6 +31,13 @@ const TopContainer = styled.div`
   position: relative;
 `;
 
+type TabbedPropsType = {
+  resource: {
+    title: string;
+  };
+  tabs: ITab[];
+};
+
 const AdminProjectFolderEdition = () => {
   const { projectFolderId } = useParams() as { projectFolderId: string };
   const { data: projectFolder } = useProjectFolderById(projectFolderId);
@@ -43,7 +51,7 @@ const AdminProjectFolderEdition = () => {
     clHistory.push('/admin/projects');
   };
 
-  let tabbedProps = {
+  let tabbedProps: TabbedPropsType = {
     resource: {
       title: localize(projectFolder.data.attributes.title_multiloc),
     },

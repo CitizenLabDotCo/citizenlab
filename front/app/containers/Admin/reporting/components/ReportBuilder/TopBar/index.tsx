@@ -10,7 +10,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useEditor } from '@craftjs/core';
 import Tippy from '@tippyjs/react';
-import { Locale } from 'typings';
+import { RouteType } from 'routes';
+import { SupportedLocale } from 'typings';
 
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
@@ -37,14 +38,14 @@ import QuitModal from './QuitModal';
 
 type ContentBuilderTopBarProps = {
   hasPendingState: boolean;
-  selectedLocale: Locale;
+  selectedLocale: SupportedLocale;
   reportId: string;
   isTemplate: boolean;
   saved: boolean;
   view: View;
   setView: (view: View) => void;
   setSaved: () => void;
-  setSelectedLocale: React.Dispatch<React.SetStateAction<Locale>>;
+  setSelectedLocale: React.Dispatch<React.SetStateAction<SupportedLocale>>;
 };
 
 const ContentBuilderTopBar = ({
@@ -86,7 +87,7 @@ const ContentBuilderTopBar = ({
     }
   };
   const doGoBack = () => {
-    const goBackUrl =
+    const goBackUrl: RouteType =
       projectId && phaseId
         ? `/admin/projects/${projectId}/phases/${phaseId}/report`
         : '/admin/reporting/report-builder';

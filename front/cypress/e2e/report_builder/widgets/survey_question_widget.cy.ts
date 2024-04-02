@@ -89,39 +89,36 @@ describe('Survey question widget', () => {
         const pointKey = surveyFields[5].attributes.key;
         const select2Key = surveyFields[6].attributes.key;
 
-            const fieldConfigs: any =
-              surveySchema.data.attributes.json_schema_multiloc.en?.properties;
+        const fieldConfigs: any =
+          surveySchema.data.attributes.json_schema_multiloc.en?.properties;
 
-            const getAnswerKeys = (fieldKey: string) => {
-              const fieldConfig = fieldConfigs[fieldKey];
+        const getAnswerKeys = (fieldKey: string) => {
+          const fieldConfig = fieldConfigs[fieldKey];
 
-              if (fieldConfig.items) {
-                return fieldConfig.items.oneOf.map((x: any) => x.const);
-              }
+          if (fieldConfig.items) {
+            return fieldConfig.items.oneOf.map((x: any) => x.const);
+          }
 
-              if (fieldConfig.enum) {
-                return fieldConfig.enum;
-              }
+          if (fieldConfig.enum) {
+            return fieldConfig.enum;
+          }
 
-              return undefined;
-            };
+          return undefined;
+        };
 
         const selectAnswerKeys = getAnswerKeys(selectKey);
         const multiSelectAnswerKeys = getAnswerKeys(multiSelectKey);
         const multiselectImageAnswerKeys = getAnswerKeys(multiselectImageKey);
         const select2AnswerKeys = getAnswerKeys(select2Key);
 
-            users.forEach(
-              (
-                { firstName, lastName, email, password, gender, location },
-                i
-              ) => {
-                let jwt: any;
+        users.forEach(
+          ({ firstName, lastName, email, password, gender, location }, i) => {
+            let jwt: any;
 
-                cy.apiSignup(firstName, lastName, email, password)
-                  .then((response) => {
-                    jwt = response._jwt;
-                    userIds.push(response.body.data.id);
+            cy.apiSignup(firstName, lastName, email, password)
+              .then((response) => {
+                jwt = response._jwt;
+                userIds.push(response.body.data.id);
 
                 cy.apiUpdateUserCustomFields(
                   email,
@@ -133,25 +130,28 @@ describe('Survey question widget', () => {
                 );
               })
               .then(() => {
-                cy.apiCreateSurveyResponse({
-                  email,
-                  password,
-                  project_id: projectId,
-                  fields: {
-                    [selectKey]: selectAnswerKeys[0],
-                    [multiSelectKey]: [
-                      multiSelectAnswerKeys[0],
-                      multiSelectAnswerKeys[1],
-                    ],
-                    [linearScaleKey]: i > 1 ? 3 : 2,
-                    [multiselectImageKey]: [multiselectImageAnswerKeys[0]],
-                    [pointKey]: {
-                      type: 'Point',
-                      coordinates: location,
+                cy.apiCreateSurveyResponse(
+                  {
+                    email,
+                    password,
+                    project_id: projectId,
+                    fields: {
+                      [selectKey]: selectAnswerKeys[0],
+                      [multiSelectKey]: [
+                        multiSelectAnswerKeys[0],
+                        multiSelectAnswerKeys[1],
+                      ],
+                      [linearScaleKey]: i > 1 ? 3 : 2,
+                      [multiselectImageKey]: [multiselectImageAnswerKeys[0]],
+                      [pointKey]: {
+                        type: 'Point',
+                        coordinates: location,
+                      },
+                      [select2Key]: select2AnswerKeys[i % 2 ? 0 : 1],
                     },
-                    [select2Key]: select2AnswerKeys[i % 2 ? 0 : 1],
                   },
-                }, jwt);
+                  jwt
+                );
               });
           }
         );

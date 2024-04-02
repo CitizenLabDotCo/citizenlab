@@ -218,6 +218,7 @@ module.exports = {
     ],
   },
   ignorePatterns: [
+    '.rollup.config.cjs',
     '.eslintrc.js',
     'internals',
     'server',
