@@ -2566,6 +2566,7 @@
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupByRegistrationField": "Agrupar por campo de inscripción",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupBySurveyQuestion": "Agrupar por pregunta de la encuesta",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupMode": "Modo Grupo",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupModeTooltip1": "Agrupa las respuestas de la encuesta por campos de registro (sexo, ubicación, edad, etc.) u otras preguntas de la encuesta.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.none": "Ninguno",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.question": "Pregunta",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.registrationField": "Campo de inscripción",
