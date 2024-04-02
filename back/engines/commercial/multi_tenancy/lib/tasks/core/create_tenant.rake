@@ -8,7 +8,7 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
     Tenant.find_by(host: host)&.destroy!
 
     settings = SettingsService.new.minimal_required_settings(
-      locales: (args[:locales]&.split(';')&.map(&:strip) || %w[en nl-BE nl-NL fr-BE]),
+      locales: args[:locales]&.split(';')&.map(&:strip) || %w[en nl-BE nl-NL fr-BE],
       lifecycle_stage: 'not_applicable'
     ).deep_merge(
       {
@@ -79,10 +79,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           allowed: true
         },
         idea_custom_copy: {
-          enabled: true,
-          allowed: true
-        },
-        project_reports: {
           enabled: true,
           allowed: true
         },
