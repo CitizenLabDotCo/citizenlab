@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
@@ -26,7 +26,7 @@ import Events from '../CraftComponents/Events';
 import Proposals from '../CraftComponents/Proposals';
 
 type HomepageBuilderToolboxProps = {
-  selectedLocale: Locale;
+  selectedLocale: SupportedLocale;
 };
 
 const HomepageBuilderToolbox = ({

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
@@ -14,8 +14,8 @@ const StyledSelect = styled.select`
 `;
 
 interface Props {
-  locale: Locale;
-  setLocale: (locale: Locale) => void;
+  locale: SupportedLocale;
+  setLocale: (locale: SupportedLocale) => void;
 }
 
 const LocaleSelect = ({ locale, setLocale }: Props) => {
@@ -28,7 +28,7 @@ const LocaleSelect = ({ locale, setLocale }: Props) => {
         id="e2e-locale-select"
         value={locale}
         onChange={(e) => {
-          setLocale(e.target.value as Locale);
+          setLocale(e.target.value as SupportedLocale);
         }}
       >
         {locales.map((locale) => (

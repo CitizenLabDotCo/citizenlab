@@ -1,14 +1,11 @@
 import React from 'react';
 
-import { isFunction } from 'lodash-es';
-import { adopt } from 'react-adopt';
-import GetInitiativesCount, {
-  GetInitiativesCountChildProps,
-} from 'resources/GetInitiativesCount';
 import styled from 'styled-components';
 
+import useInitiativesCount from 'api/initiative_counts/useInitiativesCount';
+import { IQueryParameters } from 'api/initiatives/types';
+
 import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 
@@ -19,84 +16,44 @@ const Container = styled.div`
   font-weight: 500;
 `;
 
-interface InputProps {
-  assignee?: string | null;
-  topics?: string[] | null;
-  initiativeStatus?: string | null;
-  feedbackNeeded: boolean;
-  searchTerm?: string | null;
+interface Props {
+  // We are using initiatives, not initiatives_count query parameter types.
+  // This is because the InitiativesCount component is used in the PostManager,
+  // which uses the initiatives query parameter types.
+  queryParameters: IQueryParameters;
 }
 
-interface DataProps {
-  initiativesCount: GetInitiativesCountChildProps;
-}
+const InitiativesCount = ({ queryParameters }: Props) => {
+  const { data: initiativesCount } = useInitiativesCount({
+    feedback_needed: queryParameters.feedback_needed,
+    assignee: queryParameters.assignee,
+    topics: queryParameters.topics,
+    initiative_status: queryParameters.initiative_status,
+    search: queryParameters.search,
+  });
 
-interface Props extends InputProps, DataProps {}
+  if (!initiativesCount) return null;
 
-interface State {}
+  const initiativesMatchingFiltersCount =
+    initiativesCount.data.attributes.count;
 
-export class InitiativesCount extends React.PureComponent<Props, State> {
-  componentDidUpdate(prevProps: Props) {
-    if (prevProps.searchTerm !== this.props.searchTerm) {
-      if (isFunction(this.props.initiativesCount.onChangeSearchTerm)) {
-        this.props.initiativesCount.onChangeSearchTerm(this.props.searchTerm);
-      }
-    }
-  }
-
-  render() {
-    const { initiativesCount } = this.props;
-    const initiativesMatchingFiltersCount = initiativesCount.count;
-
-    return (
-      <Container>
-        {/*
+  return (
+    <Container>
+      {/*
           If there are no initiatives, we have an 'empty container' to indicate there are no initiatives matching the filters.
           Hence we only show this count when there's at least 1 initiative.
         */}
-        {!isNilOrError(initiativesMatchingFiltersCount) &&
-          initiativesMatchingFiltersCount > 0 &&
-          (initiativesMatchingFiltersCount === 1 ? (
-            <FormattedMessage {...messages.oneInitiative} />
-          ) : (
-            <FormattedMessage
-              {...messages.multipleInitiatives}
-              values={{ initiativesCount: initiativesMatchingFiltersCount }}
-            />
-          ))}
-      </Container>
-    );
-  }
-}
+      {initiativesMatchingFiltersCount > 0 &&
+        (initiativesMatchingFiltersCount === 1 ? (
+          <FormattedMessage {...messages.oneInitiative} />
+        ) : (
+          <FormattedMessage
+            {...messages.multipleInitiatives}
+            values={{ initiativesCount: initiativesMatchingFiltersCount }}
+          />
+        ))}
+    </Container>
+  );
+};
 
-const Data = adopt({
-  initiativesCount: ({
-    topics,
-    initiativeStatus,
-    assignee,
-    feedbackNeeded,
-    render,
-  }) => {
-    return (
-      <GetInitiativesCount
-        feedbackNeeded={feedbackNeeded === true ? true : undefined}
-        assignee={assignee !== 'all' ? assignee : undefined} // TOCHECK
-        topics={topics}
-        initiativeStatusId={initiativeStatus}
-      >
-        {render}
-      </GetInitiativesCount>
-    );
-  },
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps: DataProps) => (
-      <InitiativesCount
-        {...inputProps}
-        initiativesCount={dataProps.initiativesCount}
-      />
-    )}
-  </Data>
-);
+export default InitiativesCount;

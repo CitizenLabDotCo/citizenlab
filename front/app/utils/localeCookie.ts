@@ -1,5 +1,5 @@
 import { get, set } from 'js-cookie';
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import { SECURE_COOKIE } from './cookie';
 
@@ -13,6 +13,6 @@ export function getCookieLocale() {
   }
 }
 
-export function setCookieLocale(locale: Locale) {
+export function setCookieLocale(locale: SupportedLocale) {
   set(COOKIE_NAME, locale, { expires: 60, secure: SECURE_COOKIE });
 }

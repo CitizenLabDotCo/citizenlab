@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import eventEmitter from 'utils/eventEmitter';
 
@@ -16,7 +16,7 @@ import {
 
 type ContentBuilderErrors = Record<
   string,
-  { hasError: boolean; selectedLocale?: Locale }
+  { hasError: boolean; selectedLocale?: SupportedLocale }
 >;
 
 interface Props {

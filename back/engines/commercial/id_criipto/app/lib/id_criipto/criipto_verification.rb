@@ -87,7 +87,7 @@ module IdCriipto
     end
 
     def updateable_user_attrs
-      super + %i[custom_field_values birthyear]
+      %i[custom_field_values birthyear]
     end
   end
 end

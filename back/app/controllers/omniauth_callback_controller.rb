@@ -183,14 +183,21 @@ class OmniauthCallbackController < ApplicationController
   # @param [OmniauthMethods::Base] authver_method
   # @param [User] user
   def update_user!(auth, user, authver_method)
-    attrs = authver_method.updateable_user_attrs
-    return if attrs.empty?
+    return if authver_method.updateable_user_attrs.empty?
 
+    attrs = authver_method.updateable_user_attrs
     update_hash = authver_method.profile_to_user_attrs(auth).slice(*attrs).compact
     update_hash.delete(:remote_avatar_url) if user.avatar.present? # don't overwrite avatar if already present
     user.confirm! if authver_method.email_confirmed?(auth) # confirm user email if not already confirmed
 
-    user.update_merging_custom_fields!(update_hash)
+    if authver_method.overwrite_user_attrs?
+      user.update_merging_custom_fields!(update_hash)
+    else
+      update_hash.each_pair do |attr, value|
+        user.assign_attributes(attr => value) unless user.attribute_present?(attr)
+      end
+      user.save!
+    end
   end
 
   # Return locale if a locale can be parsed from pathname which matches an app locale

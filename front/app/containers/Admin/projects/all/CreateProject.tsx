@@ -1,6 +1,6 @@
 import React, { memo, useState, useCallback, useEffect } from 'react';
 
-import { Icon, colors } from '@citizenlab/cl2-component-library';
+import { Icon, colors, stylingConsts } from '@citizenlab/cl2-component-library';
 import { transparentize } from 'polished';
 import { WrappedComponentProps } from 'react-intl';
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -30,7 +30,7 @@ const easing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 const Container = styled.div`
   background: #fff;
   border-radius: ${({ theme }) => theme.borderRadius};
-  border: 1px solid ${({ theme }) => theme.colors.divider};
+  border: ${stylingConsts.border};
 `;
 
 const CreateProjectContent = styled.div`

@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 
 import { colors, media } from '@citizenlab/cl2-component-library';
-import { GetLocaleChildProps } from 'resources/GetLocale';
 import styled from 'styled-components';
 
 import { IInitiativeData } from 'api/initiatives/types';
@@ -58,7 +57,6 @@ interface Props {
   leftContent: JSX.Element | null;
   translateButtonClicked: boolean;
   onTranslate: () => void;
-  locale: GetLocaleChildProps;
   initiative: IInitiativeData;
 }
 
@@ -69,7 +67,6 @@ export default memo<Props>(
     translateButtonClicked,
     onTranslate,
     initiative,
-    locale,
   }) => {
     return (
       <Container>
@@ -81,7 +78,6 @@ export default memo<Props>(
               translateButtonClicked={translateButtonClicked}
               onClick={onTranslate}
               initiative={initiative}
-              locale={locale}
             />
             {rightContent}
           </Right>
