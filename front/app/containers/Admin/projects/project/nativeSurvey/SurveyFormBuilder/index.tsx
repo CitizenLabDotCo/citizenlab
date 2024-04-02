@@ -41,7 +41,7 @@ const SurveyFormBuilder = () => {
   });
 
   const goBackUrl: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/native-survey`;
-  const downloadPdfLink = `${API_PATH}/phases/${phaseId}/custom_fields/to_pdf`;
+  const downloadPdfLink = `${API_PATH}/phases/${phaseId}/importer/export_form/idea/pdf`;
 
   const handleDownloadPDF = () => setExportModalOpen(true);
 

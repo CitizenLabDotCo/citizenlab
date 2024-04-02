@@ -10,7 +10,7 @@ import { QueryParams, ImportedIdeasKeys } from './types';
 
 const fetchImportedIdeas = ({ phaseId }: QueryParams) =>
   fetcher<IIdeas>({
-    path: `/phases/${phaseId}/import_ideas/draft_ideas`,
+    path: `/phases/${phaseId}/importer/draft/idea`,
     action: 'get',
   });
 const useImportedIdeas = (queryParams: QueryParams) => {

@@ -21,7 +21,7 @@ const addOfflineIdeas = async ({
   personal_data,
 }: RequestParams) =>
   fetcher<IIdeas>({
-    path: `/phases/${phase_id}/import_ideas/bulk_create`,
+    path: `/phases/${phase_id}/importer/bulk_create/idea/xlsx`,
     action: 'post',
     body: { import_ideas: { pdf, locale, personal_data } },
   });

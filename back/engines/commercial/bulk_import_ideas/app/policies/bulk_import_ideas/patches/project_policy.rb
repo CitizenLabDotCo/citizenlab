@@ -11,6 +11,10 @@ module BulkImportIdeas
         active_moderator?
       end
 
+      def to_pdf?
+        active_admin?
+      end
+
       def draft_ideas?
         active_moderator?
       end

@@ -44,7 +44,7 @@ export const IdeaForm = () => {
 
   const downloadExampleXlsxFile = async () => {
     const blob = await requestBlob(
-      `${API_PATH}/phases/${phaseId}/import_ideas/example_xlsx`,
+      `${API_PATH}/phases/${phaseId}/importer/export_form/idea/xlsx`,
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     );
     saveAs(blob, 'example.xlsx');

@@ -2,7 +2,7 @@
 
 module BulkImportIdeas
   class WebApi::V1::ImportIdeasController < ApplicationController
-    before_action :authorize_bulk_import_ideas, only: %i[bulk_create example_xlsx draft_ideas approve_all]
+    before_action :authorize_bulk_import_ideas, only: %i[bulk_create example_xlsx to_pdf draft_ideas approve_all]
 
     # NOTE: PDF version only works for a project endpoint
     def bulk_create
@@ -24,6 +24,30 @@ module BulkImportIdeas
     def example_xlsx
       xlsx = import_ideas_service.generate_example_xlsx
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
+    end
+
+    def to_pdf
+      locale = params[:locale] || current_user.locale
+      personal_data_enabled = params[:personal_data] == 'true'
+      phase = Phase.find(params[:id])
+
+      if phase
+        custom_fields = IdeaCustomFieldsService.new(Factory.instance.participation_method_for(phase).custom_form).enabled_fields_with_other_options
+        pdf = BulkImportIdeas::PrintCustomFieldsService.new(
+          phase,
+          custom_fields,
+          locale,
+          personal_data_enabled
+        ).create_pdf
+
+        send_data(
+          pdf.render,
+          type: 'application/pdf',
+          filename: 'survey.pdf'
+        )
+      else
+        send_not_found
+      end
     end
 
     def approve_all

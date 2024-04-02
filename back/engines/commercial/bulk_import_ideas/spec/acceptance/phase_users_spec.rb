@@ -9,7 +9,7 @@ resource 'Creating users for a project import' do
 
   let(:project) { create(:single_phase_ideation_project) }
 
-  post 'web_api/v1/phases/:phase_id/create_user' do
+  post 'web_api/v1/phases/:phase_id/importer/create_user' do
     parameter :project_id, 'ID of the project.', required: true
     with_options scope: 'user' do
       parameter :first_name, 'User first name', required: false

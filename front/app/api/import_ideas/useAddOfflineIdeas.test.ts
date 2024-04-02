@@ -7,7 +7,7 @@ import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { ideasData } from './__mocks__/useAddOfflineIdeas';
 import useAddOfflineIdeas from './useAddOfflineIdeas';
 
-const apiPath = '*phases/:phaseId/import_ideas/bulk_create';
+const apiPath = '*phases/:phaseId/importer/idea/bulk_create/xlsx';
 
 const server = setupServer(
   rest.post(apiPath, (_req, res, ctx) => {

@@ -16,13 +16,13 @@ resource 'BulkImportIdeasImportIdeas' do
   context 'when not authorized' do
     let(:phase_id) { project.phases.first.id }
 
-    get 'web_api/v1/phases/:phase_id/import_ideas/example_xlsx' do
-      example_request 'Get the example xlsx' do
+    get 'web_api/v1/phases/:phase_id/importer/export_form/idea/xlsx' do
+      example_request 'Get the example xlsx for importing ideas' do
         assert_status 401
       end
     end
 
-    post 'web_api/v1/phases/:phase_id/import_ideas/bulk_create' do
+    post 'web_api/v1/phases/:phase_id/importer/bulk_create/idea/xlsx' do
       parameter(
         :xlsx,
         'Base64 encoded xlsx file with ideas details. See web_api/v1/import_ideas/example_xlsx for the format',
@@ -48,13 +48,13 @@ resource 'BulkImportIdeasImportIdeas' do
 
     let(:phase_id) { project.phases.first.id }
 
-    get 'web_api/v1/phases/:phase_id/import_ideas/example_xlsx' do
+    get 'web_api/v1/phases/:phase_id/importer/export_form/idea/xlsx' do
       example_request 'Get the example xlsx for a project' do
         assert_status 200
       end
     end
 
-    post 'web_api/v1/phases/:phase_id/import_ideas/bulk_create' do
+    post 'web_api/v1/phases/:phase_id/importer/bulk_create/idea/xlsx' do
       parameter(
         :xlsx,
         'Base64 encoded xlsx file with ideas details. See web_api/v1/projects/:id/import_ideas/example_xlsx for the format',
@@ -115,7 +115,7 @@ resource 'BulkImportIdeasImportIdeas' do
       end
     end
 
-    get 'web_api/v1/phases/:id/import_ideas/draft_ideas' do
+    get 'web_api/v1/phases/:phase_id/importer/draft/idea' do
       let(:project) { create(:project_with_active_native_survey_phase) }
       let(:phase) { project.phases.first }
       let!(:draft_ideas) do
@@ -124,7 +124,7 @@ resource 'BulkImportIdeasImportIdeas' do
         end
       end
 
-      let(:id) { phase.id }
+      let(:phase_id) { phase.id }
 
       example 'Get the imported draft ideas for a phase' do
         draft_ideas[0].update! creation_phase: phase, phases: [phase]
@@ -155,17 +155,17 @@ resource 'BulkImportIdeasImportIdeas' do
       end
     end
 
-    get 'web_api/v1/phases/:id/import_ideas/example_xlsx' do
+    get 'web_api/v1/phases/:phase_id/importer/export_form/idea/xlsx' do
       let(:project) { create(:project_with_active_native_survey_phase) }
       let(:phase) { project.phases.first }
-      let(:id) { phase.id }
+      let(:phase_id) { phase.id }
 
       example_request 'Get the example xlsx for a phase' do
         assert_status 200
       end
     end
 
-    patch 'web_api/v1/phases/:phase_id/import_ideas/approve_all' do
+    patch 'web_api/v1/phases/:phase_id/importer/approve_all/idea' do
       let(:phase) { create(:phase) }
       let!(:draft_ideas) do
         create_list(:idea, 3, project: phase.project, phases: [phase], publication_status: 'draft').each do |idea|
@@ -234,13 +234,13 @@ resource 'BulkImportIdeasImportIdeas' do
 
       before { header_token_for create(:project_moderator, projects: [survey_project]) }
 
-      get 'web_api/v1/phases/:phase_id/import_ideas/example_xlsx' do
+      get 'web_api/v1/phases/:phase_id/importer/export_form/idea/xlsx' do
         example_request 'Getting example xlsx is authorized' do
           assert_status 200
         end
       end
 
-      get 'web_api/v1/phases/:phase_id/import_ideas/draft_ideas' do
+      get 'web_api/v1/phases/:phase_id/importer/draft/idea' do
         example_request 'Getting draft ideas is authorized' do
           assert_status 200
         end
@@ -256,40 +256,37 @@ resource 'BulkImportIdeasImportIdeas' do
     end
 
     context 'project can NOT be moderated' do
-      let(:unauthorized_project) { create(:project) }
-      let(:id) { unauthorized_project.id }
+      let(:survey_project) { create(:project_with_active_native_survey_phase) }
+      let(:xlsx) { create_project_bulk_import_ideas_xlsx }
+      let(:phase_id) { phase.id }
+      let(:other_project) { create(:project) }
+      let(:phase) { survey_project.phases.first }
 
-      post 'web_api/v1/projects/:id/import_ideas/bulk_create' do
-        parameter(
-          :xlsx,
-          'Base64 encoded xlsx file with ideas details. See web_api/v1/projects/:id/import_ideas/example_xlsx for the format',
-          scope: :import_ideas
-        )
+      parameter(
+        :xlsx,
+        'Base64 encoded xlsx file with ideas details. See web_api/v1/phases/:phase_id/importer/export_form/idea/xlsx for the format',
+        scope: :import_ideas
+      )
 
-        let(:xlsx) { create_project_bulk_import_ideas_xlsx }
+      before { header_token_for create(:project_moderator, projects: [other_project]) }
 
-        let(:survey_project) { create(:project_with_active_native_survey_phase) }
-        let(:phase) { survey_project.phases.first }
-        let(:id) { phase.id }
-
-        get 'web_api/v1/phases/:id/import_ideas/example_xlsx' do
-          example_request 'Getting example xlsx is NOT authorized' do
-            assert_status 401
-          end
+      get 'web_api/v1/phases/:phase_id/importer/export_form/idea/xlsx' do
+        example_request 'Getting example xlsx is NOT authorized' do
+          assert_status 401
         end
+      end
 
-        get 'web_api/v1/phases/:id/import_ideas/draft_ideas' do
-          example_request 'Getting draft ideas is NOT authorized' do
-            assert_status 401
-          end
+      get 'web_api/v1/phases/:phase_id/importer/draft/idea' do
+        example_request 'Getting draft ideas is NOT authorized' do
+          assert_status 401
         end
+      end
 
-        get 'web_api/v1/idea_imports/:id' do
-          let(:id) { create(:idea_import, idea: create(:idea, project: unauthorized_project)).id }
+      get 'web_api/v1/idea_imports/:id' do
+        let(:id) { create(:idea_import, idea: create(:idea, project: survey_project)).id }
 
-          example_request 'Getting idea import metadata is NOT authorized' do
-            assert_status 401
-          end
+        example_request 'Getting idea import metadata is NOT authorized' do
+          assert_status 401
         end
       end
     end

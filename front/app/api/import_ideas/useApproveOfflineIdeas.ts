@@ -8,7 +8,7 @@ import ideasKeys from 'api/ideas/keys';
 
 const approveIdeas = async (phaseId: string) =>
   fetcher<IIdeaApprovals>({
-    path: `/phases/${phaseId}/import_ideas/approve_all`,
+    path: `/phases/${phaseId}/importer/approve_all/idea`,
     action: 'patch',
     body: {},
   });
