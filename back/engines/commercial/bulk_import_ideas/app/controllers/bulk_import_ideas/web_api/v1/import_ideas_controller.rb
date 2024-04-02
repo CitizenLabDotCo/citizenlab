@@ -42,7 +42,7 @@ module BulkImportIdeas
         end
       end
 
-      render json: raw_json({ approved: approved, notApproved: not_approved})
+      render json: raw_json({ approved: approved, notApproved: not_approved })
     end
 
     def draft_ideas

@@ -126,12 +126,11 @@ resource 'BulkImportIdeasImportIdeas' do
 
       let(:id) { phase.id }
 
-      before do
+      example 'Get the imported draft ideas for a phase' do
         draft_ideas[0].update! creation_phase: phase
         draft_ideas[1].update! creation_phase: phase
-      end
 
-      example_request 'Get the imported draft ideas for a phase' do
+        do_request
         assert_status 200
 
         # Should return only the 2 draft ideas added to the phase
