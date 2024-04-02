@@ -7,10 +7,10 @@ import {
   Box,
   colors,
   Toggle,
-  Locale,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
+import { SupportedLocale } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { IPermissionData } from 'api/permissions/types';
@@ -95,7 +95,7 @@ const UserFieldSelection = ({
 
   const getTitleFromGlobalFieldId = (
     field: IPermissionsCustomFieldData,
-    locale: Locale
+    locale: SupportedLocale
   ) => {
     return globalRegistrationFields?.data.find(
       (globalField) =>

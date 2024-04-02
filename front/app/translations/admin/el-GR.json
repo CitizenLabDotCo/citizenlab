@@ -1179,7 +1179,6 @@
   "app.containers.AdminPage.ProjectEdit.searchPlaceholder": "Αναζήτηση στα πρότυπα",
   "app.containers.AdminPage.ProjectEdit.selectGroups": "Επιλέξτε ομάδα(ες)",
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Κοινοποιείστε πληροφορίες",
-  "app.containers.AdminPage.ProjectEdit.shareInformationDescription": "Παροχή πληροφοριών στους συμμετέχοντες.",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",
   "app.containers.AdminPage.ProjectEdit.snap_survey": "Snap Survey",
   "app.containers.AdminPage.ProjectEdit.statusLabel": "Κατάσταση έργου",
