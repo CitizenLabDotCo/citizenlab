@@ -102,8 +102,6 @@ export const proposalsConfig: StatCardConfig = {
       true
     );
 
-    console.log({ querySuccessful });
-
     const querySuccessfulLastPeriod: QuerySchema = queryBase(
       lastPeriodMoment,
       todayMoment,
