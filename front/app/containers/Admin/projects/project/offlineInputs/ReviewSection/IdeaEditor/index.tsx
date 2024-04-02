@@ -250,7 +250,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
         borderBottom={`1px ${colors.grey400} solid`}
         overflowY="scroll"
         w="100%"
-        h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px - 160px)`}
+        h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px - 215px)`}
         display="flex"
         flexDirection="column"
         alignItems="center"

@@ -129,7 +129,7 @@ const ReviewSection = () => {
                 </Text>
               </Box>
               <Box pt="10px">
-                <Button p="6px" icon="check-circle" onClick={handleApproveAll}>
+                <Button p="6px" icon="check" onClick={handleApproveAll}>
                   <FormattedMessage {...messages.approveAll} />
                 </Button>
               </Box>
