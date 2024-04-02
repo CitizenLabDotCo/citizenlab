@@ -1,4 +1,4 @@
-import { ImageSizes, Multiloc, Locale, UploadFile } from 'typings';
+import { ImageSizes, Multiloc, SupportedLocale, UploadFile } from 'typings';
 
 import { API_PATH } from 'containers/App/constants';
 
@@ -19,7 +19,7 @@ interface AppConfigurationFeature {
 export type IAppConfigurationSettingsCore = {
   allowed: boolean;
   enabled: boolean;
-  locales: Locale[];
+  locales: SupportedLocale[];
   weglot_api_key: string | null;
   timezone: string;
   organization_name: Multiloc;
@@ -108,6 +108,16 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     enabled: boolean;
     tenant: string;
+    client_id: string;
+    logo_url: string;
+    login_mechanism_name: string;
+  };
+  azure_ad_b2c_login?: {
+    allowed: boolean;
+    enabled: boolean;
+    tenant_name: string;
+    tenant_id: string;
+    policy_name: string;
     client_id: string;
     logo_url: string;
     login_mechanism_name: string;
@@ -241,6 +251,9 @@ export interface IAppConfigurationSettings {
   public_api_tokens?: AppConfigurationFeature;
   power_bi?: AppConfigurationFeature;
   analysis?: AppConfigurationFeature;
+  large_summaries?: AppConfigurationFeature;
+  ask_a_question?: AppConfigurationFeature;
+  advanced_autotagging?: AppConfigurationFeature;
   import_printed_forms?: AppConfigurationFeature;
   user_session_recording?: AppConfigurationFeature;
   user_avatars?: AppConfigurationFeature;

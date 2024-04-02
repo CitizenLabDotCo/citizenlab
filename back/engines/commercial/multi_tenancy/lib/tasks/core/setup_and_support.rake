@@ -4,7 +4,7 @@ namespace :setup_and_support do
   desc 'Mass official feedback'
   task :mass_official_feedback, %i[url host locale] => [:environment] do |_t, args|
     # ID, Feedback, Feedback Author Name, Feedback Email, New Status
-    data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
+    data = CSV.parse(open(args[:url]).read, headers: true, col_sep: ',', converters: [])
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       data.each do |d|
         idea = Idea.find d['ID']
@@ -99,7 +99,7 @@ namespace :setup_and_support do
   desc 'Change the slugs of the project through a provided mapping'
   task :map_project_slugs, %i[url host] => [:environment] do |_t, args|
     issues = []
-    data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
+    data = CSV.parse(open(args[:url]).read, headers: true, col_sep: ',', converters: [])
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       data.each do |d|
         pj = Project.find_by slug: d['old_slug'].strip
@@ -237,7 +237,7 @@ namespace :setup_and_support do
 
   desc 'Add areas'
   task :add_areas, %i[host url] => [:environment] do |_t, args|
-    data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
+    data = CSV.parse(open(args[:url]).read, headers: true, col_sep: ',', converters: [])
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       data.each do |d|
         Area.create!(title_multiloc: d.to_h)
@@ -257,7 +257,7 @@ namespace :setup_and_support do
 
   desc 'Add anonymous likes/dislikes to ideas'
   task :add_idea_reactions, %i[host url] => [:environment] do |_t, args|
-    data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
+    data = CSV.parse(open(args[:url]).read, headers: true, col_sep: ',', converters: [])
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       errors = []
       data.each do |d|

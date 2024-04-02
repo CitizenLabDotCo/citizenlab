@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import { IInitiativeFiles } from 'api/initiative_files/types';
 import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
@@ -20,7 +20,7 @@ import clHistory from 'utils/cl-router/history';
 import { parsePosition } from 'utils/locationTools';
 
 interface Props {
-  locale: Locale;
+  locale: SupportedLocale;
   initiative: IInitiativeData;
   initiativeImage?: IInitiativeImageData;
   initiativeFiles?: IInitiativeFiles;

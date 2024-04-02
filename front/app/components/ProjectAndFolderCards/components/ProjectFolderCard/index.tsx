@@ -11,6 +11,7 @@ import {
   Box,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
+import { RouteType } from 'routes';
 import styled, { useTheme } from 'styled-components';
 
 import useAdminPublication from 'api/admin_publications/useAdminPublication';
@@ -405,7 +406,7 @@ const ProjectFolderCard = memo<Props>(
       ? getCardImageUrl(imageVersions, isSmallerThanPhone, size)
       : null;
 
-    const folderUrl = `/folders/${publication.data.attributes.publication_slug}`;
+    const folderUrl: RouteType = `/folders/${publication.data.attributes.publication_slug}`;
     const numberOfProjectsInFolder =
       publication.data.attributes.visible_children_count;
 
@@ -414,7 +415,7 @@ const ProjectFolderCard = memo<Props>(
     const contentHeader = (
       <ContentHeader className={`${size} hasContent`} hasLabel={isArchived}>
         {isArchived && (
-          <ContentHeaderLabel className="e2e-project-card-archived-label">
+          <ContentHeaderLabel>
             <FormattedMessage {...messages.archived} />
           </ContentHeaderLabel>
         )}

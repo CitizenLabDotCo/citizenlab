@@ -15,7 +15,7 @@ import { debounce } from 'lodash-es';
 import Quill, { Sources, QuillOptionsStatic, RangeStatic } from 'quill';
 import BlotFormatter from 'quill-blot-formatter';
 import styled from 'styled-components';
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import usePrevious from 'hooks/usePrevious';
 
@@ -269,7 +269,7 @@ export interface Props {
   value?: string;
   label?: string | JSX.Element | null;
   labelTooltipText?: string | JSX.Element | null;
-  locale?: Locale;
+  locale?: SupportedLocale;
   placeholder?: string;
   noToolbar?: boolean;
   noImages?: boolean;
@@ -280,7 +280,7 @@ export interface Props {
   className?: string;
   maxHeight?: string;
   minHeight?: string;
-  onChange?: (html: string, locale: Locale | undefined) => void;
+  onChange?: (html: string, locale: SupportedLocale | undefined) => void;
   onFocus?: () => void;
   onBlur?: () => void;
   setRef?: (arg: HTMLDivElement) => void | undefined;

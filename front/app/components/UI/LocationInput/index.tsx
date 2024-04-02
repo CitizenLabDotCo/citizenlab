@@ -93,6 +93,7 @@ const LocationInput = (
 
   return (
     <AsyncSelect
+      id="e2e-location-input"
       defaultOptions={defaultOptions}
       loadOptions={promiseOptions}
       styles={selectStyles()}

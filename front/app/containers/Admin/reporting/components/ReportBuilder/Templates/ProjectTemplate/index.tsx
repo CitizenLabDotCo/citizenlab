@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { Element, useEditor } from '@craftjs/core';
+import { Element } from '@craftjs/core';
 import moment from 'moment';
 
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
@@ -20,9 +20,6 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
 import { withoutSpacing } from 'utils/textUtils';
 
-// shared widgets
-
-// report builder widgets
 import { SURVEY_QUESTION_INPUT_TYPES } from '../../constants';
 import AboutReportWidget from '../../Widgets/AboutReportWidget';
 import ActiveUsersWidget from '../../Widgets/ChartWidgets/ActiveUsersWidget';
@@ -33,6 +30,7 @@ import MostReactedIdeasWidget from '../../Widgets/MostReactedIdeasWidget';
 import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget';
 import TextMultiloc from '../../Widgets/TextMultiloc';
 import TwoColumn from '../../Widgets/TwoColumn';
+import { TemplateContext } from '../context';
 
 import { getTemplateData } from './getTemplateData';
 import messages from './messages';
@@ -183,15 +181,12 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
 };
 
 const ProjectTemplate = ({ reportId, projectId }: Props) => {
-  const { enabled } = useEditor((state) => {
-    return {
-      enabled: state.options.enabled,
-    };
-  });
+  const enabled = useContext(TemplateContext);
+
   if (enabled) {
     return <ProjectTemplateContent reportId={reportId} projectId={projectId} />;
   } else {
-    return <Element id="phase-report-template" is={Box} canvas />;
+    return <Element id="project-report-template" is={Box} canvas />;
   }
 };
 

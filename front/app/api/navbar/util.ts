@@ -1,8 +1,10 @@
+import { RouteType } from 'routes';
+
 import { TPageSlugById } from 'api/custom_pages/useCustomPageSlugById';
 
 import { TDefaultNavbarItemCode, TNavbarItemCode } from './types';
 
-export const DEFAULT_PAGE_SLUGS: Record<TDefaultNavbarItemCode, string> = {
+export const DEFAULT_PAGE_SLUGS: Record<TDefaultNavbarItemCode, RouteType> = {
   home: '/',
   projects: '/projects',
   all_input: '/ideas',
@@ -15,7 +17,7 @@ export function getNavbarItemSlug(
   navbarItemCode: TNavbarItemCode,
   pageBySlugId: TPageSlugById,
   pageId?: string
-) {
+): RouteType | null {
   // Default navbar item
   if (navbarItemCode !== 'custom' && !pageId) {
     return DEFAULT_PAGE_SLUGS[navbarItemCode];

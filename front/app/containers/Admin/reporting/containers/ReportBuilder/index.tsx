@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import { ReportLayout } from 'api/report_layout/types';
 import useReportLayout from 'api/report_layout/useReportLayout';
@@ -24,6 +24,7 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 import Editor from '../../components/ReportBuilder/Editor';
 import Settings from '../../components/ReportBuilder/Settings';
+import { TemplateContext } from '../../components/ReportBuilder/Templates/context';
 import PhaseTemplate from '../../components/ReportBuilder/Templates/PhaseTemplate';
 import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTemplate';
 import Toolbox from '../../components/ReportBuilder/Toolbox';
@@ -67,7 +68,8 @@ const ReportBuilder = ({
   const emptyReportOnInit = initialData === undefined;
 
   const [imageUploading, setImageUploading] = useState(false);
-  const [selectedLocale, setSelectedLocale] = useState<Locale>(platformLocale);
+  const [selectedLocale, setSelectedLocale] =
+    useState<SupportedLocale>(platformLocale);
 
   const [saved, setSaved] = useState(true);
 
@@ -76,7 +78,7 @@ const ReportBuilder = ({
   };
 
   return (
-    <ReportContextProvider width="pdf" reportId={reportId} phaseId={phaseId}>
+    <ReportContextProvider width={view} reportId={reportId} phaseId={phaseId}>
       <FullscreenContentBuilder onUploadImage={setImageUploading}>
         <Editor
           isPreview={false}
@@ -119,7 +121,7 @@ const ReportBuilder = ({
             setSelectedLocale={setSelectedLocale}
           />
           <Box mt={`${stylingConsts.menuHeight}px`}>
-            <Toolbox reportId={reportId} />
+            <Toolbox reportId={reportId} selectedLocale={selectedLocale} />
             <LanguageProvider
               contentBuilderLocale={selectedLocale}
               platformLocale={platformLocale}
@@ -179,12 +181,14 @@ const ReportBuilderWrapper = () => {
   if (!renderReportBuilder) return null;
 
   return (
-    <ReportBuilder
-      report={report}
-      reportLayout={reportLayout.data}
-      templateProjectId={templateProjectId}
-      templatePhaseId={templatePhaseId}
-    />
+    <TemplateContext.Provider value={!!(templateProjectId || templatePhaseId)}>
+      <ReportBuilder
+        report={report}
+        reportLayout={reportLayout.data}
+        templateProjectId={templateProjectId}
+        templatePhaseId={templatePhaseId}
+      />
+    </TemplateContext.Provider>
   );
 };
 

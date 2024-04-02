@@ -24,7 +24,7 @@ const SingleIdeaWidget = ({
   showReactions,
   showVotes,
 }: Props) => {
-  const response = useSingleIdea(
+  const { data: response } = useSingleIdea(
     {
       phase_id: phaseId,
       idea_id: ideaId,
