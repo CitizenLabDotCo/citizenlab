@@ -52,8 +52,22 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale',
     defaultMessage: 'Locale:',
   },
-  ideaImportedAnonymously: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.ideaImportedAnonymously',
-    defaultMessage: 'This idea was imported anonymously.',
+  inputImportedAnonymously: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously',
+    defaultMessage: 'This input was imported anonymously.',
+  },
+  inputsImported: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsImported',
+    defaultMessage:
+      '{numIdeas} inputs have been imported and require approval.',
+  },
+  inputsNotApproved: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved',
+    defaultMessage:
+      '{numNotApproved} inputs could not be approved. Please check each idea for validation issues and confirm individually.',
+  },
+  approveAll: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAll',
+    defaultMessage: 'Approve all',
   },
 });

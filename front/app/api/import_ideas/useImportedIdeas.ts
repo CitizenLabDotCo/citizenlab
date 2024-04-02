@@ -8,11 +8,9 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import { importedIdeasKeys } from './keys';
 import { QueryParams, ImportedIdeasKeys } from './types';
 
-const fetchImportedIdeas = ({ projectId, phaseId }: QueryParams) =>
+const fetchImportedIdeas = ({ phaseId }: QueryParams) =>
   fetcher<IIdeas>({
-    path: phaseId
-      ? `/phases/${phaseId}/import_ideas/draft_ideas`
-      : `/projects/${projectId}/import_ideas/draft_ideas`,
+    path: `/phases/${phaseId}/import_ideas/draft_ideas`,
     action: 'get',
   });
 const useImportedIdeas = (queryParams: QueryParams) => {

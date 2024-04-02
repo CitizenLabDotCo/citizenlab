@@ -183,6 +183,38 @@ resource 'BulkImportIdeasImportIdeas' do
           assert_status 200
         end
       end
+
+      patch 'web_api/v1/phases/:phase_id/import_ideas/approve_all' do
+        let(:phase) { create(:phase) }
+        let!(:draft_ideas) do
+          create_list(:idea, 3, project: phase.project, publication_status: 'draft').each do |idea|
+            idea.update! idea_import: create(:idea_import, idea: idea)
+          end
+        end
+
+        let(:phase_id) { phase.id }
+
+        example 'Approves all the ideas for a phase' do
+          expect(draft_ideas.map(&:publication_status)).to eq %w[draft draft draft]
+          expect(draft_ideas.map { |idea| idea.idea_import.approved_at }).to all(be_nil)
+
+          binding.pry
+          do_request
+          assert_status 200
+          expect(response_data).to eq({ type: "approve_all", attributes: { approved: 3, notApproved: 0 } })
+          expect(draft_ideas.map { |idea| idea.reload.publication_status }).to eq %w[published published published]
+          expect(draft_ideas.map { |idea| idea.idea_import.approved_at }).to all(be_a(ActiveSupport::TimeWithZone))
+        end
+
+        example 'Does not approve any ideas that fail validation' do
+          draft_ideas[0].update!(title_multiloc: { en: '' })
+
+          do_request
+          assert_status 200
+          expect(response_data).to eq({ type: "approve_all", attributes: { approved: 2, notApproved: 1 } })
+          expect(draft_ideas.map { |idea| idea.reload.publication_status }).to eq %w[draft published published]
+        end
+      end
     end
 
     context 'idea import metadata' do

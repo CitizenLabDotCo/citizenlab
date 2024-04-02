@@ -2,7 +2,7 @@
 
 module BulkImportIdeas
   class WebApi::V1::ImportIdeasController < ApplicationController
-    before_action :authorize_bulk_import_ideas, only: %i[bulk_create example_xlsx draft_ideas]
+    before_action :authorize_bulk_import_ideas, only: %i[bulk_create example_xlsx draft_ideas approve_all]
 
     # NOTE: PDF version only works for a project endpoint
     def bulk_create
@@ -26,12 +26,28 @@ module BulkImportIdeas
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
     end
 
-    def draft_ideas
-      creation_phase_id = nil
-      if import_scope == :phase
-        phase = Phase.find(params[:id])
-        creation_phase_id = phase&.native_survey? ? phase.id : nil
+    def approve_all
+      # TODO: JS - Make sure autosaved surveys don't get published
+      phase = Phase.find(params[:id])
+      creation_phase_id = phase&.native_survey? ? phase.id : nil
+      # TODO: JS - ensure these are only ideas for this phase
+      ideas = Idea.draft.where(project_id: @project.id, creation_phase_id: creation_phase_id)
+      approved = 0
+      not_approved = 0
+      ideas.each do |idea|
+        if idea.update(publication_status: 'published')
+          approved += 1
+        else
+          not_approved += 1
+        end
       end
+
+      render json: raw_json({ approved: approved, notApproved: not_approved})
+    end
+
+    def draft_ideas
+      phase = Phase.find(params[:id])
+      creation_phase_id = phase&.native_survey? ? phase.id : nil
       ideas = Idea.draft.where(project_id: @project.id, creation_phase_id: creation_phase_id)
 
       render json: linked_json(

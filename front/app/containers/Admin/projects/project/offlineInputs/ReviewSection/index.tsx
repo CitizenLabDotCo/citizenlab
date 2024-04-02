@@ -14,7 +14,7 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import EmptyState from './EmptyState';
 import IdeaEditor from './IdeaEditor';
@@ -22,18 +22,27 @@ import IdeaList from './IdeaList';
 import messages from './messages';
 import PDFPageControl from './PDFPageControl';
 import PDFViewer from './PDFViewer';
+import Button from 'components/UI/Button';
+import useApproveOfflineIdeas from 'api/import_ideas/useApproveOfflineIdeas';
+import Error from 'components/UI/Error';
 
 const ReviewSection = () => {
   const { projectId, phaseId } = useParams() as {
     projectId: string;
-    phaseId?: string;
+    phaseId: string;
   };
-
+  const { formatMessage } = useIntl();
   const [ideaId, setIdeaId] = useState<string | null>(null);
+  const [approvals, setApprovals] = useState({ approved: 0, notApproved: 0 });
 
   const { data: idea } = useIdeaById(ideaId ?? undefined, false);
-  const { data: ideas, isLoading } = useImportedIdeas({ projectId, phaseId });
+  const {
+    data: ideas,
+    refetch: refetchIdeas,
+    isLoading,
+  } = useImportedIdeas({ projectId, phaseId });
   const { mutate: deleteIdea } = useDeleteIdea();
+  const { mutate: approveIdeas } = useApproveOfflineIdeas();
 
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
 
@@ -42,7 +51,8 @@ const ReviewSection = () => {
   });
 
   if (ideas === undefined) return null;
-  if (ideas.data.length === 0) {
+  const numIdeas = ideas.data.length;
+  if (numIdeas === 0) {
     return <EmptyState />;
   }
 
@@ -58,6 +68,15 @@ const ReviewSection = () => {
           setIdeaId(null);
           setCurrentPageIndex(0);
         }
+      },
+    });
+  };
+
+  const handleApproveAll = () => {
+    approveIdeas(phaseId, {
+      onSuccess: (data) => {
+        setApprovals(data.data.attributes);
+        refetchIdeas();
       },
     });
   };
@@ -90,7 +109,41 @@ const ReviewSection = () => {
         <Title variant="h2" color="primary" mt="8px" mb="20px">
           <FormattedMessage {...messages.importedInputs} />
         </Title>
+      </Box>
 
+      <Box
+        px="25px"
+        borderBottom={`5px ${colors.grey200} solid`}
+        display="flex"
+      >
+        <Box w="60%" display="flex">
+          {approvals.notApproved === 0 ? (
+            <>
+              <Box px="15px">
+                <Text>
+                  <FormattedMessage
+                    {...messages.inputsImported}
+                    values={{ numIdeas }}
+                  />
+                </Text>
+              </Box>
+              <Box pt="10px">
+                <Button p="6px" icon="check-circle" onClick={handleApproveAll}>
+                  <FormattedMessage {...messages.approveAll} />
+                </Button>
+              </Box>
+            </>
+          ) : (
+            <Error
+              text={formatMessage(messages.inputsNotApproved, {
+                numNotApproved: approvals.notApproved,
+              })}
+              marginTop="0px"
+              showBackground={false}
+              showIcon={true}
+            />
+          )}
+        </Box>
         <Box
           w="40%"
           display="flex"
