@@ -9,9 +9,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-// resources
-
-// types
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
