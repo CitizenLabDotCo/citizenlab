@@ -63,7 +63,10 @@ const OfflineInputImporter = () => {
         h="100vh"
       >
         <FocusOn>
-          <TopBar onClickPDFImport={openImportModal} />
+          <TopBar
+            onClickPDFImport={openImportModal}
+            onClickExcelImport={openImportModal}
+          />
           <Box
             mt={`${stylingConsts.mobileMenuHeight}px`}
             h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}

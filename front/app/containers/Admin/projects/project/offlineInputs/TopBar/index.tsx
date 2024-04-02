@@ -3,7 +3,6 @@ import React from 'react';
 import {
   Box,
   Title,
-  Button,
   Text,
   Badge,
   stylingConsts,
@@ -23,11 +22,14 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
 
+import ImportButtons from './ImportButtons';
+
 interface Props {
   onClickPDFImport: () => void;
+  onClickExcelImport: () => void;
 }
 
-const TopBar = ({ onClickPDFImport }: Props) => {
+const TopBar = ({ onClickPDFImport, onClickExcelImport }: Props) => {
   const localize = useLocalize();
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -80,9 +82,10 @@ const TopBar = ({ onClickPDFImport }: Props) => {
       </Box>
 
       <Box display="flex">
-        <Button icon="page" onClick={onClickPDFImport} bgColor={colors.primary}>
-          <FormattedMessage {...messages.importFile} />
-        </Button>
+        <ImportButtons
+          onClickPDFImport={onClickPDFImport}
+          onClickExcelImport={onClickExcelImport}
+        />
       </Box>
     </Box>
   );

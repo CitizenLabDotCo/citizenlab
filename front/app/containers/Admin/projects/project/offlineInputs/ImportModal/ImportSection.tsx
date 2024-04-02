@@ -9,6 +9,7 @@ import { object, string, mixed, boolean } from 'yup';
 
 import useAddOfflineIdeas from 'api/import_ideas/useAddOfflineIdeas';
 import { IPhases } from 'api/phases/types';
+import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import { IProject } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
@@ -26,7 +27,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import LocalePicker from './LocalePicker';
 import messages from './messages';
-import usePhase from 'api/phases/usePhase';
 
 interface OuterProps {
   onFinishImport: () => void;
