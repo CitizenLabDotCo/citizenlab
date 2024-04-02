@@ -11,6 +11,8 @@ import { AdminRoute } from '../routes';
 import AdminProjectIdeaPreviewIndex from './AdminProjectIdeaPreviewIndex';
 import IdeaFormBuilder from './project/inputForm/IdeaFormBuilder';
 import SurveyFormBuilder from './project/nativeSurvey/SurveyFormBuilder';
+import ProjectParticipation from './project/participation';
+import ProjectTraffic from './project/traffic';
 
 const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));
@@ -56,6 +58,8 @@ export enum projectsRoutes {
   projects = 'projects',
   projectIdeaId = ':projectId/ideas/:ideaId',
   projectSettings = ':projectId/settings',
+  projectTraffic = ':projectId/traffic',
+  projectParticipation = ':projectId/participation',
   projectSettingsDescription = 'description',
   projectSettingsEvents = 'events',
   projectSettingsEventsNew = 'events/new',
@@ -93,6 +97,8 @@ export type projectsRouteTypes =
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectSettingsEvents}/${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectSettingsTags}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectTraffic}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectParticipation}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectPhasesSetup}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/setup`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectNewPhase}`>
@@ -136,6 +142,22 @@ const createAdminProjectsRoutes = () => {
         element: (
           <PageLoading>
             <AdminProjectIdeaPreviewIndex />
+          </PageLoading>
+        ),
+      },
+      {
+        path: projectsRoutes.projectTraffic,
+        element: (
+          <PageLoading>
+            <ProjectTraffic />
+          </PageLoading>
+        ),
+      },
+      {
+        path: projectsRoutes.projectParticipation,
+        element: (
+          <PageLoading>
+            <ProjectParticipation />
           </PageLoading>
         ),
       },
@@ -214,6 +236,7 @@ const createAdminProjectsRoutes = () => {
             path: '',
             element: <Navigate to="phases/setup" replace />,
           },
+
           {
             path: projectsRoutes.projectPhasesSetup,
             element: (
