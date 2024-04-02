@@ -22,8 +22,10 @@ const InstructionMessage = ({ projectId }: Props) => {
   const isTabletOrSmaller = useBreakpoint('tablet');
   const { data: project } = useProjectById(projectId);
 
+  if (!project) return null;
+
   const getInstructionMessage = () => {
-    if (project && authUser && canModerateProject(project.data, authUser)) {
+    if (authUser && canModerateProject(project.data, authUser)) {
       return isTabletOrSmaller
         ? formatMessage(messages.tapOnMapToAddAdmin)
         : formatMessage(messages.clickOnMapToAddAdmin);
