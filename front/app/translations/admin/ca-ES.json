@@ -1214,7 +1214,6 @@
   "app.containers.AdminPage.ProjectEdit.searchPlaceholder": "Cercar les plantilles",
   "app.containers.AdminPage.ProjectEdit.selectGroups": "Seleccioneu els grups",
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Compartir informació",
-  "app.containers.AdminPage.ProjectEdit.shareInformationDescription": "Proporcionar informació als participants.",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",
   "app.containers.AdminPage.ProjectEdit.snap_survey": "Enquesta ràpida",
   "app.containers.AdminPage.ProjectEdit.statusLabel": "Estat del projecte",

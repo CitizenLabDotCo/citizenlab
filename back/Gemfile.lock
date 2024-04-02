@@ -430,7 +430,7 @@ GEM
       activesupport (= 7.0.8.1)
     activerecord-import (1.4.1)
       activerecord (>= 4.2)
-    activerecord-postgis-adapter (8.0.2)
+    activerecord-postgis-adapter (8.0.3)
       activerecord (~> 7.0.0)
       rgeo-activerecord (~> 7.0.0)
     activestorage (7.0.8.1)
@@ -490,7 +490,7 @@ GEM
       nokogiri (~> 1.8, >= 1.8.2)
       rubyzip (~> 1.2, >= 1.2.1)
     base64 (0.2.0)
-    bcrypt (3.1.18)
+    bcrypt (3.1.20)
     bigdecimal (3.1.7)
     bindata (2.5.0)
     binding_of_caller (1.0.0)
@@ -571,7 +571,7 @@ GEM
     factory_bot_rails (6.2.0)
       factory_bot (~> 6.2.0)
       railties (>= 5.0.0)
-    faker (3.2.3)
+    faker (3.3.0)
       i18n (>= 1.8.11, < 2)
     faraday (2.8.1)
       base64
@@ -741,7 +741,8 @@ GEM
     jsonapi-renderer (0.2.2)
     jsonapi-serializer (2.2.0)
       activesupport (>= 4.2)
-    jwt (2.7.0)
+    jwt (2.8.1)
+      base64
     kaminari (1.2.2)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.2)
@@ -999,7 +1000,7 @@ GEM
       netrc (~> 0.8)
     retriable (3.1.2)
     rexml (3.2.6)
-    rgeo (3.0.0)
+    rgeo (3.0.1)
     rgeo-activerecord (7.0.1)
       activerecord (>= 5.0)
       rgeo (>= 1.0.0)
@@ -1147,7 +1148,7 @@ GEM
     sorted_set (1.0.3)
       rbtree
       set (~> 1.0)
-    spring (4.1.1)
+    spring (4.1.3)
     spring-commands-rspec (1.0.4)
       spring (>= 0.9.1)
     spring-watcher-listen (2.1.0)
@@ -1236,7 +1237,7 @@ DEPENDENCIES
   aws-sdk-bedrockruntime (~> 1)
   aws-sdk-s3 (~> 1)
   axlsx (= 3.0.0.pre)
-  bcrypt (~> 3.1.7)
+  bcrypt (~> 3.1.20)
   bootsnap (~> 1)
   bulk_import_ideas!
   bullet
@@ -1288,7 +1289,7 @@ DEPENDENCIES
   intercom (~> 4.2)
   json-schema (~> 4.0)
   jsonapi-serializer
-  jwt (~> 2.7.0)
+  jwt (~> 2.8.1)
   kaminari (~> 1.2)
   license_finder
   liquid (~> 5.4)

@@ -958,7 +958,6 @@
   "app.containers.AdminPage.ProjectEdit.searchPlaceholder": "Skabeloninik ujaasigit",
   "app.containers.AdminPage.ProjectEdit.selectGroups": "Gruppi(t) toqqaruk(kkit)",
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Paasissutissanik avitseqatiginnigit",
-  "app.containers.AdminPage.ProjectEdit.shareInformationDescription": "Peqataasut ilisimatikkit.",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",
   "app.containers.AdminPage.ProjectEdit.snap_survey": "Snap Survey",
   "app.containers.AdminPage.ProjectEdit.statusLabel": "Pilersaarutip killiffia",
