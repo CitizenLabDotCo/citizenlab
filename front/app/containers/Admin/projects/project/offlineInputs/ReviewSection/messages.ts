@@ -62,12 +62,12 @@ export default defineMessages({
       '{numIdeas} inputs have been imported and require approval.',
   },
   inputsNotApproved: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved',
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved2',
     defaultMessage:
-      '{numNotApproved} inputs could not be approved. Please check each idea for validation issues and confirm individually.',
+      '{numNotApproved} inputs could not be approved. Please check each input for validation issues and confirm individually.',
   },
-  approveAll: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAll',
-    defaultMessage: 'Approve all',
+  approveAllInputs: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs',
+    defaultMessage: 'Approve all inputs',
   },
 });

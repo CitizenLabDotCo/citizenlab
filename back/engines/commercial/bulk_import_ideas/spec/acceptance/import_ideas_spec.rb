@@ -127,8 +127,8 @@ resource 'BulkImportIdeasImportIdeas' do
       let(:id) { phase.id }
 
       example 'Get the imported draft ideas for a phase' do
-        draft_ideas[0].update! creation_phase: phase
-        draft_ideas[1].update! creation_phase: phase
+        draft_ideas[0].update! creation_phase: phase, phases: [phase]
+        draft_ideas[1].update! creation_phase: phase, phases: [phase]
 
         do_request
         assert_status 200
@@ -140,6 +140,18 @@ resource 'BulkImportIdeasImportIdeas' do
         # Relationships
         expect(response_data.first.dig(:relationships, :idea_import, :data)).not_to be_nil
         expect(json_response_body[:included].pluck(:type)).to include 'idea_import'
+      end
+
+      example 'Should only return draft ideas created via the importer' do
+        draft_ideas[0].update! creation_phase: phase, phases: [phase]
+        draft_ideas[1].update! creation_phase: phase, phases: [phase]
+        draft_ideas[0].idea_import.destroy!
+
+        do_request
+        assert_status 200
+
+        # Should return only the 1 draft idea on the phase with an idea_import
+        expect(response_data.count).to eq 1
       end
     end
 
@@ -156,7 +168,7 @@ resource 'BulkImportIdeasImportIdeas' do
     patch 'web_api/v1/phases/:phase_id/import_ideas/approve_all' do
       let(:phase) { create(:phase) }
       let!(:draft_ideas) do
-        create_list(:idea, 3, project: phase.project, publication_status: 'draft').each do |idea|
+        create_list(:idea, 3, project: phase.project, phases: [phase], publication_status: 'draft').each do |idea|
           idea.update! idea_import: create(:idea_import, idea: idea)
         end
       end

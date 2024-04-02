@@ -117,21 +117,25 @@ const ReviewSection = () => {
         borderBottom={`5px ${colors.grey200} solid`}
         display="flex"
       >
-        <Box w="60%" display="flex">
+        <Box w="60%" display="flex" alignItems="center">
           {approvals.notApproved === 0 ? (
             <>
-              <Box px="15px">
+              <Box px="15px" py="10px">
+                <Button
+                  bgColor={colors.primary}
+                  icon="check"
+                  onClick={handleApproveAll}
+                >
+                  <FormattedMessage {...messages.approveAllInputs} />
+                </Button>
+              </Box>
+              <Box>
                 <Text>
                   <FormattedMessage
                     {...messages.inputsImported}
                     values={{ numIdeas }}
                   />
                 </Text>
-              </Box>
-              <Box pt="10px">
-                <Button p="6px" icon="check" onClick={handleApproveAll}>
-                  <FormattedMessage {...messages.approveAll} />
-                </Button>
               </Box>
             </>
           ) : (

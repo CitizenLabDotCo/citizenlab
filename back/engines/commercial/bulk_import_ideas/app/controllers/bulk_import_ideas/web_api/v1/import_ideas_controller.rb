@@ -27,11 +27,7 @@ module BulkImportIdeas
     end
 
     def approve_all
-      # TODO: JS - Make sure autosaved surveys don't get published
-      phase = Phase.find(params[:id])
-      creation_phase_id = phase&.native_survey? ? phase.id : nil
-      # TODO: JS - ensure these are only ideas for this phase
-      ideas = Idea.draft.where(project_id: @project.id, creation_phase_id: creation_phase_id)
+      ideas = imported_draft_ideas
       approved = 0
       not_approved = 0
       ideas.each do |idea|
@@ -46,12 +42,8 @@ module BulkImportIdeas
     end
 
     def draft_ideas
-      phase = Phase.find(params[:id])
-      creation_phase_id = phase&.native_survey? ? phase.id : nil
-      ideas = Idea.draft.where(project_id: @project.id, creation_phase_id: creation_phase_id)
-
       render json: linked_json(
-        paginate(ideas),
+        paginate(imported_draft_ideas),
         ::WebApi::V1::IdeaSerializer,
         include: %i[author idea_import],
         params: jsonapi_serializer_params
@@ -98,6 +90,16 @@ module BulkImportIdeas
 
     def sidefx
       @sidefx ||= SideFxImportIdeasService.new
+    end
+
+    def imported_draft_ideas
+      phase = Phase.find(params[:id])
+      creation_phase_id = phase&.native_survey? ? phase.id : nil
+      Idea
+        .draft
+        .in_phase(phase)
+        .joins(:idea_import)
+        .where(project_id: @project.id, creation_phase_id: creation_phase_id)
     end
   end
 end
