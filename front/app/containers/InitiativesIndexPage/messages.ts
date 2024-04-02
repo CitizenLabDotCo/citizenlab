@@ -30,10 +30,6 @@ export default defineMessages({
     id: 'app.containers.InitiativesIndexPage.learnMoreAboutProposals',
     defaultMessage: 'Learn more about how proposals work.',
   },
-  explanationTitle: {
-    id: 'app.containers.InitiativesIndexPage.explanationTitle',
-    defaultMessage: 'How do initiatives work?',
-  },
   constraints: {
     id: 'app.containers.InitiativesIndexPage.constraints',
     defaultMessage: '{voteThreshold} votes within {daysLimit} days',

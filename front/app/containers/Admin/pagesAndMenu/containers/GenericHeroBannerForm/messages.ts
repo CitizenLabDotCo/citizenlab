@@ -19,10 +19,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.header_bg',
     defaultMessage: 'Header image',
   },
-  bannerHeaderSignedOut: {
-    id: 'app.containers.AdminPage.SettingsPage.bannerHeaderSignedOut',
-    defaultMessage: 'Header text for non-registered visitors',
-  },
   bannerHeader: {
     id: 'app.containers.AdminPage.SettingsPage.bannerHeader',
     defaultMessage: 'Header text',

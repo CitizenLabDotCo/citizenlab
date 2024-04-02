@@ -156,18 +156,6 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.setAsDefaultMapView',
     defaultMessage: `Save the current center point and zoom level as the map defaults`,
   },
-  currentLat: {
-    id: 'app.components.admin.PostManager.currentLat',
-    defaultMessage: `Center latitude`,
-  },
-  currentLng: {
-    id: 'app.components.admin.PostManager.currentLng',
-    defaultMessage: `Center longitude`,
-  },
-  currentZoomLevel: {
-    id: 'app.components.admin.PostManager.currentZoomLevel',
-    defaultMessage: `Zoom level`,
-  },
   saved: {
     id: 'app.components.admin.PostManager.saved',
     defaultMessage: `Saved`,

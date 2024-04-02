@@ -106,15 +106,6 @@ export default defineMessages({
     defaultMessage:
       'There was an issue submitting the form. Please check for any errors and try again.',
   },
-  editedPostSave: {
-    id: 'app.components.admin.PostManager.editedPostSave',
-    defaultMessage: 'Save',
-  },
-  fileUploadError: {
-    id: 'app.components.admin.PostManager.fileUploadError',
-    defaultMessage:
-      'One or more files failed to upload. Please check the file size and format and try again.',
-  },
   view: {
     id: 'app.components.admin.PostManager.view',
     defaultMessage: 'View',

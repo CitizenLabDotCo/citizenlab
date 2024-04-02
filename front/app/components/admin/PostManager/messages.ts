@@ -13,10 +13,6 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.noOne',
     defaultMessage: 'Unassigned',
   },
-  inputManagerHeader: {
-    id: 'app.components.admin.PostManager.inputManagerHeader',
-    defaultMessage: 'Inputs',
-  },
   inputsNeedFeedbackToggle: {
     id: 'app.components.admin.PostManager.inputsNeedFeedbackToggle',
     defaultMessage: 'Only show inputs that need feedback',

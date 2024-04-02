@@ -21,14 +21,6 @@ export default defineMessages({
     id: 'app.containers.PasswordReset.passwordLabel',
     defaultMessage: 'Password',
   },
-  passwordError: {
-    id: 'app.containers.PasswordReset.passwordError',
-    defaultMessage: 'Your password must contain at least 8 characters',
-  },
-  submitError: {
-    id: 'app.containers.PasswordReset.submitError',
-    defaultMessage: 'Something went wrong. Please try again later.',
-  },
   passwordUpdatedSuccessMessage: {
     id: 'app.containers.PasswordReset.passwordUpdatedSuccessMessage',
     defaultMessage: 'Your password has been successfully updated.',

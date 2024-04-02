@@ -27,23 +27,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.noLogo',
     defaultMessage: 'Please upload a logo',
   },
-  homePageCustomizableSection: {
-    id: 'app.components.AdminPage.SettingsPage.homePageCustomizableSection',
-    defaultMessage: 'Homepage customizable section',
-  },
-  eventsSection: {
-    id: 'app.components.AdminPage.SettingsPage.eventsSection',
-    defaultMessage: 'Events',
-  },
-  eventsPageSetting: {
-    id: 'app.components.AdminPage.SettingsPage.eventsPageSetting',
-    defaultMessage: 'Add Events to navigation bar',
-  },
-  eventsPageSettingDescription: {
-    id: 'app.components.AdminPage.SettingsPage.eventsPageSettingDescription',
-    defaultMessage:
-      'Add a link to view all project events in the navigation bar',
-  },
   contrastRatioTooLow: {
     id: 'app.components.AdminPage.SettingsPage.contrastRatioTooLow',
     defaultMessage:
