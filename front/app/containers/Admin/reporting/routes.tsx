@@ -1,5 +1,7 @@
 import React, { lazy } from 'react';
 
+import { Navigate } from 'react-router-dom';
+
 import PageLoading from 'components/UI/PageLoading';
 
 import { AdminRoute } from '../routes';
@@ -16,37 +18,44 @@ export enum reportingEnumRoutes {
 }
 
 export type reportingRouteTypes =
+  | AdminRoute<reportingEnumRoutes.reporting>
   | AdminRoute<`${reportingEnumRoutes.reporting}/${reportingEnumRoutes.reportBuilder}`>
   | AdminRoute<`${reportingEnumRoutes.reporting}/${reportingEnumRoutes.reportBuilder}?${string}`>
   | AdminRoute<`${reportingEnumRoutes.reporting}/${reportingEnumRoutes.reportBuilder}/${string}/${reportingEnumRoutes.editor}`>;
 
 const reportingRoutes = () => {
-  return {
-    path: `${reportingEnumRoutes.reporting}/${reportingEnumRoutes.reportBuilder}`,
-    element: (
-      <PageLoading>
-        <ReportingWrapper />
-      </PageLoading>
-    ),
-    children: [
-      {
-        index: true,
-        element: (
-          <PageLoading>
-            <ReportBuilderPage />
-          </PageLoading>
-        ),
-      },
-      {
-        path: `:reportId/${reportingEnumRoutes.editor}`,
-        element: (
-          <PageLoading>
-            <ReportBuilder />
-          </PageLoading>
-        ),
-      },
-    ],
-  };
+  return [
+    {
+      path: `${reportingEnumRoutes.reporting}/${reportingEnumRoutes.reportBuilder}`,
+      element: (
+        <PageLoading>
+          <ReportingWrapper />
+        </PageLoading>
+      ),
+      children: [
+        {
+          index: true,
+          element: (
+            <PageLoading>
+              <ReportBuilderPage />
+            </PageLoading>
+          ),
+        },
+        {
+          path: `:reportId/${reportingEnumRoutes.editor}`,
+          element: (
+            <PageLoading>
+              <ReportBuilder />
+            </PageLoading>
+          ),
+        },
+      ],
+    },
+    {
+      path: reportingEnumRoutes.reporting,
+      element: <Navigate to={reportingEnumRoutes.reportBuilder} />,
+    },
+  ];
 };
 
 export default reportingRoutes;
