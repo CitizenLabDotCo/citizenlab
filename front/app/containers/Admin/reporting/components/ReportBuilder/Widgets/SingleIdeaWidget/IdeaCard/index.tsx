@@ -177,12 +177,12 @@ const IdeaCard = ({
         <Box marginLeft="auto">
           <Text color="coolGrey500" fontSize="s">
             {showVotes && (
-              <Box display="inline" mr="10px">
+              <Box as="span" display="inline" mr="10px">
                 {textNumberOfVotes}
               </Box>
             )}
             {showReactions && (
-              <Box display="inline">
+              <Box as="span" display="inline">
                 <Icon
                   height="16px"
                   fill={colors.coolGrey500}

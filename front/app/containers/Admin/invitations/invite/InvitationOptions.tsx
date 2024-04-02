@@ -10,7 +10,7 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { IOption, Locale } from 'typings';
+import { IOption, SupportedLocale } from 'typings';
 
 import { IGroups } from 'api/groups/types';
 import useGroups from 'api/groups/useGroups';
@@ -53,8 +53,8 @@ interface Props {
   inviteesWillHaveModeratorRights: boolean;
   handleAdminRightsOnToggle: () => void;
   handleModeratorRightsOnToggle: () => void;
-  onLocaleOnChange: (selectedLocale: Locale) => void;
-  selectedLocale: Locale | null;
+  onLocaleOnChange: (selectedLocale: SupportedLocale) => void;
+  selectedLocale: SupportedLocale | null;
   handleSelectedProjectsOnChange: (selectedProjects: IOption[]) => void;
   handleSelectedGroupsOnChange: (selectedGroups: IOption[]) => void;
   handleInviteTextOnChange: (selectedInviteText: string) => void;

@@ -4,7 +4,7 @@ import { Box, Text, Button } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
-import { UploadFile, Locale } from 'typings';
+import { UploadFile, SupportedLocale } from 'typings';
 import { object, string, mixed, boolean } from 'yup';
 
 import useAddOfflineIdeas from 'api/import_ideas/useAddOfflineIdeas';
@@ -35,12 +35,12 @@ interface OuterProps {
 interface Props extends OuterProps {
   project: IProject;
   phases?: IPhases;
-  locale: Locale;
+  locale: SupportedLocale;
 }
 
 interface FormValues {
   phase_id?: string;
-  locale: Locale;
+  locale: SupportedLocale;
   file?: UploadFile;
   personal_data: boolean;
   google_consent: false;
