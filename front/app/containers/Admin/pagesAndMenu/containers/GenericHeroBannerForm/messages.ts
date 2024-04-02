@@ -32,39 +32,18 @@ export default defineMessages({
     defaultMessage:
       'The provided title exceeds the maximum allowed character limit',
   },
-  bannerHeaderSignedOutSubtitle: {
-    id: 'app.containers.AdminPage.SettingsPage.bannerHeaderSignedOutSubtitle',
-    defaultMessage: 'Sub-header text for non-registered visitors',
-  },
   subtitleMaxCharError: {
     id: 'app.containers.AdminPage.SettingsPage.subtitleMaxCharError',
     defaultMessage:
       'The provided subtitle exceeds the maximum allowed character limit',
   },
-  bannerDisplayHeaderAvatars: {
-    id: 'app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatars',
-    defaultMessage: 'Display avatars',
-  },
-  bannerDisplayHeaderAvatarsSubtitle: {
-    id: 'app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle',
-    defaultMessage:
-      'Show profile pictures of participants and number of them to non-registered visitors',
-  },
   bannerHeaderSignedIn: {
     id: 'app.components.AdminPage.SettingsPage.bannerHeaderSignedIn',
     defaultMessage: 'Header text for registered users',
   },
-  headerDescription: {
-    id: 'app.containers.AdminPage.SettingsPage.headerDescription',
-    defaultMessage: 'Customise the homepage banner image and text.',
-  },
   bannerTextTitle: {
     id: 'app.containers.AdminPage.SettingsPage.bannerTextTitle',
     defaultMessage: 'Banner text',
-  },
-  avatarsTitle: {
-    id: 'app.containers.AdminPage.SettingsPage.avatarsTitle',
-    defaultMessage: 'Avatars',
   },
   imageOverlayColor: {
     id: 'app.containers.AdminPage.SettingsPage.imageOverlayColor',
@@ -156,10 +135,6 @@ export default defineMessages({
   saveAndEnable: {
     id: 'app.containers.Admin.PagesAndMenu.saveAndEnableHeroBanner',
     defaultMessage: 'Save and enable hero banner',
-  },
-  ctaHeader: {
-    id: 'app.containers.AdminPage.SettingsPage.ctaHeader',
-    defaultMessage: 'Buttons',
   },
   signed_out: {
     id: 'app.containers.AdminPage.SettingsPage.signed_out',

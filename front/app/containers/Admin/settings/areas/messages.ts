@@ -47,11 +47,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.fieldDescription',
     defaultMessage: 'Area description',
   },
-  fieldDescriptionTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.fieldDescriptionTooltip',
-    defaultMessage:
-      'This description is only for internal collaboration with other administrators, to have a clear understanding what is meant by each area.',
-  },
   saveArea: {
     id: 'app.containers.AdminPage.SettingsPage.saveArea',
     defaultMessage: 'Save area',

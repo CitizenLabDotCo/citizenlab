@@ -69,7 +69,7 @@ const BannerHeaderFields = ({
     forOwn(bannerSubheaderMultiloc, (title, locale) => {
       if (size(trim(title)) > 45) {
         signedOutSubheaderErrors[locale] = formatMessage(
-          messages.titleMaxCharError
+          messages.subtitleMaxCharError
         );
       }
     });

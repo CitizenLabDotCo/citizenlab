@@ -48,14 +48,4 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.colorsTitle',
     defaultMessage: 'Colors',
   },
-
-  homePageCustomizableDescription: {
-    id: 'app.containers.AdminPage.SettingsPage.homePageCustomizableDescription',
-    defaultMessage:
-      'Add your own content to the customizable section at the bottom of the homepage.',
-  },
-  projectsHeaderDescription: {
-    id: 'app.containers.AdminPage.SettingsPage.projectsHeaderDescription',
-    defaultMessage: 'This text is shown on the homepage above the projects.',
-  },
 });
