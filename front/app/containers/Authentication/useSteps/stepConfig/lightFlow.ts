@@ -1,4 +1,4 @@
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import signIn from 'api/authentication/sign_in_out/signIn';
@@ -32,7 +32,7 @@ export const lightFlow = (
     // light flow
     'light-flow:email': {
       CLOSE: () => setCurrentStep('closed'),
-      SUBMIT_EMAIL: async (email: string, locale: Locale) => {
+      SUBMIT_EMAIL: async (email: string, locale: SupportedLocale) => {
         updateState({ email });
 
         const response = await checkUser(email);
@@ -74,7 +74,7 @@ export const lightFlow = (
 
     'light-flow:email-policies': {
       CLOSE: () => setCurrentStep('closed'),
-      ACCEPT_POLICIES: async (email: string, locale: Locale) => {
+      ACCEPT_POLICIES: async (email: string, locale: SupportedLocale) => {
         updateState({ email });
 
         const result = await createEmailOnlyAccount({ email, locale });
