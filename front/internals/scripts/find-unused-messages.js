@@ -1,4 +1,5 @@
-const translationMessages = require('../../app/translations/en.json');
+const residentTranslationMessages = require('../../app/translations/en.json')
+const adminTranslationMessages = require('../../app/translations/admin/en.json')
 const { execSync } = require('child_process');
 
 // • There are many false alarms, because the script searches for messages.key usage,
@@ -10,7 +11,7 @@ const { execSync } = require('child_process');
 //   but this is false because the message keys are generated programatically (resulting in the problem described in the first bullet point).
 //   However, some of them could be unused, but it's time consuming to check whether they're used. (edited)
 
-Object.keys(translationMessages).forEach((messageKey) => {
+Object.keys({...residentTranslationMessages, ...adminTranslationMessages}).forEach((messageKey) => {
   const lastPartMessageKey = messageKey.match(/[^.]+$/)[0];
 
   try {
