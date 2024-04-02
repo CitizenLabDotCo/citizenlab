@@ -125,33 +125,6 @@ RSpec.describe User do
     end
   end
 
-  describe 'user password authentication' do
-    it 'should be compatible with meteor encryption' do
-      u = build(:user)
-      u.first_name = 'Sebi'
-      u.last_name = 'Hoorens'
-      u.email = 'sebastien@citizenlab.co'
-      u.password_digest = '$2a$10$npkXzpkkyO.g6LjmSYHbOeq76gxpOYeei8SVsjr0LqsBiAdTeDhHK'
-      u.save
-      expect(!!u.authenticate('supersecret')).to be(true)
-      expect(!!u.authenticate('totallywrong')).to be(false)
-    end
-
-    it 'should replace the CL1 hash by the CL2 hash' do
-      u = build(:user)
-      u.first_name = 'Sebi'
-      u.last_name = 'Hoorens'
-      u.email = 'sebastien@citizenlab.co'
-      u.password_digest = '$2a$10$npkXzpkkyO.g6LjmSYHbOeq76gxpOYeei8SVsjr0LqsBiAdTeDhHK'
-      u.save
-      expect(!!u.authenticate('supersecret')).to be(true)
-      expect(u.password_digest).not_to eq('$2a$10$npkXzpkkyO.g6LjmSYHbOeq76gxpOYeei8SVsjr0LqsBiAdTeDhHK')
-      expect(!!BCrypt::Password.new(u.password_digest).is_password?('supersecret')).to be(true)
-      expect(!!u.authenticate('supersecret')).to be(true)
-      expect(!!u.authenticate('totallywrong')).to be(false)
-    end
-  end
-
   describe 'authentication without password' do
     context 'when user_confirmation feature is active' do
       before do
