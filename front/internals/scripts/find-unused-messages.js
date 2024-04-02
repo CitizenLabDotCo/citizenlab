@@ -17,7 +17,7 @@ Object.keys({...residentTranslationMessages, ...adminTranslationMessages}).forEa
   try {
     // requires linux environment
     execSync(
-      `grep -rn --exclude=messages.*s 'app' -e 'messages.${lastPartMessageKey}'`
+      `grep -rn --exclude=messages.*s 'app' -e 'essages.${lastPartMessageKey}'`
     );
   } catch (err) {
     console.log(`unused: ${messageKey}`);
