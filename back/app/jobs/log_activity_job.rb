@@ -21,6 +21,15 @@ class LogActivityJob < ApplicationJob
     end
   end
 
+  def perform(*args)
+    super
+  rescue ActiveJob::DeserializationError => e
+    puts '------------------'
+    puts e
+    byebug
+    puts '------------------'
+  end
+
   def run(item, action, user, acted_at = nil, options = {})
     @item = item
     @action = action
