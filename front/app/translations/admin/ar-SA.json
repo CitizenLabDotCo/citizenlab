@@ -2566,6 +2566,7 @@
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupByRegistrationField": "تجميع حسب حقل التسجيل",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupBySurveyQuestion": "تجميع حسب سؤال الاستطلاع",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupMode": "وضع المجموعة",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupModeTooltip1": "استجابات الاستطلاع الجماعية حسب حقول التسجيل (الجنس والموقع والعمر وما إلى ذلك) أو أسئلة الاستطلاع الأخرى.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.none": "لا أحد",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.question": "سؤال",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.registrationField": "مجال التسجيل",
