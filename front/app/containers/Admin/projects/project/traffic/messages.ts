@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.traffic.trafficSources',
     defaultMessage: 'Traffic sources',
   },
+  selectPeriod: {
+    id: 'app.containers.Admin.projects.project.traffic.selectPeriod',
+    defaultMessage: 'Select period',
+  },
 });

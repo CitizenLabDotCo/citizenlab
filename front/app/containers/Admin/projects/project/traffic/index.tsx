@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
+import moment, { Moment } from 'moment';
 import { useParams } from 'react-router-dom';
 
 import useLocale from 'hooks/useLocale';
@@ -10,6 +11,7 @@ import { MAX_REPORT_WIDTH } from 'containers/Admin/reporting/constants';
 import { ReportContextProvider } from 'containers/Admin/reporting/context/ReportContext';
 
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
+import DateRangePicker from 'components/admin/DateRangePicker';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -17,10 +19,11 @@ import ProjectHeader from '../projectHeader';
 
 import messages from './messages';
 
-const ReportPreview = () => {
+const TrafficReportPreview = () => {
+  const { formatMessage } = useIntl();
   const { projectId } = useParams() as { projectId: string };
   const locale = useLocale();
-  const { formatMessage } = useIntl();
+
   const editorData = {
     ROOT: {
       type: 'div',
@@ -79,29 +82,47 @@ const ReportPreview = () => {
 
   return (
     <ReportContextProvider width="desktop">
-      <Box
-        w="100%"
-        display="flex"
-        alignItems="flex-start"
-        flexDirection="column"
-      >
-        <Box maxWidth={MAX_REPORT_WIDTH} w="100%">
-          <Editor isPreview={true}>
-            {editorData && <ContentBuilderFrame editorData={editorData} />}
-          </Editor>
-        </Box>
+      <Box maxWidth={MAX_REPORT_WIDTH} w="100%">
+        <Editor isPreview={true}>
+          {editorData && <ContentBuilderFrame editorData={editorData} />}
+        </Editor>
       </Box>
     </ReportContextProvider>
   );
 };
 
 const ProjectTraffic = () => {
+  const { formatMessage } = useIntl();
   const { projectId } = useParams() as { projectId: string };
+  const [startAt, setStartAt] = useState<Moment | null>(null);
+  const [endAt, setEndAt] = useState<Moment | null>(null);
+
+  const handleChangeTimeRange = ({
+    startDate,
+    endDate,
+  }: {
+    startDate: Moment | null;
+    endDate: Moment | null;
+  }) => {
+    setStartAt(moment(startDate?.format('YYYY-MM-DDTHH:mm:ss.sss')) || null);
+    setEndAt(moment(endDate?.format('YYYY-MM-DDTHH:mm:ss.sss')) || null);
+  };
+
   return (
     <div>
       <ProjectHeader projectId={projectId} />
+      <Box px="32px" mb="20px">
+        <Text variant="bodyM" color="textSecondary" mb="5px">
+          {formatMessage(messages.selectPeriod)}
+        </Text>
+        <DateRangePicker
+          startDate={startAt}
+          endDate={endAt}
+          onDatesChange={handleChangeTimeRange}
+        />
+      </Box>
       <Box p="32px" bg="white">
-        <ReportPreview />
+        <TrafficReportPreview />
       </Box>
     </div>
   );
