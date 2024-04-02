@@ -1478,7 +1478,6 @@
   "app.containers.AdminPage.ProjectEdit.searchPlaceholder": "Pretraži predloške",
   "app.containers.AdminPage.ProjectEdit.selectGroups": "Odaberi grupu(e)",
   "app.containers.AdminPage.ProjectEdit.setup": "Postaviti",
-  "app.containers.AdminPage.ProjectEdit.shareInformationDescription": "Informirajte sudionike.",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",
   "app.containers.AdminPage.ProjectEdit.snap_survey": "Brzi upitnik",
   "app.containers.AdminPage.ProjectEdit.statusLabel": "Status projekta",

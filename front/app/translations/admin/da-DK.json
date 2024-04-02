@@ -1478,7 +1478,6 @@
   "app.containers.AdminPage.ProjectEdit.searchPlaceholder": "Søg i skabelonerne",
   "app.containers.AdminPage.ProjectEdit.selectGroups": "Udvalgt gruppe(r)",
   "app.containers.AdminPage.ProjectEdit.setup": "Opsætning",
-  "app.containers.AdminPage.ProjectEdit.shareInformationDescription": "Giv information til deltagerne.",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",
   "app.containers.AdminPage.ProjectEdit.snap_survey": "Snap-undersøgelse",
   "app.containers.AdminPage.ProjectEdit.statusLabel": "Projektstatus",

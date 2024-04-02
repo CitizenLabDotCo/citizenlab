@@ -1478,7 +1478,6 @@
   "app.containers.AdminPage.ProjectEdit.searchPlaceholder": "البحث في القوالب",
   "app.containers.AdminPage.ProjectEdit.selectGroups": "حدّد مجموعة/ مجموعات",
   "app.containers.AdminPage.ProjectEdit.setup": "يثبت",
-  "app.containers.AdminPage.ProjectEdit.shareInformationDescription": "توفر المعلومات للمشاركين.",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",
   "app.containers.AdminPage.ProjectEdit.snap_survey": "استبيان سريع",
   "app.containers.AdminPage.ProjectEdit.statusLabel": "حالة المشروع",
