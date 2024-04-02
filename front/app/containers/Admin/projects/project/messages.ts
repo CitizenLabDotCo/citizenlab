@@ -129,10 +129,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.participationMethodTooltip',
     defaultMessage: 'Choose how users can participate.',
   },
-  shareInformationDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.shareInformationDescription',
-    defaultMessage: 'Provide information to participants.',
-  },
   totalBudget: {
     id: 'app.containers.AdminPage.ProjectEdit.totalBudget',
     defaultMessage: 'Total budget',
