@@ -15,14 +15,6 @@ export default defineMessages({
     defaultMessage:
       '{citizenLabLink} is committed to providing a platform that is accessible to all users, regardless of technology or ability. Current relevant accessibility standards are adhered to in our on-going efforts to maximise the accessibility and usability of our platforms for all users.',
   },
-  changePreferencesText: {
-    id: 'app.containers.AccessibilityStatement.changePreferencesText',
-    defaultMessage: 'At any time, {changePreferencesButton}.',
-  },
-  changePreferencesButtonText: {
-    id: 'app.containers.AccessibilityStatement.changePreferencesButtonText',
-    defaultMessage: 'you can change your preferences',
-  },
   conformanceStatus: {
     id: 'app.containers.AccessibilityStatement.conformanceStatus',
     defaultMessage: 'Conformance status',
@@ -50,15 +42,6 @@ export default defineMessages({
     id: 'app.containers.AccessibilityStatement.screenReaderBugWarning',
     defaultMessage:
       'Screen reader bugs may occur with different browser/screen reader combinations. Bugs can be reported through the feedback process outlined below.',
-  },
-  technologiesTitle: {
-    id: 'app.containers.AccessibilityStatement.technologiesTitle',
-    defaultMessage: 'Technologies',
-  },
-  technologiesIntro: {
-    id: 'app.containers.AccessibilityStatement.technologiesIntro',
-    defaultMessage:
-      'The accessibility of this site relies on the following technologies to work:',
   },
   assesmentMethodsTitle: {
     id: 'app.containers.AccessibilityStatement.assesmentMethodsTitle',

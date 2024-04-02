@@ -29,17 +29,9 @@ export default defineMessages({
     id: 'app.containers.Projects.invisbleTitleDocumentAnnotation1',
     defaultMessage: 'Review the document',
   },
-  invisibleTitlePoll: {
-    id: 'app.containers.Projects.invisibleTitlePoll',
-    defaultMessage: 'Take the poll',
-  },
   createANewPhase: {
     id: 'app.containers.Projects.createANewPhase',
     defaultMessage: 'Create a new phase',
-  },
-  invisibleTitlePhaseAbout: {
-    id: 'app.containers.Projects.invisibleTitlePhaseAbout',
-    defaultMessage: 'About this phase',
   },
   information: {
     id: 'app.containers.Projects.information',
@@ -89,61 +81,13 @@ export default defineMessages({
     id: 'app.containers.Projects.navPoll',
     defaultMessage: 'Poll',
   },
-  navSurvey: {
-    id: 'app.containers.Projects.navSurvey',
-    defaultMessage: 'Survey',
-  },
   archived: {
     id: 'app.containers.Projects.archived',
     defaultMessage: 'Archived',
   },
-  myBasket: {
-    id: 'app.containers.Projects.myBasket',
-    defaultMessage: 'My basket',
-  },
-  basketSubmitted: {
-    id: 'app.containers.Projects.basketSubmitted',
-    defaultMessage: 'Your basket has been submitted!',
-  },
-  selectionExceedsBudget: {
-    id: 'app.containers.Projects.selectionExceedsBudget',
-    defaultMessage: 'Your selection exceeds your budget.',
-  },
-  requiredSelectionExceeded: {
-    id: 'app.containers.Projects.requiredSelectionExceeded',
-    defaultMessage: "You've exceeded the required selection.",
-  },
-  yourBudget: {
-    id: 'app.containers.Projects.yourBudget',
-    defaultMessage: 'Your budget',
-  },
-  requiredSelection: {
-    id: 'app.containers.Projects.requiredSelection',
-    defaultMessage: 'Required selection',
-  },
-  addedToBasket: {
-    id: 'app.containers.Projects.addedToBasket',
-    defaultMessage: 'Added to your basket',
-  },
   minBudgetRequired: {
     id: 'app.containers.Projects.minBudgetRequired',
     defaultMessage: 'Minimum budget required',
-  },
-  manageBasket: {
-    id: 'app.containers.Projects.manageBasket',
-    defaultMessage: 'Manage basket',
-  },
-  submitMyBasket: {
-    id: 'app.containers.Projects.submitMyBasket',
-    defaultMessage: 'Submit my basket',
-  },
-  noItems: {
-    id: 'app.containers.Projects.noItems',
-    defaultMessage: "You haven't selected any items yet",
-  },
-  removeItem: {
-    id: 'app.containers.Projects.removeItem',
-    defaultMessage: 'Remove item',
   },
   a11y_phasesOverview: {
     id: 'app.containers.Projects.a11y_phasesOverview',
@@ -253,10 +197,6 @@ export default defineMessages({
     defaultMessage:
       '{ideasCount, plural, no {# questions} one {# question} other {# questions}} in the final phase',
   },
-  oneSurvey: {
-    id: 'app.containers.Projects.oneSurvey',
-    defaultMessage: '1 survey',
-  },
   oneSurveyInCurrentPhase: {
     id: 'app.containers.Projects.oneSurveyInCurrentPhase',
     defaultMessage: '1 survey in the current phase',
@@ -294,11 +234,6 @@ export default defineMessages({
     id: 'app.containers.Projects.xParticipants',
     defaultMessage:
       '{participantsCount, plural, no {# participants} one {# participant} other {# participants}}',
-  },
-  xUpcomingEvents: {
-    id: 'app.containers.Projects.xUpcomingEvents',
-    defaultMessage:
-      '{upcomingEventsCount, plural, no {# upcoming events} one {# upcoming event} other {# upcoming events}}',
   },
   allocateBudget: {
     id: 'app.containers.Projects.allocateBudget',
@@ -395,14 +330,6 @@ export default defineMessages({
   seeTheContributions: {
     id: 'app.containers.Projects.seeTheContributions',
     defaultMessage: 'See the contributions',
-  },
-  meetMinBudgetRequirement: {
-    id: 'app.containers.Projects.meetMinBudgetRequirement',
-    defaultMessage: 'Meet the minimum budget to submit your basket.',
-  },
-  meetMinSelectionRequirement: {
-    id: 'app.containers.Projects.meetMinSelectionRequirement',
-    defaultMessage: 'Meet the required selection to submit your basket.',
   },
   a11y_phase: {
     id: 'app.containers.Projects.a11y_phase',

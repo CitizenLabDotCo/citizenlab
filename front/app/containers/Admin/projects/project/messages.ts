@@ -129,64 +129,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.participationMethodTooltip',
     defaultMessage: 'Choose how users can participate.',
   },
-  shareInformation: {
-    id: 'app.containers.AdminPage.ProjectEdit.shareInformation',
-    defaultMessage: 'Share information',
-  },
   shareInformationDescription: {
     id: 'app.containers.AdminPage.ProjectEdit.shareInformationDescription',
     defaultMessage: 'Provide information to participants.',
-  },
-  inputAndFeedback: {
-    id: 'app.containers.AdminPage.ProjectEdit.inputAndFeedback',
-    defaultMessage: 'Collect input and feedback',
-  },
-  inputAndFeedbackDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.inputAndFeedbackDescription2',
-    defaultMessage:
-      'Create or collect inputs, reactions and/or comments. Pick between different types of inputs: idea collection, option analysis, question and answer, issue identification and more.',
-  },
-  createExternalSurveyText: {
-    id: 'app.containers.AdminPage.ProjectEdit.createExternalSurveyText',
-    defaultMessage: 'Create an external survey',
-  },
-  createSurveyDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.createSurveyDescription',
-    defaultMessage:
-      'Embed a Typeform, Google Form, Enalyzer, SurveyXact, Qualtrics, SmartSurvey, Snap Survey or Microsoft Forms survey.',
-  },
-  conductVotingOrPrioritizationText: {
-    id: 'app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationText',
-    defaultMessage: 'Conduct a voting or prioritization exercise',
-  },
-  conductVotingOrPrioritizationDescriptionText: {
-    id: 'app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationDescriptionText2',
-    defaultMessage:
-      'Select a voting method, and have users prioritize between a few different options.',
-  },
-  createNativeSurvey: {
-    id: 'app.containers.AdminPage.ProjectEdit.createNativeSurvey',
-    defaultMessage: 'Create an in-platform survey',
-  },
-  createNativeSurveyDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.createNativeSurveyDescription',
-    defaultMessage: 'Set up a survey without leaving our platform.',
-  },
-  createPoll: {
-    id: 'app.containers.AdminPage.ProjectEdit.createPoll',
-    defaultMessage: 'Create a poll',
-  },
-  createPollDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.createPollDescription',
-    defaultMessage: 'Set up a multiple-choice questionnaire.',
-  },
-  findVolunteers: {
-    id: 'app.containers.AdminPage.ProjectEdit.findVolunteers',
-    defaultMessage: 'Find volunteers',
-  },
-  findVolunteersDescriptionText: {
-    id: 'app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText',
-    defaultMessage: 'Ask participants to volunteer for activities and causes.',
   },
   totalBudget: {
     id: 'app.containers.AdminPage.ProjectEdit.totalBudget',
