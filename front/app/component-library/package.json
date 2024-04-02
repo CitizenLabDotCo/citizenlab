@@ -1,0 +1,13 @@
+{
+    
+  "name": "@citizenlab/cl2-component-library",
+  "version": "0.11.37",
+   "description": "CitizenLab's component library",
+   "files":[
+    "dist"
+  ],
+  "module": "dist/cl2-component-library.esm.js",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts"
+  }
+  

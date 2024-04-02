@@ -15,21 +15,35 @@ describe IdNemlogIn::NemlogInOmniauth do
         'credentials' => {},
         'extra' => {
           'raw_info' => OneLogin::RubySaml::Attributes.new({
+            # MitID Ervherv (professional) attributes:
+            # 'https://data.gov.dk/concept/core/nsis/aal' => ['Substantial'],
+            # 'https://data.gov.dk/concept/core/nsis/ial' => ['Substantial'],
+            # 'https://data.gov.dk/concept/core/nsis/loa' => ['Substantial'],
+            # 'https://data.gov.dk/model/core/eid/age' => ['78'],
+            # 'https://data.gov.dk/model/core/eid/cprUuid' => ['81cf0ed2-e28d-45bd-a860-f093b2ddf1c9'],
+            # 'https://data.gov.dk/model/core/eid/dateOfBirth' => ['28-08-1944'],
+            # 'https://data.gov.dk/model/core/eid/email' => ['alexander@citizenlab.co'], # not present in personal attributes
+            # 'https://data.gov.dk/model/core/eid/firstName' => ['Terje'],
+            # 'https://data.gov.dk/model/core/eid/fullName' => ['Terje Hermansen'],
+            # 'https://data.gov.dk/model/core/eid/lastName' => ['Hermansen'],
+            # 'https://data.gov.dk/model/core/eid/professional/cvr' => ['93005620'],
+            # 'https://data.gov.dk/model/core/eid/professional/orgName' => ['Testorganisation nr. 93005620'],
+            # 'https://data.gov.dk/model/core/eid/professional/rid' => ['4294268104'],
+            # 'https://data.gov.dk/model/core/eid/professional/uuid/persistent' => ['ec6ec845-958b-459a-bb8a-6adbdcd71b39'],
+            # 'https://data.gov.dk/model/core/specVersion' => ['OIO-SAML-3.0']
+
+            # Personal attributes:
+            'https://data.gov.dk/concept/core/nsis/aal' => ['Substantial'],
             'https://data.gov.dk/concept/core/nsis/ial' => ['Substantial'],
-            'https://data.gov.dk/model/core/eid/fullName' => ['Terje Hermansen'],
-            'https://data.gov.dk/model/core/eid/firstName' => ['Terje'],
-            'https://data.gov.dk/model/core/eid/lastName' => ['Hermansen'],
-            'https://data.gov.dk/model/core/eid/email' => ['alexander@citizenlab.co'],
+            'https://data.gov.dk/concept/core/nsis/loa' => ['Substantial'],
             'https://data.gov.dk/model/core/eid/age' => ['78'],
             'https://data.gov.dk/model/core/eid/cprUuid' => ['81cf0ed2-e28d-45bd-a860-f093b2ddf1c9'],
             'https://data.gov.dk/model/core/eid/dateOfBirth' => ['28-08-1944'],
-            'https://data.gov.dk/model/core/eid/professional/uuid/persistent' => ['ec6ec845-958b-459a-bb8a-6adbdcd71b39'],
-            'https://data.gov.dk/model/core/eid/professional/rid' => ['4294268104'],
-            'https://data.gov.dk/model/core/eid/professional/cvr' => ['93005620'],
-            'https://data.gov.dk/model/core/eid/professional/orgName' => ['Testorganisation nr. 93005620'],
-            'https://data.gov.dk/model/core/specVersion' => ['OIO-SAML-3.0'],
-            'https://data.gov.dk/concept/core/nsis/loa' => ['Substantial'],
-            'https://data.gov.dk/concept/core/nsis/aal' => ['Substantial']
+            'https://data.gov.dk/model/core/eid/firstName' => ['Terje'],
+            'https://data.gov.dk/model/core/eid/fullName' => ['Terje Hermansen'],
+            'https://data.gov.dk/model/core/eid/lastName' => ['Hermansen'],
+            'https://data.gov.dk/model/core/eid/person/pid' => ['9208-2002-2-024271267078'],
+            'https://data.gov.dk/model/core/specVersion' => ['OIO-SAML-3.0']
           })
         }
       }

@@ -19,7 +19,7 @@ import moment from 'moment';
 import { useLocation } from 'react-router-dom';
 import { RouteType } from 'routes';
 import { ThemeProvider } from 'styled-components';
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import { IAppConfigurationStyle } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -76,7 +76,7 @@ const App = ({ children }: Props) => {
   ] = useState(false);
   const [userSuccessfullyDeleted, setUserSuccessfullyDeleted] = useState(false);
 
-  const [locale, setLocale] = useState<Locale | null>(null);
+  const [locale, setLocale] = useState<SupportedLocale | null>(null);
   const [signUpInModalOpened, setSignUpInModalOpened] = useState(false);
 
   const redirectsEnabled = useFeatureFlag({ name: 'redirects' });

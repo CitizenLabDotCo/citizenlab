@@ -30,6 +30,6 @@ module OmniauthMethods
   end
 
   def updateable_user_attrs
-    super + %i[remote_avatar_url]
+    [:remote_avatar_url]
   end
 end

@@ -1,4 +1,4 @@
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import signIn from 'api/authentication/sign_in_out/signIn';
@@ -32,7 +32,7 @@ export const lightFlow = (
     // light flow
     'light-flow:email': {
       CLOSE: () => setCurrentStep('closed'),
-      SUBMIT_EMAIL: async (email: string, locale: Locale) => {
+      SUBMIT_EMAIL: async (email: string, locale: SupportedLocale) => {
         updateState({ email });
 
         const response = await checkUser(email);
@@ -62,6 +62,9 @@ export const lightFlow = (
           case 'azureactivedirectory':
             setCurrentStep('light-flow:azure-ad-policies');
             break;
+          case 'azureactivedirectory_b2c':
+            setCurrentStep('light-flow:azure-ad-b2c-policies');
+            break;
           case 'franceconnect':
             setCurrentStep('light-flow:france-connect-login');
             break;
@@ -71,7 +74,7 @@ export const lightFlow = (
 
     'light-flow:email-policies': {
       CLOSE: () => setCurrentStep('closed'),
-      ACCEPT_POLICIES: async (email: string, locale: Locale) => {
+      ACCEPT_POLICIES: async (email: string, locale: SupportedLocale) => {
         updateState({ email });
 
         const result = await createEmailOnlyAccount({ email, locale });
@@ -128,6 +131,22 @@ export const lightFlow = (
 
         handleOnSSOClick(
           'azureactivedirectory',
+          { ...getAuthenticationData(), flow: 'signin' },
+          verificationRequired
+        );
+      },
+    },
+
+    'light-flow:azure-ad-b2c-policies': {
+      CLOSE: () => setCurrentStep('closed'),
+      ACCEPT_POLICIES: async () => {
+        const { requirements } = await getRequirements();
+
+        const verificationRequired =
+          requirements.special.verification === 'require';
+
+        handleOnSSOClick(
+          'azureactivedirectory_b2c',
           { ...getAuthenticationData(), flow: 'signin' },
           verificationRequired
         );

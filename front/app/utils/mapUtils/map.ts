@@ -1,5 +1,5 @@
 import { isNumber } from 'lodash-es';
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import { IAppConfigurationData } from 'api/app_configuration/types';
 import { IMapConfigData } from 'api/map_config/types';
@@ -102,7 +102,9 @@ export const getLayerIcon = (mapLayer: IMapLayerAttributes | undefined) => {
   return iconName;
 };
 
-export const getUnnamedLayerTitleMultiloc = (tenantLocales: Locale[]) => {
+export const getUnnamedLayerTitleMultiloc = (
+  tenantLocales: SupportedLocale[]
+) => {
   const newUnnamedLayerTitle = 'Unnamed layer';
   const title_multiloc = {};
   tenantLocales.forEach(
