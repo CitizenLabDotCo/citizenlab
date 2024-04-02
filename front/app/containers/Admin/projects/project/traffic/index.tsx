@@ -19,9 +19,16 @@ import ProjectHeader from '../projectHeader';
 
 import messages from './messages';
 
-const TrafficReportPreview = () => {
+const TrafficReportPreview = ({
+  projectId,
+  startAt,
+  endAt,
+}: {
+  projectId: string;
+  startAt?: string | null;
+  endAt?: string | null;
+}) => {
   const { formatMessage } = useIntl();
-  const { projectId } = useParams() as { projectId: string };
   const locale = useLocale();
 
   const editorData = {
@@ -45,7 +52,8 @@ const TrafficReportPreview = () => {
       },
       nodes: [],
       props: {
-        endAt: '2024-04-02',
+        startAt,
+        endAt,
         title: {
           [locale]: formatMessage(messages.visitorsTimeline),
         },
@@ -65,7 +73,8 @@ const TrafficReportPreview = () => {
       },
       nodes: [],
       props: {
-        endAt: '2024-04-02',
+        startAt,
+        endAt,
         title: {
           [locale]: formatMessage(messages.trafficSources),
         },
@@ -122,7 +131,11 @@ const ProjectTraffic = () => {
         />
       </Box>
       <Box p="32px" bg="white">
-        <TrafficReportPreview />
+        <TrafficReportPreview
+          projectId={projectId}
+          startAt={startAt?.format('YYYY-MM-DD')}
+          endAt={endAt?.format('YYYY-MM-DD')}
+        />
       </Box>
     </div>
   );
