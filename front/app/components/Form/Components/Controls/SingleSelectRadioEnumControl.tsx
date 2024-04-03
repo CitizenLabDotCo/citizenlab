@@ -84,6 +84,7 @@ const SingleSelectRadioEnumControl = ({
                 if (option.value !== data) {
                   handleChange(path, option.value);
                 } else {
+                  // User is trying to unselect the option
                   handleChange(path, undefined);
                 }
                 setDidBlur(true);
