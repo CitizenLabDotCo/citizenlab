@@ -65,7 +65,7 @@ const App = ({ children }: Props) => {
   const location = useLocation();
   const { mutate: signOutAndDeleteAccount } = useDeleteSelf();
   const [isAppInitialized, setIsAppInitialized] = useState(false);
-  const [isAdminUser, setIsAdminUser] = useState(false);
+  const [appContainerClassName, setAppContainerClassname] = useState('');
   const [previousPathname, setPreviousPathname] = useState<RouteType | null>(
     null
   );
@@ -237,8 +237,14 @@ const App = ({ children }: Props) => {
         scope.setUser({
           id: authUser.data.id,
         });
-        setIsAdminUser(isAdmin(authUser) || isProjectModerator(authUser));
+        setAppContainerClassname(
+          isAdmin(authUser) || isProjectModerator(authUser)
+            ? 'admin-user-view'
+            : ''
+        );
       });
+    } else {
+      setAppContainerClassname('');
     }
   }, [authUser]);
 
@@ -317,6 +323,7 @@ const App = ({ children }: Props) => {
           >
             <GlobalStyle />
             <Box
+              className={appContainerClassName}
               display="flex"
               flexDirection="column"
               alignItems="stretch"
@@ -368,7 +375,6 @@ const App = ({ children }: Props) => {
                   alignItems="stretch"
                   flex="1"
                   overflowY="auto"
-                  className={isAdminUser ? 'admin-view' : ''}
                   pt={
                     showFrontOfficeNavbar()
                       ? `${stylingConsts.menuHeight}px`

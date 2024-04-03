@@ -6,12 +6,11 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
 
-  .admin-view {
+  .admin-user-view {
     .weglot_switcher {
       margin-right: 40px;
     }
   }
-
 
   *,
   *:before,
