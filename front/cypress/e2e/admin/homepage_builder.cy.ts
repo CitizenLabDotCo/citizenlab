@@ -211,6 +211,10 @@ describe('Homepage builder', () => {
   });
 
   it('updates homepage banner correctly', () => {
+    cy.setAdminLoginCookie();
+    cy.apiUpdateHomepageLayout({
+      craftjs_json: homepageMinimalData,
+    });
     cy.intercept(
       'POST',
       '**/home_pages/content_builder_layouts/homepage/upsert'
