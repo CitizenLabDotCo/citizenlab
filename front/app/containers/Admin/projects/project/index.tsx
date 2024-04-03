@@ -9,9 +9,13 @@ import {
 
 import Tab from 'components/admin/NavigationTabs/Tab';
 
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 import ProjectHeader from './projectHeader';
 
 const AdminProjectsProjectIndex = () => {
+  const { formatMessage } = useIntl();
   const { pathname } = useLocation();
   const { projectId } = useParams() as { projectId: string };
   return (
@@ -24,21 +28,21 @@ const AdminProjectsProjectIndex = () => {
         borderTop={`1px solid ${colors.background}`}
       >
         <Tab
-          label="Timeline"
+          label={formatMessage(messages.timelineTab)}
           url={`/admin/projects/${projectId}/phases/setup`}
           active={pathname.includes(`/admin/projects/${projectId}/phases`)}
         />
         <Tab
-          label="Traffic"
-          url={`/admin/projects/${projectId}/traffic`}
-          active={pathname.includes(`/admin/projects/${projectId}/traffic`)}
-        />
-        <Tab
-          label="Participation"
+          label={formatMessage(messages.participationTab)}
           url={`/admin/projects/${projectId}/participation`}
           active={pathname.includes(
             `/admin/projects/${projectId}/participation`
           )}
+        />
+        <Tab
+          label={formatMessage(messages.trafficTab)}
+          url={`/admin/projects/${projectId}/traffic`}
+          active={pathname.includes(`/admin/projects/${projectId}/traffic`)}
         />
       </Box>
       <RouterOutlet />
