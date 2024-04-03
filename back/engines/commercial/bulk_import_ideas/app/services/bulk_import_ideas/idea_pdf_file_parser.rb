@@ -82,7 +82,7 @@ module BulkImportIdeas
       form_parsed_ideas = @google_forms_service.parse_pdf(pdf_file, @input_form_data[:page_count])
 
       text_parsed_ideas = begin
-                            Pdf::IdeaPlainTextParserService.new(
+        Pdf::IdeaPlainTextParserService.new(
           @phase || @project,
           @form_fields.reject { |field| field.input_type == 'topic_ids' }, # Temp
           @locale,

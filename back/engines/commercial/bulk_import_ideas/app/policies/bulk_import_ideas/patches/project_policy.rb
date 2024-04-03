@@ -11,7 +11,7 @@ module BulkImportIdeas
         active_moderator?
       end
 
-      def draft_ideas?
+      def draft_records?
         active_moderator?
       end
 

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module BulkImportIdeas
-  class WebApi::V1::ImportIdeasController < ApplicationController
-    before_action :authorize_bulk_import_ideas, only: %i[bulk_create export_form draft_ideas approve_all]
+  class WebApi::V1::BulkImportController < ApplicationController
+    before_action :authorize_bulk_import_ideas, only: %i[bulk_create export_form draft_records approve_all]
 
     SUPPORTED_MODELS = ['idea'].freeze
     SUPPORTED_FORMATS = %w[pdf xlsx].freeze
@@ -49,11 +49,11 @@ module BulkImportIdeas
     def approve_all
       send_not_found unless supported_model?
 
-      ideas = imported_draft_ideas
+      records = imported_draft_records
       approved = 0
       not_approved = 0
-      ideas.each do |idea|
-        if idea.update(publication_status: 'published')
+      records.each do |record|
+        if record.update(publication_status: 'published')
           approved += 1
         else
           not_approved += 1
@@ -63,11 +63,11 @@ module BulkImportIdeas
       render json: raw_json({ approved: approved, notApproved: not_approved })
     end
 
-    def draft_ideas
+    def draft_records
       send_not_found unless supported_model?
 
       render json: linked_json(
-        paginate(imported_draft_ideas),
+        paginate(imported_draft_records),
         serializer,
         include: %i[author idea_import],
         params: jsonapi_serializer_params
@@ -87,7 +87,7 @@ module BulkImportIdeas
 
     def show_idea_import_file
       idea_import_file = IdeaImportFile.find(params[:id])
-      authorize idea_import_file.project || :import
+      authorize idea_import_file.project
 
       send_data URI.open(idea_import_file.file_content_url).read, type: 'application/octet-stream'
     end
@@ -104,7 +104,7 @@ module BulkImportIdeas
       @phase = Phase.find(params[:id])
       if @phase
         @project = @phase.project
-        authorize @project || :import
+        authorize @project
       else
         send_not_found
       end
@@ -144,14 +144,16 @@ module BulkImportIdeas
       SUPPORTED_FORMATS.include?(params[:format])
     end
 
-    def imported_draft_ideas
-      phase = Phase.find(params[:id])
-      creation_phase_id = phase&.native_survey? ? phase.id : nil
-      Idea
-        .draft
-        .in_phase(phase)
-        .joins(:idea_import)
-        .where(project_id: @project.id, creation_phase_id: creation_phase_id)
+    def imported_draft_records
+      if params[:model] == 'idea'
+        phase = Phase.find(params[:id])
+        creation_phase_id = phase&.native_survey? ? phase.id : nil
+        Idea
+          .draft
+          .in_phase(phase)
+          .joins(:idea_import)
+          .where(project_id: @project.id, creation_phase_id: creation_phase_id)
+      end
     end
   end
 end
