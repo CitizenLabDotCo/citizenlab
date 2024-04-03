@@ -10,7 +10,7 @@ resource BasketsIdea do
 
   let(:user) { create(:user) }
   let(:project) { create(:single_phase_multiple_voting_project) }
-  let(:basket) { create(:basket, phase: project.phases.first, user: user) }
+  let(:basket) { create(:basket, phase: project.phases.first, user: user, submitted_at: nil) }
 
   context 'when resident' do
     before { header_token_for user }
@@ -203,7 +203,7 @@ resource BasketsIdea do
       end
 
       context 'basket already exists' do
-        let!(:basket) { create(:basket, phase: project.phases.first, user: user) }
+        let!(:basket) { create(:basket, phase: project.phases.first, user: user, submitted_at: nil) }
 
         context 'basket_idea does not exist' do
           let(:votes) { 2 }
