@@ -225,6 +225,10 @@ const createAdminProjectsRoutes = () => {
         // all routes under /admin/projects/:projectId
         children: [
           {
+            path: '',
+            element: <Navigate to="phases/setup" replace />,
+          },
+          {
             path: projectsRoutes.projectTraffic,
             element: (
               <PageLoading>
@@ -249,11 +253,6 @@ const createAdminProjectsRoutes = () => {
             ),
             // all routes under /admin/projects/:projectId/phases
             children: [
-              {
-                path: '',
-                element: <Navigate to="phases/setup" replace />,
-              },
-
               {
                 path: projectsRoutes.projectPhasesSetup,
                 element: (
