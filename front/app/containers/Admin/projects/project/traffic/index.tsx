@@ -15,8 +15,6 @@ import DateRangePicker from 'components/admin/DateRangePicker';
 
 import { useIntl } from 'utils/cl-intl';
 
-import ProjectHeader from '../projectHeader';
-
 import messages from './messages';
 
 const TrafficReportPreview = ({
@@ -119,7 +117,6 @@ const ProjectTraffic = () => {
 
   return (
     <div>
-      <ProjectHeader projectId={projectId} />
       <Box px="32px" mb="20px">
         <Text variant="bodyM" color="textSecondary" mb="5px">
           {formatMessage(messages.selectPeriod)}
