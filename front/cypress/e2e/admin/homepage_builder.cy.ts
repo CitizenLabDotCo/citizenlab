@@ -91,6 +91,7 @@ describe('Homepage builder', () => {
     cy.intercept('GET', '**/pages-menu').as('getPages');
     cy.intercept('GET', '**/nav_bar_items').as('getNavbarItems');
     cy.intercept('GET', '**/admin_publications**').as('getAdminPublications');
+    cy.intercept('GET', '**/events**').as('getEvents');
     // go to admin page
     cy.visit('/admin/pages-menu/');
 
@@ -144,6 +145,7 @@ describe('Homepage builder', () => {
     cy.get('div.e2e-text-box').should('have.length', 2);
     cy.get('div.e2e-text-box').first().should('contain', 'first text');
     cy.get('div.e2e-text-box').last().should('contain', 'last text');
+    cy.wait('@getEvents');
     cy.get('[data-cy="e2e-events"]').should('exist');
     cy.get('[data-cy="e2e-proposals"]').should('exist');
     cy.get('[data-cy="e2e-projects"]').should(
@@ -168,10 +170,13 @@ describe('Homepage builder', () => {
     cy.get('#e2e-two-column').should('exist');
 
     // Delete two column
-    cy.get('#e2e-two-column').click();
+    cy.get('#e2e-two-column').click({
+      force: true,
+    });
     cy.get('#e2e-delete-button').click();
 
     // Delete events
+    cy.wait('@getEvents');
     cy.get('[data-cy="e2e-events"]').should('exist');
     cy.get('[data-cy="e2e-events"]').click({
       force: true,
@@ -215,6 +220,7 @@ describe('Homepage builder', () => {
     cy.apiUpdateHomepageLayout({
       craftjs_json: homepageMinimalData,
     });
+    cy.logout();
     cy.intercept(
       'POST',
       '**/home_pages/content_builder_layouts/homepage/upsert'
@@ -222,6 +228,7 @@ describe('Homepage builder', () => {
     cy.intercept('GET', '**/home_pages/content_builder_layouts/homepage').as(
       'getHomePage'
     );
+    cy.intercept('GET', '**/app_configuration').as('getAppConfiguration');
     cy.intercept('GET', '**/pages-menu').as('getPages');
     cy.intercept('GET', '**/nav_bar_items').as('getNavbarItems');
     cy.intercept('POST', '**/content_builder_layout_images').as('postImage');
@@ -229,6 +236,7 @@ describe('Homepage builder', () => {
     // Check homepage banner defaults signed - out
 
     cy.visit('/');
+    cy.wait('@getAppConfiguration');
     cy.wait('@getHomePage');
     cy.get('[data-cy="e2e-homepage-banner"]').should('exist');
     cy.get('[data-cy="e2e-full-width-banner-layout-container"]').should(
@@ -366,6 +374,7 @@ describe('Homepage builder', () => {
 
     cy.logout();
     cy.visit('/');
+    cy.wait('@getAppConfiguration');
     cy.wait('@getHomePage');
     cy.get('[data-cy="e2e-homepage-banner"]').should('exist');
     cy.get('[data-cy="e2e-full-width-banner-layout-container"]').should(
