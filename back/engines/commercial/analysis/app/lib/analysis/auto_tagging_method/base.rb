@@ -38,7 +38,7 @@ module Analysis
       altul
     ]
 
-    attr_reader :analysis, :task, :input_to_text
+    attr_reader :analysis, :task, :input_to_text, :input_to_text_classify
 
     class AutoTaggingFailedError < StandardError; end
 
@@ -67,6 +67,7 @@ module Analysis
       @analysis = auto_tagging_task.analysis
       @task = auto_tagging_task
       @input_to_text = InputToText.new(analysis.associated_custom_fields)
+      @input_to_text_classify = InputToText.new(classification_fields)
     end
 
     def execute
@@ -165,14 +166,11 @@ module Analysis
       if fields.map(&:code).include?('topic_ids') || analysis.participation_method != 'ideation'
         fields
       else
+        # Include topics in the prompt when classifying (in ideation) to improve the quality of the results
         custom_form = analysis.project.custom_form || CustomForm.new(participation_context: analysis.project)
         project_fields = IdeaCustomFieldsService.new(custom_form).submittable_fields
         fields + [project_fields.find { |field| field.code == 'topic_ids' }].compact
       end
-    end
-
-    def input_to_text_classify
-      @input_to_text_classify ||= InputToText.new(classification_fields)
     end
 
     def tag_service
