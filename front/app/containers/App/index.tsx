@@ -237,12 +237,13 @@ const App = ({ children }: Props) => {
         scope.setUser({
           id: authUser.data.id,
         });
-        setAppContainerClassName(
-          isAdmin(authUser) || isProjectModerator(authUser)
-            ? 'admin-user-view'
-            : ''
-        );
       });
+
+      setAppContainerClassName(
+        isAdmin(authUser) || isProjectModerator(authUser)
+          ? 'admin-user-view'
+          : ''
+      );
     } else {
       setAppContainerClassName('');
     }
