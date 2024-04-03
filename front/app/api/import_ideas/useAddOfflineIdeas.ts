@@ -9,21 +9,23 @@ import { importedIdeasKeys } from './keys';
 
 interface RequestParams {
   phase_id: string;
-  pdf: string;
+  file: string;
+  format: string;
   locale: SupportedLocale;
   personal_data: boolean;
 }
 
 const addOfflineIdeas = async ({
   phase_id,
-  pdf,
+  file,
+  format,
   locale,
   personal_data,
 }: RequestParams) =>
   fetcher<IIdeas>({
-    path: `/phases/${phase_id}/importer/bulk_create/idea/xlsx`,
+    path: `/phases/${phase_id}/importer/bulk_create/idea/${format}`,
     action: 'post',
-    body: { import_ideas: { pdf, locale, personal_data } },
+    body: { import_ideas: { file, locale, personal_data } },
   });
 
 const useAddOfflineIdeas = () => {
