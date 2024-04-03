@@ -54,7 +54,7 @@ describe BasketsIdeaPolicy do
     let(:basket) { create(:basket, phase: context, submitted_at: Time.now) }
     let(:user) { basket.user }
 
-    it { is_expected.to permit(:show)    }
+    it { is_expected.to permit(:show)        }
     it { is_expected.not_to permit(:create)  }
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:destroy) }
