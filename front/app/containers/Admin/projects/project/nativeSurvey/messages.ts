@@ -169,7 +169,7 @@ export default defineMessages({
   },
   importInputs: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.importInputs',
-    defaultMessage: 'Import inputs',
+    defaultMessage: 'Import',
   },
   duplicateAnotherSurvey: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey',

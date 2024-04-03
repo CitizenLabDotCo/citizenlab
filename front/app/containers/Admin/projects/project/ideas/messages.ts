@@ -12,7 +12,7 @@ export default defineMessages({
   },
   importInputs: {
     id: 'app.containers.Admin.projects.project.ideas.importInputs',
-    defaultMessage: 'Import inputs',
+    defaultMessage: 'Import',
   },
   analysisUpsellTooltip: {
     id: 'app.containers.Admin.projects.project.ideas.analysisUpsellTooltip',
