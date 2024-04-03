@@ -83,7 +83,7 @@ const Forms = () => {
     togglePostingEnabled,
     viewFormLink,
     editFormLink,
-    offlineInputsLink,
+    inputImporterLink,
   } = getFormActionsConfig(project.data, updatePhase, phase.data);
 
   const closeDeleteModal = () => {
@@ -257,7 +257,7 @@ const Forms = () => {
                           <>
                             <DropdownListItem
                               onClick={() => {
-                                clHistory.push(offlineInputsLink);
+                                clHistory.push(inputImporterLink);
                               }}
                             >
                               <Box display="flex" gap="4px" alignItems="center">

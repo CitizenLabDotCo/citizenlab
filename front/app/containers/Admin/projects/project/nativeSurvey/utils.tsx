@@ -68,7 +68,7 @@ type FormActionsConfig = {
   phaseId?: string;
   editFormLink: RouteType;
   viewFormLink: RouteType;
-  offlineInputsLink: RouteType;
+  inputImporterLink: RouteType;
   downloadExcelLink: string;
   downloadPdfLink: string;
   heading?: Multiloc;
@@ -85,7 +85,7 @@ export const getFormActionsConfig = (
     phaseId: phase.id,
     editFormLink: `/admin/projects/${project.id}/phases/${phase.id}/native-survey/edit`,
     viewFormLink: `/projects/${project.attributes.slug}/ideas/new?phase_id=${phase.id}`,
-    offlineInputsLink: `/admin/projects/${project.id}/phases/${phase.id}/offline-inputs`,
+    inputImporterLink: `/admin/projects/${project.id}/phases/${phase.id}/input-importer`,
     downloadExcelLink: `${API_PATH}/phases/${phase.id}/import_ideas/example_xlsx`,
     downloadPdfLink: `${API_PATH}/phases/${phase.id}/custom_fields/to_pdf`,
     heading: phase.attributes.title_multiloc,

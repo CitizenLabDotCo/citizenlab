@@ -60,7 +60,7 @@ const AdminProjectIdeas = () => {
             {inputImporterEnabled && (
               <Button
                 width="auto"
-                linkTo={`/admin/projects/${projectId}/phases/${phaseId}/offline-inputs`}
+                linkTo={`/admin/projects/${projectId}/phases/${phaseId}/input-importer`}
                 icon="page"
                 buttonStyle="secondary"
               >
