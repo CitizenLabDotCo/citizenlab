@@ -64,7 +64,8 @@ class WebApi::V1::BasketsIdeasController < ApplicationController
     if basket.new_record?
       if basket.save
         SideFxBasketService.new.after_create basket, current_user
-      else
+      else # TODO: return 401 if no phase
+        skip_authorization
         render json: { errors: basket.errors.details }, status: :unprocessable_entity
         return
       end
