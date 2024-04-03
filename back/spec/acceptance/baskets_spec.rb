@@ -171,7 +171,7 @@ resource 'Baskets' do
             end
 
             let(:submitted) { true }
-    
+
             example_request '[error] Submit a basket' do
               assert_status 401
             end
