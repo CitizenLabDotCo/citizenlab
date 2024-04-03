@@ -6,6 +6,12 @@ class LogActivityJob < ApplicationJob
 
   attr_reader :item, :action, :user, :acted_at, :options, :activity
 
+  rescue_from(ActiveJob::DeserializationError) do |exception|
+    # It would be great if we could match exception.clause.id to the item_id
+    # or user_id, but those arguments do not seem to be available.
+    Rails.logger.warn "Job item or user was probably deleted while the job was queued: #{exception.message}"
+  end
+
   def initialize(*args)
     # The `project_id` is automatically derived from the `item` and added to the
     # `options` hash (see `LogActivityJob#run`). This is done in the constructor because
@@ -19,15 +25,6 @@ class LogActivityJob < ApplicationJob
       new_options = options.to_h.merge(project_id: project_id)
       super(item, action, user, acted_at, new_options)
     end
-  end
-
-  def perform(*args)
-    super
-  rescue ActiveJob::DeserializationError => e
-    puts '------------------'
-    puts e
-    byebug
-    puts '------------------'
   end
 
   def run(item, action, user, acted_at = nil, options = {})
