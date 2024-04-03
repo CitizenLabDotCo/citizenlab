@@ -183,7 +183,7 @@ const FollowUnfollow = ({
   return (
     <Tippy
       interactive={true}
-      disabled={false}
+      disabled={!toolTipType}
       theme="dark"
       maxWidth={280}
       placement="bottom"
