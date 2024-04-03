@@ -2529,7 +2529,7 @@
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupByRegistrationField": "Nach Registrierungsfeld gruppieren",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupBySurveyQuestion": "Nach Frage gruppieren",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupMode": "Gruppieren",
-  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupModeTooltip1": "Gruppieren Sie Umfragebeantwortungen nach Registrierungsfeldern (Geschlecht, Ort, Alter usw.) oder anderen Umfragefragen.",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupModeTooltip1": "Gruppieren Sie Umfrageantworten nach Registrierungsfeldern (Geschlecht, Ort, Alter usw.) oder anderen Fragen der Umfrage.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.none": "Keine",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.question": "Frage",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.registrationField": "Registrierungsfelder",
