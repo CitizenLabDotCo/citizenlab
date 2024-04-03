@@ -65,7 +65,7 @@ const App = ({ children }: Props) => {
   const location = useLocation();
   const { mutate: signOutAndDeleteAccount } = useDeleteSelf();
   const [isAppInitialized, setIsAppInitialized] = useState(false);
-  const [appContainerClassName, setAppContainerClassname] = useState('');
+  const [appContainerClassName, setAppContainerClassName] = useState('');
   const [previousPathname, setPreviousPathname] = useState<RouteType | null>(
     null
   );
@@ -237,14 +237,14 @@ const App = ({ children }: Props) => {
         scope.setUser({
           id: authUser.data.id,
         });
-        setAppContainerClassname(
+        setAppContainerClassName(
           isAdmin(authUser) || isProjectModerator(authUser)
             ? 'admin-user-view'
             : ''
         );
       });
     } else {
-      setAppContainerClassname('');
+      setAppContainerClassName('');
     }
   }, [authUser]);
 
