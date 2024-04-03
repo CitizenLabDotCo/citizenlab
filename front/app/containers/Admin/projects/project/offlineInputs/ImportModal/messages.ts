@@ -5,11 +5,15 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.inputImporter',
     defaultMessage: 'Input importer',
   },
-  uploadAPdfExcelFile: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadAPdfExcelFile',
+  uploadPdfFile: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadPdfFile',
     defaultMessage:
-      'Upload a <b>PDF file of scanned forms</b> or a completed <b>Excel file</b>. The PDF must use a form printed from this project. ' +
-      'The Excel file must use the template provided for this project. These can be downloaded {hereLink}.',
+      'Upload a <b>PDF file of scanned forms</b>. It must use a form printed from this project that can be downloaded {hereLink}.',
+  },
+  uploadExcelFile: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadExcelFile',
+    defaultMessage:
+      'Upload a completed <b>Excel file</b>. It must use the template provided for this project that can be downloaded {hereLink}.',
   },
   here: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.here',

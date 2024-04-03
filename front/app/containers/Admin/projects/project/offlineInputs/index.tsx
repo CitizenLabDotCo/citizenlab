@@ -13,7 +13,8 @@ import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInputSchema from 'hooks/useInputSchema';
 
-import ImportModal from './ImportModal';
+import ImportExcelModal from './ImportModal/ImportExcelModal';
+import ImportPdfModal from './ImportModal/ImportPdfModal';
 import ReviewSection from './ReviewSection';
 import TopBar from './TopBar';
 
@@ -23,7 +24,8 @@ const OfflineInputImporter = () => {
     phaseId?: string;
   };
 
-  const [importModalOpen, setImportModalOpen] = useState(false);
+  const [importPdfModalOpen, setImportPdfModalOpen] = useState(false);
+  const [importExcelModalOpen, setImportExcelModalOpen] = useState(false);
 
   const { schema, uiSchema } = useInputSchema({
     projectId,
@@ -48,8 +50,11 @@ const OfflineInputImporter = () => {
     );
   }
 
-  const openImportModal = () => setImportModalOpen(true);
-  const closeImportModal = () => setImportModalOpen(false);
+  const openImportPdfModal = () => setImportPdfModalOpen(true);
+  const closeImportPdfModal = () => setImportPdfModalOpen(false);
+
+  const openImportExcelModal = () => setImportExcelModalOpen(true);
+  const closeImportExcelModal = () => setImportExcelModalOpen(false);
 
   return (
     <>
@@ -64,8 +69,8 @@ const OfflineInputImporter = () => {
       >
         <FocusOn>
           <TopBar
-            onClickPDFImport={openImportModal}
-            onClickExcelImport={openImportModal}
+            onClickPDFImport={openImportPdfModal}
+            onClickExcelImport={openImportExcelModal}
           />
           <Box
             mt={`${stylingConsts.mobileMenuHeight}px`}
@@ -75,7 +80,11 @@ const OfflineInputImporter = () => {
           </Box>
         </FocusOn>
       </Box>
-      <ImportModal open={importModalOpen} onClose={closeImportModal} />
+      <ImportExcelModal
+        open={importExcelModalOpen}
+        onClose={closeImportExcelModal}
+      />
+      <ImportPdfModal open={importPdfModalOpen} onClose={closeImportPdfModal} />
     </>
   );
 };
