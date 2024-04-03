@@ -14,7 +14,7 @@ def parse_pages(pages)
   pages.map { |page| parse_page(page) }
 end
 
-describe BulkImportIdeas::IdeaPlaintextParserService do
+describe BulkImportIdeas::Pdf::IdeaPlainTextParserService do
   let(:project) { create(:single_phase_ideation_project) }
   let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
   let(:custom_fields) { IdeaCustomFieldsService.new(Factory.instance.participation_method_for(project).custom_form).importable_fields }

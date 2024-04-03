@@ -4,7 +4,7 @@ require 'rails_helper'
 
 # NOTE: These tests are for development purposes due to their reliance on a Google API that cannot be easily mocked
 
-describe BulkImportIdeas::GoogleFormParserService do
+describe BulkImportIdeas::Pdf::IdeaGoogleFormParserService do
   describe 'raw_text_by_page' do
     it 'gets array of page text from the PDF file' do
       # Comment out the following stub to use the actual Google service

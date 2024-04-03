@@ -387,8 +387,8 @@ describe BulkImportIdeas::IdeaPdfFileParser do
             'Description' => 'And this is the very good body'
           }
         }]
-        expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:parse_pdf).and_return(form_parser_output)
-        expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text_page_array).and_raise(BulkImportIdeas::Error.new('something'))
+        expect_any_instance_of(BulkImportIdeas::Pdf::IdeaGoogleFormParserService).to receive(:parse_pdf).and_return(form_parser_output)
+        expect_any_instance_of(BulkImportIdeas::Pdf::IdeaGoogleFormParserService).to receive(:raw_text_page_array).and_raise(BulkImportIdeas::Error.new('something'))
 
         file = create(:idea_import_file)
         expect(service.send(:parse_pdf_ideas, file)).to eq(
