@@ -1,22 +1,27 @@
 import React from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Box, Text, Title, Button } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { UploadFile, SupportedLocale } from 'typings';
 import { object, string, mixed, boolean } from 'yup';
 
 import useAddOfflineIdeas from 'api/import_ideas/useAddOfflineIdeas';
+import usePhase from 'api/phases/usePhase';
 
 import useLocale from 'hooks/useLocale';
 
 import Checkbox from 'components/HookForm/Checkbox';
+import Feedback from 'components/HookForm/Feedback';
+import SingleFileUploader from 'components/HookForm/SingleFileUploader';
+import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
-import ImportModalTemplate from './ImportModalTemplate';
+import LocalePicker from './LocalePicker';
 import messages from './messages';
 
 interface FormValues {
@@ -36,6 +41,15 @@ const ImportPdfModal = ({ open, onClose }: Props) => {
   const { mutateAsync: addOfflineIdeas, isLoading } = useAddOfflineIdeas();
   const locale = useLocale();
   const { phaseId } = useParams();
+  const { data: phase } = usePhase(phaseId);
+  const { projectId } = useParams() as {
+    projectId: string;
+  };
+
+  const downloadFormPath =
+    phase?.data.attributes.participation_method === 'native_survey'
+      ? `/admin/projects/${projectId}/phases/${phaseId}/native-survey`
+      : `/admin/projects/${projectId}/phases/${phaseId}/ideaform`;
 
   const defaultValues: FormValues = {
     locale,
@@ -88,36 +102,68 @@ const ImportPdfModal = ({ open, onClose }: Props) => {
       handleHookFormSubmissionError(e, methods.setError);
     }
   };
-
   return (
-    <ImportModalTemplate
-      open={open}
-      onClose={onClose}
-      formMethods={methods}
-      submitFile={submitFile}
-      message={messages.uploadPdfFile}
-      inputs={
-        <>
-          <Box mt="24px">
-            <Checkbox
-              name="personal_data"
-              label={<FormattedMessage {...messages.formHasPersonalData} />}
-            />
-          </Box>
-          <Box mt="24px">
-            <Checkbox
-              name="google_consent"
-              label={<FormattedMessage {...messages.googleConsent} />}
-            />
-          </Box>
-          <Box w="100%" display="flex" mt="32px">
-            <Button width="auto" type="submit" processing={isLoading}>
-              <FormattedMessage {...messages.upload} />
-            </Button>
-          </Box>
-        </>
+    <Modal
+      fullScreen={false}
+      width="780px"
+      opened={open}
+      close={onClose}
+      header={
+        <Title variant="h2" color="primary" px="24px" m="0">
+          <FormattedMessage {...messages.importPDFFileTitle} />
+        </Title>
       }
-    />
+      niceHeader
+    >
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(submitFile)}>
+          <Box w="100%" p="24px">
+            <Feedback onlyShowErrors />
+            <Box mb="28px">
+              <Text>
+                <FormattedMessage
+                  {...messages.uploadPdfFile}
+                  values={{
+                    b: (chunks) => (
+                      <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+                    ),
+                    hereLink: (
+                      <Link to={{ pathname: downloadFormPath }}>
+                        <FormattedMessage {...messages.here} />
+                      </Link>
+                    ),
+                  }}
+                />
+              </Text>
+            </Box>
+
+            <LocalePicker />
+
+            <Box>
+              <SingleFileUploader name="file" />
+            </Box>
+
+            <Box mt="24px">
+              <Checkbox
+                name="personal_data"
+                label={<FormattedMessage {...messages.formHasPersonalData} />}
+              />
+            </Box>
+            <Box mt="24px">
+              <Checkbox
+                name="google_consent"
+                label={<FormattedMessage {...messages.googleConsent} />}
+              />
+            </Box>
+            <Box w="100%" display="flex" mt="32px">
+              <Button width="auto" type="submit" processing={isLoading}>
+                <FormattedMessage {...messages.upload} />
+              </Button>
+            </Box>
+          </Box>
+        </form>
+      </FormProvider>
+    </Modal>
   );
 };
 

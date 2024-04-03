@@ -1,19 +1,23 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  inputImporter: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.inputImporter',
-    defaultMessage: 'Input importer',
+  importExcelFileTitle: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.importExcelFileTitle',
+    defaultMessage: 'Import Excel file',
+  },
+  importPDFFileTitle: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle',
+    defaultMessage: 'Import scanned forms',
   },
   uploadPdfFile: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadPdfFile',
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadPdfFile1',
     defaultMessage:
-      'Upload a <b>PDF file of scanned forms</b>. It must use a form printed from this project that can be downloaded {hereLink}.',
+      'Upload a <b>PDF file of scanned forms</b>. It must use a form printed from this project. The form can be downloaded {hereLink}.',
   },
   uploadExcelFile: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadExcelFile',
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadExcelFile1',
     defaultMessage:
-      'Upload a completed <b>Excel file</b>. It must use the template provided for this project that can be downloaded {hereLink}.',
+      'Upload a completed <b>Excel file</b> (.xlsx). It must use the template provided for this project. The template can be downloaded {hereLink}.',
   },
   here: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.here',
