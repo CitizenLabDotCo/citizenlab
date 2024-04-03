@@ -65,13 +65,13 @@ const App = ({ children }: Props) => {
   const location = useLocation();
   const { mutate: signOutAndDeleteAccount } = useDeleteSelf();
   const [isAppInitialized, setIsAppInitialized] = useState(false);
-  const [appContainerClassName, setAppContainerClassName] = useState('');
   const [previousPathname, setPreviousPathname] = useState<RouteType | null>(
     null
   );
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser, isLoading } = useAuthUser();
-
+  const appContainerClassName =
+    isAdmin(authUser) || isProjectModerator(authUser) ? 'admin-user-view' : '';
   const [
     userDeletedSuccessfullyModalOpened,
     setUserDeletedSuccessfullyModalOpened,
@@ -238,14 +238,6 @@ const App = ({ children }: Props) => {
           id: authUser.data.id,
         });
       });
-
-      setAppContainerClassName(
-        isAdmin(authUser) || isProjectModerator(authUser)
-          ? 'admin-user-view'
-          : ''
-      );
-    } else {
-      setAppContainerClassName('');
     }
   }, [authUser]);
 
