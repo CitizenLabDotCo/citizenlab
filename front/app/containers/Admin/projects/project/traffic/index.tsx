@@ -16,6 +16,7 @@ import DateRangePicker from 'components/admin/DateRangePicker';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import usePhases from 'api/phases/usePhases';
 
 const TrafficReportPreview = ({
   projectId,
@@ -98,11 +99,19 @@ const TrafficReportPreview = ({
   );
 };
 
-const ProjectTraffic = () => {
-  const { formatMessage } = useIntl();
+const ProjectTraffic = ({
+  defaultStartDate,
+  defaultEndDate,
+}: {
+  defaultStartDate: string | null;
+  defaultEndDate: string | null;
+}) => {
   const { projectId } = useParams() as { projectId: string };
-  const [startAt, setStartAt] = useState<Moment | null>(null);
-  const [endAt, setEndAt] = useState<Moment | null>(null);
+
+  const { formatMessage } = useIntl();
+
+  const [startAt, setStartAt] = useState<string | null>(defaultStartDate);
+  const [endAt, setEndAt] = useState<string | null>(defaultEndDate);
 
   const handleChangeTimeRange = ({
     startDate,
@@ -111,8 +120,8 @@ const ProjectTraffic = () => {
     startDate: Moment | null;
     endDate: Moment | null;
   }) => {
-    setStartAt(moment(startDate?.format('YYYY-MM-DDTHH:mm:ss.sss')) || null);
-    setEndAt(moment(endDate?.format('YYYY-MM-DDTHH:mm:ss.sss')) || null);
+    setStartAt(startDate?.format('YYYY-MM-DD') || null);
+    setEndAt(endDate?.format('YYYY-MM-DD') || null);
   };
 
   return (
@@ -122,20 +131,37 @@ const ProjectTraffic = () => {
           {formatMessage(messages.selectPeriod)}
         </Text>
         <DateRangePicker
-          startDate={startAt}
-          endDate={endAt}
+          startDate={startAt ? moment(startAt) : null}
+          endDate={endAt ? moment(endAt) : null}
           onDatesChange={handleChangeTimeRange}
         />
       </Box>
       <Box p="32px" bg="white">
         <TrafficReportPreview
           projectId={projectId}
-          startAt={startAt?.format('YYYY-MM-DD')}
-          endAt={endAt?.format('YYYY-MM-DD')}
+          startAt={startAt}
+          endAt={endAt}
         />
       </Box>
     </div>
   );
 };
 
-export default ProjectTraffic;
+const ProjectTrafficWithDefaultDates = () => {
+  const { projectId } = useParams() as { projectId: string };
+  const { data: phases } = usePhases(projectId);
+
+  const startOfFirstPhase = phases?.data[0]?.attributes.start_at;
+  const endOfLastPhase =
+    phases?.data[phases.data.length - 1]?.attributes.end_at;
+
+  if (!phases) return null;
+  return (
+    <ProjectTraffic
+      defaultStartDate={startOfFirstPhase || null}
+      defaultEndDate={endOfLastPhase || null}
+    />
+  );
+};
+
+export default ProjectTrafficWithDefaultDates;

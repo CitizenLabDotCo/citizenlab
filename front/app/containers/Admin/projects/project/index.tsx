@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
 import {
   Outlet as RouterOutlet,
   useLocation,
   useParams,
 } from 'react-router-dom';
 
+import NavigationTabs from 'components/admin/NavigationTabs';
 import Tab from 'components/admin/NavigationTabs/Tab';
 
 import { useIntl } from 'utils/cl-intl';
@@ -21,12 +21,7 @@ const AdminProjectsProjectIndex = () => {
   return (
     <>
       <ProjectHeader projectId={projectId} />
-      <Box
-        display="flex"
-        px="32px"
-        bg={colors.white}
-        borderTop={`1px solid ${colors.background}`}
-      >
+      <NavigationTabs position="relative">
         <Tab
           label={formatMessage(messages.timelineTab)}
           url={`/admin/projects/${projectId}/phases/setup`}
@@ -44,7 +39,7 @@ const AdminProjectsProjectIndex = () => {
           url={`/admin/projects/${projectId}/traffic`}
           active={pathname.includes(`/admin/projects/${projectId}/traffic`)}
         />
-      </Box>
+      </NavigationTabs>
       <RouterOutlet />
     </>
   );
