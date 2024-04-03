@@ -8,9 +8,7 @@ import { UploadFile, SupportedLocale } from 'typings';
 import { object, string, mixed, boolean } from 'yup';
 
 import useAddOfflineIdeas from 'api/import_ideas/useAddOfflineIdeas';
-import { IPhases } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
-import usePhases from 'api/phases/usePhases';
 import { IProject } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 
@@ -34,7 +32,6 @@ interface OuterProps {
 
 interface Props extends OuterProps {
   project: IProject;
-  phases?: IPhases;
   locale: SupportedLocale;
 }
 
@@ -174,23 +171,10 @@ const ImportSectionWrapper = (props: OuterProps) => {
 
   const locale = useLocale();
   const { data: project } = useProjectById(projectId);
-  const { data: phases } = usePhases(projectId);
 
   if (!project || isNilOrError(locale)) return null;
 
-  // TODO: JS - Remove all this
-  if (phases) {
-    return (
-      <ImportSection
-        {...props}
-        locale={locale}
-        project={project}
-        phases={phases}
-      />
-    );
-  }
-
-  return null;
+  return <ImportSection {...props} locale={locale} project={project} />;
 };
 
 export default ImportSectionWrapper;
