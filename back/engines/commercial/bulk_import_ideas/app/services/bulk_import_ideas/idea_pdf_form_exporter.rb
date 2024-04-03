@@ -3,25 +3,46 @@
 require 'prawn'
 require 'prawn/measurement_extensions'
 
-class BulkImportIdeas::PrintCustomFieldsService
-  attr_reader :participation_context, :custom_fields, :params, :previous_cursor
+class BulkImportIdeas::IdeaPdfFormExporter < BulkImportIdeas::BaseFormExporter
+  attr_reader :participation_context, :form_fields, :previous_cursor
 
   # We are still hiding linear scales for now because they are not supported
   # by the plaintext parse
   QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc number]
   FORBIDDEN_HTML_TAGS_REGEX = %r{</?(div|span|ul|ol|li|img|a){1}[^>]*/?>}
 
-  def initialize(phase, custom_fields, locale, personal_data_enabled)
-    @phase = phase
-    @custom_fields = custom_fields
-    @locale = locale
+  def initialize(phase, locale, personal_data_enabled)
+    super
+    @form_fields = IdeaCustomFieldsService.new(Factory.instance.participation_method_for(phase).custom_form).enabled_fields_with_other_options
+    # TODO: JS - should this be printable fields?
     @personal_data_enabled = personal_data_enabled
     @previous_cursor = nil
     @app_configuration = AppConfiguration.instance
     @importer_fields = []
   end
 
-  def create_pdf
+  def export
+    generate_pdf.render
+  end
+
+  def mime_type
+    'application/pdf'
+  end
+
+  def filename
+    'form.pdf'
+  end
+
+  def importer_data
+    {
+      page_count: generate_pdf.page_count,
+      fields: @importer_fields
+    }
+  end
+
+  private
+
+  def generate_pdf
     pdf = Prawn::Document.new(page_size: 'A4')
 
     load_font pdf
@@ -34,7 +55,7 @@ class BulkImportIdeas::PrintCustomFieldsService
       render_personal_data_section pdf
     end
 
-    custom_fields.each_with_index do |custom_field, i|
+    form_fields.each_with_index do |custom_field, i|
       field_type = custom_field.input_type
 
       # If this is a survey, the first field will be a 'page'.
@@ -66,15 +87,6 @@ class BulkImportIdeas::PrintCustomFieldsService
 
     pdf
   end
-
-  def importer_data
-    {
-      page_count: create_pdf.page_count,
-      fields: @importer_fields
-    }
-  end
-
-  private
 
   def load_font(pdf)
     open_sans_path = Rails.root.join('app/assets/fonts/Open_Sans/static')

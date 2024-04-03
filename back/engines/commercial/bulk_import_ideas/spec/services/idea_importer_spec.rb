@@ -2,24 +2,8 @@
 
 require 'rails_helper'
 
-describe BulkImportIdeas::ImportIdeasService do
+describe BulkImportIdeas::IdeaImporter do
   let(:service) { described_class.new(create(:admin)) }
-
-  describe 'upload_file' do
-    it 'uploads a file successfully' do
-      base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf').read
-      service.create_files "data:application/pdf;base64,#{base_64_content}"
-      expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 1
-      expect(BulkImportIdeas::IdeaImportFile.first.import_type).to eq 'pdf'
-    end
-
-    it 'detects the file type if an xlsx file is uploaded' do
-      base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/import.xlsx').read
-      service.create_files "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{base_64_content}"
-      expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 1
-      expect(BulkImportIdeas::IdeaImportFile.first.import_type).to eq 'xlsx'
-    end
-  end
 
   describe 'import_ideas' do
     before { create(:idea_status, code: 'proposed') }
@@ -41,7 +25,7 @@ describe BulkImportIdeas::ImportIdeasService do
           user_email: 'userimport@citizenlab.co'
         }
       ]
-      service.import_ideas idea_rows
+      service.import idea_rows
 
       expect(project.ideas.count).to eq 2
       expect(project.reload.ideas_count).to eq 0
@@ -74,7 +58,7 @@ describe BulkImportIdeas::ImportIdeasService do
           user_email: 'userimport@citizenlab.co'
         }
       ]
-      service.import_ideas idea_rows
+      service.import idea_rows
 
       expect(project.ideas.count).to eq 2
       expect(project.reload.ideas_count).to eq 0
@@ -103,7 +87,7 @@ describe BulkImportIdeas::ImportIdeasService do
           user_consent: true
         }
       ]
-      service.import_ideas idea_rows
+      service.import idea_rows
 
       ideas = project.reload.ideas.order(:created_at)
       expect(project.ideas.count).to eq 2
@@ -131,7 +115,7 @@ describe BulkImportIdeas::ImportIdeasService do
         }
       ]
 
-      service.import_ideas idea_rows
+      service.import idea_rows
 
       expect(Idea.count).to eq 1
       idea = Idea.first
@@ -151,7 +135,7 @@ describe BulkImportIdeas::ImportIdeasService do
           project_id: project.id
         }
       ]
-      service.import_ideas idea_rows
+      service.import idea_rows
 
       expect(project.reload.ideas.count).to eq 2
     end
@@ -176,7 +160,7 @@ describe BulkImportIdeas::ImportIdeasService do
           user_email: 'userimport@citizenlab.co'
         }
       ]
-      expect { service.import_ideas idea_rows }.to raise_error(
+      expect { service.import idea_rows }.to raise_error(
         an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_ideas_project_not_found', params: { value: 'Non-existing project', row: '2' }))
       )
       expect(Idea.count).to eq 0
@@ -195,7 +179,7 @@ describe BulkImportIdeas::ImportIdeasService do
           published_at: '01/01/2021'
         }
       ]
-      expect { service.import_ideas idea_rows }.to raise_error(
+      expect { service.import idea_rows }.to raise_error(
         an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_ideas_publication_date_invalid_format', params: { value: '01/01/2021', row: nil }))
       )
 
@@ -208,7 +192,7 @@ describe BulkImportIdeas::ImportIdeasService do
           published_at: '01-13-2021'
         }
       ]
-      expect { service.import_ideas idea_rows }.to raise_error(
+      expect { service.import idea_rows }.to raise_error(
         an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_ideas_publication_date_invalid_format', params: { value: '01-13-2021', row: nil }))
       )
     end
@@ -224,7 +208,7 @@ describe BulkImportIdeas::ImportIdeasService do
           user_email: 'userimport@@citizenlab....co'
         }
       ]
-      service.import_ideas idea_rows
+      service.import idea_rows
       expect(project.ideas.first).not_to be_nil
       expect(project.ideas.first.author).to be_nil
       expect(User.count).to eq 1
@@ -242,7 +226,7 @@ describe BulkImportIdeas::ImportIdeasService do
           user_last_name: 'McBerry'
         }
       ]
-      service.import_ideas idea_rows
+      service.import idea_rows
 
       author = project.reload.ideas.first.author
       expect(author).not_to be_nil
@@ -264,7 +248,7 @@ describe BulkImportIdeas::ImportIdeasService do
             user_email: 'surveyimport@citizenlab.co'
           }
         ]
-        service.import_ideas idea_rows
+        service.import idea_rows
 
         expect(Idea.count).to eq 1
         expect(User.count).to eq 2

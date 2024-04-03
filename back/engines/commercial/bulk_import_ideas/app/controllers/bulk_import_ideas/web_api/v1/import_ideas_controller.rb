@@ -2,16 +2,31 @@
 
 module BulkImportIdeas
   class WebApi::V1::ImportIdeasController < ApplicationController
-    before_action :authorize_bulk_import_ideas, only: %i[bulk_create example_xlsx to_pdf draft_ideas approve_all]
+    before_action :authorize_bulk_import_ideas, only: %i[bulk_create export_form draft_ideas approve_all]
 
-    # NOTE: PDF version only works for a project endpoint
+    SUPPORTED_MODELS = ['idea'].freeze
+    SUPPORTED_FORMATS = %w[pdf xlsx].freeze
+
     def bulk_create
-      file = bulk_create_params[:pdf] || bulk_create_params[:xlsx]
-      ideas = import_ideas_service.import_file file
-      users = import_ideas_service.imported_users
+      send_not_found unless supported_model? && supported_format?
+
+      format = params[:format].to_sym
+      file = bulk_create_params[format] # TODO: JS - just change to 'file'?
+
+      locale = params[:import] ? bulk_create_params[:locale] : current_user.locale
+      personal_data_enabled = params[:import] ? bulk_create_params[:personal_data] || false : false
+      phase_id = params[:id]
+      file_parser = file_parser_service.new(current_user, locale, phase_id, personal_data_enabled)
+      import_service = importer_service.new(current_user)
+
+      rows = file_parser.parse_file file
+
+      ideas = import_service.import(rows) # TODO: JS - file not added here
+      users = import_service.imported_users
+
       sidefx.after_success current_user, @project, ideas, users
 
-      render json: ::WebApi::V1::IdeaSerializer.new(
+      render json: serializer.new(
         ideas,
         params: jsonapi_serializer_params,
         include: %i[author idea_import]
@@ -21,36 +36,19 @@ module BulkImportIdeas
       render json: { errors: { file: [{ error: e.key, **e.params }] } }, status: :unprocessable_entity
     end
 
-    def example_xlsx
-      xlsx = import_ideas_service.generate_example_xlsx
-      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
-    end
+    def export_form
+      send_not_found unless supported_model? && supported_format?
 
-    def to_pdf
       locale = params[:locale] || current_user.locale
       personal_data_enabled = params[:personal_data] == 'true'
-      phase = Phase.find(params[:id])
 
-      if phase
-        custom_fields = IdeaCustomFieldsService.new(Factory.instance.participation_method_for(phase).custom_form).enabled_fields_with_other_options
-        pdf = BulkImportIdeas::PrintCustomFieldsService.new(
-          phase,
-          custom_fields,
-          locale,
-          personal_data_enabled
-        ).create_pdf
-
-        send_data(
-          pdf.render,
-          type: 'application/pdf',
-          filename: 'survey.pdf'
-        )
-      else
-        send_not_found
-      end
+      service = form_exporter_service.new(@phase, locale, personal_data_enabled)
+      send_data service.export, type: service.mime_type, filename: service.filename
     end
 
     def approve_all
+      send_not_found unless supported_model?
+
       ideas = imported_draft_ideas
       approved = 0
       not_approved = 0
@@ -66,9 +64,11 @@ module BulkImportIdeas
     end
 
     def draft_ideas
+      send_not_found unless supported_model?
+
       render json: linked_json(
         paginate(imported_draft_ideas),
-        ::WebApi::V1::IdeaSerializer,
+        serializer,
         include: %i[author idea_import],
         params: jsonapi_serializer_params
       )
@@ -87,7 +87,7 @@ module BulkImportIdeas
 
     def show_idea_import_file
       idea_import_file = IdeaImportFile.find(params[:id])
-      authorize idea_import_file.project || :'bulk_import_ideas/import_ideas'
+      authorize idea_import_file.project || :import
 
       send_data URI.open(idea_import_file.file_content_url).read, type: 'application/octet-stream'
     end
@@ -96,24 +96,52 @@ module BulkImportIdeas
 
     def bulk_create_params
       params
-        .require(:import_ideas)
+        .require(:import)
         .permit(%i[xlsx pdf locale personal_data])
     end
 
-    def import_ideas_service
-      locale = params[:import_ideas] ? bulk_create_params[:locale] : current_user.locale
-      personal_data_enabled = params[:import_ideas] ? bulk_create_params[:personal_data] || false : false
-      phase_id = params[:id]
-      @import_ideas_service = ImportProjectIdeasService.new(current_user, @project.id, locale, phase_id, personal_data_enabled)
-    end
-
     def authorize_bulk_import_ideas
-      @project = Phase.find(params[:id]).project
-      authorize @project || :'bulk_import_ideas/import_ideas'
+      @phase = Phase.find(params[:id])
+      if @phase
+        @project = @phase.project
+        authorize @project || :import
+      else
+        send_not_found
+      end
     end
 
     def sidefx
       @sidefx ||= SideFxImportIdeasService.new
+    end
+
+    def importer_service
+      model = params[:model]
+      "BulkImportIdeas::#{model.camelize}Importer".constantize
+    end
+
+    def file_parser_service
+      model = params[:model]
+      format = params[:format]
+      "BulkImportIdeas::#{model.camelize}#{format.camelize}FileParser".constantize
+    end
+
+    def form_exporter_service
+      model = params[:model]
+      format = params[:format]
+      "BulkImportIdeas::#{model.camelize}#{format.camelize}FormExporter".constantize
+    end
+
+    def serializer
+      model = params[:model]
+      "::WebApi::V1::#{model.camelize}Serializer".constantize
+    end
+
+    def supported_model?
+      SUPPORTED_MODELS.include?(params[:model])
+    end
+
+    def supported_format?
+      SUPPORTED_FORMATS.include?(params[:format])
     end
 
     def imported_draft_ideas

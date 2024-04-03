@@ -2,9 +2,9 @@
 
 require 'rails_helper'
 
-describe BulkImportIdeas::ImportProjectIdeasService do
+describe BulkImportIdeas::IdeaPdfFileParser do
   let(:project) { create(:single_phase_ideation_project) }
-  let(:service) { described_class.new create(:admin), project.id, 'en', nil, false }
+  let(:service) { described_class.new create(:admin), 'en', project.phases.first&.id, false }
   let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
 
   before do
@@ -28,7 +28,14 @@ describe BulkImportIdeas::ImportProjectIdeasService do
   end
 
   describe 'upload_file' do
-    it 'splits a 12 page file successfully based on the number of pages in the template (2) and creates additional files' do
+    it 'detects the file type if an xlsx file is uploaded' do
+      base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/import.xlsx').read
+      service.create_files "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{base_64_content}"
+      expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 1
+      expect(BulkImportIdeas::IdeaImportFile.first.import_type).to eq 'xlsx'
+    end
+
+    it 'splits a 12 page PDF file successfully based on the number of pages in the template (2) and creates additional files' do
       base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_12.pdf').read
       service.create_files "data:application/pdf;base64,#{base_64_content}"
       expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 3
@@ -41,37 +48,6 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       expect { service.create_files "data:application/pdf;base64,#{base_64_content}" }.to raise_error(
         an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_ideas_maximum_pdf_pages_exceeded'))
       )
-    end
-  end
-
-  describe 'generate_example_xlsx' do
-    it 'produces an xlsx file with all the fields for a project' do
-      xlsx = service.generate_example_xlsx
-      xlsx_hash = XlsxService.new.xlsx_to_hash_array xlsx
-
-      expect(xlsx).not_to be_nil
-      expect(xlsx_hash.count).to eq 1
-      expect(xlsx_hash[0].keys).to match_array([
-        'First name(s)',
-        'Last name',
-        'Email address',
-        'Permission',
-        'Date Published (dd-mm-yyyy)',
-        'Title',
-        'Description',
-        'Tags',
-        'Location',
-        'A text field',
-        'Number field',
-        'Point field - Latitude',
-        'Point field - Longitude',
-        'Select field',
-        'Multi select field',
-        'Another select field',
-        'Image URL',
-        'Latitude',
-        'Longitude'
-      ])
     end
   end
 
@@ -204,7 +180,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       end
 
       it 'can convert a document in french' do
-        service = described_class.new create(:admin), project.id, 'fr-FR', nil, true
+        service = described_class.new create(:admin), 'fr-FR', project.phases.first&.id, true
         ideas = [{
           pdf_pages: [1, 2],
           fields: {

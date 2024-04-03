@@ -1,48 +1,11 @@
 # frozen_string_literal: true
 
 module BulkImportIdeas
-  class Error < StandardError
-    def initialize(key, params = {})
-      super()
-      @key = key
-      @params = params
-    end
-
-    attr_reader :key, :params
-  end
-
-  class ImportIdeasService
+  class IdeaImporter < BaseImporter
     DEFAULT_MAX_IDEAS = 500
     DATE_FORMAT_REGEX = /^(0[1-9]|[1|2][0-9]|3[0|1])-(0[1-9]|1[0-2])-([0-9]{4})$/ # After https://stackoverflow.com/a/47218282/3585671
 
-    def initialize(current_user)
-      @locale = AppConfiguration.instance.settings('core', 'locales').first # Default locale for any new users created
-      @all_projects = Project.all
-      @all_topics = Topic.all
-      @import_user = current_user
-      @project = nil
-      @uploaded_file = nil
-      @imported_users = []
-    end
-
-    attr_reader :imported_users
-
-    def import_file(file_content)
-      files = create_files file_content
-
-      ideas = []
-      files.each do |file|
-        idea_rows = parse_idea_rows file
-        ideas += import_ideas(idea_rows, file)
-      end
-      ideas
-    end
-
-    def create_files(file_content)
-      [upload_source_file(file_content)]
-    end
-
-    def import_ideas(idea_rows, file = nil)
+    def import(idea_rows, file = nil)
       raise Error.new 'bulk_import_ideas_maximum_ideas_exceeded', value: DEFAULT_MAX_IDEAS if idea_rows.size > DEFAULT_MAX_IDEAS
 
       ideas = []
@@ -57,38 +20,7 @@ module BulkImportIdeas
       ideas
     end
 
-    def parse_idea_rows(_file)
-      []
-    end
-
-    def generate_example_xlsx
-      nil
-    end
-
-    def import_as_draft?
-      true
-    end
-
     private
-
-    attr_reader :all_projects, :all_topics
-
-    def upload_source_file(file_content)
-      file_type = file_content.index('application/pdf') ? 'pdf' : 'xlsx'
-      IdeaImportFile.create!(
-        import_type: file_type,
-        project: @project,
-        file_by_content: {
-          name: "import.#{file_type}",
-          content: file_content # base64
-        }
-      )
-    end
-
-    def parse_xlsx_ideas(file)
-      xlsx_file = URI.open(file.file_content_url)
-      XlsxService.new.xlsx_to_hash_array xlsx_file
-    end
 
     def import_idea(idea_row, file)
       idea_attributes = {}
@@ -115,15 +47,11 @@ module BulkImportIdeas
     end
 
     def add_title_multiloc(idea_row, idea_attributes)
-      raise Error.new 'bulk_import_ideas_blank_title', row: idea_row[:id] if idea_row[:title_multiloc].blank? && !import_as_draft?
-
       title = idea_row[:title_multiloc] || {}
       idea_attributes[:title_multiloc] = title
     end
 
     def add_body_multiloc(idea_row, idea_attributes)
-      raise Error.new 'bulk_import_ideas_blank_body', row: idea_row[:id] if idea_row[:body_multiloc].blank? && !import_as_draft?
-
       body = idea_row[:body_multiloc] || {}
       idea_attributes[:body_multiloc] = body
     end
@@ -135,7 +63,7 @@ module BulkImportIdeas
         project = Project.find(idea_row[:project_id])
       else
         project_title = idea_row[:project_title].downcase.strip
-        project = all_projects.find do |find_project|
+        project = Project.all.find do |find_project|
           find_project
             .title_multiloc
             .values
@@ -203,7 +131,7 @@ module BulkImportIdeas
     end
 
     def add_publication_status(_idea_row, idea_attributes)
-      idea_attributes[:publication_status] = import_as_draft? ? 'draft' : 'published'
+      idea_attributes[:publication_status] = 'draft'
     end
 
     def add_location(idea_row, idea_attributes)
@@ -283,13 +211,6 @@ module BulkImportIdeas
       rescue StandardError => _e
         raise Error.new 'bulk_import_ideas_image_url_not_valid', value: idea_row[:image_url], row: idea_row[:id]
       end
-    end
-
-    def idea_blank?(idea)
-      idea.each do |_field, value|
-        return false if value.present?
-      end
-      true
     end
 
     def create_idea_import(idea, user_created, user_consent, page_range, file)

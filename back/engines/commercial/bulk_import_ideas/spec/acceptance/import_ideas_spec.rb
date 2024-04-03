@@ -26,7 +26,7 @@ resource 'BulkImportIdeasImportIdeas' do
       parameter(
         :xlsx,
         'Base64 encoded xlsx file with ideas details. See web_api/v1/import_ideas/example_xlsx for the format',
-        scope: :import_ideas,
+        scope: :import,
         required: true
       )
 
@@ -54,21 +54,22 @@ resource 'BulkImportIdeasImportIdeas' do
       end
     end
 
-    post 'web_api/v1/phases/:phase_id/importer/bulk_create/idea/xlsx' do
+    post 'web_api/v1/phases/:phase_id/importer/bulk_create/idea/:format' do
       parameter(
         :xlsx,
         'Base64 encoded xlsx file with ideas details. See web_api/v1/projects/:id/import_ideas/example_xlsx for the format',
-        scope: :import_ideas
+        scope: :import
       )
       parameter(
         :pdf,
         'Base64 encoded scanned PDF of ideas. Must be from the version of the form downloaded from the site.',
-        scope: :import_ideas
+        scope: :import
       )
-      parameter(:locale, 'Locale of the ideas being imported.', scope: :import_ideas)
-      parameter(:personal_data, 'Has the uploaded form got the personal data section in it', scope: :import_ideas)
+      parameter(:locale, 'Locale of the ideas being imported.', scope: :import)
+      parameter(:personal_data, 'Has the uploaded form got the personal data section in it', scope: :import)
 
       context 'xlsx import' do
+        let(:format) { 'xlsx' }
         let(:xlsx) { create_project_bulk_import_ideas_xlsx }
 
         example 'Bulk import ideas to current phase from .xlsx' do
@@ -89,6 +90,7 @@ resource 'BulkImportIdeasImportIdeas' do
 
       context 'pdf import' do
         let(:locale) { 'en' }
+        let(:format) { 'pdf' }
         let(:pdf) { create_project_bulk_import_ideas_pdf 1 }
 
         # NOTE: GoogleFormParserService is stubbed to avoid calls to google APIs
@@ -265,7 +267,7 @@ resource 'BulkImportIdeasImportIdeas' do
       parameter(
         :xlsx,
         'Base64 encoded xlsx file with ideas details. See web_api/v1/phases/:phase_id/importer/export_form/idea/xlsx for the format',
-        scope: :import_ideas
+        scope: :import
       )
 
       before { header_token_for create(:project_moderator, projects: [other_project]) }

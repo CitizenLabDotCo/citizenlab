@@ -1,129 +1,64 @@
 # frozen_string_literal: true
 
 module BulkImportIdeas
-  class ImportProjectIdeasService < ImportIdeasService
-    PAGES_TO_TRIGGER_NEW_PDF = 8
-    MAX_TOTAL_PAGES = 50
-    POSITION_TOLERANCE = 10
+  class Error < StandardError
+    def initialize(key, params = {})
+      super()
+      @key = key
+      @params = params
+    end
 
-    def initialize(current_user, project_id, locale, phase_id, personal_data_enabled)
-      super(current_user)
-      @project = Project.find(project_id)
-      @phase = phase_id ? @project.phases.find(phase_id) : TimelineService.new.current_phase(@project)
+    attr_reader :key, :params
+  end
+
+  class IdeaBaseFileParser
+    POSITION_TOLERANCE = 10 # TODO: JS - move to PDF parser
+
+    def initialize(current_user, locale, phase_id, personal_data_enabled)
+      @import_user = current_user
+      @phase = Phase.find(phase_id)
+      @project = @phase.project
       @participation_method = Factory.instance.participation_method_for(@phase)
       @form_fields = IdeaCustomFieldsService.new(@participation_method.custom_form).importable_fields
-      @locale = locale || @locale
+      @locale = locale || AppConfiguration.instance.settings('core', 'locales').first # Default locale for any new users created
       @google_forms_service = nil
       @input_form_data = import_form_data(personal_data_enabled)
     end
 
-    def generate_example_xlsx
-      locale_first_name_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.first_name') }
-      locale_last_name_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.last_name') }
-      locale_email_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.email_address') }
-      locale_permission_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.permission') }
-      locale_published_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.date_published') }
+    def parse_file(file_content)
+      files = create_files file_content
 
-      columns = {
-        locale_first_name_label => 'Bill',
-        locale_last_name_label => 'Test',
-        locale_email_label => 'bill@citizenlab.co',
-        locale_permission_label => 'X',
-        locale_published_label => '18-07-2022'
-      }
-
-      @form_fields.each do |field|
-        column_name = field.title_multiloc[@locale]
-        value = case field.input_type
-        when 'select'
-          field.options.first.title_multiloc[@locale]
-        when 'multiselect'
-          field.options.map { |o| o.title_multiloc[@locale] }.join '; '
-        when 'topic_ids'
-          @project.allowed_input_topics.map { |t| t.title_multiloc[@locale] }.join '; '
-        when 'number'
-          5
-        when 'point'
-          rand(0.1..89.9).round(5)
-        else
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
-        end
-        columns[column_name] = value
+      idea_rows = []
+      files.each do |file|
+        idea_rows += parse_rows file
       end
-
-      unless @participation_method.supports_survey_form?
-        locale_image_url_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.image_url') }
-        locale_latitude_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.latitude') }
-        locale_longitude_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.longitude') }
-
-        columns[locale_image_url_label] = 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png'
-        columns[locale_latitude_label] = 50.5035
-        columns[locale_longitude_label] = 6.0944
-      end
-
-      XlsxService.new.hash_array_to_xlsx [columns]
-    end
-
-    def create_files(file_content)
-      source_file = upload_source_file file_content
-
-      # Split a pdf into smaller documents
-      split_pdf_files = []
-      if source_file&.import_type == 'pdf'
-        # Get number of pages in a form from the download
-        pages_per_idea = @input_form_data[:page_count]
-
-        pdf = ::CombinePDF.parse URI.open(source_file.file_content_url).read
-        source_file.update!(num_pages: pdf.pages.count)
-        raise Error.new 'bulk_import_ideas_maximum_pdf_pages_exceeded', value: pdf.pages.count if pdf.pages.count > MAX_TOTAL_PAGES
-
-        return [source_file] if pdf.pages.count <= PAGES_TO_TRIGGER_NEW_PDF # Only need to split if the file is too big
-
-        new_pdf = ::CombinePDF.new
-        new_pdf_count = 0
-        pdf.pages.each_with_index do |page, index|
-          new_pdf << page
-          current_page_num = index + 1
-          save_to_file =
-            (current_page_num % pages_per_idea == 0 && new_pdf.pages.count >= PAGES_TO_TRIGGER_NEW_PDF) ||
-            (current_page_num == pdf.pages.count)
-
-          if save_to_file
-            # Temporarily save to a file
-            new_pdf_count += 1
-            file = Rails.root.join('tmp', "import_#{source_file.id}_#{new_pdf_count}.pdf")
-            new_pdf.save file.to_s
-            base_64_content = Base64.encode64 file.read
-            file.delete
-
-            split_pdf_files << IdeaImportFile.create!(
-              import_type: source_file.import_type,
-              project: @project,
-              num_pages: new_pdf.pages.count,
-              parent: source_file,
-              file_by_content: {
-                name: "import_#{new_pdf_count}.pdf",
-                content: "data:application/pdf;base64,#{base_64_content}"
-              }
-            )
-            new_pdf = ::CombinePDF.new
-          end
-        end
-      end
-      split_pdf_files.presence || [source_file]
-    end
-
-    def parse_idea_rows(file)
-      if file.import_type == 'pdf'
-        parsed_ideas = parse_pdf_ideas(file)
-        merge_pdf_rows(parsed_ideas)
-      else
-        xlsx_ideas = parse_xlsx_ideas(file).map { |idea| { pdf_pages: [1], fields: idea } }
-        ideas_to_idea_rows(xlsx_ideas)
-      end
+      idea_rows
     end
 
     private
+
+    def create_files(file_content)
+      [upload_source_file(file_content)]
+    end
+
+    def upload_source_file(file_content)
+      file_type = file_content.index('application/pdf') ? 'pdf' : 'xlsx'
+      IdeaImportFile.create!(
+        import_type: file_type,
+        project: @project,
+        file_by_content: {
+          name: "import.#{file_type}",
+          content: file_content # base64
+        }
+      )
+    end
+
+    def idea_blank?(idea)
+      idea.each do |_field, value|
+        return false if value.present?
+      end
+      true
+    end
 
     def ideas_to_idea_rows(ideas_array)
       idea_rows = ideas_array.each_with_index.map do |idea, index|
@@ -160,44 +95,8 @@ module BulkImportIdeas
       idea_rows.compact
     end
 
-    def merge_pdf_rows(parsed_ideas)
-      form_parsed_ideas = ideas_to_idea_rows(parsed_ideas[:form_parsed_ideas])
-      text_parsed_ideas = ideas_to_idea_rows(parsed_ideas[:text_parsed_ideas])
-
-      return form_parsed_ideas unless form_parsed_ideas.count == text_parsed_ideas.count
-
-      form_parsed_ideas.each_with_index.map do |idea, index|
-        idea[:custom_field_values] = text_parsed_ideas[index][:custom_field_values].merge(idea[:custom_field_values])
-        idea[:pdf_pages] = complete_page_range(idea[:pdf_pages], text_parsed_ideas[index][:pdf_pages])
-        text_parsed_ideas[index].merge(idea)
-      end
-    end
-
-    def parse_pdf_ideas(file)
-      pdf_file = URI.open(file.file_content_url).read
-      @google_forms_service ||= GoogleFormParserService.new
-
-      # NOTE: We return both parsed values so we can later merge the best values from both
-      form_parsed_ideas = @google_forms_service.parse_pdf(pdf_file, @input_form_data[:page_count])
-
-      text_parsed_ideas = begin
-        IdeaPlaintextParserService.new(
-          @phase || @project,
-          @form_fields.reject { |field| field.input_type == 'topic_ids' }, # Temp
-          @locale,
-          @input_form_data[:page_count]
-        ).parse_text(@google_forms_service.raw_text_page_array(pdf_file))
-      rescue BulkImportIdeas::Error
-        []
-      end
-
-      {
-        form_parsed_ideas: form_parsed_ideas,
-        text_parsed_ideas: text_parsed_ideas
-      }
-    end
-
     # Match all fields in the forms field with values returned by parser / xlsx sheet
+    # TODO: Split this method for PDF
     def process_custom_form_fields(idea, idea_row)
       # Merge the form fields with the import values into a single array
       merged_idea = []
@@ -314,19 +213,6 @@ module BulkImportIdeas
       end
 
       idea_row
-    end
-
-    def complete_page_range(pages1, pages2)
-      min = [pages1.min, pages2.min].min
-      max = [pages1.max, pages2.max].max
-      (min..max).to_a
-    end
-
-    # Return the fields and page count to import data to
-    def import_form_data(personal_data_enabled)
-      # NOTE: It calls this form an xlsx import too - one side effect currently - proposed budget does not import
-      printable_fields = IdeaCustomFieldsService.new(@participation_method.custom_form).printable_fields
-      PrintCustomFieldsService.new(@phase || @project, printable_fields, @locale, personal_data_enabled).importer_data
     end
   end
 end

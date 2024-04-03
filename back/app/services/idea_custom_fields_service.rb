@@ -144,7 +144,7 @@ class IdeaCustomFieldsService
   private
 
   # Replace a point field with two fields, one for latitude and one for longitude,
-  # so that the XlsxExport::InputSheetGenerator and BulkImportIdeas::ImportProjectIdeasService#generate_example_xlsx
+  # so that the XlsxExport::InputSheetGenerator and BulkImportIdeas::IdeaPdfFileParser#generate_example_xlsx
   # can produce separate columns for latitude and longitude.
   def replace_point_fields_with_lat_and_lon_point_fields(fields)
     fields.map do |field|
