@@ -46,6 +46,7 @@ import {
 } from 'utils/helperUtils';
 import { localeStream } from 'utils/localeStream';
 import { usePermission } from 'utils/permissions';
+import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
 
 import Meta from './Meta';
 import UserSessionRecordingModal from './UserSessionRecordingModal';
@@ -64,6 +65,7 @@ const App = ({ children }: Props) => {
   const location = useLocation();
   const { mutate: signOutAndDeleteAccount } = useDeleteSelf();
   const [isAppInitialized, setIsAppInitialized] = useState(false);
+  const [isAdminUser, setIsAdminUser] = useState(false);
   const [previousPathname, setPreviousPathname] = useState<RouteType | null>(
     null
   );
@@ -235,6 +237,7 @@ const App = ({ children }: Props) => {
         scope.setUser({
           id: authUser.data.id,
         });
+        setIsAdminUser(isAdmin(authUser) || isProjectModerator(authUser));
       });
     }
   }, [authUser]);
@@ -365,6 +368,7 @@ const App = ({ children }: Props) => {
                   alignItems="stretch"
                   flex="1"
                   overflowY="auto"
+                  className={isAdminUser ? 'admin-view' : ''}
                   pt={
                     showFrontOfficeNavbar()
                       ? `${stylingConsts.menuHeight}px`
