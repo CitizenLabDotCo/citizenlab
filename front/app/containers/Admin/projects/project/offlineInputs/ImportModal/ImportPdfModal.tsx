@@ -1,7 +1,14 @@
 import React from 'react';
 
-import { Box, Text, Title, Button } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  Title,
+  Button,
+  TooltipContentWrapper,
+} from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
+import Tippy from '@tippyjs/react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { UploadFile, SupportedLocale } from 'typings';
@@ -10,6 +17,7 @@ import { object, string, mixed, boolean } from 'yup';
 import useAddOfflineIdeas from 'api/import_ideas/useAddOfflineIdeas';
 import usePhase from 'api/phases/usePhase';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import Checkbox from 'components/HookForm/Checkbox';
@@ -45,6 +53,9 @@ const ImportPdfModal = ({ open, onClose }: Props) => {
   const { projectId } = useParams() as {
     projectId: string;
   };
+  const importPrintedFormsEnabled = useFeatureFlag({
+    name: 'import_printed_forms',
+  });
 
   const downloadFormPath =
     phase?.data.attributes.participation_method === 'native_survey'
@@ -156,9 +167,28 @@ const ImportPdfModal = ({ open, onClose }: Props) => {
               />
             </Box>
             <Box w="100%" display="flex" mt="32px">
-              <Button width="auto" type="submit" processing={isLoading}>
-                <FormattedMessage {...messages.upload} />
-              </Button>
+              <Tippy
+                interactive={true}
+                theme={''}
+                maxWidth={350}
+                disabled={importPrintedFormsEnabled}
+                content={
+                  <TooltipContentWrapper tippytheme="light">
+                    <FormattedMessage {...messages.disabledPDFImportTooltip} />
+                  </TooltipContentWrapper>
+                }
+              >
+                <Box>
+                  <Button
+                    width="auto"
+                    type="submit"
+                    processing={isLoading}
+                    disabled={!importPrintedFormsEnabled}
+                  >
+                    <FormattedMessage {...messages.upload} />
+                  </Button>
+                </Box>
+              </Tippy>
             </Box>
           </Box>
         </form>

@@ -14,6 +14,11 @@ export default defineMessages({
     defaultMessage:
       'Upload a <b>PDF file of scanned forms</b>. It must use a form printed from this project. The form can be downloaded {hereLink}.',
   },
+  disabledPDFImportTooltip: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.disabledPDFImportTooltip',
+    defaultMessage:
+      'Importing PDF files of scanned forms is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.',
+  },
   uploadExcelFile: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadExcelFile1',
     defaultMessage:

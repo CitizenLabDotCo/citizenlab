@@ -13,11 +13,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.premium',
     defaultMessage: 'Premium',
   },
-  disabledPDFImportTooltip: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.disabledPDFImportTooltip',
-    defaultMessage:
-      'Importing PDF files containing scanned input forms is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.',
-  },
   importExcelFile: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile',
     defaultMessage: 'Import Excel file (.xlsx)',
