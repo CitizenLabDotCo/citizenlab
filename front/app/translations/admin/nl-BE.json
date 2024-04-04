@@ -140,7 +140,7 @@
   "app.components.admin.PostManager.editStatuses": "Bewerk statussen",
   "app.components.admin.PostManager.editTags": "Bewerk tags",
   "app.components.admin.PostManager.editedPostSave": "Bewaar",
-  "app.components.admin.PostManager.esriAddOnFeatureTooltip": "Het importeren van gegevens uit Esri ArcGIS Online is een add-on functionaliteit. Neem contact op met je Government Success manager om deze functionaliteit te ontgrendelen.",
+  "app.components.admin.PostManager.esriAddOnFeatureTooltip": "Het importeren van gegevens uit Esri ArcGIS Online is een add-on functionaliteit. Neem contact op met je Government Success Manager om deze functionaliteit te ontgrendelen.",
   "app.components.admin.PostManager.esriSideError": "Er is een fout opgetreden in de ArcGIS-toepassing. Wacht een paar minuten en probeer het later nog eens.",
   "app.components.admin.PostManager.esriWebMap": "Esri-webkaart",
   "app.components.admin.PostManager.exportAllInputs": "Alle bijdragen exporteren (.xslx)",
