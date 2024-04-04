@@ -1,5 +1,5 @@
 import { JsonSchema7, Layout } from '@jsonforms/core';
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -12,9 +12,9 @@ export interface SchemaResponse {
     type: 'schema';
     attributes: {
       json_schema_multiloc: {
-        [key in Locale]?: JsonSchema7;
+        [key in SupportedLocale]?: JsonSchema7;
       };
-      ui_schema_multiloc: { [key in Locale]?: Layout };
+      ui_schema_multiloc: { [key in SupportedLocale]?: Layout };
     };
   };
 }

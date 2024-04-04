@@ -4,13 +4,33 @@ import { Navigate, Outlet as RouterOutlet } from 'react-router-dom';
 
 import PageLoading from 'components/UI/PageLoading';
 
+import { AdminRoute } from '../routes';
+
 const FolderSettings = lazy(() => import('./containers/settings'));
 const FolderContainer = lazy(() => import('./containers'));
 const FolderProjects = lazy(() => import('./containers/projects'));
 const FolderPermissions = lazy(() => import('./containers/permissions'));
 
+export enum projectFolderRoutes {
+  projectFolders = 'projects/folders',
+  new = 'new',
+  projectFolderId = `:projectFolderId`,
+  projectFolderIdDefault = '',
+  settings = `settings`,
+  projects = `projects`,
+  permissions = `permissions`,
+}
+
+export type projectFolderRouteTypes =
+  | AdminRoute<projectFolderRoutes.projectFolders>
+  | AdminRoute<`${projectFolderRoutes.projectFolders}/${projectFolderRoutes.new}`>
+  | AdminRoute<`${projectFolderRoutes.projectFolders}/${string}`>
+  | AdminRoute<`${projectFolderRoutes.projectFolders}/${string}/${projectFolderRoutes.projects}`>
+  | AdminRoute<`${projectFolderRoutes.projectFolders}/${string}/${projectFolderRoutes.settings}`>
+  | AdminRoute<`${projectFolderRoutes.projectFolders}/${string}/${projectFolderRoutes.permissions}`>;
+
 export default () => ({
-  path: 'projects/folders',
+  path: projectFolderRoutes.projectFolders,
   element: (
     <PageLoading>
       <RouterOutlet />
@@ -18,27 +38,27 @@ export default () => ({
   ),
   children: [
     {
-      path: 'new',
+      path: projectFolderRoutes.new,
       element: <FolderSettings />,
     },
     {
-      path: ':projectFolderId',
+      path: projectFolderRoutes.projectFolderId,
       element: <FolderContainer />,
       children: [
         {
-          path: '',
+          path: projectFolderRoutes.projectFolderIdDefault,
           element: <Navigate to="projects" />,
         },
         {
-          path: 'projects',
+          path: projectFolderRoutes.projects,
           element: <FolderProjects />,
         },
         {
-          path: 'settings',
+          path: projectFolderRoutes.settings,
           element: <FolderSettings />,
         },
         {
-          path: 'permissions',
+          path: projectFolderRoutes.permissions,
           element: <FolderPermissions />,
         },
       ],

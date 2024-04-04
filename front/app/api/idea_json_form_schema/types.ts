@@ -1,5 +1,5 @@
 import { Layout } from '@jsonforms/core';
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -48,9 +48,9 @@ export interface IIdeaJsonFormSchemas {
     type: 'json_forms_schema';
     attributes: {
       json_schema_multiloc: {
-        [key in Locale]?: JsonFormsSchema;
+        [key in SupportedLocale]?: JsonFormsSchema;
       };
-      ui_schema_multiloc: { [key in Locale]?: Layout };
+      ui_schema_multiloc: { [key in SupportedLocale]?: Layout };
     };
   };
 }

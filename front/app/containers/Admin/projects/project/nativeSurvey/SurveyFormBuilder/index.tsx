@@ -1,6 +1,7 @@
 import React, { useState, lazy } from 'react';
 
 import { useParams, useSearchParams } from 'react-router-dom';
+import { RouteType } from 'routes';
 
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import usePhase from 'api/phases/usePhase';
@@ -54,7 +55,7 @@ const SurveyFormBuilder = () => {
     await saveSurveyAsPDF({ downloadPdfLink, locale, personal_data });
   };
 
-  const goBackUrl = `/admin/projects/${projectId}/phases/${phaseId}/native-survey`;
+  const goBackUrl: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/native-survey`;
 
   return (
     <>

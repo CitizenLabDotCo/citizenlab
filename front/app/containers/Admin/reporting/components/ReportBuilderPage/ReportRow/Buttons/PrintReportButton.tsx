@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
+import { RouteType } from 'routes';
 
 import useReport from 'api/reports/useReport';
 
@@ -16,7 +17,7 @@ interface Props {
 
 const PrintReportButton = ({ reportId }: Props) => {
   const { data: report } = useReport(reportId);
-  const printReportPath = `/admin/reporting/report-builder/${reportId}/print`;
+  const printReportPath: RouteType = `/admin/reporting/report-builder/${reportId}/print`;
 
   if (!report) return null;
 

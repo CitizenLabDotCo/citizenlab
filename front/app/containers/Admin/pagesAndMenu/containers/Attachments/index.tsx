@@ -34,7 +34,10 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
-import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
+import {
+  pagesAndMenuBreadcrumb,
+  pagesAndMenuBreadcrumbLinkTo,
+} from '../../breadcrumbs';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
 import ShownOnPageBadge from '../../components/ShownOnPageBadge';
 import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
@@ -157,7 +160,7 @@ const AttachmentsForm = ({
             breadcrumbs={[
               {
                 label: formatMessage(pagesAndMenuBreadcrumb.label),
-                linkTo: pagesAndMenuBreadcrumb.linkTo,
+                linkTo: pagesAndMenuBreadcrumbLinkTo,
               },
               {
                 label: localize(customPage.data.attributes.title_multiloc),

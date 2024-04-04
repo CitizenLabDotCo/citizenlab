@@ -1,5 +1,7 @@
 import React, { memo } from 'react';
 
+import { RouteType } from 'routes';
+
 import { IMentionInCommentNotificationData } from 'api/notifications/types';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -16,7 +18,7 @@ interface Props {
 
 const mapPostTypeToLink = (
   notification: IMentionInCommentNotificationData
-): string => {
+): RouteType => {
   switch (notification.attributes.post_type) {
     case 'Idea':
       return `/ideas/${notification.attributes.post_slug}`;

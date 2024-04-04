@@ -9,8 +9,9 @@ import {
 import useAddProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useAddProjectDescriptionBuilderLayout';
 import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout';
 import { WrappedComponentProps } from 'react-intl';
+import { RouteType } from 'routes';
 import styled from 'styled-components';
-import { Locale, Multiloc } from 'typings';
+import { SupportedLocale, Multiloc } from 'typings';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -26,7 +27,7 @@ import messages from '../../messages';
 
 type ProjectDescriptionBuilderToggleProps = {
   valueMultiloc: Multiloc | undefined | null;
-  onChange: (description_multiloc: Multiloc, _locale: Locale) => void;
+  onChange: (description_multiloc: Multiloc, _locale: SupportedLocale) => void;
   label: string;
   labelTooltipText: string;
   onMount: () => void;
@@ -61,7 +62,7 @@ const ProjectDescriptionBuilderToggle = ({
   const { data: projectDescriptionBuilderLayout } =
     useProjectDescriptionBuilderLayout(params.projectId);
 
-  const route = `/admin/project-description-builder/projects/${params.projectId}/description`;
+  const route: RouteType = `/admin/project-description-builder/projects/${params.projectId}/description`;
   const [
     projectDescriptionBuilderLinkVisible,
     setProjectDescriptionBuilderLinkVisible,

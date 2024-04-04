@@ -40,7 +40,6 @@ export const IdeaForm = () => {
   const { data: phases } = usePhases(projectId);
 
   const phaseToUse = phases ? getCurrentOrLastIdeationPhase(phases.data) : null;
-  const ideaFormLink = `/admin/projects/${projectId}/phases/${phaseToUse?.id}/ideaform/edit`;
 
   const handleDownloadPDF = () => setExportModalOpen(true);
 
@@ -70,7 +69,7 @@ export const IdeaForm = () => {
         </Box>
         <Box display="flex" flexDirection="row">
           <Button
-            linkTo={ideaFormLink}
+            linkTo={`/admin/projects/${projectId}/phases/${phaseToUse?.id}/ideaform/edit`}
             width="auto"
             icon="edit"
             data-cy="e2e-edit-input-form"

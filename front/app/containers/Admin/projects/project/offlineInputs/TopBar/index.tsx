@@ -10,6 +10,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
+import { RouteType } from 'routes';
 
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
@@ -43,7 +44,7 @@ const TopBar = ({ onClickPDFImport }: Props) => {
   const isSurvey =
     phase?.data.attributes.participation_method === 'native_survey';
 
-  const backPath = isSurvey
+  const backPath: RouteType = isSurvey
     ? `/admin/projects/${projectId}/phases/${phaseId}/native-survey`
     : `/admin/projects/${projectId}/phases/${phaseId}/ideas`;
 
