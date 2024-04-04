@@ -3,32 +3,15 @@
 require 'rails_helper'
 
 describe BulkImportIdeas::IdeaXlsxFormExporter do
-  let(:phase) { create(:phase) }
-  let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: phase.project) }
   let(:service) { described_class.new phase, 'en', false }
 
-  # TODO: JS - Make this a trait for the custom_form factory - :all_survey_field_types :all_ideation_field_types
-  before do
-    # Custom fields
-    create(:custom_field, resource: custom_form, key: 'a_text_field', title_multiloc: { 'en' => 'A text field' }, enabled: true)
-    create(:custom_field, resource: custom_form, key: 'number_field', title_multiloc: { 'en' => 'Number field' }, input_type: 'number', enabled: true)
-    create(:custom_field_point, resource: custom_form, key: 'a_point_field', title_multiloc: { 'en' => 'Point field' }, enabled: true)
 
-    select_field = create(:custom_field, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => 'Select field' }, input_type: 'select', enabled: true)
-    create(:custom_field_option, custom_field: select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
-    create(:custom_field_option, custom_field: select_field, key: 'no', title_multiloc: { 'en' => 'No' })
 
-    multiselect_field = create(:custom_field, resource: custom_form, key: 'multiselect_field', title_multiloc: { 'en' => 'Multi select field' }, input_type: 'multiselect', enabled: true)
-    create(:custom_field_option, custom_field: multiselect_field, key: 'this', title_multiloc: { 'en' => 'This' })
-    create(:custom_field_option, custom_field: multiselect_field, key: 'that', title_multiloc: { 'en' => 'That' })
+  describe 'export an ideation form' do
+    let(:phase) { create(:phase) }
+    let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: phase.project) }
 
-    another_select_field = create(:custom_field, resource: custom_form, key: 'another_select_field', title_multiloc: { 'en' => 'Another select field' }, input_type: 'select', enabled: true)
-    create(:custom_field_option, custom_field: another_select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
-    create(:custom_field_option, custom_field: another_select_field, key: 'no', title_multiloc: { 'en' => 'No' })
-  end
-
-  describe 'export' do
-    it 'produces an xlsx file with all the fields for an ideation phase' do
+    it 'produces an xlsx file with the default fields for an ideation phase' do
       xlsx = service.export
       xlsx_hash = XlsxService.new.xlsx_to_hash_array xlsx
 
@@ -44,17 +27,63 @@ describe BulkImportIdeas::IdeaXlsxFormExporter do
         'Description',
         'Tags',
         'Location',
-        'A text field',
-        'Number field',
-        'Point field - Latitude',
-        'Point field - Longitude',
-        'Select field',
-        'Multi select field',
-        'Another select field',
         'Image URL',
         'Latitude',
         'Longitude'
       ])
     end
   end
+
+  describe 'export a survey form' do
+    let(:phase) { create(:native_survey_phase) }
+    let(:custom_form) { create(:custom_form, participation_context: phase) }
+
+    before do
+      # Custom fields - 1 of each type
+      create(:custom_field_text, resource: custom_form, key: 'text_field', title_multiloc: { 'en' => 'Text field' })
+      create(:custom_field_multiline_text, resource: custom_form, key: 'multiline_text_field', title_multiloc: { 'en' => 'Multiline text field' })
+      create(:custom_field_number, resource: custom_form, key: 'number_field', title_multiloc: { 'en' => 'Number field' })
+      create(:custom_field_point, resource: custom_form, key: 'point_field', title_multiloc: { 'en' => 'Point field' })
+      create(:custom_field_linear_scale, resource: custom_form, key: 'linear_scale_field', title_multiloc: { 'en' => 'Linear scale field' })
+
+      select_field = create(:custom_field_select, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => 'Select field' })
+      create(:custom_field_option, custom_field: select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
+      create(:custom_field_option, custom_field: select_field, key: 'no', title_multiloc: { 'en' => 'No' })
+      create(:custom_field_option, custom_field: select_field, other: true, title_multiloc: { 'en' => 'Other' })
+
+      multiselect_field = create(:custom_field_multiselect, resource: custom_form, key: 'multiselect_field', title_multiloc: { 'en' => 'Multi select field' })
+      create(:custom_field_option, custom_field: multiselect_field, key: 'this', title_multiloc: { 'en' => 'This' })
+      create(:custom_field_option, custom_field: multiselect_field, key: 'that', title_multiloc: { 'en' => 'That' })
+
+      image_multiselect_field = create(:custom_field_multiselect_image, resource: custom_form, key: 'image_select_field', title_multiloc: { 'en' => 'Image select field' })
+      create(:custom_field_option, custom_field: image_multiselect_field, key: 'this', title_multiloc: { 'en' => 'Image1' })
+      create(:custom_field_option, custom_field: image_multiselect_field, key: 'that', title_multiloc: { 'en' => 'Image2' })
+    end
+
+    it 'produces an xlsx file with all the fields for a survey phase' do
+      xlsx = service.export
+      xlsx_hash = XlsxService.new.xlsx_to_hash_array xlsx
+
+      expect(xlsx).not_to be_nil
+      expect(xlsx_hash.count).to eq 1
+      expect(xlsx_hash[0].keys).to match_array([
+                                                 'First name(s)',
+                                                 'Last name',
+                                                 'Email address',
+                                                 'Permission',
+                                                 'Date Published (dd-mm-yyyy)',
+                                                 'Text field',
+                                                 'Multiline text field',
+                                                 'Number field',
+                                                 'Point field - Latitude',
+                                                 'Point field - Longitude',
+                                                 'Linear scale field',
+                                                 'Select field',
+                                                 "Since you picked 'other', what are you thinking of?",
+                                                 'Multi select field',
+                                                 'Image select field',
+                                               ])
+    end
+  end
+
 end

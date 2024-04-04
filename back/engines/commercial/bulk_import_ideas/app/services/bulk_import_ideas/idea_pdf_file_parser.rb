@@ -5,6 +5,8 @@ module BulkImportIdeas
     PAGES_TO_TRIGGER_NEW_PDF = 8
     MAX_TOTAL_PAGES = 50
 
+    private
+
     def create_files(file_content)
       source_file = upload_source_file file_content
 
@@ -58,8 +60,6 @@ module BulkImportIdeas
       parsed_ideas = parse_pdf_ideas(file)
       merge_pdf_rows(parsed_ideas)
     end
-
-    private
 
     def merge_pdf_rows(parsed_ideas)
       form_parsed_ideas = ideas_to_idea_rows(parsed_ideas[:form_parsed_ideas])

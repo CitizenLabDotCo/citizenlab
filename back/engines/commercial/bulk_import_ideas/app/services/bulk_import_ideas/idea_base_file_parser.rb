@@ -95,8 +95,9 @@ module BulkImportIdeas
       idea_rows.compact
     end
 
+    # TODO: JS Split the following methods for XLSX and PDF parsing - should be much simpler for XLSX
+
     # Match all fields in the forms field with values returned by parser / xlsx sheet
-    # TODO: Split this method for PDF
     def process_custom_form_fields(idea, idea_row)
       # Merge the form fields with the import values into a single array
       merged_idea = []
@@ -148,7 +149,7 @@ module BulkImportIdeas
     end
 
     def process_field_value(field, form_fields)
-      if %w[select multiselect].include?(field[:input_type]) && field[:value]
+      if %w[select multiselect multiselect_image].include?(field[:input_type]) && field[:value]
         values = field[:value].is_a?(Array) ? field[:value] : field[:value].split(';')
         if values.count > 0
           options = values.map do |value|
@@ -157,7 +158,7 @@ module BulkImportIdeas
           end
           field[:value] = options
         end
-      elsif field[:input_type] == 'number'
+      elsif %w[number linearscale].include?(field[:input_type])
         field[:value] = field[:value].to_i
       end
       field

@@ -27,17 +27,10 @@ describe BulkImportIdeas::IdeaPdfFileParser do
     create(:custom_field_option, custom_field: another_select_field, key: 'no', title_multiloc: { 'en' => 'No' })
   end
 
-  describe 'upload_file' do
-    it 'detects the file type if an xlsx file is uploaded' do
-      base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/import.xlsx').read
-      service.create_files "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{base_64_content}"
-      expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 1
-      expect(BulkImportIdeas::IdeaImportFile.first.import_type).to eq 'xlsx'
-    end
-
+  describe 'create_files' do
     it 'splits a 12 page PDF file successfully based on the number of pages in the template (2) and creates additional files' do
       base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_12.pdf').read
-      service.create_files "data:application/pdf;base64,#{base_64_content}"
+      service.send(:create_files, "data:application/pdf;base64,#{base_64_content}")
       expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 3
       expect(BulkImportIdeas::IdeaImportFile.all.pluck(:num_pages)).to match_array [12, 8, 4]
       expect(BulkImportIdeas::IdeaImportFile.where(parent: nil).pluck(:num_pages)).to eq [12]
@@ -45,13 +38,12 @@ describe BulkImportIdeas::IdeaPdfFileParser do
 
     it 'raises an error if a PDF file has too many pages (more than 50)' do
       base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_64.pdf').read
-      expect { service.create_files "data:application/pdf;base64,#{base_64_content}" }.to raise_error(
+      expect { service.send(:create_files, "data:application/pdf;base64,#{base_64_content}") }.to raise_error(
         an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_ideas_maximum_pdf_pages_exceeded'))
       )
     end
   end
 
-  describe 'private' do
     describe 'ideas_to_idea_rows' do
       let(:pdf_ideas) do
         [
@@ -218,105 +210,6 @@ describe BulkImportIdeas::IdeaPdfFileParser do
         expect(rows[0][:user_email]).to eq 'john_rambo@gravy.com'
         expect(rows[0][:user_first_name]).to eq 'John'
         expect(rows[0][:user_last_name]).to eq 'Rambo'
-      end
-
-      context 'xlsx specific fields' do
-        let(:xlsx_ideas_array) do
-          [
-            {
-              pdf_pages: [1],
-              fields: {
-                'First name(s)' => 'Bill',
-                'Last name' => 'Test',
-                'Email address' => 'bill@citizenlab.co',
-                'Permission' => 'X',
-                'Date Published (dd-mm-yyyy)' => '15-08-2023',
-                'Title' => 'A title',
-                'Description' => 'A description',
-                'Tags' => 'Economy; Waste',
-                'Location' => 'Somewhere',
-                'A text field' => 'Loads to say here',
-                'Number field' => 5,
-                'Select field' => 'Yes',
-                'Multi select field' => 'This; That',
-                'Another select field' => 'No',
-                'Image URL' => 'https://images.com/image.png',
-                'Latitude' => 50.5035,
-                'Longitude' => 6.0944
-              }
-            }
-          ]
-        end
-        let(:rows) { service.send(:ideas_to_idea_rows, xlsx_ideas_array) }
-
-        it 'converts parsed XLSX core fields into idea rows' do
-          expect(rows[0]).to include({
-            title_multiloc: { en: 'A title' },
-            body_multiloc: { en: 'A description' },
-            project_id: project.id,
-            topic_titles: %w[Economy Waste],
-            published_at: '15-08-2023',
-            latitude: 50.5035,
-            longitude: 6.0944,
-            location_description: 'Somewhere',
-            image_url: 'https://images.com/image.png',
-            pdf_pages: [1]
-          })
-        end
-
-        it 'includes user details when "Permission" is not blank' do
-          expect(rows[0]).to include({
-            user_first_name: 'Bill',
-            user_last_name: 'Test',
-            user_email: 'bill@citizenlab.co'
-          })
-        end
-
-        it 'does not include user details when "Permission" is blank' do
-          xlsx_ideas_array[0][:fields]['Permission'] = ''
-          rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array)
-
-          expect(rows[0]).not_to include({
-            user_first_name: 'Bill',
-            user_last_name: 'Test',
-            user_email: 'bill@citizenlab.co'
-          })
-        end
-
-        it 'converts parsed XLSX custom fields into idea rows' do
-          expect(rows[0][:custom_field_values][:a_text_field]).to eq 'Loads to say here'
-          expect(rows[0][:custom_field_values][:number_field]).to eq 5
-          expect(rows[0][:custom_field_values][:select_field]).to eq 'yes'
-          expect(rows[0][:custom_field_values][:another_select_field]).to eq 'no'
-          expect(rows[0][:custom_field_values][:multiselect_field]).to match_array %w[this that]
-        end
-
-        it 'ignores completely blank rows' do
-          xlsx_ideas_array = [
-            {
-              pdf_pages: [1],
-              fields: {
-                'First name' => '',
-                'Last name' => '',
-                'Email address' => '',
-                'Permission' => '',
-                'Date Published (dd-mm-yyyy)' => '',
-                'Title' => '',
-                'Description' => '',
-                'Tags' => '',
-                'Location' => '',
-                'A text field' => '',
-                'Number field' => '',
-                'Select field' => '',
-                'Multi select field' => '',
-                'Another select field' => '',
-                'Image URL' => ''
-              }
-            }
-          ]
-          idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array)
-          expect(idea_rows.count).to eq 0
-        end
       end
     end
 
@@ -570,5 +463,5 @@ describe BulkImportIdeas::IdeaPdfFileParser do
         expect(range).to eq [7, 8, 9, 10, 11, 12]
       end
     end
-  end
+
 end

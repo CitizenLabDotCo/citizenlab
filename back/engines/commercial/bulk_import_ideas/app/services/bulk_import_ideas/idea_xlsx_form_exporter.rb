@@ -21,12 +21,12 @@ class BulkImportIdeas::IdeaXlsxFormExporter < BulkImportIdeas::BaseFormExporter
       value = case field.input_type
       when 'select'
         field.options.first.title_multiloc[@locale]
-      when 'multiselect'
+      when 'multiselect', 'multiselect_image'
         field.options.map { |o| o.title_multiloc[@locale] }.join '; '
       when 'topic_ids'
         @project.allowed_input_topics.map { |t| t.title_multiloc[@locale] }.join '; '
-      when 'number'
-        5
+      when 'number', 'linear_scale'
+        field.maximum || 3
       when 'point'
         rand(0.1..89.9).round(5)
       else

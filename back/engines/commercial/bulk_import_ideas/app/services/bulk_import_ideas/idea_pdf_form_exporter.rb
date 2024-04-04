@@ -13,8 +13,7 @@ class BulkImportIdeas::IdeaPdfFormExporter < BulkImportIdeas::BaseFormExporter
 
   def initialize(phase, locale, personal_data_enabled)
     super
-    @form_fields = IdeaCustomFieldsService.new(Factory.instance.participation_method_for(phase).custom_form).enabled_fields_with_other_options
-    # TODO: JS - should this be printable fields?
+    @form_fields = IdeaCustomFieldsService.new(Factory.instance.participation_method_for(phase).custom_form).printable_fields
     @personal_data_enabled = personal_data_enabled
     @previous_cursor = nil
     @app_configuration = AppConfiguration.instance
