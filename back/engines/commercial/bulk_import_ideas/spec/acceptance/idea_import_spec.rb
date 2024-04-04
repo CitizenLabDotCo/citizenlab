@@ -16,21 +16,15 @@ resource 'BulkImportIdeasImportIdeas' do
   context 'when not authorized' do
     let(:phase_id) { project.phases.first.id }
 
-    get 'web_api/v1/phases/:phase_id/importer/export_form/idea/xlsx' do
-      example_request 'Get the example xlsx for importing ideas' do
-        assert_status 401
-      end
-    end
-
     post 'web_api/v1/phases/:phase_id/importer/bulk_create/idea/xlsx' do
       parameter(
-        :xlsx,
-        'Base64 encoded xlsx file with ideas details. See web_api/v1/import_ideas/example_xlsx for the format',
+        :file,
+        'Base64 encoded xlsx or PDF file using the template downloaded from the phase.',
         scope: :import,
         required: true
       )
 
-      let(:xlsx) { create_bulk_import_ideas_xlsx }
+      let(:file) { create_bulk_import_ideas_xlsx }
 
       example '[error] Bulk import ideas' do
         do_request
@@ -48,29 +42,20 @@ resource 'BulkImportIdeasImportIdeas' do
 
     let(:phase_id) { project.phases.first.id }
 
-    get 'web_api/v1/phases/:phase_id/importer/export_form/idea/xlsx' do
-      example_request 'Get the example xlsx for a project' do
-        assert_status 200
-      end
-    end
-
-    post 'web_api/v1/phases/:phase_id/importer/bulk_create/idea/:format' do
+    post 'web_api/v1/phases/:phase_id/importer/bulk_create/:model/:format' do
       parameter(
-        :xlsx,
-        'Base64 encoded xlsx file with ideas details. See web_api/v1/projects/:id/import_ideas/example_xlsx for the format',
+        :file,
+        'Base64 encoded xlsx or PDF file using the template downloaded from the phase.',
         scope: :import
       )
-      parameter(
-        :pdf,
-        'Base64 encoded scanned PDF of ideas. Must be from the version of the form downloaded from the site.',
-        scope: :import
-      )
-      parameter(:locale, 'Locale of the ideas being imported.', scope: :import)
+      parameter(:locale, 'Locale of the inputs being imported.', scope: :import)
       parameter(:personal_data, 'Has the uploaded form got the personal data section in it', scope: :import)
+
+      let(:model) { 'idea' }
 
       context 'xlsx import' do
         let(:format) { 'xlsx' }
-        let(:xlsx) { create_project_bulk_import_ideas_xlsx }
+        let(:file) { create_project_bulk_import_ideas_xlsx }
 
         example 'Bulk import ideas to current phase from .xlsx' do
           do_request
@@ -91,7 +76,7 @@ resource 'BulkImportIdeasImportIdeas' do
       context 'pdf import' do
         let(:locale) { 'en' }
         let(:format) { 'pdf' }
-        let(:pdf) { create_project_bulk_import_ideas_pdf 1 }
+        let(:file) { create_project_bulk_import_ideas_pdf 1 }
 
         # NOTE: GoogleFormParserService is stubbed to avoid calls to google APIs
         example 'Bulk import ideas to phase from .pdf' do
@@ -154,16 +139,6 @@ resource 'BulkImportIdeasImportIdeas' do
 
         # Should return only the 1 draft idea on the phase with an idea_import
         expect(response_data.count).to eq 1
-      end
-    end
-
-    get 'web_api/v1/phases/:phase_id/importer/export_form/idea/xlsx' do
-      let(:project) { create(:project_with_active_native_survey_phase) }
-      let(:phase) { project.phases.first }
-      let(:phase_id) { phase.id }
-
-      example_request 'Get the example xlsx for a phase' do
-        assert_status 200
       end
     end
 
@@ -236,12 +211,6 @@ resource 'BulkImportIdeasImportIdeas' do
 
       before { header_token_for create(:project_moderator, projects: [survey_project]) }
 
-      get 'web_api/v1/phases/:phase_id/importer/export_form/idea/xlsx' do
-        example_request 'Getting example xlsx is authorized' do
-          assert_status 200
-        end
-      end
-
       get 'web_api/v1/phases/:phase_id/importer/draft/idea' do
         example_request 'Getting draft ideas is authorized' do
           assert_status 200
@@ -259,24 +228,18 @@ resource 'BulkImportIdeasImportIdeas' do
 
     context 'project can NOT be moderated' do
       let(:survey_project) { create(:project_with_active_native_survey_phase) }
-      let(:xlsx) { create_project_bulk_import_ideas_xlsx }
+      let(:file) { create_project_bulk_import_ideas_xlsx }
       let(:phase_id) { phase.id }
       let(:other_project) { create(:project) }
       let(:phase) { survey_project.phases.first }
 
       parameter(
-        :xlsx,
-        'Base64 encoded xlsx file with ideas details. See web_api/v1/phases/:phase_id/importer/export_form/idea/xlsx for the format',
+        :file,
+        'Base64 encoded xlsx or PDF file using the template downloaded from the phase.',
         scope: :import
       )
 
       before { header_token_for create(:project_moderator, projects: [other_project]) }
-
-      get 'web_api/v1/phases/:phase_id/importer/export_form/idea/xlsx' do
-        example_request 'Getting example xlsx is NOT authorized' do
-          assert_status 401
-        end
-      end
 
       get 'web_api/v1/phases/:phase_id/importer/draft/idea' do
         example_request 'Getting draft ideas is NOT authorized' do

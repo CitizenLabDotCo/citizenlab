@@ -14,7 +14,6 @@ module BulkImportIdeas
   class BaseImporter
     def initialize(current_user)
       @locale = AppConfiguration.instance.settings('core', 'locales').first # Default locale for any new users created
-      # @all_topics = Topic.all - TODO: JS - can we still import topics?
       @import_user = current_user
       @imported_users = []
     end

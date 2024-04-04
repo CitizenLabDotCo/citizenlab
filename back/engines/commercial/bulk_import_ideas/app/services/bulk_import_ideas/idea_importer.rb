@@ -187,7 +187,7 @@ module BulkImportIdeas
       idea_row[:topic_titles] ||= []
       topics_ids = idea_row[:topic_titles].map do |topic_title|
         topic_title = topic_title.downcase.strip
-        all_topics.find do |topic|
+        Topic.all.find do |topic|
           topic
             .title_multiloc
             .values

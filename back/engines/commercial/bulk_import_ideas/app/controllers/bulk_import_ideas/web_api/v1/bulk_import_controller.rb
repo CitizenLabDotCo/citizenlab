@@ -4,15 +4,13 @@ module BulkImportIdeas
   class WebApi::V1::BulkImportController < ApplicationController
     before_action :authorize_bulk_import_ideas, only: %i[bulk_create export_form draft_records approve_all]
 
-    SUPPORTED_MODELS = ['idea'].freeze
+    SUPPORTED_MODELS = %w[idea].freeze
     SUPPORTED_FORMATS = %w[pdf xlsx].freeze
 
     def bulk_create
       send_not_found unless supported_model? && supported_format?
 
-      format = params[:format].to_sym
-      file = bulk_create_params[format] # TODO: JS - just change to 'file'?
-
+      file = bulk_create_params[:file]
       locale = params[:import] ? bulk_create_params[:locale] : current_user.locale
       personal_data_enabled = params[:import] ? bulk_create_params[:personal_data] || false : false
       phase_id = params[:id]
@@ -20,7 +18,6 @@ module BulkImportIdeas
       import_service = importer_service.new(current_user)
 
       rows = file_parser.parse_file file
-
       ideas = import_service.import(rows) # TODO: JS - file not added here
       users = import_service.imported_users
 
@@ -75,6 +72,7 @@ module BulkImportIdeas
     end
 
     # Show the metadata of a single imported idea
+    # TODO: JS - Rename to make polymorphic
     def show_idea_import
       idea_import = IdeaImport.find(params[:id])
       authorize idea_import
@@ -97,7 +95,7 @@ module BulkImportIdeas
     def bulk_create_params
       params
         .require(:import)
-        .permit(%i[xlsx pdf locale personal_data])
+        .permit(%i[file locale personal_data])
     end
 
     def authorize_bulk_import_ideas

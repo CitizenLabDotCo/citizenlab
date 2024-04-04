@@ -97,10 +97,11 @@ const ImportSection = ({ onFinishImport, locale, project }: Props) => {
     if (!file || !phaseId) return;
 
     try {
+      console.log(file.extension);
       await addOfflineIdeas({
         phase_id: phaseId,
         file: file.base64,
-        format: file.extension === 'pdf' ? 'pdf' : 'xlsx',
+        format: file.extension === 'application/pdf' ? 'pdf' : 'xlsx',
         ...rest,
       });
 

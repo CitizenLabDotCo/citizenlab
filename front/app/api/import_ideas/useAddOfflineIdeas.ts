@@ -25,7 +25,7 @@ const addOfflineIdeas = async ({
   fetcher<IIdeas>({
     path: `/phases/${phase_id}/importer/bulk_create/idea/${format}`,
     action: 'post',
-    body: { import_ideas: { file, locale, personal_data } },
+    body: { import: { file, locale, personal_data } },
   });
 
 const useAddOfflineIdeas = () => {
