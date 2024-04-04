@@ -97,7 +97,6 @@ const ImportSection = ({ onFinishImport, locale, project }: Props) => {
     if (!file || !phaseId) return;
 
     try {
-      console.log(file.extension);
       await addOfflineIdeas({
         phase_id: phaseId,
         file: file.base64,
