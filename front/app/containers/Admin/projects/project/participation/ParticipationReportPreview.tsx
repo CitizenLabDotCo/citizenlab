@@ -45,7 +45,7 @@ const ParticipationReportPreview = ({
     <ReportContextProvider width="desktop">
       <Box maxWidth={MAX_REPORT_WIDTH} w="100%">
         <Editor isPreview={true}>
-          <ContentBuilderFrame>
+          <ContentBuilderFrame key={`${startAt} + ${endAt}`}>
             <ActiveUsersWidget
               startAt={startAt}
               endAt={endAt}
