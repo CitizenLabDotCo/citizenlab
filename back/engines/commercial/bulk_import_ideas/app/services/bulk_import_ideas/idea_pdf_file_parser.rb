@@ -2,6 +2,7 @@
 
 module BulkImportIdeas
   class IdeaPdfFileParser < IdeaBaseFileParser
+    POSITION_TOLERANCE = 10
     PAGES_TO_TRIGGER_NEW_PDF = 8
     MAX_TOTAL_PAGES = 50
 
@@ -14,7 +15,7 @@ module BulkImportIdeas
       split_pdf_files = []
       if source_file&.import_type == 'pdf'
         # Get number of pages in a form from the download
-        pages_per_idea = @input_form_data[:page_count]
+        pages_per_idea = import_form_data[:page_count]
 
         pdf = ::CombinePDF.parse URI.open(source_file.file_content_url).read
         source_file.update!(num_pages: pdf.pages.count)
@@ -56,6 +57,59 @@ module BulkImportIdeas
       split_pdf_files.presence || [source_file]
     end
 
+    # Merge the form fields on generated input PDF and the import values into a single array
+    def merge_idea_fields(idea)
+      merged_idea = []
+      form_fields = import_form_data[:fields]
+      form_fields.each do |form_field|
+        idea.each do |idea_field|
+          if form_field[:name] == idea_field[:name]
+            if form_field[:type] == 'field'
+              new_field = form_field
+              new_field[:value] = idea_field[:value]
+              new_field = process_field_value(new_field, form_fields)
+              merged_idea << new_field
+              idea.delete_if { |f| f == idea_field }
+              break
+            elsif idea_field[:value] == 'filled_checkbox' && form_field[:page] == idea_field[:page]
+              # Check that the value is near to the position on the page it should be
+              if idea_field[:position].between?(form_field[:position].to_i - POSITION_TOLERANCE, form_field[:position].to_i + POSITION_TOLERANCE)
+                select_field = merged_idea.find { |f| f[:key] == form_field[:parent_key] } || form_fields.find { |f| f[:key] == form_field[:parent_key] }.clone
+                select_field[:value] = select_field[:value] ? select_field[:value] << form_field[:key] : [form_field[:key]]
+                merged_idea << select_field
+                idea.delete_if { |f| f == idea_field }
+                form_fields.delete_if { |f| f == idea_field } if select_field[:input_type] == 'select'
+                break
+              end
+            end
+          end
+        end
+      end
+    end
+
+    def structure_raw_fields(idea)
+      locale_optional_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.optional') }
+      idea = extract_permission_checkbox(idea)
+      idea.map do |name, value|
+        option = name.match(/(.*)_(\d*).(\d*).(\d{2})/) # Is this an option (checkbox)?
+        {
+          name: option ? option[1] : name.gsub("(#{locale_optional_label})", '').squish,
+          value: value,
+          type: value.to_s.include?('checkbox') ? 'option' : 'field',
+          page: option ? option[2].to_i : nil,
+          position: option ? option[4].to_i : nil
+        }
+      end
+    end
+
+    def extract_permission_checkbox(idea)
+      # Truncate the checkbox label for better multiline checkbox detection
+      permission_checkbox_label = (I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.by_checking_this_box') })[0..30]
+      checkbox = idea.select { |key, value| key.match(/^#{permission_checkbox_label}/) && value == 'filled_checkbox' }
+      idea['Permission'] = 'X' if checkbox != {}
+      idea
+    end
+
     def parse_rows(file)
       parsed_ideas = parse_pdf_ideas(file)
       merge_pdf_rows(parsed_ideas)
@@ -76,18 +130,17 @@ module BulkImportIdeas
 
     def parse_pdf_ideas(file)
       pdf_file = URI.open(file.file_content_url).read
-      @google_forms_service ||= Pdf::IdeaGoogleFormParserService.new
 
       # NOTE: We return both parsed values so we can later merge the best values from both
-      form_parsed_ideas = @google_forms_service.parse_pdf(pdf_file, @input_form_data[:page_count])
+      form_parsed_ideas = google_forms_service.parse_pdf(pdf_file, import_form_data[:page_count])
 
       text_parsed_ideas = begin
         Pdf::IdeaPlainTextParserService.new(
           @phase || @project,
           @form_fields.reject { |field| field.input_type == 'topic_ids' }, # Temp
           @locale,
-          @input_form_data[:page_count]
-        ).parse_text(@google_forms_service.raw_text_page_array(pdf_file))
+          import_form_data[:page_count]
+        ).parse_text(google_forms_service.raw_text_page_array(pdf_file))
       rescue BulkImportIdeas::Error
         []
       end
@@ -105,8 +158,12 @@ module BulkImportIdeas
     end
 
     # Return the fields and page count from the form we're importing from
-    def import_form_data(personal_data_enabled)
-      IdeaPdfFormExporter.new(@phase, @locale, personal_data_enabled).importer_data
+    def import_form_data
+      @import_form_data ||= IdeaPdfFormExporter.new(@phase, @locale, @personal_data_enabled).importer_data
+    end
+
+    def google_forms_service
+      @google_forms_service ||= Pdf::IdeaGoogleFormParserService.new
     end
   end
 end
