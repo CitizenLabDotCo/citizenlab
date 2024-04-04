@@ -1135,6 +1135,7 @@
   "app.containers.InitiativesNewPage.orgName": "{orgName}",
   "app.containers.InitiativesNewPage.tipsTitle": "{tenantName, select, stirlingcouncil {Some specific tips for posting your petition} other {Some specific tips for posting your proposal}}",
   "app.containers.InitiativesNewPage.unkownAddress": "Unknown address",
+  "app.containers.InitiativesShow.VoteControl.a11y_timeLeft": "Time left to vote:",
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{xVotes} out of {votingThreshold} required votes",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} Voting remains open.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "{tenantName, select, stirlingcouncil {{orgName} received the petition and has provided a response} other {{orgName} received the proposal and gave an official answer.}}",
