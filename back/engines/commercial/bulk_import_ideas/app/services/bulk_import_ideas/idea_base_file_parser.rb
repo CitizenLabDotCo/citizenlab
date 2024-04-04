@@ -16,8 +16,6 @@ module BulkImportIdeas
       @import_user = current_user
       @phase = Phase.find(phase_id)
       @project = @phase.project
-      @participation_method = Factory.instance.participation_method_for(@phase)
-      @form_fields = IdeaCustomFieldsService.new(@participation_method.custom_form).importable_fields
       @locale = locale || AppConfiguration.instance.settings('core', 'locales').first # Default locale for any new users created
       @personal_data_enabled = personal_data_enabled
     end
@@ -79,8 +77,6 @@ module BulkImportIdeas
         # TODO: JS - Make these names clearer
         fields = structure_raw_fields(fields)
         idea_row = process_user_details(fields, idea_row)
-
-        fields = merge_idea_fields(fields)
         idea_row = process_custom_form_fields(fields, idea_row)
 
         idea_row
@@ -105,10 +101,6 @@ module BulkImportIdeas
           position: nil
         }
       end
-    end
-
-    def merge_idea_fields(idea)
-      idea # Should always override in child classes
     end
 
     def process_user_details(fields, idea_row)
@@ -140,8 +132,15 @@ module BulkImportIdeas
       idea_row
     end
 
+    def merge_idea_fields(idea)
+      idea # Should always override in child classes
+    end
+
     # Processes all fields - including built in fields
-    def process_custom_form_fields(merged_fields, idea_row)
+    # TODO: JS - PDF not converting options
+    def process_custom_form_fields(fields, idea_row)
+      merged_fields = merge_idea_fields(fields)
+      binding.pry
       custom_fields = {}
       merged_fields.each do |field|
         next if field[:key].nil?
