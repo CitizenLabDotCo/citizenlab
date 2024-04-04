@@ -1135,6 +1135,7 @@
   "app.containers.InitiativesNewPage.orgName": "{orgName}",
   "app.containers.InitiativesNewPage.tipsTitle": "Enkele concrete tips voor het plaatsen van je voorstel",
   "app.containers.InitiativesNewPage.unkownAddress": "Onbekend adres",
+  "app.containers.InitiativesShow.VoteControl.a11y_timeLeft": "Nog tijd om te stemmen:",
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{xVotes} van de {votingThreshold} vereiste stemmen",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} Je kan nog steeds stemmen.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "{orgName} heeft het voorstel ontvangen en gaf een officieel antwoord.",
