@@ -57,7 +57,7 @@ module BulkImportIdeas
       split_pdf_files.presence || [source_file]
     end
 
-    # Merge the form fields on generated input PDF and the import values into a single array
+    # Overridden from base class to handle the way checkboxes are filled in the PDF
     def merge_idea_fields(idea)
       merged_idea = []
       form_fields = import_form_data[:fields]
@@ -87,6 +87,7 @@ module BulkImportIdeas
       end
     end
 
+    # Overridden from base class to tidy data returned from PDF
     def structure_raw_fields(idea)
       locale_optional_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.optional') }
       idea = extract_permission_checkbox(idea)

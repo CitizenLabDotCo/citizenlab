@@ -107,6 +107,10 @@ module BulkImportIdeas
       end
     end
 
+    def merge_idea_fields(idea)
+      idea # Should always override in child classes
+    end
+
     def process_user_details(fields, idea_row)
       # Do not add any personal details if 'Permission' field is not present or blank
       locale_permission_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.permission') }

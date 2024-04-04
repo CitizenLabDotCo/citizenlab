@@ -34,22 +34,6 @@ module BulkImportIdeas
       end
     end
 
-    def process_field_value(field, form_fields)
-      if %w[select multiselect multiselect_image].include?(field[:input_type]) && field[:value]
-        values = field[:value].is_a?(Array) ? field[:value] : field[:value].split(';')
-        if values.count > 0
-          options = values.map do |value|
-            option = form_fields.find { |f| f[:parent_key] == field[:key] && f[:name] == value.strip }
-            option[:key] if option
-          end
-          field[:value] = options
-        end
-      elsif %w[number linearscale].include?(field[:input_type])
-        field[:value] = field[:value].to_i
-      end
-      field
-    end
-
     def import_form_data
       @import_form_data ||= IdeaXlsxFormExporter.new(@phase, @locale, @personal_data_enabled).importer_data
     end
