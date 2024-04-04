@@ -17,8 +17,8 @@ const ProjectParticipation = () => {
   if (!phases) return null;
   return (
     <ParticipationDatesRange
-      defaultStartDate={startOfFirstPhase || null}
-      defaultEndDate={endOfLastPhase || null}
+      defaultStartDate={startOfFirstPhase}
+      defaultEndDate={endOfLastPhase ?? undefined}
     />
   );
 };

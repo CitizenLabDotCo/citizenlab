@@ -3,6 +3,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 
 import usePhases from 'api/phases/usePhases';
+
 import TrafficDatesRange from './TrafficDatesRange';
 
 const ProjectTraffic = () => {
@@ -16,8 +17,8 @@ const ProjectTraffic = () => {
   if (!phases) return null;
   return (
     <TrafficDatesRange
-      defaultStartDate={startOfFirstPhase || null}
-      defaultEndDate={endOfLastPhase || null}
+      defaultStartDate={startOfFirstPhase}
+      defaultEndDate={endOfLastPhase ?? undefined}
     />
   );
 };

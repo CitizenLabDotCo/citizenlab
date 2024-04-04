@@ -15,15 +15,15 @@ const ParticipationDatesRange = ({
   defaultStartDate,
   defaultEndDate,
 }: {
-  defaultStartDate: string | null;
-  defaultEndDate: string | null;
+  defaultStartDate?: string;
+  defaultEndDate?: string;
 }) => {
   const { projectId } = useParams() as { projectId: string };
 
   const { formatMessage } = useIntl();
 
-  const [startAt, setStartAt] = useState<string | null>(defaultStartDate);
-  const [endAt, setEndAt] = useState<string | null>(defaultEndDate);
+  const [startAt, setStartAt] = useState(defaultStartDate);
+  const [endAt, setEndAt] = useState(defaultEndDate);
 
   const handleChangeTimeRange = ({
     startDate,
@@ -32,8 +32,8 @@ const ParticipationDatesRange = ({
     startDate: Moment | null;
     endDate: Moment | null;
   }) => {
-    setStartAt(startDate?.format('YYYY-MM-DD') || null);
-    setEndAt(endDate?.format('YYYY-MM-DD') || null);
+    setStartAt(startDate?.format('YYYY-MM-DD'));
+    setEndAt(endDate?.format('YYYY-MM-DD'));
   };
 
   return (
@@ -48,7 +48,7 @@ const ParticipationDatesRange = ({
           onDatesChange={handleChangeTimeRange}
         />
       </Box>
-      <Box p="32px" bg="white">
+      <Box p="32px" m="32px" bg="white">
         <ParticipationReportPreview
           projectId={projectId}
           startAt={startAt}

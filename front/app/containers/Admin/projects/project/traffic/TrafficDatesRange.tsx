@@ -15,15 +15,15 @@ const TrafficDatesRange = ({
   defaultStartDate,
   defaultEndDate,
 }: {
-  defaultStartDate: string | null;
-  defaultEndDate: string | null;
+  defaultStartDate: string | undefined;
+  defaultEndDate: string | undefined;
 }) => {
   const { projectId } = useParams() as { projectId: string };
 
   const { formatMessage } = useIntl();
 
-  const [startAt, setStartAt] = useState<string | null>(defaultStartDate);
-  const [endAt, setEndAt] = useState<string | null>(defaultEndDate);
+  const [startAt, setStartAt] = useState<string | undefined>(defaultStartDate);
+  const [endAt, setEndAt] = useState<string | undefined>(defaultEndDate);
 
   const handleChangeTimeRange = ({
     startDate,
@@ -32,13 +32,13 @@ const TrafficDatesRange = ({
     startDate: Moment | null;
     endDate: Moment | null;
   }) => {
-    setStartAt(startDate?.format('YYYY-MM-DD') || null);
-    setEndAt(endDate?.format('YYYY-MM-DD') || null);
+    setStartAt(startDate?.format('YYYY-MM-DD'));
+    setEndAt(endDate?.format('YYYY-MM-DD'));
   };
 
   return (
     <div>
-      <Box px="32px" mb="20px">
+      <Box mx="32px" mb="20px">
         <Text variant="bodyM" color="textSecondary" mb="5px">
           {formatMessage(messages.selectPeriod)}
         </Text>
@@ -48,7 +48,7 @@ const TrafficDatesRange = ({
           onDatesChange={handleChangeTimeRange}
         />
       </Box>
-      <Box p="32px" bg="white">
+      <Box p="32px" m="32px" bg="white">
         <TrafficReportPreview
           projectId={projectId}
           startAt={startAt}

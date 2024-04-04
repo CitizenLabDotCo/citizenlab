@@ -5,10 +5,13 @@ import { Box } from '@citizenlab/cl2-component-library';
 import useLocale from 'hooks/useLocale';
 
 import Editor from 'containers/Admin/reporting/components/ReportBuilder/Editor';
+import VisitorsTrafficSourcesWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
+import VisitorsWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/VisitorsWidget';
 import { MAX_REPORT_WIDTH } from 'containers/Admin/reporting/constants';
 import { ReportContextProvider } from 'containers/Admin/reporting/context/ReportContext';
 
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
+import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -20,75 +23,31 @@ const TrafficReportPreview = ({
   endAt,
 }: {
   projectId: string;
-  startAt?: string | null;
-  endAt?: string | null;
+  startAt?: string;
+  endAt?: string;
 }) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
-
-  const editorData = {
-    ROOT: {
-      type: 'div',
-      nodes: ['qqJ_LZcgJ6', 'A0fn6wghdA'],
-      props: {
-        id: 'e2e-content-builder-frame',
-      },
-      custom: {},
-      hidden: false,
-      isCanvas: true,
-      displayName: 'div',
-      linkedNodes: {},
-      parent: '',
-    },
-
-    qqJ_LZcgJ6: {
-      type: {
-        resolvedName: 'VisitorsWidget',
-      },
-      nodes: [],
-      props: {
-        startAt,
-        endAt,
-        title: {
-          [locale]: formatMessage(messages.visitorsTimeline),
-        },
-        projectId,
-      },
-      custom: {},
-      hidden: false,
-      parent: 'ROOT',
-      isCanvas: false,
-      displayName: 'VisitorsWidget',
-      linkedNodes: {},
-    },
-
-    A0fn6wghdA: {
-      type: {
-        resolvedName: 'VisitorsTrafficSourcesWidget',
-      },
-      nodes: [],
-      props: {
-        startAt,
-        endAt,
-        title: {
-          [locale]: formatMessage(messages.trafficSources),
-        },
-        projectId,
-      },
-      custom: {},
-      hidden: false,
-      parent: 'ROOT',
-      isCanvas: false,
-      displayName: 'VisitorsTrafficSourcesWidget',
-      linkedNodes: {},
-    },
-  };
 
   return (
     <ReportContextProvider width="desktop">
       <Box maxWidth={MAX_REPORT_WIDTH} w="100%">
         <Editor isPreview={true}>
-          {editorData && <ContentBuilderFrame editorData={editorData} />}
+          <ContentBuilderFrame key={`${startAt} + ${endAt}`}>
+            <VisitorsWidget
+              startAt={startAt}
+              endAt={endAt}
+              projectId={projectId}
+              title={{ [locale]: formatMessage(messages.visitorsTimeline) }}
+            />
+            <WhiteSpace />
+            <VisitorsTrafficSourcesWidget
+              startAt={startAt}
+              endAt={endAt}
+              projectId={projectId}
+              title={{ [locale]: formatMessage(messages.trafficSources) }}
+            />
+          </ContentBuilderFrame>
         </Editor>
       </Box>
     </ReportContextProvider>

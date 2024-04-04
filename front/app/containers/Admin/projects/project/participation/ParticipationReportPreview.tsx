@@ -7,10 +7,18 @@ import usePhases from 'api/phases/usePhases';
 import useLocale from 'hooks/useLocale';
 
 import Editor from 'containers/Admin/reporting/components/ReportBuilder/Editor';
+import ActiveUsersWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/ActiveUsersWidget';
+import AgeWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/AgeWidget';
+import CommentsByTimeWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/CommentsByTimeWidget';
+import GenderWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/GenderWidget';
+import PostsByTimeWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/PostsByTimeWidget';
+import ReactionsByTimeWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/ReactionsByTimeWidget';
 import { MAX_REPORT_WIDTH } from 'containers/Admin/reporting/constants';
 import { ReportContextProvider } from 'containers/Admin/reporting/context/ReportContext';
 
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
+import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
+import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -22,201 +30,68 @@ const ParticipationReportPreview = ({
   endAt,
 }: {
   projectId: string;
-  startAt?: string | null;
-  endAt?: string | null;
+  startAt?: string;
+  endAt?: string;
 }) => {
   const { data: phases } = usePhases(projectId);
   const { formatMessage } = useIntl();
   const locale = useLocale();
 
-  // Only show ideation charts if there is at least one ideation phase
-  const ideationChartIds = phases?.data.some(
+  const hasIdeationPhase = phases?.data.some(
     (phase) => phase.attributes.participation_method === 'ideation'
-  )
-    ? ['sE49Spf_DM', 'glFgBKdUAs', 'GsowM7Fnye']
-    : [];
-
-  const editorData = {
-    ROOT: {
-      type: 'div',
-      nodes: ['-3htyFT8is', 'Xk1CtBYcqL', ...ideationChartIds],
-      props: {
-        id: 'e2e-content-builder-frame',
-      },
-      custom: {},
-      hidden: false,
-      isCanvas: true,
-      displayName: 'div',
-      linkedNodes: {},
-      parent: '',
-    },
-    '-3htyFT8is': {
-      type: {
-        resolvedName: 'ActiveUsersWidget',
-      },
-      nodes: [],
-      props: {
-        startAt,
-        endAt,
-        projectId,
-        title: { [locale]: formatMessage(messages.participantsTimeline) },
-      },
-      custom: {},
-      hidden: false,
-      parent: 'ROOT',
-      isCanvas: false,
-      displayName: 'ActiveUsersWidget',
-      linkedNodes: {},
-    },
-    GsowM7Fnye: {
-      type: {
-        resolvedName: 'ReactionsByTimeWidget',
-      },
-      nodes: [],
-      props: {
-        startAt,
-        endAt,
-        projectId,
-        title: { [locale]: formatMessage(messages.reactions) },
-      },
-      custom: {},
-      hidden: false,
-      parent: 'ROOT',
-      isCanvas: false,
-      displayName: 'ReactionsByTimeWidget',
-      linkedNodes: {},
-    },
-    JG1IN7pZWo: {
-      type: {
-        resolvedName: 'AgeWidget',
-      },
-      nodes: [],
-      props: {
-        startAt,
-        endAt,
-        projectId,
-        title: {
-          [locale]: formatMessage(messages.usersByAge),
-        },
-      },
-      custom: {},
-      hidden: false,
-      parent: 'USaN-ksTRN',
-      isCanvas: false,
-      displayName: 'AgeWidget',
-      linkedNodes: {},
-    },
-    'USaN-ksTRN': {
-      type: {
-        resolvedName: 'Container',
-      },
-      nodes: ['JG1IN7pZWo'],
-      props: {},
-      custom: {},
-      hidden: false,
-      parent: 'Xk1CtBYcqL',
-      isCanvas: true,
-      displayName: 'Container',
-      linkedNodes: {},
-    },
-    Xk1CtBYcqL: {
-      type: {
-        resolvedName: 'TwoColumn',
-      },
-      nodes: [],
-      props: {
-        columnLayout: '1-1',
-      },
-      custom: {},
-      hidden: false,
-      parent: 'ROOT',
-      isCanvas: false,
-      displayName: 'TwoColumn',
-      linkedNodes: {
-        left: 'USaN-ksTRN',
-        right: 'e7KuRlvji7',
-      },
-    },
-    dHLmPS52Ss: {
-      type: {
-        resolvedName: 'GenderWidget',
-      },
-      nodes: [],
-      props: {
-        startAt,
-        endAt,
-        projectId,
-        title: {
-          [locale]: formatMessage(messages.usersByGender),
-        },
-      },
-      custom: {},
-      hidden: false,
-      parent: 'e7KuRlvji7',
-      isCanvas: false,
-      displayName: 'GenderWidget',
-      linkedNodes: {},
-    },
-    e7KuRlvji7: {
-      type: {
-        resolvedName: 'Container',
-      },
-      nodes: ['dHLmPS52Ss'],
-      props: {},
-      custom: {},
-      hidden: false,
-      parent: 'Xk1CtBYcqL',
-      isCanvas: true,
-      displayName: 'Container',
-      linkedNodes: {},
-    },
-    glFgBKdUAs: {
-      type: {
-        resolvedName: 'CommentsByTimeWidget',
-      },
-      nodes: [],
-      props: {
-        startAt,
-        endAt,
-        projectId,
-        title: {
-          [locale]: formatMessage(messages.comments),
-        },
-      },
-      custom: {},
-      hidden: false,
-      parent: 'ROOT',
-      isCanvas: false,
-      displayName: 'CommentsByTimeWidget',
-      linkedNodes: {},
-    },
-    sE49Spf_DM: {
-      type: {
-        resolvedName: 'PostsByTimeWidget',
-      },
-      nodes: [],
-      props: {
-        startAt,
-        endAt,
-        projectId,
-        title: {
-          [locale]: formatMessage(messages.inputs),
-        },
-      },
-      custom: {},
-      hidden: false,
-      parent: 'ROOT',
-      isCanvas: false,
-      displayName: 'PostsByTimeWidget',
-      linkedNodes: {},
-    },
-  };
+  );
 
   return (
     <ReportContextProvider width="desktop">
       <Box maxWidth={MAX_REPORT_WIDTH} w="100%">
         <Editor isPreview={true}>
-          {editorData && <ContentBuilderFrame editorData={editorData} />}
+          <ContentBuilderFrame>
+            <ActiveUsersWidget
+              startAt={startAt}
+              endAt={endAt}
+              projectId={projectId}
+              title={{ [locale]: formatMessage(messages.participantsTimeline) }}
+            />
+            <WhiteSpace />
+            <TwoColumn columnLayout="1-1">
+              <GenderWidget
+                startAt={startAt}
+                endAt={endAt}
+                projectId={projectId}
+                title={{ [locale]: formatMessage(messages.usersByGender) }}
+              />
+              <AgeWidget
+                startAt={startAt}
+                endAt={endAt}
+                projectId={projectId}
+                title={{ [locale]: formatMessage(messages.usersByAge) }}
+              />
+            </TwoColumn>
+            {hasIdeationPhase && (
+              <Box>
+                <PostsByTimeWidget
+                  startAt={startAt}
+                  endAt={endAt}
+                  projectId={projectId}
+                  title={{ [locale]: formatMessage(messages.inputs) }}
+                />
+                <WhiteSpace />
+                <CommentsByTimeWidget
+                  startAt={startAt}
+                  endAt={endAt}
+                  projectId={projectId}
+                  title={{ [locale]: formatMessage(messages.comments) }}
+                />
+                <WhiteSpace />
+                <ReactionsByTimeWidget
+                  startAt={startAt}
+                  endAt={endAt}
+                  projectId={projectId}
+                  title={{ [locale]: formatMessage(messages.reactions) }}
+                />
+              </Box>
+            )}
+          </ContentBuilderFrame>
         </Editor>
       </Box>
     </ReportContextProvider>
