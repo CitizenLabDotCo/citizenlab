@@ -38,7 +38,7 @@ const ParticipationDatesRange = ({
 
   return (
     <div>
-      <Box px="32px" mb="20px">
+      <Box px="44px" mb="20px">
         <Text variant="bodyM" color="textSecondary" mb="5px">
           {formatMessage(messages.selectPeriod)}
         </Text>
@@ -48,7 +48,7 @@ const ParticipationDatesRange = ({
           onDatesChange={handleChangeTimeRange}
         />
       </Box>
-      <Box p="32px" m="32px" bg="white">
+      <Box p="44px" m="44px" bg="white">
         <ParticipationReportPreview
           projectId={projectId}
           startAt={startAt}

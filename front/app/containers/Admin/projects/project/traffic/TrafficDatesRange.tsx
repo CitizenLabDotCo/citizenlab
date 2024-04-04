@@ -38,7 +38,7 @@ const TrafficDatesRange = ({
 
   return (
     <div>
-      <Box mx="32px" mb="20px">
+      <Box mx="44px" mb="20px">
         <Text variant="bodyM" color="textSecondary" mb="5px">
           {formatMessage(messages.selectPeriod)}
         </Text>
@@ -48,7 +48,7 @@ const TrafficDatesRange = ({
           onDatesChange={handleChangeTimeRange}
         />
       </Box>
-      <Box p="32px" m="32px" bg="white">
+      <Box p="44px" m="44px" bg="white">
         <TrafficReportPreview
           projectId={projectId}
           startAt={startAt}
