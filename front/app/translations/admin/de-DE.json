@@ -869,7 +869,7 @@
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Vorschau",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Zeitraum auswählen",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Top-Kanäle",
-  "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Zeitleiste für Besucher",
+  "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Zeitleiste für Besucher*innen",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReport": "Phasenbericht",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.PhaseTemplate.phaseReportDescription": "Text über die Phase hinzufügen",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Dies ist ein text. Sie können ihn mit dem editor in der leiste auf der rechten seite bearbeiten und formatieren.",
