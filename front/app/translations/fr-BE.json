@@ -610,7 +610,7 @@
   "app.components.followUnfollow.followTooltipProjects2": "Le suivi déclenche des mises à jour par courrier électronique sur les modifications apportées au projet. Vous pouvez {unsubscribeLink} à tout moment.",
   "app.components.followUnfollow.unFollow": "Ne plus suivre",
   "app.components.followUnfollow.unsubscribe": "vous désabonner",
-  "app.components.followUnfollow.unsubscribeUrl": "/profil/éditer",
+  "app.components.followUnfollow.unsubscribeUrl": "/profile/edit",
   "app.components.form.ErrorDisplay.guidelinesLinkText": "nos directives",
   "app.components.form.ErrorDisplay.next": "Suivant",
   "app.components.form.ErrorDisplay.previous": "Précédent",
