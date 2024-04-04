@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import usePhases from 'api/phases/usePhases';
+
 import useLocale from 'hooks/useLocale';
 
 import Editor from 'containers/Admin/reporting/components/ReportBuilder/Editor';
@@ -23,13 +25,21 @@ const ParticipationReportPreview = ({
   startAt?: string | null;
   endAt?: string | null;
 }) => {
+  const { data: phases } = usePhases(projectId);
   const { formatMessage } = useIntl();
   const locale = useLocale();
+
+  // Only show ideation charts if there is at least one ideation phase
+  const ideationChartIds = phases?.data.some(
+    (phase) => phase.attributes.participation_method === 'ideation'
+  )
+    ? ['sE49Spf_DM', 'glFgBKdUAs', 'GsowM7Fnye']
+    : [];
 
   const editorData = {
     ROOT: {
       type: 'div',
-      nodes: ['qqJ_LZcgJ6', 'A0fn6wghdA'],
+      nodes: ['-3htyFT8is', 'Xk1CtBYcqL', ...ideationChartIds],
       props: {
         id: 'e2e-content-builder-frame',
       },
@@ -40,46 +50,164 @@ const ParticipationReportPreview = ({
       linkedNodes: {},
       parent: '',
     },
-
-    qqJ_LZcgJ6: {
+    '-3htyFT8is': {
       type: {
-        resolvedName: 'VisitorsWidget',
+        resolvedName: 'ActiveUsersWidget',
       },
       nodes: [],
       props: {
         startAt,
         endAt,
-        title: {
-          [locale]: formatMessage(messages.visitorsTimeline),
-        },
         projectId,
+        title: { [locale]: formatMessage(messages.participantsTimeline) },
       },
       custom: {},
       hidden: false,
       parent: 'ROOT',
       isCanvas: false,
-      displayName: 'VisitorsWidget',
+      displayName: 'ActiveUsersWidget',
       linkedNodes: {},
     },
-
-    A0fn6wghdA: {
+    GsowM7Fnye: {
       type: {
-        resolvedName: 'VisitorsTrafficSourcesWidget',
+        resolvedName: 'ReactionsByTimeWidget',
       },
       nodes: [],
       props: {
         startAt,
         endAt,
-        title: {
-          [locale]: formatMessage(messages.participationSources),
-        },
         projectId,
+        title: { [locale]: formatMessage(messages.reactions) },
       },
       custom: {},
       hidden: false,
       parent: 'ROOT',
       isCanvas: false,
-      displayName: 'VisitorsTrafficSourcesWidget',
+      displayName: 'ReactionsByTimeWidget',
+      linkedNodes: {},
+    },
+    JG1IN7pZWo: {
+      type: {
+        resolvedName: 'AgeWidget',
+      },
+      nodes: [],
+      props: {
+        startAt,
+        endAt,
+        projectId,
+        title: {
+          [locale]: formatMessage(messages.usersByAge),
+        },
+      },
+      custom: {},
+      hidden: false,
+      parent: 'USaN-ksTRN',
+      isCanvas: false,
+      displayName: 'AgeWidget',
+      linkedNodes: {},
+    },
+    'USaN-ksTRN': {
+      type: {
+        resolvedName: 'Container',
+      },
+      nodes: ['JG1IN7pZWo'],
+      props: {},
+      custom: {},
+      hidden: false,
+      parent: 'Xk1CtBYcqL',
+      isCanvas: true,
+      displayName: 'Container',
+      linkedNodes: {},
+    },
+    Xk1CtBYcqL: {
+      type: {
+        resolvedName: 'TwoColumn',
+      },
+      nodes: [],
+      props: {
+        columnLayout: '1-1',
+      },
+      custom: {},
+      hidden: false,
+      parent: 'ROOT',
+      isCanvas: false,
+      displayName: 'TwoColumn',
+      linkedNodes: {
+        left: 'USaN-ksTRN',
+        right: 'e7KuRlvji7',
+      },
+    },
+    dHLmPS52Ss: {
+      type: {
+        resolvedName: 'GenderWidget',
+      },
+      nodes: [],
+      props: {
+        startAt,
+        endAt,
+        projectId,
+        title: {
+          [locale]: formatMessage(messages.usersByGender),
+        },
+      },
+      custom: {},
+      hidden: false,
+      parent: 'e7KuRlvji7',
+      isCanvas: false,
+      displayName: 'GenderWidget',
+      linkedNodes: {},
+    },
+    e7KuRlvji7: {
+      type: {
+        resolvedName: 'Container',
+      },
+      nodes: ['dHLmPS52Ss'],
+      props: {},
+      custom: {},
+      hidden: false,
+      parent: 'Xk1CtBYcqL',
+      isCanvas: true,
+      displayName: 'Container',
+      linkedNodes: {},
+    },
+    glFgBKdUAs: {
+      type: {
+        resolvedName: 'CommentsByTimeWidget',
+      },
+      nodes: [],
+      props: {
+        startAt,
+        endAt,
+        projectId,
+        title: {
+          [locale]: formatMessage(messages.comments),
+        },
+      },
+      custom: {},
+      hidden: false,
+      parent: 'ROOT',
+      isCanvas: false,
+      displayName: 'CommentsByTimeWidget',
+      linkedNodes: {},
+    },
+    sE49Spf_DM: {
+      type: {
+        resolvedName: 'PostsByTimeWidget',
+      },
+      nodes: [],
+      props: {
+        startAt,
+        endAt,
+        projectId,
+        title: {
+          [locale]: formatMessage(messages.inputs),
+        },
+      },
+      custom: {},
+      hidden: false,
+      parent: 'ROOT',
+      isCanvas: false,
+      displayName: 'PostsByTimeWidget',
       linkedNodes: {},
     },
   };
