@@ -10,9 +10,9 @@ export default defineMessages({
     defaultMessage: 'Import scanned forms',
   },
   uploadPdfFile: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadPdfFile1',
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadPdfFile',
     defaultMessage:
-      'Upload a <b>PDF file of scanned forms</b>. It must use a form printed from this project. The form can be downloaded {hereLink}.',
+      'Upload a <b>PDF file of scanned forms</b>. It must use a form printed from this phase. The form can be downloaded {hereLink}.',
   },
   disabledPDFImportTooltip: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.disabledPDFImportTooltip',
