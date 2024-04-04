@@ -42,107 +42,106 @@ describe BulkImportIdeas::IdeaXlsxFileParser do
     end
   end
 
-    describe 'ideas_to_idea_rows' do
-        let(:xlsx_ideas_array) do
-          [
-            {
-              pdf_pages: [1],
-              fields: {
-                'First name(s)' => 'Bill',
-                'Last name' => 'Test',
-                'Email address' => 'bill@citizenlab.co',
-                'Permission' => 'X',
-                'Date Published (dd-mm-yyyy)' => '15-08-2023',
-                'Title' => 'A title',
-                'Description' => 'A description',
-                'Tags' => 'Economy; Waste',
-                'Location' => 'Somewhere',
-                'Text field' => 'Loads to say here',
-                'Multiline text field' => 'More to say here',
-                'Number field' => 5,
-                'Linear scale field' => 3,
-                'Select field' => 'Yes',
-                'Multi select field' => 'This; That',
-                'Image select field' => 'Image 1; Image 2',
-                'Image URL' => 'https://images.com/image.png',
-                'Latitude' => 50.5035,
-                'Longitude' => 6.0944
-              }
-            }
-          ]
-        end
-        let(:rows) { service.send(:ideas_to_idea_rows, xlsx_ideas_array) }
+  describe 'ideas_to_idea_rows' do
+    let(:xlsx_ideas_array) do
+      [
+        {
+          pdf_pages: [1],
+          fields: {
+            'First name(s)' => 'Bill',
+            'Last name' => 'Test',
+            'Email address' => 'bill@citizenlab.co',
+            'Permission' => 'X',
+            'Date Published (dd-mm-yyyy)' => '15-08-2023',
+            'Title' => 'A title',
+            'Description' => 'A description',
+            'Tags' => 'Economy; Waste',
+            'Location' => 'Somewhere',
+            'Text field' => 'Loads to say here',
+            'Multiline text field' => 'More to say here',
+            'Number field' => 5,
+            'Linear scale field' => 3,
+            'Select field' => 'Yes',
+            'Multi select field' => 'This; That',
+            'Image select field' => 'Image 1; Image 2',
+            'Image URL' => 'https://images.com/image.png',
+            'Latitude' => 50.5035,
+            'Longitude' => 6.0944
+          }
+        }
+      ]
+    end
+    let(:rows) { service.send(:ideas_to_idea_rows, xlsx_ideas_array) }
 
-        it 'converts parsed XLSX core fields into idea rows' do
-          expect(rows[0]).to include({
-            title_multiloc: { en: 'A title' },
-            body_multiloc: { en: 'A description' },
-            project_id: project.id,
-            topic_titles: %w[Economy Waste],
-            published_at: '15-08-2023',
-            latitude: 50.5035,
-            longitude: 6.0944,
-            location_description: 'Somewhere',
-            image_url: 'https://images.com/image.png',
-            pdf_pages: [1]
-          })
-        end
+    it 'converts parsed XLSX core fields into idea rows' do
+      expect(rows[0]).to include({
+        title_multiloc: { en: 'A title' },
+        body_multiloc: { en: 'A description' },
+        project_id: project.id,
+        topic_titles: %w[Economy Waste],
+        published_at: '15-08-2023',
+        latitude: 50.5035,
+        longitude: 6.0944,
+        location_description: 'Somewhere',
+        image_url: 'https://images.com/image.png',
+        pdf_pages: [1]
+      })
+    end
 
-        it 'includes user details when "Permission" is not blank' do
-          expect(rows[0]).to include({
-            user_first_name: 'Bill',
-            user_last_name: 'Test',
-            user_email: 'bill@citizenlab.co'
-          })
-        end
+    it 'includes user details when "Permission" is not blank' do
+      expect(rows[0]).to include({
+        user_first_name: 'Bill',
+        user_last_name: 'Test',
+        user_email: 'bill@citizenlab.co'
+      })
+    end
 
-        it 'does not include user details when "Permission" is blank' do
-          xlsx_ideas_array[0][:fields]['Permission'] = ''
-          rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array)
+    it 'does not include user details when "Permission" is blank' do
+      xlsx_ideas_array[0][:fields]['Permission'] = ''
+      rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array)
 
-          expect(rows[0]).not_to include({
-            user_first_name: 'Bill',
-            user_last_name: 'Test',
-            user_email: 'bill@citizenlab.co'
-          })
-        end
+      expect(rows[0]).not_to include({
+        user_first_name: 'Bill',
+        user_last_name: 'Test',
+        user_email: 'bill@citizenlab.co'
+      })
+    end
 
-        it 'converts parsed XLSX custom fields into idea rows' do
-          expect(rows[0][:custom_field_values][:text_field]).to eq 'Loads to say here'
-          expect(rows[0][:custom_field_values][:multiline_text_field]).to eq 'More to say here'
-          expect(rows[0][:custom_field_values][:number_field]).to eq 5
-          expect(rows[0][:custom_field_values][:linear_scale_field]).to eq 3
-          expect(rows[0][:custom_field_values][:select_field]).to eq 'yes'
-          expect(rows[0][:custom_field_values][:multiselect_field]).to match_array %w[this that]
-          expect(rows[0][:custom_field_values][:image_select_field]).to match_array %w[image1 image2]
-        end
+    it 'converts parsed XLSX custom fields into idea rows' do
+      expect(rows[0][:custom_field_values][:text_field]).to eq 'Loads to say here'
+      expect(rows[0][:custom_field_values][:multiline_text_field]).to eq 'More to say here'
+      expect(rows[0][:custom_field_values][:number_field]).to eq 5
+      expect(rows[0][:custom_field_values][:linear_scale_field]).to eq 3
+      expect(rows[0][:custom_field_values][:select_field]).to eq 'yes'
+      expect(rows[0][:custom_field_values][:multiselect_field]).to match_array %w[this that]
+      expect(rows[0][:custom_field_values][:image_select_field]).to match_array %w[image1 image2]
+    end
 
-        it 'ignores completely blank rows' do
-          xlsx_ideas_array = [
-            {
-              pdf_pages: [1],
-              fields: {
-                'First name' => '',
-                'Last name' => '',
-                'Email address' => '',
-                'Permission' => '',
-                'Date Published (dd-mm-yyyy)' => '',
-                'Title' => '',
-                'Description' => '',
-                'Tags' => '',
-                'Location' => '',
-                'A text field' => '',
-                'Number field' => '',
-                'Select field' => '',
-                'Multi select field' => '',
-                'Another select field' => '',
-                'Image URL' => ''
-              }
-            }
-          ]
-          idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array)
-          expect(idea_rows.count).to eq 0
-        end
-      end
-
+    it 'ignores completely blank rows' do
+      xlsx_ideas_array = [
+        {
+          pdf_pages: [1],
+          fields: {
+            'First name' => '',
+            'Last name' => '',
+            'Email address' => '',
+            'Permission' => '',
+            'Date Published (dd-mm-yyyy)' => '',
+            'Title' => '',
+            'Description' => '',
+            'Tags' => '',
+            'Location' => '',
+            'A text field' => '',
+            'Number field' => '',
+            'Select field' => '',
+            'Multi select field' => '',
+            'Another select field' => '',
+            'Image URL' => ''
+          }
+        }
+      ]
+      idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array)
+      expect(idea_rows.count).to eq 0
+    end
+  end
 end

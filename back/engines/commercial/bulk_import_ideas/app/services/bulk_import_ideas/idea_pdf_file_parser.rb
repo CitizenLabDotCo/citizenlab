@@ -6,6 +6,11 @@ module BulkImportIdeas
     PAGES_TO_TRIGGER_NEW_PDF = 8
     MAX_TOTAL_PAGES = 50
 
+    def initialize(current_user, locale, phase_id, personal_data_enabled)
+      super
+      @form_fields = IdeaCustomFieldsService.new(Factory.instance.participation_method_for(@phase).custom_form).printable_fields
+    end
+
     private
 
     def create_files(file_content)
@@ -58,7 +63,7 @@ module BulkImportIdeas
     end
 
     # Overridden from base class to handle the way checkboxes are filled in the PDF
-    def merge_idea_fields(idea)
+    def merge_idea_with_form_fields(idea)
       merged_idea = []
       form_fields = import_form_data[:fields]
       form_fields.each do |form_field|
@@ -85,6 +90,7 @@ module BulkImportIdeas
           end
         end
       end
+      merged_idea
     end
 
     # Overridden from base class to tidy data returned from PDF
@@ -134,11 +140,10 @@ module BulkImportIdeas
 
       # NOTE: We return both parsed values so we can later merge the best values from both
       form_parsed_ideas = google_forms_service.parse_pdf(pdf_file, import_form_data[:page_count])
-
       text_parsed_ideas = begin
         Pdf::IdeaPlainTextParserService.new(
           @phase || @project,
-          @form_fields.reject { |field| field.input_type == 'topic_ids' }, # Temp
+          @form_fields,
           @locale,
           import_form_data[:page_count]
         ).parse_text(google_forms_service.raw_text_page_array(pdf_file))

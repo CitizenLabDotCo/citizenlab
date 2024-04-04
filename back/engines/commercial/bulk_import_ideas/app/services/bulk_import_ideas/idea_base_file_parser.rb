@@ -132,15 +132,14 @@ module BulkImportIdeas
       idea_row
     end
 
-    def merge_idea_fields(idea)
+    def merge_idea_with_form_fields(idea)
       idea # Should always override in child classes
     end
 
     # Processes all fields - including built in fields
-    # TODO: JS - PDF not converting options
     def process_custom_form_fields(fields, idea_row)
-      merged_fields = merge_idea_fields(fields)
-      binding.pry
+      merged_fields = merge_idea_with_form_fields(fields)
+      multi_select_types = %w[multiselect multiselect_image]
       custom_fields = {}
       merged_fields.each do |field|
         next if field[:key].nil?
@@ -151,7 +150,7 @@ module BulkImportIdeas
         else
           # Custom fields
           value = field[:value]
-          value = value.compact if %w[multiselect multiselect_image].include?(field[:input_type])
+          value = value.compact if multi_select_types.include?(field[:input_type])
           value = value.compact.first if field[:input_type] == 'select' && value.is_a?(Array)
           custom_fields[field[:key].to_sym] = value if value.present?
         end

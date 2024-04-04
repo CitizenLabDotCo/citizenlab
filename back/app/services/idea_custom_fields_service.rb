@@ -39,7 +39,7 @@ class IdeaCustomFieldsService
 
   # Used in the printable PDF export
   def printable_fields
-    ignore_field_types = %w[section date files image_files point linear_scale file_upload]
+    ignore_field_types = %w[section date files image_files point linear_scale file_upload topic_ids]
     enabled_fields.reject { |field| ignore_field_types.include? field.input_type }
   end
 

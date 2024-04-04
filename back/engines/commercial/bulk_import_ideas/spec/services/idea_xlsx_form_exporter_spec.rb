@@ -5,8 +5,6 @@ require 'rails_helper'
 describe BulkImportIdeas::IdeaXlsxFormExporter do
   let(:service) { described_class.new phase, 'en', false }
 
-
-
   describe 'export an ideation form' do
     let(:phase) { create(:phase) }
     let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: phase.project) }
@@ -67,23 +65,22 @@ describe BulkImportIdeas::IdeaXlsxFormExporter do
       expect(xlsx).not_to be_nil
       expect(xlsx_hash.count).to eq 1
       expect(xlsx_hash[0].keys).to match_array([
-                                                 'First name(s)',
-                                                 'Last name',
-                                                 'Email address',
-                                                 'Permission',
-                                                 'Date Published (dd-mm-yyyy)',
-                                                 'Text field',
-                                                 'Multiline text field',
-                                                 'Number field',
-                                                 'Point field - Latitude',
-                                                 'Point field - Longitude',
-                                                 'Linear scale field',
-                                                 'Select field',
-                                                 "Since you picked 'other', what are you thinking of?",
-                                                 'Multi select field',
-                                                 'Image select field',
-                                               ])
+        'First name(s)',
+        'Last name',
+        'Email address',
+        'Permission',
+        'Date Published (dd-mm-yyyy)',
+        'Text field',
+        'Multiline text field',
+        'Number field',
+        'Point field - Latitude',
+        'Point field - Longitude',
+        'Linear scale field',
+        'Select field',
+        "Since you picked 'other', what are you thinking of?",
+        'Multi select field',
+        'Image select field'
+      ])
     end
   end
-
 end

@@ -20,15 +20,13 @@ module BulkImportIdeas
       form_fields = import_form_data[:fields]
       form_fields.each do |form_field|
         idea.each do |idea_field|
-          if form_field[:name] == idea_field[:name]
-            if form_field[:type] == 'field'
-              new_field = form_field
-              new_field[:value] = idea_field[:value]
-              new_field = process_field_value(new_field, form_fields)
-              merged_idea << new_field
-              idea.delete_if { |f| f == idea_field }
-              break
-            end
+          if form_field[:name] == idea_field[:name] && (form_field[:type] == 'field')
+            new_field = form_field
+            new_field[:value] = idea_field[:value]
+            new_field = process_field_value(new_field, form_fields)
+            merged_idea << new_field
+            idea.delete_if { |f| f == idea_field }
+            break
           end
         end
       end
