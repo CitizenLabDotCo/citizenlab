@@ -8,7 +8,7 @@ const GlobalStyle = createGlobalStyle`
 
   .admin-user-view {
     .weglot_switcher {
-      margin-right: 60px;
+      margin-right: 80px !important;
     }
   }
 
