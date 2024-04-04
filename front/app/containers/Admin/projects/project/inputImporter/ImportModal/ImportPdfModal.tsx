@@ -6,6 +6,9 @@ import {
   Title,
   Button,
   TooltipContentWrapper,
+  Icon,
+  stylingConsts,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Tippy from '@tippyjs/react';
@@ -126,6 +129,30 @@ const ImportPdfModal = ({ open, onClose }: Props) => {
       }
       niceHeader
     >
+      {/* inspired by front/app/containers/Admin/projects/project/ideas/AnalysisBanner.tsx */}
+      {importPrintedFormsEnabled || (
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          borderRadius={stylingConsts.borderRadius}
+          mx="24px"
+          mb="-8px"
+          px="8px"
+          bgColor={colors.errorLight}
+        >
+          <Box display="flex" alignItems="center">
+            <Icon
+              name="lock"
+              width="50px"
+              height="50px"
+              mr="8px"
+              fill={colors.textPrimary}
+            />
+            <Text>{formatMessage(messages.disabledPDFImportTooltip)}</Text>
+          </Box>
+        </Box>
+      )}
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(submitFile)}>
           <Box w="100%" p="24px">

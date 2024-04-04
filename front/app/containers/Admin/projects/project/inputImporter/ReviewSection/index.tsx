@@ -11,8 +11,12 @@ import { useParams } from 'react-router-dom';
 
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 import useIdeaById from 'api/ideas/useIdeaById';
+import useApproveOfflineIdeas from 'api/import_ideas/useApproveOfflineIdeas';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
+
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -22,9 +26,6 @@ import IdeaList from './IdeaList';
 import messages from './messages';
 import PDFPageControl from './PDFPageControl';
 import PDFViewer from './PDFViewer';
-import Button from 'components/UI/Button';
-import useApproveOfflineIdeas from 'api/import_ideas/useApproveOfflineIdeas';
-import Error from 'components/UI/Error';
 
 const ReviewSection = () => {
   const { projectId, phaseId } = useParams() as {
