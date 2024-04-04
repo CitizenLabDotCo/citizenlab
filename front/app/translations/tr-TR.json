@@ -1135,6 +1135,7 @@
   "app.containers.InitiativesNewPage.orgName": "{orgName}",
   "app.containers.InitiativesNewPage.tipsTitle": "Önerinizi yayınlama ile ilgili bazı özel ipuçları",
   "app.containers.InitiativesNewPage.unkownAddress": "Bilinmeyen adres",
+  "app.containers.InitiativesShow.VoteControl.a11y_timeLeft": "Oylama için zaman kaldı:",
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{votingThreshold} gerekli oy için {xVotes} oy",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} Oylama devam ediyor.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "{orgName} öneri aldı ve resmi bir yanıt verdi.",
