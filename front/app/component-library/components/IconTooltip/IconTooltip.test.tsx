@@ -1,30 +1,32 @@
 import React from 'react';
 
-import { render, screen, fireEvent, waitFor } from '../../utils/testUtils/rtl';
+import userEvent from '@testing-library/user-event';
+
+import { render, screen, waitFor } from '../../utils/testUtils/rtl';
 
 import IconTooltip from '.';
 
 const tooltipText = 'toolip text';
+
 describe('<IconTooltip />', () => {
   it('renders', () => {
     render(<IconTooltip content={<div>{tooltipText}</div>} />);
     expect(screen.getByTestId('tooltip-icon-button')).toBeInTheDocument();
   });
 
-  it('renders content on mouseEnter', () => {
+  it('shows content when hovering', async () => {
     render(<IconTooltip content={<div>{tooltipText}</div>} />);
 
-    fireEvent.mouseEnter(screen.getByTestId('tooltip-icon-button'));
-    expect(screen.getByText(tooltipText)).toBeInTheDocument();
+    expect(screen.queryByText(tooltipText)).not.toBeInTheDocument();
+    userEvent.hover(screen.getByTestId('tooltip-icon-button'));
+    await waitFor(() => {
+      expect(screen.getByText(tooltipText)).toBeInTheDocument();
+    });
   });
 
-  it('hides content mouseLeave', async () => {
+  it('hides content when not hovering', async () => {
     render(<IconTooltip content={<div>{tooltipText}</div>} />);
 
-    fireEvent.mouseOver(screen.getByTestId('tooltip-icon-button'));
-    fireEvent.mouseOut(screen.getByTestId('tooltip-icon-button'));
-    await waitFor(() => {
-      expect(screen.queryByText(tooltipText)).not.toBeInTheDocument();
-    });
+    expect(screen.queryByText(tooltipText)).not.toBeInTheDocument();
   });
 });

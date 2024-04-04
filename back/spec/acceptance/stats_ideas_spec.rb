@@ -227,120 +227,6 @@ resource 'Stats - Ideas' do
     end
   end
 
-  get 'web_api/v1/stats/ideas_by_status' do
-    time_boundary_parameters self
-    project_filter_parameter self
-    group_filter_parameter self
-    feedback_needed_filter_parameter self
-
-    describe 'with time filters only' do
-      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
-      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
-
-      example_request 'Ideas by status' do
-        assert_status 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :type)).to eq 'ideas_by_status'
-        json_attributes = json_response.dig(:data, :attributes)
-        expect(json_attributes[:series][:ideas].keys.map(&:to_s)).to match_array [@proposed.id]
-        expect(json_attributes[:series][:ideas].values.map(&:class).uniq).to eq [Integer]
-      end
-    end
-
-    describe 'with project filter' do
-      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
-      let(:project) { @project.id }
-      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
-
-      before do
-        @project = create(:single_phase_ideation_project)
-        travel_to start_at + 2.months do
-          create(:idea, project: @project, idea_status: @proposed)
-        end
-      end
-
-      example_request 'Ideas by status filtered by project' do
-        assert_status 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :type)).to eq 'ideas_by_status'
-        expect(json_response.dig(:data, :attributes, :series, :ideas).values.sum).to eq 1
-      end
-    end
-
-    describe 'with group filter' do
-      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
-      let(:group) { @group.id }
-      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
-
-      before do
-        travel_to start_at + 2.months do
-          @group = create(:group)
-          create(:idea_with_topics, topics_count: 2, author: create(:user, manual_groups: [@group]))
-        end
-      end
-
-      example_request 'Ideas by status filtered by group' do
-        assert_status 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :type)).to eq 'ideas_by_status'
-        expect(json_response.dig(:data, :attributes, :series, :ideas).values.sum).to eq 1
-      end
-    end
-  end
-
-  get 'web_api/v1/stats/ideas_by_status_as_xlsx' do
-    time_boundary_parameters self
-    project_filter_parameter self
-    group_filter_parameter self
-    feedback_needed_filter_parameter self
-
-    describe 'with project filter' do
-      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
-      let(:project) { @project.id }
-      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
-
-      before do
-        topic = create(:topic)
-        @project = create(:single_phase_ideation_project, allowed_input_topics: [topic])
-        travel_to start_at + 2.months do
-          create(:idea, project: @project, topics: [topic])
-          create(:idea)
-        end
-      end
-
-      example_request 'Ideas by topic filtered by project' do
-        assert_status 200
-        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet[0].cells.map(&:value)).to match_array %w[ideas status status_id]
-        amount_col = worksheet.map { |col| col.cells[2].value }
-        _header, *amounts = amount_col
-        expect(amounts.sum).to eq 1
-      end
-    end
-
-    describe 'with group filter' do
-      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
-      let(:group) { @group.id }
-      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
-
-      before do
-        travel_to start_at + 2.months do
-          @group = create(:group)
-          create(:idea_with_topics, topics_count: 2, author: create(:user, manual_groups: [@group]))
-        end
-      end
-
-      example_request 'Ideas by topic filtered by group' do
-        assert_status 200
-        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet[0].cells.map(&:value)).to match_array %w[status status_id ideas]
-        amount_col = worksheet.map { |col| col.cells[2].value }
-        _header, *amounts = amount_col
-        expect(amounts.sum).to eq 1
-      end
-    end
-  end
-
   get 'web_api/v1/stats/ideas_by_project' do
     time_boundary_parameters self
     topic_filter_parameter self
@@ -407,6 +293,7 @@ resource 'Stats - Ideas' do
       end
     end
   end
+
   get 'web_api/v1/stats/ideas_by_project_as_xlsx' do
     time_boundary_parameters self
     topic_filter_parameter self

@@ -3086,7 +3086,7 @@ CREATE TABLE public.report_builder_published_graph_data_units (
 CREATE TABLE public.report_builder_reports (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
     name character varying,
-    owner_id uuid NOT NULL,
+    owner_id uuid,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     phase_id uuid,
@@ -7437,6 +7437,5 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240229195843'),
 ('20240301120023'),
 ('20240305122502'),
-('20240328134312');
-
-
+('20240328134312'),
+('20240328141200');

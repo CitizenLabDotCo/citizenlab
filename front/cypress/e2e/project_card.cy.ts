@@ -1,6 +1,5 @@
 import { randomString } from '../support/commands';
 import moment = require('moment');
-import project from '../fixtures/project';
 
 describe('Project card component', () => {
   const projectTitle = randomString();
@@ -25,11 +24,12 @@ describe('Project card component', () => {
         canPost: true,
         canReact: true,
       });
-      cy.goToLandingPage();
     });
   });
 
   it('shows the title, description, progress bar and cta', () => {
+    cy.goToLandingPage();
+
     const projectCard = cy.get('.e2e-project-card').first();
 
     projectCard.contains(projectTitle);

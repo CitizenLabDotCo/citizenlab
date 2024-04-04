@@ -5,13 +5,13 @@ import { SerializedNodes } from '@craftjs/core';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import styled from 'styled-components';
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import { DEFAULT_PADDING } from '../constants';
 
 interface Props {
   onUpdateDraftData?: (serializedNodes: SerializedNodes | undefined) => void;
-  onUpdateLocale?: (locale: Locale) => void;
+  onUpdateLocale?: (locale: SupportedLocale) => void;
   children: React.ReactNode;
   padding?: string;
 }

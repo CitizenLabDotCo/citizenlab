@@ -125,14 +125,6 @@ module MultiTenancy
               enabled: false,
               allowed: false
             },
-            project_reports: {
-              enabled: true,
-              allowed: true
-            },
-            phase_reports: {
-              enabled: true,
-              allowed: true
-            },
             blocking_profanity: {
               enabled: true,
               allowed: true

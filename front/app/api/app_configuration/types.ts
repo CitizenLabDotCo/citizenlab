@@ -1,4 +1,4 @@
-import { ImageSizes, Multiloc, Locale, UploadFile } from 'typings';
+import { ImageSizes, Multiloc, SupportedLocale, UploadFile } from 'typings';
 
 import { API_PATH } from 'containers/App/constants';
 
@@ -19,7 +19,7 @@ interface AppConfigurationFeature {
 export type IAppConfigurationSettingsCore = {
   allowed: boolean;
   enabled: boolean;
-  locales: Locale[];
+  locales: SupportedLocale[];
   weglot_api_key: string | null;
   timezone: string;
   organization_name: Multiloc;
@@ -142,8 +142,6 @@ export interface IAppConfigurationSettings {
   manual_project_sorting?: AppConfigurationFeature;
   admin_project_templates?: AppConfigurationFeature;
   pages?: AppConfigurationFeature;
-  project_reports?: AppConfigurationFeature;
-  phase_reports?: AppConfigurationFeature;
   private_projects?: AppConfigurationFeature;
   maps?: AppConfigurationMapSettings;
   initiatives: ProposalsSettings;
