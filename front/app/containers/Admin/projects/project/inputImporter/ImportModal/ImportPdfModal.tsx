@@ -151,7 +151,7 @@ const ImportPdfModal = ({ open, onClose }: Props) => {
             <LocalePicker />
 
             <Box>
-              <SingleFileUploader name="file" />
+              <SingleFileUploader name="file" accept=".pdf" />
             </Box>
 
             <Box mt="24px">

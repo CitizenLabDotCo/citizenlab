@@ -120,7 +120,7 @@ const ImportPdfModal = ({ open, onClose }: Props) => {
             <LocalePicker />
 
             <Box>
-              <SingleFileUploader name="file" />
+              <SingleFileUploader name="file" accept=".xlsx" />
             </Box>
 
             <Box w="100%" display="flex" mt="32px">
