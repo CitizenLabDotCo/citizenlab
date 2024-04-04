@@ -45,25 +45,4 @@ const AdminProjectsProjectIndex = () => {
   );
 };
 
-{
-  /* <Tab
-label={label}
-url={url}
-key={url}
-active={isTopBarNavActive(
-  `/admin/projects/${projectId}/phases/${phase.id}`,
-  pathname,
-  url
-)}
-badge={
-  name === 'report' && !isExpired('01-04-2024') ? (
-    <Box display="inline" ml="8px">
-      <NewBadge />
-    </Box>
-  ) : null
-}
-disabledTooltipText={disabledTooltipText}
-/> */
-}
-
 export default AdminProjectsProjectIndex;
