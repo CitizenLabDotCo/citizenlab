@@ -1135,6 +1135,7 @@
   "app.containers.InitiativesNewPage.orgName": "{orgName}",
   "app.containers.InitiativesNewPage.tipsTitle": "Alcuni consigli specifici per pubblicare la tua proposta",
   "app.containers.InitiativesNewPage.unkownAddress": "Indirizzo sconosciuto",
+  "app.containers.InitiativesShow.VoteControl.a11y_timeLeft": "Tempo rimasto per votare:",
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{xVotes} su {votingThreshold} voti richiesti",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} La votazione rimane aperta.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "{orgName} ha ricevuto la proposta e ha dato una risposta ufficiale.",

@@ -1135,6 +1135,7 @@
   "app.containers.InitiativesNewPage.orgName": "crwdns214804:0{orgName}crwdne214804:0",
   "app.containers.InitiativesNewPage.tipsTitle": "crwdns214810:0crwdne214810:0",
   "app.containers.InitiativesNewPage.unkownAddress": "crwdns214812:0crwdne214812:0",
+  "app.containers.InitiativesShow.VoteControl.a11y_timeLeft": "crwdns1995448:0crwdne1995448:0",
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "crwdns214816:0{xVotes}crwdnd214816:0{votingThreshold}crwdne214816:0",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "crwdns214818:0{answeredStatusExplanationBold}crwdne214818:0",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "crwdns214820:0{orgName}crwdne214820:0",
