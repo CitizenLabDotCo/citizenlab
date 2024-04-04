@@ -784,7 +784,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.pleaseUploadFile": "Please upload a file to continue",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.upload": "Upload",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadExcelFile1": "Upload a completed <b>Excel file</b> (.xlsx). It must use the template provided for this project. The template can be downloaded {hereLink}.",
-  "app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadPdfFile1": "Upload a <b>PDF file of scanned forms</b>. It must use a form printed from this project. The form can be downloaded {hereLink}.",
+  "app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadPdfFile": "Upload a <b>PDF file of scanned forms</b>. It must use a form printed from this phase. The form can be downloaded {hereLink}.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.AuthorInput.addANewUser": "Add a new user",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.AuthorInput.enterAValidEmail": "Enter a valid email to create a new account",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.aNewAccountWillBeCreated": "A new account will be created with this email. This input will be added to it.",
