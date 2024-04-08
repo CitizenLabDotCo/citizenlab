@@ -4,7 +4,7 @@ module EmailCampaigns
   class AssureCampaignsService
     def assure_campaigns
       instantiatable_campaign_types = (
-        EmailCampaigns::DeliveryService.new.campaign_types - EmailCampaigns::Campaigns::MANUAL_CAMPAIGNS
+        EmailCampaigns::DeliveryService.new.campaign_types - EmailCampaigns::Campaign::MANUAL_CAMPAIGNS
       )
 
       type_counts = Campaign
