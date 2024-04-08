@@ -31,6 +31,7 @@ module EmailCampaigns
       Campaigns::InviteReceived,
       Campaigns::InviteReminder,
       Campaigns::Manual,
+      Campaigns::ManualProjectParticipants,
       Campaigns::MentionInInternalComment,
       Campaigns::MentionInOfficialFeedback,
       Campaigns::ModeratorDigest,
