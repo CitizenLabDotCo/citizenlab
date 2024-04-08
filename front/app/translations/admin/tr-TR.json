@@ -1950,7 +1950,6 @@
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Emin misiniz?",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Proje yöneticileri bulunamadı",
   "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "Bu projede kullanıcının gerçekleştirebileceği hiçbir eylem olmadığından herhangi bir şey gösterilmiyor.",
-  "app.containers.AdminPage.groups.permissions.onlyAdmins": "Bu ayarı yalnızca yöneticiler değiştirebilir.",
   "app.containers.AdminPage.groups.permissions.option1": "Seçenek 1",
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Bekleyen davetiye",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Belgeye kim açıklama ekleyebilir?",

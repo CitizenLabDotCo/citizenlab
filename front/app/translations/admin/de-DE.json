@@ -1950,7 +1950,6 @@
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Sind Sie sicher?",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Projektmanager*in nicht gefunden",
   "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "Diese Phase enthält keine aktive Beteiligungsmöglichkeit.",
-  "app.containers.AdminPage.groups.permissions.onlyAdmins": "Nur Admins können diese Einstellung ändern.",
   "app.containers.AdminPage.groups.permissions.option1": "Option 1",
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Ausstehende Einladung",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Wer kann das Dokument mit Anmerkungen versehen?",
