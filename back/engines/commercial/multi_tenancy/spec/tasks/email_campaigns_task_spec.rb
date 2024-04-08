@@ -31,7 +31,7 @@ describe 'rake email_campaigns' do
     it 'creates the missing campaign records' do
       expect { task.execute }
         .to change(EmailCampaigns::Campaign, :count)
-        .by(EmailCampaigns::DeliveryService.new.campaign_types.size - 1)
+        .by(EmailCampaigns::DeliveryService.new.campaign_types.size - EmailCampaigns::Campaign::MANUAL_CAMPAIGNS.size)
     end
   end
 end
