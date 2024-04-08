@@ -867,6 +867,7 @@
   "app.containers.Admin.projects.project.survey.upsell.title": "Analysér data hurtigere med AI",
   "app.containers.Admin.projects.project.survey.upsell.upsellMessage": "Denne funktion er ikke inkluderet i din nuværende plan. Tal med jeres administrator for at låse den op.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Se",
+  "app.containers.Admin.projects.project.traffic.cookieBannerUpdatedInfo": "Siden december 2023 har det været lettere for brugerne at afvise cookies, hvilket har en negativ effekt på den opfattede trafik.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Vælg periode",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Trafikkilder",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Tidslinje for besøgende",
