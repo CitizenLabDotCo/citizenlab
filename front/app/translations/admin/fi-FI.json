@@ -867,6 +867,7 @@
   "app.containers.Admin.projects.project.survey.upsell.title": "Analysoi dataa nopeammin tekoälyn avulla",
   "app.containers.Admin.projects.project.survey.upsell.upsellMessage": "Tämä ominaisuus ei sisälly nykyiseen suunnitelmaasi. Keskustele hallituksen menestyspäällikön tai järjestelmänvalvojan kanssa avataksesi sen.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Näytä",
+  "app.containers.Admin.projects.project.traffic.cookieBannerUpdatedInfo": "Joulukuusta 2023 lähtien käyttäjien on ollut helpompi hylätä evästeet, millä on negatiivinen vaikutus havaittuun liikenteeseen.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Valitse ajanjakso",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Liikenteen lähteet",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Vierailijoiden aikajana",
