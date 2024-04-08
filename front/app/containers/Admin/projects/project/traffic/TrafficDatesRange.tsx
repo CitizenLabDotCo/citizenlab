@@ -5,6 +5,7 @@ import moment, { Moment } from 'moment';
 import { useParams } from 'react-router-dom';
 
 import DateRangePicker from 'components/admin/DateRangePicker';
+import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -48,7 +49,15 @@ const TrafficDatesRange = ({
           onDatesChange={handleChangeTimeRange}
         />
       </Box>
-      <Box p="44px" m="44px" bg="white">
+      <Box mx="44px" mb="20px">
+        <Warning>
+          <Text color="primary" m="0px">
+            {formatMessage(messages.cookieBannerUpdatedInfo)}
+          </Text>
+        </Warning>
+      </Box>
+
+      <Box p="44px" mx="44px" bg="white">
         <TrafficReportPreview
           projectId={projectId}
           startAt={startAt}

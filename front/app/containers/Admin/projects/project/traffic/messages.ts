@@ -13,4 +13,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.traffic.selectPeriod',
     defaultMessage: 'Select period',
   },
+  cookieBannerUpdatedInfo: {
+    id: 'app.containers.Admin.projects.project.traffic.cookieBannerUpdatedInfo',
+    defaultMessage:
+      "Since December 2023 it's easier for users to reject cookies, which has a negative effect on perceived traffic.",
+  },
 });
