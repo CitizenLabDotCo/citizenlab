@@ -867,6 +867,7 @@
   "app.containers.Admin.projects.project.survey.upsell.title": "Ανάλυση δεδομένων γρηγορότερα με τεχνητή νοημοσύνη",
   "app.containers.Admin.projects.project.survey.upsell.upsellMessage": "Αυτή η λειτουργία δεν περιλαμβάνεται στο τρέχον πρόγραμμά σας. Μιλήστε με τον υπεύθυνο επιτυχίας της κυβέρνησής σας ή τον διαχειριστή για να το ξεκλειδώσετε.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "View",
+  "app.containers.Admin.projects.project.traffic.cookieBannerUpdatedInfo": "Από τον Δεκέμβριο του 2023 είναι ευκολότερο για τους χρήστες να απορρίπτουν τα cookies, γεγονός που έχει αρνητική επίδραση στην αντιληπτή επισκεψιμότητα.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Επιλέξτε περίοδο",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Πηγές κυκλοφορίας",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Χρονοδιάγραμμα επισκεπτών",
