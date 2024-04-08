@@ -232,18 +232,18 @@ kl:
       title: 'Thanks for participating'
       description: "Please submit your answers by selecting 'Submit' below."
     pdf_export:
-      personal_data: 'Personal data'
+      personal_data: 'Inummut paasissutissat'
       personal_data_explanation_ideation: "We will submit your input to %{organizationName}'s online participation platform. If you want your name to be displayed as author of this input and receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. Your email will not be public and will only be used by %{organizationName}. If you want to remain anonymous, or do not agree for us to use your personal data in this way, you can leave them empty."
       personal_data_explanation_native_survey: "We will submit your input to %{organizationName}'s online participation platform. If you want to receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. Your data will not be public and will only be used by %{organizationName}. If you do not agree for us to use your personal data in this way, you can leave them empty."
       first_name: 'First name(s)'
       last_name: 'Last name'
-      email_address: 'Email address'
+      email_address: 'Mailadressi'
       by_checking_this_box: "By checking this box I consent to my data being used to create an account on %{organizationName}'s participation platform."
-      optional: 'optional'
+      optional: 'nammineq toqqarsinnaasaq'
       permission: 'Permission'
-      choose_as_many: 'Choose as many as you like'
+      choose_as_many: 'Qanorlunniit amerlatigisunik toqqaasinnaavutit'
       this_answer: 'This answer will only be shared with moderators, and not to the public.'
-      page: 'Page'
+      page: 'Qupperneq'
       date_published: 'Date Published (dd-mm-yyyy)'
       instructions: 'Instructions'
       write_as_clearly: 'Write as <b>clearly</b> as you can— these forms might be scanned'
