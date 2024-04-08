@@ -867,6 +867,7 @@
   "app.containers.Admin.projects.project.survey.upsell.title": "Analyser data raskere med AI",
   "app.containers.Admin.projects.project.survey.upsell.upsellMessage": "Denne funksjonen er ikke inkludert i din nåværende plan. Snakk med Government Success Manager eller administrator for å låse den opp.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Utsikt",
+  "app.containers.Admin.projects.project.traffic.cookieBannerUpdatedInfo": "Siden desember 2023 er det lettere for brukere å avvise informasjonskapsler, noe som har en negativ effekt på opplevd trafikk.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Velg periode",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Trafikkkilder",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Besøkendes tidslinje",
