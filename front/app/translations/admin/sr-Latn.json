@@ -867,6 +867,7 @@
   "app.containers.Admin.projects.project.survey.upsell.title": "Analyse data faster with AI",
   "app.containers.Admin.projects.project.survey.upsell.upsellMessage": "This feature is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "View",
+  "app.containers.Admin.projects.project.traffic.cookieBannerUpdatedInfo": "Since December 2023 it's easier for users to reject cookies, which has a negative effect on perceived traffic.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Select period",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Traffic sources",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Visitors timeline",
