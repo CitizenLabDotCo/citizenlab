@@ -867,6 +867,7 @@
   "app.containers.Admin.projects.project.survey.upsell.title": "Analise os dados mais rapidamente com a IA",
   "app.containers.Admin.projects.project.survey.upsell.upsellMessage": "Esse recurso não está incluído em seu plano atual. Fale com seu gerente de Government Success Manager ou administrador para desbloqueá-lo.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Visualizar",
+  "app.containers.Admin.projects.project.traffic.cookieBannerUpdatedInfo": "Desde dezembro de 2023, é mais fácil para os usuários rejeitarem cookies, o que tem um efeito negativo no tráfego percebido.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Selecione o período",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Fontes de tráfego",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Linha do tempo dos visitantes",
