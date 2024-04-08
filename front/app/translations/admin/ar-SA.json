@@ -867,6 +867,7 @@
   "app.containers.Admin.projects.project.survey.upsell.title": "تحليل البيانات بشكل أسرع باستخدام الذكاء الاصطناعي",
   "app.containers.Admin.projects.project.survey.upsell.upsellMessage": "لم يتم تضمين هذه الميزة في خطتك الحالية. تحدث إلى مدير النجاح الحكومي أو المسؤول لفتحه.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "منظر",
+  "app.containers.Admin.projects.project.traffic.cookieBannerUpdatedInfo": "منذ ديسمبر 2023، أصبح من السهل على المستخدمين رفض ملفات تعريف الارتباط، مما له تأثير سلبي على حركة المرور الملموسة.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "اختر الفترة",
   "app.containers.Admin.projects.project.traffic.trafficSources": "مصادر حركة المرور",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "الجدول الزمني للزوار",
