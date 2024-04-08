@@ -867,6 +867,7 @@
   "app.containers.Admin.projects.project.survey.upsell.title": "Brže analizirajte podatke uz AI",
   "app.containers.Admin.projects.project.survey.upsell.upsellMessage": "Ova značajka nije uključena u vaš trenutni plan. Razgovarajte sa svojim upraviteljem uspjeha vlade ili administratorom da ga otključate.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Pogled",
+  "app.containers.Admin.projects.project.traffic.cookieBannerUpdatedInfo": "Od prosinca 2023. korisnicima je lakše odbiti kolačiće, što ima negativan učinak na percipirani promet.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Odaberite razdoblje",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Izvori prometa",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Vremenska traka posjetitelja",
