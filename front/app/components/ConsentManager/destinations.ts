@@ -12,10 +12,6 @@ export type TCategory = (typeof CATEGORIES)[number];
 
 const destinationConfigs: IDestinationConfig[] = [];
 
-export interface IConsentManagerFeatureMap {}
-export type TConsentManagerFeature =
-  IConsentManagerFeatureMap[keyof IConsentManagerFeatureMap];
-
 export interface IDestinationConfig {
   /** A unique key, used to name the destination in the stored cookie */
   key: IDestination;
