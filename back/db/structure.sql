@@ -106,6 +106,7 @@ ALTER TABLE IF EXISTS ONLY public.initiative_images DROP CONSTRAINT IF EXISTS fk
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_4aea6afa11;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_46dd2ccfd1;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_examples DROP CONSTRAINT IF EXISTS fk_rails_465d6356b2;
+ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaigns DROP CONSTRAINT IF EXISTS fk_rails_3e16ae75d7;
 ALTER TABLE IF EXISTS ONLY public.followers DROP CONSTRAINT IF EXISTS fk_rails_3d258d3942;
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS fk_rails_3c57357702;
 ALTER TABLE IF EXISTS ONLY public.initiatives DROP CONSTRAINT IF EXISTS fk_rails_3a983c39e6;
@@ -298,6 +299,7 @@ DROP INDEX IF EXISTS public.index_email_campaigns_deliveries_on_campaign_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_consents_on_user_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_consents_on_campaign_type_and_user_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_on_type;
+DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_on_project_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_on_author_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_groups_on_group_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_groups_on_campaign_id;
@@ -1391,7 +1393,8 @@ CREATE TABLE public.email_campaigns_campaigns (
     body_multiloc jsonb DEFAULT '{}'::jsonb,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    deliveries_count integer DEFAULT 0 NOT NULL
+    deliveries_count integer DEFAULT 0 NOT NULL,
+    project_id uuid
 );
 
 
@@ -4866,6 +4869,13 @@ CREATE INDEX index_email_campaigns_campaigns_on_author_id ON public.email_campai
 
 
 --
+-- Name: index_email_campaigns_campaigns_on_project_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_email_campaigns_campaigns_on_project_id ON public.email_campaigns_campaigns USING btree (project_id);
+
+
+--
 -- Name: index_email_campaigns_campaigns_on_type; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6233,6 +6243,14 @@ ALTER TABLE ONLY public.followers
 
 
 --
+-- Name: email_campaigns_campaigns fk_rails_3e16ae75d7; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.email_campaigns_campaigns
+    ADD CONSTRAINT fk_rails_3e16ae75d7 FOREIGN KEY (project_id) REFERENCES public.projects(id);
+
+
+--
 -- Name: email_campaigns_examples fk_rails_465d6356b2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7436,6 +7454,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240229195843'),
 ('20240301120023'),
 ('20240305122502'),
-('20240328141200');
+('20240328141200'),
+('20240408135803');
 
 

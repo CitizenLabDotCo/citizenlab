@@ -16,19 +16,23 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  deliveries_count :integer          default(0), not null
+#  project_id       :uuid
 #
 # Indexes
 #
-#  index_email_campaigns_campaigns_on_author_id  (author_id)
-#  index_email_campaigns_campaigns_on_type       (type)
+#  index_email_campaigns_campaigns_on_author_id   (author_id)
+#  index_email_campaigns_campaigns_on_project_id  (project_id)
+#  index_email_campaigns_campaigns_on_type        (type)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (author_id => users.id)
+#  fk_rails_...  (project_id => projects.id)
 #
 module EmailCampaigns
   class Campaign < ApplicationRecord
     belongs_to :author, class_name: 'User', optional: true
+    belongs_to :project, optional: true
     has_many :examples, class_name: 'EmailCampaigns::Example', dependent: :destroy
 
     # accepts_nested_attributes_for does not work for concerns
