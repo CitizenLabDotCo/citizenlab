@@ -1135,6 +1135,7 @@
   "app.containers.InitiativesNewPage.orgName": "{orgName}",
   "app.containers.InitiativesNewPage.tipsTitle": "Muutamia erityisiä vinkkejä ehdotuksen lähettämiseen",
   "app.containers.InitiativesNewPage.unkownAddress": "Tuntematon osoite",
+  "app.containers.InitiativesShow.VoteControl.a11y_timeLeft": "Äänestysaikaa jäljellä:",
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{xVotes} {votingThreshold} vaadituista äänistä",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} Äänestys on auki.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "{orgName} sai ehdotuksen ja antoi virallisen vastauksen.",

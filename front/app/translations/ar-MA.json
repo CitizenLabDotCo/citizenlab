@@ -1135,6 +1135,7 @@
   "app.containers.InitiativesNewPage.orgName": "{orgName}",
   "app.containers.InitiativesNewPage.tipsTitle": "بعض النصائح المحددة لنشر مُقترحك",
   "app.containers.InitiativesNewPage.unkownAddress": "عنوان غير معروف",
+  "app.containers.InitiativesShow.VoteControl.a11y_timeLeft": "الوقت المتبقي للتصويت:",
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "مطلوب {xVotes} من أصل {votingThreshold} صوت/أصوات",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} لا يزال التصويت مفتوحًا.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "تم استلام المُقترح من قِبل {orgName} وتقديم إجابة رسمية.",

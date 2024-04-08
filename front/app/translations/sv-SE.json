@@ -1135,6 +1135,7 @@
   "app.containers.InitiativesNewPage.orgName": "{orgName}",
   "app.containers.InitiativesNewPage.tipsTitle": "Några specifika tips för att publicera ditt förslag",
   "app.containers.InitiativesNewPage.unkownAddress": "Okänd adress",
+  "app.containers.InitiativesShow.VoteControl.a11y_timeLeft": "Återstående tid för omröstning:",
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{xVotes} av {votingThreshold} röster som krävs",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} Röstningen är fortfarande öppen.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "{orgName} tog emot förslaget och gav ett officiellt svar.",
