@@ -867,6 +867,7 @@
   "app.containers.Admin.projects.project.survey.upsell.title": "Analitzeu les dades més ràpidament amb la IA",
   "app.containers.Admin.projects.project.survey.upsell.upsellMessage": "Aquesta funció no està inclosa al vostre pla actual. Parleu amb el vostre gestor d'èxit del govern o l'administrador per desbloquejar-lo.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "View",
+  "app.containers.Admin.projects.project.traffic.cookieBannerUpdatedInfo": "Des del desembre de 2023 és més fàcil per als usuaris rebutjar les galetes, la qual cosa té un efecte negatiu en el trànsit percebut.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Seleccioneu període",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Fonts de trànsit",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Cronologia dels visitants",
