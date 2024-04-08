@@ -2,18 +2,16 @@
 
 class ParticipantsService
   ENGAGING_ACTIVITIES = [
-    { item_type: 'Comment', action: 'created', score: 3 },
-    { item_type: 'Idea', action: 'published', score: 5 },
-    { item_type: 'Reaction', action: 'idea_liked', score: 1 },
-    { item_type: 'Reaction', action: 'idea_disliked', score: 1 },
-    { item_type: 'Initiative', action: 'published', score: 5 },
-    { item_type: 'Reaction', action: 'initiative_liked', score: 1 },
-    { item_type: 'Reaction', action: 'initiative_disliked', score: 1 },
-    { item_type: 'Reaction', action: 'comment_liked', score: 1 },
-    { item_type: 'Reaction', action: 'comment_disliked', score: 1 },
-    { item_type: 'Basket', action: 'created', score: 3 },
-    { item_type: 'Polls::Response', action: 'created', score: 1 },
-    { item_type: 'Volunteering::Volunteer', action: 'created', score: 3 }
+    { item_type: 'Comment', action: 'created' },
+    { item_type: 'Idea', action: 'published' },
+    { item_type: 'Reaction', action: 'idea_liked' },
+    { item_type: 'Reaction', action: 'idea_disliked' },
+    { item_type: 'Initiative', action: 'published' },
+    { item_type: 'Reaction', action: 'initiative_liked' },
+    { item_type: 'Reaction', action: 'comment_liked' },
+    { item_type: 'Basket', action: 'created' },
+    { item_type: 'Polls::Response', action: 'created' },
+    { item_type: 'Volunteering::Volunteer', action: 'created' }
   ]
 
   PARTICIPANT_ACTIONS = %i[posting commenting idea_reacting comment_reacting voting polling volunteering]
@@ -192,16 +190,5 @@ class ParticipantsService
       end
     end
     output
-  end
-
-  # Adds a `score` field to the results, indicating the engagement score for the activity
-  def with_engagement_scores(activities_scope)
-    activities_scope
-      .select("(CASE
-        #{ENGAGING_ACTIVITIES.map do |activity|
-            "WHEN item_type = '#{activity[:item_type]}' AND action = '#{activity[:action]}' THEN #{activity[:score]}"
-          end.join(' ')
-        }
-      ELSE 0 END) as score")
   end
 end
