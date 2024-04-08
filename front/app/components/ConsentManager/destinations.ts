@@ -1,4 +1,7 @@
-import { IAppConfigurationData } from 'api/app_configuration/types';
+import {
+  IAppConfigurationData,
+  TAppConfigurationSetting,
+} from 'api/app_configuration/types';
 import { IUserData } from 'api/users/types';
 
 export interface IDestinationMap {}
@@ -19,7 +22,7 @@ export interface IDestinationConfig {
   /** Destinations are grouped in categories. Under which category should it be listed? */
   category: TCategory | ((tenant: IAppConfigurationData) => TCategory);
   /** The name of the feature flag that should be active for the destination to be functional */
-  feature_flag?: TConsentManagerFeature;
+  feature_flag?: TAppConfigurationSetting;
   /** Can the destination be active for the given user? */
   hasPermission?: (user?: IUserData) => boolean;
   /** Name of the destination shown in the UI */
@@ -59,7 +62,7 @@ export const isDestinationActive = (
 };
 
 function isFeatureActive(
-  featureName: TConsentManagerFeature,
+  featureName: TAppConfigurationSetting,
   appConfig: IAppConfigurationData
 ) {
   return (
