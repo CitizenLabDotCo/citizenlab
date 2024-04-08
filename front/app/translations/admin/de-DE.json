@@ -867,6 +867,7 @@
   "app.containers.Admin.projects.project.survey.upsell.title": "Daten schneller analysieren mit KI",
   "app.containers.Admin.projects.project.survey.upsell.upsellMessage": "Diese Funktion ist in Ihrer aktuellen Lizenz nicht enthalten. Sprechen Sie mit Ihrer Kundenbetreuerin oder Ihrem Admin, um sie freizuschalten.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Vorschau",
+  "app.containers.Admin.projects.project.traffic.cookieBannerUpdatedInfo": "Seit Dezember 2023 ist es für Nutzer*innen einfacher, Cookies abzulehnen, was sich negativ auf die Daten auswirken kann.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Zeitraum auswählen",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Top-Kanäle",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Zeitleiste für Besucher*innen",
