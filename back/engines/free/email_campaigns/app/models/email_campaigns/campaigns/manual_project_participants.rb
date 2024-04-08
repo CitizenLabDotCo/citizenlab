@@ -37,5 +37,9 @@ module EmailCampaigns
     include Trackable
     include LifecycleStageRestrictable
     allow_lifecycle_stages except: %w[trial churned]
+
+    def self.content_type_multiloc_key
+      'email_campaigns.admin_labels.content_type.general'
+    end
   end
 end

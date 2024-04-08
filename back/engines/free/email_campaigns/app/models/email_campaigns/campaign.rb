@@ -31,6 +31,8 @@
 #
 module EmailCampaigns
   class Campaign < ApplicationRecord
+    MANUAL_CAMPAIGNS = %w[EmailCampaigns::Campaigns::Manual EmailCampaigns::Campaigns::ManualProjectParticipants].freeze
+
     belongs_to :author, class_name: 'User', optional: true
     belongs_to :project, optional: true
     has_many :examples, class_name: 'EmailCampaigns::Example', dependent: :destroy
