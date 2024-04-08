@@ -50,7 +50,7 @@ class Project < ApplicationRecord
   has_many :areas, through: :areas_projects
   has_many :groups_projects, dependent: :destroy
   has_many :groups, through: :groups_projects
-  has_many :campaigns, dependent: :destroy # TODO: move to patch in email_campaigns
+  has_many :campaigns, class_name: 'EmailCampaigns::Campaign', dependent: :destroy # TODO: move to patch in email_campaigns
 
   has_many :phases, -> { order(:start_at) }, dependent: :destroy
   has_many :events, -> { order(:start_at) }, dependent: :destroy
