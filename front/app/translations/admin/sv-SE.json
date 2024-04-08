@@ -867,6 +867,7 @@
   "app.containers.Admin.projects.project.survey.upsell.title": "Analysera data snabbare med AI",
   "app.containers.Admin.projects.project.survey.upsell.upsellMessage": "Den här funktionen ingår inte i din nuvarande plan. Prata med din Government Success Manager eller administratör för att låsa upp den.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Utsikt",
+  "app.containers.Admin.projects.project.traffic.cookieBannerUpdatedInfo": "Sedan december 2023 är det lättare för användare att avvisa cookies, vilket har en negativ effekt på den upplevda trafiken.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Välj period",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Källor till trafik",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Besökarnas tidslinje",
