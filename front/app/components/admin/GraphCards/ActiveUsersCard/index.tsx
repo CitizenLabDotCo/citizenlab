@@ -45,7 +45,7 @@ const ActiveUsersCard = ({
     return null;
   }
 
-  const cardTitle = formatMessage(messages.activeUsers);
+  const cardTitle = formatMessage(messages.participants);
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
   const bottomLabel = getTimePeriodTranslationByResolution(
@@ -75,7 +75,7 @@ const ActiveUsersCard = ({
         >
           <Box width={layout === 'narrow' ? '50%' : undefined}>
             <Statistic
-              name={formatMessage(messages.totalActiveUsers)}
+              name={formatMessage(messages.totalParticipants)}
               value={stats.activeUsers.value}
               bottomLabel={bottomLabel}
               bottomLabelValue={stats.activeUsers.lastPeriod}

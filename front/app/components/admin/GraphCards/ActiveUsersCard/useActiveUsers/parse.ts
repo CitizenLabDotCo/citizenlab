@@ -96,7 +96,7 @@ export const parseExcelData = (
 
   const timeSeriesData = timeSeries?.map((row) => ({
     [translations.date]: row.date,
-    [translations.activeUsers]: row.activeUsers,
+    [translations.participants]: row.activeUsers,
   }));
 
   return {

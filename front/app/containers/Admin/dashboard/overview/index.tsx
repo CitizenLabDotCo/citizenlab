@@ -147,7 +147,7 @@ const OverviewDashboard = ({ projects }: DataProps) => {
           <BarChartActiveUsersByTime
             graphUnit="users"
             graphUnitMessageKey="activeUsers"
-            graphTitle={formatMessage(messages.activeUsersByTimeTitle)}
+            graphTitle={formatMessage(messages.participants)}
             xlsxEndpoint={activeUsersByTimeXlsxEndpoint}
             infoMessage={formatMessage(
               messages.numberOfActiveParticipantsDescription

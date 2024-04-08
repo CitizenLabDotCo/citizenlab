@@ -1,13 +1,13 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  activeUsers: {
-    id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.activeUsers',
-    defaultMessage: 'Active users',
+  participants: {
+    id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants',
+    defaultMessage: 'Participants',
   },
-  totalActiveUsers: {
-    id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalActiveUsers',
-    defaultMessage: 'Total active users',
+  totalParticipants: {
+    id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalParticipants',
+    defaultMessage: 'Total participants',
   },
   cardTitleTooltipMessage: {
     id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage',
