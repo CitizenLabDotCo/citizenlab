@@ -183,6 +183,7 @@ export interface IAppConfigurationSettings {
   anonymous_participation?: AppConfigurationFeature;
   custom_idea_statuses?: AppConfigurationFeature;
   idea_custom_copy?: AppConfigurationFeature;
+  intercom?: AppConfigurationFeature;
   satismeter?: AppConfigurationFeature & {
     write_key: string;
   };
