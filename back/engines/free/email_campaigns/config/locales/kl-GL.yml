@@ -541,7 +541,7 @@ kl:
       header_message: "%{firstName}, thanks for registering for"
       event_details:
         labels:
-          date: 'Date'
+          date: 'Ulloq'
           location: 'Location'
           online_link: 'Online link'
           description: 'Description'
