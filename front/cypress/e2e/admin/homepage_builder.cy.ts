@@ -232,6 +232,7 @@ describe('Homepage builder', () => {
     cy.intercept('GET', '**/pages-menu').as('getPages');
     cy.intercept('GET', '**/nav_bar_items').as('getNavbarItems');
     cy.intercept('POST', '**/content_builder_layout_images').as('postImage');
+    cy.intercept('GET', '**/admin_publications**').as('getAdminPublications');
 
     // Check homepage banner defaults signed - out
 
@@ -371,11 +372,12 @@ describe('Homepage builder', () => {
     cy.wait(1000);
 
     // Check updated content signed - out
-
     cy.logout();
     cy.visit('/');
+    cy.wait(2000);
     cy.wait('@getAppConfiguration');
     cy.wait('@getHomePage');
+    cy.wait('@getAdminPublications');
     cy.get('[data-cy="e2e-homepage-banner"]').should('exist');
     cy.get('[data-cy="e2e-full-width-banner-layout-container"]').should(
       'exist'
