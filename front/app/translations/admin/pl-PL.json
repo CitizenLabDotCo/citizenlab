@@ -867,6 +867,7 @@
   "app.containers.Admin.projects.project.survey.upsell.title": "Analizuj dane szybciej dzięki sztucznej inteligencji",
   "app.containers.Admin.projects.project.survey.upsell.upsellMessage": "Ta funkcja nie jest uwzględniona w Twoim bieżącym planie. Porozmawiaj ze swoim Government Success Managerem lub administratorem, aby ją odblokować.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Zobacz",
+  "app.containers.Admin.projects.project.traffic.cookieBannerUpdatedInfo": "Od grudnia 2023 r. użytkownicy mogą łatwiej odrzucać pliki cookie, co ma negatywny wpływ na postrzegany ruch.",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Wybierz okres",
   "app.containers.Admin.projects.project.traffic.trafficSources": "Źródła ruchu",
   "app.containers.Admin.projects.project.traffic.visitorsTimeline": "Oś czasu odwiedzających",
