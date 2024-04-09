@@ -51,15 +51,8 @@ const CreateProject = memo<Props>(() => {
       icon: 'blank-paper',
     },
   ]);
-  const tabValues = tabs.map((tab) => tab.name) as TTabName[];
 
   const [selectedTabValue, setSelectedTabValue] = useState<TTabName>('scratch');
-
-  useEffect(() => {
-    // when inserting tabs, always reset the default selected tab
-    // to the first tab
-    setSelectedTabValue(tabValues[0]);
-  }, [tabValues]);
 
   useEffect(() => {
     const subscription = eventEmitter
@@ -95,13 +88,14 @@ const CreateProject = memo<Props>(() => {
     });
 
   return (
-    <Box bg={colors.white} borderRadius={stylingConsts.borderRadius}>
+    <Box>
       <Title color="primary">{formatMessage(messages.createAProject)}</Title>
-      <Outlet
-        id="app.containers.Admin.projects.all.createProject.tabs"
-        onData={handleData}
-      />
-      <div>
+
+      <Box bg={colors.white} borderRadius={stylingConsts.borderRadius} p="24px">
+        <Outlet
+          id="app.containers.Admin.projects.all.createProject.tabs"
+          onData={handleData}
+        />
         {tabs.length > 1 && (
           <StyledTabs
             className="e2e-create-project-tabs"
@@ -115,7 +109,7 @@ const CreateProject = memo<Props>(() => {
           selectedTabValue={selectedTabValue}
         />
         {selectedTabValue === 'scratch' && <AdminProjectsProjectGeneral />}
-      </div>
+      </Box>
     </Box>
   );
 });

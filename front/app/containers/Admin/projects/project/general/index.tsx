@@ -595,27 +595,29 @@ const AdminProjectsProjectGeneral = () => {
             handleProjectFileOnRemove={handleProjectFileOnRemove}
           />
           <Box
-            position={showStickySaveButton ? 'fixed' : undefined}
-            borderTop={`1px solid ${colors.divider}`}
-            bottom="0"
-            w={`calc(${width}px + ${defaultAdminCardPadding * 2}px)`}
-            ml={`-${defaultAdminCardPadding}px`}
-            background={colors.white}
-            display="flex"
-            justifyContent="flex-start"
+            {...(showStickySaveButton && {
+              position: 'fixed',
+              borderTop: `1px solid ${colors.divider}`,
+              bottom: '0',
+              w: `calc(${width}px + ${defaultAdminCardPadding * 2}px)`,
+              ml: `-${defaultAdminCardPadding}px`,
+              background: colors.white,
+              display: 'flex',
+              justifyContent: 'flex-start',
+              px: `${defaultAdminCardPadding}px`,
+            })}
+            py="8px"
           >
-            <Box py="8px" px={`${defaultAdminCardPadding}px`}>
-              <SubmitWrapper
-                loading={processing}
-                status={submitState}
-                messages={{
-                  buttonSave: messages.saveProject,
-                  buttonSuccess: messages.saveSuccess,
-                  messageError: messages.saveErrorMessage,
-                  messageSuccess: messages.saveSuccessMessage,
-                }}
-              />
-            </Box>
+            <SubmitWrapper
+              loading={processing}
+              status={submitState}
+              messages={{
+                buttonSave: messages.saveProject,
+                buttonSuccess: messages.saveSuccess,
+                messageError: messages.saveErrorMessage,
+                messageSuccess: messages.saveSuccessMessage,
+              }}
+            />
           </Box>
         </Section>
       </StyledForm>
