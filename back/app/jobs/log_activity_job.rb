@@ -10,13 +10,13 @@ class LogActivityJob < ApplicationJob
     # Do not report any error if the item or user was deleted while the job was queued
     error_serialized_id = exception.cause.is_a?(ActiveRecord::RecordNotFound) && exception.cause.id
     item_and_user = [@serialized_arguments[0], @serialized_arguments[2]]
-    item_and_user_ids = item_and_user.map do |obj|
+    item_and_user_ids = item_and_user.filter_map do |obj|
       if obj.is_a?(Hash)
         URI(obj.values.first).path.split('/').last
       else
-        nil
+        false
       end
-    end.compact
+    end
     if error_serialized_id && item_and_user_ids.include?(error_serialized_id)
       Rails.logger.warn "Job item or user was probably deleted while the job was queued: #{exception.message}"
     else
