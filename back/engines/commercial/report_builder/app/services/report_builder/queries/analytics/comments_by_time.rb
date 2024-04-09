@@ -8,8 +8,7 @@ module ReportBuilder
         filters: {
           **date_filter('dimension_date_created', start_at, end_at),
           **project_filter('dimension_project_id', project_id),
-          'dimension_type.name': 'comment',
-          'dimension_type.parent': %w[idea initiative]
+          item_type: 'Comment'
         },
         groups: "dimension_date_created.#{interval(resolution)}",
         aggregations: {
@@ -23,8 +22,7 @@ module ReportBuilder
         filters: {
           **date_filter('dimension_date_created', nil, end_at),
           **project_filter('dimension_project_id', project_id),
-          'dimension_type.name': 'comment',
-          'dimension_type.parent': %w[idea initiative]
+          item_type: 'Comment'
         },
         aggregations: {
           all: 'count'

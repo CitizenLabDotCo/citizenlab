@@ -10,7 +10,6 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
     let_it_be(:date2) { Date.new(2022, 9, 10) }
     let_it_be(:date3) { Date.new(2022, 9, 20) }
     let_it_be(:date4) { Date.new(2022, 9, 26) }
-    let_it_be(:dimension_type) { create(:dimension_type, name: 'idea', parent: 'post') }
     let_it_be(:project) { create(:single_phase_ideation_project) }
     let_it_be(:user) { create(:user) }
 

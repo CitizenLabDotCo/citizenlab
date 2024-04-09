@@ -6,18 +6,15 @@ RSpec.describe ReportBuilder::Queries::Analytics::CommentsByTime do
   subject(:query) { described_class.new(build(:user)) }
 
   describe '#run_query' do
-    let(:date) { Date.new(2022, 9, 1) }
-    let(:project) { create(:project) }
-    let(:activity) do
+    let_it_be(:date) { Date.new(2022, 9, 1) }
+    let_it_be(:project) { create(:project) }
+    let_it_be(:activity) do
       create(:dimension_date, date: date)
-      create(:dimension_type, name: 'comment', parent: 'idea')
 
       create(
-        :activity,
+        :comment_created_activity,
         project_id: project.id,
-        acted_at: date,
-        item_type: 'Comment',
-        action: 'createds'
+        acted_at: date
       )
     end
 
