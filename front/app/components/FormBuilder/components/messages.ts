@@ -222,10 +222,10 @@ export default defineMessages({
     defaultMessage:
       'This has already been added in the form. Default content may only be used once.',
   },
-  disabledCustomFieldsTooltip: {
-    id: 'app.components.formBuilder.disabledCustomFieldsTooltip',
+  disabledCustomFieldsTooltip1: {
+    id: 'app.components.formBuilder.disabledCustomFieldsTooltip1',
     defaultMessage:
-      'Adding custom content is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.',
+      'Adding custom content is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
   },
   sectionCannotBeDeleted: {
     id: 'app.components.formBuilder.sectionCannotBeDeleted',
