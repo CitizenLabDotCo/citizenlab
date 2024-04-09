@@ -13,11 +13,11 @@ import CommentsByTimeWidget from 'containers/Admin/reporting/components/ReportBu
 import GenderWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/GenderWidget';
 import PostsByTimeWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/PostsByTimeWidget';
 import ReactionsByTimeWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/ReactionsByTimeWidget';
+import TwoColumn from 'containers/Admin/reporting/components/ReportBuilder/Widgets/TwoColumn';
 import { MAX_REPORT_WIDTH } from 'containers/Admin/reporting/constants';
 import { ReportContextProvider } from 'containers/Admin/reporting/context/ReportContext';
 
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
-import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 import { useIntl } from 'utils/cl-intl';
