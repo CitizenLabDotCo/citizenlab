@@ -14,29 +14,29 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
     let_it_be(:project) { create(:single_phase_ideation_project) }
     let_it_be(:user) { create(:user) }
 
-    let_it_be(:idea) do
+    # Create two idea activities by the same author
+    let_it_be(:activity1) do
       create(:dimension_date, date: date)
-      create(:idea, created_at: date, author: user, project: project)
+      create(:activity, acted_at: date, user: user, project_id: project.id)
     end
-    let_it_be(:idea2) do
+    let_it_be(:activity2) do
       create(:dimension_date, date: date2)
-      create(:idea, created_at: date2, author: user, project: project)
+      create(:activity, acted_at: date2, user: user, project_id: project.id)
     end
 
-    # idea3 has a different author
-    let_it_be(:idea3) do
+    # Create an idea activity by another author
+    let_it_be(:activity3) do
       create(:dimension_date, date: date3)
-      create(:idea, created_at: date3, project: project)
+      create(:activity, acted_at: date3, user: create(:user), project_id: project.id)
     end
 
-    # idea4 and 5 have no author
-
-    let_it_be(:idea4) do
+    # Create two idea activities with no author
+    let_it_be(:activity4) do
       create(:dimension_date, date: date4)
-      create(:idea, created_at: date4, project: project, author: nil)
+      create(:activity, acted_at: date4, user: nil, project_id: project.id)
     end
-    let_it_be(:idea5) do
-      create(:idea, created_at: date4, project: project, author: nil)
+    let_it_be(:activity5) do
+      create(:activity, acted_at: date4, user: nil, project_id: project.id)
     end
 
     it 'correctly filters by time' do
@@ -44,28 +44,28 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
       expect(query.run_query(**params)).to eq(
         [
           [{
-            'count_dimension_user_id' => 1,
+            'count_participant_id' => 1,
             'dimension_date_created.month' => '2022-09',
             'first_dimension_date_created_date' => date
           }],
           [{
-            'count_dimension_user_id' => 1
+            'count_participant_id' => 1
           }]
         ]
       )
     end
 
     it 'dedupes participations by user id' do
-      params = { start_at: date - 1.day, end_at: date + 25.days, project_id: project.id }
+      params = { start_at: date - 1.day, end_at: date + 21.days, project_id: project.id }
       expect(query.run_query(**params)).to eq(
         [
           [{
-            'count_dimension_user_id' => 2,
+            'count_participant_id' => 2,
             'dimension_date_created.month' => '2022-09',
             'first_dimension_date_created_date' => date
           }],
           [{
-            'count_dimension_user_id' => 2
+            'count_participant_id' => 2
           }]
         ]
       )
@@ -76,12 +76,12 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
       expect(query.run_query(**params)).to eq(
         [
           [{
-            'count_dimension_user_id' => 4,
+            'count_participant_id' => 4,
             'dimension_date_created.month' => '2022-09',
             'first_dimension_date_created_date' => date
           }],
           [{
-            'count_dimension_user_id' => 4
+            'count_participant_id' => 4
           }]
         ]
       )
