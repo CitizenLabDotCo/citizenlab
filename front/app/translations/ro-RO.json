@@ -470,7 +470,6 @@
   "app.components.formBuilder.deleteButtonLabel": "Ștergeți",
   "app.components.formBuilder.description": "Descriere",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "Acest lucru a fost deja adăugat în formular. Conținutul implicit poate fi utilizat o singură dată.",
-  "app.components.formBuilder.disabledCustomFieldsTooltip": "Adăugarea de conținut personalizat face parte din licența premium. Contactați managerul GovSuccess pentru a afla mai multe despre acest lucru.",
   "app.components.formBuilder.done": "Realizat",
   "app.components.formBuilder.editButtonLabel": "Editați",
   "app.components.formBuilder.emptyOptionError": "Furnizați cel puțin 1 răspuns",

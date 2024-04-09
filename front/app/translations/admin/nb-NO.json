@@ -245,7 +245,6 @@
   "app.components.admin.seatSetSuccess.orderCompleted": "Bestilling fullført",
   "app.components.admin.seatSetSuccess.reflectedMessage": "Endringene i planen din gjenspeiles i neste faktureringssyklus.",
   "app.components.admin.seatSetSuccess.rightsGranted": "{seatType} rettigheter er gitt til den(e) valgte brukeren(e).",
-  "app.components.app.containers.AdminPage.ProjectEdit.contactGovSuccessToAccess": "Å samle tilbakemelding på et dokument er en egendefinert funksjon, og er ikke inkludert i din nåværende lisens. Ta kontakt med GovSuccess Manager for å lære mer om det.",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Bidrag",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Du finner mer informasjon om hvordan du integrerer en kobling til Google Forms i {googleFormsTooltipLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink": "https://support.citizenlab.co/articles/5050525",

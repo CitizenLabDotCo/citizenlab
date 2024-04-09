@@ -245,7 +245,6 @@
   "app.components.admin.seatSetSuccess.orderCompleted": "Tilaus suoritettu",
   "app.components.admin.seatSetSuccess.reflectedMessage": "Suunnitelmasi muutokset näkyvät seuraavassa laskutusjaksossasi.",
   "app.components.admin.seatSetSuccess.rightsGranted": "{seatType} oikeudet on myönnetty valituille käyttäjille.",
-  "app.components.app.containers.AdminPage.ProjectEdit.contactGovSuccessToAccess": "Palautteen kerääminen asiakirjasta on mukautettu ominaisuus, eikä se sisälly nykyiseen lisenssiisi. Ota yhteyttä GovSuccess Manageriin saadaksesi lisätietoja siitä.",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Osallistuminen",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Lisätietoja linkin upottamisesta Google Formsille on osoitteessa {googleFormsTooltipLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink": "https://support.citizenlab.co/articles/5050525",

@@ -245,7 +245,6 @@
   "app.components.admin.seatSetSuccess.orderCompleted": "Bestellung abgeschlossen",
   "app.components.admin.seatSetSuccess.reflectedMessage": "Die Änderungen an Ihrer Lizenz werden in Ihrem nächsten Abrechnungszyklus berücksichtigt.",
   "app.components.admin.seatSetSuccess.rightsGranted": "{seatType} Rechte wurden den ausgewählten Benutzer*innen erteilt.",
-  "app.components.app.containers.AdminPage.ProjectEdit.contactGovSuccessToAccess": "Das Sammeln von Feedback zu einem Dokument ist eine benutzerdefinierte Funktion und nicht in Ihrer aktuellen Lizenz enthalten. Wenden Sie sich an Ihre Kundenbetreuerin, um mehr darüber zu erfahren.",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Beitrag",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Weitere Informationen zum Einbetten eines Links für Google Forms finden Sie unter {googleFormsTooltipLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink": "https://support.citizenlab.co/articles/5050525",

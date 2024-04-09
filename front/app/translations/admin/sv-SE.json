@@ -245,7 +245,6 @@
   "app.components.admin.seatSetSuccess.orderCompleted": "Beställning slutförd",
   "app.components.admin.seatSetSuccess.reflectedMessage": "Ändringarna i din plan kommer att återspeglas i nästa faktureringscykel.",
   "app.components.admin.seatSetSuccess.rightsGranted": "{seatType} rättigheter har beviljats den eller de valda användarna.",
-  "app.components.app.containers.AdminPage.ProjectEdit.contactGovSuccessToAccess": "Att samla in feedback på ett dokument är en anpassad funktion och ingår inte i din nuvarande licens. Kontakta din GovSuccess Manager om du vill veta mer om den.",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Bidrag",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Mer information om hur du bäddar in en länk för Google Formulär finns i {googleFormsTooltipLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink": "https://support.citizenlab.co/articles/5050525",

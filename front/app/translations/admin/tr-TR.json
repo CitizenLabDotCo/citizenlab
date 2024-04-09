@@ -245,7 +245,6 @@
   "app.components.admin.seatSetSuccess.orderCompleted": "Sipariş tamamlandı",
   "app.components.admin.seatSetSuccess.reflectedMessage": "Planınızdaki değişiklikler bir sonraki fatura döneminize yansıtılacaktır.",
   "app.components.admin.seatSetSuccess.rightsGranted": "{seatType} hakları seçilen kullanıcı(lar)a verilmiştir.",
-  "app.components.app.containers.AdminPage.ProjectEdit.contactGovSuccessToAccess": "Bir belge hakkında geri bildirim toplamak özel bir özelliktir ve mevcut lisansınıza dahil değildir. Bu konuda daha fazla bilgi edinmek için GovSuccess Yöneticinize ulaşın.",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Katkı",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Google Formlar için bir bağlantının nasıl yerleştirileceği hakkında daha fazla bilgi {googleFormsTooltipLink} bulunabilir.",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink": "https://support.citizenlab.co/articles/5050525",

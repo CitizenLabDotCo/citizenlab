@@ -245,7 +245,6 @@
   "app.components.admin.seatSetSuccess.orderCompleted": "Narudžba izvršena",
   "app.components.admin.seatSetSuccess.reflectedMessage": "Promjene na vašem planu odrazit će se na vaš sljedeći ciklus naplate.",
   "app.components.admin.seatSetSuccess.rightsGranted": "Odabranim korisnicima dodijeljeno je {seatType} prava.",
-  "app.components.app.containers.AdminPage.ProjectEdit.contactGovSuccessToAccess": "Prikupljanje povratnih informacija o dokumentu prilagođena je značajka i nije uključena u vašu trenutnu licencu. Obratite se svom GovSuccess Manageru da saznate više o tome.",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Doprinos",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Više informacija o tome kako ugraditi vezu za Google Forms može se pronaći na {googleFormsTooltipLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink": "https://support.citizenlab.co/articles/5050525",

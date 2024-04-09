@@ -650,7 +650,6 @@
   "app.components.formBuilder.deleteButtonLabel": "Cancellare",
   "app.components.formBuilder.description": "Descrizione",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "È già stato aggiunto nel modulo. Il contenuto predefinito può essere utilizzato una sola volta.",
-  "app.components.formBuilder.disabledCustomFieldsTooltip": "L'aggiunta di contenuti personalizzati fa parte della licenza premium. Rivolgetevi al vostro GovSuccess Manager per saperne di più.",
   "app.components.formBuilder.done": "Fatto",
   "app.components.formBuilder.editButtonLabel": "Modifica",
   "app.components.formBuilder.emptyImageOptionError": "Fornisci almeno 1 risposta. Ricorda che ogni risposta deve avere un titolo.",

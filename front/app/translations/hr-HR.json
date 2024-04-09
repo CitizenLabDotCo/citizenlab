@@ -650,7 +650,6 @@
   "app.components.formBuilder.deleteButtonLabel": "Izbriši",
   "app.components.formBuilder.description": "Opis",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "Ovo je već dodano u obrazac. Zadani sadržaj može se koristiti samo jednom.",
-  "app.components.formBuilder.disabledCustomFieldsTooltip": "Dodavanje prilagođenog sadržaja dio je premium licence. Obratite se svom GovSuccess upravitelju kako biste saznali više o tome.",
   "app.components.formBuilder.done": "Gotovo",
   "app.components.formBuilder.editButtonLabel": "Uredi",
   "app.components.formBuilder.emptyImageOptionError": "Navedite barem 1 odgovor. Napominjemo da svaki odgovor mora imati naslov.",

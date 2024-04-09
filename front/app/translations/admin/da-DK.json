@@ -245,7 +245,6 @@
   "app.components.admin.seatSetSuccess.orderCompleted": "Bestilling afsluttet",
   "app.components.admin.seatSetSuccess.reflectedMessage": "Ændringerne i dit abonnement vil blive afspejlet i næste gang i bliver faktureret.",
   "app.components.admin.seatSetSuccess.rightsGranted": "{seatType} rettigheder er blevet tildelt den eller de valgte brugere.",
-  "app.components.app.containers.AdminPage.ProjectEdit.contactGovSuccessToAccess": "Indsamling af feedback på et dokument er en brugerdefineret funktion og er ikke inkluderet i din nuværende licens. Kontakt din GovSuccess Manager for at høre mere om det.",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Bidrag",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Du kan finde flere oplysninger om, hvordan du indlejrer et link til Google Forms, i {googleFormsTooltipLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink": "https://support.citizenlab.co/articles/5050525",

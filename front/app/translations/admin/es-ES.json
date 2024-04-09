@@ -245,7 +245,6 @@
   "app.components.admin.seatSetSuccess.orderCompleted": "Pedido realizado",
   "app.components.admin.seatSetSuccess.reflectedMessage": "Los cambios en su plan se reflejarán en su próximo ciclo de facturación.",
   "app.components.admin.seatSetSuccess.rightsGranted": "Se han otorgado derechos {seatType}  a los usuarios seleccionados.",
-  "app.components.app.containers.AdminPage.ProjectEdit.contactGovSuccessToAccess": "Recopilar opiniones sobre un documento es una función personalizada, y no está incluida en tu licencia actual. Ponte en contacto con tu Manager de GovSuccess para obtener más información.",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Propuesta",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Puede encontrar más información sobre cómo insertar un enlace para Google Forms en {googleFormsTooltipLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink": "https://support.citizenlab.co/articles/5050525",

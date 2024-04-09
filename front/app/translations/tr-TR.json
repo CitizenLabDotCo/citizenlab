@@ -650,7 +650,6 @@
   "app.components.formBuilder.deleteButtonLabel": "Silme",
   "app.components.formBuilder.description": "Açıklama",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "Bu zaten forma eklenmiştir. Varsayılan içerik yalnızca bir kez kullanılabilir.",
-  "app.components.formBuilder.disabledCustomFieldsTooltip": "Özel içerik eklemek premium lisansın bir parçasıdır. Bu konuda daha fazla bilgi edinmek için GovSuccess Yöneticinize ulaşın.",
   "app.components.formBuilder.done": "Tamamlandı",
   "app.components.formBuilder.editButtonLabel": "Düzenle",
   "app.components.formBuilder.emptyImageOptionError": "En az 1 cevap veriniz. Lütfen her cevabın bir başlığı olması gerektiğini unutmayın.",

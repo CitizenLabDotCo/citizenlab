@@ -650,7 +650,6 @@
   "app.components.formBuilder.deleteButtonLabel": "Verwijderen",
   "app.components.formBuilder.description": "Beschrijving",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "Dit is al toegevoegd in het formulier. Standaard inhoud mag maar één keer gebruikt worden.",
-  "app.components.formBuilder.disabledCustomFieldsTooltip": "Het toevoegen van aangepaste inhoud is onderdeel van de premium licentie. Neem contact op met uw Government Success Manager voor meer informatie.",
   "app.components.formBuilder.done": "Klaar",
   "app.components.formBuilder.editButtonLabel": "Bewerken",
   "app.components.formBuilder.emptyImageOptionError": "Geef minstens 1 antwoord. Let op dat elk antwoord een titel moet hebben.",

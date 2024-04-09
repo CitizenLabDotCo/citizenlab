@@ -650,7 +650,6 @@
   "app.components.formBuilder.deleteButtonLabel": "Slett",
   "app.components.formBuilder.description": "Beskrivelse",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "Dette er allerede lagt til i skjemaet. Standardinnhold kan bare brukes én gang.",
-  "app.components.formBuilder.disabledCustomFieldsTooltip": "Registrering av egendefinert innhold er en del av premiumlisensen. Ta kontakt med din GovSuccess-leder for å få mer informasjon.",
   "app.components.formBuilder.done": "Ferdig",
   "app.components.formBuilder.editButtonLabel": "Rediger",
   "app.components.formBuilder.emptyImageOptionError": "Gi minst 1 svar. Vær oppmerksom på at hvert svar må ha en tittel.",

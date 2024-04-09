@@ -650,7 +650,6 @@
   "app.components.formBuilder.deleteButtonLabel": "Διαγραφή",
   "app.components.formBuilder.description": "Περιγραφή",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "Αυτό έχει ήδη προστεθεί στη φόρμα. Το προεπιλεγμένο περιεχόμενο μπορεί να χρησιμοποιηθεί μόνο μία φορά.",
-  "app.components.formBuilder.disabledCustomFieldsTooltip": "Η προσθήκη προσαρμοσμένου περιεχομένου αποτελεί μέρος της άδειας premium. Επικοινωνήστε με τον διαχειριστή του GovSuccess για να μάθετε περισσότερα σχετικά.",
   "app.components.formBuilder.done": "Έγινε",
   "app.components.formBuilder.editButtonLabel": "Επεξεργασία",
   "app.components.formBuilder.emptyImageOptionError": "Δώστε τουλάχιστον 1 απάντηση. Σημειώστε ότι κάθε απάντηση πρέπει να έχει τίτλο.",

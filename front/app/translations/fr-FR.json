@@ -650,7 +650,6 @@
   "app.components.formBuilder.deleteButtonLabel": "Supprimer",
   "app.components.formBuilder.description": "Description",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "Ceci a déjà été ajouté dans le formulaire. Le contenu par défaut ne peut être utilisé qu'une seule fois.",
-  "app.components.formBuilder.disabledCustomFieldsTooltip": "L'ajout de contenu personnalisé fait partie de la licence premium. Contactez votre responsable GovSuccess pour en savoir plus.",
   "app.components.formBuilder.done": "Terminé",
   "app.components.formBuilder.editButtonLabel": "Modifier",
   "app.components.formBuilder.emptyImageOptionError": "Fournissez au moins une réponse. Veuillez noter que chaque réponse doit avoir un titre.",

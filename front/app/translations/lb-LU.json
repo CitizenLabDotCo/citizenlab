@@ -650,7 +650,6 @@
   "app.components.formBuilder.deleteButtonLabel": "Läschen",
   "app.components.formBuilder.description": "Beschreiwung",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "Dëst gouf schonn an de Formulaire agedroen. Standardinhalter kënnen nëmmen eng Kéier benotzt ginn.",
-  "app.components.formBuilder.disabledCustomFieldsTooltip": "Moossgeschneidert Inhalter gehéieren zur Premiumlizenz. Wennt Iech un Äre GovSuccess-Manager fir méi doriwwer gewuer ze ginn.",
   "app.components.formBuilder.done": "Erleedegt",
   "app.components.formBuilder.editButtonLabel": "Editéieren",
   "app.components.formBuilder.emptyImageOptionError": "Gitt op d'mannst 1 Äntwert. Maacht weg datt all Äntwert en Titel muss hunn.",

@@ -208,7 +208,6 @@
   "app.components.admin.seatSetSuccess.orderCompleted": "Comanda completada",
   "app.components.admin.seatSetSuccess.reflectedMessage": "Els canvis al vostre pla es reflectiran en el vostre proper cicle de facturació.",
   "app.components.admin.seatSetSuccess.rightsGranted": "S'han concedit {seatType} drets als usuaris seleccionats.",
-  "app.components.app.containers.AdminPage.ProjectEdit.contactGovSuccessToAccess": "Recollir comentaris sobre un document és una característica personalitzada i no s'inclou a la vostra llicència actual. Poseu-vos en contacte amb el vostre gestor de GovSuccess per obtenir-ne més informació.",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Contribució",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Trobareu més informació sobre com inserir un enllaç per a Google Forms a {googleFormsTooltipLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink": "https://support.citizenlab.co/articles/5050525",

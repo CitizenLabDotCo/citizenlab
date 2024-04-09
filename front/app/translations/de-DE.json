@@ -650,7 +650,6 @@
   "app.components.formBuilder.deleteButtonLabel": "Löschen",
   "app.components.formBuilder.description": "Beschreibung",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "Dieser wurde bereits in das Formular eingefügt. Der Standardinhalt darf nur einmal verwendet werden.",
-  "app.components.formBuilder.disabledCustomFieldsTooltip": "Das Hinzufügen von benutzerdefinierten Inhalten ist Teil der Premium-Lizenz. Wenden Sie sich an Ihre Kundenbetreuerin, um mehr darüber zu erfahren.",
   "app.components.formBuilder.done": "Fertig",
   "app.components.formBuilder.editButtonLabel": "Bearbeiten",
   "app.components.formBuilder.emptyImageOptionError": "Geben Sie mindestens 1 Antwort. Bitte beachten Sie, dass jede Antwort einen Titel haben muss.",

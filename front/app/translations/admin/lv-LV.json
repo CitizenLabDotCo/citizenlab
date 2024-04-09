@@ -245,7 +245,6 @@
   "app.components.admin.seatSetSuccess.orderCompleted": "Pasūtījums izpildīts",
   "app.components.admin.seatSetSuccess.reflectedMessage": "Plāna izmaiņas tiks atspoguļotas nākamajā norēķinu ciklā.",
   "app.components.admin.seatSetSuccess.rightsGranted": "{seatType} izvēlētajam(-iem) lietotājam(-iem) ir piešķirtas tiesības.",
-  "app.components.app.containers.AdminPage.ProjectEdit.contactGovSuccessToAccess": "Atsauksmes par dokumentu vākšana ir pielāgota funkcija, un tā nav iekļauta jūsu pašreizējā licencē. Sazinieties ar savu GovSuccess pārvaldnieku, lai uzzinātu vairāk par to.",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Ieguldījums",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Vairāk informācijas par to, kā iestrādāt saiti uz Google Forms, var atrast sadaļā {googleFormsTooltipLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink": "https://support.citizenlab.co/articles/5050525",

@@ -245,7 +245,6 @@
   "app.components.admin.seatSetSuccess.orderCompleted": "Bestelling voltooid",
   "app.components.admin.seatSetSuccess.reflectedMessage": "De wijzigingen aan je licentie worden bij je volgende facturering verwerkt.",
   "app.components.admin.seatSetSuccess.rightsGranted": "{seatType} rechten zijn toegekend aan de geselecteerde gebruiker(s).",
-  "app.components.app.containers.AdminPage.ProjectEdit.contactGovSuccessToAccess": "Het verzamelen van feedback op een document is een aangepaste functionaliteit, en is niet inbegrepen in je huidige abonnement. Neem contact op met je Government Success Manager voor meer informatie.",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Onderwerp",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Meer informatie over het embedden van Google Forms vind je in {googleFormsTooltipLink}.",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink": "https://support.citizenlab.co/articles/5050525",

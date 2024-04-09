@@ -650,7 +650,6 @@
   "app.components.formBuilder.deleteButtonLabel": "Eliminar",
   "app.components.formBuilder.description": "Descrição",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "Isto já foi acrescentado no formulário. O conteúdo por defeito só pode ser utilizado uma vez.",
-  "app.components.formBuilder.disabledCustomFieldsTooltip": "A adição de conteúdo personalizado faz parte da licença premium. Contacte o seu GovSuccess Manager para saber mais sobre isso.",
   "app.components.formBuilder.done": "Feito",
   "app.components.formBuilder.editButtonLabel": "Editar",
   "app.components.formBuilder.emptyImageOptionError": "Forneça pelo menos uma resposta. Observe que cada resposta deve ter um título.",

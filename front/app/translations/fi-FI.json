@@ -650,7 +650,6 @@
   "app.components.formBuilder.deleteButtonLabel": "Poistaa",
   "app.components.formBuilder.description": "Kuvaus",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "Tämä on jo lisätty lomakkeeseen. Oletussisältöä saa käyttää vain kerran.",
-  "app.components.formBuilder.disabledCustomFieldsTooltip": "Mukautetun sisällön lisääminen on osa premium-lisenssiä. Ota yhteyttä GovSuccess Manageriin saadaksesi lisätietoja siitä.",
   "app.components.formBuilder.done": "Tehty",
   "app.components.formBuilder.editButtonLabel": "Muokata",
   "app.components.formBuilder.emptyImageOptionError": "Anna vähintään 1 vastaus. Huomaa, että jokaisella vastauksella on oltava otsikko.",
