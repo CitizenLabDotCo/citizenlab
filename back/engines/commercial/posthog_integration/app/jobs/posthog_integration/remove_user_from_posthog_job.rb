@@ -7,7 +7,8 @@ module PosthogIntegration
     def run(user_id)
       return unless defined?(POSTHOG_CUSTOM_CLIENT) && POSTHOG_CUSTOM_CLIENT
 
-      POSTHOG_CUSTOM_CLIENT.delete_person_by_distinct_id(user_id)
+      PosthogIntegration::PostHog::Client::ApiError
+      POSTHOG_CUSTOM_CLIENT.delete_person_by_distinct_id(user_id, retries: 10)
     end
   end
 end

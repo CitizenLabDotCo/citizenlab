@@ -24,13 +24,21 @@ module PosthogIntegration
         http.get("#{@base_uri}/api/projects/#{project_id}/persons", params: params)
       end
 
-      def delete_person(id, project_id: default_project_id)
+      def delete_person(id, project_id: default_project_id, retries: 0)
         missing_project_id! unless project_id
 
-        http.delete("#{@base_uri}/api/projects/#{project_id}/persons/#{id}")
+        response = http.delete("#{@base_uri}/api/projects/#{project_id}/persons/#{id}")
+        if response.status.success? || retries <= 0
+          response
+        else
+          # Retry after waiting between 20 and 60 seconds
+          sleep_time = rand(20..60)
+          sleep(sleep_time)
+          delete_person(id, project_id: project_id, retries: retries - 1)
+        end
       end
 
-      def delete_person_by_distinct_id(distinct_id, project_id: default_project_id)
+      def delete_person_by_distinct_id(distinct_id, project_id: default_project_id, retries: 0)
         missing_project_id! unless project_id
 
         response = persons(project_id: project_id, distinct_id: distinct_id)
@@ -43,7 +51,7 @@ module PosthogIntegration
           nil
         when 1
           person_id = results.first['id']
-          delete_response = delete_person(person_id, project_id: project_id)
+          delete_response = delete_person(person_id, project_id: project_id, retries: retries)
           raise_if_error(delete_response)
 
           person_id
