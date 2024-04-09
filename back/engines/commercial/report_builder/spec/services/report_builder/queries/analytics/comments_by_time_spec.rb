@@ -7,20 +7,22 @@ RSpec.describe ReportBuilder::Queries::Analytics::CommentsByTime do
 
   describe '#run_query' do
     let(:date) { Date.new(2022, 9, 1) }
-    let(:idea) do
+    let(:project) { create(:project) }
+    let(:activity) do
       create(:dimension_date, date: date)
-      create(:dimension_type, name: 'idea', parent: 'post')
-
-      create(:idea, created_at: date)
-    end
-
-    before do
       create(:dimension_type, name: 'comment', parent: 'idea')
-      create(:comment, created_at: date, post: idea)
+
+      create(
+        :activity,
+        project_id: project.id,
+        acted_at: date,
+        item_type: 'Comment',
+        action: 'createds'
+      )
     end
 
     it 'returns comments by time' do
-      params = { start_at: date - 1.day, end_at: date + 1.day, project_id: idea.project_id }
+      params = { start_at: date - 1.day, end_at: date + 1.day, project_id: project.id }
       expect(query.run_query(**params)).to eq(
         [
           [{
