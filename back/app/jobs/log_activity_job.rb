@@ -49,17 +49,6 @@ class LogActivityJob < ApplicationJob
     do_run
   end
 
-  def handle_error(error)
-    puts "Waaaaagaaaaaa!!!!!! #{error}"
-    case error
-    when ActiveJob::DeserializationError
-      Rails.logger.warn "Job item or user was probably deleted while the job was queued: #{exception.message}"
-      finish
-    else
-      super
-    end
-  end
-
   private
 
   def do_run
