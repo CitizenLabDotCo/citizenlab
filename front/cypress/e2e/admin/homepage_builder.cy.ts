@@ -139,7 +139,10 @@ describe('Homepage builder', () => {
 
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveHomePage');
+
     cy.visit(`/`);
+    cy.wait(2000);
+    cy.wait('@getHomePage');
     cy.wait('@getAdminPublications');
     cy.get('#e2e-two-column').should('exist');
     cy.get('div.e2e-text-box').should('have.length', 2);
@@ -202,6 +205,8 @@ describe('Homepage builder', () => {
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveHomePage');
     cy.visit(`/`);
+    cy.wait(2000);
+    cy.wait('@getHomePage');
     cy.get('#e2e-two-column').should('not.exist');
     cy.get('div.e2e-text-box').should('not.exist');
     cy.get('[data-cy="e2e-events"]').should('not.exist');
@@ -237,6 +242,7 @@ describe('Homepage builder', () => {
     // Check homepage banner defaults signed - out
 
     cy.visit('/');
+    cy.wait(2000);
     cy.wait('@getAppConfiguration');
     cy.wait('@getHomePage');
     cy.get('[data-cy="e2e-homepage-banner"]').should('exist');
@@ -283,6 +289,7 @@ describe('Homepage builder', () => {
     cy.setAdminLoginCookie();
 
     cy.visit('/');
+    cy.wait(2000);
     cy.wait('@getHomePage');
     cy.wait('@getAdminPublications');
     cy.wait('@getAppConfiguration');
@@ -427,6 +434,7 @@ describe('Homepage builder', () => {
 
     cy.logout();
     cy.visit('/');
+    cy.wait(2000);
     cy.wait('@getHomePage');
     cy.wait('@getAppConfiguration');
     cy.wait('@getAdminPublications');
@@ -462,6 +470,7 @@ describe('Homepage builder', () => {
     cy.wait('@saveHomePage');
     cy.logout();
     cy.visit('/');
+    cy.wait(2000);
     cy.wait('@getHomePage');
     cy.wait('@getAppConfiguration');
     cy.wait('@getAdminPublications');
