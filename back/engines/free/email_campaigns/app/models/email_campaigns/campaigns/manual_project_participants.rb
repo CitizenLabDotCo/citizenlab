@@ -42,10 +42,9 @@ module EmailCampaigns
 
     recipient_filter :project_participants
 
-    # Mailer not yet implemented
-    # def mailer_class
-    #   ManualProjectParticipantsCampaignMailer
-    # end
+    def mailer_class
+      ManualCampaignMailer
+    end
 
     # Without this, the campaign would be sent on every event and every schedule trigger
     before_send :only_manual_send
