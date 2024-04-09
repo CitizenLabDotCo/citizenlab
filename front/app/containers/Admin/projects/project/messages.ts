@@ -538,10 +538,10 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText',
     defaultMessage: 'this support article',
   },
-  contactGovSuccessToAccess: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.contactGovSuccessToAccess',
+  contactGovSuccessToAccess1: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.contactGovSuccessToAccess1',
     defaultMessage:
-      'Collecting feedback on a document is a custom feature, and is not included in your current license. Reach out to your GovSuccess Manager to learn more about it.',
+      'Collecting feedback on a document is not part of your license. Reach out to your Government Success Manager to learn more about it.',
   },
   konveioSupport: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.konveioSupport',

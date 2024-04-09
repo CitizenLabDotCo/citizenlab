@@ -204,7 +204,7 @@ const ParticipationMethodPicker = ({
                       maxWidth="250px"
                       placement="bottom"
                       content={formatMessage(
-                        messages.contactGovSuccessToAccess
+                        messages.contactGovSuccessToAccess1
                       )}
                       hideOnClick={false}
                     >
