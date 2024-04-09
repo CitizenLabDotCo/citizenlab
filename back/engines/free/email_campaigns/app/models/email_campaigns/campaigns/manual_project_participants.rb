@@ -40,8 +40,14 @@ module EmailCampaigns
 
     validates :project_id, presence: true
 
+    recipient_filter :project_participants
+
     def self.content_type_multiloc_key
       'email_campaigns.admin_labels.content_type.general'
+    end
+
+    def project_participants(_users_scope, _options = {})
+      ParticipantsService.new.project_participants(project)
     end
   end
 end

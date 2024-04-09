@@ -20,4 +20,18 @@ RSpec.describe EmailCampaigns::Campaigns::Manual do
       expect(campaign).to be_valid
     end
   end
+
+  describe '#apply_recipient_filters' do
+    let(:non_participant) { create(:user) }
+    let(:participant) { create(:user) }
+    let(:project) { create(:project_with_active_ideation_phase) }
+    let!(:idea) { create(:idea, project: project, author: participant, publication_status: 'published', phases: project.phases) }
+    let(:campaign) { create(:manual_project_participants_campaign, project: project) }
+
+    it 'includes only project participants' do
+      recipients = campaign.apply_recipient_filters
+
+      expect(recipients).to match_array [participant]
+    end
+  end
 end
