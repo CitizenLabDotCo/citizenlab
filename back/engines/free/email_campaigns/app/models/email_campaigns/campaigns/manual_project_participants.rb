@@ -42,12 +42,41 @@ module EmailCampaigns
 
     recipient_filter :project_participants
 
+    # Mailer not yet implemented
+    # def mailer_class
+    #   ManualProjectParticipantsCampaignMailer
+    # end
+
+    # Without this, the campaign would be sent on every event and every schedule trigger
+    before_send :only_manual_send
+
+    def self.recipient_role_multiloc_key
+      'email_campaigns.admin_labels.recipient_role.project_participants'
+    end
+
     def self.content_type_multiloc_key
       'email_campaigns.admin_labels.content_type.general'
     end
 
+    def generate_commands(recipient:, time: nil, activity: nil)
+      [{
+        author: author,
+        event_payload: {},
+        subject_multiloc: subject_multiloc,
+        body_multiloc: TextImageService.new.render_data_images_multiloc(body_multiloc, field: :body_multiloc, imageable: self),
+        sender: sender,
+        reply_to: reply_to
+      }]
+    end
+
+    private
+
     def project_participants(_users_scope, _options = {})
       ParticipantsService.new.project_participants(project)
+    end
+
+    def only_manual_send(activity: nil, time: nil)
+      !activity && !time
     end
   end
 end
