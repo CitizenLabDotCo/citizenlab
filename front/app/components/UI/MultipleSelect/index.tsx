@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Label } from '@citizenlab/cl2-component-library';
-import { isBoolean, isString, isArray } from 'lodash-es';
 import ReactSelect from 'react-select';
 import { IOption } from 'typings';
 
@@ -39,7 +38,7 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
   //  For a native react-select solution, follow this issue:
   //  https://github.com/JedWatson/react-select/issues/2669
   findFullOptionValue = (value) => {
-    if (isString(value)) {
+    if (typeof value === 'string') {
       return (
         this.props.options &&
         this.props.options.find((option) => option.value === value)
@@ -52,7 +51,7 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
   findFullOptionValues = () => {
     const { value } = this.props;
 
-    if (isArray(value)) {
+    if (Array.isArray(value)) {
       return value.map(this.findFullOptionValue);
     }
 
@@ -67,7 +66,7 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
     value = this.findFullOptionValues();
     placeholder = placeholder || '';
     options = options || this.emptyArray;
-
+    autoBlur = typeof autoBlur === 'boolean' ? autoBlur : false;
 
     return (
       <div>
