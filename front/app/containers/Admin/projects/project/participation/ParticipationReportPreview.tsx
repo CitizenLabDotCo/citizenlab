@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
+import { Element } from '@craftjs/core';
 
 import usePhases from 'api/phases/usePhases';
 
@@ -68,7 +69,7 @@ const ParticipationReportPreview = ({
               />
             </TwoColumn>
             {hasIdeationPhase && (
-              <Box>
+              <Element is="div" canvas>
                 <PostsByTimeWidget
                   startAt={startAt}
                   endAt={endAt}
@@ -89,7 +90,7 @@ const ParticipationReportPreview = ({
                   projectId={projectId}
                   title={{ [locale]: formatMessage(messages.reactions) }}
                 />
-              </Box>
+              </Element>
             )}
           </ContentBuilderFrame>
         </Editor>
