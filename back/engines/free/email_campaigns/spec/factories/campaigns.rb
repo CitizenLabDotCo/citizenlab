@@ -21,7 +21,7 @@ FactoryBot.define do
   factory :manual_project_participants_campaign, class: EmailCampaigns::Campaigns::ManualProjectParticipants do
     enabled { true }
     author
-    project { create(:project) }
+    project { create(:project) } # rubocop:disable FactoryBot/FactoryAssociationWithStrategy
     sender { 'author' }
     reply_to { 'someguy@somecity.com' }
     subject_multiloc do
