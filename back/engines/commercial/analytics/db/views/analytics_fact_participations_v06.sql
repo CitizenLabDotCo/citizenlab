@@ -3,11 +3,7 @@
 SELECT
     a.id,
     a.user_id AS dimension_user_id,
-    -- CASE WHEN
-    --     a.user_id IS NULL
-    --     THEN CONCAT('anonymous-', a.id)
-    --     ELSE a.user_id
-    -- END AS participant_id,
+    COALESCE(a.user_id, a.id) AS participant_id,
     a.project_id AS dimension_project_id,
     a.acted_at::DATE AS dimension_date_created_id,
     a.item_type AS item_type,
