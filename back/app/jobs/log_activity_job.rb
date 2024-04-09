@@ -7,9 +7,21 @@ class LogActivityJob < ApplicationJob
   attr_reader :item, :action, :user, :acted_at, :options, :activity
 
   rescue_from(ActiveJob::DeserializationError) do |exception|
-    # It would be great if we could match exception.clause.id to the item_id
-    # or user_id, but those arguments do not seem to be available.
-    Rails.logger.warn "Job item or user was probably deleted while the job was queued: #{exception.message}"
+    # Do not report any error if the item or user was deleted while the job was queued
+    error_serialized_id = exception.cause.is_a?(ActiveRecord::RecordNotFound) && exception.cause.id
+    item_and_user = [@serialized_arguments[0], @serialized_arguments[2]]
+    item_and_user_ids = item_and_user.map do |obj|
+      if obj.is_a?(Hash)
+        URI(obj.values.first).path.split('/').last
+      else
+        nil
+      end
+    end.compact
+    if error_serialized_id && item_and_user_ids.include?(error_serialized_id)
+      Rails.logger.warn "Job item or user was probably deleted while the job was queued: #{exception.message}"
+    else
+      raise
+    end
   end
 
   def initialize(*args)
@@ -35,6 +47,17 @@ class LogActivityJob < ApplicationJob
     @options = options
 
     do_run
+  end
+
+  def handle_error(error)
+    puts "Waaaaagaaaaaa!!!!!! #{error}"
+    case error
+    when ActiveJob::DeserializationError
+      Rails.logger.warn "Job item or user was probably deleted while the job was queued: #{exception.message}"
+      finish
+    else
+      super
+    end
   end
 
   private

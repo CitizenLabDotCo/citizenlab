@@ -16,7 +16,6 @@ module ActiveJobQueExtension
   end
 
   def handle_error(error)
-    raise 'test specs'
     self.class.should_retry ? super : expire
   end
 
