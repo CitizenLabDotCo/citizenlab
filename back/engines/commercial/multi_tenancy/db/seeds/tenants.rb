@@ -492,7 +492,7 @@ module MultiTenancy
             advanced_autotagging: {
               enabled: true,
               allowed: true
-            };
+            },
             multi_language_platform: {
               enabled: true,
               allowed: true
