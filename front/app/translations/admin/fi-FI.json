@@ -1950,7 +1950,6 @@
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Oletko varma?",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Projektipäälliköitä ei löydy",
   "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "Mitään ei näytetä, koska käyttäjä ei voi tehdä toimintoja tässä projektissa.",
-  "app.containers.AdminPage.groups.permissions.onlyAdmins": "Vain järjestelmänvalvojat voivat muuttaa tätä asetusta.",
   "app.containers.AdminPage.groups.permissions.option1": "Vaihtoehto 1",
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Odottaa kutsua",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Kuka voi merkitä asiakirjaan?",
