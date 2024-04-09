@@ -542,7 +542,7 @@ kl:
       event_details:
         labels:
           date: 'Ulloq'
-          location: 'Location'
+          location: 'Sumiiffik'
           online_link: 'Online link'
           description: 'Description'
           project: 'Project'
@@ -592,7 +592,7 @@ kl:
       content_type:
         comments: 'Comments'
         content_moderation: 'Content moderation'
-        events: 'Events'
+        events: 'Pisussat'
         general: 'General'
         inputs: 'Inputs'
         internal_comments: 'Internal comments'
