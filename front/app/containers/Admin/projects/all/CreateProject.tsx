@@ -1,5 +1,11 @@
 import React, { memo, useState, useCallback, useEffect } from 'react';
 
+import {
+  Title,
+  stylingConsts,
+  colors,
+  Box,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { InsertConfigurationOptions } from 'typings';
 
@@ -17,13 +23,6 @@ import { insertConfiguration } from 'utils/moduleUtils';
 
 import messages from './messages';
 import tracks from './tracks';
-
-const CreateProjectContentInner = styled.div`
-  padding-left: 4rem;
-  padding-right: 4rem;
-  padding-top: 0.5rem;
-  padding-bottom: 2.8rem;
-`;
 
 const StyledTabs = styled(Tabs)`
   margin-bottom: 25px;
@@ -96,30 +95,28 @@ const CreateProject = memo<Props>(() => {
     });
 
   return (
-    <div>
+    <Box bg={colors.white} borderRadius={stylingConsts.borderRadius}>
+      <Title color="primary">{formatMessage(messages.createAProject)}</Title>
       <Outlet
         id="app.containers.Admin.projects.all.createProject.tabs"
         onData={handleData}
       />
-
       <div>
-        <CreateProjectContentInner>
-          {tabs.length > 1 && (
-            <StyledTabs
-              className="e2e-create-project-tabs"
-              items={tabs}
-              selectedValue={selectedTabValue}
-              onClick={handleTabOnClick}
-            />
-          )}
-          <Outlet
-            id="app.containers.Admin.projects.all.createProject"
-            selectedTabValue={selectedTabValue}
+        {tabs.length > 1 && (
+          <StyledTabs
+            className="e2e-create-project-tabs"
+            items={tabs}
+            selectedValue={selectedTabValue}
+            onClick={handleTabOnClick}
           />
-          {selectedTabValue === 'scratch' && <AdminProjectsProjectGeneral />}
-        </CreateProjectContentInner>
+        )}
+        <Outlet
+          id="app.containers.Admin.projects.all.createProject"
+          selectedTabValue={selectedTabValue}
+        />
+        {selectedTabValue === 'scratch' && <AdminProjectsProjectGeneral />}
       </div>
-    </div>
+    </Box>
   );
 });
 

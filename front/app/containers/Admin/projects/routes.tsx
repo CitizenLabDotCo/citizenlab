@@ -14,6 +14,7 @@ import SurveyFormBuilder from './project/nativeSurvey/SurveyFormBuilder';
 
 const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));
+const AdminProjectNew = lazy(() => import('./all/CreateProject'));
 const AdminProjectsProjectIndex = lazy(() => import('./project'));
 const AdminProjectsProjectSettings = lazy(() => import('./project/settings'));
 const AdminProjectsProjectGeneral = lazy(() => import('./project/general'));
@@ -54,6 +55,7 @@ export function adminProjectsProjectPath(projectId: string): RouteType {
 
 export enum projectsRoutes {
   projects = 'projects',
+  projectNew = 'new',
   projectIdeaId = ':projectId/ideas/:ideaId',
   projectSettings = ':projectId/settings',
   projectSettingsDescription = 'description',
@@ -86,6 +88,7 @@ export enum projectsRoutes {
 
 export type projectsRouteTypes =
   | AdminRoute<projectsRoutes.projects>
+  | AdminRoute<`${projectsRoutes.projects}/new`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/ideas/${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/settings`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectSettingsEvents}`>
@@ -131,6 +134,14 @@ const createAdminProjectsRoutes = () => {
       },
       ...moduleConfiguration.routes['admin.project_templates'],
       ...moduleConfiguration.routes['admin.projects'],
+      {
+        path: projectsRoutes.projectNew,
+        element: (
+          <PageLoading>
+            <AdminProjectNew />
+          </PageLoading>
+        ),
+      },
       {
         path: projectsRoutes.projectIdeaId,
         element: (
