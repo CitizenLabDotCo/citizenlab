@@ -175,11 +175,11 @@ const UserFieldSelection = ({
                 label={
                   <Box display="flex">
                     <span
-                      style={
-                        !permissionsCustomFieldsEnabled
-                          ? { color: colors.disabled }
-                          : { color: colors.primary }
-                      }
+                      style={{
+                        color: permissionsCustomFieldsEnabled
+                          ? colors.primary
+                          : colors.disabled,
+                      }}
                     >
                       <FormattedMessage
                         {...messages.useExistingRegistrationQuestions}
@@ -213,11 +213,11 @@ const UserFieldSelection = ({
                     borderColor={colors.grey300}
                   >
                     <Text
-                      style={
-                        !permissionsCustomFieldsEnabled
-                          ? { color: colors.disabled }
-                          : { color: colors.primary }
-                      }
+                      style={{
+                        color: permissionsCustomFieldsEnabled
+                          ? colors.primary
+                          : colors.disabled,
+                      }}
                     >
                       {getTitleFromGlobalFieldId(field, locale)}
                     </Text>
