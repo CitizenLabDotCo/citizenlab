@@ -538,10 +538,15 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText',
     defaultMessage: 'this support article',
   },
-  contactGovSuccessToAccess1: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.contactGovSuccessToAccess1',
+  konveioNudge: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.konveioNudge',
     defaultMessage:
-      'Collecting feedback on a document is not part of your license. Reach out to your Government Success Manager to learn more about it.',
+      'Collecting feedback on a document is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
+  },
+  externalSurveysNudge: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.externalSurveysNudge',
+    defaultMessage:
+      'Embedding an external survey is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
   },
   konveioSupport: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.konveioSupport',
