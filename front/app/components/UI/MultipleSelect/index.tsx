@@ -13,7 +13,6 @@ export type Props = {
   value: IOption[] | null | IOption['value'];
   placeholder?: string | JSX.Element;
   options: IOption[] | null;
-  max?: number;
   autoBlur?: boolean;
   onChange: (arg: IOption[]) => void;
   disabled?: boolean;
@@ -33,10 +32,7 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
   }
 
   handleOnChange = (newValue: IOption[]) => {
-    const { value, max } = this.props;
-    const nextValue =
-      max && newValue && newValue.length > max ? value : newValue;
-    this.props.onChange(nextValue || this.emptyArray);
+    this.props.onChange(newValue || this.emptyArray);
   };
 
   //  Needed to keep our API compatible with react-select v1
@@ -65,15 +61,13 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
 
   render() {
     const { id, className, disabled, label, isSearchable = true } = this.props;
-    let { value, placeholder, options, max, autoBlur } = this.props;
+    let { value, placeholder, options, autoBlur } = this.props;
     const { inputId } = this.props;
 
     value = this.findFullOptionValues();
     placeholder = placeholder || '';
     options = options || this.emptyArray;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    max = max || undefined;
-    autoBlur = isBoolean(autoBlur) ? autoBlur : false;
+
 
     return (
       <div>
