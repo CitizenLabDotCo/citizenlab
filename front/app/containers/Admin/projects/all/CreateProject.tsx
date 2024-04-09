@@ -89,9 +89,16 @@ const CreateProject = memo<Props>(() => {
 
   return (
     <Box>
-      <Title color="primary">{formatMessage(messages.createAProject)}</Title>
+      <Title color="primary" mb="32px">
+        {formatMessage(messages.createAProject)}
+      </Title>
 
-      <Box bg={colors.white} borderRadius={stylingConsts.borderRadius} p="24px">
+      <Box
+        bg={colors.white}
+        borderRadius={stylingConsts.borderRadius}
+        p="24px"
+        border={`1px solid ${colors.grey300}`}
+      >
         <Outlet
           id="app.containers.Admin.projects.all.createProject.tabs"
           onData={handleData}
