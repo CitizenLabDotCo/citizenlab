@@ -82,15 +82,4 @@ RSpec.describe Analytics::FactParticipation do
       expect(described_class.find(poll_activity.id).item_type).to eq('Polls::Response')
     end
   end
-
-  # context 'when a native survey response is added in a phase' do
-  #   let(:idea_status) { create(:idea_status_proposed) }
-  #   let(:project) { create(:project_with_active_native_survey_phase) }
-  #   let(:input) { create(:idea, project: project, idea_status: idea_status, creation_phase: project.phases.first) }
-
-  #   it 'is also available as a participation fact' do
-  #     described_class.find(input.id)
-  #     expect(described_class.find(input.id).dimension_type.name).to eq('survey')
-  #   end
-  # end
 end
