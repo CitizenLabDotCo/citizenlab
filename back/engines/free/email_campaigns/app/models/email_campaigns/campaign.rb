@@ -48,7 +48,7 @@ module EmailCampaigns
 
     validate :validate_recipients, on: :send
 
-    scope :manual, -> { where type: 'EmailCampaigns::Campaigns::Manual' }
+    scope :manual, -> { where type: MANUAL_CAMPAIGNS }
 
     def self.before_send(action_symbol)
       @before_send_hooks ||= []
