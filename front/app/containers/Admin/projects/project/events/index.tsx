@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
@@ -59,97 +59,103 @@ const AdminProjectEventsIndex = ({
     };
 
   return (
-    <Box mb="40px">
-      <SectionTitle>
-        <FormattedMessage {...messages.titleEvents} />
-      </SectionTitle>
-      <SectionDescription>
-        <FormattedMessage {...messages.subtitleEvents} />
-      </SectionDescription>
-      <ListWrapper className="e2e-projects-events">
-        <AddButton
-          buttonStyle="cl-blue"
-          icon="plus-circle"
-          linkTo={`/admin/projects/${projectId}/settings/events/new`}
-        >
-          <FormattedMessage {...messages.addEventButton} />
-        </AddButton>
+    <Box mb="40px" p="44px">
+      <Box bg={colors.white} borderRadius={stylingConsts.borderRadius} p="44px">
+        <SectionTitle>
+          <FormattedMessage {...messages.titleEvents} />
+        </SectionTitle>
+        <SectionDescription>
+          <FormattedMessage {...messages.subtitleEvents} />
+        </SectionDescription>
+        <ListWrapper className="e2e-projects-events">
+          <AddButton
+            buttonStyle="cl-blue"
+            icon="plus-circle"
+            linkTo={`/admin/projects/${projectId}/events/new`}
+          >
+            <FormattedMessage {...messages.addEventButton} />
+          </AddButton>
 
-        <Box maxWidth="600px" mt="24px">
-          <Warning>
-            <FormattedMessage
-              {...messages.eventAttendanceExportText}
-              values={{
-                userTabLink: (
-                  <a
-                    href={formatMessage(messages.usersTabLink)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FormattedMessage {...messages.usersTabLinkText} />
-                  </a>
-                ),
-                supportArticleLink: (
-                  <a
-                    href={formatMessage(messages.attendanceSupportArticleLink)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FormattedMessage
-                      {...messages.attendanceSupportArticleLinkText}
-                    />
-                  </a>
-                ),
-              }}
-            />
-          </Warning>
-        </Box>
-
-        {!isNilOrError(events) && events.data.length > 0 && (
-          <StyledList>
-            <>
-              <HeadRow>
-                <div className="expand">
-                  <FormattedMessage {...messages.titleColumnHeader} />
-                </div>
-              </HeadRow>
-              {events.data.map((event) => {
-                const startAt = moment(event.attributes.start_at).format('LLL');
-                const endAt = moment(event.attributes.end_at).format('LLL');
-
-                return (
-                  <Row key={event.id}>
-                    <div className="expand">
-                      <h1>
-                        <T value={event.attributes.title_multiloc} />
-                      </h1>
-                      <p>{event.attributes.address_1}</p>
-                      <p>
-                        {startAt} → {endAt}
-                      </p>
-                    </div>
-                    <Button
-                      buttonStyle="text"
-                      icon="delete"
-                      onClick={createDeleteClickHandler(event.id)}
-                      processing={isLoading}
+          <Box maxWidth="600px" mt="24px">
+            <Warning>
+              <FormattedMessage
+                {...messages.eventAttendanceExportText}
+                values={{
+                  userTabLink: (
+                    <a
+                      href={formatMessage(messages.usersTabLink)}
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
-                      <FormattedMessage {...messages.deleteButtonLabel} />
-                    </Button>
-                    <Button
-                      buttonStyle="secondary"
-                      icon="edit"
-                      linkTo={`/admin/projects/${projectId}/settings/events/${event.id}`}
+                      <FormattedMessage {...messages.usersTabLinkText} />
+                    </a>
+                  ),
+                  supportArticleLink: (
+                    <a
+                      href={formatMessage(
+                        messages.attendanceSupportArticleLink
+                      )}
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
-                      <FormattedMessage {...messages.editButtonLabel} />
-                    </Button>
-                  </Row>
-                );
-              })}
-            </>
-          </StyledList>
-        )}
-      </ListWrapper>
+                      <FormattedMessage
+                        {...messages.attendanceSupportArticleLinkText}
+                      />
+                    </a>
+                  ),
+                }}
+              />
+            </Warning>
+          </Box>
+
+          {!isNilOrError(events) && events.data.length > 0 && (
+            <StyledList>
+              <>
+                <HeadRow>
+                  <div className="expand">
+                    <FormattedMessage {...messages.titleColumnHeader} />
+                  </div>
+                </HeadRow>
+                {events.data.map((event) => {
+                  const startAt = moment(event.attributes.start_at).format(
+                    'LLL'
+                  );
+                  const endAt = moment(event.attributes.end_at).format('LLL');
+
+                  return (
+                    <Row key={event.id}>
+                      <div className="expand">
+                        <h1>
+                          <T value={event.attributes.title_multiloc} />
+                        </h1>
+                        <p>{event.attributes.address_1}</p>
+                        <p>
+                          {startAt} → {endAt}
+                        </p>
+                      </div>
+                      <Button
+                        buttonStyle="text"
+                        icon="delete"
+                        onClick={createDeleteClickHandler(event.id)}
+                        processing={isLoading}
+                      >
+                        <FormattedMessage {...messages.deleteButtonLabel} />
+                      </Button>
+                      <Button
+                        buttonStyle="secondary"
+                        icon="edit"
+                        linkTo={`/admin/projects/${projectId}/events/${event.id}`}
+                      >
+                        <FormattedMessage {...messages.editButtonLabel} />
+                      </Button>
+                    </Row>
+                  );
+                })}
+              </>
+            </StyledList>
+          )}
+        </ListWrapper>
+      </Box>
     </Box>
   );
 };
