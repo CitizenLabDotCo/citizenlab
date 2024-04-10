@@ -1964,7 +1964,7 @@
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Are you sure?",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Suliniummi aqutsisut nassaarineqanngilat",
   "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "Atuisoq suliniummi uani iliuuseqarsinnaanngimmat nuisoqanngilaq.",
-  "app.containers.AdminPage.groups.permissions.onlyAdmins": "Only admins can change this setting.",
+  "app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion": "Only admins can create a new question.",
   "app.containers.AdminPage.groups.permissions.option1": "Option 1",
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Qaaqqusissut utaqqisaq",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Who can annotate the document?",
