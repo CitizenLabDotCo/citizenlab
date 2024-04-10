@@ -8,7 +8,8 @@ SELECT
     a.acted_at::DATE AS dimension_date_created_id,
     a.item_type AS item_type,
     a.action AS action_type,
-    a.payload->>'reactable_type' AS reactable_type
+    a.payload->>'reactable_type' AS reactable_type,
+    a.payload->>'reactable_id' AS reactable_id
 FROM activities a
 WHERE
     (a.item_type = 'Idea' AND a.action = 'published') OR

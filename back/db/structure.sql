@@ -1473,7 +1473,8 @@ CREATE VIEW public.analytics_fact_participations AS
     (a.acted_at)::date AS dimension_date_created_id,
     a.item_type,
     a.action AS action_type,
-    (a.payload ->> 'reactable_type'::text) AS reactable_type
+    (a.payload ->> 'reactable_type'::text) AS reactable_type,
+    (a.payload ->> 'reactable_id'::text) AS reactable_id
    FROM public.activities a
   WHERE ((((a.item_type)::text = 'Idea'::text) AND ((a.action)::text = 'published'::text)) OR (((a.item_type)::text = 'Comment'::text) AND ((a.action)::text = 'created'::text)) OR (((a.item_type)::text = 'Initiative'::text) AND ((a.action)::text = 'published'::text)) OR (((a.item_type)::text = 'Reaction'::text) AND ((a.action)::text = ANY ((ARRAY['idea_liked'::character varying, 'idea_disliked'::character varying, 'comment_liked'::character varying, 'initiative_liked'::character varying])::text[]))) OR (((a.item_type)::text = 'Basket'::text) AND ((a.action)::text = 'created'::text)) OR (((a.item_type)::text = 'Polls::Response'::text) AND ((a.action)::text = 'created'::text)) OR (((a.item_type)::text = 'Volunteering::Volunteer'::text) AND ((a.action)::text = 'created'::text)) OR (((a.item_type)::text = 'Events::Attendance'::text) AND ((a.action)::text = 'created'::text)) OR (((a.item_type)::text = 'Follower'::text) AND ((a.action)::text = 'created'::text)));
 
