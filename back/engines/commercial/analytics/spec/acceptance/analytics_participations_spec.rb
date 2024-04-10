@@ -19,25 +19,43 @@ resource 'Analytics - FactParticipations' do
         create(:dimension_date, date: date)
       end
 
-      # Type dimensions
-      [
-        { name: 'idea', parent: 'post' },
-        { name: 'initiative', parent: 'post' },
-        { name: 'comment', parent: 'idea' },
-        { name: 'reaction', parent: 'idea' }
-      ].each do |type|
-        create(:dimension_type, name: type[:name], parent: type[:parent])
-      end
+      # Create project
+      project = create(:project)
 
+      # Create users
       male = create(:user, gender: 'male')
       female = create(:user, gender: 'female')
       unspecified = create(:user, gender: 'unspecified')
 
       # Create participations (3 by citizens, 1 by admin)
-      idea = create(:idea, created_at: dates[0], author: male)
-      create(:comment, created_at: dates[2], post: idea, author: female)
-      create(:reaction, created_at: dates[3], user: create(:admin, gender: 'female'), reactable: idea)
-      create(:initiative, created_at: dates[1], author: unspecified)
+      create(:activity, acted_at: dates[0], user: male, project_id: project.id)
+      create(
+        :activity,
+        item_type: 'Comment',
+        action: 'created',
+        acted_at: dates[2],
+        user: female,
+        project_id: project.id
+      )
+      create(
+        :activity,
+        item_type: 'Reaction',
+        action: 'idea_liked',
+        acted_at: dates[3],
+        user: create(:admin, gender: 'female'),
+        payload: {
+          reactable_type: 'Idea',
+          reactable_id: SecureRandom.uuid
+        },
+        project_id: project.id
+      )
+      create(
+        :activity,
+        item_type: 'Initiative',
+        action: 'published',
+        acted_at: dates[1],
+        user: unspecified
+      )
     end
 
     example 'group participations by month' do
@@ -103,7 +121,15 @@ resource 'Analytics - FactParticipations' do
 
       example 'group participations by gender' do
         nil_gender_user = create(:user)
-        create(:initiative, created_at: Date.new(2023, 11, 1), author: nil_gender_user)
+        date = Date.new(2023, 11, 1)
+        create(:dimension_date, date: date)
+
+        create(
+          :activity,
+          item_type: 'Initiative',
+          acted_at: date,
+          user: nil_gender_user
+        )
 
         do_request({
           query: {
