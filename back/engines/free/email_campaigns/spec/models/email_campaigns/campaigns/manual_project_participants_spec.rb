@@ -9,9 +9,14 @@ RSpec.describe EmailCampaigns::Campaigns::ManualProjectParticipants do
     it { is_expected.to be_valid }
   end
 
-  describe 'validate project fk' do
-    it 'is invalid if project fk is blank' do
-      campaign = build(:manual_project_participants_campaign, project: nil)
+  describe 'validate resource_id' do
+    it 'is invalid if resource_id is blank' do
+      campaign = build(:manual_project_participants_campaign, resource_id: nil)
+      expect(campaign).to be_invalid
+    end
+
+    it 'is invalid if resource_id is not a project ID' do
+      campaign = build(:manual_project_participants_campaign, resource_id: SecureRandom.uuid)
       expect(campaign).to be_invalid
     end
   end
