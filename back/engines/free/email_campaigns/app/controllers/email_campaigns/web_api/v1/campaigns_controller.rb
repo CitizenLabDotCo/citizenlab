@@ -20,6 +20,8 @@ module EmailCampaigns
       end
 
       @campaigns = @campaigns.where(resource_id: params[:resource_ids]) if params[:resource_ids]
+      @campaigns = @campaigns.manual if params[:manual_campaigns_only] == 'true'
+      @campaigns = @campaigns.automatic if params[:automatic_campaigns_only] == 'true'
 
       @campaigns = @campaigns
         .page(params.dig(:page, :number))

@@ -15,7 +15,7 @@ resource 'Campaigns' do
 
   get '/web_api/v1/campaigns' do
     before do
-      create_list(:manual_campaign, 3)
+      create_list(:manual_campaign, 4)
       @manual_project_participants_campaign = create(:manual_project_participants_campaign)
       @automated_campaigns = create_list(:official_feedback_on_initiative_you_follow_campaign, 2)
     end
@@ -26,22 +26,35 @@ resource 'Campaigns' do
     end
     parameter :campaign_names, "An array of campaign names that should be returned. Possible values are #{EmailCampaigns::DeliveryService.new.campaign_classes.map(&:campaign_name).join(', ')}", required: false
     parameter :without_campaign_names, "An array of campaign names that should not be returned. Possible values are #{EmailCampaigns::DeliveryService.new.campaign_classes.map(&:campaign_name).join(', ')}", required: false
+    parameter :manual_campaigns_only, 'Filter only manual campaigns if value is true', required: false, type: 'boolean'
     parameter :resource_ids, 'An array of project IDs that will be used to filter only campaigns for those projects', required: false
 
     example_request 'List all campaigns' do
       assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 6
+      expect(json_response[:data].size).to eq 7
     end
 
-    example 'List all manual campaigns' do
-      do_request(campaign_names: %w[manual manual_project_participants])
+    example 'List campaigns that are specific type(s)' do
+      do_request(campaign_names: %w[manual])
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 4
     end
 
-    example 'List all non-manual campaigns' do
-      do_request(without_campaign_names: %w[manual manual_project_participants])
+    example 'List all campaigns that are not specific type(s)' do
+      do_request(without_campaign_names: %w[manual])
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 3
+    end
+
+    example 'List all manual campaigns' do
+      do_request(manual_campaigns_only: true)
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 5
+    end
+
+    example 'List all automatic campaigns' do
+      do_request(automatic_campaigns_only: true)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
     end
