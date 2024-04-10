@@ -82,4 +82,34 @@ RSpec.describe Analytics::FactParticipation do
       expect(described_class.find(poll_activity.id).item_type).to eq('Polls::Response')
     end
   end
+
+  context 'when an event attendance activity is added' do
+    let!(:event_attendance_activity) do
+      create(
+        :activity,
+        item_type: 'Events::Attendance',
+        action: 'created'
+      )
+    end
+
+    it 'is also available as a participation fact' do
+      described_class.find(event_attendance_activity.id)
+      expect(described_class.find(event_attendance_activity.id).item_type).to eq('Events::Attendance')
+    end
+  end
+
+  context 'when a follower activity is added' do
+    let!(:follower_activity) do
+      create(
+        :activity,
+        item_type: 'Follower',
+        action: 'created'
+      )
+    end
+
+    it 'is also available as a participation fact' do
+      described_class.find(follower_activity.id)
+      expect(described_class.find(follower_activity.id).item_type).to eq('Follower')
+    end
+  end
 end
