@@ -123,6 +123,10 @@ module EmailCampaigns
       CampaignPolicy
     end
 
+    def manual_campaign?
+      MANUAL_CAMPAIGNS.include?(type)
+    end
+
     protected
 
     def set_enabled
