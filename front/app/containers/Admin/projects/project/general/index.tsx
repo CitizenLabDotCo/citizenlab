@@ -31,7 +31,7 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreateProject';
+import { INewProjectCreatedEvent } from 'containers/Admin/projects/new';
 
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
