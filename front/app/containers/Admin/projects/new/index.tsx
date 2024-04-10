@@ -13,6 +13,7 @@ import AdminProjectsProjectGeneral from 'containers/Admin/projects/project/gener
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 import Outlet from 'components/Outlet';
+import GoBackButton from 'components/UI/GoBackButton';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
 
 import { trackEventByName } from 'utils/analytics';
@@ -89,6 +90,7 @@ const CreateProject = memo<Props>(() => {
 
   return (
     <Box>
+      <GoBackButton linkTo="/admin/projects" />
       <Title color="primary" mb="32px">
         {formatMessage(messages.createAProject)}
       </Title>
@@ -96,7 +98,7 @@ const CreateProject = memo<Props>(() => {
       <Box
         bg={colors.white}
         borderRadius={stylingConsts.borderRadius}
-        p="24px"
+        p="44px"
         border={`1px solid ${colors.grey300}`}
       >
         <Outlet

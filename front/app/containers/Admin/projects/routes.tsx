@@ -21,7 +21,7 @@ const ProjectParticipation = lazy(() => import('./project/participation'));
 const ProjectTraffic = lazy(() => import('./project/traffic'));
 const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));
-const AdminProjectNew = lazy(() => import('./all/CreateProject'));
+const AdminProjectNew = lazy(() => import('./new'));
 const AdminProjectsProjectIndex = lazy(() => import('./project'));
 const AdminProjectPhaseIndex = lazy(() => import('./project/phase'));
 const AdminProjectsProjectSettings = lazy(() => import('./project/settings'));
