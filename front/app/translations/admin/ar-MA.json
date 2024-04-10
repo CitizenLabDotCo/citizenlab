@@ -1964,7 +1964,7 @@
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "هل أنت متأكد؟",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "لم يتم العثور على مديري المشاريع",
   "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "لم يُعرض شيء، إذ لا توجد إجراءات يمكن للمستخدم اتخاذها في هذا المشروع.",
-  "app.containers.AdminPage.groups.permissions.onlyAdmins": "يمكن للمسؤولين فقط تغيير هذا الإعداد.",
+  "app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion": "يمكن للمسؤولين فقط إنشاء سؤال جديد.",
   "app.containers.AdminPage.groups.permissions.option1": "الخيار 1",
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "دعوة قيد الانتظار",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "من يمكنه إضافة تعليق توضيحي على المستند؟",
