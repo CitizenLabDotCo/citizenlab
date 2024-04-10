@@ -1950,7 +1950,6 @@
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Zeker weten?",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Geen projectbeheerders gevonden",
   "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "Er wordt niets getoond, want er zijn geen acties die de gebruiker kan nemen in dit project.",
-  "app.containers.AdminPage.groups.permissions.onlyAdmins": "Alleen platformbeheerders kunnen deze instelling wijzigen.",
   "app.containers.AdminPage.groups.permissions.option1": "Optie 1",
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Uitnodiging in behandeling",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Wie kan het document annoteren?",
