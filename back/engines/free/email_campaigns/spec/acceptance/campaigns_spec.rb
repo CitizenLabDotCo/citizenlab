@@ -17,6 +17,7 @@ resource 'Campaigns' do
     before do
       @campaigns = create_list(:manual_campaign, 3)
       @automated_campaigns = create_list(:official_feedback_on_initiative_you_follow_campaign, 2)
+      @project_campaign = create(:manual_project_participants_campaign)
     end
 
     with_options scope: :page do
@@ -25,14 +26,15 @@ resource 'Campaigns' do
     end
     parameter :campaign_names, "An array of campaign names that should be returned. Possible values are #{EmailCampaigns::DeliveryService.new.campaign_classes.map(&:campaign_name).join(', ')}", required: false
     parameter :without_campaign_names, "An array of campaign names that should not be returned. Possible values are #{EmailCampaigns::DeliveryService.new.campaign_classes.map(&:campaign_name).join(', ')}", required: false
+    parameter :project_ids, 'An array of project IDs that will be used to filter only campaigns for those projects', required: false
 
     example_request 'List all campaigns' do
       assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 5
+      expect(json_response[:data].size).to eq 6
     end
 
-    example 'List all manual campaigns' do
+    example 'List all manual campaigns' do # TODO: This test is now ambiguous (what is really 'manual'?)
       do_request(campaign_names: ['manual'])
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 3
@@ -41,11 +43,17 @@ resource 'Campaigns' do
     example 'List all non-manual campaigns' do
       do_request(without_campaign_names: ['manual'])
       json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 2
+      expect(json_response[:data].size).to eq 3
+    end
+
+    example 'List campaigns for specific project(s)' do
+      do_request(project_ids: [@project_campaign.project.id])
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 1
     end
 
     example 'List all non-manual campaigns with expected management labels' do
-      do_request(without_campaign_names: ['manual'])
+      do_request(without_campaign_names: %w[manual manual_project_participants])
       json_response = json_parse(response_body)
 
       multiloc_service ||= MultilocService.new

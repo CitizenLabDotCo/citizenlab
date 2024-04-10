@@ -19,6 +19,8 @@ module EmailCampaigns
         @campaigns = @campaigns.where.not(type: campaign_types)
       end
 
+      @campaigns = @campaigns.where(project_id: params[:project_ids]) if params[:project_ids]
+
       @campaigns = @campaigns
         .page(params.dig(:page, :number))
         .per(params.dig(:page, :size))
