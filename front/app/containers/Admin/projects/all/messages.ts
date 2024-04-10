@@ -11,7 +11,7 @@ export default defineMessages({
       'Create as many projects as you want and edit them at any time. Drag and drop them to change the order in which you want to see them on your homepage.',
   },
   newProject: {
-    id: 'app.containers.AdminPage.ProjectEdit.newProject',
+    id: 'app.containers.AdminPage.ProjectEdit.createProject',
     defaultMessage: 'New project',
   },
   published: {
