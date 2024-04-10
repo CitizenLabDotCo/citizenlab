@@ -22,7 +22,7 @@ module EmailCampaigns
             campaigns_with_wrong_groups = CampaignsGroup
               .where.not(group_id: accessible_group_ids)
               .pluck(:campaign_id)
-            campaigns_without_groups = Campaigns::Manual # TODO: needs to include new ManualProjectParticipants camapaign
+            campaigns_without_groups = scope.manual
               .left_outer_joins(:campaigns_groups)
               .where(email_campaigns_campaigns_groups: { id: nil })
               .ids
