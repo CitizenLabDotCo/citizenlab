@@ -2473,7 +2473,7 @@
   "app.modules.commercial.analytics.admin.containers.visitors.cookieBannerUpdatedInfo": "Seit Dezember 2023 ist es für Nutzer*innen einfacher, Cookies abzulehnen, was sich negativ auf die Daten auswirken kann.",
   "app.modules.commercial.analytics.admin.containers.visitors.noData": "Es gibt noch keine Besucher*innendaten.",
   "app.modules.commercial.analytics.admin.hooks.useEmailDeliveries.timeSeries": "E-Mail-Zustellungen im Zeitverlauf",
-  "app.modules.commercial.analytics.admin.hooks.useParticipants.timeSeries": "Teilnehmer im Laufe der Zeit",
+  "app.modules.commercial.analytics.admin.hooks.useParticipants.timeSeries": "Teilnehmende im Laufe der Zeit",
   "app.modules.commercial.analytics.admin.hooks.useRegistrations.timeSeries": "Registrierungen im Laufe der Zeit",
   "app.modules.commercial.analytics.admin.hooks.useVisitorReferrers.campaign": "Kampagne",
   "app.modules.commercial.analytics.admin.hooks.useVisitorReferrers.directEntry": "Direkteingabe",
