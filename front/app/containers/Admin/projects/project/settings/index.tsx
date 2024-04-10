@@ -50,15 +50,14 @@ const Settings = () => {
       feature: 'private_projects',
       url: `/admin/projects/${projectId}/settings/access-rights`,
     },
-    {
-      label: formatMessage(messages.events),
-      name: 'events',
-      url: `/admin/projects/${projectId}/settings/events`,
-    },
   ]);
 
   const handleData = (insertTabOptions: InsertConfigurationOptions<ITab>) => {
-    setTabs(insertConfiguration(insertTabOptions)(tabs));
+    setTabs(
+      insertConfiguration({ ...insertTabOptions, insertAfterName: 'tags' })(
+        tabs
+      )
+    );
   };
 
   if (!project || !phases) return null;
