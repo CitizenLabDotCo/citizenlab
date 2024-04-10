@@ -178,30 +178,6 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: projectsRoutes.projectSettingsEvents,
-            element: (
-              <PageLoading>
-                <AdminProjectEvents />
-              </PageLoading>
-            ),
-          },
-          {
-            path: projectsRoutes.projectSettingsEventsNew,
-            element: (
-              <PageLoading>
-                <AdminProjectEventsEdit />
-              </PageLoading>
-            ),
-          },
-          {
-            path: projectsRoutes.projectSettingsEventsId,
-            element: (
-              <PageLoading>
-                <AdminProjectEventsEdit />
-              </PageLoading>
-            ),
-          },
-          {
             path: projectsRoutes.projectSettingsTags,
             element: <AdminAllowedTopicsComponent />,
           },
@@ -241,6 +217,30 @@ const createAdminProjectsRoutes = () => {
             element: (
               <PageLoading>
                 <ProjectParticipation />
+              </PageLoading>
+            ),
+          },
+          {
+            path: projectsRoutes.projectSettingsEvents,
+            element: (
+              <PageLoading>
+                <AdminProjectEvents />
+              </PageLoading>
+            ),
+          },
+          {
+            path: projectsRoutes.projectSettingsEventsNew,
+            element: (
+              <PageLoading>
+                <AdminProjectEventsEdit />
+              </PageLoading>
+            ),
+          },
+          {
+            path: projectsRoutes.projectSettingsEventsId,
+            element: (
+              <PageLoading>
+                <AdminProjectEventsEdit />
               </PageLoading>
             ),
           },
