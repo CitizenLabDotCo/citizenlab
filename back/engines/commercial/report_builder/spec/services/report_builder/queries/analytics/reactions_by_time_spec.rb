@@ -74,6 +74,20 @@ RSpec.describe ReportBuilder::Queries::Analytics::ReactionsByTime do
         user_id: user.id
       )
     end
+    let_it_be(:activity) do
+      create(
+        :activity,
+        project_id: project.id,
+        acted_at: date3,
+        item_type: 'Reaction',
+        action: 'idea_liked',
+        payload: {
+          reactable_type: 'Idea',
+          reactable_id: idea.id
+        },
+        user_id: user.id
+      )
+    end
 
     it 'returns reactions by time' do
       params = { start_at: date - 1.day, end_at: date + 1.day, project_id: project.id }
@@ -121,7 +135,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::ReactionsByTime do
         [
           [
             {
-              'count_reaction_id' => 1,
+              'count_reaction_id' => 2,
               'dimension_date_created.month' => '2022-09',
               'first_dimension_date_created_date' => date
             }
@@ -133,7 +147,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::ReactionsByTime do
               'first_dimension_date_created_date' => date2
             }
           ],
-          [{ 'count_reaction_id' => 3 }]
+          [{ 'count_reaction_id' => 4 }]
         ]
       )
     end

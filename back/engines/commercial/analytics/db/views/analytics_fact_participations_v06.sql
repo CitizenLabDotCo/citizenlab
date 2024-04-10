@@ -12,7 +12,7 @@ SELECT
     (
       COALESCE(a.user_id::CHAR, a.id::CHAR) || 
       '_' ||
-      COALESCE(a.payload->>'reactable_type', '') ||
+      a.action ||
       '_' ||
       COALESCE(a.payload->>'reactable_id', '')
     ) AS reaction_id
