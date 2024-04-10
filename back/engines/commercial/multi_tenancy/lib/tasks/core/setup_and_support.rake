@@ -255,7 +255,6 @@ namespace :setup_and_support do
       Reaction.where(user: users).destroy_all
       Comment.where(author: users).destroy_all
       Basket.where(user: users).destroy_all
-      users.destroy_all
       service = SideFxUserService.new
       users.each do |user|
         service.before_destroy(user, nil)
