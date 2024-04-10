@@ -38,14 +38,13 @@ export default function useReactionsByTime({
     () =>
       analytics?.data
         ? parseTimeSeries(
-            analytics.data.attributes[0],
+            analytics,
             startAtMoment,
             endAtMoment,
-            currentResolution,
-            analytics.data.attributes[1]
+            currentResolution
           )
         : null,
-    [analytics?.data, startAtMoment, endAtMoment, currentResolution]
+    [analytics, startAtMoment, endAtMoment, currentResolution]
   );
 
   const xlsxData = useMemo(

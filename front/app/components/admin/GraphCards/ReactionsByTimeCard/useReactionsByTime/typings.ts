@@ -6,17 +6,20 @@ import {
 
 export type QueryParameters = ProjectId & Dates & Resolution;
 
-export interface TimeSeriesResponseRow {
+export interface TimeSeriesResponseRow extends ReactionsCountRow {
   first_dimension_date_created_date: string;
-  sum_dislikes_count: number;
-  sum_likes_count: number;
 }
 
 export interface ReactionsCountRow {
-  sum_reactions_count: number;
+  count_reaction_id: number;
 }
 
 // Hook return value
+export interface SingleTimeSeriesRow {
+  date: string;
+  reactions: number;
+}
+
 export interface TimeSeriesRow {
   /* Date format: YYYY-MM-DD */
   date: string;

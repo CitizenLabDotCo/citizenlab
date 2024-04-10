@@ -32,14 +32,13 @@ export default function useReactionsByTime({
     () =>
       analytics?.data
         ? parseTimeSeries(
-            analytics.data.attributes[0],
+            analytics,
             startAt ? moment(startAt) : null,
             endAt ? moment(endAt) : null,
-            currentResolution,
-            analytics.data.attributes[1]
+            currentResolution
           )
         : null,
-    [analytics?.data, startAt, endAt, currentResolution]
+    [analytics, startAt, endAt, currentResolution]
   );
 
   return { currentResolution, timeSeries };

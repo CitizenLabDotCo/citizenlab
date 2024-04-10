@@ -11,22 +11,26 @@ import { IResolution } from 'components/admin/ResolutionControl';
 import { get } from 'utils/helperUtils';
 
 import { Translations } from './translations';
-import { TimeSeriesResponseRow, TimeSeries, TimeSeriesRow } from './typings';
+import {
+  TimeSeriesResponseRow,
+  TimeSeries,
+  TimeSeriesRow,
+  SingleTimeSeriesRow,
+} from './typings';
 
 export const getEmptyRow = (date: Moment) => ({
   date: date.format('YYYY-MM-DD'),
-  likes: 0,
-  dislikes: 0,
-  total: 0,
+  reactions: 0,
 });
 
-const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
+const parseRow = (
+  date: Moment,
+  row?: TimeSeriesResponseRow
+): SingleTimeSeriesRow => {
   if (!row) return getEmptyRow(date);
 
   return {
-    total: 0,
-    likes: row.sum_likes_count,
-    dislikes: row.sum_dislikes_count,
+    reactions: row.count_reaction_id,
     date: date.format('YYYY-MM-DD'),
   };
 };
@@ -38,32 +42,65 @@ const getDate = (row: TimeSeriesResponseRow) => {
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
 
 export const parseTimeSeries = (
-  responseTimeSeries: ReactionsByTimeResponse['data']['attributes'][0],
+  response: ReactionsByTimeResponse,
   startAtMoment: Moment | null | undefined,
   endAtMoment: Moment | null,
-  resolution: IResolution,
-  total: ReactionsByTimeResponse['data']['attributes'][1]
+  resolution: IResolution
 ): TimeSeries | null => {
-  const timeSeries = _parseTimeSeries(
-    responseTimeSeries,
+  const [likeTimeSeriesResponse, dislikeTimeSeriesResponse, totalResponse] =
+    response.data.attributes;
+
+  const likeTimeSeries = _parseTimeSeries(
+    likeTimeSeriesResponse,
+    startAtMoment,
+    endAtMoment,
+    resolution
+  );
+
+  const dislikeTimeSeries = _parseTimeSeries(
+    dislikeTimeSeriesResponse,
     startAtMoment,
     endAtMoment,
     resolution
   );
 
   if (
-    !timeSeries ||
-    timeSeries.length === 0 ||
-    typeof total[0]?.sum_reactions_count !== 'number'
+    !likeTimeSeries ||
+    !dislikeTimeSeries ||
+    likeTimeSeries.length === 0 ||
+    dislikeTimeSeries.length === 0 ||
+    typeof totalResponse[0]?.count_reaction_id !== 'number'
   ) {
     return null;
   }
 
+  const combinedTimeSeries = combineTimeSeries(
+    likeTimeSeries,
+    dislikeTimeSeries
+  );
+  if (!combinedTimeSeries) return null;
+
   return calculateCumulativeSerie(
-    timeSeries,
-    total[0]?.sum_reactions_count,
+    combinedTimeSeries,
+    totalResponse[0]?.count_reaction_id,
     (row: TimeSeriesRow) => row.likes + row.dislikes
   );
+};
+
+const combineTimeSeries = (
+  likeTimeSeries: SingleTimeSeriesRow[],
+  dislikeTimeSeries: SingleTimeSeriesRow[]
+): TimeSeriesRow[] | null => {
+  if (likeTimeSeries.length !== dislikeTimeSeries.length) {
+    return null;
+  }
+
+  return likeTimeSeries.map((likeRow, index) => ({
+    date: likeRow.date,
+    likes: likeRow.reactions,
+    dislikes: dislikeTimeSeries[index].reactions,
+    total: 0,
+  }));
 };
 
 export const parseExcelData = (

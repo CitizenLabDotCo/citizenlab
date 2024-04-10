@@ -119,6 +119,7 @@ export type ReactionsByTimeResponse = {
     type: 'report_builder_data_units';
     attributes: [
       ReactionsTimeSeriesResponseRow[] | [],
+      ReactionsTimeSeriesResponseRow[] | [],
       [ReactionsCountRow] | []
     ];
   };
