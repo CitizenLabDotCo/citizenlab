@@ -1964,7 +1964,7 @@
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Are you sure?",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "No s'han trobat caps de projecte",
   "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "No es mostra res, perquè no hi ha accions que l'usuari pugui dur a terme en aquest projecte.",
-  "app.containers.AdminPage.groups.permissions.onlyAdmins": "Només els administradors poden canviar aquesta configuració.",
+  "app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion": "Només els administradors poden crear una pregunta nova.",
   "app.containers.AdminPage.groups.permissions.option1": "opció 1",
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Invitació pendent",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Qui pot anotar el document?",
