@@ -1950,7 +1950,7 @@
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Da li ste sigurni",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Nisu pronađeni projektni menadžeri",
   "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "Ništa nije prikazano, jer nema akcija koje korisnici mogu preduzeti u ovom projektu.",
-  "app.containers.AdminPage.groups.permissions.onlyAdmins": "Само администратори могу да промене ово подешавање.",
+  "app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion": "Only admins can create a new question.",
   "app.containers.AdminPage.groups.permissions.option1": "Опција 1",
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Pozivnica na čekanju",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Ко може да дода коментаре на документ?",
