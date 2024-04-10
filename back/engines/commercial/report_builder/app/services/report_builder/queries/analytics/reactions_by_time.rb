@@ -8,8 +8,7 @@ module ReportBuilder
         filters: {
           **date_filter('dimension_date_created', start_at, end_at),
           **project_filter('dimension_project_id', project_id),
-          'dimension_type.name': 'reaction',
-          'dimension_type.parent': 'idea'
+          reactable_type: 'Idea'
         },
         groups: "dimension_date_created.#{interval(resolution)}",
         aggregations: {
@@ -24,8 +23,7 @@ module ReportBuilder
         filters: {
           **date_filter('dimension_date_created', start_at, end_at),
           **project_filter('dimension_project_id', project_id),
-          'dimension_type.name': 'reaction',
-          'dimension_type.parent': 'idea'
+          reactable_type: 'Idea'
         },
         aggregations: {
           reactions_count: 'sum'
