@@ -3,10 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::Campaigns::ManualProjectParticipants do
-  describe 'ManualProjectParticipants Campaign default factory' do
-    it 'is valid' do
-      expect(build(:manual_project_participants_campaign)).to be_valid
-    end
+  subject { build(:manual_project_participants_campaign, project: create(:project_with_active_ideation_phase)) }
+
+  describe 'Default factory' do
+    it { is_expected.to be_valid }
   end
 
   describe 'validate project fk' do
