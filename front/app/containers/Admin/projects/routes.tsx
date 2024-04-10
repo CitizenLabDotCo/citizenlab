@@ -67,9 +67,9 @@ export enum projectsRoutes {
   projectTraffic = 'traffic',
   projectParticipation = 'participation',
   projectSettingsDescription = 'description',
-  projectSettingsEvents = 'events',
-  projectSettingsEventsNew = 'events/new',
-  projectSettingsEventsId = 'events/:id',
+  projectEvents = 'events',
+  projectEventsNew = 'events/new',
+  projectEventsId = 'events/:id',
   projectSettingsTags = 'tags',
   projectSettingsAccessRights = 'access-rights',
   projectId = ':projectId',
@@ -99,9 +99,9 @@ export type projectsRouteTypes =
   | AdminRoute<projectsRoutes.projects>
   | AdminRoute<`${projectsRoutes.projects}/${string}/ideas/${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/settings`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectSettingsEvents}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectEvents}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectSettingsDescription}`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectSettingsEvents}/${string}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectEvents}/${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectSettingsTags}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases`>
@@ -221,7 +221,15 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: projectsRoutes.projectSettingsEvents,
+            path: projectsRoutes.projectAnalysis,
+            element: (
+              <PageLoading>
+                <AdminProjectAnalysis />
+              </PageLoading>
+            ),
+          },
+          {
+            path: projectsRoutes.projectEvents,
             element: (
               <PageLoading>
                 <AdminProjectEvents />
@@ -229,7 +237,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: projectsRoutes.projectSettingsEventsNew,
+            path: projectsRoutes.projectEventsNew,
             element: (
               <PageLoading>
                 <AdminProjectEventsEdit />
@@ -237,7 +245,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: projectsRoutes.projectSettingsEventsId,
+            path: projectsRoutes.projectEventsId,
             element: (
               <PageLoading>
                 <AdminProjectEventsEdit />
@@ -383,14 +391,7 @@ const createAdminProjectsRoutes = () => {
               //   path: 'allowed-input-topics',
               //   element: <AdminAllowedTopicsComponent />,
               // },
-              {
-                path: projectsRoutes.projectAnalysis,
-                element: (
-                  <PageLoading>
-                    <AdminProjectAnalysis />
-                  </PageLoading>
-                ),
-              },
+
               {
                 path: projectsRoutes.projectPhaseOfflineInputs,
                 element: (
