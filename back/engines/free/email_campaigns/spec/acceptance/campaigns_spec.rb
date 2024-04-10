@@ -26,7 +26,7 @@ resource 'Campaigns' do
     end
     parameter :campaign_names, "An array of campaign names that should be returned. Possible values are #{EmailCampaigns::DeliveryService.new.campaign_classes.map(&:campaign_name).join(', ')}", required: false
     parameter :without_campaign_names, "An array of campaign names that should not be returned. Possible values are #{EmailCampaigns::DeliveryService.new.campaign_classes.map(&:campaign_name).join(', ')}", required: false
-    parameter :project_ids, 'An array of project IDs that will be used to filter only campaigns for those projects', required: false
+    parameter :resource_ids, 'An array of project IDs that will be used to filter only campaigns for those projects', required: false
 
     example_request 'List all campaigns' do
       assert_status 200
@@ -47,7 +47,7 @@ resource 'Campaigns' do
     end
 
     example 'List campaigns for specific project(s)' do
-      do_request(project_ids: [@manual_project_participants_campaign.project.id])
+      do_request(resource_ids: [@manual_project_participants_campaign.project.id])
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
     end

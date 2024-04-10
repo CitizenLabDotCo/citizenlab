@@ -19,7 +19,7 @@ module EmailCampaigns
         @campaigns = @campaigns.where.not(type: campaign_types)
       end
 
-      @campaigns = @campaigns.where(project_id: params[:project_ids]) if params[:project_ids]
+      @campaigns = @campaigns.where(resource_id: params[:resource_ids]) if params[:resource_ids]
 
       @campaigns = @campaigns
         .page(params.dig(:page, :number))
@@ -139,7 +139,7 @@ module EmailCampaigns
         :enabled,
         :sender,
         :reply_to,
-        :project_id,
+        :resource_id,
         group_ids: [],
         subject_multiloc: I18n.available_locales,
         body_multiloc: I18n.available_locales
