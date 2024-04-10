@@ -15,9 +15,9 @@ resource 'Campaigns' do
 
   get '/web_api/v1/campaigns' do
     before do
-      @campaigns = create_list(:manual_campaign, 3)
+      create_list(:manual_campaign, 3)
+      @manual_project_participants_campaign = create(:manual_project_participants_campaign)
       @automated_campaigns = create_list(:official_feedback_on_initiative_you_follow_campaign, 2)
-      @project_campaign = create(:manual_project_participants_campaign)
     end
 
     with_options scope: :page do
@@ -34,20 +34,20 @@ resource 'Campaigns' do
       expect(json_response[:data].size).to eq 6
     end
 
-    example 'List all manual campaigns' do # TODO: This test is now ambiguous (what is really 'manual'?)
-      do_request(campaign_names: ['manual'])
+    example 'List all manual campaigns' do
+      do_request(campaign_names: %w[manual manual_project_participants])
       json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 3
+      expect(json_response[:data].size).to eq 4
     end
 
     example 'List all non-manual campaigns' do
-      do_request(without_campaign_names: ['manual'])
+      do_request(without_campaign_names: %w[manual manual_project_participants])
       json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 3
+      expect(json_response[:data].size).to eq 2
     end
 
     example 'List campaigns for specific project(s)' do
-      do_request(project_ids: [@project_campaign.project.id])
+      do_request(project_ids: [@manual_project_participants_campaign.project.id])
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
     end
