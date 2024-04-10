@@ -47,7 +47,7 @@ describe('Project card component', () => {
   it('navigates to project page on click title', () => {
     cy.goToLandingPage();
 
-    cy.get('.e2e-project-card').should('exist');
+    cy.get('.e2e-project-card').first().should('exist');
     cy.get('.e2e-project-card-project-title').should('exist');
     cy.get('.e2e-project-card-project-title').first().click();
 
