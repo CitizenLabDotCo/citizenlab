@@ -1950,7 +1950,7 @@
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Jeste li sigurni?",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Nisu pronađeni voditelji projekata",
   "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "Ništa nije prikazano jer nema radnji koje korisnici mogu obaviti u ovom projektu.",
-  "app.containers.AdminPage.groups.permissions.onlyAdmins": "Samo administratori mogu promijeniti ovu postavku.",
+  "app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion": "Samo administratori mogu kreirati novo pitanje.",
   "app.containers.AdminPage.groups.permissions.option1": "opcija 1",
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Pozivnica na čekanju",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Tko može označiti dokument?",

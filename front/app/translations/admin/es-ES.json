@@ -1950,7 +1950,7 @@
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "¿Estás seguro?",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "No encontramos administradores de proyecto",
   "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "No se despliega información, debido a que no puedes realizar acciones en este proyecto.",
-  "app.containers.AdminPage.groups.permissions.onlyAdmins": "Sólo los administradores pueden cambiar esta configuración.",
+  "app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion": "Sólo los administradores pueden crear una pregunta nueva.",
   "app.containers.AdminPage.groups.permissions.option1": "Opción 1",
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Invitación pendiente",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "¿Quién puede comentar en el documento?",
