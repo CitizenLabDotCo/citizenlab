@@ -6,11 +6,12 @@
 #
 #  id                        :uuid             primary key
 #  dimension_user_id         :uuid
-#  participant_id            :uuid
 #  dimension_project_id      :uuid
+#  dimension_type_id         :uuid
 #  dimension_date_created_id :date
-#  item_type                 :string
-#  action_type               :string
+#  reactions_count           :integer
+#  likes_count               :integer
+#  dislikes_count            :integer
 #
 module Analytics
   class FactParticipation < Analytics::ApplicationRecordView
