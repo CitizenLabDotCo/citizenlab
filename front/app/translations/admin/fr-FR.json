@@ -1950,6 +1950,7 @@
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Etes-vous sûr ?",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Administrateurs projet introuvables",
   "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "Rien n'est montré, car il n'y a pas d'actions que l'utilisateur peut entreprendre dans ce projet.",
+  "app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion": "Seuls les administrateurs peuvent créer une nouvelle question.",
   "app.containers.AdminPage.groups.permissions.option1": "Option 1",
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Invitation en attente",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Qui peut annoter le document ?",

@@ -1950,6 +1950,7 @@
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Vai esat pārliecināts?",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Projektu vadītāji nav atrasti",
   "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "Nekas nav redzams, jo šajā projektā lietotājs nevar veikt nekādas darbības.",
+  "app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion": "Tikai administratori var izveidot jaunu jautājumu.",
   "app.containers.AdminPage.groups.permissions.option1": "1. iespēja",
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Neapstiprināts uzaicinājums",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Kas var pievienot anotācijas dokumentam?",
