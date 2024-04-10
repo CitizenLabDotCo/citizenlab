@@ -42,6 +42,8 @@ RSpec.describe ReportBuilder::Queries::Analytics::ReactionsByTime do
       )
     end
 
+    let_it_be(:user) { create(:user) }
+
     let_it_be(:date3) { Date.new(2022, 9, 8) }
     let_it_be(:activity) do
       create(:dimension_date, date: date3)
@@ -54,7 +56,22 @@ RSpec.describe ReportBuilder::Queries::Analytics::ReactionsByTime do
         payload: {
           reactable_type: 'Idea',
           reactable_id: idea.id
-        }
+        },
+        user_id: user.id
+      )
+    end
+    let_it_be(:activity) do
+      create(
+        :activity,
+        project_id: project.id,
+        acted_at: date3,
+        item_type: 'Reaction',
+        action: 'idea_disliked',
+        payload: {
+          reactable_type: 'Idea',
+          reactable_id: idea.id
+        },
+        user_id: user.id
       )
     end
 
@@ -64,13 +81,13 @@ RSpec.describe ReportBuilder::Queries::Analytics::ReactionsByTime do
         [
           [
             {
-              'count_reactable_id' => 1,
+              'count_reaction_id' => 1,
               'dimension_date_created.month' => '2022-09',
               'first_dimension_date_created_date' => date
             }
           ],
           [],
-          [{ 'count_reactable_id' => 1 }]
+          [{ 'count_reaction_id' => 1 }]
         ]
       )
     end
@@ -81,42 +98,42 @@ RSpec.describe ReportBuilder::Queries::Analytics::ReactionsByTime do
         [
           [
             {
-              'count_reactable_id' => 1,
+              'count_reaction_id' => 1,
               'dimension_date_created.month' => '2022-09',
               'first_dimension_date_created_date' => date
             }
           ],
           [
             {
-              'count_reactable_id' => 1,
+              'count_reaction_id' => 1,
               'dimension_date_created.month' => '2022-09',
               'first_dimension_date_created_date' => date2
             }
           ],
-          [{ 'count_reactable_id' => 2 }]
+          [{ 'count_reaction_id' => 2 }]
         ]
       )
     end
 
-    it 'dedupes duplicate reactions' do
+    it 'dedupes identical reactions by the same user on the same reactable' do
       params = { start_at: date - 1.day, end_at: date + 10.days, project_id: project.id }
       expect(query.run_query(**params)).to eq(
         [
           [
             {
-              'count_reactable_id' => 1,
+              'count_reaction_id' => 1,
               'dimension_date_created.month' => '2022-09',
               'first_dimension_date_created_date' => date
             }
           ],
           [
             {
-              'count_reactable_id' => 1,
+              'count_reaction_id' => 2,
               'dimension_date_created.month' => '2022-09',
               'first_dimension_date_created_date' => date2
             }
           ],
-          [{ 'count_reactable_id' => 2 }]
+          [{ 'count_reaction_id' => 3 }]
         ]
       )
     end

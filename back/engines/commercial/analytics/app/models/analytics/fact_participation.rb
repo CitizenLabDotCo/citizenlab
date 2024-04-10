@@ -12,7 +12,7 @@
 #  item_type                 :string
 #  action_type               :string
 #  reactable_type            :text
-#  reactable_id              :text
+#  reaction_id               :text
 #
 module Analytics
   class FactParticipation < Analytics::ApplicationRecordView

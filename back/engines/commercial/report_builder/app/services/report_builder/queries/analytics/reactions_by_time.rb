@@ -13,7 +13,7 @@ module ReportBuilder
         groups: "dimension_date_created.#{interval(resolution)}",
         aggregations: {
           'dimension_date_created.date': 'first',
-          reactable_id: 'count'
+          reaction_id: 'count'
         }
       }
 
@@ -27,7 +27,7 @@ module ReportBuilder
         groups: "dimension_date_created.#{interval(resolution)}",
         aggregations: {
           'dimension_date_created.date': 'first',
-          reactable_id: 'count'
+          reaction_id: 'count'
         }
       }
 
@@ -39,7 +39,7 @@ module ReportBuilder
           reactable_type: 'Idea'
         },
         aggregations: {
-          reactable_id: 'count'
+          reaction_id: 'count'
         }
       }
 

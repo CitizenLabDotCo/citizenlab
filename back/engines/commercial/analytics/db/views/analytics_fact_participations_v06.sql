@@ -9,7 +9,13 @@ SELECT
     a.item_type AS item_type,
     a.action AS action_type,
     a.payload->>'reactable_type' AS reactable_type,
-    a.payload->>'reactable_id' AS reactable_id
+    (
+      COALESCE(a.user_id::CHAR, a.id::CHAR) || 
+      '_' ||
+      COALESCE(a.payload->>'reactable_type', '') ||
+      '_' ||
+      COALESCE(a.payload->>'reactable_id', '')
+    ) AS reaction_id
 FROM activities a
 WHERE
     (a.item_type = 'Idea' AND a.action = 'published') OR
