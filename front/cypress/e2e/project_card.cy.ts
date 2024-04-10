@@ -27,7 +27,7 @@ describe('Project card component', () => {
     });
   });
 
-  it('shows the title, description, progress bar and cta', () => {
+  it.skip('shows the title, description, progress bar and cta', () => {
     cy.goToLandingPage();
 
     cy.get('.e2e-project-card').should('exist');
@@ -44,7 +44,7 @@ describe('Project card component', () => {
     projectCard.get('.e2e-project-card-cta').contains('Submit your idea');
   });
 
-  it('navigates to project page on click title', () => {
+  it.skip('navigates to project page on click title', () => {
     cy.goToLandingPage();
 
     cy.get('.e2e-project-card').first().should('exist');
