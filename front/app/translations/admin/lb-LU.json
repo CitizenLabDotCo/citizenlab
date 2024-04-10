@@ -1964,7 +1964,7 @@
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Are you sure?",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Project managers not found",
   "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "Nothing is shown, because there are no actions the user can take in this project.",
-  "app.containers.AdminPage.groups.permissions.onlyAdmins": "Nëmmen Admins kënnen dës Astellung änneren.",
+  "app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion": "Nëmmen Administrateuren kënnen eng nei Fro erstellen.",
   "app.containers.AdminPage.groups.permissions.option1": "Optioun 1",
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Pending invitation",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Wien kann d'Dokument annotéieren?",
