@@ -1950,6 +1950,7 @@
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Er du sikker?",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Fant ikke prosjektledere",
   "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "Ingenting vises, fordi det ikke er noen handlinger brukeren kan gjøre i dette prosjektet.",
+  "app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion": "Bare administratorer kan opprette et nytt spørsmål.",
   "app.containers.AdminPage.groups.permissions.option1": "valg 1",
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Ventende invitasjon",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Hvem kan kommentere dokumentet?",
