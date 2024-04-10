@@ -1950,7 +1950,7 @@
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Czy na pewno?",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Nie znaleziono menadżerów projektu",
   "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "Nic nie jest pokazane, ponieważ nie ma żadnych spraw, do których użytkownik może się zgłosić w tym projekcie.",
-  "app.containers.AdminPage.groups.permissions.onlyAdmins": "Tylko administratorzy mogą zmienić to ustawienie.",
+  "app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion": "Tylko administratorzy mogą tworzyć nowe pytania.",
   "app.containers.AdminPage.groups.permissions.option1": "Opcja 1",
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Zaproszenie oczekujące",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Kto może dodawać adnotacje do dokumentu?",
