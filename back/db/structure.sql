@@ -500,6 +500,8 @@ ALTER TABLE IF EXISTS ONLY public.admin_publications DROP CONSTRAINT IF EXISTS a
 ALTER TABLE IF EXISTS ONLY public.activities DROP CONSTRAINT IF EXISTS activities_pkey;
 ALTER TABLE IF EXISTS public.que_jobs ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS public.areas_static_pages ALTER COLUMN id DROP DEFAULT;
+DROP TABLE IF EXISTS public.volunteering_volunteers;
+DROP TABLE IF EXISTS public.volunteering_causes;
 DROP TABLE IF EXISTS public.verification_verifications;
 DROP TABLE IF EXISTS public.user_custom_fields_representativeness_ref_distributions;
 DROP VIEW IF EXISTS public.union_posts;
@@ -526,6 +528,7 @@ DROP TABLE IF EXISTS public.project_folders_images;
 DROP TABLE IF EXISTS public.project_folders_folders;
 DROP TABLE IF EXISTS public.project_folders_files;
 DROP TABLE IF EXISTS public.project_files;
+DROP TABLE IF EXISTS public.polls_responses;
 DROP TABLE IF EXISTS public.polls_response_options;
 DROP TABLE IF EXISTS public.polls_questions;
 DROP TABLE IF EXISTS public.polls_options;
@@ -551,6 +554,7 @@ DROP TABLE IF EXISTS public.impact_tracking_salts;
 DROP TABLE IF EXISTS public.identities;
 DROP TABLE IF EXISTS public.ideas_topics;
 DROP VIEW IF EXISTS public.idea_trending_infos;
+DROP TABLE IF EXISTS public.reactions;
 DROP TABLE IF EXISTS public.idea_imports;
 DROP TABLE IF EXISTS public.idea_import_files;
 DROP TABLE IF EXISTS public.idea_images;
@@ -578,6 +582,7 @@ DROP TABLE IF EXISTS public.cosponsors_initiatives;
 DROP TABLE IF EXISTS public.content_builder_layouts;
 DROP TABLE IF EXISTS public.content_builder_layout_images;
 DROP TABLE IF EXISTS public.common_passwords;
+DROP TABLE IF EXISTS public.comments;
 DROP TABLE IF EXISTS public.baskets_ideas;
 DROP TABLE IF EXISTS public.baskets;
 DROP SEQUENCE IF EXISTS public.areas_static_pages_id_seq;
@@ -593,17 +598,12 @@ DROP VIEW IF EXISTS public.analytics_fact_registrations;
 DROP TABLE IF EXISTS public.invites;
 DROP VIEW IF EXISTS public.analytics_fact_project_statuses;
 DROP VIEW IF EXISTS public.analytics_fact_posts;
-DROP TABLE IF EXISTS public.initiative_status_changes;
-DROP TABLE IF EXISTS public.ideas_phases;
-DROP VIEW IF EXISTS public.analytics_fact_participations;
-DROP TABLE IF EXISTS public.volunteering_volunteers;
-DROP TABLE IF EXISTS public.volunteering_causes;
-DROP TABLE IF EXISTS public.reactions;
-DROP TABLE IF EXISTS public.polls_responses;
 DROP TABLE IF EXISTS public.phases;
 DROP TABLE IF EXISTS public.initiatives;
+DROP TABLE IF EXISTS public.initiative_status_changes;
+DROP TABLE IF EXISTS public.ideas_phases;
 DROP TABLE IF EXISTS public.ideas;
-DROP TABLE IF EXISTS public.comments;
+DROP VIEW IF EXISTS public.analytics_fact_participations;
 DROP VIEW IF EXISTS public.analytics_fact_events;
 DROP TABLE IF EXISTS public.events;
 DROP VIEW IF EXISTS public.analytics_fact_email_deliveries;
@@ -1462,28 +1462,20 @@ CREATE VIEW public.analytics_fact_events AS
 
 
 --
--- Name: comments; Type: TABLE; Schema: public; Owner: -
+-- Name: analytics_fact_participations; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE TABLE public.comments (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    author_id uuid,
-    post_id uuid,
-    parent_id uuid,
-    lft integer NOT NULL,
-    rgt integer NOT NULL,
-    body_multiloc jsonb DEFAULT '{}'::jsonb,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    likes_count integer DEFAULT 0 NOT NULL,
-    dislikes_count integer DEFAULT 0 NOT NULL,
-    publication_status character varying DEFAULT 'published'::character varying NOT NULL,
-    body_updated_at timestamp without time zone,
-    children_count integer DEFAULT 0 NOT NULL,
-    post_type character varying,
-    author_hash character varying,
-    anonymous boolean DEFAULT false NOT NULL
-);
+CREATE VIEW public.analytics_fact_participations AS
+ SELECT a.id,
+    a.user_id AS dimension_user_id,
+    COALESCE(a.user_id, a.id) AS participant_id,
+    a.project_id AS dimension_project_id,
+    (a.acted_at)::date AS dimension_date_created_id,
+    a.item_type,
+    a.action AS action_type,
+    (a.payload ->> 'reactable_type'::text) AS reactable_type
+   FROM public.activities a
+  WHERE ((((a.item_type)::text = 'Idea'::text) AND ((a.action)::text = 'published'::text)) OR (((a.item_type)::text = 'Comment'::text) AND ((a.action)::text = 'created'::text)) OR (((a.item_type)::text = 'Initiative'::text) AND ((a.action)::text = 'published'::text)) OR (((a.item_type)::text = 'Reaction'::text) AND ((a.action)::text = ANY ((ARRAY['idea_liked'::character varying, 'idea_disliked'::character varying, 'comment_liked'::character varying, 'initiative_liked'::character varying])::text[]))) OR (((a.item_type)::text = 'Basket'::text) AND ((a.action)::text = 'created'::text)) OR (((a.item_type)::text = 'Polls::Response'::text) AND ((a.action)::text = 'created'::text)) OR (((a.item_type)::text = 'Volunteering::Volunteer'::text) AND ((a.action)::text = 'created'::text)) OR (((a.item_type)::text = 'Events::Attendance'::text) AND ((a.action)::text = 'created'::text)) OR (((a.item_type)::text = 'Follower'::text) AND ((a.action)::text = 'created'::text)));
 
 
 --
@@ -1520,6 +1512,36 @@ CREATE TABLE public.ideas (
     internal_comments_count integer DEFAULT 0 NOT NULL,
     votes_count integer DEFAULT 0 NOT NULL,
     followers_count integer DEFAULT 0 NOT NULL
+);
+
+
+--
+-- Name: ideas_phases; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.ideas_phases (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    idea_id uuid,
+    phase_id uuid,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    baskets_count integer DEFAULT 0 NOT NULL,
+    votes_count integer DEFAULT 0 NOT NULL
+);
+
+
+--
+-- Name: initiative_status_changes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.initiative_status_changes (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    user_id uuid,
+    initiative_id uuid,
+    initiative_status_id uuid,
+    official_feedback_id uuid,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -1598,185 +1620,6 @@ CREATE TABLE public.phases (
     campaigns_settings jsonb DEFAULT '{}'::jsonb,
     native_survey_title_multiloc jsonb DEFAULT '{}'::jsonb,
     native_survey_button_multiloc jsonb DEFAULT '{}'::jsonb
-);
-
-
---
--- Name: polls_responses; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.polls_responses (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    phase_id uuid NOT NULL,
-    user_id uuid,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: reactions; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.reactions (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    reactable_id uuid,
-    reactable_type character varying,
-    user_id uuid,
-    mode character varying NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: volunteering_causes; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.volunteering_causes (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    phase_id uuid NOT NULL,
-    title_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    description_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    volunteers_count integer DEFAULT 0 NOT NULL,
-    image character varying,
-    ordering integer NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: volunteering_volunteers; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.volunteering_volunteers (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    cause_id uuid NOT NULL,
-    user_id uuid NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: analytics_fact_participations; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.analytics_fact_participations AS
- SELECT i.id,
-    i.author_id AS dimension_user_id,
-    i.project_id AS dimension_project_id,
-        CASE
-            WHEN ((ph.participation_method)::text = 'native_survey'::text) THEN survey.id
-            ELSE idea.id
-        END AS dimension_type_id,
-    (i.created_at)::date AS dimension_date_created_id,
-    (i.likes_count + i.dislikes_count) AS reactions_count,
-    i.likes_count,
-    i.dislikes_count
-   FROM ((((public.ideas i
-     LEFT JOIN public.projects pr ON ((pr.id = i.project_id)))
-     LEFT JOIN public.phases ph ON ((ph.id = i.creation_phase_id)))
-     JOIN public.analytics_dimension_types idea ON (((idea.name)::text = 'idea'::text)))
-     LEFT JOIN public.analytics_dimension_types survey ON (((survey.name)::text = 'survey'::text)))
-UNION ALL
- SELECT i.id,
-    i.author_id AS dimension_user_id,
-    NULL::uuid AS dimension_project_id,
-    adt.id AS dimension_type_id,
-    (i.created_at)::date AS dimension_date_created_id,
-    (i.likes_count + i.dislikes_count) AS reactions_count,
-    i.likes_count,
-    i.dislikes_count
-   FROM (public.initiatives i
-     JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'initiative'::text)))
-UNION ALL
- SELECT c.id,
-    c.author_id AS dimension_user_id,
-    i.project_id AS dimension_project_id,
-    adt.id AS dimension_type_id,
-    (c.created_at)::date AS dimension_date_created_id,
-    (c.likes_count + c.dislikes_count) AS reactions_count,
-    c.likes_count,
-    c.dislikes_count
-   FROM ((public.comments c
-     JOIN public.analytics_dimension_types adt ON ((((adt.name)::text = 'comment'::text) AND ((adt.parent)::text = lower((c.post_type)::text)))))
-     LEFT JOIN public.ideas i ON ((c.post_id = i.id)))
-UNION ALL
- SELECT r.id,
-    r.user_id AS dimension_user_id,
-    COALESCE(i.project_id, ic.project_id) AS dimension_project_id,
-    adt.id AS dimension_type_id,
-    (r.created_at)::date AS dimension_date_created_id,
-    1 AS reactions_count,
-        CASE
-            WHEN ((r.mode)::text = 'up'::text) THEN 1
-            ELSE 0
-        END AS likes_count,
-        CASE
-            WHEN ((r.mode)::text = 'down'::text) THEN 1
-            ELSE 0
-        END AS dislikes_count
-   FROM ((((public.reactions r
-     JOIN public.analytics_dimension_types adt ON ((((adt.name)::text = 'reaction'::text) AND ((adt.parent)::text = lower((r.reactable_type)::text)))))
-     LEFT JOIN public.ideas i ON ((i.id = r.reactable_id)))
-     LEFT JOIN public.comments c ON ((c.id = r.reactable_id)))
-     LEFT JOIN public.ideas ic ON ((ic.id = c.post_id)))
-UNION ALL
- SELECT pr.id,
-    pr.user_id AS dimension_user_id,
-    COALESCE(p.project_id, pr.phase_id) AS dimension_project_id,
-    adt.id AS dimension_type_id,
-    (pr.created_at)::date AS dimension_date_created_id,
-    0 AS reactions_count,
-    0 AS likes_count,
-    0 AS dislikes_count
-   FROM ((public.polls_responses pr
-     LEFT JOIN public.phases p ON ((p.id = pr.phase_id)))
-     JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'poll'::text)))
-UNION ALL
- SELECT vv.id,
-    vv.user_id AS dimension_user_id,
-    COALESCE(p.project_id, vc.phase_id) AS dimension_project_id,
-    adt.id AS dimension_type_id,
-    (vv.created_at)::date AS dimension_date_created_id,
-    0 AS reactions_count,
-    0 AS likes_count,
-    0 AS dislikes_count
-   FROM (((public.volunteering_volunteers vv
-     LEFT JOIN public.volunteering_causes vc ON ((vc.id = vv.cause_id)))
-     LEFT JOIN public.phases p ON ((p.id = vc.phase_id)))
-     JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'volunteer'::text)));
-
-
---
--- Name: ideas_phases; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.ideas_phases (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    idea_id uuid,
-    phase_id uuid,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    baskets_count integer DEFAULT 0 NOT NULL,
-    votes_count integer DEFAULT 0 NOT NULL
-);
-
-
---
--- Name: initiative_status_changes; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.initiative_status_changes (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    user_id uuid,
-    initiative_id uuid,
-    initiative_status_id uuid,
-    official_feedback_id uuid,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -2048,6 +1891,31 @@ CREATE TABLE public.baskets_ideas (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     votes integer DEFAULT 1 NOT NULL
+);
+
+
+--
+-- Name: comments; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.comments (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    author_id uuid,
+    post_id uuid,
+    parent_id uuid,
+    lft integer NOT NULL,
+    rgt integer NOT NULL,
+    body_multiloc jsonb DEFAULT '{}'::jsonb,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    likes_count integer DEFAULT 0 NOT NULL,
+    dislikes_count integer DEFAULT 0 NOT NULL,
+    publication_status character varying DEFAULT 'published'::character varying NOT NULL,
+    body_updated_at timestamp without time zone,
+    children_count integer DEFAULT 0 NOT NULL,
+    post_type character varying,
+    author_hash character varying,
+    anonymous boolean DEFAULT false NOT NULL
 );
 
 
@@ -2434,6 +2302,21 @@ CREATE TABLE public.idea_imports (
     updated_at timestamp(6) without time zone NOT NULL,
     user_consent boolean DEFAULT false NOT NULL,
     content_changes jsonb DEFAULT '{}'::jsonb
+);
+
+
+--
+-- Name: reactions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.reactions (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    reactable_id uuid,
+    reactable_type character varying,
+    user_id uuid,
+    mode character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -2899,6 +2782,19 @@ CREATE TABLE public.polls_response_options (
 
 
 --
+-- Name: polls_responses; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.polls_responses (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    phase_id uuid NOT NULL,
+    user_id uuid,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
 -- Name: project_files; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3330,6 +3226,36 @@ CREATE TABLE public.verification_verifications (
     active boolean DEFAULT true NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: volunteering_causes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.volunteering_causes (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    phase_id uuid NOT NULL,
+    title_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    description_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    volunteers_count integer DEFAULT 0 NOT NULL,
+    image character varying,
+    ordering integer NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: volunteering_volunteers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.volunteering_volunteers (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    cause_id uuid NOT NULL,
+    user_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -7436,6 +7362,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240229195843'),
 ('20240301120023'),
 ('20240305122502'),
-('20240328141200');
+('20240328141200'),
+('20240409150000');
 
 
