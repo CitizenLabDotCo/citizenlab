@@ -1964,7 +1964,7 @@
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "crwdns1992634:0crwdne1992634:0",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "crwdns1992636:0crwdne1992636:0",
   "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "crwdns1992638:0crwdne1992638:0",
-  "app.containers.AdminPage.groups.permissions.onlyAdmins": "crwdns1992640:0crwdne1992640:0",
+  "app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion": "crwdns2016760:0crwdne2016760:0",
   "app.containers.AdminPage.groups.permissions.option1": "crwdns1992642:0crwdne1992642:0",
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "crwdns1992644:0crwdne1992644:0",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "crwdns1992646:0crwdne1992646:0",
