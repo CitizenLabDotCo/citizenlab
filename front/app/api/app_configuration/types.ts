@@ -77,14 +77,6 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     enabled: boolean;
   };
-  demographic_fields?: {
-    allowed: boolean;
-    enabled: boolean;
-    gender: boolean;
-    birthyear: boolean;
-    domicile: boolean;
-    education: boolean;
-  };
   password_login?: {
     allowed: boolean;
     enabled: boolean;
@@ -139,9 +131,7 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
     url?: string;
   };
-  manual_project_sorting?: AppConfigurationFeature;
   admin_project_templates?: AppConfigurationFeature;
-  pages?: AppConfigurationFeature;
   private_projects?: AppConfigurationFeature;
   maps?: AppConfigurationMapSettings;
   initiatives: ProposalsSettings;
@@ -159,7 +149,6 @@ export interface IAppConfigurationSettings {
     verification_methods: string[];
   };
   volunteering?: AppConfigurationFeature;
-  workshops?: AppConfigurationFeature;
   smart_groups?: AppConfigurationFeature;
   manual_emailing?: AppConfigurationFeature;
   automated_emailing_control?: AppConfigurationFeature;
@@ -179,12 +168,10 @@ export interface IAppConfigurationSettings {
   snap_survey_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;
   bulk_import_ideas?: AppConfigurationFeature;
-  widgets?: AppConfigurationFeature;
   granular_permissions?: AppConfigurationFeature;
   ideaflow_social_sharing?: AppConfigurationFeature;
   initiativeflow_social_sharing?: AppConfigurationFeature;
   machine_translations?: AppConfigurationFeature;
-  custom_maps?: AppConfigurationFeature;
   polls?: AppConfigurationFeature;
   moderation?: AppConfigurationFeature;
   flag_inappropriate_content?: AppConfigurationFeature;
@@ -195,7 +182,6 @@ export interface IAppConfigurationSettings {
   blocking_profanity?: AppConfigurationFeature;
   anonymous_participation?: AppConfigurationFeature;
   custom_idea_statuses?: AppConfigurationFeature;
-  idea_author_change?: AppConfigurationFeature;
   idea_custom_copy?: AppConfigurationFeature;
   intercom?: AppConfigurationFeature;
   satismeter?: AppConfigurationFeature & {
