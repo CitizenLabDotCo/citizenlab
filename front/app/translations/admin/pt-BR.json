@@ -1964,7 +1964,7 @@
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Você tem certeza?",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Administradores de projetos não encontrados",
   "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "Nada há informações, porque não há ações que o usuário possa realizar neste projeto.",
-  "app.containers.AdminPage.groups.permissions.onlyAdmins": "Apenas os administradores podem alterar esta definição.",
+  "app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion": "Somente os administradores podem criar uma nova pergunta.",
   "app.containers.AdminPage.groups.permissions.option1": "Opção 1",
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Convite pendente",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Quem pode fazer anotações no documento?",
