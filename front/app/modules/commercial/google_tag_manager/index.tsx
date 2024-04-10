@@ -19,10 +19,6 @@ declare module 'components/ConsentManager/destinations' {
   export interface IDestinationMap {
     google_tag_manager: 'google_tag_manager';
   }
-
-  interface IConsentManagerFeatureMap {
-    google_tag_manager: 'google_tag_manager';
-  }
 }
 
 const destinationConfig: IDestinationConfig = {

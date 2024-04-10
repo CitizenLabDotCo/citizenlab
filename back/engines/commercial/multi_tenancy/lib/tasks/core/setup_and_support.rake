@@ -245,13 +245,22 @@ namespace :setup_and_support do
     end
   end
 
-  desc 'Delete users and reactions'
-  task :delete_users_reactions, %i[host url] => [:environment] do |_t, args|
+  desc 'Delete spam users (from email list) and their contributions'
+  task :delete_users_participation, %i[host url] => [:environment] do |_t, args|
     emails = open(args[:url]).readlines.map(&:strip)
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       users = User.where email: emails
+      Initiative.where(author: users).destroy_all
+      Idea.where(author: users).destroy_all
       Reaction.where(user: users).destroy_all
-      users.destroy_all
+      Comment.where(author: users).destroy_all
+      Basket.where(user: users).destroy_all
+      service = SideFxUserService.new
+      users.each do |user|
+        service.before_destroy(user, nil)
+        user.destroy!
+        service.after_destroy(user, nil)
+      end
     end
   end
 
