@@ -15,6 +15,7 @@ import Button from 'components/UI/Button';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
+import { isProjectFolderModerator } from 'utils/permissions/rules/projectFolderPermissions';
 
 import messages from './messages';
 
@@ -53,7 +54,9 @@ export interface Props {
 const AdminProjectsList = memo(({ className }: Props) => {
   const { data: authUser } = useAuthUser();
   const userIsAdmin = !isNilOrError(authUser) ? isAdmin(authUser) : false;
-
+  const userIsFolderModerator = !isNilOrError(authUser)
+    ? isProjectFolderModerator(authUser.data)
+    : false;
   const [containerOutletRendered, setContainerOutletRendered] = useState(false);
   const handleContainerOutletOnRender = (hasRendered: boolean) => {
     setContainerOutletRendered(hasRendered);
@@ -87,14 +90,16 @@ const AdminProjectsList = memo(({ className }: Props) => {
                 <FormattedMessage {...messages.createProjectFolder} />
               </Button>
             )}
-
-            <Button
-              linkTo={'/admin/projects/new-project'}
-              icon="plus-circle"
-              buttonStyle="admin-dark"
-            >
-              <FormattedMessage {...messages.newProject} />
-            </Button>
+            {(userIsAdmin ||
+              (userIsFolderModerator && isProjectFoldersEnabled)) && (
+              <Button
+                linkTo={'/admin/projects/new-project'}
+                icon="plus-circle"
+                buttonStyle="admin-dark"
+              >
+                <FormattedMessage {...messages.newProject} />
+              </Button>
+            )}
           </Box>
         </Box>
         <PageWrapper>
