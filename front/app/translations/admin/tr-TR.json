@@ -2021,6 +2021,8 @@
   "app.containers.AdminPage.phase.methodPicker.votingTitle1": "Bir oylama veya önceliklendirme çalışması yapın",
   "app.containers.AdminPage.projects.all.createProjectFolder": "Yeni klasör",
   "app.containers.AdminPage.projects.all.existingProjects": "Mevcut projeler",
+  "app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders": "Yalnızca yöneticiler proje klasörleri oluşturabilir.",
+  "app.containers.AdminPage.projects.all.onlyAdminsCanCreateProjects": "Yalnızca yöneticiler ve klasör moderatörleri proje oluşturabilir.",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projeler ve klasörler",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "Yapay Zeka Analizi",
   "app.containers.AdminPage.projects.project.analysis.Insights.accuracy": "Doğruluk: {accuracy}{percentage}",
