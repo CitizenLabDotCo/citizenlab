@@ -4,6 +4,7 @@
 SELECT
     i.id,
     i.author_id AS dimension_user_id,
+    COALESCE(i.author_id::CHAR, i.author_hash, i.id::CHAR) as participant_id,
     i.project_id AS dimension_project_id,
     CASE
         WHEN ph.participation_method = 'native_survey' THEN survey.id
@@ -25,6 +26,7 @@ UNION ALL
 SELECT
     i.id,
     i.author_id AS dimension_user_id,
+    COALESCE(i.author_id::CHAR, i.author_hash, i.id::CHAR) as participant_id,
     null AS dimension_project_id, -- initiative has no project
     adt.id AS dimension_type_id,
     i.created_at::DATE AS dimension_date_created_id,
@@ -40,6 +42,7 @@ UNION ALL
 SELECT
     c.id,
     c.author_id AS dimension_user_id,
+    COALESCE(c.author_id::CHAR, c.author_hash, c.id::CHAR) as participant_id,
     i.project_id AS dimension_project_id,
     adt.id AS dimension_type_id,
     c.created_at::DATE AS dimension_date_created_id,
@@ -56,6 +59,7 @@ UNION ALL
 SELECT
     r.id,
     r.user_id AS dimension_user_id,
+    COALESCE(r.user_id::CHAR, r.id::CHAR) as participant_id,
     COALESCE(i.project_id, ic.project_id) AS dimension_project_id,
     adt.id AS dimension_type_id,
     r.created_at::DATE AS dimension_date_created_id,
@@ -74,6 +78,7 @@ UNION ALL
 SELECT
     pr.id,
     pr.user_id AS dimension_user_id,
+    COALESCE(pr.user_id::CHAR, pr.id::CHAR) as participant_id,
     COALESCE(p.project_id, pr.phase_id) AS dimension_project_id,
     adt.id AS dimension_type_id,
     pr.created_at::DATE AS dimension_date_created_id,
@@ -90,6 +95,7 @@ UNION ALL
 SELECT
     vv.id,
     vv.user_id AS dimension_user_id,
+    COALESCE(vv.user_id::CHAR, vv.id::CHAR) as participant_id,
     COALESCE(p.project_id, vc.phase_id) AS dimension_project_id,
     adt.id AS dimension_type_id,
     vv.created_at::DATE AS dimension_date_created_id,
@@ -107,6 +113,7 @@ UNION ALL
 SELECT
     b.id,
     b.user_id AS dimension_user_id,
+    COALESCE(b.user_id::CHAR, b.id::CHAR) as participant_id,
     p.project_id AS dimension_project_id,
     adt.id AS dimension_type_id,
     b.created_at::DATE AS dimension_date_created_id,
@@ -123,6 +130,7 @@ UNION ALL
 SELECT
     ea.id,
     ea.attendee_id AS dimension_user_id,
+    COALESCE(ea.attendee_id::CHAR, ea.id::CHAR) as participant_id,
     e.project_id AS dimension_project_id,
     adt.id AS dimension_type_id,
     ea.created_at::DATE AS dimension_date_created_id,
