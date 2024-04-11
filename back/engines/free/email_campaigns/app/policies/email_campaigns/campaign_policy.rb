@@ -18,16 +18,7 @@ module EmailCampaigns
           if projects.any? { |p| p.visible_to == 'public' }
             scope.all
           else
-            accessible_group_ids = GroupPolicy::Scope.new(user, Group).resolve.ids
-            campaigns_with_wrong_groups = CampaignsGroup
-              .where.not(group_id: accessible_group_ids)
-              .pluck(:campaign_id)
-            campaigns_without_groups = scope.manual
-              .left_outer_joins(:campaigns_groups)
-              .where(email_campaigns_campaigns_groups: { id: nil })
-              .ids
-            scope
-              .where.not(id: [*campaigns_with_wrong_groups, *campaigns_without_groups].uniq)
+            scope.none
           end
         else
           scope.none
@@ -92,11 +83,8 @@ module EmailCampaigns
       projects = Project.where(id: user.moderatable_project_ids)
       if projects.any? { |p| p.visible_to == 'public' }
         true
-      elsif record.groups.empty?
-        false
       else
-        accessible_group_ids = GroupPolicy::Scope.new(user, Group).resolve.ids
-        (record.groups.ids - accessible_group_ids).empty?
+        false
       end
     end
   end

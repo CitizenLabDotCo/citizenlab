@@ -77,53 +77,6 @@ describe EmailCampaigns::CampaignPolicy do
           expect(scope.resolve.size).to eq 0
         end
       end
-
-      context 'of a private groups project on a campaign without groups' do
-        let(:project) { create(:private_groups_project) }
-
-        it { is_expected.not_to permit(:show) }
-        it { is_expected.not_to permit(:create) }
-        it { is_expected.not_to permit(:update) }
-        it { is_expected.not_to permit(:destroy) }
-
-        it 'does not index the campaign' do
-          expect(scope.resolve.size).to eq 0
-        end
-      end
-
-      context 'of a private groups project on a campaign with that group' do
-        let(:project) { create(:private_groups_project) }
-
-        before do
-          campaign.update(groups: [project.groups.first])
-        end
-
-        it { is_expected.to permit(:show) }
-        it { is_expected.to permit(:create) }
-        it { is_expected.to permit(:update) }
-        it { is_expected.to permit(:destroy) }
-
-        it 'indexes the campaign' do
-          expect(scope.resolve.size).to eq 1
-        end
-      end
-
-      context 'of a private groups project on a campaign with another group' do
-        let(:project) { create(:private_groups_project) }
-
-        before do
-          campaign.update(groups: [create(:group)])
-        end
-
-        it { is_expected.not_to permit(:show) }
-        it { is_expected.not_to permit(:create) }
-        it { is_expected.not_to permit(:update) }
-        it { is_expected.not_to permit(:destroy) }
-
-        it 'does not index the campaign' do
-          expect(scope.resolve.size).to eq 0
-        end
-      end
     end
   end
 
@@ -174,19 +127,6 @@ describe EmailCampaigns::CampaignPolicy do
 
       context 'of a public project' do
         let(:project) { create(:project) }
-
-        it { is_expected.not_to permit(:show) }
-        it { is_expected.not_to permit(:create) }
-        it { is_expected.not_to permit(:update) }
-        it { is_expected.not_to permit(:destroy) }
-
-        it 'indexes the campaign' do
-          expect(scope.resolve.size).to eq 1
-        end
-      end
-
-      context 'of a private groups project on a campaign without groups' do
-        let(:project) { create(:private_groups_project) }
 
         it { is_expected.not_to permit(:show) }
         it { is_expected.not_to permit(:create) }
