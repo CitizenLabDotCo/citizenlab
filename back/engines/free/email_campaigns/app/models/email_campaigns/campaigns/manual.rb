@@ -67,6 +67,10 @@ module EmailCampaigns
       }]
     end
 
+    def manual?
+      true
+    end
+
     private
 
     def user_filter_no_invitees(users_scope, _options = {})

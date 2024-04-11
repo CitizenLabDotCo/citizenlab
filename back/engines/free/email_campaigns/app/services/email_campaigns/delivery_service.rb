@@ -67,6 +67,10 @@ module EmailCampaigns
       CAMPAIGN_CLASSES
     end
 
+    def manual_campaign_types
+      campaign_types.select { |klaz| klaz.constantize.new.manual? }
+    end
+
     def consentable_campaign_types_for(user)
       consentable_types = Consentable.consentable_campaign_types(campaign_classes, user, self)
       disabled_types = Disableable.enabled_campaign_types(Campaign.where(type: campaign_types))

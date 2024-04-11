@@ -30,8 +30,6 @@
 #
 module EmailCampaigns
   class Campaign < ApplicationRecord
-    MANUAL_CAMPAIGNS = %w[EmailCampaigns::Campaigns::Manual EmailCampaigns::Campaigns::ManualProjectParticipants].freeze
-
     belongs_to :author, class_name: 'User', optional: true
     belongs_to :project, optional: true
     has_many :examples, class_name: 'EmailCampaigns::Example', dependent: :destroy
@@ -49,8 +47,8 @@ module EmailCampaigns
     validates :resource_id, absence: true, unless: :skip_resource_absence?
     validate :validate_recipients, on: :send
 
-    scope :manual, -> { where type: MANUAL_CAMPAIGNS }
-    scope :automatic, -> { where.not(type: MANUAL_CAMPAIGNS) }
+    scope :manual, -> { where type: DeliveryService.new.manual_campaign_types }
+    scope :automatic, -> { where.not(type: DeliveryService.new.manual_campaign_types) }
 
     scope :manageable_by_project_moderator, lambda {
       where(
@@ -130,11 +128,11 @@ module EmailCampaigns
       CampaignPolicy
     end
 
-    def manual_campaign?
-      MANUAL_CAMPAIGNS.include?(type)
+    def manageable_by_project_moderator?
+      false
     end
 
-    def manageable_by_project_moderator?
+    def manual?
       false
     end
 

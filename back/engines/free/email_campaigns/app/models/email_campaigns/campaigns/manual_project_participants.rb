@@ -44,6 +44,10 @@ module EmailCampaigns
       true
     end
 
+    def manual?
+      true
+    end
+
     protected
 
     def skip_resource_absence?

@@ -23,11 +23,11 @@ module EmailCampaigns
     end
 
     def create?
-      record.manual_campaign? && can_access_and_modify?
+      record.manual? && can_access_and_modify?
     end
 
     def show?
-      if record.manual_campaign?
+      if record.manual?
         can_access_and_modify?
       else
         user&.active? && user&.admin?
@@ -35,7 +35,7 @@ module EmailCampaigns
     end
 
     def update?
-      if record.manual_campaign?
+      if record.manual?
         !(record.respond_to?(:sent?) && record.sent?) && can_access_and_modify?
       else
         user&.active? && user&.admin?
