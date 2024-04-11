@@ -2021,6 +2021,8 @@
   "app.containers.AdminPage.phase.methodPicker.votingTitle1": "Organiser un vote ou un exercice de priorisation",
   "app.containers.AdminPage.projects.all.createProjectFolder": "Nouveau dossier",
   "app.containers.AdminPage.projects.all.existingProjects": "Projets existants",
+  "app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders": "Seuls les administrateurs peuvent créer des dossiers de projet.",
+  "app.containers.AdminPage.projects.all.onlyAdminsCanCreateProjects": "Seuls les administrateurs et les modérateurs de dossiers peuvent créer des projets.",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projets et dossiers",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "Analyse IA",
   "app.containers.AdminPage.projects.project.analysis.Insights.accuracy": "Précision : {accuracy}{percentage}",
