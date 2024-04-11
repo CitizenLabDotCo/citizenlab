@@ -12,7 +12,7 @@ module ReportBuilder
         },
         groups: "dimension_date_created.#{interval(resolution)}",
         aggregations: {
-          dimension_user_id: 'count',
+          participant_id: 'count',
           'dimension_date_created.date': 'first'
         }
       }
@@ -25,7 +25,7 @@ module ReportBuilder
           **date_filter('dimension_date_created', start_at, end_at)
         },
         aggregations: {
-          dimension_user_id: 'count'
+          participant_id: 'count'
         }
       }
 
