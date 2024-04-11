@@ -84,7 +84,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
           <Box
             display="flex"
             justifyContent="flex-end"
-            gap="24px"
+            gap="12px"
             alignItems="center"
           >
             {isProjectFoldersEnabled && (
