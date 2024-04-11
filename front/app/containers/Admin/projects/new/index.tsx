@@ -1,4 +1,4 @@
-import React, { memo, useState, useCallback, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   Title,
@@ -33,17 +33,13 @@ export interface INewProjectCreatedEvent {
   projectId?: string;
 }
 
-interface Props {
-  className?: string;
-}
-
 export interface ITabNamesMap {
   scratch: 'scratch';
 }
 
 export type TTabName = ITabNamesMap[keyof ITabNamesMap];
 
-const CreateProject = memo<Props>(() => {
+const CreateProject = () => {
   const { formatMessage } = useIntl();
   const [tabs, setTabs] = useState<ITabItem[]>([
     {
@@ -73,15 +69,12 @@ const CreateProject = memo<Props>(() => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const handleTabOnClick = useCallback(
-    (newSelectedTabValue: TTabName) => {
-      trackEventByName(tracks.createdProject, {
-        selectedTabValue,
-      });
-      setSelectedTabValue(newSelectedTabValue);
-    },
-    [selectedTabValue]
-  );
+  const handleTabOnClick = (newSelectedTabValue: TTabName) => {
+    trackEventByName(tracks.createdProject, {
+      selectedTabValue,
+    });
+    setSelectedTabValue(newSelectedTabValue);
+  };
 
   const handleData = (data: InsertConfigurationOptions<ITabItem>) =>
     setTabs((tabs) => {
@@ -121,6 +114,6 @@ const CreateProject = memo<Props>(() => {
       </Box>
     </Box>
   );
-});
+};
 
 export default CreateProject;

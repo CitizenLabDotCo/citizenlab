@@ -99,7 +99,7 @@ export enum projectsRoutes {
 
 export type projectsRouteTypes =
   | AdminRoute<projectsRoutes.projects>
-  | AdminRoute<`${projectsRoutes.projects}/new`>
+  | AdminRoute<`${projectsRoutes.projects}/new-project`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/ideas/${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/settings`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectEvents}`>

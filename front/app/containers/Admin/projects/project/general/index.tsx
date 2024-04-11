@@ -594,6 +594,12 @@ const AdminProjectsProjectGeneral = () => {
             handleProjectFileOnAdd={handleProjectFileOnAdd}
             handleProjectFileOnRemove={handleProjectFileOnRemove}
           />
+
+          {/* 
+            The sticky save button is only shown when you edit a form so that the user 
+            is not forced to scroll to the bottom of the page to save it.
+          */}
+
           <Box
             {...(showStickySaveButton && {
               position: 'fixed',
