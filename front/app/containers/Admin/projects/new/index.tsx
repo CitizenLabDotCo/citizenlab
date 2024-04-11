@@ -6,7 +6,6 @@ import {
   colors,
   Box,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 import { InsertConfigurationOptions } from 'typings';
 
 import AdminProjectsProjectGeneral from 'containers/Admin/projects/project/general';
@@ -24,10 +23,6 @@ import { insertConfiguration } from 'utils/moduleUtils';
 
 import messages from './messages';
 import tracks from './tracks';
-
-const StyledTabs = styled(Tabs)`
-  margin-bottom: 25px;
-`;
 
 export interface INewProjectCreatedEvent {
   projectId?: string;
@@ -98,14 +93,16 @@ const CreateProject = () => {
           id="app.containers.Admin.projects.all.createProject.tabs"
           onData={handleData}
         />
-        {tabs.length > 1 && (
-          <StyledTabs
-            className="e2e-create-project-tabs"
-            items={tabs}
-            selectedValue={selectedTabValue}
-            onClick={handleTabOnClick}
-          />
-        )}
+        <Box mb="24px">
+          {tabs.length > 1 && (
+            <Tabs
+              className="e2e-create-project-tabs"
+              items={tabs}
+              selectedValue={selectedTabValue}
+              onClick={handleTabOnClick}
+            />
+          )}
+        </Box>
         <Outlet
           id="app.containers.Admin.projects.all.createProject"
           selectedTabValue={selectedTabValue}

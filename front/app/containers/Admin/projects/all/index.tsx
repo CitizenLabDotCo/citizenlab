@@ -13,7 +13,6 @@ import Outlet from 'components/Outlet';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
 import { isProjectFolderModerator } from 'utils/permissions/rules/projectFolderPermissions';
 
@@ -53,10 +52,10 @@ export interface Props {
 
 const AdminProjectsList = memo(({ className }: Props) => {
   const { data: authUser } = useAuthUser();
-  const userIsAdmin = !isNilOrError(authUser) ? isAdmin(authUser) : false;
-  const userIsFolderModerator = !isNilOrError(authUser)
-    ? isProjectFolderModerator(authUser.data)
-    : false;
+  const userIsAdmin = isAdmin(authUser) ?? false;
+  const userIsFolderModerator =
+    (authUser && isProjectFolderModerator(authUser.data)) ?? false;
+  const userIsAdminOrFolderModerator = userIsAdmin || userIsFolderModerator;
   const [containerOutletRendered, setContainerOutletRendered] = useState(false);
   const handleContainerOutletOnRender = (hasRendered: boolean) => {
     setContainerOutletRendered(hasRendered);
@@ -80,7 +79,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
             </SectionDescription>
           </Box>
           <Box display="flex" justifyContent="flex-end" gap="24px">
-            {isProjectFoldersEnabled && (
+            {userIsAdmin && isProjectFoldersEnabled && (
               <Button
                 data-cy="e2e-new-project-folder-button"
                 linkTo={'/admin/projects/folders/new'}
@@ -90,8 +89,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
                 <FormattedMessage {...messages.createProjectFolder} />
               </Button>
             )}
-            {(userIsAdmin ||
-              (userIsFolderModerator && isProjectFoldersEnabled)) && (
+            {userIsAdminOrFolderModerator && isProjectFoldersEnabled && (
               <Button
                 linkTo={'/admin/projects/new-project'}
                 icon="plus-circle"
