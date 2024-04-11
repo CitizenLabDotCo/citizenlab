@@ -47,6 +47,34 @@ describe ParticipantsService do
     end
   end
 
+  describe 'project_participants_count' do
+    it 'returns the count of participants' do
+      project = create(:project)
+      pp1, pp2, pp3, pp4 = create_list(:user, 4)
+
+      # Create a bunch of ideas and comments with users (4 participants)
+      idea1 = create(:idea, project: project, author: pp1) # 1
+      idea2 = create(:idea, project: project, author: pp2) # 2
+      create(:comment, post: idea1, author: pp3) # 2
+      create(:idea, project: project) # 4
+      create(:comment, post: idea2, author: pp1)
+
+      # Create two ideas and a comment, anonymous, but all for the same user (1 participant)
+      idea3 = create(:idea, project: project, author: pp4, anonymous: true)
+      create(:idea, project: project, author: pp4, anonymous: true)
+      create(:comment, post: idea3, author: pp4, anonymous: true)
+
+      # Create another anonymous idea for another user (1 participant)
+      create(:idea, project: project, anonymous: true)
+
+      # Add two ideas, not anonymous but no user_id (e.g. user deleted) (2 participants)
+      create(:idea, project: project, anonymous: false, author: nil)
+      create(:idea, project: project, anonymous: false, author: nil)
+
+      expect(service.project_participants_count(project)).to eq 8
+    end
+  end
+
   describe 'folder_participants_count' do
     it 'returns the count of participants' do
       projects = create_list(:project, 2)
