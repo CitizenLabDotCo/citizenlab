@@ -105,7 +105,7 @@ INNER JOIN analytics_dimension_types adt ON adt.name = 'volunteer';
 SELECT
     b.id,
     b.user_id AS dimension_user_id,
-    COALESCE(p.project_id, b.phase_id) AS dimension_project_id,
+    p.project_id AS dimension_project_id,
     adt.id AS dimension_type_id,
     b.created_at::DATE AS dimension_date_created_id,
     0 AS reactions_count,
