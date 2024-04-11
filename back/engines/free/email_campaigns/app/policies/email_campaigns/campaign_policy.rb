@@ -14,12 +14,11 @@ module EmailCampaigns
         if user&.active? && user&.admin?
           scope.all
         elsif user&.active? && user&.project_moderator?
-          projects = Project.where(id: user.moderatable_project_ids)
-          if projects.any? { |p| p.visible_to == 'public' }
-            scope.all
-          else
-            scope.none
-          end
+          project_ids = Project.where(id: user.moderatable_project_ids).pluck(:id)
+
+          scope
+            .where(resource_id: project_ids)
+            .where(type: DeliveryService.new.campaign_types.select { |klaz| klaz.constantize.new.manageable_by_project_moderator? })
         else
           scope.none
         end
@@ -80,12 +79,9 @@ module EmailCampaigns
     end
 
     def moderator_can_access_and_modify?
-      projects = Project.where(id: user.moderatable_project_ids)
-      if projects.any? { |p| p.visible_to == 'public' }
-        true
-      else
-        false
-      end
+      project_ids = Project.where(id: user.moderatable_project_ids).pluck(:id)
+
+      project_ids.include?(record.resource_id) && record.manageable_by_project_moderator?
     end
   end
 end

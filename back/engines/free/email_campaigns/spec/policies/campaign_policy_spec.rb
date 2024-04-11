@@ -50,27 +50,43 @@ describe EmailCampaigns::CampaignPolicy do
     end
 
     context 'for a project moderator' do
+      let(:project) { create(:project) }
       let(:user) { create(:project_moderator, projects: [project]) }
 
-      context 'of a public project' do
-        let(:project) { create(:project) }
+      context 'for a campaign manageable by project moderators' do
+        context 'and campaign is for a project they moderate' do
+          let!(:campaign) { create(:manual_project_participants_campaign, project: project) }
 
-        it { is_expected.to permit(:show) }
-        it { is_expected.to permit(:create) }
-        it { is_expected.to permit(:update) }
-        it { is_expected.to permit(:destroy) }
+          it { is_expected.to    permit(:show)    }
+          it { is_expected.to    permit(:create)  }
+          it { is_expected.to    permit(:update)  }
+          it { is_expected.to    permit(:destroy) }
 
-        it 'indexes the campaign' do
-          expect(scope.resolve.size).to eq 1
+          it 'indexes the campaign' do
+            expect(scope.resolve.size).to eq 1
+          end
+        end
+
+        context 'and campaign is for a project they do not moderate' do
+          let!(:campaign) { create(:manual_project_participants_campaign, project: create(:project)) }
+
+          it { is_expected.not_to permit(:show)    }
+          it { is_expected.not_to permit(:create)  }
+          it { is_expected.not_to permit(:update)  }
+          it { is_expected.not_to permit(:destroy) }
+
+          it 'does not index the campaign' do
+            expect(scope.resolve.size).to eq 0
+          end
         end
       end
 
-      context 'of a private admins project' do
-        let(:project) { create(:private_admins_project) }
+      context 'for a campaign not manageable by project moderators' do
+        let!(:campaign) { create(:manual_campaign) }
 
-        it { is_expected.not_to permit(:show) }
-        it { is_expected.not_to permit(:create) }
-        it { is_expected.not_to permit(:update) }
+        it { is_expected.not_to permit(:show)    }
+        it { is_expected.not_to permit(:create)  }
+        it { is_expected.not_to permit(:update)  }
         it { is_expected.not_to permit(:destroy) }
 
         it 'does not index the campaign' do
@@ -133,8 +149,8 @@ describe EmailCampaigns::CampaignPolicy do
         it { is_expected.not_to permit(:update) }
         it { is_expected.not_to permit(:destroy) }
 
-        it 'indexes the campaign' do
-          expect(scope.resolve.size).to eq 1
+        it 'does not index the campaign' do
+          expect(scope.resolve.size).to eq 0
         end
       end
     end

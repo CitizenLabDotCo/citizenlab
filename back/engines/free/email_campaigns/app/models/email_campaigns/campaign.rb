@@ -128,6 +128,10 @@ module EmailCampaigns
       MANUAL_CAMPAIGNS.include?(type)
     end
 
+    def manageable_by_project_moderator?
+      false
+    end
+
     protected
 
     def set_enabled

@@ -40,6 +40,10 @@ module EmailCampaigns
       'email_campaigns.admin_labels.recipient_role.project_participants'
     end
 
+    def manageable_by_project_moderator?
+      true
+    end
+
     protected
 
     def skip_resource_absence?
