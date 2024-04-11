@@ -16,7 +16,7 @@ export default function useFeatureFlag({
 
   if (!appConfiguration) return false;
 
-  const setting = appConfiguration.data.attributes.settings[name] || undefined;
+  const setting = appConfiguration.data.attributes.settings[name];
 
   return setting
     ? setting.allowed && (onlyCheckAllowed || setting.enabled)
