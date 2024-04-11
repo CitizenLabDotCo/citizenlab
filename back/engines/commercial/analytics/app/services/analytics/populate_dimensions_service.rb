@@ -59,7 +59,8 @@ module Analytics
           { name: 'reaction', parent: 'comment' },
           { name: 'poll', parent: nil },
           { name: 'volunteer', parent: nil },
-          { name: 'survey', parent: nil }
+          { name: 'survey', parent: nil },
+          { name: 'basket', parent: nil }
         ]
 
         current_types = Analytics::DimensionType.all.as_json(only: %i[name parent])

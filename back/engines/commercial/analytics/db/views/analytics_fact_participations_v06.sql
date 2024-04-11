@@ -100,3 +100,17 @@ FROM volunteering_volunteers vv
 LEFT JOIN volunteering_causes vc ON vc.id = vv.cause_id
 LEFT JOIN phases p ON p.id = vc.phase_id
 INNER JOIN analytics_dimension_types adt ON adt.name = 'volunteer';
+
+--Baskets
+SELECT
+    b.id,
+    b.user_id AS dimension_user_id,
+    COALESCE(p.project_id, b.phase_id) AS dimension_project_id,
+    adt.id AS dimension_type_id,
+    b.created_at::DATE AS dimension_date_created_id,
+    0 AS reactions_count,
+    0 AS likes_count,
+    0 AS dislikes_count
+FROM baskets b
+LEFT JOIN phases p ON p.id = b.phase_id
+INNER JOIN analytics_dimension_types adt ON adt.name = 'basket';
