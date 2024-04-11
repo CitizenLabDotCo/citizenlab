@@ -2021,6 +2021,8 @@
   "app.containers.AdminPage.phase.methodPicker.votingTitle1": "Eseguire un esercizio di votazione o di definizione delle priorità",
   "app.containers.AdminPage.projects.all.createProjectFolder": "Nuova cartella",
   "app.containers.AdminPage.projects.all.existingProjects": "Existing projects",
+  "app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders": "Solo gli amministratori possono creare cartelle di progetto.",
+  "app.containers.AdminPage.projects.all.onlyAdminsCanCreateProjects": "Solo gli amministratori e i moderatori delle cartelle possono creare progetti.",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projects and folders",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "Analisi dell'intelligenza artificiale",
   "app.containers.AdminPage.projects.project.analysis.Insights.accuracy": "Precisione: {accuracy}{percentage}",
