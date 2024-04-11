@@ -2021,6 +2021,8 @@
   "app.containers.AdminPage.phase.methodPicker.votingTitle1": "Veikt balsošanu vai prioritāšu noteikšanu",
   "app.containers.AdminPage.projects.all.createProjectFolder": "Jauna mape",
   "app.containers.AdminPage.projects.all.existingProjects": "Esošie projekti",
+  "app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders": "Tikai administratori var izveidot projektu mapes.",
+  "app.containers.AdminPage.projects.all.onlyAdminsCanCreateProjects": "Projektus var izveidot tikai administratori un mapju moderatori.",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projekti un mapes",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "AI analīze",
   "app.containers.AdminPage.projects.project.analysis.Insights.accuracy": "Precizitāte: {accuracy}{percentage}",
