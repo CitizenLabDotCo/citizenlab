@@ -562,6 +562,7 @@ DROP TABLE IF EXISTS public.groups;
 DROP TABLE IF EXISTS public.followers;
 DROP TABLE IF EXISTS public.flag_inappropriate_content_inappropriate_content_flags;
 DROP TABLE IF EXISTS public.experiments;
+DROP TABLE IF EXISTS public.events_attendances;
 DROP TABLE IF EXISTS public.event_images;
 DROP TABLE IF EXISTS public.event_files;
 DROP TABLE IF EXISTS public.email_snippets;
@@ -578,6 +579,7 @@ DROP TABLE IF EXISTS public.content_builder_layouts;
 DROP TABLE IF EXISTS public.content_builder_layout_images;
 DROP TABLE IF EXISTS public.common_passwords;
 DROP TABLE IF EXISTS public.baskets_ideas;
+DROP TABLE IF EXISTS public.baskets;
 DROP SEQUENCE IF EXISTS public.areas_static_pages_id_seq;
 DROP TABLE IF EXISTS public.areas_static_pages;
 DROP TABLE IF EXISTS public.areas_projects;
@@ -601,9 +603,7 @@ DROP TABLE IF EXISTS public.polls_responses;
 DROP TABLE IF EXISTS public.phases;
 DROP TABLE IF EXISTS public.initiatives;
 DROP TABLE IF EXISTS public.ideas;
-DROP TABLE IF EXISTS public.events_attendances;
 DROP TABLE IF EXISTS public.comments;
-DROP TABLE IF EXISTS public.baskets;
 DROP VIEW IF EXISTS public.analytics_fact_events;
 DROP TABLE IF EXISTS public.events;
 DROP VIEW IF EXISTS public.analytics_fact_email_deliveries;
@@ -1462,20 +1462,6 @@ CREATE VIEW public.analytics_fact_events AS
 
 
 --
--- Name: baskets; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.baskets (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    submitted_at timestamp without time zone,
-    user_id uuid,
-    phase_id uuid,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
 -- Name: comments; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1497,19 +1483,6 @@ CREATE TABLE public.comments (
     post_type character varying,
     author_hash character varying,
     anonymous boolean DEFAULT false NOT NULL
-);
-
-
---
--- Name: events_attendances; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.events_attendances (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    attendee_id uuid NOT NULL,
-    event_id uuid NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -1774,31 +1747,7 @@ UNION ALL
    FROM (((public.volunteering_volunteers vv
      LEFT JOIN public.volunteering_causes vc ON ((vc.id = vv.cause_id)))
      LEFT JOIN public.phases p ON ((p.id = vc.phase_id)))
-     JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'volunteer'::text)))
-UNION ALL
- SELECT b.id,
-    b.user_id AS dimension_user_id,
-    p.project_id AS dimension_project_id,
-    adt.id AS dimension_type_id,
-    (b.created_at)::date AS dimension_date_created_id,
-    0 AS reactions_count,
-    0 AS likes_count,
-    0 AS dislikes_count
-   FROM ((public.baskets b
-     LEFT JOIN public.phases p ON ((p.id = b.phase_id)))
-     JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'basket'::text)))
-UNION ALL
- SELECT ea.id,
-    ea.attendee_id AS dimension_user_id,
-    e.project_id AS dimension_project_id,
-    adt.id AS dimension_type_id,
-    (ea.created_at)::date AS dimension_date_created_id,
-    0 AS reactions_count,
-    0 AS likes_count,
-    0 AS dislikes_count
-   FROM ((public.events_attendances ea
-     LEFT JOIN public.events e ON ((e.id = ea.event_id)))
-     JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'event_attendance'::text)));
+     JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'volunteer'::text)));
 
 
 --
@@ -2075,6 +2024,20 @@ ALTER SEQUENCE public.areas_static_pages_id_seq OWNED BY public.areas_static_pag
 
 
 --
+-- Name: baskets; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.baskets (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    submitted_at timestamp without time zone,
+    user_id uuid,
+    phase_id uuid,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
 -- Name: baskets_ideas; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2292,6 +2255,19 @@ CREATE TABLE public.event_images (
     event_id uuid,
     image character varying,
     ordering integer,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: events_attendances; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.events_attendances (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    attendee_id uuid NOT NULL,
+    event_id uuid NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -7460,7 +7436,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240229195843'),
 ('20240301120023'),
 ('20240305122502'),
-('20240328141200'),
-('20240409150000');
+('20240328141200');
 
 

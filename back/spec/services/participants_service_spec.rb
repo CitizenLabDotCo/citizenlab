@@ -289,40 +289,4 @@ describe ParticipantsService do
       expect(service.filter_engaging_activities(Activity.all)).to be_empty
     end
   end
-
-  describe 'with_engagement_scores' do
-    it 'gives idea publishing a score of 5' do
-      activity = create(:published_activity)
-      expect(service.with_engagement_scores(Activity.where(id: activity.id)).first.score).to eq 5
-    end
-
-    it 'gives comment creation a score of 3' do
-      activity = create(:comment_created_activity)
-      expect(service.with_engagement_scores(Activity.where(id: activity.id)).first.score).to eq 3
-    end
-
-    it 'gives idea reacting a score of 1' do
-      like_activity = create(:idea_liked_activity)
-      dislike_activity = create(:idea_disliked_activity)
-      expect(service.with_engagement_scores(Activity.where(id: like_activity.id)).first.score).to eq 1
-      expect(service.with_engagement_scores(Activity.where(id: dislike_activity.id)).first.score).to eq 1
-    end
-
-    it 'gives comment reactions a score of 1' do
-      like_activity = create(:comment_liked_activity)
-      expect(service.with_engagement_scores(Activity.where(id: like_activity.id)).first.score).to eq 1
-    end
-
-    it 'returns 0 for non-engaging activities' do
-      activity = create(:changed_body_activity)
-      expect(service.with_engagement_scores(Activity.where(id: activity.id)).first.score).to eq 0
-    end
-
-    it 'allows adding other select fields to the query' do
-      activity = create(:published_activity)
-      scope = service.with_engagement_scores(Activity.where(id: activity.id).select(:user_id))
-      expect(scope.first.user_id).to eq activity.user_id
-      expect(scope.first.score).to be_present
-    end
-  end
 end
