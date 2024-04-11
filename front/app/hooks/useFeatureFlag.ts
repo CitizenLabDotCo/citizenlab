@@ -16,8 +16,7 @@ export default function useFeatureFlag({
 
   if (!appConfiguration) return false;
 
-  const tenantSettings = appConfiguration.data.attributes.settings;
-  const setting = tenantSettings[name] || undefined;
+  const setting = appConfiguration.data.attributes.settings[name] || undefined;
 
   return setting
     ? setting.allowed && (onlyCheckAllowed || setting.enabled)
