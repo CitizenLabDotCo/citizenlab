@@ -60,7 +60,8 @@ module Analytics
           { name: 'poll', parent: nil },
           { name: 'volunteer', parent: nil },
           { name: 'survey', parent: nil },
-          { name: 'basket', parent: nil }
+          { name: 'basket', parent: nil },
+          { name: 'event_attendance', parent: nil }
         ]
 
         current_types = Analytics::DimensionType.all.as_json(only: %i[name parent])

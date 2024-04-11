@@ -99,7 +99,9 @@ SELECT
 FROM volunteering_volunteers vv
 LEFT JOIN volunteering_causes vc ON vc.id = vv.cause_id
 LEFT JOIN phases p ON p.id = vc.phase_id
-INNER JOIN analytics_dimension_types adt ON adt.name = 'volunteer';
+INNER JOIN analytics_dimension_types adt ON adt.name = 'volunteer'
+
+UNION ALL
 
 --Baskets
 SELECT
@@ -113,4 +115,20 @@ SELECT
     0 AS dislikes_count
 FROM baskets b
 LEFT JOIN phases p ON p.id = b.phase_id
-INNER JOIN analytics_dimension_types adt ON adt.name = 'basket';
+INNER JOIN analytics_dimension_types adt ON adt.name = 'basket'
+
+UNION ALL
+
+--Event attendance
+SELECT
+    ea.id,
+    ea.attendee_id AS dimension_user_id,
+    e.project_id AS dimension_project_id,
+    adt.id AS dimension_type_id,
+    ea.created_at::DATE AS dimension_date_created_id,
+    0 AS reactions_count,
+    0 AS likes_count,
+    0 AS dislikes_count
+FROM events_attendances
+LEFT JOIN events e ON e.id = ea.event_id
+INNER JOIN analytics_dimension_types adt on adt.name = 'event_attendance';
