@@ -1573,7 +1573,6 @@
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Are you sure?",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Δεν βρέθηκαν οι διαχειριστές του έργου",
   "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "Δεν εμφανίζεται τίποτα, επειδή δεν υπάρχουν ενέργειες που μπορεί να κάνει ο χρήστης σε αυτό το έργο.",
-  "app.containers.AdminPage.groups.permissions.onlyAdmins": "Μόνο οι διαχειριστές μπορούν να αλλάξουν αυτή τη ρύθμιση.",
   "app.containers.AdminPage.groups.permissions.option1": "Επιλογή 1",
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Πρόσκληση σε εκκρεμότητα",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Ποιος μπορεί να σχολιάσει το έγγραφο;",
