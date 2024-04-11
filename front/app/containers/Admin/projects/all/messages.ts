@@ -42,4 +42,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.all.createProjectFolder',
     defaultMessage: 'New folder',
   },
+  onlyAdminsCanCreateFolders: {
+    id: 'app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders',
+    defaultMessage: 'Only admins can create project folders.',
+  },
+  onlyAdminsCanCreateProjects: {
+    id: 'app.containers.AdminPage.projects.all.onlyAdminsCanCreateProjects',
+    defaultMessage: 'Only admins and folder moderators can create projects.',
+  },
 });

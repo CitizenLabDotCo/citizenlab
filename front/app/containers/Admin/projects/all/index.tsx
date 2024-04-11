@@ -1,6 +1,7 @@
 import React, { memo, Suspense, useState } from 'react';
 
 import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -52,16 +53,18 @@ export interface Props {
 
 const AdminProjectsList = memo(({ className }: Props) => {
   const { data: authUser } = useAuthUser();
+  const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const userIsAdmin = isAdmin(authUser) ?? false;
   const userIsFolderModerator =
-    (authUser && isProjectFolderModerator(authUser.data)) ?? false;
+    (authUser &&
+      isProjectFoldersEnabled &&
+      isProjectFolderModerator(authUser.data)) ??
+    false;
   const userIsAdminOrFolderModerator = userIsAdmin || userIsFolderModerator;
   const [containerOutletRendered, setContainerOutletRendered] = useState(false);
   const handleContainerOutletOnRender = (hasRendered: boolean) => {
     setContainerOutletRendered(hasRendered);
   };
-
-  const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
 
   return (
     <Container className={className}>
@@ -78,27 +81,50 @@ const AdminProjectsList = memo(({ className }: Props) => {
               <FormattedMessage {...messages.overviewPageSubtitle} />
             </SectionDescription>
           </Box>
-          <Box display="flex" justifyContent="flex-end" gap="24px">
-            {userIsAdmin && isProjectFoldersEnabled && (
-              <Button
-                data-cy="e2e-new-project-folder-button"
-                linkTo={'/admin/projects/folders/new'}
-                buttonStyle="secondary-outlined"
-                icon="folder-add"
+          <Box
+            display="flex"
+            justifyContent="flex-end"
+            gap="24px"
+            alignItems="center"
+          >
+            {isProjectFoldersEnabled && (
+              <Tippy
+                content={
+                  <FormattedMessage {...messages.onlyAdminsCanCreateFolders} />
+                }
+                disabled={userIsAdmin}
               >
-                <FormattedMessage {...messages.createProjectFolder} />
-              </Button>
+                <Box>
+                  <Button
+                    data-cy="e2e-new-project-folder-button"
+                    linkTo={'/admin/projects/folders/new'}
+                    buttonStyle="secondary-outlined"
+                    icon="folder-add"
+                    disabled={!userIsAdmin}
+                  >
+                    <FormattedMessage {...messages.createProjectFolder} />
+                  </Button>
+                </Box>
+              </Tippy>
             )}
-            {userIsAdminOrFolderModerator && isProjectFoldersEnabled && (
-              <Button
-                data-cy="e2e-new-project-button"
-                linkTo={'/admin/projects/new-project'}
-                icon="plus-circle"
-                buttonStyle="admin-dark"
-              >
-                <FormattedMessage {...messages.newProject} />
-              </Button>
-            )}
+            <Tippy
+              content={
+                <FormattedMessage {...messages.onlyAdminsCanCreateProjects} />
+              }
+              disabled={userIsAdminOrFolderModerator}
+            >
+              <Box>
+                <Button
+                  data-cy="e2e-new-project-button"
+                  linkTo={'/admin/projects/new-project'}
+                  icon="plus-circle"
+                  buttonStyle="admin-dark"
+                  disabled={!userIsAdminOrFolderModerator}
+                >
+                  <FormattedMessage {...messages.newProject} />
+                </Button>
+              </Box>
+            </Tippy>
           </Box>
         </Box>
         <PageWrapper>
