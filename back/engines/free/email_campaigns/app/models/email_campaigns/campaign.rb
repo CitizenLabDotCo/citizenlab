@@ -52,6 +52,12 @@ module EmailCampaigns
     scope :manual, -> { where type: MANUAL_CAMPAIGNS }
     scope :automatic, -> { where.not(type: MANUAL_CAMPAIGNS) }
 
+    scope :manageable_by_project_moderator, lambda {
+      where(
+        type: DeliveryService.new.campaign_types.select { |klaz| klaz.constantize.new.manageable_by_project_moderator? }
+      )
+    }
+
     def self.before_send(action_symbol)
       @before_send_hooks ||= []
       @before_send_hooks << action_symbol
