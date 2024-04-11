@@ -2021,6 +2021,8 @@
   "app.containers.AdminPage.phase.methodPicker.votingTitle1": "Realitzar un exercici de votació o priorització",
   "app.containers.AdminPage.projects.all.createProjectFolder": "Carpeta nova",
   "app.containers.AdminPage.projects.all.existingProjects": "Projectes existents",
+  "app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders": "Només els administradors poden crear carpetes de projectes.",
+  "app.containers.AdminPage.projects.all.onlyAdminsCanCreateProjects": "Només els administradors i els moderadors de carpetes poden crear projectes.",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projectes i carpetes",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "Anàlisi d'IA",
   "app.containers.AdminPage.projects.project.analysis.Insights.accuracy": "Precisió: {accuracy}{percentage}",
