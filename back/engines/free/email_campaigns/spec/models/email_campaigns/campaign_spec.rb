@@ -3,6 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::Campaign do
+  describe 'validate resource_id' do
+    it 'is invalid if resource_id is present && skip_resource_absence is false' do
+      campaign = build(:invite_received_campaign, resource_id: SecureRandom.uuid)
+      expect(campaign.send(:skip_resource_absence?)).to be false
+      expect(campaign).to be_invalid
+    end
+  end
+
   describe '#apply_recipient_filters' do
     let(:campaign) { create(:invite_received_campaign) }
     let(:invite) { create(:invite) }

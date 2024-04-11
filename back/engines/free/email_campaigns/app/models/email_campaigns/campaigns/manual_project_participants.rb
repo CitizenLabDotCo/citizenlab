@@ -40,6 +40,12 @@ module EmailCampaigns
       'email_campaigns.admin_labels.recipient_role.project_participants'
     end
 
+    protected
+
+    def skip_resource_absence?
+      true
+    end
+
     private
 
     def project_participants(_users_scope, _options = {})

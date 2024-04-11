@@ -46,6 +46,7 @@ module EmailCampaigns
 
     before_validation :set_enabled, on: :create
 
+    validates :resource_id, absence: true, unless: :skip_resource_absence?
     validate :validate_recipients, on: :send
 
     scope :manual, -> { where type: MANUAL_CAMPAIGNS }
@@ -139,6 +140,10 @@ module EmailCampaigns
         serializer: serializer,
         adapter: :json
       }).serializable_hash
+    end
+
+    def skip_resource_absence?
+      false
     end
 
     private
