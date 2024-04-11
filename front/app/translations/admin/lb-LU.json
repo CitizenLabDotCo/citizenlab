@@ -2021,6 +2021,8 @@
   "app.containers.AdminPage.phase.methodPicker.votingTitle1": "Maacht eng Ofstëmmung oder Prioritéitsübung",
   "app.containers.AdminPage.projects.all.createProjectFolder": "Neien Dossier",
   "app.containers.AdminPage.projects.all.existingProjects": "Existing projects",
+  "app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders": "Nëmmen Administrateuren kënnen Projet Classeure erstellen.",
+  "app.containers.AdminPage.projects.all.onlyAdminsCanCreateProjects": "Nëmmen Administrateuren an Ordner Moderatore kënnen Projeten erstellen.",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projects and folders",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "AI Analyse",
   "app.containers.AdminPage.projects.project.analysis.Insights.accuracy": "{percentage}: {accuracy}",
