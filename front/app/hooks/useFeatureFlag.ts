@@ -17,7 +17,6 @@ export default function useFeatureFlag({
   if (!appConfiguration) return false;
 
   const tenantSettings = appConfiguration.data.attributes.settings;
-
   const setting = tenantSettings[name] || undefined;
 
   return setting
