@@ -60,7 +60,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
       isProjectFoldersEnabled &&
       isProjectFolderModerator(authUser.data)) ??
     false;
-  const userIsAdminOrFolderModerator = userIsAdmin || userIsFolderModerator;
+  const userCanCreateProject = userIsAdmin || userIsFolderModerator;
   const [containerOutletRendered, setContainerOutletRendered] = useState(false);
   const handleContainerOutletOnRender = (hasRendered: boolean) => {
     setContainerOutletRendered(hasRendered);
@@ -111,7 +111,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
               content={
                 <FormattedMessage {...messages.onlyAdminsCanCreateProjects} />
               }
-              disabled={userIsAdminOrFolderModerator}
+              disabled={userCanCreateProject}
             >
               <Box>
                 <Button
@@ -119,7 +119,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
                   linkTo={'/admin/projects/new-project'}
                   icon="plus-circle"
                   buttonStyle="admin-dark"
-                  disabled={!userIsAdminOrFolderModerator}
+                  disabled={!userCanCreateProject}
                 >
                   <FormattedMessage {...messages.newProject} />
                 </Button>
