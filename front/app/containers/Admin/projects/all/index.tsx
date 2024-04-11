@@ -91,6 +91,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
             )}
             {userIsAdminOrFolderModerator && isProjectFoldersEnabled && (
               <Button
+                data-cy="e2e-new-project-button"
                 linkTo={'/admin/projects/new-project'}
                 icon="plus-circle"
                 buttonStyle="admin-dark"
