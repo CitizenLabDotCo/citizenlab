@@ -10,7 +10,9 @@ import {
   Toggle,
   Spinner,
   colors,
+  TooltipContentWrapper,
 } from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
 import { saveAs } from 'file-saver';
 import { useParams } from 'react-router-dom';
 
@@ -179,14 +181,36 @@ const Forms = () => {
                 }}
               />
             </Box>
+            <Tippy
+              disabled={inputImporterEnabled}
+              content={
+                <TooltipContentWrapper tippytheme="light">
+                  {formatMessage(messages.disabledImportInputsTooltip)}
+                </TooltipContentWrapper>
+              }
+            >
+              <Box>
+                <Button
+                  linkTo={inputImporterLink}
+                  icon="page"
+                  iconSize="20px"
+                  buttonStyle="secondary"
+                  width="auto"
+                  mr="8px"
+                  disabled={!inputImporterEnabled}
+                >
+                  {formatMessage(messages.importInputs)}
+                </Button>
+              </Box>
+            </Tippy>
             <Button
               linkTo={viewFormLink}
-              buttonStyle="secondary"
               icon="eye"
               iconSize="20px"
-              openLinkInNewTab
+              buttonStyle="secondary"
               width="auto"
-              mx="8px"
+              openLinkInNewTab
+              mr="8px"
             >
               {formatMessage(messages.viewSurveyText)}
             </Button>
@@ -255,18 +279,6 @@ const Forms = () => {
                         </DropdownListItem>
                         {inputImporterEnabled && (
                           <>
-                            <DropdownListItem
-                              onClick={() => {
-                                clHistory.push(inputImporterLink);
-                              }}
-                            >
-                              <Box display="flex" gap="4px" alignItems="center">
-                                <Icon name="page" fill={colors.coolGrey600} />
-                                <Text my="0px">
-                                  {formatMessage(messages.importInputs)}
-                                </Text>
-                              </Box>
-                            </DropdownListItem>
                             {importPrintedFormsEnabled && (
                               <DropdownListItem onClick={handleDownloadPDF}>
                                 <Box

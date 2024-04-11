@@ -63,12 +63,12 @@ export default defineMessages({
     defaultMessage: 'Edit survey content',
   },
   editSurvey: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.editSurvey',
-    defaultMessage: 'Edit survey',
+    id: 'app.containers.AdminPage.ProjectEdit.survey.editSurvey1',
+    defaultMessage: 'Edit',
   },
   viewSurveyText: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurveyText2',
-    defaultMessage: 'View survey',
+    id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurveyText',
+    defaultMessage: 'View',
   },
   existingSubmissionsWarning: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.existingSubmissionsWarning',
@@ -170,6 +170,11 @@ export default defineMessages({
   importInputs: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.importInputs',
     defaultMessage: 'Import',
+  },
+  disabledImportInputsTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.disabledImportInputsTooltip',
+    defaultMessage:
+      'This feature is not included in your current plan. Reach out to your GovSuccess Manager to learn more about it.',
   },
   duplicateAnotherSurvey: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey',
