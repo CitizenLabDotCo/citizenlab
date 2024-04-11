@@ -2021,6 +2021,8 @@
   "app.containers.AdminPage.phase.methodPicker.votingTitle1": "Stemmen of prioriteiten stellen",
   "app.containers.AdminPage.projects.all.createProjectFolder": "Nieuwe map",
   "app.containers.AdminPage.projects.all.existingProjects": "Bestaande projecten",
+  "app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders": "Alleen admins kunnen projectmappen maken.",
+  "app.containers.AdminPage.projects.all.onlyAdminsCanCreateProjects": "Alleen admins en mapmoderators kunnen projecten maken.",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projecten en mappen",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "AI-analyse",
   "app.containers.AdminPage.projects.project.analysis.Insights.accuracy": "Nauwkeurigheid: {accuracy}{percentage}",
