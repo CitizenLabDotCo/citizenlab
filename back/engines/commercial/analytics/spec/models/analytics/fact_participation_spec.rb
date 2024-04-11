@@ -22,7 +22,9 @@ RSpec.describe Analytics::FactParticipation do
         { name: 'reaction', parent: 'idea' },
         { name: 'poll', parent: nil },
         { name: 'volunteer', parent: nil },
-        { name: 'survey', parent: nil }
+        { name: 'survey', parent: nil },
+        { name: 'basket', parent: nil },
+        { name: 'event_attendance', parent: nil }
       ].each do |type|
         create(:dimension_type, name: type[:name], parent: type[:parent])
       end
@@ -90,6 +92,24 @@ RSpec.describe Analytics::FactParticipation do
       it 'is also available as a participation fact' do
         described_class.find(input.id)
         expect(described_class.find(input.id).dimension_type.name).to eq('survey')
+      end
+    end
+
+    context 'when a basket is created' do
+      let(:basket) { create(:basket) }
+
+      it 'is also available as a participation fact' do
+        described_class.find(basket.id)
+        expect(described_class.find(basket.id).dimension_type.name).to eq('basket')
+      end
+    end
+
+    context 'when an event is attended' do
+      let(:event_attendance) { create(:event_attendance) }
+
+      it 'is also available as a participation fact' do
+        described_class.find(event_attendance.id)
+        expect(described_class.find(event_attendance.id).dimension_type.name).to eq('event_attendance')
       end
     end
   end
