@@ -61,7 +61,13 @@ module Analytics
           { name: 'volunteer', parent: nil },
           { name: 'survey', parent: nil },
           { name: 'basket', parent: nil },
-          { name: 'event_attendance', parent: nil }
+          { name: 'event_attendance', parent: nil },
+          { name: 'follower', parent: 'project' },
+          { name: 'follower', parent: 'projectfolders::folder' },
+          { name: 'follower', parent: 'idea' },
+          { name: 'follower', parent: 'initiative' },
+          { name: 'follower', parent: 'topic' },
+          { name: 'follower', parent: 'area' }
         ]
 
         current_types = Analytics::DimensionType.all.as_json(only: %i[name parent])

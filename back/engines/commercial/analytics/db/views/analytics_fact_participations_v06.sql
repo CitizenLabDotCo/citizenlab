@@ -139,4 +139,25 @@ SELECT
     0 AS dislikes_count
 FROM events_attendances ea
 LEFT JOIN events e ON e.id = ea.event_id
-INNER JOIN analytics_dimension_types adt on adt.name = 'event_attendance';
+INNER JOIN analytics_dimension_types adt on adt.name = 'event_attendance'
+
+UNION ALL
+
+--Followers
+SELECT
+  f.id,
+  f.user_id AS dimension_user_id,
+  COALESCE(f.user_id::CHAR, f.id::CHAR) as participant_id,
+  CASE f.followable_type
+    WHEN 'Project' THEN f.followable_id
+    WHEN 'Idea' THEN i.project_id
+    ELSE NULL
+  END AS dimension_project_id,
+  adt.id AS dimension_type_id,
+  f.created_at::DATE AS dimension_date_created_id,
+  0 AS reactions_count,
+  0 AS likes_count,
+  0 AS dislikes_count
+FROM followers f
+INNER JOIN analytics_dimension_types adt ON adt.name = 'follower' AND adt.parent = LOWER(f.followable_type)
+LEFT JOIN ideas i ON i.id = f.followable_id;

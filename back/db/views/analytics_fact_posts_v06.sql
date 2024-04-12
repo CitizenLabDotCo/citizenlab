@@ -1,53 +1,163 @@
--- Analytics view for posts
+-- Analytics view for all types of participation
+
+-- Ideas & Native surveys
 SELECT
     i.id,
-    i.author_id AS user_id,
+    i.author_id AS dimension_user_id,
+    COALESCE(i.author_id::CHAR, i.author_hash, i.id::CHAR) as participant_id,
     i.project_id AS dimension_project_id,
-    adt.id as dimension_type_id,
+    CASE
+        WHEN ph.participation_method = 'native_survey' THEN survey.id
+        ELSE idea.id
+    END AS dimension_type_id,
     i.created_at::DATE AS dimension_date_created_id,
-    abf.feedback_first_date::DATE as dimension_date_first_feedback_id,
-    idea_status_id as dimension_status_id,
-    (abf.feedback_first_date - i.created_at) as feedback_time_taken,
-    COALESCE(abf.feedback_official,0) AS feedback_official,
-    COALESCE(abf.feedback_status_change,0) AS feedback_status_change,
-    CASE WHEN abf.feedback_first_date IS NULL THEN 1 ELSE 0 END AS feedback_none,
-    likes_count + dislikes_count as reactions_count,
+    likes_count + dislikes_count AS reactions_count,
     likes_count,
-    dislikes_count,
-    i.publication_status
-from ideas i
-INNER JOIN analytics_dimension_types adt ON adt.name = 'idea'
-LEFT JOIN analytics_build_feedbacks AS abf ON abf.post_id = i.id
-LEFT JOIN ideas_phases iph ON iph.idea_id = i.id
-LEFT JOIN phases ph ON ph.id = iph.phase_id
+    dislikes_count
+FROM ideas i
 LEFT JOIN projects pr ON pr.id = i.project_id
-WHERE ph.id IS NULL OR ph.participation_method != 'native_survey'
+LEFT JOIN phases ph ON ph.id = i.creation_phase_id
+INNER JOIN analytics_dimension_types idea ON idea.name = 'idea'
+LEFT JOIN analytics_dimension_types survey ON survey.name = 'survey'
 
 UNION ALL
 
+-- Initiatives/Proposals
 SELECT
     i.id,
-    i.author_id AS user_id,
+    i.author_id AS dimension_user_id,
+    COALESCE(i.author_id::CHAR, i.author_hash, i.id::CHAR) as participant_id,
     null AS dimension_project_id, -- initiative has no project
-    adt.id as dimension_type_id,
+    adt.id AS dimension_type_id,
     i.created_at::DATE AS dimension_date_created_id,
-    abf.feedback_first_date::DATE as dimension_date_first_feedback_id, -- date
-    isc.initiative_status_id as dimension_status_id,
-    (abf.feedback_first_date - i.created_at) as feedback_time_taken,
-    COALESCE(abf.feedback_official,0) AS feedback_official,
-    COALESCE(abf.feedback_status_change,0) AS feedback_status_change,
-    CASE WHEN abf.feedback_first_date IS NULL THEN 1 ELSE 0 END AS feedback_none,
-    likes_count + dislikes_count as reactions_count,
+    likes_count + dislikes_count AS reactions_count,
     likes_count,
-    dislikes_count,
-    i.publication_status
+    dislikes_count
 FROM initiatives i
 INNER JOIN analytics_dimension_types adt ON adt.name = 'initiative'
-LEFT JOIN analytics_build_feedbacks AS abf ON abf.post_id = i.id
-LEFT JOIN initiative_status_changes AS isc
-    ON isc.initiative_id = i.id and 
-       isc.updated_at = (
-        select MAX(isc_.updated_at)
-        from initiative_status_changes as isc_
-        where isc_.initiative_id = i.id
-       );
+
+UNION ALL
+
+-- Comments
+SELECT
+    c.id,
+    c.author_id AS dimension_user_id,
+    COALESCE(c.author_id::CHAR, c.author_hash, c.id::CHAR) as participant_id,
+    i.project_id AS dimension_project_id,
+    adt.id AS dimension_type_id,
+    c.created_at::DATE AS dimension_date_created_id,
+    c.likes_count + c.dislikes_count AS reactions_count,
+    c.likes_count,
+    c.dislikes_count
+FROM comments c
+INNER JOIN analytics_dimension_types adt ON adt.name = 'comment' AND adt.parent = LOWER(c.post_type)
+LEFT JOIN ideas i ON c.post_id = i.id -- only join ideas, initiative has no project
+
+UNION ALL
+
+-- Reactions
+SELECT
+    r.id,
+    r.user_id AS dimension_user_id,
+    COALESCE(r.user_id::CHAR, r.id::CHAR) as participant_id,
+    COALESCE(i.project_id, ic.project_id) AS dimension_project_id,
+    adt.id AS dimension_type_id,
+    r.created_at::DATE AS dimension_date_created_id,
+    1 AS reactions_count,
+    CASE WHEN r.mode = 'up' THEN 1 ELSE 0 END AS likes_count,
+    CASE WHEN r.mode = 'down' THEN 1 ELSE 0 END AS dislikes_count
+FROM reactions r
+INNER JOIN analytics_dimension_types adt ON adt.name = 'reaction' AND adt.parent = LOWER(r.reactable_type)
+LEFT JOIN ideas i ON i.id = r.reactable_id
+LEFT JOIN comments c ON c.id = r.reactable_id
+LEFT JOIN ideas ic ON ic.id = c.post_id
+
+UNION ALL
+
+-- Poll Response
+SELECT
+    pr.id,
+    pr.user_id AS dimension_user_id,
+    COALESCE(pr.user_id::CHAR, pr.id::CHAR) as participant_id,
+    COALESCE(p.project_id, pr.phase_id) AS dimension_project_id,
+    adt.id AS dimension_type_id,
+    pr.created_at::DATE AS dimension_date_created_id,
+    0 AS reactions_count,
+    0 AS likes_count,
+    0 AS dislikes_count
+FROM polls_responses pr
+LEFT JOIN phases p ON p.id = pr.phase_id
+INNER JOIN analytics_dimension_types adt ON adt.name = 'poll'
+
+UNION ALL
+
+-- Volunteering
+SELECT
+    vv.id,
+    vv.user_id AS dimension_user_id,
+    COALESCE(vv.user_id::CHAR, vv.id::CHAR) as participant_id,
+    COALESCE(p.project_id, vc.phase_id) AS dimension_project_id,
+    adt.id AS dimension_type_id,
+    vv.created_at::DATE AS dimension_date_created_id,
+    0 AS reactions_count,
+    0 AS likes_count,
+    0 AS dislikes_count
+FROM volunteering_volunteers vv
+LEFT JOIN volunteering_causes vc ON vc.id = vv.cause_id
+LEFT JOIN phases p ON p.id = vc.phase_id
+INNER JOIN analytics_dimension_types adt ON adt.name = 'volunteer'
+
+UNION ALL
+
+--Baskets
+SELECT
+    b.id,
+    b.user_id AS dimension_user_id,
+    COALESCE(b.user_id::CHAR, b.id::CHAR) as participant_id,
+    p.project_id AS dimension_project_id,
+    adt.id AS dimension_type_id,
+    b.created_at::DATE AS dimension_date_created_id,
+    0 AS reactions_count,
+    0 AS likes_count,
+    0 AS dislikes_count
+FROM baskets b
+LEFT JOIN phases p ON p.id = b.phase_id
+INNER JOIN analytics_dimension_types adt ON adt.name = 'basket'
+
+UNION ALL
+
+--Event attendance
+SELECT
+    ea.id,
+    ea.attendee_id AS dimension_user_id,
+    COALESCE(ea.attendee_id::CHAR, ea.id::CHAR) as participant_id,
+    e.project_id AS dimension_project_id,
+    adt.id AS dimension_type_id,
+    ea.created_at::DATE AS dimension_date_created_id,
+    0 AS reactions_count,
+    0 AS likes_count,
+    0 AS dislikes_count
+FROM events_attendances ea
+LEFT JOIN events e ON e.id = ea.event_id
+INNER JOIN analytics_dimension_types adt on adt.name = 'event_attendance'
+
+UNION ALL
+
+--Followers
+SELECT
+  f.id,
+  f.user_id AS dimension_user_id,
+  COALESCE(f.user_id::CHAR, f.id::CHAR) as participant_id,
+  CASE f.followable_type
+    WHEN 'Project' THEN f.followable_id
+    WHEN 'Idea' THEN i.project_id
+    ELSE NULL
+  END AS dimension_project_id,
+  adt.id AS dimension_type_id,
+  f.created_at::DATE AS dimension_date_created_id,
+  0 AS reactions_count,
+  0 AS likes_count,
+  0 AS dislikes_count
+FROM followers f
+INNER JOIN analytics_dimension_types adt ON adt.name = 'follower' AND adt.parent = LOWER(f.followable_type)
+LEFT JOIN ideas i ON i.id = f.followable_id;
