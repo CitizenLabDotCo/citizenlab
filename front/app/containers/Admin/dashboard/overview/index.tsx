@@ -2,10 +2,8 @@ import React, { useState, useCallback, useMemo } from 'react';
 
 import { Title } from '@citizenlab/cl2-component-library';
 import moment, { Moment } from 'moment';
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 import useAuthUser from 'api/me/useAuthUser';
-import { PublicationStatus } from 'api/projects/types';
 
 import ActiveUsersCard from 'components/admin/GraphCards/ActiveUsersCard';
 import CommentsByTimeCard from 'components/admin/GraphCards/CommentsByTimeCard';
@@ -29,13 +27,9 @@ import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicCh
 import { getSensibleResolution } from './getSensibleResolution';
 import overviewMessages from './messages';
 
-interface DataProps {
-  projects: GetProjectsChildProps;
-}
-
 export type IResource = 'ideas' | 'comments' | 'reactions';
 
-const OverviewDashboard = ({ projects }: DataProps) => {
+const OverviewDashboard = () => {
   const { data: user } = useAuthUser();
   const { formatMessage } = useIntl();
 
@@ -106,7 +100,6 @@ const OverviewDashboard = ({ projects }: DataProps) => {
     setCurrentResourceByProject(option.value);
   }, []);
 
-  if (isNilOrError(projects)) return null;
   if (isNilOrError(user)) return null;
 
   const startAt = startAtMoment && startAtMoment.toISOString();
@@ -257,14 +250,4 @@ const OverviewDashboard = ({ projects }: DataProps) => {
   );
 };
 
-const publicationStatuses: PublicationStatus[] = [
-  'draft',
-  'published',
-  'archived',
-];
-
-export default () => (
-  <GetProjects publicationStatuses={publicationStatuses} canModerate={true}>
-    {(projects) => <OverviewDashboard projects={projects} />}
-  </GetProjects>
-);
+export default OverviewDashboard;
