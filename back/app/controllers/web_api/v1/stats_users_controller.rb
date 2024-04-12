@@ -13,4 +13,10 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       moderators_count: User.billed_moderators.count
     })
   end
+
+  private
+
+  def do_authorize
+    authorize :stat_user
+  end
 end
