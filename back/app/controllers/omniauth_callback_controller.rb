@@ -218,11 +218,9 @@ class OmniauthCallbackController < ApplicationController
 
   # In some cases, it may be fine not to verify during SSO.
   def handle_sso_verification(auth, user)
-    begin
-      handle_verification(auth, user)
-    rescue Verification::VerificationService::NotEntitledError
-      # ignore
-    end
+    handle_verification(auth, user)
+  rescue Verification::VerificationService::NotEntitledError
+    # ignore
   end
 
   def handle_verification(_auth, _user)
