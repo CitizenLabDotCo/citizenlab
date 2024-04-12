@@ -34,6 +34,7 @@ module IdCriipto
         method_name_multiloc
         uid_field_pattern
         method_name_for_hashing
+        minimum_age
       ]
     end
 
@@ -74,8 +75,24 @@ module IdCriipto
           private: true,
           type: 'string',
           description: 'It is the legacy of tenants migrated from Auth0, but can be used with other MitID providers too. If present, this method name will be used for hashing. Leave empty to use the default Criipto value. Example: auth0.'
+        },
+        minimum_age: {
+          private: true,
+          type: 'integer',
+          description: 'Minimum age required to verify (in years). No value means no age minimum.'
         }
       }
+    end
+
+    # copied from back/engines/commercial/id_nemlog_in/app/lib/id_nemlog_in/nemlog_in_verification.rb
+    def entitled?(auth)
+      minimum_age = config[:minimum_age]
+      return true if minimum_age.blank?
+
+      age = auth.extra.raw_info.age.to_i
+      raise Verification::VerificationService::NotEntitledError, 'under_minimum_age' if age < minimum_age
+
+      true
     end
 
     def exposed_config_parameters

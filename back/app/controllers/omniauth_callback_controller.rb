@@ -114,7 +114,7 @@ class OmniauthCallbackController < ApplicationController
       end
 
       set_auth_cookie(provider: provider)
-      handle_verification(auth, @user) if verify
+      handle_sso_verification(auth, @user) if verify
 
     else # New user
       @user = User.new(user_attrs)
@@ -125,7 +125,7 @@ class OmniauthCallbackController < ApplicationController
         @user.save!
         SideFxUserService.new.after_create(@user, nil)
         set_auth_cookie(provider: provider)
-        handle_verification(auth, @user) if verify
+        handle_sso_verification(auth, @user) if verify
         signup_success_redirect
       rescue ActiveRecord::RecordInvalid => e
         Rails.logger.info "Social signup failed: #{e.message}"
@@ -214,6 +214,15 @@ class OmniauthCallbackController < ApplicationController
 
   def get_verification_method(_provider)
     nil
+  end
+
+  # In some cases, it may be fine not to verify during SSO.
+  def handle_sso_verification(auth, user)
+    begin
+      handle_verification(auth, user)
+    rescue Verification::VerificationService::NotEntitledError
+      # ignore
+    end
   end
 
   def handle_verification(_auth, _user)
