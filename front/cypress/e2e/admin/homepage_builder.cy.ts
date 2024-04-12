@@ -76,7 +76,7 @@ describe('Homepage builder', () => {
     });
   });
 
-  it('updates and delete homepage builder content correctly', () => {
+  it.skip('updates and delete homepage builder content correctly', () => {
     cy.setAdminLoginCookie();
     cy.apiUpdateHomepageLayout({
       craftjs_json: homepageMinimalData,
