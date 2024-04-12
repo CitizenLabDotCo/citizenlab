@@ -133,7 +133,7 @@ class ApplicationController < ActionController::API
   end
 
   def require_feature!(feature)
-    raise FeatureRequiredError.new(feature) if !AppConfiguration.instance.feature_activated?(feature)
+    raise FeatureRequiredError, feature if !AppConfiguration.instance.feature_activated?(feature)
   end
 
   private
