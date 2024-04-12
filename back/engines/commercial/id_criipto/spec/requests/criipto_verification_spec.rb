@@ -102,7 +102,8 @@ context 'criipto verification' do
         municipality_code_custom_field_key: 'municipality_code',
         method_name_multiloc: {
           en: 'MitID Verification'
-        }
+        },
+        uid_field_pattern: '%{sub}'
       }]
     }
     configuration.save!
@@ -138,7 +139,7 @@ context 'criipto verification' do
 
     user2 = create(:user)
     token2 = AuthToken::AuthToken.new(payload: user2.to_token_payload).token
-    auth_hash['uid'] = '12345'
+    auth_hash['extra']['raw_info']['sub'] = '12345'
     OmniAuth.config.mock_auth[:criipto] = OmniAuth::AuthHash.new(auth_hash)
 
     get "/auth/criipto?token=#{token2}"
@@ -158,5 +159,33 @@ context 'criipto verification' do
     follow_redirect!
 
     expect(user.reload).to have_attributes(verified: false)
+  end
+
+  context 'when configured for auth0 backward compatibility' do
+    before do
+      config = AppConfiguration.instance
+      criipto = config.settings('verification', 'verification_methods').first
+      criipto[:method_name_for_hashing] = 'auth0'
+      criipto[:uid_field_pattern] = 'adfs|cl-test-criipto-verify-DK-NemID-POCES|%{nameidentifier}'
+      config.save!
+    end
+
+    it 'successfully verifies a user like auth0' do
+      get "/auth/criipto?token=#{token}&random-passthrough-param=somevalue&pathname=/yipie"
+      follow_redirect!
+
+      expect(response).to redirect_to('/en/yipie?random-passthrough-param=somevalue&verification_success=true')
+
+      expect(user.reload).to have_attributes(verified: true)
+      expect(user.custom_field_values['birthdate']).to eq '1977-12-31'
+      expect(user.verifications.first).to have_attributes({
+        method_name: 'auth0',
+        user_id: user.id,
+        active: true
+      })
+      hash_value = Verification::VerificationService.new.send(:hashed_uid, 'adfs|cl-test-criipto-verify-DK-NemID-POCES|29d14ea06e16473286ac5de87a941784', 'auth0')
+      expect(user.verifications.first.hashed_uid).to eq(hash_value)
+      expect(user.verifications.first.hashed_uid).to eq('106ba51c378a87edd55f322f0c4c9ae7ba4f6ef9141aeec0fc1ebef68d01f128')
+    end
   end
 end
