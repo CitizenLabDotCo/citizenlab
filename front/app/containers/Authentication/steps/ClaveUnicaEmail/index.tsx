@@ -37,7 +37,7 @@ interface Props {
   }) => Promise<void>;
 }
 
-const ClaveUnicaEmail = ({ loading, setError, onSubmit }: Props) => {
+const EmaillessSsoEmail = ({ loading, setError, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
 
@@ -103,4 +103,4 @@ const ClaveUnicaEmail = ({ loading, setError, onSubmit }: Props) => {
   );
 };
 
-export default ClaveUnicaEmail;
+export default EmaillessSsoEmail;
