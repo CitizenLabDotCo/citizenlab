@@ -73,6 +73,13 @@ module IdCriipto
       false
     end
 
+    def filter_auth_to_persist(auth)
+      # Atm we use `auth_hash` in one place.
+      # It can be useful in some other cases too back/lib/tasks/single_use/20240125_convert_vienna_uid_to_userid.rake
+      # But some providers send us too sensitive information (SSN, address), so we cannot always store `auth_hash`.
+      nil
+    end
+
     private
 
     # See https://docs.criipto.com/verify/guides/authorize-url-builder/#auth-methods--acr-values
