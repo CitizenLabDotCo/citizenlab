@@ -143,17 +143,6 @@ const OverviewDashboard = ({ projects }: DataProps) => {
           />
         </Column>
         <Column>
-          {/* <BarChartActiveUsersByTime
-            graphUnit="users"
-            graphUnitMessageKey="activeUsers"
-            graphTitle={formatMessage(messages.participants)}
-            xlsxEndpoint={activeUsersByTimeXlsxEndpoint}
-            infoMessage={formatMessage(
-              messages.numberOfActiveParticipantsDescription
-            )}
-            className="e2e-users-by-time-cumulative-chart fullWidth"
-            {...legacyProps}
-          /> */}
           <ActiveUsersCard
             projectId={currentProjectFilter}
             startAtMoment={startAtMoment}
