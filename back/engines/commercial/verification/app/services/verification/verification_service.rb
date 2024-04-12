@@ -112,19 +112,17 @@ module Verification
         end
       end
 
-      verification = ::Verification::Verification.find_or_initialize_by(
+      verification = ::Verification::Verification.new(
         method_name: method_name,
         hashed_uid: hashed_uid(uid, method_name),
         user: user,
         active: true
       )
 
-      if verification.new_record?
-        @sfxv_service.before_create(verification, user)
-        ActiveRecord::Base.transaction do
-          verification.save!
-          @sfxv_service.after_create(verification, user)
-        end
+      @sfxv_service.before_create(verification, user)
+      ActiveRecord::Base.transaction do
+        verification.save!
+        @sfxv_service.after_create(verification, user)
       end
 
       verification
