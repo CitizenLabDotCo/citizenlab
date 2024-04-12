@@ -72,7 +72,7 @@ module MultiTenancy
             },
             criipto_login: {
               allowed: true,
-              enabled: true,
+              enabled: true
             },
             franceconnect_login: {
               allowed: true,
