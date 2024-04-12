@@ -62,6 +62,7 @@ class WebApi::V1::BasketsIdeasController < ApplicationController
       user: current_user
     )
     if basket.new_record?
+      authorize basket
       if basket.save
         SideFxBasketService.new.after_create basket, current_user
       else

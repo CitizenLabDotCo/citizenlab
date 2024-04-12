@@ -3,7 +3,7 @@ import React, { memo, useEffect, useCallback, useState } from 'react';
 import { Success, Box, colors } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
-import { Multiloc, Locale } from 'typings';
+import { Multiloc, SupportedLocale } from 'typings';
 
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
@@ -72,7 +72,7 @@ const ProjectDescription = memo<
   }, [project]);
 
   const handleDescriptionPreviewOnChange = useCallback(
-    (description_preview_multiloc: Multiloc, _locale: Locale) => {
+    (description_preview_multiloc: Multiloc, _locale: SupportedLocale) => {
       setTouched(true);
       setSuccess(false);
       setFormValues((prevFormValues) => ({
@@ -84,7 +84,7 @@ const ProjectDescription = memo<
   );
 
   const handleDescriptionOnChange = useCallback(
-    (description_multiloc: Multiloc, _locale: Locale) => {
+    (description_multiloc: Multiloc, _locale: SupportedLocale) => {
       setTouched(true);
       setSuccess(false);
       setFormValues((prevFormValues) => ({

@@ -415,7 +415,7 @@ const ProjectFolderCard = memo<Props>(
     const contentHeader = (
       <ContentHeader className={`${size} hasContent`} hasLabel={isArchived}>
         {isArchived && (
-          <ContentHeaderLabel className="e2e-project-card-archived-label">
+          <ContentHeaderLabel>
             <FormattedMessage {...messages.archived} />
           </ContentHeaderLabel>
         )}
@@ -575,6 +575,7 @@ const ProjectFolderCard = memo<Props>(
                   projectFolder.data.relationships.user_follower?.data?.id
                 }
                 w="100%"
+                toolTipType="projectOrFolder"
               />
             </Box>
           )}

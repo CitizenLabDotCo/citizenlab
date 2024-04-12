@@ -8,7 +8,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { Multiloc, Locale, MultilocFormValues } from 'typings';
+import { Multiloc, SupportedLocale, MultilocFormValues } from 'typings';
 
 import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_official_feedback/types';
 import { IOfficialFeedbackData as IInitiativeOfficialFeedbackData } from 'api/initiative_official_feedback/types';
@@ -80,7 +80,7 @@ const StatusChangeForm = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
-  const [selectedLocale, setLocale] = React.useState<Locale>(locale);
+  const [selectedLocale, setLocale] = React.useState<SupportedLocale>(locale);
   const tenantLocales = useAppConfigurationLocales();
   const renderFullForm = () => {
     if (!latestOfficialFeedback) return null;
@@ -121,11 +121,14 @@ const StatusChangeForm = ({
     );
   };
 
-  const onLocaleChange = (locale: Locale) => {
+  const onLocaleChange = (locale: SupportedLocale) => {
     setLocale(locale);
   };
 
-  const handleBodyOnChange = (value: string, locale: Locale | undefined) => {
+  const handleBodyOnChange = (
+    value: string,
+    locale: SupportedLocale | undefined
+  ) => {
     if (locale && onChangeBody) {
       onChangeBody({
         ...newOfficialFeedback.body_multiloc,
@@ -134,7 +137,10 @@ const StatusChangeForm = ({
     }
   };
 
-  const handleAuthorOnChange = (value: string, locale: Locale | undefined) => {
+  const handleAuthorOnChange = (
+    value: string,
+    locale: SupportedLocale | undefined
+  ) => {
     if (locale && onChangeAuthor) {
       onChangeAuthor({
         ...newOfficialFeedback.author_multiloc,

@@ -507,7 +507,7 @@ const ProjectCard = memo<InputProps>(
 
       if (isArchived) {
         countdown = (
-          <ContentHeaderLabel className="e2e-project-card-archived-label">
+          <ContentHeaderLabel>
             <FormattedMessage {...messages.archived} />
           </ContentHeaderLabel>
         );
@@ -722,6 +722,7 @@ const ProjectCard = memo<InputProps>(
             <ContentBody className={size} aria-hidden>
               <ProjectTitle
                 className="e2e-project-card-project-title"
+                data-testid="project-card-project-title"
                 onClick={() => {
                   handleProjectTitleOnClick(project.data.id);
                 }}
@@ -734,7 +735,10 @@ const ProjectCard = memo<InputProps>(
                   {(description) => {
                     if (!isEmpty(description)) {
                       return (
-                        <ProjectDescription className="e2e-project-card-project-description-preview">
+                        <ProjectDescription
+                          className="e2e-project-card-project-description-preview"
+                          data-testid="project-card-project-description-preview"
+                        >
                           {description}
                         </ProjectDescription>
                       );
@@ -817,6 +821,7 @@ const ProjectCard = memo<InputProps>(
                     project.data.relationships.user_follower?.data?.id
                   }
                   w="100%"
+                  toolTipType="projectOrFolder"
                 />
               </Box>
             )}

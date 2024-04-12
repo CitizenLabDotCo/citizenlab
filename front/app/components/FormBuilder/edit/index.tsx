@@ -11,7 +11,7 @@ import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { object, boolean, array, string, number } from 'yup';
 
 import {
@@ -149,6 +149,15 @@ export const FormEdit = ({
     setSelectedField(undefined);
   };
 
+  // Remove copy_from param on save to avoid overwriting a saved survey when reloading
+  const [searchParams, setSearchParams] = useSearchParams();
+  const resetCopyFrom = () => {
+    if (searchParams.has('copy_from')) {
+      searchParams.delete('copy_from');
+      setSearchParams(searchParams);
+    }
+  };
+
   const onAddField = (field: IFlatCreateCustomField, index: number) => {
     const newField = {
       ...field,
@@ -217,6 +226,7 @@ export const FormEdit = ({
             refetch().then(() => {
               setIsUpdatingForm(true);
               setSuccessMessageIsVisible(true);
+              resetCopyFrom();
             });
           },
         }

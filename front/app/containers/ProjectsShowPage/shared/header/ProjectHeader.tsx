@@ -125,6 +125,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
                 followerId={project.data.relationships.user_follower?.data?.id}
                 py="6px"
                 iconSize="20px"
+                toolTipType="projectOrFolder"
               />
             </Box>
           </Box>

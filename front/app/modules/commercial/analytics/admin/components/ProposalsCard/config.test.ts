@@ -88,6 +88,7 @@ describe('Proposals card data parsing', () => {
             'dimension_type.name': 'initiative',
             publication_status: 'published',
             'dimension_project.id': 'PROJECT_ID',
+            'dimension_status.code': 'threshold_reached',
             'dimension_date_created.date': {
               from: '2020-10-31',
               to: '2021-10-31',
@@ -103,6 +104,7 @@ describe('Proposals card data parsing', () => {
             'dimension_type.name': 'initiative',
             publication_status: 'published',
             'dimension_project.id': 'PROJECT_ID',
+            'dimension_status.code': 'threshold_reached',
             'dimension_date_created.date': {
               from: '2022-10-24',
               to: '2022-10-31',
@@ -150,6 +152,7 @@ describe('Proposals card data parsing', () => {
           aggregations: { all: 'count' },
           filters: {
             'dimension_type.name': 'initiative',
+            'dimension_status.code': 'threshold_reached',
             publication_status: 'published',
           },
         },
@@ -158,6 +161,7 @@ describe('Proposals card data parsing', () => {
           aggregations: { all: 'count' },
           filters: {
             'dimension_type.name': 'initiative',
+            'dimension_status.code': 'threshold_reached',
             publication_status: 'published',
             'dimension_date_created.date': {
               from: '2022-10-01',

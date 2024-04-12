@@ -24,11 +24,12 @@ module OmniauthMethods
 
     # @return [Array<Symbol>] Returns a list of user attributes that can be updated from the auth response hash
     def updateable_user_attrs
-      result = []
-      # If password_login is disabled, users cannot update their emails on UI,
-      # but we still want to keep their emails up to date.
-      result << :email if !AppConfiguration.instance.feature_activated?('password_login')
-      result
+      []
+    end
+
+    # @return [Boolean] If existing user attributes should be overwritten
+    def overwrite_user_attrs?
+      true
     end
 
     def can_merge?(_user, _user_attrs, _sso_verification_param_value)

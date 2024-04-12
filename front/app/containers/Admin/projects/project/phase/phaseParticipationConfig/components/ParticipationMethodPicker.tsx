@@ -84,9 +84,6 @@ const ParticipationMethodPicker = ({
   const volunteeringEnabled = useFeatureFlag({
     name: 'volunteering',
   });
-  const phaseReportsEnabled = useFeatureFlag({
-    name: 'phase_reports',
-  });
 
   const changeMethod = (newMethod?: ParticipationMethod) => {
     const method = newMethod || methodToChangeTo;
@@ -163,11 +160,7 @@ const ParticipationMethodPicker = ({
             <ParticipationMethodChoice
               key="information"
               title={formatMessage(messages2.informationTitle)}
-              subtitle={formatMessage(
-                phaseReportsEnabled
-                  ? messages2.reportingDescription
-                  : messages.shareInformationDescription
-              )}
+              subtitle={formatMessage(messages2.reportingDescription)}
               onClick={(event) => handleMethodSelect(event, 'information')}
               image={informationImage}
               selected={selectedMethod === 'information'}

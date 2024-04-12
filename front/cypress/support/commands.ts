@@ -122,10 +122,7 @@ function unregisterServiceWorkers() {
 }
 
 function goToLandingPage() {
-  cy.wait(500);
   cy.visit('/');
-  cy.get('#e2e-landing-page');
-  cy.wait(500);
 }
 
 function login(email: string, password: string) {
