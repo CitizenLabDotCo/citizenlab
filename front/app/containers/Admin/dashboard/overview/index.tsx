@@ -4,10 +4,10 @@ import { Title } from '@citizenlab/cl2-component-library';
 import moment, { Moment } from 'moment';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
-import { activeUsersByTimeXlsxEndpoint } from 'api/active_users_by_time/util';
 import useAuthUser from 'api/me/useAuthUser';
 import { PublicationStatus } from 'api/projects/types';
 
+import ActiveUsersCard from 'components/admin/GraphCards/ActiveUsersCard';
 import CommentsByTimeCard from 'components/admin/GraphCards/CommentsByTimeCard';
 import PostByTimeCard from 'components/admin/GraphCards/PostsByTimeCard';
 import ReactionsByTimeCard from 'components/admin/GraphCards/ReactionsByTimeCard';
@@ -24,7 +24,6 @@ import messages from '../messages';
 import tracks from '../tracks';
 
 import ChartFilters from './ChartFilters';
-import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
 import { getSensibleResolution } from './getSensibleResolution';
@@ -144,7 +143,7 @@ const OverviewDashboard = ({ projects }: DataProps) => {
           />
         </Column>
         <Column>
-          <BarChartActiveUsersByTime
+          {/* <BarChartActiveUsersByTime
             graphUnit="users"
             graphUnitMessageKey="activeUsers"
             graphTitle={formatMessage(messages.participants)}
@@ -154,6 +153,12 @@ const OverviewDashboard = ({ projects }: DataProps) => {
             )}
             className="e2e-users-by-time-cumulative-chart fullWidth"
             {...legacyProps}
+          /> */}
+          <ActiveUsersCard
+            projectId={currentProjectFilter}
+            startAtMoment={startAtMoment}
+            endAtMoment={endAtMoment}
+            resolution={resolution}
           />
         </Column>
         <Title
