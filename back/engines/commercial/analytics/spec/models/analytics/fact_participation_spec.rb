@@ -24,7 +24,8 @@ RSpec.describe Analytics::FactParticipation do
         { name: 'volunteer', parent: nil },
         { name: 'survey', parent: nil },
         { name: 'basket', parent: nil },
-        { name: 'event_attendance', parent: nil }
+        { name: 'event_attendance', parent: nil },
+        { name: 'follower', parent: 'project' }
       ].each do |type|
         create(:dimension_type, name: type[:name], parent: type[:parent])
       end
@@ -110,6 +111,16 @@ RSpec.describe Analytics::FactParticipation do
       it 'is also available as a participation fact' do
         described_class.find(event_attendance.id)
         expect(described_class.find(event_attendance.id).dimension_type.name).to eq('event_attendance')
+      end
+    end
+
+    context 'when a follower is created' do
+      let(:follower) { create(:follower) }
+
+      it 'is also available as a participation fact' do
+        described_class.find(follower.id)
+        expect(described_class.find(follower.id).dimension_type.name).to eq('follower')
+        expect(described_class.find(follower.id).dimension_type.parent).to eq('project')
       end
     end
   end
