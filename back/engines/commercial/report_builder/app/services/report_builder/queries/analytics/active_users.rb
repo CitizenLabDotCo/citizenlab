@@ -3,6 +3,7 @@ module ReportBuilder
     protected
 
     def query(start_at: nil, end_at: nil, project_id: nil, resolution: nil, **_other_props)
+      binding.pry
       time_series_query = {
         fact: 'participation',
         filters: {
