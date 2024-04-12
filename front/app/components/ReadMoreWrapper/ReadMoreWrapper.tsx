@@ -1,17 +1,5 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
-import { isEmpty } from 'lodash-es';
 
-// components
-import Button from 'components/UI/Button';
-import ReactResizeDetector from 'react-resize-detector';
-
-// i18n
-import T from 'components/T';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from 'containers/ProjectsShowPage/messages';
-
-// style
-import styled, { useTheme } from 'styled-components';
 import {
   useWindowSize,
   Box,
@@ -21,9 +9,18 @@ import {
   viewportWidths,
   isRtl,
 } from '@citizenlab/cl2-component-library';
+import { isEmpty } from 'lodash-es';
+import ReactResizeDetector from 'react-resize-detector';
+import styled, { useTheme } from 'styled-components';
+import { Multiloc } from 'typings';
+
+import messages from 'containers/ProjectsShowPage/messages';
+
+import T from 'components/T';
+import Button from 'components/UI/Button';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-import { Multiloc } from 'typings';
+import { FormattedMessage } from 'utils/cl-intl';
 
 const desktopCollapsedContentMaxHeight = 380;
 const mobileCollapsedContentMaxHeight = 180;

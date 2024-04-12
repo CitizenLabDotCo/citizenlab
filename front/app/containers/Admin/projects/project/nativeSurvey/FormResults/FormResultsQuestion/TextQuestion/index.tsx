@@ -1,34 +1,46 @@
 import React from 'react';
 
-// hooks
+import { Box } from '@citizenlab/cl2-component-library';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// components
-import { Box } from '@citizenlab/cl2-component-library';
-import TextResponses from './TextResponses';
 import Analysis from './Analysis';
+import AnalysisUpsell from './AnalysisUpsell';
+import TextResponses from './TextResponses';
 
 interface Props {
   textResponses: { answer: string }[];
   showAnalysis?: boolean;
   customFieldId: string;
+  hasOtherResponses?: boolean;
 }
 
 const TextQuestion = ({
   textResponses,
   showAnalysis = true,
   customFieldId,
+  hasOtherResponses,
 }: Props) => {
-  const isAnalysisEnabled = useFeatureFlag({ name: 'analysis' });
+  const isAnalysisEnabled = useFeatureFlag({
+    name: 'analysis',
+    onlyCheckAllowed: true,
+  });
 
   return (
-    <Box display="flex" gap="24px">
+    <Box display="flex" gap="24px" mt="20px">
       <Box flex="1">
-        <TextResponses textResponses={textResponses} />
+        <TextResponses
+          textResponses={textResponses}
+          hasOtherResponses={hasOtherResponses}
+        />
       </Box>
       <Box flex="1">
-        {isAnalysisEnabled && showAnalysis && (
-          <Analysis customFieldId={customFieldId} />
+        {!isAnalysisEnabled && showAnalysis && <AnalysisUpsell />}
+        {isAnalysisEnabled && showAnalysis && !hasOtherResponses && (
+          <Analysis
+            customFieldId={customFieldId}
+            textResponsesCount={textResponses.length}
+          />
         )}
       </Box>
     </Box>

@@ -1,9 +1,11 @@
 import React from 'react';
+
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+
+import FixedRatioLayout from './FixedRatioLayout';
 import FullWidthBannerLayout from './FullWidthBannerLayout';
 import TwoColumnLayout from './TwoColumnLayout';
 import TwoRowLayout from './TwoRowLayout';
-import FixedRatioLayout from './FixedRatioLayout';
-import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
 
 const SignedOutHeaderIndex = ({
   homepageSettings,

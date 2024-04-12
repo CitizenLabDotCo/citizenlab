@@ -9,12 +9,6 @@ Rails.application.routes.draw do
   mount Surveys::Engine => '', as: 'surveys'
   mount Volunteering::Engine => '', as: 'volunteering'
 
-  # It must come before +resource :ideas+, otherwise /web_api/v1/ideas/geotagged
-  # (unfortunate route naming) is captured by /web_api/v1/ideas/<idea-id>.
-  # Already tried +Rails.applications.routes.prepend+. That does not work:
-  # https://github.com/rails/rails/issues/11663
-  mount GeographicDashboard::Engine => '', as: 'geographic_dashboard'
-
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
       concern :reactable do
@@ -67,6 +61,7 @@ Rails.application.routes.draw do
         get :as_markers, on: :collection, action: 'index_idea_markers'
         get :filter_counts, on: :collection
         get :json_forms_schema, on: :member
+        get 'draft/:phase_id', on: :collection, to: 'ideas#draft_by_phase'
       end
 
       resources :initiatives,
@@ -231,52 +226,52 @@ Rails.application.routes.draw do
         get :as_xlsx, on: :collection, action: 'index_xlsx'
       end
 
+      resources :custom_field_option_images, only: %i[show create update destroy], controller: :images, defaults: { container_type: 'CustomFieldOption' }
+
       resources :experiments, only: %i[index create]
 
-      resources :handwritten_ideas, only: %i[create]
-
       scope 'stats' do
-        route_params = { controller: 'stats_users' }
-        get 'users_count', **route_params
+        with_options controller: 'stats_users' do
+          get 'users_count'
 
-        get 'users_by_time', **route_params
-        get 'users_by_time_cumulative', **route_params
-        get 'active_users_by_time', **route_params
-        get 'active_users_by_time_cumulative', **route_params
+          get 'users_by_time'
+          get 'users_by_time_cumulative'
+          get 'active_users_by_time'
+          get 'active_users_by_time_cumulative'
 
-        get 'users_by_time_as_xlsx', **route_params
-        get 'users_by_time_cumulative_as_xlsx', **route_params
-        get 'active_users_by_time_as_xlsx', **route_params
+          get 'users_by_time_as_xlsx'
+          get 'active_users_by_time_as_xlsx'
+        end
 
-        route_params = { controller: 'stats_ideas' }
-        get 'ideas_count', **route_params
+        with_options controller: 'stats_ideas' do
+          get 'ideas_count'
 
-        get 'ideas_by_topic', **route_params
-        get 'ideas_by_project', **route_params
-        get 'ideas_by_status', **route_params
-        get 'ideas_by_status_as_xlsx', **route_params
+          get 'ideas_by_topic'
+          get 'ideas_by_project'
 
-        get 'ideas_by_topic_as_xlsx', **route_params
-        get 'ideas_by_project_as_xlsx', **route_params
+          get 'ideas_by_topic_as_xlsx'
+          get 'ideas_by_project_as_xlsx'
+        end
 
-        route_params = { controller: 'stats_initiatives' }
-        get 'initiatives_count', **route_params
+        get 'initiatives_count', controller: 'stats_initiatives'
 
-        route_params = { controller: 'stats_comments' }
-        get 'comments_count', **route_params
-        get 'comments_by_topic', **route_params
-        get 'comments_by_project', **route_params
+        with_options controller: 'stats_comments' do
+          get 'comments_count'
+          get 'comments_by_topic'
+          get 'comments_by_project'
 
-        get 'comments_by_topic_as_xlsx', **route_params
-        get 'comments_by_project_as_xlsx', **route_params
+          get 'comments_by_topic_as_xlsx'
+          get 'comments_by_project_as_xlsx'
+        end
 
-        route_params = { controller: 'stats_reactions' }
-        get 'reactions_count', **route_params
-        get 'reactions_by_topic', **route_params
-        get 'reactions_by_project', **route_params
+        with_options controller: 'stats_reactions' do
+          get 'reactions_count'
+          get 'reactions_by_topic'
+          get 'reactions_by_project'
 
-        get 'reactions_by_topic_as_xlsx', **route_params
-        get 'reactions_by_project_as_xlsx', **route_params
+          get 'reactions_by_topic_as_xlsx'
+          get 'reactions_by_project_as_xlsx'
+        end
       end
 
       scope 'mentions', controller: 'mentions' do

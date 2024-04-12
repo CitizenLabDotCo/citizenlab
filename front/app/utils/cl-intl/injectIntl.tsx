@@ -1,9 +1,13 @@
 import React from 'react';
+
 // eslint-disable-next-line no-restricted-imports
 import { useIntl, MessageDescriptor, WrappedComponentProps } from 'react-intl';
-import { isNilOrError } from 'utils/helperUtils';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import useLocalize from 'hooks/useLocalize';
+
+import { isNilOrError } from 'utils/helperUtils';
 
 const injectIntl = <P extends WrappedComponentProps>(
   Component: React.ComponentType<P>

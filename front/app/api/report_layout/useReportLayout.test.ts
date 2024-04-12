@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useReportLayout from './useReportLayout';
-import endpoints, { reportLayout, apiPath } from './__mocks__/_mockServer';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import endpoints, { reportLayout, apiPath } from './__mocks__/_mockServer';
+import useReportLayout from './useReportLayout';
 
 const server = setupServer(endpoints['GET reports/:id/layout']);
 

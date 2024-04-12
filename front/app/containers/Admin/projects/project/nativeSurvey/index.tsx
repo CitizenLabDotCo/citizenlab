@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
-import { useIntl } from 'utils/cl-intl';
-import { useParams } from 'react-router-dom';
-import { saveAs } from 'file-saver';
 
-// components
 import {
   Box,
   Title,
@@ -15,39 +11,38 @@ import {
   Spinner,
   colors,
 } from '@citizenlab/cl2-component-library';
-import Modal from 'components/UI/Modal';
-import FormResults from './FormResults';
-import Button from 'components/UI/Button';
-import EditWarningModal from './EditWarningModal';
+import { saveAs } from 'file-saver';
+import { useParams } from 'react-router-dom';
+
+import usePhase from 'api/phases/usePhase';
+import useUpdatePhase from 'api/phases/useUpdatePhase';
+import useProjectById from 'api/projects/useProjectById';
+import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
+import useDeleteSurveyResults from 'api/survey_results/useDeleteSurveyResults';
+import { downloadSurveyResults } from 'api/survey_results/utils';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useInputSchema from 'hooks/useInputSchema';
+import useLocale from 'hooks/useLocale';
+
 import PDFExportModal, {
   FormValues,
 } from 'containers/Admin/projects/components/PDFExportModal';
 
-// i18n
-import messages from './messages';
+import Button from 'components/UI/Button';
+import Modal from 'components/UI/Modal';
 
-// hooks
-import useProjectById from 'api/projects/useProjectById';
-import usePhase from 'api/phases/usePhase';
-import useLocale from 'hooks/useLocale';
-import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
-import useInputSchema from 'hooks/useInputSchema';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useDeleteSurveyResults from 'api/survey_results/useDeleteSurveyResults';
-
-// Utils
-import { isNilOrError } from 'utils/helperUtils';
-import { getFormActionsConfig } from './utils';
+import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
 import { requestBlob } from 'utils/requestBlob';
 
+import CopySurveyModal from './CopySurveyModal';
+import EditWarningModal from './EditWarningModal';
+import FormResults from './FormResults';
+import messages from './messages';
 import { saveSurveyAsPDF } from './saveSurveyAsPDF';
-
-// Styles
-
-// Services
-import { downloadSurveyResults } from 'api/survey_results/utils';
-import useUpdatePhase from 'api/phases/useUpdatePhase';
+import { getFormActionsConfig } from './utils';
 
 const Forms = () => {
   const { projectId, phaseId } = useParams() as {
@@ -60,6 +55,7 @@ const Forms = () => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditWarningModal, setShowEditWarningModal] = useState(false);
+  const [showCopySurveyModal, setShowCopySurveyModal] = useState(false);
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
   const locale = useLocale();
@@ -146,6 +142,9 @@ const Forms = () => {
   const haveSubmissionsComeIn =
     submissionCount.data.attributes.totalSubmissions > 0;
 
+  const surveyFormPersisted =
+    phase.data.attributes.custom_form_persisted || false;
+
   if (isDownloading) {
     return (
       <Box width="100%" height="100%" display="flex" alignItems="center">
@@ -171,7 +170,7 @@ const Forms = () => {
             <Box mr="16px">
               <Toggle
                 checked={postingEnabled}
-                label={formatMessage(messages.openForResponses2)}
+                label={formatMessage(messages.openForResponses)}
                 onChange={() => {
                   togglePostingEnabled();
                 }}
@@ -186,7 +185,7 @@ const Forms = () => {
               width="auto"
               mx="8px"
             >
-              {formatMessage(messages.viewSurveyText2)}
+              {formatMessage(messages.viewSurveyText)}
             </Button>
             <Button
               icon="edit"
@@ -202,6 +201,7 @@ const Forms = () => {
             >
               {formatMessage(messages.editSurvey)}
             </Button>
+
             <Box>
               <Button
                 icon="dots-horizontal"
@@ -223,36 +223,73 @@ const Forms = () => {
                 right="70px"
                 content={
                   <>
-                    {uiSchema && importPrintedFormsEnabled && (
+                    {uiSchema && (
                       <>
                         <DropdownListItem
                           onClick={() => {
-                            clHistory.push(offlineInputsLink);
+                            setShowCopySurveyModal(true);
                           }}
+                          disabled={haveSubmissionsComeIn}
                         >
                           <Box display="flex" gap="4px" alignItems="center">
-                            <Icon name="plus" fill={colors.coolGrey600} />
-                            <Text my="0px">
-                              {formatMessage(messages.addOfflineInputs)}
+                            <Icon
+                              name="copy"
+                              fill={
+                                haveSubmissionsComeIn
+                                  ? colors.grey400
+                                  : colors.coolGrey600
+                              }
+                            />
+                            <Text
+                              my="0px"
+                              color={
+                                haveSubmissionsComeIn ? 'grey400' : 'black'
+                              }
+                            >
+                              {formatMessage(messages.duplicateAnotherSurvey)}
                             </Text>
                           </Box>
                         </DropdownListItem>
-                        <DropdownListItem onClick={handleDownloadPDF}>
-                          <Box display="flex" gap="4px" alignItems="center">
-                            <Icon name="download" fill={colors.coolGrey600} />
-                            <Text my="0px">
-                              {formatMessage(messages.downloadSurvey)}
-                            </Text>
-                          </Box>
-                        </DropdownListItem>
-                        <DropdownListItem onClick={downloadExampleFile}>
-                          <Box display="flex" gap="4px" alignItems="center">
-                            <Icon name="download" fill={colors.coolGrey600} />
-                            <Text my="0px">
-                              {formatMessage(messages.downloadExcelTemplate1)}
-                            </Text>
-                          </Box>
-                        </DropdownListItem>
+                        {importPrintedFormsEnabled && (
+                          <>
+                            <DropdownListItem
+                              onClick={() => {
+                                clHistory.push(offlineInputsLink);
+                              }}
+                            >
+                              <Box display="flex" gap="4px" alignItems="center">
+                                <Icon name="plus" fill={colors.coolGrey600} />
+                                <Text my="0px">
+                                  {formatMessage(messages.addOfflineInputs)}
+                                </Text>
+                              </Box>
+                            </DropdownListItem>
+                            <DropdownListItem onClick={handleDownloadPDF}>
+                              <Box display="flex" gap="4px" alignItems="center">
+                                <Icon
+                                  name="download"
+                                  fill={colors.coolGrey600}
+                                />
+                                <Text my="0px">
+                                  {formatMessage(messages.downloadSurvey)}
+                                </Text>
+                              </Box>
+                            </DropdownListItem>
+                            <DropdownListItem onClick={downloadExampleFile}>
+                              <Box display="flex" gap="4px" alignItems="center">
+                                <Icon
+                                  name="download"
+                                  fill={colors.coolGrey600}
+                                />
+                                <Text my="0px">
+                                  {formatMessage(
+                                    messages.downloadExcelTemplate
+                                  )}
+                                </Text>
+                              </Box>
+                            </DropdownListItem>
+                          </>
+                        )}
                       </>
                     )}
                     <DropdownListItem onClick={handleDownloadResults}>
@@ -264,7 +301,7 @@ const Forms = () => {
                       >
                         <Icon name="download" fill={colors.coolGrey600} />
                         <Text my="0px">
-                          {formatMessage(messages.downloadResults2)}
+                          {formatMessage(messages.downloadResults)}
                         </Text>
                       </Box>
                     </DropdownListItem>
@@ -278,7 +315,7 @@ const Forms = () => {
                         >
                           <Icon name="delete" fill={colors.red600} />
                           <Text color="red600" my="0px">
-                            {formatMessage(messages.deleteSurveyResults2)}
+                            {formatMessage(messages.deleteSurveyResults)}
                           </Text>
                         </Box>
                       </DropdownListItem>
@@ -297,6 +334,12 @@ const Forms = () => {
           setShowEditWarningModal={setShowEditWarningModal}
           handleDownloadResults={handleDownloadResults}
         />
+        <CopySurveyModal
+          editFormLink={editFormLink}
+          showCopySurveyModal={showCopySurveyModal}
+          setShowCopySurveyModal={setShowCopySurveyModal}
+          surveyFormPersisted={surveyFormPersisted}
+        />
       </Box>
       <PDFExportModal
         open={exportModalOpen}
@@ -308,10 +351,10 @@ const Forms = () => {
         <Box display="flex" flexDirection="column" width="100%" p="20px">
           <Box mb="40px">
             <Title variant="h3" color="primary">
-              {formatMessage(messages.deleteResultsConfirmationQuestion2)}
+              {formatMessage(messages.deleteResultsConfirmationQuestion)}
             </Title>
             <Text color="primary" fontSize="l">
-              {formatMessage(messages.deleteResultsInfo2)}
+              {formatMessage(messages.deleteResultsInfo)}
             </Text>
           </Box>
           <Box
@@ -328,14 +371,14 @@ const Forms = () => {
               mr="20px"
               onClick={deleteResults}
             >
-              {formatMessage(messages.confirmDeleteButtonText2)}
+              {formatMessage(messages.confirmDeleteButtonText)}
             </Button>
             <Button
               buttonStyle="secondary"
               width="auto"
               onClick={closeDeleteModal}
             >
-              {formatMessage(messages.cancelDeleteButtonText2)}
+              {formatMessage(messages.cancelDeleteButtonText)}
             </Button>
           </Box>
         </Box>

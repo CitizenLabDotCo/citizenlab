@@ -1,6 +1,8 @@
 import React from 'react';
-import BannerHeaderFields from './BannerHeaderFields';
+
 import { render, screen, waitFor, fireEvent } from 'utils/testUtils/rtl';
+
+import BannerHeaderFields from './BannerHeaderFields';
 
 jest.mock('hooks/useAppConfigurationLocales', () =>
   jest.fn(() => ['en', 'nl-NL'])

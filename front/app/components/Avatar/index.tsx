@@ -5,18 +5,17 @@
 
 import React, { memo } from 'react';
 
-// components
 import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
-import FeatureFlag from 'components/FeatureFlag';
-import Link from 'utils/cl-router/Link';
+import BoringAvatar from 'boring-avatars';
+import { lighten } from 'polished';
+import { RouteType } from 'routes';
+import styled, { useTheme } from 'styled-components';
 
-// hooks
 import useUserById from 'api/users/useUserById';
 
-// styles
-import styled, { useTheme } from 'styled-components';
-import { lighten } from 'polished';
-import BoringAvatar from 'boring-avatars';
+import FeatureFlag from 'components/FeatureFlag';
+
+import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 
 export const Container = styled.div<{ size: number }>`
@@ -136,7 +135,7 @@ const Avatar = memo(
     }
 
     const slug = user?.data.attributes.slug;
-    const profileLink = `/profile/${slug}`;
+    const profileLink: RouteType = `/profile/${slug}`;
     const hasValidProfileLink = profileLink !== '/profile/undefined';
 
     if (isLinkToProfile && hasValidProfileLink) {

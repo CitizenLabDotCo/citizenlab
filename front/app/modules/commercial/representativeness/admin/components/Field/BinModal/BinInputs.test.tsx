@@ -1,6 +1,8 @@
 import React from 'react';
-import BinInputs from './BinInputs';
+
 import { fireEvent, render, screen } from 'utils/testUtils/rtl';
+
+import BinInputs from './BinInputs';
 
 const bins = [18, 25, 35, 55, null];
 

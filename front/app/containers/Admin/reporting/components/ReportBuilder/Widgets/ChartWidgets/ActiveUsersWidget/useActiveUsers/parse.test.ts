@@ -1,6 +1,8 @@
 import moment from 'moment';
-import { parseTimeSeries, parseStats } from './parse';
+
 import { ActiveUsersResponse } from 'api/graph_data_units/responseTypes';
+
+import { parseTimeSeries, parseStats } from './parse';
 
 describe('parseTimeSeries', () => {
   it('works', () => {

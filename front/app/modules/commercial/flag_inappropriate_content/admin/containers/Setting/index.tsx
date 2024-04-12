@@ -1,14 +1,19 @@
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import messages from './messages';
 import React, { ReactElement } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import Link from 'utils/cl-router/Link';
-import styled from 'styled-components';
+
 import { IconTooltip, Toggle } from '@citizenlab/cl2-component-library';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import { trackEventByName } from 'utils/analytics';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
+
 import tracks from '../../../tracks';
+
+import messages from './messages';
 
 const StyledToggle = styled(Toggle)`
   margin-right: 15px;
@@ -87,7 +92,7 @@ const FlagInnapropriateContentSetting = ({
               <StyledIconTooltip
                 content={
                   <FormattedMessage
-                    {...messages.inappropriateContentDetectionTooltip}
+                    {...messages.inappropriateContentDetectionToggleTooltip}
                     values={{
                       linkToActivityPage: (
                         <Link to="/admin/dashboard/moderation">

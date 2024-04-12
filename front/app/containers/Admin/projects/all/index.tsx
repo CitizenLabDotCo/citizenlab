@@ -1,33 +1,28 @@
 import React, { memo, Suspense, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// resources
+import { Spinner, Title } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
 import useAuthUser from 'api/me/useAuthUser';
 
-// localisation
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// utils
+import PageWrapper from 'components/admin/PageWrapper';
+import { SectionDescription } from 'components/admin/Section';
+import Outlet from 'components/Outlet';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
 import { isProjectFolderModerator } from 'utils/permissions/rules/projectFolderPermissions';
 
-// components
 import CreateProject from './CreateProject';
-import PageWrapper from 'components/admin/PageWrapper';
-import { SectionDescription } from 'components/admin/Section';
-import HasPermission from 'components/HasPermission';
-import { Spinner, Title } from '@citizenlab/cl2-component-library';
-import Outlet from 'components/Outlet';
+import messages from './messages';
 
 const ModeratorProjectList = React.lazy(
   () => import('./Lists/ModeratorProjectList')
 );
 const AdminProjectList = React.lazy(() => import('./Lists/AdminProjectList'));
-
-// style
-import styled from 'styled-components';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.div``;
 
@@ -67,7 +62,6 @@ const AdminProjectsList = memo(({ className }: Props) => {
     ? isProjectFolderModerator(authUser.data)
     : false;
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
-
   const [containerOutletRendered, setContainerOutletRendered] = useState(false);
   const handleContainerOutletOnRender = (hasRendered: boolean) => {
     setContainerOutletRendered(hasRendered);
@@ -83,15 +77,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
         </Title>
 
         <SectionDescription>
-          <HasPermission
-            item={{ type: 'route', path: '/admin/projects' }}
-            action="access"
-          >
-            <FormattedMessage {...messages.overviewPageSubtitle} />
-            <HasPermission.No>
-              <FormattedMessage {...messages.overviewPageSubtitleModerator} />
-            </HasPermission.No>
-          </HasPermission>
+          <FormattedMessage {...messages.overviewPageSubtitle} />
         </SectionDescription>
 
         <CreateProjectWrapper>

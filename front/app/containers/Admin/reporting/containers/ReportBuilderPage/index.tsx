@@ -1,27 +1,28 @@
 import React, { useState } from 'react';
 
-// hooks
-import useReports from 'api/reports/useReports';
-
-// styling
-import { colors, Box, Title, Text } from '@citizenlab/cl2-component-library';
-
-// components
-import EmptyState from '../../components/ReportBuilderPage/EmptyState';
-import Button from 'components/UI/Button';
-import ReportRow from '../../components/ReportBuilderPage/ReportRow';
-import CreateReportModal from '../../components/ReportBuilderPage/CreateReportModal';
+import {
+  colors,
+  Box,
+  Title,
+  Text,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import sharedMessages from '../../messages';
-import messages from './messages';
+import useReports from 'api/reports/useReports';
 
-// utils
-
-// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import CreateReportModal from '../../components/ReportBuilderPage/CreateReportModal';
+import EmptyState from '../../components/ReportBuilderPage/EmptyState';
+import ReportRow from '../../components/ReportBuilderPage/ReportRow';
+import sharedMessages from '../../messages';
+
+import messages from './messages';
 
 const ReportBuilderPage = () => {
   const { data: reports } = useReports();
@@ -42,14 +43,20 @@ const ReportBuilderPage = () => {
 
   return (
     <>
-      <Title variant="h1" color="primary" mt="0px" mb="32px">
+      <Title variant="h1" color="primary" mb="32px">
         <FormattedMessage {...sharedMessages.reportBuilder} />
       </Title>
       {showEmptyState ? (
         <EmptyState onOpenModal={openModal} />
       ) : (
         <>
-          <Box background="white" px="56px" py="40px">
+          <Box
+            background="white"
+            px="56px"
+            py="40px"
+            border={stylingConsts.border}
+            borderRadius={stylingConsts.borderRadius}
+          >
             <Title
               variant="h3"
               as="h2"
@@ -89,7 +96,14 @@ const ReportBuilderPage = () => {
             </Box>
           </Box>
           {isReportBuilderAllowed && (
-            <Box background="white" px="56px" py="40px" mt="20px">
+            <Box
+              background="white"
+              px="56px"
+              py="40px"
+              mt="20px"
+              border={stylingConsts.border}
+              borderRadius={stylingConsts.borderRadius}
+            >
               <Title
                 variant="h3"
                 as="h2"

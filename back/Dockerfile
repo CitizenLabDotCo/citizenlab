@@ -14,7 +14,7 @@ COPY back/engines ./engines
 RUN find engines -type f -not -name "*.gemspec" -not -name "version.rb" -print0 | xargs -0 rm -rf \
    && find engines -type d -empty -delete
 
-FROM ruby:2.7.6-slim
+FROM ruby:3.3.0-slim
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN apt-get update                                        \
@@ -31,14 +31,14 @@ RUN apt-get update                                        \
    # Required by `pg` gem
    libpq-dev                                              \
    # Used to wait for Postgres to be up in CircleCI
-   netcat                                                 \
+   netcat-openbsd                                         \
    # Image processing
    imagemagick                                            \
    jpegoptim                                              \
    optipng                                                \
-   pngquant                                              \
+   pngquant                                               \
    # tiktoken_ruby
-   clang                                               \
+   clang                                                  \
    && curl -sL https://deb.nodesource.com/setup_18.x  | bash - \
    && apt-get -y --no-install-recommends install nodejs        \
    # Install MJML parser required by email engine.

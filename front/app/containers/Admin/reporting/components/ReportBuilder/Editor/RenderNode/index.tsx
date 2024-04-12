@@ -1,32 +1,40 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import { Box, colors } from '@citizenlab/cl2-component-library';
+import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
 import styled from 'styled-components';
 
-// components
-import { Box, colors } from '@citizenlab/cl2-component-library';
-
-// craft
-import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
-
-// intl
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from 'components/admin/ContentBuilder/Editor/RenderNode/messages';
 import {
   WIDGET_TITLES,
   hasNoPointerEvents,
   hasChildren,
 } from 'containers/Admin/reporting/components/ReportBuilder/Widgets';
 
-const StyledBox = styled(Box)`
-  ${({ isRoot }: { isRoot: boolean }) =>
+import messages from 'components/admin/ContentBuilder/Editor/RenderNode/messages';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+const StyledBox = styled(Box)<{ isRoot: boolean; outlineColor?: string }>`
+  ${({ isRoot }) =>
     isRoot
-      ? `cursor: auto;
-padding-top: 4px;
-padding-bottom: 4px;
-width: 100%;
-max-width: 1000px;
-background-color: #fff;
-min-height: 160px;`
-      : `cursor:move;`}
+      ? `
+        cursor: auto;
+        width: 100%;
+        max-width: 1000px;
+        background-color: #fff;
+        min-height: 160px;
+        box-sizing: content-box;
+      `
+      : 'cursor: move;'}
+
+  ${({ outlineColor }) =>
+    outlineColor
+      ? `
+      outline: 1px solid ${outlineColor};
+    `
+      : 'outline: none;'}
+
+  margin-bottom: 3px;
 `;
 
 const CONTAINER = 'Container';
@@ -35,7 +43,6 @@ const RenderNode = ({ render }) => {
   const {
     id,
     name,
-    isHover,
     hasError,
     title,
     noPointerEvents,
@@ -51,13 +58,14 @@ const RenderNode = ({ render }) => {
 
     return {
       props: node.data.props,
-      isHover: node.events.hovered,
       name,
       hasError: node.data.props?.hasError,
       title: WIDGET_TITLES[name],
       noPointerEvents: hasNoPointerEvents(name),
     };
   });
+
+  const [isHover, setIsHover] = useState(false);
 
   const {
     isActive,
@@ -87,7 +95,7 @@ const RenderNode = ({ render }) => {
     if (isHover && isChildOfComplexComponent) {
       parentNodeElement?.setAttribute(
         'style',
-        `border: 1px solid ${colors.primary} `
+        `outline: 1px solid ${colors.primary} `
       );
     } else {
       parentNodeElement?.removeAttribute('style');
@@ -119,8 +127,11 @@ const RenderNode = ({ render }) => {
     isActive && isSelectable && id !== ROOT_NODE && isDeletable && !isContainer;
 
   const nodeIsHovered = isHover && id !== ROOT_NODE && !isContainer;
+
   const solidBorderIsVisible =
-    isSelectable && (nodeLabelIsVisible || nodeIsHovered || hasError);
+    isSelectable &&
+    (nodeLabelIsVisible || nodeIsHovered || hasError) &&
+    !invisible;
 
   return (
     <StyledBox
@@ -128,21 +139,24 @@ const RenderNode = ({ render }) => {
       ref={(ref) => ref && connect(drag(ref))}
       id={id}
       position="relative"
-      borderStyle={solidBorderIsVisible ? 'solid' : 'dashed'}
       minHeight={id === ROOT_NODE ? '160px' : '0px'}
       background="#fff"
-      borderWidth={invisible ? '0px' : '1px'}
-      borderColor={
+      outlineColor={
         hasError
           ? colors.red600
           : solidBorderIsVisible
           ? colors.primary
-          : isSelectable
-          ? colors.divider
           : 'transparent'
       }
-      my={invisible ? undefined : '2px'}
       isRoot={id === ROOT_NODE}
+      onMouseOver={(e) => {
+        e.stopPropagation();
+        setIsHover(true);
+      }}
+      onMouseOut={(e) => {
+        e.stopPropagation();
+        setIsHover(false);
+      }}
     >
       {nodeLabelIsVisible && (
         <Box

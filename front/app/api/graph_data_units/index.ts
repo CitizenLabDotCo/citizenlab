@@ -1,29 +1,31 @@
 import {
+  AgeProps,
+  AnalyticsProps,
+  GenderProps,
+  MostReactedIdeasProps,
+  SingleIdeaProps,
+  SurveyQuestionResultProps,
+  VisitorsTrafficSourcesProps,
+} from './requestTypes';
+import {
   ActiveUsersResponse,
   CommentsByTimeResponse,
   MostReactedIdeasResponse,
   PostsByTimeResponse,
   ReactionsByTimeResponse,
-  SurveyResultsResponse,
+  SingleIdeaResponse,
+  SurveyQuestionResultResponse,
   UsersByBirthyearResponse,
   UsersByGenderResponse,
   VisitorsResponse,
   VisitorsTrafficSourcesResponse,
 } from './responseTypes';
-import {
-  AgeProps,
-  AnalyticsProps,
-  GenderProps,
-  MostReactedIdeasProps,
-  SurveyResultsProps,
-  VisitorsTrafficSourcesProps,
-} from './requestTypes';
 import useGraphDataUnits from './useGraphDataUnits';
 import useGraphDataUnitsLive from './useGraphDataUnitsLive';
 
-export const useSurveyResults = (props: SurveyResultsProps) => {
-  return useGraphDataUnits<SurveyResultsResponse>({
-    resolvedName: 'SurveyResultsWidget',
+export const useSurveyQuestionResult = (props: SurveyQuestionResultProps) => {
+  return useGraphDataUnits<SurveyQuestionResultResponse>({
+    resolved_name: 'SurveyQuestionResultWidget',
     props,
   });
 };
@@ -34,7 +36,20 @@ export const useMostReactedIdeas = (
 ) => {
   return useGraphDataUnits<MostReactedIdeasResponse>(
     {
-      resolvedName: 'MostReactedIdeasWidget',
+      resolved_name: 'MostReactedIdeasWidget',
+      props,
+    },
+    { enabled }
+  );
+};
+
+export const useSingleIdea = (
+  props: SingleIdeaProps,
+  { enabled }: { enabled: boolean }
+) => {
+  return useGraphDataUnits<SingleIdeaResponse>(
+    {
+      resolved_name: 'SingleIdeaWidget',
       props,
     },
     { enabled }
@@ -47,7 +62,7 @@ export const useVisitors = (
 ) => {
   return useGraphDataUnits<VisitorsResponse>(
     {
-      resolvedName: 'VisitorsWidget',
+      resolved_name: 'VisitorsWidget',
       props,
     },
     { onSuccess }
@@ -58,7 +73,7 @@ export const useVisitorsTrafficSources = (
   props: VisitorsTrafficSourcesProps
 ) => {
   return useGraphDataUnits<VisitorsTrafficSourcesResponse>({
-    resolvedName: 'VisitorsTrafficSourcesWidget',
+    resolved_name: 'VisitorsTrafficSourcesWidget',
     props,
   });
 };
@@ -67,35 +82,35 @@ export const useVisitorsTrafficSourcesLive = (
   props: VisitorsTrafficSourcesProps
 ) => {
   return useGraphDataUnitsLive<VisitorsTrafficSourcesResponse>({
-    resolvedName: 'VisitorsTrafficSourcesWidget',
+    resolved_name: 'VisitorsTrafficSourcesWidget',
     props,
   });
 };
 
 export const useUsersByGender = (props: GenderProps) => {
   return useGraphDataUnits<UsersByGenderResponse>({
-    resolvedName: 'GenderWidget',
+    resolved_name: 'GenderWidget',
     props,
   });
 };
 
 export const useUsersByGenderLive = (props: GenderProps) => {
   return useGraphDataUnitsLive<UsersByGenderResponse>({
-    resolvedName: 'GenderWidget',
+    resolved_name: 'GenderWidget',
     props,
   });
 };
 
 export const useUsersByAge = (props: AgeProps) => {
   return useGraphDataUnits<UsersByBirthyearResponse>({
-    resolvedName: 'AgeWidget',
+    resolved_name: 'AgeWidget',
     props,
   });
 };
 
 export const useUsersByAgeLive = (props: AgeProps) => {
   return useGraphDataUnitsLive<UsersByBirthyearResponse>({
-    resolvedName: 'AgeWidget',
+    resolved_name: 'AgeWidget',
     props,
   });
 };
@@ -106,7 +121,7 @@ export const useActiveUsers = (
 ) => {
   return useGraphDataUnits<ActiveUsersResponse>(
     {
-      resolvedName: 'ActiveUsersWidget',
+      resolved_name: 'ActiveUsersWidget',
       props,
     },
     { onSuccess }
@@ -115,7 +130,7 @@ export const useActiveUsers = (
 
 export const usePostsByTime = (props: AnalyticsProps) => {
   return useGraphDataUnits<PostsByTimeResponse>({
-    resolvedName: 'PostsByTimeWidget',
+    resolved_name: 'PostsByTimeWidget',
     props,
   });
 };
@@ -126,7 +141,7 @@ export const usePostsByTimeLive = (
 ) => {
   return useGraphDataUnitsLive<PostsByTimeResponse>(
     {
-      resolvedName: 'PostsByTimeWidget',
+      resolved_name: 'PostsByTimeWidget',
       props,
     },
     { onSuccess }
@@ -139,7 +154,7 @@ export const useCommentsByTime = (
 ) => {
   return useGraphDataUnits<CommentsByTimeResponse>(
     {
-      resolvedName: 'CommentsByTimeWidget',
+      resolved_name: 'CommentsByTimeWidget',
       props,
     },
     { onSuccess }
@@ -152,7 +167,7 @@ export const useCommentsByTimeLive = (
 ) => {
   return useGraphDataUnitsLive<CommentsByTimeResponse>(
     {
-      resolvedName: 'CommentsByTimeWidget',
+      resolved_name: 'CommentsByTimeWidget',
       props,
     },
     { onSuccess }
@@ -161,7 +176,7 @@ export const useCommentsByTimeLive = (
 
 export const useReactionsByTime = (props: AnalyticsProps) => {
   return useGraphDataUnits<ReactionsByTimeResponse>({
-    resolvedName: 'ReactionsByTimeWidget',
+    resolved_name: 'ReactionsByTimeWidget',
     props,
   });
 };
@@ -172,7 +187,7 @@ export const useReactionsByTimeLive = (
 ) => {
   return useGraphDataUnitsLive<ReactionsByTimeResponse>(
     {
-      resolvedName: 'ReactionsByTimeWidget',
+      resolved_name: 'ReactionsByTimeWidget',
       props,
     },
     { onSuccess }

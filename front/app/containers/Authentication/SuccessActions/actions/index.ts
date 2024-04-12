@@ -1,16 +1,4 @@
-import {
-  redirectToIdeaForm,
-  RedirectToIdeaFormParams,
-} from './redirectToIdeaForm';
-import {
-  redirectToInitiativeForm,
-  RedirectToInitiativeFormParams,
-} from './redirectToInitiativeForm';
 import { follow, FollowActionParams } from './follow';
-import { replyToComment, ReplyToCommentParams } from './replyToComment';
-import { scrollTo, ScrollToParams } from './scrollTo';
-import { volunteer, VolunteerParams } from './volunteer';
-import { vote, VoteParams } from './vote';
 import {
   reactionOnComment,
   ReactionOnCommentParams,
@@ -20,7 +8,19 @@ import {
   reactionOnInitiative,
   ReactionOnInitiativeParams,
 } from './reactionOnInitiative';
+import {
+  redirectToIdeaForm,
+  RedirectToIdeaFormParams,
+} from './redirectToIdeaForm';
+import {
+  redirectToInitiativeForm,
+  RedirectToInitiativeFormParams,
+} from './redirectToInitiativeForm';
+import { replyToComment, ReplyToCommentParams } from './replyToComment';
+import { scrollTo, ScrollToParams } from './scrollTo';
 import { submitPoll, SubmitPollParams } from './submitPoll';
+import { volunteer, VolunteerParams } from './volunteer';
+import { vote, VoteParams } from './vote';
 
 interface RedirectToIdeaFormAction {
   name: 'redirectToIdeaForm';

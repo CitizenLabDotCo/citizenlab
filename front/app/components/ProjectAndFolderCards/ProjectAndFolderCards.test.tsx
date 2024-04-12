@@ -1,12 +1,15 @@
 import React from 'react';
-import { render, screen, fireEvent } from 'utils/testUtils/rtl';
+
 import { getTheme } from '@citizenlab/cl2-component-library';
 import * as styledComponents from 'styled-components';
 
-import ProjectAndFolderCards from '.';
-import { IStatusCounts } from 'api/admin_publications_status_counts/types';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
+import { IStatusCounts } from 'api/admin_publications_status_counts/types';
 import useAdminPublicationsStatusCounts from 'api/admin_publications_status_counts/useAdminPublicationsStatusCounts';
+
+import { render, screen, fireEvent } from 'utils/testUtils/rtl';
+
+import ProjectAndFolderCards from '.';
 
 // Mock external libraries
 let mockSmallerThanMinTablet = false;

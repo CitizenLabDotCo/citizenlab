@@ -5,7 +5,7 @@ class ReportBuilder::Queries::Analytics::Base < ReportBuilder::Queries::Base
     'day' => 'date'
   }.freeze
 
-  def run_query(props)
+  def run_query(**props)
     json_query = query(**props)
     results, errors, _paginations = Analytics::MultipleQueries.new.run(json_query)
     if errors.present?

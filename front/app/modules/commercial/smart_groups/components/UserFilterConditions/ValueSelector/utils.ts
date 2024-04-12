@@ -1,5 +1,6 @@
-import { Localize } from 'hooks/useLocalize';
 import { Multiloc, IOption } from 'typings';
+
+import { Localize } from 'hooks/useLocalize';
 
 type DataObject = {
   id: string;

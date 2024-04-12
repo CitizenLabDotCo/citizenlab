@@ -1,13 +1,10 @@
 import React from 'react';
 
-// components
 import { IconButton } from '@citizenlab/cl2-component-library';
-
-// style
 import { useTheme } from 'styled-components';
 
-// intl
 import { useIntl } from 'utils/cl-intl';
+
 import messages from '../../../messages';
 
 interface Props {

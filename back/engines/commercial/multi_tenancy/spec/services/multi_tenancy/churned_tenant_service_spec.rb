@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe MultiTenancy::ChurnedTenantService do
-  subject(:service) { described_class.new(params) }
+  subject(:service) { described_class.new(**params) }
 
   let(:params) { {} }
 

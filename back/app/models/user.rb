@@ -55,7 +55,7 @@ class User < ApplicationRecord
   INVITE_STATUSES = %w[pending accepted].freeze
   ROLES = %w[admin project_moderator project_folder_moderator].freeze
   CITIZENLAB_MEMBER_REGEX_CONTENT = 'citizenlab.(eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'
-  EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i.freeze
+  EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   EMAIL_DOMAIN_BLACKLIST = Rails.root.join('config', 'domain_blacklist.txt').readlines.map(&:strip).freeze
 
   class << self
@@ -165,7 +165,6 @@ class User < ApplicationRecord
 
   attr_reader :highest_role_after_initialize
 
-  before_validation :set_cl1_migrated, on: :create
   before_validation :generate_slug
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :assign_email_or_phone, if: :email_changed?
@@ -331,9 +330,23 @@ class User < ApplicationRecord
     token_lifetime = AppConfiguration.instance.settings('core', 'authentication_token_lifetime_in_days').days
     {
       sub: id,
-      roles: roles,
+      roles: compacted_roles,
       exp: token_lifetime.from_now.to_i
     }
+  end
+
+  # Returns roles excluding the `project_moderator` roles that are redundant with
+  # `project_folder_moderator` roles (i.e. the user is a project moderator for a
+  # project that is in a folder that they moderate).
+  def compacted_roles
+    redundant_project_ids = AdminPublication
+      .joins(:parent)
+      .where(parent: { publication_id: moderated_project_folder_ids })
+      .pluck(:publication_id)
+
+    roles.reject do |role|
+      role['type'] == 'project_moderator' && role['project_id'].in?(redundant_project_ids)
+    end
   end
 
   def avatar_blank?
@@ -435,11 +448,8 @@ class User < ApplicationRecord
     if no_password?
       # Allow authentication without password - but only if confirmation is required on the user
       unencrypted_password.empty? && confirmation_required? ? self : false
-    elsif cl1_authenticate(unencrypted_password)
-      self.password_digest = BCrypt::Password.create(unencrypted_password)
-      self
     else
-      original_authenticate(unencrypted_password) && self
+      BCrypt::Password.new(password_digest).is_password?(unencrypted_password) && self
     end
   end
 
@@ -622,18 +632,6 @@ class User < ApplicationRecord
     self.bio_multiloc = service.linkify_multiloc(bio_multiloc)
   end
 
-  def set_cl1_migrated
-    self.cl1_migrated ||= false
-  end
-
-  def original_authenticate(unencrypted_password)
-    BCrypt::Password.new(password_digest).is_password?(unencrypted_password)
-  end
-
-  def cl1_authenticate(unencrypted_password)
-    original_authenticate(::Digest::SHA256.hexdigest(unencrypted_password))
-  end
-
   def validate_email_domains_blacklist
     validate_email_domain_blacklist email
     validate_email_domain_blacklist new_email
@@ -703,6 +701,7 @@ class User < ApplicationRecord
 end
 
 User.include(IdeaAssignment::Extensions::User)
+User.include(ReportBuilder::Patches::User)
 User.include(Verification::Patches::User)
 
 User.prepend(MultiTenancy::Patches::User)

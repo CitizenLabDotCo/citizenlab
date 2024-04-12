@@ -1,11 +1,11 @@
-// typings
+import { IBasket } from 'api/baskets/types';
+import { IBasketsIdeas } from 'api/baskets_ideas/types';
 import { IdeaVotingDisabledReason } from 'api/ideas/types';
+
 import {
   ActionDescriptorFutureEnabled,
   isFixableByAuthentication,
 } from 'utils/actionDescriptors';
-import { IBasket } from 'api/baskets/types';
-import { IBasketsIdeas } from 'api/baskets_ideas/types';
 
 export const isButtonEnabled = (
   basket: IBasket | undefined,

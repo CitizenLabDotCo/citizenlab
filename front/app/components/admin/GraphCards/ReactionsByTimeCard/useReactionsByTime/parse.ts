@@ -1,17 +1,17 @@
 import moment, { Moment } from 'moment';
 
-// utils
+import { ReactionsByTimeResponse } from 'api/graph_data_units/responseTypes';
+
 import {
   timeSeriesParser,
   calculateCumulativeSerie,
 } from 'components/admin/GraphCards/_utils/timeSeries';
+import { IResolution } from 'components/admin/ResolutionControl';
+
 import { get } from 'utils/helperUtils';
 
-// typings
-import { TimeSeriesResponseRow, TimeSeries, TimeSeriesRow } from './typings';
 import { Translations } from './translations';
-import { IResolution } from 'components/admin/ResolutionControl';
-import { ReactionsByTimeResponse } from 'api/graph_data_units/responseTypes';
+import { TimeSeriesResponseRow, TimeSeries, TimeSeriesRow } from './typings';
 
 export const getEmptyRow = (date: Moment) => ({
   date: date.format('YYYY-MM-DD'),

@@ -1,38 +1,61 @@
 import React, { lazy } from 'react';
+
 import moduleConfiguration from 'modules';
-
-// routes
-import createDashboardRoutes from './dashboard/routes';
-import createAdminInitiativesRoutes from './initiatives/routes';
-import createAdminUsersRoutes from './users/routes';
-import invitationsRoutes from './invitations/routes';
-import createAdminProjectsRoutes from './projects/routes';
-import settingsRoutes from './settings/routes';
-import createAdminMessagingRoutes from './messaging/routes';
-import ideasRoutes from './ideas/routes';
-import pagesAndMenuRoutes from './pagesAndMenu/routes';
-import projectFoldersRoutes from './projectFolders/routes';
-import reportingRoutes from './reporting/routes';
-import toolsRoutes from './tools/routes';
-
-// components
-import PageLoading from 'components/UI/PageLoading';
 import { Navigate, useLocation } from 'react-router-dom';
-const AdminContainer = lazy(() => import('containers/Admin'));
-const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
-import Unauthorized from 'components/Unauthorized';
 
-// hooks
-import { usePermission } from 'utils/permissions';
+import { IAppConfigurationData } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 
-// utils
-import { isNilOrError, isUUID } from 'utils/helperUtils';
-import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import PageLoading from 'components/UI/PageLoading';
+import Unauthorized from 'components/Unauthorized';
 
-// typings
-import { IAppConfigurationData } from 'api/app_configuration/types';
+import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import { isNilOrError, isUUID } from 'utils/helperUtils';
+import { usePermission } from 'utils/permissions';
+
+import createDashboardRoutes, { dashboardRouteTypes } from './dashboard/routes';
+import ideasRoutes, { ideaRouteTypes } from './ideas/routes';
+import createAdminInitiativesRoutes, {
+  initiativeRouteTypes,
+} from './initiatives/routes';
+import invitationsRoutes, { invitationRouteTypes } from './invitations/routes';
+import createAdminMessagingRoutes, {
+  messagingRouteTypes,
+} from './messaging/routes';
+import pagesAndMenuRoutes, {
+  pagesAndMenuRouteTypes,
+} from './pagesAndMenu/routes';
+import projectFoldersRoutes, {
+  projectFolderRouteTypes,
+} from './projectFolders/routes';
+import createAdminProjectsRoutes, {
+  projectsRouteTypes,
+} from './projects/routes';
+import reportingRoutes, { reportingRouteTypes } from './reporting/routes';
+import settingsRoutes, { settingRouteTypes } from './settings/routes';
+import toolsRoutes, { toolRouteTypes } from './tools/routes';
+import createAdminUsersRoutes, { userRouteTypes } from './users/routes';
+
+const AdminContainer = lazy(() => import('containers/Admin'));
+const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
+
+export type AdminRoute<T extends string = string> = `/admin/${T}`;
+
+export type AdminRouteTypes =
+  | '/admin'
+  | initiativeRouteTypes
+  | ideaRouteTypes
+  | userRouteTypes
+  | invitationRouteTypes
+  | dashboardRouteTypes
+  | projectFolderRouteTypes
+  | toolRouteTypes
+  | reportingRouteTypes
+  | messagingRouteTypes
+  | pagesAndMenuRouteTypes
+  | projectsRouteTypes
+  | settingRouteTypes;
 
 const isTemplatePreviewPage = (urlSegments: string[]) =>
   urlSegments.length === 4 &&
@@ -119,7 +142,7 @@ const createAdminRoutes = () => {
       createAdminMessagingRoutes(),
       ideasRoutes(),
       projectFoldersRoutes(),
-      reportingRoutes(),
+      ...reportingRoutes(),
       toolsRoutes(),
       // This path is only reachable via URL.
       // It's a pragmatic solution to reduce workload

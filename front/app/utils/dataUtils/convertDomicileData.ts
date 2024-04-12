@@ -1,4 +1,5 @@
 import { Multiloc } from 'typings';
+
 import { RawData } from './typings';
 
 export type AreaValue = {

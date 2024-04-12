@@ -1,11 +1,16 @@
 import React from 'react';
+
 import { Toggle, Box, ListItem } from '@citizenlab/cl2-component-library';
-import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
+
 import CampaignDescription from 'containers/Admin/messaging/AutomatedEmails/CampaignDescription';
+import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
+
 import Warning from 'components/UI/Warning';
+
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 import Link from 'utils/cl-router/Link';
+
+import messages from './messages';
 
 type Props = {
   campaign: CampaignData;

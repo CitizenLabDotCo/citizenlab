@@ -1,35 +1,29 @@
 import React from 'react';
 
-// Router
+import { SupportedLocale } from 'typings';
 
-// i18n
 import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
-import messages from '../../messages';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-// components
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
-import SectionTitle from 'components/admin/ContentBuilder/Toolbox/SectionTitle';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
-
-// widgets
-import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
-import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
-import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
-import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
-import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
+import SectionTitle from 'components/admin/ContentBuilder/Toolbox/SectionTitle';
 import AboutBox from 'components/admin/ContentBuilder/Widgets/AboutBox';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
-import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
-import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
+import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
+import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
+import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
+import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
+import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
+import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
-// types
-import { Locale } from 'typings';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import messages from '../../messages';
+import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 
 type ProjectDescriptionBuilderToolboxProps = {
-  selectedLocale: Locale;
+  selectedLocale: SupportedLocale;
 };
 
 const ProjectDescriptionBuilderToolbox = ({

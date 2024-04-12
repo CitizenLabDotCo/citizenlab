@@ -11,7 +11,7 @@ module Post
 
   included do
     pg_search_scope :restricted_search,
-      against: %i[title_multiloc body_multiloc],
+      against: %i[title_multiloc body_multiloc slug],
       using: { tsearch: { prefix: true } }
 
     pg_search_scope :search_any_word,

@@ -1,29 +1,27 @@
 import React, { useMemo } from 'react';
 
-// components
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import TextButton from '../_components/TextButton';
-
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import sharedMessages from '../messages';
-import messages from './messages';
-
-// form
-import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
-import Input from 'components/HookForm/Input';
 
-// errors
+import { SetError } from 'containers/Authentication/typings';
+
+import Input from 'components/HookForm/Input';
+import Button from 'components/UI/Button';
+
+import { useIntl } from 'utils/cl-intl';
 import {
   isCLErrorsWrapper,
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
 
-// typings
-import { SetError } from 'containers/Authentication/typings';
+import TextButton from '../_components/TextButton';
+import sharedMessages from '../messages';
+
+import messages from './messages';
+
+// errors
 
 interface Props {
   loading: boolean;

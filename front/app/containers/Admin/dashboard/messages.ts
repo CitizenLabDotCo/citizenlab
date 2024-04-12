@@ -61,7 +61,7 @@ export default defineMessages({
     defaultMessage: 'Users',
   },
   inputs: {
-    id: 'app.containers.AdminPage.DashboardPage.inputs',
+    id: 'app.containers.AdminPage.DashboardPage.inputs1',
     defaultMessage: 'Inputs',
   },
   reactions: {
@@ -124,7 +124,7 @@ export default defineMessages({
       'The number of participants that posted inputs, reacted or commented.',
   },
   inputsByStatusTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.inputsByStatusTitle',
+    id: 'app.containers.AdminPage.DashboardPage.inputsByStatusTitle1',
     defaultMessage: 'Inputs by status',
   },
   commentsByTimeTitle: {

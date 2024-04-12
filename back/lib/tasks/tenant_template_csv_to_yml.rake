@@ -12,7 +12,7 @@ namespace :tenant_template do
   task :csv_to_yml, %i[path locale] => [:environment] do |_t, args|
     locales = args[:locale].split
     template_path = Rails.root.join('config/tenant_templates/base.yml')
-    yml_base = YAML.load(File.read(template_path)) # rubocop:disable Security/YAMLLoad
+    yml_base = MultiTenancy::Templates::Utils.parse_yml_file(template_path)
 
     users_hash           = {}
     topics_hash          = {}
@@ -53,7 +53,7 @@ namespace :tenant_template do
   end
 
   def read_csv(name, args)
-    CSV.read("#{args[:path]}/#{name}.csv", { headers: true, col_sep: ',' })
+    CSV.read("#{args[:path]}/#{name}.csv", headers: true, col_sep: ',')
   end
 
   def make_multiloc(value, locales)

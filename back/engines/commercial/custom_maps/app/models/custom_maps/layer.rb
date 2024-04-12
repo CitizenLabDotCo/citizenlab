@@ -13,6 +13,8 @@
 #  marker_svg_url  :string
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  type            :string
+#  layer_url       :string
 #
 # Indexes
 #
@@ -28,32 +30,38 @@ module CustomMaps
 
     attribute :geojson_file
 
-    GEOJSON_SCHEMA = CustomMaps::Engine.root.join('config', 'schemas', 'geojson.json_schema').to_s
+    LAYER_TYPES = %w[CustomMaps::GeojsonLayer CustomMaps::EsriFeatureLayer].freeze
 
     acts_as_list column: :ordering, top_of_list: 0, add_new_at: :bottom, scope: [:map_config_id]
 
     belongs_to :map_config, class_name: 'CustomMaps::MapConfig'
 
+    validates :type, inclusion: { in: LAYER_TYPES } # We enforce explicit STI type declaration.
     validates :title_multiloc, presence: true, multiloc: { presence: true }
     validates :default_enabled, inclusion: { in: [true, false] }
-    validates :geojson, presence: true, json: { schema: GEOJSON_SCHEMA }
     validates :marker_svg_url,
       format: { with: %r{\Ahttps://.*\z}, message: 'should start with https://' },
       allow_nil: true
 
-    before_validation :set_default_enabled, :decode_geojson_file
+    before_validation :set_default_enabled, :decode_geojson_file, :set_geojson_empty_hash_for_nil
+
+    def set_default_enabled
+      return unless default_enabled.nil?
+
+      self.default_enabled = true
+    end
+
+    # Metabase doesn't work well when null values can occur for json attributes, so we enforce NOT NULL at db level.
+    # This ensures that the geojson attribute is never nil, without forcing the FE to include '{}' in the payload.
+    def set_geojson_empty_hash_for_nil
+      self.geojson = {} if geojson.nil?
+    end
 
     # If there's a geojson file being passed, but not geojson, read the file and set it as geojson.
     def decode_geojson_file
       return unless !(geojson_changed? && geojson) && geojson_file_changed? && geojson_file
 
       self.geojson = JSON.parse(Base64.decode64(geojson_file[:base64].gsub('data:application/json;base64,', '')))
-    end
-
-    def set_default_enabled
-      return unless default_enabled.nil?
-
-      self.default_enabled = true
     end
   end
 end

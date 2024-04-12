@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeleteEventAttendance from './useDeleteEventAttendance';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useDeleteEventAttendance from './useDeleteEventAttendance';
 const apiPath = '*event_attendances/:attendanceId';
 
 const server = setupServer(

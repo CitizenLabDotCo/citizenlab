@@ -1,6 +1,13 @@
 import { combineLatest } from 'rxjs';
-import authUserStream from 'api/me/authUserStream';
+
 import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
+import authUserStream from 'api/me/authUserStream';
+
+import {
+  IDestinationConfig,
+  registerDestination,
+} from 'components/ConsentManager/destinations';
+
 import {
   bufferUntilInitialized,
   events$,
@@ -10,22 +17,14 @@ import {
   tenantInfo,
 } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
-import {
-  IDestinationConfig,
-  registerDestination,
-} from 'components/ConsentManager/destinations';
-import { isAdmin, isRegularUser } from 'utils/permissions/roles';
 import { ModuleConfiguration } from 'utils/moduleUtils';
+import { isAdmin, isRegularUser } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
 
 export const INTERCOM_APP_ID = process.env.INTERCOM_APP_ID;
 
 declare module 'components/ConsentManager/destinations' {
   export interface IDestinationMap {
-    intercom: 'intercom';
-  }
-
-  interface IConsentManagerFeatureMap {
     intercom: 'intercom';
   }
 }

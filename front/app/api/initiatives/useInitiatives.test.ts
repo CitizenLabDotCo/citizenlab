@@ -1,13 +1,11 @@
-import { initiativesData, links } from './__mocks__/_mockServer';
-
 import { renderHook } from '@testing-library/react-hooks';
-
-import useInitiatives from './useInitiatives';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { initiativesData, links } from './__mocks__/_mockServer';
+import useInitiatives from './useInitiatives';
 
 const apiPath = '*initiatives';
 const server = setupServer(

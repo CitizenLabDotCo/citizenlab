@@ -1,9 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-// react hook form
-import { Controller, useFormContext } from 'react-hook-form';
-
-// components
 import {
   Box,
   Label,
@@ -11,14 +7,15 @@ import {
   Input,
   LocaleSwitcher,
 } from '@citizenlab/cl2-component-library';
-
-// i18n
-import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
+import { Controller, useFormContext } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
-import { Locale } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
+import { SupportedLocale } from 'typings';
+
+import { injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from './messages';
 
 const StyledLabel = styled(Label)`
   margin-top: auto;
@@ -28,9 +25,9 @@ interface Props {
   minimumLabelName: string;
   maximumLabelName: string;
   maximumName: string;
-  onSelectedLocaleChange?: (locale: Locale) => void;
-  locales: Locale[];
-  platformLocale: Locale;
+  onSelectedLocaleChange?: (locale: SupportedLocale) => void;
+  locales: SupportedLocale[];
+  platformLocale: SupportedLocale;
 }
 
 const ScaleLabelsInput = ({
@@ -43,7 +40,7 @@ const ScaleLabelsInput = ({
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
   const { control, setValue, getValues } = useFormContext();
-  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(
+  const [selectedLocale, setSelectedLocale] = useState<SupportedLocale | null>(
     platformLocale
   );
 
@@ -56,7 +53,7 @@ const ScaleLabelsInput = ({
   const defaultValues = [{}];
 
   const handleOnSelectedLocaleChange = useCallback(
-    (newSelectedLocale: Locale) => {
+    (newSelectedLocale: SupportedLocale) => {
       setSelectedLocale(newSelectedLocale);
       onSelectedLocaleChange?.(newSelectedLocale);
     },
@@ -121,7 +118,9 @@ const ScaleLabelsInput = ({
                         onChange={(value) => {
                           const updatedMultiloc = minLabelMultiloc;
                           updatedMultiloc[selectedLocale] = value;
-                          setValue(minimumLabelName, updatedMultiloc);
+                          setValue(minimumLabelName, updatedMultiloc, {
+                            shouldDirty: true,
+                          });
                         }}
                         onKeyDown={handleKeyDown}
                       />
@@ -136,7 +135,9 @@ const ScaleLabelsInput = ({
                         onChange={(value) => {
                           const updatedMultiloc = maxLabelMultiloc;
                           updatedMultiloc[selectedLocale] = value;
-                          setValue(maximumLabelName, updatedMultiloc);
+                          setValue(maximumLabelName, updatedMultiloc, {
+                            shouldDirty: true,
+                          });
                         }}
                         onKeyDown={handleKeyDown}
                       />

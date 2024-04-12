@@ -1,14 +1,14 @@
-import useAuthenticationRequirements from './useAuthenticationRequirements';
-
 import { renderHook } from '@testing-library/react-hooks';
-import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { setupServer } from 'msw/node';
+
+import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
 import endpoints, {
   initiativeResponse,
   phaseResponse,
   ideaResponse,
 } from './__mocks__/_mockServer';
+import useAuthenticationRequirements from './useAuthenticationRequirements';
 
 const server = setupServer(
   endpoints['GET permissions/posting_initiative/requirements'],

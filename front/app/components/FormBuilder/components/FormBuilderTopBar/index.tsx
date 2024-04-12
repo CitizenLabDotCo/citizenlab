@@ -1,17 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-// hooks
-import useProjectById from 'api/projects/useProjectById';
-import useLocalize from 'hooks/useLocalize';
-import usePhase from 'api/phases/usePhase';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
-// components
-import GoBackButton from 'components/UI/GoBackButton';
-import Button from 'components/UI/Button';
-
-// styling
-import styled from 'styled-components';
 import {
   Box,
   stylingConsts,
@@ -20,21 +8,30 @@ import {
   StatusLabel,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { useFormContext } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
-// utils
+import usePhase from 'api/phases/usePhase';
+import useProjectById from 'api/projects/useProjectById';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocalize from 'hooks/useLocalize';
+
 import {
   FormBuilderConfig,
   getIsPostingEnabled,
 } from 'components/FormBuilder/utils';
+import Button from 'components/UI/Button';
+import GoBackButton from 'components/UI/GoBackButton';
+import Modal from 'components/UI/Modal';
 
-// i18n
-import messages from '../messages';
-import ownMessages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
-// routing
 import clHistory from 'utils/cl-router/history';
-import { useParams } from 'react-router-dom';
+
+import messages from '../messages';
+
+import ownMessages from './messages';
 
 const StyledStatusLabel = styled(StatusLabel)`
   height: 20px;
@@ -60,8 +57,15 @@ const FormBuilderTopBar = ({
     phaseId?: string;
   };
   const { data: project } = useProjectById(projectId);
-
   const { data: phase } = usePhase(phaseId || null);
+  const {
+    formState: { isDirty },
+  } = useFormContext();
+
+  const [showLeaveModal, setShowLeaveModal] = useState(false);
+  const closeModal = () => {
+    setShowLeaveModal(false);
+  };
 
   if (!project) {
     return null;
@@ -72,8 +76,12 @@ const FormBuilderTopBar = ({
     builderConfig.viewFormLink ||
     `/projects/${project.data.attributes.slug}/ideas/new?phase_id=${phaseId}`;
 
-  const goBack = () => {
-    clHistory.push(builderConfig.goBackUrl || `/admin/projects/${projectId}`);
+  const handleGoback = () => {
+    if (isDirty) {
+      setShowLeaveModal(true);
+    } else {
+      clHistory.push(builderConfig.goBackUrl || `/admin/projects/${projectId}`);
+    }
   };
 
   return (
@@ -96,7 +104,7 @@ const FormBuilderTopBar = ({
         display="flex"
         alignItems="center"
       >
-        <GoBackButton onClick={goBack} />
+        <GoBackButton onClick={handleGoback} />
       </Box>
       <Box display="flex" p="16px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
@@ -156,6 +164,42 @@ const FormBuilderTopBar = ({
           <FormattedMessage {...messages.save} />
         </Button>
       </Box>
+      <Modal opened={showLeaveModal} close={closeModal}>
+        <Box display="flex" flexDirection="column" width="100%" p="20px">
+          <Box mb="40px">
+            <Title variant="h3" color="primary">
+              <FormattedMessage
+                {...messages.leaveBuilderConfirmationQuestion}
+              />
+            </Title>
+            <Text color="primary" fontSize="l">
+              <FormattedMessage {...messages.leaveBuilderText} />
+            </Text>
+          </Box>
+          <Box
+            display="flex"
+            flexDirection="row"
+            width="100%"
+            alignItems="center"
+          >
+            <Button
+              buttonStyle="secondary"
+              width="100%"
+              onClick={closeModal}
+              mr="16px"
+            >
+              <FormattedMessage {...messages.cancelLeaveBuilderButtonText} />
+            </Button>
+            <Button
+              buttonStyle="delete"
+              width="100%"
+              linkTo={builderConfig.goBackUrl || `/admin/projects/${projectId}`}
+            >
+              <FormattedMessage {...messages.confirmLeaveBuilderButtonText} />
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
     </Box>
   );
 };

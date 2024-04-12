@@ -1,39 +1,46 @@
 import React from 'react';
-import { parse } from 'qs';
 
-// components
 import { Spinner } from '@citizenlab/cl2-component-library';
-import Unauthorized from 'components/Unauthorized';
-import PageNotFound from 'components/PageNotFound';
-import VerticalCenterer from 'components/VerticalCenterer';
-import SurveySubmittedNotice from './components/SurveySubmittedNotice';
-import IdeasNewForm from './IdeasNewForm';
-
-// hooks
-import useProjectBySlug from 'api/projects/useProjectBySlug';
-import usePhases from 'api/phases/usePhases';
-import { getParticipationMethod } from 'utils/configs/participationMethodConfig';
-
-// utils
-import { isUnauthorizedRQ } from 'utils/errorUtils';
+import { parse } from 'qs';
 import { useParams } from 'react-router-dom';
-import { getIdeaPostingRules } from 'utils/actionTakingRules';
+
 import useAuthUser from 'api/me/useAuthUser';
+import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
+import useProjectBySlug from 'api/projects/useProjectBySlug';
+
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+
+import PageNotFound from 'components/PageNotFound';
+import Unauthorized from 'components/Unauthorized';
+import VerticalCenterer from 'components/VerticalCenterer';
+
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { getIdeaPostingRules } from 'utils/actionTakingRules';
+import { getParticipationMethod } from 'utils/configs/participationMethodConfig';
+import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+
+import SurveyNotActiveNotice from './components/SurveyNotActiveNotice';
+import SurveySubmittedNotice from './components/SurveySubmittedNotice';
+import IdeasNewIdeationForm from './IdeasNewIdeationForm';
+import IdeasNewSurveyForm from './IdeasNewSurveyForm';
 
 const NewIdeaPage = () => {
   const { slug } = useParams();
-  const { data: project, status, error } = useProjectBySlug(slug);
+  const {
+    data: project,
+    status: projectStatus,
+    error: projectError,
+  } = useProjectBySlug(slug);
   const { data: authUser } = useAuthUser();
-  const { data: phases } = usePhases(project?.data.id);
+  const { data: phases, status: phasesStatus } = usePhases(project?.data.id);
   const { phase_id } = parse(location.search, {
     ignoreQueryPrefix: true,
   }) as { [key: string]: string };
 
-  if (status === 'loading') {
+  if (projectStatus === 'loading' || phasesStatus === 'loading') {
     return (
       <VerticalCenterer>
         <Spinner />
@@ -41,14 +48,19 @@ const NewIdeaPage = () => {
     );
   }
 
-  if (status === 'error') {
-    if (isUnauthorizedRQ(error)) {
+  if (projectStatus === 'error') {
+    if (isUnauthorizedRQ(projectError)) {
       return <Unauthorized />;
     }
 
     return <PageNotFound />;
   }
 
+  if (!phases || !project) {
+    return null;
+  }
+
+  const currentPhase = getCurrentPhase(phases?.data);
   const participationMethod = getParticipationMethod(
     project.data,
     phases?.data,
@@ -59,12 +71,23 @@ const NewIdeaPage = () => {
   const { enabled, disabledReason, authenticationRequirements } =
     getIdeaPostingRules({
       project: project.data,
-      phase: getCurrentPhase(phases?.data),
+      phase: currentPhase,
       authUser: authUser?.data,
     });
 
-  if (isSurvey && disabledReason === 'postingLimitedMaxReached') {
-    return <SurveySubmittedNotice project={project.data} />;
+  const userIsModerator =
+    !isNilOrError(authUser) &&
+    canModerateProject(project.data.id, { data: authUser.data });
+
+  const userCannotViewSurvey =
+    !userIsModerator && phase_id !== currentPhase?.id;
+
+  if (isSurvey) {
+    if (disabledReason === 'postingLimitedMaxReached') {
+      return <SurveySubmittedNotice project={project.data} />;
+    } else if (userCannotViewSurvey) {
+      return <SurveyNotActiveNotice project={project.data} />;
+    }
   }
 
   if ((enabled === 'maybe' && authenticationRequirements) || disabledReason) {
@@ -91,7 +114,11 @@ const NewIdeaPage = () => {
     );
   }
 
-  return <IdeasNewForm project={project} />;
+  if (isSurvey) {
+    return <IdeasNewSurveyForm project={project} />;
+  } else {
+    return <IdeasNewIdeationForm project={project} />;
+  }
 };
 
 export default NewIdeaPage;

@@ -1,11 +1,14 @@
 import React from 'react';
-import { ModuleConfiguration } from 'utils/moduleUtils';
+
 import {
   IDAuth0Method,
   TVerificationMethodName,
 } from 'api/verification_methods/types';
-import Auth0Button from './components/Auth0Button';
 import { isLastVerificationMethod } from 'api/verification_methods/util';
+
+import { ModuleConfiguration } from 'utils/moduleUtils';
+
+import Auth0Button from './components/Auth0Button';
 
 const verificationMethodName: TVerificationMethodName = 'auth0';
 const configuration: ModuleConfiguration = {

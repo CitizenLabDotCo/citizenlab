@@ -1,23 +1,18 @@
 import React, { memo, useState, useEffect } from 'react';
-import CSSTransition from 'react-transition-group/CSSTransition';
 
-// router
-import { useSearchParams } from 'react-router-dom';
-
-// hooks
-import useProjectById from 'api/projects/useProjectById';
 import {
   useWindowSize,
   defaultCardStyle,
 } from '@citizenlab/cl2-component-library';
-
-// components
-import MapIdeasList from './MapIdeasList';
-import IdeaShowPageTopBar from 'containers/IdeasShowPage/IdeaShowPageTopBar';
-import IdeasShow from 'containers/IdeasShow';
-
-// styling
+import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
+
+import useProjectById from 'api/projects/useProjectById';
+
+import IdeasShow from 'containers/IdeasShow';
+import IdeaShowPageTopBar from 'containers/IdeasShowPage/IdeaShowPageTopBar';
+
+import MapIdeasList from './MapIdeasList';
 
 const timeout = 200;
 
@@ -95,25 +90,24 @@ interface Props {
   projectId: string;
   phaseId?: string;
   className?: string;
-  deselectIdeaMarker: () => void;
+  onSelectIdea: (ideaId: string | null) => void;
+  selectedIdea?: string | null;
 }
 
 const IdeaMapOverlay = memo<Props>(
-  ({ projectId, phaseId, className, deselectIdeaMarker }) => {
-    const [searchParams] = useSearchParams();
+  ({ projectId, phaseId, className, selectedIdea, onSelectIdea }) => {
     const { data: project } = useProjectById(projectId);
     const { windowWidth } = useWindowSize();
     const smallerThan1440px = !!(windowWidth && windowWidth <= 1440);
 
-    const selectedIdeaId = searchParams.get('idea_map_id');
     const [scrollContainerElement, setScrollContainerElement] =
       useState<HTMLDivElement | null>(null);
 
     useEffect(() => {
-      if (scrollContainerElement && selectedIdeaId) {
+      if (scrollContainerElement && selectedIdea) {
         scrollContainerElement.scrollTop = 0;
       }
-    }, [scrollContainerElement, selectedIdeaId]);
+    }, [scrollContainerElement, selectedIdea]);
 
     const handleIdeasShowSetRef = (element: HTMLDivElement) => {
       setScrollContainerElement(element);
@@ -122,10 +116,14 @@ const IdeaMapOverlay = memo<Props>(
     if (project) {
       return (
         <Container className={className || ''}>
-          <StyledIdeasList projectId={projectId} phaseId={phaseId} />
+          <StyledIdeasList
+            projectId={projectId}
+            phaseId={phaseId}
+            onSelectIdea={onSelectIdea}
+          />
           <CSSTransition
             classNames="animation"
-            in={!!selectedIdeaId}
+            in={!!selectedIdea}
             timeout={timeout}
             mounOnEnter={true}
             unmountOnExit={true}
@@ -134,13 +132,15 @@ const IdeaMapOverlay = memo<Props>(
           >
             <InnerOverlay right={smallerThan1440px ? '-100px' : '-150px'}>
               <StyledIdeaShowPageTopBar
-                ideaId={selectedIdeaId ?? undefined}
-                deselectIdeaOnMap={deselectIdeaMarker}
+                ideaId={selectedIdea ?? undefined}
+                deselectIdeaOnMap={() => {
+                  onSelectIdea(null);
+                }}
                 projectId={projectId}
               />
-              {selectedIdeaId && (
+              {selectedIdea && (
                 <StyledIdeasShow
-                  ideaId={selectedIdeaId}
+                  ideaId={selectedIdea}
                   projectId={projectId}
                   compact={true}
                   setRef={handleIdeasShowSetRef}

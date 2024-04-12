@@ -82,9 +82,9 @@ RSpec.describe ParticipationMethod::None do
     end
   end
 
-  describe '#never_update?' do
-    it 'returns false' do
-      expect(participation_method.never_update?).to be false
+  describe '#update_if_published?' do
+    it 'returns true' do
+      expect(participation_method.update_if_published?).to be true
     end
   end
 

@@ -1,23 +1,21 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
-// components
 import { Box, isRtl } from '@citizenlab/cl2-component-library';
-import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
-import IdeaMoreActions from './IdeaMoreActions';
-
-// router
 import { useSearchParams } from 'react-router-dom';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-import clHistory from 'utils/cl-router/history';
-
-// styling
 import styled from 'styled-components';
 
-// typings
-import { IProjectData } from 'api/projects/types';
 import { IIdeaData } from 'api/ideas/types';
+import { IProjectData } from 'api/projects/types';
+
+import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
+
 import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+
 import messages from '../messages';
+
+import IdeaMoreActions from './IdeaMoreActions';
 
 const Bar = styled.div`
   display: flex;

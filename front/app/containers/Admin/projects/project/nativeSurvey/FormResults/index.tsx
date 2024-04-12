@@ -1,21 +1,16 @@
 import React from 'react';
-import { useIntl } from 'utils/cl-intl';
+
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
-// Hooks
-import useLocale from 'hooks/useLocale';
-import useFormResults from 'api/survey_results/useSurveyResults';
 import useProjectById from 'api/projects/useProjectById';
+import useFormResults from 'api/survey_results/useSurveyResults';
 
-// components
-import { Box, Text } from '@citizenlab/cl2-component-library';
-import FormResultsQuestion from './FormResultsQuestion';
+import { useIntl } from 'utils/cl-intl';
 
-// i18n
 import messages from '../messages';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
+import FormResultsQuestion from './FormResultsQuestion';
 
 const FormResults = () => {
   const { projectId, phaseId } = useParams() as {
@@ -23,13 +18,12 @@ const FormResults = () => {
     phaseId: string;
   };
   const { formatMessage } = useIntl();
-  const locale = useLocale();
   const { data: project } = useProjectById(projectId);
   const { data: formResults } = useFormResults({
     phaseId,
   });
 
-  if (isNilOrError(formResults) || isNilOrError(locale) || !project) {
+  if (!formResults || !project) {
     return null;
   }
 
@@ -37,10 +31,10 @@ const FormResults = () => {
 
   const surveyResponseMessage =
     totalSubmissions > 0
-      ? formatMessage(messages.totalSurveyResponses2, {
+      ? formatMessage(messages.totalSurveyResponses, {
           count: totalSubmissions,
         })
-      : formatMessage(messages.noSurveyResponses2);
+      : formatMessage(messages.noSurveyResponses);
 
   return (
     <Box width="100%">
@@ -49,36 +43,18 @@ const FormResults = () => {
           {surveyResponseMessage}
         </Text>
       </Box>
-
       <Box>
-        {results.map(
-          (
-            {
-              question,
-              inputType,
-              answers,
-              totalResponses,
-              required,
-              customFieldId,
-              textResponses,
-            },
-            index
-          ) => {
+        {totalSubmissions > 0 &&
+          results.map((result, index) => {
             return (
               <FormResultsQuestion
                 key={index}
-                locale={locale}
-                question={question}
-                inputType={inputType}
-                answers={answers}
-                totalResponses={totalResponses}
-                required={required}
-                customFieldId={customFieldId}
-                textResponses={textResponses}
+                questionNumber={index + 1}
+                result={result}
+                totalSubmissions={totalSubmissions}
               />
             );
-          }
-        )}
+          })}
       </Box>
     </Box>
   );

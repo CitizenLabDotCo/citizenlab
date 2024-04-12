@@ -1,9 +1,15 @@
 import React from 'react';
-import { TRule } from '../rules';
+
 import { IOption } from 'typings';
-import MultipleSelect from 'components/UI/MultipleSelect';
-import useLocalize from 'hooks/useLocalize';
+
 import useProjectFolders from 'api/project_folders/useProjectFolders';
+
+import useLocalize from 'hooks/useLocalize';
+
+import MultipleSelect from 'components/UI/MultipleSelect';
+
+import { TRule } from '../rules';
+
 import { generateOptions } from './utils';
 
 export interface Props {

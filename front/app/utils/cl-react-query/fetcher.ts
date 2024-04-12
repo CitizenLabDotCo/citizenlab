@@ -1,11 +1,13 @@
-import { API_PATH } from 'containers/App/constants';
-import { getJwt } from 'utils/auth/jwt';
-import { stringify } from 'qs';
-import { queryClient } from 'utils/cl-react-query/queryClient';
 import { isArray, isNil, omitBy } from 'lodash-es';
-import { reportError } from 'utils/loggingUtils';
-import { handleBlockedUserError } from 'utils/errorUtils';
+import { stringify } from 'qs';
 import { CLErrors } from 'typings';
+
+import { API_PATH } from 'containers/App/constants';
+
+import { getJwt } from 'utils/auth/jwt';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import { handleBlockedUserError } from 'utils/errorUtils';
+import { reportError } from 'utils/loggingUtils';
 
 // FETCHER
 
@@ -131,6 +133,11 @@ async function fetcher({
     }
 
     if (path === '/users/me') {
+      return null;
+    }
+
+    if (response.status === 204) {
+      // No content
       return null;
     }
 

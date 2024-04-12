@@ -1,6 +1,8 @@
 import React from 'react';
-import { render, screen } from 'utils/testUtils/rtl';
+
 import { IAppConfigurationSettingsCore } from 'api/app_configuration/types';
+
+import { render, screen } from 'utils/testUtils/rtl';
 
 import TrackerInfo from './TrackerInfo';
 

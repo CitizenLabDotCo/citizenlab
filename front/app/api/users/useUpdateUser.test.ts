@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useUpdateUser from './useUpdateUser';
-import { usersData } from './__mocks__/_mockServer';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { usersData } from './__mocks__/_mockServer';
+import useUpdateUser from './useUpdateUser';
 
 const apiPath = '*users/:id';
 const server = setupServer(

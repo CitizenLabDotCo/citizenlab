@@ -1,40 +1,31 @@
 import React, { memo } from 'react';
-import clHistory from 'utils/cl-router/history';
-import { stringify } from 'qs';
 
-// typings
-
-// services
-import { getIdeaPostingRules } from 'utils/actionTakingRules';
-
-// components
-import Button, { Props as ButtonProps } from 'components/UI/Button';
 import Tippy from '@tippyjs/react';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-
-// events
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-
-// tracks
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// styling
+import { stringify } from 'qs';
 import styled from 'styled-components';
 
-// typings
-import { LatLng } from 'leaflet';
-import { IPhaseData, ParticipationMethod } from 'api/phases/types';
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
 import useAuthUser from 'api/me/useAuthUser';
-import TippyContent from './TippyContent';
+import { IPhaseData, ParticipationMethod } from 'api/phases/types';
+import usePhases from 'api/phases/usePhases';
 import { getInputTerm } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+
+import useLocalize from 'hooks/useLocalize';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+
+import Button, { Props as ButtonProps } from 'components/UI/Button';
+
+import { getIdeaPostingRules } from 'utils/actionTakingRules';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import { getInputTermMessage } from 'utils/i18n';
+
 import messages from './messages';
+import TippyContent from './TippyContent';
+import tracks from './tracks';
 
 const Container = styled.div``;
 
@@ -43,7 +34,7 @@ const ButtonWrapper = styled.div``;
 export interface Props extends Omit<ButtonProps, 'onClick'> {
   id?: string;
   projectId: string;
-  latLng?: LatLng | null;
+  latLng?: GeoJSON.Point | null;
   inMap?: boolean;
   className?: string;
   phase: IPhaseData | undefined;
@@ -67,6 +58,7 @@ const IdeaButton = memo<Props>(
     const { data: project } = useProjectById(projectId);
     const { data: phases } = usePhases(projectId);
     const { data: authUser } = useAuthUser();
+    const localize = useLocalize();
 
     if (!project || !phase) return null;
 
@@ -88,7 +80,9 @@ const IdeaButton = memo<Props>(
     const redirectToIdeaForm = () => {
       trackEventByName(tracks.redirectedToIdeaFrom);
 
-      const positionParams = latLng ? { lat: latLng.lat, lng: latLng.lng } : {};
+      const positionParams = latLng
+        ? { lat: latLng.coordinates[1], lng: latLng.coordinates[0] }
+        : {};
 
       clHistory.push(
         {
@@ -193,18 +187,20 @@ const IdeaButton = memo<Props>(
               ariaDisabled={false}
               id="e2e-idea-button"
             >
-              <FormattedMessage
-                {...(participationMethod === 'native_survey'
-                  ? messages.takeTheSurvey
-                  : getInputTermMessage(getInputTerm(phases?.data), {
-                      idea: messages.submitYourIdea,
-                      option: messages.addAnOption,
-                      project: messages.addAProject,
-                      question: messages.addAQuestion,
-                      issue: messages.submitAnIssue,
-                      contribution: messages.addAContribution,
-                    }))}
-              />
+              {participationMethod === 'native_survey' ? (
+                <>{localize(phase.attributes.native_survey_button_multiloc)}</>
+              ) : (
+                <FormattedMessage
+                  {...getInputTermMessage(getInputTerm(phases?.data), {
+                    idea: messages.submitYourIdea,
+                    option: messages.addAnOption,
+                    project: messages.addAProject,
+                    question: messages.addAQuestion,
+                    issue: messages.submitAnIssue,
+                    contribution: messages.addAContribution,
+                  })}
+                />
+              )}
             </Button>
           </ButtonWrapper>
         </Tippy>

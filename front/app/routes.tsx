@@ -1,13 +1,13 @@
-import PageLoading from 'components/UI/PageLoading';
-import createAdminRoutes from 'containers/Admin/routes';
-import moduleConfiguration from 'modules';
 import React, { lazy } from 'react';
-import userProfileRoutes from 'containers/UsersShowPage/routes';
-import {
-  REPORTING,
-  REPORT_BUILDER,
-  PRINT,
-} from 'containers/Admin/reporting/routes';
+
+import moduleConfiguration, { moduleRouteTypes } from 'modules';
+
+import createAdminRoutes, { AdminRouteTypes } from 'containers/Admin/routes';
+import userProfileRoutes, {
+  userShowPageRouteTypes,
+} from 'containers/UsersShowPage/routes';
+
+import PageLoading from 'components/UI/PageLoading';
 
 const HomePage = lazy(() => import('containers/HomePage'));
 const SiteMap = lazy(() => import('containers/SiteMap'));
@@ -53,10 +53,102 @@ const ReportPrintPage = lazy(
 );
 const DisabledAccount = lazy(() => import('containers/DisabledAccount'));
 
+export type RouteType =
+  | AdminRouteTypes
+  | moduleRouteTypes
+  | userShowPageRouteTypes
+  | citizenRouteTypes
+  | ExternalRouteTypes;
+
+type ExternalRouteTypes =
+  | `https${string}`
+  | `http${string}`
+  | `www${string}`
+  | `mailto${string}`
+  | `tel${string}`;
+
+export enum citizenRoutes {
+  locale = '/:locale',
+  profile = 'profile',
+  signIn = 'sign-in',
+  signUp = 'sign-up',
+  invite = 'invite',
+  completeSignUp = 'complete-signup',
+  authenticationError = 'authentication-error',
+  siteMap = 'site-map',
+  profileEdit = `profile/edit`,
+  changePassword = `profile/change-password`,
+  changeEmail = `profile/change-email`,
+  ideas = 'ideas',
+  ideasEditIdea = `ideas/edit/:ideaId`,
+  ideasSlug = `ideas/:slug`,
+  initiatives = 'initiatives',
+  initiativeEdit = `initiatives/edit/:initiativeId`,
+  initiativesNew = `initiatives/new`,
+  initiativesSlug = `initiatives/:slug`,
+  projects = 'projects',
+  projectIdeaNew = `projects/:slug/ideas/new`,
+  projectSlug = `projects/:slug`,
+  phaseNumber = ':phaseNumber',
+  folders = 'folders',
+  foldersSlug = `folders/:slug`,
+  wildcard = '*',
+  events = 'events',
+  eventId = `events/:eventId`,
+  pages = 'pages',
+  cookiePolicy = `pages/cookie-policy`,
+  AccessibilityStatement = `pages/accessibility-statement`,
+  customPage = `pages/:slug`,
+  passwordRecovery = 'password-recovery',
+  resetPassword = 'reset-password',
+  subscriptionEnded = 'subscription-ended',
+  emailSettings = 'email-settings',
+  disabledAccount = 'disabled-account',
+  reportPrintPage = `admin/reporting/report-builder/:reportId/print`,
+}
+
+type citizenRouteTypes =
+  | '/'
+  | `/${string}/`
+  | `/sign-in`
+  | `/sign-up`
+  | `/invite`
+  | `/complete-signup`
+  | `/authentication-error`
+  | `/site-map`
+  | `/${citizenRoutes.profile}/edit`
+  | `/${citizenRoutes.profile}/change-password`
+  | `/${citizenRoutes.profile}/change-email`
+  | `/ideas`
+  | `/${citizenRoutes.ideas}/edit/${string}`
+  | `/${citizenRoutes.ideas}/${string}`
+  | `/initiatives`
+  | `/${citizenRoutes.initiatives}/edit/${string}`
+  | `/${citizenRoutes.initiatives}/new`
+  | `/${citizenRoutes.initiatives}/${string}`
+  | `/${citizenRoutes.projects}`
+  | `/${citizenRoutes.projects}?focusSearch=${string}`
+  | `/${citizenRoutes.projects}/${string}/${citizenRoutes.ideas}/new`
+  | `/${citizenRoutes.projects}/${string}`
+  | `/${citizenRoutes.folders}`
+  | `/${citizenRoutes.folders}/${string}`
+  | `/${citizenRoutes.events}`
+  | `/${citizenRoutes.events}/${string}`
+  | `/${citizenRoutes.pages}`
+  | `/${citizenRoutes.pages}/cookie-policy`
+  | `/${citizenRoutes.pages}/accessibility-statement`
+  | `/${citizenRoutes.pages}/${string}`
+  | `/${citizenRoutes.passwordRecovery}`
+  | `/${citizenRoutes.resetPassword}`
+  | `/${citizenRoutes.subscriptionEnded}`
+  | `/${citizenRoutes.emailSettings}`
+  | `/${citizenRoutes.disabledAccount}?${string}`
+  | `/admin/reporting/report-builder/${string}/print`;
+
 export default function createRoutes() {
   return [
     {
-      path: '/:locale',
+      path: citizenRoutes.locale,
       children: [
         {
           index: true,
@@ -67,7 +159,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'sign-in',
+          path: citizenRoutes.signIn,
           element: (
             <PageLoading>
               <HomePage />
@@ -75,7 +167,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'sign-up',
+          path: citizenRoutes.signUp,
           element: (
             <PageLoading>
               <HomePage />
@@ -83,7 +175,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'invite',
+          path: citizenRoutes.invite,
           element: (
             <PageLoading>
               <HomePage />
@@ -91,7 +183,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'complete-signup',
+          path: citizenRoutes.completeSignUp,
           element: (
             <PageLoading>
               <HomePage />
@@ -99,7 +191,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'authentication-error',
+          path: citizenRoutes.authenticationError,
           element: (
             <PageLoading>
               <HomePage />
@@ -107,7 +199,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'site-map',
+          path: citizenRoutes.siteMap,
           element: (
             <PageLoading>
               <SiteMap />
@@ -115,7 +207,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'profile/edit',
+          path: citizenRoutes.profileEdit,
           element: (
             <PageLoading>
               <UsersEditPage />
@@ -123,7 +215,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'profile/change-password',
+          path: citizenRoutes.changePassword,
           element: (
             <PageLoading>
               <PasswordChange />
@@ -131,7 +223,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'profile/change-email',
+          path: citizenRoutes.changeEmail,
           element: (
             <PageLoading>
               <EmailChange />
@@ -140,7 +232,7 @@ export default function createRoutes() {
         },
         userProfileRoutes(),
         {
-          path: 'ideas/edit/:ideaId',
+          path: citizenRoutes.ideasEditIdea,
           element: (
             <PageLoading>
               <IdeasEditPage />
@@ -148,7 +240,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'ideas',
+          path: citizenRoutes.ideas,
           element: (
             <PageLoading>
               <IdeasIndexPage />
@@ -156,7 +248,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'ideas/:slug',
+          path: citizenRoutes.ideasSlug,
           element: (
             <PageLoading>
               <IdeasShowPage />
@@ -164,7 +256,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'initiatives',
+          path: citizenRoutes.initiatives,
           element: (
             <PageLoading>
               <InitiativesIndexPage />
@@ -172,7 +264,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'initiatives/edit/:initiativeId',
+          path: citizenRoutes.initiativeEdit,
           element: (
             <PageLoading>
               <InitiativesEditPage />
@@ -180,7 +272,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'initiatives/new',
+          path: citizenRoutes.initiativesNew,
           element: (
             <PageLoading>
               <InitiativesNewPage />
@@ -189,7 +281,7 @@ export default function createRoutes() {
         },
         // super important that this comes AFTER initiatives/new, if it comes before, new is interpreted as a slug
         {
-          path: 'initiatives/:slug',
+          path: citizenRoutes.initiativesSlug,
           element: (
             <PageLoading>
               <InitiativesShowPage />
@@ -197,7 +289,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'projects/:slug/ideas/new',
+          path: citizenRoutes.projectIdeaNew,
           element: (
             <PageLoading>
               <IdeasNewPage />
@@ -206,7 +298,7 @@ export default function createRoutes() {
         },
         createAdminRoutes(),
         {
-          path: 'projects',
+          path: citizenRoutes.projects,
           element: (
             <PageLoading>
               <ProjectsIndexPage />
@@ -214,7 +306,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'projects/:slug',
+          path: citizenRoutes.projectSlug,
           element: (
             <PageLoading>
               <ProjectsShowPage />
@@ -230,7 +322,7 @@ export default function createRoutes() {
               ),
             },
             {
-              path: ':phaseNumber',
+              path: citizenRoutes.phaseNumber,
               element: (
                 <PageLoading>
                   <ProjectsShowPage />
@@ -238,7 +330,7 @@ export default function createRoutes() {
               ),
             },
             {
-              path: '*',
+              path: citizenRoutes.wildcard,
               element: (
                 <PageLoading>
                   <ProjectsShowPage />
@@ -248,7 +340,7 @@ export default function createRoutes() {
           ],
         },
         {
-          path: 'folders/:slug',
+          path: citizenRoutes.foldersSlug,
           element: (
             <PageLoading>
               <ProjectFolderShowPage />
@@ -256,7 +348,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'events',
+          path: citizenRoutes.events,
           element: (
             <PageLoading>
               <EventsPage />
@@ -264,7 +356,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'events/:eventId',
+          path: citizenRoutes.eventId,
           element: (
             <PageLoading>
               <EventsShowPage />
@@ -272,7 +364,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'pages/cookie-policy',
+          path: citizenRoutes.cookiePolicy,
           element: (
             <PageLoading>
               <CookiePolicy />
@@ -280,7 +372,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'pages/accessibility-statement',
+          path: citizenRoutes.AccessibilityStatement,
           element: (
             <PageLoading>
               <AccessibilityStatement />
@@ -288,7 +380,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'pages/:slug',
+          path: citizenRoutes.customPage,
           element: (
             <PageLoading>
               <CustomPageShow />
@@ -296,7 +388,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'password-recovery',
+          path: citizenRoutes.passwordRecovery,
           element: (
             <PageLoading>
               <PasswordRecovery />
@@ -305,7 +397,7 @@ export default function createRoutes() {
         },
         {
           // Used as link in email received for password recovery
-          path: 'reset-password',
+          path: citizenRoutes.resetPassword,
           element: (
             <PageLoading>
               <PasswordReset />
@@ -313,7 +405,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'subscription-ended',
+          path: citizenRoutes.subscriptionEnded,
           element: (
             <PageLoading>
               <SubscriptionEndedPage />
@@ -321,7 +413,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'email-settings',
+          path: citizenRoutes.emailSettings,
           element: (
             <PageLoading>
               <EmailSettingsPage />
@@ -329,7 +421,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: `admin/${REPORTING}/${REPORT_BUILDER}/:reportId/${PRINT}`,
+          path: citizenRoutes.reportPrintPage,
           element: (
             <PageLoading>
               <ReportPrintPage />
@@ -337,7 +429,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'disabled-account',
+          path: citizenRoutes.disabledAccount,
           element: (
             <PageLoading>
               <DisabledAccount />

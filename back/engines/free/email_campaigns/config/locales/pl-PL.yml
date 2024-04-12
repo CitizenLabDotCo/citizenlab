@@ -50,6 +50,7 @@ pl:
       "assignee_digest": Tygodniowy przegląd przydzielonych pomysłów
       "user_digest": Tygodniowy przegląd
       "voting_basket_submitted": Potwierdzenie głosowania
+      "native_survey_not_submitted": Ankieta nie została przesłana
       "voting_basket_not_submitted": Nieoddane głosy
       "voting_last_chance": Ostatnia szansa na oddanie głosu
       "voting_phase_started": Nowa faza projektu z głosowaniem
@@ -505,6 +506,13 @@ pl:
       event_description: 'Dziękujemy za udział. Twoje głosy zostały zarejestrowane. Odwiedź platformę %{organizationName} , aby zobaczyć i zarządzać swoimi głosami.'
       cta_see_votes_submitted: 'Zobacz oddane głosy'
       cta_message: 'Kliknij poniższy przycisk, aby wziąć udział'
+    native_survey_not_submitted:
+      subject: '%{organizationName}Już prawie! Prześlij swoje odpowiedzi'
+      preheader: 'Nie wypełniłeś swojej ankiety na platformie uczestnictwa %{organizationName}.'
+      title_native_survey_not_submitted: 'Już prawie! Prześlij swoje odpowiedzi'
+      body_native_survey_not_submitted: 'Zacząłeś udostępniać swoje odpowiedzi na stronie %{phaseTitle} , ale ich nie przesłałeś. Zgłoszenia zostaną zamknięte na stronie %{phaseEndDate}. Kliknij poniższy przycisk, aby kontynuować od miejsca, w którym skończyłeś.'
+      body_native_survey_not_submitted_no_date: 'Zacząłeś udostępniać swoje odpowiedzi na stronie %{phaseTitle} , ale ich nie przesłałeś. Kliknij poniższy przycisk, aby kontynuować od miejsca, w którym przerwałeś.'
+      cta_complete_your_survey_response: 'Wznów swoją odpowiedź na ankietę'
     voting_basket_not_submitted:
       subject: '%{organizationName}Nie oddałeś swojego głosu'
       preheader: 'Nie oddałeś głosu na platformie uczestnictwa %{organizationName}.'
@@ -574,12 +582,13 @@ pl:
         user_who_registers: 'Użytkownik, który się rejestruje'
         user_who_was_invited: 'Użytkownik, który został zaproszony'
         users_who_engaged_with_the_project: 'Użytkownicy, którzy zaangażowali się w projekt'
-        users_who_follow_the_proposal: 'Użytkownik, który postępuje zgodnie z propozycją'
-        users_who_follow_the_input: 'Użytkownik śledzący dane wejściowe'
+        users_who_follow_the_proposal: 'Użytkownicy, którzy śledzą propozycję'
+        users_who_follow_the_input: 'Użytkownicy, którzy śledzą dane wejściowe'
         users_who_follow_the_project: 'Użytkownicy, którzy śledzą projekt'
         user_who_voted: 'Użytkownik, który głosował'
         user_with_unsubmitted_votes: 'Użytkownik, który nie oddał głosu'
         users_who_engaged_but_not_voted: 'Użytkownicy, którzy zaangażowali się w projekt, ale nie głosowali'
+        user_with_unsubmitted_survey: 'Użytkownik, który rozpoczął ankietę, ale jej nie przesłał'
       content_type:
         comments: 'Komentarze'
         content_moderation: 'Moderacja treści'
@@ -592,6 +601,7 @@ pl:
         proposals: 'Propozycje'
         reactions: 'Reakcje'
         voting: 'Głosowanie'
+        surveys: 'Ankiety'
       trigger:
         comment_is_deleted: 'Komentarz został usunięty.'
         comment_is_flagged_as_spam: 'Komentarz został oznaczony jako spam'
@@ -640,3 +650,4 @@ pl:
         7_days_after_invite_is_sent: '7 dni po wysłaniu zaproszenia'
         7_days_before_the_project_changes_phase: '7 dni przed zmianą fazy projektu'
         registration_to_event: 'Rejestracja na wydarzenie'
+        survey_1_day_after_draft_saved: '1 dzień po ostatnim zapisaniu ankiety w wersji roboczej przez użytkownika'

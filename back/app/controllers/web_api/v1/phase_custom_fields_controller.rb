@@ -20,6 +20,6 @@ class WebApi::V1::PhaseCustomFieldsController < ApplicationController
   end
 
   def custom_fields
-    IdeaCustomFieldsService.new(Factory.instance.participation_method_for(phase).custom_form).enabled_fields
+    IdeaCustomFieldsService.new(Factory.instance.participation_method_for(phase).custom_form).enabled_fields_with_other_options
   end
 end

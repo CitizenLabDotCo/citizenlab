@@ -1,6 +1,8 @@
 import { rest } from 'msw';
-import { AuthenticationRequirementsResponse } from '../types';
+
 import { API_PATH } from 'containers/App/constants';
+
+import { AuthenticationRequirementsResponse } from '../types';
 
 export const initiativeResponse: AuthenticationRequirementsResponse = {
   data: {

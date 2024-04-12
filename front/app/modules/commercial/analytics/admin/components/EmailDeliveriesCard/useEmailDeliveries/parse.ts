@@ -1,12 +1,13 @@
+import { groupBy } from 'lodash-es';
 import moment, { Moment } from 'moment';
 
-// utils
-import { groupBy } from 'lodash-es';
+import { getInterval } from 'components/admin/GraphCards/_utils/query';
 import { timeSeriesParser } from 'components/admin/GraphCards/_utils/timeSeries';
+import { IResolution } from 'components/admin/ResolutionControl';
+
 import { keys } from 'utils/helperUtils';
 
-// typings
-import { IResolution } from 'components/admin/ResolutionControl';
+import { Translations } from './translations';
 import {
   Response,
   Stats,
@@ -16,8 +17,6 @@ import {
   PreparedTimeSeriesResponse,
   PreparedTimeSeriesResponseRow,
 } from './typings';
-import { Translations } from './translations';
-import { getInterval } from 'components/admin/GraphCards/_utils/query';
 
 export const mergeTimeSeries = (
   timeSeriesQuery: TimeSeriesResponseRow[],

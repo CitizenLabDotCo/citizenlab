@@ -70,7 +70,7 @@ RSpec.describe Phase do
       expect(p.save).to be true
     end
 
-    it 'can be changed from a transitive method to another one' do
+    it 'can be changed from ideation to voting' do
       phase = create(:phase, participation_method: 'ideation')
       phase.participation_method = 'voting'
       phase.voting_method = 'budgeting'
@@ -79,21 +79,21 @@ RSpec.describe Phase do
       expect(phase.save).to be true
     end
 
-    it 'cannot be changed from a transitive method to a non-transitive one' do
+    it 'can be changed from ideation to native_survey' do
       phase = create(:phase, participation_method: 'ideation')
       phase.participation_method = 'native_survey'
+      phase.native_survey_title_multiloc = { en: 'Survey' }
+      phase.native_survey_button_multiloc = { en: 'Take the survey' }
       phase.ideas_order = nil
-      expect(phase.save).to be false
-      expect(phase.errors.details).to eq({ participation_method: [{ error: :change_not_permitted }] })
+      expect(phase.save).to be true
     end
 
-    it 'cannot be changed from a non-transitive method to a transitive one' do
-      phase = create(:phase, participation_method: 'native_survey')
+    it 'can be changed from native_survey to ideation' do
+      phase = create(:native_survey_phase)
       phase.participation_method = 'voting'
       phase.voting_method = 'budgeting'
       phase.voting_max_total = 200
-      expect(phase.save).to be false
-      expect(phase.errors.details).to eq({ participation_method: [{ error: :change_not_permitted }] })
+      expect(phase.save).to be true
     end
   end
 
@@ -163,6 +163,14 @@ RSpec.describe Phase do
       expect(phase_left).to be_valid
       phase_right = build(:phase, project: project.reload, start_at: (Time.now + 6.days), end_at: (Time.now + 10.days))
       expect(phase_right).to be_valid
+    end
+
+    it 'fails when inserting a phase in-between two phases, where then next phase has no end date' do
+      project = create(:project)
+      create(:phase, project: project, start_at: (Time.now - 5.days), end_at: (Time.now - 2.days))
+      create(:phase, project: project, start_at: (Time.now + 5.days), end_at: nil)
+      phase = build(:phase, project: project, start_at: (Time.now + 2.days), end_at: (Time.now + 12.days))
+      expect(phase).not_to be_valid
     end
   end
 
@@ -243,6 +251,46 @@ RSpec.describe Phase do
     it 'returns false otherwise' do
       phase = create(:poll_phase)
       expect(phase.native_survey?).to be false
+    end
+  end
+
+  describe 'native_survey_title_multiloc' do
+    it 'must contain a survey title if a native survey phase' do
+      phase = build(:native_survey_phase)
+
+      phase.native_survey_title_multiloc = { en: 'Survey' }
+      expect(phase).to be_valid
+
+      phase.native_survey_title_multiloc = {}
+      expect(phase).not_to be_valid
+
+      phase.native_survey_title_multiloc = nil
+      expect(phase).not_to be_valid
+    end
+
+    it 'does not need a survey title if not native survey' do
+      phase = build(:phase, native_survey_title_multiloc: {})
+      expect(phase).to be_valid
+    end
+  end
+
+  describe 'native_survey_button_multiloc' do
+    it 'must contain survey button text if a native survey phase' do
+      phase = build(:native_survey_phase)
+
+      phase.native_survey_button_multiloc = { en: 'Take the survey' }
+      expect(phase).to be_valid
+
+      phase.native_survey_button_multiloc = {}
+      expect(phase).not_to be_valid
+
+      phase.native_survey_button_multiloc = nil
+      expect(phase).not_to be_valid
+    end
+
+    it 'does not need a survey title if not native survey' do
+      phase = build(:phase, native_survey_button_multiloc: {})
+      expect(phase).to be_valid
     end
   end
 
@@ -376,6 +424,19 @@ RSpec.describe Phase do
         expect(old_last_phase.reload.end_at).to be_nil
         expect(project.phases.count).to eq 5
       end
+    end
+  end
+
+  describe '#custom_form_persisted?' do
+    it 'returns true when the custom_form has been saved' do
+      phase = create(:phase)
+      create(:custom_form, participation_context: phase)
+      expect(phase.custom_form_persisted?).to be true
+    end
+
+    it 'returns false when there is no custom_form' do
+      phase = create(:phase)
+      expect(phase.custom_form_persisted?).to be false
     end
   end
 end

@@ -70,8 +70,17 @@ module XlsxExport
       '' # Not supported yet. Field type not used in native surveys, nor in idea forms.
     end
 
-    def visit_point(_field)
-      '' # Not supported yet. Field type not used in native surveys, nor in idea forms.
+    def visit_point(field)
+      value_key = field.key.delete_suffix('_latitude').delete_suffix('_longitude')
+      return '' if model.custom_field_values[value_key].blank?
+
+      coordinates = model.custom_field_values[value_key]['coordinates']
+
+      if field.key.end_with? '_latitude'
+        coordinates.last.to_s
+      elsif field.key.end_with? '_longitude'
+        coordinates.first.to_s
+      end
     end
 
     def visit_page(_field)
@@ -83,10 +92,12 @@ module XlsxExport
     end
 
     def visit_file_upload(field)
-      file_id = value_for(field)
-      return '' if file_id.blank?
+      file = value_for(field)
 
-      idea_file = model.idea_files.detect { |file| file.id == file_id }
+      return '' if file['id'].blank?
+
+      file_id = file['id']
+      idea_file = model.idea_files.detect { |f| f.id == file_id }
       idea_file.file.url
     end
 

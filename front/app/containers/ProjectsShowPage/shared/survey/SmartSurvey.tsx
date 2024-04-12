@@ -1,6 +1,6 @@
 import React from 'react';
-import { parse, stringify } from 'qs';
 
+import { parse, stringify } from 'qs';
 import styled from 'styled-components';
 
 const Container = styled.div`

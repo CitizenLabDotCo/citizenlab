@@ -75,7 +75,9 @@ class CustomFieldService
     end
   end
 
-  def generate_key(_record, title)
+  def generate_key(title, other)
+    return 'other' if other == true
+
     keyify(title)
   end
 
@@ -217,7 +219,8 @@ class CustomFieldService
       description: handle_description(field, locale),
       type: 'string'
     }.tap do |items|
-      options = field.options.order(:ordering)
+      options = field.ordered_options
+
       unless options.empty?
         items[:enum] = options.map(&:key)
         items[:enumNames] = options.map { |o| handle_title(o, locale) }
@@ -241,7 +244,8 @@ class CustomFieldService
       items: {
         type: 'string'
       }.tap do |items|
-        options = field.options.order(:ordering)
+        options = field.ordered_options
+
         unless options.empty?
           items[:enum] = options.map(&:key)
           items[:enumNames] = options.map { |o| handle_title(o, locale) }
@@ -345,8 +349,10 @@ class CustomFieldService
     end
   end
 
-  def point_to_json_schema_field(_field, _locale)
+  def point_to_json_schema_field(field, locale)
     {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
       type: 'string'
     }
   end

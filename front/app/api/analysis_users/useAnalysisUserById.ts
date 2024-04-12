@@ -1,8 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+
 import analysisUsersKeys from './keys';
 import { IAnalysisUser, AnalysisUsersKeys } from './types';
-import fetcher from 'utils/cl-react-query/fetcher';
 
 const fetchAnalysisUserById = ({
   id,

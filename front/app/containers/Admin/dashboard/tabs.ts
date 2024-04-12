@@ -1,8 +1,16 @@
 import { MessageDescriptor } from 'react-intl';
-import messages from './messages';
+import { RouteType } from 'routes';
 import { FormatMessage } from 'typings';
 
-const BASE_ADMIN_TABS = [
+import messages from './messages';
+
+type TabRoute = {
+  message: MessageDescriptor;
+  name: string;
+  url: RouteType;
+};
+
+const BASE_ADMIN_TABS: TabRoute[] = [
   {
     message: messages.tabOverview,
     url: '/admin/dashboard/overview',
@@ -15,19 +23,19 @@ const BASE_ADMIN_TABS = [
   },
 ];
 
-const VISITORS_TAB = {
+const VISITORS_TAB: TabRoute = {
   message: messages.tabVisitors,
   name: 'visitors',
   url: '/admin/dashboard/visitors',
 };
 
-const REPRESENTATIVENESS_TAB = {
+const REPRESENTATIVENESS_TAB: TabRoute = {
   message: messages.tabRepresentativeness,
   name: 'representativeness',
   url: '/admin/dashboard/representation',
 };
 
-const MODERATION_TAB = {
+const MODERATION_TAB: TabRoute = {
   message: messages.feed,
   name: 'moderation',
   url: '/admin/dashboard/moderation',
@@ -57,7 +65,7 @@ export const getAdminTabs = (
 type UntranslatedTab = {
   message: MessageDescriptor;
   name: string;
-  url: string;
+  url: RouteType;
 };
 
 const translateTabs = (

@@ -1,16 +1,17 @@
 import React from 'react';
 
-// components
 import { Box, Text, Button, colors } from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
 
-// api
+import useAuthUser from 'api/me/useAuthUser';
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
-
-// intl
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../containers/Granular/messages';
 import { isBuiltInField } from 'api/user_custom_fields/util';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isAdmin } from 'utils/permissions/roles';
+
+import messages from '../../../containers/Granular/messages';
 
 type SelectionScreenProps = {
   selectedFields: Array<IPermissionsCustomFieldData> | undefined;
@@ -29,9 +30,12 @@ export const SelectionScreen = ({
   setShowAddFieldPage,
   isLoading,
 }: SelectionScreenProps) => {
+  const { formatMessage } = useIntl();
   const selectedFieldIds = new Set(
     selectedFields?.map((field) => field.relationships.custom_field.data.id)
   );
+  const { data: authUser } = useAuthUser();
+  const userIsAdmin = authUser && isAdmin(authUser);
 
   return (
     <>
@@ -74,20 +78,32 @@ export const SelectionScreen = ({
             </Box>
           ))}
       </Box>
-      <Box display="flex">
-        <Button
-          ml="20px"
-          mb="20px"
-          icon="plus-circle"
-          buttonStyle="secondary"
-          onClick={() => {
-            setShowAddFieldPage(true);
-          }}
-          type="button"
-        >
-          <FormattedMessage {...messages.createANewQuestion} />
-        </Button>
-      </Box>
+      <Tippy
+        disabled={userIsAdmin}
+        content={
+          <Box style={{ cursor: 'default' }}>
+            <Text my="8px" color="white" fontSize="s">
+              {formatMessage(messages.onlyAdminsCreateQuestion)}
+            </Text>
+          </Box>
+        }
+      >
+        <Box display="flex" w="fit-content">
+          <Button
+            ml="20px"
+            mb="20px"
+            icon="plus-circle"
+            buttonStyle="secondary"
+            onClick={() => {
+              setShowAddFieldPage(true);
+            }}
+            type="button"
+            disabled={!userIsAdmin}
+          >
+            <FormattedMessage {...messages.createANewQuestion} />
+          </Button>
+        </Box>
+      </Tippy>
     </>
   );
 };

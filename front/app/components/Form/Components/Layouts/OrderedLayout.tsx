@@ -1,8 +1,10 @@
 import React, { memo } from 'react';
+
+import { Box } from '@citizenlab/cl2-component-library';
 import { rankWith, uiTypeIs } from '@jsonforms/core';
 import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
+
 import { SectionField } from 'components/admin/Section';
-import { Box } from '@citizenlab/cl2-component-library';
 
 const CLCategoryLayout = memo(
   ({ schema, uischema, path, renderers, cells, enabled }: any) => {

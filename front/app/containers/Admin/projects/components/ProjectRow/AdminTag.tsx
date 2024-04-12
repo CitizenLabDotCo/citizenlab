@@ -1,10 +1,13 @@
 import React from 'react';
+
 import { colors } from '@citizenlab/cl2-component-library';
-import { StyledStatusLabel } from '.';
+
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
 import Link from 'utils/cl-router/Link';
-import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
+
+import messages from '../messages';
+
+import { StyledStatusLabel } from '.';
 
 interface Props {
   userCanModerateProject: boolean;
@@ -24,7 +27,7 @@ const AdminTag = ({ userCanModerateProject, projectId }: Props) => {
     return (
       <Link
         data-cy="e2e-admins-only-permissions-tag"
-        to={`${adminProjectsProjectPath(projectId)}/settings/access-rights`}
+        to={`/admin/projects/${projectId}/settings/access-rights`}
       >
         <StatusLabel />
       </Link>

@@ -1,9 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors, Multiloc } from 'typings';
+
+import navbarKeys from 'api/navbar/keys';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import customPagesKeys from './keys';
 import { ICustomPage } from './types';
-import navbarKeys from 'api/navbar/keys';
 
 type AddCustomPage = {
   title_multiloc: Multiloc;

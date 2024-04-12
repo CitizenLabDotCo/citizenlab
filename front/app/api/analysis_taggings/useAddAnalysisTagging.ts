@@ -1,9 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
+import tagsKeys from 'api/analysis_tags/keys';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import taggingsKeys from './keys';
 import { ITagging, IAddTagging } from './types';
-import tagsKeys from 'api/analysis_tags/keys';
 
 const addAnalysisTagging = async ({
   inputId,

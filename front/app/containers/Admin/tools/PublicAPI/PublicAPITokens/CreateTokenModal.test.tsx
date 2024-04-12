@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { render, fireEvent, screen, waitFor } from 'utils/testUtils/rtl';
 
 import CreateTokenModal from './CreateTokenModal';

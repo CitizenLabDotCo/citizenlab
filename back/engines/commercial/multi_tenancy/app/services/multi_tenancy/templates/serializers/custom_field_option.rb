@@ -5,7 +5,7 @@ module MultiTenancy
     module Serializers
       class CustomFieldOption < Base
         ref_attribute :custom_field
-        attributes %i[key ordering title_multiloc]
+        attributes %i[key ordering title_multiloc other]
       end
     end
   end

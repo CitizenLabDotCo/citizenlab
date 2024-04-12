@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useProjectFolderBySlug from './useProjectFolderBySlug';
-import { projectFolderData } from './__mocks__/useProjectFolder';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { projectFolderData } from './__mocks__/useProjectFolder';
+import useProjectFolderBySlug from './useProjectFolderBySlug';
 
 const apiPath = '*project_folders/by_slug/:projectFolderSlug';
 

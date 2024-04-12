@@ -8,6 +8,8 @@ module MultiTenancy
 
       attr_reader :internal_template_dir
 
+      delegate :parse_yml, :parse_yml_file, to: :class
+
       def initialize(
         internal_template_dir: Rails.root.join('config/tenant_templates'),
         template_bucket: ENV.fetch('TEMPLATE_BUCKET', nil),
@@ -77,7 +79,7 @@ module MultiTenancy
 
       def fetch_internal_template_models(template_name)
         template_path = internal_template_dir.join("#{template_name}.yml")
-        parse_yml(File.read(template_path))
+        parse_yml_file(template_path)
       rescue Errno::ENOENT
         raise UnknownTemplateError, "Unknown template: '#{template_name}'."
       end
@@ -264,6 +266,27 @@ module MultiTenancy
           users.pluck('locale').uniq.sort
         end
 
+        def parse_yml(content)
+          # [TODO] Ideally, we should use `YAML.load` instead of `YAML.unsafe_load`.
+          # Currently, the tenant templates contain references to ActiveRecord model
+          # classes. If we were to use `YAML.load`, we would need to provide a whitelist
+          # of classes that are allowed to be deserialized. The list can be obtained by
+          # calling `ApplicationRecord.descendants`, but the application has to be eager
+          # loaded for this to return the complete list. The eager loading is causing
+          # issues in some CI workflows where the DB is not completely set up. Therefore,
+          # we resort to `YAML.unsafe_load` for now.
+          # One possible solution would be to rework the template format to encode AR
+          # model class names as strings instead of actual class references.
+          YAML.unsafe_load(content)
+        end
+        alias parse_yaml parse_yml
+
+        def parse_yml_file(file)
+          content = File.read(file)
+          parse_yml(content)
+        end
+        alias parse_yaml_file parse_yml_file
+
         private
 
         def template_locales(serialized_models)
@@ -289,11 +312,6 @@ module MultiTenancy
       end
 
       private
-
-      def parse_yml(content)
-        # We have to use YAML.load because templates use yaml aliases.
-        YAML.load(content) # rubocop:disable Security/YAMLLoad
-      end
 
       def raise_if_duplicates(template_names)
         duplicates = template_names.group_by(&:itself)

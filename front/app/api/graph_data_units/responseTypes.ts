@@ -1,5 +1,19 @@
-import { SurveyResultAttributes } from 'api/survey_results/types';
+import { IIdeaImageData } from 'api/idea_images/types';
+import { IIdeaData } from 'api/ideas/types';
+import { IPhaseData } from 'api/phases/types';
+import { IProjectData } from 'api/projects/types';
+import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
 import { GenderOption } from 'api/users_by_gender/types';
+
+import {
+  ActiveUsersRow,
+  TimeSeriesResponseRow as UsersTimeSeriesResponseRow,
+} from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/ActiveUsersWidget/useActiveUsers/typings';
+import {
+  TotalsRow as VisitorsTotalsRow,
+  TimeSeriesResponseRow as VisitorsTimeSeriesResponseRow,
+} from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/VisitorsWidget/useVisitors/typings';
+
 import {
   CommentsCountRow,
   TimeSeriesResponseRow as CommentsTimeSeriesResponseRow,
@@ -12,24 +26,13 @@ import {
   ReactionsCountRow,
   TimeSeriesResponseRow as ReactionsTimeSeriesResponseRow,
 } from 'components/admin/GraphCards/ReactionsByTimeCard/useReactionsByTime/typings';
-import {
-  ActiveUsersRow,
-  TimeSeriesResponseRow as UsersTimeSeriesResponseRow,
-} from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/ActiveUsersWidget/useActiveUsers/typings';
-import { IIdeaImageData } from 'api/idea_images/types';
-import { IIdeaData } from 'api/ideas/types';
-import { IPhaseData } from 'api/phases/types';
-import { IProjectData } from 'api/projects/types';
-import {
-  TotalsRow as VisitorsTotalsRow,
-  TimeSeriesResponseRow as VisitorsTimeSeriesResponseRow,
-} from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/VisitorsWidget/useVisitors/typings';
 import { TrafficSourcesRow } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/typings';
 
-export type SurveyResultsResponse = {
+// Survey question results
+export type SurveyQuestionResultResponse = {
   data: {
     type: 'report_builder_data_units';
-    attributes: SurveyResultAttributes;
+    attributes: ResultGrouped | ResultUngrouped;
   };
 };
 
@@ -40,6 +43,16 @@ export type MostReactedIdeasResponse = {
       ideas: IIdeaData[];
       project: IProjectData;
       phase: IPhaseData;
+      idea_images: Record<string, IIdeaImageData[]>;
+    };
+  };
+};
+
+export type SingleIdeaResponse = {
+  data: {
+    type: 'report_builder_data_units';
+    attributes: {
+      idea: IIdeaData;
       idea_images: IIdeaImageData[];
     };
   };

@@ -1,19 +1,20 @@
 import React, { useState, lazy } from 'react';
 
-// hooks
-import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import { useParams } from 'react-router-dom';
+import { RouteType } from 'routes';
+
+import useFormCustomFields from 'api/custom_fields/useCustomFields';
+
 import useLocale from 'hooks/useLocale';
 
-// components
 import PDFExportModal, {
   FormValues,
 } from 'containers/Admin/projects/components/PDFExportModal';
 
-// utils
-import { ideationConfig } from '../utils';
-import { saveIdeaFormAsPDF } from '../saveIdeaFormAsPDF';
 import { isNilOrError } from 'utils/helperUtils';
+
+import { saveIdeaFormAsPDF } from '../saveIdeaFormAsPDF';
+import { ideationConfig } from '../utils';
 
 const FormBuilder = lazy(() => import('components/FormBuilder/edit'));
 
@@ -30,7 +31,7 @@ const IdeaFormBuilder = () => {
   });
   const locale = useLocale();
 
-  const goBackUrl = `/admin/projects/${projectId}/phases/${phaseId}/ideaform`;
+  const goBackUrl: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/ideaform`;
 
   const handleDownloadPDF = () => setExportModalOpen(true);
 

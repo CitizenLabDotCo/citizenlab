@@ -30,7 +30,7 @@ module MachineTranslations
             authorize @translation
           else
             begin
-              @translation = MachineTranslationService.new.build_translation_for @translation_attributes
+              @translation = MachineTranslationService.new.build_translation_for(**@translation_attributes)
 
               if @translation.nil?
                 render json: { errors: { base: [{ error: 'unable_to_translate' }] } }, status: :unprocessable_entity

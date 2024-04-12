@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { screen, render } from 'utils/testUtils/rtl';
 
 import ProjectDescriptionBuilderPage from '.';

@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeleteAnalysisTagging from './useDeleteAnalysisTagging';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useDeleteAnalysisTagging from './useDeleteAnalysisTagging';
 const apiPath = '*analyses/:analysisId/taggings/:id';
 
 const server = setupServer(

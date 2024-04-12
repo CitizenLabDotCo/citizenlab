@@ -34,14 +34,6 @@ export default defineMessages({
     defaultMessage:
       'There was an issue submitting the form. Please check for any errors and try again.',
   },
-  submitSurvey: {
-    id: 'app.components.form.ErrorDisplay.submitSurvey',
-    defaultMessage: 'Submit survey',
-  },
-  anonymousSurveyMessage: {
-    id: 'app.components.form.anonymousSurveyMessage',
-    defaultMessage: 'All responses to this survey are anonymized',
-  },
   or: {
     id: 'app.containers.IdeasNewPage.or',
     defaultMessage: 'Or',
@@ -66,6 +58,10 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage.fileUploadError',
     defaultMessage:
       'A file failed to upload. Please check the file size and format and try again.',
+  },
+  surveyNewMetaTitle: {
+    id: 'app.containers.IdeasNewPage.surveyNewMetaTitle',
+    defaultMessage: 'Add survey response | {projectName}',
   },
   ideaNewMetaTitle: {
     id: 'app.containers.IdeasNewPage.ideaNewMetaTitle',
@@ -367,20 +363,33 @@ export default defineMessages({
     defaultMessage:
       'The issue description must be more than {limit} characters long',
   },
-  leaveSurveyConfirmationQuestion: {
-    id: 'app.containers.IdeasNewPage.leaveSurveyConfirmationQuestion',
-    defaultMessage: 'Are you sure you want to leave this survey?',
+  ajv_error_number_required: {
+    id: 'app.containers.IdeasNewPage.ajv_error_number_required',
+    defaultMessage: 'This field is required, please enter a valid number',
+  },
+  leaveFormConfirmationQuestion: {
+    id: 'app.containers.IdeasNewPage.leaveFormConfirmationQuestion',
+    defaultMessage: 'Are you sure you want to leave?',
   },
   leaveSurveyText: {
     id: 'app.containers.IdeasNewPage.leaveSurveyText',
     defaultMessage: "Your answers won't be saved.",
   },
-  confirmLeaveSurveyButtonText: {
-    id: 'app.containers.IdeasNewPage.confirmLeaveSurveyButtonText',
-    defaultMessage: 'Yes, I want to leave the survey',
+  leaveFormTextLoggedIn: {
+    id: 'app.containers.IdeasNewPage.leaveFormTextLoggedIn',
+    defaultMessage:
+      'Your draft answers have been saved privately and you can return to complete this later.',
+  },
+  confirmLeaveFormButtonText: {
+    id: 'app.containers.IdeasNewPage.confirmLeaveFormButtonText',
+    defaultMessage: 'Yes, I want to leave',
   },
   cancelLeaveSurveyButtonText: {
     id: 'app.containers.IdeasNewPage.cancelLeaveSurveyButtonText',
     defaultMessage: 'Cancel',
+  },
+  leaveSurvey: {
+    id: 'app.containers.IdeasNewPage.leaveSurvey',
+    defaultMessage: 'Leave survey',
   },
 });

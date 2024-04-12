@@ -1,4 +1,5 @@
 import { Keys } from 'utils/cl-react-query/types';
+
 import usersByAgeKeys from './keys';
 
 export type UsersByAgeKeys = Keys<typeof usersByAgeKeys>;

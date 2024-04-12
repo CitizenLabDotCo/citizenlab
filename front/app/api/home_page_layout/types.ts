@@ -1,5 +1,7 @@
-import { Keys } from 'utils/cl-react-query/types';
 import { CraftJson } from 'components/admin/ContentBuilder/typings';
+
+import { Keys } from 'utils/cl-react-query/types';
+
 import homepageBuilderKeys from './keys';
 
 export type HomepageBuilderKeys = Keys<typeof homepageBuilderKeys>;

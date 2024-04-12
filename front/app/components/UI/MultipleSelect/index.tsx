@@ -1,9 +1,10 @@
 import React from 'react';
-import { isBoolean, isString, isArray } from 'lodash-es';
+
+import { Label } from '@citizenlab/cl2-component-library';
 import ReactSelect from 'react-select';
 import { IOption } from 'typings';
+
 import selectStyles from 'components/UI/MultipleSelect/styles';
-import { Label } from '@citizenlab/cl2-component-library';
 
 export type Props = {
   id?: string;
@@ -11,7 +12,6 @@ export type Props = {
   value: IOption[] | null | IOption['value'];
   placeholder?: string | JSX.Element;
   options: IOption[] | null;
-  max?: number;
   autoBlur?: boolean;
   onChange: (arg: IOption[]) => void;
   disabled?: boolean;
@@ -31,17 +31,14 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
   }
 
   handleOnChange = (newValue: IOption[]) => {
-    const { value, max } = this.props;
-    const nextValue =
-      max && newValue && newValue.length > max ? value : newValue;
-    this.props.onChange(nextValue || this.emptyArray);
+    this.props.onChange(newValue || this.emptyArray);
   };
 
   //  Needed to keep our API compatible with react-select v1
   //  For a native react-select solution, follow this issue:
   //  https://github.com/JedWatson/react-select/issues/2669
   findFullOptionValue = (value) => {
-    if (isString(value)) {
+    if (typeof value === 'string') {
       return (
         this.props.options &&
         this.props.options.find((option) => option.value === value)
@@ -54,7 +51,7 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
   findFullOptionValues = () => {
     const { value } = this.props;
 
-    if (isArray(value)) {
+    if (Array.isArray(value)) {
       return value.map(this.findFullOptionValue);
     }
 
@@ -63,15 +60,13 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
 
   render() {
     const { id, className, disabled, label, isSearchable = true } = this.props;
-    let { value, placeholder, options, max, autoBlur } = this.props;
+    let { value, placeholder, options, autoBlur } = this.props;
     const { inputId } = this.props;
 
     value = this.findFullOptionValues();
     placeholder = placeholder || '';
     options = options || this.emptyArray;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    max = max || undefined;
-    autoBlur = isBoolean(autoBlur) ? autoBlur : false;
+    autoBlur = typeof autoBlur === 'boolean' ? autoBlur : false;
 
     return (
       <div>

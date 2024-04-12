@@ -1,10 +1,9 @@
 import React, { PureComponent } from 'react';
 
-// components
 import FilterSelector from 'components/FilterSelector';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
+
 import messages from './messages';
 
 export type Sort = 'random' | 'likes_count' | 'new' | '-new';

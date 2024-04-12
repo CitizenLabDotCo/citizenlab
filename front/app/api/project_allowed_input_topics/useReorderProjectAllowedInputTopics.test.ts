@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useReorderProjectAllowedInputTopics from './useReorderProjectAllowedInputTopics';
-import { projectAllowedInputTopics } from './__mocks__/useProjectAllowedInputTopics';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { projectAllowedInputTopics } from './__mocks__/useProjectAllowedInputTopics';
+import useReorderProjectAllowedInputTopics from './useReorderProjectAllowedInputTopics';
 
 const apiPath = '*projects_allowed_input_topics/:id/reorder';
 const server = setupServer(

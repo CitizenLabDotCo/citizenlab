@@ -1,6 +1,7 @@
 import React from 'react';
-import { Draggable } from 'react-beautiful-dnd';
+
 import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Draggable } from 'react-beautiful-dnd';
 
 type DragProps = {
   id: string;

@@ -1,12 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
-import { Props, QueryParameters, IProjects, ProjectsKeys } from './types';
+
 import projectsKeys from './keys';
+import { Props, QueryParameters, IProjects, ProjectsKeys } from './types';
 
 const fetchProjects = (queryParams: QueryParameters) =>
   fetcher<IProjects>({
-    path: `/projects`,
+    path: '/projects',
     action: 'get',
     queryParams,
   });

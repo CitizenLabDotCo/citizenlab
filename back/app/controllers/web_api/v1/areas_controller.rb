@@ -38,7 +38,7 @@ class WebApi::V1::AreasController < ApplicationController
       return
     end
 
-    render json: linked_json(@areas, WebApi::V1::AreaSerializer, params: jsonapi_serializer_params)
+    render json: linked_json(@areas, WebApi::V1::AreaSerializer, params: jsonapi_serializer_params(user_followers: user_followers))
   end
 
   def show

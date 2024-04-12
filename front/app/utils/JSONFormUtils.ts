@@ -26,3 +26,11 @@ export const getLabel = (uischema, schema, path) =>
     : isString(schema?.title)
     ? schema.title
     : getFieldNameFromPath(path);
+
+export const getElementType = (uiSchema, name: string): string | undefined => {
+  const elementType = uiSchema.elements
+    ?.flatMap((category) => category.elements)
+    .filter((element) => element.scope?.split('/').pop() === name)
+    .map((element) => element.options.input_type);
+  return elementType?.length ? elementType[0] : undefined;
+};

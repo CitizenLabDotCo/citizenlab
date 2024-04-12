@@ -1,8 +1,10 @@
-import { pastPresentOrFuture } from 'utils/dateUtils';
-import { IProjectData, PostingDisabledReason } from 'api/projects/types';
-import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
-import { IUserData } from 'api/users/types';
 import { IPhaseData } from 'api/phases/types';
+import { IProjectData, PostingDisabledReason } from 'api/projects/types';
+import { IUserData } from 'api/users/types';
+
+import { pastPresentOrFuture } from 'utils/dateUtils';
+
+import { canModerateProject } from './permissions/rules/projectPermissions';
 
 interface ActionPermissionHide {
   show: false;
@@ -146,11 +148,7 @@ export const getIdeaPostingRules = ({
     const { disabled_reason, future_enabled, enabled } =
       project.attributes.action_descriptor.posting_idea;
 
-    if (
-      signedIn &&
-      (isAdmin({ data: authUser }) ||
-        isProjectModerator({ data: authUser }, project?.id))
-    ) {
+    if (signedIn && canModerateProject(project.id, { data: authUser })) {
       return {
         show: true,
         enabled: true,

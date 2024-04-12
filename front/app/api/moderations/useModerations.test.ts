@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useModerations from './useModerations';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { moderationsData } from './__mocks__/useModerations';
+import useModerations from './useModerations';
 
 const apiPath = '*moderations';
 

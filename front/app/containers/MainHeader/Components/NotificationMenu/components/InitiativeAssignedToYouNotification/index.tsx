@@ -1,15 +1,15 @@
 import React, { MouseEvent, KeyboardEvent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+
 import { IInitiativeAssignedToYouNotificationData } from 'api/notifications/types';
 
-// i18n
-import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// components
-import NotificationWrapper from '../NotificationWrapper';
-import Link from 'utils/cl-router/Link';
 import T from 'components/T';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from '../../messages';
+import NotificationWrapper from '../NotificationWrapper';
 
 type Props = {
   notification: IInitiativeAssignedToYouNotificationData;

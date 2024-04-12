@@ -1,14 +1,15 @@
+import { sumBy } from 'lodash-es';
 import moment, { Moment } from 'moment';
 
-// utils
 import {
   timeSeriesParser,
   calculateCumulativeSerie,
 } from 'components/admin/GraphCards/_utils/timeSeries';
-import { get } from 'utils/helperUtils';
-import { sumBy } from 'lodash-es';
+import { IResolution } from 'components/admin/ResolutionControl';
 
-// typings
+import { get } from 'utils/helperUtils';
+
+import { Translations } from './translations';
 import {
   Response,
   TimeSeriesResponseRow,
@@ -16,8 +17,6 @@ import {
   TimeSeriesRow,
   RegistrationsTotalRow,
 } from './typings';
-import { Translations } from './translations';
-import { IResolution } from 'components/admin/ResolutionControl';
 
 export const getEmptyRow = (date: Moment) => ({
   date: date.format('YYYY-MM-DD'),

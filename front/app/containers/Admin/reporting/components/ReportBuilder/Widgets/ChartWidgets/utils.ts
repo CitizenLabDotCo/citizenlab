@@ -1,5 +1,5 @@
-import { GenderSerie } from 'containers/Admin/dashboard/users/Charts/GenderChart/typings';
 import { AgeSerie } from 'containers/Admin/dashboard/users/Charts/AgeChart/typings';
+import { GenderSerie } from 'containers/Admin/dashboard/users/Charts/GenderChart/typings';
 
 export const serieHasValues = (serie: GenderSerie | AgeSerie) => {
   let hasValues = false;

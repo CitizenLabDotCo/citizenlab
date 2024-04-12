@@ -1,4 +1,6 @@
 import React, { memo } from 'react';
+
+import { Box, fontSizes, media } from '@citizenlab/cl2-component-library';
 import {
   Categorization,
   isCategorization,
@@ -6,9 +8,9 @@ import {
   rankWith,
 } from '@jsonforms/core';
 import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
-import { Box, fontSizes, media } from '@citizenlab/cl2-component-library';
-import { FormSection } from 'components/UI/FormComponents';
 import styled, { useTheme } from 'styled-components';
+
+import { FormSection } from 'components/UI/FormComponents';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const StyledFormSection = styled(FormSection)`

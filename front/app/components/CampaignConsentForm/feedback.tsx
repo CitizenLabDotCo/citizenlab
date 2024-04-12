@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
-import Error from 'components/UI/Error';
+
 import { Text, Box } from '@citizenlab/cl2-component-library';
-import { scrollToElement } from 'utils/scroll';
+
 import SuccessFeedback from 'components/HookForm/Feedback/SuccessFeedback';
+import Error from 'components/UI/Error';
+
+import { scrollToElement } from 'utils/scroll';
 
 type FeedbackProps = {
   successMessage: string;

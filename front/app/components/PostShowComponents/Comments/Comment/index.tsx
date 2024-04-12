@@ -1,20 +1,20 @@
-// libraries
 import React, { useState } from 'react';
 
-// components
-import CommentHeader from './CommentHeader';
-import CommentBody from './CommentBody';
-import CommentFooter from './CommentFooter';
 import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
-// style
 import styled from 'styled-components';
+
 import useComment from 'api/comments/useComment';
 import useUserById from 'api/users/useUserById';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+
+import messages from '../messages';
+
+import CommentBody from './CommentBody';
+import CommentFooter from './CommentFooter';
+import CommentHeader from './CommentHeader';
 
 const Container = styled.div``;
 
@@ -92,6 +92,13 @@ const Comment = ({
     setEditing(false);
   };
 
+  const authorCanModerate = author
+    ? {
+        idea: canModerateProject(projectId, author),
+        initiative: canModerateInitiative(author),
+      }[postType]
+    : false;
+
   if (comment) {
     const commentId = comment.data.id;
     const authorId = author ? author.data.id : null;
@@ -115,11 +122,11 @@ const Comment = ({
           {comment.data.attributes.publication_status === 'published' && (
             <>
               <CommentHeader
-                projectId={projectId}
                 commentAttributes={comment.data.attributes}
                 commentType={commentType}
                 className={commentType === 'parent' ? 'marginBottom' : ''}
                 authorId={authorId}
+                userCanModerate={authorCanModerate}
               />
 
               <Content>

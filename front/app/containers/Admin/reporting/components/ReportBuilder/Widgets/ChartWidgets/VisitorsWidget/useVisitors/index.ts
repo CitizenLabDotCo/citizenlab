@@ -1,27 +1,28 @@
-// parse
-import { parseStats, parseTimeSeries } from './parse';
-
-// typings
-import { QueryParameters } from './typings';
 import { useMemo, useState } from 'react';
-import { IResolution } from 'components/admin/ResolutionControl';
+
+import moment from 'moment';
 
 import { useVisitors as useVisitorsData } from 'api/graph_data_units';
 
+import { IResolution } from 'components/admin/ResolutionControl';
+
+import { parseStats, parseTimeSeries } from './parse';
+import { QueryParameters } from './typings';
+
 export default function useVisitors({
   projectId,
-  startAtMoment,
-  endAtMoment,
+  startAt,
+  endAt,
   resolution,
 }: QueryParameters) {
   const [currentResolution, setCurrentResolution] =
     useState<IResolution>(resolution);
 
-  const analytics = useVisitorsData(
+  const { data: analytics } = useVisitorsData(
     {
-      projectId,
-      startAtMoment,
-      endAtMoment,
+      project_id: projectId,
+      start_at: startAt,
+      end_at: endAt,
       resolution,
     },
     {
@@ -36,12 +37,12 @@ export default function useVisitors({
       analytics?.data
         ? parseTimeSeries(
             analytics.data.attributes[1],
-            startAtMoment,
-            endAtMoment,
+            startAt ? moment(startAt) : null,
+            endAt ? moment(endAt) : null,
             currentResolution
           )
         : null,
-    [analytics?.data, startAtMoment, endAtMoment, currentResolution]
+    [analytics?.data, startAt, endAt, currentResolution]
   );
 
   return { currentResolution, stats, timeSeries };

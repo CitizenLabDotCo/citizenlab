@@ -1,16 +1,14 @@
 import React from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
-
-// craft
 import { UserComponent, Element } from '@craftjs/core';
-import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
-import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
+
 import AboutBox from 'components/admin/ContentBuilder/Widgets/AboutBox';
-import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
+import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
+import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
+import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 const InfoWithAccordions: UserComponent = () => {
   return (

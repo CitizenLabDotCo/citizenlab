@@ -1,25 +1,22 @@
 import React, { useState } from 'react';
 
-// router
-import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
-
-// components
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import HelmetIntl from 'components/HelmetIntl';
+import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
+import { InsertConfigurationOptions, ITab } from 'typings';
+
 import NavigationTabs, {
   Tab,
   TabsPageLayout,
 } from 'components/admin/NavigationTabs';
-
-// i18n
-import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
-
-import { InsertConfigurationOptions, ITab } from 'typings';
-import { insertConfiguration } from 'utils/moduleUtils';
+import HelmetIntl from 'components/HelmetIntl';
 import Outlet from 'components/Outlet';
-import { defaultAdminCardPadding } from 'utils/styleConstants';
+
+import { useIntl } from 'utils/cl-intl';
 import { isTopBarNavActive } from 'utils/helperUtils';
+import { insertConfiguration } from 'utils/moduleUtils';
+import { defaultAdminCardPadding } from 'utils/styleConstants';
+
+import messages from './messages';
 
 const SettingsPage = () => {
   const { formatMessage } = useIntl();

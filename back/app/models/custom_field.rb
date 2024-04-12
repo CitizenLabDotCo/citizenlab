@@ -26,6 +26,7 @@
 #  select_count_enabled   :boolean          default(FALSE), not null
 #  maximum_select_count   :integer
 #  minimum_select_count   :integer
+#  random_option_ordering :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -48,8 +49,14 @@ class CustomField < ApplicationRecord
   has_many :permissions, through: :permissions_custom_fields
 
   FIELDABLE_TYPES = %w[User CustomForm].freeze
-  INPUT_TYPES = %w[text number multiline_text html text_multiloc multiline_text_multiloc html_multiloc select multiselect checkbox date files image_files point linear_scale file_upload page section topic_ids].freeze
-  CODES = %w[gender birthyear domicile education title_multiloc body_multiloc topic_ids location_description proposed_budget idea_images_attributes idea_files_attributes author_id budget ideation_section1 ideation_section2 ideation_section3].freeze
+  INPUT_TYPES = %w[
+    checkbox date file_upload files html html_multiloc image_files linear_scale multiline_text multiline_text_multiloc
+    multiselect multiselect_image number page point select select_image text text_multiloc topic_ids section
+  ].freeze
+  CODES = %w[
+    author_id birthyear body_multiloc budget domicile education gender idea_files_attributes idea_images_attributes
+    ideation_section1 ideation_section2 ideation_section3 location_description proposed_budget title_multiloc topic_ids
+  ].freeze
   VISIBLE_TO_PUBLIC = 'public'
   VISIBLE_TO_ADMINS = 'admins'
 
@@ -58,7 +65,7 @@ class CustomField < ApplicationRecord
     :key,
     presence: true,
     uniqueness: { scope: %i[resource_type resource_id] }, format: { with: /\A[a-zA-Z0-9_]+\z/, message: 'only letters, numbers and underscore' },
-    unless: :page_or_section?
+    if: :accepts_input?
   )
   validates :input_type, presence: true, inclusion: INPUT_TYPES
   validates :title_multiloc, presence: true, multiloc: { presence: true }, unless: :page_or_section?
@@ -93,11 +100,15 @@ class CustomField < ApplicationRecord
   end
 
   def support_options?
-    %w[select multiselect].include?(input_type)
+    %w[select multiselect select_image multiselect_image].include?(input_type)
   end
 
   def support_free_text_value?
     %w[text multiline_text text_multiloc multiline_text_multiloc html_multiloc].include?(input_type)
+  end
+
+  def support_option_images?
+    %w[select_image multiselect_image].include?(input_type)
   end
 
   def built_in?
@@ -133,11 +144,19 @@ class CustomField < ApplicationRecord
   end
 
   def multiselect?
-    input_type == 'multiselect'
+    %w[multiselect multiselect_image].include?(input_type)
+  end
+
+  def linear_scale?
+    input_type == 'linear_scale'
   end
 
   def page_or_section?
     page? || section?
+  end
+
+  def accepts_input?
+    !page_or_section?
   end
 
   def custom_form_type?
@@ -154,42 +173,46 @@ class CustomField < ApplicationRecord
 
   def accept(visitor)
     case input_type
-    when 'text'
-      visitor.visit_text self
-    when 'number'
-      visitor.visit_number self
-    when 'multiline_text'
-      visitor.visit_multiline_text self
-    when 'html'
-      visitor.visit_html self
-    when 'text_multiloc'
-      visitor.visit_text_multiloc self
-    when 'multiline_text_multiloc'
-      visitor.visit_multiline_text_multiloc self
-    when 'html_multiloc'
-      visitor.visit_html_multiloc self
-    when 'select'
-      visitor.visit_select self
-    when 'multiselect'
-      visitor.visit_multiselect self
     when 'checkbox'
       visitor.visit_checkbox self
     when 'date'
       visitor.visit_date self
     when 'files'
       visitor.visit_files self
-    when 'image_files'
-      visitor.visit_image_files self
-    when 'point'
-      visitor.visit_point self
-    when 'linear_scale'
-      visitor.visit_linear_scale self
-    when 'page'
-      visitor.visit_page self
-    when 'section'
-      visitor.visit_section self
     when 'file_upload'
       visitor.visit_file_upload self
+    when 'html'
+      visitor.visit_html self
+    when 'html_multiloc'
+      visitor.visit_html_multiloc self
+    when 'image_files'
+      visitor.visit_image_files self
+    when 'linear_scale'
+      visitor.visit_linear_scale self
+    when 'multiline_text'
+      visitor.visit_multiline_text self
+    when 'multiline_text_multiloc'
+      visitor.visit_multiline_text_multiloc self
+    when 'multiselect'
+      visitor.visit_multiselect self
+    when 'multiselect_image'
+      visitor.visit_multiselect_image self
+    when 'number'
+      visitor.visit_number self
+    when 'page'
+      visitor.visit_page self
+    when 'point'
+      visitor.visit_point self
+    when 'section'
+      visitor.visit_section self
+    when 'select'
+      visitor.visit_select self
+    when 'select_image'
+      visitor.visit_select_image self
+    when 'text'
+      visitor.visit_text self
+    when 'text_multiloc'
+      visitor.visit_text_multiloc self
     when 'topic_ids'
       visitor.visit_topic_ids self
     else
@@ -200,7 +223,7 @@ class CustomField < ApplicationRecord
   # Special behaviour for ideation section 1
   def title_multiloc
     if code == 'ideation_section1'
-      project = resource.participation_context
+      project = resource.participation_context.project
       phase = TimelineService.new.current_or_last_can_contain_ideas_phase project
       input_term = phase&.input_term || Phase::DEFAULT_INPUT_TERM
 
@@ -213,6 +236,60 @@ class CustomField < ApplicationRecord
 
   def project_id
     resource.project_id if resource_type == 'CustomForm'
+  end
+
+  def other_option_text_field
+    return if options.none?(&:other)
+
+    other_field_key = "#{key}_other"
+    CustomField.new(
+      key: other_field_key,
+      input_type: 'text',
+      title_multiloc: MultilocService.new.i18n_to_multiloc(
+        'custom_fields.ideas.other.title',
+        locales: CL2_SUPPORTED_LOCALES
+      ),
+      required: true,
+      enabled: true
+    )
+  end
+
+  def point_latitude_field
+    return unless input_type == 'point'
+
+    CustomField.new(
+      key: "#{key}_latitude",
+      input_type: 'point',
+      title_multiloc: title_multiloc.to_h do |k, v|
+        [k, "#{v} - #{I18n.with_locale(k) { I18n.t('xlsx_export.column_headers.latitude') }}"]
+      end,
+      required: true,
+      enabled: true
+    )
+  end
+
+  def point_longitude_field
+    return unless input_type == 'point'
+
+    CustomField.new(
+      key: "#{key}_longitude",
+      input_type: 'point',
+      title_multiloc: title_multiloc.to_h do |k, v|
+        [k, "#{v} - #{I18n.with_locale(k) { I18n.t('xlsx_export.column_headers.longitude') }}"]
+      end,
+      required: true,
+      enabled: true
+    )
+  end
+
+  def ordered_options
+    return [] unless options.any?
+
+    if random_option_ordering
+      options.shuffle.sort_by { |o| o.other ? 1 : 0 }
+    else
+      options.order(:ordering)
+    end
   end
 
   private
@@ -233,12 +310,12 @@ class CustomField < ApplicationRecord
 
   def generate_key
     return if key
-    return if page_or_section?
+    return if !accepts_input?
 
     title = title_multiloc.values.first
     return unless title
 
-    self.key = CustomFieldService.new.generate_key(self, title) do |key_proposal|
+    self.key = CustomFieldService.new.generate_key(title, false) do |key_proposal|
       self.class.find_by(key: key_proposal, resource_type: resource_type)
     end
   end
@@ -257,3 +334,4 @@ end
 CustomField.include(SmartGroups::Extensions::CustomField)
 CustomField.include(UserCustomFields::Patches::CustomField)
 CustomField.include(Analysis::Patches::CustomField)
+CustomField.include(CustomMaps::Extensions::CustomField)

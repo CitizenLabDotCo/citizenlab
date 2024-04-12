@@ -1,8 +1,6 @@
-// i18n
-import messages from './messages';
-
-// typings
 import { FormatMessage } from 'typings';
+
+import messages from './messages';
 
 export interface Translations {
   'Direct Entry': string;

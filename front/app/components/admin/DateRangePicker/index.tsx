@@ -1,14 +1,17 @@
 import React from 'react';
-import DatePicker from 'react-datepicker';
-import moment, { Moment } from 'moment';
-import styled from 'styled-components';
+
 import {
   Box,
   Icon,
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
+import moment, { Moment } from 'moment';
+import DatePicker from 'react-datepicker';
+import styled from 'styled-components';
+
 import useLocale from 'hooks/useLocale';
+
 import { isNilOrError } from 'utils/helperUtils';
 
 const StylingWrapper = styled.div`

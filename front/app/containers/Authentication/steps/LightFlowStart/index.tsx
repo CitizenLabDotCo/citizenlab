@@ -1,43 +1,39 @@
 import React, { useMemo } from 'react';
 
-// hooks
+import { Box, Text } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
+import { SupportedLocale } from 'typings';
+import { string, object } from 'yup';
+
+import { SSOProvider } from 'api/authentication/singleSignOn';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
-// components
-import { Box, Text } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import SSOButtons from './SSOButtons';
+import { SetError } from 'containers/Authentication/typings';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import sharedMessages from '../messages';
-
-// form
-import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object } from 'yup';
 import Input from 'components/HookForm/Input';
+import Button from 'components/UI/Button';
 
-// errors
+import { useIntl } from 'utils/cl-intl';
 import {
   isCLErrorsWrapper,
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
-
-// utils
+import { isNilOrError } from 'utils/helperUtils';
 import { isValidEmail } from 'utils/validate';
 
-// typings
-import { SSOProvider } from 'api/authentication/singleSignOn';
-import { Locale } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
-import { SetError } from 'containers/Authentication/typings';
+import sharedMessages from '../messages';
+
+import SSOButtons from './SSOButtons';
+
+// errors
 
 interface Props {
   loading: boolean;
   setError: SetError;
-  onSubmit: (email: string, locale: Locale) => void;
+  onSubmit: (email: string, locale: SupportedLocale) => void;
   onSwitchToSSO: (ssoProvider: SSOProvider) => void;
 }
 

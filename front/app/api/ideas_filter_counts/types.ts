@@ -1,6 +1,8 @@
-import { Keys } from 'utils/cl-react-query/types';
-import ideaFilterCountsKeys from './keys';
 import { Sort, IQueryParameters } from 'api/ideas/types';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import ideaFilterCountsKeys from './keys';
 
 export type IdeaFilterCountsKeys = Keys<typeof ideaFilterCountsKeys>;
 

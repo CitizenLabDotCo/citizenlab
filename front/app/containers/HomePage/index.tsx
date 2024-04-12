@@ -1,21 +1,23 @@
 import React, { useEffect } from 'react';
-import clHistory from 'utils/cl-router/history';
 
-// components
-import { canAccessRoute } from 'utils/permissions/rules/routePermissions';
+import { Spinner } from '@citizenlab/cl2-component-library';
+import { RouteType } from 'routes';
 
-// hooks
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
 import useAuthUser from 'api/me/useAuthUser';
+
 import useKeyPress from 'hooks/useKeyPress';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import Viewer from './Viewer';
 import CityLogoSection from 'components/CityLogoSection';
-import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
-import { Spinner } from '@citizenlab/cl2-component-library';
-export const adminRedirectPath = '/admin';
+
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
+import { canAccessRoute } from 'utils/permissions/rules/routePermissions';
+
+import Viewer from './Viewer';
+
+export const adminRedirectPath: RouteType = '/admin';
 
 const HomePage = () => {
   const { data: homepageLayout } = useHomepageLayout();

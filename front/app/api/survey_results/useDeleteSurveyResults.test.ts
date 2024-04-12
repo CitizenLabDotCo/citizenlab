@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeleteSurveyResults from './useDeleteSurveyResults';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useDeleteSurveyResults from './useDeleteSurveyResults';
 const apiPath = '*phases/:phaseId/inputs';
 
 const server = setupServer(

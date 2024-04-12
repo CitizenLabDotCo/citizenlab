@@ -1,27 +1,5 @@
 import React, { memo, useCallback } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty } from 'lodash-es';
-import bowser from 'bowser';
-import { TLayout } from 'components/ProjectAndFolderCards';
 
-// router
-import Link from 'utils/cl-router/Link';
-
-// components
-import Image from 'components/UI/Image';
-import FollowUnfollow from 'components/FollowUnfollow';
-
-// i18n
-import T from 'components/T';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// style
-import styled, { useTheme } from 'styled-components';
 import {
   media,
   colors,
@@ -32,19 +10,32 @@ import {
   useBreakpoint,
   Box,
 } from '@citizenlab/cl2-component-library';
-import { ScreenReaderOnly } from 'utils/a11y';
+import { isEmpty } from 'lodash-es';
+import { RouteType } from 'routes';
+import styled, { useTheme } from 'styled-components';
 
-// hooks
-import useProjectFolderImages from 'api/project_folder_images/useProjectFolderImages';
 import useAdminPublication from 'api/admin_publications/useAdminPublication';
-
-// services
 import {
   getCardImageUrl,
   CARD_IMAGE_ASPECT_RATIO,
 } from 'api/project_folder_images/types';
+import useProjectFolderImages from 'api/project_folder_images/useProjectFolderImages';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
+
 import AvatarBubbles from 'components/AvatarBubbles';
+import FollowUnfollow from 'components/FollowUnfollow';
+import { TLayout } from 'components/ProjectAndFolderCards';
+import T from 'components/T';
+import Image from 'components/UI/Image';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from './messages';
+import tracks from './tracks';
 
 const Container = styled(Link)`
   width: calc(33% - 12px);
@@ -72,6 +63,8 @@ const Container = styled(Link)`
     min-height: 580px;
     padding-left: 30px;
     padding-right: 30px;
+    padding-top: 20px;
+    padding-bottom: 30px;
 
     ${media.phone`
       width: 100%;
@@ -80,6 +73,8 @@ const Container = styled(Link)`
 
   &.small {
     min-height: 540px;
+    padding-top: 18px;
+    padding-bottom: 25px;
 
     &.threecolumns {
       ${media.tablet`
@@ -97,19 +92,9 @@ const Container = styled(Link)`
     `}
   }
 
-  &.medium {
-    padding-top: 20px;
-    padding-bottom: 30px;
-  }
-
-  &.small {
-    padding-top: 18px;
-    padding-bottom: 25px;
-  }
-
-  &.desktop {
+  ${media.desktop`
     ${defaultCardHoverStyle};
-  }
+  `}
 
   ${media.phone`
     width: 100%;
@@ -421,7 +406,7 @@ const ProjectFolderCard = memo<Props>(
       ? getCardImageUrl(imageVersions, isSmallerThanPhone, size)
       : null;
 
-    const folderUrl = `/folders/${publication.data.attributes.publication_slug}`;
+    const folderUrl: RouteType = `/folders/${publication.data.attributes.publication_slug}`;
     const numberOfProjectsInFolder =
       publication.data.attributes.visible_children_count;
 
@@ -430,7 +415,7 @@ const ProjectFolderCard = memo<Props>(
     const contentHeader = (
       <ContentHeader className={`${size} hasContent`} hasLabel={isArchived}>
         {isArchived && (
-          <ContentHeaderLabel className="e2e-project-card-archived-label">
+          <ContentHeaderLabel>
             <FormattedMessage {...messages.archived} />
           </ContentHeaderLabel>
         )}
@@ -473,9 +458,7 @@ const ProjectFolderCard = memo<Props>(
 
     return (
       <Container
-        className={`${className} ${layout} ${size} ${
-          !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
-        } e2e-folder-card e2e-admin-publication-card`}
+        className={`${className} ${layout} ${size} e2e-folder-card e2e-admin-publication-card`}
         to={folderUrl}
         scrollToTop
         onClick={() => {
@@ -592,6 +575,7 @@ const ProjectFolderCard = memo<Props>(
                   projectFolder.data.relationships.user_follower?.data?.id
                 }
                 w="100%"
+                toolTipType="projectOrFolder"
               />
             </Box>
           )}

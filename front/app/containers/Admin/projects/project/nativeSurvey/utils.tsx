@@ -1,33 +1,32 @@
 import React from 'react';
 
-// api
+import { Box } from '@citizenlab/cl2-component-library';
+import { RouteType } from 'routes';
+import { Multiloc } from 'typings';
+
+import { IPhaseData, UpdatePhaseObject } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
-// typing
-import { Multiloc } from 'typings';
-import { IPhaseData, UpdatePhaseObject } from 'api/phases/types';
-
-// utils
 import { API_PATH } from 'containers/App/constants';
 
-// components
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
-import { Box } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 
-// intl
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
+import AccessRightsNotice from './AccessRightsNotice';
+import messages from './messages';
+import { IFlatCustomField, IOptionsType } from 'api/custom_fields/types';
+
 export const nativeSurveyConfig: FormBuilderConfig = {
-  formBuilderTitle: messages.survey2,
-  viewFormLinkCopy: messages.viewSurvey2,
-  toolboxTitle: messages.addSurveyContent2,
-  formSavedSuccessMessage: messages.successMessage2,
-  supportArticleLink: messages.supportArticleLink2,
-  formEndPageLogicOption: messages.surveyEnd2,
-  questionLogicHelperText: messages.questionLogicHelperText2,
-  pagesLogicHelperText: messages.pagesLogicHelperText2,
+  formBuilderTitle: messages.survey,
+  viewFormLinkCopy: messages.viewSurvey,
+  toolboxTitle: messages.addSurveyContent,
+  formSavedSuccessMessage: messages.successMessage,
+  supportArticleLink: messages.supportArticleLink,
+  formEndPageLogicOption: messages.surveyEnd,
+  questionLogicHelperText: messages.questionLogicHelperText,
+  pagesLogicHelperText: messages.pagesLogicHelperText,
 
   toolboxFieldsToExclude: [],
   formCustomFields: undefined,
@@ -47,13 +46,22 @@ export const nativeSurveyConfig: FormBuilderConfig = {
       </Box>
     );
   },
+  getAccessRightsNotice: (projectId, phaseId, handleClose) => {
+    return projectId && phaseId ? (
+      <AccessRightsNotice
+        projectId={projectId}
+        phaseId={phaseId}
+        handleClose={handleClose}
+      />
+    ) : null;
+  },
 };
 
 type FormActionsConfig = {
   phaseId?: string;
-  editFormLink: string;
-  viewFormLink: string;
-  offlineInputsLink: string;
+  editFormLink: RouteType;
+  viewFormLink: RouteType;
+  offlineInputsLink: RouteType;
   downloadExcelLink: string;
   downloadPdfLink: string;
   heading?: Multiloc;
@@ -82,4 +90,17 @@ export const getFormActionsConfig = (
       });
     },
   };
+};
+
+// Remove the IDs from the options - for when the form is not persisted
+export const clearOptionIds = (customFields: IFlatCustomField[]) => {
+  return customFields?.map((field: IFlatCustomField) => {
+    if (field.options && field.options.length > 0) {
+      field.options = field.options.map((option: IOptionsType) => {
+        delete option.id;
+        return option;
+      });
+    }
+    return field;
+  });
 };

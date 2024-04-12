@@ -2,13 +2,13 @@
 
 namespace :cl2_back do # rubocop:disable Metrics/BlockLength
   desc 'Create a tenant with given host and optional template'
-  task :create_tenant, %i[host template] => [:environment] do |_t, args| # rubocop:disable Metrics/BlockLength
+  task :create_tenant, %i[host template locales] => [:environment] do |_t, args| # rubocop:disable Metrics/BlockLength
     host = args[:host] || raise("Please provide the 'host' arg")
     tenant_template = args[:template] || 'e2etests_template'
     Tenant.find_by(host: host)&.destroy!
 
     settings = SettingsService.new.minimal_required_settings(
-      locales: %w[en nl-BE nl-NL fr-BE],
+      locales: args[:locales]&.split(';')&.map(&:strip) || %w[en nl-BE nl-NL fr-BE],
       lifecycle_stage: 'not_applicable'
     ).deep_merge(
       {
@@ -24,6 +24,23 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           maximum_moderators_number: 2,
           additional_admins_number: 2,
           additional_moderators_number: 1
+        },
+        maps: {
+          enabled: true,
+          allowed: true,
+          map_center: {
+            lat: '50.8503',
+            long: '4.3517'
+          },
+          zoom_level: 12
+        },
+        custom_maps: {
+          enabled: true,
+          allowed: true
+        },
+        esri_integration: {
+          enabled: true,
+          allowed: true
         },
         private_projects: {
           enabled: true,
@@ -65,10 +82,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: true,
           allowed: true
         },
-        project_reports: {
-          enabled: true,
-          allowed: true
-        },
         blocking_profanity: {
           enabled: true,
           allowed: true
@@ -99,14 +112,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
         pages: {
           allowed: true,
           enabled: true
-        },
-        similar_ideas: {
-          enabled: false,
-          allowed: true
-        },
-        geographic_dashboard: {
-          enabled: true,
-          allowed: true
         },
         intercom: {
           enabled: true,
@@ -203,14 +208,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
             'initiatives.default_posting_tips',
             locales: CL2_SUPPORTED_LOCALES
           )
-        },
-        insights_manual_flow: {
-          enabled: false,
-          allowed: false
-        },
-        insights_nlp_flow: {
-          enabled: false,
-          allowed: false
         },
         polls: {
           enabled: true,
@@ -328,6 +325,10 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: true,
           allowed: true
         },
+        input_form_mapping_question: {
+          enabled: true,
+          allowed: true
+        },
         posthog_integration: {
           enabled: false,
           allowed: false
@@ -356,6 +357,26 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
         user_session_recording: {
           enabled: false,
           allowed: false
+        },
+        analysis: {
+          enabled: true,
+          allowed: true
+        },
+        large_summaries: {
+          enabled: true,
+          allowed: true
+        },
+        ask_a_question: {
+          enabled: true,
+          allowed: true
+        },
+        advanced_autotagging: {
+          enabled: true,
+          allowed: true
+        },
+        report_data_grouping: {
+          enabled: true,
+          allowed: true
         }
       }
     )

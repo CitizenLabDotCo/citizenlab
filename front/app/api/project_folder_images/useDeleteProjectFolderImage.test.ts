@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeleteProjectFolderImage from './useDeleteProjectFolderImage';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useDeleteProjectFolderImage from './useDeleteProjectFolderImage';
 
 const apiPath = '*project_folders/:folderId/images/:imageId';
 

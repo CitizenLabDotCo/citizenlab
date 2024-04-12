@@ -1,8 +1,9 @@
-import { queryClient } from 'utils/cl-react-query/queryClient';
 import requirementsKeys from 'api/authentication/authentication_requirements/keys';
 import meKeys from 'api/me/keys';
 import onboardingCampaignsKeys from 'api/onboarding_campaigns/keys';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 const confirmationApiEndpoint = `user/confirm`;
 

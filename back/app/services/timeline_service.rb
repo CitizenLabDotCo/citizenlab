@@ -18,9 +18,7 @@ class TimelineService
   def current_phase(project, time = Time.now)
     date = time.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
 
-    project.phases.find do |phase|
-      phase.start_at <= date && (phase.end_at.nil? || phase.end_at >= date)
-    end
+    project.phases.find { |phase| phase.start_at <= date && (phase.end_at.nil? || phase.end_at >= date) }
   end
 
   def phase_is_complete?(phase, time = Time.now)
@@ -54,9 +52,9 @@ class TimelineService
   end
 
   def overlaps?(phase1, phase2)
-    return true if (phase1.start_at.blank? && phase1.end_at.blank?) || (phase2.start_at.blank? && phase2.end_at.blank?)
-    return (phase1.start_at <= phase2.start_at) if phase1.end_at.blank?
-    return (phase2.start_at <= phase1.start_at) if phase2.end_at.blank?
+    return true if (phase1.start_at.blank? && phase1.end_at.blank?) || (phase2.start_at.blank? && phase2.end_at.blank?) || (phase1.end_at.blank? && phase2.end_at.blank?)
+    return (phase2.end_at > phase1.start_at) if phase1.end_at.blank?
+    return (phase1.end_at > phase2.start_at) if phase2.end_at.blank?
 
     !((phase1.end_at.to_date < phase2.start_at.to_date) || (phase2.end_at.to_date < phase1.start_at.to_date))
   end
@@ -79,6 +77,7 @@ class TimelineService
   end
 
   def timeline_active_on_collection(projects)
+    projects = projects.to_a
     today = Time.now.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     starts = Phase.where(project: projects).group(:project_id).minimum(:start_at)
     ends = Phase.where(project: projects).group(:project_id).maximum(:end_at)

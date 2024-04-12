@@ -13,4 +13,17 @@ export default defineMessages({
     id: 'app.components.formBuilder.fieldLabel',
     defaultMessage: 'Answer choices',
   },
+  otherOption: {
+    id: 'app.components.formBuilder.otherOption',
+    defaultMessage: '"Other" option',
+  },
+  otherOptionTooltip: {
+    id: 'app.components.formBuilder.otherOptionTooltip',
+    defaultMessage:
+      'Allow participants to enter a custom response if the provided answers do not match their preference',
+  },
+  other: {
+    id: 'app.components.formBuilder.other',
+    defaultMessage: 'Other',
+  },
 });

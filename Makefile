@@ -14,7 +14,7 @@
 
 build:
 	docker-compose build
-	npm run install:all
+	cd front && npm install
 
 reset-dev-env:
 	# -v removes volumes with all the data inside https://docs.docker.com/compose/reference/down/
@@ -25,7 +25,7 @@ reset-dev-env:
 	docker-compose run --rm -e RAILS_ENV=test web bin/rails db:drop db:create db:schema:load
 
 migrate:
-	docker-compose run --rm web bin/rails db:migrate
+	docker-compose run --rm web bin/rails db:migrate cl2back:clean_tenant_settings email_campaigns:assure_campaign_records fix_existing_tenants:update_permissions cl2back:clear_cache_store email_campaigns:remove_deprecated
 
 be-up:
 	docker-compose up
@@ -60,6 +60,16 @@ add-campaign-and-notification:
 
 blint back-lint-autocorrect:
 	docker compose run web bundle exec rubocop -P --format simple --autocorrect
+
+# Usage example:
+# make r file=spec/models/idea_spec.rb
+r rspec:
+	docker-compose run --rm web bin/rspec ${file}
+
+# Usage example:
+# make feature-toggle feature=initiative_cosponsors enabled=true
+feature-toggle:
+	docker-compose run web "bin/rails runner \"enabled = ${enabled}; feature = '${feature}'; Tenant.find_by(host: 'localhost').switch!; c = AppConfiguration.first; c.settings['${feature}'] ||= {}; c.settings['${feature}']['allowed'] = ${enabled}; c.settings['${feature}']['enabled'] = ${enabled}; c.save!\""
 
 # =================
 # E2E tests
@@ -145,7 +155,7 @@ ci-regenerate-templates:
 		-u ${CIRCLE_CI_TOKEN}: \
 		--url https://circleci.com/api/v2/project/github/CitizenLabDotCo/citizenlab/pipeline \
 		--header 'content-type: application/json' \
-		--data '{"branch": "production", "parameters": {"templates": true}}'
+		--data '{"branch": "production", "parameters": {"templates": true, "trigger": false }}'
 
 # Triggers a build for the current branch.
 # Also, builds images for the Epic platform.

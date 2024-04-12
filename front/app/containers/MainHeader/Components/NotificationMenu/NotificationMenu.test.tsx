@@ -1,7 +1,10 @@
 import React from 'react';
-import { render, screen, userEvent } from 'utils/testUtils/rtl';
-import NotificationMenu from '.';
+
 import { mockAuthUserData } from 'api/me/__mocks__/_mockServer';
+
+import { render, screen, userEvent } from 'utils/testUtils/rtl';
+
+import NotificationMenu from '.';
 
 jest.mock('api/me/useAuthUser', () => () => ({
   data: { data: mockAuthUserData },

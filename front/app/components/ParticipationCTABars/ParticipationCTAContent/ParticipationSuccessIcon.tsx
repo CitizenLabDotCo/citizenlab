@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Icon, colors } from '@citizenlab/cl2-component-library';
 
 const ParticipationSuccessIcon = () => {

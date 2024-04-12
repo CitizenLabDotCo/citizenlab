@@ -13,6 +13,26 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.titleLabel',
     defaultMessage: 'Title',
   },
+  surveyTitleLabel: {
+    id: 'app.containers.AdminPage.ProjectTimeline.surveyTitleLabel',
+    defaultMessage: 'Survey title',
+  },
+  surveyCTALabel: {
+    id: 'app.containers.AdminPage.ProjectTimeline.surveyCTALabel',
+    defaultMessage: 'Button',
+  },
+  previewSurveyCTALabel: {
+    id: 'app.containers.AdminPage.ProjectTimeline.previewSurveyCTALabel',
+    defaultMessage: 'Preview',
+  },
+  defaultSurveyTitleLabel: {
+    id: 'app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel',
+    defaultMessage: 'Survey',
+  },
+  defaultSurveyCTALabel: {
+    id: 'app.containers.AdminPage.ProjectTimeline.defaultSurveyCTALabel',
+    defaultMessage: 'Take the survey',
+  },
   descriptionLabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.descriptionLabel',
     defaultMessage: 'Description',

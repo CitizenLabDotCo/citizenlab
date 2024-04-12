@@ -1,13 +1,12 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useAreas from './useAreas';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { areasData } from './__mocks__/useAreas';
 import { IAreasQueryParams } from './types';
+import useAreas from './useAreas';
 
 const apiPath = '*/:type/:id/areas';
 

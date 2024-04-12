@@ -1,23 +1,21 @@
 import React from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
+import { Editor as CraftEditor, QueryMethods } from '@craftjs/core';
+import { QueryCallbacksFor } from '@craftjs/utils';
 
-// craft
-import { Editor as CraftEditor, SerializedNodes } from '@craftjs/core';
-import RenderNode from './RenderNode';
-
-// widgets
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
+
+import PhaseTemplate from '../Templates/PhaseTemplate';
+import ProjectTemplate from '../Templates/ProjectTemplate';
 import { WIDGETS } from '../Widgets';
 
-// templates
-import ProjectTemplate from '../Templates/ProjectTemplate';
+import RenderNode from './RenderNode';
 
 type EditorProps = {
-  children?: React.ReactNode;
+  children: React.ReactNode;
   isPreview: boolean;
-  onNodesChange?: (nodes: SerializedNodes) => void;
+  onNodesChange?: (query: QueryCallbacksFor<typeof QueryMethods>) => void;
 };
 
 const resolver = {
@@ -25,6 +23,7 @@ const resolver = {
   Container,
   ...WIDGETS,
   ProjectTemplate,
+  PhaseTemplate,
 };
 
 // Without this, craftjs sometimes crashes.
@@ -48,8 +47,8 @@ const Editor: React.FC<EditorProps> = ({
       }}
       onRender={isPreview ? PlainDiv : RenderNode}
       enabled={isPreview ? false : true}
-      onNodesChange={(data) => {
-        onNodesChange && onNodesChange(data.getSerializedNodes());
+      onNodesChange={(query) => {
+        onNodesChange?.(query);
       }}
     >
       {children}

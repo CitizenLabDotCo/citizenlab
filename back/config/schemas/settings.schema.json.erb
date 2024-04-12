@@ -414,20 +414,66 @@
 
       "azure_ad_login": {
         "type": "object",
-        "title": "Azure Login",
-        "description":  "Allow users to register and sign in with Azure Active Directory.",
+        "title": "Azure AD Login",
+        "description":  "Allow users to register and sign in with Entra ID (fka Azure Active Directory).",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false},
           "tenant": {
-            "title": "Tenant",
+            "title": "Directory (tenant) ID",
             "type": "string",
             "private": true
           },
           "client_id": {
-            "title": "Client ID",
+            "title": "Application (client) ID",
+            "description": "Sometimes also called 'application_id'",
+            "type": "string",
+            "private": true
+          },
+          "logo_url": {
+            "title": "Logo",
+            "type": "string",
+            "pattern": "^https:\/\/.+",
+            "description": "The full URL to the logo image that is shown on the authentication button. Logo should be approx. 25px in height."
+          },
+          "login_mechanism_name": {
+            "title": "Login Mechanism Name",
+            "type": "string",
+            "description": "The Login Mechanism Name is used for user-facing copy. For instance, \"Sign up with {login_mechanism_name}.\"."
+          }
+        }
+      },
+
+      "azure_ad_b2c_login": {
+        "type": "object",
+        "title": "Azure AD B2C Login",
+        "description":  "Allow users to register and sign in with Azure AD B2C.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
+          "tenant_name": {
+            "title": "Directory (tenant) Name",
+            "description": "The name of the Azure AD B2C tenant. The first part of the domain name. E.g. in citizenlabdevdemo.onmicrosoft.com, it's citizenlabdevdemo",
+            "type": "string",
+            "private": true
+          },
+          "tenant_id": {
+            "title": "Directory (tenant) ID",
+            "type": "string",
+            "private": true
+          },
+          "policy_name": {
+            "title": "Policy (User Flow, User Journey) Name",
+            "description": "The name of the policy (user flow, user journey) in the Azure AD B2C tenant. This is the policy that is used for sign-in and sign-up. tenant_name, tenant_id, and policy_name are used together to form such configuration URL https://{tenant_name}.b2clogin.com/tfp/{tenant_id}/{policy_name}/v2.0/.well-known/openid-configuration that returns JSON configuration.",
+            "type": "string",
+            "private": true
+          },
+          "client_id": {
+            "title": "Application (client) ID",
             "description": "Sometimes also called 'application_id'",
             "type": "string",
             "private": true
@@ -470,8 +516,8 @@
 
       "maps": {
         "type": "object",
-        "title": "CustomMaps",
-        "description":  "Enable maps for all projects.",
+        "title": "Maps Default Settings",
+        "description":  "Default settings for maps. Note that 'allowed' and 'enabled' settings are redundant and toggling them will not have any effect.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -482,7 +528,7 @@
             "description": "The OSM or basemap.at compatible tile provider URL pattern (https is required).",
             "type": "string",
             "pattern": "^https:\/\/.+",
-            "default": "<%= ENV.fetch('DEFAULT_MAPS_TILE_PROVIDER', 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')%>"
+            "default": "<%= ENV.fetch('DEFAULT_MAPS_TILE_PROVIDER', 'https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=R0U21P01bsRLx7I7ZRqp')%>"
           },
           "map_center": {
             "title": "Map Center",
@@ -519,7 +565,7 @@
       "esri_integration": {
         "type": "object",
         "title": "Esri Integration",
-        "description":  "Esri integration for maps. In development. DO NOT ENABLE ON COMMERCIAL PLATFORM!",
+        "description":  "Esri integration for maps. Enables the use of Esri layers and Esri web maps with our maps. An add-on that can be purchased, and is not restricted to specific pricing plan(s).",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -527,7 +573,7 @@
           "enabled": { "type": "boolean", "default": false},
           "api_key": {
             "title": "API Key",
-            "description": "The API key for the Esri integration. (TODO: add more useful information)",
+            "description": "Add customer’s Esri API key to allow importing map layers from their ArcGIS Online in the map tabs in projects. This setting is also available to admins in the Tools: Esri Maps item.",
             "type": "string"
           }
         }
@@ -895,30 +941,6 @@
         }
       },
 
-      "project_reports": {
-        "type": "object",
-        "title": "Project Reports",
-        "description": "Browse and download the results of a project.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
-      "phase_reports": {
-        "type": "object",
-        "title": "Phase Reports",
-        "description": "Publish the results of a phase.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
       "blocking_profanity": {
         "type": "object",
         "title": "Block Profanity",
@@ -928,30 +950,6 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
-      "clustering": {
-        "type": "object",
-        "title": "Clustering",
-        "description":  "Allows admins to analyze ideas by creating clustered visualizations.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
-      "similar_ideas": {
-        "type": "object",
-        "title": "Similar Ideas",
-        "description":  "Show links to similar ideas when viewing an idea. Still in beta.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
         }
       },
 
@@ -1380,6 +1378,54 @@
           "allowed": { "type": "boolean", "default": true },
           "enabled": { "type": "boolean", "default": false }
         }
+      },
+
+      "analysis": {
+        "type": "object",
+        "title": "AI-powered analysis for surveys and ideation",
+        "description": "Enables the use of AI-powered analysis for surveys and ideation.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
+      "large_summaries": {
+        "type": "object",
+        "title": "AI-powered analysis for surveys and ideation (large summaries)",
+        "description": "Enables the use of AI-powered analysis for surveys and ideation for a large number of inputs.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "ask_a_question": {
+        "type": "object",
+        "title": "AI-powered questions and answers feature for surveys and ideation",
+        "description": "Enables the use of AI-powered questions and answers feature for surveys and ideation.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "advanced_autotagging": {
+        "type": "object",
+        "title": "AI-powered advanced autotagging for surveys and ideation",
+        "description": "Enables the use of AI-powered advanced autotagging feature for surveys and ideation.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {
@@ -1406,7 +1452,11 @@
     "id_id_card_lookup": ["verification"],
 
     "permission_option_email_confirmation": ["user_confirmation"],
-    "power_bi": ["public_api_tokens"]
+    "power_bi": ["public_api_tokens"],
+
+    "large_summaries": ["analysis"],
+    "ask_a_question": ["analysis"],
+    "advanced_autotagging": ["analysis"]
   },
   "definitions": {
     "multiloc_string": {

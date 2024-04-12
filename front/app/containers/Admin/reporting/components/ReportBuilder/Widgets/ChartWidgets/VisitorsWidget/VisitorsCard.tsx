@@ -1,45 +1,37 @@
 import React from 'react';
 
-// hooks
-import useVisitors from './useVisitors';
+import { Box } from '@citizenlab/cl2-component-library';
+import moment from 'moment';
+
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
-// components
-import { Box } from '@citizenlab/cl2-component-library';
-import NoData from '../../_shared/NoData';
-import Chart from './Chart';
-import Statistic from 'components/admin/Graphs/Statistic';
-
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-import visitorsCardMessages from 'components/admin/GraphCards/VisitorsCard/messages';
-
-// typings
 import {
   ProjectId,
-  Dates,
+  DatesStrings,
   Resolution,
 } from 'components/admin/GraphCards/typings';
+import visitorsCardMessages from 'components/admin/GraphCards/VisitorsCard/messages';
+import Statistic from 'components/admin/Graphs/Statistic';
 
-// utils
+import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-type Props = ProjectId & Dates & Resolution;
+import NoData from '../../_shared/NoData';
+import messages from '../messages';
+
+import Chart from './Chart';
+import useVisitors from './useVisitors';
+
+type Props = ProjectId & DatesStrings & Resolution;
 
 // Report specific version of <VisitorsCard/>
-const VisitorsCard = ({
-  projectId,
-  startAtMoment,
-  endAtMoment,
-  resolution,
-}: Props) => {
+const VisitorsCard = ({ projectId, startAt, endAt, resolution }: Props) => {
   const { formatMessage } = useIntl();
 
   const { currentResolution, stats, timeSeries } = useVisitors({
     projectId,
-    startAtMoment,
-    endAtMoment,
+    startAt,
+    endAt,
     resolution,
   });
 
@@ -92,8 +84,8 @@ const VisitorsCard = ({
           >
             <Chart
               timeSeries={timeSeries}
-              startAtMoment={startAtMoment}
-              endAtMoment={endAtMoment}
+              startAtMoment={startAt ? moment(startAt) : null}
+              endAtMoment={endAt ? moment(endAt) : null}
               resolution={currentResolution}
               layout={layout}
             />

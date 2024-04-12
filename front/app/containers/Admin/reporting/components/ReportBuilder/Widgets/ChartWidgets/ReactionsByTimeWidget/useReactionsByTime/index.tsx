@@ -1,26 +1,30 @@
 import { useMemo, useState } from 'react';
 
-// hooks
-import { useReactionsByTime } from 'api/graph_data_units';
+import moment from 'moment';
 
-// parse
+import { useReactionsByTime as useReactionsByTimeData } from 'api/graph_data_units';
+
 import { parseTimeSeries } from 'components/admin/GraphCards/ReactionsByTimeCard/useReactionsByTime/parse';
+import {
+  ProjectId,
+  DatesStrings,
+  Resolution,
+} from 'components/admin/GraphCards/typings';
 
-// typings
-import { QueryParameters } from 'components/admin/GraphCards/ReactionsByTimeCard/useReactionsByTime/typings';
+type QueryParameters = ProjectId & DatesStrings & Resolution;
 
-export default function useReactionsByTime123({
+export default function useReactionsByTime({
   projectId,
-  startAtMoment,
-  endAtMoment,
+  startAt,
+  endAt,
   resolution,
 }: QueryParameters) {
   const [currentResolution] = useState(resolution);
 
-  const analytics = useReactionsByTime({
-    projectId,
-    startAtMoment,
-    endAtMoment,
+  const { data: analytics } = useReactionsByTimeData({
+    project_id: projectId,
+    start_at: startAt,
+    end_at: endAt,
     resolution,
   });
 
@@ -29,13 +33,13 @@ export default function useReactionsByTime123({
       analytics?.data
         ? parseTimeSeries(
             analytics.data.attributes[0],
-            startAtMoment,
-            endAtMoment,
+            startAt ? moment(startAt) : null,
+            endAt ? moment(endAt) : null,
             currentResolution,
             analytics.data.attributes[1]
           )
         : null,
-    [analytics?.data, startAtMoment, endAtMoment, currentResolution]
+    [analytics?.data, startAt, endAt, currentResolution]
   );
 
   return { currentResolution, timeSeries };

@@ -1,12 +1,11 @@
-// utils
+import { Query, QuerySchema } from 'api/analytics/types';
+
 import {
   getDateFilter,
   getInterval,
 } from 'components/admin/GraphCards/_utils/query';
 
-// typings
 import { QueryParameters } from './typings';
-import { Query, QuerySchema } from 'api/analytics/types';
 
 export const query = ({
   startAtMoment,

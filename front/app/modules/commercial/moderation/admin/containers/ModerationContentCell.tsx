@@ -1,24 +1,19 @@
 import React, { memo, useState, useCallback, MouseEvent } from 'react';
-import { truncate } from 'lodash-es';
-import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
-// components
 import {
   LocaleSwitcher,
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// styling
-import styled from 'styled-components';
+import { truncate } from 'lodash-es';
 import { darken } from 'polished';
+import styled from 'styled-components';
+import { Multiloc, SupportedLocale } from 'typings';
 
-// typings
-import { Multiloc, Locale } from 'typings';
+import { FormattedMessage } from 'utils/cl-intl';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
+
+import messages from './messages';
 
 const Container = styled.div`
   overflow-wrap: break-word;
@@ -63,13 +58,13 @@ interface Props {
 
 const ModerationContentCell = memo<Props>(
   ({ contentTitle, contentBody, className }) => {
-    const contentBodyLocales = Object.keys(contentBody) as Locale[];
+    const contentBodyLocales = Object.keys(contentBody) as SupportedLocale[];
 
     const [selectedLocale, setSelectedLocale] = useState(contentBodyLocales[0]);
     const [expanded, setExpanded] = useState(false);
 
     const handleOnSelectedLocaleChange = useCallback(
-      (newSelectedLocale: Locale) => {
+      (newSelectedLocale: SupportedLocale) => {
         setSelectedLocale(newSelectedLocale);
       },
       []

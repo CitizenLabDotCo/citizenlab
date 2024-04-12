@@ -18,18 +18,20 @@ describe('Project and folder cards on front page', () => {
       publicationStatus: 'published',
     }).then((project) => {
       publishedProjectId = project.body.data.id;
-
-      cy.apiCreateProject({
-        title: archivedProjectTitle,
-        descriptionPreview: archivedProjectDescriptionPreview,
-        description: randomString(),
-        publicationStatus: 'archived',
-      }).then((project) => {
-        archivedProjectId = project.body.data.id;
-
-        cy.goToLandingPage();
-      });
     });
+
+    cy.apiCreateProject({
+      title: archivedProjectTitle,
+      descriptionPreview: archivedProjectDescriptionPreview,
+      description: randomString(),
+      publicationStatus: 'archived',
+    }).then((project) => {
+      archivedProjectId = project.body.data.id;
+    });
+  });
+
+  beforeEach(() => {
+    cy.goToLandingPage();
   });
 
   it('shows published project but not archived project if tab === Active', () => {
@@ -105,6 +107,8 @@ describe('Native survey project card', () => {
         startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
         endAt: moment().add(1, 'month').format('DD/MM/YYYY'),
         participationMethod: 'native_survey',
+        nativeSurveyButtonMultiloc: { en: 'Take the survey' },
+        nativeSurveyTitleMultiloc: { en: 'Survey' },
         canPost: true,
         canComment: true,
         canReact: true,

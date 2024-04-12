@@ -1,10 +1,11 @@
-import useUsersByDomicile from './useUsersByDomicile';
-
 import { renderHook } from '@testing-library/react-hooks';
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
+
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { IUsersByDomicile } from './types';
+import useUsersByDomicile from './useUsersByDomicile';
 
 const apiPath = `*stats/users_by_domicile`;
 

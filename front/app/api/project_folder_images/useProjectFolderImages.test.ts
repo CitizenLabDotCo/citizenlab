@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useProjectFolderImages from './useProjectFolderImages';
-import { projectFolderImageData } from './__mocks__/useProjectFolderImages';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { projectFolderImageData } from './__mocks__/useProjectFolderImages';
+import useProjectFolderImages from './useProjectFolderImages';
 
 const apiPath = '*project_folders/:folderId/images';
 

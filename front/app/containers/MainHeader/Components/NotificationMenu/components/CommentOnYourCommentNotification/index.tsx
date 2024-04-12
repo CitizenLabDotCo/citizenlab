@@ -1,17 +1,18 @@
 import React, { memo } from 'react';
+
+import { RouteType } from 'routes';
+
+import { ICommentOnYourCommentNotificationData } from 'api/notifications/types';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
 // data
-import { ICommentOnYourCommentNotificationData } from 'api/notifications/types';
 
-// i18n
 import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// components
-import NotificationWrapper from '../NotificationWrapper';
 import { DeletedUser } from '../Notification';
-import Link from 'utils/cl-router/Link';
+import NotificationWrapper from '../NotificationWrapper';
 
 interface Props {
   notification: ICommentOnYourCommentNotificationData;
@@ -19,7 +20,7 @@ interface Props {
 
 const mapPostTypeToLink = (
   notification: ICommentOnYourCommentNotificationData
-): string => {
+): RouteType => {
   switch (notification.attributes.post_type) {
     case 'Idea':
       return `/ideas/${notification.attributes.post_slug}`;

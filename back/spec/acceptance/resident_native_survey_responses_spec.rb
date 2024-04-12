@@ -62,6 +62,10 @@ resource 'Ideas' do
       parameter :phase_ids, 'The identifiers of the phases that host the input. None is allowed for normal users.', required: false
       parameter :custom_field_name1, 'A value for one custom field'
       parameter :custom_field_name2, 'A value for another custom field'
+      parameter :custom_field_name2_other, 'A custom text value for an "other" option in custom fields'
+      parameter :custom_field_name3, 'A value for another custom field'
+      parameter :custom_field_name3_other, 'A custom text value for an "other" option in custom fields'
+      parameter :publication_status, 'Draft or published', required: false
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
 
@@ -113,35 +117,103 @@ resource 'Ideas' do
         let(:project) { create(:single_phase_native_survey_project) }
         let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
 
+        context 'published idea' do
+          example_request 'Create a survey response with file upload fields' do
+            assert_status 201
+            expect(json_response_body.dig(:data, :relationships, :project, :data, :id)).to eq project_id
+
+            # Verify that the input is saved correctly
+            inputs = project.reload.ideas
+            expect(inputs.size).to eq 1
+            input = inputs.first
+            expect(input.phase_ids).to eq [project.phases.first.id]
+            expect(input.creation_phase).to eq project.phases.first
+
+            # Verify that the files are saved correctly
+            file1_id = input.custom_field_values['custom_field_name1']['id']
+            file2_id = input.custom_field_values['custom_field_name2']['id']
+            file1 = IdeaFile.find(file1_id)
+            file2 = IdeaFile.find(file2_id)
+            expect(input.idea_files.size).to eq 2
+            expect(input.idea_files.ids).to match_array([file1.id, file2.id])
+            expect(file1.name).to eq filename1
+            expect(file1.file.url).to match "/uploads/.+/idea_file/file/#{file1.id}/#{filename1}"
+            expect(file2.name).to eq filename2
+            expect(file2.file.url).to match "/uploads/.+/idea_file/file/#{file2.id}/#{filename2}"
+
+            # Verify that the custom field value is saved correctly.
+            expect(input.custom_field_values).to eq({
+              'custom_field_name1' => { 'id' => file1.id, 'name' => file1.name },
+              'custom_field_name2' => { 'id' => file2.id, 'name' => file2.name }
+            })
+          end
+        end
+
+        context 'draft idea' do
+          let(:publication_status) { 'draft' }
+
+          example_request 'Create a draft survey response with a file upload field' do
+            assert_status 201
+            survey = project.reload.ideas.first
+            expect(survey.publication_status).to eq 'draft'
+            expect(survey.custom_field_values.values).to match_array(
+              IdeaFile.all.map { |file| { 'id' => file.id, 'name' => file.name } }
+            )
+          end
+        end
+      end
+
+      context 'with an image multi-select field' do
+        let(:project) { create(:single_phase_native_survey_project) }
+        let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
+        let!(:image_select_field) do
+          create(
+            :custom_field_multiselect_image,
+            resource: custom_form,
+            key: 'custom_field_name1',
+            enabled: true
+          )
+        end
+        let!(:option) do
+          create(
+            :custom_field_option,
+            custom_field: image_select_field,
+            key: 'image1',
+            image: create(:custom_field_option_image)
+          )
+        end
+        let(:custom_field_name1) { ['image1'] }
+
         example_request 'Create an input with a file upload field' do
           assert_status 201
-          json_response = json_parse response_body
-          expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
+          idea = project.reload.ideas.first
+          expect(idea.custom_field_values).to eq({ 'custom_field_name1' => ['image1'] })
+        end
+      end
 
-          # Verify that the input is saved correctly
-          inputs = project.reload.ideas
-          expect(inputs.size).to eq 1
-          input = inputs.first
-          expect(input.phase_ids).to eq [project.phases.first.id]
-          expect(input.creation_phase).to eq project.phases.first
+      context 'with a point field' do
+        let(:project) { create(:single_phase_native_survey_project) }
+        let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
+        let!(:point_field) do
+          create(
+            :custom_field_point,
+            resource: custom_form,
+            key: 'custom_field_name1',
+            enabled: true
+          )
+        end
+        let(:custom_field_name1) do
+          {
+            type: 'Point',
+            coordinates: [42.42, 24.24]
+          }
+        end
 
-          # Verify that the files are saved correctly
-          file1_id = input.custom_field_values['custom_field_name1']
-          file2_id = input.custom_field_values['custom_field_name2']
-          file1 = IdeaFile.find(file1_id)
-          file2 = IdeaFile.find(file2_id)
-          expect(input.idea_files.size).to eq 2
-          expect(input.idea_files.ids).to match_array([file1.id, file2.id])
-          expect(file1.name).to eq filename1
-          expect(file1.file.url).to match "/uploads/.+/idea_file/file/#{file1.id}/#{filename1}"
-          expect(file2.name).to eq filename2
-          expect(file2.file.url).to match "/uploads/.+/idea_file/file/#{file2.id}/#{filename2}"
-
-          # Verify that the cutom field value is saved correctly.
-          expect(input.custom_field_values).to eq({
-            'custom_field_name1' => file1.id,
-            'custom_field_name2' => file2.id
-          })
+        example_request 'Create an input with a point field' do
+          assert_status 201
+          idea = project.reload.ideas.first
+          expect(idea.custom_field_values)
+            .to eq({ 'custom_field_name1' => { 'coordinates' => [42.42, 24.24], 'type' => 'Point' } })
         end
       end
 
@@ -173,6 +245,49 @@ resource 'Ideas' do
             expect(inputs.first.phase_ids).to eq [active_phase.id]
             expect(input.custom_field_values).to eq({ 'custom_field_name1' => 'Cat' })
             expect(input.creation_phase_id).to eq active_phase.id
+          end
+
+          context 'when there is an "other" option selected for a custom field' do
+            let!(:custom_field2) { create(:custom_field_select, :with_options, key: 'custom_field_name2', resource: custom_form) }
+            let!(:other_option) { create(:custom_field_option, custom_field: custom_field2, other: true, key: 'other', title_multiloc: { 'en' => 'Other' }) }
+
+            let(:custom_field_name2) { 'other' }
+            let(:custom_field_name2_other) { 'a text value here' }
+
+            example_request 'Create an input with an other option and text field' do
+              assert_status 201
+              input = project.reload.ideas.first
+              expect(input.custom_field_values).to match({
+                'custom_field_name1' => 'Cat',
+                'custom_field_name2' => 'other',
+                'custom_field_name2_other' => 'a text value here'
+              })
+            end
+          end
+
+          context 'when there are "other" options for a custom fields, but "other" is not selected' do
+            let!(:custom_field2) { create(:custom_field_select, key: 'custom_field_name2', resource: custom_form) }
+            let!(:first_option) { create(:custom_field_option, custom_field: custom_field2, other: true, key: 'first', title_multiloc: { 'en' => 'First' }) }
+            let!(:other_option) { create(:custom_field_option, custom_field: custom_field2, other: true, key: 'other', title_multiloc: { 'en' => 'Other' }) }
+
+            let!(:custom_field3) { create(:custom_field_multiselect, key: 'custom_field_name3', resource: custom_form) }
+            let!(:an_option) { create(:custom_field_option, custom_field: custom_field3, other: true, key: 'something', title_multiloc: { 'en' => 'Something' }) }
+            let!(:other_other_option) { create(:custom_field_option, custom_field: custom_field3, other: true, key: 'other', title_multiloc: { 'en' => 'Other' }) }
+
+            let(:custom_field_name2) { 'first' }
+            let(:custom_field_name2_other) { 'a text value here' }
+            let(:custom_field_name3) { ['something'] }
+            let(:custom_field_name3_other) { 'another text value here' }
+
+            example_request 'Create an input without other text fields' do
+              assert_status 201
+              input = project.reload.ideas.first
+              expect(input.custom_field_values).to match({
+                'custom_field_name1' => 'Cat',
+                'custom_field_name2' => 'first',
+                'custom_field_name3' => ['something']
+              })
+            end
           end
         end
       end
@@ -215,13 +330,13 @@ resource 'Ideas' do
     with_options scope: :idea do
       parameter :project_id, 'The identifier of the project that hosts the input', required: true
       parameter :custom_field_name1, 'A value for one custom field'
+      parameter :custom_field_name2, 'A value for another custom field'
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
     let(:project) { create(:project_with_active_native_survey_phase) }
     let(:active_phase) { project.phases.first }
     let(:custom_form) { create(:custom_form, participation_context: active_phase) }
     let(:creation_phase) { active_phase }
-    let(:creation_phase) { nil }
     let!(:input) do
       create(
         :idea,
@@ -236,54 +351,119 @@ resource 'Ideas' do
     end
     let(:id) { input.id }
     let(:project_id) { project.id }
-    let(:custom_field_name1) { 'Dog' }
 
-    context 'native survey' do
-      context 'with active participation context' do
-        let!(:custom_field) do
-          create(
-            :custom_field,
-            resource: custom_form,
-            key: 'custom_field_name1',
-            enabled: true,
-            title_multiloc: { 'en' => 'What is your favourite pet?' },
-            description_multiloc: { 'en' => 'Enter one pet.' }
-          )
-        end
+    context 'with active participation context' do
+      let!(:text_field) do
+        create(
+          :custom_field,
+          resource: custom_form,
+          key: 'custom_field_name1',
+          enabled: true,
+          title_multiloc: { 'en' => 'What is your favourite pet?' },
+          description_multiloc: { 'en' => 'Enter one pet.' }
+        )
+      end
+      let!(:files_field) do
+        create(
+          :custom_field,
+          resource: custom_form,
+          input_type: 'file_upload',
+          key: 'custom_field_name2',
+          enabled: true,
+          title_multiloc: { 'en' => 'Please upload a plan' }
+        )
+      end
 
-        describe 'in a native survey phase' do
-          let(:project) { create(:project_with_active_native_survey_phase) }
-          let(:active_phase) { project.phases.first }
-          let(:custom_form) { create(:custom_form, participation_context: active_phase) }
-          let(:creation_phase) { active_phase }
+      context 'when survey is published' do
+        let(:custom_field_name1) { 'Dog' }
 
-          example_request '[error] Trying to update an input' do
-            assert_status 401
-            json_response = json_parse(response_body)
-            expect(json_response).to eq({ errors: { base: [{ error: 'Unauthorized!' }] } })
-          end
+        example_request '[error] Trying to update an input' do
+          assert_status 401
+          json_response = json_parse(response_body)
+          expect(json_response).to eq({ errors: { base: [{ error: 'Unauthorized!' }] } })
         end
       end
 
-      context 'without active participation context' do
-        describe 'before all phases' do
-          let(:project) { create(:project_with_future_phases) }
+      context 'when survey is draft' do
+        context 'with existing file upload' do
+          let!(:existing_file) { create(:idea_file, idea: input, name: 'existing_file.pdf') }
 
-          example_request '[error] Trying to update an input' do
-            assert_status 401
-            json_response = json_parse(response_body)
-            expect(json_response).to eq({ errors: { base: [{ error: 'project_inactive' }] } })
+          let(:custom_field_name2) do
+            {
+              id: existing_file.id,
+              name: existing_file.name
+            }
+          end
+
+          example 'Create a survey response with file upload fields' do
+            input.update!(publication_status: 'draft')
+
+            do_request
+            assert_status 200
+
+            # Verify that the input is saved correctly
+            inputs = project.reload.ideas
+            expect(inputs.size).to eq 1
+            expect(IdeaFile.count).to eq 1
+
+            # Verify that the custom field value is still the existing referenced file.
+            expect(input.reload.custom_field_values).to eq({
+              'custom_field_name2' => { 'id' => existing_file.id, 'name' => 'existing_file.pdf' }
+            })
           end
         end
 
-        describe 'after all phases' do
-          let(:project) { create(:project_with_past_phases) }
+        context 'with new file upload' do
+          let(:file_name) { 'afvalkalender.pdf' }
 
-          example_request '[error] Trying to update an input' do
-            assert_status 401
-            json_response = json_parse(response_body)
-            expect(json_response).to eq({ errors: { base: [{ error: 'project_inactive' }] } })
+          let(:custom_field_name2) do
+            {
+              content: file_as_base64(file_name, 'application/pdf'),
+              name: file_name
+            }
           end
+
+          example 'Create a survey response with file upload fields' do
+            input.update!(publication_status: 'draft')
+
+            do_request
+            assert_status 200
+
+            # Verify that the input is saved correctly
+            inputs = project.reload.ideas
+            expect(inputs.size).to eq 1
+            expect(IdeaFile.count).to eq 1
+            new_idea_file = IdeaFile.first
+
+            # Verify that the custom field value is saved correctly.
+            expect(input.reload.custom_field_values).to eq({
+              'custom_field_name2' => { 'id' => new_idea_file.id, 'name' => file_name }
+            })
+          end
+        end
+      end
+    end
+
+    context 'without active participation context' do
+      describe 'before all phases' do
+        let(:creation_phase) { nil }
+        let(:project) { create(:project_with_future_phases) }
+
+        example_request '[error] Trying to update an input' do
+          assert_status 401
+          json_response = json_parse(response_body)
+          expect(json_response).to eq({ errors: { base: [{ error: 'project_inactive' }] } })
+        end
+      end
+
+      describe 'after all phases' do
+        let(:creation_phase) { nil }
+        let(:project) { create(:project_with_past_phases) }
+
+        example_request '[error] Trying to update an input' do
+          assert_status 401
+          json_response = json_parse(response_body)
+          expect(json_response).to eq({ errors: { base: [{ error: 'project_inactive' }] } })
         end
       end
     end

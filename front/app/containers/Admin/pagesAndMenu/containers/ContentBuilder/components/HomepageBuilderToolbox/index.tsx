@@ -1,35 +1,32 @@
 import React from 'react';
 
-// i18n
+import { SupportedLocale } from 'typings';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+
 import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
-import messages from '../../messages';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-// components
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
-import SectionTitle from 'components/admin/ContentBuilder/Toolbox/SectionTitle';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
-
-// widgets
-import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
-import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
-import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
-import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
+import SectionTitle from 'components/admin/ContentBuilder/Toolbox/SectionTitle';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
-import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
+import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
+import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
+import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
+import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
+import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import messages from '../../messages';
+import Events from '../CraftComponents/Events';
 import Proposals from '../CraftComponents/Proposals';
 
-// types
-import { Locale } from 'typings';
-import Events from '../CraftComponents/Events';
-import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 type HomepageBuilderToolboxProps = {
-  selectedLocale: Locale;
+  selectedLocale: SupportedLocale;
 };
 
 const HomepageBuilderToolbox = ({

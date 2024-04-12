@@ -40,7 +40,7 @@ resource 'Voting' do
       associations = json_response_body[:basket_ideas].map { |bi| [bi[:basket_id], bi[:idea_id]] }
       expected_associations = basket_ideas.map { |bi| [bi.basket_id, bi.idea_id] }
       expect(associations).to match_array(expected_associations)
-      expect(json_response_body[:basket_ideas].first.keys).to match_array(%i[basket_id idea_id votes created_at updated_at])
+      expect(json_response_body[:basket_ideas].first.keys).to match_array(%i[id basket_id idea_id phase_id project_id user_id votes created_at updated_at])
     end
 
     describe 'when filtering by idea ID' do

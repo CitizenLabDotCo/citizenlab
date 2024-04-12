@@ -1,13 +1,5 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { Mode } from './StatusChangeFormWrapper';
 
-// intl
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../../messages';
-
-// components
-import OfficialFeedbackPost from 'components/PostShowComponents/OfficialFeedback/OfficialFeedbackPost';
 import {
   Radio,
   Input,
@@ -15,20 +7,27 @@ import {
   Box,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { Section } from 'components/admin/Section';
-import MentionsTextArea from 'components/UI/MentionsTextArea';
-import Error from 'components/UI/Error';
-import Button from 'components/UI/Button';
-
-// styling
 import styled from 'styled-components';
+import { Multiloc, SupportedLocale, MultilocFormValues } from 'typings';
 
-// typings
-import { Multiloc, Locale, MultilocFormValues } from 'typings';
 import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_official_feedback/types';
 import { IOfficialFeedbackData as IInitiativeOfficialFeedbackData } from 'api/initiative_official_feedback/types';
+
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
+
+import { Section } from 'components/admin/Section';
+import OfficialFeedbackPost from 'components/PostShowComponents/OfficialFeedback/OfficialFeedbackPost';
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+import MentionsTextArea from 'components/UI/MentionsTextArea';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from '../../messages';
+
+import { Mode } from './StatusChangeFormWrapper';
 
 const StyledSection = styled(Section)``;
 
@@ -81,7 +80,7 @@ const StatusChangeForm = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
-  const [selectedLocale, setLocale] = React.useState<Locale>(locale);
+  const [selectedLocale, setLocale] = React.useState<SupportedLocale>(locale);
   const tenantLocales = useAppConfigurationLocales();
   const renderFullForm = () => {
     if (!latestOfficialFeedback) return null;
@@ -122,11 +121,14 @@ const StatusChangeForm = ({
     );
   };
 
-  const onLocaleChange = (locale: Locale) => {
+  const onLocaleChange = (locale: SupportedLocale) => {
     setLocale(locale);
   };
 
-  const handleBodyOnChange = (value: string, locale: Locale | undefined) => {
+  const handleBodyOnChange = (
+    value: string,
+    locale: SupportedLocale | undefined
+  ) => {
     if (locale && onChangeBody) {
       onChangeBody({
         ...newOfficialFeedback.body_multiloc,
@@ -135,7 +137,10 @@ const StatusChangeForm = ({
     }
   };
 
-  const handleAuthorOnChange = (value: string, locale: Locale | undefined) => {
+  const handleAuthorOnChange = (
+    value: string,
+    locale: SupportedLocale | undefined
+  ) => {
     if (locale && onChangeAuthor) {
       onChangeAuthor({
         ...newOfficialFeedback.author_multiloc,

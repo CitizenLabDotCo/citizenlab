@@ -1,6 +1,9 @@
 import React from 'react';
+
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
+
 import useTopics from 'api/topics/useTopics';
+
 import UpdateFollowTopic from './UpdateFollowTopic';
 import UpdateOnboardingTopic from './UpdateOnboardingTopic';
 

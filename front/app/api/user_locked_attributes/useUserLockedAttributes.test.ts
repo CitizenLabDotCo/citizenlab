@@ -1,11 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useUserLockedAttributes from './useUserLockedAttributes';
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { ILockedAttributes } from './types';
+import useUserLockedAttributes from './useUserLockedAttributes';
 
 const apiPath = '*/users/me/locked_attributes';
 

@@ -1,11 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-// components
-import ProjectHelmet from './shared/header/ProjectHelmet';
-import Unauthorized from 'components/Unauthorized';
-import PageNotFound from 'components/PageNotFound';
-import ProjectHeader from './shared/header/ProjectHeader';
-import TimelineContainer from './timeline';
 import {
   Box,
   Spinner,
@@ -13,43 +7,43 @@ import {
   media,
   colors,
 } from '@citizenlab/cl2-component-library';
-import Navigate from 'utils/cl-router/Navigate';
-import SuccessModal from './SucessModal';
-import ProjectCTABar from './ProjectCTABar';
-import EventsViewer from 'containers/EventsPage/EventsViewer';
-import Centerer from 'components/UI/Centerer';
-import ErrorBoundary from 'components/ErrorBoundary';
 import JSConfetti from 'js-confetti';
-
-// hooks
+import { isError } from 'lodash-es';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
-import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useProjectBySlug from 'api/projects/useProjectBySlug';
-import usePhases from 'api/phases/usePhases';
-import useEvents from 'api/events/useEvents';
-import useAuthUser from 'api/me/useAuthUser';
-import { useIntl } from 'utils/cl-intl';
-
-// context
-import { VotingContext } from 'api/baskets_ideas/useVoting';
-
-// i18n
-import messages from 'utils/messages';
-
-// style
+import { RouteType } from 'routes';
 import styled from 'styled-components';
 
-// typings
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { VotingContext } from 'api/baskets_ideas/useVoting';
+import useEvents from 'api/events/useEvents';
+import useAuthUser from 'api/me/useAuthUser';
+import usePhases from 'api/phases/usePhases';
 import { IProjectData } from 'api/projects/types';
+import useProjectBySlug from 'api/projects/useProjectBySlug';
 
-// utils
-import { isValidPhase } from './phaseParam';
-import { anyIsUndefined, isNilOrError } from 'utils/helperUtils';
-import { isUnauthorizedRQ } from 'utils/errorUtils';
-import { scrollToElement } from 'utils/scroll';
-import { isError } from 'lodash-es';
+import useLocale from 'hooks/useLocale';
+
+import EventsViewer from 'containers/EventsPage/EventsViewer';
+
+import ErrorBoundary from 'components/ErrorBoundary';
+import PageNotFound from 'components/PageNotFound';
+import Centerer from 'components/UI/Centerer';
+import Unauthorized from 'components/Unauthorized';
+
+import { useIntl } from 'utils/cl-intl';
+import Navigate from 'utils/cl-router/Navigate';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { isUnauthorizedRQ } from 'utils/errorUtils';
+import { anyIsUndefined, isNilOrError } from 'utils/helperUtils';
+import messages from 'utils/messages';
+import { scrollToElement } from 'utils/scroll';
+
+import { isValidPhase } from './phaseParam';
+import ProjectCTABar from './ProjectCTABar';
+import ProjectHeader from './shared/header/ProjectHeader';
+import ProjectHelmet from './shared/header/ProjectHelmet';
+import SuccessModal from './SucessModal';
+import TimelineContainer from './timeline';
 
 const confetti = new JSConfetti();
 
@@ -165,7 +159,6 @@ const ProjectsShowPage = ({ project }: Props) => {
               eventsTime="currentAndFuture"
               title={formatMessage(messages.upcomingAndOngoingEvents)}
               fallbackMessage={messages.noUpcomingOrOngoingEvents}
-              hideSectionIfNoEvents={true}
               projectPublicationStatuses={['published', 'draft', 'archived']}
             />
             <EventsViewer
@@ -174,7 +167,6 @@ const ProjectsShowPage = ({ project }: Props) => {
               eventsTime="past"
               title={formatMessage(messages.pastEvents)}
               fallbackMessage={messages.noPastEvents}
-              hideSectionIfNoEvents={true}
               projectPublicationStatuses={['published', 'draft', 'archived']}
               showDateFilter={false}
             />
@@ -262,7 +254,7 @@ const ProjectsShowPageWrapper = () => {
     !isTimelineProjectAndHasValidPhaseParam
   ) {
     // Redirect old childRoutes (e.g. /info, /process, ...) to the project index location
-    const projectRoot = `/${urlSegments.slice(1, 3).join('/')}`;
+    const projectRoot = `/${urlSegments.slice(1, 3).join('/')}` as RouteType;
     return <Navigate to={projectRoot} replace />;
   }
 

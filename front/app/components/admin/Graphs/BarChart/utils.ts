@@ -1,8 +1,9 @@
-import { Mapping, Bars } from './typings';
 import {
   Mapping as ConvertedMapping,
   Bars as ConvertedBars,
 } from 'components/admin/Graphs/MultiBarChart/typings';
+
+import { Mapping, Bars } from './typings';
 
 export const convertMapping = <Row>(
   mapping: Mapping<Row>

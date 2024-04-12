@@ -1,49 +1,41 @@
 import React, { useState, useEffect } from 'react';
 
-// services
-import { convertUrlToUploadFile } from 'utils/fileUtils';
-
-// components
 import { IconTooltip, Box, Button } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { isEmpty } from 'lodash-es';
+import { useForm, FormProvider } from 'react-hook-form';
+import styled from 'styled-components';
+import { IOption, UploadFile, Multiloc } from 'typings';
+import { string, object, mixed } from 'yup';
+
+import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
+import useAuthUser from 'api/me/useAuthUser';
+import onboardingCampaignsKeys from 'api/onboarding_campaigns/keys';
+import useUserLockedAttributes from 'api/user_locked_attributes/useUserLockedAttributes';
+import useUpdateUser from 'api/users/useUpdateUser';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { appLocalePairs } from 'containers/App/constants';
+
 import { SectionField } from 'components/admin/Section';
+import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
+import Feedback from 'components/HookForm/Feedback';
+import ImagesDropzone from 'components/HookForm/ImagesDropzone';
+import Input from 'components/HookForm/Input';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import Select from 'components/HookForm/Select';
 import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
 import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
-import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 
-// form
-import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object, mixed } from 'yup';
-import ImagesDropzone from 'components/HookForm/ImagesDropzone';
-import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
-import Input from 'components/HookForm/Input';
-import Select from 'components/HookForm/Select';
-import Feedback from 'components/HookForm/Feedback';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
-
-// i18n
-import { appLocalePairs } from 'containers/App/constants';
-import messages from './messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-// styling
-import styled from 'styled-components';
-
-// constants
-import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
-
-// typings
-import { IOption, UploadFile, Multiloc } from 'typings';
-
-import eventEmitter from 'utils/eventEmitter';
-import useUpdateUser from 'api/users/useUpdateUser';
-import useUserLockedAttributes from 'api/user_locked_attributes/useUserLockedAttributes';
-import useAuthUser from 'api/me/useAuthUser';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import onboardingCampaignsKeys from 'api/onboarding_campaigns/keys';
 import { queryClient } from 'utils/cl-react-query/queryClient';
-import { isEmpty } from 'lodash-es';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import eventEmitter from 'utils/eventEmitter';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+
+import messages from './messages';
 
 const StyledIconTooltip = styled(IconTooltip)`
   margin-left: 5px;

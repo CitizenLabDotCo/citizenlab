@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-// components
 import {
   Box,
   Title,
@@ -9,18 +8,17 @@ import {
   Input,
   Button,
 } from '@citizenlab/cl2-component-library';
-import GoBackButton from 'components/UI/GoBackButton';
 
-// hooks
-import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// utils
+import GoBackButton from 'components/UI/GoBackButton';
+
+import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
-// intl
-import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 const EsriKeyInput = () => {

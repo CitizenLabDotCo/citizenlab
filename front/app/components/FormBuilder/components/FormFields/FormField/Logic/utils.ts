@@ -1,10 +1,10 @@
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { formEndOption } from 'components/FormBuilder/components/FormBuilderSettings/utils';
+import { SupportedLocale } from 'typings';
 
-// typings
 import { IFlatCustomField, IOptionsType } from 'api/custom_fields/types';
-import { Locale } from 'typings';
+
+import { formEndOption } from 'components/FormBuilder/utils';
+
+import { isNilOrError } from 'utils/helperUtils';
 
 export const getOptionRule = (
   option: IOptionsType,
@@ -51,7 +51,7 @@ export const getLinearScaleOptions = (maximum: number) => {
 export const getTitleFromAnswerId = (
   field: IFlatCustomField,
   answerId: string | number | undefined,
-  locale: Locale | undefined | null | Error
+  locale: SupportedLocale | undefined | null | Error
 ) => {
   if (answerId && !isNilOrError(locale)) {
     // If number, this is a linear scale option. Return the value as a string.

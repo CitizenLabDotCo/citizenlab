@@ -1,20 +1,23 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
+import insightsKeys from 'api/analysis_insights/keys';
+import taggingKeys from 'api/analysis_taggings/keys';
+import tagsKeys from 'api/analysis_tags/keys';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import backgroundTasksKeys from './keys';
 import { IBackgroundTasks, BackgroundTasksKeys } from './types';
-import tagsKeys from 'api/analysis_tags/keys';
-import taggingKeys from 'api/analysis_taggings/keys';
-import insightsKeys from 'api/analysis_insights/keys';
 
-const fetchBackgroundTasks = (analysisId: string) => {
+const fetchBackgroundTasks = (analysisId?: string) => {
   return fetcher<IBackgroundTasks>({
     path: `/analyses/${analysisId}/background_tasks`,
     action: 'get',
   });
 };
 
-const useAnalysisBackgroundTasks = (analysisId: string) => {
+const useAnalysisBackgroundTasks = (analysisId?: string) => {
   const queryClient = useQueryClient();
   return useQuery<
     IBackgroundTasks,
@@ -38,6 +41,7 @@ const useAnalysisBackgroundTasks = (analysisId: string) => {
       return activeTask ? 2000 : false;
     },
     keepPreviousData: false,
+    enabled: !!analysisId,
   });
 };
 

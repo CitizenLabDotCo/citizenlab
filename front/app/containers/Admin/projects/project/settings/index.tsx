@@ -1,31 +1,26 @@
 import React, { useState } from 'react';
-import clHistory from 'utils/cl-router/history';
-import { isTopBarNavActive } from 'utils/helperUtils';
+
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import {
   Outlet as RouterOutlet,
   useLocation,
   useParams,
 } from 'react-router-dom';
+import { InsertConfigurationOptions, ITab } from 'typings';
 
-// components
-import GoBackButton from 'components/UI/GoBackButton';
-import { Box, colors } from '@citizenlab/cl2-component-library';
-import NavigationTabs, { Tab } from 'components/admin/NavigationTabs';
-import Outlet from 'components/Outlet';
-
-// hooks
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import NavigationTabs, { Tab } from 'components/admin/NavigationTabs';
+import Outlet from 'components/Outlet';
+import GoBackButton from 'components/UI/GoBackButton';
 
-// utils
+import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { isTopBarNavActive } from 'utils/helperUtils';
 import { insertConfiguration } from 'utils/moduleUtils';
 
-// typings
-import { InsertConfigurationOptions, ITab } from 'typings';
+import messages from './messages';
 
 const Settings = () => {
   const { formatMessage } = useIntl();
@@ -55,15 +50,14 @@ const Settings = () => {
       feature: 'private_projects',
       url: `/admin/projects/${projectId}/settings/access-rights`,
     },
-    {
-      label: formatMessage(messages.events),
-      name: 'events',
-      url: `/admin/projects/${projectId}/settings/events`,
-    },
   ]);
 
   const handleData = (insertTabOptions: InsertConfigurationOptions<ITab>) => {
-    setTabs(insertConfiguration(insertTabOptions)(tabs));
+    setTabs(
+      insertConfiguration({ ...insertTabOptions, insertAfterName: 'tags' })(
+        tabs
+      )
+    );
   };
 
   if (!project || !phases) return null;

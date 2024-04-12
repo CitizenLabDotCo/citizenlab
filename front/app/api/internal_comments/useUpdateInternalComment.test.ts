@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useUpdateInternalComment from './useUpdateInternalComment';
-import { commentsData } from './__mocks__/useInternalComments';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { commentsData } from './__mocks__/useInternalComments';
+import useUpdateInternalComment from './useUpdateInternalComment';
 
 const apiPath = '*internal_comments/:id';
 const server = setupServer(

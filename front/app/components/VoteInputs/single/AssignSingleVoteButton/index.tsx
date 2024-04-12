@@ -1,32 +1,24 @@
 import React from 'react';
 
-// components
 import { Button, colors } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
-
-// api
-import useIdeaById from 'api/ideas/useIdeaById';
-import useBasket from 'api/baskets/useBasket';
-import useVoting from 'api/baskets_ideas/useVoting';
-
-// events
-import eventEmitter from 'utils/eventEmitter';
-import { VOTES_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-
-// intl
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// routing
 import { useSearchParams } from 'react-router-dom';
 
-// utils
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
-
-// types
+import useBasket from 'api/baskets/useBasket';
+import useVoting from 'api/baskets_ideas/useVoting';
+import useIdeaById from 'api/ideas/useIdeaById';
 import { IPhaseData } from 'api/phases/types';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+
+import { VOTES_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
+
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { useIntl } from 'utils/cl-intl';
+import eventEmitter from 'utils/eventEmitter';
+
+import messages from './messages';
 
 interface Props {
   phase: IPhaseData;
@@ -56,7 +48,6 @@ const AssignSingleVoteButton = ({
   const maxVotes = phase?.attributes.voting_max_total;
   const maxVotesReached = maxVotes && numberOfVotesCast === maxVotes;
 
-  // permissions
   const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
 
   if (
@@ -122,7 +113,8 @@ const AssignSingleVoteButton = ({
     if (maxVotesReached && !ideaInBasket) {
       return formatMessage(messages.maxVotesReached);
     }
-    return undefined;
+
+    return null;
   };
 
   const disabledButtonExplanation = getButtonDisabledExplanation();

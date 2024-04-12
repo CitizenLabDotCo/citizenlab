@@ -186,13 +186,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.atLeastOneOptionError',
     defaultMessage: 'At least one choice must be provided',
   },
+  emptyTitleErrorMessage: {
+    id: 'app.containers.AdminPage.groups.permissions.emptyTitleErrorMessage',
+    defaultMessage: 'Please provide a title for all choices',
+  },
   option1: {
     id: 'app.containers.AdminPage.groups.permissions.option1',
     defaultMessage: 'Option 1',
   },
-  onlyAdmins: {
-    id: 'app.containers.AdminPage.groups.permissions.onlyAdmins',
-    defaultMessage: 'Only admins can change this setting.',
+  onlyAdminsCreateQuestion: {
+    id: 'app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion',
+    defaultMessage: 'Only admins can create a new question.',
   },
   premiumUsersOnly: {
     id: 'app.containers.AdminPage.groups.permissions.premiumUsersOnly',

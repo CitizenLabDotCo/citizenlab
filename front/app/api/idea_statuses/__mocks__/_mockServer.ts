@@ -1,4 +1,5 @@
 import { rest } from 'msw';
+
 import { IIdeaStatusData } from '../types';
 
 export const ideaStatusesData: IIdeaStatusData[] = [

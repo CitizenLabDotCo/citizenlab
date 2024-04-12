@@ -1,4 +1,5 @@
 import { Keys } from 'utils/cl-react-query/types';
+
 import seatsKeys from './keys';
 
 export type SeatsKeys = Keys<typeof seatsKeys>;

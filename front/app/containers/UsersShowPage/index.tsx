@@ -1,35 +1,28 @@
 import React, { useContext } from 'react';
-import { Helmet } from 'react-helmet';
+
+import { media, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { PreviousPathnameContext } from 'context';
-
-// router
+import { Helmet } from 'react-helmet';
 import { useParams, Outlet as RouterOutlet } from 'react-router-dom';
+import { RouteType } from 'routes';
+import styled from 'styled-components';
 
-// components
-import ContentContainer from 'components/ContentContainer';
-import UsersShowPageMeta from './UsersShowPageMeta';
-import Button from 'components/UI/Button';
-
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// hooks
+import { IUserData } from 'api/users/types';
 import useUserBySlug from 'api/users/useUserBySlug';
 
-// style
-import styled from 'styled-components';
-import { media, colors, fontSizes } from '@citizenlab/cl2-component-library';
-import UserHeader from './UserHeader';
-import UserNavbar from './UserNavbar';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
+
+import ContentContainer from 'components/ContentContainer';
+import Button from 'components/UI/Button';
 import Unauthorized from 'components/Unauthorized';
 
-// utils
+import { useIntl } from 'utils/cl-intl';
 import { isError } from 'utils/helperUtils';
 
-// typings
-import { IUserData } from 'api/users/types';
+import messages from './messages';
+import UserHeader from './UserHeader';
+import UserNavbar from './UserNavbar';
+import UsersShowPageMeta from './UsersShowPageMeta';
 
 const NotFoundContainer = styled.main`
   min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px - 4rem);
@@ -100,7 +93,7 @@ const UsersShowPageOuter = ({ className }: Props) => {
   const { userSlug } = useParams() as { userSlug: string };
   const { formatMessage } = useIntl();
   const { data: user } = useUserBySlug(userSlug);
-  const previousPathName = useContext(PreviousPathnameContext);
+  const previousPathName = useContext(PreviousPathnameContext) as RouteType;
 
   if (!user) return null;
 

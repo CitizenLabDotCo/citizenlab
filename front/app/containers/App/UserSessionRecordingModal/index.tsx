@@ -8,13 +8,16 @@ import {
   Title,
   Box,
 } from '@citizenlab/cl2-component-library';
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import { get, set } from 'js-cookie';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import Modal from 'components/UI/Modal';
 
-import { get, set } from 'js-cookie';
+import { useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
-import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import messages from './messages';
 
 const UserSessionRecordingModal = () => {
   const [modalOpened, setModalOpened] = useState(false);

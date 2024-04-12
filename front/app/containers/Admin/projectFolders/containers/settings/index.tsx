@@ -1,15 +1,21 @@
 import React from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import styled from 'styled-components';
-import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-import { isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
-import GoBackButton from 'components/UI/GoBackButton';
-import ProjectFolderForm from './ProjectFolderForm';
-import useProjectFolderById from 'api/project_folders/useProjectFolderById';
+
 import { Box } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import useProjectFolderById from 'api/project_folders/useProjectFolderById';
+
+import { SectionTitle, SectionDescription } from 'components/admin/Section';
+import GoBackButton from 'components/UI/GoBackButton';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from '../messages';
+
+import ProjectFolderForm from './ProjectFolderForm';
 
 const Container = styled.div<{ mode: 'edit' | 'new' }>`
   display: flex;
@@ -58,7 +64,7 @@ const FolderSettings = ({ params }: WithRouterProps) => {
   }
 
   return (
-    <Box p="40px">
+    <Box p={mode === 'new' ? '40px' : '0'}>
       {mode === 'new' && <StyledGoBackButton onClick={goBack} />}
       <Container mode={mode}>
         {mode === 'edit' ? (

@@ -1,4 +1,5 @@
 import { parse } from 'qs';
+
 import { isNil } from 'utils/helperUtils';
 
 export function getPageNumberFromUrl(url: string) {

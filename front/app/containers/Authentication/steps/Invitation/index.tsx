@@ -1,28 +1,26 @@
 import React from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
+import { string, object } from 'yup';
+
+import { SetError } from 'containers/Authentication/typings';
+
+import Input from 'components/HookForm/Input';
 import Button from 'components/UI/Button';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-import sharedMessages from '../messages';
-
-// form
-import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object } from 'yup';
-import Input from 'components/HookForm/Input';
-
-// errors
 import {
   isCLErrorsWrapper,
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
 
-// typings
-import { SetError } from 'containers/Authentication/typings';
+import sharedMessages from '../messages';
+
+import messages from './messages';
+
+// errors
 
 interface FormValues {
   token: string;

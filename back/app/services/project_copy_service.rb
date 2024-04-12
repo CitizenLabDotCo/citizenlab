@@ -30,26 +30,27 @@ class ProjectCopyService < TemplateService
     new_publication_status: nil
   )
     include_ideas = false if local_copy
+    @include_ideas = include_ideas
     @local_copy = local_copy
     @project = project
     @template = { 'models' => {} }
 
     # TODO: deal with linking idea_statuses, topics, custom field values and maybe areas and groups
-    @template['models']['project']                 = yml_projects new_slug: new_slug, new_publication_status: new_publication_status, new_title_multiloc: new_title_multiloc, shift_timestamps: shift_timestamps
-    @template['models']['project_file']            = yml_project_files shift_timestamps: shift_timestamps
-    @template['models']['project_image']           = yml_project_images shift_timestamps: shift_timestamps
-    @template['models']['phase']                   = yml_phases timeline_start_at: timeline_start_at, shift_timestamps: shift_timestamps
-    @template['models']['phase_file']              = yml_phase_files shift_timestamps: shift_timestamps
-    @template['models']['custom_form']             = yml_custom_forms shift_timestamps: shift_timestamps
-    @template['models']['custom_field']            = yml_custom_fields shift_timestamps: shift_timestamps
-    @template['models']['custom_field_option']     = yml_custom_field_options shift_timestamps: shift_timestamps
-    @template['models']['permission']              = yml_permissions shift_timestamps: shift_timestamps
-    @template['models']['polls/question']          = yml_poll_questions shift_timestamps: shift_timestamps
-    @template['models']['polls/option']            = yml_poll_options shift_timestamps: shift_timestamps
-    @template['models']['volunteering/cause']      = yml_volunteering_causes shift_timestamps: shift_timestamps
-    @template['models']['custom_maps/map_config']  = yml_maps_map_configs shift_timestamps: shift_timestamps
-    @template['models']['custom_maps/layer']       = yml_maps_layers shift_timestamps: shift_timestamps
-    @template['models']['custom_maps/legend_item'] = yml_maps_legend_items shift_timestamps: shift_timestamps
+    @template['models']['project']                    = yml_projects new_slug: new_slug, new_publication_status: new_publication_status, new_title_multiloc: new_title_multiloc, shift_timestamps: shift_timestamps
+    @template['models']['project_file']               = yml_project_files shift_timestamps: shift_timestamps
+    @template['models']['project_image']              = yml_project_images shift_timestamps: shift_timestamps
+    @template['models']['phase']                      = yml_phases timeline_start_at: timeline_start_at, shift_timestamps: shift_timestamps
+    @template['models']['phase_file']                 = yml_phase_files shift_timestamps: shift_timestamps
+    @template['models']['custom_form']                = yml_custom_forms shift_timestamps: shift_timestamps
+    @template['models']['custom_field']               = yml_custom_fields shift_timestamps: shift_timestamps
+    @template['models']['custom_field_option']        = yml_custom_field_options shift_timestamps: shift_timestamps
+    @template['models']['custom_field_option_image']  = yml_custom_field_option_images shift_timestamps: shift_timestamps
+    @template['models']['permission']                 = yml_permissions shift_timestamps: shift_timestamps
+    @template['models']['polls/question']             = yml_poll_questions shift_timestamps: shift_timestamps
+    @template['models']['polls/option']               = yml_poll_options shift_timestamps: shift_timestamps
+    @template['models']['volunteering/cause']         = yml_volunteering_causes shift_timestamps: shift_timestamps
+    @template['models']['custom_maps/map_config']     = yml_maps_map_configs shift_timestamps: shift_timestamps
+    @template['models']['custom_maps/layer']          = yml_maps_layers shift_timestamps: shift_timestamps
 
     @template['models']['content_builder/layout'], layout_images_mapping = yml_content_builder_layouts shift_timestamps: shift_timestamps
     @template['models']['content_builder/layout_image'] = yml_content_builder_layout_images layout_images_mapping, shift_timestamps: shift_timestamps
@@ -160,6 +161,7 @@ class ProjectCopyService < TemplateService
         'select_count_enabled' => field.select_count_enabled,
         'maximum_select_count' => field.maximum_select_count,
         'minimum_select_count' => field.minimum_select_count,
+        'random_option_ordering' => field.random_option_ordering,
         'text_images_attributes' => field.text_images.map do |text_image|
           {
             'imageable_field' => text_image.imageable_field,
@@ -183,11 +185,26 @@ class ProjectCopyService < TemplateService
         'key' => c.key,
         'title_multiloc' => c.title_multiloc,
         'ordering' => c.ordering,
+        'other' => c.other,
         'created_at' => shift_timestamp(c.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(c.updated_at, shift_timestamps)&.iso8601
       }
       store_ref yml_custom_field_option, c.id, :custom_field_option
       yml_custom_field_option
+    end
+  end
+
+  def yml_custom_field_option_images(shift_timestamps: 0)
+    custom_form_ids = ([@project.custom_form_id] + @project.phases.map(&:custom_form_id)).compact
+    CustomFieldOption.where(custom_field: CustomField.where(resource: custom_form_ids))
+      .flat_map(&:image).compact.map do |image|
+      {
+        'custom_field_option_ref' => lookup_ref(image.custom_field_option_id, :custom_field_option),
+        'remote_image_url' => image.image_url,
+        'ordering' => image.ordering,
+        'created_at' => shift_timestamp(image.created_at, shift_timestamps)&.iso8601,
+        'updated_at' => shift_timestamp(image.updated_at, shift_timestamps)&.iso8601
+      }
     end
   end
 
@@ -281,8 +298,8 @@ class ProjectCopyService < TemplateService
         'poll_anonymous' => phase.poll_anonymous,
         'ideas_order' => phase.ideas_order,
         'input_term' => phase.input_term,
-        'baskets_count' => phase.baskets_count,
-        'votes_count' => phase.votes_count
+        'baskets_count' => @local_copy || !@include_ideas ? 0 : phase.baskets_count,
+        'votes_count' => @local_copy || !@include_ideas ? 0 : phase.votes_count
       }
       if yml_phase['participation_method'] == 'voting'
         yml_phase['voting_method'] = phase.voting_method
@@ -299,6 +316,11 @@ class ProjectCopyService < TemplateService
 
       if yml_phase['participation_method'] == 'document_annotation'
         yml_phase['document_annotation_embed_url'] = phase.document_annotation_embed_url
+      end
+
+      if yml_phase['participation_method'] == 'native_survey'
+        yml_phase['native_survey_title_multiloc'] = phase.native_survey_title_multiloc
+        yml_phase['native_survey_button_multiloc'] = phase.native_survey_button_multiloc
       end
 
       store_ref yml_phase, phase.id, :phase
@@ -366,12 +388,18 @@ class ProjectCopyService < TemplateService
   end
 
   def yml_maps_map_configs(shift_timestamps: 0)
-    CustomMaps::MapConfig.where(project_id: @project.id).map do |map_config|
+    map_configs = CustomMaps::MapConfig.where(mappable: @project)
+      .or(CustomMaps::MapConfig.where(mappable: @project&.custom_form&.custom_fields))
+      .or(CustomMaps::MapConfig.where(mappable: @project&.phases&.map(&:custom_form)&.compact&.map(&:custom_fields)))
+
+    map_configs.map do |map_config|
       yml_map_config = {
-        'project_ref' => lookup_ref(map_config.project_id, :project),
+        'mappable_ref' => lookup_ref(map_config.mappable_id, %i[project custom_field]),
         'center_geojson' => map_config.center_geojson,
         'zoom_level' => map_config.zoom_level&.to_f,
         'tile_provider' => map_config.tile_provider,
+        'esri_web_map_id' => map_config.esri_web_map_id,
+        'esri_base_map_id' => map_config.esri_base_map_id,
         'created_at' => shift_timestamp(map_config.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(map_config.updated_at, shift_timestamps)&.iso8601
       }
@@ -384,6 +412,8 @@ class ProjectCopyService < TemplateService
     (@project.map_config&.layers || []).map do |layer|
       yml_layer = {
         'map_config_ref' => lookup_ref(layer.map_config_id, :maps_map_config),
+        'type' => layer.type,
+        'layer_url' => layer.layer_url,
         'title_multiloc' => layer.title_multiloc,
         'geojson' => layer.geojson,
         'default_enabled' => layer.default_enabled,
@@ -392,19 +422,6 @@ class ProjectCopyService < TemplateService
         'updated_at' => shift_timestamp(layer.updated_at, shift_timestamps)&.iso8601
       }
       yml_layer
-    end
-  end
-
-  def yml_maps_legend_items(shift_timestamps: 0)
-    (@project.map_config&.legend_items || []).map do |legend_item|
-      {
-        'map_config_ref' => lookup_ref(legend_item.map_config_id, :maps_map_config),
-        'title_multiloc' => legend_item.title_multiloc,
-        'color' => legend_item.color,
-        'ordering' => legend_item.ordering,
-        'created_at' => shift_timestamp(legend_item.created_at, shift_timestamps)&.iso8601,
-        'updated_at' => shift_timestamp(legend_item.updated_at, shift_timestamps)&.iso8601
-      }
     end
   end
 
@@ -482,7 +499,7 @@ class ProjectCopyService < TemplateService
         'title_multiloc' => event.title_multiloc,
         'description_multiloc' => event.description_multiloc,
         'location_multiloc' => event.location_multiloc,
-        'location_point' => event.location_point_geojson,
+        'location_point_geojson' => event.location_point_geojson,
         'online_link' => event.online_link,
         'start_at' => shift_timestamp(event.start_at, shift_timestamps)&.iso8601,
         'end_at' => shift_timestamp(event.end_at, shift_timestamps)&.iso8601,

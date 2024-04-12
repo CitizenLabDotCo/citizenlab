@@ -1,21 +1,18 @@
 import React from 'react';
 
-// components
 import { Button } from '@citizenlab/cl2-component-library';
-import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
-
-// hooks
-import { useTheme } from 'styled-components';
-import useEvents from 'api/events/useEvents';
-
-// utils
-import { CTABarProps } from 'components/ParticipationCTABars/utils';
-import { getCurrentPhase } from 'api/phases/utils';
-import { scrollToElement } from 'utils/scroll';
 import moment from 'moment';
+import { useTheme } from 'styled-components';
 
-// intl
+import useEvents from 'api/events/useEvents';
+import { getCurrentPhase } from 'api/phases/utils';
+
+import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
+import { CTABarProps } from 'components/ParticipationCTABars/utils';
+
 import { FormattedMessage } from 'utils/cl-intl';
+import { scrollToElement } from 'utils/scroll';
+
 import messages from '../messages';
 
 const EventsCTABar = ({ phases, project }: CTABarProps) => {

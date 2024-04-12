@@ -1,5 +1,6 @@
-import projectGroupsKeys from './keys';
 import { Keys } from 'utils/cl-react-query/types';
+
+import projectGroupsKeys from './keys';
 
 export type ProjectGroupsKeys = Keys<typeof projectGroupsKeys>;
 

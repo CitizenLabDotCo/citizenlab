@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeletePhaseFile from './useDeletePhaseFile';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useDeletePhaseFile from './useDeletePhaseFile';
 const apiPath = '*phases/:phaseId/files/:fileId';
 
 const server = setupServer(

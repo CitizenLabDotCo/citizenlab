@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { useTheme } from 'styled-components';
+
 import {
   Box,
   media,
@@ -7,12 +7,18 @@ import {
   Spinner,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import IdeaCard from 'components/IdeaCard';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
 import { rgba } from 'polished';
-import EmptyIdeas from './EmptyIdeas';
+import styled, { useTheme } from 'styled-components';
+
 import { IIdeaData } from 'api/ideas/types';
+
+import IdeaCard from 'components/IdeaCard';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../../messages';
+
+import EmptyIdeas from './EmptyIdeas';
 
 const Footer = styled.div`
   width: 100%;

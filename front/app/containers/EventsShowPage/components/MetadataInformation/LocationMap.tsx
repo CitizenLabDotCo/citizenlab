@@ -1,16 +1,12 @@
-import React, { memo, useRef } from 'react';
+import React, { memo, useMemo, useRef } from 'react';
 
-// components
-import EsriMap from 'components/EsriMap';
-import Graphic from '@arcgis/core/Graphic';
 import Point from '@arcgis/core/geometry/Point';
-
-// utils
-import { getMapPinSymbol } from 'components/EsriMap/utils';
-
-// hooks
-import { useTheme } from 'styled-components';
+import Graphic from '@arcgis/core/Graphic';
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
+
+import EsriMap from 'components/EsriMap';
+import { getMapPinSymbol } from 'components/EsriMap/utils';
 
 export interface Props {
   eventLocation?: GeoJSON.Point | null;
@@ -21,22 +17,28 @@ const LocationMap = memo<Props>(({ eventLocation }: Props) => {
   const isPhoneOrSmaller = useBreakpoint('phone');
   const locationPoint = useRef<GeoJSON.Point | null>(eventLocation || null);
 
-  // Create point graphic for event location
-  const pointGraphic = new Graphic({
-    geometry: new Point({
-      longitude: locationPoint?.current?.coordinates[0],
-      latitude: locationPoint?.current?.coordinates[1],
-    }),
-    symbol: getMapPinSymbol(theme.colors.tenantPrimary),
-  });
+  const graphics = useMemo(() => {
+    // Create point graphic for event location
+    const pointGraphic = new Graphic({
+      geometry: new Point({
+        longitude: locationPoint?.current?.coordinates[0],
+        latitude: locationPoint?.current?.coordinates[1],
+      }),
+      symbol: getMapPinSymbol({ color: theme.colors.tenantPrimary }),
+    });
+
+    return [pointGraphic];
+  }, [theme.colors.tenantPrimary]);
 
   return (
     <EsriMap
-      center={eventLocation}
+      initialData={{
+        center: eventLocation,
+        zoom: 18,
+        showFullscreenOption: isPhoneOrSmaller ? false : true,
+      }}
+      graphics={graphics}
       height={isPhoneOrSmaller ? '180px' : '140px'}
-      zoom={18}
-      graphics={[pointGraphic]}
-      showFullscreenOption={isPhoneOrSmaller ? false : true}
     />
   );
 });

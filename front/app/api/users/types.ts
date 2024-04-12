@@ -1,8 +1,10 @@
-import { TRole } from 'utils/permissions/roles';
+import { ImageSizes, SupportedLocale, Multiloc } from 'typings';
+
 import { OnboardingType } from 'api/authentication/authentication_requirements/types';
-import { ImageSizes, Locale, Multiloc } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
+import { TRole } from 'utils/permissions/roles';
+
 import usersKeys from './keys';
 
 export type UsersKeys = Keys<typeof usersKeys>;
@@ -22,7 +24,7 @@ export interface IUserAttributes {
   first_name?: string | null;
   last_name?: string | null;
   slug: string;
-  locale: Locale;
+  locale: SupportedLocale;
   highest_role:
     | 'super_admin'
     | 'admin'

@@ -1,25 +1,18 @@
-// tracks
-import { trackEventByName } from 'utils/analytics';
-import tracks from 'components/IdeaButton/tracks';
-
-// history
-import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
 
-// typings
-import { LatLng } from 'leaflet';
+import { fetchPhase } from 'api/phases/usePhase';
+import { fetchProjectBySlug } from 'api/projects/useProjectBySlug';
 import { IUser, IUserData } from 'api/users/types';
 
-// api
-import { fetchProjectBySlug } from 'api/projects/useProjectBySlug';
+import tracks from 'components/IdeaButton/tracks';
 
-// utils
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
-import { fetchPhase } from 'api/phases/usePhase';
+import { trackEventByName } from 'utils/analytics';
+import clHistory from 'utils/cl-router/history';
 
 export interface RedirectToIdeaFormParams {
   projectSlug: string;
-  latLng?: LatLng | null;
+  latLng?: GeoJSON.Point | null;
   phaseId?: string;
   authUser?: IUser;
 }
@@ -44,7 +37,9 @@ export const redirectToIdeaForm =
 
     if (disabledReason !== 'postingLimitedMaxReached') {
       trackEventByName(tracks.redirectedToIdeaFrom);
-      const positionParams = latLng ? { lat: latLng.lat, lng: latLng.lng } : {};
+      const positionParams = latLng
+        ? { lat: latLng.coordinates[1], lng: latLng.coordinates[0] }
+        : {};
       clHistory.push(
         {
           pathname: `/projects/${projectSlug}/ideas/new`,

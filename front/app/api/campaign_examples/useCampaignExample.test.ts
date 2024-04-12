@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useCampaignExample from './useCampaignExample';
-import { campaignExamplesData } from './__mocks__/useCampaignExamples';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { campaignExamplesData } from './__mocks__/useCampaignExamples';
+import useCampaignExample from './useCampaignExample';
 
 const apiPath = '*campaigns/examples/:id';
 

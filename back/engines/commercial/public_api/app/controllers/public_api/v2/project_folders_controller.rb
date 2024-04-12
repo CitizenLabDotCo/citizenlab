@@ -6,12 +6,12 @@ module PublicApi
 
     def index
       folders = ProjectFoldersFinder.new(
-        ProjectFolders::Folder,
+        ProjectFolders::Folder.includes([:admin_publication]),
         publication_status: publication_status
       ).execute
 
       list_items(
-        ProjectFoldersFinder.new(folders, publication_status: publication_status).execute,
+        folders,
         V2::ProjectFolders::FolderSerializer
       )
     end

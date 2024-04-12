@@ -1,7 +1,9 @@
+import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
+
 import { isNilOrError } from 'utils/helperUtils';
+
 import useAppConfigurationLocales from './useAppConfigurationLocales';
 import useLocale from './useLocale';
-import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 
 interface Props {
   projectId: string | undefined;

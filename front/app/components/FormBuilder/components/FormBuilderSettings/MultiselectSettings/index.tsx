@@ -1,15 +1,15 @@
 import React from 'react';
 
-// components
 import { Box, IconTooltip, Label } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
-import Toggle from 'components/HookForm/Toggle';
-import Input from 'components/HookForm/Input';
-
-// intl
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
 import { useFormContext } from 'react-hook-form';
+import styled from 'styled-components';
+
+import Input from 'components/HookForm/Input';
+import Toggle from 'components/HookForm/Toggle';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 
 const StyledLabel = styled(Label)`
   height: 100%;

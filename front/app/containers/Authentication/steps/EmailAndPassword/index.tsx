@@ -1,43 +1,39 @@
 import React, { useEffect } from 'react';
 
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useAnySSOEnabled from 'containers/Authentication/useAnySSOEnabled';
+import { Box, Text } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
+import { string, object, boolean } from 'yup';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-// components
-import { Box, Text } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import TextLink from '../_components/TextLink';
-import TextButton from '../_components/TextButton';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// i18n
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import sharedMessages from '../messages';
-import messages from './messages';
-import containerMessages from '../../messages';
+import { SetError } from 'containers/Authentication/typings';
+import useAnySSOEnabled from 'containers/Authentication/useAnySSOEnabled';
 
-// form
-import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object, boolean } from 'yup';
+import Checkbox from 'components/HookForm/Checkbox';
 import Input from 'components/HookForm/Input';
 import PasswordInput from 'components/HookForm/PasswordInput';
-import Checkbox from 'components/HookForm/Checkbox';
+import Button from 'components/UI/Button';
 
-// errors
+import { trackEventByName } from 'utils/analytics';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import {
   isCLErrorsWrapper,
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
-
-// utils
 import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../../tracks';
 
-// typings
-import { SetError } from 'containers/Authentication/typings';
+import containerMessages from '../../messages';
+import tracks from '../../tracks';
+import TextButton from '../_components/TextButton';
+import TextLink from '../_components/TextLink';
+import sharedMessages from '../messages';
+
+import messages from './messages';
+
+// errors
 
 interface Props {
   loading: boolean;

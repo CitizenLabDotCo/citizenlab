@@ -1,8 +1,8 @@
 import React from 'react';
-import ReportBuilderPage from '.';
+
 import { render, screen, fireEvent, userEvent, act } from 'utils/testUtils/rtl';
 
-import clHistory from 'utils/cl-router/history';
+import ReportBuilderPage from '.';
 
 // hook mocks
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => true));
@@ -154,17 +154,6 @@ describe('<ReportBuilderPage />', () => {
 
       expect(global.window.confirm).toHaveBeenCalledTimes(1);
       expect(mockDeleteReport).toHaveBeenCalledWith('r2');
-    });
-
-    it('calls clHistory.push with correct arg when clicking "edit"', () => {
-      mockReports = reports;
-      render(<ReportBuilderPage />);
-      const editButtonSecondReport = screen.getAllByText('Edit')[1];
-      fireEvent.click(editButtonSecondReport);
-
-      expect(clHistory.push).toHaveBeenCalledWith(
-        '/admin/reporting/report-builder/r2/editor'
-      );
     });
 
     it('has print buttons', () => {

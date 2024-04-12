@@ -1,11 +1,14 @@
 import React, { ReactNode } from 'react';
-import { ModuleConfiguration } from 'utils/moduleUtils';
+
 import {
   TNotificationData,
   TNotificationType,
   INLPFlagNotificationData,
 } from 'api/notifications/types';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { ModuleConfiguration } from 'utils/moduleUtils';
 
 const Setting = React.lazy(() => import('./admin/containers/Setting'));
 const RemoveFlagButton = React.lazy(

@@ -1,12 +1,15 @@
-import { Keys } from 'utils/cl-react-query/types';
-import appConfigurationKeys from './keys';
-
-export type AppConfigurationKeys = Keys<typeof appConfigurationKeys>;
+import { ImageSizes, Multiloc, SupportedLocale, UploadFile } from 'typings';
 
 import { API_PATH } from 'containers/App/constants';
-import { ImageSizes, Multiloc, Locale, UploadFile } from 'typings';
+
 import { TCategory } from 'components/ConsentManager/destinations';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import appConfigurationKeys from './keys';
 export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
+
+export type AppConfigurationKeys = Keys<typeof appConfigurationKeys>;
 
 interface AppConfigurationFeature {
   allowed: boolean;
@@ -16,7 +19,7 @@ interface AppConfigurationFeature {
 export type IAppConfigurationSettingsCore = {
   allowed: boolean;
   enabled: boolean;
-  locales: Locale[];
+  locales: SupportedLocale[];
   weglot_api_key: string | null;
   timezone: string;
   organization_name: Multiloc;
@@ -74,14 +77,6 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     enabled: boolean;
   };
-  demographic_fields?: {
-    allowed: boolean;
-    enabled: boolean;
-    gender: boolean;
-    birthyear: boolean;
-    domicile: boolean;
-    education: boolean;
-  };
   password_login?: {
     allowed: boolean;
     enabled: boolean;
@@ -109,6 +104,16 @@ export interface IAppConfigurationSettings {
     logo_url: string;
     login_mechanism_name: string;
   };
+  azure_ad_b2c_login?: {
+    allowed: boolean;
+    enabled: boolean;
+    tenant_name: string;
+    tenant_id: string;
+    policy_name: string;
+    client_id: string;
+    logo_url: string;
+    login_mechanism_name: string;
+  };
   franceconnect_login?: {
     allowed: boolean;
     enabled: boolean;
@@ -126,15 +131,12 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
     url?: string;
   };
-  manual_project_sorting?: AppConfigurationFeature;
   admin_project_templates?: AppConfigurationFeature;
-  pages?: AppConfigurationFeature;
-  project_reports?: AppConfigurationFeature;
-  phase_reports?: AppConfigurationFeature;
   private_projects?: AppConfigurationFeature;
   maps?: AppConfigurationMapSettings;
   initiatives: ProposalsSettings;
   initiative_review?: AppConfigurationFeature;
+  input_form_mapping_question?: AppConfigurationFeature;
   initiative_cosponsors?: AppConfigurationFeature;
   fragments?: {
     allowed: boolean;
@@ -147,11 +149,8 @@ export interface IAppConfigurationSettings {
     verification_methods: string[];
   };
   volunteering?: AppConfigurationFeature;
-  workshops?: AppConfigurationFeature;
   smart_groups?: AppConfigurationFeature;
   manual_emailing?: AppConfigurationFeature;
-  insights_manual_flow?: AppConfigurationFeature;
-  insights_nlp_flow?: AppConfigurationFeature;
   automated_emailing_control?: AppConfigurationFeature;
   typeform_surveys?: {
     allowed: boolean;
@@ -169,12 +168,10 @@ export interface IAppConfigurationSettings {
   snap_survey_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;
   bulk_import_ideas?: AppConfigurationFeature;
-  widgets?: AppConfigurationFeature;
   granular_permissions?: AppConfigurationFeature;
   ideaflow_social_sharing?: AppConfigurationFeature;
   initiativeflow_social_sharing?: AppConfigurationFeature;
   machine_translations?: AppConfigurationFeature;
-  custom_maps?: AppConfigurationFeature;
   polls?: AppConfigurationFeature;
   moderation?: AppConfigurationFeature;
   flag_inappropriate_content?: AppConfigurationFeature;
@@ -185,7 +182,6 @@ export interface IAppConfigurationSettings {
   blocking_profanity?: AppConfigurationFeature;
   anonymous_participation?: AppConfigurationFeature;
   custom_idea_statuses?: AppConfigurationFeature;
-  idea_author_change?: AppConfigurationFeature;
   idea_custom_copy?: AppConfigurationFeature;
   intercom?: AppConfigurationFeature;
   satismeter?: AppConfigurationFeature & {
@@ -228,6 +224,7 @@ export interface IAppConfigurationSettings {
   permissions_custom_fields?: AppConfigurationFeature;
   input_form_custom_fields?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
+  report_data_grouping?: AppConfigurationFeature;
   posthog_integration?: AppConfigurationFeature;
   user_blocking?: AppConfigurationFeature & {
     duration: boolean;
@@ -239,6 +236,9 @@ export interface IAppConfigurationSettings {
   public_api_tokens?: AppConfigurationFeature;
   power_bi?: AppConfigurationFeature;
   analysis?: AppConfigurationFeature;
+  large_summaries?: AppConfigurationFeature;
+  ask_a_question?: AppConfigurationFeature;
+  advanced_autotagging?: AppConfigurationFeature;
   import_printed_forms?: AppConfigurationFeature;
   user_session_recording?: AppConfigurationFeature;
   user_avatars?: AppConfigurationFeature;
@@ -248,7 +248,7 @@ export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
 
 export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
 
-interface AppConfigurationMapSettings extends AppConfigurationFeature {
+export interface AppConfigurationMapSettings extends AppConfigurationFeature {
   map_center: {
     lat: string;
     long: string;

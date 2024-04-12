@@ -1,6 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
 import { CLErrorsWrapper } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import { IUser, IChangePassword } from './types';
 
 export const changePassword = async (requestBody: IChangePassword) =>

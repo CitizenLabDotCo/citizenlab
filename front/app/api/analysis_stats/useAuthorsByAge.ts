@@ -1,12 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
+import { authorsByAgeKeys } from './keys';
 import {
   IAuthorsByAge,
   AuthorsByAgeKeys,
   AuthorsByAgeQueryParams,
 } from './types';
-import { authorsByAgeKeys } from './keys';
 
 const fetchUsersByAge = (
   analysisId: string,

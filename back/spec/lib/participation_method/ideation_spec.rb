@@ -31,8 +31,12 @@ RSpec.describe ParticipationMethod::Ideation do
 
   describe '#create_default_form!' do
     it 'creates a default form' do
-      expect { participation_method.create_default_form! }.to change(CustomForm, :count)
-      expect { participation_method.create_default_form! }.to change(CustomField, :count)
+      form = nil
+      expect { form = participation_method.create_default_form! }
+        .to change(CustomForm, :count).by(1)
+        .and change(CustomField, :count).by_at_least(1)
+
+      expect(form.participation_context).to eq phase.project
     end
   end
 
@@ -160,9 +164,9 @@ RSpec.describe ParticipationMethod::Ideation do
     end
   end
 
-  describe '#never_update?' do
-    it 'returns false' do
-      expect(participation_method.never_update?).to be false
+  describe '#update_if_published?' do
+    it 'returns true' do
+      expect(participation_method.update_if_published?).to be true
     end
   end
 

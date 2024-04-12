@@ -1,14 +1,28 @@
 import React, { lazy } from 'react';
-import moduleConfiguration from 'modules';
-import PageLoading from 'components/UI/PageLoading';
-import IdeaFormBuilder from './project/inputForm/IdeaFormBuilder';
-import SurveyFormBuilder from './project/nativeSurvey/SurveyFormBuilder';
-import AdminProjectIdeaPreviewIndex from './AdminProjectIdeaPreviewIndex';
-import { Navigate } from 'react-router-dom';
 
+import moduleConfiguration from 'modules';
+import { Navigate } from 'react-router-dom';
+import { RouteType } from 'routes';
+
+import PageLoading from 'components/UI/PageLoading';
+
+import { AdminRoute } from '../routes';
+
+const AdminProjectIdeaPreviewIndex = lazy(
+  () => import('./AdminProjectIdeaPreviewIndex')
+);
+const IdeaFormBuilder = lazy(
+  () => import('./project/inputForm/IdeaFormBuilder')
+);
+const SurveyFormBuilder = lazy(
+  () => import('./project/nativeSurvey/SurveyFormBuilder')
+);
+const ProjectParticipation = lazy(() => import('./project/participation'));
+const ProjectTraffic = lazy(() => import('./project/traffic'));
+const AdminProjectsProjectIndex = lazy(() => import('./project'));
 const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));
-const AdminProjectsProjectIndex = lazy(() => import('./project'));
+const AdminProjectPhaseIndex = lazy(() => import('./project/phase'));
 const AdminProjectsProjectSettings = lazy(() => import('./project/settings'));
 const AdminProjectsProjectGeneral = lazy(() => import('./project/general'));
 const AdminPhaseNewAndEdit = lazy(() => import('./project/timeline/edit'));
@@ -35,16 +49,86 @@ const AdminProjectVolunteeringEdit = lazy(
 const AdminAllowedTopicsComponent = React.lazy(
   () => import('./project/topics')
 );
+const AdminCustomMapConfigComponent = React.lazy(
+  () => import('containers/Admin/CustomMapConfigPage')
+);
 
 const AdminProjectAnalysis = lazy(() => import('./project/analysis'));
+const ReportTab = lazy(() => import('./project/information/ReportTab'));
 
-export function adminProjectsProjectPath(projectId: string) {
+export function adminProjectsProjectPath(projectId: string): RouteType {
   return `/admin/projects/${projectId}`;
 }
 
+export enum projectsRoutes {
+  projects = 'projects',
+  projectIdeaId = ':projectId/ideas/:ideaId',
+  projectSettings = ':projectId/settings',
+  projectTraffic = 'traffic',
+  projectParticipation = 'participation',
+  projectSettingsDescription = 'description',
+  projectEvents = 'events',
+  projectEventsNew = 'events/new',
+  projectEventsId = 'events/:id',
+  projectSettingsTags = 'tags',
+  projectSettingsAccessRights = 'access-rights',
+  projectId = ':projectId',
+  projectIdPhases = 'phases',
+  projectPhasesSetup = 'setup',
+  projectPhaseSetup = ':phaseId/setup',
+  projectNewPhase = 'new',
+  projectPhase = ':phaseId',
+  projectPhaseSurveyResults = ':phaseId/survey-results',
+  projectPhasePolls = ':phaseId/polls',
+  projectPhaseAccessRights = ':phaseId/access-rights',
+  projectPhaseIdeas = ':phaseId/ideas',
+  projectPhaseIdeaForm = ':phaseId/ideaform',
+  projectPhaseVolunteering = ':phaseId/volunteering',
+  projectPhaseMap = ':phaseId/map',
+  projectPhaseNativeSurvey = ':phaseId/native-survey',
+  projectPhaseVolunteeringNewCause = ':phaseId/volunteering/causes/new',
+  projectPhaseIdeaFormEdit = ':phaseId/ideaform/edit',
+  projectPhaseNativeSurveyEdit = ':phaseId/native-survey/edit',
+  projectPhaseVolunteeringCause = ':phaseId/volunteering/causes/:causeId',
+  projectPhaseOfflineInputs = ':phaseId/offline-inputs',
+  projectPhaseReport = ':phaseId/report',
+  projectAnalysis = 'analysis/:analysisId',
+}
+
+export type projectsRouteTypes =
+  | AdminRoute<projectsRoutes.projects>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/ideas/${string}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/settings`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectEvents}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectSettingsDescription}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectEvents}/${string}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectSettingsTags}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectTraffic}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectParticipation}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectPhasesSetup}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/setup`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectNewPhase}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-results`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/polls`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/access-rights`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/ideas`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/ideaform`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/map`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/new`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/new`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/ideaform/edit`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/native-survey/edit`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/native-survey/edit?${string}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/${string}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/analysis/${string}`>;
+
 const createAdminProjectsRoutes = () => {
   return {
-    path: 'projects',
+    path: projectsRoutes.projects,
     element: (
       <PageLoading>
         <AdminProjectsAndFolders />
@@ -62,7 +146,7 @@ const createAdminProjectsRoutes = () => {
       ...moduleConfiguration.routes['admin.project_templates'],
       ...moduleConfiguration.routes['admin.projects'],
       {
-        path: ':projectId/ideas/:ideaId',
+        path: projectsRoutes.projectIdeaId,
         element: (
           <PageLoading>
             <AdminProjectIdeaPreviewIndex />
@@ -70,7 +154,7 @@ const createAdminProjectsRoutes = () => {
         ),
       },
       {
-        path: ':projectId/settings',
+        path: projectsRoutes.projectSettings,
         element: (
           <PageLoading>
             <AdminProjectsProjectSettings />
@@ -86,7 +170,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'description',
+            path: projectsRoutes.projectSettingsDescription,
             element: (
               <PageLoading>
                 <AdminProjectDescription />
@@ -94,35 +178,11 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'events',
-            element: (
-              <PageLoading>
-                <AdminProjectEvents />
-              </PageLoading>
-            ),
-          },
-          {
-            path: 'events/new',
-            element: (
-              <PageLoading>
-                <AdminProjectEventsEdit />
-              </PageLoading>
-            ),
-          },
-          {
-            path: 'events/:id',
-            element: (
-              <PageLoading>
-                <AdminProjectEventsEdit />
-              </PageLoading>
-            ),
-          },
-          {
-            path: 'tags',
+            path: projectsRoutes.projectSettingsTags,
             element: <AdminAllowedTopicsComponent />,
           },
           {
-            path: 'access-rights',
+            path: projectsRoutes.projectSettingsAccessRights,
             element: (
               <PageLoading>
                 <AdminProjectPermissions />
@@ -132,7 +192,7 @@ const createAdminProjectsRoutes = () => {
         ],
       },
       {
-        path: ':projectId',
+        path: projectsRoutes.projectId,
         element: (
           <PageLoading>
             <AdminProjectsProjectIndex />
@@ -145,144 +205,23 @@ const createAdminProjectsRoutes = () => {
             element: <Navigate to="phases/setup" replace />,
           },
           {
-            path: 'phases/setup',
+            path: projectsRoutes.projectTraffic,
             element: (
               <PageLoading>
-                <AdminPhaseNewAndEdit />
+                <ProjectTraffic />
               </PageLoading>
             ),
           },
           {
-            path: 'phases/:phaseId/setup',
+            path: projectsRoutes.projectParticipation,
             element: (
               <PageLoading>
-                <AdminPhaseNewAndEdit />
+                <ProjectParticipation />
               </PageLoading>
             ),
           },
           {
-            path: 'phases/new',
-            element: (
-              <PageLoading>
-                <AdminPhaseNewAndEdit />
-              </PageLoading>
-            ),
-          },
-          // TODO: Hook up input manager on phase
-          // {
-          //   path: 'timeline/:id/ideas',
-          //   element: (
-          //     <PageLoading>
-          //       <AdminProjectIdeas />
-          //     </PageLoading>
-          //   ),
-          // },
-          {
-            path: 'phases/:phaseId',
-            element: (
-              <PageLoading>
-                <AdminPhaseNewAndEdit />
-              </PageLoading>
-            ),
-          },
-          {
-            path: 'phases/:phaseId/survey-results',
-            element: (
-              <PageLoading>
-                <AdminProjectSurveyResults />
-              </PageLoading>
-            ),
-          },
-          {
-            path: 'phases/:phaseId/polls',
-            element: (
-              <PageLoading>
-                <AdminProjectPoll />
-              </PageLoading>
-            ),
-          },
-          {
-            path: 'phases/:phaseId/access-rights',
-            element: (
-              <PageLoading>
-                <AdminProjectPermissions />
-              </PageLoading>
-            ),
-          },
-          {
-            path: 'phases/:phaseId/ideas',
-            element: (
-              <PageLoading>
-                <AdminProjectIdeas />
-              </PageLoading>
-            ),
-          },
-          {
-            path: 'phases/:phaseId/ideaform',
-            element: (
-              <PageLoading>
-                <AdminProjectIdeaForm />
-              </PageLoading>
-            ),
-          },
-          {
-            path: 'phases/:phaseId/volunteering',
-            element: (
-              <PageLoading>
-                <AdminProjectVolunteering />
-              </PageLoading>
-            ),
-          },
-          {
-            path: 'phases/:phaseId/volunteering/causes/new',
-            element: (
-              <PageLoading>
-                <AdminProjectVolunteeringNew />
-              </PageLoading>
-            ),
-          },
-          {
-            path: 'phases/:phaseId/native-survey',
-            element: <AdminProjectsSurvey />,
-          },
-          {
-            path: 'phases/:phaseId/volunteering/causes/new',
-            element: (
-              <PageLoading>
-                <AdminProjectVolunteeringNew />
-              </PageLoading>
-            ),
-          },
-          {
-            path: 'ideaform/edit',
-            element: <IdeaFormBuilder />,
-          },
-          {
-            path: 'phases/:phaseId/ideaform/edit',
-            element: <IdeaFormBuilder />,
-          },
-          {
-            path: 'native-survey/edit',
-            element: <SurveyFormBuilder />,
-          },
-          {
-            path: 'phases/:phaseId/native-survey/edit',
-            element: <SurveyFormBuilder />,
-          },
-          {
-            path: 'phases/:phaseId/volunteering/causes/:causeId',
-            element: (
-              <PageLoading>
-                <AdminProjectVolunteeringEdit />
-              </PageLoading>
-            ),
-          },
-          // {
-          //   path: 'allowed-input-topics',
-          //   element: <AdminAllowedTopicsComponent />,
-          // },
-          {
-            path: 'analysis/:analysisId',
+            path: projectsRoutes.projectAnalysis,
             element: (
               <PageLoading>
                 <AdminProjectAnalysis />
@@ -290,14 +229,188 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'phases/:phaseId/offline-inputs',
+            path: projectsRoutes.projectEvents,
             element: (
               <PageLoading>
-                <OfflineInputImporter />
+                <AdminProjectEvents />
               </PageLoading>
             ),
           },
-          ...moduleConfiguration.routes['admin.projects.project'],
+          {
+            path: projectsRoutes.projectEventsNew,
+            element: (
+              <PageLoading>
+                <AdminProjectEventsEdit />
+              </PageLoading>
+            ),
+          },
+          {
+            path: projectsRoutes.projectEventsId,
+            element: (
+              <PageLoading>
+                <AdminProjectEventsEdit />
+              </PageLoading>
+            ),
+          },
+          {
+            path: projectsRoutes.projectIdPhases,
+            element: (
+              <PageLoading>
+                <AdminProjectPhaseIndex />
+              </PageLoading>
+            ),
+            // all routes under /admin/projects/:projectId/phases
+            children: [
+              {
+                path: projectsRoutes.projectPhasesSetup,
+                element: (
+                  <PageLoading>
+                    <AdminPhaseNewAndEdit />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: projectsRoutes.projectPhaseSetup,
+                element: (
+                  <PageLoading>
+                    {/* We use the key here to make sure that the component is treated as a different instance
+                    to differentiate between the new and edit phase. This distinction is especially important
+                    when the component is already visible and the route changes to the same component.
+                    For example, from phase setup to creating a new phase.
+                    */}
+                    <AdminPhaseNewAndEdit key="setup" />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: projectsRoutes.projectNewPhase,
+                element: (
+                  <PageLoading>
+                    {/* We use the key here to make sure that the component is treated as a different instance
+                    to differentiate between the new and edit phase. This distinction is especially important
+                    when the component is already visible and the route changes to the same component.
+                    For example, from phase setup to creating a new phase.
+                    */}
+                    <AdminPhaseNewAndEdit key="new" />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: projectsRoutes.projectPhase,
+                element: (
+                  <PageLoading>
+                    <AdminPhaseNewAndEdit />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: projectsRoutes.projectPhaseSurveyResults,
+                element: (
+                  <PageLoading>
+                    <AdminProjectSurveyResults />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: projectsRoutes.projectPhasePolls,
+                element: (
+                  <PageLoading>
+                    <AdminProjectPoll />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: projectsRoutes.projectPhaseAccessRights,
+                element: (
+                  <PageLoading>
+                    <AdminProjectPermissions />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: projectsRoutes.projectPhaseIdeas,
+                element: (
+                  <PageLoading>
+                    <AdminProjectIdeas />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: projectsRoutes.projectPhaseIdeaForm,
+                element: (
+                  <PageLoading>
+                    <AdminProjectIdeaForm />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: projectsRoutes.projectPhaseVolunteering,
+                element: (
+                  <PageLoading>
+                    <AdminProjectVolunteering />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: projectsRoutes.projectPhaseMap,
+                element: (
+                  <PageLoading>
+                    <AdminCustomMapConfigComponent />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: projectsRoutes.projectPhaseVolunteeringNewCause,
+                element: (
+                  <PageLoading>
+                    <AdminProjectVolunteeringNew />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: projectsRoutes.projectPhaseNativeSurvey,
+                element: <AdminProjectsSurvey />,
+              },
+              {
+                path: projectsRoutes.projectPhaseIdeaFormEdit,
+                element: <IdeaFormBuilder />,
+              },
+              {
+                path: projectsRoutes.projectPhaseNativeSurveyEdit,
+                element: <SurveyFormBuilder />,
+              },
+              {
+                path: projectsRoutes.projectPhaseVolunteeringCause,
+                element: (
+                  <PageLoading>
+                    <AdminProjectVolunteeringEdit />
+                  </PageLoading>
+                ),
+              },
+              // {
+              //   path: 'allowed-input-topics',
+              //   element: <AdminAllowedTopicsComponent />,
+              // },
+
+              {
+                path: projectsRoutes.projectPhaseOfflineInputs,
+                element: (
+                  <PageLoading>
+                    <OfflineInputImporter />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: projectsRoutes.projectPhaseReport,
+                element: (
+                  <PageLoading>
+                    <ReportTab />
+                  </PageLoading>
+                ),
+              },
+              ...moduleConfiguration.routes['admin.projects.project'],
+            ],
+          },
         ],
       },
     ],

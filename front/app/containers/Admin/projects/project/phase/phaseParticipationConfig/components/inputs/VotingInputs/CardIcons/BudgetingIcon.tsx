@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
 const BudgetingIcon = ({ selected }: { selected: boolean }) => {

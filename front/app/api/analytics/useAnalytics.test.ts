@@ -1,11 +1,10 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useAnalytics from './useAnalytics';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useAnalytics from './useAnalytics';
 
 const apiPath = '*analytics';
 

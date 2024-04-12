@@ -1,7 +1,10 @@
 import React from 'react';
-import { render, screen } from 'utils/testUtils/rtl';
-import PublicApiTokens from './';
+
 import { data } from 'api/api_clients/__mocks__/useApiClients';
+
+import { render, screen } from 'utils/testUtils/rtl';
+
+import PublicApiTokens from './';
 
 const mockData = data;
 

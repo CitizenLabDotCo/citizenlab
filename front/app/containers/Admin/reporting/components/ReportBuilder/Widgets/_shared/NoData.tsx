@@ -1,9 +1,7 @@
 import React from 'react';
 
-// components
 import { Text } from '@citizenlab/cl2-component-library';
 
-// i18n
 import { useIntl, MessageDescriptor } from 'utils/cl-intl';
 
 interface Props {

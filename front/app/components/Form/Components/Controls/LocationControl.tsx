@@ -1,21 +1,25 @@
 import React, { useState } from 'react';
 
-import { withJsonFormsControlProps } from '@jsonforms/react';
-import LocationInput, { Option } from 'components/UI/LocationInput';
+import { Box, Text, IconTooltip } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
   RankedTester,
   rankWith,
   scopeEndsWith,
 } from '@jsonforms/core';
-import { FormLabel } from 'components/UI/FormComponents';
-import ErrorDisplay from '../ErrorDisplay';
+import { withJsonFormsControlProps } from '@jsonforms/react';
 import { WrappedComponentProps } from 'react-intl';
-import { getLabel } from 'utils/JSONFormUtils';
-import { getSubtextElement } from './controlUtils';
-import { Box, Text, IconTooltip } from '@citizenlab/cl2-component-library';
-import messages from './messages';
+
+import { FormLabel } from 'components/UI/FormComponents';
+import LocationInput, { Option } from 'components/UI/LocationInput';
+
 import { useIntl } from 'utils/cl-intl';
+import { getLabel } from 'utils/JSONFormUtils';
+
+import ErrorDisplay from '../ErrorDisplay';
+
+import { getSubtextElement } from './controlUtils';
+import messages from './messages';
 
 const LocationControl = ({
   uischema,

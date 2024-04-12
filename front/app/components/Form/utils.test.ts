@@ -1,8 +1,8 @@
-import { getFormSchemaAndData } from './utils';
-import Ajv from 'ajv';
 import { RuleEffect } from '@jsonforms/core';
 
-const ajv = new Ajv({ useDefaults: 'empty', removeAdditional: true });
+import { getFormSchemaAndData } from './utils';
+
+import { customAjv } from '.';
 
 describe('getFormSchemaAndData', () => {
   it('should return the same schema and data if no elements are hidden', () => {
@@ -42,7 +42,7 @@ describe('getFormSchemaAndData', () => {
       schema,
       uiSchema,
       data,
-      ajv
+      customAjv
     );
 
     expect(resultSchema).toEqual(schema);
@@ -150,7 +150,7 @@ describe('getFormSchemaAndData', () => {
       schema,
       uiSchema,
       data,
-      ajv
+      customAjv
     );
 
     expect(resultSchema).toEqual(expectedSchema);

@@ -1,24 +1,21 @@
 import React from 'react';
 
-// components
-import InternalComment from './InternalComment';
-import InternalChildCommentForm from './InternalChildCommentForm';
 import { Spinner } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import commentsMessages from 'components/PostShowComponents/Comments/messages';
-
-// style
-import styled, { useTheme } from 'styled-components';
 import { darken } from 'polished';
+import { useLocation } from 'react-router-dom';
+import styled, { useTheme } from 'styled-components';
 
-// hooks
 import useIdeaById from 'api/ideas/useIdeaById';
 import useInternalComment from 'api/internal_comments/useInternalComment';
 import useInternalComments from 'api/internal_comments/useInternalComments';
-import { useLocation } from 'react-router-dom';
+
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
+import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import InternalChildCommentForm from './InternalChildCommentForm';
+import InternalComment from './InternalComment';
 
 const Container = styled.div`
   position: relative;

@@ -2,14 +2,11 @@ import React, { useCallback } from 'react';
 
 import useAuthUser from 'api/me/useAuthUser';
 
-// components
-import BaseProjectFilter from 'components/UI/ProjectFilter';
-
-// i18n
-import { MessageDescriptor } from 'utils/cl-intl';
 import dashboardFilterMessages from 'containers/Admin/dashboard/components/filters/messages';
 
-// utils
+import BaseProjectFilter from 'components/UI/ProjectFilter';
+
+import { MessageDescriptor } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
 
 interface Option {
@@ -18,12 +15,14 @@ interface Option {
 }
 
 interface Props {
+  id?: string;
   projectId?: string;
   emptyOptionMessage?: MessageDescriptor;
   onProjectFilter: (filter: Option) => void;
 }
 
 const ProjectFilter = ({
+  id,
   projectId,
   emptyOptionMessage,
   onProjectFilter,
@@ -51,7 +50,7 @@ const ProjectFilter = ({
 
   return (
     <BaseProjectFilter
-      id="e2e-report-builder-project-filter-box"
+      id={id || 'e2e-report-builder-project-filter-box'}
       width="100%"
       mb="20px"
       projectId={projectId}

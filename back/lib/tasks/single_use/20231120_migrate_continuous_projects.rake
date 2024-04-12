@@ -10,7 +10,6 @@ namespace :single_use do
     Rails.logger.info 'DRY RUN: Changes will not be persisted' unless persist_changes
     stats = {}
 
-    # TODO: Test that it continues if there are errors
     Tenant.prioritize(Tenant.creation_finalized).each do |tenant|
       next unless tenant.host == specify_host || specify_host.blank?
 

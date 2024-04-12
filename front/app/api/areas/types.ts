@@ -1,5 +1,7 @@
 import { ILinks, IRelationship, Multiloc } from 'typings';
+
 import { Keys } from 'utils/cl-react-query/types';
+
 import areasKeys from './keys';
 
 export type AreasKeys = Keys<typeof areasKeys>;

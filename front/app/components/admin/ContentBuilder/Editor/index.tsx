@@ -1,11 +1,11 @@
 import React from 'react';
+
 import {
   Editor as CraftEditor,
   SerializedNodes,
   Resolver,
 } from '@craftjs/core';
 
-// craft
 import RenderNode from './RenderNode';
 
 type EditorProps = {

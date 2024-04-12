@@ -1,16 +1,13 @@
-// Libraries
 import React, { memo } from 'react';
 
-// Components
+import { colors, fontSizes } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
 import Button from 'components/UI/Button';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
-// Styling
-import styled from 'styled-components';
-import { colors, fontSizes } from '@citizenlab/cl2-component-library';
+import messages from './messages';
 
 const TitleWrapper = styled.div`
   min-height: 105px;

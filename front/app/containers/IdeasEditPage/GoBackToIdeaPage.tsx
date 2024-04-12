@@ -1,16 +1,14 @@
 import React from 'react';
 
-// Components
-import Button from 'components/UI/Button';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
-// Utils
-import { ScreenReaderOnly } from 'utils/a11y';
+import { IIdeaData } from 'api/ideas/types';
 
-// Hooks
 import useLocalize from 'hooks/useLocalize';
 
-import { IIdeaData } from 'api/ideas/types';
+import Button from 'components/UI/Button';
+
+import { ScreenReaderOnly } from 'utils/a11y';
 
 interface Props {
   idea: IIdeaData;

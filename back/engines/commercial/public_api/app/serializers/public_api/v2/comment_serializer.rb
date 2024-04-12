@@ -16,4 +16,5 @@ class PublicApi::V2::CommentSerializer < PublicApi::V2::BaseSerializer
 
   attribute(:body) { MultilocService.new.t(object.body_multiloc) }
   attribute(:post_type) { classname_to_type(object.post_type) }
+  attribute(:project_id) { object.post.project_id if object.post_type == 'Idea' }
 end

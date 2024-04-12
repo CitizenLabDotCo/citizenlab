@@ -1,30 +1,27 @@
 import React from 'react';
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../../../tracks';
 
-// hooks
-import useNavbarItems from 'api/navbar/useNavbarItems';
+import { Box, media, colors } from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
+import styled from 'styled-components';
+
 import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
+import useNavbarItems from 'api/navbar/useNavbarItems';
+
 import useLocalize from 'hooks/useLocalize';
 
-// components
-import FullscreenModal from 'components/UI/FullscreenModal';
-import TenantLogo from '../../TenantLogo';
-import FullMobileNavMenuItem from './FullMobileNavMenuItem';
-
-// styles
-import styled from 'styled-components';
-import { darken } from 'polished';
-
-// i18n
-import messages from '../../../messages';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
 import CloseIconButton from 'components/UI/CloseIconButton';
-import getNavbarItemPropsArray from '../../DesktopNavItems/getNavbarItemPropsArray';
+import FullscreenModal from 'components/UI/FullscreenModal';
+
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
-import { Box, media, colors } from '@citizenlab/cl2-component-library';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from '../../../messages';
+import tracks from '../../../tracks';
+import getNavbarItemPropsArray from '../../DesktopNavItems/getNavbarItemPropsArray';
+import TenantLogo from '../../TenantLogo';
+
+import FullMobileNavMenuItem from './FullMobileNavMenuItem';
 
 const Container = styled.div`
   height: 100%;
@@ -161,7 +158,7 @@ const FullMobileNavMenu = ({
                 );
               })}
               <FullMobileNavMenuItem
-                linkTo="/projects?focusSearch=true"
+                linkTo={'/projects?focusSearch=true'}
                 navigationItemTitle={formatMessage(messages.search)}
                 onClick={handleOnMenuItemClick('/projects?focusSearch=true')}
                 iconName="search"

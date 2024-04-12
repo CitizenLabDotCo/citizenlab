@@ -93,12 +93,28 @@ describe ProjectCopyService do
         'input_type' => field.input_type,
         'title_multiloc' => field.title_multiloc,
         'description_multiloc' => field.description_multiloc,
+        'random_option_ordering' => field.random_option_ordering,
         'text_images_attributes' => [
           hash_including(
             'imageable_field' => 'description_multiloc',
             'remote_image_url' => match(%r{/uploads/#{uuid_regex}/text_image/image/#{uuid_regex}/#{uuid_regex}.gif})
           )
         ]
+      )
+    end
+
+    it 'successfully exports custom field option images' do
+      field = create(:custom_field_select, :for_custom_form)
+      option = create(:custom_field_option, custom_field: field, image: create(:custom_field_option_image))
+      template = service.export field.resource.participation_context
+
+      expect(template['models']['custom_field_option_image'].size).to eq 1
+      expect(template['models']['custom_field_option_image'].first).to match hash_including(
+        'created_at' => an_instance_of(String),
+        'updated_at' => an_instance_of(String),
+        'custom_field_option_ref' => hash_including('custom_field_ref' => an_instance_of(Hash)),
+        'remote_image_url' => an_instance_of(String),
+        'ordering' => option.image.ordering
       )
     end
 
@@ -127,6 +143,68 @@ describe ProjectCopyService do
       }
       expect(template['models']['idea'].size).to eq 1
       expect(template['models']['idea'].first['custom_field_values']).to match expected_custom_field_values
+    end
+
+    it 'successfully copies map_configs associated with phase-level form custom_fields' do
+      open_ended_project = create(:single_phase_native_survey_project, title_multiloc: { en: 'open ended' })
+      form1 = create(:custom_form, participation_context: open_ended_project.phases.first)
+      field1 = create(:custom_field_point, :for_custom_form, resource: form1)
+      map_config = create(:map_config, zoom_level: 17, mappable: field1)
+
+      template = service.export open_ended_project
+
+      expect(template['models']['custom_field'].size).to eq 1
+      expect(template['models']['custom_maps/map_config'].size).to eq 1
+
+      tenant = create(:tenant)
+      tenant.switch do
+        expect(CustomMaps::MapConfig.count).to eq 0
+
+        service.import template
+
+        expect(CustomMaps::MapConfig.count).to eq 1
+        expect(CustomMaps::MapConfig.first.zoom_level).to eq map_config.zoom_level
+      end
+    end
+
+    it 'successfully copies map_configs associated with project-level form custom_fields' do
+      project = create(:project)
+      form1 = create(:custom_form, participation_context: project)
+      field1 = create(:custom_field_point, :for_custom_form, resource: form1)
+      map_config = create(:map_config, zoom_level: 17, mappable: field1)
+
+      template = service.export project
+
+      expect(template['models']['custom_maps/map_config'].size).to eq 1
+
+      tenant = create(:tenant)
+      tenant.switch do
+        expect(CustomMaps::MapConfig.count).to eq 0
+
+        service.import template
+
+        expect(CustomMaps::MapConfig.count).to eq 1
+        expect(CustomMaps::MapConfig.first.zoom_level).to eq map_config.zoom_level
+      end
+    end
+
+    it 'successfully copies map_configs associated with projects' do
+      project = create(:project)
+      map_config = create(:map_config, zoom_level: 17, mappable: project)
+
+      template = service.export project
+
+      expect(template['models']['custom_maps/map_config'].size).to eq 1
+
+      tenant = create(:tenant)
+      tenant.switch do
+        expect(CustomMaps::MapConfig.count).to eq 0
+
+        service.import template
+
+        expect(CustomMaps::MapConfig.count).to eq 1
+        expect(CustomMaps::MapConfig.first.zoom_level).to eq map_config.zoom_level
+      end
     end
 
     it 'includes volunteers' do
@@ -164,7 +242,7 @@ describe ProjectCopyService do
         'title_multiloc' => event.title_multiloc,
         'description_multiloc' => event.description_multiloc,
         'location_multiloc' => event.location_multiloc,
-        'location_point' => event.location_point_geojson,
+        'location_point_geojson' => event.location_point_geojson,
         'online_link' => event.online_link,
         'address_1' => event.address_1,
         'address_2_multiloc' => event.address_2_multiloc,

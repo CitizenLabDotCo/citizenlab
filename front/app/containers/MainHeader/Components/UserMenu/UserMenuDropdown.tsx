@@ -1,33 +1,23 @@
 import React, { MouseEvent, KeyboardEvent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
-import Button from 'components/UI/Button';
 import { Dropdown, colors } from '@citizenlab/cl2-component-library';
-import HasPermission from 'components/HasPermission';
-
-// services
-import signOut from 'api/authentication/sign_in_out/signOut';
-
-// hooks
-import useAuthUser from 'api/me/useAuthUser';
-import useAuthenticationRequirements from 'api/authentication/authentication_requirements/useAuthenticationRequirements';
-
-// events
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-
-// style
 import styled from 'styled-components';
 
-// constants
 import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
+import useAuthenticationRequirements from 'api/authentication/authentication_requirements/useAuthenticationRequirements';
+import signOut from 'api/authentication/sign_in_out/signOut';
+import useAuthUser from 'api/me/useAuthUser';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// utils
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { showOnboarding } from 'containers/Authentication/useSteps/stepConfig/utils';
+
+import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { usePermission } from 'utils/permissions';
+
+import messages from './messages';
 
 const DropdownListItem = styled(Button)``;
 
@@ -41,6 +31,10 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
   const { data: authUser } = useAuthUser();
   const { data: authenticationRequirementsResponse } =
     useAuthenticationRequirements(GLOBAL_CONTEXT);
+  const canAccessAdmin = usePermission({
+    item: { type: 'route', path: '/admin' },
+    action: 'access',
+  });
 
   const isRegisteredUser =
     !isNilOrError(authUser) &&
@@ -80,10 +74,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
       onClickOutside={handleToggleDropdown}
       content={
         <>
-          <HasPermission
-            item={{ type: 'route', path: '/admin' }}
-            action="access"
-          >
+          {canAccessAdmin && (
             <DropdownListItem
               id="admin-link"
               linkTo={'/admin'}
@@ -98,7 +89,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
             >
               <FormattedMessage {...messages.admin} />
             </DropdownListItem>
-          </HasPermission>
+          )}
 
           {isConfirmedUser && (
             <DropdownListItem

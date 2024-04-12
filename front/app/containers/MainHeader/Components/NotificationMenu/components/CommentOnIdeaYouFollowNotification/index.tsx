@@ -1,26 +1,21 @@
 import React, { memo } from 'react';
-import { isNilOrError, stopPropagation } from 'utils/helperUtils';
-import { DeletedUser } from '../Notification';
 
 // data
+
+import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
 import { ICommentOnIdeaYouFollowNotificationData } from 'api/notifications/types';
+import usePhases from 'api/phases/usePhases';
+import { getInputTerm } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
 
-// i18n
-import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
-// components
-import NotificationWrapper from '../NotificationWrapper';
 import Link from 'utils/cl-router/Link';
+import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 import { getInputTermMessage } from 'utils/i18n';
 
-// hooks
-import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
-import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
-
-// services
-import { getInputTerm } from 'api/phases/utils';
+import messages from '../../messages';
+import { DeletedUser } from '../Notification';
+import NotificationWrapper from '../NotificationWrapper';
 
 interface Props {
   notification: ICommentOnIdeaYouFollowNotificationData;

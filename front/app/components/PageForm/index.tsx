@@ -1,36 +1,29 @@
 import React, { useEffect } from 'react';
 
-// types
-import { Multiloc, UploadFile } from 'typings';
-
-// form
-import { useForm, FormProvider } from 'react-hook-form';
+import { IconTooltip, Label, Box } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
+import { Multiloc, UploadFile } from 'typings';
 import { object, mixed } from 'yup';
-import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
+
+import useCustomPageById from 'api/custom_pages/useCustomPageById';
+import usePageFiles from 'api/page_files/usePageFiles';
+
+import { SectionField } from 'components/admin/Section';
+import Feedback from 'components/HookForm/Feedback';
+import FileUploader from 'components/HookForm/FileUploader';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
-import FileUploader from 'components/HookForm/FileUploader';
-import Feedback from 'components/HookForm/Feedback';
-import { SectionField } from 'components/admin/Section';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
-
-// intl
-import messages from './messages';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-// components
-import { IconTooltip, Label, Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import NavbarTitleField from './NavbarTitleField';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// hooks
-import usePageFiles from 'api/page_files/usePageFiles';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
-import useCustomPageById from 'api/custom_pages/useCustomPageById';
+import { isNilOrError } from 'utils/helperUtils';
+import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
+
+import messages from './messages';
+import NavbarTitleField from './NavbarTitleField';
 
 export interface FormValues {
   nav_bar_item_title_multiloc?: Multiloc;

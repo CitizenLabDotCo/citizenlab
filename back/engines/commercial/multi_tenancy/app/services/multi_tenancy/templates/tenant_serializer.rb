@@ -77,10 +77,10 @@ module MultiTenancy
               custom_field: CustomField.where.not(code: 'domicile').or(CustomField.where(code: nil))
             )
           ),
+          CustomFieldOptionImage => serialize_records(CustomFieldOptionImage),
 
           # Custom maps
           CustomMaps::Layer => serialize_records(CustomMaps::Layer),
-          CustomMaps::LegendItem => serialize_records(CustomMaps::LegendItem),
           CustomMaps::MapConfig => serialize_records(CustomMaps::MapConfig),
 
           # Polls
@@ -204,7 +204,7 @@ module MultiTenancy
         return {} if record_class.nil? && scope.size == 0 # rubocop:disable Style/ZeroLengthPredicate
 
         serializer_class = MultiTenancy::Templates::Serializers.const_get(record_class.name)
-        serializer = serializer_class.new(@serialization_params)
+        serializer = serializer_class.new(**@serialization_params)
         scope.to_h { |record| [record.id, serializer.serialize(record)] }
       end
 

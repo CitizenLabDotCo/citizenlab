@@ -1,13 +1,5 @@
 import React, { useMemo } from 'react';
 
-// hooks
-import useProjects from 'api/projects/useProjects';
-import useAuthUser from 'api/me/useAuthUser';
-
-// styling
-import styled from 'styled-components';
-
-// components
 import {
   Select,
   Box,
@@ -15,15 +7,24 @@ import {
   Spinner,
   BoxProps,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+import { IOption } from 'typings';
 
-// i18n
+import useAuthUser from 'api/me/useAuthUser';
+import { IProjectData, PublicationStatus } from 'api/projects/types';
+import useProjects from 'api/projects/useProjects';
+
 import useLocalize, { Localize } from 'hooks/useLocalize';
+
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+
 import messages from './messages';
 
-// typings
-import { IOption } from 'typings';
-import { IProjectData, PublicationStatus } from 'api/projects/types';
+const PUBLICATION_STATUSES: PublicationStatus[] = [
+  'published',
+  'archived',
+  'draft',
+];
 
 interface Option {
   value: string | undefined;
@@ -56,8 +57,6 @@ const generateProjectOptions = (
 
   return [...(emptyOption ? [emptyOption] : []), ...projectOptions];
 };
-
-const PUBLICATION_STATUSES: PublicationStatus[] = ['published', 'archived'];
 
 const ProjectFilter = ({
   projectId,

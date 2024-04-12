@@ -1,38 +1,35 @@
 import React from 'react';
-import bowser from 'bowser';
 
-// api
-import usePhase from 'api/phases/usePhase';
-import useProjectById from 'api/projects/useProjectById';
-import useIdeaImage from 'api/idea_images/useIdeaImage';
-
-// i18n
-import useLocalize from 'hooks/useLocalize';
-
-// components
 import {
   useBreakpoint,
   Box,
   defaultCardStyle,
   defaultCardHoverStyle,
   media,
+  Text,
 } from '@citizenlab/cl2-component-library';
-import Image from 'components/UI/Image';
-import ImagePlaceholder from './ImagePlaceholder';
-import Rank from './Rank';
-import Results from './Results';
-import Footer from 'components/IdeaCard/Footer';
-
-// styling
+import { RouteType } from 'routes';
 import styled from 'styled-components';
 
-// router
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import useIdeaImage from 'api/idea_images/useIdeaImage';
+import { IIdeaData } from 'api/ideas/types';
+import usePhase from 'api/phases/usePhase';
+
+import useLocalize from 'hooks/useLocalize';
+
+import Footer from 'components/IdeaCard/Footer';
+import Image from 'components/UI/Image';
+
+import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import FormattedBudget from 'utils/currency/FormattedBudget';
 
-// typings
-import { IIdeaData } from 'api/ideas/types';
+import ImagePlaceholder from './ImagePlaceholder';
+import messages from './messages';
+import ProgressBar from './ProgressBar';
+import Rank from './Rank';
 
 const cardPadding = '17px';
 const cardInnerHeight = '162px';
@@ -47,10 +44,10 @@ const Container = styled(Link)`
   ${defaultCardStyle};
   cursor: pointer;
 
-  &.desktop {
+  ${media.desktop`
     ${defaultCardHoverStyle};
     transform: translate(0px, -2px);
-  }
+  `}
 
   @media (max-width: 1220px) and (min-width: 1023px) {
     min-height: calc(
@@ -153,19 +150,20 @@ interface Props {
 
 const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const { data: phase } = usePhase(phaseId);
-  const { data: project } = useProjectById(idea.relationships.project.data.id);
   const { data: ideaImage } = useIdeaImage(
     idea.id,
     idea.relationships.idea_images.data?.[0]?.id
   );
   const smallerThanPhone = useBreakpoint('phone');
 
-  if (!phase || !project) return null;
+  if (!phase) return null;
 
+  const budget = idea.attributes.budget;
   const ideaTitle = localize(idea.attributes.title_multiloc);
   const votingMethod = phase.data.attributes.voting_method;
-  const url = `/ideas/${idea.attributes.slug}?go_back=true`;
+  const url: RouteType = `/ideas/${idea.attributes.slug}?go_back=true`;
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -183,9 +181,7 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
       id={idea.id}
       to={url}
       onClick={handleClick}
-      className={`e2e-card ${
-        !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
-      }`}
+      className={'e2e-card'}
     >
       {image && (
         <IdeaCardImageWrapper>
@@ -226,13 +222,21 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
 
         <Header>
           <Title title={ideaTitle}>{ideaTitle}</Title>
+          {phase.data.attributes.voting_method === 'budgeting' &&
+            typeof budget === 'number' && (
+              <Text mb="8px" mt="8px" color="tenantPrimary">
+                {formatMessage(messages.cost)}{' '}
+                <FormattedBudget value={budget} />
+              </Text>
+            )}
         </Header>
 
         <Body>
-          <Results phase={phase} idea={idea} />
+          <Box h="100%" display="flex" alignItems="flex-end">
+            <ProgressBar idea={idea} phase={phase} />
+          </Box>
         </Body>
         <Footer
-          project={project}
           idea={idea}
           hideIdeaStatus={true}
           participationMethod="voting"

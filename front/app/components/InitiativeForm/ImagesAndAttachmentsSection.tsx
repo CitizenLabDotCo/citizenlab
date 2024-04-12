@@ -1,4 +1,6 @@
 import React from 'react';
+
+import { SectionField } from 'components/admin/Section';
 import FileUploader from 'components/HookForm/FileUploader';
 import ImagesDropzone from 'components/HookForm/ImagesDropzone';
 import {
@@ -6,8 +8,8 @@ import {
   FormSectionTitle,
   FormLabel,
 } from 'components/UI/FormComponents';
+
 import messages from './messages';
-import { SectionField } from 'components/admin/Section';
 
 const ImageAndAttachmentsSection = () => {
   return (

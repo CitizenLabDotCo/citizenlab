@@ -1,13 +1,15 @@
 import React from 'react';
-import { Title } from 'components/PostShowComponents/Title';
-import { Locale } from 'typings';
+
 import useTranslation from 'modules/commercial/machine_translations/hooks/useTranslation';
+import { SupportedLocale } from 'typings';
+
+import { Title } from 'components/PostShowComponents/Title';
 
 interface Props {
   postId: string;
   postType: 'idea' | 'initiative';
   title: string;
-  locale?: Locale;
+  locale?: SupportedLocale;
   translateButtonClicked?: boolean;
   color?: string;
   align: 'left' | 'center';

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class TextImageService < ContentImageService
-  BASE64_REGEX = %r{^data:image/([a-zA-Z]*);base64,.*$}.freeze
+  BASE64_REGEX = %r{^data:image/([a-zA-Z]*);base64,.*$}
 
   protected
 

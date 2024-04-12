@@ -2,12 +2,16 @@
 import {
   linearScaleControlTester,
   LinearScaleControl,
+  PointControl,
+  pointControlTester,
   inputControlTester,
   InputControl,
   textAreaControlTester,
   TextAreaControl,
   multiSelectCheckboxControlTester,
   MultiSelectCheckboxControl,
+  imageMultichoiceControlTester,
+  ImageMultichoiceControl,
   singleSelectRadioControlTester,
   SingleSelectRadioControl,
   singleSelectRadioEnumControlTester,
@@ -27,7 +31,7 @@ import {
   clCategoryTester,
   clPageTester,
   CLCategoryLayout,
-  CLPageLayout,
+  CLSurveyPageLayout,
   locationControlTester,
   LocationControl,
   dateControlTester,
@@ -65,7 +69,7 @@ const commonRenderers = [
   { tester: imageControlTester, renderer: ImageControl },
   { tester: attachmentsControlTester, renderer: AttachmentsControl },
   { tester: clCategoryTester, renderer: CLCategoryLayout },
-  { tester: clPageTester, renderer: CLPageLayout },
+  { tester: clPageTester, renderer: CLSurveyPageLayout },
   { tester: orderedLayoutTester, renderer: OrderedLayout },
   { tester: locationControlTester, renderer: LocationControl },
   { tester: dateControlTester, renderer: DateControl },
@@ -84,6 +88,10 @@ export const selectRenderers = (formType: 'default' | 'input' | 'survey') => {
       renderer: MultiSelectCheckboxControl,
     },
     {
+      tester: imageMultichoiceControlTester,
+      renderer: ImageMultichoiceControl,
+    },
+    {
       tester: singleSelectRadioControlTester,
       renderer: SingleSelectRadioControl,
     },
@@ -94,6 +102,10 @@ export const selectRenderers = (formType: 'default' | 'input' | 'survey') => {
     {
       tester: singleAttachmentControlTester,
       renderer: SingleAttachmentControl,
+    },
+    {
+      tester: pointControlTester,
+      renderer: PointControl,
     },
     ...commonRenderers,
   ];

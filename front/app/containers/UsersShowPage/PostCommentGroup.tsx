@@ -1,11 +1,5 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// typings
-import { ICommentData } from 'api/comments/types';
-
-// style
-import styled from 'styled-components';
 import {
   colors,
   media,
@@ -13,23 +7,26 @@ import {
   defaultCardStyle,
   Icon,
 } from '@citizenlab/cl2-component-library';
-import { ScreenReaderOnly } from 'utils/a11y';
 import { darken } from 'polished';
+import styled from 'styled-components';
 
-// Components
-import Link from 'utils/cl-router/Link';
-import CommentHeader from 'components/PostShowComponents/Comments/Comment/CommentHeader';
+import { ICommentData } from 'api/comments/types';
+import useIdeaById from 'api/ideas/useIdeaById';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useUserById from 'api/users/useUserById';
+
 import CommentBody from 'components/PostShowComponents/Comments/Comment/CommentBody';
-
-// intl
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import CommentHeader from 'components/PostShowComponents/Comments/Comment/CommentHeader';
 import T from 'components/T';
 
-// hooks
-import useInitiativeById from 'api/initiatives/useInitiativeById';
-import useIdeaById from 'api/ideas/useIdeaById';
-import useUserById from 'api/users/useUserById';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
+import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+
+import messages from './messages';
 
 const Container = styled.div`
   width: 100%;
@@ -145,6 +142,10 @@ const PostCommentGroup = ({ postType, comments, userId, postId }: Props) => {
     postType === 'idea' && 'project' in post.data.relationships
       ? post.data.relationships.project.data.id
       : null;
+  const userCanModerate = {
+    idea: canModerateProject(projectId, user),
+    initiative: canModerateInitiative(user),
+  }[postType];
 
   return (
     <Container>
@@ -178,10 +179,10 @@ const PostCommentGroup = ({ postType, comments, userId, postId }: Props) => {
           return (
             <CommentContainer key={comment.id}>
               <CommentHeader
-                projectId={projectId}
                 authorId={userId}
                 commentType="parent"
                 commentAttributes={comment.attributes}
+                userCanModerate={userCanModerate}
               />
               <CommentBody
                 commentId={comment.id}

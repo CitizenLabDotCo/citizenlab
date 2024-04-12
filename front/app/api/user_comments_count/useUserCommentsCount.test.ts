@@ -1,10 +1,10 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useUserCommentsCount from './useUserCommentsCount';
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useUserCommentsCount from './useUserCommentsCount';
 
 const apiPath = '*/users/:userId/comments_count';
 

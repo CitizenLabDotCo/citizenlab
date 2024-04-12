@@ -1,10 +1,11 @@
-import { formatTranslationMessages } from './';
-import { registerLocale } from 'react-datepicker';
 import sv from 'date-fns/locale/sv';
+import { registerLocale } from 'react-datepicker';
+
+import { formatTranslationMessages } from './';
 
 registerLocale('sv-SE', sv);
-const svSETranslationMessages = require('translations/sv-SE.json');
 const svSEAdminTranslationMessages = require('translations/admin/sv-SE.json');
+const svSETranslationMessages = require('translations/sv-SE.json');
 const translationMessages = formatTranslationMessages('sv-SE', {
   ...svSETranslationMessages,
   ...svSEAdminTranslationMessages,

@@ -1,9 +1,12 @@
 import React from 'react';
-import { render, screen, fireEvent, act, within } from 'utils/testUtils/rtl';
-import ProjectDescriptionBuilderTopBar from '.';
+
 import { Editor } from '@craftjs/core';
 import { IProjectDescriptionBuilderData } from 'modules/commercial/project_description_builder/api/types';
+
 import clHistory from 'utils/cl-router/history';
+import { render, screen, fireEvent, act, within } from 'utils/testUtils/rtl';
+
+import ProjectDescriptionBuilderTopBar from '.';
 
 const mockEditorData: IProjectDescriptionBuilderData = {
   id: '2',

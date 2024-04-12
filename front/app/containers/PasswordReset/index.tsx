@@ -1,22 +1,18 @@
 import React, { FormEvent } from 'react';
-import { adopt } from 'react-adopt';
-import { isString } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 
-// router
-import clHistory from 'utils/cl-router/history';
-import Link from 'utils/cl-router/Link';
-import { parse } from 'qs';
-
-// components
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
-import PasswordInput, {
-  hasPasswordMinimumLength,
-} from 'components/UI/PasswordInput';
+import { isString } from 'lodash-es';
+import { parse } from 'qs';
 import { Helmet } from 'react-helmet';
-import { FormLabel } from 'components/UI/FormComponents';
-import Error from 'components/UI/Error';
+import { WrappedComponentProps } from 'react-intl';
+import { CLError, FormatMessage } from 'typings';
+
+import { IAppConfiguration } from 'api/app_configuration/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import resetPassword from 'api/authentication/reset_password/resetPassword';
+
 import { PasswordResetSuccess } from 'containers/PasswordReset/PasswordResetSuccess';
+
 import {
   StyledContentContainer,
   Title,
@@ -25,32 +21,22 @@ import {
   LabelContainer,
   StyledPasswordIconTooltip,
 } from 'components/smallForm';
+import Error from 'components/UI/Error';
+import { FormLabel } from 'components/UI/FormComponents';
+import PasswordInput, {
+  hasPasswordMinimumLength,
+} from 'components/UI/PasswordInput';
 
-// services
-import resetPassword from 'api/authentication/reset_password/resetPassword';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import Link from 'utils/cl-router/Link';
 
-// i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-
-// style
 import messages from './messages';
 
-// resources
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-
-// typings
-import { CLError } from 'typings';
-
-interface DataProps {
-  tenant: GetAppConfigurationChildProps;
+interface Props {
+  appConfig: IAppConfiguration | undefined;
+  formatMessage: FormatMessage;
 }
-
-interface InputProps {}
-
-interface Props extends InputProps, DataProps {}
 
 interface IApiErrors {
   token?: CLError[];
@@ -69,10 +55,7 @@ type State = {
   apiErrors: IApiErrors | null;
 };
 
-class PasswordReset extends React.PureComponent<
-  Props & WrappedComponentProps,
-  State
-> {
+class PasswordReset extends React.PureComponent<Props, State> {
   passwordInputElement: HTMLInputElement | null;
 
   constructor(props: Props & WrappedComponentProps) {
@@ -103,14 +86,14 @@ class PasswordReset extends React.PureComponent<
   }
 
   hasPasswordMinimumLengthError = () => {
-    const { tenant } = this.props;
+    const { appConfig } = this.props;
     const { password } = this.state;
 
     return typeof password === 'string'
       ? hasPasswordMinimumLength(
           password,
-          !isNilOrError(tenant)
-            ? tenant.attributes.settings.password_login?.minimum_length
+          appConfig
+            ? appConfig.data.attributes.settings.password_login?.minimum_length
             : undefined
         )
       : true;
@@ -188,7 +171,7 @@ class PasswordReset extends React.PureComponent<
   };
 
   render() {
-    const { formatMessage } = this.props.intl;
+    const { formatMessage } = this.props;
     const { password, processing, success, apiErrors, minimumLengthError } =
       this.state;
     const helmetTitle = formatMessage(messages.helmetTitle);
@@ -257,16 +240,9 @@ class PasswordReset extends React.PureComponent<
   }
 }
 
-const PasswordResetWithHocs = injectIntl(PasswordReset);
+export default () => {
+  const { data: appConfig } = useAppConfiguration();
+  const { formatMessage } = useIntl();
 
-const Data = adopt({
-  tenant: <GetAppConfiguration />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data>
-    {(dataProps: DataProps) => (
-      <PasswordResetWithHocs {...inputProps} {...dataProps} />
-    )}
-  </Data>
-);
+  return <PasswordReset appConfig={appConfig} formatMessage={formatMessage} />;
+};

@@ -1,31 +1,20 @@
 import { useEffect } from 'react';
+
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import fetcher, { BaseResponseData } from 'utils/cl-react-query/fetcher';
-import graphDataUnitKeys from './keys';
-import { ParametersLive, Options } from './requestTypes';
 import { CLErrors } from 'typings';
 
-const fetchGraphDataUnitsLive = <Response extends BaseResponseData>({
-  resolvedName,
-  props,
-}: ParametersLive) => {
-  const _props = props as any;
+import fetcher, { BaseResponseData } from 'utils/cl-react-query/fetcher';
 
+import graphDataUnitKeys from './keys';
+import { ParametersLive, Options } from './requestTypes';
+
+const fetchGraphDataUnitsLive = <Response extends BaseResponseData>(
+  queryParams: ParametersLive
+) => {
   return fetcher<Response>({
     path: `/reports/graph_data_units/live`,
     action: 'get',
-    queryParams: {
-      resolved_name: resolvedName,
-      props: {
-        project_id: _props.projectId,
-        phase_id: _props.phaseId,
-        resolution: _props.resolution,
-        group_id: _props.groupId,
-        number_of_ideas: _props.numberOfIdeas,
-        start_at: _props.startAtMoment?.format('yyyy-MM-DD'),
-        end_at: _props.endAtMoment?.format('yyyy-MM-DD'),
-      },
-    },
+    queryParams,
   });
 };
 

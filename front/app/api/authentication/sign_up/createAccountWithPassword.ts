@@ -1,6 +1,9 @@
-import { Locale } from 'typings';
-import signIn from '../sign_in_out/signIn';
+import { SupportedLocale } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
+import signIn from '../sign_in_out/signIn';
+
 import { CreateAccountWithPasswordProperties } from './types';
 
 export interface Parameters {
@@ -8,7 +11,7 @@ export interface Parameters {
   lastName: string;
   email: string;
   password: string;
-  locale: Locale;
+  locale: SupportedLocale;
   isInvitation?: boolean | null | undefined;
   token?: string | undefined | null;
 }

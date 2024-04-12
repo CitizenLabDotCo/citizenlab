@@ -1,29 +1,29 @@
 import React from 'react';
 
-// i18n
-import messages from './messages';
-import { useFormatMessageWithLocale } from 'utils/cl-intl';
-
-// components
-import Container from 'components/admin/ContentBuilder/Widgets/Container';
-import TextMultiloc from '../TextMultiloc';
-import { NoWidgetSettings } from 'components/admin/ContentBuilder/Widgets/NoWidgetSettings';
-import { Element } from '@craftjs/core';
 import { Box } from '@citizenlab/cl2-component-library';
-import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
-import TenantLogo from 'containers/MainHeader/Components/TenantLogo';
+import { Element } from '@craftjs/core';
 
-// hooks
+import useProjectById from 'api/projects/useProjectById';
 import useReport from 'api/reports/useReport';
 import useUserById from 'api/users/useUserById';
-import useProjectById from 'api/projects/useProjectById';
-import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
+
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
-// utils
-import { getFullName, withoutSpacing } from 'utils/textUtils';
-import { getPeriod } from './utils';
+import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
+import TenantLogo from 'containers/MainHeader/Components/TenantLogo';
+
+import Container from 'components/admin/ContentBuilder/Widgets/Container';
+import { NoWidgetSettings } from 'components/admin/ContentBuilder/Widgets/NoWidgetSettings';
+import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
+
+import { useFormatMessageWithLocale } from 'utils/cl-intl';
+import { getFullName, withoutSpacing } from 'utils/textUtils';
+
+import TextMultiloc from '../TextMultiloc';
+
+import messages from './messages';
+import { getPeriod } from './utils';
 
 export type Props = {
   startAt?: string;
@@ -41,7 +41,7 @@ const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
   const { data: report } = useReport(reportId);
 
   // Project mod
-  const userId = report?.data.relationships.owner.data.id;
+  const userId = report?.data.relationships.owner?.data.id;
   const { data: user } = useUserById(userId);
   const projectModerator = !user ? null : getFullName(user.data);
 

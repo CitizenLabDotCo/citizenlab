@@ -1,40 +1,29 @@
 import React from 'react';
 
-// hooks
-import useReactionsByTime from './useReactionsByTime';
-
-// router
-
-// components
 import { Box } from '@citizenlab/cl2-component-library';
-import NoData from '../../_shared/NoData';
+import moment from 'moment';
+
 import Chart from 'components/admin/GraphCards/ReactionsByTimeCard/Chart';
-
-// i18n
-import messages from '../messages';
-
-// typings
 import {
   ProjectId,
-  Dates,
+  DatesStrings,
   Resolution,
 } from 'components/admin/GraphCards/typings';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-type Props = ProjectId & Dates & Resolution;
+import NoData from '../../_shared/NoData';
+import messages from '../messages';
 
-const ReactionsByTime = ({
-  projectId,
-  startAtMoment,
-  endAtMoment,
-  resolution,
-}: Props) => {
+import useReactionsByTime from './useReactionsByTime';
+
+type Props = ProjectId & DatesStrings & Resolution;
+
+const ReactionsByTime = ({ projectId, startAt, endAt, resolution }: Props) => {
   const { currentResolution, timeSeries } = useReactionsByTime({
     projectId,
-    startAtMoment,
-    endAtMoment,
+    startAt,
+    endAt,
     resolution,
   });
 
@@ -52,8 +41,8 @@ const ReactionsByTime = ({
     >
       <Chart
         timeSeries={timeSeries}
-        startAtMoment={startAtMoment}
-        endAtMoment={endAtMoment}
+        startAtMoment={startAt ? moment(startAt) : null}
+        endAtMoment={endAt ? moment(endAt) : null}
         resolution={currentResolution}
       />
     </Box>

@@ -1,18 +1,18 @@
 import React, { memo } from 'react';
-import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
-// services
+import { RouteType } from 'routes';
+
 import { IMentionInOfficialFeedbackNotificationData } from 'api/notifications/types';
 
-// i18n
-import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// components
-import NotificationWrapper from '../NotificationWrapper';
-import Link from 'utils/cl-router/Link';
-import { DeletedUser } from '../Notification';
 import T from 'components/T';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError, stopPropagation } from 'utils/helperUtils';
+
+import messages from '../../messages';
+import { DeletedUser } from '../Notification';
+import NotificationWrapper from '../NotificationWrapper';
 
 interface Props {
   notification: IMentionInOfficialFeedbackNotificationData;
@@ -20,7 +20,7 @@ interface Props {
 
 const mapPostTypeToLink = (
   notification: IMentionInOfficialFeedbackNotificationData
-): string => {
+): RouteType => {
   switch (notification.attributes.post_type) {
     case 'Idea':
       return `/ideas/${notification.attributes.post_slug}`;

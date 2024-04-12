@@ -60,6 +60,16 @@ module MultiTenancy
               logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
               login_mechanism_name: 'Azure Active Directory'
             },
+            azure_ad_b2c_login: {
+              allowed: true,
+              enabled: true,
+              tenant_name: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_TENANT_NAME'),
+              tenant_id: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_TENANT_ID'),
+              policy_name: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_POLICY_NAME'),
+              client_id: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_CLIENT_ID'),
+              logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
+              login_mechanism_name: 'Azure AD B2C'
+            },
             franceconnect_login: {
               allowed: true,
               enabled: false,
@@ -114,14 +124,6 @@ module MultiTenancy
             custom_accessibility_statement_link: {
               enabled: false,
               allowed: false
-            },
-            project_reports: {
-              enabled: true,
-              allowed: true
-            },
-            phase_reports: {
-              enabled: true,
-              allowed: true
             },
             blocking_profanity: {
               enabled: true,
@@ -196,14 +198,6 @@ module MultiTenancy
               allowed: true
             },
             machine_translations: {
-              enabled: true,
-              allowed: true
-            },
-            similar_ideas: {
-              enabled: false,
-              allowed: true
-            },
-            geographic_dashboard: {
               enabled: true,
               allowed: true
             },
@@ -320,14 +314,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            insights_manual_flow: {
-              enabled: true,
-              allowed: true
-            },
-            insights_nlp_flow: {
-              enabled: true,
-              allowed: true
-            },
             verification: {
               enabled: true,
               allowed: true,
@@ -401,8 +387,8 @@ module MultiTenancy
               allowed: true
             },
             flag_inappropriate_content: {
-              enabled: true,
-              allowed: true
+              enabled: false,
+              allowed: false
             },
             project_management: {
               enabled: true,
@@ -439,6 +425,10 @@ module MultiTenancy
               allowed: true
             },
             report_builder: {
+              enabled: true,
+              allowed: true
+            },
+            report_data_grouping: {
               enabled: true,
               allowed: true
             },
@@ -484,6 +474,22 @@ module MultiTenancy
               allowed: true
             },
             user_session_recording: {
+              enabled: true,
+              allowed: true
+            },
+            analysis: {
+              enabled: true,
+              allowed: true
+            },
+            large_summaries: {
+              enabled: true,
+              allowed: true
+            },
+            ask_a_question: {
+              enabled: true,
+              allowed: true
+            },
+            advanced_autotagging: {
               enabled: true,
               allowed: true
             }

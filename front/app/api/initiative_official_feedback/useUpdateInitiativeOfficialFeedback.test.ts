@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useUpdateInitiativeOfficialFeedback from './useUpdateInitiativeOfficialFeedback';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { data } from './useInitiativeOfficialFeedback.test';
+import useUpdateInitiativeOfficialFeedback from './useUpdateInitiativeOfficialFeedback';
 
 const apiPath = '*official_feedback/:id';
 

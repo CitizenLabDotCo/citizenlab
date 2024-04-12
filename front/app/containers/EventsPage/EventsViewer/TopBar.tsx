@@ -1,18 +1,16 @@
 import React, { memo } from 'react';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
-// components
-import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
-import DateFilterDropdown from './DateFilterDropdown';
-
-// styling
 import styled, { useTheme } from 'styled-components';
 
-// types
+import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
+
+import DateFilterDropdown from './DateFilterDropdown';
+
 import { dateFilterKey } from '.';
 
 const ProjectFilterDropdownPositioner = styled.div`

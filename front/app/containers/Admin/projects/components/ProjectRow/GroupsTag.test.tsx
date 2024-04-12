@@ -1,5 +1,7 @@
 import * as React from 'react';
+
 import { render, screen } from 'utils/testUtils/rtl';
+
 import GroupsTag from './GroupsTag';
 
 const projectGroups = [{ id: 'projectGroup1' }, { id: 'projectGroup2' }];

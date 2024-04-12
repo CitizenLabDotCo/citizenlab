@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
+
+import styled from 'styled-components';
+
+import { IAdminPublicationData } from 'api/admin_publications/types';
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
+import useAuthUser from 'api/me/useAuthUser';
+import { PublicationStatus } from 'api/projects/types';
+
+import { SortableRow } from 'components/admin/ResourceList';
+
 import { isNilOrError } from 'utils/helperUtils';
 
-// style
-import styled from 'styled-components';
-import { SortableRow } from 'components/admin/ResourceList';
-import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import ProjectFolderRow from '../../projectFolders/components/ProjectFolderRow';
-import { PublicationStatus } from 'api/projects/types';
-import useAuthUser from 'api/me/useAuthUser';
+
 import FolderChildProjects from './FolderChildProjects';
-import { IAdminPublicationData } from 'api/admin_publications/types';
 
 const StyledSortableRow = styled(SortableRow)`
   & .sortablerow-draghandle {

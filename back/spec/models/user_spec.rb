@@ -125,33 +125,6 @@ RSpec.describe User do
     end
   end
 
-  describe 'user password authentication' do
-    it 'should be compatible with meteor encryption' do
-      u = build(:user)
-      u.first_name = 'Sebi'
-      u.last_name = 'Hoorens'
-      u.email = 'sebastien@citizenlab.co'
-      u.password_digest = '$2a$10$npkXzpkkyO.g6LjmSYHbOeq76gxpOYeei8SVsjr0LqsBiAdTeDhHK'
-      u.save
-      expect(!!u.authenticate('supersecret')).to be(true)
-      expect(!!u.authenticate('totallywrong')).to be(false)
-    end
-
-    it 'should replace the CL1 hash by the CL2 hash' do
-      u = build(:user)
-      u.first_name = 'Sebi'
-      u.last_name = 'Hoorens'
-      u.email = 'sebastien@citizenlab.co'
-      u.password_digest = '$2a$10$npkXzpkkyO.g6LjmSYHbOeq76gxpOYeei8SVsjr0LqsBiAdTeDhHK'
-      u.save
-      expect(!!u.authenticate('supersecret')).to be(true)
-      expect(u.password_digest).not_to eq('$2a$10$npkXzpkkyO.g6LjmSYHbOeq76gxpOYeei8SVsjr0LqsBiAdTeDhHK')
-      expect(!!BCrypt::Password.new(u.password_digest).is_password?('supersecret')).to be(true)
-      expect(!!u.authenticate('supersecret')).to be(true)
-      expect(!!u.authenticate('totallywrong')).to be(false)
-    end
-  end
-
   describe 'authentication without password' do
     context 'when user_confirmation feature is active' do
       before do
@@ -1254,6 +1227,83 @@ RSpec.describe User do
       user.save
       expect(user.full_name).to match(/User \d{6}/)
       expect(user.slug).to match(/user-\d{6}/)
+    end
+  end
+
+  describe '#compacted_roles' do
+    let_it_be(:user) { create(:user) }
+
+    let_it_be(:projects_in_folder) { create_list(:project, 2) }
+    let_it_be(:folder) { create(:project_folder, projects: projects_in_folder) }
+
+    # Top-level project (not in a folder)
+    let_it_be(:another_project) { create(:project) }
+
+    let_it_be(:project_in_another_folder) { create(:project) }
+    let_it_be(:another_folder) { create(:project_folder, projects: [project_in_another_folder]) }
+
+    def create_roles(projects, folders, admin: false)
+      projects = Array.wrap(projects)
+      folders = Array.wrap(folders)
+
+      [].tap do |roles|
+        roles << { 'type' => 'admin' } if admin
+        projects.each { |project| roles << { 'type' => 'project_moderator', 'project_id' => project.id } }
+        folders.each { |folder| roles << { 'type' => 'project_folder_moderator', 'project_folder_id' => folder.id } }
+      end
+    end
+
+    context 'when the roles are not redundant' do
+      where(:admin?, :projects, :folders) do
+        [
+          [true, nil, nil],
+          [true, ref(:another_project), nil],
+          [true, nil, ref(:folder)],
+          [false, ref(:another_project), ref(:folder)],
+          [false, ref(:projects_in_folder), nil],
+          [false, nil, [ref(:folder), ref(:another_folder)]],
+          [false, ref(:project_in_another_folder), ref(:folder)]
+        ]
+      end
+
+      with_them do
+        it 'does not modify the roles' do
+          user.roles = create_roles(projects, folders, admin: admin?)
+          expect(user.compacted_roles).to match(user.roles)
+        end
+      end
+    end
+
+    context 'when the roles are redundant' do
+      it 'removes redundant roles (1)' do
+        user.roles = create_roles(projects_in_folder, folder)
+        expected_roles = create_roles(nil, folder)
+        expect(user.compacted_roles).to match(expected_roles)
+      end
+
+      it 'removes redundant roles (2)' do
+        projects = projects_in_folder + [another_project]
+        user.roles = create_roles(projects, folder)
+        # only keep projects that are not in the folder
+        expected_roles = create_roles(another_project, folder)
+        expect(user.compacted_roles).to match(expected_roles)
+      end
+
+      it 'removes redundant roles (3)' do
+        folders = [folder, another_folder]
+        user.roles = create_roles(projects_in_folder, folders)
+        # only keep folder roles
+        expected_roles = create_roles(nil, folders)
+        expect(user.compacted_roles).to match(expected_roles)
+      end
+
+      it 'removes redundant roles (4)' do
+        projects = projects_in_folder + [project_in_another_folder, another_project]
+        folders = [folder, another_folder]
+        user.roles = create_roles(projects, folders)
+        expected_roles = create_roles(another_project, folders)
+        expect(user.compacted_roles).to match(expected_roles)
+      end
     end
   end
 

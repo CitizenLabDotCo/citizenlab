@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useMarkInternalCommentForDeletion from './useMarkInternalCommentForDeletion';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useMarkInternalCommentForDeletion from './useMarkInternalCommentForDeletion';
 
 const apiPath = '*internal_comments/:commentId/mark_as_deleted';
 

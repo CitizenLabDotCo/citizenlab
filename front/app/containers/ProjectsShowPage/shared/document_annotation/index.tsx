@@ -1,13 +1,18 @@
 import React from 'react';
-import Konveio from './Konveio';
+
 import { MessageDescriptor } from 'react-intl';
+
 import {
   DocumentAnnotationDisabledReason,
   IProjectData,
 } from 'api/projects/types';
-import messages from './messages';
+
 import globalMessages from 'utils/messages';
+
 import ParticipationPermission from '../ParticipationPermission';
+
+import Konveio from './Konveio';
+import messages from './messages';
 
 interface Props {
   project: IProjectData;

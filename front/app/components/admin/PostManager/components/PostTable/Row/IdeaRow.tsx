@@ -1,43 +1,40 @@
 import React, { ChangeEvent, useState, MouseEvent } from 'react';
+
+import { Box, colors, Td, Badge } from '@citizenlab/cl2-component-library';
 import { uniq, isEmpty } from 'lodash-es';
 import { useDrag } from 'react-dnd';
-// services
-import { IPhaseData } from 'api/phases/types';
-import { IIdeaData } from 'api/ideas/types';
-import { IIdeaStatusData } from 'api/idea_statuses/types';
-
-// components
-import { TitleLink } from '.';
-import { Box, colors, Td, Badge } from '@citizenlab/cl2-component-library';
-import StyledRow from './StyledRow';
-import SubRow from './SubRow';
 import { Icon } from 'semantic-ui-react';
+import { CellConfiguration, SupportedLocale, Override } from 'typings';
+
+import { IIdeaStatusData } from 'api/idea_statuses/types';
+import { IIdeaData } from 'api/ideas/types';
+import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import useIdeasPhases from 'api/ideas_phases/useIdeasPhases';
+import { IPhaseData } from 'api/phases/types';
+
+import usePostManagerColumnFilter from 'hooks/usePostManagerColumnFilter';
+
+import AssigneeSelect from 'components/admin/PostManager/components/PostTable/AssigneeSelect';
+import FeatureFlag from 'components/FeatureFlag';
 import T from 'components/T';
 import Checkbox from 'components/UI/Checkbox';
-import FeatureFlag from 'components/FeatureFlag';
-import PhaseDeselectModal from './PhaseDeselectModal';
-import AssigneeSelect from 'components/admin/PostManager/components/PostTable/AssigneeSelect';
 
-// utils
+import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
 import { timeAgo } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
+
+import { TFilterMenu, ManagerType } from '../../..';
+import FormattedBudget from '../../../../../../utils/currency/FormattedBudget';
+import messages from '../../../messages';
+import tracks from '../../../tracks';
+
+import PhaseDeselectModal from './PhaseDeselectModal';
+import StyledRow from './StyledRow';
+import SubRow from './SubRow';
 import { getRemovedPhase, ideaHasVotesInPhase } from './utils';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from '../../../messages';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../../../tracks';
-import { TFilterMenu, ManagerType } from '../../..';
-import { CellConfiguration, Locale, Override } from 'typings';
-
-// hooks
-import useUpdateIdea from 'api/ideas/useUpdateIdea';
-import usePostManagerColumnFilter from 'hooks/usePostManagerColumnFilter';
-import FormattedBudget from '../../../../../../utils/currency/FormattedBudget';
-import useIdeasPhases from 'api/ideas_phases/useIdeasPhases';
+import { TitleLink } from '.';
 
 type Props = {
   type: ManagerType;
@@ -52,7 +49,7 @@ type Props = {
   className?: string;
   onClickCheckbox: (event) => void;
   onClickTitle: (event: MouseEvent) => void;
-  locale: Locale;
+  locale: SupportedLocale;
 };
 
 export type IdeaCellComponentProps = {

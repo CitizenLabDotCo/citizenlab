@@ -1,9 +1,13 @@
 import React, { memo } from 'react';
-import clHistory from 'utils/cl-router/history';
+
 import { Button } from '@citizenlab/cl2-component-library';
+
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
-import { isNilOrError } from 'utils/helperUtils';
+
 import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
+
 import messages from './messages';
 
 interface Props {

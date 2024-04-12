@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useInitiativeBySlug from './useInitiativeBySlug';
-import { initiativesData } from './__mocks__/_mockServer';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { initiativesData } from './__mocks__/_mockServer';
+import useInitiativeBySlug from './useInitiativeBySlug';
 
 const apiPath = '*initiatives/by_slug/:initiativeSlug';
 

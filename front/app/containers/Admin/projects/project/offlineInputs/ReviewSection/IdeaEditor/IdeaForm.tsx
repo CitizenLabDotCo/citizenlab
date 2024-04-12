@@ -1,25 +1,22 @@
 import React, { useCallback } from 'react';
 
-// i18n
+import { Box } from '@citizenlab/cl2-component-library';
+import { JsonSchema7, Layout } from '@jsonforms/core';
+import { CLErrors } from 'typings';
+
+import { ImportedIdeaMetadataResponse } from 'api/import_ideas/types';
+
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
 
-// components
-import { Box } from '@citizenlab/cl2-component-library';
-import Fields from 'components/Form/Components/Fields';
-
-// utils
 import { customAjv } from 'components/Form';
-import { getFieldNameFromPath } from 'utils/JSONFormUtils';
-
-// typings
+import Fields from 'components/Form/Components/Fields';
 import {
   FormData,
   ApiErrorGetter,
   AjvErrorGetter,
 } from 'components/Form/typings';
-import { CLErrors } from 'typings';
-import { ImportedIdeaMetadataResponse } from 'api/import_ideas/types';
-import { JsonSchema7, Layout } from '@jsonforms/core';
+
+import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 
 interface Props {
   schema: JsonSchema7;

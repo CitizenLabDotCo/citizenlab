@@ -1,33 +1,22 @@
 import React, { useState, useEffect } from 'react';
 
-// components
 import { Label } from '@citizenlab/cl2-component-library';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
-import { Section, SectionField } from 'components/admin/Section';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
-
-// utils
-import { convertUrlToUploadFile } from 'utils/fileUtils';
-import getSubmitState from 'utils/getSubmitState';
-
-// services
-
-// resources
-
-// intl
-import messages from './messages';
-import FormattedMessage from 'utils/cl-intl/FormattedMessage';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// styling
 import styled from 'styled-components';
-
-// typings
 import { UploadFile } from 'typings';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
+
+import { Section, SectionField } from 'components/admin/Section';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
+
+import FormattedMessage from 'utils/cl-intl/FormattedMessage';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+import getSubmitState from 'utils/getSubmitState';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from './messages';
 
 const MainDropzone = styled(ImagesDropzone)`
   margin-top: 20px;

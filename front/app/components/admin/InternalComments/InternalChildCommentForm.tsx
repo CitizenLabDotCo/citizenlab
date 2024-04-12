@@ -1,38 +1,30 @@
-// libraries
 import React, { useEffect, useRef, useState } from 'react';
-import { Subscription } from 'rxjs';
-import { filter, tap } from 'rxjs/operators';
 
-// components
-import Button from 'components/UI/Button';
-import MentionsTextArea from 'components/UI/MentionsTextArea';
-import Avatar from 'components/Avatar';
-import clickOutside from 'utils/containers/clickOutside';
 import {
   useBreakpoint,
   colors,
   defaultStyles,
 } from '@citizenlab/cl2-component-library';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import commentsMessages from 'components/PostShowComponents/Comments/messages';
-
-// events
-import { commentReplyButtonClicked$, commentAdded } from './events';
-
-// style
-import styled from 'styled-components';
 import { hideVisually } from 'polished';
-import useAuthUser from 'api/me/useAuthUser';
+import { Subscription } from 'rxjs';
+import { filter, tap } from 'rxjs/operators';
+import styled from 'styled-components';
+
 import useAddInternalCommentToIdea from 'api/internal_comments/useAddInternalCommentToIdea';
 import useAddInternalCommentToInitiative from 'api/internal_comments/useAddInternalCommentToInitiative';
+import useAuthUser from 'api/me/useAuthUser';
 
-// utils
+import Avatar from 'components/Avatar';
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
+import Button from 'components/UI/Button';
+import MentionsTextArea from 'components/UI/MentionsTextArea';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import clickOutside from 'utils/containers/clickOutside';
+
+import { commentReplyButtonClicked$, commentAdded } from './events';
+import tracks from './tracks';
 import { getMentionRoles } from './utils';
 
 const Container = styled.div`

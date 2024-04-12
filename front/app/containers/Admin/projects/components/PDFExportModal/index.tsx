@@ -1,26 +1,22 @@
 import React, { useState } from 'react';
 
-// router
+import { Box, Button, Text, Title } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
+import { object, boolean, string } from 'yup';
 
-// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// components
+import Checkbox from 'components/HookForm/Checkbox';
+import Feedback from 'components/HookForm/Feedback';
 import Modal from 'components/UI/Modal';
-import { Box, Button, Text, Title } from '@citizenlab/cl2-component-library';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
+
 import PhaseSelector from '../PhaseSelector';
 
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
-
-// form
-import Feedback from 'components/HookForm/Feedback';
-import Checkbox from 'components/HookForm/Checkbox';
-import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { object, boolean, string } from 'yup';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 export interface FormValues {
   personal_data: boolean;

@@ -1,13 +1,16 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { CLErrors, Locale } from 'typings';
-import fetcher from 'utils/cl-react-query/fetcher';
+import { CLErrors, SupportedLocale } from 'typings';
+
 import { IIdeas } from 'api/ideas/types';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+
 import { importedIdeasKeys } from './keys';
 
 interface RequestParams {
   project_id: string;
   pdf: string;
-  locale: Locale;
+  locale: SupportedLocale;
   personal_data: boolean;
   phase_id?: string;
 }

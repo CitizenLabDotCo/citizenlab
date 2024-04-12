@@ -1,18 +1,16 @@
 import React, { memo } from 'react';
-import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
-// i18n
-import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { IInitiativeMarkedAsSpamNotificationData } from 'api/notifications/types';
 
-// components
-import NotificationWrapper from '../NotificationWrapper';
-import Link from 'utils/cl-router/Link';
-import { DeletedUser } from '../Notification';
 import T from 'components/T';
 
-// services
-import { IInitiativeMarkedAsSpamNotificationData } from 'api/notifications/types';
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError, stopPropagation } from 'utils/helperUtils';
+
+import messages from '../../messages';
+import { DeletedUser } from '../Notification';
+import NotificationWrapper from '../NotificationWrapper';
 
 interface Props {
   notification: IInitiativeMarkedAsSpamNotificationData;

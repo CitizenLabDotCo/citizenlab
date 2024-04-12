@@ -1,17 +1,16 @@
 import React, { memo } from 'react';
 
-// craft
-import EditModePreview from 'components/admin/ContentBuilder/EditModePreview';
-
-// hooks
-import useLocale from 'hooks/useLocale';
-import { Locale } from 'typings';
 import { useSearchParams } from 'react-router-dom';
+import { SupportedLocale } from 'typings';
+
+import useLocale from 'hooks/useLocale';
+
+import EditModePreview from 'components/admin/ContentBuilder/EditModePreview';
 
 const HomapageBuilderEditModePreview = React.forwardRef<
   HTMLIFrameElement,
   {
-    selectedLocale?: Locale | null;
+    selectedLocale?: SupportedLocale | null;
   }
 >(({ selectedLocale }, ref) => {
   const [search] = useSearchParams();

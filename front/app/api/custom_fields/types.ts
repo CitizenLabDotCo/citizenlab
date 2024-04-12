@@ -1,6 +1,9 @@
 import { IRelationship, Multiloc } from 'typings';
 
+import { IMapConfig } from 'api/map_config/types';
+
 import { Keys } from 'utils/cl-react-query/types';
+
 import customFieldsKeys from './keys';
 
 export type CustomFieldsKeys = Keys<typeof customFieldsKeys>;
@@ -9,6 +12,7 @@ export interface ICustomFieldsParameters {
   projectId: string;
   phaseId?: string;
   inputTypes?: ICustomFieldInputType[];
+  copy?: boolean;
 }
 
 export type ICustomFieldInputType =
@@ -25,12 +29,16 @@ export type ICustomFieldInputType =
   | 'html_multiloc'
   | 'files'
   | 'image_files'
-  | 'topic_ids';
+  | 'topic_ids'
+  | 'multiselect_image'
+  | 'point';
 
 export type IOptionsType = {
   id?: string;
   title_multiloc: Multiloc;
+  other?: boolean;
   temp_id?: string;
+  image_id?: string;
 };
 
 export type QuestionRuleType = { if: string | number; goto_page_id: string };
@@ -41,13 +49,14 @@ export type LogicType = {
 };
 
 export interface IAttributes {
-  temp_id: string;
+  temp_id?: string;
   logic: LogicType;
   key: string;
   code?: string;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
   input_type: ICustomFieldInputType;
+  map_config_id?: string | null;
   required: boolean;
   isRequiredEditable?: boolean;
   isEnabledEditable?: boolean;
@@ -64,12 +73,14 @@ export interface IAttributes {
   ordering: number;
   created_at: string;
   updated_at: string;
-  minimum_label_multiloc: Multiloc;
-  maximum_label_multiloc: Multiloc;
-  maximum: number;
+  minimum_label_multiloc?: Multiloc;
+  maximum_label_multiloc?: Multiloc;
+  maximum?: number;
   minimum_select_count?: number;
   maximum_select_count?: number;
   select_count_enabled?: boolean;
+  other?: boolean;
+  random_option_ordering?: boolean;
 }
 
 export interface ICustomFieldResponse {
@@ -79,6 +90,9 @@ export interface ICustomFieldResponse {
   relationships: {
     options: {
       data: IRelationship[];
+    };
+    map_config?: {
+      data: IRelationship;
     };
   };
 }
@@ -90,7 +104,9 @@ export type IFlatCustomField = Omit<
 > &
   IAttributes & {
     isLocalOnly?: boolean;
+    mapConfig?: IMapConfig;
     options?: IOptionsType[];
+    map_config?: { data: IRelationship };
   };
 
 export type IFlatCustomFieldWithIndex = IFlatCustomField & {
@@ -111,6 +127,7 @@ export type IFlatCreateCustomField = Optional<
   | 'minimum_label_multiloc'
   | 'maximum_label_multiloc'
   | 'maximum'
+  | 'random_option_ordering'
 > & {
   isLocalOnly: boolean;
 };

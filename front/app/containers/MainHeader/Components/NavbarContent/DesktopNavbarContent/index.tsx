@@ -1,11 +1,5 @@
 import React from 'react';
 
-// hooks
-import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useAuthUser from 'api/me/useAuthUser';
-
-// components
 import {
   IconButton,
   colors,
@@ -14,33 +8,30 @@ import {
   isRtl,
   Button,
 } from '@citizenlab/cl2-component-library';
-import NotificationMenu from '../../NotificationMenu';
-import LanguageSelector from '../../LanguageSelector';
-import UserMenu from '../../UserMenu';
+import { darken } from 'polished';
+import styled, { useTheme } from 'styled-components';
 
-// utils
-import clHistory from 'utils/cl-router/history';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAuthUser from 'api/me/useAuthUser';
+
+import useLocale from 'hooks/useLocale';
+
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import bowser from 'bowser';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import { isNilOrError, isPage } from 'utils/helperUtils';
 
-// style
-import styled, { useTheme } from 'styled-components';
-import { darken } from 'polished';
-
-// intl
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../../messages';
+import LanguageSelector from '../../LanguageSelector';
+import NotificationMenu from '../../NotificationMenu';
+import UserMenu from '../../UserMenu';
 
 const Right = styled.div`
   display: flex;
   align-items: center;
   height: ${({ theme }) => theme.menuHeight}px;
   margin-right: 30px;
-
-  &.ie {
-    margin-right: 50px;
-  }
 
   ${media.desktop`
     margin-right: 40px;
@@ -53,9 +44,6 @@ const Right = styled.div`
     flex-direction: row-reverse;
     margin-left: 30px;
 
-    &.ie {
-      margin-left: 50px;
-    }
     ${media.desktop`
         margin-left: 40px;
     `}
@@ -131,7 +119,7 @@ const DesktopNavbarContent = () => {
   };
 
   return (
-    <Right className={bowser.msie ? 'ie' : ''}>
+    <Right>
       {!isEmailSettingsPage && (
         <>
           {isDesktopUser && (

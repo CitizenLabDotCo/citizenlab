@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 
-// components
 import {
   useBreakpoint,
   Box,
@@ -9,39 +8,31 @@ import {
   defaultCardHoverStyle,
   media,
 } from '@citizenlab/cl2-component-library';
-import CardImage from './CardImage';
-import Body from './Body';
-import Footer from './Footer';
-import Interactions from './Interactions';
-import FollowUnfollow from 'components/FollowUnfollow';
-
-// router
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-import clHistory from 'utils/cl-router/history';
 import { useSearchParams } from 'react-router-dom';
-import Link from 'utils/cl-router/Link';
-
-// types
-import { IIdea } from 'api/ideas/types';
-
-// styling
 import styled from 'styled-components';
 
-// hooks
-import useIdeaById from 'api/ideas/useIdeaById';
-import useProjectById from 'api/projects/useProjectById';
-import useLocalize from 'hooks/useLocalize';
-import usePhase from 'api/phases/usePhase';
 import useIdeaImage from 'api/idea_images/useIdeaImage';
+import { IIdea } from 'api/ideas/types';
+import useIdeaById from 'api/ideas/useIdeaById';
+import usePhase from 'api/phases/usePhase';
 
-// utils
-import { scrollToElement } from 'utils/scroll';
-import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import useLocalize from 'hooks/useLocalize';
 
-// events
-import eventEmitter from 'utils/eventEmitter';
 import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
+import FollowUnfollow from 'components/FollowUnfollow';
+
+import clHistory from 'utils/cl-router/history';
+import Link from 'utils/cl-router/Link';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import eventEmitter from 'utils/eventEmitter';
+import { scrollToElement } from 'utils/scroll';
+
+import Body from './Body';
+import CardImage from './CardImage';
+import Footer from './Footer';
+import Interactions from './Interactions';
 
 export interface Props {
   ideaId: string;
@@ -102,9 +93,7 @@ const IdeaCard = ({
   const smallerThanTablet = useBreakpoint('tablet');
 
   const localize = useLocalize();
-  const { data: project } = useProjectById(
-    idea.data.relationships.project.data.id
-  );
+
   const { data: phase } = usePhase(phaseId);
 
   const phaseData = phase?.data;
@@ -187,7 +176,6 @@ const IdeaCard = ({
         <Box>
           <Interactions idea={idea} phase={phaseData || null} />
           <Footer
-            project={project}
             idea={idea.data}
             hideIdeaStatus={hideIdeaStatus}
             participationMethod={participationMethod}
@@ -200,6 +188,7 @@ const IdeaCard = ({
                 followersCount={idea.data.attributes.followers_count}
                 followerId={idea.data.relationships.user_follower?.data?.id}
                 w="auto"
+                toolTipType="input"
               />
             </Box>
           )}

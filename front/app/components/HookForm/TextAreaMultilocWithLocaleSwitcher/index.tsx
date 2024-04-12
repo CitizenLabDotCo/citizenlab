@@ -1,13 +1,17 @@
 import React from 'react';
+
+import { get } from 'lodash-es';
+import { Controller, FieldError, useFormContext } from 'react-hook-form';
+import { CLError, SupportedLocale, RHFErrors } from 'typings';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
+import Error, { TFieldName } from 'components/UI/Error';
 import TextAreaMultilocWithLocaleSwitcherComponent, {
   Props as TextAreaMultilocWithLocaleSwitcherProps,
 } from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
-import Error, { TFieldName } from 'components/UI/Error';
-import { Controller, FieldError, useFormContext } from 'react-hook-form';
-import { CLError, Locale, RHFErrors } from 'typings';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
 import { isNilOrError } from 'utils/helperUtils';
-import { get } from 'lodash-es';
 
 type TextAreaProps = Props & {
   name: string;
@@ -36,7 +40,7 @@ const TextAreaMultilocWithLocaleSwitcher = ({
     return null;
   }
 
-  const defaultValue: Partial<Record<Locale, any>> = locales.reduce(
+  const defaultValue: Partial<Record<SupportedLocale, any>> = locales.reduce(
     (acc, curr) => ((acc[curr] = ''), acc),
     {}
   );
@@ -45,7 +49,7 @@ const TextAreaMultilocWithLocaleSwitcher = ({
 
   // Select the first error messages from the field's multiloc validation error
   const validationError = Object.values(
-    (errors as Record<Locale, FieldError> | undefined) || {}
+    (errors as Record<SupportedLocale, FieldError> | undefined) || {}
   )[0]?.message;
 
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item

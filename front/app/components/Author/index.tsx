@@ -1,29 +1,24 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
-import Avatar from 'components/Avatar';
-import UserName from 'components/UI/UserName';
-
-// services
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-
-// hooks
-import useUserById from 'api/users/useUserById';
-import useLocale from 'hooks/useLocale';
-
-// style
-import styled from 'styled-components';
 import {
   media,
   colors,
   fontSizes,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import styled from 'styled-components';
+
+import useLocale from 'hooks/useLocale';
+
+import Avatar from 'components/Avatar';
+import UserName from 'components/UI/UserName';
+
 import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
 import { timeAgo } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;
@@ -100,15 +95,12 @@ const TimeAgo = styled.div`
   }
 `;
 
-export interface Props {
+interface Props {
   authorId: string | null;
   createdAt: string;
   size: number;
   isLinkToProfile?: boolean;
-  projectId?: string | null;
-  showAvatar?: boolean;
   avatarBadgeBgColor?: string;
-  showModeration?: boolean; // will show red styling on admins and moderators of projectId
   fontWeight?: number;
   fontSize?: number;
   className?: string;
@@ -117,6 +109,7 @@ export interface Props {
   color?: string;
   authorHash?: string;
   anonymous?: boolean;
+  showModeratorStyles: boolean;
 }
 
 const Author = memo(
@@ -126,9 +119,6 @@ const Author = memo(
     createdAt,
     size,
     isLinkToProfile,
-    projectId,
-    showAvatar = true,
-    showModeration,
     className,
     avatarBadgeBgColor,
     fontWeight,
@@ -137,28 +127,22 @@ const Author = memo(
     color,
     underline,
     anonymous,
+    showModeratorStyles,
   }: Props) => {
     const locale = useLocale();
-    const { data: author } = useUserById(authorId);
-    const authorCanModerate =
-      !isNilOrError(author) &&
-      showModeration &&
-      canModerateProject(projectId, { data: author.data });
 
     if (!isNilOrError(locale)) {
       return (
         <Container className={className}>
           <AuthorContainer>
-            {showAvatar && (
-              <StyledAvatar
-                userId={authorId}
-                authorHash={authorHash}
-                size={size}
-                isLinkToProfile={isLinkToProfile}
-                moderator={authorCanModerate}
-                bgColor={avatarBadgeBgColor}
-              />
-            )}
+            <StyledAvatar
+              userId={authorId}
+              authorHash={authorHash}
+              size={size}
+              isLinkToProfile={isLinkToProfile}
+              moderator={showModeratorStyles}
+              bgColor={avatarBadgeBgColor}
+            />
 
             <AuthorMeta className={horizontalLayout ? 'horizontalLayout' : ''}>
               <AuthorNameContainer
@@ -170,7 +154,7 @@ const Author = memo(
                 <UserName
                   userId={authorId}
                   isLinkToProfile={isLinkToProfile}
-                  canModerate={authorCanModerate}
+                  canModerate={showModeratorStyles}
                   fontWeight={fontWeight}
                   fontSize={fontSize}
                   color={color}

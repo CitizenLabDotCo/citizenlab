@@ -1,20 +1,15 @@
 import React from 'react';
 
-// hooks
+import { IIdea } from 'api/ideas/types';
+
 import useLocale from 'hooks/useLocale';
 
-// tracks
-import tracks from '../tracks';
-import { trackEventByName } from 'utils/analytics';
-
-// components
 import Outlet from 'components/Outlet';
 
-// utils
+import { trackEventByName } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
 
-// typings
-import { IIdea } from 'api/ideas/types';
+import tracks from '../tracks';
 
 interface Props {
   idea: IIdea;
@@ -27,7 +22,6 @@ const TranslateButton = ({ idea, translateButtonClicked, onClick }: Props) => {
   if (isNilOrError(locale)) return null;
 
   const onTranslateIdea = () => {
-    // analytics
     if (translateButtonClicked) {
       trackEventByName(tracks.clickGoBackToOriginalIdeaCopyButton.name);
     } else {

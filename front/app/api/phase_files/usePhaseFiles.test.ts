@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import usePhaseFiles from './usePhaseFiles';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { phaseFilesData } from './__mocks__/usePhaseFiles';
+import usePhaseFiles from './usePhaseFiles';
 
 const apiPath = '*phases/:phaseId/files';
 

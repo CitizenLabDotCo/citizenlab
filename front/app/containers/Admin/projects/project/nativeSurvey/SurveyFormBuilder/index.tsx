@@ -1,22 +1,22 @@
 import React, { useState, lazy } from 'react';
 
-// components
+import { useParams, useSearchParams } from 'react-router-dom';
+import { RouteType } from 'routes';
+
+import useFormCustomFields from 'api/custom_fields/useCustomFields';
+import usePhase from 'api/phases/usePhase';
+
+import useLocale from 'hooks/useLocale';
+
 import PDFExportModal, {
   FormValues,
 } from 'containers/Admin/projects/components/PDFExportModal';
-
-// router
-import { useParams } from 'react-router-dom';
-
-// hooks
-import useFormCustomFields from 'api/custom_fields/useCustomFields';
-import useLocale from 'hooks/useLocale';
-
-// utils
-import { nativeSurveyConfig } from '../utils';
-import { saveSurveyAsPDF } from '../saveSurveyAsPDF';
-import { isNilOrError } from 'utils/helperUtils';
 import { API_PATH } from 'containers/App/constants';
+
+import { isNilOrError } from 'utils/helperUtils';
+
+import { saveSurveyAsPDF } from '../saveSurveyAsPDF';
+import { nativeSurveyConfig, clearOptionIds } from '../utils';
 
 const FormBuilder = lazy(() => import('components/FormBuilder/edit'));
 
@@ -26,31 +26,43 @@ const SurveyFormBuilder = () => {
     projectId: string;
     phaseId?: string;
   };
+  const [searchParams] = useSearchParams();
+  const copyFrom = searchParams.get('copy_from');
+  const { data: phase } = usePhase(phaseId);
 
   const locale = useLocale();
   const { data: formCustomFields } = useFormCustomFields({
     projectId,
-    phaseId,
+    phaseId: copyFrom ? copyFrom : phaseId,
+    copy: copyFrom ? true : false,
   });
 
-  const goBackUrl = `/admin/projects/${projectId}/phases/${phaseId}/native-survey`;
-  const downloadPdfLink = phaseId
-    ? `${API_PATH}/phases/${phaseId}/custom_fields/to_pdf`
-    : `${API_PATH}/projects/${projectId}/custom_fields/to_pdf`;
+  if (!phase || !formCustomFields) return null;
 
+  // Reset option IDs if this is a new or copied form
+  const isFormPersisted = copyFrom
+    ? false
+    : phase.data.attributes.custom_form_persisted;
+  const newCustomFields = isFormPersisted
+    ? formCustomFields
+    : clearOptionIds(formCustomFields);
+
+  // PDF downloading
+  const downloadPdfLink = `${API_PATH}/phases/${phaseId}/custom_fields/to_pdf`;
   const handleDownloadPDF = () => setExportModalOpen(true);
-
   const handleExportPDF = async ({ personal_data }: FormValues) => {
     if (isNilOrError(locale)) return;
     await saveSurveyAsPDF({ downloadPdfLink, locale, personal_data });
   };
+
+  const goBackUrl: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/native-survey`;
 
   return (
     <>
       <FormBuilder
         builderConfig={{
           ...nativeSurveyConfig,
-          formCustomFields,
+          formCustomFields: newCustomFields,
           goBackUrl,
           onDownloadPDF: handleDownloadPDF,
         }}

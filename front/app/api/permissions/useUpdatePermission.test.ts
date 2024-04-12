@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useUpdatePermission from './useUpdatePermission';
-import { permissionsData } from './__mocks__/usePermissions';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { permissionsData } from './__mocks__/usePermissions';
+import useUpdatePermission from './useUpdatePermission';
 
 const apiPath = '*permissions/:action';
 const server = setupServer(

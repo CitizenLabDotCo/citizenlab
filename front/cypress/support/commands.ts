@@ -3,6 +3,8 @@ import './dnd';
 import { IUserUpdate } from '../../app/api/users/types';
 import { IUpdatedAppConfigurationProperties } from '../../app/api/app_configuration/types';
 import { IProjectAttributes } from '../../app/api/projects/types';
+import { ICustomFieldInputType } from '../../app/api/custom_fields/types';
+import { Multiloc } from '../../app/typings';
 
 import jwtDecode from 'jwt-decode';
 import { ParticipationMethod, VotingMethod } from '../../app/api/phases/types';
@@ -43,6 +45,7 @@ declare global {
       apiRemoveIdea: typeof apiRemoveIdea;
       apiRemoveInitiative: typeof apiRemoveInitiative;
       apiLikeInitiative: typeof apiLikeInitiative;
+      apiLikeIdea: typeof apiLikeIdea;
       apiDislikeIdea: typeof apiDislikeIdea;
       apiCreateOfficialFeedbackForIdea: typeof apiCreateOfficialFeedbackForIdea;
       apiAddComment: typeof apiAddComment;
@@ -52,6 +55,7 @@ declare global {
       apiCreateFolder: typeof apiCreateFolder;
       apiRemoveFolder: typeof apiRemoveFolder;
       apiRemoveProject: typeof apiRemoveProject;
+      apiRemovePhase: typeof apiRemovePhase;
       apiRemoveCustomPage: typeof apiRemoveCustomPage;
       apiCreateCustomPage: typeof apiCreateCustomPage;
       apiAddProjectsToFolder: typeof apiAddProjectsToFolder;
@@ -65,6 +69,7 @@ declare global {
       apiEnableProjectDescriptionBuilder: typeof apiEnableProjectDescriptionBuilder;
       apiCreateReportBuilder: typeof apiCreateReportBuilder;
       apiRemoveReportBuilder: typeof apiRemoveReportBuilder;
+      apiRemoveAllReports: typeof apiRemoveAllReports;
       apiSetPhasePermission: typeof apiSetPhasePermission;
       apiGetPhasePermission: typeof apiGetPhasePermission;
       intersectsViewport: typeof intersectsViewport;
@@ -75,6 +80,11 @@ declare global {
       apiCreateSmartGroupCustomField: typeof apiCreateSmartGroupCustomField;
       apiRemoveSmartGroup: typeof apiRemoveSmartGroup;
       apiSetPermissionCustomField: typeof apiSetPermissionCustomField;
+      apiCreateSurveyQuestions: typeof apiCreateSurveyQuestions;
+      apiUpdateUserCustomFields: typeof apiUpdateUserCustomFields;
+      apiCreateSurveyResponse: typeof apiCreateSurveyResponse;
+      uploadSurveyImageQuestionImage: typeof uploadSurveyImageQuestionImage;
+      apiGetSurveySchema: typeof apiGetSurveySchema;
     }
   }
 }
@@ -112,10 +122,7 @@ function unregisterServiceWorkers() {
 }
 
 function goToLandingPage() {
-  cy.wait(500);
   cy.visit('/');
-  cy.get('#e2e-landing-page');
-  cy.wait(500);
 }
 
 function login(email: string, password: string) {
@@ -253,7 +260,10 @@ function apiSignup(
       const jwt = response.body.jwt;
 
       return emailConfirmation(jwt).then(() => {
-        return originalResponse;
+        return {
+          ...originalResponse,
+          _jwt: jwt,
+        };
       });
     });
   });
@@ -321,6 +331,41 @@ function apiUpdateCurrentUser(attrs: IUserUpdate) {
       },
     });
   });
+}
+
+function apiUpdateUserCustomFields(
+  email: string,
+  password: string,
+  custom_field_values: Record<string, any>,
+  jwt?: any
+) {
+  const makeRequest = (jwt: any) => {
+    const userId = jwtDecode<{ sub: string }>(jwt).sub;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwt}`,
+      },
+      method: 'PATCH',
+      url: `web_api/v1/users/${userId}`,
+      body: {
+        user: {
+          custom_field_values,
+        },
+      },
+    });
+  };
+
+  if (jwt) {
+    return makeRequest(jwt);
+  } else {
+    return cy.apiLogin(email, password).then((response) => {
+      const jwt = response.body.jwt;
+
+      return makeRequest(jwt);
+    });
+  }
 }
 
 function apiRemoveUser(userId: string) {
@@ -702,6 +747,21 @@ function apiLikeInitiative(
   });
 }
 
+function apiLikeIdea(email: string, password: string, ideaId: string) {
+  return cy.apiLogin(email, password).then((response) => {
+    const jwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/ideas/${ideaId}/reactions/up`,
+    });
+  });
+}
+
 function apiDislikeIdea(email: string, password: string, ideaId: string) {
   return cy.apiLogin(email, password).then((response) => {
     const jwt = response.body.jwt;
@@ -1009,6 +1069,21 @@ function apiRemoveProject(projectId: string) {
   });
 }
 
+function apiRemovePhase(phaseId: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'DELETE',
+      url: `web_api/v1/phases/${phaseId}`,
+    });
+  });
+}
+
 function apiRemoveFolder(folderId: string) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1123,6 +1198,8 @@ function apiCreatePhase({
   votingMethod,
   votingMaxVotesPerIdea,
   votingMinTotal,
+  nativeSurveyButtonMultiloc,
+  nativeSurveyTitleMultiloc,
 }: {
   projectId: string;
   title: string;
@@ -1140,6 +1217,8 @@ function apiCreatePhase({
   votingMethod?: VotingMethod;
   votingMaxVotesPerIdea?: number;
   votingMinTotal?: number;
+  nativeSurveyButtonMultiloc?: Multiloc;
+  nativeSurveyTitleMultiloc?: Multiloc;
 }) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1172,6 +1251,8 @@ function apiCreatePhase({
           campaigns_settings: { project_phase_started: true },
           voting_max_votes_per_idea: votingMaxVotesPerIdea,
           voting_min_total: votingMinTotal,
+          native_survey_button_multiloc: nativeSurveyButtonMultiloc,
+          native_survey_title_multiloc: nativeSurveyTitleMultiloc,
         },
       },
     });
@@ -1341,8 +1422,7 @@ function apiEnableProjectDescriptionBuilder({
   });
 }
 
-function apiCreateReportBuilder() {
-  const reportName = randomString();
+function apiCreateReportBuilder(phaseId?: string, visible: boolean = true) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -1355,25 +1435,54 @@ function apiCreateReportBuilder() {
       url: 'web_api/v1/reports',
       body: {
         report: {
-          name: reportName,
+          name: phaseId ? undefined : randomString(),
+          phase_id: phaseId,
+          visible,
         },
       },
     });
   });
 }
 
-function apiRemoveReportBuilder(reportId: string) {
+function removeReport(reportId: string, jwt: any) {
+  return cy.request({
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${jwt}`,
+    },
+    method: 'DELETE',
+    url: `web_api/v1/reports/${reportId}`,
+  });
+}
+
+function apiRemoveReportBuilder(reportId: string, jwt?: any) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
-      },
-      method: 'DELETE',
-      url: `web_api/v1/reports/${reportId}`,
-    });
+    return removeReport(reportId, jwt || adminJwt);
+  });
+}
+
+function apiRemoveAllReports() {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy
+      .request({
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`,
+        },
+        method: 'GET',
+        url: 'web_api/v1/reports',
+      })
+      .then((response) => {
+        return Promise.all(
+          response.body.data.map((report: any) =>
+            removeReport(report.id, adminJwt)
+          )
+        );
+      });
   });
 }
 
@@ -1552,6 +1661,155 @@ function apiRemoveSmartGroup(smartGroupId: string) {
   });
 }
 
+const createBaseCustomField =
+  (imageId?: string) => (input_type: ICustomFieldInputType, i: number) => ({
+    title_multiloc:
+      input_type === 'page' ? {} : { en: `Question: ${input_type}` },
+    description_multiloc: {},
+    enabled: true,
+    id: randomString(),
+    key: input_type === 'page' ? 'page_1' : randomString(),
+    logic: {},
+    required: false,
+    input_type,
+    options: getOptions(input_type, imageId),
+    ordering: i,
+    ...(input_type === 'linear_scale'
+      ? {
+          maximum: 5,
+          minimum_label_multiloc: { en: 'Min label' },
+          maximum_label_multiloc: { en: 'Max label' },
+        }
+      : {}),
+  });
+
+const getOptions = (input_type: string, imageId?: string) => {
+  if (['select', 'multiselect', 'multiselect_image'].indexOf(input_type) > -1) {
+    return [
+      {
+        temp_id: `TEMP-ID-${randomString()}`,
+        title_multiloc: { en: `${input_type}: Option 1` },
+        ...(imageId ? { image_id: imageId } : {}),
+      },
+      {
+        temp_id: `TEMP-ID-${randomString()}`,
+        title_multiloc: { en: `${input_type}: Option 2` },
+        ...(imageId ? { image_id: imageId } : {}),
+      },
+    ];
+  }
+
+  return undefined;
+};
+
+function apiCreateSurveyQuestions(
+  phaseId: string,
+  inputTypes: ICustomFieldInputType[],
+  imageId?: string
+) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'PATCH',
+      url: `web_api/v1/admin/phases/${phaseId}/custom_fields/update_all`,
+      body: {
+        custom_fields: inputTypes.map(createBaseCustomField(imageId)),
+      },
+    });
+  });
+}
+
+function apiCreateSurveyResponse(
+  {
+    email,
+    password,
+    project_id,
+    fields,
+  }: {
+    email?: string;
+    password?: string;
+    project_id: string;
+    fields: Record<string, any>;
+  },
+  jwt?: any
+) {
+  const makeRequest = (jwt: any) => {
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwt}`,
+      },
+      method: 'POST',
+      url: 'web_api/v1/ideas',
+      body: {
+        idea: {
+          publication_status: 'published',
+          project_id,
+          ...fields,
+        },
+        method: 'POST',
+        url: 'web_api/v1/ideas',
+        body: {
+          idea: {
+            publication_status: 'published',
+            project_id,
+            ...fields,
+          },
+        },
+      },
+    });
+  };
+
+  if (jwt) {
+    return makeRequest(jwt);
+  } else {
+    return cy
+      .apiLogin(email || 'admin@citizenlab.co', password || 'democracy2.0')
+      .then((response) => {
+        const jwt = response.body.jwt;
+        return makeRequest(jwt);
+      });
+  }
+}
+
+function uploadSurveyImageQuestionImage(base64: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: 'web_api/v1/custom_field_option_images',
+      body: {
+        image: { image: base64 },
+      },
+    });
+  });
+}
+
+function apiGetSurveySchema(phaseId: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'GET',
+      url: `web_api/v1/phases/${phaseId}/custom_fields/json_forms_schema`,
+    });
+  });
+}
+
 // https://stackoverflow.com/a/16012490
 interface Bbox {
   left: number;
@@ -1629,6 +1887,7 @@ Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
 Cypress.Commands.add('apiRemoveIdea', apiRemoveIdea);
 Cypress.Commands.add('apiCreateInitiative', apiCreateInitiative);
 Cypress.Commands.add('apiRemoveInitiative', apiRemoveInitiative);
+Cypress.Commands.add('apiLikeIdea', apiLikeIdea);
 Cypress.Commands.add('apiDislikeIdea', apiDislikeIdea);
 Cypress.Commands.add(
   'apiCreateOfficialFeedbackForIdea',
@@ -1641,6 +1900,7 @@ Cypress.Commands.add('apiEditProject', apiEditProject);
 Cypress.Commands.add('apiCreateFolder', apiCreateFolder);
 Cypress.Commands.add('apiRemoveFolder', apiRemoveFolder);
 Cypress.Commands.add('apiRemoveProject', apiRemoveProject);
+Cypress.Commands.add('apiRemovePhase', apiRemovePhase);
 Cypress.Commands.add('apiAddProjectsToFolder', apiAddProjectsToFolder);
 Cypress.Commands.add('apiCreatePhase', apiCreatePhase);
 Cypress.Commands.add('apiCreateCustomField', apiCreateCustomField);
@@ -1663,6 +1923,7 @@ Cypress.Commands.add(
 );
 Cypress.Commands.add('apiCreateReportBuilder', apiCreateReportBuilder);
 Cypress.Commands.add('apiRemoveReportBuilder', apiRemoveReportBuilder);
+Cypress.Commands.add('apiRemoveAllReports', apiRemoveAllReports);
 Cypress.Commands.add(
   'intersectsViewport',
   { prevSubject: true },
@@ -1687,3 +1948,11 @@ Cypress.Commands.add(
   'apiSetPermissionCustomField',
   apiSetPermissionCustomField
 );
+Cypress.Commands.add('apiCreateSurveyQuestions', apiCreateSurveyQuestions);
+Cypress.Commands.add('apiUpdateUserCustomFields', apiUpdateUserCustomFields);
+Cypress.Commands.add('apiCreateSurveyResponse', apiCreateSurveyResponse);
+Cypress.Commands.add(
+  'uploadSurveyImageQuestionImage',
+  uploadSurveyImageQuestionImage
+);
+Cypress.Commands.add('apiGetSurveySchema', apiGetSurveySchema);

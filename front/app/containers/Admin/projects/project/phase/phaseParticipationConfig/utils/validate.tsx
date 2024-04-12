@@ -1,9 +1,12 @@
 import React from 'react';
-import messages from '../../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
-import { State } from '..';
+
 import { isFinite, isNaN } from 'lodash-es';
 import { FormatMessage } from 'typings';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import { State } from '..';
+import messages from '../../../messages';
 
 export default (state: State, formatMessage: FormatMessage) => {
   const {

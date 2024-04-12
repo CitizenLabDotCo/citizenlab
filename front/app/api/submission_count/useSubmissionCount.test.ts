@@ -1,11 +1,12 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useSubmissionCount from './useSubmissionCount';
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
+
+import { IFormSubmissionCount } from 'api/submission_count/types';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { IFormSubmissionCount } from 'api/submission_count/types';
+
+import useSubmissionCount from './useSubmissionCount';
 
 let apiPath = '*phases/:phaseId/submission_count';
 

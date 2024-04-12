@@ -1,13 +1,13 @@
 import React from 'react';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// components and styling
-import Button from 'components/UI/Button';
-import styled from 'styled-components';
 import { Title, Text, media } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import Button from 'components/UI/Button';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 
 const PageNotFoundWrapper = styled.div`
   height: calc(

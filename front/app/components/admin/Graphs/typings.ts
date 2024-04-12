@@ -1,7 +1,9 @@
-// typings
 import { RefObject } from 'react';
+
 import { Percentage } from 'typings';
+
 import { NilOrError } from 'utils/helperUtils';
+
 import { Position, LegendItem } from './_components/Legend/typings';
 
 // PROPS
