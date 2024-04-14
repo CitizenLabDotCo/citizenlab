@@ -44,8 +44,7 @@ module EmailCampaigns
       ManualCampaignMailer
     end
 
-    # If this would be missing, the campaign would be sent on every event and
-    # every schedule trigger
+    # Without this, the campaign would be sent on every event and every schedule trigger
     before_send :only_manual_send
 
     def self.recipient_role_multiloc_key

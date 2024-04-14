@@ -503,9 +503,9 @@ resource 'Campaigns' do
 
         do_request(id: @manual_project_participants_campaign.id)
         assert_status 200
-        # json_response = json_parse response_body
-        # pp json_response
-        # expect(json_response.dig(:data, :attributes, :deliveries_count)).to eq 1 # TODO: Returns 0, needs fixing.
+
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :attributes, :deliveries_count)).to eq 1
       end
 
       example '[Unauthorized] Send out a campaign manageable by project moderator, for unmoderated project', document: false do
