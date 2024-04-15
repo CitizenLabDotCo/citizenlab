@@ -5,7 +5,10 @@ import {
   invalidateCacheAfterUpdateUser,
 } from 'api/users/useUpdateUser';
 
-import { GetRequirements } from 'containers/Authentication/typings';
+import {
+  GetRequirements,
+  UpdateState,
+} from 'containers/Authentication/typings';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
@@ -14,7 +17,8 @@ import { askCustomFields, showOnboarding } from './utils';
 
 export const emaillessSsoFlow = (
   getRequirements: GetRequirements,
-  setCurrentStep: (step: Step) => void
+  setCurrentStep: (step: Step) => void,
+  updateState: UpdateState
 ) => {
   return {
     'emailless-sso:email': {
@@ -34,6 +38,7 @@ export const emaillessSsoFlow = (
           invalidateCacheAfterUpdateUser(queryClient);
           setCurrentStep('success');
         }
+        updateState({ email });
       },
     },
     'emailless-sso:email-confirmation': {

@@ -56,7 +56,7 @@ export const getStepConfig = (
       anySSOEnabled
     ),
 
-    ...emaillessSsoFlow(getRequirements, setCurrentStep),
+    ...emaillessSsoFlow(getRequirements, setCurrentStep, updateState),
 
     'verification-only': {
       CLOSE: () => setCurrentStep('closed'),
