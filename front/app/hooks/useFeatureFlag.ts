@@ -13,13 +13,12 @@ export default function useFeatureFlag({
   onlyCheckAllowed = false,
 }: Parameters): boolean {
   const { data: appConfiguration } = useAppConfiguration();
-  const tenantSettings = appConfiguration?.data.attributes.settings;
 
-  const setting = tenantSettings && tenantSettings[name];
-  const isEnabled =
-    setting && 'enabled' in setting ? setting.enabled : undefined;
+  if (!appConfiguration) return false;
 
-  return Boolean(
-    tenantSettings?.[name]?.allowed && (onlyCheckAllowed || isEnabled)
-  );
+  const setting = appConfiguration.data.attributes.settings[name];
+
+  return setting
+    ? setting.allowed && (onlyCheckAllowed || setting.enabled)
+    : false;
 }

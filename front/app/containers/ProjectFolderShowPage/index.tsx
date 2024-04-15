@@ -158,6 +158,7 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
                 w="auto"
                 py="6px"
                 iconSize="20px"
+                toolTipType="projectOrFolder"
               />
             </Box>
           </Box>

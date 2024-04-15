@@ -228,6 +228,7 @@ const Content = ({
                 followersCount={idea.data.attributes.followers_count}
                 followerId={idea.data.relationships.user_follower?.data?.id}
                 width="100%"
+                toolTipType="input"
               />
             </Box>
           )}
