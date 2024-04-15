@@ -17,12 +17,20 @@ RSpec.describe Analytics::FactParticipation do
       Analytics::PopulateDimensionsService.populate_types
     end
 
-    context 'when an idea is created' do
+    context 'when an idea is created and published' do
       let!(:idea) { create(:idea) }
 
       it 'is also available as a participation fact' do
         participation = described_class.find(idea.id)
         expect(participation.dimension_type.name).to eq('idea')
+      end
+    end
+
+    context 'when an idea is created but not published' do
+      let!(:idea) { create(:idea, publication_status: 'draft') }
+
+      it 'is not available as a participation fact' do
+        expect(described_class.count).to eq(0)
       end
     end
 
