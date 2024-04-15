@@ -43,7 +43,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
       # Create a bunch of ideas and comments with users (4 participants)
       idea1 = create(:idea, project: project, author: pp1, created_at: date_september) # 1
       idea2 = create(:idea, project: project, author: pp2, created_at: date_september) # 2
-      create(:comment, post: idea1, author: pp3, created_at: date_september) # 2
+      create(:comment, post: idea1, author: pp3, created_at: date_september) # 3
       create(:idea, project: project, created_at: date_september) # 4
       create(:comment, post: idea2, author: pp1, created_at: date_september)
 
