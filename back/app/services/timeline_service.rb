@@ -52,9 +52,9 @@ class TimelineService
   end
 
   def overlaps?(phase1, phase2)
-    return true if (phase1.start_at.blank? && phase1.end_at.blank?) || (phase2.start_at.blank? && phase2.end_at.blank?)
-    return (phase1.start_at <= phase2.start_at) if phase1.end_at.blank?
-    return (phase2.start_at <= phase1.start_at) if phase2.end_at.blank?
+    return true if (phase1.start_at.blank? && phase1.end_at.blank?) || (phase2.start_at.blank? && phase2.end_at.blank?) || (phase1.end_at.blank? && phase2.end_at.blank?)
+    return (phase2.end_at > phase1.start_at) if phase1.end_at.blank?
+    return (phase1.end_at > phase2.start_at) if phase2.end_at.blank?
 
     !((phase1.end_at.to_date < phase2.start_at.to_date) || (phase2.end_at.to_date < phase1.start_at.to_date))
   end

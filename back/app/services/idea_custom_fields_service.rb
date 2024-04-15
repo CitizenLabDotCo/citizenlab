@@ -142,6 +142,58 @@ class IdeaCustomFieldsService
     end
   end
 
+  def duplicate_all_fields
+    fields = all_fields
+    logic_id_map = { survey_end: 'survey_end' }
+    copied_fields = fields.map do |field|
+      # Duplicate fields to return with a new id
+      copied_field = field.dup
+      copied_field.id = SecureRandom.uuid
+      logic_id_map[field.id] = copied_field.id
+
+      # Duplicate options to return them with a new id and a temp_id to enable logic copying
+      copied_options = field.options.map do |option|
+        copied_option = option.dup
+        copied_option.id = SecureRandom.uuid
+        copied_option.temp_id = "TEMP-ID-#{SecureRandom.uuid}"
+        logic_id_map[option.id] = copied_option.temp_id
+        copied_option
+      end
+      copied_field.options = copied_options
+
+      # Duplicate and persist map config if it is a point field
+      if copied_field.input_type == 'point' && field.map_config
+        original_map_config = CustomMaps::MapConfig.find(field.map_config.id)
+        new_map_config = original_map_config.dup
+        new_map_config.mappable = nil
+        if new_map_config.save
+          new_map_config_layers = original_map_config.layers.map(&:dup)
+          new_map_config_layers.each do |layer|
+            layer.map_config = new_map_config
+            layer.save!
+          end
+          copied_field.map_config = new_map_config
+        end
+      end
+
+      copied_field
+    end
+
+    # Update the logic
+    copied_fields.map do |field|
+      if field.logic['rules']
+        field.logic['rules'].map! do |rule|
+          rule['if'] = logic_id_map[rule['if']]
+          rule['goto_page_id'] = logic_id_map[rule['goto_page_id']]
+          rule
+        end
+      elsif field.logic['next_page_id']
+        field.logic['next_page_id'] = logic_id_map[field.logic['next_page_id']] unless field.logic['next_page_id'] == 'survey_end'
+      end
+      field
+    end
+  end
+
   private
 
   # Replace a point field with two fields, one for latitude and one for longitude,
