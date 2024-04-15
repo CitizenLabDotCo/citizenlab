@@ -38,6 +38,27 @@ resource 'Campaigns' do
       expect(json_response[:data].size).to eq 3
     end
 
+    example 'List all manual campaigns when some have been sent' do
+      create_list(:delivery, 5, campaign: @campaigns.first)
+      do_request(campaign_names: ['manual'])
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 3
+
+      sent_campaign = json_response[:data].find { |c| c[:id] == @campaigns.first.id }
+      unsent_campaign = json_response[:data].find { |c| c[:id] == @campaigns.second.id }
+      expect(sent_campaign[:attributes][:stats]).to match({
+        sent: 5,
+        bounced: 0,
+        failed: 0,
+        accepted: 0,
+        delivered: 0,
+        opened: 0,
+        clicked: 0,
+        total: 5
+      })
+      expect(unsent_campaign[:attributes][:stats]).to be_nil
+    end
+
     example 'List all non-manual campaigns' do
       do_request(without_campaign_names: ['manual'])
       json_response = json_parse(response_body)
