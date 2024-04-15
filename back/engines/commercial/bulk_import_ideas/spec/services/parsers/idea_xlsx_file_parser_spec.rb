@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe BulkImportIdeas::IdeaXlsxFileParser do
+describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
   let(:project) { create(:single_phase_ideation_project) }
   let(:service) { described_class.new create(:admin), 'en', project.phases.first&.id, false }
   let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }

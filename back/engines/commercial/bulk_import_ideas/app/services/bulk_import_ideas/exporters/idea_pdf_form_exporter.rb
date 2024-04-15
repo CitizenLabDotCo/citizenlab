@@ -2,8 +2,8 @@
 
 require 'prawn'
 require 'prawn/measurement_extensions'
-
-class BulkImportIdeas::IdeaPdfFormExporter < BulkImportIdeas::BaseFormExporter
+module BulkImportIdeas::Exporters
+class IdeaPdfFormExporter < BaseFormExporter
   attr_reader :participation_context, :form_fields, :previous_cursor
 
   FORBIDDEN_HTML_TAGS_REGEX = %r{</?(div|span|ul|ol|li|img|a){1}[^>]*/?>}
@@ -217,6 +217,12 @@ class BulkImportIdeas::IdeaPdfFormExporter < BulkImportIdeas::BaseFormExporter
     # inside of it will be on a new page if there
     # is not enough space on the current page
     pdf.group do |pdf_group|
+
+      # Add print description to linear scale fields (if not overriden by the admin)
+      if custom_field.linear_scale? && custom_field.description_multiloc.blank?
+        custom_field.description_multiloc[@locale] = custom_field.linear_scale_print_description(@locale)
+        end
+
       # Add field to array to use in import
       add_to_importer_fields(custom_field, 'field', pdf.page_number, pdf.y)
 
@@ -433,4 +439,5 @@ class BulkImportIdeas::IdeaPdfFormExporter < BulkImportIdeas::BaseFormExporter
       position: position.to_i
     }
   end
+end
 end

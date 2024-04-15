@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-module BulkImportIdeas
+module BulkImportIdeas::Importers
   class IdeaImporter < BaseImporter
     DEFAULT_MAX_IDEAS = 500
     DATE_FORMAT_REGEX = /^(0[1-9]|[1|2][0-9]|3[0|1])-(0[1-9]|1[0-2])-([0-9]{4})$/ # After https://stackoverflow.com/a/47218282/3585671
 
     def import(idea_rows)
-      raise Error.new 'bulk_import_ideas_maximum_ideas_exceeded', value: DEFAULT_MAX_IDEAS if idea_rows.size > DEFAULT_MAX_IDEAS
+      raise BulkImportIdeas::Error.new 'bulk_import_ideas_maximum_ideas_exceeded', value: DEFAULT_MAX_IDEAS if idea_rows.size > DEFAULT_MAX_IDEAS
 
       ideas = []
       ActiveRecord::Base.transaction do
@@ -71,7 +71,7 @@ module BulkImportIdeas
         end
       end
       unless project
-        raise Error.new 'bulk_import_ideas_project_not_found', value: idea_row[:project_title], row: idea_row[:id]
+        raise BulkImportIdeas::Error.new 'bulk_import_ideas_project_not_found', value: idea_row[:project_title], row: idea_row[:id]
       end
 
       idea_attributes[:project] = project
@@ -113,7 +113,7 @@ module BulkImportIdeas
         return
       end
 
-      invalid_date_error = Error.new(
+      invalid_date_error = BulkImportIdeas::Error.new(
         'bulk_import_ideas_publication_date_invalid_format',
         value: idea_row[:published_at],
         row: idea_row[:id]
@@ -214,7 +214,7 @@ module BulkImportIdeas
 
     def create_idea_import(idea, user_created, user_consent, page_range, file)
       # Add import metadata
-      idea_import = IdeaImport.new(
+      idea_import = BulkImportIdeas::IdeaImport.new(
         idea: idea,
         page_range: page_range,
         import_user: @import_user,

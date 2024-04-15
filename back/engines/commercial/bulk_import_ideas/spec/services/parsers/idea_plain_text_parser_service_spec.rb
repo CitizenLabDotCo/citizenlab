@@ -2,19 +2,7 @@
 
 require 'rails_helper'
 
-def parse_page(page)
-  page
-    .lines
-    .reject { |line| line == "\n" }
-    .map(&:strip)
-    .join("\n")
-end
-
-def parse_pages(pages)
-  pages.map { |page| parse_page(page) }
-end
-
-describe BulkImportIdeas::Pdf::IdeaPlainTextParserService do
+describe BulkImportIdeas::Parsers::Pdf::IdeaPlainTextParserService do
   let(:project) { create(:single_phase_ideation_project) }
   let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
   let(:custom_fields) { IdeaCustomFieldsService.new(Factory.instance.participation_method_for(project).custom_form).importable_fields }
@@ -669,4 +657,16 @@ describe BulkImportIdeas::Pdf::IdeaPlainTextParserService do
       expect(docs).to eq result
     end
   end
+end
+
+def parse_page(page)
+  page
+    .lines
+    .reject { |line| line == "\n" }
+    .map(&:strip)
+    .join("\n")
+end
+
+def parse_pages(pages)
+  pages.map { |page| parse_page(page) }
 end

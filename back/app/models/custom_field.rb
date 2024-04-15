@@ -292,6 +292,12 @@ class CustomField < ApplicationRecord
     end
   end
 
+  def linear_scale_print_description(locale)
+    return nil unless linear_scale?
+
+    "Please write a number between 1 (#{minimum_label_multiloc[locale]}) and #{maximum} (#{maximum_label_multiloc[locale]})"
+  end
+
   private
 
   def set_default_enabled

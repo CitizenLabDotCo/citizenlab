@@ -1,16 +1,6 @@
 # frozen_string_literal: true
 
-module BulkImportIdeas
-  class Error < StandardError
-    def initialize(key, params = {})
-      super()
-      @key = key
-      @params = params
-    end
-
-    attr_reader :key, :params
-  end
-
+module BulkImportIdeas::Parsers
   class IdeaBaseFileParser
     def initialize(current_user, locale, phase_id, personal_data_enabled)
       @import_user = current_user
@@ -38,7 +28,7 @@ module BulkImportIdeas
 
     def upload_source_file(file_content)
       file_type = file_content.index('application/pdf') ? 'pdf' : 'xlsx'
-      IdeaImportFile.create!(
+      BulkImportIdeas::IdeaImportFile.create!(
         import_type: file_type,
         project: @project,
         file_by_content: {
@@ -75,7 +65,6 @@ module BulkImportIdeas
         idea_row[:longitude]    = fields[locale_longitude_label]
         idea_row[:topic_titles] = (fields[locale_tags_label] || '').split(';').map(&:strip).select(&:present?)
 
-        # TODO: JS - Make these names clearer
         fields = structure_raw_fields(fields)
         idea_row = process_user_details(fields, idea_row)
         idea_row = process_custom_form_fields(fields, idea_row)
@@ -134,7 +123,7 @@ module BulkImportIdeas
     end
 
     def merge_idea_with_form_fields(idea)
-      idea # Should always override in child classes
+      raise NotImplementedError, 'This method is not yet implemented'
     end
 
     # Processes all fields - including built in fields

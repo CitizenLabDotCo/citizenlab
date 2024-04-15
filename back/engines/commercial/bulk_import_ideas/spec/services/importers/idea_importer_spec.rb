@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe BulkImportIdeas::IdeaImporter do
+describe BulkImportIdeas::Importers::IdeaImporter do
   let(:service) { described_class.new(create(:admin)) }
 
   describe 'import_ideas' do

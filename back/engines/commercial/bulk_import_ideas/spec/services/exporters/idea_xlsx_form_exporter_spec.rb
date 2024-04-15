@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe BulkImportIdeas::IdeaXlsxFormExporter do
+describe BulkImportIdeas::Exporters::IdeaXlsxFormExporter do
   let(:service) { described_class.new phase, 'en', false }
 
   describe 'export an ideation form' do

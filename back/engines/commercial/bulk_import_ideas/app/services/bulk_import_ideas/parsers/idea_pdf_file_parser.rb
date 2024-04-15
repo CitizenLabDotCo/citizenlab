@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module BulkImportIdeas
+module BulkImportIdeas::Parsers
   class IdeaPdfFileParser < IdeaBaseFileParser
     POSITION_TOLERANCE = 10
     PAGES_TO_TRIGGER_NEW_PDF = 8
@@ -24,7 +24,7 @@ module BulkImportIdeas
 
         pdf = ::CombinePDF.parse URI.open(source_file.file_content_url).read
         source_file.update!(num_pages: pdf.pages.count)
-        raise Error.new 'bulk_import_ideas_maximum_pdf_pages_exceeded', value: pdf.pages.count if pdf.pages.count > MAX_TOTAL_PAGES
+        raise BulkImportIdeas::Error.new 'bulk_import_ideas_maximum_pdf_pages_exceeded', value: pdf.pages.count if pdf.pages.count > MAX_TOTAL_PAGES
 
         return [source_file] if pdf.pages.count <= PAGES_TO_TRIGGER_NEW_PDF # Only need to split if the file is too big
 
@@ -45,7 +45,7 @@ module BulkImportIdeas
             base_64_content = Base64.encode64 file.read
             file.delete
 
-            split_pdf_files << IdeaImportFile.create!(
+            split_pdf_files << BulkImportIdeas::IdeaImportFile.create!(
               import_type: source_file.import_type,
               project: @project,
               num_pages: new_pdf.pages.count,
@@ -157,7 +157,7 @@ module BulkImportIdeas
 
     # Return the fields and page count from the form we're importing from
     def import_form_data
-      @import_form_data ||= IdeaPdfFormExporter.new(@phase, @locale, @personal_data_enabled).importer_data
+      @import_form_data ||= BulkImportIdeas::Exporters::IdeaPdfFormExporter.new(@phase, @locale, @personal_data_enabled).importer_data
     end
 
     def google_forms_service

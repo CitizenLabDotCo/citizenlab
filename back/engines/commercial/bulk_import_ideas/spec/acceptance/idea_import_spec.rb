@@ -328,7 +328,7 @@ resource 'BulkImportIdeasImportIdeas' do
   end
 
   def stub_google_form_parser_api
-    expect_any_instance_of(BulkImportIdeas::Pdf::IdeaGoogleFormParserService).to receive(:raw_text_page_array).and_return(create_project_bulk_import_raw_text_array)
-    expect_any_instance_of(BulkImportIdeas::Pdf::IdeaGoogleFormParserService).to receive(:parse_pdf).and_return(create_project_bulk_import_parse_pdf)
+    expect_any_instance_of(BulkImportIdeas::Parsers::Pdf::IdeaGoogleFormParserService).to receive(:raw_text_page_array).and_return(create_project_bulk_import_raw_text_array)
+    expect_any_instance_of(BulkImportIdeas::Parsers::Pdf::IdeaGoogleFormParserService).to receive(:parse_pdf).and_return(create_project_bulk_import_parse_pdf)
   end
 end

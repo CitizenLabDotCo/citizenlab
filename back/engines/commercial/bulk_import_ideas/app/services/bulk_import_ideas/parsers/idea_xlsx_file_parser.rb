@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module BulkImportIdeas
+module BulkImportIdeas::Parsers
   class IdeaXlsxFileParser < IdeaBaseFileParser
     def parse_rows(file)
       xlsx_ideas = parse_xlsx_ideas(file).map { |idea| { pdf_pages: [1], fields: idea } }
@@ -33,7 +33,7 @@ module BulkImportIdeas
     end
 
     def import_form_data
-      @import_form_data ||= IdeaXlsxFormExporter.new(@phase, @locale, @personal_data_enabled).importer_data
+      @import_form_data ||= BulkImportIdeas::Exporters::IdeaXlsxFormExporter.new(@phase, @locale, @personal_data_enabled).importer_data
     end
   end
 end

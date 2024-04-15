@@ -1,6 +1,5 @@
 # frozen_string_literal: true
-
-module BulkImportIdeas
+module BulkImportIdeas::Exporters
   class BaseFormExporter
     def initialize(phase, locale, _personal_data_enabled)
       @phase = phase
@@ -57,4 +56,4 @@ module BulkImportIdeas
       }
     end
   end
-end
+  end

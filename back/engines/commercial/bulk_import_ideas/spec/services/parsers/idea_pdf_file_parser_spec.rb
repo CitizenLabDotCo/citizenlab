@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe BulkImportIdeas::IdeaPdfFileParser do
+describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
   let(:project) { create(:single_phase_ideation_project) }
   let(:service) { described_class.new create(:admin), 'en', project.phases.first&.id, false }
   let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
@@ -284,8 +284,8 @@ describe BulkImportIdeas::IdeaPdfFileParser do
       }]
       file = create(:idea_import_file)
 
-      expect_any_instance_of(BulkImportIdeas::Pdf::IdeaGoogleFormParserService).to receive(:parse_pdf).and_return(form_parser_output)
-      expect_any_instance_of(BulkImportIdeas::Pdf::IdeaGoogleFormParserService).to receive(:raw_text_page_array).and_raise(BulkImportIdeas::Error.new('something'))
+      expect_any_instance_of(BulkImportIdeas::Parsers::Pdf::IdeaGoogleFormParserService).to receive(:parse_pdf).and_return(form_parser_output)
+      expect_any_instance_of(BulkImportIdeas::Parsers::Pdf::IdeaGoogleFormParserService).to receive(:raw_text_page_array).and_raise(BulkImportIdeas::Error.new('something'))
       expect(service).to receive(:merge_pdf_rows).with(form_parser_output, [], file)
 
       service.send(:parse_rows, file)
@@ -412,7 +412,7 @@ describe BulkImportIdeas::IdeaPdfFileParser do
       end
 
       it 'converts multiselect fields - independently for each idea' do
-        expect_any_instance_of(BulkImportIdeas::IdeaPdfFormExporter).to receive(:importer_data).and_return(pdf_form_data)
+        expect_any_instance_of(BulkImportIdeas::Exporters::IdeaPdfFormExporter).to receive(:importer_data).and_return(pdf_form_data)
         idea1 = [
           { name: 'Monkeys', value: 'filled_checkbox', type: 'option', page: 2, position: 68 },
           { name: 'Cows', value: 'filled_checkbox', type: 'option', page: 2, position: 70 },

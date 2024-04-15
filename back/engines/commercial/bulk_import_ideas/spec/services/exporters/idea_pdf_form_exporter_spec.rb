@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe BulkImportIdeas::IdeaPdfFormExporter do
+describe BulkImportIdeas::Exporters::IdeaPdfFormExporter do
   let(:project) { create(:single_phase_ideation_project) }
   let(:custom_form) { create(:custom_form, participation_context: project) }
   let(:service) { described_class.new project, 'en', false }
@@ -39,7 +39,7 @@ describe BulkImportIdeas::IdeaPdfFormExporter do
   describe 'importer_data' do
     it 'returns form meta data for importer - page count, fields, options and positions' do
       importer_data = service.importer_data
-      expect(importer_data[:page_count]).to eq 3
+      expect(importer_data[:page_count]).to eq 2
       expect(importer_data[:fields].pluck(:key)).to eq %w[
         a_text_field
         number_field

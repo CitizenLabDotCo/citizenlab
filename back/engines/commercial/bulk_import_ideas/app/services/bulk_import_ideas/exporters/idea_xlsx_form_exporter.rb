@@ -1,6 +1,6 @@
 # frozen_string_literal: true
-
-class BulkImportIdeas::IdeaXlsxFormExporter < BulkImportIdeas::BaseFormExporter
+module BulkImportIdeas::Exporters
+class IdeaXlsxFormExporter < BaseFormExporter
   def export
     locale_first_name_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.first_name') }
     locale_last_name_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.last_name') }
@@ -55,4 +55,5 @@ class BulkImportIdeas::IdeaXlsxFormExporter < BulkImportIdeas::BaseFormExporter
   def filename
     'form.xlsx'
   end
+end
 end

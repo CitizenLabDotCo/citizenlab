@@ -2,7 +2,7 @@
 
 require 'google/cloud/document_ai'
 
-module BulkImportIdeas::Pdf
+module BulkImportIdeas::Parsers::Pdf
   class IdeaGoogleFormParserService
     def initialize
       @document = nil

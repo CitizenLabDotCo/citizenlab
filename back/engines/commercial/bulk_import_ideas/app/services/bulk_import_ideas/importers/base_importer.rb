@@ -1,16 +1,6 @@
 # frozen_string_literal: true
 
-module BulkImportIdeas
-  class Error < StandardError
-    def initialize(key, params = {})
-      super()
-      @key = key
-      @params = params
-    end
-
-    attr_reader :key, :params
-  end
-
+module BulkImportIdeas::Importers
   class BaseImporter
     def initialize(current_user)
       @locale = AppConfiguration.instance.settings('core', 'locales').first # Default locale for any new users created
@@ -19,5 +9,8 @@ module BulkImportIdeas
     end
 
     attr_reader :imported_users
+    def import(rows)
+      raise NotImplementedError, 'This method is not yet implemented'
+    end
   end
 end

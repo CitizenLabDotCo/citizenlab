@@ -114,19 +114,19 @@ module BulkImportIdeas
 
     def importer_service
       model = params[:model]
-      "BulkImportIdeas::#{model.camelize}Importer".constantize
+      "BulkImportIdeas::Importers::#{model.camelize}Importer".constantize
     end
 
     def file_parser_service
       model = params[:model]
       format = params[:format]
-      "BulkImportIdeas::#{model.camelize}#{format.camelize}FileParser".constantize
+      "BulkImportIdeas::Parsers::#{model.camelize}#{format.camelize}FileParser".constantize
     end
 
     def form_exporter_service
       model = params[:model]
       format = params[:format]
-      "BulkImportIdeas::#{model.camelize}#{format.camelize}FormExporter".constantize
+      "BulkImportIdeas::Exporters::#{model.camelize}#{format.camelize}FormExporter".constantize
     end
 
     def serializer
