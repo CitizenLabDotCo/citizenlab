@@ -48,6 +48,39 @@ describe ParticipantsService do
   end
 
   describe 'project_participants_count' do
+    it 'correctly deduplicates users' do
+      project = create(:project)
+      user = create(:user)
+
+      # Create a bunch of ideas and comments with users (4 participants)
+      idea1 = create(:idea, project: project, author: user) # 1
+      idea2 = create(:idea, project: project) # 2
+      create(:comment, post: idea1) # 3
+      create(:idea, project: project) # 4
+      create(:comment, post: idea2, author: user)
+
+      expect(service.project_participants_count(project)).to eq 4
+    end
+
+    it 'correctly deduplicates anonymous users' do
+      project = create(:project)
+      user = create(:user)
+
+      idea = create(:idea, project: project, author: user, anonymous: true)
+      create(:idea, project: project, author: user, anonymous: true)
+      create(:comment, post: idea, author: user, anonymous: true)
+
+      expect(service.project_participants_count(project)).to eq 1
+    end
+
+    it 'counts ideas without a user_id or author_hash as separate participants' do
+      project = create(:project)
+      create(:idea, project: project, anonymous: false, author: nil)
+      create(:idea, project: project, anonymous: false, author: nil)
+
+      expect(service.project_participants_count(project)).to eq 2
+    end
+
     it 'returns the count of participants' do
       project = create(:project)
       pp1, pp2, pp3, pp4 = create_list(:user, 4)
@@ -55,7 +88,7 @@ describe ParticipantsService do
       # Create a bunch of ideas and comments with users (4 participants)
       idea1 = create(:idea, project: project, author: pp1) # 1
       idea2 = create(:idea, project: project, author: pp2) # 2
-      create(:comment, post: idea1, author: pp3) # 2
+      create(:comment, post: idea1, author: pp3) # 3
       create(:idea, project: project) # 4
       create(:comment, post: idea2, author: pp1)
 
