@@ -22,55 +22,40 @@ class ParticipantsService
 
   def initiatives_participants(initiatives)
     participants = User.none
+
     # Posting
     participants = participants.or(User.where(id: initiatives.select(:author_id)))
+
     # Commenting
     comments = Comment.where(post: initiatives)
     participants = participants.or(User.where(id: comments.select(:author_id)))
+
     # Initiative reacting
     reactions = Reaction.where(reactable: initiatives)
     participants = participants.or(User.where(id: reactions.select(:user_id)))
+
     # Comment reacting
     reactions = Reaction.where(reactable: comments)
     participants.or(User.where(id: reactions.select(:user_id)))
   end
 
-  def ideas_participants(ideas, options = {})
-    since = options[:since]
-    actions = options[:actions] || PARTICIPANT_ACTIONS
+  def ideas_participants(ideas)
     participants = User.none
+
     # Posting
-    if actions.include? :posting
-      ideas_since = if since
-        ideas.where('created_at::date >= (?)::date', since)
-      else
-        ideas
-      end
-      participants = participants.or(User.where(id: ideas_since.select(:author_id)))
-    end
+    participants = participants.or(User.where(id: ideas.select(:author_id)))
+
     # Commenting
     comments = Comment.where(post_id: ideas)
-    if actions.include? :commenting
-      comments_since = if since
-        comments.where('created_at::date >= (?)::date', since)
-      else
-        comments
-      end
-      participants = participants.or(User.where(id: comments_since.select(:author_id)))
-    end
+    participants = participants.or(User.where(id: comments.select(:author_id)))
+
     # Idea reacting
-    if actions.include? :idea_reacting
-      reactions = Reaction.where(reactable_id: ideas)
-      reactions = reactions.where('created_at::date >= (?)::date', since) if since
-      participants = participants.or(User.where(id: reactions.select(:user_id)))
-    end
+    reactions = Reaction.where(reactable_id: ideas)
+    participants = participants.or(User.where(id: reactions.select(:user_id)))
+
     # Comment reacting
-    if actions.include? :comment_reacting
-      reactions = Reaction.where(reactable_id: comments)
-      reactions = reactions.where('created_at::date >= (?)::date', since) if since
-      participants = participants.or(User.where(id: reactions.select(:user_id)))
-    end
-    participants
+    reactions = Reaction.where(reactable_id: comments)
+    participants.or(User.where(id: reactions.select(:user_id)))
   end
 
   # Returns all the known participants of a single project - cached.
