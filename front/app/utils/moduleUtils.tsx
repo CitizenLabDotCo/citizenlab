@@ -25,7 +25,7 @@ import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import { TVerificationMethod } from 'api/verification_methods/types';
 
-import { TTabName } from 'containers/Admin/projects/all/CreateProject';
+import { TTabName } from 'containers/Admin/projects/new';
 import { NavItem } from 'containers/Admin/sideBar/navItems';
 import { GroupCreationModal } from 'containers/Admin/users';
 import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
