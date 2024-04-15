@@ -61,9 +61,9 @@ export function adminProjectsProjectPath(projectId: string): RouteType {
   return `/admin/projects/${projectId}`;
 }
 
-export enum projectsRoutes {
+enum projectsRoutes {
   projects = 'projects',
-  projectNew = 'new-project',
+  projectsNew = 'new',
   projectIdeaId = ':projectId/ideas/:ideaId',
   projectSettings = ':projectId/settings',
   projectTraffic = 'traffic',
@@ -78,7 +78,7 @@ export enum projectsRoutes {
   projectIdPhases = 'phases',
   projectPhasesSetup = 'setup',
   projectPhaseSetup = ':phaseId/setup',
-  projectNewPhase = 'new',
+  projectNewPhase = 'phases/new',
   projectPhase = ':phaseId',
   projectPhaseSurveyResults = ':phaseId/survey-results',
   projectPhasePolls = ':phaseId/polls',
@@ -99,7 +99,7 @@ export enum projectsRoutes {
 
 export type projectsRouteTypes =
   | AdminRoute<projectsRoutes.projects>
-  | AdminRoute<`${projectsRoutes.projects}/new-project`>
+  | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.projectsNew}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/ideas/${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/settings`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectEvents}`>
@@ -112,7 +112,7 @@ export type projectsRouteTypes =
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectParticipation}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectPhasesSetup}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/setup`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectNewPhase}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/new`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-results`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/polls`>
@@ -149,7 +149,7 @@ const createAdminProjectsRoutes = () => {
       ...moduleConfiguration.routes['admin.project_templates'],
       ...moduleConfiguration.routes['admin.projects'],
       {
-        path: projectsRoutes.projectNew,
+        path: projectsRoutes.projectsNew,
         element: (
           <PageLoading>
             <AdminProjectNew />
