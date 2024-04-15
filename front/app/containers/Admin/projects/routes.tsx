@@ -149,7 +149,7 @@ const createAdminProjectsRoutes = () => {
       ...moduleConfiguration.routes['admin.project_templates'],
       ...moduleConfiguration.routes['admin.projects'],
       {
-        path: projectsRoutes.projectsNew,
+        path: projectsRoutes.projectNew,
         element: (
           <PageLoading>
             <AdminProjectNew />
