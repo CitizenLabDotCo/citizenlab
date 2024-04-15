@@ -5,14 +5,13 @@ module BulkImportIdeas
     DEFAULT_MAX_IDEAS = 500
     DATE_FORMAT_REGEX = /^(0[1-9]|[1|2][0-9]|3[0|1])-(0[1-9]|1[0-2])-([0-9]{4})$/ # After https://stackoverflow.com/a/47218282/3585671
 
-    def import(idea_rows, file = nil)
+    def import(idea_rows)
       raise Error.new 'bulk_import_ideas_maximum_ideas_exceeded', value: DEFAULT_MAX_IDEAS if idea_rows.size > DEFAULT_MAX_IDEAS
 
       ideas = []
       ActiveRecord::Base.transaction do
         ideas = idea_rows.map do |idea_row|
-          idea = import_idea idea_row, file
-          Rails.logger.info { "Created #{idea.id}" }
+          idea = import_idea idea_row
           idea
         end
       end
@@ -22,7 +21,7 @@ module BulkImportIdeas
 
     private
 
-    def import_idea(idea_row, file)
+    def import_idea(idea_row)
       idea_attributes = {}
       add_title_multiloc idea_row, idea_attributes
       add_body_multiloc idea_row, idea_attributes
@@ -41,7 +40,7 @@ module BulkImportIdeas
       idea.save!
 
       create_idea_image idea_row, idea
-      create_idea_import idea, user_created, idea_row[:user_consent], idea_row[:pdf_pages], file
+      create_idea_import idea, user_created, idea_row[:user_consent], idea_row[:pdf_pages], idea_row[:file]
 
       idea
     end

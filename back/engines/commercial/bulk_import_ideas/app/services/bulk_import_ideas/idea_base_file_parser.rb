@@ -48,7 +48,7 @@ module BulkImportIdeas
       )
     end
 
-    def ideas_to_idea_rows(ideas_array)
+    def ideas_to_idea_rows(ideas_array, file)
       idea_rows = ideas_array.each_with_index.map do |idea, index|
         page_range = idea[:pdf_pages]
         fields = idea[:fields]
@@ -65,6 +65,7 @@ module BulkImportIdeas
         locale_tags_label = I18n.with_locale(@locale) { I18n.t('custom_fields.ideas.topic_ids.title') }
 
         idea_row[:id]           = index + 1
+        idea_row[:file]         = file
         idea_row[:project_id]   = @project.id
         idea_row[:phase_id]     = @phase.id if @phase
         idea_row[:pdf_pages]    = page_range

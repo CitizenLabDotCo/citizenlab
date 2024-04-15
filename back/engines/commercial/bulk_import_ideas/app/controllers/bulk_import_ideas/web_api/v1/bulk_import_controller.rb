@@ -18,7 +18,7 @@ module BulkImportIdeas
       import_service = importer_service.new(current_user)
 
       rows = file_parser.parse_file file
-      ideas = import_service.import(rows) # TODO: JS - file not added here as it was before - is it needed?
+      ideas = import_service.import(rows)
       users = import_service.imported_users
 
       sidefx.after_success current_user, @project, ideas, users

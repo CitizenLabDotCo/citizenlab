@@ -118,27 +118,9 @@ module BulkImportIdeas
     end
 
     def parse_rows(file)
-      parsed_ideas = parse_pdf_ideas(file)
-      merge_pdf_rows(parsed_ideas)
-    end
-
-    def merge_pdf_rows(parsed_ideas)
-      form_parsed_ideas = ideas_to_idea_rows(parsed_ideas[:form_parsed_ideas])
-      text_parsed_ideas = ideas_to_idea_rows(parsed_ideas[:text_parsed_ideas])
-
-      return form_parsed_ideas unless form_parsed_ideas.count == text_parsed_ideas.count
-
-      form_parsed_ideas.each_with_index.map do |idea, index|
-        idea[:custom_field_values] = text_parsed_ideas[index][:custom_field_values].merge(idea[:custom_field_values])
-        idea[:pdf_pages] = complete_page_range(idea[:pdf_pages], text_parsed_ideas[index][:pdf_pages])
-        text_parsed_ideas[index].merge(idea)
-      end
-    end
-
-    def parse_pdf_ideas(file)
       pdf_file = URI.open(file.file_content_url).read
 
-      # NOTE: We return both parsed values so we can later merge the best values from both
+      # NOTE: We return both parsed values so we can merge the best values from both
       form_parsed_ideas = google_forms_service.parse_pdf(pdf_file, import_form_data[:page_count])
       text_parsed_ideas = begin
         Pdf::IdeaPlainTextParserService.new(
@@ -151,10 +133,20 @@ module BulkImportIdeas
         []
       end
 
-      {
-        form_parsed_ideas: form_parsed_ideas,
-        text_parsed_ideas: text_parsed_ideas
-      }
+      merge_pdf_rows(form_parsed_ideas, text_parsed_ideas, file)
+    end
+
+    def merge_pdf_rows(form_parsed_ideas, text_parsed_ideas, file)
+      form_parsed_idea_rows = ideas_to_idea_rows(form_parsed_ideas, file)
+      text_parsed_idea_rows = ideas_to_idea_rows(text_parsed_ideas, file)
+
+      return form_parsed_idea_rows unless form_parsed_idea_rows.count == text_parsed_idea_rows.count
+
+      form_parsed_idea_rows.each_with_index.map do |idea, index|
+        idea[:custom_field_values] = text_parsed_idea_rows[index][:custom_field_values].merge(idea[:custom_field_values])
+        idea[:pdf_pages] = complete_page_range(idea[:pdf_pages], text_parsed_idea_rows[index][:pdf_pages])
+        text_parsed_idea_rows[index].merge(idea)
+      end
     end
 
     def complete_page_range(pages1, pages2)

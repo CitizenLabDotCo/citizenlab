@@ -71,7 +71,8 @@ describe BulkImportIdeas::IdeaXlsxFileParser do
         }
       ]
     end
-    let(:rows) { service.send(:ideas_to_idea_rows, xlsx_ideas_array) }
+    let!(:import_file) { create(:idea_import_file) }
+    let(:rows) { service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file) }
 
     it 'converts parsed XLSX core fields into idea rows' do
       expect(rows[0]).to include({
@@ -98,7 +99,7 @@ describe BulkImportIdeas::IdeaXlsxFileParser do
 
     it 'does not include user details when "Permission" is blank' do
       xlsx_ideas_array[0][:fields]['Permission'] = ''
-      rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array)
+      rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file)
 
       expect(rows[0]).not_to include({
         user_first_name: 'Bill',
@@ -140,7 +141,7 @@ describe BulkImportIdeas::IdeaXlsxFileParser do
           }
         }
       ]
-      idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array)
+      idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file)
       expect(idea_rows.count).to eq 0
     end
   end

@@ -85,7 +85,8 @@ describe BulkImportIdeas::IdeaPdfFileParser do
         }
       ]
     end
-    let(:rows) { service.send(:ideas_to_idea_rows, pdf_ideas) }
+    let!(:import_file) { create(:idea_import_file) }
+    let(:rows) { service.send(:ideas_to_idea_rows, pdf_ideas, import_file) }
 
     it 'converts the output from GoogleFormParser into idea rows' do
       expect(rows.count).to eq 2
@@ -155,7 +156,7 @@ describe BulkImportIdeas::IdeaPdfFileParser do
         pdf_pages: [1, 2],
         fields: { 'First name' => 'John', 'Last name' => 'Rambo', 'Email address' => 'john_rambo.com', 'Permission' => 'X' }
       }]
-      rows = service.send(:ideas_to_idea_rows, ideas)
+      rows = service.send(:ideas_to_idea_rows, ideas, import_file)
       expect(rows[0][:permission]).to be_nil
       expect(rows[0].keys).not_to include :user_email
       expect(rows[0].keys).not_to include :user_first_name
@@ -167,7 +168,7 @@ describe BulkImportIdeas::IdeaPdfFileParser do
         pdf_pages: [1, 2],
         fields: { 'First name' => 'John', 'Last name' => 'Rambo', 'Email address' => 'john  @rambo.com', 'Permission' => 'X' }
       }]
-      rows = service.send(:ideas_to_idea_rows, ideas)
+      rows = service.send(:ideas_to_idea_rows, ideas, import_file)
       expect(rows[0][:user_email]).to eq 'john@rambo.com'
     end
 
@@ -184,7 +185,7 @@ describe BulkImportIdeas::IdeaPdfFileParser do
           'Description' => "Je suis un chien. J'aime les chats."
         }
       }]
-      rows = service.send(:ideas_to_idea_rows, ideas)
+      rows = service.send(:ideas_to_idea_rows, ideas, import_file)
 
       expect(rows[0][:title_multiloc]).to eq({ 'fr-FR': 'Bonjour' })
       expect(rows[0][:body_multiloc]).to eq({ 'fr-FR': "Je suis un chien. J'aime les chats." })
@@ -205,7 +206,7 @@ describe BulkImportIdeas::IdeaPdfFileParser do
       # Remove permission field and use output from checkbox on PDF scan
       pdf_ideas[0][:fields].delete('Permission')
       pdf_ideas[0][:fields]['By checking this box I consent to my data'] = 'filled_checkbox'
-      rows = service.send(:ideas_to_idea_rows, pdf_ideas)
+      rows = service.send(:ideas_to_idea_rows, pdf_ideas, import_file)
 
       expect(rows[0][:user_email]).to eq 'john_rambo@gravy.com'
       expect(rows[0][:user_first_name]).to eq 'John'
@@ -214,9 +215,8 @@ describe BulkImportIdeas::IdeaPdfFileParser do
   end
 
   describe 'merge_pdf_rows' do
-    let(:pdf_ideas) do
-      {
-        form_parsed_ideas: [
+    let(:form_parsed_ideas) do
+       [
           {
             pdf_pages: [1, 2],
             fields: { 'Title' => 'Form title 1', 'Location' => 'Formville' }
@@ -225,8 +225,11 @@ describe BulkImportIdeas::IdeaPdfFileParser do
             pdf_pages: [3, 4],
             fields: { 'Title' => 'Form title 2', 'Description' => 'Form description 2', 'Select field' => 'Yes' }
           }
-        ],
-        text_parsed_ideas: [
+        ]
+    end
+
+    let(:text_parsed_ideas) do
+      [
           {
             pdf_pages: [1, 2],
             fields: { 'Title' => 'Text title 1', 'Description' => 'Text description 1', 'Location' => 'Textville' }
@@ -236,11 +239,10 @@ describe BulkImportIdeas::IdeaPdfFileParser do
             fields: { 'Title' => 'Text title 2', 'Description' => 'Text description 2', 'Location' => 'Textington', 'Another select field' => 'No' }
           }
         ]
-      }
     end
 
     it 'merges both sources, prioritising those from the form parser' do
-      rows = service.send(:merge_pdf_rows, pdf_ideas)
+      rows = service.send(:merge_pdf_rows, form_parsed_ideas, text_parsed_ideas, nil)
       expect(rows[0]).to include({
         title_multiloc: { en: 'Form title 1' },
         body_multiloc: { en: 'Text description 1' },
@@ -254,13 +256,13 @@ describe BulkImportIdeas::IdeaPdfFileParser do
     end
 
     it 'merges custom fields successfully' do
-      rows = service.send(:merge_pdf_rows, pdf_ideas)
+      rows = service.send(:merge_pdf_rows, form_parsed_ideas, text_parsed_ideas, nil)
       expect(rows[1][:custom_field_values]).to match_array({ select_field: 'yes', another_select_field: 'no' })
     end
 
     it 'ignores the text parsed ideas if the array lengths differ' do
-      pdf_ideas[:text_parsed_ideas].pop
-      rows = service.send(:merge_pdf_rows, pdf_ideas)
+      text_parsed_ideas.pop
+      rows = service.send(:merge_pdf_rows, form_parsed_ideas, text_parsed_ideas, nil)
       expect(rows[0]).not_to include({
         body_multiloc: { en: 'Text description 1' }
       })
@@ -270,7 +272,7 @@ describe BulkImportIdeas::IdeaPdfFileParser do
     end
   end
 
-  describe 'parse_pdf' do
+  describe 'parse_rows' do
     it 'ignores errors from the plain text service' do
       form_parser_output = [{
         form_pages: [1],
@@ -280,13 +282,13 @@ describe BulkImportIdeas::IdeaPdfFileParser do
           'Description' => 'And this is the very good body'
         }
       }]
+      file = create(:idea_import_file)
+
       expect_any_instance_of(BulkImportIdeas::Pdf::IdeaGoogleFormParserService).to receive(:parse_pdf).and_return(form_parser_output)
       expect_any_instance_of(BulkImportIdeas::Pdf::IdeaGoogleFormParserService).to receive(:raw_text_page_array).and_raise(BulkImportIdeas::Error.new('something'))
+      expect(service).to receive(:merge_pdf_rows).with(form_parser_output, [], file)
 
-      file = create(:idea_import_file)
-      expect(service.send(:parse_pdf_ideas, file)).to eq(
-        { form_parsed_ideas: form_parser_output, text_parsed_ideas: [] }
-      )
+      service.send(:parse_rows, file)
     end
   end
 
