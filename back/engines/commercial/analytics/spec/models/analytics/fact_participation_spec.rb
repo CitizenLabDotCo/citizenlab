@@ -14,21 +14,7 @@ RSpec.describe Analytics::FactParticipation do
 
   context 'when dimension types have been created' do
     before_all do
-      # Type dimensions
-      [
-        { name: 'idea', parent: 'post' },
-        { name: 'initiative', parent: 'post' },
-        { name: 'comment', parent: 'idea' },
-        { name: 'reaction', parent: 'idea' },
-        { name: 'poll', parent: nil },
-        { name: 'volunteer', parent: nil },
-        { name: 'survey', parent: nil },
-        { name: 'basket', parent: nil },
-        { name: 'event_attendance', parent: nil },
-        { name: 'follower', parent: 'project' }
-      ].each do |type|
-        create(:dimension_type, name: type[:name], parent: type[:parent])
-      end
+      Analytics::PopulateDimensionsService.populate_types
     end
 
     context 'when an idea is created' do

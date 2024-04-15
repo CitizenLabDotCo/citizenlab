@@ -23,6 +23,31 @@ module Analytics
         end
       end
 
+      def populate_types
+        types = [
+          { name: 'idea', parent: 'post' },
+          { name: 'initiative', parent: 'post' },
+          { name: 'comment', parent: 'initiative' },
+          { name: 'comment', parent: 'idea' },
+          { name: 'reaction', parent: 'initiative' },
+          { name: 'reaction', parent: 'idea' },
+          { name: 'reaction', parent: 'comment' },
+          { name: 'poll', parent: nil },
+          { name: 'volunteer', parent: nil },
+          { name: 'survey', parent: nil },
+          { name: 'basket', parent: nil },
+          { name: 'event_attendance', parent: nil },
+          *Follower::FOLLOWABLE_TYPES.map { |type| { name: 'follower', parent: type.downcase } }
+        ]
+
+        current_types = Analytics::DimensionType.all.as_json(only: %i[name parent])
+
+        return unless current_types & types != types
+
+        Analytics::DimensionType.delete_all
+        Analytics::DimensionType.insert_all(types)
+      end
+
       private
 
       def populate_dates
@@ -46,31 +71,6 @@ module Analytics
           end
         end
         create_dates(from, to)
-      end
-
-      def populate_types
-        types = [
-          { name: 'idea', parent: 'post' },
-          { name: 'initiative', parent: 'post' },
-          { name: 'comment', parent: 'initiative' },
-          { name: 'comment', parent: 'idea' },
-          { name: 'reaction', parent: 'initiative' },
-          { name: 'reaction', parent: 'idea' },
-          { name: 'reaction', parent: 'comment' },
-          { name: 'poll', parent: nil },
-          { name: 'volunteer', parent: nil },
-          { name: 'survey', parent: nil },
-          { name: 'basket', parent: nil },
-          { name: 'event_attendance', parent: nil },
-          *FOLLOWABLE_TYPES.map { |type| { name: 'follower', parent: type.downcase } }
-        ]
-
-        current_types = Analytics::DimensionType.all.as_json(only: %i[name parent])
-
-        return unless current_types & types != types
-
-        Analytics::DimensionType.delete_all
-        Analytics::DimensionType.insert_all(types)
       end
 
       def populate_locales
