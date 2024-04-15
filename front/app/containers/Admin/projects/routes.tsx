@@ -293,19 +293,19 @@ const createAdminProjectsRoutes = () => {
                   </PageLoading>
                 ),
               },
-              // {
-              //   path: projectsRoutes.projectNewPhase,
-              //   element: (
-              //     <PageLoading>
-              //       {/* We use the key here to make sure that the component is treated as a different instance
-              //       to differentiate between the new and edit phase. This distinction is especially important
-              //       when the component is already visible and the route changes to the same component.
-              //       For example, from phase setup to creating a new phase.
-              //       */}
-              //       <AdminPhaseNewAndEdit key="new" />
-              //     </PageLoading>
-              //   ),
-              // },
+              {
+                path: projectsRoutes.projectNewPhase,
+                element: (
+                  <PageLoading>
+                    {/* We use the key here to make sure that the component is treated as a different instance
+                    to differentiate between the new and edit phase. This distinction is especially important
+                    when the component is already visible and the route changes to the same component.
+                    For example, from phase setup to creating a new phase.
+                    */}
+                    <AdminPhaseNewAndEdit key="new" />
+                  </PageLoading>
+                ),
+              },
               {
                 path: projectsRoutes.projectPhase,
                 element: (
