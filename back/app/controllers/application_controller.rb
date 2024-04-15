@@ -4,6 +4,15 @@ class ApplicationController < ActionController::API
   include AuthToken::Authenticable
   include Pundit::Authorization
 
+  class FeatureRequiredError < StandardError
+    attr_reader :feature
+
+    def initialize(feature)
+      super()
+      @feature = feature
+    end
+  end
+
   before_action :authenticate_user
 
   after_action :verify_authorized, except: :index
@@ -19,6 +28,8 @@ class ApplicationController < ActionController::API
   rescue_from ClErrors::TransactionError, with: :transaction_error
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
+  rescue_from FeatureRequiredError, with: :feature_required_error
 
   def send_error(error = nil, status = 400)
     render json: error, status: status
@@ -49,6 +60,11 @@ class ApplicationController < ActionController::API
       reason = exception.try(:reason) || 'Unauthorized!'
       render json: { errors: { base: [{ error: reason }] } }, status: :unauthorized
     end
+  end
+
+  def feature_required_error(exception)
+    skip_authorization
+    render json: { errors: { base: [{ error: "#{exception.feature}_disabled" }] } }, status: :unauthorized
   end
 
   # Used by semantic logger to include in every log line
@@ -114,6 +130,10 @@ class ApplicationController < ActionController::API
 
   def parse_bool(value)
     ActiveModel::Type::Boolean.new.cast(value)
+  end
+
+  def require_feature!(feature)
+    raise FeatureRequiredError, feature if !AppConfiguration.instance.feature_activated?(feature)
   end
 
   private
