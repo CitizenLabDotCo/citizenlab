@@ -6,7 +6,7 @@
 #
 #  id         :uuid             not null, primary key
 #  name       :string
-#  owner_id   :uuid             not null
+#  owner_id   :uuid
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  phase_id   :uuid
@@ -25,7 +25,7 @@
 #
 module ReportBuilder
   class Report < ::ApplicationRecord
-    belongs_to :owner, class_name: 'User'
+    belongs_to :owner, class_name: 'User', optional: true
     belongs_to :phase, class_name: 'Phase', optional: true
 
     has_one(

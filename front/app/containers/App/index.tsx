@@ -46,6 +46,7 @@ import {
 } from 'utils/helperUtils';
 import { localeStream } from 'utils/localeStream';
 import { usePermission } from 'utils/permissions';
+import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
 
 import Meta from './Meta';
 import UserSessionRecordingModal from './UserSessionRecordingModal';
@@ -69,7 +70,8 @@ const App = ({ children }: Props) => {
   );
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser, isLoading } = useAuthUser();
-
+  const appContainerClassName =
+    isAdmin(authUser) || isProjectModerator(authUser) ? 'admin-user-view' : '';
   const [
     userDeletedSuccessfullyModalOpened,
     setUserDeletedSuccessfullyModalOpened,
@@ -314,6 +316,7 @@ const App = ({ children }: Props) => {
           >
             <GlobalStyle />
             <Box
+              className={appContainerClassName}
               display="flex"
               flexDirection="column"
               alignItems="stretch"

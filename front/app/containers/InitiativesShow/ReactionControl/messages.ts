@@ -140,4 +140,8 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.VoteControl.votingNotPermitted',
     defaultMessage: "You don't have the rights to vote on this proposal.",
   },
+  a11y_timeLeft: {
+    id: 'app.containers.InitiativesShow.VoteControl.a11y_timeLeft',
+    defaultMessage: 'Time left to vote:',
+  },
 });
