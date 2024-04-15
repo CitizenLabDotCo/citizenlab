@@ -142,7 +142,7 @@ module BulkImportIdeas
       multi_select_types = %w[multiselect multiselect_image]
       custom_fields = {}
       merged_fields.each do |field|
-        next if field[:key].nil?
+        next if field[:key].nil? || field[:value].nil?
 
         if field[:code]
           # Core fields

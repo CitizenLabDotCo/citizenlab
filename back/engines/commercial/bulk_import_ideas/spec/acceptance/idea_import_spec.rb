@@ -12,6 +12,7 @@ resource 'BulkImportIdeasImportIdeas' do
   end
 
   let!(:project) { create(:single_phase_ideation_project, title_multiloc: { en: 'Project 1' }) }
+  let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
 
   context 'when not authorized' do
     let(:phase_id) { project.phases.first.id }

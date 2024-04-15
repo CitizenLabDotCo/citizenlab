@@ -15,7 +15,7 @@ module BulkImportIdeas
     end
 
     # Merge the form fields that generated the input xlsx sheet and the import values into a single array
-    def merge_idea_fields(idea)
+    def merge_idea_with_form_fields(idea)
       merged_idea = []
       form_fields = import_form_data[:fields]
       form_fields.each do |form_field|
