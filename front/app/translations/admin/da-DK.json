@@ -2519,7 +2519,6 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText": "Rapporteret som upassende af en platformbruger.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "Advarsler om indhold",
   "app.modules.commercial.report_builder.admin.components.TopBar.reportBuilder": "Rapportbygger",
-  "app.modules.idea_assignment.admin.components.permissionsTab": "Adgangsrettigheder",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Sider, der vises på din navigationslinje",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Opret brugerdefineret side",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Er du sikker på, at du ønsker at slette denne side? Dette kan ikke fortrydes. Du kan også fjerne siden fra navigationslinjen, hvis du ikke er klar til at slette den endnu.",

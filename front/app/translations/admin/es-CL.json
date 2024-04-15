@@ -2519,7 +2519,6 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText": "Reportado como inapropiado por un usuario/a de la plataforma.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "Advertencias sobre el contenido",
   "app.modules.commercial.report_builder.admin.components.TopBar.reportBuilder": "Constructor de informes",
-  "app.modules.idea_assignment.admin.components.permissionsTab": "Derechos de acceso",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Páginas que se muestran en la barra de navegación",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Crear página personalizada",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "¿Está seguro de que quiere eliminar esta página? Este paso no podrá deshacerse. También puede eliminar la página de la barra de navegación si aún no está listo para eliminarla.",
