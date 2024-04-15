@@ -410,7 +410,7 @@ describe BulkImportIdeas::IdeaPdfFileParser do
       end
 
       it 'converts multiselect fields - independently for each idea' do
-        expect_any_instance_of(described_class).to receive(:import_form_data).and_return(pdf_form_data)
+        expect_any_instance_of(BulkImportIdeas::IdeaPdfFormExporter).to receive(:importer_data).and_return(pdf_form_data)
         idea1 = [
           { name: 'Monkeys', value: 'filled_checkbox', type: 'option', page: 2, position: 68 },
           { name: 'Cows', value: 'filled_checkbox', type: 'option', page: 2, position: 70 },
