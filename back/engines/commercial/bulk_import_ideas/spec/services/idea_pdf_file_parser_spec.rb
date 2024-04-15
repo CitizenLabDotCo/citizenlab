@@ -216,29 +216,29 @@ describe BulkImportIdeas::IdeaPdfFileParser do
 
   describe 'merge_pdf_rows' do
     let(:form_parsed_ideas) do
-       [
-          {
-            pdf_pages: [1, 2],
-            fields: { 'Title' => 'Form title 1', 'Location' => 'Formville' }
-          },
-          {
-            pdf_pages: [3, 4],
-            fields: { 'Title' => 'Form title 2', 'Description' => 'Form description 2', 'Select field' => 'Yes' }
-          }
-        ]
+      [
+        {
+          pdf_pages: [1, 2],
+          fields: { 'Title' => 'Form title 1', 'Location' => 'Formville' }
+        },
+        {
+          pdf_pages: [3, 4],
+          fields: { 'Title' => 'Form title 2', 'Description' => 'Form description 2', 'Select field' => 'Yes' }
+        }
+      ]
     end
 
     let(:text_parsed_ideas) do
       [
-          {
-            pdf_pages: [1, 2],
-            fields: { 'Title' => 'Text title 1', 'Description' => 'Text description 1', 'Location' => 'Textville' }
-          },
-          {
-            pdf_pages: [3, 4],
-            fields: { 'Title' => 'Text title 2', 'Description' => 'Text description 2', 'Location' => 'Textington', 'Another select field' => 'No' }
-          }
-        ]
+        {
+          pdf_pages: [1, 2],
+          fields: { 'Title' => 'Text title 1', 'Description' => 'Text description 1', 'Location' => 'Textville' }
+        },
+        {
+          pdf_pages: [3, 4],
+          fields: { 'Title' => 'Text title 2', 'Description' => 'Text description 2', 'Location' => 'Textington', 'Another select field' => 'No' }
+        }
+      ]
     end
 
     it 'merges both sources, prioritising those from the form parser' do
