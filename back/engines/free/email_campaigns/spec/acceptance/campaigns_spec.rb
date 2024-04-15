@@ -7,7 +7,7 @@ resource 'Campaigns' do
   explanation 'E-mail campaigns, both automated and manual'
 
   before do
-    create_list(:manual_campaign, 4)
+    @manual_campaigns = create_list(:manual_campaign, 4)
     @manual_project_participants_campaign = create(:manual_project_participants_campaign)
     @automated_campaigns = create_list(:official_feedback_on_initiative_you_follow_campaign, 2)
   end
@@ -66,15 +66,15 @@ resource 'Campaigns' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 1
       end
-      
-      example 'List all manual campaigns when one has been sent' do
-        create_list(:delivery, 5, campaign: @campaigns.first)
-        do_request(campaign_names: ['manual'])
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 3
 
-        sent_campaign = json_response[:data].find { |c| c[:id] == @campaigns.first.id }
-        unsent_campaign = json_response[:data].find { |c| c[:id] == @campaigns.second.id }
+      example 'List all manual campaigns when one has been sent' do
+        create_list(:delivery, 5, campaign: @manual_campaigns.first)
+        do_request(manual_campaigns_only: true)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 5
+
+        sent_campaign = json_response[:data].find { |c| c[:id] == @manual_campaigns.first.id }
+        unsent_campaign = json_response[:data].find { |c| c[:id] == @manual_campaigns.second.id }
         expect(sent_campaign[:attributes][:delivery_stats]).to match({
           sent: 5,
           bounced: 0,
