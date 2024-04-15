@@ -130,7 +130,7 @@ UNION ALL
 SELECT
     ea.id,
     ea.attendee_id AS dimension_user_id,
-    COALESCE(ea.attendee_id::TEXT, ea.id::TEXT) as participant_id,
+    ea.attendee_id::TEXT as participant_id,
     e.project_id AS dimension_project_id,
     adt.id AS dimension_type_id,
     ea.created_at::DATE AS dimension_date_created_id,
@@ -147,7 +147,7 @@ UNION ALL
 SELECT
   f.id,
   f.user_id AS dimension_user_id,
-  COALESCE(f.user_id::TEXT, f.id::TEXT) as participant_id,
+  f.user_id::TEXT as participant_id,
   CASE f.followable_type
     WHEN 'Project' THEN f.followable_id
     WHEN 'Idea' THEN i.project_id
