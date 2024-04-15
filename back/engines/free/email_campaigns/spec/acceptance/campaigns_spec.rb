@@ -38,7 +38,7 @@ resource 'Campaigns' do
       expect(json_response[:data].size).to eq 3
     end
 
-    example 'List all manual campaigns when some have been sent' do
+    example 'List all manual campaigns when one has been sent' do
       create_list(:delivery, 5, campaign: @campaigns.first)
       do_request(campaign_names: ['manual'])
       json_response = json_parse(response_body)
@@ -90,6 +90,7 @@ resource 'Campaigns' do
       assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq id
+      expect(json_response[:data][:attributes][:stats]).to be_nil
     end
 
     example 'Get a manual campaign that has been sent' do
