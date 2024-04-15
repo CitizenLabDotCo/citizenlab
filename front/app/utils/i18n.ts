@@ -120,7 +120,7 @@ export function getLocalizedWithFallback(
 
 const isMissing = (value?: string) => !value || value.length === 0;
 
-export function getLanguage(locale: SupportedLocale) {
+function getLanguage(locale: SupportedLocale) {
   return locale.indexOf('-') > -1 ? locale.split('-')[0] : locale;
 }
 
