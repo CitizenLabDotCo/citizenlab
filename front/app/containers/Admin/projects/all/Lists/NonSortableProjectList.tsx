@@ -15,10 +15,11 @@ import { ListHeader, HeaderTitle } from '../StyledComponents';
 
 import NonSortableFolderRow from './NonSortableFolderRow';
 
-const ModeratorProjectList = memo(() => {
+const NonSortableProjectList = memo(() => {
   const { data } = useAdminPublications({
     publicationStatusFilter: ['published', 'draft', 'archived'],
     rootLevelOnly: true,
+    moderator: true,
   });
 
   const rootLevelAdminPublications = data?.pages
@@ -76,4 +77,4 @@ const ModeratorProjectList = memo(() => {
   return null;
 });
 
-export default ModeratorProjectList;
+export default NonSortableProjectList;

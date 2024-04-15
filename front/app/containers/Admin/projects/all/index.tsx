@@ -19,10 +19,12 @@ import { isProjectFolderModerator } from 'utils/permissions/rules/projectFolderP
 
 import messages from './messages';
 
-const ModeratorProjectList = React.lazy(
-  () => import('./Lists/ModeratorProjectList')
+const NonSortableProjectList = React.lazy(
+  () => import('./Lists/NonSortableProjectList')
 );
-const AdminProjectList = React.lazy(() => import('./Lists/AdminProjectList'));
+const SortableProjectList = React.lazy(
+  () => import('./Lists/SortableProjectList')
+);
 
 const Container = styled.div``;
 
@@ -130,7 +132,11 @@ const AdminProjectsList = memo(({ className }: Props) => {
         <PageWrapper>
           <ListsContainer>
             <Suspense fallback={<Spinner />}>
-              {userIsAdmin ? <AdminProjectList /> : <ModeratorProjectList />}
+              {userIsAdmin ? (
+                <SortableProjectList />
+              ) : (
+                <NonSortableProjectList />
+              )}
             </Suspense>
           </ListsContainer>
         </PageWrapper>

@@ -35,11 +35,12 @@ const Spacer = styled.div`
 
 interface Props {}
 
-const AdminProjectList = memo<Props>((_props) => {
+const SortableProjectList = memo<Props>((_props) => {
   const { mutate: reorderAdminPublication } = useReorderAdminPublication();
   const { data } = useAdminPublications({
     publicationStatusFilter: ['published', 'draft', 'archived'],
     rootLevelOnly: true,
+    moderator: true,
   });
 
   const rootLevelAdminPublications = data?.pages
@@ -122,4 +123,4 @@ const AdminProjectList = memo<Props>((_props) => {
   return null;
 });
 
-export default AdminProjectList;
+export default SortableProjectList;
