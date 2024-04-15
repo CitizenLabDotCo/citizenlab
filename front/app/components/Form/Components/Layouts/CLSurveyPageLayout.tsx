@@ -171,7 +171,9 @@ const CLSurveyPageLayout = memo(
 
     const scrollToTop = () => {
       // Scroll inner container to top
-      pagesRef?.current?.scrollBy(0, -window.screen.height);
+      if (pagesRef?.current) {
+        pagesRef.current.scrollTop = 0;
+      }
     };
 
     const handleNextAndSubmit = async () => {
