@@ -157,8 +157,7 @@ const AuthProviders = memo<Props>(
 
         {criiptoLoginEnabled && (
           <StyledAuthProviderButton
-            // TODO: add icon
-            // icon="criipto"
+            icon="mitid"
             flow={flow}
             authProvider="criipto"
             onContinue={onSelectAuthProvider}
