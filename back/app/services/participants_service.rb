@@ -1,7 +1,17 @@
 # frozen_string_literal: true
 
 class ParticipantsService
-  PARTICIPANT_ACTIONS = %i[posting commenting idea_reacting comment_reacting voting polling volunteering]
+  PROJECT_PARTICIPANT_ACTIONS = %i[
+    posting
+    commenting
+    idea_reacting
+    comment_reacting
+    voting
+    polling
+    volunteering
+    event_attending
+    following
+  ]
 
   def participants(options = {})
     since = options[:since]
@@ -41,7 +51,7 @@ class ParticipantsService
 
   def ideas_participants(ideas, options = {})
     since = options[:since]
-    actions = options[:actions] || PARTICIPANT_ACTIONS
+    actions = options[:actions] || PROJECT_PARTICIPANT_ACTIONS
     participants = User.none
 
     # Posting
@@ -129,28 +139,38 @@ class ParticipantsService
 
   def projects_participants(projects, options = {})
     since = options[:since]
-    actions = options[:actions] || PARTICIPANT_ACTIONS
+    actions = options[:actions] || PROJECT_PARTICIPANT_ACTIONS
     ideas = Idea.where(project: projects)
     participants = ideas_participants(ideas, options)
-    # voting
+
+    # Voting
     if actions.include? :voting
       baskets = Basket.submitted
       baskets = baskets.where(phase: Phase.where(project: projects))
       baskets = baskets.where('created_at::date >= (?)::date', since) if since
       participants = participants.or(User.where(id: baskets.select(:user_id)))
     end
+
     # Polling
     if actions.include? :polling
       poll_responses = Polls::Response.where(phase: Phase.where(project: projects))
       poll_responses = poll_responses.where('created_at::date >= (?)::date', since) if since
       participants = participants.or(User.where(id: poll_responses.select(:user_id)))
     end
+
     # Volunteering
     if actions.include? :volunteering
       volunteering_users = User.joins(volunteers: [:cause])
       volunteering_users = volunteering_users.where(volunteering_causes: { phase: Phase.where(project: projects) })
       participants = participants.or(User.where(id: volunteering_users))
     end
+
+    # Event attending
+    # TODO
+
+    # Following
+    # TODO
+
     participants
   end
 

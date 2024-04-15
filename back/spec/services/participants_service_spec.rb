@@ -259,6 +259,20 @@ describe ParticipantsService do
 
       expect(service.projects_participants([project], actions: %i[posting voting]).map(&:id)).to match_array [pp1.id, pp4.id]
     end
+
+    it 'returns event attendees' do
+      project = create(:project)
+      event = create(:event, project: project)
+      attendee1 = create(:event_attendance, event: event).attendee
+      attendee2 = create(:event_attendance, event: event).attendee
+
+      expect(service.projects_participants([project]).map(&:id)).to match_array [attendee1.id, attendee2.id]
+    end
+
+    it 'returns followers' do
+      project = create(:project)
+      # TODO
+    end
   end
 
   describe 'topics_participants' do
