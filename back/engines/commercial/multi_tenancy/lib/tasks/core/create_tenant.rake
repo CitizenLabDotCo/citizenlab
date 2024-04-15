@@ -267,10 +267,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: true,
           allowed: true
         },
-        volunteering: {
-          enabled: true,
-          allowed: true
-        },
         project_description_builder: {
           enabled: true,
           allowed: true
