@@ -171,7 +171,7 @@ module BulkImportIdeas
           end
           field[:value] = options
         end
-      elsif %w[number linearscale].include?(field[:input_type])
+      elsif %w[number linear_scale].include?(field[:input_type])
         field[:value] = field[:value].to_i
       end
       field

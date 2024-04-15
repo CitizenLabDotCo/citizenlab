@@ -6,9 +6,6 @@ require 'prawn/measurement_extensions'
 class BulkImportIdeas::IdeaPdfFormExporter < BulkImportIdeas::BaseFormExporter
   attr_reader :participation_context, :form_fields, :previous_cursor
 
-  # We are still hiding linear scales for now because they are not supported
-  # by the plaintext parse
-  QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc number]
   FORBIDDEN_HTML_TAGS_REGEX = %r{</?(div|span|ul|ol|li|img|a){1}[^>]*/?>}
 
   def initialize(phase, locale, personal_data_enabled)
@@ -65,9 +62,6 @@ class BulkImportIdeas::IdeaPdfFormExporter < BulkImportIdeas::BaseFormExporter
       if field_type == 'page'
         pdf.start_new_page(size: 'A4')
       end
-
-      # Skip unsupported question types
-      next unless QUESTION_TYPES.include? field_type
 
       render_field(pdf, custom_field)
     end
@@ -245,8 +239,6 @@ class BulkImportIdeas::IdeaPdfFormExporter < BulkImportIdeas::BaseFormExporter
         render_single_choice(pdf_group, custom_field)
       when 'multiselect'
         render_multiple_choice(pdf_group, custom_field)
-      when 'linear_scale'
-        render_linear_scale(pdf_group, custom_field)
       when 'multiline_text', 'html_multiloc'
         render_text_lines(pdf_group, 7)
       else # text, text_multiloc, number
@@ -347,58 +339,59 @@ class BulkImportIdeas::IdeaPdfFormExporter < BulkImportIdeas::BaseFormExporter
     end
   end
 
-  def render_linear_scale(pdf, custom_field)
-    max_index = custom_field.maximum - 1
-    width = 80.mm
-
-    if custom_field.maximum > 3
-      width = 100.mm
-    end
-
-    if custom_field.maximum > 5
-      width = 120.mm
-    end
-
-    # Draw number labels
-    (0..max_index).each do |i|
-      pdf.indent(((i.to_f / max_index) * width) + 1.8.mm) do
-        save_cursor pdf
-
-        pdf.text((i + 1).to_s)
-
-        reset_cursor pdf
-      end
-    end
-
-    pdf.move_down 7.mm
-
-    # Draw checkboxes
-    (0..max_index).each do |i|
-      pdf.stroke_color '000000'
-      pdf.stroke_circle(
-        [
-          3.mm + ((i.to_f / max_index) * width),
-          pdf.cursor
-        ],
-        5
-      )
-    end
-
-    pdf.move_down 7.mm
-
-    # Draw min and max labels
-    save_cursor pdf
-
-    pdf.indent(1.8.mm) do
-      pdf.text custom_field.minimum_label_multiloc[@locale]
-    end
-
-    reset_cursor pdf
-
-    pdf.indent(width + 1.mm) do
-      pdf.text custom_field.maximum_label_multiloc[@locale]
-    end
-  end
+  # TODO: More advanced rendering of linear scale fields not used currently in favour of simple number field
+  # def render_linear_scale(pdf, custom_field)
+  #   max_index = custom_field.maximum - 1
+  #   width = 80.mm
+  #
+  #   if custom_field.maximum > 3
+  #     width = 100.mm
+  #   end
+  #
+  #   if custom_field.maximum > 5
+  #     width = 120.mm
+  #   end
+  #
+  #   # Draw number labels
+  #   (0..max_index).each do |i|
+  #     pdf.indent(((i.to_f / max_index) * width) + 1.8.mm) do
+  #       save_cursor pdf
+  #
+  #       pdf.text((i + 1).to_s)
+  #
+  #       reset_cursor pdf
+  #     end
+  #   end
+  #
+  #   pdf.move_down 7.mm
+  #
+  #   # Draw checkboxes
+  #   (0..max_index).each do |i|
+  #     pdf.stroke_color '000000'
+  #     pdf.stroke_circle(
+  #       [
+  #         3.mm + ((i.to_f / max_index) * width),
+  #         pdf.cursor
+  #       ],
+  #       5
+  #     )
+  #   end
+  #
+  #   pdf.move_down 7.mm
+  #
+  #   # Draw min and max labels
+  #   save_cursor pdf
+  #
+  #   pdf.indent(1.8.mm) do
+  #     pdf.text custom_field.minimum_label_multiloc[@locale]
+  #   end
+  #
+  #   reset_cursor pdf
+  #
+  #   pdf.indent(width + 1.mm) do
+  #     pdf.text custom_field.maximum_label_multiloc[@locale]
+  #   end
+  # end
 
   def parse_html_tags(string)
     string
