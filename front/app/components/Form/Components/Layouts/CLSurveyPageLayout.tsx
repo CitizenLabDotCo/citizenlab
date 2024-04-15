@@ -94,8 +94,6 @@ const CLSurveyPageLayout = memo(
     const showSubmit = currentStep === uiPages.length - 1;
     const dataCyValue = showSubmit ? 'e2e-submit-form' : 'e2e-next-page';
     const hasPreviousPage = currentStep !== 0;
-    const useTopAnchor =
-      isSmallerThanPhone && !isNilOrError(topAnchorRef) && topAnchorRef.current;
     const pagesRef = useRef<HTMLDivElement>(null);
     const [hasScrollBars, setHasScrollBars] = useState(false);
     const [queryParams] = useSearchParams();
@@ -131,13 +129,11 @@ const CLSurveyPageLayout = memo(
     useEffect(() => {
       if (scrollToError) {
         // Scroll to the first field with an error
-        document
-          .getElementById('error-display')
-          ?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'nearest',
-            inline: 'start',
-          });
+        document.getElementById('error-display')?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'start',
+        });
         setScrollToError(false);
       }
     }, [scrollToError]);
@@ -174,11 +170,8 @@ const CLSurveyPageLayout = memo(
     ]);
 
     const scrollToTop = () => {
-      if (useTopAnchor) {
-        topAnchorRef.current.scrollIntoView();
-      } else {
-        window.scrollTo(0, 0);
-      }
+      // Scroll inner container to top
+      pagesRef?.current?.scrollBy(0, -window.screen.height);
     };
 
     const handleNextAndSubmit = async () => {
