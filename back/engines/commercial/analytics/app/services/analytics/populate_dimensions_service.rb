@@ -62,12 +62,7 @@ module Analytics
           { name: 'survey', parent: nil },
           { name: 'basket', parent: nil },
           { name: 'event_attendance', parent: nil },
-          { name: 'follower', parent: 'project' },
-          { name: 'follower', parent: 'projectfolders::folder' },
-          { name: 'follower', parent: 'idea' },
-          { name: 'follower', parent: 'initiative' },
-          { name: 'follower', parent: 'topic' },
-          { name: 'follower', parent: 'area' }
+          *FOLLOWABLE_TYPES.map { |type| { name: 'follower', parent: type.downcase } }
         ]
 
         current_types = Analytics::DimensionType.all.as_json(only: %i[name parent])
