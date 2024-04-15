@@ -1,6 +1,7 @@
 import React, { memo, Suspense, useState } from 'react';
 
-import { Spinner, Title } from '@citizenlab/cl2-component-library';
+import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -10,13 +11,12 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import PageWrapper from 'components/admin/PageWrapper';
 import { SectionDescription } from 'components/admin/Section';
 import Outlet from 'components/Outlet';
+import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
 import { isProjectFolderModerator } from 'utils/permissions/rules/projectFolderPermissions';
 
-import CreateProject from './CreateProject';
 import messages from './messages';
 
 const ModeratorProjectList = React.lazy(
@@ -30,10 +30,6 @@ const CreateAndEditProjectsContainer = styled.div`
   &.hidden {
     display: none;
   }
-`;
-
-const CreateProjectWrapper = styled.div`
-  margin-bottom: 18px;
 `;
 
 const ListsContainer = styled.div`
@@ -57,11 +53,14 @@ export interface Props {
 
 const AdminProjectsList = memo(({ className }: Props) => {
   const { data: authUser } = useAuthUser();
-  const userIsAdmin = !isNilOrError(authUser) ? isAdmin(authUser) : false;
-  const userIsFolderModerator = !isNilOrError(authUser)
-    ? isProjectFolderModerator(authUser.data)
-    : false;
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
+  const userIsAdmin = isAdmin(authUser);
+  const userIsFolderModerator =
+    (authUser &&
+      isProjectFoldersEnabled &&
+      isProjectFolderModerator(authUser.data)) ??
+    false;
+  const userCanCreateProject = userIsAdmin || userIsFolderModerator;
   const [containerOutletRendered, setContainerOutletRendered] = useState(false);
   const handleContainerOutletOnRender = (hasRendered: boolean) => {
     setContainerOutletRendered(hasRendered);
@@ -72,21 +71,62 @@ const AdminProjectsList = memo(({ className }: Props) => {
       <CreateAndEditProjectsContainer
         className={containerOutletRendered ? 'hidden' : ''}
       >
-        <Title color="primary">
-          <FormattedMessage {...messages.overviewPageTitle} />
-        </Title>
+        <Box display="flex" justifyContent="space-between">
+          <Box>
+            <Title color="primary">
+              <FormattedMessage {...messages.overviewPageTitle} />
+            </Title>
 
-        <SectionDescription>
-          <FormattedMessage {...messages.overviewPageSubtitle} />
-        </SectionDescription>
-
-        <CreateProjectWrapper>
-          {(userIsAdmin ||
-            (userIsFolderModerator && isProjectFoldersEnabled)) && (
-            <CreateProject />
-          )}
-        </CreateProjectWrapper>
-
+            <SectionDescription>
+              <FormattedMessage {...messages.overviewPageSubtitle} />
+            </SectionDescription>
+          </Box>
+          <Box
+            display="flex"
+            justifyContent="flex-end"
+            gap="12px"
+            alignItems="center"
+          >
+            {isProjectFoldersEnabled && (
+              <Tippy
+                content={
+                  <FormattedMessage {...messages.onlyAdminsCanCreateFolders} />
+                }
+                disabled={userIsAdmin}
+              >
+                <Box>
+                  <Button
+                    data-cy="e2e-new-project-folder-button"
+                    linkTo={'/admin/projects/folders/new'}
+                    buttonStyle="secondary-outlined"
+                    icon="folder-add"
+                    disabled={!userIsAdmin}
+                  >
+                    <FormattedMessage {...messages.createProjectFolder} />
+                  </Button>
+                </Box>
+              </Tippy>
+            )}
+            <Tippy
+              content={
+                <FormattedMessage {...messages.onlyAdminsCanCreateProjects} />
+              }
+              disabled={userCanCreateProject}
+            >
+              <Box>
+                <Button
+                  data-cy="e2e-new-project-button"
+                  linkTo={'/admin/projects/new'}
+                  icon="plus-circle"
+                  buttonStyle="admin-dark"
+                  disabled={!userCanCreateProject}
+                >
+                  <FormattedMessage {...messages.newProject} />
+                </Button>
+              </Box>
+            </Tippy>
+          </Box>
+        </Box>
         <PageWrapper>
           <ListsContainer>
             <Suspense fallback={<Spinner />}>

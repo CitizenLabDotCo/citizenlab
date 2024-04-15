@@ -165,7 +165,6 @@ class User < ApplicationRecord
 
   attr_reader :highest_role_after_initialize
 
-  before_validation :set_cl1_migrated, on: :create
   before_validation :generate_slug
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :assign_email_or_phone, if: :email_changed?
@@ -449,11 +448,8 @@ class User < ApplicationRecord
     if no_password?
       # Allow authentication without password - but only if confirmation is required on the user
       unencrypted_password.empty? && confirmation_required? ? self : false
-    elsif cl1_authenticate(unencrypted_password)
-      self.password_digest = BCrypt::Password.create(unencrypted_password)
-      self
     else
-      original_authenticate(unencrypted_password) && self
+      BCrypt::Password.new(password_digest).is_password?(unencrypted_password) && self
     end
   end
 
@@ -636,18 +632,6 @@ class User < ApplicationRecord
     self.bio_multiloc = service.linkify_multiloc(bio_multiloc)
   end
 
-  def set_cl1_migrated
-    self.cl1_migrated ||= false
-  end
-
-  def original_authenticate(unencrypted_password)
-    BCrypt::Password.new(password_digest).is_password?(unencrypted_password)
-  end
-
-  def cl1_authenticate(unencrypted_password)
-    original_authenticate(::Digest::SHA256.hexdigest(unencrypted_password))
-  end
-
   def validate_email_domains_blacklist
     validate_email_domain_blacklist email
     validate_email_domain_blacklist new_email
@@ -717,6 +701,7 @@ class User < ApplicationRecord
 end
 
 User.include(IdeaAssignment::Extensions::User)
+User.include(ReportBuilder::Patches::User)
 User.include(Verification::Patches::User)
 
 User.prepend(MultiTenancy::Patches::User)
