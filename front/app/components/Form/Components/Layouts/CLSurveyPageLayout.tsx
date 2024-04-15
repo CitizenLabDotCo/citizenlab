@@ -76,7 +76,6 @@ const CLSurveyPageLayout = memo(
     data,
   }: LayoutProps) => {
     const { onSubmit, setShowAllErrors, setFormData } = useContext(FormContext);
-    const topAnchorRef = useRef<HTMLInputElement>(null);
     const { formatMessage } = useIntl();
     const [currentStep, setCurrentStep] = useState<number>(0);
     const [isLoading, setIsLoading] = useState(false);
@@ -250,7 +249,6 @@ const CLSurveyPageLayout = memo(
     return (
       <>
         <Box
-          ref={topAnchorRef}
           marginTop={'-140px'} // TODO: Find cleaner solution for mobile scrollTo behaviour.
           marginBottom={'140px'}
           id="top-anchor"
