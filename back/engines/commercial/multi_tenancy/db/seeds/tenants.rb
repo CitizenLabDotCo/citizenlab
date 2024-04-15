@@ -185,14 +185,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            manual_emailing: {
-              enabled: true,
-              allowed: true
-            },
-            automated_emailing_control: {
-              enabled: true,
-              allowed: true
-            },
             granular_permissions: {
               enabled: true,
               allowed: true
