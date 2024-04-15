@@ -80,6 +80,17 @@ module IdCriipto
       nil
     end
 
+    def logout_url(_user)
+      # We don't need to logout from Criipto, we set this URL only to refresh UI on our side.
+      # Otherwise, the "Sign up" modal is shown after signout.
+      # Steps to reproduce:
+      # 1. Sign up with Criipto
+      # 2. Sign out without entering email
+      #
+      # TODO: do it on FE.
+      configuration.base_frontend_uri
+    end
+
     private
 
     # See https://docs.criipto.com/verify/guides/authorize-url-builder/#auth-methods--acr-values
