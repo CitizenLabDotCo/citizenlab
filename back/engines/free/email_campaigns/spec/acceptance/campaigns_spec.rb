@@ -91,6 +91,23 @@ resource 'Campaigns' do
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq id
     end
+
+    example 'Get a manual campaign that has been sent' do
+      create_list(:delivery, 5, campaign: campaign)
+      do_request
+      assert_status 200
+      json_response = json_parse(response_body)
+      expect(json_response[:data][:attributes][:stats]).to match({
+        sent: 5,
+        bounced: 0,
+        failed: 0,
+        accepted: 0,
+        delivered: 0,
+        opened: 0,
+        clicked: 0,
+        total: 5
+      })
+    end
   end
 
   get '/web_api/v1/campaigns/:id/preview' do
