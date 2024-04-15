@@ -54,7 +54,7 @@ export interface Props {
 const AdminProjectsList = memo(({ className }: Props) => {
   const { data: authUser } = useAuthUser();
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
-  const userIsAdmin = isAdmin(authUser) ?? false;
+  const userIsAdmin = isAdmin(authUser);
   const userIsFolderModerator =
     (authUser &&
       isProjectFoldersEnabled &&
