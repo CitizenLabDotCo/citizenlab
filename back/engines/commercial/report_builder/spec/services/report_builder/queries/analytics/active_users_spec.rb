@@ -55,7 +55,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
       # Create another anonymous idea for another user (1 participant)
       create(:idea, project: project, anonymous: true, created_at: date_september)
 
-      # Add two ideas, not anonymous but no user_id (e.g. user deleted) (2 participants)
+      # Add two ideas, not anonymous but no user_id or author_hash (2 participants)
       create(:idea, project: project, anonymous: false, author: nil, created_at: date_september)
       create(:idea, project: project, anonymous: false, author: nil, created_at: date_september)
 
