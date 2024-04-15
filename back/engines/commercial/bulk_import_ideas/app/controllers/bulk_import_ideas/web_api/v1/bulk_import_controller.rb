@@ -21,7 +21,7 @@ module BulkImportIdeas
       ideas = import_service.import(rows)
       users = import_service.imported_users
 
-      sidefx.after_success current_user, @project, ideas, users
+      sidefx.after_success current_user, @phase, params[:model], params[:format], ideas, users
 
       render json: serializer.new(
         ideas,
@@ -29,7 +29,7 @@ module BulkImportIdeas
         include: %i[author idea_import]
       ).serializable_hash, status: :created
     rescue BulkImportIdeas::Error => e
-      sidefx.after_failure current_user, @project
+      sidefx.after_failure current_user, @phase, params[:model], params[:format]
       render json: { errors: { file: [{ error: e.key, **e.params }] } }, status: :unprocessable_entity
     end
 
@@ -109,7 +109,7 @@ module BulkImportIdeas
     end
 
     def sidefx
-      @sidefx ||= SideFxImportIdeasService.new
+      @sidefx ||= SideFxBulkImportService.new
     end
 
     def importer_service
