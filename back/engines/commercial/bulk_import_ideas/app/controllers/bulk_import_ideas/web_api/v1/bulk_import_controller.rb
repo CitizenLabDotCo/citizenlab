@@ -4,8 +4,20 @@ module BulkImportIdeas
   class WebApi::V1::BulkImportController < ApplicationController
     before_action :authorize_bulk_import_ideas, only: %i[bulk_create export_form draft_records approve_all]
 
-    SUPPORTED_MODELS = %w[idea].freeze
-    SUPPORTED_FORMATS = %w[pdf xlsx].freeze
+    CONSTANTIZER = {
+      'idea' => {
+        importer_class: Importers::IdeaImporter,
+        serializer_class: ::WebApi::V1::IdeaSerializer,
+        'xlsx' => {
+          exporter_class: Exporters::IdeaXlsxFormExporter,
+          parser_class: Parsers::IdeaXlsxFileParser
+        },
+        'pdf' => {
+          exporter_class: Exporters::IdeaPdfFormExporter,
+          parser_class: Parsers::IdeaPdfFileParser
+        }
+      }
+    }
 
     def bulk_create
       send_not_found unless supported_model? && supported_format?
@@ -114,32 +126,32 @@ module BulkImportIdeas
 
     def importer_service
       model = params[:model]
-      "BulkImportIdeas::Importers::#{model.camelize}Importer".constantize
+      CONSTANTIZER.fetch(model)[:importer_class]
     end
 
     def file_parser_service
       model = params[:model]
       format = params[:format]
-      "BulkImportIdeas::Parsers::#{model.camelize}#{format.camelize}FileParser".constantize
+      CONSTANTIZER.fetch(model).fetch(format)[:parser_class]
     end
 
     def form_exporter_service
       model = params[:model]
       format = params[:format]
-      "BulkImportIdeas::Exporters::#{model.camelize}#{format.camelize}FormExporter".constantize
+      CONSTANTIZER.fetch(model).fetch(format)[:exporter_class]
     end
 
     def serializer
       model = params[:model]
-      "::WebApi::V1::#{model.camelize}Serializer".constantize
+      CONSTANTIZER.fetch(model)[:serializer_class]
     end
 
     def supported_model?
-      SUPPORTED_MODELS.include?(params[:model])
+      CONSTANTIZER.keys.include?(params[:model])
     end
 
     def supported_format?
-      SUPPORTED_FORMATS.include?(params[:format])
+      CONSTANTIZER.fetch(params[:model]).keys.include?(params[:format])
     end
 
     def imported_draft_records
