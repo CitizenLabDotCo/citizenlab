@@ -70,7 +70,7 @@ module EmailCampaigns
       end
     end
 
-    attribute :stats, if: proc { |object|
+    attribute :delivery_stats, if: proc { |object|
       object.manual? && object.sent?
     } do |object|
       Delivery.status_counts(object.id)

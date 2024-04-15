@@ -46,7 +46,7 @@ resource 'Campaigns' do
 
       sent_campaign = json_response[:data].find { |c| c[:id] == @campaigns.first.id }
       unsent_campaign = json_response[:data].find { |c| c[:id] == @campaigns.second.id }
-      expect(sent_campaign[:attributes][:stats]).to match({
+      expect(sent_campaign[:attributes][:delivery_stats]).to match({
         sent: 5,
         bounced: 0,
         failed: 0,
@@ -90,7 +90,7 @@ resource 'Campaigns' do
       assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq id
-      expect(json_response[:data][:attributes][:stats]).to be_nil
+      expect(json_response[:data][:attributes][:delivery_stats]).to be_nil
     end
 
     example 'Get a manual campaign that has been sent' do
@@ -98,7 +98,7 @@ resource 'Campaigns' do
       do_request
       assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response[:data][:attributes][:stats]).to match({
+      expect(json_response[:data][:attributes][:delivery_stats]).to match({
         sent: 5,
         bounced: 0,
         failed: 0,
