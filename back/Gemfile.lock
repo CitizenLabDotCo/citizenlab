@@ -798,7 +798,7 @@ GEM
     mini_magick (4.12.0)
     mini_mime (1.1.5)
     minitest (5.22.3)
-    mjml-rails (4.10.1)
+    mjml-rails (4.11.0)
     msgpack (1.6.0)
     multi_json (1.15.0)
     multi_xml (0.6.0)
@@ -1300,7 +1300,7 @@ DEPENDENCIES
   mailgun-ruby (~> 1.2.14)
   matomo!
   mini_magick (~> 4.12)
-  mjml-rails (~> 4.10)
+  mjml-rails (~> 4.11)
   moderation!
   multi_tenancy!
   nokogiri (~> 1.16.3)
