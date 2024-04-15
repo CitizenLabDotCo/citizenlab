@@ -1,44 +1,8 @@
 # frozen_string_literal: true
 
 class ParticipantsService
-  ENGAGING_ACTIVITIES = [
-    { item_type: 'Comment', action: 'created' },
-    { item_type: 'Idea', action: 'published' },
-    { item_type: 'Reaction', action: 'idea_liked' },
-    { item_type: 'Reaction', action: 'idea_disliked' },
-    { item_type: 'Initiative', action: 'published' },
-    { item_type: 'Reaction', action: 'initiative_liked' },
-    { item_type: 'Reaction', action: 'initiative_disliked' },
-    { item_type: 'Reaction', action: 'comment_liked' },
-    { item_type: 'Reaction', action: 'comment_disliked' },
-    { item_type: 'Basket', action: 'created' },
-    { item_type: 'Polls::Response', action: 'created' },
-    { item_type: 'Volunteering::Volunteer', action: 'created' }
-  ]
-
   PARTICIPANT_ACTIONS = %i[posting commenting idea_reacting comment_reacting voting polling volunteering]
 
-  # def participants(options = {})
-  #   since = options[:since]
-  #   to = options[:to]
-  #   # After https://stackoverflow.com/a/25356375
-  #   list = (['(?, ?)'] * ENGAGING_ACTIVITIES.size).join(', ')
-  #   multiwhere = "(activities.item_type, activities.action) IN (#{list})"
-  #   users = User
-  #     .joins(:activities)
-  #     .where(
-  #       multiwhere,
-  #       *ENGAGING_ACTIVITIES.map { |h| [h[:item_type], h[:action]] }.flatten
-  #     ).group('users.id')
-
-  #   if since && to
-  #     users.where('activities.acted_at::date >= ? AND activities.acted_at::date < ?', since, to)
-  #   elsif since
-  #     users.where('activities.acted_at::date >= ?', since)
-  #   else
-  #     users
-  #   end
-  # end
   def participants(options = {})
     since = options[:since]
     to = options[:to]
@@ -47,12 +11,10 @@ class ParticipantsService
       .select(:dimension_user_id).distinct
       .where.not(dimension_user_id: nil)
 
-    binding.pry
-
     if since && to
-      participants.where('created_at::date >= ? AND created_at::date < ?', since, to)
+      participants.where('dimension_date_created_id >= ? AND dimension_date_created_id < ?', since, to)
     elsif since
-      participants.where('created_at::date >= ?', since)
+      participants.where('dimension_date_created_id >= ?', since)
     else
       participants
     end

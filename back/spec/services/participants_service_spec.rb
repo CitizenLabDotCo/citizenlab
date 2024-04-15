@@ -18,22 +18,16 @@ describe ParticipantsService do
       idea = nil
 
       travel_to Time.now - 100.days do
-        # create(:published_activity, user: pp1)
         idea = create(:idea, author: pp1)
       end
       travel_to Time.now - 6.days do
-        # create(:activity, item: create(:comment), action: 'created', user: pp2)
         create(:comment, author: pp2, post: idea)
       end
       travel_to Time.now - 2.days do
-        # create(:activity, item: create(:comment), action: 'created', user: pp3)
         create(:comment, author: pp3, post: idea)
-        # create(:activity, item: create(:idea), action: 'created', user: others.first)
         create(:idea, author: others.first, publication_status: 'draft')
       end
-      # create(:activity, item: create(:idea), action: 'published', user: pp4)
       create(:idea, author: pp4)
-      # create(:activity, item: create(:poll_response), action: 'created', user: pp5)
       create(:poll_response, user: pp5)
 
       expect(service.participants.map(&:dimension_user_id)).to match_array participants.map(&:id)
@@ -44,18 +38,20 @@ describe ParticipantsService do
       pp1, pp2, pp3, pp4 = participants
       create_list(:user, 3)
 
+      idea = nil
+
       travel_to Time.now - 100.days do
-        create(:published_activity, user: pp1)
+        idea = create(:idea, author: pp1)
       end
       travel_to Time.now - 6.days do
-        create(:activity, item: create(:comment), action: 'created', user: pp2)
+        create(:comment, post: idea, author: pp2)
       end
       travel_to Time.now - 2.days do
-        create(:activity, item: create(:comment), action: 'created', user: pp3)
+        create(:comment, post: idea, author: pp3)
       end
-      create(:activity, item: create(:comment), action: 'created', user: pp4)
+      create(:comment, post: idea, author: pp4)
 
-      expect(service.participants(since: (Time.now - 6.days)).map(&:id)).to match_array [pp2.id, pp3.id, pp4.id]
+      expect(service.participants(since: (Time.now - 6.days)).map(&:dimension_user_id)).to match_array [pp2.id, pp3.id, pp4.id]
     end
   end
 
