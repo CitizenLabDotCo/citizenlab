@@ -18,25 +18,43 @@ class ParticipantsService
 
   PARTICIPANT_ACTIONS = %i[posting commenting idea_reacting comment_reacting voting polling volunteering]
 
+  # def participants(options = {})
+  #   since = options[:since]
+  #   to = options[:to]
+  #   # After https://stackoverflow.com/a/25356375
+  #   list = (['(?, ?)'] * ENGAGING_ACTIVITIES.size).join(', ')
+  #   multiwhere = "(activities.item_type, activities.action) IN (#{list})"
+  #   users = User
+  #     .joins(:activities)
+  #     .where(
+  #       multiwhere,
+  #       *ENGAGING_ACTIVITIES.map { |h| [h[:item_type], h[:action]] }.flatten
+  #     ).group('users.id')
+
+  #   if since && to
+  #     users.where('activities.acted_at::date >= ? AND activities.acted_at::date < ?', since, to)
+  #   elsif since
+  #     users.where('activities.acted_at::date >= ?', since)
+  #   else
+  #     users
+  #   end
+  # end
   def participants(options = {})
     since = options[:since]
     to = options[:to]
-    # After https://stackoverflow.com/a/25356375
-    list = (['(?, ?)'] * ENGAGING_ACTIVITIES.size).join(', ')
-    multiwhere = "(activities.item_type, activities.action) IN (#{list})"
-    users = User
-      .joins(:activities)
-      .where(
-        multiwhere,
-        *ENGAGING_ACTIVITIES.map { |h| [h[:item_type], h[:action]] }.flatten
-      ).group('users.id')
+
+    participants = Analytics::FactParticipation
+      .select(:dimension_user_id).distinct
+      .where.not(dimension_user_id: nil)
+
+    binding.pry
 
     if since && to
-      users.where('activities.acted_at::date >= ? AND activities.acted_at::date < ?', since, to)
+      participants.where('created_at::date >= ? AND created_at::date < ?', since, to)
     elsif since
-      users.where('activities.acted_at::date >= ?', since)
+      participants.where('created_at::date >= ?', since)
     else
-      users
+      participants
     end
   end
 

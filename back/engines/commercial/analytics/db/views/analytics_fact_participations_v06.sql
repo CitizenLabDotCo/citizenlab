@@ -19,6 +19,7 @@ LEFT JOIN projects pr ON pr.id = i.project_id
 LEFT JOIN phases ph ON ph.id = i.creation_phase_id
 INNER JOIN analytics_dimension_types idea ON idea.name = 'idea'
 LEFT JOIN analytics_dimension_types survey ON survey.name = 'survey'
+WHERE i.publication_status = 'published'
 
 UNION ALL
 

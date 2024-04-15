@@ -1722,6 +1722,7 @@ CREATE VIEW public.analytics_fact_participations AS
      LEFT JOIN public.phases ph ON ((ph.id = i.creation_phase_id)))
      JOIN public.analytics_dimension_types idea ON (((idea.name)::text = 'idea'::text)))
      LEFT JOIN public.analytics_dimension_types survey ON (((survey.name)::text = 'survey'::text)))
+  WHERE ((i.publication_status)::text = 'published'::text)
 UNION ALL
  SELECT i.id,
     i.author_id AS dimension_user_id,
@@ -1811,7 +1812,7 @@ UNION ALL
 UNION ALL
  SELECT ea.id,
     ea.attendee_id AS dimension_user_id,
-    COALESCE((ea.attendee_id)::text, (ea.id)::text) AS participant_id,
+    (ea.attendee_id)::text AS participant_id,
     e.project_id AS dimension_project_id,
     adt.id AS dimension_type_id,
     (ea.created_at)::date AS dimension_date_created_id,
@@ -1824,7 +1825,7 @@ UNION ALL
 UNION ALL
  SELECT f.id,
     f.user_id AS dimension_user_id,
-    COALESCE((f.user_id)::text, (f.id)::text) AS participant_id,
+    (f.user_id)::text AS participant_id,
         CASE f.followable_type
             WHEN 'Project'::text THEN f.followable_id
             WHEN 'Idea'::text THEN i.project_id
