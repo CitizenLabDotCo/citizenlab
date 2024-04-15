@@ -116,7 +116,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
               <Box>
                 <Button
                   data-cy="e2e-new-project-button"
-                  linkTo={'/admin/projects/new-project'}
+                  linkTo={'/admin/projects/new'}
                   icon="plus-circle"
                   buttonStyle="admin-dark"
                   disabled={!userCanCreateProject}
