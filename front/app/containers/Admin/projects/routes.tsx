@@ -63,7 +63,7 @@ export function adminProjectsProjectPath(projectId: string): RouteType {
 
 enum projectsRoutes {
   projects = 'projects',
-  projectsNew = 'new',
+  projectNew = 'new',
   projectIdeaId = ':projectId/ideas/:ideaId',
   projectSettings = ':projectId/settings',
   projectTraffic = 'traffic',
@@ -99,7 +99,7 @@ enum projectsRoutes {
 
 export type projectsRouteTypes =
   | AdminRoute<projectsRoutes.projects>
-  | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.projectsNew}`>
+  | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.projectNew}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/ideas/${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/settings`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectEvents}`>
