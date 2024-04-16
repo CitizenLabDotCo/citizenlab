@@ -112,6 +112,14 @@ class ParticipantsService
     end
   end
 
+  def project_participants_count_uncached(project)
+    Analytics::FactParticipation
+      .where(dimension_project_id: project.id)
+      .select(:participant_id)
+      .distinct
+      .count
+  end
+
   # Returns the total count of all folder participants including anonymous posts - cached
   def folder_participants_count(folder)
     Rails.cache.fetch("#{folder.cache_key}/participant_count", expires_in: 1.day) do

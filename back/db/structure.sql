@@ -1707,7 +1707,7 @@ CREATE TABLE public.volunteering_volunteers (
 CREATE VIEW public.analytics_fact_participations AS
  SELECT i.id,
     i.author_id AS dimension_user_id,
-    COALESCE(i.author_hash, ((i.author_id)::text)::character varying, ((i.id)::text)::character varying) AS participant_id,
+    COALESCE((i.author_id)::text, (i.author_hash)::text, (i.id)::text) AS participant_id,
     i.project_id AS dimension_project_id,
         CASE
             WHEN ((ph.participation_method)::text = 'native_survey'::text) THEN survey.id
@@ -1726,7 +1726,7 @@ CREATE VIEW public.analytics_fact_participations AS
 UNION ALL
  SELECT i.id,
     i.author_id AS dimension_user_id,
-    COALESCE(i.author_hash, ((i.author_id)::text)::character varying, ((i.id)::text)::character varying) AS participant_id,
+    COALESCE((i.author_id)::text, (i.author_hash)::text, (i.id)::text) AS participant_id,
     NULL::uuid AS dimension_project_id,
     adt.id AS dimension_type_id,
     (i.created_at)::date AS dimension_date_created_id,
@@ -1738,7 +1738,7 @@ UNION ALL
 UNION ALL
  SELECT c.id,
     c.author_id AS dimension_user_id,
-    COALESCE(c.author_hash, ((c.author_id)::text)::character varying, ((c.id)::text)::character varying) AS participant_id,
+    COALESCE((c.author_id)::text, (c.author_hash)::text, (c.id)::text) AS participant_id,
     i.project_id AS dimension_project_id,
     adt.id AS dimension_type_id,
     (c.created_at)::date AS dimension_date_created_id,

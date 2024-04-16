@@ -4,7 +4,7 @@
 SELECT
     i.id,
     i.author_id AS dimension_user_id,
-    COALESCE(i.author_hash, i.author_id::TEXT, i.id::TEXT) as participant_id,
+    COALESCE(i.author_id::TEXT, i.author_hash, i.id::TEXT) as participant_id,
     i.project_id AS dimension_project_id,
     CASE
         WHEN ph.participation_method = 'native_survey' THEN survey.id
@@ -27,7 +27,7 @@ UNION ALL
 SELECT
     i.id,
     i.author_id AS dimension_user_id,
-    COALESCE(i.author_hash, i.author_id::TEXT, i.id::TEXT) as participant_id,
+    COALESCE(i.author_id::TEXT, i.author_hash, i.id::TEXT) as participant_id,
     null AS dimension_project_id, -- initiative has no project
     adt.id AS dimension_type_id,
     i.created_at::DATE AS dimension_date_created_id,
@@ -43,7 +43,7 @@ UNION ALL
 SELECT
     c.id,
     c.author_id AS dimension_user_id,
-    COALESCE(c.author_hash, c.author_id::TEXT, c.id::TEXT) as participant_id,
+    COALESCE(c.author_id::TEXT, c.author_hash, c.id::TEXT) as participant_id,
     i.project_id AS dimension_project_id,
     adt.id AS dimension_type_id,
     c.created_at::DATE AS dimension_date_created_id,
