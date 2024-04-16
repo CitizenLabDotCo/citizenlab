@@ -104,8 +104,10 @@ interface Props {
   className?: string;
   top?: string;
   mobileRight?: string;
+  isTopUndefined?: boolean;
   mobileLeft?: string;
   right?: string;
+  afterClick?: () => void;
 }
 
 const LanguageSelector = ({
@@ -113,7 +115,9 @@ const LanguageSelector = ({
   top,
   mobileRight,
   mobileLeft,
+  isTopUndefined,
   right,
+  afterClick,
 }: Props) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const isPhoneOrSmaller = useBreakpoint('phone');
@@ -129,6 +133,7 @@ const LanguageSelector = ({
   const handleLanguageSelect = (selectedLocale: SupportedLocale) => () => {
     if (appConfig) {
       updateLocale(selectedLocale, appConfig);
+      afterClick && afterClick();
     }
     setDropdownOpened(false);
   };
@@ -160,7 +165,7 @@ const LanguageSelector = ({
         <Dropdown
           width="180px"
           mobileWidth="160px"
-          top={top || '68px'}
+          top={isTopUndefined ? undefined : top || '68px'}
           right={right ? right : !isRtl ? '0px' : undefined}
           mobileRight={mobileRight ? mobileRight : !isRtl ? '5px' : undefined}
           mobileLeft={mobileLeft ? mobileLeft : isRtl ? '5px' : undefined}
