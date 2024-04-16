@@ -104,20 +104,22 @@ class ParticipantsService
   # Returns the total count of all project participants including anonymous posts - cached
   def project_participants_count(project)
     Rails.cache.fetch("#{project.cache_key}/participant_count", expires_in: 1.day) do
-      participant_ids = projects_participants([project]).pluck(:id)
-      known_author_hashes = participant_ids.map { |id| Idea.create_author_hash(id, project.id, true) }
-      participant_ids.size + projects_anonymous_count([project], known_author_hashes) + projects_everyone_count([project])
+      Analytics::FactParticipation
+        .where(dimension_project_id: project.id)
+        .select(:participant_id)
+        .distinct
+        .count
     end
   end
 
   # Returns the total count of all folder participants including anonymous posts - cached
   def folder_participants_count(folder)
     Rails.cache.fetch("#{folder.cache_key}/participant_count", expires_in: 1.day) do
-      participant_ids = projects_participants(folder.projects).pluck(:id)
-      known_author_hashes = participant_ids.flat_map do |id|
-        folder.projects.ids { |project_id| Idea.create_author_hash(id, project_id, true) }
-      end
-      participant_ids.size + projects_anonymous_count(folder.projects, known_author_hashes) + projects_everyone_count(folder.projects)
+      Analytics::FactParticipation
+        .where(dimension_project_id: folder.projects.pluck(:id))
+        .select(:participant_id)
+        .distinct
+        .count
     end
   end
 
