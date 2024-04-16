@@ -33,7 +33,7 @@ interface Props {
   onClose: () => void;
 }
 
-const ImportPdfModal = ({ open, onClose }: Props) => {
+const ImportExcelModal = ({ open, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const { mutateAsync: addOfflineIdeas, isLoading } = useAddOfflineIdeas();
   const locale = useLocale();
@@ -136,4 +136,4 @@ const ImportPdfModal = ({ open, onClose }: Props) => {
   );
 };
 
-export default ImportPdfModal;
+export default ImportExcelModal;
