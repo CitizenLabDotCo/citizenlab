@@ -22,6 +22,13 @@ import { updateLocale } from 'utils/locale';
 
 import { getSelectedLocale } from './utils';
 
+const StyledDropdown = styled(Dropdown)`
+  &.open-upwards {
+    bottom: 100% !important;
+    margin-bottom: 8px;
+  }
+`;
+
 const DropdownButtonText = styled.div`
   color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
@@ -103,19 +110,21 @@ const ListItem = styled.button`
 interface Props {
   className?: string;
   top?: string;
+  useDefaultTop?: boolean;
   mobileRight?: string;
   mobileLeft?: string;
   right?: string;
-  afterClick?: () => void;
+  afterSelection?: () => void;
 }
 
 const LanguageSelector = ({
   className,
   top,
   mobileRight,
+  useDefaultTop,
   mobileLeft,
   right,
-  afterClick,
+  afterSelection,
 }: Props) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const isPhoneOrSmaller = useBreakpoint('phone');
@@ -131,7 +140,7 @@ const LanguageSelector = ({
   const handleLanguageSelect = (selectedLocale: SupportedLocale) => () => {
     if (appConfig) {
       updateLocale(selectedLocale, appConfig);
-      afterClick && afterClick();
+      afterSelection && afterSelection();
     }
     setDropdownOpened(false);
   };
@@ -160,10 +169,11 @@ const LanguageSelector = ({
           />
         </DropdownButton>
 
-        <Dropdown
+        <StyledDropdown
+          className={className}
           width="180px"
           mobileWidth="160px"
-          top={top || '68px'}
+          top={useDefaultTop ? top || '68px' : top || undefined}
           right={right ? right : !isRtl ? '0px' : undefined}
           mobileRight={mobileRight ? mobileRight : !isRtl ? '5px' : undefined}
           mobileLeft={mobileLeft ? mobileLeft : isRtl ? '5px' : undefined}

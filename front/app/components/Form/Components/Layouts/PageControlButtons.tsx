@@ -63,11 +63,11 @@ const PageControlButtons = ({
             padding={isSmallerThanPhone ? '16px' : '16px 24px'}
           >
             <LanguageSelector
-              top="-200px"
+              className={'open-upwards'}
               mobileRight="auto"
               mobileLeft="auto"
               right="auto"
-              afterClick={() => {
+              afterSelection={() => {
                 window.location.reload();
               }}
             />
