@@ -103,7 +103,7 @@ resource 'BulkImportIdeasImportIdeas' do
       end
     end
 
-    get 'web_api/v1/phases/:phase_id/importer/draft/idea' do
+    get 'web_api/v1/phases/:phase_id/importer/draft_records/idea' do
       let(:project) { create(:project_with_active_native_survey_phase) }
       let(:phase) { project.phases.first }
       let!(:draft_ideas) do
@@ -212,7 +212,7 @@ resource 'BulkImportIdeasImportIdeas' do
 
       before { header_token_for create(:project_moderator, projects: [survey_project]) }
 
-      get 'web_api/v1/phases/:phase_id/importer/draft/idea' do
+      get 'web_api/v1/phases/:phase_id/importer/draft_records/idea' do
         example_request 'Getting draft ideas is authorized' do
           assert_status 200
         end
@@ -242,7 +242,7 @@ resource 'BulkImportIdeasImportIdeas' do
 
       before { header_token_for create(:project_moderator, projects: [other_project]) }
 
-      get 'web_api/v1/phases/:phase_id/importer/draft/idea' do
+      get 'web_api/v1/phases/:phase_id/importer/draft_records/idea' do
         example_request 'Getting draft ideas is NOT authorized' do
           assert_status 401
         end

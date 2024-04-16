@@ -6,7 +6,7 @@ BulkImportIdeas::Engine.routes.draw do
       resources :phases do
         post 'importer/bulk_create/:model/:format', on: :member, to: 'bulk_import#bulk_create'
         get 'importer/export_form/:model/:format', on: :member, to: 'bulk_import#export_form'
-        get 'importer/draft/:model', on: :member, to: 'bulk_import#draft_records'
+        get 'importer/draft_records/:model', on: :member, to: 'bulk_import#draft_records'
         patch 'importer/approve_all/:model', on: :member, to: 'bulk_import#approve_all'
         post 'importer/create_user', on: :member, to: 'phase_users#create_user'
       end

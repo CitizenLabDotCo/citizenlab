@@ -7,7 +7,7 @@ import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { ideasData } from './__mocks__/useAddOfflineIdeas';
 import useImportedIdeas from './useImportedIdeas';
 
-const apiPath = '*phases/:phaseId/importer/draft/idea';
+const apiPath = '*phases/:phaseId/importer/draft_records/idea';
 
 const server = setupServer(
   rest.get(apiPath, (_req, res, ctx) => {
