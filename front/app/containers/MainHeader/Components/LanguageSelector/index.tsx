@@ -24,7 +24,7 @@ import { getSelectedLocale } from './utils';
 
 const StyledDropdown = styled(Dropdown)`
   &.open-upwards {
-    bottom: 100% !important;
+    bottom: 100%;
     margin-bottom: 8px;
   }
 `;
