@@ -13,7 +13,7 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
     project.allowed_input_topics << create(:topic_waste)
 
     # Custom fields
-    create(:custom_field, resource: custom_form, key: 'a_text_field', title_multiloc: { 'en' => 'A text field' }, enabled: true)
+    create(:custom_field, resource: custom_form, key: 'a_text_field', title_multiloc: { 'en' => 'A text field' }, description_multiloc: { 'en' => 'A text field description' }, enabled: true)
     create(:custom_field, resource: custom_form, key: 'number_field', title_multiloc: { 'en' => 'Number field' }, input_type: 'number', enabled: true)
     create(:custom_field_point, resource: custom_form, key: 'a_point_field', title_multiloc: { 'en' => 'Point field' }, enabled: true)
     select_field = create(:custom_field, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => 'Select field' }, input_type: 'select', enabled: true)
@@ -192,6 +192,21 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
       expect(rows[0][:user_email]).to eq 'jean@france.com'
       expect(rows[0][:user_first_name]).to eq 'Jean'
       expect(rows[0][:user_last_name]).to eq 'Rambo'
+    end
+
+    it 'can convert where the description is detected as the field name instead of the title' do
+      ideas = [{
+        pdf_pages: [1, 2],
+        fields: {
+          'Title' => 'Free donuts for all',
+          'Description' => 'Give them all donuts',
+          'A text field description' => 'Not much to say'
+        }
+      }]
+      rows = service.send(:ideas_to_idea_rows, ideas, import_file)
+
+      expect(rows.count).to eq 1
+      expect(rows[0][:custom_field_values][:a_text_field]).to eq 'Not much to say'
     end
 
     it 'can accept select fields as arrays as well as delimited strings' do

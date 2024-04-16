@@ -63,13 +63,14 @@ module BulkImportIdeas::Parsers
     end
 
     # Overridden from base class to handle the way checkboxes are filled in the PDF
+    # and detect fields from description as well as title
     def merge_idea_with_form_fields(idea)
       merged_idea = []
       form_fields = import_form_data[:fields]
       form_fields.each do |form_field|
         idea.each do |idea_field|
-          if form_field[:name] == idea_field[:name]
-            if form_field[:type] == 'field'
+          if form_field[:name] == idea_field[:name] || form_field[:description] == idea_field[:name]
+            if form_field[:type] == 'field' && idea_field[:value].present?
               new_field = form_field
               new_field[:value] = idea_field[:value]
               new_field = process_field_value(new_field, form_fields)

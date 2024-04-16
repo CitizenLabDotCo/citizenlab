@@ -22,7 +22,7 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaGoogleFormParserService do
     end
 
     # it 'parses the pdf using the form parser' do
-    #   file_content = Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/personal-not-working.pdf').binread
+    #   file_content = Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/formsync_survey_linearscale3.pdf').binread
     #   service = described_class.new
     #   pages = service.parse_pdf file_content, 2
     #
