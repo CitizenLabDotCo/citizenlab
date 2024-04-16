@@ -109,6 +109,7 @@ const ListItem = styled.button`
 
 interface Props {
   className?: string;
+  dropdownClassName?: string;
   top?: string;
   useDefaultTop?: boolean;
   mobileRight?: string;
@@ -119,9 +120,10 @@ interface Props {
 
 const LanguageSelector = ({
   className,
+  dropdownClassName,
   top,
   mobileRight,
-  useDefaultTop,
+  useDefaultTop = true,
   mobileLeft,
   right,
   afterSelection,
@@ -170,7 +172,7 @@ const LanguageSelector = ({
         </DropdownButton>
 
         <StyledDropdown
-          className={className}
+          className={dropdownClassName}
           width="180px"
           mobileWidth="160px"
           top={useDefaultTop ? top || '68px' : top || undefined}

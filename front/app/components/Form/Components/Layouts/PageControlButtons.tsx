@@ -63,7 +63,8 @@ const PageControlButtons = ({
             padding={isSmallerThanPhone ? '16px' : '16px 24px'}
           >
             <LanguageSelector
-              className={'open-upwards'}
+              dropdownClassName={'open-upwards'}
+              useDefaultTop={false}
               mobileRight="auto"
               mobileLeft="auto"
               right="auto"
