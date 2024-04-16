@@ -14,8 +14,12 @@ module WebApi::V1
       def index_xlsx
         authorize %i[events attendance], :index_xlsx?
         event = Event.find(params[:id])
-        puts "event_id: #{event.id}"
-        puts 'I am index_xlsx'
+        attendees = User.where(id: event.attendances.pluck(:attendee_id))
+
+        I18n.with_locale(current_user&.locale) do
+          xlsx = XlsxService.new.generate_users_xlsx attendees, view_private_attributes: true
+          send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'attendees.xlsx'
+        end
       end
 
       def create
