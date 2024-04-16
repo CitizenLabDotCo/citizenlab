@@ -130,7 +130,7 @@ class XlsxService
     generate_xlsx 'Users', columns, users
   end
 
-  def generate_attendees_xlsx(users)
+  def generate_attendees_xlsx(users, view_private_attributes: false)
     columns = [
       { header: 'first_name', f: ->(u) { u.first_name } },
       { header: 'last_name', f: ->(u) { u.last_name } },
@@ -138,6 +138,7 @@ class XlsxService
       { header: 'registration_completed_at', f: ->(u) { u.registration_completed_at }, skip_sanitization: true },
       *user_custom_field_columns(:itself)
     ]
+    columns.reject! { |c| %w[email first_name last_name].include?(c[:header]) } unless view_private_attributes
 
     generate_xlsx 'Users', columns, users
   end
