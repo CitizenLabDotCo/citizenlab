@@ -132,7 +132,6 @@ export interface IAppConfigurationSettings {
     url?: string;
   };
   admin_project_templates?: AppConfigurationFeature;
-  private_projects?: AppConfigurationFeature;
   maps?: AppConfigurationMapSettings;
   initiatives: ProposalsSettings;
   initiative_review?: AppConfigurationFeature;

@@ -2525,7 +2525,6 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText": "Rapportert som upassende av en plattformbruker.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "Innholdsadvarsler",
   "app.modules.commercial.report_builder.admin.components.TopBar.reportBuilder": "Rapportbygger",
-  "app.modules.idea_assignment.admin.components.permissionsTab": "Tilgangsrettigheter",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Sider som vises på navigasjonslinjen",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Opprett en egendefinert side",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Er du sikker på at du vil slette denne siden? Dette kan ikke angres. Du kan også fjerne siden fra navigasjonslinjen hvis du ikke er klar til å slette den ennå.",
