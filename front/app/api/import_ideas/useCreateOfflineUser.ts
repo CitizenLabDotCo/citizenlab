@@ -14,7 +14,7 @@ export const createOfflineUser = async ({
   ...requestBody
 }: CreateOfflineIdeasParams) =>
   fetcher<IUser>({
-    path: `/phases/${phaseId}/create_user`,
+    path: `/phases/${phaseId}/importer/create_user`,
     action: 'post',
     body: { user: { ...requestBody } },
   });

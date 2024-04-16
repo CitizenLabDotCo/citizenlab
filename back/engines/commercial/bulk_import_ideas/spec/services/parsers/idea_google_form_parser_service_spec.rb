@@ -4,7 +4,7 @@ require 'rails_helper'
 
 # NOTE: These tests are for development purposes due to their reliance on a Google API that cannot be easily mocked
 
-describe BulkImportIdeas::GoogleFormParserService do
+describe BulkImportIdeas::Parsers::Pdf::IdeaGoogleFormParserService do
   describe 'raw_text_by_page' do
     it 'gets array of page text from the PDF file' do
       # Comment out the following stub to use the actual Google service
@@ -22,7 +22,7 @@ describe BulkImportIdeas::GoogleFormParserService do
     end
 
     # it 'parses the pdf using the form parser' do
-    #   file_content = Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/personal-not-working.pdf').binread
+    #   file_content = Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/formsync_survey_linearscale3.pdf').binread
     #   service = described_class.new
     #   pages = service.parse_pdf file_content, 2
     #

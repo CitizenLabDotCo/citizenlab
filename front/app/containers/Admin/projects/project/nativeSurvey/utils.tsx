@@ -79,8 +79,8 @@ export const getFormActionsConfig = (
     editFormLink: `/admin/projects/${project.id}/phases/${phase.id}/native-survey/edit`,
     viewFormLink: `/projects/${project.attributes.slug}/ideas/new?phase_id=${phase.id}`,
     offlineInputsLink: `/admin/projects/${project.id}/phases/${phase.id}/offline-inputs`,
-    downloadExcelLink: `${API_PATH}/phases/${phase.id}/import_ideas/example_xlsx`,
-    downloadPdfLink: `${API_PATH}/phases/${phase.id}/custom_fields/to_pdf`,
+    downloadExcelLink: `${API_PATH}/phases/${phase.id}/importer/export_form/idea/xlsx`,
+    downloadPdfLink: `${API_PATH}/phases/${phase.id}/importer/export_form/idea/pdf`,
     heading: phase.attributes.title_multiloc,
     postingEnabled: phase.attributes.posting_enabled,
     togglePostingEnabled: () => {

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module BulkImportIdeas
-  class IdeaPlaintextParserService
+module BulkImportIdeas::Parsers::Pdf
+  class IdeaPlainTextParserService
     TEXT_FIELD_TYPES = %w[text text_multiloc]
     MULTILINE_FIELD_TYPES = %w[multiline_text html_multiloc]
 

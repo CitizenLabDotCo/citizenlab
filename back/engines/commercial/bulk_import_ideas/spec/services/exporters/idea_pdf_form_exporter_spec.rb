@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe BulkImportIdeas::PrintCustomFieldsService do
+describe BulkImportIdeas::Exporters::IdeaPdfFormExporter do
   let(:project) { create(:single_phase_ideation_project) }
   let(:custom_form) { create(:custom_form, participation_context: project) }
-  let(:service) { described_class.new project, custom_form.custom_fields, 'en', false }
+  let(:service) { described_class.new project, 'en', false }
 
   before do
     # Custom fields
@@ -30,16 +30,16 @@ describe BulkImportIdeas::PrintCustomFieldsService do
     create(:custom_field_option, custom_field: another_select_field, key: 'no', title_multiloc: { 'en' => 'No' })
   end
 
-  describe 'create_pdf' do
-    it 'prints a PDF form' do
-      expect(service.create_pdf).not_to be_nil
+  describe 'export' do
+    it 'returns a printable PDF form' do
+      expect(service.export).not_to be_nil
     end
   end
 
   describe 'importer_data' do
     it 'returns form meta data for importer - page count, fields, options and positions' do
       importer_data = service.importer_data
-      expect(importer_data[:page_count]).to eq 3
+      expect(importer_data[:page_count]).to eq 2
       expect(importer_data[:fields].pluck(:key)).to eq %w[
         a_text_field
         number_field

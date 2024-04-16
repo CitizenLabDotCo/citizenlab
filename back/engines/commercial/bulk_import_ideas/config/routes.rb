@@ -4,17 +4,14 @@ BulkImportIdeas::Engine.routes.draw do
   namespace :web_api do
     namespace :v1 do
       resources :phases do
-        post 'import_ideas/bulk_create', on: :member, to: 'import_ideas#bulk_create'
-        get 'import_ideas/example_xlsx', on: :member, to: 'import_ideas#example_xlsx'
-        get 'import_ideas/draft_ideas', on: :member, to: 'import_ideas#draft_ideas'
-        patch 'import_ideas/approve_all', on: :member, to: 'import_ideas#approve_all'
-        post 'create_user', on: :member, to: 'phase_users#create_user'
-        resources :custom_fields, controller: 'phase_custom_fields', only: %i[] do
-          get 'to_pdf', on: :collection
-        end
+        post 'importer/bulk_create/:model/:format', on: :member, to: 'bulk_import#bulk_create'
+        get 'importer/export_form/:model/:format', on: :member, to: 'bulk_import#export_form'
+        get 'importer/draft_records/:model', on: :member, to: 'bulk_import#draft_records'
+        patch 'importer/approve_all/:model', on: :member, to: 'bulk_import#approve_all'
+        post 'importer/create_user', on: :member, to: 'phase_users#create_user'
       end
-      resources :idea_imports, on: :member, to: 'import_ideas#show_idea_import'
-      resources :idea_import_files, on: :member, to: 'import_ideas#show_idea_import_file'
+      resources :idea_imports, on: :member, to: 'bulk_import#show_idea_import'
+      resources :idea_import_files, on: :member, to: 'bulk_import#show_idea_import_file'
     end
   end
 end
