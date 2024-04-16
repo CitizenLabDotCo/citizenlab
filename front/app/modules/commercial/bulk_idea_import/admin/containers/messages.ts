@@ -8,6 +8,6 @@ export default defineMessages({
   importNoLongerAvailable: {
     id: 'app.containers.admin.import.importNoLongerAvailable2',
     defaultMessage:
-      'This feature is no longer available here. To import inputs to an ideation phase, go to the phase and select "Add offline inputs".',
+      'This feature is no longer available here. To import inputs to an ideation phase, go to the phase and select "Import".',
   },
 });
