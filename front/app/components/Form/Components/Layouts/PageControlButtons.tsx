@@ -63,7 +63,6 @@ const PageControlButtons = ({
             padding={isSmallerThanPhone ? '16px' : '16px 24px'}
           >
             <LanguageSelector
-              isTopUndefined={true}
               right="-180px"
               mobileRight="-180px"
               mobileLeft="auto"
