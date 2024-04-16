@@ -103,6 +103,8 @@ module MultiTenancy
       data_listing = Cl2DataListingService.new
 
       data_listing.cl2_schema_leaf_models.each do |claz|
+        next if claz == QueJob
+
         timestamp_attrs = data_listing.timestamp_attributes claz
         if [Activity.name, Tenant.name, AppConfiguration.name].include? claz.name
           timestamp_attrs.delete 'created_at'
