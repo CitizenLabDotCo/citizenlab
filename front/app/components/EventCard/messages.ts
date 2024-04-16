@@ -45,4 +45,8 @@ export default defineMessages({
     id: 'app.containers.EventsShow.eventDateTimeIcon',
     defaultMessage: 'Event date and time',
   },
+  locationIconAltText: {
+    id: 'app.containers.EventsShow.locationIconAltText',
+    defaultMessage: 'Location',
+  },
 });
