@@ -87,7 +87,7 @@ module BulkImportIdeas
     # TODO: When other model types (eg comments) are supported, IdeaImport & IdeaImportFile will need to be made polymorphic
     def show_idea_import
       idea_import = IdeaImport.find(params[:id])
-      authorize idea_import
+      authorize idea_import.idea
 
       render json: WebApi::V1::IdeaImportSerializer.new(
         idea_import,
