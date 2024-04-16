@@ -10,9 +10,9 @@ export default defineMessages({
     defaultMessage: 'Total participants',
   },
   cardTitleTooltipMessage: {
-    id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage',
+    id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage2',
     defaultMessage:
-      'The number of users who have participated in one or more project(s). Participants embedded surveys will not be counted here.',
+      'Participants are users that have participated in a project, posted or interacted with a proposal, attended events or followed things.',
   },
   participationRate: {
     id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate',
