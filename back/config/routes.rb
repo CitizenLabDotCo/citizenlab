@@ -151,9 +151,11 @@ Rails.application.routes.draw do
       resources :events, only: %i[index show edit update destroy] do
         resources :files, defaults: { container_type: 'Event' }, shallow: false
         resources :images, defaults: { container_type: 'Event' }
-        resources :attendances, module: 'events', only: %i[create index]
+        resources :attendances, module: 'events', only: %i[create index] 
       end
-      resources :event_attendances, only: %i[destroy], controller: 'events/attendances'
+      resources :event_attendances, only: %i[destroy], controller: 'events/attendances' do
+        get :as_xlsx, on: :member, action: 'index_xlsx'
+      end
 
       resources :phases, only: %i[show edit update destroy], concerns: :permissionable, defaults: { parent_param: :phase_id } do
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
