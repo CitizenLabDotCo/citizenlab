@@ -93,6 +93,16 @@ describe ParticipantsService do
       expect(service.project_participants_count(project)).to eq 2
     end
 
+    it 'caches the result for 1 day' do
+      project = create(:project)
+      create(:idea, project: project)
+      expect(service.project_participants_count(project)).to eq 1
+
+      create(:idea, project: project)
+      expect(service.project_participants_count(project)).to eq 1
+      expect(service.project_participants_count_uncached(project)).to eq 2
+    end
+
     it 'returns the count of participants' do
       project = create(:project)
       pp1, pp2, pp3, pp4 = create_list(:user, 4)
@@ -119,50 +129,33 @@ describe ParticipantsService do
       expect(service.project_participants_count(project)).to eq 8
     end
 
-    it 'returns correctly cached total project participant count including anonymous posts & everyone surveys' do
+    it 'returns total project participant count including anonymous posts & everyone surveys' do
       project = create(:project)
       pp1, pp2, pp3, pp4, pp5 = create_list(:user, 5)
 
-      # Normal participation - +3
+      # Normal participation +3
       idea1 = create(:idea, project: project, author: pp1)
       idea2 = create(:idea, project: project, author: pp2)
       create(:idea, project: project, author: pp3)
       create(:comment, post: idea1, author: pp3)
       create(:comment, post: idea2, author: pp3)
       create(:comment, post: idea2, author: pp2)
-      # expect(service.project_participants_count(project)).to eq 3
-
       expect(service.project_participants_count_uncached(project)).to eq 3
 
       # Anonymous & participated already +2
       create(:idea, project: project, author: pp2, anonymous: true)
       create(:comment, post: idea1, author: pp3, anonymous: true)
-      # expect(service.project_participants_count(project)).to eq 3
-      # travel_to Time.now + 1.day do
-      #   expect(service.project_participants_count(project)).to eq 3
-      # end
-
       expect(service.project_participants_count_uncached(project)).to eq 5
 
       # Only participated anonymously +2
       create(:idea, project: project, author: pp4, anonymous: true)
       create(:comment, post: idea1, author: pp4, anonymous: true)
       create(:comment, post: idea1, author: pp5, anonymous: true)
-      # expect(service.project_participants_count(project)).to eq 3
-      # travel_to Time.now + 2.days do
-      #   expect(service.project_participants_count(project)).to eq 5
-      # end
-
       expect(service.project_participants_count_uncached(project)).to eq 7
 
       # 'everyone' surveys +2
       create(:native_survey_response, project: project, author: nil, title_multiloc: { 'en' => 'title' }, body_multiloc: { 'en' => 'body' })
       create(:native_survey_response, project: project, author: nil, title_multiloc: { 'en' => 'title' }, body_multiloc: { 'en' => 'body' })
-      # expect(service.project_participants_count(project)).to eq 5
-      # travel_to Time.now + 3.days do
-      #   expect(service.project_participants_count(project)).to eq 7
-      # end
-
       expect(service.project_participants_count_uncached(project)).to eq 9
     end
   end

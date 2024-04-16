@@ -104,11 +104,7 @@ class ParticipantsService
   # Returns the total count of all project participants including anonymous posts - cached
   def project_participants_count(project)
     Rails.cache.fetch("#{project.cache_key}/participant_count", expires_in: 1.day) do
-      Analytics::FactParticipation
-        .where(dimension_project_id: project.id)
-        .select(:participant_id)
-        .distinct
-        .count
+      project_participants_count_uncached(project)
     end
   end
 
