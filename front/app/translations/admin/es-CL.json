@@ -957,7 +957,7 @@
   "app.containers.Admin.tools.esriSaveButtonError": "Se ha producido un error al guardar tu clave, inténtalo de nuevo.",
   "app.containers.Admin.tools.esriSaveButtonSuccess": "Clave API guardada",
   "app.containers.Admin.tools.esriSaveButtonText": "Tecla Guardar",
-  "app.containers.Admin.tools.learnMore": "Saber más",
+  "app.containers.Admin.tools.learnMore": "Conoce más",
   "app.containers.Admin.tools.managePublicAPIKeys": "Gestionar claves API",
   "app.containers.Admin.tools.manageWidget": "Administrar widget",
   "app.containers.Admin.tools.manageWorkshops": "Gestionar talleres",
