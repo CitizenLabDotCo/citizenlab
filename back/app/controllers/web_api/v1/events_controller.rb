@@ -37,7 +37,7 @@ class WebApi::V1::EventsController < ApplicationController
   # GET events/:event_id/attendees_xlsx
   def attendees_xlsx
     event = Event.find(params[:id])
-    authorize(event, :update?)
+    authorize(event)
 
     attendees = User.where(id: event.attendances.pluck(:attendee_id))
 
