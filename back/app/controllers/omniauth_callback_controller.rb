@@ -52,7 +52,7 @@ class OmniauthCallbackController < ApplicationController
 
     if verify # only for verification methods
       uid = authver_method.profile_to_uid(auth)
-      verification = Verification::VerificationService.new.verifications_by_uid(uid, authver_method.name).first
+      verification = Verification::VerificationService.new.verifications_by_uid(uid, authver_method).first
       verification&.user
     end
   end

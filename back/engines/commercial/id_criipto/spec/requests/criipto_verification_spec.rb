@@ -147,6 +147,22 @@ context 'criipto verification' do
     expect(response).to redirect_to('/en/yipie?random-passthrough-param=somevalue&verification_success=true')
   end
 
+  it 'successfully authenticates a user that was previously verified' do
+    get "/auth/criipto?token=#{@token}"
+    follow_redirect!
+
+    expect(User.count).to eq(1)
+    expect(@user.identities.count).to eq(0)
+    expect_to_create_verified_user(@user)
+
+    get '/auth/criipto'
+    follow_redirect!
+
+    expect(User.count).to eq(1)
+    expect(@user.identities.count).to eq(1)
+    expect_to_create_verified_and_identified_user(@user)
+  end
+
   it 'successfully verifies another user with another MitID account' do
     get "/auth/criipto?token=#{@token}"
     follow_redirect!

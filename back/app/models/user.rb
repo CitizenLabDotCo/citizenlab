@@ -479,7 +479,7 @@ class User < ApplicationRecord
   end
 
   def blank_and_can_be_deleted?
-    # atm it can be true only for users registered with ClaveUnica who haven't entered email
+    # atm it can be true only for users registered with ClaveUnica and MitID who haven't entered email
     sso? && email.blank? && new_email.blank? && password_digest.blank? && identity_ids.count == 1
   end
 
@@ -594,8 +594,8 @@ class User < ApplicationRecord
     return unless persisted? && (new_email_changed? || email_changed?)
 
     # no_password? - here it's only for light registration
-    # confirmation_required? - it's always false for SSO providers that return email (all except ClaveUnica)
-    # !sso? - exclude ClaveUnica registrations (no email)
+    # confirmation_required? - it's always false for SSO providers that return email (all except ClaveUnica and MitID)
+    # !sso? - exclude ClaveUnica and MitID registrations (no email)
     if no_password? && confirmation_required? && !sso?
       # Avoid security hole where passwordless user can change when they are authenticated without confirmation
       errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - user not active'
