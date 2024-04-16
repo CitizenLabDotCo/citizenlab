@@ -127,22 +127,6 @@ class ParticipantsService
     end
   end
 
-  def projects_anonymous_count(projects, known_author_hashes)
-    anonymous_idea_hashes = Idea.where(project: projects, anonymous: true)
-      .where.not(author_hash: known_author_hashes)
-      .distinct.pluck(:author_hash)
-    anonymous_comment_hashes = Comment.joins(:idea)
-      .where(anonymous: true)
-      .where(idea: { project: projects })
-      .where.not(author_hash: known_author_hashes + anonymous_idea_hashes)
-      .distinct.pluck(:author_hash)
-    anonymous_idea_hashes.size + anonymous_comment_hashes.size
-  end
-
-  def projects_everyone_count(projects)
-    Idea.where(project: projects, author: nil, anonymous: false).size
-  end
-
   def projects_participants(projects, options = {})
     since = options[:since]
     actions = options[:actions] || PROJECT_PARTICIPANT_ACTIONS
