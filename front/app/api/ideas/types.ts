@@ -231,7 +231,7 @@ export interface IIdeaApprovals {
     type: 'idea_approvals';
     attributes: {
       approved: number;
-      notApproved: number;
+      not_approved: number;
     };
   };
 }

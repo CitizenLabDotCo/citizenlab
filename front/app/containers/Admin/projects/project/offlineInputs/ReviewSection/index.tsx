@@ -33,7 +33,7 @@ const ReviewSection = () => {
   };
   const { formatMessage } = useIntl();
   const [ideaId, setIdeaId] = useState<string | null>(null);
-  const [approvals, setApprovals] = useState({ approved: 0, notApproved: 0 });
+  const [approvals, setApprovals] = useState({ approved: 0, not_approved: 0 });
 
   const { data: idea } = useIdeaById(ideaId ?? undefined, false);
   const {
@@ -118,7 +118,7 @@ const ReviewSection = () => {
         display="flex"
       >
         <Box w="60%" display="flex" alignItems="center">
-          {approvals.notApproved === 0 ? (
+          {approvals.not_approved === 0 ? (
             <>
               <Box px="15px" py="10px">
                 <Button
@@ -141,7 +141,7 @@ const ReviewSection = () => {
           ) : (
             <Error
               text={formatMessage(messages.inputsNotApproved, {
-                numNotApproved: approvals.notApproved,
+                numNotApproved: approvals.not_approved,
               })}
               marginTop="0px"
               showBackground={false}
