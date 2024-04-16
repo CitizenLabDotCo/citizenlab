@@ -20,7 +20,7 @@ const NonSortableProjectList = memo(() => {
     publicationStatusFilter: ['published', 'draft', 'archived'],
     rootLevelOnly: true,
     moderator: true,
-  });
+ });
 
   const rootLevelAdminPublications = data?.pages
     .map((page) => page.data)
