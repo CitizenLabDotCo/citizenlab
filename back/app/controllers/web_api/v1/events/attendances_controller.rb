@@ -10,18 +10,6 @@ module WebApi::V1
         render json: linked_json(paginated_attendances, WebApi::V1::Events::AttendanceSerializer)
       end
 
-      # GET event_attendances/:event_id/as_xlsx
-      def index_xlsx
-        authorize %i[events attendance], :index_xlsx?
-        event = Event.find(params[:id])
-        attendees = User.where(id: event.attendances.pluck(:attendee_id))
-
-        I18n.with_locale(current_user&.locale) do
-          xlsx = XlsxService.new.generate_attendees_xlsx attendees
-          send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'attendees.xlsx'
-        end
-      end
-
       def create
         attendance = ::Events::Attendance.new(
           attendee_id: current_user.id,

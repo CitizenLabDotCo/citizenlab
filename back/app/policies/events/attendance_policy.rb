@@ -32,8 +32,4 @@ class Events::AttendancePolicy < ApplicationPolicy
       ProjectPolicy.new(user, record.event.project).update?
     )
   end
-
-  def index_xlsx?
-    true
-  end
 end
