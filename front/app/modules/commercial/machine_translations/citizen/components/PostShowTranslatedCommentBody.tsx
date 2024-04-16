@@ -3,6 +3,8 @@ import React from 'react';
 import useMachineTranslationByCommentId from 'modules/commercial/machine_translations/api/useMachineTranslationByCommentId';
 import { SupportedLocale } from 'typings';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { CommentText } from 'components/PostShowComponents/Comments/Comment/CommentBody';
 
 interface Props {
@@ -18,13 +20,16 @@ const PostShowTranslatedCommentBody = ({
   locale,
   commentId,
 }: Props) => {
+  const isMachineTranslationsEnabled = useFeatureFlag({
+    name: 'machine_translations',
+  });
   const { data: translation } = useMachineTranslationByCommentId({
     commentId,
     machine_translation: {
       locale_to: locale,
       attribute_name: 'body_multiloc',
     },
-    enabled: true,
+    enabled: isMachineTranslationsEnabled,
   });
   const showTranslatedContent = translateButtonClicked && translation;
   const content = showTranslatedContent
