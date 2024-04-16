@@ -12,7 +12,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import NavigationTabs from 'components/admin/NavigationTabs';
 import Tab from 'components/admin/NavigationTabs/Tab';
 import PageWrapper from 'components/admin/PageWrapper';
-import { SectionDescription } from 'components/admin/Section';
 import Outlet from 'components/Outlet';
 import Button from 'components/UI/Button';
 
@@ -90,15 +89,11 @@ const AdminProjectsList = memo(({ className }: Props) => {
       <CreateAndEditProjectsContainer
         className={containerOutletRendered ? 'hidden' : ''}
       >
-        <Box display="flex" justifyContent="space-between">
+        <Box display="flex" justifyContent="space-between" mb="24px">
           <Box>
             <Title color="primary">
               <FormattedMessage {...messages.overviewPageTitle} />
             </Title>
-
-            <SectionDescription>
-              <FormattedMessage {...messages.overviewPageSubtitle} />
-            </SectionDescription>
           </Box>
           <Box
             display="flex"
