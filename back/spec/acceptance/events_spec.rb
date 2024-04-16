@@ -156,7 +156,7 @@ resource 'Events' do
     let(:event) { @events.first }
     let(:id) { event.id }
 
-    context 'when regular user' do
+    context 'as a regular user' do
       before { header_token_for(create(:user)) }
 
       example_request '[Unauthorized] Get xlsx of attendees of an event', document: false do
@@ -164,7 +164,7 @@ resource 'Events' do
       end
     end
 
-    context 'when admin' do
+    context 'as an admin' do
       before { admin_header_token }
 
       example_request 'Get xlsx of attendees of an event' do
