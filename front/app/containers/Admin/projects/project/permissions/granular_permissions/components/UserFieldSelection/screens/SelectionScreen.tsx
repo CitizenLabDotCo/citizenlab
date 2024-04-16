@@ -79,16 +79,15 @@ export const SelectionScreen = ({
           ))}
       </Box>
       <Tippy
+        zIndex={9999999}
         disabled={userIsAdmin}
         content={
-          <Box style={{ cursor: 'default' }}>
-            <Text my="8px" color="white" fontSize="s">
-              {formatMessage(messages.onlyAdminsCreateQuestion)}
-            </Text>
-          </Box>
+          <Text my="8px" color="white" fontSize="s">
+            {formatMessage(messages.onlyAdminsCreateQuestion)}
+          </Text>
         }
       >
-        <Box display="flex" w="fit-content">
+        <Box w="fit-content">
           <Button
             ml="20px"
             mb="20px"
