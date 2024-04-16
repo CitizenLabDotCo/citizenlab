@@ -63,9 +63,10 @@ const PageControlButtons = ({
             padding={isSmallerThanPhone ? '16px' : '16px 24px'}
           >
             <LanguageSelector
-              right="-180px"
-              mobileRight="-180px"
+              top="-200px"
+              mobileRight="auto"
               mobileLeft="auto"
+              right="auto"
               afterClick={() => {
                 window.location.reload();
               }}
