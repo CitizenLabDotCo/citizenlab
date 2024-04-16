@@ -53,4 +53,8 @@ export default defineMessages({
     id: 'app.containers.EventsShow.onlineLinkIconAltText',
     defaultMessage: 'Online meeting link',
   },
+  attendeesIconAltText: {
+    id: 'app.containers.EventsShow.attendeesIconAltText',
+    defaultMessage: 'Attendees',
+  },
 });
