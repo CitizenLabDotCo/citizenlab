@@ -105,7 +105,8 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
                 my="auto"
                 fill={colors.coolGrey300}
                 name="clock"
-                ariaHidden
+                title={formatMessage(messages.eventDateTimeIcon)}
+                ariaHidden={false}
                 mr={theme.isRtl ? '0px' : '8px'}
                 ml={theme.isRtl ? '8px' : '0px'}
               />
