@@ -47,8 +47,8 @@ class OmniauthCallbackController < ApplicationController
     @identity = Identity.find_or_build_with_omniauth(auth, authver_method)
     return @identity.user if @identity.user
 
-    @user = User.find_by_cimail(user_attrs.fetch(:email)) if user_attrs.key?(:email) # some providers (e.g, ClaveUnica) don't return email
-    return @user if @user
+    user = User.find_by_cimail(user_attrs.fetch(:email)) if user_attrs.key?(:email) # some providers (emailless) don't return email
+    return user if user
 
     if verify # only for verification methods
       uid = authver_method.profile_to_uid(auth)

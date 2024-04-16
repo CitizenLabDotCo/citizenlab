@@ -68,13 +68,13 @@ module IdCriipto
         uid_field_pattern: {
           private: true,
           type: 'string',
-          description: 'Pattern used for getting UID value. It can be used to switch (migrate) between different MitID providers that return different values in `sub`. Use ${value} for values from the auth->extra->raw_info object. Example: adfs|criipto-verify-DK-NemID-POCES|%{nameidentifier}. See the specs for all possible values.',
+          description: 'Pattern used for getting UID value. It can be used to switch (migrate) between different MitID verification (not SSO) providers that return different values in `sub`. Use ${value} for values from the auth->extra->raw_info object. Example: adfs|criipto-verify-DK-NemID-POCES|%{nameidentifier}. See the specs for all possible values.',
           default: DEFAULT_UID_FIELD_PATTERN
         },
         method_name_for_hashing: {
           private: true,
           type: 'string',
-          description: 'If present, this method name will be used for hashing.  It can be used to switch (migrate) between different MitID providers that return different values in `sub`. Leave empty to use the default MitID value. Example: auth0.'
+          description: 'If present, this method name will be used for hashing. It can be used to switch (migrate) between different MitID verification (not SSO) providers that return different values in `sub`. Leave empty to use the default MitID value. Example: auth0.'
         },
         minimum_age: {
           private: true,
