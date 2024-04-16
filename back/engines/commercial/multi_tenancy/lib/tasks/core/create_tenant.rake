@@ -70,10 +70,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: true,
           allowed: true
         },
-        initiativeflow_social_sharing: {
-          enabled: true,
-          allowed: true
-        },
         idea_author_change: {
           enabled: true,
           allowed: true
