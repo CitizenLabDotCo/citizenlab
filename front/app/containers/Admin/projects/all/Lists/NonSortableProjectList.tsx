@@ -1,6 +1,7 @@
-import React, { memo, Fragment } from 'react';
+import React, { Fragment } from 'react';
 
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
+import { PublicationStatus } from 'api/projects/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -15,12 +16,18 @@ import { ListHeader, HeaderTitle } from '../StyledComponents';
 
 import NonSortableFolderRow from './NonSortableFolderRow';
 
-const NonSortableProjectList = memo(() => {
+const NonSortableProjectList = ({
+  publicationStatusFilter,
+  moderator,
+}: {
+  publicationStatusFilter: PublicationStatus[];
+  moderator: boolean;
+}) => {
   const { data } = useAdminPublications({
-    publicationStatusFilter: ['published', 'draft', 'archived'],
+    publicationStatusFilter,
     rootLevelOnly: true,
-    moderator: true,
- });
+    moderator,
+  });
 
   const rootLevelAdminPublications = data?.pages
     .map((page) => page.data)
@@ -64,6 +71,7 @@ const NonSortableProjectList = memo(() => {
                       id={adminPublicationId}
                       isLastItem={isLastItem}
                       publication={adminPublication}
+                      publicationStatuses={publicationStatusFilter}
                     />
                   )}
               </Fragment>
@@ -75,6 +83,6 @@ const NonSortableProjectList = memo(() => {
   }
 
   return null;
-});
+};
 
 export default NonSortableProjectList;

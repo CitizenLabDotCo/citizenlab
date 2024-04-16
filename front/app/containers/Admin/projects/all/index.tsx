@@ -2,12 +2,15 @@ import React, { memo, Suspense, useState } from 'react';
 
 import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import NavigationTabs from 'components/admin/NavigationTabs';
+import Tab from 'components/admin/NavigationTabs/Tab';
 import PageWrapper from 'components/admin/PageWrapper';
 import { SectionDescription } from 'components/admin/Section';
 import Outlet from 'components/Outlet';
@@ -17,11 +20,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
 import { isProjectFolderModerator } from 'utils/permissions/rules/projectFolderPermissions';
 
+import NonSortableProjectList from './Lists/NonSortableProjectList';
 import messages from './messages';
 
-const NonSortableProjectList = React.lazy(
-  () => import('./Lists/NonSortableProjectList')
-);
 const SortableProjectList = React.lazy(
   () => import('./Lists/SortableProjectList')
 );
@@ -67,6 +68,22 @@ const AdminProjectsList = memo(({ className }: Props) => {
   const handleContainerOutletOnRender = (hasRendered: boolean) => {
     setContainerOutletRendered(hasRendered);
   };
+
+  const { pathname } = useLocation();
+
+  const activeTab = (() => {
+    if (pathname.includes('/admin/projects/your-projects')) {
+      return 'your-projects';
+    } else if (pathname.includes('/admin/projects/published')) {
+      return 'published';
+    } else if (pathname.includes('/admin/projects/draft')) {
+      return 'draft';
+    } else if (pathname.includes('/admin/projects/archived')) {
+      return 'archived';
+    } else {
+      return 'all';
+    }
+  })();
 
   return (
     <Container className={className}>
@@ -129,13 +146,49 @@ const AdminProjectsList = memo(({ className }: Props) => {
             </Tippy>
           </Box>
         </Box>
+        <Box w="100%" overflow="hidden">
+          <NavigationTabs position="relative">
+            <Tab
+              url="/admin/projects/your-projects"
+              label={'Your projects'}
+              active={activeTab === 'your-projects'}
+            />
+            <Tab
+              label={'Active'}
+              active={activeTab === 'published'}
+              url="/admin/projects/published"
+            />
+            <Tab
+              label={'Draft'}
+              active={activeTab === 'draft'}
+              url="/admin/projects/draft"
+            />
+            <Tab
+              label={'Archived'}
+              active={activeTab === 'archived'}
+              url="/admin/projects/archived"
+            />
+            <Tab
+              label={'All'}
+              active={activeTab === 'all'}
+              url="/admin/projects"
+            />
+          </NavigationTabs>
+        </Box>
         <PageWrapper>
           <ListsContainer>
             <Suspense fallback={<Spinner />}>
-              {userIsAdmin ? (
+              {userIsAdmin && activeTab === 'all' ? (
                 <SortableProjectList />
               ) : (
-                <NonSortableProjectList />
+                <NonSortableProjectList
+                  publicationStatusFilter={
+                    activeTab === 'all' || activeTab === 'your-projects'
+                      ? ['published', 'draft', 'archived']
+                      : [activeTab]
+                  }
+                  moderator={activeTab === 'your-projects'}
+                />
               )}
             </Suspense>
           </ListsContainer>

@@ -17,15 +17,15 @@ export interface Props {
   id: string;
   isLastItem: boolean;
   publication: IAdminPublicationData;
+  publicationStatuses: PublicationStatus[];
 }
 
-const publicationStatuses: PublicationStatus[] = [
-  'draft',
-  'published',
-  'archived',
-];
-
-const NonSortableFolderRow = ({ id, isLastItem, publication }: Props) => {
+const NonSortableFolderRow = ({
+  id,
+  isLastItem,
+  publication,
+  publicationStatuses,
+}: Props) => {
   const { data: authUser } = useAuthUser();
 
   const { data } = useAdminPublications({
