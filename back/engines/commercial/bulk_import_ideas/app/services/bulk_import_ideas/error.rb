@@ -10,4 +10,4 @@ module BulkImportIdeas
 
     attr_reader :key, :params
   end
-  end
+end

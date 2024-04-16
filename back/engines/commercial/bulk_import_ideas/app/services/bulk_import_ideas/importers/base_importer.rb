@@ -9,6 +9,7 @@ module BulkImportIdeas::Importers
     end
 
     attr_reader :imported_users
+
     def import(rows)
       raise NotImplementedError, 'This method is not yet implemented'
     end

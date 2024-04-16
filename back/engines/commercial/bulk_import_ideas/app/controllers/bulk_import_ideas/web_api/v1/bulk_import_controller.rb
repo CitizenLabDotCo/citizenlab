@@ -147,11 +147,11 @@ module BulkImportIdeas
     end
 
     def supported_model?
-      CONSTANTIZER.keys.include?(params[:model])
+      CONSTANTIZER.key?(params[:model])
     end
 
     def supported_format?
-      CONSTANTIZER.fetch(params[:model]).keys.include?(params[:format])
+      CONSTANTIZER.fetch(params[:model]).key?(params[:format])
     end
 
     def imported_draft_records
