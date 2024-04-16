@@ -49,4 +49,8 @@ export default defineMessages({
     id: 'app.containers.EventsShow.locationIconAltText',
     defaultMessage: 'Location',
   },
+  onlineLinkIconAltText: {
+    id: 'app.containers.EventsShow.onlineLinkIconAltText',
+    defaultMessage: 'Online meeting link',
+  },
 });

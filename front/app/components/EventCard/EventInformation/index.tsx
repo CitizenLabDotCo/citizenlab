@@ -145,7 +145,8 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
                 my="auto"
                 fill={colors.coolGrey300}
                 name="link"
-                ariaHidden
+                title={formatMessage(messages.onlineLinkIconAltText)}
+                ariaHidden={false}
                 mr="8px"
               />
               <Text
