@@ -9,8 +9,6 @@ const AssigneeFilter = React.lazy(
 );
 const InputAssignment = React.lazy(() => import('./admin/containers/'));
 
-const FeatureFlag = React.lazy(() => import('components/FeatureFlag'));
-
 const StyledAssigneeFilter = styled(AssigneeFilter)`
   margin-right: 20px;
 `;
@@ -22,11 +20,7 @@ const configuration: ModuleConfiguration = {
     ),
     'app.containers.Admin.project.edit.permissions.moderatorRights': (
       props
-    ) => (
-      <FeatureFlag name="idea_assignment">
-        <InputAssignment {...props} />
-      </FeatureFlag>
-    ),
+    ) => <InputAssignment {...props} />,
   },
 };
 
