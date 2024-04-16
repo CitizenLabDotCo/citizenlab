@@ -18,7 +18,7 @@ import ImportPdfModal from './ImportModal/ImportPdfModal';
 import ReviewSection from './ReviewSection';
 import TopBar from './TopBar';
 
-const OfflineInputImporter = () => {
+const InputImporter = () => {
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId?: string;
@@ -89,7 +89,7 @@ const OfflineInputImporter = () => {
   );
 };
 
-const OfflineInputImporterWrapper = () => {
+const InputImporterWrapper = () => {
   const inputImporterEnabled = useFeatureFlag({
     name: 'input_importer',
   });
@@ -98,7 +98,7 @@ const OfflineInputImporterWrapper = () => {
   const modalPortalElement = document.getElementById('modal-portal');
   if (!modalPortalElement) return null;
 
-  return createPortal(<OfflineInputImporter />, modalPortalElement);
+  return createPortal(<InputImporter />, modalPortalElement);
 };
 
-export default OfflineInputImporterWrapper;
+export default InputImporterWrapper;

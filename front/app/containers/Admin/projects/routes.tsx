@@ -91,7 +91,7 @@ export enum projectsRoutes {
   projectPhaseIdeaFormEdit = ':phaseId/ideaform/edit',
   projectPhaseNativeSurveyEdit = ':phaseId/native-survey/edit',
   projectPhaseVolunteeringCause = ':phaseId/volunteering/causes/:causeId',
-  projectPhaseInputImporter = 'phases/:phaseId/input-importer',
+  projectPhaseInputImporter = ':phaseId/input-importer',
   projectPhaseReport = ':phaseId/report',
   projectAnalysis = 'analysis/:analysisId',
 }
