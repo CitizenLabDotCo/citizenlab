@@ -313,7 +313,8 @@ describe ParticipantsService do
     it 'returns followers' do
       project = create(:project)
       follower1 = create(:follower, followable: project).user
-      follower2 = create(:follower, followable: project).user
+      idea = create(:idea, project: project, author: follower1)
+      follower2 = create(:follower, followable: idea).user
 
       expect(service.projects_participants([project]).map(&:id)).to match_array [follower1.id, follower2.id]
     end

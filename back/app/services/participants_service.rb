@@ -164,7 +164,12 @@ class ParticipantsService
 
     # Following
     if actions.include? :following
-      followers = Follower.where(followable: projects)
+      followers = Follower
+        .where(%{
+          (followable_type = 'Project' AND followable_id IN (?)) OR
+          (followable_type = 'Idea' AND followable_id IN (?))
+        }, projects.pluck(:id), Idea.where(project: projects).select(:id))
+
       followers = followers.where('created_at::date >= (?)::date', since) if since
       participants = participants.or(User.where(id: followers.select(:user_id)))
     end
