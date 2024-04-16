@@ -2396,7 +2396,7 @@
   "app.containers.admin.ideas.all.inputManagerPageTitle": "Input manager",
   "app.containers.admin.ideas.all.tabOverview": "Overview",
   "app.containers.admin.import.importInputs": "Import inputs",
-  "app.containers.admin.import.importNoLongerAvailable2": "This feature is no longer available here. To import inputs to an ideation phase, go to the phase and select \"Add offline inputs\".",
+  "app.containers.admin.import.importNoLongerAvailable3": "This feature is no longer available here. To import inputs to an ideation phase, go to the phase and select \"Import\".",
   "app.containers.admin.inviteUsersWithSeatsModal.additionalAdminAndManagerSeats1": "{adminSeats, plural, one {1 additional admin seat} other {# additional admin seats}} and {managerSeats, plural, one {1 additional manager seat} other {# additional manager seats}} will be added over the limit.",
   "app.containers.admin.inviteUsersWithSeatsModal.additionalAdminSeats1": "{seats, plural, one {1 additional admin seat will be added over the limit} other {# additional admin seats will be added over the limit}}.",
   "app.containers.admin.inviteUsersWithSeatsModal.additionalManagerSeats1": "{seats, plural, one {1 additional manager seat will be added over the limit} other {# additional manager seats will be added over the limit}}.",

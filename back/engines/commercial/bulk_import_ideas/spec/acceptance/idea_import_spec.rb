@@ -159,7 +159,7 @@ resource 'BulkImportIdeasImportIdeas' do
 
         do_request
         assert_status 200
-        expect(response_data).to eq({ type: 'approve_all', attributes: { approved: 3, notApproved: 0 } })
+        expect(response_data).to eq({ type: 'approve_all', attributes: { approved: 3, not_approved: 0 } })
         expect(draft_ideas.map { |idea| idea.reload.publication_status }).to eq %w[published published published]
         expect(draft_ideas.map { |idea| idea.idea_import.approved_at }).to all(be_a(ActiveSupport::TimeWithZone))
       end
@@ -169,7 +169,7 @@ resource 'BulkImportIdeasImportIdeas' do
 
         do_request
         assert_status 200
-        expect(response_data).to eq({ type: 'approve_all', attributes: { approved: 2, notApproved: 1 } })
+        expect(response_data).to eq({ type: 'approve_all', attributes: { approved: 2, not_approved: 1 } })
         expect(draft_ideas.map { |idea| idea.reload.publication_status }).to eq %w[draft published published]
       end
     end
