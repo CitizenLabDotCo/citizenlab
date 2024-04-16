@@ -37,7 +37,7 @@ const NonSortableFolderRow = ({
     .map((page) => page.data)
     .flat();
 
-  const [folderOpen, setFolderOpen] = useState(true);
+  const [folderOpen, setFolderOpen] = useState(false);
 
   if (isNilOrError(authUser)) {
     return null;
