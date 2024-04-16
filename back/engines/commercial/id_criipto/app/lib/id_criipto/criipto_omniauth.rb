@@ -52,7 +52,7 @@ module IdCriipto
 
       options[:response_type] = :code
       options[:acr_values] = acr_values
-      options[:issuer] = "https://#{config[:domain]}"
+      options[:issuer] = issuer
       options[:client_options] = {
         identifier: config[:client_id],
         secret: config[:client_secret],
@@ -88,7 +88,11 @@ module IdCriipto
       # 2. Sign out without entering email
       #
       # TODO: do it on FE.
-      configuration.base_frontend_uri
+      Frontend::UrlService.new.home_url
+    end
+
+    def issuer
+      "https://#{config[:domain]}"
     end
 
     private
