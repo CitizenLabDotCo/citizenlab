@@ -37,8 +37,8 @@ class WebApi::V1::EventsController < ApplicationController
   # GET events/:event_id/attendees_xlsx
   def attendees_xlsx
     event = Event.find(params[:id])
-
     authorize(event, :update?)
+
     attendees = User.where(id: event.attendances.pluck(:attendee_id))
 
     I18n.with_locale(current_user&.locale) do
