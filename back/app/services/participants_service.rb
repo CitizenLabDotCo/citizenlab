@@ -166,10 +166,18 @@ class ParticipantsService
     end
 
     # Event attending
-    # TODO
+    if actions.include? :event_attending
+      event_attendances = Events::Attendance.where(event: Event.where(project: projects))
+      event_attendances = event_attendances.where('created_at::date >= (?)::date', since) if since
+      participants = participants.or(User.where(id: event_attendances.select(:attendee_id)))
+    end
 
     # Following
-    # TODO
+    if actions.include? :following
+      followers = Follower.where(followable: projects)
+      followers = followers.where('created_at::date >= (?)::date', since) if since
+      participants = participants.or(User.where(id: followers.select(:user_id)))
+    end
 
     participants
   end

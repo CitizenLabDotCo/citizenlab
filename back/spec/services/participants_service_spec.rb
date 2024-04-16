@@ -260,6 +260,38 @@ describe ParticipantsService do
       expect(service.projects_participants([project], actions: %i[posting voting]).map(&:id)).to match_array [pp1.id, pp4.id]
     end
 
+    it 'returns only participants for comment_reacting' do
+      project = create(:project)
+      create(:project)
+      participants = create_list(:user, 4)
+      pp1, pp2, pp3, pp4 = participants
+      other = create(:user)
+
+      i = create(:idea, project: project, author: pp1)
+      c = create(:comment, post: i, author: pp2)
+      create(:reaction, reactable: i, user: pp3)
+      create(:reaction, reactable: c, user: pp4)
+      create(:idea, author: other)
+
+      expect(service.projects_participants([project], actions: [:comment_reacting]).map(&:id)).to match_array [pp4.id]
+    end
+
+    it 'returns only participants for commenting' do
+      project = create(:single_phase_budgeting_project)
+      create(:project)
+      participants = create_list(:user, 4)
+      pp1, pp2, pp3, pp4 = participants
+      other = create(:user)
+
+      i = create(:idea, project: project, author: pp1, phases: project.phases)
+      create(:comment, post: i, author: pp2)
+      create(:reaction, reactable: i, user: pp3)
+      create(:basket, ideas: [i], phase: project.phases.first, user: pp4)
+      create(:idea, author: other)
+
+      expect(service.projects_participants([project], actions: [:commenting]).map(&:id)).to match_array [pp2.id]
+    end
+
     it 'returns event attendees' do
       project = create(:project)
       event = create(:event, project: project)
@@ -272,8 +304,7 @@ describe ParticipantsService do
     it 'returns followers' do
       project = create(:project)
       follower1 = create(:follower, followable: project).user
-      idea = create(:idea, project: project)
-      follower2 = create(:follower, followable: idea).user
+      follower2 = create(:follower, followable: project).user
 
       expect(service.projects_participants([project]).map(&:id)).to match_array [follower1.id, follower2.id]
     end
@@ -294,22 +325,6 @@ describe ParticipantsService do
 
       expect(service.topics_participants([t1, t2]).map(&:id)).to match_array participants.map(&:id)
     end
-
-    it 'returns only participants for specific actions' do
-      project = create(:project)
-      create(:project)
-      participants = create_list(:user, 4)
-      pp1, pp2, pp3, pp4 = participants
-      other = create(:user)
-
-      i = create(:idea, project: project, author: pp1)
-      c = create(:comment, post: i, author: pp2)
-      create(:reaction, reactable: i, user: pp3)
-      create(:reaction, reactable: c, user: pp4)
-      create(:idea, author: other)
-
-      expect(service.projects_participants([project], actions: [:comment_reacting]).map(&:id)).to match_array [pp4.id]
-    end
   end
 
   describe 'idea_statuses_participants' do
@@ -324,22 +339,6 @@ describe ParticipantsService do
       create(:comment, post: i1, author: pp3)
 
       expect(service.idea_statuses_participants([s1, s2]).map(&:id)).to match_array participants.map(&:id)
-    end
-
-    it 'returns only participants for specific actions' do
-      project = create(:single_phase_budgeting_project)
-      create(:project)
-      participants = create_list(:user, 4)
-      pp1, pp2, pp3, pp4 = participants
-      other = create(:user)
-
-      i = create(:idea, project: project, author: pp1, phases: project.phases)
-      create(:comment, post: i, author: pp2)
-      create(:reaction, reactable: i, user: pp3)
-      create(:basket, ideas: [i], phase: project.phases.first, user: pp4)
-      create(:idea, author: other)
-
-      expect(service.projects_participants([project], actions: [:commenting]).map(&:id)).to match_array [pp2.id]
     end
   end
 end
