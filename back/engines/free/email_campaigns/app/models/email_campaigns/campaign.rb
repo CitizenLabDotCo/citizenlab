@@ -117,6 +117,10 @@ module EmailCampaigns
       CampaignPolicy
     end
 
+    def manual?
+      false
+    end
+
     protected
 
     def set_enabled
