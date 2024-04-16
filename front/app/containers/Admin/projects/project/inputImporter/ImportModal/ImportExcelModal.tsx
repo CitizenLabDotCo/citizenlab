@@ -70,7 +70,8 @@ const ImportPdfModal = ({ open, onClose }: Props) => {
     try {
       await addOfflineIdeas({
         phase_id: phaseId,
-        pdf: file.base64,
+        file: file.base64,
+        format: 'xlsx',
         personal_data: false,
         ...rest,
       });

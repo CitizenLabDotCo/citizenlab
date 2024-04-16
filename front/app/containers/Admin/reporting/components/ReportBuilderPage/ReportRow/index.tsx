@@ -50,7 +50,7 @@ const ReportRow = ({ report }: Props) => {
           <EditedText
             createdAt={report.attributes.created_at}
             updatedAt={report.attributes.updated_at}
-            userId={report.relationships.owner.data.id}
+            userId={report.relationships.owner?.data?.id}
           />
         </Box>
         <Box display="flex">

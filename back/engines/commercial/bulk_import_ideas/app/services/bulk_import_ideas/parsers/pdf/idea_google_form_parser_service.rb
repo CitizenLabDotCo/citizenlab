@@ -2,8 +2,8 @@
 
 require 'google/cloud/document_ai'
 
-module BulkImportIdeas
-  class GoogleFormParserService
+module BulkImportIdeas::Parsers::Pdf
+  class IdeaGoogleFormParserService
     def initialize
       @document = nil
     end

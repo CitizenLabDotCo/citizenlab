@@ -292,6 +292,18 @@ class CustomField < ApplicationRecord
     end
   end
 
+  def linear_scale_print_description(locale)
+    return nil unless linear_scale?
+
+    min_label = "1#{minimum_label_multiloc[locale].present? ? " (#{minimum_label_multiloc[locale]})" : ''}"
+    max_label = maximum.to_s + (maximum_label_multiloc[locale].present? ? " (#{maximum_label_multiloc[locale]})" : '')
+    I18n.t(
+      'form_builder.pdf_export.linear_scale_print_description',
+      min_label: min_label,
+      max_label: max_label
+    )
+  end
+
   private
 
   def set_default_enabled
