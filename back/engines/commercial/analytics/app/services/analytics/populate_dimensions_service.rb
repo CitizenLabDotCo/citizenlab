@@ -44,8 +44,10 @@ module Analytics
 
         return unless current_types & types != types
 
-        Analytics::DimensionType.delete_all
-        Analytics::DimensionType.insert_all(types)
+        Analytics::DimensionType.transaction do
+          Analytics::DimensionType.delete_all
+          Analytics::DimensionType.insert_all(types)
+        end
       end
 
       private

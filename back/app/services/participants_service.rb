@@ -17,17 +17,10 @@ class ParticipantsService
     since = options[:since]
     to = options[:to]
 
-    participants = Analytics::FactParticipation
+    Analytics::FactParticipation
       .select(:dimension_user_id).distinct
       .where.not(dimension_user_id: nil)
-
-    if since && to
-      participants.where('dimension_date_created_id >= ? AND dimension_date_created_id < ?', since, to)
-    elsif since
-      participants.where('dimension_date_created_id >= ?', since)
-    else
-      participants
-    end
+      .where(dimension_date_created_id: since..to)
   end
 
   def initiatives_participants(initiatives)
@@ -120,7 +113,7 @@ class ParticipantsService
   def folder_participants_count(folder)
     Rails.cache.fetch("#{folder.cache_key}/participant_count", expires_in: 1.day) do
       Analytics::FactParticipation
-        .where(dimension_project_id: folder.projects.pluck(:id))
+        .where(dimension_project_id: folder.projects)
         .select(:participant_id)
         .distinct
         .count
@@ -157,20 +150,20 @@ class ParticipantsService
 
     # Event attending
     if actions.include? :event_attending
-      event_attendances = Events::Attendance.where(event: Event.where(project: projects))
-      event_attendances = event_attendances.where('created_at::date >= (?)::date', since) if since
-      participants = participants.or(User.where(id: event_attendances.select(:attendee_id)))
+      event_attendances = Events::Attendance
+        .joins(:event).where(events: { project: projects })
+        .where(created_at: since..)
+      event_attendees = User.where(id: event_attendances.select(:attendee_id))
+      participants = participants.or(event_attendees)
     end
 
     # Following
     if actions.include? :following
       followers = Follower
-        .where(%{
-          (followable_type = 'Project' AND followable_id IN (?)) OR
-          (followable_type = 'Idea' AND followable_id IN (?))
-        }, projects.pluck(:id), Idea.where(project: projects).select(:id))
+        .where(followable: projects)
+        .or(Follower.where(followable: Idea.where(project: projects)))
+        .where(created_at: since..)
 
-      followers = followers.where('created_at::date >= (?)::date', since) if since
       participants = participants.or(User.where(id: followers.select(:user_id)))
     end
 
