@@ -1,10 +1,13 @@
 import React, { memo, Suspense, useState } from 'react';
 
 import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
+import { InfiniteData } from '@tanstack/react-query';
 import Tippy from '@tippyjs/react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { IAdminPublications } from 'api/admin_publications/types';
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import useAuthUser from 'api/me/useAuthUser';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -21,11 +24,8 @@ import { isAdmin } from 'utils/permissions/roles';
 import { isProjectFolderModerator } from 'utils/permissions/rules/projectFolderPermissions';
 
 import NonSortableProjectList from './Lists/NonSortableProjectList';
+import SortableProjectList from './Lists/SortableProjectList';
 import messages from './messages';
-
-const SortableProjectList = React.lazy(
-  () => import('./Lists/SortableProjectList')
-);
 
 const Container = styled.div``;
 
@@ -54,6 +54,26 @@ export interface Props {
   className?: string;
 }
 
+const getActiveTab = (pathname: string) => {
+  if (pathname.includes('/admin/projects/your-projects')) {
+    return 'your-projects';
+  } else if (pathname.includes('/admin/projects/published')) {
+    return 'published';
+  } else if (pathname.includes('/admin/projects/draft')) {
+    return 'draft';
+  } else if (pathname.includes('/admin/projects/archived')) {
+    return 'archived';
+  } else {
+    return 'all';
+  }
+};
+
+const flattenPagesData = (
+  data: InfiniteData<IAdminPublications> | undefined
+) => {
+  return data?.pages.map((page: any) => page.data).flat();
+};
+
 const AdminProjectsList = memo(({ className }: Props) => {
   const [search, setSearch] = useState<string>('');
   const { data: authUser } = useAuthUser();
@@ -66,25 +86,43 @@ const AdminProjectsList = memo(({ className }: Props) => {
     false;
   const userCanCreateProject = userIsAdmin || userIsFolderModerator;
   const [containerOutletRendered, setContainerOutletRendered] = useState(false);
+
+  const { data: yourAdminPublications } = useAdminPublications({
+    publicationStatusFilter: ['published', 'draft', 'archived'],
+    onlyProjects: true,
+    filter_can_moderate: true,
+  });
+
+  const { data: publishedAdminPublications } = useAdminPublications({
+    publicationStatusFilter: ['published'],
+    onlyProjects: true,
+    rootLevelOnly: false,
+  });
+
+  const { data: draftAdminPublications } = useAdminPublications({
+    publicationStatusFilter: ['draft'],
+    onlyProjects: true,
+    rootLevelOnly: false,
+  });
+
+  const { data: archivedAdminPublications } = useAdminPublications({
+    publicationStatusFilter: ['archived'],
+    onlyProjects: true,
+    rootLevelOnly: false,
+  });
+
+  const { data: allAdminPublications } = useAdminPublications({
+    publicationStatusFilter: ['published', 'draft', 'archived'],
+    rootLevelOnly: true,
+  });
+
   const handleContainerOutletOnRender = (hasRendered: boolean) => {
     setContainerOutletRendered(hasRendered);
   };
 
   const { pathname } = useLocation();
 
-  const activeTab = (() => {
-    if (pathname.includes('/admin/projects/your-projects')) {
-      return 'your-projects';
-    } else if (pathname.includes('/admin/projects/published')) {
-      return 'published';
-    } else if (pathname.includes('/admin/projects/draft')) {
-      return 'draft';
-    } else if (pathname.includes('/admin/projects/archived')) {
-      return 'archived';
-    } else {
-      return 'all';
-    }
-  })();
+  const activeTab = getActiveTab(pathname);
 
   return (
     <Container className={className}>
@@ -155,21 +193,29 @@ const AdminProjectsList = memo(({ className }: Props) => {
           <NavigationTabs position="relative">
             <Tab
               url="/admin/projects/your-projects"
-              label={'Your projects'}
+              label={`Your projects (${
+                flattenPagesData(yourAdminPublications)?.length || ''
+              })`}
               active={activeTab === 'your-projects'}
             />
             <Tab
-              label={'Active'}
+              label={`Active (${
+                flattenPagesData(publishedAdminPublications)?.length
+              })`}
               active={activeTab === 'published'}
               url="/admin/projects/published"
             />
             <Tab
-              label={'Draft'}
+              label={`Draft (${
+                flattenPagesData(draftAdminPublications)?.length
+              })`}
               active={activeTab === 'draft'}
               url="/admin/projects/draft"
             />
             <Tab
-              label={'Archived'}
+              label={`Archived (${
+                flattenPagesData(archivedAdminPublications)?.length
+              })`}
               active={activeTab === 'archived'}
               url="/admin/projects/archived"
             />
@@ -184,15 +230,20 @@ const AdminProjectsList = memo(({ className }: Props) => {
           <ListsContainer>
             <Suspense fallback={<Spinner />}>
               {userIsAdmin && activeTab === 'all' ? (
-                <SortableProjectList />
+                <SortableProjectList adminPublications={allAdminPublications} />
               ) : (
                 <NonSortableProjectList
-                  publicationStatusFilter={
-                    activeTab === 'all' || activeTab === 'your-projects'
-                      ? ['published', 'draft', 'archived']
-                      : [activeTab]
+                  adminPublications={
+                    activeTab === 'your-projects'
+                      ? yourAdminPublications
+                      : activeTab === 'published'
+                      ? publishedAdminPublications
+                      : activeTab === 'draft'
+                      ? draftAdminPublications
+                      : activeTab === 'archived'
+                      ? archivedAdminPublications
+                      : allAdminPublications
                   }
-                  filter_can_moderate={activeTab === 'your-projects'?true:undefined}
                 />
               )}
             </Suspense>

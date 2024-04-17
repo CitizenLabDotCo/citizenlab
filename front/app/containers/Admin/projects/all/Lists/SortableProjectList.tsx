@@ -1,9 +1,12 @@
-import React, { Fragment, memo } from 'react';
+import React, { Fragment } from 'react';
 
+import { InfiniteData } from '@tanstack/react-query';
 import styled from 'styled-components';
 
-import { IAdminPublicationData } from 'api/admin_publications/types';
-import useAdminPublications from 'api/admin_publications/useAdminPublications';
+import {
+  IAdminPublicationData,
+  IAdminPublications,
+} from 'api/admin_publications/types';
 import useReorderAdminPublication from 'api/admin_publications/useReorderAdminPublication';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -33,16 +36,14 @@ const Spacer = styled.div`
   flex: 1;
 `;
 
-interface Props {}
-
-const SortableProjectList = memo<Props>((_props) => {
+const SortableProjectList = ({
+  adminPublications,
+}: {
+  adminPublications: InfiniteData<IAdminPublications> | undefined;
+}) => {
   const { mutate: reorderAdminPublication } = useReorderAdminPublication();
-  const { data } = useAdminPublications({
-    publicationStatusFilter: ['published', 'draft', 'archived'],
-    rootLevelOnly: true,
-  });
 
-  const rootLevelAdminPublications = data?.pages
+  const rootLevelAdminPublications = adminPublications?.pages
     .map((page) => page.data)
     .flat();
 
@@ -120,6 +121,6 @@ const SortableProjectList = memo<Props>((_props) => {
   }
 
   return null;
-});
+};
 
 export default SortableProjectList;

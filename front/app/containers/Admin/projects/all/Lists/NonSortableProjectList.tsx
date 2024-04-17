@@ -1,9 +1,8 @@
 import React, { Fragment } from 'react';
 
-import { useLocation } from 'react-router-dom';
+import { InfiniteData } from '@tanstack/react-query';
 
-import useAdminPublications from 'api/admin_publications/useAdminPublications';
-import { PublicationStatus } from 'api/projects/types';
+import { IAdminPublications } from 'api/admin_publications/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -14,24 +13,11 @@ import ProjectRow from '../../components/ProjectRow';
 import NonSortableFolderRow from './NonSortableFolderRow';
 
 const NonSortableProjectList = ({
-  publicationStatusFilter,
-  filter_can_moderate,
+  adminPublications,
 }: {
-  publicationStatusFilter: PublicationStatus[];
-  filter_can_moderate?: boolean;
+  adminPublications: InfiniteData<IAdminPublications> | undefined;
 }) => {
-
-  const { pathname } = useLocation();
-  const showOnlyProjects = !pathname.endsWith('admin/projects');
-
-  const { data } = useAdminPublications({
-    publicationStatusFilter,
-    rootLevelOnly: !showOnlyProjects,
-    onlyProjects: showOnlyProjects,
-    filter_can_moderate,
-  });
-
-  const rootLevelAdminPublications = data?.pages
+  const rootLevelAdminPublications = adminPublications?.pages
     .map((page) => page.data)
     .flat();
 
