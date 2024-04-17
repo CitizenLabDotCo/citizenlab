@@ -182,7 +182,6 @@ export interface IAppConfigurationSettings {
   blocking_profanity?: AppConfigurationFeature;
   anonymous_participation?: AppConfigurationFeature;
   custom_idea_statuses?: AppConfigurationFeature;
-  idea_custom_copy?: AppConfigurationFeature;
   intercom?: AppConfigurationFeature;
   satismeter?: AppConfigurationFeature & {
     write_key: string;

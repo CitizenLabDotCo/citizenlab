@@ -165,10 +165,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            idea_custom_copy: {
-              enabled: true,
-              allowed: true
-            },
             widgets: {
               enabled: true,
               allowed: true

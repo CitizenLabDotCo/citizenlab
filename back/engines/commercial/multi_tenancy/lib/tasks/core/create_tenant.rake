@@ -78,10 +78,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: true,
           allowed: true
         },
-        idea_custom_copy: {
-          enabled: true,
-          allowed: true
-        },
         blocking_profanity: {
           enabled: true,
           allowed: true
