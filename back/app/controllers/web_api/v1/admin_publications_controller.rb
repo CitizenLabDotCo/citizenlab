@@ -5,9 +5,10 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
   before_action :set_admin_publication, only: %i[reorder show]
 
   def index
+    params['moderator'] = current_user if params[:filter_can_moderate]
     publication_filterer = AdminPublicationsFilteringService.new
     publications = policy_scope(AdminPublication.includes(:parent))
-    publications = publication_filterer.filter(publications, params.merge(current_user: current_user))
+    publications = publication_filterer.filter(publications, params)
 
     @publications = publications.includes(:publication, :children)
       .order(:ordering)

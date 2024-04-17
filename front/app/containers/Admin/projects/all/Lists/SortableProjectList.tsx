@@ -40,7 +40,6 @@ const SortableProjectList = memo<Props>((_props) => {
   const { data } = useAdminPublications({
     publicationStatusFilter: ['published', 'draft', 'archived'],
     rootLevelOnly: true,
-    moderator: true,
   });
 
   const rootLevelAdminPublications = data?.pages

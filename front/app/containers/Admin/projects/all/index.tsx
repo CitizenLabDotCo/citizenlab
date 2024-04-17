@@ -14,6 +14,7 @@ import Tab from 'components/admin/NavigationTabs/Tab';
 import PageWrapper from 'components/admin/PageWrapper';
 import Outlet from 'components/Outlet';
 import Button from 'components/UI/Button';
+import SearchInput from 'components/UI/SearchInput';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
@@ -54,6 +55,7 @@ export interface Props {
 }
 
 const AdminProjectsList = memo(({ className }: Props) => {
+  const [search, setSearch] = useState<string>('');
   const { data: authUser } = useAuthUser();
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const userIsAdmin = isAdmin(authUser);
@@ -141,6 +143,14 @@ const AdminProjectsList = memo(({ className }: Props) => {
             </Tippy>
           </Box>
         </Box>
+        <Box my="24px" w="fit-content">
+          <SearchInput
+            defaultValue={search}
+            onChange={(search) => search && setSearch(search)}
+            a11y_numberOfSearchResults={0}
+            placeholder="Search projects"
+          />
+        </Box>
         <Box w="100%" overflow="hidden">
           <NavigationTabs position="relative">
             <Tab
@@ -182,7 +192,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
                       ? ['published', 'draft', 'archived']
                       : [activeTab]
                   }
-                  moderator={activeTab === 'your-projects'}
+                  filter_can_moderate={activeTab === 'your-projects'?true:undefined}
                 />
               )}
             </Suspense>

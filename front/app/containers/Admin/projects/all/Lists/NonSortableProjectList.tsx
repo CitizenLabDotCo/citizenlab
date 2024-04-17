@@ -15,16 +15,17 @@ import NonSortableFolderRow from './NonSortableFolderRow';
 
 const NonSortableProjectList = ({
   publicationStatusFilter,
-  moderator,
+  filter_can_moderate,
 }: {
   publicationStatusFilter: PublicationStatus[];
-  moderator: boolean;
+  filter_can_moderate?: boolean;
 }) => {
   const { pathname } = useLocation();
   const { data } = useAdminPublications({
     publicationStatusFilter,
+    rootLevelOnly: true,
     onlyProjects: !pathname.endsWith('admin/projects'),
-    moderator,
+    filter_can_moderate,
   });
 
   const rootLevelAdminPublications = data?.pages
@@ -60,7 +61,6 @@ const NonSortableProjectList = ({
                     isLastItem={isLastItem}
                     publication={adminPublication}
                     publicationStatuses={publicationStatusFilter}
-                    moderator={moderator}
                   />
                 )}
             </Fragment>

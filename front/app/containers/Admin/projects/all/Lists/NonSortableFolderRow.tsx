@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import useAuthUser from 'api/me/useAuthUser';
-import { PublicationStatus } from 'api/projects/types';
 
 import { Row } from 'components/admin/ResourceList';
 
@@ -17,23 +16,18 @@ export interface Props {
   id: string;
   isLastItem: boolean;
   publication: IAdminPublicationData;
-  publicationStatuses: PublicationStatus[];
-  moderator: boolean;
 }
 
 const NonSortableFolderRow = ({
   id,
   isLastItem,
   publication,
-  publicationStatuses,
-  moderator,
 }: Props) => {
   const { data: authUser } = useAuthUser();
 
   const { data } = useAdminPublications({
     childrenOfId: publication.relationships.publication.data.id,
-    publicationStatusFilter: publicationStatuses,
-    moderator,
+    publicationStatusFilter: ['draft', 'published', 'archived'],
   });
 
   const folderChildAdminPublications = data?.pages
