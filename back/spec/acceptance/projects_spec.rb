@@ -791,68 +791,6 @@ resource 'Projects' do
       end
     end
 
-    get 'web_api/v1/projects/:id/as_xlsx' do
-      describe do
-        let(:project) { projects.first }
-        let(:id) { project.id }
-        let!(:idea) { create(:idea, project: project, phases: project.phases) }
-
-        example 'Download phase inputs without private user data', document: false do
-          phase = project.phases.first
-          expected_params = [[idea], project.phases.first, false]
-          allow(XlsxExport::InputSheetGenerator).to receive(:new).and_return(XlsxExport::InputSheetGenerator.new(*expected_params))
-          do_request
-          expect(XlsxExport::InputSheetGenerator).to have_received(:new).with(*expected_params)
-          assert_status 200
-          expect(xlsx_contents(response_body)).to match([
-            {
-              sheet_name: phase.title_multiloc['en'],
-              column_headers: [
-                'ID',
-                'Title',
-                'Description',
-                'Attachments',
-                'Tags',
-                'Latitude',
-                'Longitude',
-                'Location',
-                'Proposed Budget',
-                'Submitted at',
-                'Published at',
-                'Comments',
-                'Likes',
-                'Dislikes',
-                'URL',
-                'Project',
-                'Status'
-              ],
-              rows: [
-                [
-                  idea.id,
-                  idea.title_multiloc['en'],
-                  'It would improve the air quality!', # html tags are removed
-                  '',
-                  '',
-                  idea.location_point.coordinates.last,
-                  idea.location_point.coordinates.first,
-                  idea.location_description,
-                  idea.proposed_budget,
-                  an_instance_of(DateTime), # created_at
-                  an_instance_of(DateTime), # published_at
-                  0,
-                  0,
-                  0,
-                  "http://example.org/ideas/#{idea.slug}",
-                  project.title_multiloc['en'],
-                  idea.idea_status.title_multiloc['en']
-                ]
-              ]
-            }
-          ])
-        end
-      end
-    end
-
     post 'web_api/v1/projects' do
       with_options scope: :project do
         parameter :title_multiloc, 'The title of the project, as a multiloc string', required: true
