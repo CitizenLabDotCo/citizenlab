@@ -114,9 +114,8 @@ class ParticipantsService
     Rails.cache.fetch("#{folder.cache_key}/participant_count", expires_in: 1.day) do
       Analytics::FactParticipation
         .where(dimension_project_id: folder.projects)
-        .select(:participant_id)
         .distinct
-        .count
+        .count(:participant_id)
     end
   end
 
