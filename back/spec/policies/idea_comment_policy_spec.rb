@@ -87,20 +87,6 @@ describe IdeaCommentPolicy do
         expect(scope.resolve.size).to eq 1
       end
     end
-
-    context 'for a moderator of other project' do
-      let(:user) { create(:project_moderator, projects: [create(:project)]) }
-
-      it { is_expected.to permit(:show)           }
-      it { is_expected.not_to permit(:create)     }
-      it { is_expected.not_to permit(:update)     }
-      it { is_expected.not_to permit(:destroy)    }
-      it { is_expected.not_to permit(:index_xlsx) }
-
-      it 'indexes the comment' do
-        expect(scope.resolve.size).to eq 1
-      end
-    end
   end
 
   context 'for a visitor on a comment on an idea in a private groups project' do

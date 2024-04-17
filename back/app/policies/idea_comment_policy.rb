@@ -15,7 +15,7 @@ class IdeaCommentPolicy < ApplicationPolicy
   end
 
   def index_xlsx?
-    active_moderator?
+    user&.admin? || user&.project_moderator?
   end
 
   def create?
@@ -24,7 +24,9 @@ class IdeaCommentPolicy < ApplicationPolicy
       (record.author_id == user.id) &&
       ProjectPolicy.new(user, record.post.project).show? &&
       check_commenting_allowed(record, user)
-    ) || active_moderator?
+    ) || (
+      user&.active? && UserRoleService.new.can_moderate?(record.post, user)
+    )
   end
 
   def children?
@@ -52,15 +54,5 @@ class IdeaCommentPolicy < ApplicationPolicy
   def check_commenting_allowed(comment, user)
     pcs = ParticipationPermissionsService.new
     !pcs.commenting_disabled_reason_for_idea comment.post, user
-  end
-
-  def active_moderator?
-    return false unless active? && (admin? || user&.project_moderator?)
-
-    # Needed to permit project moderator to export all comments,
-    # without processing :idea_comment symbols for idea_comments from unmoderated projects.
-    return true if record.instance_of?(Symbol)
-
-    UserRoleService.new.can_moderate_project? record.post.project, user
   end
 end
