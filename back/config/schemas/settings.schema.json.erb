@@ -1032,30 +1032,6 @@
         }
       },
 
-      "manual_emailing": {
-        "type": "object",
-        "title": "Manual Emails",
-        "description":  "Admin and project managers can email users through the platform.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "automated_emailing_control": {
-        "type": "object",
-        "title": "Automated Emails",
-        "description":  "Admin can set and control automated e-mail campaigns and notifications.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
       "pages": {
         "type": "object",
         "title": "Custom Pages",

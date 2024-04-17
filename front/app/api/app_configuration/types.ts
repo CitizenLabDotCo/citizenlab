@@ -148,8 +148,6 @@ export interface IAppConfigurationSettings {
     verification_methods: string[];
   };
   smart_groups?: AppConfigurationFeature;
-  manual_emailing?: AppConfigurationFeature;
-  automated_emailing_control?: AppConfigurationFeature;
   typeform_surveys?: {
     allowed: boolean;
     enabled: boolean;
