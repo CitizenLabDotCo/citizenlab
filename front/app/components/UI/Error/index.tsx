@@ -13,13 +13,13 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 import { CLError } from 'typings';
 
+import { IAppConfiguration } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IInviteError } from 'api/invites/types';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 import messages from './messages';
-import { IAppConfiguration } from 'api/app_configuration/types';
 
 const timeout = 350;
 
@@ -208,7 +208,7 @@ export const getApiErrorValues = (
     (error as any)?.inviter_email ??
     appConfiguration?.data.attributes.settings.core.reply_to_email;
 
-  let values = {
+  const values = {
     row: error.row ?? '',
     rows: error.rows?.join(', ') ?? '',
     value: error.value ?? '',

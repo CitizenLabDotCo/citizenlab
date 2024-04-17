@@ -5,18 +5,19 @@ import { get } from 'lodash-es';
 import { useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import Error, {
   findErrorMessage,
   getApiErrorValues,
   TFieldName,
 } from 'components/UI/Error';
 
+import { useIntl } from 'utils/cl-intl';
 import { scrollToElement } from 'utils/scroll';
 
 import messages from './messages';
 import SuccessFeedback from './SuccessFeedback';
-import { useIntl } from 'react-intl';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 type FeedbackProps = {
   successMessage?: string;
