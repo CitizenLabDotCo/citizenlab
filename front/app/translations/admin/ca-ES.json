@@ -2525,7 +2525,7 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText": "Un usuari de la plataforma ha informat com a inadequat.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "Avisos de contingut",
   "app.modules.commercial.report_builder.admin.components.TopBar.reportBuilder": "Report builder",
-  "app.modules.idea_assignment.admin.components.permissionsTab": "Access rights",
+  "app.modules.idea_assignment.admin.components.permissionsTab": "Drets d'accés",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Pàgines que es mostren a la barra de navegació",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Create custom page",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Esteu segur que voleu eliminar aquesta pàgina? Això no es pot desfer. També podeu eliminar la pàgina de la barra de navegació si encara no esteu preparat per eliminar-la.",
