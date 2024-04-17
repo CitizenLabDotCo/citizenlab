@@ -52,7 +52,7 @@ resource 'Reports' do
 
       example 'Search by name' do
         report = create(:report, name: 'lemon opera sky')
-        query = 'opera sky'
+        query = 'lem sky' # prefix search is enabled
 
         do_request(search: query)
 
