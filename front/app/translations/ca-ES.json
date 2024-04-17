@@ -263,7 +263,6 @@
   "app.components.InitiativesShow.skipSharing": "Ometre-ho, ho faré més tard",
   "app.components.InitiativesShowPage.goBack": "Tornar",
   "app.components.LocationInput.noOptions": "Sense opcions",
-  "app.components.Modal.closeModal": "Tancar el modal",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "Introduïu una adreça de correu electrònic nova",
   "app.components.PageNotFound.goBackToHomePage": "Enrere a la pàgina d'inici",
   "app.components.PageNotFound.notFoundTitle": "Pàgina no trobada",

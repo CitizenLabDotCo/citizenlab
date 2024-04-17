@@ -230,7 +230,6 @@
   "app.components.InitiativesShow.shareTitle": "Innuttaasuutut siunnersuutit ikkunneqarpoq, pilluarit!",
   "app.components.InitiativesShow.skipSharing": "Kingusinnerusukkut siammarumaarpara",
   "app.components.InitiativesShowPage.goBack": "Uterit",
-  "app.components.Modal.closeModal": "Modal una matujuk",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "Enter a new email address",
   "app.components.PageNotFound.goBackToHomePage": "Back to the homepage",
   "app.components.PageNotFound.notFoundTitle": "Page not found",

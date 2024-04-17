@@ -263,7 +263,6 @@
   "app.components.InitiativesShow.skipSharing": "Vergessen Sie es, ich werde es später tun",
   "app.components.InitiativesShowPage.goBack": "Zurück",
   "app.components.LocationInput.noOptions": "Keine Optionen",
-  "app.components.Modal.closeModal": "Popup schließen",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "Geben Sie eine neue E-Mail-Adresse ein",
   "app.components.PageNotFound.goBackToHomePage": "Zurück zur Startseite",
   "app.components.PageNotFound.notFoundTitle": "Seite nicht gefunden",

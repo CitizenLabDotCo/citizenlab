@@ -263,7 +263,6 @@
   "app.components.InitiativesShow.skipSharing": "Прескочи, урадићу то касније",
   "app.components.InitiativesShowPage.goBack": "Повратак назад",
   "app.components.LocationInput.noOptions": "Нема опција",
-  "app.components.Modal.closeModal": "Затворите модал",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "Унесите нову адресу е-поште",
   "app.components.PageNotFound.goBackToHomePage": "Назад на почетну страницу",
   "app.components.PageNotFound.notFoundTitle": "Страница није пронађена",

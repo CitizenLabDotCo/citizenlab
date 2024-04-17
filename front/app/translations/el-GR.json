@@ -263,7 +263,6 @@
   "app.components.InitiativesShow.skipSharing": "Παραλείψτε το, θα το κάνω αργότερα",
   "app.components.InitiativesShowPage.goBack": "Επιστροφή",
   "app.components.LocationInput.noOptions": "Δεν υπάρχουν επιλογές",
-  "app.components.Modal.closeModal": "Κλείστε το αποκλειστικό στοιχείο",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "Εισάγετε μια νέα διεύθυνση email",
   "app.components.PageNotFound.goBackToHomePage": "Επιστροφή στην αρχική σελίδα",
   "app.components.PageNotFound.notFoundTitle": "Η σελίδα δεν βρέθηκε",

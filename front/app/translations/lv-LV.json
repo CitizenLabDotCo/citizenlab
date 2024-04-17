@@ -263,7 +263,6 @@
   "app.components.InitiativesShow.skipSharing": "Izlaist, es to izdarīšu vēlāk",
   "app.components.InitiativesShowPage.goBack": "Atgriezties",
   "app.components.LocationInput.noOptions": "Iespēju nav",
-  "app.components.Modal.closeModal": "Aizvērt modālo logu",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "Ievadiet jaunu e-pasta adresi",
   "app.components.PageNotFound.goBackToHomePage": "Atpakaļ uz mājaslapu",
   "app.components.PageNotFound.notFoundTitle": "Lapa nav atrasta",

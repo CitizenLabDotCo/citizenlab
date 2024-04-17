@@ -177,7 +177,6 @@
   "app.components.InitiativesShow.shareTitle": "Congratulations, your proposal was successfully posted!",
   "app.components.InitiativesShow.skipSharing": "Skip it, I'll do it later",
   "app.components.InitiativesShowPage.goBack": "Go back",
-  "app.components.Modal.closeModal": "Close the modal",
   "app.components.PagesForm.editContent": "Content",
   "app.components.PagesForm.fileUploadLabel": "Attachments (max. 50MB)",
   "app.components.PagesForm.fileUploadLabelTooltip": "Files should not be larger than 50Mb. Added files will be shown on the bottom of this page.",

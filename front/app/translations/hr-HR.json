@@ -263,7 +263,6 @@
   "app.components.InitiativesShow.skipSharing": "Preskačem korak, učinit ću ovo kasnije",
   "app.components.InitiativesShowPage.goBack": "Idi natrag",
   "app.components.LocationInput.noOptions": "Bez mogućnosti",
-  "app.components.Modal.closeModal": "Zatvorite modal",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "Unesite novu adresu e-pošte",
   "app.components.PageNotFound.goBackToHomePage": "Natrag na početnu stranicu",
   "app.components.PageNotFound.notFoundTitle": "Stranica nije pronađena",

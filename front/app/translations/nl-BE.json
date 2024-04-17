@@ -263,7 +263,6 @@
   "app.components.InitiativesShow.skipSharing": "Sla deze stap over, en deel het later",
   "app.components.InitiativesShowPage.goBack": "Ga terug",
   "app.components.LocationInput.noOptions": "Geen opties",
-  "app.components.Modal.closeModal": "Sluit deze pop-up",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "Voer een nieuw e-mailadres in",
   "app.components.PageNotFound.goBackToHomePage": "Terug naar de startpagina",
   "app.components.PageNotFound.notFoundTitle": "Pagina niet gevonden",

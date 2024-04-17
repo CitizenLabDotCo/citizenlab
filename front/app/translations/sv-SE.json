@@ -263,7 +263,6 @@
   "app.components.InitiativesShow.skipSharing": "Hoppa över det, jag gör det senare",
   "app.components.InitiativesShowPage.goBack": "Gå tillbaka",
   "app.components.LocationInput.noOptions": "Inga alternativ",
-  "app.components.Modal.closeModal": "Stäng modalen",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "Ange en ny e-postadress",
   "app.components.PageNotFound.goBackToHomePage": "Tillbaka till startsidan",
   "app.components.PageNotFound.notFoundTitle": "Sidan hittades inte",

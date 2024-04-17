@@ -263,7 +263,6 @@
   "app.components.InitiativesShow.skipSharing": "تخطي، سأقوم بهذا لاحقًا",
   "app.components.InitiativesShowPage.goBack": "العودة",
   "app.components.LocationInput.noOptions": "لا يوجد خيارات",
-  "app.components.Modal.closeModal": "أغلق الشاشة العلوية",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "أدخل عنوان بريد إلكتروني جديد",
   "app.components.PageNotFound.goBackToHomePage": "عودة إلى الصفحة الرئيسية",
   "app.components.PageNotFound.notFoundTitle": "لم يتم العثور على الصفحة",
