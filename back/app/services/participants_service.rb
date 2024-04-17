@@ -113,7 +113,7 @@ class ParticipantsService
   def folder_participants_count(folder)
     Rails.cache.fetch("#{folder.cache_key}/participant_count", expires_in: 1.day) do
       Analytics::FactParticipation
-        .where(dimension_project_id: folder.projects.pluck(:id))
+        .where(dimension_project_id: folder.projects)
         .select(:participant_id)
         .distinct
         .count
@@ -158,12 +158,10 @@ class ParticipantsService
     # Following
     if actions.include? :following
       followers = Follower
-        .where(%{
-          (followable_type = 'Project' AND followable_id IN (?)) OR
-          (followable_type = 'Idea' AND followable_id IN (?))
-        }, projects.pluck(:id), Idea.where(project: projects).select(:id))
+        .where(followable: projects)
+        .or(Follower.where(followable: Idea.where(project: projects)))
+        .where(created_at: since..)
 
-      followers = followers.where('created_at::date >= (?)::date', since) if since
       participants = participants.or(User.where(id: followers.select(:user_id)))
     end
 

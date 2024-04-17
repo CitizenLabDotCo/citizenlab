@@ -63,13 +63,13 @@ describe SmartGroups::Rules::ParticipatedInProject do
 
     it "correctly filters on 'in' predicate" do
       rule = described_class.new('in', [@project1.id])
-      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(2)
+      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user1.id, @user2.id, @user3.id]
     end
 
     it "correctly filters on 'not_in' predicate" do
       rule = described_class.new('not_in', @project2.id)
-      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(2)
+      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user1.id, @user2.id]
     end
 
