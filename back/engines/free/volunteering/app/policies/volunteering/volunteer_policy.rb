@@ -21,7 +21,7 @@ module Volunteering
     end
 
     def index_xlsx?
-      user&.active? && (user&.admin? || ProjectPolicy.new(user, record.cause.phase.project).update?)
+      user&.active? && (user&.admin? || moderator_of_project?(record))
     end
 
     def create?
@@ -32,6 +32,12 @@ module Volunteering
 
     def destroy?
       create?
+    end
+
+    private
+
+    def moderator_of_project?(record)
+      user&.project_moderator? && ProjectPolicy.new(user, record.cause.phase.project).update?
     end
   end
 end
