@@ -168,7 +168,11 @@ const AuthorsByAge = ({ customFieldId }: Props) => {
         <FormattedMessage {...messages.authorsByAge} />
       </Title>
       <ResponsiveContainer width="100%" height={100}>
-        <BarChart data={chartData} margin={{ top: 20, left: 8, right: 8 }}>
+        <BarChart
+          data={chartData}
+          margin={{ top: 20, left: 8, right: 8 }}
+          accessibilityLayer
+        >
           <XAxis dataKey="shortName" interval={0} tickLine={false} />
           <Bar stackId="a" dataKey="filtered" onClick={handleClick}>
             {chartData.map((entry, index) => (
