@@ -20,11 +20,14 @@ const NonSortableProjectList = ({
   publicationStatusFilter: PublicationStatus[];
   filter_can_moderate?: boolean;
 }) => {
+
   const { pathname } = useLocation();
+  const showOnlyProjects = !pathname.endsWith('admin/projects');
+
   const { data } = useAdminPublications({
     publicationStatusFilter,
-    rootLevelOnly: true,
-    onlyProjects: !pathname.endsWith('admin/projects'),
+    rootLevelOnly: !showOnlyProjects,
+    onlyProjects: showOnlyProjects,
     filter_can_moderate,
   });
 
@@ -60,7 +63,6 @@ const NonSortableProjectList = ({
                     id={adminPublicationId}
                     isLastItem={isLastItem}
                     publication={adminPublication}
-                    publicationStatuses={publicationStatusFilter}
                   />
                 )}
             </Fragment>
