@@ -495,6 +495,7 @@ resource 'Ideas' do
           end
 
           example 'XLSX export', document: false do
+            pp @unmoderated_idea
             do_request
             assert_status 200
 
