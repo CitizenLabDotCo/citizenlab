@@ -2525,7 +2525,7 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText": "Αναφέρθηκε ως ακατάλληλη από έναν χρήστη της πλατφόρμας.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "Προειδοποιήσεις περιεχομένου",
   "app.modules.commercial.report_builder.admin.components.TopBar.reportBuilder": "Report builder",
-  "app.modules.idea_assignment.admin.components.permissionsTab": "Access rights",
+  "app.modules.idea_assignment.admin.components.permissionsTab": "Δικαιώματα πρόσβασης",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Σελίδες που εμφανίζονται στη γραμμή πλοήγησης",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Create custom page",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτή τη σελίδα; Αυτό δεν μπορεί να αναιρεθεί. Μπορείτε επίσης να καταργήσετε τη σελίδα από τη γραμμή πλοήγησης αν δεν είστε ακόμα έτοιμοι να τη διαγράψετε.",
