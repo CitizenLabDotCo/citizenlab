@@ -22,9 +22,14 @@ module BulkImportIdeas::Parsers
         # Get number of pages in a form from the download
         pages_per_idea = import_form_data[:page_count]
 
-        pdf = ::CombinePDF.parse URI.open(source_file.file_content_url).read
+        pdf = begin
+          ::CombinePDF.parse URI.open(source_file.file_content_url).read
+        rescue ::CombinePDF::ParsingError
+          raise BulkImportIdeas::Error.new 'bulk_import_malformed_pdf', value: source_file.file_content_url
+        end
+
         source_file.update!(num_pages: pdf.pages.count)
-        raise BulkImportIdeas::Error.new 'bulk_import_ideas_maximum_pdf_pages_exceeded', value: pdf.pages.count if pdf.pages.count > MAX_TOTAL_PAGES
+        raise BulkImportIdeas::Error.new 'bulk_import_maximum_pdf_pages_exceeded', value: pdf.pages.count if pdf.pages.count > MAX_TOTAL_PAGES
 
         return [source_file] if pdf.pages.count <= PAGES_TO_TRIGGER_NEW_PDF # Only need to split if the file is too big
 

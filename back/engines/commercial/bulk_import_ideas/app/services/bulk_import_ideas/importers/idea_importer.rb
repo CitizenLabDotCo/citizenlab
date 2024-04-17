@@ -6,7 +6,7 @@ module BulkImportIdeas::Importers
     DATE_FORMAT_REGEX = /^(0[1-9]|[1|2][0-9]|3[0|1])-(0[1-9]|1[0-2])-([0-9]{4})$/ # After https://stackoverflow.com/a/47218282/3585671
 
     def import(idea_rows)
-      raise BulkImportIdeas::Error.new 'bulk_import_ideas_maximum_ideas_exceeded', value: DEFAULT_MAX_IDEAS if idea_rows.size > DEFAULT_MAX_IDEAS
+      raise BulkImportIdeas::Error.new 'bulk_import_maximum_ideas_exceeded', value: DEFAULT_MAX_IDEAS if idea_rows.size > DEFAULT_MAX_IDEAS
 
       ideas = []
       ActiveRecord::Base.transaction do
@@ -70,9 +70,6 @@ module BulkImportIdeas::Importers
             .include? project_title
         end
       end
-      unless project
-        raise BulkImportIdeas::Error.new 'bulk_import_ideas_project_not_found', value: idea_row[:project_title], row: idea_row[:id]
-      end
 
       idea_attributes[:project] = project
     end
@@ -114,7 +111,7 @@ module BulkImportIdeas::Importers
       end
 
       invalid_date_error = BulkImportIdeas::Error.new(
-        'bulk_import_ideas_publication_date_invalid_format',
+        'bulk_import_publication_date_invalid_format',
         value: idea_row[:published_at],
         row: idea_row[:id]
       )
