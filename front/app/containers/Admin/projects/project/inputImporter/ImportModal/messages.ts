@@ -10,9 +10,13 @@ export default defineMessages({
     defaultMessage: 'Import scanned forms',
   },
   uploadPdfFile: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadPdfFile',
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadPdfFile1',
     defaultMessage:
-      'Upload a <b>PDF file of scanned forms</b>. It must use a form printed from this phase. The form can be downloaded {hereLink}.',
+      'Upload a <b>PDF file of scanned forms</b>. It must use a form printed from this phase. {hereLink}',
+  },
+  formCanBeDownloadedHere: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.formCanBeDownloadedHere',
+    defaultMessage: 'The form can be downloaded here.',
   },
   disabledPDFImportTooltip: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.disabledPDFImportTooltip',
@@ -20,13 +24,13 @@ export default defineMessages({
       'Importing PDF files of scanned forms is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.',
   },
   uploadExcelFile: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadExcelFile1',
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadExcelFile',
     defaultMessage:
-      'Upload a completed <b>Excel file</b> (.xlsx). It must use the template provided for this project. The template can be downloaded {hereLink}.',
+      'Upload a completed <b>Excel file</b> (.xlsx). It must use the template provided for this project. {hereLink}',
   },
-  here: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.here',
-    defaultMessage: 'here',
+  templateCanBeDownloadedHere: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.templateCanBeDownloadedHere',
+    defaultMessage: 'The template can be downloaded here.',
   },
   formLanguage: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage',

@@ -168,7 +168,9 @@ const ImportPdfModal = ({ open, onClose }: Props) => {
                     ),
                     hereLink: (
                       <Link to={{ pathname: downloadFormPath }}>
-                        <FormattedMessage {...messages.here} />
+                        <FormattedMessage
+                          {...messages.formCanBeDownloadedHere}
+                        />
                       </Link>
                     ),
                   }}
