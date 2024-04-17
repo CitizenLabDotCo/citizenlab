@@ -2525,7 +2525,6 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText": "Prijavljeno kao neprikladno od strane korisnika platforme.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "Upozorenja o sadržaju",
   "app.modules.commercial.report_builder.admin.components.TopBar.reportBuilder": "Prijavi alatku za izradu",
-  "app.modules.idea_assignment.admin.components.permissionsTab": "Prava pristupa",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Stranice prikazane u traci za navigaciju",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Kreiraj prilagođenu stranicu",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Da li ste sigurni da želite da izbrišete ovu stranicu? Ova radnja ne može se poništiti. Takođe možete da uklonite stranicu iz trake za navigaciju, ako još uvek niste spremni da je izbrišete.",

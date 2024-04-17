@@ -98,10 +98,6 @@ module MultiTenancy
               allowed: true,
               enabled: true
             },
-            private_projects: {
-              enabled: true,
-              allowed: true
-            },
             maps: {
               enabled: true,
               allowed: true,

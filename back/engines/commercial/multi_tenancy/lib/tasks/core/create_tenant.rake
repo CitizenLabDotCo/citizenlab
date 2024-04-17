@@ -42,10 +42,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: true,
           allowed: true
         },
-        private_projects: {
-          enabled: true,
-          allowed: true
-        },
         user_confirmation: {
           enabled: true,
           allowed: true
