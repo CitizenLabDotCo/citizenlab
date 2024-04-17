@@ -198,8 +198,12 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
           ml="auto"
           width={'100%'}
           bgColor={theme.colors.tenantPrimary}
+          tabIndex={0}
           onClick={() => {
             clHistory.push(`/events/${event.id}`, { scrollToTop: true });
+          }}
+          onKeyDown={(event) => {
+            event.stopPropagation();
           }}
         >
           {formatMessage(messages.readMore)}

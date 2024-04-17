@@ -50,7 +50,7 @@ const EventCard = memo<Props>((props) => {
         role="button"
         onClick={navigateToEventPage}
         onKeyDown={(e) => {
-          if (e.key === 'Enter') {
+          if (e.target === e.currentTarget && e.key === 'Enter') {
             navigateToEventPage();
           }
         }}
