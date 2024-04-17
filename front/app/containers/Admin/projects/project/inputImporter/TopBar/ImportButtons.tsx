@@ -24,7 +24,7 @@ const ImportButtons = ({ onClickPDFImport, onClickExcelImport }: Props) => {
   return (
     <Box>
       <Button
-        buttonStyle="admin-dark-text"
+        buttonStyle="secondary"
         onClick={() => setDropdownOpened((opened) => !opened)}
         icon="page"
       >
