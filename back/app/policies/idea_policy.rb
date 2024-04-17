@@ -26,7 +26,7 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def index_xlsx?
-    (active? && admin?) || active_moderator?
+    active? && (admin? || user&.project_moderator?)
   end
 
   def index_mini?
@@ -36,7 +36,7 @@ class IdeaPolicy < ApplicationPolicy
   def create?
     return false if user&.blocked?
     return true if record.draft?
-    return true if active_moderator?
+    return true if active? && UserRoleService.new.can_moderate_project?(record.project, user)
     return false if !active? && record.participation_method_on_creation.sign_in_required_for_posting?
 
     reason = ParticipationPermissionsService.new.posting_idea_disabled_reason_for_project(record.project, user)
@@ -81,15 +81,6 @@ class IdeaPolicy < ApplicationPolicy
 
   def owner?
     record.author_id == user.id
-  end
-
-  def active_moderator?
-    return false unless active? && (admin? || user&.project_moderator?)
-
-    # Needed to permit project moderator to export all ideas, without processing :idea symbols for ideas from unmoderated projects
-    return true if record.instance_of?(Symbol)
-
-    UserRoleService.new.can_moderate_project? record.project, user
   end
 end
 
