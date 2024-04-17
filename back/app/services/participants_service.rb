@@ -150,9 +150,11 @@ class ParticipantsService
 
     # Event attending
     if actions.include? :event_attending
-      event_attendances = Events::Attendance.where(event: Event.where(project: projects))
-      event_attendances = event_attendances.where('created_at::date >= (?)::date', since) if since
-      participants = participants.or(User.where(id: event_attendances.select(:attendee_id)))
+      event_attendances = Events::Attendance
+        .joins(:event).where(events: { project: projects })
+        .where(created_at: since..)
+      event_attendees = User.where(id: event_attendances.select(:attendee_id))
+      participants = participants.or(event_attendees)
     end
 
     # Following
