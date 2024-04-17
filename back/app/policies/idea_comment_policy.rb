@@ -55,7 +55,11 @@ class IdeaCommentPolicy < ApplicationPolicy
   end
 
   def active_moderator?
-    return false unless active?
+    return false unless active? && (admin? || user&.project_moderator?)
+
+    # Needed to permit project moderator to export all comments,
+    # without processing :idea_comment symbols for idea_comments from unmoderated projects.
+    return true if record.instance_of?(Symbol)
 
     UserRoleService.new.can_moderate_project? record.post.project, user
   end
