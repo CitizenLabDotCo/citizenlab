@@ -1,12 +1,17 @@
 import React from 'react';
 
 import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
+import saveAs from 'file-saver';
 import moment from 'moment';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 
+import { IEventData } from 'api/events/types';
 import useDeleteEvent from 'api/events/useDeleteEvent';
 import useEvents from 'api/events/useEvents';
+import { exportEventAttendees } from 'api/events/util';
+
+import useLocalize from 'hooks/useLocalize';
 
 import { List, Row, HeadRow } from 'components/admin/ResourceList';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
@@ -17,6 +22,7 @@ import Warning from 'components/UI/Warning';
 import { injectIntl, FormattedMessage, useIntl } from 'utils/cl-intl';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
+import { requestBlob } from 'utils/requestBlob';
 
 import messages from './messages';
 
@@ -37,6 +43,7 @@ const AdminProjectEventsIndex = ({
   intl,
   params,
 }: WithRouterProps & WrappedComponentProps) => {
+  const localize = useLocalize();
   const { formatMessage } = useIntl();
   const { projectId } = params;
   const { data: events } = useEvents({
@@ -57,6 +64,22 @@ const AdminProjectEventsIndex = ({
         deleteEvent(eventId);
       }
     };
+
+  const handleAttendeesExport = async (event: IEventData) => {
+    try {
+      const blob = await requestBlob(
+        exportEventAttendees(event.id),
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      );
+
+      saveAs(
+        blob,
+        `attendees-export-for-${localize(event.attributes.title_multiloc)}.xlsx`
+      );
+    } catch {
+      // Do nothing
+    }
+  };
 
   return (
     <Box mb="40px" p="44px">
@@ -140,6 +163,14 @@ const AdminProjectEventsIndex = ({
                         processing={isLoading}
                       >
                         <FormattedMessage {...messages.deleteButtonLabel} />
+                      </Button>
+                      <Button
+                        buttonStyle="secondary"
+                        disabled={event.attributes.attendees_count === 0}
+                        icon="download"
+                        onClick={() => handleAttendeesExport(event)}
+                      >
+                        <FormattedMessage {...messages.exportAttendees} />
                       </Button>
                       <Button
                         buttonStyle="secondary"

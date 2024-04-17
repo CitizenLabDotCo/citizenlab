@@ -207,4 +207,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEvents.attend',
     defaultMessage: 'Attend',
   },
+  exportAttendees: {
+    id: 'app.containers.AdminPage.ProjectEvents.exportAttendees',
+    defaultMessage: 'Export attendees',
+  },
+  attendees: {
+    id: 'app.containers.AdminPage.ProjectEvents.attendees',
+    defaultMessage: 'attendees',
+  },
 });
