@@ -61,7 +61,7 @@ describe Volunteering::VolunteerPolicy do
     end
 
     context 'for a moderator NOT of the volunteering project' do
-      let(:user) { create(:user, roles: [{ type: 'project_moderator', project_id: 'fake_id' }]) }
+      let(:user) { create(:user, roles: [{ type: 'project_moderator', project_id: create(:project).id }]) }
 
       it { is_expected.not_to permit(:create) }
       it { is_expected.not_to permit(:destroy) }
