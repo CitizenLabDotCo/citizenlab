@@ -23,7 +23,7 @@ export const query = ({
     },
     groups: `dimension_date_created.${getInterval(resolution)}`,
     aggregations: {
-      dimension_user_id: 'count',
+      participant_id: 'count',
       'dimension_date_created.date': 'first',
     },
   };
@@ -35,7 +35,7 @@ export const query = ({
       ...getDateFilter('dimension_date_created', startAtMoment, endAtMoment),
     },
     aggregations: {
-      dimension_user_id: 'count',
+      participant_id: 'count',
     },
   };
 
@@ -46,7 +46,7 @@ export const query = ({
       ...getDateFilterLastPeriod('dimension_date_created', resolution),
     },
     aggregations: {
-      dimension_user_id: 'count',
+      participant_id: 'count',
     },
   };
 

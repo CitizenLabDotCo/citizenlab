@@ -43,7 +43,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
       # Create a bunch of ideas and comments with users (4 participants)
       idea1 = create(:idea, project: project, author: pp1, created_at: date_september) # 1
       idea2 = create(:idea, project: project, author: pp2, created_at: date_september) # 2
-      create(:comment, post: idea1, author: pp3, created_at: date_september) # 2
+      create(:comment, post: idea1, author: pp3, created_at: date_september) # 3
       create(:idea, project: project, created_at: date_september) # 4
       create(:comment, post: idea2, author: pp1, created_at: date_september)
 
@@ -55,7 +55,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
       # Create another anonymous idea for another user (1 participant)
       create(:idea, project: project, anonymous: true, created_at: date_september)
 
-      # Add two ideas, not anonymous but no user_id (e.g. user deleted) (2 participants)
+      # Add two ideas, not anonymous but no user_id or author_hash (2 participants)
       create(:idea, project: project, anonymous: false, author: nil, created_at: date_september)
       create(:idea, project: project, anonymous: false, author: nil, created_at: date_september)
 

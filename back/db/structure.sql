@@ -1707,7 +1707,7 @@ CREATE TABLE public.volunteering_volunteers (
 CREATE VIEW public.analytics_fact_participations AS
  SELECT i.id,
     i.author_id AS dimension_user_id,
-    COALESCE((i.author_id)::character(1), (i.author_hash)::bpchar, (i.id)::character(1)) AS participant_id,
+    COALESCE((i.author_id)::text, (i.author_hash)::text, (i.id)::text) AS participant_id,
     i.project_id AS dimension_project_id,
         CASE
             WHEN ((ph.participation_method)::text = 'native_survey'::text) THEN survey.id
@@ -1722,10 +1722,11 @@ CREATE VIEW public.analytics_fact_participations AS
      LEFT JOIN public.phases ph ON ((ph.id = i.creation_phase_id)))
      JOIN public.analytics_dimension_types idea ON (((idea.name)::text = 'idea'::text)))
      LEFT JOIN public.analytics_dimension_types survey ON (((survey.name)::text = 'survey'::text)))
+  WHERE ((i.publication_status)::text = 'published'::text)
 UNION ALL
  SELECT i.id,
     i.author_id AS dimension_user_id,
-    COALESCE((i.author_id)::character(1), (i.author_hash)::bpchar, (i.id)::character(1)) AS participant_id,
+    COALESCE((i.author_id)::text, (i.author_hash)::text, (i.id)::text) AS participant_id,
     NULL::uuid AS dimension_project_id,
     adt.id AS dimension_type_id,
     (i.created_at)::date AS dimension_date_created_id,
@@ -1737,7 +1738,7 @@ UNION ALL
 UNION ALL
  SELECT c.id,
     c.author_id AS dimension_user_id,
-    COALESCE((c.author_id)::character(1), (c.author_hash)::bpchar, (c.id)::character(1)) AS participant_id,
+    COALESCE((c.author_id)::text, (c.author_hash)::text, (c.id)::text) AS participant_id,
     i.project_id AS dimension_project_id,
     adt.id AS dimension_type_id,
     (c.created_at)::date AS dimension_date_created_id,
@@ -1750,7 +1751,7 @@ UNION ALL
 UNION ALL
  SELECT r.id,
     r.user_id AS dimension_user_id,
-    COALESCE((r.user_id)::character(1), (r.id)::character(1)) AS participant_id,
+    COALESCE((r.user_id)::text, (r.id)::text) AS participant_id,
     COALESCE(i.project_id, ic.project_id) AS dimension_project_id,
     adt.id AS dimension_type_id,
     (r.created_at)::date AS dimension_date_created_id,
@@ -1771,8 +1772,8 @@ UNION ALL
 UNION ALL
  SELECT pr.id,
     pr.user_id AS dimension_user_id,
-    COALESCE((pr.user_id)::character(1), (pr.id)::character(1)) AS participant_id,
-    COALESCE(p.project_id, pr.phase_id) AS dimension_project_id,
+    COALESCE((pr.user_id)::text, (pr.id)::text) AS participant_id,
+    p.project_id AS dimension_project_id,
     adt.id AS dimension_type_id,
     (pr.created_at)::date AS dimension_date_created_id,
     0 AS reactions_count,
@@ -1784,8 +1785,8 @@ UNION ALL
 UNION ALL
  SELECT vv.id,
     vv.user_id AS dimension_user_id,
-    COALESCE((vv.user_id)::character(1), (vv.id)::character(1)) AS participant_id,
-    COALESCE(p.project_id, vc.phase_id) AS dimension_project_id,
+    COALESCE((vv.user_id)::text, (vv.id)::text) AS participant_id,
+    p.project_id AS dimension_project_id,
     adt.id AS dimension_type_id,
     (vv.created_at)::date AS dimension_date_created_id,
     0 AS reactions_count,
@@ -1798,7 +1799,7 @@ UNION ALL
 UNION ALL
  SELECT b.id,
     b.user_id AS dimension_user_id,
-    COALESCE((b.user_id)::character(1), (b.id)::character(1)) AS participant_id,
+    COALESCE((b.user_id)::text, (b.id)::text) AS participant_id,
     p.project_id AS dimension_project_id,
     adt.id AS dimension_type_id,
     (b.created_at)::date AS dimension_date_created_id,
@@ -1811,7 +1812,7 @@ UNION ALL
 UNION ALL
  SELECT ea.id,
     ea.attendee_id AS dimension_user_id,
-    COALESCE((ea.attendee_id)::character(1), (ea.id)::character(1)) AS participant_id,
+    (ea.attendee_id)::text AS participant_id,
     e.project_id AS dimension_project_id,
     adt.id AS dimension_type_id,
     (ea.created_at)::date AS dimension_date_created_id,
@@ -1824,7 +1825,7 @@ UNION ALL
 UNION ALL
  SELECT f.id,
     f.user_id AS dimension_user_id,
-    COALESCE((f.user_id)::character(1), (f.id)::character(1)) AS participant_id,
+    (f.user_id)::text AS participant_id,
         CASE f.followable_type
             WHEN 'Project'::text THEN f.followable_id
             WHEN 'Idea'::text THEN i.project_id

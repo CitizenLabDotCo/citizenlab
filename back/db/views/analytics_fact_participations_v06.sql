@@ -4,7 +4,7 @@
 SELECT
     i.id,
     i.author_id AS dimension_user_id,
-    COALESCE(i.author_id::CHAR, i.author_hash, i.id::CHAR) as participant_id,
+    COALESCE(i.author_id::TEXT, i.author_hash, i.id::TEXT) as participant_id,
     i.project_id AS dimension_project_id,
     CASE
         WHEN ph.participation_method = 'native_survey' THEN survey.id
@@ -19,6 +19,7 @@ LEFT JOIN projects pr ON pr.id = i.project_id
 LEFT JOIN phases ph ON ph.id = i.creation_phase_id
 INNER JOIN analytics_dimension_types idea ON idea.name = 'idea'
 LEFT JOIN analytics_dimension_types survey ON survey.name = 'survey'
+WHERE i.publication_status = 'published'
 
 UNION ALL
 
@@ -26,7 +27,7 @@ UNION ALL
 SELECT
     i.id,
     i.author_id AS dimension_user_id,
-    COALESCE(i.author_id::CHAR, i.author_hash, i.id::CHAR) as participant_id,
+    COALESCE(i.author_id::TEXT, i.author_hash, i.id::TEXT) as participant_id,
     null AS dimension_project_id, -- initiative has no project
     adt.id AS dimension_type_id,
     i.created_at::DATE AS dimension_date_created_id,
@@ -42,7 +43,7 @@ UNION ALL
 SELECT
     c.id,
     c.author_id AS dimension_user_id,
-    COALESCE(c.author_id::CHAR, c.author_hash, c.id::CHAR) as participant_id,
+    COALESCE(c.author_id::TEXT, c.author_hash, c.id::TEXT) as participant_id,
     i.project_id AS dimension_project_id,
     adt.id AS dimension_type_id,
     c.created_at::DATE AS dimension_date_created_id,
@@ -59,7 +60,7 @@ UNION ALL
 SELECT
     r.id,
     r.user_id AS dimension_user_id,
-    COALESCE(r.user_id::CHAR, r.id::CHAR) as participant_id,
+    COALESCE(r.user_id::TEXT, r.id::TEXT) as participant_id,
     COALESCE(i.project_id, ic.project_id) AS dimension_project_id,
     adt.id AS dimension_type_id,
     r.created_at::DATE AS dimension_date_created_id,
@@ -78,8 +79,8 @@ UNION ALL
 SELECT
     pr.id,
     pr.user_id AS dimension_user_id,
-    COALESCE(pr.user_id::CHAR, pr.id::CHAR) as participant_id,
-    COALESCE(p.project_id, pr.phase_id) AS dimension_project_id,
+    COALESCE(pr.user_id::TEXT, pr.id::TEXT) as participant_id,
+    p.project_id AS dimension_project_id,
     adt.id AS dimension_type_id,
     pr.created_at::DATE AS dimension_date_created_id,
     0 AS reactions_count,
@@ -95,8 +96,8 @@ UNION ALL
 SELECT
     vv.id,
     vv.user_id AS dimension_user_id,
-    COALESCE(vv.user_id::CHAR, vv.id::CHAR) as participant_id,
-    COALESCE(p.project_id, vc.phase_id) AS dimension_project_id,
+    COALESCE(vv.user_id::TEXT, vv.id::TEXT) as participant_id,
+    p.project_id AS dimension_project_id,
     adt.id AS dimension_type_id,
     vv.created_at::DATE AS dimension_date_created_id,
     0 AS reactions_count,
@@ -113,7 +114,7 @@ UNION ALL
 SELECT
     b.id,
     b.user_id AS dimension_user_id,
-    COALESCE(b.user_id::CHAR, b.id::CHAR) as participant_id,
+    COALESCE(b.user_id::TEXT, b.id::TEXT) as participant_id,
     p.project_id AS dimension_project_id,
     adt.id AS dimension_type_id,
     b.created_at::DATE AS dimension_date_created_id,
@@ -130,7 +131,7 @@ UNION ALL
 SELECT
     ea.id,
     ea.attendee_id AS dimension_user_id,
-    COALESCE(ea.attendee_id::CHAR, ea.id::CHAR) as participant_id,
+    ea.attendee_id::TEXT as participant_id,
     e.project_id AS dimension_project_id,
     adt.id AS dimension_type_id,
     ea.created_at::DATE AS dimension_date_created_id,
@@ -147,7 +148,7 @@ UNION ALL
 SELECT
   f.id,
   f.user_id AS dimension_user_id,
-  COALESCE(f.user_id::CHAR, f.id::CHAR) as participant_id,
+  f.user_id::TEXT as participant_id,
   CASE f.followable_type
     WHEN 'Project' THEN f.followable_id
     WHEN 'Idea' THEN i.project_id
