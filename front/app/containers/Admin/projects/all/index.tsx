@@ -91,29 +91,34 @@ const AdminProjectsList = memo(({ className }: Props) => {
     publicationStatusFilter: ['published', 'draft', 'archived'],
     onlyProjects: true,
     filter_can_moderate: true,
+    search,
   });
 
   const { data: publishedAdminPublications } = useAdminPublications({
     publicationStatusFilter: ['published'],
     onlyProjects: true,
     rootLevelOnly: false,
+    search,
   });
 
   const { data: draftAdminPublications } = useAdminPublications({
     publicationStatusFilter: ['draft'],
     onlyProjects: true,
     rootLevelOnly: false,
+    search,
   });
 
   const { data: archivedAdminPublications } = useAdminPublications({
     publicationStatusFilter: ['archived'],
     onlyProjects: true,
     rootLevelOnly: false,
+    search,
   });
 
   const { data: allAdminPublications } = useAdminPublications({
     publicationStatusFilter: ['published', 'draft', 'archived'],
-    rootLevelOnly: true,
+    rootLevelOnly: !search || search.length === 0,
+    search,
   });
 
   const handleContainerOutletOnRender = (hasRendered: boolean) => {
@@ -184,7 +189,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
         <Box my="24px" w="fit-content">
           <SearchInput
             defaultValue={search}
-            onChange={(search) => search && setSearch(search)}
+            onChange={(search) => setSearch(search || '')}
             a11y_numberOfSearchResults={0}
             placeholder="Search projects"
           />
@@ -230,9 +235,13 @@ const AdminProjectsList = memo(({ className }: Props) => {
           <ListsContainer>
             <Suspense fallback={<Spinner />}>
               {userIsAdmin && activeTab === 'all' ? (
-                <SortableProjectList adminPublications={allAdminPublications} />
+                <SortableProjectList
+                  search={search}
+                  adminPublications={allAdminPublications}
+                />
               ) : (
                 <NonSortableProjectList
+                  search={search}
                   adminPublications={
                     activeTab === 'your-projects'
                       ? yourAdminPublications

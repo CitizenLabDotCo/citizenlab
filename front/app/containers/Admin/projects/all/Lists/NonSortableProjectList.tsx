@@ -14,8 +14,10 @@ import NonSortableFolderRow from './NonSortableFolderRow';
 
 const NonSortableProjectList = ({
   adminPublications,
+  search,
 }: {
   adminPublications: InfiniteData<IAdminPublications> | undefined;
+  search?: string;
 }) => {
   const rootLevelAdminPublications = adminPublications?.pages
     .map((page) => page.data)
@@ -49,6 +51,7 @@ const NonSortableProjectList = ({
                     id={adminPublicationId}
                     isLastItem={isLastItem}
                     publication={adminPublication}
+                    search={search}
                   />
                 )}
             </Fragment>

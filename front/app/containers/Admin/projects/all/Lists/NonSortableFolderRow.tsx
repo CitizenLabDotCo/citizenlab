@@ -16,18 +16,21 @@ export interface Props {
   id: string;
   isLastItem: boolean;
   publication: IAdminPublicationData;
+  search?: string;
 }
 
 const NonSortableFolderRow = ({
   id,
   isLastItem,
   publication,
+  search,
 }: Props) => {
   const { data: authUser } = useAuthUser();
 
   const { data } = useAdminPublications({
     childrenOfId: publication.relationships.publication.data.id,
     publicationStatusFilter: ['draft', 'published', 'archived'],
+    search,
   });
 
   const folderChildAdminPublications = data?.pages
