@@ -17,17 +17,10 @@ class ParticipantsService
     since = options[:since]
     to = options[:to]
 
-    participants = Analytics::FactParticipation
+    Analytics::FactParticipation
       .select(:dimension_user_id).distinct
       .where.not(dimension_user_id: nil)
-
-    if since && to
-      participants.where('dimension_date_created_id >= ? AND dimension_date_created_id < ?', since, to)
-    elsif since
-      participants.where('dimension_date_created_id >= ?', since)
-    else
-      participants
-    end
+      .where(dimension_date_created_id: since..to)
   end
 
   def initiatives_participants(initiatives)
