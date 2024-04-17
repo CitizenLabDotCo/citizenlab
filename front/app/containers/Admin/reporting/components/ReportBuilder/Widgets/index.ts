@@ -18,6 +18,7 @@ import PostsByTimeWidget, {
 import ReactionsByTimeWidget, {
   reactionsByTimeTitle,
 } from './ChartWidgets/ReactionsByTimeWidget';
+import UsersWidget, { usersTitle } from './ChartWidgets/UsersWidget';
 import VisitorsTrafficSourcesWidget, {
   visitorsTrafficSourcesTitle,
 } from './ChartWidgets/VisitorsTrafficSourcesWidget';
@@ -51,6 +52,7 @@ export const WIDGETS = {
   PostsByTimeWidget,
   CommentsByTimeWidget,
   ReactionsByTimeWidget,
+  UsersWidget,
   IframeMultiloc,
 };
 
@@ -73,6 +75,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   PostsByTimeWidget: postsByTimeTitle,
   CommentsByTimeWidget: commentsByTimeTitle,
   ReactionsByTimeWidget: reactionsByTimeTitle,
+  UsersWidget: usersTitle,
   IframeMultiloc: iframeMultilocTitle,
 };
 
@@ -94,6 +97,7 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'VisitorsTrafficSourcesWidget',
   'VisitorsWidget',
   'SurveyQuestionResultWidget',
+  'UsersWidget',
   'IframeMultiloc',
 ] satisfies WidgetName[]);
 

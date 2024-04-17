@@ -42,4 +42,8 @@ export default defineMessages({
     defaultMessage:
       'There is no data available for the filters you have selected.',
   },
+  users: {
+    id: 'app.containers.admin.ReportBuilder.charts.users',
+    defaultMessage: 'Users',
+  },
 });

@@ -42,6 +42,7 @@ import CommentsByTimeWidget from '../Widgets/ChartWidgets/CommentsByTimeWidget';
 import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
 import PostsByTimeWidget from '../Widgets/ChartWidgets/PostsByTimeWidget';
 import ReactionsByTimeWidget from '../Widgets/ChartWidgets/ReactionsByTimeWidget';
+import UsersWidget from '../Widgets/ChartWidgets/UsersWidget';
 import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
 import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
 import IframeMultiloc from '../Widgets/IframeMultiloc';
@@ -271,6 +272,19 @@ const ReportBuilderToolbox = ({
               }
               icon="chart-bar"
               label={formatMessage(WIDGET_TITLES.VisitorsTrafficSourcesWidget)}
+            />
+            <DraggableElement
+              id="e2e-draggable-users-widget"
+              component={
+                <UsersWidget
+                  title={toMultiloc(WIDGET_TITLES.UsersWidget)}
+                  projectId={selectedProjectId}
+                  startAt={undefined}
+                  endAt={chartEndDate}
+                />
+              }
+              icon="chart-bar"
+              label={formatMessage(WIDGET_TITLES.UsersWidget)}
             />
             <DraggableElement
               id="e2e-draggable-users-by-gender-widget"
