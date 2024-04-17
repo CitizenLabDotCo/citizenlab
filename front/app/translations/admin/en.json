@@ -2343,6 +2343,7 @@
   "app.containers.admin.ReportBuilder.charts.analyticsChartTitle": "Title",
   "app.containers.admin.ReportBuilder.charts.noData": "There is no data available for the filters you have selected.",
   "app.containers.admin.ReportBuilder.charts.trafficSources": "Traffic sources",
+  "app.containers.admin.ReportBuilder.charts.users": "Users",
   "app.containers.admin.ReportBuilder.charts.usersByAge": "Users by age",
   "app.containers.admin.ReportBuilder.charts.usersByGender": "Users by gender",
   "app.containers.admin.ReportBuilder.charts.visitorTimeline": "Visitor timeline",
