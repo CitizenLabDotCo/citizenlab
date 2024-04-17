@@ -1020,30 +1020,6 @@
         }
       },
 
-      "ideaflow_social_sharing": {
-        "type": "object",
-        "title": "Share Ideas on Social Media",
-        "description":  "After posting an idea, users receive a pop-up to share their idea on social media.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "initiativeflow_social_sharing": {
-        "type": "object",
-        "title": "Share Proposals on Social Media",
-        "description": "After posting a proposal, users receive a pop-up to share their proposal on social media.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
       "widgets": {
         "type": "object",
         "title": "Widgets",
@@ -1114,18 +1090,6 @@
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
-      "idea_custom_copy": {
-        "type": "object",
-        "title": "Idea Custom Copy",
-        "description": "Allows the changing of the word `idea` as the default term of input.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false}
         }
       },

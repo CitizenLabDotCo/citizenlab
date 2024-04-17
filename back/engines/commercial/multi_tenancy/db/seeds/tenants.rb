@@ -165,23 +165,11 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            idea_custom_copy: {
-              enabled: true,
-              allowed: true
-            },
             widgets: {
               enabled: true,
               allowed: true
             },
             admin_project_templates: {
-              enabled: true,
-              allowed: true
-            },
-            ideaflow_social_sharing: {
-              enabled: true,
-              allowed: true
-            },
-            initiativeflow_social_sharing: {
               enabled: true,
               allowed: true
             },

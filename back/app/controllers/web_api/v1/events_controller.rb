@@ -34,6 +34,19 @@ class WebApi::V1::EventsController < ApplicationController
     )
   end
 
+  # GET events/:event_id/attendees_xlsx
+  def attendees_xlsx
+    event = Event.find(params[:id])
+    authorize(event)
+
+    attendees = User.where(id: event.attendances.pluck(:attendee_id))
+
+    I18n.with_locale(current_user&.locale) do
+      xlsx = XlsxService.new.generate_attendees_xlsx attendees, view_private_attributes: true
+      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'attendees.xlsx'
+    end
+  end
+
   def show
     respond_to do |format|
       format.json do
