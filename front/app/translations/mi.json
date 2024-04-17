@@ -8,7 +8,6 @@
   "app.ccomponents.InitiativeCards.noInitiativesForFilter": "No proposals found",
   "app.components.AssignBudgetControl.a11y_price": "Price:",
   "app.components.AssignBudgetControl.add": "Add",
-  "app.components.Author.a11y_postedBy": "Posted by:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} participants",
   "app.components.CityLogoSection.iframeTitle": "More information about {orgName}",
   "app.components.Comments.cancel": "Cancel",

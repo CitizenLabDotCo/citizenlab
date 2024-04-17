@@ -45,7 +45,6 @@
   "app.components.AuthProviders.signUpButtonAltText": "Registreu-vos amb {loginMechanismName}",
   "app.components.AuthProviders.signUpWithEmail": "Registreu-vos amb correu electrònic",
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Registreu-vos amb telèfon o correu electrònic",
-  "app.components.Author.a11y_postedBy": "Publicat per:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} participants",
   "app.components.CityLogoSection.iframeTitle": "Més informació sobre {orgName}",
   "app.components.Comments.cancel": "Cancel·lar",

@@ -38,7 +38,6 @@
   "app.components.AuthProviders.signUpButtonAltText": "{loginMechanismName} atorlugu nalunaarit",
   "app.components.AuthProviders.signUpWithEmail": "Sign up with Email",
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Sign up with Phone or Email",
-  "app.components.Author.a11y_postedBy": "Nassiunneqarpoq:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} atuisut\n",
   "app.components.CityLogoSection.iframeTitle": "{orgName} pillugu paasissutissat amerlanerit",
   "app.components.Comments.cancel": "Atorunnaarsiguk",

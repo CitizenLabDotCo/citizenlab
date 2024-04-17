@@ -45,7 +45,6 @@
   "app.components.AuthProviders.signUpButtonAltText": "Tilmeld dig med {loginMechanismName}",
   "app.components.AuthProviders.signUpWithEmail": "Registrer dig med Email",
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Tilmeld dig med telefon eller e-mail",
-  "app.components.Author.a11y_postedBy": "Sendt af:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} brugere\n",
   "app.components.CityLogoSection.iframeTitle": "Flere oplysninger om {orgName}",
   "app.components.Comments.cancel": "Annuller",

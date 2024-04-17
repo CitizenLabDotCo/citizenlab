@@ -45,7 +45,6 @@
   "app.components.AuthProviders.signUpButtonAltText": "Registrer deg med {loginMechanismName}",
   "app.components.AuthProviders.signUpWithEmail": "Registrer med e-post",
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Registrer deg med telefon eller e-post",
-  "app.components.Author.a11y_postedBy": "Publisert av:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} brukere",
   "app.components.CityLogoSection.iframeTitle": "Mer informasjon om {orgName}",
   "app.components.Comments.cancel": "Avbryt",

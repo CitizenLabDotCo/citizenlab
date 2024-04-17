@@ -45,7 +45,6 @@
   "app.components.AuthProviders.signUpButtonAltText": "Reģistrēties, izmantojot {loginMechanismName}",
   "app.components.AuthProviders.signUpWithEmail": "Reģistrēties, izmantojot e-pastu",
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Reģistrējieties, izmantojot tālruni vai e-pastu",
-  "app.components.Author.a11y_postedBy": "Publicēja:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} dalībnieki",
   "app.components.CityLogoSection.iframeTitle": "Vairāk informācijas par {orgName}",
   "app.components.Comments.cancel": "Atcelt",

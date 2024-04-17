@@ -45,7 +45,6 @@
   "app.components.AuthProviders.signUpButtonAltText": "Registrujte se sa {loginMechanismName}",
   "app.components.AuthProviders.signUpWithEmail": "Registrujte se putem Emaila",
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Registruj se telefonom ili e-poštom",
-  "app.components.Author.a11y_postedBy": "Autor objave:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} učesnika",
   "app.components.CityLogoSection.iframeTitle": "Više informacija o {orgName}",
   "app.components.Comments.cancel": "Prekid",

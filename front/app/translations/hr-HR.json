@@ -45,7 +45,6 @@
   "app.components.AuthProviders.signUpButtonAltText": "Registrirajte se pomoću {loginMechanismName}",
   "app.components.AuthProviders.signUpWithEmail": "Registrirajte se putem e-pošte",
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Registracija putem telefona ili e-pošte",
-  "app.components.Author.a11y_postedBy": "Autor objave:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} sudionika",
   "app.components.CityLogoSection.iframeTitle": "Više informacija o {orgName}",
   "app.components.Comments.cancel": "Odustani",

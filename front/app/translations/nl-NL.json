@@ -45,7 +45,6 @@
   "app.components.AuthProviders.signUpButtonAltText": "Registreer met {loginMechanismName}",
   "app.components.AuthProviders.signUpWithEmail": "Registreren met e-mail",
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Registreren met telefoon of e-mail",
-  "app.components.Author.a11y_postedBy": "Geplaatst door:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} gebruikers",
   "app.components.CityLogoSection.iframeTitle": "Meer informatie over {orgName}",
   "app.components.Comments.cancel": "Annuleer",

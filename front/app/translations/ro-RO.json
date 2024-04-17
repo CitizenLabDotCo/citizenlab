@@ -23,7 +23,6 @@
   "app.components.AuthProviders.signUpButtonAltText": "Înregistrează-te cu {loginMechanismName}",
   "app.components.AuthProviders.signUpWithEmail": "Înscrie-te cu e-mailul",
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Înscrieți-vă cu telefonul sau e-mailul",
-  "app.components.Author.a11y_postedBy": "Postat de:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} utilizatori",
   "app.components.CityLogoSection.iframeTitle": "Mai multe informații despre {orgName}",
   "app.components.Comments.cancel": "Anulare",

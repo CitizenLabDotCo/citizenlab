@@ -45,7 +45,6 @@
   "app.components.AuthProviders.signUpButtonAltText": "{loginMechanismName} ile kaydolun",
   "app.components.AuthProviders.signUpWithEmail": "E-posta ile kaydolun",
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Telefon veya E-posta ile kaydolun",
-  "app.components.Author.a11y_postedBy": "Yayınlayan:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} katılımcı",
   "app.components.CityLogoSection.iframeTitle": "{orgName} hakkında daha fazla bilgi",
   "app.components.Comments.cancel": "İptal",

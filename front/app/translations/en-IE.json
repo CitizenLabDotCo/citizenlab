@@ -45,7 +45,6 @@
   "app.components.AuthProviders.signUpButtonAltText": "Sign up with {loginMechanismName}",
   "app.components.AuthProviders.signUpWithEmail": "Sign up with Email",
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Sign up with Phone or Email",
-  "app.components.Author.a11y_postedBy": "Posted by:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} participants",
   "app.components.CityLogoSection.iframeTitle": "More information about {orgName}",
   "app.components.Comments.cancel": "Cancel",

@@ -45,7 +45,6 @@
   "app.components.AuthProviders.signUpButtonAltText": "Registrate con {loginMechanismName}",
   "app.components.AuthProviders.signUpWithEmail": "Ingresa con el correo electrónico",
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Regístrate con el télefono o con el correo electrónico",
-  "app.components.Author.a11y_postedBy": "Publicado por:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} usuarios",
   "app.components.CityLogoSection.iframeTitle": "Más información sobre {orgName}",
   "app.components.Comments.cancel": "Cancelar",

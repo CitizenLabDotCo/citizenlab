@@ -45,7 +45,6 @@
   "app.components.AuthProviders.signUpButtonAltText": "Пријавите се са {loginMechanismName}",
   "app.components.AuthProviders.signUpWithEmail": "Пријавите се путем е-поште",
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Пријавите се путем телефона или е-поште",
-  "app.components.Author.a11y_postedBy": "Поставио:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} учесника",
   "app.components.CityLogoSection.iframeTitle": "Више информација о {orgName}",
   "app.components.Comments.cancel": "Поништити, отказати",

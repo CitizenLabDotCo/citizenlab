@@ -45,7 +45,6 @@
   "app.components.AuthProviders.signUpButtonAltText": "Rekisteröidy numerolla {loginMechanismName}",
   "app.components.AuthProviders.signUpWithEmail": "Rekisteröidy sähköpostilla",
   "app.components.AuthProviders.signUpWithPhoneOrEmail": "Ilmoittaudu puhelimella tai sähköpostilla",
-  "app.components.Author.a11y_postedBy": "Lähettänyt:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} osallistujia",
   "app.components.CityLogoSection.iframeTitle": "Lisätietoja {orgName}",
   "app.components.Comments.cancel": "Peruuttaa",
