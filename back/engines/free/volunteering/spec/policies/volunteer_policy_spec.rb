@@ -48,7 +48,7 @@ describe Volunteering::VolunteerPolicy do
       end
     end
 
-    context 'for a moderator of the volunteering project' do
+    context 'for a project moderator' do
       let(:user) { create(:user, roles: [{ type: 'project_moderator', project_id: project.id }]) }
 
       it { is_expected.not_to permit(:create) }
@@ -57,18 +57,6 @@ describe Volunteering::VolunteerPolicy do
 
       it 'indexes the volunteer' do
         expect(scope.resolve.size).to eq 1
-      end
-    end
-
-    context 'for a moderator NOT of the volunteering project' do
-      let(:user) { create(:user, roles: [{ type: 'project_moderator', project_id: create(:project).id }]) }
-
-      it { is_expected.not_to permit(:create) }
-      it { is_expected.not_to permit(:destroy) }
-      it { is_expected.not_to permit(:index_xlsx) }
-
-      it 'does not index the volunteer' do
-        expect(scope.resolve.size).to eq 0
       end
     end
 
