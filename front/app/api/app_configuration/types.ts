@@ -169,8 +169,6 @@ export interface IAppConfigurationSettings {
   project_folders?: AppConfigurationFeature;
   bulk_import_ideas?: AppConfigurationFeature;
   granular_permissions?: AppConfigurationFeature;
-  ideaflow_social_sharing?: AppConfigurationFeature;
-  initiativeflow_social_sharing?: AppConfigurationFeature;
   machine_translations?: AppConfigurationFeature;
   polls?: AppConfigurationFeature;
   moderation?: AppConfigurationFeature;
