@@ -251,8 +251,8 @@ const CLSurveyPageLayout = memo(
         <Box
           width="100%"
           height="100%"
-          pt={isSmallerThanPhone ? '80px' : '100px'}
-          pb="100px"
+          pt="82px"
+          pb="72px"
           maxWidth="700px"
           display="flex"
           flexDirection="column"
