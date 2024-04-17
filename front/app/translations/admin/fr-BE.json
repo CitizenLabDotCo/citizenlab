@@ -781,7 +781,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formHasPersonalData": "Le formulaire téléchargé a été créé avec la section \"Données personnelles\"",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "Langue du formulaire",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.googleConsent2": "Je consens au traitement de ce fichier à l'aide de Google Cloud Form Parser",
-  "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "ici",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.pleaseUploadFile": "Veuillez télécharger un fichier pour continuer",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.upload": "Télécharger",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.AuthorInput.addANewUser": "Ajouter un nouvel utilisateur",

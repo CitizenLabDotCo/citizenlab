@@ -781,7 +781,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formHasPersonalData": "Отпремљени образац је креиран са одељком „Лични подаци“.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "Језик форме",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.googleConsent2": "Овим се слажем са обрадом ове датотеке користећи Гоогле Цлоуд Форм Парсер",
-  "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "овде",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.pleaseUploadFile": "Отпремите датотеку да бисте наставили",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.upload": "Отпремити",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.AuthorInput.addANewUser": "Додајте новог корисника",

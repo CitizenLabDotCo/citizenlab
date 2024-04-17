@@ -781,7 +781,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formHasPersonalData": "تم إنشاء النموذج الذي تم تحميله باستخدام قسم \"البيانات الشخصية\".",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "لغة النموذج",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.googleConsent2": "أوافق بموجب هذا على معالجة هذا الملف باستخدام Google Cloud Form Parser",
-  "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "هنا",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.pleaseUploadFile": "يرجى تحميل ملف للمتابعة",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.upload": "رفع",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.AuthorInput.addANewUser": "إضافة مستخدم جديد",

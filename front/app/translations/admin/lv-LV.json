@@ -781,7 +781,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formHasPersonalData": "Augšupielādētā veidlapa tika izveidota ar sadaļu \"Personas dati\".",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "Veidlapu valoda",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.googleConsent2": "Ar šo es piekrītu šī faila apstrādei, izmantojot Google mākoņveidlapu parseri.",
-  "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "šeit",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.pleaseUploadFile": "Lūdzu, augšupielādējiet failu, lai turpinātu",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.upload": "Augšupielādēt",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.AuthorInput.addANewUser": "Pievienot jaunu lietotāju",

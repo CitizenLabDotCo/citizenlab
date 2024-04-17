@@ -781,7 +781,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formHasPersonalData": "The uploaded form was created with the \"Personal data\" section",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "Form language",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.googleConsent2": "I hereby consent to processing this file using the Google Cloud Form Parser",
-  "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "here",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.pleaseUploadFile": "Please upload a file to continue",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.upload": "Upload",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.AuthorInput.addANewUser": "Add a new user",

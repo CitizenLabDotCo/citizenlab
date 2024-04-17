@@ -781,7 +781,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formHasPersonalData": "Yüklenen form \"Kişisel veriler\" bölümü ile oluşturuldu",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "Form dili",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.googleConsent2": "Bu dosyanın Google Cloud Form Parser kullanılarak işlenmesine izin veriyorum",
-  "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "Burada",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.pleaseUploadFile": "Devam etmek için lütfen bir dosya yükleyin",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.upload": "Yükle",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.AuthorInput.addANewUser": "Yeni bir kullanıcı ekleme",

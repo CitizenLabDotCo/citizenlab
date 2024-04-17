@@ -781,7 +781,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formHasPersonalData": "Przesłany formularz został utworzony z sekcją \"Dane osobowe\"",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "Język formularza",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.googleConsent2": "Niniejszym wyrażam zgodę na przetwarzanie tego pliku przy użyciu Google Cloud Form Parser",
-  "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "tutaj",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.pleaseUploadFile": "Prześlij plik, aby kontynuować",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.upload": "Prześlij",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.AuthorInput.addANewUser": "Dodaj nowego użytkownika",

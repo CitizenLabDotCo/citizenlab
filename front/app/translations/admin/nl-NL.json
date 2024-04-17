@@ -781,7 +781,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formHasPersonalData": "Het geüploade formulier is gemaakt met het gedeelte \"Persoonlijke gegevens",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "Taal van het formulier",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.googleConsent2": "Hierbij geef ik toestemming om dit bestand te verwerken met de Google Cloud Form Parser",
-  "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "hier",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.pleaseUploadFile": "Upload een bestand om verder te gaan",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.upload": "Uploaden",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.AuthorInput.addANewUser": "Voeg een nieuwe gebruiker toe",

@@ -781,7 +781,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formHasPersonalData": "Učitani obrazac je kreiran sa odjeljkom \"Osobni podaci\".",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "Jezik obrasca",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.googleConsent2": "Ovime pristajem na obradu ove datoteke pomoću Google Cloud Form Parsera",
-  "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "ovdje",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.pleaseUploadFile": "Učitajte datoteku za nastavak",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.upload": "Učitaj",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.AuthorInput.addANewUser": "Dodajte novog korisnika",

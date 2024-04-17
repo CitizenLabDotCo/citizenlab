@@ -781,7 +781,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formHasPersonalData": "Ladattu lomake luotiin Henkilötiedot-osiossa",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "Lomakkeen kieli",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.googleConsent2": "Täten suostun käsittelemään tätä tiedostoa Google Cloud Form Parser -sovelluksella",
-  "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "tässä",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.pleaseUploadFile": "Lähetä tiedosto jatkaaksesi",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.upload": "Lataa",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.AuthorInput.addANewUser": "Lisää uusi käyttäjä",

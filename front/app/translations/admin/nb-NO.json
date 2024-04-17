@@ -781,7 +781,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formHasPersonalData": "Det opplastede skjemaet ble opprettet med delen \"Personlige data\".",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "Formspråk",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.googleConsent2": "Jeg samtykker herved til å behandle denne filen ved hjelp av Google Cloud Form Parser",
-  "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "her",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.pleaseUploadFile": "Last opp en fil for å fortsette",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.upload": "Laste opp",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.AuthorInput.addANewUser": "Legg til en ny bruker",

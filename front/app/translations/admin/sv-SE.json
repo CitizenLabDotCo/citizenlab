@@ -781,7 +781,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formHasPersonalData": "Det uppladdade formuläret skapades med avsnittet \"Personuppgifter\"",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "Formulärspråk",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.googleConsent2": "Jag samtycker härmed till att denna fil behandlas med hjälp av Google Cloud Form Parser",
-  "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "här",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.pleaseUploadFile": "Ladda upp en fil för att fortsätta",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.upload": "Uppladdning",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.AuthorInput.addANewUser": "Lägg till en ny användare",

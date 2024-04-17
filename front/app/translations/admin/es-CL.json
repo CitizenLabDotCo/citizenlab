@@ -781,7 +781,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formHasPersonalData": "El formulario subido se creó con la sección \"Datos personales\".",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "Lengua de formulario",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.googleConsent2": "Doy mi consentimiento para que se procese este archivo utilizando el analizador de formularios de Google Cloud",
-  "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "aquí",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.pleaseUploadFile": "Por favor, sube un archivo para continuar",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.upload": "Sube",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.AuthorInput.addANewUser": "Añadir un nuevo usuario",
