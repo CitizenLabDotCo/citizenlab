@@ -114,7 +114,6 @@ const ImportPdfModal = ({ open, onClose }: Props) => {
       onClose();
       methods.reset();
     } catch (e) {
-      console.log(e);
       handleHookFormSubmissionError(e, methods.setError);
     }
   };

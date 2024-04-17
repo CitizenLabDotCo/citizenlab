@@ -29,7 +29,7 @@ module BulkImportIdeas::Parsers
         end
 
         source_file.update!(num_pages: pdf.pages.count)
-        raise BulkImportIdeas::Error.new 'bulk_import_maximum_pdf_pages_exceeded', value: pdf.pages.count if pdf.pages.count > MAX_TOTAL_PAGES
+        raise BulkImportIdeas::Error.new 'bulk_import_maximum_pdf_pages_exceeded', value: MAX_TOTAL_PAGES if pdf.pages.count > MAX_TOTAL_PAGES
 
         return [source_file] if pdf.pages.count <= PAGES_TO_TRIGGER_NEW_PDF # Only need to split if the file is too big
 

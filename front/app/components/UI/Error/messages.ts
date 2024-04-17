@@ -257,10 +257,29 @@ export default defineMessages({
     id: 'app.errors.bulk_import_maximum_pdf_pages_exceeded',
     defaultMessage: 'The maximum of {value} pages in a PDF has been exceeded.',
   },
+  bulk_import_idea_not_valid: {
+    id: 'app.errors.bulk_import_idea_not_valid',
+    defaultMessage: 'The resulting idea is not valid: {value}.',
+  },
   bulk_import_publication_date_invalid_format: {
     id: 'app.errors.bulk_import_publication_date_invalid_format',
     defaultMessage:
-      'Idea with invalid publication date format "{value}". Please use the format "DD-MM-YYYY".',
+      'Idea with invalid publication date format "{value}". This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_location_point_blank_coordinate: {
+    id: 'app.errors.bulk_import_location_point_blank_coordinate',
+    defaultMessage:
+      'Idea location with a missing coordinate in {value}. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_location_point_non_numeric_coordinate: {
+    id: 'app.errors.bulk_import_location_point_non_numeric_coordinate',
+    defaultMessage:
+      'Idea location with a non-numeric coordinate in {value}. This issue occurs in the row with ID {row}.',
+  },
+  bulk_import_image_url_not_valid: {
+    id: 'app.errors.bulk_import_image_url_not_valid',
+    defaultMessage:
+      'No image could be downloaded from {value}. Make sure the URL is valid and ends with a file extension such as .png or .jpg. This issue occurs in the row with ID {row}.',
   },
   banner_cta_signed_in_text_multiloc_blank: {
     id: 'app.errors.banner_cta_signed_in_text_multiloc_blank',

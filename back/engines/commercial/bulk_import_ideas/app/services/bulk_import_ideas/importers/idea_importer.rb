@@ -35,7 +35,7 @@ module BulkImportIdeas::Importers
       user_created = add_author idea_row, idea_attributes
 
       idea = Idea.new idea_attributes
-      raise Error.new 'bulk_import_ideas_idea_not_valid', value: idea.errors.messages unless idea.valid?
+      raise BulkImportIdeas::Error.new 'bulk_import_idea_not_valid', value: idea.errors.messages unless idea.valid?
 
       idea.save!
 
@@ -56,8 +56,6 @@ module BulkImportIdeas::Importers
     end
 
     def add_project(idea_row, idea_attributes)
-      raise Error.new 'bulk_import_ideas_blank_project', row: idea_row[:id] if idea_row[:project_title].blank? && idea_row[:project_id].blank?
-
       if idea_row[:project_id]
         project = Project.find(idea_row[:project_id])
       else
@@ -136,14 +134,14 @@ module BulkImportIdeas::Importers
       return if idea_row[:latitude].blank? && idea_row[:longitude].blank?
 
       if idea_row[:latitude].blank? || idea_row[:longitude].blank?
-        raise Error.new 'bulk_import_ideas_location_point_blank_coordinate', value: "(#{idea_row[:latitude]}, #{idea_row[:longitude]})", row: idea_row[:id]
+        raise BulkImportIdeas::Error.new 'bulk_import_location_point_blank_coordinate', value: "(#{idea_row[:latitude]}, #{idea_row[:longitude]})", row: idea_row[:id]
       end
 
       begin
         lat = Float idea_row[:latitude]
         lon = Float idea_row[:longitude]
       rescue ArgumentError => _e
-        raise Error.new 'bulk_import_ideas_location_point_non_numeric_coordinate', value: "(#{idea_row[:latitude]}, #{idea_row[:longitude]})", row: idea_row[:id]
+        raise BulkImportIdeas::Error.new 'bulk_import_location_point_non_numeric_coordinate', value: "(#{idea_row[:latitude]}, #{idea_row[:longitude]})", row: idea_row[:id]
       end
 
       location_point = {
@@ -154,28 +152,11 @@ module BulkImportIdeas::Importers
     end
 
     def add_phase(idea_row, idea_attributes)
-      if idea_row[:phase_id]
-        phase = Phase.find(idea_row[:phase_id])
-        participation_method = Factory.instance.participation_method_for phase
-        idea_attributes[:creation_phase_id] = phase.id if participation_method.supports_survey_form?
-      else
-        return if idea_row[:phase_rank].blank?
+      return unless idea_row[:phase_id]
 
-        begin
-          phase_rank = Integer idea_row[:phase_rank]
-        rescue ArgumentError => _e
-          raise Error.new 'bulk_import_ideas_non_numeric_phase_rank', value: idea_row[:phase_rank], row: idea_row[:id]
-        end
-
-        project_phases = Phase.where(project: idea_attributes[:project])
-        if phase_rank > project_phases.size
-          raise Error.new 'bulk_import_ideas_maximum_phase_rank_exceeded', value: phase_rank, row: idea_row[:id]
-        end
-
-        phase = project_phases.order(:start_at).all[phase_rank - 1]
-        raise Error.new 'bulk_import_ideas_project_phase_not_found', value: phase_rank, row: idea_row[:id] unless phase
-      end
-
+      phase = Phase.find(idea_row[:phase_id])
+      participation_method = Factory.instance.participation_method_for phase
+      idea_attributes[:creation_phase_id] = phase.id if participation_method.supports_survey_form?
       idea_attributes[:phases] = [phase]
     end
 
@@ -205,7 +186,7 @@ module BulkImportIdeas::Importers
       begin
         IdeaImage.create!(remote_image_url: idea_row[:image_url], idea: idea)
       rescue StandardError => _e
-        raise Error.new 'bulk_import_ideas_image_url_not_valid', value: idea_row[:image_url], row: idea_row[:id]
+        raise BulkImportIdeas::Error.new 'bulk_import_image_url_not_valid', value: idea_row[:image_url], row: idea_row[:id]
       end
     end
 

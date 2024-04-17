@@ -19,6 +19,7 @@ import { IInviteError } from 'api/invites/types';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 import messages from './messages';
+import { IAppConfiguration } from 'api/app_configuration/types';
 
 const timeout = 350;
 
@@ -197,6 +198,27 @@ export const findErrorMessage = (
   return '';
 };
 
+// Get the variables to use inside API error messages
+export const getApiErrorValues = (
+  error: CLError | IInviteError,
+  appConfiguration?: IAppConfiguration
+) => {
+  const payload = error.payload ?? null;
+  const supportEmail =
+    (error as any)?.inviter_email ??
+    appConfiguration?.data.attributes.settings.core.reply_to_email;
+
+  let values = {
+    row: error.row ?? '',
+    rows: error.rows?.join(', ') ?? '',
+    value: error.value ?? '',
+    supportEmail: supportEmail ?? '',
+    ideasCount: (error as CLError).ideas_count ?? '',
+  };
+
+  return payload ? { ...payload, ...values } : values;
+};
+
 const Error = (props: Props) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { data: appConfiguration } = useAppConfiguration();
@@ -281,29 +303,12 @@ const Error = (props: Props) => {
 
                       if (errorMessage) {
                         // Variables for inside messages.js
-                        const payload = error?.payload ?? null;
-                        const value = error?.value ?? null;
-                        const row = error?.row ?? null;
-                        const rows = error?.rows ?? null;
-                        const supportEmail =
-                          (error as any)?.inviter_email ??
-                          appConfiguration.data.attributes.settings.core
-                            .reply_to_email;
+                        const values = getApiErrorValues(
+                          error,
+                          appConfiguration
+                        );
 
-                        let values = {
-                          row: <strong>{row}</strong>,
-                          rows: rows ? (
-                            <strong>{rows.join(', ')}</strong>
-                          ) : null,
-                          // eslint-disable-next-line react/no-unescaped-entities
-                          value: <strong>{value}</strong>,
-                          supportEmail: <strong>{supportEmail}</strong>,
-                          ideasCount: (error as CLError).ideas_count,
-                        };
-
-                        values = payload ? { ...payload, ...values } : values;
-
-                        if (value || row || rows) {
+                        if (values.value || values.row || values.rows) {
                           return (
                             <ErrorListItem key={index}>
                               {dedupApiErrors.length > 1 && (
