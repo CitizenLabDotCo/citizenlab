@@ -362,10 +362,6 @@ module MultiTenancy
                 }
               ]
             },
-            volunteering: {
-              enabled: true,
-              allowed: true
-            },
             project_folders: {
               enabled: true,
               allowed: true
