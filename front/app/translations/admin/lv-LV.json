@@ -2517,7 +2517,6 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText": "Platformas lietotājs par to ziņoja kā par nepiemērotu.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "Satura brīdinājumi",
   "app.modules.commercial.report_builder.admin.components.TopBar.reportBuilder": "Ziņojuma veidotājs",
-  "app.modules.idea_assignment.admin.components.permissionsTab": "Piekļuves tiesības",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Navigācijas joslā redzamās lapas",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Izveidot pielāgotu lapu",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Vai esat pārliecināts, ka vēlaties dzēst šo lapu? Šo darbību nevar atsaukt. Jūs varat arī izņemt lapu no navigācijas joslas, ja vēl neesat gatavs to izdzēst.",

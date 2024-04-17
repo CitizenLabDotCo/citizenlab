@@ -2517,7 +2517,6 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText": "Zgłoszone jako nieodpowiednie przez użytkownika platformy.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "Ostrzeżenia dotyczące treści",
   "app.modules.commercial.report_builder.admin.components.TopBar.reportBuilder": "Kreator raportu",
-  "app.modules.idea_assignment.admin.components.permissionsTab": "Uprawnienia",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Strony wyświetlane na pasku nawigacyjnym",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Utwórz własną stronę",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Czy na pewno chcesz usunąć tę stronę? Nie można tego cofnąć. Możesz również usunąć stronę z paska nawigacyjnego, jeśli nie jesteś jeszcze gotowy, aby ją usunąć.",

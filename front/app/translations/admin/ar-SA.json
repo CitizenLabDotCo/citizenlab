@@ -2517,7 +2517,6 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText": "تم الإبلاغ عنه كغير لائق من أحد مستخدمي المنصة.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "تحذيرات المحتوى",
   "app.modules.commercial.report_builder.admin.components.TopBar.reportBuilder": "أداة إنشاء التقرير",
-  "app.modules.idea_assignment.admin.components.permissionsTab": "حقوق الوصول",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "صفحات معروضة في شريط التنقل",
   "app.modules.navbar.admin.containers.createCustomPageButton": "إنشاء صفحة مخصصة",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "هل تريد بالتأكيد حذف هذه الصفحة؟ لا يمكن التراجع عن هذا الإجراء. يمكنك أيضًا إزالة الصفحة من شريط التنقل إذا لم تكن قد حذفتها حتى الآن.",

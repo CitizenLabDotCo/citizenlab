@@ -1501,7 +1501,6 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText": "Reported as inappropriate by a platform user.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "Content Warnings",
   "app.modules.commercial.report_builder.admin.components.TopBar.reportBuilder": "Report builder",
-  "app.modules.idea_assignment.admin.components.permissionsTab": "Access rights",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Säiten, déi op Ärer Navigatiounsleescht ugewise ginn",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Create custom page",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Sidd Dir sécher, datt Dir dës Säit läsche wëllt? Dëst kann net réckgängeg gemaach ginn. Dir kënnt d’Säit och vun der Navigatiounsleescht ewechhuelen, wann Dir net prett sidd, se ze läschen.",

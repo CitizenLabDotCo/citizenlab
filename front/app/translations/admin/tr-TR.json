@@ -2517,7 +2517,6 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText": "Bir platform kullanıcısı tarafından uygunsuz olduğu bildirildi.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "İçerik Uyarıları",
   "app.modules.commercial.report_builder.admin.components.TopBar.reportBuilder": "Rapor oluşturucu",
-  "app.modules.idea_assignment.admin.components.permissionsTab": "Erişim hakları",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Gezinme çubuğunuzda gösterilen sayfalar",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Özel sayfa oluşturma",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Bu sayfayı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz. Henüz sayfayı silmeye hazır değilseniz gezinme çubuğundan da silebilirsiniz.",

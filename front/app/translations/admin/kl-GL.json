@@ -1501,7 +1501,6 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText": "Atuisumit naapertuutinngitsut nalunaarutigineqarpoq.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "Imarisat pillugit mianersoqqussut",
   "app.modules.commercial.report_builder.admin.components.TopBar.reportBuilder": "Report builder",
-  "app.modules.idea_assignment.admin.components.permissionsTab": "Access rights",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Quppernerit illit iserfigisinnaasanni takusinnaasatit",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Create custom page",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Ilumut qupperneq una peerniarpiuk? Uterteqqissinnaanavianngilaq. Peernissaanut piareersimanngikkuit qupperneq navigationslinjemiit peersinnaavat.",

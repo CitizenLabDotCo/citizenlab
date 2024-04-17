@@ -940,7 +940,6 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.removeWarning": "Remove {numberOfItems, plural, one {content warning} other {# content warnings}}",
   "app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText": "Reported as inappropriate by a platform user.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "Content Warnings",
-  "app.modules.idea_assignment.admin.components.permissionsTab": "Access rights",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Pages shown on your navigation bar",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Are you sure you want to delete this page? This cannot be undone. You can also remove the page from the navigation bar if you aren’t ready to delete it yet.",
   "app.modules.navbar.admin.containers.pageSubtitle": "Your navigation bar can display up to five pages in addition to the Home and projects pages. You can rename menu items, re-order and add new pages  with your own content.",
