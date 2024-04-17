@@ -26,7 +26,7 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def index_xlsx?
-    active? && (admin? || user&.project_moderator?)
+    active_moderator?
   end
 
   def index_mini?
@@ -81,6 +81,12 @@ class IdeaPolicy < ApplicationPolicy
 
   def owner?
     record.author_id == user.id
+  end
+
+  def active_moderator?
+    return false unless active?
+
+    UserRoleService.new.can_moderate_project? record.project, user
   end
 end
 
