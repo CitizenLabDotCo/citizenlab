@@ -1,4 +1,4 @@
-import { CornerRadius } from 'components/admin/Graphs/typings';
+import { CornerRadius } from '../typings';
 
 export const getCornerRadius =
   (stackLength: number, cornerRadius: number) =>

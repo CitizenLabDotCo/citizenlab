@@ -8,8 +8,17 @@ import { ChartWidgetProps } from '../typings';
 
 import Chart from './Chart';
 import Settings from './Settings';
+import { Data } from './typings';
 
-const FAKE_DATA = [];
+const FAKE_DATA: Data = [
+  {
+    northeast_quarter: 25,
+    northwest_quarter: 17,
+    city_center: 32,
+    southeast_quarter: 24,
+    other: 2,
+  },
+];
 
 const UsersWidget = ({ title }: ChartWidgetProps) => {
   // TODO add real data
@@ -17,7 +26,7 @@ const UsersWidget = ({ title }: ChartWidgetProps) => {
 
   return (
     <Card title={title} pagebreak>
-      <Box width="100%" height="220px" mt="20px" pb="10px">
+      <Box width="100%" height="120px" mt="20px" pb="10px">
         <Chart data={data} />
       </Box>
     </Card>
