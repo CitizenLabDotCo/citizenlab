@@ -67,7 +67,7 @@ describe IdeaCommentPolicy do
       it { is_expected.to     permit(:create)  }
       it { is_expected.to     permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
-      it { is_expected.to permit(:index_xlsx)   }
+      it { is_expected.to permit(:index_xlsx)  }
 
       it 'indexes the comment' do
         expect(scope.resolve.size).to eq 1

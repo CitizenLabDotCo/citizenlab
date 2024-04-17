@@ -72,8 +72,6 @@ class WebApi::V1::IdeasController < ApplicationController
     ).find_records
     ideas = SortByParamsService.new.sort_ideas(ideas, params, current_user)
 
-    # pp ideas
-
     I18n.with_locale(current_user&.locale) do
       xlsx = XlsxService.new.generate_ideas_xlsx ideas, view_private_attributes: true
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
