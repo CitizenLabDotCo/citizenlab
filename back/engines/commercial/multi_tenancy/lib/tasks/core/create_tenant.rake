@@ -353,6 +353,10 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
         report_data_grouping: {
           enabled: true,
           allowed: true
+        },
+        multi_language_platform: {
+          enabled: true,
+          allowed: true
         }
       }
     )
