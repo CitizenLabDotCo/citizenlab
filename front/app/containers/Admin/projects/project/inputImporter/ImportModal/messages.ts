@@ -1,19 +1,36 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  inputImporter: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.inputImporter',
-    defaultMessage: 'Input importer',
+  importExcelFileTitle: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.importExcelFileTitle',
+    defaultMessage: 'Import Excel file',
   },
-  uploadAPdfExcelFile: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadAPdfExcelFile',
+  importPDFFileTitle: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle',
+    defaultMessage: 'Import scanned forms',
+  },
+  uploadPdfFile: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadPdfFile1',
     defaultMessage:
-      'Upload a <b>PDF file of scanned forms</b> or a completed <b>Excel file</b>. The PDF must use a form printed from this project. ' +
-      'The Excel file must use the template provided for this project. These can be downloaded {hereLink}.',
+      'Upload a <b>PDF file of scanned forms</b>. It must use a form printed from this phase. {hereLink}',
   },
-  here: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.here',
-    defaultMessage: 'here',
+  formCanBeDownloadedHere: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.formCanBeDownloadedHere',
+    defaultMessage: 'The form can be downloaded here.',
+  },
+  disabledPDFImportTooltip: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.disabledPDFImportTooltip',
+    defaultMessage:
+      'Importing PDF files of scanned forms is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.',
+  },
+  uploadExcelFile: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadExcelFile',
+    defaultMessage:
+      'Upload a completed <b>Excel file</b> (.xlsx). It must use the template provided for this project. {hereLink}',
+  },
+  templateCanBeDownloadedHere: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.templateCanBeDownloadedHere',
+    defaultMessage: 'The template can be downloaded here.',
   },
   formLanguage: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage',

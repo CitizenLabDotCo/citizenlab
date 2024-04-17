@@ -76,9 +76,10 @@ interface Props {
   onAdd: (file: UploadFile) => void;
   className?: string;
   id: string;
+  accept?: string;
 }
 
-const SingleFileInput = ({ className, id, onAdd }: Props) => {
+const SingleFileInput = ({ className, id, onAdd, accept }: Props) => {
   const onClick = (event: FormEvent<any>) => {
     // reset the value of the input field
     // so we can upload the same file again after deleting it
@@ -111,6 +112,7 @@ const SingleFileInput = ({ className, id, onAdd }: Props) => {
         type="file"
         tabIndex={0}
         data-testid="fileInput"
+        accept={accept}
       />
       <Label aria-hidden htmlFor={id}>
         <StyledIcon name="upload-file" ariaHidden />

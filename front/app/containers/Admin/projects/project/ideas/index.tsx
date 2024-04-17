@@ -30,8 +30,8 @@ const timelineProjectVisibleFilterMenus: TFilterMenu[] = [
 ];
 
 const AdminProjectIdeas = () => {
-  const importPrintedFormsEnabled = useFeatureFlag({
-    name: 'import_printed_forms',
+  const inputImporterEnabled = useFeatureFlag({
+    name: 'input_importer',
   });
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -57,14 +57,14 @@ const AdminProjectIdeas = () => {
             <FormattedMessage {...messages.titleInputManager} />
           </Title>
           <Box display="flex" gap="8px">
-            {importPrintedFormsEnabled && (
+            {inputImporterEnabled && (
               <Button
                 width="auto"
-                linkTo={`/admin/projects/${projectId}/phases/${phaseId}/offline-inputs`}
+                linkTo={`/admin/projects/${projectId}/phases/${phaseId}/input-importer`}
                 icon="page"
                 buttonStyle="secondary"
               >
-                <FormattedMessage {...ownMessages.addOfflineInputs} />
+                <FormattedMessage {...ownMessages.importInputs} />
               </Button>
             )}
             {phase && (
