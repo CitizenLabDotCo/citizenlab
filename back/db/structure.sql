@@ -1327,7 +1327,6 @@ CREATE TABLE public.users (
     last_name character varying,
     locale character varying,
     bio_multiloc jsonb DEFAULT '{}'::jsonb,
-    cl1_migrated boolean DEFAULT false,
     invite_status character varying,
     custom_field_values jsonb DEFAULT '{}'::jsonb,
     registration_completed_at timestamp without time zone,
@@ -7436,6 +7435,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240229195843'),
 ('20240301120023'),
 ('20240305122502'),
-('20240328141200');
+('20240328141200'),
+('20240417150820');
 
 
