@@ -103,7 +103,7 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
             <Box flexShrink={0} my="auto">
               <Icon
                 my="auto"
-                fill={colors.coolGrey300}
+                fill={theme.colors.tenantPrimary}
                 name="clock"
                 ariaHidden
                 mr={theme.isRtl ? '0px' : '8px'}
@@ -123,7 +123,7 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
               <Box flexShrink={0} my="auto">
                 <Icon
                   my="auto"
-                  fill={colors.coolGrey300}
+                  fill={theme.colors.tenantPrimary}
                   name="position"
                   ariaHidden
                   mr={theme.isRtl ? '0px' : '8px'}
@@ -141,7 +141,7 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
             <Box display="flex" mb="12px">
               <Icon
                 my="auto"
-                fill={colors.coolGrey300}
+                fill={theme.colors.tenantPrimary}
                 name="link"
                 ariaHidden
                 mr="8px"
@@ -172,7 +172,7 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
               <Box flexShrink={0} my="auto">
                 <Icon
                   my="auto"
-                  fill={colors.coolGrey300}
+                  fill={theme.colors.tenantPrimary}
                   name="user"
                   ariaHidden
                   mr={theme.isRtl ? '0px' : '8px'}
