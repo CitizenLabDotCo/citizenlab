@@ -199,52 +199,54 @@ const IdeasEditForm = ({ ideaId }: Props) => {
         <Box p="32px" pb="0">
           <GoBackToIdeaPage idea={idea.data} />
         </Box>
-        <PageContainer id="e2e-idea-edit-page">
-          {schema && uiSchema ? (
-            <Form
-              schema={schema}
-              uiSchema={uiSchema}
-              onSubmit={handleDisclaimer}
-              initialFormData={initialFormData}
-              inputId={idea.data.id}
-              getAjvErrorMessage={getAjvErrorMessage}
-              getApiErrorMessage={getApiErrorMessage}
-              config={'input'}
-              title={
-                <Box
-                  width="100%"
-                  display="flex"
-                  flexDirection="column"
-                  justifyContent="center"
-                  alignItems="center"
-                  pb="40px"
-                >
-                  <FormattedMessage
-                    {...{
-                      idea: messages.formTitle,
-                      option: messages.optionFormTitle,
-                      project: messages.projectFormTitle,
-                      question: messages.questionFormTitle,
-                      issue: messages.issueFormTitle,
-                      contribution: messages.contributionFormTitle,
-                    }[
-                      uiSchema && uiSchema?.options?.inputTerm
-                        ? uiSchema.options.inputTerm
-                        : 'idea'
-                    ]}
-                  />
-                </Box>
-              }
+        <main>
+          <PageContainer id="e2e-idea-edit-page">
+            {schema && uiSchema ? (
+              <Form
+                schema={schema}
+                uiSchema={uiSchema}
+                onSubmit={handleDisclaimer}
+                initialFormData={initialFormData}
+                inputId={idea.data.id}
+                getAjvErrorMessage={getAjvErrorMessage}
+                getApiErrorMessage={getApiErrorMessage}
+                config={'input'}
+                title={
+                  <Box
+                    width="100%"
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    alignItems="center"
+                    pb="40px"
+                  >
+                    <FormattedMessage
+                      {...{
+                        idea: messages.formTitle,
+                        option: messages.optionFormTitle,
+                        project: messages.projectFormTitle,
+                        question: messages.questionFormTitle,
+                        issue: messages.issueFormTitle,
+                        contribution: messages.contributionFormTitle,
+                      }[
+                        uiSchema && uiSchema?.options?.inputTerm
+                          ? uiSchema.options.inputTerm
+                          : 'idea'
+                      ]}
+                    />
+                  </Box>
+                }
+              />
+            ) : inputSchemaError ? null : (
+              <FullPageSpinner />
+            )}
+            <ContentUploadDisclaimer
+              isDisclaimerOpened={isDisclaimerOpened}
+              onAcceptDisclaimer={() => onAcceptDisclaimer(formData)}
+              onCancelDisclaimer={onCancelDisclaimer}
             />
-          ) : inputSchemaError ? null : (
-            <FullPageSpinner />
-          )}
-          <ContentUploadDisclaimer
-            isDisclaimerOpened={isDisclaimerOpened}
-            onAcceptDisclaimer={() => onAcceptDisclaimer(formData)}
-            onCancelDisclaimer={onCancelDisclaimer}
-          />
-        </PageContainer>
+          </PageContainer>
+        </main>
       </Box>
     </>
   );
