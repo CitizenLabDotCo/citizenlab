@@ -1603,7 +1603,6 @@
   "app.containers.AdminPage.ProjectEvents.descriptionLabel": "Opis događaja",
   "app.containers.AdminPage.ProjectEvents.editButtonLabel": "Uredi",
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "Uredi događaj",
-  "app.containers.AdminPage.ProjectEvents.eventAttendanceExportText": "Kako biste vidjeli sudionike događaja, idite na karticu {userTabLink} i izradite pametnu grupu za događaj. {supportArticleLink}.",
   "app.containers.AdminPage.ProjectEvents.eventDates": "Datumi događaja",
   "app.containers.AdminPage.ProjectEvents.eventImage": "Slika događaja",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Mjesto događaja",

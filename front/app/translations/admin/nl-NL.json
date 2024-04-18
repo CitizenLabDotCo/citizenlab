@@ -1603,7 +1603,6 @@
   "app.containers.AdminPage.ProjectEvents.descriptionLabel": "Beschrijving van de activiteit",
   "app.containers.AdminPage.ProjectEvents.editButtonLabel": "Bewerk",
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "Activiteit bewerken",
-  "app.containers.AdminPage.ProjectEvents.eventAttendanceExportText": "Om deelnemers aan een activiteit te zien, ga je naar het tabblad {userTabLink} en maak je een slimme groep voor de activiteit. {supportArticleLink}.",
   "app.containers.AdminPage.ProjectEvents.eventDates": "Data activiteit",
   "app.containers.AdminPage.ProjectEvents.eventImage": "Afbeelding activiteit",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Locatie activiteit",

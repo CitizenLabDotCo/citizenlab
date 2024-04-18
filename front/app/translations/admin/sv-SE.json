@@ -1603,7 +1603,6 @@
   "app.containers.AdminPage.ProjectEvents.descriptionLabel": "Evenemangsbeskrivning",
   "app.containers.AdminPage.ProjectEvents.editButtonLabel": "Redigera",
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "Redigera evenemang",
-  "app.containers.AdminPage.ProjectEvents.eventAttendanceExportText": "För att se deltagarna i evenemanget, gå till fliken {userTabLink} och skapa en smartgrupp för evenemanget. {supportArticleLink}.",
   "app.containers.AdminPage.ProjectEvents.eventDates": "Datum för evenemang",
   "app.containers.AdminPage.ProjectEvents.eventImage": "Bild av evenemang",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Plats för evenemanget",

@@ -1603,7 +1603,6 @@
   "app.containers.AdminPage.ProjectEvents.descriptionLabel": "Description de l'événement",
   "app.containers.AdminPage.ProjectEvents.editButtonLabel": "Modifier",
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "Modifier l’événement",
-  "app.containers.AdminPage.ProjectEvents.eventAttendanceExportText": "Pour obtenir la liste des participants à l'événement, rendez-vous dans l'onglet {userTabLink} et créez un groupe intelligent pour l'événement. {supportArticleLink}.",
   "app.containers.AdminPage.ProjectEvents.eventDates": "Dates de l'événement",
   "app.containers.AdminPage.ProjectEvents.eventImage": "Image de l'événement",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Lieu de l'événement",

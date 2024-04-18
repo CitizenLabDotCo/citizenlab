@@ -1603,7 +1603,6 @@
   "app.containers.AdminPage.ProjectEvents.descriptionLabel": "Opis wydarzenia",
   "app.containers.AdminPage.ProjectEvents.editButtonLabel": "Edycja",
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "Edytuj wydarzenie",
-  "app.containers.AdminPage.ProjectEvents.eventAttendanceExportText": "Aby zobaczyć uczestników wydarzenia, przejdź do zakładki {userTabLink} i utwórz grupę inteligentną dla wydarzenia. {supportArticleLink}.",
   "app.containers.AdminPage.ProjectEvents.eventDates": "Daty wydarzeń",
   "app.containers.AdminPage.ProjectEvents.eventImage": "Obraz zdarzenia",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Miejsce wydarzenia",

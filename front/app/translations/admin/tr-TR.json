@@ -1603,7 +1603,6 @@
   "app.containers.AdminPage.ProjectEvents.descriptionLabel": "Etkinlik açıklaması",
   "app.containers.AdminPage.ProjectEvents.editButtonLabel": "Düzenle",
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "Etkinliği düzenleyin",
-  "app.containers.AdminPage.ProjectEvents.eventAttendanceExportText": "Etkinlik katılımcılarını görmek için {userTabLink} sekmesine gidin ve etkinlik için bir akıllı grup oluşturun. {supportArticleLink}.",
   "app.containers.AdminPage.ProjectEvents.eventDates": "Etkinlik tarihleri",
   "app.containers.AdminPage.ProjectEvents.eventImage": "Etkinlik görüntüsü",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Etkinlik yeri",

@@ -1603,7 +1603,6 @@
   "app.containers.AdminPage.ProjectEvents.descriptionLabel": "Tapahtuman kuvaus",
   "app.containers.AdminPage.ProjectEvents.editButtonLabel": "Muokata",
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "Muokkaa tapahtumaa",
-  "app.containers.AdminPage.ProjectEvents.eventAttendanceExportText": "Nähdäksesi tapahtuman osallistujat, siirry välilehdelle {userTabLink} ja luo tapahtumalle älykäs ryhmä. {supportArticleLink}.",
   "app.containers.AdminPage.ProjectEvents.eventDates": "Tapahtumapäivät",
   "app.containers.AdminPage.ProjectEvents.eventImage": "Tapahtuman kuva",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Tapahtumapaikka",

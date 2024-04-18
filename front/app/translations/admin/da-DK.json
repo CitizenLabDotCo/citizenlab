@@ -1603,7 +1603,6 @@
   "app.containers.AdminPage.ProjectEvents.descriptionLabel": "Beskrivelse af begivenheden",
   "app.containers.AdminPage.ProjectEvents.editButtonLabel": "Rediger",
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "Rediger begivenhed",
-  "app.containers.AdminPage.ProjectEvents.eventAttendanceExportText": "For at se eventdeltagere skal du gå til fanen {userTabLink} og oprette en smartgruppe til eventet. {supportArticleLink}.",
   "app.containers.AdminPage.ProjectEvents.eventDates": "Datoer for begivenheder",
   "app.containers.AdminPage.ProjectEvents.eventImage": "Billede af begivenhed",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Arrangementets placering",
