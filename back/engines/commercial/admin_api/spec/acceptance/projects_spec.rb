@@ -14,15 +14,19 @@ resource 'Project', admin_api: true do
     let!(:project) { create(:project) }
     example_request 'List all projects' do
       expect(status).to eq 200
-      json_response = json_parse(response_body)
-      expect(json_response.size).to eq 1
-      expect(json_response.first).to include(
+      pp json_response_body
+      expect(json_response_body.size).to eq 1
+      expect(json_response_body.first).to include(
         id: project.id,
         title_multiloc: kind_of(Hash),
         description_multiloc: kind_of(Hash),
         slug: 'renew-west-parc-1',
-        map_config_id: nil,
+        map_config_id: nil
       )
+      expect(json_response_body.first[:admin_publication]).to include(
+        publication_status: 'published'
+      )
+      expect(json_response_body.first[:folder]).to be_nil
     end
   end
 
