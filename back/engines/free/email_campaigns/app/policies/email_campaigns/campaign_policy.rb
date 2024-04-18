@@ -14,8 +14,7 @@ module EmailCampaigns
         if user&.active? && user&.admin?
           scope.all
         elsif user&.active? && user&.project_moderator?
-          project_ids = Project.where(id: user.moderatable_project_ids).pluck(:id)
-          scope.manageable_by_project_moderator.where(resource_id: project_ids)
+          scope.manageable_by_project_moderator.where(resource_id: user.moderatable_project_ids)
         else
           scope.none
         end
