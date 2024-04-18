@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import { TTabName } from 'containers/Admin/projects/all/CreateProject';
+import { TTabName } from 'containers/Admin/projects/new';
 import { AdminRoute } from 'containers/Admin/routes';
 
 import { ModuleConfiguration } from 'utils/moduleUtils';
@@ -21,7 +21,7 @@ const AdminTemplatePreviewComponent = React.lazy(
   () => import('./admin/containers/ProjectTemplatePreviewAdmin')
 );
 
-declare module 'containers/Admin/projects/all/CreateProject' {
+declare module 'containers/Admin/projects/new' {
   export interface ITabNamesMap {
     template: 'template';
   }

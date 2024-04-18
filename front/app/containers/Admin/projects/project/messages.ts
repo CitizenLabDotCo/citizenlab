@@ -574,4 +574,16 @@ export default defineMessages({
     defaultMessage:
       'This is not included in your current plan. Reach out to your Government Success Manager or admin to unlock it.',
   },
+  trafficTab: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.trafficTab',
+    defaultMessage: 'Traffic',
+  },
+  timelineTab: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.timelineTab',
+    defaultMessage: 'Timeline',
+  },
+  participationTab: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.participationTab',
+    defaultMessage: 'Participants',
+  },
 });

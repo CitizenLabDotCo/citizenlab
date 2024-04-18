@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import {
@@ -6,19 +6,14 @@ import {
   useLocation,
   useParams,
 } from 'react-router-dom';
-import { InsertConfigurationOptions, ITab } from 'typings';
-
-import usePhases from 'api/phases/usePhases';
-import useProjectById from 'api/projects/useProjectById';
+import { ITab } from 'typings';
 
 import NavigationTabs, { Tab } from 'components/admin/NavigationTabs';
-import Outlet from 'components/Outlet';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isTopBarNavActive } from 'utils/helperUtils';
-import { insertConfiguration } from 'utils/moduleUtils';
 
 import messages from './messages';
 
@@ -26,9 +21,7 @@ const Settings = () => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
   const { projectId } = useParams() as { projectId: string };
-  const { data: project } = useProjectById(projectId);
-  const { data: phases } = usePhases(projectId);
-  const [tabs, setTabs] = useState<ITab[]>([
+  const tabs: ITab[] = [
     {
       label: formatMessage(messages.general),
       name: 'general',
@@ -47,21 +40,9 @@ const Settings = () => {
     {
       label: formatMessage(messages.accessRights),
       name: 'permissions',
-      feature: 'private_projects',
       url: `/admin/projects/${projectId}/settings/access-rights`,
     },
-    {
-      label: formatMessage(messages.events),
-      name: 'events',
-      url: `/admin/projects/${projectId}/settings/events`,
-    },
-  ]);
-
-  const handleData = (insertTabOptions: InsertConfigurationOptions<ITab>) => {
-    setTabs(insertConfiguration(insertTabOptions)(tabs));
-  };
-
-  if (!project || !phases) return null;
+  ];
 
   const goBack = () => {
     clHistory.push(`/admin/projects/${projectId}`);
@@ -100,12 +81,6 @@ const Settings = () => {
         </Box>
       </Box>
       <Box m="80px 20px 16px 20px">
-        <Outlet
-          id="app.containers.Admin.projects.edit.settings"
-          onData={handleData}
-          project={project.data}
-          phases={phases.data}
-        />
         <Box p="16px 40px" background={colors.white}>
           <RouterOutlet />
         </Box>

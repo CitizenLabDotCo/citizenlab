@@ -9,7 +9,6 @@ import useReorderAdminPublication from 'api/admin_publications/useReorderAdminPu
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
-import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -68,15 +67,6 @@ const AdminProjectList = memo<Props>((_props) => {
             />
           </HeaderTitle>
           <Spacer />
-          {isProjectFoldersEnabled && (
-            <Button
-              data-cy="e2e-new-project-folder-button"
-              linkTo={'/admin/projects/folders/new'}
-              buttonStyle="admin-dark"
-            >
-              <FormattedMessage {...messages.newProjectFolder} />
-            </Button>
-          )}
         </StyledListHeader>
         <SortableList
           items={rootLevelAdminPublications}
