@@ -28,7 +28,7 @@ import tracks from './tracks';
 const Container = styled.div`
   display: flex;
   padding: 4px;
-  background: ${darken(0.06, colors.grey200)};
+  background: #fff;
   border-radius: ${(props) => props.theme.borderRadius};
 `;
 
@@ -41,21 +41,32 @@ const ViewButton = styled.button<{ active: boolean }>`
   padding: 10px 12px;
   font-size: ${fontSizes.base}px;
   border-radius: 3px;
-  background-color: ${(props) => (props.active ? '#fff' : 'transparent')};
-  color: ${colors.textSecondary};
+  background-color: ${(props) =>
+    props.active ? props.theme.colors.tenantSecondary : 'transparent'};
+  color: ${(props) => (props.active ? '#fff' : props.theme.colors.tenantText)};
+  font-weight: ${(props) => (props.active ? 'bold' : 'normal')};
   border-color: transparent;
   box-shadow: ${defaultStyles.boxShadow};
   margin-right: 0;
   display: flex;
   align-items: center;
 
+  ${StyledIcon} {
+    fill: ${(props) =>
+      props.active ? '#fff' : darken(0.2, props.theme.colors.tenantText)};
+  }
+
   &:hover {
     background-color: ${(props) =>
-      props.active ? '#fff' : 'rgba(0,0,0,0.12)'};
-    color: ${darken(0.2, colors.textSecondary)};
+      props.active
+        ? darken(0.15, props.theme.colors.tenantSecondary)
+        : 'rgba(132, 147, 158, 0.15)'};
+    color: ${(props) =>
+      props.active ? '#fff' : darken(0.2, props.theme.colors.tenantText)};
 
     ${StyledIcon} {
-      color: ${darken(0.2, colors.textSecondary)};
+      fill: ${(props) =>
+        props.active ? '#fff' : darken(0.2, props.theme.colors.tenantText)};
     }
   }
 `;
