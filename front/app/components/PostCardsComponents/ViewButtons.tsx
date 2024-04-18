@@ -41,16 +41,23 @@ const ViewButton = styled.button<{ active: boolean }>`
   padding: 10px 12px;
   font-size: ${fontSizes.base}px;
   border-radius: 3px;
-  background-color: ${(props) =>
-    props.active ? props.theme.colors.tenantSecondary : 'transparent'};
-  color: ${(props) =>
-    props.active ? colors.white : props.theme.colors.tenantText};
-  font-weight: ${(props) => (props.active ? 'bold' : 'normal')};
   border-color: transparent;
   box-shadow: ${defaultStyles.boxShadow};
   margin-right: 0;
   display: flex;
   align-items: center;
+  ${({ active, theme }) =>
+    active
+      ? {
+          backgroundColor: theme.colors.tenantSecondary,
+          color: colors.white,
+          fontWeight: 'bold',
+        }
+      : {
+          backgroundColor: 'transparent',
+          color: theme.colors.tenantText,
+          fontWeight: 'normal',
+        }};
 
   ${StyledIcon} {
     fill: ${(props) =>
@@ -58,12 +65,16 @@ const ViewButton = styled.button<{ active: boolean }>`
   }
 
   &:hover {
-    background-color: ${(props) =>
-      props.active
-        ? darken(0.15, props.theme.colors.tenantSecondary)
-        : 'rgba(132, 147, 158, 0.15)'};
-    color: ${(props) =>
-      props.active ? colors.white : darken(0.2, props.theme.colors.tenantText)};
+    ${({ active, theme }) =>
+      active
+        ? {
+            backgroundColor: darken(0.15, theme.colors.tenantSecondary),
+            color: colors.white,
+          }
+        : {
+            backgroundColor: 'rgba(132, 147, 158, 0.15)',
+            color: darken(0.2, theme.colors.tenantText),
+          }};
   }
 `;
 
