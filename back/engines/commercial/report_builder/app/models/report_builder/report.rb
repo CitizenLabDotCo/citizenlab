@@ -4,19 +4,21 @@
 #
 # Table name: report_builder_reports
 #
-#  id         :uuid             not null, primary key
-#  name       :string
-#  owner_id   :uuid
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  phase_id   :uuid
-#  visible    :boolean          default(FALSE), not null
+#  id            :uuid             not null, primary key
+#  name          :string
+#  owner_id      :uuid
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  phase_id      :uuid
+#  visible       :boolean          default(FALSE), not null
+#  name_tsvector :tsvector
 #
 # Indexes
 #
-#  index_report_builder_reports_on_name      (name) UNIQUE
-#  index_report_builder_reports_on_owner_id  (owner_id)
-#  index_report_builder_reports_on_phase_id  (phase_id)
+#  index_report_builder_reports_on_name           (name) UNIQUE
+#  index_report_builder_reports_on_name_tsvector  (name_tsvector) USING gin
+#  index_report_builder_reports_on_owner_id       (owner_id)
+#  index_report_builder_reports_on_phase_id       (phase_id) UNIQUE
 #
 # Foreign Keys
 #
@@ -41,6 +43,7 @@ module ReportBuilder
     scope :global, -> { where(phase_id: nil) }
 
     validates :name, uniqueness: true, allow_nil: true
+    validates :phase_id, uniqueness: true, allow_nil: true
 
     def phase?
       !phase_id.nil?

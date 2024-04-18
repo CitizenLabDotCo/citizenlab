@@ -167,6 +167,7 @@ DROP INDEX IF EXISTS public.index_spam_reports_on_user_id;
 DROP INDEX IF EXISTS public.index_spam_reports_on_reported_at;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_phase_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_owner_id;
+DROP INDEX IF EXISTS public.index_report_builder_reports_on_name_tsvector;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_name;
 DROP INDEX IF EXISTS public.index_reactions_on_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id_and_user_id;
@@ -3089,7 +3090,8 @@ CREATE TABLE public.report_builder_reports (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     phase_id uuid,
-    visible boolean DEFAULT false NOT NULL
+    visible boolean DEFAULT false NOT NULL,
+    name_tsvector tsvector GENERATED ALWAYS AS (to_tsvector('simple'::regconfig, (name)::text)) STORED
 );
 
 
@@ -5783,6 +5785,13 @@ CREATE UNIQUE INDEX index_report_builder_reports_on_name ON public.report_builde
 
 
 --
+-- Name: index_report_builder_reports_on_name_tsvector; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_report_builder_reports_on_name_tsvector ON public.report_builder_reports USING gin (name_tsvector);
+
+
+--
 -- Name: index_report_builder_reports_on_owner_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5793,7 +5802,7 @@ CREATE INDEX index_report_builder_reports_on_owner_id ON public.report_builder_r
 -- Name: index_report_builder_reports_on_phase_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_report_builder_reports_on_phase_id ON public.report_builder_reports USING btree (phase_id);
+CREATE UNIQUE INDEX index_report_builder_reports_on_phase_id ON public.report_builder_reports USING btree (phase_id);
 
 
 --
@@ -7436,6 +7445,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240229195843'),
 ('20240301120023'),
 ('20240305122502'),
-('20240328141200');
+('20240328141200'),
+('20240417064819'),
+('20240418081854');
 
 
