@@ -38,10 +38,8 @@ const Spacer = styled.div`
 
 const SortableProjectList = ({
   adminPublications,
-  search,
 }: {
   adminPublications: InfiniteData<IAdminPublications> | undefined;
-  search?: string;
 }) => {
   const { mutate: reorderAdminPublication } = useReorderAdminPublication();
 
@@ -109,7 +107,6 @@ const SortableProjectList = ({
                             index === rootLevelAdminPublications.length - 1
                           }
                           publication={item}
-                          search={search}
                         />
                       )}
                     </Fragment>

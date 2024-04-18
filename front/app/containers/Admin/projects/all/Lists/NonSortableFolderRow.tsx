@@ -45,7 +45,8 @@ const NonSortableFolderRow = ({
 
   const hasProjects =
     !isNilOrError(folderChildAdminPublications) &&
-    folderChildAdminPublications.length > 0;
+    folderChildAdminPublications.length > 0 &&
+    !search;
 
   const toggleFolder = () => {
     setFolderOpen((folderOpen) => !folderOpen);

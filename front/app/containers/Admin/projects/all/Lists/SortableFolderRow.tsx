@@ -44,14 +44,12 @@ const SortableFolderRow = ({
   dropRow,
   publication,
   isLastItem,
-  search,
 }: Props) => {
   const { data: authUser } = useAuthUser();
 
   const { data } = useAdminPublications({
     childrenOfId: publication.relationships.publication.data.id,
     publicationStatusFilter: publicationStatuses,
-    search,
   });
 
   const folderChildAdminPublications = data?.pages

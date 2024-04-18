@@ -234,11 +234,8 @@ const AdminProjectsList = memo(({ className }: Props) => {
         <PageWrapper>
           <ListsContainer>
             <Suspense fallback={<Spinner />}>
-              {userIsAdmin && activeTab === 'all' ? (
-                <SortableProjectList
-                  search={search}
-                  adminPublications={allAdminPublications}
-                />
+              {userIsAdmin && activeTab === 'all' && !search ? (
+                <SortableProjectList adminPublications={allAdminPublications} />
               ) : (
                 <NonSortableProjectList
                   search={search}
