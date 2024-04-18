@@ -19,7 +19,6 @@ import T from 'components/T';
 import Image from 'components/UI/Image';
 
 import { useIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
 import { getEventDateString } from 'utils/dateUtils';
 
 import DateBlocks from '../DateBlocks';
