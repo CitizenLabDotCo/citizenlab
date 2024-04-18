@@ -1020,58 +1020,10 @@
         }
       },
 
-      "ideaflow_social_sharing": {
-        "type": "object",
-        "title": "Share Ideas on Social Media",
-        "description":  "After posting an idea, users receive a pop-up to share their idea on social media.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "initiativeflow_social_sharing": {
-        "type": "object",
-        "title": "Share Proposals on Social Media",
-        "description": "After posting a proposal, users receive a pop-up to share their proposal on social media.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
       "widgets": {
         "type": "object",
         "title": "Widgets",
         "description":  "Admins can generate platform widgets to embed on external websites.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "manual_emailing": {
-        "type": "object",
-        "title": "Manual Emails",
-        "description":  "Admin and project managers can email users through the platform.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "automated_emailing_control": {
-        "type": "object",
-        "title": "Automated Emails",
-        "description":  "Admin can set and control automated e-mail campaigns and notifications.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1142,18 +1094,6 @@
         }
       },
 
-      "idea_custom_copy": {
-        "type": "object",
-        "title": "Idea Custom Copy",
-        "description": "Allows the changing of the word `idea` as the default term of input.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
       "idea_author_change": {
         "type": "object",
         "title": "Idea Author Change",
@@ -1163,18 +1103,6 @@
         "properties": {
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
-      "private_projects": {
-        "type": "object",
-        "title": "Private projects",
-        "description":  "Make projects visible to certain groups only (Access Rights tab in the Admin panel).",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
         }
       },
 
@@ -1420,6 +1348,18 @@
         "type": "object",
         "title": "AI-powered advanced autotagging for surveys and ideation",
         "description": "Enables the use of AI-powered advanced autotagging feature for surveys and ideation.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "multi_language_platform": {
+        "type": "object",
+        "title": "Multi-language platform",
+        "description": "Enables the ability to add multiple languages on the platform.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
