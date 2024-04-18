@@ -17,7 +17,6 @@
 #  last_name                           :string
 #  locale                              :string
 #  bio_multiloc                        :jsonb
-#  cl1_migrated                        :boolean          default(FALSE)
 #  invite_status                       :string
 #  custom_field_values                 :jsonb
 #  registration_completed_at           :datetime
