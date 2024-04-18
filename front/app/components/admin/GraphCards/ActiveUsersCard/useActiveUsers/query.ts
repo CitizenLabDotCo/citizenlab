@@ -18,13 +18,12 @@ export const query = ({
   const timeSeriesQuery: QuerySchema = {
     fact: 'participation',
     filters: {
-      'dimension_user.role': ['citizen', null],
       ...getProjectFilter('dimension_project', projectId),
       ...getDateFilter('dimension_date_created', startAtMoment, endAtMoment),
     },
     groups: `dimension_date_created.${getInterval(resolution)}`,
     aggregations: {
-      dimension_user_id: 'count',
+      participant_id: 'count',
       'dimension_date_created.date': 'first',
     },
   };
@@ -32,31 +31,28 @@ export const query = ({
   const activeUsersWholePeriodQuery: QuerySchema = {
     fact: 'participation',
     filters: {
-      'dimension_user.role': ['citizen', null],
       ...getProjectFilter('dimension_project', projectId),
       ...getDateFilter('dimension_date_created', startAtMoment, endAtMoment),
     },
     aggregations: {
-      dimension_user_id: 'count',
+      participant_id: 'count',
     },
   };
 
   const activeUsersLastPeriodQuery: QuerySchema = {
     fact: 'participation',
     filters: {
-      'dimension_user.role': ['citizen', null],
       ...getProjectFilter('dimension_project', projectId),
       ...getDateFilterLastPeriod('dimension_date_created', resolution),
     },
     aggregations: {
-      dimension_user_id: 'count',
+      participant_id: 'count',
     },
   };
 
   const visitsWholePeriodQuery: QuerySchema = {
     fact: 'visit',
     filters: {
-      'dimension_user.role': ['citizen', null],
       ...getProjectFilter('dimension_projects', projectId),
       ...getDateFilter(
         'dimension_date_first_action',
@@ -72,7 +68,6 @@ export const query = ({
   const visitsLastPeriodQuery: QuerySchema = {
     fact: 'visit',
     filters: {
-      'dimension_user.role': ['citizen', null],
       ...getProjectFilter('dimension_projects', projectId),
       ...getDateFilterLastPeriod('dimension_date_first_action', resolution),
     },
