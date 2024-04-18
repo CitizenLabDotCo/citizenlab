@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 
 import StackedBarChart from 'components/admin/Graphs/StackedBarChart';
-import { getCornerRadius } from 'components/admin/Graphs/StackedBarChart/singleBarHelpers';
+import {
+  getCornerRadius,
+  stackLabels,
+} from 'components/admin/Graphs/StackedBarChart/singleBarHelpers';
 import { DEFAULT_CATEGORICAL_COLORS } from 'components/admin/Graphs/styling';
 
 import { Data } from './typings';
@@ -32,6 +35,12 @@ const Chart = ({ data }: Props) => {
     {}
   );
 
+  const legendItems = columns.map((column) => ({
+    icon: 'circle' as const,
+    color: statusColorById[column] as string,
+    label: column,
+  }));
+
   return (
     <StackedBarChart
       data={data}
@@ -46,11 +55,7 @@ const Chart = ({ data }: Props) => {
         },
       }}
       layout="horizontal"
-      // labels={stackLabels(
-      //   stackedBarsData,
-      //   stackedBarColumns,
-      //   stackedBarPercentages
-      // )}
+      labels={stackLabels(data, columns, Object.values(data[0]))}
       xaxis={{ hide: true, domain: [0, 'dataMax'] }}
       yaxis={{ hide: true, domain: ['dataMin', 'dataMax'] }}
       // tooltip={stackedBarTooltip(
@@ -60,11 +65,11 @@ const Chart = ({ data }: Props) => {
       //   stackedBarPercentages,
       //   stackedBarsLegendItems.map((item) => item.label)
       // )}
-      // legend={{
-      //   items: stackedBarsLegendItems,
-      //   marginTop: 15,
-      //   maintainGraphSize: true,
-      // }}
+      legend={{
+        items: legendItems,
+        marginTop: 15,
+        maintainGraphSize: true,
+      }}
       onMouseOver={onMouseOverStackedBar}
       onMouseOut={onMouseOutStackedBar}
     />
