@@ -28,7 +28,7 @@ module PosthogIntegration
         missing_project_id! unless project_id
 
         response = http.delete("#{@base_uri}/api/projects/#{project_id}/persons/#{id}")
-        if response.status.success? || retries <= 0
+        if response.status.code != 429 || retries <= 0
           response
         else
           # Retry after waiting between 20 and 60 seconds
