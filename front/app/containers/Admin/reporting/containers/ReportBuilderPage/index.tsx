@@ -8,11 +8,14 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
+import { useSearchParams } from 'react-router-dom';
 
+import useAuthUser from 'api/me/useAuthUser';
 import useReports from 'api/reports/useReports';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import Tab from 'components/admin/NavigationTabs/Tab';
 import Button from 'components/UI/Button';
 import SearchInput from 'components/UI/SearchInput';
 
@@ -28,8 +31,14 @@ import messages from './messages';
 const ReportBuilderPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [search, setSearch] = useState<string | undefined>();
+  const [searchParams] = useSearchParams();
+  const globalReportsActve = searchParams.get('tab') === 'global-reports';
+  const { data: me } = useAuthUser();
 
-  const { data: reports } = useReports({ search });
+  const { data: reports } = useReports({
+    search,
+    owner_id: globalReportsActve ? undefined : me?.data.id,
+  });
   const isReportBuilderAllowed = useFeatureFlag({
     name: 'report_builder',
     onlyCheckAllowed: true,
@@ -116,25 +125,33 @@ const ReportBuilderPage = () => {
               </Box>
               <Box
                 background="white"
-                px="56px"
-                py="40px"
                 mt="20px"
                 border={stylingConsts.border}
                 borderRadius={stylingConsts.borderRadius}
               >
-                <Title
-                  variant="h3"
-                  as="h2"
-                  color="primary"
-                  mt="0px"
-                  mb="32px"
-                  fontWeight="normal"
+                <Box
+                  display="flex"
+                  position="relative"
+                  borderRadius={stylingConsts.borderRadius}
+                  w="100%"
+                  pl="44px"
                 >
-                  <FormattedMessage {...messages.viewReports} />
-                </Title>
-                {reports.data.map((report) => (
-                  <ReportRow key={report.id} report={report} />
-                ))}
+                  <Tab
+                    label={formatMessage(messages.yourReports)}
+                    url={'/admin/reporting/report-builder'}
+                    active={!globalReportsActve}
+                  />
+                  <Tab
+                    label={formatMessage(messages.globalReports)}
+                    url={`/admin/reporting/report-builder?tab=global-reports`}
+                    active={globalReportsActve}
+                  />
+                </Box>
+                <Box px="44px" py="24px">
+                  {reports.data.map((report) => (
+                    <ReportRow key={report.id} report={report} />
+                  ))}
+                </Box>
               </Box>
             </>
           )}

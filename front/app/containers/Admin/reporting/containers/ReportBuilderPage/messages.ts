@@ -10,12 +10,16 @@ export default defineMessages({
     defaultMessage:
       'Customise your report and share it with internal stakeholders or community with a web link.',
   },
-  viewReports: {
-    id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports',
-    defaultMessage: 'View reports',
-  },
   searchReports: {
     id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.searchReports',
     defaultMessage: 'Search reports',
+  },
+  yourReports: {
+    id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.yourReports',
+    defaultMessage: 'Your reports',
+  },
+  globalReports: {
+    id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.globalReports',
+    defaultMessage: 'Global reports',
   },
 });
