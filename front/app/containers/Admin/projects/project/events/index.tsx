@@ -163,7 +163,11 @@ const AdminProjectEventsIndex = () => {
                           {event.attributes.attendees_count}
                         </Title>
                         <Text m="0px">
-                          <FormattedMessage {...messages.attendees} />
+                          {event.attributes.attendees_count === 1 ? (
+                            <FormattedMessage {...messages.attendee} />
+                          ) : (
+                            <FormattedMessage {...messages.attendees} />
+                          )}
                         </Text>
                       </Box>
                       <Button
