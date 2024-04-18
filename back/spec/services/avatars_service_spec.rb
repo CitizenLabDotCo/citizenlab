@@ -5,6 +5,10 @@ require 'rails_helper'
 describe AvatarsService do
   let(:service) { described_class.new }
 
+  before do
+    Analytics::PopulateDimensionsService.populate_types
+  end
+
   describe 'avatars_for_project' do
     it 'returns the idea authors in a project' do
       project = create(:project)
