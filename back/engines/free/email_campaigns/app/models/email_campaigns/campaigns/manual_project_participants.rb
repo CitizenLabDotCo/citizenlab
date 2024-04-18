@@ -86,8 +86,8 @@ module EmailCampaigns
 
     private
 
-    def project_participants(_users_scope, _options = {})
-      ParticipantsService.new.project_participants(project)
+    def project_participants(users_scope, _options = {})
+      users_scope.where(id: ParticipantsService.new.project_participants(project))
     end
 
     def only_manual_send(activity: nil, time: nil)
