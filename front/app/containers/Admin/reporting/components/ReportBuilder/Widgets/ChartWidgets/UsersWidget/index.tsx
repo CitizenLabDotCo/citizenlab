@@ -1,10 +1,9 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import Card from '../../_shared/Card';
 import messages from '../messages';
-import { ChartWidgetProps } from '../typings';
 
 import Chart from './Chart';
 import Settings from './Settings';
@@ -20,13 +19,18 @@ const FAKE_DATA: Data = [
   },
 ];
 
-const UsersWidget = ({ title }: ChartWidgetProps) => {
+const UsersWidget = () => {
   // TODO add real data
   const data = FAKE_DATA;
 
   return (
-    <Card title={title} pagebreak>
-      <Box width="100%" height="120px" mt="20px" pb="10px">
+    <Card pagebreak>
+      <Box width="100%" pb="0px" display="flex">
+        <Box w="300px" display="flex" flexDirection="column">
+          <Text mt="8px" fontWeight="bold" fontSize="l">
+            Place of residence
+          </Text>
+        </Box>
         <Chart data={data} />
       </Box>
     </Card>
@@ -35,7 +39,6 @@ const UsersWidget = ({ title }: ChartWidgetProps) => {
 
 UsersWidget.craft = {
   props: {
-    title: {},
     projectId: undefined,
     startAt: undefined,
     endAt: null,
