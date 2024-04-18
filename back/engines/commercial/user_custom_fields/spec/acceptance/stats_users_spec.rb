@@ -449,9 +449,11 @@ resource 'Stats - Users' do
           create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
           create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
           user = create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
-          comment = create(:comment)
-          create(:activity, item: comment, action: 'created', user: user)
+          idea = create(:idea, author: nil)
+          create(:comment, post: idea, author: user)
         end
+
+        Analytics::PopulateDimensionsService.populate_types
       end
 
       describe 'with filter by participation' do
