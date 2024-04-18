@@ -55,14 +55,14 @@ module XlsxExport
     end
 
     # Add __[0-9] suffix to duplicate column names to allow serialization of XLSX to a hash array.
-    def duplication_suffixer(column_name)
+    def duplicate_column_name_suffixer(column_name)
       @column_name_counts[column_name] ||= 0
       @column_name_counts[column_name] += 1
       column_name + (@column_name_counts[column_name] > 1 ? "__#{@column_name_counts[column_name]}" : '')
     end
 
-    # Remove the suffix added by duplication_suffixer.
-    def duplication_desuffixer(column_name)
+    # Remove the suffix added by duplicate_column_name_suffixer.
+    def duplicate_column_name_desuffixer(column_name)
       column_name.gsub(/__[0-9]*$/, '')
     end
 

@@ -38,7 +38,7 @@ class XlsxService
       xlsx_utils = XlsxExport::Utils.new
       (row&.cells || []).compact.filter_map do |cell|
         if cell.value
-          column_header = xlsx_utils.duplication_suffixer(worksheet[0][cell.column]&.value)
+          column_header = xlsx_utils.duplicate_column_name_suffixer(worksheet[0][cell.column]&.value)
           [column_header, cell.value]
         end
       end.to_h
@@ -331,7 +331,7 @@ class XlsxService
   # Remove any suffixes added for duplicate column names
   def remove_duplicate_header_suffix(headers)
     headers.map do |header|
-      XlsxExport::Utils.new.duplication_desuffixer header
+      XlsxExport::Utils.new.duplicate_column_name_desuffixer header
     end
   end
 end

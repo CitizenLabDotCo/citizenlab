@@ -19,7 +19,7 @@ module BulkImportIdeas::Exporters
 
       xlsx_utils = XlsxExport::Utils.new
       @form_fields.each do |field|
-        column_name = xlsx_utils.duplication_suffixer(field.title_multiloc[@locale])
+        column_name = xlsx_utils.duplicate_column_name_suffixer(field.title_multiloc[@locale])
 
         value = case field.input_type
         when 'select'
