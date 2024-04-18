@@ -235,7 +235,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
               url="/admin/projects/archived"
             />
             <Tab
-              label={'All'}
+              label={formatMessage(messages.all)}
               active={activeTab === 'all'}
               url="/admin/projects"
             />
