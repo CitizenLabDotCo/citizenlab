@@ -428,7 +428,7 @@ GEM
     activerecord (7.0.8.1)
       activemodel (= 7.0.8.1)
       activesupport (= 7.0.8.1)
-    activerecord-import (1.4.1)
+    activerecord-import (1.6.0)
       activerecord (>= 4.2)
     activerecord-postgis-adapter (8.0.3)
       activerecord (~> 7.0.0)
@@ -571,7 +571,7 @@ GEM
     factory_bot_rails (6.2.0)
       factory_bot (~> 6.2.0)
       railties (>= 5.0.0)
-    faker (3.3.0)
+    faker (3.3.1)
       i18n (>= 1.8.11, < 2)
     faraday (2.9.0)
       faraday-net_http (>= 2.0, < 3.2)
@@ -1227,7 +1227,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers (~> 0.10.12)
-  activerecord-import (~> 1.4)
+  activerecord-import (~> 1.6)
   activerecord-postgis-adapter (~> 8.0)
   acts_as_list (~> 1.1)
   admin_api!

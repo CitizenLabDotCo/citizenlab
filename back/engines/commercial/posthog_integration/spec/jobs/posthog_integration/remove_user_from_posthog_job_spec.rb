@@ -21,7 +21,7 @@ RSpec.describe PosthogIntegration::RemoveUserFromPosthogJob do
         job.perform(user_id)
 
         expect(posthog_client)
-          .to have_received(:delete_person_by_distinct_id).with(user_id)
+          .to have_received(:delete_person_by_distinct_id).with(user_id, retries: 10)
       end
     end
 

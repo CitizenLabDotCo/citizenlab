@@ -18,9 +18,9 @@ export default defineMessages({
     defaultMessage: 'Pageviews per visit ',
   },
   cardTitleTooltipMessage: {
-    id: 'app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage',
+    id: 'app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage2',
     defaultMessage:
-      'Only users who have accepted cookie tracking will be counted. Admins and project managers are not counted.',
+      'Only users who have accepted cookie tracking will be counted. Admins and project managers are also counted if they accept cookie tracking.',
   },
   visitorsStatTooltipMessage: {
     id: 'app.modules.commercial.analytics.admin.components.VisitorsCard.visitorsStatTooltipMessage',
