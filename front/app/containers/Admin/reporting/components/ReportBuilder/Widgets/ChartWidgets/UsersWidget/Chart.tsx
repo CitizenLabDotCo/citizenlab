@@ -7,6 +7,7 @@ import {
 } from 'components/admin/Graphs/StackedBarChart/singleBarHelpers';
 import { DEFAULT_CATEGORICAL_COLORS } from 'components/admin/Graphs/styling';
 
+import { tooltip } from './tooltip';
 import { Data } from './typings';
 
 interface Props {
@@ -58,13 +59,13 @@ const Chart = ({ data }: Props) => {
       labels={stackLabels(data, columns, Object.values(data[0]))}
       xaxis={{ hide: true, domain: [0, 'dataMax'] }}
       yaxis={{ hide: true, domain: ['dataMin', 'dataMax'] }}
-      // tooltip={stackedBarTooltip(
-      //   stackedBarHoverIndex,
-      //   stackedBarsData,
-      //   stackedBarColumns,
-      //   stackedBarPercentages,
-      //   stackedBarsLegendItems.map((item) => item.label)
-      // )}
+      tooltip={tooltip(
+        stackedBarHoverIndex,
+        data,
+        columns,
+        Object.values(data[0]),
+        columns
+      )}
       legend={{
         items: legendItems,
         marginTop: 15,

@@ -28,7 +28,7 @@ const UsersWidget = () => {
       <Box width="100%" pb="0px" display="flex">
         <Box w="300px" display="flex" flexDirection="column">
           <Text mt="1px" fontWeight="bold" fontSize="m">
-            Place of residence
+            Place of residence (TODO)
           </Text>
         </Box>
         <Chart data={data} />
