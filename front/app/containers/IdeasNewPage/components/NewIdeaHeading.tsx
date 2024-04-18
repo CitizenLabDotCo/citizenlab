@@ -15,7 +15,7 @@ type Props = {
   titleText: string | React.ReactNode;
 };
 
-export const NewIdeaHeading = ({ project, titleText }: Props) => {
+const NewIdeaHeading = ({ project, titleText }: Props) => {
   const localize = useLocalize();
 
   const goBackToProject = useCallback(() => {
@@ -57,3 +57,5 @@ export const NewIdeaHeading = ({ project, titleText }: Props) => {
     </Box>
   );
 };
+
+export default NewIdeaHeading;
