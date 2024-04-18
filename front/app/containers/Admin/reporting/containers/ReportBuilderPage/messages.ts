@@ -14,4 +14,8 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports',
     defaultMessage: 'View reports',
   },
+  searchReports: {
+    id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.searchReports',
+    defaultMessage: 'Search reports',
+  },
 });

@@ -14,8 +14,9 @@ import useReports from 'api/reports/useReports';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Button from 'components/UI/Button';
+import SearchInput from 'components/UI/SearchInput';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import CreateReportModal from '../../components/ReportBuilderPage/CreateReportModal';
 import EmptyState from '../../components/ReportBuilderPage/EmptyState';
@@ -25,12 +26,16 @@ import sharedMessages from '../../messages';
 import messages from './messages';
 
 const ReportBuilderPage = () => {
-  const { data: reports } = useReports();
   const [modalOpen, setModalOpen] = useState(false);
+  const [search, setSearch] = useState<string | undefined>();
+
+  const { data: reports } = useReports({ search });
   const isReportBuilderAllowed = useFeatureFlag({
     name: 'report_builder',
     onlyCheckAllowed: true,
   });
+
+  const { formatMessage } = useIntl();
 
   if (!reports) {
     return null;
@@ -40,6 +45,8 @@ const ReportBuilderPage = () => {
   const closeModal = () => setModalOpen(false);
 
   const showEmptyState = reports.data.length === 0;
+
+  const searchReports = formatMessage(messages.searchReports);
 
   return (
     <>
@@ -96,28 +103,40 @@ const ReportBuilderPage = () => {
             </Box>
           </Box>
           {isReportBuilderAllowed && (
-            <Box
-              background="white"
-              px="56px"
-              py="40px"
-              mt="20px"
-              border={stylingConsts.border}
-              borderRadius={stylingConsts.borderRadius}
-            >
-              <Title
-                variant="h3"
-                as="h2"
-                color="primary"
-                mt="0px"
-                mb="32px"
-                fontWeight="normal"
+            <>
+              <Box mt="40px" w="300px">
+                <SearchInput
+                  placeholder={searchReports}
+                  ariaLabel={searchReports}
+                  a11y_numberOfSearchResults={reports?.data.length ?? 0}
+                  onChange={(value) => {
+                    setSearch(value ?? undefined);
+                  }}
+                />
+              </Box>
+              <Box
+                background="white"
+                px="56px"
+                py="40px"
+                mt="20px"
+                border={stylingConsts.border}
+                borderRadius={stylingConsts.borderRadius}
               >
-                <FormattedMessage {...messages.viewReports} />
-              </Title>
-              {reports.data.map((report) => (
-                <ReportRow key={report.id} report={report} />
-              ))}
-            </Box>
+                <Title
+                  variant="h3"
+                  as="h2"
+                  color="primary"
+                  mt="0px"
+                  mb="32px"
+                  fontWeight="normal"
+                >
+                  <FormattedMessage {...messages.viewReports} />
+                </Title>
+                {reports.data.map((report) => (
+                  <ReportRow key={report.id} report={report} />
+                ))}
+              </Box>
+            </>
           )}
         </>
       )}
