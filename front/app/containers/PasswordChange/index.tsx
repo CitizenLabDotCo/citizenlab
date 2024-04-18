@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Helmet } from 'react-helmet';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -107,12 +107,7 @@ const ChangePassword = () => {
   if (success) return <ChangePasswordSuccess />;
 
   return (
-    <Box
-      width="100%"
-      minHeight={`calc(100vh - ${
-        stylingConsts.menuHeight + stylingConsts.footerHeight
-      }px)`}
-    >
+    <>
       <Helmet
         title={formatMessage(messages.helmetTitle)}
         meta={[
@@ -173,7 +168,7 @@ const ChangePassword = () => {
           </FormProvider>
         </StyledContentContainer>
       </main>
-    </Box>
+    </>
   );
 };
 
