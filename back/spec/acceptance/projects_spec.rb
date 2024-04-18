@@ -125,6 +125,10 @@ resource 'Projects' do
     get 'web_api/v1/projects/:id' do
       let(:id) { @projects.first.id }
 
+      before do
+        Analytics::PopulateDimensionsService.populate_types
+      end
+
       example 'Get one project by id' do
         PermissionsService.new.update_all_permissions
         do_request

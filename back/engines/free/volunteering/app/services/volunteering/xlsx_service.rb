@@ -7,14 +7,15 @@ module Volunteering
     def generate_xlsx(
       phase,
       volunteers,
-      view_private_attributes: false
+      view_private_attributes: true
     )
       xlsx_service = ::XlsxService.new
       columns = [
         { header: 'first_name', f: ->(v) { v.user.first_name } },
         { header: 'last_name',  f: ->(v) { v.user.last_name } },
         { header: 'email',      f: ->(v) { v.user.email } },
-        { header: 'date',       f: ->(v) { v.created_at }, skip_sanitization: true }
+        { header: 'date',       f: ->(v) { v.created_at }, skip_sanitization: true },
+        *xlsx_service.user_custom_field_columns(:user)
       ]
 
       unless view_private_attributes

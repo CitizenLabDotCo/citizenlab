@@ -13,7 +13,6 @@ import {
 import Statistic from 'components/admin/Graphs/Statistic';
 
 import { useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 
 import Chart from './Chart';
 import messages from './messages';
@@ -41,11 +40,7 @@ const ActiveUsersCard = ({
     resolution,
   });
 
-  if (isNilOrError(stats)) {
-    return null;
-  }
-
-  const cardTitle = formatMessage(messages.activeUsers);
+  const cardTitle = formatMessage(messages.participants);
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
   const bottomLabel = getTimePeriodTranslationByResolution(
@@ -60,7 +55,7 @@ const ActiveUsersCard = ({
       exportMenu={{
         name: cardTitle,
         svgNode: graphRef,
-        xlsx: isNilOrError(xlsxData) ? undefined : { data: xlsxData },
+        xlsx: xlsxData ? { data: xlsxData } : undefined,
         startAt,
         endAt,
         resolution: currentResolution,
@@ -75,10 +70,10 @@ const ActiveUsersCard = ({
         >
           <Box width={layout === 'narrow' ? '50%' : undefined}>
             <Statistic
-              name={formatMessage(messages.totalActiveUsers)}
-              value={stats.activeUsers.value}
+              name={formatMessage(messages.totalParticipants)}
+              value={stats?.activeUsers.value ?? '-'}
               bottomLabel={bottomLabel}
-              bottomLabelValue={stats.activeUsers.lastPeriod}
+              bottomLabelValue={stats?.activeUsers.lastPeriod ?? '-'}
             />
           </Box>
           <Box
@@ -89,9 +84,9 @@ const ActiveUsersCard = ({
             <Statistic
               name={formatMessage(messages.participationRate)}
               tooltipContent={formatMessage(messages.participationRateTooltip)}
-              value={stats.participationRate.value}
+              value={stats?.participationRate.value ?? '-'}
               bottomLabel={bottomLabel}
-              bottomLabelValue={stats.participationRate.lastPeriod}
+              bottomLabelValue={stats?.participationRate.lastPeriod ?? '-'}
             />
           </Box>
         </Box>

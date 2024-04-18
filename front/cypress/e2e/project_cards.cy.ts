@@ -35,6 +35,7 @@ describe('Project and folder cards on front page', () => {
   });
 
   it('shows published project but not archived project if tab === Active', () => {
+    cy.get('#project-cards-tab-published').should('exist');
     cy.get('.e2e-project-card').first().contains(publishedProjectTitle);
 
     cy.get('#e2e-projects-container').should(

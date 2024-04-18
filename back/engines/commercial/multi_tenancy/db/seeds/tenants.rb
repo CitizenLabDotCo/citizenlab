@@ -98,10 +98,6 @@ module MultiTenancy
               allowed: true,
               enabled: true
             },
-            private_projects: {
-              enabled: true,
-              allowed: true
-            },
             maps: {
               enabled: true,
               allowed: true,
@@ -170,22 +166,6 @@ module MultiTenancy
               allowed: true
             },
             admin_project_templates: {
-              enabled: true,
-              allowed: true
-            },
-            ideaflow_social_sharing: {
-              enabled: true,
-              allowed: true
-            },
-            initiativeflow_social_sharing: {
-              enabled: true,
-              allowed: true
-            },
-            manual_emailing: {
-              enabled: true,
-              allowed: true
-            },
-            automated_emailing_control: {
               enabled: true,
               allowed: true
             },
@@ -370,10 +350,6 @@ module MultiTenancy
                 }
               ]
             },
-            volunteering: {
-              enabled: true,
-              allowed: true
-            },
             project_folders: {
               enabled: true,
               allowed: true
@@ -486,6 +462,10 @@ module MultiTenancy
               allowed: true
             },
             advanced_autotagging: {
+              enabled: true,
+              allowed: true
+            },
+            multi_language_platform: {
               enabled: true,
               allowed: true
             }
