@@ -86,6 +86,7 @@ const ProjectFolderRow = memo<Props>(
             <Box width="100%" display="flex" alignItems="center">
               <FolderRowContent
                 className="e2e-admin-adminPublications-list-item"
+                data-testid="folder-row"
                 hasProjects={hasProjects}
                 as="button"
                 onClick={handleClick}

@@ -43,7 +43,7 @@ const NonSortableFolderRow = ({
     return null;
   }
 
-  const hasProjects =
+  const showProjects =
     !isNilOrError(folderChildAdminPublications) &&
     folderChildAdminPublications.length > 0 &&
     !search;
@@ -57,7 +57,6 @@ const NonSortableFolderRow = ({
 
   const folderId =
     publicationRelation.type === 'folder' ? publicationRelation.id : undefined;
-
   return (
     <>
       <Row id={id} isLastItem={showBottomBorder}>
@@ -65,10 +64,10 @@ const NonSortableFolderRow = ({
           publication={publication}
           toggleFolder={toggleFolder}
           isFolderOpen={folderOpen}
-          hasProjects={hasProjects}
+          hasProjects={showProjects}
         />
       </Row>
-      {hasProjects && folderOpen && (
+      {showProjects && folderOpen && (
         <FolderChildProjects
           folderChildAdminPublications={folderChildAdminPublications}
           folderId={folderId}
