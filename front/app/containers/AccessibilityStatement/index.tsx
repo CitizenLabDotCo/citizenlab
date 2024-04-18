@@ -121,9 +121,7 @@ const CookiePolicy = memo((props: WrappedComponentProps) => {
                 <ul>
                   <li>
                     {formatMessage(messages.email)}{' '}
-                    <a href="mailto:support@citizenlab.co">
-                      support@citizenlab.co
-                    </a>
+                    <a href="mailto:support@govocal.co">support@govocal.co</a>
                   </li>
                   <li>
                     {formatMessage(messages.postalAddress)}{' '}
