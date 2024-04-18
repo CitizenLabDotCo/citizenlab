@@ -54,7 +54,6 @@ const navItems: NavItem[] = [
     link: '/admin/messaging',
     iconName: 'messages',
     message: 'messaging',
-    featureNames: ['texting'],
   },
   {
     name: 'reporting',

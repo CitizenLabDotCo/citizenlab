@@ -6,13 +6,12 @@ module ReportBuilder
       time_series_query = {
         fact: 'participation',
         filters: {
-          'dimension_user.role': ['citizen', nil],
           **project_filter('dimension_project_id', project_id),
           **date_filter('dimension_date_created', start_at, end_at)
         },
         groups: "dimension_date_created.#{interval(resolution)}",
         aggregations: {
-          dimension_user_id: 'count',
+          participant_id: 'count',
           'dimension_date_created.date': 'first'
         }
       }
@@ -20,12 +19,11 @@ module ReportBuilder
       active_users_whole_period_query = {
         fact: 'participation',
         filters: {
-          'dimension_user.role': ['citizen', nil],
           **project_filter('dimension_project_id', project_id),
           **date_filter('dimension_date_created', start_at, end_at)
         },
         aggregations: {
-          dimension_user_id: 'count'
+          participant_id: 'count'
         }
       }
 

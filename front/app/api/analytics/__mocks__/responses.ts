@@ -225,48 +225,48 @@ const participantsOverTime = {
         [
           {
             'dimension_date_created.month': '2023-02',
-            count_dimension_user_id: 1,
+            count_participant_id: 1,
             first_dimension_date_created_date: '2023-02-15',
           },
           {
             'dimension_date_created.month': '2023-03',
-            count_dimension_user_id: 5,
+            count_participant_id: 5,
             first_dimension_date_created_date: '2023-03-22',
           },
           {
             'dimension_date_created.month': '2023-04',
-            count_dimension_user_id: 1,
+            count_participant_id: 1,
             first_dimension_date_created_date: '2023-04-11',
           },
           {
             'dimension_date_created.month': '2023-05',
-            count_dimension_user_id: 11,
+            count_participant_id: 11,
             first_dimension_date_created_date: '2023-05-03',
           },
           {
             'dimension_date_created.month': '2023-06',
-            count_dimension_user_id: 1,
+            count_participant_id: 1,
             first_dimension_date_created_date: '2023-06-01',
           },
           {
             'dimension_date_created.month': '2023-08',
-            count_dimension_user_id: 5,
+            count_participant_id: 5,
             first_dimension_date_created_date: '2023-08-29',
           },
           {
             'dimension_date_created.month': '2023-09',
-            count_dimension_user_id: 1,
+            count_participant_id: 1,
             first_dimension_date_created_date: '2023-09-27',
           },
           {
             'dimension_date_created.month': '2023-10',
-            count_dimension_user_id: 10,
+            count_participant_id: 10,
             first_dimension_date_created_date: '2023-10-18',
           },
         ],
         [
           {
-            count_dimension_user_id: 501,
+            count_participant_id: 501,
           },
         ],
       ],
