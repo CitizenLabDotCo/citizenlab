@@ -28,7 +28,7 @@ import tracks from './tracks';
 const Container = styled.div`
   display: flex;
   padding: 4px;
-  background: #fff;
+  background: ${colors.white};
   border-radius: ${(props) => props.theme.borderRadius};
 `;
 
@@ -43,7 +43,8 @@ const ViewButton = styled.button<{ active: boolean }>`
   border-radius: 3px;
   background-color: ${(props) =>
     props.active ? props.theme.colors.tenantSecondary : 'transparent'};
-  color: ${(props) => (props.active ? '#fff' : props.theme.colors.tenantText)};
+  color: ${(props) =>
+    props.active ? colors.white : props.theme.colors.tenantText};
   font-weight: ${(props) => (props.active ? 'bold' : 'normal')};
   border-color: transparent;
   box-shadow: ${defaultStyles.boxShadow};
@@ -53,7 +54,7 @@ const ViewButton = styled.button<{ active: boolean }>`
 
   ${StyledIcon} {
     fill: ${(props) =>
-      props.active ? '#fff' : darken(0.2, props.theme.colors.tenantText)};
+      props.active ? colors.white : darken(0.2, props.theme.colors.tenantText)};
   }
 
   &:hover {
@@ -62,11 +63,13 @@ const ViewButton = styled.button<{ active: boolean }>`
         ? darken(0.15, props.theme.colors.tenantSecondary)
         : 'rgba(132, 147, 158, 0.15)'};
     color: ${(props) =>
-      props.active ? '#fff' : darken(0.2, props.theme.colors.tenantText)};
+      props.active ? colors.white : darken(0.2, props.theme.colors.tenantText)};
 
     ${StyledIcon} {
       fill: ${(props) =>
-        props.active ? '#fff' : darken(0.2, props.theme.colors.tenantText)};
+        props.active
+          ? colors.white
+          : darken(0.2, props.theme.colors.tenantText)};
     }
   }
 `;
