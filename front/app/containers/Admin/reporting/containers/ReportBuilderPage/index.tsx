@@ -32,12 +32,12 @@ const ReportBuilderPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [search, setSearch] = useState<string | undefined>();
   const [searchParams] = useSearchParams();
-  const globalReportsActve = searchParams.get('tab') === 'global-reports';
+  const globalReportsTab = searchParams.get('tab') !== 'your-reports';
   const { data: me } = useAuthUser();
 
   const { data: reports } = useReports({
     search,
-    owner_id: globalReportsActve ? undefined : me?.data.id,
+    owner_id: globalReportsTab ? undefined : me?.data.id,
   });
   const isReportBuilderAllowed = useFeatureFlag({
     name: 'report_builder',
@@ -53,7 +53,8 @@ const ReportBuilderPage = () => {
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
-  const showEmptyState = reports.data.length === 0;
+  const showEmptyState =
+    reports.data.length === 0 && !search && globalReportsTab;
 
   const searchReports = formatMessage(messages.searchReports);
 
@@ -137,14 +138,14 @@ const ReportBuilderPage = () => {
                   pl="44px"
                 >
                   <Tab
-                    label={formatMessage(messages.yourReports)}
+                    label={formatMessage(messages.globalReports)}
                     url={'/admin/reporting/report-builder'}
-                    active={!globalReportsActve}
+                    active={globalReportsTab}
                   />
                   <Tab
-                    label={formatMessage(messages.globalReports)}
-                    url={`/admin/reporting/report-builder?tab=global-reports`}
-                    active={globalReportsActve}
+                    label={formatMessage(messages.yourReports)}
+                    url={`/admin/reporting/report-builder?tab=your-reports`}
+                    active={!globalReportsTab}
                   />
                 </Box>
                 <Box px="44px" py="24px">
