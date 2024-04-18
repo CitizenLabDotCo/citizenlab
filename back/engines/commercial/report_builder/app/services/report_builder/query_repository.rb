@@ -3,7 +3,6 @@
 module ReportBuilder
   class QueryRepository
     GRAPH_RESOLVED_NAMES_CLASSES = {
-      # 'GenderWidget' => Queries::Analytics::UsersByGender,
       'GenderWidget' => Queries::UsersByCustomField::Gender,
       'AgeWidget' => Queries::UsersByCustomField::Birthyear,
       'ReactionsByTimeWidget' => Queries::Analytics::ReactionsByTime,
