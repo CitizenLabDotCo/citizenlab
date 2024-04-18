@@ -56,7 +56,11 @@ const EventCard = memo<Props>((props) => {
         }}
         tabIndex={0}
       >
-        <EventInformation event={event} {...otherProps} />
+        <EventInformation
+          event={event}
+          goToEvent={navigateToEventPage}
+          {...otherProps}
+        />
       </Container>
     );
   }

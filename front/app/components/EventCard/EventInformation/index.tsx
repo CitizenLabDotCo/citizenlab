@@ -42,9 +42,10 @@ const EventCardImage = styled(Image)`
 interface Props {
   event: IEventData;
   titleFontSize?: number;
+  goToEvent: () => void;
 }
 
-const EventInformation = ({ event, titleFontSize }: Props) => {
+const EventInformation = ({ event, goToEvent, titleFontSize }: Props) => {
   const { formatMessage } = useIntl();
   const theme = useTheme();
 
@@ -200,10 +201,12 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
           bgColor={theme.colors.tenantPrimary}
           tabIndex={0}
           onClick={() => {
-            clHistory.push(`/events/${event.id}`, { scrollToTop: true });
+            goToEvent();
           }}
-          onKeyDown={(event) => {
-            event.stopPropagation();
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              goToEvent();
+            }
           }}
         >
           {formatMessage(messages.readMore)}
