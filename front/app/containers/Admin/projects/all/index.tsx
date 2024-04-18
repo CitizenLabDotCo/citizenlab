@@ -19,7 +19,7 @@ import Outlet from 'components/Outlet';
 import Button from 'components/UI/Button';
 import SearchInput from 'components/UI/SearchInput';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
 import { isProjectFolderModerator } from 'utils/permissions/rules/projectFolderPermissions';
 
@@ -82,6 +82,7 @@ const flattenPagesData = (
 };
 
 const AdminProjectsList = memo(({ className }: Props) => {
+  const { formatMessage } = useIntl();
   const [search, setSearch] = useState<string>('');
   const { data: authUser } = useAuthUser();
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
@@ -198,34 +199,36 @@ const AdminProjectsList = memo(({ className }: Props) => {
             defaultValue={search}
             onChange={(search) => setSearch(search || '')}
             a11y_numberOfSearchResults={0}
-            placeholder="Search projects"
+            placeholder={formatMessage(messages.searchProjects)}
           />
         </Box>
         <Box w="100%" overflow="hidden">
           <NavigationTabs position="relative">
             <Tab
               url="/admin/projects/your-projects"
-              label={`Your projects (${
-                flattenPagesData(yourAdminPublications)?.length || ''
+              label={`${formatMessage(messages.yourProjects)} (${
+                flattenPagesData(yourAdminPublications)?.length
               })`}
               active={activeTab === 'your-projects'}
             />
             <Tab
-              label={`Active (${
+              label={`${formatMessage(messages.active)} (${
                 flattenPagesData(publishedAdminPublications)?.length
               })`}
               active={activeTab === 'published'}
               url="/admin/projects/published"
             />
             <Tab
-              label={`Draft (${
+              label={`
+                ${formatMessage(messages.draft)} (${
                 flattenPagesData(draftAdminPublications)?.length
               })`}
               active={activeTab === 'draft'}
               url="/admin/projects/draft"
             />
             <Tab
-              label={`Archived (${
+              label={`
+                ${formatMessage(messages.archived)} (${
                 flattenPagesData(archivedAdminPublications)?.length
               })`}
               active={activeTab === 'archived'}

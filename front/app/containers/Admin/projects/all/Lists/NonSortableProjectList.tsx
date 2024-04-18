@@ -8,8 +8,11 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { List, Row } from 'components/admin/ResourceList';
 
+import { useIntl } from 'utils/cl-intl';
+
 import { ActiveTab } from '..';
 import ProjectRow from '../../components/ProjectRow';
+import messages from '../messages';
 
 import NonSortableFolderRow from './NonSortableFolderRow';
 
@@ -22,6 +25,7 @@ const NonSortableProjectList = ({
   search?: string;
   activeTab: ActiveTab;
 }) => {
+  const { formatMessage } = useIntl();
   const rootLevelAdminPublications = adminPublications?.pages
     .map((page) => page.data)
     .flat();
@@ -30,7 +34,9 @@ const NonSortableProjectList = ({
 
   return (
     <>
-      {rootLevelAdminPublications?.length === 0 && <p>No projects found</p>}
+      {rootLevelAdminPublications?.length === 0 && (
+        <p>{formatMessage(messages.noProjectsFound)}</p>
+      )}
       <List>
         {rootLevelAdminPublications?.map((adminPublication, index) => {
           const adminPublicationId = adminPublication.id;
