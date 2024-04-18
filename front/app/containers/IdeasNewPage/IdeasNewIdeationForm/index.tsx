@@ -226,67 +226,69 @@ const IdeasNewIdeationForm = ({ project }: Props) => {
   }
 
   return (
-    <PageContainer id="e2e-idea-new-page" overflow="hidden">
-      {!processingLocation &&
-      schema &&
-      uiSchema &&
-      participationMethodConfig ? (
-        <>
-          <IdeasNewMeta />
-          <Form
-            schema={schema}
-            uiSchema={uiSchema}
-            onSubmit={handleDisclaimer}
-            initialFormData={initialFormData}
-            getAjvErrorMessage={getAjvErrorMessage}
-            getApiErrorMessage={getApiErrorMessage}
-            title={
-              <>
-                <NewIdeaHeading
-                  project={project.data}
-                  titleText={
-                    participationMethodConfig.getFormTitle ? (
-                      participationMethodConfig.getFormTitle({
-                        project: project.data,
-                        phases: phases?.data,
-                        phaseFromUrl: phaseFromUrl?.data,
-                      })
-                    ) : (
-                      <></>
-                    )
-                  }
-                />
-              </>
-            }
-            config={'input'}
-            footer={
-              allowAnonymousPosting ? (
-                <Suspense fallback={null}>
-                  <ProfileVisiblity
-                    postAnonymously={postAnonymously}
-                    onChange={handleOnChangeAnonymousPosting}
+    <>
+      <IdeasNewMeta />
+      <PageContainer id="e2e-idea-new-page" overflow="hidden">
+        {!processingLocation &&
+        schema &&
+        uiSchema &&
+        participationMethodConfig ? (
+          <>
+            <Form
+              schema={schema}
+              uiSchema={uiSchema}
+              onSubmit={handleDisclaimer}
+              initialFormData={initialFormData}
+              getAjvErrorMessage={getAjvErrorMessage}
+              getApiErrorMessage={getApiErrorMessage}
+              title={
+                <>
+                  <NewIdeaHeading
+                    project={project.data}
+                    titleText={
+                      participationMethodConfig.getFormTitle ? (
+                        participationMethodConfig.getFormTitle({
+                          project: project.data,
+                          phases: phases?.data,
+                          phaseFromUrl: phaseFromUrl?.data,
+                        })
+                      ) : (
+                        <></>
+                      )
+                    }
                   />
-                </Suspense>
-              ) : undefined
-            }
+                </>
+              }
+              config={'input'}
+              footer={
+                allowAnonymousPosting ? (
+                  <Suspense fallback={null}>
+                    <ProfileVisiblity
+                      postAnonymously={postAnonymously}
+                      onChange={handleOnChangeAnonymousPosting}
+                    />
+                  </Suspense>
+                ) : undefined
+              }
+            />
+          </>
+        ) : inputSchemaError ? null : (
+          <FullPageSpinner />
+        )}
+        {showAnonymousConfirmationModal && (
+          <AnonymousParticipationConfirmationModal
+            onCloseModal={() => {
+              setShowAnonymousConfirmationModal(false);
+            }}
           />
-        </>
-      ) : inputSchemaError ? null : (
-        <FullPageSpinner />
-      )}
-      {showAnonymousConfirmationModal && (
-        <AnonymousParticipationConfirmationModal
-          onCloseModal={() => {
-            setShowAnonymousConfirmationModal(false);
-          }}
+        )}
+        <ContentUploadDisclaimer
+          isDisclaimerOpened={isDisclaimerOpened}
+          onAcceptDisclaimer={() => onAcceptDisclaimer(formData)}
+          onCancelDisclaimer={onCancelDisclaimer}
         />
-      )}
-      <ContentUploadDisclaimer
-        isDisclaimerOpened={isDisclaimerOpened}
-        onAcceptDisclaimer={() => onAcceptDisclaimer(formData)}
-        onCancelDisclaimer={onCancelDisclaimer}
-      />
-    </PageContainer>
+      </PageContainer>
+    </>
   );
 };
 
