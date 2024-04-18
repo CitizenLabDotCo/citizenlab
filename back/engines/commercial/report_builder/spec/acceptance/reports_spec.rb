@@ -55,7 +55,7 @@ resource 'Reports' do
             name: report.name,
             created_at: report.created_at.iso8601(3),
             updated_at: report.updated_at.iso8601(3),
-            visible: true
+            visible: false
           },
           relationships: {
             layout: { data: { id: layout.id, type: 'content_builder_layout' } },
@@ -293,11 +293,14 @@ resource 'Reports' do
       end
 
       describe 'updating the visibility of a report' do
+        # only phase reports can be visible
+        before { report.update!(phase: create(:phase)) }
+
         example 'Visibility successfully updates by report id' do
-          expect(report.reload.visible).to be(true)
-          do_request(report: { visible: false })
-          assert_status 200
           expect(report.reload.visible).to be(false)
+          do_request(report: { visible: true })
+          assert_status 200
+          expect(report.reload.visible).to be(true)
         end
       end
 

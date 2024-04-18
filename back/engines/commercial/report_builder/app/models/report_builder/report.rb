@@ -44,6 +44,7 @@ module ReportBuilder
 
     validates :name, uniqueness: true, allow_nil: true
     validates :phase_id, uniqueness: true, allow_nil: true
+    validates :visible, inclusion: { in: [false], unless: :phase? }
 
     def phase?
       !phase_id.nil?

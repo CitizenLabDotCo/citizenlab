@@ -40,7 +40,13 @@ resource 'Graph data units' do
       start_at: Time.zone.today - 2.days,
       end_at: Time.zone.today + 2.days,
       project: project)
-    @report = create(:report, layout: build(:layout, craftjs_json: craftjs_json), phase: phase)
+
+    @report = create(
+      :report,
+      :visible,
+      layout: build(:layout, craftjs_json: craftjs_json),
+      phase: phase
+    )
 
     # Make TimeBoundariesParser work as expected
     AppConfiguration.instance.update!(created_at: filtered_date - 2.days)
