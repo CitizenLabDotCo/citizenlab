@@ -75,9 +75,7 @@ module EmailCampaigns
     end
 
     def moderator_can_access_and_modify?
-      project_ids = Project.where(id: user.moderatable_project_ids).pluck(:id)
-
-      project_ids.include?(record.resource_id) && record.manageable_by_project_moderator?
+      user.moderatable_project_ids.include?(record.resource_id) && record.manageable_by_project_moderator?
     end
   end
 end
