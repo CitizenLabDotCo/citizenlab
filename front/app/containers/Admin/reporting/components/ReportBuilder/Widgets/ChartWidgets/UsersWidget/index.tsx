@@ -27,7 +27,7 @@ const UsersWidget = () => {
     <Card pagebreak>
       <Box width="100%" pb="0px" display="flex">
         <Box w="300px" display="flex" flexDirection="column">
-          <Text mt="1px" fontWeight="bold" fontSize="l">
+          <Text mt="1px" fontWeight="bold" fontSize="m">
             Place of residence
           </Text>
         </Box>
