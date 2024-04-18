@@ -83,7 +83,7 @@ module BulkImportIdeas::Parsers
 
     def structure_raw_fields(fields)
       fields.map do |name, value|
-        name = name.gsub(/__[0-9]*$/, '') # Remove any suffix added for duplicate field titles
+        name = XlsxExport::Utils.new.duplication_desuffixer name
         {
           name: name,
           value: value,

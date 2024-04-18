@@ -152,7 +152,7 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
           pdf_pages: [1],
           fields: {
             'Text field' => 'First text field',
-            'Text field_1' => 'Second text field'
+            'Text field__1' => 'Second text field'
           }
         }
       ]

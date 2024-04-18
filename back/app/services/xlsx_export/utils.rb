@@ -10,6 +10,10 @@ module XlsxExport
   class Utils
     include HtmlToPlainText
 
+    def initialize
+      @column_name_counts = {}
+    end
+
     def escape_formula(text)
       return text unless text.is_a?(String)
 
@@ -48,6 +52,18 @@ module XlsxExport
           sheet.add_hyperlink location: cell.value, ref: cell
         end
       end
+    end
+
+    # Add __[0-9] suffix to duplicate column names to allow serialization of XLSX to a hash array.
+    def duplication_suffixer(column_name)
+      @column_name_counts[column_name] ||= 0
+      @column_name_counts[column_name] += 1
+      column_name + (@column_name_counts[column_name] > 1 ? "__#{@column_name_counts[column_name]}" : '')
+    end
+
+    # Remove the suffix added by duplication_suffixer.
+    def duplication_desuffixer(column_name)
+      column_name.gsub(/__[0-9]*$/, '')
     end
 
     private

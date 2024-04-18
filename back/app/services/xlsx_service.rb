@@ -35,15 +35,11 @@ class XlsxService
     workbook = RubyXL::Parser.parse_buffer(xlsx)
     worksheet = workbook.worksheets[0]
     worksheet.drop(1).map do |row|
-      column_name_count = {}
+      xlsx_utils = XlsxExport::Utils.new
       (row&.cells || []).compact.filter_map do |cell|
         if cell.value
-          column_header = worksheet[0][cell.column]&.value
-          column_name_count[column_header] ||= 0
-          column_name_count[column_header] += 1
-          # An __[0-9] suffix to enable duplicate column names to all appear in hash array
-          suffix = column_name_count[column_header] > 1 ? "__#{column_name_count[column_header]}" : ''
-          [column_header + suffix, cell.value]
+          column_header = xlsx_utils.duplication_suffixer(worksheet[0][cell.column]&.value)
+          [column_header, cell.value]
         end
       end.to_h
     end
@@ -332,9 +328,10 @@ class XlsxService
     I18n.t 'xlsx_export.anonymous'
   end
 
+  # Remove any suffixes added for duplicate column names
   def remove_duplicate_header_suffix(headers)
     headers.map do |header|
-      header.gsub(/__[0-9]*$/, '') # Remove any suffix added for duplicate field titles
+      XlsxExport::Utils.new.duplication_desuffixer header
     end
   end
 end
