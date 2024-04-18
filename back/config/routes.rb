@@ -152,6 +152,7 @@ Rails.application.routes.draw do
         resources :files, defaults: { container_type: 'Event' }, shallow: false
         resources :images, defaults: { container_type: 'Event' }
         resources :attendances, module: 'events', only: %i[create index]
+        get :attendees_xlsx, on: :member, action: 'attendees_xlsx'
       end
       resources :event_attendances, only: %i[destroy], controller: 'events/attendances'
 
@@ -233,14 +234,6 @@ Rails.application.routes.draw do
       scope 'stats' do
         with_options controller: 'stats_users' do
           get 'users_count'
-
-          get 'users_by_time'
-          get 'users_by_time_cumulative'
-          get 'active_users_by_time'
-          get 'active_users_by_time_cumulative'
-
-          get 'users_by_time_as_xlsx'
-          get 'active_users_by_time_as_xlsx'
         end
 
         with_options controller: 'stats_ideas' do
