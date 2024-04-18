@@ -132,7 +132,7 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
             'Description' => '',
             'Tags' => '',
             'Location' => '',
-            'A text field' => '',
+            'Text field' => '',
             'Number field' => '',
             'Select field' => '',
             'Multi select field' => '',
@@ -143,6 +143,23 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
       ]
       idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file)
       expect(idea_rows.count).to eq 0
+    end
+
+    it 'correctly converts fields with the same title' do
+      create(:custom_field_text, resource: custom_form, key: 'text_field2', title_multiloc: { 'en' => 'Text field' })
+      xlsx_ideas_array = [
+        {
+          pdf_pages: [1],
+          fields: {
+            'Text field' => 'First text field',
+            'Text field_1' => 'Second text field'
+          }
+        }
+      ]
+      idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file)
+      expect(idea_rows.count).to eq 1
+      expect(idea_rows[0][:custom_field_values][:text_field]).to eq 'First text field'
+      expect(idea_rows[0][:custom_field_values][:text_field2]).to eq 'Second text field'
     end
   end
 end

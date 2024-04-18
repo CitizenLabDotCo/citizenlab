@@ -15,7 +15,7 @@ class XlsxService
 
     wb.styles do |s|
       wb.add_worksheet do |sheet|
-        sheet.add_row headers, style: header_style(s)
+        sheet.add_row remove_duplicate_header_suffix(headers), style: header_style(s)
         hash_array.each do |hash|
           sheet.add_row(headers.map { |header| hash[header] })
         end
@@ -35,8 +35,16 @@ class XlsxService
     workbook = RubyXL::Parser.parse_buffer(xlsx)
     worksheet = workbook.worksheets[0]
     worksheet.drop(1).map do |row|
+      column_name_count = {}
       (row&.cells || []).compact.filter_map do |cell|
-        [worksheet[0][cell.column]&.value, cell.value] if cell.value
+        if cell.value
+          column_header = worksheet[0][cell.column]&.value
+          column_name_count[column_header] ||= 0
+          column_name_count[column_header] += 1
+          # An __[0-9] suffix to enable duplicate column names to all appear in hash array
+          suffix = column_name_count[column_header] > 1 ? "__#{column_name_count[column_header]}" : ''
+          [column_header + suffix, cell.value]
+        end
       end.to_h
     end
   end
@@ -322,6 +330,12 @@ class XlsxService
     return input.author_name unless input.anonymous?
 
     I18n.t 'xlsx_export.anonymous'
+  end
+
+  def remove_duplicate_header_suffix(headers)
+    headers.map do |header|
+      header.gsub(/__[0-9]*$/, '') # Remove any suffix added for duplicate field titles
+    end
   end
 end
 
