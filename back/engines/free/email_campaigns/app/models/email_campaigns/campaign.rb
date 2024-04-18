@@ -31,7 +31,6 @@
 module EmailCampaigns
   class Campaign < ApplicationRecord
     belongs_to :author, class_name: 'User', optional: true
-    belongs_to :project, optional: true
     has_many :examples, class_name: 'EmailCampaigns::Example', dependent: :destroy
 
     # accepts_nested_attributes_for does not work for concerns
