@@ -91,28 +91,36 @@ const ProjectFolderRow = memo<Props>(
                 as="button"
                 onClick={handleClick}
               >
-                <RowContentInner className="expand primary">
-                  {hasProjects && (
-                    <ArrowIcon
-                      expanded={hasProjects && isFolderOpen}
-                      name="chevron-right"
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  alignItems="flex-start"
+                >
+                  <RowContentInner className="expand primary">
+                    {hasProjects && (
+                      <ArrowIcon
+                        expanded={hasProjects && isFolderOpen}
+                        name="chevron-right"
+                      />
+                    )}
+
+                    <FolderIcon name="folder-outline" />
+
+                    <RowTitle
+                      value={publication.attributes.publication_title_multiloc}
                     />
-                  )}
-                  <FolderIcon name="folder-outline" />
-                  <RowTitle
-                    value={publication.attributes.publication_title_multiloc}
-                  />
-                  {isBeingDeleted && (
-                    <Box>
-                      <Spinner size="20px" color={colors.grey400} />
-                    </Box>
-                  )}
+                    {isBeingDeleted && (
+                      <Box>
+                        <Spinner size="20px" color={colors.grey400} />
+                      </Box>
+                    )}
+                  </RowContentInner>
                   <PublicationStatusLabel
                     publicationStatus={
                       publication.attributes.publication_status
                     }
                   />
-                </RowContentInner>
+                </Box>
                 <RowButton
                   className={`e2e-admin-edit-project ${
                     publication.attributes.publication_title_multiloc[

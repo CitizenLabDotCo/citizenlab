@@ -8,6 +8,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { List, Row } from 'components/admin/ResourceList';
 
+import { ActiveTab } from '..';
 import ProjectRow from '../../components/ProjectRow';
 
 import NonSortableFolderRow from './NonSortableFolderRow';
@@ -15,9 +16,11 @@ import NonSortableFolderRow from './NonSortableFolderRow';
 const NonSortableProjectList = ({
   adminPublications,
   search,
+  activeTab,
 }: {
   adminPublications: InfiniteData<IAdminPublications> | undefined;
   search?: string;
+  activeTab: ActiveTab;
 }) => {
   const rootLevelAdminPublications = adminPublications?.pages
     .map((page) => page.data)
@@ -41,6 +44,7 @@ const NonSortableProjectList = ({
                   <ProjectRow
                     publication={adminPublication}
                     actions={['manage']}
+                    showParent={!(activeTab === 'all' && !search)}
                   />
                 </Row>
               )}

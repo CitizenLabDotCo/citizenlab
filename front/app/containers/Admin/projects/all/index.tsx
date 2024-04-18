@@ -54,7 +54,14 @@ export interface Props {
   className?: string;
 }
 
-const getActiveTab = (pathname: string) => {
+export type ActiveTab =
+  | 'your-projects'
+  | 'published'
+  | 'draft'
+  | 'archived'
+  | 'all';
+
+const getActiveTab = (pathname: string): ActiveTab => {
   if (pathname.includes('/admin/projects/your-projects')) {
     return 'your-projects';
   } else if (pathname.includes('/admin/projects/published')) {
@@ -239,6 +246,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
               ) : (
                 <NonSortableProjectList
                   search={search}
+                  activeTab={activeTab}
                   adminPublications={
                     activeTab === 'your-projects'
                       ? yourAdminPublications
