@@ -64,13 +64,6 @@ const ViewButton = styled.button<{ active: boolean }>`
         : 'rgba(132, 147, 158, 0.15)'};
     color: ${(props) =>
       props.active ? colors.white : darken(0.2, props.theme.colors.tenantText)};
-
-    ${StyledIcon} {
-      fill: ${(props) =>
-        props.active
-          ? colors.white
-          : darken(0.2, props.theme.colors.tenantText)};
-    }
   }
 `;
 
