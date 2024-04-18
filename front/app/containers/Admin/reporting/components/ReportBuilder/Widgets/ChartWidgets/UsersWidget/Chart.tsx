@@ -44,7 +44,7 @@ const Chart = ({ data }: Props) => {
   return (
     <StackedBarChart
       data={data}
-      height={40}
+      height={30}
       mapping={{
         stackedLength: columns,
         fill: ({ stackIndex }) => statusColorById[columns[stackIndex]],
