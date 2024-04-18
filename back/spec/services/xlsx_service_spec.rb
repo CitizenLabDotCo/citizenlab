@@ -300,9 +300,9 @@ describe XlsxService do
     it 'can convert duplicate field titles' do
       xlsx_file = Rails.root.join('spec/fixtures/example.xlsx').binread
       xlsx_hash_array = service.xlsx_to_hash_array(xlsx_file)
-      expect(xlsx_hash_array[0].keys).to include "Duplicate field", "Duplicate field__2"
-      expect(xlsx_hash_array[0]["Duplicate field"]).to eq "Duplicate field value 1"
-      expect(xlsx_hash_array[0]["Duplicate field__2"]).to eq "Duplicate field value 2"
+      expect(xlsx_hash_array[0].keys).to include 'Duplicate field', 'Duplicate field__2'
+      expect(xlsx_hash_array[0]['Duplicate field']).to eq 'Duplicate field value 1'
+      expect(xlsx_hash_array[0]['Duplicate field__2']).to eq 'Duplicate field value 2'
     end
   end
 

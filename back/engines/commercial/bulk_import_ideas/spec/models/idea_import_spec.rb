@@ -40,7 +40,7 @@ RSpec.describe BulkImportIdeas::IdeaImport do
     context 'users created by the idea import' do
       context 'deleting ideas' do
         it 'deletes a user when deleting a draft idea' do
-          user = create(:user)
+          user = create(:user, password: nil) # Password is nil because the user is created by the idea import
           idea = create(:idea, publication_status: 'draft', author: user)
           create(:idea_import, idea: idea, user_created: true)
           idea.destroy!
@@ -50,8 +50,19 @@ RSpec.describe BulkImportIdeas::IdeaImport do
           expect { user.reload }.to raise_error(ActiveRecord::RecordNotFound)
         end
 
+        it 'does not delete a user when the user has a password' do
+          user = create(:user, password: 'abcd1234')
+          idea = create(:idea, publication_status: 'draft', author: user)
+          create(:idea_import, idea: idea, user_created: true)
+          idea.destroy!
+
+          expect(Idea.all.count).to eq 0
+          expect(described_class.all.count).to eq 0
+          expect(user.reload).to eq user
+        end
+
         it 'does not delete a user when deleting a published idea' do
-          user = create(:user)
+          user = create(:user, password: nil)
           idea = create(:idea, publication_status: 'published', author: user)
           create(:idea_import, idea: idea, user_created: true)
           idea.destroy!
