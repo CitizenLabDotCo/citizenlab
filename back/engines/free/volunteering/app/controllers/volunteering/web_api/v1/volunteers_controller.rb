@@ -31,7 +31,7 @@ module Volunteering
             .includes(:user, :cause)
 
           I18n.with_locale(current_user&.locale) do
-            xlsx = Volunteering::XlsxService.new.generate_xlsx @phase, @volunteers, view_private_attributes: true
+            xlsx = Volunteering::XlsxService.new.generate_xlsx @phase, @volunteers
             send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'volunteers.xlsx'
           end
         end

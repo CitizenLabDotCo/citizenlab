@@ -7,7 +7,7 @@ module Volunteering
     def generate_xlsx(
       phase,
       volunteers,
-      view_private_attributes: false
+      view_private_attributes: true
     )
       xlsx_service = ::XlsxService.new
       columns = [
