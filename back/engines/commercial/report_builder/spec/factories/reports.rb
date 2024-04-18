@@ -7,4 +7,8 @@ FactoryBot.define do
     layout { association :layout, content_buildable: instance, code: 'report' }
     visible { true }
   end
+
+  trait :with_phase do
+    phase factory: :phase
+  end
 end

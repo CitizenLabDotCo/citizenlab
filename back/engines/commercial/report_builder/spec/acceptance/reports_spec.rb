@@ -80,6 +80,58 @@ resource 'Reports' do
     include_examples 'not authorized to normal users'
   end
 
+  post 'web_api/v1/reports/:id/copy' do
+    route_description <<~DESC
+      Copy a report by ID. The owner of the new report will be the current user.
+      
+      Note on copying phase reports: Report copies are never associated with a phase,
+      even if the source report is a phase report. It follows that:
+      - The new report is not published (`visible = false`).
+      - Graph data units are not copied over. They only make sense in the context of a
+        report that can be published.
+    DESC
+
+    let_it_be(:report) { create(:report) }
+    let(:id) { report.id }
+
+    describe 'when authorized' do
+      let(:current_user) { create(:admin) }
+
+      before { header_token_for current_user }
+
+      example_request 'Copy a report by id' do
+        assert_status 201
+
+        clone = ReportBuilder::Report.find(response_data[:id])
+        expect(clone.name).to eq("#{report.name} (copy)")
+        expect(clone.owner_id).to eq(current_user.id)
+        expect(clone.phase_id).to be_nil
+        expect(clone.visible).to be(false)
+        expect(clone.layout.craftjs_json).to eq(report.layout.craftjs_json)
+      end
+
+      context 'when the report is a phase report with graph data units' do
+        let!(:report) do
+          create(:published_graph_data_unit).report.tap do |report|
+            report.visible = true
+            expect(report.phase_id).not_to be_nil
+          end
+        end
+
+        example 'Copy the report without the graph data units and phase association' do
+          expect { do_request }.not_to change(ReportBuilder::PublishedGraphDataUnit, :count)
+
+          clone = ReportBuilder::Report.find(response_data[:id])
+          expect(clone.published_graph_data_units).to be_empty
+          expect(clone.phase_id).to be_nil
+        end
+      end
+    end
+
+    include_examples 'not authorized to visitors'
+    include_examples 'not authorized to normal users'
+  end
+
   post 'web_api/v1/reports' do
     parameter :name, name_param_desc, scope: :report, required: false
     parameter :craftjs_json, craftjs_json_param_desc, scope: %i[report layout]

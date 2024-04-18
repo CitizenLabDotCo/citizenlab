@@ -17,6 +17,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
     it { is_expected.to permit(:show) }
     it { is_expected.to permit(:layout) }
     it { is_expected.to permit(:create) }
+    it { is_expected.to permit(:copy) }
     it { is_expected.to permit(:destroy) }
     it { is_expected.to permit(:update) }
   end
@@ -25,6 +26,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
     it { is_expected.not_to permit(:show) }
     it { is_expected.not_to permit(:layout) }
     it { is_expected.not_to permit(:create) }
+    it { is_expected.not_to permit(:copy) }
     it { is_expected.not_to permit(:destroy) }
     it { is_expected.not_to permit(:update) }
   end
@@ -83,6 +85,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
           it { is_expected.to permit(:show) }
           it { is_expected.not_to permit(:layout) }
           it { is_expected.not_to permit(:create) }
+          it { is_expected.not_to permit(:copy) }
           it { is_expected.not_to permit(:destroy) }
           it { is_expected.not_to permit(:update) }
           it { expect(scope.resolve.count).to eq(1) }
@@ -95,6 +98,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
           it { is_expected.to permit(:show) }
           it { is_expected.not_to permit(:layout) }
           it { is_expected.not_to permit(:create) }
+          it { is_expected.not_to permit(:copy) }
           it { is_expected.not_to permit(:destroy) }
           it { is_expected.not_to permit(:update) }
           it { expect(scope.resolve.count).to eq(1) }
@@ -143,6 +147,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
           it { is_expected.to permit(:show) }
           it { is_expected.not_to permit(:layout) }
           it { is_expected.not_to permit(:create) }
+          it { is_expected.not_to permit(:copy) }
           it { is_expected.not_to permit(:destroy) }
           it { is_expected.not_to permit(:update) }
         end
@@ -164,6 +169,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
           it { is_expected.to permit(:show) }
           it { is_expected.to permit(:layout) }
           it { is_expected.not_to permit(:create) }
+          it { is_expected.not_to permit(:copy) }
           it { is_expected.not_to permit(:destroy) }
           it { is_expected.not_to permit(:update) }
           it { expect(scope.resolve.count).to eq(0) }
@@ -176,6 +182,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
           it { is_expected.not_to permit(:show) }
           it { is_expected.to permit(:layout) }
           it { is_expected.not_to permit(:create) }
+          it { is_expected.not_to permit(:copy) }
           it { is_expected.not_to permit(:destroy) }
           it { is_expected.not_to permit(:update) }
           it { expect(scope.resolve.count).to eq(0) }
@@ -225,6 +232,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
         it { is_expected.not_to permit(:show) }
         it { is_expected.not_to permit(:layout) }
         it { is_expected.not_to permit(:create) }
+        it { is_expected.not_to permit(:copy) }
         it { is_expected.not_to permit(:destroy) }
         it { is_expected.not_to permit(:update) }
         it { expect { scope.resolve.count }.to raise_error(Pundit::NotAuthorizedError) }
@@ -236,6 +244,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
         it { is_expected.not_to permit(:show) }
         it { is_expected.to permit(:layout) }
         it { is_expected.not_to permit(:create) }
+        it { is_expected.not_to permit(:copy) }
         it { is_expected.not_to permit(:destroy) }
         it { is_expected.not_to permit(:update) }
         it { expect { scope.resolve.count }.to raise_error(Pundit::NotAuthorizedError) }
@@ -274,6 +283,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
         it { is_expected.not_to permit(:show) }
         it { is_expected.to permit(:layout) }
         it { is_expected.not_to permit(:create) }
+        it { is_expected.not_to permit(:copy) }
         it { is_expected.not_to permit(:destroy) }
         it { is_expected.not_to permit(:update) }
         it { expect { scope.resolve.count }.to raise_error(Pundit::NotAuthorizedError) }

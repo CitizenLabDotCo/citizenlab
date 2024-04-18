@@ -26,6 +26,25 @@ module ReportBuilder
           render json: serialize_report(report), status: :created
         end
 
+        def copy
+          source_report = authorize(ReportBuilder::Report.find(params[:id]))
+
+          report = source_report.dup.tap do |r|
+            r.name = "#{source_report.name} (copy)"
+            r.owner_id = current_user.id
+            r.phase_id = nil
+            r.visible = false
+            r.layout = source_report.layout.dup
+          end
+
+          authorize(report)
+          side_fx_service.before_create(report, current_user)
+          return send_unprocessable_entity(report) unless report.save
+
+          side_fx_service.after_create(report, current_user)
+          render json: serialize_report(report), status: :created
+        end
+
         def update
           report.attributes = update_params
           side_fx_service.before_update(report, current_user)
