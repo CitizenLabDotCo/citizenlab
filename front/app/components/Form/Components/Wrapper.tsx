@@ -25,21 +25,18 @@ const Wrapper = ({ id, layoutType, isSurvey, children }: Props) => {
           : '100%'
       }
       height={
-        isSmallerThanPhone
-          ? '100%'
-          : layoutType === 'fullpage' && !isSurvey
+        !isSmallerThanPhone && layoutType === 'fullpage' && !isSurvey
           ? '100vh'
           : '100%'
       }
-      display="flex"
-      flexDirection="column"
       maxHeight={
-        layoutType === 'inline'
-          ? 'auto'
-          : isSmallerThanPhone || isSurvey
+        layoutType === 'inline' ||
+        (layoutType === 'fullpage' && (isSmallerThanPhone || isSurvey))
           ? 'auto'
           : `calc(100vh - ${stylingConsts.menuHeight}px)`
       }
+      display="flex"
+      flexDirection="column"
       id={id}
     >
       {children}
