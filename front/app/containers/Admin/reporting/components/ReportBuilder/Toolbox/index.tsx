@@ -277,7 +277,6 @@ const ReportBuilderToolbox = ({
               id="e2e-draggable-users-widget"
               component={
                 <UsersWidget
-                  title={toMultiloc(WIDGET_TITLES.UsersWidget)}
                   projectId={selectedProjectId}
                   startAt={undefined}
                   endAt={chartEndDate}
