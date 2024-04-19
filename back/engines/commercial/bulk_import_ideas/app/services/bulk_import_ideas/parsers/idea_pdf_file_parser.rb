@@ -69,6 +69,7 @@ module BulkImportIdeas::Parsers
       form_fields = import_form_data[:fields]
       form_fields.each do |form_field|
         idea.each do |idea_field|
+          # TODO: JS - Should we trim the field names?? Just in case
           if form_field[:name] == idea_field[:name] || form_field[:description] == idea_field[:name]
             if form_field[:type] == 'field' && idea_field[:value].present?
               new_field = form_field
