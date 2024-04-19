@@ -17,9 +17,7 @@ EmailCampaigns::Engine.routes.draw do
         patch 'by_campaign_id/:campaign_id', action: 'update_by_campaign_id', on: :collection
       end
 
-      resources :projects, only: %i[index] do
-        get ':context_id/email_campaigns', on: :collection, to: 'campaigns#index'
-      end
+      get 'projects/:context_id/email_campaigns', to: 'campaigns#index'
     end
   end
 
