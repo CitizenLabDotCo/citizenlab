@@ -104,7 +104,7 @@ module BulkImportIdeas::Parsers
         email = fields.find { |f| f[:name] == locale_email_label }
         email_value = email ? email[:value].gsub(/\s+/, '') : nil # Remove any spaces
         # Remove the email if it does not validate
-        email_value = email_value&.match(User::EMAIL_REGEX) ? email_value : nil
+        email_value = nil unless email_value&.match(User::EMAIL_REGEX)
 
         locale_first_name_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.first_name') }
         first_name = fields.find { |f| f[:name] == locale_first_name_label }
