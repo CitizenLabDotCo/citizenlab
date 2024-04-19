@@ -18,7 +18,7 @@ module EmailCampaigns
         @campaigns = @campaigns.where.not(type: campaign_types)
       end
 
-      @campaigns = @campaigns.where(context_id: params[:context_ids]) if params[:context_ids]
+      @campaigns = @campaigns.where(context_id: params[:context_id]) if params[:context_id]
       @campaigns = @campaigns.manual if params[:manual] == 'true'
       @campaigns = @campaigns.automatic if params[:manual] == 'false'
 

@@ -28,7 +28,7 @@ resource 'Campaigns' do
       parameter :campaign_names, "An array of campaign names that should be returned. Possible values are #{EmailCampaigns::DeliveryService.new.campaign_classes.map(&:campaign_name).join(', ')}", required: false
       parameter :without_campaign_names, "An array of campaign names that should not be returned. Possible values are #{EmailCampaigns::DeliveryService.new.campaign_classes.map(&:campaign_name).join(', ')}", required: false
       parameter :manual, 'Filter manual campaigns - only manual if true, only automatic if false', required: false, type: 'boolean'
-      parameter :context_ids, 'An array of project IDs that will be used to filter only campaigns for those projects', required: false
+      parameter :context_id, 'An ID used to filter only campaigns for the given context', required: false
 
       example_request 'List all campaigns' do
         assert_status 200
@@ -58,12 +58,6 @@ resource 'Campaigns' do
         do_request(manual: false)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 2
-      end
-
-      example 'List campaigns for specific project(s)' do
-        do_request(context_ids: [@manual_project_participants_campaign.project.id])
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 1
       end
 
       example 'List all manual campaigns when one has been sent' do
@@ -325,6 +319,19 @@ resource 'Campaigns' do
         })
       end
     end
+
+    get 'web_api/v1/projects/:context_id/email_campaigns' do
+      let(:campaign1) { create(:manual_project_participants_campaign) }
+      let(:campaign2) { create(:manual_campaign) }
+      let(:context_id) { campaign1.project.id }
+
+      example_request 'List all campaigns associated with a project' do
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 1
+        expect(json_response[:data].pluck(:id)).to match_array [campaign1.id]
+      end
+    end
   end
 
   context 'as a project moderator' do
@@ -345,7 +352,7 @@ resource 'Campaigns' do
       parameter :campaign_names, "An array of campaign names that should be returned. Possible values are #{EmailCampaigns::DeliveryService.new.campaign_classes.map(&:campaign_name).join(', ')}", required: false
       parameter :without_campaign_names, "An array of campaign names that should not be returned. Possible values are #{EmailCampaigns::DeliveryService.new.campaign_classes.map(&:campaign_name).join(', ')}", required: false
       parameter :manual, 'Filter manual campaigns - only manual if true, only automatic if false', required: false, type: 'boolean'
-      parameter :context_ids, 'An array of project IDs that will be used to filter only campaigns for those projects', required: false
+      parameter :context_id, 'An ID used to filter only campaigns for the given context', required: false
 
       example_request 'List all campaigns only lists campaigns manageable by the project moderator' do
         assert_status 200
@@ -420,7 +427,7 @@ resource 'Campaigns' do
         parameter :subject_multiloc, 'The of the email, as a multiloc string', required: true
         parameter :body_multiloc, 'The body of the email campaign, as a multiloc string. Supports basic HTML', required: true
         parameter :group_ids, 'Array of group ids to whom the email should be sent', required: false
-        parameter :context_id, 'ID of resource for which the campaign is created (required for some campaigns)', required: false
+        parameter :context_id, 'ID of the context with which the campaign is associated (required for some campaigns)', required: false
       end
       ValidationErrorHelper.new.error_fields self, EmailCampaigns::Campaign
 
