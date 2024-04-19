@@ -4,9 +4,9 @@ require 'rails_helper'
 
 RSpec.describe EmailCampaigns::Campaign do
   describe 'validate context_id' do
-    it 'is invalid if context_id is present && skip_resource_absence is false' do
+    it 'is invalid if context_id is present && skip_context_absence is false' do
       campaign = build(:invite_received_campaign, context_id: SecureRandom.uuid)
-      expect(campaign.send(:skip_resource_absence?)).to be false
+      expect(campaign.send(:skip_context_absence?)).to be false
       expect(campaign).to be_invalid
     end
   end

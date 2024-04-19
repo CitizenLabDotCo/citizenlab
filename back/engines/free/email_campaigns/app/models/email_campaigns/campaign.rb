@@ -43,7 +43,7 @@ module EmailCampaigns
 
     before_validation :set_enabled, on: :create
 
-    validates :context_id, absence: true, unless: :skip_resource_absence?
+    validates :context_id, absence: true, unless: :skip_context_absence?
     validate :validate_recipients, on: :send
 
     scope :manual, -> { where type: DeliveryService.new.manual_campaign_types }
@@ -149,7 +149,7 @@ module EmailCampaigns
       }).serializable_hash
     end
 
-    def skip_resource_absence?
+    def skip_context_absence?
       false
     end
 
