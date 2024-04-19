@@ -27,8 +27,7 @@ resource 'Campaigns' do
       end
       parameter :campaign_names, "An array of campaign names that should be returned. Possible values are #{EmailCampaigns::DeliveryService.new.campaign_classes.map(&:campaign_name).join(', ')}", required: false
       parameter :without_campaign_names, "An array of campaign names that should not be returned. Possible values are #{EmailCampaigns::DeliveryService.new.campaign_classes.map(&:campaign_name).join(', ')}", required: false
-      parameter :manual_campaigns_only, 'Filter only manual campaigns if value is true', required: false, type: 'boolean'
-      parameter :automatic_campaigns_only, 'Filter only automatic campaigns if value is true', required: false, type: 'boolean'
+      parameter :manual, 'Filter manual campaigns - only manual if true, only automatic if false', required: false, type: 'boolean'
       parameter :context_ids, 'An array of project IDs that will be used to filter only campaigns for those projects', required: false
 
       example_request 'List all campaigns' do
@@ -50,13 +49,13 @@ resource 'Campaigns' do
       end
 
       example 'List all manual campaigns' do
-        do_request(manual_campaigns_only: true)
+        do_request(manual: true)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 5
       end
 
       example 'List all automatic campaigns' do
-        do_request(automatic_campaigns_only: true)
+        do_request(manual: false)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 2
       end
@@ -69,7 +68,7 @@ resource 'Campaigns' do
 
       example 'List all manual campaigns when one has been sent' do
         create_list(:delivery, 5, campaign: @manual_campaigns.first)
-        do_request(manual_campaigns_only: true)
+        do_request(manual: true)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 5
 
@@ -345,8 +344,7 @@ resource 'Campaigns' do
       end
       parameter :campaign_names, "An array of campaign names that should be returned. Possible values are #{EmailCampaigns::DeliveryService.new.campaign_classes.map(&:campaign_name).join(', ')}", required: false
       parameter :without_campaign_names, "An array of campaign names that should not be returned. Possible values are #{EmailCampaigns::DeliveryService.new.campaign_classes.map(&:campaign_name).join(', ')}", required: false
-      parameter :manual_campaigns_only, 'Filter only manual campaigns if value is true', required: false, type: 'boolean'
-      parameter :automatic_campaigns_only, 'Filter only automatic campaigns if value is true', required: false, type: 'boolean'
+      parameter :manual, 'Filter manual campaigns - only manual if true, only automatic if false', required: false, type: 'boolean'
       parameter :context_ids, 'An array of project IDs that will be used to filter only campaigns for those projects', required: false
 
       example_request 'List all campaigns only lists campaigns manageable by the project moderator' do
