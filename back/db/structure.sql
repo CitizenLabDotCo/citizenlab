@@ -298,7 +298,7 @@ DROP INDEX IF EXISTS public.index_email_campaigns_deliveries_on_campaign_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_consents_on_user_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_consents_on_campaign_type_and_user_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_on_type;
-DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_on_resource_id;
+DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_on_context_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_on_author_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_groups_on_group_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_groups_on_campaign_id;
@@ -1393,7 +1393,7 @@ CREATE TABLE public.email_campaigns_campaigns (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     deliveries_count integer DEFAULT 0 NOT NULL,
-    resource_id character varying
+    context_id character varying
 );
 
 
@@ -4918,10 +4918,10 @@ CREATE INDEX index_email_campaigns_campaigns_on_author_id ON public.email_campai
 
 
 --
--- Name: index_email_campaigns_campaigns_on_resource_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_email_campaigns_campaigns_on_context_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_email_campaigns_campaigns_on_resource_id ON public.email_campaigns_campaigns USING btree (resource_id);
+CREATE INDEX index_email_campaigns_campaigns_on_context_id ON public.email_campaigns_campaigns USING btree (context_id);
 
 
 --
@@ -7496,5 +7496,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240301120023'),
 ('20240305122502'),
 ('20240328141200'),
-('20240408135803'),
-('20240409150000');
+('20240409150000'),
+('20240419100508');
+
+

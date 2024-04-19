@@ -5,7 +5,7 @@ module EmailCampaigns
     module Project
       def self.included(base)
         base.has_many :email_campaigns,
-          foreign_key: :resource_id,
+          foreign_key: :context_id,
           class_name: 'EmailCampaigns::Campaigns::ManualProjectParticipants'
       end
     end

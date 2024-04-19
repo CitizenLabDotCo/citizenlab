@@ -16,13 +16,13 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  deliveries_count :integer          default(0), not null
-#  resource_id      :string
+#  context_id       :string
 #
 # Indexes
 #
-#  index_email_campaigns_campaigns_on_author_id    (author_id)
-#  index_email_campaigns_campaigns_on_resource_id  (resource_id)
-#  index_email_campaigns_campaigns_on_type         (type)
+#  index_email_campaigns_campaigns_on_author_id   (author_id)
+#  index_email_campaigns_campaigns_on_context_id  (context_id)
+#  index_email_campaigns_campaigns_on_type        (type)
 #
 # Foreign Keys
 #
@@ -43,7 +43,7 @@ module EmailCampaigns
 
     before_validation :set_enabled, on: :create
 
-    validates :resource_id, absence: true, unless: :skip_resource_absence?
+    validates :context_id, absence: true, unless: :skip_resource_absence?
     validate :validate_recipients, on: :send
 
     scope :manual, -> { where type: DeliveryService.new.manual_campaign_types }

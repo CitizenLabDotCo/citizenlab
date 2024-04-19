@@ -29,7 +29,7 @@ resource 'Campaigns' do
       parameter :without_campaign_names, "An array of campaign names that should not be returned. Possible values are #{EmailCampaigns::DeliveryService.new.campaign_classes.map(&:campaign_name).join(', ')}", required: false
       parameter :manual_campaigns_only, 'Filter only manual campaigns if value is true', required: false, type: 'boolean'
       parameter :automatic_campaigns_only, 'Filter only automatic campaigns if value is true', required: false, type: 'boolean'
-      parameter :resource_ids, 'An array of project IDs that will be used to filter only campaigns for those projects', required: false
+      parameter :context_ids, 'An array of project IDs that will be used to filter only campaigns for those projects', required: false
 
       example_request 'List all campaigns' do
         assert_status 200
@@ -62,7 +62,7 @@ resource 'Campaigns' do
       end
 
       example 'List campaigns for specific project(s)' do
-        do_request(resource_ids: [@manual_project_participants_campaign.project.id])
+        do_request(context_ids: [@manual_project_participants_campaign.project.id])
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 1
       end
@@ -347,7 +347,7 @@ resource 'Campaigns' do
       parameter :without_campaign_names, "An array of campaign names that should not be returned. Possible values are #{EmailCampaigns::DeliveryService.new.campaign_classes.map(&:campaign_name).join(', ')}", required: false
       parameter :manual_campaigns_only, 'Filter only manual campaigns if value is true', required: false, type: 'boolean'
       parameter :automatic_campaigns_only, 'Filter only automatic campaigns if value is true', required: false, type: 'boolean'
-      parameter :resource_ids, 'An array of project IDs that will be used to filter only campaigns for those projects', required: false
+      parameter :context_ids, 'An array of project IDs that will be used to filter only campaigns for those projects', required: false
 
       example_request 'List all campaigns only lists campaigns manageable by the project moderator' do
         assert_status 200
@@ -422,7 +422,7 @@ resource 'Campaigns' do
         parameter :subject_multiloc, 'The of the email, as a multiloc string', required: true
         parameter :body_multiloc, 'The body of the email campaign, as a multiloc string. Supports basic HTML', required: true
         parameter :group_ids, 'Array of group ids to whom the email should be sent', required: false
-        parameter :resource_id, 'ID of resource for which the campaign is created (required for some campaigns)', required: false
+        parameter :context_id, 'ID of resource for which the campaign is created (required for some campaigns)', required: false
       end
       ValidationErrorHelper.new.error_fields self, EmailCampaigns::Campaign
 
@@ -432,7 +432,7 @@ resource 'Campaigns' do
       let(:body_multiloc) { campaign.body_multiloc }
       let(:sender) { 'author' }
       let(:reply_to) { 'test@emailer.com' }
-      let(:resource_id) { @user.roles.first['project_id'] }
+      let(:context_id) { @user.roles.first['project_id'] }
 
       example_request 'Create a campaign, manageable by project moderator, for moderated project' do
         expect(response_status).to eq 201
@@ -446,7 +446,7 @@ resource 'Campaigns' do
 
       example '[Unauthorized] Create campaign, manageable by project moderator, for unmoderated project', document: false do
         do_request(campaign: {
-          resource_id: manual_project_participants_campaign_not_moderated_by_this_pm.project.id,
+          context_id: manual_project_participants_campaign_not_moderated_by_this_pm.project.id,
           campaign_name: 'manual_project_participants'
         })
         expect(response_status).to eq 401
@@ -537,7 +537,7 @@ resource 'Campaigns' do
       let!(:idea) { create(:idea, project: project, author: participant, publication_status: 'published', phases: project.phases) }
 
       example 'Send out the campaign now' do
-        @manual_project_participants_campaign.update(resource_id: project.id)
+        @manual_project_participants_campaign.update(context_id: project.id)
         @user.update(roles: [{ type: 'project_moderator', project_id: project.id }])
 
         do_request(id: @manual_project_participants_campaign.id)
@@ -548,7 +548,7 @@ resource 'Campaigns' do
       end
 
       example '[Unauthorized] Send out a campaign manageable by project moderator, for unmoderated project', document: false do
-        manual_project_participants_campaign_not_moderated_by_this_pm.update(resource_id: project.id)
+        manual_project_participants_campaign_not_moderated_by_this_pm.update(context_id: project.id)
 
         do_request(id: manual_project_participants_campaign_not_moderated_by_this_pm.id)
         assert_status 401

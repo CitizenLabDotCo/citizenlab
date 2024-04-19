@@ -14,7 +14,7 @@ module EmailCampaigns
         if user&.active? && user&.admin?
           scope.all
         elsif user&.active? && user&.project_moderator?
-          scope.manageable_by_project_moderator.where(resource_id: user.moderatable_project_ids)
+          scope.manageable_by_project_moderator.where(context_id: user.moderatable_project_ids)
         else
           scope.none
         end
@@ -75,7 +75,7 @@ module EmailCampaigns
     end
 
     def moderator_can_access_and_modify?
-      user.moderatable_project_ids.include?(record.resource_id) && record.manageable_by_project_moderator?
+      user.moderatable_project_ids.include?(record.context_id) && record.manageable_by_project_moderator?
     end
   end
 end

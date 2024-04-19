@@ -18,7 +18,7 @@ module EmailCampaigns
         @campaigns = @campaigns.where.not(type: campaign_types)
       end
 
-      @campaigns = @campaigns.where(resource_id: params[:resource_ids]) if params[:resource_ids]
+      @campaigns = @campaigns.where(context_id: params[:context_ids]) if params[:context_ids]
       @campaigns = @campaigns.manual if params[:manual_campaigns_only] == 'true'
       @campaigns = @campaigns.automatic if params[:automatic_campaigns_only] == 'true'
 
@@ -140,7 +140,7 @@ module EmailCampaigns
         :enabled,
         :sender,
         :reply_to,
-        :resource_id,
+        :context_id,
         group_ids: [],
         subject_multiloc: I18n.available_locales,
         body_multiloc: I18n.available_locales
