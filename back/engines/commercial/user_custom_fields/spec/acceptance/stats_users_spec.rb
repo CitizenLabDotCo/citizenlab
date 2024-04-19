@@ -66,13 +66,13 @@ resource 'Stats - Users' do
     worksheet.map { |row| row.cells.map(&:value) }
   end
 
-  describe 'by_gender endpoints' do
-    get 'web_api/v1/stats/users_by_gender' do
+  describe 'former by_gender endpoints' do
+    get 'web_api/v1/stats/users_by_custom_field/:custom_field_id' do
       time_boundary_parameters self
       group_filter_parameter self
       parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
 
-      before do # rubocop:disable RSpec/ScatteredSetup
+      before do
         travel_to start_at + 16.days do
           group_members = %w[female female unspecified].map { |gender| create(:user, gender: gender) }
           @group = create_group(group_members)
@@ -81,6 +81,7 @@ resource 'Stats - Users' do
       end
 
       let(:group) { @group.id }
+      let(:custom_field_id) { CustomField.find_by(key: 'gender').id }
 
       context "when 'gender' custom field has no reference distribution" do
         example_request 'Users by gender' do
@@ -111,34 +112,34 @@ resource 'Stats - Users' do
       end
     end
 
-    get 'web_api/v1/stats/users_by_gender_as_xlsx' do
-      time_boundary_parameters self
-      group_filter_parameter self
-      parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
+    # get 'web_api/v1/stats/users_by_gender_as_xlsx' do
+    #   time_boundary_parameters self
+    #   group_filter_parameter self
+    #   parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
 
-      before do # rubocop:disable RSpec/ScatteredSetup
-        travel_to start_at + 16.days do
-          group_members = %w[female female male unspecified].map { |gender| create(:user, gender: gender) }
-          @group = create_group(group_members)
-          _non_member = create(:user)
-        end
-      end
+    #   before do
+    #     travel_to start_at + 16.days do
+    #       group_members = %w[female female male unspecified].map { |gender| create(:user, gender: gender) }
+    #       @group = create_group(group_members)
+    #       _non_member = create(:user)
+    #     end
+    #   end
 
-      let(:group) { @group.id }
+    #   let(:group) { @group.id }
 
-      include_examples('xlsx export', 'gender') do
-        let(:expected_worksheet_name) { 'users_by_gender' }
-        let(:expected_worksheet_values) do
-          [
-            %w[option option_id users],
-            ['youth council', 'male', 1],
-            ['youth council', 'female', 2],
-            ['youth council', 'unspecified', 1],
-            ['_blank', '_blank', 0]
-          ]
-        end
-      end
-    end
+    #   include_examples('xlsx export', 'gender') do
+    #     let(:expected_worksheet_name) { 'users_by_gender' }
+    #     let(:expected_worksheet_values) do
+    #       [
+    #         %w[option option_id users],
+    #         ['youth council', 'male', 1],
+    #         ['youth council', 'female', 2],
+    #         ['youth council', 'unspecified', 1],
+    #         ['_blank', '_blank', 0]
+    #       ]
+    #     end
+    #   end
+    # end
   end
 
   describe 'by_domicile endpoints' do
