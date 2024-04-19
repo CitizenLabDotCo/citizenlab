@@ -6,8 +6,7 @@ module EmailCampaigns
       def self.included(base)
         base.has_many :email_campaigns,
           foreign_key: :resource_id,
-          class_name: 'EmailCampaigns::Campaigns::ManualProjectParticipants',
-          dependent: :destroy
+          class_name: 'EmailCampaigns::Campaigns::ManualProjectParticipants'
       end
     end
   end

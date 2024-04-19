@@ -432,11 +432,6 @@ resource 'Projects' do
         do_request
         expect(moderator.reload.project_moderator?(id)).to be false
       end
-
-      example 'Deleting a project removes associated manual email campaigns' do
-        create(:manual_project_participants_campaign, project: project)
-        expect { do_request }.to change(EmailCampaigns::Campaign, :count).by(-1)
-      end
     end
 
     post 'web_api/v1/projects/:id/copy' do
