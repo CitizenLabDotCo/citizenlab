@@ -74,7 +74,7 @@ export interface VisitorsTrafficSourcesResponse {
   };
 }
 
-type GenderOption = 'male' | 'female' | 'unspecified' | '_blank';
+export type GenderOption = 'male' | 'female' | 'unspecified' | '_blank';
 
 export type UsersByGenderResponse = {
   data: {
