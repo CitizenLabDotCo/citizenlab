@@ -83,6 +83,7 @@ module BulkImportIdeas::Parsers
 
     def structure_raw_fields(fields)
       fields.map do |name, value|
+        name = XlsxExport::Utils.new.remove_duplicate_column_name_suffix name
         {
           name: name,
           value: value,
