@@ -18,7 +18,7 @@ describe XlsxService do
     let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
     let(:worksheet) { workbook.worksheets[0] }
 
-    it 'includes imported value' do
+    it 'includes column to show the idea was imported' do
       headers = worksheet[0].cells.map(&:value)
       import_column_index = headers.find_index 'imported'
       idea1_row = worksheet[1].cells.map(&:value)

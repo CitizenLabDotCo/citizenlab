@@ -104,13 +104,13 @@ describe BulkImportIdeas::Importers::IdeaImporter do
 
     it 'imports ideas as draft with publication info' do
       create(:user, email: 'userimport@citizenlab.co')
-      create(:project, title_multiloc: { 'en' => 'Project title' })
+      project = create(:project, title_multiloc: { 'en' => 'Project title' })
 
       idea_rows = [
         {
           title_multiloc: { 'en' => 'My idea title' },
           body_multiloc: { 'en' => 'My idea description' },
-          project_title: 'Project title',
+          project_id: project.id,
           user_email: 'userimport@citizenlab.co'
         }
       ]
@@ -140,60 +140,34 @@ describe BulkImportIdeas::Importers::IdeaImporter do
       expect(project.reload.ideas.count).to eq 2
     end
 
-    it 'does not accept invalid import data' do
-      create(:user, email: 'userimport@citizenlab.co')
-      create(:project, title_multiloc: { 'en' => 'Project title' })
-
-      idea_rows = [
-        {
-          id: '1',
-          title_multiloc: { 'en' => 'My idea title' },
-          body_multiloc: { 'en' => 'My idea description' },
-          project_title: 'Project title',
-          user_email: 'userimport@citizenlab.co'
-        },
-        {
-          id: '2',
-          title_multiloc: { 'en' => 'My idea title' },
-          body_multiloc: { 'en' => 'My idea description' },
-          project_title: 'Non-existing project',
-          user_email: 'userimport@citizenlab.co'
-        }
-      ]
-      expect { service.import idea_rows }.to raise_error(
-        an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_ideas_project_not_found', params: { value: 'Non-existing project', row: '2' }))
-      )
-      expect(Idea.count).to eq 0
-    end
-
     it 'does not accept import data with invalid date format' do
       create(:user, email: 'userimport@citizenlab.co')
-      create(:project, title_multiloc: { 'en' => 'Project title' })
+      project = create(:project, title_multiloc: { 'en' => 'Project title' })
 
       idea_rows = [
         {
           title_multiloc: { 'en' => 'My idea title' },
           body_multiloc: { 'en' => 'My idea description' },
-          project_title: 'Project title',
+          project_id: project.id,
           user_email: 'userimport@citizenlab.co',
           published_at: '01/01/2021'
         }
       ]
       expect { service.import idea_rows }.to raise_error(
-        an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_ideas_publication_date_invalid_format', params: { value: '01/01/2021', row: nil }))
+        an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_publication_date_invalid_format', params: { value: '01/01/2021', row: nil }))
       )
 
       idea_rows = [
         {
           title_multiloc: { 'en' => 'My idea title' },
           body_multiloc: { 'en' => 'My idea description' },
-          project_title: 'Project title',
+          project_id: project.id,
           user_email: 'userimport@citizenlab.co',
           published_at: '01-13-2021'
         }
       ]
       expect { service.import idea_rows }.to raise_error(
-        an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_ideas_publication_date_invalid_format', params: { value: '01-13-2021', row: nil }))
+        an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_publication_date_invalid_format', params: { value: '01-13-2021', row: nil }))
       )
     end
 

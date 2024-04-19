@@ -1,10 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import ideasKeys from 'api/ideas/keys';
+import { IIdeaApprovals } from 'api/ideas/types';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import { IIdeaApprovals } from 'api/ideas/types';
-import ideasKeys from 'api/ideas/keys';
 
 const approveIdeas = async (phaseId: string) =>
   fetcher<IIdeaApprovals>({

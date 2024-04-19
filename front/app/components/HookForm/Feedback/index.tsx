@@ -3,9 +3,15 @@ import React, { useEffect, useState } from 'react';
 import { Text, Title, Box } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { useFormContext } from 'react-hook-form';
-import { RHFErrors } from 'typings';
+import { CLError, RHFErrors } from 'typings';
 
-import Error, { findErrorMessage, TFieldName } from 'components/UI/Error';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import Error, {
+  findErrorMessage,
+  getApiErrorValues,
+  TFieldName,
+} from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
 import { scrollToElement } from 'utils/scroll';
@@ -21,6 +27,8 @@ type FeedbackProps = {
 const Feedback = ({ successMessage, onlyShowErrors }: FeedbackProps) => {
   const { formatMessage } = useIntl();
   const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(true);
+  const { data: appConfiguration } = useAppConfiguration();
+
   const {
     formState: {
       errors: formContextErrors,
@@ -38,7 +46,8 @@ const Feedback = ({ successMessage, onlyShowErrors }: FeedbackProps) => {
   }, [submitCount]);
 
   const getAllErrorMessages = () => {
-    const errorMessages: Array<{ field: string; message?: string }> = [];
+    const errorMessages: Array<{ field: string; message?: string | Element }> =
+      [];
 
     for (const field in formContextErrors) {
       const errors = get(formContextErrors, field) as RHFErrors;
@@ -59,9 +68,12 @@ const Feedback = ({ successMessage, onlyShowErrors }: FeedbackProps) => {
           String(apiError)
         );
 
+        const values = getApiErrorValues(errors as CLError, appConfiguration);
         errorMessages.push({
           field,
-          message: apiErrorMessage ? formatMessage(apiErrorMessage) : '',
+          message: apiErrorMessage
+            ? formatMessage(apiErrorMessage, values)
+            : '',
         });
       } else if (multilocFieldFirstError) {
         errorMessages.push({
