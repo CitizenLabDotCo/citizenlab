@@ -141,36 +141,6 @@ resource 'Stats - Users' do
     end
   end
 
-  describe 'by_birthyear endpoints' do
-    before do
-      travel_to start_at + 16.days do
-        group_members = [1980, 1980, 1976].map { |year| create(:user, birthyear: year) }
-        @group = create_group(group_members)
-        _non_member = create(:user, birthyear: 1980)
-      end
-
-      travel_to start_at + 18.days do
-        @project = create(:project)
-        @idea1 = create(:idea, project: @project)
-        create(:published_activity, item: @idea1, user: @idea1.author)
-      end
-    end
-
-    shared_examples 'ignore reference distribution' do
-      example 'is not affected by the presence of a reference distribution', document: false do
-        do_request
-        response_without_reference = response_body
-
-        create(:binned_distribution)
-        do_request
-        response_with_reference = response_body
-
-        expect(response_status).to eq 200
-        expect(response_without_reference).to eq response_with_reference
-      end
-    end
-  end
-
   describe 'by_domicile endpoints' do
     before do
       travel_to start_at + 16.days do
