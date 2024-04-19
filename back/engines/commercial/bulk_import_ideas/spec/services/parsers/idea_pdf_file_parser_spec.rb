@@ -151,22 +151,22 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
       expect(rows[1][:pdf_pages]).to eq [3, 4]
     end
 
-    it 'does not return any personal data if email does not validate' do
+    it 'does not return an email address if email does not validate' do
       ideas = [{
         pdf_pages: [1, 2],
-        fields: { 'First name' => 'John', 'Last name' => 'Rambo', 'Email address' => 'john_rambo.com', 'Permission' => 'X' }
+        fields: { 'First name(s)' => 'John', 'Last name' => 'Rambo', 'Email address' => 'john_rambo.com', 'Permission' => 'X' }
       }]
       rows = service.send(:ideas_to_idea_rows, ideas, import_file)
-      expect(rows[0][:permission]).to be_nil
-      expect(rows[0].keys).not_to include :user_email
-      expect(rows[0].keys).not_to include :user_first_name
-      expect(rows[0].keys).not_to include :user_last_name
+      expect(rows[0][:user_consent]).to be true
+      expect(rows[0][:user_email]).to be_nil
+      expect(rows[0][:user_first_name]).to eq 'John'
+      expect(rows[0][:user_last_name]).to eq 'Rambo'
     end
 
     it 'corrects the email if it has spaces in it' do
       ideas = [{
         pdf_pages: [1, 2],
-        fields: { 'First name' => 'John', 'Last name' => 'Rambo', 'Email address' => 'john  @rambo.com', 'Permission' => 'X' }
+        fields: { 'First name(s)' => 'John', 'Last name' => 'Rambo', 'Email address' => 'john  @rambo.com', 'Permission' => 'X' }
       }]
       rows = service.send(:ideas_to_idea_rows, ideas, import_file)
       expect(rows[0][:user_email]).to eq 'john@rambo.com'
