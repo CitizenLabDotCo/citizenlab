@@ -36,7 +36,7 @@ const Wrapper = ({ id, layoutType, isSurvey, children }: Props) => {
         }
       : {
           minHeight: '100%',
-          height: '100%',
+          height: '100vh',
           maxHeight: `calc(100vh - ${stylingConsts.menuHeight}px)`,
         },
   }[layoutType];
