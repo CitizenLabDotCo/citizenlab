@@ -10,7 +10,6 @@ import {
 import { usersByAgeXlsxEndpoint } from 'api/users_by_age/util';
 import { usersByCustomFieldXlsxEndpoint } from 'api/users_by_custom_field/util';
 import { usersByDomicileXlsxEndpoint } from 'api/users_by_domicile/util';
-import { usersByGenderXlsxEndpoint } from 'api/users_by_gender/util';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -45,8 +44,6 @@ const getXlsxEndpoint = (
   userCustomFieldId: string
 ): string => {
   switch (code) {
-    case 'gender':
-      return usersByGenderXlsxEndpoint;
     case 'domicile':
       return usersByDomicileXlsxEndpoint;
     case 'birthyear':

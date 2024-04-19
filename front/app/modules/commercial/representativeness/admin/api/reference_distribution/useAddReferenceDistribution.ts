@@ -3,7 +3,6 @@ import { CLErrors } from 'typings';
 
 import userCustomFieldsKeys from 'api/user_custom_fields/keys';
 import usersByCustomFieldKeys from 'api/users_by_custom_field/keys';
-import usersByGenderKeys from 'api/users_by_gender/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
@@ -29,10 +28,6 @@ const useAddReferenceDistribution = () => {
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
         queryKey: userCustomFieldsKeys.lists(),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: usersByGenderKeys.all(),
       });
 
       queryClient.invalidateQueries({
