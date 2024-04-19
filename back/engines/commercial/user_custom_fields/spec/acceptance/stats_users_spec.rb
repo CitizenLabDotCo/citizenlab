@@ -72,7 +72,7 @@ resource 'Stats - Users' do
       group_filter_parameter self
       parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
 
-      before do
+      before do # rubocop:disable RSpec/ScatteredSetup
         travel_to start_at + 16.days do
           group_members = %w[female female unspecified].map { |gender| create(:user, gender: gender) }
           @group = create_group(group_members)
