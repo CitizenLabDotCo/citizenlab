@@ -22,20 +22,22 @@ const Wrapper = ({ id, layoutType, isSurvey, children }: Props) => {
       height: '100%',
       maxHeight: 'auto',
     },
-    fullpage: isSmallerThanPhone
+    fullpage: isSurvey
       ? {
-          minHeight: isSurvey
-            ? '100%'
-            : `calc(100vh - ${stylingConsts.menuHeight}px)`,
+          minHeight: '100%',
+          height: '100%',
+          maxHeight: 'auto',
+        }
+      : isSmallerThanPhone
+      ? {
+          minHeight: `calc(100vh - ${stylingConsts.menuHeight}px)`,
           height: '100%',
           maxHeight: 'auto',
         }
       : {
           minHeight: '100%',
           height: '100%',
-          maxHeight: isSurvey
-            ? 'auto'
-            : `calc(100vh - ${stylingConsts.menuHeight}px)`,
+          maxHeight: `calc(100vh - ${stylingConsts.menuHeight}px)`,
         },
   }[layoutType];
 
