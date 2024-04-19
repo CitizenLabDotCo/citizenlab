@@ -429,7 +429,7 @@ module BulkImportIdeas::Exporters
 
       @importer_fields << {
         name: field[:title_multiloc][@locale],
-        description: type == 'field' ? field[:description_multiloc][@locale] : nil,
+        description: type == 'field' ? ActionView::Base.full_sanitizer.sanitize(field[:description_multiloc][@locale]) : nil,
         type: type,
         input_type: field[:input_type],
         code: field[:code],

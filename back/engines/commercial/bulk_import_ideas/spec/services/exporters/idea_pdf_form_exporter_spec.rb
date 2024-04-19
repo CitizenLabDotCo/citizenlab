@@ -9,7 +9,7 @@ describe BulkImportIdeas::Exporters::IdeaPdfFormExporter do
 
   before do
     # Custom fields
-    create(:custom_field, resource: custom_form, key: 'a_text_field', title_multiloc: { 'en' => 'A text field' }, enabled: true)
+    create(:custom_field, resource: custom_form, key: 'a_text_field', title_multiloc: { 'en' => 'A text field' }, enabled: true, description_multiloc: { 'en' => '<p>A text <b>field</b> description<p>' })
 
     create(:custom_field, resource: custom_form, key: 'number_field', title_multiloc: { 'en' => 'Number field' }, input_type: 'number', enabled: true)
 
@@ -53,6 +53,12 @@ describe BulkImportIdeas::Exporters::IdeaPdfFormExporter do
         yes
         no
       ]
+    end
+
+    it 'does not have HTML in the field descriptions' do
+      importer_data = service.importer_data
+      expect(importer_data[:fields][0][:description]).not_to include '<p>'
+      expect(importer_data[:fields][0][:description]).to eq 'A text field description'
     end
   end
 end

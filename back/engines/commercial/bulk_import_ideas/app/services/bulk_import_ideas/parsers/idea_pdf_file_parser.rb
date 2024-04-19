@@ -114,7 +114,11 @@ module BulkImportIdeas::Parsers
       # Truncate the checkbox label for better multiline checkbox detection
       permission_checkbox_label = (I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.by_checking_this_box') })[0..30]
       checkbox = idea.select { |key, value| key.match(/^#{permission_checkbox_label}/) && value == 'filled_checkbox' }
-      idea['Permission'] = 'X' if checkbox != {}
+      if checkbox != {}
+        locale_permission_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.permission') }
+        idea[locale_permission_label] = 'X'
+        idea.delete(checkbox.first.first) # Remove the original field TODO: JS - Better way of doing this?
+      end
       idea
     end
 
@@ -148,6 +152,24 @@ module BulkImportIdeas::Parsers
         idea[:pdf_pages] = complete_page_range(idea[:pdf_pages], text_parsed_idea_rows[index][:pdf_pages])
         text_parsed_idea_rows[index].merge(idea)
       end
+    end
+
+    def process_field_value(field, form_fields)
+      field = super field, form_fields
+
+      if %w[text multiline_text text_multiloc html_multiloc].include?(field[:input_type]) && field[:value]
+        # Strip out text that has leaked from the field description into the value
+        field[:value] = field[:value].gsub(/#{field[:description]}/, '')
+
+        # Strip out out any text that has leaked from the next questions title into the value
+        next_question = form_fields[form_fields.find_index(field) + 1]
+        if next_question && next_question[:name].split.count > 4
+          field[:value] = field[:value].gsub(/#{next_question[:name]}*/, '')
+        end
+        field[:value] = field[:value].strip
+      end
+
+      field
     end
 
     def complete_page_range(pages1, pages2)

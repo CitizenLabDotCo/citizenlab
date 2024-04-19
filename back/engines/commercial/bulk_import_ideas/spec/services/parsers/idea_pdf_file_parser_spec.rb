@@ -480,4 +480,43 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
       expect(range).to eq [7, 8, 9, 10, 11, 12]
     end
   end
+
+  describe 'process_field_value' do
+    let(:form_fields) do
+      [
+        {
+          name: 'Title',
+          description: nil,
+          type: 'field',
+          input_type: 'text_multiloc',
+          value: 'A modern childrens playground'
+        },
+        {
+          name: 'Description',
+          description: 'This is a description of the field that may be detected in the scanned text.',
+          type: 'field',
+          input_type: 'html_multiloc',
+          value: 'This is a description of the field that may be detected in the scanned text. This is the text that we really want. This is the next field title'
+        },
+        {
+          name: 'This is the next field title',
+          description: nil,
+          type: 'field',
+          input_type: 'text'
+        }
+      ]
+    end
+
+    it 'removes text that is either in from description of the field or the title of the next field' do
+      field = service.send(:process_field_value, form_fields[1], form_fields)
+      expect(field[:value]).to eq 'This is the text that we really want.'
+    end
+
+    it 'does not remove text if the next field title has fewer than five words in it' do
+      form_fields[1][:value] = 'This is the text that we really want. Four word field title'
+      form_fields[2][:name] = 'Four word field title'
+      field = service.send(:process_field_value, form_fields[1], form_fields)
+      expect(field[:value]).to eq 'This is the text that we really want. Four word field title'
+    end
+  end
 end
