@@ -7,6 +7,7 @@ module BulkImportIdeas::Exporters
     attr_reader :participation_context, :form_fields, :previous_cursor
 
     FORBIDDEN_HTML_TAGS_REGEX = %r{</?(div|span|ul|ol|li|img|a){1}[^>]*/?>}
+    MULTILINE_FIELD_TYPES = %w[multiline_text html_multiloc]
 
     def initialize(phase, locale, personal_data_enabled)
       super
@@ -244,7 +245,7 @@ module BulkImportIdeas::Exporters
           render_single_choice(pdf_group, custom_field)
         when 'multiselect'
           render_multiple_choice(pdf_group, custom_field)
-        when 'multiline_text', 'html_multiloc'
+        when *MULTILINE_FIELD_TYPES
           render_text_lines(pdf_group, 7)
         else # text, text_multiloc, number
           render_text_lines(pdf_group, 1)

@@ -69,26 +69,26 @@ module BulkImportIdeas::Parsers
 
     # Overridden from base class to handle the way checkboxes are filled in the PDF
     # and detect fields from description as well as title
-    def merge_idea_with_form_fields(idea)
-      merged_idea = []
+    def merge_idea_with_form_fields(idea_fields)
+      merged_fields = []
       form_fields = import_form_data[:fields]
       form_fields.each do |form_field|
-        idea.each do |idea_field|
+        idea_fields.each do |idea_field|
           if form_field[:name] == idea_field[:name] || form_field[:description] == idea_field[:name]
             if form_field[:type] == 'field' && idea_field[:value].present?
               new_field = form_field
               new_field[:value] = idea_field[:value]
               new_field = process_field_value(new_field, form_fields)
-              merged_idea << new_field
-              idea.delete_if { |f| f == idea_field }
+              merged_fields << new_field
+              idea_fields.delete_if { |f| f == idea_field }
               break
             elsif idea_field[:value] == 'filled_checkbox' && form_field[:page] == idea_field[:page]
               # Check that the value is near to the position on the page it should be
               if idea_field[:position].between?(form_field[:position].to_i - POSITION_TOLERANCE, form_field[:position].to_i + POSITION_TOLERANCE)
-                select_field = merged_idea.find { |f| f[:key] == form_field[:parent_key] } || form_fields.find { |f| f[:key] == form_field[:parent_key] }.clone
+                select_field = merged_fields.find { |f| f[:key] == form_field[:parent_key] } || form_fields.find { |f| f[:key] == form_field[:parent_key] }.clone
                 select_field[:value] = select_field[:value] ? select_field[:value] << form_field[:key] : [form_field[:key]]
-                merged_idea << select_field
-                idea.delete_if { |f| f == idea_field }
+                merged_fields << select_field
+                idea_fields.delete_if { |f| f == idea_field }
                 form_fields.delete_if { |f| f == idea_field } if select_field[:input_type] == 'select'
                 break
               end
@@ -96,7 +96,7 @@ module BulkImportIdeas::Parsers
           end
         end
       end
-      merged_idea
+      merged_fields
     end
 
     # Overridden from base class to tidy data returned from PDF
@@ -139,7 +139,8 @@ module BulkImportIdeas::Parsers
         []
       end
 
-      merge_pdf_rows(form_parsed_ideas, text_parsed_ideas, file)
+      idea_rows = merge_pdf_rows(form_parsed_ideas, text_parsed_ideas, file)
+      idea_rows_with_corrected_texts(idea_rows)
     end
 
     def merge_pdf_rows(form_parsed_ideas, text_parsed_ideas, file)
@@ -168,6 +169,11 @@ module BulkImportIdeas::Parsers
 
     def google_forms_service
       @google_forms_service ||= Pdf::IdeaGoogleFormParserService.new
+    end
+
+    def idea_rows_with_corrected_texts(idea_rows)
+      corrector = BulkImportIdeas::Parsers::Pdf::TextCorrector.new(@phase, idea_rows)
+      corrector.correct
     end
   end
 end
