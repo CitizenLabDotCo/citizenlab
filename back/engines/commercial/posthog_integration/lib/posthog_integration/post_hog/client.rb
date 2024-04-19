@@ -31,8 +31,8 @@ module PosthogIntegration
         if response.status.code != 429 || retries <= 0
           response
         else
-          # Retry after waiting between 20 and 60 seconds
-          sleep_time = rand(20..60)
+          # Retry after waiting between 1 and 5 minutes
+          sleep_time = rand(60..300)
           sleep(sleep_time)
           delete_person(id, project_id: project_id, retries: retries - 1)
         end
