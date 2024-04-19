@@ -125,11 +125,8 @@ const Form = memo(
       setData(parseRequiredMultilocsData(schema, locale, initialFormData));
     }, [schema, locale, initialFormData]);
 
-    const layoutType = layout
-      ? layout
-      : isCategorization(uiSchema)
-      ? 'fullpage'
-      : 'inline';
+    const layoutType =
+      layout || (isCategorization(uiSchema) ? 'fullpage' : 'inline');
 
     const handleChange = (data: FormData) => {
       setData(data);
