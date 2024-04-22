@@ -5,7 +5,7 @@ import { WrappedComponentProps } from 'react-intl';
 
 import { IUsersByCustomField } from 'api/users_by_custom_field/types';
 import useUsersByCustomField from 'api/users_by_custom_field/useUsersByCustomField';
-import { usersByDomicileXlsxEndpoint } from 'api/users_by_domicile/util';
+import { usersByCustomFieldXlsxEndpoint } from 'api/users_by_custom_field/util';
 
 import messages from 'containers/Admin/dashboard/messages';
 
@@ -28,19 +28,20 @@ const fallbackMessages = {
   _blank: messages._blank,
 };
 
-const AreaChart = (
-  props: Props & WrappedComponentProps & InjectedLocalized
-) => {
-  const {
-    intl: { formatMessage },
-    localize,
-  } = props;
-
+const AreaChart = ({
+  intl: { formatMessage },
+  localize,
+  startAt,
+  endAt,
+  currentGroupFilter,
+  currentGroupFilterLabel,
+  customFieldId,
+}: Props & WrappedComponentProps & InjectedLocalized) => {
   const { data: usersByDomicile } = useUsersByCustomField({
-    start_at: props.startAt,
-    end_at: props.endAt,
-    group: props.currentGroupFilter,
-    id: props.customFieldId,
+    start_at: startAt,
+    end_at: endAt,
+    group: currentGroupFilter,
+    id: customFieldId,
   });
 
   const convertToGraphFormat = (data: IUsersByCustomField) => {
@@ -60,14 +61,17 @@ const AreaChart = (
 
   return (
     <HorizontalBarChart
-      {...props}
+      startAt={startAt}
+      endAt={endAt}
+      currentGroupFilter={currentGroupFilter}
+      currentGroupFilterLabel={currentGroupFilterLabel}
       graphTitleString={formatMessage(messages.usersByDomicileTitle)}
       graphUnit="users"
       serie={
         usersByDomicile ? convertToGraphFormat(usersByDomicile) : undefined
       }
       className="dynamicHeight"
-      xlsxEndpoint={usersByDomicileXlsxEndpoint}
+      xlsxEndpoint={usersByCustomFieldXlsxEndpoint(customFieldId)}
     />
   );
 };
