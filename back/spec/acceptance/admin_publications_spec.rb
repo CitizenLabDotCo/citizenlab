@@ -40,6 +40,7 @@ resource 'AdminPublication' do
       parameter :folder, 'Filter by folder (project folder id)', required: false
       parameter :remove_not_allowed_parents, 'Filter out folders which contain only projects that are not visible to the user', required: false
       parameter :only_projects, 'Include projects only (no folders)', required: false
+      parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
 
       example_request 'List all admin publications' do
         expect(status).to eq(200)
@@ -80,6 +81,12 @@ resource 'AdminPublication' do
         expect(json_response[:data].size).to eq 8
         expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 8
         expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 0
+      end
+
+      example 'Admins can moderate all projects', document: false do
+        do_request filter_can_moderate: true
+        assert_status 200
+        expect(json_response[:data].size).to eq 10
       end
 
       ProjectsFilteringService::HOMEPAGE_FILTER_PARAMS.each do |filter_param|
@@ -203,6 +210,30 @@ resource 'AdminPublication' do
         expect(json_response[:data][:attributes][:status_counts][:archived]).to eq 2
 
         expect(json_response[:data][:attributes][:status_counts][:published]).to eq 3
+      end
+    end
+  end
+
+  get 'web_api/v1/admin_publications' do
+    context 'when project moderator' do
+      before do
+        @project = create(:project)
+        @moderator = create(:project_moderator, projects: [@project])
+        header_token_for(@moderator)
+
+        @projects = create_list(:project, 10, admin_publication_attributes: { publication_status: 'published' })
+      end
+
+      example 'List projects the current user can moderate' do
+        n_moderating_projects = 3
+        @projects.shuffle.take(n_moderating_projects).each do |pj|
+          @moderator.add_role 'project_moderator', project_id: pj.id
+        end
+        @moderator.save!
+
+        do_request filter_can_moderate: true
+        assert_status 200
+        expect(json_response[:data].size).to eq n_moderating_projects + 1
       end
     end
   end
