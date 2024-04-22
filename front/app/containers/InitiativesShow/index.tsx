@@ -81,7 +81,6 @@ const InitiativesShow = ({ initiativeId, className }: Props) => {
 
   return (
     <Box id="e2e-initiative-show" className={className}>
-      <InitiativeMeta initiativeId={initiativeId} />
       {isSmallerThanPhone ? (
         <Phone
           initiativeId={initiativeId}

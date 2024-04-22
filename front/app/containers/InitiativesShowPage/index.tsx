@@ -9,6 +9,7 @@ import useInitiativeBySlug from 'api/initiatives/useInitiativeBySlug';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import InitiativesShow from 'containers/InitiativesShow';
+import InitiativeMeta from 'containers/InitiativesShow/InitiativeMeta';
 
 import PageNotFound from 'components/PageNotFound';
 import Unauthorized from 'components/Unauthorized';
@@ -64,11 +65,16 @@ const InitiativesShowPage = () => {
     return <PageNotFound />;
   }
 
+  const initiativeId = initiative.data.id;
+
   return (
-    <Container>
-      <StyledInitiativeShowPageTopBar initiativeId={initiative.data.id} />
-      <StyledInitiativesShow initiativeId={initiative.data.id} />
-    </Container>
+    <>
+      <InitiativeMeta initiativeId={initiativeId} />
+      <Container>
+        <StyledInitiativeShowPageTopBar initiativeId={initiativeId} />
+        <StyledInitiativesShow initiativeId={initiativeId} />
+      </Container>
+    </>
   );
 };
 
