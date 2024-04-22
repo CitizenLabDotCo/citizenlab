@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
 
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
 import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
@@ -79,38 +79,40 @@ const InitiativesShow = ({ initiativeId, className }: Props) => {
   };
 
   return (
-    <Box id="e2e-initiative-show" className={className}>
-      {isSmallerThanPhone ? (
-        <Phone
-          initiativeId={initiativeId}
-          translateButtonClicked={translateButtonClicked}
-          a11y_pronounceLatestOfficialFeedbackPost={
-            a11y_pronounceLatestOfficialFeedbackPost
-          }
-          onScrollToOfficialFeedback={onScrollToOfficialFeedback}
-          onTranslateInitiative={onTranslateInitiative}
-        />
-      ) : (
-        <LargerThanPhone
-          initiativeId={initiativeId}
-          translateButtonClicked={translateButtonClicked}
-          a11y_pronounceLatestOfficialFeedbackPost={
-            a11y_pronounceLatestOfficialFeedbackPost
-          }
-          onScrollToOfficialFeedback={onScrollToOfficialFeedback}
-          onTranslateInitiative={onTranslateInitiative}
-        />
-      )}
-      <Suspense fallback={<LoadingComments />}>
-        <Footer postId={initiativeId} postType="initiative" />
-      </Suspense>
+    <div id="e2e-initiative-show" className={className}>
+      <main>
+        {isSmallerThanPhone ? (
+          <Phone
+            initiativeId={initiativeId}
+            translateButtonClicked={translateButtonClicked}
+            a11y_pronounceLatestOfficialFeedbackPost={
+              a11y_pronounceLatestOfficialFeedbackPost
+            }
+            onScrollToOfficialFeedback={onScrollToOfficialFeedback}
+            onTranslateInitiative={onTranslateInitiative}
+          />
+        ) : (
+          <LargerThanPhone
+            initiativeId={initiativeId}
+            translateButtonClicked={translateButtonClicked}
+            a11y_pronounceLatestOfficialFeedbackPost={
+              a11y_pronounceLatestOfficialFeedbackPost
+            }
+            onScrollToOfficialFeedback={onScrollToOfficialFeedback}
+            onTranslateInitiative={onTranslateInitiative}
+          />
+        )}
+        <Suspense fallback={<LoadingComments />}>
+          <Footer postId={initiativeId} postType="initiative" />
+        </Suspense>
+      </main>
       <Suspense fallback={null}>
         <Modals
           closeInitiativeSocialSharingModal={closeInitiativeSocialSharingModal}
           initiativeIdForSocialSharing={initiativeIdForSocialSharing}
         />
       </Suspense>
-    </Box>
+    </div>
   );
 };
 
