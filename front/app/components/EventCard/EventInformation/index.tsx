@@ -198,15 +198,7 @@ const EventInformation = ({ event, goToEvent, titleFontSize }: Props) => {
           ml="auto"
           width={'100%'}
           bgColor={theme.colors.tenantPrimary}
-          tabIndex={0}
-          onClick={() => {
-            goToEvent();
-          }}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              goToEvent();
-            }
-          }}
+          onClick={goToEvent}
         >
           {formatMessage(messages.readMore)}
         </Button>
