@@ -188,7 +188,6 @@ const Content = ({
               'voting' && // To reduce bias we want to hide the author data during voting methods
             statusId && (
               <Box my="24px">
-                {' '}
                 <MetaInformation
                   ideaId={ideaId}
                   projectId={project.id}
