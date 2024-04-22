@@ -2,8 +2,8 @@
 
 module BulkImportIdeas::Importers
   class BaseImporter
-    def initialize(current_user)
-      @locale = AppConfiguration.instance.settings('core', 'locales').first # Default locale for any new users created
+    def initialize(current_user, locale)
+      @locale = locale || AppConfiguration.instance.settings('core', 'locales').first # Default locale for any new users created
       @import_user = current_user
       @imported_users = []
     end
