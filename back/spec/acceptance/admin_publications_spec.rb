@@ -85,6 +85,7 @@ resource 'AdminPublication' do
 
       example 'Admins can moderate all projects', document: false do
         do_request filter_can_moderate: true
+        json_response = json_parse(response_body)
         assert_status 200
         expect(json_response[:data].size).to eq 10
       end
@@ -232,6 +233,7 @@ resource 'AdminPublication' do
         @moderator.save!
 
         do_request filter_can_moderate: true
+        json_response = json_parse(response_body)
         assert_status 200
         expect(json_response[:data].size).to eq n_moderating_projects + 1
       end
