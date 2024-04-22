@@ -79,17 +79,14 @@ module EmailCampaigns
     end
 
     def run_after_send_hooks(command)
-      result = true
       current_class = self.class
 
       while current_class <= ::EmailCampaigns::Campaign
-        result &&= current_class.after_send_hooks.all? do |action_symbol|
+        current_class.after_send_hooks.each do |action_symbol|
           send(action_symbol, command)
         end
         current_class = current_class.superclass
       end
-
-      result
     end
 
     def apply_recipient_filters(activity: nil, time: nil)
