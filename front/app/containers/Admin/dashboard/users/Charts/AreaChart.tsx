@@ -3,6 +3,7 @@ import React from 'react';
 import { orderBy } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
 
+import useUsersByCustomField from 'api/users_by_custom_field/useUsersByCustomField';
 import { IUsersByDomicile } from 'api/users_by_domicile/types';
 import useUsersByDomicile from 'api/users_by_domicile/useUsersByDomicile';
 import { usersByDomicileXlsxEndpoint } from 'api/users_by_domicile/util';
@@ -21,7 +22,7 @@ interface Props {
   endAt: string | null;
   currentGroupFilter: string | undefined;
   currentGroupFilterLabel: string | undefined;
-  className?: string;
+  customFieldId: string;
 }
 
 export const fallbackMessages = {
@@ -42,6 +43,18 @@ const AreaChart = (
     end_at: props.endAt,
     group: props.currentGroupFilter,
     enabled: true,
+  });
+
+  const { data: usersByCustomField } = useUsersByCustomField({
+    id: props.customFieldId,
+    start_at: props.startAt,
+    end_at: props.endAt,
+    group: props.currentGroupFilter,
+  });
+
+  console.log({
+    usersByDomicile,
+    usersByCustomField,
   });
 
   const convertToGraphFormat = (data: IUsersByDomicile) => {
