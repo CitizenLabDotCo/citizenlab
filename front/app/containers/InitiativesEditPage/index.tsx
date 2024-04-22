@@ -75,7 +75,7 @@ const InitiativesEditPage = ({ initiative }: Props) => {
   return (
     <>
       <InitiativesEditMeta />
-      <Box background={colors.background} pt="32px" pl="32px">
+      <Box background={colors.background} p="32px" pb="0">
         <GoBackButton
           onClick={() => {
             clHistory.goBack();
