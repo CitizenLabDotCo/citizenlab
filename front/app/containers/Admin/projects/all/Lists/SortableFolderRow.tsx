@@ -96,6 +96,7 @@ const SortableFolderRow = ({
         <FolderChildProjects
           folderChildAdminPublications={folderChildAdminPublications}
           folderId={folderId}
+          isLastFolder={isLastItem}
         />
       )}
     </>
