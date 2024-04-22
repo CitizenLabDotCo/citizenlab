@@ -24,7 +24,7 @@ interface Props {
   customFieldId: string;
 }
 
-export const fallbackMessages = {
+const fallbackMessages = {
   _blank: messages._blank,
 };
 

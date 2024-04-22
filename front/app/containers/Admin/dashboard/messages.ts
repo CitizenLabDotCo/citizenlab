@@ -216,10 +216,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.false',
     defaultMessage: 'false',
   },
-  otherArea: {
-    id: 'app.containers.AdminPage.DashboardPage.otherArea',
-    defaultMessage: 'Other',
-  },
   mostActiveUsersRankingDescription: {
     id: 'app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription2',
     defaultMessage:
