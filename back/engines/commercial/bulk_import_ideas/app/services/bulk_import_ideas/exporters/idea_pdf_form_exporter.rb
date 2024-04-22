@@ -108,7 +108,7 @@ module BulkImportIdeas::Exporters
 
       pdf.text(
         "<b>#{project_title} - #{phase_title}</b>",
-        size: 20,
+        size: 18,
         inline_format: true
       )
 
@@ -118,7 +118,7 @@ module BulkImportIdeas::Exporters
     def write_instructions(pdf)
       pdf.text(
         "<b>#{I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.instructions') }}</b>",
-        size: 16,
+        size: 14,
         inline_format: true
       )
 
@@ -152,7 +152,7 @@ module BulkImportIdeas::Exporters
       # Personal data header
       pdf.text(
         "<b>#{I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.personal_data') }}</b>",
-        size: 16,
+        size: 14,
         inline_format: true
       )
 
@@ -259,7 +259,7 @@ module BulkImportIdeas::Exporters
 
       pdf.text(
         "<b>#{custom_field.title_multiloc[@locale]}</b>#{custom_field.required? ? '' : " (#{optional})"}",
-        size: 16,
+        size: 14,
         inline_format: true
       )
     end
