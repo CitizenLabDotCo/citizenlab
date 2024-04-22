@@ -1124,7 +1124,7 @@
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Udforsk forslag fra {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Opdag forslag",
   "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards": "Alle forslag der finder sted i {orgName}",
-  "app.containers.InitiativesIndexPage.learnMoreAboutProposals": "{tenantName, select, KøbenhavnsKommune {Her kan du læse mere om retningslinjer og kriterier for Københavnerforslagsordningen.} other {Læs mere om hvordan forslag fungerer.}}",
+  "app.containers.InitiativesIndexPage.learnMoreAboutProposals": "{tenantName, select, KøbenhavnsKommune {Her kan du læse mere om retningslinjer og kriterier for Københavnerforslagsordningen.} RegionSjælland {Læs mere om, hvordan ordningen med borgerforslag fungerer.} other {Læs mere om hvordan forslag fungerer.}}",
   "app.containers.InitiativesIndexPage.metaDescription": "Udforsk og støt forslag, der gennemføres i {orgName}",
   "app.containers.InitiativesIndexPage.metaTitle": "Alle forslag • {orgName}",
   "app.containers.InitiativesIndexPage.newProposalsNotPermitted": "Der accepteres ikke nye forslag i øjeblikket.",
