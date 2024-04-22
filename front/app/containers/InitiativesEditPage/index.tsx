@@ -55,10 +55,7 @@ const InitiativesEditPage = ({ initiative }: Props) => {
 
   useEffect(() => {
     const isPrivilegedUser =
-      authUser &&
-      (isAdmin({ data: authUser.data }) ||
-        !isRegularUser({ data: authUser.data }) ||
-        isSuperAdmin({ data: authUser.data }));
+      isAdmin(authUser) || !isRegularUser(authUser) || isSuperAdmin(authUser);
 
     if (!isPrivilegedUser && authUser === null) {
       clHistory.replace(previousPathName || '/sign-up');
