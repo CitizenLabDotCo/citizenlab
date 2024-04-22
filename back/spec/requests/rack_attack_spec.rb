@@ -342,6 +342,51 @@ describe 'Rack::Attack' do
     end
   end
 
+  it 'limits confirmation requests from same user to 10 in 24 hours' do
+    # Use a different IP for each request, to avoid testing limit by IP
+    token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
+    headers = { 'CONTENT_TYPE' => 'application/json', 'Authorization' => "Bearer #{token}" }
+    start_time = Time.zone.now.midnight # Avoid testing 24-hour period that spans midnight
+
+    travel_to(start_time) do
+      10.times do |i|
+        headers['REMOTE_ADDR'] = "1.2.3.#{i + 1}"
+        post(
+          '/web_api/v1/user/confirm',
+          params: '{ "confirmation": { "code": "12345" } }',
+          headers: headers
+        )
+      end
+      expect(status).to eq(422) # Unprocessable entity == given confirmation code is not correct
+
+      headers['REMOTE_ADDR'] = '1.2.3.11'
+      post(
+        '/web_api/v1/user/confirm',
+        params: '{ "confirmation": { "code": "12345" } }',
+        headers: headers
+      )
+      expect(status).to eq(429) # Too many requests
+    end
+
+    travel_to(start_time + 23.hours) do
+      post(
+        '/web_api/v1/user/confirm',
+        params: '{ "confirmation": { "code": "12345" } }',
+        headers: headers
+      )
+      expect(status).to eq(429) # Too many requests
+    end
+
+    travel_to(start_time + 25.hours) do
+      post(
+        '/web_api/v1/user/confirm',
+        params: '{ "confirmation": { "code": "12345" } }',
+        headers: headers
+      )
+      expect(status).to eq(422) # Unprocessable entity == given confirmation code is not correct
+    end
+  end
+
   # ==================================================================================================================
   # These tests are too slow to include in the CI, due to the number of requests they make, and are therefore skipped.
   # Remove skip statement to run in local dev environment, but do not push/merge that change to master.
