@@ -219,6 +219,7 @@ resource 'AdminPublication' do
     context 'when project moderator' do
       before do
         create(:project)
+        create(:project)
         @project1 = create(:project)
         @project2 = create(:project)
         @moderator = create(:project_moderator, projects: [@project1, @project2])
