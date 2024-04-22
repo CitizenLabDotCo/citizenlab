@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { Spinner, media } from '@citizenlab/cl2-component-library';
+import { Box, Spinner, colors, media } from '@citizenlab/cl2-component-library';
 import { PreviousPathnameContext } from 'context';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -16,6 +16,7 @@ import useLocale from 'hooks/useLocale';
 
 import PageLayout from 'components/InitiativeForm/PageLayout';
 import PageNotFound from 'components/PageNotFound';
+import GoBackButton from 'components/UI/GoBackButton';
 import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
 
@@ -74,8 +75,22 @@ const InitiativesEditPage = ({ initiative }: Props) => {
   return (
     <>
       <InitiativesEditMeta />
+      <Box background={colors.background} pt="32px" pl="32px">
+        <GoBackButton
+          onClick={() => {
+            clHistory.goBack();
+          }}
+        />
         <PageLayout className="e2e-initiative-edit-page">
+          <StyledInitiativesEditFormWrapper
+            locale={locale}
+            initiative={initiative.data}
+            initiativeImage={initiativeImages?.data[0]}
+            onPublished={onPublished}
+            initiativeFiles={initiativeFiles}
+          />
         </PageLayout>
+      </Box>
     </>
   );
 };

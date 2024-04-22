@@ -24,15 +24,6 @@ const Container = styled.main`
   position: relative;
 `;
 
-const TopLine = styled.div`
-  width: 100%;
-  padding: 30px 40px 0;
-
-  ${media.phone`
-    display: none;
-  `}
-`;
-
 const Header = styled.div`
   width: 100%;
   position: relative;
@@ -137,11 +128,9 @@ const PageLayout = ({ children, className }: Props) => {
       </TipsContainer>
     </TwoColumns>
   );
+
   return (
     <Container className={className}>
-      <TopLine>
-        <GoBackButton onClick={goBack} />
-      </TopLine>
       <Header>
         <HeaderTitle>
           <FormattedMessage
