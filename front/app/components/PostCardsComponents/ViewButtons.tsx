@@ -58,8 +58,14 @@ const ViewButton = styled.button<{ active: boolean }>`
         }};
 
   ${StyledIcon} {
-    fill: ${(props) =>
-      props.active ? colors.white : darken(0.2, props.theme.colors.tenantText)};
+    ${({ active, theme }) =>
+      active
+        ? {
+            fill: colors.white,
+          }
+        : {
+            fill: darken(0.2, theme.colors.tenantText),
+          }};
   }
 
   &:hover {
