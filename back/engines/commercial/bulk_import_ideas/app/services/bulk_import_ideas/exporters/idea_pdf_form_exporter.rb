@@ -313,7 +313,7 @@ module BulkImportIdeas::Exporters
           pdf.text option.title_multiloc[@locale]
         end
 
-        pdf.move_down 5.mm
+        pdf.move_down 4.mm
       end
       pdf.move_up 2.mm
     end
@@ -334,7 +334,7 @@ module BulkImportIdeas::Exporters
           pdf.text option.title_multiloc[@locale]
         end
 
-        pdf.move_down 5.mm
+        pdf.move_down 4.mm
       end
       pdf.move_up 2.mm
     end
