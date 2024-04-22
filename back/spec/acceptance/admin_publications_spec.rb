@@ -218,24 +218,19 @@ resource 'AdminPublication' do
   get 'web_api/v1/admin_publications' do
     context 'when project moderator' do
       before do
-        @project = create(:project)
-        @moderator = create(:project_moderator, projects: [@project])
+        create(:project)
+        @project1 = create(:project)
+        @project2 = create(:project)
+        @moderator = create(:project_moderator, projects: [@project1, @project2])
         header_token_for(@moderator)
-
-        @projects = create_list(:project, 10, admin_publication_attributes: { publication_status: 'published' })
       end
 
       example 'List projects the current user can moderate' do
-        n_moderating_projects = 3
-        @projects.shuffle.take(n_moderating_projects).each do |pj|
-          @moderator.add_role 'project_moderator', project_id: pj.id
-        end
-        @moderator.save!
 
         do_request filter_can_moderate: true
         json_response = json_parse(response_body)
         assert_status 200
-        expect(json_response[:data].size).to eq n_moderating_projects + 1
+        expect(json_response[:data].size).to eq 2
       end
     end
   end
