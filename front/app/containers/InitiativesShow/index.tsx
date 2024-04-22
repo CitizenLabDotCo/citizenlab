@@ -9,7 +9,6 @@ import Footer from 'components/PostShowComponents/Footer';
 import { trackEventByName } from 'utils/analytics';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
-import InitiativeMeta from './InitiativeMeta';
 const Modals = lazy(() => import('./modals'));
 import LargerThanPhone from './LargerThanPhone';
 import Phone from './Phone';
