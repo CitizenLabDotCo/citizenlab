@@ -1,6 +1,12 @@
 import React, { memo, Suspense, useState } from 'react';
 
-import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  colors,
+  Spinner,
+  stylingConsts,
+  Title,
+} from '@citizenlab/cl2-component-library';
 import { InfiniteData } from '@tanstack/react-query';
 import Tippy from '@tippyjs/react';
 import { useLocation } from 'react-router-dom';
@@ -17,7 +23,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import NavigationTabs from 'components/admin/NavigationTabs';
 import Tab from 'components/admin/NavigationTabs/Tab';
-import PageWrapper from 'components/admin/PageWrapper';
 import Outlet from 'components/Outlet';
 import Button from 'components/UI/Button';
 import SearchInput from 'components/UI/SearchInput';
@@ -40,6 +45,11 @@ const CreateAndEditProjectsContainer = styled.div`
 
 const ListsContainer = styled.div`
   min-height: 80vh;
+  padding-left: 36px;
+  padding-right: 36px;
+  border: 1px solid ${colors.divider};
+  border-radius: ${stylingConsts.borderRadius};
+  background: ${colors.white};
 `;
 
 export const ListHeader = styled.div`
@@ -65,8 +75,8 @@ export type ActiveTab =
   | 'all';
 
 const getActiveTab = (pathname: string): ActiveTab => {
-  if (pathname.includes('/admin/projects/your-projects')) {
-    return 'your-projects';
+  if (pathname.includes('/admin/projects/all')) {
+    return 'all';
   } else if (pathname.includes('/admin/projects/published')) {
     return 'published';
   } else if (pathname.includes('/admin/projects/draft')) {
@@ -74,7 +84,7 @@ const getActiveTab = (pathname: string): ActiveTab => {
   } else if (pathname.includes('/admin/projects/archived')) {
     return 'archived';
   } else {
-    return 'all';
+    return 'your-projects';
   }
 };
 
@@ -232,10 +242,18 @@ const AdminProjectsList = memo(({ className }: Props) => {
             placeholder={formatMessage(messages.searchProjects)}
           />
         </Box>
-        <Box w="100%" overflow="hidden">
+
+        <Box
+          w="100%"
+          overflow="hidden"
+          borderBottom={`1px solid ${colors.divider}`}
+          position="relative"
+          zIndex="1"
+          mb="-2px"
+        >
           <NavigationTabs position="relative">
             <Tab
-              url="/admin/projects/your-projects"
+              url="/admin/projects"
               label={`${formatMessage(messages.yourProjects)} (${
                 flatModeratedAdminPublications?.length || 0
               })`}
@@ -267,37 +285,36 @@ const AdminProjectsList = memo(({ className }: Props) => {
             <Tab
               label={formatMessage(messages.all)}
               active={activeTab === 'all'}
-              url="/admin/projects"
+              url="/admin/projects/all"
             />
           </NavigationTabs>
         </Box>
-        <PageWrapper>
-          <ListsContainer>
-            <Suspense fallback={<Spinner />}>
-              {userIsAdmin && activeTab === 'all' && !search ? (
-                <SortableProjectList
-                  adminPublications={flatAllAdminPublications}
-                />
-              ) : (
-                <NonSortableProjectList
-                  search={search}
-                  activeTab={activeTab}
-                  adminPublications={
-                    activeTab === 'your-projects'
-                      ? flatModeratedAdminPublications
-                      : activeTab === 'published'
-                      ? flatPublishedAdminPublications
-                      : activeTab === 'draft'
-                      ? flatDraftAdminPublications
-                      : activeTab === 'archived'
-                      ? flatArchivedAdminPublications
-                      : flatAllAdminPublications
-                  }
-                />
-              )}
-            </Suspense>
-          </ListsContainer>
-        </PageWrapper>
+
+        <ListsContainer>
+          <Suspense fallback={<Spinner />}>
+            {userIsAdmin && activeTab === 'all' && !search ? (
+              <SortableProjectList
+                adminPublications={flatAllAdminPublications}
+              />
+            ) : (
+              <NonSortableProjectList
+                search={search}
+                activeTab={activeTab}
+                adminPublications={
+                  activeTab === 'your-projects'
+                    ? flatModeratedAdminPublications
+                    : activeTab === 'published'
+                    ? flatPublishedAdminPublications
+                    : activeTab === 'draft'
+                    ? flatDraftAdminPublications
+                    : activeTab === 'archived'
+                    ? flatArchivedAdminPublications
+                    : flatAllAdminPublications
+                }
+              />
+            )}
+          </Suspense>
+        </ListsContainer>
       </CreateAndEditProjectsContainer>
       <Outlet
         id="app.containers.Admin.projects.all.container"

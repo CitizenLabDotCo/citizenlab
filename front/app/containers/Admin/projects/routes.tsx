@@ -64,7 +64,7 @@ export function adminProjectsProjectPath(projectId: string): RouteType {
 export enum projectsRoutes {
   projects = 'projects',
   new = 'new',
-  yourProjects = 'your-projects',
+  allProjects = 'all',
   published = 'published',
   draft = 'draft',
   archived = 'archived',
@@ -102,7 +102,7 @@ export enum projectsRoutes {
 
 export type projectsRouteTypes =
   | AdminRoute<projectsRoutes.projects>
-  | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.yourProjects}`>
+  | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.allProjects}`>
   | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.published}`>
   | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.draft}`>
   | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.archived}`>
@@ -154,7 +154,7 @@ const createAdminProjectsRoutes = () => {
         ),
       },
       {
-        path: projectsRoutes.yourProjects,
+        path: projectsRoutes.allProjects,
         element: (
           <PageLoading>
             <AdminProjectsList />

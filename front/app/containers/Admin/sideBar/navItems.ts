@@ -25,7 +25,7 @@ const navItems: NavItem[] = [
   },
   {
     name: 'projects',
-    link: '/admin/projects/your-projects',
+    link: '/admin/projects',
     iconName: 'projects',
     message: 'projects',
   },
