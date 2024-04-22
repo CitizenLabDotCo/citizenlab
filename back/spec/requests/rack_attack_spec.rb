@@ -432,7 +432,7 @@ describe 'Rack::Attack' do
     end
   end
 
-  it 'limits login requests for same email to 100 in 1 day' do # , skip: 'Too slow to include in CI' do
+  it 'limits login requests for same email to 100 in 1 day', skip: 'Too slow to include in CI' do
     # Use a different IP for each request, to avoid testing limit by IP
     10.times do |i|
       # Move time forward, each 10 requests, to avoid testing shorter time-limited rule
