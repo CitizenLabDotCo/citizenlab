@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe BulkImportIdeas::Importers::IdeaImporter do
-  let(:service) { described_class.new(create(:admin)) }
+  let(:service) { described_class.new(create(:admin), 'en') }
 
   describe 'import_ideas' do
     before { create(:idea_status, code: 'proposed') }
