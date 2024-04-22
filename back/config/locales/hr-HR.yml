@@ -248,6 +248,7 @@ hr:
       instructions: 'upute'
       write_as_clearly: 'Napišite što jasnije <b></b> ti se obrasci mogu skenirati'
       write_in_language: 'Napišite svoje odgovore na istom jeziku kao i ovaj obrazac'
+      linear_scale_print_description: 'Napišite samo broj između %{min_label} i %{max_label}'
   project_copy:
     title_suffix: 'Kopija'
   confirmations_mailer:
