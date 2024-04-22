@@ -248,6 +248,7 @@
       instructions: 'Bruksanvisning'
       write_as_clearly: 'Skriv så tydelig <b>du kan</b> disse skjemaene kan bli skannet'
       write_in_language: 'Skriv svarene dine på samme språk som dette skjemaet'
+      linear_scale_print_description: 'Skriv kun et tall mellom %{min_label} og %{max_label}'
   project_copy:
     title_suffix: 'Kopi'
   confirmations_mailer:
