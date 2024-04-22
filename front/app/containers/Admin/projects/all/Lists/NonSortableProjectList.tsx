@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 
-import { InfiniteData } from '@tanstack/react-query';
 
-import { IAdminPublications } from 'api/admin_publications/types';
+
+import { IAdminPublicationData } from 'api/admin_publications/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -21,26 +21,24 @@ const NonSortableProjectList = ({
   search,
   activeTab,
 }: {
-  adminPublications: InfiniteData<IAdminPublications> | undefined;
+  adminPublications: IAdminPublicationData[] | undefined;
   search?: string;
   activeTab: ActiveTab;
 }) => {
   const { formatMessage } = useIntl();
-  const rootLevelAdminPublications = adminPublications?.pages
-    .map((page) => page.data)
-    .flat();
+
 
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
 
   return (
     <>
-      {rootLevelAdminPublications?.length === 0 && (
+      {adminPublications?.length === 0 && (
         <p>{formatMessage(messages.noProjectsFound)}</p>
       )}
       <List>
-        {rootLevelAdminPublications?.map((adminPublication, index) => {
+        {adminPublications?.map((adminPublication, index) => {
           const adminPublicationId = adminPublication.id;
-          const isLastItem = rootLevelAdminPublications.length - 1 === index;
+          const isLastItem = adminPublications.length - 1 === index;
 
           return (
             <Fragment key={adminPublicationId}>

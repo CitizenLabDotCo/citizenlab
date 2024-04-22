@@ -6,7 +6,10 @@ import Tippy from '@tippyjs/react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { IAdminPublications } from 'api/admin_publications/types';
+import {
+  IAdminPublicationData,
+  IAdminPublications,
+} from 'api/admin_publications/types';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import useAuthUser from 'api/me/useAuthUser';
 
@@ -20,7 +23,7 @@ import Button from 'components/UI/Button';
 import SearchInput from 'components/UI/SearchInput';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { isAdmin } from 'utils/permissions/roles';
+import { IProjectModeratorRole, isAdmin } from 'utils/permissions/roles';
 import { isProjectFolderModerator } from 'utils/permissions/rules/projectFolderPermissions';
 
 import NonSortableProjectList from './Lists/NonSortableProjectList';
@@ -77,8 +80,10 @@ const getActiveTab = (pathname: string): ActiveTab => {
 
 const flattenPagesData = (
   data: InfiniteData<IAdminPublications> | undefined
-) => {
-  return data?.pages.map((page: any) => page.data).flat();
+): IAdminPublicationData[] | undefined => {
+  return data?.pages
+    .map((page: { data: IAdminPublicationData[] }) => page.data)
+    .flat();
 };
 
 const AdminProjectsList = memo(({ className }: Props) => {
@@ -87,6 +92,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
   const { data: authUser } = useAuthUser();
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const userIsAdmin = isAdmin(authUser);
+
   const userIsFolderModerator =
     (authUser &&
       isProjectFoldersEnabled &&
@@ -95,7 +101,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
   const userCanCreateProject = userIsAdmin || userIsFolderModerator;
   const [containerOutletRendered, setContainerOutletRendered] = useState(false);
 
-  const { data: yourAdminPublications } = useAdminPublications({
+  const { data: moderatedAdminPublications } = useAdminPublications({
     publicationStatusFilter: ['published', 'draft', 'archived'],
     onlyProjects: true,
     filter_can_moderate: true,
@@ -125,6 +131,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
 
   const { data: allAdminPublications } = useAdminPublications({
     publicationStatusFilter: ['published', 'draft', 'archived'],
+    // Admin publications in the "All" tab are shown in a flat list when there is a search query
     rootLevelOnly: !search || search.length === 0,
     search,
   });
@@ -136,6 +143,29 @@ const AdminProjectsList = memo(({ className }: Props) => {
   const { pathname } = useLocation();
 
   const activeTab = getActiveTab(pathname);
+
+  const flatPublishedAdminPublications = flattenPagesData(
+    publishedAdminPublications
+  );
+  const flatDraftAdminPublications = flattenPagesData(draftAdminPublications);
+  const flatArchivedAdminPublications = flattenPagesData(
+    archivedAdminPublications
+  );
+  const flatAllAdminPublications = flattenPagesData(allAdminPublications);
+
+  const flatModeratedAdminPublications = flattenPagesData(
+    moderatedAdminPublications
+  )?.filter((adminPublication) => {
+    // When the user is admin they have access to all projects
+    // so we filter out the projects they are not explicitly assigned to as project moderators
+    const explicitlyModeratedProjects = authUser?.data.attributes.roles
+      ?.filter((role) => role.type === 'project_moderator')
+      .map((role: IProjectModeratorRole) => role.project_id);
+
+    return explicitlyModeratedProjects?.includes(
+      adminPublication.relationships.publication.data.id
+    );
+  });
 
   return (
     <Container className={className}>
@@ -207,13 +237,13 @@ const AdminProjectsList = memo(({ className }: Props) => {
             <Tab
               url="/admin/projects/your-projects"
               label={`${formatMessage(messages.yourProjects)} (${
-                flattenPagesData(yourAdminPublications)?.length
+                flatModeratedAdminPublications?.length || 0
               })`}
               active={activeTab === 'your-projects'}
             />
             <Tab
               label={`${formatMessage(messages.active)} (${
-                flattenPagesData(publishedAdminPublications)?.length
+                flatPublishedAdminPublications?.length || 0
               })`}
               active={activeTab === 'published'}
               url="/admin/projects/published"
@@ -221,7 +251,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
             <Tab
               label={`
                 ${formatMessage(messages.draft)} (${
-                flattenPagesData(draftAdminPublications)?.length
+                flatDraftAdminPublications?.length || 0
               })`}
               active={activeTab === 'draft'}
               url="/admin/projects/draft"
@@ -229,7 +259,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
             <Tab
               label={`
                 ${formatMessage(messages.archived)} (${
-                flattenPagesData(archivedAdminPublications)?.length
+                flatArchivedAdminPublications?.length || 0
               })`}
               active={activeTab === 'archived'}
               url="/admin/projects/archived"
@@ -245,21 +275,23 @@ const AdminProjectsList = memo(({ className }: Props) => {
           <ListsContainer>
             <Suspense fallback={<Spinner />}>
               {userIsAdmin && activeTab === 'all' && !search ? (
-                <SortableProjectList adminPublications={allAdminPublications} />
+                <SortableProjectList
+                  adminPublications={flatAllAdminPublications}
+                />
               ) : (
                 <NonSortableProjectList
                   search={search}
                   activeTab={activeTab}
                   adminPublications={
                     activeTab === 'your-projects'
-                      ? yourAdminPublications
+                      ? flatModeratedAdminPublications
                       : activeTab === 'published'
-                      ? publishedAdminPublications
+                      ? flatPublishedAdminPublications
                       : activeTab === 'draft'
-                      ? draftAdminPublications
+                      ? flatDraftAdminPublications
                       : activeTab === 'archived'
-                      ? archivedAdminPublications
-                      : allAdminPublications
+                      ? flatArchivedAdminPublications
+                      : flatAllAdminPublications
                   }
                 />
               )}

@@ -1,11 +1,9 @@
 import React, { Fragment } from 'react';
 
-import { InfiniteData } from '@tanstack/react-query';
 import styled from 'styled-components';
 
 import {
   IAdminPublicationData,
-  IAdminPublications,
 } from 'api/admin_publications/types';
 import useReorderAdminPublication from 'api/admin_publications/useReorderAdminPublication';
 
@@ -14,7 +12,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 
 import ProjectRow from '../../components/ProjectRow';
 import messages from '../messages';
@@ -39,13 +36,11 @@ const Spacer = styled.div`
 const SortableProjectList = ({
   adminPublications,
 }: {
-  adminPublications: InfiniteData<IAdminPublications> | undefined;
+  adminPublications: IAdminPublicationData[] | undefined;
 }) => {
   const { mutate: reorderAdminPublication } = useReorderAdminPublication();
 
-  const rootLevelAdminPublications = adminPublications?.pages
-    .map((page) => page.data)
-    .flat();
+
 
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
 
@@ -53,10 +48,7 @@ const SortableProjectList = ({
     reorderAdminPublication({ id: itemId, ordering: newOrder });
   }
 
-  if (
-    !isNilOrError(rootLevelAdminPublications) &&
-    rootLevelAdminPublications.length > 0
-  ) {
+  if (adminPublications && adminPublications?.length > 0) {
     return (
       <>
         <StyledListHeader>
@@ -70,11 +62,11 @@ const SortableProjectList = ({
           <Spacer />
         </StyledListHeader>
         <SortableList
-          items={rootLevelAdminPublications}
+          items={adminPublications}
           onReorder={handleReorderAdminPublication}
           className="projects-list e2e-admin-projects-list"
           id="e2e-admin-projects-list-unsortable"
-          key={rootLevelAdminPublications.length}
+          key={adminPublications.length}
         >
           {({ itemsList, handleDragRow, handleDropRow }) => {
             return (
@@ -90,7 +82,7 @@ const SortableProjectList = ({
                           moveRow={handleDragRow}
                           dropRow={handleDropRow}
                           isLastItem={
-                            index === rootLevelAdminPublications.length - 1
+                            index === adminPublications.length - 1
                           }
                         >
                           <ProjectRow actions={['manage']} publication={item} />
@@ -104,7 +96,7 @@ const SortableProjectList = ({
                           moveRow={handleDragRow}
                           dropRow={handleDropRow}
                           isLastItem={
-                            index === rootLevelAdminPublications.length - 1
+                            index === adminPublications.length - 1
                           }
                           publication={item}
                         />
