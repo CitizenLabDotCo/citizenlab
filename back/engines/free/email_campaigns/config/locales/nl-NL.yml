@@ -560,7 +560,7 @@ nl:
         admins: 'Aan platformbeheerders'
         admins_and_managers: 'Aan beheerders'
         managers: 'Aan beheerders'
-        project_participants: 'Aan de projectdeelnemers'
+        project_participants: 'Aan projectdeelnemers'
         registered_users: 'Aan geregistreerde gebruikers'
       recipient_segment:
         admins: 'Platformbeheerders'
