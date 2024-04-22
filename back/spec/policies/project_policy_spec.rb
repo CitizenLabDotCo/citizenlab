@@ -64,6 +64,25 @@ describe ProjectPolicy do
       end
     end
 
+    context 'for a moderator of the project' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      it { is_expected.to permit(:show) }
+      it { is_expected.not_to permit(:create) }
+      it { is_expected.to permit(:update) }
+      it { is_expected.to permit(:reorder) }
+      it { is_expected.not_to permit(:destroy) }
+      it { is_expected.to permit(:index_xlsx) }
+
+      it 'indexes the project' do
+        expect(scope.resolve.size).to eq 1
+      end
+
+      it 'includes the user in the users that have access' do
+        expect(inverse_scope.resolve).to include(user)
+      end
+    end
+
     context 'for a moderator of another project' do
       let(:user) { create(:project_moderator, projects: [create(:project)]) }
 
@@ -72,6 +91,7 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:update) }
       it { is_expected.not_to permit(:reorder) }
       it { is_expected.not_to permit(:destroy) }
+      it { is_expected.not_to permit(:index_xlsx) }
 
       it 'indexes the project' do
         expect(scope.resolve.size).to eq 2
@@ -280,6 +300,7 @@ describe ProjectPolicy do
       it { is_expected.to permit(:update) }
       it { is_expected.to permit(:reorder) }
       it { is_expected.not_to permit(:destroy) }
+      it { is_expected.to permit(:index_xlsx) }
 
       it 'indexes the project' do
         expect(scope.resolve.size).to eq 1
@@ -298,6 +319,7 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:update) }
       it { is_expected.not_to permit(:reorder) }
       it { is_expected.not_to permit(:destroy) }
+      it { is_expected.not_to permit(:index_xlsx) }
 
       it { expect(scope.resolve).not_to include(project) }
       it { expect(inverse_scope.resolve).not_to include(user) }

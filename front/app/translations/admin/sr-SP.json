@@ -1601,7 +1601,6 @@
   "app.containers.AdminPage.ProjectEvents.descriptionLabel": "Опис догађаја",
   "app.containers.AdminPage.ProjectEvents.editButtonLabel": "Уредити",
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "Уреди догађај",
-  "app.containers.AdminPage.ProjectEvents.eventAttendanceExportText": "Да бисте видели учеснике догађаја, идите на картицу {userTabLink} и креирајте паметну групу за догађај. {supportArticleLink}.",
   "app.containers.AdminPage.ProjectEvents.eventDates": "Датуми догађаја",
   "app.containers.AdminPage.ProjectEvents.eventImage": "Слика догађаја",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Локација догађаја",

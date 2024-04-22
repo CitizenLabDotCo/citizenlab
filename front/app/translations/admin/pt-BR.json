@@ -1601,7 +1601,6 @@
   "app.containers.AdminPage.ProjectEvents.descriptionLabel": "Descrição do evento",
   "app.containers.AdminPage.ProjectEvents.editButtonLabel": "Editar",
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "Editar evento",
-  "app.containers.AdminPage.ProjectEvents.eventAttendanceExportText": "Para ver os participantes do evento, aceda ao separador {userTabLink} e crie um grupo inteligente para o evento. {supportArticleLink}.",
   "app.containers.AdminPage.ProjectEvents.eventDates": "Datas do evento",
   "app.containers.AdminPage.ProjectEvents.eventImage": "Imagem do evento",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Local do evento",
