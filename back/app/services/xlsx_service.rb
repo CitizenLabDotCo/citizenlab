@@ -115,14 +115,14 @@ class XlsxService
   def generate_users_xlsx(users, view_private_attributes: false)
     url_service = Frontend::UrlService.new
     columns = [
-      { header: 'id', f: ->(u) { u.id }, skip_sanitization: true },
-      { header: 'email', f: ->(u) { u.email } },
-      { header: 'first_name', f: ->(u) { u.first_name } },
-      { header: 'last_name', f: ->(u) { u.last_name } },
-      { header: 'profile_page', f: ->(u) { url_service.model_to_url(u) }, skip_sanitization: true, hyperlink: true },
-      { header: 'created_at', f: ->(u) { u.created_at }, skip_sanitization: true },
+      { header: 'id',                        f: ->(u) { u.id }, skip_sanitization: true },
+      { header: 'email',                     f: ->(u) { u.email } },
+      { header: 'first_name',                f: ->(u) { u.first_name } },
+      { header: 'last_name',                 f: ->(u) { u.last_name } },
+      { header: 'profile_page',              f: ->(u) { url_service.model_to_url(u) }, skip_sanitization: true, hyperlink: true },
+      { header: 'created_at',                f: ->(u) { u.created_at }, skip_sanitization: true },
       { header: 'registration_completed_at', f: ->(u) { u.registration_completed_at }, skip_sanitization: true },
-      { header: 'invite_status', f: ->(u) { u.invite_status }, skip_sanitization: true },
+      { header: 'invite_status',             f: ->(u) { u.invite_status }, skip_sanitization: true },
       *user_custom_field_columns(:itself)
     ]
     columns.reject! { |c| %w[id email first_name last_name].include?(c[:header]) } unless view_private_attributes
@@ -132,9 +132,9 @@ class XlsxService
 
   def generate_attendees_xlsx(users, view_private_attributes: false)
     columns = [
-      { header: 'first_name', f: ->(u) { u.first_name } },
-      { header: 'last_name', f: ->(u) { u.last_name } },
-      { header: 'email', f: ->(u) { u.email } },
+      { header: 'first_name',                f: ->(u) { u.first_name } },
+      { header: 'last_name',                 f: ->(u) { u.last_name } },
+      { header: 'email',                     f: ->(u) { u.email } },
       { header: 'registration_completed_at', f: ->(u) { u.registration_completed_at }, skip_sanitization: true },
       *user_custom_field_columns(:itself)
     ]
@@ -151,9 +151,9 @@ class XlsxService
       { header: 'author_name',          f: ->(i) { format_author_name i } },
       { header: 'author_email',         f: ->(i) { i.author&.email } },
       { header: 'author_id',            f: ->(i) { i.author_id } },
-      { header: 'proposed_budget',      f: ->(i) { i.proposed_budget },                                                    skip_sanitization: true },
-      { header: 'published_at',         f: ->(i) { i.published_at },                                                       skip_sanitization: true },
-      { header: 'comments',             f: ->(i) { i.comments_count },                                                     skip_sanitization: true },
+      { header: 'proposed_budget',      f: ->(i) { i.proposed_budget }, skip_sanitization: true },
+      { header: 'published_at',         f: ->(i) { i.published_at }, skip_sanitization: true },
+      { header: 'comments',             f: ->(i) { i.comments_count }, skip_sanitization: true },
       { header: 'likes',                f: ->(i) { i.likes_count }, skip_sanitization: true },
       { header: 'dislikes',             f: ->(i) { i.dislikes_count }, skip_sanitization: true },
       { header: 'url',                  f: ->(i) { Frontend::UrlService.new.model_to_url(i) }, skip_sanitization: true, hyperlink: true },
@@ -162,8 +162,8 @@ class XlsxService
       { header: 'status',               f: ->(i) { multiloc_service.t(i&.idea_status&.title_multiloc) } },
       { header: 'assignee',             f: ->(i) { i.assignee&.full_name } },
       { header: 'assignee_email',       f: ->(i) { i.assignee&.email } },
-      { header: 'latitude',             f: ->(i) { i.location_point&.coordinates&.last },                                  skip_sanitization: true },
-      { header: 'longitude',            f: ->(i) { i.location_point&.coordinates&.first },                                 skip_sanitization: true },
+      { header: 'latitude',             f: ->(i) { i.location_point&.coordinates&.last }, skip_sanitization: true },
+      { header: 'longitude',            f: ->(i) { i.location_point&.coordinates&.first }, skip_sanitization: true },
       { header: 'location_description', f: ->(i) { i.location_description } },
       { header: 'attachments',          f: ->(i) { i.idea_files.map { |f| f.file.url }.join("\n") }, skip_sanitization: true, width: 2 }
     ]
@@ -187,16 +187,16 @@ class XlsxService
       { header: 'author_email',         f: ->(i) { i.author&.email } },
       { header: 'author_id',            f: ->(i) { i.author_id } },
       { header: 'cosponsors',           f: ->(i) { i.cosponsors_initiatives.map { |ci| "#{ci.user.email} - status: #{ci.status}" }.join("\n") }, skip_sanitization: true },
-      { header: 'published_at',         f: ->(i) { i.published_at },                                    skip_sanitization: true },
-      { header: 'comments',             f: ->(i) { i.comments_count },                                  skip_sanitization: true },
+      { header: 'published_at',         f: ->(i) { i.published_at }, skip_sanitization: true },
+      { header: 'comments',             f: ->(i) { i.comments_count }, skip_sanitization: true },
       { header: 'likes',                f: ->(i) { i.likes_count }, skip_sanitization: true },
       { header: 'url',                  f: ->(i) { Frontend::UrlService.new.model_to_url(i) }, skip_sanitization: true, hyperlink: true },
       { header: 'topics',               f: ->(i) { i.topics.map { |t| multiloc_service.t(t.title_multiloc) }.join(',') } },
       { header: 'initiative_status',    f: ->(i) { multiloc_service.t(i&.initiative_status&.title_multiloc) } },
       { header: 'assignee',             f: ->(i) { i.assignee&.full_name } },
       { header: 'assignee_email',       f: ->(i) { i.assignee&.email } },
-      { header: 'latitude',             f: ->(i) { i.location_point&.coordinates&.last },               skip_sanitization: true },
-      { header: 'longitude',            f: ->(i) { i.location_point&.coordinates&.first },              skip_sanitization: true },
+      { header: 'latitude',             f: ->(i) { i.location_point&.coordinates&.last }, skip_sanitization: true },
+      { header: 'longitude',            f: ->(i) { i.location_point&.coordinates&.first }, skip_sanitization: true },
       { header: 'location_description', f: ->(i) { i.location_description } },
       { header: 'attachments',          f: ->(i) { i.initiative_files.map { |f| f.file.url }.join("\n") }, skip_sanitization: true, width: 2 }
     ]
@@ -211,12 +211,12 @@ class XlsxService
       { header: 'input',              f: ->(c) { multiloc_service.t(c.post.title_multiloc) } },
       { header: 'input_id',           f: ->(c) { c.post.id } },
       { header: 'comment',            f: ->(c) { XlsxExport::Utils.new.convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) }, width: 10 },
-      { header: 'likes_count', f: ->(c) { c.likes_count }, skip_sanitization: true },
+      { header: 'likes_count',        f: ->(c) { c.likes_count }, skip_sanitization: true },
       { header: 'author_name',        f: ->(c) { format_author_name c } },
       { header: 'author_email',       f: ->(c) { c.author&.email } },
       { header: 'author_id',          f: ->(i) { i.author_id } },
-      { header: 'created_at',         f: ->(c) { c.created_at },    skip_sanitization: true },
-      { header: 'parent_comment_id',  f: ->(c) { c.parent_id },     skip_sanitization: true },
+      { header: 'created_at',         f: ->(c) { c.created_at }, skip_sanitization: true },
+      { header: 'parent_comment_id',  f: ->(c) { c.parent_id }, skip_sanitization: true },
       { header: 'project',            f: ->(c) { multiloc_service.t(c&.idea&.project&.title_multiloc) } }
     ]
     columns.concat user_custom_field_columns(:author)
@@ -237,16 +237,16 @@ class XlsxService
 
   def generate_initiative_comments_xlsx(comments, view_private_attributes: false)
     columns = [
-      { header: 'id', f: ->(c) { c.id }, skip_sanitization: true },
-      { header: 'proposal', f: ->(c) { multiloc_service.t(c.post.title_multiloc) } },
-      { header: 'proposal_id',         f: ->(c) { c.post.id } },
-      { header: 'comment', f: ->(c) { XlsxExport::Utils.new.convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) }, width: 10 },
-      { header: 'likes_count', f: ->(c) { c.likes_count }, skip_sanitization: true },
-      { header: 'author_name',   f: ->(c) { format_author_name c } },
-      { header: 'author_email',  f: ->(c) { c.author&.email } },
-      { header: 'author_id', f: ->(i) { i.author_id } },
-      { header: 'created_at', f: ->(c) { c.created_at }, skip_sanitization: true },
-      { header: 'parent_comment_id',        f: ->(c) { c.parent_id }, skip_sanitization: true }
+      { header: 'id',                f: ->(c) { c.id }, skip_sanitization: true },
+      { header: 'proposal',          f: ->(c) { multiloc_service.t(c.post.title_multiloc) } },
+      { header: 'proposal_id',       f: ->(c) { c.post.id } },
+      { header: 'comment',           f: ->(c) { XlsxExport::Utils.new.convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) }, width: 10 },
+      { header: 'likes_count',       f: ->(c) { c.likes_count }, skip_sanitization: true },
+      { header: 'author_name',       f: ->(c) { format_author_name c } },
+      { header: 'author_email',      f: ->(c) { c.author&.email } },
+      { header: 'author_id',         f: ->(i) { i.author_id } },
+      { header: 'created_at',        f: ->(c) { c.created_at }, skip_sanitization: true },
+      { header: 'parent_comment_id', f: ->(c) { c.parent_id }, skip_sanitization: true }
     ]
     columns.concat user_custom_field_columns(:author)
     columns.reject! { |c| %w[author_name author_email author_id].include?(c[:header]) } unless view_private_attributes
@@ -255,7 +255,7 @@ class XlsxService
 
   def generate_invites_xlsx(invites, view_private_attributes: false)
     columns = [
-      { header: 'token',         f: ->(i) { i.token },                 skip_sanitization: true },
+      { header: 'token',         f: ->(i) { i.token }, skip_sanitization: true },
       { header: 'invite_status', f: ->(i) { i.invitee.invite_status }, skip_sanitization: true },
       { header: 'email',         f: ->(i) { i.invitee.email } },
       { header: 'first_name',    f: ->(i) { i.invitee.first_name } },
