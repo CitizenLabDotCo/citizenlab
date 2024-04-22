@@ -52,17 +52,6 @@ const ListsContainer = styled.div`
   background: ${colors.white};
 `;
 
-export const ListHeader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin-bottom: 25px;
-
-  & ~ & {
-    margin-top: 70px;
-  }
-`;
-
 export interface Props {
   className?: string;
 }

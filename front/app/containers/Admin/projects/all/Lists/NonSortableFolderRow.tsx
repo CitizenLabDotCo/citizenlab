@@ -70,6 +70,7 @@ const NonSortableFolderRow = ({
         <FolderChildProjects
           folderChildAdminPublications={folderChildAdminPublications}
           folderId={folderId}
+          isLastFolder={isLastItem}
         />
       )}
     </>

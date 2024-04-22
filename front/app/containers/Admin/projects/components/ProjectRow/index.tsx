@@ -41,6 +41,7 @@ export const StyledStatusLabel = styled(StatusLabel)`
   padding-left: 4px;
   padding-right: 4px;
   font-weight: bold;
+  font-size: 10px;
 `;
 
 const Container = styled.div`

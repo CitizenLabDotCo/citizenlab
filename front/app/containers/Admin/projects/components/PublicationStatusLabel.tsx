@@ -18,6 +18,7 @@ const StyledStatusLabel = styled(StatusLabel)`
   padding-right: 4px;
   height: 20px;
   font-weight: bold;
+  font-size: 10px;
 `;
 
 const PublicationStatusLabel = memo<Props>(({ publicationStatus }) => {
