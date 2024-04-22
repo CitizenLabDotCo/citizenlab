@@ -230,7 +230,6 @@ export default function createRoutes() {
             </PageLoading>
           ),
         },
-        // TODO: review user profile routes
         userProfileRoutes(),
         {
           path: citizenRoutes.ideasEditIdea,
