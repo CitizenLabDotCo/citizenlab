@@ -172,7 +172,7 @@ module BulkImportIdeas::Parsers
     end
 
     def idea_rows_with_corrected_texts(idea_rows)
-      corrector = BulkImportIdeas::Parsers::Pdf::TextCorrector.new(@phase, idea_rows)
+      corrector = BulkImportIdeas::Parsers::Pdf::GPTTextCorrector.new(@phase, idea_rows)
       corrector.correct
     end
   end

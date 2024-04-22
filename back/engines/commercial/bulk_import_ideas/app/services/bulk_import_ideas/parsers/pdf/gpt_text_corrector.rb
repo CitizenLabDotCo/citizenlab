@@ -1,4 +1,4 @@
-class BulkImportIdeas::Parsers::Pdf::TextCorrector
+class BulkImportIdeas::Parsers::Pdf::GPTTextCorrector
   def initialize(phase, idea_rows)
     @phase = phase
     @idea_rows = idea_rows
