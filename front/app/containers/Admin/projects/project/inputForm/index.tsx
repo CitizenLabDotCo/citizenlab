@@ -23,9 +23,6 @@ import messages from './messages';
 import { saveIdeaFormAsPDF } from './saveIdeaFormAsPDF';
 
 export const IdeaForm = () => {
-  const printedFormsEnabled = useFeatureFlag({
-    name: 'import_printed_forms',
-  });
   const inputImporterEnabled = useFeatureFlag({
     name: 'input_importer',
   });
@@ -74,18 +71,16 @@ export const IdeaForm = () => {
           >
             <FormattedMessage {...messages.editInputForm} />
           </Button>
-          {printedFormsEnabled && (
-            <Box mr="8px">
-              <Button
-                onClick={handleDownloadPDF}
-                width="auto"
-                icon="download"
-                data-cy="e2e-save-input-form-pdf"
-              >
-                <FormattedMessage {...messages.downloadInputForm} />
-              </Button>
-            </Box>
-          )}
+          <Box mr="8px">
+            <Button
+              onClick={handleDownloadPDF}
+              width="auto"
+              icon="download"
+              data-cy="e2e-save-input-form-pdf"
+            >
+              <FormattedMessage {...messages.downloadInputForm} />
+            </Button>
+          </Box>
           {inputImporterEnabled && (
             <Button
               mr="8px"

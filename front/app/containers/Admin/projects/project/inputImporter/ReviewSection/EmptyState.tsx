@@ -14,7 +14,6 @@ import { useParams } from 'react-router-dom';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import PDFExportModal, {
@@ -43,9 +42,6 @@ const EmptyState = () => {
   };
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
-  const importPrintedFormsEnabled = useFeatureFlag({
-    name: 'import_printed_forms',
-  });
 
   if (!project || !phase) {
     return null;
@@ -111,19 +107,17 @@ const EmptyState = () => {
           />
         </Text>
         <Box display="flex" flexDirection="row">
-          {importPrintedFormsEnabled && (
-            <Box mr="8px">
-              <Button
-                onClick={handleDownloadPDF}
-                width="auto"
-                icon="download"
-                data-cy="e2e-save-input-form-pdf"
-              >
-                {/* TODO: distinguish copies between surveys and inputs */}
-                <FormattedMessage {...buttonMessages.downloadInputForm} />
-              </Button>
-            </Box>
-          )}
+          <Box mr="8px">
+            <Button
+              onClick={handleDownloadPDF}
+              width="auto"
+              icon="download"
+              data-cy="e2e-save-input-form-pdf"
+            >
+              {/* TODO: distinguish copies between surveys and inputs */}
+              <FormattedMessage {...buttonMessages.downloadInputForm} />
+            </Button>
+          </Box>
           <Button
             mr="8px"
             buttonStyle="secondary"
