@@ -3,12 +3,13 @@ import React from 'react';
 import { media, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useAuthUser from 'api/me/useAuthUser';
+
 import ContentContainer from 'components/ContentContainer';
 import Fragment from 'components/Fragment';
-import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
+import { isAdmin } from 'utils/permissions/roles';
 
 import CollapsibleTipsAndInfo from './CollapsibleTipsAndInfo';
 import messages from './messages';
@@ -120,13 +121,10 @@ const StyledTipsBox = styled(TipsBox)`
 interface Props {
   children: JSX.Element | null;
   className?: string;
-  isAdmin: boolean;
 }
 
-const PageLayout = ({ children, className, isAdmin }: Props) => {
-  const goBack = () => {
-    clHistory.goBack();
-  };
+const PageLayout = ({ children, className }: Props) => {
+  const { data: authUser } = useAuthUser();
 
   const pageContent = (
     <TwoColumns>
@@ -159,7 +157,7 @@ const PageLayout = ({ children, className, isAdmin }: Props) => {
         </HeaderTitle>
       </Header>
       <StyledContentContainer mode="page">
-        {isAdmin ? (
+        {isAdmin(authUser) ? (
           pageContent
         ) : (
           <Fragment name="external-proposal-form">{pageContent}</Fragment>

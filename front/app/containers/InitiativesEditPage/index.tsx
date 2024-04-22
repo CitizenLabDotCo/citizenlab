@@ -74,18 +74,8 @@ const InitiativesEditPage = ({ initiative }: Props) => {
   return (
     <>
       <InitiativesEditMeta />
-      <PageLayout
-        isAdmin={isAdmin(authUser)}
-        className="e2e-initiative-edit-page"
-      >
-        <StyledInitiativesEditFormWrapper
-          locale={locale}
-          initiative={initiative.data}
-          initiativeImage={initiativeImages?.data[0]}
-          onPublished={onPublished}
-          initiativeFiles={initiativeFiles}
-        />
-      </PageLayout>
+        <PageLayout className="e2e-initiative-edit-page">
+        </PageLayout>
     </>
   );
 };

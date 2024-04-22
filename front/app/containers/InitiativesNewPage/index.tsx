@@ -15,7 +15,6 @@ import PageNotFound from 'components/PageNotFound';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import { reverseGeocode } from 'utils/locationTools';
-import { isAdmin } from 'utils/permissions/roles';
 
 import InitiativesNewFormWrapper from './InitiativesNewFormWrapper';
 import InitiativesNewMeta from './InitiativesNewMeta';
@@ -67,7 +66,7 @@ const InitiativesNewPage = () => {
   return (
     <>
       <InitiativesNewMeta />
-      <PageLayout isAdmin={isAdmin(authUser)}>
+      <PageLayout>
         <InitiativesNewFormWrapper locationInfo={locationInfo} />
       </PageLayout>
     </>
