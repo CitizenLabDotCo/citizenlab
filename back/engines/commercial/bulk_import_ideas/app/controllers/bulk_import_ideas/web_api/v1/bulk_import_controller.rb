@@ -27,7 +27,7 @@ module BulkImportIdeas
       personal_data_enabled = params[:import] ? bulk_create_params[:personal_data] || false : false
       phase_id = params[:id]
       file_parser = file_parser_service.new(current_user, locale, phase_id, personal_data_enabled)
-      import_service = importer_service.new(current_user)
+      import_service = importer_service.new(current_user, locale)
 
       rows = file_parser.parse_file file
       ideas = import_service.import(rows)
