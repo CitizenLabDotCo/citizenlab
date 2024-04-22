@@ -19,10 +19,6 @@ import { isUnauthorizedRQ } from 'utils/errorUtils';
 
 import InitiativeShowPageTopBar from './InitiativeShowPageTopBar';
 
-const Container = styled.div`
-  background: #fff;
-`;
-
 const StyledInitiativeShowPageTopBar = styled(InitiativeShowPageTopBar)`
   position: fixed;
   top: 0;
@@ -70,10 +66,10 @@ const InitiativesShowPage = () => {
   return (
     <>
       <InitiativeMeta initiativeId={initiativeId} />
-      <Container>
+      <>
         <StyledInitiativeShowPageTopBar initiativeId={initiativeId} />
         <StyledInitiativesShow initiativeId={initiativeId} />
-      </Container>
+      </>
     </>
   );
 };
