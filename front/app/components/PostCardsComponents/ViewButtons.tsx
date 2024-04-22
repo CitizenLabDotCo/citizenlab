@@ -51,12 +51,10 @@ const ViewButton = styled.button<{ active: boolean }>`
       ? {
           backgroundColor: theme.colors.tenantSecondary,
           color: colors.white,
-          fontWeight: 'bold',
         }
       : {
           backgroundColor: 'transparent',
           color: theme.colors.tenantText,
-          fontWeight: 'normal',
         }};
 
   ${StyledIcon} {
