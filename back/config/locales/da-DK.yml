@@ -248,6 +248,7 @@ da:
       instructions: 'Instruktioner'
       write_as_clearly: 'Skriv så <b>tydeligt</b> som du kan - disse formularer kan blive scannet.'
       write_in_language: 'Skriv dine svar på samme sprog som denne formular'
+      linear_scale_print_description: 'Skriv kun et tal mellem %{min_label} og %{max_label}'
   project_copy:
     title_suffix: 'Kopi'
   confirmations_mailer:
