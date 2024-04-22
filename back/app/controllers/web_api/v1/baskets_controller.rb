@@ -64,7 +64,7 @@ class WebApi::V1::BasketsController < ApplicationController
     I18n.with_locale(current_user&.locale) do
       xlsx = XlsxService.new.generate_baskets_users_xlsx baskets
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        filename: 'basketsusers.xlsx'
+        filename: 'baskets_users.xlsx'
     end
   end
 
