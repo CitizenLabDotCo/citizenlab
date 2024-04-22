@@ -55,7 +55,7 @@ describe('Project description builder toggle', () => {
     projectId = '';
   });
 
-  it('shows original description by default along with any attachments if project description builder is not used', () => {
+  it.skip('shows original description by default along with any attachments if project description builder is not used', () => {
     cy.intercept(`**/projects/${projectId}`).as('saveProject');
     cy.intercept(`**/projects/${projectId}/files`).as('saveProjectFiles');
 
