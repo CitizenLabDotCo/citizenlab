@@ -369,6 +369,7 @@ describe 'Rack::Attack' do
     end
 
     travel_to(start_time + 23.hours) do
+      headers['REMOTE_ADDR'] = '1.2.3.12'
       post(
         '/web_api/v1/user/confirm',
         params: '{ "confirmation": { "code": "12345" } }',
@@ -378,6 +379,7 @@ describe 'Rack::Attack' do
     end
 
     travel_to(start_time + 25.hours) do
+      headers['REMOTE_ADDR'] = '1.2.3.13'
       post(
         '/web_api/v1/user/confirm',
         params: '{ "confirmation": { "code": "12345" } }',
