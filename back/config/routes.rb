@@ -277,6 +277,7 @@ Rails.application.routes.draw do
 
       resources :baskets, except: [:index] do
         resources :baskets_ideas, shallow: true
+        get :as_xlsx, on: :collection, action: 'index_xlsx'
       end
       put 'baskets/ideas/:idea_id', to: 'baskets_ideas#upsert'
 

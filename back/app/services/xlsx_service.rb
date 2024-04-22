@@ -224,6 +224,14 @@ class XlsxService
     generate_xlsx 'Comments', columns, comments
   end
 
+  def generate_baskets_users_xlsx(baskets)
+    columns = [
+      { header: 'user_id', f: ->(b) { b.user_id } } # TODO: remove when developed
+    ]
+    columns.concat user_custom_field_columns(:user)
+    generate_xlsx 'BasketsUsers', columns, baskets
+  end
+
   def generate_initiative_comments_xlsx(comments, view_private_attributes: false)
     columns = [
       { header: 'id', f: ->(c) { c.id }, skip_sanitization: true },
