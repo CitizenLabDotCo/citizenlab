@@ -14,7 +14,7 @@ class BulkImportIdeas::Parsers::Pdf::TextCorrector
   private
 
   def correctable_idea_fields
-    types = BulkImportIdeas::Exporters::IdeaPdfFormExporter::MULTILINE_FIELD_TYPES
+    types = BulkImportIdeas::Exporters::IdeaPdfFormExporter::JUMBLING_FIELD_TYPES
     multiline_fields = @phase.project.custom_form.custom_fields.select { |f| f.input_type.in?(types) }
     core_fields = multiline_fields.filter_map { _1.code&.to_sym }
     custom_fields = multiline_fields.reject(&:code?).map { _1.key&.to_sym }
