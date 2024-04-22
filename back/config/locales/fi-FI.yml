@@ -248,6 +248,7 @@ fi:
       instructions: 'Ohjeet'
       write_as_clearly: 'Kirjoita <b>selkeästi</b> niin kuin voit – nämä lomakkeet voidaan skannata'
       write_in_language: 'Kirjoita vastauksesi samalla kielellä kuin tämä lomake'
+      linear_scale_print_description: 'Kirjoita vain numero väliltä %{min_label} ja %{max_label}'
   project_copy:
     title_suffix: 'Kopio'
   confirmations_mailer:
