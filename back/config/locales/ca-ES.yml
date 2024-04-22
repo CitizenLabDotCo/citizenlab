@@ -248,6 +248,7 @@ ca:
       instructions: 'Instruccions'
       write_as_clearly: 'Escriu <b>amb claredat</b> com puguis; aquests formularis es poden escanejar'
       write_in_language: 'Escriu les teves respostes en el mateix idioma que aquest formulari'
+      linear_scale_print_description: 'Escriu només un número entre %{min_label} i %{max_label}'
   project_copy:
     title_suffix: 'Còpia'
   confirmations_mailer:
