@@ -1601,7 +1601,6 @@
   "app.containers.AdminPage.ProjectEvents.descriptionLabel": "Beschreibung der Veranstaltung",
   "app.containers.AdminPage.ProjectEvents.editButtonLabel": "Bearbeiten",
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "Veranstaltung bearbeiten",
-  "app.containers.AdminPage.ProjectEvents.eventAttendanceExportText": "Um die Teilnehmenden der Veranstaltung zu sehen, gehen Sie auf die Registerkarte {userTabLink} und erstellen Sie eine intelligente Gruppe für die Veranstaltung. {supportArticleLink}.",
   "app.containers.AdminPage.ProjectEvents.eventDates": "Veranstaltungstermine",
   "app.containers.AdminPage.ProjectEvents.eventImage": "Bild der Veranstaltung",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Veranstaltungsort",
