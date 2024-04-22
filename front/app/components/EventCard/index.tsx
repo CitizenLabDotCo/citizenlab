@@ -9,7 +9,6 @@ import styled from 'styled-components';
 import { IEventData } from 'api/events/types';
 
 import clHistory from 'utils/cl-router/history';
-import { isNilOrError } from 'utils/helperUtils';
 
 import EventInformation from './EventInformation';
 
@@ -38,7 +37,7 @@ interface Props {
 const EventCard = memo<Props>((props) => {
   const { event, className, id, ...otherProps } = props;
 
-  if (!isNilOrError(event)) {
+  if (event) {
     const navigateToEventPage = () => {
       clHistory.push(`/events/${event.id}`, { scrollToTop: true });
     };
