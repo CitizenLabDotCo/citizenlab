@@ -124,9 +124,11 @@ const ProjectRow = ({
           </RowContentInner>
           <Box display="flex" gap="4px" alignItems="stretch">
             {parentPublication && showParent && (
-              <Box display="flex" gap="4px" alignItems="center" mr="4px">
+              <Box display="flex" gap="4px" alignItems="center" mr="4px"
+              color={colors.textSecondary}  
+              >
                 <Icon
-                  name="folder-outline"
+                  name="folder-solid"
                   width="20px"
                   height="20px"
                   fill={colors.textSecondary}
