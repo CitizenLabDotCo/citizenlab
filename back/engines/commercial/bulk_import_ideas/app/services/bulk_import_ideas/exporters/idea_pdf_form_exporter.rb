@@ -100,7 +100,7 @@ module BulkImportIdeas::Exporters
       return if logo.blank? || logo.url&.include?('.gif')
 
       pdf.image URI.open logo.to_s
-      pdf.move_down 10.mm
+      pdf.move_down 5.mm
     end
 
     def write_form_title(pdf)
@@ -109,17 +109,17 @@ module BulkImportIdeas::Exporters
 
       pdf.text(
         "<b>#{project_title} - #{phase_title}</b>",
-        size: 20,
+        size: 18,
         inline_format: true
       )
 
-      pdf.move_down 9.mm
+      pdf.move_down 5.mm
     end
 
     def write_instructions(pdf)
       pdf.text(
         "<b>#{I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.instructions') }}</b>",
-        size: 16,
+        size: 14,
         inline_format: true
       )
 
@@ -153,11 +153,11 @@ module BulkImportIdeas::Exporters
       # Personal data header
       pdf.text(
         "<b>#{I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.personal_data') }}</b>",
-        size: 16,
+        size: 14,
         inline_format: true
       )
 
-      pdf.move_down 4.mm
+      pdf.move_down 2.mm
 
       # Personal data explanation
       participation_method = @phase.participation_method
@@ -238,7 +238,7 @@ module BulkImportIdeas::Exporters
         # if necessary
         write_instructions_and_disclaimers(pdf_group, custom_field)
 
-        pdf_group.move_down 7.mm
+        pdf_group.move_down 5.mm
 
         case field_type
         when 'select'
@@ -260,7 +260,7 @@ module BulkImportIdeas::Exporters
 
       pdf.text(
         "<b>#{custom_field.title_multiloc[@locale]}</b>#{custom_field.required? ? '' : " (#{optional})"}",
-        size: 16,
+        size: 14,
         inline_format: true
       )
     end
@@ -268,7 +268,6 @@ module BulkImportIdeas::Exporters
     def write_description(pdf, custom_field)
       description = custom_field.description_multiloc[@locale]
       if description.present?
-        pdf.move_down 3.mm
         paragraphs = parse_html_tags(description)
 
         paragraphs.each do |paragraph|
@@ -283,7 +282,7 @@ module BulkImportIdeas::Exporters
       show_visibility_disclaimer = participation_method.supports_idea_form? && custom_field.answer_visible_to == 'admins'
 
       if show_multiselect_instructions || show_visibility_disclaimer
-        pdf.move_down 5.mm
+        pdf.move_down 2.mm
 
         if show_multiselect_instructions
           pdf.text(
@@ -315,8 +314,9 @@ module BulkImportIdeas::Exporters
           pdf.text option.title_multiloc[@locale]
         end
 
-        pdf.move_down 5.mm
+        pdf.move_down 4.mm
       end
+      pdf.move_up 2.mm
     end
 
     def render_multiple_choice(pdf, custom_field)
@@ -335,69 +335,16 @@ module BulkImportIdeas::Exporters
           pdf.text option.title_multiloc[@locale]
         end
 
-        pdf.move_down 5.mm
+        pdf.move_down 4.mm
       end
+      pdf.move_up 2.mm
     end
 
     def render_text_lines(pdf, lines)
       lines.times do
-        pdf.text '_' * 59, color: '666666', size: 20, leading: 15
+        pdf.text '_' * 59, color: '666666', size: 20, leading: 5
       end
     end
-
-    # TODO: More advanced rendering of linear scale fields not used currently in favour of simple number field
-    # def render_linear_scale(pdf, custom_field)
-    #   max_index = custom_field.maximum - 1
-    #   width = 80.mm
-    #
-    #   if custom_field.maximum > 3
-    #     width = 100.mm
-    #   end
-    #
-    #   if custom_field.maximum > 5
-    #     width = 120.mm
-    #   end
-    #
-    #   # Draw number labels
-    #   (0..max_index).each do |i|
-    #     pdf.indent(((i.to_f / max_index) * width) + 1.8.mm) do
-    #       save_cursor pdf
-    #
-    #       pdf.text((i + 1).to_s)
-    #
-    #       reset_cursor pdf
-    #     end
-    #   end
-    #
-    #   pdf.move_down 7.mm
-    #
-    #   # Draw checkboxes
-    #   (0..max_index).each do |i|
-    #     pdf.stroke_color '000000'
-    #     pdf.stroke_circle(
-    #       [
-    #         3.mm + ((i.to_f / max_index) * width),
-    #         pdf.cursor
-    #       ],
-    #       5
-    #     )
-    #   end
-    #
-    #   pdf.move_down 7.mm
-    #
-    #   # Draw min and max labels
-    #   save_cursor pdf
-    #
-    #   pdf.indent(1.8.mm) do
-    #     pdf.text custom_field.minimum_label_multiloc[@locale]
-    #   end
-    #
-    #   reset_cursor pdf
-    #
-    #   pdf.indent(width + 1.mm) do
-    #     pdf.text custom_field.maximum_label_multiloc[@locale]
-    #   end
-    # end
 
     def parse_html_tags(string)
       string

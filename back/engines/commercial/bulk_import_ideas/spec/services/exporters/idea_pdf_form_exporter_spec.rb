@@ -39,7 +39,7 @@ describe BulkImportIdeas::Exporters::IdeaPdfFormExporter do
   describe 'importer_data' do
     it 'returns form meta data for importer - page count, fields, options and positions' do
       importer_data = service.importer_data
-      expect(importer_data[:page_count]).to eq 2
+      expect(importer_data[:page_count]).to eq 1
       expect(importer_data[:fields].pluck(:key)).to eq %w[
         a_text_field
         number_field
