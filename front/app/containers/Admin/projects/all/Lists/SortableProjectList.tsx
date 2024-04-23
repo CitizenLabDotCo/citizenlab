@@ -1,5 +1,7 @@
 import React, { Fragment } from 'react';
 
+
+import { Text } from '@citizenlab/cl2-component-library'
 import styled from 'styled-components';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
@@ -7,7 +9,10 @@ import useReorderAdminPublication from 'api/admin_publications/useReorderAdminPu
 
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 
+import { useIntl } from 'utils/cl-intl';
+
 import ProjectRow from '../../components/ProjectRow';
+import messages from '../messages';
 
 import SortableFolderRow from './SortableFolderRow';
 
@@ -23,12 +28,21 @@ const SortableProjectList = ({
   adminPublications: IAdminPublicationData[] | undefined;
 }) => {
   const { mutate: reorderAdminPublication } = useReorderAdminPublication();
+  const { formatMessage } = useIntl();
 
   function handleReorderAdminPublication(itemId: string, newOrder: number) {
     reorderAdminPublication({ id: itemId, ordering: newOrder });
   }
 
-  if (adminPublications && adminPublications?.length > 0) {
+  if(!adminPublications) return null;
+
+  if (adminPublications.length === 0) {
+return ( <Text color="textSecondary" fontSize="l">{formatMessage( messages.noProjectsFound)}</Text>
+)
+     
+  }
+
+  if (adminPublications.length > 0) {
     return (
       <SortableList
         items={adminPublications}

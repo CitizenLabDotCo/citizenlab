@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-
+import { Text } from '@citizenlab/cl2-component-library';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 
@@ -33,7 +33,7 @@ const NonSortableProjectList = ({
   return (
     <>
       {adminPublications?.length === 0 && (
-        <p>{formatMessage(messages.noProjectsFound)}</p>
+        <Text color="textSecondary" fontSize="l">{formatMessage(activeTab==="your-projects"&&!search? messages.moderatedProjectsEmpty : messages.noProjectsFound)}</Text>
       )}
       <List>
         {adminPublications?.map((adminPublication, index) => {

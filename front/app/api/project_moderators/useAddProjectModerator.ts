@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import adminPublicationsKeys from 'api/admin_publications/keys';
 import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 import usersKeys from 'api/users/keys';
 import { IUsers } from 'api/users/types';
@@ -38,7 +39,7 @@ const useAddProjectModerator = () => {
       queryClient.invalidateQueries({
         queryKey: userCountKeys.items(),
       });
-      invalidateSeatsCache();
+      queryClient.invalidateQueries({queryKey: adminPublicationsKeys.lists()});
     },
   });
 };
