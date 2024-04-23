@@ -9,10 +9,19 @@ module ReportBuilder
       **_other_props
     )
       users = find_users(start_at, end_at, project_id, group_id)
-
       custom_field = CustomField.find(custom_field_id)
 
-      UserCustomFields::FieldValueCounter.counts_by_field_option(users, custom_field)
+      json_response = {
+        series: UserCustomFields::FieldValueCounter.counts_by_field_option(users, custom_field)
+      }
+
+      if custom_field.options.present?
+        json_response[:options] = custom_field.options.to_h do |o|
+          [o.key, o.attributes.slice('title_multiloc', 'ordering')]
+        end
+      end
+
+      json_response
     end
 
     private

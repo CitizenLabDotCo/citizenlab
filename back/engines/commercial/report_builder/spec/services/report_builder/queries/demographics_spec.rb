@@ -38,26 +38,20 @@ RSpec.describe ReportBuilder::Queries::Demographics do
         AppConfiguration.update!(created_at: Date.new(2020, 1, 1))
       end
 
+      it 'returns multilocs' do
+        result = query.run_query(@custom_field.id)
+
+        multilocs = @custom_field.options.to_h do |o|
+          [o.key, o.attributes.slice('title_multiloc', 'ordering')]
+        end
+
+        expect(result[:options]).to match(multilocs)
+      end
+
       it 'works' do
         result = query.run_query(@custom_field.id)
 
-        # expect(result).to match({
-        #   options: {
-        #     @option1.key => { title_multiloc: @option1.title_multiloc, ordering: 0 },
-        #     @option2.key => { title_multiloc: @option2.title_multiloc, ordering: 1 },
-        #     @option3.key => { title_multiloc: @option3.title_multiloc, ordering: 2 }
-        #   },
-        #   series: {
-        #     reference_population: nil,
-        #     users: {
-        #       @option1.key => 1,
-        #       @option2.key => 1,
-        #       @option3.key => 0,
-        #       _blank: 1
-        #     }
-        #   }
-        # })
-        expect(result).to match({
+        expect(result[:series]).to match({
           @option1.key => 3,
           @option2.key => 1,
           @option3.key => 1,
@@ -68,7 +62,7 @@ RSpec.describe ReportBuilder::Queries::Demographics do
       it 'works with date filter' do
         result = query.run_query(@custom_field.id, start_at: start_at, end_at: end_at)
 
-        expect(result).to match({
+        expect(result[:series]).to match({
           @option1.key => 1,
           @option2.key => 1,
           @option3.key => 1,
@@ -79,7 +73,7 @@ RSpec.describe ReportBuilder::Queries::Demographics do
       it 'works with project filter' do
         result = query.run_query(@custom_field.id, project_id: @project.id)
 
-        expect(result).to match({
+        expect(result[:series]).to match({
           @option1.key => 1,
           @option2.key => 0,
           @option3.key => 1,
@@ -90,7 +84,7 @@ RSpec.describe ReportBuilder::Queries::Demographics do
       it 'works with group filter' do
         result = query.run_query(@custom_field.id, group_id: @group.id)
 
-        expect(result).to match({
+        expect(result[:series]).to match({
           @option1.key => 3,
           @option2.key => 1,
           @option3.key => 0,
