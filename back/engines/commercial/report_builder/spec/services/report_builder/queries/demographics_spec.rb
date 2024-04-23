@@ -16,16 +16,19 @@ RSpec.describe ReportBuilder::Queries::Demographics do
         @group = create(:group)
         @custom_field = create(:custom_field_select)
         @option1, @option2, @option3 = create_list(:custom_field_option, 3, custom_field: @custom_field)
+        @project = create(:project_with_active_ideation_phase)
 
         travel_to(start_at - 1.day) do
-          create(:user, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
+          user1 = create(:user, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
+          create(:idea, author: user1, project: @project)
         end
 
         travel_to(start_at + 4.days) do
           create(:user, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
           create(:user, custom_field_values: { @custom_field.key => @option2.key }, manual_groups: [@group])
           create(:user, manual_groups: [@group])
-          create(:user, custom_field_values: { @custom_field.key => @option3.key })
+          user2 = create(:user, custom_field_values: { @custom_field.key => @option3.key })
+          create(:idea, author: user2, project: @project)
         end
 
         travel_to(end_at + 1.day) do
@@ -62,17 +65,38 @@ RSpec.describe ReportBuilder::Queries::Demographics do
         })
       end
 
-      # it 'works with date filter' do
+      it 'works with date filter' do
+        result = query.run_query(@custom_field.id, start_at: start_at, end_at: end_at)
 
-      # end
+        expect(result).to match({
+          @option1.key => 1,
+          @option2.key => 1,
+          @option3.key => 1,
+          '_blank' => 1
+        })
+      end
 
-      # it 'works with project filter' do
+      it 'works with project filter' do
+        result = query.run_query(@custom_field.id, project_id: @project.id)
 
-      # end
+        expect(result).to match({
+          @option1.key => 1,
+          @option2.key => 0,
+          @option3.key => 1,
+          '_blank' => 0
+        })
+      end
 
-      # it 'works with group filter' do
+      it 'works with group filter' do
+        result = query.run_query(@custom_field.id, group_id: @group.id)
 
-      # end
+        expect(result).to match({
+          @option1.key => 3,
+          @option2.key => 1,
+          @option3.key => 0,
+          '_blank' => 1
+        })
+      end
     end
   end
 end
