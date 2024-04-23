@@ -13,6 +13,10 @@ resource 'Reports' do
   craftjs_json_param_desc = 'The craftjs layout configuration.'
 
   get 'web_api/v1/reports' do
+    parameter :owner_id, 'Filter reports by owner id(s).', required: false
+    parameter :search, 'Search reports by name.', required: false
+    parameter :service, 'Filter only the reports from super admins or non-super admins.', required: false
+
     let_it_be(:reports) { create_list(:report, 3) }
 
     describe 'when authorized' do
@@ -24,6 +28,65 @@ resource 'Reports' do
 
         # Layouts are not included when getting a collection of records.
         expect(json_response_body[:included]).to be_nil
+      end
+
+      example 'Search reports by owner' do
+        report = reports.first
+        owner_id = report.owner_id
+
+        do_request(owner_id: owner_id)
+        assert_status 200
+
+        expect(response_ids).to match [report.id]
+      end
+
+      example 'Search reports by owners' do
+        expected_reports = reports.take(2)
+        owner_ids = expected_reports.pluck(:owner_id)
+
+        do_request(owner_id: owner_ids)
+
+        assert_status 200
+        expect(response_ids).to match_array(expected_reports.pluck(:id))
+      end
+
+      example 'Search by name' do
+        report = create(:report, name: 'lemon opera sky')
+        query = 'lem sky' # prefix search is enabled
+
+        do_request(search: query)
+
+        assert_status 200
+        expect(response_ids).to match [report.id]
+      end
+
+      example 'Search by name (no results)' do
+        query = 'opera sky'
+
+        do_request(search: query)
+
+        assert_status 200
+        expect(response_data).to be_empty
+      end
+
+      example 'Get only the reports from super admins (service reports)' do
+        super_admin = create(:super_admin)
+        service_report = create(:report, owner: super_admin)
+
+        do_request(service: true)
+
+        assert_status 200
+        expect(response_ids).to match [service_report.id]
+      end
+
+      example 'Get only the reports from non-super admins' do
+        super_admin = create(:super_admin)
+        _service_report = create(:report, owner: super_admin)
+
+        do_request(service: false)
+
+        assert_status 200
+        expect(response_ids).to match_array(reports.pluck(:id))
       end
     end
 
