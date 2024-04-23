@@ -564,7 +564,6 @@
   "app.containers.AdminPage.DashboardPage.month": "lună",
   "app.containers.AdminPage.DashboardPage.noData": "There is no data to be shown.",
   "app.containers.AdminPage.DashboardPage.noPhase": "No phase created for this project",
-  "app.containers.AdminPage.DashboardPage.otherArea": "Altundeva",
   "app.containers.AdminPage.DashboardPage.overview.management": "Management",
   "app.containers.AdminPage.DashboardPage.overview.projectsAndParticipation": "Proiecte și participare",
   "app.containers.AdminPage.DashboardPage.overview.showLess": "Show less",

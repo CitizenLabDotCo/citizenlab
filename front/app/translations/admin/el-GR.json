@@ -791,7 +791,6 @@
   "app.containers.AdminPage.DashboardPage.numberOfDislikes": "Απεχθάνεται το",
   "app.containers.AdminPage.DashboardPage.numberOfLikes": "Μου αρέσει",
   "app.containers.AdminPage.DashboardPage.numberOfReactionsTotal": "Συνολικές αντιδράσεις",
-  "app.containers.AdminPage.DashboardPage.otherArea": "Somewhere else",
   "app.containers.AdminPage.DashboardPage.overview.management": "Διαχείριση",
   "app.containers.AdminPage.DashboardPage.overview.projectsAndParticipation": "Έργα & Συμμετοχή",
   "app.containers.AdminPage.DashboardPage.overview.showLess": "Show less",

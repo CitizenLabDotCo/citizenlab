@@ -3,9 +3,9 @@ import React from 'react';
 import { orderBy } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
 
-import { IUsersByDomicile } from 'api/users_by_domicile/types';
-import useUsersByDomicile from 'api/users_by_domicile/useUsersByDomicile';
-import { usersByDomicileXlsxEndpoint } from 'api/users_by_domicile/util';
+import { IUsersByCustomField } from 'api/users_by_custom_field/types';
+import useUsersByCustomField from 'api/users_by_custom_field/useUsersByCustomField';
+import { usersByCustomFieldXlsxEndpoint } from 'api/users_by_custom_field/util';
 
 import messages from 'containers/Admin/dashboard/messages';
 
@@ -21,54 +21,57 @@ interface Props {
   endAt: string | null;
   currentGroupFilter: string | undefined;
   currentGroupFilterLabel: string | undefined;
-  className?: string;
+  customFieldId: string;
 }
 
-export const fallbackMessages = {
+const fallbackMessages = {
   _blank: messages._blank,
-  outside: messages.otherArea,
 };
 
-const AreaChart = (
-  props: Props & WrappedComponentProps & InjectedLocalized
-) => {
-  const {
-    intl: { formatMessage },
-    localize,
-  } = props;
-
-  const { data: usersByDomicile } = useUsersByDomicile({
-    start_at: props.startAt,
-    end_at: props.endAt,
-    group: props.currentGroupFilter,
-    enabled: true,
+const AreaChart = ({
+  intl: { formatMessage },
+  localize,
+  startAt,
+  endAt,
+  currentGroupFilter,
+  currentGroupFilterLabel,
+  customFieldId,
+}: Props & WrappedComponentProps & InjectedLocalized) => {
+  const { data: usersByDomicile } = useUsersByCustomField({
+    start_at: startAt,
+    end_at: endAt,
+    group: currentGroupFilter,
+    id: customFieldId,
   });
 
-  const convertToGraphFormat = (data: IUsersByDomicile) => {
+  const convertToGraphFormat = (data: IUsersByCustomField) => {
     if (isNilOrError(data)) return null;
 
-    const { series, areas } = data.data.attributes;
+    const { series, options } = data.data.attributes;
 
     const parseName = (key, value) =>
       key in fallbackMessages
         ? formatMessage(fallbackMessages[key])
         : localize(value.title_multiloc);
 
-    const res = convertDomicileData(areas, series.users, parseName);
+    const res = convertDomicileData(options, series.users, parseName);
     const sortedByValue = orderBy(res, 'value', 'desc');
     return sortedByValue.length > 0 ? sortedByValue : null;
   };
 
   return (
     <HorizontalBarChart
-      {...props}
+      startAt={startAt}
+      endAt={endAt}
+      currentGroupFilter={currentGroupFilter}
+      currentGroupFilterLabel={currentGroupFilterLabel}
       graphTitleString={formatMessage(messages.usersByDomicileTitle)}
       graphUnit="users"
       serie={
         usersByDomicile ? convertToGraphFormat(usersByDomicile) : undefined
       }
       className="dynamicHeight"
-      xlsxEndpoint={usersByDomicileXlsxEndpoint}
+      xlsxEndpoint={usersByCustomFieldXlsxEndpoint(customFieldId)}
     />
   );
 };

@@ -3,7 +3,6 @@ import { IIdeaData } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
-import { GenderOption } from 'api/users_by_gender/types';
 
 import {
   ActiveUsersRow,
@@ -75,6 +74,8 @@ export interface VisitorsTrafficSourcesResponse {
   };
 }
 
+export type GenderOption = 'male' | 'female' | 'unspecified' | '_blank';
+
 export type UsersByGenderResponse = {
   data: {
     type: 'report_builder_data_units';
@@ -84,7 +85,7 @@ export type UsersByGenderResponse = {
   };
 };
 
-export type UsersByBirthyearResponse = {
+export type UsersByAgeResponse = {
   data: {
     type: 'report_builder_data_units';
     attributes: {

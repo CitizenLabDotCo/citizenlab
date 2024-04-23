@@ -66,8 +66,8 @@ resource 'Stats - Users' do
     worksheet.map { |row| row.cells.map(&:value) }
   end
 
-  describe 'by_gender endpoints' do
-    get 'web_api/v1/stats/users_by_gender' do
+  describe 'former by_gender endpoints' do
+    get 'web_api/v1/stats/users_by_custom_field/:custom_field_id' do
       time_boundary_parameters self
       group_filter_parameter self
       parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
@@ -81,6 +81,7 @@ resource 'Stats - Users' do
       end
 
       let(:group) { @group.id }
+      let(:custom_field_id) { CustomField.find_by(key: 'gender').id }
 
       context "when 'gender' custom field has no reference distribution" do
         example_request 'Users by gender' do
@@ -111,7 +112,7 @@ resource 'Stats - Users' do
       end
     end
 
-    get 'web_api/v1/stats/users_by_gender_as_xlsx' do
+    get 'web_api/v1/stats/users_by_custom_field_as_xlsx/:custom_field_id' do
       time_boundary_parameters self
       group_filter_parameter self
       parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
@@ -125,6 +126,7 @@ resource 'Stats - Users' do
       end
 
       let(:group) { @group.id }
+      let(:custom_field_id) { CustomField.find_by(key: 'gender').id }
 
       include_examples('xlsx export', 'gender') do
         let(:expected_worksheet_name) { 'users_by_gender' }
@@ -141,90 +143,7 @@ resource 'Stats - Users' do
     end
   end
 
-  describe 'by_birthyear endpoints' do
-    before do
-      travel_to start_at + 16.days do
-        group_members = [1980, 1980, 1976].map { |year| create(:user, birthyear: year) }
-        @group = create_group(group_members)
-        _non_member = create(:user, birthyear: 1980)
-      end
-
-      travel_to start_at + 18.days do
-        @project = create(:project)
-        @idea1 = create(:idea, project: @project)
-        create(:published_activity, item: @idea1, user: @idea1.author)
-      end
-    end
-
-    shared_examples 'ignore reference distribution' do
-      example 'is not affected by the presence of a reference distribution', document: false, skip: 'flaky with users_by_birthyear_as_xlsx' do
-        do_request
-        response_without_reference = response_body
-
-        create(:binned_distribution)
-        do_request
-        response_with_reference = response_body
-
-        expect(response_status).to eq 200
-        expect(response_without_reference).to eq response_with_reference
-      end
-    end
-
-    get 'web_api/v1/stats/users_by_birthyear' do
-      time_boundary_parameters self
-      group_filter_parameter self
-      parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
-
-      describe 'filtered by group' do
-        let(:group) { @group.id }
-
-        example_request 'Users by birthyear' do
-          expect(response_status).to eq 200
-          expect(json_response_body.dig(:data, :attributes)).to match({
-            series: {
-              users: { '1980': 2, '1976': 1, _blank: 0 },
-              reference_population: nil
-            }
-          })
-        end
-      end
-
-      describe 'filtered by project' do
-        let(:project) { @project.id }
-
-        example_request 'Users by birthyear filtered by project' do
-          expect(response_status).to eq 200
-          expect(json_response_body.dig(:data, :attributes)[:series][:users].values.sum).to eq 1
-        end
-      end
-
-      include_examples 'ignore reference distribution'
-    end
-
-    get 'web_api/v1/stats/users_by_birthyear_as_xlsx' do
-      time_boundary_parameters self
-      group_filter_parameter self
-      parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
-
-      let(:group) { @group.id }
-
-      include_examples('xlsx export', 'birthyear') do
-        let(:expected_worksheet_name) { 'users_by_birthyear' }
-        let(:expected_worksheet_values) do
-          [
-            %w[option users],
-            [1976, 1],
-            [1980, 2],
-            ['_blank', 0]
-          ]
-        end
-      end
-
-      include_examples 'ignore reference distribution'
-    end
-  end
-
-  describe 'by_domicile endpoints' do
+  describe 'former by_domicile endpoints' do
     before do
       travel_to start_at + 16.days do
         @area1, @area2, @area3 = create_list(:area, 3)
@@ -235,8 +154,10 @@ resource 'Stats - Users' do
     end
 
     let(:group) { @group.id }
+    let(:domicile_field) { CustomField.find_by(key: 'domicile') }
+    let(:custom_field_id) { domicile_field.id }
 
-    get 'web_api/v1/stats/users_by_domicile' do
+    get 'web_api/v1/stats/users_by_custom_field/:custom_field_id' do
       time_boundary_parameters self
       group_filter_parameter self
       parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
@@ -244,13 +165,14 @@ resource 'Stats - Users' do
       example_request 'Users by domicile' do
         expect(response_status).to eq 200
         expect(json_response_body.dig(:data, :attributes)).to match({
-          areas: Area.all.to_h { |area| [area.id, area.attributes.slice('title_multiloc')] },
+          options: domicile_field.options.to_h { |o| [o.key, o.attributes.slice('title_multiloc', 'ordering')] },
           series: {
+            reference_population: nil,
             users: {
-              @area1.id => 2,
-              @area2.id => 1,
-              @area3.id => 0,
-              outside: 0,
+              domicile_field.options.first.key => 2,
+              domicile_field.options[1].key => 1,
+              domicile_field.options[2].key => 0,
+              domicile_field.options.last.key => 0,
               _blank: 1
             }
           }
@@ -258,20 +180,21 @@ resource 'Stats - Users' do
       end
     end
 
-    get 'web_api/v1/stats/users_by_domicile_as_xlsx' do
+    get 'web_api/v1/stats/users_by_custom_field_as_xlsx/:custom_field_id' do
       time_boundary_parameters self
       group_filter_parameter self
       parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
 
       include_examples('xlsx export', 'domicile') do
-        let(:expected_worksheet_name) { 'users_by_area' }
+        let(:expected_worksheet_name) { 'users_by_domicile' }
         let(:expected_worksheet_values) do
           [
-            %w[area area_id users],
-            ['Westside', @area1.id, 2],
-            ['Westside', @area2.id, 1],
-            ['Westside', @area3.id, 0],
-            ['unknown', '_blank', 1]
+            %w[option option_id users],
+            ['Westside', domicile_field.options.first.key, 2],
+            ['Westside', domicile_field.options[1].key, 1],
+            ['Westside', domicile_field.options[2].key, 0],
+            ['Somewhere else', domicile_field.options.last.key, 0],
+            ['_blank', '_blank', 1]
           ]
         end
       end
