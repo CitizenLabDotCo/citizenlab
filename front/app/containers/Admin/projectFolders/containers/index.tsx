@@ -69,7 +69,7 @@ const AdminProjectFolderEdition = () => {
     ],
   };
 
-  if (isAdmin({ data: authUser.data })) {
+  if (isAdmin(authUser)) {
     tabbedProps = {
       ...tabbedProps,
       tabs: tabbedProps.tabs.concat({
