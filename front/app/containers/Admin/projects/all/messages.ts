@@ -75,4 +75,9 @@ export default defineMessages({
     defaultMessage:
       'Projects where you are a Project Manager will appear here.',
   },
+  homepageWarning: {
+    id: 'app.containers.AdminPage.projects.all.homepageWarning',
+    defaultMessage:
+      'Customize your homepage display: admins can arrange projects and folders here to set the order on the homepage.',
+  },
 });

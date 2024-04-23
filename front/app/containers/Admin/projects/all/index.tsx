@@ -47,6 +47,7 @@ const ListsContainer = styled.div`
   min-height: 80vh;
   padding-left: 36px;
   padding-right: 36px;
+  padding-bottom: 36px;
   border: 1px solid ${colors.divider};
   border-radius: ${stylingConsts.borderRadius};
   background: ${colors.white};
