@@ -17,10 +17,10 @@ module BulkImportIdeas::Parsers
     def create_files(file_content)
       source_file = upload_source_file file_content
 
-      # Split a pdf into smaller documents
+      # Split a pdf into one document per idea
       split_pdf_files = []
       if source_file&.import_type == 'pdf'
-        # Get number of pages in a form from the download
+        # Get number of pages in a form from the exported PDF template
         pages_per_idea = import_form_data[:page_count]
 
         pdf = begin
@@ -32,16 +32,12 @@ module BulkImportIdeas::Parsers
         source_file.update!(num_pages: pdf.pages.count)
         raise BulkImportIdeas::Error.new 'bulk_import_maximum_pdf_pages_exceeded', value: MAX_TOTAL_PAGES if pdf.pages.count > MAX_TOTAL_PAGES
 
-        return [source_file] if pdf.pages.count <= PAGES_TO_TRIGGER_NEW_PDF # Only need to split if the file is too big
-
         new_pdf = ::CombinePDF.new
         new_pdf_count = 0
         pdf.pages.each_with_index do |page, index|
           new_pdf << page
           current_page_num = index + 1
-          save_to_file =
-            (current_page_num % pages_per_idea == 0 && new_pdf.pages.count >= PAGES_TO_TRIGGER_NEW_PDF) ||
-            (current_page_num == pdf.pages.count)
+          save_to_file = current_page_num % pages_per_idea == 0
 
           if save_to_file
             # Temporarily save to a file
@@ -65,7 +61,7 @@ module BulkImportIdeas::Parsers
           end
         end
       end
-      split_pdf_files.presence || [source_file]
+      split_pdf_files
     end
 
     # Overridden from base class to handle the way checkboxes are filled in the PDF
