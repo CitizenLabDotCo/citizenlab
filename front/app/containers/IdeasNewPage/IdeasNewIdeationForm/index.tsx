@@ -22,7 +22,6 @@ import AnonymousParticipationConfirmationModal from 'components/AnonymousPartici
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 import Form from 'components/Form';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
-import FullPageSpinner from 'components/UI/FullPageSpinner';
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 import PageContainer from 'components/UI/PageContainer';
 
@@ -230,74 +229,61 @@ const IdeasNewIdeationForm = ({ project }: Props) => {
     clHistory.push(`/projects/${project.data.attributes.slug}`);
   }, [project]);
 
-  if (!participationMethodConfig) {
+  if (
+    !participationMethodConfig ||
+    !schema ||
+    !uiSchema ||
+    inputSchemaError ||
+    processingLocation
+  ) {
     return null;
   }
 
   return (
     <>
       <IdeasNewMeta />
-      <Box
-        w="100%"
-        ml="0px"
-        display="flex"
-        justifyContent="flex-start"
-        bg={colors.grey100}
-      >
-        <Box p="32px" pb="0">
+      <Box bg={colors.grey100}>
+        <Box p="32px" display="flex" justifyContent="flex-start">
           <GoBackButtonSolid
             text={localize(project.data.attributes.title_multiloc)}
             onClick={goBackToProject}
           />
         </Box>
-      </Box>
-      <main>
-        <PageContainer id="e2e-idea-new-page" overflow="hidden">
-          {!processingLocation &&
-          schema &&
-          uiSchema &&
-          participationMethodConfig ? (
-            <>
-              <Form
-                schema={schema}
-                uiSchema={uiSchema}
-                onSubmit={handleDisclaimer}
-                initialFormData={initialFormData}
-                getAjvErrorMessage={getAjvErrorMessage}
-                getApiErrorMessage={getApiErrorMessage}
-                title={
-                  <>
+        <main>
+          <PageContainer id="e2e-idea-new-page" overflow="hidden">
+            <Form
+              schema={schema}
+              uiSchema={uiSchema}
+              onSubmit={handleDisclaimer}
+              initialFormData={initialFormData}
+              getAjvErrorMessage={getAjvErrorMessage}
+              getApiErrorMessage={getApiErrorMessage}
+              title={
+                participationMethodConfig.getFormTitle ? (
+                  <Box mb="40px">
                     <NewIdeaHeading
-                      titleText={
-                        participationMethodConfig.getFormTitle ? (
-                          participationMethodConfig.getFormTitle({
-                            project: project.data,
-                            phases: phases?.data,
-                            phaseFromUrl: phaseFromUrl?.data,
-                          })
-                        ) : (
-                          <></>
-                        )
-                      }
+                      titleText={participationMethodConfig.getFormTitle({
+                        project: project.data,
+                        phases: phases?.data,
+                        phaseFromUrl: phaseFromUrl?.data,
+                      })}
                     />
-                  </>
-                }
-                config={'input'}
-                footer={
-                  allowAnonymousPosting ? (
-                    <Suspense fallback={null}>
-                      <ProfileVisiblity
-                        postAnonymously={postAnonymously}
-                        onChange={handleOnChangeAnonymousPosting}
-                      />
-                    </Suspense>
-                  ) : undefined
-                }
-              />
-            </>
-          ) : inputSchemaError ? null : (
-            <FullPageSpinner />
-          )}
+                  </Box>
+                ) : undefined
+              }
+              config={'input'}
+              footer={
+                allowAnonymousPosting ? (
+                  <Suspense fallback={null}>
+                    <ProfileVisiblity
+                      postAnonymously={postAnonymously}
+                      onChange={handleOnChangeAnonymousPosting}
+                    />
+                  </Suspense>
+                ) : undefined
+              }
+            />
+          </PageContainer>
           {showAnonymousConfirmationModal && (
             <AnonymousParticipationConfirmationModal
               onCloseModal={() => {
@@ -310,8 +296,8 @@ const IdeasNewIdeationForm = ({ project }: Props) => {
             onAcceptDisclaimer={() => onAcceptDisclaimer(formData)}
             onCancelDisclaimer={onCancelDisclaimer}
           />
-        </PageContainer>
-      </main>
+        </main>
+      </Box>
     </>
   );
 };

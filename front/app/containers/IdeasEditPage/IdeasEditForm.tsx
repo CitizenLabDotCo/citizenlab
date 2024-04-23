@@ -21,7 +21,6 @@ import ideaFormMessages from 'containers/IdeasNewPage/messages';
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 import Form from 'components/Form';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
-import FullPageSpinner from 'components/UI/FullPageSpinner';
 import PageContainer from 'components/UI/PageContainer';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -192,60 +191,58 @@ const IdeasEditForm = ({ ideaId }: Props) => {
     );
   };
 
+  if (!schema || !uiSchema || inputSchemaError) return null;
+
   return (
     <>
       <IdeasEditMeta ideaId={ideaId} projectId={projectId} />
       <Box bg={colors.grey100}>
-        <Box p="32px" pb="0">
+        <Box p="32px">
           <GoBackToIdeaPage idea={idea.data} />
         </Box>
         <main>
           <PageContainer id="e2e-idea-edit-page">
-            {schema && uiSchema ? (
-              <Form
-                schema={schema}
-                uiSchema={uiSchema}
-                onSubmit={handleDisclaimer}
-                initialFormData={initialFormData}
-                inputId={idea.data.id}
-                getAjvErrorMessage={getAjvErrorMessage}
-                getApiErrorMessage={getApiErrorMessage}
-                config={'input'}
-                title={
-                  <Box
-                    width="100%"
-                    display="flex"
-                    flexDirection="column"
-                    justifyContent="center"
-                    alignItems="center"
-                    pb="40px"
-                  >
-                    <FormattedMessage
-                      {...{
-                        idea: messages.formTitle,
-                        option: messages.optionFormTitle,
-                        project: messages.projectFormTitle,
-                        question: messages.questionFormTitle,
-                        issue: messages.issueFormTitle,
-                        contribution: messages.contributionFormTitle,
-                      }[
-                        uiSchema && uiSchema?.options?.inputTerm
-                          ? uiSchema.options.inputTerm
-                          : 'idea'
-                      ]}
-                    />
-                  </Box>
-                }
-              />
-            ) : inputSchemaError ? null : (
-              <FullPageSpinner />
-            )}
-            <ContentUploadDisclaimer
-              isDisclaimerOpened={isDisclaimerOpened}
-              onAcceptDisclaimer={() => onAcceptDisclaimer(formData)}
-              onCancelDisclaimer={onCancelDisclaimer}
+            <Form
+              schema={schema}
+              uiSchema={uiSchema}
+              onSubmit={handleDisclaimer}
+              initialFormData={initialFormData}
+              inputId={idea.data.id}
+              getAjvErrorMessage={getAjvErrorMessage}
+              getApiErrorMessage={getApiErrorMessage}
+              config={'input'}
+              title={
+                <Box
+                  width="100%"
+                  display="flex"
+                  flexDirection="column"
+                  justifyContent="center"
+                  alignItems="center"
+                  mb="40px"
+                >
+                  <FormattedMessage
+                    {...{
+                      idea: messages.formTitle,
+                      option: messages.optionFormTitle,
+                      project: messages.projectFormTitle,
+                      question: messages.questionFormTitle,
+                      issue: messages.issueFormTitle,
+                      contribution: messages.contributionFormTitle,
+                    }[
+                      uiSchema && uiSchema?.options?.inputTerm
+                        ? uiSchema.options.inputTerm
+                        : 'idea'
+                    ]}
+                  />
+                </Box>
+              }
             />
           </PageContainer>
+          <ContentUploadDisclaimer
+            isDisclaimerOpened={isDisclaimerOpened}
+            onAcceptDisclaimer={() => onAcceptDisclaimer(formData)}
+            onCancelDisclaimer={onCancelDisclaimer}
+          />
         </main>
       </Box>
     </>

@@ -16,21 +16,17 @@ const NewIdeaHeading = ({ titleText }: Props) => {
         justifyContent="center"
         alignItems="center"
         maxWidth="700px"
-        pt="40px"
       >
-        <Box width="100%">
-          <Text
-            width="100%"
-            color={'tenantPrimary'}
-            variant="bodyL"
-            style={{ fontWeight: 500 }}
-            fontSize={'xxxxl'}
-            ml={'0px'}
-            my={'8px'}
-          >
-            {titleText}
-          </Text>
-        </Box>
+        <Text
+          width="100%"
+          color={'tenantPrimary'}
+          variant="bodyL"
+          style={{ fontWeight: 500 }}
+          fontSize={'xxxxl'}
+          m={'0px'}
+        >
+          {titleText}
+        </Text>
       </Box>
     </Box>
   );
