@@ -12,6 +12,7 @@ import {
   withJsonFormsLayoutProps,
   useJsonForms,
 } from '@jsonforms/react';
+import { FocusOn } from 'react-focus-on';
 import { useSearchParams, useParams } from 'react-router-dom';
 import styled, { useTheme } from 'styled-components';
 
@@ -107,6 +108,8 @@ const CLSurveyPageLayout = memo(
       !isNilOrError(authUser) &&
       canModerateProject(project?.data.id, { data: authUser.data });
     const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
+    const surveyHeadingRef = useRef<HTMLDivElement>(null);
+    const pageControlButtonsRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
       // We can cast types because the tester made sure we only get correct values
@@ -247,7 +250,13 @@ const CLSurveyPageLayout = memo(
     }
 
     return (
-      <>
+      <FocusOn
+        shards={[surveyHeadingRef, pageControlButtonsRef]}
+        style={{
+          width: '100%',
+          height: '100%',
+        }}
+      >
         <Box
           width="100%"
           height="100%"
@@ -267,6 +276,7 @@ const CLSurveyPageLayout = memo(
             canUserEditProject={userIsModerator}
             loggedIn={!isNilOrError(authUser)}
             percentageAnswered={percentageAnswered}
+            ref={surveyHeadingRef}
           />
 
           {allowAnonymousPosting && (
@@ -362,9 +372,10 @@ const CLSurveyPageLayout = memo(
             isLoading={isLoading}
             showSubmit={showSubmit}
             dataCyValue={dataCyValue}
+            ref={pageControlButtonsRef}
           />
         </Box>
-      </>
+      </FocusOn>
     );
   }
 );
