@@ -2,7 +2,7 @@ fr-BE:
   email_campaigns:
     campaign_type_description:
       "manual": Messages officiels
-      "manual_project_participants": Messages officiels aux participants au projet
+      "manual_project_participants": Messages officiels aux participants d'un projet
       "admin_rights_received": Droits d'administrateur reçus
       "comment_deleted_by_admin": Suppression de mon commentaire
       "comment_marked_as_spam": Commenter le rapport de spam
