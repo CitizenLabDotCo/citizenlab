@@ -172,6 +172,11 @@ module BulkImportIdeas::Parsers
         if next_question && next_question[:name].split.count > 4
           field[:value] = field[:value].gsub(/#{next_question[:name]}*/, '')
         end
+
+        # Strip out 'this answer may be shared with moderators...' text
+        this_answer_copy = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.this_answer') }
+        field[:value] = field[:value].gsub(/\*#{this_answer_copy}/, '')
+
         field[:value] = field[:value].strip
       end
 

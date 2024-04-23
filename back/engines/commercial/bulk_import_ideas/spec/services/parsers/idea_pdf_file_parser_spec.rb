@@ -512,6 +512,12 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
       expect(field[:value]).to eq 'This is the text that we really want.'
     end
 
+    it 'removes moderator disclaimer text' do
+      form_fields[1][:value] = '*This answer will only be shared with moderators, and not to the public. This is the text that we really want.'
+      field = service.send(:process_field_value, form_fields[1], form_fields)
+      expect(field[:value]).to eq 'This is the text that we really want.'
+    end
+
     it 'does not remove text if the next field title has fewer than five words in it' do
       form_fields[1][:value] = 'This is the text that we really want. Four word field title'
       form_fields[2][:name] = 'Four word field title'
