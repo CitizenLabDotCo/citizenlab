@@ -218,22 +218,19 @@ resource 'AdminPublication' do
   get 'web_api/v1/admin_publications' do
     context 'when project moderator' do
       before do
-        create(:project)
-        create(:project)
-        @project1 = create(:project)
-        @project2 = create(:project)
-        @moderator = create(:project_moderator, projects: [@project1, @project2])
+        @moderator = create(:project_moderator, projects: [published_projects[0], published_projects[1]])
         header_token_for(@moderator)
       end
 
-      example 'List projects the current user can moderate' do
-
+      example 'List only publications the current user can moderate' do
         do_request filter_can_moderate: true
         json_response = json_parse(response_body)
         assert_status 200
         expect(json_response[:data].size).to eq 2
       end
     end
+
+    # TODO: add tests for folder mod, etc.
   end
 
   context 'when resident' do
