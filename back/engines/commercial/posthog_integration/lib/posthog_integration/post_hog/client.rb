@@ -7,8 +7,6 @@ module PosthogIntegration
     class Client
       DEFAULT_BASE_URI = 'https://eu.posthog.com'
 
-      attr_accessor :default_project_id
-
       def initialize(base_uri: nil, api_key: nil, project_id: nil)
         @base_uri = base_uri || ENV.fetch('POSTHOG_HOST', DEFAULT_BASE_URI)
         @base_uri = @base_uri.chomp('/')
@@ -37,7 +35,7 @@ module PosthogIntegration
 
       def delete_person_by_distinct_id(distinct_id, retries: 0)
         response = persons(distinct_id: distinct_id)
-        raise_if_error(response)
+        raise_if_error!(response)
 
         results = response.parse['results']
 
@@ -47,7 +45,7 @@ module PosthogIntegration
         when 1
           person_id = results.first['id']
           delete_response = delete_person(person_id, retries: retries)
-          raise_if_error(delete_response)
+          raise_if_error!(delete_response)
 
           person_id
         else
@@ -56,13 +54,6 @@ module PosthogIntegration
             Expected 0 or 1, got #{results.size}.
           MSG
         end
-      end
-
-      def raise_if_error(response)
-        status = response.status
-        return if !status.client_error? && !status.server_error?
-
-        raise ApiError, response.to_s
       end
 
       private
@@ -86,6 +77,12 @@ module PosthogIntegration
           
           > client.default_project_id = '123'
         MSG
+      end
+
+      def raise_if_error!(response)
+        return if !response.status.client_error? && !response.status.server_error?
+
+        raise ApiError, response.to_s
       end
 
       class ApiError < RuntimeError; end
