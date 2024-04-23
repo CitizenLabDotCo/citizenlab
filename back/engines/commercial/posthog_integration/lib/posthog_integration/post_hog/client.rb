@@ -17,28 +17,23 @@ module PosthogIntegration
         assert_project_id!
       end
 
-      def persons(**params)
-        http.get("#{@base_uri}/api/projects/#{@project_id}/persons", params: params)
+      def persons(retries: 0, **params)
+        retry_request(retries: retries) do
+          http.get("#{@base_uri}/api/projects/#{@project_id}/persons", params: params)
+        end
       end
 
       def delete_person(id, retries: 0)
-        response = http.delete("#{@base_uri}/api/projects/#{@project_id}/persons/#{id}")
-        if response.status.code != 429 || retries <= 0
-          response
-        else
-          # Retry after waiting between 1 and 5 minutes
-          sleep_time = rand(60..300)
-          sleep(sleep_time)
-          delete_person(id, retries: retries - 1)
+        retry_request(retries: retries) do
+          http.delete("#{@base_uri}/api/projects/#{@project_id}/persons/#{id}")
         end
       end
 
       def delete_person_by_distinct_id(distinct_id, retries: 0)
-        response = persons(distinct_id: distinct_id)
+        response = persons(distinct_id: distinct_id, retries: retries)
         raise_if_error!(response)
 
         results = response.parse['results']
-
         case results.size
         when 0
           nil
@@ -57,6 +52,15 @@ module PosthogIntegration
       end
 
       private
+
+      def retry_request(retries: 0)
+        response = yield
+        return response if response.status.code != 429 || retries <= 0
+
+        # Retry after waiting between 30 seconds and 2 minutes
+        sleep rand(30..120)
+        retry_request(retries: retries - 1)
+      end
 
       def http
         HTTP

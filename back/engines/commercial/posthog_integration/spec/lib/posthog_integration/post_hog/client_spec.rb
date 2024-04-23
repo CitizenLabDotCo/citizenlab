@@ -134,14 +134,15 @@ describe PosthogIntegration::PostHog::Client do
         .with(headers: { 'Authorization' => "Bearer #{api_key}" })
         .to_return(status: 429)
       allow(posthog).to receive(:delete_person).with(person_id, retries: 3).and_call_original
+      allow(posthog).to receive(:retry_request).with(retries: 3).and_call_original
       status = double()
       status.stub(:client_error?).and_return(false)
       status.stub(:server_error?).and_return(false)
       response = double()
       response.stub(:status).and_return(status)
-      allow(posthog).to receive(:delete_person).with(person_id, retries: 2).and_return(response) # HTTP::Response.new(status: 429, request: nil, connection: nil, version: '1.1'))
+      allow(posthog).to receive(:retry_request).with(retries: 2).and_return(response)
       posthog.delete_person_by_distinct_id(user.id, retries: 3)
-      expect(posthog).to have_received(:delete_person).twice
+      expect(posthog).to have_received(:retry_request).thrice # Once for persons, twice for delete_person
     end
 
     it 'reports error when response is not 429 and retries > 0' do
