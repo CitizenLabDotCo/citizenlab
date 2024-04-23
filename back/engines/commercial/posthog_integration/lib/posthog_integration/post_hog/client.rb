@@ -9,8 +9,6 @@ module PosthogIntegration
 
       attr_accessor :default_project_id
 
-      delegate :raise_if_error, to: :class  ###
-
       def initialize(base_uri: nil, api_key: nil)
         @base_uri = base_uri || ENV.fetch('POSTHOG_HOST', DEFAULT_BASE_URI)
         @base_uri = @base_uri.chomp('/')
@@ -63,9 +61,9 @@ module PosthogIntegration
         end
       end
 
-      def self.raise_if_error(response)
+      def raise_if_error(response)
         status = response.status
-        return unless status.client_error? || status.server_error? ###
+        return if !status.client_error? && !status.server_error?
 
         raise ApiError, response.to_s
       end

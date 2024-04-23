@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 # TODO
-# Spec throttling and retry
 # Refactoring
 # Add retry for persons + wait less long + reusable method
 
