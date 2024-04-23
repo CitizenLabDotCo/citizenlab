@@ -90,6 +90,8 @@ class AdminPublicationsFilteringService
     next scope unless ['true', true, '1'].include? options[:filter_can_moderate]
 
     current_user = options[:current_user]
+    next scope.none unless current_user
+
     next scope if current_user.admin?
 
     moderated_folder_ids = current_user.roles.select { |r| r['type'] == 'project_folder_moderator' }.pluck('project_folder_id')
