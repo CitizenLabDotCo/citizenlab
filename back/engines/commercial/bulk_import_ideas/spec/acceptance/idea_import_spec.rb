@@ -91,7 +91,7 @@ resource 'BulkImportIdeasImportIdeas' do
           expect(response_data.first[:attributes][:publication_status]).to eq 'draft'
           expect(User.all.count).to eq 1 # No new users created
           expect(BulkImportIdeas::IdeaImport.all.count).to eq 1
-          expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 1
+          expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 2
           expect(Idea.all.first.phases.count).to eq 1
           expect(Idea.all.first.phases.first).to eq project.phases.first
           expect(project.reload.ideas_count).to eq 0 # Draft ideas should not be counted
