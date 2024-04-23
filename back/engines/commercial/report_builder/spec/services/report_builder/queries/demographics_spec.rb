@@ -92,5 +92,25 @@ RSpec.describe ReportBuilder::Queries::Demographics do
         })
       end
     end
+
+    context 'birthyear field' do
+      before do
+        options = []
+        @birthyear_field = create(:custom_field, key: :birthyear, options: options, input_type: :select)
+
+        create(
+          :user,
+          registration_completed_at: start_at + 4.days,
+          custom_field_values: { birthyear: 1977 }
+        )
+
+        AppConfiguration.update!(created_at: Date.new(2020, 1, 1))
+      end
+
+      it 'works' do
+        result = query.run_query(@birthyear_field.id)
+        expect(result[:series]).to eq({ '_blank' => 0, 1977 => 1 })
+      end
+    end
   end
 end
