@@ -515,15 +515,50 @@ resource 'AdminPublication' do
   end
 
   context 'when project folder moderator' do
-    let(:folder) { create(:project_folder) }
+    # We can't use :folder as will collide with param :folder
+    let(:project_folder) { create(:project_folder) }
 
     before do
-      header_token_for create(:project_folder_moderator, project_folders: [folder])
-
       @projects = %w[published published draft draft published archived archived published]
-        .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps, parent_id: folder.admin_publication.id }) }
+        .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps, parent_id: project_folder.admin_publication.id }) }
       @folder = create(:project_folder, projects: @projects.take(3))
       @empty_draft_folder = create(:project_folder, admin_publication_attributes: { publication_status: 'draft' })
+      @moderator = create(:project_folder_moderator, project_folders: [project_folder, @folder])
+
+      @folder.projects.each do |project|
+        @moderator.update(roles: @moderator.roles += [{ type: 'project_moderator', project_id: project.id }])
+      end
+
+      header_token_for(@moderator)
+    end
+
+    get 'web_api/v1/admin_publications' do
+      with_options scope: :page do
+        parameter :number, 'Page number'
+        parameter :size, 'Number of projects per page'
+      end
+      parameter :topics, 'Filter by topics (AND)', required: false
+      parameter :areas, 'Filter by areas (AND)', required: false
+      parameter :depth, 'Filter by depth', required: false
+      parameter :search, 'Search text of title, description, preview, and slug', required: false
+      parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default (OR)', required: false
+      parameter :folder, 'Filter by folder (project folder id)', required: false
+      parameter :remove_not_allowed_parents, 'Filter out folders which contain only projects that are not visible to the user', required: false
+      parameter :only_projects, 'Include projects only (no folders)', required: false
+      parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
+      parameter :filter_is_moderator_of, 'Filter out the publications the user is not moderator of. False by default', required: false
+
+      example 'List publications user is moderator of', document: false do
+        do_request filter_is_moderator_of: true
+        assert_status 200
+        expect(publication_ids).to match_array [project_folder.id, @folder.id, @folder.projects.pluck(:id)].flatten
+      end
+
+      example 'List only projects user is moderator of' do
+        do_request(filter_is_moderator_of: true, only_projects: true)
+        assert_status 200
+        expect(publication_ids).to match_array @folder.projects.pluck(:id)
+      end
     end
 
     patch 'web_api/v1/admin_publications/:id/reorder' do
@@ -533,14 +568,14 @@ resource 'AdminPublication' do
 
       describe do
         # getting the first publication, which should have ordering = 0
-        let(:publication) { folder.admin_publication.children.first }
+        let(:publication) { project_folder.admin_publication.children.first }
         let(:id) { publication.id }
         let(:publication_ordering) { 0 }
 
         let(:ordering) { 1 }
 
         # getting the second publication, which should have ordering = 1
-        let(:second_publication) { folder.admin_publication.children.second }
+        let(:second_publication) { project_folder.admin_publication.children.second }
         let(:second_publication_ordering) { 1 }
 
         example 'Reorder an admin publication' do
