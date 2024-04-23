@@ -37,7 +37,15 @@ const FormSectionTitleStyled = styled.h2`
 
 const CLCategoryLayout = memo(
   // here we can cast types because the tester made sure we only get categorization layouts
-  ({ schema, uischema, path, renderers, cells, enabled }: LayoutProps) => {
+  ({
+    schema,
+    uischema,
+    path,
+    renderers,
+    cells,
+    enabled,
+    data,
+  }: LayoutProps) => {
     const theme = useTheme();
 
     return (
@@ -67,8 +75,15 @@ const CLCategoryLayout = memo(
               </Box>
             )}
             {e.elements.map((e, index) => {
+              const key = e.scope?.split('/').pop();
+              const isOtherField = key?.includes('_other');
               return (
-                <Box w="100%" mb="40px" key={index}>
+                <Box
+                  w="100%"
+                  mb="40px"
+                  mt={isOtherField ? '-25px' : undefined}
+                  key={index}
+                >
                   <JsonFormsDispatch
                     renderers={renderers}
                     cells={cells}
