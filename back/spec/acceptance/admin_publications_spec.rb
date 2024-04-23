@@ -222,7 +222,7 @@ resource 'AdminPublication' do
         header_token_for(@moderator)
       end
 
-      example 'List only publications the current user can moderate' do
+      example 'List only the projects the current user is moderator of' do
         do_request(filter_is_moderator_of: true, only_projects: true)
         json_response = json_parse(response_body)
         assert_status 200
@@ -238,12 +238,26 @@ resource 'AdminPublication' do
         header_token_for(@admin)
       end
 
-      example 'List only publications the current user can moderate' do
+      example 'List only the projects the current user is moderator of' do
         do_request(filter_is_moderator_of: true, only_projects: true)
         json_response = json_parse(response_body)
         assert_status 200
         expect(json_response[:data].size).to eq 1
         expect(json_response[:data].first.dig(:relationships, :publication, :data, :id)).to eq published_projects[0].id
+      end
+    end
+
+    context 'when regular user' do
+      before do
+        @user = create(:user)
+        header_token_for(@user)
+      end
+
+      example 'List only the projects the current user is moderator of' do
+        do_request(filter_is_moderator_of: true, only_projects: true)
+        json_response = json_parse(response_body)
+        assert_status 200
+        expect(json_response[:data].size).to eq 0
       end
     end
   end
