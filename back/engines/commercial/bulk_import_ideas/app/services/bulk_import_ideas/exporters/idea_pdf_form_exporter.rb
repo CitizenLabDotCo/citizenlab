@@ -7,6 +7,7 @@ module BulkImportIdeas::Exporters
     attr_reader :participation_context, :form_fields, :previous_cursor
 
     FORBIDDEN_HTML_TAGS_REGEX = %r{</?(div|span|ul|ol|li|img|a){1}[^>]*/?>}
+    JUMBLING_FIELD_TYPES = %w[multiline_text html_multiloc text text_multiloc]
 
     def initialize(phase, locale, personal_data_enabled)
       super
