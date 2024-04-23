@@ -41,7 +41,7 @@ describe PosthogIntegration::PostHog::Client do
         .to_return(status: 200, body: persons_response, headers: { 'Content-Type' => 'application/json' })
 
 
-      stub_request(:delete, /example/)
+      stub_request(:delete, "https://example.com/api/projects/#{project_id}/persons/0")
         .to_return(status: 204)
       
 
