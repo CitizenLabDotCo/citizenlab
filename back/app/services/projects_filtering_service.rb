@@ -37,11 +37,11 @@ class ProjectsFilteringService
   end
 
   add_filter('by_moderator') do |scope, options|
-    next scope unless options.key? :moderator
+    next scope unless ['true', true, '1'].include? options[:filter_can_moderate]
 
-    moderator = options[:moderator] # nil means the user is not logged in
-    if moderator
-      ::UserRoleService.new.moderatable_projects moderator, scope
+    current_user = options[:current_user] # nil means the user is not logged in
+    if current_user
+      ::UserRoleService.new.moderatable_projects current_user, scope
     else
       scope.none
     end
