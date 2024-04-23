@@ -223,14 +223,29 @@ resource 'AdminPublication' do
       end
 
       example 'List only publications the current user can moderate' do
-        do_request filter_can_moderate: true
+        do_request(filter_is_moderator_of: true, only_projects: true)
         json_response = json_parse(response_body)
         assert_status 200
         expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) })
+          .to match_array [published_projects[0].id, published_projects[1].id]
       end
     end
 
-    # TODO: add tests for folder mod, etc.
+    context 'when an admin' do
+      before do
+        @admin = create(:admin, roles: [{ type: 'admin' }, { type: 'project_moderator', project_id: published_projects[0].id }])
+        header_token_for(@admin)
+      end
+
+      example 'List only publications the current user can moderate' do
+        do_request(filter_is_moderator_of: true, only_projects: true)
+        json_response = json_parse(response_body)
+        assert_status 200
+        expect(json_response[:data].size).to eq 1
+        expect(json_response[:data].first.dig(:relationships, :publication, :data, :id)).to eq published_projects[0].id
+      end
+    end
   end
 
   context 'when resident' do
