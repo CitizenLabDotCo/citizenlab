@@ -86,6 +86,18 @@ class AdminPublicationsFilteringService
     parents_with_children.or(non_parents)
   end
 
+  add_filter('remove_unmoderated_folders') do |scope, options|
+    next scope unless options[:moderator]
+
+    moderator = options[:moderator]
+    next scope if moderator.admin?
+
+    moderated_folder_ids = moderator.roles.select { |r| r['type'] == 'project_folder_moderator' }.pluck('project_folder_id')
+    unmoderated_folders = scope.where(children_allowed: true).where.not(id: moderated_folder_ids)
+
+    scope.where.not(id: unmoderated_folders)
+  end
+
   add_filter('top_level_only') do |scope, options|
     [0, '0'].include?(options[:depth]) ? scope.where(depth: 0) : scope
   end
