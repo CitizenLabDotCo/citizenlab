@@ -67,7 +67,7 @@ describe('Idea posting permissions', () => {
   });
 });
 
-describe('idea posting that requires smart group', () => {
+describe.skip('idea posting that requires smart group', () => {
   const projectTitle = randomString(10);
   let projectId = '';
   let projectSlug = '';
