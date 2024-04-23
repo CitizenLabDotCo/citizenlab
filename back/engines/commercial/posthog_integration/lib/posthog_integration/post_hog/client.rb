@@ -9,37 +9,34 @@ module PosthogIntegration
 
       attr_accessor :default_project_id
 
-      def initialize(base_uri: nil, api_key: nil)
+      def initialize(base_uri: nil, api_key: nil, project_id: nil)
         @base_uri = base_uri || ENV.fetch('POSTHOG_HOST', DEFAULT_BASE_URI)
         @base_uri = @base_uri.chomp('/')
 
         @api_key = api_key || ENV.fetch('POSTHOG_API_KEY', nil)
+
+        @project_id = project_id
+        assert_project_id!
       end
 
-      def persons(project_id: default_project_id, **params)
-        missing_project_id! unless project_id
-
-        http.get("#{@base_uri}/api/projects/#{project_id}/persons", params: params)
+      def persons(**params)
+        http.get("#{@base_uri}/api/projects/#{@project_id}/persons", params: params)
       end
 
-      def delete_person(id, project_id: default_project_id, retries: 0)
-        missing_project_id! unless project_id
-
-        response = http.delete("#{@base_uri}/api/projects/#{project_id}/persons/#{id}")
+      def delete_person(id, retries: 0)
+        response = http.delete("#{@base_uri}/api/projects/#{@project_id}/persons/#{id}")
         if response.status.code != 429 || retries <= 0
           response
         else
           # Retry after waiting between 1 and 5 minutes
           sleep_time = rand(60..300)
           sleep(sleep_time)
-          delete_person(id, project_id: project_id, retries: retries - 1)
+          delete_person(id, retries: retries - 1)
         end
       end
 
-      def delete_person_by_distinct_id(distinct_id, project_id: default_project_id, retries: 0)
-        missing_project_id! unless project_id
-
-        response = persons(project_id: project_id, distinct_id: distinct_id)
+      def delete_person_by_distinct_id(distinct_id, retries: 0)
+        response = persons(distinct_id: distinct_id)
         raise_if_error(response)
 
         results = response.parse['results']
@@ -49,7 +46,7 @@ module PosthogIntegration
           nil
         when 1
           person_id = results.first['id']
-          delete_response = delete_person(person_id, project_id: project_id, retries: retries)
+          delete_response = delete_person(person_id, retries: retries)
           raise_if_error(delete_response)
 
           person_id
@@ -80,7 +77,9 @@ module PosthogIntegration
         "Bearer #{@api_key}"
       end
 
-      def missing_project_id!
+      def assert_project_id!
+        return if @project_id
+
         raise <<~MSG
           The PostHog project ID is missing. You should either use the `project_id`
           parameter or set a default project ID on the client: 

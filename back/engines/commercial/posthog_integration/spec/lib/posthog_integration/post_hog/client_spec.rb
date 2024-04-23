@@ -8,7 +8,7 @@ describe PosthogIntegration::PostHog::Client do
   let(:base_uri) { 'https://example.com' }
   let(:api_key) { 'fake_api_key' }
   let(:project_id) { 'fake_project_id' }
-  let(:posthog) { described_class.new(base_uri: base_uri, api_key: api_key).tap { |client| client.default_project_id = project_id } }
+  let(:posthog) { described_class.new(base_uri: base_uri, api_key: api_key, project_id: project_id) }
   let(:user) { create(:user) }
   let(:person_id) { 0 }
 
@@ -133,13 +133,13 @@ describe PosthogIntegration::PostHog::Client do
       stub_request(:delete, "https://example.com/api/projects/#{project_id}/persons/#{person_id}")
         .with(headers: { 'Authorization' => "Bearer #{api_key}" })
         .to_return(status: 429)
-      allow(posthog).to receive(:delete_person).with(person_id, project_id: project_id, retries: 3).and_call_original
+      allow(posthog).to receive(:delete_person).with(person_id, retries: 3).and_call_original
       status = double()
       status.stub(:client_error?).and_return(false)
       status.stub(:server_error?).and_return(false)
       response = double()
       response.stub(:status).and_return(status)
-      allow(posthog).to receive(:delete_person).with(person_id, project_id: project_id, retries: 2).and_return(response) # HTTP::Response.new(status: 429, request: nil, connection: nil, version: '1.1'))
+      allow(posthog).to receive(:delete_person).with(person_id, retries: 2).and_return(response) # HTTP::Response.new(status: 429, request: nil, connection: nil, version: '1.1'))
       posthog.delete_person_by_distinct_id(user.id, retries: 3)
       expect(posthog).to have_received(:delete_person).twice
     end
