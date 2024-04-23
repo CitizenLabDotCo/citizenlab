@@ -35,18 +35,18 @@ export const getFormSchemaAndData = (
 
   iterateSchema(uiSchema, uiSchema, (element, parentSchema) => {
     // If saving a draft response, we only want to validate the answers
-    // against pages up to and including the latest completed page
+    // against pages up to and including the latest completed page.
     if (
       data?.latest_complete_page >= 0 &&
       data?.publication_status === 'draft'
     ) {
-      // Get the index of the current page we're iterating in the uiSchema
+      // Get the index of the current page we're iterating in the uiSchema.
       const indexCurrentElement = uiSchema?.elements?.findIndex(
         (page) => page?.options?.id === parentSchema?.options?.id
       );
 
       // If the index of the current page is greater than the latest completed page
-      // we don't want to validate our current draft answers against this page
+      // we don't want to include it in our validation check.
       if (indexCurrentElement > data?.latest_complete_page) {
         return;
       }
