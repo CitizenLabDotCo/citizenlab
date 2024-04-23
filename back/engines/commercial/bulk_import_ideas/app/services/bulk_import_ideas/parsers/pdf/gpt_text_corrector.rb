@@ -1,4 +1,5 @@
 class BulkImportIdeas::Parsers::Pdf::GPTTextCorrector
+  # @param [Array<Hash>] idea_rows - comes from IdeaBaseFileParser#ideas_to_idea_rows
   def initialize(phase, idea_rows)
     @phase = phase
     @idea_rows = idea_rows
