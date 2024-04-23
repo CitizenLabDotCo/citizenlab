@@ -5,9 +5,10 @@ module SmartGroups::Rules
     include ActiveModel::Validations
     include DescribableRule
 
-    PREDICATE_VALUES = %w[in not_in posted_in not_posted_in commented_in not_commented_in reacted_idea_in not_reacted_idea_in reacted_comment_in not_reacted_comment_in voted_in not_voted_in volunteered_in not_volunteered_in]
-    MULTIVALUE_PREDICATES = %w[in posted_in commented_in reacted_idea_in reacted_comment_in voted_in volunteered_in]
     VALUELESS_PREDICATES = []
+    SINGLEVALUE_PREDICATES = %w[not_in not_posted_in not_commented_in not_reacted_idea_in not_reacted_comment_in not_voted_in not_volunteered_in]
+    MULTIVALUE_PREDICATES = %w[in posted_in commented_in reacted_idea_in reacted_comment_in voted_in volunteered_in]
+    PREDICATE_VALUES = VALUELESS_PREDICATES + SINGLEVALUE_PREDICATES + MULTIVALUE_PREDICATES
 
     attr_accessor :predicate, :value
 
@@ -29,7 +30,7 @@ module SmartGroups::Rules
             },
             'predicate' => {
               type: 'string',
-              enum: PREDICATE_VALUES - (VALUELESS_PREDICATES + MULTIVALUE_PREDICATES)
+              enum: SINGLEVALUE_PREDICATES
             },
             'value' => {
               'description' => 'The id of a project',
