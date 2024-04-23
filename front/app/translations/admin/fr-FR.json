@@ -788,7 +788,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.templateCanBeDownloadedHere": "Le modèle peut être téléchargé ici.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.upload": "Télécharger",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadExcelFile": "Téléchargez un <b>fichier Excel</b> (.xlsx) complété. Il doit utiliser le modèle fourni pour ce projet. {hereLink}",
-  "app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadPdfFile1": "Téléchargez un <b>fichier PDF de formulaires scannés</b>. Il doit utiliser un formulaire imprimé à partir de cette phase. {hereLink}",
+  "app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadPdfFile1": "Téléchargez un <b>fichier PDF de formulaires scannés</b>. Les formulaires scannés doivent correspondre au modèle généré pour cette phase. {hereLink}",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.AuthorInput.addANewUser": "Ajouter un nouvel utilisateur",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.AuthorInput.enterAValidEmail": "Entrez une adresse e-mail valide pour créer un nouveau compte",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.aNewAccountWillBeCreated": "Un nouveau compte sera créé avec cette adresse e-mail. Cette contribution sera associée à ce compte.",
