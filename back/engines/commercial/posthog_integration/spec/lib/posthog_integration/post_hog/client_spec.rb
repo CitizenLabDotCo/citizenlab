@@ -37,7 +37,7 @@ describe PosthogIntegration::PostHog::Client do
           ]
         }
       JSON_RESPONSE
-      stub_request(:get, /example\.com\/api\/projects\/#{project_id}\/persons\?distinct_id\=#{user.id}/)
+      stub_request(:get, "https://example.com/api/projects/#{project_id}/persons?distinct_id=#{user.id}")
         .to_return(status: 200, body: persons_response, headers: { 'Content-Type' => 'application/json' })
 
 
