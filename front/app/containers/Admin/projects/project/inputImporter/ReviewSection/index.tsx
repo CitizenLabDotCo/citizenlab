@@ -27,7 +27,7 @@ import messages from './messages';
 import PDFPageControl from './PDFPageControl';
 import PDFViewer from './PDFViewer';
 
-const ReviewSection = () => {
+const ReviewSection = ({ pollIdeas }: { pollIdeas: boolean }) => {
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId: string;
@@ -41,7 +41,7 @@ const ReviewSection = () => {
     data: ideas,
     refetch: refetchIdeas,
     isLoading,
-  } = useImportedIdeas({ projectId, phaseId });
+  } = useImportedIdeas({ projectId, phaseId }, { pollingEnabled: pollIdeas });
   const { mutate: deleteIdea } = useDeleteIdea();
   const { mutate: approveIdeas } = useApproveOfflineIdeas();
 

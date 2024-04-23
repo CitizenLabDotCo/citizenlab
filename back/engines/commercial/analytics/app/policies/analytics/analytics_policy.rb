@@ -13,11 +13,5 @@ module Analytics
     def schema?
       admin_or_moderator?
     end
-
-    private
-
-    def admin_or_moderator?
-      user&.active? && (user&.admin? || user&.project_moderator?)
-    end
   end
 end

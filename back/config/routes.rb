@@ -80,6 +80,8 @@ Rails.application.routes.draw do
         patch :accept_cosponsorship_invite, on: :member
       end
 
+      resources :jobs, only: %i[show]
+
       resources :idea_statuses, only: %i[index show]
       resources :initiative_statuses, only: %i[index show]
 

@@ -45,9 +45,10 @@ interface FormValues {
 interface Props {
   open: boolean;
   onClose: () => void;
+  onImport: (jobId: string) => void;
 }
 
-const ImportPdfModal = ({ open, onClose }: Props) => {
+const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
   const { formatMessage } = useIntl();
   const { mutateAsync: addOfflineIdeas, isLoading } = useAddOfflineIdeas();
   const locale = useLocale();
@@ -104,16 +105,21 @@ const ImportPdfModal = ({ open, onClose }: Props) => {
     if (!file || !phaseId) return;
 
     try {
-      await addOfflineIdeas({
+      console.log('Sending request', { phaseId });
+      const response = await addOfflineIdeas({
         phase_id: phaseId,
         file: file.base64,
         format: 'pdf',
         ...rest,
       });
+      console.log({ response });
+      // @ts-ignore
+      onImport(response.data.id);
 
       onClose();
       methods.reset();
     } catch (e) {
+      console.log('ERRRRROR', { e });
       handleHookFormSubmissionError(e, methods.setError);
     }
   };

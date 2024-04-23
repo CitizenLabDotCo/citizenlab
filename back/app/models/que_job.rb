@@ -37,6 +37,10 @@ class QueJob < Que::ActiveRecord::Model
     super.first.with_indifferent_access
   end
 
+  def active?
+    %i[pending scheduled].include?(status)
+  end
+
   def status
     return :finished if finished_at
     return :expired  if expired_at
