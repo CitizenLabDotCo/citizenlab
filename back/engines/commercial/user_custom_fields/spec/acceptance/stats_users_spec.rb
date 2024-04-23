@@ -143,7 +143,7 @@ resource 'Stats - Users' do
     end
   end
 
-  describe 'by_domicile endpoints' do
+  describe 'former by_domicile endpoints' do
     before do
       travel_to start_at + 16.days do
         @area1, @area2, @area3 = create_list(:area, 3)
@@ -154,8 +154,10 @@ resource 'Stats - Users' do
     end
 
     let(:group) { @group.id }
+    let(:domicile_field) { CustomField.find_by(key: 'domicile') }
+    let(:custom_field_id) { domicile_field.id }
 
-    get 'web_api/v1/stats/users_by_domicile' do
+    get 'web_api/v1/stats/users_by_custom_field/:custom_field_id' do
       time_boundary_parameters self
       group_filter_parameter self
       parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
@@ -163,13 +165,14 @@ resource 'Stats - Users' do
       example_request 'Users by domicile' do
         expect(response_status).to eq 200
         expect(json_response_body.dig(:data, :attributes)).to match({
-          areas: Area.all.to_h { |area| [area.id, area.attributes.slice('title_multiloc')] },
+          options: domicile_field.options.to_h { |o| [o.key, o.attributes.slice('title_multiloc', 'ordering')] },
           series: {
+            reference_population: nil,
             users: {
-              @area1.id => 2,
-              @area2.id => 1,
-              @area3.id => 0,
-              outside: 0,
+              domicile_field.options.first.key => 2,
+              domicile_field.options[1].key => 1,
+              domicile_field.options[2].key => 0,
+              domicile_field.options.last.key => 0,
               _blank: 1
             }
           }
@@ -177,20 +180,21 @@ resource 'Stats - Users' do
       end
     end
 
-    get 'web_api/v1/stats/users_by_domicile_as_xlsx' do
+    get 'web_api/v1/stats/users_by_custom_field_as_xlsx/:custom_field_id' do
       time_boundary_parameters self
       group_filter_parameter self
       parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
 
       include_examples('xlsx export', 'domicile') do
-        let(:expected_worksheet_name) { 'users_by_area' }
+        let(:expected_worksheet_name) { 'users_by_domicile' }
         let(:expected_worksheet_values) do
           [
-            %w[area area_id users],
-            ['Westside', @area1.id, 2],
-            ['Westside', @area2.id, 1],
-            ['Westside', @area3.id, 0],
-            ['unknown', '_blank', 1]
+            %w[option option_id users],
+            ['Westside', domicile_field.options.first.key, 2],
+            ['Westside', domicile_field.options[1].key, 1],
+            ['Westside', domicile_field.options[2].key, 0],
+            ['Somewhere else', domicile_field.options.last.key, 0],
+            ['_blank', '_blank', 1]
           ]
         end
       end
