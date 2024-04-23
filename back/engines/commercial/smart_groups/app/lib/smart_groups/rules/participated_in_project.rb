@@ -89,49 +89,50 @@ module SmartGroups::Rules
 
     def filter(users_scope)
       participants_service = ParticipantsService.new
+      projects = Project.where(id: value)
 
       case predicate
-      when 'in'
-        participants = participants_service.projects_participants(Project.where(id: value))
-        users_scope.where(id: participants)
-      when 'not_in'
-        participants = participants_service.projects_participants(Project.where(id: value))
-        users_scope.where.not(id: participants)
-      when 'posted_in'
-        participants = participants_service.projects_participants(Project.where(id: value), actions: [:posting])
-        users_scope.where(id: participants)
-      when 'not_posted_in'
-        participants = participants_service.projects_participants(Project.where(id: value), actions: [:posting])
-        users_scope.where.not(id: participants)
       when 'commented_in'
-        participants = participants_service.projects_participants(Project.where(id: value), actions: [:commenting])
+        participants = participants_service.projects_participants(projects, actions: [:commenting])
         users_scope.where(id: participants)
       when 'not_commented_in'
-        participants = participants_service.projects_participants(Project.where(id: value), actions: [:commenting])
+        participants = participants_service.projects_participants(projects, actions: [:commenting])
         users_scope.where.not(id: participants)
-      when 'reacted_idea_in'
-        participants = participants_service.projects_participants(Project.where(id: value), actions: [:idea_reacting])
+      when 'in'
+        participants = participants_service.projects_participants(projects)
         users_scope.where(id: participants)
-      when 'not_reacted_idea_in'
-        participants = participants_service.projects_participants(Project.where(id: value), actions: [:idea_reacting])
+      when 'not_in'
+        participants = participants_service.projects_participants(projects)
+        users_scope.where.not(id: participants)
+      when 'posted_in'
+        participants = participants_service.projects_participants(projects, actions: [:posting])
+        users_scope.where(id: participants)
+      when 'not_posted_in'
+        participants = participants_service.projects_participants(projects, actions: [:posting])
         users_scope.where.not(id: participants)
       when 'reacted_comment_in'
-        participants = participants_service.projects_participants(Project.where(id: value), actions: [:comment_reacting])
+        participants = participants_service.projects_participants(projects, actions: [:comment_reacting])
         users_scope.where(id: participants)
       when 'not_reacted_comment_in'
-        participants = participants_service.projects_participants(Project.where(id: value), actions: [:comment_reacting])
+        participants = participants_service.projects_participants(projects, actions: [:comment_reacting])
         users_scope.where.not(id: participants)
-      when 'voted_in'
-        participants = participants_service.projects_participants(Project.where(id: value), actions: [:voting])
+      when 'reacted_idea_in'
+        participants = participants_service.projects_participants(projects, actions: [:idea_reacting])
         users_scope.where(id: participants)
-      when 'not_voted_in'
-        participants = participants_service.projects_participants(Project.where(id: value), actions: [:voting])
+      when 'not_reacted_idea_in'
+        participants = participants_service.projects_participants(projects, actions: [:idea_reacting])
         users_scope.where.not(id: participants)
       when 'volunteered_in'
-        participants = participants_service.projects_participants(Project.where(id: value), actions: [:volunteering])
+        participants = participants_service.projects_participants(projects, actions: [:volunteering])
         users_scope.where(id: participants)
       when 'not_volunteered_in'
-        participants = participants_service.projects_participants(Project.where(id: value), actions: [:volunteering])
+        participants = participants_service.projects_participants(projects, actions: [:volunteering])
+        users_scope.where.not(id: participants)
+      when 'voted_in'
+        participants = participants_service.projects_participants(projects, actions: [:voting])
+        users_scope.where(id: participants)
+      when 'not_voted_in'
+        participants = participants_service.projects_participants(projects, actions: [:voting])
         users_scope.where.not(id: participants)
       else
         raise "Unsupported predicate #{predicate}"
