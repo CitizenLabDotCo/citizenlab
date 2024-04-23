@@ -19,14 +19,12 @@ module PosthogIntegration
       end
 
       def persons(project_id: default_project_id, **params)
-        return 'test-posthog-specs'
         missing_project_id! unless project_id
 
         http.get("#{@base_uri}/api/projects/#{project_id}/persons", params: params)
       end
 
       def delete_person(id, project_id: default_project_id, retries: 0)
-        return 'test-posthog-specs'
         missing_project_id! unless project_id
 
         response = http.delete("#{@base_uri}/api/projects/#{project_id}/persons/#{id}")
