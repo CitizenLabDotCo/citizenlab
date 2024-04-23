@@ -27,13 +27,18 @@ const NonSortableProjectList = ({
 }) => {
   const { formatMessage } = useIntl();
 
-
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
 
   return (
     <>
       {adminPublications?.length === 0 && (
-        <Text color="textSecondary" fontSize="l">{formatMessage(activeTab==="your-projects"&&!search? messages.moderatedProjectsEmpty : messages.noProjectsFound)}</Text>
+        <Text color="textSecondary" mt="16px">
+          {formatMessage(
+            activeTab === 'your-projects' && !search
+              ? messages.moderatedProjectsEmpty
+              : messages.noProjectsFound
+          )}
+        </Text>
       )}
       <List>
         {adminPublications?.map((adminPublication, index) => {

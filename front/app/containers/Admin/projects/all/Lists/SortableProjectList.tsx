@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 
-
-import { Text } from '@citizenlab/cl2-component-library'
+import { Text } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
@@ -34,12 +33,14 @@ const SortableProjectList = ({
     reorderAdminPublication({ id: itemId, ordering: newOrder });
   }
 
-  if(!adminPublications) return null;
+  if (!adminPublications) return null;
 
   if (adminPublications.length === 0) {
-return ( <Text color="textSecondary" fontSize="l">{formatMessage( messages.noProjectsFound)}</Text>
-)
-     
+    return (
+      <Text color="textSecondary" mt="16px">
+        {formatMessage(messages.noProjectsFound)}
+      </Text>
+    );
   }
 
   if (adminPublications.length > 0) {

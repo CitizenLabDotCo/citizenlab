@@ -67,11 +67,12 @@ export default defineMessages({
     defaultMessage: 'Search projects',
   },
   noProjectsFound: {
-    id: 'app.containers.AdminPage.projects.all.noProjectsFound',
-    defaultMessage: 'No projects found',
+    id: 'app.containers.AdminPage.projects.all.noProjects',
+    defaultMessage: 'No projects found.',
   },
   moderatedProjectsEmpty: {
     id: 'app.containers.AdminPage.projects.all.moderatedProjectsEmpty',
-    defaultMessage: 'Projects where you are a Project Manager will appear here.',
+    defaultMessage:
+      'Projects where you are a Project Manager will appear here.',
   },
 });
