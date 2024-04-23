@@ -44,7 +44,7 @@ const CookiePolicy = memo((props: WrappedComponentProps) => {
                     values={{
                       citizenLabLink: (
                         <a
-                          href="https://www.govocal.co/"
+                          href="https://www.govocal.com/"
                           target="_blank"
                           rel="noreferrer"
                         >
@@ -121,7 +121,9 @@ const CookiePolicy = memo((props: WrappedComponentProps) => {
                 <ul>
                   <li>
                     {formatMessage(messages.email)}{' '}
-                    <a href="mailto:support@govocal.co">support@govocal.co</a>
+                    <a href="mailto:support@citizenlab.co">
+                      support@citizenlab.co
+                    </a>
                   </li>
                   <li>
                     {formatMessage(messages.postalAddress)}{' '}
