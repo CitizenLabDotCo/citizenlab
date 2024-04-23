@@ -58,7 +58,8 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::GPTTextCorrector do
           actual_texts = [
             'Ik vraag me af of dit ook werkt',
             'Dit is nog een ingevuld test formulier',
-            'Dit is een 2e harte test met het originele formulier'
+            # "harte" has a typo. It should be "harde"
+            'Dit is een 2e harde test met het originele formulier'
           ]
           pp 'Actual texts', actual_texts
           corrected_texts = corrector.correct.map { _1[:body_multiloc][:'nl-BE'] }
