@@ -10,10 +10,10 @@ describe('/admin route', () => {
     cy.get('.intercom-admin-dashboard-tab-overview.active').contains(
       'Overview'
     );
-    cy.get('.e2e-users-by-time-cumulative-chart')
+    cy.get('#e2e-registrations-by-time-chart')
       .find('.recharts-wrapper')
       .find('.recharts-surface');
-    cy.get('#e2e-active-users-chart')
+    cy.get('#e2e-participants-by-time-chart')
       .find('.recharts-wrapper')
       .find('.recharts-surface');
     cy.get('#e2e-ideas-chart');

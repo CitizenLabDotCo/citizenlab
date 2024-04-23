@@ -167,6 +167,7 @@ DROP INDEX IF EXISTS public.index_spam_reports_on_user_id;
 DROP INDEX IF EXISTS public.index_spam_reports_on_reported_at;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_phase_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_owner_id;
+DROP INDEX IF EXISTS public.index_report_builder_reports_on_name_tsvector;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_name;
 DROP INDEX IF EXISTS public.index_reactions_on_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id_and_user_id;
@@ -559,10 +560,8 @@ DROP TABLE IF EXISTS public.id_id_card_lookup_id_cards;
 DROP TABLE IF EXISTS public.groups_projects;
 DROP TABLE IF EXISTS public.groups_permissions;
 DROP TABLE IF EXISTS public.groups;
-DROP TABLE IF EXISTS public.followers;
 DROP TABLE IF EXISTS public.flag_inappropriate_content_inappropriate_content_flags;
 DROP TABLE IF EXISTS public.experiments;
-DROP TABLE IF EXISTS public.events_attendances;
 DROP TABLE IF EXISTS public.event_images;
 DROP TABLE IF EXISTS public.event_files;
 DROP TABLE IF EXISTS public.email_snippets;
@@ -579,7 +578,6 @@ DROP TABLE IF EXISTS public.content_builder_layouts;
 DROP TABLE IF EXISTS public.content_builder_layout_images;
 DROP TABLE IF EXISTS public.common_passwords;
 DROP TABLE IF EXISTS public.baskets_ideas;
-DROP TABLE IF EXISTS public.baskets;
 DROP SEQUENCE IF EXISTS public.areas_static_pages_id_seq;
 DROP TABLE IF EXISTS public.areas_static_pages;
 DROP TABLE IF EXISTS public.areas_projects;
@@ -603,7 +601,10 @@ DROP TABLE IF EXISTS public.polls_responses;
 DROP TABLE IF EXISTS public.phases;
 DROP TABLE IF EXISTS public.initiatives;
 DROP TABLE IF EXISTS public.ideas;
+DROP TABLE IF EXISTS public.followers;
+DROP TABLE IF EXISTS public.events_attendances;
 DROP TABLE IF EXISTS public.comments;
+DROP TABLE IF EXISTS public.baskets;
 DROP VIEW IF EXISTS public.analytics_fact_events;
 DROP TABLE IF EXISTS public.events;
 DROP VIEW IF EXISTS public.analytics_fact_email_deliveries;
@@ -1462,6 +1463,20 @@ CREATE VIEW public.analytics_fact_events AS
 
 
 --
+-- Name: baskets; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.baskets (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    submitted_at timestamp without time zone,
+    user_id uuid,
+    phase_id uuid,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
 -- Name: comments; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1483,6 +1498,33 @@ CREATE TABLE public.comments (
     post_type character varying,
     author_hash character varying,
     anonymous boolean DEFAULT false NOT NULL
+);
+
+
+--
+-- Name: events_attendances; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.events_attendances (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    attendee_id uuid NOT NULL,
+    event_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: followers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.followers (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    followable_type character varying NOT NULL,
+    followable_id uuid NOT NULL,
+    user_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -1666,6 +1708,7 @@ CREATE TABLE public.volunteering_volunteers (
 CREATE VIEW public.analytics_fact_participations AS
  SELECT i.id,
     i.author_id AS dimension_user_id,
+    COALESCE((i.author_id)::text, (i.author_hash)::text, (i.id)::text) AS participant_id,
     i.project_id AS dimension_project_id,
         CASE
             WHEN ((ph.participation_method)::text = 'native_survey'::text) THEN survey.id
@@ -1680,9 +1723,11 @@ CREATE VIEW public.analytics_fact_participations AS
      LEFT JOIN public.phases ph ON ((ph.id = i.creation_phase_id)))
      JOIN public.analytics_dimension_types idea ON (((idea.name)::text = 'idea'::text)))
      LEFT JOIN public.analytics_dimension_types survey ON (((survey.name)::text = 'survey'::text)))
+  WHERE ((i.publication_status)::text = 'published'::text)
 UNION ALL
  SELECT i.id,
     i.author_id AS dimension_user_id,
+    COALESCE((i.author_id)::text, (i.author_hash)::text, (i.id)::text) AS participant_id,
     NULL::uuid AS dimension_project_id,
     adt.id AS dimension_type_id,
     (i.created_at)::date AS dimension_date_created_id,
@@ -1694,6 +1739,7 @@ UNION ALL
 UNION ALL
  SELECT c.id,
     c.author_id AS dimension_user_id,
+    COALESCE((c.author_id)::text, (c.author_hash)::text, (c.id)::text) AS participant_id,
     i.project_id AS dimension_project_id,
     adt.id AS dimension_type_id,
     (c.created_at)::date AS dimension_date_created_id,
@@ -1706,6 +1752,7 @@ UNION ALL
 UNION ALL
  SELECT r.id,
     r.user_id AS dimension_user_id,
+    COALESCE((r.user_id)::text, (r.id)::text) AS participant_id,
     COALESCE(i.project_id, ic.project_id) AS dimension_project_id,
     adt.id AS dimension_type_id,
     (r.created_at)::date AS dimension_date_created_id,
@@ -1726,7 +1773,8 @@ UNION ALL
 UNION ALL
  SELECT pr.id,
     pr.user_id AS dimension_user_id,
-    COALESCE(p.project_id, pr.phase_id) AS dimension_project_id,
+    COALESCE((pr.user_id)::text, (pr.id)::text) AS participant_id,
+    p.project_id AS dimension_project_id,
     adt.id AS dimension_type_id,
     (pr.created_at)::date AS dimension_date_created_id,
     0 AS reactions_count,
@@ -1738,7 +1786,8 @@ UNION ALL
 UNION ALL
  SELECT vv.id,
     vv.user_id AS dimension_user_id,
-    COALESCE(p.project_id, vc.phase_id) AS dimension_project_id,
+    COALESCE((vv.user_id)::text, (vv.id)::text) AS participant_id,
+    p.project_id AS dimension_project_id,
     adt.id AS dimension_type_id,
     (vv.created_at)::date AS dimension_date_created_id,
     0 AS reactions_count,
@@ -1747,7 +1796,50 @@ UNION ALL
    FROM (((public.volunteering_volunteers vv
      LEFT JOIN public.volunteering_causes vc ON ((vc.id = vv.cause_id)))
      LEFT JOIN public.phases p ON ((p.id = vc.phase_id)))
-     JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'volunteer'::text)));
+     JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'volunteer'::text)))
+UNION ALL
+ SELECT b.id,
+    b.user_id AS dimension_user_id,
+    COALESCE((b.user_id)::text, (b.id)::text) AS participant_id,
+    p.project_id AS dimension_project_id,
+    adt.id AS dimension_type_id,
+    (b.created_at)::date AS dimension_date_created_id,
+    0 AS reactions_count,
+    0 AS likes_count,
+    0 AS dislikes_count
+   FROM ((public.baskets b
+     LEFT JOIN public.phases p ON ((p.id = b.phase_id)))
+     JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'basket'::text)))
+UNION ALL
+ SELECT ea.id,
+    ea.attendee_id AS dimension_user_id,
+    (ea.attendee_id)::text AS participant_id,
+    e.project_id AS dimension_project_id,
+    adt.id AS dimension_type_id,
+    (ea.created_at)::date AS dimension_date_created_id,
+    0 AS reactions_count,
+    0 AS likes_count,
+    0 AS dislikes_count
+   FROM ((public.events_attendances ea
+     LEFT JOIN public.events e ON ((e.id = ea.event_id)))
+     JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'event_attendance'::text)))
+UNION ALL
+ SELECT f.id,
+    f.user_id AS dimension_user_id,
+    (f.user_id)::text AS participant_id,
+        CASE f.followable_type
+            WHEN 'Project'::text THEN f.followable_id
+            WHEN 'Idea'::text THEN i.project_id
+            ELSE NULL::uuid
+        END AS dimension_project_id,
+    adt.id AS dimension_type_id,
+    (f.created_at)::date AS dimension_date_created_id,
+    0 AS reactions_count,
+    0 AS likes_count,
+    0 AS dislikes_count
+   FROM ((public.followers f
+     JOIN public.analytics_dimension_types adt ON ((((adt.name)::text = 'follower'::text) AND ((adt.parent)::text = lower((f.followable_type)::text)))))
+     LEFT JOIN public.ideas i ON ((i.id = f.followable_id)));
 
 
 --
@@ -2024,20 +2116,6 @@ ALTER SEQUENCE public.areas_static_pages_id_seq OWNED BY public.areas_static_pag
 
 
 --
--- Name: baskets; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.baskets (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    submitted_at timestamp without time zone,
-    user_id uuid,
-    phase_id uuid,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
 -- Name: baskets_ideas; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2261,19 +2339,6 @@ CREATE TABLE public.event_images (
 
 
 --
--- Name: events_attendances; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.events_attendances (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    attendee_id uuid NOT NULL,
-    event_id uuid NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
 -- Name: experiments; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2300,20 +2365,6 @@ CREATE TABLE public.flag_inappropriate_content_inappropriate_content_flags (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     ai_reason character varying
-);
-
-
---
--- Name: followers; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.followers (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    followable_type character varying NOT NULL,
-    followable_id uuid NOT NULL,
-    user_id uuid NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -3089,7 +3140,8 @@ CREATE TABLE public.report_builder_reports (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     phase_id uuid,
-    visible boolean DEFAULT false NOT NULL
+    visible boolean DEFAULT false NOT NULL,
+    name_tsvector tsvector GENERATED ALWAYS AS (to_tsvector('simple'::regconfig, (name)::text)) STORED
 );
 
 
@@ -5783,6 +5835,13 @@ CREATE UNIQUE INDEX index_report_builder_reports_on_name ON public.report_builde
 
 
 --
+-- Name: index_report_builder_reports_on_name_tsvector; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_report_builder_reports_on_name_tsvector ON public.report_builder_reports USING gin (name_tsvector);
+
+
+--
 -- Name: index_report_builder_reports_on_owner_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7436,6 +7495,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240229195843'),
 ('20240301120023'),
 ('20240305122502'),
-('20240328141200');
+('20240328141200'),
+('20240409150000'),
+('20240417064819');
 
 

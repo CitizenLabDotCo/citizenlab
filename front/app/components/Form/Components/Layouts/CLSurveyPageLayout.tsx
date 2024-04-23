@@ -76,7 +76,6 @@ const CLSurveyPageLayout = memo(
     data,
   }: LayoutProps) => {
     const { onSubmit, setShowAllErrors, setFormData } = useContext(FormContext);
-    const topAnchorRef = useRef<HTMLInputElement>(null);
     const { formatMessage } = useIntl();
     const [currentStep, setCurrentStep] = useState<number>(0);
     const [isLoading, setIsLoading] = useState(false);
@@ -94,8 +93,6 @@ const CLSurveyPageLayout = memo(
     const showSubmit = currentStep === uiPages.length - 1;
     const dataCyValue = showSubmit ? 'e2e-submit-form' : 'e2e-next-page';
     const hasPreviousPage = currentStep !== 0;
-    const useTopAnchor =
-      isSmallerThanPhone && !isNilOrError(topAnchorRef) && topAnchorRef.current;
     const pagesRef = useRef<HTMLDivElement>(null);
     const [hasScrollBars, setHasScrollBars] = useState(false);
     const [queryParams] = useSearchParams();
@@ -131,13 +128,11 @@ const CLSurveyPageLayout = memo(
     useEffect(() => {
       if (scrollToError) {
         // Scroll to the first field with an error
-        document
-          .getElementById('error-display')
-          ?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'nearest',
-            inline: 'start',
-          });
+        document.getElementById('error-display')?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'start',
+        });
         setScrollToError(false);
       }
     }, [scrollToError]);
@@ -174,10 +169,9 @@ const CLSurveyPageLayout = memo(
     ]);
 
     const scrollToTop = () => {
-      if (useTopAnchor) {
-        topAnchorRef.current.scrollIntoView();
-      } else {
-        window.scrollTo(0, 0);
+      // Scroll inner container to top
+      if (pagesRef?.current) {
+        pagesRef.current.scrollTop = 0;
       }
     };
 
@@ -255,18 +249,10 @@ const CLSurveyPageLayout = memo(
     return (
       <>
         <Box
-          ref={topAnchorRef}
-          marginTop={'-140px'} // TODO: Find cleaner solution for mobile scrollTo behaviour.
-          marginBottom={'140px'}
-          id="top-anchor"
-          my="0px"
-        />
-
-        <Box
           width="100%"
           height="100%"
-          pt={isSmallerThanPhone ? '80px' : '100px'}
-          pb="100px"
+          pt="82px"
+          pb="72px"
           maxWidth="700px"
           display="flex"
           flexDirection="column"
@@ -294,6 +280,7 @@ const CLSurveyPageLayout = memo(
             display="flex"
             flex="1"
             height="100%"
+            pt={isSmallerThanPhone ? '28px' : '8px'}
             overflowY="auto"
             w="100%"
             ref={pagesRef}

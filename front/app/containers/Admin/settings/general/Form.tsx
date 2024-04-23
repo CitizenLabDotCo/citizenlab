@@ -13,6 +13,8 @@ import { object, array, string } from 'yup';
 
 import { IAppConfigurationSettingsCore } from 'api/app_configuration/types';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { appLocalePairs } from 'containers/App/constants';
 
 import {
@@ -49,6 +51,9 @@ export interface Props {
 }
 
 const Form = ({ defaultValues, onSubmit }: Props) => {
+  const multiLanguagePlatformEnabled = useFeatureFlag({
+    name: 'multi_language_platform',
+  });
   const { formatMessage } = useIntl();
   const schema = object({
     organization_name: validateMultilocForEveryLocale(
@@ -119,6 +124,7 @@ const Form = ({ defaultValues, onSubmit }: Props) => {
               name="locales"
               placeholder=""
               options={localeOptions}
+              disabled={!multiLanguagePlatformEnabled}
             />
           </SectionField>
 
