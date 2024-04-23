@@ -90,11 +90,11 @@ describe PosthogIntegration::PostHog::Client do
   end
 
   def stub_response
-    status = double()
+    status = double
     status.stub(:client_error?).and_return(false)
     status.stub(:server_error?).and_return(false)
-    
-    double().tap do |response|
+
+    double.tap do |response|
       response.stub(:status).and_return(status)
       response.stub(:parse).and_return(JSON.parse(persons_response))
     end
