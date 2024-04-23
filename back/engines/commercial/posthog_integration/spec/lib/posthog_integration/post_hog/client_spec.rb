@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 # TODO
-# Spec exact request matches + headers
 # Spec throttling and retry
 # Refactoring
 # Add retry for persons + wait less long + reusable method
@@ -38,16 +37,11 @@ describe PosthogIntegration::PostHog::Client do
         }
       JSON_RESPONSE
       stub_request(:get, "https://example.com/api/projects/#{project_id}/persons?distinct_id=#{user.id}")
+        .with(headers: { 'Authorization' => "Bearer #{api_key}" })
         .to_return(status: 200, body: persons_response, headers: { 'Content-Type' => 'application/json' })
-
-
       stub_request(:delete, "https://example.com/api/projects/#{project_id}/persons/0")
+        .with(headers: { 'Authorization' => "Bearer #{api_key}" })
         .to_return(status: 204)
-      
-
-      # stub_request(:any, "example.com") ### Does not work
-      # stub_request(:get, "https://something.com/api/projects/fake_project_id/persons?distinct_id=\"#{user.id}\"") ### Does not work
-
 
       expect { posthog.delete_person_by_distinct_id(user.id) }.not_to raise_error
     end
