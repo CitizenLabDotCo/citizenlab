@@ -78,10 +78,9 @@ describe('Project description builder toggle', () => {
     cy.visit(`/projects/${projectSlug}`);
     // Check that original project description is visible
     cy.contains('Original project description.').should('be.visible');
-    // Check that attachment is present
-    cy.wait(1000);
 
-    // skip this check for now as it is flaky.
+    // Check that attachment is present
+    // Skip this check for now as it is flaky.
     // cy.contains('example.pdf').should('exist');
   });
 
