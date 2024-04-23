@@ -101,8 +101,8 @@ resource 'AdminPublication' do
           @admin.roles += [
             { type: 'project_moderator', project_id: @moderated_project1.id },
             { type: 'project_moderator', project_id: @moderated_project2.id },
-            { type: 'project_folder_moderator', project_folder_id: @moderated_folder1.admin_publication.id },
-            { type: 'project_folder_moderator', project_folder_id: @moderated_folder2.admin_publication.id }
+            { type: 'project_folder_moderator', project_folder_id: @moderated_folder1.id },
+            { type: 'project_folder_moderator', project_folder_id: @moderated_folder2.id }
           ]
           @admin.save!
         end

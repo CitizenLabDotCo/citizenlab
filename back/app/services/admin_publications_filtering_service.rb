@@ -93,9 +93,9 @@ class AdminPublicationsFilteringService
     next scope.none unless current_user
 
     moderated_folder_ids = current_user.roles.select { |r| r['type'] == 'project_folder_moderator' }.pluck('project_folder_id')
-    unmoderated_folders = scope.where(children_allowed: true).where.not(id: moderated_folder_ids)
+    unmoderated_parents = scope.where(children_allowed: true).where.not(publication_id: moderated_folder_ids)
 
-    scope.where.not(id: unmoderated_folders)
+    scope.where.not(id: unmoderated_parents)
   end
 
   add_filter('top_level_only') do |scope, options|
