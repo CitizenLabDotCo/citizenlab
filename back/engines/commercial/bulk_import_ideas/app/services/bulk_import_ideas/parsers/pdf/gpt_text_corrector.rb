@@ -38,14 +38,19 @@ class BulkImportIdeas::Parsers::Pdf::GPTTextCorrector
 
   def prompt(ideas_to_correct)
     <<~GPT_PROMPT
-      At the end of this message is a JSON array of objects. The fields within these objects are texts that have been extracted through the recognition of handwritten text. But in many cases the texts are recognized innacurately. The lines and some words could be mixed up.
+      At the end of this message, you’ll find a JSON array of objects. The fields within these objects contain texts that have been extracted through the recognition of handwritten text. However, in many cases, inaccuracies may occur. Lines and some words could be mixed up.
 
-      Correct it to ensure every text makes sense. Take into account the following rules:
-      - Nothing should be removed from the original text.
-      - The meaning shouldn't be changed.
-      - Numbers should be left as they are (important!).
 
-      Return JSON array with the same objects in the same order, but with corrected texts. Return only JSON without any other text or markers.
+      Your task is to correct the texts to ensure that each one makes sense. Follow these rules:
+      - Do not remove anything from the original text.
+      - Don't skip words that make sense in the context. Consider rather fixing a typo in a word than removing it.
+      - Maintain the meaning without altering it.
+      - Leave numbers unchanged. E.g., "3" should remain "3", not "three". The same applies to all other digits from 0 to 9.
+      - If a text already makes sense, leave it unchanged.
+
+
+      Return the JSON array with the same objects in the same order, but with corrected texts. Provide only the JSON without any additional text or markers.
+
 
       JSON array:
       #{ideas_to_correct.to_json}
