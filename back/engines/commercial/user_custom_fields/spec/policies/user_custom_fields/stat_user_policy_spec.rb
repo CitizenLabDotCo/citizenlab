@@ -9,12 +9,10 @@ RSpec.describe UserCustomFields::StatUserPolicy do
     let_it_be(:user) { build(:admin) }
 
     it { is_expected.to permit(:users_by_age) }
-    it { is_expected.to permit(:users_by_birthyear) }
     it { is_expected.to permit(:users_by_domicile) }
     it { is_expected.to permit(:users_by_custom_field) }
     it { is_expected.to permit(:users_by_gender_as_xlsx) }
     it { is_expected.to permit(:users_by_age_as_xlsx) }
-    it { is_expected.to permit(:users_by_birthyear_as_xlsx) }
     it { is_expected.to permit(:users_by_domicile_as_xlsx) }
     it { is_expected.to permit(:users_by_custom_field_as_xlsx) }
   end
@@ -23,12 +21,10 @@ RSpec.describe UserCustomFields::StatUserPolicy do
     let_it_be(:user) { build(:user) }
 
     it { is_expected.not_to permit(:users_by_age) }
-    it { is_expected.not_to permit(:users_by_birthyear) }
     it { is_expected.not_to permit(:users_by_domicile) }
     it { is_expected.not_to permit(:users_by_custom_field) }
     it { is_expected.not_to permit(:users_by_gender_as_xlsx) }
     it { is_expected.not_to permit(:users_by_age_as_xlsx) }
-    it { is_expected.not_to permit(:users_by_birthyear_as_xlsx) }
     it { is_expected.not_to permit(:users_by_domicile_as_xlsx) }
     it { is_expected.not_to permit(:users_by_custom_field_as_xlsx) }
   end
@@ -37,12 +33,10 @@ RSpec.describe UserCustomFields::StatUserPolicy do
     let_it_be(:user) { nil }
 
     it { is_expected.not_to permit(:users_by_age) }
-    it { is_expected.not_to permit(:users_by_birthyear) }
     it { is_expected.not_to permit(:users_by_domicile) }
     it { is_expected.not_to permit(:users_by_custom_field) }
     it { is_expected.not_to permit(:users_by_gender_as_xlsx) }
     it { is_expected.not_to permit(:users_by_age_as_xlsx) }
-    it { is_expected.not_to permit(:users_by_birthyear_as_xlsx) }
     it { is_expected.not_to permit(:users_by_domicile_as_xlsx) }
     it { is_expected.not_to permit(:users_by_custom_field_as_xlsx) }
   end
