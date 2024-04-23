@@ -5,6 +5,7 @@ module BulkImportIdeas::Parsers
     POSITION_TOLERANCE = 10
     PAGES_TO_TRIGGER_NEW_PDF = 8
     MAX_TOTAL_PAGES = 50
+    TEXT_FIELD_TYPES = %w[text multiline_text text_multiloc html_multiloc number linear_scale]
 
     def initialize(current_user, locale, phase_id, personal_data_enabled)
       super
@@ -74,7 +75,7 @@ module BulkImportIdeas::Parsers
       form_fields = import_form_data[:fields]
       form_fields.each do |form_field|
         idea_fields.each do |idea_field|
-          if form_field[:name].trim == idea_field[:name].trim || form_field[:description].trim == idea_field[:name].trim
+          if form_field[:name] == idea_field[:name] || form_field[:description] == idea_field[:name]
             if form_field[:type] == 'field' && idea_field[:value].present?
               new_field = form_field
               new_field[:value] = idea_field[:value]
@@ -163,7 +164,7 @@ module BulkImportIdeas::Parsers
     def process_field_value(field, form_fields)
       field = super field, form_fields
 
-      if %w[text multiline_text text_multiloc html_multiloc].include?(field[:input_type]) && field[:value]
+      if TEXT_FIELD_TYPES.include?(field[:input_type]) && field[:value]
         # Strip out text that has leaked from the field description into the value
         field[:value] = field[:value].gsub(/#{field[:description]}/, '')
 

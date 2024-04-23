@@ -67,10 +67,7 @@ module BulkImportIdeas::Parsers
 
         fields = structure_raw_fields(fields)
         idea_row = process_user_details(fields, idea_row)
-
-        # binding.pry
         idea_row = process_custom_form_fields(fields, idea_row)
-        # binding.pry
 
         idea_row
       end
