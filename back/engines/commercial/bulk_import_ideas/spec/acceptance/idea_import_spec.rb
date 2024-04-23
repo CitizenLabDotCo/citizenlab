@@ -71,6 +71,7 @@ resource 'BulkImportIdeasImportIdeas' do
           expect(User.all.pluck(:email)).not_to include 'bob@citizenlab.co'
           expect(BulkImportIdeas::IdeaImport.count).to eq 2
           expect(BulkImportIdeas::IdeaImportFile.count).to eq 1
+          expect(BulkImportIdeas::IdeaPdfImportJob).to have_been_enqueued
         end
       end
 
@@ -79,26 +80,14 @@ resource 'BulkImportIdeasImportIdeas' do
         let(:format) { 'pdf' }
         let(:file) { create_project_bulk_import_ideas_pdf 1 }
 
-        # NOTE: GoogleFormParserService is stubbed to avoid calls to google APIs
-        example 'Bulk import ideas to phase from .pdf' do
-          stub_external_api
-
+        example 'Bulk import ideas to phase from .pdf queues a job' do
           do_request
           assert_status 201
-          expect(response_data.count).to eq 1
-          expect(response_data.first[:attributes][:title_multiloc][:en]).to eq 'My very good idea'
-          expect(response_data.first[:attributes][:location_description]).to eq 'Somewhere'
-          expect(response_data.first[:attributes][:publication_status]).to eq 'draft'
+          expect(response_data.count).to eq 0
+          expect(Idea.all.count).to eq 0 # No ideas created yet
           expect(User.all.count).to eq 1 # No new users created
-          expect(BulkImportIdeas::IdeaImport.all.count).to eq 1
+          expect(BulkImportIdeas::IdeaImport.all.count).to eq 0
           expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 2
-          expect(Idea.all.first.phases.count).to eq 1
-          expect(Idea.all.first.phases.first).to eq project.phases.first
-          expect(project.reload.ideas_count).to eq 0 # Draft ideas should not be counted
-
-          # Relationships
-          expect(response_data.first.dig(:relationships, :idea_import, :data)).not_to be_nil
-          expect(json_response_body[:included].pluck(:type)).to include 'idea_import'
         end
       end
     end

@@ -99,7 +99,8 @@ module BulkImportIdeas::Exporters
       logo = @app_configuration.logo&.medium
       return if logo.blank? || logo.url&.include?('.gif')
 
-      pdf.image URI.open logo.to_s
+      logo_image = StringIO.new logo.file.read
+      pdf.image logo_image
       pdf.move_down 5.mm
     end
 

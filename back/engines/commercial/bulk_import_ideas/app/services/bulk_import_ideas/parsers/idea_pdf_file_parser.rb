@@ -2,14 +2,45 @@
 
 module BulkImportIdeas::Parsers
   class IdeaPdfFileParser < IdeaBaseFileParser
+    IDEAS_PER_JOB = 2
     POSITION_TOLERANCE = 10
-    PAGES_TO_TRIGGER_NEW_PDF = 8
     MAX_TOTAL_PAGES = 50
     TEXT_FIELD_TYPES = %w[text multiline_text text_multiloc html_multiloc]
 
     def initialize(current_user, locale, phase_id, personal_data_enabled)
       super
       @form_fields = IdeaCustomFieldsService.new(Factory.instance.participation_method_for(@phase).custom_form).printable_fields
+    end
+
+    # Asynchronous version of the parse_file method
+    def parse_file(file_content)
+      files = create_files file_content
+
+      files.each_slice(IDEAS_PER_JOB) do |sliced_files|
+        BulkImportIdeas::IdeaPdfImportJob.perform_later(sliced_files, @import_user, @locale, @phase, @personal_data_enabled)
+      end
+
+      [] # Return an empty ideas_rows array as files are processed in jobs
+    end
+
+    def parse_rows(file)
+      pdf_file = file.file.read
+
+      # NOTE: We return both parsed values so we can merge the best values from both
+      form_parsed_ideas = google_forms_service.parse_pdf(pdf_file, import_form_data[:page_count])
+      text_parsed_ideas = begin
+        Pdf::IdeaPlainTextParserService.new(
+          @phase || @project,
+          @form_fields,
+          @locale,
+          import_form_data[:page_count]
+        ).parse_text(google_forms_service.raw_text_page_array(pdf_file))
+      rescue BulkImportIdeas::Error
+        []
+      end
+
+      idea_rows = merge_pdf_rows(form_parsed_ideas, text_parsed_ideas, file)
+      idea_rows_with_corrected_texts(idea_rows)
     end
 
     private
@@ -24,7 +55,7 @@ module BulkImportIdeas::Parsers
         pages_per_idea = import_form_data[:page_count]
 
         pdf = begin
-          ::CombinePDF.parse URI.open(source_file.file_content_url).read
+          ::CombinePDF.parse source_file.file.read
         rescue ::CombinePDF::ParsingError
           raise BulkImportIdeas::Error.new 'bulk_import_malformed_pdf', value: source_file.file_content_url
         end
@@ -122,26 +153,6 @@ module BulkImportIdeas::Parsers
         idea.delete(checkbox.first.first) # Remove the original field TODO: JS - Better way of doing this?
       end
       idea
-    end
-
-    def parse_rows(file)
-      pdf_file = URI.open(file.file_content_url).read
-
-      # NOTE: We return both parsed values so we can merge the best values from both
-      form_parsed_ideas = google_forms_service.parse_pdf(pdf_file, import_form_data[:page_count])
-      text_parsed_ideas = begin
-        Pdf::IdeaPlainTextParserService.new(
-          @phase || @project,
-          @form_fields,
-          @locale,
-          import_form_data[:page_count]
-        ).parse_text(google_forms_service.raw_text_page_array(pdf_file))
-      rescue BulkImportIdeas::Error
-        []
-      end
-
-      idea_rows = merge_pdf_rows(form_parsed_ideas, text_parsed_ideas, file)
-      idea_rows_with_corrected_texts(idea_rows)
     end
 
     def merge_pdf_rows(form_parsed_ideas, text_parsed_ideas, file)

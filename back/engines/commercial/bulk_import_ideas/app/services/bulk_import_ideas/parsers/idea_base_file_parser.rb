@@ -10,6 +10,7 @@ module BulkImportIdeas::Parsers
       @personal_data_enabled = personal_data_enabled
     end
 
+    # Default is real time import of ideas
     def parse_file(file_content)
       files = create_files file_content
 

@@ -29,9 +29,10 @@ module BulkImportIdeas
       file_parser = file_parser_service.new(current_user, locale, phase_id, personal_data_enabled)
       import_service = importer_service.new(current_user, locale)
 
-      rows = file_parser.parse_file file
-      ideas = import_service.import(rows)
-      users = import_service.imported_users
+      rows = file_parser.parse_file file # Note: rows may be empty if parse file is asynchronous
+
+      ideas = rows.presence ? import_service.import(rows) : []
+      users = rows.presence ? import_service.imported_users : []
 
       sidefx.after_success current_user, @phase, params[:model], params[:format], ideas, users
 
