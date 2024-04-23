@@ -5,7 +5,7 @@ module BulkImportIdeas::Parsers
     POSITION_TOLERANCE = 10
     PAGES_TO_TRIGGER_NEW_PDF = 8
     MAX_TOTAL_PAGES = 50
-    TEXT_FIELD_TYPES = %w[text multiline_text text_multiloc html_multiloc number linear_scale]
+    TEXT_FIELD_TYPES = %w[text multiline_text text_multiloc html_multiloc]
 
     def initialize(current_user, locale, phase_id, personal_data_enabled)
       super
