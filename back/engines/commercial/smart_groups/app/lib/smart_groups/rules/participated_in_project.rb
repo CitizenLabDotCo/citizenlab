@@ -6,8 +6,28 @@ module SmartGroups::Rules
     include DescribableRule
 
     VALUELESS_PREDICATES = []
-    SINGLEVALUE_PREDICATES = %w[not_in not_posted_in not_commented_in not_reacted_idea_in not_reacted_comment_in not_voted_in not_volunteered_in]
-    MULTIVALUE_PREDICATES = %w[in posted_in commented_in reacted_idea_in reacted_comment_in voted_in volunteered_in]
+    SINGLEVALUE_PREDICATES = %w[
+      not_commented_in
+      not_follows_something
+      not_in
+      not_posted_in
+      not_reacted_comment_in
+      not_reacted_idea_in
+      not_registered_to_an_event
+      not_volunteered_in
+      not_voted_in
+    ]
+    MULTIVALUE_PREDICATES = %w[
+      commented_in
+      follows_something
+      in
+      posted_in
+      reacted_comment_in
+      reacted_idea_in
+      registered_to_an_event
+      volunteered_in
+      voted_in
+    ]
     PREDICATE_VALUES = VALUELESS_PREDICATES + SINGLEVALUE_PREDICATES + MULTIVALUE_PREDICATES
 
     attr_accessor :predicate, :value
@@ -98,6 +118,12 @@ module SmartGroups::Rules
       when 'not_commented_in'
         participants = participants_service.projects_participants(projects, actions: [:commenting])
         users_scope.where.not(id: participants)
+      when 'follows_something'
+        participants = participants_service.projects_participants(projects, actions: [:following])
+        users_scope.where(id: participants)
+      when 'not_follows_something'
+        participants = participants_service.projects_participants(projects, actions: [:following])
+        users_scope.where.not(id: participants)
       when 'in'
         participants = participants_service.projects_participants(projects)
         users_scope.where(id: participants)
@@ -121,6 +147,12 @@ module SmartGroups::Rules
         users_scope.where(id: participants)
       when 'not_reacted_idea_in'
         participants = participants_service.projects_participants(projects, actions: [:idea_reacting])
+        users_scope.where.not(id: participants)
+      when 'registered_to_an_event'
+        participants = participants_service.projects_participants(projects, actions: [:event_attending])
+        users_scope.where(id: participants)
+      when 'not_registered_to_an_event'
+        participants = participants_service.projects_participants(projects, actions: [:event_attending])
         users_scope.where.not(id: participants)
       when 'volunteered_in'
         participants = participants_service.projects_participants(projects, actions: [:volunteering])

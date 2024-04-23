@@ -123,20 +123,24 @@ type TRegistrationCompletedPredicate =
   | 'is_after';
 
 type TParticipatedInProjectPredicate =
+  | 'commented_in'
+  | 'not_commented_in'
+  | 'follows_something'
+  | 'not_follows_something'
   | 'in'
   | 'not_in'
   | 'posted_in'
   | 'not_posted_in'
-  | 'commented_in'
-  | 'not_commented_in'
-  | 'reacted_idea_in'
-  | 'not_reacted_idea_in'
   | 'reacted_comment_in'
   | 'not_reacted_comment_in'
-  | 'voted_in'
-  | 'not_voted_in'
+  | 'reacted_idea_in'
+  | 'not_reacted_idea_in'
+  | 'registered_to_an_event'
+  | 'not_registered_to_an_event'
   | 'volunteered_in'
-  | 'not_volunteered_in';
+  | 'not_volunteered_in'
+  | 'voted_in'
+  | 'not_voted_in';
 
 type TParticipatedInTopicPredicate =
   | 'in'
@@ -392,14 +396,15 @@ export type TRule =
   | {
       ruleType?: 'participated_in_project';
       predicate?:
+        | 'not_commented_in'
+        | 'not_follows_something'
         | 'not_in'
         | 'not_posted_in'
-        | 'not_commented_in'
-        | 'not_reacted_idea_in'
         | 'not_reacted_comment_in'
-        | 'not_voted_in'
-        | 'not_volunteered_in';
-
+        | 'not_reacted_idea_in'
+        | 'not_registered_to_an_event'
+        | 'not_volunteered_in'
+        | 'not_voted_in';
       /**
        * The id of a project
        */
@@ -408,14 +413,15 @@ export type TRule =
   | {
       ruleType?: 'participated_in_project';
       predicate?:
+        | 'commented_in'
+        | 'follows_something'
         | 'in'
         | 'posted_in'
-        | 'commented_in'
-        | 'reacted_idea_in'
         | 'reacted_comment_in'
-        | 'voted_in'
-        | 'volunteered_in';
-
+        | 'reacted_idea_in'
+        | 'registered_to_an_event'
+        | 'volunteered_in'
+        | 'voted_in';
       /**
        * The IDs of projects
        */
@@ -593,20 +599,24 @@ export const ruleTypeConstraints = {
     not_is_normal_user: null,
   },
   participated_in_project: {
+    commented_in: ProjectValuesSelector,
+    not_commented_in: ProjectValueSelector,
+    follows_something: ProjectValuesSelector,
+    not_follows_something: ProjectValueSelector,
     in: ProjectValuesSelector,
     not_in: ProjectValueSelector,
     posted_in: ProjectValuesSelector,
     not_posted_in: ProjectValueSelector,
-    commented_in: ProjectValuesSelector,
-    not_commented_in: ProjectValueSelector,
-    reacted_idea_in: ProjectValuesSelector,
-    not_reacted_idea_in: ProjectValueSelector,
     reacted_comment_in: ProjectValuesSelector,
     not_reacted_comment_in: ProjectValueSelector,
-    voted_in: ProjectValuesSelector,
-    not_voted_in: ProjectValueSelector,
+    reacted_idea_in: ProjectValuesSelector,
+    not_reacted_idea_in: ProjectValueSelector,
+    registered_to_an_event: ProjectValuesSelector,
+    not_registered_to_an_event: ProjectValueSelector,
     volunteered_in: ProjectValuesSelector,
     not_volunteered_in: ProjectValueSelector,
+    voted_in: ProjectValuesSelector,
+    not_voted_in: ProjectValueSelector,
   },
   participated_in_topic: {
     in: TopicValuesSelector,
@@ -637,3 +647,5 @@ export const ruleTypeConstraints = {
     not_is_verified: null,
   },
 };
+
+// Extract rule types (ruleType) and their predicates from TRule
