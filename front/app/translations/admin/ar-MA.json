@@ -564,7 +564,6 @@
   "app.containers.AdminPage.DashboardPage.month": "شهر",
   "app.containers.AdminPage.DashboardPage.noData": "لا توجد بيانات لعرضها",
   "app.containers.AdminPage.DashboardPage.noPhase": "لم تتم تهيئة أي مرحلة لهذا المشروع",
-  "app.containers.AdminPage.DashboardPage.otherArea": "في مكان آخر",
   "app.containers.AdminPage.DashboardPage.overview.management": "الإدارة",
   "app.containers.AdminPage.DashboardPage.overview.projectsAndParticipation": "المشاريع والمشاركة",
   "app.containers.AdminPage.DashboardPage.overview.showLess": "عرض أقل",

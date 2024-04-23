@@ -606,7 +606,6 @@
   "app.containers.AdminPage.DashboardPage.month": "måned",
   "app.containers.AdminPage.DashboardPage.noData": "There is no data to be shown.",
   "app.containers.AdminPage.DashboardPage.noPhase": "No phase created for this project",
-  "app.containers.AdminPage.DashboardPage.otherArea": "Allaminngaanniit",
   "app.containers.AdminPage.DashboardPage.overview.management": "Management",
   "app.containers.AdminPage.DashboardPage.overview.projectsAndParticipation": "Projects & Participation",
   "app.containers.AdminPage.DashboardPage.overview.showLess": "Show less",
