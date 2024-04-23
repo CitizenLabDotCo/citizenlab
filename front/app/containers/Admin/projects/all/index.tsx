@@ -28,7 +28,7 @@ import Button from 'components/UI/Button';
 import SearchInput from 'components/UI/SearchInput';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { IProjectModeratorRole, isAdmin } from 'utils/permissions/roles';
+import { isAdmin } from 'utils/permissions/roles';
 import { isProjectFolderModerator } from 'utils/permissions/rules/projectFolderPermissions';
 
 import NonSortableProjectList from './Lists/NonSortableProjectList';
@@ -104,7 +104,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
   const { data: moderatedAdminPublications } = useAdminPublications({
     publicationStatusFilter: ['published', 'draft', 'archived'],
     onlyProjects: true,
-    filter_can_moderate: true,
+    filter_is_moderator_of: true,
     search,
   });
 
@@ -155,17 +155,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
 
   const flatModeratedAdminPublications = flattenPagesData(
     moderatedAdminPublications
-  )?.filter((adminPublication) => {
-    // When the user is admin they have access to all projects
-    // so we filter out the projects they are not explicitly assigned to as project moderators
-    const explicitlyModeratedProjects = authUser?.data.attributes.roles
-      ?.filter((role) => role.type === 'project_moderator')
-      .map((role: IProjectModeratorRole) => role.project_id);
-
-    return explicitlyModeratedProjects?.includes(
-      adminPublication.relationships.publication.data.id
-    );
-  });
+  );
 
   return (
     <Container className={className}>

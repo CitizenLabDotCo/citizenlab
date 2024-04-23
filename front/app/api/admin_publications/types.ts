@@ -19,7 +19,7 @@ export interface IQueryParameters {
   rootLevelOnly?: boolean;
   removeNotAllowedParents?: boolean;
   onlyProjects?: boolean;
-  filter_can_moderate?: boolean;
+  filter_is_moderator_of?: boolean;
 }
 
 /**
