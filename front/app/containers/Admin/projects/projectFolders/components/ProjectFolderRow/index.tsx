@@ -76,7 +76,12 @@ const ProjectFolderRow = memo<Props>(
 
     if (!isNilOrError(authUser)) {
       return (
-        <Box display="flex" flexDirection="column" flexGrow={1}>
+        <Box
+          display="flex"
+          flexDirection="column"
+          flexGrow={1}
+          data-cy="e2e-project-folder-row"
+        >
           <Box
             display="flex"
             flexDirection="column"
