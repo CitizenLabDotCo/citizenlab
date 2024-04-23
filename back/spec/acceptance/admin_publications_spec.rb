@@ -20,7 +20,8 @@ resource 'AdminPublication' do
 
   context 'when admin' do
     before do
-      admin_header_token
+      @admin = create(:admin)
+      header_token_for(@admin)
     end
 
     # the name of this variable shouldn't be `folder`
@@ -41,6 +42,7 @@ resource 'AdminPublication' do
       parameter :remove_not_allowed_parents, 'Filter out folders which contain only projects that are not visible to the user', required: false
       parameter :only_projects, 'Include projects only (no folders)', required: false
       parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
+      parameter :filter_is_moderator_of, 'Filter out the publications the user is not moderator of. False by default', required: false
 
       example_request 'List all admin publications' do
         expect(status).to eq(200)
@@ -83,11 +85,41 @@ resource 'AdminPublication' do
         expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 0
       end
 
-      example 'Admins can moderate all projects', document: false do
+      example 'List publications admin can moderate', document: false do
         do_request filter_can_moderate: true
         json_response = json_parse(response_body)
         assert_status 200
         expect(json_response[:data].size).to eq 10
+      end
+
+      context 'when admin is moderator of publications' do
+        before do
+          @moderated_project1 = published_projects[0]
+          @moderated_project2 = published_projects[1]
+          @moderated_folder1 = create(:project_folder, projects: [@moderated_project1])
+          @moderated_folder2 = create(:project_folder)
+          @admin.roles += [
+            { type: 'project_moderator', project_id: @moderated_project1.id },
+            { type: 'project_moderator', project_id: @moderated_project2.id },
+            { type: 'project_folder_moderator', project_folder_id: @moderated_folder1.admin_publication.id },
+            { type: 'project_folder_moderator', project_folder_id: @moderated_folder2.admin_publication.id }
+          ]
+          @admin.save!
+        end
+
+        example 'List publications admin is moderator of', document: false do
+          do_request filter_is_moderator_of: true
+          assert_status 200
+          expect(publication_ids).to match_array [
+            @moderated_project1.id, @moderated_project2.id, @moderated_folder1.id, @moderated_folder2.id
+          ]
+        end
+
+        example 'List only projects admin is moderator of', document: false do
+          do_request(filter_is_moderator_of: true, only_projects: true)
+          assert_status 200
+          expect(publication_ids).to match_array [@moderated_project1.id, @moderated_project2.id]
+        end
       end
 
       ProjectsFilteringService::HOMEPAGE_FILTER_PARAMS.each do |filter_param|
