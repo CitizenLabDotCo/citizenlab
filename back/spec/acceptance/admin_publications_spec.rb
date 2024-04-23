@@ -247,53 +247,6 @@ resource 'AdminPublication' do
     end
   end
 
-  get 'web_api/v1/admin_publications' do
-    context 'when project moderator' do
-      before do
-        @moderator = create(:project_moderator, projects: [published_projects[0], published_projects[1]])
-        header_token_for(@moderator)
-      end
-
-      example 'List only the projects the current user is moderator of' do
-        do_request(filter_is_moderator_of: true, only_projects: true)
-        json_response = json_parse(response_body)
-        assert_status 200
-        expect(json_response[:data].size).to eq 2
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) })
-          .to match_array [published_projects[0].id, published_projects[1].id]
-      end
-    end
-
-    context 'when an admin' do
-      before do
-        @admin = create(:admin, roles: [{ type: 'admin' }, { type: 'project_moderator', project_id: published_projects[0].id }])
-        header_token_for(@admin)
-      end
-
-      example 'List only the projects the current user is moderator of' do
-        do_request(filter_is_moderator_of: true, only_projects: true)
-        json_response = json_parse(response_body)
-        assert_status 200
-        expect(json_response[:data].size).to eq 1
-        expect(json_response[:data].first.dig(:relationships, :publication, :data, :id)).to eq published_projects[0].id
-      end
-    end
-
-    context 'when regular user' do
-      before do
-        @user = create(:user)
-        header_token_for(@user)
-      end
-
-      example 'List only the projects the current user is moderator of' do
-        do_request(filter_is_moderator_of: true, only_projects: true)
-        json_response = json_parse(response_body)
-        assert_status 200
-        expect(json_response[:data].size).to eq 0
-      end
-    end
-  end
-
   context 'when resident' do
     before { resident_header_token }
 
@@ -510,6 +463,39 @@ resource 'AdminPublication' do
         expect(json_response[:data][:attributes][:status_counts][:published]).to eq 2
 
         expect(json_response[:data][:attributes][:status_counts][:archived]).to eq 1
+      end
+    end
+  end
+
+  context 'when project moderator' do
+    get 'web_api/v1/admin_publications' do
+      with_options scope: :page do
+        parameter :number, 'Page number'
+        parameter :size, 'Number of projects per page'
+      end
+      parameter :topics, 'Filter by topics (AND)', required: false
+      parameter :areas, 'Filter by areas (AND)', required: false
+      parameter :depth, 'Filter by depth', required: false
+      parameter :search, 'Search text of title, description, preview, and slug', required: false
+      parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default (OR)', required: false
+      parameter :folder, 'Filter by folder (project folder id)', required: false
+      parameter :remove_not_allowed_parents, 'Filter out folders which contain only projects that are not visible to the user', required: false
+      parameter :only_projects, 'Include projects only (no folders)', required: false
+      parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
+      parameter :filter_is_moderator_of, 'Filter out the publications the user is not moderator of. False by default', required: false
+
+      before do
+        @moderator = create(:project_moderator, projects: [published_projects[0], published_projects[1]])
+        header_token_for(@moderator)
+      end
+
+      example 'List only the projects the current user is moderator of' do
+        do_request(filter_is_moderator_of: true, only_projects: true)
+        json_response = json_parse(response_body)
+        assert_status 200
+        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) })
+          .to match_array [published_projects[0].id, published_projects[1].id]
       end
     end
   end
