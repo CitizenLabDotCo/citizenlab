@@ -30,9 +30,9 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
   describe 'parse_file_async' do
     it 'creates jobs to process 5 ideas at a time' do
       base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_12.pdf').read
-      expect {
+      expect do
         service.parse_file_async("data:application/pdf;base64,#{base_64_content}")
-      }.to have_enqueued_job(BulkImportIdeas::IdeaPdfImportJob).exactly(:twice)
+      end.to have_enqueued_job(BulkImportIdeas::IdeaPdfImportJob).exactly(:twice)
     end
   end
 
