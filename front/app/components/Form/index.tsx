@@ -23,7 +23,6 @@ import { useIntl } from 'utils/cl-intl';
 
 import ButtonBar from './Components/ButtonBar';
 import Fields from './Components/Fields';
-import Wrapper from './Components/Wrapper';
 import messages from './messages';
 import { parseRequiredMultilocsData } from './parseRequiredMultilocs';
 import { ApiErrorGetter, AjvErrorGetter, FormData } from './typings';
@@ -125,11 +124,8 @@ const Form = memo(
       setData(parseRequiredMultilocsData(schema, locale, initialFormData));
     }, [schema, locale, initialFormData]);
 
-    const layoutType = layout
-      ? layout
-      : isCategorization(uiSchema)
-      ? 'fullpage'
-      : 'inline';
+    const layoutType =
+      layout || (isCategorization(uiSchema) ? 'fullpage' : 'inline');
 
     const handleChange = (data: FormData) => {
       setData(data);
@@ -161,10 +157,11 @@ const Form = memo(
     useObserveEvent(submitOnEvent, handleSubmit);
 
     return (
-      <Wrapper
+      <Box
         id={uiSchema?.options?.formId}
-        layoutType={layoutType}
-        isSurvey={config === 'survey'}
+        as="form"
+        display="flex"
+        flexDirection="column"
       >
         <Box
           overflow={layoutType === 'inline' ? 'visible' : 'auto'}
@@ -218,7 +215,7 @@ const Form = memo(
             )}
           </>
         )}
-      </Wrapper>
+      </Box>
     );
   }
 );

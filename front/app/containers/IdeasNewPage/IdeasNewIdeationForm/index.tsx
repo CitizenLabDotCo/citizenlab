@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback, lazy, Suspense } from 'react';
 
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { parse } from 'qs';
 import { useSearchParams } from 'react-router-dom';
 import { Multiloc } from 'typings';
@@ -15,21 +16,23 @@ import { IProject } from 'api/projects/types';
 
 import useInputSchema from 'hooks/useInputSchema';
 import useLocale from 'hooks/useLocale';
+import useLocalize from 'hooks/useLocalize';
 
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 import Form from 'components/Form';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
-import FullPageSpinner from 'components/UI/FullPageSpinner';
+import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 import PageContainer from 'components/UI/PageContainer';
 
+import clHistory from 'utils/cl-router/history';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { reverseGeocode } from 'utils/locationTools';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
-import { NewIdeaHeading } from '../components/NewIdeaHeading';
+import NewIdeaHeading from '../components/NewIdeaHeading';
 import IdeasNewMeta from '../IdeasNewMeta';
 import messages from '../messages';
 import { getLocationGeojson } from '../utils';
@@ -68,6 +71,7 @@ interface Props {
 }
 
 const IdeasNewIdeationForm = ({ project }: Props) => {
+  const localize = useLocalize();
   const locale = useLocale();
   const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const [formData, setFormData] = useState<FormValues | null>(null);
@@ -221,72 +225,80 @@ const IdeasNewIdeationForm = ({ project }: Props) => {
     setPostAnonymously((postAnonymously) => !postAnonymously);
   };
 
-  if (!participationMethodConfig) {
+  const goBackToProject = useCallback(() => {
+    clHistory.push(`/projects/${project.data.attributes.slug}`);
+  }, [project]);
+
+  if (
+    !participationMethodConfig ||
+    !schema ||
+    !uiSchema ||
+    inputSchemaError ||
+    processingLocation
+  ) {
     return null;
   }
 
   return (
-    <PageContainer id="e2e-idea-new-page" overflow="hidden">
-      {!processingLocation &&
-      schema &&
-      uiSchema &&
-      participationMethodConfig ? (
-        <>
-          <IdeasNewMeta />
-          <Form
-            schema={schema}
-            uiSchema={uiSchema}
-            onSubmit={handleDisclaimer}
-            initialFormData={initialFormData}
-            getAjvErrorMessage={getAjvErrorMessage}
-            getApiErrorMessage={getApiErrorMessage}
-            title={
-              <>
-                <NewIdeaHeading
-                  project={project.data}
-                  titleText={
-                    participationMethodConfig.getFormTitle ? (
-                      participationMethodConfig.getFormTitle({
+    <>
+      <IdeasNewMeta />
+      <Box bg={colors.grey100}>
+        <Box p="32px" display="flex" justifyContent="flex-start">
+          <GoBackButtonSolid
+            text={localize(project.data.attributes.title_multiloc)}
+            onClick={goBackToProject}
+          />
+        </Box>
+        <main>
+          <PageContainer id="e2e-idea-new-page" overflow="hidden">
+            <Form
+              schema={schema}
+              uiSchema={uiSchema}
+              onSubmit={handleDisclaimer}
+              initialFormData={initialFormData}
+              getAjvErrorMessage={getAjvErrorMessage}
+              getApiErrorMessage={getApiErrorMessage}
+              title={
+                participationMethodConfig.getFormTitle ? (
+                  <Box mb="40px">
+                    <NewIdeaHeading
+                      titleText={participationMethodConfig.getFormTitle({
                         project: project.data,
                         phases: phases?.data,
                         phaseFromUrl: phaseFromUrl?.data,
-                      })
-                    ) : (
-                      <></>
-                    )
-                  }
-                />
-              </>
-            }
-            config={'input'}
-            footer={
-              allowAnonymousPosting ? (
-                <Suspense fallback={null}>
-                  <ProfileVisiblity
-                    postAnonymously={postAnonymously}
-                    onChange={handleOnChangeAnonymousPosting}
-                  />
-                </Suspense>
-              ) : undefined
-            }
+                      })}
+                    />
+                  </Box>
+                ) : undefined
+              }
+              config={'input'}
+              footer={
+                allowAnonymousPosting ? (
+                  <Suspense fallback={null}>
+                    <ProfileVisiblity
+                      postAnonymously={postAnonymously}
+                      onChange={handleOnChangeAnonymousPosting}
+                    />
+                  </Suspense>
+                ) : undefined
+              }
+            />
+          </PageContainer>
+          {showAnonymousConfirmationModal && (
+            <AnonymousParticipationConfirmationModal
+              onCloseModal={() => {
+                setShowAnonymousConfirmationModal(false);
+              }}
+            />
+          )}
+          <ContentUploadDisclaimer
+            isDisclaimerOpened={isDisclaimerOpened}
+            onAcceptDisclaimer={() => onAcceptDisclaimer(formData)}
+            onCancelDisclaimer={onCancelDisclaimer}
           />
-        </>
-      ) : inputSchemaError ? null : (
-        <FullPageSpinner />
-      )}
-      {showAnonymousConfirmationModal && (
-        <AnonymousParticipationConfirmationModal
-          onCloseModal={() => {
-            setShowAnonymousConfirmationModal(false);
-          }}
-        />
-      )}
-      <ContentUploadDisclaimer
-        isDisclaimerOpened={isDisclaimerOpened}
-        onAcceptDisclaimer={() => onAcceptDisclaimer(formData)}
-        onCancelDisclaimer={onCancelDisclaimer}
-      />
-    </PageContainer>
+        </main>
+      </Box>
+    </>
   );
 };
 

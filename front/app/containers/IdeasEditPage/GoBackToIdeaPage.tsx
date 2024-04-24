@@ -19,22 +19,13 @@ const GoBackToIdeaPage = ({ idea }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
 
   return (
-    <Box
-      display="flex"
-      width="100%"
-      flexDirection="row"
-      justifyContent="space-between"
-      mb="14px"
-      alignItems="center"
-      maxWidth="700px"
-      px="20px"
-    >
+    <Box display="flex" maxWidth="700px">
       <Button
         icon="arrow-left-circle"
         linkTo={`/ideas/${idea.attributes.slug}`}
         scrollToTop
         buttonStyle="text"
-        iconSize="24px"
+        iconSize="28px"
         padding="0"
         textDecorationHover="underline"
         whiteSpace="normal"

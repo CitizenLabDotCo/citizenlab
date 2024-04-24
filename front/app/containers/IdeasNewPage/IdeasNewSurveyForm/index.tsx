@@ -211,37 +211,42 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   };
 
   return (
-    <PageContainer id="e2e-idea-new-page" overflow="hidden">
-      {!loadingDraftIdea && schema && uiSchema && participationMethodConfig ? (
-        <Box
-          width="100%"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-        >
+    <>
+      <IdeasNewMeta isSurvey={true} />
+      <PageContainer id="e2e-idea-new-page" overflow="hidden">
+        {!loadingDraftIdea &&
+        schema &&
+        uiSchema &&
+        participationMethodConfig ? (
           <Box
-            background={colors.white}
-            width="700px"
-            h={isSmallerThanPhone ? '100vh' : `calc(100vh - 80px)`}
-            my={isSmallerThanPhone ? '0px' : '40px'}
+            width="100%"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
           >
-            <IdeasNewMeta isSurvey={true} />
-            <Form
-              schema={schema}
-              uiSchema={uiSchema}
-              onSubmit={handleDraftIdeas}
-              initialFormData={initialFormData}
-              getAjvErrorMessage={getAjvErrorMessage}
-              getApiErrorMessage={getApiErrorMessage}
-              inputId={ideaId}
-              config={'survey'}
-            />
+            <Box
+              background={colors.white}
+              width="700px"
+              h={isSmallerThanPhone ? '100vh' : `calc(100vh - 80px)`}
+              my={isSmallerThanPhone ? '0px' : '40px'}
+            >
+              <Form
+                schema={schema}
+                uiSchema={uiSchema}
+                onSubmit={handleDraftIdeas}
+                initialFormData={initialFormData}
+                getAjvErrorMessage={getAjvErrorMessage}
+                getApiErrorMessage={getApiErrorMessage}
+                inputId={ideaId}
+                config={'survey'}
+              />
+            </Box>
           </Box>
-        </Box>
-      ) : inputSchemaError ? null : (
-        <FullPageSpinner />
-      )}
-    </PageContainer>
+        ) : inputSchemaError ? null : (
+          <FullPageSpinner />
+        )}
+      </PageContainer>
+    </>
   );
 };
 
@@ -252,11 +257,9 @@ const IdeasNewSurveyFormWrapperModal = (props: Props) => {
     ? createPortal(
         <Box
           display="flex"
-          // flexDirection="column"
           w="100%"
           zIndex="1010"
           position="fixed"
-          // position="sticky"
           bgColor={colors.grey100}
           h="100vh"
           borderRadius="2px"
