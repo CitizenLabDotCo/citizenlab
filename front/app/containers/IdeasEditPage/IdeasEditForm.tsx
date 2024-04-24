@@ -113,12 +113,16 @@ const IdeasEditForm = ({ ideaId }: Props) => {
     [uiSchema]
   );
 
-  if (!schema || !uiSchema || inputSchemaError || !projectId || !idea)
+  if (!schema || !uiSchema || inputSchemaError || !projectId || !idea) {
     return null;
+  }
 
-  const initialFormData = schema
-    ? getFormValues(idea, schema, remoteImages, remoteFiles)
-    : null;
+  const initialFormData = getFormValues(
+    idea,
+    schema,
+    remoteImages,
+    remoteFiles
+  );
 
   // Set initial location point if exists
   if (initialFormData && idea.data.attributes.location_point_geojson) {
