@@ -1,21 +1,18 @@
-import React, { Fragment, memo } from 'react';
+import React, { Fragment } from 'react';
 
+import { Text, Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
-import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import useReorderAdminPublication from 'api/admin_publications/useReorderAdminPublication';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
+import Warning from 'components/UI/Warning';
 
-import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
+import { useIntl } from 'utils/cl-intl';
 
 import ProjectRow from '../../components/ProjectRow';
 import messages from '../messages';
-import { ListHeader, HeaderTitle } from '../StyledComponents';
 
 import SortableFolderRow from './SortableFolderRow';
 
@@ -25,55 +22,40 @@ const StyledSortableRow = styled(SortableRow)`
   }
 `;
 
-const StyledListHeader = styled(ListHeader)`
-  margin-bottom: 30px;
-`;
-
-const Spacer = styled.div`
-  flex: 1;
-`;
-
-interface Props {}
-
-const AdminProjectList = memo<Props>((_props) => {
+const SortableProjectList = ({
+  adminPublications,
+}: {
+  adminPublications: IAdminPublicationData[] | undefined;
+}) => {
   const { mutate: reorderAdminPublication } = useReorderAdminPublication();
-  const { data } = useAdminPublications({
-    publicationStatusFilter: ['published', 'draft', 'archived'],
-    rootLevelOnly: true,
-  });
-
-  const rootLevelAdminPublications = data?.pages
-    .map((page) => page.data)
-    .flat();
-
-  const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
+  const { formatMessage } = useIntl();
 
   function handleReorderAdminPublication(itemId: string, newOrder: number) {
     reorderAdminPublication({ id: itemId, ordering: newOrder });
   }
 
-  if (
-    !isNilOrError(rootLevelAdminPublications) &&
-    rootLevelAdminPublications.length > 0
-  ) {
+  if (!adminPublications) return null;
+
+  if (adminPublications.length === 0) {
+    return (
+      <Text color="textSecondary" mt="16px">
+        {formatMessage(messages.noProjectsFound)}
+      </Text>
+    );
+  }
+
+  if (adminPublications.length > 0) {
     return (
       <>
-        <StyledListHeader>
-          <HeaderTitle>
-            <FormattedMessage
-              {...(isProjectFoldersEnabled
-                ? messages.projectsAndFolders
-                : messages.existingProjects)}
-            />
-          </HeaderTitle>
-          <Spacer />
-        </StyledListHeader>
+        <Box py="16px">
+          <Warning>{formatMessage(messages.homepageWarning)}</Warning>
+        </Box>
         <SortableList
-          items={rootLevelAdminPublications}
+          items={adminPublications}
           onReorder={handleReorderAdminPublication}
           className="projects-list e2e-admin-projects-list"
           id="e2e-admin-projects-list-unsortable"
-          key={rootLevelAdminPublications.length}
+          key={adminPublications.length}
         >
           {({ itemsList, handleDragRow, handleDropRow }) => {
             return (
@@ -88,9 +70,7 @@ const AdminProjectList = memo<Props>((_props) => {
                           index={index}
                           moveRow={handleDragRow}
                           dropRow={handleDropRow}
-                          isLastItem={
-                            index === rootLevelAdminPublications.length - 1
-                          }
+                          isLastItem={index === adminPublications.length - 1}
                         >
                           <ProjectRow actions={['manage']} publication={item} />
                         </StyledSortableRow>
@@ -102,9 +82,7 @@ const AdminProjectList = memo<Props>((_props) => {
                           index={index}
                           moveRow={handleDragRow}
                           dropRow={handleDropRow}
-                          isLastItem={
-                            index === rootLevelAdminPublications.length - 1
-                          }
+                          isLastItem={index === adminPublications.length - 1}
                           publication={item}
                         />
                       )}
@@ -120,6 +98,6 @@ const AdminProjectList = memo<Props>((_props) => {
   }
 
   return null;
-});
+};
 
-export default AdminProjectList;
+export default SortableProjectList;

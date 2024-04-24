@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import useAuthUser from 'api/me/useAuthUser';
-import { PublicationStatus } from 'api/projects/types';
 
 import { Row } from 'components/admin/ResourceList';
 
@@ -17,35 +16,36 @@ export interface Props {
   id: string;
   isLastItem: boolean;
   publication: IAdminPublicationData;
+  search?: string;
 }
 
-const publicationStatuses: PublicationStatus[] = [
-  'draft',
-  'published',
-  'archived',
-];
-
-const NonSortableFolderRow = ({ id, isLastItem, publication }: Props) => {
+const NonSortableFolderRow = ({
+  id,
+  isLastItem,
+  publication,
+  search,
+}: Props) => {
   const { data: authUser } = useAuthUser();
 
   const { data } = useAdminPublications({
     childrenOfId: publication.relationships.publication.data.id,
-    publicationStatusFilter: publicationStatuses,
+    publicationStatusFilter: ['draft', 'published', 'archived'],
   });
 
   const folderChildAdminPublications = data?.pages
     .map((page) => page.data)
     .flat();
 
-  const [folderOpen, setFolderOpen] = useState(true);
+  const [folderOpen, setFolderOpen] = useState(false);
 
   if (isNilOrError(authUser)) {
     return null;
   }
 
-  const hasProjects =
+  const showProjects =
     !isNilOrError(folderChildAdminPublications) &&
-    folderChildAdminPublications.length > 0;
+    folderChildAdminPublications.length > 0 &&
+    !search;
 
   const toggleFolder = () => {
     setFolderOpen((folderOpen) => !folderOpen);
@@ -56,7 +56,6 @@ const NonSortableFolderRow = ({ id, isLastItem, publication }: Props) => {
 
   const folderId =
     publicationRelation.type === 'folder' ? publicationRelation.id : undefined;
-
   return (
     <>
       <Row id={id} isLastItem={showBottomBorder}>
@@ -64,13 +63,14 @@ const NonSortableFolderRow = ({ id, isLastItem, publication }: Props) => {
           publication={publication}
           toggleFolder={toggleFolder}
           isFolderOpen={folderOpen}
-          hasProjects={hasProjects}
+          hasProjects={showProjects}
         />
       </Row>
-      {hasProjects && folderOpen && (
+      {showProjects && folderOpen && (
         <FolderChildProjects
           folderChildAdminPublications={folderChildAdminPublications}
           folderId={folderId}
+          isLastFolder={isLastItem}
         />
       )}
     </>
