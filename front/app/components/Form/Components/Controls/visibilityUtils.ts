@@ -15,7 +15,6 @@ import {
   Scopable,
   composeWithUi,
   resolveData,
-  Layout,
 } from '@jsonforms/core';
 import Ajv from 'ajv';
 import { has } from 'lodash-es';
@@ -23,7 +22,6 @@ import { has } from 'lodash-es';
 import { getOtherControlKey } from 'components/Form/utils';
 
 import { PageType } from '../Layouts/utils';
-import { Categorization } from '@jsonforms/core/src/models/uischema';
 
 interface ConditionWithPageId
   extends Condition,
