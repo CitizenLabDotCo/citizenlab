@@ -19,8 +19,11 @@ module EmailCampaigns
       end
 
       @campaigns = @campaigns.where(context_id: params[:context_id]) if params[:context_id]
-      @campaigns = @campaigns.manual if params[:manual] == 'true'
-      @campaigns = @campaigns.automatic if params[:manual] == 'false'
+
+      case params[:manual]&.downcase
+      when 'true' then @campaigns = @campaigns.manual
+      when 'false' then @campaigns = @campaigns.automatic
+      end
 
       @campaigns = @campaigns
         .page(params.dig(:page, :number))
