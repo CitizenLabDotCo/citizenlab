@@ -31,9 +31,8 @@ const InputImporter = () => {
   const [importExcelModalOpen, setImportExcelModalOpen] = useState(false);
 
   const [importJobs, setImportJobs] = useState<IJobData[]>([]);
-  const { data: jobs } = useJobs(
-    importJobs.map((job) => job.attributes.job_id)
-  );
+  const importJobIds = importJobs.map((job) => job.attributes.job_id);
+  const { data: jobs } = useJobs(importJobIds);
 
   const { schema, uiSchema } = useInputSchema({
     projectId,

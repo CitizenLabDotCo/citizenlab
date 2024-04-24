@@ -8,7 +8,7 @@ class WebApi::V1::JobsController < ApplicationController
     authorize :jobs, policy_class: JobPolicy
     job_ids = params[:ids]
 
-    render json: ::WebApi::V1::IdeaSerializer.new(
+    render json: ::WebApi::V1::JobSerializer.new(
       QueJob.by_ids(job_ids),
       params: jsonapi_serializer_params
     ).serializable_hash
@@ -18,7 +18,7 @@ class WebApi::V1::JobsController < ApplicationController
     job = QueJob.find(params[:id])
     authorize job
 
-    render json: ::WebApi::V1::IdeaSerializer.new(
+    render json: ::WebApi::V1::JobSerializer.new(
       job,
       params: jsonapi_serializer_params
     ).serializable_hash

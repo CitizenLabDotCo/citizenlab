@@ -39,7 +39,8 @@ class QueJob < Que::ActiveRecord::Model
     end
 
     def by_ids(job_ids)
-      by_args({ job_id: job_ids }, {}).all
+      ids = job_ids.map { |job_id| [{ job_id: }].to_json }
+      where('args @> ANY (ARRAY[?]::jsonb[])', ids)
     end
   end
 
