@@ -1905,7 +1905,7 @@
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Félicitations, votre budget a été soumis avec succès !</b> Vous pouvez vérifier vos choix ci-dessous.",
   "app.utils.votingMethodUtils.budgets": "Budgets",
   "app.utils.votingMethodUtils.castYourVote": "Participez au vote",
-  "app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxVotesPerIdea2": "Vous pouvez ajouter un nombre maximum de {maxVotes} {voteTerm} par option.",
+  "app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxVotesPerIdea2": "Vous pouvez attribuer un maximum de {maxVotes} {voteTerm} par option.",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsOnceYouAreDone": "Une fois terminé, cliquez sur « Soumettre » pour voter.",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsPreferredOptions2": "Choisissez vos options préférées en cliquant sur « Sélectionner ».",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalVotes": "Vous disposez de <b>{totalVotes} {voteTerm} à répartir entre {optionCount} options</b>.",
