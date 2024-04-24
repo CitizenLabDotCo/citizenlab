@@ -63,47 +63,6 @@ module EmailCampaigns
       true
     end
 
-    def run_before_send_hooks(activity: nil, time: nil)
-      result = true
-      current_class = self.class
-
-      while current_class <= ::EmailCampaigns::Campaign
-        result &&= current_class.before_send_hooks.all? do |action_symbol|
-          send(action_symbol, activity: activity, time: time)
-        end
-
-        current_class = current_class.superclass
-      end
-
-      result
-    end
-
-    def run_after_send_hooks(command)
-      current_class = self.class
-
-      while current_class <= ::EmailCampaigns::Campaign
-        current_class.after_send_hooks.each do |action_symbol|
-          send(action_symbol, command)
-        end
-        current_class = current_class.superclass
-      end
-    end
-
-    def apply_recipient_filters(activity: nil, time: nil)
-      current_class = self.class
-
-      users_scope = User.where.not(email: nil)
-      while current_class <= ::EmailCampaigns::Campaign
-        users_scope = current_class.recipient_filters.inject(users_scope) do |users_scope, action_symbol|
-          send(action_symbol, users_scope, activity: activity, time: time)
-        end
-
-        current_class = current_class.superclass
-      end
-
-      users_scope
-    end
-
     private
 
     def only_manual_send(activity: nil, time: nil)

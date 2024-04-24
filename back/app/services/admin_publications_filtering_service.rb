@@ -94,7 +94,7 @@ class AdminPublicationsFilteringService
   # If any of the filters before return duplicate admin publications, we remove them at the last step
   add_filter('distinct') do |scope, _options|
     scope.distinct
-end
+  end
 
   add_filter('by_folder') do |scope, options|
     next scope unless options.key? :folder
