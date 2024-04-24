@@ -72,6 +72,7 @@ const Unauthorized = ({
           </>
         ) : (
           <>
+            <Title mb="0">{formatMessage(messages.noPermission)}</Title>
             <Text fontSize="l" color="textSecondary" mb="30px">
               {formatMessage(messages.notAuthorized)}
             </Text>
@@ -84,6 +85,7 @@ const Unauthorized = ({
         )
       ) : (
         <>
+          <Title mb="0">{formatMessage(messages.noPermission)}</Title>
           <Text fontSize="l" color="textSecondary" mb="20px">
             {formatMessage(messages.sorryNoAccess)}
           </Text>
