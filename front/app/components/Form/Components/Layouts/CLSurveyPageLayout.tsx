@@ -199,7 +199,6 @@ const CLSurveyPageLayout = memo(
           getSanitizedFormData(data)
         )
       ) {
-        // setShowAllErrors?.(false);
         scrollToTop();
         data.publication_status = 'draft';
         data.latest_complete_page = currentStep;
