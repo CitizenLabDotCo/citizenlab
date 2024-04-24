@@ -44,63 +44,65 @@ const Unauthorized = ({
   };
 
   return (
-    <Box
-      height={`calc(100vh - ${theme.menuHeight + theme.footerHeight})`}
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      padding="4rem"
-      id="e2e-not-authorized"
-      as="main"
-    >
-      {authUser ? (
-        fixableByAuthentication ? (
+    <main id="e2e-not-authorized">
+      <Box
+        height={`calc(100vh - ${theme.menuHeight + theme.footerHeight})`}
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        padding="4rem"
+      >
+        {authUser ? (
+          fixableByAuthentication ? (
+            <>
+              <Title mb="0">
+                {formatMessage(messages.completeProfileTitle)}
+              </Title>
+              <Text fontSize="l" color="textSecondary" mb="20px">
+                {formatMessage(messages.additionalInformationRequired)}
+              </Text>
+              <Box mb="16px">
+                <Button
+                  onClick={() => {
+                    triggerAuthFlow?.();
+                  }}
+                  text={formatMessage(messages.completeProfile)}
+                  data-cy="e2e-trigger-authentication"
+                />
+              </Box>
+            </>
+          ) : (
+            <>
+              <Title mb="0">{formatMessage(messages.noPermission)}</Title>
+              <Text fontSize="l" color="textSecondary" mb="30px">
+                {formatMessage(messages.notAuthorized)}
+              </Text>
+              <Button
+                linkTo="/"
+                text={formatMessage(pageNotFoundMessages.goBackToHomePage)}
+                icon="arrow-left"
+              />
+            </>
+          )
+        ) : (
           <>
-            <Title mb="0">{formatMessage(messages.completeProfileTitle)}</Title>
+            <Title mb="0">{formatMessage(messages.noPermission)}</Title>
             <Text fontSize="l" color="textSecondary" mb="20px">
-              {formatMessage(messages.additionalInformationRequired)}
+              {formatMessage(messages.sorryNoAccess)}
             </Text>
-            <Box mb="16px">
+            <Box mb="16px" data-cy="e2e-unauthorized-must-sign-in">
               <Button
                 onClick={() => {
-                  triggerAuthFlow?.();
+                  triggerAuthFlow ? triggerAuthFlow() : signIn();
                 }}
-                text={formatMessage(messages.completeProfile)}
+                text={formatMessage(messages.signIn)}
                 data-cy="e2e-trigger-authentication"
               />
             </Box>
           </>
-        ) : (
-          <>
-            <Title mb="0">{formatMessage(messages.noPermission)}</Title>
-            <Text fontSize="l" color="textSecondary" mb="30px">
-              {formatMessage(messages.notAuthorized)}
-            </Text>
-            <Button
-              linkTo="/"
-              text={formatMessage(pageNotFoundMessages.goBackToHomePage)}
-              icon="arrow-left"
-            />
-          </>
-        )
-      ) : (
-        <>
-          <Title mb="0">{formatMessage(messages.noPermission)}</Title>
-          <Text fontSize="l" color="textSecondary" mb="20px">
-            {formatMessage(messages.sorryNoAccess)}
-          </Text>
-          <Box mb="16px" data-cy="e2e-unauthorized-must-sign-in">
-            <Button
-              onClick={() => {
-                triggerAuthFlow ? triggerAuthFlow() : signIn();
-              }}
-              text={formatMessage(messages.signIn)}
-              data-cy="e2e-trigger-authentication"
-            />
-          </Box>
-        </>
-      )}
-    </Box>
+        )}
+      </Box>
+    </main>
   );
 };
 
