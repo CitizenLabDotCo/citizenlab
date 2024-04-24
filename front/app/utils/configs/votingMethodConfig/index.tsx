@@ -273,19 +273,20 @@ const multipleVotingConfig: VotingMethodConfig = {
     localize,
     formatMessage,
   }: GetStatusDescriptionProps) => {
-    const maxVotesPerOption = phase?.attributes.voting_max_votes_per_idea;
-    const fallbackVoteTerm = formatMessage(messages.votes).toLowerCase();
+    const fallbackVoteTerm = formatMessage(messages.vote).toLowerCase();
+    const fallbackVotesTerm = formatMessage(messages.votes).toLowerCase();
 
-    const voteTermPlural =
-      localize(phase?.attributes?.voting_term_plural_multiloc) ||
+    const voteTerm =
+      localize(phase?.attributes?.voting_term_singular_multiloc) ??
       fallbackVoteTerm;
+    const votesTerm =
+      localize(phase?.attributes?.voting_term_plural_multiloc) ??
+      fallbackVotesTerm;
 
-    const voteTermVotesPerOption =
-      maxVotesPerOption && maxVotesPerOption > 1
-        ? localize(phase?.attributes?.voting_term_plural_multiloc) ||
-          fallbackVoteTerm
-        : localize(phase?.attributes?.voting_term_singular_multiloc) ||
-          fallbackVoteTerm;
+    const maxVotesTerm =
+      phase?.attributes.voting_max_total === 1 ? voteTerm : votesTerm;
+    const maxVotesPerIdeaTerm =
+      phase?.attributes.voting_max_votes_per_idea === 1 ? voteTerm : votesTerm;
 
     if (!phase) return null;
 
@@ -297,7 +298,7 @@ const multipleVotingConfig: VotingMethodConfig = {
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
-              voteTerm: voteTermPlural,
+              voteTerm: maxVotesTerm,
               optionCount: phase.attributes.ideas_count,
               totalVotes: phase.attributes.voting_max_total?.toLocaleString(),
             }}
@@ -314,7 +315,7 @@ const multipleVotingConfig: VotingMethodConfig = {
                 {...messages.cumulativeVotingInstructionsMaxVotesPerIdea}
                 values={{
                   maxVotes: phase.attributes.voting_max_votes_per_idea,
-                  voteTerm: voteTermVotesPerOption,
+                  voteTerm: maxVotesPerIdeaTerm,
                 }}
               />
             </li>
@@ -374,7 +375,7 @@ const multipleVotingConfig: VotingMethodConfig = {
             ),
             endDate: getLocalisedDateString(phase?.attributes.end_at),
             maxVotes: phase?.attributes.voting_max_total?.toLocaleString(),
-            voteTerm: voteTermPlural,
+            voteTerm: maxVotesTerm,
             optionCount: phase.attributes.ideas_count,
           }}
           {...messages.multipleVotingEnded}
