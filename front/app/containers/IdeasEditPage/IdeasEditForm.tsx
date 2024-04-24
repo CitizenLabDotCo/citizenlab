@@ -66,9 +66,10 @@ const IdeasEditForm = ({ ideaId }: Props) => {
   const { mutateAsync: updateIdea } = useUpdateIdea();
   const { data: remoteImages } = useIdeaImages(ideaId);
   const { data: remoteFiles } = useIdeaFiles(ideaId);
+  const projectId = idea?.data.relationships.project.data.id;
 
   const { schema, uiSchema, inputSchemaError } = useInputSchema({
-    projectId: idea?.data.relationships.project.data.id,
+    projectId,
     inputId: ideaId,
   });
 
@@ -112,12 +113,16 @@ const IdeasEditForm = ({ ideaId }: Props) => {
     [uiSchema]
   );
 
-  if (!idea) return null;
+  if (!schema || !uiSchema || inputSchemaError || !projectId || !idea) {
+    return null;
+  }
 
-  const projectId = idea.data.relationships.project.data.id;
-  const initialFormData = schema
-    ? getFormValues(idea, schema, remoteImages, remoteFiles)
-    : null;
+  const initialFormData = getFormValues(
+    idea,
+    schema,
+    remoteImages,
+    remoteFiles
+  );
 
   // Set initial location point if exists
   if (initialFormData && idea.data.attributes.location_point_geojson) {
@@ -190,8 +195,6 @@ const IdeasEditForm = ({ ideaId }: Props) => {
       { scrollToTop: true }
     );
   };
-
-  if (!schema || !uiSchema || inputSchemaError) return null;
 
   return (
     <>
