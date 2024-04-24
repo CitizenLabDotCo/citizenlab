@@ -21,7 +21,8 @@ resource 'Project', admin_api: true do
         title_multiloc: kind_of(Hash),
         description_multiloc: kind_of(Hash),
         slug: 'renew-west-parc-1',
-        map_config_id: nil
+        map_config_id: nil,
+        visible_to: 'public'
       )
       expect(json_response_body.first[:admin_publication]).to include(
         publication_status: 'published'

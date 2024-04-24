@@ -7,6 +7,7 @@ module AdminApi
       :description_multiloc,
       :slug,
       :map_config_id,
+      :visible_to,
       :created_at,
       :updated_at
 
