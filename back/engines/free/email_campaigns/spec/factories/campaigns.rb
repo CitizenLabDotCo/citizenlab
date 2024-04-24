@@ -16,23 +16,9 @@ FactoryBot.define do
         'en' => 'Time to check it all out!'
       }
     end
-  end
 
-  factory :manual_project_participants_campaign, class: EmailCampaigns::Campaigns::ManualProjectParticipants do
-    association :project, factory: :project_with_active_ideation_phase
-    enabled { true }
-    author
-    sender { 'author' }
-    reply_to { 'someguy@somecity.com' }
-    subject_multiloc do
-      {
-        'en' => "We're almost done with your feedback"
-      }
-    end
-    body_multiloc do
-      {
-        'en' => 'Time to check it all out!'
-      }
+    factory :manual_project_participants_campaign, class: EmailCampaigns::Campaigns::ManualProjectParticipants do
+      association :project, factory: :project_with_active_ideation_phase
     end
   end
 
