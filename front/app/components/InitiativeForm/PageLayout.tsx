@@ -15,7 +15,7 @@ import CollapsibleTipsAndInfo from './CollapsibleTipsAndInfo';
 import messages from './messages';
 import TipsBox from './TipsBox';
 
-const Container = styled.main`
+const Container = styled.div`
   background: ${colors.background};
   min-height: calc(
     100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
