@@ -97,7 +97,6 @@ resource 'Phase level Custom Fields' do
         # TODO
         # List affected surveys
         # Check if this also happens for multiselect
-        # Apply to other endpoints (projects, users?)
         example_request 'returns the options in the same random order in the JSON and UI schemas' do
           assert_status 200
           json_response = json_parse response_body
