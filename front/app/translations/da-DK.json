@@ -1,4 +1,5 @@
 {
+  "EmailSettingsPage.emailSettings": "Indstillinger for e-mail",
   "EmailSettingsPage.initialUnsubscribeError": "Der var et problem med at afmelde dig fra denne kampagne, prøv venligst igen.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Din anmodning bliver behandlet, vent venligst...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Du har afmeldt dig fra {campaignTitle}.",
