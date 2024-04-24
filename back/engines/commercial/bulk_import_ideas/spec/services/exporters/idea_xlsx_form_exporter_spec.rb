@@ -77,7 +77,7 @@ describe BulkImportIdeas::Exporters::IdeaXlsxFormExporter do
         'Point field - Longitude',
         'Linear scale field',
         'Select field',
-        "Since you picked 'other', what are you thinking of?",
+        "If you picked 'Other', what are you thinking of?",
         'Multi select field',
         'Image select field'
       ])
