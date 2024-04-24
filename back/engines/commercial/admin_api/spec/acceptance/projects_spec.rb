@@ -14,13 +14,12 @@ resource 'Project', admin_api: true do
     let!(:project) { create(:project) }
     example_request 'List all projects' do
       expect(status).to eq 200
-      pp json_response_body
       expect(json_response_body.size).to eq 1
       expect(json_response_body.first).to include(
         id: project.id,
         title_multiloc: kind_of(Hash),
         description_multiloc: kind_of(Hash),
-        slug: 'renew-west-parc-1',
+        slug: project.slug,
         map_config_id: nil,
         visible_to: 'public'
       )
