@@ -27,6 +27,15 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
     create(:custom_field_option, custom_field: another_select_field, key: 'no', title_multiloc: { 'en' => 'No' })
   end
 
+  describe 'parse_file_async' do
+    it 'creates jobs to process 5 ideas at a time' do
+      base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_12.pdf').read
+      job_ids = service.parse_file_async("data:application/pdf;base64,#{base_64_content}")
+      expect(job_ids.count).to eq 2
+      expect(BulkImportIdeas::IdeaPdfImportJob).to have_been_enqueued.exactly(:twice)
+    end
+  end
+
   describe 'create_files' do
     it 'splits a 12 page PDF file into a file per idea based on the number of pages in the template (2)' do
       base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_12.pdf').read

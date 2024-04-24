@@ -5,6 +5,7 @@ BulkImportIdeas::Engine.routes.draw do
     namespace :v1 do
       resources :phases do
         post 'importer/bulk_create/:model/:format', on: :member, to: 'bulk_import#bulk_create'
+        post 'importer/bulk_create_async/:model/:format', on: :member, to: 'bulk_import#bulk_create_async'
         get 'importer/export_form/:model/:format', on: :member, to: 'bulk_import#export_form'
         get 'importer/draft_records/:model', on: :member, to: 'bulk_import#draft_records'
         patch 'importer/approve_all/:model', on: :member, to: 'bulk_import#approve_all'

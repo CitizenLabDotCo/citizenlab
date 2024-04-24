@@ -21,6 +21,15 @@ module BulkImportIdeas::Parsers
       idea_rows
     end
 
+    # Asynchronous version is not implemented by default
+    def parse_file_async(file_content)
+      raise NotImplementedError, 'This method is not implemented'
+    end
+
+    def parse_rows(file)
+      raise NotImplementedError, 'This method is not implemented'
+    end
+
     private
 
     def create_files(file_content)

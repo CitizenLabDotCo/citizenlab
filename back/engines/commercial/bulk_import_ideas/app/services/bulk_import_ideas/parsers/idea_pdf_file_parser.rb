@@ -2,7 +2,7 @@
 
 module BulkImportIdeas::Parsers
   class IdeaPdfFileParser < IdeaBaseFileParser
-    IDEAS_PER_JOB = 2
+    IDEAS_PER_JOB = 5
     POSITION_TOLERANCE = 10
     MAX_TOTAL_PAGES = 50
     TEXT_FIELD_TYPES = %w[text multiline_text text_multiloc html_multiloc]
@@ -12,15 +12,22 @@ module BulkImportIdeas::Parsers
       @form_fields = IdeaCustomFieldsService.new(Factory.instance.participation_method_for(@phase).custom_form).printable_fields
     end
 
-    # Asynchronous version of the parse_file method
+    # Synchronous version not implemented for PDFs
     def parse_file(file_content)
+      raise NotImplementedError, 'This method is not implemented for PDFs'
+    end
+
+    # Asynchronous version of the parse_file method
+    def parse_file_async(file_content)
       files = create_files file_content
 
+      job_ids = []
       files.each_slice(IDEAS_PER_JOB) do |sliced_files|
-        BulkImportIdeas::IdeaPdfImportJob.perform_later(sliced_files, @import_user, @locale, @phase, @personal_data_enabled)
+        job = BulkImportIdeas::IdeaPdfImportJob.perform_later(sliced_files, @import_user, @locale, @phase, @personal_data_enabled)
+        job_ids << job.job_id
       end
 
-      [] # Return an empty ideas_rows array as files are processed in jobs
+      job_ids
     end
 
     def parse_rows(file)
