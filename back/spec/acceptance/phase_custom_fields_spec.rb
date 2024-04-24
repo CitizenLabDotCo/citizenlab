@@ -86,7 +86,7 @@ resource 'Phase level Custom Fields' do
             ["my_option_#{i}", multiloc]
           end
         end
-        let!(:custom_field) do 
+        let!(:custom_field) do
           create(:custom_field_select, resource: custom_form, random_option_ordering: true, key: field_key).tap do |field|
             options_mapping.each do |key, multiloc|
               create(:custom_field_option, custom_field: field, key: key, title_multiloc: multiloc)
@@ -105,8 +105,8 @@ resource 'Phase level Custom Fields' do
           ui_schemas = json_response.dig(:data, :attributes, :ui_schema_multiloc)
           %i[en fr-FR nl-NL].each do |locale|
             json_keys = json_schemas.dig(locale, :properties, field_key, :enum)
-            ui_details = ui_schemas.dig(locale, :elements).find{|elt| elt[:label] == 'Details'}
-            ui_names = ui_details[:elements].find{|elt| elt[:scope] == "#/properties/#{field_key}"}.dig(:options, :enumNames)
+            ui_details = ui_schemas.dig(locale, :elements).find { |elt| elt[:label] == 'Details' }
+            ui_names = ui_details[:elements].find { |elt| elt[:scope] == "#/properties/#{field_key}" }.dig(:options, :enumNames)
 
             expect(json_keys.size).to eq 20
             expect(ui_names.size).to eq 20
