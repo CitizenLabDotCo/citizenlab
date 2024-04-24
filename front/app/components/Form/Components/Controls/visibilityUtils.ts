@@ -15,6 +15,7 @@ import {
   Scopable,
   composeWithUi,
   resolveData,
+  Layout,
 } from '@jsonforms/core';
 import Ajv from 'ajv';
 import { has } from 'lodash-es';
@@ -22,6 +23,7 @@ import { has } from 'lodash-es';
 import { getOtherControlKey } from 'components/Form/utils';
 
 import { PageType } from '../Layouts/utils';
+import { Categorization } from '@jsonforms/core/src/models/uischema';
 
 interface ConditionWithPageId
   extends Condition,
@@ -174,7 +176,7 @@ export const isVisible = (
 
 // This returns the elements on a page that are visible based on the data and the other option selection. You can pass returnHidden as true to get the hidden elements
 export const extractElementsByOtherOptionLogic = (
-  page: any, // PageType | Categorization,
+  page: any,
   data: any,
   returnHidden: boolean = false
 ): ExtendedUISchema[] => {
