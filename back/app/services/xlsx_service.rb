@@ -224,15 +224,28 @@ class XlsxService
     generate_xlsx 'Comments', columns, comments
   end
 
-  def generate_baskets_users_xlsx(baskets)
+  def generate_project_voting_xlsx(project_id)
+    project = Project.find_by(id: project_id)
+    phases = project.phases.where(participation_method: 'voting')
+    pa = Axlsx::Package.new
+
+    phases.each do |phase|
+      baskets = Basket.where(phase_id: phase.id)
+      sheet_name = MultilocService.new.t phase.title_multiloc
+      generate_baskets_users_sheet pa.workbook, sheet_name, baskets
+    end
+    pa.to_stream
+  end
+
+  def generate_baskets_users_sheet(workbook, sheet_name, baskets)
     columns = user_custom_field_columns(:user)
 
-    ideas = Phase.find_by(id: baskets.first.phase_id)&.ideas # Expecting all baskets to be in the same phase
+    ideas = Phase.find_by(id: baskets.first.phase_id)&.ideas
     ideas.each do |idea|
       columns << { header: "Idea ID: #{idea.id}", f: ->(b) { b.baskets_ideas.find_by(idea_id: idea.id)&.votes || 0 } } # TODO: Just using Idea ID for development purposes
     end
 
-    generate_xlsx 'Voting Users and Baskets', columns, baskets
+    generate_sheet workbook, sheet_name, columns, baskets
   end
 
   def generate_initiative_comments_xlsx(comments, view_private_attributes: false)

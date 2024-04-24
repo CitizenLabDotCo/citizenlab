@@ -64,6 +64,10 @@ class ProjectPolicy < ApplicationPolicy
     active_moderator?
   end
 
+  def voting_xlsx?
+    true # TODO: set
+  end
+
   def create?
     return false unless active?
     return true if admin?

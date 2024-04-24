@@ -26,10 +26,6 @@ class BasketPolicy < ApplicationPolicy
     update?
   end
 
-  def index_xlsx?
-    true # TODO: develop policy
-  end
-
   private
 
   def check_voting_allowed(basket, user)

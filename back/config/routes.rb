@@ -184,6 +184,7 @@ Rails.application.routes.draw do
         post 'copy', on: :member
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
         get :as_xlsx, on: :member, action: 'index_xlsx'
+        get :voting_xlsx, on: :member, action: 'voting_xlsx'
       end
 
       resources :projects_allowed_input_topics, only: %i[show create destroy] do
@@ -277,7 +278,6 @@ Rails.application.routes.draw do
 
       resources :baskets, except: [:index] do
         resources :baskets_ideas, shallow: true
-        get :as_xlsx, on: :collection, action: 'index_xlsx'
       end
       put 'baskets/ideas/:idea_id', to: 'baskets_ideas#upsert'
 

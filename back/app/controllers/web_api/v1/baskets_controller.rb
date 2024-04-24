@@ -56,18 +56,6 @@ class WebApi::V1::BasketsController < ApplicationController
     end
   end
 
-  def index_xlsx
-    authorize :basket, :index_xlsx?
-
-    baskets = Basket.where(phase_id: params[:phase_id])
-
-    I18n.with_locale(current_user&.locale) do
-      xlsx = XlsxService.new.generate_baskets_users_xlsx baskets
-      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        filename: 'baskets_users.xlsx'
-    end
-  end
-
   private
 
   def basket
