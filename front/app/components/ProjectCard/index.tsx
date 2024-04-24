@@ -452,7 +452,7 @@ const ProjectCard = memo<InputProps>(
         ? moment.duration(moment(endAt).endOf('day').diff(moment())).humanize()
         : null;
       let countdown: JSX.Element | null = null;
-      const inputTerm = getInputTerm(phases?.data);
+      const inputTerm = getInputTerm(phases?.data, phase?.data);
 
       if (isArchived) {
         countdown = (

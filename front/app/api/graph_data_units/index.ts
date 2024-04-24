@@ -15,7 +15,7 @@ import {
   ReactionsByTimeResponse,
   SingleIdeaResponse,
   SurveyQuestionResultResponse,
-  UsersByBirthyearResponse,
+  UsersByAgeResponse,
   UsersByGenderResponse,
   VisitorsResponse,
   VisitorsTrafficSourcesResponse,
@@ -102,14 +102,14 @@ export const useUsersByGenderLive = (props: GenderProps) => {
 };
 
 export const useUsersByAge = (props: AgeProps) => {
-  return useGraphDataUnits<UsersByBirthyearResponse>({
+  return useGraphDataUnits<UsersByAgeResponse>({
     resolved_name: 'AgeWidget',
     props,
   });
 };
 
 export const useUsersByAgeLive = (props: AgeProps) => {
-  return useGraphDataUnitsLive<UsersByBirthyearResponse>({
+  return useGraphDataUnitsLive<UsersByAgeResponse>({
     resolved_name: 'AgeWidget',
     props,
   });
