@@ -94,9 +94,8 @@ resource 'Phase level Custom Fields' do
           end
         end
 
-        # TODO
-        # List affected surveys
-        # Check if this also happens for multiselect
+        # Important: If at some point we would have different endpoint for getting the JSON and UI schemas, we risk
+        # getting back this terrible bug: https://citizenlabco.slack.com/archives/C06CJ4D3B0R/p1713959696610869
         example_request 'returns the options in the same random order in the JSON and UI schemas' do
           assert_status 200
           json_response = json_parse response_body
