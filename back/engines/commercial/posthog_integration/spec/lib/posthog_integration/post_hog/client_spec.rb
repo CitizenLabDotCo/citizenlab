@@ -23,7 +23,7 @@ describe PosthogIntegration::PostHog::Client do
     it 'sends a delete request' do
       allow(posthog).to receive(:delete_person).and_call_original
       expect { posthog.delete_person_by_distinct_id(user.id) }.not_to raise_error
-      expect(posthog).to have_received(:delete_person).once
+      expect(posthog).to have_received(:delete_person).with(person_id, retries: anything).once
     end
 
     it 'raises error when response is 429 (GET persons) and retries is 0' do
@@ -52,7 +52,7 @@ describe PosthogIntegration::PostHog::Client do
 
       posthog.delete_person_by_distinct_id(user.id, retries: 3)
 
-      expect(posthog).to have_received(:retry_request).thrice # Once for persons, twice for delete_person
+      expect(posthog).to have_received(:retry_request).thrice # Twice for persons, once for delete_person
     end
 
     it 'retries when response is 429 (DELETE persons) and retries > 0' do
