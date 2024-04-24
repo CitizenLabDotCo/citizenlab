@@ -59,17 +59,13 @@ const Title = styled.h2<{ hasPublications: boolean }>`
 const Container = styled.div<{ showFilters: boolean }>`
   width: 100%;
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
   justify-content: ${({ showFilters }) =>
     showFilters ? 'space-between' : 'start'};
   border-bottom: 1px solid #d1d1d1;
 
   ${isRtl`
     flex-direction: row-reverse;
-  `}
-
-  ${media.phone`
-    flex-direction: row;
   `}
 `;
 
@@ -242,6 +238,15 @@ const Header = ({
       )}
 
       <Container showFilters={shouldShowAreaAndTagFilters}>
+        {showTabs && (
+          <Tabs
+            currentTab={currentTab}
+            statusCounts={statusCounts}
+            availableTabs={availableTabs}
+            onChangeTab={onChangeTab}
+          />
+        )}
+
         {shouldShowAreaAndTagFilters && (
           <DesktopFilters>
             {showFiltersLabel && (
@@ -256,15 +261,6 @@ const Header = ({
               onChangeAreas={handleOnChangeAreas}
             />
           </DesktopFilters>
-        )}
-
-        {showTabs && (
-          <Tabs
-            currentTab={currentTab}
-            statusCounts={statusCounts}
-            availableTabs={availableTabs}
-            onChangeTab={onChangeTab}
-          />
         )}
       </Container>
 
