@@ -16,7 +16,7 @@ interface BinOptionsCustom {
   missingBin?: string;
 }
 
-const binBirthyear = (data: RawData, binOptions?: BinOptions) => {
+const binAge = (data: RawData, binOptions?: BinOptions) => {
   const { binFunction, bins, missingBin } = {
     binFunction: defaultBinFunction,
     bins: defaultBins,
@@ -35,7 +35,7 @@ const binBirthyear = (data: RawData, binOptions?: BinOptions) => {
   return toSeries(binsMap);
 };
 
-export default binBirthyear;
+export default binAge;
 
 export const defaultBinFunction: BinFunction = (birthYear: string) => {
   const currentYear = moment().year();
