@@ -1,4 +1,4 @@
-import binBirthyear, { defaultBinFunction } from './binBirthyear';
+import binAge, { defaultBinFunction } from './binAge';
 
 jest.mock('moment', () => () => ({ year: () => 2022 }));
 
@@ -42,7 +42,7 @@ describe('binBirthyear', () => {
       { name: '_blank', value: 3 },
     ];
 
-    expect(binBirthyear(data)).toEqual(expectedOutput);
+    expect(binAge(data)).toEqual(expectedOutput);
   });
 
   it('works with custom bins', () => {
@@ -59,7 +59,7 @@ describe('binBirthyear', () => {
       { name: '_blank', value: 3 },
     ];
 
-    expect(binBirthyear(data, { binFunction, bins })).toEqual(expectedOutput);
+    expect(binAge(data, { binFunction, bins })).toEqual(expectedOutput);
   });
 
   it('works with custom missing bin name', () => {
@@ -77,6 +77,6 @@ describe('binBirthyear', () => {
       { name: 'TEST', value: 3 },
     ];
 
-    expect(binBirthyear(data, { missingBin: 'TEST' })).toEqual(expectedOutput);
+    expect(binAge(data, { missingBin: 'TEST' })).toEqual(expectedOutput);
   });
 });

@@ -17,7 +17,6 @@
 #  last_name                           :string
 #  locale                              :string
 #  bio_multiloc                        :jsonb
-#  cl1_migrated                        :boolean          default(FALSE)
 #  invite_status                       :string
 #  custom_field_values                 :jsonb
 #  registration_completed_at           :datetime
@@ -62,7 +61,10 @@ class User < ApplicationRecord
     # Asynchronously deletes all users in a specified scope with associated side effects.
     # By default, this method deletes all users on the platform.
     def destroy_all_async(scope = User)
-      scope.pluck(:id).each { |id| DeleteUserJob.perform_later(id) }
+      scope.pluck(:id).each.with_index do |id, idx|
+        # Spread out the deletion of users to avoid throttling.
+        DeleteUserJob.set(wait: (idx / 5.0).seconds).perform_later(id)
+      end
     end
 
     def roles_json_schema
@@ -145,16 +147,16 @@ class User < ApplicationRecord
     where(id: joins(:follows).where(follows: follows))
   end)
 
-  has_many :ideas, foreign_key: :author_id, dependent: :nullify
+  has_many :ideas, -> { order(:project_id) }, foreign_key: :author_id, dependent: :nullify
   has_many :initiatives, foreign_key: :author_id, dependent: :nullify
   has_many :assigned_initiatives, class_name: 'Initiative', foreign_key: :assignee_id, dependent: :nullify
   has_many :comments, foreign_key: :author_id, dependent: :nullify
   has_many :internal_comments, foreign_key: :author_id, dependent: :nullify
   has_many :official_feedbacks, dependent: :nullify
   has_many :reactions, dependent: :nullify
-  has_many :event_attendances, class_name: 'Events::Attendance', foreign_key: :attendee_id, dependent: :destroy
+  has_many :event_attendances, -> { order(:event_id) }, class_name: 'Events::Attendance', foreign_key: :attendee_id, dependent: :destroy
   has_many :attended_events, through: :event_attendances, source: :event
-  has_many :follows, class_name: 'Follower', dependent: :destroy
+  has_many :follows, -> { order(:followable_id) }, class_name: 'Follower', dependent: :destroy
   has_many :cosponsors_initiatives, dependent: :destroy
 
   after_initialize do
@@ -182,7 +184,7 @@ class User < ApplicationRecord
   has_many :memberships, dependent: :destroy
   has_many :manual_groups, class_name: 'Group', source: 'group', through: :memberships
   has_many :campaign_email_commands, class_name: 'EmailCampaigns::CampaignEmailCommand', foreign_key: :recipient_id, dependent: :destroy
-  has_many :baskets
+  has_many :baskets, -> { order(:phase_id) }
   before_destroy :destroy_baskets
   has_many :initiative_status_changes, dependent: :nullify
 

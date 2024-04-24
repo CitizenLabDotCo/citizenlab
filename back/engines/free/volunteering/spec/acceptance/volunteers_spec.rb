@@ -78,7 +78,10 @@ resource 'Volunteering Volunteers' do
       before do
         @phase = create(:volunteering_phase)
         @cause1 = create(:cause, title_multiloc: { en: 'For sure works with very long titles too!!!' }, phase: @phase)
-        @volunteer1 = create(:volunteer, cause: @cause1)
+        create(:custom_field_domicile)
+        area = create(:area, title_multiloc: { 'en' => 'Center' })
+        user = create(:user, custom_field_values: { 'domicile' => area.id })
+        @volunteer1 = create(:volunteer, cause: @cause1, user: user)
         @other_volunteers = create_list(:volunteer, 2, cause: @cause1)
         @cause2 = create(:cause, phase: @phase)
         @volunteers2 = create_list(:volunteer, 3, cause: @cause2)
@@ -101,6 +104,7 @@ resource 'Volunteering Volunteers' do
         expect(worksheets[0][1][1].value).to eq @volunteer1.user.last_name
         expect(worksheets[0][1][2].value).to eq @volunteer1.user.email
         expect(worksheets[0][1][3].value.to_i).to eq @volunteer1.created_at.to_i
+        expect(worksheets[0][1][4].value).to eq 'Center'
       end
 
       describe 'when resident' do

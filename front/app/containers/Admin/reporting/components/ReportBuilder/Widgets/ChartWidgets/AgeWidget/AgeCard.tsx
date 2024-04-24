@@ -34,14 +34,14 @@ const MARGINS: Record<Layout, Margin | undefined> = {
 type Props = ProjectId & DatesStrings;
 
 const AgeCard = ({ startAt, endAt, projectId }: Props) => {
-  const { data: usersByBirthyear } = useUsersByAge({
+  const { data: usersByAge } = useUsersByAge({
     project_id: projectId,
     start_at: startAt,
     end_at: endAt,
   });
   const { formatMessage } = useIntl();
 
-  const ageSerie = convertToGraphFormat(usersByBirthyear, formatMessage);
+  const ageSerie = convertToGraphFormat(usersByAge, formatMessage);
 
   const layout = useLayout();
 
