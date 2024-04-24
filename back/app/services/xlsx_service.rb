@@ -232,21 +232,21 @@ class XlsxService
     pa = Axlsx::Package.new
 
     phases.each do |phase|
-      baskets = Basket.where(phase_id: phase.id).includes([:user])
       sheet_name = MultilocService.new.t phase.title_multiloc
-      generate_phase_baskets_users_sheet pa.workbook, sheet_name, baskets
+      generate_phase_baskets_users_sheet pa.workbook, sheet_name, phase
     end
+
     pa.to_stream
   end
 
-  def generate_phase_baskets_users_sheet(workbook, sheet_name, baskets)
+  def generate_phase_baskets_users_sheet(workbook, sheet_name, phase)
+    baskets = Basket.where(phase: phase).includes([:user])
     columns = user_custom_field_columns(:user)
 
-    ideas = Phase.find_by(id: baskets.first.phase_id)&.ideas
-    ideas.each do |idea|
+    phase.ideas.each do |idea|
       columns << {
         header: MultilocService.new.t(idea.title_multiloc),
-        f: ->(b) { b.baskets_ideas.find_by(idea_id: idea.id)&.votes || 0 },
+        f: ->(b) { b.baskets_ideas.find_by(idea: idea)&.votes || 0 },
         skip_sanitization: true
       }
     end
