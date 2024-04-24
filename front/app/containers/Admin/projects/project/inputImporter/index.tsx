@@ -10,7 +10,8 @@ import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import { useParams } from 'react-router-dom';
 
-import useJob from 'api/jobs/useJob';
+import { IJobData } from 'api/jobs/types';
+import useJobs from 'api/jobs/useJobs';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInputSchema from 'hooks/useInputSchema';
@@ -29,8 +30,10 @@ const InputImporter = () => {
   const [importPdfModalOpen, setImportPdfModalOpen] = useState(false);
   const [importExcelModalOpen, setImportExcelModalOpen] = useState(false);
 
-  const [importJobId, setImportJobId] = useState<string | undefined>(undefined);
-  const { data: job } = useJob(importJobId);
+  const [importJobs, setImportJobs] = useState<IJobData[]>([]);
+  const { data: jobs } = useJobs(
+    importJobs.map((job) => job.attributes.job_id)
+  );
 
   const { schema, uiSchema } = useInputSchema({
     projectId,
@@ -81,7 +84,9 @@ const InputImporter = () => {
             mt={`${stylingConsts.mobileMenuHeight}px`}
             h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
           >
-            <ReviewSection pollIdeas={!!job?.data.attributes.active} />
+            <ReviewSection
+              pollIdeas={!!jobs?.data.some((job) => job.attributes.active)}
+            />
           </Box>
         </FocusOn>
       </Box>
@@ -92,7 +97,7 @@ const InputImporter = () => {
       <ImportPdfModal
         open={importPdfModalOpen}
         onClose={closeImportPdfModal}
-        onImport={(jobId: string) => setImportJobId(jobId)}
+        onImport={(jobs: IJobData[]) => setImportJobs(jobs)}
       />
     </>
   );

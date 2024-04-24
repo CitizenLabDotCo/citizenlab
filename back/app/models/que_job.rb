@@ -29,8 +29,18 @@
 require 'que/active_record/model'
 
 class QueJob < Que::ActiveRecord::Model
-  def self.find(id)
-    by_args({ job_id: id }, {}).sole
+  class << self
+    def find(job_id)
+      by_args({ job_id: job_id }, {}).sole
+    end
+
+    def find_with_job_id(job_id)
+      by_args({ job_id: job_id }, {}).first
+    end
+
+    def by_ids(job_ids)
+      by_args({ job_id: job_ids }, {}).all
+    end
   end
 
   def args
@@ -40,6 +50,7 @@ class QueJob < Que::ActiveRecord::Model
   def active?
     %i[pending scheduled].include?(status)
   end
+  alias active active?
 
   def status
     return :finished if finished_at
