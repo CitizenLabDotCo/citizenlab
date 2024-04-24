@@ -16,7 +16,7 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  deliveries_count :integer          default(0), not null
-#  context_id       :string
+#  context_id       :uuid
 #
 # Indexes
 #

@@ -1393,7 +1393,7 @@ CREATE TABLE public.email_campaigns_campaigns (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     deliveries_count integer DEFAULT 0 NOT NULL,
-    context_id character varying
+    context_id uuid
 );
 
 
@@ -7508,3 +7508,5 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240417064819'),
 ('20240417150820'),
 ('20240419100508');
+
+
