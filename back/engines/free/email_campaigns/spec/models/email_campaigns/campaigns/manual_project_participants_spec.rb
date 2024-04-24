@@ -10,15 +10,9 @@ RSpec.describe EmailCampaigns::Campaigns::ManualProjectParticipants do
   end
 
   describe 'validate context_id' do
-    it 'is invalid if context_id is blank' do
-      campaign = build(:manual_project_participants_campaign, context_id: nil)
-      expect(campaign).to be_invalid
-    end
+    it { is_expected.to validate_presence_of(:context_id) }
 
-    it 'is invalid if context_id is not a project ID' do
-      campaign = build(:manual_project_participants_campaign, context_id: SecureRandom.uuid)
-      expect(campaign).to be_invalid
-    end
+    it { is_expected.to belong_to(:project) }
   end
 
   describe '#apply_recipient_filters' do
