@@ -9,7 +9,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
 
-const Container = styled.div`
+const Container = styled.main`
   min-height: calc(
     100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
   );
@@ -40,7 +40,7 @@ const Title = styled.h1`
   `}
 `;
 
-export default React.memo(() => (
+const SubscriptionEndedPage = () => (
   <Container>
     <ContentContainer>
       <Title>
@@ -51,4 +51,6 @@ export default React.memo(() => (
       </div>
     </ContentContainer>
   </Container>
-));
+);
+
+export default SubscriptionEndedPage;
