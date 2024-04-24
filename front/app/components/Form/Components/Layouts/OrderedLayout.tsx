@@ -22,7 +22,7 @@ const CLCategoryLayout = memo(
           return (
             <Box
               width="100%"
-              mb={hasOtherFieldBelow ? undefined : '28px'}
+              mb={hasOtherFieldBelow ? undefined : '30px'}
               key={index}
             >
               <JsonFormsDispatch
