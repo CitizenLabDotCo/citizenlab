@@ -144,10 +144,14 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def voting_xlsx
-    I18n.with_locale(current_user&.locale) do
-      xlsx = XlsxService.new.generate_project_voting_xlsx @project.id
-      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        filename: 'voter_selections.xlsx'
+    if @project.phases.any? { |phase| phase.participation_method == 'voting' }
+      I18n.with_locale(current_user&.locale) do
+        xlsx = XlsxService.new.generate_project_voting_xlsx @project.id
+        send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          filename: 'voter_selections.xlsx'
+      end
+    else
+      raise 'Project has no voting phase.'
     end
   end
 
