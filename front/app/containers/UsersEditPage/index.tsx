@@ -41,28 +41,30 @@ const UsersEditPage = () => {
   }
 
   return (
-    <Container id="e2e-user-edit-profile-page">
+    <>
       <UsersEditPageMeta authUser={authUser} />
-      <ScreenReaderOnly>
-        <FormattedMessage
-          tagName="h1"
-          {...messages.invisibleTitleUserSettings}
-        />
-      </ScreenReaderOnly>
-      {/*
+      <Container id="e2e-user-edit-profile-page">
+        <ScreenReaderOnly>
+          <FormattedMessage
+            tagName="h1"
+            {...messages.invisibleTitleUserSettings}
+          />
+        </ScreenReaderOnly>
+        {/*
         To have two forms with an equal width,
         the forms need to be wrapped with a div.
         https://stackoverflow.com/questions/34993826/flexbox-column-direction-same-width
       */}
-      <div>
-        <VerificationStatus />
-        <ProfileForm />
-        <FragmentForm />
-        {passwordLoginActive && <LoginCredentials user={authUser.data} />}
-        <ProfileDeletion />
-        <CampaignsConsentForm />
-      </div>
-    </Container>
+        <div>
+          <VerificationStatus />
+          <ProfileForm />
+          <FragmentForm />
+          {passwordLoginActive && <LoginCredentials user={authUser.data} />}
+          <ProfileDeletion />
+          <CampaignsConsentForm />
+        </div>
+      </Container>
+    </>
   );
 };
 
