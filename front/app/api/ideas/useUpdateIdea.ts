@@ -30,7 +30,7 @@ const useUpdateIdea = () => {
   const queryClient = useQueryClient();
   return useMutation<IIdea, CLErrors, IUpdateIdeaObject>({
     mutationFn: updateIdea,
-    onSuccess: (idea, attributes) => {
+    onSuccess: (idea) => {
       queryClient.invalidateQueries({ queryKey: ideasKeys.lists() });
       queryClient.invalidateQueries({ queryKey: ideaMarkersKeys.lists() });
       queryClient.invalidateQueries({ queryKey: ideaFilterCountsKeys.all() });
@@ -43,17 +43,6 @@ const useUpdateIdea = () => {
       });
 
       const projectId = idea.data.relationships?.project.data.id;
-      const phases = idea.data.relationships?.phases;
-      const phaseIds = phases?.data?.map((phase) => phase.id);
-
-      // If the idea is a draft, we need to invalidate the cached draft idea
-      if (phaseIds && attributes.requestBody.publication_status === 'draft') {
-        phaseIds.forEach((phaseId) => {
-          queryClient.invalidateQueries({
-            queryKey: ideasKeys.item({ id: phaseId }),
-          });
-        });
-      }
 
       if (projectId) {
         queryClient.invalidateQueries({
