@@ -75,7 +75,7 @@ module EmailCampaigns
     end
 
     def moderator_can_access_and_modify?
-      user.moderatable_project_ids.include?(record.context_id) && record.manageable_by_project_moderator?
+      record.manageable_by_project_moderator? && user.moderatable_project_ids.include?(record.context_id)
     end
   end
 end
