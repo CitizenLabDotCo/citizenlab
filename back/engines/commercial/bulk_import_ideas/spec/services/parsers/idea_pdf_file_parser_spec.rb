@@ -12,7 +12,7 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
     project.allowed_input_topics << create(:topic_economy)
     project.allowed_input_topics << create(:topic_waste)
 
-    # Custom fields
+    # Custom fields - will produce a PDF form with 2 pages
     create(:custom_field, resource: custom_form, key: 'a_text_field', title_multiloc: { 'en' => 'A text field' }, description_multiloc: { 'en' => 'A text field description' }, enabled: true)
     create(:custom_field, resource: custom_form, key: 'number_field', title_multiloc: { 'en' => 'Number field' }, input_type: 'number', enabled: true)
     create(:custom_field_point, resource: custom_form, key: 'a_point_field', title_multiloc: { 'en' => 'Point field' }, enabled: true)
@@ -30,9 +30,9 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
   describe 'parse_file_async' do
     it 'creates jobs to process 5 ideas at a time' do
       base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_12.pdf').read
-      job_ids = service.parse_file_async("data:application/pdf;base64,#{base_64_content}")
-      expect(job_ids.count).to eq 2
-      expect(BulkImportIdeas::IdeaPdfImportJob).to have_been_enqueued.exactly(:twice)
+      expect {
+        service.parse_file_async("data:application/pdf;base64,#{base_64_content}")
+      }.to have_enqueued_job(BulkImportIdeas::IdeaPdfImportJob).exactly(:twice)
     end
   end
 

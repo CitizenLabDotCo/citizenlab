@@ -23,14 +23,9 @@ module BulkImportIdeas
       send_not_found unless supported_model? && supported_format?
 
       file = bulk_create_params[:file]
-
-      file_parser = file_parser_service
-      import_service = importer_service.new(current_user, locale)
-
-      rows = file_parser.parse_file file
-
-      ideas = import_service.import(rows)
-      users = import_service.imported_users
+      rows = file_parser_service.parse_file file
+      ideas = importer_service.import(rows)
+      users = importer_service.imported_users
 
       sidefx.after_success current_user, @phase, params[:model], params[:format], ideas, users
 
@@ -48,8 +43,7 @@ module BulkImportIdeas
       send_not_found unless supported_model? && supported_format?
 
       file = bulk_create_params[:file]
-      file_parser = file_parser_service
-      job_ids = file_parser.parse_file_async file
+      job_ids = file_parser_service.parse_file_async file
 
       sidefx.after_success current_user, @phase, params[:model], params[:format], [], []
 
@@ -140,7 +134,10 @@ module BulkImportIdeas
 
     def importer_service
       model = params[:model]
-      CONSTANTIZER.fetch(model)[:importer_class]
+      locale = params[:import] ? bulk_create_params[:locale] : current_user.locale
+
+      service = CONSTANTIZER.fetch(model)[:importer_class]
+      @importer_service ||= service.new(current_user, locale)
     end
 
     def file_parser_service
