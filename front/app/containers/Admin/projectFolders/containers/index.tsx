@@ -17,8 +17,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isAdmin } from 'utils/permissions/roles';
 
-// Localisation
-
 import messages from './messages';
 
 const TopContainer = styled.div`

@@ -20,7 +20,7 @@ interface Props {
 }
 
 const InitiativesShow = ({ initiativeId, className }: Props) => {
-  const isSmallerThanPhone = useBreakpoint('phone');
+  const isSmallerThanTablet = useBreakpoint('tablet');
   const [searchParams] = useSearchParams();
   const newInitiativeId = searchParams.get('new_initiative_id');
 
@@ -81,7 +81,7 @@ const InitiativesShow = ({ initiativeId, className }: Props) => {
   return (
     <div id="e2e-initiative-show" className={className}>
       <main>
-        {isSmallerThanPhone ? (
+        {isSmallerThanTablet ? (
           <Phone
             initiativeId={initiativeId}
             translateButtonClicked={translateButtonClicked}

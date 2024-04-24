@@ -249,17 +249,10 @@ const CLSurveyPageLayout = memo(
     return (
       <>
         <Box
-          marginTop={'-140px'} // TODO: Find cleaner solution for mobile scrollTo behaviour.
-          marginBottom={'140px'}
-          id="top-anchor"
-          my="0px"
-        />
-
-        <Box
           width="100%"
           height="100%"
-          pt={isSmallerThanPhone ? '80px' : '100px'}
-          pb="100px"
+          pt="82px"
+          pb="72px"
           maxWidth="700px"
           display="flex"
           flexDirection="column"
@@ -287,6 +280,7 @@ const CLSurveyPageLayout = memo(
             display="flex"
             flex="1"
             height="100%"
+            pt={isSmallerThanPhone ? '28px' : '8px'}
             overflowY="auto"
             w="100%"
             ref={pagesRef}
