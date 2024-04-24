@@ -229,7 +229,7 @@ class XlsxService
 
     ideas = Phase.find_by(id: baskets.first.phase_id)&.ideas # Expecting all baskets to be in the same phase
     ideas.each do |idea|
-      columns << { header: "Idea ID: #{idea.id}", f: ->(b) { b.baskets_ideas.find_by(idea_id: idea.id)&.votes } } # TODO: Just using Idea ID for development purposes
+      columns << { header: "Idea ID: #{idea.id}", f: ->(b) { b.baskets_ideas.find_by(idea_id: idea.id)&.votes || 0 } } # TODO: Just using Idea ID for development purposes
     end
 
     generate_xlsx 'Voting Users and Baskets', columns, baskets
