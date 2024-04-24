@@ -230,7 +230,7 @@ class XlsxService
     pa = Axlsx::Package.new
 
     phases.each do |phase|
-      baskets = Basket.where(phase_id: phase.id)
+      baskets = Basket.where(phase_id: phase.id).includes([:user])
       sheet_name = MultilocService.new.t phase.title_multiloc
       generate_baskets_users_sheet pa.workbook, sheet_name, baskets
     end
