@@ -21,8 +21,6 @@ import { IGroupDataAttributes, MembershipType } from 'api/groups/types';
 import { IIdeaData } from 'api/ideas/types';
 import { IInitiativeData } from 'api/initiatives/types';
 import { TNotificationData } from 'api/notifications/types';
-import { IPhaseData } from 'api/phases/types';
-import { IProjectData } from 'api/projects/types';
 import { TVerificationMethod } from 'api/verification_methods/types';
 
 import { TTabName } from 'containers/Admin/projects/new';
@@ -124,11 +122,6 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.project.edit.permissions.moderatorRights': {
     projectId: string;
     children: OutletRenderProps;
-  };
-  'app.containers.Admin.projects.edit.settings': {
-    onData: (data: InsertConfigurationOptions<ITab>) => void;
-    project: IProjectData;
-    phases: IPhaseData[] | null;
   };
   'app.containers.Admin.settings.tabs': {
     onData: (data: InsertConfigurationOptions<ITab>) => void;

@@ -30,7 +30,6 @@ import { usePermission } from 'utils/permissions';
 
 import Container from './components/Container';
 import DesktopTopBar from './components/DesktopTopBar';
-import IdeaMeta from './components/IdeaMeta';
 import IdeaTitle from './components/IdeaTitle';
 import MetaInformation from './components/MetaInformation';
 import ProposedBudget from './components/ProposedBudget';
@@ -131,10 +130,7 @@ const Content = ({
 
   return (
     <>
-      <IdeaMeta ideaId={ideaId} />
-
       {!compact && <DesktopTopBar project={project} idea={idea.data} />}
-
       <Box display="flex" id="e2e-idea-show-page-content">
         <Box flex="1 1 100%">
           {wasImported && (
@@ -192,7 +188,6 @@ const Content = ({
               'voting' && // To reduce bias we want to hide the author data during voting methods
             statusId && (
               <Box my="24px">
-                {' '}
                 <MetaInformation
                   ideaId={ideaId}
                   projectId={project.id}

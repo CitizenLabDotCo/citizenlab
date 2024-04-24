@@ -7,10 +7,8 @@ class WebApi::V1::ProjectsController < ApplicationController
   skip_after_action :verify_policy_scoped, only: :index
 
   def index
-    params['moderator'] = current_user if params[:filter_can_moderate]
-
     publications = policy_scope(AdminPublication)
-    publications = AdminPublicationsFilteringService.new.filter(publications, params)
+    publications = AdminPublicationsFilteringService.new.filter(publications, params.merge(current_user: current_user))
       .where(publication_type: Project.name)
 
     # Not very satisfied with this ping-pong of SQL queries (knowing that the
@@ -140,8 +138,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def index_xlsx
     I18n.with_locale(current_user.locale) do
-      include_private_attributes = Pundit.policy!(current_user, User).view_private_attributes?
-      xlsx = XlsxExport::GeneratorService.new.generate_inputs_for_project @project.id, include_private_attributes
+      xlsx = XlsxExport::GeneratorService.new.generate_inputs_for_project @project.id, view_private_attributes: true
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'inputs.xlsx'
     end
   end

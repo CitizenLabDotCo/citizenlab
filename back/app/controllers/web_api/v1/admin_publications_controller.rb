@@ -7,7 +7,7 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
   def index
     publication_filterer = AdminPublicationsFilteringService.new
     publications = policy_scope(AdminPublication.includes(:parent))
-    publications = publication_filterer.filter(publications, params)
+    publications = publication_filterer.filter(publications, params.merge(current_user: current_user))
 
     @publications = publications.includes(:publication, :children)
       .order(:ordering)

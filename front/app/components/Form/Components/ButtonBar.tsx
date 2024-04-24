@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
@@ -27,7 +27,7 @@ const ButtonBar = ({
     bottom="0px"
     width="100%"
     height="auto"
-    background="#fff"
+    background={colors.white}
     border-top="solid 1px #ddd"
   >
     <Box maxWidth="700px" display="flex" padding="10px 16px" margin="auto">
