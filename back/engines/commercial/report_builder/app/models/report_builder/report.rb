@@ -27,8 +27,11 @@
 #
 module ReportBuilder
   class Report < ::ApplicationRecord
+    include PgSearch::Model
+
     belongs_to :owner, class_name: 'User', optional: true
     belongs_to :phase, class_name: 'Phase', optional: true
+    has_many :published_graph_data_units, dependent: :destroy
 
     has_one(
       :layout,
@@ -36,11 +39,12 @@ module ReportBuilder
       dependent: :destroy
     )
 
-    has_many :published_graph_data_units, dependent: :destroy
-
     accepts_nested_attributes_for :layout
 
     scope :global, -> { where(phase_id: nil) }
+    pg_search_scope :search_name, against: :name_tsvector, using: {
+      tsearch: { tsvector_column: 'name_tsvector', prefix: true }
+    }
 
     validates :name, uniqueness: true, allow_nil: true
     validates :phase_id, uniqueness: true, allow_nil: true

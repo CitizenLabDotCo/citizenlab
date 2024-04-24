@@ -11,11 +11,13 @@ import { List, Row } from 'components/admin/ResourceList';
 interface Props {
   folderChildAdminPublications: IAdminPublicationData[];
   folderId?: string;
+  isLastFolder: boolean;
 }
 
 const FolderChildProjects = ({
   folderChildAdminPublications,
   folderId,
+  isLastFolder,
 }: Props) => {
   return (
     <Box pl="60px">
@@ -25,7 +27,10 @@ const FolderChildProjects = ({
             const isLastItem =
               index === folderChildAdminPublications.length - 1;
             return (
-              <Row key={childPublication.id} isLastItem={isLastItem}>
+              <Row
+                key={childPublication.id}
+                isLastItem={isLastItem && isLastFolder}
+              >
                 <ProjectRow
                   publication={childPublication}
                   actions={['manage']}
