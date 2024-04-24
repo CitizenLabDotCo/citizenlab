@@ -1,4 +1,5 @@
 {
+  "EmailSettingsPage.emailSettings": "Ustawienia poczty e-mail",
   "EmailSettingsPage.initialUnsubscribeError": "Zaistniał problem z wypisaniem się z tej kampanii, proszę spróbuj ponownie później.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Twoja prośba jest rozpatrywana, proszę poczekaj...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Pomyślnie wypisałeś się z {campaignTitle}.",
