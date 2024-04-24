@@ -141,9 +141,9 @@ const IdeasNewIdeationForm = ({ project }: Props) => {
     }
   };
 
-  const onAcceptDisclaimer = (data: FormValues | null) => {
-    if (!data) return;
-    onSubmit(data);
+  const onAcceptDisclaimer = () => {
+    if (!formData) return;
+    onSubmit(formData);
     setIsDisclaimerOpened(false);
   };
 
@@ -293,7 +293,7 @@ const IdeasNewIdeationForm = ({ project }: Props) => {
           )}
           <ContentUploadDisclaimer
             isDisclaimerOpened={isDisclaimerOpened}
-            onAcceptDisclaimer={() => onAcceptDisclaimer(formData)}
+            onAcceptDisclaimer={onAcceptDisclaimer}
             onCancelDisclaimer={onCancelDisclaimer}
           />
         </main>
