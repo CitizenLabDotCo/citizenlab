@@ -44,60 +44,54 @@ const SortableProjectList = ({
     );
   }
 
-  if (adminPublications.length > 0) {
-    return (
-      <>
-        <Box py="16px">
-          <Warning>{formatMessage(messages.homepageWarning)}</Warning>
-        </Box>
-        <SortableList
-          items={adminPublications}
-          onReorder={handleReorderAdminPublication}
-          className="projects-list e2e-admin-projects-list"
-          id="e2e-admin-projects-list-unsortable"
-          key={adminPublications.length}
-        >
-          {({ itemsList, handleDragRow, handleDropRow }) => {
-            return (
-              <>
-                {itemsList.map((item: IAdminPublicationData, index: number) => {
-                  return (
-                    <Fragment key={item.id}>
-                      {item.relationships.publication.data.type ===
-                        'project' && (
-                        <StyledSortableRow
-                          id={item.id}
-                          index={index}
-                          moveRow={handleDragRow}
-                          dropRow={handleDropRow}
-                          isLastItem={index === adminPublications.length - 1}
-                        >
-                          <ProjectRow actions={['manage']} publication={item} />
-                        </StyledSortableRow>
-                      )}
-                      {item.relationships.publication.data.type ===
-                        'folder' && (
-                        <SortableFolderRow
-                          id={item.id}
-                          index={index}
-                          moveRow={handleDragRow}
-                          dropRow={handleDropRow}
-                          isLastItem={index === adminPublications.length - 1}
-                          publication={item}
-                        />
-                      )}
-                    </Fragment>
-                  );
-                })}
-              </>
-            );
-          }}
-        </SortableList>
-      </>
-    );
-  }
-
-  return null;
+  return (
+    <>
+      <Box py="16px">
+        <Warning>{formatMessage(messages.homepageWarning)}</Warning>
+      </Box>
+      <SortableList
+        items={adminPublications}
+        onReorder={handleReorderAdminPublication}
+        className="projects-list e2e-admin-projects-list"
+        id="e2e-admin-projects-list-unsortable"
+        key={adminPublications.length}
+      >
+        {({ itemsList, handleDragRow, handleDropRow }) => {
+          return (
+            <>
+              {itemsList.map((item: IAdminPublicationData, index: number) => {
+                return (
+                  <Fragment key={item.id}>
+                    {item.relationships.publication.data.type === 'project' && (
+                      <StyledSortableRow
+                        id={item.id}
+                        index={index}
+                        moveRow={handleDragRow}
+                        dropRow={handleDropRow}
+                        isLastItem={index === adminPublications.length - 1}
+                      >
+                        <ProjectRow actions={['manage']} publication={item} />
+                      </StyledSortableRow>
+                    )}
+                    {item.relationships.publication.data.type === 'folder' && (
+                      <SortableFolderRow
+                        id={item.id}
+                        index={index}
+                        moveRow={handleDragRow}
+                        dropRow={handleDropRow}
+                        isLastItem={index === adminPublications.length - 1}
+                        publication={item}
+                      />
+                    )}
+                  </Fragment>
+                );
+              })}
+            </>
+          );
+        }}
+      </SortableList>
+    </>
+  );
 };
 
 export default SortableProjectList;

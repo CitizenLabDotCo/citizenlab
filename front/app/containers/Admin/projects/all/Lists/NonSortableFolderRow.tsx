@@ -6,8 +6,6 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import { Row } from 'components/admin/ResourceList';
 
-import { isNilOrError } from 'utils/helperUtils';
-
 import ProjectFolderRow from '../../projectFolders/components/ProjectFolderRow';
 
 import FolderChildProjects from './FolderChildProjects';
@@ -38,13 +36,13 @@ const NonSortableFolderRow = ({
 
   const [folderOpen, setFolderOpen] = useState(false);
 
-  if (isNilOrError(authUser)) {
+  if (!authUser) {
     return null;
   }
 
   const showProjects =
-    !isNilOrError(folderChildAdminPublications) &&
-    folderChildAdminPublications.length > 0 &&
+    !!folderChildAdminPublications &&
+    folderChildAdminPublications?.length > 0 &&
     !search;
 
   const toggleFolder = () => {
