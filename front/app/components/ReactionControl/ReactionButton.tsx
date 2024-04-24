@@ -324,7 +324,6 @@ interface Props {
   reactionsCount: number;
   size: TSize;
   styleType: TStyleType;
-  ariaHidden?: boolean;
   onClick: (event: React.FormEvent) => void;
   iconName: IconNames;
   ideaId: string;
@@ -336,7 +335,6 @@ const ReactionButton = ({
   reactionsCount,
   size,
   styleType,
-  ariaHidden = false,
   onClick,
   iconName,
   ideaId,
@@ -423,20 +421,22 @@ const ReactionButton = ({
     const projectName = localize(project.data.attributes.title_multiloc);
     const buttonReactionModeIsActive = buttonReactionMode === userReactionMode;
 
+    const disabledMessage = (
+      <FormattedMessage
+        {...disabledReasonMessage}
+        values={{
+          enabledFromDate,
+          projectName,
+        }}
+      />
+    );
+
     return (
       <Tippy
         placement="top"
         theme="dark"
         disabled={disabledReason === null}
-        content={
-          <FormattedMessage
-            {...disabledReasonMessage}
-            values={{
-              enabledFromDate,
-              projectName,
-            }}
-          />
-        }
+        content={disabledMessage}
         trigger="mouseenter"
       >
         <Button
@@ -453,7 +453,7 @@ const ReactionButton = ({
             }[buttonReactionMode],
             buttonReactionModeEnabled ? 'enabled' : '',
           ].join(' ')}
-          tabIndex={ariaHidden ? -1 : 0}
+          aria-disabled={!buttonEnabled}
         >
           <ReactionIconContainer
             styleType={styleType}
@@ -486,6 +486,9 @@ const ReactionButton = ({
           >
             {reactionsCount}
           </ReactionCount>
+          {disabledReason && (
+            <ScreenReaderOnly>{disabledMessage}</ScreenReaderOnly>
+          )}
         </Button>
       </Tippy>
     );

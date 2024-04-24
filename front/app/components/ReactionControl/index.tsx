@@ -47,13 +47,11 @@ interface Props {
     disabled_reason?: IdeaReactingDisabledReason
   ) => void;
   setRef?: (element: HTMLDivElement) => void;
-  ariaHidden?: boolean;
   className?: string;
   styleType: TStyleType;
 }
 
 const ReactionControl = ({
-  ariaHidden = false,
   ideaId,
   size,
   className,
@@ -237,14 +235,12 @@ const ReactionControl = ({
         ]
           .filter((item) => item)
           .join(' ')}
-        aria-hidden={ariaHidden}
       >
         <ReactionButton
           buttonReactionMode="up"
           userReactionMode={myReactionMode}
           onClick={onClickLike}
           className={reactingAnimation === 'up' ? 'reactionClick' : ''}
-          ariaHidden={ariaHidden}
           styleType={styleType}
           size={size}
           iconName="vote-up"
@@ -258,7 +254,6 @@ const ReactionControl = ({
             userReactionMode={myReactionMode}
             onClick={onClickDislike}
             className={reactingAnimation === 'down' ? 'reactionClick' : ''}
-            ariaHidden={ariaHidden}
             styleType={styleType}
             size={size}
             iconName="vote-down"
