@@ -14,13 +14,12 @@ import {
   Layout,
 } from '@jsonforms/core';
 import styled from 'styled-components';
-import { CLErrors, SupportedLocale } from 'typings';
+import { CLErrors } from 'typings';
 
 import useLocale from 'hooks/useLocale';
 import useObserveEvent from 'hooks/useObserveEvent';
 
 import { useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 
 import ButtonBar from './Components/ButtonBar';
 import Fields from './Components/Fields';
@@ -82,13 +81,8 @@ interface Props {
   footer?: React.ReactNode;
 }
 
-interface InnerProps extends Props {
-  locale: SupportedLocale;
-}
-
 const Form = memo(
   ({
-    locale,
     schema,
     uiSchema,
     initialFormData,
@@ -102,8 +96,9 @@ const Form = memo(
     footer,
     onChange,
     onSubmit,
-  }: InnerProps) => {
+  }: Props) => {
     const { formatMessage } = useIntl();
+    const locale = useLocale();
 
     const [data, setData] = useState<FormData>(() => {
       return parseRequiredMultilocsData(schema, locale, initialFormData);
@@ -228,11 +223,4 @@ const Form = memo(
   }
 );
 
-const OuterForm = (props: Props) => {
-  const locale = useLocale();
-  if (isNilOrError(locale)) return null;
-
-  return <Form locale={locale} {...props} />;
-};
-
-export default OuterForm;
+export default Form;

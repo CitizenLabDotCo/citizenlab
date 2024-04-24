@@ -9,7 +9,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-const PageNotFoundWrapper = styled.div`
+const PageNotFoundWrapper = styled.main`
   height: calc(
     100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
   );

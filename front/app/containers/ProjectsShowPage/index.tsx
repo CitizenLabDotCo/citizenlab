@@ -34,14 +34,14 @@ import { useIntl } from 'utils/cl-intl';
 import Navigate from 'utils/cl-router/Navigate';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
-import { anyIsUndefined, isNilOrError } from 'utils/helperUtils';
+import { anyIsUndefined } from 'utils/helperUtils';
 import messages from 'utils/messages';
 import { scrollToElement } from 'utils/scroll';
 
 import { isValidPhase } from './phaseParam';
 import ProjectCTABar from './ProjectCTABar';
 import ProjectHeader from './shared/header/ProjectHeader';
-import ProjectHelmet from './shared/header/ProjectHelmet';
+import ProjectShowPageMeta from './shared/header/ProjectShowPageMeta';
 import SuccessModal from './SucessModal';
 import TimelineContainer from './timeline';
 
@@ -178,14 +178,12 @@ const ProjectsShowPage = ({ project }: Props) => {
     );
   }
 
-  const bgColor =
-    !isNilOrError(events) && events.data.length > 0
-      ? '#fff'
-      : colors.background;
-
   return (
-    <Container background={bgColor}>
-      <ProjectHelmet project={project} />
+    <Container
+      background={
+        events && events?.data.length > 0 ? '#fff' : colors.background
+      }
+    >
       {content}
     </Container>
   );
@@ -261,9 +259,12 @@ const ProjectsShowPageWrapper = () => {
   if (!project) return null;
 
   return (
-    <VotingContext projectId={project.data.id}>
-      <ProjectsShowPage project={project.data} />
-    </VotingContext>
+    <>
+      <ProjectShowPageMeta project={project.data} />
+      <VotingContext projectId={project.data.id}>
+        <ProjectsShowPage project={project.data} />
+      </VotingContext>
+    </>
   );
 };
 
