@@ -6,11 +6,15 @@ import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
 import { campaignsData, links } from './__mocks__/useCampaigns';
 import { QueryParameters } from './types';
-import useCampaigns from './useCampaigns';
+import useProjectCampaigns from './useProjectCampaigns';
 
 const apiPath = '*/projects/:projectId/email_campaigns';
 
-const params: QueryParameters = {};
+const params: QueryParameters & {
+  projectId: string;
+} = {
+  projectId: 'project-id',
+};
 
 const server = setupServer(
   rest.get(apiPath, (_req, res, ctx) => {
@@ -18,12 +22,12 @@ const server = setupServer(
   })
 );
 
-describe('useCampaigns', () => {
+describe('useProjectCampaigns', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useCampaigns(params), {
+    const { result, waitFor } = renderHook(() => useProjectCampaigns(params), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -42,7 +46,7 @@ describe('useCampaigns', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useCampaigns(params), {
+    const { result, waitFor } = renderHook(() => useProjectCampaigns(params), {
       wrapper: createQueryClientWrapper(),
     });
 
