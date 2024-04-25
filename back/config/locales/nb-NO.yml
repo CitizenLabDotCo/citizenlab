@@ -148,8 +148,8 @@
       section3:
         title: Detaljer
         description:
-      other:
-        title: Siden du valgte "annet", hva tenker du på?
+      other_text_field:
+        title: Hvis du valgte '{other_option}', hva tenker du på?
   custom_forms:
     categories:
       main_content:
