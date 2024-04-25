@@ -148,8 +148,8 @@ ca:
       section3:
         title: Detalls
         description:
-      other:
-        title: Com que vas triar "altres", en què estàs pensant?
+      other_text_field:
+        title: Si has triat "{other_option}", en què estàs pensant?
   custom_forms:
     categories:
       main_content:
