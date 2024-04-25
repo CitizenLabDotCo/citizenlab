@@ -148,8 +148,8 @@ es:
       section3:
         title: Detalles
         description:
-      other:
-        title: Ya que has elegido "otro", ¿en qué estás pensando?
+      other_text_field:
+        title: Si has elegido '{other_option}', ¿en qué estás pensando?
   custom_forms:
     categories:
       main_content:
