@@ -148,8 +148,8 @@ el:
       section3:
         title: Λεπτομέρειες
         description:
-      other:
-        title: Αφού επιλέξατε το "άλλο", τι σκέφτεστε;
+      other_text_field:
+        title: Αν επιλέξατε το "{other_option}", τι σκέφτεστε;
   custom_forms:
     categories:
       main_content:
