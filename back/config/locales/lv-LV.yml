@@ -210,6 +210,7 @@ lv:
       budget: 'Budžets'
       created_at: 'Iesniegts'
       published_at: 'Publicēts'
+      date_vote_submitted: 'Balsojuma iesniegšanas datums'
       comments_count: 'Komentāri'
       likes_count: 'Patīk'
       dislikes_count: 'Nepatīk'
