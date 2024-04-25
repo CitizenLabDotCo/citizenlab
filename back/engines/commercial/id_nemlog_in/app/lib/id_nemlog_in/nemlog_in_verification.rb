@@ -8,16 +8,6 @@ module IdNemlogIn
       :omniauth
     end
 
-    def entitled?(auth)
-      minimum_age = config[:minimum_age]
-      return true if minimum_age.blank?
-
-      age = auth.extra.raw_info['https://data.gov.dk/model/core/eid/age'].to_i
-      raise Verification::VerificationService::NotEntitledError, 'under_minimum_age' if age < minimum_age
-
-      true
-    end
-
     def id
       'e7378672-add2-4eb1-a73b-77a805797eac'
     end
@@ -59,6 +49,16 @@ module IdNemlogIn
           description: 'Minimum age required to verify (in years). No value means no age minimum.'
         }
       }
+    end
+
+    def entitled?(auth)
+      minimum_age = config[:minimum_age]
+      return true if minimum_age.blank?
+
+      age = auth.extra.raw_info['https://data.gov.dk/model/core/eid/age'].to_i
+      raise Verification::VerificationService::NotEntitledError, 'under_minimum_age' if age < minimum_age
+
+      true
     end
   end
 end

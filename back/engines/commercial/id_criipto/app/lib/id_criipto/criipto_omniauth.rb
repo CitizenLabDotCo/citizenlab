@@ -25,7 +25,11 @@ module IdCriipto
           custom_field_values[municipality_code_key] = municipality_code
         end
 
+        first_name, *last_name = auth.extra.raw_info.name.split
         {
+          first_name: first_name,
+          last_name: last_name.join(' '),
+          locale: AppConfiguration.instance.closest_locale_to('da-DK'),
           custom_field_values: custom_field_values
         }
       end
@@ -48,7 +52,7 @@ module IdCriipto
 
       options[:response_type] = :code
       options[:acr_values] = acr_values
-      options[:issuer] = "https://#{config[:domain]}"
+      options[:issuer] = issuer
       options[:client_options] = {
         identifier: config[:client_id],
         secret: config[:client_secret],
@@ -56,6 +60,42 @@ module IdCriipto
         redirect_uri: "#{configuration.base_backend_uri}/auth/criipto/callback"
       }
     end
+
+    def email_always_present?
+      false
+    end
+
+    def verification_prioritized?
+      true
+    end
+
+    def email_confirmed?(_auth)
+      false
+    end
+
+    def filter_auth_to_persist(_auth)
+      # Atm we use `auth_hash` in one place.
+      # It can be useful in some other cases too back/lib/tasks/single_use/20240125_convert_vienna_uid_to_userid.rake
+      # But some providers send us too sensitive information (SSN, address), so we cannot always store `auth_hash`.
+      nil
+    end
+
+    def logout_url(_user)
+      # We don't need to logout from Criipto, we set this URL only to refresh UI on our side.
+      # Otherwise, the "Sign up" modal is shown after signout.
+      # Steps to reproduce:
+      # 1. Sign up with Criipto
+      # 2. Sign out without entering email
+      #
+      # TODO: do it on FE.
+      Frontend::UrlService.new.home_url
+    end
+
+    def issuer
+      "https://#{config[:domain]}"
+    end
+
+    private
 
     # See https://docs.criipto.com/verify/guides/authorize-url-builder/#auth-methods--acr-values
     def acr_values
