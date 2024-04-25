@@ -210,6 +210,7 @@ ca:
       budget: 'Pressupost'
       created_at: 'Presentat a'
       published_at: 'Publicat a'
+      date_vote_submitted: 'Data de presentació de la votació'
       comments_count: 'Comentaris'
       likes_count: 'M''agrada'
       dislikes_count: 'No li agrada'
