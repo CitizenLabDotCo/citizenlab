@@ -259,7 +259,7 @@ class XlsxService
 
   def generate_project_voting_xlsx(project_id)
     project = Project.find_by(id: project_id)
-    phases = project.phases.where(participation_method: 'voting')
+    phases = project.phases.where(participation_method: 'voting').includes([:ideas])
     phases_to_titles = add_suffix_to_duplicate_titles(phases) # avoid ArgumentError due to duplicate sheet names
 
     pa = Axlsx::Package.new
