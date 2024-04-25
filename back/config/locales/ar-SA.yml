@@ -210,6 +210,7 @@ ar:
       budget: 'ميزانية'
       created_at: 'تم التقديم في'
       published_at: 'تم النشر في'
+      date_vote_submitted: 'تاريخ تقديم التصويت'
       comments_count: 'التعليقات'
       likes_count: 'الإعجابات'
       dislikes_count: 'يكره'
