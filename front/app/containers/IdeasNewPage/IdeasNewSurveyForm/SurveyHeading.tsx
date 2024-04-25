@@ -195,7 +195,10 @@ const SurveyHeading = ({
                     width="100%"
                     mb={isSmallerThanPhone ? '16px' : undefined}
                     onClick={() => {
-                      // We need to invalidate any previously cached draft idea
+                      // We need to invalidate any previously cached draft idea.
+                      // Invalidating the draft while "in" the survey (I.e. In the useUpdateIdea
+                      // when survey page next/previous buttons clicked) causes issues.
+                      // TODO: Find a better solution for this.
                       queryClient.invalidateQueries({
                         queryKey: ideasKeys.item({ id: phaseId }),
                       });
