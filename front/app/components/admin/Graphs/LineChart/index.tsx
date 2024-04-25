@@ -94,6 +94,7 @@ const LineChart = <Row,>({
           DEFAULT_LEGEND_OFFSET
         )}
         ref={innerRef}
+        accessibilityLayer
       >
         {legend && graphDimensions && legendDimensions && (
           <g className="graph-legend">
