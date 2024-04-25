@@ -653,8 +653,8 @@ resource 'Projects' do
   end
 
   get 'web_api/v1/projects/:id/voting_xlsx' do
-    let(:phase1) { create(:single_voting_phase, title_multiloc: { en: 'Phase 1' }, start_at: Time.now - 18.days, end_at: Time.now - 17.days) }
-    let(:phase2) { create(:multiple_voting_phase, title_multiloc: { en: 'Phase 2' }, start_at: Time.now - 14.days, end_at: Time.now - 13.days) }
+    let(:phase1) { create(:single_voting_phase, start_at: Time.now - 18.days, end_at: Time.now - 17.days) }
+    let(:phase2) { create(:multiple_voting_phase, start_at: Time.now - 14.days, end_at: Time.now - 13.days) }
     let(:project) { create(:project, phases: [phase1, phase2]) }
     let(:id) { project.id }
 
