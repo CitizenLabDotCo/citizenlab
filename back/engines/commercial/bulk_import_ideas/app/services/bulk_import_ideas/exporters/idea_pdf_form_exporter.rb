@@ -375,6 +375,7 @@ module BulkImportIdeas::Exporters
       # Because of the way pdf group works we delete if value is already there and always use the last value for the field
       @importer_fields.delete_if { |f| f[:key] == key && f[:parent_key] == parent_key }
 
+      # In IdeaPdfFileParser#merge_idea_with_form_fields, we add :value key to this hash.
       @importer_fields << {
         name: field[:title_multiloc][@locale],
         description: type == 'field' ? ActionView::Base.full_sanitizer.sanitize(field[:description_multiloc][@locale]) : nil,

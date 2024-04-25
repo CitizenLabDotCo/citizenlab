@@ -126,11 +126,13 @@ module BulkImportIdeas::Parsers
       idea_row
     end
 
-    def merge_idea_with_form_fields(idea)
+    def merge_idea_with_form_fields(fields)
       raise NotImplementedError, 'This method is not yet implemented'
     end
 
     # Processes all fields - including built in fields
+    # @param [Array<Hash>] fields - comes from #structure_raw_fields
+    # @param [Hash] idea_row - comes from #ideas_to_idea_rows
     def process_custom_form_fields(fields, idea_row)
       merged_fields = merge_idea_with_form_fields(fields)
       multi_select_types = %w[multiselect multiselect_image]
