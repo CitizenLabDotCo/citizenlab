@@ -2,12 +2,46 @@
 
 module BulkImportIdeas::Parsers
   class IdeaXlsxFileParser < IdeaBaseFileParser
+    MAX_ROWS_PER_XLSX = 50
     def parse_rows(file)
       xlsx_ideas = parse_xlsx_ideas(file).map { |idea| { pdf_pages: [1], fields: idea } }
       ideas_to_idea_rows(xlsx_ideas, file)
     end
 
+    # Asynchronous version of the parse_file method
+    # Sends 1 XSLX file containing 50 ideas to each job
+    def parse_file_async(file_content)
+      files = create_files file_content
+
+      job_ids = []
+      files.each do |file|
+        job = BulkImportIdeas::IdeaImportJob.perform_later('xlsx', [file], @import_user, @locale, @phase, @personal_data_enabled)
+        job_ids << job.job_id
+      end
+
+      job_ids
+    end
+
     private
+
+    def create_files(file_content)
+      source_file = upload_source_file(file_content)
+
+      # Split into multiple XLSX files with 50 ideas each
+      split_xlsx_files = XlsxService.new.split_xlsx(source_file.file.read, MAX_ROWS_PER_XLSX)
+      split_xlsx_files.map.with_index do |xlsx_file, index|
+        base64_xlsx_file = Base64.encode64(xlsx_file.string)
+        BulkImportIdeas::IdeaImportFile.create!(
+          import_type: 'xlsx',
+          project: @project,
+          parent: source_file,
+          file_by_content: {
+            name: "import_#{index}.xlsx",
+            content: "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{base64_xlsx_file}"
+          }
+        )
+      end
+    end
 
     def parse_xlsx_ideas(file)
       xlsx_file = URI.open(file.file_content_url)
