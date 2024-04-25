@@ -65,7 +65,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def voting_xlsx?
-    true # TODO: set
+    index_xlsx?
   end
 
   def create?
