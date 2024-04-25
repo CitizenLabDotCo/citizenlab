@@ -210,6 +210,7 @@ da:
       budget: 'Budget'
       created_at: 'Indsendt på'
       published_at: 'Udgivet på'
+      date_vote_submitted: 'Dato for afgivelse af stemme'
       comments_count: 'Kommentarer'
       likes_count: 'Likes'
       dislikes_count: 'Dislikes'
