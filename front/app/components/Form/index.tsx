@@ -157,6 +157,10 @@ const Form = memo(
     useObserveEvent(submitOnEvent, handleSubmit);
 
     return (
+      /*
+        This form should contain as few styles as possible!
+        Customization should happen in places where this component is imported!
+      */
       <Box
         id={uiSchema?.options?.formId}
         as="form"

@@ -229,6 +229,8 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
               width="700px"
               h={isSmallerThanPhone ? '100vh' : `calc(100vh - 80px)`}
               my={isSmallerThanPhone ? '0px' : '40px'}
+              display="flex"
+              alignItems="center"
             >
               <Form
                 schema={schema}
