@@ -66,7 +66,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   const phaseId = queryParams.get('phase_id') || undefined;
   const { data: phases } = usePhases(project.data.id);
   const { data: phaseFromUrl } = usePhase(phaseId);
-  const { schema, uiSchema, inputSchemaError } = useInputSchema({
+  const { schema, uiSchema } = useInputSchema({
     projectId: project.data.id,
     phaseId,
   });
