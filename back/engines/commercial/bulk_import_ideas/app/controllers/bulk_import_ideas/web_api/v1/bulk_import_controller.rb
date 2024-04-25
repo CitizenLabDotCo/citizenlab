@@ -22,29 +22,24 @@ module BulkImportIdeas
     def bulk_create
       send_not_found unless supported_model? && supported_format?
 
-      # file = bulk_create_params[:file]
-      # locale = params[:import] ? bulk_create_params[:locale] : current_user.locale
-      # personal_data_enabled = params[:import] ? bulk_create_params[:personal_data] || false : false
-      # phase_id = params[:id]
-      # file_parser = file_parser_service.new(current_user, locale, phase_id, personal_data_enabled)
-      # import_service = importer_service.new(current_user, locale)
+      file = bulk_create_params[:file]
+      locale = params[:import] ? bulk_create_params[:locale] : current_user.locale
+      personal_data_enabled = params[:import] ? bulk_create_params[:personal_data] || false : false
+      phase_id = params[:id]
+      file_parser = file_parser_service.new(current_user, locale, phase_id, personal_data_enabled)
+      import_service = importer_service.new(current_user, locale)
 
-      # rows = file_parser.parse_file file
-      # ideas = import_service.import(rows)
-      # users = import_service.imported_users
+      rows = file_parser.parse_file file
+      ideas = import_service.import(rows)
+      users = import_service.imported_users
 
-      # sidefx.after_success current_user, @phase, params[:model], params[:format], ideas, users
+      sidefx.after_success current_user, @phase, params[:model], params[:format], ideas, users
 
-      # render json: serializer.new(
-      #   ideas,
-      #   params: jsonapi_serializer_params,
-      #   include: %i[author idea_import]
-      # ).serializable_hash, status: :created
-      job = TestJob.perform_later
-      render json: ::WebApi::V1::JobSerializer.new(
-        [QueJob.find_with_job_id(job.job_id)],
-        params: jsonapi_serializer_params
-      ).serializable_hash
+      render json: serializer.new(
+        ideas,
+        params: jsonapi_serializer_params,
+        include: %i[author idea_import]
+      ).serializable_hash, status: :created
     rescue BulkImportIdeas::Error => e
       sidefx.after_failure current_user, @phase, params[:model], params[:format]
       render json: { errors: { file: [{ error: e.key, **e.params }] } }, status: :unprocessable_entity
