@@ -14,6 +14,8 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useApproveOfflineIdeas from 'api/import_ideas/useApproveOfflineIdeas';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
+import { IJobData } from 'api/jobs/types';
+import useJobs from 'api/jobs/useJobs';
 
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
@@ -27,7 +29,7 @@ import messages from './messages';
 import PDFPageControl from './PDFPageControl';
 import PDFViewer from './PDFViewer';
 
-const ReviewSection = ({ pollIdeas }: { pollIdeas: boolean }) => {
+const ReviewSection = ({ importJobs }: { importJobs: IJobData[] }) => {
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId: string;
@@ -35,8 +37,11 @@ const ReviewSection = ({ pollIdeas }: { pollIdeas: boolean }) => {
   const { formatMessage } = useIntl();
   const [ideaId, setIdeaId] = useState<string | null>(null);
   const [approvals, setApprovals] = useState({ approved: 0, not_approved: 0 });
+  const importJobIds = importJobs.map((job) => job.attributes.job_id);
+  const { data: polledJobs } = useJobs(importJobIds);
 
   const { data: idea } = useIdeaById(ideaId ?? undefined, false);
+  const pollIdeas = !!polledJobs?.data.some((job) => job.attributes.active);
   const {
     data: ideas,
     refetch: refetchIdeas,
@@ -126,6 +131,7 @@ const ReviewSection = ({ pollIdeas }: { pollIdeas: boolean }) => {
                   bgColor={colors.primary}
                   icon="check"
                   onClick={handleApproveAll}
+                  disabled={pollIdeas}
                 >
                   <FormattedMessage {...messages.approveAllInputs} />
                 </Button>
@@ -137,6 +143,7 @@ const ReviewSection = ({ pollIdeas }: { pollIdeas: boolean }) => {
                     values={{ numIdeas }}
                   />
                 </Text>
+                {pollIdeas && 'Processing ideas...'}
               </Box>
             </>
           ) : (

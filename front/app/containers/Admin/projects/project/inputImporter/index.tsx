@@ -11,7 +11,6 @@ import { FocusOn } from 'react-focus-on';
 import { useParams } from 'react-router-dom';
 
 import { IJobData } from 'api/jobs/types';
-import useJobs from 'api/jobs/useJobs';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInputSchema from 'hooks/useInputSchema';
@@ -31,8 +30,6 @@ const InputImporter = () => {
   const [importExcelModalOpen, setImportExcelModalOpen] = useState(false);
 
   const [importJobs, setImportJobs] = useState<IJobData[]>([]);
-  const importJobIds = importJobs.map((job) => job.attributes.job_id);
-  const { data: jobs } = useJobs(importJobIds);
 
   const { schema, uiSchema } = useInputSchema({
     projectId,
@@ -83,9 +80,7 @@ const InputImporter = () => {
             mt={`${stylingConsts.mobileMenuHeight}px`}
             h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
           >
-            <ReviewSection
-              pollIdeas={!!jobs?.data.some((job) => job.attributes.active)}
-            />
+            <ReviewSection importJobs={importJobs} />
           </Box>
         </FocusOn>
       </Box>
