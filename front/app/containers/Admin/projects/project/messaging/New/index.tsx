@@ -21,7 +21,8 @@ const New = () => {
   const { isLoading, mutateAsync: createCampaign } = useAddCampaign();
   const handleSubmit = async (values: FormValues) => {
     const response = await createCampaign({
-      campaign_name: 'manual',
+      context_id: projectId,
+      campaign_name: 'manual_project_participants',
       ...values,
     });
     clHistory.push(

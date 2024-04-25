@@ -58,7 +58,6 @@ export interface FormValues {
   reply_to: string;
   subject_multiloc: Multiloc;
   body_multiloc: Multiloc;
-  group_ids?: string[];
 }
 
 type CampaignFormProps = {

@@ -135,6 +135,7 @@ type AdminModeratorCampaignName =
 
 export type CampaignName =
   | 'manual'
+  | 'manual_project_participants'
   | 'invite_received'
   | 'invite_reminder'
   | RegisterUserCampaignName
@@ -154,4 +155,5 @@ export interface CampaignAdd {
   sender: string;
   reply_to?: string;
   group_ids?: string[];
+  context_id?: string;
 }

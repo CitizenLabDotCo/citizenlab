@@ -10,7 +10,6 @@ import {
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
-import GetGroup from 'resources/GetGroup';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -25,10 +24,10 @@ import useLocalize from 'hooks/useLocalize';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
+import GoBackButton from 'components/UI/GoBackButton';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import { getFullName } from 'utils/textUtils';
 
@@ -89,15 +88,6 @@ const Buttons = styled.div`
   justify-content: flex-end;
   & > * {
     padding: 0 10px;
-  }
-`;
-
-const GroupLink = styled.a`
-  color: inherit;
-  cursor: pointer;
-
-  &:hover {
-    text-decoration: underline;
   }
 `;
 
@@ -166,16 +156,6 @@ const Show = () => {
     });
   };
 
-  const handleGroupLinkClick =
-    (groupId?: string) => (event: React.FormEvent<any>) => {
-      event.preventDefault();
-      if (groupId) {
-        clHistory.push(`/admin/users/${groupId}`);
-      } else {
-        clHistory.push('/admin/users');
-      }
-    };
-
   const getSenderName = (senderType: string) => {
     let senderName: string | null = null;
 
@@ -217,6 +197,7 @@ const Show = () => {
     return (
       <Box p="44px">
         <Box background={colors.white} p="40px" id="e2e-custom-email-container">
+          <GoBackButton linkTo={`/admin/projects/${projectId}/messaging`} />
           <PageHeader>
             <PageTitleWrapper>
               <Title mr="12px">
@@ -275,32 +256,6 @@ const Show = () => {
                   <FormattedMessage {...messages.campaignTo} />
                   &nbsp;
                 </FromToHeader>
-                {noGroupsSelected && (
-                  <GroupLink onClick={handleGroupLinkClick()}>
-                    {formatMessage(messages.allUsers)}
-                  </GroupLink>
-                )}
-                {groupIds.map((groupId, index) => (
-                  <GetGroup key={groupId} id={groupId}>
-                    {(group) => {
-                      if (index < groupIds.length - 1) {
-                        return (
-                          <GroupLink onClick={handleGroupLinkClick(groupId)}>
-                            {!isNilOrError(group) &&
-                              localize(group.attributes.title_multiloc)}
-                            ,{' '}
-                          </GroupLink>
-                        );
-                      }
-                      return (
-                        <GroupLink onClick={handleGroupLinkClick(groupId)}>
-                          {!isNilOrError(group) &&
-                            localize(group.attributes.title_multiloc)}
-                        </GroupLink>
-                      );
-                    }}
-                  </GetGroup>
-                ))}
               </div>
             </FromTo>
             {isDraft(campaign.data) && (

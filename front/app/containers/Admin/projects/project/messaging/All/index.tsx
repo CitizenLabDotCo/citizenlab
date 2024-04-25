@@ -8,9 +8,10 @@ import {
   fontSizes,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import useCampaigns from 'api/campaigns/useCampaigns';
+import useProjectCampaigns from 'api/campaigns/useProjectCampaigns';
 import { isDraft } from 'api/campaigns/util';
 
 import { ButtonWrapper } from 'components/admin/PageWrapper';
@@ -49,9 +50,10 @@ const NoCampaignsDescription = styled.p`
 `;
 
 const CustomEmails = () => {
+  const { projectId } = useParams() as { projectId: string };
   const [currentPage, setCurrentPage] = useState(1);
-  const { data: campaigns, fetchNextPage } = useCampaigns({
-    campaignNames: ['manual'],
+  const { data: campaigns, fetchNextPage } = useProjectCampaigns({
+    projectId,
     pageSize: 10,
   });
 
@@ -68,17 +70,19 @@ const CustomEmails = () => {
 
   if (campaignsList.data.length === 0) {
     return (
-      <Box background={colors.white} p="40px">
-        <NoCampaignsWrapper>
-          <Icon name="email-2" width="80px" height="80px" />
-          <NoCampaignsHeader>
-            <FormattedMessage {...messages.noCampaignsHeader} />
-          </NoCampaignsHeader>
-          <NoCampaignsDescription>
-            <FormattedMessage {...messages.noCampaignsDescription} />
-          </NoCampaignsDescription>
-          <NewCampaignButton />
-        </NoCampaignsWrapper>
+      <Box p="44px">
+        <Box background={colors.white} p="40px">
+          <NoCampaignsWrapper>
+            <Icon name="email-2" width="80px" height="80px" />
+            <NoCampaignsHeader>
+              <FormattedMessage {...messages.noCampaignsHeader} />
+            </NoCampaignsHeader>
+            <NoCampaignsDescription>
+              <FormattedMessage {...messages.noCampaignsDescription} />
+            </NoCampaignsDescription>
+            <NewCampaignButton />
+          </NoCampaignsWrapper>
+        </Box>
       </Box>
     );
   } else {
