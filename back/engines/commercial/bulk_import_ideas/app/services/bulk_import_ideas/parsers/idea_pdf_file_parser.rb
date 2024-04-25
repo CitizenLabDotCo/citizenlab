@@ -2,8 +2,8 @@
 
 module BulkImportIdeas::Parsers
   class IdeaPdfFileParser < IdeaBaseFileParser
+    IDEAS_PER_JOB = 5
     POSITION_TOLERANCE = 10
-    PAGES_TO_TRIGGER_NEW_PDF = 8
     MAX_TOTAL_PAGES = 50
     TEXT_FIELD_TYPES = %w[text multiline_text text_multiloc html_multiloc]
 
@@ -12,19 +12,57 @@ module BulkImportIdeas::Parsers
       @form_fields = IdeaCustomFieldsService.new(Factory.instance.participation_method_for(@phase).custom_form).printable_fields
     end
 
+    # Synchronous version not implemented for PDFs
+    def parse_file(file_content)
+      raise NotImplementedError, 'This method is not implemented for PDFs'
+    end
+
+    # Asynchronous version of the parse_file method
+    def parse_file_async(file_content)
+      files = create_files file_content
+
+      job_ids = []
+      files.each_slice(IDEAS_PER_JOB) do |sliced_files|
+        job = BulkImportIdeas::IdeaPdfImportJob.perform_later(sliced_files, @import_user, @locale, @phase, @personal_data_enabled)
+        job_ids << job.job_id
+      end
+
+      job_ids
+    end
+
+    def parse_rows(file)
+      pdf_file = file.file.read
+
+      # NOTE: We return both parsed values so we can merge the best values from both
+      form_parsed_ideas = google_forms_service.parse_pdf(pdf_file, import_form_data[:page_count])
+      text_parsed_ideas = begin
+        Pdf::IdeaPlainTextParserService.new(
+          @phase || @project,
+          @form_fields,
+          @locale,
+          import_form_data[:page_count]
+        ).parse_text(google_forms_service.raw_text_page_array(pdf_file))
+      rescue BulkImportIdeas::Error
+        []
+      end
+
+      idea_rows = merge_pdf_rows(form_parsed_ideas, text_parsed_ideas, file)
+      idea_rows_with_corrected_texts(idea_rows)
+    end
+
     private
 
     def create_files(file_content)
       source_file = upload_source_file file_content
 
-      # Split a pdf into smaller documents
+      # Split a pdf into one document per idea
       split_pdf_files = []
       if source_file&.import_type == 'pdf'
-        # Get number of pages in a form from the download
+        # Get number of pages in a form from the exported PDF template
         pages_per_idea = import_form_data[:page_count]
 
         pdf = begin
-          ::CombinePDF.parse URI.open(source_file.file_content_url).read
+          ::CombinePDF.parse source_file.file.read
         rescue ::CombinePDF::ParsingError
           raise BulkImportIdeas::Error.new 'bulk_import_malformed_pdf', value: source_file.file_content_url
         end
@@ -32,16 +70,12 @@ module BulkImportIdeas::Parsers
         source_file.update!(num_pages: pdf.pages.count)
         raise BulkImportIdeas::Error.new 'bulk_import_maximum_pdf_pages_exceeded', value: MAX_TOTAL_PAGES if pdf.pages.count > MAX_TOTAL_PAGES
 
-        return [source_file] if pdf.pages.count <= PAGES_TO_TRIGGER_NEW_PDF # Only need to split if the file is too big
-
         new_pdf = ::CombinePDF.new
         new_pdf_count = 0
         pdf.pages.each_with_index do |page, index|
           new_pdf << page
           current_page_num = index + 1
-          save_to_file =
-            (current_page_num % pages_per_idea == 0 && new_pdf.pages.count >= PAGES_TO_TRIGGER_NEW_PDF) ||
-            (current_page_num == pdf.pages.count)
+          save_to_file = current_page_num % pages_per_idea == 0
 
           if save_to_file
             # Temporarily save to a file
@@ -65,7 +99,7 @@ module BulkImportIdeas::Parsers
           end
         end
       end
-      split_pdf_files.presence || [source_file]
+      split_pdf_files
     end
 
     # Overridden from base class to handle the way checkboxes are filled in the PDF
@@ -127,26 +161,6 @@ module BulkImportIdeas::Parsers
         idea.delete(checkbox.first.first) # Remove the original field TODO: JS - Better way of doing this?
       end
       idea
-    end
-
-    def parse_rows(file)
-      pdf_file = URI.open(file.file_content_url).read
-
-      # NOTE: We return both parsed values so we can merge the best values from both
-      form_parsed_ideas = google_forms_service.parse_pdf(pdf_file, import_form_data[:page_count])
-      text_parsed_ideas = begin
-        Pdf::IdeaPlainTextParserService.new(
-          @phase || @project,
-          @form_fields,
-          @locale,
-          import_form_data[:page_count]
-        ).parse_text(google_forms_service.raw_text_page_array(pdf_file))
-      rescue BulkImportIdeas::Error
-        []
-      end
-
-      idea_rows = merge_pdf_rows(form_parsed_ideas, text_parsed_ideas, file)
-      idea_rows_with_corrected_texts(idea_rows)
     end
 
     def merge_pdf_rows(form_parsed_ideas, text_parsed_ideas, file)

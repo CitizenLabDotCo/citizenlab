@@ -10,6 +10,7 @@ module BulkImportIdeas::Parsers
       @personal_data_enabled = personal_data_enabled
     end
 
+    # Default is real time import of ideas
     def parse_file(file_content)
       files = create_files file_content
 
@@ -18,6 +19,15 @@ module BulkImportIdeas::Parsers
         idea_rows += parse_rows file
       end
       idea_rows
+    end
+
+    # Asynchronous version is not implemented by default
+    def parse_file_async(file_content)
+      raise NotImplementedError, 'This method is not implemented'
+    end
+
+    def parse_rows(file)
+      raise NotImplementedError, 'This method is not implemented'
     end
 
     private

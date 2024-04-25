@@ -12,7 +12,7 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
     project.allowed_input_topics << create(:topic_economy)
     project.allowed_input_topics << create(:topic_waste)
 
-    # Custom fields
+    # Custom fields - will produce a PDF form with 2 pages
     create(:custom_field, resource: custom_form, key: 'a_text_field', title_multiloc: { 'en' => 'A text field' }, description_multiloc: { 'en' => 'A text field description' }, enabled: true)
     create(:custom_field, resource: custom_form, key: 'number_field', title_multiloc: { 'en' => 'Number field' }, input_type: 'number', enabled: true)
     create(:custom_field_point, resource: custom_form, key: 'a_point_field', title_multiloc: { 'en' => 'Point field' }, enabled: true)
@@ -27,12 +27,21 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
     create(:custom_field_option, custom_field: another_select_field, key: 'no', title_multiloc: { 'en' => 'No' })
   end
 
+  describe 'parse_file_async' do
+    it 'creates jobs to process 5 ideas at a time' do
+      base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_12.pdf').read
+      expect do
+        service.parse_file_async("data:application/pdf;base64,#{base_64_content}")
+      end.to have_enqueued_job(BulkImportIdeas::IdeaPdfImportJob).exactly(:twice)
+    end
+  end
+
   describe 'create_files' do
-    it 'splits a 12 page PDF file successfully based on the number of pages in the template (2) and creates additional files' do
+    it 'splits a 12 page PDF file into a file per idea based on the number of pages in the template (2)' do
       base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_12.pdf').read
       service.send(:create_files, "data:application/pdf;base64,#{base_64_content}")
-      expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 3
-      expect(BulkImportIdeas::IdeaImportFile.all.pluck(:num_pages)).to match_array [12, 8, 4]
+      expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 7
+      expect(BulkImportIdeas::IdeaImportFile.all.pluck(:num_pages)).to match_array [2, 2, 2, 2, 2, 2, 12]
       expect(BulkImportIdeas::IdeaImportFile.where(parent: nil).pluck(:num_pages)).to eq [12]
     end
 

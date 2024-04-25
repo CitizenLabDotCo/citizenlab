@@ -43,7 +43,7 @@ resource 'BulkImportIdeasImportIdeas' do
 
     let(:phase_id) { project.phases.first.id }
 
-    post 'web_api/v1/phases/:phase_id/importer/bulk_create/:model/:format' do
+    context 'Imports' do
       parameter(
         :file,
         'Base64 encoded xlsx or PDF file using the template downloaded from the phase.',
@@ -53,52 +53,48 @@ resource 'BulkImportIdeasImportIdeas' do
       parameter(:personal_data, 'Has the uploaded form got the personal data section in it', scope: :import)
 
       let(:model) { 'idea' }
+      let(:locale) { 'en' }
 
-      context 'xlsx import' do
-        let(:format) { 'xlsx' }
-        let(:file) { create_project_bulk_import_ideas_xlsx }
+      post 'web_api/v1/phases/:phase_id/importer/bulk_create/:model/:format' do
+        context 'xlsx import' do
+          let(:format) { 'xlsx' }
+          let(:file) { create_project_bulk_import_ideas_xlsx }
 
-        example 'Bulk import ideas to current phase from .xlsx' do
-          do_request
+          example 'Bulk import ideas to current phase from .xlsx' do
+            do_request
 
-          assert_status 201
-          expect(response_data.count).to eq 2
-          expect(Idea.count).to eq 2
-          expect(IdeasPhase.count).to eq 2
-          expect(Idea.all.pluck(:title_multiloc)).to match_array [{ 'en' => 'My project idea title 1' }, { 'en' => 'My project idea title 2' }]
-          expect(User.count).to eq 2
-          expect(User.all.pluck(:email)).to include 'dave@citizenlab.co'
-          expect(User.all.pluck(:email)).not_to include 'bob@citizenlab.co'
-          expect(BulkImportIdeas::IdeaImport.count).to eq 2
-          expect(BulkImportIdeas::IdeaImportFile.count).to eq 1
+            assert_status 201
+            expect(response_data.count).to eq 2
+            expect(Idea.count).to eq 2
+            expect(IdeasPhase.count).to eq 2
+            expect(Idea.all.pluck(:title_multiloc)).to match_array [{ 'en' => 'My project idea title 1' }, { 'en' => 'My project idea title 2' }]
+            expect(User.count).to eq 2
+            expect(User.all.pluck(:email)).to include 'dave@citizenlab.co'
+            expect(User.all.pluck(:email)).not_to include 'bob@citizenlab.co'
+            expect(BulkImportIdeas::IdeaImport.count).to eq 2
+            expect(BulkImportIdeas::IdeaImportFile.count).to eq 1
+          end
         end
       end
 
-      context 'pdf import' do
-        let(:locale) { 'en' }
-        let(:format) { 'pdf' }
-        let(:file) { create_project_bulk_import_ideas_pdf 1 }
+      post 'web_api/v1/phases/:phase_id/importer/bulk_create_async/:model/:format' do
+        context 'pdf import' do
+          let(:locale) { 'en' }
+          let(:format) { 'pdf' }
+          let(:file) { create_project_bulk_import_ideas_pdf 1 }
 
-        # NOTE: GoogleFormParserService is stubbed to avoid calls to google APIs
-        example 'Bulk import ideas to phase from .pdf' do
-          stub_external_api
+          example 'Bulk import ideas to phase from .pdf creates files and queues an import job' do
+            do_request
+            assert_status 200
 
-          do_request
-          assert_status 201
-          expect(response_data.count).to eq 1
-          expect(response_data.first[:attributes][:title_multiloc][:en]).to eq 'My very good idea'
-          expect(response_data.first[:attributes][:location_description]).to eq 'Somewhere'
-          expect(response_data.first[:attributes][:publication_status]).to eq 'draft'
-          expect(User.all.count).to eq 1 # No new users created
-          expect(BulkImportIdeas::IdeaImport.all.count).to eq 1
-          expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 1
-          expect(Idea.all.first.phases.count).to eq 1
-          expect(Idea.all.first.phases.first).to eq project.phases.first
-          expect(project.reload.ideas_count).to eq 0 # Draft ideas should not be counted
-
-          # Relationships
-          expect(response_data.first.dig(:relationships, :idea_import, :data)).not_to be_nil
-          expect(json_response_body[:included].pluck(:type)).to include 'idea_import'
+            expect(response_data[:type]).to eq 'bulk_create_async'
+            expect(response_data[:attributes].keys).to eq [:job_ids]
+            expect(Idea.all.count).to eq 0 # No ideas created yet
+            expect(User.all.count).to eq 1 # No new users created
+            expect(BulkImportIdeas::IdeaImport.all.count).to eq 0
+            expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 2
+            expect(BulkImportIdeas::IdeaPdfImportJob).to have_been_enqueued
+          end
         end
       end
     end

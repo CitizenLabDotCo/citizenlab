@@ -2,7 +2,7 @@
 
 module BulkImportIdeas
   class WebApi::V1::BulkImportController < ApplicationController
-    before_action :authorize_bulk_import_ideas, only: %i[bulk_create export_form draft_records approve_all]
+    before_action :authorize_bulk_import_ideas, only: %i[bulk_create bulk_create_async export_form draft_records approve_all]
 
     CONSTANTIZER = {
       'idea' => {
@@ -23,15 +23,9 @@ module BulkImportIdeas
       send_not_found unless supported_model? && supported_format?
 
       file = bulk_create_params[:file]
-      locale = params[:import] ? bulk_create_params[:locale] : current_user.locale
-      personal_data_enabled = params[:import] ? bulk_create_params[:personal_data] || false : false
-      phase_id = params[:id]
-      file_parser = file_parser_service.new(current_user, locale, phase_id, personal_data_enabled)
-      import_service = importer_service.new(current_user, locale)
-
-      rows = file_parser.parse_file file
-      ideas = import_service.import(rows)
-      users = import_service.imported_users
+      rows = file_parser_service.parse_file file
+      ideas = importer_service.import(rows)
+      users = importer_service.imported_users
 
       sidefx.after_success current_user, @phase, params[:model], params[:format], ideas, users
 
@@ -40,6 +34,20 @@ module BulkImportIdeas
         params: jsonapi_serializer_params,
         include: %i[author idea_import]
       ).serializable_hash, status: :created
+    rescue BulkImportIdeas::Error => e
+      sidefx.after_failure current_user, @phase, params[:model], params[:format]
+      render json: { errors: { file: [{ error: e.key, **e.params }] } }, status: :unprocessable_entity
+    end
+
+    def bulk_create_async
+      send_not_found unless supported_model? && supported_format?
+
+      file = bulk_create_params[:file]
+      job_ids = file_parser_service.parse_file_async file
+
+      sidefx.after_success current_user, @phase, params[:model], params[:format], [], []
+
+      render json: raw_json({ job_ids: })
     rescue BulkImportIdeas::Error => e
       sidefx.after_failure current_user, @phase, params[:model], params[:format]
       render json: { errors: { file: [{ error: e.key, **e.params }] } }, status: :unprocessable_entity
@@ -126,13 +134,21 @@ module BulkImportIdeas
 
     def importer_service
       model = params[:model]
-      CONSTANTIZER.fetch(model)[:importer_class]
+      locale = params[:import] ? bulk_create_params[:locale] : current_user.locale
+
+      service = CONSTANTIZER.fetch(model)[:importer_class]
+      @importer_service ||= service.new(current_user, locale)
     end
 
     def file_parser_service
       model = params[:model]
       format = params[:format]
-      CONSTANTIZER.fetch(model).fetch(format)[:parser_class]
+      locale = params[:import] ? bulk_create_params[:locale] : current_user.locale
+      personal_data_enabled = params[:import] ? bulk_create_params[:personal_data] || false : false
+      phase_id = params[:id]
+
+      service = CONSTANTIZER.fetch(model).fetch(format)[:parser_class]
+      @file_parser_service ||= service.new(current_user, locale, phase_id, personal_data_enabled)
     end
 
     def form_exporter_service
