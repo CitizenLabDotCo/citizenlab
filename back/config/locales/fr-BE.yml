@@ -148,8 +148,8 @@ fr-BE:
       section3:
         title: Détails
         description:
-      other:
-        title: Puisque vous avez choisi « autre », à quoi pensez-vous ?
+      other_text_field:
+        title: Si vous avez choisi "{other_option}", à quoi pensez-vous ?
   custom_forms:
     categories:
       main_content:
