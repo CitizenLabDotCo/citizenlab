@@ -210,6 +210,7 @@
       budget: 'Budsjett'
       created_at: 'Innsendt'
       published_at: 'Publisert'
+      date_vote_submitted: 'Dato avstemning innsendt'
       comments_count: 'Kommentarer'
       likes_count: 'Liker'
       dislikes_count: 'Misliker'
