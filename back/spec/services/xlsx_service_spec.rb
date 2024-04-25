@@ -367,7 +367,7 @@ describe XlsxService do
       expect([
         user_row1[header_row.find_index 'Date vote submitted'].to_i,
         user_row2[header_row.find_index 'Date vote submitted'].to_i
-      ]).to match_array [0, basket2.submitted_at.to_i]
+      ]).to match_array [0, basket2.submitted_at.to_i] # nil.to_i == 0
     end
 
     it 'handles ideas with same title multiloc values' do
