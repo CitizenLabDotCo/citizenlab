@@ -210,6 +210,7 @@ fr-BE:
       budget: 'Budget'
       created_at: 'Soumis le'
       published_at: 'Publié le'
+      date_vote_submitted: 'Date de dépôt du vote'
       comments_count: 'Commentaires'
       likes_count: 'Nombre de « likes »'
       dislikes_count: 'Nombre de « dislikes »'
