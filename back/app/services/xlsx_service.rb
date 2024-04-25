@@ -260,7 +260,6 @@ class XlsxService
   def generate_project_voting_xlsx(project_id)
     project = Project.find_by(id: project_id)
     phases = project.phases.where(participation_method: 'voting')
-    # TODO: Handle nil project or phases
 
     pa = Axlsx::Package.new
 
