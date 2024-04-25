@@ -32,6 +32,55 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::GPTTextCorrector do
       end
     end
 
+    context 'when idea_rows is not blank' do
+      let(:gpt_response) do
+        [
+          { id: '1', title_multiloc: { en: 'corrected title' }, custom_field_values: { field1: 'corrected value' } },
+          { id: '2', title_multiloc: { en: 'corrected title 2' }, custom_field_values: { field1: 'corrected value 2' } }
+        ].to_json
+      end
+
+      before do
+        allow_any_instance_of(Analysis::LLM::GPT4Turbo).to receive(:chat).and_return(gpt_response)
+      end
+
+      it 'returns idea_rows with corrected texts' do
+        expect_any_instance_of(Analysis::LLM::GPT4Turbo).to receive(:chat).once.with(/title_multiloc.*field1/).and_return(gpt_response)
+
+        expect(corrector.correct).to eq([
+          { id: '1', project_id: '1', title_multiloc: { en: 'corrected title' }, custom_field_values: { field1: 'corrected value' } },
+          { id: '2', project_id: '2', title_multiloc: { en: 'corrected title 2' }, custom_field_values: { field1: 'corrected value 2' } }
+        ])
+      end
+
+      context "when GPT doesn't return JSON" do
+        let(:gpt_response) { 'What is JSON?' }
+
+        it 'returns idea_rows' do
+          expect(ErrorReporter).to receive(:report_msg)
+          expect(corrector.correct).to eq(idea_rows)
+        end
+      end
+
+      context 'when GPT returns empty response' do
+        let(:gpt_response) { '' }
+
+        it 'returns idea_rows' do
+          expect(ErrorReporter).to receive(:report_msg)
+          expect(corrector.correct).to eq(idea_rows)
+        end
+      end
+
+      context 'when GPT returns invalid JSON' do
+        let(:gpt_response) { '[,]' }
+
+        it 'returns idea_rows' do
+          expect(ErrorReporter).to receive(:report_msg)
+          expect(corrector.correct).to eq(idea_rows)
+        end
+      end
+    end
+
     context 'when running real GPT', skip: 'These tests are added to run manualy. They will make real requests to GPT API.' do
       context 'when processing Dutch' do
         subject(:corrector) { described_class.new(phase, idea_rows) }
@@ -99,55 +148,6 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::GPTTextCorrector do
           pp 'Corrected texts', corrected_texts
 
           expect(corrected_texts).to eq(actual_texts)
-        end
-      end
-    end
-
-    context 'when idea_rows is not blank' do
-      let(:gpt_response) do
-        [
-          { id: '1', title_multiloc: { en: 'corrected title' }, custom_field_values: { field1: 'corrected value' } },
-          { id: '2', title_multiloc: { en: 'corrected title 2' }, custom_field_values: { field1: 'corrected value 2' } }
-        ].to_json
-      end
-
-      before do
-        allow_any_instance_of(Analysis::LLM::GPT4Turbo).to receive(:chat).and_return(gpt_response)
-      end
-
-      it 'returns idea_rows with corrected texts' do
-        expect_any_instance_of(Analysis::LLM::GPT4Turbo).to receive(:chat).once.with(/title_multiloc.*field1/).and_return(gpt_response)
-
-        expect(corrector.correct).to eq([
-          { id: '1', project_id: '1', title_multiloc: { en: 'corrected title' }, custom_field_values: { field1: 'corrected value' } },
-          { id: '2', project_id: '2', title_multiloc: { en: 'corrected title 2' }, custom_field_values: { field1: 'corrected value 2' } }
-        ])
-      end
-
-      context "when GPT doesn't return JSON" do
-        let(:gpt_response) { 'What is JSON?' }
-
-        it 'returns idea_rows' do
-          expect(ErrorReporter).to receive(:report_msg)
-          expect(corrector.correct).to eq(idea_rows)
-        end
-      end
-
-      context 'when GPT returns empty response' do
-        let(:gpt_response) { '' }
-
-        it 'returns idea_rows' do
-          expect(ErrorReporter).to receive(:report_msg)
-          expect(corrector.correct).to eq(idea_rows)
-        end
-      end
-
-      context 'when GPT returns invalid JSON' do
-        let(:gpt_response) { '[,]' }
-
-        it 'returns idea_rows' do
-          expect(ErrorReporter).to receive(:report_msg)
-          expect(corrector.correct).to eq(idea_rows)
         end
       end
     end
