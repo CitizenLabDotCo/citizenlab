@@ -37,6 +37,7 @@ interface Props {
   }) => Promise<void>;
 }
 
+// Some SSO providers don't return the email (ClaveUnica, Criipto MitID). We call such providers "emailless".
 const EmaillessSsoEmail = ({ loading, setError, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
