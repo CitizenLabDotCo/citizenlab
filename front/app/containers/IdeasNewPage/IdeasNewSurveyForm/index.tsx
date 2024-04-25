@@ -218,12 +218,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
         schema &&
         uiSchema &&
         participationMethodConfig ? (
-          <Box
-            width="100%"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          >
+          <Box display="flex" justifyContent="center">
             <Box
               background={colors.white}
               width="700px"
@@ -258,13 +253,11 @@ const IdeasNewSurveyFormWrapperModal = (props: Props) => {
   return modalPortalElement
     ? createPortal(
         <Box
-          display="flex"
           w="100%"
           zIndex="1010"
           position="fixed"
           bgColor={colors.grey100}
           h="100vh"
-          borderRadius="2px"
         >
           <IdeasNewSurveyForm {...props} />
         </Box>,
