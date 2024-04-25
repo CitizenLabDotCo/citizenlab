@@ -3,6 +3,7 @@
 module BulkImportIdeas::Parsers::Pdf
   class IdeaPlainTextParserService
     TEXT_FIELD_TYPES = %w[text text_multiloc]
+    NUMBER_FIELD_TYPES = %w[number linear_scale]
     MULTILINE_FIELD_TYPES = %w[multiline_text html_multiloc]
 
     FORBIDDEN_HTML_TAGS_REGEX = %r{</?(div|p|span|ul|ol|li|em|img|a){1}[^>]*/?>}
@@ -122,7 +123,7 @@ module BulkImportIdeas::Parsers::Pdf
           handle_multiselect_field(line)
         end
 
-        if field_type == 'number'
+        if NUMBER_FIELD_TYPES.include? field_type
           handle_number_field(line)
         end
       end

@@ -5,6 +5,7 @@ module BulkImportIdeas::Parsers
     POSITION_TOLERANCE = 10
     PAGES_TO_TRIGGER_NEW_PDF = 8
     MAX_TOTAL_PAGES = 50
+    TEXT_FIELD_TYPES = %w[text multiline_text text_multiloc html_multiloc]
 
     def initialize(current_user, locale, phase_id, personal_data_enabled)
       super
@@ -69,26 +70,26 @@ module BulkImportIdeas::Parsers
 
     # Overridden from base class to handle the way checkboxes are filled in the PDF
     # and detect fields from description as well as title
-    def merge_idea_with_form_fields(idea)
-      merged_idea = []
+    def merge_idea_with_form_fields(idea_fields)
+      merged_fields = []
       form_fields = import_form_data[:fields]
       form_fields.each do |form_field|
-        idea.each do |idea_field|
+        idea_fields.each do |idea_field|
           if form_field[:name] == idea_field[:name] || form_field[:description] == idea_field[:name]
             if form_field[:type] == 'field' && idea_field[:value].present?
               new_field = form_field
               new_field[:value] = idea_field[:value]
               new_field = process_field_value(new_field, form_fields)
-              merged_idea << new_field
-              idea.delete_if { |f| f == idea_field }
+              merged_fields << new_field
+              idea_fields.delete_if { |f| f == idea_field }
               break
             elsif idea_field[:value] == 'filled_checkbox' && form_field[:page] == idea_field[:page]
               # Check that the value is near to the position on the page it should be
               if idea_field[:position].between?(form_field[:position].to_i - POSITION_TOLERANCE, form_field[:position].to_i + POSITION_TOLERANCE)
-                select_field = merged_idea.find { |f| f[:key] == form_field[:parent_key] } || form_fields.find { |f| f[:key] == form_field[:parent_key] }.clone
+                select_field = merged_fields.find { |f| f[:key] == form_field[:parent_key] } || form_fields.find { |f| f[:key] == form_field[:parent_key] }.clone
                 select_field[:value] = select_field[:value] ? select_field[:value] << form_field[:key] : [form_field[:key]]
-                merged_idea << select_field
-                idea.delete_if { |f| f == idea_field }
+                merged_fields << select_field
+                idea_fields.delete_if { |f| f == idea_field }
                 form_fields.delete_if { |f| f == idea_field } if select_field[:input_type] == 'select'
                 break
               end
@@ -96,7 +97,7 @@ module BulkImportIdeas::Parsers
           end
         end
       end
-      merged_idea
+      merged_fields
     end
 
     # Overridden from base class to tidy data returned from PDF
@@ -119,7 +120,11 @@ module BulkImportIdeas::Parsers
       # Truncate the checkbox label for better multiline checkbox detection
       permission_checkbox_label = (I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.by_checking_this_box') })[0..30]
       checkbox = idea.select { |key, value| key.match(/^#{permission_checkbox_label}/) && value == 'filled_checkbox' }
-      idea['Permission'] = 'X' if checkbox != {}
+      if checkbox != {}
+        locale_permission_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.permission') }
+        idea[locale_permission_label] = 'X'
+        idea.delete(checkbox.first.first) # Remove the original field TODO: JS - Better way of doing this?
+      end
       idea
     end
 
@@ -139,7 +144,8 @@ module BulkImportIdeas::Parsers
         []
       end
 
-      merge_pdf_rows(form_parsed_ideas, text_parsed_ideas, file)
+      idea_rows = merge_pdf_rows(form_parsed_ideas, text_parsed_ideas, file)
+      idea_rows_with_corrected_texts(idea_rows)
     end
 
     def merge_pdf_rows(form_parsed_ideas, text_parsed_ideas, file)
@@ -155,6 +161,29 @@ module BulkImportIdeas::Parsers
       end
     end
 
+    def process_field_value(field, form_fields)
+      field = super field, form_fields
+
+      if TEXT_FIELD_TYPES.include?(field[:input_type]) && field[:value]
+        # Strip out text that has leaked from the field description into the value
+        field[:value] = field[:value].gsub(/#{field[:description]}/, '')
+
+        # Strip out out any text that has leaked from the next questions title into the value
+        next_question = form_fields[form_fields.find_index(field) + 1]
+        if next_question && next_question[:name].split.count > 4
+          field[:value] = field[:value].gsub(/#{next_question[:name]}*/, '')
+        end
+
+        # Strip out 'this answer may be shared with moderators...' text
+        this_answer_copy = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.this_answer') }
+        field[:value] = field[:value].gsub(/\*#{this_answer_copy}/, '')
+
+        field[:value] = field[:value].strip
+      end
+
+      field
+    end
+
     def complete_page_range(pages1, pages2)
       min = [pages1.min, pages2.min].min
       max = [pages1.max, pages2.max].max
@@ -168,6 +197,11 @@ module BulkImportIdeas::Parsers
 
     def google_forms_service
       @google_forms_service ||= Pdf::IdeaGoogleFormParserService.new
+    end
+
+    def idea_rows_with_corrected_texts(idea_rows)
+      corrector = BulkImportIdeas::Parsers::Pdf::GPTTextCorrector.new(@phase, idea_rows)
+      corrector.correct
     end
   end
 end

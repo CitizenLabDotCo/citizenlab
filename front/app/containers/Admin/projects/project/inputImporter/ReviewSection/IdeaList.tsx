@@ -1,6 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { Box, Text, Button, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  Button,
+  colors,
+  Spinner,
+} from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import styled from 'styled-components';
 
@@ -73,6 +79,8 @@ const Idea = ({
     id: idea.relationships.idea_import?.data?.id,
   });
 
+  const [deletingIdea, setDeletingIdea] = useState<string | null>(null);
+
   if (!ideaMetadata) return null;
 
   const { locale } = ideaMetadata.data.attributes;
@@ -81,6 +89,7 @@ const Idea = ({
   const handleDeleteIdea = (ideaId: string) => (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    setDeletingIdea(ideaId);
     onDeleteIdea(ideaId);
   };
 
@@ -120,15 +129,21 @@ const Idea = ({
         justifyContent="flex-end"
         alignItems="center"
       >
-        <StyledButton
-          icon="close"
-          iconSize="12px"
-          padding="2px"
-          borderRadius="10px"
-          marginRight="8px"
-          bgColor={colors.teal200}
-          onClick={handleDeleteIdea(idea.id)}
-        />
+        {deletingIdea === idea.id ? (
+          <Box marginRight="8px">
+            <Spinner size="15px" />
+          </Box>
+        ) : (
+          <StyledButton
+            icon="close"
+            iconSize="12px"
+            padding="2px"
+            borderRadius="10px"
+            marginRight="8px"
+            bgColor={colors.teal200}
+            onClick={handleDeleteIdea(idea.id)}
+          />
+        )}
       </Box>
     </StyledBox>
   );

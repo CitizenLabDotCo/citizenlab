@@ -81,7 +81,7 @@ resource 'BulkImportIdeasImportIdeas' do
 
         # NOTE: GoogleFormParserService is stubbed to avoid calls to google APIs
         example 'Bulk import ideas to phase from .pdf' do
-          stub_google_form_parser_api
+          stub_external_api
 
           do_request
           assert_status 201
@@ -327,7 +327,9 @@ resource 'BulkImportIdeasImportIdeas' do
     }]
   end
 
-  def stub_google_form_parser_api
+  def stub_external_api
+    allow_any_instance_of(Analysis::LLM::GPT4Turbo).to receive(:chat).and_return('[{}]')
+
     expect_any_instance_of(BulkImportIdeas::Parsers::Pdf::IdeaGoogleFormParserService).to receive(:raw_text_page_array).and_return(create_project_bulk_import_raw_text_array)
     expect_any_instance_of(BulkImportIdeas::Parsers::Pdf::IdeaGoogleFormParserService).to receive(:parse_pdf).and_return(create_project_bulk_import_parse_pdf)
   end

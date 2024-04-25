@@ -95,28 +95,33 @@ module BulkImportIdeas::Parsers
     end
 
     def process_user_details(fields, idea_row)
-      # Do not add any personal details if 'Permission' field is not present or blank
       locale_permission_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.permission') }
+      locale_email_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.email_address') }
+      locale_first_name_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.first_name') }
+      locale_last_name_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.last_name') }
+
+      # Do not add any personal details if 'Permission' field is not present or is blank
       permission = fields.find { |f| f[:name] == locale_permission_label }
       idea_row[:user_consent] = permission && permission[:value].present?
-
       if idea_row[:user_consent]
-        locale_email_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.email_address') }
+
+        # Add email but only if it validates
         email = fields.find { |f| f[:name] == locale_email_label }
         email_value = email ? email[:value].gsub(/\s+/, '') : nil # Remove any spaces
-        # Remove the email if it does not validate
-        email_value = nil unless email_value&.match(User::EMAIL_REGEX)
+        idea_row[:user_email] = email_value if email_value&.match(User::EMAIL_REGEX)
 
-        locale_first_name_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.first_name') }
         first_name = fields.find { |f| f[:name] == locale_first_name_label }
         idea_row[:user_first_name] = first_name[:value] if first_name
 
-        locale_last_name_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.last_name') }
         last_name = fields.find { |f| f[:name] == locale_last_name_label }
         idea_row[:user_last_name] = last_name[:value] if last_name
-
-        idea_row[:user_email] = email_value
       end
+
+      # Delete all the user fields as they are not needed later
+      fields.delete_if { |f| f[:name] == locale_permission_label }
+      fields.delete_if { |f| f[:name] == locale_email_label }
+      fields.delete_if { |f| f[:name] == locale_first_name_label }
+      fields.delete_if { |f| f[:name] == locale_last_name_label }
 
       idea_row
     end
@@ -162,6 +167,7 @@ module BulkImportIdeas::Parsers
       elsif %w[number linear_scale].include?(field[:input_type]) && field[:value].present?
         field[:value] = field[:value].to_i
       end
+
       field
     end
   end

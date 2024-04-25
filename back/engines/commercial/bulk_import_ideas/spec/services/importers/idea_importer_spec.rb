@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe BulkImportIdeas::Importers::IdeaImporter do
-  let(:service) { described_class.new(create(:admin)) }
+  let(:service) { described_class.new(create(:admin), 'en') }
 
   describe 'import_ideas' do
     before { create(:idea_status, code: 'proposed') }
@@ -100,6 +100,24 @@ describe BulkImportIdeas::Importers::IdeaImporter do
       expect(ideas[1].idea_import.page_range).to eq %w[3 4]
       expect(ideas[1].idea_import.user_created).to be true
       expect(ideas[1].idea_import.user_consent).to be true
+    end
+
+    it 'adds the correct locale to the idea import meta data' do
+      project = create(:project)
+      idea_rows = [
+        {
+          title_multiloc: { 'fr-BE' => "Titre de l'idée" },
+          body_multiloc: { 'fr-BE' => 'Description de mon idée' },
+          project_id: project.id,
+          pdf_pages: [1, 2],
+          user_consent: false
+        }
+      ]
+      service = described_class.new(create(:admin), 'fr-BE')
+      service.import idea_rows
+      ideas = project.reload.ideas
+      expect(ideas[0].idea_import).not_to be_nil
+      expect(ideas[0].idea_import.locale).to eq 'fr-BE'
     end
 
     it 'imports ideas as draft with publication info' do
