@@ -104,26 +104,26 @@ const EmptyState = () => {
         </Title>
         <Text>
           <FormattedMessage
-            {...messages.noIdeasYet}
+            {...(importPrintedFormsEnabled
+              ? messages.noIdeasYet
+              : messages.noIdeasYetPrintedFormsDisabled)}
             values={{
               importFile: <FormattedMessage {...sharedMessages.importFile} />,
             }}
           />
         </Text>
         <Box display="flex" flexDirection="row">
-          {importPrintedFormsEnabled && (
-            <Box mr="8px">
-              <Button
-                onClick={handleDownloadPDF}
-                width="auto"
-                icon="download"
-                data-cy="e2e-save-input-form-pdf"
-              >
-                {/* TODO: distinguish copies between surveys and inputs */}
-                <FormattedMessage {...buttonMessages.downloadInputForm} />
-              </Button>
-            </Box>
-          )}
+          <Box mr="8px">
+            <Button
+              onClick={handleDownloadPDF}
+              width="auto"
+              icon="download"
+              data-cy="e2e-save-input-form-pdf"
+            >
+              {/* TODO: distinguish copies between surveys and inputs */}
+              <FormattedMessage {...buttonMessages.downloadInputForm} />
+            </Button>
+          </Box>
           <Button
             mr="8px"
             buttonStyle="secondary"
