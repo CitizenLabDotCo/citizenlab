@@ -32,27 +32,29 @@ const SurveyNotActiveNotice = ({ project }: Props) => {
   const isMobileOrSmaller = useBreakpoint('phone');
 
   return (
-    <PageContainer>
-      <Box mx="auto">
-        <Title mt={isMobileOrSmaller ? '80px' : '160px'} textAlign="center">
-          {formatMessage(messages.surveyNotActiveTitle)}
-        </Title>
-        <Text mb="30px" textAlign="center">
-          {formatMessage(messages.surveyNotActiveDescription)}
-        </Text>
-        <Box display="flex" justifyContent="center">
-          <Button
-            icon="arrow-left"
-            pl="12px"
-            onClick={() => {
-              clHistory.push(`/projects/${project.attributes.slug}`);
-            }}
-          >
-            {formatMessage(messages.returnToProject)}
-          </Button>
+    <main>
+      <PageContainer>
+        <Box mx="auto">
+          <Title mt={isMobileOrSmaller ? '80px' : '160px'} textAlign="center">
+            {formatMessage(messages.surveyNotActiveTitle)}
+          </Title>
+          <Text mb="30px" textAlign="center">
+            {formatMessage(messages.surveyNotActiveDescription)}
+          </Text>
+          <Box display="flex" justifyContent="center">
+            <Button
+              icon="arrow-left"
+              pl="12px"
+              onClick={() => {
+                clHistory.push(`/projects/${project.attributes.slug}`);
+              }}
+            >
+              {formatMessage(messages.returnToProject)}
+            </Button>
+          </Box>
         </Box>
-      </Box>
-    </PageContainer>
+      </PageContainer>
+    </main>
   );
 };
 
