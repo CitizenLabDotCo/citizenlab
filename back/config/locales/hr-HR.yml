@@ -148,8 +148,8 @@ hr:
       section3:
         title: Pojedinosti
         description:
-      other:
-        title: Budući da ste odabrali 'drugo', o čemu razmišljate?
+      other_text_field:
+        title: Ako ste odabrali '{other_option}', na što mislite?
   custom_forms:
     categories:
       main_content:
