@@ -306,16 +306,37 @@ class XlsxService
   def generate_phase_baskets_users_sheet(workbook, sheet_name, phase)
     baskets = Basket.where(phase: phase).includes([:user])
     columns = user_custom_field_columns(:user)
+    ideas = phase.ideas
+    ideas_to_titles = add_suffix_to_duplicate_titles(ideas) # avoid losing columns with duplicate headers
 
-    phase.ideas.each do |idea|
+    ideas.each do |idea|
       columns << {
-        header: MultilocService.new.t(idea.title_multiloc),
+        header: ideas_to_titles.find { |hash| hash.key?(idea.id) }[idea.id],
         f: ->(b) { b.baskets_ideas.find_by(idea: idea)&.votes || 0 },
         skip_sanitization: true
       }
     end
 
     generate_sheet workbook, sheet_name, columns, baskets
+  end
+
+  def add_suffix_to_duplicate_titles(collection)
+    objects_to_titles = collection.map { |obj| { obj.id => multiloc_service.t(obj.title_multiloc) } }
+    titles = objects_to_titles.map(&:values).flatten
+    duplicated_titles = titles.select { |title| titles.count(title) > 1 }.uniq
+
+    duplicated_titles.each do |title|
+      suffix = 1
+
+      objects_to_titles.each do |hash|
+        next unless hash.value?(title)
+
+        hash[hash.keys.first] = "#{title} (#{suffix})"
+        suffix += 1
+      end
+    end
+
+    objects_to_titles
   end
 
   def value_getter_for_user_custom_field_columns(field, record_to_user, options)

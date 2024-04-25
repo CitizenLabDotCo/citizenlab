@@ -122,7 +122,7 @@ describe XlsxService do
     it 'contains extra columns for custom user fields' do
       create(:custom_field_domicile)
       area = create(:area, title_multiloc: { 'en' => 'Center' })
-      users.first.update!(custom_field_values: { 'domicile' => area.id })
+      users.first.update(custom_field_values: { 'domicile' => area.id })
 
       title_row = worksheet[0].cells.map(&:value)
       user_rows = worksheet.map { |row| row.cells.map(&:value) }
@@ -331,7 +331,7 @@ describe XlsxService do
       expect(workbook.worksheets[2].sheet_data.size).to eq(3) # Header row + 2 voters
     end
 
-    it 'contains one column for each idea in a phase worksheet' do
+    it 'contains one column for each idea in a phase, on each respective worksheet' do
       3.times do |i|
         header_row = workbook.worksheets[i][0].cells.map(&:value)
         expect(header_row).to match_array(%w[idea1 idea2 idea3 idea4])
@@ -348,10 +348,19 @@ describe XlsxService do
       expect(user_row[header_row.find_index 'idea4']).to eq 0
     end
 
+    it 'handles ideas wth same title multiloc' do
+      ideas[1].update(title_multiloc: ideas[0].title_multiloc)
+      header_row = workbook.worksheets[1][0].cells.map(&:value)
+      user_row = workbook.worksheets[1][1].cells.map(&:value)
+
+      expect(user_row[header_row.find_index 'idea1 (1)']).to eq 42
+      expect(user_row[header_row.find_index 'idea1 (2)']).to eq 24
+    end
+
     it 'contains extra columns for custom user fields' do
       create(:custom_field_domicile)
       area = create(:area, title_multiloc: { 'en' => 'Center' })
-      user1.update!(custom_field_values: { 'domicile' => area.id })
+      user1.update(custom_field_values: { 'domicile' => area.id })
 
       header_row = workbook.worksheets[1][0].cells.map(&:value)
       user_row = workbook.worksheets[1][1].cells.map(&:value)
