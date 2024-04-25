@@ -104,9 +104,10 @@ module BulkImportIdeas::Parsers
 
     # Overridden from base class to handle the way checkboxes are filled in the PDF
     # and detect fields from description as well as title
+    # @param [Array<Hash>] idea_fields - comes from IdeaBaseFileParser#structure_raw_fields
     def merge_idea_with_form_fields(idea_fields)
       merged_fields = []
-      form_fields = import_form_data[:fields]
+      form_fields = import_form_data[:fields] # Array<Hash> comes from IdeaPdfFormExporter#add_to_importer_fields
       form_fields.each do |form_field|
         idea_fields.each do |idea_field|
           if form_field[:name] == idea_field[:name] || form_field[:description] == idea_field[:name]
@@ -175,12 +176,15 @@ module BulkImportIdeas::Parsers
       end
     end
 
+    # @param [Hash] field - comes from IdeaPdfFormExporter#add_to_importer_fields
+    # @param [Array<Hash>] form_fields - comes from IdeaPdfFormExporter#add_to_importer_fields
     def process_field_value(field, form_fields)
       field = super field, form_fields
 
       if TEXT_FIELD_TYPES.include?(field[:input_type]) && field[:value]
-        # Strip out text that has leaked from the field description into the value
+        # Strip out text that has leaked from the field description and name into the value
         field[:value] = field[:value].gsub(/#{field[:description]}/, '')
+        field[:value] = field[:value].gsub(/\A\s*#{field[:name]}/, '')
 
         # Strip out out any text that has leaked from the next questions title into the value
         next_question = form_fields[form_fields.find_index(field) + 1]
