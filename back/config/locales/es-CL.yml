@@ -210,6 +210,7 @@ es-CL:
       budget: 'Presupuesto'
       created_at: 'Presentado en'
       published_at: 'Publicado en'
+      date_vote_submitted: 'Fecha de presentación del voto'
       comments_count: 'Respuestas'
       likes_count: 'Me gusta'
       dislikes_count: 'No me gusta'
