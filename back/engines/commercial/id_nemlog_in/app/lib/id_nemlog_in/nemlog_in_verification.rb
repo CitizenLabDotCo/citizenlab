@@ -22,6 +22,8 @@ module IdNemlogIn
         issuer
         private_key
         minimum_age
+        birthday_custom_field_key
+        birthyear_custom_field_key
       ]
     end
 
@@ -47,6 +49,16 @@ module IdNemlogIn
           private: true,
           type: 'integer',
           description: 'Minimum age required to verify (in years). No value means no age minimum.'
+        },
+        birthday_custom_field_key: {
+          private: true,
+          type: 'string',
+          description: 'The `key` attribute of the custom field where the birthdate should be stored. Leave empty to not store the birthday. If it\'s set, the field will be locked for verified users.'
+        },
+        birthyear_custom_field_key: {
+          private: true,
+          type: 'string',
+          description: 'The `key` attribute of the custom field where the birthyear should be stored (`birthyear` by default). Leave empty to not store the birthyear. If it\'s set, the field will be locked for verified users.'
         }
       }
     end

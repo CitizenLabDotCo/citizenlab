@@ -27,6 +27,7 @@ module IdCriipto
       %i[
         identity_source
         birthday_custom_field_key
+        birthyear_custom_field_key
         municipality_code_custom_field_key
         domain
         client_id
