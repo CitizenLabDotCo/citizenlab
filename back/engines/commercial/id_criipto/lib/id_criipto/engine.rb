@@ -5,9 +5,11 @@ module IdCriipto
     isolate_namespace IdCriipto
 
     config.to_prepare do
-      Verification.add_method(
-        CriiptoOmniauth.new
-      )
+      AppConfiguration::Settings.add_feature(IdCriipto::FeatureSpecification)
+
+      criipto = CriiptoOmniauth.new
+      Verification.add_method(criipto)
+      AuthenticationService.add_method('criipto', criipto)
     end
   end
 end
