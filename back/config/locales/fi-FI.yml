@@ -210,6 +210,7 @@ fi:
       budget: 'Budjetti'
       created_at: 'Lähetetty klo'
       published_at: 'Julkaistu klo'
+      date_vote_submitted: 'Äänestyspäivämäärä'
       comments_count: 'Kommentit'
       likes_count: 'Tykkää'
       dislikes_count: 'Ei pidä'
