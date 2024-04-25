@@ -588,7 +588,7 @@
   "app.components.admin.UserFilterConditions.predicate_not_posted_input": "no publicó una entrada",
   "app.components.admin.UserFilterConditions.predicate_not_reacted_comment_in": "no reaccionó al comentario",
   "app.components.admin.UserFilterConditions.predicate_not_reacted_input_in": "no reaccionó a los aportes",
-  "app.components.admin.UserFilterConditions.predicate_not_registered_to_an_event": "no te has inscrito en un acto",
+  "app.components.admin.UserFilterConditions.predicate_not_registered_to_an_event": "no te has inscrito en un evento",
   "app.components.admin.UserFilterConditions.predicate_not_volunteered_in": "no se ofreció como voluntario",
   "app.components.admin.UserFilterConditions.predicate_not_voted_in3": "no participó en la votación",
   "app.components.admin.UserFilterConditions.predicate_nothing": "nada",
