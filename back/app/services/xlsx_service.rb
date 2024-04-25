@@ -260,11 +260,12 @@ class XlsxService
   def generate_project_voting_xlsx(project_id)
     project = Project.find_by(id: project_id)
     phases = project.phases.where(participation_method: 'voting')
+    phases_to_titles = add_suffix_to_duplicate_titles(phases) # avoid ArgumentError due to duplicate sheet names
 
     pa = Axlsx::Package.new
 
     phases.each do |phase|
-      sheet_name = MultilocService.new.t phase.title_multiloc
+      sheet_name = phases_to_titles.find { |hash| hash.key?(phase.id) }[phase.id]
       generate_phase_baskets_users_sheet pa.workbook, sheet_name, phase
     end
 

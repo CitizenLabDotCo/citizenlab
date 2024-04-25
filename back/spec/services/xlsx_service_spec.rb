@@ -325,6 +325,16 @@ describe XlsxService do
       expect { workbook }.not_to raise_error
     end
 
+    it 'contains a worksheet for each voting phase' do
+      expect(workbook.worksheets.size).to eq(3)
+      expect(workbook.worksheets.map(&:sheet_name)).to match_array(['Phase 1', 'Phase 2', 'Phase 3'])
+    end
+
+    it 'handles phases same title multiloc values' do
+      phase1.update(title_multiloc: phase2.title_multiloc)
+      expect(workbook.worksheets.map(&:sheet_name)).to match_array(['Phase 2 (1)', 'Phase 2 (2)', 'Phase 3'])
+    end
+
     it 'contains a row for every user who voted in each phase' do
       expect(workbook.worksheets[0].sheet_data.size).to eq(3) # Header row + 2 voters
       expect(workbook.worksheets[1].sheet_data.size).to eq(2) # Header row + 1 voter
@@ -348,7 +358,7 @@ describe XlsxService do
       expect(user_row[header_row.find_index 'idea4']).to eq 0
     end
 
-    it 'handles ideas wth same title multiloc' do
+    it 'handles ideas with same title multiloc values' do
       ideas[1].update(title_multiloc: ideas[0].title_multiloc)
       header_row = workbook.worksheets[1][0].cells.map(&:value)
       user_row = workbook.worksheets[1][1].cells.map(&:value)
