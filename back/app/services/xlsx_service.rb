@@ -271,21 +271,6 @@ class XlsxService
     pa.to_stream
   end
 
-  def generate_phase_baskets_users_sheet(workbook, sheet_name, phase)
-    baskets = Basket.where(phase: phase).includes([:user])
-    columns = user_custom_field_columns(:user)
-
-    phase.ideas.each do |idea|
-      columns << {
-        header: MultilocService.new.t(idea.title_multiloc),
-        f: ->(b) { b.baskets_ideas.find_by(idea: idea)&.votes || 0 },
-        skip_sanitization: true
-      }
-    end
-
-    generate_sheet workbook, sheet_name, columns, baskets
-  end
-
   def user_custom_field_columns(record_to_user)
     # options keys are only unique in the scope of their field, namespacing to avoid collisions
     options = CustomFieldOption.all.index_by { |option| namespace(option.custom_field_id, option.key) }
@@ -316,6 +301,21 @@ class XlsxService
     when String
       multiloc_service.t(options[namespace(field.id, record.custom_field_values[field.key])]&.title_multiloc)
     end
+  end
+
+  def generate_phase_baskets_users_sheet(workbook, sheet_name, phase)
+    baskets = Basket.where(phase: phase).includes([:user])
+    columns = user_custom_field_columns(:user)
+
+    phase.ideas.each do |idea|
+      columns << {
+        header: MultilocService.new.t(idea.title_multiloc),
+        f: ->(b) { b.baskets_ideas.find_by(idea: idea)&.votes || 0 },
+        skip_sanitization: true
+      }
+    end
+
+    generate_sheet workbook, sheet_name, columns, baskets
   end
 
   def value_getter_for_user_custom_field_columns(field, record_to_user, options)
