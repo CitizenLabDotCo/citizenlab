@@ -384,7 +384,7 @@ RSpec.describe UiSchemaGeneratorService do
         # NOTE: Checking 10 loops to make sure the chance of a flaky test here is very very low
         attempts = []
         10.times do
-          options = generator.visit_select(field).dig(:options, :enumNames)
+          options = generator.visit_select(CustomField.find(field.id)).dig(:options, :enumNames)
           expect(options.last).to eq 'Other'
           attempts << options
         end

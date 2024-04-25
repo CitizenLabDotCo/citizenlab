@@ -189,6 +189,9 @@ Metrics/BlockNesting:
 Metrics/ClassLength:
   Max: 689
 
+Metrics/ModuleLength:
+  Max: 120
+
 # Offense count: 1
 # Configuration parameters: LengthThreshold.
 Metrics/CollectionLiteralLength:
