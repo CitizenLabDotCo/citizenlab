@@ -148,8 +148,8 @@ fi:
       section3:
         title: Yksityiskohdat
         description:
-      other:
-        title: Koska valitsit "muu", mitä ajattelet?
+      other_text_field:
+        title: Jos valitsit{other_option}, mitä ajattelet?
   custom_forms:
     categories:
       main_content:
