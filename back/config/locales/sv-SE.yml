@@ -210,6 +210,7 @@ sv:
       budget: 'Budget'
       created_at: 'Skickades in'
       published_at: 'Publicerades'
+      date_vote_submitted: 'Datum för avgivande av röst'
       comments_count: 'Kommentarer'
       likes_count: 'Gillar'
       dislikes_count: 'Ogillar'
