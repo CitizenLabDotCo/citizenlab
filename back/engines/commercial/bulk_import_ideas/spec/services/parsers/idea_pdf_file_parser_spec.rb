@@ -525,4 +525,26 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
       expect(field[:value]).to eq 'This is the text that we really want. Four word field title'
     end
   end
+
+  describe 'fix_email_address' do
+    it 'removes spaces from email addresses' do
+      expect(service.send(:fix_email_address, 'john  @rambo.com')).to eq 'john@rambo.com'
+    end
+
+    it 'replaces commas with dots' do
+      expect(service.send(:fix_email_address, 'bart,simpson@simpsons.com')).to eq 'bart.simpson@simpsons.com'
+    end
+
+    it 'fixes common suffixes' do
+      expect(service.send(:fix_email_address, 'homer@simpsonscom')).to eq 'homer@simpsons.com'
+      expect(service.send(:fix_email_address, 'homer@simpsonsco')).to eq 'homer@simpsons.co'
+      expect(service.send(:fix_email_address, 'homer@simpsonsuk')).to eq 'homer@simpsons.uk'
+      expect(service.send(:fix_email_address, 'homer@simpsonsfr')).to eq 'homer@simpsons.fr'
+      expect(service.send(:fix_email_address, 'homer@simpsonscouk')).to eq 'homer@simpsons.co.uk'
+    end
+
+    it 'returns nil if it cannot correct the email address' do
+      expect(service.send(:fix_email_address, 'john_rambo.com')).to be_nil
+    end
+  end
 end
