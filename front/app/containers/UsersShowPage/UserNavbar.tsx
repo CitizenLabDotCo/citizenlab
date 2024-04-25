@@ -138,10 +138,9 @@ const UserNavbar = memo<Props>(({ user }) => {
   });
   const showFollowingTab = isFollowingEnabled && authUser?.data?.id === user.id;
 
-  if (!authUser) return null;
   const followingTab: TabData = {
     label: formatMessage(messages.followingWithCount, {
-      followingCount: authUser.data.attributes.followings_count,
+      followingCount: authUser?.data.attributes.followings_count || 0,
     }),
     active: pathname.endsWith('following'),
     path: 'following',
@@ -150,7 +149,7 @@ const UserNavbar = memo<Props>(({ user }) => {
   };
   const eventsTab: TabData = {
     label: formatMessage(messages.eventsWithCount, {
-      eventsCount: eventsCount || '0',
+      eventsCount: eventsCount || 0,
     }),
     active: pathname.endsWith('events'),
     path: 'events',
@@ -161,7 +160,7 @@ const UserNavbar = memo<Props>(({ user }) => {
   const tabs: TabData[] = [
     {
       label: formatMessage(messages.postsWithCount, {
-        ideasCount: ideasCount?.data.attributes.count || '0',
+        ideasCount: ideasCount?.data.attributes.count || 0,
       }),
       active: pathname.endsWith('submissions'),
       path: 'submissions',
@@ -169,7 +168,7 @@ const UserNavbar = memo<Props>(({ user }) => {
     },
     {
       label: formatMessage(messages.commentsWithCount, {
-        commentsCount: commentsCount?.data.attributes.count || '0',
+        commentsCount: commentsCount?.data.attributes.count || 0,
       }),
       active: pathname.endsWith('comments'),
       path: 'comments',
@@ -211,7 +210,7 @@ const UserNavbar = memo<Props>(({ user }) => {
           onClick={() =>
             clHistory.push(`/profile/${user.attributes.slug}/${tab.path}`)
           }
-          className={`${tab.active ? 'active' : ''} ${tab.className || ''}`}
+          className={`${tab.className || ''} ${tab.active ? 'active' : ''}`}
           role="tab"
           aria-selected={tab.active}
           data-cy={tab.className}
