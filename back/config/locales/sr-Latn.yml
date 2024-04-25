@@ -210,6 +210,7 @@ sr-Latn:
       budget: 'Budžet'
       created_at: 'Predato u'
       published_at: 'Objavljeno u'
+      date_vote_submitted: 'Date vote submitted'
       comments_count: 'Komentari'
       likes_count: 'Свиђа'
       dislikes_count: 'Не свиђа ми се'
