@@ -14,6 +14,7 @@ import { useParams } from 'react-router-dom';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import PDFExportModal, {
@@ -42,6 +43,9 @@ const EmptyState = () => {
   };
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
+  const importPrintedFormsEnabled = useFeatureFlag({
+    name: 'import_printed_forms',
+  });
 
   if (!project || !phase) {
     return null;
@@ -100,7 +104,9 @@ const EmptyState = () => {
         </Title>
         <Text>
           <FormattedMessage
-            {...messages.noIdeasYet}
+            {...(importPrintedFormsEnabled
+              ? messages.noIdeasYet
+              : messages.noIdeasYetPrintedFormsDisabled)}
             values={{
               importFile: <FormattedMessage {...sharedMessages.importFile} />,
             }}
