@@ -210,6 +210,7 @@ lb:
       budget: 'Budget'
       created_at: 'Agereecht bei'
       published_at: 'Verëffentlecht bei'
+      date_vote_submitted: 'Datum Vote presentéiert'
       comments_count: 'Kommentaren'
       likes_count: 'Gefällt'
       dislikes_count: 'Net gär'
