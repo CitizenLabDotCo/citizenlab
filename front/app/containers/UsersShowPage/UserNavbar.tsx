@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, KeyboardEvent, useRef } from 'react';
 
 import {
   fontSizes,
@@ -114,13 +114,14 @@ interface Props {
 interface TabData {
   label: string;
   active: boolean;
-  path: string;
+  path: 'submissions' | 'comments' | 'following' | 'events';
   className?: string;
   icon: IconNames;
 }
 
 const UserNavbar = memo<Props>(({ user }) => {
   const { data: ideasCount } = useUserIdeasCount({ userId: user.id });
+  const tabsRef = useRef({});
   const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('phone');
   const { pathname } = useLocation();
@@ -157,7 +158,7 @@ const UserNavbar = memo<Props>(({ user }) => {
     className: 'e2e-events-nav',
   };
 
-  const tabsData: TabData[] = [
+  const tabs: TabData[] = [
     {
       label: formatMessage(messages.postsWithCount, {
         ideasCount: ideasCount?.data.attributes.count || '0',
@@ -179,9 +180,31 @@ const UserNavbar = memo<Props>(({ user }) => {
     ...(showEventTab ? [eventsTab] : []),
   ];
 
+  const handleKeyDownTab = (
+    { key }: KeyboardEvent<HTMLButtonElement>,
+    path: string
+  ) => {
+    if (key !== 'ArrowLeft' && key !== 'ArrowRight') return;
+
+    const currentTabIndex = tabs.findIndex((tabData) => tabData.path === path);
+    let nextTabIndex: number;
+
+    if (key === 'ArrowLeft') {
+      nextTabIndex =
+        currentTabIndex === 0 ? tabs.length - 1 : currentTabIndex - 1;
+    } else {
+      nextTabIndex =
+        currentTabIndex === tabs.length - 1 ? 0 : currentTabIndex + 1;
+    }
+    const nextTab = tabs[nextTabIndex];
+
+    clHistory.push(`/profile/${user.attributes.slug}/${nextTab.path}`);
+    tabsRef.current[nextTab.path].focus();
+  };
+
   return (
     <UserNavbarWrapper role="tablist">
-      {tabsData.map((tab) => (
+      {tabs.map((tab) => (
         <UserNavbarButton
           key={tab.path}
           onMouseDown={removeFocusAfterMouseClick}
@@ -193,6 +216,9 @@ const UserNavbar = memo<Props>(({ user }) => {
           aria-selected={tab.active}
           data-cy={tab.className}
           tabIndex={tab.active ? 0 : -1}
+          onKeyDown={(event) => handleKeyDownTab(event, tab.path)}
+          ref={(el) => el && (tabsRef.current[tab.path] = el)}
+          aria-controls={`tab-${tab.path}`}
         >
           <Border aria-hidden />
           <TabIcon name={tab.icon} ariaHidden />
