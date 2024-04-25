@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import userCustomFieldsKeys from 'api/user_custom_fields/keys';
-import usersByBirthyearKeys from 'api/users_by_birthyear/keys';
 import usersByCustomFieldKeys from 'api/users_by_custom_field/keys';
 import usersByGenderKeys from 'api/users_by_gender/keys';
 
@@ -25,10 +24,6 @@ const useDeleteReferenceDistribution = () => {
     onSuccess: (_data, id) => {
       queryClient.invalidateQueries({
         queryKey: userCustomFieldsKeys.lists(),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: usersByBirthyearKeys.all(),
       });
 
       queryClient.invalidateQueries({

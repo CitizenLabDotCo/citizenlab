@@ -17,7 +17,6 @@
 #  last_name                           :string
 #  locale                              :string
 #  bio_multiloc                        :jsonb
-#  cl1_migrated                        :boolean          default(FALSE)
 #  invite_status                       :string
 #  custom_field_values                 :jsonb
 #  registration_completed_at           :datetime
@@ -62,7 +61,10 @@ class User < ApplicationRecord
     # Asynchronously deletes all users in a specified scope with associated side effects.
     # By default, this method deletes all users on the platform.
     def destroy_all_async(scope = User)
-      scope.pluck(:id).each { |id| DeleteUserJob.perform_later(id) }
+      scope.pluck(:id).each.with_index do |id, idx|
+        # Spread out the deletion of users to avoid throttling.
+        DeleteUserJob.set(wait: (idx / 5.0).seconds).perform_later(id)
+      end
     end
 
     def roles_json_schema

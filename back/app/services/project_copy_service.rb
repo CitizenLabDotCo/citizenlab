@@ -462,7 +462,6 @@ class ProjectCopyService < TemplateService
       'last_name' => user.last_name,
       'locale' => user.locale,
       'bio_multiloc' => user.bio_multiloc,
-      'cl1_migrated' => user.cl1_migrated,
       'custom_field_values' => user.custom_field_values.delete_if { |_k, v| v.nil? },
       'registration_completed_at' => shift_timestamp(user.registration_completed_at, shift_timestamps)&.iso8601,
       'verified' => user.verified,
