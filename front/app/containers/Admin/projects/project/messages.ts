@@ -586,4 +586,8 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.participationTab',
     defaultMessage: 'Participants',
   },
+  messagingTab: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.messagingTab',
+    defaultMessage: 'Messaging',
+  },
 });

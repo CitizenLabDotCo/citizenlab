@@ -19,6 +19,7 @@ const SurveyFormBuilder = lazy(
 );
 const ProjectParticipation = lazy(() => import('./project/participation'));
 const ProjectTraffic = lazy(() => import('./project/traffic'));
+const ProjectMessaging = lazy(() => import('./project/messaging'));
 const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));
 const AdminProjectNew = lazy(() => import('./new'));
@@ -70,6 +71,7 @@ export enum projectsRoutes {
   projectParticipation = 'participation',
   projectSettingsDescription = 'description',
   projectEvents = 'events',
+  projectMessaging = 'messaging',
   projectEventsNew = 'events/new',
   projectEventsId = 'events/:id',
   projectSettingsTags = 'tags',
@@ -219,6 +221,14 @@ const createAdminProjectsRoutes = () => {
             element: (
               <PageLoading>
                 <ProjectTraffic />
+              </PageLoading>
+            ),
+          },
+          {
+            path: projectsRoutes.projectMessaging,
+            element: (
+              <PageLoading>
+                <ProjectMessaging />
               </PageLoading>
             ),
           },
