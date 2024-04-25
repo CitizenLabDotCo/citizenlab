@@ -48,15 +48,15 @@ describe XlsxService do
 
       document1 = RubyXL::Parser.parse_buffer(multiple_xlsx[0])
       expect(document1[0].count).to eq 4
-      expect(document1[0].map { |r| r.cells.map(&:value) }).to eq [['col1', 'col2'], ['a', 1], ['b', 2], ['c', 3]]
+      expect(document1[0].map { |r| r.cells.map(&:value) }).to eq [%w[col1 col2], ['a', 1], ['b', 2], ['c', 3]]
 
       document2 = RubyXL::Parser.parse_buffer(multiple_xlsx[1])
       expect(document2[0].count).to eq 4
-      expect(document2[0].map { |r| r.cells.map(&:value) }).to eq [['col1', 'col2'], ['d', 4], ['e', 5], ['f', 6]]
+      expect(document2[0].map { |r| r.cells.map(&:value) }).to eq [%w[col1 col2], ['d', 4], ['e', 5], ['f', 6]]
 
       document3 = RubyXL::Parser.parse_buffer(multiple_xlsx[2])
       expect(document3[0].count).to eq 2
-      expect(document3[0].map { |r| r.cells.map(&:value) }).to eq [['col1', 'col2'], ['g', 7]]
+      expect(document3[0].map { |r| r.cells.map(&:value) }).to eq [%w[col1 col2], ['g', 7]]
     end
   end
 end

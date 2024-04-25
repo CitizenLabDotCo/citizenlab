@@ -81,6 +81,7 @@ resource 'BulkImportIdeasImportIdeas' do
         before do
           ActiveJob::Base.queue_adapter.enqueued_jobs.clear
         end
+
         context 'xlsx import' do
           let(:format) { 'xlsx' }
           let(:file) { create_project_bulk_import_ideas_xlsx }

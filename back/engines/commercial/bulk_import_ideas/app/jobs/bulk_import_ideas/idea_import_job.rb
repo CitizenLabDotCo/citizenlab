@@ -5,12 +5,12 @@ module BulkImportIdeas
     self.priority = 60
 
     CONSTANTIZER = {
-        'xlsx' => {
-          exporter_class: Exporters::IdeaXlsxFormExporter,
-        },
-        'pdf' => {
-          exporter_class: Exporters::IdeaPdfFormExporter,
-        }
+      'xlsx' => {
+        exporter_class: Exporters::IdeaXlsxFormExporter
+      },
+      'pdf' => {
+        exporter_class: Exporters::IdeaPdfFormExporter
+      }
     }
 
     def run(format, files, import_user, locale, phase, personal_data_enabled)
