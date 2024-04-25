@@ -210,6 +210,7 @@ el:
       budget: 'Προϋπολογισμός'
       created_at: 'Υποβλήθηκε στο'
       published_at: 'Δημοσιεύθηκε στις'
+      date_vote_submitted: 'Ημερομηνία υποβολής ψήφου'
       comments_count: 'Σχόλια'
       likes_count: 'Μου αρέσει'
       dislikes_count: 'Απεχθάνεται το'
