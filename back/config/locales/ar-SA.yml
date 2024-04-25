@@ -148,8 +148,8 @@ ar:
       section3:
         title: تفاصيل
         description:
-      other:
-        title: بما أنك اخترت "أخرى"، ما الذي تفكر فيه؟
+      other_text_field:
+        title: إذا اخترت '{other_option}'، ما الذي تفكر فيه؟
   custom_forms:
     categories:
       main_content:
