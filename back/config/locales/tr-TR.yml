@@ -148,8 +148,8 @@ tr:
       section3:
         title: Detaylar
         description:
-      other:
-        title: '''Diğer''i seçtiğinize göre, ne düşünüyorsunuz?'
+      other_text_field:
+        title: Eğer '{other_option}' adresini seçtiyseniz, ne düşünüyorsunuz?
   custom_forms:
     categories:
       main_content:
