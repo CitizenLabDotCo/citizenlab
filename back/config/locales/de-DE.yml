@@ -148,8 +148,8 @@ de:
       section3:
         title: Details
         description:
-      other:
-        title: '"Sonstiges" erläutern'
+      other_text_field:
+        title: Wenn Sie '{other_option}' gewählt haben, woran denken Sie dann?
   custom_forms:
     categories:
       main_content:
