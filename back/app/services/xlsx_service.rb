@@ -318,6 +318,8 @@ class XlsxService
       }
     end
 
+    columns << { header: 'Date vote submitted', f: ->(b) { b.submitted_at }, skip_sanitization: true }
+
     generate_sheet workbook, sheet_name, columns, baskets
   end
 

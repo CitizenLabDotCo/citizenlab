@@ -344,7 +344,7 @@ describe XlsxService do
     it 'contains one column for each idea in a phase, on each respective worksheet' do
       3.times do |i|
         header_row = workbook.worksheets[i][0].cells.map(&:value)
-        expect(header_row).to match_array(%w[idea1 idea2 idea3 idea4])
+        expect(header_row).to match_array(['idea1', 'idea2', 'idea3', 'idea4', 'Date vote submitted'])
       end
     end
 
@@ -356,6 +356,18 @@ describe XlsxService do
       expect(user_row[header_row.find_index 'idea2']).to eq 24
       expect(user_row[header_row.find_index 'idea3']).to eq 0
       expect(user_row[header_row.find_index 'idea4']).to eq 0
+    end
+
+    it 'shows the date each vote basket was submitted (or nil if not submitted)' do
+      basket1.update(submitted_at: nil) # user1 started allocating votes to ideas, but did not submit the vote selection
+      header_row = workbook.worksheets[0][0].cells.map(&:value)
+      user_row1 = workbook.worksheets[0][1].cells.map(&:value)
+      user_row2 = workbook.worksheets[0][2].cells.map(&:value)
+
+      expect([
+        user_row1[header_row.find_index 'Date vote submitted'].to_i,
+        user_row2[header_row.find_index 'Date vote submitted'].to_i
+      ]).to match_array [0, basket2.submitted_at.to_i]
     end
 
     it 'handles ideas with same title multiloc values' do
