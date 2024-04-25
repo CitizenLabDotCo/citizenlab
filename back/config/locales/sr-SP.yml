@@ -210,6 +210,7 @@ sr-Cyrl:
       budget: 'Буџет'
       created_at: 'Послано на'
       published_at: 'Објављено на'
+      date_vote_submitted: 'Date vote submitted'
       comments_count: 'Коментари'
       likes_count: 'Свиђа'
       dislikes_count: 'Не свиђа ми се'
