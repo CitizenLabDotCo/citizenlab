@@ -51,7 +51,7 @@ const NoCampaignsDescription = styled.p`
 const CustomEmails = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const { data: campaigns, fetchNextPage } = useCampaigns({
-    campaignNames: ['manual'],
+    campaignNames: ['manual', 'manual_project_participants'],
     pageSize: 10,
   });
 
