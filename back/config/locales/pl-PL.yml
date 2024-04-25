@@ -210,6 +210,7 @@ pl:
       budget: 'Budżet'
       created_at: 'Zgłoszone'
       published_at: 'Opublikowane'
+      date_vote_submitted: 'Data oddania głosu'
       comments_count: 'Komentarze'
       likes_count: 'Lubi'
       dislikes_count: 'Nie lubi'
