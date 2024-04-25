@@ -210,6 +210,7 @@ pt:
       budget: 'Orçamento'
       created_at: 'Submetido em'
       published_at: 'Publicado em'
+      date_vote_submitted: 'Data de envio do voto'
       comments_count: 'Comentários'
       likes_count: 'Curtidas'
       dislikes_count: 'Não curtidas'
