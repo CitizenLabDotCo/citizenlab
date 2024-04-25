@@ -210,6 +210,7 @@ tr:
       budget: 'Bütçe'
       created_at: 'Şu adrese gönderildi'
       published_at: 'Şu adreste yayınlandı'
+      date_vote_submitted: 'Oylamanın sunulduğu tarih'
       comments_count: 'Yorumlar'
       likes_count: 'Beğeniler'
       dislikes_count: 'Sevmediğim'
