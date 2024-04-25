@@ -3,9 +3,10 @@ import React from 'react';
 import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout';
-import { Multiloc } from 'typings';
+import { useParams } from 'react-router-dom';
 
 import useProjectFiles from 'api/project_files/useProjectFiles';
+import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -20,21 +21,23 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import Editor from '../../Editor';
 
-type PreviewProps = {
-  projectId: string;
-  projectTitle: Multiloc;
-};
-
 const handleLoadImages = () => {
   eventEmitter.emit(IMAGES_LOADED_EVENT);
 };
 
-const Preview = ({ projectId, projectTitle }: PreviewProps) => {
+const Preview = () => {
+  const { slug } = useParams() as {
+    slug: string;
+  };
+  const { data: project } = useProjectBySlug(slug);
+  const projectId = project?.data?.id;
+  const projectTitle = project?.data?.attributes.title_multiloc;
+
   const localize = useLocalize();
-  const { data: projectFiles } = useProjectFiles(projectId);
+  const { data: projectFiles } = useProjectFiles(projectId || null);
 
   const { data: projectDescriptionBuilderLayout, isInitialLoading } =
-    useProjectDescriptionBuilderLayout(projectId);
+    useProjectDescriptionBuilderLayout(projectId || null);
 
   const projectDescriptionBuilderContent =
     projectDescriptionBuilderLayout &&
@@ -66,7 +69,7 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
           )}
         </Box>
       )}
-      {!isInitialLoading && !projectDescriptionBuilderContent && (
+      {!isInitialLoading && !projectDescriptionBuilderContent && projectId && (
         <Box data-testid="projectDescriptionBuilderProjectDescription">
           <ProjectInfo projectId={projectId} />
         </Box>

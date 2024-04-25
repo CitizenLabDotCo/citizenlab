@@ -5,7 +5,7 @@ const baseKey = { type: 'project_description_builder' };
 const projectDescriptionBuilderKeys = {
   all: () => [baseKey],
   items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({ projectId }: { projectId: string }) => [
+  item: ({ projectId }: { projectId: string | null }) => [
     {
       ...baseKey,
       operation: 'item',

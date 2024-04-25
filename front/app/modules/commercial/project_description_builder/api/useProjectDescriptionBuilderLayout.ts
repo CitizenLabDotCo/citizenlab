@@ -11,14 +11,14 @@ import {
   ProjectDescriptionBuilderKeys,
 } from './types';
 
-const fetchProjectDescriptionBuilderLayout = (projectId: string) => {
+const fetchProjectDescriptionBuilderLayout = (projectId: string | null) => {
   return fetcher<IProjectDescriptionBuilderLayout>({
     path: `/projects/${projectId}/content_builder_layouts/project_description`,
     action: 'get',
   });
 };
 
-const useProjectDescriptionBuilderLayout = (projectId: string) => {
+const useProjectDescriptionBuilderLayout = (projectId: string | null) => {
   const { data: project } = useProjectById(projectId);
 
   return useQuery<
@@ -29,7 +29,9 @@ const useProjectDescriptionBuilderLayout = (projectId: string) => {
   >({
     queryKey: projectDescriptionBuilderKeys.item({ projectId }),
     queryFn: () => fetchProjectDescriptionBuilderLayout(projectId),
-    enabled: !!project && project.data.attributes.uses_content_builder,
+    enabled:
+      !!projectId ||
+      (!!project && project.data.attributes.uses_content_builder),
   });
 };
 

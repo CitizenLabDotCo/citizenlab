@@ -18,12 +18,7 @@ const ContentViewer = ({ params: { slug } }: WithRouterProps) => {
     return null;
   }
 
-  return (
-    <Viewer
-      projectId={project.data.id}
-      projectTitle={project.data.attributes.title_multiloc}
-    />
-  );
+  return <Viewer />;
 };
 
 export default withRouter(ContentViewer);
