@@ -83,7 +83,7 @@ const CustomEmails = () => {
     );
   } else {
     return (
-      <>
+      <Box p="44px">
         <Box
           mb="28px"
           display="flex"
@@ -124,7 +124,7 @@ const CustomEmails = () => {
             </Box>
           )}
         </Box>
-      </>
+      </Box>
     );
   }
 };

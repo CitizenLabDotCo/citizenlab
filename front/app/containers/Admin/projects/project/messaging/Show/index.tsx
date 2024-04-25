@@ -123,7 +123,10 @@ const SendNowWarning = styled.div`
 `;
 
 const Show = () => {
-  const { campaignId } = useParams() as { campaignId: string };
+  const { projectId, campaignId } = useParams() as {
+    projectId: string;
+    campaignId: string;
+  };
 
   const { data: user } = useAuthUser();
   const { data: tenant } = useAppConfiguration();
@@ -212,143 +215,145 @@ const Show = () => {
     const noGroupsSelected = groupIds.length === 0;
 
     return (
-      <Box background={colors.white} p="40px" id="e2e-custom-email-container">
-        <PageHeader>
-          <PageTitleWrapper>
-            <Title mr="12px">
-              <T value={campaign.data.attributes.subject_multiloc} />
-            </Title>
-            {isDraft(campaign.data) ? (
-              <StatusLabel
-                backgroundColor={colors.brown}
-                text={<FormattedMessage {...messages.draft} />}
-              />
-            ) : (
-              <StatusLabel
-                backgroundColor={colors.success}
-                text={<FormattedMessage {...messages.sent} />}
-              />
-            )}
-          </PageTitleWrapper>
-          {isDraft(campaign.data) && (
-            <Buttons>
-              <Button
-                linkTo={`/admin/messaging/emails/custom/${campaign.data.id}/edit`}
-                buttonStyle="secondary"
-              >
-                <FormattedMessage {...messages.editButtonLabel} />
-              </Button>
-              <Button
-                buttonStyle="admin-dark"
-                icon="send"
-                iconPos="right"
-                onClick={handleSend(noGroupsSelected)}
-                disabled={isLoading}
-                processing={isLoading}
-              >
-                <FormattedMessage {...messages.send} />
-              </Button>
-            </Buttons>
-          )}
-        </PageHeader>
-        {apiSendErrors && (
-          <Box mb="8px">
-            <Error apiErrors={apiSendErrors.errors['base']} />
-          </Box>
-        )}
-        <CampaignHeader>
-          <StampIcon />
-          <FromTo>
-            <div>
-              <FromToHeader>
-                <FormattedMessage {...messages.campaignFrom} />
-                &nbsp;
-              </FromToHeader>
-              <span>{senderName}</span>
-            </div>
-            <div>
-              <FromToHeader>
-                <FormattedMessage {...messages.campaignTo} />
-                &nbsp;
-              </FromToHeader>
-              {noGroupsSelected && (
-                <GroupLink onClick={handleGroupLinkClick()}>
-                  {formatMessage(messages.allUsers)}
-                </GroupLink>
+      <Box p="44px">
+        <Box background={colors.white} p="40px" id="e2e-custom-email-container">
+          <PageHeader>
+            <PageTitleWrapper>
+              <Title mr="12px">
+                <T value={campaign.data.attributes.subject_multiloc} />
+              </Title>
+              {isDraft(campaign.data) ? (
+                <StatusLabel
+                  backgroundColor={colors.brown}
+                  text={<FormattedMessage {...messages.draft} />}
+                />
+              ) : (
+                <StatusLabel
+                  backgroundColor={colors.success}
+                  text={<FormattedMessage {...messages.sent} />}
+                />
               )}
-              {groupIds.map((groupId, index) => (
-                <GetGroup key={groupId} id={groupId}>
-                  {(group) => {
-                    if (index < groupIds.length - 1) {
+            </PageTitleWrapper>
+            {isDraft(campaign.data) && (
+              <Buttons>
+                <Button
+                  linkTo={`/admin/projects/${projectId}/messaging/${campaign.data.id}/edit`}
+                  buttonStyle="secondary"
+                >
+                  <FormattedMessage {...messages.editButtonLabel} />
+                </Button>
+                <Button
+                  buttonStyle="admin-dark"
+                  icon="send"
+                  iconPos="right"
+                  onClick={handleSend(noGroupsSelected)}
+                  disabled={isLoading}
+                  processing={isLoading}
+                >
+                  <FormattedMessage {...messages.send} />
+                </Button>
+              </Buttons>
+            )}
+          </PageHeader>
+          {apiSendErrors && (
+            <Box mb="8px">
+              <Error apiErrors={apiSendErrors.errors['base']} />
+            </Box>
+          )}
+          <CampaignHeader>
+            <StampIcon />
+            <FromTo>
+              <div>
+                <FromToHeader>
+                  <FormattedMessage {...messages.campaignFrom} />
+                  &nbsp;
+                </FromToHeader>
+                <span>{senderName}</span>
+              </div>
+              <div>
+                <FromToHeader>
+                  <FormattedMessage {...messages.campaignTo} />
+                  &nbsp;
+                </FromToHeader>
+                {noGroupsSelected && (
+                  <GroupLink onClick={handleGroupLinkClick()}>
+                    {formatMessage(messages.allUsers)}
+                  </GroupLink>
+                )}
+                {groupIds.map((groupId, index) => (
+                  <GetGroup key={groupId} id={groupId}>
+                    {(group) => {
+                      if (index < groupIds.length - 1) {
+                        return (
+                          <GroupLink onClick={handleGroupLinkClick(groupId)}>
+                            {!isNilOrError(group) &&
+                              localize(group.attributes.title_multiloc)}
+                            ,{' '}
+                          </GroupLink>
+                        );
+                      }
                       return (
                         <GroupLink onClick={handleGroupLinkClick(groupId)}>
                           {!isNilOrError(group) &&
                             localize(group.attributes.title_multiloc)}
-                          ,{' '}
                         </GroupLink>
                       );
-                    }
-                    return (
-                      <GroupLink onClick={handleGroupLinkClick(groupId)}>
-                        {!isNilOrError(group) &&
-                          localize(group.attributes.title_multiloc)}
-                      </GroupLink>
-                    );
-                  }}
-                </GetGroup>
-              ))}
-            </div>
-          </FromTo>
-          {isDraft(campaign.data) && (
-            <StyledButtonContainer>
-              <SendTestEmailButton onClick={handleSendTestEmail}>
-                <FormattedMessage {...messages.sendTestEmailButton} />
-              </SendTestEmailButton>
-              &nbsp;
-              <IconTooltip
-                content={
-                  <FormattedMessage {...messages.sendTestEmailTooltip} />
-                }
-              />
-            </StyledButtonContainer>
+                    }}
+                  </GetGroup>
+                ))}
+              </div>
+            </FromTo>
+            {isDraft(campaign.data) && (
+              <StyledButtonContainer>
+                <SendTestEmailButton onClick={handleSendTestEmail}>
+                  <FormattedMessage {...messages.sendTestEmailButton} />
+                </SendTestEmailButton>
+                &nbsp;
+                <IconTooltip
+                  content={
+                    <FormattedMessage {...messages.sendTestEmailTooltip} />
+                  }
+                />
+              </StyledButtonContainer>
+            )}
+          </CampaignHeader>
+
+          {isDraft(campaign.data) ? (
+            <DraftCampaignDetails campaignId={campaign.data.id} />
+          ) : (
+            <SentCampaignDetails campaignId={campaign.data.id} />
           )}
-        </CampaignHeader>
 
-        {isDraft(campaign.data) ? (
-          <DraftCampaignDetails campaignId={campaign.data.id} />
-        ) : (
-          <SentCampaignDetails campaignId={campaign.data.id} />
-        )}
-
-        <Modal
-          opened={showSendConfirmationModal}
-          close={closeSendConfirmationModal}
-          header={<FormattedMessage {...messages.confirmSendHeader} />}
-        >
-          <ModalContainer>
-            <SendNowWarning>
-              <FormattedMessage {...messages.toAllUsers} />
-            </SendNowWarning>
-            <ButtonsWrapper>
-              <Button
-                buttonStyle="secondary"
-                linkTo={`/admin/messaging/emails/custom/${campaign.data.id}/edit`}
-              >
-                <FormattedMessage {...messages.changeRecipientsButton} />
-              </Button>
-              <Button
-                buttonStyle="primary"
-                onClick={confirmSendCampaign(campaign.data.id)}
-                icon="send"
-                iconPos="right"
-                disabled={isLoading}
-                processing={isLoading}
-              >
-                <FormattedMessage {...messages.sendNowButton} />
-              </Button>
-            </ButtonsWrapper>
-          </ModalContainer>
-        </Modal>
+          <Modal
+            opened={showSendConfirmationModal}
+            close={closeSendConfirmationModal}
+            header={<FormattedMessage {...messages.confirmSendHeader} />}
+          >
+            <ModalContainer>
+              <SendNowWarning>
+                <FormattedMessage {...messages.toAllUsers} />
+              </SendNowWarning>
+              <ButtonsWrapper>
+                <Button
+                  buttonStyle="secondary"
+                  linkTo={`/admin/projects/${projectId}/messaging/${campaign.data.id}/edit`}
+                >
+                  <FormattedMessage {...messages.changeRecipientsButton} />
+                </Button>
+                <Button
+                  buttonStyle="primary"
+                  onClick={confirmSendCampaign(campaign.data.id)}
+                  icon="send"
+                  iconPos="right"
+                  disabled={isLoading}
+                  processing={isLoading}
+                >
+                  <FormattedMessage {...messages.sendNowButton} />
+                </Button>
+              </ButtonsWrapper>
+            </ModalContainer>
+          </Modal>
+        </Box>
       </Box>
     );
   }

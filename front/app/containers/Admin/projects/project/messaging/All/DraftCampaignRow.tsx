@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box, StatusLabel, colors } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
 
 import { ICampaignData } from 'api/campaigns/types';
 
@@ -16,26 +17,29 @@ interface Props {
   campaign: ICampaignData;
 }
 
-const DraftCampaignRow = ({ campaign }: Props) => (
-  <Row id={campaign.id}>
-    <TextCell className="expand">
-      <T value={campaign.attributes.subject_multiloc} />
-    </TextCell>
-    <StatusLabel
-      minWidth="94px"
-      backgroundColor={colors.orange}
-      text={<FormattedMessage {...messages.draft} />}
-    />
-    <Box minWidth="220px" display="flex" justifyContent="flex-end">
-      <Button
-        linkTo={`/admin/messaging/emails/custom/${campaign.id}`}
-        buttonStyle="secondary"
-        icon="edit"
-      >
-        <FormattedMessage {...messages.manageButtonLabel} />
-      </Button>
-    </Box>
-  </Row>
-);
+const DraftCampaignRow = ({ campaign }: Props) => {
+  const { projectId } = useParams();
+  return (
+    <Row id={campaign.id}>
+      <TextCell className="expand">
+        <T value={campaign.attributes.subject_multiloc} />
+      </TextCell>
+      <StatusLabel
+        minWidth="94px"
+        backgroundColor={colors.orange}
+        text={<FormattedMessage {...messages.draft} />}
+      />
+      <Box minWidth="220px" display="flex" justifyContent="flex-end">
+        <Button
+          linkTo={`/admin/projects/${projectId}/messaging/${campaign.id}`}
+          buttonStyle="secondary"
+          icon="edit"
+        >
+          <FormattedMessage {...messages.manageButtonLabel} />
+        </Button>
+      </Box>
+    </Row>
+  );
+};
 
 export default DraftCampaignRow;

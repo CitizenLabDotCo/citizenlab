@@ -5,16 +5,16 @@ import {
   Box,
   Button,
   fontSizes,
+  Label,
+  Text,
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
-import { string, object, array } from 'yup';
+import { string, object } from 'yup';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { IGroupData } from 'api/groups/types';
-import useGroups from 'api/groups/useGroups';
 import useAuthUser from 'api/me/useAuthUser';
 
 import useLocalize from 'hooks/useLocalize';
@@ -23,7 +23,6 @@ import { Section, SectionField, SectionTitle } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
 import Input from 'components/HookForm/Input';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import MultipleSelect from 'components/HookForm/MultipleSelect';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Select from 'components/HookForm/Select';
 
@@ -75,7 +74,6 @@ const CampaignForm = ({
 }: CampaignFormProps) => {
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
-  const { data: groups } = useGroups({});
   const { data: appConfig } = useAppConfiguration();
   const localize = useLocalize();
 
@@ -92,7 +90,6 @@ const CampaignForm = ({
     body_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.fieldBodyError)
     ),
-    group_ids: array(),
   });
 
   const methods = useForm({
@@ -128,13 +125,6 @@ const CampaignForm = ({
     ];
   };
 
-  const groupsOptions = (groups: IGroupData[]) => {
-    return groups.map((group) => ({
-      label: localize(group.attributes.title_multiloc),
-      value: group.id,
-    }));
-  };
-
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>
@@ -162,21 +152,15 @@ const CampaignForm = ({
             />
           </StyledSectionField>
 
-          <StyledSectionField>
-            <MultipleSelect
-              name="group_ids"
-              placeholder={<FormattedMessage {...messages.allUsers} />}
-              options={groupsOptions(groups?.data || [])}
-              label={
-                <>
-                  <FormattedMessage {...messages.fieldTo} />
-                  <IconTooltip
-                    content={<FormattedMessage {...messages.fieldToTooltip} />}
-                  />
-                </>
-              }
-            />
-          </StyledSectionField>
+          <Label>
+            <>
+              <FormattedMessage {...messages.fieldTo} />
+              <IconTooltip
+                content={<FormattedMessage {...messages.fieldToTooltip} />}
+              />
+            </>
+          </Label>
+          <Text> All participants</Text>
 
           <StyledSectionField>
             <Input

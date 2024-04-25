@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useParams } from 'react-router-dom';
 import GetCampaign from 'resources/GetCampaign';
 import styled from 'styled-components';
 
@@ -33,6 +34,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 const DraftCampaignDetails = ({ campaign }: Props) => {
+  const { projectId } = useParams();
   const { formatMessage } = useIntl();
   const { mutate: deleteCampaign, isLoading } = useDeleteCampaign();
 
@@ -41,7 +43,7 @@ const DraftCampaignDetails = ({ campaign }: Props) => {
     if (window.confirm(deleteMessage)) {
       deleteCampaign(campaign.id, {
         onSuccess: () => {
-          clHistory.push('/admin/messaging/emails/custom');
+          clHistory.push(`/admin/projects/${projectId}/messaging`);
         },
       });
     }
