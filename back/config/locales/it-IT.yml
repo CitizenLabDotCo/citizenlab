@@ -210,6 +210,7 @@ it:
       budget: 'Bilancio'
       created_at: 'Presentato a'
       published_at: 'Pubblicato presso'
+      date_vote_submitted: 'Data di presentazione del voto'
       comments_count: 'Commenti'
       likes_count: 'Preferiti'
       dislikes_count: 'Antipatie'
