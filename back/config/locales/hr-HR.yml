@@ -210,6 +210,7 @@ hr:
       budget: 'Proračun'
       created_at: 'Predano'
       published_at: 'Objavljeno'
+      date_vote_submitted: 'Datum podnošenja glasova'
       comments_count: 'Komentari'
       likes_count: 'Sviđa mi se'
       dislikes_count: 'Nesviđanja'
