@@ -1,11 +1,9 @@
 import React from 'react';
 
+import CustomEmails from './All';
+
 const Messaging = () => {
-  return (
-    <div>
-      <h1>Messaging</h1>
-    </div>
-  );
+  return <CustomEmails />;
 };
 
 export default Messaging;
