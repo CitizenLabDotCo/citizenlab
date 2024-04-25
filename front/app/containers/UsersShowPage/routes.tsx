@@ -43,19 +43,35 @@ export default () => ({
     },
     {
       path: userShowPageRoutes.submissions,
-      element: <Submissions />,
+      element: (
+        <div role="tabpanel" aria-labelledby="tab-submissions">
+          <Submissions />
+        </div>
+      ),
     },
     {
       path: userShowPageRoutes.comments,
-      element: <UserComments />,
+      element: (
+        <div role="tabpanel" aria-labelledby="tab-comments">
+          <UserComments />
+        </div>
+      ),
     },
     {
       path: userShowPageRoutes.following,
-      element: <Following />,
+      element: (
+        <div role="tabpanel" aria-labelledby="tab-following">
+          <Following />
+        </div>
+      ),
     },
     {
       path: userShowPageRoutes.events,
-      element: <UserEvents />,
+      element: (
+        <div role="tabpanel" aria-labelledby="tab-events">
+          <UserEvents />
+        </div>
+      ),
     },
   ],
 });
