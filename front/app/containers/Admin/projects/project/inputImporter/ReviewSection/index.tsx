@@ -38,9 +38,6 @@ const ReviewSection = ({ importJobs }: { importJobs: IJobData[] }) => {
   const { formatMessage } = useIntl();
   const [ideaId, setIdeaId] = useState<string | null>(null);
   const [approvals, setApprovals] = useState({ approved: 0, not_approved: 0 });
-  const importFinishedWithErrors =
-    importJobs.length > 0 &&
-    importJobs.every((job) => job.attributes.status === 'errored');
 
   const { data: idea } = useIdeaById(ideaId ?? undefined, false);
   const {
@@ -48,10 +45,13 @@ const ReviewSection = ({ importJobs }: { importJobs: IJobData[] }) => {
     refetch: refetchIdeas,
     isLoading,
   } = useImportedIdeas({ projectId, phaseId });
-  const { active: pollingIdeas } = useTrackJobs({
+  const { active: pollingIdeas, polledJobs } = useTrackJobs({
     trackedJobs: importJobs,
     onChange: refetchIdeas,
   });
+  const importFinishedWithErrors =
+    polledJobs.length > 0 &&
+    polledJobs.every((job) => job.attributes.status === 'errored');
 
   const { mutate: deleteIdea } = useDeleteIdea();
   const { mutate: approveIdeas } = useApproveOfflineIdeas();

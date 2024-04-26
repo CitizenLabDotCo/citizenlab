@@ -19,7 +19,7 @@ const useTrackJobs = ({
   }, [polledJobs?.data, onChange]);
 
   const active = !!polledJobs?.data.some((job) => job.attributes.active);
-  return { active };
+  return { active, polledJobs: polledJobs?.data ?? [] };
 };
 
 export default useTrackJobs;
