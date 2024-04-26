@@ -49,13 +49,10 @@ const ReviewSection = ({
     refetch: refetchIdeas,
     isLoading,
   } = useImportedIdeas({ projectId, phaseId });
-  const { active: pollingIdeas, polledJobs } = useTrackBackgroundJobs({
-    trackedJobs: importJobs,
+  const { active: importing, failed: importFailed } = useTrackBackgroundJobs({
+    jobs: importJobs,
     onChange: refetchIdeas,
   });
-  const importFinishedWithErrors =
-    polledJobs.length > 0 &&
-    polledJobs.every((job) => job.attributes.status === 'errored');
 
   const { mutate: deleteIdea } = useDeleteIdea();
   const { mutate: approveIdeas } = useApproveOfflineIdeas();
@@ -141,7 +138,7 @@ const ReviewSection = ({
                   bgColor={colors.primary}
                   icon="check"
                   onClick={handleApproveAll}
-                  disabled={pollingIdeas}
+                  disabled={importing}
                 >
                   <FormattedMessage {...messages.approveAllInputs} />
                 </Button>
@@ -196,13 +193,13 @@ const ReviewSection = ({
           pr="8px"
           overflowY="scroll"
         >
-          {(pollingIdeas || importFinishedWithErrors) && (
+          {(importing || importFailed) && (
             <Box
               py="8px"
               borderBottom={`1px ${colors.grey400} solid`}
               position="relative"
             >
-              {importFinishedWithErrors ? (
+              {importFailed ? (
                 <Error text={formatMessage(messages.errorImporting)} />
               ) : (
                 <Box

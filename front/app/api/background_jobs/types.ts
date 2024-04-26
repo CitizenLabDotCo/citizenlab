@@ -13,8 +13,7 @@ export interface IBackgroundJobData {
   type: string;
   attributes: {
     job_id: string;
-    // See QueJob#status, but not all statuses make sense in this context.
-    status: 'errored' | 'scheduled';
+    failed: boolean;
     active: boolean;
   };
 }

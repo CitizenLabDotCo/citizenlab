@@ -34,10 +34,6 @@ class QueJob < Que::ActiveRecord::Model
       by_args({ job_id: job_id }, {}).sole
     end
 
-    def find_with_job_id(job_id)
-      by_args({ job_id: job_id }, {}).first
-    end
-
     def by_ids(job_ids)
       ids = job_ids.map { |job_id| [{ job_id: }].to_json }
       where('args @> ANY (ARRAY[?]::jsonb[])', ids)
@@ -52,6 +48,11 @@ class QueJob < Que::ActiveRecord::Model
     %i[pending scheduled].include?(status)
   end
   alias active active?
+
+  def failed?
+    %i[expired errored].include?(status)
+  end
+  alias failed failed?
 
   def status
     return :finished if finished_at

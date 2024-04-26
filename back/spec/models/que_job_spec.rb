@@ -11,6 +11,57 @@ RSpec.describe QueJob, :active_job_que_adapter do
     end
   end
 
+  describe '.by_ids' do
+    it 'retrieves the jobs by job_ids' do
+      jobs = Array.new(2) { TestJob.perform_later }
+      que_jobs = described_class.by_ids(jobs.map(&:job_id) + ['non-existent-job-id'])
+      job_ids_in_db = que_jobs.map { |qj| qj.args['job_id'] }
+      expect(job_ids_in_db).to eq(jobs.map(&:job_id))
+    end
+  end
+
+  describe '#active?' do
+    let!(:que_job) do
+      id = TestJob.perform_later.job_id
+      described_class.find(id)
+    end
+
+    context 'when the job is not finished and not expired' do
+      it 'returns true' do
+        expect(que_job.active?).to be true
+      end
+    end
+
+    context 'when the job is failed' do
+      before { que_job.update!(error_count: 1) }
+
+      it 'returns false' do
+        expect(que_job.active?).to be false
+      end
+    end
+  end
+
+  describe '#failed?' do
+    let!(:que_job) do
+      id = TestJob.perform_later.job_id
+      described_class.find(id)
+    end
+
+    context 'when the job is not finished and not expired' do
+      it 'returns false' do
+        expect(que_job.failed?).to be false
+      end
+    end
+
+    context 'when the job is failed' do
+      before { que_job.update!(error_count: 1) }
+
+      it 'returns true' do
+        expect(que_job.failed?).to be true
+      end
+    end
+  end
+
   describe '#status' do
     let!(:que_job) do
       id = TestJob.perform_later.job_id

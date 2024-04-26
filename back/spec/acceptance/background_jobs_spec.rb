@@ -24,8 +24,8 @@ resource 'BackgroundJob', :active_job_que_adapter, :admin_api do
           data: jobs.map do |job|
             {
               attributes: {
-                status: 'pending',
                 active: true,
+                failed: false,
                 job_id: job.job_id
               },
               id: instance_of(String),
