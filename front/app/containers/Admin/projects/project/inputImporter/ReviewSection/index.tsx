@@ -6,6 +6,7 @@ import {
   Text,
   colors,
   stylingConsts,
+  Spinner,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
@@ -39,14 +40,20 @@ const ReviewSection = ({ importJobs }: { importJobs: IJobData[] }) => {
   const [approvals, setApprovals] = useState({ approved: 0, not_approved: 0 });
   const importJobIds = importJobs.map((job) => job.attributes.job_id);
   const { data: polledJobs } = useJobs(importJobIds);
+  const importFinishedWithErrors =
+    importJobs.length > 0 &&
+    importJobs.every((job) => job.attributes.status === 'errored');
 
   const { data: idea } = useIdeaById(ideaId ?? undefined, false);
-  const pollIdeas = !!polledJobs?.data.some((job) => job.attributes.active);
+  const pollingIdeas = true; // !!polledJobs?.data.some((job) => job.attributes.active);
   const {
     data: ideas,
-    refetch: refetchIdeas,
+    refetch: refetchIdeas, // use this when jobs array changes instead of polling ideas
     isLoading,
-  } = useImportedIdeas({ projectId, phaseId }, { pollingEnabled: pollIdeas });
+  } = useImportedIdeas(
+    { projectId, phaseId },
+    { pollingEnabled: pollingIdeas }
+  );
   const { mutate: deleteIdea } = useDeleteIdea();
   const { mutate: approveIdeas } = useApproveOfflineIdeas();
 
@@ -131,7 +138,7 @@ const ReviewSection = ({ importJobs }: { importJobs: IJobData[] }) => {
                   bgColor={colors.primary}
                   icon="check"
                   onClick={handleApproveAll}
-                  disabled={pollIdeas}
+                  disabled={pollingIdeas}
                 >
                   <FormattedMessage {...messages.approveAllInputs} />
                 </Button>
@@ -143,7 +150,6 @@ const ReviewSection = ({ importJobs }: { importJobs: IJobData[] }) => {
                     values={{ numIdeas }}
                   />
                 </Text>
-                {pollIdeas && 'Processing ideas...'}
               </Box>
             </>
           ) : (
@@ -187,6 +193,30 @@ const ReviewSection = ({ importJobs }: { importJobs: IJobData[] }) => {
           pr="8px"
           overflowY="scroll"
         >
+          {(pollingIdeas || importFinishedWithErrors) && (
+            <Box
+              py="8px"
+              borderBottom={`1px ${colors.grey400} solid`}
+              position="relative"
+            >
+              {importFinishedWithErrors ? (
+                <Error text={formatMessage(messages.errorImporting)} />
+              ) : (
+                <Box
+                  justifyContent="flex-start"
+                  alignItems="center"
+                  display="flex"
+                >
+                  <Box mr="8px">
+                    <Spinner size="20px" />
+                  </Box>
+                  <Text m="0" color="black" fontSize="m">
+                    <FormattedMessage {...messages.importing} />
+                  </Text>
+                </Box>
+              )}
+            </Box>
+          )}
           <IdeaList
             ideaId={ideaId}
             ideas={ideas}

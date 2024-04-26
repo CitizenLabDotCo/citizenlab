@@ -12,9 +12,9 @@ export interface IJobData {
   id: string;
   type: string;
   attributes: {
-    // See QueJob#status
     job_id: string;
-    status: 'finished' | 'expired' | 'errored' | 'scheduled' | 'pending';
+    // See QueJob#status, but not all statuses make sense in this context.
+    status: 'errored' | 'scheduled';
     active: boolean;
   };
 }

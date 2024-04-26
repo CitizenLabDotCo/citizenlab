@@ -28,12 +28,12 @@ const addOfflineIdeas = async ({
   personal_data,
 }: RequestParams): Promise<JobIdResponse> =>
   fetcher<JobIdResponse>({
-    path: `/phases/${phase_id}/importer/bulk_create/idea/${format}`,
+    path: `/phases/${phase_id}/importer/bulk_create_async/idea/${format}`,
     action: 'post',
     body: { import: { file, locale, personal_data } },
   });
 
-const useAsyncAddOfflineIdeas = () => {
+const useAddOfflineIdeasAsync = () => {
   const queryClient = useQueryClient();
 
   return useMutation<JobIdResponse, CLErrors, RequestParams>({
@@ -46,4 +46,4 @@ const useAsyncAddOfflineIdeas = () => {
   });
 };
 
-export default useAsyncAddOfflineIdeas;
+export default useAddOfflineIdeasAsync;

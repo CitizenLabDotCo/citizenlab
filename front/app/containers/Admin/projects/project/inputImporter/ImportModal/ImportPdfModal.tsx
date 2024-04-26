@@ -17,7 +17,7 @@ import { useParams } from 'react-router-dom';
 import { UploadFile, SupportedLocale } from 'typings';
 import { object, string, mixed, boolean } from 'yup';
 
-import useAsyncAddOfflineIdeas from 'api/import_ideas/useAsyncAddOfflineIdeas';
+import useAddOfflineIdeasAsync from 'api/import_ideas/useAddOfflineIdeasAsync';
 import { IJobData } from 'api/jobs/types';
 import usePhase from 'api/phases/usePhase';
 
@@ -51,7 +51,7 @@ interface Props {
 
 const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutateAsync: addOfflineIdeas, isLoading } = useAsyncAddOfflineIdeas();
+  const { mutateAsync: addOfflineIdeas, isLoading } = useAddOfflineIdeasAsync();
   const locale = useLocale();
   const { phaseId } = useParams();
   const { data: phase } = usePhase(phaseId);

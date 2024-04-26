@@ -47,7 +47,10 @@ module BulkImportIdeas
 
       sidefx.after_success current_user, @phase, params[:model], params[:format], [], []
 
-      render json: raw_json({ job_ids: })
+      render json: ::WebApi::V1::JobSerializer.new(
+        QueJob.by_ids(job_ids),
+        params: jsonapi_serializer_params
+      ).serializable_hash
     rescue BulkImportIdeas::Error => e
       sidefx.after_failure current_user, @phase, params[:model], params[:format]
       render json: { errors: { file: [{ error: e.key, **e.params }] } }, status: :unprocessable_entity

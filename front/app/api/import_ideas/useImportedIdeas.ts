@@ -17,7 +17,6 @@ const useImportedIdeas = (
   queryParams: QueryParams,
   { pollingEnabled }: { pollingEnabled?: boolean } = {}
 ) => {
-  console.log({ queryParams });
   return useQuery<IIdeas, CLErrors, IIdeas, ImportedIdeasKeys>({
     queryKey: importedIdeasKeys.list(queryParams),
     queryFn: () => fetchImportedIdeas(queryParams),
