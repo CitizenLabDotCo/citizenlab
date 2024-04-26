@@ -66,7 +66,7 @@ export default defineMessages({
     defaultMessage: 'Importing...',
   },
   errorImporting: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing',
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImporting',
     defaultMessage: 'An error occurred during the import.',
   },
   inputsNotApproved: {
