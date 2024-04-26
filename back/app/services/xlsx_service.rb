@@ -305,7 +305,7 @@ class XlsxService
   end
 
   def generate_phase_baskets_users_sheet(workbook, sheet_name, phase)
-    baskets = Basket.where(phase: phase).includes([:user])
+    baskets = Basket.where(phase: phase).where.not(submitted_at: nil).includes([:user])
     columns = user_custom_field_columns(:user)
     ideas = phase.ideas
     ideas_to_titles = add_suffix_to_duplicate_titles(ideas) # avoid losing columns with duplicate headers
