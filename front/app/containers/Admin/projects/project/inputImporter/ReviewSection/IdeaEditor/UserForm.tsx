@@ -10,13 +10,14 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
+import { isUserFormDataValid } from 'containers/Admin/projects/project/inputImporter/ReviewSection/IdeaEditor/utils';
+
 import { useIntl } from 'utils/cl-intl';
 
 import AuthorInput from './AuthorInput';
 import { SelectedAuthor } from './AuthorInput/typings';
 import messages from './messages';
 import { UserFormData } from './typings';
-import { isUserFormDataValid } from 'containers/Admin/projects/project/inputImporter/ReviewSection/IdeaEditor/utils';
 
 interface Props {
   userFormData: UserFormData;
