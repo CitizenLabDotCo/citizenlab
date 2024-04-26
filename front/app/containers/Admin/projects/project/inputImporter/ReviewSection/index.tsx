@@ -16,7 +16,7 @@ import useApproveOfflineIdeas from 'api/import_ideas/useApproveOfflineIdeas';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
 import { IJobData } from 'api/jobs/types';
-import useJobs from 'api/jobs/useJobs';
+import useTrackJobs from 'api/jobs/useTrackJobs';
 
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
@@ -38,22 +38,21 @@ const ReviewSection = ({ importJobs }: { importJobs: IJobData[] }) => {
   const { formatMessage } = useIntl();
   const [ideaId, setIdeaId] = useState<string | null>(null);
   const [approvals, setApprovals] = useState({ approved: 0, not_approved: 0 });
-  const importJobIds = importJobs.map((job) => job.attributes.job_id);
-  const { data: polledJobs } = useJobs(importJobIds);
   const importFinishedWithErrors =
     importJobs.length > 0 &&
     importJobs.every((job) => job.attributes.status === 'errored');
 
   const { data: idea } = useIdeaById(ideaId ?? undefined, false);
-  const pollingIdeas = true; // !!polledJobs?.data.some((job) => job.attributes.active);
   const {
     data: ideas,
-    refetch: refetchIdeas, // use this when jobs array changes instead of polling ideas
+    refetch: refetchIdeas,
     isLoading,
-  } = useImportedIdeas(
-    { projectId, phaseId },
-    { pollingEnabled: pollingIdeas }
-  );
+  } = useImportedIdeas({ projectId, phaseId });
+  const { active: pollingIdeas } = useTrackJobs({
+    trackedJobs: importJobs,
+    onChange: refetchIdeas,
+  });
+
   const { mutate: deleteIdea } = useDeleteIdea();
   const { mutate: approveIdeas } = useApproveOfflineIdeas();
 
