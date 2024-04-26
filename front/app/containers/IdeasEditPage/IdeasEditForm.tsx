@@ -21,6 +21,7 @@ import ideaFormMessages from 'containers/IdeasNewPage/messages';
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 import Form from 'components/Form';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
+import FullPageSpinner from 'components/UI/FullPageSpinner';
 import PageContainer from 'components/UI/PageContainer';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -68,7 +69,12 @@ const IdeasEditForm = ({ ideaId }: Props) => {
   const { data: remoteFiles } = useIdeaFiles(ideaId);
   const projectId = idea?.data.relationships.project.data.id;
 
-  const { schema, uiSchema, inputSchemaError } = useInputSchema({
+  const {
+    schema,
+    uiSchema,
+    inputSchemaError,
+    isLoading: isLoadingInputSchema,
+  } = useInputSchema({
     projectId,
     inputId: ideaId,
   });
@@ -113,6 +119,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
     [uiSchema]
   );
 
+  if (isLoadingInputSchema) return <FullPageSpinner />;
   if (!schema || !uiSchema || inputSchemaError || !projectId || !idea) {
     return null;
   }
