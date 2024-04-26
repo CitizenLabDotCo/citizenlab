@@ -30,10 +30,11 @@ class Group < ApplicationRecord
   has_many :permissions, through: :groups_permissions
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
-  validates :slug, uniqueness: true, presence: true
+  slug
+  # validates :slug, uniqueness: true, presence: true
   validates :membership_type, presence: true, inclusion: { in: proc { membership_types } }
 
-  before_validation :generate_slug, on: :create
+  # before_validation :generate_slug, on: :create
   before_validation :set_membership_type, on: :create
   before_validation :strip_title
 
@@ -84,12 +85,12 @@ class Group < ApplicationRecord
 
   private
 
-  def generate_slug
-    self.slug ||= SlugService.new.generate_slug(
-      self,
-      title_multiloc.find { |_key, value| value.present? }&.last
-    )
-  end
+  # def generate_slug
+  #   self.slug ||= SlugService.new.generate_slug(
+  #     self,
+  #     title_multiloc.find { |_key, value| value.present? }&.last
+  #   )
+  # end
 
   def set_membership_type
     self.membership_type ||= 'manual'
