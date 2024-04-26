@@ -6,7 +6,7 @@ import {
   Icon,
   Success,
   Checkbox,
-  Text,
+  Error,
   colors,
 } from '@citizenlab/cl2-component-library';
 
@@ -16,6 +16,7 @@ import AuthorInput from './AuthorInput';
 import { SelectedAuthor } from './AuthorInput/typings';
 import messages from './messages';
 import { UserFormData } from './typings';
+import { isUserFormDataValid } from 'containers/Admin/projects/project/inputImporter/ReviewSection/IdeaEditor/utils';
 
 interface Props {
   userFormData: UserFormData;
@@ -32,28 +33,36 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
   const { formatMessage } = useIntl();
 
   const updateUserFormData = (newData: Partial<UserFormData>) => {
-    setUserFormData((oldData) => ({
-      ...oldData,
-      ...newData,
-    }));
+    setUserFormData((oldData) => {
+      const updatedData = {
+        ...(oldData ? oldData : userFormData),
+        ...newData,
+      };
+      if (updatedData.user_state !== 'existing-user') {
+        // Change the state if the form is now valid
+        updatedData.user_state = isUserFormDataValid(updatedData)
+          ? 'new-imported-user'
+          : 'no-user';
+      }
+      return updatedData;
+    });
   };
 
   const handleSelect = (selectedAuthor: SelectedAuthor) => {
-    if (selectedAuthor.user_state === 'invalid-email') {
+    if (selectedAuthor.user_state === 'no-user') {
       updateUserFormData({
-        user_state: 'invalid-email',
-        email: selectedAuthor.email,
+        user_state: 'no-user',
+        email: undefined,
         user_id: undefined,
       });
-
       return;
     }
 
-    if (selectedAuthor.user_state === 'new-user') {
+    if (selectedAuthor.user_state === 'new-imported-user') {
       updateUserFormData({
-        user_state: 'new-user',
+        user_state: 'new-imported-user',
         email: selectedAuthor.email,
-        user_id: undefined,
+        // user_id: undefined, // TODO: JS - this does not seem right?
       });
       return;
     }
@@ -74,18 +83,21 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
     >
       {userFormData.consent ? (
         <Box>
-          <Box>
-            <AuthorInput
-              selectedAuthor={{
-                user_state: userFormData.user_state,
-                email: userFormData.email,
-                id: userFormData.user_id,
-              }}
-              onSelect={handleSelect}
-            />
-          </Box>
+          {userFormData.user_state === 'new-imported-user' && (
+            <Box display="flex" alignItems="center" mb="12px">
+              <Icon
+                width="40px"
+                height="40px"
+                name="plus-circle"
+                fill={colors.success}
+              />
+              <Success
+                text={formatMessage(messages.aNewAccountWillBeCreated)}
+              />
+            </Box>
+          )}
           {userFormData.user_state === 'existing-user' && (
-            <Box display="flex" alignItems="center" mt="12px">
+            <Box display="flex" alignItems="center" mb="12px">
               <Icon
                 width="40px"
                 height="40px"
@@ -95,28 +107,27 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
               <Success text={formatMessage(messages.thereIsAlreadyAnAccount)} />
             </Box>
           )}
-          {['new-user', 'invalid-email'].includes(userFormData.user_state) && (
+          {userFormData.user_state === 'no-user' && (
+            <Box display="flex" alignItems="center" mb="12px">
+              <Error text={formatMessage(messages.pleaseEnterValidUser)} />
+            </Box>
+          )}
+          <Box>
+            <AuthorInput
+              selectedAuthor={{
+                user_state: userFormData.user_state,
+                email: userFormData.email,
+                first_name: userFormData.first_name,
+                last_name: userFormData.last_name,
+                id: userFormData.user_id,
+              }}
+              onSelect={handleSelect}
+            />
+          </Box>
+          {['new-imported-user', 'no-user'].includes(
+            userFormData.user_state
+          ) && (
             <>
-              {userFormData.user_state === 'new-user' && (
-                <Box display="flex" alignItems="center" mt="12px">
-                  <Icon
-                    width="40px"
-                    height="40px"
-                    name="plus-circle"
-                    fill={colors.success}
-                  />
-                  <Success
-                    text={formatMessage(messages.aNewAccountWillBeCreated)}
-                  />
-                </Box>
-              )}
-              {userFormData.user_state === 'invalid-email' && (
-                <Box display="flex" alignItems="center" mt="12px">
-                  <Text color="orange" mb="15px">
-                    {formatMessage(messages.pleaseEnterValidEmail)}
-                  </Text>
-                </Box>
-              )}
               <Box mt="20px">
                 <Input
                   type="text"
