@@ -5,6 +5,10 @@ class TextImageService < ContentImageService
 
   protected
 
+  # Decodes the given HTML string into a Nokogiri document.
+  # @raise [DecodingError] if the HTML string is not valid.
+  # @param html_string [String] the HTML string to decode.
+  # @return [Nokogiri::HTML::DocumentFragment] the decoded HTML document.
   def decode_content(html_string)
     html_doc = Nokogiri::HTML.fragment html_string
     raise ContentImageService::DecodingError.new parse_errors: html_doc.errors if html_doc.errors.any?
@@ -12,10 +16,16 @@ class TextImageService < ContentImageService
     html_doc
   end
 
+  # Encodes the given HTML document into a string.
+  # @param [Nokogiri::HTML::DocumentFragment] html_doc the HTML document to encode.
+  # @return [String] the encoded HTML string.
   def encode_content(html_doc)
     html_doc.to_s
   end
 
+  # Returns the image elements in the given HTML document.
+  # @param html_doc [Nokogiri::HTML::DocumentFragment] the HTML document to search.
+  # @return [Nokogiri::XML::NodeSet] the image elements.
   def image_elements(html_doc)
     html_doc.css 'img'
   end
