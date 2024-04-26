@@ -70,6 +70,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   const {
     schema,
     uiSchema,
+    inputSchemaError,
     isLoading: isLoadingInputSchema,
   } = useInputSchema({
     projectId: project.data.id,
@@ -138,7 +139,13 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   }, [draftIdeaStatus, draftIdea, schema, ideaId]);
 
   if (isLoadingInputSchema || loadingDraftIdea) return <FullPageSpinner />;
-  if (!participationMethodConfig || !phaseId || !schema || !uiSchema) {
+  if (
+    inputSchemaError ||
+    !participationMethodConfig ||
+    !phaseId ||
+    !schema ||
+    !uiSchema
+  ) {
     return null;
   }
 
