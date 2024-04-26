@@ -23,13 +23,18 @@ import Editor from '../../Editor';
 type PreviewProps = {
   projectId: string;
   projectTitle: Multiloc;
+  usesContentBuilder?: boolean;
 };
 
 const handleLoadImages = () => {
   eventEmitter.emit(IMAGES_LOADED_EVENT);
 };
 
-const Preview = ({ projectId, projectTitle }: PreviewProps) => {
+const Preview = ({
+  projectId,
+  projectTitle,
+  usesContentBuilder,
+}: PreviewProps) => {
   const localize = useLocalize();
   const { data: projectFiles } = useProjectFiles(projectId);
 
@@ -48,29 +53,32 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
   return (
     <Box data-testid="projectDescriptionBuilderPreview">
       {isInitialLoading && <Spinner />}
-      {!isInitialLoading && projectDescriptionBuilderContent && (
-        <Box data-testid="projectDescriptionBuilderPreviewContent">
-          <Title color="tenantText" variant="h1">
-            {localize(projectTitle)}
-          </Title>
-          <Editor isPreview={true}>
-            <ContentBuilderFrame
-              editorData={editorData}
-              onLoadImages={handleLoadImages}
-            />
-          </Editor>
-          {projectFiles && (
-            <Box maxWidth="750px" mb="25px">
-              <FileAttachments files={projectFiles.data} />
-            </Box>
-          )}
-        </Box>
-      )}
-      {!isInitialLoading && !projectDescriptionBuilderContent && (
-        <Box data-testid="projectDescriptionBuilderProjectDescription">
-          <ProjectInfo projectId={projectId} />
-        </Box>
-      )}
+      {!isInitialLoading &&
+        projectDescriptionBuilderContent &&
+        usesContentBuilder && (
+          <Box data-testid="projectDescriptionBuilderPreviewContent">
+            <Title color="tenantText" variant="h1">
+              {localize(projectTitle)}
+            </Title>
+            <Editor isPreview={true}>
+              <ContentBuilderFrame
+                editorData={editorData}
+                onLoadImages={handleLoadImages}
+              />
+            </Editor>
+            {projectFiles && (
+              <Box maxWidth="750px" mb="25px">
+                <FileAttachments files={projectFiles.data} />
+              </Box>
+            )}
+          </Box>
+        )}
+      {!isInitialLoading &&
+        (!usesContentBuilder || !projectDescriptionBuilderContent) && (
+          <Box data-testid="projectDescriptionBuilderProjectDescription">
+            <ProjectInfo projectId={projectId} />
+          </Box>
+        )}
     </Box>
   );
 };

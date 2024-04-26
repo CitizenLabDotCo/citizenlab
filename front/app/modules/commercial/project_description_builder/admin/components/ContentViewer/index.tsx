@@ -22,6 +22,7 @@ const ContentViewer = ({ params: { slug } }: WithRouterProps) => {
     <Viewer
       projectId={project.data.id}
       projectTitle={project.data.attributes.title_multiloc}
+      usesContentBuilder={project.data.attributes.uses_content_builder}
     />
   );
 };
