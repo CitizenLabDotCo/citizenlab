@@ -89,7 +89,7 @@ resource 'BulkImportIdeasImportIdeas' do
             assert_status 200
 
             expect(response_data).to be_a Array
-            expect(response_data.first[:type]).to eq 'job'
+            expect(response_data.first[:type]).to eq 'background_job'
             expect(response_data.first[:attributes]).to include(:status, :active, :job_id)
 
             expect(Idea.all.count).to eq 0 # No ideas created yet
