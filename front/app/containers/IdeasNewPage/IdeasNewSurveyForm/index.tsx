@@ -67,7 +67,11 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   const phaseId = queryParams.get('phase_id') || undefined;
   const { data: phases } = usePhases(project.data.id);
   const { data: phaseFromUrl } = usePhase(phaseId);
-  const { schema, uiSchema, inputSchemaError } = useInputSchema({
+  const {
+    schema,
+    uiSchema,
+    isLoading: isLoadingInputSchema,
+  } = useInputSchema({
     projectId: project.data.id,
     phaseId,
   });
@@ -123,12 +127,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
 
   // Try and load in a draft idea if one exists
   useEffect(() => {
-    if (
-      draftIdeaStatus === 'success' &&
-      !isNilOrError(draftIdea) &&
-      !ideaId &&
-      schema
-    ) {
+    if (draftIdeaStatus === 'success' && !ideaId && schema) {
       const formValues = getFormValues(draftIdea, schema);
       setInitialFormData(formValues);
       setIdeaId(draftIdea.data.id);
@@ -138,7 +137,8 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     }
   }, [draftIdeaStatus, draftIdea, schema, ideaId]);
 
-  if (!participationMethodConfig || !phaseId) {
+  if (isLoadingInputSchema || loadingDraftIdea) return <FullPageSpinner />;
+  if (!participationMethodConfig || !phaseId || !schema || !uiSchema) {
     return null;
   }
 
@@ -214,37 +214,30 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     <>
       <IdeasNewMeta isSurvey={true} />
       <PageContainer id="e2e-idea-new-page" overflow="hidden">
-        {!loadingDraftIdea &&
-        schema &&
-        uiSchema &&
-        participationMethodConfig ? (
+        <Box
+          width="100%"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
           <Box
-            width="100%"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
+            background={colors.white}
+            width="700px"
+            h={isSmallerThanPhone ? '100vh' : `calc(100vh - 80px)`}
+            my={isSmallerThanPhone ? '0px' : '40px'}
           >
-            <Box
-              background={colors.white}
-              width="700px"
-              h={isSmallerThanPhone ? '100vh' : `calc(100vh - 80px)`}
-              my={isSmallerThanPhone ? '0px' : '40px'}
-            >
-              <Form
-                schema={schema}
-                uiSchema={uiSchema}
-                onSubmit={handleDraftIdeas}
-                initialFormData={initialFormData}
-                getAjvErrorMessage={getAjvErrorMessage}
-                getApiErrorMessage={getApiErrorMessage}
-                inputId={ideaId}
-                config={'survey'}
-              />
-            </Box>
+            <Form
+              schema={schema}
+              uiSchema={uiSchema}
+              onSubmit={handleDraftIdeas}
+              initialFormData={initialFormData}
+              getAjvErrorMessage={getAjvErrorMessage}
+              getApiErrorMessage={getApiErrorMessage}
+              inputId={ideaId}
+              config={'survey'}
+            />
           </Box>
-        ) : inputSchemaError ? null : (
-          <FullPageSpinner />
-        )}
+        </Box>
       </PageContainer>
     </>
   );
