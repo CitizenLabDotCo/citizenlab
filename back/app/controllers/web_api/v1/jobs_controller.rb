@@ -13,14 +13,4 @@ class WebApi::V1::JobsController < ApplicationController
       params: jsonapi_serializer_params
     ).serializable_hash
   end
-
-  def show
-    job = QueJob.find(params[:id])
-    authorize job
-
-    render json: ::WebApi::V1::JobSerializer.new(
-      job,
-      params: jsonapi_serializer_params
-    ).serializable_hash
-  end
 end

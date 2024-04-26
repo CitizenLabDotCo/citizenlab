@@ -19,10 +19,6 @@ export interface IJobData {
   };
 }
 
-export interface IJob {
-  data: IJobData;
-}
-
 export interface IJobs {
   data: IJobData[];
 }
