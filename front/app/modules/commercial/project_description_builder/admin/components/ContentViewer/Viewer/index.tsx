@@ -34,7 +34,7 @@ const Preview = () => {
   const projectTitle = project?.data?.attributes.title_multiloc;
 
   const localize = useLocalize();
-  const { data: projectFiles } = useProjectFiles(projectId);
+  const { data: projectFiles } = useProjectFiles(projectId || null);
 
   const { data: projectDescriptionBuilderLayout, isInitialLoading } =
     useProjectDescriptionBuilderLayout(projectId || null);

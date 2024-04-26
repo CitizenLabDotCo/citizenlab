@@ -8,7 +8,7 @@ const baseKey = {
 const projectFilesKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
-  list: ({ projectId }: { projectId: string | undefined }) => [
+  list: ({ projectId }: { projectId: string | null }) => [
     { ...baseKey, operation: 'list', parameters: { projectId } },
   ],
 } satisfies QueryKeys;

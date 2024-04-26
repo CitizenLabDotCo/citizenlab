@@ -99,7 +99,7 @@ const AdminProjectsProjectGeneral = () => {
   const { mutateAsync: updateProject } = useUpdateProject();
   const { mutateAsync: addProject } = useAddProject();
 
-  const { data: remoteProjectFiles } = useProjectFiles(projectId);
+  const { data: remoteProjectFiles } = useProjectFiles(projectId || null);
   const { mutateAsync: addProjectFile } = useAddProjectFile();
   const { mutateAsync: deleteProjectFile } = useDeleteProjectFile();
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
