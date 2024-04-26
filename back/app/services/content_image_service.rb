@@ -1,5 +1,20 @@
 # frozen_string_literal: true
 
+# This service is used to extract images embedded in some content and store them in as a
+# separate model. It should not be instantiated directly, but be subclassed to implement
+# the specific logic for each type of content.
+#
+# This, sort of, implements an implicit mechanism to upload images. The typical use case
+# is that some content is created on the platform with references to images. The service
+# is then used to extract those references and store the images by instantiating a
+# separate image model. The image references are then replaced by references to the image
+# model.
+#
+# In practice, this class implements two main operations:
+# - The extraction mechanism described above (see {ContentImageService#swap_data_images}).
+# - The rendering mechanism which re-injects the images into the content by replacing the
+#   references to the model by the actual image data
+#   (see {ContentImageService#render_data_images}).
 class ContentImageService
   class DecodingError < StandardError
     def initialize(options = {})
@@ -10,12 +25,15 @@ class ContentImageService
     attr_reader :parse_errors
   end
 
+  # Applies {#swap_data_images} to each multiloc value in the given multiloc.
   def swap_data_images_multiloc(multiloc, imageable: nil, field: nil)
     multiloc.transform_values do |encoded_content|
       swap_data_images encoded_content, imageable: imageable, field: field
     end
   end
 
+  # Extracts and remove image data from the content, stores it in a separate image model,
+  # and updates the original content to reference the image model instead.
   def swap_data_images(encoded_content, imageable: nil, field: nil)
     content = begin
       decode_content encoded_content
@@ -39,6 +57,7 @@ class ContentImageService
     encode_content content
   end
 
+  # Applies {#render_data_images} to each multiloc value in the given multiloc.
   def render_data_images_multiloc(multiloc, imageable: nil, field: nil)
     return multiloc if multiloc.blank?
     return multiloc if multiloc.values.none? { |encoded_content| could_include_images?(encoded_content) }
@@ -50,6 +69,7 @@ class ContentImageService
     end
   end
 
+  # Replaces references to image models in the content by actual image data.
   def render_data_images(encoded_content, imageable: nil, field: nil)
     content = decode_content encoded_content
     precompute_for_rendering content, imageable, field
@@ -58,6 +78,7 @@ class ContentImageService
       next if !attribute? img_elt, code_attribute_for_element
 
       code = get_attribute img_elt, code_attribute_for_element
+      # Content image is an instance of {#content_image_class}.
       content_image = fetch_content_image code
       if content_image.present?
         set_image_attributes! img_elt, content_image
@@ -84,10 +105,14 @@ class ContentImageService
     raise NotImplementedError
   end
 
+  # The model class used to persist the image data.
+  # @return [Class]
   def content_image_class
     raise NotImplementedError
   end
 
+  # Computes the attributes that should be used to instantiate the image model given an
+  # image element. The current implementation is a bit coupled with the TextImage model.
   def image_attributes(_img_elt, _imageable, _field)
     raise NotImplementedError
   end
