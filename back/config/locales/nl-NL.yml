@@ -23,8 +23,8 @@ nl:
     proposed_description: voorgesteld
     expired: verstreken
     expired_description: verstreken
-    threshold_reached: aantal bereikt
-    threshold_reached_description: aantal bereikt
+    threshold_reached: drempel bereikt
+    threshold_reached_description: drempel bereikt
     answered: beantwoord
     answered_description: beantwoord
     ineligible: niet in aanmerking
