@@ -5,7 +5,7 @@ const baseKey = { type: 'image', variant: 'project' };
 const projectImagesKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
-  list: ({ projectId }: { projectId: string | null }) => [
+  list: ({ projectId }: { projectId: string | undefined }) => [
     { ...baseKey, operation: 'list', parameters: { projectId } },
   ],
 } satisfies QueryKeys;

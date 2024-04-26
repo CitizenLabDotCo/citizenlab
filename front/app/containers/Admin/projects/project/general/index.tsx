@@ -93,13 +93,13 @@ const AdminProjectsProjectGeneral = () => {
     `/admin/projects/${projectId}/settings`
   );
 
-  const { data: remoteProjectImages } = useProjectImages(projectId || null);
+  const { data: remoteProjectImages } = useProjectImages(projectId);
   const { mutateAsync: addProjectImage } = useAddProjectImage();
   const { mutateAsync: deleteProjectImage } = useDeleteProjectImage();
   const { mutateAsync: updateProject } = useUpdateProject();
   const { mutateAsync: addProject } = useAddProject();
 
-  const { data: remoteProjectFiles } = useProjectFiles(projectId || null);
+  const { data: remoteProjectFiles } = useProjectFiles(projectId);
   const { mutateAsync: addProjectFile } = useAddProjectFile();
   const { mutateAsync: deleteProjectFile } = useDeleteProjectFile();
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
