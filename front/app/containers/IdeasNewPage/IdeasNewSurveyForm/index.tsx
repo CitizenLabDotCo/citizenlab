@@ -140,6 +140,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
 
   if (isLoadingInputSchema || loadingDraftIdea) return <FullPageSpinner />;
   if (
+    // inputSchemaError should display an error page instead
     inputSchemaError ||
     !participationMethodConfig ||
     !phaseId ||

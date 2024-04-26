@@ -237,10 +237,11 @@ const IdeasNewIdeationForm = ({ project }: Props) => {
 
   if (isLoadingInputSchema) return <FullPageSpinner />;
   if (
+    // inputSchemaError should display an error page instead
+    inputSchemaError ||
     !participationMethodConfig ||
     !schema ||
     !uiSchema ||
-    inputSchemaError ||
     processingLocation
   ) {
     return null;

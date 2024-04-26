@@ -120,7 +120,14 @@ const IdeasEditForm = ({ ideaId }: Props) => {
   );
 
   if (isLoadingInputSchema) return <FullPageSpinner />;
-  if (!schema || !uiSchema || inputSchemaError || !projectId || !idea) {
+  if (
+    // inputSchemaError should display an error page instead
+    inputSchemaError ||
+    !schema ||
+    !uiSchema ||
+    !projectId ||
+    !idea
+  ) {
     return null;
   }
 
