@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectsController < ApplicationController
-  before_action :set_project, only: %i[show update reorder destroy index_xlsx delete_inputs]
+  before_action :set_project, only: %i[show update reorder destroy index_xlsx voting_results_xlsx delete_inputs]
 
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
@@ -140,6 +140,18 @@ class WebApi::V1::ProjectsController < ApplicationController
     I18n.with_locale(current_user.locale) do
       xlsx = XlsxExport::GeneratorService.new.generate_inputs_for_project @project.id, view_private_attributes: true
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'inputs.xlsx'
+    end
+  end
+
+  def voting_results_xlsx
+    if @project.phases.where(participation_method: 'voting').present?
+      I18n.with_locale(current_user&.locale) do
+        xlsx = XlsxService.new.generate_project_voting_results_xlsx @project.id
+        send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          filename: 'voting_results.xlsx'
+      end
+    else
+      raise 'Project has no voting phase.'
     end
   end
 
