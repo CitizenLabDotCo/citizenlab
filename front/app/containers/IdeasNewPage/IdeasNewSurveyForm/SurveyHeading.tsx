@@ -68,7 +68,6 @@ const SurveyHeading = ({
     ? createPortal(
         <Box
           display="flex"
-          flexDirection="row"
           justifyContent="center"
           w="100%"
           zIndex="1010"

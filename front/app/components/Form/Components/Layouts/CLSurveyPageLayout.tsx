@@ -249,15 +249,11 @@ const CLSurveyPageLayout = memo(
     return (
       <>
         <Box
-          width="100%"
-          height="100%"
           pt="82px"
           pb="72px"
           maxWidth="700px"
           display="flex"
           flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
         >
           <SurveyHeading
             project={project.data}
@@ -268,7 +264,6 @@ const CLSurveyPageLayout = memo(
             loggedIn={!isNilOrError(authUser)}
             percentageAnswered={percentageAnswered}
           />
-
           {allowAnonymousPosting && (
             <Box w="100%" px={isSmallerThanPhone ? '16px' : '24px'} mt="16px">
               <Warning icon="shield-checkered">
@@ -276,15 +271,7 @@ const CLSurveyPageLayout = memo(
               </Warning>
             </Box>
           )}
-          <Box
-            display="flex"
-            flex="1"
-            height="100%"
-            pt={isSmallerThanPhone ? '28px' : '8px'}
-            overflowY="auto"
-            w="100%"
-            ref={pagesRef}
-          >
+          <Box w="100%" ref={pagesRef}>
             {uiPages.map((page, index) => {
               const pageElements = extractElementsByOtherOptionLogic(
                 page,
