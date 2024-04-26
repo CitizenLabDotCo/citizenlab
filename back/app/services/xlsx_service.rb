@@ -288,10 +288,12 @@ class XlsxService
   private
 
   def generate_phase_ideas_votes_sheet(workbook, sheet_name, phase)
-    ideas = phase.ideas
+    ideas = phase.ideas.includes([baskets_ideas: :basket])
 
     columns = [
-      { header: 'title', f: ->(i) { multiloc_service.t(i.title_multiloc) }, skip_sanitization: true }
+      { header: 'title', f: ->(i) { multiloc_service.t(i.title_multiloc) }, skip_sanitization: true },
+      # TODO: look for and use a central method to get the votes for an idea
+      { header: 'votes', f: ->(i) { i.baskets_ideas.joins(:basket).where(basket: { phase_id: phase.id }).where.not(basket: { submitted_at: nil }).pluck(:votes).sum }, skip_sanitization: true }
     ]
 
     generate_sheet workbook, sheet_name, columns, ideas
