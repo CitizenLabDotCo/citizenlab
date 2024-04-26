@@ -70,8 +70,8 @@ const EmailSettingPage = () => {
   }, [unsubscriptionToken, updateCampaignConsents, campaignId]);
 
   return (
-    <main>
-      <Container id="e2e-email-settings-page">
+    <main id="e2e-email-settings-page">
+      <Container>
         <Title mb="24px">
           <FormattedMessage {...messages.emailSettings} />
         </Title>
