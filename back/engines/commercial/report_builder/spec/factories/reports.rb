@@ -6,13 +6,17 @@ FactoryBot.define do
     owner factory: :user
     layout { association :layout, content_buildable: instance, code: 'report' }
     visible { false }
-  end
 
-  trait :visible do
-    visible { true }
-  end
+    trait :visible do
+      visible { true }
+    end
 
-  trait :with_phase do
-    phase factory: :phase
+    trait :with_phase do
+      phase factory: :phase
+    end
+
+    trait :with_image do
+      layout { association :report_layout, :with_image, content_buildable: instance }
+    end
   end
 end

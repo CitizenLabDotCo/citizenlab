@@ -181,12 +181,37 @@ resource 'Reports' do
           end
         end
 
-        example 'Copy the report without the graph data units and phase association' do
+        example 'Copy the report without the graph data units and phase association', document: false do
           expect { do_request }.not_to change(ReportBuilder::PublishedGraphDataUnit, :count)
 
           clone = ReportBuilder::Report.find(response_data[:id])
           expect(clone.published_graph_data_units).to be_empty
           expect(clone.phase_id).to be_nil
+        end
+      end
+
+      context 'when the report contains images' do
+        let!(:report) { create(:report, :with_image) }
+
+        # @return [void]
+        def clear_data_codes(craftjs_json)
+          ContentBuilder::LayoutImageService.new.image_elements(craftjs_json).each do |img_elt|
+            img_elt['dataCode'] = nil
+          end
+        end
+
+        example 'Copy the report and its images', document: false do
+          expect { do_request }.to change(ContentBuilder::LayoutImage, :count).by(1)
+
+          craftjs_json_orig = report.layout.craftjs_json
+          craftjs_json_copy = ContentBuilder::Layout
+            .find_by(content_buildable_id: response_data[:id])
+            .craftjs_json
+
+          clear_data_codes(craftjs_json_orig)
+          clear_data_codes(craftjs_json_copy)
+
+          expect(craftjs_json_copy).to eq(craftjs_json_orig)
         end
       end
     end

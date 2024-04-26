@@ -30,6 +30,24 @@ module ContentBuilder
       content_buildable.try(:project_id)
     end
 
+    # Creates and persists a copy of the layout, including all the images ({LayoutImage})
+    # associated with it. The newly created layout is not associated with any content
+    # buildable.
+    # @return [Layout] the duplicated layout.
+    def duplicate!
+      dup.tap do |layout|
+        transaction do
+          LayoutImageService.new.image_elements(layout.craftjs_json).each do |img_elt|
+            layout_image_copy = LayoutImage.find_by(code: img_elt['dataCode']).duplicate!
+            img_elt['dataCode'] = layout_image_copy.code
+          end
+
+          layout.content_buildable = nil
+          layout.save!
+        end
+      end
+    end
+
     private
 
     def validate_iframe_urls

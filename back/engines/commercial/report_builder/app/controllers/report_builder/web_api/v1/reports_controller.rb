@@ -45,22 +45,32 @@ module ReportBuilder
         end
 
         def copy
-          source_report = authorize(ReportBuilder::Report.find(params[:id]))
+          # We wrap the whole report creation in a transaction to ensure that the layout
+          # duplication (that is persisted directly — see {ContentBuilder::Layout#duplicate!}
+          # is rolled back if the report copy fails.
+          report_copy = ActiveRecord::Base.transaction do
+            copy = report.dup.tap do |copy_|
+              copy_.name = "#{copy_.name} (copy)"
+              copy_.owner_id = current_user.id
+              # Copies are never associated with a phase, even if the source report was.
+              # That's because, currently, there can be only one report per phase.
+              copy_.phase_id = nil
+              copy_.visible = false
+              copy_.layout = report.layout.duplicate!
+            end
 
-          report = source_report.dup.tap do |r|
-            r.name = "#{source_report.name} (copy)"
-            r.owner_id = current_user.id
-            r.phase_id = nil
-            r.visible = false
-            r.layout = source_report.layout.dup
+            authorize(copy)
+            side_fx_service.before_create(copy, current_user)
+            copy.save!
+            side_fx_service.after_create(copy, current_user)
+
+            copy
           end
 
-          authorize(report)
-          side_fx_service.before_create(report, current_user)
-          return send_unprocessable_entity(report) unless report.save
-
-          side_fx_service.after_create(report, current_user)
-          render json: serialize_report(report), status: :created
+          render json: serialize_report(report_copy), status: :created
+        rescue ActiveRecord::RecordInvalid => e
+          record = e.record
+          record.is_a?(ReportBuilder::Report) ? send_unprocessable_entity(record) : raise
         end
 
         def update
