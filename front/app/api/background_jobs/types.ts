@@ -1,14 +1,14 @@
 import { Keys } from 'utils/cl-react-query/types';
 
-import jobsKeys from './keys';
+import backgroundJobsKeys from './keys';
 
-export type JobsKeys = Keys<typeof jobsKeys>;
+export type BackgroundJobsKeys = Keys<typeof backgroundJobsKeys>;
 
-export interface IJobsQueryParams {
+export interface IBackgroundJobsQueryParams {
   ids?: string[];
 }
 
-export interface IJobData {
+export interface IBackgroundJobData {
   id: string;
   type: string;
   attributes: {
@@ -19,6 +19,6 @@ export interface IJobData {
   };
 }
 
-export interface IJobs {
-  data: IJobData[];
+export interface IBackgroundJobs {
+  data: IBackgroundJobData[];
 }

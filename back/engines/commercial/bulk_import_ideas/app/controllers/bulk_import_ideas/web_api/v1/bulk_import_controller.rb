@@ -47,7 +47,7 @@ module BulkImportIdeas
 
       sidefx.after_success current_user, @phase, params[:model], params[:format], [], []
 
-      render json: ::WebApi::V1::JobSerializer.new(
+      render json: ::WebApi::V1::BackgroundJobSerializer.new(
         QueJob.by_ids(job_ids),
         params: jsonapi_serializer_params
       ).serializable_hash

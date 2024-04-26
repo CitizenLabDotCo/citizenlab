@@ -10,7 +10,7 @@ import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import { useParams } from 'react-router-dom';
 
-import { IJobData } from 'api/jobs/types';
+import { IBackgroundJobData } from 'api/background_jobs/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInputSchema from 'hooks/useInputSchema';
@@ -29,7 +29,7 @@ const InputImporter = () => {
   const [importPdfModalOpen, setImportPdfModalOpen] = useState(false);
   const [importExcelModalOpen, setImportExcelModalOpen] = useState(false);
 
-  const [importJobs, setImportJobs] = useState<IJobData[]>([]);
+  const [importJobs, setImportJobs] = useState<IBackgroundJobData[]>([]);
 
   const { schema, uiSchema } = useInputSchema({
     projectId,
@@ -91,7 +91,7 @@ const InputImporter = () => {
       <ImportPdfModal
         open={importPdfModalOpen}
         onClose={closeImportPdfModal}
-        onImport={(jobs: IJobData[]) => setImportJobs(jobs)}
+        onImport={(jobs: IBackgroundJobData[]) => setImportJobs(jobs)}
       />
     </>
   );

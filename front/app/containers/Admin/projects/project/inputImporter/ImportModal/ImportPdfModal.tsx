@@ -17,8 +17,8 @@ import { useParams } from 'react-router-dom';
 import { UploadFile, SupportedLocale } from 'typings';
 import { object, string, mixed, boolean } from 'yup';
 
+import { IBackgroundJobData } from 'api/background_jobs/types';
 import useAddOfflineIdeasAsync from 'api/import_ideas/useAddOfflineIdeasAsync';
-import { IJobData } from 'api/jobs/types';
 import usePhase from 'api/phases/usePhase';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -46,7 +46,7 @@ interface FormValues {
 interface Props {
   open: boolean;
   onClose: () => void;
-  onImport: (jobs: IJobData[]) => void;
+  onImport: (jobs: IBackgroundJobData[]) => void;
 }
 
 const ImportPdfModal = ({ open, onClose, onImport }: Props) => {

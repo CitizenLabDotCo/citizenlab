@@ -1,18 +1,18 @@
 import { useEffect } from 'react';
 
-import { IJobData } from './types';
-import useJobs from './useJobs';
+import { IBackgroundJobData } from './types';
+import useBackgroundJobs from './useBackgroundJobs';
 
 const useTrackJobs = ({
   trackedJobs,
   onChange,
 }: {
-  trackedJobs: IJobData[];
+  trackedJobs: IBackgroundJobData[];
   onChange: () => void;
 }) => {
   const trackedJobsIds = trackedJobs.map((job) => job.attributes.job_id);
 
-  const { data: polledJobs } = useJobs(trackedJobsIds);
+  const { data: polledJobs } = useBackgroundJobs(trackedJobsIds);
 
   useEffect(() => {
     onChange();

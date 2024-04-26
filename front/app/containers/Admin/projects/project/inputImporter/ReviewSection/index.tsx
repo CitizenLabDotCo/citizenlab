@@ -10,13 +10,13 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
+import { IBackgroundJobData } from 'api/background_jobs/types';
+import useTrackBackgroundJobs from 'api/background_jobs/useTrackBackgroundJobs';
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useApproveOfflineIdeas from 'api/import_ideas/useApproveOfflineIdeas';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
-import { IJobData } from 'api/jobs/types';
-import useTrackJobs from 'api/jobs/useTrackJobs';
 
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
@@ -30,7 +30,11 @@ import messages from './messages';
 import PDFPageControl from './PDFPageControl';
 import PDFViewer from './PDFViewer';
 
-const ReviewSection = ({ importJobs }: { importJobs: IJobData[] }) => {
+const ReviewSection = ({
+  importJobs,
+}: {
+  importJobs: IBackgroundJobData[];
+}) => {
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId: string;
@@ -45,7 +49,7 @@ const ReviewSection = ({ importJobs }: { importJobs: IJobData[] }) => {
     refetch: refetchIdeas,
     isLoading,
   } = useImportedIdeas({ projectId, phaseId });
-  const { active: pollingIdeas, polledJobs } = useTrackJobs({
+  const { active: pollingIdeas, polledJobs } = useTrackBackgroundJobs({
     trackedJobs: importJobs,
     onChange: refetchIdeas,
   });

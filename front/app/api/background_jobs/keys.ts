@@ -1,12 +1,12 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
-import { IJobsQueryParams } from './types';
+import { IBackgroundJobsQueryParams } from './types';
 
 const baseKey = { type: 'job' };
 
-const jobsKeys = {
+const backgroundJobsKeys = {
   all: () => [baseKey],
-  list: (queryParams: IJobsQueryParams) => [
+  list: (queryParams: IBackgroundJobsQueryParams) => [
     {
       ...baseKey,
       operation: 'list',
@@ -22,4 +22,4 @@ const jobsKeys = {
   ],
 } satisfies QueryKeys;
 
-export default jobsKeys;
+export default backgroundJobsKeys;

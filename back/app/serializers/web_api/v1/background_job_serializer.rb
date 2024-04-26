@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::JobSerializer < WebApi::V1::BaseSerializer
+class WebApi::V1::BackgroundJobSerializer < WebApi::V1::BaseSerializer
   attributes :status, :active
 
   attribute :job_id do |object|

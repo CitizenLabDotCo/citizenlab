@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors, ILinks, SupportedLocale } from 'typings';
 
-import { IJobData } from 'api/jobs/types';
+import { IBackgroundJobData } from 'api/background_jobs/types';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
@@ -16,7 +16,7 @@ interface RequestParams {
 }
 
 interface JobIdResponse {
-  data: IJobData[];
+  data: IBackgroundJobData[];
   links: ILinks;
 }
 
