@@ -288,13 +288,23 @@ class XlsxService
   private
 
   def generate_phase_ideas_votes_sheet(workbook, sheet_name, phase)
-    ideas = phase.ideas.includes([baskets_ideas: :basket])
+    ideas = phase.ideas
+    method = phase.voting_method
+    t_scope = 'xlsx_export.column_headers'
 
-    columns = [
-      { header: 'title', f: ->(i) { multiloc_service.t(i.title_multiloc) }, skip_sanitization: true },
-      # TODO: look for and use a central method to get the votes for an idea
-      { header: 'votes', f: ->(i) { i.baskets_ideas.joins(:basket).where(basket: { phase_id: phase.id }).where.not(basket: { submitted_at: nil }).pluck(:votes).sum }, skip_sanitization: true }
-    ]
+    columns = [{ header: I18n.t('title', scope: t_scope),
+                 f: ->(i) { multiloc_service.t(i.title_multiloc) },
+                 skip_sanitization: true }]
+
+    columns << if method == 'budgeting'
+      { header: "#{I18n.t('picks', scope: t_scope)} / #{I18n.t('participants', scope: t_scope)}",
+        f: ->(i) { i.baskets_ideas.joins(:basket).where(basket: { phase_id: phase.id }).where.not(basket: { submitted_at: nil }).size },
+        skip_sanitization: true }
+    else
+      { header: I18n.t('votes_count', scope: t_scope),
+        f: ->(i) { i.ideas_phases.find_by(phase: phase).votes_count },
+        skip_sanitization: true }
+    end
 
     generate_sheet workbook, sheet_name, columns, ideas
   end

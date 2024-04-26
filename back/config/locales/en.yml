@@ -222,6 +222,8 @@ en:
       assignee_fullname: 'Assignee'
       assignee_email: 'Assignee email'
       image_url: 'Image URL'
+      title: 'Title'
+      description: 'Description'
     anonymous: 'Anonymous'
   form_builder:
     default_select_field:
