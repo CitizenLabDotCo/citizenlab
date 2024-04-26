@@ -9,7 +9,11 @@ interface Props {
   inputId?: string | null;
 }
 const useInputSchema = ({ projectId, phaseId, inputId }: Props) => {
-  const { data: ideaJsonFormSchema, isError } = useIdeaJsonFormSchema({
+  const {
+    data: ideaJsonFormSchema,
+    isError,
+    ...otherAttributes
+  } = useIdeaJsonFormSchema({
     projectId,
     phaseId,
     inputId,
@@ -29,7 +33,7 @@ const useInputSchema = ({ projectId, phaseId, inputId }: Props) => {
       ideaJsonFormSchema?.data.attributes.ui_schema_multiloc[locales[0]]) ||
     null;
 
-  return { schema, uiSchema, inputSchemaError: isError };
+  return { schema, uiSchema, inputSchemaError: isError, ...otherAttributes };
 };
 
 export default useInputSchema;
