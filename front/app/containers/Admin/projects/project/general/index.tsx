@@ -93,7 +93,7 @@ const AdminProjectsProjectGeneral = () => {
     `/admin/projects/${projectId}/settings`
   );
 
-  const { data: remoteProjectImages } = useProjectImages(projectId);
+  const { data: remoteProjectImages } = useProjectImages(projectId || null);
   const { mutateAsync: addProjectImage } = useAddProjectImage();
   const { mutateAsync: deleteProjectImage } = useDeleteProjectImage();
   const { mutateAsync: updateProject } = useUpdateProject();
