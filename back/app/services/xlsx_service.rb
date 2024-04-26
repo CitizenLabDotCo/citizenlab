@@ -296,14 +296,27 @@ class XlsxService
                  f: ->(i) { multiloc_service.t(i.title_multiloc) },
                  skip_sanitization: true }]
 
-    columns << if method == 'budgeting'
-      { header: "#{I18n.t('picks', scope: t_scope)} / #{I18n.t('participants', scope: t_scope)}",
-        f: ->(i) { i.baskets_ideas.joins(:basket).where(basket: { phase_id: phase.id }).where.not(basket: { submitted_at: nil }).size },
-        skip_sanitization: true }
+    columns += if method == 'budgeting'
+      [
+        { header: "#{I18n.t('picks', scope: t_scope)} / #{I18n.t('participants', scope: t_scope)}",
+          f: ->(i) { i.baskets_ideas.joins(:basket).where(basket: { phase_id: phase.id }).where.not(basket: { submitted_at: nil }).size },
+          skip_sanitization: true },
+        { header: I18n.t('cost', scope: t_scope),
+          f: ->(i) { i.budget },
+          skip_sanitization: true }
+      ]
     else
-      { header: I18n.t('votes_count', scope: t_scope),
-        f: ->(i) { i.ideas_phases.find_by(phase: phase).votes_count },
-        skip_sanitization: true }
+      [{ header: I18n.t('votes_count', scope: t_scope),
+         f: ->(i) { i.ideas_phases.find_by(phase: phase).votes_count },
+         skip_sanitization: true }]
+    end
+
+    puts "method_inspect: #{method.inspect}"
+
+    if method == 'multiple_voting'
+      columns << { header: I18n.t('participants', scope: t_scope),
+                   f: ->(i) { i.baskets_ideas.joins(:basket).where(basket: { phase_id: phase.id }).where.not(basket: { submitted_at: nil }).size },
+                   skip_sanitization: true }
     end
 
     generate_sheet workbook, sheet_name, columns, ideas

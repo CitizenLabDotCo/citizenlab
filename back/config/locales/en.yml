@@ -208,6 +208,7 @@ en:
       author_email: 'Author email'
       author_id: 'Author ID'
       budget: 'Budget'
+      cost: 'Cost'
       created_at: 'Submitted at'
       published_at: 'Published at'
       comments_count: 'Comments'
