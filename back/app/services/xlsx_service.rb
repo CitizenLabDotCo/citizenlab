@@ -302,6 +302,7 @@ class XlsxService
     columns += if method == 'budgeting'
       [
         { header: "#{I18n.t('picks', scope: t_scope)} / #{I18n.t('participants', scope: t_scope)}",
+          # We want the n of times each idea was selected (by a user), not the total budget allocated to each idea (ideas_phase.votes_count)
           f: ->(i) { i.baskets_ideas.joins(:basket).where(basket: { phase_id: phase.id }).where.not(basket: { submitted_at: nil }).size },
           skip_sanitization: true },
         { header: I18n.t('cost', scope: t_scope),
@@ -316,6 +317,7 @@ class XlsxService
 
     if method == 'multiple_voting'
       columns << { header: I18n.t('participants', scope: t_scope),
+                   # We want the n of times each idea was selected (by a user), not the n of votes allocated to each idea (ideas_phase.votes_count)
                    f: ->(i) { i.baskets_ideas.joins(:basket).where(basket: { phase_id: phase.id }).where.not(basket: { submitted_at: nil }).size },
                    skip_sanitization: true }
     end
