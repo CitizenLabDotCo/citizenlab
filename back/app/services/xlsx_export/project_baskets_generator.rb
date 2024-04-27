@@ -4,7 +4,6 @@ module XlsxExport
       @project = project
       @xlsx_service = XlsxService.new
       @multiloc_service = MultilocService.new(app_configuration: AppConfiguration.instance)
-      @url_service = Frontend::UrlService.new
     end
 
     def generate_project_baskets_xlsx
