@@ -217,8 +217,8 @@ const IdeasEditForm = ({ ideaId }: Props) => {
         <Box p="32px">
           <GoBackToIdeaPage idea={idea.data} />
         </Box>
-        <main>
-          <PageContainer id="e2e-idea-edit-page">
+        <main id="e2e-idea-edit-page">
+          <PageContainer>
             <Form
               schema={schema}
               uiSchema={uiSchema}

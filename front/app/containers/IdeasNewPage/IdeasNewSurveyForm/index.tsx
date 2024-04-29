@@ -210,7 +210,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
 
     if (published) {
       clearDraftIdea(phaseId);
-      participationMethodConfig?.onFormSubmission({
+      participationMethodConfig.onFormSubmission({
         project: project.data,
         ideaId,
         idea,
