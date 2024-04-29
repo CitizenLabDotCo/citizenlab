@@ -21,6 +21,7 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import useLocalize from 'hooks/useLocalize';
 
+import Stamp from 'components/admin/Email/Stamp';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
@@ -35,7 +36,6 @@ import messages from '../messages';
 
 import DraftCampaignDetails from './DraftCampaignDetails';
 import SentCampaignDetails from './SentCampaignDetails';
-import Stamp from './Stamp';
 
 const PageHeader = styled.div`
   display: flex;

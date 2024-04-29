@@ -13,7 +13,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { getFullName } from 'utils/textUtils';
 
-import messages from '../../messages';
+import messages from './messages';
 
 const statusColorMapping: {
   [k in IDeliveryData['attributes']['delivery_status']]: string;

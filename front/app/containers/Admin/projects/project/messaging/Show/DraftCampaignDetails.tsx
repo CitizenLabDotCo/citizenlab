@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { ICampaignData } from 'api/campaigns/types';
 import useDeleteCampaign from 'api/campaigns/useDeleteCampaign';
 
+import PreviewFrame from 'components/admin/Email/PreviewFrame';
 import Button from 'components/UI/Button';
 
 import { useIntl } from 'utils/cl-intl';
@@ -14,8 +15,6 @@ import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
-
-import PreviewFrame from './PreviewFrame';
 
 const ButtonWrapper = styled.div`
   margin: 40px 0;
