@@ -461,10 +461,13 @@ RSpec.describe CustomField do
     let(:field) { create(:custom_field_multiselect, :with_options, key: 'select_field') }
 
     it 'returns a text field when the field has an other option' do
-      create(:custom_field_option, custom_field: field, key: 'other', other: true)
-      expect(field.other_option_text_field).not_to be_nil
-      expect(field.other_option_text_field.key).to eq 'select_field_other'
-      expect(field.other_option_text_field.input_type).to eq 'text'
+      create(:custom_field_option, custom_field: field, key: 'other', other: true, title_multiloc: { en: 'Something else', 'fr-FR': 'Quelque chose' })
+      other_option_text_field = field.other_option_text_field
+      expect(other_option_text_field).not_to be_nil
+      expect(other_option_text_field.key).to eq 'select_field_other'
+      expect(other_option_text_field.input_type).to eq 'text'
+      expect(other_option_text_field.title_multiloc['en']).to eq "If you picked 'Something else', what are you thinking of?"
+      expect(other_option_text_field.title_multiloc['fr-FR']).to eq 'Puisque vous avez choisi « Quelque chose », à quoi pensez-vous ?'
     end
 
     it 'returns nil otherwise' do

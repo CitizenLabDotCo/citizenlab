@@ -28,6 +28,7 @@ const FakeInput = styled.div`
   color: #666;
   background-color: #f9f9f9;
   cursor: text;
+  margin-bottom: 20px;
 `;
 
 const StyledIcon = styled(Icon)`
@@ -44,10 +45,12 @@ interface Props {
 }
 
 const AuthorInput = ({ selectedAuthor, onSelect }: Props) => {
-  if (selectedAuthor.user_state !== 'invalid-email') {
+  if (selectedAuthor.email) {
     const handleClear = () => {
+      const isValidWithoutEmail =
+        selectedAuthor.first_name && selectedAuthor.last_name;
       onSelect({
-        user_state: 'invalid-email',
+        user_state: isValidWithoutEmail ? 'new-imported-user' : 'no-user',
         email: undefined,
       });
     };

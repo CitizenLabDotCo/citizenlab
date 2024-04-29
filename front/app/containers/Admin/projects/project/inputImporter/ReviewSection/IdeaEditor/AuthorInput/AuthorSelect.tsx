@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react';
 
 import useInfiniteUsers from 'api/users/useInfiniteUsers';
-import useUserById from 'api/users/useUserById';
 
 import BaseUserSelect from 'components/UI/UserSelect/BaseUserSelect';
 import OptionLabel from 'components/UI/UserSelect/OptionLabel';
@@ -16,7 +15,7 @@ interface Props {
   onSelect: (selectedAuthor?: SelectedAuthor) => void;
 }
 
-const AuthorSelect = ({ selectedAuthor, onSelect }: Props) => {
+const AuthorSelect = ({ onSelect }: Props) => {
   const [searchValue, setSearchValue] = useState('');
 
   const {
@@ -38,8 +37,6 @@ const AuthorSelect = ({ selectedAuthor, onSelect }: Props) => {
     ];
   }, [searchValue, users, hasNextPage]);
 
-  const { data: selectedUser } = useUserById(selectedAuthor?.id);
-
   const handleSelectExistingUser = (option?: Option) => {
     if (!option) return;
 
@@ -54,7 +51,7 @@ const AuthorSelect = ({ selectedAuthor, onSelect }: Props) => {
 
     if (option.value === 'newUser') {
       onSelect({
-        user_state: 'new-user',
+        user_state: 'new-imported-user',
         email: option.payload,
       });
     }
@@ -62,7 +59,7 @@ const AuthorSelect = ({ selectedAuthor, onSelect }: Props) => {
 
   return (
     <BaseUserSelect
-      value={selectedUser?.data ?? null}
+      value={null}
       placeholder={'Enter an email address'}
       options={options}
       components={{ Option: CustomOption }}

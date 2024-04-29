@@ -117,8 +117,7 @@ module BulkImportIdeas::Parsers
 
         # Add email but only if it validates
         email = fields.find { |f| f[:name] == locale_email_label }
-        email_value = email ? email[:value].gsub(/\s+/, '') : nil # Remove any spaces
-        idea_row[:user_email] = email_value if email_value&.match(User::EMAIL_REGEX)
+        idea_row[:user_email] = email ? fix_email_address(email[:value]) : nil
 
         first_name = fields.find { |f| f[:name] == locale_first_name_label }
         idea_row[:user_first_name] = first_name[:value] if first_name
@@ -136,11 +135,13 @@ module BulkImportIdeas::Parsers
       idea_row
     end
 
-    def merge_idea_with_form_fields(idea)
+    def merge_idea_with_form_fields(fields)
       raise NotImplementedError, 'This method is not yet implemented'
     end
 
     # Processes all fields - including built in fields
+    # @param [Array<Hash>] fields - comes from #structure_raw_fields
+    # @param [Hash] idea_row - comes from #ideas_to_idea_rows
     def process_custom_form_fields(fields, idea_row)
       merged_fields = merge_idea_with_form_fields(fields)
       multi_select_types = %w[multiselect multiselect_image]
@@ -179,6 +180,18 @@ module BulkImportIdeas::Parsers
       end
 
       field
+    end
+
+    def fix_email_address(email)
+      email = email.gsub(/\s+/, '') # Remove any white space
+      email = email.tr(',', '.') # Fix any commas that should be dots
+      return email if email&.match(User::EMAIL_REGEX)
+
+      # Try and fix common email domain suffixes
+      email = email.gsub(/(couk|govuk)$/, '.\1') # Double domain suffixes
+      email = email.gsub(/(com|co|org|gov|uk|fr|be|nl|de|cl|us|dk|ca|at|nu)$/, '.\1') # Single domain suffixes
+
+      email&.match(User::EMAIL_REGEX) ? email : nil
     end
   end
 end

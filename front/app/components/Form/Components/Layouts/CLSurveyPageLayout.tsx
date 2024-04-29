@@ -44,6 +44,7 @@ import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import {
   extractElementsByOtherOptionLogic,
+  hasOtherTextFieldBelow,
   isVisible,
 } from '../Controls/visibilityUtils';
 
@@ -131,13 +132,11 @@ const CLSurveyPageLayout = memo(
     useEffect(() => {
       if (scrollToError) {
         // Scroll to the first field with an error
-        document
-          .getElementById('error-display')
-          ?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'nearest',
-            inline: 'start',
-          });
+        document.getElementById('error-display')?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'start',
+        });
         setScrollToError(false);
       }
     }, [scrollToError]);
@@ -337,12 +336,10 @@ const CLSurveyPageLayout = memo(
                         </Box>
                       )}
                       {pageElements.map((elementUiSchema, index) => {
-                        const key = elementUiSchema.scope.split('/').pop();
-                        const hasOtherFieldBelow =
-                          key &&
-                          (Array.isArray(data[key])
-                            ? data[key].includes('other')
-                            : data[key] === 'other');
+                        const hasOtherFieldBelow = hasOtherTextFieldBelow(
+                          elementUiSchema,
+                          data
+                        );
 
                         return (
                           <Box

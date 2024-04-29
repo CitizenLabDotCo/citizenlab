@@ -17,7 +17,7 @@ const MetaBox = ({ phaseName, locale }: Props) => {
     <Box
       w="90%"
       borderBottom={`1px solid ${colors.borderLight}`}
-      mb="20px"
+      mb="10px"
       display="flex"
     >
       <Box pr="12px">
