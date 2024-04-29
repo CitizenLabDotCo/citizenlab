@@ -44,7 +44,7 @@ class Initiative < ApplicationRecord
   include Post
   include AnonymousParticipation
 
-  slug from: proc { |initiative| initiative.title_multiloc.values.find(&:present?) }, if: proc(&:published?)
+  slug from: proc { |initiative| MultilocService.new.t(initiative.title_multiloc, initiative.author&.locale) }, if: proc(&:published?)
 
   mount_base64_uploader :header_bg, InitiativeHeaderBgUploader
 
@@ -72,10 +72,8 @@ class Initiative < ApplicationRecord
     post.validates :title_multiloc, presence: true, multiloc: { presence: true }
     post.validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
     post.validates :author, presence: true, if: :author_required_on_change?
-    post.validates :slug, uniqueness: true, presence: true
 
     post.before_validation :strip_title
-    # post.before_validation :generate_slug
     post.after_validation :set_published_at, if: ->(record) { record.published? && record.publication_status_changed? }
     post.after_validation :set_assigned_at, if: ->(record) { record.assignee_id && record.assignee_id_changed? }
   end
@@ -179,13 +177,6 @@ class Initiative < ApplicationRecord
       .where(initiative_status: InitiativeStatus.where(code: initiative_status_code))
       .order(:created_at).pluck(:created_at).last
   end
-
-  # def generate_slug
-  #   return if slug
-
-  #   title = MultilocService.new.t title_multiloc, author&.locale
-  #   self.slug ||= SlugService.new.generate_slug self, title
-  # end
 
   def sanitize_body_multiloc
     service = SanitizationService.new
