@@ -163,6 +163,7 @@ const PhaseNavigation = memo<Props>(({ projectId, buttonStyle, className }) => {
               disabled={selectedPhaseId === phases.data[0].id}
               ariaLabel={formatMessage(messages.previousPhase)}
               className="e2e-previous-phase"
+              borderColor={colors.primary}
             />
           </div>
         </Tippy>
@@ -189,6 +190,7 @@ const PhaseNavigation = memo<Props>(({ projectId, buttonStyle, className }) => {
                 disabled={selectedPhaseId === currentPhaseId}
                 ariaLabel={formatMessage(messages.currentPhase)}
                 className="e2e-current-phase"
+                borderColor={colors.primary}
               />
             </div>
           </Tippy>
@@ -216,6 +218,8 @@ const PhaseNavigation = memo<Props>(({ projectId, buttonStyle, className }) => {
               }
               ariaLabel={formatMessage(messages.nextPhase)}
               className="e2e-next-phase"
+              borderColor={colors.primary}
+              borderThickness="1px"
             />
           </div>
         </Tippy>
