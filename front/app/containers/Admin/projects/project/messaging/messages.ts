@@ -117,10 +117,6 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.failed',
     defaultMessage: 'Failed',
   },
-  sendNowButton: {
-    id: 'app.containers.Admin.emails.sendNowButton',
-    defaultMessage: 'Send now',
-  },
   sendTestEmailButton: {
     id: 'app.containers.Admin.emails.sendTestEmailButton',
     defaultMessage: 'Send a preview',
@@ -217,21 +213,9 @@ export default defineMessages({
     defaultMessage:
       'You can speak directly to citizens using the variables {firstName} {lastName}. E.g. "Dear {firstName} {lastName}, ..."',
   },
-  changeRecipientsButton: {
-    id: 'app.containers.Admin.emails.changeRecipientsButton',
-    defaultMessage: 'Change recipients',
-  },
   send: {
     id: 'app.containers.Admin.emails.send',
     defaultMessage: 'Send',
-  },
-  confirmSendHeader: {
-    id: 'app.containers.Admin.emails.confirmSendHeader',
-    defaultMessage: 'Email to all users?',
-  },
-  toAllUsers: {
-    id: 'app.containers.Admin.emails.toAllUsers',
-    defaultMessage: 'Do you want to send this email to all users?',
   },
   senderRecipients: {
     id: 'app.containers.Admin.emails.senderRecipients',

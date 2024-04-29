@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useState } from 'react';
 
 import {
   StatusLabel,
@@ -26,7 +25,6 @@ import T from 'components/T';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import GoBackButton from 'components/UI/GoBackButton';
-import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -91,27 +89,6 @@ const Buttons = styled.div`
   }
 `;
 
-const ButtonsWrapper = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  width: 100%;
-
-  .Button {
-    margin-right: 1rem;
-    margin-bottom: 0.5rem;
-  }
-`;
-
-const ModalContainer = styled.div`
-  padding: 30px;
-`;
-
-const SendNowWarning = styled.div`
-  font-size: ${fontSizes.base}px;
-  margin-bottom: 30px;
-`;
-
 const Show = () => {
   const { projectId, campaignId } = useParams() as {
     projectId: string;
@@ -134,15 +111,8 @@ const Show = () => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  const [showSendConfirmationModal, setShowSendConfirmationModal] =
-    useState(false);
-
-  const handleSend = (noGroupsSelected: boolean) => () => {
-    if (noGroupsSelected) {
-      openSendConfirmationModal();
-    } else {
-      sendCampaign(campaignId);
-    }
+  const handleSend = () => () => {
+    sendCampaign(campaignId);
   };
 
   const handleSendTestEmail = () => {
@@ -170,29 +140,9 @@ const Show = () => {
     return senderName;
   };
 
-  const openSendConfirmationModal = () => {
-    setShowSendConfirmationModal(true);
-  };
-
-  const closeSendConfirmationModal = () => {
-    setShowSendConfirmationModal(false);
-  };
-
-  const confirmSendCampaign = (campaignId: string) => () => {
-    sendCampaign(campaignId, {
-      onSuccess: () => {
-        closeSendConfirmationModal();
-      },
-    });
-  };
-
   if (campaign) {
-    const groupIds: string[] = campaign.data.relationships.groups.data.map(
-      (group) => group.id
-    );
     const senderType = campaign.data.attributes.sender;
     const senderName = getSenderName(senderType);
-    const noGroupsSelected = groupIds.length === 0;
 
     return (
       <Box p="44px">
@@ -227,7 +177,7 @@ const Show = () => {
                   buttonStyle="admin-dark"
                   icon="send"
                   iconPos="right"
-                  onClick={handleSend(noGroupsSelected)}
+                  onClick={handleSend}
                   disabled={isLoading}
                   processing={isLoading}
                 >
@@ -278,36 +228,6 @@ const Show = () => {
           ) : (
             <SentCampaignDetails campaignId={campaign.data.id} />
           )}
-
-          <Modal
-            opened={showSendConfirmationModal}
-            close={closeSendConfirmationModal}
-            header={<FormattedMessage {...messages.confirmSendHeader} />}
-          >
-            <ModalContainer>
-              <SendNowWarning>
-                <FormattedMessage {...messages.toAllUsers} />
-              </SendNowWarning>
-              <ButtonsWrapper>
-                <Button
-                  buttonStyle="secondary"
-                  linkTo={`/admin/projects/${projectId}/messaging/${campaign.data.id}/edit`}
-                >
-                  <FormattedMessage {...messages.changeRecipientsButton} />
-                </Button>
-                <Button
-                  buttonStyle="primary"
-                  onClick={confirmSendCampaign(campaign.data.id)}
-                  icon="send"
-                  iconPos="right"
-                  disabled={isLoading}
-                  processing={isLoading}
-                >
-                  <FormattedMessage {...messages.sendNowButton} />
-                </Button>
-              </ButtonsWrapper>
-            </ModalContainer>
-          </Modal>
         </Box>
       </Box>
     );
