@@ -6,7 +6,7 @@ export default defineMessages({
     defaultMessage: 'Enter a valid email to create a new account',
   },
   addANewUser: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.AuthorInput.addANewUser',
-    defaultMessage: 'Add a new user',
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.AuthorInput.addANewUser2',
+    defaultMessage: 'Use this email for the new user',
   },
 });

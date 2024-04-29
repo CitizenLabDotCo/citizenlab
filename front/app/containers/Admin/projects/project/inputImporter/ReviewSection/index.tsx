@@ -40,15 +40,18 @@ const ReviewSection = () => {
   const {
     data: ideas,
     refetch: refetchIdeas,
-    isLoading,
+    isLoading: isLoadingIdeas,
   } = useImportedIdeas({ projectId, phaseId });
   const { mutate: deleteIdea } = useDeleteIdea();
-  const { mutate: approveIdeas } = useApproveOfflineIdeas();
+  const { mutate: approveIdeas, isLoading: isApproving } =
+    useApproveOfflineIdeas();
 
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
 
   const { data: ideaMetadata } = useImportedIdeaMetadata({
-    id: isLoading ? undefined : idea?.data.relationships.idea_import?.data?.id,
+    id: isLoadingIdeas
+      ? undefined
+      : idea?.data.relationships.idea_import?.data?.id,
   });
 
   if (ideas === undefined) return null;
@@ -125,6 +128,8 @@ const ReviewSection = () => {
                 <Button
                   bgColor={colors.primary}
                   icon="check"
+                  processing={isApproving}
+                  disabled={isApproving}
                   onClick={handleApproveAll}
                 >
                   <FormattedMessage {...messages.approveAllInputs} />

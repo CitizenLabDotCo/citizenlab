@@ -39,8 +39,8 @@ export interface ImportedIdeaMetadataResponse {
 
 export interface CreateOfflineIdeasParams {
   phaseId: string;
-  email: string;
   locale: SupportedLocale;
+  email?: string;
   first_name?: string;
   last_name?: string;
 }
