@@ -71,8 +71,7 @@ export const isUserFormDataValid = (userFormData: UserFormData | null) => {
 
   const { email, first_name, last_name } = userFormData;
 
-  return ((email !== null && email !== undefined) ||
-    (first_name && last_name)) as boolean;
+  return !!email || !!(first_name && last_name);
 };
 
 type UserFormDataAction =
