@@ -246,18 +246,27 @@ const CLSurveyPageLayout = memo(
       return null;
     }
 
+    const getFormContainerHeight = () => {
+      if (hasScrollBars) {
+        return 'fit-content';
+      } else if (isSmallerThanPhone) {
+        return ''; // Returning 100% on mobile results in odd behavior
+      }
+      return '100%';
+    };
+
     return (
       <>
         <Box
           width="100%"
           height="100%"
-          pt="82px"
-          pb="72px"
           maxWidth="700px"
           display="flex"
           flexDirection="column"
           justifyContent="center"
           alignItems="center"
+          pt={isSmallerThanPhone ? '' : '82px'}
+          pb={isSmallerThanPhone ? '' : '72px'}
         >
           <SurveyHeading
             project={project.data}
@@ -280,7 +289,6 @@ const CLSurveyPageLayout = memo(
             display="flex"
             flex="1"
             height="100%"
-            pt={isSmallerThanPhone ? '28px' : '8px'}
             overflowY="auto"
             w="100%"
             ref={pagesRef}
@@ -296,8 +304,10 @@ const CLSurveyPageLayout = memo(
                     <Box
                       display="flex"
                       justifyContent="center"
-                      h={hasScrollBars ? 'fit-content' : '100%'}
+                      h={getFormContainerHeight()}
                       flexDirection="column"
+                      pt={isSmallerThanPhone ? '60px' : ''}
+                      pb={isSmallerThanPhone ? '160px' : ''}
                     >
                       {page.options.title && (
                         <Title
