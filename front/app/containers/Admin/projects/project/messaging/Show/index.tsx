@@ -111,7 +111,7 @@ const Show = () => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  const handleSend = () => () => {
+  const handleSend = () => {
     sendCampaign(campaignId);
   };
 
@@ -179,7 +179,7 @@ const Show = () => {
                   iconPos="right"
                   onClick={handleSend}
                   disabled={isLoading}
-                  processing={isLoading}
+                  processing={isSendingCampaign}
                 >
                   <FormattedMessage {...messages.send} />
                 </Button>
