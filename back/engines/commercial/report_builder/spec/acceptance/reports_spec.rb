@@ -214,6 +214,47 @@ resource 'Reports' do
           expect(craftjs_json_copy).to eq(craftjs_json_orig)
         end
       end
+
+      context 'when the report contains references to itself (its own id)' do
+        let!(:report) do
+          create(:report) do |report|
+            report.layout.update!(craftjs_json: {
+              'ROOT' => {
+                'type' => 'div',
+                'nodes' => ['QoSo5wgDlQ'],
+                'props' => { 'id' => 'e2e-content-builder-frame' },
+                'custom' => {},
+                'hidden' => false,
+                'isCanvas' => true,
+                'displayName' => 'div',
+                'linkedNodes' => {}
+              },
+              'QoSo5wgDlQ' => {
+                'type' => { 'resolvedName' => 'DummyAboutReportWidget' },
+                'nodes' => [],
+                'props' => { 'reportId' => report.id },
+                'custom' => {},
+                'hidden' => false,
+                'parent' => 'ROOT',
+                'isCanvas' => false,
+                'displayName' => 'DummyAboutReportWidget',
+                'linkedNodes' => {}
+              }
+            })
+          end
+        end
+
+        example 'Copy the report and update the references', document: false do
+          # sanity check
+          expect(report.layout.craftjs_json.to_json).to include(report.id)
+
+          do_request
+
+          clone = ReportBuilder::Report.find(response_data[:id])
+          expect(clone.layout.craftjs_json.to_json).not_to include(report.id)
+          expect(clone.layout.craftjs_json.to_json).to include(clone.id)
+        end
+      end
     end
 
     include_examples 'not authorized to visitors'
