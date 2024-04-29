@@ -42,9 +42,6 @@ const IT_IS_POSSIBLE_MESSAGES = {
 };
 
 const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
-  // Atm importPrintedFormsEnabled is always true if this modal is shown.
-  // I.e. this modal is never shown if the feature flag is not enabled.
-  // Not removing it for now, as it might be used in the future.
   const importPrintedFormsEnabled = useFeatureFlag({
     name: 'import_printed_forms',
   });

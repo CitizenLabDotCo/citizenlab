@@ -165,11 +165,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
 
     let newUser: IUser | undefined;
 
-    if (
-      userFormDataAction === 'create-new-user-and-assign-to-idea' &&
-      userFormData.email &&
-      locale
-    ) {
+    if (userFormDataAction === 'create-new-user-and-assign-to-idea' && locale) {
       newUser = await createOfflineUser({
         phaseId,
         email: userFormData.email,

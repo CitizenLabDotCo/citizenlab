@@ -9,6 +9,8 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
@@ -20,6 +22,9 @@ interface Props {
 
 const ImportButtons = ({ onClickPDFImport, onClickExcelImport }: Props) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
+  const printedFormsEnabled = useFeatureFlag({
+    name: 'import_printed_forms',
+  });
 
   return (
     <Box>
@@ -41,16 +46,18 @@ const ImportButtons = ({ onClickPDFImport, onClickExcelImport }: Props) => {
             <DropdownListItem onClick={onClickExcelImport}>
               <FormattedMessage {...messages.importExcelFile} />
             </DropdownListItem>
-            <DropdownListItem onClick={onClickPDFImport}>
-              <Box mr="12px" alignSelf="center">
-                <FormattedMessage {...messages.importPDFFile} />
-              </Box>
-              <Box alignSelf="center">
-                <Badge color={colors.teal400}>
-                  <FormattedMessage {...messages.premium} />
-                </Badge>
-              </Box>
-            </DropdownListItem>
+            {printedFormsEnabled && (
+              <DropdownListItem onClick={onClickPDFImport}>
+                <Box mr="12px" alignSelf="center">
+                  <FormattedMessage {...messages.importPDFFile} />
+                </Box>
+                <Box alignSelf="center">
+                  <Badge color={colors.teal400}>
+                    <FormattedMessage {...messages.premium} />
+                  </Badge>
+                </Box>
+              </DropdownListItem>
+            )}
           </>
         }
       />
