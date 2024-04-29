@@ -60,13 +60,13 @@ RSpec.describe Sluggable do
       it 'does not accept a slug with spaces' do
         sluggable.slug = 'invalid-slug '
         expect(sluggable).to be_invalid
-        expect(sluggable.errors.details).to eq({ slug: [{ error: :invalid, value: 'invalid-slug ' }]})
+        expect(sluggable.errors.details).to eq({ slug: [{ error: :invalid, value: 'invalid-slug ' }] })
       end
 
       it 'does not accept a slug with double quotes' do
         sluggable.slug = 'invalid"slug'
         expect(sluggable).to be_invalid
-        expect(sluggable.errors.details).to eq({ slug: [{ error: :invalid, value: 'invalid"slug' }]})
+        expect(sluggable.errors.details).to eq({ slug: [{ error: :invalid, value: 'invalid"slug' }] })
       end
     end
   end

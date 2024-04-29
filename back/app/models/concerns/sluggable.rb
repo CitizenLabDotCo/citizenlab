@@ -3,6 +3,8 @@
 module Sluggable
   extend ActiveSupport::Concern
 
+  SLUG_REGEX = /\A[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*\z/ # Inspired by https://ihateregex.io/expr/url-slug/
+
   module ClassMethods
     # TODO: Migration script
     attr_reader :slug_attribute, :slug_from, :slug_if
@@ -22,8 +24,6 @@ module Sluggable
   end
 
   included do
-    SLUG_REGEX = /\A[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*\z/ # Inspired by https://ihateregex.io/expr/url-slug/
-
     validates :slug, uniqueness: true, presence: true, format: { with: SLUG_REGEX }, if: proc { self.class.slug? && slug_if? }
     before_validation :generate_slug, if: proc { self.class.slug? }
   end
