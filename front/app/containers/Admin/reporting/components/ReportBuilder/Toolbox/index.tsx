@@ -39,10 +39,10 @@ import AboutReportWidget from '../Widgets/AboutReportWidget';
 import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
 import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
 import CommentsByTimeWidget from '../Widgets/ChartWidgets/CommentsByTimeWidget';
+import DemographicsWidget from '../Widgets/ChartWidgets/DemographicsWidget';
 import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
 import PostsByTimeWidget from '../Widgets/ChartWidgets/PostsByTimeWidget';
 import ReactionsByTimeWidget from '../Widgets/ChartWidgets/ReactionsByTimeWidget';
-import UsersWidget from '../Widgets/ChartWidgets/DemographicsWidget';
 import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
 import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
 import IframeMultiloc from '../Widgets/IframeMultiloc';
@@ -276,14 +276,14 @@ const ReportBuilderToolbox = ({
             <DraggableElement
               id="e2e-draggable-users-widget"
               component={
-                <UsersWidget
+                <DemographicsWidget
                   projectId={selectedProjectId}
                   startAt={undefined}
                   endAt={chartEndDate}
                 />
               }
               icon="chart-bar"
-              label={formatMessage(WIDGET_TITLES.UsersWidget)}
+              label={formatMessage(WIDGET_TITLES.DemographicsWidget)}
             />
             <DraggableElement
               id="e2e-draggable-users-by-gender-widget"

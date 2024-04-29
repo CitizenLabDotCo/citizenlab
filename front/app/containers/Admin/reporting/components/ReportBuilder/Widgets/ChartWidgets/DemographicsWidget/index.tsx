@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
+import { useDemographics } from 'api/graph_data_units';
+
 import Card from '../../_shared/Card';
 import { ChartWidgetProps } from '../typings';
 
@@ -23,6 +25,11 @@ const FAKE_DATA: Data = [
 const DemographicsWidget = (_props: Omit<ChartWidgetProps, 'title'>) => {
   // TODO add real data
   const data = FAKE_DATA;
+
+  const { data: hookData } = useDemographics({
+    custom_field_id: '0ccf547b-d86b-4d1c-97dc-7977154c2e6b',
+  });
+  console.log(hookData);
 
   return (
     <Card pagebreak>

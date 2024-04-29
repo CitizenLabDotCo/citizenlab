@@ -1,13 +1,15 @@
 module ReportBuilder
   class Queries::Demographics < ReportBuilder::Queries::Base
     def run_query(
-      custom_field_id,
+      custom_field_id: nil,
       start_at: nil,
       end_at: nil,
       project_id: nil,
       group_id: nil,
       **_other_props
     )
+      return {} if custom_field_id.blank?
+
       users = find_users(start_at, end_at, project_id, group_id)
       custom_field = CustomField.find(custom_field_id)
 
