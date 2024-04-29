@@ -248,22 +248,16 @@ const CLSurveyPageLayout = memo(
 
     return (
       <>
-        <Box
-          pt="82px"
-          pb="72px"
-          maxWidth="700px"
-          display="flex"
-          flexDirection="column"
-        >
-          <SurveyHeading
-            project={project.data}
-            titleText={localize(
-              phase?.data.attributes.native_survey_title_multiloc
-            )}
-            canUserEditProject={userIsModerator}
-            loggedIn={!isNilOrError(authUser)}
-            percentageAnswered={percentageAnswered}
-          />
+        <SurveyHeading
+          project={project.data}
+          titleText={localize(
+            phase?.data.attributes.native_survey_title_multiloc
+          )}
+          canUserEditProject={userIsModerator}
+          loggedIn={!isNilOrError(authUser)}
+          percentageAnswered={percentageAnswered}
+        />
+        <Box maxWidth="700px" display="flex" flexDirection="column">
           {allowAnonymousPosting && (
             <Box w="100%" px={isSmallerThanPhone ? '16px' : '24px'} mt="16px">
               <Warning icon="shield-checkered">

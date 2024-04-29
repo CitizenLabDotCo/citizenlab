@@ -166,6 +166,7 @@ const Form = memo(
         as="form"
         display="flex"
         flexDirection="column"
+        height="100%"
       >
         <Box
           overflow={layoutType === 'inline' ? 'visible' : 'auto'}

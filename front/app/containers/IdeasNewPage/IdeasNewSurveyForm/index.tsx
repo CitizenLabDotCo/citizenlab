@@ -220,17 +220,11 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
       <IdeasNewMeta isSurvey={true} />
       <main id="e2e-idea-new-page">
         <PageContainer overflow="hidden">
-          <Box
-            width="100%"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          >
+          <Box display="flex" justifyContent="center">
             <Box
               background={colors.white}
               width="700px"
               h={isSmallerThanPhone ? '100vh' : `calc(100vh - 80px)`}
-              my={isSmallerThanPhone ? '0px' : '40px'}
             >
               <Form
                 schema={schema}
