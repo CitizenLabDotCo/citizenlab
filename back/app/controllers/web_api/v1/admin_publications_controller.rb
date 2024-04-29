@@ -10,7 +10,7 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
     publications = publication_filterer.filter(publications, params.merge(current_user: current_user))
 
     # A flattened ordering, such that project publications with a parent (projects in folders) are ordered
-    # first by their parent's :ordering, and then by their own :ordering (their odering within the folder).
+    # first by their parent's :ordering, and then by their own :ordering (their ordering within the folder).
     publications = publications.select(
       'admin_publications.*',
       'CASE WHEN admin_publications.parent_id IS NULL THEN admin_publications.ordering ELSE parents.ordering END
@@ -18,9 +18,9 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
     )
       .joins('LEFT OUTER JOIN admin_publications AS parents ON parents.id = admin_publications.parent_id')
       .order('root_ordering, admin_publications.ordering')
+      .includes(:publication, :children)
 
-    @publications = publications.includes(:publication, :children)
-    @publications = paginate @publications
+    @publications = paginate publications
 
     render json: linked_json(
       @publications,
