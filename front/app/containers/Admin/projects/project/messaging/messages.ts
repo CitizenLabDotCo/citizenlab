@@ -10,10 +10,6 @@ export default defineMessages({
     defaultMessage:
       'Send out manual emails to certain citizen group and active automated campaigns',
   },
-  campaignDeletionConfirmation: {
-    id: 'app.containers.Admin.emails.campaignDeletionConfirmation',
-    defaultMessage: 'Are you sure?',
-  },
   addCampaignButton: {
     id: 'app.containers.Admin.emails.addCampaignButton',
     defaultMessage: 'Create campaign',
@@ -138,10 +134,6 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.previewTitle',
     defaultMessage: 'Preview',
   },
-  recipientsTitle: {
-    id: 'app.containers.Admin.emails.recipientsTitle',
-    defaultMessage: 'Recipients',
-  },
   customEmails: {
     id: 'app.containers.Admin.Campaigns.customEmails',
     defaultMessage: 'Custom emails',
@@ -162,10 +154,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Campaigns.noAccess',
     defaultMessage:
       "We're sorry, but it seems like you don't have access to the emails section",
-  },
-  deleteCampaignButton: {
-    id: 'app.containers.Admin.emails.deleteCampaignButton',
-    defaultMessage: 'Delete Campaign',
   },
   noCampaignsHeader: {
     id: 'app.containers.Admin.emails.noCampaignsHeader',

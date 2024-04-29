@@ -30,4 +30,16 @@ export default defineMessages({
     defaultMessage:
       'When you added one or more links to your email, the number of users who clicked a link will be shown here.',
   },
+  recipientsTitle: {
+    id: 'app.components.Admin.Campaigns.recipientsTitle',
+    defaultMessage: 'Recipients',
+  },
+  campaignDeletionConfirmation: {
+    id: 'app.components.Admin.Campaigns.campaignDeletionConfirmation',
+    defaultMessage: 'Are you sure?',
+  },
+  deleteCampaignButton: {
+    id: 'app.components.Admin.Campaigns.deleteCampaignButton',
+    defaultMessage: 'Delete campaign',
+  },
 });

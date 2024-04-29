@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { ICampaignData } from 'api/campaigns/types';
@@ -11,7 +12,7 @@ import Button from 'components/UI/Button';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
-import messages from '../../messages';
+import messages from './messages';
 
 const ButtonWrapper = styled.div`
   margin: 40px 0;
@@ -24,6 +25,7 @@ interface Props {
 }
 
 const DraftCampaignDetails = ({ campaign }: Props) => {
+  const { projectId } = useParams();
   const { formatMessage } = useIntl();
   const { mutate: deleteCampaign, isLoading } = useDeleteCampaign();
 
@@ -32,7 +34,11 @@ const DraftCampaignDetails = ({ campaign }: Props) => {
     if (window.confirm(deleteMessage)) {
       deleteCampaign(campaign.id, {
         onSuccess: () => {
-          clHistory.push('/admin/messaging/emails/custom');
+          if (projectId) {
+            clHistory.push(`/admin/projects/${projectId}/messaging`);
+          } else {
+            clHistory.push('/admin/messaging/emails/custom');
+          }
         },
       });
     }

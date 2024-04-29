@@ -13,7 +13,7 @@ import PageWrapper from 'components/admin/PageWrapper';
 import { FormattedMessage } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
-import messages from '../messages';
+import messages from './messages';
 
 const PaddedCampaignStats = styled(CampaignStats)`
   padding-bottom: 20px;

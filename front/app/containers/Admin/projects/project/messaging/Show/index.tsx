@@ -20,6 +20,8 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import useLocalize from 'hooks/useLocalize';
 
+import DraftCampaignDetails from 'components/admin/Email/DraftCampaignDetails';
+import SentCampaignDetails from 'components/admin/Email/SentCampaignDetails';
 import Stamp from 'components/admin/Email/Stamp';
 import T from 'components/T';
 import Button from 'components/UI/Button';
@@ -31,9 +33,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { getFullName } from 'utils/textUtils';
 
 import messages from '../messages';
-
-import DraftCampaignDetails from './DraftCampaignDetails';
-import SentCampaignDetails from './SentCampaignDetails';
 
 const PageHeader = styled.div`
   display: flex;
@@ -104,10 +103,11 @@ const Show = () => {
     isLoading: isSendingCampaign,
     error: apiSendErrors,
   } = useSendCampaign();
-  const { mutate: sendCampaignPreview, isLoading: isSenndingCampaignPreview } =
+  const { mutate: sendCampaignPreview, isLoading: isSendingCampaignPreview } =
     useSendCampaignPreview();
 
-  const isLoading = isSendingCampaign || isSenndingCampaignPreview;
+  const isLoading = isSendingCampaign || isSendingCampaignPreview;
+
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
