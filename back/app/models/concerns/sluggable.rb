@@ -23,18 +23,20 @@ module Sluggable
   end
 
   included do
-    validates :slug, uniqueness: true, presence: true, format: { with: SLUG_REGEX }, if: proc { self.class.slug? && slug_if? }
-    before_validation :generate_slug, if: proc { self.class.slug? }
+    validates :slug, uniqueness: true, presence: true, format: { with: SLUG_REGEX }, if: proc { enabled? }
+    before_validation :generate_slug, if: proc { enabled? }
   end
 
   def generate_slug
-    return if slug || !slug_if?
+    return if slug
 
     from_value = self.class.slug_from.call(self)
     self.slug = SlugService.new.generate_slug self, from_value
   end
 
-  def slug_if?
-    !self.class.slug_if || self.class.slug_if&.call(self)
+  private
+
+  def enabled?
+    self.class.slug? && (!self.class.slug_if || self.class.slug_if&.call(self))
   end
 end
