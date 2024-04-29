@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { IBackgroundJobData } from './types';
 import useBackgroundJobs from './useBackgroundJobs';
 
-const useTrackJobs = ({
+const useTrackBackgroundJobs = ({
   jobs,
   onChange,
 }: {
@@ -18,6 +18,8 @@ const useTrackJobs = ({
     onChange();
   }, [polledJobs?.data, onChange]);
 
+  // When a job is successfully completed, we delete it from the DB.
+  // So, if the polled jobs list is empty, it means that all jobs have been completed.
   const active = !!polledJobs?.data.some((job) => job.attributes.active);
   const failed =
     polledJobs?.data &&
@@ -26,4 +28,4 @@ const useTrackJobs = ({
   return { active, failed };
 };
 
-export default useTrackJobs;
+export default useTrackBackgroundJobs;
