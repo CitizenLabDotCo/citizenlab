@@ -44,59 +44,6 @@ resource 'AdminPublication' do
       parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
       parameter :filter_is_moderator_of, 'Filter out the publications the user is not moderator of. False by default', required: false
 
-      context 'with specific publication orderings at different depths' do
-        before do
-          # Purposefully use orderings that don't reflect creation order, to avoid corect ordering due to creation order
-          #
-          # Modelling structure:
-          # P1 (project)
-          # F1 (folder)
-          # P2 (project)
-          # F2 (folder)
-          #  .. P3-f2 (project)
-          #  .. P4-f2 (project)
-          #  .. P5-f2 (project)
-          # P6 (project)
-          # P7 (project)
-
-          projects[7].update(title_multiloc: { en: 'P1' })
-          projects[7].admin_publication.insert_at(0)
-          empty_draft_folder.update(title_multiloc: { en: 'F1' })
-          empty_draft_folder.admin_publication.insert_at(1)
-          projects[5].update(title_multiloc: { en: 'P2' })
-          projects[5].admin_publication.insert_at(2)
-          custom_folder.update(title_multiloc: { en: 'F2' })
-          custom_folder.admin_publication.insert_at(3)
-          projects[1].update(title_multiloc: { en: 'P3-f2' })
-          projects[1].admin_publication.insert_at(0)
-          projects[0].update(title_multiloc: { en: 'P4-f2' })
-          projects[0].admin_publication.insert_at(1)
-          projects[2].update(title_multiloc: { en: 'P5-f2' })
-          projects[2].admin_publication.insert_at(2)
-          projects[6].update(title_multiloc: { en: 'P6' })
-          projects[6].admin_publication.insert_at(4)
-          projects[4].update(title_multiloc: { en: 'P7' })
-          projects[4].admin_publication.insert_at(5)
-          projects[3].update(title_multiloc: { en: 'P8' })
-          projects[3].admin_publication.insert_at(6)
-        end
-
-        example_request 'List all admin publications uses a flattened nested ordering', document: false do
-          expect(status).to eq(200)
-          json_response = json_parse(response_body)
-          expect(json_response[:data].map { |d| d.dig(:attributes, :publication_title_multiloc, :en) })
-            .to eq(%w[P1 F1 P2 F2 P3-f2 P4-f2 P5-f2 P6 P7 P8])
-        end
-
-        example 'List only project publications maintains a flattened nested ordering', document: false do
-          do_request(only_projects: 'true')
-          expect(status).to eq(200)
-          json_response = json_parse(response_body)
-          expect(json_response[:data].map { |d| d.dig(:attributes, :publication_title_multiloc, :en) })
-            .to eq(%w[P1 P2 P3-f2 P4-f2 P5-f2 P6 P7 P8])
-        end
-      end
-
       example_request 'List all admin publications' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
@@ -236,6 +183,60 @@ resource 'AdminPublication' do
             do_request(filter_param => ['any id'])
             expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :id) }).not_to include custom_folder.id
           end
+        end
+      end
+
+      context 'with specific publication orderings at different depths' do
+        before do
+          # Purposefully use orderings that don't reflect creation order, to avoid corect ordering due to creation order
+          #
+          # Modelling the structure:
+          # P1 (project)
+          # F1 (folder)
+          # P2 (project)
+          # F2 (folder)
+          #  .. P3-f2 (project)
+          #  .. P4-f2 (project)
+          #  .. P5-f2 (project)
+          # P6 (project)
+          # P7 (project)
+          # P8 (project)
+
+          projects[7].update(title_multiloc: { en: 'P1' })
+          projects[7].admin_publication.insert_at(0)
+          empty_draft_folder.update(title_multiloc: { en: 'F1' })
+          empty_draft_folder.admin_publication.insert_at(1)
+          projects[5].update(title_multiloc: { en: 'P2' })
+          projects[5].admin_publication.insert_at(2)
+          custom_folder.update(title_multiloc: { en: 'F2' })
+          custom_folder.admin_publication.insert_at(3)
+          projects[1].update(title_multiloc: { en: 'P3-f2' })
+          projects[1].admin_publication.insert_at(0)
+          projects[0].update(title_multiloc: { en: 'P4-f2' })
+          projects[0].admin_publication.insert_at(1)
+          projects[2].update(title_multiloc: { en: 'P5-f2' })
+          projects[2].admin_publication.insert_at(2)
+          projects[6].update(title_multiloc: { en: 'P6' })
+          projects[6].admin_publication.insert_at(4)
+          projects[4].update(title_multiloc: { en: 'P7' })
+          projects[4].admin_publication.insert_at(5)
+          projects[3].update(title_multiloc: { en: 'P8' })
+          projects[3].admin_publication.insert_at(6)
+        end
+
+        example_request 'List all admin publications uses a flattened nested ordering', document: false do
+          expect(status).to eq(200)
+          json_response = json_parse(response_body)
+          expect(json_response[:data].map { |d| d.dig(:attributes, :publication_title_multiloc, :en) })
+            .to eq(%w[P1 F1 P2 F2 P3-f2 P4-f2 P5-f2 P6 P7 P8])
+        end
+
+        example 'List only project publications maintains a flattened nested ordering', document: false do
+          do_request(only_projects: 'true')
+          expect(status).to eq(200)
+          json_response = json_parse(response_body)
+          expect(json_response[:data].map { |d| d.dig(:attributes, :publication_title_multiloc, :en) })
+            .to eq(%w[P1 P2 P3-f2 P4-f2 P5-f2 P6 P7 P8])
         end
       end
     end
