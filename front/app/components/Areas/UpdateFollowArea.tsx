@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Badge, colors, Button } from '@citizenlab/cl2-component-library';
 import { useLocation } from 'react-router-dom';
+import { useTheme } from 'styled-components';
 
 import { IAreaData } from 'api/areas/types';
 import useAddFollower from 'api/follow_unfollow/useAddFollower';
@@ -21,10 +22,13 @@ const UpdateFollowArea = ({ area }: Props) => {
   const { mutate: deleteFollower, isLoading: isDeletingFollower } =
     useDeleteFollower();
   const { pathname } = useLocation();
+  const theme = useTheme();
   const isLoading = isAddingFollower || isDeletingFollower;
   const followerId = area.relationships.user_follower?.data?.id;
   const isFollowing = !!followerId;
-  const buttonTextColor = isFollowing ? colors.white : colors.success;
+  const buttonTextColor = isFollowing
+    ? colors.white
+    : theme.colors.tenantPrimary;
   const className = isFollowing ? 'inverse' : '';
   const iconName = isFollowing ? 'check-circle' : 'plus-circle';
   const handleFollowOrUnfollow = () => {
@@ -54,7 +58,7 @@ const UpdateFollowArea = ({ area }: Props) => {
 
   return (
     <Badge
-      color={colors.success}
+      color={theme.colors.tenantPrimary}
       className={className}
       onClick={handleFollowOrUnfollow}
     >
