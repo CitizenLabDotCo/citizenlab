@@ -224,11 +224,12 @@ resource 'AdminPublication' do
           projects[3].admin_publication.insert_at(6)
         end
 
-        example_request 'List all admin publications uses a flattened nested ordering', document: false do
+        example 'List all root-level admin publications is ordered correctly', document: false do
+          do_request(depth: 0)
           expect(status).to eq(200)
           json_response = json_parse(response_body)
           expect(json_response[:data].map { |d| d.dig(:attributes, :publication_title_multiloc, :en) })
-            .to eq(%w[P1 F1 P2 F2 P3-f2 P4-f2 P5-f2 P6 P7 P8])
+            .to eq(%w[P1 F1 P2 F2 P6 P7 P8])
         end
 
         example 'List only project publications maintains a flattened nested ordering', document: false do
