@@ -226,6 +226,22 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.predicate_not_volunteered_in',
     defaultMessage: "didn't volunteer",
   },
+  predicate_registered_to_an_event: {
+    id: 'app.components.admin.UserFilterConditions.predicate_registered_to_an_event',
+    defaultMessage: 'registered to an event',
+  },
+  predicate_not_registered_to_an_event: {
+    id: 'app.components.admin.UserFilterConditions.predicate_not_registered_to_an_event',
+    defaultMessage: "didn't register to an event",
+  },
+  predicate_follows_something: {
+    id: 'app.components.admin.UserFilterConditions.predicate_follows_something',
+    defaultMessage: 'follows something in these projects',
+  },
+  predicate_not_follows_something: {
+    id: 'app.components.admin.UserFilterConditions.predicate_not_follows_something',
+    defaultMessage: 'does not follow anything in this project',
+  },
   predicate_is_verified: {
     id: 'app.components.admin.UserFilterConditions.predicate_is_verified',
     defaultMessage: 'is verified',

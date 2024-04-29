@@ -1,4 +1,4 @@
-import React, { memo, Suspense, useState } from 'react';
+import React, { memo, Suspense, useEffect, useState } from 'react';
 
 import {
   Box,
@@ -28,6 +28,7 @@ import Button from 'components/UI/Button';
 import SearchInput from 'components/UI/SearchInput';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import { isAdmin } from 'utils/permissions/roles';
 import { isProjectFolderModerator } from 'utils/permissions/rules/projectFolderPermissions';
 
@@ -135,6 +136,12 @@ const AdminProjectsList = memo(({ className }: Props) => {
     rootLevelOnly: !search || search.length === 0,
     search,
   });
+
+  useEffect(() => {
+    if (userIsAdmin) {
+      clHistory.push('/admin/projects/all');
+    }
+  }, [userIsAdmin]);
 
   const handleContainerOutletOnRender = (hasRendered: boolean) => {
     setContainerOutletRendered(hasRendered);
