@@ -247,7 +247,8 @@ const CLSurveyPageLayout = memo(
     }
 
     const getFormContainerHeight = () => {
-      // TODO: Simplify the styling of the CLSurveyPageLayout.
+      // TODO: Simplify the styling in CLSurveyPageLayout.
+      // Difficult to make changes to the layout due to the complex styling.
       if (hasScrollBars) {
         return 'fit-content';
       } else if (isSmallerThanPhone) {
