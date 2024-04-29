@@ -166,7 +166,7 @@ const AuthProviders = memo<Props>(
               {...messages.continueWithLoginMechanism}
               values={{
                 loginMechanismName:
-                  process.env.NODE_ENV !== 'development'
+                  process.env.NODE_ENV === 'development'
                     ? 'MitID (Criipto)'
                     : 'MitID',
               }}
