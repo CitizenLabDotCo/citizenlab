@@ -26,7 +26,7 @@ const UpdateFollowArea = ({ area }: Props) => {
   const isLoading = isAddingFollower || isDeletingFollower;
   const followerId = area.relationships.user_follower?.data?.id;
   const isFollowing = !!followerId;
-  const buttonTextColor = isFollowing
+  const areaButtonContentColor = isFollowing
     ? colors.white
     : theme.colors.tenantPrimary;
   const className = isFollowing ? 'inverse' : '';
@@ -65,12 +65,12 @@ const UpdateFollowArea = ({ area }: Props) => {
       <Button
         buttonStyle="text"
         icon={iconName}
-        iconColor={buttonTextColor}
+        iconColor={areaButtonContentColor}
         iconPos="right"
         padding="0px"
         my="0px"
         processing={isLoading}
-        textColor={buttonTextColor}
+        textColor={areaButtonContentColor}
         data-cy={
           isFollowing ? 'e2e-unfollow-area-button' : 'e2e-follow-area-button'
         }

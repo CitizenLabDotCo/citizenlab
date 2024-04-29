@@ -26,7 +26,7 @@ const UpdateFollowTopic = ({ topic }: Props) => {
   const isLoading = isAddingFollower || isDeletingFollower;
   const followerId = topic.relationships.user_follower?.data?.id;
   const isFollowing = !!followerId;
-  const buttonTextColor = isFollowing
+  const topicButtonContentColor = isFollowing
     ? colors.white
     : theme.colors.tenantPrimary;
   const className = isFollowing ? 'inverse' : '';
@@ -65,12 +65,12 @@ const UpdateFollowTopic = ({ topic }: Props) => {
       <Button
         buttonStyle="text"
         icon={iconName}
-        iconColor={buttonTextColor}
+        iconColor={topicButtonContentColor}
         iconPos="right"
         padding="0px"
         my="0px"
         processing={isLoading}
-        textColor={buttonTextColor}
+        textColor={topicButtonContentColor}
         data-cy={
           isFollowing ? 'e2e-unfollow-topic-button' : 'e2e-follow-topic-button'
         }

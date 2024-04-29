@@ -24,7 +24,7 @@ const UpdateOnboardingArea = ({ area }: Props) => {
   const iconName = area.attributes.include_in_onboarding
     ? 'check-circle'
     : 'plus-circle';
-  const buttonTextColor = area.attributes.include_in_onboarding
+  const areaButtonContentColor = area.attributes.include_in_onboarding
     ? colors.white
     : theme.colors.tenantPrimary;
   const className = area.attributes.include_in_onboarding ? 'inverse' : '';
@@ -50,8 +50,8 @@ const UpdateOnboardingArea = ({ area }: Props) => {
           padding="0px"
           my="0px"
           processing={isLoading}
-          textColor={buttonTextColor}
-          iconColor={buttonTextColor}
+          textColor={areaButtonContentColor}
+          iconColor={areaButtonContentColor}
         >
           <T value={area.attributes.title_multiloc} />
         </Button>

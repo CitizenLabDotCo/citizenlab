@@ -24,7 +24,7 @@ const UpdateOnboardingTopic = ({ topic }: Props) => {
   const iconName = topic.attributes.include_in_onboarding
     ? 'check-circle'
     : 'plus-circle';
-  const buttonTextColor = topic.attributes.include_in_onboarding
+  const topicButtonContentColor = topic.attributes.include_in_onboarding
     ? colors.white
     : theme.colors.tenantPrimary;
   const className = topic.attributes.include_in_onboarding ? 'inverse' : '';
@@ -50,8 +50,8 @@ const UpdateOnboardingTopic = ({ topic }: Props) => {
           padding="0px"
           my="0px"
           processing={isLoading}
-          textColor={buttonTextColor}
-          iconColor={buttonTextColor}
+          textColor={topicButtonContentColor}
+          iconColor={topicButtonContentColor}
         >
           <T value={topic.attributes.title_multiloc} />
         </Button>
