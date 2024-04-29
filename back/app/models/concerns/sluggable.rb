@@ -6,7 +6,6 @@ module Sluggable
   SLUG_REGEX = /\A[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*\z/ # Inspired by https://ihateregex.io/expr/url-slug/
 
   module ClassMethods
-    # TODO: Migration script
     attr_reader :slug_attribute, :slug_from, :slug_if
 
     def slug?
