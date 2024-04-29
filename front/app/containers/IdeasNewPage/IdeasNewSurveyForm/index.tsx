@@ -221,32 +221,34 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   return (
     <>
       <IdeasNewMeta isSurvey={true} />
-      <PageContainer id="e2e-idea-new-page" overflow="hidden">
-        <Box
-          width="100%"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-        >
+      <main id="e2e-idea-new-page">
+        <PageContainer overflow="hidden">
           <Box
-            background={colors.white}
-            width="700px"
-            h={isSmallerThanPhone ? '100vh' : `calc(100vh - 80px)`}
-            my={isSmallerThanPhone ? '0px' : '40px'}
+            width="100%"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
           >
-            <Form
-              schema={schema}
-              uiSchema={uiSchema}
-              onSubmit={handleDraftIdeas}
-              initialFormData={initialFormData}
-              getAjvErrorMessage={getAjvErrorMessage}
-              getApiErrorMessage={getApiErrorMessage}
-              inputId={ideaId}
-              config={'survey'}
-            />
+            <Box
+              background={colors.white}
+              width="700px"
+              h={isSmallerThanPhone ? '100vh' : `calc(100vh - 80px)`}
+              my={isSmallerThanPhone ? '0px' : '40px'}
+            >
+              <Form
+                schema={schema}
+                uiSchema={uiSchema}
+                onSubmit={handleDraftIdeas}
+                initialFormData={initialFormData}
+                getAjvErrorMessage={getAjvErrorMessage}
+                getApiErrorMessage={getApiErrorMessage}
+                inputId={ideaId}
+                config={'survey'}
+              />
+            </Box>
           </Box>
-        </Box>
-      </PageContainer>
+        </PageContainer>
+      </main>
     </>
   );
 };
