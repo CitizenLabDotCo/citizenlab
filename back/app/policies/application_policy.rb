@@ -59,7 +59,7 @@ class ApplicationPolicy
     user&.admin?
   end
 
-  def admin_or_moderator?
+  def active_admin_or_moderator?
     active? && (admin? || user&.project_or_folder_moderator?)
   end
 

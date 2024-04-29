@@ -15,6 +15,6 @@ class BackgroundJobPolicy < ApplicationPolicy
   end
 
   def index?
-    admin_or_moderator?
+    active_admin_or_moderator?
   end
 end
