@@ -4,8 +4,6 @@ import { IIdeas } from 'api/ideas/types';
 import { ImportedIdeaMetadataResponse } from 'api/import_ideas/types';
 import { IUser } from 'api/users/types';
 
-import { isValidEmail } from 'utils/validate';
-
 import { UserFormData } from './typings';
 
 export const getNextIdeaId = (ideaId: string, ideas: IIdeas) => {
@@ -44,10 +42,11 @@ const getInitialUserFormValues = (
   ideaMetadata: ImportedIdeaMetadataResponse
 ): UserFormData => {
   const consent = ideaMetadata.data.attributes.user_consent;
+  const userCreated = ideaMetadata.data.attributes.user_created;
 
   if (!author) {
     return {
-      user_state: 'invalid-email',
+      user_state: 'no-user',
       first_name: undefined,
       last_name: undefined,
       email: undefined,
@@ -57,14 +56,8 @@ const getInitialUserFormValues = (
 
   const { email, first_name, last_name, no_name } = author.data.attributes;
 
-  const validEmail = email ? isValidEmail(email) : false;
-
   return {
-    user_state: !validEmail
-      ? 'invalid-email'
-      : ideaMetadata.data.attributes.user_created === true
-      ? 'new-user'
-      : 'existing-user',
+    user_state: userCreated ? 'new-imported-user' : 'existing-user',
     first_name: no_name ? undefined : first_name ?? undefined,
     last_name: no_name ? undefined : last_name ?? undefined,
     email,
@@ -76,16 +69,9 @@ export const isUserFormDataValid = (userFormData: UserFormData | null) => {
   if (!userFormData) return false;
   if (!userFormData.consent) return true;
 
-  if (['no-user', 'invalid-email'].includes(userFormData.user_state)) {
-    return false;
-  }
+  const { email, first_name, last_name } = userFormData;
 
-  const { email } = userFormData;
-  const validEmail = email ? isValidEmail(email) : false;
-
-  if (!validEmail) return false;
-
-  return true;
+  return !!email || !!(first_name && last_name);
 };
 
 type UserFormDataAction =
@@ -108,8 +94,8 @@ export const getUserFormDataAction = (
     return initialFormData.consent ? 'remove-assigned-user' : 'do-nothing';
   }
 
-  if (userFormData.user_state === 'new-user') {
-    return initialFormData.user_state === 'new-user'
+  if (userFormData.user_state === 'new-imported-user') {
+    return initialFormData.user_state === 'new-imported-user'
       ? 'update-created-user'
       : 'create-new-user-and-assign-to-idea';
   }

@@ -216,7 +216,7 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
                     width="auto"
                     type="submit"
                     processing={isLoading}
-                    disabled={!importPrintedFormsEnabled}
+                    disabled={!importPrintedFormsEnabled || isLoading}
                   >
                     <FormattedMessage {...messages.upload} />
                   </Button>

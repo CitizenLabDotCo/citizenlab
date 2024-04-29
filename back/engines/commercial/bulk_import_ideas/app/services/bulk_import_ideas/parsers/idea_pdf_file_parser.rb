@@ -18,12 +18,13 @@ module BulkImportIdeas::Parsers
     end
 
     # Asynchronous version of the parse_file method
+    # Sends 5 files containing 1 idea to each job
     def parse_file_async(file_content)
       files = create_files file_content
 
       job_ids = []
       files.each_slice(IDEAS_PER_JOB) do |sliced_files|
-        job = BulkImportIdeas::IdeaPdfImportJob.perform_later(sliced_files, @import_user, @locale, @phase, @personal_data_enabled)
+        job = BulkImportIdeas::IdeaImportJob.perform_later('pdf', sliced_files, @import_user, @locale, @phase, @personal_data_enabled)
         job_ids << job.job_id
       end
 
@@ -34,6 +35,7 @@ module BulkImportIdeas::Parsers
       pdf_file = file.file.read
 
       # NOTE: We return both parsed values so we can merge the best values from both
+      google_forms_service = Pdf::IdeaGoogleFormParserService.new
       form_parsed_ideas = google_forms_service.parse_pdf(pdf_file, import_form_data[:page_count])
       text_parsed_ideas = begin
         Pdf::IdeaPlainTextParserService.new(
@@ -55,7 +57,7 @@ module BulkImportIdeas::Parsers
     def create_files(file_content)
       source_file = upload_source_file file_content
 
-      # Split a pdf into one document per idea
+      # Split a pdf into one PDF per idea
       split_pdf_files = []
       if source_file&.import_type == 'pdf'
         # Get number of pages in a form from the exported PDF template
@@ -152,13 +154,13 @@ module BulkImportIdeas::Parsers
     end
 
     def extract_permission_checkbox(idea)
-      # Truncate the checkbox label for better multiline checkbox detection
+      # Truncate the checkbox label and downcase for better multiline checkbox detection
       permission_checkbox_label = (I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.by_checking_this_box') })[0..30]
-      checkbox = idea.select { |key, value| key.match(/^#{permission_checkbox_label}/) && value == 'filled_checkbox' }
+      checkbox = idea.select { |key, value| key.downcase.match(/^#{permission_checkbox_label.downcase}/) && value == 'filled_checkbox' }
       if checkbox != {}
         locale_permission_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.permission') }
         idea[locale_permission_label] = 'X'
-        idea.delete(checkbox.first.first) # Remove the original field TODO: JS - Better way of doing this?
+        idea.delete(checkbox.first.first) # Remove the original field
       end
       idea
     end
@@ -211,10 +213,6 @@ module BulkImportIdeas::Parsers
     # Return the fields and page count from the form we're importing from
     def import_form_data
       @import_form_data ||= BulkImportIdeas::Exporters::IdeaPdfFormExporter.new(@phase, @locale, @personal_data_enabled).importer_data
-    end
-
-    def google_forms_service
-      @google_forms_service ||= Pdf::IdeaGoogleFormParserService.new
     end
 
     def idea_rows_with_corrected_texts(idea_rows)

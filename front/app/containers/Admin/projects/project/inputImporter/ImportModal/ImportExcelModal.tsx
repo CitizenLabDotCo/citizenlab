@@ -127,7 +127,12 @@ const ImportExcelModal = ({ open, onClose }: Props) => {
             </Box>
 
             <Box w="100%" display="flex" mt="32px">
-              <Button width="auto" type="submit" processing={isLoading}>
+              <Button
+                width="auto"
+                type="submit"
+                processing={isLoading}
+                disabled={isLoading}
+              >
                 <FormattedMessage {...messages.upload} />
               </Button>
             </Box>

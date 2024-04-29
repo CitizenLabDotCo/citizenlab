@@ -66,9 +66,6 @@ const Forms = () => {
     phaseId,
   });
   const { uiSchema } = useInputSchema({ projectId, phaseId });
-  const importPrintedFormsEnabled = useFeatureFlag({
-    name: 'import_printed_forms',
-  });
   const inputImporterEnabled = useFeatureFlag({
     name: 'input_importer',
   });
@@ -279,23 +276,17 @@ const Forms = () => {
                         </DropdownListItem>
                         {inputImporterEnabled && (
                           <>
-                            {importPrintedFormsEnabled && (
-                              <DropdownListItem onClick={handleDownloadPDF}>
-                                <Box
-                                  display="flex"
-                                  gap="4px"
-                                  alignItems="center"
-                                >
-                                  <Icon
-                                    name="download"
-                                    fill={colors.coolGrey600}
-                                  />
-                                  <Text my="0px">
-                                    {formatMessage(messages.downloadSurvey)}
-                                  </Text>
-                                </Box>
-                              </DropdownListItem>
-                            )}
+                            <DropdownListItem onClick={handleDownloadPDF}>
+                              <Box display="flex" gap="4px" alignItems="center">
+                                <Icon
+                                  name="download"
+                                  fill={colors.coolGrey600}
+                                />
+                                <Text my="0px">
+                                  {formatMessage(messages.downloadSurvey)}
+                                </Text>
+                              </Box>
+                            </DropdownListItem>
                             <DropdownListItem onClick={downloadExampleFile}>
                               <Box display="flex" gap="4px" alignItems="center">
                                 <Icon

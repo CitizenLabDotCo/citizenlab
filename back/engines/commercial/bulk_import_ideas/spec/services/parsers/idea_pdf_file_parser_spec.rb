@@ -32,7 +32,7 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
       base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_12.pdf').read
       expect do
         service.parse_file_async("data:application/pdf;base64,#{base_64_content}")
-      end.to have_enqueued_job(BulkImportIdeas::IdeaPdfImportJob).exactly(:twice)
+      end.to have_enqueued_job(BulkImportIdeas::IdeaImportJob).exactly(:twice)
     end
   end
 
@@ -532,6 +532,28 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
       form_fields[2][:name] = 'Four word field title'
       field = service.send(:process_field_value, form_fields[1], form_fields)
       expect(field[:value]).to eq 'This is the text that we really want. Four word field title'
+    end
+  end
+
+  describe 'fix_email_address' do
+    it 'removes spaces from email addresses' do
+      expect(service.send(:fix_email_address, 'john  @rambo.com')).to eq 'john@rambo.com'
+    end
+
+    it 'replaces commas with dots' do
+      expect(service.send(:fix_email_address, 'bart,simpson@simpsons.com')).to eq 'bart.simpson@simpsons.com'
+    end
+
+    it 'fixes common suffixes' do
+      expect(service.send(:fix_email_address, 'homer@simpsonscom')).to eq 'homer@simpsons.com'
+      expect(service.send(:fix_email_address, 'homer@simpsonsco')).to eq 'homer@simpsons.co'
+      expect(service.send(:fix_email_address, 'homer@simpsonsuk')).to eq 'homer@simpsons.uk'
+      expect(service.send(:fix_email_address, 'homer@simpsonsfr')).to eq 'homer@simpsons.fr'
+      expect(service.send(:fix_email_address, 'homer@simpsonscouk')).to eq 'homer@simpsons.co.uk'
+    end
+
+    it 'returns nil if it cannot correct the email address' do
+      expect(service.send(:fix_email_address, 'john_rambo.com')).to be_nil
     end
   end
 end

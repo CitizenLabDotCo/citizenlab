@@ -42,11 +42,11 @@ module BulkImportIdeas::Parsers::Pdf
       fields = []
       @document.pages.each do |page|
         page.form_fields.each do |field|
-          field_name = format_name field.field_name&.text_anchor&.content&.strip
-          field_value = field.field_value.text_anchor&.content&.strip
+          field_name = field.field_name&.text_anchor&.content&.strip&.squish
+          field_value = field.field_value.text_anchor&.content&.strip&.squish
           f = {
             name: field_name,
-            value: format_value(field_name, field_value),
+            value: field_value,
             type: field.value_type,
             page: page.page_number,
             x: field.field_name.bounding_poly.normalized_vertices[0].x.round(2),
@@ -118,47 +118,6 @@ module BulkImportIdeas::Parsers::Pdf
       # Process document
       response = client.process_document request
       response.document
-    end
-
-    # Utility to correct common issues - ie remove new lines as they don't seem that accurate
-    def format_value(name, value)
-      if name == 'Email address'
-        value = value.squish.delete(' ').downcase
-      end
-      value&.squish
-    end
-
-    def format_name(name)
-      name.squish
-    end
-
-    # NOTE: For DEVELOPMENT ONLY to avoid Google API being called - disable GOOGLE_APPLICATION_CREDENTIALS in back-secret.env
-    def dummy_raw_text
-      dummy_text = []
-      rand(1..8).times do
-        dummy_text << "Title\n#{Faker::Quote.yoda}\nDescription\n#{Faker::Hipster.paragraph}\nPage 1"
-        dummy_text << "Another field\n#{Faker::Quote.robin}\nPage 2"
-      end
-      dummy_text
-    end
-
-    def dummy_parsed_data
-      Array.new(rand(1..8)) do
-        [
-          form_pages: [],
-          pdf_pages: [1, 2],
-          fields: {
-            'First name' => Faker::FunnyName.name,
-            'Last name' => Faker::FunnyName.name,
-            'Email address' => Faker::Internet.email,
-            'Title' => Faker::Quote.yoda,
-            'Description' => Faker::Hipster.paragraph,
-            'Yes_1.82' => %w[filled_checkbox unfilled_checkbox].sample,
-            'No_1.82' => %w[filled_checkbox unfilled_checkbox].sample,
-            'Another field' => Faker::Quote.robin
-          }
-        ]
-      end
     end
   end
 end
