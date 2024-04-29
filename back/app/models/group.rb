@@ -20,7 +20,7 @@
 class Group < ApplicationRecord
   include EmailCampaigns::GroupDecorator
 
-  slug from: proc { |group| group.title_multiloc.values.find(&:present?) }
+  slug from: proc { |group| group.title_multiloc.values.find(&:present?) }, on: :create
 
   has_many :groups_projects, dependent: :destroy
   has_many :projects, through: :groups_projects
