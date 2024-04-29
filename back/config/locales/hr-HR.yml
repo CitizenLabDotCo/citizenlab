@@ -149,7 +149,7 @@ hr:
         title: Pojedinosti
         description:
       other_text_field:
-        title: Ako ste odabrali '{other_option}', na što mislite?
+        title: If you selected '{other_option}', please type in your answer.
   custom_forms:
     categories:
       main_content:
