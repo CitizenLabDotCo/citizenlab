@@ -70,14 +70,13 @@ RSpec.describe Group do
     end
   end
 
-  # TODO: spec duplication
-  # TODO: spec invalid chars
   describe 'generate_slug' do
+    let(:group) { build(:group) }
+
     it 'generates a slug based on the first non-empty locale' do
-      group = described_class.new
-      group.title_multiloc = { en: '', 'nl-BE': 'title', 'fr-BE': 'titlefrançais' }
-      group.send(:generate_slug)
-      expect(group.slug).to eq('title')
+      group.title_multiloc = { en: '', 'nl-BE': 'titel', 'fr-BE': 'titlefrançais' }
+      group.save!
+      expect(group.slug).to eq 'titel'
     end
   end
 end

@@ -5,10 +5,12 @@ module Sluggable
 
   module ClassMethods
     # TODO: Test for this concern
+      # Custom slug attribute
     # TODO: Apply everywhere
     # TODO: SlugService only here? (delete service?) -> Keep for now
+    # TODO: Validate chars + spec
     # TODO: Migration script
-    attr_reader :slug_attribute, :slug_from, :slug_on
+    attr_reader :slug_attribute, :slug_from
 
     def has_slug?
       !!@has_slug
@@ -16,17 +18,16 @@ module Sluggable
 
     private
 
-    def slug(attribute: :slug, from: nil, on: nil)
+    def slug(attribute: :slug, from: nil)
       @has_slug = true
       @slug_attribute = attribute
       @slug_from ||= (from || proc { |sluggable| sluggable.id || SecureRandom.uuid })
-      @slug_on ||= on
     end
   end
 
   included do
     validates :slug, uniqueness: true, presence: true, if: proc { self.class.has_slug? } # TODO: Check valid chars + spec
-    before_validation :generate_slug, on: slug_on, if: proc { self.class.has_slug? }
+    before_validation :generate_slug, if: proc { self.class.has_slug? }
   end
 
   def generate_slug
