@@ -6,9 +6,12 @@ import {
   Text,
   colors,
   stylingConsts,
+  Spinner,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
+import { IBackgroundJobData } from 'api/background_jobs/types';
+import useTrackBackgroundJobs from 'api/background_jobs/useTrackBackgroundJobs';
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useApproveOfflineIdeas from 'api/import_ideas/useApproveOfflineIdeas';
@@ -27,7 +30,11 @@ import messages from './messages';
 import PDFPageControl from './PDFPageControl';
 import PDFViewer from './PDFViewer';
 
-const ReviewSection = () => {
+const ReviewSection = ({
+  importJobs,
+}: {
+  importJobs: IBackgroundJobData[];
+}) => {
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId: string;
@@ -42,6 +49,11 @@ const ReviewSection = () => {
     refetch: refetchIdeas,
     isLoading: isLoadingIdeas,
   } = useImportedIdeas({ projectId, phaseId });
+  const { active: importing, failed: importFailed } = useTrackBackgroundJobs({
+    jobs: importJobs,
+    onChange: refetchIdeas,
+  });
+
   const { mutate: deleteIdea } = useDeleteIdea();
   const { mutate: approveIdeas, isLoading: isApproving } =
     useApproveOfflineIdeas();
@@ -129,7 +141,7 @@ const ReviewSection = () => {
                   bgColor={colors.primary}
                   icon="check"
                   processing={isApproving}
-                  disabled={isApproving}
+                  disabled={isApproving || importing}
                   onClick={handleApproveAll}
                 >
                   <FormattedMessage {...messages.approveAllInputs} />
@@ -185,6 +197,30 @@ const ReviewSection = () => {
           pr="8px"
           overflowY="scroll"
         >
+          {(importing || importFailed) && (
+            <Box
+              py="8px"
+              borderBottom={`1px ${colors.grey400} solid`}
+              position="relative"
+            >
+              {importFailed ? (
+                <Error text={formatMessage(messages.errorImporting)} />
+              ) : (
+                <Box
+                  justifyContent="flex-start"
+                  alignItems="center"
+                  display="flex"
+                >
+                  <Box mr="8px">
+                    <Spinner size="20px" />
+                  </Box>
+                  <Text m="0" color="black" fontSize="m">
+                    <FormattedMessage {...messages.importing} />
+                  </Text>
+                </Box>
+              )}
+            </Box>
+          )}
           <IdeaList
             ideaId={ideaId}
             ideas={ideas}

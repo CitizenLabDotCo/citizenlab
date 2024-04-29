@@ -78,25 +78,25 @@ resource 'BulkImportIdeasImportIdeas' do
       end
 
       post 'web_api/v1/phases/:phase_id/importer/bulk_create_async/:model/:format' do
-        before do
-          ActiveJob::Base.queue_adapter.enqueued_jobs.clear
-        end
-
         context 'xlsx import' do
           let(:format) { 'xlsx' }
           let(:file) { create_project_bulk_import_ideas_xlsx }
 
-          example 'Bulk import ideas to phase from .xlsx via asynchronous jobs' do
+          example 'Bulk import ideas to phase from .xlsx via asynchronous jobs', :active_job_que_adapter do
             do_request
             assert_status 200
 
-            expect(response_data[:type]).to eq 'bulk_create_async'
-            expect(response_data[:attributes].keys).to eq [:job_ids]
+            expect(response_data).to be_a Array
+            expect(response_data.first[:type]).to eq 'background_job'
+            expect(response_data.first[:attributes]).to include(:active, :failed, :job_id)
+
             expect(Idea.all.count).to eq 0 # No ideas created yet
             expect(User.all.count).to eq 1 # No new users created
             expect(BulkImportIdeas::IdeaImport.all.count).to eq 0
             expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 2
-            expect(BulkImportIdeas::IdeaImportJob).to have_been_enqueued
+            # If we used the normal test adapter instead of :active_job_que_adapter, we could test it like this
+            # expect(BulkImportIdeas::IdeaImportJob).to have_been_enqueued
+            expect(QueJob.by_args({ job_class: 'BulkImportIdeas::IdeaImportJob' }).count).to eq 1
           end
         end
 
@@ -104,17 +104,22 @@ resource 'BulkImportIdeasImportIdeas' do
           let(:format) { 'pdf' }
           let(:file) { create_project_bulk_import_ideas_pdf 1 }
 
-          example 'Bulk import ideas to phase from .pdf via asynchronous jobs' do
+          # We use :active_job_que_adapter to properly check the response
+          example 'Bulk import ideas to phase from .pdf via asynchronous jobs', :active_job_que_adapter do
             do_request
             assert_status 200
 
-            expect(response_data[:type]).to eq 'bulk_create_async'
-            expect(response_data[:attributes].keys).to eq [:job_ids]
+            expect(response_data).to be_a Array
+            expect(response_data.first[:type]).to eq 'background_job'
+            expect(response_data.first[:attributes]).to include(:active, :failed, :job_id)
+
             expect(Idea.all.count).to eq 0 # No ideas created yet
             expect(User.all.count).to eq 1 # No new users created
             expect(BulkImportIdeas::IdeaImport.all.count).to eq 0
             expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 2
-            expect(BulkImportIdeas::IdeaImportJob).to have_been_enqueued
+            # If we used the normal test adapter instead of :active_job_que_adapter, we could test it like this
+            # expect(BulkImportIdeas::IdeaImportJob).to have_been_enqueued
+            expect(QueJob.by_args({ job_class: 'BulkImportIdeas::IdeaImportJob' }).count).to eq 1
           end
         end
       end
