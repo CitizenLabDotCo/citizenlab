@@ -17,12 +17,12 @@ namespace :fix_existing_tenants do
             if !sluggable.valid?
               sluggable.slug = nil
               sluggable.generate_slug
-              if !sluggable.save
+              if sluggable.save
+                changed += ["Changed #{tenant.host} #{claz.name} #{sluggable.id}: \"#{previous_slug}\" => \"#{sluggable.slug}\""] if previous_slug != sluggable.slug
+              else
                 errors[tenant.host] ||= {}
                 errors[tenant.host][claz.name] ||= {}
                 errors[tenant.host][claz.name][sluggable.id] = sluggable.errors.details
-              else
-                changed += ["Changed #{tenant.host} #{claz.name} #{sluggable.id}: \"#{previous_slug}\" => \"#{sluggable.slug}\""] if previous_slug != sluggable.slug
               end
             end
           end
