@@ -166,7 +166,7 @@ resource 'Reports' do
         assert_status 201
 
         clone = ReportBuilder::Report.find(response_data[:id])
-        expect(clone.name).to eq("#{report.name} (copy)")
+        expect(clone.name).to eq("#{report.name} (1)")
         expect(clone.owner_id).to eq(current_user.id)
         expect(clone.phase_id).to be_nil
         expect(clone.visible).to be(false)
@@ -253,6 +253,22 @@ resource 'Reports' do
           clone = ReportBuilder::Report.find(response_data[:id])
           expect(clone.layout.craftjs_json.to_json).not_to include(report.id)
           expect(clone.layout.craftjs_json.to_json).to include(clone.id)
+        end
+      end
+
+      context 'when called multiple times' do
+        example 'Create a report copy with a unique name' do
+          do_request
+
+          assert_status 201
+          copy1 = ReportBuilder::Report.find(response_data[:id])
+          expect(copy1.name).to eq("#{report.name} (1)")
+
+          do_request
+
+          assert_status 201
+          copy2 = ReportBuilder::Report.find(response_data[:id])
+          expect(copy2.name).to eq("#{report.name} (2)")
         end
       end
     end

@@ -50,7 +50,7 @@ module ReportBuilder
           # is rolled back if the report copy fails.
           report_copy = ActiveRecord::Base.transaction do
             copy = report.dup.tap do |copy_|
-              copy_.name = "#{copy_.name} (copy)"
+              copy_.name = generate_copy_name(report.name)
               copy_.owner_id = current_user.id
               # Copies are never associated with a phase, even if the source report was.
               # That's because, currently, there can be only one report per phase.
@@ -158,6 +158,18 @@ module ReportBuilder
 
         def side_fx_service
           @side_fx_service ||= ::ReportBuilder::SideFxReportService.new
+        end
+
+        def generate_copy_name(basename)
+          candidate_generator = Enumerator.new do |enum|
+            (1..).each { |i| enum.yield "#{basename} (#{i})" }
+          end
+
+          candidate_generator.each_slice(25).each do |candidates|
+            taken_names = ReportBuilder::Report.where(name: candidates).pluck(:name)
+            available_names = candidates - taken_names
+            return available_names.first if available_names.present?
+          end
         end
       end
     end
