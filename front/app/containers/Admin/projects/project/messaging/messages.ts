@@ -24,10 +24,6 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.addCampaignButton',
     defaultMessage: 'Create campaign',
   },
-  addTextButton: {
-    id: 'app.containers.Admin.emails.addTextButton',
-    defaultMessage: 'Create a new SMS',
-  },
   deleteButtonLabel: {
     id: 'app.containers.Admin.emails.deleteButtonLabel',
     defaultMessage: 'Delete',
@@ -164,14 +160,7 @@ export default defineMessages({
     id: 'app.containers.Admin.Campaigns.customEmailsDescription',
     defaultMessage: 'Send out custom emails and check statistics.',
   },
-  tabAutomatedEmails: {
-    id: 'app.containers.Admin.Campaigns.tabAutomatedEmails',
-    defaultMessage: 'Automated emails',
-  },
-  tabTexting: {
-    id: 'app.containers.Admin.Campaigns.tabTexting1',
-    defaultMessage: 'Texting',
-  },
+
   campaignFrom: {
     id: 'app.containers.Admin.Campaigns.campaignFrom',
     defaultMessage: 'From:',
@@ -193,10 +182,6 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.noCampaignsHeader',
     defaultMessage: 'No custom email campaigns yet',
   },
-  noTextingCampaignsHeader: {
-    id: 'app.containers.Admin.emails.noTextingCampaignsHeader',
-    defaultMessage: 'No SMS has been drafted or sent yet',
-  },
   message: {
     id: 'app.containers.Admin.emails.message',
     defaultMessage: 'Message',
@@ -217,35 +202,6 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.noCampaignsDescription',
     defaultMessage:
       'Custom email campaigns are emails created from scratch. Their content and recipients can be chosen and you can follow up on their results through statistics.',
-  },
-  automatedEmailCampaignsInfo: {
-    id: 'app.containers.Admin.emails.automatedEmailCampaignsInfo1',
-    defaultMessage:
-      "Automated emails are automatically sent out and are triggered by a user's actions. You can turn some of them off for all users of your platform. The other automated emails can not be turned off because they are required for the proper functioning of your platform.",
-  },
-  automatedEmails: {
-    id: 'app.containers.Admin.emails.automatedEmails',
-    defaultMessage: 'Automated emails',
-  },
-  automatedEmailsRecipients: {
-    id: 'app.containers.Admin.emails.automatedEmailsRecipients',
-    defaultMessage: 'Users who will receive this email',
-  },
-  automatedEmailsTriggers: {
-    id: 'app.containers.Admin.emails.automatedEmailsTriggers',
-    defaultMessage: 'Event that triggers this email',
-  },
-  automatedEmailsDigest: {
-    id: 'app.containers.Admin.emails.automatedEmailsDigest',
-    defaultMessage: 'The email will only be sent if there is content',
-  },
-  allUsers: {
-    id: 'app.containers.Admin.emails.allUsers',
-    defaultMessage: 'All users',
-  },
-  groups: {
-    id: 'app.containers.Admin.emails.groups',
-    defaultMessage: 'Groups',
   },
   viewExample: {
     id: 'app.containers.Admin.emails.viewExample',

@@ -19,7 +19,7 @@ const SurveyFormBuilder = lazy(
 );
 const ProjectParticipation = lazy(() => import('./project/participation'));
 const ProjectTraffic = lazy(() => import('./project/traffic'));
-const ProjectMessaging = lazy(() => import('./project/messaging'));
+const ProjectMessaging = lazy(() => import('./project/messaging/All'));
 const ProjectMessagingNew = lazy(() => import('./project/messaging/New'));
 const ProjectMessagingEdit = lazy(() => import('./project/messaging/Edit'));
 const ProjectMessagingShow = lazy(() => import('./project/messaging/Show'));
