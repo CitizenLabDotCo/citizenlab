@@ -4,21 +4,17 @@ module BulkImportIdeas
   class IdeaImportJob < ApplicationJob
     self.priority = 60
 
-    CONSTANTIZER = {
-      'xlsx' => {
-        exporter_class: Exporters::IdeaXlsxFormExporter
-      },
-      'pdf' => {
-        exporter_class: Exporters::IdeaPdfFormExporter
-      }
+    FILE_PARSERS = {
+      'xlsx' => Parsers::IdeaXlsxFileParser,
+      'pdf' => Parsers::IdeaPdfFileParser
     }
 
-    def run(format, files, import_user, locale, phase, personal_data_enabled)
-      file_parser = CONSTANTIZER.fetch(format)[:parser_class].new(import_user, locale, phase.id, personal_data_enabled)
+    def run(format, idea_import_files, import_user, locale, phase, personal_data_enabled)
+      file_parser = FILE_PARSERS.fetch(format).new(import_user, locale, phase.id, personal_data_enabled)
       import_service = BulkImportIdeas::Importers::IdeaImporter.new(import_user, locale)
 
       idea_rows = []
-      files.each do |file|
+      idea_import_files.each do |file|
         idea_rows += file_parser.parse_rows file
       end
 
