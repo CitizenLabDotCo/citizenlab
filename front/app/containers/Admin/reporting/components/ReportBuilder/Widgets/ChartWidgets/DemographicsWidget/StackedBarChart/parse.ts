@@ -1,9 +1,12 @@
+import { Multiloc } from 'typings';
+
 import { DemographicsResponse } from 'api/graph_data_units/responseTypes';
 
 import { Localize } from 'hooks/useLocalize';
 
 import { DEFAULT_CATEGORICAL_COLORS } from 'components/admin/Graphs/styling';
 
+import { binAge } from 'utils/dataUtils';
 import { roundPercentages } from 'utils/math';
 
 export const parseResponse = (
@@ -13,18 +16,75 @@ export const parseResponse = (
 ) => {
   const { options } = response.data.attributes;
 
-  // Birthyear data is the only data that does not have options
+  // Birthyear is the only custom field we support here
+  // that does not have options
   const isBirthyearData = options === undefined;
 
   if (isBirthyearData) {
-    // TODO
-    throw new Error('');
-    // return {};
+    return parseBirthyearResponse(response.data.attributes.series, blankLabel);
   }
 
-  const data: [Record<string, number>] = [
-    { ...response.data.attributes.series },
-  ];
+  return parseOtherResponse(
+    response.data.attributes.series,
+    options,
+    localize,
+    blankLabel
+  );
+};
+
+const parseBirthyearResponse = (
+  series: DemographicsResponse['data']['attributes']['series'],
+  blankLabel: string
+) => {
+  const bins = binAge(series, {
+    missingBin: blankLabel,
+  });
+
+  const binHash = bins.reduce(
+    (acc, { value, name }) => ({
+      ...acc,
+      [name]: value,
+    }),
+    {} as Record<string, number>
+  );
+
+  const data: [Record<string, number>] = [binHash];
+
+  const columns = Object.keys(binHash);
+  const percentages = roundPercentages(
+    columns.map((column) => binHash[column])
+  );
+  const statusColorById = columns.reduce(
+    (acc, cur, i) => ({
+      ...acc,
+      [cur]: DEFAULT_CATEGORICAL_COLORS[i % DEFAULT_CATEGORICAL_COLORS.length],
+    }),
+    {} as Record<string, string>
+  );
+
+  const legendItems = columns.map((column) => ({
+    icon: 'circle' as const,
+    color: statusColorById[column],
+    label: column,
+  }));
+
+  return {
+    data,
+    percentages,
+    columns,
+    statusColorById,
+    labels: columns,
+    legendItems,
+  };
+};
+
+const parseOtherResponse = (
+  series: DemographicsResponse['data']['attributes']['series'],
+  options: Record<string, { title_multiloc: Multiloc }>,
+  localize: Localize,
+  blankLabel: string
+) => {
+  const data: [Record<string, number>] = [series];
   const columns = Object.keys(data[0]);
   const percentages = roundPercentages(
     columns.map((column) => data[0][column])
@@ -34,7 +94,7 @@ export const parseResponse = (
       ...acc,
       [cur]: DEFAULT_CATEGORICAL_COLORS[i % DEFAULT_CATEGORICAL_COLORS.length],
     }),
-    {}
+    {} as Record<string, string>
   );
 
   const labels = columns.map((column) => {
@@ -44,7 +104,7 @@ export const parseResponse = (
 
   const legendItems = columns.map((column, i) => ({
     icon: 'circle' as const,
-    color: statusColorById[column] as string,
+    color: statusColorById[column],
     label: labels[i],
   }));
 

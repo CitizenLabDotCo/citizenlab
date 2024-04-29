@@ -15,7 +15,7 @@ import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
 import messages from './messages';
 import { Props } from './typings';
 
-const INPUT_TYPES: IUserCustomFieldInputType[] = ['select'];
+const INPUT_TYPES: IUserCustomFieldInputType[] = ['select', 'number'];
 
 const Settings = () => {
   const { formatMessage } = useIntl();
