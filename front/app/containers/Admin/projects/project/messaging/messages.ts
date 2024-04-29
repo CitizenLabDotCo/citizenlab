@@ -1,9 +1,3 @@
-/*
- * Admin.emails Messages
- *
- * This contains all the text for the admins email.
- */
-
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
@@ -160,7 +154,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Campaigns.customEmailsDescription',
     defaultMessage: 'Send out custom emails and check statistics.',
   },
-
   campaignFrom: {
     id: 'app.containers.Admin.Campaigns.campaignFrom',
     defaultMessage: 'From:',
@@ -202,29 +195,6 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.noCampaignsDescription',
     defaultMessage:
       'Custom email campaigns are emails created from scratch. Their content and recipients can be chosen and you can follow up on their results through statistics.',
-  },
-  viewExample: {
-    id: 'app.containers.Admin.emails.viewExample',
-    defaultMessage: 'View',
-  },
-  clickOnButtonForExamples: {
-    id: 'app.containers.Admin.emails.clickOnButtonForExamples',
-    defaultMessage:
-      'Click on the button below to check examples of this email on our support page. ',
-  },
-  seeEmailHereText: {
-    id: 'app.containers.Admin.emails.seeEmailHereText',
-    defaultMessage:
-      "As soon as an email of this type is sent you'll be able to check it here.",
-  },
-  supportButtonLabel: {
-    id: 'app.containers.Admin.emails.supportButtonLabel',
-    defaultMessage: 'See examples on our support page',
-  },
-  supportButtonLink: {
-    id: 'app.containers.Admin.emails.supportButtonLink',
-    defaultMessage:
-      'https://support.citizenlab.co/en/articles/2762939-what-are-automated-emails',
   },
   sentToUsers: {
     id: 'app.containers.Admin.emails.sentToUsers',

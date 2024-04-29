@@ -315,7 +315,7 @@ const Show = () => {
         </CampaignHeader>
 
         {isDraft(campaign.data) ? (
-          <DraftCampaignDetails campaignId={campaign.data.id} />
+          <DraftCampaignDetails campaign={campaign.data} />
         ) : (
           <SentCampaignDetails campaignId={campaign.data.id} />
         )}

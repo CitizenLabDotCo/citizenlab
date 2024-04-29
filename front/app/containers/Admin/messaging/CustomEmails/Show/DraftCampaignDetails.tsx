@@ -1,6 +1,5 @@
 import React from 'react';
 
-import GetCampaign from 'resources/GetCampaign';
 import styled from 'styled-components';
 
 import { ICampaignData } from 'api/campaigns/types';
@@ -11,7 +10,6 @@ import Button from 'components/UI/Button';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../messages';
 
@@ -21,15 +19,9 @@ const ButtonWrapper = styled.div`
   justify-content: flex-end;
 `;
 
-interface InputProps {
-  campaignId: string;
-}
-
-interface DataProps {
+interface Props {
   campaign: ICampaignData;
 }
-
-interface Props extends InputProps, DataProps {}
 
 const DraftCampaignDetails = ({ campaign }: Props) => {
   const { formatMessage } = useIntl();
@@ -63,12 +55,4 @@ const DraftCampaignDetails = ({ campaign }: Props) => {
   );
 };
 
-export default (inputProps: InputProps) => (
-  <GetCampaign id={inputProps.campaignId}>
-    {(campaign) =>
-      isNilOrError(campaign) ? null : (
-        <DraftCampaignDetails {...inputProps} campaign={campaign} />
-      )
-    }
-  </GetCampaign>
-);
+export default DraftCampaignDetails;
