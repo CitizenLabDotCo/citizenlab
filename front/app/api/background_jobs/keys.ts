@@ -13,13 +13,6 @@ const backgroundJobsKeys = {
       parameters: queryParams,
     },
   ],
-  item: ({ id }: { id?: string }) => [
-    {
-      ...baseKey,
-      operation: 'item',
-      parameters: { id },
-    },
-  ],
 } satisfies QueryKeys;
 
 export default backgroundJobsKeys;
