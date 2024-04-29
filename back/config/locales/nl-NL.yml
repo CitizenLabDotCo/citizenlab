@@ -149,7 +149,7 @@ nl:
         title: Details
         description:
       other_text_field:
-        title: Als je '{other_option}' hebt gekozen, waar denk je dan aan?
+        title: If you selected '{other_option}', please type in your answer.
   custom_forms:
     categories:
       main_content:
