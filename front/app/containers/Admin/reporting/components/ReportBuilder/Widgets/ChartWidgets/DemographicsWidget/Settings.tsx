@@ -1,14 +1,16 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 
-import { IUserCustomFieldInputType } from 'api/user_custom_fields/types';
+import {
+  IUserCustomFieldData,
+  IUserCustomFieldInputType,
+} from 'api/user_custom_fields/types';
 
 import { useIntl } from 'utils/cl-intl';
 
 import UserFieldSelect from '../../_shared/UserFieldSelect';
-import { DateAndProjectFilter } from '../_shared/ChartWidgetSettings';
+import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
 
 import messages from './messages';
 import { Props } from './typings';
@@ -25,22 +27,26 @@ const Settings = () => {
     customFieldId: node.data.props.customFieldId,
   }));
 
-  const setCustomFieldId = (value?: string) => {
+  const setCustomFieldId = (
+    value?: string,
+    fieldData?: IUserCustomFieldData
+  ) => {
     setProp((props: Props) => {
       props.customFieldId = value;
+      props.title = fieldData?.attributes.title_multiloc;
     });
   };
 
   return (
-    <Box>
+    <>
       <UserFieldSelect
         userFieldId={customFieldId}
         inputTypes={INPUT_TYPES}
         label={formatMessage(messages.registrationField)}
         onChange={setCustomFieldId}
       />
-      <DateAndProjectFilter />
-    </Box>
+      <ChartWidgetSettings />
+    </>
   );
 };
 

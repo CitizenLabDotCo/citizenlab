@@ -4,6 +4,7 @@ import { Box, Select } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
 import {
+  IUserCustomFieldData,
   IUserCustomFieldInputType,
   IUserCustomFields,
 } from 'api/user_custom_fields/types';
@@ -15,7 +16,7 @@ interface Props {
   userFieldId?: string;
   inputTypes: IUserCustomFieldInputType[];
   label: string;
-  onChange: (userFieldId?: string) => void;
+  onChange: (userFieldId?: string, fieldData?: IUserCustomFieldData) => void;
 }
 
 const generateOptions = (questions: IUserCustomFields, localize: Localize) => {
@@ -39,7 +40,10 @@ const UserFieldSelect = ({
   const localize = useLocalize();
 
   const handleChange = ({ value }: IOption) => {
-    onChange(value === '' ? undefined : value);
+    onChange(
+      value === '' ? undefined : value,
+      userFields?.data.find((field) => field.id === value)
+    );
   };
 
   const userFieldOptions = useMemo(() => {

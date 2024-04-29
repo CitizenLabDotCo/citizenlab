@@ -1,8 +1,7 @@
-export interface Props {
+import { ChartWidgetProps } from '../typings';
+
+export interface Props extends ChartWidgetProps {
   customFieldId?: string;
-  projectId: string | undefined;
-  startAt?: string;
-  endAt?: string | null;
 }
 
 export type Data = [Record<string, number>];

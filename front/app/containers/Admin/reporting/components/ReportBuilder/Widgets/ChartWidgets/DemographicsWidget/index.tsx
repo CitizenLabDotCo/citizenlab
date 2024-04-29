@@ -3,6 +3,9 @@ import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import { useDemographics } from 'api/graph_data_units';
+import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
+
+import useLocalize from 'hooks/useLocalize';
 
 import Card from '../../_shared/Card';
 
@@ -22,32 +25,34 @@ const FAKE_DATA: Data = [
 ];
 
 const DemographicsWidget = ({
-  customFieldId,
+  title,
   projectId,
   startAt,
   endAt,
+  customFieldId,
 }: Props) => {
+  const localize = useLocalize();
+
   // TODO add real data
   const data = FAKE_DATA;
 
-  const { data: hookData } = useDemographics(
-    {
-      custom_field_id: customFieldId,
-      project_id: projectId,
-      start_at: startAt,
-      end_at: endAt,
-    },
-    { enabled: !!customFieldId }
-  );
+  const { data: hookData } = useDemographics({
+    custom_field_id: customFieldId,
+    project_id: projectId,
+    start_at: startAt,
+    end_at: endAt,
+  });
 
-  console.log(hookData);
+  const { data: customField } = useUserCustomField(customFieldId);
+
+  console.log({ hookData, customField });
 
   return (
     <Card pagebreak>
       <Box width="100%" pb="0px" display="flex">
         <Box w="300px" display="flex" flexDirection="column">
           <Text mt="1px" fontWeight="bold" fontSize="m" pr="16px">
-            Place of residence
+            {localize(title)}
           </Text>
         </Box>
         <Chart data={data} />
@@ -58,10 +63,11 @@ const DemographicsWidget = ({
 
 DemographicsWidget.craft = {
   props: {
-    customFieldId: undefined,
+    title: undefined,
     projectId: undefined,
     startAt: undefined,
     endAt: null,
+    customFieldId: undefined,
   },
   related: {
     settings: Settings,

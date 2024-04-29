@@ -6,7 +6,6 @@ import {
   SurveyQuestionResultProps,
   VisitorsTrafficSourcesProps,
   DemographicsProps,
-  Options,
 } from './requestTypes';
 import {
   ActiveUsersResponse,
@@ -89,16 +88,16 @@ export const useVisitorsTrafficSourcesLive = (
   });
 };
 
-export const useDemographics = (
-  props: DemographicsProps,
-  options?: Options
-) => {
+export const useDemographics = ({
+  custom_field_id,
+  ...props
+}: DemographicsProps) => {
   return useGraphDataUnits<DemographicsResponse>(
     {
       resolved_name: 'DemographicsWidget',
-      props,
+      props: { custom_field_id, ...props },
     },
-    options
+    { enabled: !!custom_field_id }
   );
 };
 
