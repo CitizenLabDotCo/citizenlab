@@ -7,7 +7,7 @@ module ParticipationMethod
     end
 
     def generate_slug(input)
-      title = MultilocService.new.t input.title_multiloc, input.author&.locale
+      title = MultilocService.new.t(input.title_multiloc, input.author&.locale).presence
       SlugService.new.generate_slug input, title
     end
 
