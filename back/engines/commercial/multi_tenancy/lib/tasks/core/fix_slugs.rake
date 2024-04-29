@@ -15,13 +15,14 @@ namespace :fix_existing_tenants do
           claz.all.each do |sluggable|
             previous_slug = sluggable.slug
             if !sluggable.valid?
+              sluggable.slug = nil
               sluggable.generate_slug
               if !sluggable.save
                 errors[tenant.host] ||= {}
                 errors[tenant.host][claz.name] ||= {}
                 errors[tenant.host][claz.name][sluggable.id] = sluggable.errors.details
               else
-                changed += ["Changed #{tenant.host} #{claz.name} #{claz.id}: \"#{previous_slug}\" => \"#{sluggable.slug}\""] if previous_slug != sluggable.slug
+                changed += ["Changed #{tenant.host} #{claz.name} #{sluggable.id}: \"#{previous_slug}\" => \"#{sluggable.slug}\""] if previous_slug != sluggable.slug
               end
             end
           end
