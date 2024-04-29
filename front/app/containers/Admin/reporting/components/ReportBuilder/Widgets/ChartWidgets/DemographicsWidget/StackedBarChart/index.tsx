@@ -1,20 +1,30 @@
 import React, { useState } from 'react';
 
-import StackedBarChart from 'components/admin/Graphs/StackedBarChart';
+import { DemographicsResponse } from 'api/graph_data_units/responseTypes';
+
+import useLocalize from 'hooks/useLocalize';
+
+import BaseStackedBarChart from 'components/admin/Graphs/StackedBarChart';
 import {
   getCornerRadius,
   stackLabels,
 } from 'components/admin/Graphs/StackedBarChart/singleBarHelpers';
-import { DEFAULT_CATEGORICAL_COLORS } from 'components/admin/Graphs/styling';
 
-import { tooltip } from './tooltip';
-import { Data } from './typings';
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
+import { tooltip } from '../tooltip';
+
+import { parseResponse } from './parse';
 
 interface Props {
-  data: Data;
+  response: DemographicsResponse;
 }
 
-const Chart = ({ data }: Props) => {
+const StackedBarChart = ({ response }: Props) => {
+  const localize = useLocalize();
+  const { formatMessage } = useIntl();
+
   const [stackedBarHoverIndex, setStackedBarHoverIndex] = useState<
     number | undefined
   >();
@@ -27,23 +37,11 @@ const Chart = ({ data }: Props) => {
     setStackedBarHoverIndex(undefined);
   };
 
-  const columns = Object.keys(data[0]);
-  const statusColorById = columns.reduce(
-    (acc, cur, i) => ({
-      ...acc,
-      [cur]: DEFAULT_CATEGORICAL_COLORS[i % DEFAULT_CATEGORICAL_COLORS.length],
-    }),
-    {}
-  );
-
-  const legendItems = columns.map((column) => ({
-    icon: 'circle' as const,
-    color: statusColorById[column] as string,
-    label: column,
-  }));
+  const { data, percentages, columns, statusColorById, labels, legendItems } =
+    parseResponse(response, localize, formatMessage(messages.unknown));
 
   return (
-    <StackedBarChart
+    <BaseStackedBarChart
       data={data}
       height={30}
       mapping={{
@@ -56,7 +54,7 @@ const Chart = ({ data }: Props) => {
         },
       }}
       layout="horizontal"
-      labels={stackLabels(data, columns, Object.values(data[0]))}
+      labels={stackLabels(data, columns, percentages)}
       xaxis={{ hide: true, domain: [0, 'dataMax'] }}
       yaxis={{ hide: true, domain: ['dataMin', 'dataMax'] }}
       tooltip={tooltip(
@@ -64,7 +62,7 @@ const Chart = ({ data }: Props) => {
         data,
         columns,
         Object.values(data[0]),
-        columns
+        labels
       )}
       legend={{
         items: legendItems,
@@ -77,4 +75,4 @@ const Chart = ({ data }: Props) => {
   );
 };
 
-export default Chart;
+export default StackedBarChart;

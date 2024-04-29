@@ -13,4 +13,8 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.registrationField',
     defaultMessage: 'Registration field',
   },
+  unknown: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.unknown',
+    defaultMessage: 'Unknown',
+  },
 });
