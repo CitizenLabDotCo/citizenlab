@@ -11,15 +11,25 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
 
     # A flattened ordering of top-level and nested publications, such that project publications are always ordered as if
     # nested under their parent publication, even if their parent(s) is/are not included in the collection.
+    # publications = publications.select(
+    #   'admin_publications.*',
+    #   'CASE WHEN admin_publications.parent_id IS NOT NULL
+    #   THEN parents.ordering + (admin_publications.ordering / 10.0) + 0.05
+    #   ELSE admin_publications.ordering
+    #   END AS flattened_ordering'
+    # )
+    #   .joins('LEFT OUTER JOIN admin_publications AS parents ON parents.id = admin_publications.parent_id')
+    #   .order('flattened_ordering ASC')
+
     publications = publications.select(
       'admin_publications.*',
-      'CASE WHEN admin_publications.parent_id IS NOT NULL
-      THEN parents.ordering + (admin_publications.ordering / 10.0) + 0.05
-      ELSE admin_publications.ordering
+      'CASE WHEN admin_publications.parent_id IS NULL
+      THEN admin_publications.ordering - 0.5
+      ELSE parents.ordering
       END AS flattened_ordering'
     )
       .joins('LEFT OUTER JOIN admin_publications AS parents ON parents.id = admin_publications.parent_id')
-      .order('flattened_ordering ASC')
+      .order('flattened_ordering, admin_publications.ordering')
 
     # Ruby non-sql version (just for testing)
     # flattened_ordering = publications.index_with { |p| p&.parent ? p.parent.ordering + (p.ordering / 10.0) + 0.05 : p.ordering }
