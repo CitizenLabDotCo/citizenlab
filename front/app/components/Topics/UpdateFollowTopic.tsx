@@ -24,7 +24,8 @@ const UpdateFollowTopic = ({ topic }: Props) => {
   const isLoading = isAddingFollower || isDeletingFollower;
   const followerId = topic.relationships.user_follower?.data?.id;
   const isFollowing = !!followerId;
-  const color = isFollowing ? colors.success : colors.coolGrey300;
+  const buttonTextColor = isFollowing ? colors.white : colors.success;
+  const className = isFollowing ? 'inverse' : '';
   const iconName = isFollowing ? 'check-circle' : 'plus-circle';
   const handleFollowOrUnfollow = () => {
     if (isFollowing) {
@@ -52,15 +53,20 @@ const UpdateFollowTopic = ({ topic }: Props) => {
   };
 
   return (
-    <Badge color={color} onClick={handleFollowOrUnfollow}>
+    <Badge
+      color={colors.success}
+      className={className}
+      onClick={handleFollowOrUnfollow}
+    >
       <Button
         buttonStyle="text"
         icon={iconName}
-        iconColor={color}
+        iconColor={buttonTextColor}
         iconPos="right"
         padding="0px"
         my="0px"
         processing={isLoading}
+        textColor={buttonTextColor}
         data-cy={
           isFollowing ? 'e2e-unfollow-topic-button' : 'e2e-follow-topic-button'
         }
