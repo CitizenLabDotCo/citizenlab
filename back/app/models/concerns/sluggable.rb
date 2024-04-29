@@ -27,14 +27,18 @@ module Sluggable
   end
 
   included do
-    validates :slug, uniqueness: true, presence: true, if: proc { self.class.has_slug? } # TODO: Check valid chars + spec
+    validates :slug, uniqueness: true, presence: true, if: proc { self.class.has_slug? && slug_if? } # TODO: Check valid chars + spec
     before_validation :generate_slug, if: proc { self.class.has_slug? }
   end
 
   def generate_slug
-    self.slug ||= SlugService.new.generate_slug(
-      self,
-      self.class.slug_from.call(self)
-    )
+    return if self.slug || !slug_if?
+
+    from_value = self.class.slug_from.call(self)
+    self.slug = SlugService.new.generate_slug self, from_value
+  end
+
+  def slug_if?
+    !self.class.slug_if || self.class.slug_if&.call(self)
   end
 end
