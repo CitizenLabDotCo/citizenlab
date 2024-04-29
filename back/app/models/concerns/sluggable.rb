@@ -10,7 +10,7 @@ module Sluggable
     # TODO: SlugService only here? (delete service?) -> Keep for now
     # TODO: Validate chars + spec
     # TODO: Migration script
-    attr_reader :slug_attribute, :slug_from
+    attr_reader :slug_attribute, :slug_from, :slug_if
 
     def has_slug?
       !!@has_slug
@@ -18,10 +18,11 @@ module Sluggable
 
     private
 
-    def slug(attribute: :slug, from: nil)
+    def slug(options={})
       @has_slug = true
-      @slug_attribute = attribute
-      @slug_from ||= (from || proc { |sluggable| sluggable.id || SecureRandom.uuid })
+      @slug_attribute = options[:attribute] || :slug
+      @slug_from ||= (options[:from] || proc { |sluggable| sluggable.id || SecureRandom.uuid })
+      @slug_if = options[:if]
     end
   end
 

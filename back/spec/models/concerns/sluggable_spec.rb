@@ -11,11 +11,12 @@ RSpec.describe Sluggable do
       # to keep this spec as generic as possible.
       {
         no_slug: :follower,
-        slug_from_first_title: :group
+        slug_from_first_title: :group,
+        slug_on_publication: :initiative
       }
     end
 
-    it 'does not generate a slug when `slug` is not included in the class' do
+    it 'does not set a slug when `slug` is not included in the class' do
       sluggable = create(sluggable_factories[:no_slug])
       expect(sluggable[:slug]).to be_blank
     end
@@ -34,6 +35,16 @@ RSpec.describe Sluggable do
       sluggable2 = create(sluggable_factories[:slug_from_first_title], title_multiloc: title_multiloc)
 
       expect(sluggable1.slug).not_to eq sluggable2.slug
+    end
+
+    it 'does not set a slug when the if-condition is false' do
+      sluggable = create(sluggable_factories[:slug_on_publication], publication_status: 'draft')
+      expect(sluggable.slug).to be_blank
+    end
+
+    it 'sets a slug when the if-condition is true' do
+      sluggable = create(sluggable_factories[:slug_on_publication], publication_status: 'published')
+      expect(sluggable.slug).to be_present
     end
   end
 end
