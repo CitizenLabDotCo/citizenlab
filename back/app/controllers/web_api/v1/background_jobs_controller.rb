@@ -8,7 +8,7 @@ class WebApi::V1::BackgroundJobsController < ApplicationController
     job_ids = params[:ids]
 
     render json: ::WebApi::V1::BackgroundJobSerializer.new(
-      QueJob.by_ids(job_ids),
+      QueJob.by_job_ids(job_ids),
       params: jsonapi_serializer_params
     ).serializable_hash
   end

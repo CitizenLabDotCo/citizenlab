@@ -30,11 +30,11 @@ require 'que/active_record/model'
 
 class QueJob < Que::ActiveRecord::Model
   class << self
-    def find(job_id)
+    def by_job_id!(job_id)
       by_args({ job_id: job_id }, {}).sole
     end
 
-    def by_ids(job_ids)
+    def by_job_ids(job_ids)
       ids = job_ids.map { |job_id| [{ job_id: }].to_json }
       where('args @> ANY (ARRAY[?]::jsonb[])', ids)
     end

@@ -6,7 +6,7 @@ RSpec.describe QueJob, :active_job_que_adapter do
   describe '.find' do
     it 'retrieves the jobs by job_id (uuid) instead of the sequential id (primary key)' do
       job = TestJob.perform_later
-      que_job = described_class.find(job.job_id)
+      que_job = described_class.by_job_id!(job.job_id)
       expect(que_job.args['job_id']).to eq(job.job_id)
     end
   end
@@ -14,7 +14,7 @@ RSpec.describe QueJob, :active_job_que_adapter do
   describe '.by_ids' do
     it 'retrieves the jobs by job_ids' do
       jobs = Array.new(2) { TestJob.perform_later }
-      que_jobs = described_class.by_ids(jobs.map(&:job_id) + ['non-existent-job-id'])
+      que_jobs = described_class.by_job_ids(jobs.map(&:job_id) + ['non-existent-job-id'])
       job_ids_in_db = que_jobs.map { |qj| qj.args['job_id'] }
       expect(job_ids_in_db).to eq(jobs.map(&:job_id))
     end
@@ -23,7 +23,7 @@ RSpec.describe QueJob, :active_job_que_adapter do
   describe '#active?' do
     let!(:que_job) do
       id = TestJob.perform_later.job_id
-      described_class.find(id)
+      described_class.by_job_id!(id)
     end
 
     context 'when the job is not finished and not expired' do
@@ -44,7 +44,7 @@ RSpec.describe QueJob, :active_job_que_adapter do
   describe '#failed?' do
     let!(:que_job) do
       id = TestJob.perform_later.job_id
-      described_class.find(id)
+      described_class.by_job_id!(id)
     end
 
     context 'when the job is not finished and not expired' do
@@ -65,7 +65,7 @@ RSpec.describe QueJob, :active_job_que_adapter do
   describe '#status' do
     let!(:que_job) do
       id = TestJob.perform_later.job_id
-      described_class.find(id)
+      described_class.by_job_id!(id)
     end
 
     context 'when the job is finished' do
