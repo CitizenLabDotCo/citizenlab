@@ -41,8 +41,8 @@ import tracks from './tracks';
 const MIN_PHASE_WIDTH_PX = 44;
 const CONTAINER_PADDING_PX = 20;
 
-const grey = colors.textSecondary;
-const greenTransparent = rgba(colors.success, 0.15);
+const grey = colors.coolGrey700;
+const greenTransparent = rgba(colors.success, 0.6);
 const green = colors.success;
 const darkGreen = colors.green700;
 
@@ -88,13 +88,13 @@ const phaseBarHeight = '24px';
 const PhaseBar = styled.button`
   width: 100%;
   height: calc(${phaseBarHeight} - 1px);
-  color: ${darken(0.1, colors.textSecondary)};
+  color: ${colors.white};
   font-size: ${fontSizes.s}px;
   font-weight: 500;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${darken(0.08, colors.grey200)};
+  background: ${rgba(colors.coolGrey700, 0.7)};
   transition: background 60ms ease-out;
   position: relative;
   cursor: pointer;
@@ -155,6 +155,7 @@ const selectedPhaseBar = css`
   ${PhaseBar} {
     background: ${grey};
     color: #fff;
+    font-size: ${fontSizes.m}px;
   }
   ${PhaseText} {
     color: ${grey};
@@ -169,7 +170,6 @@ const selectedPhaseBar = css`
 const currentPhaseBar = css`
   ${PhaseBar} {
     background: ${greenTransparent};
-    color: ${darkGreen};
   }
   ${PhaseText} {
     color: ${darkGreen};
@@ -180,6 +180,7 @@ const currentSelectedPhaseBar = css`
   ${PhaseBar} {
     background: ${green};
     color: #fff;
+    font-size: ${fontSizes.m}px;
   }
   ${PhaseText} {
     color: ${darkGreen};
