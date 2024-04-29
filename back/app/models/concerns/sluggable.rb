@@ -4,7 +4,6 @@ module Sluggable
   extend ActiveSupport::Concern
 
   module ClassMethods
-    # TODO: Validate chars + spec
     # TODO: Migration script
     attr_reader :slug_attribute, :slug_from, :slug_if
 
@@ -23,7 +22,9 @@ module Sluggable
   end
 
   included do
-    validates :slug, uniqueness: true, presence: true, if: proc { self.class.slug? && slug_if? } # TODO: Check valid chars + spec
+    SLUG_REGEX = /\A[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*\z/ # Inspired by https://ihateregex.io/expr/url-slug/
+
+    validates :slug, uniqueness: true, presence: true, format: { with: SLUG_REGEX }, if: proc { self.class.slug? && slug_if? }
     before_validation :generate_slug, if: proc { self.class.slug? }
   end
 
