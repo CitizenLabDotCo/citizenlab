@@ -96,7 +96,7 @@ export interface BaseDemographicsProps {
 }
 
 export interface DemographicsProps extends BaseDemographicsProps {
-  custom_field_id: string;
+  custom_field_id?: string;
 }
 
 export interface DemographicsParams extends BaseParams {

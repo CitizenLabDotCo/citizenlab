@@ -19,6 +19,40 @@ const ChartWidgetSettings = () => {
   const {
     actions: { setProp },
     title,
+  } = useNode((node) => ({
+    title: node.data.props.title,
+  }));
+
+  const setTitle = (value: Multiloc) => {
+    setProp((props: ChartWidgetProps) => {
+      props.title = value;
+    });
+  };
+
+  return (
+    <Box>
+      <Box background="#ffffff" marginBottom="20px">
+        <InputMultilocWithLocaleSwitcher
+          id="e2e-analytics-chart-widget-title"
+          label={
+            <Text variant="bodyM" color="textSecondary" mb="0">
+              {formatMessage(messages.analyticsChartTitle)}
+            </Text>
+          }
+          type="text"
+          valueMultiloc={title}
+          onChange={setTitle}
+        />
+      </Box>
+      <DateAndProjectFilter />
+    </Box>
+  );
+};
+
+export const DateAndProjectFilter = () => {
+  const { formatMessage } = useIntl();
+  const {
+    actions: { setProp },
     projectId,
     startAtMoment,
     endAtMoment,
@@ -30,12 +64,6 @@ const ChartWidgetSettings = () => {
       : null,
     endAtMoment: node.data.props.endAt ? moment(node.data.props.endAt) : null,
   }));
-
-  const setTitle = (value: Multiloc) => {
-    setProp((props: ChartWidgetProps) => {
-      props.title = value;
-    });
-  };
 
   const handleChangeTimeRange = ({
     startDate,
@@ -57,20 +85,7 @@ const ChartWidgetSettings = () => {
   };
 
   return (
-    <Box>
-      <Box background="#ffffff" marginBottom="20px">
-        <InputMultilocWithLocaleSwitcher
-          id="e2e-analytics-chart-widget-title"
-          label={
-            <Text variant="bodyM" color="textSecondary" mb="0">
-              {formatMessage(messages.analyticsChartTitle)}
-            </Text>
-          }
-          type="text"
-          valueMultiloc={title}
-          onChange={setTitle}
-        />
-      </Box>
+    <>
       <Box mb="20px">
         <Text variant="bodyM" color="textSecondary" mb="5px">
           {formatMessage(messages.analyticsChartDateRange)}
@@ -87,7 +102,7 @@ const ChartWidgetSettings = () => {
           onProjectFilter={handleProjectFilter}
         />
       </Box>
-    </Box>
+    </>
   );
 };
 

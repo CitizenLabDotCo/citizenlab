@@ -5,12 +5,11 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 import { useDemographics } from 'api/graph_data_units';
 
 import Card from '../../_shared/Card';
-import { ChartWidgetProps } from '../typings';
 
 import Chart from './Chart';
 import messages from './messages';
 import Settings from './Settings';
-import { Data } from './typings';
+import { Props, Data } from './typings';
 
 const FAKE_DATA: Data = [
   {
@@ -22,13 +21,25 @@ const FAKE_DATA: Data = [
   },
 ];
 
-const DemographicsWidget = (_props: Omit<ChartWidgetProps, 'title'>) => {
+const DemographicsWidget = ({
+  customFieldId,
+  projectId,
+  startAt,
+  endAt,
+}: Props) => {
   // TODO add real data
   const data = FAKE_DATA;
 
-  const { data: hookData } = useDemographics({
-    custom_field_id: '0ccf547b-d86b-4d1c-97dc-7977154c2e6b',
-  });
+  const { data: hookData } = useDemographics(
+    {
+      custom_field_id: customFieldId,
+      project_id: projectId,
+      start_at: startAt,
+      end_at: endAt,
+    },
+    { enabled: !!customFieldId }
+  );
+
   console.log(hookData);
 
   return (
@@ -47,6 +58,7 @@ const DemographicsWidget = (_props: Omit<ChartWidgetProps, 'title'>) => {
 
 DemographicsWidget.craft = {
   props: {
+    customFieldId: undefined,
     projectId: undefined,
     startAt: undefined,
     endAt: null,

@@ -6,6 +6,7 @@ import {
   SurveyQuestionResultProps,
   VisitorsTrafficSourcesProps,
   DemographicsProps,
+  Options,
 } from './requestTypes';
 import {
   ActiveUsersResponse,
@@ -88,11 +89,17 @@ export const useVisitorsTrafficSourcesLive = (
   });
 };
 
-export const useDemographics = (props: DemographicsProps) => {
-  return useGraphDataUnits<DemographicsResponse>({
-    resolved_name: 'DemographicsWidget',
-    props,
-  });
+export const useDemographics = (
+  props: DemographicsProps,
+  options?: Options
+) => {
+  return useGraphDataUnits<DemographicsResponse>(
+    {
+      resolved_name: 'DemographicsWidget',
+      props,
+    },
+    options
+  );
 };
 
 export const useUsersByGender = (props: BaseDemographicsProps) => {
