@@ -34,6 +34,18 @@ resource 'BackgroundJob', :active_job_que_adapter, :admin_api do
           end
         })
       end
+
+      context 'when fetching jobs from other tenants' do
+        let(:ids) do
+          other_tenant_job_id = create(:tenant).switch { TestJob.perform_later }.job_id
+          jobs.map(&:job_id) + [other_tenant_job_id]
+        end
+
+        example_request "Doesn't return jobs from other tenants", document: false do
+          expect(status).to eq 200
+          expect(json_response_body[:data].count).to eq(jobs.count)
+        end
+      end
     end
 
     context 'when user' do

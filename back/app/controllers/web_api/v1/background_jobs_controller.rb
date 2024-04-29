@@ -7,8 +7,9 @@ class WebApi::V1::BackgroundJobsController < ApplicationController
     authorize :jobs, policy_class: BackgroundJobPolicy
     job_ids = params[:ids]
 
+    scoped_jobs = policy_scope(QueJob.all, policy_scope_class: BackgroundJobPolicy::Scope)
     render json: ::WebApi::V1::BackgroundJobSerializer.new(
-      QueJob.by_job_ids(job_ids),
+      scoped_jobs.all_by_job_ids(job_ids),
       params: jsonapi_serializer_params
     ).serializable_hash
   end
