@@ -140,7 +140,7 @@ const ReviewSection = ({
                 <Button
                   bgColor={colors.primary}
                   icon="check"
-                  processing={isApproving || importing}
+                  processing={isApproving}
                   disabled={isApproving || importing}
                   onClick={handleApproveAll}
                 >
