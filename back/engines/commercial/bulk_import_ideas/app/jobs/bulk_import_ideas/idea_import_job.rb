@@ -5,8 +5,8 @@ module BulkImportIdeas
     self.priority = 60
 
     FILE_PARSERS = {
-      'xlsx' => Parsers::IdeaXlsxFileParser,
-      'pdf' => Parsers::IdeaPdfFileParser
+      'xlsx' => BulkImportIdeas::Parsers::IdeaXlsxFileParser,
+      'pdf' => BulkImportIdeas::Parsers::IdeaPdfFileParser
     }
 
     def run(format, idea_import_files, import_user, locale, phase, personal_data_enabled)
