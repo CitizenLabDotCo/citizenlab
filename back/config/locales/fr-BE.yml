@@ -149,7 +149,7 @@ fr-BE:
         title: Détails
         description:
       other_text_field:
-        title: Si vous avez choisi "{other_option}", à quoi pensez-vous ?
+        title: Si vous avez choisi « {other_option} », à quoi pensez-vous ?
   custom_forms:
     categories:
       main_content:
