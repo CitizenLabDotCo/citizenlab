@@ -21,7 +21,6 @@ import useInputSchema from 'hooks/useInputSchema';
 
 import Form from 'components/Form';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
-import FullPageSpinner from 'components/UI/FullPageSpinner';
 import PageContainer from 'components/UI/PageContainer';
 
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
@@ -67,7 +66,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   const phaseId = queryParams.get('phase_id') || undefined;
   const { data: phases } = usePhases(project.data.id);
   const { data: phaseFromUrl } = usePhase(phaseId);
-  const { schema, uiSchema, inputSchemaError } = useInputSchema({
+  const { schema, uiSchema } = useInputSchema({
     projectId: project.data.id,
     phaseId,
   });
@@ -138,7 +137,13 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     }
   }, [draftIdeaStatus, draftIdea, schema, ideaId]);
 
-  if (!participationMethodConfig || !phaseId) {
+  if (
+    loadingDraftIdea ||
+    !participationMethodConfig ||
+    !phaseId ||
+    !schema ||
+    !uiSchema
+  ) {
     return null;
   }
 
@@ -202,7 +207,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
 
     if (published) {
       clearDraftIdea(phaseId);
-      participationMethodConfig?.onFormSubmission({
+      participationMethodConfig.onFormSubmission({
         project: project.data,
         ideaId,
         idea,
@@ -213,11 +218,8 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   return (
     <>
       <IdeasNewMeta isSurvey={true} />
-      <PageContainer id="e2e-idea-new-page" overflow="hidden">
-        {!loadingDraftIdea &&
-        schema &&
-        uiSchema &&
-        participationMethodConfig ? (
+      <main id="e2e-idea-new-page">
+        <PageContainer overflow="hidden">
           <Box
             width="100%"
             display="flex"
@@ -242,10 +244,8 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
               />
             </Box>
           </Box>
-        ) : inputSchemaError ? null : (
-          <FullPageSpinner />
-        )}
-      </PageContainer>
+        </PageContainer>
+      </main>
     </>
   );
 };

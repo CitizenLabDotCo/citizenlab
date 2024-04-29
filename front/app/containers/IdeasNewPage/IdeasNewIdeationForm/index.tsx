@@ -249,8 +249,8 @@ const IdeasNewIdeationForm = ({ project }: Props) => {
             onClick={goBackToProject}
           />
         </Box>
-        <main>
-          <PageContainer id="e2e-idea-new-page" overflow="hidden">
+        <main id="e2e-idea-new-page">
+          <PageContainer overflow="hidden">
             <Form
               schema={schema}
               uiSchema={uiSchema}
