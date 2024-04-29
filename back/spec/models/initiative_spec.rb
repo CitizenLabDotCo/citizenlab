@@ -79,7 +79,8 @@ RSpec.describe Initiative do
   describe 'generate_slug' do
     it 'generates a slug upon publication' do
       initiative = create(:initiative, title_multiloc: nil, slug: nil, publication_status: 'draft')
-      initiative.update!(title_multiloc: { 'en' => 'My stupendous idea' }, publication_status: 'published')
+      initiative.author.update!(locale: 'en')
+      initiative.update!(title_multiloc: { 'fr-BE' => 'Ma superbe idée', 'en' => 'My stupendous idea' }, publication_status: 'published')
       expect(initiative.slug).to eq 'my-stupendous-idea'
     end
   end
