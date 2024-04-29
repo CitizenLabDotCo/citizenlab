@@ -47,7 +47,13 @@ jest.mock(
 
 describe('Preview', () => {
   it('should shows project description builder content when project description builder is enabled', () => {
-    render(<Preview projectId={projectId} projectTitle={projectTitle} />);
+    render(
+      <Preview
+        projectId={projectId}
+        projectTitle={projectTitle}
+        usesContentBuilder={true}
+      />
+    );
     expect(
       screen.getByTestId('projectDescriptionBuilderPreviewContent')
     ).toBeInTheDocument();
