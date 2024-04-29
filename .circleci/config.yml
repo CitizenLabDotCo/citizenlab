@@ -242,9 +242,8 @@ jobs:
       - wait-for-postgres
       - run: bin/rails db:create db:schema:load
       - run: |
-          TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" "engines/*/*/spec/**/*_spec.rb" | circleci tests split  --split-by=timings)
-          echo $TESTFILES
-          bundle exec rspec --format documentation --profile --format RspecJunitFormatter -o spec/reports/rspec.xml -- ${TESTFILES}
+          circleci tests glob "spec/**/*_spec.rb" "engines/*/*/spec/**/*_spec.rb" \
+            | circleci tests run --command="xargs bundle exec rspec --format documentation --format RspecJunitFormatter -o spec/reports/rspec.xml" --verbose --split-by=timings
       - store_test_results:
           path: spec/reports
 
