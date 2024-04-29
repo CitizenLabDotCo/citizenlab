@@ -247,10 +247,11 @@ const CLSurveyPageLayout = memo(
     }
 
     const getFormContainerHeight = () => {
+      // TODO: Simplify the styling of the CLSurveyPageLayout.
       if (hasScrollBars) {
         return 'fit-content';
       } else if (isSmallerThanPhone) {
-        return ''; // Returning 100% on mobile results in odd behavior
+        return ''; // Returning 100% on mobile results in odd UI behavior
       }
       return '100%';
     };
