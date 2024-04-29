@@ -32,7 +32,7 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
       base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_12.pdf').read
       expect do
         service.parse_file_async("data:application/pdf;base64,#{base_64_content}")
-      end.to have_enqueued_job(BulkImportIdeas::IdeaPdfImportJob).exactly(:twice)
+      end.to have_enqueued_job(BulkImportIdeas::IdeaImportJob).exactly(:twice)
     end
   end
 

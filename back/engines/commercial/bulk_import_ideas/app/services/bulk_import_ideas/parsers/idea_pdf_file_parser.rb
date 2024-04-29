@@ -18,12 +18,13 @@ module BulkImportIdeas::Parsers
     end
 
     # Asynchronous version of the parse_file method
+    # Sends 5 files containing 1 idea to each job
     def parse_file_async(file_content)
       files = create_files file_content
 
       job_ids = []
       files.each_slice(IDEAS_PER_JOB) do |sliced_files|
-        job = BulkImportIdeas::IdeaPdfImportJob.perform_later(sliced_files, @import_user, @locale, @phase, @personal_data_enabled)
+        job = BulkImportIdeas::IdeaImportJob.perform_later('pdf', sliced_files, @import_user, @locale, @phase, @personal_data_enabled)
         job_ids << job.job_id
       end
 
@@ -56,7 +57,7 @@ module BulkImportIdeas::Parsers
     def create_files(file_content)
       source_file = upload_source_file file_content
 
-      # Split a pdf into one document per idea
+      # Split a pdf into one PDF per idea
       split_pdf_files = []
       if source_file&.import_type == 'pdf'
         # Get number of pages in a form from the exported PDF template
