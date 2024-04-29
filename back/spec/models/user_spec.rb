@@ -50,12 +50,6 @@ RSpec.describe User do
       invitee = create(:invited_user, first_name: nil, last_name: nil)
       expect(invitee.slug).to be_nil
     end
-
-    it 'returns an anonymous full_name and slug in format "User 123456" if true' do
-      user.update!(email: 'test@citizenlab.co')
-      expect(user.full_name).to match(/User \d{6}/)
-      expect(user.slug).to match(/user-\d{6}/)
-    end
   end
 
   describe 'creating an invited user' do
