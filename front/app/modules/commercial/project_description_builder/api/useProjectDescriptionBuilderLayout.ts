@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
@@ -21,7 +23,7 @@ const fetchProjectDescriptionBuilderLayout = (projectId: string) => {
 const useProjectDescriptionBuilderLayout = (projectId: string) => {
   const { data: project } = useProjectById(projectId);
 
-  return useQuery<
+  const result = useQuery<
     IProjectDescriptionBuilderLayout,
     CLErrors,
     IProjectDescriptionBuilderLayout,
@@ -31,6 +33,14 @@ const useProjectDescriptionBuilderLayout = (projectId: string) => {
     queryFn: () => fetchProjectDescriptionBuilderLayout(projectId),
     enabled: !!project && project.data.attributes.uses_content_builder,
   });
+
+  useEffect(() => {
+    if (project && project.data.attributes.uses_content_builder) {
+      result.refetch();
+    }
+  }, [project, result]);
+
+  return result;
 };
 
 export default useProjectDescriptionBuilderLayout;

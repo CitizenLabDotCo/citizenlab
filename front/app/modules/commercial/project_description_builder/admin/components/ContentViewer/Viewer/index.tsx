@@ -46,7 +46,7 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
     : undefined;
 
   return (
-    <Box data-testid="projectDescriptionBuilderPreview">
+    <Box data-testid="projectDescriptionBuilderPreview" key={projectId}>
       {isInitialLoading && <Spinner />}
       {!isInitialLoading && projectDescriptionBuilderContent && (
         <Box data-testid="projectDescriptionBuilderPreviewContent">
