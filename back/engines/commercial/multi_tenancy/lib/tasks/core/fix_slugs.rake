@@ -3,7 +3,7 @@
 namespace :fix_existing_tenants do
   desc 'Fix the slugs for all existing tenants.'
   task fix_slugs: [:environment] do |_t, _args|
-    SLUGGABLE_CLASSES = [Group, Idea, Initiative, Project, ProjectFolders::Folder, StaticPage, User]
+    sluggable_classes = [Group, Idea, Initiative, Project, ProjectFolders::Folder, StaticPage, User]
 
     errors = {}
     changed = []
@@ -11,7 +11,7 @@ namespace :fix_existing_tenants do
       tenant.switch do
         puts "Processing tenant #{tenant.host}..."
 
-        SLUGGABLE_CLASSES.each do |claz|
+        sluggable_classes.each do |claz|
           claz.all.each do |sluggable|
             previous_slug = sluggable.slug
             if !sluggable.valid?
