@@ -140,10 +140,9 @@ const ReviewSection = ({
                 <Button
                   bgColor={colors.primary}
                   icon="check"
-                  processing={isApproving}
-                  disabled={isApproving}
+                  processing={isApproving || importing}
+                  disabled={isApproving || importing}
                   onClick={handleApproveAll}
-                  disabled={importing}
                 >
                   <FormattedMessage {...messages.approveAllInputs} />
                 </Button>
