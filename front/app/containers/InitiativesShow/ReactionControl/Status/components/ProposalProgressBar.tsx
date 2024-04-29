@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { colors, Box } from '@citizenlab/cl2-component-library';
+import { colors } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 
 import ProgressBar from 'components/UI/ProgressBar';
