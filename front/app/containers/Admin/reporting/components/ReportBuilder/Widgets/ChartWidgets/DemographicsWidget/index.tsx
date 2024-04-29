@@ -3,10 +3,10 @@ import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import Card from '../../_shared/Card';
-import messages from '../messages';
 import { ChartWidgetProps } from '../typings';
 
 import Chart from './Chart';
+import messages from './messages';
 import Settings from './Settings';
 import { Data } from './typings';
 
@@ -20,7 +20,7 @@ const FAKE_DATA: Data = [
   },
 ];
 
-const UsersWidget = (_props: Omit<ChartWidgetProps, 'title'>) => {
+const DemographicsWidget = (_props: Omit<ChartWidgetProps, 'title'>) => {
   // TODO add real data
   const data = FAKE_DATA;
 
@@ -38,7 +38,7 @@ const UsersWidget = (_props: Omit<ChartWidgetProps, 'title'>) => {
   );
 };
 
-UsersWidget.craft = {
+DemographicsWidget.craft = {
   props: {
     projectId: undefined,
     startAt: undefined,
@@ -49,6 +49,6 @@ UsersWidget.craft = {
   },
 };
 
-export const usersTitle = messages.users;
+export const demographicsTitle = messages.demographics;
 
-export default UsersWidget;
+export default DemographicsWidget;

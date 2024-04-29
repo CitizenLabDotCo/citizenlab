@@ -42,7 +42,7 @@ import CommentsByTimeWidget from '../Widgets/ChartWidgets/CommentsByTimeWidget';
 import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
 import PostsByTimeWidget from '../Widgets/ChartWidgets/PostsByTimeWidget';
 import ReactionsByTimeWidget from '../Widgets/ChartWidgets/ReactionsByTimeWidget';
-import UsersWidget from '../Widgets/ChartWidgets/UsersWidget';
+import UsersWidget from '../Widgets/ChartWidgets/DemographicsWidget';
 import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
 import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
 import IframeMultiloc from '../Widgets/IframeMultiloc';

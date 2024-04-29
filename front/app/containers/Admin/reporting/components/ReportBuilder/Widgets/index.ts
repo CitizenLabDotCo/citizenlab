@@ -11,6 +11,9 @@ import AgeWidget, { ageTitle } from './ChartWidgets/AgeWidget';
 import CommentsByTimeWidget, {
   commentsByTimeTitle,
 } from './ChartWidgets/CommentsByTimeWidget';
+import DemographicsWidget, {
+  demographicsTitle,
+} from './ChartWidgets/DemographicsWidget';
 import GenderWidget, { genderTitle } from './ChartWidgets/GenderWidget';
 import PostsByTimeWidget, {
   postsByTimeTitle,
@@ -18,7 +21,6 @@ import PostsByTimeWidget, {
 import ReactionsByTimeWidget, {
   reactionsByTimeTitle,
 } from './ChartWidgets/ReactionsByTimeWidget';
-import UsersWidget, { usersTitle } from './ChartWidgets/UsersWidget';
 import VisitorsTrafficSourcesWidget, {
   visitorsTrafficSourcesTitle,
 } from './ChartWidgets/VisitorsTrafficSourcesWidget';
@@ -52,7 +54,7 @@ export const WIDGETS = {
   PostsByTimeWidget,
   CommentsByTimeWidget,
   ReactionsByTimeWidget,
-  UsersWidget,
+  DemographicsWidget,
   IframeMultiloc,
 };
 
@@ -75,7 +77,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   PostsByTimeWidget: postsByTimeTitle,
   CommentsByTimeWidget: commentsByTimeTitle,
   ReactionsByTimeWidget: reactionsByTimeTitle,
-  UsersWidget: usersTitle,
+  DemographicsWidget: demographicsTitle,
   IframeMultiloc: iframeMultilocTitle,
 };
 
@@ -97,7 +99,7 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'VisitorsTrafficSourcesWidget',
   'VisitorsWidget',
   'SurveyQuestionResultWidget',
-  'UsersWidget',
+  'DemographicsWidget',
   'IframeMultiloc',
 ] satisfies WidgetName[]);
 

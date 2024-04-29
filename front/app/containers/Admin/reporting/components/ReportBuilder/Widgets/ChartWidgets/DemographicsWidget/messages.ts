@@ -5,4 +5,8 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.users',
     defaultMessage: 'Users: {numberOfUsers} ({percentageOfUsers}%)',
   },
+  demographics: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.demographics',
+    defaultMessage: 'Demographics',
+  },
 });
