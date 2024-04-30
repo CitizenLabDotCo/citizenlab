@@ -550,9 +550,7 @@ jobs:
           name: Run tests with JUnit as reporter
           command: |
             cd citizenlab/front
-            TEST_FILES=$(circleci tests glob '**/*.test.{ts,tsx}' | circleci tests split --split-by=timings)
-            echo $TEST_FILES
-            npm run test:ci -- $TEST_FILES
+            npx jest --listTests | circleci tests run --command="JEST_JUNIT_ADD_FILE_ATTRIBUTE=true xargs npx jest --ci --reporters=default --reporters=jest-junit -w 3 --coverage --coverageReporters=text-summary --" --split-by=timings
           environment:
             JEST_JUNIT_OUTPUT_DIR: ./reports/
       - store_test_results:
