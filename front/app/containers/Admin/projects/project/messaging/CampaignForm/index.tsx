@@ -9,6 +9,7 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
+import Tippy from '@tippyjs/react';
 import { useForm, FormProvider } from 'react-hook-form';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
@@ -25,6 +26,7 @@ import Input from 'components/HookForm/Input';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Select from 'components/HookForm/Select';
+import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
@@ -124,6 +126,21 @@ const CampaignForm = ({
     ];
   };
 
+  // allParticipants: {
+  //   id: 'app.containers.Admin.emails.allParticipants',
+  //   defaultMessage: 'All participants from the project',
+  // },
+  // allParticipantsTooltip: {
+  //   id: 'app.containers.Admin.emails.allParticipantsTooltip',
+  //   defaultMessage:
+  //     'This includes users that performed any action in the project (even follow)',
+  // },
+  // infobox: {
+  //   id: 'app.containers.Admin.emails.infobox',
+  //   defaultMessage:
+  //     'Admins can send emails to more complex groups of participants, related to demographics, events, or across projects.',
+  // },
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>
@@ -151,15 +168,39 @@ const CampaignForm = ({
             />
           </StyledSectionField>
 
-          <Label>
-            <>
+          <StyledSectionField>
+            <Label>
               <FormattedMessage {...messages.fieldTo} />
-              <IconTooltip
-                content={<FormattedMessage {...messages.fieldToTooltip} />}
+            </Label>
+
+            <Text m="0px 0px 8px 0px">
+              <FormattedMessage
+                {...messages.allParticipants}
+                values={{
+                  participants: (
+                    <Tippy
+                      maxWidth={280}
+                      content={
+                        <FormattedMessage
+                          {...messages.allParticipantsTooltip}
+                        />
+                      }
+                    >
+                      <Box w="fit-content" display="inline">
+                        <Text as="span" m="0px" textDecoration="underline">
+                          <FormattedMessage {...messages.participants} />
+                        </Text>
+                      </Box>
+                    </Tippy>
+                  ),
+                }}
               />
-            </>
-          </Label>
-          <Text> All participants</Text>
+            </Text>
+
+            <Warning>
+              <FormattedMessage {...messages.infobox} />
+            </Warning>
+          </StyledSectionField>
 
           <StyledSectionField>
             <Input

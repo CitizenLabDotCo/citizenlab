@@ -7,8 +7,7 @@ export default defineMessages({
   },
   helmetDescription: {
     id: 'app.containers.Admin.emails.helmetDescription',
-    defaultMessage:
-      'Send out manual emails to certain citizen group and active automated campaigns',
+    defaultMessage: 'Send out manual emails to project participants',
   },
   addCampaignButton: {
     id: 'app.containers.Admin.emails.addCampaignButton',
@@ -56,9 +55,23 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.fieldTo',
     defaultMessage: 'To',
   },
-  fieldToTooltip: {
-    id: 'app.containers.Admin.emails.fieldToTooltip',
-    defaultMessage: 'Choose the group(s) of users who will receive your email.',
+  allParticipants: {
+    id: 'app.containers.Admin.emails.allParticipants',
+    defaultMessage: 'All {participants} from the project',
+  },
+  participants: {
+    id: 'app.containers.Admin.emails.participants',
+    defaultMessage: 'participants',
+  },
+  allParticipantsTooltip: {
+    id: 'app.containers.Admin.emails.allParticipantsTooltip',
+    defaultMessage:
+      'This includes users that performed any action in the project (even follow).',
+  },
+  infobox: {
+    id: 'app.containers.Admin.emails.infobox',
+    defaultMessage:
+      'Admins can send emails to more complex groups of participants, related to demographics, events, or across projects.',
   },
   fieldSubject: {
     id: 'app.containers.Admin.emails.fieldSubject',
