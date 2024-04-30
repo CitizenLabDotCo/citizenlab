@@ -2,216 +2,216 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   helmetTitle: {
-    id: 'app.containers.Admin.messaging.helmetTitle',
+    id: 'app.containers.Admin.project.messaging.helmetTitle',
     defaultMessage: 'Messaging',
   },
   helmetDescription: {
-    id: 'app.containers.Admin.emails.helmetDescription',
+    id: 'app.containers.Admin.project.emails.helmetDescription',
     defaultMessage: 'Send out manual emails to project participants',
   },
   addCampaignButton: {
-    id: 'app.containers.Admin.emails.addCampaignButton',
+    id: 'app.containers.Admin.project.emails.addCampaignButton',
     defaultMessage: 'Create campaign',
   },
   deleteButtonLabel: {
-    id: 'app.containers.Admin.emails.deleteButtonLabel',
+    id: 'app.containers.Admin.project.emails.deleteButtonLabel',
     defaultMessage: 'Delete',
   },
   editButtonLabel: {
-    id: 'app.containers.Admin.emails.editButtonLabel',
+    id: 'app.containers.Admin.project.emails.editButtonLabel',
     defaultMessage: 'Edit',
   },
   fieldSender: {
-    id: 'app.containers.Admin.emails.fieldSender',
+    id: 'app.containers.Admin.project.emails.fieldSender',
     defaultMessage: 'From',
   },
   fieldSenderTooltip: {
-    id: 'app.containers.Admin.emails.fieldSenderTooltip',
+    id: 'app.containers.Admin.project.emails.fieldSenderTooltip',
     defaultMessage: 'Choose whom users will see as the sender of the email.',
   },
   fieldSenderError: {
-    id: 'app.containers.Admin.emails.fieldSenderError',
+    id: 'app.containers.Admin.project.emails.fieldSenderError',
     defaultMessage: 'Provide a sender of the email',
   },
   fieldReplyTo: {
-    id: 'app.containers.Admin.emails.fieldReplyTo',
+    id: 'app.containers.Admin.project.emails.fieldReplyTo',
     defaultMessage: 'Replies should go to',
   },
   fieldReplyToTooltip: {
-    id: 'app.containers.Admin.emails.fieldReplyToTooltip',
+    id: 'app.containers.Admin.project.emails.fieldReplyToTooltip',
     defaultMessage:
       'Choose what email address should receive direct replies from users on your email.',
   },
   fieldReplyToEmailError: {
-    id: 'app.containers.Admin.emails.fieldReplyToEmailError',
+    id: 'app.containers.Admin.project.emails.fieldReplyToEmailError',
     defaultMessage:
       'Provide an email address in the correct format, for example name@provider.com',
   },
   fieldReplyToError: {
-    id: 'app.containers.Admin.emails.fieldReplyToError',
+    id: 'app.containers.Admin.project.emails.fieldReplyToError',
     defaultMessage: 'Provide an email address',
   },
   fieldTo: {
-    id: 'app.containers.Admin.emails.fieldTo',
+    id: 'app.containers.Admin.project.emails.fieldTo',
     defaultMessage: 'To',
   },
   allParticipants: {
-    id: 'app.containers.Admin.emails.allParticipants',
+    id: 'app.containers.Admin.project.emails.allParticipants',
     defaultMessage: 'All {participants} from the project',
   },
   participants: {
-    id: 'app.containers.Admin.emails.participants',
+    id: 'app.containers.Admin.project.emails.participants',
     defaultMessage: 'participants',
   },
   allParticipantsTooltip: {
-    id: 'app.containers.Admin.emails.allParticipantsTooltip',
+    id: 'app.containers.Admin.project.emails.allParticipantsTooltip',
     defaultMessage:
       'This includes users that performed any action in the project (even follow).',
   },
   infobox: {
-    id: 'app.containers.Admin.emails.infobox',
+    id: 'app.containers.Admin.project.emails.infobox',
     defaultMessage:
       'Admins can send emails to more complex groups of participants, related to demographics, events, or across projects.',
   },
   fieldSubject: {
-    id: 'app.containers.Admin.emails.fieldSubject',
+    id: 'app.containers.Admin.project.emails.fieldSubject',
     defaultMessage: 'Email Subject',
   },
   fieldSubjectTooltip: {
-    id: 'app.containers.Admin.emails.fieldSubjectTooltip',
+    id: 'app.containers.Admin.project.emails.fieldSubjectTooltip',
     defaultMessage:
       'This will be shown in the subject line of the email and in the user’s inbox overview. Make it clear and engaging.',
   },
   fieldSubjectError: {
-    id: 'app.containers.Admin.emails.fieldSubjectError',
+    id: 'app.containers.Admin.project.emails.fieldSubjectError',
     defaultMessage: 'Provide an email subject for all languages',
   },
   fieldBody: {
-    id: 'app.containers.Admin.emails.fieldBody',
+    id: 'app.containers.Admin.project.emails.fieldBody',
     defaultMessage: 'Email Message',
   },
   fieldBodyError: {
-    id: 'app.containers.Admin.emails.fieldBodyError',
+    id: 'app.containers.Admin.project.emails.fieldBodyError',
     defaultMessage: 'Provide an email message for all languages',
   },
   addCampaignTitle: {
-    id: 'app.containers.Admin.emails.addCampaignTitle',
+    id: 'app.containers.Admin.project.emails.addCampaignTitle',
     defaultMessage: 'New campaign',
   },
   editCampaignTitle: {
-    id: 'app.containers.Admin.emails.editCampaignTitle',
+    id: 'app.containers.Admin.project.emails.editCampaignTitle',
     defaultMessage: 'Edit campaign',
   },
   draft: {
-    id: 'app.containers.Admin.emails.draft',
+    id: 'app.containers.Admin.project.emails.draft',
     defaultMessage: 'Draft',
   },
   sending: {
-    id: 'app.containers.Admin.emails.sending',
+    id: 'app.containers.Admin.project.emails.sending',
     defaultMessage: 'Sending',
   },
   sent: {
-    id: 'app.containers.Admin.emails.sent',
+    id: 'app.containers.Admin.project.emails.sent',
     defaultMessage: 'Sent',
   },
   failed: {
-    id: 'app.containers.Admin.emails.failed',
+    id: 'app.containers.Admin.project.emails.failed',
     defaultMessage: 'Failed',
   },
   sendTestEmailButton: {
-    id: 'app.containers.Admin.emails.sendTestEmailButton',
+    id: 'app.containers.Admin.project.emails.sendTestEmailButton',
     defaultMessage: 'Send a preview',
   },
   sendTestEmailTooltip: {
-    id: 'app.containers.Admin.emails.sendTestEmailTooltip',
+    id: 'app.containers.Admin.project.emails.sendTestEmailTooltip',
     defaultMessage:
       'Send this draft email to the email address with which you are logged in, to check how it looks like in ‘real life’.',
   },
   previewSentConfirmation: {
-    id: 'app.containers.Admin.emails.previewSentConfirmation',
+    id: 'app.containers.Admin.project.emails.previewSentConfirmation',
     defaultMessage: 'A preview email has been sent to your email address',
   },
   formSave: {
-    id: 'app.containers.Admin.emails.formSave',
+    id: 'app.containers.Admin.project.emails.formSave',
     defaultMessage: 'Save as draft',
   },
   previewTitle: {
-    id: 'app.containers.Admin.emails.previewTitle',
+    id: 'app.containers.Admin.project.emails.previewTitle',
     defaultMessage: 'Preview',
   },
   customEmails: {
-    id: 'app.containers.Admin.Campaigns.customEmails',
+    id: 'app.containers.Admin.project.Campaigns.customEmails',
     defaultMessage: 'Custom emails',
   },
   customEmailsDescription: {
-    id: 'app.containers.Admin.Campaigns.customEmailsDescription',
+    id: 'app.containers.Admin.project.Campaigns.customEmailsDescription',
     defaultMessage: 'Send out custom emails and check statistics.',
   },
   campaignFrom: {
-    id: 'app.containers.Admin.Campaigns.campaignFrom',
+    id: 'app.containers.Admin.project.Campaigns.campaignFrom',
     defaultMessage: 'From:',
   },
   campaignTo: {
-    id: 'app.containers.Admin.Campaigns.campaignTo',
+    id: 'app.containers.Admin.project.Campaigns.campaignTo',
     defaultMessage: 'To:',
   },
   noAccess: {
-    id: 'app.containers.Admin.Campaigns.noAccess',
+    id: 'app.containers.Admin.project.Campaigns.noAccess',
     defaultMessage:
       "We're sorry, but it seems like you don't have access to the emails section",
   },
   noCampaignsHeader: {
-    id: 'app.containers.Admin.emails.noCampaignsHeader',
+    id: 'app.containers.Admin.project.emails.noCampaignsHeader',
     defaultMessage: 'No custom email campaigns yet',
   },
   message: {
-    id: 'app.containers.Admin.emails.message',
+    id: 'app.containers.Admin.project.emails.message',
     defaultMessage: 'Message',
   },
   dateSent: {
-    id: 'app.containers.Admin.emails.dateSent',
+    id: 'app.containers.Admin.project.emails.dateSent',
     defaultMessage: 'Date sent',
   },
   recipients: {
-    id: 'app.containers.Admin.emails.recipients',
+    id: 'app.containers.Admin.project.emails.recipients',
     defaultMessage: 'Recipients',
   },
   status: {
-    id: 'app.containers.Admin.emails.status',
+    id: 'app.containers.Admin.project.emails.status',
     defaultMessage: 'Status',
   },
   noCampaignsDescription: {
-    id: 'app.containers.Admin.emails.noCampaignsDescription',
+    id: 'app.containers.Admin.project.emails.noCampaignsDescription',
     defaultMessage:
       'Custom email campaigns are emails created from scratch. Their content and recipients can be chosen and you can follow up on their results through statistics.',
   },
   sentToUsers: {
-    id: 'app.containers.Admin.emails.sentToUsers',
+    id: 'app.containers.Admin.project.emails.sentToUsers',
     defaultMessage: 'These are emails sent to users',
   },
   subject: {
-    id: 'app.containers.Admin.emails.subject',
+    id: 'app.containers.Admin.project.emails.subject',
     defaultMessage: 'Subject:',
   },
   from: {
-    id: 'app.containers.Admin.emails.from',
+    id: 'app.containers.Admin.project.emails.from',
     defaultMessage: 'From:',
   },
   to: {
-    id: 'app.containers.Admin.emails.to',
+    id: 'app.containers.Admin.project.emails.to',
     defaultMessage: 'To:',
   },
   nameVariablesInfo: {
-    id: 'app.containers.Admin.emails.nameVariablesInfo2',
+    id: 'app.containers.Admin.project.emails.nameVariablesInfo2',
     defaultMessage:
       'You can speak directly to citizens using the variables {firstName} {lastName}. E.g. "Dear {firstName} {lastName}, ..."',
   },
   send: {
-    id: 'app.containers.Admin.emails.send',
+    id: 'app.containers.Admin.project.emails.send',
     defaultMessage: 'Send',
   },
   senderRecipients: {
-    id: 'app.containers.Admin.emails.senderRecipients',
+    id: 'app.containers.Admin.project.emails.senderRecipients',
     defaultMessage: 'Sender and recipients',
   },
 });
