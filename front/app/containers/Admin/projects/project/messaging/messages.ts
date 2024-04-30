@@ -68,10 +68,19 @@ export default defineMessages({
     defaultMessage:
       'This includes users that performed any action in the project (even follow).',
   },
-  infobox: {
-    id: 'app.containers.Admin.project.emails.infobox',
+  infoboxModerator: {
+    id: 'app.containers.Admin.project.emails.infoboxModerator',
     defaultMessage:
       'Admins can send emails to more complex groups of participants, related to demographics, events, or across projects.',
+  },
+  infoboxAdmin: {
+    id: 'app.containers.Admin.project.emails.infoboxAdmin',
+    defaultMessage:
+      'Admins can send emails to more complex groups of participants, related to demographics, events, or across projects from the global {link} tab.',
+  },
+  infoboxLink: {
+    id: 'app.containers.Admin.project.emails.infoboxLink',
+    defaultMessage: 'Messaging',
   },
   fieldSubject: {
     id: 'app.containers.Admin.project.emails.fieldSubject',
@@ -161,8 +170,8 @@ export default defineMessages({
       "We're sorry, but it seems like you don't have access to the emails section",
   },
   noCampaignsHeader: {
-    id: 'app.containers.Admin.project.emails.noCampaignsHeader',
-    defaultMessage: 'No custom email campaigns yet',
+    id: 'app.containers.Admin.project.emails.noCampaignsEmptyHeader',
+    defaultMessage: 'Send your first email',
   },
   message: {
     id: 'app.containers.Admin.project.emails.message',
@@ -181,9 +190,9 @@ export default defineMessages({
     defaultMessage: 'Status',
   },
   noCampaignsDescription: {
-    id: 'app.containers.Admin.project.emails.noCampaignsDescription',
+    id: 'app.containers.Admin.project.emails.noCampaignsEmptyDescription',
     defaultMessage:
-      'Custom email campaigns are emails created from scratch. Their content and recipients can be chosen and you can follow up on their results through statistics.',
+      'Easily connect with your participants by sending them emails. Choose who to contact and track your engagement.',
   },
   sentToUsers: {
     id: 'app.containers.Admin.project.emails.sentToUsers',

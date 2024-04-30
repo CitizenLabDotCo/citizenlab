@@ -29,7 +29,9 @@ import Select from 'components/HookForm/Select';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { isAdmin } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
@@ -126,21 +128,6 @@ const CampaignForm = ({
     ];
   };
 
-  // allParticipants: {
-  //   id: 'app.containers.Admin.emails.allParticipants',
-  //   defaultMessage: 'All participants from the project',
-  // },
-  // allParticipantsTooltip: {
-  //   id: 'app.containers.Admin.emails.allParticipantsTooltip',
-  //   defaultMessage:
-  //     'This includes users that performed any action in the project (even follow)',
-  // },
-  // infobox: {
-  //   id: 'app.containers.Admin.emails.infobox',
-  //   defaultMessage:
-  //     'Admins can send emails to more complex groups of participants, related to demographics, events, or across projects.',
-  // },
-
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>
@@ -198,7 +185,20 @@ const CampaignForm = ({
             </Text>
 
             <Warning>
-              <FormattedMessage {...messages.infobox} />
+              {isAdmin(authUser) ? (
+                <FormattedMessage
+                  {...messages.infoboxAdmin}
+                  values={{
+                    link: (
+                      <Link to="/admin/messaging/emails/custom">
+                        <FormattedMessage {...messages.infoboxLink} />
+                      </Link>
+                    ),
+                  }}
+                />
+              ) : (
+                <FormattedMessage {...messages.infoboxModerator} />
+              )}
             </Warning>
           </StyledSectionField>
 
