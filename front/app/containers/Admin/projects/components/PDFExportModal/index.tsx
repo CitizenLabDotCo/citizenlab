@@ -95,13 +95,13 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
                   <FormattedMessage {...messages.notes} />
                 </Title>
                 <Box as="ul" pl="28px">
-                  <Text mb="4px" mt="0px" w="500px" as="li">
+                  <Text as="li" mb="4px" mt="0px" w="500px">
                     <FormattedMessage {...CLICK_EXPORT_MESSAGES[formType]} />
                   </Text>
-                  <Text mb="4px" as="li">
+                  <Text as="li" mb="4px">
                     <FormattedMessage {...IT_IS_POSSIBLE_MESSAGES[formType]} />
                   </Text>
-                  <Text mb="24px" as="li">
+                  <Text as="li" mb="24px">
                     <FormattedMessage {...messages.personalDataExplanation} />
                   </Text>
                   <Box mb="24px" ml="-20px">
