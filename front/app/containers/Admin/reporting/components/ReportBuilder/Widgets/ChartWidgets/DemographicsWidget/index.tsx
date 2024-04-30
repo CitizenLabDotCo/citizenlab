@@ -21,6 +21,7 @@ const DemographicsWidget = ({
   startAt,
   endAt,
   customFieldId,
+  groupId,
 }: Props) => {
   const localize = useLocalize();
 
@@ -29,6 +30,7 @@ const DemographicsWidget = ({
     project_id: projectId,
     start_at: startAt,
     end_at: endAt,
+    group_id: groupId,
   });
 
   if (isLoading) return null;
@@ -62,6 +64,7 @@ DemographicsWidget.craft = {
     startAt: undefined,
     endAt: null,
     customFieldId: undefined,
+    groupId: undefined,
   },
   related: {
     settings: Settings,
