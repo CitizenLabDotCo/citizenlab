@@ -7,7 +7,8 @@ import { useParams } from 'react-router-dom';
 import { UploadFile, SupportedLocale } from 'typings';
 import { object, string, mixed } from 'yup';
 
-import useAddOfflineIdeas from 'api/import_ideas/useAddOfflineIdeas';
+import { IBackgroundJobData } from 'api/background_jobs/types';
+import useAddOfflineIdeasAsync from 'api/import_ideas/useAddOfflineIdeasAsync';
 import usePhase from 'api/phases/usePhase';
 
 import useLocale from 'hooks/useLocale';
@@ -31,11 +32,12 @@ interface FormValues {
 interface Props {
   open: boolean;
   onClose: () => void;
+  onImport: (jobs: IBackgroundJobData[]) => void;
 }
 
-const ImportExcelModal = ({ open, onClose }: Props) => {
+const ImportExcelModal = ({ open, onClose, onImport }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutateAsync: addOfflineIdeas, isLoading } = useAddOfflineIdeas();
+  const { mutateAsync: addOfflineIdeas, isLoading } = useAddOfflineIdeasAsync();
   const locale = useLocale();
   const { phaseId } = useParams();
   const { data: phase } = usePhase(phaseId);
@@ -68,7 +70,7 @@ const ImportExcelModal = ({ open, onClose }: Props) => {
     if (!file || !phaseId) return;
 
     try {
-      await addOfflineIdeas({
+      const response = await addOfflineIdeas({
         phase_id: phaseId,
         file: file.base64,
         format: 'xlsx',
@@ -76,6 +78,7 @@ const ImportExcelModal = ({ open, onClose }: Props) => {
         ...rest,
       });
 
+      onImport(response.data);
       onClose();
       methods.reset();
     } catch (e) {
