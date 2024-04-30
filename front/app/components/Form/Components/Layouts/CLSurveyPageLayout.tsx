@@ -289,15 +289,15 @@ const CLSurveyPageLayout = memo(
             })}
           </Box>
           <PageControlButtons
-            handleNextAndSubmit={handleNextAndSubmit}
-            handlePrevious={handlePrevious}
-            hasPreviousPage={hasPreviousPage}
-            currentStep={currentStep}
-            isLoading={isLoading}
-            showSubmit={showSubmit}
-            dataCyValue={dataCyValue}
-          />
-        </Box>
+        <PageControlButtons
+          handleNextAndSubmit={handleNextAndSubmit}
+          handlePrevious={handlePrevious}
+          hasPreviousPage={hasPreviousPage}
+          currentStep={currentStep}
+          isLoading={isLoading}
+          showSubmit={showSubmit}
+          dataCyValue={dataCyValue}
+        />
       </>
     );
   }
