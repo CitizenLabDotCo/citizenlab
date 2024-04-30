@@ -33,6 +33,11 @@ export default defineMessages({
     defaultMessage:
       "You can combine online and offline responses. To upload offline responses, go to the 'Survey' tab of this project, and click 'Import'.",
   },
+  notIncludedInYourPlan: {
+    id: 'app.containers.Admin.projects.all.notIncludedInYourPlan',
+    defaultMessage:
+      'However, this is not included in your current plan. Reach out to your Government Success Manager or admin to unlock it.',
+  },
   personalDataExplanation: {
     id: 'app.containers.Admin.projects.all.personalDataExplanation1',
     defaultMessage:
