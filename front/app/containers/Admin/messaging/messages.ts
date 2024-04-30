@@ -17,8 +17,8 @@ export default defineMessages({
       'Send out manual emails to certain citizen group and active automated campaigns',
   },
   addCampaignButton: {
-    id: 'app.containers.Admin.emails.addCampaignButton',
-    defaultMessage: 'Create campaign',
+    id: 'app.containers.Admin.emails.addCampaign',
+    defaultMessage: 'Create email',
   },
   addTextButton: {
     id: 'app.containers.Admin.emails.addTextButton',
@@ -170,8 +170,8 @@ export default defineMessages({
       "We're sorry, but it seems like you don't have access to the emails section",
   },
   noCampaignsHeader: {
-    id: 'app.containers.Admin.emails.noCampaignsHeader',
-    defaultMessage: 'No custom email campaigns yet',
+    id: 'app.containers.Admin.emails.emptyCampaignsHeader',
+    defaultMessage: 'Send your first email',
   },
   noTextingCampaignsHeader: {
     id: 'app.containers.Admin.emails.noTextingCampaignsHeader',
@@ -194,9 +194,9 @@ export default defineMessages({
     defaultMessage: 'Status',
   },
   noCampaignsDescription: {
-    id: 'app.containers.Admin.emails.noCampaignsDescription',
+    id: 'app.containers.Admin.emails.emptyCampaignsDescription',
     defaultMessage:
-      'Custom email campaigns are emails created from scratch. Their content and recipients can be chosen and you can follow up on their results through statistics.',
+      'Easily connect with your participants by sending them emails. Choose who to contact and track your engagement.',
   },
   automatedEmailCampaignsInfo: {
     id: 'app.containers.Admin.emails.automatedEmailCampaignsInfo1',

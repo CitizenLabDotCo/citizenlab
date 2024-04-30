@@ -10,8 +10,8 @@ export default defineMessages({
     defaultMessage: 'Send out manual emails to project participants',
   },
   addCampaignButton: {
-    id: 'app.containers.Admin.project.emails.addCampaignButton',
-    defaultMessage: 'Create campaign',
+    id: 'app.containers.Admin.project.emails.addCampaign',
+    defaultMessage: 'Create email',
   },
   deleteButtonLabel: {
     id: 'app.containers.Admin.project.emails.deleteButtonLabel',
@@ -170,7 +170,7 @@ export default defineMessages({
       "We're sorry, but it seems like you don't have access to the emails section",
   },
   noCampaignsHeader: {
-    id: 'app.containers.Admin.project.emails.noCampaignsEmptyHeader',
+    id: 'app.containers.Admin.project.emails.emptyCampaignsHeader',
     defaultMessage: 'Send your first email',
   },
   message: {
@@ -190,7 +190,7 @@ export default defineMessages({
     defaultMessage: 'Status',
   },
   noCampaignsDescription: {
-    id: 'app.containers.Admin.project.emails.noCampaignsEmptyDescription',
+    id: 'app.containers.Admin.project.emails.emptyCampaignsDescription',
     defaultMessage:
       'Easily connect with your participants by sending them emails. Choose who to contact and track your engagement.',
   },
