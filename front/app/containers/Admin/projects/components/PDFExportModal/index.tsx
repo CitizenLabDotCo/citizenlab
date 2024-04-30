@@ -94,7 +94,7 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
                 <Title variant="h3" m="0" mb="24px">
                   <FormattedMessage {...messages.notes} />
                 </Title>
-                <ul style={{ paddingLeft: '28px' }}>
+                <Box as="ul" pl="28px">
                   <Text mb="4px" mt="0px" w="500px" as="li">
                     <FormattedMessage {...CLICK_EXPORT_MESSAGES[formType]} />
                   </Text>
@@ -114,7 +114,7 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
                       }
                     />
                   </Box>
-                </ul>
+                </Box>
               </>
             ) : (
               <Text mb="20px" mt="0px" w="500px">
