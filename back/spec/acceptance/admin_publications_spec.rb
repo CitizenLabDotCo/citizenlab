@@ -26,7 +26,7 @@ resource 'AdminPublication' do
 
     # the name of this variable shouldn't be `folder`
     # because otherwise it will be used by default in `parameter :folder`
-    let!(:custom_folder) { create(:project_folder, projects: [projects[0..2]]) }
+    let!(:custom_folder) { create(:project_folder, projects: projects.take(3)) }
 
     get 'web_api/v1/admin_publications' do
       with_options scope: :page do
