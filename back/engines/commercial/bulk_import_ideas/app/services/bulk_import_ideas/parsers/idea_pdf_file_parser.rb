@@ -133,10 +133,8 @@ module BulkImportIdeas::Parsers
       form_parsed_ideas = google_forms_service.parse_pdf(pdf_file, import_form_data[:page_count])
       text_parsed_ideas = begin
         Pdf::IdeaPlainTextParserService.new(
-          @phase || @project,
           @form_fields,
-          @locale,
-          import_form_data[:page_count]
+          @locale
         ).parse_text(google_forms_service.raw_text_page_array(pdf_file))
       rescue BulkImportIdeas::Error
         []
@@ -153,7 +151,8 @@ module BulkImportIdeas::Parsers
       return form_parsed_idea_rows unless form_parsed_idea_rows.count == text_parsed_idea_rows.count
 
       form_parsed_idea_rows.each_with_index.map do |idea, index|
-        idea[:custom_field_values] = text_parsed_idea_rows[index][:custom_field_values].merge(idea[:custom_field_values])
+        # Prefer custom field values from text parsed ideas if available
+        idea[:custom_field_values] = idea[:custom_field_values].merge(text_parsed_idea_rows[index][:custom_field_values])
         idea[:pdf_pages] = complete_page_range(idea[:pdf_pages], text_parsed_idea_rows[index][:pdf_pages])
         text_parsed_idea_rows[index].merge(idea)
       end

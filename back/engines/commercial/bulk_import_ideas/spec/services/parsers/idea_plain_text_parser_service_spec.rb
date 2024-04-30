@@ -508,6 +508,30 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaPlainTextParserService do
         input_type: 'text',
         enabled: true,
         required: false)
+      create(:custom_field, resource: custom_form,
+        key: 'question_with_description',
+        title_multiloc: { 'en' => 'Tell us about yourself' },
+        description_multiloc: { 'en' => 'Answer this question with "Pizza nutella"' },
+        input_type: 'text',
+        enabled: true,
+        required: false)
+      create(:custom_field, resource: custom_form,
+        key: 'burgers',
+        title_multiloc: {
+          'en' => 'How much do you like burgers',
+          'fr-FR' => 'A quel point aimez-vous les hamburgers'
+        },
+        input_type: 'select',
+        enabled: true,
+        required: false,
+        options: [
+          create(:custom_field_option,
+            key: 'a-lot',
+            title_multiloc: { 'en' => 'A lot', 'fr-FR': 'Beaucoup' }),
+          create(:custom_field_option,
+            key: 'not-at-all',
+            title_multiloc: { 'en' => 'Not at all', 'fr-FR': 'Pas du tout' })
+        ])
     end
 
     it 'handles values matching substrings of description' do
@@ -655,6 +679,79 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaPlainTextParserService do
       }]
 
       expect(docs).to eq result
+    end
+
+    it 'detects field names over multiple lines' do
+      text = parse_pages [
+        "The\n
+        City\n
+        Renew West Parc - Idea phase\n
+        Instructions\n
+        • Write as clearly as you can- these forms might be scanned\n
+        • Write your answers in the same language as this form\n
+        Title\n
+        Another Test\n
+        Description\n
+        Test description\n
+        with words and things\n
+        Location (optional)\n
+        Somewhere\n",
+        "Your favourite name for a swimming \npool (optional)\n
+        Answer this question with \"Pizza nutella\"\n
+        *This answer will only be shared with moderators, and not to the public.\n
+        Pizza nutella\n"
+      ]
+
+      docs = service.parse_text text
+      result = [{
+        form_pages: [],
+        pdf_pages: [1, 2],
+        fields: { 'Title' => 'Another Test',
+                  'Description' => 'Test description with words and things',
+                  'Location' => 'Somewhere',
+                  'Your favourite name for a swimming pool' => 'Pizza nutella' }
+      }]
+      expect(docs).to eq result
+    end
+
+    it 'detects select fields correctly' do
+      text = parse_pages [
+        "The\n
+        City\n
+        Renew West Parc - Idea phase\n
+        Instructions\n
+        • Write as clearly as you can- these forms might be scanned\n
+        • Write your answers in the same language as this form\n
+        Title\n
+        Another Test\n
+        Description\n
+        Test description\n
+        with words and things\n
+        Location (optional)\n
+        Somewhere\n",
+        "How much do you like burgers (optional)\n
+                           *This answer will only be shared with moderators, and not to the public.\n
+                           ○ A lot\n
+                           ☑ Not at all\n"
+      ]
+
+      docs = service.parse_text text
+      result = [{
+        form_pages: [],
+        pdf_pages: [1, 2],
+        fields: { 'Title' => 'Another Test',
+                  'Description' => 'Test description with words and things',
+                  'Location' => 'Somewhere',
+                  'How much do you like burgers' => 'Not at all' }
+      }]
+      expect(docs).to eq result
+    end
+  end
+
+  describe 'test real data' do
+    it 'parses text correctly' do
+      phase = create(:native_survey_phase)
+      create(:custom_form, participation_context: phase)
     end
   end
 end
