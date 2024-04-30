@@ -2,6 +2,7 @@ nl:
   email_campaigns:
     campaign_type_description:
       "manual": Officiële berichten
+      "manual_project_participants": Officiële berichten aan projectdeelnemers
       "admin_rights_received": Platformbeheerdersrechten ontvangen
       "comment_deleted_by_admin": Verwijderen van mijn reactie
       "comment_marked_as_spam": Reactie spammelding
@@ -559,6 +560,7 @@ nl:
         admins: 'Aan platformbeheerders'
         admins_and_managers: 'Aan beheerders'
         managers: 'Aan beheerders'
+        project_participants: 'Aan projectdeelnemers'
         registered_users: 'Aan geregistreerde gebruikers'
       recipient_segment:
         admins: 'Platformbeheerders'
