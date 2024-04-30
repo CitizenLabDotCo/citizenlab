@@ -182,7 +182,7 @@ describe ActivitiesService do
         create(:activity, item: basket.phase, action: 'ended')
         create(:baskets_idea, idea: create(:idea), basket: basket, created_at: updated_at, updated_at: updated_at)
         now = updated_at + 1.day
-        phase = basket.phase.update!(start_at: (now - 4.days), end_at: (now - 2.days))
+        basket.phase.update!(start_at: (now - 4.days), end_at: (now - 2.days))
         expect { service.create_periodic_activities(now: now) }
           .not_to(have_enqueued_job(LogActivityJob))
       end
@@ -215,7 +215,7 @@ describe ActivitiesService do
       it 'does not log an activity when a the survey phase finished' do
         create(:activity, item: idea.creation_phase, action: 'ended')
         now = updated_at + 1.day
-        phase = idea.creation_phase.update!(start_at: (now - 4.days), end_at: (now - 2.days))
+        idea.creation_phase.update!(start_at: (now - 4.days), end_at: (now - 2.days))
         expect { service.create_periodic_activities(now: now) }
           .not_to(have_enqueued_job(LogActivityJob))
       end
