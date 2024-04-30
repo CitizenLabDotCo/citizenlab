@@ -83,10 +83,6 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     : getCurrentPhase(phases?.data);
   const allowAnonymousPosting = phase?.attributes.allow_anonymous_participation;
 
-  const userIsModerator =
-    !isNilOrError(authUser) &&
-    canModerateProject(project.data.id, { data: authUser.data });
-
   const getApiErrorMessage: ApiErrorGetter = useCallback(
     (error) => {
       return (
@@ -163,7 +159,9 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     const requestBody = {
       ...data,
       project_id: project.data.id,
-      ...(userIsModerator ? { phase_ids: [phaseId] } : {}), // Moderators can submit survey responses for inactive phases, in which case the backend cannot infer the correct phase (the current phase).
+      ...(canModerateProject(project.data.id, authUser)
+        ? { phase_ids: [phaseId] }
+        : {}), // Moderators can submit survey responses for inactive phases, in which case the backend cannot infer the correct phase (the current phase).
       publication_status: data.publication_status || 'published',
     };
 
