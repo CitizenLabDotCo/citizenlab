@@ -1907,7 +1907,7 @@
   "app.utils.votingMethodUtils.castYourVote": "Participez au vote",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxVotesPerIdea": "Vous pouvez accorder jusqu'à {maxVotes} votes par option.",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsOnceYouAreDone": "Une fois terminé, cliquez sur « Soumettre » pour voter.",
-  "app.utils.votingMethodUtils.cumulativeVotingInstructionsPreferredOptions": "Choisissez vos options préférées en cliquant sur « Sélectionner ».",
+  "app.utils.votingMethodUtils.cumulativeVotingInstructionsPreferredOptions": "Sélectionnez vos options préférées en cliquant sur \"Voter\".",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalVotes": "Vous disposez de <b>{totalVotes} {voteTerm} à répartir entre {optionCount} options</b>.",
   "app.utils.votingMethodUtils.finalResults": "Résultats finaux",
   "app.utils.votingMethodUtils.finalTally": "Résultat final",
