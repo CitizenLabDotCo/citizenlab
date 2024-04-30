@@ -28,8 +28,7 @@ const Cosponsors = ({ initiativeId }: Props) => {
   const authUserId = authUser?.data.id;
   const authUserIsAuthor =
     typeof authUserId === 'string' ? authUserId === authorId : false;
-  const showPendingInvites =
-    authUserIsAuthor || (authUser && isAdmin({ data: authUser.data }));
+  const showPendingInvites = authUserIsAuthor || isAdmin(authUser);
 
   const show = () => {
     if (showPendingInvites) {

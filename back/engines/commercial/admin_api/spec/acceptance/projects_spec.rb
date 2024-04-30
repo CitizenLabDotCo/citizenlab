@@ -9,6 +9,27 @@ resource 'Project', admin_api: true do
     header 'Authorization', ENV.fetch('ADMIN_API_TOKEN')
   end
 
+  get 'admin_api/projects' do
+    let(:tenant_id) { Tenant.current.id }
+    let!(:project) { create(:project) }
+    example_request 'List all projects' do
+      expect(status).to eq 200
+      expect(json_response_body.size).to eq 1
+      expect(json_response_body.first).to include(
+        id: project.id,
+        title_multiloc: kind_of(Hash),
+        description_multiloc: kind_of(Hash),
+        slug: project.slug,
+        map_config_id: nil,
+        visible_to: 'public'
+      )
+      expect(json_response_body.first[:admin_publication]).to include(
+        publication_status: 'published'
+      )
+      expect(json_response_body.first[:folder]).to be_nil
+    end
+  end
+
   get 'admin_api/projects/:id/template_export' do
     parameter :tenant_id, 'The tenant id from which to export the project', required: true
     with_options scope: :project do
