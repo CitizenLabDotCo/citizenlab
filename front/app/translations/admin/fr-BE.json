@@ -758,7 +758,7 @@
   "app.containers.Admin.project.emails.fieldReplyToEmailError": "Fournissez une adresse e-mail au format correct, par exemple name@provider.com",
   "app.containers.Admin.project.emails.fieldReplyToError": "Fournir une adresse e-mail",
   "app.containers.Admin.project.emails.fieldReplyToTooltip": "Choisissez quelle adresse email recevra directement toutes les réponses des utilisateurs.",
-  "app.containers.Admin.project.emails.fieldSender": "Du ",
+  "app.containers.Admin.project.emails.fieldSender": "De",
   "app.containers.Admin.project.emails.fieldSenderError": "Fournir un expéditeur de l'e-mail",
   "app.containers.Admin.project.emails.fieldSenderTooltip": "Choisissez quels utilisateurs seront vu en tant qu'expéditeur de cette email.",
   "app.containers.Admin.project.emails.fieldSubject": "Sujet",
