@@ -2,6 +2,7 @@ it:
   email_campaigns:
     campaign_type_description:
       "manual": Messaggi ufficiali
+      "manual_project_participants": Messaggi ufficiali ai partecipanti al progetto
       "admin_rights_received": Diritti di amministratore ricevuti
       "comment_deleted_by_admin": Cancellazione del mio commento
       "comment_marked_as_spam": Segnalazione di spam di commenti
@@ -559,6 +560,7 @@ it:
         admins: 'Agli amministratori'
         admins_and_managers: 'Agli amministratori e ai manager'
         managers: 'Ai manager'
+        project_participants: 'Ai partecipanti al progetto'
         registered_users: 'Agli utenti registrati'
       recipient_segment:
         admins: 'Amministratori'
