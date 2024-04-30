@@ -18,10 +18,18 @@ module BulkImportIdeas
         idea_rows += file_parser.parse_rows file
       end
 
+      idea_rows = idea_rows_with_corrected_texts(phase, idea_rows)
       ideas = import_service.import(idea_rows)
       users = import_service.imported_users
 
       SideFxBulkImportService.new.after_success(import_user, phase, 'idea', format, ideas, users)
+    end
+
+    private
+
+    def idea_rows_with_corrected_texts(phase, idea_rows)
+      corrector = BulkImportIdeas::Parsers::Pdf::GPTTextCorrector.new(phase, idea_rows)
+      corrector.correct
     end
   end
 end

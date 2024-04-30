@@ -48,8 +48,7 @@ module BulkImportIdeas::Parsers
         []
       end
 
-      idea_rows = merge_pdf_rows(form_parsed_ideas, text_parsed_ideas, file)
-      idea_rows_with_corrected_texts(idea_rows)
+      merge_pdf_rows(form_parsed_ideas, text_parsed_ideas, file)
     end
 
     private
@@ -213,11 +212,6 @@ module BulkImportIdeas::Parsers
     # Return the fields and page count from the form we're importing from
     def import_form_data
       @import_form_data ||= BulkImportIdeas::Exporters::IdeaPdfFormExporter.new(@phase, @locale, @personal_data_enabled).importer_data
-    end
-
-    def idea_rows_with_corrected_texts(idea_rows)
-      corrector = BulkImportIdeas::Parsers::Pdf::GPTTextCorrector.new(@phase, idea_rows)
-      corrector.correct
     end
   end
 end
