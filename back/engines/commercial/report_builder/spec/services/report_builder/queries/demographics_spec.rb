@@ -39,7 +39,7 @@ RSpec.describe ReportBuilder::Queries::Demographics do
       end
 
       it 'returns multilocs' do
-        result = query.run_query(@custom_field.id)
+        result = query.run_query(custom_field_id: @custom_field.id)
 
         multilocs = @custom_field.options.to_h do |o|
           [o.key, o.attributes.slice('title_multiloc', 'ordering')]
@@ -49,7 +49,7 @@ RSpec.describe ReportBuilder::Queries::Demographics do
       end
 
       it 'works' do
-        result = query.run_query(@custom_field.id)
+        result = query.run_query(custom_field_id: @custom_field.id)
 
         expect(result[:series]).to match({
           @option1.key => 3,
@@ -60,7 +60,7 @@ RSpec.describe ReportBuilder::Queries::Demographics do
       end
 
       it 'works with date filter' do
-        result = query.run_query(@custom_field.id, start_at: start_at, end_at: end_at)
+        result = query.run_query(custom_field_id: @custom_field.id, start_at: start_at, end_at: end_at)
 
         expect(result[:series]).to match({
           @option1.key => 1,
@@ -71,7 +71,7 @@ RSpec.describe ReportBuilder::Queries::Demographics do
       end
 
       it 'works with project filter' do
-        result = query.run_query(@custom_field.id, project_id: @project.id)
+        result = query.run_query(custom_field_id: @custom_field.id, project_id: @project.id)
 
         expect(result[:series]).to match({
           @option1.key => 1,
@@ -82,7 +82,7 @@ RSpec.describe ReportBuilder::Queries::Demographics do
       end
 
       it 'works with group filter' do
-        result = query.run_query(@custom_field.id, group_id: @group.id)
+        result = query.run_query(custom_field_id: @custom_field.id, group_id: @group.id)
 
         expect(result[:series]).to match({
           @option1.key => 3,
@@ -108,7 +108,7 @@ RSpec.describe ReportBuilder::Queries::Demographics do
       end
 
       it 'works' do
-        result = query.run_query(@birthyear_field.id)
+        result = query.run_query(custom_field_id: @birthyear_field.id)
         expect(result[:series]).to eq({ '_blank' => 0, 1977 => 1 })
       end
     end
