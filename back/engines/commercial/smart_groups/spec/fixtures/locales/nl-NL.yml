@@ -67,6 +67,8 @@ nl:
       voted_comment_in: "Stemde op een reactie op een idee met één van de volgende statussen %{value}"
       not_voted_comment_in: "Stemde niet op een reactie op een idee met status %{value}"
     participated_in_project:
+      follows_something: "Volgt iets in een van de volgende projecten %{value}"
+      not_follows_something: "Volgt niets in het project %{value}"
       in: "Participatie in een idee in een van de volgende projecten %{value}"
       not_in: "Geen participatie in een idee in het project %{value}"
       posted_in: "Plaatste een idee in een van de volgende projecten %{value}"
@@ -79,6 +81,8 @@ nl:
       not_voted_comment_in: "Stemde niet op een reactie op een idee in het project %{value}"
       budgeted_in: "Wees een budget toe in een van de volgende projecten %{value}"
       not_budgeted_in: "Wees geen budget toe in het project %{value}"
+      registered_to_an_event: "Geregistreerd voor een evenement in een van de volgende projecten %{value}"
+      not_registered_to_an_event: "Niet geregistreerd voor een evenement in het project %{value}"
     participated_in_topic:
       in: "Participatie in een idee met één van de volgende thema %{value}"
       not_in: "Geen participatie in een idee met thema %{value}"

@@ -149,7 +149,7 @@ const Author = memo(
                 className={horizontalLayout ? 'horizontalLayout' : ''}
               >
                 <ScreenReaderOnly>
-                  <FormattedMessage {...messages.a11y_postedBy} />:
+                  <FormattedMessage {...messages.a11yPostedBy} />:
                 </ScreenReaderOnly>
                 <UserName
                   userId={authorId}

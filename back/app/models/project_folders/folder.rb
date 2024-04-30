@@ -23,6 +23,8 @@ module ProjectFolders
     self.table_name = 'project_folders_folders'
     include PgSearch::Model
 
+    slug from: proc { |project| project.title_multiloc.values.find(&:present?) }
+
     has_one :admin_publication, as: :publication, dependent: :destroy
     accepts_nested_attributes_for :admin_publication, update_only: true
     has_many :images, -> { order(:ordering) }, dependent: :destroy, inverse_of: 'project_folder', foreign_key: 'project_folder_id' # TODO: remove after renaming project_folder association in Image model
@@ -36,10 +38,8 @@ module ProjectFolders
     validates :title_multiloc, presence: true, multiloc: { presence: true }
     validates :description_multiloc, multiloc: { presence: false, html: true }
     validates :description_preview_multiloc, multiloc: { presence: false, html: true }
-    validates :slug, uniqueness: true, presence: true
     validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template }
 
-    before_validation :generate_slug, on: :create
     before_validation :sanitize_description_multiloc, if: :description_multiloc
     before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
     before_validation :strip_title
@@ -71,10 +71,6 @@ module ProjectFolders
       return unless id.present? && admin_publication&.id.blank?
 
       errors.add(:admin_publication_id, :blank, message: "Admin publication can't be blank")
-    end
-
-    def generate_slug
-      self.slug ||= SlugService.new.generate_slug self, title_multiloc.values.first
     end
 
     def sanitize_description_multiloc

@@ -19,7 +19,6 @@ import T from 'components/T';
 import Image from 'components/UI/Image';
 
 import { useIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
 import { getEventDateString } from 'utils/dateUtils';
 
 import DateBlocks from '../DateBlocks';
@@ -42,9 +41,10 @@ const EventCardImage = styled(Image)`
 interface Props {
   event: IEventData;
   titleFontSize?: number;
+  goToEvent: () => void;
 }
 
-const EventInformation = ({ event, titleFontSize }: Props) => {
+const EventInformation = ({ event, goToEvent, titleFontSize }: Props) => {
   const { formatMessage } = useIntl();
   const theme = useTheme();
 
@@ -105,7 +105,8 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
                 my="auto"
                 fill={theme.colors.tenantPrimary}
                 name="clock"
-                ariaHidden
+                title={formatMessage(messages.eventDateTimeIcon)}
+                ariaHidden={false}
                 mr={theme.isRtl ? '0px' : '8px'}
                 ml={theme.isRtl ? '8px' : '0px'}
               />
@@ -125,7 +126,8 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
                   my="auto"
                   fill={theme.colors.tenantPrimary}
                   name="position"
-                  ariaHidden
+                  title={formatMessage(messages.locationIconAltText)}
+                  ariaHidden={false}
                   mr={theme.isRtl ? '0px' : '8px'}
                   ml={theme.isRtl ? '8px' : '0px'}
                 />
@@ -143,7 +145,8 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
                 my="auto"
                 fill={theme.colors.tenantPrimary}
                 name="link"
-                ariaHidden
+                title={formatMessage(messages.onlineLinkIconAltText)}
+                ariaHidden={false}
                 mr="8px"
               />
               <Text
@@ -174,7 +177,8 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
                   my="auto"
                   fill={theme.colors.tenantPrimary}
                   name="user"
-                  ariaHidden
+                  title={formatMessage(messages.attendeesIconAltText)}
+                  ariaHidden={false}
                   mr={theme.isRtl ? '0px' : '8px'}
                   ml={theme.isRtl ? '8px' : '0px'}
                 />
@@ -194,9 +198,7 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
           ml="auto"
           width={'100%'}
           bgColor={theme.colors.tenantPrimary}
-          onClick={() => {
-            clHistory.push(`/events/${event.id}`, { scrollToTop: true });
-          }}
+          onClick={goToEvent}
         >
           {formatMessage(messages.readMore)}
         </Button>

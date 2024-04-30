@@ -7,10 +7,8 @@ class WebApi::V1::ProjectsController < ApplicationController
   skip_after_action :verify_policy_scoped, only: :index
 
   def index
-    params['moderator'] = current_user if params[:filter_can_moderate]
-
     publications = policy_scope(AdminPublication)
-    publications = AdminPublicationsFilteringService.new.filter(publications, params)
+    publications = AdminPublicationsFilteringService.new.filter(publications, params.merge(current_user: current_user))
       .where(publication_type: Project.name)
 
     # Not very satisfied with this ping-pong of SQL queries (knowing that the
