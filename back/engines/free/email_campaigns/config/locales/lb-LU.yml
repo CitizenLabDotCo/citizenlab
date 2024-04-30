@@ -2,6 +2,7 @@ lb:
   email_campaigns:
     campaign_type_description:
       "manual": Offiziell Noriichten
+      "manual_project_participants": Offiziell Messagen un de Projet Participanten
       "admin_rights_received": Administratorrechter kritt
       "comment_deleted_by_admin": Mäi Kommentar läschen
       "comment_marked_as_spam": Kommentéiert de Bericht vum Spam
@@ -559,6 +560,7 @@ lb:
         admins: 'An den Admins'
         admins_and_managers: 'Fir Administrateuren & Manager'
         managers: 'Zu Manager'
+        project_participants: 'Zu Projet Participanten'
         registered_users: 'Fir registréiert Benotzer'
       recipient_segment:
         admins: 'Administrateuren'
