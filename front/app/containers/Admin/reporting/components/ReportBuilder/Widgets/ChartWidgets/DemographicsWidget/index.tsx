@@ -44,7 +44,7 @@ const DemographicsWidget = ({
   }
 
   return (
-    <Card pagebreak>
+    <Card pagebreak className="e2e-demographics-widget">
       <Box width="100%" pb="0px" display="flex">
         <Box w="300px" display="flex" flexDirection="column">
           <Text mt="1px" fontWeight="bold" fontSize="m" pr="16px">

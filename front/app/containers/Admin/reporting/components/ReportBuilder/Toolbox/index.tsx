@@ -94,7 +94,12 @@ const ReportBuilderToolbox = ({
   const { data: phases } = usePhases(projectId);
   const { data: userFields } = useUserCustomFields({ inputTypes: ['select'] });
 
-  if (!appConfigurationLocales || !authUser || (userIsModerator && !projects)) {
+  if (
+    !appConfigurationLocales ||
+    !authUser ||
+    (userIsModerator && !projects) ||
+    !userFields
+  ) {
     return (
       <Container>
         <Box
@@ -283,7 +288,7 @@ const ReportBuilderToolbox = ({
               label={formatMessage(WIDGET_TITLES.VisitorsTrafficSourcesWidget)}
             />
             <DraggableElement
-              id="e2e-draggable-users-widget"
+              id="e2e-draggable-demographics-widget"
               component={
                 <DemographicsWidget
                   title={genderFieldTitle}
