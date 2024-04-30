@@ -257,60 +257,13 @@ const CLSurveyPageLayout = memo(
           loggedIn={!isNilOrError(authUser)}
           percentageAnswered={percentageAnswered}
         />
-        <Box maxWidth="700px" display="flex" flexDirection="column">
-          {allowAnonymousPosting && (
-            <Box w="100%" px={isSmallerThanPhone ? '16px' : '24px'} mt="16px">
-              <Warning icon="shield-checkered">
-                {formatMessage(messages.anonymousSurveyMessage)}
-              </Warning>
-            </Box>
-          )}
-          <Box w="100%" ref={pagesRef}>
-            {uiPages.map((page, index) => {
-              const pageElements = extractElementsByOtherOptionLogic(
-                page,
-                data
-              );
-              return (
-                currentStep === index && (
-                  <StyledFormSection key={index}>
-                    <Box
-                      display="flex"
-                      justifyContent="center"
-                      h={hasScrollBars ? 'fit-content' : '100%'}
-                      flexDirection="column"
-                    >
-                      {page.options.title && (
-                        <Title
-                          variant="h2"
-                          mt="0"
-                          mb="24px"
-                          color="tenantPrimary"
-                        >
-                          {page.options.title}
-                        </Title>
-                      )}
-                      {page.options.description && (
-                        <Box mb={pageElements.length >= 1 ? '48px' : '28px'}>
-                          <QuillEditedContent
-                            fontWeight={400}
-                            textColor={theme.colors.tenantText}
-                          >
-                            <div
-                              dangerouslySetInnerHTML={{
-                                __html: page.options.description,
-                              }}
-                            />
-                          </QuillEditedContent>
-                        </Box>
-                      )}
-                      {pageElements.map((elementUiSchema, index) => {
-                        const key = elementUiSchema.scope.split('/').pop();
-                        const hasOtherFieldBelow =
-                          key &&
-                          (Array.isArray(data[key])
-                            ? data[key].includes('other')
-                            : data[key] === 'other');
+        {allowAnonymousPosting && (
+          <Box w="100%" px={isSmallerThanPhone ? '16px' : '24px'} mt="16px">
+            <Warning icon="shield-checkered">
+              {formatMessage(messages.anonymousSurveyMessage)}
+            </Warning>
+          </Box>
+        )}
 
                         return (
                           <Box
