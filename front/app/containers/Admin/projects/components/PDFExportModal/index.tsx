@@ -89,31 +89,37 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
         <form onSubmit={methods.handleSubmit(handleExport)}>
           <Feedback onlyShowErrors />
           <Box p="24px" w="100%">
-            <Title variant="h3" m="0" mb="24px">
-              <FormattedMessage {...messages.notes} />
-            </Title>
-            <Text mb="4px" mt="0px" w="500px" as="li">
-              <FormattedMessage {...CLICK_EXPORT_MESSAGES[formType]} />
-            </Text>
-            {importPrintedFormsEnabled && (
+            {importPrintedFormsEnabled ? (
               <>
-                <Text mb="4px" as="li">
-                  <FormattedMessage {...IT_IS_POSSIBLE_MESSAGES[formType]} />
-                </Text>
-                <Text mb="24px" as="li">
-                  <FormattedMessage {...messages.personalDataExplanation} />
-                </Text>
-                <Box mb="24px">
-                  <Checkbox
-                    name="personal_data"
-                    label={
-                      <Text m="0">
-                        <FormattedMessage {...messages.askPersonalData} />
-                      </Text>
-                    }
-                  />
-                </Box>
+                <Title variant="h3" m="0" mb="24px">
+                  <FormattedMessage {...messages.notes} />
+                </Title>
+                <ul style={{ paddingLeft: '28px' }}>
+                  <Text mb="4px" mt="0px" w="500px" as="li">
+                    <FormattedMessage {...CLICK_EXPORT_MESSAGES[formType]} />
+                  </Text>
+                  <Text mb="4px" as="li">
+                    <FormattedMessage {...IT_IS_POSSIBLE_MESSAGES[formType]} />
+                  </Text>
+                  <Text mb="24px" as="li">
+                    <FormattedMessage {...messages.personalDataExplanation} />
+                  </Text>
+                  <Box mb="24px" ml="-20px">
+                    <Checkbox
+                      name="personal_data"
+                      label={
+                        <Text m="0">
+                          <FormattedMessage {...messages.askPersonalData} />
+                        </Text>
+                      }
+                    />
+                  </Box>
+                </ul>
               </>
+            ) : (
+              <Text mb="20px" mt="0px" w="500px">
+                <FormattedMessage {...CLICK_EXPORT_MESSAGES[formType]} />
+              </Text>
             )}
             <Box w="100%" display="flex">
               <Button width="auto" type="submit" processing={loading}>
