@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'app.components.Admin.Campaigns.deliveryStatus_clicked',
     defaultMessage: 'Clicked',
   },
+  deliveryStatus_bounced: {
+    id: 'app.components.Admin.Campaigns.deliveryStatus_bounced',
+    defaultMessage: 'Bounced',
+  },
   deliveryStatus_clickedTooltip: {
     id: 'app.components.Admin.Campaigns.deliveryStatus_clickedTooltip',
     defaultMessage:
@@ -41,5 +45,21 @@ export default defineMessages({
   deleteCampaignButton: {
     id: 'app.components.Admin.Campaigns.deleteCampaignButton',
     defaultMessage: 'Delete campaign',
+  },
+  sent: {
+    id: 'app.components.Admin.Campaigns.sent',
+    defaultMessage: 'Sent',
+  },
+  statsButton: {
+    id: 'app.components.Admin.Campaigns.statsButton',
+    defaultMessage: 'Statistics',
+  },
+  draft: {
+    id: 'app.components.Admin.Campaigns.draft',
+    defaultMessage: 'Draft',
+  },
+  manageButtonLabel: {
+    id: 'app.components.Admin.Campaigns.manageButtonLabel',
+    defaultMessage: 'Manage',
   },
 });

@@ -3,6 +3,7 @@ import React from 'react';
 import { Box, StatusLabel, colors } from '@citizenlab/cl2-component-library';
 import { FormattedDate, FormattedTime } from 'react-intl';
 import { useParams } from 'react-router-dom';
+import { RouteType } from 'routes';
 
 import { ICampaignData } from 'api/campaigns/types';
 
@@ -12,7 +13,7 @@ import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import messages from '../messages';
+import messages from './messages';
 
 interface Props {
   campaign: ICampaignData;
@@ -20,6 +21,10 @@ interface Props {
 
 const SentCampaignRow = ({ campaign }: Props) => {
   const { projectId } = useParams();
+  const statsLink: RouteType = projectId
+    ? `/admin/projects/${projectId}/messaging/${campaign.id}`
+    : `/admin/messaging/emails/custom/${campaign.id}`;
+
   return (
     <Row id={campaign.id}>
       <TextCell className="expand">
@@ -36,11 +41,7 @@ const SentCampaignRow = ({ campaign }: Props) => {
         text={<FormattedMessage {...messages.sent} />}
       />
       <Box minWidth="220px" display="flex" justifyContent="flex-end">
-        <Button
-          linkTo={`/admin/projects/${projectId}/messaging/${campaign.id}`}
-          icon="chart-bar"
-          buttonStyle="text"
-        >
+        <Button linkTo={statsLink} icon="chart-bar" buttonStyle="text">
           <FormattedMessage {...messages.statsButton} />
         </Button>
       </Box>

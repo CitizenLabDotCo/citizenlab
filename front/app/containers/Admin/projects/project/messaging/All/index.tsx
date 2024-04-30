@@ -14,6 +14,8 @@ import styled from 'styled-components';
 import useProjectCampaigns from 'api/campaigns/useProjectCampaigns';
 import { isDraft } from 'api/campaigns/util';
 
+import DraftCampaignRow from 'components/admin/Email/DraftCampaignRow';
+import SentCampaignRow from 'components/admin/Email/SentCampaignRow';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import Pagination from 'components/admin/Pagination';
 import { List } from 'components/admin/ResourceList';
@@ -23,9 +25,7 @@ import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import messages from '../messages';
 
-import DraftCampaignRow from './DraftCampaignRow';
 import NewCampaignButton from './NewCampaignButton';
-import SentCampaignRow from './SentCampaignRow';
 
 const NoCampaignsWrapper = styled.div`
   display: flex;

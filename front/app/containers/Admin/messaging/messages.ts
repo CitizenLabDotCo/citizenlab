@@ -28,17 +28,9 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.deleteButtonLabel',
     defaultMessage: 'Delete',
   },
-  statsButton: {
-    id: 'app.containers.Admin.emails.statsButton',
-    defaultMessage: 'Statistics',
-  },
   editButtonLabel: {
     id: 'app.containers.Admin.emails.editButtonLabel',
     defaultMessage: 'Edit',
-  },
-  manageButtonLabel: {
-    id: 'app.containers.Admin.emails.manageButtonLabel',
-    defaultMessage: 'Manage & Edit & Preview & Delete',
   },
   fieldSender: {
     id: 'app.containers.Admin.emails.fieldSender',
