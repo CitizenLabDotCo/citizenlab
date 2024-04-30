@@ -7,21 +7,13 @@ import { useDemographics } from 'api/graph_data_units';
 import useLocalize from 'hooks/useLocalize';
 
 import Card from '../../_shared/Card';
+import NoData from '../../_shared/NoData';
+import chartWidgetMessages from '../messages';
 
 import messages from './messages';
 import Settings from './Settings';
 import Chart from './StackedBarChart';
 import { Props } from './typings';
-
-// const FAKE_DATA: Data = [
-//   {
-//     northeast_quarter: 25,
-//     northwest_quarter: 17,
-//     city_center: 32,
-//     southeast_quarter: 24,
-//     other: 2,
-//   },
-// ];
 
 const DemographicsWidget = ({
   title,
@@ -32,15 +24,21 @@ const DemographicsWidget = ({
 }: Props) => {
   const localize = useLocalize();
 
-  const { data: demographicsResponse } = useDemographics({
+  const { data: demographicsResponse, isLoading } = useDemographics({
     custom_field_id: customFieldId,
     project_id: projectId,
     start_at: startAt,
     end_at: endAt,
   });
 
+  if (isLoading) return null;
+
   if (!demographicsResponse) {
-    return null; // TODO empty state
+    return (
+      <Box>
+        <NoData message={chartWidgetMessages.noData} />
+      </Box>
+    );
   }
 
   return (

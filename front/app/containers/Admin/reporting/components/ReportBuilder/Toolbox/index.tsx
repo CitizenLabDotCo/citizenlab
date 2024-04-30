@@ -14,6 +14,7 @@ import { SupportedLocale } from 'typings';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
 import useProjects from 'api/projects/useProjects';
+import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
@@ -91,6 +92,7 @@ const ReportBuilderToolbox = ({
   );
 
   const { data: phases } = usePhases(projectId);
+  const { data: userFields } = useUserCustomFields({ inputTypes: ['select'] });
 
   if (!appConfigurationLocales || !authUser || (userIsModerator && !projects)) {
     return (
@@ -125,6 +127,13 @@ const ReportBuilderToolbox = ({
 
   const surveyPhaseId = phases ? findSurveyPhaseId(phases) : undefined;
   const ideationPhaseId = phases ? findIdeationPhaseId(phases) : undefined;
+
+  const genderField = userFields?.data.find(
+    (field) => field.attributes.code === 'gender'
+  );
+
+  const genderFieldId = genderField?.id;
+  const genderFieldTitle = genderField?.attributes.title_multiloc;
 
   return (
     <Transition in={selectedTab === 'ai'} timeout={1000}>
@@ -277,9 +286,11 @@ const ReportBuilderToolbox = ({
               id="e2e-draggable-users-widget"
               component={
                 <DemographicsWidget
+                  title={genderFieldTitle}
                   projectId={selectedProjectId}
                   startAt={undefined}
                   endAt={chartEndDate}
+                  customFieldId={genderFieldId}
                 />
               }
               icon="chart-bar"

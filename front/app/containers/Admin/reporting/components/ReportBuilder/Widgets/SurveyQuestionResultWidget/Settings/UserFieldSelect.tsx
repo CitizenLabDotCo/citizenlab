@@ -1,5 +1,7 @@
 import React from 'react';
 
+import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
+
 import { useIntl } from 'utils/cl-intl';
 
 import { SLICE_REGISTRATION_FIELD_INPUT_TYPES } from '../../../constants';
@@ -15,10 +17,14 @@ interface Props {
 const UserFieldSelect = ({ userFieldId, onChange }: Props) => {
   const { formatMessage } = useIntl();
 
+  const { data: userFields } = useUserCustomFields({
+    inputTypes: SLICE_REGISTRATION_FIELD_INPUT_TYPES,
+  });
+
   return (
     <BaseUserFieldSelect
       userFieldId={userFieldId}
-      inputTypes={SLICE_REGISTRATION_FIELD_INPUT_TYPES}
+      userFields={userFields?.data}
       label={formatMessage(messages.groupByRegistrationField)}
       onChange={onChange}
     />
