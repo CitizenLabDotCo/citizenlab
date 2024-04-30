@@ -29,7 +29,7 @@ module MultiTenancy
       private
 
       def serialize_models
-        email_campaigns = EmailCampaigns::Campaign.where(type: 'EmailCampaigns::Campaigns::Manual')
+        email_campaigns = EmailCampaigns::Campaign.manual
         groups = Group.where(membership_type: 'manual')
         ideas = Idea.published
         initiatives = Initiative.published

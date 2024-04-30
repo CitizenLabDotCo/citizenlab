@@ -29,50 +29,44 @@
 #  fk_rails_...  (author_id => users.id)
 #
 module EmailCampaigns
-  class Campaigns::Welcome < Campaign
-    include ActivityTriggerable
+  class Campaigns::BaseManual < Campaign
+    include Consentable
+    include ContentConfigurable
+    include SenderConfigurable
     include RecipientConfigurable
-    include Disableable
     include Trackable
     include LifecycleStageRestrictable
-    allow_lifecycle_stages except: ['churned']
 
-    recipient_filter :filter_recipient
+    # Without this, the campaign would be sent on every event and every schedule trigger
+    before_send :only_manual_send
 
     def mailer_class
-      WelcomeMailer
-    end
-
-    def activity_triggers
-      { 'User' => { 'completed_registration' => true } }
-    end
-
-    def filter_recipient(users_scope, activity:, time: nil)
-      users_scope.where(id: activity.item.id)
-    end
-
-    def generate_commands(_options = {})
-      # All required information is acquired from the
-      # identified user so no payload is required.
-      [{
-        event_payload: {}
-      }]
-    end
-
-    def self.recipient_role_multiloc_key
-      'email_campaigns.admin_labels.recipient_role.registered_users'
-    end
-
-    def self.recipient_segment_multiloc_key
-      'email_campaigns.admin_labels.recipient_segment.user_who_registers'
+      ManualCampaignMailer
     end
 
     def self.content_type_multiloc_key
       'email_campaigns.admin_labels.content_type.general'
     end
 
-    def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.user_registers_for_the_first_time'
+    def generate_commands(recipient:, time: nil, activity: nil)
+      [{
+        author: author,
+        event_payload: {},
+        subject_multiloc: subject_multiloc,
+        body_multiloc: TextImageService.new.render_data_images_multiloc(body_multiloc, field: :body_multiloc, imageable: self),
+        sender: sender,
+        reply_to: reply_to
+      }]
+    end
+
+    def manual?
+      true
+    end
+
+    private
+
+    def only_manual_send(activity: nil, time: nil)
+      !activity && !time
     end
   end
 end

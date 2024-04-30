@@ -29,19 +29,31 @@
 #  fk_rails_...  (author_id => users.id)
 #
 module EmailCampaigns
-  class Campaigns::Manual < Campaigns::BaseManual
+  class Campaigns::ManualProjectParticipants < Campaigns::BaseManual
     allow_lifecycle_stages except: %w[trial churned]
 
-    recipient_filter :user_filter_no_invitees
+    belongs_to :project, optional: false, foreign_key: :context_id, class_name: 'Project'
+
+    validates :context_id, presence: true
+
+    recipient_filter :project_participants
 
     def self.recipient_role_multiloc_key
-      'email_campaigns.admin_labels.recipient_role.registered_users'
+      'email_campaigns.admin_labels.recipient_role.project_participants'
+    end
+
+    def manageable_by_project_moderator?
+      true
     end
 
     private
 
-    def user_filter_no_invitees(users_scope, _options = {})
-      users_scope.active
+    def skip_context_absence?
+      true
+    end
+
+    def project_participants(users_scope, _options = {})
+      users_scope.where(id: ParticipantsService.new.project_participants(project))
     end
   end
 end
