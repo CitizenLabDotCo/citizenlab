@@ -7,7 +7,7 @@ import TooltipOutline from 'components/admin/Graphs/_components/TooltipOutline';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import messages from './messages';
+import messages from '../messages';
 
 export const tooltip =
   (

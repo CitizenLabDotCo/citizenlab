@@ -13,9 +13,9 @@ import {
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
-import { tooltip } from '../tooltip';
 
 import { parseResponse } from './parse';
+import { tooltip } from './tooltip';
 
 interface Props {
   response: DemographicsResponse;
