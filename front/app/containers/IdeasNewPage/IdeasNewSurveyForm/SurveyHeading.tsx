@@ -63,16 +63,8 @@ const SurveyHeading = ({
   };
 
   return (
-    <Box display="flex" justifyContent="center" w="100%" borderRadius="2px">
-      <Box
-        width="100%"
-        bgColor={colors.white}
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        maxWidth="700px"
-      >
+    <>
+      <Box bgColor={colors.white} display="flex" flexDirection="column">
         <Box w="100%" background={colors.background}>
           <Box
             w={`${percentageAnswered}%`}
@@ -84,14 +76,12 @@ const SurveyHeading = ({
         <Box
           display="flex"
           width="100%"
-          flexDirection="row"
           justifyContent={showEditSurveyButton ? 'flex-end' : 'space-between'}
           alignItems="center"
           maxWidth="700px"
         >
           <Box
             display="flex"
-            flexDirection="row"
             width="100%"
             alignItems="center"
             justifyContent="space-between"

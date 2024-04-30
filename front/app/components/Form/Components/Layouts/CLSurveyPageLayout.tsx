@@ -1,11 +1,6 @@
 import React, { memo, useState, useEffect, useContext, useRef } from 'react';
 
-import {
-  Box,
-  Title,
-  useBreakpoint,
-  media,
-} from '@citizenlab/cl2-component-library';
+import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { LayoutProps, RankedTester, rankWith } from '@jsonforms/core';
 import {
   JsonFormsDispatch,
@@ -13,7 +8,7 @@ import {
   useJsonForms,
 } from '@jsonforms/react';
 import { useSearchParams, useParams } from 'react-router-dom';
-import styled, { useTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
@@ -34,7 +29,6 @@ import {
   getFormCompletionPercentage,
 } from 'components/Form/Components/Layouts/utils';
 import { FormContext } from 'components/Form/contexts';
-import { FormSection } from 'components/UI/FormComponents';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';
 
@@ -49,17 +43,6 @@ import {
 
 import messages from './messages';
 import PageControlButtons from './PageControlButtons';
-
-const StyledFormSection = styled(FormSection)`
-  max-width: 100%;
-  width: 100%;
-  padding: 24px;
-  flex-direction: column;
-  ${media.phone`
-    padding: 16px;
-  `}
-  box-shadow: none;
-`;
 
 // Handling survey pages in here. The more things that we have added to it,
 // the more it has become a survey page layout. It also becomes extremely hard to understand
@@ -248,22 +231,74 @@ const CLSurveyPageLayout = memo(
 
     return (
       <>
-        <SurveyHeading
-          project={project.data}
-          titleText={localize(
-            phase?.data.attributes.native_survey_title_multiloc
+        <Box
+          display="flex"
+          flexDirection="column"
+          maxWidth="700px"
+          height="100%"
+        >
+          <SurveyHeading
+            project={project.data}
+            titleText={localize(
+              phase?.data.attributes.native_survey_title_multiloc
+            )}
+            canUserEditProject={userIsModerator}
+            loggedIn={!isNilOrError(authUser)}
+            percentageAnswered={percentageAnswered}
+          />
+          {allowAnonymousPosting && (
+            <Box w="100%" px={isSmallerThanPhone ? '16px' : '24px'} mt="16px">
+              <Warning icon="shield-checkered">
+                {formatMessage(messages.anonymousSurveyMessage)}
+              </Warning>
+            </Box>
           )}
-          canUserEditProject={userIsModerator}
-          loggedIn={!isNilOrError(authUser)}
-          percentageAnswered={percentageAnswered}
-        />
-        {allowAnonymousPosting && (
-          <Box w="100%" px={isSmallerThanPhone ? '16px' : '24px'} mt="16px">
-            <Warning icon="shield-checkered">
-              {formatMessage(messages.anonymousSurveyMessage)}
-            </Warning>
-          </Box>
-        )}
+          <Box w="100%" h="100%" display="flex" ref={pagesRef}>
+            {uiPages.map((page, index) => {
+              const pageElements = extractElementsByOtherOptionLogic(
+                page,
+                data
+              );
+              return (
+                currentStep === index && (
+                  <Box key={index} p="24px" w="100%">
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      h={hasScrollBars ? 'fit-content' : '100%'}
+                      flexDirection="column"
+                    >
+                      {page.options.title && (
+                        <Title
+                          variant="h2"
+                          mt="0"
+                          mb="24px"
+                          color="tenantPrimary"
+                        >
+                          {page.options.title}
+                        </Title>
+                      )}
+                      {page.options.description && (
+                        <Box mb={pageElements.length >= 1 ? '48px' : '28px'}>
+                          <QuillEditedContent
+                            fontWeight={400}
+                            textColor={theme.colors.tenantText}
+                          >
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: page.options.description,
+                              }}
+                            />
+                          </QuillEditedContent>
+                        </Box>
+                      )}
+                      {pageElements.map((elementUiSchema, index) => {
+                        const key = elementUiSchema.scope.split('/').pop();
+                        const hasOtherFieldBelow =
+                          key &&
+                          (Array.isArray(data[key])
+                            ? data[key].includes('other')
+                            : data[key] === 'other');
 
                         return (
                           <Box
@@ -283,12 +318,12 @@ const CLSurveyPageLayout = memo(
                         );
                       })}
                     </Box>
-                  </StyledFormSection>
+                  </Box>
                 )
               );
             })}
           </Box>
-          <PageControlButtons
+        </Box>
         <PageControlButtons
           handleNextAndSubmit={handleNextAndSubmit}
           handlePrevious={handlePrevious}
