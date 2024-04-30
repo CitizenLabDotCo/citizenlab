@@ -2,7 +2,7 @@ import { IUser } from 'api/users/types';
 
 import { isNilOrError } from 'utils/helperUtils';
 
-interface IProjectModeratorRole {
+export interface IProjectModeratorRole {
   type: 'project_moderator';
   project_id: string;
 }

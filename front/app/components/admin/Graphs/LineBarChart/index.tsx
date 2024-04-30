@@ -120,6 +120,7 @@ const LineBarChart = <Row,>({
           legendDimensions,
           DEFAULT_LEGEND_OFFSET
         )}
+        accessibilityLayer
       >
         <CartesianGrid stroke={legacyColors.cartesianGrid} strokeWidth={0.5} />
         <XAxis
