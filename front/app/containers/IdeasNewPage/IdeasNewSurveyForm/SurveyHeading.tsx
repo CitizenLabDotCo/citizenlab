@@ -7,6 +7,7 @@ import {
   useBreakpoint,
   IconButton,
   colors,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import { RouteType } from 'routes';
@@ -76,53 +77,47 @@ const SurveyHeading = ({
         <Box
           display="flex"
           width="100%"
-          justifyContent={showEditSurveyButton ? 'flex-end' : 'space-between'}
+          justifyContent={'space-between'}
           alignItems="center"
           maxWidth="700px"
+          minHeight={`${stylingConsts.menuHeight}px`}
+          p={isSmallerThanPhone ? '14px 16px' : '14px 24px'}
+          borderBottom={`1px solid ${colors.divider}`}
         >
-          <Box
-            display="flex"
-            width="100%"
-            alignItems="center"
-            justifyContent="space-between"
-            p={isSmallerThanPhone ? '14px 16px' : '14px 24px'}
-            borderBottom={`1px solid ${colors.divider}`}
+          <StyledSurveyTitle
+            color={'tenantPrimary'}
+            variant="bodyS"
+            fontSize="m"
+            my="0px"
+            textAlign="left"
           >
-            <StyledSurveyTitle
-              color={'tenantPrimary'}
-              variant="bodyS"
-              fontSize="m"
-              my="0px"
-              textAlign="left"
-            >
-              {titleText}
-            </StyledSurveyTitle>
-            <Box display="flex">
-              {showEditSurveyButton && (
-                <Button
-                  data-cy="e2e-edit-survey-link"
-                  icon="edit"
-                  linkTo={linkToSurveyBuilder}
-                  buttonStyle="primary-inverse"
-                  textDecorationHover="underline"
-                  hidden={!canUserEditProject}
-                  mr="12px"
-                >
-                  <FormattedMessage {...messages.editSurvey} />
-                </Button>
-              )}
-              <IconButton
-                iconName="close"
-                onClick={(event) => {
-                  event?.preventDefault();
-                  openModal();
-                }}
-                iconColor={colors.textSecondary}
-                iconColorOnHover={colors.black}
-                a11y_buttonActionMessage={formatMessage(messages.leaveSurvey)}
-                p="0px"
-              />
-            </Box>
+            {titleText}
+          </StyledSurveyTitle>
+          <Box display="flex">
+            {showEditSurveyButton && (
+              <Button
+                data-cy="e2e-edit-survey-link"
+                icon="edit"
+                linkTo={linkToSurveyBuilder}
+                buttonStyle="primary-inverse"
+                textDecorationHover="underline"
+                hidden={!canUserEditProject}
+                mr="12px"
+              >
+                <FormattedMessage {...messages.editSurvey} />
+              </Button>
+            )}
+            <IconButton
+              iconName="close"
+              onClick={(event) => {
+                event?.preventDefault();
+                openModal();
+              }}
+              iconColor={colors.textSecondary}
+              iconColorOnHover={colors.black}
+              a11y_buttonActionMessage={formatMessage(messages.leaveSurvey)}
+              p="0px"
+            />
           </Box>
         </Box>
       </Box>

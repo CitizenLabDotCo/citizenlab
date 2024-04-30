@@ -1,6 +1,11 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
-import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  colors,
+  stylingConsts,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 import { useSearchParams } from 'react-router-dom';
 
@@ -224,7 +229,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
             <Box
               background={colors.white}
               width="700px"
-              h={isSmallerThanPhone ? '100vh' : `calc(100vh - 80px)`}
+              h={`calc(100vh - ${stylingConsts.menuHeight}px)`}
             >
               <Form
                 schema={schema}
