@@ -62,8 +62,9 @@ const props: Props = {
 describe('NonSortableFolderRow', () => {
   it('renders the project row inside', () => {
     render(<NonSortableFolderRow {...props} />);
-
+    screen.getByTestId('folder-row').click();
     const projectRows = screen.getAllByTestId('projectRow');
+
     expect(projectRows.length).toEqual(2);
   });
 });

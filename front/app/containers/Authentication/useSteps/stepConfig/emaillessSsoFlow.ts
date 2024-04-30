@@ -5,19 +5,23 @@ import {
   invalidateCacheAfterUpdateUser,
 } from 'api/users/useUpdateUser';
 
-import { GetRequirements } from 'containers/Authentication/typings';
+import {
+  GetRequirements,
+  UpdateState,
+} from 'containers/Authentication/typings';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
 import { Step } from './typings';
 import { askCustomFields, showOnboarding } from './utils';
 
-export const claveUnicaFlow = (
+export const emaillessSsoFlow = (
   getRequirements: GetRequirements,
-  setCurrentStep: (step: Step) => void
+  setCurrentStep: (step: Step) => void,
+  updateState: UpdateState
 ) => {
   return {
-    'clave-unica:email': {
+    'emailless-sso:email': {
       SUBMIT_EMAIL: async ({
         email,
         userId,
@@ -28,18 +32,19 @@ export const claveUnicaFlow = (
         const { requirements } = await getRequirements();
         if (requirements.special.confirmation === 'require') {
           await resendEmailConfirmationCode(email);
-          setCurrentStep('clave-unica:email-confirmation');
+          setCurrentStep('emailless-sso:email-confirmation');
         } else {
           await updateUser({ userId, email });
           invalidateCacheAfterUpdateUser(queryClient);
           setCurrentStep('success');
         }
+        updateState({ email });
       },
     },
-    'clave-unica:email-confirmation': {
+    'emailless-sso:email-confirmation': {
       CLOSE: () => setCurrentStep('closed'),
       CHANGE_EMAIL: async () => {
-        setCurrentStep('clave-unica:email');
+        setCurrentStep('emailless-sso:email');
       },
       SUBMIT_CODE: async (code: string) => {
         await confirmEmail({ code });

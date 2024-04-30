@@ -13,12 +13,14 @@ import { useSearchParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 import styled, { useTheme } from 'styled-components';
 
+import ideasKeys from 'api/ideas/keys';
 import { IProjectData } from 'api/projects/types';
 
 import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 import messages from '../messages';
 
@@ -192,6 +194,15 @@ const SurveyHeading = ({
                     buttonStyle={loggedIn ? 'primary' : 'delete'}
                     width="100%"
                     mb={isSmallerThanPhone ? '16px' : undefined}
+                    onClick={() => {
+                      // We need to invalidate any previously cached draft idea.
+                      // Invalidating the draft while "in" the survey (I.e. In the useUpdateIdea
+                      // when survey page next/previous buttons clicked) causes issues.
+                      // TODO: Find a better solution for this.
+                      queryClient.invalidateQueries({
+                        queryKey: ideasKeys.item({ id: phaseId }),
+                      });
+                    }}
                     linkTo={`/projects/${project.attributes.slug}`}
                   >
                     <FormattedMessage
