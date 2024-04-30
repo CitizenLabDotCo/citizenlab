@@ -114,6 +114,10 @@ module ParticipationMethod
       true
     end
 
+    def supports_everyone_permission?
+      true
+    end
+
     def include_data_in_email?
       false
     end
