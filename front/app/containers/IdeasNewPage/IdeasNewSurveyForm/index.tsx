@@ -1,11 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
-import {
-  Box,
-  colors,
-  stylingConsts,
-  useBreakpoint,
-} from '@citizenlab/cl2-component-library';
+import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 import { useSearchParams } from 'react-router-dom';
 
@@ -75,7 +70,6 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     projectId: project.data.id,
     phaseId,
   });
-  const isSmallerThanPhone = useBreakpoint('phone');
 
   const { data: draftIdea, status: draftIdeaStatus } =
     useDraftIdeaByPhaseId(phaseId);
