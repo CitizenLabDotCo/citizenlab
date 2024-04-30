@@ -17,7 +17,7 @@ resource 'BulkImportIdeasImportIdeas' do
   context 'when not authorized' do
     let(:phase_id) { project.phases.first.id }
 
-    post 'web_api/v1/phases/:phase_id/importer/bulk_create/idea/xlsx' do
+    post 'web_api/v1/phases/:phase_id/importer/bulk_create_async/idea/xlsx' do
       parameter(
         :file,
         'Base64 encoded xlsx or PDF file using the template downloaded from the phase.',
@@ -54,28 +54,6 @@ resource 'BulkImportIdeasImportIdeas' do
 
       let(:model) { 'idea' }
       let(:locale) { 'en' }
-
-      post 'web_api/v1/phases/:phase_id/importer/bulk_create/:model/:format' do
-        context 'xlsx import' do
-          let(:format) { 'xlsx' }
-          let(:file) { create_project_bulk_import_ideas_xlsx }
-
-          example 'Bulk import ideas to current phase from .xlsx in real time' do
-            do_request
-
-            assert_status 201
-            expect(response_data.count).to eq 2
-            expect(Idea.count).to eq 2
-            expect(IdeasPhase.count).to eq 2
-            expect(Idea.all.pluck(:title_multiloc)).to match_array [{ 'en' => 'My project idea title 1' }, { 'en' => 'My project idea title 2' }]
-            expect(User.count).to eq 2
-            expect(User.all.pluck(:email)).to include 'dave@citizenlab.co'
-            expect(User.all.pluck(:email)).not_to include 'bob@citizenlab.co'
-            expect(BulkImportIdeas::IdeaImport.count).to eq 2
-            expect(BulkImportIdeas::IdeaImportFile.count).to eq 2
-          end
-        end
-      end
 
       post 'web_api/v1/phases/:phase_id/importer/bulk_create_async/:model/:format' do
         context 'xlsx import' do
