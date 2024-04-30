@@ -21,6 +21,7 @@ import useInputSchema from 'hooks/useInputSchema';
 
 import Form from 'components/Form';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
+import FullPageSpinner from 'components/UI/FullPageSpinner';
 import PageContainer from 'components/UI/PageContainer';
 
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
@@ -66,7 +67,12 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   const phaseId = queryParams.get('phase_id') || undefined;
   const { data: phases } = usePhases(project.data.id);
   const { data: phaseFromUrl } = usePhase(phaseId);
-  const { schema, uiSchema } = useInputSchema({
+  const {
+    schema,
+    uiSchema,
+    inputSchemaError,
+    isLoading: isLoadingInputSchema,
+  } = useInputSchema({
     projectId: project.data.id,
     phaseId,
   });
@@ -122,12 +128,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
 
   // Try and load in a draft idea if one exists
   useEffect(() => {
-    if (
-      draftIdeaStatus === 'success' &&
-      !isNilOrError(draftIdea) &&
-      !ideaId &&
-      schema
-    ) {
+    if (draftIdeaStatus === 'success' && !ideaId && schema) {
       const formValues = getFormValues(draftIdea, schema);
       setInitialFormData(formValues);
       setIdeaId(draftIdea.data.id);
@@ -137,8 +138,10 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     }
   }, [draftIdeaStatus, draftIdea, schema, ideaId]);
 
+  if (isLoadingInputSchema || loadingDraftIdea) return <FullPageSpinner />;
   if (
-    loadingDraftIdea ||
+    // inputSchemaError should display an error page instead
+    inputSchemaError ||
     !participationMethodConfig ||
     !phaseId ||
     !schema ||
