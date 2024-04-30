@@ -7,12 +7,10 @@ import {
   withJsonFormsLayoutProps,
   useJsonForms,
 } from '@jsonforms/react';
-import { useSearchParams, useParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 
-import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
-import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -33,8 +31,6 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import {
   extractElementsByOtherOptionLogic,
@@ -83,12 +79,6 @@ const CLSurveyPageLayout = memo(
     const { data: phase } = usePhase(phaseId);
     const allowAnonymousPosting =
       phase?.data.attributes.allow_anonymous_participation;
-    const { slug } = useParams();
-    const { data: project } = useProjectBySlug(slug);
-    const { data: authUser } = useAuthUser();
-    const userIsModerator =
-      !isNilOrError(authUser) &&
-      canModerateProject(project?.data.id, { data: authUser.data });
     const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
 
     useEffect(() => {
@@ -225,10 +215,6 @@ const CLSurveyPageLayout = memo(
       scrollToTop();
     };
 
-    if (!project) {
-      return null;
-    }
-
     return (
       <>
         <Box
@@ -238,12 +224,9 @@ const CLSurveyPageLayout = memo(
           height="100%"
         >
           <SurveyHeading
-            project={project.data}
             titleText={localize(
               phase?.data.attributes.native_survey_title_multiloc
             )}
-            canUserEditProject={userIsModerator}
-            loggedIn={!isNilOrError(authUser)}
             percentageAnswered={percentageAnswered}
           />
           {allowAnonymousPosting && (

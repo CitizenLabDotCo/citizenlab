@@ -9,18 +9,20 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 import styled, { useTheme } from 'styled-components';
 
-import { IProjectData } from 'api/projects/types';
+import useAuthUser from 'api/me/useAuthUser';
+import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
-import messages from '../messages';
+import messages from '../../messages';
 
 const StyledSurveyTitle = styled(Text)`
   text-overflow: ellipsis;
@@ -31,30 +33,19 @@ const StyledSurveyTitle = styled(Text)`
 `;
 
 type Props = {
-  project: IProjectData;
   titleText: string | React.ReactNode;
-  canUserEditProject: boolean;
-  loggedIn?: boolean;
   percentageAnswered: number;
 };
 
-const SurveyHeading = ({
-  project,
-  titleText,
-  canUserEditProject,
-  loggedIn,
-  percentageAnswered,
-}: Props) => {
+const SurveyHeading = ({ titleText, percentageAnswered }: Props) => {
+  const { slug: projectSlug } = useParams();
+  const { data: project } = useProjectBySlug(projectSlug);
+  const { data: authUser } = useAuthUser();
+
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const [searchParams] = useSearchParams();
-  const phaseId =
-    searchParams.get('phase_id') ||
-    project.relationships.current_phase?.data?.id;
-  const linkToSurveyBuilder: RouteType = `/admin/projects/${project.id}/phases/${phaseId}/native-survey/edit`;
-  const canEditSurvey = canUserEditProject;
   const isSmallerThanPhone = useBreakpoint('phone');
-  const showEditSurveyButton = !isSmallerThanPhone && canEditSurvey;
   const [showLeaveModal, setShowLeaveModal] = useState(false);
   const openModal = () => {
     setShowLeaveModal(true);
@@ -62,6 +53,15 @@ const SurveyHeading = ({
   const closeModal = () => {
     setShowLeaveModal(false);
   };
+
+  if (!project) return null;
+
+  const showEditSurveyButton =
+    !isSmallerThanPhone && canModerateProject(project.data.id, authUser);
+  const phaseId =
+    searchParams.get('phase_id') ||
+    project.data.relationships.current_phase?.data?.id;
+  const linkToSurveyBuilder: RouteType = `/admin/projects/${project.data.id}/phases/${phaseId}/native-survey/edit`;
 
   return (
     <>
@@ -101,7 +101,6 @@ const SurveyHeading = ({
                 linkTo={linkToSurveyBuilder}
                 buttonStyle="primary-inverse"
                 textDecorationHover="underline"
-                hidden={!canUserEditProject}
                 mr="12px"
               >
                 <FormattedMessage {...messages.editSurvey} />
@@ -129,7 +128,7 @@ const SurveyHeading = ({
             </Title>
             <Text color="primary" fontSize="l">
               <FormattedMessage
-                {...(loggedIn
+                {...(authUser
                   ? messages.leaveFormTextLoggedIn
                   : messages.leaveSurveyText)}
               />
@@ -146,12 +145,12 @@ const SurveyHeading = ({
               <FormattedMessage {...messages.cancelLeaveSurveyButtonText} />
             </Button>
             <Button
-              icon={loggedIn ? 'arrow-left-circle' : 'delete'}
+              icon={authUser ? 'arrow-left-circle' : 'delete'}
               data-cy="e2e-confirm-delete-survey-results"
-              buttonStyle={loggedIn ? 'primary' : 'delete'}
+              buttonStyle={authUser ? 'primary' : 'delete'}
               width="100%"
               mb={isSmallerThanPhone ? '16px' : undefined}
-              linkTo={`/projects/${project.attributes.slug}`}
+              linkTo={`/projects/${projectSlug}`}
             >
               <FormattedMessage {...messages.confirmLeaveFormButtonText} />
             </Button>
