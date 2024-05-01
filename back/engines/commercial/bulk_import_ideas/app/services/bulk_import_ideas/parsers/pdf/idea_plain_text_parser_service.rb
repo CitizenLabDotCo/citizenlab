@@ -3,12 +3,9 @@
 module BulkImportIdeas::Parsers::Pdf
   class IdeaPlainTextParserService
     NUMBER_FIELD_TYPES = %w[number linear_scale]
+    SELECT_FIELD_TYPES = %w[select multiselect multiselect_image]
     FILLED_OPTION_CHARS = %w[☑ ☒ >]
-
-    # TODO: JS - Needed any more?
-    # FORBIDDEN_HTML_TAGS_REGEX = %r{</?(div|p|span|ul|ol|li|em|img|a){1}[^>]*/?>}
-    # EMPTY_SELECT_CIRCLES = ['O', '○']
-    # EMPTY_MULTISELECT_SQUARES = ['☐']
+    EMPTY_OPTION_CHARS = %w[O ○ ☐]
 
     def initialize(custom_fields, locale)
       @custom_fields = custom_fields
@@ -76,12 +73,8 @@ module BulkImportIdeas::Parsers::Pdf
 
       # Process different field types
       field_type = field.input_type
-      if field_type == 'select'
+      if SELECT_FIELD_TYPES.include? field_type
         field_value = handle_select_field(field, field_value)
-      end
-
-      if field_type == 'multiselect'
-        field_value = handle_multiselect_field(field, field_value)
       end
 
       if NUMBER_FIELD_TYPES.include? field_type
@@ -90,27 +83,48 @@ module BulkImportIdeas::Parsers::Pdf
       field_value
     end
 
+    # Extract selected options
     def handle_select_field(field, field_value)
-      # if contains a tick or cross - choose this in priority order
+      option_values = []
+
+      # First throw out any options that are not selected
+      field_value = reject_empty_options(field_value, field.options)
+
+      # First match clearly known filled options
       field.options.each do |option|
         option_title = option.title_multiloc[@locale]
-        FILLED_OPTION_CHARS.each do |filled_option|
-          return option_title if field_value.include? "#{filled_option} #{option_title}"
+        FILLED_OPTION_CHARS.each do |char|
+          filled_option_text = "#{char} #{option_title}"
+          if field_value.include? filled_option_text
+            option_values << option_title
+            field_value = field_value.gsub(filled_option_text, '').squish
+          end
         end
       end
-      nil
+
+      # Now match any that are not prefixed with a character - these seem to be selected more than not
+      field.options.each do |option|
+        option_title = option.title_multiloc[@locale]
+        option_values << option_title if field_value.include? option_title
+      end
+
+      # Single select should only return the first option if more than one has been detected
+      if field.input_type == 'select'
+        option_values.first
+      else
+        option_values
+      end
     end
 
-    def handle_multiselect_field(field, field_value)
-      # The multiselect field works similar to the select field, except it returns an array of values.
-      option_values = []
-      field.options.each do |option|
+    def reject_empty_options(field_value, options)
+      options.each do |option|
         option_title = option.title_multiloc[@locale]
-        FILLED_OPTION_CHARS.each do |filled_option|
-          option_values << option_title if field_value.include? "#{filled_option} #{option_title}"
+        EMPTY_OPTION_CHARS.each do |empty_option|
+          field_value = field_value.gsub("#{empty_option} #{option_title}", '')
         end
       end
-      option_values
+
+      field_value.squish
     end
 
     def handle_number_field(field, field_value)

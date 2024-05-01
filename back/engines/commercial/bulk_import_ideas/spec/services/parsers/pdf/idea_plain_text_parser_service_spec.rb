@@ -101,11 +101,11 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaPlainTextParserService do
       expect(fields['Number field (optional)']).to eq 20_125
     end
 
-    it 'parses different option identifiers correctly' do
+    it 'parses different selected option identifiers correctly' do
       raw_text_array = ["
         Select field (optional)
         *This answer will only be shared with moderators, and not to the public.
-        Yes
+        ☐ Yes
         ☒ No
         Multi select field (optional)
         *Choose as many as you like
@@ -118,6 +118,37 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaPlainTextParserService do
       fields = service.parse_text(raw_text_array)[0][:fields]
       expect(fields['Select field (optional)']).to eq 'No'
       expect(fields['Multi select field (optional)']).to eq %w[This Another]
+    end
+
+    it 'parses options without a selected option identifier as selected' do
+      raw_text_array = ["
+        Select field (optional)
+        *This answer will only be shared with moderators, and not to the public.
+        Yes
+        ○ No
+        Multi select field (optional)
+        *Choose as many as you like
+        *This answer will only be shared with moderators, and not to the public.
+        O This
+        That
+        ☒ Another
+        Page 1
+      "]
+      fields = service.parse_text(raw_text_array)[0][:fields]
+      expect(fields['Select field (optional)']).to eq 'Yes'
+      expect(fields['Multi select field (optional)']).to match_array %w[That Another]
+    end
+
+    it 'chooses the first option for select fields if both are filled' do
+      raw_text_array = ["
+        Select field (optional)
+        *This answer will only be shared with moderators, and not to the public.
+        ☑ Yes
+        ☒ No
+        Page 1
+      "]
+      fields = service.parse_text(raw_text_array)[0][:fields]
+      expect(fields['Select field (optional)']).to eq 'Yes'
     end
 
     it 'parses when question titles are split across lines' do
