@@ -8,9 +8,8 @@ module BulkImportIdeas::Parsers::Pdf
       @document = nil
     end
 
+    # Read the idea PDF into array of raw text per page
     def raw_text_page_array(pdf_file_content)
-      return dummy_raw_text unless ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS', false) # Temp for development
-
       @document ||= process_upload pdf_file_content
       text = @document.text
 
@@ -33,9 +32,8 @@ module BulkImportIdeas::Parsers::Pdf
       end
     end
 
-    def parse_pdf(pdf_file_content, form_pages_count)
-      return dummy_parsed_data unless ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS', false) # Temp for development
-
+    # Read the idea PDF into an idea using the Google Document AI API
+    def parse_pdf(pdf_file_content)
       @document ||= process_upload pdf_file_content
 
       # Gets an array of all fields on all pages
@@ -60,19 +58,13 @@ module BulkImportIdeas::Parsers::Pdf
       # Now reorder 'fields' by y then x field placement in the doc
       fields = fields.sort { |a, b| [a[:y], a[:x]] <=> [b[:y], b[:x]] }
 
-      # Then split into separate ideas based on the number of pages in the PDF form (form_pages_count)
-      ideas = []
+      # Then add these fields to an idea
       idea = { pdf_pages: [], fields: {} }
       previous_page = 1
       page_count = 0
       fields.each do |field|
         current_page = field[:page]
         page_count += 1 if current_page != previous_page
-        if page_count == form_pages_count # split by pages count
-          ideas << idea
-          idea = { pdf_pages: [], fields: {} }
-          page_count = 0
-        end
 
         # Include field y, position in doc + position in form values in name to allow checkbox values to be used multiple times
         position = "#{page_count + 1}.#{field[:position]}"
@@ -81,8 +73,7 @@ module BulkImportIdeas::Parsers::Pdf
         idea[:pdf_pages] << field[:page] unless idea[:pdf_pages].include? field[:page]
         previous_page = field[:page]
       end
-      ideas << idea
-      ideas
+      idea
     end
 
     private

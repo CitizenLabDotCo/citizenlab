@@ -13,18 +13,17 @@ module BulkImportIdeas::Parsers::Pdf
     end
 
     def parse_text(pages)
-      form = {
+      idea = {
         pdf_pages: [],
         fields: {}
       }
       pages.each_with_index do |page, i|
         page_number = i + 1
         page_fields = parse_page(page)
-        form[:pdf_pages] << page_number
-        form[:fields] = form[:fields].merge(page_fields)
+        idea[:pdf_pages] << page_number
+        idea[:fields] = idea[:fields].merge(page_fields)
       end
-
-      [form]
+      idea
     end
 
     private

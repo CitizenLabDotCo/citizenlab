@@ -77,7 +77,7 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaPlainTextParserService do
     end
 
     it 'parses an ideation response correctly' do
-      expected_result = [{
+      expected_result = {
         pdf_pages: [1, 2, 3],
         fields: { 'Title' => 'My very good idea',
                   'Description' => 'I would suggest building the new swimming Pool near the Shopping mall on Park Lane',
@@ -88,7 +88,7 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaPlainTextParserService do
                   'Multi select field (optional)' => %w[This Another],
                   'Linear scale field (optional)' => 4,
                   'Another select field (optional)' => 'No' }
-      }]
+      }
       expect(service.parse_text(raw_text_array)).to eq expected_result
     end
 
@@ -99,7 +99,7 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaPlainTextParserService do
         2OIZS
         Page 1
       "]
-      fields = service.parse_text(raw_text_array)[0][:fields]
+      fields = service.parse_text(raw_text_array)[:fields]
       expect(fields['Number field (optional)']).to eq 20_125
     end
 
@@ -117,7 +117,7 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaPlainTextParserService do
         ☒ Another
         Page 1
       "]
-      fields = service.parse_text(raw_text_array)[0][:fields]
+      fields = service.parse_text(raw_text_array)[:fields]
       expect(fields['Select field (optional)']).to eq 'No'
       expect(fields['Multi select field (optional)']).to eq %w[This Another]
     end
@@ -136,7 +136,7 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaPlainTextParserService do
         ☒ Another
         Page 1
       "]
-      fields = service.parse_text(raw_text_array)[0][:fields]
+      fields = service.parse_text(raw_text_array)[:fields]
       expect(fields['Select field (optional)']).to eq 'Yes'
       expect(fields['Multi select field (optional)']).to match_array %w[That Another]
     end
@@ -149,7 +149,7 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaPlainTextParserService do
         ☒ No
         Page 1
       "]
-      fields = service.parse_text(raw_text_array)[0][:fields]
+      fields = service.parse_text(raw_text_array)[:fields]
       expect(fields['Select field (optional)']).to eq 'Yes'
     end
 
@@ -162,7 +162,7 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaPlainTextParserService do
         This is my answer
         Page 1
       "]
-      fields = service.parse_text(raw_text_array)[0][:fields]
+      fields = service.parse_text(raw_text_array)[:fields]
       expect(fields['Really long text field title that will span multiple lines (optional)']).to eq 'This is my answer'
     end
 
@@ -181,7 +181,7 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaPlainTextParserService do
         This is my answer
         Page 1
       "]
-      fields = service.parse_text(raw_text_array)[0][:fields]
+      fields = service.parse_text(raw_text_array)[:fields]
       expect(fields['New text field (optional)']).to eq 'This is my answer'
     end
 
@@ -232,7 +232,7 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaPlainTextParserService do
       "]
 
       service = described_class.new custom_form.custom_fields, 'fr-FR'
-      expected_result = [{
+      expected_result = {
         pdf_pages: [1, 2],
         fields: {
           'Titre' => 'Test pour les page numbers',
@@ -241,7 +241,7 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaPlainTextParserService do
           'Votre nom préféré pour une piscine (optionnel)' => 'Je veux lui donner le nom de la rivière',
           'Veux-tu de la nourriture? (optionnel)' => 'Oui'
         }
-      }]
+      }
 
       expect(service.parse_text(raw_text_array)).to eq expected_result
     end
