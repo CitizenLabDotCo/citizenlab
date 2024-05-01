@@ -231,8 +231,9 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
           >
             <Box
               background={colors.white}
-              width="700px"
+              w="100%"
               h={`calc(100vh - ${stylingConsts.menuHeight}px)`}
+              maxWidth="700px"
               /*
                 Content needs to be pushed up by the 40px from the top because it's pushed down with the padding-top above + the footer that is fixed 40px from the bottom of the page
               */
