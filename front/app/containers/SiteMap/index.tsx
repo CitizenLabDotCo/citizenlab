@@ -17,7 +17,7 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 import messages from './messages';
 import ProjectsAndFoldersSection from './ProjectsAndFoldersSection';
@@ -127,7 +127,7 @@ const SiteMap = () => {
   const hasProjectSubsection =
     archivedSection.current || draftSection.current || currentSection.current;
 
-  if (!isNilOrError(pages)) {
+  if (pages) {
     const nonCustomStaticPages = pages.data.filter((page) => {
       const showPageConditions: Record<TCustomPageCode, boolean> = {
         proposals: proposalsEnabled,
@@ -254,7 +254,7 @@ const SiteMap = () => {
                   </H2>
                   <ul>
                     {/* Nav bar items that are not included in pages */}
-                    {!isNilOrError(navBarItems) &&
+                    {navBarItems &&
                       navBarItems.data
                         .filter(
                           (navBarItem) =>
@@ -283,7 +283,7 @@ const SiteMap = () => {
                     })}
                   </ul>
                   <>
-                    {!isNilOrError(authUser) && (
+                    {authUser && (
                       <>
                         <H2 ref={userSpaceSection} tabIndex={-1}>
                           <FormattedMessage {...messages.userSpaceSection} />
