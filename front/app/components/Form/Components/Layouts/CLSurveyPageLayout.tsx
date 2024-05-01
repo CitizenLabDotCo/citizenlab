@@ -236,9 +236,22 @@ const CLSurveyPageLayout = memo(
                 page,
                 data
               );
+              const oneElementOnPage = pageElements.length === 1;
+
               return (
                 currentStep === index && (
-                  <Box key={index} p="24px" w="100%">
+                  <Box
+                    key={index}
+                    p="24px"
+                    w="100%"
+                    /*
+                      Used to center fields vertically if there is only one field on the page.
+                      Removing this line may not look to change anything.
+                      However, two-field pages (or any number that doesn't take the full page height)
+                      would be centered without this line, which looks odd.
+                    */
+                    alignSelf={oneElementOnPage ? 'center' : 'flex-start'}
+                  >
                     <Box
                       display="flex"
                       justifyContent="center"

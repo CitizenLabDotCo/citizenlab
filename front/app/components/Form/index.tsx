@@ -171,6 +171,10 @@ const Form = memo(
       >
         <Box
           overflow={layoutType === 'inline' ? 'visible' : 'auto'}
+          /*
+            Grows the content to take full height,
+            so we can center the form content vertically for survey form pages with only 1 field
+          */
           flex="1"
           marginBottom={
             layoutType === 'fullpage' && showSubmitButton ? '32px' : 'auto'
