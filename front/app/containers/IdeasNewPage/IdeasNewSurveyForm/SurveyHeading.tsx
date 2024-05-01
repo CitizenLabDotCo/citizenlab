@@ -66,10 +66,7 @@ const SurveyHeading = ({ titleText }: Props) => {
       <Box
         bgColor={colors.white}
         display="flex"
-        width="100%"
-        justifyContent={'space-between'}
         alignItems="center"
-        maxWidth="700px"
         // If we don't have an edit button, it still needs to look consistent
         minHeight={`${stylingConsts.menuHeight}px`}
         px={isSmallerThanPhone ? '16px' : '24px'}
