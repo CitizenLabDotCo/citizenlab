@@ -114,18 +114,11 @@ const Content = ({
   const localize = useLocalize();
   const [translateButtonIsClicked, setTranslateButtonIsClicked] =
     useState(false);
-
-  const authorId = idea.data.relationships?.author?.data?.id || null;
-  const statusId = idea.data.relationships?.idea_status?.data?.id;
-  const ideaImageLarge =
-    ideaImages?.data[0]?.attributes?.versions?.large || null;
+  const authorId = idea.data.relationships.author?.data?.id || null;
+  const statusId = idea.data.relationships.idea_status.data?.id;
+  const ideaImageLarge = ideaImages?.data[0]?.attributes?.versions?.large;
   const ideaId = idea.data.id;
-  const ideaBody = localize(idea.data.attributes?.body_multiloc);
-
   const participationContext = getCurrentPhase(phases?.data);
-
-  const inputTerm = getInputTerm(phases?.data);
-
   const wasImported = !!idea.data.relationships.idea_import?.data;
 
   return (
@@ -142,7 +135,7 @@ const Content = ({
                   <Box>
                     <FormattedMessage
                       {...messages.importedTooltip}
-                      values={{ inputTerm }}
+                      values={{ inputTerm: getInputTerm(phases?.data) }}
                     />
                   </Box>
                 }
@@ -162,24 +155,20 @@ const Content = ({
             showActions={compact}
           />
           <ProjectLink project={project} />
-
           {ideaImageLarge && (
             <Image src={ideaImageLarge} alt="" id="e2e-idea-image" />
           )}
-
           <TranslateButton
             idea={idea}
             translateButtonClicked={translateButtonIsClicked}
             onClick={setTranslateButtonIsClicked}
           />
-
           <ProposedBudget ideaId={ideaId} projectId={project.id} />
-
           <Box mb={compact ? '12px' : '40px'}>
             <Body
               postType="idea"
               postId={ideaId}
-              body={ideaBody}
+              body={localize(idea.data.attributes?.body_multiloc)}
               translateButtonClicked={translateButtonIsClicked}
             />
           </Box>
@@ -228,7 +217,6 @@ const Content = ({
             </Box>
           )}
         </Box>
-
         {!compact && statusId && (
           <StyledRightColumnDesktop
             ideaId={ideaId}
