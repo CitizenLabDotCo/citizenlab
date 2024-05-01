@@ -98,36 +98,40 @@ const IdeasShowPage = () => {
   return (
     <>
       <IdeaMeta ideaId={idea.data.id} />
-      <VotingContext projectId={project.data.id}>
-        <Box
-          background={colors.white}
-          pt={
-            showCTABarAtTopOfPage ? `${stylingConsts.menuHeight}px` : undefined
-          }
-        >
-          {isSmallerThanTablet && (
-            <StyledIdeaShowPageTopBar
-              projectId={idea.data.relationships.project.data.id}
-              ideaId={idea.data.id}
-              phase={phase}
-            />
-          )}
-          <StyledIdeasShow
-            ideaId={idea.data.id}
-            projectId={idea.data.relationships.project.data.id}
-            compact={isSmallerThanTablet}
-          />
-        </Box>
-        {showCTABar && (
+      <main id="e2e-idea-show">
+        <VotingContext projectId={project.data.id}>
           <Box
-            position="fixed"
-            bottom={isSmallerThanTablet ? '0px' : undefined} // Show CTA at bottom of screen on mobile
-            width="100vw"
+            background={colors.white}
+            pt={
+              showCTABarAtTopOfPage
+                ? `${stylingConsts.menuHeight}px`
+                : undefined
+            }
           >
-            <ProjectCTABar projectId={project.data.id} />
+            {isSmallerThanTablet && (
+              <StyledIdeaShowPageTopBar
+                projectId={idea.data.relationships.project.data.id}
+                ideaId={idea.data.id}
+                phase={phase}
+              />
+            )}
+            <StyledIdeasShow
+              ideaId={idea.data.id}
+              projectId={idea.data.relationships.project.data.id}
+              compact={isSmallerThanTablet}
+            />
           </Box>
-        )}
-      </VotingContext>
+          {showCTABar && (
+            <Box
+              position="fixed"
+              bottom={isSmallerThanTablet ? '0px' : undefined} // Show CTA at bottom of screen on mobile
+              width="100vw"
+            >
+              <ProjectCTABar projectId={project.data.id} />
+            </Box>
+          )}
+        </VotingContext>
+      </main>
     </>
   );
 };

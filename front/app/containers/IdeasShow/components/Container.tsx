@@ -103,14 +103,12 @@ const Container2 = ({
         enter={true}
         exit={false}
       >
-        <main id="e2e-idea-show">
-          <Container
-            className={`loaded ${className || ''}`}
-            ref={handleContainerRef}
-          >
-            {children}
-          </Container>
-        </main>
+        <Container
+          className={`loaded ${className || ''}`}
+          ref={handleContainerRef}
+        >
+          {children}
+        </Container>
       </CSSTransition>
       {typeof newIdeaId === 'string' && (
         <IdeaSharingModal
