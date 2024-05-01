@@ -24,9 +24,9 @@ const useBackgroundJobs = (ids?: string[]) => {
     queryKey: backgroundJobsKeys.list({ ids }),
     queryFn: () => fetchJob(ids),
     enabled: ids && ids.length > 0,
-    // Refetch every 5 seconds when any job is active
+    // Refetch while any job is active
     refetchInterval: (data) => {
-      return data?.data.some((job) => job.attributes.active) ? 5000 : false;
+      return data?.data.some((job) => job.attributes.active) ? 2000 : false;
     },
   });
 };

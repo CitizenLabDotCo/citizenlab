@@ -27,8 +27,8 @@ class BulkImportIdeas::Parsers::Pdf::GPTTextCorrector
     return [] if core_fields.blank? && custom_fields.blank?
 
     @idea_rows.filter_map do |idea_row|
-      idea_to_correct = idea_row.slice(*core_fields)
-      values = idea_row[:custom_field_values]&.slice(*custom_fields)
+      idea_to_correct = idea_row.slice(*core_fields).transform_values(&:presence).compact
+      values = idea_row[:custom_field_values]&.slice(*custom_fields)&.transform_values(&:presence)&.compact
       idea_to_correct[:custom_field_values] = values if values.present?
       next if idea_to_correct.blank?
 

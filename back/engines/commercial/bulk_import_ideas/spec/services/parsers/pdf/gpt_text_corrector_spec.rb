@@ -15,7 +15,8 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::GPTTextCorrector do
     project = build(:project, custom_form: custom_form)
     create(:phase, project: project)
   end
-  let_it_be(:idea_rows) do
+
+  let(:idea_rows) do
     [
       { id: '1', project_id: '1', title_multiloc: { en: 'title' }, custom_field_values: { field1: 'wrong value' } },
       { id: '2', project_id: '2', title_multiloc: { en: 'title 2' }, custom_field_values: { field1: 'wrong value 2' } }
@@ -51,6 +52,30 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::GPTTextCorrector do
           { id: '1', project_id: '1', title_multiloc: { en: 'corrected title' }, custom_field_values: { field1: 'corrected value' } },
           { id: '2', project_id: '2', title_multiloc: { en: 'corrected title 2' }, custom_field_values: { field1: 'corrected value 2' } }
         ])
+      end
+
+      context 'when custom fields are empty' do
+        let(:idea_rows) do
+          [
+            { id: '1', project_id: '1', title_multiloc: { en: 'title' } },
+            { id: '2', project_id: '2', title_multiloc: { en: 'title 2' } }
+          ]
+        end
+        let(:gpt_response) do
+          [
+            { id: '1', title_multiloc: { en: 'corrected title' } },
+            { id: '2', title_multiloc: { en: 'corrected title 2' } }
+          ].to_json
+        end
+
+        it 'returns idea_rows with corrected texts' do
+          expect_any_instance_of(Analysis::LLM::GPT4Turbo).to receive(:chat).once.with(/title_multiloc/).and_return(gpt_response)
+
+          expect(corrector.correct).to eq([
+            { id: '1', project_id: '1', title_multiloc: { en: 'corrected title' } },
+            { id: '2', project_id: '2', title_multiloc: { en: 'corrected title 2' } }
+          ])
+        end
       end
 
       context "when GPT doesn't return JSON" do

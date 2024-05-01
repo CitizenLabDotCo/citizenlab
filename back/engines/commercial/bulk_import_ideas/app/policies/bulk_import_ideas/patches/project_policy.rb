@@ -3,10 +3,6 @@
 module BulkImportIdeas
   module Patches
     module ProjectPolicy
-      def bulk_create?
-        active_moderator?
-      end
-
       def bulk_create_async?
         active_moderator?
       end

@@ -2,11 +2,10 @@
 
 module BulkImportIdeas
   class WebApi::V1::BulkImportController < ApplicationController
-    before_action :authorize_bulk_import_ideas, only: %i[bulk_create bulk_create_async export_form draft_records approve_all]
+    before_action :authorize_bulk_import_ideas, only: %i[bulk_create_async export_form draft_records approve_all]
 
     CONSTANTIZER = {
       'idea' => {
-        importer_class: Importers::IdeaImporter,
         serializer_class: ::WebApi::V1::IdeaSerializer,
         'xlsx' => {
           exporter_class: Exporters::IdeaXlsxFormExporter,
@@ -18,26 +17,6 @@ module BulkImportIdeas
         }
       }
     }
-
-    def bulk_create
-      send_not_found unless supported_model? && supported_format?
-
-      file = bulk_create_params[:file]
-      rows = file_parser_service.parse_file file
-      ideas = importer_service.import(rows)
-      users = importer_service.imported_users
-
-      sidefx.after_success current_user, @phase, params[:model], params[:format], ideas, users
-
-      render json: serializer.new(
-        ideas,
-        params: jsonapi_serializer_params,
-        include: %i[author idea_import]
-      ).serializable_hash, status: :created
-    rescue BulkImportIdeas::Error => e
-      sidefx.after_failure current_user, @phase, params[:model], params[:format]
-      render json: { errors: { file: [{ error: e.key, **e.params }] } }, status: :unprocessable_entity
-    end
 
     def bulk_create_async
       send_not_found unless supported_model? && supported_format?
@@ -133,14 +112,6 @@ module BulkImportIdeas
 
     def sidefx
       @sidefx ||= SideFxBulkImportService.new
-    end
-
-    def importer_service
-      model = params[:model]
-      locale = params[:import] ? bulk_create_params[:locale] : current_user.locale
-
-      service = CONSTANTIZER.fetch(model)[:importer_class]
-      @importer_service ||= service.new(current_user, locale)
     end
 
     def file_parser_service

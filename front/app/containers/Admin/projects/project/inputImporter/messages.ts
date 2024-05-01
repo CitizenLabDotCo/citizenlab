@@ -9,10 +9,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2',
     defaultMessage: 'Import',
   },
-  premium: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.premium',
-    defaultMessage: 'Premium',
-  },
   importExcelFile: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile',
     defaultMessage: 'Import Excel file (.xlsx)',

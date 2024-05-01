@@ -44,8 +44,7 @@ module BulkImportIdeas::Parsers
     end
 
     def parse_xlsx_ideas(file)
-      xlsx_file = URI.open(file.file_content_url)
-      XlsxService.new.xlsx_to_hash_array xlsx_file
+      XlsxService.new.xlsx_to_hash_array(file.file.read)
     end
 
     # Merge the form fields that generated the input xlsx sheet and the import values into a single array
