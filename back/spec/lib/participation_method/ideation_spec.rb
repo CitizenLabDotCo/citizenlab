@@ -17,15 +17,14 @@ RSpec.describe ParticipationMethod::Ideation do
     end
   end
 
-  describe '#assign_slug' do
+  describe '#generate_slug' do
     let(:input) { create(:idea) }
 
     it 'sets and persists the slug of the input' do
       input.update_column :slug, nil
       input.title_multiloc = { 'en' => 'Changed title' }
-      participation_method.assign_slug(input)
-      input.reload
-      expect(input.slug).to eq 'changed-title'
+
+      expect(participation_method.generate_slug(input)).to eq 'changed-title'
     end
   end
 

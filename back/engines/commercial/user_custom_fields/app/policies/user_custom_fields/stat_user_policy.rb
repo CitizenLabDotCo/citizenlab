@@ -10,10 +10,6 @@ module UserCustomFields
       active_admin_or_project_moderator?
     end
 
-    def users_by_birthyear?
-      active_admin_or_project_moderator?
-    end
-
     def users_by_domicile?
       active_admin_or_project_moderator?
     end
@@ -27,10 +23,6 @@ module UserCustomFields
     end
 
     def users_by_age_as_xlsx?
-      active_admin_or_project_moderator?
-    end
-
-    def users_by_birthyear_as_xlsx?
       active_admin_or_project_moderator?
     end
 

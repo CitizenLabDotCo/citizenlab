@@ -141,89 +141,6 @@ resource 'Stats - Users' do
     end
   end
 
-  describe 'by_birthyear endpoints' do
-    before do
-      travel_to start_at + 16.days do
-        group_members = [1980, 1980, 1976].map { |year| create(:user, birthyear: year) }
-        @group = create_group(group_members)
-        _non_member = create(:user, birthyear: 1980)
-      end
-
-      travel_to start_at + 18.days do
-        @project = create(:project)
-        @idea1 = create(:idea, project: @project)
-        create(:published_activity, item: @idea1, user: @idea1.author)
-      end
-    end
-
-    shared_examples 'ignore reference distribution' do
-      example 'is not affected by the presence of a reference distribution', document: false, skip: 'flaky with users_by_birthyear_as_xlsx' do
-        do_request
-        response_without_reference = response_body
-
-        create(:binned_distribution)
-        do_request
-        response_with_reference = response_body
-
-        expect(response_status).to eq 200
-        expect(response_without_reference).to eq response_with_reference
-      end
-    end
-
-    get 'web_api/v1/stats/users_by_birthyear' do
-      time_boundary_parameters self
-      group_filter_parameter self
-      parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
-
-      describe 'filtered by group' do
-        let(:group) { @group.id }
-
-        example_request 'Users by birthyear' do
-          expect(response_status).to eq 200
-          expect(json_response_body.dig(:data, :attributes)).to match({
-            series: {
-              users: { '1980': 2, '1976': 1, _blank: 0 },
-              reference_population: nil
-            }
-          })
-        end
-      end
-
-      describe 'filtered by project' do
-        let(:project) { @project.id }
-
-        example_request 'Users by birthyear filtered by project' do
-          expect(response_status).to eq 200
-          expect(json_response_body.dig(:data, :attributes)[:series][:users].values.sum).to eq 1
-        end
-      end
-
-      include_examples 'ignore reference distribution'
-    end
-
-    get 'web_api/v1/stats/users_by_birthyear_as_xlsx' do
-      time_boundary_parameters self
-      group_filter_parameter self
-      parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
-
-      let(:group) { @group.id }
-
-      include_examples('xlsx export', 'birthyear') do
-        let(:expected_worksheet_name) { 'users_by_birthyear' }
-        let(:expected_worksheet_values) do
-          [
-            %w[option users],
-            [1976, 1],
-            [1980, 2],
-            ['_blank', 0]
-          ]
-        end
-      end
-
-      include_examples 'ignore reference distribution'
-    end
-  end
-
   describe 'by_domicile endpoints' do
     before do
       travel_to start_at + 16.days do
@@ -449,9 +366,11 @@ resource 'Stats - Users' do
           create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
           create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
           user = create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
-          comment = create(:comment)
-          create(:activity, item: comment, action: 'created', user: user)
+          idea = create(:idea, author: nil)
+          create(:comment, post: idea, author: user)
         end
+
+        Analytics::PopulateDimensionsService.populate_types
       end
 
       describe 'with filter by participation' do

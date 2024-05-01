@@ -75,7 +75,7 @@ end
 group :test do
   gem 'rubyXL'
   gem 'shoulda-matchers', '~> 6.2.0'
-  gem 'webmock', '~> 3.18'
+  gem 'webmock', '~> 3.23'
 
   # Adds rspec matchers and helpers for testing html structure and styling.
   gem 'capybara', '~> 3.39'
@@ -92,7 +92,7 @@ gem 'jwt', '~> 2.8.1'
 gem 'que', '~> 2.0.0'
 gem 'que-web', '~> 0.10.0'
 
-gem 'activerecord-import', '~> 1.4'
+gem 'activerecord-import', '~> 1.6'
 gem 'json-schema', '~> 4.0'
 gem 'activerecord-postgis-adapter', '~> 8.0'
 
@@ -106,7 +106,7 @@ gem 'rails-i18n', '~> 7.0.9'
 
 gem 'awesome_nested_set', '~> 3.5.0'
 gem 'axlsx', '3.0.0.pre'
-gem 'counter_culture', '~> 3.3'
+gem 'counter_culture', '~> 3.5'
 gem 'groupdate', '~> 4.1'
 gem 'icalendar', '~> 2.10'
 gem 'interactor'
@@ -159,7 +159,7 @@ gem 'intercom', '~> 4.2'
 # mjml-rails cannot find the MJML parser when installed
 # through the emails engine and is therefore specified
 # in the main app.
-gem 'mjml-rails', '~> 4.10'
+gem 'mjml-rails', '~> 4.11'
 gem 'cloudfront-rails', '~> 0.4'
 gem 'google-cloud-document_ai'
 gem 'combine_pdf', '~> 1.0.26'

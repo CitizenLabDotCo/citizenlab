@@ -29,7 +29,6 @@ import {
 import SortingPicker from './SortingPicker';
 
 interface Props {
-  isCustomInputTermEnabled: boolean;
   input_term: InputTerm | undefined;
   handleInputTermChange: (option: IOption) => void;
   posting_enabled: boolean;
@@ -69,8 +68,7 @@ interface Props {
   ) => void;
 }
 
-export default ({
-  isCustomInputTermEnabled,
+const IdeationInputs = ({
   input_term,
   handleInputTermChange,
   posting_enabled,
@@ -113,13 +111,10 @@ export default ({
           handleAllowAnonymousParticipationOnChange
         }
       />
-
-      {isCustomInputTermEnabled && (
-        <CustomFieldPicker
-          input_term={input_term}
-          handleInputTermChange={handleInputTermChange}
-        />
-      )}
+      <CustomFieldPicker
+        input_term={input_term}
+        handleInputTermChange={handleInputTermChange}
+      />
       <StyledSectionField>
         <SubSectionTitle>
           <FormattedMessage {...messages.enabledActionsForUsers} />
@@ -306,3 +301,5 @@ export default ({
     </>
   );
 };
+
+export default IdeationInputs;

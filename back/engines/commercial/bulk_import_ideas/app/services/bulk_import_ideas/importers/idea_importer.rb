@@ -35,6 +35,7 @@ module BulkImportIdeas::Importers
       user_created = add_author idea_row, idea_attributes
 
       idea = Idea.new idea_attributes
+      idea.slug ||= SecureRandom.uuid if !idea.valid? # Support importing draft ideas without title
       raise BulkImportIdeas::Error.new 'bulk_import_idea_not_valid', value: idea.errors.messages unless idea.valid?
 
       idea.save!

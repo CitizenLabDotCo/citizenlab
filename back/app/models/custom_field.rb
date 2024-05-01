@@ -297,9 +297,7 @@ class CustomField < ApplicationRecord
   end
 
   def ordered_options
-    return [] unless options.any?
-
-    if random_option_ordering
+    @ordered_options ||= if random_option_ordering
       options.shuffle.sort_by { |o| o.other ? 1 : 0 }
     else
       options.order(:ordering)
