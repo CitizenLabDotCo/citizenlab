@@ -112,8 +112,8 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
         format: 'pdf',
         ...rest,
       });
-      onImport(response.data);
 
+      onImport(response.data);
       onClose();
       methods.reset();
     } catch (e) {

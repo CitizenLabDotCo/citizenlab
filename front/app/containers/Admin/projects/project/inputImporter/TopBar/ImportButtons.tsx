@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 
 import {
-  Badge,
   Box,
   Button,
   Dropdown,
   DropdownListItem,
-  colors,
 } from '@citizenlab/cl2-component-library';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import NewBadge from 'components/UI/NewBadge';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -52,9 +52,7 @@ const ImportButtons = ({ onClickPDFImport, onClickExcelImport }: Props) => {
                   <FormattedMessage {...messages.importPDFFile} />
                 </Box>
                 <Box alignSelf="center">
-                  <Badge color={colors.teal400}>
-                    <FormattedMessage {...messages.premium} />
-                  </Badge>
+                  <NewBadge />
                 </Box>
               </DropdownListItem>
             )}

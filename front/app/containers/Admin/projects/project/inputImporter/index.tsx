@@ -87,6 +87,7 @@ const InputImporter = () => {
       <ImportExcelModal
         open={importExcelModalOpen}
         onClose={closeImportExcelModal}
+        onImport={(jobs: IBackgroundJobData[]) => setImportJobs(jobs)}
       />
       <ImportPdfModal
         open={importPdfModalOpen}
