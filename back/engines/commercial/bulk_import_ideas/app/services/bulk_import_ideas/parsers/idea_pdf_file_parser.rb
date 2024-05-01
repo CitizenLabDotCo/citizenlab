@@ -38,13 +38,13 @@ module BulkImportIdeas::Parsers
       google_forms_service = Pdf::IdeaGoogleFormParserService.new
       form_parsed_idea = google_forms_service.parse_pdf(pdf_file)
       text_parsed_idea = begin
-                           Pdf::IdeaPlainTextParserService.new(
-                             @form_fields,
-                             @locale
-                           ).parse_text(google_forms_service.raw_text_page_array(pdf_file))
-                         rescue BulkImportIdeas::Error
-                           []
-                         end
+        Pdf::IdeaPlainTextParserService.new(
+          @form_fields,
+          @locale
+        ).parse_text(google_forms_service.raw_text_page_array(pdf_file))
+      rescue BulkImportIdeas::Error
+        []
+      end
 
       idea_rows = merge_pdf_rows(form_parsed_idea, text_parsed_idea, file)
       idea_rows_with_corrected_texts(idea_rows)
