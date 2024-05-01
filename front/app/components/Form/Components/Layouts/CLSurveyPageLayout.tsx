@@ -217,12 +217,7 @@ const CLSurveyPageLayout = memo(
 
     return (
       <>
-        <Box
-          display="flex"
-          flexDirection="column"
-          maxWidth="700px"
-          height="100%"
-        >
+        <Box display="flex" flexDirection="column" height="100%">
           {allowAnonymousPosting && (
             <Box w="100%" px={isSmallerThanPhone ? '16px' : '24px'} mt="16px">
               <Warning icon="shield-checkered">
@@ -230,7 +225,7 @@ const CLSurveyPageLayout = memo(
               </Warning>
             </Box>
           )}
-          <Box w="100%" h="100%" display="flex" ref={pagesRef}>
+          <Box h="100%" display="flex" ref={pagesRef}>
             {uiPages.map((page, index) => {
               const pageElements = extractElementsByOtherOptionLogic(
                 page,
@@ -252,12 +247,7 @@ const CLSurveyPageLayout = memo(
                     */
                     alignSelf={oneElementOnPage ? 'center' : 'flex-start'}
                   >
-                    <Box
-                      display="flex"
-                      justifyContent="center"
-                      h={hasScrollBars ? 'fit-content' : '100%'}
-                      flexDirection="column"
-                    >
+                    <Box display="flex" flexDirection="column">
                       {page.options.title && (
                         <Title variant="h1" mb="8px" color="tenantPrimary">
                           {page.options.title}
@@ -287,7 +277,6 @@ const CLSurveyPageLayout = memo(
 
                         return (
                           <Box
-                            width="100%"
                             mb={hasOtherFieldBelow ? undefined : '28px'}
                             key={index}
                           >
