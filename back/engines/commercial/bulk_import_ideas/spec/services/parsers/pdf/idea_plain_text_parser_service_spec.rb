@@ -98,7 +98,7 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaPlainTextParserService do
         Page 1
       "]
       fields = service.parse_text(raw_text_array)[0][:fields]
-      expect(fields['Number field (optional)']).to eq 20125
+      expect(fields['Number field (optional)']).to eq 20_125
     end
 
     it 'parses different option identifiers correctly' do
@@ -135,11 +135,11 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaPlainTextParserService do
 
     it 'parses with long multiline field descriptions with HTML' do
       create(:custom_field,
-             resource: custom_form,
-             title_multiloc: { 'en' => 'New text field' },
-             description_multiloc: {
-        'en' => '<p>This is an important description that will be split over <b>multiple lines</b> and contain HTML. OK is that clear?</p>'
-      })
+        resource: custom_form,
+        title_multiloc: { 'en' => 'New text field' },
+        description_multiloc: {
+          'en' => '<p>This is an important description that will be split over <b>multiple lines</b> and contain HTML. OK is that clear?</p>'
+        })
       raw_text_array = ["
         New text field (optional)
         This is an important description that will be split over
@@ -185,7 +185,7 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaPlainTextParserService do
         Adresse (optionnel)
         Champs-Élysées
         Page 1
-      ","
+      ", "
         Votre nom préféré pour une piscine (optionnel)
         Une description un peu plus longue
         *Cette réponse ne sera communiquée qu'aux modérateurs, et non au public.
@@ -200,15 +200,15 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaPlainTextParserService do
 
       service = described_class.new custom_form.custom_fields, 'fr-FR'
       expected_result = [{
-                  pdf_pages: [1,2],
-                  fields: {
-                    'Titre' => 'Test pour les page numbers',
-                    'Description' => "C'est une idée fantastique et j'adore ça",
-                    'Adresse (optionnel)' => 'Champs-Élysées',
-                    'Votre nom préféré pour une piscine (optionnel)' => 'Je veux lui donner le nom de la rivière',
-                    'Veux-tu de la nourriture? (optionnel)' => 'Oui'
-                  }
-                }]
+        pdf_pages: [1, 2],
+        fields: {
+          'Titre' => 'Test pour les page numbers',
+          'Description' => "C'est une idée fantastique et j'adore ça",
+          'Adresse (optionnel)' => 'Champs-Élysées',
+          'Votre nom préféré pour une piscine (optionnel)' => 'Je veux lui donner le nom de la rivière',
+          'Veux-tu de la nourriture? (optionnel)' => 'Oui'
+        }
+      }]
 
       expect(service.parse_text(raw_text_array)).to eq expected_result
     end

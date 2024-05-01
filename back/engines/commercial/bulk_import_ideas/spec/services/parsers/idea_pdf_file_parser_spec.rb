@@ -238,7 +238,7 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
         },
         {
           pdf_pages: [3, 4],
-          fields: { 'Title' => 'Form title 2', 'Description' => 'Form description 2', 'Select field' => 'Yes' }
+          fields: { 'Title' => 'Form title 2', 'Description' => 'Form description 2', 'A text field' => 'Something', 'Select field' => 'Yes' }
         }
       ]
     end
@@ -251,7 +251,7 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
         },
         {
           pdf_pages: [3, 4],
-          fields: { 'Title' => 'Text title 2', 'Description' => 'Text description 2', 'Location' => 'Textington', 'Another select field' => 'No' }
+          fields: { 'Title' => 'Text title 2', 'Description' => 'Text description 2', 'Location' => 'Textington', 'Select field' => 'No', 'Another select field' => 'No' }
         }
       ]
     end
@@ -270,9 +270,9 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
       })
     end
 
-    it 'merges custom fields successfully' do
+    it 'merges custom fields successfully and prefers the answers from the text parser' do
       rows = service.send(:merge_pdf_rows, form_parsed_ideas, text_parsed_ideas, nil)
-      expect(rows[1][:custom_field_values]).to match_array({ select_field: 'yes', another_select_field: 'no' })
+      expect(rows[1][:custom_field_values]).to match_array({ a_text_field: 'Something', select_field: 'no', another_select_field: 'no' })
     end
 
     it 'ignores the text parsed ideas if the array lengths differ' do
