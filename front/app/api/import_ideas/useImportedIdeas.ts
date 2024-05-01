@@ -13,10 +13,14 @@ const fetchImportedIdeas = ({ phaseId }: QueryParams) =>
     path: `/phases/${phaseId}/importer/draft_records/idea`,
     action: 'get',
   });
-const useImportedIdeas = (queryParams: QueryParams) => {
+const useImportedIdeas = (
+  queryParams: QueryParams,
+  { pollingEnabled }: { pollingEnabled?: boolean } = {}
+) => {
   return useQuery<IIdeas, CLErrors, IIdeas, ImportedIdeasKeys>({
     queryKey: importedIdeasKeys.list(queryParams),
     queryFn: () => fetchImportedIdeas(queryParams),
+    refetchInterval: pollingEnabled ? 5000 : false,
   });
 };
 

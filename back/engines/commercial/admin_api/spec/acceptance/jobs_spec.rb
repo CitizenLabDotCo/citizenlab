@@ -21,7 +21,7 @@ resource 'Job', :active_job_que_adapter, :admin_api do
           tenant: Tenant.current.host,
           last_error_message: nil,
           status: 'pending',
-          scheduled_at: QueJob.find(id).run_at.iso8601(3)
+          scheduled_at: QueJob.by_job_id!(id).run_at.iso8601(3)
         )
       end
     end
