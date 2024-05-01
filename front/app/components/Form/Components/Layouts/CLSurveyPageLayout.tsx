@@ -307,15 +307,23 @@ const CLSurveyPageLayout = memo(
             })}
           </Box>
         </Box>
-        <PageControlButtons
-          handleNextAndSubmit={handleNextAndSubmit}
-          handlePrevious={handlePrevious}
-          hasPreviousPage={hasPreviousPage}
-          currentStep={currentStep}
-          isLoading={isLoading}
-          showSubmit={showSubmit}
-          dataCyValue={dataCyValue}
-        />
+        <Box
+          maxWidth="700px"
+          w="100%"
+          position="fixed"
+          bottom={isSmallerThanPhone ? '0' : '40px'}
+          zIndex="1010"
+        >
+          <PageControlButtons
+            handleNextAndSubmit={handleNextAndSubmit}
+            handlePrevious={handlePrevious}
+            hasPreviousPage={hasPreviousPage}
+            currentStep={currentStep}
+            isLoading={isLoading}
+            showSubmit={showSubmit}
+            dataCyValue={dataCyValue}
+          />
+        </Box>
       </>
     );
   }

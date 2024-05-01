@@ -39,65 +39,54 @@ const PageControlButtons = ({
 
   return (
     <Box
+      width="100%"
       display="flex"
-      justifyContent="center"
-      w="100%"
-      zIndex="1010"
-      position="fixed"
-      bottom="0px"
-      borderRadius="2px"
-      maxWidth="700px"
+      justifyContent="space-between"
+      alignItems="center"
+      bgColor={colors.white}
+      borderTop={`1px solid ${colors.borderLight}`}
+      padding={isSmallerThanPhone ? '16px' : '16px 24px'}
     >
-      <Box
-        width="100%"
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        bgColor={colors.white}
-        borderTop={`1px solid ${colors.borderLight}`}
-        padding={isSmallerThanPhone ? '16px' : '16px 24px'}
-      >
-        <LanguageSelector
-          dropdownClassName={'open-upwards'}
-          useDefaultTop={false}
-          mobileRight="auto"
-          mobileLeft="auto"
-          right="auto"
-          afterSelection={() => {
-            window.location.reload();
-          }}
-        />
-        <Box display="flex" justifyContent="center" alignItems="center">
-          {hasPreviousPage && (
-            <Button
-              onClick={handlePrevious}
-              data-cy="e2e-previous-page"
-              icon="chevron-left"
-              buttonStyle="white"
-              marginRight={isSmallerThanPhone ? '8px' : '16px'}
-            >
-              <FormattedMessage {...messages.previous} />
-            </Button>
-          )}
+      <LanguageSelector
+        dropdownClassName={'open-upwards'}
+        useDefaultTop={false}
+        mobileRight="auto"
+        mobileLeft="auto"
+        right="auto"
+        afterSelection={() => {
+          window.location.reload();
+        }}
+      />
+      <Box display="flex" justifyContent="center" alignItems="center">
+        {hasPreviousPage && (
           <Button
-            onClick={handleNextAndSubmit}
-            data-cy={dataCyValue}
-            icon={showSubmit ? 'send' : 'chevron-right'}
-            iconPos="right"
-            key={currentStep.toString()}
-            bgColor={
-              showSubmit
-                ? theme.colors.tenantSecondary
-                : theme.colors.tenantPrimary
-            }
-            boxShadow={defaultStyles.boxShadow}
-            processing={isLoading}
+            onClick={handlePrevious}
+            data-cy="e2e-previous-page"
+            icon="chevron-left"
+            buttonStyle="white"
+            marginRight={isSmallerThanPhone ? '8px' : '16px'}
           >
-            <FormattedMessage
-              {...(showSubmit ? messages.submit : messages.next)}
-            />
+            <FormattedMessage {...messages.previous} />
           </Button>
-        </Box>
+        )}
+        <Button
+          onClick={handleNextAndSubmit}
+          data-cy={dataCyValue}
+          icon={showSubmit ? 'send' : 'chevron-right'}
+          iconPos="right"
+          key={currentStep.toString()}
+          bgColor={
+            showSubmit
+              ? theme.colors.tenantSecondary
+              : theme.colors.tenantPrimary
+          }
+          boxShadow={defaultStyles.boxShadow}
+          processing={isLoading}
+        >
+          <FormattedMessage
+            {...(showSubmit ? messages.submit : messages.next)}
+          />
+        </Button>
       </Box>
     </Box>
   );
