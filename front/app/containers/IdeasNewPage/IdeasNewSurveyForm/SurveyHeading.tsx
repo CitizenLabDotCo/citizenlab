@@ -63,52 +63,52 @@ const SurveyHeading = ({ titleText }: Props) => {
 
   return (
     <>
-      <Box bgColor={colors.white} display="flex" flexDirection="column">
-        <Box
-          display="flex"
-          width="100%"
-          justifyContent={'space-between'}
-          alignItems="center"
-          maxWidth="700px"
-          minHeight={`${stylingConsts.menuHeight}px`}
-          p={isSmallerThanPhone ? '14px 16px' : '14px 24px'}
-          borderBottom={`1px solid ${colors.divider}`}
+      <Box
+        bgColor={colors.white}
+        display="flex"
+        width="100%"
+        justifyContent={'space-between'}
+        alignItems="center"
+        maxWidth="700px"
+        // If we don't have an edit button, it still needs to look consistent
+        minHeight={`${stylingConsts.menuHeight}px`}
+        px={isSmallerThanPhone ? '16px' : '24px'}
+        borderBottom={`1px solid ${colors.divider}`}
+      >
+        <StyledSurveyTitle
+          color={'tenantPrimary'}
+          variant="bodyS"
+          fontSize="m"
+          my="0px"
+          textAlign="left"
         >
-          <StyledSurveyTitle
-            color={'tenantPrimary'}
-            variant="bodyS"
-            fontSize="m"
-            my="0px"
-            textAlign="left"
+          {titleText}
+        </StyledSurveyTitle>
+        {showEditSurveyButton && (
+          <Button
+            data-cy="e2e-edit-survey-link"
+            icon="edit"
+            linkTo={linkToSurveyBuilder}
+            buttonStyle="primary-inverse"
+            textDecorationHover="underline"
+            // Pushes button to the right
+            ml="auto"
+            mr="12px"
           >
-            {titleText}
-          </StyledSurveyTitle>
-          <Box display="flex">
-            {showEditSurveyButton && (
-              <Button
-                data-cy="e2e-edit-survey-link"
-                icon="edit"
-                linkTo={linkToSurveyBuilder}
-                buttonStyle="primary-inverse"
-                textDecorationHover="underline"
-                mr="12px"
-              >
-                <FormattedMessage {...messages.editSurvey} />
-              </Button>
-            )}
-            <IconButton
-              iconName="close"
-              onClick={(event) => {
-                event?.preventDefault();
-                openModal();
-              }}
-              iconColor={colors.textSecondary}
-              iconColorOnHover={colors.black}
-              a11y_buttonActionMessage={formatMessage(messages.leaveSurvey)}
-              p="0px"
-            />
-          </Box>
-        </Box>
+            <FormattedMessage {...messages.editSurvey} />
+          </Button>
+        )}
+        <IconButton
+          iconName="close"
+          onClick={(event) => {
+            event?.preventDefault();
+            openModal();
+          }}
+          iconColor={colors.textSecondary}
+          iconColorOnHover={colors.black}
+          a11y_buttonActionMessage={formatMessage(messages.leaveSurvey)}
+          p="0px"
+        />
       </Box>
       <Modal opened={showLeaveModal} close={closeModal}>
         <Box display="flex" flexDirection="column" width="100%" p="20px">
