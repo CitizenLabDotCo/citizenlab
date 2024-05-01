@@ -89,19 +89,28 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
         <form onSubmit={methods.handleSubmit(handleExport)}>
           <Feedback onlyShowErrors />
           <Box p="24px" w="100%">
-            <Text mb="20px" mt="0px" w="500px">
-              <FormattedMessage {...CLICK_EXPORT_MESSAGES[formType]} />
-            </Text>
-            {importPrintedFormsEnabled && (
-              <>
-                <Text mb="24px">
-                  <FormattedMessage {...IT_IS_POSSIBLE_MESSAGES[formType]} />
-                </Text>
+            <Title variant="h3" m="0" mb="24px">
+              <FormattedMessage {...messages.notes} />
+            </Title>
+            <Box as="ul" pl="28px">
+              <Text as="li" mb="4px" mt="0px" w="500px">
+                <FormattedMessage {...CLICK_EXPORT_MESSAGES[formType]} />
+              </Text>
+              <Text as="li" mb="4px">
+                <FormattedMessage {...IT_IS_POSSIBLE_MESSAGES[formType]} />
+                {importPrintedFormsEnabled || (
+                  <>
+                    {' '}
+                    <FormattedMessage {...messages.notIncludedInYourPlan} />
+                  </>
+                )}
+              </Text>
+              {importPrintedFormsEnabled ? (
                 <>
-                  <Text mb="24px">
+                  <Text as="li" mb="24px">
                     <FormattedMessage {...messages.personalDataExplanation} />
                   </Text>
-                  <Box mb="24px">
+                  <Box mb="24px" ml="-20px">
                     <Checkbox
                       name="personal_data"
                       label={
@@ -112,8 +121,10 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
                     />
                   </Box>
                 </>
-              </>
-            )}
+              ) : (
+                <Box mb="24px" />
+              )}
+            </Box>
             <Box w="100%" display="flex">
               <Button width="auto" type="submit" processing={loading}>
                 <FormattedMessage {...messages.exportAsPDF} />
