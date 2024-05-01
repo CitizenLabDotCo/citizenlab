@@ -210,7 +210,7 @@
     "cypress-file-upload": "^5.0.8",
     "dependency-cruiser": "^16.2.4",
     "esbuild-loader": "^4.1.0",
-    "eslint": "^8.35.0",
+    "eslint": "^8.57.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-prettier": "^4.2.1",
