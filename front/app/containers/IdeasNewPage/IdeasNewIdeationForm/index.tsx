@@ -22,6 +22,7 @@ import AnonymousParticipationConfirmationModal from 'components/AnonymousPartici
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 import Form from 'components/Form';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
+import FullPageSpinner from 'components/UI/FullPageSpinner';
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 import PageContainer from 'components/UI/PageContainer';
 
@@ -81,7 +82,12 @@ const IdeasNewIdeationForm = ({ project }: Props) => {
   const phaseId = queryParams.get('phase_id') || undefined;
   const { data: phases } = usePhases(project.data.id);
   const { data: phaseFromUrl } = usePhase(phaseId);
-  const { schema, uiSchema, inputSchemaError } = useInputSchema({
+  const {
+    schema,
+    uiSchema,
+    inputSchemaError,
+    isLoading: isLoadingInputSchema,
+  } = useInputSchema({
     projectId: project.data.id,
     phaseId,
   });
@@ -229,11 +235,13 @@ const IdeasNewIdeationForm = ({ project }: Props) => {
     clHistory.push(`/projects/${project.data.attributes.slug}`);
   }, [project]);
 
+  if (isLoadingInputSchema) return <FullPageSpinner />;
   if (
+    // inputSchemaError should display an error page instead
+    inputSchemaError ||
     !participationMethodConfig ||
     !schema ||
     !uiSchema ||
-    inputSchemaError ||
     processingLocation
   ) {
     return null;

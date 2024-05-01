@@ -14,7 +14,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import InitialUnsubscribeFeedback from './InitialUnsubscribeFeedback';
 import messages from './messages';
 
-const Container = styled.main`
+const Container = styled.div`
   background-color: ${colors.background};
   display: flex;
   flex-direction: column;
@@ -70,25 +70,32 @@ const EmailSettingPage = () => {
   }, [unsubscriptionToken, updateCampaignConsents, campaignId]);
 
   return (
-    <Container id="e2e-email-settings-page">
-      <Title mb="24px">
-        <FormattedMessage {...messages.emailSettings} />
-      </Title>
-      {initialUnsubscribeStatus && initialUnsubscribeStatus !== 'hidden' && (
-        <InitialUnsubscribeFeedback
-          className="e2e-unsubscribe-status"
-          status={initialUnsubscribeStatus}
-          unsubscribedCampaignMultiloc={unsubscribedCampaignMultiloc}
-        />
-      )}
-      {initialUnsubscribeStatus && initialUnsubscribeStatus !== 'loading' && (
-        <CampaignConsentForm
-          trackEventName="Unsubcribed from unsubscribe link flow"
-          runOnSave={closeInitialUnsubscribe}
-          unsubscriptionToken={unsubscriptionToken}
-        />
-      )}
-    </Container>
+    <main id="e2e-email-settings-page">
+      <Container>
+        <Title mb="24px">
+          <FormattedMessage {...messages.emailSettings} />
+        </Title>
+        {/* Wrapping with a div is needed for these to have the same width */}
+        <div>
+          {initialUnsubscribeStatus &&
+            initialUnsubscribeStatus !== 'hidden' && (
+              <InitialUnsubscribeFeedback
+                className="e2e-unsubscribe-status"
+                status={initialUnsubscribeStatus}
+                unsubscribedCampaignMultiloc={unsubscribedCampaignMultiloc}
+              />
+            )}
+          {initialUnsubscribeStatus &&
+            initialUnsubscribeStatus !== 'loading' && (
+              <CampaignConsentForm
+                trackEventName="Unsubcribed from unsubscribe link flow"
+                runOnSave={closeInitialUnsubscribe}
+                unsubscriptionToken={unsubscriptionToken}
+              />
+            )}
+        </div>
+      </Container>
+    </main>
   );
 };
 
