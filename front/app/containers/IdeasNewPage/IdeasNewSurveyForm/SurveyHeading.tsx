@@ -69,7 +69,7 @@ const SurveyHeading = ({ titleText }: Props) => {
         alignItems="center"
         // If we don't have an edit button, it still needs to look consistent
         minHeight={`${stylingConsts.menuHeight}px`}
-        px={isSmallerThanPhone ? '16px' : '24px'}
+        px="24px"
         borderBottom={`1px solid ${colors.divider}`}
       >
         <StyledSurveyTitle
