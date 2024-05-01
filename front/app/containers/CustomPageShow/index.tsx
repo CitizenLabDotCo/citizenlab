@@ -113,8 +113,8 @@ const CustomPageShow = () => {
           pageAttributes.title_multiloc
         )} | ${localizedOrgName}`}
       />
-      <main>
-        <Container className={`e2e-page-${slug}`}>
+      <main className={`e2e-page-${slug}`}>
+        <Container>
           {pageAttributes.banner_enabled ? (
             <Box background="#fff" width="100%">
               <CustomPageHeader pageData={page.data} />
