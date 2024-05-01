@@ -1,7 +1,6 @@
 module XlsxExport
   class ProjectIdeasVotesGenerator
     def generate_project_voting_results_xlsx(project)
-      # project = Project.find_by(id: project.id)
       phases = project.phases.where(participation_method: 'voting').includes([:ideas])
       phases_to_titles = add_suffix_to_duplicate_titles(phases) # avoid ArgumentError due to duplicate sheet names
 
