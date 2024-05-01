@@ -161,7 +161,7 @@
     "@rollup/plugin-typescript": "^9.0.2",
     "@sentry/webpack-plugin": "^1.18.8",
     "@storybook/react": "^7.5.1",
-    "@storybook/react-webpack5": "^7.5.2",
+    "@storybook/react-webpack5": "^8.0.9",
     "@tanstack/react-query-devtools": "^4.22.4",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^12.1.5",
