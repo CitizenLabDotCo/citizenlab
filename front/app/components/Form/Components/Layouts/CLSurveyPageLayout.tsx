@@ -259,17 +259,12 @@ const CLSurveyPageLayout = memo(
                       flexDirection="column"
                     >
                       {page.options.title && (
-                        <Title
-                          variant="h2"
-                          mt="0"
-                          mb="24px"
-                          color="tenantPrimary"
-                        >
+                        <Title variant="h1" mb="8px" color="tenantPrimary">
                           {page.options.title}
                         </Title>
                       )}
                       {page.options.description && (
-                        <Box mb={pageElements.length >= 1 ? '48px' : '28px'}>
+                        <Box mb={pageElements.length >= 1 ? '48px' : '0px'}>
                           <QuillEditedContent
                             fontWeight={400}
                             textColor={theme.colors.tenantText}
