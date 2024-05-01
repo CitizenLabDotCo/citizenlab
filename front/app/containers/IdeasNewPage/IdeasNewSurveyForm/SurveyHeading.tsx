@@ -81,31 +81,35 @@ const SurveyHeading = ({ titleText }: Props) => {
         >
           {titleText}
         </StyledSurveyTitle>
-        {showEditSurveyButton && (
-          <Button
-            data-cy="e2e-edit-survey-link"
-            icon="edit"
-            linkTo={linkToSurveyBuilder}
-            buttonStyle="primary-inverse"
-            textDecorationHover="underline"
-            // Pushes button to the right
-            ml="auto"
-            mr="12px"
-          >
-            <FormattedMessage {...messages.editSurvey} />
-          </Button>
-        )}
-        <IconButton
-          iconName="close"
-          onClick={(event) => {
-            event?.preventDefault();
-            openModal();
-          }}
-          iconColor={colors.textSecondary}
-          iconColorOnHover={colors.black}
-          a11y_buttonActionMessage={formatMessage(messages.leaveSurvey)}
-          p="0px"
-        />
+        <Box
+          display="flex"
+          // Pushes buttons to the right
+          ml="auto"
+        >
+          {showEditSurveyButton && (
+            <Button
+              data-cy="e2e-edit-survey-link"
+              icon="edit"
+              linkTo={linkToSurveyBuilder}
+              buttonStyle="primary-inverse"
+              textDecorationHover="underline"
+              mr="12px"
+            >
+              <FormattedMessage {...messages.editSurvey} />
+            </Button>
+          )}
+          <IconButton
+            iconName="close"
+            onClick={(event) => {
+              event?.preventDefault();
+              openModal();
+            }}
+            iconColor={colors.textSecondary}
+            iconColorOnHover={colors.black}
+            a11y_buttonActionMessage={formatMessage(messages.leaveSurvey)}
+            p="0px"
+          />
+        </Box>
       </Box>
       <Modal opened={showLeaveModal} close={closeModal}>
         <Box display="flex" flexDirection="column" width="100%" p="20px">
