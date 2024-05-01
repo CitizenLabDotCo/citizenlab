@@ -1,13 +1,7 @@
 module XlsxExport
   class ProjectBasketsIdeasGenerator
-    def initialize(project)
-      @project = project
-      @xlsx_service = XlsxService.new
-      @multiloc_service = MultilocService.new(app_configuration: AppConfiguration.instance)
-    end
-
-    def generate_project_baskets_xlsx
-      phases = @project.phases.where(participation_method: 'voting').includes([:ideas])
+    def generate_project_baskets_xlsx(project)
+      phases = project.phases.where(participation_method: 'voting').includes([:ideas])
       phases_to_titles = add_suffix_to_duplicate_titles(phases) # avoid ArgumentError due to duplicate sheet names
 
       pa = Axlsx::Package.new
@@ -24,7 +18,7 @@ module XlsxExport
 
     def generate_phase_baskets_users_sheet(workbook, sheet_name, phase)
       baskets = Basket.where(phase: phase).where.not(submitted_at: nil).includes([:user])
-      columns = @xlsx_service.user_custom_field_columns(:user)
+      columns = xlsx_service.user_custom_field_columns(:user)
       ideas = phase.ideas
       ideas_to_titles = add_suffix_to_duplicate_titles(ideas) # avoid losing columns with duplicate headers
 
@@ -41,11 +35,11 @@ module XlsxExport
         f: ->(b) { b.submitted_at }, skip_sanitization: true
       }
 
-      @xlsx_service.generate_sheet workbook, sheet_name, columns, baskets
+      xlsx_service.generate_sheet workbook, sheet_name, columns, baskets
     end
 
     def add_suffix_to_duplicate_titles(collection)
-      objects_to_titles = collection.map { |obj| { obj.id => @multiloc_service.t(obj.title_multiloc) } }
+      objects_to_titles = collection.map { |obj| { obj.id => multiloc_service.t(obj.title_multiloc) } }
       titles = objects_to_titles.map(&:values).flatten
       duplicated_titles = titles.select { |title| titles.count(title) > 1 }.uniq
 
@@ -61,6 +55,14 @@ module XlsxExport
       end
 
       objects_to_titles
+    end
+
+    def multiloc_service
+      @multiloc_service ||= MultilocService.new
+    end
+
+    def xlsx_service
+      @xlsx_service ||= XlsxService.new
     end
   end
 end
