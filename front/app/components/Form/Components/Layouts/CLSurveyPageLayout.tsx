@@ -73,7 +73,6 @@ const CLSurveyPageLayout = memo(
     const dataCyValue = showSubmit ? 'e2e-submit-form' : 'e2e-next-page';
     const hasPreviousPage = currentStep !== 0;
     const pagesRef = useRef<HTMLDivElement>(null);
-    const [hasScrollBars, setHasScrollBars] = useState(false);
     const [queryParams] = useSearchParams();
     const phaseId = queryParams.get('phase_id') || undefined;
     const { data: phase } = usePhase(phaseId);
@@ -109,14 +108,6 @@ const CLSurveyPageLayout = memo(
         setScrollToError(false);
       }
     }, [scrollToError]);
-
-    useEffect(() => {
-      if (pagesRef.current) {
-        const isScrollBarVisible =
-          pagesRef.current.scrollHeight > pagesRef.current.clientHeight;
-        setHasScrollBars(isScrollBarVisible);
-      }
-    }, [currentStep]);
 
     useEffect(() => {
       if (currentStep === uiPages.length - 1) {
