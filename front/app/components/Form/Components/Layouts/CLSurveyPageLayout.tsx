@@ -19,8 +19,6 @@ import usePhase from 'api/phases/usePhase';
 
 import useLocalize from 'hooks/useLocalize';
 
-import SurveyHeading from 'containers/IdeasNewPage/IdeasNewSurveyForm/SurveyHeading';
-
 import { customAjv } from 'components/Form';
 import {
   getSanitizedFormData,
@@ -228,11 +226,6 @@ const CLSurveyPageLayout = memo(
           maxWidth="700px"
           height="100%"
         >
-          <SurveyHeading
-            titleText={localize(
-              phase?.data.attributes.native_survey_title_multiloc
-            )}
-          />
           <Box w="100%" background={colors.background}>
             <Box
               w={`${percentageAnswered}%`}

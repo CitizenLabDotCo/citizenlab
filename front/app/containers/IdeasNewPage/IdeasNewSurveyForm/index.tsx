@@ -23,6 +23,7 @@ import { getCurrentPhase } from 'api/phases/utils';
 import { IProject } from 'api/projects/types';
 
 import useInputSchema from 'hooks/useInputSchema';
+import useLocalize from 'hooks/useLocalize';
 
 import Form from 'components/Form';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
@@ -36,6 +37,8 @@ import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import { getFormValues } from '../../IdeasEditPage/utils';
 import IdeasNewMeta from '../IdeasNewMeta';
 import messages from '../messages';
+
+import SurveyHeading from './SurveyHeading';
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,
@@ -64,6 +67,7 @@ interface Props {
 }
 
 const IdeasNewSurveyForm = ({ project }: Props) => {
+  const localize = useLocalize();
   const isSmallerThanPhone = useBreakpoint('phone');
   const { mutateAsync: addIdea } = useAddIdea();
   const { mutateAsync: updateIdea } = useUpdateIdea();
@@ -224,6 +228,18 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
       <main id="e2e-idea-new-page">
         <PageContainer overflow="hidden">
           <Box
+            mx="auto"
+            position="relative"
+            top={isSmallerThanPhone ? '0' : '40px'}
+            maxWidth="700px"
+          >
+            <SurveyHeading
+              titleText={localize(
+                phase?.attributes.native_survey_title_multiloc
+              )}
+            />
+          </Box>
+          <Box
             display="flex"
             justifyContent="center"
             // Used to createa gap between the form and the top of the page
@@ -231,12 +247,9 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
           >
             <Box
               background={colors.white}
-              w="100%"
-              h={`calc(100vh - ${stylingConsts.menuHeight}px)`}
               maxWidth="700px"
-              /*
-                Content needs to be pushed up by the 40px from the top because it's pushed down with the padding-top above + the footer that is fixed 40px from the bottom of the page
-              */
+              w="100%"
+              h={`calc(100vh - ${stylingConsts.menuHeight}px - 80px)`}
               pb={isSmallerThanPhone ? '0' : '80px'}
             >
               <Form
