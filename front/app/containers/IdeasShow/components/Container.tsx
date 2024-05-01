@@ -4,25 +4,19 @@ import { useSearchParams } from 'react-router-dom';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 
-import usePhases from 'api/phases/usePhases';
-import { getInputTerm } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
-import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
-import Modal from 'components/UI/Modal';
-
-import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { isString } from 'utils/helperUtils';
-import { getInputTermMessage } from 'utils/i18n';
 
-import messages from '../messages';
 import {
   pageContentMaxWidth,
   contentFadeInDuration,
   contentFadeInEasing,
   contentFadeInDelay,
 } from '../styleConstants';
+
+import IdeaSharingModal from './IdeaSharingModal';
 
 const Container = styled.div`
   width: 100%;
@@ -73,9 +67,6 @@ const Container2 = ({
   handleContainerRef,
 }: Props) => {
   const { data: project } = useProjectById(projectId);
-  const { data: phases } = usePhases(projectId);
-  const { formatMessage } = useIntl();
-
   const [searchParams] = useSearchParams();
   const ideaIdParameter = searchParams.get('new_idea_id');
   const [newIdeaId, setNewIdeaId] = useState<string | null>(null);
@@ -100,8 +91,6 @@ const Container2 = ({
 
   if (!project) return null;
 
-  const inputTerm = getInputTerm(phases?.data);
-
   return (
     <>
       <CSSTransition
@@ -123,30 +112,13 @@ const Container2 = ({
           </Container>
         </main>
       </CSSTransition>
-      <Modal
-        opened={!!newIdeaId}
-        close={closeIdeaSocialSharingModal}
-        hasSkipButton={true}
-        skipText={<>{formatMessage(messages.skipSharing)}</>}
-      >
-        {newIdeaId && (
-          <SharingModalContent
-            postType="idea"
-            postId={newIdeaId}
-            title={formatMessage(
-              getInputTermMessage(inputTerm, {
-                idea: messages.sharingModalTitle,
-                option: messages.optionSharingModalTitle,
-                project: messages.projectSharingModalTitle,
-                question: messages.questionSharingModalTitle,
-                issue: messages.issueSharingModalTitle,
-                contribution: messages.contributionSharingModalTitle,
-              })
-            )}
-            subtitle={formatMessage(messages.sharingModalSubtitle)}
-          />
-        )}
-      </Modal>
+      {typeof newIdeaId === 'string' && (
+        <IdeaSharingModal
+          projectId={projectId}
+          newIdeaId={newIdeaId}
+          closeIdeaSocialSharingModal={closeIdeaSocialSharingModal}
+        />
+      )}
     </>
   );
 };
