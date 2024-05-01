@@ -1,6 +1,11 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
-import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  colors,
+  stylingConsts,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 import { useSearchParams } from 'react-router-dom';
 
@@ -59,6 +64,7 @@ interface Props {
 }
 
 const IdeasNewSurveyForm = ({ project }: Props) => {
+  const isSmallerThanPhone = useBreakpoint('phone');
   const { mutateAsync: addIdea } = useAddIdea();
   const { mutateAsync: updateIdea } = useUpdateIdea();
   const { data: authUser } = useAuthUser();
@@ -217,11 +223,20 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
       <IdeasNewMeta isSurvey={true} />
       <main id="e2e-idea-new-page">
         <PageContainer overflow="hidden">
-          <Box display="flex" justifyContent="center">
+          <Box
+            display="flex"
+            justifyContent="center"
+            // Used to createa gap between the form and the top of the page
+            pt={isSmallerThanPhone ? '0' : '40px'}
+          >
             <Box
               background={colors.white}
               width="700px"
               h={`calc(100vh - ${stylingConsts.menuHeight}px)`}
+              /*
+                Content needs to be pushed up by the 40px from the top because it's pushed down with the padding-top above + the footer that is fixed 40px from the bottom of the page
+              */
+              pb={isSmallerThanPhone ? '0' : '80px'}
             >
               <Form
                 schema={schema}
