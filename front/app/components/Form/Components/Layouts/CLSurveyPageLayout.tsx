@@ -231,8 +231,6 @@ const CLSurveyPageLayout = memo(
                 page,
                 data
               );
-              const oneElementOnPage = pageElements.length === 1;
-
               return (
                 currentStep === index && (
                   <Box
@@ -241,11 +239,15 @@ const CLSurveyPageLayout = memo(
                     w="100%"
                     /*
                       Used to center fields vertically if there is only one field on the page.
+                      Also used to center the final "Thank you for participating" page,
+                      which has zero elements.
                       Removing this line may not look to change anything.
                       However, two-field pages (or any number that doesn't take the full page height)
                       would be centered without this line, which looks odd.
                     */
-                    alignSelf={oneElementOnPage ? 'center' : 'flex-start'}
+                    alignSelf={
+                      pageElements.length <= 1 ? 'center' : 'flex-start'
+                    }
                   >
                     <Box display="flex" flexDirection="column">
                       {page.options.title && (
@@ -254,7 +256,7 @@ const CLSurveyPageLayout = memo(
                         </Title>
                       )}
                       {page.options.description && (
-                        <Box mb={pageElements.length >= 1 ? '48px' : '0px'}>
+                        <Box mb="48px">
                           <QuillEditedContent
                             fontWeight={400}
                             textColor={theme.colors.tenantText}
