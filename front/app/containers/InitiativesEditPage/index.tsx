@@ -81,18 +81,18 @@ const InitiativesEditPage = ({ initiative }: Props) => {
             clHistory.goBack();
           }}
         />
-        <main>
-          <PageLayout className="e2e-initiative-edit-page">
-            <StyledInitiativesEditFormWrapper
-              locale={locale}
-              initiative={initiative.data}
-              initiativeImage={initiativeImages?.data[0]}
-              onPublished={onPublished}
-              initiativeFiles={initiativeFiles}
-            />
-          </PageLayout>
-        </main>
       </Box>
+      <main>
+        <PageLayout className="e2e-initiative-edit-page">
+          <StyledInitiativesEditFormWrapper
+            locale={locale}
+            initiative={initiative.data}
+            initiativeImage={initiativeImages?.data[0]}
+            onPublished={onPublished}
+            initiativeFiles={initiativeFiles}
+          />
+        </PageLayout>
+      </main>
     </>
   );
 };
