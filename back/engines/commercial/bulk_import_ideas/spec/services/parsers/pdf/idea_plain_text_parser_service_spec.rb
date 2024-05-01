@@ -7,6 +7,8 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaPlainTextParserService do
     let(:project) { create(:single_phase_ideation_project) }
     let(:service) { described_class.new custom_form.custom_fields, 'en' }
     let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
+
+    # This raw text array is a representation of the raw text we get returned from Google Document AI
     let(:raw_text_array) do
       ["
         The
