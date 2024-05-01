@@ -10,7 +10,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams, useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
@@ -34,15 +34,13 @@ const StyledSurveyTitle = styled(Text)`
 
 type Props = {
   titleText: string | React.ReactNode;
-  percentageAnswered: number;
 };
 
-const SurveyHeading = ({ titleText, percentageAnswered }: Props) => {
+const SurveyHeading = ({ titleText }: Props) => {
   const { slug: projectSlug } = useParams();
   const { data: project } = useProjectBySlug(projectSlug);
   const { data: authUser } = useAuthUser();
 
-  const theme = useTheme();
   const { formatMessage } = useIntl();
   const [searchParams] = useSearchParams();
   const isSmallerThanPhone = useBreakpoint('phone');
@@ -66,14 +64,6 @@ const SurveyHeading = ({ titleText, percentageAnswered }: Props) => {
   return (
     <>
       <Box bgColor={colors.white} display="flex" flexDirection="column">
-        <Box w="100%" background={colors.background}>
-          <Box
-            w={`${percentageAnswered}%`}
-            h="4px"
-            background={theme.colors.tenantSecondary}
-            style={{ transition: 'width 0.3s ease-in-out' }}
-          />
-        </Box>
         <Box
           display="flex"
           width="100%"

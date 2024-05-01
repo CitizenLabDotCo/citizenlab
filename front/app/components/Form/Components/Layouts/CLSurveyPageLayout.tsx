@@ -1,6 +1,11 @@
 import React, { memo, useState, useEffect, useContext, useRef } from 'react';
 
-import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  colors,
+  Title,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import { LayoutProps, RankedTester, rankWith } from '@jsonforms/core';
 import {
   JsonFormsDispatch,
@@ -227,8 +232,15 @@ const CLSurveyPageLayout = memo(
             titleText={localize(
               phase?.data.attributes.native_survey_title_multiloc
             )}
-            percentageAnswered={percentageAnswered}
           />
+          <Box w="100%" background={colors.background}>
+            <Box
+              w={`${percentageAnswered}%`}
+              h="4px"
+              background={theme.colors.tenantSecondary}
+              style={{ transition: 'width 0.3s ease-in-out' }}
+            />
+          </Box>
           {allowAnonymousPosting && (
             <Box w="100%" px={isSmallerThanPhone ? '16px' : '24px'} mt="16px">
               <Warning icon="shield-checkered">
