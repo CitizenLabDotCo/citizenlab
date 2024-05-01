@@ -17,8 +17,6 @@ import { useTheme } from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
 
-import useLocalize from 'hooks/useLocalize';
-
 import { customAjv } from 'components/Form';
 import {
   getSanitizedFormData,
@@ -61,7 +59,6 @@ const CLSurveyPageLayout = memo(
     const { formatMessage } = useIntl();
     const [currentStep, setCurrentStep] = useState<number>(0);
     const [isLoading, setIsLoading] = useState(false);
-    const localize = useLocalize();
 
     // We can cast types because the tester made sure we only get correct values
     const pageTypeElements = (uischema as PageCategorization)
@@ -226,14 +223,6 @@ const CLSurveyPageLayout = memo(
           maxWidth="700px"
           height="100%"
         >
-          <Box w="100%" background={colors.background}>
-            <Box
-              w={`${percentageAnswered}%`}
-              h="4px"
-              background={theme.colors.tenantSecondary}
-              style={{ transition: 'width 0.3s ease-in-out' }}
-            />
-          </Box>
           {allowAnonymousPosting && (
             <Box w="100%" px={isSmallerThanPhone ? '16px' : '24px'} mt="16px">
               <Warning icon="shield-checkered">
@@ -319,6 +308,14 @@ const CLSurveyPageLayout = memo(
           bottom={isSmallerThanPhone ? '0' : '40px'}
           zIndex="1010"
         >
+          <Box background={colors.background}>
+            <Box
+              w={`${percentageAnswered}%`}
+              h="4px"
+              background={theme.colors.tenantSecondary}
+              style={{ transition: 'width 0.3s ease-in-out' }}
+            />
+          </Box>
           <PageControlButtons
             handleNextAndSubmit={handleNextAndSubmit}
             handlePrevious={handlePrevious}

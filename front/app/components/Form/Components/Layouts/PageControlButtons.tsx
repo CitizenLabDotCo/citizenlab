@@ -44,7 +44,6 @@ const PageControlButtons = ({
       justifyContent="space-between"
       alignItems="center"
       bgColor={colors.white}
-      borderTop={`1px solid ${colors.borderLight}`}
       padding={isSmallerThanPhone ? '16px' : '16px 24px'}
     >
       <LanguageSelector
