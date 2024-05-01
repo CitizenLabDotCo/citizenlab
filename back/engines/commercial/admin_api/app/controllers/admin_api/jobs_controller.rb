@@ -3,7 +3,7 @@
 module AdminApi
   class JobsController < AdminApiController
     def show
-      job = QueJob.find(params[:id])
+      job = QueJob.by_job_id!(params[:id])
       if show_authorized?(job)
         render json: AdminApi::JobSerializer.new(job).to_json
       else

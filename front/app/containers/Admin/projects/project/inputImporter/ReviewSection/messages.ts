@@ -66,6 +66,14 @@ export default defineMessages({
     defaultMessage:
       '{numIdeas} inputs have been imported and require approval.',
   },
+  importing: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing',
+    defaultMessage: 'Importing...',
+  },
+  errorImporting: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImporting',
+    defaultMessage: 'An error occurred during the import.',
+  },
   inputsNotApproved: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved2',
     defaultMessage:

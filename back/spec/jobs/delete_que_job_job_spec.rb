@@ -11,7 +11,7 @@ RSpec.describe DeleteQueJobJob, :active_job_que_adapter do
 
       it 'deletes the job' do
         expect { job.perform(job_id) }.to change(QueJob, :count).by(-1)
-        expect { QueJob.find(job_id) }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { QueJob.by_job_id!(job_id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
