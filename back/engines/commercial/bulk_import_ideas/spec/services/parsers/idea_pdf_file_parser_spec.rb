@@ -290,7 +290,6 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
   describe 'parse_rows' do
     it 'ignores errors from the plain text service' do
       form_parser_output = [{
-        form_pages: [1],
         pdf_pages: [1],
         fields: {
           'Title' => 'My very good idea',

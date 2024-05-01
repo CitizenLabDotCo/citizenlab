@@ -5,7 +5,7 @@ module BulkImportIdeas::Parsers::Pdf
     NUMBER_FIELD_TYPES = %w[number linear_scale]
     FILLED_OPTION_CHARS = %w[☑ ☒ >]
 
-    # TODO: JS - Needed?
+    # TODO: JS - Needed any more?
     # FORBIDDEN_HTML_TAGS_REGEX = %r{</?(div|p|span|ul|ol|li|em|img|a){1}[^>]*/?>}
     # EMPTY_SELECT_CIRCLES = ['O', '○']
     # EMPTY_MULTISELECT_SQUARES = ['☐']
@@ -18,7 +18,6 @@ module BulkImportIdeas::Parsers::Pdf
     def parse_text(pages)
       form = {
         pdf_pages: [],
-        form_pages: [],
         fields: {}
       }
       pages.each_with_index do |page, i|
@@ -34,9 +33,8 @@ module BulkImportIdeas::Parsers::Pdf
     private
 
     def parse_page(page)
-      page = page.squish
+      page = page.squish # Remove new lines and extra whitespace
 
-      # TODO: Should we be doing this here? we're also doing it later?
       # Remove static content from the whole page - ' eg *This answer may be shared...'
       choose_as_many_copy = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.choose_as_many') }
       this_answer_copy = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.this_answer') }
@@ -50,6 +48,8 @@ module BulkImportIdeas::Parsers::Pdf
       page_fragment = page
       @custom_fields.reverse_each do |field|
         title = field.title_multiloc[@locale]
+        next if title.blank?
+
         title = "#{title} (#{optional_copy})" if field.required == false
         text_split = page_fragment.split(title)
         if text_split.length > 1

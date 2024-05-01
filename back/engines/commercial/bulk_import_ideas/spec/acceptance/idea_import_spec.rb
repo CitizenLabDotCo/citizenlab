@@ -318,7 +318,6 @@ resource 'BulkImportIdeasImportIdeas' do
 
   def create_project_bulk_import_parse_pdf
     [{
-      form_pages: [1],
       pdf_pages: [1],
       fields: {
         'Title' => 'My very good idea',

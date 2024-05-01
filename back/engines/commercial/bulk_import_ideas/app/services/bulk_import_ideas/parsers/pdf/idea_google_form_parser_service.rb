@@ -62,7 +62,7 @@ module BulkImportIdeas::Parsers::Pdf
 
       # Then split into separate ideas based on the number of pages in the PDF form (form_pages_count)
       ideas = []
-      idea = { form_pages: [], pdf_pages: [], fields: {} }
+      idea = { pdf_pages: [], fields: {} }
       previous_page = 1
       page_count = 0
       fields.each do |field|
@@ -70,7 +70,7 @@ module BulkImportIdeas::Parsers::Pdf
         page_count += 1 if current_page != previous_page
         if page_count == form_pages_count # split by pages count
           ideas << idea
-          idea = { form_pages: [], pdf_pages: [], fields: {} }
+          idea = { pdf_pages: [], fields: {} }
           page_count = 0
         end
 
@@ -79,7 +79,6 @@ module BulkImportIdeas::Parsers::Pdf
         field_name = field[:type].include?('checkbox') ? "#{field[:name]}_#{position}" : field[:name].to_s
         idea[:fields][field_name] = field[:type].include?('checkbox') ? field[:type] : field[:value]
         idea[:pdf_pages] << field[:page] unless idea[:pdf_pages].include? field[:page]
-        idea[:form_pages] << (page_count + 1) unless idea[:form_pages].include?(page_count + 1)
         previous_page = field[:page]
       end
       ideas << idea
