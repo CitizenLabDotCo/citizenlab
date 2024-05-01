@@ -146,7 +146,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   def voting_results_xlsx
     if @project.phases.where(participation_method: 'voting').present?
       I18n.with_locale(current_user&.locale) do
-        xlsx = XlsxService.new.generate_project_voting_results_xlsx @project.id
+        xlsx = XlsxExport::ProjectIdeasVotesGenerator.new.generate_project_voting_results_xlsx @project
         send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
           filename: 'votes_by_input.xlsx'
       end
