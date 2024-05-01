@@ -122,9 +122,8 @@ const Container2 = ({
         enter={true}
         exit={false}
       >
-        <main>
+        <main id="e2e-idea-show">
           <Container
-            id="e2e-idea-show"
             className={`loaded ${className || ''}`}
             ref={handleContainerRef}
           >
