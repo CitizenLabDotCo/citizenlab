@@ -122,7 +122,7 @@ describe XlsxService do
     it 'contains extra columns for custom user fields' do
       create(:custom_field_domicile)
       area = create(:area, title_multiloc: { 'en' => 'Center' })
-      users.first.update(custom_field_values: { 'domicile' => area.id })
+      users.first.update!(custom_field_values: { 'domicile' => area.id })
 
       title_row = worksheet[0].cells.map(&:value)
       user_rows = worksheet.map { |row| row.cells.map(&:value) }

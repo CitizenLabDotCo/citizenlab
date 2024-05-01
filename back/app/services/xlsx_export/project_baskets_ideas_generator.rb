@@ -1,5 +1,5 @@
 module XlsxExport
-  class ProjectBasketsGenerator
+  class ProjectBasketsIdeasGenerator
     def initialize(project)
       @project = project
       @xlsx_service = XlsxService.new

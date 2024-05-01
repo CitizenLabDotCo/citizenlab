@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe XlsxExport::ProjectBasketsGenerator do
+describe XlsxExport::ProjectBasketsIdeasGenerator do
   let(:service) { described_class.new(project) }
 
   describe 'generate_project_baskets_xlsx' do
