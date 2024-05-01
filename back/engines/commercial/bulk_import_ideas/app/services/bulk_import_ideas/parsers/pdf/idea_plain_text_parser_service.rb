@@ -87,12 +87,13 @@ module BulkImportIdeas::Parsers::Pdf
     def handle_select_field(field, field_value)
       option_values = []
 
-      # First throw out any options that are not selected
+      # First throw out any options that are not filled
       field_value = reject_empty_options(field_value, field.options)
 
-      # First match clearly known filled options
       field.options.each do |option|
         option_title = option.title_multiloc[@locale]
+
+        # Now match clearly known filled option characters
         FILLED_OPTION_CHARS.each do |char|
           filled_option_text = "#{char} #{option_title}"
           if field_value.include? filled_option_text
@@ -100,12 +101,12 @@ module BulkImportIdeas::Parsers::Pdf
             field_value = field_value.gsub(filled_option_text, '').squish
           end
         end
-      end
 
-      # Now match any that are not prefixed with a character - these seem to be selected more than not
-      field.options.each do |option|
-        option_title = option.title_multiloc[@locale]
-        option_values << option_title if field_value.include? option_title
+        # Now match any that are not prefixed with a character - these seem to be selected more than not
+        if field_value.include? option_title
+          option_values << option_title
+          field_value = field_value.gsub(option_title, '').squish
+        end
       end
 
       # Single select should only return the first option if more than one has been detected
