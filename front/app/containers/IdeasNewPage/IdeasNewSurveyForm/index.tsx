@@ -27,7 +27,6 @@ import useLocalize from 'hooks/useLocalize';
 
 import Form from 'components/Form';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
-import PageContainer from 'components/UI/PageContainer';
 
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
@@ -225,20 +224,18 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   return (
     <>
       <IdeasNewMeta isSurvey={true} />
-      <main id="e2e-idea-new-page">
-        <PageContainer overflow="hidden">
-          <Box
-            mx="auto"
-            position="relative"
-            top={isSmallerThanPhone ? '0' : '40px'}
-            maxWidth="700px"
-          >
-            <SurveyHeading
-              titleText={localize(
-                phase?.attributes.native_survey_title_multiloc
-              )}
-            />
-          </Box>
+      <>
+        <Box
+          mx="auto"
+          position="relative"
+          top={isSmallerThanPhone ? '0' : '40px'}
+          maxWidth="700px"
+        >
+          <SurveyHeading
+            titleText={localize(phase?.attributes.native_survey_title_multiloc)}
+          />
+        </Box>
+        <main id="e2e-idea-new-page">
           <Box
             display="flex"
             justifyContent="center"
@@ -263,8 +260,8 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
               />
             </Box>
           </Box>
-        </PageContainer>
-      </main>
+        </main>
+      </>
     </>
   );
 };
