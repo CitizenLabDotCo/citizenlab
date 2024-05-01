@@ -242,7 +242,6 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
           <Box
             display="flex"
             justifyContent="center"
-            // Used to createa gap between the form and the top of the page
             pt={isSmallerThanPhone ? '0' : '40px'}
           >
             <Box
