@@ -22,11 +22,6 @@ RSpec.describe Initiative do
       initiative = create(:initiative, author: u)
       expect(initiative.author_name).to eq u.full_name
     end
-
-    it 'should generate a slug on creation' do
-      idea = create(:initiative, slug: nil)
-      expect(idea.slug).to be_present
-    end
   end
 
   context 'published at' do
@@ -81,15 +76,12 @@ RSpec.describe Initiative do
     end
   end
 
-  describe 'slug' do
-    it 'is set properly upon publication' do
-      i1 = create(:initiative, title_multiloc: nil, slug: nil, publication_status: 'draft')
-      i1.update!(title_multiloc: { 'en' => 'My stupendous idea' }, publication_status: 'published')
-      expect(i1.slug).to be_present
-
-      i2 = create(:initiative, title_multiloc: nil, slug: nil, publication_status: 'draft')
-      i2.update!(title_multiloc: { 'en' => 'My sublime idea' }, publication_status: 'published')
-      expect(i1.slug).to be_present
+  describe 'generate_slug' do
+    it 'generates a slug upon publication' do
+      initiative = create(:initiative, title_multiloc: nil, slug: nil, publication_status: 'draft')
+      initiative.author.update!(locale: 'en')
+      initiative.update!(title_multiloc: { 'fr-BE' => 'Ma superbe idée', 'en' => 'My stupendous idea' }, publication_status: 'published')
+      expect(initiative.slug).to eq 'my-stupendous-idea'
     end
   end
 
