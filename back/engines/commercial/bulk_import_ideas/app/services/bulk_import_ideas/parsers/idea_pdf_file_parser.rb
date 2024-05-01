@@ -32,23 +32,21 @@ module BulkImportIdeas::Parsers
     end
 
     def parse_rows(file)
-      pdf_file = file.file.read
+      pdf_file = URI.open(file.file_content_url).read
 
       # NOTE: We return both parsed values so we can merge the best values from both
       google_forms_service = Pdf::IdeaGoogleFormParserService.new
-      form_parsed_ideas = google_forms_service.parse_pdf(pdf_file, import_form_data[:page_count])
-      text_parsed_ideas = begin
+      form_parsed_idea = google_forms_service.parse_pdf(pdf_file)
+      text_parsed_idea = begin
         Pdf::IdeaPlainTextParserService.new(
-          @phase || @project,
           @form_fields,
-          @locale,
-          import_form_data[:page_count]
+          @locale
         ).parse_text(google_forms_service.raw_text_page_array(pdf_file))
       rescue BulkImportIdeas::Error
         []
       end
 
-      merge_pdf_rows(form_parsed_ideas, text_parsed_ideas, file)
+      merge_pdf_rows(form_parsed_idea, text_parsed_idea, file)
     end
 
     private
@@ -164,17 +162,16 @@ module BulkImportIdeas::Parsers
       idea
     end
 
-    def merge_pdf_rows(form_parsed_ideas, text_parsed_ideas, file)
-      form_parsed_idea_rows = ideas_to_idea_rows(form_parsed_ideas, file)
-      text_parsed_idea_rows = ideas_to_idea_rows(text_parsed_ideas, file)
+    def merge_pdf_rows(form_parsed_idea, text_parsed_idea, file)
+      form_parsed_idea_row = ideas_to_idea_rows([form_parsed_idea], file).first
+      text_parsed_idea_row = ideas_to_idea_rows([text_parsed_idea], file).first
 
-      return form_parsed_idea_rows unless form_parsed_idea_rows.count == text_parsed_idea_rows.count
+      return [form_parsed_idea_row] if text_parsed_idea_row.blank?
 
-      form_parsed_idea_rows.each_with_index.map do |idea, index|
-        idea[:custom_field_values] = text_parsed_idea_rows[index][:custom_field_values].merge(idea[:custom_field_values])
-        idea[:pdf_pages] = complete_page_range(idea[:pdf_pages], text_parsed_idea_rows[index][:pdf_pages])
-        text_parsed_idea_rows[index].merge(idea)
-      end
+      # Merge & prefer custom field values from text parsed ideas
+      form_parsed_idea_row[:custom_field_values] = form_parsed_idea_row[:custom_field_values].merge(text_parsed_idea_row[:custom_field_values])
+      form_parsed_idea_row[:pdf_pages] = complete_page_range(form_parsed_idea_row[:pdf_pages], text_parsed_idea_row[:pdf_pages])
+      [text_parsed_idea_row.merge(form_parsed_idea_row)]
     end
 
     # @param [Hash] field - comes from IdeaPdfFormExporter#add_to_importer_fields

@@ -307,24 +307,25 @@ resource 'BulkImportIdeasImportIdeas' do
   end
 
   def create_project_bulk_import_raw_text_array
-    ["Title\n" \
-     "This is really a great title\n" \
-     "Description\n" \
-     "And this is the body\n" \
-     "Location (optional)\n" \
-     "Somewhere\n" \
-     "Page 1\n"]
+    ["
+      Title
+      This is really a great title
+      Description
+      And this is the body
+      Location (optional)
+      Somewhere
+      Page 1
+    "]
   end
 
   def create_project_bulk_import_parse_pdf
-    [{
-      form_pages: [1],
+    {
       pdf_pages: [1],
       fields: {
         'Title' => 'My very good idea',
         'Description' => 'And this is the very good body'
       }
-    }]
+    }
   end
 
   def stub_external_api

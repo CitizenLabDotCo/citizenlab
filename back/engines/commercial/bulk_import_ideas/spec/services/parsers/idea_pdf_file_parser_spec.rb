@@ -239,67 +239,38 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
   end
 
   describe 'merge_pdf_rows' do
-    let(:form_parsed_ideas) do
-      [
-        {
-          pdf_pages: [1, 2],
-          fields: { 'Title' => 'Form title 1', 'Location' => 'Formville' }
-        },
-        {
-          pdf_pages: [3, 4],
-          fields: { 'Title' => 'Form title 2', 'Description' => 'Form description 2', 'Select field' => 'Yes' }
-        }
-      ]
+    let(:form_parsed_idea) do
+      {
+        pdf_pages: [1, 2],
+        fields: { 'Title' => 'Form title 2', 'Description' => 'Form description 2', 'A text field' => 'Something', 'Select field' => 'Yes' }
+      }
     end
 
-    let(:text_parsed_ideas) do
-      [
-        {
-          pdf_pages: [1, 2],
-          fields: { 'Title' => 'Text title 1', 'Description' => 'Text description 1', 'Location' => 'Textville' }
-        },
-        {
-          pdf_pages: [3, 4],
-          fields: { 'Title' => 'Text title 2', 'Description' => 'Text description 2', 'Location' => 'Textington', 'Another select field' => 'No' }
-        }
-      ]
+    let(:text_parsed_idea) do
+      {
+        pdf_pages: [1, 2],
+        fields: { 'Title' => 'Text title 2', 'Description' => 'Text description 2', 'Location' => 'Textington', 'Select field' => 'No', 'Another select field' => 'No' }
+      }
     end
 
     it 'merges both sources, prioritising those from the form parser' do
-      rows = service.send(:merge_pdf_rows, form_parsed_ideas, text_parsed_ideas, nil)
-      expect(rows[0]).to include({
-        title_multiloc: { en: 'Form title 1' },
-        body_multiloc: { en: 'Text description 1' },
-        location_description: 'Formville'
-      })
-      expect(rows[1]).to include({
+      rows = service.send(:merge_pdf_rows, form_parsed_idea, text_parsed_idea, nil)
+      expect(rows.first).to include({
         title_multiloc: { en: 'Form title 2' },
         body_multiloc: { en: 'Form description 2' },
         location_description: 'Textington'
       })
     end
 
-    it 'merges custom fields successfully' do
-      rows = service.send(:merge_pdf_rows, form_parsed_ideas, text_parsed_ideas, nil)
-      expect(rows[1][:custom_field_values]).to match_array({ select_field: 'yes', another_select_field: 'no' })
-    end
-
-    it 'ignores the text parsed ideas if the array lengths differ' do
-      text_parsed_ideas.pop
-      rows = service.send(:merge_pdf_rows, form_parsed_ideas, text_parsed_ideas, nil)
-      expect(rows[0]).not_to include({
-        body_multiloc: { en: 'Text description 1' }
-      })
-      expect(rows[1]).not_to include({
-        location_description: 'Textington'
-      })
+    it 'merges custom fields successfully and prefers the answers from the text parser' do
+      rows = service.send(:merge_pdf_rows, form_parsed_idea, text_parsed_idea, nil)
+      expect(rows.first[:custom_field_values]).to match_array({ a_text_field: 'Something', select_field: 'no', another_select_field: 'no' })
     end
   end
 
   describe 'parse_rows' do
     it 'ignores errors from the plain text service' do
       form_parser_output = [{
-        form_pages: [1],
         pdf_pages: [1],
         fields: {
           'Title' => 'My very good idea',

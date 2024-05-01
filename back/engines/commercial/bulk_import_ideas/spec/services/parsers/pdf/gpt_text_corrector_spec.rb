@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe BulkImportIdeas::Parsers::Pdf::GPTTextCorrector do
-  subject(:corrector) { described_class.new(phase, idea_rows) }
+  subject(:corrector) { described_class.new(phase, correctable_fields, idea_rows) }
 
   let_it_be(:correctable_fields) do
     [
