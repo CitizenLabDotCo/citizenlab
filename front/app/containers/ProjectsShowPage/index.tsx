@@ -47,7 +47,7 @@ import TimelineContainer from './timeline';
 
 const confetti = new JSConfetti();
 
-const Container = styled.main<{ background: string }>`
+const Container = styled.div<{ background: string }>`
   flex: 1 0 auto;
   height: 100%;
   min-height: calc(
@@ -179,13 +179,15 @@ const ProjectsShowPage = ({ project }: Props) => {
   }
 
   return (
-    <Container
-      background={
-        events && events?.data.length > 0 ? '#fff' : colors.background
-      }
-    >
-      {content}
-    </Container>
+    <main>
+      <Container
+        background={
+          events && events?.data.length > 0 ? colors.white : colors.background
+        }
+      >
+        {content}
+      </Container>
+    </main>
   );
 };
 

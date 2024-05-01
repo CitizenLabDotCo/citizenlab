@@ -25,7 +25,7 @@ import {
   contentFadeInDelay,
 } from '../styleConstants';
 
-const Main = styled.main`
+const Container = styled.div`
   width: 100%;
   max-width: ${pageContentMaxWidth}px;
   position: relative;
@@ -68,7 +68,7 @@ interface Props {
   handleContainerRef: (element: HTMLElement | null) => void;
 }
 
-const Container = ({
+const Container2 = ({
   projectId,
   isLoaded,
   className,
@@ -108,9 +108,9 @@ const Container = ({
   return (
     <>
       {!isLoaded && (
-        <Main className={`loading ${className || ''}`}>
+        <Container className={`loading ${className || ''}`}>
           <Spinner />
-        </Main>
+        </Container>
       )}
       <CSSTransition
         classNames="content"
@@ -122,13 +122,15 @@ const Container = ({
         enter={true}
         exit={false}
       >
-        <Main
-          id="e2e-idea-show"
-          className={`loaded ${className || ''}`}
-          ref={handleContainerRef}
-        >
-          {children}
-        </Main>
+        <main>
+          <Container
+            id="e2e-idea-show"
+            className={`loaded ${className || ''}`}
+            ref={handleContainerRef}
+          >
+            {children}
+          </Container>
+        </main>
       </CSSTransition>
       <Modal
         opened={!!newIdeaId}
@@ -158,4 +160,4 @@ const Container = ({
   );
 };
 
-export default Container;
+export default Container2;
