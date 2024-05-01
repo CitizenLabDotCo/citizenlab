@@ -2,6 +2,7 @@ lv:
   email_campaigns:
     campaign_type_description:
       "manual": Oficiālie ziņojumi
+      "manual_project_participants": Oficiāli paziņojumi projekta dalībniekiem
       "admin_rights_received": Saņemtās administratora tiesības
       "comment_deleted_by_admin": Mana komentāra dzēšana
       "comment_marked_as_spam": Ziņot par surogātpastu komentārā
@@ -559,6 +560,7 @@ lv:
         admins: 'Administratoriem'
         admins_and_managers: 'Administratoriem un vadītājiem'
         managers: 'Vadītājiem'
+        project_participants: 'Projekta dalībniekiem'
         registered_users: 'Reģistrētiem lietotājiem'
       recipient_segment:
         admins: 'Administratori'

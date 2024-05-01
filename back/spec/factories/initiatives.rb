@@ -14,7 +14,6 @@ FactoryBot.define do
         'nl-BE' => '<p>Hier zullen we vast wel hopen groene energie uit halen!</p>'
       }
     end
-    sequence(:slug) { |n| "turbines-on-kanals-#{n}" }
     publication_status { 'published' }
     author
     assignee { nil }
