@@ -26,7 +26,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
 
 import Container from './components/Container';
-import DesktopTopBar from './components/DesktopTopBar';
 import IdeaTitle from './components/IdeaTitle';
 import MetaInformation from './components/MetaInformation';
 import ProposedBudget from './components/ProposedBudget';
@@ -96,7 +95,6 @@ export const IdeasShow = ({
       className={className}
       handleContainerRef={handleContainerRef}
     >
-      {!compact && <DesktopTopBar project={project.data} idea={idea.data} />}
       <Box display="flex" id="e2e-idea-show-page-content">
         <Box flex="1 1 100%">
           {wasImported && (
@@ -125,7 +123,6 @@ export const IdeasShow = ({
             idea={idea}
             projectId={project.data.id}
             translateButtonClicked={translateButtonIsClicked}
-            showActions={compact}
           />
           <ProjectLink project={project.data} />
           {ideaImageLarge && (

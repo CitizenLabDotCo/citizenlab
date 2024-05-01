@@ -27,6 +27,7 @@ import VerticalCenterer from 'components/VerticalCenterer';
 
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 
+import DesktopTopBar from './DesktopTopBar';
 import IdeaShowPageTopBar from './IdeaShowPageTopBar';
 
 const StyledIdeaShowPageTopBar = styled(IdeaShowPageTopBar)`
@@ -98,40 +99,40 @@ const IdeasShowPage = () => {
   return (
     <>
       <IdeaMeta ideaId={idea.data.id} />
-      <main id="e2e-idea-show">
-        <VotingContext projectId={project.data.id}>
-          <Box
-            background={colors.white}
-            pt={
-              showCTABarAtTopOfPage
-                ? `${stylingConsts.menuHeight}px`
-                : undefined
-            }
-          >
-            {isSmallerThanTablet && (
-              <StyledIdeaShowPageTopBar
-                projectId={idea.data.relationships.project.data.id}
-                ideaId={idea.data.id}
-                phase={phase}
-              />
-            )}
+      <VotingContext projectId={project.data.id}>
+        <Box
+          background={colors.white}
+          pt={
+            showCTABarAtTopOfPage ? `${stylingConsts.menuHeight}px` : undefined
+          }
+        >
+          {isSmallerThanTablet ? (
+            <StyledIdeaShowPageTopBar
+              projectId={idea.data.relationships.project.data.id}
+              ideaId={idea.data.id}
+              phase={phase}
+            />
+          ) : (
+            <DesktopTopBar project={project.data} />
+          )}
+          <main id="e2e-idea-show">
             <StyledIdeasShow
               ideaId={idea.data.id}
               projectId={idea.data.relationships.project.data.id}
               compact={isSmallerThanTablet}
             />
+          </main>
+        </Box>
+        {showCTABar && (
+          <Box
+            position="fixed"
+            bottom={isSmallerThanTablet ? '0px' : undefined} // Show CTA at bottom of screen on mobile
+            width="100vw"
+          >
+            <ProjectCTABar projectId={project.data.id} />
           </Box>
-          {showCTABar && (
-            <Box
-              position="fixed"
-              bottom={isSmallerThanTablet ? '0px' : undefined} // Show CTA at bottom of screen on mobile
-              width="100vw"
-            >
-              <ProjectCTABar projectId={project.data.id} />
-            </Box>
-          )}
-        </VotingContext>
-      </main>
+        )}
+      </VotingContext>
     </>
   );
 };
