@@ -149,7 +149,7 @@ da:
         title: Detaljer
         description:
       other_text_field:
-        title: If you picked '{other_option}', what are you thinking of?
+        title: Siden du valgte "{other_option}", hvad tænker du så på?
   custom_forms:
     categories:
       main_content:
