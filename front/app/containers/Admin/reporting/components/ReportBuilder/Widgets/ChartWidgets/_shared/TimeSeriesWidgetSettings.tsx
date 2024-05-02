@@ -42,7 +42,10 @@ const ResolutionInput = () => {
 
   return (
     <Box mb="20px">
-      <ResolutionControl value={resolution} onChange={handleResolution} />
+      <ResolutionControl
+        value={resolution ?? 'month'}
+        onChange={handleResolution}
+      />
     </Box>
   );
 };
