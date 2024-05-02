@@ -631,8 +631,6 @@ function apiCreateIdea({
     return doRequest(jwt);
   }
 
-  throw Error('KANKER KANKER KANKER');
-
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
     return doRequest(adminJwt);
