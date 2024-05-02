@@ -212,6 +212,7 @@ en:
       budget: 'Budget'
       cost: 'Cost'
       created_at: 'Submitted at'
+      submitted_at: 'Submitted at'
       published_at: 'Published at'
       comments_count: 'Comments'
       participants: 'Participants'

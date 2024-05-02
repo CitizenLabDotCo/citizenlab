@@ -31,7 +31,7 @@ module XlsxExport
       end
 
       columns << {
-        header: I18n.t('created_at', scope: 'xlsx_export.column_headers'),
+        header: I18n.t('submitted_at', scope: 'xlsx_export.column_headers'),
         f: ->(b) { b.submitted_at }, skip_sanitization: true
       }
 
