@@ -24,6 +24,7 @@ import messages from './messages';
 
 const StyledBox = styled(Box)`
   cursor: pointer;
+  border: 1px solid ${colors.grey800};
   background-color: ${colors.grey100};
   &:hover {
     background-color: ${darken(0.05, colors.grey100)};
@@ -69,7 +70,7 @@ const SingleSelectRadioEnumControl = ({
           <StyledBox mb="12px" key={option.value} borderRadius="3px">
             <Radio
               padding="20px 20px 4px 20px"
-              marginTop="8px"
+              borderColor={colors.grey800}
               buttonColor={theme.colors.tenantSecondary}
               id={`${path}-radio-${index}`}
               name="name-temp"
