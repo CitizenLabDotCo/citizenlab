@@ -139,55 +139,54 @@ const ProjectsShowPage = ({ project }: Props) => {
         <ProjectHeader projectId={projectId} />
         <ProjectCTABar projectId={projectId} />
 
-        <div id="participation-detail">
-          <TimelineContainer projectId={projectId} />
-        </div>
-        {!!events?.data.length && (
-          <Box
-            id="e2e-events-section-project-page"
-            display="flex"
-            flexDirection="column"
-            gap="48px"
-            mx="auto"
-            my="48px"
-            maxWidth="1166px"
-            padding={isSmallerThanTablet ? '20px' : '0px'}
-          >
-            <EventsViewer
-              showProjectFilter={false}
-              projectId={projectId}
-              eventsTime="currentAndFuture"
-              title={formatMessage(messages.upcomingAndOngoingEvents)}
-              fallbackMessage={messages.noUpcomingOrOngoingEvents}
-              projectPublicationStatuses={['published', 'draft', 'archived']}
-            />
-            <EventsViewer
-              showProjectFilter={false}
-              projectId={projectId}
-              eventsTime="past"
-              title={formatMessage(messages.pastEvents)}
-              fallbackMessage={messages.noPastEvents}
-              projectPublicationStatuses={['published', 'draft', 'archived']}
-              showDateFilter={false}
-            />
-          </Box>
-        )}
-
+        <main>
+          <div id="participation-detail">
+            <TimelineContainer projectId={projectId} />
+          </div>
+          {!!events?.data.length && (
+            <Box
+              id="e2e-events-section-project-page"
+              display="flex"
+              flexDirection="column"
+              gap="48px"
+              mx="auto"
+              my="48px"
+              maxWidth="1166px"
+              padding={isSmallerThanTablet ? '20px' : '0px'}
+            >
+              <EventsViewer
+                showProjectFilter={false}
+                projectId={projectId}
+                eventsTime="currentAndFuture"
+                title={formatMessage(messages.upcomingAndOngoingEvents)}
+                fallbackMessage={messages.noUpcomingOrOngoingEvents}
+                projectPublicationStatuses={['published', 'draft', 'archived']}
+              />
+              <EventsViewer
+                showProjectFilter={false}
+                projectId={projectId}
+                eventsTime="past"
+                title={formatMessage(messages.pastEvents)}
+                fallbackMessage={messages.noPastEvents}
+                projectPublicationStatuses={['published', 'draft', 'archived']}
+                showDateFilter={false}
+              />
+            </Box>
+          )}
+        </main>
         <SuccessModal projectId={projectId} />
       </ContentWrapper>
     );
   }
 
   return (
-    <main>
-      <Container
-        background={
-          events && events?.data.length > 0 ? colors.white : colors.background
-        }
-      >
-        {content}
-      </Container>
-    </main>
+    <Container
+      background={
+        events && events?.data.length > 0 ? colors.white : colors.background
+      }
+    >
+      {content}
+    </Container>
   );
 };
 
