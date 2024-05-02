@@ -2,7 +2,7 @@
 
 module ParticipationMethod
   class Survey < Base
-    def supports_everyone_permission?
+    def supports_permitted_by_everyone?
       true
     end
   end

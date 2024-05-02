@@ -114,7 +114,7 @@ module ParticipationMethod
       true
     end
 
-    def supports_everyone_permission?
+    def supports_permitted_by_everyone?
       true
     end
 
