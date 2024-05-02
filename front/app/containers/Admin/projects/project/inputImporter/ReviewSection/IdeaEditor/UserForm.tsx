@@ -63,7 +63,6 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
       updateUserFormData({
         user_state: 'new-imported-user',
         email: selectedAuthor.email,
-        // user_id: undefined, // TODO: JS - this does not seem right?
       });
       return;
     }
