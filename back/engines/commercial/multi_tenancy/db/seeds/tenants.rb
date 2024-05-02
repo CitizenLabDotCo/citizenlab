@@ -445,6 +445,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            input_importer: {
+              enabled: true,
+              allowed: true
+            },
             import_printed_forms: {
               enabled: true,
               allowed: true
