@@ -672,7 +672,7 @@ resource 'Projects' do
       example_request 'Get xlsx of voters in voting phases' do
         expect(status).to eq 200
         expect(response_headers['Content-Type']).to include('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        expect(response_headers['Content-Disposition']).to include('voter_selections.xlsx')
+        expect(response_headers['Content-Disposition']).to include('votes_by_user.xlsx')
       end
     end
 
@@ -686,7 +686,7 @@ resource 'Projects' do
       example_request 'Get xlsx of voters in voting phases of project the user moderates' do
         expect(status).to eq 200
         expect(response_headers['Content-Type']).to include('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        expect(response_headers['Content-Disposition']).to include('voter_selections.xlsx')
+        expect(response_headers['Content-Disposition']).to include('votes_by_user.xlsx')
       end
 
       example '[Unauthorized] Get xlsx of voters in voting phases of project the user does NOT moderate', document: false do
