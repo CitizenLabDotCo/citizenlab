@@ -4,14 +4,14 @@ import messages from 'containers/Admin/dashboard/messages';
 
 import Card from '../../_shared/Card';
 import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
-import { ChartWidgetProps } from '../typings';
+import { TimeSeriesWidgetProps } from '../typings';
 
 import ReactionsByTimeCard from './ReactionsByTimeCard';
 
-const ReactionsByTimeWidget = ({ title, ...props }: ChartWidgetProps) => {
+const ReactionsByTimeWidget = ({ title, ...props }: TimeSeriesWidgetProps) => {
   return (
     <Card title={title} pagebreak>
-      <ReactionsByTimeCard {...props} resolution="month" />
+      <ReactionsByTimeCard {...props} />
     </Card>
   );
 };
@@ -22,6 +22,7 @@ ReactionsByTimeWidget.craft = {
     projectId: undefined,
     startAt: undefined,
     endAt: null,
+    resolution: undefined,
   },
   related: {
     settings: ChartWidgetSettings,
