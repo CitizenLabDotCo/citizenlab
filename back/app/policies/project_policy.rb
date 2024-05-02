@@ -68,6 +68,10 @@ class ProjectPolicy < ApplicationPolicy
     index_xlsx?
   end
 
+  def voting_results_xlsx?
+    index_xlsx?
+  end
+
   def create?
     return false unless active?
     return true if admin?

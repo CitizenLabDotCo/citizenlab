@@ -270,6 +270,12 @@ class XlsxService
     end
   end
 
+  def format_author_name(input)
+    return input.author_name unless input.anonymous?
+
+    I18n.t 'xlsx_export.anonymous'
+  end
+
   private
 
   def multiloc_service
@@ -329,12 +335,6 @@ class XlsxService
 
   def namespace(field_id, option_key)
     "#{field_id}/#{option_key}"
-  end
-
-  def format_author_name(input)
-    return input.author_name unless input.anonymous?
-
-    I18n.t 'xlsx_export.anonymous'
   end
 end
 
