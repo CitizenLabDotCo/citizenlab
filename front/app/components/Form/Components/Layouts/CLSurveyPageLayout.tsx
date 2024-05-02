@@ -44,6 +44,7 @@ import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import {
   extractElementsByOtherOptionLogic,
+  hasOtherTextFieldBelow,
   isVisible,
 } from '../Controls/visibilityUtils';
 
@@ -341,12 +342,10 @@ const CLSurveyPageLayout = memo(
                         </Box>
                       )}
                       {pageElements.map((elementUiSchema, index) => {
-                        const key = elementUiSchema.scope.split('/').pop();
-                        const hasOtherFieldBelow =
-                          key &&
-                          (Array.isArray(data[key])
-                            ? data[key].includes('other')
-                            : data[key] === 'other');
+                        const hasOtherFieldBelow = hasOtherTextFieldBelow(
+                          elementUiSchema,
+                          data
+                        );
 
                         return (
                           <Box

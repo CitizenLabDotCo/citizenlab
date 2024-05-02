@@ -1274,13 +1274,25 @@
 
       "import_printed_forms": {
         "type": "object",
-        "title": "Import printed forms",
-        "description": "Enables the importing from handwritten idea and surveys on printed forms.",
+        "title": "Form Sync (fka import printed forms)",
+        "description": "Enables the importing of PDF files from handwritten ideas and surveys on printed forms.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "input_importer": {
+        "type": "object",
+        "title": "Input importer",
+        "description": "Enables the importing of Excel (XLSX) files with ideas and surveys.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
         }
       },
 
@@ -1384,7 +1396,8 @@
 
     "large_summaries": ["analysis"],
     "ask_a_question": ["analysis"],
-    "advanced_autotagging": ["analysis"]
+    "advanced_autotagging": ["analysis"],
+    "import_printed_forms": ["input_importer"]
   },
   "definitions": {
     "multiloc_string": {
