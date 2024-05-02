@@ -28,7 +28,7 @@ class BulkImportIdeas::Parsers::Pdf::GPTTextCorrector
 
     # Make sure each row has a unique ID
     @idea_rows = @idea_rows.map.with_index do |row, index|
-      row[:id] = index
+      row[:id] = index + 1
       row
     end
 

@@ -18,8 +18,8 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::GPTTextCorrector do
 
   let(:idea_rows) do
     [
-      { id: '1', project_id: '1', title_multiloc: { en: 'title' }, custom_field_values: { field1: 'wrong value' } },
-      { id: '2', project_id: '2', title_multiloc: { en: 'title 2' }, custom_field_values: { field1: 'wrong value 2' } }
+      { id: 1, project_id: '1', title_multiloc: { en: 'title' }, custom_field_values: { field1: 'wrong value' } },
+      { id: 2, project_id: '2', title_multiloc: { en: 'title 2' }, custom_field_values: { field1: 'wrong value 2' } }
     ]
   end
 
@@ -36,8 +36,8 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::GPTTextCorrector do
     context 'when idea_rows is not blank' do
       let(:gpt_response) do
         [
-          { id: '1', title_multiloc: { en: 'corrected title' }, custom_field_values: { field1: 'corrected value' } },
-          { id: '2', title_multiloc: { en: 'corrected title 2' }, custom_field_values: { field1: 'corrected value 2' } }
+          { id: 1, title_multiloc: { en: 'corrected title' }, custom_field_values: { field1: 'corrected value' } },
+          { id: 2, title_multiloc: { en: 'corrected title 2' }, custom_field_values: { field1: 'corrected value 2' } }
         ].to_json
       end
 
@@ -49,22 +49,22 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::GPTTextCorrector do
         expect_any_instance_of(Analysis::LLM::GPT4Turbo).to receive(:chat).once.with(/title_multiloc.*field1/).and_return(gpt_response)
 
         expect(corrector.correct).to eq([
-          { id: '1', project_id: '1', title_multiloc: { en: 'corrected title' }, custom_field_values: { field1: 'corrected value' } },
-          { id: '2', project_id: '2', title_multiloc: { en: 'corrected title 2' }, custom_field_values: { field1: 'corrected value 2' } }
+          { id: 1, project_id: '1', title_multiloc: { en: 'corrected title' }, custom_field_values: { field1: 'corrected value' } },
+          { id: 2, project_id: '2', title_multiloc: { en: 'corrected title 2' }, custom_field_values: { field1: 'corrected value 2' } }
         ])
       end
 
       context 'when custom fields are empty' do
         let(:idea_rows) do
           [
-            { id: '1', project_id: '1', title_multiloc: { en: 'title' } },
-            { id: '2', project_id: '2', title_multiloc: { en: 'title 2' } }
+            { id: 1, project_id: '1', title_multiloc: { en: 'title' } },
+            { id: 2, project_id: '2', title_multiloc: { en: 'title 2' } }
           ]
         end
         let(:gpt_response) do
           [
-            { id: '1', title_multiloc: { en: 'corrected title' } },
-            { id: '2', title_multiloc: { en: 'corrected title 2' } }
+            { id: 1, title_multiloc: { en: 'corrected title' } },
+            { id: 2, title_multiloc: { en: 'corrected title 2' } }
           ].to_json
         end
 
@@ -72,8 +72,8 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::GPTTextCorrector do
           expect_any_instance_of(Analysis::LLM::GPT4Turbo).to receive(:chat).once.with(/title_multiloc/).and_return(gpt_response)
 
           expect(corrector.correct).to eq([
-            { id: '1', project_id: '1', title_multiloc: { en: 'corrected title' } },
-            { id: '2', project_id: '2', title_multiloc: { en: 'corrected title 2' } }
+            { id: 1, project_id: '1', title_multiloc: { en: 'corrected title' } },
+            { id: 2, project_id: '2', title_multiloc: { en: 'corrected title 2' } }
           ])
         end
       end
