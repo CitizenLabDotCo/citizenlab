@@ -70,7 +70,11 @@ const SurveyHeading = ({ titleText }: Props) => {
         display="flex"
         alignItems="center"
         // If we don't have an edit button, it still needs to look consistent
-        minHeight={`${stylingConsts.menuHeight}px`}
+        minHeight={
+          isSmallerThanPhone
+            ? `${stylingConsts.mobileTopBarHeight}px`
+            : `${stylingConsts.menuHeight}px`
+        }
         px="24px"
         borderBottom={`1px solid ${colors.divider}`}
       >
