@@ -246,18 +246,29 @@ const CLSurveyPageLayout = memo(
       return null;
     }
 
+    const getFormContainerHeight = () => {
+      // TODO: Simplify the styling in CLSurveyPageLayout.
+      // Difficult to make changes to the layout due to the complex styling.
+      if (hasScrollBars) {
+        return 'fit-content';
+      } else if (isSmallerThanPhone) {
+        return ''; // Returning 100% on mobile results in odd UI behavior
+      }
+      return '100%';
+    };
+
     return (
       <>
         <Box
           width="100%"
           height="100%"
-          pt="82px"
-          pb="72px"
           maxWidth="700px"
           display="flex"
           flexDirection="column"
           justifyContent="center"
           alignItems="center"
+          pt={isSmallerThanPhone ? '' : '82px'}
+          pb={isSmallerThanPhone ? '' : '72px'}
         >
           <SurveyHeading
             project={project.data}
@@ -296,8 +307,10 @@ const CLSurveyPageLayout = memo(
                     <Box
                       display="flex"
                       justifyContent="center"
-                      h={hasScrollBars ? 'fit-content' : '100%'}
+                      h={getFormContainerHeight()}
                       flexDirection="column"
+                      pt={isSmallerThanPhone ? '60px' : ''}
+                      pb={isSmallerThanPhone ? '160px' : ''}
                     >
                       {page.options.title && (
                         <Title
