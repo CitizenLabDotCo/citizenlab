@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module XlsxExport
-  class GeneratorService
+  class InputsGenerator
     def generate_inputs_for_phase(phase_id, include_private_attributes)
       phase = eager_load_phase(phase_id)
       create_stream do |workbook|

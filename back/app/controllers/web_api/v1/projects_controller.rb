@@ -138,7 +138,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def index_xlsx
     I18n.with_locale(current_user.locale) do
-      xlsx = XlsxExport::GeneratorService.new.generate_inputs_for_project @project.id, view_private_attributes: true
+      xlsx = XlsxExport::InputsGenerator.new.generate_inputs_for_project @project.id, view_private_attributes: true
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'inputs.xlsx'
     end
   end
