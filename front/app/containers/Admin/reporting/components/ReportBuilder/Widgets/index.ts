@@ -4,17 +4,19 @@ import whiteSpaceMessages from 'components/admin/ContentBuilder/Widgets/WhiteSpa
 import { MessageDescriptor } from 'utils/cl-intl';
 
 import AboutReportWidget, { aboutReportTitle } from './AboutReportWidget';
+import AgeWidget, { ageTitle } from './ChartWidgets/_deprecated/AgeWidget';
+import GenderWidget, {
+  genderTitle,
+} from './ChartWidgets/_deprecated/GenderWidget';
 import ActiveUsersWidget, {
   activeUsersTitle,
 } from './ChartWidgets/ActiveUsersWidget';
-import AgeWidget, { ageTitle } from './ChartWidgets/AgeWidget';
 import CommentsByTimeWidget, {
   commentsByTimeTitle,
 } from './ChartWidgets/CommentsByTimeWidget';
 import DemographicsWidget, {
   demographicsTitle,
 } from './ChartWidgets/DemographicsWidget';
-import GenderWidget, { genderTitle } from './ChartWidgets/GenderWidget';
 import PostsByTimeWidget, {
   postsByTimeTitle,
 } from './ChartWidgets/PostsByTimeWidget';
@@ -46,8 +48,6 @@ export const WIDGETS = {
   SurveyQuestionResultWidget,
   VisitorsWidget,
   VisitorsTrafficSourcesWidget,
-  AgeWidget,
-  GenderWidget,
   ActiveUsersWidget,
   MostReactedIdeasWidget,
   SingleIdeaWidget,
@@ -56,6 +56,9 @@ export const WIDGETS = {
   ReactionsByTimeWidget,
   DemographicsWidget,
   IframeMultiloc,
+  // DEPRECATED
+  AgeWidget,
+  GenderWidget,
 };
 
 type WidgetName = keyof typeof WIDGETS;
@@ -71,14 +74,15 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   SingleIdeaWidget: singleIdeaTitle,
   VisitorsWidget: visitorsTitle,
   VisitorsTrafficSourcesWidget: visitorsTrafficSourcesTitle,
-  AgeWidget: ageTitle,
-  GenderWidget: genderTitle,
   ActiveUsersWidget: activeUsersTitle,
   PostsByTimeWidget: postsByTimeTitle,
   CommentsByTimeWidget: commentsByTimeTitle,
   ReactionsByTimeWidget: reactionsByTimeTitle,
   DemographicsWidget: demographicsTitle,
   IframeMultiloc: iframeMultilocTitle,
+  // DEPRECATED
+  AgeWidget: ageTitle,
+  GenderWidget: genderTitle,
 };
 
 const WIDGETS_WITH_CHILDREN = new Set<string>([
@@ -91,9 +95,7 @@ export const hasChildren = (nodeName: string) => {
 
 const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'ActiveUsersWidget',
-  'AgeWidget',
   'CommentsByTimeWidget',
-  'GenderWidget',
   'PostsByTimeWidget',
   'ReactionsByTimeWidget',
   'VisitorsTrafficSourcesWidget',
@@ -101,6 +103,9 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'SurveyQuestionResultWidget',
   'DemographicsWidget',
   'IframeMultiloc',
+  // DEPRECATED
+  'AgeWidget',
+  'GenderWidget',
 ] satisfies WidgetName[]);
 
 export const hasNoPointerEvents = (nodeName: string) => {

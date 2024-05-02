@@ -17,9 +17,9 @@ import { Margin } from 'components/admin/Graphs/typings';
 
 import { useIntl } from 'utils/cl-intl';
 
-import NoData from '../../_shared/NoData';
-import messages from '../messages';
-import { serieHasValues, formatLargeNumber } from '../utils';
+import NoData from '../../../_shared/NoData';
+import messages from '../../messages';
+import { serieHasValues, formatLargeNumber } from '../../utils';
 
 const MARGINS: Record<Layout, Margin | undefined> = {
   wide: {

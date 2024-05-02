@@ -8,10 +8,10 @@ import usePhases from 'api/phases/usePhases';
 import useLocale from 'hooks/useLocale';
 
 import Editor from 'containers/Admin/reporting/components/ReportBuilder/Editor';
+import AgeWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/_deprecated/AgeWidget';
+import GenderWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/_deprecated/GenderWidget';
 import ActiveUsersWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/ActiveUsersWidget';
-import AgeWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/AgeWidget';
 import CommentsByTimeWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/CommentsByTimeWidget';
-import GenderWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/GenderWidget';
 import PostsByTimeWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/PostsByTimeWidget';
 import ReactionsByTimeWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/ReactionsByTimeWidget';
 import TwoColumn from 'containers/Admin/reporting/components/ReportBuilder/Widgets/TwoColumn';

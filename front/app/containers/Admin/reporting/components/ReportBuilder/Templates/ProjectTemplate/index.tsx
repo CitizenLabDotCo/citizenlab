@@ -22,9 +22,9 @@ import { withoutSpacing } from 'utils/textUtils';
 
 import { SURVEY_QUESTION_INPUT_TYPES } from '../../constants';
 import AboutReportWidget from '../../Widgets/AboutReportWidget';
+import AgeWidget from '../../Widgets/ChartWidgets/_deprecated/AgeWidget';
+import GenderWidget from '../../Widgets/ChartWidgets/_deprecated/GenderWidget';
 import ActiveUsersWidget from '../../Widgets/ChartWidgets/ActiveUsersWidget';
-import AgeWidget from '../../Widgets/ChartWidgets/AgeWidget';
-import GenderWidget from '../../Widgets/ChartWidgets/GenderWidget';
 import VisitorsWidget from '../../Widgets/ChartWidgets/VisitorsWidget';
 import MostReactedIdeasWidget from '../../Widgets/MostReactedIdeasWidget';
 import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget';

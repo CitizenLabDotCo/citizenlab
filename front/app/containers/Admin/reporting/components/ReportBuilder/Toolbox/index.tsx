@@ -38,10 +38,8 @@ import Analysis from '../Analysis';
 import { WIDGET_TITLES } from '../Widgets';
 import AboutReportWidget from '../Widgets/AboutReportWidget';
 import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
-import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
 import CommentsByTimeWidget from '../Widgets/ChartWidgets/CommentsByTimeWidget';
 import DemographicsWidget from '../Widgets/ChartWidgets/DemographicsWidget';
-import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
 import PostsByTimeWidget from '../Widgets/ChartWidgets/PostsByTimeWidget';
 import ReactionsByTimeWidget from '../Widgets/ChartWidgets/ReactionsByTimeWidget';
 import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
@@ -300,32 +298,6 @@ const ReportBuilderToolbox = ({
               }
               icon="chart-bar"
               label={formatMessage(WIDGET_TITLES.DemographicsWidget)}
-            />
-            <DraggableElement
-              id="e2e-draggable-users-by-gender-widget"
-              component={
-                <GenderWidget
-                  title={toMultiloc(WIDGET_TITLES.GenderWidget)}
-                  projectId={selectedProjectId}
-                  startAt={undefined}
-                  endAt={chartEndDate}
-                />
-              }
-              icon="chart-bar"
-              label={formatMessage(WIDGET_TITLES.GenderWidget)}
-            />
-            <DraggableElement
-              id="e2e-draggable-users-by-age-widget"
-              component={
-                <AgeWidget
-                  title={toMultiloc(WIDGET_TITLES.AgeWidget)}
-                  projectId={selectedProjectId}
-                  startAt={undefined}
-                  endAt={chartEndDate}
-                />
-              }
-              icon="chart-bar"
-              label={formatMessage(WIDGET_TITLES.AgeWidget)}
             />
             <DraggableElement
               id="e2e-draggable-active-users-widget"
