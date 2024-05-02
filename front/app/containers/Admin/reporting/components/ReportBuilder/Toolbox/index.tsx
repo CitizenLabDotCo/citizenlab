@@ -131,7 +131,7 @@ const ReportBuilderToolbox = ({
   const surveyPhaseId = phases ? findSurveyPhaseId(phases) : undefined;
   const ideationPhaseId = phases ? findIdeationPhaseId(phases) : undefined;
 
-  const genderField = userFields?.data.find(
+  const genderField = userFields.data.find(
     (field) => field.attributes.code === 'gender'
   );
 
