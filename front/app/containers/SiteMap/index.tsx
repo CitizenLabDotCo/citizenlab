@@ -148,8 +148,8 @@ const SiteMap = () => {
     return (
       <>
         <SiteMapMeta />
-        <Container>
-          <main>
+        <main>
+          <Container>
             <PageContent>
               <StyledContentContainer>
                 <QuillEditedContent>
@@ -356,8 +356,8 @@ const SiteMap = () => {
                 </QuillEditedContent>
               </StyledContentContainer>
             </PageContent>
-          </main>
-        </Container>
+          </Container>
+        </main>
       </>
     );
   }
