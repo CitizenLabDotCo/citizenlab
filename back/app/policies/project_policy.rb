@@ -64,11 +64,11 @@ class ProjectPolicy < ApplicationPolicy
     active_moderator?
   end
 
-  def voting_xlsx?
+  def votes_by_user_xlsx?
     index_xlsx?
   end
 
-  def voting_results_xlsx?
+  def votes_by_input_xlsx?
     index_xlsx?
   end
 

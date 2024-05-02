@@ -652,7 +652,7 @@ resource 'Projects' do
     end
   end
 
-  get 'web_api/v1/projects/:id/voting_xlsx' do
+  get 'web_api/v1/projects/:id/votes_by_user_xlsx' do
     let(:phase1) { create(:single_voting_phase, start_at: Time.now - 18.days, end_at: Time.now - 17.days) }
     let(:phase2) { create(:multiple_voting_phase, start_at: Time.now - 14.days, end_at: Time.now - 13.days) }
     let(:project) { create(:project, phases: [phase1, phase2]) }
@@ -696,7 +696,7 @@ resource 'Projects' do
     end
   end
 
-  get 'web_api/v1/projects/:id/voting_results_xlsx' do
+  get 'web_api/v1/projects/:id/votes_by_input_xlsx' do
     let(:phase1) { create(:single_voting_phase, start_at: Time.now - 18.days, end_at: Time.now - 17.days) }
     let(:phase2) { create(:multiple_voting_phase, start_at: Time.now - 14.days, end_at: Time.now - 13.days) }
     let(:project) { create(:project, phases: [phase1, phase2]) }

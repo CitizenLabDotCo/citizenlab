@@ -5,7 +5,7 @@ require 'rails_helper'
 describe XlsxExport::ProjectIdeasVotesGenerator do
   let(:service) { described_class.new }
 
-  describe 'generate_project_baskets_xlsx' do
+  describe 'generate_project_ideas_votes_xlsx' do
     let(:phase1) { create(:phase, title_multiloc: { en: 'Ideation phase' }, start_at: Time.now - 20.days, end_at: Time.now - 19.days) }
     let(:phase2) { create(:single_voting_phase, title_multiloc: { en: 'Single voting phase' }, start_at: Time.now - 18.days, end_at: Time.now - 17.days) }
     let(:phase3) { create(:multiple_voting_phase, title_multiloc: { en: 'Multiple voting phase' }, start_at: Time.now - 14.days, end_at: Time.now - 13.days) }
@@ -46,7 +46,7 @@ describe XlsxExport::ProjectIdeasVotesGenerator do
     let!(:baskets_idea8) { create(:baskets_idea, basket: basket4, idea: ideas[1]) }
     let!(:baskets_idea9) { create(:baskets_idea, basket: basket4, idea: ideas[2]) }
 
-    let(:xlsx) { service.generate_project_voting_results_xlsx(project) }
+    let(:xlsx) { service.generate_project_ideas_votes_xlsx(project) }
     let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
 
     it 'exports a valid excel file' do

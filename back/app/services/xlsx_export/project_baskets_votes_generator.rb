@@ -1,6 +1,6 @@
 module XlsxExport
-  class ProjectBasketsIdeasGenerator < Generator
-    def generate_project_baskets_xlsx(project)
+  class ProjectBasketsVotesGenerator < Generator
+    def generate_project_baskets_votes_xlsx(project)
       phases = project.phases.where(participation_method: 'voting').includes([:ideas])
       phases_to_titles = add_suffix_to_duplicate_titles(phases) # avoid ArgumentError due to duplicate sheet names
 
@@ -8,7 +8,7 @@ module XlsxExport
 
       phases.each do |phase|
         sheet_name = phases_to_titles.find { |hash| hash.key?(phase.id) }[phase.id]
-        generate_phase_baskets_users_sheet pa.workbook, sheet_name, phase
+        generate_phase_baskets_votes_sheet pa.workbook, sheet_name, phase
       end
 
       pa.to_stream
@@ -16,7 +16,7 @@ module XlsxExport
 
     private
 
-    def generate_phase_baskets_users_sheet(workbook, sheet_name, phase)
+    def generate_phase_baskets_votes_sheet(workbook, sheet_name, phase)
       baskets = Basket.where(phase: phase).where.not(submitted_at: nil).includes([:user])
       columns = xlsx_service.user_custom_field_columns(:user)
       ideas = phase.ideas
