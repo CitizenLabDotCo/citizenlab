@@ -74,6 +74,9 @@ const AuthProviders = memo<Props>(
     const hoplrLoginEnabled = useFeatureFlag({
       name: 'hoplr_login',
     });
+    const criiptoLoginEnabled = useFeatureFlag({
+      name: 'criipto_login',
+    });
 
     const azureProviderName =
       tenantSettings?.azure_ad_login?.login_mechanism_name;
@@ -113,7 +116,8 @@ const AuthProviders = memo<Props>(
       azureAdB2cLoginEnabled ||
       viennaCitizenLoginEnabled ||
       claveUnicaLoginEnabled ||
-      hoplrLoginEnabled;
+      hoplrLoginEnabled ||
+      criiptoLoginEnabled;
 
     return (
       <Container
@@ -148,6 +152,25 @@ const AuthProviders = memo<Props>(
             onContinue={onSelectAuthProvider}
           >
             <FormattedMessage {...messages.continueWithHoplr} />
+          </StyledAuthProviderButton>
+        )}
+
+        {criiptoLoginEnabled && (
+          <StyledAuthProviderButton
+            icon="mitid"
+            flow={flow}
+            authProvider="criipto"
+            onContinue={onSelectAuthProvider}
+          >
+            <FormattedMessage
+              {...messages.continueWithLoginMechanism}
+              values={{
+                loginMechanismName:
+                  process.env.NODE_ENV === 'development'
+                    ? 'MitID (Criipto)'
+                    : 'MitID',
+              }}
+            />
           </StyledAuthProviderButton>
         )}
 

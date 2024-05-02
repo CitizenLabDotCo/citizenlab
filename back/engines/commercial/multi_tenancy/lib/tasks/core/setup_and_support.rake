@@ -82,7 +82,7 @@ namespace :setup_and_support do
   desc 'Copy manual email campaigns from one platform to another'
   task :copy_manual_campaigns, %i[from_host to_host] => [:environment] do |_t, args|
     campaigns = Apartment::Tenant.switch(args[:from_host].tr('.', '_')) do
-      EmailCampaigns::Campaign.where(type: 'EmailCampaigns::Campaigns::Manual').map do |c|
+      EmailCampaigns::Campaign.manual.map do |c|
         { 'type' => c.type, 'author_ref' => nil, 'enabled' => c.enabled, 'sender' => 'organization',
           'subject_multiloc' => c.subject_multiloc, 'body_multiloc' => c.body_multiloc, 'created_at' => c.created_at.to_s, 'updated_at' => c.updated_at.to_s }
       end

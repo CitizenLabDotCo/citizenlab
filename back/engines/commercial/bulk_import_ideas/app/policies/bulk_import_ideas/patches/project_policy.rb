@@ -3,15 +3,19 @@
 module BulkImportIdeas
   module Patches
     module ProjectPolicy
-      def bulk_create?
+      def bulk_create_async?
         active_moderator?
       end
 
-      def example_xlsx?
+      def export_form?
         active_moderator?
       end
 
-      def draft_ideas?
+      def draft_records?
+        active_moderator?
+      end
+
+      def approve_all?
         active_moderator?
       end
 

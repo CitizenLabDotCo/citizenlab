@@ -27,10 +27,8 @@ class Identity < ApplicationRecord
 
   class << self
     def find_or_build_with_omniauth(auth, authver_method)
-      auth_to_persist = authver_method.filter_auth_to_persist(auth)
-
       uid = authver_method.profile_to_uid(auth)
-      find_with_omniauth(uid, auth) || build_with_omniauth(uid, auth_to_persist)
+      find_with_omniauth(uid, auth) || build_with_omniauth(uid, auth, authver_method)
     end
 
     private
@@ -39,8 +37,9 @@ class Identity < ApplicationRecord
       find_by(uid: uid, provider: auth['provider'])
     end
 
-    def build_with_omniauth(uid, auth)
-      new(uid: uid, provider: auth['provider'], auth_hash: auth)
+    def build_with_omniauth(uid, auth, authver_method)
+      auth_to_persist = authver_method.filter_auth_to_persist(auth)
+      new(uid: uid, provider: auth['provider'], auth_hash: auth_to_persist)
     end
   end
 

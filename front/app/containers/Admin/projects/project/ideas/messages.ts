@@ -10,9 +10,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.ideas.analysisAction',
     defaultMessage: 'Go to AI analysis',
   },
-  addOfflineInputs: {
-    id: 'app.containers.Admin.projects.project.ideas.addOfflineInputs',
-    defaultMessage: 'Add offline inputs',
+  importInputs: {
+    id: 'app.containers.Admin.projects.project.ideas.importInputs',
+    defaultMessage: 'Import',
   },
   analysisUpsellTooltip: {
     id: 'app.containers.Admin.projects.project.ideas.analysisUpsellTooltip',

@@ -70,6 +70,10 @@ module MultiTenancy
               logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
               login_mechanism_name: 'Azure AD B2C'
             },
+            criipto_login: {
+              allowed: true,
+              enabled: true
+            },
             franceconnect_login: {
               allowed: true,
               enabled: false,
@@ -438,6 +442,10 @@ module MultiTenancy
               allowed: true
             },
             power_bi: {
+              enabled: true,
+              allowed: true
+            },
+            input_importer: {
               enabled: true,
               allowed: true
             },

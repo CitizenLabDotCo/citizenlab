@@ -29,22 +29,24 @@ class IdeaCustomFieldsService
   end
 
   def submittable_fields
-    unsubbmittable_input_types = %w[page section]
-    enabled_fields.reject { |field| unsubbmittable_input_types.include? field.input_type }
+    unsubmittable_input_types = %w[page section]
+    enabled_fields.reject { |field| unsubmittable_input_types.include? field.input_type }
   end
 
   def submittable_fields_with_other_options
     insert_other_option_text_fields(submittable_fields)
   end
 
+  # Used in the printable PDF export
   def printable_fields
-    ignore_field_types = %w[section date files image_files point linear_scale file_upload]
-    enabled_fields.reject { |field| ignore_field_types.include? field.input_type }
+    ignore_field_types = %w[section page date files image_files point file_upload topic_ids]
+    fields = enabled_fields.reject { |field| ignore_field_types.include? field.input_type }
+    insert_other_option_text_fields(fields)
   end
 
   def importable_fields
-    ignore_field_types = %w[page section date files image_files linear_scale file_upload]
-    filtered_fields = enabled_fields.reject { |field| ignore_field_types.include? field.input_type }
+    ignore_field_types = %w[page section date files image_files file_upload]
+    filtered_fields = enabled_fields_with_other_options.reject { |field| ignore_field_types.include? field.input_type }
 
     # Importing of latitude and longitude for point fields is not yet implemented, but the fields are still
     # included in the importable fields list. This is because this list is used to generate the example template
@@ -196,7 +198,7 @@ class IdeaCustomFieldsService
   private
 
   # Replace a point field with two fields, one for latitude and one for longitude,
-  # so that the XlsxExport::InputSheetGenerator and BulkImportIdeas::ImportProjectIdeasService#generate_example_xlsx
+  # so that the XlsxExport::InputSheetGenerator and BulkImportIdeas::IdeaXlsxFormExporter#export
   # can produce separate columns for latitude and longitude.
   def replace_point_fields_with_lat_and_lon_point_fields(fields)
     fields.map do |field|

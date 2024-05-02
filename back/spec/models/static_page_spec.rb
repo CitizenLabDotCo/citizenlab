@@ -85,14 +85,12 @@ RSpec.describe StaticPage do
     end
   end
 
-  describe 'when create new static page with no value for slug' do
-    subject(:static_page) { build(:static_page) }
+  describe 'generate_slug' do
+    let(:static_page) { build(:static_page, slug: nil) }
 
-    it 'generates a slug' do
-      static_page.title_multiloc = { en: 'My amazing page' }
-      static_page.slug = nil
-      static_page.save!
-      expect(static_page.slug).to eq('my-amazing-page')
+    it 'generates a slug based on the first non-empty locale' do
+      static_page.update!(title_multiloc: { 'fr-BE' => 'titre', 'en' => 'title' })
+      expect(static_page.slug).to eq 'titre'
     end
   end
 
