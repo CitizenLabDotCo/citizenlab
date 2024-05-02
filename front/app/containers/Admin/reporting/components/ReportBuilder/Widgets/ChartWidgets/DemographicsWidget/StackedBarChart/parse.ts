@@ -54,13 +54,8 @@ const parseBirthyearResponse = (
   const percentages = roundPercentages(
     columns.map((column) => binHash[column])
   );
-  const statusColorById = columns.reduce(
-    (acc, cur, i) => ({
-      ...acc,
-      [cur]: DEFAULT_CATEGORICAL_COLORS[i % DEFAULT_CATEGORICAL_COLORS.length],
-    }),
-    {} as Record<string, string>
-  );
+
+  const statusColorById = createColorMap(columns);
 
   const legendItems = columns.map((column) => ({
     icon: 'circle' as const,
@@ -80,22 +75,20 @@ const parseBirthyearResponse = (
 
 const parseOtherResponse = (
   series: DemographicsResponse['data']['attributes']['series'],
-  options: Record<string, { title_multiloc: Multiloc }>,
+  options: Record<string, { title_multiloc: Multiloc; ordering: number }>,
   localize: Localize,
   blankLabel: string
 ) => {
   const data: [Record<string, number>] = [series];
-  const columns = Object.keys(data[0]);
+
+  const columns = Object.keys(options).sort(
+    (a, b) => options[a].ordering - options[b].ordering
+  );
+
   const percentages = roundPercentages(
     columns.map((column) => data[0][column])
   );
-  const statusColorById = columns.reduce(
-    (acc, cur, i) => ({
-      ...acc,
-      [cur]: DEFAULT_CATEGORICAL_COLORS[i % DEFAULT_CATEGORICAL_COLORS.length],
-    }),
-    {} as Record<string, string>
-  );
+  const statusColorById = createColorMap(columns);
 
   const labels = columns.map((column) => {
     if (column === '_blank') return blankLabel;
@@ -109,4 +102,14 @@ const parseOtherResponse = (
   }));
 
   return { data, percentages, columns, statusColorById, labels, legendItems };
+};
+
+const createColorMap = (columns: string[]) => {
+  return columns.reduce(
+    (acc, cur, i) => ({
+      ...acc,
+      [cur]: DEFAULT_CATEGORICAL_COLORS[i % DEFAULT_CATEGORICAL_COLORS.length],
+    }),
+    {} as Record<string, string>
+  );
 };
