@@ -35,6 +35,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import {
   extractElementsByOtherOptionLogic,
+  hasOtherTextFieldBelow,
   isVisible,
 } from '../Controls/visibilityUtils';
 
@@ -210,7 +211,11 @@ const CLSurveyPageLayout = memo(
       <>
         <Box display="flex" flexDirection="column" height="100%">
           {allowAnonymousPosting && (
-            <Box w="100%" px={isSmallerThanPhone ? '16px' : '24px'} mt="16px">
+            <Box
+              w="100%"
+              px={isSmallerThanPhone ? '16px' : '24px'}
+              mt={isSmallerThanPhone ? '64px' : '12px'}
+            >
               <Warning icon="shield-checkered">
                 {formatMessage(messages.anonymousSurveyMessage)}
               </Warning>
@@ -261,12 +266,10 @@ const CLSurveyPageLayout = memo(
                         </Box>
                       )}
                       {pageElements.map((elementUiSchema, index) => {
-                        const key = elementUiSchema.scope.split('/').pop();
-                        const hasOtherFieldBelow =
-                          key &&
-                          (Array.isArray(data[key])
-                            ? data[key].includes('other')
-                            : data[key] === 'other');
+                        const hasOtherFieldBelow = hasOtherTextFieldBelow(
+                          elementUiSchema,
+                          data
+                        );
 
                         return (
                           <Box

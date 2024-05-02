@@ -126,6 +126,10 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     enabled: boolean;
   };
+  criipto_login?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   custom_accessibility_statement_link: {
     allowed: boolean;
     enabled: boolean;
@@ -233,6 +237,7 @@ export interface IAppConfigurationSettings {
   ask_a_question?: AppConfigurationFeature;
   advanced_autotagging?: AppConfigurationFeature;
   import_printed_forms?: AppConfigurationFeature;
+  input_importer?: AppConfigurationFeature;
   user_session_recording?: AppConfigurationFeature;
   user_avatars?: AppConfigurationFeature;
   multi_language_platform?: AppConfigurationFeature;

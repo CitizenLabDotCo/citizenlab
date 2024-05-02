@@ -35,6 +35,8 @@ class Project < ApplicationRecord
 
   VISIBLE_TOS = %w[public groups admins].freeze
 
+  slug from: proc { |project| project.title_multiloc.values.find(&:present?) }
+
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
   has_one :custom_form, as: :participation_context, dependent: :destroy # ideation & voting phases only
@@ -61,7 +63,6 @@ class Project < ApplicationRecord
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
   has_many :followers, as: :followable, dependent: :destroy
 
-  before_validation :generate_slug, on: :create
   before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
   before_validation :set_visible_to, on: :create
@@ -84,7 +85,6 @@ class Project < ApplicationRecord
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :description_preview_multiloc, multiloc: { presence: false }
-  validates :slug, presence: true, uniqueness: true
   validates :visible_to, presence: true, inclusion: { in: VISIBLE_TOS }
   validates :internal_role, inclusion: { in: INTERNAL_ROLES, allow_nil: true }
   validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template }
@@ -205,10 +205,6 @@ class Project < ApplicationRecord
     errors.add(:admin_publication_id, :blank, message: "Admin publication can't be blank")
   end
 
-  def generate_slug
-    self.slug ||= SlugService.new.generate_slug self, title_multiloc.values.first
-  end
-
   def sanitize_description_multiloc
     service = SanitizationService.new
     self.description_multiloc = service.sanitize_multiloc(
@@ -287,3 +283,4 @@ Project.include(CustomMaps::Extensions::Project)
 Project.include(IdeaAssignment::Extensions::Project)
 Project.include(ContentBuilder::Patches::Project)
 Project.include(Analysis::Patches::Project)
+Project.include(EmailCampaigns::Extensions::Project)

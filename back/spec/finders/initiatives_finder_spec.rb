@@ -142,7 +142,7 @@ describe InitiativesFinder do
   end
 
   describe '#search_condition' do
-    let(:slug) { 'slug_1' }
+    let(:slug) { 'slug-1' }
     let(:expected_record_ids) { Initiative.search_by_all(slug).pluck(:id) }
 
     before do

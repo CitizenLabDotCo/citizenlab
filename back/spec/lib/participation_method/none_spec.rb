@@ -23,10 +23,9 @@ RSpec.describe ParticipationMethod::None do
     end
   end
 
-  describe '#assign_slug' do
+  describe '#generate_slug' do
     it 'does not change the input' do
-      participation_method.assign_slug input
-      expect(input).not_to be_changed
+      expect(participation_method.generate_slug(input)).to be_nil
     end
   end
 

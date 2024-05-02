@@ -2,6 +2,7 @@ sv:
   email_campaigns:
     campaign_type_description:
       "manual": Officiella meddelanden
+      "manual_project_participants": Officiella meddelanden till projektdeltagare
       "admin_rights_received": Adminrättigheter har erhållits
       "comment_deleted_by_admin": Borttagning av min kommentar
       "comment_marked_as_spam": Kommentera skräppostrapport
@@ -559,6 +560,7 @@ sv:
         admins: 'Till administratörer'
         admins_and_managers: 'Till administratörer och chefer'
         managers: 'Till chefer'
+        project_participants: 'Till projektdeltagare'
         registered_users: 'Till registrerade användare'
       recipient_segment:
         admins: 'Administratörer'

@@ -74,12 +74,12 @@ const InitiativesNewPage = () => {
             clHistory.goBack();
           }}
         />
-        <main>
-          <PageLayout>
-            <InitiativesNewFormWrapper locationInfo={locationInfo} />
-          </PageLayout>
-        </main>
       </Box>
+      <main>
+        <PageLayout>
+          <InitiativesNewFormWrapper locationInfo={locationInfo} />
+        </PageLayout>
+      </main>
     </>
   );
 };
