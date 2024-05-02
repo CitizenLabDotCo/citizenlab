@@ -758,7 +758,6 @@
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Çevrimiçi ve çevrimdışı yanıtları birleştirebilirsiniz. Çevrimdışı yanıtları yüklemek için bu projenin 'Anket' sekmesine gidin ve 'İçe Aktar'a tıklayın.",
   "app.containers.Admin.projects.all.notIncludedInYourPlan": "Ancak, bu mevcut planınıza dahil değildir. Kilidi açmak için Kamu Başarı Yöneticinize veya yöneticinize ulaşın.",
   "app.containers.Admin.projects.all.notes": "Notlar",
-  "app.containers.Admin.projects.all.personalDataExplanation1": "Aşağıdaki kutuyu işaretlerseniz, çevrimdışı katılımcılar için kullanıcı hesapları oluşturacağız.",
   "app.containers.Admin.projects.project.analysis.aiSummary": "Yapay zeka özeti",
   "app.containers.Admin.projects.project.analysis.aiSummaryTooltipText": "Bu yapay zeka tarafından oluşturulmuş bir içeriktir. 100 doğru olmayabilir. Lütfen doğruluk için gerçek girdileri gözden geçirin ve çapraz referans alın. Seçilen girdilerin sayısı azaltılırsa doğruluğun muhtemelen artacağını unutmayın.",
   "app.containers.Admin.projects.project.ideas.analysisAction": "Yapay zeka analizine git",
