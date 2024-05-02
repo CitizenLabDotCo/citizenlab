@@ -4,14 +4,14 @@ import messages from 'containers/Admin/dashboard/messages';
 
 import Card from '../../_shared/Card';
 import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
-import { ChartWidgetProps } from '../typings';
+import { TimeSeriesWidgetProps } from '../typings';
 
 import CommentsByTimeCard from './CommentsByTimeCard';
 
-const CommentsByTimeWidget = ({ title, ...props }: ChartWidgetProps) => {
+const CommentsByTimeWidget = ({ title, ...props }: TimeSeriesWidgetProps) => {
   return (
     <Card title={title} className="e2e-comments-by-time-widget" pagebreak>
-      <CommentsByTimeCard {...props} resolution="month" />
+      <CommentsByTimeCard {...props} />
     </Card>
   );
 };
@@ -22,6 +22,7 @@ CommentsByTimeWidget.craft = {
     projectId: undefined,
     startAt: undefined,
     endAt: null,
+    resolution: undefined,
   },
   related: {
     settings: ChartWidgetSettings,
