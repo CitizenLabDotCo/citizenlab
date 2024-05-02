@@ -148,7 +148,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       I18n.with_locale(current_user&.locale) do
         xlsx = XlsxExport::ProjectBasketsIdeasGenerator.new.generate_project_baskets_xlsx(@project)
         send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-          filename: 'voter_selections.xlsx'
+          filename: 'votes_by_user.xlsx'
       end
     else
       raise 'Project has no voting phase.'
