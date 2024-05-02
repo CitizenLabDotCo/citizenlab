@@ -1,8 +1,8 @@
 class BulkImportIdeas::Parsers::Pdf::GPTTextCorrector
   # @param [Array<Hash>] idea_rows - comes from IdeaBaseFileParser#ideas_to_idea_rows
-  def initialize(phase, form_fields, idea_rows)
+  def initialize(phase, idea_rows)
     @phase = phase
-    @form_fields = form_fields
+    @form_fields = IdeaCustomFieldsService.new(Factory.instance.participation_method_for(@phase).custom_form).printable_fields
     @idea_rows = idea_rows
   end
 
@@ -25,6 +25,12 @@ class BulkImportIdeas::Parsers::Pdf::GPTTextCorrector
     custom_fields = text_fields.reject(&:code?).map { _1.key&.to_sym }
 
     return [] if core_fields.blank? && custom_fields.blank?
+
+    # Make sure each row has a unique ID
+    @idea_rows = @idea_rows.map.with_index do |row, index|
+      row[:id] = index
+      row
+    end
 
     @idea_rows.filter_map do |idea_row|
       idea_to_correct = idea_row.slice(*core_fields).transform_values(&:presence).compact

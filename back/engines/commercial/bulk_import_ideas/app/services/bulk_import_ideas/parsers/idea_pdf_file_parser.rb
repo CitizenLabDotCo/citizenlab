@@ -32,7 +32,7 @@ module BulkImportIdeas::Parsers
     end
 
     def parse_rows(file)
-      pdf_file = URI.open(file.file_content_url).read
+      pdf_file = file.file.read
 
       # NOTE: We return both parsed values so we can merge the best values from both
       google_forms_service = Pdf::IdeaGoogleFormParserService.new

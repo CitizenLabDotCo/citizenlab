@@ -42,16 +42,22 @@ const ReviewSection = ({
   const { formatMessage } = useIntl();
   const [ideaId, setIdeaId] = useState<string | null>(null);
   const [approvals, setApprovals] = useState({ approved: 0, not_approved: 0 });
+  const [importTriggered, setImportTriggered] = useState<boolean>(false);
 
-  const { data: idea } = useIdeaById(ideaId ?? undefined, false);
   const {
     data: ideas,
     refetch: refetchIdeas,
     isLoading: isLoadingIdeas,
   } = useImportedIdeas({ projectId, phaseId });
+
+  const jobsChanged = () => {
+    if (importJobs.length > 0) setImportTriggered(true);
+    refetchIdeas();
+  };
+
   const { active: importing, failed: importFailed } = useTrackBackgroundJobs({
     jobs: importJobs,
-    onChange: refetchIdeas,
+    onChange: jobsChanged,
   });
 
   const { mutate: deleteIdea } = useDeleteIdea();
@@ -60,6 +66,7 @@ const ReviewSection = ({
 
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
 
+  const { data: idea } = useIdeaById(ideaId ?? undefined, false);
   const { data: ideaMetadata } = useImportedIdeaMetadata({
     id: isLoadingIdeas
       ? undefined
@@ -67,8 +74,9 @@ const ReviewSection = ({
   });
 
   if (ideas === undefined) return null;
+
   const numIdeas = ideas.data.length;
-  if (numIdeas === 0) {
+  if (!importTriggered && numIdeas === 0) {
     return <EmptyState />;
   }
 
@@ -197,7 +205,7 @@ const ReviewSection = ({
           pr="8px"
           overflowY="scroll"
         >
-          {(importing || importFailed) && (
+          {(importing || importFailed || isLoadingIdeas) && (
             <Box
               py="8px"
               borderBottom={`1px ${colors.grey400} solid`}
