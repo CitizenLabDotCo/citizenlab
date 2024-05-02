@@ -81,9 +81,11 @@ const parseOtherResponse = (
 ) => {
   const data: [Record<string, number>] = [series];
 
-  const columns = Object.keys(options).sort(
+  const columnsWithoutBlank = Object.keys(options).sort(
     (a, b) => options[a].ordering - options[b].ordering
   );
+
+  const columns = [...columnsWithoutBlank, '_blank'];
 
   const percentages = roundPercentages(
     columns.map((column) => data[0][column])
