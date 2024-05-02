@@ -6,12 +6,9 @@ module ParticipationMethod
       phase.ideas_order ||= 'trending'
     end
 
-    # This method is invoked after creation of the input,
-    # so store the new slug.
-    def assign_slug(input)
-      title = MultilocService.new.t input.title_multiloc, input.author&.locale
-      new_slug = SlugService.new.generate_slug input, title
-      input.update_column :slug, new_slug
+    def generate_slug(input)
+      title = MultilocService.new.t(input.title_multiloc, input.author&.locale).presence
+      SlugService.new.generate_slug input, title
     end
 
     def assign_defaults(input)

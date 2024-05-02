@@ -104,7 +104,8 @@ module BulkImportIdeas
       user_created = add_author idea_row, idea_attributes
 
       idea = Idea.new idea_attributes
-      raise Error.new 'bulk_import_ideas_idea_not_valid', value: idea.errors.messages unless idea.valid?
+      idea.slug ||= SecureRandom.uuid if !idea.valid? # Support importing draft ideas without title
+      raise Error.new 'bulk_import_ideas_idea_not_valid', value: idea.errors.messages if !idea.valid?
 
       idea.save!
 

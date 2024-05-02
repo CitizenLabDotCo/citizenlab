@@ -3,7 +3,9 @@
 module EmailCampaigns
   class AssureCampaignsService
     def assure_campaigns
-      instantiatable_campaign_types = (EmailCampaigns::DeliveryService.new.campaign_types - [EmailCampaigns::Campaigns::Manual.name])
+      instantiatable_campaign_types = (
+        delivery_service.campaign_types - delivery_service.manual_campaign_types
+      )
 
       type_counts = Campaign
         .where(type: instantiatable_campaign_types)
@@ -19,7 +21,7 @@ module EmailCampaigns
 
     ## Removes the DB records of removed STI classes
     def remove_deprecated_campaigns
-      supported_campaigns = EmailCampaigns::DeliveryService.new.campaign_types
+      supported_campaigns = delivery_service.campaign_types
       unsupported_ids     = EmailCampaigns::Campaign.where.not(type: supported_campaigns).pluck(:id)
 
       # This makes it possible to temporarily load the records without STI errors
@@ -37,6 +39,12 @@ module EmailCampaigns
 
       # Make everything back to normal
       EmailCampaigns::Campaign.class_eval { self.inheritance_column = :type }
+    end
+
+    private
+
+    def delivery_service
+      @delivery_service ||= EmailCampaigns::DeliveryService.new
     end
   end
 end
