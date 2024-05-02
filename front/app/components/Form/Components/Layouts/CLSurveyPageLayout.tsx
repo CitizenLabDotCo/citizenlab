@@ -281,7 +281,11 @@ const CLSurveyPageLayout = memo(
           />
 
           {allowAnonymousPosting && (
-            <Box w="100%" px={isSmallerThanPhone ? '16px' : '24px'} mt="16px">
+            <Box
+              w="100%"
+              px={isSmallerThanPhone ? '16px' : '24px'}
+              mt={isSmallerThanPhone ? '64px' : '12px'}
+            >
               <Warning icon="shield-checkered">
                 {formatMessage(messages.anonymousSurveyMessage)}
               </Warning>
