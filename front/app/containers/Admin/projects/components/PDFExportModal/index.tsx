@@ -96,6 +96,11 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
               <Text as="li" mb="4px" mt="0px" w="500px">
                 <FormattedMessage {...CLICK_EXPORT_MESSAGES[formType]} />
               </Text>
+              {formType === 'survey' && (
+                <Text as="li" mb="4px" mt="0px" w="500px">
+                  <FormattedMessage {...messages.logicNotInPDF} />
+                </Text>
+              )}
               <Text as="li" mb="4px">
                 <FormattedMessage {...IT_IS_POSSIBLE_MESSAGES[formType]} />
                 {importPrintedFormsEnabled || (
