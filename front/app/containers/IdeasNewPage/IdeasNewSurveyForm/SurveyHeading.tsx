@@ -16,6 +16,7 @@ import styled from 'styled-components';
 import ideasKeys from 'api/ideas/keys';
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
+import { IProjectData } from 'api/projects/types';
 
 import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
@@ -121,7 +122,7 @@ const SurveyHeading = ({ titleText }: Props) => {
             </Title>
             <Text color="primary" fontSize="l">
               <FormattedMessage
-                {...(authUser
+                {...(loggedIn
                   ? messages.leaveFormTextLoggedIn
                   : messages.leaveSurveyText)}
               />
@@ -138,9 +139,9 @@ const SurveyHeading = ({ titleText }: Props) => {
               <FormattedMessage {...messages.cancelLeaveSurveyButtonText} />
             </Button>
             <Button
-              icon={authUser ? 'arrow-left-circle' : 'delete'}
+              icon={loggedIn ? 'arrow-left-circle' : 'delete'}
               data-cy="e2e-confirm-delete-survey-results"
-              buttonStyle={authUser ? 'primary' : 'delete'}
+              buttonStyle={loggedIn ? 'primary' : 'delete'}
               width="100%"
               mb={isSmallerThanPhone ? '16px' : undefined}
               onClick={() => {
@@ -152,7 +153,7 @@ const SurveyHeading = ({ titleText }: Props) => {
                   queryKey: ideasKeys.item({ id: phaseId }),
                 });
               }}
-              linkTo={`/projects/${projectSlug}`}
+              linkTo={`/projects/${project.attributes.slug}`}
             >
               <FormattedMessage {...messages.confirmLeaveFormButtonText} />
             </Button>
