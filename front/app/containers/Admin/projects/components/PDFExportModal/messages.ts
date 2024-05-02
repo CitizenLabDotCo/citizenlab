@@ -38,10 +38,15 @@ export default defineMessages({
     defaultMessage:
       'However, this is not included in your current plan. Reach out to your Government Success Manager or admin to unlock it.',
   },
-  personalDataExplanation: {
-    id: 'app.containers.Admin.projects.all.personalDataExplanation1',
+  logicNotInPDF: {
+    id: 'app.containers.Admin.projects.all.logicNotInPDF',
     defaultMessage:
-      'If you check the box below, we will create user accounts for offline participants.',
+      'Survey logic will not be reflected in the downloaded PDF. Paper respondents will see all survey questions.',
+  },
+  personalDataExplanation: {
+    id: 'app.containers.Admin.projects.all.personalDataExplanation2',
+    defaultMessage:
+      'Check the box below, if you want your downloaded PDF to contain name, last name, and email fields. Upon upload of the paper form, we will use that user data, to auto-generate an account for the offline survey respondent.',
   },
   phase: {
     id: 'app.containers.Admin.projects.all.PDFExportModal.phase',
