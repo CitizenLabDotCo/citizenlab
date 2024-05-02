@@ -1,11 +1,11 @@
 import React from 'react';
 
 import Card from '../../_shared/Card';
-import TimeSeriesWidgetSettings from '../_shared/TimeSeriesWidgetSettings';
 import messages from '../messages';
 import { TimeSeriesWidgetProps } from '../typings';
 
 import ActiveUsers from './ActiveUsersCard';
+import ChartWidgetSettings from './ChartWidgetSettings';
 
 const ActiveUsersWidget = ({ title, ...props }: TimeSeriesWidgetProps) => {
   return (
@@ -24,7 +24,7 @@ ActiveUsersWidget.craft = {
     resolution: undefined,
   },
   related: {
-    settings: TimeSeriesWidgetSettings,
+    settings: ChartWidgetSettings,
   },
 };
 
