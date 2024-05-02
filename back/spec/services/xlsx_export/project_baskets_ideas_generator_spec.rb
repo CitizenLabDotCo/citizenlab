@@ -73,7 +73,7 @@ describe XlsxExport::ProjectBasketsIdeasGenerator do
     it 'contains one column for each idea in a phase, on each respective worksheet' do
       3.times do |i|
         header_row = workbook.worksheets[i][0].cells.map(&:value)
-        expect(header_row).to match_array(['idea1', 'idea2', 'idea3', 'idea4', 'Date vote submitted'])
+        expect(header_row).to match_array(['idea1', 'idea2', 'idea3', 'idea4', 'Submitted at'])
       end
     end
 
@@ -85,7 +85,7 @@ describe XlsxExport::ProjectBasketsIdeasGenerator do
       expect(user_row[header_row.find_index 'idea2']).to eq baskets_idea4.votes
       expect(user_row[header_row.find_index 'idea3']).to eq 0
       expect(user_row[header_row.find_index 'idea4']).to eq 0
-      expect(user_row[header_row.find_index 'Date vote submitted'].to_i).to eq basket3.submitted_at.to_i
+      expect(user_row[header_row.find_index 'Submitted at'].to_i).to eq basket3.submitted_at.to_i
     end
 
     it 'handles ideas with same title multiloc values' do
