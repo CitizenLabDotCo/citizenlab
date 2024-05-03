@@ -136,7 +136,11 @@ const EmptyState = () => {
       </Box>
       <PDFExportModal
         open={exportModalOpen}
-        formType="idea_form"
+        formType={
+          phase?.data.attributes.participation_method === 'native_survey'
+            ? 'survey'
+            : 'idea_form'
+        }
         onClose={() => setExportModalOpen(false)}
         onExport={handleExportPDF}
       />

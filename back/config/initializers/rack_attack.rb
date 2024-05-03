@@ -132,4 +132,11 @@ class Rack::Attack
       end
     end
   end
+
+  # Machine translations by IP.
+  throttle('translate/id', limit: 10, period: 20.seconds) do |req|
+    if %r{/web_api/v1/.+/machine_translation}.match?(req.path)
+      req.remote_ip
+    end
+  end
 end

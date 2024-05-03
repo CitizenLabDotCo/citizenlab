@@ -6,7 +6,6 @@ import { IIdeaApprovals } from 'api/ideas/types';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-
 const approveIdeas = async (phaseId: string) =>
   fetcher<IIdeaApprovals>({
     path: `/phases/${phaseId}/importer/approve_all/idea`,
