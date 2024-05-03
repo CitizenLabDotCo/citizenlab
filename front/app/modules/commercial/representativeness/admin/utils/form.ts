@@ -34,7 +34,7 @@ export const isFormValid = (formValues: FormValues) => {
   const allOptionsFilledOut = areAllOptionsFilledOut(formValues);
   const numberOfOptions = Object.keys(formValues).length;
 
-  return allOptionsFilledOut && numberOfOptions > 1;
+  return allOptionsFilledOut && numberOfOptions >= 1;
 };
 
 export const getSubmitAction = (
