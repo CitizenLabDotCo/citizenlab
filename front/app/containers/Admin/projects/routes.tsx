@@ -38,7 +38,7 @@ const AdminProjectDescription = lazy(() => import('./project/description'));
 const AdminProjectIdeaForm = lazy(() => import('./project/inputForm'));
 
 const AdminProjectIdeas = lazy(() => import('./project/ideas'));
-const OfflineInputImporter = lazy(() => import('./project/offlineInputs'));
+const InputImporter = lazy(() => import('./project/inputImporter'));
 
 const AdminProjectVolunteering = lazy(() => import('./project/volunteering'));
 const AdminProjectVolunteeringNew = lazy(
@@ -64,6 +64,10 @@ export function adminProjectsProjectPath(projectId: string): RouteType {
 export enum projectsRoutes {
   projects = 'projects',
   new = 'new',
+  allProjects = 'all',
+  published = 'published',
+  draft = 'draft',
+  archived = 'archived',
   projectIdeaId = ':projectId/ideas/:ideaId',
   projectSettings = ':projectId/settings',
   projectTraffic = 'traffic',
@@ -91,13 +95,17 @@ export enum projectsRoutes {
   projectPhaseIdeaFormEdit = ':phaseId/ideaform/edit',
   projectPhaseNativeSurveyEdit = ':phaseId/native-survey/edit',
   projectPhaseVolunteeringCause = ':phaseId/volunteering/causes/:causeId',
-  projectPhaseOfflineInputs = ':phaseId/offline-inputs',
+  projectPhaseInputImporter = ':phaseId/input-importer',
   projectPhaseReport = ':phaseId/report',
   projectAnalysis = 'analysis/:analysisId',
 }
 
 export type projectsRouteTypes =
   | AdminRoute<projectsRoutes.projects>
+  | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.allProjects}`>
+  | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.published}`>
+  | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.draft}`>
+  | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.archived}`>
   | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.new}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/ideas/${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/settings`>
@@ -139,6 +147,38 @@ const createAdminProjectsRoutes = () => {
     children: [
       {
         index: true,
+        element: (
+          <PageLoading>
+            <AdminProjectsList />
+          </PageLoading>
+        ),
+      },
+      {
+        path: projectsRoutes.allProjects,
+        element: (
+          <PageLoading>
+            <AdminProjectsList />
+          </PageLoading>
+        ),
+      },
+      {
+        path: projectsRoutes.published,
+        element: (
+          <PageLoading>
+            <AdminProjectsList />
+          </PageLoading>
+        ),
+      },
+      {
+        path: projectsRoutes.draft,
+        element: (
+          <PageLoading>
+            <AdminProjectsList />
+          </PageLoading>
+        ),
+      },
+      {
+        path: projectsRoutes.archived,
         element: (
           <PageLoading>
             <AdminProjectsList />
@@ -403,10 +443,10 @@ const createAdminProjectsRoutes = () => {
               // },
 
               {
-                path: projectsRoutes.projectPhaseOfflineInputs,
+                path: projectsRoutes.projectPhaseInputImporter,
                 element: (
                   <PageLoading>
-                    <OfflineInputImporter />
+                    <InputImporter />
                   </PageLoading>
                 ),
               },

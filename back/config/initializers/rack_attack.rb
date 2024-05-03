@@ -121,8 +121,20 @@ class Rack::Attack
     end
   end
 
+  # Confirm by user ID from JWT.
+  throttle('confirm/id', limit: 10, period: 24.hours) do |req|
+    if req.path == '/web_api/v1/user/confirm' && req.post?
+      begin
+        jwt = req.env['HTTP_AUTHORIZATION']&.split&.last
+        JWT.decode(jwt, nil, false, algorithm: 'RS256').first['sub'] # sub is the user ID
+      rescue JWT::DecodeError
+        # do nothing
+      end
+    end
+  end
+
   # Machine translations by IP.
-  throttle('translate/id', limit: 5, period: 20.seconds) do |req|
+  throttle('translate/id', limit: 10, period: 20.seconds) do |req|
     if %r{/web_api/v1/.+/machine_translation}.match?(req.path)
       req.remote_ip
     end

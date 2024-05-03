@@ -722,7 +722,7 @@ resource 'Phases' do
           end
 
           example 'Download native survey phase inputs in one sheet' do
-            expected_params = [[survey_response1, survey_response2], active_phase, true]
+            expected_params = [[survey_response1, survey_response2], active_phase, { view_private_attributes: true }]
             allow(XlsxExport::InputSheetGenerator).to receive(:new).and_return(XlsxExport::InputSheetGenerator.new(*expected_params))
             do_request
             expect(XlsxExport::InputSheetGenerator).to have_received(:new).with(*expected_params)
@@ -827,8 +827,8 @@ resource 'Phases' do
         )
       end
 
-      example 'Download phase inputs without private user data', document: false do
-        expected_params = [[survey_response], active_phase, false]
+      example 'Download phase inputs WITH private user data', document: false do
+        expected_params = [[survey_response], active_phase, { view_private_attributes: true }]
         allow(XlsxExport::InputSheetGenerator).to receive(:new).and_return(XlsxExport::InputSheetGenerator.new(*expected_params))
         do_request
         expect(XlsxExport::InputSheetGenerator).to have_received(:new).with(*expected_params)
@@ -839,6 +839,9 @@ resource 'Phases' do
             column_headers: [
               'ID',
               multiselect_field.title_multiloc['en'],
+              'Author name',
+              'Author email',
+              'Author ID',
               'Submitted at',
               'Project'
             ],
@@ -846,6 +849,9 @@ resource 'Phases' do
               [
                 survey_response.id,
                 'Cat, Dog',
+                survey_response.author_name,
+                survey_response.author.email,
+                survey_response.author_id,
                 an_instance_of(DateTime), # created_at
                 project.title_multiloc['en']
               ]

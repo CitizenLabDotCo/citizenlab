@@ -6,7 +6,6 @@ module ReportBuilder
       {
         fact: 'visit',
         filters: {
-          'dimension_user.role': ['citizen', nil],
           **project_filter('dimension_projects.id', project_id),
           **date_filter(
             'dimension_date_first_action',

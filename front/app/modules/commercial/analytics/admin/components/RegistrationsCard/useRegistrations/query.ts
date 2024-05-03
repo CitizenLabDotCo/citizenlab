@@ -54,7 +54,6 @@ export const query = ({
   const visitsWholePeriodQuery: QuerySchema = {
     fact: 'visit',
     filters: {
-      'dimension_user.role': ['citizen', null],
       ...getDateFilter('dimension_date_first_action', startAt, endAt),
     },
     aggregations: {
@@ -65,7 +64,6 @@ export const query = ({
   const visitsLastPeriodQuery: QuerySchema = {
     fact: 'visit',
     filters: {
-      'dimension_user.role': ['citizen', null],
       ...getDateFilterLastPeriod('dimension_date_first_action', resolution),
     },
     aggregations: {

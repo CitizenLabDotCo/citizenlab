@@ -7,10 +7,28 @@ module ReportBuilder
         skip_before_action :authenticate_user
 
         def index
-          reports = policy_scope(ReportBuilder::Report.global)
-          reports = paginate(reports)
+          finder_params = {}.tap do |f_params|
+            # Avoid to create params with nil values if they are not present
+            f_params[:text_search] = params[:search] if params.key?(:search)
+            f_params[:owners] = params[:owner_id] if params.key?(:owner_id)
 
-          render json: linked_json(reports, ReportSerializer, params: jsonapi_serializer_params)
+            if params.key?(:service)
+              f_params[:service_reports] = case params[:service]&.downcase
+              when 'true' then true
+              when 'false' then false
+              end
+            end
+          end
+
+          reports = policy_scope(ReportBuilder::Report.global)
+            .then { ReportBuilder::ReportFinder.new(_1, **finder_params).execute }
+            .then { paginate(_1) }
+
+          render json: linked_json(
+            reports,
+            ReportSerializer,
+            params: jsonapi_serializer_params
+          )
         end
 
         def show

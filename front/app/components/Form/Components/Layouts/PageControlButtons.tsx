@@ -63,10 +63,14 @@ const PageControlButtons = ({
             padding={isSmallerThanPhone ? '16px' : '16px 24px'}
           >
             <LanguageSelector
-              top="-200px"
+              dropdownClassName={'open-upwards'}
+              useDefaultTop={false}
               mobileRight="auto"
               mobileLeft="auto"
               right="auto"
+              afterSelection={() => {
+                window.location.reload();
+              }}
             />
             <Box display="flex" justifyContent="center" alignItems="center">
               {hasPreviousPage && (

@@ -25,7 +25,7 @@ const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
   if (!row) return getEmptyRow(date);
 
   return {
-    activeUsers: row.count_dimension_user_id,
+    activeUsers: row.count_participant_id,
     date: date.format('YYYY-MM-DD'),
   };
 };
@@ -57,21 +57,19 @@ export const parseStats = (data: Response['data']['attributes']): Stats => {
   const visitsLastPeriod = data[4][0];
 
   const participationRateWholePeriod = getConversionRate(
-    activeUsersWholePeriod?.count_dimension_user_id ?? 0,
+    activeUsersWholePeriod?.count_participant_id ?? 0,
     visitsWholePeriod?.count_visitor_id ?? 0
   );
 
   const participationRateRateLastPeriod = getConversionRate(
-    activeUsersLastPeriod?.count_dimension_user_id ?? 0,
+    activeUsersLastPeriod?.count_participant_id ?? 0,
     visitsLastPeriod?.count_visitor_id ?? 0
   );
 
   return {
     activeUsers: {
-      value: (activeUsersWholePeriod?.count_dimension_user_id ?? 0).toString(),
-      lastPeriod: (
-        activeUsersLastPeriod?.count_dimension_user_id ?? 0
-      ).toString(),
+      value: (activeUsersWholePeriod?.count_participant_id ?? 0).toString(),
+      lastPeriod: (activeUsersLastPeriod?.count_participant_id ?? 0).toString(),
     },
     participationRate: {
       value: participationRateWholePeriod,
@@ -96,7 +94,7 @@ export const parseExcelData = (
 
   const timeSeriesData = timeSeries?.map((row) => ({
     [translations.date]: row.date,
-    [translations.activeUsers]: row.activeUsers,
+    [translations.participants]: row.activeUsers,
   }));
 
   return {

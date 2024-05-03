@@ -13,7 +13,6 @@ export const referrersListQuery = ({
   const referrersListQuery: QuerySchema = {
     fact: 'visit',
     filters: {
-      'dimension_user.role': ['citizen', null],
       ...getProjectFilter('dimension_projects', projectId),
       ...getDateFilter(
         'dimension_date_first_action',
@@ -45,7 +44,6 @@ export const referrersTotalQuery = ({
   const referrersTotalQuery: QuerySchema = {
     fact: 'visit',
     filters: {
-      'dimension_user.role': ['citizen', null],
       ...getProjectFilter('dimension_projects', projectId),
       ...getDateFilter(
         'dimension_date_first_action',

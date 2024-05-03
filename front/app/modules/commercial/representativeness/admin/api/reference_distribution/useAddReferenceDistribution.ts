@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import userCustomFieldsKeys from 'api/user_custom_fields/keys';
-import usersByBirthyearKeys from 'api/users_by_birthyear/keys';
 import usersByCustomFieldKeys from 'api/users_by_custom_field/keys';
 import usersByGenderKeys from 'api/users_by_gender/keys';
 
@@ -30,10 +29,6 @@ const useAddReferenceDistribution = () => {
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
         queryKey: userCustomFieldsKeys.lists(),
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: usersByBirthyearKeys.all(),
       });
 
       queryClient.invalidateQueries({

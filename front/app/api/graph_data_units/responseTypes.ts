@@ -84,7 +84,7 @@ export type UsersByGenderResponse = {
   };
 };
 
-export type UsersByBirthyearResponse = {
+export type UsersByAgeResponse = {
   data: {
     type: 'report_builder_data_units';
     attributes: {

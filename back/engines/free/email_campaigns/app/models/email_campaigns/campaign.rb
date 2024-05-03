@@ -16,11 +16,13 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  deliveries_count :integer          default(0), not null
+#  context_id       :uuid
 #
 # Indexes
 #
-#  index_email_campaigns_campaigns_on_author_id  (author_id)
-#  index_email_campaigns_campaigns_on_type       (type)
+#  index_email_campaigns_campaigns_on_author_id   (author_id)
+#  index_email_campaigns_campaigns_on_context_id  (context_id)
+#  index_email_campaigns_campaigns_on_type        (type)
 #
 # Foreign Keys
 #
@@ -41,9 +43,17 @@ module EmailCampaigns
 
     before_validation :set_enabled, on: :create
 
+    validates :context_id, absence: true, unless: :skip_context_absence?
     validate :validate_recipients, on: :send
 
-    scope :manual, -> { where type: 'EmailCampaigns::Campaigns::Manual' }
+    scope :manual, -> { where type: DeliveryService.new.manual_campaign_types }
+    scope :automatic, -> { where.not(type: DeliveryService.new.manual_campaign_types) }
+
+    scope :manageable_by_project_moderator, lambda {
+      where(type: DeliveryService.new.campaign_classes.select do |campaign|
+                    campaign.new.manageable_by_project_moderator?
+                  end.map(&:name))
+    }
 
     def self.before_send(action_symbol)
       @before_send_hooks ||= []
@@ -89,20 +99,43 @@ module EmailCampaigns
     def self.trigger_multiloc_key; end
 
     def apply_recipient_filters(activity: nil, time: nil)
-      self.class.recipient_filters.inject(User.where.not(email: nil)) do |users_scope, action_symbol|
-        send(action_symbol, users_scope, activity: activity, time: time)
+      current_class = self.class
+
+      users_scope = User.where.not(email: nil)
+      while current_class <= ::EmailCampaigns::Campaign
+        users_scope = current_class.recipient_filters.inject(users_scope) do |users_scope, action_symbol|
+          send(action_symbol, users_scope, activity: activity, time: time)
+        end
+
+        current_class = current_class.superclass
       end
+
+      users_scope
     end
 
     def run_before_send_hooks(activity: nil, time: nil)
-      self.class.before_send_hooks.all? do |action_symbol|
-        send(action_symbol, activity: activity, time: time)
+      result = true
+      current_class = self.class
+
+      while current_class <= ::EmailCampaigns::Campaign
+        result &&= current_class.before_send_hooks.all? do |action_symbol|
+          send(action_symbol, activity: activity, time: time)
+        end
+
+        current_class = current_class.superclass
       end
+
+      result
     end
 
     def run_after_send_hooks(command)
-      self.class.after_send_hooks.each do |action_symbol|
-        send(action_symbol, command)
+      current_class = self.class
+
+      while current_class <= ::EmailCampaigns::Campaign
+        current_class.after_send_hooks.each do |action_symbol|
+          send(action_symbol, command)
+        end
+        current_class = current_class.superclass
       end
     end
 
@@ -115,6 +148,10 @@ module EmailCampaigns
 
     def self.policy_class
       CampaignPolicy
+    end
+
+    def manageable_by_project_moderator?
+      false
     end
 
     def manual?
@@ -133,6 +170,10 @@ module EmailCampaigns
         serializer: serializer,
         adapter: :json
       }).serializable_hash
+    end
+
+    def skip_context_absence?
+      false
     end
 
     private

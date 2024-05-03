@@ -21,7 +21,7 @@ describe('Admin: edit project', () => {
     });
 
     cy.setAdminLoginCookie();
-    cy.visit('/admin/projects/');
+    cy.visit('/admin/projects/all');
     cy.acceptCookies();
   });
 
