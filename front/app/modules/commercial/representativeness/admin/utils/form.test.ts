@@ -32,12 +32,12 @@ describe('isFormValid', () => {
     expect(isFormValid(formValues)).toBe(false);
   });
 
-  it('returns false if only one option is enabled and filled out', () => {
+  it('returns true if only one option is enabled and filled out', () => {
     const formValues: FormValues = {
       id123: 1000,
     };
 
-    expect(isFormValid(formValues)).toBe(false);
+    expect(isFormValid(formValues)).toBe(true);
   });
 });
 
