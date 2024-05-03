@@ -1097,7 +1097,6 @@
   "app.containers.AdminPage.DashboardPage.numberOfDislikes": "Dislikes",
   "app.containers.AdminPage.DashboardPage.numberOfLikes": "Likes",
   "app.containers.AdminPage.DashboardPage.numberOfReactionsTotal": "Totaal aantal likes/dislikes",
-  "app.containers.AdminPage.DashboardPage.otherArea": "Ergens anders",
   "app.containers.AdminPage.DashboardPage.overview.management": "Beheer",
   "app.containers.AdminPage.DashboardPage.overview.projectsAndParticipation": "Projecten en participatie",
   "app.containers.AdminPage.DashboardPage.overview.showLess": "Toon minder",

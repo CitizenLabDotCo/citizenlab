@@ -66,60 +66,6 @@ resource 'Stats - Users' do
     worksheet.map { |row| row.cells.map(&:value) }
   end
 
-  describe 'by_domicile endpoints' do
-    before do
-      travel_to start_at + 16.days do
-        @area1, @area2, @area3 = create_list(:area, 3)
-        group_members = [@area1, @area1, @area2, nil].map { |area| create(:user, domicile: area&.id) }
-        @group = create_group(group_members)
-        _non_member = create(:user, birthyear: 1980)
-      end
-    end
-
-    let(:group) { @group.id }
-
-    get 'web_api/v1/stats/users_by_domicile' do
-      time_boundary_parameters self
-      group_filter_parameter self
-      parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
-
-      example_request 'Users by domicile' do
-        expect(response_status).to eq 200
-        expect(json_response_body.dig(:data, :attributes)).to match({
-          areas: Area.all.to_h { |area| [area.id, area.attributes.slice('title_multiloc')] },
-          series: {
-            users: {
-              @area1.id => 2,
-              @area2.id => 1,
-              @area3.id => 0,
-              outside: 0,
-              _blank: 1
-            }
-          }
-        }.deep_symbolize_keys)
-      end
-    end
-
-    get 'web_api/v1/stats/users_by_domicile_as_xlsx' do
-      time_boundary_parameters self
-      group_filter_parameter self
-      parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
-
-      include_examples('xlsx export', 'domicile') do
-        let(:expected_worksheet_name) { 'users_by_area' }
-        let(:expected_worksheet_values) do
-          [
-            %w[area area_id users],
-            ['Westside', @area1.id, 2],
-            ['Westside', @area2.id, 1],
-            ['Westside', @area3.id, 0],
-            ['unknown', '_blank', 1]
-          ]
-        end
-      end
-    end
-  end
-
   describe 'by_custom_field endpoints' do
     get 'web_api/v1/stats/users_by_custom_field/:custom_field_id' do
       time_boundary_parameters self

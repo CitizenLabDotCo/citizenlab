@@ -1097,7 +1097,6 @@
   "app.containers.AdminPage.DashboardPage.numberOfDislikes": "Nombre de « je n'aime pas »",
   "app.containers.AdminPage.DashboardPage.numberOfLikes": "Nombre de « j'aime »",
   "app.containers.AdminPage.DashboardPage.numberOfReactionsTotal": "Total des réactions",
-  "app.containers.AdminPage.DashboardPage.otherArea": "Autre lieu",
   "app.containers.AdminPage.DashboardPage.overview.management": "Gestion",
   "app.containers.AdminPage.DashboardPage.overview.projectsAndParticipation": "Projets et participation",
   "app.containers.AdminPage.DashboardPage.overview.showLess": "Montrer moins",

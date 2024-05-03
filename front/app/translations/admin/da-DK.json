@@ -1097,7 +1097,6 @@
   "app.containers.AdminPage.DashboardPage.numberOfDislikes": "Dislikes",
   "app.containers.AdminPage.DashboardPage.numberOfLikes": "Likes",
   "app.containers.AdminPage.DashboardPage.numberOfReactionsTotal": "Stemmer i alt",
-  "app.containers.AdminPage.DashboardPage.otherArea": "Et andet sted",
   "app.containers.AdminPage.DashboardPage.overview.management": "Forvaltning",
   "app.containers.AdminPage.DashboardPage.overview.projectsAndParticipation": "Projekter og deltagelse",
   "app.containers.AdminPage.DashboardPage.overview.showLess": "Vis mindre",

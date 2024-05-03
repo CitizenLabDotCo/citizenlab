@@ -19,9 +19,6 @@ UserCustomFields::Engine.routes.draw do
 
       scope 'stats' do
         with_options controller: 'stats_users' do
-          get 'users_by_domicile'
-          get 'users_by_domicile_as_xlsx'
-
           get 'users_by_age'
           get 'users_by_age_as_xlsx'
 
