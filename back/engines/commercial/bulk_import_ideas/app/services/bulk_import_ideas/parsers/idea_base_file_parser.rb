@@ -50,12 +50,15 @@ module BulkImportIdeas::Parsers
 
     def ideas_to_idea_rows(ideas_array, file)
       idea_rows = ideas_array.each_with_index.map do |idea, index|
+        idea_to_idea_row(idea, file, index: index)
+      end
+      idea_rows.compact
+    end
+    def idea_to_idea_row(idea, file, index: 0)
         page_range = idea[:pdf_pages]
         fields = idea[:fields]
 
-        next if idea_blank? fields
-
-        idea_row = {}
+        return nil if idea_blank? fields
 
         # Fields not in the idea/survey form
         locale_published_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.date_published') }
@@ -64,7 +67,8 @@ module BulkImportIdeas::Parsers
         locale_longitude_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.longitude') }
         locale_tags_label = I18n.with_locale(@locale) { I18n.t('custom_fields.ideas.topic_ids.title') }
 
-        idea_row[:id]           = index + 1
+        idea_row = {}
+        idea_row[:id]           = index
         idea_row[:file]         = file
         idea_row[:project_id]   = @project.id
         idea_row[:phase_id]     = @phase.id if @phase
@@ -80,8 +84,6 @@ module BulkImportIdeas::Parsers
         idea_row = process_custom_form_fields(fields, idea_row)
 
         idea_row
-      end
-      idea_rows.compact
     end
 
     def idea_blank?(idea)

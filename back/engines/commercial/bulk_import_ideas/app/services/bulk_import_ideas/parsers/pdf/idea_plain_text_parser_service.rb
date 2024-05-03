@@ -100,11 +100,18 @@ module BulkImportIdeas::Parsers::Pdf
             field_value = field_value.gsub(filled_option_text, '').squish
           end
         end
+      end
 
-        # Now match any that are not prefixed with a character - these seem to be selected more than not
-        if field_value.include? option_title
-          option_values << option_title
-          field_value = field_value.gsub(option_title, '').squish
+      # Now match any that are not prefixed with a character
+      # ONLY for select field AND ONLY if nothing concrete has been match
+      # these seem to usually they are selected for select fields
+      if field.input_type == 'select' && option_values.empty?
+        field.options.each do |option|
+          option_title = option.title_multiloc[@locale]
+          if field_value.include? option_title
+            option_values << option_title
+            field_value = field_value.gsub(option_title, '').squish
+          end
         end
       end
 

@@ -46,7 +46,7 @@ module BulkImportIdeas::Parsers
         []
       end
 
-      merge_pdf_rows(form_parsed_idea, text_parsed_idea, file)
+      [merge_parsed_ideas_into_idea_row(form_parsed_idea, text_parsed_idea, file)]
     end
 
     private
@@ -68,6 +68,9 @@ module BulkImportIdeas::Parsers
 
         source_file.update!(num_pages: pdf.pages.count)
         raise BulkImportIdeas::Error.new 'bulk_import_maximum_pdf_pages_exceeded', value: MAX_TOTAL_PAGES if pdf.pages.count > MAX_TOTAL_PAGES
+
+        # TODO: JS - doesn't seem to be working
+        # raise BulkImportIdeas::Error.new 'bulk_import_not_enough_pdf_pages', value: pdf.pages if pdf.pages.count < pages_per_idea
 
         new_pdf = ::CombinePDF.new
         new_pdf_count = 0
@@ -162,16 +165,31 @@ module BulkImportIdeas::Parsers
       idea
     end
 
-    def merge_pdf_rows(form_parsed_idea, text_parsed_idea, file)
-      form_parsed_idea_row = ideas_to_idea_rows([form_parsed_idea], file).first
-      text_parsed_idea_row = ideas_to_idea_rows([text_parsed_idea], file).first
+    def merge_parsed_ideas_into_idea_row(form_parsed_idea, text_parsed_idea, file)
+      form_parsed_idea_row = idea_to_idea_row(form_parsed_idea, file)
+      text_parsed_idea_row = idea_to_idea_row(text_parsed_idea, file)
+      return form_parsed_idea_row if text_parsed_idea_row.blank?
 
-      return [form_parsed_idea_row] if text_parsed_idea_row.blank?
+      # Merge the core fields and prefer the form parsed values
+      merged_row = text_parsed_idea_row.merge(form_parsed_idea_row)
 
-      # Merge & prefer custom field values from text parsed ideas
-      form_parsed_idea_row[:custom_field_values] = form_parsed_idea_row[:custom_field_values].merge(text_parsed_idea_row[:custom_field_values])
-      form_parsed_idea_row[:pdf_pages] = complete_page_range(form_parsed_idea_row[:pdf_pages], text_parsed_idea_row[:pdf_pages])
-      [text_parsed_idea_row.merge(form_parsed_idea_row)]
+      # Merge the custom field values of only select fields
+      # 1. For most fields prefer the text parsed value
+      custom_field_values = form_parsed_idea_row[:custom_field_values].merge(text_parsed_idea_row[:custom_field_values])
+
+      # 2. If multi select (array) combine the two sets of values
+      custom_field_values = custom_field_values.map do |name,value|
+        if value.is_a?(Array)
+          value += form_parsed_idea_row[:custom_field_values][name]
+          value.uniq!
+        end
+        [name, value]
+      end.to_h
+      merged_row[:custom_field_values] = custom_field_values
+
+      # Get the complete PDF page range - although should always be the same
+      merged_row[:pdf_pages] = complete_page_range(form_parsed_idea_row[:pdf_pages], text_parsed_idea_row[:pdf_pages])
+      merged_row
     end
 
     # @param [Hash] field - comes from IdeaPdfFormExporter#add_to_importer_fields
