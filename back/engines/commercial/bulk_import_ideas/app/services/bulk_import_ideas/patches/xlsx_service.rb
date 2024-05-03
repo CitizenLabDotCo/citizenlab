@@ -28,7 +28,7 @@ module BulkImportIdeas
           # Add data rows
           rows.each_with_index do |row, i|
             row.cells.each_with_index do |cell, j|
-              new_worksheet.add_cell(i + 1, j, cell.value)
+              new_worksheet.add_cell(i + 1, j, cell.value) unless cell.nil?
             end
           end
           new_workbook.stream
