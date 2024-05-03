@@ -253,7 +253,7 @@ const IdeasWithoutFiltersSidebar = ({
         >
           <LeftFilterArea>
             {showViewButtons && smallerThanTablet && (
-              <Box mb="15px">
+              <Box mb="16px">
                 <ViewButtons
                   selectedView={selectedView}
                   onClick={setSelectedView}
