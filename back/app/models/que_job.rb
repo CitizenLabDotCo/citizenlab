@@ -29,13 +29,34 @@
 require 'que/active_record/model'
 
 class QueJob < Que::ActiveRecord::Model
-  def self.find(id)
-    by_args({ job_id: id }, {}).sole
+  class << self
+    def by_job_id!(job_id)
+      by_args({ job_id: }).sole
+    end
+
+    def all_by_job_ids(job_ids)
+      ids = job_ids.map { |job_id| [{ job_id: }].to_json }
+      where('args @> ANY (ARRAY[?]::jsonb[])', ids)
+    end
+
+    def all_by_tenant_schema_name(tenant_schema_name)
+      by_args({ tenant_schema_name: }).all
+    end
   end
 
   def args
     super.first.with_indifferent_access
   end
+
+  def active?
+    %i[pending scheduled].include?(status)
+  end
+  alias active active?
+
+  def failed?
+    %i[expired errored].include?(status)
+  end
+  alias failed failed?
 
   def status
     return :finished if finished_at
