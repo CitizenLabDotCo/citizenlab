@@ -212,7 +212,7 @@ nl:
       budget: 'Begroting'
       cost: 'Kosten'
       created_at: 'Ingediend om'
-      submitted_at: 'Ingediend om'
+      submitted_at: 'Ingediend op'
       published_at: 'Gepubliceerd om'
       comments_count: 'Reacties'
       likes_count: 'Likes'
