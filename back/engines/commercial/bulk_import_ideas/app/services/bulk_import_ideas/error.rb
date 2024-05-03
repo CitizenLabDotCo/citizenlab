@@ -8,6 +8,10 @@ module BulkImportIdeas
       @params = params
     end
 
+    def to_s
+      super + "##{key}"
+    end
+
     attr_reader :key, :params
   end
 end

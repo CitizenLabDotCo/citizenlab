@@ -3,6 +3,7 @@
 module BulkImportIdeas
   class IdeaImportJob < ApplicationJob
     self.priority = 60
+    perform_retries false
 
     FILE_PARSERS = {
       'xlsx' => BulkImportIdeas::Parsers::IdeaXlsxFileParser,

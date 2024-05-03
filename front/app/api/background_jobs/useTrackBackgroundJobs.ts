@@ -25,7 +25,16 @@ const useTrackBackgroundJobs = ({
     polledJobs?.data &&
     polledJobs.data.length > 0 &&
     polledJobs.data.every((job) => job.attributes.failed);
-  return { active, failed };
+  const errors =
+    polledJobs?.data &&
+    polledJobs.data.length > 0 &&
+    polledJobs.data.flatMap((job) =>
+      !!job.attributes.last_error_message
+        ? [job.attributes.last_error_message]
+        : []
+    );
+  // .map((job) => job.attributes.last_error_message);
+  return { active, failed, errors };
 };
 
 export default useTrackBackgroundJobs;

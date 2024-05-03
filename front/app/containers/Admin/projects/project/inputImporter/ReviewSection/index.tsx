@@ -29,6 +29,7 @@ import IdeaList from './IdeaList';
 import messages from './messages';
 import PDFPageControl from './PDFPageControl';
 import PDFViewer from './PDFViewer';
+import { CLError } from 'typings';
 
 const ReviewSection = ({
   importJobs,
@@ -55,7 +56,11 @@ const ReviewSection = ({
     refetchIdeas();
   };
 
-  const { active: importing, failed: importFailed } = useTrackBackgroundJobs({
+  const {
+    active: importing,
+    failed: importFailed,
+    errors: importErrors,
+  } = useTrackBackgroundJobs({
     jobs: importJobs,
     onChange: jobsChanged,
   });
@@ -79,6 +84,15 @@ const ReviewSection = ({
   if (!importTriggered && numIdeas === 0) {
     return <EmptyState />;
   }
+
+  console.log('importFailed', importFailed);
+
+  const jobErrors: CLError[] = importErrors
+    ? importErrors.map((e) => {
+        return { error: e } as CLError;
+      })
+    : [];
+  console.log('jobErrors', jobErrors);
 
   const handleSelectIdea = (ideaId: string) => {
     setCurrentPageIndex(0);

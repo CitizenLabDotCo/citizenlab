@@ -15,6 +15,7 @@ export interface IBackgroundJobData {
     job_id: string;
     failed: boolean;
     active: boolean;
+    last_error_message: string | null;
   };
 }
 

@@ -26,7 +26,8 @@ resource 'BackgroundJob', :active_job_que_adapter, :admin_api do
               attributes: {
                 active: true,
                 failed: false,
-                job_id: job.job_id
+                job_id: job.job_id,
+                last_error_message: nil
               },
               id: instance_of(String),
               type: 'background_job'
