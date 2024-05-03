@@ -54,36 +54,35 @@ module BulkImportIdeas::Parsers
       end
       idea_rows.compact
     end
+
     def idea_to_idea_row(idea, file, index: 0)
-        page_range = idea[:pdf_pages]
-        fields = idea[:fields]
+      page_range = idea[:pdf_pages]
+      fields = idea[:fields]
 
-        return nil if idea_blank? fields
+      return nil if idea_blank? fields
 
-        # Fields not in the idea/survey form
-        locale_published_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.date_published') }
-        locale_image_url_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.image_url') }
-        locale_latitude_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.latitude') }
-        locale_longitude_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.longitude') }
-        locale_tags_label = I18n.with_locale(@locale) { I18n.t('custom_fields.ideas.topic_ids.title') }
+      # Fields not in the idea/survey form
+      locale_published_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.date_published') }
+      locale_image_url_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.image_url') }
+      locale_latitude_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.latitude') }
+      locale_longitude_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.longitude') }
+      locale_tags_label = I18n.with_locale(@locale) { I18n.t('custom_fields.ideas.topic_ids.title') }
 
-        idea_row = {}
-        idea_row[:id]           = index
-        idea_row[:file]         = file
-        idea_row[:project_id]   = @project.id
-        idea_row[:phase_id]     = @phase.id if @phase
-        idea_row[:pdf_pages]    = page_range
-        idea_row[:published_at] = fields[locale_published_label]
-        idea_row[:image_url]    = fields[locale_image_url_label]
-        idea_row[:latitude]     = fields[locale_latitude_label]
-        idea_row[:longitude]    = fields[locale_longitude_label]
-        idea_row[:topic_titles] = (fields[locale_tags_label] || '').split(';').map(&:strip).select(&:present?)
+      idea_row = {}
+      idea_row[:id]           = index
+      idea_row[:file]         = file
+      idea_row[:project_id]   = @project.id
+      idea_row[:phase_id]     = @phase.id if @phase
+      idea_row[:pdf_pages]    = page_range
+      idea_row[:published_at] = fields[locale_published_label]
+      idea_row[:image_url]    = fields[locale_image_url_label]
+      idea_row[:latitude]     = fields[locale_latitude_label]
+      idea_row[:longitude]    = fields[locale_longitude_label]
+      idea_row[:topic_titles] = (fields[locale_tags_label] || '').split(';').map(&:strip).select(&:present?)
 
-        fields = structure_raw_fields(fields)
-        idea_row = process_user_details(fields, idea_row)
-        idea_row = process_custom_form_fields(fields, idea_row)
-
-        idea_row
+      fields = structure_raw_fields(fields)
+      idea_row = process_user_details(fields, idea_row)
+      process_custom_form_fields(fields, idea_row)
     end
 
     def idea_blank?(idea)
