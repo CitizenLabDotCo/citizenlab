@@ -44,8 +44,8 @@ const PageControlButtons = ({
       justifyContent="space-between"
       alignItems="center"
       bgColor={colors.white}
-      px="24px"
-      py={isSmallerThanPhone ? '12px' : '24px'}
+      px={isSmallerThanPhone ? '16px' : '24px'}
+      py={'16px'}
     >
       <LanguageSelector
         dropdownClassName={'open-upwards'}
