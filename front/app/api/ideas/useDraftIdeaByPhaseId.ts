@@ -2,14 +2,13 @@ import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
-
-import { queryClient } from '../../utils/cl-react-query/queryClient';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 import ideasKeys from './keys';
 import { IIdea, IdeasKeys } from './types';
 
 export const fetchIdea = ({ phaseId }: { phaseId?: string }) =>
-  fetcher<IIdea>({ path: `/ideas/draft/${phaseId}`, action: 'get' });
+  fetcher<IIdea>({ path: `/ideas/draft_records/${phaseId}`, action: 'get' });
 
 const useDraftIdeaByPhaseId = (phaseId?: string) => {
   return useQuery<IIdea, CLErrors, IIdea, IdeasKeys>({

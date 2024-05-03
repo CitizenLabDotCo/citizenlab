@@ -16,6 +16,10 @@ FactoryBot.define do
         'en' => 'Time to check it all out!'
       }
     end
+
+    factory :manual_project_participants_campaign, class: EmailCampaigns::Campaigns::ManualProjectParticipants do
+      association :project, factory: :project_with_active_ideation_phase
+    end
   end
 
   factory :admin_rights_received_campaign, class: EmailCampaigns::Campaigns::AdminRightsReceived do

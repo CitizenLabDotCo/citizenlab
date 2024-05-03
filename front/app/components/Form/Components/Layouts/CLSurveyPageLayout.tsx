@@ -44,6 +44,7 @@ import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import {
   extractElementsByOtherOptionLogic,
+  hasOtherTextFieldBelow,
   isVisible,
 } from '../Controls/visibilityUtils';
 
@@ -246,18 +247,29 @@ const CLSurveyPageLayout = memo(
       return null;
     }
 
+    const getFormContainerHeight = () => {
+      // TODO: Simplify the styling in CLSurveyPageLayout.
+      // Difficult to make changes to the layout due to the complex styling.
+      if (hasScrollBars) {
+        return 'fit-content';
+      } else if (isSmallerThanPhone) {
+        return ''; // Returning 100% on mobile results in odd UI behavior
+      }
+      return '100%';
+    };
+
     return (
       <>
         <Box
           width="100%"
           height="100%"
-          pt="82px"
-          pb="72px"
           maxWidth="700px"
           display="flex"
           flexDirection="column"
           justifyContent="center"
           alignItems="center"
+          pt={isSmallerThanPhone ? '' : '82px'}
+          pb={isSmallerThanPhone ? '' : '72px'}
         >
           <SurveyHeading
             project={project.data}
@@ -270,7 +282,11 @@ const CLSurveyPageLayout = memo(
           />
 
           {allowAnonymousPosting && (
-            <Box w="100%" px={isSmallerThanPhone ? '16px' : '24px'} mt="16px">
+            <Box
+              w="100%"
+              px={isSmallerThanPhone ? '16px' : '24px'}
+              mt={isSmallerThanPhone ? '64px' : '12px'}
+            >
               <Warning icon="shield-checkered">
                 {formatMessage(messages.anonymousSurveyMessage)}
               </Warning>
@@ -296,8 +312,10 @@ const CLSurveyPageLayout = memo(
                     <Box
                       display="flex"
                       justifyContent="center"
-                      h={hasScrollBars ? 'fit-content' : '100%'}
+                      h={getFormContainerHeight()}
                       flexDirection="column"
+                      pt={isSmallerThanPhone ? '60px' : ''}
+                      pb={isSmallerThanPhone ? '160px' : ''}
                     >
                       {page.options.title && (
                         <Title
@@ -324,12 +342,10 @@ const CLSurveyPageLayout = memo(
                         </Box>
                       )}
                       {pageElements.map((elementUiSchema, index) => {
-                        const key = elementUiSchema.scope.split('/').pop();
-                        const hasOtherFieldBelow =
-                          key &&
-                          (Array.isArray(data[key])
-                            ? data[key].includes('other')
-                            : data[key] === 'other');
+                        const hasOtherFieldBelow = hasOtherTextFieldBelow(
+                          elementUiSchema,
+                          data
+                        );
 
                         return (
                           <Box
