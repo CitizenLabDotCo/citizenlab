@@ -758,7 +758,6 @@
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Du kan kombinere online og offline svar. For å laste opp frakoblede svar, gå til fanen \"Survey\" for dette prosjektet og klikk \"Importer\".",
   "app.containers.Admin.projects.all.notIncludedInYourPlan": "Dette er imidlertid ikke inkludert i din nåværende plan. Ta kontakt med Government Success Manager eller administrator for å låse den opp.",
   "app.containers.Admin.projects.all.notes": "Notater",
-  "app.containers.Admin.projects.all.personalDataExplanation1": "Hvis du merker av i boksen nedenfor, oppretter vi brukerkontoer for offline deltakere.",
   "app.containers.Admin.projects.project.analysis.aiSummary": "AI oppsummering",
   "app.containers.Admin.projects.project.analysis.aiSummaryTooltipText": "Dette er AI-generert innhold. Det er kanskje ikke 100% nøyaktig. Se gjennom og kryssreferanse med de faktiske inngangene for nøyaktighet. Vær oppmerksom på at nøyaktigheten sannsynligvis vil forbedres hvis antall valgte innganger reduseres.",
   "app.containers.Admin.projects.project.ideas.analysisAction": "Gå til AI-analyse",

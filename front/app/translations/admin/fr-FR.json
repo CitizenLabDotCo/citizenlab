@@ -758,7 +758,6 @@
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Vous pouvez combiner des réponses en ligne et hors ligne. Pour télécharger des réponses hors ligne, allez dans l'onglet \"Enquête\" de ce projet et cliquez sur \"Importer\".",
   "app.containers.Admin.projects.all.notIncludedInYourPlan": "Cependant, cela n'est pas inclus dans votre plan actuel. Contactez votre Government Success Manager ou votre administrateur pour le débloquer.",
   "app.containers.Admin.projects.all.notes": "Notes",
-  "app.containers.Admin.projects.all.personalDataExplanation1": "Si vous cochez la case ci-dessous, nous créerons des comptes d'utilisateur pour les participants hors ligne.",
   "app.containers.Admin.projects.project.analysis.aiSummary": "Résumé de l'IA",
   "app.containers.Admin.projects.project.analysis.aiSummaryTooltipText": "Ce contenu a été généré par un modèle d'intelligence artificielle. Il peut ne pas être totalement exact. Nous vous recommandons de le vérifier en le recoupant avec les contributions d'origine. Notez que la précision est susceptible de s'améliorer si le nombre de contributions sélectionnées est réduit.",
   "app.containers.Admin.projects.project.ideas.analysisAction": "Accéder à l'analyse par IA",
