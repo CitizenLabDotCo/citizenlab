@@ -24,10 +24,9 @@ RSpec.describe ParticipationMethod::Survey do
     end
   end
 
-  describe '#assign_slug' do
+  describe '#generate_slug' do
     it 'does not change the input' do
-      participation_method.assign_slug input
-      expect(input).not_to be_changed
+      expect(participation_method.generate_slug(input)).to be_nil
     end
   end
 
@@ -148,6 +147,7 @@ RSpec.describe ParticipationMethod::Survey do
   its(:supports_reacting?) { is_expected.to be false }
   its(:supports_status?) { is_expected.to be false }
   its(:supports_assignment?) { is_expected.to be false }
+  its(:supports_permitted_by_everyone?) { is_expected.to be true }
   its(:return_disabled_actions?) { is_expected.to be false }
   its(:additional_export_columns) { is_expected.to eq [] }
 end
