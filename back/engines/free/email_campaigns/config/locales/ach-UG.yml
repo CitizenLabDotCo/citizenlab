@@ -2,6 +2,7 @@ ach:
   email_campaigns:
     campaign_type_description:
       "manual": crwdns2168156:0crwdne2168156:0
+      "manual_project_participants": crwdns2169454:0crwdne2169454:0
       "admin_rights_received": crwdns2168158:0crwdne2168158:0
       "comment_deleted_by_admin": crwdns2168160:0crwdne2168160:0
       "comment_marked_as_spam": crwdns2168162:0crwdne2168162:0
@@ -559,6 +560,7 @@ ach:
         admins: 'crwdns2169140:0crwdne2169140:0'
         admins_and_managers: 'crwdns2169142:0crwdne2169142:0'
         managers: 'crwdns2169144:0crwdne2169144:0'
+        project_participants: 'crwdns2169456:0crwdne2169456:0'
         registered_users: 'crwdns2169146:0crwdne2169146:0'
       recipient_segment:
         admins: 'crwdns2169148:0crwdne2169148:0'
