@@ -21,7 +21,6 @@ interface Props {
   endAt: string | null;
   currentGroupFilter: string | undefined;
   currentGroupFilterLabel: string | undefined;
-  className?: string;
 }
 
 export const fallbackMessages = {
