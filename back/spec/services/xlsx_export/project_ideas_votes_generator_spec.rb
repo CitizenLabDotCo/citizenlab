@@ -60,7 +60,7 @@ describe XlsxExport::ProjectIdeasVotesGenerator do
     end
 
     it 'handles phases with same title multiloc values' do
-      phase2.update(title_multiloc: phase3.title_multiloc)
+      phase2.update!(title_multiloc: phase3.title_multiloc)
       expect(workbook.worksheets.map(&:sheet_name))
         .to match_array(['Multiple voting phase (1)', 'Multiple voting phase (2)', 'Budget allocation phase'])
     end

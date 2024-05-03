@@ -55,7 +55,7 @@ describe XlsxExport::ProjectBasketsVotesGenerator do
     end
 
     it 'handles phases same title multiloc values' do
-      phase1.update(title_multiloc: phase2.title_multiloc)
+      phase1.update!(title_multiloc: phase2.title_multiloc)
       expect(workbook.worksheets.map(&:sheet_name)).to match_array(['Phase 2 (1)', 'Phase 2 (2)', 'Phase 3'])
     end
 
@@ -66,7 +66,7 @@ describe XlsxExport::ProjectBasketsVotesGenerator do
     end
 
     it 'does not contain a row for a NOT submitted basket' do
-      basket1.update(submitted_at: nil) # user1 started allocating votes to ideas, but did not submit the vote selection
+      basket1.update!(submitted_at: nil) # user1 started allocating votes to ideas, but did not submit the vote selection
       expect(workbook.worksheets[0].sheet_data.size).to eq(2) # Header row + 1 voter
     end
 
@@ -89,7 +89,7 @@ describe XlsxExport::ProjectBasketsVotesGenerator do
     end
 
     it 'handles ideas with same title multiloc values' do
-      ideas[1].update(title_multiloc: ideas[0].title_multiloc)
+      ideas[1].update!(title_multiloc: ideas[0].title_multiloc)
       header_row = workbook.worksheets[1][0].cells.map(&:value)
       user_row = workbook.worksheets[1][1].cells.map(&:value)
 
@@ -100,7 +100,7 @@ describe XlsxExport::ProjectBasketsVotesGenerator do
     it 'contains extra columns for custom user fields' do
       create(:custom_field_domicile)
       area = create(:area, title_multiloc: { 'en' => 'Center' })
-      user1.update(custom_field_values: { 'domicile' => area.id })
+      user1.update!(custom_field_values: { 'domicile' => area.id })
 
       header_row = workbook.worksheets[1][0].cells.map(&:value)
       user_row = workbook.worksheets[1][1].cells.map(&:value)
