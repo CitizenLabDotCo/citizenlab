@@ -1,7 +1,6 @@
 import React from 'react';
 
 import useTranslation from 'modules/commercial/machine_translations/hooks/useTranslation';
-import { SupportedLocale } from 'typings';
 
 import useLocale from 'hooks/useLocale';
 
@@ -10,7 +9,6 @@ import { isNilOrError } from 'utils/helperUtils';
 interface Props {
   postId: string;
   body: string;
-  locale: SupportedLocale;
   translateButtonClicked?: boolean;
   postType: 'idea' | 'initiative';
 }

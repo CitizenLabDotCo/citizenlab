@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { SupportedLocale } from 'typings';
-
 import useLocale from 'hooks/useLocale';
 
 import { CommentText } from 'components/PostShowComponents/Comments/Comment/CommentBody';
@@ -11,7 +9,6 @@ import useTranslation from '../../hooks/useTranslation';
 interface Props {
   translateButtonClicked: boolean;
   commentContent: string;
-  locale: SupportedLocale;
   commentId: string;
 }
 
