@@ -3,17 +3,17 @@ module XlsxExport
     private
 
     def add_suffix_to_duplicate_titles(collection)
-      objects_to_titles = collection.map { |obj| { obj.id => multiloc_service.t(obj.title_multiloc) } }
-      titles = objects_to_titles.map(&:values).flatten
+      objects_to_titles = collection.to_h { |obj| [obj.id, multiloc_service.t(obj.title_multiloc)] }
+      titles = objects_to_titles.values
       duplicated_titles = titles.select { |title| titles.count(title) > 1 }.uniq
 
       duplicated_titles.each do |title|
         suffix = 1
 
-        objects_to_titles.each do |hash|
-          next unless hash.value?(title)
+        objects_to_titles.each do |k, v|
+          next unless v == title
 
-          hash[hash.keys.first] = "#{title} (#{suffix})"
+          objects_to_titles[k] = "#{title} (#{suffix})"
           suffix += 1
         end
       end

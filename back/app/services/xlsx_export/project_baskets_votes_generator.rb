@@ -7,7 +7,7 @@ module XlsxExport
       pa = Axlsx::Package.new
 
       phases.each do |phase|
-        sheet_name = phases_to_titles.find { |hash| hash.key?(phase.id) }[phase.id]
+        sheet_name = phases_to_titles[phase.id]
         generate_phase_baskets_votes_sheet pa.workbook, sheet_name, phase
       end
 
@@ -24,7 +24,7 @@ module XlsxExport
 
       ideas.each do |idea|
         columns << {
-          header: ideas_to_titles.find { |hash| hash.key?(idea.id) }[idea.id],
+          header: ideas_to_titles[idea.id],
           f: ->(b) { b.baskets_ideas.find_by(idea: idea)&.votes || 0 },
           skip_sanitization: true
         }

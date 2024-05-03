@@ -7,7 +7,7 @@ module XlsxExport
       pa = Axlsx::Package.new
 
       phases.each do |phase|
-        sheet_name = phases_to_titles.find { |hash| hash.key?(phase.id) }[phase.id]
+        sheet_name = phases_to_titles[phase.id]
         generate_phase_ideas_votes_sheet pa.workbook, sheet_name, phase
       end
 
