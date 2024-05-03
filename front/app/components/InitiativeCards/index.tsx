@@ -304,12 +304,10 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
           onChange={handleStatusOnChange}
         />
       </Box>
-      <Box mb="0px">
-        <TopicFilterBox
-          selectedTopicIds={selectedInitiativeFilters.topics}
-          onChange={handleTopicsOnChange}
-        />
-      </Box>
+      <TopicFilterBox
+        selectedTopicIds={selectedInitiativeFilters.topics}
+        onChange={handleTopicsOnChange}
+      />
     </Box>
   );
 
