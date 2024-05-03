@@ -122,7 +122,7 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaPlainTextParserService do
       expect(fields['Multi select field (optional)']).to eq %w[This Another]
     end
 
-    it 'parses options without a selected option identifier as selected' do
+    it 'parses options without a selected option identifier as selected for "select" fields only' do
       raw_text_array = ["
         Select field (optional)
         *This answer will only be shared with moderators, and not to the public.
@@ -138,7 +138,7 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaPlainTextParserService do
       "]
       fields = service.parse_text(raw_text_array)[:fields]
       expect(fields['Select field (optional)']).to eq 'Yes'
-      expect(fields['Multi select field (optional)']).to match_array %w[That Another]
+      expect(fields['Multi select field (optional)']).to match_array %w[Another]
     end
 
     it 'chooses the first option for select fields if both are filled' do
