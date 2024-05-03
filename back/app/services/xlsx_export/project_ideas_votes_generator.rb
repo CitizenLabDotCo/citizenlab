@@ -19,7 +19,6 @@ module XlsxExport
     def generate_phase_ideas_votes_sheet(workbook, sheet_name, phase)
       url_service = Frontend::UrlService.new
       ideas = phase.ideas
-      method = phase.voting_method
       t_scope = 'xlsx_export.column_headers'
 
       columns = [
@@ -28,27 +27,8 @@ module XlsxExport
         { header: I18n.t('description', scope: t_scope), f: ->(i) { multiloc_service.t(i.body_multiloc) } }
       ]
 
-      columns += if method == 'budgeting'
-        [
-          { header: "#{I18n.t('picks', scope: t_scope)} / #{I18n.t('participants', scope: t_scope)}",
-            # We want the n of times each idea was selected (by a user), not the total budget allocated to each idea (ideas_phase.votes_count)
-            f: ->(i) { i.baskets_ideas.joins(:basket).where(basket: { phase_id: phase.id }).where.not(basket: { submitted_at: nil }).size },
-            skip_sanitization: true },
-          { header: I18n.t('cost', scope: t_scope),
-            f: ->(i) { i.budget },
-            skip_sanitization: true }
-        ]
-      else
-        [{ header: I18n.t('votes_count', scope: t_scope),
-           f: ->(i) { i.ideas_phases.find_by(phase: phase).votes_count },
-           skip_sanitization: true }]
-      end
-
-      if method == 'multiple_voting'
-        columns << { header: I18n.t('participants', scope: t_scope),
-                     # We want the n of times each idea was selected (by a user), not the n of votes allocated to each idea (ideas_phase.votes_count)
-                     f: ->(i) { i.baskets_ideas.joins(:basket).where(basket: { phase_id: phase.id }).where.not(basket: { submitted_at: nil }).size },
-                     skip_sanitization: true }
+      Factory.instance.voting_method_for(phase).export_columns.each do |column|
+        columns << send(:"#{column}_column", t_scope, phase)
       end
 
       columns += [
@@ -67,6 +47,31 @@ module XlsxExport
       ]
 
       xlsx_service.generate_sheet workbook, sheet_name, columns, ideas
+    end
+
+    def picks_column(translation_scope, phase)
+      { header: "#{I18n.t('picks', scope: translation_scope)} / #{I18n.t('participants', scope: translation_scope)}",
+        f: picks_lamda(phase),
+        skip_sanitization: true }
+    end
+
+    def participants_column(translation_scope, phase)
+      { header: I18n.t('participants', scope: translation_scope), f: picks_lamda(phase), skip_sanitization: true }
+    end
+
+    def votes_column(translation_scope, phase)
+      { header: I18n.t('votes_count', scope: translation_scope),
+        f: ->(i) { i.ideas_phases.find_by(phase: phase).votes_count },
+        skip_sanitization: true }
+    end
+
+    def budget_column(translation_scope, _phase)
+      { header: I18n.t('cost', scope: translation_scope), f: ->(i) { i.budget }, skip_sanitization: true }
+    end
+
+    def picks_lamda(phase)
+      # We want the n of times each idea was selected (by a user), not the total budget allocated to each idea (ideas_phase.votes_count)
+      ->(i) { i.baskets_ideas.joins(:basket).where(basket: { phase_id: phase.id }).where.not(basket: { submitted_at: nil }).size }
     end
   end
 end

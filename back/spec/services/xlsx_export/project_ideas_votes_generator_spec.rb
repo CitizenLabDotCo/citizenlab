@@ -95,25 +95,25 @@ describe XlsxExport::ProjectIdeasVotesGenerator do
     end
 
     context 'when sheet is for a multiple voting phase' do
-      it 'contains a column with vote count values for each idea in the phase' do
-        votes_column = workbook.worksheets[1].collect { |row| { idea_id: row[0].value, votes: row[3].value } }
-        expect(votes_column).to match_array([
-          { idea_id: 'ID', votes: 'Votes' },
-          { idea_id: ideas[0].id, votes: 63 },
-          { idea_id: ideas[1].id, votes: 24 },
-          { idea_id: ideas[2].id, votes: 0 },
-          { idea_id: ideas[3].id, votes: 0 }
-        ])
-      end
-
       it 'contains a column with count of participants who voted for each idea in the phase' do
-        participants_column = workbook.worksheets[1].collect { |row| { idea_id: row[0].value, participants: row[4].value } }
+        participants_column = workbook.worksheets[1].collect { |row| { idea_id: row[0].value, participants: row[3].value } }
         expect(participants_column).to match_array([
           { idea_id: 'ID', participants: 'Participants' },
           { idea_id: ideas[0].id, participants: 2 },
           { idea_id: ideas[1].id, participants: 1 },
           { idea_id: ideas[2].id, participants: 0 },
           { idea_id: ideas[3].id, participants: 0 }
+        ])
+      end
+
+      it 'contains a column with vote count values for each idea in the phase' do
+        votes_column = workbook.worksheets[1].collect { |row| { idea_id: row[0].value, votes: row[4].value } }
+        expect(votes_column).to match_array([
+          { idea_id: 'ID', votes: 'Votes' },
+          { idea_id: ideas[0].id, votes: 63 },
+          { idea_id: ideas[1].id, votes: 24 },
+          { idea_id: ideas[2].id, votes: 0 },
+          { idea_id: ideas[3].id, votes: 0 }
         ])
       end
     end
