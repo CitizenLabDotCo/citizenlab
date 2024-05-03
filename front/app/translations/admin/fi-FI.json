@@ -758,7 +758,6 @@
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Voit yhdistää online- ja offline-vastauksia. Voit ladata offline-vastauksia siirtymällä tämän projektin Kysely-välilehdelle ja napsauttamalla Tuo.",
   "app.containers.Admin.projects.all.notIncludedInYourPlan": "Tämä ei kuitenkaan sisälly nykyiseen suunnitelmaasi. Ota yhteyttä Government Success Manageriin tai järjestelmänvalvojaan avataksesi sen lukituksen.",
   "app.containers.Admin.projects.all.notes": "Huomautuksia",
-  "app.containers.Admin.projects.all.personalDataExplanation1": "Jos valitset alla olevan ruudun, luomme käyttäjätilejä offline-osallistujille.",
   "app.containers.Admin.projects.project.analysis.aiSummary": "AI yhteenveto",
   "app.containers.Admin.projects.project.analysis.aiSummaryTooltipText": "Tämä on tekoälyn luomaa sisältöä. Se ei välttämättä ole 100 % tarkka. Tarkista ja vertaa todellisia syötteitä tarkkuuden varmistamiseksi. Huomaa, että tarkkuus todennäköisesti paranee, jos valittujen tulojen määrää vähennetään.",
   "app.containers.Admin.projects.project.ideas.analysisAction": "Siirry AI-analyysiin",
