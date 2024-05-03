@@ -70,11 +70,11 @@ const SurveyHeading = ({ titleText }: Props) => {
         display="flex"
         alignItems="center"
         // If we don't have an edit button, it still needs to look consistent
-        minHeight={
+        minHeight={`${
           isSmallerThanPhone
-            ? `${stylingConsts.mobileTopBarHeight}px`
-            : `${stylingConsts.menuHeight}px`
-        }
+            ? stylingConsts.mobileTopBarHeight
+            : stylingConsts.menuHeight
+        }px`}
         px="24px"
         // TODO: Make reususable?
         boxShadow={'0px 2px 4px -1px rgba(0, 0, 0, 0.1)'}

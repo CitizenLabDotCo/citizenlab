@@ -248,7 +248,11 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
               background={colors.white}
               maxWidth="700px"
               w="100%"
-              h={`calc(100vh - ${stylingConsts.menuHeight}px - 80px)`}
+              h={`calc(100vh - ${
+                isSmallerThanPhone
+                  ? stylingConsts.mobileTopBarHeight
+                  : stylingConsts.menuHeight
+              }px - 80px)`}
               pb={isSmallerThanPhone ? '0' : '80px'}
             >
               <Form
