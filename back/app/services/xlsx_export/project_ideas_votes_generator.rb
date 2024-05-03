@@ -49,16 +49,6 @@ module XlsxExport
       xlsx_service.generate_sheet workbook, sheet_name, columns, ideas
     end
 
-    def picks_column(translation_scope, phase)
-      { header: "#{I18n.t('picks', scope: translation_scope)} / #{I18n.t('participants', scope: translation_scope)}",
-        f: picks_lamda(phase),
-        skip_sanitization: true }
-    end
-
-    def participants_column(translation_scope, phase)
-      { header: I18n.t('participants', scope: translation_scope), f: picks_lamda(phase), skip_sanitization: true }
-    end
-
     def votes_column(translation_scope, phase)
       { header: I18n.t('votes_count', scope: translation_scope),
         f: ->(i) { i.ideas_phases.find_by(phase: phase).votes_count },
@@ -67,6 +57,16 @@ module XlsxExport
 
     def budget_column(translation_scope, _phase)
       { header: I18n.t('cost', scope: translation_scope), f: ->(i) { i.budget }, skip_sanitization: true }
+    end
+
+    def picks_column(translation_scope, phase)
+      { header: "#{I18n.t('picks', scope: translation_scope)} / #{I18n.t('participants', scope: translation_scope)}",
+        f: picks_lamda(phase),
+        skip_sanitization: true }
+    end
+
+    def participants_column(translation_scope, phase)
+      { header: I18n.t('participants', scope: translation_scope), f: picks_lamda(phase), skip_sanitization: true }
     end
 
     def picks_lamda(phase)
