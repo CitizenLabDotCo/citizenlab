@@ -758,7 +758,6 @@
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Puedes combinar respuestas online y offline. Para cargar respuestas sin conexión, ve a la pestaña \"Encuesta\" de este proyecto y haz clic en \"Importar\".",
   "app.containers.Admin.projects.all.notIncludedInYourPlan": "Sin embargo, esto no está incluido en tu plan actual. Ponte en contacto con tu Gestor de Éxito Gubernamental o con el administrador para desbloquearlo.",
   "app.containers.Admin.projects.all.notes": "Notas",
-  "app.containers.Admin.projects.all.personalDataExplanation1": "Si marcas la casilla de abajo, crearemos cuentas de usuario para los participantes sin conexión.",
   "app.containers.Admin.projects.project.analysis.aiSummary": "Resumen de la IA",
   "app.containers.Admin.projects.project.analysis.aiSummaryTooltipText": "Se trata de contenido generado por IA. Puede que no sea 100% exacto. Por favor, revísalo y haz referencias cruzadas con las entradas reales para comprobar su exactitud. Ten en cuenta que es probable que la precisión mejore si se reduce el número de entradas seleccionadas.",
   "app.containers.Admin.projects.project.ideas.analysisAction": "Ir al análisis de la IA",
