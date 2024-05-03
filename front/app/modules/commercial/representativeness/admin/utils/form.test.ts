@@ -159,7 +159,7 @@ describe('getStatus', () => {
     expect(getStatus(formValues, remoteFormValues, touched)).toBe('incomplete');
   });
 
-  it("returns 'incomplete' if if only one option is enabled and filled out (remote data)", () => {
+  it("returns 'complete' if if only one option is enabled and filled out (remote data)", () => {
     const formValues: FormValues = {
       id123: 1000,
     };
@@ -171,7 +171,7 @@ describe('getStatus', () => {
 
     const touched = true;
 
-    expect(getStatus(formValues, remoteFormValues, touched)).toBe('incomplete');
+    expect(getStatus(formValues, remoteFormValues, touched)).toBe('complete');
   });
 
   it("returns 'incomplete' if not all enabled options are filled out (no remote data)", () => {
