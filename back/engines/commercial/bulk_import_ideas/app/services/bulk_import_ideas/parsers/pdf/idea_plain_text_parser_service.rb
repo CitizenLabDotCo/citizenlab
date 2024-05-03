@@ -103,8 +103,8 @@ module BulkImportIdeas::Parsers::Pdf
       end
 
       # Now match any that are not prefixed with a character
-      # ONLY for select field AND ONLY if nothing concrete has been match
-      # these seem to usually they are selected for select fields
+      # ONLY for select field AND ONLY if nothing concrete has been matched
+      # these seem to usually be selected for select fields
       if field.input_type == 'select' && option_values.empty?
         field.options.each do |option|
           option_title = option.title_multiloc[@locale]
