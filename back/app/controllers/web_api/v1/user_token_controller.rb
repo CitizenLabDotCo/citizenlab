@@ -7,7 +7,7 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
 
   def auth_token
     payload = entity.to_token_payload
-    update_user_last_login_at(entity)
+    update_user_last_login_at(entity) # TODO: add `if payload`?
 
     unless auth_params[:remember_me] # default expiration is set in #to_token_payload and can also be used by 3rd party auth
       payload[:exp] = TOKEN_LIFETIME.from_now.to_i

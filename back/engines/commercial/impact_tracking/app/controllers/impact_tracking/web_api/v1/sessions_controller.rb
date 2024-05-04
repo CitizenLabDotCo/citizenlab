@@ -17,6 +17,8 @@ module ImpactTracking
         )
 
         if session
+          current_user&.update!(last_login_at: Time.now) # TODO: adjust for timezone?
+
           head :created
         else
           head :internal_server_error
