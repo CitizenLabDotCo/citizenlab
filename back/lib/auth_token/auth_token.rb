@@ -19,6 +19,8 @@ module AuthToken
         puts 'AuthToken_initialize_token_not_present'
         @payload = { exp: TOKEN_LIFETIME.from_now.to_i }.merge(payload)
         @token = JWT.encode @payload, secret_key, TOKEN_SIGNATURE_ALGORITHM
+        puts "payload[:sub] = #{@payload[:sub].inspect}"
+        puts '-----------------------'
       end
     end
 
