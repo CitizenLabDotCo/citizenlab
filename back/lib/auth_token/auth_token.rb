@@ -12,9 +12,11 @@ module AuthToken
 
     def initialize(payload: {}, token: nil)
       if token.present?
+        puts 'AuthToken_initialize_token_present'
         @payload, = JWT.decode token.to_s, TOKEN_PUBLIC_KEY, true, decode_token_options
         @token = token
       else
+        puts 'AuthToken_initialize_token_not_present'
         @payload = { exp: TOKEN_LIFETIME.from_now.to_i }.merge(payload)
         @token = JWT.encode @payload, secret_key, TOKEN_SIGNATURE_ALGORITHM
       end
