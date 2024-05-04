@@ -12,15 +12,12 @@ module AuthToken
 
     def initialize(payload: {}, token: nil)
       if token.present?
-        puts 'AuthToken_initialize_token_present'
         @payload, = JWT.decode token.to_s, TOKEN_PUBLIC_KEY, true, decode_token_options
         @token = token
       else
-        puts 'AuthToken_initialize_token_not_present'
         @payload = { exp: TOKEN_LIFETIME.from_now.to_i }.merge(payload)
+        update_user_last_login_at
         @token = JWT.encode @payload, secret_key, TOKEN_SIGNATURE_ALGORITHM
-        puts "payload[:sub] = #{@payload[:sub].inspect}"
-        puts '-----------------------'
       end
     end
 
@@ -47,6 +44,13 @@ module AuthToken
 
     def secret_key
       TOKEN_SECRET_SIGNATURE_KEY.call
+    end
+
+    def update_user_last_login_at
+      return unless @payload[:sub]
+
+      user = User.find_by(id: @payload[:sub])
+      user&.update!(last_login_at: Time.now) # TODO: adjust for timezone?
     end
   end
 end

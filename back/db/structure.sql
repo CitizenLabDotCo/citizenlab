@@ -1346,7 +1346,6 @@ CREATE TABLE public.users (
     followings_count integer DEFAULT 0 NOT NULL,
     onboarding jsonb DEFAULT '{}'::jsonb NOT NULL,
     unique_code character varying,
-    last_login_at timestamp(6) without time zone,
     last_acted_at timestamp(6) without time zone
 );
 
