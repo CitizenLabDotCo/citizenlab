@@ -16,6 +16,7 @@ module AuthToken
         @token = token
       else
         @payload = { exp: TOKEN_LIFETIME.from_now.to_i }.merge(payload)
+        update_user_last_login_at
         @token = JWT.encode @payload, secret_key, TOKEN_SIGNATURE_ALGORITHM
       end
     end
@@ -43,6 +44,13 @@ module AuthToken
 
     def secret_key
       TOKEN_SECRET_SIGNATURE_KEY.call
+    end
+
+    def update_user_last_login_at
+      return unless @payload[:sub]
+
+      user = User.find_by(id: @payload[:sub])
+      user&.update!(last_login_at: Time.now) # TODO: adjust for timezone?
     end
   end
 end
