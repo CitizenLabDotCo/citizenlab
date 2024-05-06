@@ -21,7 +21,7 @@ import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
 import { withoutSpacing } from 'utils/textUtils';
 
 import { SURVEY_QUESTION_INPUT_TYPES } from '../../constants';
-import AboutReportWidget from '../../Widgets/AboutReportWidget';
+import AboutReportWidget from '../../Widgets/_deprecated/AboutReportWidget';
 import ActiveUsersWidget from '../../Widgets/ChartWidgets/ActiveUsersWidget';
 import AgeWidget from '../../Widgets/ChartWidgets/AgeWidget';
 import GenderWidget from '../../Widgets/ChartWidgets/GenderWidget';
