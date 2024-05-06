@@ -281,6 +281,11 @@ export default defineMessages({
     defaultMessage:
       'No image could be downloaded from {value}. Make sure the URL is valid and ends with a file extension such as .png or .jpg. This issue occurs in the row with ID {row}.',
   },
+  bulk_import_not_enough_pdf_pages: {
+    id: 'app.errors.bulk_import_not_enough_pdf_pages',
+    defaultMessage:
+      'The uploaded PDF does not have enough pages - it should have at least the same number of pages as the downloaded template.',
+  },
   banner_cta_signed_in_text_multiloc_blank: {
     id: 'app.errors.banner_cta_signed_in_text_multiloc_blank',
     defaultMessage: 'Enter a button text.',
