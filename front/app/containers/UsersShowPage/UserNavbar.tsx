@@ -215,6 +215,7 @@ const UserNavbar = memo<Props>(({ user }) => {
           role="tab"
           aria-selected={tab.active}
           data-cy={tab.className}
+          // Allow tabbing to active tab. The other tabs can be accessed with the arrow keys.
           tabIndex={tab.active ? 0 : -1}
           onKeyDown={(event) => handleKeyDownTab(event, tab.path)}
           ref={(el) => el && (tabsRef.current[tab.path] = el)}
