@@ -44,7 +44,7 @@ export default () => ({
     {
       path: userShowPageRoutes.submissions,
       element: (
-        <div role="tabpanel" aria-labelledby="tab-submissions">
+        <div role="tabpanel" aria-labelledby="tab-submissions" tabIndex={0}>
           <Submissions />
         </div>
       ),
@@ -52,7 +52,7 @@ export default () => ({
     {
       path: userShowPageRoutes.comments,
       element: (
-        <div role="tabpanel" aria-labelledby="tab-comments">
+        <div role="tabpanel" aria-labelledby="tab-comments" tabIndex={0}>
           <UserComments />
         </div>
       ),
@@ -60,7 +60,7 @@ export default () => ({
     {
       path: userShowPageRoutes.following,
       element: (
-        <div role="tabpanel" aria-labelledby="tab-following">
+        <div role="tabpanel" aria-labelledby="tab-following" tabIndex={0}>
           <Following />
         </div>
       ),
@@ -68,7 +68,7 @@ export default () => ({
     {
       path: userShowPageRoutes.events,
       element: (
-        <div role="tabpanel" aria-labelledby="tab-events">
+        <div role="tabpanel" aria-labelledby="tab-events" tabIndex={0}>
           <UserEvents />
         </div>
       ),
