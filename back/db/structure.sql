@@ -5860,7 +5860,7 @@ CREATE INDEX index_report_builder_reports_on_owner_id ON public.report_builder_r
 -- Name: index_report_builder_reports_on_phase_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_report_builder_reports_on_phase_id ON public.report_builder_reports USING btree (phase_id);
+CREATE UNIQUE INDEX index_report_builder_reports_on_phase_id ON public.report_builder_reports USING btree (phase_id);
 
 
 --
@@ -7507,6 +7507,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240409150000'),
 ('20240417064819'),
 ('20240417150820'),
+('20240418081854'),
 ('20240419100508');
 
 
