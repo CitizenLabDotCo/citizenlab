@@ -52,12 +52,7 @@ const FooterWithReactionControl = ({
   return (
     <Container className={className || ''}>
       <Left>
-        <StyledReactionControl
-          styleType="border"
-          ideaId={idea.id}
-          size="1"
-          ariaHidden
-        />
+        <StyledReactionControl styleType="border" ideaId={idea.id} size="1" />
 
         {showCommentCount && (
           <CommentCount commentCount={idea.attributes.comments_count} />
