@@ -2,6 +2,7 @@ el:
   email_campaigns:
     campaign_type_description:
       "manual": Επίσημα μηνύματα
+      "manual_project_participants": Επίσημα μηνύματα προς τους συμμετέχοντες στο έργο
       "admin_rights_received": Δικαιώματα διαχειριστή
       "comment_deleted_by_admin": Διαγράψτε το σχόλιό μου
       "comment_marked_as_spam": Σχόλιο spam αναφορά
@@ -559,6 +560,7 @@ el:
         admins: 'Προς τους διαχειριστές'
         admins_and_managers: 'Προς διαχειριστές & διευθυντές'
         managers: 'Προς τους διαχειριστές'
+        project_participants: 'Για τους συμμετέχοντες στο έργο'
         registered_users: 'Για εγγεγραμμένους χρήστες'
       recipient_segment:
         admins: 'Διαχειριστές'

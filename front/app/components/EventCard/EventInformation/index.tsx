@@ -2,7 +2,6 @@ import React from 'react';
 
 import {
   Icon,
-  Button,
   Box,
   Title,
   Text,
@@ -16,10 +15,10 @@ import { IEventData } from 'api/events/types';
 
 import EventAttendanceButton from 'components/EventAttendanceButton';
 import T from 'components/T';
+import Button from 'components/UI/Button';
 import Image from 'components/UI/Image';
 
 import { useIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
 import { getEventDateString } from 'utils/dateUtils';
 
 import DateBlocks from '../DateBlocks';
@@ -42,9 +41,10 @@ const EventCardImage = styled(Image)`
 interface Props {
   event: IEventData;
   titleFontSize?: number;
+  goToEvent: () => void;
 }
 
-const EventInformation = ({ event, titleFontSize }: Props) => {
+const EventInformation = ({ event, goToEvent, titleFontSize }: Props) => {
   const { formatMessage } = useIntl();
   const theme = useTheme();
 
@@ -105,7 +105,8 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
                 my="auto"
                 fill={theme.colors.tenantPrimary}
                 name="clock"
-                ariaHidden
+                title={formatMessage(messages.eventDateTimeIcon)}
+                ariaHidden={false}
                 mr={theme.isRtl ? '0px' : '8px'}
                 ml={theme.isRtl ? '8px' : '0px'}
               />
@@ -125,7 +126,8 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
                   my="auto"
                   fill={theme.colors.tenantPrimary}
                   name="position"
-                  ariaHidden
+                  title={formatMessage(messages.locationIconAltText)}
+                  ariaHidden={false}
                   mr={theme.isRtl ? '0px' : '8px'}
                   ml={theme.isRtl ? '8px' : '0px'}
                 />
@@ -143,24 +145,28 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
                 my="auto"
                 fill={theme.colors.tenantPrimary}
                 name="link"
-                ariaHidden
+                title={formatMessage(messages.onlineLinkIconAltText)}
+                ariaHidden={false}
                 mr="8px"
               />
-              <Text
-                m="0px"
-                color="coolGrey700"
-                fontSize="s"
-                role="button"
-                pt="2px"
+              <a
+                href={onlineLink}
+                target="_blank"
+                rel="noreferrer"
                 onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  window.open(onlineLink, '_blank');
+                  e.stopPropagation(); // Prevent the event from bubbling up to the parent Container
                 }}
-                style={{ textDecoration: 'underline' }}
               >
-                {formatMessage(messages.online)}
-              </Text>
+                <Text
+                  m="0px"
+                  color="coolGrey700"
+                  fontSize="s"
+                  pt="2px"
+                  style={{ textDecoration: 'underline' }}
+                >
+                  {formatMessage(messages.online)}
+                </Text>
+              </a>
             </Box>
           )}
           {event.attributes.attendees_count > 0 && (
@@ -174,7 +180,8 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
                   my="auto"
                   fill={theme.colors.tenantPrimary}
                   name="user"
-                  ariaHidden
+                  title={formatMessage(messages.attendeesIconAltText)}
+                  ariaHidden={false}
                   mr={theme.isRtl ? '0px' : '8px'}
                   ml={theme.isRtl ? '8px' : '0px'}
                 />
@@ -194,9 +201,7 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
           ml="auto"
           width={'100%'}
           bgColor={theme.colors.tenantPrimary}
-          onClick={() => {
-            clHistory.push(`/events/${event.id}`, { scrollToTop: true });
-          }}
+          onClick={goToEvent}
         >
           {formatMessage(messages.readMore)}
         </Button>

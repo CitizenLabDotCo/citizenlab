@@ -38,7 +38,7 @@ const AdminProjectDescription = lazy(() => import('./project/description'));
 const AdminProjectIdeaForm = lazy(() => import('./project/inputForm'));
 
 const AdminProjectIdeas = lazy(() => import('./project/ideas'));
-const OfflineInputImporter = lazy(() => import('./project/offlineInputs'));
+const InputImporter = lazy(() => import('./project/inputImporter'));
 
 const AdminProjectVolunteering = lazy(() => import('./project/volunteering'));
 const AdminProjectVolunteeringNew = lazy(
@@ -95,7 +95,7 @@ export enum projectsRoutes {
   projectPhaseIdeaFormEdit = ':phaseId/ideaform/edit',
   projectPhaseNativeSurveyEdit = ':phaseId/native-survey/edit',
   projectPhaseVolunteeringCause = ':phaseId/volunteering/causes/:causeId',
-  projectPhaseOfflineInputs = ':phaseId/offline-inputs',
+  projectPhaseInputImporter = ':phaseId/input-importer',
   projectPhaseReport = ':phaseId/report',
   projectAnalysis = 'analysis/:analysisId',
 }
@@ -443,10 +443,10 @@ const createAdminProjectsRoutes = () => {
               // },
 
               {
-                path: projectsRoutes.projectPhaseOfflineInputs,
+                path: projectsRoutes.projectPhaseInputImporter,
                 element: (
                   <PageLoading>
-                    <OfflineInputImporter />
+                    <InputImporter />
                   </PageLoading>
                 ),
               },

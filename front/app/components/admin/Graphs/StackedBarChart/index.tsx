@@ -118,6 +118,7 @@ const StackedBarChart = <Row,>({
         ref={innerRef}
         barGap={0}
         barCategoryGap={bars?.categoryGap}
+        accessibilityLayer
       >
         {legend && graphDimensions && legendDimensions && (
           <g className="graph-legend">

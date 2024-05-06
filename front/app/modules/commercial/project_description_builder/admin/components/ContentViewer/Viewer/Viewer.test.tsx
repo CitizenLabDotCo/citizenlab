@@ -31,6 +31,17 @@ const DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA = {
   },
 };
 
+const mockProjectData = {
+  id: '2',
+  type: 'project',
+  attributes: {
+    title_multiloc: { en: 'Test Project' },
+    slug: 'test',
+    input_term: 'idea',
+    uses_content_builder: true,
+  },
+};
+
 const mockProjectDescriptionBuilderLayoutData:
   | typeof DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA
   | undefined
@@ -43,6 +54,10 @@ jest.mock(
       data: mockProjectDescriptionBuilderLayoutData,
     };
   }
+);
+
+jest.mock('api/projects/useProjectById', () =>
+  jest.fn(() => ({ data: { data: mockProjectData } }))
 );
 
 describe('Preview', () => {

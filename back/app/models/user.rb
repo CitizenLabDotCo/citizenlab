@@ -57,6 +57,8 @@ class User < ApplicationRecord
   EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   EMAIL_DOMAIN_BLACKLIST = Rails.root.join('config', 'domain_blacklist.txt').readlines.map(&:strip).freeze
 
+  slug from: proc { |user| UserSlugService.new.generate_slug(user, user.full_name) }, if: proc { |user| !user.invite_pending? }
+
   class << self
     # Asynchronously deletes all users in a specified scope with associated side effects.
     # By default, this method deletes all users on the platform.
@@ -167,7 +169,6 @@ class User < ApplicationRecord
 
   attr_reader :highest_role_after_initialize
 
-  before_validation :generate_slug
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :assign_email_or_phone, if: :email_changed?
   with_options if: -> { user_confirmation_enabled? } do
@@ -194,7 +195,6 @@ class User < ApplicationRecord
   validates :email, presence: true, if: :requires_email?
   validates :locale, presence: true, unless: :invite_pending?
   validates :email, uniqueness: true, allow_nil: true
-  validates :slug, uniqueness: true, presence: true, unless: :invite_pending?
   validates :email, format: { with: EMAIL_REGEX }, allow_nil: true
   validates :new_email, format: { with: EMAIL_REGEX }, allow_nil: true
   validates :locale, inclusion: { in: proc { AppConfiguration.instance.settings('core', 'locales') } }
@@ -481,7 +481,7 @@ class User < ApplicationRecord
   end
 
   def blank_and_can_be_deleted?
-    # atm it can be true only for users registered with ClaveUnica who haven't entered email
+    # atm it can be true only for users registered with ClaveUnica and MitID who haven't entered email
     sso? && email.blank? && new_email.blank? && password_digest.blank? && identity_ids.count == 1
   end
 
@@ -596,9 +596,9 @@ class User < ApplicationRecord
     return unless persisted? && (new_email_changed? || email_changed?)
 
     # no_password? - here it's only for light registration
-    # confirmation_required? - it's always false for SSO providers that return email (all except ClaveUnica)
-    # !sso? - exclude ClaveUnica registrations (no email)
-    if no_password? && confirmation_required? && !sso?
+    # confirmation_required? - it's always false for SSO providers that return email (all except ClaveUnica and MitID)
+    # !sso? - exclude ClaveUnica and MitID registrations (no email)
+    if no_password? && confirmation_required? && !sso? && email_was.present?
       # Avoid security hole where passwordless user can change when they are authenticated without confirmation
       errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - user not active'
     elsif user_confirmation_enabled? && active? && email_changed? && !email_changed?(to: new_email_was) && email_was.present?
@@ -616,12 +616,6 @@ class User < ApplicationRecord
     return if confirmation_required? || invite_pending? || registration_completed_at_changed?
 
     self.registration_completed_at ||= Time.now
-  end
-
-  def generate_slug
-    return if slug.present?
-
-    self.slug = UserSlugService.new.generate_slug(self, full_name) unless invite_pending?
   end
 
   def sanitize_bio_multiloc
