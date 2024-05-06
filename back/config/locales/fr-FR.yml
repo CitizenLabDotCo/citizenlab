@@ -204,7 +204,7 @@ fr:
       input_id: 'ID'
       latitude: 'Latitude'
       longitude: 'Longitude'
-      location: 'Lieu'
+      location: 'Localisation'
       author_fullname: 'Nom de l''auteur'
       author_email: 'E-mail de l''auteur'
       author_id: 'ID de l''auteur'
@@ -227,7 +227,7 @@ fr:
       assignee_fullname: 'Attribué'
       assignee_email: 'E-mails du destinataire'
       image_url: 'URL de l''image'
-      title: 'Nom'
+      title: 'Titre'
       description: 'Description'
     anonymous: 'Anonyme'
   form_builder:
