@@ -10,6 +10,7 @@ import {
 import { rgba } from 'polished';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+import { ITab } from 'typings';
 
 import useEventsByUserId from 'api/events/useEventsByUserId';
 import useAuthUser from 'api/me/useAuthUser';
@@ -111,12 +112,12 @@ interface Props {
   user: IUserData;
 }
 
-interface TabData {
-  label: string;
-  active: boolean;
+interface TabData
+  extends Omit<ITab, 'name' | 'url' | 'feature' | 'statusLabel' | 'active'> {
   path: 'submissions' | 'comments' | 'following' | 'events';
   className?: string;
   icon: IconNames;
+  active: boolean;
 }
 
 const UserNavbar = memo<Props>(({ user }) => {
