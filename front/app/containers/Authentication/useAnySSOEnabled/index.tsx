@@ -20,6 +20,10 @@ export default function useAnySSOEnabled() {
     name: 'hoplr_login',
   });
 
+  const criiptoLoginEnabled = useFeatureFlag({
+    name: 'criipto_login',
+  });
+
   const anySSOEnabled =
     googleLoginEnabled ||
     facebookLoginEnabled ||
@@ -28,7 +32,8 @@ export default function useAnySSOEnabled() {
     franceconnectLoginEnabled ||
     viennaCitizenLoginEnabled ||
     claveUnicaLoginEnabled ||
-    hoplrLoginEnabled;
+    hoplrLoginEnabled ||
+    criiptoLoginEnabled;
 
   return anySSOEnabled;
 }

@@ -31,7 +31,7 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreateProject';
+import { INewProjectCreatedEvent } from 'containers/Admin/projects/new';
 
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
@@ -594,28 +594,36 @@ const AdminProjectsProjectGeneral = () => {
             handleProjectFileOnAdd={handleProjectFileOnAdd}
             handleProjectFileOnRemove={handleProjectFileOnRemove}
           />
+
+          {/* 
+            The sticky save button is only shown when you edit a form so that the user 
+            is not forced to scroll to the bottom of the page to save it.
+          */}
+
           <Box
-            position={showStickySaveButton ? 'fixed' : undefined}
-            borderTop={`1px solid ${colors.divider}`}
-            bottom="0"
-            w={`calc(${width}px + ${defaultAdminCardPadding * 2}px)`}
-            ml={`-${defaultAdminCardPadding}px`}
-            background={colors.white}
-            display="flex"
-            justifyContent="flex-start"
+            {...(showStickySaveButton && {
+              position: 'fixed',
+              borderTop: `1px solid ${colors.divider}`,
+              bottom: '0',
+              w: `calc(${width}px + ${defaultAdminCardPadding * 2}px)`,
+              ml: `-${defaultAdminCardPadding}px`,
+              background: colors.white,
+              display: 'flex',
+              justifyContent: 'flex-start',
+              px: `${defaultAdminCardPadding}px`,
+            })}
+            py="8px"
           >
-            <Box py="8px" px={`${defaultAdminCardPadding}px`}>
-              <SubmitWrapper
-                loading={processing}
-                status={submitState}
-                messages={{
-                  buttonSave: messages.saveProject,
-                  buttonSuccess: messages.saveSuccess,
-                  messageError: messages.saveErrorMessage,
-                  messageSuccess: messages.saveSuccessMessage,
-                }}
-              />
-            </Box>
+            <SubmitWrapper
+              loading={processing}
+              status={submitState}
+              messages={{
+                buttonSave: messages.saveProject,
+                buttonSuccess: messages.saveSuccess,
+                messageError: messages.saveErrorMessage,
+                messageSuccess: messages.saveSuccessMessage,
+              }}
+            />
           </Box>
         </Section>
       </StyledForm>

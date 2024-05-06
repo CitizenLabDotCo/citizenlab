@@ -47,7 +47,7 @@ const Chart = ({
     {
       icon: 'circle',
       color: colors.categorical01,
-      label: formatMessage(messages.activeUsers),
+      label: formatMessage(messages.participants),
     },
   ];
 

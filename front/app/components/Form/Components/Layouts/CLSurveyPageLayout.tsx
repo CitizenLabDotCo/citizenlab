@@ -12,6 +12,7 @@ import {
   withJsonFormsLayoutProps,
   useJsonForms,
 } from '@jsonforms/react';
+import { FocusOn } from 'react-focus-on';
 import { useSearchParams, useParams } from 'react-router-dom';
 import styled, { useTheme } from 'styled-components';
 
@@ -44,6 +45,7 @@ import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import {
   extractElementsByOtherOptionLogic,
+  hasOtherTextFieldBelow,
   isVisible,
 } from '../Controls/visibilityUtils';
 
@@ -76,7 +78,6 @@ const CLSurveyPageLayout = memo(
     data,
   }: LayoutProps) => {
     const { onSubmit, setShowAllErrors, setFormData } = useContext(FormContext);
-    const topAnchorRef = useRef<HTMLInputElement>(null);
     const { formatMessage } = useIntl();
     const [currentStep, setCurrentStep] = useState<number>(0);
     const [isLoading, setIsLoading] = useState(false);
@@ -94,8 +95,6 @@ const CLSurveyPageLayout = memo(
     const showSubmit = currentStep === uiPages.length - 1;
     const dataCyValue = showSubmit ? 'e2e-submit-form' : 'e2e-next-page';
     const hasPreviousPage = currentStep !== 0;
-    const useTopAnchor =
-      isSmallerThanPhone && !isNilOrError(topAnchorRef) && topAnchorRef.current;
     const pagesRef = useRef<HTMLDivElement>(null);
     const [hasScrollBars, setHasScrollBars] = useState(false);
     const [queryParams] = useSearchParams();
@@ -110,6 +109,8 @@ const CLSurveyPageLayout = memo(
       !isNilOrError(authUser) &&
       canModerateProject(project?.data.id, { data: authUser.data });
     const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
+    const surveyHeadingRef = useRef<HTMLDivElement>(null);
+    const pageControlButtonsRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
       // We can cast types because the tester made sure we only get correct values
@@ -131,13 +132,11 @@ const CLSurveyPageLayout = memo(
     useEffect(() => {
       if (scrollToError) {
         // Scroll to the first field with an error
-        document
-          .getElementById('error-display')
-          ?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'nearest',
-            inline: 'start',
-          });
+        document.getElementById('error-display')?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'start',
+        });
         setScrollToError(false);
       }
     }, [scrollToError]);
@@ -174,10 +173,9 @@ const CLSurveyPageLayout = memo(
     ]);
 
     const scrollToTop = () => {
-      if (useTopAnchor) {
-        topAnchorRef.current.scrollIntoView();
-      } else {
-        window.scrollTo(0, 0);
+      // Scroll inner container to top
+      if (pagesRef?.current) {
+        pagesRef.current.scrollTop = 0;
       }
     };
 
@@ -202,7 +200,6 @@ const CLSurveyPageLayout = memo(
           getSanitizedFormData(data)
         )
       ) {
-        // setShowAllErrors?.(false);
         scrollToTop();
         data.publication_status = 'draft';
         data.latest_complete_page = currentStep;
@@ -252,26 +249,35 @@ const CLSurveyPageLayout = memo(
       return null;
     }
 
-    return (
-      <>
-        <Box
-          ref={topAnchorRef}
-          marginTop={'-140px'} // TODO: Find cleaner solution for mobile scrollTo behaviour.
-          marginBottom={'140px'}
-          id="top-anchor"
-          my="0px"
-        />
+    const getFormContainerHeight = () => {
+      // TODO: Simplify the styling in CLSurveyPageLayout.
+      // Difficult to make changes to the layout due to the complex styling.
+      if (hasScrollBars) {
+        return 'fit-content';
+      } else if (isSmallerThanPhone) {
+        return ''; // Returning 100% on mobile results in odd UI behavior
+      }
+      return '100%';
+    };
 
+    return (
+      <FocusOn
+        shards={[surveyHeadingRef, pageControlButtonsRef]}
+        style={{
+          width: '100%',
+          height: '100%',
+        }}
+      >
         <Box
           width="100%"
           height="100%"
-          pt={isSmallerThanPhone ? '80px' : '100px'}
-          pb="100px"
           maxWidth="700px"
           display="flex"
           flexDirection="column"
           justifyContent="center"
           alignItems="center"
+          pt={isSmallerThanPhone ? '' : '82px'}
+          pb={isSmallerThanPhone ? '' : '72px'}
         >
           <SurveyHeading
             project={project.data}
@@ -281,10 +287,15 @@ const CLSurveyPageLayout = memo(
             canUserEditProject={userIsModerator}
             loggedIn={!isNilOrError(authUser)}
             percentageAnswered={percentageAnswered}
+            ref={surveyHeadingRef}
           />
 
           {allowAnonymousPosting && (
-            <Box w="100%" px={isSmallerThanPhone ? '16px' : '24px'} mt="16px">
+            <Box
+              w="100%"
+              px={isSmallerThanPhone ? '16px' : '24px'}
+              mt={isSmallerThanPhone ? '64px' : '12px'}
+            >
               <Warning icon="shield-checkered">
                 {formatMessage(messages.anonymousSurveyMessage)}
               </Warning>
@@ -294,6 +305,7 @@ const CLSurveyPageLayout = memo(
             display="flex"
             flex="1"
             height="100%"
+            pt={isSmallerThanPhone ? '28px' : '8px'}
             overflowY="auto"
             w="100%"
             ref={pagesRef}
@@ -309,8 +321,10 @@ const CLSurveyPageLayout = memo(
                     <Box
                       display="flex"
                       justifyContent="center"
-                      h={hasScrollBars ? 'fit-content' : '100%'}
+                      h={getFormContainerHeight()}
                       flexDirection="column"
+                      pt={isSmallerThanPhone ? '60px' : ''}
+                      pb={isSmallerThanPhone ? '160px' : ''}
                     >
                       {page.options.title && (
                         <Title
@@ -337,12 +351,10 @@ const CLSurveyPageLayout = memo(
                         </Box>
                       )}
                       {pageElements.map((elementUiSchema, index) => {
-                        const key = elementUiSchema.scope.split('/').pop();
-                        const hasOtherFieldBelow =
-                          key &&
-                          (Array.isArray(data[key])
-                            ? data[key].includes('other')
-                            : data[key] === 'other');
+                        const hasOtherFieldBelow = hasOtherTextFieldBelow(
+                          elementUiSchema,
+                          data
+                        );
 
                         return (
                           <Box
@@ -375,9 +387,10 @@ const CLSurveyPageLayout = memo(
             isLoading={isLoading}
             showSubmit={showSubmit}
             dataCyValue={dataCyValue}
+            ref={pageControlButtonsRef}
           />
         </Box>
-      </>
+      </FocusOn>
     );
   }
 );

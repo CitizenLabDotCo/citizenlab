@@ -38,9 +38,8 @@ import Image from 'components/UI/Image';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { trackEventByName } from 'utils/analytics';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { getInputTermMessage } from 'utils/i18n';
 
 import messages from './messages';
@@ -352,47 +351,6 @@ const ContentHeaderLabel = styled.span`
   align-items: center;
 `;
 
-const ProjectMetaItems = styled.div`
-  height: 100%;
-  color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  display: flex;
-`;
-
-const MetaItem = styled.div`
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  cursor: pointer;
-  margin-left: 24px;
-
-  &.first {
-    margin-left: 0px;
-  }
-
-  ${media.phone`
-    margin-left: 20px;
-  `};
-`;
-
-const MetaItemIcon = styled(Icon)`
-  fill: ${({ theme }) => theme.colors.tenantPrimary};
-`;
-
-const CommentIcon = styled(MetaItemIcon)`
-  width: 23px;
-  height: 23px;
-`;
-
-const MetaItemText = styled.div`
-  color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: normal;
-  margin-left: 3px;
-`;
-
 export type TProjectCardSize = 'small' | 'medium' | 'large';
 export interface InputProps {
   projectId: string;
@@ -419,7 +377,6 @@ const ProjectCard = memo<InputProps>(
         }
       },
     });
-    const { formatMessage } = useIntl();
     const { data: project } = useProjectById(projectId);
     const { data: authUser } = useAuthUser();
     const { data: projectImages } = useProjectImages(projectId);
@@ -457,9 +414,6 @@ const ProjectCard = memo<InputProps>(
     };
 
     if (project) {
-      const methodConfig = phase
-        ? getMethodConfig(phase.data.attributes.participation_method)
-        : null;
       const postingPermission = getIdeaPostingRules({
         project: project?.data,
         phase: phase?.data,
@@ -482,16 +436,11 @@ const ProjectCard = memo<InputProps>(
       const isFinished = project.data.attributes.timeline_active === 'past';
       const isArchived =
         project.data.attributes.publication_status === 'archived';
-      const ideasCount = project.data.attributes.ideas_count;
-      const commentsCount = project.data.attributes.comments_count;
       const hasAvatars =
         project.data.relationships.avatars &&
         project.data.relationships.avatars.data &&
         project.data.relationships.avatars.data.length > 0;
-      const showIdeasCount =
-        (!methodConfig || methodConfig.showInputCount) && ideasCount > 0;
-      const showCommentsCount = commentsCount > 0;
-      const showFooter = hasAvatars || showIdeasCount || showCommentsCount;
+      const showFooter = hasAvatars;
       const avatarIds =
         project.data.relationships.avatars &&
         project.data.relationships.avatars.data
@@ -503,7 +452,7 @@ const ProjectCard = memo<InputProps>(
         ? moment.duration(moment(endAt).endOf('day').diff(moment())).humanize()
         : null;
       let countdown: JSX.Element | null = null;
-      const inputTerm = getInputTerm(phases?.data);
+      const inputTerm = getInputTerm(phases?.data, phase?.data);
 
       if (isArchived) {
         countdown = (
@@ -750,7 +699,7 @@ const ProjectCard = memo<InputProps>(
               )}
             </ContentBody>
 
-            {(hasAvatars || showIdeasCount || showCommentsCount) && (
+            {hasAvatars && (
               <Box
                 borderTop={`1px solid ${colors.divider}`}
                 pt="16px"
@@ -769,44 +718,6 @@ const ProjectCard = memo<InputProps>(
                         userCount={project.data.attributes.participants_count}
                       />
                     )}
-                  </Box>
-
-                  <Box h="100%" display="flex" alignItems="center">
-                    <ProjectMetaItems>
-                      {showIdeasCount && (
-                        <MetaItem className="first">
-                          <MetaItemIcon ariaHidden name="idea" />
-                          <MetaItemText aria-hidden>{ideasCount}</MetaItemText>
-                          <ScreenReaderOnly>
-                            {formatMessage(
-                              getInputTermMessage(inputTerm, {
-                                idea: messages.xIdeas,
-                                option: messages.xOptions,
-                                contribution: messages.xContributions,
-                                project: messages.xProjects,
-                                issue: messages.xIssues,
-                                question: messages.xQuestions,
-                              }),
-                              { ideasCount }
-                            )}
-                          </ScreenReaderOnly>
-                        </MetaItem>
-                      )}
-
-                      {showCommentsCount && (
-                        <MetaItem>
-                          <CommentIcon ariaHidden name="comments" />
-                          <MetaItemText aria-hidden>
-                            {commentsCount}
-                          </MetaItemText>
-                          <ScreenReaderOnly>
-                            {formatMessage(messages.xComments, {
-                              commentsCount,
-                            })}
-                          </ScreenReaderOnly>
-                        </MetaItem>
-                      )}
-                    </ProjectMetaItems>
                   </Box>
                 </ContentFooter>
               </Box>

@@ -9,15 +9,15 @@ describe('parseTimeSeries', () => {
     const timeSeries = [
       {
         first_dimension_date_created_date: '2022-10-01',
-        count_dimension_user_id: 4,
+        count_participant_id: 4,
       },
       {
         first_dimension_date_created_date: '2022-09-02',
-        count_dimension_user_id: 1,
+        count_participant_id: 1,
       },
       {
         first_dimension_date_created_date: '2022-11-14',
-        count_dimension_user_id: 3,
+        count_participant_id: 3,
       },
     ];
 
@@ -57,18 +57,18 @@ describe('parseStats', () => {
       [
         {
           first_dimension_date_created_date: '2022-09-02',
-          count_dimension_user_id: 1,
+          count_participant_id: 1,
         },
         {
           first_dimension_date_created_date: '2022-10-01',
-          count_dimension_user_id: 4,
+          count_participant_id: 4,
         },
         {
           first_dimension_date_created_date: '2022-11-14',
-          count_dimension_user_id: 3,
+          count_participant_id: 3,
         },
       ],
-      [{ count_dimension_user_id: 4 }],
+      [{ count_participant_id: 4 }],
     ];
 
     const expectedOutput = {
@@ -85,10 +85,10 @@ describe('parseStats', () => {
       [
         {
           first_dimension_date_created_date: '2022-11-09',
-          count_dimension_user_id: 3,
+          count_participant_id: 3,
         },
       ],
-      [{ count_dimension_user_id: 3 }],
+      [{ count_participant_id: 3 }],
     ];
 
     const expectedOutput = {

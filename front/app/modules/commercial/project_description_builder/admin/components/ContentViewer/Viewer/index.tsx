@@ -6,6 +6,7 @@ import useProjectDescriptionBuilderLayout from 'modules/commercial/project_descr
 import { Multiloc } from 'typings';
 
 import useProjectFiles from 'api/project_files/useProjectFiles';
+import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -32,12 +33,13 @@ const handleLoadImages = () => {
 const Preview = ({ projectId, projectTitle }: PreviewProps) => {
   const localize = useLocalize();
   const { data: projectFiles } = useProjectFiles(projectId);
-
+  const { data: project } = useProjectById(projectId);
   const { data: projectDescriptionBuilderLayout, isInitialLoading } =
     useProjectDescriptionBuilderLayout(projectId);
 
   const projectDescriptionBuilderContent =
     projectDescriptionBuilderLayout &&
+    project?.data.attributes.uses_content_builder &&
     projectDescriptionBuilderLayout.data.attributes.enabled &&
     !isEmpty(projectDescriptionBuilderLayout.data.attributes.craftjs_json);
 

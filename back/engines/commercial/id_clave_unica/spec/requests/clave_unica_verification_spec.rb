@@ -72,6 +72,10 @@ describe 'clave_unica verification' do
       active: true,
       hashed_uid: Verification::VerificationService.new.send(:hashed_uid, '44444444', 'clave_unica')
     })
+  end
+
+  def expect_to_create_verified_and_identified_user(user)
+    expect_to_create_verified_user(user)
     expect(user.identities.first).to have_attributes({
       provider: 'clave_unica',
       user_id: user.id,
@@ -127,13 +131,13 @@ describe 'clave_unica verification' do
 
   it 'creates user when the authentication token is not passed' do
     expect(User.count).to eq(1)
-    get '/auth/clave_unica?pathname=/some-page'
+    get '/auth/clave_unica?param=/some-param'
     follow_redirect!
 
     expect(User.count).to eq(2)
 
     user = User.order(created_at: :asc).last
-    expect_to_create_verified_user(user)
+    expect_to_create_verified_and_identified_user(user)
 
     expect(user).not_to eq(@user)
     expect(user).to have_attributes({
@@ -141,31 +145,7 @@ describe 'clave_unica verification' do
       password_digest: nil
     })
 
-    expect(response).to redirect_to('/en/complete-signup?pathname=%2Fsome-page')
-  end
-
-  context 'when checking against list of verified RUTs registered in municipality' do
-    context 'when RUT is added to list' do
-      before { IdIdCardLookup::IdCard.create!(card_id: '44.444.444-4') }
-
-      it 'sets rut_verified custom field' do
-        get "/auth/clave_unica?token=#{@token}"
-        follow_redirect!
-
-        expect(@user.reload.custom_field_values).to eq({ 'rut_verified' => true })
-      end
-    end
-
-    context 'when RUT is not added to list' do
-      before { IdIdCardLookup::IdCard.create!(card_id: '55.555.555-5') }
-
-      it 'does not set rut_verified custom field' do
-        get "/auth/clave_unica?token=#{@token}"
-        follow_redirect!
-
-        expect(@user.reload.custom_field_values).to eq({})
-      end
-    end
+    expect(response).to redirect_to('/en/complete-signup?param=%2Fsome-param')
   end
 
   context 'when verification is already taken by new user' do
@@ -177,7 +157,7 @@ describe 'clave_unica verification' do
     let!(:new_user) do
       User.order(created_at: :asc).last.tap do |user|
         expect(user).to have_attributes({ email: nil })
-        expect_to_create_verified_user(user)
+        expect_to_create_verified_and_identified_user(user)
       end
     end
 
@@ -238,11 +218,11 @@ describe 'clave_unica verification' do
       end
 
       it 'creates user that can confirm her email' do
-        get '/auth/clave_unica?pathname=/some-page'
+        get '/auth/clave_unica'
         follow_redirect!
 
         user = User.order(created_at: :asc).last
-        expect_to_create_verified_user(user)
+        expect_to_create_verified_and_identified_user(user)
 
         token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
         headers = { 'Authorization' => "Bearer #{token}" }
@@ -259,10 +239,10 @@ describe 'clave_unica verification' do
       end
 
       it 'prevents bypassing email confirmation by logging in when signup is partially completed' do
-        get '/auth/clave_unica?pathname=/some-page'
+        get '/auth/clave_unica'
         follow_redirect!
 
-        get '/auth/clave_unica?pathname=/some-page'
+        get '/auth/clave_unica'
         follow_redirect!
 
         user = User.order(created_at: :asc).last
@@ -286,11 +266,11 @@ describe 'clave_unica verification' do
       end
 
       it 'creates user that can update her email' do
-        get '/auth/clave_unica?pathname=/some-page'
+        get '/auth/clave_unica'
         follow_redirect!
 
         user = User.order(created_at: :asc).last
-        expect_to_create_verified_user(user)
+        expect_to_create_verified_and_identified_user(user)
 
         token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
         headers = { 'Authorization' => "Bearer #{token}" }
@@ -298,6 +278,30 @@ describe 'clave_unica verification' do
         expect(response).to have_http_status(:ok)
         expect(user.reload).to have_attributes({ email: 'newcoolemail@example.org' })
         expect(user.confirmation_required?).to be(false)
+      end
+    end
+  end
+
+  context 'when checking against list of verified RUTs registered in municipality' do
+    context 'when RUT is added to list' do
+      before { IdIdCardLookup::IdCard.create!(card_id: '44.444.444-4') }
+
+      it 'sets rut_verified custom field' do
+        get "/auth/clave_unica?token=#{@token}"
+        follow_redirect!
+
+        expect(@user.reload.custom_field_values).to eq({ 'rut_verified' => true })
+      end
+    end
+
+    context 'when RUT is not added to list' do
+      before { IdIdCardLookup::IdCard.create!(card_id: '55.555.555-5') }
+
+      it 'does not set rut_verified custom field' do
+        get "/auth/clave_unica?token=#{@token}"
+        follow_redirect!
+
+        expect(@user.reload.custom_field_values).to eq({})
       end
     end
   end

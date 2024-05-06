@@ -73,7 +73,7 @@ class WebApi::V1::IdeasController < ApplicationController
     ideas = SortByParamsService.new.sort_ideas(ideas, params, current_user)
 
     I18n.with_locale(current_user&.locale) do
-      xlsx = XlsxService.new.generate_ideas_xlsx ideas, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?
+      xlsx = XlsxService.new.generate_ideas_xlsx ideas, view_private_attributes: true
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
     end
   end

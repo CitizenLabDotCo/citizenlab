@@ -81,9 +81,6 @@ const ParticipationMethodPicker = ({
   const nativeSurveysEnabled = useFeatureFlag({
     name: 'native_surveys',
   });
-  const volunteeringEnabled = useFeatureFlag({
-    name: 'volunteering',
-  });
 
   const changeMethod = (newMethod?: ParticipationMethod) => {
     const method = newMethod || methodToChangeTo;
@@ -166,16 +163,14 @@ const ParticipationMethodPicker = ({
               selected={selectedMethod === 'information'}
             />
 
-            {volunteeringEnabled && (
-              <ParticipationMethodChoice
-                key="volunteering"
-                title={formatMessage(messages2.volunteeringTitle)}
-                subtitle={formatMessage(messages2.volunteeringDescription)}
-                onClick={(event) => handleMethodSelect(event, 'volunteering')}
-                image={volunteeringImage}
-                selected={selectedMethod === 'volunteering'}
-              />
-            )}
+            <ParticipationMethodChoice
+              key="volunteering"
+              title={formatMessage(messages2.volunteeringTitle)}
+              subtitle={formatMessage(messages2.volunteeringDescription)}
+              onClick={(event) => handleMethodSelect(event, 'volunteering')}
+              image={volunteeringImage}
+              selected={selectedMethod === 'volunteering'}
+            />
 
             {documentAnnotationAllowed && (
               <Box position="relative">

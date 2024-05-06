@@ -126,13 +126,16 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     enabled: boolean;
   };
+  criipto_login?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   custom_accessibility_statement_link: {
     allowed: boolean;
     enabled: boolean;
     url?: string;
   };
   admin_project_templates?: AppConfigurationFeature;
-  private_projects?: AppConfigurationFeature;
   maps?: AppConfigurationMapSettings;
   initiatives: ProposalsSettings;
   initiative_review?: AppConfigurationFeature;
@@ -148,10 +151,7 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
     verification_methods: string[];
   };
-  volunteering?: AppConfigurationFeature;
   smart_groups?: AppConfigurationFeature;
-  manual_emailing?: AppConfigurationFeature;
-  automated_emailing_control?: AppConfigurationFeature;
   typeform_surveys?: {
     allowed: boolean;
     enabled: boolean;
@@ -169,8 +169,6 @@ export interface IAppConfigurationSettings {
   project_folders?: AppConfigurationFeature;
   bulk_import_ideas?: AppConfigurationFeature;
   granular_permissions?: AppConfigurationFeature;
-  ideaflow_social_sharing?: AppConfigurationFeature;
-  initiativeflow_social_sharing?: AppConfigurationFeature;
   machine_translations?: AppConfigurationFeature;
   polls?: AppConfigurationFeature;
   moderation?: AppConfigurationFeature;
@@ -182,7 +180,6 @@ export interface IAppConfigurationSettings {
   blocking_profanity?: AppConfigurationFeature;
   anonymous_participation?: AppConfigurationFeature;
   custom_idea_statuses?: AppConfigurationFeature;
-  idea_custom_copy?: AppConfigurationFeature;
   intercom?: AppConfigurationFeature;
   satismeter?: AppConfigurationFeature & {
     write_key: string;
@@ -240,8 +237,10 @@ export interface IAppConfigurationSettings {
   ask_a_question?: AppConfigurationFeature;
   advanced_autotagging?: AppConfigurationFeature;
   import_printed_forms?: AppConfigurationFeature;
+  input_importer?: AppConfigurationFeature;
   user_session_recording?: AppConfigurationFeature;
   user_avatars?: AppConfigurationFeature;
+  multi_language_platform?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

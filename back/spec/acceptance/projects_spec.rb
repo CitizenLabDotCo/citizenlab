@@ -125,6 +125,10 @@ resource 'Projects' do
     get 'web_api/v1/projects/:id' do
       let(:id) { @projects.first.id }
 
+      before do
+        Analytics::PopulateDimensionsService.populate_types
+      end
+
       example 'Get one project by id' do
         PermissionsService.new.update_all_permissions
         do_request
@@ -797,13 +801,14 @@ resource 'Projects' do
         let(:id) { project.id }
         let!(:idea) { create(:idea, project: project, phases: project.phases) }
 
-        example 'Download phase inputs without private user data', document: false do
+        example 'Download phase inputs WITH private user data', document: false do
           phase = project.phases.first
-          expected_params = [[idea], project.phases.first, false]
+          expected_params = [[idea], project.phases.first, { view_private_attributes: true }]
           allow(XlsxExport::InputSheetGenerator).to receive(:new).and_return(XlsxExport::InputSheetGenerator.new(*expected_params))
           do_request
           expect(XlsxExport::InputSheetGenerator).to have_received(:new).with(*expected_params)
           assert_status 200
+
           expect(xlsx_contents(response_body)).to match([
             {
               sheet_name: phase.title_multiloc['en'],
@@ -817,6 +822,9 @@ resource 'Projects' do
                 'Longitude',
                 'Location',
                 'Proposed Budget',
+                'Author name',
+                'Author email',
+                'Author ID',
                 'Submitted at',
                 'Published at',
                 'Comments',
@@ -824,7 +832,9 @@ resource 'Projects' do
                 'Dislikes',
                 'URL',
                 'Project',
-                'Status'
+                'Status',
+                'Assignee',
+                'Assignee email'
               ],
               rows: [
                 [
@@ -837,6 +847,9 @@ resource 'Projects' do
                   idea.location_point.coordinates.first,
                   idea.location_description,
                   idea.proposed_budget,
+                  idea.author_name,
+                  idea.author.email,
+                  idea.author_id,
                   an_instance_of(DateTime), # created_at
                   an_instance_of(DateTime), # published_at
                   0,
@@ -844,7 +857,9 @@ resource 'Projects' do
                   0,
                   "http://example.org/ideas/#{idea.slug}",
                   project.title_multiloc['en'],
-                  idea.idea_status.title_multiloc['en']
+                  idea.idea_status.title_multiloc['en'],
+                  nil,
+                  nil
                 ]
               ]
             }

@@ -10,9 +10,9 @@ export default defineMessages({
     defaultMessage:
       'Create as many projects as you want and edit them at any time. Drag and drop them to change the order in which you want to see them on your homepage.',
   },
-  createAProject: {
-    id: 'app.containers.AdminPage.ProjectEdit.createAProject',
-    defaultMessage: 'Create a project',
+  newProject: {
+    id: 'app.containers.AdminPage.ProjectEdit.createProject',
+    defaultMessage: 'New project',
   },
   published: {
     id: 'app.containers.AdminPage.ProjectDashboard.published',
@@ -38,12 +38,46 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.all.projectsAndFolders',
     defaultMessage: 'Projects and folders',
   },
-  newProjectFolder: {
-    id: 'app.containers.AdminPage.projects.all.newProjectFolder',
-    defaultMessage: 'Create a project folder',
+  createProjectFolder: {
+    id: 'app.containers.AdminPage.projects.all.createProjectFolder',
+    defaultMessage: 'New folder',
   },
-  fromScratch: {
-    id: 'app.containers.AdminPage.ProjectEdit.fromScratch',
-    defaultMessage: 'From scratch',
+  onlyAdminsCanCreateFolders: {
+    id: 'app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders',
+    defaultMessage: 'Only admins can create project folders.',
+  },
+  onlyAdminsCanCreateProjects: {
+    id: 'app.containers.AdminPage.projects.all.onlyAdminsCanCreateProjects',
+    defaultMessage: 'Only admins and folder moderators can create projects.',
+  },
+  all: {
+    id: 'app.containers.AdminPage.projects.all.all',
+    defaultMessage: 'All',
+  },
+  yourProjects: {
+    id: 'app.containers.AdminPage.projects.all.yourProjects',
+    defaultMessage: 'Your projects',
+  },
+  active: {
+    id: 'app.containers.AdminPage.projects.all.active',
+    defaultMessage: 'Active',
+  },
+  searchProjects: {
+    id: 'app.containers.AdminPage.projects.all.searchProjects',
+    defaultMessage: 'Search projects',
+  },
+  noProjectsFound: {
+    id: 'app.containers.AdminPage.projects.all.noProjects',
+    defaultMessage: 'No projects found.',
+  },
+  moderatedProjectsEmpty: {
+    id: 'app.containers.AdminPage.projects.all.moderatedProjectsEmpty',
+    defaultMessage:
+      'Projects where you are a Project Manager will appear here.',
+  },
+  homepageWarning: {
+    id: 'app.containers.AdminPage.projects.all.homepageWarning',
+    defaultMessage:
+      'Customize your homepage display: admins can arrange projects and folders here to set the order on the homepage.',
   },
 });

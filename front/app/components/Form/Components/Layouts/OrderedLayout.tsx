@@ -4,25 +4,37 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { rankWith, uiTypeIs } from '@jsonforms/core';
 import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
 
-import { SectionField } from 'components/admin/Section';
+import {
+  extractElementsByOtherOptionLogic,
+  hasOtherTextFieldBelow,
+} from 'components/Form/Components/Controls/visibilityUtils';
 
 const CLCategoryLayout = memo(
-  ({ schema, uischema, path, renderers, cells, enabled }: any) => {
+  ({ schema, uischema, path, renderers, cells, enabled, data }: any) => {
+    const elements = extractElementsByOtherOptionLogic(uischema, data);
     return (
       <Box margin-bottom="30px" width="100%">
-        {uischema.elements.map((e, index) => {
+        {elements.map((elementUiSchema, index) => {
+          const hasOtherFieldBelow = hasOtherTextFieldBelow(
+            elementUiSchema,
+            data
+          );
           return (
-            <SectionField marginBottom="30px" key={index}>
+            <Box
+              width="100%"
+              mb={hasOtherFieldBelow ? undefined : '30px'}
+              key={index}
+            >
               <JsonFormsDispatch
                 key={index}
                 renderers={renderers}
                 cells={cells}
-                uischema={e}
+                uischema={elementUiSchema}
                 schema={schema}
                 path={path}
                 enabled={enabled}
               />
-            </SectionField>
+            </Box>
           );
         })}
       </Box>

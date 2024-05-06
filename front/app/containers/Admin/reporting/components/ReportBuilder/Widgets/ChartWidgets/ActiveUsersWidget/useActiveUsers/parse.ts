@@ -18,7 +18,7 @@ const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
   if (!row) return getEmptyRow(date);
 
   return {
-    activeUsers: row.count_dimension_user_id,
+    activeUsers: row.count_participant_id,
     date: date.format('YYYY-MM-DD'),
   };
 };
@@ -48,7 +48,7 @@ export const parseStats = (data: ActiveUsersResponse['data']['attributes']) => {
 
   return {
     activeUsers: {
-      value: (activeUsersWholePeriod?.count_dimension_user_id ?? 0).toString(),
+      value: (activeUsersWholePeriod?.count_participant_id ?? 0).toString(),
     },
   };
 };

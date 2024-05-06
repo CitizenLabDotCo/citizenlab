@@ -1,5 +1,3 @@
-import moment = require('moment');
-
 describe('/admin route', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
@@ -10,10 +8,10 @@ describe('/admin route', () => {
     cy.get('.intercom-admin-dashboard-tab-overview.active').contains(
       'Overview'
     );
-    cy.get('.e2e-users-by-time-cumulative-chart')
+    cy.get('#e2e-registrations-by-time-chart')
       .find('.recharts-wrapper')
       .find('.recharts-surface');
-    cy.get('#e2e-active-users-chart')
+    cy.get('#e2e-participants-by-time-chart')
       .find('.recharts-wrapper')
       .find('.recharts-surface');
     cy.get('#e2e-ideas-chart');
@@ -21,18 +19,5 @@ describe('/admin route', () => {
     cy.get('#e2e-reactions-chart');
     cy.get('.e2e-resource-by-topic-chart');
     cy.get('.e2e-resource-by-project-chart');
-  });
-
-  it('Shows usable controls', () => {
-    cy.get('.e2e-open-time-presets').click();
-    cy.wait(1000);
-    cy.get('.e2e-preset-items').find('button').last().click();
-    cy.wait(1000);
-    cy.get('#e2e-start-date-input').click();
-    cy.wait(1000);
-    cy.get('.e2e-start-date-popper').should('be.visible');
-    cy.get('#e2e-end-date-input').click();
-    cy.wait(1000);
-    cy.get('.e2e-end-date-popper').should('be.visible');
   });
 });

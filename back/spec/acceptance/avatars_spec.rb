@@ -19,6 +19,10 @@ resource 'Avatars' do
 
     response_field :total, 'The total count of users in the given context, including those without avatar', scope: :meta
 
+    before do
+      Analytics::PopulateDimensionsService.populate_types
+    end
+
     example_request 'List random user avatars' do
       assert_status 200
       json_response = json_parse(response_body)

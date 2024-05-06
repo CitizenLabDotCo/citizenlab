@@ -25,8 +25,9 @@ const EditedText = ({ createdAt, updatedAt, userId }: Props) => {
   return (
     <Text fontSize="s" color="textSecondary" mb="0px" mt="0px">
       {formatMessage(messages.createdOn, { date: createdOn })}
-        {user && ' • '}
-        {user && formatMessage(messages.lastUpdate, {
+      {user && ' • '}
+      {user &&
+        formatMessage(messages.lastUpdate, {
           days: lastUpdateDaysAgo,
           author: user.data.attributes.first_name ?? '',
         })}
