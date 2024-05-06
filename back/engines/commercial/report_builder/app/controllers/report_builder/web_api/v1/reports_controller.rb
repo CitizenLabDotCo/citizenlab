@@ -65,7 +65,7 @@ module ReportBuilder
             copy.save!
             # Update self-references in the layout to point to the new report. The report
             # copy must be saved before this operation, because it needs an ID.
-            copy.layout.update(craftjs_json: JSON.parse(
+            copy.layout.update!(craftjs_json: JSON.parse(
               copy.layout.craftjs_json.to_json.gsub(report.id.to_s, copy.id.to_s)
             ))
 
