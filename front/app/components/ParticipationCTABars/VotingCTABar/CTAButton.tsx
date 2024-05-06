@@ -27,9 +27,10 @@ const confetti = new JSConfetti();
 const StyledButton = styled(Button)`
   &.pulse {
     animation-name: pulse;
-    animation-duration: 1s;
     animation-timing-function: ease;
-    animation-iteration-count: 4; /* Run the animation fout times be below 5 seconds. See https://www.w3.org/WAI/WCAG21/Understanding/pause-stop-hide.html */
+    /* We set 1 second for the animation and run it 4 times to make sure we are a11y compliant (Under 5 seconds) */
+    animation-iteration-count: 4;
+    animation-duration: 1s;
     animation-delay: 0.3s;
     animation-fill-mode: forwards;
   }
