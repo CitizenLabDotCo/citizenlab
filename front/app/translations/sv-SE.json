@@ -1713,6 +1713,7 @@
   "app.errors.bulk_import_malformed_pdf": "Den uppladdade PDF-filen verkar vara felformad. Försök exportera PDF-filen igen från din källa och ladda sedan upp den igen.",
   "app.errors.bulk_import_maximum_ideas_exceeded": "Maximiantalet {value} idéer har överskridits.",
   "app.errors.bulk_import_maximum_pdf_pages_exceeded": "Det maximala antalet {value} sidor i en PDF har överskridits.",
+  "app.errors.bulk_import_not_enough_pdf_pages": "Den uppladdade PDF-filen har inte tillräckligt många sidor - den bör ha minst samma antal sidor som den nedladdade mallen.",
   "app.errors.bulk_import_publication_date_invalid_format": "Idé med ogiltigt format för publiceringsdatum \"{value}\". Vänligen använd formatet \"DD-MM-YYYY\".",
   "app.errors.cannot_contain_ideas": "Metoden för deltagande du valde stödjer inte den här typen av inlägg. Redigera ditt val och försök igen.",
   "app.errors.cant_change_after_first_response": "Du kan inte längre ändra det här eftersom vissa användare redan har svarat",
