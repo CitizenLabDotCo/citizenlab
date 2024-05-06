@@ -728,7 +728,7 @@ GEM
     interception (0.5)
     intercom (4.2.1)
     jmespath (1.6.2)
-    json (2.7.1)
+    json (2.7.2)
     json-jwt (1.16.6)
       activesupport (>= 4.2)
       aes_key_wrap
@@ -755,7 +755,7 @@ GEM
       activerecord
       kaminari-core (= 1.2.2)
     kaminari-core (1.2.2)
-    koala (3.4.0)
+    koala (3.5.0)
       addressable
       faraday
       faraday-multipart
