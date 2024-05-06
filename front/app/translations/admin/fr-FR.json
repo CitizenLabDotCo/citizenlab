@@ -1431,7 +1431,7 @@
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd2": "Fin de l'enquête",
   "app.containers.AdminPage.ProjectEdit.fromATemplate": "A partir d'un modèle",
   "app.containers.AdminPage.ProjectEdit.generalTab": "Général",
-  "app.containers.AdminPage.ProjectEdit.generalTab.publicationStatusTooltip": "Ceci définit comment le projet sera affiché après avoir cliqué sur 'Enregistrer': 'Brouillon' n'est pasaffiché, 'Publié' est affiché et actif et 'Archivé' est affiché mais inactif.",
+  "app.containers.AdminPage.ProjectEdit.generalTab.publicationStatusTooltip": "Ceci détermine comment le projet est présentés sur la plateforme : les « brouillons » ne sont pas visibles, les projets « publiés » sont visibles et actifs, tandis que les projets « archivés » sont visibles mais inactifs.",
   "app.containers.AdminPage.ProjectEdit.google_forms": "Google Forms",
   "app.containers.AdminPage.ProjectEdit.headerImageInputLabel": "Image de couverture",
   "app.containers.AdminPage.ProjectEdit.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
