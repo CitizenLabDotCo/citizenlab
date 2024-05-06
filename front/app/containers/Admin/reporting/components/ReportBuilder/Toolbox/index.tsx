@@ -167,7 +167,7 @@ const ReportBuilderToolbox = ({
             />
             <DraggableElement
               id="e2e-draggable-image"
-              component={<ImageMultiloc />}
+              component={<ImageMultiloc stretch />}
               icon="image"
               label={formatMessage(WIDGET_TITLES.ImageMultiloc)}
             />
