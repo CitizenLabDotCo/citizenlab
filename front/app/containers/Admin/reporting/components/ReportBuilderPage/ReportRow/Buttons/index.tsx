@@ -11,8 +11,6 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-import PrintReportButton from './PrintReportButton';
-
 interface Props {
   reportId: string;
   isLoading: boolean;
@@ -62,7 +60,6 @@ const Buttons = ({ reportId, isLoading, onDelete }: Props) => {
           </Button>
         </div>
       </Tippy>
-      <PrintReportButton reportId={reportId} />
     </>
   );
 };
