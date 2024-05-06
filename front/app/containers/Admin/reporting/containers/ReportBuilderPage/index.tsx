@@ -27,18 +27,27 @@ import ReportRow from '../../components/ReportBuilderPage/ReportRow';
 import sharedMessages from '../../messages';
 
 import messages from './messages';
+import { compactObject, isEmpty } from './utils';
+
+const tabNames = ['all-reports', 'your-reports', 'service-reports'];
 
 const ReportBuilderPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [search, setSearch] = useState<string | undefined>();
   const [searchParams] = useSearchParams();
-  const globalReportsTab = searchParams.get('tab') !== 'your-reports';
-  const { data: me } = useAuthUser();
+  const currentTab =
+    tabNames.find((tab) => tab === searchParams.get('tab')) ?? 'all-reports';
 
-  const { data: reports } = useReports({
+  const { data: me } = useAuthUser();
+  if (!me) return null;
+
+  const reportParams = {
     search,
-    owner_id: globalReportsTab ? undefined : me?.data.id,
-  });
+    owner_id: currentTab === 'your-reports' ? me.data.id : undefined,
+    service: currentTab === 'service-reports' ? true : undefined,
+  };
+  const { data: reports } = useReports(reportParams);
+
   const isReportBuilderAllowed = useFeatureFlag({
     name: 'report_builder',
     onlyCheckAllowed: true,
@@ -46,15 +55,15 @@ const ReportBuilderPage = () => {
 
   const { formatMessage } = useIntl();
 
-  if (!reports) {
-    return null;
-  }
+  if (!reports) return null;
 
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
   const showEmptyState =
-    reports.data.length === 0 && !search && globalReportsTab;
+    currentTab === 'all-reports' &&
+    reports.data.length === 0 &&
+    isEmpty(compactObject(reportParams));
 
   const searchReports = formatMessage(messages.searchReports);
 
@@ -140,12 +149,17 @@ const ReportBuilderPage = () => {
                   <Tab
                     label={formatMessage(messages.globalReports)}
                     url={'/admin/reporting/report-builder'}
-                    active={globalReportsTab}
+                    active={currentTab === 'all-reports'}
                   />
                   <Tab
                     label={formatMessage(messages.yourReports)}
                     url={`/admin/reporting/report-builder?tab=your-reports`}
-                    active={!globalReportsTab}
+                    active={currentTab === 'your-reports'}
+                  />
+                  <Tab
+                    label={formatMessage(messages.serviceReports)}
+                    url={`/admin/reporting/report-builder?tab=service-reports`}
+                    active={currentTab === 'service-reports'}
                   />
                 </Box>
                 <Box px="44px" py="24px">

@@ -22,4 +22,8 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.globalReports',
     defaultMessage: 'Global reports',
   },
+  serviceReports: {
+    id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.serviceReports',
+    defaultMessage: 'Strategic reports',
+  },
 });
