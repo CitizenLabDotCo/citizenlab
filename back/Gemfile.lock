@@ -1157,7 +1157,7 @@ GEM
       listen (>= 2.7, < 4.0)
       spring (>= 4)
     ssrf_filter (1.1.2)
-    stackprof (0.2.25)
+    stackprof (0.2.26)
     swd (2.0.2)
       activesupport (>= 3)
       attr_required (>= 0.0.5)
@@ -1369,7 +1369,7 @@ DEPENDENCIES
   spring
   spring-commands-rspec
   spring-watcher-listen (~> 2.1)
-  stackprof (~> 0.2.25)
+  stackprof (~> 0.2.26)
   surveys!
   test-prof (~> 1.3)
   texting!
