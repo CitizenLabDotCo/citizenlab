@@ -4,9 +4,12 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { Element } from '@craftjs/core';
 import moment from 'moment';
 
+import useAppConfiguration from 'api/app_configuration/__mocks__/useAppConfiguration';
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
+import useReport from 'api/reports/useReport';
+import useUserById from 'api/users/useUserById';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
@@ -18,14 +21,16 @@ import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
-import { withoutSpacing } from 'utils/textUtils';
+import { withoutSpacing, getFullName } from 'utils/textUtils';
 
 import { SURVEY_QUESTION_INPUT_TYPES } from '../../constants';
-import AboutReportWidget from '../../Widgets/_deprecated/AboutReportWidget';
+import aboutMessages from '../../Widgets/_deprecated/AboutReportWidget/messages';
+import { getPeriod } from '../../Widgets/_deprecated/AboutReportWidget/utils';
 import ActiveUsersWidget from '../../Widgets/ChartWidgets/ActiveUsersWidget';
 import AgeWidget from '../../Widgets/ChartWidgets/AgeWidget';
 import GenderWidget from '../../Widgets/ChartWidgets/GenderWidget';
 import VisitorsWidget from '../../Widgets/ChartWidgets/VisitorsWidget';
+import ImageMultilocWidget from '../../Widgets/ImageMultiloc';
 import MostReactedIdeasWidget from '../../Widgets/MostReactedIdeasWidget';
 import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget';
 import TextMultiloc from '../../Widgets/TextMultiloc';
@@ -42,9 +47,13 @@ export interface Props {
 
 const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
   const formatMessageWithLocale = useFormatMessageWithLocale();
+  const { data: appConfiguration } = useAppConfiguration();
   const appConfigurationLocales = useAppConfigurationLocales();
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
+  const { data: report } = useReport(reportId);
+  const { data: user } = useUserById(report?.data.relationships.owner?.data.id);
+  const projectModerator = !user ? null : getFullName(user.data);
 
   const templateData = phases ? getTemplateData(phases.data) : null;
 
@@ -55,7 +64,16 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
         : undefined,
   });
 
-  if (!project || !phases || !templateData) return null;
+  if (
+    !appConfiguration ||
+    !project ||
+    !phases ||
+    !report ||
+    !projectModerator ||
+    !templateData
+  ) {
+    return null;
+  }
 
   const { participationMethod, phaseId } = templateData;
   if (participationMethod === 'native_survey' && !surveyQuestions) {
@@ -69,6 +87,38 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
     : { startAt: undefined, endAt: moment().format('YYYY-MM-DD') };
 
   if (!appConfigurationLocales) return null;
+
+  const reportTitle = report.data.attributes.name;
+  const projectTitle = project?.data.attributes.title_multiloc;
+
+  const reportTitleMultiloc = reportTitle
+    ? createMultiloc(appConfigurationLocales, (_locale) => {
+        return `<h2>${reportTitle}</h2>`;
+      })
+    : null;
+
+  const aboutTextMultiloc = createMultiloc(
+    appConfigurationLocales,
+    (locale) => {
+      const formatMessage = (message, values) =>
+        formatMessageWithLocale(locale, message, values);
+
+      const { startAt, endAt } = projectPeriod;
+      const period = getPeriod({ startAt, endAt, formatMessage });
+
+      return withoutSpacing`
+        <ul>
+          <li>${formatMessage(aboutMessages.projectLabel, {
+            projectsList: projectTitle?.[locale] ?? '',
+          })}</li>
+          ${period ? `<li>${period}</li>` : ''}
+          <li>${formatMessage(aboutMessages.managerLabel, {
+            managerName: projectModerator,
+          })}</li>
+        </ul>
+      `;
+    }
+  );
 
   const toMultilocParagraph = (
     title: MessageDescriptor,
@@ -96,11 +146,16 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
 
   return (
     <Element id="project-report-template" is={Box} canvas>
-      <AboutReportWidget
-        reportId={reportId}
-        projectId={projectId}
-        {...projectPeriod}
+      {/* About this report section */}
+      <ImageMultilocWidget
+        image={{
+          imageUrl: appConfiguration.data.attributes.logo?.medium ?? undefined,
+        }}
+        stretch={false}
       />
+      {reportTitleMultiloc && <TextMultiloc text={reportTitleMultiloc} />}
+      <TextMultiloc text={aboutTextMultiloc} />
+      <WhiteSpace />
       <TextMultiloc
         text={toMultilocParagraph(
           messages.reportSummary,
