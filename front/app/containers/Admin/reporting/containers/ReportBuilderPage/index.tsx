@@ -147,7 +147,7 @@ const ReportBuilderPage = () => {
                   pl="44px"
                 >
                   <Tab
-                    label={formatMessage(messages.globalReports)}
+                    label={formatMessage(messages.allReports)}
                     url={'/admin/reporting/report-builder'}
                     active={currentTab === 'all-reports'}
                   />

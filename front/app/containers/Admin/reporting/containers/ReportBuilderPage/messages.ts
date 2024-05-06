@@ -18,9 +18,9 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.yourReports',
     defaultMessage: 'Your reports',
   },
-  globalReports: {
-    id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.globalReports',
-    defaultMessage: 'Global reports',
+  allReports: {
+    id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.allReports',
+    defaultMessage: 'All reports',
   },
   serviceReports: {
     id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.serviceReports',
