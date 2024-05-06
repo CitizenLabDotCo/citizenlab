@@ -149,16 +149,20 @@ const EventInformation = ({ event, goToEvent, titleFontSize }: Props) => {
                 ariaHidden={false}
                 mr="8px"
               />
-              <a href={onlineLink} target="_blank" rel="noreferrer">
+              <a
+                href={onlineLink}
+                target="_blank"
+                rel="noreferrer"
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent the event from bubbling up to the parent Container
+                }}
+              >
                 <Text
                   m="0px"
                   color="coolGrey700"
                   fontSize="s"
                   pt="2px"
                   style={{ textDecoration: 'underline' }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
                 >
                   {formatMessage(messages.online)}
                 </Text>
