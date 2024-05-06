@@ -895,6 +895,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Dodaj cilj projekta, korišćene metode učešća i ishod",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Posetioci",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.cannotPrint": "This report contains unsaved changes. Please save before printing.",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": "Stretch",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "The data for this widget is missing. Reconfigure or delete it to be able to save the report.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "No appropriate phases found in this project",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noPhaseSelected": "No phase selected. Please select a phase first.",
