@@ -78,7 +78,7 @@ group :test do
   gem 'webmock', '~> 3.23'
 
   # Adds rspec matchers and helpers for testing html structure and styling.
-  gem 'capybara', '~> 3.39'
+  gem 'capybara', '~> 3.40'
   # gem 'bullet'
 end
 
