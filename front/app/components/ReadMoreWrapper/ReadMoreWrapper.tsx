@@ -110,7 +110,6 @@ const ReadMoreWrapper = memo<Props>(
                   <QuillEditedContent
                     fontSize={fontSize}
                     textColor={theme.colors.tenantText}
-                    disableTabbing={!expanded}
                   >
                     <T value={value} supportHtml={true} />
                   </QuillEditedContent>
