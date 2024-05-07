@@ -21,7 +21,7 @@ module EmailCampaigns
 
     ## Removes the DB records of removed STI classes
     def remove_deprecated_campaigns
-      supported_campaigns = delivery_service.new.campaign_types
+      supported_campaigns = delivery_service.campaign_types
       unsupported_ids     = EmailCampaigns::Campaign.where.not(type: supported_campaigns).pluck(:id)
 
       # This makes it possible to temporarily load the records without STI errors

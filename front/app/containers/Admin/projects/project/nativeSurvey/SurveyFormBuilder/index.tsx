@@ -48,7 +48,7 @@ const SurveyFormBuilder = () => {
     : clearOptionIds(formCustomFields);
 
   // PDF downloading
-  const downloadPdfLink = `${API_PATH}/phases/${phaseId}/custom_fields/to_pdf`;
+  const downloadPdfLink = `${API_PATH}/phases/${phaseId}/importer/export_form/idea/pdf`;
   const handleDownloadPDF = () => setExportModalOpen(true);
   const handleExportPDF = async ({ personal_data }: FormValues) => {
     if (isNilOrError(locale)) return;
