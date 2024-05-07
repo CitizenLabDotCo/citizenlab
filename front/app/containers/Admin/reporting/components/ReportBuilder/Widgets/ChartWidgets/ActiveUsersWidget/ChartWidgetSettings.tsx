@@ -14,9 +14,9 @@ import activeUsersMessages from 'components/admin/GraphCards/ActiveUsersCard/mes
 
 import { useIntl } from 'utils/cl-intl';
 
-import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
+import TimeSeriesWidgetSettings from '../_shared/TimeSeriesWidgetSettings';
 
-const _ChartWidgetSettings = () => {
+const ChartWidgetSettings = () => {
   const { formatMessage } = useIntl();
   const {
     actions: { setProp },
@@ -49,7 +49,7 @@ const _ChartWidgetSettings = () => {
           {formatMessage(activeUsersMessages.cardTitleTooltipMessage)}
         </Text>
       </Box>
-      <ChartWidgetSettings />
+      <TimeSeriesWidgetSettings />
       <Toggle
         label={'TODO'}
         checked={!!comparePreviousPeriod}
@@ -63,4 +63,4 @@ const _ChartWidgetSettings = () => {
   );
 };
 
-export default _ChartWidgetSettings;
+export default ChartWidgetSettings;
