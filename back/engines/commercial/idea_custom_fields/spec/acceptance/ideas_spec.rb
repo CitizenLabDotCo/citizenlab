@@ -39,41 +39,37 @@ resource 'Ideas' do
     let(:area_ids) { create_list(:area, 2).map(&:id) }
     let(:extra_field_name) { 'custom_field_name1' }
 
-    describe 'debugging' do
-      let(:form) { create(:custom_form, :with_default_fields, participation_context: project) }
-      # let!(:html_multiloc) { create(:custom_field_extra_custom_form,
-      #   input_type: 'html_multiloc', key: 'description_copie_47e', title_multiloc: { 'fr-FR' => 'Décrivez les investissements et/ou dépenses matérielles souhaitées et estimez les couts de chacun.' },
-      #   description_multiloc: {"fr-FR"=>""}, required: true, enabled: true, code: nil, hidden: false, maximum: nil, minimum_label_multiloc: {}, maximum_label_multiloc: {}, logic: {},
-      #   answer_visible_to: "admins", select_count_enabled: false, maximum_select_count: nil, minimum_select_count: nil, random_option_ordering: false,
-      #   resource: form) }
-      let!(:text_field) { create(:custom_field_extra_custom_form, input_type: 'html_multiloc', key: 'description_copie_47e', required: true, resource: form) }
-      let(:description_copie_47e) { {"fr-FR":"<p>test2test2test2</p>"} }
-
-      post 'web_api/v1/ideas' do
-        example_request 'debugging html_multiloc' do
-          assert_status 201
-          json_response = json_parse(response_body)
-          expect(Idea.first.custom_field_values.keys).to include 'description_copie_47e'
-        end
-      end
-    end
-
     context 'when the extra field is required' do
       let(:form) { create(:custom_form, :with_default_fields, participation_context: project) }
-      let!(:text_field) { create(:custom_field_extra_custom_form, key: extra_field_name, required: true, resource: form) }
 
       context 'when the field value is given' do
-        let(:custom_field_name1) { 'test value' }
-
         post 'web_api/v1/ideas' do
-          example_request 'Create an idea with an extra field' do
-            assert_status 201
-            json_response = json_parse(response_body)
-            idea_from_db = Idea.find(json_response[:data][:id])
-            expect(idea_from_db.custom_field_values.to_h).to eq({
-              extra_field_name => 'test value'
-            })
-            byebug
+          context 'when the extra field is a simple text field' do
+            let!(:text_field) { create(:custom_field_extra_custom_form, key: extra_field_name, required: true, resource: form) }
+            let(:custom_field_name1) { 'test value' }
+
+            example_request 'Create an idea with an extra field' do
+              assert_status 201
+              json_response = json_parse(response_body)
+              idea_from_db = Idea.find(json_response[:data][:id])
+              expect(idea_from_db.custom_field_values.to_h).to eq({
+                extra_field_name => 'test value'
+              })
+            end
+          end
+
+          context 'when the extra field is a HTML multiloc field' do
+            let!(:text_field) { create(:custom_field_extra_custom_form, input_type: 'html_multiloc', key: extra_field_name, required: true, resource: form) }
+            let(:custom_field_name1) { { 'fr-FR' => '<p>test value</p>' } }
+
+            example_request 'Create an idea with an extra field' do
+              assert_status 201
+              json_response = json_parse(response_body)
+              idea_from_db = Idea.find(json_response[:data][:id])
+              expect(idea_from_db.custom_field_values.to_h).to eq({
+                extra_field_name => custom_field_name1
+              })
+            end
           end
         end
       end
