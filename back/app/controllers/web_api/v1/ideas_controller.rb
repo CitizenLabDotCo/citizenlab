@@ -142,7 +142,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
     participation_method = Factory.instance.participation_method_for(phase)
 
-    extract_custom_field_values_from_params! participation_method.custom_form
+    # extract_custom_field_values_from_params! participation_method.custom_form
     params_for_create = idea_params participation_method.custom_form, is_moderator
     input = Idea.new params_for_create
     input.creation_phase = (phase if participation_method.creation_phase?)
@@ -190,15 +190,15 @@ class WebApi::V1::IdeasController < ApplicationController
       return
     end
 
-    extract_custom_field_values_from_params! input.custom_form
+    # extract_custom_field_values_from_params! input.custom_form
     params[:idea][:topic_ids] ||= [] if params[:idea].key?(:topic_ids)
     params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
     mark_custom_field_values_to_clear! input
 
     user_can_moderate_project = UserRoleService.new.can_moderate_project?(project, current_user)
     update_params = idea_params(input.custom_form, user_can_moderate_project).to_h
-    update_params[:custom_field_values] = input.custom_field_values.merge(update_params[:custom_field_values] || {})
-    CustomFieldService.new.compact_custom_field_values! update_params[:custom_field_values]
+    # update_params[:custom_field_values] = input.custom_field_values.merge(update_params[:custom_field_values] || {})
+    # CustomFieldService.new.compact_custom_field_values! update_params[:custom_field_values]
     input.assign_attributes update_params
     authorize input
     if anonymous_not_allowed?(phase)
@@ -257,6 +257,7 @@ class WebApi::V1::IdeasController < ApplicationController
       next if field.built_in?
 
       given_value = params[:idea].delete field.key
+      # byebug
       next unless given_value && field.enabled?
 
       accu[field.key] = given_value
@@ -264,7 +265,7 @@ class WebApi::V1::IdeasController < ApplicationController
     return if extra_field_values.empty?
 
     extra_field_values = reject_other_text_values(extra_field_values)
-    params[:idea][:custom_field_values] = extra_field_values
+    # params[:idea][:custom_field_values] = extra_field_values
   end
 
   def extract_params_for_file_upload_fields(custom_form, params)
@@ -344,9 +345,9 @@ class WebApi::V1::IdeasController < ApplicationController
       location_point_geojson: [:type, { coordinates: [] }]
     }
     allowed_extra_field_keys = IdeaCustomFieldsService.new(custom_form).allowed_extra_field_keys
-    if allowed_extra_field_keys.any?
-      complex_attributes[:custom_field_values] = allowed_extra_field_keys
-    end
+    # if allowed_extra_field_keys.any?
+    #   complex_attributes[:custom_field_values] = allowed_extra_field_keys
+    # end
     if submittable_field_keys.include?(:title_multiloc)
       complex_attributes[:title_multiloc] = CL2_SUPPORTED_LOCALES
     end
