@@ -895,6 +895,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Legg til målet med prosjektet, deltakermetoder som brukes og utfallet",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Besøkende",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.cannotPrint": "Denne rapporten inneholder ulagrede endringer. Vennligst lagre før utskrift.",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": "Tøye ut",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "Dataene for denne modulen mangler. Konfigurer eller slett den på nytt for å kunne lagre rapporten.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "Ingen passende faser funnet i dette prosjektet",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noPhaseSelected": "Ingen fase valgt. Velg en fase først.",
