@@ -1713,6 +1713,7 @@
   "app.errors.bulk_import_malformed_pdf": "Augšupielādētais PDF fails, šķiet, ir nepareizi noformēts. Mēģiniet vēlreiz eksportēt PDF failu no avota un pēc tam vēlreiz augšupielādēt.",
   "app.errors.bulk_import_maximum_ideas_exceeded": "Maksimālais {value} ideju skaits ir pārsniegts.",
   "app.errors.bulk_import_maximum_pdf_pages_exceeded": "Ir pārsniegts maksimālais {value} lapu skaits PDF formātā.",
+  "app.errors.bulk_import_not_enough_pdf_pages": "Augšupielādētajā PDF failā nav pietiekami daudz lappušu - tam jābūt vismaz tikpat daudz lappušu, cik lejupielādētajā veidnē.",
   "app.errors.bulk_import_publication_date_invalid_format": "Ideja ar nederīgu publicēšanas datuma formātu \"{value}\". Lūdzu, izmantojiet formātu \"DD-MM-YYYYY\".",
   "app.errors.cannot_contain_ideas": "Jūsu izvēlētā dalības metode neatbalsta šāda veida ziņojumus. Lūdzu, rediģējiet savu izvēli un mēģiniet vēlreiz.",
   "app.errors.cant_change_after_first_response": "Jūs to vairs nevarat mainīt, jo daži lietotāji jau ir atbildējuši",
