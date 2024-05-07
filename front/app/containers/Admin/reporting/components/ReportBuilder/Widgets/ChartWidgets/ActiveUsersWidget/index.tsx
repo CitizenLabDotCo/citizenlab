@@ -21,6 +21,7 @@ ActiveUsersWidget.craft = {
     projectId: undefined,
     startAt: undefined,
     endAt: null,
+    comparePreviousPeriod: undefined,
   },
   related: {
     settings: ChartWidgetSettings,

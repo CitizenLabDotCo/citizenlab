@@ -6,7 +6,9 @@ import {
   Box,
   Text,
   Icon,
+  Toggle,
 } from '@citizenlab/cl2-component-library';
+import { useNode } from '@craftjs/core';
 
 import activeUsersMessages from 'components/admin/GraphCards/ActiveUsersCard/messages';
 
@@ -16,6 +18,12 @@ import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
 
 const _ChartWidgetSettings = () => {
   const { formatMessage } = useIntl();
+  const {
+    actions: { setProp },
+    comparePreviousPeriod,
+  } = useNode((node) => ({
+    comparePreviousPeriod: node.data.props.comparePreviousPeriod,
+  }));
 
   return (
     <Box>
@@ -42,6 +50,15 @@ const _ChartWidgetSettings = () => {
         </Text>
       </Box>
       <ChartWidgetSettings />
+      <Toggle
+        label={'TODO'}
+        checked={!!comparePreviousPeriod}
+        onChange={() => {
+          setProp((props) => {
+            props.comparePreviousPeriod = !comparePreviousPeriod;
+          });
+        }}
+      />
     </Box>
   );
 };
