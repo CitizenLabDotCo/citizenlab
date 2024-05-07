@@ -899,6 +899,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.registrationField": "crwdns2164376:0crwdne2164376:0",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.unknown": "crwdns2164378:0crwdne2164378:0",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.users": "crwdns2164380:0{numberOfUsers}crwdnd2164380:0{percentageOfUsers}crwdne2164380:0",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": "crwdns2201780:0crwdne2201780:0",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "crwdns2164382:0crwdne2164382:0",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "crwdns2164384:0crwdne2164384:0",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noPhaseSelected": "crwdns2164386:0crwdne2164386:0",
