@@ -15,20 +15,16 @@ module BulkImportIdeas
         data_rows = worksheet.drop(1)
 
         data_rows.each_slice(max_rows).map do |rows|
-          # Create new package
           new_package = Axlsx::Package.new
           new_workbook = new_package.workbook
           new_workbook.add_worksheet(name: worksheet.sheet_name) do |new_sheet|
-            # Add header
             new_sheet.add_row(header.cells.map { |c| c&.value })
 
-            # Add data rows
             rows.each do |row|
               new_sheet.add_row(row.cells.map { |c| c&.value })
             end
           end
 
-          # Serialize to stream
           new_package.to_stream
         end
       end
