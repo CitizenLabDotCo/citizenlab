@@ -72,6 +72,17 @@ RSpec.describe LogActivityJob do
       user = create(:user)
       expect { job.perform(item, 'created', user, Time.now) }.not_to have_enqueued_job(TrackEventJob)
     end
+
+    it 'updates last_acted_at for user who acted' do
+      user = create(:user, last_acted_at: nil)
+      idea = create(:idea)
+
+      freeze_time do
+        t = Time.now
+        job.perform(idea, 'created', user, t)
+        expect(user.reload.last_acted_at).to eq t
+      end
+    end
   end
 
   describe '.perform_later' do

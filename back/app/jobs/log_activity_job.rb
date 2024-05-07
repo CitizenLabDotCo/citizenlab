@@ -91,6 +91,6 @@ class LogActivityJob < ApplicationJob
   end
 
   def update_user_last_acted_at(user, acted_at)
-    user&.update!(last_acted_at: acted_at) # TODO: adjust for timezone?
+    user&.update!(last_acted_at: acted_at)
   end
 end
