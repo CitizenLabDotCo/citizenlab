@@ -23,14 +23,10 @@ export default defineMessages({
     defaultMessage:
       'Are you sure you want to delete this report? This action cannot be undone.',
   },
-  createdOn: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.createdOn',
-    defaultMessage: 'Created on: {date}',
-  },
   lastUpdate: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.lastUpdate',
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.lastUpdate1',
     defaultMessage:
-      'Last update: {days, plural, no {# days} one {# day} other {# days}} ago by {author}',
+      'Modified {days, plural, no {# days} one {# day} other {# days}} ago',
   },
   cannotEditReport: {
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport2',
