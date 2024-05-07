@@ -12,6 +12,11 @@ import Button from 'components/UI/Button';
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
+const BaseButton = (props) => {
+  // hard-coded values come after the spread operator to override the prop values
+  return <Button {...props} mr={'8px'} iconSize={'18px'} />;
+};
+
 interface Props {
   reportId: string;
   showDuplicate?: boolean;
@@ -40,32 +45,28 @@ const Buttons = ({ reportId, showDuplicate = true }: Props) => {
 
   return (
     <>
-      <Button
+      <BaseButton
         id="e2e-delete-report-button"
-        mr="8px"
         icon="delete"
         buttonStyle="white"
         textColor={colors.textSecondary}
         onClick={handleDeleteReport}
         processing={isDeleting}
         disabled={isLoading || !canEdit}
-        iconSize="18px"
       >
         {formatMessage(messages.delete)}
-      </Button>
+      </BaseButton>
 
       {showDuplicate && (
-        <Button
-          mr="8px"
+        <BaseButton
           icon="copy"
           buttonStyle="secondary"
           processing={isDuplicating}
           disabled={isLoading || !canEdit}
-          iconSize="18px"
           onClick={() => duplicateReport({ id: reportId })}
         >
           {formatMessage(messages.duplicate)}
-        </Button>
+        </BaseButton>
       )}
 
       <Tippy
@@ -75,16 +76,14 @@ const Buttons = ({ reportId, showDuplicate = true }: Props) => {
         content={formatMessage(messages.cannotEditReport)}
       >
         <div>
-          <Button
-            mr="8px"
+          <BaseButton
             icon="edit"
             buttonStyle="secondary"
             disabled={isLoading || !canEdit}
-            iconSize="18px"
             linkTo={`/admin/reporting/report-builder/${reportId}/editor`}
           >
             {formatMessage(messages.edit)}
-          </Button>
+          </BaseButton>
         </div>
       </Tippy>
     </>
