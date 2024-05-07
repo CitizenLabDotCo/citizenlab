@@ -14,6 +14,7 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
     :block_reason,
     :followings_count,
     :onboarding,
+    :last_acted_at,
     :created_at,
     :updated_at
 
