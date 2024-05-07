@@ -899,6 +899,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.registrationField": "Registratieveld",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.unknown": "Onbekend",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.users": "Gebruikers: {numberOfUsers} ({percentageOfUsers}%)",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": "Stretch",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "De gegevens voor deze widget ontbreken. Configureer het opnieuw of verwijder het om het rapport op te kunnen slaan.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "Geen geschikte fasen gevonden in dit project",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noPhaseSelected": "Geen fase geselecteerd. Selecteer eerst een fase.",
