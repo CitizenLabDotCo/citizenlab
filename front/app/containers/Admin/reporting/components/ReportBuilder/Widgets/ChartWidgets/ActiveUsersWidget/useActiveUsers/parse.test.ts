@@ -69,6 +69,7 @@ describe('parseStats', () => {
         },
       ],
       [{ count_participant_id: 4 }],
+      undefined,
     ];
 
     const expectedOutput = {
@@ -89,6 +90,7 @@ describe('parseStats', () => {
         },
       ],
       [{ count_participant_id: 3 }],
+      undefined,
     ];
 
     const expectedOutput = {
