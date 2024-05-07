@@ -37,4 +37,9 @@ export default defineMessages({
     defaultMessage:
       "You cannot edit this report because it contains data that you don't have access to.",
   },
+  cannotDuplicateReport: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotDuplicateReport',
+    defaultMessage:
+      "You cannot duplicate this report because it contains data that you don't have access to.",
+  },
 });

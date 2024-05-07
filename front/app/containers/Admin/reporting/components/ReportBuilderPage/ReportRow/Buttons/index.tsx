@@ -17,6 +17,17 @@ const BaseButton = (props) => {
   return <Button {...props} mr={'8px'} iconSize={'18px'} />;
 };
 
+const Tooltip = ({ disabled, content, children }) => (
+  <Tippy
+    disabled={disabled}
+    interactive={true}
+    placement="bottom"
+    content={content}
+  >
+    <div> {children} </div>
+  </Tippy>
+);
+
 interface Props {
   reportId: string;
   showDuplicate?: boolean;
@@ -58,34 +69,35 @@ const Buttons = ({ reportId, showDuplicate = true }: Props) => {
       </BaseButton>
 
       {showDuplicate && (
-        <BaseButton
-          icon="copy"
-          buttonStyle="secondary"
-          processing={isDuplicating}
-          disabled={isLoading || !canEdit}
-          onClick={() => duplicateReport({ id: reportId })}
+        <Tooltip
+          disabled={canEdit}
+          content={formatMessage(messages.cannotDuplicateReport)}
         >
-          {formatMessage(messages.duplicate)}
-        </BaseButton>
+          <BaseButton
+            icon="copy"
+            buttonStyle="secondary"
+            processing={isDuplicating}
+            disabled={isLoading || !canEdit}
+            onClick={() => duplicateReport({ id: reportId })}
+          >
+            {formatMessage(messages.duplicate)}
+          </BaseButton>
+        </Tooltip>
       )}
 
-      <Tippy
+      <Tooltip
         disabled={canEdit}
-        interactive={true}
-        placement="bottom"
         content={formatMessage(messages.cannotEditReport)}
       >
-        <div>
-          <BaseButton
-            icon="edit"
-            buttonStyle="secondary"
-            disabled={isLoading || !canEdit}
-            linkTo={`/admin/reporting/report-builder/${reportId}/editor`}
-          >
-            {formatMessage(messages.edit)}
-          </BaseButton>
-        </div>
-      </Tippy>
+        <BaseButton
+          icon="edit"
+          buttonStyle="secondary"
+          disabled={isLoading || !canEdit}
+          linkTo={`/admin/reporting/report-builder/${reportId}/editor`}
+        >
+          {formatMessage(messages.edit)}
+        </BaseButton>
+      </Tooltip>
     </>
   );
 };
