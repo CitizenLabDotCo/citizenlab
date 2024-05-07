@@ -86,4 +86,29 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
       )
     end
   end
+
+  describe '#query' do
+    it 'calculates correct previous period dates' do
+      queries = query.query(
+        start_at: '2023-01-01',
+        end_at: '2023-04-01',
+        compare_previous_period: true
+      )
+
+      expect(queries[2]).to eq(
+        {
+          fact: 'participation',
+          filters: {
+            'dimension_date_created.date' => {
+              from: '2022-10-02',
+              to: '2022-12-31'
+            }
+          },
+          aggregations: {
+            participant_id: 'count'
+          }
+        }
+      )
+    end
+  end
 end
