@@ -80,8 +80,17 @@ RSpec.describe LogActivityJob do
       freeze_time do
         t = Time.now
         job.perform(idea, 'created', user, t)
-        expect(user.reload.last_acted_at).to eq t
+        expect(user.reload.last_acted_at.to_i).to eq t.to_i
       end
+    end
+
+    it 'does NOT update last_acted_at with an earlier date than exists' do
+      t = Time.now
+      user = create(:user, last_acted_at: t)
+      idea = create(:idea)
+
+      job.perform(idea, 'created', user, t - 1.day)
+      expect(user.reload.last_acted_at.to_i).to eq t.to_i
     end
 
     it 'does not update last_acted_at for user who acted if acted_at is nil' do

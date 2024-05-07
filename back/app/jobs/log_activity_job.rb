@@ -91,8 +91,8 @@ class LogActivityJob < ApplicationJob
   end
 
   def update_user_last_acted_at(user, acted_at)
-    return unless acted_at
+    return unless user && acted_at
 
-    user&.update!(last_acted_at: acted_at)
+    user.update!(last_acted_at: acted_at) if user.last_acted_at.nil? || acted_at > user.last_acted_at
   end
 end
