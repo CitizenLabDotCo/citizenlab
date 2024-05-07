@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
 
-import {
-  colors,
-  Box,
-  Title,
-  Text,
-  stylingConsts,
-} from '@citizenlab/cl2-component-library';
+import { Box, Title, stylingConsts } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 import { useSearchParams } from 'react-router-dom';
 
@@ -28,6 +22,21 @@ import sharedMessages from '../../messages';
 
 import messages from './messages';
 import { compactObject, isEmpty } from './utils';
+
+const BuilderNotAllowedTooltip = ({ disabled, children }) => {
+  const { formatMessage } = useIntl();
+
+  return (
+    <Tippy
+      disabled={disabled}
+      placement="bottom"
+      content={formatMessage(sharedMessages.contactToAccess)}
+      hideOnClick
+    >
+      <Box>{children}</Box>
+    </Tippy>
+  );
+};
 
 const tabNames = ['all-reports', 'your-reports', 'service-reports'];
 
@@ -69,108 +78,75 @@ const ReportBuilderPage = () => {
 
   return (
     <>
-      <Title variant="h1" color="primary" mb="32px">
-        <FormattedMessage {...sharedMessages.reportBuilder} />
-      </Title>
+      <Box display="flex" justifyContent="space-between" mb="24px">
+        <Title variant="h1" color="primary">
+          <FormattedMessage {...sharedMessages.reportBuilder} />
+        </Title>
+
+        <Box display="flex" alignItems="center">
+          <BuilderNotAllowedTooltip disabled={isReportBuilderAllowed}>
+            <Button
+              onClick={openModal}
+              icon="plus-circle"
+              buttonStyle="admin-dark"
+              disabled={!isReportBuilderAllowed}
+            >
+              <FormattedMessage {...messages.createAReport} />
+            </Button>
+          </BuilderNotAllowedTooltip>
+        </Box>
+      </Box>
+
       {showEmptyState ? (
         <EmptyState onOpenModal={openModal} />
       ) : (
-        <>
-          <Box
-            background="white"
-            px="56px"
-            py="40px"
-            border={stylingConsts.border}
-            borderRadius={stylingConsts.borderRadius}
-          >
-            <Title
-              variant="h3"
-              as="h2"
-              color="primary"
-              mt="0px"
-              mb="0px"
-              fontWeight="normal"
-            >
-              <FormattedMessage {...messages.createAReport} />
-            </Title>
-            <Text color="textSecondary" mt="4px" mb="16px">
-              <FormattedMessage {...messages.createReportDescription} />
-            </Text>
-            <Box display="flex">
-              <Tippy
-                maxWidth="250px"
-                placement="right-start"
-                content={
-                  <FormattedMessage {...sharedMessages.contactToAccess} />
-                }
-                disabled={isReportBuilderAllowed}
-                hideOnClick
-              >
-                <div>
-                  <Button
-                    onClick={openModal}
-                    width="auto"
-                    mt="12px"
-                    bgColor={colors.primary}
-                    disabled={!isReportBuilderAllowed}
-                    p="8px 12px"
-                  >
-                    <FormattedMessage {...messages.createAReport} />
-                  </Button>
-                </div>
-              </Tippy>
+        isReportBuilderAllowed && (
+          <>
+            <Box my="24px" w="fit-content">
+              <SearchInput
+                placeholder={searchReports}
+                ariaLabel={searchReports}
+                a11y_numberOfSearchResults={reports?.data.length ?? 0}
+                onChange={(value) => setSearch(value ?? undefined)}
+              />
             </Box>
-          </Box>
-          {isReportBuilderAllowed && (
-            <>
-              <Box mt="40px" w="300px">
-                <SearchInput
-                  placeholder={searchReports}
-                  ariaLabel={searchReports}
-                  a11y_numberOfSearchResults={reports?.data.length ?? 0}
-                  onChange={(value) => {
-                    setSearch(value ?? undefined);
-                  }}
+            <Box
+              background="white"
+              mt="20px"
+              border={stylingConsts.border}
+              borderRadius={stylingConsts.borderRadius}
+            >
+              <Box
+                display="flex"
+                position="relative"
+                borderRadius={stylingConsts.borderRadius}
+                w="100%"
+                pl="44px"
+              >
+                <Tab
+                  label={formatMessage(messages.allReports)}
+                  url={'/admin/reporting/report-builder'}
+                  active={currentTab === 'all-reports'}
+                />
+                <Tab
+                  label={formatMessage(messages.yourReports)}
+                  url={`/admin/reporting/report-builder?tab=your-reports`}
+                  active={currentTab === 'your-reports'}
+                />
+                <Tab
+                  label={formatMessage(messages.serviceReports)}
+                  url={`/admin/reporting/report-builder?tab=service-reports`}
+                  active={currentTab === 'service-reports'}
                 />
               </Box>
-              <Box
-                background="white"
-                mt="20px"
-                border={stylingConsts.border}
-                borderRadius={stylingConsts.borderRadius}
-              >
-                <Box
-                  display="flex"
-                  position="relative"
-                  borderRadius={stylingConsts.borderRadius}
-                  w="100%"
-                  pl="44px"
-                >
-                  <Tab
-                    label={formatMessage(messages.allReports)}
-                    url={'/admin/reporting/report-builder'}
-                    active={currentTab === 'all-reports'}
-                  />
-                  <Tab
-                    label={formatMessage(messages.yourReports)}
-                    url={`/admin/reporting/report-builder?tab=your-reports`}
-                    active={currentTab === 'your-reports'}
-                  />
-                  <Tab
-                    label={formatMessage(messages.serviceReports)}
-                    url={`/admin/reporting/report-builder?tab=service-reports`}
-                    active={currentTab === 'service-reports'}
-                  />
-                </Box>
-                <Box px="44px" py="24px">
-                  {reports.data.map((report) => (
-                    <ReportRow key={report.id} report={report} />
-                  ))}
-                </Box>
+              <Box px="44px" py="24px">
+                {reports.data.map((report) => (
+                  <ReportRow key={report.id} report={report} />
+                ))}
               </Box>
-            </>
-          )}
-        </>
+            </Box>
+          </>
+        )
       )}
       <CreateReportModal open={modalOpen} onClose={closeModal} />
     </>
