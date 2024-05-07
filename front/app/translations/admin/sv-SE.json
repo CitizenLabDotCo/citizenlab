@@ -899,6 +899,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.registrationField": "Registreringsfält",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.unknown": "Okänd",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.users": "Användare: {numberOfUsers} ({percentageOfUsers}%)",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": "Stretch",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "Data för denna widget saknas. Konfigurera om eller ta bort den för att kunna spara rapporten.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "Inga lämpliga faser hittades i detta projekt",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noPhaseSelected": "Ingen fas vald. Vänligen välj en fas först.",
