@@ -899,6 +899,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.registrationField": "Campo de inscripción",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.unknown": "Desconocido",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.users": "Usuarios: {numberOfUsers} ({percentageOfUsers}%)",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": "Estira",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "Faltan los datos de este widget. Reconfigúralo o elimínalo para poder guardar el informe.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "No se han encontrado fases adecuadas en este proyecto",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noPhaseSelected": "No se ha seleccionado ninguna fase. Por favor, selecciona primero una fase.",
