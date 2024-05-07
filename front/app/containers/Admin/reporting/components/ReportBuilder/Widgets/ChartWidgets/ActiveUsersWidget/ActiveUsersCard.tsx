@@ -56,6 +56,7 @@ const ActiveUsers = ({
               name={formatMessage(messages.totalParticipants)}
               value={stats.activeUsers.value}
               nameColor="black"
+              bottomLabel="from previous TODO days"
             />
           </Box>
         </Box>

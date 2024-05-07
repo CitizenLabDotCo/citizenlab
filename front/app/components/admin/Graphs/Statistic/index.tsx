@@ -9,7 +9,7 @@ import {
 
 interface Props {
   name: string;
-  value: string;
+  value: React.ReactNode;
   bottomLabel?: string;
   bottomLabelValue?: string;
   tooltipContent?: React.ReactChild;
@@ -42,7 +42,6 @@ const Statistic = ({
       >
         {name}
       </Text>
-
       {tooltipContent && (
         <Box ml="5px" display="inline">
           <IconTooltip
@@ -54,10 +53,13 @@ const Statistic = ({
         </Box>
       )}
     </Box>
-
-    <Text color="textPrimary" fontSize="xl" mt="2px" mb="0px">
-      {value}
-    </Text>
+    {typeof value === 'string' ? (
+      <Text color="textPrimary" fontSize="xl" mt="2px" mb="0px">
+        {value}
+      </Text>
+    ) : (
+      value
+    )}
     {bottomLabel && (
       <Box mt="3px">
         <Text
