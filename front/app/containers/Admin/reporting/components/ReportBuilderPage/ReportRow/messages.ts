@@ -14,12 +14,14 @@ export default defineMessages({
     defaultMessage: 'Duplicate',
   },
   confirmDeleteReport: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport',
-    defaultMessage: 'Are you sure you want to delete "{reportName}"?',
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport1',
+    defaultMessage:
+      'Are you sure you want to delete "{reportName}"? This action cannot be undone.',
   },
   confirmDeleteThisReport: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteThisReport',
-    defaultMessage: 'Are you sure you want to delete this report?',
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteThisReport1',
+    defaultMessage:
+      'Are you sure you want to delete this report? This action cannot be undone.',
   },
   createdOn: {
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.createdOn',
