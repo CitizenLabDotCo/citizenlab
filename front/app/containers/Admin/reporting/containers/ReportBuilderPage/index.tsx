@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 
-import { Box, Title, stylingConsts } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  colors,
+  stylingConsts,
+  Title,
+} from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 import { useSearchParams } from 'react-router-dom';
 
@@ -9,9 +14,10 @@ import useReports from 'api/reports/useReports';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import Tab from 'components/admin/NavigationTabs/Tab';
 import Button from 'components/UI/Button';
+import NavigationTabs from 'components/admin/NavigationTabs';
 import SearchInput from 'components/UI/SearchInput';
+import Tab from 'components/admin/NavigationTabs/Tab';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -37,6 +43,32 @@ const BuilderNotAllowedTooltip = ({ disabled, children }) => {
     </Tippy>
   );
 };
+
+const TabContainer = ({ children }) => (
+  <Box
+    w="100%"
+    borderBottom={`1px solid ${colors.divider}`}
+    position="relative"
+    zIndex="1"
+    mb="-2px"
+    overflow="hidden"
+  >
+    {children}
+  </Box>
+);
+
+const ListContainer = ({ children }) => (
+  <Box
+    minHeight="66vh"
+    px="36px"
+    pb="36px"
+    border={`1px solid ${colors.divider}`}
+    borderRadius={stylingConsts.borderRadius}
+    bg={colors.white}
+  >
+    {children}
+  </Box>
+);
 
 const tabNames = ['all-reports', 'your-reports', 'service-reports'];
 
@@ -112,40 +144,33 @@ const ReportBuilderPage = () => {
                 onChange={(value) => setSearch(value ?? undefined)}
               />
             </Box>
-            <Box
-              background="white"
-              mt="20px"
-              border={stylingConsts.border}
-              borderRadius={stylingConsts.borderRadius}
-            >
-              <Box
-                display="flex"
-                position="relative"
-                borderRadius={stylingConsts.borderRadius}
-                w="100%"
-                pl="44px"
-              >
-                <Tab
-                  label={formatMessage(messages.allReports)}
-                  url={'/admin/reporting/report-builder'}
-                  active={currentTab === 'all-reports'}
-                />
-                <Tab
-                  label={formatMessage(messages.yourReports)}
-                  url={`/admin/reporting/report-builder?tab=your-reports`}
-                  active={currentTab === 'your-reports'}
-                />
-                <Tab
-                  label={formatMessage(messages.serviceReports)}
-                  url={`/admin/reporting/report-builder?tab=service-reports`}
-                  active={currentTab === 'service-reports'}
-                />
-              </Box>
-              <Box px="44px" py="24px">
+
+            <Box>
+              <TabContainer>
+                <NavigationTabs position="relative">
+                  <Tab
+                    label={formatMessage(messages.allReports)}
+                    url={'/admin/reporting/report-builder'}
+                    active={currentTab === 'all-reports'}
+                  />
+                  <Tab
+                    label={formatMessage(messages.yourReports)}
+                    url={`/admin/reporting/report-builder?tab=your-reports`}
+                    active={currentTab === 'your-reports'}
+                  />
+                  <Tab
+                    label={formatMessage(messages.serviceReports)}
+                    url={`/admin/reporting/report-builder?tab=service-reports`}
+                    active={currentTab === 'service-reports'}
+                  />
+                </NavigationTabs>
+              </TabContainer>
+
+              <ListContainer>
                 {reports.data.map((report) => (
                   <ReportRow key={report.id} report={report} />
                 ))}
-              </Box>
+              </ListContainer>
             </Box>
           </>
         )
