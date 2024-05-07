@@ -23,9 +23,11 @@ module BulkImportIdeas::Parsers
       files = create_files file_content
 
       job_ids = []
+      job_first_idea_index = 1
       files.each_slice(IDEAS_PER_JOB) do |sliced_files|
-        job = BulkImportIdeas::IdeaImportJob.perform_later('pdf', sliced_files, @import_user, @locale, @phase, @personal_data_enabled)
+        job = BulkImportIdeas::IdeaImportJob.perform_later('pdf', sliced_files, @import_user, @locale, @phase, @personal_data_enabled, job_first_idea_index)
         job_ids << job.job_id
+        job_first_idea_index += IDEAS_PER_JOB
       end
 
       job_ids

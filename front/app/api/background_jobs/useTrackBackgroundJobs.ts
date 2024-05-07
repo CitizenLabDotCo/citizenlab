@@ -2,6 +2,12 @@ import { useEffect } from 'react';
 
 import { IBackgroundJobData } from './types';
 import useBackgroundJobs from './useBackgroundJobs';
+import { CLError } from 'typings';
+
+interface JobErrorParams {
+  value?: string;
+  row?: number;
+}
 
 const useTrackBackgroundJobs = ({
   jobs,
@@ -25,15 +31,31 @@ const useTrackBackgroundJobs = ({
     polledJobs?.data &&
     polledJobs.data.length > 0 &&
     polledJobs.data.every((job) => job.attributes.failed);
-  const errors =
-    polledJobs?.data &&
-    polledJobs.data.length > 0 &&
-    polledJobs.data.flatMap((job) =>
-      !!job.attributes.last_error_message
-        ? [job.attributes.last_error_message]
-        : []
-    );
-  // .map((job) => job.attributes.last_error_message);
+  const errors: CLError[] =
+    polledJobs?.data && polledJobs.data.length > 0
+      ? polledJobs.data.flatMap((job) => {
+          if (!!job.attributes.last_error_message) {
+            // Remove the Ruby error class
+            const splitError = job.attributes.last_error_message.split(': ');
+
+            // When a bulk import error - there will be additional params
+            const splitErrorParams = splitError[1].split('#');
+            if (splitErrorParams.length > 1) {
+              const params = JSON.parse(splitErrorParams[1]) as JobErrorParams;
+              return {
+                error: splitErrorParams[0],
+                value: params?.value,
+                row: params?.row,
+              };
+            } else {
+              return { error: splitErrorParams[0] };
+            }
+          } else {
+            return [];
+          }
+        })
+      : [];
+
   return { active, failed, errors };
 };
 

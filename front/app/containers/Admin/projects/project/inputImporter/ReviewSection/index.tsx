@@ -29,7 +29,6 @@ import IdeaList from './IdeaList';
 import messages from './messages';
 import PDFPageControl from './PDFPageControl';
 import PDFViewer from './PDFViewer';
-import { CLError } from 'typings';
 
 const ReviewSection = ({
   importJobs,
@@ -85,14 +84,17 @@ const ReviewSection = ({
     return <EmptyState />;
   }
 
-  console.log('importFailed', importFailed);
-
-  const jobErrors: CLError[] = importErrors
-    ? importErrors.map((e) => {
-        return { error: e } as CLError;
-      })
-    : [];
-  console.log('jobErrors', jobErrors);
+  // Ensure we can format an API error that we've not specifically handled in the backend
+  const jobErrors = importErrors.map((error) => {
+    if (error.error.startsWith('bulk_import_')) {
+      return error;
+    } else {
+      return {
+        error: 'bulk_import_unknown_error',
+        value: error.error,
+      };
+    }
+  });
 
   const handleSelectIdea = (ideaId: string) => {
     setCurrentPageIndex(0);
@@ -225,8 +227,16 @@ const ReviewSection = ({
               borderBottom={`1px ${colors.grey400} solid`}
               position="relative"
             >
-              {importFailed ? (
-                <Error text={formatMessage(messages.errorImporting)} />
+              {jobErrors.length > 0 ? (
+                <>
+                  <Error
+                    text={formatMessage(messages.errorImporting)}
+                    showIcon={false}
+                  />
+                  {jobErrors.map((error, index) => (
+                    <Error key={index} apiErrors={[error]} />
+                  ))}
+                </>
               ) : (
                 <Box
                   justifyContent="flex-start"
