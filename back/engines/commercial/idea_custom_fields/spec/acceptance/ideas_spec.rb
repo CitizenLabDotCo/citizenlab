@@ -26,6 +26,7 @@ resource 'Ideas' do
       parameter :topic_ids, 'Array of ids of the associated topics'
       parameter :area_ids, 'Array of ids of the associated areas'
       parameter :custom_field_name1, 'A value for one custom field'
+      parameter :description_copie_47e, 'Another value for one custom field'
     end
 
     let(:idea) { build(:idea) }
@@ -37,6 +38,24 @@ resource 'Ideas' do
     let(:topic_ids) { create_list(:topic, 2, projects: [project]).map(&:id) }
     let(:area_ids) { create_list(:area, 2).map(&:id) }
     let(:extra_field_name) { 'custom_field_name1' }
+
+    describe 'debugging' do
+      let(:form) { create(:custom_form, :with_default_fields, participation_context: project) }
+      let!(:html_multiloc) { create(:custom_field_extra_custom_form,
+        input_type: 'html_multiloc', key: 'description_copie_47e', title_multiloc: { 'fr-FR' => 'Décrivez les investissements et/ou dépenses matérielles souhaitées et estimez les couts de chacun.' },
+        description_multiloc: {"fr-FR"=>""}, required: true, enabled: true, code: nil, hidden: false, maximum: nil, minimum_label_multiloc: {}, maximum_label_multiloc: {}, logic: {},
+        answer_visible_to: "admins", select_count_enabled: false, maximum_select_count: nil, minimum_select_count: nil, random_option_ordering: false,
+        resource: form) }
+      let(:description_copie_47e) { {"fr-FR":"<p>test2test2test2</p>"} }
+
+      post 'web_api/v1/ideas' do
+        example_request 'debugging html_multiloc' do
+          assert_status 201
+          json_response = json_parse(response_body)
+          byebug
+        end
+      end
+    end
 
     context 'when the extra field is required' do
       let(:form) { create(:custom_form, :with_default_fields, participation_context: project) }
