@@ -899,6 +899,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.registrationField": "Πεδίο εγγραφής",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.unknown": "Άγνωστος",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.users": "Χρήστες: {numberOfUsers} ({percentageOfUsers}%)",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": "Stretch",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "The data for this widget is missing. Reconfigure or delete it to be able to save the report.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "Δεν βρέθηκαν κατάλληλες φάσεις σε αυτό το έργο",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noPhaseSelected": "Δεν έχει επιλεγεί φάση. Παρακαλώ επιλέξτε πρώτα μια φάση.",
