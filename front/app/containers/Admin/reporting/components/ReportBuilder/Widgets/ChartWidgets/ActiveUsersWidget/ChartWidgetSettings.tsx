@@ -16,6 +16,8 @@ import { useIntl } from 'utils/cl-intl';
 
 import TimeSeriesWidgetSettings from '../_shared/TimeSeriesWidgetSettings';
 
+import messages from './messages';
+
 const ChartWidgetSettings = () => {
   const { formatMessage } = useIntl();
   const {
@@ -50,15 +52,17 @@ const ChartWidgetSettings = () => {
         </Text>
       </Box>
       <TimeSeriesWidgetSettings />
-      <Toggle
-        label={'TODO'}
-        checked={!!comparePreviousPeriod}
-        onChange={() => {
-          setProp((props) => {
-            props.comparePreviousPeriod = !comparePreviousPeriod;
-          });
-        }}
-      />
+      <Box mb="20px">
+        <Toggle
+          label={formatMessage(messages.showComparisonLastPeriod)}
+          checked={!!comparePreviousPeriod}
+          onChange={() => {
+            setProp((props) => {
+              props.comparePreviousPeriod = !comparePreviousPeriod;
+            });
+          }}
+        />
+      </Box>
     </Box>
   );
 };

@@ -11,9 +11,9 @@ import { useIntl } from 'utils/cl-intl';
 
 import NoData from '../../_shared/NoData';
 import messages from '../messages';
-import { TimeSeriesWidgetProps } from '../typings';
 
 import Chart from './Chart';
+import { Props } from './typings';
 import useActiveUsers from './useActiveUsers';
 
 const ActiveUsers = ({
@@ -21,14 +21,16 @@ const ActiveUsers = ({
   startAt,
   endAt,
   resolution = 'month',
-}: TimeSeriesWidgetProps) => {
+  comparePreviousPeriod,
+}: Props) => {
   const { formatMessage } = useIntl();
 
   const { currentResolution, stats, timeSeries } = useActiveUsers({
-    projectId,
-    startAt,
-    endAt,
+    project_id: projectId,
+    start_at: startAt,
+    end_at: endAt,
     resolution,
+    compare_previous_period: comparePreviousPeriod,
   });
 
   const layout = useLayout();

@@ -34,7 +34,7 @@ module ReportBuilder
 
       queries = [time_series_query, active_users_whole_period_query]
 
-      if start_at.present? && end_at.present? && compare_previous_period == true
+      if start_at.present? && end_at.present? && compare_previous_period
         previous_period_start_at, previous_period_end_at = previous_period_dates(start_at, end_at)
 
         active_users_previous_period_query = {
@@ -57,10 +57,13 @@ module ReportBuilder
     private
 
     def previous_period_dates(start_at, end_at)
+      start_at = Date.parse(start_at)
+      end_at = Date.parse(end_at)
+
       previous_period_start_at = start_at - (end_at - start_at) - 1.day
       previous_period_end_at = start_at - 1.day
 
-      [previous_period_start_at, previous_period_end_at]
+      [previous_period_start_at.to_s, previous_period_end_at.to_s]
     end
   end
 end

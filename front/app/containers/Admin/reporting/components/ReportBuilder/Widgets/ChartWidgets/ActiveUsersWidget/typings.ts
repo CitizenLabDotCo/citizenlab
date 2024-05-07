@@ -1,5 +1,5 @@
-import { ChartWidgetProps } from '../typings';
+import { TimeSeriesWidgetProps } from '../typings';
 
-export interface Props extends ChartWidgetProps {
+export interface Props extends TimeSeriesWidgetProps {
   comparePreviousPeriod?: boolean;
 }

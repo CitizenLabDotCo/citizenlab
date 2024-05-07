@@ -13,7 +13,11 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
       create(:dimension_type, name: 'idea', parent: 'post')
       create(:idea, created_at: date, project: project)
 
-      params = { start_at: date - 1.day, end_at: date + 1.day, project_id: project.id }
+      params = {
+        start_at: (date - 1.day).to_s,
+        end_at: (date + 1.day).to_s,
+        project_id: project.id
+      }
       expect(query.run_query(**params)).to eq(
         [
           [{
@@ -107,8 +111,8 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
       create(:idea, project: project, author: pp4, created_at: date_october)
 
       params = {
-        start_at: Date.new(2022, 10, 1),
-        end_at: Date.new(2022, 10, 31),
+        start_at: Date.new(2022, 10, 1).to_s,
+        end_at: Date.new(2022, 10, 31).to_s,
         project_id: project.id,
         compare_previous_period: true
       }
@@ -136,8 +140,8 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
   describe '#query' do
     it 'calculates correct previous period dates' do
       queries = query.query(
-        start_at: Date.new(2023, 1, 1),
-        end_at: Date.new(2023, 4, 1),
+        start_at: Date.new(2023, 1, 1).to_s,
+        end_at: Date.new(2023, 4, 1).to_s,
         compare_previous_period: true
       )
 
