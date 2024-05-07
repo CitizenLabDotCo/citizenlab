@@ -1713,6 +1713,7 @@
   "app.errors.bulk_import_malformed_pdf": "crwdns2169466:0crwdne2169466:0",
   "app.errors.bulk_import_maximum_ideas_exceeded": "crwdns2169468:0{value}crwdne2169468:0",
   "app.errors.bulk_import_maximum_pdf_pages_exceeded": "crwdns2169470:0{value}crwdne2169470:0",
+  "app.errors.bulk_import_not_enough_pdf_pages": "crwdns2201782:0crwdne2201782:0",
   "app.errors.bulk_import_publication_date_invalid_format": "crwdns2169472:0{value}crwdne2169472:0",
   "app.errors.cannot_contain_ideas": "crwdns2162096:0crwdne2162096:0",
   "app.errors.cant_change_after_first_response": "crwdns2162098:0crwdne2162098:0",
