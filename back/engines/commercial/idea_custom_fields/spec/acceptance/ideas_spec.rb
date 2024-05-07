@@ -59,6 +59,14 @@ resource 'Ideas' do
           end
 
           context 'when the extra field is a HTML multiloc field' do
+            # TODO: Refactoring
+            # - Spec for all (supported) input types
+            # - Extract custom_field_values from params
+            # - Update: Merge extracted custom_field_values with current persisted custom_field_values
+            # - Permit params and extract non-cutom_field_values from params
+            # - Remove/clear custom_field_values
+            # - compact_custom_field_values! ?
+            # - Let's start with a CustomFieldValuesParamsService, we could eventually introduce a CustomFieldValues class (overwrite model attribute)
             let!(:text_field) { create(:custom_field_extra_custom_form, input_type: 'html_multiloc', key: extra_field_name, required: true, resource: form) }
             let(:custom_field_name1) { { 'fr-FR' => '<p>test value</p>' } }
 
