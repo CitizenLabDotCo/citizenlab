@@ -85,13 +85,59 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
         ]
       )
     end
+
+    it 'returns active users in previous period' do
+      project = create(:project)
+      pp1, pp2, pp3, pp4 = create_list(:user, 4)
+      date_september = Date.new(2022, 9, 10)
+      date_october = Date.new(2022, 10, 5)
+
+      create(:dimension_date, date: date_september)
+      create(:dimension_date, date: date_october)
+      create(:dimension_type, name: 'idea', parent: 'post')
+      create(:dimension_type, name: 'comment', parent: 'idea')
+
+      ### SEPTEMBER ###
+      create(:idea, project: project, author: pp1, created_at: date_september)
+      create(:idea, project: project, author: pp2, created_at: date_september)
+
+      ### OCTOBER ###
+      create(:idea, project: project, author: pp1, created_at: date_october)
+      create(:idea, project: project, author: pp3, created_at: date_october)
+      create(:idea, project: project, author: pp4, created_at: date_october)
+
+      params = {
+        start_at: Date.new(2022, 10, 1),
+        end_at: Date.new(2022, 10, 31),
+        project_id: project.id,
+        compare_previous_period: true
+      }
+
+      expect(query.run_query(**params)).to eq(
+        [
+          [
+            {
+              'count_participant_id' => 3,
+              'dimension_date_created.month' => '2022-10',
+              'first_dimension_date_created_date' => date_october
+            }
+          ],
+          [{
+            'count_participant_id' => 3
+          }],
+          [{
+            'count_participant_id' => 2
+          }]
+        ]
+      )
+    end
   end
 
   describe '#query' do
     it 'calculates correct previous period dates' do
       queries = query.query(
-        start_at: '2023-01-01',
-        end_at: '2023-04-01',
+        start_at: Date.new(2023, 1, 1),
+        end_at: Date.new(2023, 4, 1),
         compare_previous_period: true
       )
 
@@ -99,6 +145,8 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
         {
           fact: 'participation',
           filters: {
+            # 2023-01-01 - 2023-04-01 is exactly 90 days,
+            # 2022-10-02 - 2022-12-31 is exactly 90 days too
             'dimension_date_created.date' => {
               from: '2022-10-02',
               to: '2022-12-31'
