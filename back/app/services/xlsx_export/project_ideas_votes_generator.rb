@@ -70,7 +70,7 @@ module XlsxExport
     end
 
     def picks_lamda(phase)
-      # We want the n of times each idea was selected (by a user), not the total budget allocated to each idea (ideas_phase.votes_count)
+      # We want the n of times each idea was selected (by a unique user), not the total votes or budget allocated to each idea (ideas_phase.votes_count)
       ->(i) { i.baskets_ideas.joins(:basket).where(basket: { phase_id: phase.id }).where.not(basket: { submitted_at: nil }).size }
     end
   end
