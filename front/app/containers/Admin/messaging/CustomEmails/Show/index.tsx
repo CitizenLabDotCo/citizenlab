@@ -37,19 +37,6 @@ import { getFullName } from 'utils/textUtils';
 
 import messages from '../../messages';
 
-const PageHeader = styled.div`
-  display: flex;
-  margin-bottom: 20px;
-`;
-
-const CampaignHeader = styled.div`
-  display: flex;
-  padding: 20px 0;
-  border-top: 1px solid #d8d8d8;
-  border-bottom: 1px solid #d8d8d8;
-  margin-bottom: 20px;
-`;
-
 const StampIcon = styled(Stamp)`
   margin-right: 20px;
 `;
@@ -70,17 +57,6 @@ const SendTestEmailButton = styled.button`
   text-decoration: underline;
   font-size: ${fontSizes.base}px;
   cursor: pointer;
-`;
-const StyledButtonContainer = styled.div`
-  margin-bottom: 30px;
-  display: flex;
-  align-items: center;
-`;
-
-const PageTitleWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  margin-right: auto;
 `;
 
 const Buttons = styled.div`
@@ -110,10 +86,6 @@ const ButtonsWrapper = styled.div`
     margin-right: 1rem;
     margin-bottom: 0.5rem;
   }
-`;
-
-const ModalContainer = styled.div`
-  padding: 30px;
 `;
 
 const SendNowWarning = styled.div`
@@ -175,9 +147,9 @@ const Show = () => {
   const getSenderName = (senderType: string) => {
     let senderName: string | null = null;
 
-    if (senderType === 'author' && !isNilOrError(user)) {
+    if (senderType === 'author' && user) {
       senderName = getFullName(user.data);
-    } else if (senderType === 'organization' && !isNilOrError(tenant)) {
+    } else if (senderType === 'organization' && tenant) {
       senderName = localize(
         tenant?.data.attributes.settings.core.organization_name
       );
@@ -212,8 +184,8 @@ const Show = () => {
 
     return (
       <Box background={colors.white} p="40px" id="e2e-custom-email-container">
-        <PageHeader>
-          <PageTitleWrapper>
+        <Box display="flex" mb="20px">
+          <Box display="flex" alignItems="center" mr="auto">
             <Title mr="12px">
               <T value={campaign.data.attributes.subject_multiloc} />
             </Title>
@@ -228,7 +200,7 @@ const Show = () => {
                 text={<FormattedMessage {...messages.sent} />}
               />
             )}
-          </PageTitleWrapper>
+          </Box>
           {isDraft(campaign.data) && (
             <Buttons>
               <Button
@@ -249,13 +221,19 @@ const Show = () => {
               </Button>
             </Buttons>
           )}
-        </PageHeader>
+        </Box>
         {apiSendErrors && (
           <Box mb="8px">
             <Error apiErrors={apiSendErrors.errors['base']} />
           </Box>
         )}
-        <CampaignHeader>
+        <Box
+          display="flex"
+          p="20px 0"
+          borderTop={`1px solid ${colors.borderLight}`}
+          borderBottom={`1px solid ${colors.borderLight}`}
+          marginBottom="20px"
+        >
           <StampIcon />
           <FromTo>
             <div>
@@ -299,7 +277,7 @@ const Show = () => {
             </div>
           </FromTo>
           {isDraft(campaign.data) && (
-            <StyledButtonContainer>
+            <Box mb="30px" display="flex" alignItems="center">
               <SendTestEmailButton onClick={handleSendTestEmail}>
                 <FormattedMessage {...messages.sendTestEmailButton} />
               </SendTestEmailButton>
@@ -309,9 +287,9 @@ const Show = () => {
                   <FormattedMessage {...messages.sendTestEmailTooltip} />
                 }
               />
-            </StyledButtonContainer>
+            </Box>
           )}
-        </CampaignHeader>
+        </Box>
 
         {isDraft(campaign.data) ? (
           <DraftCampaignDetails campaign={campaign.data} />
@@ -324,7 +302,7 @@ const Show = () => {
           close={closeSendConfirmationModal}
           header={<FormattedMessage {...messages.confirmSendHeader} />}
         >
-          <ModalContainer>
+          <Box p="30px">
             <SendNowWarning>
               <FormattedMessage {...messages.toAllUsers} />
             </SendNowWarning>
@@ -346,7 +324,7 @@ const Show = () => {
                 <FormattedMessage {...messages.sendNowButton} />
               </Button>
             </ButtonsWrapper>
-          </ModalContainer>
+          </Box>
         </Modal>
       </Box>
     );
