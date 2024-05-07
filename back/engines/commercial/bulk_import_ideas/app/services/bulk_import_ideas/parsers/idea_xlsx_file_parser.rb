@@ -2,7 +2,7 @@
 
 module BulkImportIdeas::Parsers
   class IdeaXlsxFileParser < IdeaBaseFileParser
-    MAX_ROWS_PER_XLSX = 10
+    MAX_ROWS_PER_XLSX = 50
     def parse_rows(file)
       xlsx_ideas = parse_xlsx_ideas(file).map { |idea| { pdf_pages: [1], fields: idea } }
       ideas_to_idea_rows(xlsx_ideas, file)
