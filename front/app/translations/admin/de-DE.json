@@ -895,6 +895,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Fügen Sie das Projektziel, die verwendeten Beteiligungsmethoden und das Ergebnis hinzu",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Besucher*innen",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.cannotPrint": "Dieser Bericht enthält ungesicherte Änderungen. Bitte speichern Sie ihn vor dem Drucken.",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": "Ausdehnen",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "Die Daten für dieses Widget fehlen. Konfigurieren Sie es neu oder löschen Sie es, um den Bericht speichern zu können.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "Keine geeigneten Phasen in diesem Projekt gefunden",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noPhaseSelected": "Keine Phase ausgewählt. Bitte wählen Sie zuerst eine Phase.",
