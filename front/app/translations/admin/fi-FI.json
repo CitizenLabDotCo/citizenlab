@@ -899,6 +899,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.registrationField": "Rekisteröintikenttä",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.unknown": "Tuntematon",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.users": "Käyttäjät: {numberOfUsers} ({percentageOfUsers}%)",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": "Venyttää",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "Tämän widgetin tiedot puuttuvat. Määritä se uudelleen tai poista se, jotta voit tallentaa raportin.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "Tästä projektista ei löytynyt sopivia vaiheita",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noPhaseSelected": "Vaihetta ei ole valittu. Valitse ensin vaihe.",
