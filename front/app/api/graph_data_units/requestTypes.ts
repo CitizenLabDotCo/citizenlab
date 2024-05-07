@@ -108,9 +108,13 @@ export interface AgeParams extends BaseParams {
   props: AgeProps;
 }
 
+export interface ActiveUsersProps extends AnalyticsProps {
+  compare_previous_period?: boolean;
+}
+
 export interface ActiveUsersParams extends BaseParams {
   resolved_name: 'ActiveUsersWidget';
-  props: AnalyticsProps;
+  props: ActiveUsersProps;
 }
 
 export interface PostsByTimeParams extends BaseParams {

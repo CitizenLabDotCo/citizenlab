@@ -1,4 +1,5 @@
 import {
+  ActiveUsersProps,
   AgeProps,
   AnalyticsProps,
   GenderProps,
@@ -116,7 +117,7 @@ export const useUsersByAgeLive = (props: AgeProps) => {
 };
 
 export const useActiveUsers = (
-  props: AnalyticsProps,
+  props: ActiveUsersProps,
   { onSuccess }: { onSuccess?: () => void }
 ) => {
   return useGraphDataUnits<ActiveUsersResponse>(

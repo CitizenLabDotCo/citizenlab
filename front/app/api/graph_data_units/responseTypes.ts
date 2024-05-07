@@ -97,7 +97,11 @@ export type UsersByAgeResponse = {
 export interface ActiveUsersResponse {
   data: {
     type: 'report_builder_data_units';
-    attributes: [UsersTimeSeriesResponseRow[] | [], [ActiveUsersRow] | []];
+    attributes: [
+      UsersTimeSeriesResponseRow[] | [],
+      [ActiveUsersRow] | [],
+      [ActiveUsersRow] | undefined
+    ];
   };
 }
 
