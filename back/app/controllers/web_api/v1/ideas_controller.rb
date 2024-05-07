@@ -257,7 +257,6 @@ class WebApi::V1::IdeasController < ApplicationController
       next if field.built_in?
 
       given_value = params[:idea].delete field.key
-      # byebug if given_value.is_a?(ActionController::Parameters)
       next unless given_value && field.enabled?
 
       accu[field.key] = given_value
