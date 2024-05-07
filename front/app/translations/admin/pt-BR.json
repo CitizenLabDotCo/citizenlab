@@ -895,6 +895,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Acrescentar o objectivo do projeto, os métodos de participação utilizados, e o resultado",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Visitantes",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.cannotPrint": "Este relatório contém alterações não salvas. Por favor, salve-o antes de imprimir.",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": "Alongamento",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "Os dados desse widget estão faltando. Reconfigure-o ou exclua-o para que você possa salvar o relatório.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "Não foram encontradas fases apropriadas neste projeto",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noPhaseSelected": "Nenhuma fase foi selecionada. Selecione uma fase primeiro.",
