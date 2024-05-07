@@ -899,6 +899,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.registrationField": "Kayıt alanı",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.unknown": "Bilinmiyor",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.users": "Kullanıcılar: {numberOfUsers} ({percentageOfUsers}%)",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": "Esneme",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "Bu widget için veriler eksik. Raporu kaydedebilmek için yeniden yapılandırın veya silin.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "Bu projede uygun bir aşama bulunamamıştır",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noPhaseSelected": "Seçili faz yok. Lütfen önce bir faz seçin.",
