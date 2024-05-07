@@ -83,6 +83,14 @@ RSpec.describe LogActivityJob do
         expect(user.reload.last_acted_at).to eq t
       end
     end
+
+    it 'does not update last_acted_at for user who acted if acted_at is nil' do
+      user = create(:user, last_acted_at: Time.now)
+      idea = create(:idea)
+
+      job.perform(idea, 'created', user, nil)
+      expect(user.reload.last_acted_at).to be_present
+    end
   end
 
   describe '.perform_later' do
