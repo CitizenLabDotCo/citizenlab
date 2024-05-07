@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.edit',
     defaultMessage: 'Edit',
   },
+  duplicate: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.duplicate',
+    defaultMessage: 'Duplicate',
+  },
   confirmDeleteReport: {
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport',
     defaultMessage: 'Are you sure you want to delete "{reportName}"?',

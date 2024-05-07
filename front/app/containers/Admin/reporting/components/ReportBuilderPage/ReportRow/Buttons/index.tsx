@@ -3,12 +3,12 @@ import React from 'react';
 import { colors } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
+import useCopyReport from 'api/reports/useCopyReport';
 import useReport from 'api/reports/useReport';
 
 import Button from 'components/UI/Button';
 
 import { useIntl } from 'utils/cl-intl';
-
 import messages from '../messages';
 
 interface Props {
@@ -18,6 +18,7 @@ interface Props {
 }
 
 const Buttons = ({ reportId, isLoading, onDelete }: Props) => {
+  const { mutate: duplicateReport, isLoading: isDuplicating } = useCopyReport();
   const { data: report } = useReport(reportId);
   const { formatMessage } = useIntl();
 
@@ -41,6 +42,18 @@ const Buttons = ({ reportId, isLoading, onDelete }: Props) => {
       >
         {formatMessage(messages.delete)}
       </Button>
+
+      <Button
+        mr="8px"
+        icon="copy"
+        buttonStyle="secondary"
+        disabled={isDuplicating || !canEdit}
+        iconSize="18px"
+        onClick={() => duplicateReport({ id: reportId })}
+      >
+        {formatMessage(messages.duplicate)}
+      </Button>
+
       <Tippy
         disabled={canEdit}
         interactive={true}
