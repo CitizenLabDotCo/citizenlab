@@ -20,7 +20,7 @@ import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import { useFormatMessageWithLocale } from 'utils/cl-intl';
 import { getFullName, withoutSpacing } from 'utils/textUtils';
 
-import TextMultiloc from '../TextMultiloc';
+import TextMultiloc from '../../TextMultiloc';
 
 import messages from './messages';
 import { getPeriod } from './utils';
@@ -107,6 +107,8 @@ AboutReportWidget.craft = {
   },
 };
 
+/** @deprecated This widget should not be used for new reports anymore */
 export const aboutReportTitle = messages.aboutThisReport;
 
+/** @deprecated This widget should not be used for new reports anymore */
 export default AboutReportWidget;
