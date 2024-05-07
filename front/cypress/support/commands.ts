@@ -1437,7 +1437,7 @@ function apiCreateReportBuilder(phaseId?: string, visible: boolean = true) {
         report: {
           name: phaseId ? undefined : randomString(),
           phase_id: phaseId,
-          visible,
+          visible: phaseId ? visible : undefined,
         },
       },
     });
