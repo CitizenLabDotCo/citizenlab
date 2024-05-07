@@ -64,23 +64,23 @@ export default defineMessages({
     defaultMessage: 'participants',
   },
   allParticipantsTooltip: {
-    id: 'app.containers.Admin.project.emails.allParticipantsTooltip',
+    id: 'app.containers.Admin.project.emails.allParticipantsTooltipText',
     defaultMessage:
-      'This includes users that performed any action in the project (even follow).',
+      'This includes registered users that performed any action in the project (including follow). Unregistered or anonymized users are not included.',
   },
   infoboxModerator: {
-    id: 'app.containers.Admin.project.emails.infoboxModerator',
+    id: 'app.containers.Admin.project.emails.infoboxModeratorText',
     defaultMessage:
-      'Admins can send emails to more complex groups of participants, related to demographics, events, or across projects.',
+      'From the Project Messaging tab you can only email all project participants. Admins can send emails to other participants or subsets of users via the Platform Messaging tab.',
   },
   infoboxAdmin: {
-    id: 'app.containers.Admin.project.emails.infoboxAdmin',
+    id: 'app.containers.Admin.project.emails.infoboxAdminText',
     defaultMessage:
-      'Admins can send emails to more complex groups of participants, related to demographics, events, or across projects from the global {link} tab.',
+      'From the Project Messaging tab you can only email all project participants.  To email other participants or subsets of users go to the {link} tab.',
   },
   infoboxLink: {
-    id: 'app.containers.Admin.project.emails.infoboxLink',
-    defaultMessage: 'Messaging',
+    id: 'app.containers.Admin.project.emails.infoboxLinkText',
+    defaultMessage: 'Platform Messaging',
   },
   fieldSubject: {
     id: 'app.containers.Admin.project.emails.fieldSubject',

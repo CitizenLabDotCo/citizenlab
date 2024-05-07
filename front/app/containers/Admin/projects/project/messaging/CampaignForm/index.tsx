@@ -160,7 +160,7 @@ const CampaignForm = ({
               <FormattedMessage {...messages.fieldTo} />
             </Label>
 
-            <Text m="0px 0px 8px 0px">
+            <Text m="0px 0px 8px 0px" fontSize="l">
               <FormattedMessage
                 {...messages.allParticipants}
                 values={{
@@ -174,7 +174,12 @@ const CampaignForm = ({
                       }
                     >
                       <Box w="fit-content" display="inline">
-                        <Text as="span" m="0px" textDecoration="underline">
+                        <Text
+                          as="span"
+                          m="0px"
+                          textDecoration="underline"
+                          fontSize="l"
+                        >
                           <FormattedMessage {...messages.participants} />
                         </Text>
                       </Box>
