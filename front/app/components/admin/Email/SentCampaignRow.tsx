@@ -1,13 +1,19 @@
 import React from 'react';
 
-import { Box, StatusLabel, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  StatusLabel,
+  colors,
+  Text,
+  Title,
+} from '@citizenlab/cl2-component-library';
 import { FormattedDate, FormattedTime } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 
 import { ICampaignData } from 'api/campaigns/types';
 
-import { Row, TextCell } from 'components/admin/ResourceList';
+import { Row } from 'components/admin/ResourceList';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 
@@ -27,20 +33,50 @@ const SentCampaignRow = ({ campaign }: Props) => {
 
   return (
     <Row id={campaign.id}>
-      <TextCell className="expand">
-        <T value={campaign.attributes.subject_multiloc} />
-      </TextCell>
-      <div>
-        <FormattedDate value={campaign.attributes.updated_at} />
-        &nbsp;
-        <FormattedTime value={campaign.attributes.updated_at} />
-      </div>
-      <StatusLabel
-        minWidth="94px"
-        backgroundColor={colors.success}
-        text={<FormattedMessage {...messages.sent} />}
-      />
-      <Box minWidth="220px" display="flex" justifyContent="flex-end">
+      <Box>
+        <Title color="primary" variant="h4" m="0px">
+          <T value={campaign.attributes.subject_multiloc} />
+        </Title>
+        <Box display="flex" alignItems="center" gap="12px">
+          <div>
+            <FormattedDate value={campaign.attributes.updated_at} />
+            &nbsp;
+            <FormattedTime value={campaign.attributes.updated_at} />
+          </div>
+          <StatusLabel
+            backgroundColor={colors.success}
+            text={<FormattedMessage {...messages.sent} />}
+          />
+        </Box>
+      </Box>
+
+      <Box minWidth="220px" display="flex" justifyContent="flex-end" gap="40px">
+        <Box>
+          <Title color="primary" variant="h4" m="0px" fontSize="xl">
+            {(
+              ((campaign.attributes.delivery_stats?.opened || 0) /
+                (campaign.attributes.delivery_stats?.total || 1)) *
+              100
+            ).toFixed(0)}
+            %
+          </Title>
+          <Text m="0px">
+            <FormattedMessage {...messages.opened} />
+          </Text>
+        </Box>
+        <Box>
+          <Title color="primary" variant="h4" m="0px" fontSize="xl">
+            {(
+              ((campaign.attributes.delivery_stats?.clicked || 0) /
+                (campaign.attributes.delivery_stats?.total || 1)) *
+              100
+            ).toFixed(0)}
+            %
+          </Title>
+          <Text m="0px">
+            <FormattedMessage {...messages.clicked} />
+          </Text>
+        </Box>
         <Button linkTo={statsLink} icon="chart-bar" buttonStyle="text">
           <FormattedMessage {...messages.statsButton} />
         </Button>

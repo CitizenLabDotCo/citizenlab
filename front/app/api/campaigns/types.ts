@@ -37,6 +37,16 @@ export interface ICampaignData {
     schedule: any;
     // Undefined for campaigns that are not scheduled
     schedule_multiloc?: Multiloc;
+    delivery_stats?: {
+      sent: number;
+      bounced: number;
+      failed: number;
+      accepted: number;
+      delivered: number;
+      opened: number;
+      clicked: number;
+      total: number;
+    };
   };
   relationships: {
     author: {

@@ -1,12 +1,17 @@
 import React from 'react';
 
-import { Box, StatusLabel, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  StatusLabel,
+  colors,
+  Title,
+} from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 
 import { ICampaignData } from 'api/campaigns/types';
 
-import { Row, TextCell } from 'components/admin/ResourceList';
+import { Row } from 'components/admin/ResourceList';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 
@@ -26,14 +31,15 @@ const DraftCampaignRow = ({ campaign }: Props) => {
 
   return (
     <Row id={campaign.id}>
-      <TextCell className="expand">
-        <T value={campaign.attributes.subject_multiloc} />
-      </TextCell>
-      <StatusLabel
-        minWidth="94px"
-        backgroundColor={colors.orange}
-        text={<FormattedMessage {...messages.draft} />}
-      />
+      <Box>
+        <Title color="primary" variant="h4" m="0px">
+          <T value={campaign.attributes.subject_multiloc} />
+        </Title>
+        <StatusLabel
+          backgroundColor={colors.orange}
+          text={<FormattedMessage {...messages.draft} />}
+        />
+      </Box>
       <Box minWidth="220px" display="flex" justifyContent="flex-end">
         <Button linkTo={editLink} buttonStyle="secondary" icon="edit">
           <FormattedMessage {...messages.manageButtonLabel} />

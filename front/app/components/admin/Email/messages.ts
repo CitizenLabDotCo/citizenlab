@@ -62,4 +62,12 @@ export default defineMessages({
     id: 'app.components.Admin.Campaigns.manageButtonLabel',
     defaultMessage: 'Manage',
   },
+  opened: {
+    id: 'app.components.Admin.Campaigns.opened',
+    defaultMessage: 'Opened',
+  },
+  clicked: {
+    id: 'app.components.Admin.Campaigns.clicked',
+    defaultMessage: 'Clicked',
+  },
 });
