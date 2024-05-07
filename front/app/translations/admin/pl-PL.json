@@ -899,6 +899,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.registrationField": "Pole rejestracji",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.unknown": "Nieznany",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.users": "Użytkownicy: {numberOfUsers} ({percentageOfUsers}%)",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": "Rozciąganie",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "Brakuje danych dla tego widżetu. Skonfiguruj go ponownie lub usuń, aby móc zapisać raport.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "W tym projekcie nie znaleziono odpowiednich faz",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noPhaseSelected": "Nie wybrano żadnej fazy. Najpierw wybierz fazę.",
