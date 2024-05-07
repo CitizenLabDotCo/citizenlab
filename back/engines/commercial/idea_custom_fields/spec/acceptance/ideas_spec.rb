@@ -59,12 +59,12 @@ resource 'Ideas' do
             { factory: :custom_field_select, options: [:with_options], value: 'option1' },
             { factory: :custom_field_multiselect, options: [:with_options], value: %w[option1 option2] },
             { factory: :custom_field_multiselect_image, options: [:with_options], value: %w[image1] },
-            { factory: :custom_field_html_multiloc, value: { 'fr-FR' => '<p>test value</p>' } }, # This field does not seem to be supported by ideation but very rarely occurs on production
+            { factory: :custom_field_html_multiloc, value: { 'fr-FR' => '<p>test value</p>' } } # This field does not seem to be supported by ideation but very rarely occurs on production
           ].each do |field_desc|
             describe do
               let!(:extra_field) { create(field_desc[:factory], key: extra_field_name, required: true, resource: form) }
               let(:custom_field_name1) { field_desc[:value] }
-  
+
               example_request "Create an idea with a #{field_desc[:factory]} field" do
                 assert_status 201
                 json_response = json_parse(response_body)
