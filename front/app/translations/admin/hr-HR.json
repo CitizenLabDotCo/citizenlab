@@ -899,6 +899,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.registrationField": "Polje za registraciju",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.unknown": "Nepoznato",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.users": "Korisnici: {numberOfUsers} ({percentageOfUsers}%)",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": "Istegnite se",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "Podaci za ovaj widget nedostaju. Ponovno ga konfigurirajte ili izbrišite da biste mogli spremiti izvješće.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "U ovom projektu nisu pronađene odgovarajuće faze",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noPhaseSelected": "Nije odabrana faza. Prvo odaberite fazu.",
