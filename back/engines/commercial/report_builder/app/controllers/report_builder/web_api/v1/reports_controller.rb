@@ -44,6 +44,42 @@ module ReportBuilder
           render json: serialize_report(report), status: :created
         end
 
+        def copy
+          # We wrap the whole report creation in a transaction to ensure that the layout
+          # duplication (that is persisted directly — see {ContentBuilder::Layout#duplicate!}
+          # is rolled back if the report copy fails.
+          report_copy = ActiveRecord::Base.transaction do
+            copy = report.dup.tap do |copy_|
+              copy_.name = generate_copy_name(report.name)
+              copy_.owner_id = current_user.id
+              # Copies are never associated with a phase, even if the source report was.
+              # That's because, currently, there can be only one report per phase.
+              copy_.phase_id = nil
+              copy_.visible = false
+              copy_.layout = report.layout.duplicate!
+            end
+
+            authorize(copy)
+            side_fx_service.before_create(copy, current_user)
+
+            copy.save!
+            # Update self-references in the layout to point to the new report. The report
+            # copy must be saved before this operation, because it needs an ID.
+            copy.layout.update!(craftjs_json: JSON.parse(
+              copy.layout.craftjs_json.to_json.gsub(report.id.to_s, copy.id.to_s)
+            ))
+
+            side_fx_service.after_create(copy, current_user)
+
+            copy
+          end
+
+          render json: serialize_report(report_copy), status: :created
+        rescue ActiveRecord::RecordInvalid => e
+          record = e.record
+          record.is_a?(ReportBuilder::Report) ? send_unprocessable_entity(record) : raise
+        end
+
         def update
           report.attributes = update_params
           side_fx_service.before_update(report, current_user)
@@ -122,6 +158,18 @@ module ReportBuilder
 
         def side_fx_service
           @side_fx_service ||= ::ReportBuilder::SideFxReportService.new
+        end
+
+        def generate_copy_name(basename)
+          candidate_generator = Enumerator.new do |enum|
+            (1..).each { |i| enum.yield "#{basename} (#{i})" }
+          end
+
+          candidate_generator.each_slice(25).each do |candidates|
+            taken_names = ReportBuilder::Report.where(name: candidates).pluck(:name)
+            available_names = candidates - taken_names
+            return available_names.first if available_names.present?
+          end
         end
       end
     end
