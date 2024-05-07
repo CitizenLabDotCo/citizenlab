@@ -41,18 +41,19 @@ resource 'Ideas' do
 
     describe 'debugging' do
       let(:form) { create(:custom_form, :with_default_fields, participation_context: project) }
-      let!(:html_multiloc) { create(:custom_field_extra_custom_form,
-        input_type: 'html_multiloc', key: 'description_copie_47e', title_multiloc: { 'fr-FR' => 'Décrivez les investissements et/ou dépenses matérielles souhaitées et estimez les couts de chacun.' },
-        description_multiloc: {"fr-FR"=>""}, required: true, enabled: true, code: nil, hidden: false, maximum: nil, minimum_label_multiloc: {}, maximum_label_multiloc: {}, logic: {},
-        answer_visible_to: "admins", select_count_enabled: false, maximum_select_count: nil, minimum_select_count: nil, random_option_ordering: false,
-        resource: form) }
+      # let!(:html_multiloc) { create(:custom_field_extra_custom_form,
+      #   input_type: 'html_multiloc', key: 'description_copie_47e', title_multiloc: { 'fr-FR' => 'Décrivez les investissements et/ou dépenses matérielles souhaitées et estimez les couts de chacun.' },
+      #   description_multiloc: {"fr-FR"=>""}, required: true, enabled: true, code: nil, hidden: false, maximum: nil, minimum_label_multiloc: {}, maximum_label_multiloc: {}, logic: {},
+      #   answer_visible_to: "admins", select_count_enabled: false, maximum_select_count: nil, minimum_select_count: nil, random_option_ordering: false,
+      #   resource: form) }
+      let!(:text_field) { create(:custom_field_extra_custom_form, input_type: 'html_multiloc', key: 'description_copie_47e', required: true, resource: form) }
       let(:description_copie_47e) { {"fr-FR":"<p>test2test2test2</p>"} }
 
       post 'web_api/v1/ideas' do
         example_request 'debugging html_multiloc' do
           assert_status 201
           json_response = json_parse(response_body)
-          byebug
+          expect(Idea.first.custom_field_values.keys).to include 'description_copie_47e'
         end
       end
     end
@@ -72,6 +73,7 @@ resource 'Ideas' do
             expect(idea_from_db.custom_field_values.to_h).to eq({
               extra_field_name => 'test value'
             })
+            byebug
           end
         end
       end
