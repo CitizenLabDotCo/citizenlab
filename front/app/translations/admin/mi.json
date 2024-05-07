@@ -337,7 +337,6 @@
   "app.containers.AdminPage.DashboardPage.month": "month",
   "app.containers.AdminPage.DashboardPage.noData": "There is no data to be shown.",
   "app.containers.AdminPage.DashboardPage.noPhase": "No phase created for this project",
-  "app.containers.AdminPage.DashboardPage.otherArea": "Somewhere else",
   "app.containers.AdminPage.DashboardPage.participationPerProject": "Participation per project",
   "app.containers.AdminPage.DashboardPage.participationPerTopic": "Participation per tag",
   "app.containers.AdminPage.DashboardPage.perPeriod": "Per {period}",

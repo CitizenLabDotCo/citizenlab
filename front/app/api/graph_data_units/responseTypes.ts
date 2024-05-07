@@ -3,7 +3,6 @@ import { IIdeaData } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
-import { GenderOption } from 'api/users_by_gender/types';
 
 import {
   ActiveUsersRow,
@@ -74,6 +73,8 @@ export interface VisitorsTrafficSourcesResponse {
     attributes: TrafficSourcesRow[];
   };
 }
+
+export type GenderOption = 'male' | 'female' | 'unspecified' | '_blank';
 
 export type UsersByGenderResponse = {
   data: {
