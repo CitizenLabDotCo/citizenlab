@@ -3,7 +3,9 @@ import whiteSpaceMessages from 'components/admin/ContentBuilder/Widgets/WhiteSpa
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
-import AboutReportWidget, { aboutReportTitle } from './AboutReportWidget';
+import AboutReportWidget, {
+  aboutReportTitle,
+} from './_deprecated/AboutReportWidget';
 import AgeWidget, { ageTitle } from './ChartWidgets/_deprecated/AgeWidget';
 import GenderWidget, {
   genderTitle,
@@ -44,7 +46,6 @@ export const WIDGETS = {
   TextMultiloc,
   ImageMultiloc,
   WhiteSpace,
-  AboutReportWidget,
   SurveyQuestionResultWidget,
   VisitorsWidget,
   VisitorsTrafficSourcesWidget,
@@ -59,6 +60,7 @@ export const WIDGETS = {
   // DEPRECATED
   AgeWidget,
   GenderWidget,
+  AboutReportWidget,
 };
 
 type WidgetName = keyof typeof WIDGETS;
@@ -68,7 +70,6 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   TextMultiloc: textMultilocTitle,
   TwoColumn: twoColumnTitle,
   ImageMultiloc: imageMultilocTitle,
-  AboutReportWidget: aboutReportTitle,
   SurveyQuestionResultWidget: surveyQuestionResultTitle,
   MostReactedIdeasWidget: mostReactedIdeasTitle,
   SingleIdeaWidget: singleIdeaTitle,
@@ -83,6 +84,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   // DEPRECATED
   AgeWidget: ageTitle,
   GenderWidget: genderTitle,
+  AboutReportWidget: aboutReportTitle,
 };
 
 const WIDGETS_WITH_CHILDREN = new Set<string>([

@@ -14,7 +14,9 @@ module EmailCampaigns
         if user&.active? && user&.admin?
           scope.all
         elsif user&.active? && user&.project_moderator?
-          scope.manageable_by_project_moderator.where(context_id: user.moderatable_project_ids)
+          scope.manageable_by_project_moderator.automatic.or(
+            scope.manageable_by_project_moderator.manual.where(context_id: user.moderatable_project_ids)
+          )
         else
           scope.none
         end

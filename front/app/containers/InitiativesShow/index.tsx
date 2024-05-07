@@ -72,11 +72,20 @@ const InitiativesShow = ({ initiativeId, className }: Props) => {
   };
 
   const onScrollToOfficialFeedback = () => {
-    document.getElementById('official-feedback-feed')?.scrollIntoView({
-      behavior: 'smooth',
-    });
+    const feedbackElement = document.getElementById('official-feedback-feed');
+    if (feedbackElement) {
+      feedbackElement.setAttribute('tabindex', '-1'); // Make the feedback element focusable
 
-    setA11y_pronounceLatestOfficialFeedbackPost(true);
+      feedbackElement.focus();
+      feedbackElement.scrollIntoView({ behavior: 'smooth' });
+
+      // Listen for focus out to restore default tabbing behavior
+      feedbackElement.addEventListener('focusout', function () {
+        feedbackElement.removeAttribute('tabindex');
+      });
+
+      setA11y_pronounceLatestOfficialFeedbackPost(true);
+    }
   };
 
   return (

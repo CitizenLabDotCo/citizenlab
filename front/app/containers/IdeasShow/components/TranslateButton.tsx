@@ -19,7 +19,31 @@ interface Props {
   onClick: (clicked: boolean) => void;
 }
 
-const supportedLanguages = ['ar', 'ca', 'da', 'de', 'el', 'en', 'es', 'fi', 'fr', 'hr', 'hu', 'it', 'lb', 'lv', 'mi', 'nb', 'nl', 'pl', 'pt', 'ro', 'sr', 'sv', 'tr'];
+const supportedLanguages = [
+  'ar',
+  'ca',
+  'da',
+  'de',
+  'el',
+  'en',
+  'es',
+  'fi',
+  'fr',
+  'hr',
+  'hu',
+  'it',
+  'lb',
+  'lv',
+  'mi',
+  'nb',
+  'nl',
+  'pl',
+  'pt',
+  'ro',
+  'sr',
+  'sv',
+  'tr',
+];
 
 const TranslateButton = ({ idea, translateButtonClicked, onClick }: Props) => {
   const locale = useLocale();
@@ -47,6 +71,6 @@ const TranslateButton = ({ idea, translateButtonClicked, onClick }: Props) => {
 
 function supportsTranslation(locale: SupportedLocale) {
   return supportedLanguages.includes(getLanguage(locale));
-};
+}
 
 export default TranslateButton;

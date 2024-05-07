@@ -109,6 +109,10 @@ const CLSurveyPageLayout = memo(
       canModerateProject(project?.data.id, { data: authUser.data });
     const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
 
+    // TODO: Readd Focuson after solving UI issue
+    const surveyHeadingRef = useRef<HTMLDivElement>(null);
+    const pageControlButtonsRef = useRef<HTMLDivElement>(null);
+
     useEffect(() => {
       // We can cast types because the tester made sure we only get correct values
       const allPageTypeElements = (uischema as PageCategorization)
@@ -197,7 +201,6 @@ const CLSurveyPageLayout = memo(
           getSanitizedFormData(data)
         )
       ) {
-        // setShowAllErrors?.(false);
         scrollToTop();
         data.publication_status = 'draft';
         data.latest_complete_page = currentStep;
@@ -279,6 +282,7 @@ const CLSurveyPageLayout = memo(
             canUserEditProject={userIsModerator}
             loggedIn={!isNilOrError(authUser)}
             percentageAnswered={percentageAnswered}
+            ref={surveyHeadingRef}
           />
 
           {allowAnonymousPosting && (
@@ -378,6 +382,7 @@ const CLSurveyPageLayout = memo(
             isLoading={isLoading}
             showSubmit={showSubmit}
             dataCyValue={dataCyValue}
+            ref={pageControlButtonsRef}
           />
         </Box>
       </>

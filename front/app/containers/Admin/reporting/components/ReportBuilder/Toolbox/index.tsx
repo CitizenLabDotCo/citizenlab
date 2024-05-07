@@ -36,7 +36,6 @@ import { isModerator } from 'utils/permissions/roles';
 
 import Analysis from '../Analysis';
 import { WIDGET_TITLES } from '../Widgets';
-import AboutReportWidget from '../Widgets/AboutReportWidget';
 import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
 import CommentsByTimeWidget from '../Widgets/ChartWidgets/CommentsByTimeWidget';
 import DemographicsWidget from '../Widgets/ChartWidgets/DemographicsWidget';
@@ -56,7 +55,6 @@ import messages from './messages';
 import { findSurveyPhaseId, findIdeationPhaseId } from './utils';
 
 type ReportBuilderToolboxProps = {
-  reportId: string;
   selectedLocale: SupportedLocale;
 };
 
@@ -67,7 +65,6 @@ const Section = ({ children }) => (
 );
 
 const ReportBuilderToolbox = ({
-  reportId,
   selectedLocale,
 }: ReportBuilderToolboxProps) => {
   const [selectedTab, setSelectedTab] = useState<'widgets' | 'ai'>('widgets');
@@ -180,7 +177,7 @@ const ReportBuilderToolbox = ({
             />
             <DraggableElement
               id="e2e-draggable-image"
-              component={<ImageMultiloc />}
+              component={<ImageMultiloc stretch />}
               icon="image"
               label={formatMessage(WIDGET_TITLES.ImageMultiloc)}
             />
@@ -248,17 +245,6 @@ const ReportBuilderToolbox = ({
           </Section>
 
           <Section>
-            <DraggableElement
-              id="e2e-draggable-about-report"
-              component={
-                <AboutReportWidget
-                  reportId={reportId}
-                  projectId={selectedProjectId}
-                />
-              }
-              icon="section-image-text"
-              label={formatMessage(WIDGET_TITLES.AboutReportWidget)}
-            />
             <DraggableElement
               id="e2e-draggable-visitors-timeline-widget"
               component={
