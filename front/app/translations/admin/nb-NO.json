@@ -899,6 +899,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.registrationField": "Registreringsfelt",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.unknown": "Ukjent",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.users": "Brukere: {numberOfUsers} ({percentageOfUsers}%)",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": "Tøye ut",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "Dataene for denne modulen mangler. Konfigurer eller slett den på nytt for å kunne lagre rapporten.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "Ingen passende faser funnet i dette prosjektet",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noPhaseSelected": "Ingen fase valgt. Velg en fase først.",
