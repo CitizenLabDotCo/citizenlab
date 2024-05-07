@@ -83,18 +83,20 @@ const ReportBuilderPage = () => {
           <FormattedMessage {...sharedMessages.reportBuilder} />
         </Title>
 
-        <Box display="flex" alignItems="center">
-          <BuilderNotAllowedTooltip disabled={isReportBuilderAllowed}>
-            <Button
-              onClick={openModal}
-              icon="plus-circle"
-              buttonStyle="admin-dark"
-              disabled={!isReportBuilderAllowed}
-            >
-              <FormattedMessage {...messages.createAReport} />
-            </Button>
-          </BuilderNotAllowedTooltip>
-        </Box>
+        {!showEmptyState && (
+          <Box display="flex" alignItems="center">
+            <BuilderNotAllowedTooltip disabled={isReportBuilderAllowed}>
+              <Button
+                onClick={openModal}
+                icon="plus-circle"
+                buttonStyle="admin-dark"
+                disabled={!isReportBuilderAllowed}
+              >
+                <FormattedMessage {...messages.createAReport} />
+              </Button>
+            </BuilderNotAllowedTooltip>
+          </Box>
+        )}
       </Box>
 
       {showEmptyState ? (
