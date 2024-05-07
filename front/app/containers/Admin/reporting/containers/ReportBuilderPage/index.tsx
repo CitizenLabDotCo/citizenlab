@@ -73,40 +73,56 @@ const ListContainer = ({ children }) => (
 const tabNames = ['all-reports', 'your-reports', 'service-reports'];
 
 const ReportBuilderPage = () => {
+  const { formatMessage } = useIntl();
+  const [searchParams] = useSearchParams();
+  const { data: me } = useAuthUser();
   const [modalOpen, setModalOpen] = useState(false);
   const [search, setSearch] = useState<string | undefined>();
-  const [searchParams] = useSearchParams();
-  const currentTab =
-    tabNames.find((tab) => tab === searchParams.get('tab')) ?? 'all-reports';
-
-  const { data: me } = useAuthUser();
-  if (!me) return null;
-
-  const reportParams = {
-    search,
-    owner_id: currentTab === 'your-reports' ? me.data.id : undefined,
-    service: currentTab === 'service-reports' ? true : undefined,
-  };
-  const { data: reports } = useReports(reportParams);
 
   const isReportBuilderAllowed = useFeatureFlag({
     name: 'report_builder',
     onlyCheckAllowed: true,
   });
 
-  const { formatMessage } = useIntl();
+  // Compute the query parameters for the reports API based on the tab.
+  function getParams(tab: string) {
+    return {
+      search,
+      owner_id: tab === 'your-reports' ? me?.data.id : undefined,
+      service: tab === 'service-reports' ? true : undefined,
+    };
+  }
+
+  const { data: yourReports } = useReports(getParams('your-reports'));
+  const { data: serviceReports } = useReports(getParams('service-reports'));
+  const { data: allReports } = useReports(getParams('all-reports'));
+
+  const currentTab =
+    tabNames.find((tab) => tab === searchParams.get('tab')) ?? 'all-reports';
+  const reports = {
+    'your-reports': yourReports,
+    'service-reports': serviceReports,
+    'all-reports': allReports,
+  }[currentTab];
 
   if (!reports) return null;
+  if (!me) return null;
 
-  const openModal = () => setModalOpen(true);
-  const closeModal = () => setModalOpen(false);
+  const allReportsCount = allReports?.data.length ?? 0;
+  const yourReportsCount = yourReports?.data.length ?? 0;
+  const serviceReportsCount = serviceReports?.data.length ?? 0;
 
+  const reportParams = getParams(currentTab);
   const showEmptyState =
     currentTab === 'all-reports' &&
     reports.data.length === 0 &&
+    // The empty state is only shown when no filters are applied.
     isEmpty(compactObject(reportParams));
 
   const searchReports = formatMessage(messages.searchReports);
+
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
 
   return (
     <>
@@ -149,17 +165,23 @@ const ReportBuilderPage = () => {
               <TabContainer>
                 <NavigationTabs position="relative">
                   <Tab
-                    label={formatMessage(messages.allReports)}
+                    label={`${formatMessage(
+                      messages.allReports
+                    )} (${allReportsCount})`}
                     url={'/admin/reporting/report-builder'}
                     active={currentTab === 'all-reports'}
                   />
                   <Tab
-                    label={formatMessage(messages.yourReports)}
+                    label={`${formatMessage(
+                      messages.yourReports
+                    )} (${yourReportsCount})`}
                     url={`/admin/reporting/report-builder?tab=your-reports`}
                     active={currentTab === 'your-reports'}
                   />
                   <Tab
-                    label={formatMessage(messages.serviceReports)}
+                    label={`${formatMessage(
+                      messages.serviceReports
+                    )} (${serviceReportsCount})`}
                     url={`/admin/reporting/report-builder?tab=service-reports`}
                     active={currentTab === 'service-reports'}
                   />
