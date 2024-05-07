@@ -43,12 +43,12 @@ resource 'Ideas' do
 
       context 'when the field value is given' do
         # TODO: Refactoring
-        # - Spec for all (supported) input types
         # - Extract custom_field_values from params
         # - Update: Merge extracted custom_field_values with current persisted custom_field_values
         # - Permit params and extract non-cutom_field_values from params
         # - Remove/clear custom_field_values
         # - compact_custom_field_values! ?
+        # - Validate input types in params + spec (can't create html_multiloc field in ideation or native survey)
         # - Let's start with a CustomFieldValuesParamsService, we could eventually introduce a CustomFieldValues class (overwrite model attribute)
         post 'web_api/v1/ideas' do
           [
