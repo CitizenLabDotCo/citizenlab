@@ -59,6 +59,25 @@ FactoryBot.define do
       end
     end
 
+    factory :custom_field_html_multiloc do
+      title_multiloc do
+        {
+          'en' => 'Why would you want to join the army?'
+        }
+      end
+      description_multiloc do
+        {
+          'en' => 'Please explain why you want to join the army.'
+        }
+      end
+      required { false }
+      input_type { 'html_multiloc' }
+
+      trait :for_custom_form do
+        association :resource, factory: :custom_form
+      end
+    end
+
     factory :custom_field_extra_custom_form do
       title_multiloc do
         {
@@ -188,6 +207,17 @@ FactoryBot.define do
           create(:custom_field_option, custom_field: cf, key: 'image2', image: create(:custom_field_option_image))
         end
       end
+    end
+
+    factory :custom_field_file_upload do
+      title_multiloc do
+        {
+          'en' => 'Upload your CV'
+        }
+      end
+      required { false }
+      input_type { 'file_upload' }
+      enabled { true }
     end
 
     factory :custom_field_checkbox do

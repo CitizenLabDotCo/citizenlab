@@ -26,7 +26,6 @@ resource 'Ideas' do
       parameter :topic_ids, 'Array of ids of the associated topics'
       parameter :area_ids, 'Array of ids of the associated areas'
       parameter :custom_field_name1, 'A value for one custom field'
-      parameter :description_copie_47e, 'Another value for one custom field'
     end
 
     let(:idea) { build(:idea) }
@@ -43,40 +42,37 @@ resource 'Ideas' do
       let(:form) { create(:custom_form, :with_default_fields, participation_context: project) }
 
       context 'when the field value is given' do
+        # TODO: Refactoring
+        # - Spec for all (supported) input types
+        # - Extract custom_field_values from params
+        # - Update: Merge extracted custom_field_values with current persisted custom_field_values
+        # - Permit params and extract non-cutom_field_values from params
+        # - Remove/clear custom_field_values
+        # - compact_custom_field_values! ?
+        # - Let's start with a CustomFieldValuesParamsService, we could eventually introduce a CustomFieldValues class (overwrite model attribute)
         post 'web_api/v1/ideas' do
-          context 'when the extra field is a simple text field' do
-            let!(:text_field) { create(:custom_field_extra_custom_form, key: extra_field_name, required: true, resource: form) }
-            let(:custom_field_name1) { 'test value' }
-
-            example_request 'Create an idea with an extra field' do
-              assert_status 201
-              json_response = json_parse(response_body)
-              idea_from_db = Idea.find(json_response[:data][:id])
-              expect(idea_from_db.custom_field_values.to_h).to eq({
-                extra_field_name => 'test value'
-              })
-            end
-          end
-
-          context 'when the extra field is a HTML multiloc field' do
-            # TODO: Refactoring
-            # - Spec for all (supported) input types
-            # - Extract custom_field_values from params
-            # - Update: Merge extracted custom_field_values with current persisted custom_field_values
-            # - Permit params and extract non-cutom_field_values from params
-            # - Remove/clear custom_field_values
-            # - compact_custom_field_values! ?
-            # - Let's start with a CustomFieldValuesParamsService, we could eventually introduce a CustomFieldValues class (overwrite model attribute)
-            let!(:text_field) { create(:custom_field_extra_custom_form, input_type: 'html_multiloc', key: extra_field_name, required: true, resource: form) }
-            let(:custom_field_name1) { { 'fr-FR' => '<p>test value</p>' } }
-
-            example_request 'Create an idea with an extra field' do
-              assert_status 201
-              json_response = json_parse(response_body)
-              idea_from_db = Idea.find(json_response[:data][:id])
-              expect(idea_from_db.custom_field_values.to_h).to eq({
-                extra_field_name => custom_field_name1
-              })
+          [
+            { factory: :custom_field_number, value: 42 },
+            { factory: :custom_field_linear_scale, value: 3 },
+            { factory: :custom_field_text, value: 'test value' },
+            { factory: :custom_field_multiline_text, value: 'test value' },
+            { factory: :custom_field_select, options: [:with_options], value: 'option1' },
+            { factory: :custom_field_multiselect, options: [:with_options], value: %w[option1 option2] },
+            { factory: :custom_field_multiselect_image, options: [:with_options], value: %w[image1] },
+            { factory: :custom_field_html_multiloc, value: { 'fr-FR' => '<p>test value</p>' } }, # This field does not seem to be supported by ideation but very rarely occurs on production
+          ].each do |field_desc|
+            describe do
+              let!(:extra_field) { create(field_desc[:factory], key: extra_field_name, required: true, resource: form) }
+              let(:custom_field_name1) { field_desc[:value] }
+  
+              example_request "Create an idea with a #{field_desc[:factory]} field" do
+                assert_status 201
+                json_response = json_parse(response_body)
+                idea_from_db = Idea.find(json_response[:data][:id])
+                expect(idea_from_db.custom_field_values).to eq({
+                  extra_field_name => field_desc[:value]
+                })
+              end
             end
           end
         end
