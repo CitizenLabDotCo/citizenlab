@@ -29,6 +29,10 @@ class WebApi::V1::UsersController < ApplicationController
         @users.order(created_at: :asc)
       when '-created_at'
         @users.order(created_at: :desc)
+      when 'last_acted_at'
+        @users.order(last_acted_at: :asc)
+      when '-last_acted_at'
+        @users.order(last_acted_at: :desc)
       when 'last_name'
         @users.order(last_name: :asc)
       when '-last_name'
