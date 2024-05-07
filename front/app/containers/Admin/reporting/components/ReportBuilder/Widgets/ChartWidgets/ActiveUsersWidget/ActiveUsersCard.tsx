@@ -56,7 +56,7 @@ const ActiveUsers = ({
               <Statistic
                 name={formatMessage(messages.totalParticipants)}
                 value={
-                  <Box display="inline">
+                  <>
                     <Text
                       color="textPrimary"
                       fontSize="xl"
@@ -76,7 +76,7 @@ const ActiveUsers = ({
                     >
                       +{stats.activeUsers.previousPeriod}
                     </Text>
-                  </Box>
+                  </>
                 }
                 nameColor="black"
                 bottomLabel="from previous TODO days"
