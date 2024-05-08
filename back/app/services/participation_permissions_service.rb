@@ -327,7 +327,7 @@ class ParticipationPermissionsService
         end
       end
     end
-    return if PermissionsService.new.requirements(permission, user)[:permitted]
+    return if RegistrationRequirementsService.new.requirements(permission, user)[:permitted]
 
     DENIED_REASONS[:missing_data]
   end

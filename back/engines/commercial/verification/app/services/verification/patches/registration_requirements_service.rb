@@ -2,7 +2,7 @@
 
 module Verification
   module Patches
-    module PermissionsService
+    module RegistrationRequirementsService
 
       private
 

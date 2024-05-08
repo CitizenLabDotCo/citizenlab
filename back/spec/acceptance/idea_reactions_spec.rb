@@ -47,7 +47,7 @@ resource 'Reactions' do
     end
     ValidationErrorHelper.new.error_fields(self, Reaction)
 
-    disabled_reasons = ParticipationPermissionsService::REACTING_DISABLED_REASONS.values + PermissionsService::DENIED_REASONS.values
+    disabled_reasons = ParticipationPermissionsService::REACTING_DISABLED_REASONS.values + ParticipationPermissionsService::DENIED_REASONS.values
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
 
     let(:idea_id) { @idea.id }
@@ -81,7 +81,7 @@ resource 'Reactions' do
   post 'web_api/v1/ideas/:idea_id/reactions/up' do
     ValidationErrorHelper.new.error_fields(self, Reaction)
 
-    disabled_reasons = ParticipationPermissionsService::REACTING_DISABLED_REASONS.values + PermissionsService::DENIED_REASONS.values
+    disabled_reasons = ParticipationPermissionsService::REACTING_DISABLED_REASONS.values + ParticipationPermissionsService::DENIED_REASONS.values
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
 
     let(:idea_id) { @idea.id }
@@ -159,7 +159,7 @@ resource 'Reactions' do
   post 'web_api/v1/ideas/:idea_id/reactions/down' do
     ValidationErrorHelper.new.error_fields(self, Reaction)
 
-    disabled_reasons = ParticipationPermissionsService::REACTING_DISABLED_REASONS.values + PermissionsService::DENIED_REASONS.values
+    disabled_reasons = ParticipationPermissionsService::REACTING_DISABLED_REASONS.values + ParticipationPermissionsService::DENIED_REASONS.values
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
 
     let(:idea_id) { @idea.id }

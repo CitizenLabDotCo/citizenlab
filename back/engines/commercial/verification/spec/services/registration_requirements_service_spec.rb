@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe PermissionsService do
+describe RegistrationRequirementsService do
   let(:service) { described_class.new }
 
   describe '#requirements' do
