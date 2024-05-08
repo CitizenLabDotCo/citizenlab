@@ -141,8 +141,7 @@ class WebApi::V1::IdeasController < ApplicationController
     send_error and return unless phase
 
     participation_method = Factory.instance.participation_method_for(phase)
-
-    extract_custom_field_values_from_params! participation_method.custom_form
+    extract_custom_field_values_from_params!(participation_method.custom_form)
     params_for_create = idea_params participation_method.custom_form, is_moderator
     input = Idea.new params_for_create
     input.creation_phase = (phase if participation_method.creation_phase?)
@@ -153,7 +152,7 @@ class WebApi::V1::IdeasController < ApplicationController
       input.anonymous = true
     end
     input.author ||= current_user
-    service.before_create(input, current_user)
+    sidefx.before_create(input, current_user)
 
     authorize input
     if anonymous_not_allowed?(phase)
@@ -167,7 +166,7 @@ class WebApi::V1::IdeasController < ApplicationController
     ActiveRecord::Base.transaction do
       if input.save(**save_options)
         update_file_upload_fields input, participation_method.custom_form, params_for_create
-        service.after_create(input, current_user)
+        sidefx.after_create(input, current_user)
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
           params: jsonapi_serializer_params,
@@ -190,7 +189,7 @@ class WebApi::V1::IdeasController < ApplicationController
       return
     end
 
-    extract_custom_field_values_from_params! input.custom_form
+    extract_custom_field_values_from_params!(input.custom_form)
     params[:idea][:topic_ids] ||= [] if params[:idea].key?(:topic_ids)
     params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
     mark_custom_field_values_to_clear! input
@@ -207,13 +206,13 @@ class WebApi::V1::IdeasController < ApplicationController
     end
     verify_profanity input
 
-    service.before_update(input, current_user)
+    sidefx.before_update(input, current_user)
 
     save_options = {}
     save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
       if input.save(**save_options)
-        service.after_update(input, current_user)
+        sidefx.after_update(input, current_user)
         update_file_upload_fields input, input.custom_form, update_params
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
@@ -231,7 +230,7 @@ class WebApi::V1::IdeasController < ApplicationController
     authorize input
     input = input.destroy
     if input.destroyed?
-      service.after_destroy(input, current_user)
+      sidefx.after_destroy(input, current_user)
       head :ok
     else
       head :internal_server_error
@@ -250,21 +249,13 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def extract_custom_field_values_from_params!(custom_form)
-    return unless custom_form
+    return if !custom_form
 
-    all_fields = IdeaCustomFieldsService.new(custom_form).submittable_fields_with_other_options
-    extra_field_values = all_fields.each_with_object({}) do |field, accu|
-      next if field.built_in?
-
-      given_value = params[:idea].delete field.key
-      next unless given_value && field.enabled?
-
-      accu[field.key] = given_value
-    end
-    return if extra_field_values.empty?
-
-    extra_field_values = reject_other_text_values(extra_field_values)
-    params[:idea][:custom_field_values] = extra_field_values
+    custom_field_values = CustomFieldsParamsService.new.extract_custom_field_values_from_params!(
+      params[:idea],
+      submittable_custom_fields(custom_form)
+    )
+    params[:idea][:custom_field_values] = custom_field_values if custom_field_values.present?
   end
 
   def extract_params_for_file_upload_fields(custom_form, params)
@@ -299,25 +290,16 @@ class WebApi::V1::IdeasController < ApplicationController
     input.save! if file_uploads_exist
   end
 
-  # Do not save any 'other' text values if the select field does not include 'other' as an option
-  def reject_other_text_values(extra_field_values)
-    extra_field_values.each do |key, _value|
-      if key.end_with? '_other'
-        parent_field_key = key.delete_suffix '_other'
-        parent_field_values = extra_field_values[parent_field_key].is_a?(Array) ? extra_field_values[parent_field_key] : [extra_field_values[parent_field_key]]
-        if parent_field_values.exclude? 'other'
-          extra_field_values.delete key
-        end
-      end
-    end
+  def sidefx
+    @sidefx ||= SideFxIdeaService.new
   end
 
-  def service
-    @service ||= SideFxIdeaService.new
+  def idea_params(custom_form, user_can_moderate_project)
+    params.require(:idea).permit(idea_attributes(custom_form, user_can_moderate_project))
   end
 
   def idea_attributes(custom_form, user_can_moderate_project)
-    submittable_field_keys = IdeaCustomFieldsService.new(custom_form).submittable_fields_with_other_options.map { |field| field.key.to_sym }
+    submittable_field_keys = submittable_custom_fields(custom_form).map(&:key).map(&:to_sym)
     attributes = idea_simple_attributes(submittable_field_keys)
     complex_attributes = idea_complex_attributes(custom_form, submittable_field_keys)
     attributes << complex_attributes if complex_attributes.any?
@@ -344,7 +326,7 @@ class WebApi::V1::IdeasController < ApplicationController
       location_point_geojson: [:type, { coordinates: [] }]
     }
 
-    allowed_custom_fields = IdeaCustomFieldsService.new(custom_form).submittable_fields_with_other_options.reject(&:built_in?)
+    allowed_custom_fields = submittable_custom_fields(custom_form).reject(&:built_in?)
     custom_field_values_params = CustomFieldsParamsService.new.custom_field_values_params(allowed_custom_fields)
     if custom_field_values_params.any?
       complex_attributes[:custom_field_values] = custom_field_values_params
@@ -365,8 +347,8 @@ class WebApi::V1::IdeasController < ApplicationController
     complex_attributes
   end
 
-  def idea_params(custom_form, user_can_moderate_project)
-    params.require(:idea).permit(idea_attributes(custom_form, user_can_moderate_project))
+  def submittable_custom_fields(custom_form)
+    IdeaCustomFieldsService.new(custom_form).submittable_fields_with_other_options
   end
 
   def authorize_project_or_ideas
