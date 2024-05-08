@@ -15,6 +15,7 @@
   "app.components.Admin.Campaigns.draft": "Entworf",
   "app.components.Admin.Campaigns.manageButtonLabel": "Verwalten",
   "app.components.Admin.Campaigns.opened": "Opgemaach",
+  "app.components.Admin.Campaigns.project": "Projet",
   "app.components.Admin.Campaigns.recipientsTitle": "Empfänger",
   "app.components.Admin.Campaigns.sent": "Geschéckt",
   "app.components.Admin.Campaigns.statsButton": "Statistiken",
