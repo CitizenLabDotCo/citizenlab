@@ -1011,31 +1011,6 @@ RSpec.describe User do
       expect(user.email_confirmation_code).to be_nil
     end
 
-    describe '#should_require_confirmation?' do
-      it 'returns false if the user is an admin' do
-        user.add_role('admin')
-        user.save!
-        expect(user.should_require_confirmation?).to be false
-      end
-
-      it 'returns false if the user is a project moderator' do
-        user.add_role('project_moderator', 'project_id' => 'some_id')
-        user.save!
-        expect(user.should_require_confirmation?).to be false
-      end
-
-      it 'returns false if the user is a normal user' do
-        expect(user.should_require_confirmation?).to be true
-      end
-
-      it 'returns false if the user registered with a phone number' do
-        enable_phone_login
-        user.email = '343938837373'
-        user.save!
-        expect(user.reload.should_require_confirmation?).to be false
-      end
-    end
-
     describe '#confirmation_required?' do
       it 'returns false if the feature is not active' do
         SettingsService.new.deactivate_feature! 'user_confirmation'
@@ -1068,15 +1043,41 @@ RSpec.describe User do
 
     describe '#set_confirmation_required' do
       it 'sets the confirmation required field' do
-        user.save!
-        user.set_confirmation_required
+        user.email_confirmed_at = Time.now
+        user.email_confirmation_code_sent_at = Time.now
+        user.validate
+
         expect(user.confirmation_required?).to be true
         expect(user.email_confirmed_at).to be_nil
+        expect(user.email_confirmation_code_sent_at).to be_nil
+      end
+
+      it 'sets false if the user is an admin' do
+        user.add_role('admin')
+        user.save!
+        expect(user.confirmation_required?).to be false
+      end
+
+      it 'sets false if the user is a project moderator' do
+        user.add_role('project_moderator', 'project_id' => 'some_id')
+        user.save!
+        expect(user.confirmation_required?).to be false
+      end
+
+      it 'sets true if the user is a normal user' do
+        user.save!
+        expect(user.confirmation_required?).to be true
+      end
+
+      it 'sets false if the user registered with a phone number' do
+        enable_phone_login
+        user.email = '343938837373'
+        user.save!
+        expect(user.reload.confirmation_required?).to be false
       end
 
       it 'does not perform a commit to the db' do
-        user.save!
-        user.set_confirmation_required
+        user.validate
         expect(user.saved_change_to_confirmation_required?).to be false
         expect(user.saved_change_to_email_confirmed_at?).to be false
       end

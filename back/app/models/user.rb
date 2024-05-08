@@ -172,7 +172,7 @@ class User < ApplicationRecord
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :assign_email_or_phone, if: :email_changed?
   with_options if: -> { user_confirmation_enabled? } do
-    before_validation :set_confirmation_required, if: :email_changed?, on: :create
+    before_validation :set_confirmation_required
     before_validation :confirm, if: ->(user) { user.invite_status_change&.last == 'accepted' }
   end
   before_validation :complete_registration
@@ -497,10 +497,6 @@ class User < ApplicationRecord
     manual_groups.merge(groups).exists?
   end
 
-  def should_require_confirmation?
-    !(registered_with_phone? || highest_role != :user || sso? || invited? || active?)
-  end
-
   # true if the user has not yet confirmed their email address and the platform requires it
   def confirmation_required?
     user_confirmation_enabled? && confirmation_required
@@ -517,12 +513,6 @@ class User < ApplicationRecord
     confirm_new_email if new_email.present?
     confirm
     save!
-  end
-
-  def set_confirmation_required
-    self.confirmation_required = should_require_confirmation?
-    self.email_confirmed_at = nil
-    self.email_confirmation_code_sent_at = nil
   end
 
   def reset_confirmation_and_counts
@@ -558,14 +548,23 @@ class User < ApplicationRecord
     save!
   end
 
+  private
+
+  def set_confirmation_required
+    return unless new_record? && email_changed?
+
+    self.confirmation_required =
+      !(registered_with_phone? || highest_role != :user || sso? || invited? || active?)
+    self.email_confirmed_at = nil
+    self.email_confirmation_code_sent_at = nil
+  end
+
   def confirm_new_email
     return unless new_email
 
     self.email = new_email
     self.new_email = nil
   end
-
-  private
 
   def validate_not_duplicate_new_email
     return unless new_email
@@ -593,15 +592,13 @@ class User < ApplicationRecord
   end
 
   def validate_can_update_email
-    return unless persisted? && (new_email_changed? || email_changed?)
+    return unless persisted? && (new_email_changed? || email_changed?) && email_was.present?
 
-    # no_password? - here it's only for light registration
-    # confirmation_required? - it's always false for SSO providers that return email (all except ClaveUnica and MitID)
-    # !sso? - exclude ClaveUnica and MitID registrations (no email)
-    if no_password? && confirmation_required? && !sso? && email_was.present?
+    # no_password? - only for light registration
+    if no_password? && confirmation_required? && !sso?
       # Avoid security hole where passwordless user can change when they are authenticated without confirmation
       errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - user not active'
-    elsif user_confirmation_enabled? && active? && email_changed? && !email_changed?(to: new_email_was) && email_was.present?
+    elsif user_confirmation_enabled? && active? && email_changed? && !email_changed?(to: new_email_was)
       # When new_email is used, email can only be updated from the value in that column
       errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - email not matching new email'
     end
