@@ -46,10 +46,6 @@ class PermissionsService
     denied_reason_for_permission permission, user
   end
 
-  def denied_reason_for_permission(permission, user)
-    denied_reason permission, user
-  end
-
   def requirements(permission, user)
     requirements = base_requirements permission
     mark_satisfied_requirements! requirements, permission, user if user
@@ -118,7 +114,7 @@ class PermissionsService
     end
   end
 
-  def denied_reason(permission, user)
+  def denied_reason_for_permission(permission, user)
     if permission.permitted_by == 'everyone'
       user ||= User.new
     else

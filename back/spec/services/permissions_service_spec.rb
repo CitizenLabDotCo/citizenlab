@@ -61,7 +61,7 @@ describe PermissionsService do
     end
 
     let(:permission) { create(:permission, permitted_by: permitted_by) }
-    let(:denied_reason) { service.denied_reason_for_permission permission, user }
+    let(:denied_reason) { service.send(:denied_reason_for_permission, permission, user) }
 
     context 'when permitted by everyone' do
       let(:permitted_by) { 'everyone' }

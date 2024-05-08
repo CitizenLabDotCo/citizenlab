@@ -12,38 +12,38 @@ describe PermissionsService do
     context 'when not signed in' do
       let(:user) { nil }
 
-      it { expect(service.denied_reason_for_permission(group_permission, user)).to eq 'not_signed_in' }
+      it { expect(service.send(:denied_reason_for_permission, group_permission, user)).to eq 'not_signed_in' }
     end
 
     context 'when user is admin' do
       let(:admin) { create(:admin) }
 
-      it { expect(service.denied_reason_for_permission(group_permission, admin)).to be_nil }
+      it { expect(service.send(:denied_reason_for_permission, group_permission, admin)).to be_nil }
     end
 
     context 'when verified resident' do
       let(:user) { create(:user, verified: true) }
 
-      it { expect(service.denied_reason_for_permission(group_permission, user)).to be_nil }
+      it { expect(service.send(:denied_reason_for_permission, group_permission, user)).to be_nil }
     end
 
     context 'when unverified resident' do
       let(:user) { create(:user, verified: false) }
 
-      it { expect(service.denied_reason_for_permission(group_permission, user)).to eq 'not_verified' }
+      it { expect(service.send(:denied_reason_for_permission, group_permission, user)).to eq 'not_verified' }
     end
 
     context 'when unverified resident and no verification group' do
       let(:groups) { [create(:group)] }
       let(:user) { create(:user, verified: false) }
 
-      it { expect(service.denied_reason_for_permission(group_permission, user)).to eq 'not_in_group' }
+      it { expect(service.send(:denied_reason_for_permission, group_permission, user)).to eq 'not_in_group' }
     end
 
     context 'when unverified resident, belonging to the other group' do
       let(:user) { create(:user, verified: false, manual_groups: [groups.first]) }
 
-      it { expect(service.denied_reason_for_permission(group_permission, user)).to be_nil }
+      it { expect(service.send(:denied_reason_for_permission, group_permission, user)).to be_nil }
     end
   end
 
