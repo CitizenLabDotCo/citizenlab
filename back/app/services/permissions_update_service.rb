@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class PermissionsService
+class PermissionsUpdateService
   # TODO: JS - Scope here is probably just phase OR null now
   def update_permissions_for_scope(scope)
     actions = Permission.available_actions scope

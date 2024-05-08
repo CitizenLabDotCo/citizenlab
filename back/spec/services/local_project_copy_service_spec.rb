@@ -267,7 +267,7 @@ describe LocalProjectCopyService do
       let!(:source_project) { create(:project_with_active_ideation_phase) }
       let(:groups) { create_list(:group, 2) }
       let(:permission) do
-        PermissionsService.new.update_all_permissions
+        PermissionsUpdateService.new.update_all_permissions
         ParticipationPermissionsService.new
           .get_current_phase(source_project).permissions
           .find_by(action: 'commenting_idea')

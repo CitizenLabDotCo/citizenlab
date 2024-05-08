@@ -42,89 +42,89 @@ describe RegistrationRequirementsService do
 
         it 'permits a visitor' do
           expect(service.requirements(permission, nil)).to eq({
-                                                                permitted: true,
-                                                                requirements: {
-                                                                  built_in: {
-                                                                    first_name: 'dont_ask',
-                                                                    last_name: 'dont_ask',
-                                                                    email: 'dont_ask'
-                                                                  },
-                                                                  custom_fields: {},
-                                                                  onboarding: { topics_and_areas: 'dont_ask' },
-                                                                  special: {
-                                                                    password: 'dont_ask',
-                                                                    confirmation: 'dont_ask',
-                                                                    verification: 'dont_ask',
-                                                                    group_membership: 'dont_ask'
-                                                                  }
-                                                                }
-                                                              })
+            permitted: true,
+            requirements: {
+              built_in: {
+                first_name: 'dont_ask',
+                last_name: 'dont_ask',
+                email: 'dont_ask'
+              },
+              custom_fields: {},
+              onboarding: { topics_and_areas: 'dont_ask' },
+              special: {
+                password: 'dont_ask',
+                confirmation: 'dont_ask',
+                verification: 'dont_ask',
+                group_membership: 'dont_ask'
+              }
+            }
+          })
         end
 
         it 'permits a light unconfirmed resident' do
           user.reset_confirmation_and_counts
           user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
           expect(service.requirements(permission, user)).to eq({
-                                                                 permitted: true,
-                                                                 requirements: {
-                                                                   built_in: {
-                                                                     first_name: 'dont_ask',
-                                                                     last_name: 'satisfied',
-                                                                     email: 'satisfied'
-                                                                   },
-                                                                   custom_fields: {},
-                                                                   onboarding: { topics_and_areas: 'dont_ask' },
-                                                                   special: {
-                                                                     password: 'dont_ask',
-                                                                     confirmation: 'dont_ask',
-                                                                     verification: 'dont_ask',
-                                                                     group_membership: 'dont_ask'
-                                                                   }
-                                                                 }
-                                                               })
+            permitted: true,
+            requirements: {
+              built_in: {
+                first_name: 'dont_ask',
+                last_name: 'satisfied',
+                email: 'satisfied'
+              },
+              custom_fields: {},
+              onboarding: { topics_and_areas: 'dont_ask' },
+              special: {
+                password: 'dont_ask',
+                confirmation: 'dont_ask',
+                verification: 'dont_ask',
+                group_membership: 'dont_ask'
+              }
+            }
+          })
         end
 
         it 'permits a fully registered confirmed resident' do
           expect(service.requirements(permission, user)).to eq({
-                                                                 permitted: true,
-                                                                 requirements: {
-                                                                   built_in: {
-                                                                     first_name: 'satisfied',
-                                                                     last_name: 'satisfied',
-                                                                     email: 'satisfied'
-                                                                   },
-                                                                   custom_fields: {},
-                                                                   onboarding: { topics_and_areas: 'dont_ask' },
-                                                                   special: {
-                                                                     password: 'satisfied',
-                                                                     confirmation: 'satisfied',
-                                                                     verification: 'dont_ask',
-                                                                     group_membership: 'dont_ask'
-                                                                   }
-                                                                 }
-                                                               })
+            permitted: true,
+            requirements: {
+              built_in: {
+                first_name: 'satisfied',
+                last_name: 'satisfied',
+                email: 'satisfied'
+              },
+              custom_fields: {},
+              onboarding: { topics_and_areas: 'dont_ask' },
+              special: {
+                password: 'satisfied',
+                confirmation: 'satisfied',
+                verification: 'dont_ask',
+                group_membership: 'dont_ask'
+              }
+            }
+          })
         end
 
         it 'permits a confirmed admin' do
           user.add_role 'admin'
           expect(service.requirements(permission, user)).to eq({
-                                                                 permitted: true,
-                                                                 requirements: {
-                                                                   built_in: {
-                                                                     first_name: 'satisfied',
-                                                                     last_name: 'satisfied',
-                                                                     email: 'satisfied'
-                                                                   },
-                                                                   custom_fields: {},
-                                                                   onboarding: { topics_and_areas: 'dont_ask' },
-                                                                   special: {
-                                                                     password: 'satisfied',
-                                                                     confirmation: 'satisfied',
-                                                                     verification: 'dont_ask',
-                                                                     group_membership: 'dont_ask'
-                                                                   }
-                                                                 }
-                                                               })
+            permitted: true,
+            requirements: {
+              built_in: {
+                first_name: 'satisfied',
+                last_name: 'satisfied',
+                email: 'satisfied'
+              },
+              custom_fields: {},
+              onboarding: { topics_and_areas: 'dont_ask' },
+              special: {
+                password: 'satisfied',
+                confirmation: 'satisfied',
+                verification: 'dont_ask',
+                group_membership: 'dont_ask'
+              }
+            }
+          })
         end
       end
 
@@ -138,170 +138,170 @@ describe RegistrationRequirementsService do
 
         it 'does not permit a visitor' do
           expect(service.requirements(permission, nil)).to eq({
-                                                                permitted: false,
-                                                                requirements: {
-                                                                  built_in: {
-                                                                    first_name: 'dont_ask',
-                                                                    last_name: 'dont_ask',
-                                                                    email: 'require'
-                                                                  },
-                                                                  custom_fields: {
-                                                                    'birthyear' => 'ask'
-                                                                  },
-                                                                  onboarding: { topics_and_areas: 'dont_ask' },
-                                                                  special: {
-                                                                    password: 'dont_ask',
-                                                                    confirmation: 'require',
-                                                                    verification: 'dont_ask',
-                                                                    group_membership: 'dont_ask'
-                                                                  }
-                                                                }
-                                                              })
+            permitted: false,
+            requirements: {
+              built_in: {
+                first_name: 'dont_ask',
+                last_name: 'dont_ask',
+                email: 'require'
+              },
+              custom_fields: {
+                'birthyear' => 'ask'
+              },
+              onboarding: { topics_and_areas: 'dont_ask' },
+              special: {
+                password: 'dont_ask',
+                confirmation: 'require',
+                verification: 'dont_ask',
+                group_membership: 'dont_ask'
+              }
+            }
+          })
         end
 
         it 'does not permit a light unconfirmed resident' do
           user.reset_confirmation_and_counts
           user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
           expect(service.requirements(permission, user)).to eq({
-                                                                 permitted: false,
-                                                                 requirements: {
-                                                                   built_in: {
-                                                                     first_name: 'dont_ask',
-                                                                     last_name: 'satisfied',
-                                                                     email: 'satisfied'
-                                                                   },
-                                                                   custom_fields: {
-                                                                     'birthyear' => 'ask'
-                                                                   },
-                                                                   onboarding: { topics_and_areas: 'dont_ask' },
-                                                                   special: {
-                                                                     password: 'dont_ask',
-                                                                     confirmation: 'require',
-                                                                     verification: 'dont_ask',
-                                                                     group_membership: 'dont_ask'
-                                                                   }
-                                                                 }
-                                                               })
+            permitted: false,
+            requirements: {
+              built_in: {
+                first_name: 'dont_ask',
+                last_name: 'satisfied',
+                email: 'satisfied'
+              },
+              custom_fields: {
+                'birthyear' => 'ask'
+              },
+              onboarding: { topics_and_areas: 'dont_ask' },
+              special: {
+                password: 'dont_ask',
+                confirmation: 'require',
+                verification: 'dont_ask',
+                group_membership: 'dont_ask'
+              }
+            }
+          })
         end
 
         it 'permits a light confirmed resident' do
           user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
           expect(service.requirements(permission, user)).to eq({
-                                                                 permitted: true,
-                                                                 requirements: {
-                                                                   built_in: {
-                                                                     first_name: 'dont_ask',
-                                                                     last_name: 'satisfied',
-                                                                     email: 'satisfied'
-                                                                   },
-                                                                   custom_fields: {
-                                                                     'birthyear' => 'ask'
-                                                                   },
-                                                                   onboarding: { topics_and_areas: 'dont_ask' },
-                                                                   special: {
-                                                                     password: 'dont_ask',
-                                                                     confirmation: 'satisfied',
-                                                                     verification: 'dont_ask',
-                                                                     group_membership: 'dont_ask'
-                                                                   }
-                                                                 }
-                                                               })
+            permitted: true,
+            requirements: {
+              built_in: {
+                first_name: 'dont_ask',
+                last_name: 'satisfied',
+                email: 'satisfied'
+              },
+              custom_fields: {
+                'birthyear' => 'ask'
+              },
+              onboarding: { topics_and_areas: 'dont_ask' },
+              special: {
+                password: 'dont_ask',
+                confirmation: 'satisfied',
+                verification: 'dont_ask',
+                group_membership: 'dont_ask'
+              }
+            }
+          })
         end
 
         it 'does not permit a fully registered unconfirmed resident' do # https://citizenlabco.slack.com/archives/C04FX2ATE5B/p1677170928400679
           user.reset_confirmation_and_counts
           expect(service.requirements(permission, user)).to eq({
-                                                                 permitted: false,
-                                                                 requirements: {
-                                                                   built_in: {
-                                                                     first_name: 'satisfied',
-                                                                     last_name: 'satisfied',
-                                                                     email: 'satisfied'
-                                                                   },
-                                                                   custom_fields: {
-                                                                     'birthyear' => 'satisfied'
-                                                                   },
-                                                                   onboarding: { topics_and_areas: 'dont_ask' },
-                                                                   special: {
-                                                                     password: 'satisfied',
-                                                                     confirmation: 'require',
-                                                                     verification: 'dont_ask',
-                                                                     group_membership: 'dont_ask'
-                                                                   }
-                                                                 }
-                                                               })
+            permitted: false,
+            requirements: {
+              built_in: {
+                first_name: 'satisfied',
+                last_name: 'satisfied',
+                email: 'satisfied'
+              },
+              custom_fields: {
+                'birthyear' => 'satisfied'
+              },
+              onboarding: { topics_and_areas: 'dont_ask' },
+              special: {
+                password: 'satisfied',
+                confirmation: 'require',
+                verification: 'dont_ask',
+                group_membership: 'dont_ask'
+              }
+            }
+          })
         end
 
         it 'permits a fully registered confirmed resident' do
           expect(service.requirements(permission, user)).to eq({
-                                                                 permitted: true,
-                                                                 requirements: {
-                                                                   built_in: {
-                                                                     first_name: 'satisfied',
-                                                                     last_name: 'satisfied',
-                                                                     email: 'satisfied'
-                                                                   },
-                                                                   custom_fields: {
-                                                                     'birthyear' => 'satisfied'
-                                                                   },
-                                                                   onboarding: { topics_and_areas: 'dont_ask' },
-                                                                   special: {
-                                                                     password: 'satisfied',
-                                                                     confirmation: 'satisfied',
-                                                                     verification: 'dont_ask',
-                                                                     group_membership: 'dont_ask'
-                                                                   }
-                                                                 }
-                                                               })
+            permitted: true,
+            requirements: {
+              built_in: {
+                first_name: 'satisfied',
+                last_name: 'satisfied',
+                email: 'satisfied'
+              },
+              custom_fields: {
+                'birthyear' => 'satisfied'
+              },
+              onboarding: { topics_and_areas: 'dont_ask' },
+              special: {
+                password: 'satisfied',
+                confirmation: 'satisfied',
+                verification: 'dont_ask',
+                group_membership: 'dont_ask'
+              }
+            }
+          })
         end
 
         it 'does not permit an unconfirmed admin' do
           user.add_role 'admin'
           user.reset_confirmation_and_counts
           expect(service.requirements(permission, user)).to eq({
-                                                                 permitted: false,
-                                                                 requirements: {
-                                                                   built_in: {
-                                                                     first_name: 'satisfied',
-                                                                     last_name: 'satisfied',
-                                                                     email: 'satisfied'
-                                                                   },
-                                                                   custom_fields: {
-                                                                     'birthyear' => 'satisfied'
-                                                                   },
-                                                                   onboarding: { topics_and_areas: 'dont_ask' },
-                                                                   special: {
-                                                                     password: 'satisfied',
-                                                                     confirmation: 'require',
-                                                                     verification: 'dont_ask',
-                                                                     group_membership: 'dont_ask'
-                                                                   }
-                                                                 }
-                                                               })
+            permitted: false,
+            requirements: {
+              built_in: {
+                first_name: 'satisfied',
+                last_name: 'satisfied',
+                email: 'satisfied'
+              },
+              custom_fields: {
+                'birthyear' => 'satisfied'
+              },
+              onboarding: { topics_and_areas: 'dont_ask' },
+              special: {
+                password: 'satisfied',
+                confirmation: 'require',
+                verification: 'dont_ask',
+                group_membership: 'dont_ask'
+              }
+            }
+          })
         end
 
         it 'permits a confirmed admin' do
           user.add_role 'admin'
           expect(service.requirements(permission, user)).to eq({
-                                                                 permitted: true,
-                                                                 requirements: {
-                                                                   built_in: {
-                                                                     first_name: 'satisfied',
-                                                                     last_name: 'satisfied',
-                                                                     email: 'satisfied'
-                                                                   },
-                                                                   custom_fields: {
-                                                                     'birthyear' => 'satisfied'
-                                                                   },
-                                                                   onboarding: { topics_and_areas: 'dont_ask' },
-                                                                   special: {
-                                                                     password: 'satisfied',
-                                                                     confirmation: 'satisfied',
-                                                                     verification: 'dont_ask',
-                                                                     group_membership: 'dont_ask'
-                                                                   }
-                                                                 }
-                                                               })
+            permitted: true,
+            requirements: {
+              built_in: {
+                first_name: 'satisfied',
+                last_name: 'satisfied',
+                email: 'satisfied'
+              },
+              custom_fields: {
+                'birthyear' => 'satisfied'
+              },
+              onboarding: { topics_and_areas: 'dont_ask' },
+              special: {
+                password: 'satisfied',
+                confirmation: 'satisfied',
+                verification: 'dont_ask',
+                group_membership: 'dont_ask'
+              }
+            }
+          })
         end
       end
 
@@ -315,108 +315,108 @@ describe RegistrationRequirementsService do
 
         it 'does not permit a visitor' do
           expect(service.requirements(permission, nil)).to eq({
-                                                                permitted: false,
-                                                                requirements: {
-                                                                  built_in: {
-                                                                    first_name: 'require',
-                                                                    last_name: 'require',
-                                                                    email: 'require'
-                                                                  },
-                                                                  custom_fields: {
-                                                                    'birthyear' => 'require',
-                                                                    'gender' => 'ask',
-                                                                    'extra_required_field' => 'require',
-                                                                    'extra_optional_field' => 'ask'
-                                                                  },
-                                                                  onboarding: { topics_and_areas: 'ask' },
-                                                                  special: {
-                                                                    password: 'require',
-                                                                    confirmation: 'require',
-                                                                    verification: 'dont_ask',
-                                                                    group_membership: 'dont_ask'
-                                                                  }
-                                                                }
-                                                              })
+            permitted: false,
+            requirements: {
+              built_in: {
+                first_name: 'require',
+                last_name: 'require',
+                email: 'require'
+              },
+              custom_fields: {
+                'birthyear' => 'require',
+                'gender' => 'ask',
+                'extra_required_field' => 'require',
+                'extra_optional_field' => 'ask'
+              },
+              onboarding: { topics_and_areas: 'ask' },
+              special: {
+                password: 'require',
+                confirmation: 'require',
+                verification: 'dont_ask',
+                group_membership: 'dont_ask'
+              }
+            }
+          })
         end
 
         it 'does not permit a light confirmed resident' do
           user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
           expect(service.requirements(permission, user)).to eq({
-                                                                 permitted: false,
-                                                                 requirements: {
-                                                                   built_in: {
-                                                                     first_name: 'require',
-                                                                     last_name: 'satisfied',
-                                                                     email: 'satisfied'
-                                                                   },
-                                                                   custom_fields: {
-                                                                     'birthyear' => 'require',
-                                                                     'gender' => 'ask',
-                                                                     'extra_required_field' => 'require',
-                                                                     'extra_optional_field' => 'ask'
-                                                                   },
-                                                                   onboarding: { topics_and_areas: 'ask' },
-                                                                   special: {
-                                                                     password: 'require',
-                                                                     confirmation: 'satisfied',
-                                                                     verification: 'dont_ask',
-                                                                     group_membership: 'dont_ask'
-                                                                   }
-                                                                 }
-                                                               })
+            permitted: false,
+            requirements: {
+              built_in: {
+                first_name: 'require',
+                last_name: 'satisfied',
+                email: 'satisfied'
+              },
+              custom_fields: {
+                'birthyear' => 'require',
+                'gender' => 'ask',
+                'extra_required_field' => 'require',
+                'extra_optional_field' => 'ask'
+              },
+              onboarding: { topics_and_areas: 'ask' },
+              special: {
+                password: 'require',
+                confirmation: 'satisfied',
+                verification: 'dont_ask',
+                group_membership: 'dont_ask'
+              }
+            }
+          })
         end
 
         it 'does not permit a fully registered unconfirmed resident' do
           user.reset_confirmation_and_counts
           expect(service.requirements(permission, user)).to eq({
-                                                                 permitted: false,
-                                                                 requirements: {
-                                                                   built_in: {
-                                                                     first_name: 'satisfied',
-                                                                     last_name: 'satisfied',
-                                                                     email: 'satisfied'
-                                                                   },
-                                                                   custom_fields: {
-                                                                     'birthyear' => 'satisfied',
-                                                                     'gender' => 'satisfied',
-                                                                     'extra_required_field' => 'satisfied',
-                                                                     'extra_optional_field' => 'satisfied'
-                                                                   },
-                                                                   onboarding: { topics_and_areas: 'ask' },
-                                                                   special: {
-                                                                     password: 'satisfied',
-                                                                     confirmation: 'require',
-                                                                     verification: 'dont_ask',
-                                                                     group_membership: 'dont_ask'
-                                                                   }
-                                                                 }
-                                                               })
+            permitted: false,
+            requirements: {
+              built_in: {
+                first_name: 'satisfied',
+                last_name: 'satisfied',
+                email: 'satisfied'
+              },
+              custom_fields: {
+                'birthyear' => 'satisfied',
+                'gender' => 'satisfied',
+                'extra_required_field' => 'satisfied',
+                'extra_optional_field' => 'satisfied'
+              },
+              onboarding: { topics_and_areas: 'ask' },
+              special: {
+                password: 'satisfied',
+                confirmation: 'require',
+                verification: 'dont_ask',
+                group_membership: 'dont_ask'
+              }
+            }
+          })
         end
 
         it 'permits a fully registered confirmed resident' do
           expect(service.requirements(permission, user)).to eq({
-                                                                 permitted: true,
-                                                                 requirements: {
-                                                                   built_in: {
-                                                                     first_name: 'satisfied',
-                                                                     last_name: 'satisfied',
-                                                                     email: 'satisfied'
-                                                                   },
-                                                                   custom_fields: {
-                                                                     'birthyear' => 'satisfied',
-                                                                     'gender' => 'satisfied',
-                                                                     'extra_required_field' => 'satisfied',
-                                                                     'extra_optional_field' => 'satisfied'
-                                                                   },
-                                                                   onboarding: { topics_and_areas: 'ask' },
-                                                                   special: {
-                                                                     password: 'satisfied',
-                                                                     confirmation: 'satisfied',
-                                                                     verification: 'dont_ask',
-                                                                     group_membership: 'dont_ask'
-                                                                   }
-                                                                 }
-                                                               })
+            permitted: true,
+            requirements: {
+              built_in: {
+                first_name: 'satisfied',
+                last_name: 'satisfied',
+                email: 'satisfied'
+              },
+              custom_fields: {
+                'birthyear' => 'satisfied',
+                'gender' => 'satisfied',
+                'extra_required_field' => 'satisfied',
+                'extra_optional_field' => 'satisfied'
+              },
+              onboarding: { topics_and_areas: 'ask' },
+              special: {
+                password: 'satisfied',
+                confirmation: 'satisfied',
+                verification: 'dont_ask',
+                group_membership: 'dont_ask'
+              }
+            }
+          })
         end
 
         it 'does not ask onboarding for a fully registered confirmed resident when onboarding is not possible' do
@@ -425,83 +425,83 @@ describe RegistrationRequirementsService do
           app_configuration.save!
 
           expect(service.requirements(permission, user)).to eq({
-                                                                 permitted: true,
-                                                                 requirements: {
-                                                                   built_in: {
-                                                                     first_name: 'satisfied',
-                                                                     last_name: 'satisfied',
-                                                                     email: 'satisfied'
-                                                                   },
-                                                                   custom_fields: {
-                                                                     'birthyear' => 'satisfied',
-                                                                     'gender' => 'satisfied',
-                                                                     'extra_required_field' => 'satisfied',
-                                                                     'extra_optional_field' => 'satisfied'
-                                                                   },
-                                                                   onboarding: { topics_and_areas: 'dont_ask' },
-                                                                   special: {
-                                                                     password: 'satisfied',
-                                                                     confirmation: 'satisfied',
-                                                                     verification: 'dont_ask',
-                                                                     group_membership: 'dont_ask'
-                                                                   }
-                                                                 }
-                                                               })
+            permitted: true,
+            requirements: {
+              built_in: {
+                first_name: 'satisfied',
+                last_name: 'satisfied',
+                email: 'satisfied'
+              },
+              custom_fields: {
+                'birthyear' => 'satisfied',
+                'gender' => 'satisfied',
+                'extra_required_field' => 'satisfied',
+                'extra_optional_field' => 'satisfied'
+              },
+              onboarding: { topics_and_areas: 'dont_ask' },
+              special: {
+                password: 'satisfied',
+                confirmation: 'satisfied',
+                verification: 'dont_ask',
+                group_membership: 'dont_ask'
+              }
+            }
+          })
         end
 
         it 'does not permit an unconfirmed admin' do
           user.add_role 'admin'
           user.reset_confirmation_and_counts
           expect(service.requirements(permission, user)).to eq({
-                                                                 permitted: false,
-                                                                 requirements: {
-                                                                   built_in: {
-                                                                     first_name: 'satisfied',
-                                                                     last_name: 'satisfied',
-                                                                     email: 'satisfied'
-                                                                   },
-                                                                   custom_fields: {
-                                                                     'birthyear' => 'satisfied',
-                                                                     'gender' => 'satisfied',
-                                                                     'extra_required_field' => 'satisfied',
-                                                                     'extra_optional_field' => 'satisfied'
-                                                                   },
-                                                                   onboarding: { topics_and_areas: 'ask' },
-                                                                   special: {
-                                                                     password: 'satisfied',
-                                                                     confirmation: 'require',
-                                                                     verification: 'dont_ask',
-                                                                     group_membership: 'dont_ask'
-                                                                   }
-                                                                 }
-                                                               })
+            permitted: false,
+            requirements: {
+              built_in: {
+                first_name: 'satisfied',
+                last_name: 'satisfied',
+                email: 'satisfied'
+              },
+              custom_fields: {
+                'birthyear' => 'satisfied',
+                'gender' => 'satisfied',
+                'extra_required_field' => 'satisfied',
+                'extra_optional_field' => 'satisfied'
+              },
+              onboarding: { topics_and_areas: 'ask' },
+              special: {
+                password: 'satisfied',
+                confirmation: 'require',
+                verification: 'dont_ask',
+                group_membership: 'dont_ask'
+              }
+            }
+          })
         end
 
         it 'permits a confirmed admin' do
           user.add_role 'admin'
           expect(service.requirements(permission, user)).to eq({
-                                                                 permitted: true,
-                                                                 requirements: {
-                                                                   built_in: {
-                                                                     first_name: 'satisfied',
-                                                                     last_name: 'satisfied',
-                                                                     email: 'satisfied'
-                                                                   },
-                                                                   custom_fields: {
-                                                                     'birthyear' => 'satisfied',
-                                                                     'gender' => 'satisfied',
-                                                                     'extra_required_field' => 'satisfied',
-                                                                     'extra_optional_field' => 'satisfied'
-                                                                   },
-                                                                   onboarding: { topics_and_areas: 'ask' },
-                                                                   special: {
-                                                                     password: 'satisfied',
-                                                                     confirmation: 'satisfied',
-                                                                     verification: 'dont_ask',
-                                                                     group_membership: 'dont_ask'
-                                                                   }
-                                                                 }
-                                                               })
+            permitted: true,
+            requirements: {
+              built_in: {
+                first_name: 'satisfied',
+                last_name: 'satisfied',
+                email: 'satisfied'
+              },
+              custom_fields: {
+                'birthyear' => 'satisfied',
+                'gender' => 'satisfied',
+                'extra_required_field' => 'satisfied',
+                'extra_optional_field' => 'satisfied'
+              },
+              onboarding: { topics_and_areas: 'ask' },
+              special: {
+                password: 'satisfied',
+                confirmation: 'satisfied',
+                verification: 'dont_ask',
+                group_membership: 'dont_ask'
+              }
+            }
+          })
         end
       end
 
@@ -517,122 +517,122 @@ describe RegistrationRequirementsService do
 
           it 'does not permit a visitor' do
             expect(service.requirements(permission, nil)).to eq({
-                                                                  permitted: false,
-                                                                  requirements: {
-                                                                    built_in: {
-                                                                      first_name: 'require',
-                                                                      last_name: 'require',
-                                                                      email: 'require'
-                                                                    },
-                                                                    custom_fields: {
-                                                                      'birthyear' => 'require'
-                                                                    },
-                                                                    onboarding: { topics_and_areas: 'ask' },
-                                                                    special: {
-                                                                      password: 'require',
-                                                                      confirmation: 'require',
-                                                                      verification: 'dont_ask',
-                                                                      group_membership: 'require'
-                                                                    }
-                                                                  }
-                                                                })
+              permitted: false,
+              requirements: {
+                built_in: {
+                  first_name: 'require',
+                  last_name: 'require',
+                  email: 'require'
+                },
+                custom_fields: {
+                  'birthyear' => 'require'
+                },
+                onboarding: { topics_and_areas: 'ask' },
+                special: {
+                  password: 'require',
+                  confirmation: 'require',
+                  verification: 'dont_ask',
+                  group_membership: 'require'
+                }
+              }
+            })
           end
 
           it 'does not permit a light unconfirmed resident' do
             user.reset_confirmation_and_counts
             user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: { 'birthyear' => 1968 })
             expect(service.requirements(permission, user)).to eq({
-                                                                   permitted: false,
-                                                                   requirements: {
-                                                                     built_in: {
-                                                                       first_name: 'require',
-                                                                       last_name: 'satisfied',
-                                                                       email: 'satisfied'
-                                                                     },
-                                                                     custom_fields: {
-                                                                       'birthyear' => 'satisfied'
-                                                                     },
-                                                                     onboarding: { topics_and_areas: 'ask' },
-                                                                     special: {
-                                                                       password: 'require',
-                                                                       confirmation: 'require',
-                                                                       verification: 'dont_ask',
-                                                                       group_membership: 'require'
-                                                                     }
-                                                                   }
-                                                                 })
+              permitted: false,
+              requirements: {
+                built_in: {
+                  first_name: 'require',
+                  last_name: 'satisfied',
+                  email: 'satisfied'
+                },
+                custom_fields: {
+                  'birthyear' => 'satisfied'
+                },
+                onboarding: { topics_and_areas: 'ask' },
+                special: {
+                  password: 'require',
+                  confirmation: 'require',
+                  verification: 'dont_ask',
+                  group_membership: 'require'
+                }
+              }
+            })
           end
 
           it 'does not permit a fully registered confirmed resident' do
             expect(service.requirements(permission, user)).to eq({
-                                                                   permitted: false,
-                                                                   requirements: {
-                                                                     built_in: {
-                                                                       first_name: 'satisfied',
-                                                                       last_name: 'satisfied',
-                                                                       email: 'satisfied'
-                                                                     },
-                                                                     custom_fields: {
-                                                                       'birthyear' => 'satisfied'
-                                                                     },
-                                                                     onboarding: { topics_and_areas: 'ask' },
-                                                                     special: {
-                                                                       password: 'satisfied',
-                                                                       confirmation: 'satisfied',
-                                                                       verification: 'dont_ask',
-                                                                       group_membership: 'require'
-                                                                     }
-                                                                   }
-                                                                 })
+              permitted: false,
+              requirements: {
+                built_in: {
+                  first_name: 'satisfied',
+                  last_name: 'satisfied',
+                  email: 'satisfied'
+                },
+                custom_fields: {
+                  'birthyear' => 'satisfied'
+                },
+                onboarding: { topics_and_areas: 'ask' },
+                special: {
+                  password: 'satisfied',
+                  confirmation: 'satisfied',
+                  verification: 'dont_ask',
+                  group_membership: 'require'
+                }
+              }
+            })
           end
 
           it 'does not permit an unconfirmed admin' do
             user.add_role 'admin'
             user.reset_confirmation_and_counts
             expect(service.requirements(permission, user)).to eq({
-                                                                   permitted: false,
-                                                                   requirements: {
-                                                                     built_in: {
-                                                                       first_name: 'satisfied',
-                                                                       last_name: 'satisfied',
-                                                                       email: 'satisfied'
-                                                                     },
-                                                                     custom_fields: {
-                                                                       'birthyear' => 'satisfied'
-                                                                     },
-                                                                     onboarding: { topics_and_areas: 'ask' },
-                                                                     special: {
-                                                                       password: 'satisfied',
-                                                                       confirmation: 'require',
-                                                                       verification: 'dont_ask',
-                                                                       group_membership: 'require'
-                                                                     }
-                                                                   }
-                                                                 })
+              permitted: false,
+              requirements: {
+                built_in: {
+                  first_name: 'satisfied',
+                  last_name: 'satisfied',
+                  email: 'satisfied'
+                },
+                custom_fields: {
+                  'birthyear' => 'satisfied'
+                },
+                onboarding: { topics_and_areas: 'ask' },
+                special: {
+                  password: 'satisfied',
+                  confirmation: 'require',
+                  verification: 'dont_ask',
+                  group_membership: 'require'
+                }
+              }
+            })
           end
 
           it 'does not permit a confirmed admin' do
             user.add_role 'admin'
             expect(service.requirements(permission, user)).to eq({
-                                                                   permitted: false,
-                                                                   requirements: {
-                                                                     built_in: {
-                                                                       first_name: 'satisfied',
-                                                                       last_name: 'satisfied',
-                                                                       email: 'satisfied'
-                                                                     },
-                                                                     custom_fields: {
-                                                                       'birthyear' => 'satisfied'
-                                                                     },
-                                                                     onboarding: { topics_and_areas: 'ask' },
-                                                                     special: {
-                                                                       password: 'satisfied',
-                                                                       confirmation: 'satisfied',
-                                                                       verification: 'dont_ask',
-                                                                       group_membership: 'require'
-                                                                     }
-                                                                   }
-                                                                 })
+              permitted: false,
+              requirements: {
+                built_in: {
+                  first_name: 'satisfied',
+                  last_name: 'satisfied',
+                  email: 'satisfied'
+                },
+                custom_fields: {
+                  'birthyear' => 'satisfied'
+                },
+                onboarding: { topics_and_areas: 'ask' },
+                special: {
+                  password: 'satisfied',
+                  confirmation: 'satisfied',
+                  verification: 'dont_ask',
+                  group_membership: 'require'
+                }
+              }
+            })
           end
         end
 
@@ -641,23 +641,23 @@ describe RegistrationRequirementsService do
 
           it 'permits a fully registered confirmed resident who is in the group' do
             expect(service.requirements(permission, user)).to eq({
-                                                                   permitted: true,
-                                                                   requirements: {
-                                                                     built_in: {
-                                                                       first_name: 'satisfied',
-                                                                       last_name: 'satisfied',
-                                                                       email: 'satisfied'
-                                                                     },
-                                                                     custom_fields: {},
-                                                                     onboarding: { topics_and_areas: 'ask' },
-                                                                     special: {
-                                                                       password: 'satisfied',
-                                                                       confirmation: 'satisfied',
-                                                                       verification: 'dont_ask',
-                                                                       group_membership: 'satisfied'
-                                                                     }
-                                                                   }
-                                                                 })
+              permitted: true,
+              requirements: {
+                built_in: {
+                  first_name: 'satisfied',
+                  last_name: 'satisfied',
+                  email: 'satisfied'
+                },
+                custom_fields: {},
+                onboarding: { topics_and_areas: 'ask' },
+                special: {
+                  password: 'satisfied',
+                  confirmation: 'satisfied',
+                  verification: 'dont_ask',
+                  group_membership: 'satisfied'
+                }
+              }
+            })
           end
         end
       end
@@ -669,113 +669,113 @@ describe RegistrationRequirementsService do
 
         it 'does not permit a visitor' do
           expect(service.requirements(permission, nil)).to eq({
-                                                                permitted: false,
-                                                                requirements: {
-                                                                  built_in: {
-                                                                    first_name: 'require',
-                                                                    last_name: 'require',
-                                                                    email: 'require'
-                                                                  },
-                                                                  custom_fields: {},
-                                                                  onboarding: { topics_and_areas: 'ask' },
-                                                                  special: {
-                                                                    password: 'require',
-                                                                    confirmation: 'dont_ask',
-                                                                    verification: 'dont_ask',
-                                                                    group_membership: 'dont_ask'
-                                                                  }
-                                                                }
-                                                              })
+            permitted: false,
+            requirements: {
+              built_in: {
+                first_name: 'require',
+                last_name: 'require',
+                email: 'require'
+              },
+              custom_fields: {},
+              onboarding: { topics_and_areas: 'ask' },
+              special: {
+                password: 'require',
+                confirmation: 'dont_ask',
+                verification: 'dont_ask',
+                group_membership: 'dont_ask'
+              }
+            }
+          })
         end
 
         it 'does not permit a light unconfirmed resident' do
           user.reset_confirmation_and_counts
           user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
           expect(service.requirements(permission, user)).to eq({
-                                                                 permitted: false,
-                                                                 requirements: {
-                                                                   built_in: {
-                                                                     first_name: 'require',
-                                                                     last_name: 'satisfied',
-                                                                     email: 'satisfied'
-                                                                   },
-                                                                   custom_fields: {},
-                                                                   onboarding: { topics_and_areas: 'ask' },
-                                                                   special: {
-                                                                     password: 'require',
-                                                                     confirmation: 'satisfied',
-                                                                     verification: 'dont_ask',
-                                                                     group_membership: 'dont_ask'
-                                                                   }
-                                                                 }
-                                                               })
+            permitted: false,
+            requirements: {
+              built_in: {
+                first_name: 'require',
+                last_name: 'satisfied',
+                email: 'satisfied'
+              },
+              custom_fields: {},
+              onboarding: { topics_and_areas: 'ask' },
+              special: {
+                password: 'require',
+                confirmation: 'satisfied',
+                verification: 'dont_ask',
+                group_membership: 'dont_ask'
+              }
+            }
+          })
         end
 
         it 'permits a fully registered unconfirmed resident' do
           user.reset_confirmation_and_counts
           expect(service.requirements(permission, user)).to eq({
-                                                                 permitted: true,
-                                                                 requirements: {
-                                                                   built_in: {
-                                                                     first_name: 'satisfied',
-                                                                     last_name: 'satisfied',
-                                                                     email: 'satisfied'
-                                                                   },
-                                                                   custom_fields: {},
-                                                                   onboarding: { topics_and_areas: 'ask' },
-                                                                   special: {
-                                                                     password: 'satisfied',
-                                                                     confirmation: 'satisfied',
-                                                                     verification: 'dont_ask',
-                                                                     group_membership: 'dont_ask'
-                                                                   }
-                                                                 }
-                                                               })
+            permitted: true,
+            requirements: {
+              built_in: {
+                first_name: 'satisfied',
+                last_name: 'satisfied',
+                email: 'satisfied'
+              },
+              custom_fields: {},
+              onboarding: { topics_and_areas: 'ask' },
+              special: {
+                password: 'satisfied',
+                confirmation: 'satisfied',
+                verification: 'dont_ask',
+                group_membership: 'dont_ask'
+              }
+            }
+          })
         end
 
         it 'permits an unconfirmed admin' do
           user.add_role 'admin'
           user.reset_confirmation_and_counts
           expect(service.requirements(permission, user)).to eq({
-                                                                 permitted: true,
-                                                                 requirements: {
-                                                                   built_in: {
-                                                                     first_name: 'satisfied',
-                                                                     last_name: 'satisfied',
-                                                                     email: 'satisfied'
-                                                                   },
-                                                                   custom_fields: {},
-                                                                   onboarding: { topics_and_areas: 'ask' },
-                                                                   special: {
-                                                                     password: 'satisfied',
-                                                                     confirmation: 'satisfied',
-                                                                     verification: 'dont_ask',
-                                                                     group_membership: 'dont_ask'
-                                                                   }
-                                                                 }
-                                                               })
+            permitted: true,
+            requirements: {
+              built_in: {
+                first_name: 'satisfied',
+                last_name: 'satisfied',
+                email: 'satisfied'
+              },
+              custom_fields: {},
+              onboarding: { topics_and_areas: 'ask' },
+              special: {
+                password: 'satisfied',
+                confirmation: 'satisfied',
+                verification: 'dont_ask',
+                group_membership: 'dont_ask'
+              }
+            }
+          })
         end
 
         it 'permits a confirmed admin' do
           user.add_role 'admin'
           expect(service.requirements(permission, user)).to eq({
-                                                                 permitted: true,
-                                                                 requirements: {
-                                                                   built_in: {
-                                                                     first_name: 'satisfied',
-                                                                     last_name: 'satisfied',
-                                                                     email: 'satisfied'
-                                                                   },
-                                                                   custom_fields: {},
-                                                                   onboarding: { topics_and_areas: 'ask' },
-                                                                   special: {
-                                                                     password: 'satisfied',
-                                                                     confirmation: 'satisfied',
-                                                                     verification: 'dont_ask',
-                                                                     group_membership: 'dont_ask'
-                                                                   }
-                                                                 }
-                                                               })
+            permitted: true,
+            requirements: {
+              built_in: {
+                first_name: 'satisfied',
+                last_name: 'satisfied',
+                email: 'satisfied'
+              },
+              custom_fields: {},
+              onboarding: { topics_and_areas: 'ask' },
+              special: {
+                password: 'satisfied',
+                confirmation: 'satisfied',
+                verification: 'dont_ask',
+                group_membership: 'dont_ask'
+              }
+            }
+          })
         end
       end
     end
@@ -791,28 +791,28 @@ describe RegistrationRequirementsService do
 
         it 'permits a fully registered confirmed resident' do
           expect(service.requirements(permission, user)).to eq({
-                                                                 permitted: true,
-                                                                 requirements: {
-                                                                   built_in: {
-                                                                     first_name: 'satisfied',
-                                                                     last_name: 'satisfied',
-                                                                     email: 'satisfied'
-                                                                   },
-                                                                   custom_fields: {
-                                                                     'birthyear' => 'satisfied',
-                                                                     'gender' => 'satisfied',
-                                                                     'extra_required_field' => 'satisfied',
-                                                                     'extra_optional_field' => 'satisfied'
-                                                                   },
-                                                                   onboarding: { topics_and_areas: 'dont_ask' },
-                                                                   special: {
-                                                                     password: 'satisfied',
-                                                                     confirmation: 'satisfied',
-                                                                     verification: 'dont_ask',
-                                                                     group_membership: 'dont_ask'
-                                                                   }
-                                                                 }
-                                                               })
+            permitted: true,
+            requirements: {
+              built_in: {
+                first_name: 'satisfied',
+                last_name: 'satisfied',
+                email: 'satisfied'
+              },
+              custom_fields: {
+                'birthyear' => 'satisfied',
+                'gender' => 'satisfied',
+                'extra_required_field' => 'satisfied',
+                'extra_optional_field' => 'satisfied'
+              },
+              onboarding: { topics_and_areas: 'dont_ask' },
+              special: {
+                password: 'satisfied',
+                confirmation: 'satisfied',
+                verification: 'dont_ask',
+                group_membership: 'dont_ask'
+              }
+            }
+          })
         end
       end
     end

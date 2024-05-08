@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe PermissionsService do
+describe PermissionsUpdateService do
   let(:service) { described_class.new }
 
   before do

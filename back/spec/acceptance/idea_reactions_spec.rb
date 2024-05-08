@@ -126,7 +126,7 @@ resource 'Reactions' do
 
     describe 'when reacting to idea is allowed by moderators/admins' do
       before do
-        PermissionsService.new.update_all_permissions
+        PermissionsUpdateService.new.update_all_permissions
         @project.phases.first.permissions.find_by(action: 'reacting_idea').update!(permitted_by: 'admins_moderators')
         @user.update!(roles: [])
       end

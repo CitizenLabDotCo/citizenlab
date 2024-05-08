@@ -92,6 +92,6 @@ class SideFxPhaseService
   private
 
   def permissions_service
-    @permissions_service ||= PermissionsService.new
+    @permissions_service ||= PermissionsUpdateService.new
   end
 end

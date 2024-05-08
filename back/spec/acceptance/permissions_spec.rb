@@ -10,7 +10,7 @@ resource 'Permissions' do
     header 'Content-Type', 'application/json'
     @project = create(:single_phase_ideation_project)
     @phase = ParticipationPermissionsService.new.get_current_phase(@project)
-    PermissionsService.new.update_all_permissions
+    PermissionsUpdateService.new.update_all_permissions
   end
 
   let(:project_id) { @project.id }
