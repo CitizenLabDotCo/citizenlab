@@ -49,6 +49,7 @@ resource 'Ideas' do
         # - Remove/clear custom_field_values
         # - compact_custom_field_values! ?
         #
+        # - Don't allow duplicating default fields
         # - Simplify factories
         # - Validate input types in params + spec (can't create html_multiloc field in ideation or native survey)
         # - Let's start with a CustomFieldValuesParamsService, we could eventually introduce a CustomFieldValues class (overwrite model attribute)
