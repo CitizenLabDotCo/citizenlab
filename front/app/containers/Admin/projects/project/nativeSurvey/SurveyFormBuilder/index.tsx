@@ -16,11 +16,7 @@ import { API_PATH } from 'containers/App/constants';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { saveSurveyAsPDF } from '../saveSurveyAsPDF';
-import {
-  nativeSurveyConfig,
-  resetCopiedForm,
-  resetOptionsIfNotPersisted,
-} from '../utils';
+import { nativeSurveyConfig, clearOptionIds } from '../utils';
 
 const FormBuilder = lazy(() => import('components/FormBuilder/edit'));
 
@@ -35,36 +31,38 @@ const SurveyFormBuilder = () => {
   const { data: phase } = usePhase(phaseId);
 
   const locale = useLocale();
-  const { data: customFields } = useFormCustomFields({
+  const { data: formCustomFields } = useFormCustomFields({
     projectId,
     phaseId: copyFrom ? copyFrom : phaseId,
+    copy: copyFrom ? true : false,
   });
 
-  const goBackUrl: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/native-survey`;
-  const downloadPdfLink = `${API_PATH}/phases/${phaseId}/custom_fields/to_pdf`;
+  if (!phase || !formCustomFields) return null;
 
+  // Reset option IDs if this is a new or copied form
+  const isFormPersisted = copyFrom
+    ? false
+    : phase.data.attributes.custom_form_persisted;
+  const newCustomFields = isFormPersisted
+    ? formCustomFields
+    : clearOptionIds(formCustomFields);
+
+  // PDF downloading
+  const downloadPdfLink = `${API_PATH}/phases/${phaseId}/importer/export_form/idea/pdf`;
   const handleDownloadPDF = () => setExportModalOpen(true);
-
-  if (!phase || !customFields) return null;
-
-  const surveyFormPersisted =
-    phase.data.attributes.custom_form_persisted || false;
-
-  const formCustomFields = copyFrom
-    ? resetCopiedForm(customFields)
-    : resetOptionsIfNotPersisted(customFields, surveyFormPersisted);
-
   const handleExportPDF = async ({ personal_data }: FormValues) => {
     if (isNilOrError(locale)) return;
     await saveSurveyAsPDF({ downloadPdfLink, locale, personal_data });
   };
+
+  const goBackUrl: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/native-survey`;
 
   return (
     <>
       <FormBuilder
         builderConfig={{
           ...nativeSurveyConfig,
-          formCustomFields,
+          formCustomFields: newCustomFields,
           goBackUrl,
           onDownloadPDF: handleDownloadPDF,
         }}

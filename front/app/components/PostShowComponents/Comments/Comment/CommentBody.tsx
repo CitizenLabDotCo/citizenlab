@@ -238,7 +238,6 @@ const CommentBody = ({
                 id="app.components.PostShowComponents.CommentBody.translation"
                 translateButtonClicked={translateButtonClicked}
                 commentContent={commentContent}
-                locale={locale}
                 commentId={commentId}
               >
                 {(outletComponents) =>

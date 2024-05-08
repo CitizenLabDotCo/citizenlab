@@ -70,6 +70,12 @@ module EmailCampaigns
       end
     end
 
+    attribute :delivery_stats, if: proc { |object|
+      object.manual? && object.sent?
+    } do |object|
+      Delivery.status_counts(object.id)
+    end
+
     attribute :sender, if: proc { |object|
       sender_configurable? object
     }

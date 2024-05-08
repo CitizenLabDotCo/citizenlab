@@ -11,7 +11,7 @@ export interface Translations {
   stats: string;
   timeSeries: string;
   date: string;
-  activeUsers: string;
+  participants: string;
   statistic: string;
   participationRate: string;
   total: string;
@@ -26,7 +26,7 @@ export const getTranslations = (
   stats: formatMessage(moduleMessages.stats),
   timeSeries: formatMessage(messages.timeSeries),
   date: formatMessage(moduleMessages.date),
-  activeUsers: formatMessage(cardMessages.activeUsers),
+  participants: formatMessage(cardMessages.participants),
   statistic: formatMessage(moduleMessages.statistic),
   participationRate: formatMessage(cardMessages.participationRate),
   total: formatMessage(moduleMessages.total),

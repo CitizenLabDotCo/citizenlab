@@ -1,12 +1,15 @@
 import React from 'react';
 
 import { Box, Text, Button, colors } from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
 
+import useAuthUser from 'api/me/useAuthUser';
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 import { isBuiltInField } from 'api/user_custom_fields/util';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isAdmin } from 'utils/permissions/roles';
 
 import messages from '../../../containers/Granular/messages';
 
@@ -27,9 +30,12 @@ export const SelectionScreen = ({
   setShowAddFieldPage,
   isLoading,
 }: SelectionScreenProps) => {
+  const { formatMessage } = useIntl();
   const selectedFieldIds = new Set(
     selectedFields?.map((field) => field.relationships.custom_field.data.id)
   );
+  const { data: authUser } = useAuthUser();
+  const userIsAdmin = authUser && isAdmin(authUser);
 
   return (
     <>
@@ -72,20 +78,31 @@ export const SelectionScreen = ({
             </Box>
           ))}
       </Box>
-      <Box display="flex">
-        <Button
-          ml="20px"
-          mb="20px"
-          icon="plus-circle"
-          buttonStyle="secondary"
-          onClick={() => {
-            setShowAddFieldPage(true);
-          }}
-          type="button"
-        >
-          <FormattedMessage {...messages.createANewQuestion} />
-        </Button>
-      </Box>
+      <Tippy
+        zIndex={9999999}
+        disabled={userIsAdmin}
+        content={
+          <Text my="8px" color="white" fontSize="s">
+            {formatMessage(messages.onlyAdminsCreateQuestion)}
+          </Text>
+        }
+      >
+        <Box w="fit-content">
+          <Button
+            ml="20px"
+            mb="20px"
+            icon="plus-circle"
+            buttonStyle="secondary"
+            onClick={() => {
+              setShowAddFieldPage(true);
+            }}
+            type="button"
+            disabled={!userIsAdmin}
+          >
+            <FormattedMessage {...messages.createANewQuestion} />
+          </Button>
+        </Box>
+      </Tippy>
     </>
   );
 };

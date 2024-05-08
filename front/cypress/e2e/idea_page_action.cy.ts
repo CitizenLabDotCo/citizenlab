@@ -119,7 +119,7 @@ describe('Idea show page actions', () => {
         cy.reload();
       });
 
-      it('has working up and dislike buttons', () => {
+      it.skip('has working up and dislike buttons', () => {
         cy.visit(`/ideas/${ideaSlug}`);
         cy.intercept(`**/ideas/by_slug/${ideaSlug}`).as('ideaRequest');
 

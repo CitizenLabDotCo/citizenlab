@@ -1,22 +1,12 @@
 import React from 'react';
 
 import { colors, fontSizes } from '@citizenlab/cl2-component-library';
-import { isFunction } from 'lodash-es';
-import { adopt } from 'react-adopt';
-import GetIdeasCount, {
-  GetIdeasCountChildProps,
-} from 'resources/GetIdeasCount';
-import GetInitiativesCount, {
-  GetInitiativesCountChildProps,
-} from 'resources/GetInitiativesCount';
 import styled, { css } from 'styled-components';
 
 import CountBadge from 'components/UI/CountBadge';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 
-import { ManagerType } from '../..';
 import messages from '../../messages';
 
 const size = 21;
@@ -79,103 +69,34 @@ const StyledLabel = styled.label`
   align-items: center;
 `;
 
-interface InputProps {
-  type: ManagerType;
+interface Props {
   value: boolean;
+  count: number | undefined;
   onChange: (feedbackNeeded: boolean | undefined) => void;
-  assignee?: string | null;
-  project?: string | null;
-  phase?: string | null;
-  topics?: string[] | null;
-  status?: string | null;
-  searchTerm?: string | null;
 }
 
-interface DataProps {
-  feedbackNeededCount: GetIdeasCountChildProps | GetInitiativesCountChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-interface State {}
-
-export class FeedbackToggle extends React.PureComponent<Props, State> {
-  componentDidUpdate(prevProps: Props) {
-    if (prevProps.searchTerm !== this.props.searchTerm) {
-      if (isFunction(this.props.feedbackNeededCount.onChangeSearchTerm)) {
-        this.props.feedbackNeededCount.onChangeSearchTerm(
-          this.props.searchTerm || ''
-        );
-      }
-    }
-  }
-
-  handleOnClick = () => {
-    this.props.onChange(!this.props.value || undefined);
+const FeedbackToggle = ({ onChange, value, count }: Props) => {
+  const handleOnClick = () => {
+    // If the value is true, we want to set it to undefined, so that the filter is removed
+    // If it's undefined, we want to set it to true, so that the filter is added
+    onChange(!value || undefined);
   };
 
-  render() {
-    const { value, feedbackNeededCount } = this.props;
+  return (
+    <Container
+      id="e2e-feedback_needed_filter_toggle"
+      className="feedback_needed_filter_toggle"
+    >
+      <ToggleContainer onClick={handleOnClick} checked={value}>
+        <input type="checkbox" role="checkbox" aria-checked={value} />
+        <i />
+      </ToggleContainer>
+      <StyledLabel onClick={handleOnClick}>
+        <FormattedMessage {...messages.inputsNeedFeedbackToggle} />
+        {typeof count === 'number' && <CountBadge count={count} />}
+      </StyledLabel>
+    </Container>
+  );
+};
 
-    return (
-      <Container
-        id="e2e-feedback_needed_filter_toggle"
-        className="feedback_needed_filter_toggle"
-      >
-        <ToggleContainer onClick={this.handleOnClick} checked={value}>
-          <input type="checkbox" role="checkbox" aria-checked={value} />
-          <i />
-        </ToggleContainer>
-        <StyledLabel onClick={this.handleOnClick}>
-          <FormattedMessage {...messages.inputsNeedFeedbackToggle} />
-          {!isNilOrError(feedbackNeededCount.count) && (
-            <CountBadge count={feedbackNeededCount.count} />
-          )}
-        </StyledLabel>
-      </Container>
-    );
-  }
-}
-
-const Data = adopt({
-  feedbackNeededCount: ({
-    project,
-    phase,
-    topics,
-    status,
-    assignee,
-    render,
-    type,
-  }) => {
-    const projectIds = project ? [project] : undefined;
-    return type === 'Initiatives' ? (
-      <GetInitiativesCount
-        feedbackNeeded={true}
-        assignee={assignee}
-        topics={topics}
-        initiativeStatusId={status}
-      >
-        {render}
-      </GetInitiativesCount>
-    ) : (
-      <GetIdeasCount
-        feedbackNeeded={true}
-        assignee={assignee}
-        projects={projectIds}
-        phase={phase}
-        topics={topics}
-        ideaStatusId={status}
-      >
-        {render}
-      </GetIdeasCount>
-    );
-  },
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps: DataProps) => (
-      <FeedbackToggle {...inputProps} {...dataProps} />
-    )}
-  </Data>
-);
+export default FeedbackToggle;

@@ -9,7 +9,6 @@ import styled from 'styled-components';
 import { IEventData } from 'api/events/types';
 
 import clHistory from 'utils/cl-router/history';
-import { isNilOrError } from 'utils/helperUtils';
 
 import EventInformation from './EventInformation';
 
@@ -38,30 +37,31 @@ interface Props {
 const EventCard = memo<Props>((props) => {
   const { event, className, id, ...otherProps } = props;
 
-  if (!isNilOrError(event)) {
-    const navigateToEventPage = () => {
-      clHistory.push(`/events/${event.id}`, { scrollToTop: true });
-    };
+  const navigateToEventPage = () => {
+    clHistory.push(`/events/${event.id}`, { scrollToTop: true });
+  };
 
-    return (
-      <Container
-        className={className || ''}
-        id={id}
-        role="button"
-        onClick={navigateToEventPage}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') {
-            navigateToEventPage();
-          }
-        }}
-        tabIndex={0}
-      >
-        <EventInformation event={event} {...otherProps} />
-      </Container>
-    );
-  }
-
-  return null;
+  return (
+    <Container
+      className={className || ''}
+      id={id}
+      role="button"
+      onClick={navigateToEventPage}
+      onKeyDown={(e) => {
+        // We want this to trigger when the user interacts with the card itself, not its children. The buttons inside the card for example should not trigger this.
+        if (e.target === e.currentTarget && e.key === 'Enter') {
+          navigateToEventPage();
+        }
+      }}
+      tabIndex={0}
+    >
+      <EventInformation
+        event={event}
+        goToEvent={navigateToEventPage}
+        {...otherProps}
+      />
+    </Container>
+  );
 });
 
 export default EventCard;

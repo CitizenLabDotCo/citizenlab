@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
@@ -23,7 +23,7 @@ import messages from '../../messages';
 import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 
 type ProjectDescriptionBuilderToolboxProps = {
-  selectedLocale: Locale;
+  selectedLocale: SupportedLocale;
 };
 
 const ProjectDescriptionBuilderToolbox = ({

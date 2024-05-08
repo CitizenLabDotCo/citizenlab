@@ -164,6 +164,14 @@ RSpec.describe Phase do
       phase_right = build(:phase, project: project.reload, start_at: (Time.now + 6.days), end_at: (Time.now + 10.days))
       expect(phase_right).to be_valid
     end
+
+    it 'fails when inserting a phase in-between two phases, where then next phase has no end date' do
+      project = create(:project)
+      create(:phase, project: project, start_at: (Time.now - 5.days), end_at: (Time.now - 2.days))
+      create(:phase, project: project, start_at: (Time.now + 5.days), end_at: nil)
+      phase = build(:phase, project: project, start_at: (Time.now + 2.days), end_at: (Time.now + 12.days))
+      expect(phase).not_to be_valid
+    end
   end
 
   describe 'voting_max_total' do

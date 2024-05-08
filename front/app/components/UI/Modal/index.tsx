@@ -9,13 +9,9 @@ import {
   viewportWidths,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import { adopt } from 'react-adopt';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
 import { Subscription, fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import styled from 'styled-components';
@@ -298,7 +294,7 @@ const Overlay = styled.div<{
   }
 `;
 
-export const HeaderContainer = styled.div`
+const HeaderContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -317,7 +313,7 @@ export const HeaderContainer = styled.div`
   `}
 `;
 
-export const HeaderTitle = styled.h1`
+const HeaderTitle = styled.h1`
   color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.xl}px;
   font-weight: 600;
@@ -417,11 +413,7 @@ const ModalContentContainerSwitch = ({
   );
 };
 
-interface DataProps {
-  windowSize: GetWindowSizeChildProps;
-}
-
-export interface InputProps {
+interface Props {
   opened: boolean;
   fixedHeight?: boolean;
   width?: number | string;
@@ -440,23 +432,18 @@ export interface InputProps {
   hideCloseButton?: boolean;
 }
 
-interface Props extends InputProps, DataProps {}
-
 interface State {
+  windowWidth: number;
   windowHeight: number;
 }
 
 class Modal extends PureComponent<Props, State> {
   subscription: Subscription | null;
 
-  static defaultProps = {
-    fixedHeight: false,
-    width: 650,
-  };
-
   constructor(props: Props) {
     super(props);
     this.state = {
+      windowWidth: window.innerWidth,
       windowHeight: window.innerHeight,
     };
     this.subscription = null;
@@ -468,7 +455,8 @@ class Modal extends PureComponent<Props, State> {
       .subscribe((event) => {
         if (event.target) {
           const height = event.target['innerHeight'] as number;
-          this.setState({ windowHeight: height });
+          const width = event.target['innerWidth'] as number;
+          this.setState({ windowWidth: width, windowHeight: height });
         }
       });
   }
@@ -528,10 +516,9 @@ class Modal extends PureComponent<Props, State> {
   };
 
   render() {
-    const { windowHeight } = this.state;
+    const { windowHeight, windowWidth } = this.state;
     const {
-      windowSize,
-      width,
+      width = 650,
       children,
       opened,
       header,
@@ -542,12 +529,11 @@ class Modal extends PureComponent<Props, State> {
       fullScreen,
       zIndex,
       hideCloseButton,
+      fixedHeight = false,
     } = this.props;
-    const hasFixedHeight = this.props.fixedHeight;
-    const smallerThanSmallTablet = windowSize
-      ? windowSize <= viewportWidths.tablet
+    const smallerThanSmallTablet = windowWidth
+      ? windowWidth <= viewportWidths.tablet
       : false;
-    const modalPortalElement = document?.getElementById('modal-portal');
     let padding: string | undefined = undefined;
 
     if (header !== undefined || footer !== undefined) {
@@ -556,8 +542,8 @@ class Modal extends PureComponent<Props, State> {
       padding = this.props.padding;
     }
 
-    if (modalPortalElement && width) {
-      return createPortal(
+    if (width) {
+      return (
         <CSSTransition
           classNames="modal"
           in={opened}
@@ -580,9 +566,7 @@ class Modal extends PureComponent<Props, State> {
             <ModalContentContainerSwitch width={width} fullScreen={fullScreen}>
               <ModalContainer
                 fullScreen={fullScreen}
-                className={`modalcontent ${
-                  hasFixedHeight ? 'fixedHeight' : ''
-                }`}
+                className={`modalcontent ${fixedHeight ? 'fixedHeight' : ''}`}
                 onClickOutside={this.clickOutsideModal}
                 windowHeight={windowHeight}
                 ariaLabelledBy={header ? 'modal-header' : undefined}
@@ -598,7 +582,7 @@ class Modal extends PureComponent<Props, State> {
                         onClick={this.clickCloseButton}
                         iconColor={colors.textSecondary}
                         iconColorOnHover={'#000'}
-                        a11y_buttonActionMessage={messages.closeModal}
+                        a11y_buttonActionMessage={messages.closeWindow}
                       />
                     )}
 
@@ -642,7 +626,7 @@ class Modal extends PureComponent<Props, State> {
                           className="e2e-modal-close-button"
                           iconColor={colors.textSecondary}
                           iconColorOnHover={colors.black}
-                          a11y_buttonActionMessage={messages.closeModal}
+                          a11y_buttonActionMessage={messages.closeWindow}
                           onClick={this.clickCloseButton}
                         />
                       </Box>
@@ -665,8 +649,7 @@ class Modal extends PureComponent<Props, State> {
               </ModalContainer>
             </ModalContentContainerSwitch>
           </Overlay>
-        </CSSTransition>,
-        modalPortalElement
+        </CSSTransition>
       );
     }
 
@@ -674,12 +657,10 @@ class Modal extends PureComponent<Props, State> {
   }
 }
 
-const Data = adopt<DataProps, InputProps>({
-  windowSize: <GetWindowSize />,
-});
+export default (props: Props) => {
+  const modalPortalElement = document.getElementById('modal-portal');
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <Modal {...inputProps} {...dataProps} />}
-  </Data>
-);
+  return modalPortalElement
+    ? createPortal(<Modal {...props} />, modalPortalElement)
+    : null;
+};

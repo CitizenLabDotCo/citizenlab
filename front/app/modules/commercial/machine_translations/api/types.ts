@@ -1,4 +1,4 @@
-import { IRelationship, Locale } from 'typings';
+import { IRelationship, SupportedLocale } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -13,7 +13,7 @@ export interface IMachineTranslationData {
   type: string;
   attributes: {
     attribute_name: AttributeName;
-    locale_to: Locale;
+    locale_to: SupportedLocale;
     translation: string;
   };
   relationships: {
@@ -28,7 +28,7 @@ export interface IMachineTranslation {
 }
 
 type IMachineTranslationAttributes = {
-  locale_to?: Locale;
+  locale_to?: SupportedLocale;
   attribute_name: AttributeName;
 };
 

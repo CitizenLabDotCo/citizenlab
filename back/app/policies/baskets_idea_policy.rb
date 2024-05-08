@@ -19,18 +19,24 @@ class BasketsIdeaPolicy < ApplicationPolicy
   end
 
   def create?
-    BasketPolicy.new(user, record.basket).update?
+    modify_basket?
   end
 
   def update?
-    BasketPolicy.new(user, record.basket).update?
+    modify_basket?
   end
 
   def destroy?
-    BasketPolicy.new(user, record.basket).update?
+    modify_basket?
   end
 
   def upsert?
-    BasketPolicy.new(user, record.basket).update?
+    modify_basket?
+  end
+
+  private
+
+  def modify_basket?
+    !record.basket.submitted? && BasketPolicy.new(user, record.basket).update?
   end
 end

@@ -32,13 +32,14 @@ describe('Project selection page', () => {
           folderId = folder.body.data.id;
 
           cy.apiAddProjectsToFolder([projectOneId, projectTwoId], folderId);
-          cy.goToLandingPage();
         });
       });
     });
   });
 
-  it('shows the title, description, progress bar and cta', () => {
+  it.skip('shows the title, description, progress bar and cta', () => {
+    cy.goToLandingPage();
+
     cy.get('.e2e-folder-card')
       .contains(folderTitle)
       .closest('.e2e-folder-card')

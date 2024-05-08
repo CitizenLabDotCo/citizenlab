@@ -33,7 +33,7 @@ const CustomTooltip = ({ label, payload, resolution }: CustomTooltipProps) => {
   return (
     <TooltipOutline label={toFullMonth(label, resolution)}>
       <Box py="0px">
-        <FormattedMessage {...messages.activeUsers} />:{' '}
+        <FormattedMessage {...messages.participants} />:{' '}
         {payload[0].payload.activeUsers}
       </Box>
     </TooltipOutline>

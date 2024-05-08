@@ -142,7 +142,7 @@ const createAdminRoutes = () => {
       createAdminMessagingRoutes(),
       ideasRoutes(),
       projectFoldersRoutes(),
-      reportingRoutes(),
+      ...reportingRoutes(),
       toolsRoutes(),
       // This path is only reachable via URL.
       // It's a pragmatic solution to reduce workload

@@ -82,7 +82,6 @@ interface DataProps {
   microsoft_forms_enabled: boolean;
   survey_monkey_enabled: boolean;
   snap_survey_enabled: boolean;
-  isCustomInputTermEnabled: boolean;
 }
 
 export type ApiErrors = CLErrors | null | undefined;
@@ -463,7 +462,6 @@ class PhaseParticipationConfig extends PureComponent<
       survey_monkey_enabled,
       snap_survey_enabled,
       google_forms_enabled,
-      isCustomInputTermEnabled,
       intl: { formatMessage },
     } = this.props;
 
@@ -563,7 +561,6 @@ class PhaseParticipationConfig extends PureComponent<
               typeof posting_enabled === 'boolean' &&
               typeof commenting_enabled === 'boolean' && (
                 <IdeationInputs
-                  isCustomInputTermEnabled={isCustomInputTermEnabled}
                   input_term={input_term}
                   handleInputTermChange={this.handleInputTermChange}
                   posting_enabled={posting_enabled}
@@ -698,7 +695,6 @@ export default (inputProps: InputProps) => {
     microsoft_forms_enabled: useFeatureFlag({
       name: 'microsoft_forms_surveys',
     }),
-    isCustomInputTermEnabled: useFeatureFlag({ name: 'idea_custom_copy' }),
   };
 
   const intl = useIntl();

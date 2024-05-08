@@ -38,6 +38,7 @@ const ReactionControl = ({
         followersCount={initiative.data.attributes.followers_count}
         followerId={initiative.data.relationships.user_follower?.data?.id}
         buttonStyle="secondary"
+        toolTipType="input"
       />
     </BorderContainer>
   );

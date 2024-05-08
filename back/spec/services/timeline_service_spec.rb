@@ -285,6 +285,60 @@ describe TimelineService do
     end
   end
 
+  describe 'overlaps?' do
+    it 'returns false when a phase ends before the next starts' do
+      project = build(:project)
+
+      phase1 = build(:phase, project: project, start_at: (Time.now - 5.days), end_at: (Time.now + 2.days))
+      phase2 = build(:phase, project: project, start_at: (Time.now + 5.days), end_at: (Time.now + 12.days))
+      expect(service.overlaps?(phase1, phase2)).to be false
+      expect(service.overlaps?(phase2, phase1)).to be false
+    end
+
+    it 'returns true when a phase ends on the same date that next starts' do
+      project = build(:project)
+
+      phase1 = build(:phase, project: project, start_at: (Time.now - 5.days), end_at: (Time.now + 2.days))
+      phase2 = build(:phase, project: project, start_at: (Time.now + 2.days), end_at: (Time.now + 12.days))
+      expect(service.overlaps?(phase1, phase2)).to be true
+      expect(service.overlaps?(phase2, phase1)).to be true
+    end
+
+    it 'returns true when a phase ends in between start and end of the next phase' do
+      project = build(:project)
+
+      phase1 = build(:phase, project: project, start_at: (Time.now - 5.days), end_at: (Time.now + 5.days))
+      phase2 = build(:phase, project: project, start_at: (Time.now + 2.days), end_at: (Time.now + 12.days))
+      expect(service.overlaps?(phase1, phase2)).to be true
+      expect(service.overlaps?(phase2, phase1)).to be true
+    end
+
+    it 'returns true when a phase starts and ends inside the start-end period of the other phase' do
+      project = build(:project)
+
+      phase1 = build(:phase, project: project, start_at: (Time.now - 5.days), end_at: (Time.now + 12.days))
+      phase2 = build(:phase, project: project, start_at: (Time.now + 2.days), end_at: (Time.now + 5.days))
+      expect(service.overlaps?(phase1, phase2)).to be true
+      expect(service.overlaps?(phase2, phase1)).to be true
+    end
+
+    it 'returns false for a phase ending before a phase with no end date starts' do
+      project = build(:project)
+      phase1 = build(:phase, project: project, start_at: (Time.now + 5.days), end_at: nil)
+      phase2 = build(:phase, project: project, start_at: (Time.now - 2.days), end_at: (Time.now + 2.days))
+      expect(service.overlaps?(phase1, phase2)).to be false
+      expect(service.overlaps?(phase2, phase1)).to be false
+    end
+
+    it 'returns true for a phase ending after a phase with no end date starts' do
+      project = build(:project)
+      phase1 = build(:phase, project: project, start_at: (Time.now + 5.days), end_at: nil)
+      phase2 = build(:phase, project: project, start_at: (Time.now + 2.days), end_at: (Time.now + 12.days))
+      expect(service.overlaps?(phase1, phase2)).to be true
+      expect(service.overlaps?(phase2, phase1)).to be true
+    end
+  end
+
   describe 'phase_number' do
     it 'returns the phase number' do
       project = create(:project)

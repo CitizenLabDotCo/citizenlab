@@ -6,7 +6,7 @@ type ReportWidth = 'phone' | 'tablet' | 'desktop' | 'pdf';
 
 interface ReportContextBase {
   width: ReportWidth;
-  reportId: string;
+  reportId?: string;
   phaseId?: string;
 }
 

@@ -6,6 +6,7 @@
 #
 #  id                        :uuid             primary key
 #  dimension_user_id         :uuid
+#  participant_id            :text
 #  dimension_project_id      :uuid
 #  dimension_type_id         :uuid
 #  dimension_date_created_id :date

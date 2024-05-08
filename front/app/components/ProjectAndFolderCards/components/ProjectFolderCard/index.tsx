@@ -30,7 +30,7 @@ import Image from 'components/UI/Image';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -293,38 +293,6 @@ const ContentFooter = styled.div`
   }
 `;
 
-const ProjectMetaItems = styled.div`
-  height: 100%;
-  color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  display: flex;
-`;
-
-const MetaItem = styled.div`
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  cursor: pointer;
-  margin-left: 24px;
-
-  &.first {
-    margin-left: 0px;
-  }
-
-  ${media.phone`
-    margin-left: 20px;
-  `};
-`;
-
-const MetaItemText = styled.div`
-  color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: normal;
-  margin-left: 3px;
-`;
-
 const MapIcon = styled(Icon)`
   fill: ${({ theme }) => theme.colors.tenantSecondary};
   margin-right: 10px;
@@ -357,7 +325,6 @@ const ProjectFolderCard = memo<Props>(
       projectFolder?.data.relationships.admin_publication.data?.id || null
     );
     const theme = useTheme();
-    const { formatMessage } = useIntl();
 
     const handleProjectCardOnClick = useCallback(
       (projectFolderId: string) => () => {
@@ -382,8 +349,6 @@ const ProjectFolderCard = memo<Props>(
     }
 
     // Footer
-    const commentsCount = projectFolder?.data.attributes.comments_count;
-    const ideasCount = projectFolder?.data.attributes.ideas_count;
     const avatarIds =
       projectFolder?.data.relationships.avatars &&
       projectFolder?.data.relationships.avatars.data
@@ -391,11 +356,8 @@ const ProjectFolderCard = memo<Props>(
             (avatar) => avatar.id
           )
         : [];
-
-    const showIdeasCount = ideasCount ? ideasCount > 0 : false;
-    const showCommentsCount = commentsCount ? commentsCount > 0 : false;
     const showAvatarBubbles = avatarIds ? avatarIds.length > 0 : false;
-    const showFooter = showAvatarBubbles || showIdeasCount || showCommentsCount;
+    const showFooter = showAvatarBubbles;
 
     // Images
     const imageVersions = isNilOrError(projectFolderImages)
@@ -415,7 +377,7 @@ const ProjectFolderCard = memo<Props>(
     const contentHeader = (
       <ContentHeader className={`${size} hasContent`} hasLabel={isArchived}>
         {isArchived && (
-          <ContentHeaderLabel className="e2e-project-card-archived-label">
+          <ContentHeaderLabel>
             <FormattedMessage {...messages.archived} />
           </ContentHeaderLabel>
         )}
@@ -527,42 +489,6 @@ const ProjectFolderCard = memo<Props>(
                   />
                 )}
               </Box>
-
-              <Box h="100%" display="flex" alignItems="center">
-                <ProjectMetaItems>
-                  {showIdeasCount && ideasCount && (
-                    <MetaItem className="first">
-                      <Icon
-                        height="23px"
-                        width="23px"
-                        fill={theme.colors.tenantPrimary}
-                        ariaHidden
-                        name="idea"
-                      />
-                      <MetaItemText aria-hidden>{ideasCount}</MetaItemText>
-                      <ScreenReaderOnly>
-                        {formatMessage(messages.xInputs, { ideasCount })}
-                      </ScreenReaderOnly>
-                    </MetaItem>
-                  )}
-
-                  {showCommentsCount && commentsCount && (
-                    <MetaItem>
-                      <Icon
-                        height="23px"
-                        width="23px"
-                        fill={theme.colors.tenantPrimary}
-                        ariaHidden
-                        name="comments"
-                      />
-                      <MetaItemText aria-hidden>{commentsCount}</MetaItemText>
-                      <ScreenReaderOnly>
-                        {formatMessage(messages.xComments, { commentsCount })}
-                      </ScreenReaderOnly>
-                    </MetaItem>
-                  )}
-                </ProjectMetaItems>
-              </Box>
             </ContentFooter>
           </Box>
           {showFollowButton && (
@@ -575,6 +501,7 @@ const ProjectFolderCard = memo<Props>(
                   projectFolder.data.relationships.user_follower?.data?.id
                 }
                 w="100%"
+                toolTipType="projectOrFolder"
               />
             </Box>
           )}

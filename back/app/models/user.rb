@@ -17,7 +17,6 @@
 #  last_name                           :string
 #  locale                              :string
 #  bio_multiloc                        :jsonb
-#  cl1_migrated                        :boolean          default(FALSE)
 #  invite_status                       :string
 #  custom_field_values                 :jsonb
 #  registration_completed_at           :datetime
@@ -58,11 +57,16 @@ class User < ApplicationRecord
   EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   EMAIL_DOMAIN_BLACKLIST = Rails.root.join('config', 'domain_blacklist.txt').readlines.map(&:strip).freeze
 
+  slug from: proc { |user| UserSlugService.new.generate_slug(user, user.full_name) }, if: proc { |user| !user.invite_pending? }
+
   class << self
     # Asynchronously deletes all users in a specified scope with associated side effects.
     # By default, this method deletes all users on the platform.
     def destroy_all_async(scope = User)
-      scope.pluck(:id).each { |id| DeleteUserJob.perform_later(id) }
+      scope.pluck(:id).each.with_index do |id, idx|
+        # Spread out the deletion of users to avoid throttling.
+        DeleteUserJob.set(wait: (idx / 5.0).seconds).perform_later(id)
+      end
     end
 
     def roles_json_schema
@@ -145,16 +149,16 @@ class User < ApplicationRecord
     where(id: joins(:follows).where(follows: follows))
   end)
 
-  has_many :ideas, foreign_key: :author_id, dependent: :nullify
+  has_many :ideas, -> { order(:project_id) }, foreign_key: :author_id, dependent: :nullify
   has_many :initiatives, foreign_key: :author_id, dependent: :nullify
   has_many :assigned_initiatives, class_name: 'Initiative', foreign_key: :assignee_id, dependent: :nullify
   has_many :comments, foreign_key: :author_id, dependent: :nullify
   has_many :internal_comments, foreign_key: :author_id, dependent: :nullify
   has_many :official_feedbacks, dependent: :nullify
   has_many :reactions, dependent: :nullify
-  has_many :event_attendances, class_name: 'Events::Attendance', foreign_key: :attendee_id, dependent: :destroy
+  has_many :event_attendances, -> { order(:event_id) }, class_name: 'Events::Attendance', foreign_key: :attendee_id, dependent: :destroy
   has_many :attended_events, through: :event_attendances, source: :event
-  has_many :follows, class_name: 'Follower', dependent: :destroy
+  has_many :follows, -> { order(:followable_id) }, class_name: 'Follower', dependent: :destroy
   has_many :cosponsors_initiatives, dependent: :destroy
 
   after_initialize do
@@ -165,8 +169,6 @@ class User < ApplicationRecord
 
   attr_reader :highest_role_after_initialize
 
-  before_validation :set_cl1_migrated, on: :create
-  before_validation :generate_slug
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :assign_email_or_phone, if: :email_changed?
   with_options if: -> { user_confirmation_enabled? } do
@@ -183,7 +185,7 @@ class User < ApplicationRecord
   has_many :memberships, dependent: :destroy
   has_many :manual_groups, class_name: 'Group', source: 'group', through: :memberships
   has_many :campaign_email_commands, class_name: 'EmailCampaigns::CampaignEmailCommand', foreign_key: :recipient_id, dependent: :destroy
-  has_many :baskets
+  has_many :baskets, -> { order(:phase_id) }
   before_destroy :destroy_baskets
   has_many :initiative_status_changes, dependent: :nullify
 
@@ -193,7 +195,6 @@ class User < ApplicationRecord
   validates :email, presence: true, if: :requires_email?
   validates :locale, presence: true, unless: :invite_pending?
   validates :email, uniqueness: true, allow_nil: true
-  validates :slug, uniqueness: true, presence: true, unless: :invite_pending?
   validates :email, format: { with: EMAIL_REGEX }, allow_nil: true
   validates :new_email, format: { with: EMAIL_REGEX }, allow_nil: true
   validates :locale, inclusion: { in: proc { AppConfiguration.instance.settings('core', 'locales') } }
@@ -449,11 +450,8 @@ class User < ApplicationRecord
     if no_password?
       # Allow authentication without password - but only if confirmation is required on the user
       unencrypted_password.empty? && confirmation_required? ? self : false
-    elsif cl1_authenticate(unencrypted_password)
-      self.password_digest = BCrypt::Password.create(unencrypted_password)
-      self
     else
-      original_authenticate(unencrypted_password) && self
+      BCrypt::Password.new(password_digest).is_password?(unencrypted_password) && self
     end
   end
 
@@ -483,7 +481,7 @@ class User < ApplicationRecord
   end
 
   def blank_and_can_be_deleted?
-    # atm it can be true only for users registered with ClaveUnica who haven't entered email
+    # atm it can be true only for users registered with ClaveUnica and MitID who haven't entered email
     sso? && email.blank? && new_email.blank? && password_digest.blank? && identity_ids.count == 1
   end
 
@@ -598,9 +596,9 @@ class User < ApplicationRecord
     return unless persisted? && (new_email_changed? || email_changed?)
 
     # no_password? - here it's only for light registration
-    # confirmation_required? - it's always false for SSO providers that return email (all except ClaveUnica)
-    # !sso? - exclude ClaveUnica registrations (no email)
-    if no_password? && confirmation_required? && !sso?
+    # confirmation_required? - it's always false for SSO providers that return email (all except ClaveUnica and MitID)
+    # !sso? - exclude ClaveUnica and MitID registrations (no email)
+    if no_password? && confirmation_required? && !sso? && email_was.present?
       # Avoid security hole where passwordless user can change when they are authenticated without confirmation
       errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - user not active'
     elsif user_confirmation_enabled? && active? && email_changed? && !email_changed?(to: new_email_was) && email_was.present?
@@ -620,12 +618,6 @@ class User < ApplicationRecord
     self.registration_completed_at ||= Time.now
   end
 
-  def generate_slug
-    return if slug.present?
-
-    self.slug = UserSlugService.new.generate_slug(self, full_name) unless invite_pending?
-  end
-
   def sanitize_bio_multiloc
     service = SanitizationService.new
     self.bio_multiloc = service.sanitize_multiloc(
@@ -634,18 +626,6 @@ class User < ApplicationRecord
     )
     self.bio_multiloc = service.remove_multiloc_empty_trailing_tags(bio_multiloc)
     self.bio_multiloc = service.linkify_multiloc(bio_multiloc)
-  end
-
-  def set_cl1_migrated
-    self.cl1_migrated ||= false
-  end
-
-  def original_authenticate(unencrypted_password)
-    BCrypt::Password.new(password_digest).is_password?(unencrypted_password)
-  end
-
-  def cl1_authenticate(unencrypted_password)
-    original_authenticate(::Digest::SHA256.hexdigest(unencrypted_password))
   end
 
   def validate_email_domains_blacklist
@@ -717,6 +697,7 @@ class User < ApplicationRecord
 end
 
 User.include(IdeaAssignment::Extensions::User)
+User.include(ReportBuilder::Patches::User)
 User.include(Verification::Patches::User)
 
 User.prepend(MultiTenancy::Patches::User)

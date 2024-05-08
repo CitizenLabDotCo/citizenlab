@@ -30,8 +30,9 @@ module IdeaCustomFields
 
     def index
       authorize CustomField.new(resource: @custom_form), :index?, policy_class: IdeaCustomFieldPolicy
-      fields = IdeaCustomFieldsService.new(@custom_form).all_fields
+      service = IdeaCustomFieldsService.new(@custom_form)
 
+      fields = params[:copy] == 'true' ? service.duplicate_all_fields : service.all_fields
       fields = fields.filter(&:support_free_text_value?) if params[:support_free_text_value].present?
 
       render json: ::WebApi::V1::CustomFieldSerializer.new(

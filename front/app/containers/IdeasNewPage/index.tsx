@@ -32,7 +32,7 @@ const NewIdeaPage = () => {
   const {
     data: project,
     status: projectStatus,
-    error,
+    error: projectError,
   } = useProjectBySlug(slug);
   const { data: authUser } = useAuthUser();
   const { data: phases, status: phasesStatus } = usePhases(project?.data.id);
@@ -48,8 +48,8 @@ const NewIdeaPage = () => {
     );
   }
 
-  if (status === 'error') {
-    if (isUnauthorizedRQ(error)) {
+  if (projectStatus === 'error') {
+    if (isUnauthorizedRQ(projectError)) {
       return <Unauthorized />;
     }
 

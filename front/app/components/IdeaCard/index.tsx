@@ -188,6 +188,7 @@ const IdeaCard = ({
                 followersCount={idea.data.attributes.followers_count}
                 followerId={idea.data.relationships.user_follower?.data?.id}
                 w="auto"
+                toolTipType="input"
               />
             </Box>
           )}

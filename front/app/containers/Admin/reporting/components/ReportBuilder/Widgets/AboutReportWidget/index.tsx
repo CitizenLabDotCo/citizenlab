@@ -41,7 +41,7 @@ const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
   const { data: report } = useReport(reportId);
 
   // Project mod
-  const userId = report?.data.relationships.owner.data.id;
+  const userId = report?.data.relationships.owner?.data.id;
   const { data: user } = useUserById(userId);
   const projectModerator = !user ? null : getFullName(user.data);
 

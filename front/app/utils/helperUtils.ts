@@ -1,5 +1,5 @@
 import { trim, isUndefined } from 'lodash-es';
-import { Locale, Multiloc, GraphqlLocale } from 'typings';
+import { SupportedLocale, Multiloc, GraphqlLocale } from 'typings';
 
 import { locales } from 'containers/App/constants';
 
@@ -135,7 +135,7 @@ export function stripHtmlTags(str: string | null | undefined) {
 }
 
 // e.g. 'en-GB' -> 'enGb'
-export function convertToGraphqlLocale(locale: Locale) {
+export function convertToGraphqlLocale(locale: SupportedLocale) {
   const newLocale = locale.replace('-', '');
   const length = newLocale.length - 1;
   return (newLocale.substring(0, length) +

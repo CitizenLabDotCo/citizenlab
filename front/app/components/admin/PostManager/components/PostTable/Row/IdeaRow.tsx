@@ -4,7 +4,7 @@ import { Box, colors, Td, Badge } from '@citizenlab/cl2-component-library';
 import { uniq, isEmpty } from 'lodash-es';
 import { useDrag } from 'react-dnd';
 import { Icon } from 'semantic-ui-react';
-import { CellConfiguration, Locale, Override } from 'typings';
+import { CellConfiguration, SupportedLocale, Override } from 'typings';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IIdeaData } from 'api/ideas/types';
@@ -49,7 +49,7 @@ type Props = {
   className?: string;
   onClickCheckbox: (event) => void;
   onClickTitle: (event: MouseEvent) => void;
-  locale: Locale;
+  locale: SupportedLocale;
 };
 
 export type IdeaCellComponentProps = {

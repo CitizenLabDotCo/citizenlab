@@ -8,7 +8,7 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
     Tenant.find_by(host: host)&.destroy!
 
     settings = SettingsService.new.minimal_required_settings(
-      locales: (args[:locales]&.split(';')&.map(&:strip) || %w[en nl-BE nl-NL fr-BE]),
+      locales: args[:locales]&.split(';')&.map(&:strip) || %w[en nl-BE nl-NL fr-BE],
       lifecycle_stage: 'not_applicable'
     ).deep_merge(
       {
@@ -42,10 +42,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: true,
           allowed: true
         },
-        private_projects: {
-          enabled: true,
-          allowed: true
-        },
         user_confirmation: {
           enabled: true,
           allowed: true
@@ -70,19 +66,7 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: true,
           allowed: true
         },
-        initiativeflow_social_sharing: {
-          enabled: true,
-          allowed: true
-        },
         idea_author_change: {
-          enabled: true,
-          allowed: true
-        },
-        idea_custom_copy: {
-          enabled: true,
-          allowed: true
-        },
-        project_reports: {
           enabled: true,
           allowed: true
         },
@@ -91,14 +75,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           allowed: true
         },
         widgets: {
-          enabled: true,
-          allowed: true
-        },
-        manual_emailing: {
-          enabled: true,
-          allowed: true
-        },
-        automated_emailing_control: {
           enabled: true,
           allowed: true
         },
@@ -271,10 +247,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: true,
           allowed: true
         },
-        volunteering: {
-          enabled: true,
-          allowed: true
-        },
         project_description_builder: {
           enabled: true,
           allowed: true
@@ -378,11 +350,11 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: true,
           allowed: true
         },
-        phase_reports: {
+        report_data_grouping: {
           enabled: true,
           allowed: true
         },
-        report_data_grouping: {
+        multi_language_platform: {
           enabled: true,
           allowed: true
         }

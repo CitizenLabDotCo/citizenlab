@@ -176,6 +176,36 @@ RSpec.describe Analysis::AutoTaggingTask do
       expect(other_tag).not_to be_present
       expect(ideas.map(&:tags)).to match_array [[bananas_tag], []]
     end
+
+    describe '#fit_inputs_in_context_window' do
+      it 'recudes the inputs to fit in the context window' do
+        stubbed_context_window = 1000
+        expect_any_instance_of(Analysis::LLM::GPT4Turbo)
+          .to receive(:context_window)
+          .at_least(:once)
+          .and_return(stubbed_context_window)
+
+        project = create(:single_phase_ideation_project)
+        custom_form = create(:custom_form, :with_default_fields, participation_context: project)
+        analysis = create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)
+        task = create(:auto_tagging_task, analysis: analysis, auto_tagging_method: 'nlp_topic')
+        model = Analysis::AutoTaggingMethod::NLPTopic.new(task)
+
+        # Take token size of the prompt with one input + one returned topic
+        ideas = [create(:idea, project: project)]
+        min_size = Analysis::LLM::AzureOpenAI.token_count(model.send(:inputs_prompt, ideas, project.title_multiloc.values.first)) + Analysis::AutoTaggingMethod::NLPTopic::TOKENS_PER_TOPIC
+
+        # Check how many more inputs can fit and triple that amount
+        remaining_tokens = stubbed_context_window - min_size
+        tokens_per_input = Analysis::LLM::AzureOpenAI.token_count(Analysis::InputToText.new(analysis.associated_custom_fields).format_all(ideas))
+        fit_ideas_count = (remaining_tokens / tokens_per_input.to_f).ceil
+        ideas += create_list(:idea, (fit_ideas_count * 3), project: project)
+
+        # The remaining inputs should be somewhere between half the inputs that can fit and half the tripled inputs
+        filtered_ideas = model.send(:fit_inputs_in_context_window, ideas, project.title_multiloc.values.first)
+        expect(filtered_ideas.size).to be_between((fit_ideas_count / 2), (ideas.size / 2))
+      end
+    end
   end
 
   describe 'LabelClassification auto_tagging' do
@@ -224,6 +254,20 @@ RSpec.describe Analysis::AutoTaggingTask do
         state: 'failed',
         progress: nil
       })
+    end
+
+    it 'includes the topics field for ideation' do
+      topic = create(:topic, title_multiloc: { 'en' => 'Bananas' })
+      project = create(:single_phase_ideation_project)
+      custom_form = create(:custom_form, :with_default_fields, participation_context: project)
+      analysis = create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)
+      tags = create_list(:tag, 3, analysis: analysis)
+      task = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'label_classification', tags_ids: [tags[0].id, tags[1].id])
+      create(:idea, project: project, topics: [topic])
+
+      expect_any_instance_of(Analysis::AutoTaggingMethod::Base)
+        .to receive(:classify_input_text).with(/Bananas/, anything).and_return(tags.first.name)
+      task.execute
     end
   end
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { Box, LocaleSwitcher, colors } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
@@ -30,12 +30,14 @@ const AdminInitiativeEdit = ({ goBack, initiativeId }: Props) => {
   const theme = useTheme();
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
-  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
+  const [selectedLocale, setSelectedLocale] = useState<SupportedLocale | null>(
+    null
+  );
   const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: initiativeImages } = useInitiativeImages(initiativeId);
 
-  const onLocaleChange = (locale: Locale) => {
+  const onLocaleChange = (locale: SupportedLocale) => {
     setSelectedLocale(locale);
   };
 

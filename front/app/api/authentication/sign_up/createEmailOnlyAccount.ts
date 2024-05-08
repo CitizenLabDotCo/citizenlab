@@ -1,4 +1,4 @@
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import { IUser } from 'api/users/types';
 
@@ -26,7 +26,7 @@ const emailIsTaken = async (response: Response) => {
 
 export interface Parameters {
   email: string;
-  locale: Locale;
+  locale: SupportedLocale;
 }
 
 export default async function createEmailOnlyAccount({

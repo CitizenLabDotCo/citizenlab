@@ -74,6 +74,7 @@ module ReportBuilder
     end
 
     alias create? write?
+    alias copy? write?
     alias update? write?
     alias destroy? write?
 

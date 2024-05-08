@@ -8,7 +8,7 @@ import {
   Label,
 } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
-import { Locale, Multiloc } from 'typings';
+import { SupportedLocale, Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -31,7 +31,7 @@ interface Props {
   hasError: boolean;
   errorType?: string;
   title?: Multiloc;
-  selectedLocale: Locale;
+  selectedLocale: SupportedLocale;
 }
 
 const Iframe = ({ url, height, hasError, title }: Props) => {

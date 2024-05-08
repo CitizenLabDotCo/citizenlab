@@ -4,5 +4,4 @@ export default {
   useTemplateButtonClicked:
     "Project template card 'Use template' button clicked",
   useTemplateModalClosed: 'Use templatye modal closed',
-  createdProject: 'Created a new project',
 };

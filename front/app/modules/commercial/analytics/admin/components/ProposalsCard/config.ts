@@ -72,11 +72,10 @@ export const proposalsConfig: StatCardConfig = {
       endMoment: Moment | null,
       successful = false
     ): QuerySchema => {
-      const successStatus = () => {
-        return successful
-          ? { 'dimension_status.code': 'threshold_reached' }
-          : {};
-      };
+      const successStatus = successful
+        ? { 'dimension_status.code': 'threshold_reached' }
+        : {};
+
       return {
         fact: 'post',
         aggregations: {
@@ -102,6 +101,7 @@ export const proposalsConfig: StatCardConfig = {
       endAtMoment,
       true
     );
+
     const querySuccessfulLastPeriod: QuerySchema = queryBase(
       lastPeriodMoment,
       todayMoment,

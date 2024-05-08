@@ -1,13 +1,12 @@
 import React, { memo, useEffect } from 'react';
 
 import { colors, media } from '@citizenlab/cl2-component-library';
-import { Outlet as RouterOutlet } from 'react-router-dom';
+import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 
 import clHistory from 'utils/cl-router/history';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { usePermission } from 'utils/permissions';
 import { isAdmin, isModerator } from 'utils/permissions/roles';
 
@@ -85,75 +84,72 @@ type Props = {
   className?: string;
 };
 
-const AdminPage = memo<Props & WithRouterProps>(
-  ({ className, location: { pathname } }) => {
-    const { data: authUser } = useAuthUser();
+const AdminPage = memo<Props>(({ className }) => {
+  const { data: authUser } = useAuthUser();
+  const { pathname } = useLocation();
 
-    // The check in front/app/containers/Admin/routes.tsx already should do the same.
-    // TODO: double check it and remove `userCanViewAdmin`
-    const userCanViewPath = usePermission({
-      // If we're in this component, we're sure
-      // that the path is an admin path
-      item: { type: 'route', path: pathname },
-      action: 'access',
-    });
+  // The check in front/app/containers/Admin/routes.tsx already should do the same.
+  // TODO: double check it and remove `userCanViewAdmin`
+  const userCanViewPath = usePermission({
+    // If we're in this component, we're sure
+    // that the path is an admin path
+    item: { type: 'route', path: pathname },
+    action: 'access',
+  });
 
-    useEffect(() => {
-      if (authUser === null || (authUser !== undefined && !userCanViewPath)) {
-        clHistory.push('/');
-      }
-
-      if (pathname.endsWith('/admin') || pathname.endsWith('/admin/')) {
-        if (isAdmin(authUser)) {
-          clHistory.push('/admin/dashboard/overview');
-        }
-
-        if (isModerator(authUser)) {
-          clHistory.push('/admin/projects');
-        }
-      }
-    }, [authUser, userCanViewPath, pathname]);
-
-    if (!userCanViewPath) {
-      return null;
+  useEffect(() => {
+    if (authUser === null || (authUser !== undefined && !userCanViewPath)) {
+      clHistory.push('/');
     }
-    const isFoldersPage = pathname.match(
-      /admin\/projects\/folders\/[a-f0-9-]+(\/(?!projects(?:\/|$))[\w-]+)*/
-    );
-    const isProjectPage =
-      pathname.match(
-        /admin\/projects\/[a-f0-9-]+(\/(?!projects(?:\/|$))[\w-]+)*/
-      ) && !isFoldersPage;
 
-    const noPadding =
-      pathname.includes('admin/dashboard') ||
-      pathname.includes('admin/initiatives') ||
-      pathname.includes('admin/messaging') ||
-      pathname.includes('admin/settings') ||
-      pathname.includes('admin/ideas') ||
-      pathname.includes('admin/reporting') ||
-      isProjectPage;
+    if (pathname.endsWith('/admin') || pathname.endsWith('/admin/')) {
+      if (isAdmin(authUser)) {
+        clHistory.push('/admin/dashboard/overview');
+      }
 
-    const fullWidth =
-      pathname.includes('admin/dashboard') ||
-      pathname.includes('admin/initiatives') ||
-      pathname.includes('admin/messaging') ||
-      pathname.includes('admin/settings') ||
-      pathname.includes('admin/ideas') ||
-      pathname.includes('admin/reporting') ||
-      isProjectPage;
+      if (isModerator(authUser)) {
+        clHistory.push('/admin/projects');
+      }
+    }
+  }, [authUser, userCanViewPath, pathname]);
 
-    return (
-      <Container className={className}>
-        <Sidebar />
-        <RightColumn
-          className={`${fullWidth && 'fullWidth'} ${noPadding && 'noPadding'}`}
-        >
-          <RouterOutlet />
-        </RightColumn>
-      </Container>
-    );
+  if (!userCanViewPath) {
+    return null;
   }
-);
+  const isFoldersPage = pathname.match(
+    /admin\/projects\/folders\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(\/(?!projects(?:\/|$))[\w-]+)*/
+  );
+  const isProjectPage =
+    pathname.match(
+      /admin\/projects\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(\/(?!projects(?:\/|$))[\w-]+)*/
+    ) && !isFoldersPage;
 
-export default withRouter(AdminPage);
+  const noPadding =
+    pathname.includes('admin/dashboard') ||
+    pathname.includes('admin/initiatives') ||
+    pathname.includes('admin/messaging') ||
+    pathname.includes('admin/settings') ||
+    pathname.includes('admin/ideas') ||
+    isProjectPage;
+
+  const fullWidth =
+    pathname.includes('admin/dashboard') ||
+    pathname.includes('admin/initiatives') ||
+    pathname.includes('admin/messaging') ||
+    pathname.includes('admin/settings') ||
+    pathname.includes('admin/ideas') ||
+    isProjectPage;
+
+  return (
+    <Container className={className}>
+      <Sidebar />
+      <RightColumn
+        className={`${fullWidth && 'fullWidth'} ${noPadding && 'noPadding'}`}
+      >
+        <RouterOutlet />
+      </RightColumn>
+    </Container>
+  );
+});
+
+export default AdminPage;

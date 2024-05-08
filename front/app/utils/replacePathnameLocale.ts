@@ -1,4 +1,4 @@
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 /*  @param pathname: a string representing a pathname, with a first part we want to replace
  *     starting and/or finishing and/or not starting and/or not finishing with '/'
  *     ie resembling (/|''){gottaGo}( /{aValidRoute} | (/|'') )
@@ -9,7 +9,7 @@ import { Locale } from 'typings';
  */
 export function replacePathnameLocale(
   pathname: string,
-  locale: Locale,
+  locale: SupportedLocale,
   search?: string
 ) {
   // strips beginning and ending '/', breaks down the string at '/'

@@ -24,10 +24,6 @@ declare module 'components/ConsentManager/destinations' {
   export interface IDestinationMap {
     matomo: 'matomo';
   }
-
-  interface IConsentManagerFeatureMap {
-    matomo: 'matomo';
-  }
 }
 
 const destinationConfig: IDestinationConfig = {

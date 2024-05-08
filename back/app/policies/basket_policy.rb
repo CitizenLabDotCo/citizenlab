@@ -4,7 +4,8 @@ class BasketPolicy < ApplicationPolicy
   def create?
     user&.active? &&
       (record.user_id == user.id) &&
-      ProjectPolicy.new(user, record.phase&.project).show? &&
+      record.phase &&
+      ProjectPolicy.new(user, record.phase.project).show? &&
       check_voting_allowed(record, user)
   end
 

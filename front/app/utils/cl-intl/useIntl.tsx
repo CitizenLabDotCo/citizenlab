@@ -6,7 +6,7 @@ import {
   MessageDescriptor,
   IntlShape,
 } from 'react-intl';
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import { IAppConfiguration } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -22,7 +22,7 @@ export type FormatMessageValues =
 export const handleFormatMessage = (
   intl: IntlShape,
   appConfig: IAppConfiguration | undefined,
-  locale: Locale | undefined,
+  locale: SupportedLocale | undefined,
   messageDescriptor: MessageDescriptor,
   values?: FormatMessageValues
 ) => {
@@ -46,7 +46,7 @@ export const handleFormatMessage = (
 
 const useIntl = () => {
   const intl = useOriginalUseIntl();
-  const [locale, setLocale] = useState<Locale | undefined>(undefined);
+  const [locale, setLocale] = useState<SupportedLocale | undefined>(undefined);
 
   useEffect(() => {
     const subscription = localeStream().observable.subscribe((locale) => {

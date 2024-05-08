@@ -9,8 +9,6 @@ import usePhases from 'api/phases/usePhases';
 import { getInputTerm } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import Modal from 'components/UI/Modal';
 
@@ -86,10 +84,6 @@ const Container = ({
   const [newIdeaId, setNewIdeaId] = useState<string | null>(null);
   const timeout = useRef<NodeJS.Timeout>();
 
-  const ideaflowSocialSharingIsEnabled = useFeatureFlag({
-    name: 'ideaflow_social_sharing',
-  });
-
   useEffect(() => {
     if (isString(ideaIdParameter)) {
       timeout.current = setTimeout(() => {
@@ -136,32 +130,30 @@ const Container = ({
           {children}
         </Main>
       </CSSTransition>
-      {ideaflowSocialSharingIsEnabled && (
-        <Modal
-          opened={!!newIdeaId}
-          close={closeIdeaSocialSharingModal}
-          hasSkipButton={true}
-          skipText={<>{formatMessage(messages.skipSharing)}</>}
-        >
-          {newIdeaId && (
-            <SharingModalContent
-              postType="idea"
-              postId={newIdeaId}
-              title={formatMessage(
-                getInputTermMessage(inputTerm, {
-                  idea: messages.sharingModalTitle,
-                  option: messages.optionSharingModalTitle,
-                  project: messages.projectSharingModalTitle,
-                  question: messages.questionSharingModalTitle,
-                  issue: messages.issueSharingModalTitle,
-                  contribution: messages.contributionSharingModalTitle,
-                })
-              )}
-              subtitle={formatMessage(messages.sharingModalSubtitle)}
-            />
-          )}
-        </Modal>
-      )}
+      <Modal
+        opened={!!newIdeaId}
+        close={closeIdeaSocialSharingModal}
+        hasSkipButton={true}
+        skipText={<>{formatMessage(messages.skipSharing)}</>}
+      >
+        {newIdeaId && (
+          <SharingModalContent
+            postType="idea"
+            postId={newIdeaId}
+            title={formatMessage(
+              getInputTermMessage(inputTerm, {
+                idea: messages.sharingModalTitle,
+                option: messages.optionSharingModalTitle,
+                project: messages.projectSharingModalTitle,
+                question: messages.questionSharingModalTitle,
+                issue: messages.issueSharingModalTitle,
+                contribution: messages.contributionSharingModalTitle,
+              })
+            )}
+            subtitle={formatMessage(messages.sharingModalSubtitle)}
+          />
+        )}
+      </Modal>
     </>
   );
 };

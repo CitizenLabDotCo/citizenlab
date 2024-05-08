@@ -111,9 +111,6 @@ describe('Idea edit page', () => {
     // verify updated idea page
     cy.location('pathname').should('eq', `/en/ideas/${ideaSlug}`);
 
-    cy.intercept(`**/ideas/by_slug/${ideaSlug}`).as('ideaRequest');
-    cy.wait('@ideaRequest');
-
     cy.get('#e2e-idea-show');
     cy.get('#e2e-idea-show #e2e-idea-title').contains(newIdeaTitle);
     cy.get('#e2e-idea-show #e2e-idea-description').contains(newIdeaContent);

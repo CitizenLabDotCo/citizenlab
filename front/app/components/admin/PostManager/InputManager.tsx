@@ -1,4 +1,4 @@
-import React, { ChangeEvent, Suspense, lazy, useEffect, useState } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -14,6 +14,7 @@ import { IProjectData } from 'api/projects/types';
 import useTopics from 'api/topics/useTopics';
 
 import Outlet from 'components/Outlet';
+import SearchInput from 'components/UI/SearchInput';
 
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { isNilOrError } from 'utils/helperUtils';
@@ -24,7 +25,7 @@ import FilterSidebar from './components/FilterSidebar';
 import IdeasCount from './components/IdeasCount';
 import InfoSidebar from './components/InfoSidebar';
 import PostTable from './components/PostTable';
-import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
+import IdeaFeedbackToggle from './components/TopLevelFilters/IdeaFeedbackToggle';
 
 import {
   LeftColumn,
@@ -33,7 +34,6 @@ import {
   PreviewMode,
   Sticky,
   StyledExportMenu,
-  StyledInput,
   ThreeColumns,
   TopActionBar,
 } from '.';
@@ -188,7 +188,7 @@ const InputManager = ({
     setQueryParameters({ ...queryParameters, 'page[number]': 1, topics });
   };
 
-  const onChangeStatus = (ideaStatus: string | null) => {
+  const onChangeStatus = (ideaStatus: string | undefined) => {
     setQueryParameters({
       ...queryParameters,
       'page[number]': 1,
@@ -200,7 +200,7 @@ const InputManager = ({
     setQueryParameters({ ...queryParameters, 'page[number]': 1, assignee });
   };
 
-  const onChangeFeedbackFilter = (feedbackNeeded: boolean) => {
+  const onChangeFeedbackFilter = (feedbackNeeded: boolean | undefined) => {
     setQueryParameters({
       ...queryParameters,
       'page[number]': 1,
@@ -240,11 +240,11 @@ const InputManager = ({
     setQueryParameters({ ...queryParameters, 'page[number]': pageNumber });
   };
 
-  const onChangeSearchTerm = (event: ChangeEvent<HTMLInputElement>) => {
+  const onChangeSearchTerm = (value: string | null) => {
     setQueryParameters({
       ...queryParameters,
       'page[number]': 1,
-      search: event.target.value,
+      search: value || undefined,
     });
   };
 
@@ -254,33 +254,24 @@ const InputManager = ({
 
   const currentPage = getPageNumberFromUrl(ideas.links.self);
   const lastPage = getPageNumberFromUrl(ideas.links.last);
-  const selectedTopics = queryParameters.topics;
-  const selectedAssignee = queryParameters.assignee;
-  const feedbackNeeded = queryParameters.feedback_needed || false;
   const selectedProjectId = getSelectedProject();
   const selectedPhaseId = queryParameters.phase;
-  const selectedStatus = queryParameters.idea_status;
 
   return (
     <>
       <TopActionBar>
         <Outlet
           id="app.components.admin.PostManager.topActionBar"
-          assignee={selectedAssignee}
+          assignee={queryParameters.assignee}
           projectId={type === 'ProjectIdeas' ? projectId : null}
           handleAssigneeFilterChange={onChangeAssignee}
           type={type}
         />
-        <FeedbackToggle
-          type={type}
-          value={feedbackNeeded}
+        <IdeaFeedbackToggle
+          value={queryParameters.feedback_needed || false}
           onChange={onChangeFeedbackFilter}
           project={selectedProjectId}
-          phase={selectedPhaseId}
-          topics={selectedTopics}
-          status={selectedStatus}
-          assignee={selectedAssignee}
-          searchTerm={queryParameters.search}
+          queryParameters={queryParameters}
         />
         <StyledExportMenu
           type={type}
@@ -300,17 +291,14 @@ const InputManager = ({
         </LeftColumn>
         <MiddleColumnTop>
           <IdeasCount
-            feedbackNeeded={
-              feedbackNeeded === true ? feedbackNeeded : undefined
-            }
             project={selectedProjectId}
-            phase={selectedPhaseId ?? undefined}
-            topics={selectedTopics ?? undefined}
-            ideaStatusId={selectedStatus ?? undefined}
-            search={queryParameters.search}
-            assignee={selectedAssignee ?? undefined}
+            queryParameters={queryParameters}
           />
-          <StyledInput icon="search" onChange={onChangeSearchTerm} />
+          <SearchInput
+            debounce={1500}
+            onChange={onChangeSearchTerm}
+            a11y_numberOfSearchResults={ideas?.data.length}
+          />
         </MiddleColumnTop>
       </ThreeColumns>
       <ThreeColumns>
@@ -326,8 +314,8 @@ const InputManager = ({
               statuses={ideaStatuses?.data ?? []}
               topics={topicsData}
               selectedPhase={selectedPhaseId}
-              selectedTopics={selectedTopics}
-              selectedStatus={selectedStatus}
+              selectedTopics={queryParameters.topics}
+              selectedStatus={queryParameters.idea_status}
               selectedProject={selectedProjectId}
               onChangePhaseFilter={onChangePhase}
               onChangeTopicsFilter={onChangeTopics}

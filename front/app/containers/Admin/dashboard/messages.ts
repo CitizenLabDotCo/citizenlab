@@ -110,13 +110,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.usersByTimeTitle',
     defaultMessage: 'Users',
   },
-  activeUsers: {
-    id: 'app.containers.AdminPage.DashboardPage.activeUsers',
-    defaultMessage: 'Active users',
-  },
-  activeUsersByTimeTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.activeUsersByTimeTitle',
-    defaultMessage: 'Active users',
+  participants: {
+    id: 'app.containers.AdminPage.DashboardPage.participants',
+    defaultMessage: 'Participants',
   },
   numberOfActiveParticipantsDescription: {
     id: 'app.containers.AdminPage.DashboardPage.numberOfActiveParticipantsDescription2',
@@ -220,10 +216,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.false',
     defaultMessage: 'false',
   },
-  otherArea: {
-    id: 'app.containers.AdminPage.DashboardPage.otherArea',
-    defaultMessage: 'Other',
-  },
   mostActiveUsersRankingDescription: {
     id: 'app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription2',
     defaultMessage:
@@ -237,10 +229,6 @@ export default defineMessages({
   titleDashboard: {
     id: 'app.containers.AdminPage.DashboardPage.titleDashboard',
     defaultMessage: 'Dashboard',
-  },
-  participants: {
-    id: 'app.containers.AdminPage.DashboardPage.Report.participants',
-    defaultMessage: 'participants',
   },
   totalUsers: {
     id: 'app.containers.AdminPage.DashboardPage.Report.totalUsers',

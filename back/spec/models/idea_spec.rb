@@ -489,6 +489,15 @@ RSpec.describe Idea do
       create(:reaction, reactable: old_idea, updated_at: 1.day.ago)
       expect(recent_ideas).to include old_idea
     end
+
+    it 'does not return duplicates' do
+      create(:comment, post: recent_idea, updated_at: 1.day.ago)
+      create(:comment, post: recent_idea, updated_at: 1.day.ago)
+
+      recent_ids = recent_ideas.pluck(:id)
+      expect(recent_ids.size).to eq 1
+      expect(recent_ids).to eq [recent_idea.id]
+    end
   end
 
   describe 'idea search' do

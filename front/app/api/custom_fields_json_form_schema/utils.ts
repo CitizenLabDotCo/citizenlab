@@ -1,10 +1,10 @@
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import { SchemaResponse } from './types';
 
 export const hasRequiredFields = (
   schemaResponse: SchemaResponse,
-  locale: Locale
+  locale: SupportedLocale
 ) => {
   const { json_schema_multiloc } = schemaResponse.data.attributes;
 

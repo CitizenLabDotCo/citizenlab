@@ -1,90 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { adopt } from 'react-adopt';
 import { IntlProvider, createIntlCache, createIntl } from 'react-intl';
-import GetAppConfigurationLocales, {
-  GetAppConfigurationLocalesChildProps,
-} from 'resources/GetAppConfigurationLocales';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
-import { isNilOrError } from 'utils/helperUtils';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
+import { localeStream } from 'utils/localeStream';
 
 import CustomIntlContext from './CustomIntlContext';
 import { AllMessages, IntlShapes } from './types';
 
-interface InputProps {}
-
-interface DataProps {
-  locale: GetLocaleChildProps;
-  tenantLocales: GetAppConfigurationLocalesChildProps;
+interface Props {
+  children: React.ReactNode;
 }
 
-interface Props extends DataProps, InputProps {}
+const LanguageProvider = ({ children }: Props) => {
+  const [messages, setMessages] = useState<AllMessages>({} as AllMessages);
+  const [intlShapes, setIntlShapes] = useState<IntlShapes>({} as IntlShapes);
+  const tenantLocales = useAppConfigurationLocales();
+  const [locale, setLocale] = useState<SupportedLocale | null>(null);
 
-interface State {
-  messages: AllMessages;
-  intlShapes: IntlShapes;
-}
-
-class LanguageProvider extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      messages: {} as AllMessages,
-      intlShapes: {} as IntlShapes,
-    };
-  }
-
-  componentDidMount() {
-    this.loadLocales();
-  }
-
-  componentDidUpdate() {
-    this.loadLocales();
-  }
-
-  loadLocales = () => {
-    const { locale, tenantLocales } = this.props;
-
-    if (!isNilOrError(locale) && !this.state.messages[locale]) {
-      this.importLocale(locale);
-    }
-
-    if (!isNilOrError(tenantLocales)) {
-      this.importTenantLocales(tenantLocales);
-    }
-  };
-
-  importLocale = (locale: Locale) => {
-    import(`i18n/${locale}`).then((translationMessages) => {
-      const intlCache = createIntlCache();
-
-      const intlShape = createIntl(
-        {
-          locale,
-          messages: translationMessages.default,
-        },
-        intlCache
-      );
-
-      this.setState((prevState) => ({
-        messages: {
-          ...prevState.messages,
-          [locale]: translationMessages.default,
-        },
-
-        intlShapes: {
-          ...prevState.intlShapes,
-          [locale]: intlShape,
-        },
-      }));
+  useEffect(() => {
+    const sub = localeStream().observable.subscribe((locale) => {
+      setLocale(locale);
     });
-  };
 
-  importTenantLocales = (tenantLocales: Locale[]) => {
+    return () => sub.unsubscribe();
+  });
+
+  useEffect(() => {
+    if (!tenantLocales) return;
+
     for (const locale of tenantLocales) {
-      if (!this.state.messages[locale]) {
+      if (!messages[locale]) {
         import(`i18n/${locale}`).then((translationMessages) => {
           const intlCache = createIntlCache();
 
@@ -96,51 +44,30 @@ class LanguageProvider extends React.PureComponent<Props, State> {
             intlCache
           );
 
-          this.setState((prevState) => ({
-            messages: {
-              ...prevState.messages,
-              [locale]: translationMessages.default,
-            },
-
-            intlShapes: {
-              ...prevState.intlShapes,
-              [locale]: intlShape,
-            },
+          setMessages((prevState) => ({
+            ...prevState,
+            [locale]: translationMessages.default,
+          }));
+          setIntlShapes((prevState) => ({
+            ...prevState,
+            [locale]: intlShape,
           }));
         });
       }
     }
-  };
+  }, [tenantLocales, messages]);
 
-  render() {
-    const { locale } = this.props;
-    const { messages, intlShapes } = this.state;
-
-    if (locale && messages[locale]) {
-      return (
-        <CustomIntlContext.Provider value={intlShapes}>
-          <IntlProvider
-            locale={locale}
-            key={locale}
-            messages={messages[locale]}
-          >
-            {React.Children.only(this.props.children)}
-          </IntlProvider>
-        </CustomIntlContext.Provider>
-      );
-    }
-
-    return null;
+  if (locale && messages[locale]) {
+    return (
+      <CustomIntlContext.Provider value={intlShapes}>
+        <IntlProvider locale={locale} key={locale} messages={messages[locale]}>
+          {React.Children.only(children)}
+        </IntlProvider>
+      </CustomIntlContext.Provider>
+    );
   }
-}
 
-const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale />,
-  tenantLocales: <GetAppConfigurationLocales />,
-});
+  return null;
+};
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <LanguageProvider {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default LanguageProvider;

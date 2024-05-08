@@ -10,7 +10,7 @@ resource BasketsIdea do
 
   let(:user) { create(:user) }
   let(:project) { create(:single_phase_multiple_voting_project) }
-  let(:basket) { create(:basket, phase: project.phases.first, user: user) }
+  let(:basket) { create(:basket, phase: project.phases.first, user: user, submitted_at: nil) }
 
   context 'when resident' do
     before { header_token_for user }
@@ -78,6 +78,14 @@ resource BasketsIdea do
           expect(json_response[:included].pluck(:id)).to include idea_id
         end
       end
+
+      context 'basket is submitted' do
+        let!(:basket) { create(:basket, phase: project.phases.first, user: user, submitted_at: Time.now) }
+
+        example_request '[error] Add an idea to a submitted basket' do
+          assert_status 401
+        end
+      end
     end
 
     patch 'web_api/v1/baskets_ideas/:id' do
@@ -114,6 +122,14 @@ resource BasketsIdea do
           expect(json_response.dig(:data, :attributes, :votes)).to eq 3
         end
       end
+
+      context 'basket is submitted' do
+        let!(:basket) { create(:basket, phase: project.phases.first, user: user, submitted_at: Time.now) }
+
+        example_request '[error] Update an idea in a submitted basket' do
+          assert_status 401
+        end
+      end
     end
 
     delete 'web_api/v1/baskets_ideas/:id' do
@@ -123,6 +139,14 @@ resource BasketsIdea do
       example_request 'Delete a baskets_idea' do
         assert_status 200
         expect { BasketsIdea.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      context 'basket is submitted' do
+        let!(:basket) { create(:basket, phase: project.phases.first, user: user, submitted_at: Time.now) }
+
+        example_request '[error] Remove an idea from a submitted basket' do
+          assert_status 401
+        end
       end
     end
 
@@ -168,10 +192,18 @@ resource BasketsIdea do
             assert_status 401
           end
         end
+
+        context 'voting phase is over' do
+          let(:project) { create(:single_voting_phase, start_at: (Time.zone.today - 5.days), end_at: (Time.zone.today - 3.days)).project }
+
+          example_request '[error] Add an idea to a new basket' do
+            assert_status 401
+          end
+        end
       end
 
       context 'basket already exists' do
-        let!(:basket) { create(:basket, phase: project.phases.first, user: user) }
+        let!(:basket) { create(:basket, phase: project.phases.first, user: user, submitted_at: nil) }
 
         context 'basket_idea does not exist' do
           let(:votes) { 2 }
@@ -232,6 +264,14 @@ resource BasketsIdea do
             expect(response_data.dig(:attributes, :votes)).to be_nil
             expect(response_data.dig(:relationships, :idea, :data, :id)).to eq idea_id
             expect(BasketsIdea.find_by(idea: idea)).to be_nil
+          end
+        end
+
+        context 'basket is submitted' do
+          let!(:basket) { create(:basket, phase: project.phases.first, user: user, submitted_at: Time.now) }
+
+          example_request '[error] Add an idea to a submitted basket' do
+            assert_status 401
           end
         end
       end

@@ -6,6 +6,12 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  .admin-user-view {
+    .weglot_switcher {
+      margin-right: 80px !important;
+    }
+  }
+
   *,
   *:before,
   *:after {

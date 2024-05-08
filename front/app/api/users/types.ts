@@ -1,4 +1,4 @@
-import { ImageSizes, Locale, Multiloc } from 'typings';
+import { ImageSizes, SupportedLocale, Multiloc } from 'typings';
 
 import { OnboardingType } from 'api/authentication/authentication_requirements/types';
 
@@ -24,7 +24,7 @@ export interface IUserAttributes {
   first_name?: string | null;
   last_name?: string | null;
   slug: string;
-  locale: Locale;
+  locale: SupportedLocale;
   highest_role:
     | 'super_admin'
     | 'admin'

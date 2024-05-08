@@ -22,7 +22,7 @@ export default defineMessages({
     defaultMessage: 'Participants timeline',
   },
   totalParticipants: {
-    id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalParticipants',
+    id: 'app.modules.commercial.analytics.admin.components.totalParticipants',
     defaultMessage: 'Total participants',
   },
   trafficSources: {

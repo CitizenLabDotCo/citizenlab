@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Multiloc, Locale } from 'typings';
+import { Multiloc, SupportedLocale } from 'typings';
 
 import {
   SectionField,
@@ -22,7 +22,7 @@ interface Props {
 export default ({ postingTips, onChangePostingTips }: Props) => {
   const handlePostingTipsOnChange = (
     valueMultiloc: Multiloc,
-    locale: Locale | undefined
+    locale: SupportedLocale | undefined
   ) => {
     if (locale) {
       onChangePostingTips(valueMultiloc);

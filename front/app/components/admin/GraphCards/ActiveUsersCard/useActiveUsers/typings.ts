@@ -28,7 +28,7 @@ export interface TimeSeriesResponseRow extends ActiveUsersRow {
 }
 
 interface ActiveUsersRow {
-  count_dimension_user_id: number;
+  count_participant_id: number;
 }
 
 interface VisitorsRow {

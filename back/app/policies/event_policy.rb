@@ -58,4 +58,8 @@ class EventPolicy < ApplicationPolicy
   def destroy?
     ProjectPolicy.new(user, record.project).update?
   end
+
+  def attendees_xlsx?
+    ProjectPolicy.new(user, record.project).update?
+  end
 end

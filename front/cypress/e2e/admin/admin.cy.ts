@@ -10,7 +10,7 @@ describe('/admin route', () => {
 
 const ADMIN_PAGES = [
   { url: 'projects', container: '#e2e-projects-admin-container' },
-  { url: 'reporting', container: '#e2e-reporting-container' },
+  { url: 'reporting/report-builder', container: '#e2e-reporting-container' },
   { url: 'ideas', container: '#e2e-input-manager-container' },
   { url: 'initiatives', container: '#e2e-initiatives-admin-container' },
   { url: 'users', container: '#e2e-users-container' },

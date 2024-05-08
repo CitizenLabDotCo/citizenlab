@@ -3,7 +3,6 @@ import React from 'react';
 import { Box, Button } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
-import { WrappedComponentProps } from 'react-intl';
 import { Multiloc } from 'typings';
 import { object } from 'yup';
 
@@ -11,7 +10,7 @@ import { Section, SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 
-import { injectIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
@@ -24,13 +23,10 @@ export interface FormValues {
 type Props = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: FormValues;
-} & WrappedComponentProps;
+};
 
-const AreaForm = ({
-  intl: { formatMessage },
-  defaultValues,
-  onSubmit,
-}: Props) => {
+const AreaForm = ({ defaultValues, onSubmit }: Props) => {
+  const { formatMessage } = useIntl();
   const schema = object({
     title_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.fieldTitleError)
@@ -53,9 +49,12 @@ const AreaForm = ({
   };
 
   return (
-    <FormProvider {...methods}>
-      <Section data-testid="areaForm">
-        <form onSubmit={methods.handleSubmit(onFormSubmit)}>
+    <Section>
+      <FormProvider {...methods}>
+        <form
+          onSubmit={methods.handleSubmit(onFormSubmit)}
+          data-testid="areaForm"
+        >
           <SectionField>
             <Feedback />
             <InputMultilocWithLocaleSwitcher
@@ -74,9 +73,9 @@ const AreaForm = ({
             </Button>
           </Box>
         </form>
-      </Section>
-    </FormProvider>
+      </FormProvider>
+    </Section>
   );
 };
 
-export default injectIntl(AreaForm);
+export default AreaForm;

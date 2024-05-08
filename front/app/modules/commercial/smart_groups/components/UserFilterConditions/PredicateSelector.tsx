@@ -74,6 +74,13 @@ const PredicateSelector = memo(
         predicate_not_reacted_idea_in: messages.predicate_not_reacted_input_in,
         predicate_posted_in: messages.predicate_posted_input,
         predicate_volunteered_in: messages.predicate_volunteered_in,
+        predicate_registered_to_an_event:
+          messages.predicate_registered_to_an_event,
+        predicate_not_registered_to_an_event:
+          messages.predicate_not_registered_to_an_event,
+        predicate_follows_something: messages.predicate_follows_something,
+        predicate_not_follows_something:
+          messages.predicate_not_follows_something,
         predicate_reacted_comment_in: messages.predicate_reacted_comment_in,
         predicate_reacted_idea_in: messages.predicate_reacted_input_in,
         predicate_something: messages.predicate_something,

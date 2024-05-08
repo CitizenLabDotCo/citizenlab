@@ -2,8 +2,8 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { IQueryParameters } from 'api/idea_count/types';
 import useIdeasCount from 'api/idea_count/useIdeasCount';
+import { IQueryParameters } from 'api/ideas/types';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -16,24 +16,26 @@ const Container = styled.div`
   font-weight: 500;
 `;
 
-interface Props extends Omit<IQueryParameters, 'projectIds'> {
+interface Props {
   project?: string | null;
-  feedbackNeeded?: boolean;
-  ideaStatusId?: string;
+  // We are using ideas, not ideas_count query parameter types.
+  // This is because the IdeasCount component is used in the PostManager,
+  // which uses the ideas query parameter types.
+  queryParameters: IQueryParameters;
 }
 
-const IdeasCount = ({
-  project,
-  ideaStatusId,
-  feedbackNeeded,
-  ...otherProps
-}: Props) => {
+const IdeasCount = ({ project, queryParameters }: Props) => {
   const { data: ideasCount } = useIdeasCount({
-    ...otherProps,
-    feedback_needed: feedbackNeeded,
-    idea_status_id: ideaStatusId,
+    phase: queryParameters.phase,
+    topics: queryParameters.topics,
+    search: queryParameters.search,
+    assignee: queryParameters.assignee,
+    feedback_needed: queryParameters.feedback_needed,
+    idea_status_id: queryParameters.idea_status,
     projects: project ? [project] : undefined,
   });
+
+  if (!ideasCount) return null;
 
   return (
     <Container>
@@ -41,8 +43,7 @@ const IdeasCount = ({
           If there are no ideas, we have an 'empty container' to indicate there are no ideas matching the filters.
           Hence we only show this count when there's at least 1 idea.
         */}
-      {ideasCount &&
-        ideasCount.data.attributes.count > 0 &&
+      {ideasCount.data.attributes.count > 0 &&
         (ideasCount.data.attributes.count === 1 ? (
           <FormattedMessage {...messages.oneInput} />
         ) : (

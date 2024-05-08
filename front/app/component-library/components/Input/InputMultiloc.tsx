@@ -8,12 +8,6 @@ import { Locale, Multiloc } from '../../utils/typings';
 import IconTooltip from '../IconTooltip';
 import Label from '../Label';
 
-// utils
-
-// style
-
-// typings
-
 import Input, { InputProps } from '.';
 
 const Container = styled.div``;

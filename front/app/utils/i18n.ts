@@ -1,6 +1,6 @@
 import { keys, uniq, isArray, isObject, isEmpty, get, has } from 'lodash-es';
 import { MessageDescriptor } from 'react-intl';
-import { Multiloc, GraphqlMultiloc, Locale } from 'typings';
+import { Multiloc, GraphqlMultiloc, SupportedLocale } from 'typings';
 
 import { InputTerm } from 'api/phases/types';
 
@@ -20,8 +20,8 @@ export const getInputTermMessage = (
 
 export function getLocalized(
   multiloc: Multiloc | GraphqlMultiloc | null | undefined,
-  locale: Locale | null | undefined | Error,
-  tenantLocales: Locale[] | null | undefined | Error,
+  locale: SupportedLocale | null | undefined | Error,
+  tenantLocales: SupportedLocale[] | null | undefined | Error,
   maxLength?: number
 ) {
   if (
@@ -71,7 +71,7 @@ export function getLocalized(
       // Return value for exactly the same locale
       if (multiloc[locale]) return truncate(multiloc[locale], maxLength);
 
-      const multilocLocales = keys(multiloc) as Locale[];
+      const multilocLocales = keys(multiloc) as SupportedLocale[];
 
       // Return value for a locale of the same language
       const sameLanguageLocale = findSimilarLocale(locale, multilocLocales);
@@ -100,8 +100,8 @@ export function getLocalized(
 
 export function getLocalizedWithFallback(
   multiloc: Multiloc | null | undefined,
-  locale: Locale | null | undefined | Error,
-  tenantLocales: Locale[] | null | undefined | Error,
+  locale: SupportedLocale | null | undefined | Error,
+  tenantLocales: SupportedLocale[] | null | undefined | Error,
   maxLength?: number,
   fallback?: string
 ) {
@@ -120,11 +120,14 @@ export function getLocalizedWithFallback(
 
 const isMissing = (value?: string) => !value || value.length === 0;
 
-function getLanguage(locale: Locale) {
+export function getLanguage(locale: SupportedLocale) {
   return locale.indexOf('-') > -1 ? locale.split('-')[0] : locale;
 }
 
-function findSimilarLocale(locale: Locale, candidateLocales: Locale[]) {
+function findSimilarLocale(
+  locale: SupportedLocale,
+  candidateLocales: SupportedLocale[]
+) {
   const localeLanguage = getLanguage(locale);
   const localeLanguages = candidateLocales.map(getLanguage);
 

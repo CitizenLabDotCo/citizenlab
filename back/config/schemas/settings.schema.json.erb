@@ -917,18 +917,6 @@
         }
       },
 
-      "volunteering": {
-        "type": "object",
-        "title": "Volunteering",
-        "description": "Allow volunteering.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
       "workshops": {
         "title": "Workshops",
         "type": "object",
@@ -938,30 +926,6 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "project_reports": {
-        "type": "object",
-        "title": "Project Reports (deprecated)",
-        "description": "Browse and download the results of a project. Deprecated - use Report Builder instead.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
-      "phase_reports": {
-        "type": "object",
-        "title": "Phase Reports",
-        "description": "Publish the results of a phase.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
         }
       },
 
@@ -1044,58 +1008,10 @@
         }
       },
 
-      "ideaflow_social_sharing": {
-        "type": "object",
-        "title": "Share Ideas on Social Media",
-        "description":  "After posting an idea, users receive a pop-up to share their idea on social media.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "initiativeflow_social_sharing": {
-        "type": "object",
-        "title": "Share Proposals on Social Media",
-        "description": "After posting a proposal, users receive a pop-up to share their proposal on social media.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
       "widgets": {
         "type": "object",
         "title": "Widgets",
         "description":  "Admins can generate platform widgets to embed on external websites.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "manual_emailing": {
-        "type": "object",
-        "title": "Manual Emails",
-        "description":  "Admin and project managers can email users through the platform.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "automated_emailing_control": {
-        "type": "object",
-        "title": "Automated Emails",
-        "description":  "Admin can set and control automated e-mail campaigns and notifications.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1166,18 +1082,6 @@
         }
       },
 
-      "idea_custom_copy": {
-        "type": "object",
-        "title": "Idea Custom Copy",
-        "description": "Allows the changing of the word `idea` as the default term of input.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
       "idea_author_change": {
         "type": "object",
         "title": "Idea Author Change",
@@ -1187,18 +1091,6 @@
         "properties": {
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
-      "private_projects": {
-        "type": "object",
-        "title": "Private projects",
-        "description":  "Make projects visible to certain groups only (Access Rights tab in the Admin panel).",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
         }
       },
 
@@ -1382,13 +1274,25 @@
 
       "import_printed_forms": {
         "type": "object",
-        "title": "Import printed forms",
-        "description": "Enables the importing from handwritten idea and surveys on printed forms.",
+        "title": "Form Sync (fka import printed forms)",
+        "description": "Enables the importing of PDF files from handwritten ideas and surveys on printed forms.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "input_importer": {
+        "type": "object",
+        "title": "Input importer",
+        "description": "Enables the importing of Excel (XLSX) files with ideas and surveys.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
         }
       },
 
@@ -1450,6 +1354,18 @@
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
         }
+      },
+
+      "multi_language_platform": {
+        "type": "object",
+        "title": "Multi-language platform",
+        "description": "Enables the ability to add multiple languages on the platform.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {
@@ -1480,7 +1396,8 @@
 
     "large_summaries": ["analysis"],
     "ask_a_question": ["analysis"],
-    "advanced_autotagging": ["analysis"]
+    "advanced_autotagging": ["analysis"],
+    "import_printed_forms": ["input_importer"]
   },
   "definitions": {
     "multiloc_string": {

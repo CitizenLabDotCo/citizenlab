@@ -21,16 +21,16 @@ export type Sort =
 export interface IQueryParameters {
   pageNumber?: number;
   pageSize?: number;
-  author?: string | undefined | null;
+  author?: string;
   sort?: Sort;
-  search?: string | undefined | null;
-  topics?: string[] | undefined | null;
-  areas?: string[] | undefined | null;
-  initiative_status?: string | undefined | null;
-  publication_status?: InitiativePublicationStatus | undefined | null;
-  bounding_box?: number[] | undefined | null;
-  assignee?: string | undefined | null;
-  feedback_needed?: boolean | undefined | null;
+  search?: string;
+  topics?: string[];
+  areas?: string[];
+  initiative_status?: string;
+  publication_status?: InitiativePublicationStatus;
+  bounding_box?: number[];
+  assignee?: string;
+  feedback_needed?: boolean;
   cosponsor_ids?: string[];
 }
 
