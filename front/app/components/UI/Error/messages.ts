@@ -286,9 +286,9 @@ export default defineMessages({
     defaultMessage:
       'The uploaded PDF does not have enough pages - it should have at least the same number of pages as the downloaded template.',
   },
-  bulk_import_unknown_error: {
-    id: 'app.errors.bulk_import_unknown_error',
-    defaultMessage: 'An unknown error occurred: {value}',
+  uncaught_error: {
+    id: 'app.errors.uncaught_error',
+    defaultMessage: 'An unknown error occurred.',
   },
   banner_cta_signed_in_text_multiloc_blank: {
     id: 'app.errors.banner_cta_signed_in_text_multiloc_blank',

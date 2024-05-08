@@ -35,11 +35,9 @@ const useTrackBackgroundJobs = ({
     polledJobs?.data && polledJobs.data.length > 0
       ? polledJobs.data.flatMap((job) => {
           if (!!job.attributes.last_error_message) {
-            // Remove the Ruby error class
-            const splitError = job.attributes.last_error_message.split(': ');
-
-            // When a bulk import error - there will be additional params
-            const splitErrorParams = splitError[1].split('#');
+            const error_string = job.attributes.last_error_message;
+            // When a bulk_import_ error - there will be additional params after a #
+            const splitErrorParams = error_string.split('#');
             if (splitErrorParams.length > 1) {
               const params = JSON.parse(splitErrorParams[1]) as JobErrorParams;
               return {
@@ -48,7 +46,7 @@ const useTrackBackgroundJobs = ({
                 row: params?.row,
               };
             } else {
-              return { error: splitErrorParams[0] };
+              return { error: error_string };
             }
           } else {
             return [];

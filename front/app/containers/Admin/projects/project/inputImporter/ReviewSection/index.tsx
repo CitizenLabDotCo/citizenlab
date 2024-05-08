@@ -84,18 +84,6 @@ const ReviewSection = ({
     return <EmptyState />;
   }
 
-  // Ensure we can format an API error that we've not specifically handled in the backend
-  const jobErrors = importErrors.map((error) => {
-    if (error.error.startsWith('bulk_import_')) {
-      return error;
-    } else {
-      return {
-        error: 'bulk_import_unknown_error',
-        value: error.error,
-      };
-    }
-  });
-
   const handleSelectIdea = (ideaId: string) => {
     setCurrentPageIndex(0);
     setIdeaId(ideaId);
@@ -227,13 +215,13 @@ const ReviewSection = ({
               borderBottom={`1px ${colors.grey400} solid`}
               position="relative"
             >
-              {jobErrors.length > 0 ? (
+              {importErrors.length > 0 ? (
                 <>
                   <Error
                     text={formatMessage(messages.errorImporting)}
                     showIcon={false}
                   />
-                  {jobErrors.map((error, index) => (
+                  {importErrors.map((error, index) => (
                     <Error key={index} apiErrors={[error]} />
                   ))}
                 </>
