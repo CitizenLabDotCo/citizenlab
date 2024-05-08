@@ -99,6 +99,7 @@ const ReportBuilderPage = () => {
 
   const currentTab =
     tabNames.find((tab) => tab === searchParams.get('tab')) ?? 'all-reports';
+
   const reports = {
     'your-reports': yourReports,
     'service-reports': serviceReports,
@@ -107,6 +108,10 @@ const ReportBuilderPage = () => {
 
   if (!reports) return null;
   if (!me) return null;
+
+  const sortedReports = reports?.data.sort((a, b) => {
+    return b.attributes.updated_at.localeCompare(a.attributes.updated_at);
+  });
 
   const allReportsCount = allReports?.data.length ?? 0;
   const yourReportsCount = yourReports?.data.length ?? 0;
@@ -189,7 +194,7 @@ const ReportBuilderPage = () => {
               </TabContainer>
 
               <ListContainer>
-                {reports.data.map((report) => (
+                {sortedReports.map((report) => (
                   <ReportRow key={report.id} report={report} />
                 ))}
               </ListContainer>
