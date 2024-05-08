@@ -15,6 +15,7 @@
   "app.components.Admin.Campaigns.draft": "Udkast",
   "app.components.Admin.Campaigns.manageButtonLabel": "Administrere",
   "app.components.Admin.Campaigns.opened": "Åbnet",
+  "app.components.Admin.Campaigns.project": "Projekt",
   "app.components.Admin.Campaigns.recipientsTitle": "Modtagere",
   "app.components.Admin.Campaigns.sent": "Sendt",
   "app.components.Admin.Campaigns.statsButton": "Statistik",
