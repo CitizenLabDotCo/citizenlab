@@ -12,7 +12,7 @@ export default function useActiveUsers({
   start_at,
   end_at,
   resolution = 'month',
-  compare_previous_period,
+  compare_previous_period = false,
 }: ActiveUsersProps) {
   const [currentResolution, setCurrentResolution] = useState(resolution);
 

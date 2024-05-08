@@ -34,7 +34,7 @@ module ReportBuilder
 
       queries = [time_series_query, active_users_whole_period_query]
 
-      if start_at.present? && end_at.present? && compare_previous_period
+      if start_at.present? && end_at.present? && compare_previous_period == 'true'
         previous_period_start_at, previous_period_end_at = previous_period_dates(start_at, end_at)
 
         active_users_previous_period_query = {
