@@ -38,11 +38,11 @@ const SentCampaignRow = ({ campaign }: Props) => {
           <T value={campaign.attributes.subject_multiloc} />
         </Title>
         <Box display="flex" alignItems="center" gap="12px">
-          <div>
+          <Text m="0px" fontSize="s">
             <FormattedDate value={campaign.attributes.updated_at} />
             &nbsp;
             <FormattedTime value={campaign.attributes.updated_at} />
-          </div>
+          </Text>
           <StatusLabel
             backgroundColor={colors.success}
             text={<FormattedMessage {...messages.sent} />}
@@ -50,9 +50,15 @@ const SentCampaignRow = ({ campaign }: Props) => {
         </Box>
       </Box>
 
-      <Box minWidth="220px" display="flex" justifyContent="flex-end" gap="40px">
-        <Box>
-          <Title color="primary" variant="h4" m="0px" fontSize="xl">
+      <Box
+        minWidth="220px"
+        display="flex"
+        justifyContent="flex-end"
+        gap="40px"
+        alignItems="center"
+      >
+        <Box display="flex" flexDirection="column" justifyContent="center">
+          <Title color="primary" variant="h4" m="0px">
             {(
               ((campaign.attributes.delivery_stats?.opened || 0) /
                 (campaign.attributes.delivery_stats?.total || 1)) *
@@ -60,12 +66,12 @@ const SentCampaignRow = ({ campaign }: Props) => {
             ).toFixed(0)}
             %
           </Title>
-          <Text m="0px">
+          <Text m="0px" fontSize="s">
             <FormattedMessage {...messages.opened} />
           </Text>
         </Box>
-        <Box>
-          <Title color="primary" variant="h4" m="0px" fontSize="xl">
+        <Box display="flex" flexDirection="column" justifyContent="center">
+          <Title color="primary" variant="h4" m="0px">
             {(
               ((campaign.attributes.delivery_stats?.clicked || 0) /
                 (campaign.attributes.delivery_stats?.total || 1)) *
@@ -73,7 +79,7 @@ const SentCampaignRow = ({ campaign }: Props) => {
             ).toFixed(0)}
             %
           </Title>
-          <Text m="0px">
+          <Text m="0px" fontSize="s">
             <FormattedMessage {...messages.clicked} />
           </Text>
         </Box>
