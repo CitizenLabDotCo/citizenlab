@@ -15,6 +15,7 @@
   "app.components.Admin.Campaigns.draft": "مسودة",
   "app.components.Admin.Campaigns.manageButtonLabel": "يدير",
   "app.components.Admin.Campaigns.opened": "افتتح",
+  "app.components.Admin.Campaigns.project": "مشروع",
   "app.components.Admin.Campaigns.recipientsTitle": "المستلمون",
   "app.components.Admin.Campaigns.sent": "مرسل",
   "app.components.Admin.Campaigns.statsButton": "إحصائيات",
