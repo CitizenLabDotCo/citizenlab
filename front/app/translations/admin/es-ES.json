@@ -895,6 +895,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Añada el objetivo del proyecto, los métodos de participación utilizados y el resultado",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Visitantes",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.cannotPrint": "Este informe contiene cambios no guardados. Por favor, guárdalos antes de imprimirlos.",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": "Estira",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "Faltan los datos de este widget. Reconfigúralo o elimínalo para poder guardar el informe.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "No se han encontrado fases adecuadas en este proyecto",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noPhaseSelected": "No se ha seleccionado ninguna fase. Por favor, selecciona primero una fase.",
