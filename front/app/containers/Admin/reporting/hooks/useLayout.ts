@@ -25,6 +25,10 @@ function useNarrowLayout() {
   }));
 
   if (!parentId) return false;
+
+  const parent = node(parentId).get();
+  if (parent.data.name === 'TwoColumn') return true;
+
   const grandParentId = node(parentId)?.ancestors()[0];
   if (!grandParentId) return false;
 
