@@ -35,7 +35,7 @@ class Permissions::PermissionsUpdateService
       Phase.find(scope_id)
     when :idea_id
       idea = Idea.find(scope_id)
-      ParticipationPermissionsService.new.get_current_phase idea.project
+      Permissions::PermissionsService.new.get_current_phase idea.project
     end
   end
 

@@ -1,5 +1,5 @@
 # inspired by PermissionsService - But has no need to inherit from it
-class ReportBuilder::ReportBuilderPermissionsService
+class ReportBuilder::Permissions::ReportBuilderPermissionsService
   EDITING_DISABLED_REASONS = {
     report_has_unauthorized_data: 'report_has_unauthorized_data'
   }.freeze

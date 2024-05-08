@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe ParticipationPermissionsService do
+describe Permissions::PermissionsService do
   let(:service) { described_class.new }
 
   describe 'denied_reason_for_permission' do

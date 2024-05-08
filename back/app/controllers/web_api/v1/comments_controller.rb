@@ -272,7 +272,7 @@ class WebApi::V1::CommentsController < ApplicationController
 
     case @post_type
     when 'Idea'
-      !ParticipationPermissionsService.new.get_current_phase(@comment.post.project).allow_anonymous_participation
+      !Permissions::PermissionsService.new.get_current_phase(@comment.post.project).allow_anonymous_participation
     when 'Initiative'
       !AppConfiguration.instance.settings.dig('initiatives', 'allow_anonymous_participation')
     else raise "Unsupported post type #{@post_type}"

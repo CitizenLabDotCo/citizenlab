@@ -7,7 +7,7 @@ module ReportBuilder
         attributes :name, :created_at, :updated_at, :visible
 
         attribute :action_descriptor do |object, params|
-          @permissions_service = ReportBuilder::ReportBuilderPermissionsService.new
+          @permissions_service = ReportBuilder::Permissions::ReportBuilderPermissionsService.new
           action_descriptor = @permissions_service.action_descriptor(object, current_user(params))
           action_descriptor
         end

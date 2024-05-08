@@ -6,7 +6,7 @@ class WebApi::V1::ActionDescriptorsController < ApplicationController
 
   def initiatives
     # TODO: JS - descriptor or descriptors?
-    descriptors = InitiativePermissionsService.new.action_descriptor(current_user)
+    descriptors = Permissions::InitiativePermissionsService.new.action_descriptor(current_user)
     render(json: raw_json(descriptors))
   end
 end

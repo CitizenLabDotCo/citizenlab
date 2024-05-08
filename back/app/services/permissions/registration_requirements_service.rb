@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class RegistrationRequirementsService
+class Permissions::RegistrationRequirementsService
   def requirements(permission, user)
     requirements = base_requirements permission
     mark_satisfied_requirements! requirements, permission, user if user
@@ -121,4 +121,4 @@ class RegistrationRequirementsService
   end
 end
 
-RegistrationRequirementsService.prepend(Verification::Patches::RegistrationRequirementsService)
+Permissions::RegistrationRequirementsService.prepend(Verification::Patches::Permissions::RegistrationRequirementsService)

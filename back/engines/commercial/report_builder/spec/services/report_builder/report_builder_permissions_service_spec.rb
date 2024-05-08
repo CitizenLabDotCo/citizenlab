@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ReportBuilder::ReportBuilderPermissionsService do
+RSpec.describe ReportBuilder::Permissions::ReportBuilderPermissionsService do
   let(:phase) { create(:phase) }
   let(:phase_id) { phase.id }
   let(:project_id) { phase.project.id }

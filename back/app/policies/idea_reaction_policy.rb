@@ -64,6 +64,6 @@ class IdeaReactionPolicy < ApplicationPolicy
   end
 
   def participation_context_service
-    @participation_context_service ||= ParticipationPermissionsService.new
+    @participation_context_service ||= Permissions::PermissionsService.new
   end
 end
