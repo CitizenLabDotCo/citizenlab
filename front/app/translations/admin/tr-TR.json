@@ -15,6 +15,7 @@
   "app.components.Admin.Campaigns.draft": "Taslak",
   "app.components.Admin.Campaigns.manageButtonLabel": "Yönetmek",
   "app.components.Admin.Campaigns.opened": "Açıldı",
+  "app.components.Admin.Campaigns.project": "Proje",
   "app.components.Admin.Campaigns.recipientsTitle": "Alıcılar",
   "app.components.Admin.Campaigns.sent": "Gönderildi",
   "app.components.Admin.Campaigns.statsButton": "İstatistikler",
