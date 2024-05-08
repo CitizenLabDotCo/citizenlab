@@ -896,7 +896,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Besucher*innen",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.cannotPrint": "Dieser Bericht enthält ungesicherte Änderungen. Bitte speichern Sie ihn vor dem Drucken.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.demographics": "Demografische Daten",
-  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.registrationField": "Registrierungsfelder",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.registrationField": "Registrierungsfeld",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.unknown": "Unbekannt",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.users": "Nutzer*innen: {numberOfUsers} ({percentageOfUsers}%)",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": "Ausdehnen",
