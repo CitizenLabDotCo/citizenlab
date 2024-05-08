@@ -123,7 +123,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def allowed_custom_fields
-    CustomField.with_resource_type('User').not_hidden
+    CustomField.registration.not_hidden
   end
 end
 

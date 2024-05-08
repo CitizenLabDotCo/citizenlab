@@ -264,7 +264,7 @@ class XlsxService
   def user_custom_field_columns(record_to_user)
     # options keys are only unique in the scope of their field, namespacing to avoid collisions
     options = CustomFieldOption.all.index_by { |option| namespace(option.custom_field_id, option.key) }
-    user_custom_fields = CustomField.with_resource_type('User').order(:ordering)
+    user_custom_fields = CustomField.registration.order(:ordering)
 
     fields_to_columns = map_user_custom_fields_to_columns(user_custom_fields)
 
