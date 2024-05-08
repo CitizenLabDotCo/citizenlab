@@ -763,6 +763,21 @@ resource 'Phases' do
               }
             ])
           end
+
+          example 'Draft responses are not included' do
+            create(
+              :idea,
+              project: project,
+              creation_phase: active_phase,
+              phases: [active_phase],
+              publication_status: 'draft'
+            )
+            do_request
+
+            assert_status 200
+            xlsx = xlsx_contents(response_body)
+            expect(xlsx.first[:rows].size).to eq 2
+          end
         end
       end
     end
