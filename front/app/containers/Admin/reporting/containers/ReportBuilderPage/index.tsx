@@ -129,6 +129,20 @@ const ReportBuilderPage = () => {
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
+  const noReportMessage = (() => {
+    if (search) return null;
+    if (sortedReports.length > 0) return null;
+
+    switch (currentTab) {
+      case 'your-reports':
+        return formatMessage(messages.personalReportsPlaceholder);
+      case 'service-reports':
+        return formatMessage(messages.serviceReportsPlaceholder);
+      default:
+        return null;
+    }
+  })();
+
   return (
     <>
       <Box display="flex" justifyContent="space-between" mb="24px">
@@ -194,6 +208,12 @@ const ReportBuilderPage = () => {
               </TabContainer>
 
               <ListContainer>
+                {noReportMessage && (
+                  <Box py="16px">
+                    <Warning>{noReportMessage}</Warning>
+                  </Box>
+                )}
+
                 {sortedReports.map((report) => (
                   <ReportRow key={report.id} report={report} />
                 ))}
