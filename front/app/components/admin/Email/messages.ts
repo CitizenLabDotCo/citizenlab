@@ -70,4 +70,8 @@ export default defineMessages({
     id: 'app.components.Admin.Campaigns.clicked',
     defaultMessage: 'Clicked',
   },
+  project: {
+    id: 'app.components.Admin.Campaigns.project',
+    defaultMessage: 'Project',
+  },
 });

@@ -98,9 +98,17 @@ const CustomEmails = () => {
           <List key={campaignsList.data.map((c) => c.id).join()}>
             {campaignsList.data.map((campaign) =>
               isDraft(campaign) ? (
-                <DraftCampaignRow key={campaign.id} campaign={campaign} />
+                <DraftCampaignRow
+                  key={campaign.id}
+                  campaign={campaign}
+                  context="project"
+                />
               ) : (
-                <SentCampaignRow key={campaign.id} campaign={campaign} />
+                <SentCampaignRow
+                  key={campaign.id}
+                  campaign={campaign}
+                  context="project"
+                />
               )
             )}
           </List>

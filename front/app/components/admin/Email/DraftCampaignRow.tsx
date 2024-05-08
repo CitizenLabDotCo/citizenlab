@@ -5,29 +5,37 @@ import {
   StatusLabel,
   colors,
   Title,
+  Text,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 
 import { ICampaignData } from 'api/campaigns/types';
+import useProjectById from 'api/projects/useProjectById';
+
+import useLocalize from 'hooks/useLocalize';
 
 import { Row } from 'components/admin/ResourceList';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
 interface Props {
   campaign: ICampaignData;
+  context?: 'global' | 'project';
 }
 
-const DraftCampaignRow = ({ campaign }: Props) => {
-  const { projectId } = useParams();
-  const editLink: RouteType = projectId
-    ? `/admin/projects/${projectId}/messaging/${campaign.id}`
-    : `/admin/messaging/emails/custom/${campaign.id}`;
+const DraftCampaignRow = ({ campaign, context }: Props) => {
+  const { formatMessage } = useIntl();
+  const { data: project } = useProjectById(campaign.attributes.context_id);
+  const localize = useLocalize();
+
+  const editLink: RouteType =
+    context === 'global'
+      ? `/admin/messaging/emails/custom/${campaign.id}`
+      : `/admin/projects/${campaign.attributes.context_id}/messaging/${campaign.id}`;
 
   return (
     <Row id={campaign.id}>
@@ -35,11 +43,21 @@ const DraftCampaignRow = ({ campaign }: Props) => {
         <Title color="primary" variant="h4" m="0px">
           <T value={campaign.attributes.subject_multiloc} />
         </Title>
-        <StatusLabel
-          backgroundColor={colors.orange}
-          text={<FormattedMessage {...messages.draft} />}
-        />
+        <Box display="flex" alignItems="center" gap="12px">
+          <StatusLabel
+            backgroundColor={colors.orange}
+            text={<FormattedMessage {...messages.draft} />}
+          />
+          {/* Only display project name in the global messaging tab */}
+          {context === 'global' && project && (
+            <Text m="0px">
+              {formatMessage(messages.project)}:{' '}
+              {localize(project?.data.attributes.title_multiloc)}
+            </Text>
+          )}
+        </Box>
       </Box>
+
       <Box minWidth="220px" display="flex" justifyContent="flex-end">
         <Button linkTo={editLink} buttonStyle="secondary" icon="edit">
           <FormattedMessage {...messages.manageButtonLabel} />

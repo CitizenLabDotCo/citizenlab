@@ -8,28 +8,35 @@ import {
   Title,
 } from '@citizenlab/cl2-component-library';
 import { FormattedDate, FormattedTime } from 'react-intl';
-import { useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 
 import { ICampaignData } from 'api/campaigns/types';
+import useProjectById from 'api/projects/useProjectById';
+
+import useLocalize from 'hooks/useLocalize';
 
 import { Row } from 'components/admin/ResourceList';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
 interface Props {
   campaign: ICampaignData;
+  context?: 'global' | 'project';
 }
 
-const SentCampaignRow = ({ campaign }: Props) => {
-  const { projectId } = useParams();
-  const statsLink: RouteType = projectId
-    ? `/admin/projects/${projectId}/messaging/${campaign.id}`
-    : `/admin/messaging/emails/custom/${campaign.id}`;
+const SentCampaignRow = ({ campaign, context }: Props) => {
+  const { data: project } = useProjectById(campaign.attributes.context_id);
+  const localize = useLocalize();
+  const { formatMessage } = useIntl();
+
+  const statsLink: RouteType =
+    context === 'global'
+      ? `/admin/messaging/emails/custom/${campaign.id}`
+      : `/admin/projects/${campaign.attributes.context_id}/messaging/${campaign.id}`;
 
   return (
     <Row id={campaign.id}>
@@ -47,6 +54,13 @@ const SentCampaignRow = ({ campaign }: Props) => {
             backgroundColor={colors.success}
             text={<FormattedMessage {...messages.sent} />}
           />
+          {/* Only display project name in the global messaging tab */}
+          {context === 'global' && project && (
+            <Text m="0px" fontSize="s">
+              {formatMessage(messages.project)}:{' '}
+              {localize(project?.data.attributes.title_multiloc)}
+            </Text>
+          )}
         </Box>
       </Box>
 
