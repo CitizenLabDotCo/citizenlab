@@ -119,10 +119,7 @@ class UserPolicy < ApplicationPolicy
   private
 
   def allowed_custom_field_keys
-    allowed_fields = allowed_custom_fields
-    simple_keys = allowed_fields.support_single_value.pluck(:key).map(&:to_sym)
-    array_keys = allowed_fields.support_multiple_values.pluck(:key).map(&:to_sym)
-    [*simple_keys, array_keys.index_with { |_k| [] }]
+    CustomFieldsParamsService.new.custom_field_values_params allowed_custom_fields
   end
 
   def allowed_custom_fields
