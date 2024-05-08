@@ -15,6 +15,7 @@
   "app.components.Admin.Campaigns.draft": "Concept",
   "app.components.Admin.Campaigns.manageButtonLabel": "Beheren",
   "app.components.Admin.Campaigns.opened": "Geopend",
+  "app.components.Admin.Campaigns.project": "projecten",
   "app.components.Admin.Campaigns.recipientsTitle": "Ontvangers",
   "app.components.Admin.Campaigns.sent": "Verzonden",
   "app.components.Admin.Campaigns.statsButton": "Statistieken",
