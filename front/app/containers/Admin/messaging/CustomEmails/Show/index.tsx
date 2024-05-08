@@ -257,8 +257,11 @@ const Show = () => {
                 'manual_project_participants' &&
                 project && (
                   <span>
-                    <FormattedMessage {...messages.allParticipantsInProject} />
-                    <Link to={`/admin/projects/${project.data.id}`}>
+                    <FormattedMessage {...messages.allParticipantsInProject} />{' '}
+                    <Link
+                      to={`/admin/projects/${project.data.id}`}
+                      target="_blank"
+                    >
                       {localize(project?.data.attributes.title_multiloc)}
                     </Link>
                   </span>

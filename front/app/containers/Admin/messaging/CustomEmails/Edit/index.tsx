@@ -42,6 +42,7 @@ const Edit = () => {
       <CampaignForm
         isLoading={isLoading}
         onSubmit={handleSubmit}
+        campaignContextId={campaign.data.attributes.context_id}
         defaultValues={{
           sender: campaign.data.attributes.sender,
           reply_to: campaign.data.attributes.reply_to,

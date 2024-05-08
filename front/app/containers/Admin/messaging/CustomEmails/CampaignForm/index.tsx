@@ -5,6 +5,8 @@ import {
   Box,
   Button,
   fontSizes,
+  Label,
+  Text,
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -83,7 +85,6 @@ const CampaignForm = ({
   const { data: appConfig } = useAppConfiguration();
   const { data: project } = useProjectById(campaignContextId);
   const localize = useLocalize();
-
   const schema = object({
     sender: string()
       .oneOf(['author', 'organization'])
@@ -168,12 +169,17 @@ const CampaignForm = ({
           </StyledSectionField>
 
           {campaignContextId && project && (
-            <span>
-              <FormattedMessage {...messages.allParticipantsInProject} />
-              <Link to={`/admin/projects/${project.data.id}`}>
-                {localize(project?.data.attributes.title_multiloc)}
-              </Link>
-            </span>
+            <>
+              <Label>
+                <FormattedMessage {...messages.fieldTo} />
+              </Label>
+              <Text fontSize="l">
+                <FormattedMessage {...messages.allParticipantsInProject} />{' '}
+                <Link to={`/admin/projects/${project.data.id}`} target="_blank">
+                  {localize(project?.data.attributes.title_multiloc)}
+                </Link>
+              </Text>
+            </>
           )}
 
           {!campaignContextId && (
