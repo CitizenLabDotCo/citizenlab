@@ -395,7 +395,6 @@ class ParticipationPermissionsService
       POSTING_DISABLED_REASONS[:project_not_visible]
     end
   end
-
 end
 
 ParticipationPermissionsService.prepend(Verification::Patches::ParticipationPermissionsService)

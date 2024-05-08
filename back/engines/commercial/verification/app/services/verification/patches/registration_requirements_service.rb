@@ -3,7 +3,6 @@
 module Verification
   module Patches
     module RegistrationRequirementsService
-
       private
 
       def base_requirements(permission)
