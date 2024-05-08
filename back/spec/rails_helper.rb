@@ -96,7 +96,7 @@ end
 ActiveJob::Base.queue_adapter = :test
 
 # Helper method analyse performance by counting how many queries are executed in a particular block of code.
-def count_queries(&block)
+def count_queries(&)
   count = 0
 
   counter_f = lambda { |_name, _started, _finished, _unique_id, payload|
@@ -105,7 +105,7 @@ def count_queries(&block)
     end
   }
 
-  ActiveSupport::Notifications.subscribed(counter_f, 'sql.active_record', &block)
+  ActiveSupport::Notifications.subscribed(counter_f, 'sql.active_record', &)
 
   count
 end
