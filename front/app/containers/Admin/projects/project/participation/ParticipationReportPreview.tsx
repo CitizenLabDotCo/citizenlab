@@ -4,14 +4,15 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { Element } from '@craftjs/core';
 
 import usePhases from 'api/phases/usePhases';
+import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 import useLocale from 'hooks/useLocale';
 
 import Editor from 'containers/Admin/reporting/components/ReportBuilder/Editor';
-import AgeWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/_deprecated/AgeWidget';
-import GenderWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/_deprecated/GenderWidget';
 import ActiveUsersWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/ActiveUsersWidget';
 import CommentsByTimeWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/CommentsByTimeWidget';
+import DemographicsWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/DemographicsWidget';
+import { INPUT_TYPES } from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/DemographicsWidget/Settings';
 import PostsByTimeWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/PostsByTimeWidget';
 import ReactionsByTimeWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/ReactionsByTimeWidget';
 import TwoColumn from 'containers/Admin/reporting/components/ReportBuilder/Widgets/TwoColumn';
@@ -38,9 +39,20 @@ const ParticipationReportPreview = ({
   const { formatMessage } = useIntl();
   const locale = useLocale();
 
+  const { data: userFields } = useUserCustomFields({ inputTypes: INPUT_TYPES });
+
   const hasIdeationPhase = phases?.data.some(
     (phase) => phase.attributes.participation_method === 'ideation'
   );
+
+  const genderField = userFields?.data.find(
+    (field) => field.attributes.code === 'gender'
+  );
+  const ageField = userFields?.data.find(
+    (field) => field.attributes.code === 'birthyear'
+  );
+
+  if (!genderField || !ageField) return null;
 
   return (
     <ReportContextProvider width="desktop">
@@ -55,7 +67,7 @@ const ParticipationReportPreview = ({
             />
             <WhiteSpace />
             <TwoColumn columnLayout="1-1">
-              <GenderWidget
+              {/* <GenderWidget
                 startAt={startAt}
                 endAt={endAt}
                 projectId={projectId}
@@ -65,6 +77,20 @@ const ParticipationReportPreview = ({
                 startAt={startAt}
                 endAt={endAt}
                 projectId={projectId}
+                title={{ [locale]: formatMessage(messages.usersByAge) }}
+              /> */}
+              <DemographicsWidget
+                startAt={startAt}
+                endAt={endAt}
+                projectId={projectId}
+                customFieldId={genderField.id}
+                title={{ [locale]: formatMessage(messages.usersByGender) }}
+              />
+              <DemographicsWidget
+                startAt={startAt}
+                endAt={endAt}
+                projectId={projectId}
+                customFieldId={ageField.id}
                 title={{ [locale]: formatMessage(messages.usersByAge) }}
               />
             </TwoColumn>

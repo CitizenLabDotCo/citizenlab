@@ -1,10 +1,12 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Title } from '@citizenlab/cl2-component-library';
 
 import { useDemographics } from 'api/graph_data_units';
 
 import useLocalize from 'hooks/useLocalize';
+
+import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
 import Card from '../../_shared/Card';
 import NoData from '../../_shared/NoData';
@@ -33,6 +35,8 @@ const DemographicsWidget = ({
     group_id: groupId,
   });
 
+  const layout = useLayout();
+
   if (isLoading) return null;
 
   if (!demographicsResponse) {
@@ -43,13 +47,24 @@ const DemographicsWidget = ({
     );
   }
 
+  if (layout === 'narrow') {
+    return (
+      <Card pagebreak className="e2e-demographics-widget">
+        <Title variant="h4" mt="1px">
+          {localize(title)}
+        </Title>
+        <Chart response={demographicsResponse} />
+      </Card>
+    );
+  }
+
   return (
     <Card pagebreak className="e2e-demographics-widget">
       <Box width="100%" pb="0px" display="flex">
         <Box w="300px" display="flex" flexDirection="column">
-          <Text mt="1px" fontWeight="bold" fontSize="m" pr="16px">
+          <Title variant="h4" mt="1px" pr="16px">
             {localize(title)}
-          </Text>
+          </Title>
         </Box>
         <Chart response={demographicsResponse} />
       </Box>

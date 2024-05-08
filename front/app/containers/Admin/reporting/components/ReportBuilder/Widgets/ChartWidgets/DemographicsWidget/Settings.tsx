@@ -28,7 +28,7 @@ const isSupportedField = (userField: IUserCustomFieldData) => {
   return input_type === 'select';
 };
 
-const INPUT_TYPES: IUserCustomFieldInputType[] = ['select', 'number'];
+export const INPUT_TYPES: IUserCustomFieldInputType[] = ['select', 'number'];
 
 const Settings = () => {
   const { formatMessage } = useIntl();
