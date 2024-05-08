@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 
 import StackedBarChart from 'components/admin/Graphs/StackedBarChart';
+import {
+  getCornerRadius,
+  stackLabels,
+} from 'components/admin/Graphs/StackedBarChart/singleBarHelpers';
 import { colors } from 'components/admin/Graphs/styling';
 
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
@@ -8,8 +12,6 @@ import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { PostFeedback } from '../usePostsFeedback/typings';
 
 import { stackedBarTooltip } from './stackedBarTooltip';
-import { stackLabels } from './stackLabels';
-import { getCornerRadius } from './utils';
 
 interface Props {
   data: PostFeedback | NilOrError;
