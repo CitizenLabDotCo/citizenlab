@@ -30,8 +30,6 @@ import Warning from 'components/UI/Warning';
 import sharedMessages from '../../messages';
 import messages from './messages';
 
-import { compactObject, isEmpty } from './utils';
-
 const BuilderNotAllowedTooltip = ({ disabled, children }) => {
   const { formatMessage } = useIntl();
 
@@ -100,12 +98,9 @@ const ReportBuilderPage = () => {
   const { data: serviceReports } = useReports(getParams('service-reports'));
   const { data: allReports } = useReports(getParams('all-reports'));
 
-  const currentTab = (() => {
-    const defaultTab = isAdmin(me) ? 'all-reports' : 'your-reports';
-    return (
-      tabNames.find((tab) => tab === searchParams.get('tab')) ?? defaultTab
-    );
-  })();
+  const defaultTab = isAdmin(me) ? 'all-reports' : 'your-reports';
+  const currentTab =
+    tabNames.find((tab) => tab === searchParams.get('tab')) ?? defaultTab;
 
   const reports = {
     'your-reports': yourReports,
@@ -124,12 +119,10 @@ const ReportBuilderPage = () => {
   const yourReportsCount = yourReports?.data.length ?? 0;
   const serviceReportsCount = serviceReports?.data.length ?? 0;
 
-  const reportParams = getParams(currentTab);
   const showEmptyState =
-    currentTab === 'all-reports' &&
+    currentTab === defaultTab &&
     reports.data.length === 0 &&
-    // The empty state is only shown when no filters are applied.
-    isEmpty(compactObject(reportParams));
+    search === undefined;
 
   const searchReports = formatMessage(messages.searchReports);
 
