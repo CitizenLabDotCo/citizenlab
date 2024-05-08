@@ -47,11 +47,17 @@ export const parseStats = (data: ActiveUsersResponse['data']['attributes']) => {
   const activeUsersWholePeriod = data[1][0];
   const activeUsersPreviousPeriod = data[2]?.[0];
 
+  const wholePeriodValue = activeUsersWholePeriod?.count_participant_id ?? 0;
+  const previousPeriodValue = activeUsersPreviousPeriod?.count_participant_id;
+
+  const previousPeriodDelta = previousPeriodValue
+    ? wholePeriodValue - previousPeriodValue
+    : undefined;
+
   return {
     activeUsers: {
-      value: (activeUsersWholePeriod?.count_participant_id ?? 0).toString(),
-      previousPeriod:
-        activeUsersPreviousPeriod?.count_participant_id?.toString(),
+      value: wholePeriodValue.toString(),
+      previousPeriodDelta,
     },
   };
 };

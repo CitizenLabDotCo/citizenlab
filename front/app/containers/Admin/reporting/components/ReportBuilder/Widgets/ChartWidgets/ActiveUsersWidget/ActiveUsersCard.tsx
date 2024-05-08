@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
@@ -52,42 +52,17 @@ const ActiveUsers = ({
           mb={layout === 'wide' ? undefined : '8px'}
         >
           <Box>
-            {stats.activeUsers.previousPeriod ? (
-              <Statistic
-                name={formatMessage(messages.totalParticipants)}
-                value={
-                  <>
-                    <Text
-                      color="textPrimary"
-                      fontSize="xl"
-                      mt="2px"
-                      mb="0px"
-                      display="inline"
-                    >
-                      {stats.activeUsers.value}
-                    </Text>
-                    <Text
-                      color="green500"
-                      fontSize="l"
-                      mt="2px"
-                      mb="0px"
-                      ml="8px"
-                      display="inline"
-                    >
-                      +{stats.activeUsers.previousPeriod}
-                    </Text>
-                  </>
-                }
-                nameColor="black"
-                bottomLabel="from previous TODO days"
-              />
-            ) : (
-              <Statistic
-                name={formatMessage(messages.totalParticipants)}
-                value={stats.activeUsers.value}
-                nameColor="black"
-              />
-            )}
+            <Statistic
+              name={formatMessage(messages.totalParticipants)}
+              value={stats.activeUsers.value}
+              delta={stats.activeUsers.previousPeriodDelta}
+              nameColor="black"
+              bottomLabel={
+                stats.activeUsers.previousPeriodDelta
+                  ? 'compared to TODO days'
+                  : undefined
+              }
+            />
           </Box>
         </Box>
 

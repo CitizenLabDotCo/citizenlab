@@ -9,7 +9,8 @@ import {
 
 interface Props {
   name: string;
-  value: React.ReactNode;
+  value: string;
+  delta?: number;
   bottomLabel?: string;
   bottomLabelValue?: string;
   tooltipContent?: React.ReactChild;
@@ -17,9 +18,22 @@ interface Props {
   nameColor?: Color;
 }
 
+const getDeltaColor = (delta: number) => {
+  if (delta === 0) return 'textPrimary';
+  if (delta > 0) return 'green500';
+  return 'red500';
+};
+
+const getDeltaSymbol = (delta: number) => {
+  if (delta === 0) return '';
+  if (delta > 0) return '+';
+  return '-';
+};
+
 const Statistic = ({
   name,
   value,
+  delta,
   bottomLabel,
   bottomLabelValue,
   tooltipContent,
@@ -53,13 +67,23 @@ const Statistic = ({
         </Box>
       )}
     </Box>
-    {typeof value === 'string' ? (
-      <Text color="textPrimary" fontSize="xl" mt="2px" mb="0px">
+    <Box mt="2px">
+      <Text color="textPrimary" fontSize="xl" display="inline">
         {value}
       </Text>
-    ) : (
-      value
-    )}
+      {delta !== undefined && (
+        <Text
+          color={getDeltaColor(delta)}
+          fontSize="l"
+          fontWeight="bold"
+          display="inline"
+          ml="8px"
+        >
+          {getDeltaSymbol(delta)}
+          {delta}
+        </Text>
+      )}
+    </Box>
     {bottomLabel && (
       <Box mt="3px">
         <Text
