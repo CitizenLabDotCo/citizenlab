@@ -43,8 +43,6 @@ resource 'Ideas' do
 
       context 'when the field value is given' do
         # TODO: Refactoring
-        # - Don't allow duplicating default fields
-        # - Simplify factories
         # - Validate input types in params + spec (can't create html_multiloc field in ideation or native survey)
         post 'web_api/v1/ideas' do
           [

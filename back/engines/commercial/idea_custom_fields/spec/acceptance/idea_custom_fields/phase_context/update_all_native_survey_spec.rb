@@ -285,6 +285,26 @@ resource 'Idea Custom Fields' do
         )
       end
 
+      example '[error] Add a field of unsupported input_type' do
+        request = {
+          custom_fields: [
+            { input_type: 'page' },
+            {
+              input_type: 'topic_ids',
+              title_multiloc: { 'en' => 'Topics field title' },
+              description_multiloc: { 'en' => 'Topics field description' },
+              required: false,
+              enabled: true
+            }
+          ]
+        }
+        do_request request
+
+        assert_status 422
+        json_response = json_parse response_body
+        expect(json_response).to eq({ errors: { "1": "Can't create field with input type: topic_ids" } })
+      end
+
       context 'Update custom field options with images' do
         let!(:page) { create(:custom_field_page, resource: custom_form) }
         let!(:field) { create(:custom_field_multiselect_image, resource: custom_form) }
