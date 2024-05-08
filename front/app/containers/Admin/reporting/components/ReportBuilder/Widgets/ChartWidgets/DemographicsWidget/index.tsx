@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Title } from '@citizenlab/cl2-component-library';
 
 import { useDemographics } from 'api/graph_data_units';
 
@@ -50,9 +50,9 @@ const DemographicsWidget = ({
   if (layout === 'narrow') {
     return (
       <Card pagebreak className="e2e-demographics-widget">
-        <Text mt="1px" fontWeight="bold" fontSize="m" pr="16px">
+        <Title variant="h4" mt="1px">
           {localize(title)}
-        </Text>
+        </Title>
         <Chart response={demographicsResponse} />
       </Card>
     );
@@ -62,9 +62,9 @@ const DemographicsWidget = ({
     <Card pagebreak className="e2e-demographics-widget">
       <Box width="100%" pb="0px" display="flex">
         <Box w="300px" display="flex" flexDirection="column">
-          <Text mt="1px" fontWeight="bold" fontSize="m" pr="16px">
+          <Title variant="h4" mt="1px" pr="16px">
             {localize(title)}
-          </Text>
+          </Title>
         </Box>
         <Chart response={demographicsResponse} />
       </Box>
