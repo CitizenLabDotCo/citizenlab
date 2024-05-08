@@ -928,7 +928,6 @@
   "app.containers.Admin.reporting.contactToAccess": "Creating a custom report is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createAReport": "Create a report",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createReportDescription": "Customise your report and share it with internal stakeholders or community with a web link.",
-  "app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports": "View reports",
   "app.containers.Admin.reporting.deprecated": "DEPRECATED",
   "app.containers.Admin.reporting.helmetDescription": "Admin reporting page",
   "app.containers.Admin.reporting.helmetTitle": "Reporting",

@@ -928,7 +928,6 @@
   "app.containers.Admin.reporting.contactToAccess": "Izrada prilagođenog izvješća dio je premium licence. Obratite se svom GovSuccess upravitelju kako biste saznali više o tome.",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createAReport": "Izradite izvješće",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createReportDescription": "Prilagodite svoj izvješće i podijelite ga s internim dionicima ili zajednicom putem web poveznice.",
-  "app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports": "Prikaz izvješća",
   "app.containers.Admin.reporting.deprecated": "ZASTARJELO",
   "app.containers.Admin.reporting.helmetDescription": "Stranica s administratorskim izvještavanjem",
   "app.containers.Admin.reporting.helmetTitle": "Izvještavanje",

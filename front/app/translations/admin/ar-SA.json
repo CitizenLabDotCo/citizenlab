@@ -928,7 +928,6 @@
   "app.containers.Admin.reporting.contactToAccess": "يشكِّل إنشاء تقرير مخصص جزءًا من الترخيص المتميز. تواصل مع مدير GovSuccess لمعرفة مزيد من المعلومات عن هذا الأمر.",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createAReport": "إنشاء تقرير",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createReportDescription": "أضفِ طابعك الشخصي على التقرير وأتحه للمشاركة مع الأطراف المعنية الداخلية أو المجتمع عبر رابط ويب.",
-  "app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports": "عرض التقارير",
   "app.containers.Admin.reporting.deprecated": "إهمال",
   "app.containers.Admin.reporting.helmetDescription": "صفحة تقارير المسؤول",
   "app.containers.Admin.reporting.helmetTitle": "تقديم بلاغات",

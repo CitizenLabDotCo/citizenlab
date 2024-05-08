@@ -516,7 +516,6 @@
   "app.containers.Admin.reporting.contactToAccess": "A benotzerdefinéierte Rapport ze erstellen, ass Deel vun der Premiumlizenz. Wennt Iech un Äre GovSuccess Manager fir méi doriwwer gewuer ze ginn.",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createAReport": "Create a report",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createReportDescription": "Customise your report and share it with internal stakeholders or community with a web link.",
-  "app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports": "Rapporten ukucken",
   "app.containers.Admin.reporting.helmetDescription": "Verwalterrapportssäit",
   "app.containers.Admin.reporting.helmetTitle": "Reporting",
   "app.containers.Admin.reporting.printPrepare": "Drécke gëtt preparéiert...",

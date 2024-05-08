@@ -928,7 +928,6 @@
   "app.containers.Admin.reporting.contactToAccess": "Özel bir rapor oluşturmak premium lisansın bir parçasıdır. Bu konuda daha fazla bilgi edinmek için GovSuccess Yöneticinize ulaşın.",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createAReport": "Bir rapor oluşturun",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createReportDescription": "Raporunuzu özelleştirin ve bir web bağlantısı ile dahili paydaşlarla veya toplulukla paylaşın.",
-  "app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports": "Raporları görüntüle",
   "app.containers.Admin.reporting.deprecated": "DEVRE DIŞI BIRAKILDI",
   "app.containers.Admin.reporting.helmetDescription": "Yönetici raporlama sayfası",
   "app.containers.Admin.reporting.helmetTitle": "Raporlama",

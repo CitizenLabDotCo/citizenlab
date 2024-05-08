@@ -928,7 +928,6 @@
   "app.containers.Admin.reporting.contactToAccess": "Прављење прилагођеног извештаја је део премијум лиценце. Обратите се свом ГовСуццесс менаџеру да сазнате више о томе.",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createAReport": "Направите извештај",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createReportDescription": "Прилагодите свој извештај и поделите га са интерним заинтересованим странама или заједницом помоћу веб везе.",
-  "app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports": "Погледајте извештаје",
   "app.containers.Admin.reporting.deprecated": "DEPRECATED",
   "app.containers.Admin.reporting.helmetDescription": "Страница за извештавање администратора",
   "app.containers.Admin.reporting.helmetTitle": "Извештавање",

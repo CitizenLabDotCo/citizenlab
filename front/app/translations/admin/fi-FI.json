@@ -928,7 +928,6 @@
   "app.containers.Admin.reporting.contactToAccess": "Mukautetun raportin luominen on osa premium-lisenssiä. Ota yhteyttä GovSuccess Manageriin saadaksesi lisätietoja siitä.",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createAReport": "Luo raportti",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createReportDescription": "Mukauta raporttiasi ja jaa se sisäisten sidosryhmien tai yhteisön kanssa verkkolinkin avulla.",
-  "app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports": "Näytä raportit",
   "app.containers.Admin.reporting.deprecated": "POISTETTU",
   "app.containers.Admin.reporting.helmetDescription": "Järjestelmänvalvojan raportointisivu",
   "app.containers.Admin.reporting.helmetTitle": "Raportointi",

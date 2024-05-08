@@ -928,7 +928,6 @@
   "app.containers.Admin.reporting.contactToAccess": "Oprettelse af en brugerdefineret rapport er en del af premium-licensen. Kontakt din GovSuccess Manager for at få mere at vide om det.",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createAReport": "Opret en rapport",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createReportDescription": "Tilpas din rapport, og del den med interne interessenter eller et fællesskab med et weblink.",
-  "app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports": "Se rapporter",
   "app.containers.Admin.reporting.deprecated": "DEPRECERET",
   "app.containers.Admin.reporting.helmetDescription": "Admin-rapporteringsside",
   "app.containers.Admin.reporting.helmetTitle": "Indsigt",

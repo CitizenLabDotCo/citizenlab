@@ -928,7 +928,6 @@
   "app.containers.Admin.reporting.contactToAccess": "Möjligheten att skapa en anpassad rapport är en del av premiumlicensen. Kontakta din GovSuccess-ansvarige för att få veta mer om det här.",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createAReport": "Skapa en rapport",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createReportDescription": "Anpassa din rapport och dela den med interna intressenter eller en community med en webblänk.",
-  "app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports": "Visa rapporter",
   "app.containers.Admin.reporting.deprecated": "DEPRECERAD",
   "app.containers.Admin.reporting.helmetDescription": "Rapporteringssida för administratörer",
   "app.containers.Admin.reporting.helmetTitle": "Rapportering",

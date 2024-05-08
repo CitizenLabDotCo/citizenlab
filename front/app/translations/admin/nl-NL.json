@@ -928,7 +928,6 @@
   "app.containers.Admin.reporting.contactToAccess": "Het maken van een aangepast rapport maakt deel uit van de premium licentie. Neem contact op met uw GovSuccess Manager voor meer informatie.",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createAReport": "Maak een rapport",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createReportDescription": "Pas je rapport aan en deel het met interne belanghebbenden of de gemeenschap met een weblink.",
-  "app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports": "Rapporten bekijken",
   "app.containers.Admin.reporting.deprecated": "VEROUDERD",
   "app.containers.Admin.reporting.helmetDescription": "Platformbeheerder rapportagepagina",
   "app.containers.Admin.reporting.helmetTitle": "Rapportering",

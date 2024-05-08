@@ -928,7 +928,6 @@
   "app.containers.Admin.reporting.contactToAccess": "A criação de um relatório personalizado faz parte da licença premium. Contacte o seu GovSuccess Manager para saber mais sobre isso.",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createAReport": "Criar um relatório",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createReportDescription": "Personalize seu relatório e compartilhe com os usuários internos ou com a comunidade por meio da web.",
-  "app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports": "Ver relatórios",
   "app.containers.Admin.reporting.deprecated": "DEPRECADO",
   "app.containers.Admin.reporting.helmetDescription": "Página de relatórios de administração",
   "app.containers.Admin.reporting.helmetTitle": "Relatório",

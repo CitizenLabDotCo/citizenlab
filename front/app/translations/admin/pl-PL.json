@@ -928,7 +928,6 @@
   "app.containers.Admin.reporting.contactToAccess": "Tworzenie niestandardowych raportów jest częścią licencji premium. Skontaktuj się ze swoim GovSuccess Managerem, aby dowiedzieć się więcej na ten temat.",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createAReport": "Utwórz raportu",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createReportDescription": "Dostosuj swój raport i podziel się nim z wewnętrznymi interesariuszami lub społecznością za pomocą linku internetowego.",
-  "app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports": "Wyświetl raporty",
   "app.containers.Admin.reporting.deprecated": "USUNIĘTO",
   "app.containers.Admin.reporting.helmetDescription": "Strona raportowania administratora",
   "app.containers.Admin.reporting.helmetTitle": "Raportowanie",
