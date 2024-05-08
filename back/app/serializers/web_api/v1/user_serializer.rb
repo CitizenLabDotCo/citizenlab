@@ -14,7 +14,6 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
     :block_reason,
     :followings_count,
     :onboarding,
-    :last_acted_at,
     :created_at,
     :updated_at
 
@@ -39,6 +38,10 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :email, if: proc { |object, params|
+    view_private_attributes? object, params
+  }
+
+  attribute :last_active_at, if: proc { |object, params|
     view_private_attributes? object, params
   }
 
