@@ -343,19 +343,25 @@ class WebApi::V1::IdeasController < ApplicationController
     complex_attributes = {
       location_point_geojson: [:type, { coordinates: [] }]
     }
-    allowed_extra_field_keys = IdeaCustomFieldsService.new(custom_form).allowed_extra_field_keys
-    if allowed_extra_field_keys.any?
-      complex_attributes[:custom_field_values] = allowed_extra_field_keys
+
+    allowed_custom_fields = IdeaCustomFieldsService.new(custom_form).submittable_fields_with_other_options.reject(&:built_in?)
+    custom_field_values_params = CustomFieldsParamsService.new.custom_field_values_params(allowed_custom_fields)
+    if custom_field_values_params.any?
+      complex_attributes[:custom_field_values] = custom_field_values_params
     end
+
     if submittable_field_keys.include?(:title_multiloc)
       complex_attributes[:title_multiloc] = CL2_SUPPORTED_LOCALES
     end
+
     if submittable_field_keys.include?(:body_multiloc)
       complex_attributes[:body_multiloc] = CL2_SUPPORTED_LOCALES
     end
+
     if submittable_field_keys.include?(:topic_ids)
       complex_attributes[:topic_ids] = []
     end
+
     complex_attributes
   end
 

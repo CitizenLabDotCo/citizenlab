@@ -48,6 +48,8 @@ resource 'Ideas' do
         # - Permit params and extract non-cutom_field_values from params
         # - Remove/clear custom_field_values
         # - compact_custom_field_values! ?
+        #
+        # - Simplify factories
         # - Validate input types in params + spec (can't create html_multiloc field in ideation or native survey)
         # - Let's start with a CustomFieldValuesParamsService, we could eventually introduce a CustomFieldValues class (overwrite model attribute)
         post 'web_api/v1/ideas' do

@@ -70,30 +70,6 @@ class IdeaCustomFieldsService
     visible_fields.reject(&:built_in?)
   end
 
-  def allowed_extra_field_keys
-    fields_with_simple_keys = []
-    fields_with_array_keys = {}
-    submittable_fields_with_other_options.reject(&:built_in?).each do |field|
-      case field.input_type
-      when 'multiselect', 'multiselect_image'
-        fields_with_array_keys[field.key.to_sym] = []
-      when 'file_upload'
-        fields_with_array_keys[field.key.to_sym] = %i[id content name]
-      when 'point'
-        fields_with_array_keys[field.key.to_sym] = [:type, { coordinates: [] }]
-      when 'html_multiloc', 'multiline_text_multiloc', 'text_multiloc'
-        fields_with_array_keys[field.key.to_sym] = CL2_SUPPORTED_LOCALES
-      else
-        fields_with_simple_keys << field.key.to_sym
-      end
-    end
-    if fields_with_array_keys.empty?
-      fields_with_simple_keys
-    else
-      fields_with_simple_keys + [fields_with_array_keys]
-    end
-  end
-
   def validate_constraints_against_updates(field, field_params)
     constraints = @participation_method.constraints[field.code&.to_sym]
     return unless constraints
