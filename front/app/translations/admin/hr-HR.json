@@ -15,6 +15,7 @@
   "app.components.Admin.Campaigns.draft": "Nacrt",
   "app.components.Admin.Campaigns.manageButtonLabel": "Upravljati",
   "app.components.Admin.Campaigns.opened": "Otvoreno",
+  "app.components.Admin.Campaigns.project": "Projekt",
   "app.components.Admin.Campaigns.recipientsTitle": "Primatelji",
   "app.components.Admin.Campaigns.sent": "Poslano",
   "app.components.Admin.Campaigns.statsButton": "Statistika",
