@@ -15,6 +15,7 @@
   "app.components.Admin.Campaigns.draft": "Projekts",
   "app.components.Admin.Campaigns.manageButtonLabel": "Pārvaldiet",
   "app.components.Admin.Campaigns.opened": "Atvērts",
+  "app.components.Admin.Campaigns.project": "Projekts",
   "app.components.Admin.Campaigns.recipientsTitle": "Saņēmēji",
   "app.components.Admin.Campaigns.sent": "Nosūtīts",
   "app.components.Admin.Campaigns.statsButton": "Statistika",
