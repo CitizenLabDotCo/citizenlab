@@ -1346,7 +1346,7 @@ CREATE TABLE public.users (
     followings_count integer DEFAULT 0 NOT NULL,
     onboarding jsonb DEFAULT '{}'::jsonb NOT NULL,
     unique_code character varying,
-    last_acted_at timestamp(6) without time zone
+    last_active_at timestamp(6) without time zone
 );
 
 
@@ -7510,4 +7510,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240417150820'),
 ('20240418081854'),
 ('20240419100508'),
-('20240504212048');
+('20240504212048'),
+('20240508124215');
+
+
