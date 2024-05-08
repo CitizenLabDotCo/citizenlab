@@ -75,10 +75,10 @@ end
 group :test do
   gem 'rubyXL'
   gem 'shoulda-matchers', '~> 6.2.0'
-  gem 'webmock', '~> 3.18'
+  gem 'webmock', '~> 3.23'
 
   # Adds rspec matchers and helpers for testing html structure and styling.
-  gem 'capybara', '~> 3.39'
+  gem 'capybara', '~> 3.40'
   # gem 'bullet'
 end
 
@@ -119,7 +119,7 @@ gem 'premailer-rails', '~> 1.12.0'
 gem 'rest-client'
 gem 'rgeo-geojson'
 gem 'rubyzip', '~> 1.3.0'
-gem 'stackprof', '~> 0.2.25'
+gem 'stackprof', '~> 0.2.26'
 
 gem 'okcomputer'
 gem 'omniauth', '~> 1.9.1'

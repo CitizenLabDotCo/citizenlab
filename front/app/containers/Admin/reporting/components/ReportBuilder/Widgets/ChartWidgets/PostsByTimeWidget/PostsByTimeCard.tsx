@@ -4,22 +4,21 @@ import { Box } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 
 import Chart from 'components/admin/GraphCards/PostsByTimeCard/Chart';
-import {
-  ProjectId,
-  DatesStrings,
-  Resolution,
-} from 'components/admin/GraphCards/typings';
 
 import { isNilOrError } from 'utils/helperUtils';
 
 import NoData from '../../_shared/NoData';
 import messages from '../messages';
+import { TimeSeriesWidgetProps } from '../typings';
 
 import usePostsByTime from './usePostsByTime';
 
-type Props = ProjectId & DatesStrings & Resolution;
-
-const PostsByTime = ({ projectId, startAt, endAt, resolution }: Props) => {
+const PostsByTime = ({
+  projectId,
+  startAt,
+  endAt,
+  resolution = 'month',
+}: TimeSeriesWidgetProps) => {
   const { currentResolution, timeSeries } = usePostsByTime({
     projectId,
     startAt,

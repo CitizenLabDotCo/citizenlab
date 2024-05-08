@@ -299,6 +299,7 @@ DROP INDEX IF EXISTS public.index_email_campaigns_deliveries_on_campaign_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_consents_on_user_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_consents_on_campaign_type_and_user_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_on_type;
+DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_on_context_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_on_author_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_groups_on_group_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_groups_on_campaign_id;
@@ -1344,7 +1345,8 @@ CREATE TABLE public.users (
     new_email character varying,
     followings_count integer DEFAULT 0 NOT NULL,
     onboarding jsonb DEFAULT '{}'::jsonb NOT NULL,
-    unique_code character varying
+    unique_code character varying,
+    last_acted_at timestamp(6) without time zone
 );
 
 
@@ -1391,7 +1393,8 @@ CREATE TABLE public.email_campaigns_campaigns (
     body_multiloc jsonb DEFAULT '{}'::jsonb,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    deliveries_count integer DEFAULT 0 NOT NULL
+    deliveries_count integer DEFAULT 0 NOT NULL,
+    context_id uuid
 );
 
 
@@ -4917,6 +4920,13 @@ CREATE INDEX index_email_campaigns_campaigns_on_author_id ON public.email_campai
 
 
 --
+-- Name: index_email_campaigns_campaigns_on_context_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_email_campaigns_campaigns_on_context_id ON public.email_campaigns_campaigns USING btree (context_id);
+
+
+--
 -- Name: index_email_campaigns_campaigns_on_type; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5851,7 +5861,7 @@ CREATE INDEX index_report_builder_reports_on_owner_id ON public.report_builder_r
 -- Name: index_report_builder_reports_on_phase_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_report_builder_reports_on_phase_id ON public.report_builder_reports USING btree (phase_id);
+CREATE UNIQUE INDEX index_report_builder_reports_on_phase_id ON public.report_builder_reports USING btree (phase_id);
 
 
 --
@@ -7497,6 +7507,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240328141200'),
 ('20240409150000'),
 ('20240417064819'),
-('20240417150820');
-
-
+('20240417150820'),
+('20240418081854'),
+('20240419100508'),
+('20240504212048');
