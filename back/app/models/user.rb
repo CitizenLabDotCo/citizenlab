@@ -595,7 +595,7 @@ class User < ApplicationRecord
     return unless persisted? && (new_email_changed? || email_changed?) && email_was.present?
 
     # no_password? - only for light registration
-    if no_password? && confirmation_required? && !sso?
+    if no_password? && confirmation_required?
       # Avoid security hole where passwordless user can change when they are authenticated without confirmation
       errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - user not active'
     elsif user_confirmation_enabled? && active? && email_changed? && !email_changed?(to: new_email_was)
