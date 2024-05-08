@@ -33,8 +33,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
 
   attribute :action_descriptor do |object, params|
     @project_permissions_service ||= ProjectPermissionsService.new
-    user = current_user(params)
-    @project_permissions_service.action_descriptors object, user
+    @project_permissions_service.action_descriptor object, current_user(params)
   end
 
   attribute :avatars_count do |object, params|

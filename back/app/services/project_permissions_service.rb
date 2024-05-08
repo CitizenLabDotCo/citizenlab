@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ProjectPermissionsService < ParticipationPermissionsService
-  def action_descriptors(project, user)
+  def action_descriptor(project, user)
     posting_disabled_reason = posting_idea_disabled_reason_for_project project, user
     commenting_disabled_reason = commenting_idea_disabled_reason_for_project project, user
     reacting_disabled_reason = idea_reacting_disabled_reason_for project, user

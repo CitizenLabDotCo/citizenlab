@@ -48,7 +48,7 @@ class WebApi::V1::IdeasController < ApplicationController
     ).find_records
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
 
-    render json: linked_json(ideas, WebApi::V1::IdeaMiniSerializer, params: jsonapi_serializer_params(pcs: ParticipationPermissionsService.new))
+    render json: linked_json(ideas, WebApi::V1::IdeaMiniSerializer, params: jsonapi_serializer_params)
   end
 
   def index_idea_markers
@@ -389,12 +389,12 @@ class WebApi::V1::IdeasController < ApplicationController
         end
       user_followers ||= {}
       {
-        params: jsonapi_serializer_params(vbii: reactions.index_by(&:reactable_id), user_followers: user_followers, pcs: ParticipationPermissionsService.new),
+        params: jsonapi_serializer_params(vbii: reactions.index_by(&:reactable_id), user_followers: user_followers, pcs: IdeaPermissionsService.new),
         include: include
       }
     else
       {
-        params: jsonapi_serializer_params(pcs: ParticipationPermissionsService.new),
+        params: jsonapi_serializer_params(pcs: IdeaPermissionsService.new),
         include: include
       }
     end
