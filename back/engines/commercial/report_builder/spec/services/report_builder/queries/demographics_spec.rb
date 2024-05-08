@@ -48,7 +48,7 @@ RSpec.describe ReportBuilder::Queries::Demographics do
         expect(result[:options]).to match(multilocs)
       end
 
-      it 'works' do
+      it 'returns correct series data' do
         result = query.run_query(custom_field_id: @custom_field.id)
 
         expect(result[:series]).to match({
@@ -107,7 +107,7 @@ RSpec.describe ReportBuilder::Queries::Demographics do
         AppConfiguration.update!(created_at: Date.new(2020, 1, 1))
       end
 
-      it 'works' do
+      it 'returns correct series data' do
         result = query.run_query(custom_field_id: @birthyear_field.id)
         expect(result[:series]).to eq({ '_blank' => 0, 1977 => 1 })
       end
