@@ -15,6 +15,7 @@
   "app.components.Admin.Campaigns.draft": "Brouillon",
   "app.components.Admin.Campaigns.manageButtonLabel": "Gérer",
   "app.components.Admin.Campaigns.opened": "Ouvert",
+  "app.components.Admin.Campaigns.project": "{tenantName, select, frw {communes} other {projets}}",
   "app.components.Admin.Campaigns.recipientsTitle": "Destinataires",
   "app.components.Admin.Campaigns.sent": "Envoyé",
   "app.components.Admin.Campaigns.statsButton": "Statistiques",
