@@ -50,7 +50,7 @@ const Meta = () => {
 
     const metaTitleMultiLoc = tenant.data.attributes.settings.core.meta_title;
     let metaTitle = localize(metaTitleMultiLoc);
-    metaTitle = metaTitle || formatMessage(messages.metaTitle);
+    metaTitle = metaTitle || formatMessage(messages.metaTitle1);
 
     const metaDescriptionMultiLoc =
       tenant.data.attributes.settings.core.meta_description;
