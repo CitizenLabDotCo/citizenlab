@@ -12,9 +12,9 @@ import { ProjectId, DatesStrings } from 'components/admin/GraphCards/typings';
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-import NoData from '../../_shared/NoData';
-import messages from '../messages';
-import { serieHasValues } from '../utils';
+import NoData from '../../../_shared/NoData';
+import messages from '../../messages';
+import { serieHasValues } from '../../utils';
 
 import Chart from './Chart';
 

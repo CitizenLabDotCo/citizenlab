@@ -266,4 +266,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.overview.showLess',
     defaultMessage: 'Show less',
   },
+  labelGroupFilter: {
+    id: 'app.containers.AdminPage.DashboardPage.labelGroupFilter',
+    defaultMessage: 'Select user group',
+  },
 });

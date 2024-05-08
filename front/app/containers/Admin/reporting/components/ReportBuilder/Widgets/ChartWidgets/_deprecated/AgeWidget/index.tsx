@@ -1,9 +1,9 @@
 import React from 'react';
 
-import Card from '../../_shared/Card';
-import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
-import messages from '../messages';
-import { ChartWidgetProps } from '../typings';
+import Card from '../../../_shared/Card';
+import ChartWidgetSettings from '../../_shared/ChartWidgetSettings';
+import messages from '../../messages';
+import { ChartWidgetProps } from '../../typings';
 
 import AgeCard from './AgeCard';
 
@@ -27,6 +27,8 @@ AgeWidget.craft = {
   },
 };
 
+/** @deprecated This widget should not be used for new reports anymore */
 export const ageTitle = messages.usersByAge;
 
+/** @deprecated This widget should not be used for new reports anymore */
 export default AgeWidget;
