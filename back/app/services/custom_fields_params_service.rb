@@ -50,6 +50,10 @@ class CustomFieldsParamsService
     end
   end
 
+  def updated_custom_field_values(current_custom_field_values, custom_field_values_params)
+    current_custom_field_values.merge(custom_field_values_params || {})
+  end
+
   private
 
   # Do not save any 'other' text values if the select field does not include 'other' as an option

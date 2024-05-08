@@ -192,11 +192,11 @@ class WebApi::V1::IdeasController < ApplicationController
     extract_custom_field_values_from_params!(input.custom_form)
     params[:idea][:topic_ids] ||= [] if params[:idea].key?(:topic_ids)
     params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
-    CustomFieldsParamsService.new.mark_custom_field_values_to_clear!(input.custom_field_values, params[:idea][:custom_field_values])
+    params_service.mark_custom_field_values_to_clear!(input.custom_field_values, params[:idea][:custom_field_values])
 
     user_can_moderate_project = UserRoleService.new.can_moderate_project?(project, current_user)
     update_params = idea_params(input.custom_form, user_can_moderate_project).to_h
-    update_params[:custom_field_values] = input.custom_field_values.merge(update_params[:custom_field_values] || {})
+    update_params[:custom_field_values] = params_service.updated_custom_field_values(input.custom_field_values, update_params[:custom_field_values])
     CustomFieldService.new.compact_custom_field_values! update_params[:custom_field_values]
     input.assign_attributes update_params
     authorize input
@@ -251,7 +251,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def extract_custom_field_values_from_params!(custom_form)
     return if !custom_form
 
-    custom_field_values = CustomFieldsParamsService.new.extract_custom_field_values_from_params!(
+    custom_field_values = params_service.extract_custom_field_values_from_params!(
       params[:idea],
       submittable_custom_fields(custom_form)
     )
@@ -294,6 +294,10 @@ class WebApi::V1::IdeasController < ApplicationController
     @sidefx ||= SideFxIdeaService.new
   end
 
+  def params_service
+    @params_service ||= CustomFieldsParamsService.new
+  end
+
   def idea_params(custom_form, user_can_moderate_project)
     params.require(:idea).permit(idea_attributes(custom_form, user_can_moderate_project))
   end
@@ -327,7 +331,7 @@ class WebApi::V1::IdeasController < ApplicationController
     }
 
     allowed_custom_fields = submittable_custom_fields(custom_form).reject(&:built_in?)
-    custom_field_values_params = CustomFieldsParamsService.new.custom_field_values_params(allowed_custom_fields)
+    custom_field_values_params = params_service.custom_field_values_params(allowed_custom_fields)
     if custom_field_values_params.any?
       complex_attributes[:custom_field_values] = custom_field_values_params
     end
