@@ -28,13 +28,26 @@ class CustomFieldsParamsService
     extra_field_values = fields.each_with_object({}) do |field, accu|
       next if field.built_in?
 
-      given_value = params.delete field.key # TODO: :idea should be parameterized
+      given_value = params.delete field.key
       next if !given_value || !field.enabled?
 
       accu[field.key] = given_value
     end
 
     reject_other_text_values(extra_field_values)
+  end
+
+  def mark_custom_field_values_to_clear!(current_custom_field_values, custom_field_values_params)
+    # We need to explicitly mark which custom field values
+    # should be cleared so we can distinguish those from
+    # the custom field value updates cleared out by the
+    # policy (which should stay like before instead of
+    # being cleared out).
+    return if current_custom_field_values.blank? || custom_field_values_params.blank?
+
+    (current_custom_field_values.keys - (custom_field_values_params.keys || [])).each do |clear_key|
+      custom_field_values_params[clear_key] = nil
+    end
   end
 
   private

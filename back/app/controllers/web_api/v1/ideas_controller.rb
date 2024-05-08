@@ -192,7 +192,7 @@ class WebApi::V1::IdeasController < ApplicationController
     extract_custom_field_values_from_params!(input.custom_form)
     params[:idea][:topic_ids] ||= [] if params[:idea].key?(:topic_ids)
     params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
-    mark_custom_field_values_to_clear! input
+    CustomFieldsParamsService.new.mark_custom_field_values_to_clear!(input.custom_field_values, params[:idea][:custom_field_values])
 
     user_can_moderate_project = UserRoleService.new.can_moderate_project?(project, current_user)
     update_params = idea_params(input.custom_form, user_can_moderate_project).to_h
@@ -385,19 +385,6 @@ class WebApi::V1::IdeasController < ApplicationController
         params: jsonapi_serializer_params(pcs: ParticipationPermissionsService.new),
         include: include
       }
-    end
-  end
-
-  def mark_custom_field_values_to_clear!(input)
-    # We need to explicitly mark which custom field values
-    # should be cleared so we can distinguish those from
-    # the custom field value updates cleared out by the
-    # policy (which should stay like before instead of
-    # being cleared out).
-    return unless input&.custom_field_values.present? && params[:idea][:custom_field_values].present?
-
-    (input.custom_field_values.keys - (params[:idea][:custom_field_values].keys || [])).each do |clear_key|
-      params[:idea][:custom_field_values][clear_key] = nil
     end
   end
 
