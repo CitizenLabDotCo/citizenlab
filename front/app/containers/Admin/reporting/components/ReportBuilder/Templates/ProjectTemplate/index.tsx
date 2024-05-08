@@ -9,6 +9,7 @@ import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 import useReport from 'api/reports/useReport';
+import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 import useUserById from 'api/users/useUserById';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -27,8 +28,8 @@ import { SURVEY_QUESTION_INPUT_TYPES } from '../../constants';
 import aboutMessages from '../../Widgets/_deprecated/AboutReportWidget/messages';
 import { getPeriod } from '../../Widgets/_deprecated/AboutReportWidget/utils';
 import ActiveUsersWidget from '../../Widgets/ChartWidgets/ActiveUsersWidget';
-import AgeWidget from '../../Widgets/ChartWidgets/AgeWidget';
-import GenderWidget from '../../Widgets/ChartWidgets/GenderWidget';
+import DemographicsWidget from '../../Widgets/ChartWidgets/DemographicsWidget';
+import { INPUT_TYPES } from '../../Widgets/ChartWidgets/DemographicsWidget/Settings';
 import VisitorsWidget from '../../Widgets/ChartWidgets/VisitorsWidget';
 import ImageMultilocWidget from '../../Widgets/ImageMultiloc';
 import MostReactedIdeasWidget from '../../Widgets/MostReactedIdeasWidget';
@@ -53,6 +54,8 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
   const { data: phases } = usePhases(projectId);
   const { data: report } = useReport(reportId);
   const { data: user } = useUserById(report?.data.relationships.owner?.data.id);
+  const { data: userFields } = useUserCustomFields({ inputTypes: INPUT_TYPES });
+
   const projectModerator = !user ? null : getFullName(user.data);
 
   const templateData = phases ? getTemplateData(phases.data) : null;
@@ -70,6 +73,7 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
     !phases ||
     !report ||
     !projectModerator ||
+    !userFields ||
     !templateData
   ) {
     return null;
@@ -144,6 +148,13 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
       )
     : undefined;
 
+  const genderField = userFields.data.find(
+    (field) => field.attributes.code === 'gender'
+  );
+  const ageField = userFields.data.find(
+    (field) => field.attributes.code === 'birthyear'
+  );
+
   return (
     <Element id="project-report-template" is={Box} canvas>
       {/* About this report section */}
@@ -205,16 +216,18 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
       <WhiteSpace />
       <TwoColumn columnLayout="1-1">
         <Element id="left" is={Container} canvas>
-          <GenderWidget
+          <DemographicsWidget
             projectId={projectId}
-            title={toMultiloc(WIDGET_TITLES.GenderWidget)}
+            customFieldId={genderField?.id}
+            title={genderField?.attributes.title_multiloc}
             {...projectPeriod}
           />
         </Element>
         <Element id="right" is={Container} canvas>
-          <AgeWidget
+          <DemographicsWidget
             projectId={projectId}
-            title={toMultiloc(WIDGET_TITLES.AgeWidget)}
+            customFieldId={ageField?.id}
+            title={ageField?.attributes.title_multiloc}
             {...projectPeriod}
           />
         </Element>

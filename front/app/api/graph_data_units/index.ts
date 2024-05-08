@@ -1,11 +1,11 @@
 import {
-  AgeProps,
+  BaseDemographicsProps,
   AnalyticsProps,
-  GenderProps,
   MostReactedIdeasProps,
   SingleIdeaProps,
   SurveyQuestionResultProps,
   VisitorsTrafficSourcesProps,
+  DemographicsProps,
 } from './requestTypes';
 import {
   ActiveUsersResponse,
@@ -15,6 +15,7 @@ import {
   ReactionsByTimeResponse,
   SingleIdeaResponse,
   SurveyQuestionResultResponse,
+  DemographicsResponse,
   UsersByAgeResponse,
   UsersByGenderResponse,
   VisitorsResponse,
@@ -87,28 +88,41 @@ export const useVisitorsTrafficSourcesLive = (
   });
 };
 
-export const useUsersByGender = (props: GenderProps) => {
+export const useDemographics = ({
+  custom_field_id,
+  ...props
+}: DemographicsProps) => {
+  return useGraphDataUnits<DemographicsResponse>(
+    {
+      resolved_name: 'DemographicsWidget',
+      props: { custom_field_id, ...props },
+    },
+    { enabled: !!custom_field_id }
+  );
+};
+
+export const useUsersByGender = (props: BaseDemographicsProps) => {
   return useGraphDataUnits<UsersByGenderResponse>({
     resolved_name: 'GenderWidget',
     props,
   });
 };
 
-export const useUsersByGenderLive = (props: GenderProps) => {
+export const useUsersByGenderLive = (props: BaseDemographicsProps) => {
   return useGraphDataUnitsLive<UsersByGenderResponse>({
     resolved_name: 'GenderWidget',
     props,
   });
 };
 
-export const useUsersByAge = (props: AgeProps) => {
+export const useUsersByAge = (props: BaseDemographicsProps) => {
   return useGraphDataUnits<UsersByAgeResponse>({
     resolved_name: 'AgeWidget',
     props,
   });
 };
 
-export const useUsersByAgeLive = (props: AgeProps) => {
+export const useUsersByAgeLive = (props: BaseDemographicsProps) => {
   return useGraphDataUnitsLive<UsersByAgeResponse>({
     resolved_name: 'AgeWidget',
     props,

@@ -9,10 +9,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-export const stackedBarTooltip =
+export const tooltip =
   (
     stackIndex: number | undefined,
-    [statusRow]: [Record<string, number>],
+    [row]: [Record<string, number>],
     stackedBarColumns: string[],
     percentages: number[],
     labels: string[]
@@ -26,14 +26,19 @@ export const stackedBarTooltip =
           if (stackIndex === undefined) return null;
 
           const label = labels[stackIndex];
-          const value = statusRow[stackedBarColumns[stackIndex]];
-          const percentage = percentages[stackIndex];
+          const numberOfUsers = row[stackedBarColumns[stackIndex]];
+          const percentageOfUsers = percentages[stackIndex];
 
           return (
             <TooltipOutline label={label}>
               <Box display="flex" justifyContent="center">
-                <FormattedMessage {...messages.inputs} />: {value} ({percentage}
-                %)
+                <FormattedMessage
+                  {...messages.users}
+                  values={{
+                    numberOfUsers,
+                    percentageOfUsers,
+                  }}
+                />
               </Box>
             </TooltipOutline>
           );

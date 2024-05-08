@@ -39,7 +39,6 @@ class LogActivityJob < ApplicationJob
 
   def run(item, action, user, acted_at = nil, options = {})
     activity = create_activity(item, action, user, acted_at, options)
-    update_user_last_acted_at(user, activity.acted_at)
     trigger_notifications(activity)
     trigger_campaigns(activity)
     publish_activity_to_rabbit(activity)
@@ -88,11 +87,5 @@ class LogActivityJob < ApplicationJob
     # notifications that count as segment's monthly active users, which is too
     # expensive
     TrackEventJob.perform_later(activity) unless original_item.is_a?(Notification)
-  end
-
-  def update_user_last_acted_at(user, acted_at)
-    return unless user && acted_at
-
-    user.update!(last_acted_at: acted_at) if user.last_acted_at.nil? || acted_at > user.last_acted_at
   end
 end
