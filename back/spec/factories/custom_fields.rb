@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :custom_field, aliases: [:custom_field_text, :custom_field_extra_custom_form] do # TODO: Remove custom_field_extra_custom_form alias
+  factory :custom_field, aliases: [:custom_field_text] do
     for_registration
 
     sequence(:key) { |n| "field_#{n}" }

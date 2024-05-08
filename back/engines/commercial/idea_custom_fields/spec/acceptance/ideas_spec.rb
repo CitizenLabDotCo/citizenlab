@@ -110,7 +110,7 @@ resource 'Ideas' do
     context 'when the extra field is optional' do
       before do
         form = create(:custom_form, :with_default_fields, participation_context: project)
-        create(:custom_field_extra_custom_form, key: extra_field_name, required: false, resource: form)
+        create(:custom_field, key: extra_field_name, required: false, resource: form)
       end
 
       context 'when the field value is given' do
@@ -155,7 +155,7 @@ resource 'Ideas' do
     end
 
     context 'when the extra field is required' do
-      let!(:text_field) { create(:custom_field_extra_custom_form, key: extra_field_name1, required: true, resource: form) }
+      let!(:text_field) { create(:custom_field, key: extra_field_name1, required: true, resource: form) }
       let(:custom_field_name1) { 'Changed Value' }
 
       context 'when the field value is given' do
@@ -216,7 +216,7 @@ resource 'Ideas' do
     end
 
     context 'when the extra field is optional' do
-      let!(:text_field) { create(:custom_field_extra_custom_form, key: extra_field_name1, required: false, resource: form) }
+      let!(:text_field) { create(:custom_field, key: extra_field_name1, required: false, resource: form) }
 
       context 'when the field value is given' do
         let(:custom_field_name1) { 'Changed Value' }
