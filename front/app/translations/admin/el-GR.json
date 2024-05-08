@@ -15,6 +15,7 @@
   "app.components.Admin.Campaigns.draft": "Σχέδιο",
   "app.components.Admin.Campaigns.manageButtonLabel": "Διαχείριση",
   "app.components.Admin.Campaigns.opened": "Άνοιξε το",
+  "app.components.Admin.Campaigns.project": "Έργο",
   "app.components.Admin.Campaigns.recipientsTitle": "Αποδέκτες",
   "app.components.Admin.Campaigns.sent": "Αποστολή",
   "app.components.Admin.Campaigns.statsButton": "Στατιστικά στοιχεία",
