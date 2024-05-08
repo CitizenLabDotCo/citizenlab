@@ -202,7 +202,7 @@ resource 'Idea Custom Fields' do
 
           assert_status 422
           json_response = json_parse response_body
-          expect(json_response).to eq({ errors: { "11": { input_type: [{ error: 'inclusion', value: 'html_multiloc' }] } } })
+          expect(json_response).to eq({ errors: { '11': { input_type: [{ error: 'inclusion', value: 'html_multiloc' }] } } })
         end
 
         example 'Updating custom fields when there are responses', document: false do

@@ -120,7 +120,7 @@ describe XlsxExport::InputSheetGenerator do
 
       context 'with persisted form' do
         let(:project_form) { create(:custom_form, :with_default_fields, participation_context: phase.project) }
-        let!(:extra_idea_field) { create( :custom_field, resource: project_form) }
+        let!(:extra_idea_field) { create(:custom_field, resource: project_form) }
         let(:assignee) { create(:admin, first_name: 'John', last_name: 'Doe') }
         let(:ideation_response1) do
           create(

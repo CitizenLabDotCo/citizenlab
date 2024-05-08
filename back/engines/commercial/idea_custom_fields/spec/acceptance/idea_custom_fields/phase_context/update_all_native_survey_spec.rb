@@ -302,7 +302,7 @@ resource 'Idea Custom Fields' do
 
         assert_status 422
         json_response = json_parse response_body
-        expect(json_response).to eq({ errors: { "1": { input_type: [{ error: 'inclusion', value: 'topic_ids' }] } } })
+        expect(json_response).to eq({ errors: { '1': { input_type: [{ error: 'inclusion', value: 'topic_ids' }] } } })
       end
 
       context 'Update custom field options with images' do
