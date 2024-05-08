@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :custom_field, aliases: [:custom_field_text] do
+  factory :custom_field, aliases: [:custom_field_text, :custom_field_extra_custom_form] do # TODO: Remove custom_field_extra_custom_form alias
     for_registration
 
     sequence(:key) { |n| "field_#{n}" }
@@ -68,15 +68,6 @@ FactoryBot.define do
         }
       end
       input_type { 'html_multiloc' }
-    end
-
-    factory :custom_field_extra_custom_form do
-      title_multiloc do
-        {
-          'en' => 'An extra question'
-        }
-      end
-      key { 'extra_field' }
     end
 
     factory :custom_field_select do
