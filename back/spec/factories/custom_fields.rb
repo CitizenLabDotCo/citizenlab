@@ -2,7 +2,8 @@
 
 FactoryBot.define do
   factory :custom_field, aliases: [:custom_field_text] do
-    resource_type { 'User' }
+    for_registration
+
     sequence(:key) { |n| "field_#{n}" }
     title_multiloc do
       {
@@ -15,7 +16,14 @@ FactoryBot.define do
       }
     end
     required { false }
+    enabled { true }
+
     input_type { 'text' }
+
+    trait :for_registration do
+      resource_type { 'User' }
+    end
+
     trait :for_custom_form do
       association :resource, factory: :custom_form
     end
@@ -31,13 +39,7 @@ FactoryBot.define do
           'en' => 'Please indicate where you live.'
         }
       end
-      required { false }
       input_type { 'point' }
-      enabled { true }
-
-      trait :for_custom_form do
-        association :resource, factory: :custom_form
-      end
     end
 
     factory :custom_field_multiline_text do
@@ -51,12 +53,7 @@ FactoryBot.define do
           'en' => 'Please explain why you want to join the army.'
         }
       end
-      required { false }
       input_type { 'multiline_text' }
-
-      trait :for_custom_form do
-        association :resource, factory: :custom_form
-      end
     end
 
     factory :custom_field_html_multiloc do
@@ -70,12 +67,7 @@ FactoryBot.define do
           'en' => 'Please explain why you want to join the army.'
         }
       end
-      required { false }
       input_type { 'html_multiloc' }
-
-      trait :for_custom_form do
-        association :resource, factory: :custom_form
-      end
     end
 
     factory :custom_field_extra_custom_form do
@@ -84,11 +76,7 @@ FactoryBot.define do
           'en' => 'An extra question'
         }
       end
-      required { false }
       key { 'extra_field' }
-      input_type { 'text' }
-      enabled { true }
-      resource { create(:custom_form) }
     end
 
     factory :custom_field_select do
@@ -102,9 +90,7 @@ FactoryBot.define do
           'en' => 'Which councils are you attending in our city?'
         }
       end
-      required { false }
       input_type { 'select' }
-      enabled { true }
 
       trait :with_options do
         after(:create) do |cf|
@@ -125,9 +111,7 @@ FactoryBot.define do
           'en' => 'Please indicate how strong you agree or disagree.'
         }
       end
-      required { false }
       input_type { 'linear_scale' }
-      enabled { true }
       maximum { 5 }
       minimum_label_multiloc do
         {
@@ -152,9 +136,7 @@ FactoryBot.define do
           'en' => 'This is a survey on your cycling habits.'
         }
       end
-      required { false }
       input_type { 'page' }
-      enabled { true }
     end
 
     factory :custom_field_section do
@@ -168,9 +150,7 @@ FactoryBot.define do
           'en' => 'This is a section.'
         }
       end
-      required { false }
       input_type { 'section' }
-      enabled { true }
     end
 
     factory :custom_field_multiselect do
@@ -179,9 +159,7 @@ FactoryBot.define do
           'en' => 'What languages do you speak?'
         }
       end
-      required { false }
       input_type { 'multiselect' }
-      enabled { true }
 
       trait :with_options do
         after(:create) do |cf|
@@ -197,9 +175,7 @@ FactoryBot.define do
           'en' => 'Choose an image'
         }
       end
-      required { false }
       input_type { 'multiselect_image' }
-      enabled { true }
 
       trait :with_options do
         after(:create) do |cf|
@@ -215,9 +191,7 @@ FactoryBot.define do
           'en' => 'Upload your CV'
         }
       end
-      required { false }
       input_type { 'file_upload' }
-      enabled { true }
     end
 
     factory :custom_field_checkbox do
@@ -226,9 +200,7 @@ FactoryBot.define do
           'en' => 'I want to join the army'
         }
       end
-      required { true } # default should be false, right?
       input_type { 'checkbox' }
-      enabled { true }
     end
 
     factory :custom_field_date do
@@ -237,9 +209,7 @@ FactoryBot.define do
           'en' => 'When did you last see a mermaid?'
         }
       end
-      required { false }
       input_type { 'date' }
-      enabled { true }
     end
 
     factory :custom_field_number do

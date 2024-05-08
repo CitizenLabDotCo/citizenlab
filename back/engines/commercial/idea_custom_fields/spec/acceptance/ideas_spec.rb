@@ -46,7 +46,6 @@ resource 'Ideas' do
         # - Don't allow duplicating default fields
         # - Simplify factories
         # - Validate input types in params + spec (can't create html_multiloc field in ideation or native survey)
-        # - Let's start with a CustomFieldValuesParamsService, we could eventually introduce a CustomFieldValues class (overwrite model attribute)
         post 'web_api/v1/ideas' do
           [
             { factory: :custom_field_number, value: 42 },
