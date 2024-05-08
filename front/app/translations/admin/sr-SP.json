@@ -15,6 +15,7 @@
   "app.components.Admin.Campaigns.draft": "Draft",
   "app.components.Admin.Campaigns.manageButtonLabel": "Manage",
   "app.components.Admin.Campaigns.opened": "Opened",
+  "app.components.Admin.Campaigns.project": "Project",
   "app.components.Admin.Campaigns.recipientsTitle": "Recipients",
   "app.components.Admin.Campaigns.sent": "Sent",
   "app.components.Admin.Campaigns.statsButton": "Statistics",
