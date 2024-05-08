@@ -15,6 +15,7 @@ export interface ICampaignData {
   id: string;
   type: string;
   attributes: {
+    context_id?: string;
     campaign_name: CampaignName;
     campaign_description_multiloc: Multiloc;
     // Only undefined for invite_received?

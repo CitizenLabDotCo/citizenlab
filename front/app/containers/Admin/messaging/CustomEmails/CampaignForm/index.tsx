@@ -16,6 +16,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IGroupData } from 'api/groups/types';
 import useGroups from 'api/groups/useGroups';
 import useAuthUser from 'api/me/useAuthUser';
+import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -28,6 +29,7 @@ import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWi
 import Select from 'components/HookForm/Select';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { getFullName } from 'utils/textUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
@@ -66,17 +68,20 @@ type CampaignFormProps = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: Partial<FormValues>;
   isLoading: boolean;
+  campaignContextId?: string;
 };
 
 const CampaignForm = ({
   onSubmit,
   defaultValues,
   isLoading,
+  campaignContextId,
 }: CampaignFormProps) => {
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
   const { data: groups } = useGroups({});
   const { data: appConfig } = useAppConfiguration();
+  const { data: project } = useProjectById(campaignContextId);
   const localize = useLocalize();
 
   const schema = object({
@@ -162,21 +167,34 @@ const CampaignForm = ({
             />
           </StyledSectionField>
 
-          <StyledSectionField>
-            <MultipleSelect
-              name="group_ids"
-              placeholder={<FormattedMessage {...messages.allUsers} />}
-              options={groupsOptions(groups?.data || [])}
-              label={
-                <>
-                  <FormattedMessage {...messages.fieldTo} />
-                  <IconTooltip
-                    content={<FormattedMessage {...messages.fieldToTooltip} />}
-                  />
-                </>
-              }
-            />
-          </StyledSectionField>
+          {campaignContextId && project && (
+            <span>
+              <FormattedMessage {...messages.allParticipantsInProject} />
+              <Link to={`/admin/projects/${project.data.id}`}>
+                {localize(project?.data.attributes.title_multiloc)}
+              </Link>
+            </span>
+          )}
+
+          {!campaignContextId && (
+            <StyledSectionField>
+              <MultipleSelect
+                name="group_ids"
+                placeholder={<FormattedMessage {...messages.allUsers} />}
+                options={groupsOptions(groups?.data || [])}
+                label={
+                  <>
+                    <FormattedMessage {...messages.fieldTo} />
+                    <IconTooltip
+                      content={
+                        <FormattedMessage {...messages.fieldToTooltip} />
+                      }
+                    />
+                  </>
+                }
+              />
+            </StyledSectionField>
+          )}
 
           <StyledSectionField>
             <Input

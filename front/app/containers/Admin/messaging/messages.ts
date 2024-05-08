@@ -291,4 +291,8 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.senderRecipients',
     defaultMessage: 'Sender and recipients',
   },
+  allParticipantsInProject: {
+    id: 'app.containers.Admin.emails.allParticipantsInProject',
+    defaultMessage: 'All participants in project',
+  },
 });

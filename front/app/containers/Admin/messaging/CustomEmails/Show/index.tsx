@@ -19,6 +19,7 @@ import useSendCampaign from 'api/campaigns/useSendCampaign';
 import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
 import { isDraft } from 'api/campaigns/util';
 import useAuthUser from 'api/me/useAuthUser';
+import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -32,6 +33,7 @@ import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 import { getFullName } from 'utils/textUtils';
 
@@ -99,6 +101,9 @@ const Show = () => {
   const { data: user } = useAuthUser();
   const { data: tenant } = useAppConfiguration();
   const { data: campaign } = useCampaign(campaignId);
+  const { data: project } = useProjectById(
+    campaign?.data.attributes.context_id
+  );
 
   const {
     mutate: sendCampaign,
@@ -248,11 +253,22 @@ const Show = () => {
                 <FormattedMessage {...messages.campaignTo} />
                 &nbsp;
               </FromToHeader>
-              {noGroupsSelected && (
-                <GroupLink onClick={handleGroupLinkClick()}>
-                  {formatMessage(messages.allUsers)}
-                </GroupLink>
-              )}
+              {campaign.data.attributes.campaign_name ===
+                'manual_project_participants' &&
+                project && (
+                  <span>
+                    <FormattedMessage {...messages.allParticipantsInProject} />
+                    <Link to={`/admin/projects/${project.data.id}`}>
+                      {localize(project?.data.attributes.title_multiloc)}
+                    </Link>
+                  </span>
+                )}
+              {noGroupsSelected &&
+                campaign.data.attributes.campaign_name === 'manual' && (
+                  <GroupLink onClick={handleGroupLinkClick()}>
+                    {formatMessage(messages.allUsers)}
+                  </GroupLink>
+                )}
               {groupIds.map((groupId, index) => (
                 <GetGroup key={groupId} id={groupId}>
                   {(group) => {

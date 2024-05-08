@@ -187,6 +187,9 @@ const Show = () => {
                   <FormattedMessage {...messages.campaignTo} />
                   &nbsp;
                 </FromToHeader>
+                <span>
+                  <FormattedMessage {...messages.projectParticipants} />
+                </span>
               </div>
             </FromTo>
             {isDraft(campaign.data) && (

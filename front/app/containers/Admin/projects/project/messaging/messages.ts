@@ -223,4 +223,8 @@ export default defineMessages({
     id: 'app.containers.Admin.project.emails.senderRecipients',
     defaultMessage: 'Sender and recipients',
   },
+  projectParticipants: {
+    id: 'app.containers.Admin.project.emails.projectParticipants',
+    defaultMessage: 'Project participants',
+  },
 });
