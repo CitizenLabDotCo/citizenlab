@@ -17,6 +17,8 @@ module ImpactTracking
         )
 
         if session
+          current_user&.update!(last_active_at: Time.zone.now)
+
           head :created
         else
           head :internal_server_error
