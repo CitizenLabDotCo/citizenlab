@@ -47,6 +47,15 @@ describe PermissionsUpdateService do
       expect(phase.permissions.pluck(:permitted_by)).to match_array %w[users users users]
     end
 
+    it 'does not change permitted_by to "users" for external surveys permitted_by "everyone"' do
+      phase = create(:typeform_survey_phase, with_permissions: true)
+      permission = phase.permissions.first
+      permission.update!(permitted_by: 'everyone')
+      service.update_permissions_for_scope(phase)
+
+      expect(permission.reload.permitted_by).to eq 'everyone'
+    end
+
     it 'does not changes permitted_by from native_survey if permitted_by is not "everyone"' do
       phase = create(:native_survey_phase, with_permissions: true)
       phase.permissions.first.update!(permitted_by: 'groups')
