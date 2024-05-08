@@ -14,7 +14,7 @@ describe ParticipationPermissionsService do
     let(:permission) { Permission.find_by(permission_scope: nil, action: action) }
     let(:user) { create(:user) }
 
-    before { PermissionsUpdateService.new.update_global_permissions }
+    before { Permissions::PermissionsUpdateService.new.update_global_permissions }
 
     it 'returns nil when action is allowed' do
       groups = create_list(:group, 2)

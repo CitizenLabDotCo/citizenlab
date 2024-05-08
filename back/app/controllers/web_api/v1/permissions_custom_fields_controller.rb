@@ -77,7 +77,7 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
   end
 
   def permission_scope
-    PermissionsUpdateService.new.permission_scope_from_permissions_params(params)
+    Permissions::PermissionsUpdateService.new.permission_scope_from_permissions_params(params)
   end
 
   def permission_action

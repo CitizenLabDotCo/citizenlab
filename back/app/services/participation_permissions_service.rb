@@ -76,7 +76,7 @@ class ParticipationPermissionsService
     permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
 
     if permission.blank? && Permission.available_actions(scope)
-      PermissionsUpdateService.new.update_permissions_for_scope scope
+      Permissions::PermissionsUpdateService.new.update_permissions_for_scope scope
       permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
     end
 

@@ -130,7 +130,7 @@ resource 'Projects' do
       end
 
       example 'Get one project by id' do
-        PermissionsUpdateService.new.update_all_permissions
+        Permissions::PermissionsUpdateService.new.update_all_permissions
         do_request
         assert_status 200
 
