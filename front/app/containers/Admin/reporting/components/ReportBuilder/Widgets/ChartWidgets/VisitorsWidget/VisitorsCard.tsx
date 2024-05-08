@@ -5,11 +5,6 @@ import moment from 'moment';
 
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
-import {
-  ProjectId,
-  DatesStrings,
-  Resolution,
-} from 'components/admin/GraphCards/typings';
 import visitorsCardMessages from 'components/admin/GraphCards/VisitorsCard/messages';
 import Statistic from 'components/admin/Graphs/Statistic';
 
@@ -18,14 +13,18 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import NoData from '../../_shared/NoData';
 import messages from '../messages';
+import { TimeSeriesWidgetProps } from '../typings';
 
 import Chart from './Chart';
 import useVisitors from './useVisitors';
 
-type Props = ProjectId & DatesStrings & Resolution;
-
 // Report specific version of <VisitorsCard/>
-const VisitorsCard = ({ projectId, startAt, endAt, resolution }: Props) => {
+const VisitorsCard = ({
+  projectId,
+  startAt,
+  endAt,
+  resolution = 'month',
+}: TimeSeriesWidgetProps) => {
   const { formatMessage } = useIntl();
 
   const { currentResolution, stats, timeSeries } = useVisitors({
