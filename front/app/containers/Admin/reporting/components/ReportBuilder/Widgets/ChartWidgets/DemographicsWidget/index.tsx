@@ -6,6 +6,8 @@ import { useDemographics } from 'api/graph_data_units';
 
 import useLocalize from 'hooks/useLocalize';
 
+import useLayout from 'containers/Admin/reporting/hooks/useLayout';
+
 import Card from '../../_shared/Card';
 import NoData from '../../_shared/NoData';
 import chartWidgetMessages from '../messages';
@@ -33,6 +35,8 @@ const DemographicsWidget = ({
     group_id: groupId,
   });
 
+  const layout = useLayout();
+
   if (isLoading) return null;
 
   if (!demographicsResponse) {
@@ -40,6 +44,17 @@ const DemographicsWidget = ({
       <Box>
         <NoData message={chartWidgetMessages.noData} />
       </Box>
+    );
+  }
+
+  if (layout === 'narrow') {
+    return (
+      <Card pagebreak className="e2e-demographics-widget">
+        <Text mt="1px" fontWeight="bold" fontSize="m" pr="16px">
+          {localize(title)}
+        </Text>
+        <Chart response={demographicsResponse} />
+      </Card>
     );
   }
 
