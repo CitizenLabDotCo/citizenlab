@@ -1656,7 +1656,7 @@
   "app.containers.AdminPage.ProjectIdeaForm.errorMessage": "Etwas ging schief, bitte versuchen Sie es später nochmal",
   "app.containers.AdminPage.ProjectIdeaForm.expandAll": "Alle Felder aufklappen",
   "app.containers.AdminPage.ProjectIdeaForm.inputForm": "Eingabeformular",
-  "app.containers.AdminPage.ProjectIdeaForm.inputFormDescription": "Legen Sie fest, welche Informationen angegeben werden sollen, fügen Sie kurze Beschreibungen oder Anweisungen hinzu, um die Teilnehmer bei der Beantwortung zu unterstützen, und geben Sie an, ob jedes Feld optional oder erforderlich ist.",
+  "app.containers.AdminPage.ProjectIdeaForm.inputFormDescription": "Legen Sie fest, welche Informationen angegeben werden sollen, fügen Sie kurze Beschreibungen oder Anweisungen hinzu, um die Teilnehmenden bei der Beantwortung zu unterstützen, und geben Sie an, ob jedes Feld optional oder erforderlich ist.",
   "app.containers.AdminPage.ProjectIdeaForm.postDescription": "Legen Sie fest, welche Informationen bereitgestellt werden sollen, fügen Sie kurze Beschreibungen oder Anweisungen hinzu, um die Antworten der Teilnehmenden anzuleiten, und geben Sie an, ob jedes Feld optional oder erforderlich ist",
   "app.containers.AdminPage.ProjectIdeaForm.required": "Erforderlich",
   "app.containers.AdminPage.ProjectIdeaForm.requiredTooltipContent": "Dieses Feld muss ausgefüllt werden.",
