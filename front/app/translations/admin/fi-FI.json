@@ -895,6 +895,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Lisää projektin tavoite, käytetyt osallistumismenetelmät ja tulos",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Vierailijat",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.cannotPrint": "Tämä raportti sisältää tallentamattomia muutoksia. Tallenna ennen tulostusta.",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": "Venyttää",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "Tämän widgetin tiedot puuttuvat. Määritä se uudelleen tai poista se, jotta voit tallentaa raportin.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "Tästä projektista ei löytynyt sopivia vaiheita",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noPhaseSelected": "Vaihetta ei ole valittu. Valitse ensin vaihe.",
