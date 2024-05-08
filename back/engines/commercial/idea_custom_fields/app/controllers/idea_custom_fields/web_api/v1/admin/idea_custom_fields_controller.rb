@@ -111,8 +111,8 @@ module IdeaCustomFields
     end
 
     def create_field!(field_params, errors, page_temp_ids_to_ids_mapping, index)
-      if field_params['input_type'] == 'topic_ids' # !allowed.include?(field_params['input_type'])
-        errors[index.to_s] = "Can't create field with input type: #{field_params['input_type']}"
+      if field_params['code'].nil? && @participation_method.allowed_extra_field_input_types.exclude?(field_params['input_type'])
+        errors[index.to_s] = { input_type: [{ error: 'inclusion', value: field_params['input_type'] }] }
         return false
       end
 
