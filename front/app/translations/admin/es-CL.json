@@ -15,6 +15,7 @@
   "app.components.Admin.Campaigns.draft": "Borrador",
   "app.components.Admin.Campaigns.manageButtonLabel": "Administrar",
   "app.components.Admin.Campaigns.opened": "Abierto",
+  "app.components.Admin.Campaigns.project": "proyectos",
   "app.components.Admin.Campaigns.recipientsTitle": "Destinatarios",
   "app.components.Admin.Campaigns.sent": "Enviado",
   "app.components.Admin.Campaigns.statsButton": "Estadísticas",
