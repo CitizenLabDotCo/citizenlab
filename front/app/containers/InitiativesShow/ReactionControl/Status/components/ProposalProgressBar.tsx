@@ -13,8 +13,6 @@ import messages from '../../messages';
 const StyledProgressBar = styled(ProgressBar)`
   height: 12px;
   width: 100%;
-  border: 1px solid ${colors.primary};
-  border-radius: 4px;
 `;
 
 interface Props {
