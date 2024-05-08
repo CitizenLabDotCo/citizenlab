@@ -1,16 +1,8 @@
 # frozen_string_literal: true
 
 class PermissionsService
-  DENIED_REASONS = {
-    not_signed_in: 'not_signed_in',
-    not_active: 'not_active',
-    not_permitted: 'not_permitted',
-    not_in_group: 'not_in_group',
-    missing_data: 'missing_data',
-    not_verified: 'not_verified',
-    blocked: 'blocked'
-  }.freeze
 
+  # TODO: JS - Scope here is probably just phase OR null now
   def update_permissions_for_scope(scope)
     actions = Permission.available_actions scope
     remove_extras_actions(scope, actions)
@@ -30,20 +22,6 @@ class PermissionsService
     end
 
     Permission.select(&:invalid?).each(&:destroy!)
-  end
-
-  def denied_reason_for_resource(user, action, resource = nil)
-    scope = resource&.permission_scope
-    permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
-
-    if permission.blank? && Permission.available_actions(scope)
-      update_permissions_for_scope scope
-      permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
-    end
-
-    raise "Unknown action '#{action}' for resource: #{resource}" unless permission
-
-    denied_reason_for_permission permission, user
   end
 
   def requirements(permission, user)
@@ -112,33 +90,6 @@ class PermissionsService
     if scope && !scope.native_survey?
       Permission.where(permission_scope: scope, permitted_by: 'everyone').update!(permitted_by: 'users')
     end
-  end
-
-  def denied_reason_for_permission(permission, user)
-    if permission.permitted_by == 'everyone'
-      user ||= User.new
-    else
-      return DENIED_REASONS[:not_signed_in] if !user
-      return DENIED_REASONS[:blocked] if user.blocked?
-
-      if !user.confirmation_required? # Ignore confirmation as this will be checked by the requirements
-        return DENIED_REASONS[:not_active] if !user.active?
-        return if UserRoleService.new.can_moderate? permission.permission_scope, user
-        return DENIED_REASONS[:not_permitted] if permission.permitted_by == 'admins_moderators'
-
-        if permission.permitted_by == 'groups'
-          reason = denied_when_permitted_by_groups?(permission, user)
-          return DENIED_REASONS[reason] if reason.present?
-        end
-      end
-    end
-    return if requirements(permission, user)[:permitted]
-
-    DENIED_REASONS[:missing_data]
-  end
-
-  def denied_when_permitted_by_groups?(permission, user)
-    :not_in_group if !user.in_any_groups?(permission.groups)
   end
 
   def base_requirements(permission)

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class IdeaPermissionsService < ParticipationPermissionsService
+class IdeaPermissionsService < ProjectPermissionsService
   def action_descriptor(idea, user)
     commenting_disabled_reason = commenting_disabled_reason_for_idea(idea, user)
     liking_disabled_reason = idea_reacting_disabled_reason_for(idea, user, mode: 'up')

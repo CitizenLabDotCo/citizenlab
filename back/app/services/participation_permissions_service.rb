@@ -1,6 +1,16 @@
 # frozen_string_literal: true
 
-class ParticipationPermissionsService < PermissionsService
+class ParticipationPermissionsService
+  DENIED_REASONS = {
+    not_signed_in: 'not_signed_in',
+    not_active: 'not_active',
+    not_permitted: 'not_permitted',
+    not_in_group: 'not_in_group',
+    missing_data: 'missing_data',
+    not_verified: 'not_verified',
+    blocked: 'blocked'
+  }.freeze
+
   POSTING_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
     project_not_visible: 'project_not_visible',
@@ -59,6 +69,20 @@ class ParticipationPermissionsService < PermissionsService
     else
       @timeline_service.current_phase project
     end
+  end
+
+  def denied_reason_for_resource(user, action, resource = nil)
+    scope = resource&.permission_scope
+    permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
+
+    if permission.blank? && Permission.available_actions(scope)
+      PermissionsService.new.update_permissions_for_scope scope
+      permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
+    end
+
+    raise "Unknown action '#{action}' for resource: #{resource}" unless permission
+
+    denied_reason_for_permission permission, user
   end
 
   def posting_idea_disabled_reason_for_project(project, user)
@@ -285,6 +309,33 @@ class ParticipationPermissionsService < PermissionsService
 
   private
 
+  def denied_reason_for_permission(permission, user)
+    if permission.permitted_by == 'everyone'
+      user ||= User.new
+    else
+      return DENIED_REASONS[:not_signed_in] if !user
+      return DENIED_REASONS[:blocked] if user.blocked?
+
+      if !user.confirmation_required? # Ignore confirmation as this will be checked by the requirements
+        return DENIED_REASONS[:not_active] if !user.active?
+        return if UserRoleService.new.can_moderate? permission.permission_scope, user
+        return DENIED_REASONS[:not_permitted] if permission.permitted_by == 'admins_moderators'
+
+        if permission.permitted_by == 'groups'
+          reason = denied_when_permitted_by_groups?(permission, user)
+          return DENIED_REASONS[reason] if reason.present?
+        end
+      end
+    end
+    return if PermissionsService.new.requirements(permission, user)[:permitted]
+
+    DENIED_REASONS[:missing_data]
+  end
+
+  def denied_when_permitted_by_groups?(permission, user)
+    :not_in_group if !user.in_any_groups?(permission.groups)
+  end
+
   def idea_in_current_phase?(idea, current_phase = nil)
     project = idea.project
     current_phase ||= get_current_phase project
@@ -344,4 +395,7 @@ class ParticipationPermissionsService < PermissionsService
       POSTING_DISABLED_REASONS[:project_not_visible]
     end
   end
+
 end
+
+ParticipationPermissionsService.prepend(Verification::Patches::ParticipationPermissionsService)
