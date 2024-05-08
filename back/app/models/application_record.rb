@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ApplicationRecord < ActiveRecord::Base
+  include Sluggable
+
   self.abstract_class = true
 
   # do not rename to will_be_destroyed, it overrides activerecord.

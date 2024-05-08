@@ -2,6 +2,7 @@ en:
   email_campaigns:
     campaign_type_description:
       "manual": Official messages
+      "manual_project_participants": Official messages to project participants
       "admin_rights_received": Admin rights received
       "comment_deleted_by_admin": Deletion of my comment
       "comment_marked_as_spam": Comment spam report
@@ -559,6 +560,7 @@ en:
         admins: 'To admins'
         admins_and_managers: 'To admins & managers'
         managers: 'To managers'
+        project_participants: 'To project participants'
         registered_users: 'To registered users'
       recipient_segment:
         admins: 'Admins'

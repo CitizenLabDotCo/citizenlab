@@ -652,6 +652,94 @@ resource 'Projects' do
     end
   end
 
+  get 'web_api/v1/projects/:id/votes_by_user_xlsx' do
+    let(:phase1) { create(:single_voting_phase, start_at: Time.now - 18.days, end_at: Time.now - 17.days) }
+    let(:phase2) { create(:multiple_voting_phase, start_at: Time.now - 14.days, end_at: Time.now - 13.days) }
+    let(:project) { create(:project, phases: [phase1, phase2]) }
+    let(:id) { project.id }
+
+    context 'as a regular user' do
+      before { header_token_for(create(:user)) }
+
+      example_request '[Unauthorized] Get xlsx of voters in voting phases', document: false do
+        expect(status).to eq 401
+      end
+    end
+
+    context 'as an admin' do
+      before { admin_header_token }
+
+      example_request 'Get xlsx of voters in voting phases' do
+        expect(status).to eq 200
+        expect(response_headers['Content-Type']).to include('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        expect(response_headers['Content-Disposition']).to include('votes_by_user.xlsx')
+      end
+    end
+
+    context 'as a project moderator' do
+      before do
+        header 'Content-Type', 'application/json'
+        @user = create(:user, roles: [{ type: 'project_moderator', project_id: project.id }])
+        header_token_for @user
+      end
+
+      example_request 'Get xlsx of voters in voting phases of project the user moderates' do
+        expect(status).to eq 200
+        expect(response_headers['Content-Type']).to include('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        expect(response_headers['Content-Disposition']).to include('votes_by_user.xlsx')
+      end
+
+      example '[Unauthorized] Get xlsx of voters in voting phases of project the user does NOT moderate', document: false do
+        do_request(id: create(:project).id)
+        expect(status).to eq 401
+      end
+    end
+  end
+
+  get 'web_api/v1/projects/:id/votes_by_input_xlsx' do
+    let(:phase1) { create(:single_voting_phase, start_at: Time.now - 18.days, end_at: Time.now - 17.days) }
+    let(:phase2) { create(:multiple_voting_phase, start_at: Time.now - 14.days, end_at: Time.now - 13.days) }
+    let(:project) { create(:project, phases: [phase1, phase2]) }
+    let(:id) { project.id }
+
+    context 'as a regular user' do
+      before { header_token_for(create(:user)) }
+
+      example_request '[Unauthorized] Get xlsx of voting results in voting phases', document: false do
+        expect(status).to eq 401
+      end
+    end
+
+    context 'as an admin' do
+      before { admin_header_token }
+
+      example_request 'Get xlsx of voting results in voting phases' do
+        expect(status).to eq 200
+        expect(response_headers['Content-Type']).to include('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        expect(response_headers['Content-Disposition']).to include('votes_by_input.xlsx')
+      end
+    end
+
+    context 'as a project moderator' do
+      before do
+        header 'Content-Type', 'application/json'
+        @user = create(:user, roles: [{ type: 'project_moderator', project_id: project.id }])
+        header_token_for @user
+      end
+
+      example_request 'Get xlsx of voting results in voting phases of project the user moderates' do
+        expect(status).to eq 200
+        expect(response_headers['Content-Type']).to include('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        expect(response_headers['Content-Disposition']).to include('votes_by_input.xlsx')
+      end
+
+      example '[Unauthorized] Get xlsx of voters in voting phases of project the user does NOT moderate', document: false do
+        do_request(id: create(:project).id)
+        expect(status).to eq 401
+      end
+    end
+  end
+
   get 'web_api/v1/projects' do
     context 'when moderator' do
       before do

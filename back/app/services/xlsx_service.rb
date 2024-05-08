@@ -15,7 +15,7 @@ class XlsxService
 
     wb.styles do |s|
       wb.add_worksheet do |sheet|
-        sheet.add_row headers, style: header_style(s)
+        sheet.add_row remove_duplicate_header_suffix(headers), style: header_style(s)
         hash_array.each do |hash|
           sheet.add_row(headers.map { |header| hash[header] })
         end
@@ -35,8 +35,12 @@ class XlsxService
     workbook = RubyXL::Parser.parse_buffer(xlsx)
     worksheet = workbook.worksheets[0]
     worksheet.drop(1).map do |row|
+      xlsx_utils = XlsxExport::Utils.new
       (row&.cells || []).compact.filter_map do |cell|
-        [worksheet[0][cell.column]&.value, cell.value] if cell.value
+        if cell.value
+          column_header = xlsx_utils.add_duplicate_column_name_suffix(worksheet[0][cell.column]&.value)
+          [column_header, cell.value]
+        end
       end.to_h
     end
   end
@@ -270,6 +274,12 @@ class XlsxService
     end
   end
 
+  def format_author_name(input)
+    return input.author_name unless input.anonymous?
+
+    I18n.t 'xlsx_export.anonymous'
+  end
+
   private
 
   def multiloc_service
@@ -331,10 +341,11 @@ class XlsxService
     "#{field_id}/#{option_key}"
   end
 
-  def format_author_name(input)
-    return input.author_name unless input.anonymous?
-
-    I18n.t 'xlsx_export.anonymous'
+  # Remove any suffixes added for duplicate column names
+  def remove_duplicate_header_suffix(headers)
+    headers.map do |header|
+      XlsxExport::Utils.new.remove_duplicate_column_name_suffix header
+    end
   end
 end
 

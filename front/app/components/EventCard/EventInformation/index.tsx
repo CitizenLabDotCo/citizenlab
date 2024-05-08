@@ -2,7 +2,6 @@ import React from 'react';
 
 import {
   Icon,
-  Button,
   Box,
   Title,
   Text,
@@ -16,6 +15,7 @@ import { IEventData } from 'api/events/types';
 
 import EventAttendanceButton from 'components/EventAttendanceButton';
 import T from 'components/T';
+import Button from 'components/UI/Button';
 import Image from 'components/UI/Image';
 
 import { useIntl } from 'utils/cl-intl';
@@ -149,21 +149,24 @@ const EventInformation = ({ event, goToEvent, titleFontSize }: Props) => {
                 ariaHidden={false}
                 mr="8px"
               />
-              <Text
-                m="0px"
-                color="coolGrey700"
-                fontSize="s"
-                role="button"
-                pt="2px"
+              <a
+                href={onlineLink}
+                target="_blank"
+                rel="noreferrer"
                 onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  window.open(onlineLink, '_blank');
+                  e.stopPropagation(); // Prevent the event from bubbling up to the parent Container
                 }}
-                style={{ textDecoration: 'underline' }}
               >
-                {formatMessage(messages.online)}
-              </Text>
+                <Text
+                  m="0px"
+                  color="coolGrey700"
+                  fontSize="s"
+                  pt="2px"
+                  style={{ textDecoration: 'underline' }}
+                >
+                  {formatMessage(messages.online)}
+                </Text>
+              </a>
             </Box>
           )}
           {event.attributes.attendees_count > 0 && (
