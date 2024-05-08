@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  metaTitle: {
-    id: 'app.containers.InitiativesIndexPage.metaTitle',
-    defaultMessage: 'All Initiatives • {orgName}',
+  metaTitle1: {
+    id: 'app.containers.InitiativesIndexPage.metaTitle1',
+    defaultMessage: 'All proposals | {orgName}',
   },
   invisibleTitleInitiativeCards: {
     id: 'app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards',
@@ -13,9 +13,9 @@ export default defineMessages({
     id: 'app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle',
     defaultMessage: 'Discover Initiatives',
   },
-  metaDescription: {
-    id: 'app.containers.InitiativesIndexPage.metaDescription',
-    defaultMessage: 'Explore and support initiatives conducted in {orgName}',
+  metaDescription1: {
+    id: 'app.containers.InitiativesIndexPage.metaDescription1',
+    defaultMessage: 'Explore and support proposals conducted in {orgName}',
   },
   header: {
     id: 'app.containers.InitiativesIndexPage.header',
