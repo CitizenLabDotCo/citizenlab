@@ -209,9 +209,7 @@ FactoryBot.define do
           'en' => 'How many cheese burgers can you put in your mouth without swallowing?'
         }
       end
-      required { false }
       input_type { 'number' }
-      enabled { true }
     end
 
     factory :custom_field_birthyear do
