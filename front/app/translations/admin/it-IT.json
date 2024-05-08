@@ -15,6 +15,7 @@
   "app.components.Admin.Campaigns.draft": "Bozza",
   "app.components.Admin.Campaigns.manageButtonLabel": "Gestire",
   "app.components.Admin.Campaigns.opened": "Aperto",
+  "app.components.Admin.Campaigns.project": "Progetto",
   "app.components.Admin.Campaigns.recipientsTitle": "Destinatari",
   "app.components.Admin.Campaigns.sent": "Inviato",
   "app.components.Admin.Campaigns.statsButton": "Statistiche",
