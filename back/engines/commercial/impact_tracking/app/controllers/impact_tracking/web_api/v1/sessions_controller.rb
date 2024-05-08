@@ -33,6 +33,8 @@ module ImpactTracking
           highest_role: current_user&.highest_role,
           user_id: current_user.id
         )
+          current_user.update!(last_active_at: Time.zone.now)
+
           head :accepted
         else
           head :internal_server_error
