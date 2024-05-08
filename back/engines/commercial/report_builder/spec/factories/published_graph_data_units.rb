@@ -7,8 +7,7 @@ FactoryBot.define do
     data do
       [{
         'count' => 1,
-        'dimension_date_created.month' => '2022-09',
-        'first_dimension_date_created_date' => date
+        'dimension_date_created.month' => '2022-09'
       }]
     end
   end
