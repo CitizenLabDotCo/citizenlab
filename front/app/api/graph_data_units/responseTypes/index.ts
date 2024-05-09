@@ -5,11 +5,6 @@ import { IProjectData } from 'api/projects/types';
 import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
 
 import {
-  ActiveUsersRow,
-  TimeSeriesResponseRow as UsersTimeSeriesResponseRow,
-} from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/ActiveUsersWidget/useActiveUsers/typings';
-
-import {
   CommentsCountRow,
   TimeSeriesResponseRow as CommentsTimeSeriesResponseRow,
 } from 'components/admin/GraphCards/CommentsByTimeCard/useCommentsByTime/typings';
@@ -71,13 +66,6 @@ export type UsersByAgeResponse = {
     };
   };
 };
-
-export interface ActiveUsersResponse {
-  data: {
-    type: 'report_builder_data_units';
-    attributes: [UsersTimeSeriesResponseRow[] | [], [ActiveUsersRow] | []];
-  };
-}
 
 export type PostsByTimeResponse = {
   data: {

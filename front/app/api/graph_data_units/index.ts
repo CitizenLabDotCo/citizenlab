@@ -8,7 +8,6 @@ import {
   DemographicsProps,
 } from './requestTypes';
 import {
-  ActiveUsersResponse,
   CommentsByTimeResponse,
   MostReactedIdeasResponse,
   PostsByTimeResponse,
@@ -18,6 +17,7 @@ import {
   UsersByAgeResponse,
   UsersByGenderResponse,
 } from './responseTypes';
+import { ActiveUsersResponse } from './responseTypes/ActiveUsersWidget';
 import { DemographicsResponse } from './responseTypes/DemographicsWidget';
 import { VisitorsTrafficSourcesResponse } from './responseTypes/VisitorsTrafficSourcesWidget';
 import { VisitorsResponse } from './responseTypes/VisitorsWidget';
