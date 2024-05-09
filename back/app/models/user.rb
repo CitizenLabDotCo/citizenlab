@@ -34,7 +34,7 @@
 #  followings_count                    :integer          default(0), not null
 #  onboarding                          :jsonb            not null
 #  unique_code                         :string
-#  last_acted_at                       :datetime
+#  last_active_at                      :datetime
 #
 # Indexes
 #

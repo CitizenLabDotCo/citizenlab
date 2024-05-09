@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { ActiveUsersResponse } from 'api/graph_data_units/responseTypes';
+import { ActiveUsersResponse } from 'api/graph_data_units/responseTypes/ActiveUsersWidget';
 
 import { parseTimeSeries, parseStats } from './parse';
 

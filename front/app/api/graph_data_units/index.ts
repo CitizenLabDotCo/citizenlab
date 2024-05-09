@@ -1,3 +1,4 @@
+// Props
 import {
   ActiveUsersProps,
   BaseDemographicsProps,
@@ -8,20 +9,22 @@ import {
   VisitorsTrafficSourcesProps,
   DemographicsProps,
 } from './requestTypes';
+// Response types
 import {
-  ActiveUsersResponse,
-  CommentsByTimeResponse,
-  MostReactedIdeasResponse,
-  PostsByTimeResponse,
-  ReactionsByTimeResponse,
-  SingleIdeaResponse,
-  SurveyQuestionResultResponse,
-  DemographicsResponse,
   UsersByAgeResponse,
   UsersByGenderResponse,
-  VisitorsResponse,
-  VisitorsTrafficSourcesResponse,
-} from './responseTypes';
+} from './responseTypes/_deprecated';
+import { ActiveUsersResponse } from './responseTypes/ActiveUsersWidget';
+import { CommentsByTimeResponse } from './responseTypes/CommentsByTimeWidget';
+import { DemographicsResponse } from './responseTypes/DemographicsWidget';
+import { MostReactedIdeasResponse } from './responseTypes/MostReactedIdeasWidget';
+import { PostsByTimeResponse } from './responseTypes/PostsByTimeWidget';
+import { ReactionsByTimeResponse } from './responseTypes/ReactionsByTimeWidget';
+import { SingleIdeaResponse } from './responseTypes/SingleIdeaWidget';
+import { SurveyQuestionResultResponse } from './responseTypes/SurveyQuestionResultWidget';
+import { VisitorsTrafficSourcesResponse } from './responseTypes/VisitorsTrafficSourcesWidget';
+import { VisitorsResponse } from './responseTypes/VisitorsWidget';
+// Hooks
 import useGraphDataUnits from './useGraphDataUnits';
 import useGraphDataUnitsLive from './useGraphDataUnitsLive';
 
