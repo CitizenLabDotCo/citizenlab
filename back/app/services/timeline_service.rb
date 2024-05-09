@@ -21,6 +21,12 @@ class TimelineService
     project.phases.find { |phase| phase.start_at <= date && (phase.end_at.nil? || phase.end_at >= date) }
   end
 
+  def current_phase_not_archived(project, time = Time.now)
+    return nil if project.admin_publication.archived?
+
+    current_phase project, time
+  end
+
   def phase_is_complete?(phase, time = Time.now)
     date = time.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     phase.end_at.present? && phase.end_at <= date

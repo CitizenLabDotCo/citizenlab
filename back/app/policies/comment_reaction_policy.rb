@@ -53,6 +53,7 @@ class CommentReactionPolicy < ApplicationPolicy
 
   private
 
+  # TODO: JS - not consistent with how ideas are done above
   def denied_for_initiative_reason(user)
     Permissions::PermissionsService.new.denied_reason_for_resource user, 'commenting_initiative'
   end

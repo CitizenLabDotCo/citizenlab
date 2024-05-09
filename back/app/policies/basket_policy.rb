@@ -30,6 +30,7 @@ class BasketPolicy < ApplicationPolicy
 
   def check_voting_allowed(basket, user)
     pcs = Permissions::PermissionsService.new
-    !pcs.voting_disabled_reason_for_phase pcs.get_current_phase(basket.phase.project), user
+    current_phase = TimelineService.new.current_phase_not_archived basket.phase.project
+    !pcs.voting_disabled_reason_for_phase current_phase, user
   end
 end

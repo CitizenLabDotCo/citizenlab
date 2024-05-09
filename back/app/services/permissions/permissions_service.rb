@@ -2,7 +2,7 @@
 
 module Permissions
   class PermissionsService
-    DENIED_REASONS = {
+    USER_DENIED_REASONS = {
       not_signed_in: 'not_signed_in',
       not_active: 'not_active',
       not_permitted: 'not_permitted',
@@ -12,23 +12,24 @@ module Permissions
       blocked: 'blocked'
     }.freeze
 
-    POSTING_DISABLED_REASONS = {
+    PROJECT_DENIED_REASONS = {
       project_inactive: 'project_inactive',
-      project_not_visible: 'project_not_visible',
+      project_not_visible: 'project_not_visible'
+    }.freeze
+
+    POSTING_DENIED_REASONS = {
       not_ideation: 'not_ideation',
       posting_disabled: 'posting_disabled',
       posting_limited_max_reached: 'posting_limited_max_reached'
     }.freeze
 
-    COMMENTING_DISABLED_REASONS = {
-      project_inactive: 'project_inactive',
+    COMMENTING_DENIED_REASONS = {
       not_supported: 'not_supported',
       idea_not_in_current_phase: 'idea_not_in_current_phase',
       commenting_disabled: 'commenting_disabled'
     }.freeze
 
-    REACTING_DISABLED_REASONS = {
-      project_inactive: 'project_inactive',
+    REACTING_DENIED_REASONS = {
       not_ideation: 'not_ideation',
       reacting_disabled: 'reacting_disabled',
       reacting_dislike_disabled: 'reacting_dislike_disabled',
@@ -37,24 +38,20 @@ module Permissions
       idea_not_in_current_phase: 'idea_not_in_current_phase'
     }.freeze
 
-    VOTING_DISABLED_REASONS = {
-      project_inactive: 'project_inactive',
+    VOTING_DENIED_REASONS = {
       not_voting: 'not_voting',
       idea_not_in_current_phase: 'idea_not_in_current_phase'
     }.freeze
 
-    ANNOTATING_DOCUMENT_DISABLED_REASONS = {
-      project_inactive: 'project_inactive',
+    ANNOTATING_DOCUMENT_DENIED_REASONS = {
       not_document_annotation: 'not_document_annotation'
     }.freeze
 
-    TAKING_SURVEY_DISABLED_REASONS = {
-      project_inactive: 'project_inactive',
+    TAKING_SURVEY_DENIED_REASONS = {
       not_survey: 'not_survey'
     }.freeze
 
-    TAKING_POLL_DISABLED_REASONS = {
-      project_inactive: 'project_inactive',
+    TAKING_POLL_DENIED_REASONS = {
       not_poll: 'not_poll',
       already_responded: 'already_responded'
     }.freeze
@@ -64,15 +61,9 @@ module Permissions
       @timeline_service = TimelineService.new
     end
 
-    def get_current_phase(project)
-      if project.admin_publication.archived?
-        nil
-      else
-        @timeline_service.current_phase project
-      end
-    end
-
+    # NOTE: Used in policies
     def denied_reason_for_resource(user, action, resource = nil)
+      # Change to get_permission or something like
       scope = resource&.permission_scope
       permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
 
@@ -83,63 +74,103 @@ module Permissions
 
       raise "Unknown action '#{action}' for resource: #{resource}" unless permission
 
-      denied_reason_for_permission permission, user
+      denied_reason_for_user permission, user
     end
 
-    def posting_idea_disabled_reason_for_project(project, user)
+    def denied_reason_for_project(project, user, action)
       project_visible_reason = project_visible_disabled_reason(project, user)
       if project_visible_reason
         project_visible_reason
       else
-        phase = get_current_phase project
-        posting_idea_disabled_reason_for_phase(phase, user)
+        phase = @timeline_service.current_phase_not_archived project
+        denied_reason_for_phase phase, user, action
       end
     end
 
-    def posting_idea_disabled_reason_for_phase(phase, user)
-      if !phase
-        POSTING_DISABLED_REASONS[:project_inactive]
-      elsif !Factory.instance.participation_method_for(phase).posting_allowed?
-        POSTING_DISABLED_REASONS[:not_ideation] # TODO: (native surveys) change reason code?
-      elsif !phase.posting_enabled
-        POSTING_DISABLED_REASONS[:posting_disabled]
-      elsif user && posting_limit_reached?(phase, user)
-        POSTING_DISABLED_REASONS[:posting_limited_max_reached]
+    # TODO: JS - up and down need to be dealt with here too?
+    def denied_reason_for_phase(phase, user, action)
+      return PROJECT_DENIED_REASONS[:project_inactive] if !phase
+
+      phase_denied_reason = case action
+      when 'posting_idea'
+        posting_idea_disabled_reason_for_phase(phase, user)
+      when 'commenting_idea'
+        commenting_idea_disabled_reason_for_phase(phase)
+      when 'reacting_idea'
+        idea_reacting_disabled_reason_for(phase, user)
+      when 'voting'
+        voting_disabled_reason_for_phase(phase, user)
+      when 'annotating_document'
+        annotating_document_disabled_reason_for_phase(phase)
+      when 'taking_survey'
+        taking_survey_disabled_reason_for_phase(phase)
+      when 'taking_poll'
+        taking_poll_disabled_reason_for_phase(phase, user)
       else
-        denied_reason_for_resource(user, 'posting_idea', phase)
+        raise "Unsupported action: #{action}"
+      end
+      return phase_denied_reason if phase_denied_reason
+
+      denied_reason_for_resource(user, action, phase)
+    end
+
+    ## OLD METHODS ###
+
+    # PHASE METHODS
+    def posting_idea_disabled_reason_for_phase(phase, user)
+      if !Factory.instance.participation_method_for(phase).posting_allowed?
+        POSTING_DENIED_REASONS[:not_ideation] # TODO: native surveys allow posting too - change reason code?
+      elsif !phase.posting_enabled
+        POSTING_DENIED_REASONS[:posting_disabled]
+      elsif user && posting_limit_reached?(phase, user)
+        POSTING_DENIED_REASONS[:posting_limited_max_reached]
       end
     end
+
+    def commenting_idea_disabled_reason_for_phase(phase)
+      if !phase.can_contain_ideas?
+        COMMENTING_DENIED_REASONS[:not_supported]
+      elsif !phase.commenting_enabled
+        COMMENTING_DENIED_REASONS[:commenting_disabled]
+      end
+    end
+
+    def taking_survey_disabled_reason_for_phase(phase)
+      if !phase.survey?
+        TAKING_SURVEY_DENIED_REASONS[:not_survey]
+      end
+    end
+
+    def annotating_document_disabled_reason_for_phase(phase)
+      if !phase.document_annotation?
+        ANNOTATING_DOCUMENT_DENIED_REASONS[:not_document_annotation]
+      end
+    end
+
+    def taking_poll_disabled_reason_for_phase(phase, user)
+      if !phase.poll?
+        TAKING_POLL_DENIED_REASONS[:not_poll]
+      elsif user && phase.poll_responses.exists?(user: user)
+        TAKING_POLL_DENIED_REASONS[:already_responded]
+      end
+    end
+
+    def voting_disabled_reason_for_phase(phase, _user)
+      if !phase.voting?
+        VOTING_DENIED_REASONS[:not_voting]
+      end
+    end
+
+    # IDEA METHODS
 
     def commenting_disabled_reason_for_idea(idea, user)
-      active_phase = get_current_phase idea.project
+      active_phase = @timeline_service.current_phase_not_archived idea.project
       if !active_phase
-        COMMENTING_DISABLED_REASONS[:project_inactive]
+        PROJECT_DENIED_REASONS[:project_inactive]
       elsif !idea_in_current_phase? idea, active_phase
-        COMMENTING_DISABLED_REASONS[:idea_not_in_current_phase]
+        COMMENTING_DENIED_REASONS[:idea_not_in_current_phase]
       else
-        commenting_idea_disabled_reason_for_project(idea.project, user)
-      end
-    end
-
-    def commenting_idea_disabled_reason_for_project(project, user)
-      project_visible_reason = project_visible_disabled_reason(project, user)
-      if project_visible_reason
-        project_visible_reason
-      else
-        phase = get_current_phase project
-        commenting_idea_disabled_reason_for_phase phase, user
-      end
-    end
-
-    def commenting_idea_disabled_reason_for_phase(phase, user)
-      if !phase
-        COMMENTING_DISABLED_REASONS[:project_inactive]
-      elsif !phase.can_contain_ideas?
-        COMMENTING_DISABLED_REASONS[:not_supported]
-      elsif !phase.commenting_enabled
-        COMMENTING_DISABLED_REASONS[:commenting_disabled]
-      else
-        denied_reason_for_resource(user, 'commenting_idea', phase)
+        denied_reason_for_project(idea.project, user, 'commenting_idea')
       end
     end
 
@@ -154,30 +185,30 @@ module Permissions
       when Reaction.name
         mode ||= object.mode
         idea = object.reactable
-        phase = get_current_phase idea.project
+        phase = @timeline_service.current_phase_not_archived idea.project
       when Idea.name
         idea = object
-        phase = get_current_phase idea.project
+        phase = @timeline_service.current_phase_not_archived idea.project
       when Project.name
-        phase = get_current_phase object
+        phase = @timeline_service.current_phase_not_archived object
       when Phase.name
         # This allows checking for future or past
         # phases instead of the current phase.
         phase = object
       else
         ErrorReporter.report_msg("Unsupported context type #{object.class.name}")
-        'unsupported_context_type'
+        'unsupported_context_type' # TODO: JS - constantize this?
       end
 
       # At some point, it may become more desirable
       # to either return multiple reasons or have
       # a predefined ranking of reasons to return
       # the reason with the highest rank.
-      return REACTING_DISABLED_REASONS[:project_inactive] unless phase
+      return PROJECT_DENIED_REASONS[:project_inactive] unless phase
 
       reason = general_idea_reacting_disabled_reason(phase, user)
       return reason if reason
-      return REACTING_DISABLED_REASONS[:idea_not_in_current_phase] if idea && !idea_in_current_phase?(idea, phase)
+      return REACTING_DENIED_REASONS[:idea_not_in_current_phase] if idea && !idea_in_current_phase?(idea, phase)
 
       if mode
         reason = mode_specific_idea_reacting_disabled_reason(mode, phase, user)
@@ -188,98 +219,26 @@ module Permissions
     end
 
     def cancelling_reacting_disabled_reason_for_idea(idea, user)
-      phase = get_current_phase idea.project
+      phase = @timeline_service.current_phase_not_archived idea.project
       if !phase
-        REACTING_DISABLED_REASONS[:project_inactive]
+        REACTING_DENIED_REASONS[:project_inactive]
       elsif !phase.ideation?
-        REACTING_DISABLED_REASONS[:not_ideation]
+        REACTING_DENIED_REASONS[:not_ideation]
       elsif !idea_in_current_phase? idea, phase
-        REACTING_DISABLED_REASONS[:idea_not_in_current_phase]
+        REACTING_DENIED_REASONS[:idea_not_in_current_phase]
       elsif !phase.reacting_enabled
-        REACTING_DISABLED_REASONS[:reacting_disabled]
+        REACTING_DENIED_REASONS[:reacting_disabled]
       else
-        denied_reason_for_resource user, 'reacting_idea', get_current_phase(idea.project)
+        denied_reason_for_resource user, 'reacting_idea', @timeline_service.current_phase_not_archived(idea.project)
       end
-    end
-
-    def taking_survey_disabled_reason_for_project(project, user)
-      project_visible_reason = project_visible_disabled_reason(project, user)
-      if project_visible_reason
-        project_visible_reason
-      else
-        phase = get_current_phase project
-        taking_survey_disabled_reason_for_phase phase, user
-      end
-    end
-
-    def taking_survey_disabled_reason_for_phase(phase, user)
-      if !phase
-        TAKING_SURVEY_DISABLED_REASONS[:project_inactive]
-      elsif !phase.survey?
-        TAKING_SURVEY_DISABLED_REASONS[:not_survey]
-      else
-        denied_reason_for_resource(user, 'taking_survey', phase)
-      end
-    end
-
-    def annotating_document_disabled_reason_for_project(project, user)
-      project_visible_reason = project_visible_disabled_reason(project, user)
-      if project_visible_reason
-        project_visible_reason
-      else
-        phase = get_current_phase project
-        annotating_document_disabled_reason_for_phase phase, user
-      end
-    end
-
-    def annotating_document_disabled_reason_for_phase(phase, user)
-      if !phase
-        ANNOTATING_DOCUMENT_DISABLED_REASONS[:project_inactive]
-      elsif !phase.document_annotation?
-        ANNOTATING_DOCUMENT_DISABLED_REASONS[:not_document_annotation]
-      else
-        denied_reason_for_resource(user, 'annotating_document', phase)
-      end
-    end
-
-    def taking_poll_disabled_reason_for_project(project, user)
-      phase = get_current_phase project
-      taking_poll_disabled_reason_for_phase phase, user
-    end
-
-    def taking_poll_disabled_reason_for_phase(phase, user)
-      if !phase
-        TAKING_POLL_DISABLED_REASONS[:project_inactive]
-      elsif !phase.poll?
-        TAKING_POLL_DISABLED_REASONS[:not_poll]
-      elsif user && phase.poll_responses.exists?(user: user)
-        TAKING_POLL_DISABLED_REASONS[:already_responded]
-      else
-        denied_reason_for_resource(user, 'taking_poll', phase)
-      end
-    end
-
-    def voting_disabled_reason_for_project(project, user)
-      phase = get_current_phase project
-      voting_disabled_reason_for_phase phase, user
     end
 
     def voting_disabled_reason_for_idea(idea, user)
-      phase = get_current_phase idea.project
+      phase = @timeline_service.current_phase_not_archived idea.project
       if phase && !idea_in_current_phase?(idea, phase)
-        VOTING_DISABLED_REASONS[:idea_not_in_current_phase]
+        VOTING_DENIED_REASONS[:idea_not_in_current_phase]
       else
-        voting_disabled_reason_for_phase phase, user
-      end
-    end
-
-    def voting_disabled_reason_for_phase(phase, user)
-      if !phase
-        VOTING_DISABLED_REASONS[:project_inactive]
-      elsif !phase.voting?
-        VOTING_DISABLED_REASONS[:not_voting]
-      else
-        denied_reason_for_resource(user, 'voting', phase)
+        denied_reason_for_phase phase, user, 'voting'
       end
     end
 
@@ -288,8 +247,8 @@ module Permissions
       @timeline_service.future_phases(project, time).find { |phase| !posting_idea_disabled_reason_for_phase(phase, user) }
     end
 
-    def future_commenting_idea_enabled_phase(project, user, time = Time.zone.now)
-      @timeline_service.future_phases(project, time).find { |phase| !commenting_idea_disabled_reason_for_phase(phase, user) }
+    def future_commenting_idea_enabled_phase(project, _user, time = Time.zone.now)
+      @timeline_service.future_phases(project, time).find { |phase| !commenting_idea_disabled_reason_for_phase(phase) }
     end
 
     def future_liking_idea_enabled_phase(project, user, time = Time.zone.now)
@@ -310,45 +269,43 @@ module Permissions
 
     private
 
-    def denied_reason_for_permission(permission, user)
+    def denied_reason_for_user(permission, user)
       if permission.permitted_by == 'everyone'
         user ||= User.new
       else
-        return DENIED_REASONS[:not_signed_in] if !user
-        return DENIED_REASONS[:blocked] if user.blocked?
+        return USER_DENIED_REASONS[:not_signed_in] if !user
+        return USER_DENIED_REASONS[:blocked] if user.blocked?
 
         if !user.confirmation_required? # Ignore confirmation as this will be checked by the requirements
-          return DENIED_REASONS[:not_active] if !user.active?
+          return USER_DENIED_REASONS[:not_active] if !user.active?
           return if UserRoleService.new.can_moderate? permission.permission_scope, user
-          return DENIED_REASONS[:not_permitted] if permission.permitted_by == 'admins_moderators'
+          return USER_DENIED_REASONS[:not_permitted] if permission.permitted_by == 'admins_moderators'
 
           if permission.permitted_by == 'groups'
             reason = denied_when_permitted_by_groups?(permission, user)
-            return DENIED_REASONS[reason] if reason.present?
+            return USER_DENIED_REASONS[reason] if reason.present?
           end
         end
       end
       return if Permissions::RegistrationRequirementsService.new.requirements(permission, user)[:permitted]
 
-      DENIED_REASONS[:missing_data]
+      USER_DENIED_REASONS[:missing_data]
     end
 
     def denied_when_permitted_by_groups?(permission, user)
-      :not_in_group if !user.in_any_groups?(permission.groups)
+      :not_in_group unless user.in_any_groups?(permission.groups)
     end
 
-    def idea_in_current_phase?(idea, current_phase = nil)
-      project = idea.project
-      current_phase ||= get_current_phase project
+    def idea_in_current_phase?(idea, current_phase)
       idea.ideas_phases.find { |ip| ip.phase_id == current_phase.id }
     end
 
     # Common reason regardless of the reaction type.
     def general_idea_reacting_disabled_reason(phase, _user)
       if !phase.ideation?
-        REACTING_DISABLED_REASONS[:not_ideation]
+        REACTING_DENIED_REASONS[:not_ideation]
       elsif !phase.reacting_enabled
-        REACTING_DISABLED_REASONS[:reacting_disabled]
+        REACTING_DENIED_REASONS[:reacting_disabled]
       end
     end
 
@@ -356,13 +313,13 @@ module Permissions
       case mode
       when 'up'
         if user && liking_limit_reached?(phase, user)
-          REACTING_DISABLED_REASONS[:reacting_like_limited_max_reached]
+          REACTING_DENIED_REASONS[:reacting_like_limited_max_reached]
         end
       when 'down'
         if !phase.reacting_dislike_enabled
-          REACTING_DISABLED_REASONS[:reacting_dislike_disabled]
+          REACTING_DENIED_REASONS[:reacting_dislike_disabled]
         elsif user && disliking_limit_reached?(phase, user)
-          REACTING_DISABLED_REASONS[:reacting_dislike_limited_max_reached]
+          REACTING_DENIED_REASONS[:reacting_dislike_limited_max_reached]
         end
       else
         ErrorReporter.report_msg("Unsupported reaction type #{mode}")
@@ -393,7 +350,7 @@ module Permissions
     def project_visible_disabled_reason(project, user)
       if (project.visible_to == 'admins' && !user.admin?) ||
          (project.visible_to == 'groups' && !user.in_any_groups?(project.groups))
-        POSTING_DISABLED_REASONS[:project_not_visible]
+        PROJECT_DENIED_REASONS[:project_not_visible]
       end
     end
   end

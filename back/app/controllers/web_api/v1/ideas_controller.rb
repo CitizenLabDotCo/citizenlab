@@ -136,7 +136,7 @@ class WebApi::V1::IdeasController < ApplicationController
     phase = if is_moderator && phase_ids.any?
       Phase.find(phase_ids.first)
     else
-      Permissions::PermissionsService.new.get_current_phase(project)
+      TimelineService.new.current_phase_not_archived(project)
     end
     send_error and return unless phase
 
@@ -182,7 +182,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def update
     input = Idea.find params[:id]
     project = input.project
-    phase = Permissions::PermissionsService.new.get_current_phase project
+    phase = TimelineService.new.current_phase_not_archived project
     authorize input
 
     if invalid_blank_author_for_update? input, params

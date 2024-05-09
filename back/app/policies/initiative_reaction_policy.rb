@@ -36,6 +36,7 @@ class InitiativeReactionPolicy < ApplicationPolicy
   end
 
   def down?
+    # TODO: JS - should this reason be in a permissions service
     raise_not_authorized('dislikes_not_supported')
   end
 

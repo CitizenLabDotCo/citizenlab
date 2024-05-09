@@ -68,6 +68,27 @@ describe TimelineService do
     end
   end
 
+  describe 'current_phase_not_archived' do
+    it 'returns the active phase for a timeline project' do
+      random_title = SecureRandom.uuid
+      project = create(
+        :project_with_current_phase,
+        current_phase_attrs: { title_multiloc: { 'en' => random_title } }
+      )
+      expect(service.current_phase_not_archived(project).title_multiloc['en']).to eq random_title
+    end
+
+    it 'returns nil for a timeline project without an active phase' do
+      project = create(:project_with_past_phases)
+      expect(service.current_phase_not_archived(project)).to be_nil
+    end
+
+    it "returns nil for a timeline project that's archived" do
+      project = create(:project_with_current_phase, admin_publication_attributes: { publication_status: 'archived' })
+      expect(service.current_phase_not_archived(project)).to be_nil
+    end
+  end
+
   describe 'phase_is_complete?' do
     let(:project) { create(:project) }
 

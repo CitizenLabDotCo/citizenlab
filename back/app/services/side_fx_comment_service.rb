@@ -54,11 +54,10 @@ class SideFxCommentService
   private
 
   def check_participation_context(comment, user)
-    pcs = Permissions::PermissionsService.new
     idea = comment.post if comment.post_type == 'Idea'
     return unless idea
 
-    disallowed_reason = pcs.commenting_disabled_reason_for_idea(idea, user)
+    disallowed_reason = Permissions::PermissionsService.new.commenting_disabled_reason_for_idea(idea, user)
     return unless disallowed_reason
 
     raise ClErrors::TransactionError.new(error_key: disallowed_reason)

@@ -3,15 +3,15 @@
 module Permissions
   class ProjectPermissionsService < Permissions::PermissionsService
     def action_descriptor(project, user)
-      posting_disabled_reason = posting_idea_disabled_reason_for_project project, user # Can move to project service
-      commenting_disabled_reason = commenting_idea_disabled_reason_for_project project, user # Used by commenting_idea_disabled_reason_for_idea
+      posting_disabled_reason = denied_reason_for_project project, user, 'posting_idea' # Can move to project service
+      commenting_disabled_reason = denied_reason_for_project project, user, 'commenting_idea' # Used by commenting_idea_disabled_reason_for_idea
       reacting_disabled_reason = idea_reacting_disabled_reason_for project, user
       liking_disabled_reason = idea_reacting_disabled_reason_for project, user, mode: 'up'
       disliking_disabled_reason = idea_reacting_disabled_reason_for project, user, mode: 'down'
-      annotating_document_disabled_reason = annotating_document_disabled_reason_for_project project, user # Can move to project service
-      taking_survey_disabled_reason = taking_survey_disabled_reason_for_project project, user # Can move to project service
-      taking_poll_disabled_reason = taking_poll_disabled_reason_for_project project, user # Can move to project service
-      voting_disabled_reason = voting_disabled_reason_for_project project, user # Can move to project service
+      annotating_document_disabled_reason = denied_reason_for_project project, user, 'annotating_document' # Can move to project service
+      taking_survey_disabled_reason = denied_reason_for_project project, user, 'taking_survey' # Can move to project service
+      taking_poll_disabled_reason = denied_reason_for_project project, user, 'taking_poll' # Can move to project service
+      voting_disabled_reason = denied_reason_for_project project, user, 'voting' # Can move to project service
       {
         posting_idea: {
           enabled: !posting_disabled_reason,

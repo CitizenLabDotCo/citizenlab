@@ -29,7 +29,7 @@ resource 'Ideas' do
       end
       ValidationErrorHelper.new.error_fields self, Idea
       response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
-      response_field :base, "Array containing objects with signature { error: #{Permissions::PermissionsService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
+      response_field :base, "Array containing objects with signature { error: #{Permissions::PermissionsService::POSTING_DENIED_REASONS.values.join(' | ')} }", scope: :errors
 
       let(:idea) { build(:idea) }
       let(:project) { create(:single_phase_ideation_project) }
@@ -751,7 +751,7 @@ resource 'Ideas' do
       end
       ValidationErrorHelper.new.error_fields(self, Idea)
       response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
-      response_field :base, "Array containing objects with signature { error: #{Permissions::PermissionsService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
+      response_field :base, "Array containing objects with signature { error: #{Permissions::PermissionsService::POSTING_DENIED_REASONS.values.join(' | ')} }", scope: :errors
 
       let(:idea) { build(:idea) }
       let(:with_permissions) { false }
@@ -1121,7 +1121,7 @@ resource 'Ideas' do
       end
       ValidationErrorHelper.new.error_fields(self, Idea)
       response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
-      response_field :base, "Array containing objects with signature { error: #{Permissions::PermissionsService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
+      response_field :base, "Array containing objects with signature { error: #{Permissions::PermissionsService::POSTING_DENIED_REASONS.values.join(' | ')} }", scope: :errors
 
       describe do
         before do
