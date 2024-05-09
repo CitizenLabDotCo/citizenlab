@@ -15,6 +15,8 @@ class ReportBuilder::Queries::Analytics::Base < ReportBuilder::Queries::Base
     results
   end
 
+  protected
+
   def query(**_props)
     raise NotImplementedError
   end

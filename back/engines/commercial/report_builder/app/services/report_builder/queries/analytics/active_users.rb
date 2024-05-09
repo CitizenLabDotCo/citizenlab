@@ -1,5 +1,7 @@
 module ReportBuilder
   class Queries::Analytics::ActiveUsers < Queries::Analytics::Base
+    protected
+
     def query(
       start_at: nil,
       end_at: nil,
@@ -80,18 +82,6 @@ module ReportBuilder
       end
 
       queries
-    end
-
-    private
-
-    def previous_period_dates(start_at, end_at)
-      start_at = Date.parse(start_at)
-      end_at = Date.parse(end_at)
-
-      previous_period_start_at = start_at - (end_at - start_at) - 1.day
-      previous_period_end_at = start_at - 1.day
-
-      [previous_period_start_at.to_s, previous_period_end_at.to_s]
     end
   end
 end
