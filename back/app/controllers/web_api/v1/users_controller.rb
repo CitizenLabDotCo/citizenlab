@@ -6,7 +6,7 @@ class WebApi::V1::UsersController < ApplicationController
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  def index
+  def index # rubocop:disable Metrics/CyclomaticComplexity
     authorize :user, :index?
 
     @users = policy_scope User
@@ -21,7 +21,11 @@ class WebApi::V1::UsersController < ApplicationController
     @users = @users.admin.or(@users.project_moderator).or(@users.project_folder_moderator) if params[:can_moderate].present?
     @users = @users.not_project_folder_moderator(params[:is_not_folder_moderator]) if params[:is_not_folder_moderator].present?
     @users = @users.not_citizenlab_member if params[:not_citizenlab_member].present?
-    @users = @users.admin if params[:can_admin].present?
+
+    case params[:can_admin]&.downcase
+    when 'true' then @users = @users.admin
+    when 'false' then @users = @users.not_admin
+    end
 
     if params[:search].blank?
       @users = case params[:sort]
@@ -29,6 +33,10 @@ class WebApi::V1::UsersController < ApplicationController
         @users.order(created_at: :asc)
       when '-created_at'
         @users.order(created_at: :desc)
+      when 'last_active_at'
+        @users.order(last_active_at: :asc)
+      when '-last_active_at'
+        @users.order(last_active_at: :desc)
       when 'last_name'
         @users.order(last_name: :asc)
       when '-last_name'

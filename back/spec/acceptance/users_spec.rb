@@ -384,7 +384,7 @@ resource 'Users' do
         parameter :group, 'Filter by group_id', required: false
         parameter :can_moderate_project, 'Filter by users (and admins) who can moderate the project (by id)', required: false
         parameter :can_moderate, 'Return only admins and moderators', required: false
-        parameter :can_admin, 'Return only admins', required: false
+        parameter :can_admin, 'Return only admins if value is true, only non-admins if value is false', required: false
         parameter :blocked, 'Return only blocked users', required: false
 
         example_request 'List all users' do
@@ -442,6 +442,20 @@ resource 'Users' do
 
           sorted_last_names = User.pluck(:last_name).sort
           expect(json_response[:data].map { |u| u.dig(:attributes, :last_name) }).to eq sorted_last_names
+        end
+
+        example 'List all users sorted by last_active_at' do
+          User.all.each_with_index do |user, i|
+            user.update!(last_active_at: Time.now - i.days)
+          end
+
+          do_request sort: 'last_active_at'
+
+          assert_status 200
+          json_response = json_parse(response_body)
+
+          sorted_by_last_active_at_emails = User.order(:last_active_at).pluck(:email)
+          expect(json_response[:data].map { |u| u.dig(:attributes, :email) }).to eq sorted_by_last_active_at_emails
         end
 
         example 'List all users in group' do
@@ -568,6 +582,19 @@ resource 'Users' do
           do_request(can_moderate: true)
           json_response = json_parse(response_body)
           expect(json_response[:data].pluck(:id)).to match_array [a.id, m1.id, m2.id, @user.id]
+        end
+
+        example 'List all moderators who are not admins' do
+          p = create(:project)
+          m1 = create(:project_moderator, projects: [p])
+          m2 = create(:project_moderator)
+          f = create(:project_folder_moderator, project_folders: [create(:project_folder)])
+          create(:admin, roles: [{ type: 'admin' }, { type: 'project_moderator', project_id: p.id }])
+          create(:user)
+
+          do_request(can_moderate: true, can_admin: false)
+          json_response = json_parse(response_body)
+          expect(json_response[:data].pluck(:id)).to match_array [m1.id, m2.id, f.id]
         end
 
         example 'List all admins' do
