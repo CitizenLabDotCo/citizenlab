@@ -269,7 +269,7 @@ describe LocalProjectCopyService do
       let(:permission) do
         Permissions::PermissionsUpdateService.new.update_all_permissions
         TimelineService.new
-                       .current_phase_not_archived(source_project).permissions
+          .current_phase_not_archived(source_project).permissions
           .find_by(action: 'commenting_idea')
       end
 

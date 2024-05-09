@@ -116,51 +116,6 @@ module Permissions
 
     ## OLD METHODS ###
 
-    # PHASE METHODS
-    def posting_idea_disabled_reason_for_phase(phase, user)
-      if !Factory.instance.participation_method_for(phase).posting_allowed?
-        POSTING_DENIED_REASONS[:not_ideation] # TODO: native surveys allow posting too - change reason code?
-      elsif !phase.posting_enabled
-        POSTING_DENIED_REASONS[:posting_disabled]
-      elsif user && posting_limit_reached?(phase, user)
-        POSTING_DENIED_REASONS[:posting_limited_max_reached]
-      end
-    end
-
-    def commenting_idea_disabled_reason_for_phase(phase)
-      if !phase.can_contain_ideas?
-        COMMENTING_DENIED_REASONS[:not_supported]
-      elsif !phase.commenting_enabled
-        COMMENTING_DENIED_REASONS[:commenting_disabled]
-      end
-    end
-
-    def taking_survey_disabled_reason_for_phase(phase)
-      if !phase.survey?
-        TAKING_SURVEY_DENIED_REASONS[:not_survey]
-      end
-    end
-
-    def annotating_document_disabled_reason_for_phase(phase)
-      if !phase.document_annotation?
-        ANNOTATING_DOCUMENT_DENIED_REASONS[:not_document_annotation]
-      end
-    end
-
-    def taking_poll_disabled_reason_for_phase(phase, user)
-      if !phase.poll?
-        TAKING_POLL_DENIED_REASONS[:not_poll]
-      elsif user && phase.poll_responses.exists?(user: user)
-        TAKING_POLL_DENIED_REASONS[:already_responded]
-      end
-    end
-
-    def voting_disabled_reason_for_phase(phase, _user)
-      if !phase.voting?
-        VOTING_DENIED_REASONS[:not_voting]
-      end
-    end
-
     # IDEA METHODS
 
     def commenting_disabled_reason_for_idea(idea, user)
@@ -269,6 +224,7 @@ module Permissions
 
     private
 
+    # User methods
     def denied_reason_for_user(permission, user)
       if permission.permitted_by == 'everyone'
         user ||= User.new
@@ -294,6 +250,51 @@ module Permissions
 
     def denied_when_permitted_by_groups?(permission, user)
       :not_in_group unless user.in_any_groups?(permission.groups)
+    end
+
+    # Phase methods
+    def posting_idea_disabled_reason_for_phase(phase, user)
+      if !Factory.instance.participation_method_for(phase).posting_allowed?
+        POSTING_DENIED_REASONS[:not_ideation] # TODO: native surveys allow posting too - change reason code?
+      elsif !phase.posting_enabled
+        POSTING_DENIED_REASONS[:posting_disabled]
+      elsif user && posting_limit_reached?(phase, user)
+        POSTING_DENIED_REASONS[:posting_limited_max_reached]
+      end
+    end
+
+    def commenting_idea_disabled_reason_for_phase(phase)
+      if !phase.can_contain_ideas?
+        COMMENTING_DENIED_REASONS[:not_supported]
+      elsif !phase.commenting_enabled
+        COMMENTING_DENIED_REASONS[:commenting_disabled]
+      end
+    end
+
+    def taking_survey_disabled_reason_for_phase(phase)
+      if !phase.survey?
+        TAKING_SURVEY_DENIED_REASONS[:not_survey]
+      end
+    end
+
+    def annotating_document_disabled_reason_for_phase(phase)
+      if !phase.document_annotation?
+        ANNOTATING_DOCUMENT_DENIED_REASONS[:not_document_annotation]
+      end
+    end
+
+    def taking_poll_disabled_reason_for_phase(phase, user)
+      if !phase.poll?
+        TAKING_POLL_DENIED_REASONS[:not_poll]
+      elsif user && phase.poll_responses.exists?(user: user)
+        TAKING_POLL_DENIED_REASONS[:already_responded]
+      end
+    end
+
+    def voting_disabled_reason_for_phase(phase, _user)
+      if !phase.voting?
+        VOTING_DENIED_REASONS[:not_voting]
+      end
     end
 
     def idea_in_current_phase?(idea, current_phase)

@@ -40,7 +40,7 @@ module Polls
 
     def check_responding_allowed(response, user)
       pcs = Permissions::PermissionsService.new
-      !pcs.taking_poll_disabled_reason_for_phase response.phase, user
+      !pcs.denied_reason_for_phase response.phase, user, 'taking_poll'
     end
   end
 end
