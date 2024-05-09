@@ -21,7 +21,7 @@ Rails.application.routes.draw do
         resources :followers, only: [:create]
       end
       concern :post do
-        resources :activities, only: [:index]
+        # resources :activities, only: [:index]
         resources :comments, shallow: true,
           concerns: %i[reactable spam_reportable],
           defaults: { reactable: 'Comment', spam_reportable: 'Comment' } do
