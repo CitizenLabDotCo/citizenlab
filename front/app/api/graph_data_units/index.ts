@@ -18,9 +18,9 @@ import {
   DemographicsResponse,
   UsersByAgeResponse,
   UsersByGenderResponse,
-  VisitorsResponse,
-  VisitorsTrafficSourcesResponse,
 } from './responseTypes';
+import { VisitorsTrafficSourcesResponse } from './responseTypes/VisitorsTrafficSourcesWidget';
+import { VisitorsResponse } from './responseTypes/VisitorsWidget';
 import useGraphDataUnits from './useGraphDataUnits';
 import useGraphDataUnitsLive from './useGraphDataUnitsLive';
 

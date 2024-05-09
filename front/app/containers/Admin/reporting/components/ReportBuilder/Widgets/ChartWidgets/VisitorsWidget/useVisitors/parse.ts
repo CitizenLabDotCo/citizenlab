@@ -1,10 +1,10 @@
 import moment, { Moment } from 'moment';
 
-import { VisitorsResponse } from 'api/graph_data_units/responseTypes';
 import {
   TimeSeries,
   TimeSeriesResponseRow,
   TimeSeriesRow,
+  VisitorsResponse,
 } from 'api/graph_data_units/responseTypes/VisitorsWidget';
 
 import { timeSeriesParser } from 'components/admin/GraphCards/_utils/timeSeries';

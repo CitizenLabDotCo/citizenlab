@@ -21,12 +21,6 @@ import {
   ReactionsCountRow,
   TimeSeriesResponseRow as ReactionsTimeSeriesResponseRow,
 } from 'components/admin/GraphCards/ReactionsByTimeCard/useReactionsByTime/typings';
-import { TrafficSourcesRow } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/typings';
-
-import {
-  TotalsRow as VisitorsTotalsRow,
-  TimeSeriesResponseRow as VisitorsTimeSeriesResponseRow,
-} from './VisitorsWidget';
 
 // Survey question results
 export type SurveyQuestionResultResponse = {
@@ -57,23 +51,6 @@ export type SingleIdeaResponse = {
     };
   };
 };
-
-export type VisitorsResponse = {
-  data: {
-    type: 'report_builder_data_units';
-    attributes: [
-      [VisitorsTotalsRow] | [],
-      VisitorsTimeSeriesResponseRow[] | []
-    ];
-  };
-};
-
-export interface VisitorsTrafficSourcesResponse {
-  data: {
-    type: 'report_builder_data_units';
-    attributes: TrafficSourcesRow[];
-  };
-}
 
 export type DemographicsResponse = {
   data: {

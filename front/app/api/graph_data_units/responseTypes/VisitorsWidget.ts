@@ -21,3 +21,10 @@ export interface TimeSeriesRow {
 }
 
 export type TimeSeries = TimeSeriesRow[];
+
+export type VisitorsResponse = {
+  data: {
+    type: 'report_builder_data_units';
+    attributes: [[TotalsRow] | [], TimeSeriesResponseRow[] | []];
+  };
+};
