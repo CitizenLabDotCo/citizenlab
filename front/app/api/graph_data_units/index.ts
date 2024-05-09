@@ -9,7 +9,6 @@ import {
 } from './requestTypes';
 import {
   CommentsByTimeResponse,
-  MostReactedIdeasResponse,
   PostsByTimeResponse,
   ReactionsByTimeResponse,
   SingleIdeaResponse,
@@ -18,6 +17,7 @@ import {
 } from './responseTypes';
 import { ActiveUsersResponse } from './responseTypes/ActiveUsersWidget';
 import { DemographicsResponse } from './responseTypes/DemographicsWidget';
+import { MostReactedIdeasResponse } from './responseTypes/MostReactedIdeasWidget';
 import { SurveyQuestionResultResponse } from './responseTypes/SurveyQuestionResultWidget';
 import { VisitorsTrafficSourcesResponse } from './responseTypes/VisitorsTrafficSourcesWidget';
 import { VisitorsResponse } from './responseTypes/VisitorsWidget';
