@@ -15,10 +15,10 @@ import {
   ReactionsByTimeResponse,
   SingleIdeaResponse,
   SurveyQuestionResultResponse,
-  DemographicsResponse,
   UsersByAgeResponse,
   UsersByGenderResponse,
 } from './responseTypes';
+import { DemographicsResponse } from './responseTypes/DemographicsWidget';
 import { VisitorsTrafficSourcesResponse } from './responseTypes/VisitorsTrafficSourcesWidget';
 import { VisitorsResponse } from './responseTypes/VisitorsWidget';
 import useGraphDataUnits from './useGraphDataUnits';
