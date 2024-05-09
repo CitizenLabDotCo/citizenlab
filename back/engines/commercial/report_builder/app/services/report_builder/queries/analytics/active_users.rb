@@ -53,7 +53,7 @@ module ReportBuilder
       ]
 
       if compare_start_at.present? && compare_end_at.present?
-        active_users_previous_period_query = {
+        active_users_compared_period_query = {
           fact: 'participation',
           filters: {
             **project_filter('dimension_project_id', project_id),
@@ -66,7 +66,7 @@ module ReportBuilder
           }
         }
 
-        visitors_previous_period_query = {
+        visitors_compared_period_query = {
           fact: 'visit',
           filters: {
             **project_filter('dimension_projects.id', project_id),
@@ -77,8 +77,8 @@ module ReportBuilder
           }
         }
 
-        queries << active_users_previous_period_query
-        queries << visitors_previous_period_query
+        queries << active_users_compared_period_query
+        queries << visitors_compared_period_query
       end
 
       queries
