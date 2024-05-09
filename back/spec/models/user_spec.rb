@@ -1176,10 +1176,13 @@ RSpec.describe User do
           expect { user.update!(email: invalid_email) }.to raise_error(ActiveRecord::RecordInvalid)
         end
 
-        context 'the user is not active' do
+        context 'when form submitted' do
+          let(:save_options) { { context: :form_submission } }
+
           it 'cannot change the email if the user is passwordless' do
             user.update!(password: nil)
-            expect { user.update!(email: email) }.to raise_error(ActiveRecord::RecordInvalid)
+            user.assign_attributes(email: email)
+            expect { user.save!(**save_options) }.to raise_error(ActiveRecord::RecordInvalid)
           end
         end
       end

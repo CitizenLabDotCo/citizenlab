@@ -210,7 +210,7 @@ class User < ApplicationRecord
   # NOTE: All validation except for required
   validates :custom_field_values, json: {
     schema: -> { CustomFieldService.new.fields_to_json_schema_ignore_required(CustomField.with_resource_type('User')) }
-  }, on: :form_submission
+  }, on: :form_submission, if: :custom_field_values_changed?
 
   validates :password, length: { maximum: 72 }, allow_nil: true
   # Custom validation is required to deal with the
@@ -223,7 +223,7 @@ class User < ApplicationRecord
 
   validate :validate_not_duplicate_email
   validate :validate_not_duplicate_new_email
-  validate :validate_can_update_email
+  validate :validate_can_update_email, on: :form_submission
   validate :validate_email_domains_blacklist
 
   with_options if: -> { user_confirmation_enabled? } do
