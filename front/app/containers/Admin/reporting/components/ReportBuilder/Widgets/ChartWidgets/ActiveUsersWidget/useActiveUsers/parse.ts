@@ -48,7 +48,7 @@ export const parseTimeSeries = (
 
 export const parseStats = (data: ActiveUsersResponse['data']['attributes']) => {
   const activeUsersWholePeriod = data[1][0];
-  const activeUsersPreviousPeriod = data[2]?.[0];
+  const activeUsersPreviousPeriod = data[3]?.[0];
 
   const wholePeriodValue = activeUsersWholePeriod?.count_participant_id ?? 0;
   const previousPeriodValue = activeUsersPreviousPeriod?.count_participant_id;
