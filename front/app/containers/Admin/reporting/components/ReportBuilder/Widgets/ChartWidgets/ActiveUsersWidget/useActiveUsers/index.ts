@@ -5,7 +5,9 @@ import moment from 'moment';
 import { useActiveUsers as useActiveUsersData } from 'api/graph_data_units';
 import { ActiveUsersProps } from 'api/graph_data_units/requestTypes';
 
-import { parseTimeSeries, parseStats } from './parse';
+import { parseTimeSeries } from 'components/admin/GraphCards/ActiveUsersCard/useActiveUsers/parse';
+
+import { parseStats } from './parse';
 
 export default function useActiveUsers({
   project_id,
