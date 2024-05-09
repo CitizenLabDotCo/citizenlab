@@ -7,7 +7,6 @@ import {
   VisitorsTrafficSourcesProps,
   DemographicsProps,
 } from './requestTypes';
-import { ReactionsByTimeResponse } from './responseTypes';
 import {
   UsersByAgeResponse,
   UsersByGenderResponse,
@@ -17,6 +16,7 @@ import { CommentsByTimeResponse } from './responseTypes/CommentsByTimeWidget';
 import { DemographicsResponse } from './responseTypes/DemographicsWidget';
 import { MostReactedIdeasResponse } from './responseTypes/MostReactedIdeasWidget';
 import { PostsByTimeResponse } from './responseTypes/PostsByTimeWidget';
+import { ReactionsByTimeResponse } from './responseTypes/ReactionsByTimeWidget';
 import { SingleIdeaResponse } from './responseTypes/SingleIdeaWidget';
 import { SurveyQuestionResultResponse } from './responseTypes/SurveyQuestionResultWidget';
 import { VisitorsTrafficSourcesResponse } from './responseTypes/VisitorsTrafficSourcesWidget';
