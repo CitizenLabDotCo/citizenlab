@@ -444,6 +444,20 @@ resource 'Users' do
           expect(json_response[:data].map { |u| u.dig(:attributes, :last_name) }).to eq sorted_last_names
         end
 
+        example 'List all users sorted by last_active_at' do
+          User.all.each_with_index do |user, i|
+            user.update!(last_active_at: Time.now - i.days)
+          end
+
+          do_request sort: 'last_active_at'
+
+          assert_status 200
+          json_response = json_parse(response_body)
+
+          sorted_by_last_active_at_emails = User.order(:last_active_at).pluck(:email)
+          expect(json_response[:data].map { |u| u.dig(:attributes, :email) }).to eq sorted_by_last_active_at_emails
+        end
+
         example 'List all users in group' do
           group = create(:group)
           group_users = create_list(:user, 3, manual_groups: [group])
