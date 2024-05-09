@@ -52,9 +52,9 @@ export const parseTimeSeries = (
 
 export const parseStats = (data: Response['data']['attributes']): Stats => {
   const activeUsersWholePeriod = data[1][0];
-  const activeUsersLastPeriod = data[2][0];
-  const visitsWholePeriod = data[3][0];
-  const visitsLastPeriod = data[4][0];
+  const visitsWholePeriod = data[2][0];
+  const activeUsersLastPeriod = data[3]?.[0];
+  const visitsLastPeriod = data[4]?.[0];
 
   const participationRateWholePeriod = getConversionRate(
     activeUsersWholePeriod?.count_participant_id ?? 0,

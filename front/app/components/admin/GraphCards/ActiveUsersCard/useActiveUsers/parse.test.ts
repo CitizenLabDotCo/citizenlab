@@ -68,8 +68,8 @@ describe('parseStats', () => {
         },
       ],
       [{ count_participant_id: 4 }],
-      [{ count_participant_id: 4 }],
       [{ count_visitor_id: 2 }],
+      [{ count_participant_id: 4 }],
       [{ count_visitor_id: 0 }],
     ];
 
@@ -96,8 +96,8 @@ describe('parseStats', () => {
         },
       ],
       [{ count_participant_id: 3 }],
-      [{ count_participant_id: 3 }],
       [{ count_visitor_id: 1 }],
+      [{ count_participant_id: 3 }],
       [],
     ];
 

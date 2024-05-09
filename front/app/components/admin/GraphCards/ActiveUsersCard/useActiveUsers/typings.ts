@@ -14,9 +14,9 @@ export interface Response {
     attributes: [
       TimeSeriesResponse | [],
       [ActiveUsersRow] | [],
-      [ActiveUsersRow] | [],
       [VisitorsRow] | [],
-      [VisitorsRow] | []
+      [ActiveUsersRow] | [] | undefined,
+      [VisitorsRow] | [] | undefined
     ];
   };
 }
