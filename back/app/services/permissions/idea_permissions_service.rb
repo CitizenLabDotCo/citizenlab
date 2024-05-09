@@ -3,11 +3,11 @@
 module Permissions
   class IdeaPermissionsService < Permissions::ProjectPermissionsService
     def action_descriptor(idea, user)
-      commenting_disabled_reason = commenting_disabled_reason_for_idea(idea, user)
+      commenting_disabled_reason = denied_reason_for_idea(idea, user, 'commenting_idea')
       liking_disabled_reason = idea_reacting_disabled_reason_for(idea, user, mode: 'up')
       disliking_disabled_reason = idea_reacting_disabled_reason_for(idea, user, mode: 'down')
       cancelling_reactions_disabled_reason = cancelling_reacting_disabled_reason_for_idea(idea, user)
-      voting_disabled_reason = voting_disabled_reason_for_idea(idea, user)
+      voting_disabled_reason = denied_reason_for_idea(idea, user, 'voting')
       comment_reacting_disabled_reason = reacting_disabled_reason_for_idea_comment(Comment.new(post: idea), user)
 
       {

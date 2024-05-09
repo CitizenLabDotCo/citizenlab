@@ -17,6 +17,10 @@ module Permissions
       project_not_visible: 'project_not_visible'
     }.freeze
 
+    IDEA_DENIED_REASONS = {
+      idea_not_in_current_phase: 'idea_not_in_current_phase'
+    }.freeze
+
     POSTING_DENIED_REASONS = {
       not_ideation: 'not_ideation',
       posting_disabled: 'posting_disabled',
@@ -25,7 +29,6 @@ module Permissions
 
     COMMENTING_DENIED_REASONS = {
       not_supported: 'not_supported',
-      idea_not_in_current_phase: 'idea_not_in_current_phase',
       commenting_disabled: 'commenting_disabled'
     }.freeze
 
@@ -35,12 +38,10 @@ module Permissions
       reacting_dislike_disabled: 'reacting_dislike_disabled',
       reacting_like_limited_max_reached: 'reacting_like_limited_max_reached',
       reacting_dislike_limited_max_reached: 'reacting_dislike_limited_max_reached',
-      idea_not_in_current_phase: 'idea_not_in_current_phase'
     }.freeze
 
     VOTING_DENIED_REASONS = {
       not_voting: 'not_voting',
-      idea_not_in_current_phase: 'idea_not_in_current_phase'
     }.freeze
 
     ANNOTATING_DOCUMENT_DENIED_REASONS = {
@@ -61,7 +62,6 @@ module Permissions
       @timeline_service = TimelineService.new
     end
 
-    # NOTE: Used in policies
     def denied_reason_for_resource(user, action, resource = nil)
       # Change to get_permission or something like
       scope = resource&.permission_scope
@@ -87,7 +87,6 @@ module Permissions
       end
     end
 
-    # TODO: JS - up and down need to be dealt with here too?
     def denied_reason_for_phase(phase, user, action)
       return PROJECT_DENIED_REASONS[:project_inactive] if !phase
 
@@ -114,23 +113,22 @@ module Permissions
       denied_reason_for_resource(user, action, phase)
     end
 
-    ## OLD METHODS ###
-
     # IDEA METHODS
-
-    def commenting_disabled_reason_for_idea(idea, user)
-      active_phase = @timeline_service.current_phase_not_archived idea.project
-      if !active_phase
-        PROJECT_DENIED_REASONS[:project_inactive]
-      elsif !idea_in_current_phase? idea, active_phase
-        COMMENTING_DENIED_REASONS[:idea_not_in_current_phase]
+    def denied_reason_for_idea(idea, user, action)
+      # TODO: JS - only allow for certain actions? Only commenting_idea && voting
+      current_phase = @timeline_service.current_phase_not_archived idea.project
+      # TODO: JS - Does it matter that project_inactive now comes later? Which it was for 'commenting_idea' Feels like idea specific reasons should come last tbh
+      # if !active_phase
+      #   PROJECT_DENIED_REASONS[:project_inactive]
+      if current_phase && !idea_in_current_phase?(idea, current_phase)
+        IDEA_DENIED_REASONS[:idea_not_in_current_phase]
       else
-        denied_reason_for_project(idea.project, user, 'commenting_idea')
+        denied_reason_for_phase current_phase, user, action
       end
     end
 
     def reacting_disabled_reason_for_idea_comment(comment, user)
-      commenting_disabled_reason_for_idea comment.post, user
+      denied_reason_for_idea comment.post, user, 'commenting_idea'
     end
 
     def idea_reacting_disabled_reason_for(object, user, mode: nil)
@@ -155,6 +153,7 @@ module Permissions
         'unsupported_context_type' # TODO: JS - constantize this?
       end
 
+      # TODO: JS - make more generic
       # At some point, it may become more desirable
       # to either return multiple reasons or have
       # a predefined ranking of reasons to return
@@ -163,7 +162,7 @@ module Permissions
 
       reason = general_idea_reacting_disabled_reason(phase, user)
       return reason if reason
-      return REACTING_DENIED_REASONS[:idea_not_in_current_phase] if idea && !idea_in_current_phase?(idea, phase)
+      return IDEA_DENIED_REASONS[:idea_not_in_current_phase] if idea && !idea_in_current_phase?(idea, phase)
 
       if mode
         reason = mode_specific_idea_reacting_disabled_reason(mode, phase, user)
@@ -185,15 +184,6 @@ module Permissions
         REACTING_DENIED_REASONS[:reacting_disabled]
       else
         denied_reason_for_resource user, 'reacting_idea', @timeline_service.current_phase_not_archived(idea.project)
-      end
-    end
-
-    def voting_disabled_reason_for_idea(idea, user)
-      phase = @timeline_service.current_phase_not_archived idea.project
-      if phase && !idea_in_current_phase?(idea, phase)
-        VOTING_DENIED_REASONS[:idea_not_in_current_phase]
-      else
-        denied_reason_for_phase phase, user, 'voting'
       end
     end
 

@@ -445,7 +445,7 @@ describe Permissions::PermissionsService do
       project = create(:project_with_current_phase)
       expect(service.denied_reason_for_project(project, user, 'commenting_idea')).to be_nil
       idea = create(:idea, project: project, phases: [project.phases[2]])
-      expect(service.commenting_disabled_reason_for_idea(idea, user)).to be_nil
+      expect(service.denied_reason_for_idea(idea, user, 'commenting_idea')).to be_nil
     end
 
     it 'returns `commenting_disabled` when commenting is disabled in the current phase' do
@@ -455,28 +455,28 @@ describe Permissions::PermissionsService do
       )
       expect(service.denied_reason_for_project(project, user, 'commenting_idea')).to eq 'commenting_disabled'
       idea = create(:idea, project: project, phases: [project.phases[2]])
-      expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'commenting_disabled'
+      expect(service.denied_reason_for_idea(idea, user, 'commenting_idea')).to eq 'commenting_disabled'
     end
 
     it "returns 'project_inactive' when the timeline hasn't started" do
       project = create(:project_with_future_phases)
       expect(service.denied_reason_for_project(project, user, 'commenting_idea')).to eq 'project_inactive'
       idea = create(:idea, project: project, phases: [project.phases[2]])
-      expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'project_inactive'
+      expect(service.denied_reason_for_idea(idea, user, 'commenting_idea')).to eq 'project_inactive'
     end
 
     it "returns 'project_inactive' when the timeline is over" do
       project = create(:project_with_past_phases)
       expect(service.denied_reason_for_project(project, user, 'commenting_idea')).to eq 'project_inactive'
       idea = create(:idea, project: project, phases: [project.phases[2]])
-      expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'project_inactive'
+      expect(service.denied_reason_for_idea(idea, user, 'commenting_idea')).to eq 'project_inactive'
     end
 
     it "returns 'project_inactive' when the project is archived" do
       project = create(:project_with_current_phase, admin_publication_attributes: { publication_status: 'archived' })
       expect(service.denied_reason_for_project(project, user, 'commenting_idea')).to eq 'project_inactive'
       idea = create(:idea, project: project, phases: [project.phases[2]])
-      expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'project_inactive'
+      expect(service.denied_reason_for_idea(idea, user, 'commenting_idea')).to eq 'project_inactive'
     end
 
     it "returns nil when we're in a participatory budgeting context" do
@@ -486,13 +486,13 @@ describe Permissions::PermissionsService do
       )
       expect(service.denied_reason_for_project(project, user, 'commenting_idea')).to be_nil
       idea = create(:idea, project: project, phases: [project.phases[2]])
-      expect(service.commenting_disabled_reason_for_idea(idea, user)).to be_nil
+      expect(service.denied_reason_for_idea(idea, user, 'commenting_idea')).to be_nil
     end
 
     it "returns 'idea_not_in_current_phase' for an idea when it's not in the current phase" do
       project = create(:project_with_current_phase)
       idea = create(:idea, project: project, phases: [project.phases[1]])
-      expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'idea_not_in_current_phase'
+      expect(service.denied_reason_for_idea(idea, user, 'commenting_idea')).to eq 'idea_not_in_current_phase'
     end
 
     context 'with phase permissions' do
@@ -506,7 +506,7 @@ describe Permissions::PermissionsService do
         expect(service.denied_reason_for_project(project, nil, 'commenting_idea')).to eq 'not_signed_in'
 
         idea = create(:idea, project: project, phases: [project.phases[2]])
-        expect(service.commenting_disabled_reason_for_idea(idea, nil)).to eq 'not_signed_in'
+        expect(service.denied_reason_for_idea(idea, nil, 'commenting_idea')).to eq 'not_signed_in'
       end
 
       it 'returns `not_in_group` commenting is not permitted for the user' do
@@ -514,14 +514,14 @@ describe Permissions::PermissionsService do
         expect(service.denied_reason_for_project(project, user, 'commenting_idea')).to eq 'not_in_group'
 
         idea = create(:idea, project: project, phases: [project.phases[2]])
-        expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'not_in_group'
+        expect(service.denied_reason_for_idea(idea, user, 'commenting_idea')).to eq 'not_in_group'
       end
 
       it "returns 'commenting_disabled' when commenting is disabled in the phase" do
         project.phases[2].update!(commenting_enabled: false)
         expect(service.denied_reason_for_project(project, user, 'commenting_idea')).to eq 'commenting_disabled'
         idea = create(:idea, project: project, phases: [project.phases[2]])
-        expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'commenting_disabled'
+        expect(service.denied_reason_for_idea(idea, user, 'commenting_idea')).to eq 'commenting_disabled'
       end
     end
   end
@@ -1026,7 +1026,7 @@ describe Permissions::PermissionsService do
         sequence: 'xxcxx'
       }, current_phase_attrs: { participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 10_000 })
       idea = create(:idea, project: project, phases: [project.phases[2]])
-      expect(service.voting_disabled_reason_for_idea(idea, create(:user))).to be_nil
+      expect(service.denied_reason_for_idea(idea, create(:user), 'voting')).to be_nil
     end
 
     it 'returns `idea_not_in_current_phase` when the idea is not in the current phase, budgeting is allowed in the current phase and was allowed in the last phase the idea was part of' do
@@ -1034,7 +1034,7 @@ describe Permissions::PermissionsService do
         sequence: 'xxcxx'
       }, current_phase_attrs: { participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 10_000 })
       idea = create(:idea, project: project, phases: [project.phases[1]])
-      expect(service.voting_disabled_reason_for_idea(idea, create(:user))).to eq 'idea_not_in_current_phase'
+      expect(service.denied_reason_for_idea(idea, create(:user), 'voting')).to eq 'idea_not_in_current_phase'
     end
 
     it "returns 'idea_not_in_current_phase' when the idea is not in the current phase, budgeting is permitted but was not permitted in the last phase the idea was part of" do
@@ -1049,7 +1049,7 @@ describe Permissions::PermissionsService do
         group_ids: create_list(:group, 2).map(&:id)
       )
       idea = create(:idea, project: project, phases: [project.phases[0], project.phases[1]])
-      expect(service.voting_disabled_reason_for_idea(idea, create(:user))).to eq 'idea_not_in_current_phase'
+      expect(service.denied_reason_for_idea(idea, create(:user), 'voting')).to eq 'idea_not_in_current_phase'
     end
 
     it 'returns `not_signed_in` when user needs to be signed in' do
@@ -1061,7 +1061,7 @@ describe Permissions::PermissionsService do
       permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'voting')
       permission.update!(permitted_by: 'users')
       expect(service.denied_reason_for_project(project, nil, 'voting')).to eq 'not_signed_in'
-      expect(service.voting_disabled_reason_for_idea(idea, nil)).to eq 'not_signed_in'
+      expect(service.denied_reason_for_idea(idea, nil, 'voting')).to eq 'not_signed_in'
     end
 
     it 'returns `not_in_group` when the idea is in the current phase and voting is not permitted' do
@@ -1076,21 +1076,21 @@ describe Permissions::PermissionsService do
         group_ids: create_list(:group, 2).map(&:id)
       )
       expect(service.denied_reason_for_project(project, create(:user), 'voting')).to eq 'not_in_group'
-      expect(service.voting_disabled_reason_for_idea(idea, create(:user))).to eq 'not_in_group'
+      expect(service.denied_reason_for_idea(idea, create(:user), 'voting')).to eq 'not_in_group'
     end
 
     it "returns 'project_inactive' when the timeline is over" do
       project = create(:project_with_past_phases)
       idea = create(:idea, project: project, phases: [project.phases[2]])
       expect(service.denied_reason_for_project(project, create(:user), 'voting')).to eq 'project_inactive'
-      expect(service.voting_disabled_reason_for_idea(idea, create(:user))).to eq 'project_inactive'
+      expect(service.denied_reason_for_idea(idea, create(:user), 'voting')).to eq 'project_inactive'
     end
 
     it "returns 'project_inactive' when the project is archived" do
       project = create(:single_phase_budgeting_project, admin_publication_attributes: { publication_status: 'archived' })
       idea = create(:idea, project: project)
       expect(service.denied_reason_for_project(project, create(:user), 'voting')).to eq 'project_inactive'
-      expect(service.voting_disabled_reason_for_idea(idea, create(:user))).to eq 'project_inactive'
+      expect(service.denied_reason_for_idea(idea, create(:user), 'voting')).to eq 'project_inactive'
     end
   end
 

@@ -57,7 +57,7 @@ class SideFxCommentService
     idea = comment.post if comment.post_type == 'Idea'
     return unless idea
 
-    disallowed_reason = Permissions::PermissionsService.new.commenting_disabled_reason_for_idea(idea, user)
+    disallowed_reason = Permissions::PermissionsService.new.denied_reason_for_idea(idea, user, 'commenting_idea')
     return unless disallowed_reason
 
     raise ClErrors::TransactionError.new(error_key: disallowed_reason)

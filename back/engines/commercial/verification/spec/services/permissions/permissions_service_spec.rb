@@ -106,7 +106,7 @@ describe Permissions::PermissionsService do
       permission.update!(permitted_by: 'groups', group_ids: [create(:group).id, verified_members.id])
       expect(service.denied_reason_for_project(project, user, 'commenting_idea')).to eq 'not_verified'
       idea = create(:idea, project: project, phases: [project.phases[2]])
-      expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'not_verified'
+      expect(service.denied_reason_for_idea(idea, user, 'commenting_idea')).to eq 'not_verified'
     end
   end
 
@@ -196,7 +196,7 @@ describe Permissions::PermissionsService do
       permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'voting')
       verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
       permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
-      expect(service.voting_disabled_reason_for_idea(idea, create(:user))).to eq 'not_verified'
+      expect(service.denied_reason_for_idea(idea, create(:user))).to eq 'not_verified'
     end
   end
 end
