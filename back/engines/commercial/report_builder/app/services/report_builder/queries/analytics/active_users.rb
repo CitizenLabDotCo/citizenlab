@@ -5,7 +5,8 @@ module ReportBuilder
       end_at: nil,
       project_id: nil,
       resolution: nil,
-      compare_previous_period: nil,
+      prev_start_at: nil,
+      prev_end_at: nil,
       **_other_props
     )
       time_series_query = {
@@ -35,7 +36,7 @@ module ReportBuilder
       visitors_whole_period_query = {
         fact: 'visit',
         filters: {
-          **project_filter('dimension_project_id', project_id),
+          **project_filter('dimension_projects.id', project_id),
           **date_filter('dimension_date_first_action', start_at, end_at)
         },
         aggregations: {
@@ -49,15 +50,13 @@ module ReportBuilder
         visitors_whole_period_query
       ]
 
-      if start_at.present? && end_at.present? && compare_previous_period == 'true'
-        previous_start_at, previous_end_at = previous_period_dates(start_at, end_at)
-
+      if prev_start_at.present? && prev_end_at.present?
         active_users_previous_period_query = {
           fact: 'participation',
           filters: {
             **project_filter('dimension_project_id', project_id),
             **date_filter(
-              'dimension_date_created', previous_start_at, previous_end_at
+              'dimension_date_created', prev_start_at, prev_end_at
             )
           },
           aggregations: {
@@ -68,8 +67,8 @@ module ReportBuilder
         visitors_previous_period_query = {
           fact: 'visit',
           filters: {
-            **project_filter('dimension_project_id', project_id),
-            **date_filter('dimension_date_first_action', previous_start_at, previous_end_at)
+            **project_filter('dimension_projects.id', project_id),
+            **date_filter('dimension_date_first_action', prev_start_at, prev_end_at)
           },
           aggregations: {
             visitor_id: 'count'

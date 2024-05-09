@@ -27,7 +27,8 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
           }],
           [{
             'count_participant_id' => 1
-          }]
+          }],
+          []
         ]
       )
     end
@@ -85,7 +86,8 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
           ],
           [{
             'count_participant_id' => 8
-          }]
+          }],
+          []
         ]
       )
     end
@@ -112,9 +114,10 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
 
       params = {
         start_at: Date.new(2022, 10, 1).to_s,
-        end_at: Date.new(2022, 10, 31).to_s,
+        end_at: Date.new(2022, 10, 31).to_s, # 30 days
         project_id: project.id,
-        compare_previous_period: true
+        prev_start_at: Date.new(2022, 8, 31).to_s,
+        prev_end_at: Date.new(2022, 9, 30).to_s # also 30 days
       }
 
       expect(query.run_query(**params)).to eq(
@@ -129,37 +132,12 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
           [{
             'count_participant_id' => 3
           }],
+          [],
           [{
             'count_participant_id' => 2
-          }]
+          }],
+          []
         ]
-      )
-    end
-  end
-
-  describe '#query' do
-    it 'calculates correct previous period dates' do
-      queries = query.query(
-        start_at: Date.new(2023, 1, 1).to_s,
-        end_at: Date.new(2023, 4, 1).to_s,
-        compare_previous_period: true
-      )
-
-      expect(queries[2]).to eq(
-        {
-          fact: 'participation',
-          filters: {
-            # 2023-01-01 - 2023-04-01 is exactly 90 days,
-            # 2022-10-02 - 2022-12-31 is exactly 90 days too
-            'dimension_date_created.date' => {
-              from: '2022-10-02',
-              to: '2022-12-31'
-            }
-          },
-          aggregations: {
-            participant_id: 'count'
-          }
-        }
       )
     end
   end
