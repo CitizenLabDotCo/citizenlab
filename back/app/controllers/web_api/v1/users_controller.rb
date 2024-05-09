@@ -6,7 +6,7 @@ class WebApi::V1::UsersController < ApplicationController
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  def index
+  def index # rubocop:disable Metrics/CyclomaticComplexity
     authorize :user, :index?
 
     @users = policy_scope User
