@@ -1,9 +1,9 @@
-export interface TimeSeriesResponseRow extends InputsCountRow {
-  first_dimension_date_created_date: string;
+interface InputsCountRow {
+  count: number;
 }
 
-export interface InputsCountRow {
-  count: number;
+export interface TimeSeriesResponseRow extends InputsCountRow {
+  first_dimension_date_created_date: string;
 }
 
 export type PostsByTimeResponse = {

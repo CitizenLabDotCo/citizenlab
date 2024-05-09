@@ -1,4 +1,4 @@
-export interface TrafficSourcesRow {
+interface TrafficSourcesRow {
   count: number;
   'dimension_referrer_type.id': string;
   first_dimension_referrer_type_name: ReferrerTypeName;

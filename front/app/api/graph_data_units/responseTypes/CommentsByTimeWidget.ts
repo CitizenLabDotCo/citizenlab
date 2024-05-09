@@ -1,9 +1,9 @@
-export interface TimeSeriesResponseRow extends CommentsCountRow {
-  first_dimension_date_created_date: string;
+interface CommentsCountRow {
+  count: number;
 }
 
-export interface CommentsCountRow {
-  count: number;
+export interface TimeSeriesResponseRow extends CommentsCountRow {
+  first_dimension_date_created_date: string;
 }
 
 export type CommentsByTimeResponse = {
