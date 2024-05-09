@@ -21,7 +21,11 @@ class WebApi::V1::UsersController < ApplicationController
     @users = @users.admin.or(@users.project_moderator).or(@users.project_folder_moderator) if params[:can_moderate].present?
     @users = @users.not_project_folder_moderator(params[:is_not_folder_moderator]) if params[:is_not_folder_moderator].present?
     @users = @users.not_citizenlab_member if params[:not_citizenlab_member].present?
-    @users = @users.admin if params[:can_admin].present?
+
+    case params[:can_admin]&.downcase
+    when 'true' then @users = @users.admin
+    when 'false' then @users = @users.not_admin
+    end
 
     if params[:search].blank?
       @users = case params[:sort]
