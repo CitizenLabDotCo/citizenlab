@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { DemographicsResponse } from 'api/graph_data_units/responseTypes';
+import { DemographicsResponse } from 'api/graph_data_units/responseTypes/DemographicsWidget';
 
 import useLocalize from 'hooks/useLocalize';
 

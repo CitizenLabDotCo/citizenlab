@@ -11,13 +11,15 @@ import {
   CommentsByTimeResponse,
   PostsByTimeResponse,
   ReactionsByTimeResponse,
-  SingleIdeaResponse,
+} from './responseTypes';
+import {
   UsersByAgeResponse,
   UsersByGenderResponse,
-} from './responseTypes';
+} from './responseTypes/_deprecated';
 import { ActiveUsersResponse } from './responseTypes/ActiveUsersWidget';
 import { DemographicsResponse } from './responseTypes/DemographicsWidget';
 import { MostReactedIdeasResponse } from './responseTypes/MostReactedIdeasWidget';
+import { SingleIdeaResponse } from './responseTypes/SingleIdeaWidget';
 import { SurveyQuestionResultResponse } from './responseTypes/SurveyQuestionResultWidget';
 import { VisitorsTrafficSourcesResponse } from './responseTypes/VisitorsTrafficSourcesWidget';
 import { VisitorsResponse } from './responseTypes/VisitorsWidget';
