@@ -13,12 +13,12 @@ import {
   PostsByTimeResponse,
   ReactionsByTimeResponse,
   SingleIdeaResponse,
-  SurveyQuestionResultResponse,
   UsersByAgeResponse,
   UsersByGenderResponse,
 } from './responseTypes';
 import { ActiveUsersResponse } from './responseTypes/ActiveUsersWidget';
 import { DemographicsResponse } from './responseTypes/DemographicsWidget';
+import { SurveyQuestionResultResponse } from './responseTypes/SurveyQuestionResultWidget';
 import { VisitorsTrafficSourcesResponse } from './responseTypes/VisitorsTrafficSourcesWidget';
 import { VisitorsResponse } from './responseTypes/VisitorsWidget';
 import useGraphDataUnits from './useGraphDataUnits';

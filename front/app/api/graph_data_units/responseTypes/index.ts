@@ -2,7 +2,6 @@ import { IIdeaImageData } from 'api/idea_images/types';
 import { IIdeaData } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
-import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
 
 import {
   CommentsCountRow,
@@ -16,14 +15,6 @@ import {
   ReactionsCountRow,
   TimeSeriesResponseRow as ReactionsTimeSeriesResponseRow,
 } from 'components/admin/GraphCards/ReactionsByTimeCard/useReactionsByTime/typings';
-
-// Survey question results
-export type SurveyQuestionResultResponse = {
-  data: {
-    type: 'report_builder_data_units';
-    attributes: ResultGrouped | ResultUngrouped;
-  };
-};
 
 export type MostReactedIdeasResponse = {
   data: {
