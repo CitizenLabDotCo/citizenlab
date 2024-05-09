@@ -32,23 +32,52 @@ module ReportBuilder
         }
       }
 
-      queries = [time_series_query, active_users_whole_period_query]
+      visitors_whole_period_query = {
+        fact: 'visit',
+        filters: {
+          **project_filter('dimension_project_id', project_id),
+          **date_filter('dimension_date_first_action', start_at, end_at)
+        },
+        aggregations: {
+          visitor_id: 'count'
+        }
+      }
+
+      queries = [
+        time_series_query,
+        active_users_whole_period_query,
+        visitors_whole_period_query
+      ]
 
       if start_at.present? && end_at.present? && compare_previous_period == 'true'
-        previous_period_start_at, previous_period_end_at = previous_period_dates(start_at, end_at)
+        previous_start_at, previous_end_at = previous_period_dates(start_at, end_at)
 
         active_users_previous_period_query = {
           fact: 'participation',
           filters: {
             **project_filter('dimension_project_id', project_id),
-            **date_filter('dimension_date_created', previous_period_start_at, previous_period_end_at)
+            **date_filter(
+              'dimension_date_created', previous_start_at, previous_end_at
+            )
           },
           aggregations: {
             participant_id: 'count'
           }
         }
 
+        visitors_previous_period_query = {
+          fact: 'visit',
+          filters: {
+            **project_filter('dimension_project_id', project_id),
+            **date_filter('dimension_date_first_action', previous_start_at, previous_end_at)
+          },
+          aggregations: {
+            visitor_id: 'count'
+          }
+        }
+
         queries << active_users_previous_period_query
+        queries << visitors_previous_period_query
       end
 
       queries

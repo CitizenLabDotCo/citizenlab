@@ -118,8 +118,9 @@ export interface ActiveUsersResponse {
   data: {
     type: 'report_builder_data_units';
     attributes: [
-      UsersTimeSeriesResponseRow[] | [],
-      [ActiveUsersRow] | [],
+      UsersTimeSeriesResponseRow[] | [], // time series
+      [ActiveUsersRow] | [], // active users whole period
+      // TODO
       [ActiveUsersRow] | undefined
     ];
   };
