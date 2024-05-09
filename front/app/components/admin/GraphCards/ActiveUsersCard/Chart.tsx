@@ -4,6 +4,7 @@ import { Dates, Resolution, Layout } from 'components/admin/GraphCards/typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import LineChart from 'components/admin/Graphs/LineChart';
 import { colors } from 'components/admin/Graphs/styling';
+import { Margin } from 'components/admin/Graphs/typings';
 
 import { useIntl } from 'utils/cl-intl';
 import { toThreeLetterMonth } from 'utils/dateUtils';
@@ -20,6 +21,7 @@ type Props = Dates &
     timeSeries: TimeSeries | null;
     innerRef?: React.RefObject<any>;
     layout?: Layout;
+    margin?: Margin;
   };
 
 const emptyLineConfig = { strokeWidths: [0] };
@@ -35,6 +37,7 @@ const Chart = ({
   resolution,
   innerRef,
   layout = 'wide',
+  margin,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -71,7 +74,7 @@ const Chart = ({
         x: 'date',
         y: ['activeUsers'],
       }}
-      margin={MARGINS[layout]}
+      margin={margin ?? MARGINS[layout]}
       lines={noData ? emptyLineConfig : lineConfig}
       grid={{ vertical: true }}
       xaxis={{ tickFormatter: formatTick }}
