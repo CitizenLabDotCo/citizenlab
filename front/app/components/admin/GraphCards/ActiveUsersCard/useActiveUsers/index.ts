@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 
-import { useActiveUsers as useActiveUsersData } from 'api/graph_data_units';
+import { useActiveUsersLive } from 'api/graph_data_units';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -19,7 +19,7 @@ export default function useActiveUsers({
   const { formatMessage } = useIntl();
   const [currentResolution, setCurrentResolution] = useState(resolution);
 
-  const { data: analytics } = useActiveUsersData(
+  const { data: analytics } = useActiveUsersLive(
     {
       project_id: projectId,
       start_at: startAtMoment?.toISOString(),

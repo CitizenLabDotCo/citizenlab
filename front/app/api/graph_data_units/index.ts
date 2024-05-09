@@ -146,6 +146,19 @@ export const useActiveUsers = (
   );
 };
 
+export const useActiveUsersLive = (
+  props: ActiveUsersProps,
+  { onSuccess }: { onSuccess?: () => void }
+) => {
+  return useGraphDataUnitsLive<ActiveUsersResponse>(
+    {
+      resolved_name: 'ActiveUsersWidget',
+      props,
+    },
+    { onSuccess }
+  );
+};
+
 export const usePostsByTime = (props: AnalyticsProps) => {
   return useGraphDataUnits<PostsByTimeResponse>({
     resolved_name: 'PostsByTimeWidget',
