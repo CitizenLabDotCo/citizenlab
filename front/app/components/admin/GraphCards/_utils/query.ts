@@ -2,6 +2,8 @@ import moment, { Moment } from 'moment';
 
 import { IResolution } from 'components/admin/ResolutionControl';
 
+import { momentToIsoDate } from 'utils/dateUtils';
+
 type ProjectFilter = { [key: string]: string };
 type EmptyObject = Record<string, unknown>;
 
@@ -75,5 +77,20 @@ export const getDateFilterLastPeriod = (
       from: lastPeriod,
       to: today,
     },
+  };
+};
+
+export const getPreviousPeriod = (startAt: string, endAt: string) => {
+  const startAtMoment = moment(startAt, 'YYYY-MM-DD');
+  const endAtMoment = moment(endAt, 'YYYY-MM-DD');
+
+  const days = endAtMoment.diff(startAtMoment, 'days');
+
+  const prevEndAtMoment = startAtMoment.clone().subtract(1, 'days');
+  const prevStartAtMoment = prevEndAtMoment.clone().subtract(days, 'days');
+
+  return {
+    prev_start_at: momentToIsoDate(prevStartAtMoment),
+    prev_end_at: momentToIsoDate(prevEndAtMoment),
   };
 };

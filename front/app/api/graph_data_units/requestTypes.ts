@@ -115,7 +115,8 @@ export interface AgeParams extends BaseParams {
 }
 
 export interface ActiveUsersProps extends AnalyticsProps {
-  compare_previous_period?: boolean;
+  prev_start_at?: string;
+  prev_end_at?: string;
 }
 
 export interface ActiveUsersParams extends BaseParams {

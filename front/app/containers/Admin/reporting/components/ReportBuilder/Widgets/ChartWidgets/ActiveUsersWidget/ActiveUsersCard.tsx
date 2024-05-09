@@ -5,6 +5,7 @@ import moment from 'moment';
 
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
+import { getPreviousPeriod } from 'components/admin/GraphCards/_utils/query';
 import Statistic from 'components/admin/Graphs/Statistic';
 
 import { useIntl } from 'utils/cl-intl';
@@ -30,7 +31,9 @@ const ActiveUsers = ({
     start_at: startAt,
     end_at: endAt,
     resolution,
-    compare_previous_period: comparePreviousPeriod,
+    ...(startAt && endAt && comparePreviousPeriod
+      ? getPreviousPeriod(startAt, endAt)
+      : {}),
   });
 
   const layout = useLayout();
