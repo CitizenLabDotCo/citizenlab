@@ -5,7 +5,7 @@ import moment from 'moment';
 
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
-import { getPreviousPeriod } from 'components/admin/GraphCards/_utils/query';
+import { getPreviousTimeRange } from 'components/admin/GraphCards/_utils/query';
 import Statistic from 'components/admin/Graphs/Statistic';
 
 import { useIntl } from 'utils/cl-intl';
@@ -22,7 +22,7 @@ const ActiveUsers = ({
   startAt,
   endAt,
   resolution = 'month',
-  comparePreviousPeriod,
+  comparePreviousPeriod = false,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -31,9 +31,7 @@ const ActiveUsers = ({
     start_at: startAt,
     end_at: endAt,
     resolution,
-    ...(startAt && endAt && comparePreviousPeriod
-      ? getPreviousPeriod(startAt, endAt)
-      : {}),
+    ...getPreviousTimeRange(comparePreviousPeriod, startAt, endAt),
   });
 
   const layout = useLayout();

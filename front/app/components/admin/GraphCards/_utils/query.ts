@@ -80,7 +80,14 @@ export const getDateFilterLastPeriod = (
   };
 };
 
-export const getPreviousPeriod = (startAt: string, endAt: string) => {
+export const getPreviousTimeRange = (
+  comparePreviousPeriod: boolean,
+  startAt?: string,
+  endAt?: string | null
+) => {
+  if (!comparePreviousPeriod) return {};
+  if (!startAt || !endAt) return {};
+
   const startAtMoment = moment(startAt, 'YYYY-MM-DD');
   const endAtMoment = moment(endAt, 'YYYY-MM-DD');
 
@@ -94,3 +101,5 @@ export const getPreviousPeriod = (startAt: string, endAt: string) => {
     prev_end_at: momentToIsoDate(prevEndAtMoment),
   };
 };
+
+// export const getPreviousPeriod = ()
