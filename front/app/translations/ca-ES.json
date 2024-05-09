@@ -1713,6 +1713,7 @@
   "app.errors.bulk_import_malformed_pdf": "Sembla que el fitxer PDF penjat té un format incorrecte. Proveu d'exportar el PDF de nou des de la vostra font i, a continuació, torneu a carregar-lo.",
   "app.errors.bulk_import_maximum_ideas_exceeded": "S'ha superat el màxim de {value} idees.",
   "app.errors.bulk_import_maximum_pdf_pages_exceeded": "S'ha superat el màxim de {value} pàgines en un PDF.",
+  "app.errors.bulk_import_not_enough_pdf_pages": "El PDF penjat no té prou pàgines; hauria de tenir almenys el mateix nombre de pàgines que la plantilla baixada.",
   "app.errors.bulk_import_publication_date_invalid_format": "Idea amb un format de data de publicació no vàlid \"{value}\". Utilitzeu el format \"DD-MM-AAAA\".",
   "app.errors.cannot_contain_ideas": "El mètode de participació que heu seleccionat no admet aquest tipus de publicació. Editeu la vostra selecció i torneu-ho a provar.",
   "app.errors.cant_change_after_first_response": "Ja no podeu canviar això, ja que alguns usuaris ja han respost",

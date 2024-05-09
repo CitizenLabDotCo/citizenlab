@@ -1713,6 +1713,7 @@
   "app.errors.bulk_import_malformed_pdf": "Déi eropgeluede PDF Datei schéngt falsch ze sinn. Probéiert de PDF nach eng Kéier vun Ärer Quell exportéieren an dann erëm eropzelueden.",
   "app.errors.bulk_import_maximum_ideas_exceeded": "De Maximum vun {value} Iddien gouf iwwerschratt.",
   "app.errors.bulk_import_maximum_pdf_pages_exceeded": "De Maximum vu {value} Säiten an engem PDF gouf iwwerschratt.",
+  "app.errors.bulk_import_not_enough_pdf_pages": "Den eropgeluedene PDF huet net genuch Säiten - et soll op d'mannst déiselwecht Zuel vu Säiten hunn wéi déi erofgeluede Schabloun.",
   "app.errors.bulk_import_publication_date_invalid_format": "Iddi mat ongëlteg Verëffentlechungsdatumformat \"{value}\". Benotzt w.e.g. de Format \"DD-MM-JJJJ\".",
   "app.errors.cannot_contain_ideas": "D’Bedeelegungsmethod, déi Dir gewielt hutt, ënnerstëtzt dësen Typ vu Bäiträg net. Ännert wgl. Är Auswiel a probéiert nach eng Kéier.",
   "app.errors.cant_change_after_first_response": "Dir kënnt dëst net méi änneren, well aner Benotzer scho geäntwert hunn.",
