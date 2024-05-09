@@ -133,8 +133,5 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
         ]
       )
     end
-
-    it 'returns active users and visitors in previous period' do
-    end
   end
 end
