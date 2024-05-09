@@ -4,7 +4,7 @@ import { useActiveUsers as useActiveUsersData } from 'api/graph_data_units';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { getPreviousPeriod } from '../../_utils/query';
+import { getComparedPeriod } from '../../_utils/query';
 
 import { parseTimeSeries, parseStats, parseExcelData } from './parse';
 import { getTranslations } from './translations';
@@ -25,7 +25,7 @@ export default function useActiveUsers({
       start_at: startAtMoment?.toISOString(),
       end_at: endAtMoment?.toISOString(),
       resolution,
-      ...getPreviousPeriod(resolution),
+      ...getComparedPeriod(resolution),
     },
     {
       onSuccess: () => setCurrentResolution(resolution),

@@ -80,7 +80,7 @@ export const getDateFilterLastPeriod = (
   };
 };
 
-export const getPreviousTimeRange = (
+export const getComparedTimeRange = (
   comparePreviousPeriod: boolean,
   startAt?: string,
   endAt?: string | null
@@ -97,17 +97,17 @@ export const getPreviousTimeRange = (
   const prevStartAtMoment = prevEndAtMoment.clone().subtract(days, 'days');
 
   return {
-    prev_start_at: momentToIsoDate(prevStartAtMoment),
-    prev_end_at: momentToIsoDate(prevEndAtMoment),
+    compare_start_at: momentToIsoDate(prevStartAtMoment),
+    compare_end_at: momentToIsoDate(prevEndAtMoment),
   };
 };
 
-export const getPreviousPeriod = (resolution: IResolution) => {
+export const getComparedPeriod = (resolution: IResolution) => {
   const today = moment().format('YYYY-MM-DD');
   const lastPeriod = getLastPeriod(resolution);
 
   return {
-    prev_start_at: lastPeriod,
-    prev_end_at: today,
+    compare_start_at: lastPeriod,
+    compare_end_at: today,
   };
 };

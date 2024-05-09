@@ -92,7 +92,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
       )
     end
 
-    it 'returns active users in previous period' do
+    it 'returns active users in compared period' do
       project = create(:project)
       pp1, pp2, pp3, pp4 = create_list(:user, 4)
 
@@ -107,10 +107,10 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
 
       params = {
         start_at: Date.new(2022, 10, 1).to_s,
-        end_at: Date.new(2022, 10, 31).to_s, # 30 days
+        end_at: Date.new(2022, 10, 31).to_s,
         project_id: project.id,
-        prev_start_at: Date.new(2022, 8, 31).to_s,
-        prev_end_at: Date.new(2022, 9, 30).to_s # also 30 days
+        compare_start_at: Date.new(2022, 8, 31).to_s,
+        compare_end_at: Date.new(2022, 9, 30).to_s
       }
 
       expect(query.run_query(**params)).to eq(
