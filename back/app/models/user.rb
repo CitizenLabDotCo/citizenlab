@@ -594,11 +594,10 @@ class User < ApplicationRecord
   def validate_can_update_email
     return unless persisted? &&
                   (new_email_changed? || email_changed?) &&
-                  email_was.present? &&
+                  email_was.present? && # see #allows_empty_email?
                   user_confirmation_enabled?
 
-    # no_password? - only for light registration
-    if no_password? && confirmation_required
+    if no_password? && confirmation_required # only for light registration
       # Avoid security hole where passwordless user can change when they are authenticated without confirmation
       errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - user not active'
     elsif active? && email_changed? && !email_changed?(to: new_email_was)
@@ -608,7 +607,8 @@ class User < ApplicationRecord
   end
 
   def allows_empty_email?
-    invite_pending? || unique_code.present? ||
+    invite_pending? ||
+      unique_code.present? || # user created in input importer
       (email_was.blank? && sso? && identities.none?(&:email_always_present?))
   end
 

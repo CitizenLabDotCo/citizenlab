@@ -1023,14 +1023,32 @@ resource 'Users' do
 
             example_request '[error] is not allowed' do
               expect(@user.reload.email).not_to eq(email)
+              assert_status 422
+            end
+
+            context 'when email was empty' do # see User#allows_empty_email?
+              before { @user.update_columns(email: nil) }
+
+              example_request 'is allowed' do
+                expect(@user.reload.email).to eq(email)
+                assert_status 200
+              end
+            end
+
+            context 'when new_email was set properly' do
+              before { @user.update!(new_email: email) }
+
+              example_request 'is allowed' do
+                expect(@user.reload.email).to eq(email)
+                assert_status 200
+              end
             end
           end
 
           context 'when the user_confirmation module is not active' do
             example_request 'is allowed' do
-              json_response = json_parse(response_body)
+              expect(@user.reload.email).to eq(email)
               assert_status 200
-              expect(json_response.dig(:data, :attributes, :email)).to eq(email)
             end
           end
         end
