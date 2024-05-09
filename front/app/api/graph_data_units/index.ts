@@ -1,3 +1,4 @@
+// Props
 import {
   BaseDemographicsProps,
   AnalyticsProps,
@@ -7,6 +8,7 @@ import {
   VisitorsTrafficSourcesProps,
   DemographicsProps,
 } from './requestTypes';
+// Response types
 import {
   UsersByAgeResponse,
   UsersByGenderResponse,
@@ -21,6 +23,7 @@ import { SingleIdeaResponse } from './responseTypes/SingleIdeaWidget';
 import { SurveyQuestionResultResponse } from './responseTypes/SurveyQuestionResultWidget';
 import { VisitorsTrafficSourcesResponse } from './responseTypes/VisitorsTrafficSourcesWidget';
 import { VisitorsResponse } from './responseTypes/VisitorsWidget';
+// Hooks
 import useGraphDataUnits from './useGraphDataUnits';
 import useGraphDataUnitsLive from './useGraphDataUnitsLive';
 
