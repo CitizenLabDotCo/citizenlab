@@ -4,6 +4,8 @@ import { useActiveUsers as useActiveUsersData } from 'api/graph_data_units';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { getPreviousPeriod } from '../../_utils/query';
+
 import { parseTimeSeries, parseStats, parseExcelData } from './parse';
 import { getTranslations } from './translations';
 import { QueryParameters } from './typings';
@@ -17,22 +19,13 @@ export default function useActiveUsers({
   const { formatMessage } = useIntl();
   const [currentResolution, setCurrentResolution] = useState(resolution);
 
-  // const { data: analytics } = useAnalytics<Response>(
-  //   query({
-  //     projectId,
-  //     startAtMoment,
-  //     endAtMoment,
-  //     resolution,
-  //   }),
-  //   () => setCurrentResolution(resolution)
-  // );
-
   const { data: analytics } = useActiveUsersData(
     {
       project_id: projectId,
       start_at: startAtMoment?.toISOString(),
       end_at: endAtMoment?.toISOString(),
       resolution,
+      ...getPreviousPeriod(resolution),
     },
     {
       onSuccess: () => setCurrentResolution(resolution),

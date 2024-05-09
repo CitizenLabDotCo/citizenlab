@@ -102,4 +102,12 @@ export const getPreviousTimeRange = (
   };
 };
 
-// export const getPreviousPeriod = ()
+export const getPreviousPeriod = (resolution: IResolution) => {
+  const today = moment().format('YYYY-MM-DD');
+  const lastPeriod = getLastPeriod(resolution);
+
+  return {
+    prev_start_at: lastPeriod,
+    prev_end_at: today,
+  };
+};
