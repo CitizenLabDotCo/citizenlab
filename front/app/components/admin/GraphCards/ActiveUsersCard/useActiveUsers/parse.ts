@@ -1,5 +1,10 @@
 import moment, { Moment } from 'moment';
 
+import {
+  ActiveUsersResponse,
+  TimeSeriesResponseRow,
+} from 'api/graph_data_units/responseTypes/ActiveUsersWidget';
+
 import { getConversionRate } from 'components/admin/GraphCards/_utils/parse';
 import { RESOLUTION_TO_MESSAGE_KEY } from 'components/admin/GraphCards/_utils/resolution';
 import { timeSeriesParser } from 'components/admin/GraphCards/_utils/timeSeries';
@@ -8,13 +13,7 @@ import { IResolution } from 'components/admin/ResolutionControl';
 import { keys, get } from 'utils/helperUtils';
 
 import { Translations } from './translations';
-import {
-  Response,
-  TimeSeriesResponseRow,
-  TimeSeriesRow,
-  TimeSeries,
-  Stats,
-} from './typings';
+import { TimeSeries, TimeSeriesRow, Stats } from './typings';
 
 export const getEmptyRow = (date: Moment) => ({
   date: date.format('YYYY-MM-DD'),
@@ -37,7 +36,7 @@ const getDate = (row: TimeSeriesResponseRow) => {
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
 
 export const parseTimeSeries = (
-  responseTimeSeries: Response['data']['attributes'][0],
+  responseTimeSeries: ActiveUsersResponse['data']['attributes'][0],
   startAtMoment: Moment | null | undefined,
   endAtMoment: Moment | null,
   resolution: IResolution
@@ -50,7 +49,9 @@ export const parseTimeSeries = (
   );
 };
 
-export const parseStats = (data: Response['data']['attributes']): Stats => {
+export const parseStats = (
+  data: ActiveUsersResponse['data']['attributes']
+): Stats => {
   const activeUsersWholePeriod = data[1][0];
   const visitsWholePeriod = data[2][0];
   const activeUsersLastPeriod = data[3]?.[0];

@@ -6,11 +6,13 @@ import {
 } from 'api/graph_data_units/responseTypes/ActiveUsersWidget';
 
 import { timeSeriesParser } from 'components/admin/GraphCards/_utils/timeSeries';
+import {
+  TimeSeriesRow,
+  TimeSeries,
+} from 'components/admin/GraphCards/ActiveUsersCard/useActiveUsers/typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 import { get } from 'utils/helperUtils';
-
-import { TimeSeriesRow, TimeSeries } from './typings';
 
 export const getEmptyRow = (date: Moment) => ({
   date: date.format('YYYY-MM-DD'),
