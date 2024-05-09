@@ -536,7 +536,7 @@ class User < ApplicationRecord
   end
 
   def reset_confirmation_code
-    self.email_confirmation_code = use_fake_code? ? '1234' : rand.to_s[2..5]
+    self.email_confirmation_code = Rails.env.development? ? '1234' : rand.to_s[2..5]
   end
 
   def increment_confirmation_code_reset_count
@@ -688,10 +688,6 @@ class User < ApplicationRecord
     write_attribute :confirmation_required, val
   end
 
-  def use_fake_code?
-    Rails.env.development?
-  end
-
   def destroy_baskets
     baskets.each(&:destroy_or_keep!)
   end
@@ -702,5 +698,4 @@ User.include(ReportBuilder::Patches::User)
 User.include(Verification::Patches::User)
 
 User.prepend(MultiTenancy::Patches::User)
-User.prepend(MultiTenancy::Patches::UserConfirmation::User)
 User.prepend(SmartGroups::Patches::User)
