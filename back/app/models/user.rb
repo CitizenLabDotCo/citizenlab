@@ -192,7 +192,7 @@ class User < ApplicationRecord
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
   store_accessor :onboarding, :topics_and_areas
 
-  validates :email, presence: true, if: :requires_email?
+  validates :email, presence: true, unless: :allows_empty_email?
   validates :locale, presence: true, unless: :invite_pending?
   validates :email, uniqueness: true, allow_nil: true
   validates :email, format: { with: EMAIL_REGEX }, allow_nil: true
@@ -553,8 +553,8 @@ class User < ApplicationRecord
   def set_confirmation_required
     return unless new_record? && email_changed?
 
-    self.confirmation_required =
-      !(registered_with_phone? || highest_role != :user || sso? || invited? || active?)
+    not_required = registered_with_phone? || sso? || invited? || active? || highest_role != :user
+    self.confirmation_required = !not_required
     self.email_confirmed_at = nil
     self.email_confirmation_code_sent_at = nil
   end
@@ -592,16 +592,24 @@ class User < ApplicationRecord
   end
 
   def validate_can_update_email
-    return unless persisted? && (new_email_changed? || email_changed?) && email_was.present?
+    return unless persisted? &&
+                  (new_email_changed? || email_changed?) &&
+                  email_was.present? &&
+                  user_confirmation_enabled?
 
     # no_password? - only for light registration
-    if no_password? && confirmation_required?
+    if no_password? && confirmation_required
       # Avoid security hole where passwordless user can change when they are authenticated without confirmation
       errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - user not active'
-    elsif user_confirmation_enabled? && active? && email_changed? && !email_changed?(to: new_email_was)
+    elsif active? && email_changed? && !email_changed?(to: new_email_was)
       # When new_email is used, email can only be updated from the value in that column
       errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - email not matching new email'
     end
+  end
+
+  def allows_empty_email?
+    invite_pending? || unique_code.present? ||
+      (email_was.blank? && sso? && identities.none?(&:email_always_present?))
   end
 
   def user_confirmation_enabled?
@@ -686,10 +694,6 @@ class User < ApplicationRecord
 
   def destroy_baskets
     baskets.each(&:destroy_or_keep!)
-  end
-
-  def requires_email?
-    !invite_pending? && unique_code.blank? && !(sso? && identities.none?(&:email_always_present?))
   end
 end
 
