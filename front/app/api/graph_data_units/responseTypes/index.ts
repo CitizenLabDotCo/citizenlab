@@ -8,10 +8,6 @@ import {
   ActiveUsersRow,
   TimeSeriesResponseRow as UsersTimeSeriesResponseRow,
 } from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/ActiveUsersWidget/useActiveUsers/typings';
-import {
-  TotalsRow as VisitorsTotalsRow,
-  TimeSeriesResponseRow as VisitorsTimeSeriesResponseRow,
-} from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/VisitorsWidget/useVisitors/typings';
 
 import {
   CommentsCountRow,
@@ -26,6 +22,11 @@ import {
   TimeSeriesResponseRow as ReactionsTimeSeriesResponseRow,
 } from 'components/admin/GraphCards/ReactionsByTimeCard/useReactionsByTime/typings';
 import { TrafficSourcesRow } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/typings';
+
+import {
+  TotalsRow as VisitorsTotalsRow,
+  TimeSeriesResponseRow as VisitorsTimeSeriesResponseRow,
+} from './VisitorsWidget';
 
 // Survey question results
 export type SurveyQuestionResultResponse = {
