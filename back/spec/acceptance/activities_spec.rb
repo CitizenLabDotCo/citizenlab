@@ -19,6 +19,11 @@ resource 'Activity' do
   end
 
   get 'web_api/v1/activities' do
+    with_options scope: :page do
+      parameter :number, 'Page number'
+      parameter :size, 'Number of areas per page'
+    end
+
     example_request 'List all activities' do
       assert_status 200
       json_response = json_parse(response_body)
