@@ -415,6 +415,13 @@ resource 'Projects' do
           .to have_enqueued_job(LogActivityJob)
           .with(@project, 'published', anything, anything, anything)
       end
+
+      example 'Logs `changed_publication_status` activity when going from published to archived', document: false do
+        @project.admin_publication.update!(publication_status: 'published')
+        expect { do_request project: { admin_publication_attributes: { publication_status: 'archived' } } }
+          .to have_enqueued_job(LogActivityJob)
+          .with(@project, 'changed_publication_status', anything, anything, anything)
+      end
     end
 
     patch 'web_api/v1/projects/:id' do
@@ -426,6 +433,12 @@ resource 'Projects' do
 
       example 'Does not log `changed` activity when no project attribute is updated', document: false do
         @project.admin_publication.update!(publication_status: 'draft')
+
+        expect { do_request project: { admin_publication_attributes: { publication_status: 'published' } } }
+          .not_to have_enqueued_job(LogActivityJob)
+          .with(@project, 'changed', anything, anything, anything)
+
+        @project.admin_publication.update!(publication_status: 'archived')
 
         expect { do_request project: { admin_publication_attributes: { publication_status: 'published' } } }
           .not_to have_enqueued_job(LogActivityJob)
