@@ -432,6 +432,22 @@ resource 'Projects' do
       end
     end
 
+    patch 'web_api/v1/projects/:id' do
+      before do
+        @project = create(:project)
+      end
+
+      let(:id) { @project.id }
+
+      example 'Does not log `changed` activity when no project attribute is updated', document: false do
+        @project.admin_publication.update!(publication_status: 'draft')
+
+        expect { do_request project: { admin_publication_attributes: { publication_status: 'published' } } }
+          .not_to have_enqueued_job(LogActivityJob)
+          .with(@project, 'changed', anything, anything, anything)
+      end
+    end
+
     delete 'web_api/v1/projects/:id' do
       let(:project) { create(:project) }
       let(:id) { project.id }
