@@ -7,4 +7,4 @@ SELECT
         ELSE TRUE
     END AS is_visitor
 FROM users u
-LEFT JOIN analytics_fact_visits v on v.dimension_user_id = users.id;
+LEFT JOIN analytics_fact_visits v on v.dimension_user_id = u.id;
