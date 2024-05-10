@@ -1,18 +1,8 @@
 # inspired by PermissionsService - But has no need to inherit from it
-class ReportBuilder::Permissions::ReportBuilderPermissionsService
+class ReportBuilder::Permissions::PermissionsService
   EDITING_DENIED_REASONS = {
     report_has_unauthorized_data: 'report_has_unauthorized_data'
   }.freeze
-
-  def action_descriptor(report, user)
-    editing_disabled_reason = editing_disabled_reason_for_report(report, user)
-    {
-      editing_report: {
-        enabled: !editing_disabled_reason,
-        disabled_reason: editing_disabled_reason
-      }
-    }
-  end
 
   def editing_disabled_reason_for_report(report, current_user)
     if report_has_unauthorized_data?(report, current_user)
