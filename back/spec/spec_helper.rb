@@ -183,6 +183,7 @@ RSpec.configure do |config|
 
   config.before do
     Apartment::Tenant.switch!('example_org') # Switch into the default tenant
+    FactoryBot.rewind_sequences
   end
 
   config.around(:each, use_transactional_fixtures: false) do |example|
