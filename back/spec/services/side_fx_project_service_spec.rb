@@ -46,7 +46,14 @@ describe SideFxProjectService do
       project.update!(title_multiloc: { en: 'changed' })
       expect { service.after_update(project, user) }
         .to have_enqueued_job(LogActivityJob)
-        .with(project, 'changed', user, project.updated_at.to_i, project_id: project.id)
+        .with(
+          project,
+          'changed',
+          user,
+          project.updated_at.to_i,
+          project_id: project.id,
+          payload: { change: project.saved_changes }
+        )
     end
 
     it "logs a 'published' action when a draft project is published" do
