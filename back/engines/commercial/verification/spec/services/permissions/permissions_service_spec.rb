@@ -144,20 +144,6 @@ describe Permissions::PermissionsService do
     end
   end
 
-  describe 'cancelling_reactions_disabled_reasons' do
-    let(:user) { create(:user) }
-
-    it "returns 'not_verified' if it's in the current phase and reacting is not permitted and a permitted group requires verification" do
-      project = create(:project_with_current_phase,
-        current_phase_attrs: { permissions_config: { reacting_idea: false } })
-      permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'reacting_idea')
-      verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
-      permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
-      idea = create(:idea, project: project, phases: [project.phases[2]])
-      expect(service.cancelling_reacting_disabled_reason_for_idea(idea, idea.author)).to eq 'not_verified'
-    end
-  end
-
   describe 'annotating_document_disabled_reason' do
     it 'returns `not_verified` when annotating the document not permitted and permitted group requires verification' do
       project = create(:single_phase_document_annotation_project, phase_attrs: { with_permissions: true })
@@ -196,7 +182,7 @@ describe Permissions::PermissionsService do
       permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'voting')
       verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
       permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
-      expect(service.denied_reason_for_idea(idea, create(:user))).to eq 'not_verified'
+      expect(service.denied_reason_for_idea(idea, create(:user), 'voting')).to eq 'not_verified'
     end
   end
 end

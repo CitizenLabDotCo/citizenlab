@@ -25,7 +25,7 @@ class CommentReactionPolicy < ApplicationPolicy
 
     reason = case record.reactable&.post_type
     when 'Idea'
-      Permissions::PermissionsService.new.reacting_disabled_reason_for_idea_comment(record.reactable, user)
+      Permissions::PermissionsService.new.denied_reason_for_idea record.reactable.post, user, 'commenting_idea'
     when 'Initiative'
       denied_for_initiative_reason user
     else

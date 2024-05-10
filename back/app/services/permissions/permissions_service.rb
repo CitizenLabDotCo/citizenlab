@@ -66,7 +66,7 @@ module Permissions
     # Should there just be a generic denied_reason_for on each service?
     def denied_reason_for_resource(user, action, resource = nil)
       permission = find_permission(resource, action)
-      denied_reason_for_user permission, user
+      denied_reason_for_user(permission, user)
     end
 
     def denied_reason_for_project(project, user, action, mode: nil)
@@ -123,20 +123,10 @@ module Permissions
       denied_reason_for_idea(idea, user, 'reacting_idea', mode: mode)
     end
 
-    def reacting_disabled_reason_for_idea_comment(comment, user) # TODO: JS - what is this supposed to do?
-      denied_reason_for_idea comment.post, user, 'commenting_idea'
-    end
-
     # Future enabled phases
     # TODO: JS - no test for 'voting'
     def future_enabled_phase(project, user, action, time = Time.zone.now, mode: nil)
       @timeline_service.future_phases(project, time).find { |phase| !denied_reason_for_phase(phase, user, action, mode: mode) }
-    end
-
-    # TODO: JS - This is same as denied_reason_for reacting_idea
-    # Do we even need this in action_descriptors?
-    def cancelling_reacting_disabled_reason_for_idea(idea, user)
-      denied_reason_for_idea(idea, user, 'reacting_idea')
     end
 
     private
@@ -177,6 +167,9 @@ module Permissions
       :not_in_group unless user.in_any_groups?(permission.groups)
     end
 
+    # TODO: JS - Need to preload these permissions - else this is being called for every call to denied_reason_for_resource
+    # 10 x per project
+    # 11 x per idea
     def find_permission(resource, action)
       scope = resource&.permission_scope
       permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)

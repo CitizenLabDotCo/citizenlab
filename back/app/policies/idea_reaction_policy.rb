@@ -27,8 +27,7 @@ class IdeaReactionPolicy < ApplicationPolicy
   def create?
     return false unless could_modify?
 
-    reason = participation_context_service.denied_reason_for_idea_reaction record, user
-
+    reason = permissions_service.denied_reason_for_idea_reaction record, user
     reason ? raise_not_authorized(reason) : true
   end
 
@@ -43,8 +42,7 @@ class IdeaReactionPolicy < ApplicationPolicy
   def destroy?
     return false unless could_modify?
 
-    reason = participation_context_service.cancelling_reacting_disabled_reason_for_idea record.reactable, user
-
+    reason = permissions_service.denied_reason_for_idea_reaction record.reactable, user
     reason ? raise_not_authorized(reason) : true
   end
 
@@ -57,13 +55,11 @@ class IdeaReactionPolicy < ApplicationPolicy
   def upsert_reaction?(mode)
     return false unless could_modify?
 
-    reason = participation_context_service.idea_reacting_disabled_reason_for record, user, mode: mode
-    reason ||= participation_context_service.cancelling_reacting_disabled_reason_for_idea record.reactable, user
-
+    reason = permissions_service.denied_reason_for_idea_reaction record.reactable, user, mode: mode
     reason ? raise_not_authorized(reason) : true
   end
 
-  def participation_context_service
-    @participation_context_service ||= Permissions::PermissionsService.new
+  def permissions_service
+    @permissions_service ||= Permissions::PermissionsService.new
   end
 end

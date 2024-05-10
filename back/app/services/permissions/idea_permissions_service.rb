@@ -4,11 +4,11 @@ module Permissions
   class IdeaPermissionsService < Permissions::ProjectPermissionsService
     def action_descriptor(idea, user)
       commenting_disabled_reason = denied_reason_for_idea(idea, user, 'commenting_idea')
-      liking_disabled_reason = denied_reason_for_idea(idea, user, mode: 'up')
-      disliking_disabled_reason = denied_reason_for_idea(idea, user, mode: 'down')
-      cancelling_reactions_disabled_reason = cancelling_reacting_disabled_reason_for_idea(idea, user)
+      liking_disabled_reason = denied_reason_for_idea(idea, user, 'reacting_idea', mode: 'up')
+      disliking_disabled_reason = denied_reason_for_idea(idea, user, 'reacting_idea', mode: 'down')
+      cancelling_reactions_disabled_reason = denied_reason_for_idea(idea, user, 'reacting_idea')
       voting_disabled_reason = denied_reason_for_idea(idea, user, 'voting')
-      comment_reacting_disabled_reason = reacting_disabled_reason_for_idea_comment(Comment.new(post: idea), user)
+      comment_reacting_disabled_reason = denied_reason_for_idea(idea, user, 'commenting_idea')
 
       {
         commenting_idea: {
@@ -23,12 +23,12 @@ module Permissions
           up: {
             enabled: !liking_disabled_reason,
             disabled_reason: liking_disabled_reason,
-            future_enabled: liking_disabled_reason && future_enabled_phase(idea.project, user, 'reacting_idea', mode: up)&.start_at
+            future_enabled: liking_disabled_reason && future_enabled_phase(idea.project, user, 'reacting_idea', mode: 'up')&.start_at
           },
           down: {
             enabled: !disliking_disabled_reason,
             disabled_reason: disliking_disabled_reason,
-            future_enabled: disliking_disabled_reason && future_enabled_phase(idea.project, user, 'reacting_idea', mode: down)&.start_at
+            future_enabled: disliking_disabled_reason && future_enabled_phase(idea.project, user, 'reacting_idea', mode: 'down')&.start_at
           }
         },
         comment_reacting_idea: {
