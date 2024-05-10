@@ -29,16 +29,17 @@ resource 'Activity' do
       do_request user_ids: [@user.id]
       assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 1
-      expect(json_response[:data].first[:id]).to eq @management_activity1.id
+      expect(json_response[:data].size).to eq 2
+      expect(json_response[:data].pluck(:id)).to match_array [@management_activity1.id, @management_activity3.id]
     end
 
     example 'List all activities associated with a project' do
       do_request project_ids: [@project.id]
       assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 1
-      expect(json_response[:data].first[:id]).to eq @management_activity2.id
+      expect(json_response[:data].size).to eq 3
+      expect(json_response[:data].pluck(:id))
+        .to match_array [@management_activity2.id, @management_activity3.id, @management_activity4.id]
     end
   end
 end
