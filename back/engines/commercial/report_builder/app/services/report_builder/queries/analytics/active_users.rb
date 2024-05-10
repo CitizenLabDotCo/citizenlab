@@ -11,6 +11,8 @@ module ReportBuilder
       compare_end_at: nil,
       **_other_props
     )
+      binding.pry
+
       time_series_query = {
         fact: 'participation',
         filters: {
@@ -46,10 +48,23 @@ module ReportBuilder
         }
       }
 
+      active_visitor_users_whole_period_query = {
+        fact: 'participation',
+        filters: {
+          **project_filter('dimension_project_id', project_id),
+          **date_filter('dimension_date_created', start_at, end_at),
+          'dimension_user.is_visitor': 'true'
+        },
+        aggregations: {
+          participant_id: 'count'
+        }
+      }
+
       queries = [
         time_series_query,
         active_users_whole_period_query,
-        visitors_whole_period_query
+        visitors_whole_period_query,
+        active_visitor_users_whole_period_query
       ]
 
       if compare_start_at.present? && compare_end_at.present?

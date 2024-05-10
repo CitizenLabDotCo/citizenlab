@@ -35,6 +35,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
           [{
             'count_participant_id' => 1
           }],
+          [],
           []
         ]
       )
@@ -87,6 +88,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
           [{
             'count_participant_id' => 8
           }],
+          [],
           []
         ]
       )
@@ -126,12 +128,53 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
             'count_participant_id' => 3
           }],
           [],
+          [],
           [{
             'count_participant_id' => 2
           }],
           []
+          # []
         ]
       )
     end
+
+    it 'returns visitors and a separate count for participants filtered by is_visitor' do
+      user = create(:user)
+
+      create(:fact_visit, dimension_user_id: user.id)
+      create(:fact_visit)
+
+      project = create(:single_phase_ideation_project)
+      create(:idea, created_at: @date_september, project: project)
+      create(:idea, created_at: @date_september, project: project, author: user)
+
+      params = {
+        start_at: (@date_september - 1.day).to_s,
+        end_at: (@date_september + 1.day).to_s,
+        project_id: project.id
+      }
+      expect(query.run_query(**params)).to eq(
+        [
+          [{
+            'count_participant_id' => 2,
+            'dimension_date_created.month' => '2022-09',
+            'first_dimension_date_created_date' => @date_september
+          }],
+          [{
+            'count_participant_id' => 2
+          }],
+          [{
+            'count_visitor_id' => 2
+          }],
+          [{
+            'count_participant_id' => 1
+          }]
+        ]
+      )
+    end
+
+    # it 'returns visitors and a separate count for participants filtered by is_visitor in compared period' do
+    #  TODO
+    # end
   end
 end
