@@ -637,54 +637,54 @@ describe Permissions::PermissionsService do
 
     context 'an idea' do
       context 'with up/down mode' do
-      it 'returns nil when reacting is enabled' do
-        project = create(:single_phase_ideation_project, phase_attrs: { reacting_enabled: true })
-        idea = create(:idea, project: project, phases: project.phases)
+        it 'returns nil when reacting is enabled' do
+          project = create(:single_phase_ideation_project, phase_attrs: { reacting_enabled: true })
+          idea = create(:idea, project: project, phases: project.phases)
 
-        expect(service.denied_reason_for_idea(idea, user, 'reacting_idea', reaction_mode: 'up')).to be_nil
-        expect(service.denied_reason_for_idea(idea, user, 'reacting_idea', reaction_mode: 'down')).to be_nil
-      end
+          expect(service.denied_reason_for_idea(idea, user, 'reacting_idea', reaction_mode: 'up')).to be_nil
+          expect(service.denied_reason_for_idea(idea, user, 'reacting_idea', reaction_mode: 'down')).to be_nil
+        end
 
-      it 'returns `project_inactive` when the timeline has past' do
-        project = create(:project_with_past_phases)
-        idea = create(:idea, project: project, phases: project.phases)
+        it 'returns `project_inactive` when the timeline has past' do
+          project = create(:project_with_past_phases)
+          idea = create(:idea, project: project, phases: project.phases)
 
-        expect(service.denied_reason_for_idea(idea, user, 'reacting_idea', reaction_mode: 'up')).to eq 'project_inactive'
-        expect(service.denied_reason_for_idea(idea, user, 'reacting_idea', reaction_mode: 'down')).to eq 'project_inactive'
-      end
+          expect(service.denied_reason_for_idea(idea, user, 'reacting_idea', reaction_mode: 'up')).to eq 'project_inactive'
+          expect(service.denied_reason_for_idea(idea, user, 'reacting_idea', reaction_mode: 'down')).to eq 'project_inactive'
+        end
 
-      it "returns `not_ideation` when we're in a voting (budgeting) phase" do
-        project = create(:single_phase_budgeting_project)
-        idea = create(:idea, project: project)
+        it "returns `not_ideation` when we're in a voting (budgeting) phase" do
+          project = create(:single_phase_budgeting_project)
+          idea = create(:idea, project: project)
 
-        expect(service.denied_reason_for_idea(idea, user, 'reacting_idea', reaction_mode: 'up')).to eq 'not_ideation'
-        expect(service.denied_reason_for_idea(idea, user, 'reacting_idea', reaction_mode: 'down')).to eq 'not_ideation'
-      end
+          expect(service.denied_reason_for_idea(idea, user, 'reacting_idea', reaction_mode: 'up')).to eq 'not_ideation'
+          expect(service.denied_reason_for_idea(idea, user, 'reacting_idea', reaction_mode: 'down')).to eq 'not_ideation'
+        end
 
-      it "returns `idea_not_in_current_phase` when it's not in the current phase" do
-        project = create(
-          :project_with_current_phase,
-          phases_config: { sequence: 'xxcxx' },
-          current_phase_attrs: { reacting_enabled: true }
-        )
-        idea_phases = [project.phases.order(:start_at).first, project.phases.order(:start_at).last]
-        idea = create(:idea, project: project, phases: idea_phases)
+        it "returns `idea_not_in_current_phase` when it's not in the current phase" do
+          project = create(
+            :project_with_current_phase,
+            phases_config: { sequence: 'xxcxx' },
+            current_phase_attrs: { reacting_enabled: true }
+          )
+          idea_phases = [project.phases.order(:start_at).first, project.phases.order(:start_at).last]
+          idea = create(:idea, project: project, phases: idea_phases)
 
-        expect(service.denied_reason_for_idea(idea, user, 'reacting_idea', reaction_mode: 'up')).to eq 'idea_not_in_current_phase'
-        expect(service.denied_reason_for_idea(idea, user, 'reacting_idea', reaction_mode: 'down')).to eq 'idea_not_in_current_phase'
-      end
+          expect(service.denied_reason_for_idea(idea, user, 'reacting_idea', reaction_mode: 'up')).to eq 'idea_not_in_current_phase'
+          expect(service.denied_reason_for_idea(idea, user, 'reacting_idea', reaction_mode: 'down')).to eq 'idea_not_in_current_phase'
+        end
 
-      it 'returns `reacting_dislike_limited_max_reached` if the dislike limit was reached' do
-        project = create(:single_phase_ideation_project, phase_attrs: {
-          reacting_enabled: true, reacting_dislike_enabled: true,
-          reacting_dislike_method: 'limited', reacting_dislike_limited_max: 1
-        })
-        idea = create(:idea, project: project, phases: project.phases)
-        create(:reaction, mode: 'down', user: user, reactable: idea)
+        it 'returns `reacting_dislike_limited_max_reached` if the dislike limit was reached' do
+          project = create(:single_phase_ideation_project, phase_attrs: {
+            reacting_enabled: true, reacting_dislike_enabled: true,
+            reacting_dislike_method: 'limited', reacting_dislike_limited_max: 1
+          })
+          idea = create(:idea, project: project, phases: project.phases)
+          create(:reaction, mode: 'down', user: user, reactable: idea)
 
-        expect(service.denied_reason_for_idea(idea, user, 'reacting_idea', reaction_mode: 'up')).to be_nil
-        expect(service.denied_reason_for_idea(idea, user, 'reacting_idea', reaction_mode: 'down')).to eq 'reacting_dislike_limited_max_reached'
-      end
+          expect(service.denied_reason_for_idea(idea, user, 'reacting_idea', reaction_mode: 'up')).to be_nil
+          expect(service.denied_reason_for_idea(idea, user, 'reacting_idea', reaction_mode: 'down')).to eq 'reacting_dislike_limited_max_reached'
+        end
       end
 
       context 'without up/down' do
@@ -737,7 +737,7 @@ describe Permissions::PermissionsService do
 
           it "returns `not_signed_in` if it's in the current phase and user needs to be signed in" do
             TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'reacting_idea')
-                           .update!(permitted_by: 'users')
+              .update!(permitted_by: 'users')
             expect(service.denied_reason_for_idea(idea, nil, 'reacting_idea')).to eq 'not_signed_in'
           end
 

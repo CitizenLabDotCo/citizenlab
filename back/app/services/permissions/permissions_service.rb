@@ -37,11 +37,11 @@ module Permissions
       reacting_disabled: 'reacting_disabled',
       reacting_dislike_disabled: 'reacting_dislike_disabled',
       reacting_like_limited_max_reached: 'reacting_like_limited_max_reached',
-      reacting_dislike_limited_max_reached: 'reacting_dislike_limited_max_reached',
+      reacting_dislike_limited_max_reached: 'reacting_dislike_limited_max_reached'
     }.freeze
 
     VOTING_DENIED_REASONS = {
-      not_voting: 'not_voting',
+      not_voting: 'not_voting'
     }.freeze
 
     ANNOTATING_DOCUMENT_DENIED_REASONS = {
@@ -178,7 +178,7 @@ module Permissions
     # Project methods
     def project_visible_disabled_reason(project, user)
       if (project.visible_to == 'admins' && !user.admin?) ||
-        (project.visible_to == 'groups' && !user.in_any_groups?(project.groups))
+         (project.visible_to == 'groups' && !user.in_any_groups?(project.groups))
         PROJECT_DENIED_REASONS[:project_not_visible]
       end
     end

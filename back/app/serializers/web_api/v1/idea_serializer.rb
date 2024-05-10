@@ -37,8 +37,8 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
   }
 
   attribute :action_descriptor do |object, params|
-    @idea_permissions_service = params[:pcs] ||= Permissions::IdeaPermissionsService.new # TODO: JS :pcs - what's this for?
-    @idea_permissions_service.action_descriptor object, current_user(params)
+    @idea_permissions_service = params[:pcs] ||= Permissions::PermissionsService.new
+    Permissions::ActionDescriptorsService.new.idea_action_descriptors object, current_user(params)
   end
 
   has_many :topics
