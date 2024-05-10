@@ -70,6 +70,7 @@ describe('parseStats', () => {
       ],
       [{ count_participant_id: 4 }],
       [{ count_visitor_id: 2 }],
+
       [{ count_participant_id: 4 }],
       [{ count_visitor_id: 0 }],
     ];

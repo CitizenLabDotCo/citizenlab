@@ -17,8 +17,10 @@ export interface ActiveUsersResponse {
       TimeSeriesResponseRow[] | [], // time series
       [ActiveUsersRow] | [], // active users whole period
       [VisitorsRow] | [], // visitors whole period
+      [ActiveUsersRow] | [], // active users who accepted cookies whole period
       [ActiveUsersRow] | [] | undefined, // active users previous period
-      [VisitorsRow] | [] | undefined // visitors previous period
+      [VisitorsRow] | [] | undefined, // visitors previous period
+      [ActiveUsersRow] | [] | undefined // active users who accepted cookies previous period
     ];
   };
 }

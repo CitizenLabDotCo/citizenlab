@@ -34,25 +34,27 @@ const calculateActiveUsersStats = (
 const calculateParticipationStats = (
   data: ActiveUsersResponse['data']['attributes']
 ) => {
-  const activeUsersWholePeriod = data[1][0];
   const visitorsWholePeriod = data[2][0];
-  const activeUsersPreviousPeriod = data[3]?.[0];
-  const visitorsPreviousPeriod = data[4]?.[0];
+  const visitorsPreviousPeriod = data[5]?.[0];
+
+  const activeVisitorUsersWholePeriod = data[3][0];
+  const activeVisitorUsersLastPeriod = data[6]?.[0];
 
   const participationRateWholePeriod = calculateConversionRate(
-    activeUsersWholePeriod?.count_participant_id ?? 0,
+    activeVisitorUsersWholePeriod?.count_participant_id ?? 0,
     visitorsWholePeriod?.count_visitor_id ?? 0
   );
 
-  const activeUsersPreviousPeriodValue =
-    activeUsersPreviousPeriod?.count_participant_id;
+  const aactiveVisitorUsersLastPeriodValue =
+    activeVisitorUsersLastPeriod?.count_participant_id;
+
   const visitorsPreviousPeriodValue = visitorsPreviousPeriod?.count_visitor_id;
 
   const participationRateRateLastPeriod =
     visitorsPreviousPeriodValue !== undefined &&
-    activeUsersPreviousPeriodValue !== undefined
+    aactiveVisitorUsersLastPeriodValue !== undefined
       ? calculateConversionRate(
-          activeUsersPreviousPeriodValue,
+          aactiveVisitorUsersLastPeriodValue,
           visitorsPreviousPeriodValue
         )
       : undefined;

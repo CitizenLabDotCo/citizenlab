@@ -53,18 +53,22 @@ export const parseStats = (
   data: ActiveUsersResponse['data']['attributes']
 ): Stats => {
   const activeUsersWholePeriod = data[1][0];
-  const visitsWholePeriod = data[2][0];
-  const activeUsersLastPeriod = data[3]?.[0];
-  const visitsLastPeriod = data[4]?.[0];
+  const activeUsersLastPeriod = data[4]?.[0];
+
+  const visitorsWholePeriod = data[2][0];
+  const visitorsLastPeriod = data[5]?.[0];
+
+  const activeVisitorUsersWholePeriod = data[3][0];
+  const activeVisitorUsersLastPeriod = data[6]?.[0];
 
   const participationRateWholePeriod = getConversionRate(
-    activeUsersWholePeriod?.count_participant_id ?? 0,
-    visitsWholePeriod?.count_visitor_id ?? 0
+    activeVisitorUsersWholePeriod?.count_participant_id ?? 0,
+    visitorsWholePeriod?.count_visitor_id ?? 0
   );
 
   const participationRateRateLastPeriod = getConversionRate(
-    activeUsersLastPeriod?.count_participant_id ?? 0,
-    visitsLastPeriod?.count_visitor_id ?? 0
+    activeVisitorUsersLastPeriod?.count_participant_id ?? 0,
+    visitorsLastPeriod?.count_visitor_id ?? 0
   );
 
   return {
