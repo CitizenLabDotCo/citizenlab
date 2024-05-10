@@ -1,55 +1,6 @@
-import moment from 'moment';
-
 import { ActiveUsersResponse } from 'api/graph_data_units/responseTypes/ActiveUsersWidget';
 
-import { parseTimeSeries, parseStats } from './parse';
-
-describe('parseTimeSeries', () => {
-  it('works', () => {
-    const timeSeries = [
-      {
-        first_dimension_date_created_date: '2022-10-01',
-        count_participant_id: 4,
-      },
-      {
-        first_dimension_date_created_date: '2022-09-02',
-        count_participant_id: 1,
-      },
-      {
-        first_dimension_date_created_date: '2022-11-14',
-        count_participant_id: 3,
-      },
-    ];
-
-    const output = parseTimeSeries(
-      timeSeries,
-      moment('2022-09-01'),
-      moment('2022-12-01'),
-      'month'
-    );
-
-    const expectedOutput = [
-      {
-        date: '2022-09-01',
-        activeUsers: 1,
-      },
-      {
-        date: '2022-10-01',
-        activeUsers: 4,
-      },
-      {
-        date: '2022-11-01',
-        activeUsers: 3,
-      },
-      {
-        date: '2022-12-01',
-        activeUsers: 0,
-      },
-    ];
-
-    expect(output).toEqual(expectedOutput);
-  });
-});
+import { parseStats } from './parse';
 
 describe('parseStats', () => {
   it('works', () => {
