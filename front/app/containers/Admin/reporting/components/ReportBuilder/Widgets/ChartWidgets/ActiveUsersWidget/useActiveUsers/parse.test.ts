@@ -81,10 +81,52 @@ describe('parseStats', () => {
   });
 
   it('correctly calculates participation rate whole period', () => {
-    // TODO
+    const responseData: ActiveUsersResponse['data']['attributes'] = [
+      TIME_SERIES,
+      [{ count_participant_id: 4 }],
+      [{ count_visitor_id: 6 }],
+      [{ count_participant_id: 3 }],
+      undefined,
+      undefined,
+      undefined,
+    ];
+
+    const expectedOutput = {
+      activeUsers: {
+        value: 4,
+        delta: undefined,
+      },
+      participationRate: {
+        value: 50,
+        delta: undefined,
+      },
+    };
+
+    expect(parseStats(responseData)).toEqual(expectedOutput);
   });
 
   it('correctly calculates participation rate previous period', () => {
-    // TODO
+    const responseData: ActiveUsersResponse['data']['attributes'] = [
+      TIME_SERIES,
+      [{ count_participant_id: 4 }],
+      [{ count_visitor_id: 6 }],
+      [{ count_participant_id: 3 }],
+      [{ count_participant_id: 3 }],
+      [{ count_visitor_id: 5 }],
+      [{ count_participant_id: 2 }],
+    ];
+
+    const expectedOutput = {
+      activeUsers: {
+        value: 4,
+        delta: 1,
+      },
+      participationRate: {
+        value: 50,
+        delta: 10,
+      },
+    };
+
+    expect(parseStats(responseData)).toEqual(expectedOutput);
   });
 });

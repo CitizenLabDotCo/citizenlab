@@ -13,7 +13,7 @@ const calculateActiveUsersStats = (
   data: ActiveUsersResponse['data']['attributes']
 ) => {
   const activeUsersWholePeriod = data[1][0];
-  const activeUsersPreviousPeriod = data[3]?.[0];
+  const activeUsersPreviousPeriod = data[4]?.[0];
 
   const activeUsersWholePeriodValue =
     activeUsersWholePeriod?.count_participant_id ?? 0;
