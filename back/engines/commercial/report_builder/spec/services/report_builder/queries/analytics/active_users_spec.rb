@@ -7,6 +7,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
 
   describe '#run_query' do
     before do
+      FactoryBot.rewind_sequences
       @date_september = Date.new(2022, 9, 10)
       @date_october = Date.new(2022, 10, 5)
 
