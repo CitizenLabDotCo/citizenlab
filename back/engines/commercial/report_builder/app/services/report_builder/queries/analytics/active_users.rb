@@ -90,6 +90,12 @@ module ReportBuilder
           }
         }
 
+        # We request the active user count again,
+        # but this time we filter by is_visitor = true
+        # This is so that we can calculate a more accurate
+        # conversion rate on the FE, where we only compare
+        # visitors (i.e. people that accepted cookies)
+        # to active users that also accepted cookies
         active_visitor_users_compared_period_query = {
           fact: 'participation',
           filters: {
