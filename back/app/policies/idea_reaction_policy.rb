@@ -42,7 +42,7 @@ class IdeaReactionPolicy < ApplicationPolicy
   def destroy?
     return false unless could_modify?
 
-    reason = permissions_service.denied_reason_for_idea_reaction record.reactable, user
+    reason = permissions_service.denied_reason_for_idea_reaction record, user
     reason ? raise_not_authorized(reason) : true
   end
 
@@ -55,7 +55,7 @@ class IdeaReactionPolicy < ApplicationPolicy
   def upsert_reaction?(mode)
     return false unless could_modify?
 
-    reason = permissions_service.denied_reason_for_idea_reaction record.reactable, user, mode: mode
+    reason = permissions_service.denied_reason_for_idea_reaction record, user, reaction_mode: mode
     reason ? raise_not_authorized(reason) : true
   end
 

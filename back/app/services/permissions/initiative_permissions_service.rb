@@ -3,9 +3,9 @@
 module Permissions
   class InitiativePermissionsService < Permissions::PermissionsService
     def action_descriptor(user)
-      posting_disabled_reason = denied_reason_for_resource(user, 'posting_initiative')
-      commenting_disabled_reason = denied_reason_for_resource(user, 'commenting_initiative')
-      reacting_disabled_reason = denied_reason_for_resource(user, 'reacting_initiative')
+      posting_disabled_reason = denied_reason_for_user(user, 'posting_initiative')
+      commenting_disabled_reason = denied_reason_for_user(user, 'commenting_initiative')
+      reacting_disabled_reason = denied_reason_for_user(user, 'reacting_initiative')
 
       descriptors = {
         posting_initiative: { disabled_reason: posting_disabled_reason },

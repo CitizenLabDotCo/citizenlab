@@ -47,6 +47,6 @@ class InitiativeReactionPolicy < ApplicationPolicy
   private
 
   def reacting_denied_reason(user)
-    Permissions::PermissionsService.new.denied_reason_for_resource user, 'reacting_initiative'
+    Permissions::PermissionsService.new.denied_reason_for_user user, 'reacting_initiative'
   end
 end

@@ -27,7 +27,7 @@ class CommentReactionPolicy < ApplicationPolicy
     when 'Idea'
       Permissions::PermissionsService.new.denied_reason_for_idea record.reactable.post, user, 'commenting_idea'
     when 'Initiative'
-      denied_for_initiative_reason user
+      Permissions::PermissionsService.new.denied_reason_for_user user, 'commenting_initiative'
     else
       raise ArgumentError, "Comment reacting policy not implemented for #{record.reactable&.post_type}"
     end
@@ -49,12 +49,5 @@ class CommentReactionPolicy < ApplicationPolicy
 
   def destroy?
     create?
-  end
-
-  private
-
-  # TODO: JS - not consistent with how ideas are done above
-  def denied_for_initiative_reason(user)
-    Permissions::PermissionsService.new.denied_reason_for_resource user, 'commenting_initiative'
   end
 end

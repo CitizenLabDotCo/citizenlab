@@ -62,24 +62,23 @@ module Permissions
       @timeline_service = TimelineService.new
     end
 
-    # TODO: JS - Naming of this - should it just be denied_reason_for user
-    # Should there just be a generic denied_reason_for on each service?
-    def denied_reason_for_resource(user, action, resource = nil)
-      permission = find_permission(resource, action)
-      denied_reason_for_user(permission, user)
+    # NOTE: Where phase is nil, the check is for global permissions (ie initiatives)
+    def denied_reason_for_user(user, action, phase = nil)
+      permission = find_permission(action, phase)
+      user_denied_reason(permission, user)
     end
 
-    def denied_reason_for_project(project, user, action, mode: nil)
+    def denied_reason_for_project(project, user, action, reaction_mode: nil)
       project_visible_reason = project_visible_disabled_reason(project, user)
       if project_visible_reason
         project_visible_reason
       else
         phase = @timeline_service.current_phase_not_archived project
-        denied_reason_for_phase phase, user, action, mode: mode
+        denied_reason_for_phase phase, user, action, reaction_mode: reaction_mode
       end
     end
 
-    def denied_reason_for_phase(phase, user, action, mode: nil)
+    def denied_reason_for_phase(phase, user, action, reaction_mode: nil)
       return PROJECT_DENIED_REASONS[:project_inactive] unless phase
 
       phase_denied_reason = case action
@@ -88,7 +87,7 @@ module Permissions
       when 'commenting_idea'
         commenting_idea_disabled_reason_for_phase(phase)
       when 'reacting_idea'
-        reacting_disabled_reason_for_phase(phase, user, mode)
+        reacting_disabled_reason_for_phase(phase, user, reaction_mode: reaction_mode)
       when 'voting'
         voting_disabled_reason_for_phase(phase, user)
       when 'annotating_document'
@@ -102,37 +101,53 @@ module Permissions
       end
       return phase_denied_reason if phase_denied_reason
 
-      denied_reason_for_resource(user, action, phase)
+      denied_reason_for_user(user, action, phase)
     end
 
-    # IDEA METHODS
-    def denied_reason_for_idea(idea, user, action, mode: nil)
-      # TODO: JS - only allow for certain actions? eg commenting_idea && voting
-      current_phase = @timeline_service.current_phase_not_archived idea.project
-      reason = denied_reason_for_phase current_phase, user, action, mode: mode
+    def denied_reason_for_idea(idea, user, action, reaction_mode: nil)
+      reason = denied_reason_for_project idea.project, user, action, reaction_mode: reaction_mode
       return reason if reason
 
+      current_phase = @timeline_service.current_phase_not_archived idea.project
       if current_phase && !idea_in_current_phase?(idea, current_phase)
         IDEA_DENIED_REASONS[:idea_not_in_current_phase]
       end
     end
 
-    def denied_reason_for_idea_reaction(reaction, user, mode: nil)
-      mode ||= reaction.mode
+    def denied_reason_for_idea_reaction(reaction, user, reaction_mode: nil)
+      reaction_mode ||= reaction.mode
       idea = reaction.reactable
-      denied_reason_for_idea(idea, user, 'reacting_idea', mode: mode)
+      denied_reason_for_idea(idea, user, 'reacting_idea', reaction_mode: reaction_mode)
     end
 
     # Future enabled phases
     # TODO: JS - no test for 'voting'
-    def future_enabled_phase(project, user, action, time = Time.zone.now, mode: nil)
-      @timeline_service.future_phases(project, time).find { |phase| !denied_reason_for_phase(phase, user, action, mode: mode) }
+    def future_enabled_phase(project, user, action, reaction_mode: nil)
+      time = Time.zone.now
+      @timeline_service.future_phases(project, time).find { |phase| !denied_reason_for_phase(phase, user, action, reaction_mode: reaction_mode) }
     end
 
     private
 
+    # TODO: JS - Need to preload these permissions - else this is being called for every call to denied_reason_for_resource
+    # 10 x per project
+    # 11 x per idea
+    def find_permission(action, phase)
+      scope = phase&.permission_scope
+      permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
+
+      if permission.blank? && Permission.available_actions(scope)
+        Permissions::PermissionsUpdateService.new.update_permissions_for_scope scope
+        permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
+      end
+
+      raise "Unknown action '#{action}' for phase: #{phase}" unless permission
+
+      permission
+    end
+
     # User methods
-    def denied_reason_for_user(permission, user)
+    def user_denied_reason(permission, user)
       if permission.permitted_by == 'everyone'
         user ||= User.new
       else
@@ -150,16 +165,9 @@ module Permissions
           end
         end
       end
-      return if Permissions::RegistrationRequirementsService.new.requirements(permission, user)[:permitted]
+      return if Permissions::UserRequirementsService.new.requirements(permission, user)[:permitted]
 
       USER_DENIED_REASONS[:missing_data]
-    end
-
-    def project_visible_disabled_reason(project, user)
-      if (project.visible_to == 'admins' && !user.admin?) ||
-        (project.visible_to == 'groups' && !user.in_any_groups?(project.groups))
-        PROJECT_DENIED_REASONS[:project_not_visible]
-      end
     end
 
     # NOTE: method overridden in the verification engine when enabled
@@ -167,21 +175,12 @@ module Permissions
       :not_in_group unless user.in_any_groups?(permission.groups)
     end
 
-    # TODO: JS - Need to preload these permissions - else this is being called for every call to denied_reason_for_resource
-    # 10 x per project
-    # 11 x per idea
-    def find_permission(resource, action)
-      scope = resource&.permission_scope
-      permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
-
-      if permission.blank? && Permission.available_actions(scope)
-        Permissions::PermissionsUpdateService.new.update_permissions_for_scope scope
-        permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
+    # Project methods
+    def project_visible_disabled_reason(project, user)
+      if (project.visible_to == 'admins' && !user.admin?) ||
+        (project.visible_to == 'groups' && !user.in_any_groups?(project.groups))
+        PROJECT_DENIED_REASONS[:project_not_visible]
       end
-
-      raise "Unknown action '#{action}' for resource: #{resource}" unless permission
-
-      permission
     end
 
     # Phase methods
@@ -203,16 +202,16 @@ module Permissions
       end
     end
 
-    def reacting_disabled_reason_for_phase(phase, user, mode)
+    def reacting_disabled_reason_for_phase(phase, user, reaction_mode: nil)
       if !phase.ideation?
         REACTING_DENIED_REASONS[:not_ideation]
       elsif !phase.reacting_enabled
         REACTING_DENIED_REASONS[:reacting_disabled]
-      elsif mode == 'down' && !phase.reacting_dislike_enabled
+      elsif reaction_mode == 'down' && !phase.reacting_dislike_enabled
         REACTING_DENIED_REASONS[:reacting_dislike_disabled]
-      elsif mode == 'up' && user && liking_limit_reached?(phase, user)
+      elsif reaction_mode == 'up' && user && liking_limit_reached?(phase, user)
         REACTING_DENIED_REASONS[:reacting_like_limited_max_reached]
-      elsif mode == 'down' && user && disliking_limit_reached?(phase, user)
+      elsif reaction_mode == 'down' && user && disliking_limit_reached?(phase, user)
         REACTING_DENIED_REASONS[:reacting_dislike_limited_max_reached]
       end
     end
@@ -242,6 +241,8 @@ module Permissions
         VOTING_DENIED_REASONS[:not_voting]
       end
     end
+
+    # Helper methods
 
     def idea_in_current_phase?(idea, current_phase)
       idea.ideas_phases.find { |ip| ip.phase_id == current_phase.id }

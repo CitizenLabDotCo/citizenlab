@@ -56,7 +56,7 @@ class WebApi::V1::PermissionsController < ApplicationController
   end
 
   def registration_requirements_service
-    @registration_requirements_service ||= Permissions::RegistrationRequirementsService.new
+    @registration_requirements_service ||= Permissions::UserRequirementsService.new
   end
 
   def set_permission

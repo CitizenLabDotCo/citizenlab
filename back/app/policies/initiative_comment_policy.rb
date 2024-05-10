@@ -56,7 +56,7 @@ class InitiativeCommentPolicy < ApplicationPolicy
   private
 
   def commenting_allowed?(user)
-    !Permissions::PermissionsService.new.denied_reason_for_resource user, 'commenting_initiative'
+    !Permissions::PermissionsService.new.denied_reason_for_user user, 'commenting_initiative'
   end
 
   def owner?
