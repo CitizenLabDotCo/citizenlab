@@ -2,23 +2,35 @@ import { ActiveUsersResponse } from 'api/graph_data_units/responseTypes/ActiveUs
 
 import { parseStats } from './parse';
 
+const TIME_SERIES = [];
+
 describe('parseStats', () => {
-  it('works', () => {
+  it('works when all stats data is empty', () => {
     const responseData: ActiveUsersResponse['data']['attributes'] = [
-      [
-        {
-          first_dimension_date_created_date: '2022-09-02',
-          count_participant_id: 1,
-        },
-        {
-          first_dimension_date_created_date: '2022-10-01',
-          count_participant_id: 4,
-        },
-        {
-          first_dimension_date_created_date: '2022-11-14',
-          count_participant_id: 3,
-        },
-      ],
+      TIME_SERIES,
+      [],
+      [],
+      undefined,
+      undefined,
+    ];
+
+    const expectedOutput = {
+      activeUsers: {
+        value: 0,
+        delta: undefined,
+      },
+      participationRate: {
+        value: 0,
+        delta: undefined,
+      },
+    };
+
+    expect(parseStats(responseData)).toEqual(expectedOutput);
+  });
+
+  it('works when only data for active users in whole period', () => {
+    const responseData: ActiveUsersResponse['data']['attributes'] = [
+      TIME_SERIES,
       [{ count_participant_id: 4 }],
       [],
       undefined,
@@ -27,33 +39,61 @@ describe('parseStats', () => {
 
     const expectedOutput = {
       activeUsers: {
-        value: '4',
+        value: 4,
+        delta: undefined,
+      },
+      participationRate: {
+        value: 0,
+        delta: undefined,
       },
     };
 
     expect(parseStats(responseData)).toEqual(expectedOutput);
   });
 
-  it('works with last query response as empty array', () => {
+  it('correctly calculates active users delta', () => {
     const responseData: ActiveUsersResponse['data']['attributes'] = [
-      [
-        {
-          first_dimension_date_created_date: '2022-11-09',
-          count_participant_id: 3,
-        },
-      ],
-      [{ count_participant_id: 3 }],
+      TIME_SERIES,
+      [{ count_participant_id: 4 }],
       [],
-      undefined,
+      [{ count_participant_id: 1 }],
       undefined,
     ];
 
     const expectedOutput = {
       activeUsers: {
-        value: '3',
+        value: 4,
+        delta: 3,
+      },
+      participationRate: {
+        value: 0,
+        delta: undefined,
       },
     };
 
     expect(parseStats(responseData)).toEqual(expectedOutput);
   });
+
+  // it('correctly calculates participation rates', () => {
+  //   const responseData: ActiveUsersResponse['data']['attributes'] = [
+  //     TIME_SERIES,
+  //     [{ count_participant_id: 4 }],
+  //     [{ count_visitor_id: 8 }],
+  //     [{ count_participant_id: 1 }],
+  //     [{ count_visitor_id: 3 }],
+  //   ];
+
+  //   const expectedOutput = {
+  //     activeUsers: {
+  //       value: 4,
+  //       delta: 3
+  //     },
+  //     participationRate: {
+  //       value: 0,
+  //       delta: undefined
+  //     }
+  //   };
+
+  //   expect(parseStats(responseData)).toEqual(expectedOutput);
+  // })
 });
