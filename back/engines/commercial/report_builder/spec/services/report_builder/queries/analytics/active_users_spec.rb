@@ -11,7 +11,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
       @date_october = Date.new(2022, 10, 5)
 
       @dimension_date_sept = create(:dimension_date, date: @date_september)
-      create(:dimension_date, date: @date_october)
+      @dimension_date_oct = create(:dimension_date, date: @date_october)
       create(:dimension_type, name: 'idea', parent: 'post')
       create(:dimension_type, name: 'comment', parent: 'idea')
     end
@@ -178,8 +178,73 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
       )
     end
 
-    # it 'returns visitors and a separate count for participants filtered by is_visitor in compared period' do
-    #  TODO
-    # end
+    it 'returns visitors and a separate count for participants filtered by is_visitor in compared period' do
+      user1 = create(:user)
+      user2 = create(:user)
+
+      project = create(:single_phase_ideation_project)
+
+      ### SEPTEMBER ###
+      create(:fact_visit, dimension_date_first_action: @dimension_date_sept, dimension_user_id: user1.id)
+      create(:fact_visit, dimension_date_first_action: @dimension_date_sept)
+      create(:fact_visit, dimension_date_first_action: @dimension_date_sept)
+      create(:fact_visit, dimension_date_first_action: @dimension_date_sept)
+
+      create(:idea, created_at: @date_september, project: project, author: user1)
+      create(:idea, created_at: @date_september, project: project)
+
+      ### OCTOBER ###
+      create(:fact_visit, dimension_date_first_action: @dimension_date_oct, dimension_user_id: user1.id)
+      create(:fact_visit, dimension_date_first_action: @dimension_date_oct, dimension_user_id: user2.id)
+      create(:fact_visit, dimension_date_first_action: @dimension_date_oct)
+      create(:fact_visit, dimension_date_first_action: @dimension_date_oct)
+
+      create(:idea, created_at: @date_october, project: project, author: user1)
+      create(:idea, created_at: @date_october, project: project, author: user2)
+      create(:idea, created_at: @date_october, project: project)
+      create(:idea, created_at: @date_october, project: project)
+
+      params = {
+        start_at: Date.new(2022, 10, 1).to_s,
+        end_at: Date.new(2022, 10, 30).to_s,
+        compare_start_at: Date.new(2022, 9, 1).to_s,
+        compare_end_at: Date.new(2022, 9, 30).to_s
+      }
+
+      expect(query.run_query(**params)).to eq(
+        [
+          [
+            {
+              'count_participant_id' => 1,
+              'dimension_date_created.month' => '2022-09',
+              'first_dimension_date_created_date' => @date_september
+            },
+            {
+              'count_participant_id' => 2,
+              'dimension_date_created.month' => '2022-10',
+              'first_dimension_date_created_date' => @date_october
+            }
+          ],
+          [{
+            'count_participant_id' => 4
+          }],
+          [{
+            'count_visitor_id' => 4
+          }],
+          [{
+            'count_participant_id' => 2
+          }],
+          [{
+            'count_participant_id' => 2
+          }],
+          [{
+            'count_visitor_id' => 4
+          }],
+          [{
+            'count_participant_id' => 1
+          }]
+        ]
+      )
+    end
   end
 end
