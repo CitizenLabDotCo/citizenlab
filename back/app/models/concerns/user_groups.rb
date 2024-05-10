@@ -36,7 +36,7 @@ module UserGroups
   end
 
   def member_of?(group_id)
-    !memberships.select { |m| m.group_id == group_id }.empty?
+    memberships.any? { |m| m.group_id == group_id }
   end
 
   private
