@@ -355,10 +355,6 @@ class User < ApplicationRecord
     avatar.file.nil?
   end
 
-  def invited?
-    invite_status.present?
-  end
-
   def invite_pending?
     invite_status == 'pending'
   end
@@ -553,8 +549,11 @@ class User < ApplicationRecord
   def set_confirmation_required
     return unless new_record? && email_changed?
 
-    not_required = registered_with_phone? || sso? || invited? || active? || highest_role != :user
-    self.confirmation_required = !not_required
+    confirmation_not_required =
+      registered_with_phone? || sso? || invite_status.present? ||
+      active? || highest_role != :user
+
+    self.confirmation_required = !confirmation_not_required
     self.email_confirmed_at = nil
     self.email_confirmation_code_sent_at = nil
   end
