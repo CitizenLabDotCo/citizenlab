@@ -49,6 +49,7 @@ class User < ApplicationRecord
   include Polls::UserDecorator
   include Volunteering::UserDecorator
   include UserRoles
+  include UserGroups
   include PgSearch::Model
 
   GENDERS = %w[male female unspecified].freeze
@@ -158,8 +159,6 @@ class User < ApplicationRecord
   has_many :activities, dependent: :nullify
   has_many :inviter_invites, class_name: 'Invite', foreign_key: :inviter_id, dependent: :nullify
   has_one :invitee_invite, class_name: 'Invite', foreign_key: :invitee_id, dependent: :destroy
-  has_many :memberships, dependent: :destroy
-  has_many :manual_groups, class_name: 'Group', source: 'group', through: :memberships
   has_many :campaign_email_commands, class_name: 'EmailCampaigns::CampaignEmailCommand', foreign_key: :recipient_id, dependent: :destroy
   has_many :baskets, -> { order(:phase_id) }
   before_destroy :destroy_baskets
@@ -221,14 +220,6 @@ class User < ApplicationRecord
   scope :blocked, -> { where('? < block_end_at', Time.zone.now) }
   scope :not_blocked, -> { where(block_end_at: nil).or(where('? > block_end_at', Time.zone.now)) }
   scope :active, -> { registered.not_blocked }
-
-  IN_GROUP_PROC = ->(group) { joins(:memberships).where(memberships: { group_id: group.id }) }
-  scope :in_group, IN_GROUP_PROC
-
-  scope :in_any_group, lambda { |groups|
-    user_ids = groups.flat_map { |group| in_group(group).ids }.uniq
-    where(id: user_ids)
-  }
 
   def update_merging_custom_fields!(attributes)
     attributes = attributes.deep_stringify_keys
@@ -313,10 +304,6 @@ class User < ApplicationRecord
     identity_ids.present?
   end
 
-  def member_of?(group_id)
-    !memberships.select { |m| m.group_id == group_id }.empty?
-  end
-
   def blocked?
     block_end_at.present? && block_end_at > Time.zone.now
   end
@@ -332,18 +319,6 @@ class User < ApplicationRecord
   def blank_and_can_be_deleted?
     # atm it can be true only for users registered with ClaveUnica and MitID who haven't entered email
     sso? && email.blank? && new_email.blank? && password_digest.blank? && identity_ids.count == 1
-  end
-
-  def groups
-    manual_groups
-  end
-
-  def group_ids
-    manual_group_ids
-  end
-
-  def in_any_groups?(groups)
-    manual_groups.merge(groups).exists?
   end
 
   # true if the user has not yet confirmed their email address and the platform requires it
@@ -550,4 +525,3 @@ User.include(ReportBuilder::Patches::User)
 User.include(Verification::Patches::User)
 
 User.prepend(MultiTenancy::Patches::User)
-User.prepend(SmartGroups::Patches::User)
