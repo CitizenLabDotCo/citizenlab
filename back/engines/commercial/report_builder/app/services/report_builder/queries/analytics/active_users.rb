@@ -11,8 +11,6 @@ module ReportBuilder
       compare_end_at: nil,
       **_other_props
     )
-      binding.pry
-
       time_series_query = {
         fact: 'participation',
         filters: {

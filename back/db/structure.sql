@@ -1347,10 +1347,7 @@ CREATE VIEW public.analytics_dimension_users AS
  SELECT u.id,
     COALESCE(((u.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role,
     u.invite_status,
-        CASE v.id
-            WHEN NULL::uuid THEN false
-            ELSE true
-        END AS is_visitor
+    (v.id IS NOT NULL) AS is_visitor
    FROM (public.users u
      LEFT JOIN public.analytics_fact_visits v ON ((v.dimension_user_id = u.id)));
 
