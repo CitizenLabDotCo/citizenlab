@@ -138,8 +138,10 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
           [{
             'count_participant_id' => 2
           }],
-          []
-          # []
+          [],
+          [{
+            'count_participant_id' => 0
+          }]
         ]
       )
     end
@@ -215,12 +217,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
         [
           [
             {
-              'count_participant_id' => 1,
-              'dimension_date_created.month' => '2022-09',
-              'first_dimension_date_created_date' => @date_september
-            },
-            {
-              'count_participant_id' => 2,
+              'count_participant_id' => 4,
               'dimension_date_created.month' => '2022-10',
               'first_dimension_date_created_date' => @date_october
             }

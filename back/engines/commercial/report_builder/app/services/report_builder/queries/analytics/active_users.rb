@@ -90,8 +90,23 @@ module ReportBuilder
           }
         }
 
+        active_visitor_users_compared_period_query = {
+          fact: 'participation',
+          filters: {
+            **project_filter('dimension_project_id', project_id),
+            **date_filter(
+              'dimension_date_created', compare_start_at, compare_end_at
+            ),
+            'dimension_user.is_visitor': 'true'
+          },
+          aggregations: {
+            participant_id: 'count'
+          }
+        }
+
         queries << active_users_compared_period_query
         queries << visitors_compared_period_query
+        queries << active_visitor_users_compared_period_query
       end
 
       queries
