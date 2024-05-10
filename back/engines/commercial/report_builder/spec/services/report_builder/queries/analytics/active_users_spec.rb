@@ -10,7 +10,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
       @date_september = Date.new(2022, 9, 10)
       @date_october = Date.new(2022, 10, 5)
 
-      create(:dimension_date, date: @date_september)
+      @dimension_date_sept = create(:dimension_date, date: @date_september)
       create(:dimension_date, date: @date_october)
       create(:dimension_type, name: 'idea', parent: 'post')
       create(:dimension_type, name: 'comment', parent: 'idea')
@@ -147,8 +147,8 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
     it 'returns visitors and a separate count for participants filtered by is_visitor' do
       user = create(:user)
 
-      create(:fact_visit, dimension_user_id: user.id)
-      create(:fact_visit)
+      create(:fact_visit, dimension_date_first_action: @dimension_date_sept, dimension_user_id: user.id)
+      create(:fact_visit, dimension_date_first_action: @dimension_date_sept)
 
       project = create(:single_phase_ideation_project)
       create(:idea, created_at: @date_september, project: project)
@@ -156,8 +156,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
 
       params = {
         start_at: (@date_september - 1.day).to_s,
-        end_at: (@date_september + 1.day).to_s,
-        project_id: project.id
+        end_at: (@date_september + 1.day).to_s
       }
       expect(query.run_query(**params)).to eq(
         [
