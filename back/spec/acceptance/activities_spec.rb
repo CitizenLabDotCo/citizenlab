@@ -16,6 +16,7 @@ resource 'Activity' do
     @activity3 = create(:activity, item_type: 'Project', action: 'created', project_id: @project.id, user: @user)
     @activity4 = create(:activity, item_type: 'Project', action: 'changed', project_id: @project.id)
     @activity5 = create(:activity, item_type: 'Project', action: 'deleted', project_id: @project.id)
+    @activity6 = create(:activity, item_type: 'Project', action: 'published', project_id: SecureRandom.uuid)
     @non_management_activity = create(:comment_created_activity)
   end
 
@@ -28,7 +29,7 @@ resource 'Activity' do
     example_request 'List all activities' do
       assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 5
+      expect(json_response[:data].size).to eq 6
     end
 
     example 'List all activities associated with a user' do

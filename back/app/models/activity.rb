@@ -28,7 +28,7 @@
 #
 class Activity < ApplicationRecord
   MANAGEMENT_FILTERS = [
-    { item_type: 'Project', actions: %w[created changed deleted] },
+    { item_type: 'Project', actions: %w[created changed deleted published] },
     { item_type: 'Phase', actions: %w[created deleted] }
   ].freeze
 
