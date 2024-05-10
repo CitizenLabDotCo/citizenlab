@@ -36,7 +36,9 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
             'count_participant_id' => 1
           }],
           [],
-          []
+          [{
+            'count_participant_id' => 0
+          }]
         ]
       )
     end
@@ -89,7 +91,9 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
             'count_participant_id' => 8
           }],
           [],
-          []
+          [{
+            'count_participant_id' => 0
+          }]
         ]
       )
     end
@@ -128,7 +132,9 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
             'count_participant_id' => 3
           }],
           [],
-          [],
+          [{
+            'count_participant_id' => 0
+          }],
           [{
             'count_participant_id' => 2
           }],
