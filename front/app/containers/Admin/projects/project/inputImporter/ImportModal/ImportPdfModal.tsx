@@ -213,6 +213,7 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
               >
                 <Box>
                   <Button
+                    bgColor={colors.primary}
                     width="auto"
                     type="submit"
                     processing={isLoading}
