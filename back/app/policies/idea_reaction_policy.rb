@@ -27,7 +27,7 @@ class IdeaReactionPolicy < ApplicationPolicy
   def create?
     return false unless could_modify?
 
-    reason = participation_context_service.idea_reacting_disabled_reason_for record, user
+    reason = participation_context_service.denied_reason_for_idea_reaction record, user
 
     reason ? raise_not_authorized(reason) : true
   end

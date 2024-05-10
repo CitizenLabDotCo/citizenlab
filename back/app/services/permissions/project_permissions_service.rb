@@ -3,20 +3,20 @@
 module Permissions
   class ProjectPermissionsService < Permissions::PermissionsService
     def action_descriptor(project, user)
-      posting_disabled_reason = denied_reason_for_project project, user, 'posting_idea' # Can move to project service
-      commenting_disabled_reason = denied_reason_for_project project, user, 'commenting_idea' # Used by commenting_idea_disabled_reason_for_idea
-      reacting_disabled_reason = idea_reacting_disabled_reason_for project, user
-      liking_disabled_reason = idea_reacting_disabled_reason_for project, user, mode: 'up'
-      disliking_disabled_reason = idea_reacting_disabled_reason_for project, user, mode: 'down'
-      annotating_document_disabled_reason = denied_reason_for_project project, user, 'annotating_document' # Can move to project service
-      taking_survey_disabled_reason = denied_reason_for_project project, user, 'taking_survey' # Can move to project service
-      taking_poll_disabled_reason = denied_reason_for_project project, user, 'taking_poll' # Can move to project service
-      voting_disabled_reason = denied_reason_for_project project, user, 'voting' # Can move to project service
+      posting_disabled_reason = denied_reason_for_project project, user, 'posting_idea'
+      commenting_disabled_reason = denied_reason_for_project project, user, 'commenting_idea'
+      reacting_disabled_reason = denied_reason_for_project project, user, 'reacting_idea'
+      liking_disabled_reason = denied_reason_for_project project, user, 'reacting_idea', mode: 'up'
+      disliking_disabled_reason = denied_reason_for_project project, user, 'reacting_idea', mode: 'down'
+      annotating_document_disabled_reason = denied_reason_for_project project, user, 'annotating_document'
+      taking_survey_disabled_reason = denied_reason_for_project project, user, 'taking_survey'
+      taking_poll_disabled_reason = denied_reason_for_project project, user, 'taking_poll'
+      voting_disabled_reason = denied_reason_for_project project, user, 'voting'
       {
         posting_idea: {
           enabled: !posting_disabled_reason,
           disabled_reason: posting_disabled_reason,
-          future_enabled: posting_disabled_reason && future_posting_idea_enabled_phase(project, user)&.start_at
+          future_enabled: posting_disabled_reason && future_enabled_phase(project, user, 'posting_idea')&.start_at
         },
         commenting_idea: {
           enabled: !commenting_disabled_reason,
