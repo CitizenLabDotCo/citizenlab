@@ -35,7 +35,7 @@ class SideFxProjectService
   end
 
   def after_update(project, user)
-    LogActivityJob.perform_later project, 'changed', user, project.updated_at.to_i
+    LogActivityJob.perform_later project, 'changed', user, project.updated_at.to_i,payload: { change: project.saved_changes }
 
     after_folder_changed project, user if @folder_id_was != project.folder_id
     # We don't want to send out the "project published" campaign when e.g. changing from "archived" to "published"
