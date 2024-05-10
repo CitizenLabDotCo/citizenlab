@@ -26,8 +26,4 @@ class ActivityPolicy < ApplicationPolicy
       end
     end
   end
-
-  def index?
-    user&.admin?
-  end
 end

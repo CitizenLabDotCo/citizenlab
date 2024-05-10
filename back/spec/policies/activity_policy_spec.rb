@@ -13,8 +13,6 @@ describe ActivityPolicy do
     context 'for a visitor' do
       let(:user) { nil }
 
-      it { is_expected.not_to permit(:index) }
-
       it 'does not index the activity' do
         expect(scope.resolve.size).to eq 0
       end
@@ -22,8 +20,6 @@ describe ActivityPolicy do
 
     context 'for a resident' do
       let(:user) { create(:user) }
-
-      it { is_expected.not_to permit(:index) }
 
       it 'does not index the activity' do
         expect(scope.resolve.size).to eq 0
@@ -34,7 +30,42 @@ describe ActivityPolicy do
       let(:project) { create(:project) }
       let(:user) { create(:project_moderator, projects: [project]) }
 
-      it { is_expected.not_to permit(:index) }
+      it 'does not index the activity' do
+        expect(scope.resolve.size).to eq 0
+      end
+    end
+
+    context 'for an admin' do
+      let(:user) { create(:admin) }
+
+      it 'indexes the activity' do
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+  end
+
+  context 'on an activity NOT for the management feed' do
+    let!(:activity) { create(:comment_created_activity) }
+
+    context 'for a visitor' do
+      let(:user) { nil }
+
+      it 'does not index the activity' do
+        expect(scope.resolve.size).to eq 0
+      end
+    end
+
+    context 'for a resident' do
+      let(:user) { create(:user) }
+
+      it 'does not index the activity' do
+        expect(scope.resolve.size).to eq 0
+      end
+    end
+
+    context 'for a project moderator (who is not an admin)' do
+      let(:project) { create(:project) }
+      let(:user) { create(:project_moderator, projects: [project]) }
 
       it 'does not index the activity' do
         expect(scope.resolve.size).to eq 0
@@ -44,14 +75,9 @@ describe ActivityPolicy do
     context 'for an admin' do
       let(:user) { create(:admin) }
 
-      it { is_expected.to permit(:index) }
-
-      it 'indexes the activity' do
-        expect(scope.resolve.size).to eq 1
+      it 'does not index the activity' do
+        expect(scope.resolve.size).to eq 0
       end
     end
   end
-
-  # context 'on an activity NOT for the management feed' do
-  # end
 end
