@@ -48,6 +48,8 @@ Rails.application.routes.draw do
 
       concerns :permissionable # for the global permission scope (with parent_param = nil)
 
+      resources :activities, only: [:index]
+
       resources :ideas,
         concerns: %i[reactable spam_reportable post followable permissionable],
         defaults: { reactable: 'Idea', spam_reportable: 'Idea', post: 'Idea', followable: 'Idea', parent_param: :idea_id } do
