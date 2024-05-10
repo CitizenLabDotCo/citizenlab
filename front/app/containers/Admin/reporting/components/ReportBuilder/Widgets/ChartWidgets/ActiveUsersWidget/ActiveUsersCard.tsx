@@ -36,7 +36,7 @@ const ActiveUsers = ({
 
   const layout = useLayout();
 
-  if (!stats || stats.activeUsers.value === '0') {
+  if (!stats || stats.activeUsers.value === 0) {
     return <NoData message={messages.noData} />;
   }
 
