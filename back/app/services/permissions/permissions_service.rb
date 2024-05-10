@@ -121,7 +121,6 @@ module Permissions
     end
 
     # Future enabled phases
-    # TODO: JS - no test for 'voting'
     def future_enabled_phase(project, user, action, reaction_mode: nil)
       time = Time.zone.now
       @timeline_service.future_phases(project, time).find { |phase| !denied_reason_for_phase(phase, user, action, reaction_mode: reaction_mode) }

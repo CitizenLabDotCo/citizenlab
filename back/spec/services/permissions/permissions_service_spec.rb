@@ -1127,7 +1127,7 @@ describe Permissions::PermissionsService do
     end
   end
 
-  describe 'future_reacting_enabled_phase' do
+  describe '"reacting_idea" future_enabled_phase' do
     it 'returns the first upcoming phase that has reacting enabled' do
       project = create(
         :project_with_current_phase,
@@ -1189,6 +1189,37 @@ describe Permissions::PermissionsService do
     it 'returns nil for a project without future phases' do
       project = create(:project_with_past_phases)
       expect(service.future_enabled_phase(project, create(:user), 'commenting_idea')).to be_nil
+    end
+  end
+
+  describe '"voting" future_enabled_phase' do
+    it 'returns the first upcoming phase that is voting' do
+      project = create(
+        :project_with_current_phase,
+        phases_config: {
+          sequence: 'xcxxyxy',
+          x: { participation_method: 'ideation' },
+          y: { participation_method: 'voting', voting_method: 'budgeting' },
+          c: { participation_method: 'ideation' }
+        }
+      )
+      expect(service.future_enabled_phase(project, create(:user), 'voting')).to eq project.phases.order(:start_at)[4]
+    end
+
+    it 'returns nil if none of the next phases are voting phase' do
+      project = create(
+        :project_with_current_phase,
+        phases_config: {
+          sequence: 'xcyyy',
+          y: { participation_method: 'ideation' }
+        }
+      )
+      expect(service.future_enabled_phase(project, create(:user), 'voting')).to be_nil
+    end
+
+    it 'returns nil for a project without future phases' do
+      project = create(:project_with_past_phases)
+      expect(service.future_enabled_phase(project, create(:user), 'voting')).to be_nil
     end
   end
 end
