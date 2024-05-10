@@ -12,10 +12,6 @@ module Sluggable
       !!@has_slug
     end
 
-    def generate_fallback_slug(sluggable)
-      sluggable.id || SecureRandom.uuid
-    end
-
     private
 
     def slug(options = {})
@@ -36,7 +32,7 @@ module Sluggable
 
     from_value = self.class.slug_from.call(self)
     self.slug = SlugService.new.generate_slug self, from_value
-    self.slug = self.class.generate_fallback_slug(self) if !SLUG_REGEX.match?(slug)
+    self.slug = generate_fallback_slug(self) if !SLUG_REGEX.match?(slug)
   end
 
   private
@@ -44,4 +40,8 @@ module Sluggable
   def slug_enabled?
     self.class.slug? && (!self.class.slug_if || self.class.slug_if&.call(self))
   end
+end
+
+def generate_fallback_slug(sluggable)
+  sluggable.id || SecureRandom.uuid
 end
