@@ -10,7 +10,7 @@ class ActivityPolicy < ApplicationPolicy
     end
 
     def resolve
-      if user&.admin?
+      if user&.admin? && user&.active?
         activities = scope.none
 
         Activity::MANAGEMENT_FILTERS.each do |filter|
