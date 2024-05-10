@@ -54,42 +54,31 @@ describe('parseTimeSeries', () => {
 describe('parseStats', () => {
   it('works', () => {
     const responseData: ActiveUsersResponse['data']['attributes'] = [
-      [
-        {
-          first_dimension_date_created_date: '2022-09-02',
-          count_participant_id: 1,
-        },
-        {
-          first_dimension_date_created_date: '2022-10-01',
-          count_participant_id: 4,
-        },
-        {
-          first_dimension_date_created_date: '2022-11-14',
-          count_participant_id: 3,
-        },
-      ],
-      [{ count_participant_id: 4 }],
-      [{ count_visitor_id: 2 }],
+      [],
+      [{ count_participant_id: 8 }],
+      [{ count_visitor_id: 4 }],
+      [{ count_participant_id: 2 }],
 
-      [{ count_participant_id: 4 }],
-      [{ count_visitor_id: 0 }],
+      [{ count_participant_id: 6 }],
+      [{ count_visitor_id: 4 }],
+      [{ count_participant_id: 1 }],
     ];
 
     const expectedOutput = {
       activeUsers: {
-        value: '4',
-        lastPeriod: '4',
+        value: '8',
+        lastPeriod: '6',
       },
       participationRate: {
-        value: '100%',
-        lastPeriod: '0%',
+        value: '50%',
+        lastPeriod: '25%',
       },
     };
 
     expect(parseStats(responseData)).toEqual(expectedOutput);
   });
 
-  it('works with last query response as empty array', () => {
+  it('works when last period visitors is empty array', () => {
     const responseData: ActiveUsersResponse['data']['attributes'] = [
       [
         {
@@ -99,7 +88,10 @@ describe('parseStats', () => {
       ],
       [{ count_participant_id: 3 }],
       [{ count_visitor_id: 1 }],
+      [{ count_participant_id: 1 }],
+
       [{ count_participant_id: 3 }],
+      [],
       [],
     ];
 
