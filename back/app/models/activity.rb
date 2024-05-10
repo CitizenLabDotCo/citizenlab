@@ -27,6 +27,10 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Activity < ApplicationRecord
+  MANAGEMENT_FILTERS = [
+    { item_type: 'Phase', actions: %w[created deleted] }
+  ].freeze
+
   belongs_to :user, optional: true
   belongs_to :item, polymorphic: true, optional: true
 

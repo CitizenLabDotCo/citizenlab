@@ -82,5 +82,15 @@ FactoryBot.define do
       association :item, factory: :admin
       action { 'admin_rights_given' }
     end
+
+    factory :phase_created_activity do
+      association :item, factory: :phase
+      action { 'created' }
+    end
+
+    factory :phase_deleted_activity do
+      association :item, factory: :phase
+      action { 'deleted' }
+    end
   end
 end

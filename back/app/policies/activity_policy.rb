@@ -11,7 +11,16 @@ class ActivityPolicy < ApplicationPolicy
 
     def resolve
       if user&.admin?
-        scope.all
+        activities = scope.all
+
+        Activity::MANAGEMENT_FILTERS.each do |filter|
+          activities = activities.where(
+            item_type: filter[:item_type],
+            action: filter[:actions]
+          )
+        end
+
+        activities
       else
         scope.none
       end
