@@ -32,7 +32,7 @@ class Activity < ApplicationRecord
     { item_type: 'Phase', actions: %w[created changed deleted] },
     { item_type: 'EmailCampaigns::Campaigns::Manual', actions: ['sent'] },
     { item_type: 'EmailCampaigns::Campaigns::ManualProjectParticipants', actions: ['sent'] },
-    { item_type: 'idea', actions: ['deleted']}
+    { item_type: 'idea', actions: ['deleted'] }
   ].freeze
 
   belongs_to :user, optional: true
