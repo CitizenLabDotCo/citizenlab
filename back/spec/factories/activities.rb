@@ -104,6 +104,7 @@ FactoryBot.define do
       action { 'published' }
     end
 
+    # TODO: Add payload to this factory
     factory :project_changed_publication_status_activity do
       association :item, factory: :project
       action { 'changed_publication_status' }
@@ -112,6 +113,12 @@ FactoryBot.define do
     factory :phase_created_activity do
       association :item, factory: :phase
       action { 'created' }
+    end
+
+    # TODO: Add payload to this factory
+    factory :phase_changed_activity do
+      association :item, factory: :phase
+      action { 'changed' }
     end
 
     factory :phase_deleted_activity do

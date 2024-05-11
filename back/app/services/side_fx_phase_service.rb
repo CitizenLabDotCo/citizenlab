@@ -32,7 +32,17 @@ class SideFxPhaseService
   end
 
   def after_update(phase, user)
-    LogActivityJob.perform_later(phase, 'changed', user, phase.updated_at.to_i)
+    change = phase.saved_changes
+
+    if change.present? # We don't want to log a `changed` activity when no phase attribute is changed.
+      LogActivityJob.perform_later(
+        phase,
+        'changed',
+        user,
+        phase.updated_at.to_i,
+        payload: { change: change }
+      )
+    end
 
     permissions_service.update_permissions_for_scope(phase)
 
@@ -41,13 +51,13 @@ class SideFxPhaseService
       posting_enabled posting_method posting_limited_max commenting_enabled reacting_enabled
       reacting_like_method reacting_like_limited_max reacting_dislike_enabled presentation_mode participation_method
     ].each do |attribute|
-      if phase.send "#{attribute}_previously_changed?"
+      if phase.send :"#{attribute}_previously_changed?"
         LogActivityJob.perform_later(
           phase,
           "changed_#{attribute}",
           user,
           phase.updated_at.to_i,
-          payload: { change: phase.send("#{attribute}_previous_change") }
+          payload: { change: phase.send(:"#{attribute}_previous_change") }
         )
       end
     end

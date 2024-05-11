@@ -29,7 +29,7 @@
 class Activity < ApplicationRecord
   MANAGEMENT_FILTERS = [
     { item_type: 'Project', actions: %w[created changed changed_publication_status deleted published] },
-    { item_type: 'Phase', actions: %w[created deleted] }
+    { item_type: 'Phase', actions: %w[created changed deleted] }
   ].freeze
 
   belongs_to :user, optional: true
