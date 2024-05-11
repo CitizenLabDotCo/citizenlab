@@ -65,8 +65,14 @@ class SideFxIdeaService
   def after_destroy(frozen_idea, user)
     serialized_idea = clean_time_attributes(frozen_idea.attributes)
     serialized_idea['location_point'] = serialized_idea['location_point'].to_s
-    LogActivityJob.perform_later(encode_frozen_resource(frozen_idea), 'deleted', user, Time.now.to_i,
-      payload: { idea: serialized_idea })
+    LogActivityJob.perform_later(
+      encode_frozen_resource(frozen_idea),
+      'deleted',
+      user,
+      Time.now.to_i,
+      payload: { idea: serialized_idea },
+      project_id: frozen_idea&.project&.id
+    )
   end
 
   private
