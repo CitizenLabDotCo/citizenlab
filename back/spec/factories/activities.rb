@@ -88,9 +88,25 @@ FactoryBot.define do
       action { 'created' }
     end
 
+    # TODO: Add payload to this factory
+    factory :project_changed_activity do
+      association :item, factory: :project
+      action { 'changed' }
+    end
+
     factory :project_deleted_activity do
       association :item, factory: :project
       action { 'deleted' }
+    end
+
+    factory :project_published_activity do
+      association :item, factory: :project
+      action { 'published' }
+    end
+
+    factory :project_changed_publication_status_activity do
+      association :item, factory: :project
+      action { 'changed_publication_status' }
     end
 
     factory :phase_created_activity do
