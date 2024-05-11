@@ -37,6 +37,7 @@ resource 'Activity' do
       assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 11
+      expect(json_response[:data].pluck(:id).include?(@non_management_activity.id)).to be false
     end
 
     example 'List all activities associated with a user' do
