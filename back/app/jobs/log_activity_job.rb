@@ -29,6 +29,8 @@ class LogActivityJob < ApplicationJob
     # feasible to determine the `project_id` for deleted items.
     item, action, user, acted_at, options = args
 
+    puts "options: #{options.inspect}"
+
     if options.to_h.key?(:project_id) || (project_id = item.try(:project_id)).nil?
       super(*args)
     else
@@ -38,6 +40,7 @@ class LogActivityJob < ApplicationJob
   end
 
   def run(item, action, user, acted_at = nil, options = {})
+    puts "options_run: #{options.inspect}"
     activity = create_activity(item, action, user, acted_at, options)
     trigger_notifications(activity)
     trigger_campaigns(activity)
