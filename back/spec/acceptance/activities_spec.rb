@@ -13,9 +13,10 @@ resource 'Activity' do
     @project = create(:project)
     @activity1 = create(:phase_created_activity, user: @user)
     @activity2 = create(:phase_deleted_activity, project_id: @project.id)
+    # Should probably be setting item: @project instead of project_id: @project, for 'Project' type activities
     @activity3 = create(:activity, item_type: 'Project', action: 'created', project_id: @project.id, user: @user)
     @activity4 = create(:activity, item_type: 'Project', action: 'changed', project_id: @project.id)
-    @activity5 = create(:activity, item_type: 'Project', action: 'deleted', project_id: @project.id)
+    @activity5 = create(:project_deleted_activity, item: @project)
     @activity6 = create(:activity, item_type: 'Project', action: 'published', project_id: SecureRandom.uuid)
     @activity7 = create(:activity, item_type: 'Project', action: 'changed_publication_status', project_id: SecureRandom.uuid)
     @non_management_activity = create(:comment_created_activity)
@@ -41,7 +42,7 @@ resource 'Activity' do
       expect(json_response[:data].pluck(:id)).to match_array [@activity1.id, @activity3.id]
     end
 
-    example 'List all activities associated with a project' do
+    example 'List all activities with a specific project_id' do
       do_request project_ids: [@project.id]
       assert_status 200
       json_response = json_parse(response_body)

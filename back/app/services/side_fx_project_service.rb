@@ -38,7 +38,7 @@ class SideFxProjectService
     change = project.saved_changes
 
     # We don't want to log a `changed` activity when no project attribute is changed.
-    # e.g. when the related admin_publication publication_status is updated, we instead create a different activity
+    # e.g. when the project.admin_publication.publication_status is updated, we instead create a different activity
     # with the action `published` or `changed_publication_status`.
     if change.present?
       LogActivityJob.perform_later(

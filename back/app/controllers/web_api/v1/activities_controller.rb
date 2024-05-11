@@ -6,7 +6,7 @@ class WebApi::V1::ActivitiesController < ApplicationController
   def index
     @activities = policy_scope Activity
     @activities = @activities.where(user_id: params[:user_ids]) if params[:user_ids]
-    @activities = @activities.where(project_id: params[:project_ids]) if params[:project_ids]
+    @activities = @activities.where(project_id: params[:project_ids]).or(@activities.where(item_id: params[:project_ids])) if params[:project_ids]
     paginated_activities = paginate @activities
 
     render json: linked_json(
