@@ -13,12 +13,11 @@ resource 'Activity' do
     @project = create(:project)
     @activity1 = create(:phase_created_activity, user: @user)
     @activity2 = create(:phase_deleted_activity, project_id: @project.id)
-    # Should probably be setting item: @project instead of project_id: @project, for 'Project' type activities
-    @activity3 = create(:activity, item_type: 'Project', action: 'created', project_id: @project.id, user: @user)
-    @activity4 = create(:activity, item_type: 'Project', action: 'changed', project_id: @project.id)
+    @activity3 = create(:project_created_activity, item: @project, user: @user)
+    @activity4 = create(:project_changed_activity, item: @project)
     @activity5 = create(:project_deleted_activity, item: @project)
-    @activity6 = create(:activity, item_type: 'Project', action: 'published', project_id: SecureRandom.uuid)
-    @activity7 = create(:activity, item_type: 'Project', action: 'changed_publication_status', project_id: SecureRandom.uuid)
+    @activity6 = create(:project_published_activity, item: create(:project))
+    @activity7 = create(:project_changed_publication_status_activity, item: create(:project))
     @non_management_activity = create(:comment_created_activity)
   end
 
