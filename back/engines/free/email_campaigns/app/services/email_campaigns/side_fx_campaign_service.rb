@@ -25,9 +25,7 @@ module EmailCampaigns
     def before_send(campaign, user); end
 
     def after_send(campaign, user)
-      project_id = campaign.instance_of?(::EmailCampaigns::Campaigns::ManualProjectParticipants) ? campaign.context_id : nil
-
-      LogActivityJob.perform_later(campaign, 'sent', user, campaign.updated_at.to_i, project_id: project_id)
+      LogActivityJob.perform_later(campaign, 'sent', user, campaign.updated_at.to_i, project_id: campaign&.project&.id)
     end
 
     def before_destroy(campaign, user); end
