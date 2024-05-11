@@ -34,7 +34,14 @@ describe SideFxPhaseService do
       phase.update(title_multiloc: { en: 'changed' })
       expect { service.after_update(phase, user) }
         .to have_enqueued_job(LogActivityJob)
-        .with(phase, 'changed', user, phase.updated_at.to_i, project_id: phase.project_id)
+        .with(
+          phase,
+          'changed',
+          user,
+          phase.updated_at.to_i,
+          project_id: phase.project_id,
+          payload: { change: phase.saved_changes }
+        )
     end
 
     describe 'changing attributes' do
