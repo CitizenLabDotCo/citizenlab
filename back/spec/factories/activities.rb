@@ -16,6 +16,10 @@ FactoryBot.define do
       action { 'deleted' }
     end
 
+    factory :idea_changed_status_activity do
+      action { 'changed_status' }
+    end
+
     factory :changed_title_activity do
       action { 'changed_title' }
       payload do
