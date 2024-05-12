@@ -26,7 +26,7 @@ class SideFxIdeaService
 
     if idea.just_published?
       after_publish idea, user
-    elsif idea.published? && idea.changed?
+    elsif idea.published? && idea.saved_changes.present?
       LogActivityJob.perform_later(idea, 'changed', user_for_activity_on_anonymizable_item(idea, user), idea.updated_at.to_i)
       scrape_facebook(idea)
     end
