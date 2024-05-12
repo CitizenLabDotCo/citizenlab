@@ -32,7 +32,7 @@ class SideFxIdeaService
         'changed',
         user_for_activity_on_anonymizable_item(idea, user),
         idea.updated_at.to_i,
-        payload: { change: idea.saved_changes }
+        payload: { change: sanitize_location_point(idea.saved_changes) }
       )
       scrape_facebook(idea)
     end
@@ -116,6 +116,12 @@ class SideFxIdeaService
     return if !idea.project.in_folder?
 
     Follower.find_or_create_by(followable: idea.project.folder, user: user)
+  end
+
+  def sanitize_location_point(change)
+    return change if change['location_point'].blank?
+
+    change['location_point'].map(&:to_s)
   end
 end
 
