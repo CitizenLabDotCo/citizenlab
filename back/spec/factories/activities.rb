@@ -133,5 +133,10 @@ FactoryBot.define do
       association :item, factory: :phase
       action { 'deleted' }
     end
+
+    factory :user_blocked_activity do
+      association :item, factory: :user
+      action { 'blocked' }
+    end
   end
 end
