@@ -1132,7 +1132,7 @@
   "app.containers.InitiativesIndexPage.header": "crwdns2204058:0{styledOrgName}crwdne2204058:0",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "crwdns2204060:0{styledOrgName}crwdne2204060:0",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "crwdns2204062:0crwdne2204062:0",
-  "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards1": "crwdns2223318:0crwdne2223318:0",
+  "app.containers.InitiativesIndexPage.invisibleTitleProposalsCards": "crwdns2223322:0crwdne2223322:0",
   "app.containers.InitiativesIndexPage.learnMoreAboutProposals": "crwdns2204066:0crwdne2204066:0",
   "app.containers.InitiativesIndexPage.metaDescription2": "crwdns2223320:0crwdne2223320:0",
   "app.containers.InitiativesIndexPage.metaTitle1": "crwdns2204070:0{orgName}crwdne2204070:0",
