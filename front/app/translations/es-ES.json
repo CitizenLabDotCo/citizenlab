@@ -1713,6 +1713,7 @@
   "app.errors.bulk_import_malformed_pdf": "El archivo PDF cargado parece estar malformado. Intenta exportar de nuevo el PDF desde tu fuente y luego vuelve a subirlo.",
   "app.errors.bulk_import_maximum_ideas_exceeded": "Se ha superado el máximo de ideas de {value}.",
   "app.errors.bulk_import_maximum_pdf_pages_exceeded": "Se ha superado el máximo de {value} páginas en un PDF.",
+  "app.errors.bulk_import_not_enough_pdf_pages": "El PDF cargado no tiene suficientes páginas - debería tener al menos el mismo número de páginas que la plantilla descargada.",
   "app.errors.bulk_import_publication_date_invalid_format": "Idea con formato de fecha de publicación no válido \"{value}\". Por favor, utiliza el formato \"DD-MM-AAAA\".",
   "app.errors.cannot_contain_ideas": "Esta fase contiene {ideasCount, plural, one {one idea} other {{ideasCount} ideas}} y el método de participación al que intenta cambiarla no es compatible con las ideas. Elimine {ideasCount, plural, one {the idea} other {the ideas}} de la fase e inténtelo de nuevo.",
   "app.errors.cant_change_after_first_response": "No es posible modificarlo, ya que algunos usuarios ya lo han respondido.",

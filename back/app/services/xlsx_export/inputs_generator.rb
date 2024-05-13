@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module XlsxExport
-  class GeneratorService
+  class InputsGenerator
     def generate_inputs_for_phase(phase_id, include_private_attributes)
       phase = eager_load_phase(phase_id)
       create_stream do |workbook|
@@ -50,7 +50,7 @@ module XlsxExport
     end
 
     def create_phase_sheet(workbook, phase, include_private_attributes)
-      inputs = eager_load_inputs(phase.ideas)
+      inputs = eager_load_inputs(phase.ideas.published)
       sheet_generator = InputSheetGenerator.new inputs, phase, include_private_attributes
       sheet_name = MultilocService.new.t phase.title_multiloc
       sheet_generator.generate_sheet(workbook, sheet_name)
