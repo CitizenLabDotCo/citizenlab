@@ -15,23 +15,17 @@ module BulkImportIdeas
         data_rows = worksheet.drop(1)
 
         data_rows.each_slice(max_rows).map do |rows|
-          # Create new workbook
-          new_workbook = RubyXL::Workbook.new
-          new_worksheet = new_workbook[0]
-          new_worksheet.sheet_name = worksheet.sheet_name
+          new_package = Axlsx::Package.new
+          new_workbook = new_package.workbook
+          new_workbook.add_worksheet(name: worksheet.sheet_name) do |new_sheet|
+            new_sheet.add_row(header.cells.map { |c| c&.value })
 
-          # Add header
-          header.cells.each_with_index do |cell, i|
-            new_worksheet.add_cell(0, i, cell.value)
-          end
-
-          # Add data rows
-          rows.each_with_index do |row, i|
-            row.cells.each_with_index do |cell, j|
-              new_worksheet.add_cell(i + 1, j, cell.value) unless cell.nil?
+            rows.each do |row|
+              new_sheet.add_row(row.cells.map { |c| c&.value })
             end
           end
-          new_workbook.stream
+
+          new_package.to_stream
         end
       end
     end
