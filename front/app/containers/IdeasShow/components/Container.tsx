@@ -68,6 +68,14 @@ interface Props {
   handleContainerRef: (element: HTMLElement | null) => void;
 }
 
+{
+  /*
+  On "Container2" naming: I didn't try to come up with a better name because this shouldn't be a separate component.
+  It makes it harder to understand IdeasShow with no benefits.
+  This component needs to be reintegrated into IdeasShow instead, then extract
+  the modal perhaps.
+*/
+}
 const Container2 = ({
   projectId,
   isLoaded,
