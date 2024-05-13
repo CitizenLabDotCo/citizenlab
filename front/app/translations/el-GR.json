@@ -1132,7 +1132,7 @@
   "app.containers.InitiativesIndexPage.header": "Δημοσιεύστε την πρότασή σας εδώ και βάλτε την στην ημερήσια διάταξη του {styledOrgName}",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Εξερευνήστε προτάσεις για το {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Ανακαλύψτε προτάσεις",
-  "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards1": "Όλες οι πρωτοβουλίες που λαμβάνουν χώρα",
+  "app.containers.InitiativesIndexPage.invisibleTitleProposalsCards": "Όλες οι προτάσεις που πραγματοποιούνται",
   "app.containers.InitiativesIndexPage.learnMoreAboutProposals": "Μάθετε περισσότερα σχετικά με τον τρόπο λειτουργίας των προτάσεων.",
   "app.containers.InitiativesIndexPage.metaDescription2": "Διερεύνηση και υποστήριξη προτάσεων που διεξάγονται",
   "app.containers.InitiativesIndexPage.metaTitle1": "Όλες οι προτάσεις | {orgName}",
