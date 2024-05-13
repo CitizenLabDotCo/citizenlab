@@ -3,13 +3,13 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 
+import Chart from 'components/admin/GraphCards/ActiveUsersCard/Chart';
 import { TimeSeries } from 'components/admin/GraphCards/ActiveUsersCard/useActiveUsers/typings';
 import { DatesStrings } from 'components/admin/GraphCards/typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 import { parseStats } from '../useActiveUsers/parse';
 
-import Chart from './Chart';
 import Statistics from './Statistics';
 
 export interface Props extends DatesStrings {
@@ -51,7 +51,6 @@ const Wide = ({
               startAtMoment={startAt ? moment(startAt) : null}
               endAtMoment={endAt ? moment(endAt) : null}
               resolution={currentResolution}
-              layout="wide"
             />
           </Box>
         </Box>

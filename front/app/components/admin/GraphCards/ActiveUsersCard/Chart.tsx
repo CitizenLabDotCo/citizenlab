@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { Dates, Resolution, Layout } from 'components/admin/GraphCards/typings';
+import { Dates, Resolution } from 'components/admin/GraphCards/typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import LineChart from 'components/admin/Graphs/LineChart';
 import { colors } from 'components/admin/Graphs/styling';
@@ -8,8 +8,6 @@ import { Margin, YAxisProps } from 'components/admin/Graphs/typings';
 
 import { useIntl } from 'utils/cl-intl';
 import { toThreeLetterMonth } from 'utils/dateUtils';
-
-import { MARGINS } from '../_utils/style';
 
 import { generateEmptyData } from './generateEmptyData';
 import messages from './messages';
@@ -20,7 +18,6 @@ type Props = Dates &
   Resolution & {
     timeSeries: TimeSeries | null;
     innerRef?: React.RefObject<any>;
-    layout?: Layout;
     margin?: Margin;
     yaxis?: YAxisProps;
   };
@@ -37,7 +34,6 @@ const Chart = ({
   endAtMoment,
   resolution,
   innerRef,
-  layout = 'wide',
   margin,
   yaxis,
 }: Props) => {
@@ -76,7 +72,7 @@ const Chart = ({
         x: 'date',
         y: ['activeUsers'],
       }}
-      margin={margin ?? MARGINS[layout]}
+      margin={margin}
       lines={noData ? emptyLineConfig : lineConfig}
       grid={{ vertical: true }}
       xaxis={{ tickFormatter: formatTick }}

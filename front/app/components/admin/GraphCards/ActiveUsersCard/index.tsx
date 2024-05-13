@@ -14,6 +14,8 @@ import Statistic from 'components/admin/Graphs/Statistic';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { MARGINS } from '../_utils/style';
+
 import Chart from './Chart';
 import messages from './messages';
 import useActiveUsers from './useActiveUsers';
@@ -99,7 +101,7 @@ const ActiveUsersCard = ({
                 endAtMoment={endAtMoment}
                 resolution={currentResolution}
                 innerRef={graphRef}
-                layout={layout}
+                margin={MARGINS.wide}
               />
             </Box>
           </Box>
@@ -113,7 +115,7 @@ const ActiveUsersCard = ({
               endAtMoment={endAtMoment}
               resolution={currentResolution}
               innerRef={graphRef}
-              layout={layout}
+              margin={MARGINS.narrow}
             />
           </Box>
         )}

@@ -3,6 +3,7 @@ import React, { useRef } from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 import GraphCard from 'components/admin/GraphCard';
+import { MARGINS } from 'components/admin/GraphCards/_utils/style';
 import Chart from 'components/admin/GraphCards/ActiveUsersCard/Chart';
 import actveUsersCardMessages from 'components/admin/GraphCards/ActiveUsersCard/messages';
 import useActiveUsers from 'components/admin/GraphCards/ActiveUsersCard/useActiveUsers';
@@ -70,7 +71,7 @@ const ParticipantsCard = ({
             endAtMoment={endAtMoment}
             resolution={currentResolution}
             innerRef={graphRef}
-            layout="wide"
+            margin={MARGINS.wide}
           />
         </Box>
       </Box>

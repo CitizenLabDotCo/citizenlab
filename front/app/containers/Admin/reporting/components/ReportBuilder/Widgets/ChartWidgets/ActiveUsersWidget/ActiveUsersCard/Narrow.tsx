@@ -3,7 +3,8 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 
-import Chart from './Chart';
+import Chart from 'components/admin/GraphCards/ActiveUsersCard/Chart';
+
 import Statistics from './Statistics';
 import { Props } from './Wide';
 
@@ -34,7 +35,12 @@ const Narrow = ({
               startAtMoment={startAt ? moment(startAt) : null}
               endAtMoment={endAt ? moment(endAt) : null}
               resolution={currentResolution}
-              layout="narrow"
+              margin={{
+                left: 5,
+                right: -20,
+                top: 0,
+                bottom: 0,
+              }}
               yaxis={{ orientation: 'right' }}
             />
           </Box>
