@@ -1132,7 +1132,7 @@
   "app.containers.InitiativesIndexPage.header": "Verëffentlecht Äre Virschlag hei a setzt en op d’Agenda vum {styledOrgName}",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Kuckt Iech d'Virschléi vun anere Benotzer un fir {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Entdeckt d'Virschléi",
-  "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards1": "All Initiativen déi stattfannen",
+  "app.containers.InitiativesIndexPage.invisibleTitleProposalsCards": "All d'Propositioune stattfannen",
   "app.containers.InitiativesIndexPage.learnMoreAboutProposals": "Gitt méi doriwwer gewuer wéi Virschléi funktionéieren.",
   "app.containers.InitiativesIndexPage.metaDescription2": "Entdeckt an ënnerstëtzen Virschléi déi duerchgefouert goufen",
   "app.containers.InitiativesIndexPage.metaTitle1": "All Propositioune | {orgName}",
