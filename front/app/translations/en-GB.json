@@ -1132,7 +1132,7 @@
   "app.containers.InitiativesIndexPage.header": "{tenantName, select, stirlingcouncil {Post your petition here and place it on the agenda of {styledOrgName}} other {Post your proposal here and place it on the agenda of {styledOrgName}}}",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "{tenantName, select, stirlingcouncil {Explore petitions for {styledOrgName}} other {Explore citizen proposals for {styledOrgName}}}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "{tenantName, select, stirlingcouncil {Discover petitions} other {Discover proposals}}",
-  "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards1": "All the initiatives taking place",
+  "app.containers.InitiativesIndexPage.invisibleTitleProposalsCards": "All the proposals taking place",
   "app.containers.InitiativesIndexPage.learnMoreAboutProposals": "Learn more about how proposals work.",
   "app.containers.InitiativesIndexPage.metaDescription2": "Explore and support proposals conducted",
   "app.containers.InitiativesIndexPage.metaTitle1": "All proposals | {orgName}",
