@@ -1132,7 +1132,7 @@
   "app.containers.InitiativesIndexPage.header": "Önerinizi burada yayınlayın ve {styledOrgName} gündemine taşıyın",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "{styledOrgName} için olan önerileri inceleyin",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Önerileri keşfedin",
-  "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards1": "Gerçekleştirilen tüm girişimler",
+  "app.containers.InitiativesIndexPage.invisibleTitleProposalsCards": "Gerçekleşen tüm teklifler",
   "app.containers.InitiativesIndexPage.learnMoreAboutProposals": "Önerilerin işleyiş şekli hakkında daha fazla bilgi edinin.",
   "app.containers.InitiativesIndexPage.metaDescription2": "Yürütülen teklifleri araştırın ve destekleyin",
   "app.containers.InitiativesIndexPage.metaTitle1": "Tüm teklifler | {orgName}",
