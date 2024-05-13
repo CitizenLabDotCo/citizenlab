@@ -224,6 +224,20 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     }
   };
 
+  function calculateDynamicHeight() {
+    const viewportHeight = window.innerHeight;
+    const menuHeight = stylingConsts.menuHeight;
+    const mobileTopBarHeight = stylingConsts.mobileTopBarHeight;
+    const extraSpace = 80;
+
+    const dynamicHeight =
+      viewportHeight -
+      (isSmallerThanPhone ? mobileTopBarHeight : menuHeight) -
+      extraSpace;
+
+    return `${dynamicHeight}px`;
+  }
+
   return (
     <>
       <IdeasNewMeta isSurvey={true} />
@@ -248,7 +262,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
               background={colors.white}
               maxWidth="700px"
               w="100%"
-              h={`calc(100vh - ${stylingConsts.menuHeight}px - 80px)`}
+              h={calculateDynamicHeight()}
               pb={isSmallerThanPhone ? '0' : '80px'}
             >
               <Form
