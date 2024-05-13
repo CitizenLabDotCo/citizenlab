@@ -1132,7 +1132,7 @@
   "app.containers.InitiativesIndexPage.header": "Siunnersuutit uunga allaguk, uanilu {styledOrgName} oqaluuserisassanngortillugu",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Explore citizen proposals for {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Innuttaasut siunnersuutaat misissukkit",
-  "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards1": "All the initiatives taking place",
+  "app.containers.InitiativesIndexPage.invisibleTitleProposalsCards": "All the proposals taking place",
   "app.containers.InitiativesIndexPage.learnMoreAboutProposals": "Innuttaasunut siunnersuuteqartarnerup ingerlariaasia paasisaqarfigiuk",
   "app.containers.InitiativesIndexPage.metaDescription2": "Explore and support proposals conducted",
   "app.containers.InitiativesIndexPage.metaTitle1": "All proposals | {orgName}",
