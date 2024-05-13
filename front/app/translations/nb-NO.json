@@ -1132,7 +1132,7 @@
   "app.containers.InitiativesIndexPage.header": "Publiser ideen din her og sett det på agendaen til {styledOrgName}",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Utforsk innbyggerforslagene til {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Oppdag forslag",
-  "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards1": "Alle initiativene som finner sted",
+  "app.containers.InitiativesIndexPage.invisibleTitleProposalsCards": "Alle forslagene finner sted",
   "app.containers.InitiativesIndexPage.learnMoreAboutProposals": "Lær mere om hvordan borger forslag fungerer.",
   "app.containers.InitiativesIndexPage.metaDescription2": "Utforsk og støtte forslag utført",
   "app.containers.InitiativesIndexPage.metaTitle1": "Alle forslag | {orgName}",
