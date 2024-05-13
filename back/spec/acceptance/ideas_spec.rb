@@ -1078,271 +1078,6 @@ resource 'Ideas' do
           end
         end
 
-        context 'when admin' do
-          before do
-            @user = create(:admin)
-            header_token_for @user
-          end
-
-          describe do
-            let(:idea_status_id) { create(:idea_status).id }
-
-            example_request 'Change the idea status (as an admin)' do
-              assert_status 200
-              json_response = json_parse response_body
-              expect(json_response.dig(:data, :relationships, :idea_status, :data, :id)).to eq idea_status_id
-            end
-          end
-
-          describe 'draft ideas' do
-            before { @idea.update! publication_status: 'draft' }
-
-            context 'Editing an idea' do
-              let(:title_multiloc) { { 'en' => 'Changed the title' } }
-
-              example_request 'Can edit a draft idea (as an admin)' do
-                assert_status 200
-                expect(response_data[:attributes][:publication_status]).to eq 'draft'
-                expect(response_data[:attributes][:title_multiloc][:en]).to eq 'Changed the title'
-              end
-            end
-
-            context 'Publishing an idea' do
-              let(:publication_status) { 'published' }
-
-              example_request 'Can change an idea from draft to published (as an admin)' do
-                assert_status 200
-                expect(response_data[:attributes][:publication_status]).to eq 'published'
-              end
-            end
-
-            context 'Publishing an imported native survey response' do
-              let(:project) { create(:single_phase_native_survey_project) }
-              let(:idea) { create(:native_survey_response, project: project, publication_status: 'draft') }
-
-              let(:id) { idea.id }
-              let(:publication_status) { 'published' }
-
-              before { idea.update! idea_import: create(:idea_import, idea: idea) }
-
-              example_request 'Can change an idea from draft to published (as an admin)' do
-                assert_status 200
-                expect(response_data[:attributes][:publication_status]).to eq 'published'
-              end
-            end
-          end
-
-          describe 'phase_ids' do
-            let(:phase) { @project.phases.first }
-
-            context 'when passing some phase ids' do
-              before do
-                @project = create(:project_with_phases)
-                @idea.project = @project
-                @idea.save!
-                do_request(idea: { phase_ids: phase_ids })
-              end
-
-              let(:phase_ids) { [phase].map(&:id) }
-
-              example 'returns a 200 status' do
-                assert_status 200
-              end
-
-              example 'Change the idea phases (as an admin or moderator)' do
-                json_response = json_parse response_body
-                expect(json_response.dig(:data, :relationships, :phases, :data).pluck(:id)).to match_array phase_ids
-              end
-
-              example 'Changes the ideas count of a phase' do
-                expect(phase.reload.ideas_count).to eq 1
-              end
-            end
-
-            context 'Moving the idea from a voting phase' do
-              let!(:project) { create(:project_with_past_ideation_and_active_budgeting_phase) }
-              let!(:idea) { create(:idea, project: project, phases: project.phases) }
-
-              let(:id) { idea.id }
-
-              before do
-                basket = create(:basket, phase: project.phases.last)
-                basket.update!(ideas: [idea], submitted_at: Time.zone.now)
-                basket.baskets_ideas.update_all(votes: 1)
-                basket.update_counts!
-              end
-
-              context 'Removing the idea from a voting phase' do
-                let(:phase_ids) { [project.phases.first.id] }
-
-                example 'Successfully removes the idea from a voting phase and recalculates vote counts', document: false do
-                  # Voting counts before
-                  expect(idea.ideas_phases.pluck(:votes_count)).to match_array [0, 1]
-
-                  do_request
-                  assert_status 200
-
-                  # Voting phase counts after
-                  expect(idea.ideas_phases.pluck(:votes_count)).to match_array [0]
-                end
-              end
-
-              context 'Add an idea back into a voting phase' do
-                let(:phase_ids) { [project.phases.last.id] }
-
-                example 'Successfully added the idea to the voting phase and restores vote counts', document: false do
-                  # Voting counts before
-                  idea.update!(phases: [project.phases.first])
-                  expect(idea.ideas_phases.pluck(:votes_count)).to match_array [0]
-
-                  do_request
-                  assert_status 200
-
-                  expect(idea.ideas_phases.pluck(:votes_count)).to match_array [1]
-                end
-              end
-
-              context 'Moving to a different project' do
-                let(:new_project) { create(:single_phase_ideation_project) }
-                let(:project_id) { new_project.id }
-
-                example 'Move the idea to another (non-voting) project', document: false do
-                  do_request
-                  assert_status 200
-                end
-              end
-            end
-
-            context 'when passing an empty array of phase ids' do
-              before do
-                @project = create(:project_with_phases)
-                @idea.update! project: @project, phases: [phase]
-                do_request(idea: { phase_ids: phase_ids })
-              end
-
-              let(:phase_ids) { [] }
-
-              example 'returns a 200 status' do
-                assert_status 200
-              end
-
-              example 'Change the idea phases (as an admin or moderator)' do
-                json_response = json_parse response_body
-                expect(json_response.dig(:data, :relationships, :phases, :data).pluck(:id)).to match_array phase_ids
-              end
-
-              example 'Changes the ideas count of a phase when the phases change' do
-                expect(phase.reload.ideas_count).to eq 0
-              end
-            end
-          end
-
-          describe 'voting context' do
-            let(:budget) { 1800 }
-
-            example_request 'Change the participatory budget (as an admin)' do
-              assert_status 200
-              json_response = json_parse response_body
-              expect(json_response.dig(:data, :attributes, :budget)).to eq budget
-            end
-
-            example 'Admin can update an idea in a voting context', document: false do
-              @idea.update!(project: create(:single_phase_budgeting_project))
-
-              do_request
-
-              assert_status 200
-            end
-          end
-
-          describe 'Change the project' do
-            before do
-              @project.update! allowed_input_topics: create_list(:topic, 2)
-              @project2 = create(:project, allowed_input_topics: [@project.allowed_input_topics.first])
-              @idea.update! topics: @project.allowed_input_topics
-            end
-
-            let(:project_id) { @project2.id }
-
-            example_request 'As an admin' do
-              assert_status 200
-              json_response = json_parse response_body
-              expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
-
-              expect(@idea.reload).to be_valid
-            end
-          end
-
-          example '[error] Removing the author of a published idea', document: false do
-            @idea.update! publication_status: 'published'
-            do_request idea: { author_id: nil }
-            assert_status 422
-            expect(json_response_body).to include_response_error(:author, 'blank')
-          end
-
-          example '[error] Publishing an idea without author', document: false do
-            @idea.update! publication_status: 'draft', author: nil
-            do_request idea: { publication_status: 'published' }
-            assert_status 422
-            expect(json_response_body).to include_response_error(:author, 'blank')
-          end
-
-          describe 'Changing an idea to anonymous' do
-            let(:allow_anonymous_participation) { true }
-
-            before { @project.phases.first.update! allow_anonymous_participation: allow_anonymous_participation }
-
-            example 'Updating values of an anonymously posted idea', document: false do
-              @idea.update! publication_status: 'published', anonymous: true, author: nil
-              do_request idea: { location_description: 'HERE' }
-              assert_status 200
-              expect(response_data.dig(:attributes, :location_description)).to eq 'HERE'
-            end
-
-            example 'Changing an idea to anonymous', document: false do
-              @idea.update! publication_status: 'published', anonymous: false, author: @user
-              do_request idea: { anonymous: true }
-              assert_status 200
-              expect(response_data.dig(:attributes, :anonymous)).to be true
-              expect(response_data.dig(:attributes, :author_name)).to be_nil
-            end
-
-            example 'Updating an anonymously posted idea with an author', document: false do
-              @idea.update! publication_status: 'published', anonymous: true, author: nil
-              do_request idea: { author_id: @user.id, publication_status: 'published' }
-              assert_status 200
-              expect(response_data.dig(:relationships, :author, :data, :id)).to eq @user.id
-              expect(response_data.dig(:attributes, :anonymous)).to be false
-            end
-
-            describe 'when anonymous posting is not allowed' do
-              let(:allow_anonymous_participation) { false }
-
-              example 'Rejects the anonymous parameter' do
-                do_request idea: { anonymous: true }
-                assert_status 422
-                json_response = json_parse response_body
-                expect(json_response).to include_response_error(:base, 'anonymous_participation_not_allowed')
-              end
-            end
-
-            example 'Does not log activities for the author', document: false do
-              expect { do_request(idea: { anonymous: true }) }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything, anything)
-            end
-
-            example 'Does not log activities for the author and clears the author from past activities', document: false do
-              clear_activity = create(:activity, item: @idea, user: @user)
-              other_item_activity = create(:activity, item: @idea, user: create(:user))
-              other_user_activity = create(:activity, user: @user)
-
-              expect { do_request(idea: { anonymous: true }) }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything, anything)
-              expect(clear_activity.reload.user_id).to be_nil
-              expect(other_item_activity.reload.user_id).to be_present
-              expect(other_user_activity.reload.user_id).to eq @user.id
-            end
-          end
-        end
-
         context 'when moderator' do
           before { header_token_for create(:project_moderator, projects: [@project]) }
 
@@ -1565,6 +1300,297 @@ resource 'Ideas' do
           assert_status 422
           json_response = json_parse response_body
           expect(json_response).to include_response_error(:ideas_phases, 'invalid')
+        end
+      end
+    end
+
+    patch 'web_api/v1/ideas/:id' do
+      with_options scope: :idea do
+        parameter :project_id, 'The idea of the project that hosts the idea'
+        parameter :phase_ids, 'The phases the idea is part of, defaults to the current only, only allowed by admins'
+        parameter :author_id, 'The user id of the user owning the idea. This can only be specified by moderators and is inferred from the JWT token for residents.'
+        parameter :idea_status_id, 'The status of the idea, only allowed for admins'
+        parameter :publication_status, "Either #{Post::PUBLICATION_STATUSES.join(', ')}"
+        parameter :title_multiloc, 'Multi-locale field with the idea title', extra: 'Maximum 100 characters'
+        parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
+        parameter :topic_ids, 'Array of ids of the associated topics'
+        parameter :location_point_geojson, 'A GeoJSON point that situates the location the idea applies to'
+        parameter :location_description, 'A human readable description of the location the idea applies to'
+        parameter :proposed_budget, 'The budget needed to realize the idea, as proposed by the author'
+        parameter :budget, 'The budget needed to realize the idea, as determined by the city'
+        parameter :anonymous, 'Post this idea anonymously'
+      end
+      ValidationErrorHelper.new.error_fields(self, Idea)
+      response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
+      response_field :base, "Array containing objects with signature { error: #{ParticipationPermissionsService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
+
+      before do
+        @user = User.admin.first
+        @project = create(:single_phase_ideation_project)
+        @idea = create(:idea, author: @user, project: @project, phases: @project.phases)
+      end
+
+      let(:id) { @idea.id }
+      let(:location_point_geojson) { { type: 'Point', coordinates: [51.4365635, 3.825930459] } }
+      let(:location_description) { 'Watkins Road 8' }
+      let(:title_multiloc) { { 'en' => 'Changed title' } }
+      let(:topic_ids) { create_list(:topic, 2, projects: [@project]).map(&:id) }
+
+      describe do
+        let(:idea_status_id) { create(:idea_status).id }
+
+        example_request 'Change the idea status (as an admin)' do
+          assert_status 200
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :relationships, :idea_status, :data, :id)).to eq idea_status_id
+        end
+      end
+
+      describe 'draft ideas' do
+        before { @idea.update! publication_status: 'draft' }
+
+        context 'Editing an idea' do
+          let(:title_multiloc) { { 'en' => 'Changed the title' } }
+
+          example_request 'Can edit a draft idea (as an admin)' do
+            assert_status 200
+            expect(response_data[:attributes][:publication_status]).to eq 'draft'
+            expect(response_data[:attributes][:title_multiloc][:en]).to eq 'Changed the title'
+          end
+        end
+
+        context 'Publishing an idea' do
+          let(:publication_status) { 'published' }
+
+          example_request 'Can change an idea from draft to published (as an admin)' do
+            assert_status 200
+            expect(response_data[:attributes][:publication_status]).to eq 'published'
+          end
+        end
+
+        context 'Publishing an imported native survey response' do
+          let(:project) { create(:single_phase_native_survey_project) }
+          let(:idea) { create(:native_survey_response, project: project, publication_status: 'draft') }
+
+          let(:id) { idea.id }
+          let(:publication_status) { 'published' }
+
+          before { idea.update! idea_import: create(:idea_import, idea: idea) }
+
+          example_request 'Can change an idea from draft to published (as an admin)' do
+            assert_status 200
+            expect(response_data[:attributes][:publication_status]).to eq 'published'
+          end
+        end
+      end
+
+      describe 'phase_ids' do
+        let(:phase) { @project.phases.first }
+
+        context 'when passing some phase ids' do
+          before do
+            @project = create(:project_with_phases)
+            @idea.project = @project
+            @idea.save!
+            do_request(idea: { phase_ids: phase_ids })
+          end
+
+          let(:phase_ids) { [phase].map(&:id) }
+
+          example 'returns a 200 status' do
+            assert_status 200
+          end
+
+          example 'Change the idea phases (as an admin or moderator)' do
+            json_response = json_parse response_body
+            expect(json_response.dig(:data, :relationships, :phases, :data).pluck(:id)).to match_array phase_ids
+          end
+
+          example 'Changes the ideas count of a phase' do
+            expect(phase.reload.ideas_count).to eq 1
+          end
+        end
+
+        context 'Moving the idea from a voting phase' do
+          let!(:project) { create(:project_with_past_ideation_and_active_budgeting_phase) }
+          let!(:idea) { create(:idea, project: project, phases: project.phases) }
+
+          let(:id) { idea.id }
+
+          before do
+            basket = create(:basket, phase: project.phases.last)
+            basket.update!(ideas: [idea], submitted_at: Time.zone.now)
+            basket.baskets_ideas.update_all(votes: 1)
+            basket.update_counts!
+          end
+
+          context 'Removing the idea from a voting phase' do
+            let(:phase_ids) { [project.phases.first.id] }
+
+            example 'Successfully removes the idea from a voting phase and recalculates vote counts', document: false do
+              # Voting counts before
+              expect(idea.ideas_phases.pluck(:votes_count)).to match_array [0, 1]
+
+              do_request
+              assert_status 200
+
+              # Voting phase counts after
+              expect(idea.ideas_phases.pluck(:votes_count)).to match_array [0]
+            end
+          end
+
+          context 'Add an idea back into a voting phase' do
+            let(:phase_ids) { [project.phases.last.id] }
+
+            example 'Successfully added the idea to the voting phase and restores vote counts', document: false do
+              # Voting counts before
+              idea.update!(phases: [project.phases.first])
+              expect(idea.ideas_phases.pluck(:votes_count)).to match_array [0]
+
+              do_request
+              assert_status 200
+
+              expect(idea.ideas_phases.pluck(:votes_count)).to match_array [1]
+            end
+          end
+
+          context 'Moving to a different project' do
+            let(:new_project) { create(:single_phase_ideation_project) }
+            let(:project_id) { new_project.id }
+
+            example 'Move the idea to another (non-voting) project', document: false do
+              do_request
+              assert_status 200
+            end
+          end
+        end
+
+        context 'when passing an empty array of phase ids' do
+          before do
+            @project = create(:project_with_phases)
+            @idea.update! project: @project, phases: [phase]
+            do_request(idea: { phase_ids: phase_ids })
+          end
+
+          let(:phase_ids) { [] }
+
+          example 'returns a 200 status' do
+            assert_status 200
+          end
+
+          example 'Change the idea phases (as an admin or moderator)' do
+            json_response = json_parse response_body
+            expect(json_response.dig(:data, :relationships, :phases, :data).pluck(:id)).to match_array phase_ids
+          end
+
+          example 'Changes the ideas count of a phase when the phases change' do
+            expect(phase.reload.ideas_count).to eq 0
+          end
+        end
+      end
+
+      describe 'voting context' do
+        let(:budget) { 1800 }
+
+        example_request 'Change the participatory budget (as an admin)' do
+          assert_status 200
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :attributes, :budget)).to eq budget
+        end
+
+        example 'Admin can update an idea in a voting context', document: false do
+          @idea.update!(project: create(:single_phase_budgeting_project))
+
+          do_request
+
+          assert_status 200
+        end
+      end
+
+      describe 'Change the project' do
+        before do
+          @project.update! allowed_input_topics: create_list(:topic, 2)
+          @project2 = create(:project, allowed_input_topics: [@project.allowed_input_topics.first])
+          @idea.update! topics: @project.allowed_input_topics
+        end
+
+        let(:project_id) { @project2.id }
+
+        example_request 'As an admin' do
+          assert_status 200
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
+
+          expect(@idea.reload).to be_valid
+        end
+      end
+
+      example '[error] Removing the author of a published idea', document: false do
+        @idea.update! publication_status: 'published'
+        do_request idea: { author_id: nil }
+        assert_status 422
+        expect(json_response_body).to include_response_error(:author, 'blank')
+      end
+
+      example '[error] Publishing an idea without author', document: false do
+        @idea.update! publication_status: 'draft', author: nil
+        do_request idea: { publication_status: 'published' }
+        assert_status 422
+        expect(json_response_body).to include_response_error(:author, 'blank')
+      end
+
+      describe 'Changing an idea to anonymous' do
+        let(:allow_anonymous_participation) { true }
+
+        before { @project.phases.first.update! allow_anonymous_participation: allow_anonymous_participation }
+
+        example 'Updating values of an anonymously posted idea', document: false do
+          @idea.update! publication_status: 'published', anonymous: true, author: nil
+          do_request idea: { location_description: 'HERE' }
+          assert_status 200
+          expect(response_data.dig(:attributes, :location_description)).to eq 'HERE'
+        end
+
+        example 'Changing an idea to anonymous', document: false do
+          @idea.update! publication_status: 'published', anonymous: false, author: @user
+          do_request idea: { anonymous: true }
+          assert_status 200
+          expect(response_data.dig(:attributes, :anonymous)).to be true
+          expect(response_data.dig(:attributes, :author_name)).to be_nil
+        end
+
+        example 'Updating an anonymously posted idea with an author', document: false do
+          @idea.update! publication_status: 'published', anonymous: true, author: nil
+          do_request idea: { author_id: @user.id, publication_status: 'published' }
+          assert_status 200
+          expect(response_data.dig(:relationships, :author, :data, :id)).to eq @user.id
+          expect(response_data.dig(:attributes, :anonymous)).to be false
+        end
+
+        describe 'when anonymous posting is not allowed' do
+          let(:allow_anonymous_participation) { false }
+
+          example 'Rejects the anonymous parameter' do
+            do_request idea: { anonymous: true }
+            assert_status 422
+            json_response = json_parse response_body
+            expect(json_response).to include_response_error(:base, 'anonymous_participation_not_allowed')
+          end
+        end
+
+        example 'Does not log activities for the author', document: false do
+          expect { do_request(idea: { anonymous: true }) }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything, anything)
+        end
+
+        example 'Does not log activities for the author and clears the author from past activities', document: false do
+          clear_activity = create(:activity, item: @idea, user: @user)
+          other_item_activity = create(:activity, item: @idea, user: create(:user))
+          other_user_activity = create(:activity, user: @user)
+
+          expect { do_request(idea: { anonymous: true }) }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything, anything)
+          expect(clear_activity.reload.user_id).to be_nil
+          expect(other_item_activity.reload.user_id).to be_present
+          expect(other_user_activity.reload.user_id).to eq @user.id
         end
       end
     end
