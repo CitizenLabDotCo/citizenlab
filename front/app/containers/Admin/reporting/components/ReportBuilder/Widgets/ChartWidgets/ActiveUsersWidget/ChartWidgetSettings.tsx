@@ -10,6 +10,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 
+import { getComparedTimeRange } from 'components/admin/GraphCards/_utils/query';
 import activeUsersMessages from 'components/admin/GraphCards/ActiveUsersCard/messages';
 
 import { useIntl } from 'utils/cl-intl';
@@ -22,10 +23,18 @@ const ChartWidgetSettings = () => {
   const { formatMessage } = useIntl();
   const {
     actions: { setProp },
-    comparePreviousPeriod,
+    startAt,
+    endAt,
+    compareStartAt,
+    compareEndAt,
   } = useNode((node) => ({
-    comparePreviousPeriod: node.data.props.comparePreviousPeriod,
+    startAt: node.data.props.startAt,
+    endAt: node.data.props.endAt,
+    compareStartAt: node.data.props.compareStartAt,
+    compareEndAt: node.data.props.compareEndAt,
   }));
+
+  const comparePreviousPeriod = !!compareStartAt && !!compareEndAt;
 
   return (
     <Box>
@@ -55,10 +64,28 @@ const ChartWidgetSettings = () => {
       <Box mb="20px">
         <Toggle
           label={formatMessage(messages.showComparisonLastPeriod)}
-          checked={!!comparePreviousPeriod}
+          disabled={!startAt || !endAt}
+          checked={comparePreviousPeriod}
           onChange={() => {
             setProp((props) => {
-              props.comparePreviousPeriod = !comparePreviousPeriod;
+              if (!startAt || !endAt) {
+                props.compareStartAt = undefined;
+                props.compareEndAt = undefined;
+                return;
+              }
+
+              if (comparePreviousPeriod) {
+                props.compareStartAt = undefined;
+                props.compareEndAt = undefined;
+                return;
+              }
+
+              const { compare_start_at, compare_end_at } = getComparedTimeRange(
+                startAt,
+                endAt
+              );
+              props.compareStartAt = compare_start_at;
+              props.compareEndAt = compare_end_at;
             });
           }}
         />

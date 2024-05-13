@@ -5,7 +5,6 @@ import moment from 'moment';
 
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
-import { getComparedTimeRange } from 'components/admin/GraphCards/_utils/query';
 import StatisticBottomLabel from 'components/admin/Graphs/Statistic/StatisticBottomLabel';
 import StatisticDelta from 'components/admin/Graphs/Statistic/StatisticDelta';
 import StatisticName from 'components/admin/Graphs/Statistic/StatisticName';
@@ -25,7 +24,8 @@ const ActiveUsers = ({
   startAt,
   endAt,
   resolution = 'month',
-  comparePreviousPeriod = false,
+  compareStartAt,
+  compareEndAt,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -34,7 +34,8 @@ const ActiveUsers = ({
     start_at: startAt,
     end_at: endAt,
     resolution,
-    ...getComparedTimeRange(comparePreviousPeriod, startAt, endAt),
+    compare_start_at: compareStartAt,
+    compare_end_at: compareEndAt,
   });
 
   const layout = useLayout();

@@ -5,7 +5,7 @@ describe('getComparedTimeRange', () => {
     const startAt = '2022-10-01';
     const endAt = '2022-10-31';
 
-    const result = getComparedTimeRange(true, startAt, endAt);
+    const result = getComparedTimeRange(startAt, endAt);
 
     expect(result).toEqual({
       compare_start_at: '2022-08-31',
