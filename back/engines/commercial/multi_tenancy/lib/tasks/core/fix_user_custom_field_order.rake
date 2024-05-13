@@ -6,7 +6,7 @@ namespace :fix_existing_tenants do
     Tenant.creation_finalized.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         Rails.logger.info "Attempting to reorder: #{tenant.name}"
-        fields = CustomField.with_resource_type('User').order(:ordering)
+        fields = CustomField.registration.order(:ordering)
         if fields.pluck(:ordering) != (0..fields.size - 1).to_a
           fields.each_with_index do |field, index|
             field.set_list_position(index)

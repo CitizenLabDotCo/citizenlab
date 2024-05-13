@@ -7,7 +7,7 @@ module SmartGroups::Rules
 
     include CustomFieldRule
 
-    validates :custom_field_id, inclusion: { in: proc { CustomField.with_resource_type('User').where(input_type: 'text').map(&:id) } }
+    validates :custom_field_id, inclusion: { in: proc { CustomField.registration.where(input_type: 'text').map(&:id) } }
 
     def self.to_json_schema
       [
