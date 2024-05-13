@@ -896,6 +896,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Visitors",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.cannotPrint": "This report contains unsaved changes. Please save before printing.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.comparedToPreviousXDays": "Compared to previous {days} days",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.hideStatistics": "Hide statistics",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.participationRate": "Participation rate",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.showComparisonLastPeriod": "Show comparison with last period",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.youNeedToSelectADateRange": "You need to select a date range first.",
