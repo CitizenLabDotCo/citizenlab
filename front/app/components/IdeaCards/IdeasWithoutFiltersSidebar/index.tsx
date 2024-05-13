@@ -5,6 +5,7 @@ import {
   useBreakpoint,
   media,
   isRtl,
+  Box,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -102,10 +103,6 @@ const DesktopViewButtons = styled(ViewButtons)`
   ${media.tablet`
     display: none;
   `}
-`;
-
-const MobileViewButtons = styled(ViewButtons)`
-  margin-bottom: 15px;
 `;
 
 const StyledSearchInput = styled(SearchInput)`
@@ -256,10 +253,12 @@ const IdeasWithoutFiltersSidebar = ({
         >
           <LeftFilterArea>
             {showViewButtons && smallerThanTablet && (
-              <MobileViewButtons
-                selectedView={selectedView}
-                onClick={setSelectedView}
-              />
+              <Box mb="16px">
+                <ViewButtons
+                  selectedView={selectedView}
+                  onClick={setSelectedView}
+                />
+              </Box>
             )}
             {!(selectedView === 'map') && showSearchbar && (
               <StyledSearchInput

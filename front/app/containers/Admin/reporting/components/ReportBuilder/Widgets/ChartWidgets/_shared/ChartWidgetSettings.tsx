@@ -15,20 +15,23 @@ import messages from '../messages';
 import { ChartWidgetProps } from '../typings';
 
 const ChartWidgetSettings = () => {
+  return (
+    <Box>
+      <TitleInput />
+      <DateRangeInput />
+      <ProjectInput />
+    </Box>
+  );
+};
+
+export const TitleInput = () => {
   const { formatMessage } = useIntl();
+
   const {
     actions: { setProp },
     title,
-    projectId,
-    startAtMoment,
-    endAtMoment,
   } = useNode((node) => ({
     title: node.data.props.title,
-    projectId: node.data.props.projectId,
-    startAtMoment: node.data.props.startAt
-      ? moment(node.data.props.startAt)
-      : null,
-    endAtMoment: node.data.props.endAt ? moment(node.data.props.endAt) : null,
   }));
 
   const setTitle = (value: Multiloc) => {
@@ -36,6 +39,36 @@ const ChartWidgetSettings = () => {
       props.title = value;
     });
   };
+
+  return (
+    <Box marginBottom="20px">
+      <InputMultilocWithLocaleSwitcher
+        id="e2e-analytics-chart-widget-title"
+        label={
+          <Text variant="bodyM" color="textSecondary" mb="0">
+            {formatMessage(messages.analyticsChartTitle)}
+          </Text>
+        }
+        type="text"
+        valueMultiloc={title}
+        onChange={setTitle}
+      />
+    </Box>
+  );
+};
+
+export const DateRangeInput = () => {
+  const { formatMessage } = useIntl();
+  const {
+    actions: { setProp },
+    startAtMoment,
+    endAtMoment,
+  } = useNode((node) => ({
+    startAtMoment: node.data.props.startAt
+      ? moment(node.data.props.startAt)
+      : null,
+    endAtMoment: node.data.props.endAt ? moment(node.data.props.endAt) : null,
+  }));
 
   const handleChangeTimeRange = ({
     startDate,
@@ -50,6 +83,28 @@ const ChartWidgetSettings = () => {
     });
   };
 
+  return (
+    <Box mb="20px">
+      <Text variant="bodyM" color="textSecondary" mb="5px">
+        {formatMessage(messages.analyticsChartDateRange)}
+      </Text>
+      <DateRangePicker
+        startDate={startAtMoment}
+        endDate={endAtMoment}
+        onDatesChange={handleChangeTimeRange}
+      />
+    </Box>
+  );
+};
+
+export const ProjectInput = () => {
+  const {
+    actions: { setProp },
+    projectId,
+  } = useNode((node) => ({
+    projectId: node.data.props.projectId,
+  }));
+
   const handleProjectFilter = ({ value }: IOption) => {
     setProp((props: ChartWidgetProps) => {
       props.projectId = value;
@@ -57,36 +112,11 @@ const ChartWidgetSettings = () => {
   };
 
   return (
-    <Box>
-      <Box background="#ffffff" marginBottom="20px">
-        <InputMultilocWithLocaleSwitcher
-          id="e2e-analytics-chart-widget-title"
-          label={
-            <Text variant="bodyM" color="textSecondary" mb="0">
-              {formatMessage(messages.analyticsChartTitle)}
-            </Text>
-          }
-          type="text"
-          valueMultiloc={title}
-          onChange={setTitle}
-        />
-      </Box>
-      <Box mb="20px">
-        <Text variant="bodyM" color="textSecondary" mb="5px">
-          {formatMessage(messages.analyticsChartDateRange)}
-        </Text>
-        <DateRangePicker
-          startDate={startAtMoment}
-          endDate={endAtMoment}
-          onDatesChange={handleChangeTimeRange}
-        />
-      </Box>
-      <Box mb="20px">
-        <ProjectFilter
-          projectId={projectId}
-          onProjectFilter={handleProjectFilter}
-        />
-      </Box>
+    <Box mb="20px">
+      <ProjectFilter
+        projectId={projectId}
+        onProjectFilter={handleProjectFilter}
+      />
     </Box>
   );
 };

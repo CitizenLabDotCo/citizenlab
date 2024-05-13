@@ -354,15 +354,18 @@ resource 'Campaigns' do
       parameter :manual, 'Filter manual campaigns - only manual if true, only automatic if false', required: false, type: 'boolean'
       parameter :context_id, 'An ID used to filter only campaigns for the given context', required: false
 
-      example_request 'List all campaigns only lists campaigns manageable by the project moderator' do
+      example 'List all campaigns only lists campaigns manageable by the project moderator' do
+        phase_started = create(:project_phase_started_campaign)
+
+        do_request
         assert_status 200
         json_response = json_parse(response_body)
 
-        expect(EmailCampaigns::Campaign.count).to eq 8
+        expect(EmailCampaigns::Campaign.count).to eq 9
         expect(EmailCampaigns::Campaign.where(type: 'EmailCampaigns::Campaigns::ManualProjectParticipants').size)
           .to eq 2
-        expect(json_response[:data].size).to eq 1
-        expect(json_response[:data].first[:id]).to eq @manual_project_participants_campaign.id
+        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].pluck(:id)).to match_array [@manual_project_participants_campaign.id, phase_started.id]
       end
     end
 

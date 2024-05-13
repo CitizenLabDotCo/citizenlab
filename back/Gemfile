@@ -73,12 +73,11 @@ group :development do
 end
 
 group :test do
-  gem 'rubyXL'
   gem 'shoulda-matchers', '~> 6.2.0'
   gem 'webmock', '~> 3.23'
 
   # Adds rspec matchers and helpers for testing html structure and styling.
-  gem 'capybara', '~> 3.39'
+  gem 'capybara', '~> 3.40'
   # gem 'bullet'
 end
 
@@ -105,7 +104,8 @@ gem 'kaminari', '~> 1.2'
 gem 'rails-i18n', '~> 7.0.9'
 
 gem 'awesome_nested_set', '~> 3.5.0'
-gem 'axlsx', '3.0.0.pre'
+gem 'axlsx', '3.0.0.pre' # write xlsx files
+gem 'rubyXL' # read xlsx files. Has issues with writing files https://github.com/CitizenLabDotCo/citizenlab/pull/7834
 gem 'counter_culture', '~> 3.5'
 gem 'groupdate', '~> 4.1'
 gem 'icalendar', '~> 2.10'
@@ -119,7 +119,7 @@ gem 'premailer-rails', '~> 1.12.0'
 gem 'rest-client'
 gem 'rgeo-geojson'
 gem 'rubyzip', '~> 1.3.0'
-gem 'stackprof', '~> 0.2.25'
+gem 'stackprof', '~> 0.2.26'
 
 gem 'okcomputer'
 gem 'omniauth', '~> 1.9.1'

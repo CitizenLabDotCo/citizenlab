@@ -34,6 +34,7 @@
 #  followings_count                    :integer          default(0), not null
 #  onboarding                          :jsonb            not null
 #  unique_code                         :string
+#  last_active_at                      :datetime
 #
 # Indexes
 #
@@ -598,7 +599,7 @@ class User < ApplicationRecord
     # no_password? - here it's only for light registration
     # confirmation_required? - it's always false for SSO providers that return email (all except ClaveUnica and MitID)
     # !sso? - exclude ClaveUnica and MitID registrations (no email)
-    if no_password? && confirmation_required? && !sso?
+    if no_password? && confirmation_required? && !sso? && email_was.present?
       # Avoid security hole where passwordless user can change when they are authenticated without confirmation
       errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - user not active'
     elsif user_confirmation_enabled? && active? && email_changed? && !email_changed?(to: new_email_was) && email_was.present?

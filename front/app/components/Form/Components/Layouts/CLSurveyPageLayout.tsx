@@ -44,6 +44,7 @@ import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import {
   extractElementsByOtherOptionLogic,
+  hasOtherTextFieldBelow,
   isVisible,
 } from '../Controls/visibilityUtils';
 
@@ -107,6 +108,10 @@ const CLSurveyPageLayout = memo(
       !isNilOrError(authUser) &&
       canModerateProject(project?.data.id, { data: authUser.data });
     const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
+
+    // TODO: Readd Focuson after solving UI issue
+    const surveyHeadingRef = useRef<HTMLDivElement>(null);
+    const pageControlButtonsRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
       // We can cast types because the tester made sure we only get correct values
@@ -196,7 +201,6 @@ const CLSurveyPageLayout = memo(
           getSanitizedFormData(data)
         )
       ) {
-        // setShowAllErrors?.(false);
         scrollToTop();
         data.publication_status = 'draft';
         data.latest_complete_page = currentStep;
@@ -278,10 +282,15 @@ const CLSurveyPageLayout = memo(
             canUserEditProject={userIsModerator}
             loggedIn={!isNilOrError(authUser)}
             percentageAnswered={percentageAnswered}
+            ref={surveyHeadingRef}
           />
 
           {allowAnonymousPosting && (
-            <Box w="100%" px={isSmallerThanPhone ? '16px' : '24px'} mt="16px">
+            <Box
+              w="100%"
+              px={isSmallerThanPhone ? '16px' : '24px'}
+              mt={isSmallerThanPhone ? '64px' : '12px'}
+            >
               <Warning icon="shield-checkered">
                 {formatMessage(messages.anonymousSurveyMessage)}
               </Warning>
@@ -337,12 +346,10 @@ const CLSurveyPageLayout = memo(
                         </Box>
                       )}
                       {pageElements.map((elementUiSchema, index) => {
-                        const key = elementUiSchema.scope.split('/').pop();
-                        const hasOtherFieldBelow =
-                          key &&
-                          (Array.isArray(data[key])
-                            ? data[key].includes('other')
-                            : data[key] === 'other');
+                        const hasOtherFieldBelow = hasOtherTextFieldBelow(
+                          elementUiSchema,
+                          data
+                        );
 
                         return (
                           <Box
@@ -375,6 +382,7 @@ const CLSurveyPageLayout = memo(
             isLoading={isLoading}
             showSubmit={showSubmit}
             dataCyValue={dataCyValue}
+            ref={pageControlButtonsRef}
           />
         </Box>
       </>

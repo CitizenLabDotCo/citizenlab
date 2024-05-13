@@ -95,10 +95,20 @@ const Following = () => {
           getScreenReaderTextForTab={getScreenReaderTextForTab}
         />
       </Box>
-      {currentTab === 'Topics' && <Topics />}
-      {currentTab === 'Areas' && <Areas />}
+      {currentTab === 'Topics' && (
+        <div role="tabpanel" aria-labelledby={`tab-${currentTab}`} tabIndex={0}>
+          <Topics />
+        </div>
+      )}
+      {currentTab === 'Areas' && (
+        <div role="tabpanel" aria-labelledby={`tab-${currentTab}`} tabIndex={0}>
+          <Areas />
+        </div>
+      )}
       {currentTab !== 'Topics' && currentTab !== 'Areas' && (
-        <UserFollowingList value={currentTab} />
+        <div role="tabpanel" aria-labelledby={`tab-${currentTab}`} tabIndex={0}>
+          <UserFollowingList value={currentTab} />
+        </div>
       )}
     </Box>
   );
