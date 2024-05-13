@@ -812,7 +812,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Skenētu veidlapu importēšana (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Skenētu veidlapu importēšana",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Importētie ievadi",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing": "Importēt...",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Šie dati tika importēti anonīmi.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsImported": "{numIdeas} ir importēti ievades dati, un tie ir jāapstiprina.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved2": "{numNotApproved} ieguldījumus nevarēja apstiprināt. Lūdzu, pārbaudiet, vai katrā ievadītajā informācijā nav apstiprināšanas problēmu, un apstipriniet to atsevišķi.",

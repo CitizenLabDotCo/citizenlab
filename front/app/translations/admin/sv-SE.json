@@ -812,7 +812,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Importera skannade formulär (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Importera skannade formulär",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Importerade inmatningar",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing": "Importerar...",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Denna input importerades anonymt.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsImported": "{numIdeas} input har importerats och kräver godkännande.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved2": "{numNotApproved} Inmatningarna kunde inte godkännas. Kontrollera varje inmatning för valideringsproblem och bekräfta individuellt.",
