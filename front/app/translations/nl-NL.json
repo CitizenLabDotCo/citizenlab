@@ -1132,7 +1132,7 @@
   "app.containers.InitiativesIndexPage.header": "Plaats je voorstel hier en breng het op de agenda van {styledOrgName}",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Ontdek de burgervoorstellen van {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Ontdek de voorstellen",
-  "app.containers.InitiativesIndexPage.invisibleTitleProposalsCards": "Alle voorstellen die plaatsvinden",
+  "app.containers.InitiativesIndexPage.invisibleTitleProposalsCards": "Alle geplaatste voorstellen",
   "app.containers.InitiativesIndexPage.learnMoreAboutProposals": "Lees meer over hoe voorstellen werken.",
   "app.containers.InitiativesIndexPage.metaDescription2": "Verken en ondersteun geplaatste voorstellen",
   "app.containers.InitiativesIndexPage.metaTitle1": "Alle voorstellen • {orgName}",
