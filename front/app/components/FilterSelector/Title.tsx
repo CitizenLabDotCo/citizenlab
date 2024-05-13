@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { KeyboardEvent } from 'react';
 
 import { Icon, fontSizes, colors } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
@@ -58,41 +58,48 @@ interface Props {
   baseID: string;
   className?: string;
   textColor?: string;
+  handleKeyDown?: (event: KeyboardEvent) => void;
 }
 
-interface State {}
-
-export default class Title extends PureComponent<Props, State> {
-  handleOnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    this.props.onClick(event);
+const Title = ({
+  title,
+  opened,
+  onClick,
+  baseID,
+  className,
+  textColor,
+  handleKeyDown,
+}: Props) => {
+  const handleOnClick = (event) => {
+    onClick(event);
   };
 
-  render() {
-    const { title, opened, baseID, className, textColor } = this.props;
-    const adminPage = isPage('admin', location.pathname);
+  const adminPage = isPage('admin', location.pathname);
 
-    return (
-      <Container
-        onMouseDown={removeFocusAfterMouseClick}
-        onClick={this.handleOnClick}
-        aria-expanded={opened}
-        id={`${baseID}-label`}
-        className={`e2e-filter-selector-button FilterSelectorTitle ${
-          opened ? 'opened' : ''
-        } ${className} ${adminPage ? 'adminpage' : ''}`}
-        aria-live="polite"
+  return (
+    <Container
+      onMouseDown={removeFocusAfterMouseClick}
+      onKeyDown={handleKeyDown}
+      onClick={handleOnClick}
+      aria-expanded={opened}
+      id={`${baseID}-label`}
+      className={`e2e-filter-selector-button FilterSelectorTitle ${
+        opened ? 'opened' : ''
+      } ${className} ${adminPage ? 'adminpage' : ''}`}
+      aria-live="polite"
+      textColor={textColor}
+    >
+      <Text className="FilterSelectorTitleText" textColor={textColor}>
+        {title}
+      </Text>
+      <DropdownIcon
+        className="FilterSelectorTitleIcon"
+        name={opened ? 'chevron-up' : 'chevron-down'}
+        ariaHidden
         textColor={textColor}
-      >
-        <Text className="FilterSelectorTitleText" textColor={textColor}>
-          {title}
-        </Text>
-        <DropdownIcon
-          className="FilterSelectorTitleIcon"
-          name="chevron-down"
-          ariaHidden
-          textColor={textColor}
-        />
-      </Container>
-    );
-  }
-}
+      />
+    </Container>
+  );
+};
+
+export default Title;

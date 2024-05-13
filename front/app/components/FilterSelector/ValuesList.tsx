@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 
 import {
   Dropdown,
@@ -158,16 +158,41 @@ const ValuesList = ({
   onChange,
   onClickOutside,
 }: Props) => {
+  const tabsRef = useRef({});
+  const [focusedIndex, setFocusedIndex] = React.useState(0);
+
   const handleOnToggleCheckbox = (entry) => (_event) => {
     onChange(entry.value);
   };
 
+  useEffect(() => {
+    if (opened) {
+      tabsRef.current[0].focus();
+    }
+  }, [opened]);
+
   const handleOnSelectSingleValue = (entry) => (event) => {
     if (
+      event.type === 'keydown' &&
+      (event.key === 'ArrowUp' || event.key === 'ArrowDown')
+    ) {
+      event.preventDefault();
+
+      const totalItems = values.length;
+      let nextIndex = 0;
+      if (event.key === 'ArrowUp') {
+        nextIndex = focusedIndex === 0 ? totalItems - 1 : focusedIndex - 1;
+      } else {
+        nextIndex = focusedIndex === totalItems - 1 ? 0 : focusedIndex + 1;
+      }
+      setFocusedIndex(nextIndex);
+      tabsRef.current[nextIndex].focus();
+    } else if (
       event.type === 'click' ||
       (event.type === 'keydown' && event.key === 'Enter')
     ) {
       event.preventDefault();
+
       onChange(entry.value);
     }
   };
@@ -217,8 +242,10 @@ const ValuesList = ({
                     aria-selected={checked}
                     key={entry.value}
                     onMouseDown={removeFocusAfterMouseClick}
+                    onKeyDown={handleOnSelectSingleValue(entry)}
                     className={classNames}
                     tabIndex={0}
+                    ref={(el) => el && (tabsRef.current[index] = el)}
                   >
                     <Checkbox
                       checked={checked}
