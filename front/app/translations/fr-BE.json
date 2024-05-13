@@ -1762,7 +1762,7 @@
   "app.errors.too_common": "Ce mot de passe est trop simple. Veuillez choisir un mot de passe plus complexe.",
   "app.errors.too_long": "Votre mot de passe peut comporter au maximum 72 caractères.",
   "app.errors.too_short": "Votre mot de passe doit comporter au minimum 8 caractères.",
-  "app.errors.uncaught_error": "Une erreur inconnue s'est produite.",
+  "app.errors.uncaught_error": "Une erreur s'est produite.",
   "app.errors.unknown_group": "Le groupe {value} trouvé à la ligne {row} n'est pas un groupe connu",
   "app.errors.unknown_locale": "La langue {value} trouvée ligne {row} ne fait pas partie des langues paramétrées",
   "app.errors.unparseable_excel": "Le fichier Excel sélectionné n'a pas pu être traité.",
