@@ -66,14 +66,18 @@ class JsonFormsService
     participation_method = Factory.instance.participation_method_for fields.first.resource.participation_context
 
     if participation_method.author_in_form? current_user
-      output[:json_schema_multiloc].each_value do |json_schema|
-        json_schema[:properties]['author_id'] = InputJsonSchemaGeneratorService.new.visit_text AUTHOR_FIELD
-      end
-      output[:ui_schema_multiloc].each_value do |ui_schema|
-        schema_main_section = ui_schema[:elements].find do |elt|
-          elt.dig(:options, :id) == fields.find { |field| field.code == 'ideation_section1' }.id
+      output[:json_schema_multiloc].each do |locale, json_schema|
+        I18n.with_locale(locale) do
+          json_schema[:properties]['author_id'] = InputJsonSchemaGeneratorService.new.visit_text AUTHOR_FIELD
         end
-        schema_main_section[:elements].insert 1, InputUiSchemaGeneratorService.new(nil, true).visit_text(AUTHOR_FIELD)
+      end
+      output[:ui_schema_multiloc].each do |locale, ui_schema|
+        I18n.with_locale(locale) do
+          schema_main_section = ui_schema[:elements].find do |elt|
+            elt.dig(:options, :id) == fields.find { |field| field.code == 'ideation_section1' }.id
+          end
+          schema_main_section[:elements].insert 1, InputUiSchemaGeneratorService.new(nil, true).visit_text(AUTHOR_FIELD)
+        end
       end
     end
 
@@ -111,6 +115,14 @@ class JsonFormsService
           end
           schema_main_section[:elements].insert (body_multiloc_position + 1), budget_schema
         end
+      end
+    end
+  end
+
+  def each_schema_elt_with_locale(schema_multiloc)
+    schema_multiloc.each do |locale, elt|
+      I18n.with_locale(locale) do
+        yield elt
       end
     end
   end
