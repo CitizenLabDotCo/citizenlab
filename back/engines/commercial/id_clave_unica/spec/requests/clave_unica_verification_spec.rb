@@ -223,6 +223,7 @@ describe 'clave_unica verification' do
 
         user = User.order(created_at: :asc).last
         expect_to_create_verified_and_identified_user(user)
+        expect(user.confirmation_required?).to be(true)
 
         headers = { 'Authorization' => authorization_header(user) }
 

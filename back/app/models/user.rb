@@ -550,9 +550,10 @@ class User < ApplicationRecord
   def set_confirmation_required
     return unless new_record? && email_changed?
 
+    not_ordinary_user = highest_role != :user # admin or moderator can be created only by invite or by admin API from cl2-tenant-setup
     confirmation_not_required =
       registered_with_phone? || sso? || invite_status.present? ||
-      active? || highest_role != :user
+      active? || not_ordinary_user
 
     self.confirmation_required = !confirmation_not_required
     self.email_confirmed_at = nil
