@@ -53,7 +53,7 @@ resource 'Ideas' do
             { factory: :custom_field_select, options: [:with_options], value: 'option1' },
             { factory: :custom_field_multiselect, options: [:with_options], value: %w[option1 option2] },
             { factory: :custom_field_multiselect_image, options: [:with_options], value: %w[image1] },
-            { factory: :custom_field_html_multiloc, value: { 'fr-FR' => '<p>test value</p>' } } # This field does not seem to be supported by ideation but very rarely occurs on production
+            { factory: :custom_field_html_multiloc, value: { 'fr-FR' => '<p>test value</p>' } } # This field is not supported but rarely occurs on production, because it was possible at some point to make a copy of the description field.
           ].each do |field_desc|
             describe do
               let!(:extra_field) { create(field_desc[:factory], key: extra_field_name, required: true, resource: form) }
