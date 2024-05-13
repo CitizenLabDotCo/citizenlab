@@ -1132,7 +1132,7 @@
   "app.containers.InitiativesIndexPage.header": "{tenantName, select, KøbenhavnsKommune {Hvad er dit københavnerforslag?} HolbækKommune {Opret dit forslag her og sæt det på dagsordenen hos Holbæk Kommune} other {Aflever dit forslag her og sæt det på dagsordenen hos {styledOrgName}}}",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Udforsk forslag fra {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Opdag forslag",
-  "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards1": "Alle de initiativer, der finder sted",
+  "app.containers.InitiativesIndexPage.invisibleTitleProposalsCards": "Alle de forslag, der finder sted",
   "app.containers.InitiativesIndexPage.learnMoreAboutProposals": "{tenantName, select, KøbenhavnsKommune {Her kan du læse mere om retningslinjer og kriterier for Københavnerforslagsordningen.} RegionSjælland {Læs mere om, hvordan ordningen med borgerforslag fungerer.} other {Læs mere om hvordan forslag fungerer.}}",
   "app.containers.InitiativesIndexPage.metaDescription2": "Udforsk og støt forslag, der gennemføres",
   "app.containers.InitiativesIndexPage.metaTitle1": "Alle forslag • {orgName}",
