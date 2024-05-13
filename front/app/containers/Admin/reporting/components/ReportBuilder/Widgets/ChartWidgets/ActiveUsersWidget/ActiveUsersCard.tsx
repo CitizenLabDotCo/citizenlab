@@ -1,19 +1,22 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
 import { getComparedTimeRange } from 'components/admin/GraphCards/_utils/query';
-import Statistic from 'components/admin/Graphs/Statistic';
+import StatisticBottomLabel from 'components/admin/Graphs/Statistic/StatisticBottomLabel';
+import StatisticDelta from 'components/admin/Graphs/Statistic/StatisticDelta';
+import StatisticName from 'components/admin/Graphs/Statistic/StatisticName';
 
 import { useIntl } from 'utils/cl-intl';
 
 import NoData from '../../_shared/NoData';
-import messages from '../messages';
+import chartWidgetMessages from '../messages';
 
 import Chart from './Chart';
+import messages from './messages';
 import { Props } from './typings';
 import useActiveUsers from './useActiveUsers';
 
@@ -37,7 +40,7 @@ const ActiveUsers = ({
   const layout = useLayout();
 
   if (!stats || stats.activeUsers.value === 0) {
-    return <NoData message={messages.noData} />;
+    return <NoData message={chartWidgetMessages.noData} />;
   }
 
   return (
@@ -53,17 +56,52 @@ const ActiveUsers = ({
           mb={layout === 'wide' ? undefined : '8px'}
         >
           <Box>
-            <Statistic
-              name={formatMessage(messages.totalParticipants)}
-              value={stats.activeUsers.value}
-              delta={stats.activeUsers.delta}
-              nameColor="black"
-              bottomLabel={
-                stats.activeUsers.delta !== undefined
-                  ? 'compared to TODO days'
-                  : undefined
-              }
-            />
+            <Box>
+              <StatisticName
+                name={formatMessage(chartWidgetMessages.totalParticipants)}
+                nameColor="black"
+              />
+              <Box mt="2px">
+                <Text color="textPrimary" fontSize="xl" display="inline">
+                  {stats.activeUsers.value}
+                </Text>
+                {stats.activeUsers.delta !== undefined && (
+                  <StatisticDelta delta={stats.activeUsers.delta} />
+                )}
+              </Box>
+              {stats.activeUsers.delta !== undefined && (
+                <StatisticBottomLabel
+                  bottomLabel={formatMessage(messages.comparedToPreviousXDays, {
+                    days: moment(endAt).diff(moment(startAt), 'days'),
+                  })}
+                />
+              )}
+            </Box>
+
+            <Box mt="32px">
+              <StatisticName
+                name={formatMessage(messages.participationRate)}
+                nameColor="black"
+              />
+              <Box mt="2px">
+                <Text color="textPrimary" fontSize="xl" display="inline">
+                  {stats.participationRate.value}
+                </Text>
+                {stats.participationRate.delta !== undefined && (
+                  <StatisticDelta
+                    delta={stats.participationRate.delta}
+                    deltaType="percentage"
+                  />
+                )}
+              </Box>
+              {stats.activeUsers.delta !== undefined && (
+                <StatisticBottomLabel
+                  bottomLabel={formatMessage(messages.comparedToPreviousXDays, {
+                    days: moment(endAt).diff(moment(startAt), 'days'),
+                  })}
+                />
+              )}
+            </Box>
           </Box>
         </Box>
 
