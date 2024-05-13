@@ -1515,6 +1515,10 @@ resource 'Ideas' do
       let(:project) { create(:project_with_active_ideation_phase) }
       let(:idea_id) { create(:idea, project: project).id }
 
+      # TODO:
+      # - Add author and budget labels to fixtures
+      # - Refactoring
+      # - Move admin specs
       example 'Get the json schema and ui schema for an ideation input with author field', document: false do
         SettingsService.new.activate_feature! 'idea_author_change'
         do_request
