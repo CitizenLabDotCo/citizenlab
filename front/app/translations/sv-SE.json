@@ -1132,7 +1132,7 @@
   "app.containers.InitiativesIndexPage.header": "Publicera ditt förslag här och sätt upp det på dagordningen för {styledOrgName}",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Upptäck förslag till {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Upptäck förslag",
-  "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards1": "Alla de initiativ som pågår",
+  "app.containers.InitiativesIndexPage.invisibleTitleProposalsCards": "Alla de förslag som läggs fram",
   "app.containers.InitiativesIndexPage.learnMoreAboutProposals": "Läs mer om hur förslag fungerar.",
   "app.containers.InitiativesIndexPage.metaDescription2": "Utforska och stödja förslag som genomförs",
   "app.containers.InitiativesIndexPage.metaTitle1": "Alla förslag | {orgName}",
