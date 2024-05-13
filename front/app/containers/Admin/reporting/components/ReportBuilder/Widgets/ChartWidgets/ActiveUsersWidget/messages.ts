@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.comparedToPreviousXDays',
     defaultMessage: 'Compared to previous {days} days',
   },
+  hideStatistics: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.hideStatistics',
+    defaultMessage: 'Hide statistics',
+  },
   participationRate: {
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.participationRate',
     defaultMessage: 'Participation rate',

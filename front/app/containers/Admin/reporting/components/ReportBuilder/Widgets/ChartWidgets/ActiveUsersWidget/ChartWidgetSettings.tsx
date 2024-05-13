@@ -98,8 +98,8 @@ const ChartWidgetSettings = () => {
       </Box>
       <Box mb="20px">
         <Toggle
-          label={'TODO'}
-          checked={hideStatistics}
+          label={formatMessage(messages.hideStatistics)}
+          checked={!!hideStatistics}
           onChange={() => {
             setProp((props) => {
               props.hideStatistics = !hideStatistics;
