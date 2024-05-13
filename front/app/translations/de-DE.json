@@ -1132,7 +1132,7 @@
   "app.containers.InitiativesIndexPage.header": "Veröffentliche deinen Vorschlag hier und setze ihn auf die Tagesordnung von {styledOrgName}",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Untersuchen Sie Bürgervorschläge für {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Vorschläge entdecken",
-  "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards1": "Alle aktiven Vorschläge",
+  "app.containers.InitiativesIndexPage.invisibleTitleProposalsCards": "Alle Vorschläge, die gemacht werden",
   "app.containers.InitiativesIndexPage.learnMoreAboutProposals": "Mehr zu den Zulassungskriterien von Vorschlägen.",
   "app.containers.InitiativesIndexPage.metaDescription2": "Vorschläge erkunden und unterstützen",
   "app.containers.InitiativesIndexPage.metaTitle1": "Alle Vorschläge • {orgName}",
