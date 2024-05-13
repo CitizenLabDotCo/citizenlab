@@ -206,7 +206,7 @@ describe 'google authentication' do
         get '/auth/google'
         follow_redirect!
         user = User.find_by(email: 'boris.brompton@orange.uk')
-        expect(user.confirmation_required?).to eq(false)
+        expect(user.confirmation_required?).to be(false)
       end
     end
   end
