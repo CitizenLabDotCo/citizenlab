@@ -389,12 +389,12 @@ class WebApi::V1::IdeasController < ApplicationController
         end
       user_followers ||= {}
       {
-        params: jsonapi_serializer_params(vbii: reactions.index_by(&:reactable_id), user_followers: user_followers, pcs: Permissions::BasePermissionsService.new),
+        params: jsonapi_serializer_params(vbii: reactions.index_by(&:reactable_id), user_followers: user_followers, pcs: Permissions::IdeaPermissionsService.new),
         include: include
       }
     else
       {
-        params: jsonapi_serializer_params(pcs: Permissions::BasePermissionsService.new),
+        params: jsonapi_serializer_params(pcs: Permissions::IdeaPermissionsService.new),
         include: include
       }
     end

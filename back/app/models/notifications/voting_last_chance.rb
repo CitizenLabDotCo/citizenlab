@@ -76,7 +76,7 @@ module Notifications
       if phase.voting?
         user_scope = ParticipantsService.new.projects_participants(Project.where(id: phase.project_id))
         ProjectPolicy::InverseScope.new(phase.project, user_scope).resolve.filter_map do |recipient|
-          next if Permissions::BasePermissionsService.new.denied_reason_for_phase 'voting', recipient, phase
+          next if Permissions::PhasePermissionsService.new.denied_reason_for_phase 'voting', recipient, phase
 
           new(
             recipient: recipient,

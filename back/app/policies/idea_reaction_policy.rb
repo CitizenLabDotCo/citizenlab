@@ -60,6 +60,6 @@ class IdeaReactionPolicy < ApplicationPolicy
   end
 
   def permissions_service
-    @permissions_service ||= Permissions::BasePermissionsService.new
+    @permissions_service ||= Permissions::IdeaPermissionsService.new
   end
 end

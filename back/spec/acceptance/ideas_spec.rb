@@ -29,7 +29,7 @@ resource 'Ideas' do
       end
       ValidationErrorHelper.new.error_fields self, Idea
       response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
-      response_field :base, "Array containing objects with signature { error: #{Permissions::BasePermissionsService::POSTING_DENIED_REASONS.values.join(' | ')} }", scope: :errors
+      response_field :base, "Array containing objects with signature { error: #{Permissions::IdeaPermissionsService::POSTING_DENIED_REASONS.values.join(' | ')} }", scope: :errors
 
       let(:idea) { build(:idea) }
       let(:project) { create(:single_phase_ideation_project) }
@@ -751,7 +751,7 @@ resource 'Ideas' do
       end
       ValidationErrorHelper.new.error_fields(self, Idea)
       response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
-      response_field :base, "Array containing objects with signature { error: #{Permissions::BasePermissionsService::POSTING_DENIED_REASONS.values.join(' | ')} }", scope: :errors
+      response_field :base, "Array containing objects with signature { error: #{Permissions::IdeaPermissionsService::POSTING_DENIED_REASONS.values.join(' | ')} }", scope: :errors
 
       let(:idea) { build(:idea) }
       let(:with_permissions) { false }
@@ -976,7 +976,7 @@ resource 'Ideas' do
         end
 
         example '[error] Create an idea when there is a posting disabled reason' do
-          expect_any_instance_of(Permissions::BasePermissionsService)
+          expect_any_instance_of(Permissions::PhasePermissionsService)
             .to receive(:posting_idea_disabled_reason_for_phase).with(project.phases.first, @user).and_return('i_dont_like_you')
 
           do_request
@@ -1121,7 +1121,7 @@ resource 'Ideas' do
       end
       ValidationErrorHelper.new.error_fields(self, Idea)
       response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
-      response_field :base, "Array containing objects with signature { error: #{Permissions::BasePermissionsService::POSTING_DENIED_REASONS.values.join(' | ')} }", scope: :errors
+      response_field :base, "Array containing objects with signature { error: #{Permissions::PhasePermissionsService::POSTING_DENIED_REASONS.values.join(' | ')} }", scope: :errors
 
       describe do
         before do
@@ -1157,7 +1157,7 @@ resource 'Ideas' do
           end
 
           example '[error] Update an idea when there is a posting disabled reason' do
-            expect_any_instance_of(Permissions::BasePermissionsService)
+            expect_any_instance_of(Permissions::PhasePermissionsService)
               .to receive(:posting_idea_disabled_reason_for_phase).with(@project.phases.first, @user).and_return('i_dont_like_you')
 
             do_request
