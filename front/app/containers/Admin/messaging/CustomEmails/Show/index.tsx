@@ -121,7 +121,10 @@ const Show = () => {
     useState(false);
 
   const handleSend = (noGroupsSelected: boolean) => () => {
-    if (noGroupsSelected) {
+    if (
+      noGroupsSelected &&
+      campaign?.data.attributes.campaign_name === 'manual'
+    ) {
       openSendConfirmationModal();
     } else {
       sendCampaign(campaignId);
