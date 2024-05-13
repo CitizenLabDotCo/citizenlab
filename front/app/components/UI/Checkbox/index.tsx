@@ -121,7 +121,7 @@ export default class Checkbox extends PureComponent<Props> {
               onChange={onChange}
               checked={checked}
               disabled={disabled}
-              tabIndex={0}
+              tabIndex={-1}
               name={name}
             />
             <StyledCheckbox

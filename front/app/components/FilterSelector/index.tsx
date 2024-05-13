@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, KeyboardEvent } from 'react';
 
 import {
   Box,
@@ -20,8 +20,8 @@ import {
 } from 'lodash-es';
 import styled from 'styled-components';
 
-import Title from './title';
-import ValuesList from './valuesList';
+import Title from './Title';
+import ValuesList from './ValuesList';
 
 const Container = styled(Box)`
   display: inline-block;
@@ -196,6 +196,13 @@ const FilterSelector = ({
     title
   );
 
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'ArrowDown' && !opened) {
+      event.preventDefault();
+      toggleExpanded();
+    }
+  };
+
   return (
     <Container
       id={id}
@@ -210,10 +217,14 @@ const FilterSelector = ({
             borderRadius="24px"
             onClick={toggleExpanded}
             minWidth={minWidth ? minWidth : undefined}
+            onKeyDown={handleKeyDown}
           >
             <Box display="flex" gap="8px">
               {currentTitle}
-              <Icon fill={colors.white} name={'chevron-down'} />
+              <Icon
+                fill={colors.white}
+                name={opened ? 'chevron-up' : 'chevron-down'}
+              />
             </Box>
           </Button>
         ) : (
@@ -224,6 +235,7 @@ const FilterSelector = ({
             onClick={toggleExpanded}
             baseID={baseID}
             textColor={textColor}
+            handleKeyDown={handleKeyDown}
           />
         )}
       </Box>
