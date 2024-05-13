@@ -28,11 +28,13 @@ const ChartWidgetSettings = () => {
     endAt,
     compareStartAt,
     compareEndAt,
+    hideStatistics,
   } = useNode((node) => ({
     startAt: node.data.props.startAt,
     endAt: node.data.props.endAt,
     compareStartAt: node.data.props.compareStartAt,
     compareEndAt: node.data.props.compareEndAt,
+    hideStatistics: node.data.props.hideStatistics,
   }));
 
   const noTimePeriodSelected = !startAt || !endAt;
@@ -93,6 +95,17 @@ const ChartWidgetSettings = () => {
             />
           </div>
         </Tippy>
+      </Box>
+      <Box mb="20px">
+        <Toggle
+          label={'TODO'}
+          checked={hideStatistics}
+          onChange={() => {
+            setProp((props) => {
+              props.hideStatistics = !hideStatistics;
+            });
+          }}
+        />
       </Box>
     </Box>
   );

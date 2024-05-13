@@ -1,21 +1,15 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
-
-import StatisticBottomLabel from 'components/admin/Graphs/Statistic/StatisticBottomLabel';
-import StatisticDelta from 'components/admin/Graphs/Statistic/StatisticDelta';
-import StatisticName from 'components/admin/Graphs/Statistic/StatisticName';
-
-import { useIntl } from 'utils/cl-intl';
 
 import NoData from '../../_shared/NoData';
 import chartWidgetMessages from '../messages';
 
 import Chart from './Chart';
-import messages from './messages';
+import Statistics from './Statistics';
 import { Props } from './typings';
 import useActiveUsers from './useActiveUsers';
 
@@ -26,9 +20,8 @@ const ActiveUsers = ({
   resolution = 'month',
   compareStartAt,
   compareEndAt,
+  hideStatistics,
 }: Props) => {
-  const { formatMessage } = useIntl();
-
   const { currentResolution, stats, timeSeries } = useActiveUsers({
     project_id: projectId,
     start_at: startAt,
@@ -44,8 +37,6 @@ const ActiveUsers = ({
     return <NoData message={chartWidgetMessages.noData} />;
   }
 
-  const previousDays = moment(endAt).diff(moment(startAt), 'days');
-
   return (
     <Box
       width="100%"
@@ -58,66 +49,23 @@ const ActiveUsers = ({
         display="flex"
         flexDirection={layout === 'wide' ? 'row' : 'column'}
       >
-        <Box
-          display="flex"
-          flexDirection="row"
-          mb={layout === 'wide' ? undefined : '8px'}
-        >
-          <Box>
-            <Box>
-              <StatisticName
-                name={formatMessage(chartWidgetMessages.totalParticipants)}
-                nameColor="black"
-              />
-              <Box mt="2px">
-                <Text color="textPrimary" fontSize="xl" display="inline">
-                  {stats.activeUsers.value}
-                </Text>
-                {stats.activeUsers.delta !== undefined && (
-                  <StatisticDelta delta={stats.activeUsers.delta} />
-                )}
-              </Box>
-              {stats.activeUsers.delta !== undefined && (
-                <StatisticBottomLabel
-                  bottomLabel={formatMessage(messages.comparedToPreviousXDays, {
-                    days: previousDays,
-                  })}
-                />
-              )}
-            </Box>
-
-            <Box mt={layout === 'wide' ? '32px' : '12px'}>
-              <StatisticName
-                name={formatMessage(messages.participationRate)}
-                nameColor="black"
-              />
-              <Box mt="2px">
-                <Text color="textPrimary" fontSize="xl" display="inline">
-                  {stats.participationRate.value}
-                </Text>
-                {stats.participationRate.delta !== undefined && (
-                  <StatisticDelta
-                    delta={stats.participationRate.delta}
-                    deltaType="percentage"
-                  />
-                )}
-              </Box>
-              {stats.activeUsers.delta !== undefined && (
-                <StatisticBottomLabel
-                  bottomLabel={formatMessage(messages.comparedToPreviousXDays, {
-                    days: previousDays,
-                  })}
-                />
-              )}
-            </Box>
-          </Box>
-        </Box>
+        {!hideStatistics && (
+          <Statistics
+            startAt={startAt}
+            endAt={endAt}
+            stats={stats}
+            layout={layout}
+          />
+        )}
 
         <Box
-          flexGrow={layout === 'wide' ? 1 : undefined}
+          flexGrow={layout === 'wide' && !hideStatistics ? 1 : undefined}
           display="flex"
-          justifyContent={layout === 'wide' ? 'flex-end' : undefined}
+          justifyContent={
+            layout === 'wide' && !hideStatistics ? 'flex-end' : undefined
+          }
           height={layout === 'wide' ? undefined : '200px'}
+          w="100%"
         >
           <Box pt="8px" width="100%" maxWidth="800px" h="100%">
             <Chart
