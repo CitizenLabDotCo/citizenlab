@@ -63,6 +63,7 @@ const ChartWidgetSettings = () => {
       <TimeSeriesWidgetSettings />
       <Box mb="20px">
         <Toggle
+          id="e2e-compare-previous-period-toggle"
           label={formatMessage(messages.showComparisonLastPeriod)}
           disabled={!startAt || !endAt}
           checked={comparePreviousPeriod}

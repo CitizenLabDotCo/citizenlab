@@ -27,6 +27,7 @@ const StatisticDelta = ({ delta, deltaType = 'absolute' }: Props) => {
       fontWeight="bold"
       display="inline"
       ml="8px"
+      className="e2e-statistic-delta"
     >
       {getDeltaSymbol(delta)}
       {deltaType === 'percentage' ? `${delta}%` : delta}

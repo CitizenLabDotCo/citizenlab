@@ -103,6 +103,16 @@ describe('Report builder Participants timeline widget', () => {
     cy.get('#e2e-report-builder-project-filter-box select').select(projectId);
 
     // Set date range and compare with previous period
+    cy.get('.e2e-statistic-delta').should('not.exist');
+    cy.get('#e2e-start-date-input')
+      .clear({ force: true })
+      .type(moment().subtract(5, 'day').format('DD/MM/YYYY'), { force: true });
+    cy.get('#e2e-content-builder-settings').click();
+
+    cy.wait(1000);
+
+    cy.get('#e2e-compare-previous-period-toggle').parent().click();
+    cy.get('.e2e-statistic-delta').should('exist');
 
     // Confirms that the widget displays correctly on live report
     cy.get('#e2e-content-builder-topbar-save').click();
@@ -112,7 +122,9 @@ describe('Report builder Participants timeline widget', () => {
     cy.get('.recharts-surface:first').trigger('mouseover');
 
     cy.contains('New Widget Title').should('exist');
-    cy.contains('Total : 1').should('exist');
+    cy.contains('Participants: 1').should('exist');
+
+    cy.get('.e2e-statistic-delta').should('exist');
   });
 
   it('deletes Participants timeline widget correctly', function () {
