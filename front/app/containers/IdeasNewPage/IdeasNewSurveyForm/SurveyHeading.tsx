@@ -76,8 +76,7 @@ const SurveyHeading = ({ titleText }: Props) => {
             : stylingConsts.menuHeight
         }px`}
         px="24px"
-        // TODO: Make reususable?
-        boxShadow={'0px 2px 4px -1px rgba(0, 0, 0, 0.1)'}
+        borderBottom={`1px solid ${colors.divider}`}
       >
         <StyledSurveyTitle
           color={'tenantPrimary'}
