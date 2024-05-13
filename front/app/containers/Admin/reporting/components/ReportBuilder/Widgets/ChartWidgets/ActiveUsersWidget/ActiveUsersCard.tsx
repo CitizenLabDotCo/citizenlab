@@ -56,10 +56,10 @@ const ActiveUsers = ({
             <Statistic
               name={formatMessage(messages.totalParticipants)}
               value={stats.activeUsers.value}
-              delta={stats.activeUsers.previousPeriodDelta}
+              delta={stats.activeUsers.delta}
               nameColor="black"
               bottomLabel={
-                stats.activeUsers.previousPeriodDelta
+                stats.activeUsers.delta !== undefined
                   ? 'compared to TODO days'
                   : undefined
               }

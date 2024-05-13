@@ -9,7 +9,7 @@ import {
 
 interface Props {
   name: string;
-  value: string;
+  value?: string | number;
   delta?: number;
   bottomLabel?: string;
   bottomLabelValue?: string;
