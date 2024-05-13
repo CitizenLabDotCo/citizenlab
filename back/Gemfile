@@ -73,7 +73,6 @@ group :development do
 end
 
 group :test do
-  gem 'rubyXL'
   gem 'shoulda-matchers', '~> 6.2.0'
   gem 'webmock', '~> 3.23'
 
@@ -105,7 +104,8 @@ gem 'kaminari', '~> 1.2'
 gem 'rails-i18n', '~> 7.0.9'
 
 gem 'awesome_nested_set', '~> 3.5.0'
-gem 'axlsx', '3.0.0.pre'
+gem 'axlsx', '3.0.0.pre' # write xlsx files
+gem 'rubyXL' # read xlsx files. Has issues with writing files https://github.com/CitizenLabDotCo/citizenlab/pull/7834
 gem 'counter_culture', '~> 3.5'
 gem 'groupdate', '~> 4.1'
 gem 'icalendar', '~> 2.10'

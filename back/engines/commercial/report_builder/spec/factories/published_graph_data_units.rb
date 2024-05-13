@@ -6,8 +6,8 @@ FactoryBot.define do
     graph_id { 'gJxirq8X7m' }
     data do
       [{
-        'count_dimension_user_custom_field_values_dimension_user_id' => 1,
-        'dimension_user_custom_field_values.value' => 'female'
+        'count' => 1,
+        'dimension_date_created.month' => '2022-09'
       }]
     end
   end
