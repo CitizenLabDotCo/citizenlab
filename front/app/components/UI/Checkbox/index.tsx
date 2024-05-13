@@ -109,7 +109,13 @@ export default class Checkbox extends PureComponent<Props> {
 
     if (size && isBoolean(disabled) && isBoolean(indeterminate)) {
       return (
-        <Wrapper id={id} className={className || ''} disabled={disabled}>
+        <Wrapper
+          id={id}
+          className={className || ''}
+          disabled={disabled}
+          role="checkbox"
+          aria-checked={checked}
+        >
           <CheckboxContainer hasLabel={hasLabel}>
             <HiddenCheckbox
               onChange={onChange}
