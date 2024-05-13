@@ -69,13 +69,9 @@ const ChartWidgetSettings = () => {
           checked={comparePreviousPeriod}
           onChange={() => {
             setProp((props) => {
-              if (!startAt || !endAt) {
-                props.compareStartAt = undefined;
-                props.compareEndAt = undefined;
-                return;
-              }
+              const noTimePeriodSelected = !startAt || !endAt;
 
-              if (comparePreviousPeriod) {
+              if (noTimePeriodSelected || comparePreviousPeriod) {
                 props.compareStartAt = undefined;
                 props.compareEndAt = undefined;
                 return;
