@@ -47,7 +47,12 @@ const ActiveUsers = ({
   const previousDays = moment(endAt).diff(moment(startAt), 'days');
 
   return (
-    <Box width="100%" height={layout === 'wide' ? '260px' : undefined} pb="8px">
+    <Box
+      width="100%"
+      height={layout === 'wide' ? '260px' : undefined}
+      pb="8px"
+      className="e2e-participants-timeline-widget"
+    >
       <Box
         height="100%"
         display="flex"

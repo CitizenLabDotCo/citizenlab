@@ -1,7 +1,7 @@
 import { randomString } from '../../../support/commands';
 import moment = require('moment');
 
-describe('Report builder Posts By Time widget', () => {
+describe('Report builder Participants timeline widget', () => {
   let projectId: string;
   let projectSlug: string;
   let reportId: string;
@@ -82,8 +82,8 @@ describe('Report builder Posts By Time widget', () => {
     cy.apiRemoveReportBuilder(reportId);
   });
 
-  it('handles Posts By Time widget correctly', function () {
-    cy.get('#e2e-draggable-posts-by-time-widget').dragAndDrop(
+  it('handles Participants timeline widget correctly', function () {
+    cy.get('#e2e-draggable-active-users-widget').dragAndDrop(
       '#e2e-content-builder-frame',
       {
         position: 'inside',
@@ -102,6 +102,8 @@ describe('Report builder Posts By Time widget', () => {
     // Set project filter
     cy.get('#e2e-report-builder-project-filter-box select').select(projectId);
 
+    // Set date range and compare with previous period
+
     // Confirms that the widget displays correctly on live report
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveReportLayout');
@@ -113,8 +115,8 @@ describe('Report builder Posts By Time widget', () => {
     cy.contains('Total : 1').should('exist');
   });
 
-  it('deletes Posts By Time widget correctly', function () {
-    cy.get('#e2e-draggable-posts-by-time-widget').dragAndDrop(
+  it('deletes Participants timeline widget correctly', function () {
+    cy.get('#e2e-draggable-active-users-widget').dragAndDrop(
       '#e2e-content-builder-frame',
       {
         position: 'inside',
@@ -134,8 +136,8 @@ describe('Report builder Posts By Time widget', () => {
     cy.wait('@getReportLayout');
     cy.wait(500);
 
-    cy.get('#e2e-draggable-posts-by-time-widget').should('exist');
-    cy.get('#e2e-draggable-posts-by-time-widget')
+    cy.get('#e2e-draggable-active-users-widget').should('exist');
+    cy.get('#e2e-draggable-active-users-widget')
       .parent()
       .click({ force: true });
 
@@ -145,6 +147,6 @@ describe('Report builder Posts By Time widget', () => {
     cy.wait('@saveReportLayout');
 
     cy.visit(`projects/${projectSlug}`);
-    cy.get('.e2e-posts-by-time-widget').should('not.exist');
+    cy.get('.e2e-participants-timeline-widget').should('not.exist');
   });
 });
