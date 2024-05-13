@@ -812,7 +812,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Importer des formulaires numérisés (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Importer des formulaires numérisés",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Entrées importées",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing": "Importation en cours...",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Cette contribution a été importée de manière anonyme.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsImported": "{numIdeas} contributions ont été importées et doivent encore être approuvées.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved2": "{numNotApproved} n'ont pas pu être approuvées. Veuillez vérifier chaque entrée pour les problèmes de validation et confirmer individuellement.",
