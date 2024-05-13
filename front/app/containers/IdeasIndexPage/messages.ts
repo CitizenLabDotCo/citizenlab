@@ -5,9 +5,9 @@ export default defineMessages({
     id: 'app.containers.IdeasIndexPage.inputsPageTitle',
     defaultMessage: 'Inputs',
   },
-  a11y_IdeasListTitle: {
-    id: 'app.containers.IdeasIndexPage.a11y_IdeasListTitle',
-    defaultMessage: 'All inputs posted in {orgName}',
+  a11y_IdeasListTitle1: {
+    id: 'app.containers.IdeasIndexPage.a11y_IdeasListTitle1',
+    defaultMessage: 'All inputs posted',
   },
   loadMore: {
     id: 'app.containers.IdeasIndexPage.loadMore',

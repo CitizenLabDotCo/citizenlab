@@ -5,17 +5,17 @@ export default defineMessages({
     id: 'app.containers.InitiativesIndexPage.metaTitle1',
     defaultMessage: 'All proposals | {orgName}',
   },
-  invisibleTitleInitiativeCards: {
-    id: 'app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards',
-    defaultMessage: 'All the initiatives taking place in {orgName}',
+  invisibleTitleInitiativeCards1: {
+    id: 'app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards1',
+    defaultMessage: 'All the initiatives taking place',
   },
   invisibleInitiativesPageTitle: {
     id: 'app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle',
     defaultMessage: 'Discover Initiatives',
   },
-  metaDescription1: {
-    id: 'app.containers.InitiativesIndexPage.metaDescription1',
-    defaultMessage: 'Explore and support proposals conducted in {orgName}',
+  metaDescription2: {
+    id: 'app.containers.InitiativesIndexPage.metaDescription2',
+    defaultMessage: 'Explore and support proposals conducted',
   },
   header: {
     id: 'app.containers.InitiativesIndexPage.header',
