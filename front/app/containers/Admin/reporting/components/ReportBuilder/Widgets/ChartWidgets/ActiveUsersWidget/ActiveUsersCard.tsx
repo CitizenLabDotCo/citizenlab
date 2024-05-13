@@ -78,7 +78,7 @@ const ActiveUsers = ({
               )}
             </Box>
 
-            <Box mt="32px">
+            <Box mt={layout === 'wide' ? '32px' : '12px'}>
               <StatisticName
                 name={formatMessage(messages.participationRate)}
                 nameColor="black"
@@ -105,7 +105,12 @@ const ActiveUsers = ({
           </Box>
         </Box>
 
-        <Box flexGrow={1} display="flex" justifyContent="flex-end">
+        <Box
+          flexGrow={layout === 'wide' ? 1 : undefined}
+          display="flex"
+          justifyContent={layout === 'wide' ? 'flex-end' : undefined}
+          w={layout === 'wide' ? undefined : '100%'}
+        >
           <Box pt="8px" width="100%" maxWidth="800px">
             <Chart
               timeSeries={timeSeries}

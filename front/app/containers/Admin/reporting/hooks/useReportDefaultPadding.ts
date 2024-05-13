@@ -35,7 +35,7 @@ const useReportDefaultPadding = () => {
   const isSmall = width === 'phone' || width === 'tablet';
   const inRoot = parentIsRoot || grandParentIsTemplateAndGreatGrandparentIsRoot;
 
-  return isSmall && inRoot ? DEFAULT_PADDING : '0px';
+  return !isSmall && inRoot ? DEFAULT_PADDING : '0px';
 };
 
 export default useReportDefaultPadding;

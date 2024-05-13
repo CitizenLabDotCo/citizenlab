@@ -15,7 +15,8 @@ const MARGINS = {
     top: 10,
   },
   narrow: {
-    right: -20,
+    right: 0,
+    left: 0,
   },
 } as const;
 
