@@ -123,6 +123,7 @@ const EmailConfirmation = ({
             name="code"
             type="text"
             label={formatMessage(messages.codeInput)}
+            maxCharCount={4}
           />
         </Box>
         <Box w="100%" display="flex" mt="32px">

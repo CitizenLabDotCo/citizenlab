@@ -92,6 +92,10 @@ module EmailCampaigns
       end
     end
 
+    def manageable_by_project_moderator?
+      true
+    end
+
     private
 
     def campaign_enabled_for_phase?(activity:, time: nil)

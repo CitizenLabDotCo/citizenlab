@@ -53,7 +53,7 @@ module EmailCampaigns
     end
 
     def project_participants(users_scope, _options = {})
-      users_scope.where(id: ParticipantsService.new.project_participants(project))
+      users_scope.where(id: ParticipantsService.new.projects_participants(project))
     end
   end
 end

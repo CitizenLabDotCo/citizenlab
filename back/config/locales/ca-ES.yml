@@ -149,7 +149,7 @@ ca:
         title: Detalls
         description:
       other_text_field:
-        title: If you picked '{other_option}', what are you thinking of?
+        title: Si has triat "{other_option}", en què estàs pensant?
   custom_forms:
     categories:
       main_content:
@@ -204,11 +204,15 @@ ca:
       input_id: 'ID'
       latitude: 'Latitud'
       longitude: 'Longitud'
+      location: 'Ubicació'
       author_fullname: 'Nom de l''autor'
       author_email: 'Correu electrònic de l''autor'
       author_id: 'ID de l''autor'
+      attachments: 'Adjunts'
       budget: 'Pressupost'
+      cost: 'Cost'
       created_at: 'Presentat a'
+      submitted_at: 'Presentat a'
       published_at: 'Publicat a'
       comments_count: 'Comentaris'
       likes_count: 'M''agrada'
@@ -217,11 +221,14 @@ ca:
       participants: 'Participants'
       votes_count: 'Vots'
       input_url: 'URL'
+      tags: 'Etiquetes'
       project: 'Projecte'
       status: 'Estat'
       assignee_fullname: 'Cesionari'
       assignee_email: 'Correu electrònic del cessionari'
       image_url: 'URL de la imatge'
+      title: 'Títol'
+      description: 'Descripció'
     anonymous: 'Anònim'
   form_builder:
     default_select_field:

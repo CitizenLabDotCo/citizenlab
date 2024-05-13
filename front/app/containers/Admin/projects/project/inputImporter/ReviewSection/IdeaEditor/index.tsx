@@ -290,6 +290,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
           >
             <div>
               <Button
+                bgColor={colors.primary}
                 icon="check"
                 w="100%"
                 processing={loadingApproveIdea}

@@ -598,22 +598,11 @@ function apiCreateIdea({
   anonymous,
   phaseIds,
 }: IdeaType) {
-  let headers: { 'Content-Type': string; Authorization: string } | null = null;
-
-  if (jwt) {
-    headers = {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${jwt}`,
-    };
-  }
-
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
-    const adminJwt = response.body.jwt;
-
-    return cy.request({
-      headers: headers || {
+  const doRequest = (jwt: string) =>
+    cy.request({
+      headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
+        Authorization: `Bearer ${jwt}`,
       },
       method: 'POST',
       url: 'web_api/v1/ideas',
@@ -637,6 +626,14 @@ function apiCreateIdea({
         },
       },
     });
+
+  if (jwt) {
+    return doRequest(jwt);
+  }
+
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+    return doRequest(adminJwt);
   });
 }
 
@@ -1437,7 +1434,7 @@ function apiCreateReportBuilder(phaseId?: string, visible: boolean = true) {
         report: {
           name: phaseId ? undefined : randomString(),
           phase_id: phaseId,
-          visible,
+          visible: phaseId ? visible : undefined,
         },
       },
     });

@@ -7,6 +7,7 @@ export type ResolvedName =
   | 'SingleIdeaWidget'
   | 'VisitorsWidget'
   | 'VisitorsTrafficSourcesWidget'
+  | 'DemographicsWidget'
   | 'GenderWidget'
   | 'AgeWidget'
   | 'ActiveUsersWidget'
@@ -25,6 +26,7 @@ export type ParametersLive =
   | SingleIdeaParams
   | VisitorsParams
   | VisitorsTrafficSourcesParams
+  | DemographicsParams
   | GenderParams
   | AgeParams
   | ActiveUsersParams
@@ -86,26 +88,30 @@ export interface VisitorsTrafficSourcesParams extends BaseParams {
   props: VisitorsTrafficSourcesProps;
 }
 
-export interface GenderProps {
+export interface BaseDemographicsProps {
   project_id?: string;
   start_at?: string | null | undefined;
   end_at?: string | null;
   group_id?: string | null;
-}
-export interface GenderParams extends BaseParams {
-  resolved_name: 'GenderWidget';
-  props: GenderProps;
 }
 
-export interface AgeProps {
-  project_id?: string;
-  start_at?: string | null | undefined;
-  end_at?: string | null;
-  group_id?: string | null;
+export interface DemographicsProps extends BaseDemographicsProps {
+  custom_field_id?: string;
 }
+
+export interface DemographicsParams extends BaseParams {
+  resolved_name: 'DemographicsWidget';
+  props: DemographicsProps;
+}
+
+export interface GenderParams extends BaseParams {
+  resolved_name: 'GenderWidget';
+  props: BaseDemographicsProps;
+}
+
 export interface AgeParams extends BaseParams {
   resolved_name: 'AgeWidget';
-  props: AgeProps;
+  props: BaseDemographicsProps;
 }
 
 export interface ActiveUsersParams extends BaseParams {

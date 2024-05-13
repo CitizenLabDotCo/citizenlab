@@ -163,57 +163,35 @@ resource 'Ideas' do
         end
       end
 
-      context 'with an image multi-select field' do
-        let(:project) { create(:single_phase_native_survey_project) }
-        let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
-        let!(:image_select_field) do
-          create(
-            :custom_field_multiselect_image,
-            resource: custom_form,
-            key: 'custom_field_name1',
-            enabled: true
-          )
-        end
-        let!(:option) do
-          create(
-            :custom_field_option,
-            custom_field: image_select_field,
-            key: 'image1',
-            image: create(:custom_field_option_image)
-          )
-        end
-        let(:custom_field_name1) { ['image1'] }
+      describe do
+        file = IdeaFile.create(file: Rails.root.join('spec/fixtures/afvalkalender.pdf').open, name: 'my_file.pdf')
+        [
+          { factory: :custom_field_number, value: 42 },
+          { factory: :custom_field_linear_scale, value: 3 },
+          { factory: :custom_field_text, value: 'test value' },
+          { factory: :custom_field_multiline_text, value: 'test value' },
+          { factory: :custom_field_select, options: [:with_options], value: 'option1' },
+          { factory: :custom_field_multiselect, options: [:with_options], value: %w[option1 option2] },
+          { factory: :custom_field_multiselect_image, options: [:with_options], value: %w[image1] },
+          { factory: :custom_field_file_upload, value: { 'id' => file.id, 'name' => file.name } },
+          { factory: :custom_field_point, value: { 'type' => 'Point', 'coordinates' => [4.30, 50.85] } },
+          { factory: :custom_field_html_multiloc, value: { 'fr-FR' => '<p>test value</p>' } } # This field does not seem to be supported by native surveys but occurs on production
+        ].each do |field_desc|
+          describe do
+            let(:project) { create(:single_phase_native_survey_project) }
+            let(:form) { create(:custom_form, participation_context: project.phases.first) }
+            let!(:survey_field) { create(field_desc[:factory], key: 'custom_field_name1', required: true, resource: form) }
+            let!(:custom_field_name1) { field_desc[:value] }
 
-        example_request 'Create an input with a file upload field' do
-          assert_status 201
-          idea = project.reload.ideas.first
-          expect(idea.custom_field_values).to eq({ 'custom_field_name1' => ['image1'] })
-        end
-      end
-
-      context 'with a point field' do
-        let(:project) { create(:single_phase_native_survey_project) }
-        let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
-        let!(:point_field) do
-          create(
-            :custom_field_point,
-            resource: custom_form,
-            key: 'custom_field_name1',
-            enabled: true
-          )
-        end
-        let(:custom_field_name1) do
-          {
-            type: 'Point',
-            coordinates: [42.42, 24.24]
-          }
-        end
-
-        example_request 'Create an input with a point field' do
-          assert_status 201
-          idea = project.reload.ideas.first
-          expect(idea.custom_field_values)
-            .to eq({ 'custom_field_name1' => { 'coordinates' => [42.42, 24.24], 'type' => 'Point' } })
+            example_request "Create a response with a #{field_desc[:factory]} field" do
+              assert_status 201
+              json_response = json_parse(response_body)
+              idea_from_db = Idea.find(json_response[:data][:id])
+              expect(idea_from_db.custom_field_values).to eq({
+                'custom_field_name1' => field_desc[:value]
+              })
+            end
+          end
         end
       end
 
