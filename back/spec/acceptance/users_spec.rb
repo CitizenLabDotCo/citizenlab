@@ -1076,6 +1076,8 @@ resource 'Users' do
             example_request 'is allowed' do
               expect(@user.reload.email).to eq(email)
               assert_status 200
+              json_response = json_parse(response_body)
+              expect(json_response.dig(:data, :attributes, :email)).to eq(email)
             end
           end
         end
