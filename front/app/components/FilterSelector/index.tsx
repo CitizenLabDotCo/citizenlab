@@ -203,28 +203,30 @@ const FilterSelector = ({
         last ? 'last' : ''
       }`}
     >
-      {filterSelectorStyle === 'button' ? (
-        <Button
-          height={isPhoneOrSmaller ? '32px' : '36px'}
-          borderRadius="24px"
-          onClick={toggleExpanded}
-          minWidth={minWidth ? minWidth : undefined}
-        >
-          <Box display="flex" gap="8px">
-            {currentTitle}
-            <Icon fill={colors.white} name={'chevron-down'} />
-          </Box>
-        </Button>
-      ) : (
-        <Title
-          key={baseID}
-          title={currentTitle}
-          opened={opened}
-          onClick={toggleExpanded}
-          baseID={baseID}
-          textColor={textColor}
-        />
-      )}
+      <Box id={`id-${name}`}>
+        {filterSelectorStyle === 'button' ? (
+          <Button
+            height={isPhoneOrSmaller ? '32px' : '36px'}
+            borderRadius="24px"
+            onClick={toggleExpanded}
+            minWidth={minWidth ? minWidth : undefined}
+          >
+            <Box display="flex" gap="8px">
+              {currentTitle}
+              <Icon fill={colors.white} name={'chevron-down'} />
+            </Box>
+          </Button>
+        ) : (
+          <Title
+            key={baseID}
+            title={currentTitle}
+            opened={opened}
+            onClick={toggleExpanded}
+            baseID={baseID}
+            textColor={textColor}
+          />
+        )}
+      </Box>
       <ValuesList
         title={currentTitle}
         opened={opened}

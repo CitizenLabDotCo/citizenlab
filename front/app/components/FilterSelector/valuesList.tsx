@@ -5,6 +5,7 @@ import {
   colors,
   fontSizes,
   isRtl,
+  Box,
 } from '@citizenlab/cl2-component-library';
 import { includes, isNil } from 'lodash-es';
 import styled from 'styled-components';
@@ -206,63 +207,63 @@ export default class ValuesList extends PureComponent<Props, State> {
         opened={opened}
         onClickOutside={this.handleOnClickOutside}
         content={
-          <List
-            className="e2e-sort-items"
-            tabIndex={-1}
-            role="listbox"
-            aria-multiselectable={multipleSelectionAllowed}
-          >
-            {values &&
-              values.map((entry, index) => {
-                const checked = includes(selected, entry.value);
-                const last = index === values.length - 1;
-                const classNames = [
-                  `e2e-sort-item-${
-                    entry.value !== '-new' ? entry.value : 'old'
-                  }`,
-                  !multipleSelectionAllowed && checked ? 'selected' : '',
-                  last ? 'last' : '',
-                ]
-                  .filter((item) => !isNil(item))
-                  .join(' ');
+          <Box role="group" aria-labelledby={`id-${name}`}>
+            <List
+              className="e2e-sort-items"
+              aria-multiselectable={multipleSelectionAllowed}
+            >
+              {values &&
+                values.map((entry, index) => {
+                  const checked = includes(selected, entry.value);
+                  const last = index === values.length - 1;
+                  const classNames = [
+                    `e2e-sort-item-${
+                      entry.value !== '-new' ? entry.value : 'old'
+                    }`,
+                    !multipleSelectionAllowed && checked ? 'selected' : '',
+                    last ? 'last' : '',
+                  ]
+                    .filter((item) => !isNil(item))
+                    .join(' ');
 
-                return multipleSelectionAllowed ? (
-                  <CheckboxListItem
-                    id={`${baseID}-${index}`}
-                    role="option"
-                    aria-posinset={index + 1}
-                    aria-selected={checked}
-                    key={entry.value}
-                    onMouseDown={removeFocusAfterMouseClick}
-                    className={classNames}
-                  >
-                    <Checkbox
-                      checked={checked}
-                      onChange={this.handleOnToggleCheckbox(entry)}
-                      label={<CheckboxLabel>{entry.text}</CheckboxLabel>}
-                      name={name}
-                    />
-                  </CheckboxListItem>
-                ) : (
-                  <ListItem
-                    id={`${baseID}-${index}`}
-                    role="option"
-                    aria-posinset={index + 1}
-                    aria-selected={checked}
-                    key={entry.value}
-                    onMouseDown={removeFocusAfterMouseClick}
-                    className={classNames}
-                    onClick={this.handleOnSelectSingleValue(entry)}
-                    onKeyDown={this.handleOnSelectSingleValue(entry)}
-                    tabIndex={0}
-                  >
-                    <ListItemText id={`e2e-item-${entry.value}`}>
-                      {entry.text}
-                    </ListItemText>
-                  </ListItem>
-                );
-              })}
-          </List>
+                  return multipleSelectionAllowed ? (
+                    <CheckboxListItem
+                      id={`${baseID}-${index}`}
+                      role="option"
+                      aria-posinset={index + 1}
+                      aria-selected={checked}
+                      key={entry.value}
+                      onMouseDown={removeFocusAfterMouseClick}
+                      className={classNames}
+                    >
+                      <Checkbox
+                        checked={checked}
+                        onChange={this.handleOnToggleCheckbox(entry)}
+                        label={<CheckboxLabel>{entry.text}</CheckboxLabel>}
+                        name={name}
+                      />
+                    </CheckboxListItem>
+                  ) : (
+                    <ListItem
+                      id={`${baseID}-${index}`}
+                      role="option"
+                      aria-posinset={index + 1}
+                      aria-selected={checked}
+                      key={entry.value}
+                      onMouseDown={removeFocusAfterMouseClick}
+                      className={classNames}
+                      onClick={this.handleOnSelectSingleValue(entry)}
+                      onKeyDown={this.handleOnSelectSingleValue(entry)}
+                      tabIndex={0}
+                    >
+                      <ListItemText id={`e2e-item-${entry.value}`}>
+                        {entry.text}
+                      </ListItemText>
+                    </ListItem>
+                  );
+                })}
+            </List>
+          </Box>
         }
       />
     );
