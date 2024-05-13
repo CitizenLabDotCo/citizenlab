@@ -797,7 +797,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Tuo skannatut lomakkeet (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Tuo skannatut lomakkeet",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Tuodut tulot",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing": "Tuodaan...",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Tämä syöte tuotiin anonyymisti.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsImported": "{numIdeas} syötteet on tuotu ja vaativat hyväksynnän.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved2": "{numNotApproved} syötteitä ei voitu hyväksyä. Tarkista jokainen syöte vahvistusongelmien varalta ja vahvista yksitellen.",

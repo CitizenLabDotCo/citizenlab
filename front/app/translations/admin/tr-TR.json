@@ -797,7 +797,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Taranmış formları içe aktarma (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Taranmış formları içe aktarma",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "İçe aktarılan girdiler",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing": "İçe aktarılıyor...",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Bu girdi anonim olarak aktarılmıştır.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsImported": "{numIdeas} girdiler ithal edilmiştir ve onay gerektirmektedir.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved2": "{numNotApproved} girdiler onaylanamadı. Lütfen doğrulama sorunları için her bir girdiyi kontrol edin ve ayrı ayrı onaylayın.",

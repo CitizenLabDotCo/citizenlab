@@ -449,7 +449,7 @@ resource 'Projects' do
     get 'web_api/v1/projects/:id/as_xlsx' do
       let(:project) { create(:project) }
       let(:project_form) { create(:custom_form, :with_default_fields, participation_context: project) }
-      let!(:extra_idea_field) { create(:custom_field_extra_custom_form, resource: project_form) }
+      let!(:extra_idea_field) { create(:custom_field, resource: project_form) }
       let(:ideation_phase) do
         create(
           :phase,
