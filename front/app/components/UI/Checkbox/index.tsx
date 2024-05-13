@@ -27,7 +27,7 @@ const IndeterminateIcon = styled(Icon)<{ size: string }>`
   fill: #fff;
 `;
 
-const Wrapper = styled.div<{ disabled: boolean }>`
+const Label = styled.label<{ disabled: boolean }>`
   position: relative;
   flex: 1;
   display: flex;
@@ -109,7 +109,7 @@ export default class Checkbox extends PureComponent<Props> {
 
     if (size && isBoolean(disabled) && isBoolean(indeterminate)) {
       return (
-        <Wrapper
+        <Label
           id={id}
           className={className || ''}
           disabled={disabled}
@@ -138,7 +138,7 @@ export default class Checkbox extends PureComponent<Props> {
             </StyledCheckbox>
           </CheckboxContainer>
           {label}
-        </Wrapper>
+        </Label>
       );
     }
 
