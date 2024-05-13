@@ -6,8 +6,6 @@ import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 
-import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
-
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import messages from 'components/admin/ContentBuilder/Widgets/TextMultiloc/messages';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -18,7 +16,6 @@ export interface Props {
 }
 
 const TextMultiloc = ({ text }: Props) => {
-  const craftComponentDefaultPadding = useReportDefaultPadding();
   const localize = useLocalize();
 
   const value = localize(text);
@@ -29,7 +26,6 @@ const TextMultiloc = ({ text }: Props) => {
       minHeight="26px"
       maxWidth="1200px"
       margin="0 auto"
-      px={craftComponentDefaultPadding}
     >
       <QuillEditedContent textColor={colors.textPrimary}>
         <div dangerouslySetInnerHTML={{ __html: value }} />
