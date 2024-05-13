@@ -1132,7 +1132,7 @@
   "app.containers.InitiativesIndexPage.header": "انشر مُقترحك هنا وضعه على جدول أعمال {styledOrgName}",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "{tenantName, select, stirling {استكشف العرائض لـ {styledOrgName}} other { استكشف مُقترحات المواطنين لـ {styledOrgName}}}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "{tenantName, select, stirling {استكشف العرائض} other {استكشف المُقترحات}}",
-  "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards1": "كل المبادرات جارية",
+  "app.containers.InitiativesIndexPage.invisibleTitleProposalsCards": "جميع المقترحات تجري",
   "app.containers.InitiativesIndexPage.learnMoreAboutProposals": "اعرف المزيد حول المُقترحات.",
   "app.containers.InitiativesIndexPage.metaDescription2": "استكشاف ودعم المقترحات التي تم إجراؤها",
   "app.containers.InitiativesIndexPage.metaTitle1": "جميع المقترحات | {orgName}",
