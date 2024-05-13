@@ -9,7 +9,7 @@ module BulkImportIdeas
     end
 
     def to_s
-      "#{key}##{@params.to_json}"
+      "#{key}###{@params[:value]}###{@params[:row]}"
     end
 
     attr_reader :key, :params

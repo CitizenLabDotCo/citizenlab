@@ -4,11 +4,6 @@ import { IBackgroundJobData } from './types';
 import useBackgroundJobs from './useBackgroundJobs';
 import { CLError } from 'typings';
 
-interface JobErrorParams {
-  value?: string;
-  row?: number;
-}
-
 const useTrackBackgroundJobs = ({
   jobs,
   onChange,
@@ -34,20 +29,8 @@ const useTrackBackgroundJobs = ({
   const errors: CLError[] =
     polledJobs?.data && polledJobs.data.length > 0
       ? polledJobs.data.flatMap((job) => {
-          if (!!job.attributes.last_error_message) {
-            const error_string = job.attributes.last_error_message;
-            // When a bulk_import_ error - there will be additional params after a #
-            const splitErrorParams = error_string.split('#');
-            if (splitErrorParams.length > 1) {
-              const params = JSON.parse(splitErrorParams[1]) as JobErrorParams;
-              return {
-                error: splitErrorParams[0],
-                value: params?.value,
-                row: params?.row,
-              };
-            } else {
-              return { error: error_string };
-            }
+          if (!!job.attributes.last_error) {
+            return job.attributes.last_error;
           } else {
             return [];
           }

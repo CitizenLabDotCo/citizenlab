@@ -1,6 +1,7 @@
 import { Keys } from 'utils/cl-react-query/types';
 
 import backgroundJobsKeys from './keys';
+import { CLError } from 'typings';
 
 export type BackgroundJobsKeys = Keys<typeof backgroundJobsKeys>;
 
@@ -15,7 +16,7 @@ export interface IBackgroundJobData {
     job_id: string;
     failed: boolean;
     active: boolean;
-    last_error_message: string | null;
+    last_error: CLError | null;
   };
 }
 
