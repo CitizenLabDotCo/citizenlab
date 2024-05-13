@@ -44,7 +44,7 @@ const ActiveUsers = ({
   }
 
   return (
-    <Box width="100%" height="260px" mt="20px" pb="8px">
+    <Box width="100%" height={layout === 'wide' ? '260px' : undefined} pb="8px">
       <Box
         height="100%"
         display="flex"
@@ -109,15 +109,16 @@ const ActiveUsers = ({
           flexGrow={layout === 'wide' ? 1 : undefined}
           display="flex"
           justifyContent={layout === 'wide' ? 'flex-end' : undefined}
-          w={layout === 'wide' ? undefined : '100%'}
+          height={layout === 'wide' ? undefined : '200px'}
         >
-          <Box pt="8px" width="100%" maxWidth="800px">
+          <Box pt="8px" width="100%" maxWidth="800px" h="100%">
             <Chart
               timeSeries={timeSeries}
               startAtMoment={startAt ? moment(startAt) : null}
               endAtMoment={endAt ? moment(endAt) : null}
               resolution={currentResolution}
               layout={layout}
+              yaxis={layout === 'wide' ? undefined : { orientation: 'right' }}
             />
           </Box>
         </Box>

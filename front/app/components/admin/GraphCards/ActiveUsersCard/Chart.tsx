@@ -4,7 +4,7 @@ import { Dates, Resolution, Layout } from 'components/admin/GraphCards/typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import LineChart from 'components/admin/Graphs/LineChart';
 import { colors } from 'components/admin/Graphs/styling';
-import { Margin } from 'components/admin/Graphs/typings';
+import { Margin, YAxisProps } from 'components/admin/Graphs/typings';
 
 import { useIntl } from 'utils/cl-intl';
 import { toThreeLetterMonth } from 'utils/dateUtils';
@@ -22,6 +22,7 @@ type Props = Dates &
     innerRef?: React.RefObject<any>;
     layout?: Layout;
     margin?: Margin;
+    yaxis?: YAxisProps;
   };
 
 const emptyLineConfig = { strokeWidths: [0] };
@@ -38,6 +39,7 @@ const Chart = ({
   innerRef,
   layout = 'wide',
   margin,
+  yaxis,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -78,6 +80,7 @@ const Chart = ({
       lines={noData ? emptyLineConfig : lineConfig}
       grid={{ vertical: true }}
       xaxis={{ tickFormatter: formatTick }}
+      yaxis={yaxis}
       tooltip={noData ? undefined : renderTooltip(resolution)}
       legend={{
         marginTop: 16,
