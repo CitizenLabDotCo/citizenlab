@@ -812,7 +812,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Importar formulários digitalizados (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Importar formulários digitalizados",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Entradas importadas",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing": "Importando...",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Essa entrada foi importada de forma anônima.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsImported": "{numIdeas} foram importados e precisam de aprovação.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved2": "{numNotApproved} não foi possível aprovar as entradas. Verifique se há problemas de validação em cada entrada e confirme individualmente.",

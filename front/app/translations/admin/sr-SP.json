@@ -812,7 +812,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Import scanned forms (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Import scanned forms",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Увезени улази",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing": "Importing...",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "This input was imported anonymously.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsImported": "{numIdeas} inputs have been imported and require approval.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved2": "{numNotApproved} inputs could not be approved. Please check each input for validation issues and confirm individually.",
