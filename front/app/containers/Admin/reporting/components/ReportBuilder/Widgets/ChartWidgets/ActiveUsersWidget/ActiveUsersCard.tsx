@@ -43,6 +43,8 @@ const ActiveUsers = ({
     return <NoData message={chartWidgetMessages.noData} />;
   }
 
+  const previousDays = moment(endAt).diff(moment(startAt), 'days');
+
   return (
     <Box width="100%" height={layout === 'wide' ? '260px' : undefined} pb="8px">
       <Box
@@ -72,7 +74,7 @@ const ActiveUsers = ({
               {stats.activeUsers.delta !== undefined && (
                 <StatisticBottomLabel
                   bottomLabel={formatMessage(messages.comparedToPreviousXDays, {
-                    days: moment(endAt).diff(moment(startAt), 'days'),
+                    days: previousDays,
                   })}
                 />
               )}
@@ -97,7 +99,7 @@ const ActiveUsers = ({
               {stats.activeUsers.delta !== undefined && (
                 <StatisticBottomLabel
                   bottomLabel={formatMessage(messages.comparedToPreviousXDays, {
-                    days: moment(endAt).diff(moment(startAt), 'days'),
+                    days: previousDays,
                   })}
                 />
               )}
