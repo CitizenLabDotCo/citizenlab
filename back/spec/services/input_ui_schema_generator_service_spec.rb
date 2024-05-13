@@ -65,6 +65,7 @@ RSpec.describe InputUiSchemaGeneratorService do
         end
 
         it 'returns the schema for the given fields' do
+          byebug
           expect(ui_schema.keys).to match_array %w[en fr-FR nl-NL]
           # en
           expect(ui_schema['en']).to eq(
@@ -1094,16 +1095,18 @@ RSpec.describe InputUiSchemaGeneratorService do
     end
 
     context 'for author_id built-in field' do
-      let(:code) { 'author_id' }
+      # let(:code) { 'author_id' }
+      # let(:title_multiloc) { MultilocService.new.i18n_to_multiloc('custom_fields.ideas.author_id.title', locales: CL2_SUPPORTED_LOCALES) }
+      let(:field) { JsonFormsService::AUTHOR_FIELD }
 
       it 'returns the schema for the author_id field with isAdminField set to true' do
         expect(generator.visit_text(field)).to eq({
           type: 'Control',
-          scope: "#/properties/#{field_key}",
-          label: 'Text field title',
+          scope: "#/properties/author_id",
+          label: 'Author',
           options: {
             input_type: field.input_type,
-            description: 'Text field description',
+            description: '',
             transform: 'trim_on_blur',
             isAdminField: true,
             hasRule: false
@@ -1146,17 +1149,17 @@ RSpec.describe InputUiSchemaGeneratorService do
       )
     end
 
-    context 'for author_id built-in field' do
-      let(:code) { 'budget' }
+    context 'for budget built-in field' do
+      let(:field) { JsonFormsService::BUDGET_FIELD }
 
       it 'returns the schema for the budget field with isAdminField set to true' do
         expect(generator.visit_number(field)).to eq({
           type: 'Control',
-          scope: "#/properties/#{field_key}",
-          label: 'Number field title',
+          scope: "#/properties/budget",
+          label: 'Budget',
           options: {
-            input_type: field.input_type,
-            description: 'Number field description',
+            input_type: 'number',
+            description: '',
             isAdminField: true,
             hasRule: false
           }
