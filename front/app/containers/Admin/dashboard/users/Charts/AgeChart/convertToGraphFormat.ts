@@ -1,6 +1,6 @@
 import { FormatMessage } from 'typings';
 
-import { UsersByAgeResponse } from 'api/graph_data_units/responseTypes';
+import { UsersByAgeResponse } from 'api/graph_data_units/responseTypes/_deprecated';
 
 import messages from 'containers/Admin/dashboard/messages';
 
