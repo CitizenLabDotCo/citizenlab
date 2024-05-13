@@ -1132,7 +1132,7 @@
   "app.containers.InitiativesIndexPage.header": "Publiqueu la vostra proposta aquí i col·loqueu-la a l'agenda de {styledOrgName}",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Exploreu propostes per a {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Descobriu propostes",
-  "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards1": "Totes les iniciatives que es fan",
+  "app.containers.InitiativesIndexPage.invisibleTitleProposalsCards": "Totes les propostes que es fan",
   "app.containers.InitiativesIndexPage.learnMoreAboutProposals": "Obteniu més informació sobre com funcionen les propostes.",
   "app.containers.InitiativesIndexPage.metaDescription2": "Explorar i donar suport a les propostes realitzades",
   "app.containers.InitiativesIndexPage.metaTitle1": "Totes les propostes | {orgName}",
