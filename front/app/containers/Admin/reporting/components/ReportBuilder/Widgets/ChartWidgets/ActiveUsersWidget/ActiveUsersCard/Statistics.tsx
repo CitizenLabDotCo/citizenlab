@@ -10,10 +10,9 @@ import StatisticName from 'components/admin/Graphs/Statistic/StatisticName';
 
 import { useIntl } from 'utils/cl-intl';
 
-import chartWidgetMessages from '../messages';
-
-import messages from './messages';
-import { parseStats } from './useActiveUsers/parse';
+import chartWidgetMessages from '../../messages';
+import messages from '../messages';
+import { parseStats } from '../useActiveUsers/parse';
 
 interface Props extends DatesStrings {
   stats: ReturnType<typeof parseStats>;
