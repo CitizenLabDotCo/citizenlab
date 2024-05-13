@@ -47,6 +47,18 @@ const UpdatedOnMessage = ({ updatedAt }) => {
   );
 };
 
+const UserAvatar = ({ userData }) => (
+  <Tippy
+    content={`${userData.attributes.first_name} ${userData.attributes.last_name}`}
+    placement="bottom"
+    delay={500}
+  >
+    <Box>
+      <Avatar userId={userData.id} size={20} isLinkToProfile />
+    </Box>
+  </Tippy>
+);
+
 const EditedText = ({ createdAt, updatedAt, userId }: Props) => {
   const { data: user } = useUserById(userId);
   const createdOn = moment(createdAt).format('DD/MM/YYYY');
@@ -54,7 +66,7 @@ const EditedText = ({ createdAt, updatedAt, userId }: Props) => {
   return (
     <Box display="flex" alignItems="center">
       <T>{`${createdOn} • `}</T>
-      {userId && user && <Avatar userId={userId} size={20} isLinkToProfile />}
+      {userId && user && <UserAvatar userData={user.data} />}
       <UpdatedOnMessage updatedAt={updatedAt} />
     </Box>
   );
