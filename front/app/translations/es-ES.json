@@ -1132,7 +1132,7 @@
   "app.containers.InitiativesIndexPage.header": "Sube aquí tu propuesta e instálala en la agenda de {styledOrgName}",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Explorar las propuestas de los ciudadanos para {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Descubra las propuestas",
-  "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards1": "Todas las iniciativas en curso",
+  "app.containers.InitiativesIndexPage.invisibleTitleProposalsCards": "Todas las propuestas que tienen lugar",
   "app.containers.InitiativesIndexPage.learnMoreAboutProposals": "Conoce más sobre cómo funcionan las propuestas.",
   "app.containers.InitiativesIndexPage.metaDescription2": "Explorar y apoyar las propuestas realizadas",
   "app.containers.InitiativesIndexPage.metaTitle1": "Todas las propuestas • {orgName}",
