@@ -52,7 +52,7 @@ class IdeaCommentPolicy < ApplicationPolicy
   private
 
   def check_commenting_allowed(comment, user)
-    pcs = Permissions::PermissionsService.new
-    !pcs.denied_reason_for_idea comment.post, user, 'commenting_idea'
+    pcs = Permissions::BasePermissionsService.new
+    !pcs.denied_reason_for_idea 'commenting_idea', user, comment.post
   end
 end

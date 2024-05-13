@@ -3,7 +3,7 @@
 module Verification
   module Patches
     module Permissions
-      module RegistrationRequirementsService
+      module UserRequirementsService
         private
 
         def base_requirements(permission)

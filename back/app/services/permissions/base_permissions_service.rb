@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Permissions
-  class PermissionsService
+  class BasePermissionsService
     USER_DENIED_REASONS = {
       not_signed_in: 'not_signed_in',
       not_active: 'not_active',
@@ -63,22 +63,22 @@ module Permissions
     end
 
     # NOTE: Where phase is nil, the check is for global permissions (ie initiatives)
-    def denied_reason_for_user(user, action, phase = nil)
+    def denied_reason_for_action(action, user, phase = nil)
       permission = find_permission(action, phase)
       user_denied_reason(permission, user)
     end
 
-    def denied_reason_for_project(project, user, action, reaction_mode: nil)
+    def denied_reason_for_project(action, user, project, reaction_mode: nil)
       project_visible_reason = project_visible_disabled_reason(project, user)
       if project_visible_reason
         project_visible_reason
       else
         phase = @timeline_service.current_phase_not_archived project
-        denied_reason_for_phase phase, user, action, reaction_mode: reaction_mode
+        denied_reason_for_phase action, user, phase, reaction_mode: reaction_mode
       end
     end
 
-    def denied_reason_for_phase(phase, user, action, reaction_mode: nil)
+    def denied_reason_for_phase(action, user, phase, reaction_mode: nil)
       return PROJECT_DENIED_REASONS[:project_inactive] unless phase
 
       phase_denied_reason = case action
@@ -101,11 +101,11 @@ module Permissions
       end
       return phase_denied_reason if phase_denied_reason
 
-      denied_reason_for_user(user, action, phase)
+      denied_reason_for_action(action, user, phase)
     end
 
-    def denied_reason_for_idea(idea, user, action, reaction_mode: nil)
-      reason = denied_reason_for_project idea.project, user, action, reaction_mode: reaction_mode
+    def denied_reason_for_idea(action, user, idea, reaction_mode: nil)
+      reason = denied_reason_for_project action, user, idea.project, reaction_mode: reaction_mode
       return reason if reason
 
       current_phase = @timeline_service.current_phase_not_archived idea.project
@@ -114,16 +114,16 @@ module Permissions
       end
     end
 
-    def denied_reason_for_idea_reaction(reaction, user, reaction_mode: nil)
+    def denied_reason_for_idea_reaction(user, reaction, reaction_mode: nil)
       reaction_mode ||= reaction.mode
       idea = reaction.reactable
-      denied_reason_for_idea(idea, user, 'reacting_idea', reaction_mode: reaction_mode)
+      denied_reason_for_idea('reacting_idea', user, idea, reaction_mode: reaction_mode)
     end
 
     # Future enabled phases
-    def future_enabled_phase(project, user, action, reaction_mode: nil)
+    def future_enabled_phase(action, user, project, reaction_mode: nil)
       time = Time.zone.now
-      @timeline_service.future_phases(project, time).find { |phase| !denied_reason_for_phase(phase, user, action, reaction_mode: reaction_mode) }
+      @timeline_service.future_phases(project, time).find { |phase| !denied_reason_for_phase(action, user, phase, reaction_mode: reaction_mode) }
     end
 
     private
@@ -269,4 +269,4 @@ module Permissions
   end
 end
 
-Permissions::PermissionsService.prepend(Verification::Patches::Permissions::PermissionsService)
+Permissions::BasePermissionsService.prepend(Verification::Patches::Permissions::BasePermissionsService)

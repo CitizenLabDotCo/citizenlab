@@ -32,7 +32,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :action_descriptor do |object, params|
-    @project_permissions_service ||= Permissions::PermissionsService.new
+    @project_permissions_service ||= Permissions::BasePermissionsService.new
     Permissions::ActionDescriptorsService.new.project_action_descriptors object, current_user(params)
   end
 

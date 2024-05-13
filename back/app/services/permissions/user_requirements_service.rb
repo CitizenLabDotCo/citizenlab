@@ -121,4 +121,4 @@ class Permissions::UserRequirementsService
   end
 end
 
-Permissions::UserRequirementsService.prepend(Verification::Patches::Permissions::RegistrationRequirementsService)
+Permissions::UserRequirementsService.prepend(Verification::Patches::Permissions::UserRequirementsService)
