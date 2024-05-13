@@ -26,6 +26,7 @@ module ReportBuilder
       return unless klass
 
       kwargs = props.to_h.transform_keys(&:snakecase).symbolize_keys
+      puts kwargs
       klass.new(@current_user).run_query(**kwargs)
     end
   end

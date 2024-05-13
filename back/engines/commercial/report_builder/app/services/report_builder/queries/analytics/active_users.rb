@@ -65,6 +65,11 @@ module ReportBuilder
         active_visitor_users_whole_period_query
       ]
 
+      puts "start_at: #{start_at}"
+      puts "end_at: #{end_at}"
+      puts "compare_start_at: #{compare_start_at}"
+      puts "compare_end_at: #{compare_end_at}"
+
       if compare_start_at.present? && compare_end_at.present?
         active_users_compared_period_query = {
           fact: 'participation',
