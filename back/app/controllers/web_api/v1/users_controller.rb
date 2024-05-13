@@ -301,6 +301,6 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def params_service
-    @params_service ||= CustomFieldsParamsService.new
+    @params_service ||= CustomFieldParamsService.new
   end
 end

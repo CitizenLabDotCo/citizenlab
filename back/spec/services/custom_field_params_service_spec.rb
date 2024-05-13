@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe CustomFieldsParamsService do
+describe CustomFieldParamsService do
   let(:service) { described_class.new }
   let(:fields) do
     [

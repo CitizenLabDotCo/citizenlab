@@ -119,7 +119,7 @@ class UserPolicy < ApplicationPolicy
   private
 
   def allowed_custom_field_keys
-    CustomFieldsParamsService.new.custom_field_values_params allowed_custom_fields
+    CustomFieldParamsService.new.custom_field_values_params allowed_custom_fields
   end
 
   def allowed_custom_fields

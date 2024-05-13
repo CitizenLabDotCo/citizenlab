@@ -72,7 +72,7 @@ module AdminApi
 
     def allowed_custom_field_keys
       enabled_fields = CustomField.registration.enabled
-      CustomFieldsParamsService.new.custom_field_values_params(enabled_fields)
+      CustomFieldParamsService.new.custom_field_values_params(enabled_fields)
     end
 
     def user_params

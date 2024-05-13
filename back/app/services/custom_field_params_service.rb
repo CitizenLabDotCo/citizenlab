@@ -1,4 +1,4 @@
-class CustomFieldsParamsService
+class CustomFieldParamsService
   def custom_field_values_params(allowed_fields)
     fields_with_simple_keys = []
     fields_with_array_keys = {}

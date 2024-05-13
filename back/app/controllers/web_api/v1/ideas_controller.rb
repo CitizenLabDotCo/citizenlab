@@ -295,7 +295,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def params_service
-    @params_service ||= CustomFieldsParamsService.new
+    @params_service ||= CustomFieldParamsService.new
   end
 
   def idea_params(custom_form, user_can_moderate_project)
