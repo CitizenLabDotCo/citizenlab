@@ -1132,7 +1132,7 @@
   "app.containers.InitiativesIndexPage.header": "Objavite svoj prijedlog i stavite ga na dnevni red {styledOrgName}",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Istražite prijedloge koje su građani uputili organizaciji {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Otkrijte prijedloge",
-  "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards1": "Sve inicijative koje se odvijaju",
+  "app.containers.InitiativesIndexPage.invisibleTitleProposalsCards": "Svi prijedlozi se odvijaju",
   "app.containers.InitiativesIndexPage.learnMoreAboutProposals": "Saznajte kako funkcioniraju prijedlozi.",
   "app.containers.InitiativesIndexPage.metaDescription2": "Istražite i poduprite provedene prijedloge",
   "app.containers.InitiativesIndexPage.metaTitle1": "Svi prijedlozi | {orgName}",
