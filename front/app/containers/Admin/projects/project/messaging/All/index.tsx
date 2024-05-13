@@ -7,8 +7,9 @@ import {
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
 
-import useCampaigns from 'api/campaigns/useCampaigns';
+import useProjectCampaigns from 'api/campaigns/useProjectCampaigns';
 import { isDraft } from 'api/campaigns/util';
 
 import DraftCampaignRow from 'components/admin/Email/DraftCampaignRow';
@@ -20,14 +21,15 @@ import { List } from 'components/admin/ResourceList';
 import { FormattedMessage } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
-import messages from '../../messages';
+import messages from '../messages';
 
 import NewCampaignButton from './NewCampaignButton';
 
 const CustomEmails = () => {
+  const { projectId } = useParams() as { projectId: string };
   const [currentPage, setCurrentPage] = useState(1);
-  const { data: campaigns, fetchNextPage } = useCampaigns({
-    campaignNames: ['manual', 'manual_project_participants'],
+  const { data: campaigns, fetchNextPage } = useProjectCampaigns({
+    projectId,
     pageSize: 10,
   });
 
@@ -44,27 +46,34 @@ const CustomEmails = () => {
 
   if (campaignsList.data.length === 0) {
     return (
-      <Box background={colors.white} p="40px">
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          padding="80px 0 100px"
-        >
-          <Icon name="email-2" width="80px" height="80px" />
-          <Title fontSize="xl" fontWeight="bold" marginBottom="10px">
-            <FormattedMessage {...messages.noCampaignsHeader} />
-          </Title>
-          <Text color="textSecondary" mb="30px" maxWidth="450px">
-            <FormattedMessage {...messages.noCampaignsDescription} />
-          </Text>
-          <NewCampaignButton />
+      <Box p="44px">
+        <Box background={colors.white} p="40px">
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            padding="80px 0 100px"
+          >
+            <Icon name="email-2" width="80px" height="80px" />
+            <Title
+              fontSize="xl"
+              fontWeight="bold"
+              marginBottom="10px"
+              color="primary"
+            >
+              <FormattedMessage {...messages.noCampaignsHeader} />
+            </Title>
+            <Text color="textSecondary" mb="30px" maxWidth="450px">
+              <FormattedMessage {...messages.noCampaignsDescription} />
+            </Text>
+            <NewCampaignButton />
+          </Box>
         </Box>
       </Box>
     );
   } else {
     return (
-      <>
+      <Box p="44px">
         <Box
           mb="28px"
           display="flex"
@@ -92,13 +101,13 @@ const CustomEmails = () => {
                 <DraftCampaignRow
                   key={campaign.id}
                   campaign={campaign}
-                  context="global"
+                  context="project"
                 />
               ) : (
                 <SentCampaignRow
                   key={campaign.id}
                   campaign={campaign}
-                  context="global"
+                  context="project"
                 />
               )
             )}
@@ -113,7 +122,7 @@ const CustomEmails = () => {
             </Box>
           )}
         </Box>
-      </>
+      </Box>
     );
   }
 };

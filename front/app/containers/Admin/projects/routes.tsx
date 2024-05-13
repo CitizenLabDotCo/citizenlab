@@ -19,6 +19,10 @@ const SurveyFormBuilder = lazy(
 );
 const ProjectParticipation = lazy(() => import('./project/participation'));
 const ProjectTraffic = lazy(() => import('./project/traffic'));
+const ProjectMessaging = lazy(() => import('./project/messaging/All'));
+const ProjectMessagingNew = lazy(() => import('./project/messaging/New'));
+const ProjectMessagingEdit = lazy(() => import('./project/messaging/Edit'));
+const ProjectMessagingShow = lazy(() => import('./project/messaging/Show'));
 const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));
 const AdminProjectNew = lazy(() => import('./new'));
@@ -73,6 +77,10 @@ export enum projectsRoutes {
   projectTraffic = 'traffic',
   projectParticipation = 'participation',
   projectSettingsDescription = 'description',
+  projectMessaging = 'messaging',
+  projectMessagingNew = 'messaging/new',
+  projectMessagingEdit = 'messaging/:campaignId/edit',
+  projectMessagingShow = 'messaging/:campaignId',
   projectEvents = 'events',
   projectEventsNew = 'events/new',
   projectEventsId = 'events/:id',
@@ -112,6 +120,10 @@ export type projectsRouteTypes =
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectEvents}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectSettingsDescription}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectEvents}/${string}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectMessaging}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectMessagingNew}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectMessagingEdit}`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectMessagingShow}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectSettingsTags}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases`>
@@ -253,6 +265,46 @@ const createAdminProjectsRoutes = () => {
           {
             path: '',
             element: <Navigate to="phases/setup" replace />,
+          },
+          {
+            path: projectsRoutes.projectTraffic,
+            element: (
+              <PageLoading>
+                <ProjectTraffic />
+              </PageLoading>
+            ),
+          },
+          {
+            path: projectsRoutes.projectMessaging,
+            element: (
+              <PageLoading>
+                <ProjectMessaging />
+              </PageLoading>
+            ),
+          },
+          {
+            path: projectsRoutes.projectMessagingNew,
+            element: (
+              <PageLoading>
+                <ProjectMessagingNew />
+              </PageLoading>
+            ),
+          },
+          {
+            path: projectsRoutes.projectMessagingEdit,
+            element: (
+              <PageLoading>
+                <ProjectMessagingEdit />
+              </PageLoading>
+            ),
+          },
+          {
+            path: projectsRoutes.projectMessagingShow,
+            element: (
+              <PageLoading>
+                <ProjectMessagingShow />
+              </PageLoading>
+            ),
           },
           {
             path: projectsRoutes.projectTraffic,

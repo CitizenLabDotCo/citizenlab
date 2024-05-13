@@ -5,16 +5,15 @@ import styled from 'styled-components';
 
 import useCampaignDeliveries from 'api/campaign_deliveries/useCampaignDeliveries';
 
+import CampaignStats from 'components/admin/Email/CampaignStats';
+import PreviewFrame from 'components/admin/Email/PreviewFrame';
+import RecipientsTable from 'components/admin/Email/RecipientsTable';
 import PageWrapper from 'components/admin/PageWrapper';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
-import messages from '../../messages';
-
-import CampaignStats from './CampaignStats';
-import PreviewFrame from './PreviewFrame';
-import RecipientsTable from './RecipientsTable';
+import messages from './messages';
 
 const PaddedCampaignStats = styled(CampaignStats)`
   padding-bottom: 20px;

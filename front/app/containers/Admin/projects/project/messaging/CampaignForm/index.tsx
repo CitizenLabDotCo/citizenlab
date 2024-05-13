@@ -9,16 +9,14 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
+import Tippy from '@tippyjs/react';
 import { useForm, FormProvider } from 'react-hook-form';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
-import { string, object, array } from 'yup';
+import { string, object } from 'yup';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { IGroupData } from 'api/groups/types';
-import useGroups from 'api/groups/useGroups';
 import useAuthUser from 'api/me/useAuthUser';
-import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -26,17 +24,18 @@ import { Section, SectionField, SectionTitle } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
 import Input from 'components/HookForm/Input';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import MultipleSelect from 'components/HookForm/MultipleSelect';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Select from 'components/HookForm/Select';
+import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { isAdmin } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
-import messages from '../../messages';
+import messages from '../messages';
 
 const StyledSection = styled(Section)`
   margin-bottom: 2.5rem;
@@ -63,28 +62,24 @@ export interface FormValues {
   reply_to: string;
   subject_multiloc: Multiloc;
   body_multiloc: Multiloc;
-  group_ids?: string[];
 }
 
 type CampaignFormProps = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: Partial<FormValues>;
   isLoading: boolean;
-  campaignContextId?: string;
 };
 
 const CampaignForm = ({
   onSubmit,
   defaultValues,
   isLoading,
-  campaignContextId,
 }: CampaignFormProps) => {
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
-  const { data: groups } = useGroups({});
   const { data: appConfig } = useAppConfiguration();
-  const { data: project } = useProjectById(campaignContextId);
   const localize = useLocalize();
+
   const schema = object({
     sender: string()
       .oneOf(['author', 'organization'])
@@ -98,7 +93,6 @@ const CampaignForm = ({
     body_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.fieldBodyError)
     ),
-    group_ids: array(),
   });
 
   const methods = useForm({
@@ -134,13 +128,6 @@ const CampaignForm = ({
     ];
   };
 
-  const groupsOptions = (groups: IGroupData[]) => {
-    return groups.map((group) => ({
-      label: localize(group.attributes.title_multiloc),
-      value: group.id,
-    }));
-  };
-
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>
@@ -168,39 +155,57 @@ const CampaignForm = ({
             />
           </StyledSectionField>
 
-          {campaignContextId && project && (
-            <>
-              <Label>
-                <FormattedMessage {...messages.fieldTo} />
-              </Label>
-              <Text fontSize="l">
-                <FormattedMessage {...messages.allParticipantsInProject} />{' '}
-                <Link to={`/admin/projects/${project.data.id}`} target="_blank">
-                  {localize(project?.data.attributes.title_multiloc)}
-                </Link>
-              </Text>
-            </>
-          )}
+          <StyledSectionField>
+            <Label>
+              <FormattedMessage {...messages.fieldTo} />
+            </Label>
 
-          {!campaignContextId && (
-            <StyledSectionField>
-              <MultipleSelect
-                name="group_ids"
-                placeholder={<FormattedMessage {...messages.allUsers} />}
-                options={groupsOptions(groups?.data || [])}
-                label={
-                  <>
-                    <FormattedMessage {...messages.fieldTo} />
-                    <IconTooltip
+            <Text m="0px 0px 8px 0px" fontSize="l">
+              <FormattedMessage
+                {...messages.allParticipants}
+                values={{
+                  participants: (
+                    <Tippy
+                      maxWidth={280}
                       content={
-                        <FormattedMessage {...messages.fieldToTooltip} />
+                        <FormattedMessage
+                          {...messages.allParticipantsTooltip}
+                        />
                       }
-                    />
-                  </>
-                }
+                    >
+                      <Box w="fit-content" display="inline">
+                        <Text
+                          as="span"
+                          m="0px"
+                          textDecoration="underline"
+                          fontSize="l"
+                        >
+                          <FormattedMessage {...messages.participants} />
+                        </Text>
+                      </Box>
+                    </Tippy>
+                  ),
+                }}
               />
-            </StyledSectionField>
-          )}
+            </Text>
+
+            <Warning>
+              {isAdmin(authUser) ? (
+                <FormattedMessage
+                  {...messages.infoboxAdmin}
+                  values={{
+                    link: (
+                      <Link to="/admin/messaging/emails/custom">
+                        <FormattedMessage {...messages.infoboxLink} />
+                      </Link>
+                    ),
+                  }}
+                />
+              ) : (
+                <FormattedMessage {...messages.infoboxModerator} />
+              )}
+            </Warning>
+          </StyledSectionField>
 
           <StyledSectionField>
             <Input
