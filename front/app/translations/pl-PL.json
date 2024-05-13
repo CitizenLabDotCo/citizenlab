@@ -1132,7 +1132,7 @@
   "app.containers.InitiativesIndexPage.header": "Opublikuj swoją propozycję tutaj i umieść ją w porządku dziennym {styledOrgName}",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Zapoznaj się z propozycjami {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Zapoznaj się z propozycjami",
-  "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards1": "Wszystkie podejmowane inicjatywy",
+  "app.containers.InitiativesIndexPage.invisibleTitleProposalsCards": "Wszystkie propozycje mają miejsce",
   "app.containers.InitiativesIndexPage.learnMoreAboutProposals": "Dowiedz się więcej o tym, jak działają propozycje.",
   "app.containers.InitiativesIndexPage.metaDescription2": "Zbadaj i wspieraj prowadzone propozycje",
   "app.containers.InitiativesIndexPage.metaTitle1": "Wszystkie propozycje | {orgName}",
