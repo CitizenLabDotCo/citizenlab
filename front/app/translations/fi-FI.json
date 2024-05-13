@@ -1132,7 +1132,7 @@
   "app.containers.InitiativesIndexPage.header": "Lähetä ehdotuksesi tähän ja laita se {styledOrgName}esityslistalle",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Tutustu ehdotuksiin kohteelle {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Tutustu ehdotuksiin",
-  "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards1": "Kaikki aloitteet käynnissä",
+  "app.containers.InitiativesIndexPage.invisibleTitleProposalsCards": "Kaikki ehdotukset meneillään",
   "app.containers.InitiativesIndexPage.learnMoreAboutProposals": "Lue lisää ehdotusten toiminnasta.",
   "app.containers.InitiativesIndexPage.metaDescription2": "Tutustu tehtyihin ehdotuksiin ja tue niitä",
   "app.containers.InitiativesIndexPage.metaTitle1": "Kaikki ehdotukset | {orgName}",
