@@ -9,6 +9,7 @@ import {
   Toggle,
 } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
+import Tippy from '@tippyjs/react';
 
 import { getComparedTimeRange } from 'components/admin/GraphCards/_utils/query';
 import activeUsersMessages from 'components/admin/GraphCards/ActiveUsersCard/messages';
@@ -34,6 +35,7 @@ const ChartWidgetSettings = () => {
     compareEndAt: node.data.props.compareEndAt,
   }));
 
+  const noTimePeriodSelected = !startAt || !endAt;
   const comparePreviousPeriod = !!compareStartAt && !!compareEndAt;
 
   return (
@@ -62,30 +64,35 @@ const ChartWidgetSettings = () => {
       </Box>
       <TimeSeriesWidgetSettings />
       <Box mb="20px">
-        <Toggle
-          id="e2e-compare-previous-period-toggle"
-          label={formatMessage(messages.showComparisonLastPeriod)}
-          disabled={!startAt || !endAt}
-          checked={comparePreviousPeriod}
-          onChange={() => {
-            setProp((props) => {
-              const noTimePeriodSelected = !startAt || !endAt;
+        <Tippy
+          content={formatMessage(messages.youNeedToSelectADateRange)}
+          disabled={!noTimePeriodSelected}
+          placement="left-start"
+          zIndex={999999}
+        >
+          <div>
+            <Toggle
+              id="e2e-compare-previous-period-toggle"
+              label={formatMessage(messages.showComparisonLastPeriod)}
+              disabled={noTimePeriodSelected}
+              checked={comparePreviousPeriod}
+              onChange={() => {
+                setProp((props) => {
+                  if (noTimePeriodSelected || comparePreviousPeriod) {
+                    props.compareStartAt = undefined;
+                    props.compareEndAt = undefined;
+                    return;
+                  }
 
-              if (noTimePeriodSelected || comparePreviousPeriod) {
-                props.compareStartAt = undefined;
-                props.compareEndAt = undefined;
-                return;
-              }
-
-              const { compare_start_at, compare_end_at } = getComparedTimeRange(
-                startAt,
-                endAt
-              );
-              props.compareStartAt = compare_start_at;
-              props.compareEndAt = compare_end_at;
-            });
-          }}
-        />
+                  const { compare_start_at, compare_end_at } =
+                    getComparedTimeRange(startAt, endAt);
+                  props.compareStartAt = compare_start_at;
+                  props.compareEndAt = compare_end_at;
+                });
+              }}
+            />
+          </div>
+        </Tippy>
       </Box>
     </Box>
   );

@@ -13,4 +13,8 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.participationRate',
     defaultMessage: 'Participation rate',
   },
+  youNeedToSelectADateRange: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.youNeedToSelectADateRange',
+    defaultMessage: 'You need to select a date range first.',
+  },
 });
