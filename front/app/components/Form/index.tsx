@@ -157,14 +157,24 @@ const Form = memo(
     useObserveEvent(submitOnEvent, handleSubmit);
 
     return (
+      /*
+        This form should contain as few styles as possible!
+        Customization should happen in places where this component is imported!
+      */
       <Box
         id={uiSchema?.options?.formId}
         as="form"
         display="flex"
         flexDirection="column"
+        // This is necessary for the form to grow with the content and still be scrollable
+        height="100%"
       >
         <Box
           overflow={layoutType === 'inline' ? 'visible' : 'auto'}
+          /*
+            Grows the content to take full height,
+            so we can center the form content vertically for survey form pages with only 1 field
+          */
           flex="1"
           marginBottom={
             layoutType === 'fullpage' && showSubmitButton ? '32px' : 'auto'

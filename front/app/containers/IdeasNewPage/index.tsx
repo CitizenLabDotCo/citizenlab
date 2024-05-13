@@ -27,7 +27,7 @@ import SurveySubmittedNotice from './components/SurveySubmittedNotice';
 import IdeasNewIdeationForm from './IdeasNewIdeationForm';
 import IdeasNewSurveyForm from './IdeasNewSurveyForm';
 
-const NewIdeaPage = () => {
+const IdeasNewPage = () => {
   const { slug } = useParams();
   const {
     data: project,
@@ -118,4 +118,4 @@ const NewIdeaPage = () => {
   }
 };
 
-export default NewIdeaPage;
+export default IdeasNewPage;
