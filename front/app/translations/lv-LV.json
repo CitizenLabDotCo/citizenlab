@@ -1132,7 +1132,7 @@
   "app.containers.InitiativesIndexPage.header": "Publicējiet šeit savu priekšlikumu un iekļaujiet to {styledOrgName} darba kārtībā",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Izpētīt priekšlikumus {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Atklāt priekšlikumus",
-  "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards1": "Visas uzsāktās iniciatīvas",
+  "app.containers.InitiativesIndexPage.invisibleTitleProposalsCards": "Visi iesniegtie priekšlikumi",
   "app.containers.InitiativesIndexPage.learnMoreAboutProposals": "Uzzināt vairāk par to, kā darbojas priekšlikumi.",
   "app.containers.InitiativesIndexPage.metaDescription2": "Izpētīt un atbalstīt iesniegtos priekšlikumus",
   "app.containers.InitiativesIndexPage.metaTitle1": "Visi priekšlikumi | {orgName}",
