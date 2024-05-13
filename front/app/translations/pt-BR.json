@@ -1132,7 +1132,7 @@
   "app.containers.InitiativesIndexPage.header": "Publique aqui a sua proposta e coloque-a na agenda de {styledOrgName}",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Explore propostas de cidadãos para {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Descobrir propostas",
-  "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards1": "Todas as iniciativas que estão ocorrendo",
+  "app.containers.InitiativesIndexPage.invisibleTitleProposalsCards": "Todas as propostas em andamento",
   "app.containers.InitiativesIndexPage.learnMoreAboutProposals": "Saiba mais sobre como as propostas funcionam.",
   "app.containers.InitiativesIndexPage.metaDescription2": "Explorar e apoiar propostas conduzidas",
   "app.containers.InitiativesIndexPage.metaTitle1": "Todas as propostas | {orgName}",
