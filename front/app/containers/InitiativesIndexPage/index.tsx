@@ -88,7 +88,7 @@ const InitiativeIndexPage = () => {
           <StyledContentContainer maxWidth="100%">
             <Padding />
             <InitiativeCards
-              invisibleTitleMessage={messages.invisibleTitleInitiativeCards1}
+              invisibleTitleMessage={messages.invisibleTitleProposalsCards}
             />
           </StyledContentContainer>
           {proposalSubmissionEnabled && (
