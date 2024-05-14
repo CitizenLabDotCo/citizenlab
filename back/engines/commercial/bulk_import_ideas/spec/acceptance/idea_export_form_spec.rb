@@ -42,7 +42,7 @@ resource 'Idea form exports' do
       context 'in an ideation phase with form fields' do
         let(:project) { create(:project_with_active_ideation_phase) }
         let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
-        let!(:custom_field) { create(:custom_field_extra_custom_form, resource: custom_form) }
+        let!(:custom_field) { create(:custom_field, resource: custom_form) }
 
         context 'PDF download' do
           let(:format) { 'pdf' }
@@ -65,7 +65,7 @@ resource 'Idea form exports' do
       context 'in an active native survey phase with form fields' do
         let(:project) { create(:project_with_active_native_survey_phase) }
         let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
-        let!(:custom_field) { create(:custom_field_extra_custom_form, resource: custom_form) }
+        let!(:custom_field) { create(:custom_field, resource: custom_form) }
 
         context 'PDF download' do
           let(:format) { 'pdf' }

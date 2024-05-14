@@ -58,5 +58,29 @@ describe XlsxService do
       expect(document3[0].count).to eq 2
       expect(document3[0].map { |r| r.cells.map(&:value) }).to eq [%w[col1 col2], ['g', 7]]
     end
+
+    it 'writes dates correctly in split xlsx files' do
+      sheet_rows = [
+        %w[col1 col2],
+        ['a', Date.new(2020, 1, 1)],
+        ['b', Date.new(2020, 2, 2)],
+        ['c', Date.new(2020, 3, 3)]
+      ]
+      # Copied from XlsxService#xlsx_from_rows.
+      # We don't use xlsx_from_rows to save dates as dates.
+      # W/o skip_sanitization, the dates are saved as strings.
+      header, *rows = sheet_rows
+      instances = rows.map { |row| header.zip(row).to_h }
+      columns = header.map do |colname|
+        { header: colname, f: ->(item) { item[colname] }, skip_sanitization: true }
+      end
+      xlsx = service.generate_xlsx('sheet 1', columns, instances)
+
+      multiple_xlsx = service.split_xlsx(xlsx, 2)
+
+      document1 = RubyXL::Parser.parse_buffer(multiple_xlsx[0])
+      expect(document1[0].count).to eq 3
+      expect(document1[0].map { |r| r.cells.map(&:value) }).to eq sheet_rows.first(3)
+    end
   end
 end
