@@ -25,7 +25,7 @@ import {
   contentFadeInDelay,
 } from '../styleConstants';
 
-const Main = styled.main`
+const Container = styled.div`
   width: 100%;
   max-width: ${pageContentMaxWidth}px;
   position: relative;
@@ -68,7 +68,15 @@ interface Props {
   handleContainerRef: (element: HTMLElement | null) => void;
 }
 
-const Container = ({
+{
+  /*
+  On "Container2" naming: I didn't try to come up with a better name because this shouldn't be a separate component.
+  It makes it harder to understand IdeasShow with no benefits.
+  This component needs to be reintegrated into IdeasShow instead, then extract
+  the modal perhaps.
+*/
+}
+const Container2 = ({
   projectId,
   isLoaded,
   className,
@@ -108,9 +116,9 @@ const Container = ({
   return (
     <>
       {!isLoaded && (
-        <Main className={`loading ${className || ''}`}>
+        <Container className={`loading ${className || ''}`}>
           <Spinner />
-        </Main>
+        </Container>
       )}
       <CSSTransition
         classNames="content"
@@ -122,13 +130,14 @@ const Container = ({
         enter={true}
         exit={false}
       >
-        <Main
-          id="e2e-idea-show"
-          className={`loaded ${className || ''}`}
-          ref={handleContainerRef}
-        >
-          {children}
-        </Main>
+        <main id="e2e-idea-show">
+          <Container
+            className={`loaded ${className || ''}`}
+            ref={handleContainerRef}
+          >
+            {children}
+          </Container>
+        </main>
       </CSSTransition>
       <Modal
         opened={!!newIdeaId}
@@ -158,4 +167,4 @@ const Container = ({
   );
 };
 
-export default Container;
+export default Container2;

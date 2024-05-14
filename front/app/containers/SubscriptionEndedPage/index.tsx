@@ -9,7 +9,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
 
-const Container = styled.main`
+const Container = styled.div`
   min-height: calc(
     100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
   );
@@ -41,16 +41,18 @@ const Title = styled.h1`
 `;
 
 const SubscriptionEndedPage = () => (
-  <Container>
-    <ContentContainer>
-      <Title>
-        <FormattedMessage {...messages.accessDenied} />
-      </Title>
-      <div>
-        <FormattedMessage {...messages.subscriptionEnded} />
-      </div>
-    </ContentContainer>
-  </Container>
+  <main>
+    <Container>
+      <ContentContainer>
+        <Title>
+          <FormattedMessage {...messages.accessDenied} />
+        </Title>
+        <div>
+          <FormattedMessage {...messages.subscriptionEnded} />
+        </div>
+      </ContentContainer>
+    </Container>
+  </main>
 );
 
 export default SubscriptionEndedPage;

@@ -15,7 +15,7 @@ import UserHeader from './UserHeader';
 import UserNavbar from './UserNavbar';
 import UsersShowPageMeta from './UsersShowPageMeta';
 
-const Main = styled.main`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -47,13 +47,15 @@ const UsersShowPage = () => {
   return (
     <>
       <UsersShowPageMeta user={user.data} />
-      <Main id="e2e-usersshowpage">
-        <UserHeader userSlug={user.data.attributes.slug} />
-        <UserNavbar user={user.data} />
-        <StyledContentContainer maxWidth={maxPageWidth}>
-          <RouterOutlet />
-        </StyledContentContainer>
-      </Main>
+      <main id="e2e-usersshowpage">
+        <Container>
+          <UserHeader userSlug={user.data.attributes.slug} />
+          <UserNavbar user={user.data} />
+          <StyledContentContainer maxWidth={maxPageWidth}>
+            <RouterOutlet />
+          </StyledContentContainer>
+        </Container>
+      </main>
     </>
   );
 };

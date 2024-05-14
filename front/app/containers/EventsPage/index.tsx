@@ -18,12 +18,8 @@ const EventsPage = () => {
   return (
     <>
       <EventsPageMeta />
-      <>
-        <Box
-          as="main"
-          id="e2e-events-container"
-          pb={isTabletOrSmaller ? '80px' : '160px'}
-        >
+      <main id="e2e-events-container">
+        <Box pb={isTabletOrSmaller ? '80px' : '160px'}>
           <ContentContainer mode="page">
             <Title
               color="tenantPrimary"
@@ -35,7 +31,7 @@ const EventsPage = () => {
             <PastEvents />
           </ContentContainer>
         </Box>
-      </>
+      </main>
     </>
   );
 };

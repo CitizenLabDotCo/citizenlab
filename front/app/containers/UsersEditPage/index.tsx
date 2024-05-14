@@ -21,7 +21,7 @@ import ProfileForm from './ProfileForm';
 import UsersEditPageMeta from './UsersEditPageMeta';
 import VerificationStatus from './VerificationStatus';
 
-const Container = styled.main`
+const Container = styled.div`
   width: 100%;
   background-color: ${colors.background};
   display: flex;
@@ -43,27 +43,29 @@ const UsersEditPage = () => {
   return (
     <>
       <UsersEditPageMeta authUser={authUser} />
-      <Container id="e2e-user-edit-profile-page">
-        <ScreenReaderOnly>
-          <FormattedMessage
-            tagName="h1"
-            {...messages.invisibleTitleUserSettings}
-          />
-        </ScreenReaderOnly>
-        {/*
+      <main>
+        <Container id="e2e-user-edit-profile-page">
+          <ScreenReaderOnly>
+            <FormattedMessage
+              tagName="h1"
+              {...messages.invisibleTitleUserSettings}
+            />
+          </ScreenReaderOnly>
+          {/*
         To have two forms with an equal width,
         the forms need to be wrapped with a div.
         https://stackoverflow.com/questions/34993826/flexbox-column-direction-same-width
       */}
-        <div>
-          <VerificationStatus />
-          <ProfileForm />
-          <FragmentForm />
-          {passwordLoginActive && <LoginCredentials user={authUser.data} />}
-          <ProfileDeletion />
-          <CampaignsConsentForm />
-        </div>
-      </Container>
+          <div>
+            <VerificationStatus />
+            <ProfileForm />
+            <FragmentForm />
+            {passwordLoginActive && <LoginCredentials user={authUser.data} />}
+            <ProfileDeletion />
+            <CampaignsConsentForm />
+          </div>
+        </Container>
+      </main>
     </>
   );
 };

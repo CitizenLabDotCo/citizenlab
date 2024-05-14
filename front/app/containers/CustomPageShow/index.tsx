@@ -113,45 +113,49 @@ const CustomPageShow = () => {
           pageAttributes.title_multiloc
         )} | ${localizedOrgName}`}
       />
-      <Container className={`e2e-page-${slug}`}>
-        {pageAttributes.banner_enabled ? (
-          <Box background="#fff" width="100%">
-            <CustomPageHeader pageData={page.data} />
-          </Box>
-        ) : (
-          <NoBannerContainer>
-            {/* show page text title if the banner is disabled */}
-            <PageTitle>{localize(pageAttributes.title_multiloc)}</PageTitle>
-            <Box zIndex="40000">
-              <AdminCustomPageEditButton pageId={page.data.id} />
+      <main className={`e2e-page-${slug}`}>
+        <Container>
+          {pageAttributes.banner_enabled ? (
+            <Box background="#fff" width="100%">
+              <CustomPageHeader pageData={page.data} />
             </Box>
-          </NoBannerContainer>
-        )}
-        <Content>
-          <Fragment name={`pages/${page.data.id}/content`} />
-          {pageAttributes.top_info_section_enabled && (
-            <InfoSection
-              multilocContent={pageAttributes.top_info_section_multiloc}
-            />
+          ) : (
+            <NoBannerContainer>
+              {/* show page text title if the banner is disabled */}
+              <PageTitle>{localize(pageAttributes.title_multiloc)}</PageTitle>
+              <Box zIndex="40000">
+                <AdminCustomPageEditButton pageId={page.data.id} />
+              </Box>
+            </NoBannerContainer>
           )}
-          {pageAttributes.files_section_enabled &&
-            !isNilOrError(remotePageFiles) &&
-            remotePageFiles.data.length > 0 && (
-              <AttachmentsContainer
-                topInfoSectionEnabled={pageAttributes.top_info_section_enabled}
-              >
-                <FileAttachments files={remotePageFiles.data} />
-              </AttachmentsContainer>
-            )}
-          <CustomPageProjectsAndEvents page={page.data} />
-          {pageAttributes.bottom_info_section_enabled &&
-            pageAttributes.bottom_info_section_multiloc && (
+          <Content>
+            <Fragment name={`pages/${page.data.id}/content`} />
+            {pageAttributes.top_info_section_enabled && (
               <InfoSection
-                multilocContent={pageAttributes.bottom_info_section_multiloc}
+                multilocContent={pageAttributes.top_info_section_multiloc}
               />
             )}
-        </Content>
-      </Container>
+            {pageAttributes.files_section_enabled &&
+              !isNilOrError(remotePageFiles) &&
+              remotePageFiles.data.length > 0 && (
+                <AttachmentsContainer
+                  topInfoSectionEnabled={
+                    pageAttributes.top_info_section_enabled
+                  }
+                >
+                  <FileAttachments files={remotePageFiles.data} />
+                </AttachmentsContainer>
+              )}
+            <CustomPageProjectsAndEvents page={page.data} />
+            {pageAttributes.bottom_info_section_enabled &&
+              pageAttributes.bottom_info_section_multiloc && (
+                <InfoSection
+                  multilocContent={pageAttributes.bottom_info_section_multiloc}
+                />
+              )}
+          </Content>
+        </Container>
+      </main>
     </>
   );
 };
