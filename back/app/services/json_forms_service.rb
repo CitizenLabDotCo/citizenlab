@@ -3,7 +3,7 @@
 # Service to generate a json schema and UI schema for a CustomForm, compatible
 # with jsonforms.io.
 class JsonFormsService
-  AUTHOR_FIELD = CustomField.new(
+  AUTHOR_FIELD = SchemaField.new(CustomField.new(
     key: 'author_id',
     code: 'author_id',
     input_type: 'text',
@@ -11,8 +11,8 @@ class JsonFormsService
     required: false,
     enabled: true,
     answer_visible_to: 'public'
-  )
-  BUDGET_FIELD = CustomField.new(
+  ))
+  BUDGET_FIELD = SchemaField.new(CustomField.new(
     key: 'budget',
     code: 'budget',
     input_type: 'number',
@@ -20,7 +20,7 @@ class JsonFormsService
     required: false,
     enabled: true,
     answer_visible_to: 'public'
-  )
+  ))
 
   def initialize
     @configuration = AppConfiguration.instance
@@ -28,6 +28,7 @@ class JsonFormsService
   end
 
   def user_ui_and_json_multiloc_schemas(fields)
+    fields = fields.map { |field| SchemaField.new field }
     return if fields.empty?
 
     visible_fields = fields.reject do |field|
@@ -41,11 +42,11 @@ class JsonFormsService
     }
   end
 
-  def input_ui_and_json_multiloc_schemas(fields, current_user, input_term)
+  def input_ui_and_json_multiloc_schemas(fields, current_user, input_term, participation_method)
+    fields = fields.map { |field| SchemaField.new field }
     return if fields.empty?
 
-    participation_context = fields.first.resource.participation_context
-    supports_answer_visible_to = Factory.instance.participation_method_for(participation_context).supports_answer_visible_to?
+    supports_answer_visible_to = participation_method.supports_answer_visible_to?
 
     visible_fields = fields.reject do |field|
       !field.enabled? || field.hidden?
@@ -56,15 +57,13 @@ class JsonFormsService
       json_schema_multiloc: json_schema_multiloc,
       ui_schema_multiloc: ui_schema_multiloc
     }.tap do |output|
-      add_author_budget_fields! output, fields, current_user
+      add_author_budget_fields! output, fields, current_user, participation_method
     end
   end
 
   private
 
-  def add_author_budget_fields!(output, fields, current_user)
-    participation_method = Factory.instance.participation_method_for fields.first.resource.participation_context
-
+  def add_author_budget_fields!(output, fields, current_user, participation_method)
     if participation_method.author_in_form? current_user
       add_author_field_to_json_schema_multiloc! output[:json_schema_multiloc]
       add_author_field_to_ui_schema_multiloc! output[:ui_schema_multiloc], fields

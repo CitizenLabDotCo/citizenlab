@@ -712,15 +712,6 @@ RSpec.describe InputUiSchemaGeneratorService do
           expect(ui_schema.dig('en', :options, :inputTerm)).to eq 'contribution'
         end
       end
-
-      # This behaves as expected
-      # context 'for the author and budget fields' do
-      #   let(:fields) { [JsonFormsService::AUTHOR_FIELD, JsonFormsService::BUDGET_FIELD] }
-
-      #   it 'uses the right copy' do
-      #     byebug
-      #   end
-      # end
     end
 
     context 'native survey forms' do
