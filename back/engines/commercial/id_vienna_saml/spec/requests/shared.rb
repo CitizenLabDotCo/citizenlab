@@ -146,7 +146,6 @@ RSpec.shared_examples 'authenticates when the user was already registered with V
             allowed: true,
             enabled: true,
             minimum_length: 8,
-            phone: false,
             enable_signup: true
           }
           configuration.save!
