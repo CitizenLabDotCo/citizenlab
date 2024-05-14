@@ -19,7 +19,8 @@ export default defineMessages({
     defaultMessage: 'Participation rate',
   },
   participationRateTooltip: {
-    id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip',
-    defaultMessage: 'Percentage of all participants compared to all visitors.',
+    id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip2',
+    defaultMessage:
+      'Percentage of all participants compared to all visitors. Only participants and visitors that accepted cookies are counted.',
   },
 });

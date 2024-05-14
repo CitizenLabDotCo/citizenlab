@@ -51,11 +51,10 @@ const calculateParticipationStats = (
   const visitorsPreviousPeriodValue = visitorsPreviousPeriod?.count_visitor_id;
 
   const participationRateRateLastPeriod =
-    visitorsPreviousPeriodValue !== undefined &&
     aactiveVisitorUsersLastPeriodValue !== undefined
       ? calculateConversionRate(
           aactiveVisitorUsersLastPeriodValue,
-          visitorsPreviousPeriodValue
+          visitorsPreviousPeriodValue ?? 0
         )
       : undefined;
 

@@ -3,6 +3,7 @@ import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 
+import dashboardCardMessages from 'components/admin/GraphCards/ActiveUsersCard/messages';
 import { Layout, DatesStrings } from 'components/admin/GraphCards/typings';
 import StatisticBottomLabel from 'components/admin/Graphs/Statistic/StatisticBottomLabel';
 import StatisticDelta from 'components/admin/Graphs/Statistic/StatisticDelta';
@@ -52,10 +53,13 @@ const Statistics = ({ startAt, endAt, stats, layout }: Props) => {
         <StatisticName
           name={formatMessage(messages.participationRate)}
           nameColor="black"
+          tooltipContent={formatMessage(
+            dashboardCardMessages.participationRateTooltip
+          )}
         />
         <Box mt="2px">
           <Text color="textPrimary" fontSize="xl" display="inline">
-            {stats.participationRate.value}
+            {stats.participationRate.value}%
           </Text>
           {stats.participationRate.delta !== undefined && (
             <StatisticDelta
