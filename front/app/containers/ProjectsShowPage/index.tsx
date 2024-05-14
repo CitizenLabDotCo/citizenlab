@@ -6,6 +6,7 @@ import {
   useBreakpoint,
   media,
   colors,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import JSConfetti from 'js-confetti';
 import { isError } from 'lodash-es';
@@ -51,7 +52,7 @@ const Container = styled.div<{ background: string }>`
   flex: 1 0 auto;
   height: 100%;
   min-height: calc(
-    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+    100vh - ${stylingConsts.menuHeight + stylingConsts.footerHeight}px
   );
   display: flex;
   flex-direction: column;
@@ -59,16 +60,7 @@ const Container = styled.div<{ background: string }>`
   background: ${(props) => props.background};
 
   ${media.tablet`
-    min-height: calc(100vh - ${({ theme: { mobileMenuHeight } }) =>
-      mobileMenuHeight}px - ${({ theme: { mobileTopBarHeight } }) =>
-    mobileTopBarHeight}px);
-  `}
-
-  ${media.phone`
-    min-height: calc(100vh - ${({ theme: { mobileMenuHeight } }) =>
-      mobileMenuHeight}px - ${({ theme: { mobileTopBarHeight } }) =>
-    mobileTopBarHeight}px);
-  `}
+    min-height: calc(100vh - ${stylingConsts.mobileMenuHeight}px - ${stylingConsts.mobileTopBarHeight}px);`}
 `;
 
 const ContentWrapper = styled.div`

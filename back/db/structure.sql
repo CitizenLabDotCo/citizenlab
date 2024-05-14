@@ -572,6 +572,7 @@ DROP TABLE IF EXISTS public.email_campaigns_consents;
 DROP TABLE IF EXISTS public.email_campaigns_campaigns_groups;
 DROP TABLE IF EXISTS public.email_campaigns_campaign_email_commands;
 DROP TABLE IF EXISTS public.custom_forms;
+DROP TABLE IF EXISTS public.custom_fields;
 DROP TABLE IF EXISTS public.custom_field_options;
 DROP TABLE IF EXISTS public.custom_field_option_images;
 DROP TABLE IF EXISTS public.cosponsors_initiatives;
@@ -612,9 +613,7 @@ DROP VIEW IF EXISTS public.analytics_fact_email_deliveries;
 DROP TABLE IF EXISTS public.email_campaigns_deliveries;
 DROP TABLE IF EXISTS public.email_campaigns_campaigns;
 DROP VIEW IF EXISTS public.analytics_dimension_users;
-DROP VIEW IF EXISTS public.analytics_dimension_user_custom_field_values;
 DROP TABLE IF EXISTS public.users;
-DROP TABLE IF EXISTS public.custom_fields;
 DROP TABLE IF EXISTS public.analytics_dimension_types;
 DROP VIEW IF EXISTS public.analytics_dimension_statuses;
 DROP TABLE IF EXISTS public.initiative_statuses;
@@ -1281,37 +1280,6 @@ CREATE TABLE public.analytics_dimension_types (
 
 
 --
--- Name: custom_fields; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.custom_fields (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    resource_type character varying,
-    key character varying,
-    input_type character varying,
-    title_multiloc jsonb DEFAULT '{}'::jsonb,
-    description_multiloc jsonb DEFAULT '{}'::jsonb,
-    required boolean DEFAULT false,
-    ordering integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    enabled boolean DEFAULT true NOT NULL,
-    code character varying,
-    resource_id uuid,
-    hidden boolean DEFAULT false NOT NULL,
-    maximum integer,
-    minimum_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    maximum_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    logic jsonb DEFAULT '{}'::jsonb NOT NULL,
-    answer_visible_to character varying,
-    select_count_enabled boolean DEFAULT false NOT NULL,
-    maximum_select_count integer,
-    minimum_select_count integer,
-    random_option_ordering boolean DEFAULT false NOT NULL
-);
-
-
---
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1345,24 +1313,9 @@ CREATE TABLE public.users (
     new_email character varying,
     followings_count integer DEFAULT 0 NOT NULL,
     onboarding jsonb DEFAULT '{}'::jsonb NOT NULL,
-    unique_code character varying
+    unique_code character varying,
+    last_active_at timestamp(6) without time zone
 );
-
-
---
--- Name: analytics_dimension_user_custom_field_values; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.analytics_dimension_user_custom_field_values AS
- SELECT DISTINCT u.id AS dimension_user_id,
-    cf.key,
-    cf.value
-   FROM ((public.users u
-     LEFT JOIN LATERAL ( SELECT custom_fields.key,
-            (u.custom_field_values ->> (custom_fields.key)::text) AS value
-           FROM public.custom_fields
-          WHERE ((custom_fields.resource_type)::text = 'User'::text)) cf ON (true))
-     LEFT JOIN LATERAL ( SELECT jsonb_object_keys(u.custom_field_values) AS key) cfv ON (true));
 
 
 --
@@ -2210,6 +2163,37 @@ CREATE TABLE public.custom_field_options (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     other boolean DEFAULT false NOT NULL
+);
+
+
+--
+-- Name: custom_fields; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.custom_fields (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    resource_type character varying,
+    key character varying,
+    input_type character varying,
+    title_multiloc jsonb DEFAULT '{}'::jsonb,
+    description_multiloc jsonb DEFAULT '{}'::jsonb,
+    required boolean DEFAULT false,
+    ordering integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    enabled boolean DEFAULT true NOT NULL,
+    code character varying,
+    resource_id uuid,
+    hidden boolean DEFAULT false NOT NULL,
+    maximum integer,
+    minimum_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    maximum_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    logic jsonb DEFAULT '{}'::jsonb NOT NULL,
+    answer_visible_to character varying,
+    select_count_enabled boolean DEFAULT false NOT NULL,
+    maximum_select_count integer,
+    minimum_select_count integer,
+    random_option_ordering boolean DEFAULT false NOT NULL
 );
 
 
@@ -5860,7 +5844,7 @@ CREATE INDEX index_report_builder_reports_on_owner_id ON public.report_builder_r
 -- Name: index_report_builder_reports_on_phase_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_report_builder_reports_on_phase_id ON public.report_builder_reports USING btree (phase_id);
+CREATE UNIQUE INDEX index_report_builder_reports_on_phase_id ON public.report_builder_reports USING btree (phase_id);
 
 
 --
@@ -7507,6 +7491,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240409150000'),
 ('20240417064819'),
 ('20240417150820'),
-('20240419100508');
+('20240418081854'),
+('20240419100508'),
+('20240504212048'),
+('20240508124400'),
+('20240508133950');
 
 

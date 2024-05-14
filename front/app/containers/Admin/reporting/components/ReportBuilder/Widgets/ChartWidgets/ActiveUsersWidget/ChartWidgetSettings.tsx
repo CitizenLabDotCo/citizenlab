@@ -12,9 +12,9 @@ import activeUsersMessages from 'components/admin/GraphCards/ActiveUsersCard/mes
 
 import { useIntl } from 'utils/cl-intl';
 
-import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
+import TimeSeriesWidgetSettings from '../_shared/TimeSeriesWidgetSettings';
 
-const _ChartWidgetSettings = () => {
+const ChartWidgetSettings = () => {
   const { formatMessage } = useIntl();
 
   return (
@@ -41,9 +41,9 @@ const _ChartWidgetSettings = () => {
           {formatMessage(activeUsersMessages.cardTitleTooltipMessage)}
         </Text>
       </Box>
-      <ChartWidgetSettings />
+      <TimeSeriesWidgetSettings />
     </Box>
   );
 };
 
-export default _ChartWidgetSettings;
+export default ChartWidgetSettings;

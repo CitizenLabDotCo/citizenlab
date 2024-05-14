@@ -216,10 +216,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.false',
     defaultMessage: 'false',
   },
-  otherArea: {
-    id: 'app.containers.AdminPage.DashboardPage.otherArea',
-    defaultMessage: 'Other',
-  },
   mostActiveUsersRankingDescription: {
     id: 'app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription2',
     defaultMessage:
@@ -269,5 +265,9 @@ export default defineMessages({
   showLess: {
     id: 'app.containers.AdminPage.DashboardPage.overview.showLess',
     defaultMessage: 'Show less',
+  },
+  labelGroupFilter: {
+    id: 'app.containers.AdminPage.DashboardPage.labelGroupFilter',
+    defaultMessage: 'Select user group',
   },
 });

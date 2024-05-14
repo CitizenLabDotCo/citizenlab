@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef, RefObject } from 'react';
 
 import {
   Box,
@@ -25,71 +25,77 @@ interface Props {
   dataCyValue: string;
 }
 
-const PageControlButtons = ({
-  handleNextAndSubmit,
-  handlePrevious,
-  hasPreviousPage,
-  currentStep,
-  isLoading,
-  showSubmit,
-  dataCyValue,
-}: Props) => {
-  const theme = useTheme();
-  const isSmallerThanPhone = useBreakpoint('phone');
+const PageControlButtons = forwardRef(
+  (
+    {
+      handleNextAndSubmit,
+      handlePrevious,
+      hasPreviousPage,
+      currentStep,
+      isLoading,
+      showSubmit,
+      dataCyValue,
+    }: Props,
+    ref: RefObject<HTMLDivElement>
+  ) => {
+    const theme = useTheme();
+    const isSmallerThanPhone = useBreakpoint('phone');
 
-  return (
-    <Box
-      width="100%"
-      display="flex"
-      justifyContent="space-between"
-      alignItems="center"
-      bgColor={colors.white}
-      px={isSmallerThanPhone ? '16px' : '24px'}
-      py={'16px'}
-    >
-      <LanguageSelector
-        dropdownClassName={'open-upwards'}
-        useDefaultTop={false}
-        mobileRight="auto"
-        mobileLeft="auto"
-        right="auto"
-        afterSelection={() => {
-          window.location.reload();
-        }}
-      />
-      <Box display="flex" justifyContent="center" alignItems="center">
-        {hasPreviousPage && (
+    return (
+      <Box
+        width="100%"
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        bgColor={colors.white}
+        px={isSmallerThanPhone ? '16px' : '24px'}
+        py={'16px'}
+        ref={ref}
+      >
+        <LanguageSelector
+          dropdownClassName={'open-upwards'}
+          useDefaultTop={false}
+          mobileRight="auto"
+          mobileLeft="auto"
+          right="auto"
+          afterSelection={() => {
+            window.location.reload();
+          }}
+        />
+        <Box display="flex" justifyContent="center" alignItems="center">
+          {hasPreviousPage && (
+            <Button
+              onClick={handlePrevious}
+              data-cy="e2e-previous-page"
+              icon="chevron-left"
+              buttonStyle="white"
+              marginRight={isSmallerThanPhone ? '8px' : '16px'}
+            >
+              <FormattedMessage {...messages.previous} />
+            </Button>
+          )}
           <Button
-            onClick={handlePrevious}
-            data-cy="e2e-previous-page"
-            icon="chevron-left"
-            buttonStyle="white"
-            marginRight={isSmallerThanPhone ? '8px' : '16px'}
+            onClick={handleNextAndSubmit}
+            data-cy={dataCyValue}
+            icon={showSubmit ? 'send' : 'chevron-right'}
+            iconPos="right"
+            key={currentStep.toString()}
+            bgColor={
+              showSubmit
+                ? theme.colors.tenantSecondary
+                : theme.colors.tenantPrimary
+            }
+            boxShadow={defaultStyles.boxShadow}
+            processing={isLoading}
           >
-            <FormattedMessage {...messages.previous} />
+            <FormattedMessage
+              {...(showSubmit ? messages.submit : messages.next)}
+            />
           </Button>
-        )}
-        <Button
-          onClick={handleNextAndSubmit}
-          data-cy={dataCyValue}
-          icon={showSubmit ? 'send' : 'chevron-right'}
-          iconPos="right"
-          key={currentStep.toString()}
-          bgColor={
-            showSubmit
-              ? theme.colors.tenantSecondary
-              : theme.colors.tenantPrimary
-          }
-          boxShadow={defaultStyles.boxShadow}
-          processing={isLoading}
-        >
-          <FormattedMessage
-            {...(showSubmit ? messages.submit : messages.next)}
-          />
-        </Button>
+        </Box>
       </Box>
-    </Box>
-  );
-};
+    );
+  }
+);
 
 export default PageControlButtons;

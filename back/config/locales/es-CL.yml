@@ -148,8 +148,8 @@ es-CL:
       section3:
         title: Detalles
         description:
-      other:
-        title: Ya que has elegido "otro", ¿en qué estás pensando?
+      other_text_field:
+        title: Ya que has elegido "{other_option}", ¿en qué estás pensando?
   custom_forms:
     categories:
       main_content:
@@ -204,11 +204,15 @@ es-CL:
       input_id: 'ID'
       latitude: 'Latitud'
       longitude: 'Longitud'
+      location: 'Ubicación'
       author_fullname: 'Nombre del autor'
       author_email: 'Correo electrónico del autor'
       author_id: 'Identificación del autor'
+      attachments: 'Archivos adjuntos'
       budget: 'Presupuesto'
+      cost: 'Coste'
       created_at: 'Presentado en'
+      submitted_at: 'Enviado en'
       published_at: 'Publicado en'
       comments_count: 'Respuestas'
       likes_count: 'Me gusta'
@@ -217,11 +221,14 @@ es-CL:
       participants: 'Participantes'
       votes_count: 'Votos'
       input_url: 'URL'
+      tags: 'Temas'
       project: 'Proyecto'
       status: 'Estado'
       assignee_fullname: 'Asignado'
       assignee_email: 'Correo electrónico del beneficiario'
       image_url: 'URL de la imagen'
+      title: 'Nombre'
+      description: 'Descripción'
     anonymous: 'Anónimo'
   form_builder:
     default_select_field:
@@ -248,6 +255,7 @@ es-CL:
       instructions: 'Instrucciones'
       write_as_clearly: 'Escribe tan claramente <b></b> como puedas - estos formularios podrían ser escaneados'
       write_in_language: 'Escribe tus respuestas en la misma lengua que este formulario'
+      linear_scale_print_description: 'Escribe sólo un número entre %{min_label} y %{max_label}'
   project_copy:
     title_suffix: 'Copia'
   confirmations_mailer:

@@ -115,6 +115,7 @@ const EmptyState = () => {
         <Box display="flex" flexDirection="row">
           <Box mr="8px">
             <Button
+              bgColor={colors.primary}
               onClick={handleDownloadPDF}
               width="auto"
               icon="download"
@@ -136,7 +137,11 @@ const EmptyState = () => {
       </Box>
       <PDFExportModal
         open={exportModalOpen}
-        formType="idea_form"
+        formType={
+          phase?.data.attributes.participation_method === 'native_survey'
+            ? 'survey'
+            : 'idea_form'
+        }
         onClose={() => setExportModalOpen(false)}
         onExport={handleExportPDF}
       />

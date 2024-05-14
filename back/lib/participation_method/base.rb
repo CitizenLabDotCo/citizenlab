@@ -27,6 +27,10 @@ module ParticipationMethod
       []
     end
 
+    def allowed_extra_field_input_types
+      []
+    end
+
     def constraints
       {}
     end
@@ -122,6 +126,10 @@ module ParticipationMethod
     end
 
     def supports_survey_form?
+      false
+    end
+
+    def supports_permitted_by_everyone?
       false
     end
 
