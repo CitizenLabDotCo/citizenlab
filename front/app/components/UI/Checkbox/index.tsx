@@ -84,6 +84,7 @@ type Props = DefaultProps & {
   label?: string | JSX.Element | null;
   id?: string;
   name?: string;
+  checkBoxTabIndex?: number;
 };
 
 export default class Checkbox extends PureComponent<Props> {
@@ -104,6 +105,7 @@ export default class Checkbox extends PureComponent<Props> {
       indeterminate,
       onChange,
       name,
+      checkBoxTabIndex,
     } = this.props;
     const hasLabel = !!label;
 
@@ -121,7 +123,7 @@ export default class Checkbox extends PureComponent<Props> {
               onChange={onChange}
               checked={checked}
               disabled={disabled}
-              tabIndex={-1}
+              tabIndex={checkBoxTabIndex}
               name={name}
             />
             <StyledCheckbox

@@ -257,6 +257,7 @@ const ValuesList = ({
                       onChange={handleOnToggleCheckbox(entry)}
                       label={<CheckboxLabel>{entry.text}</CheckboxLabel>}
                       name={name}
+                      checkBoxTabIndex={-1}
                     />
                   </CheckboxListItem>
                 ) : (
