@@ -64,7 +64,18 @@ const ChartWidgetSettings = () => {
           {formatMessage(activeUsersMessages.cardTitleTooltipMessage)}
         </Text>
       </Box>
-      <TimeSeriesWidgetSettings />
+      <TimeSeriesWidgetSettings
+        onChangeDateRange={({ startDate, endDate }) => {
+          if (!startDate || !endDate) {
+            // Make sure that we always reset compared date range
+            // if the main date range is not fully set
+            setProp((props) => {
+              props.compareStartAt = undefined;
+              props.compareEndAt = undefined;
+            });
+          }
+        }}
+      />
       <Box mb="20px">
         <Tippy
           content={formatMessage(messages.youNeedToSelectADateRange)}
