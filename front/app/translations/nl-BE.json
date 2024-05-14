@@ -1,4 +1,5 @@
 {
+  "EmailSettingsPage.emailSettings": "E-mail instellingen",
   "EmailSettingsPage.initialUnsubscribeError": "Er was een probleem bij het uitschrijven van deze campagne, probeer het later alsjeblieft opnieuw.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Je verzoek wordt verwerkt, even geduld...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Je hebt je succesvol afgemeld voor {campaignTitle}.",

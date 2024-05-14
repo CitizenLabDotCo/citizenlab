@@ -1,4 +1,5 @@
 {
+  "EmailSettingsPage.emailSettings": "Email settings",
   "EmailSettingsPage.initialUnsubscribeError": "Došlo je do greške prilikom odjave. Molimo pokušajte ponovo.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Vaš zahtev se obrađuje, molimo sačekajte...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Uspešno ste se odjavili sa {campaignTitle}.",

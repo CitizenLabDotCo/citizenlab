@@ -1,4 +1,5 @@
 {
+  "EmailSettingsPage.emailSettings": "E-pasta iestatījumi",
   "EmailSettingsPage.initialUnsubscribeError": "Radās problēma ar atteikšanos no šīs abonēšanas, lūdzu, mēģiniet vēlreiz.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Jūsu pieprasījums tiek apstrādāts, lūdzu, uzgaidiet...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Jūs esat veiksmīgi atteicies no {campaignTitle}.",

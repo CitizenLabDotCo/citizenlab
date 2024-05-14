@@ -1,4 +1,5 @@
 {
+  "EmailSettingsPage.emailSettings": "Configurações de e-mail",
   "EmailSettingsPage.initialUnsubscribeError": "Ocorreu um problema ao cancelar a inscrição desta campanha, por favor tente novamente.",
   "EmailSettingsPage.initialUnsubscribeLoading": "O seu pedido está sendo processado, por favor aguarde...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Você cancelou com sucesso a inscrição de {campaignTitle}.",

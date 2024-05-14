@@ -1,4 +1,5 @@
 {
+  "EmailSettingsPage.emailSettings": "E-postinnstillinger",
   "EmailSettingsPage.initialUnsubscribeError": "Det oppsto et problem med å avslutte abonnementet, vennligst prøv igjen.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Forespørslen din blir behandlet, vennligst vent.",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Du har nå meldt deg av {campaignTitle}.",

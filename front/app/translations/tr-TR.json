@@ -1,4 +1,5 @@
 {
+  "EmailSettingsPage.emailSettings": "E-posta ayarları",
   "EmailSettingsPage.initialUnsubscribeError": "Bu kampanya için aboneliğiniz iptal edilirken bir sorun oluştu. Lütfen yeniden deneyin.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Talebiniz işleniyor, lütfen bekleyin...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "{campaignTitle} adlı kampanya için aboneliğiniz başarıyla iptal edildi.",

@@ -1,4 +1,5 @@
 {
+  "EmailSettingsPage.emailSettings": "Paramètres des e-mails",
   "EmailSettingsPage.initialUnsubscribeError": "Il y a eu un problème lors de votre désabonnement à cette campagne, veuillez réessayer.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Votre demande est en cours de traitement, veuillez patienter...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Vous avez réussi à vous désabonner de {campaignTitle}.",

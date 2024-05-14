@@ -1,4 +1,5 @@
 {
+  "EmailSettingsPage.emailSettings": "Configuració del correu electrònic",
   "EmailSettingsPage.initialUnsubscribeError": "S'ha produït un problema en cancel·lar la subscripció d'aquesta campanya. Torneu-ho a provar.",
   "EmailSettingsPage.initialUnsubscribeLoading": "La vostra sol·licitud s'està processant, espereu...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Heu cancel·lat correctament la subscripció a {campaignTitle}.",
