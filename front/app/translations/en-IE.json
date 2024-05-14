@@ -1712,6 +1712,7 @@
   "app.errors.bulk_import_malformed_pdf": "The uploaded PDF file appears to be malformed. Try exporting the PDF again from your source and then upload again.",
   "app.errors.bulk_import_maximum_ideas_exceeded": "The maximum of {value} ideas has been exceeded.",
   "app.errors.bulk_import_maximum_pdf_pages_exceeded": "The maximum of {value} pages in a PDF has been exceeded.",
+  "app.errors.bulk_import_not_enough_pdf_pages": "The uploaded PDF does not have enough pages - it should have at least the same number of pages as the downloaded template.",
   "app.errors.bulk_import_publication_date_invalid_format": "Idea with invalid publication date format \"{value}\". Please use the format \"DD-MM-YYYY\".",
   "app.errors.cannot_contain_ideas": "The participation method you selected does not support this type of post. Please edit your selection and try again.",
   "app.errors.cant_change_after_first_response": "You can no longer change this, since some users already responded",
