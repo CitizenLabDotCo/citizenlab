@@ -211,8 +211,8 @@ const FilterSelector = ({
       }`}
     >
       <Box id={`id-${name}`}>
-        {' '}
-        {/* The id is used for aria-labelledby on the group which defines the accessible name for the group */}
+        {/* The id is used for aria-labelledby on the group
+         which defines the accessible name for the group */}
         {filterSelectorStyle === 'button' ? (
           <Button
             height={isPhoneOrSmaller ? '32px' : '36px'}

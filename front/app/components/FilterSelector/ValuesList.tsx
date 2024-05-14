@@ -219,7 +219,8 @@ const ValuesList = ({
       onClickOutside={handleOnClickOutside}
       content={
         // The id is used for aria-labelledby on the group which defines
-        // the accessiblename for the group
+        // the accessible name for the group. The role group identifies the
+        // group container for the list items.
         <Box role="group" aria-labelledby={`id-${name}`}>
           <List
             className="e2e-sort-items"
