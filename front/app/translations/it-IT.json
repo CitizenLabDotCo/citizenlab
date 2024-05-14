@@ -1712,6 +1712,7 @@
   "app.errors.bulk_import_malformed_pdf": "Il file PDF caricato sembra essere malformato. Prova a esportare nuovamente il PDF dalla tua fonte e a caricarlo di nuovo.",
   "app.errors.bulk_import_maximum_ideas_exceeded": "Il limite massimo di {value} idee è stato superato.",
   "app.errors.bulk_import_maximum_pdf_pages_exceeded": "È stato superato il limite massimo di {value} pagine in un PDF.",
+  "app.errors.bulk_import_not_enough_pdf_pages": "Il PDF caricato non ha abbastanza pagine: dovrebbe avere almeno lo stesso numero di pagine del modello scaricato.",
   "app.errors.bulk_import_publication_date_invalid_format": "Idea con formato di data di pubblicazione non valido \"{value}\". Utilizza il formato \"GG-MM-AAAA\".",
   "app.errors.cannot_contain_ideas": "Il metodo di partecipazione che hai selezionato non supporta questo tipo di post. Si prega di modificare la selezione e riprovare.",
   "app.errors.cant_change_after_first_response": "Non è più possibile cambiare questo, poiché alcuni utenti hanno già risposto",
