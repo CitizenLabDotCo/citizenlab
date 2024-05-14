@@ -1756,7 +1756,6 @@
   "app.modules.commercial.analytics.admin.components.Proposals.totalProposals": "Totale proposte",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "New registrations",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRate": "Tasso di registrazione",
-  "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip": "Percentuale di tutte le registrazioni rispetto a tutti i visitatori.",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Registrations",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Total registrations",
   "app.modules.commercial.analytics.admin.components.Tab": "Visitatori",

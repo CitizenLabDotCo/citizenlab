@@ -2542,7 +2542,6 @@
   "app.modules.commercial.analytics.admin.components.Proposals.totalProposals": "Kopējais priekšlikumu skaits",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "Jaunas reģistrācijas",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRate": "Reģistrācijas rādītājs",
-  "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip": "Visu reģistrāciju procentuālais īpatsvars salīdzinājumā ar visiem apmeklētājiem.",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Reģistrācijas",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Kopējais reģistrāciju skaits",
   "app.modules.commercial.analytics.admin.components.Tab": "Apmeklētāji",

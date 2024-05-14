@@ -2542,7 +2542,6 @@
   "app.modules.commercial.analytics.admin.components.Proposals.totalProposals": "Forslag i alt",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "Nye registreringer",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRate": "Registreringsgrad",
-  "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip": "Procentdel af alle tilmeldinger i forhold til alle besøgende.",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Registreringer",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Registreringer i alt",
   "app.modules.commercial.analytics.admin.components.Tab": "Besøgende",

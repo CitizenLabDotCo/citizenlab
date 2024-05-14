@@ -1417,7 +1417,6 @@
   "app.modules.commercial.analytics.admin.components.Proposals.totalProposals": "Gesamtzuel vu Propositiounen",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "New registrations",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRate": "Umeldungstaux",
-  "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip": "Prozentsaz vun allen Umeldungen am Verglach mat alle Visiteuren.",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Registrations",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Total registrations",
   "app.modules.commercial.analytics.admin.components.Tab": "Visiteuren",

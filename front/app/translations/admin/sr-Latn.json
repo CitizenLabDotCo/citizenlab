@@ -2542,7 +2542,6 @@
   "app.modules.commercial.analytics.admin.components.Proposals.totalProposals": "Ukupno ponuda",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "Nove registracije",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRate": "Stopa registracija",
-  "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip": "Procenat svih registracija u odnosu na sve posetioce.",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Registracije",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Ukupno registracija",
   "app.modules.commercial.analytics.admin.components.Tab": "Posetioci",
