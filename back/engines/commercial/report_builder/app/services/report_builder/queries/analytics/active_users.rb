@@ -95,10 +95,4 @@ module ReportBuilder
       }
     }
   end
-
-  def visitor_filter(apply)
-    return {} unless apply
-
-    { 'dimension_user.is_visitor': 'true' }
-  end
 end
