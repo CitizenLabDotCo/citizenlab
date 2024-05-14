@@ -245,7 +245,7 @@ const ValuesList = ({
                     onMouseDown={removeFocusAfterMouseClick}
                     onKeyDown={handleOnSelectSingleValue(entry)}
                     className={classNames}
-                    tabIndex={0}
+                    tabIndex={-1}
                     ref={(el) => el && (tabsRef.current[index] = el)}
                   >
                     <Checkbox
@@ -266,7 +266,7 @@ const ValuesList = ({
                     className={classNames}
                     onClick={handleOnSelectSingleValue(entry)}
                     onKeyDown={handleOnSelectSingleValue(entry)}
-                    tabIndex={0}
+                    tabIndex={-1}
                     ref={(el) => el && (tabsRef.current[index] = el)}
                   >
                     <ListItemText id={`e2e-item-${entry.value}`}>
