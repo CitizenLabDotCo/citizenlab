@@ -36,19 +36,15 @@ class SideFxProjectService
 
   def after_update(project, user)
     change = project.saved_changes
+    payload = change.present? ? { change: change } : {}
 
-    # We don't want to log a `changed` activity when no project attribute is changed.
-    # e.g. when the project.admin_publication.publication_status is updated, we instead create a different activity
-    # with the action `published` or `changed_publication_status`.
-    if change.present?
-      LogActivityJob.perform_later(
-        project,
-        'changed',
-        user,
-        project.updated_at.to_i,
-        payload: { change: project.saved_changes }
-      )
-    end
+    LogActivityJob.perform_later(
+      project,
+      'changed',
+      user,
+      project.updated_at.to_i,
+      payload: payload
+    )
 
     after_folder_changed project, user if @folder_id_was != project.folder_id
     # We don't want to send out the "project published" campaign when e.g. changing from "archived" to "published"
