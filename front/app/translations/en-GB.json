@@ -1,4 +1,5 @@
 {
+  "EmailSettingsPage.emailSettings": "Email settings",
   "EmailSettingsPage.initialUnsubscribeError": "There was an issue unsubscribing from this campaign, please try again.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Your request is being processed, please wait...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "You have successfully unsubscribed from {campaignTitle}.",
@@ -1611,7 +1612,6 @@
   "app.containers.UsersShowPage.emptyInfoText": "You are not following any items of the specified filter above.",
   "app.containers.UsersShowPage.eventsWithCount": "Events ({eventsCount})",
   "app.containers.UsersShowPage.followingWithCount": "Following ({followingCount})",
-  "app.containers.UsersShowPage.goBackToPreviousPage": "Go back to the previous page",
   "app.containers.UsersShowPage.inputs": "Inputs",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "All input submitted by this participant",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "All comments posted by this participant",
@@ -1632,7 +1632,6 @@
   "app.containers.UsersShowPage.seePost": "See submission",
   "app.containers.UsersShowPage.topics": "Topics",
   "app.containers.UsersShowPage.tryAgain": "An error has occurred, please try again later.",
-  "app.containers.UsersShowPage.user404NotFound": "We couldn't find this user's profile. If it was here before, it may have been deleted.",
   "app.containers.UsersShowPage.userShowPageMetaDescription": "This is the profile page of {firstName} {lastName} on the online participation platform of {orgName}. Here is an overview of all of their input.",
   "app.containers.VoteControl.close": "Close",
   "app.containers.VoteControl.voteErrorTitle": "Something went wrong",
