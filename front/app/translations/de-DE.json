@@ -1,4 +1,5 @@
 {
+  "EmailSettingsPage.emailSettings": "E-Mail-Einstellungen",
   "EmailSettingsPage.initialUnsubscribeError": "Beim Abmelden von diesem E-Mailverteiler ist ein Fehler aufgetreten.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Ihre Anfrage wird gerade bearbeitet, bitte haben Sie noch etwas Geduld...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Sie haben sich erfolgreich von {campaignTitle} abgemeldet.",
@@ -1611,7 +1612,6 @@
   "app.containers.UsersShowPage.emptyInfoText": "Sie folgen keinem der Elemente des oben angegebenen Filters.",
   "app.containers.UsersShowPage.eventsWithCount": "Veranstaltungen ({eventsCount})",
   "app.containers.UsersShowPage.followingWithCount": "Folge ich ({followingCount})",
-  "app.containers.UsersShowPage.goBackToPreviousPage": "Zurück zur letzten Seite",
   "app.containers.UsersShowPage.inputs": "Beiträge",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Alle von diesem Teilnehmenden eingereichten Beiträge",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Alle Kommentare, die von diesem Nutzer / dieser Nutzerin gepostet wurden",
@@ -1632,7 +1632,6 @@
   "app.containers.UsersShowPage.seePost": "Siehe Beitrag",
   "app.containers.UsersShowPage.topics": "Themen",
   "app.containers.UsersShowPage.tryAgain": "Ein Fehler ist aufgetreten, bitte später erneut versuchen.",
-  "app.containers.UsersShowPage.user404NotFound": "Wir konnten das Profil dieses Nutzers / dieser Nutzerin nicht finden. Wenn es vorher hier war, wurde es möglicherweise gelöscht.",
   "app.containers.UsersShowPage.userShowPageMetaDescription": "Dies ist die Profilseite von {firstName} {lastName} auf der Beteiligungsplattform {orgName}. Hier finden Sie eine Übersicht über alle ihre / seine Beiträge.",
   "app.containers.VoteControl.close": "Schließen",
   "app.containers.VoteControl.voteErrorTitle": "Etwas ging schief",
