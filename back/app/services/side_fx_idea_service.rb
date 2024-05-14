@@ -26,7 +26,7 @@ class SideFxIdeaService
 
     if idea.just_published?
       after_publish idea, user
-    elsif idea.published? && idea.saved_changes.present?
+    elsif idea.published?
       LogActivityJob.perform_later(
         idea,
         'changed',
