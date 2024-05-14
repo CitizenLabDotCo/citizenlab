@@ -24,7 +24,7 @@ type State = {
 };
 
 class PreviewFrame extends React.Component<Props, State> {
-  iframeNode: HTMLIFrameElement;
+  iframeNode: HTMLIFrameElement | undefined;
 
   constructor(props: Props) {
     super(props);
