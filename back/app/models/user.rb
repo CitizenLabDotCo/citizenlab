@@ -49,12 +49,12 @@ class User < ApplicationRecord
   include Onboarding::UserDecorator
   include Polls::UserDecorator
   include Volunteering::UserDecorator
+  include UserRoles
+  include UserGroups
   include PgSearch::Model
 
   GENDERS = %w[male female unspecified].freeze
   INVITE_STATUSES = %w[pending accepted].freeze
-  ROLES = %w[admin project_moderator project_folder_moderator].freeze
-  CITIZENLAB_MEMBER_REGEX_CONTENT = 'citizenlab.(eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'
   EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   EMAIL_DOMAIN_BLACKLIST = Rails.root.join('config', 'domain_blacklist.txt').readlines.map(&:strip).freeze
 
@@ -68,21 +68,6 @@ class User < ApplicationRecord
         # Spread out the deletion of users to avoid throttling.
         DeleteUserJob.set(wait: (idx / 5.0).seconds).perform_later(id)
       end
-    end
-
-    def roles_json_schema
-      _roles_json_schema.deep_dup.tap do |schema|
-        # Remove the schemas for roles that are not enabled.
-        schema['items']['oneOf'] = schema.dig('items', 'oneOf').select do |role_schema|
-          role_name = role_schema.dig('properties', 'type', 'enum', 0)
-          ROLES.include?(role_name)
-        end
-      end
-    end
-
-    # Returns (and memoize) the schema of all declared roles without restrictions.
-    def _roles_json_schema
-      @_roles_json_schema ||= JSON.parse(Rails.root.join('config/schemas/user_roles.json_schema').read)
     end
 
     def onboarding_json_schema
@@ -162,14 +147,6 @@ class User < ApplicationRecord
   has_many :follows, -> { order(:followable_id) }, class_name: 'Follower', dependent: :destroy
   has_many :cosponsors_initiatives, dependent: :destroy
 
-  after_initialize do
-    next unless has_attribute?('roles')
-
-    @highest_role_after_initialize = highest_role
-  end
-
-  attr_reader :highest_role_after_initialize
-
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :assign_email_or_phone, if: :email_changed?
   with_options if: -> { user_confirmation_enabled? } do
@@ -183,8 +160,6 @@ class User < ApplicationRecord
   has_many :activities, dependent: :nullify
   has_many :inviter_invites, class_name: 'Invite', foreign_key: :inviter_id, dependent: :nullify
   has_one :invitee_invite, class_name: 'Invite', foreign_key: :invitee_id, dependent: :destroy
-  has_many :memberships, dependent: :destroy
-  has_many :manual_groups, class_name: 'Group', source: 'group', through: :memberships
   has_many :campaign_email_commands, class_name: 'EmailCampaigns::CampaignEmailCommand', foreign_key: :recipient_id, dependent: :destroy
   has_many :baskets, -> { order(:phase_id) }
   before_destroy :destroy_baskets
@@ -219,7 +194,6 @@ class User < ApplicationRecord
   validate :validate_minimum_password_length
   validate :validate_password_not_common
 
-  validates :roles, json: { schema: -> { User.roles_json_schema } }
   validates :onboarding, json: { schema: -> { User.onboarding_json_schema } }
 
   validate :validate_not_duplicate_email
@@ -238,37 +212,6 @@ class User < ApplicationRecord
   has_many :unread_notifications, -> { where read_at: nil }, class_name: 'Notification', foreign_key: :recipient_id
   has_many :initiator_notifications, class_name: 'Notification', foreign_key: :initiating_user_id, dependent: :nullify
 
-  scope :admin, -> { where("roles @> '[{\"type\":\"admin\"}]'") }
-  scope :not_admin, -> { where.not("roles @> '[{\"type\":\"admin\"}]'") }
-  scope :normal_user, -> { where("roles = '[]'::jsonb") }
-  scope :not_normal_user, -> { where.not("roles = '[]'::jsonb") }
-  scope :project_moderator, lambda { |project_id = nil|
-    if project_id
-      where('roles @> ?', JSON.generate([{ type: 'project_moderator', project_id: project_id }]))
-    else
-      where("roles @> '[{\"type\":\"project_moderator\"}]'")
-    end
-  }
-  scope :not_project_moderator, lambda { |project_id = nil|
-    return where.not(id: project_moderator) if project_id.nil?
-
-    project = Project.find(project_id)
-    if project.folder
-      where.not(id: project_moderator(project_id)).and(where(id: not_project_folder_moderator(project.folder.id)))
-    else
-      where.not(id: project_moderator(project_id))
-    end
-  }
-  scope :project_folder_moderator, lambda { |*project_folder_ids|
-    return where("roles @> '[{\"type\":\"project_folder_moderator\"}]'") if project_folder_ids.empty?
-
-    query = project_folder_ids.map do |id|
-      { type: 'project_folder_moderator', project_folder_id: id }
-    end
-
-    where('roles @> ?', JSON.generate(query))
-  }
-
   scope :not_project_folder_moderator, lambda { |*project_folder_ids|
     where.not(id: project_folder_moderator(*project_folder_ids))
   }
@@ -278,33 +221,6 @@ class User < ApplicationRecord
   scope :blocked, -> { where('? < block_end_at', Time.zone.now) }
   scope :not_blocked, -> { where(block_end_at: nil).or(where('? > block_end_at', Time.zone.now)) }
   scope :active, -> { registered.not_blocked }
-
-  scope :order_role, lambda { |direction = :asc|
-    joins('LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id')
-      .order(Arel.sql("(roles @> '[{\"type\":\"admin\"}]')::integer #{direction}"))
-      .reverse_order
-      .group('users.id')
-  }
-
-  IN_GROUP_PROC = ->(group) { joins(:memberships).where(memberships: { group_id: group.id }) }
-  scope :in_group, IN_GROUP_PROC
-
-  scope :in_any_group, lambda { |groups|
-    user_ids = groups.flat_map { |group| in_group(group).ids }.uniq
-    where(id: user_ids)
-  }
-
-  # https://www.postgresql.org/docs/12/functions-matching.html#FUNCTIONS-POSIX-REGEXP
-  scope :citizenlab_member, -> { where('email ~* ?', CITIZENLAB_MEMBER_REGEX_CONTENT) }
-  scope :not_citizenlab_member, -> { where.not('email ~* ?', CITIZENLAB_MEMBER_REGEX_CONTENT) }
-  scope :billed_admins, -> { admin.not_citizenlab_member }
-  scope :billed_moderators, lambda {
-    # use any conditions before `or` very carefully (inspect the generated SQL)
-    project_moderator.or(User.project_folder_moderator).where.not(id: admin).not_citizenlab_member
-  }
-
-  scope :super_admins, -> { citizenlab_member.admin }
-  scope :not_super_admins, -> { where.not(id: super_admins) }
 
   def update_merging_custom_fields!(attributes)
     attributes = attributes.deep_stringify_keys
@@ -336,20 +252,6 @@ class User < ApplicationRecord
       roles: compacted_roles,
       exp: token_lifetime.from_now.to_i
     }
-  end
-
-  # Returns roles excluding the `project_moderator` roles that are redundant with
-  # `project_folder_moderator` roles (i.e. the user is a project moderator for a
-  # project that is in a folder that they moderate).
-  def compacted_roles
-    redundant_project_ids = AdminPublication
-      .joins(:parent)
-      .where(parent: { publication_id: moderated_project_folder_ids })
-      .pluck(:publication_id)
-
-    roles.reject do |role|
-      role['type'] == 'project_moderator' && role['project_id'].in?(redundant_project_ids)
-    end
   end
 
   def avatar_blank?
@@ -385,64 +287,6 @@ class User < ApplicationRecord
     (name_key.sum**2).to_s[0, 6]
   end
 
-  def highest_role
-    if super_admin?
-      :super_admin
-    elsif admin?
-      :admin
-    elsif project_folder_moderator?
-      :project_folder_moderator
-    elsif project_moderator?
-      :project_moderator
-    else
-      :user
-    end
-  end
-
-  def super_admin?
-    admin? && !!(email =~ Regexp.new(CITIZENLAB_MEMBER_REGEX_CONTENT, 'i'))
-  end
-
-  def admin?
-    roles.any? { |r| r['type'] == 'admin' }
-  end
-
-  def project_folder_moderator?(project_folder_id = nil)
-    project_folder_id ? moderated_project_folder_ids.include?(project_folder_id) : moderated_project_folder_ids.present?
-  end
-
-  def project_moderator?(project_id = nil)
-    project_id ? moderatable_project_ids.include?(project_id) : moderatable_project_ids.present?
-  end
-
-  def project_or_folder_moderator?
-    project_moderator? || project_folder_moderator?
-  end
-
-  def normal_user?
-    !admin? && moderatable_project_ids.blank? && moderated_project_folder_ids.blank?
-  end
-
-  def moderatable_project_ids
-    # Does not include folders
-    roles.select { |role| role['type'] == 'project_moderator' }.pluck('project_id').compact
-  end
-
-  def moderated_project_folder_ids
-    roles.select { |role| role['type'] == 'project_folder_moderator' }.pluck('project_folder_id').compact
-  end
-
-  def add_role(type, options = {})
-    roles << { 'type' => type.to_s }.merge(options.stringify_keys)
-    roles.uniq!
-    self
-  end
-
-  def delete_role(type, options = {})
-    roles.delete({ 'type' => type.to_s }.merge(options.stringify_keys))
-    self
-  end
-
   def authenticate(unencrypted_password)
     if no_password?
       # Allow authentication without password - but only if confirmation is required on the user
@@ -461,10 +305,6 @@ class User < ApplicationRecord
     identity_ids.present?
   end
 
-  def member_of?(group_id)
-    !memberships.select { |m| m.group_id == group_id }.empty?
-  end
-
   def blocked?
     block_end_at.present? && block_end_at > Time.zone.now
   end
@@ -480,18 +320,6 @@ class User < ApplicationRecord
   def blank_and_can_be_deleted?
     # atm it can be true only for users registered with ClaveUnica and MitID who haven't entered email
     sso? && email.blank? && new_email.blank? && password_digest.blank? && identity_ids.count == 1
-  end
-
-  def groups
-    manual_groups
-  end
-
-  def group_ids
-    manual_group_ids
-  end
-
-  def in_any_groups?(groups)
-    manual_groups.merge(groups).exists?
   end
 
   # true if the user has not yet confirmed their email address and the platform requires it
@@ -699,4 +527,3 @@ User.include(ReportBuilder::Patches::User)
 User.include(Verification::Patches::User)
 
 User.prepend(MultiTenancy::Patches::User)
-User.prepend(SmartGroups::Patches::User)
