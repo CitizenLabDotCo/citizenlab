@@ -82,7 +82,6 @@ const CLSurveyPageLayout = memo(
     const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
 
     // TODO: Readd Focuson after solving UI issue
-    const surveyHeadingRef = useRef<HTMLDivElement>(null);
     const pageControlButtonsRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
