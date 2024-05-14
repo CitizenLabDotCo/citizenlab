@@ -1712,6 +1712,7 @@
   "app.errors.bulk_import_malformed_pdf": "Het geüploade PDF-bestand lijkt misvormd te zijn. Probeer de PDF opnieuw te exporteren vanuit je bron en dan opnieuw te uploaden.",
   "app.errors.bulk_import_maximum_ideas_exceeded": "Het maximum van {value} ideeën is overschreden.",
   "app.errors.bulk_import_maximum_pdf_pages_exceeded": "Het maximum van {value} pagina's in een PDF is overschreden.",
+  "app.errors.bulk_import_not_enough_pdf_pages": "De geüploade PDF heeft niet genoeg pagina's - hij moet minstens evenveel pagina's hebben als de gedownloade sjabloon.",
   "app.errors.bulk_import_publication_date_invalid_format": "Idee met ongeldig datumformaat \"{value}\". Gebruik het formaat \"DD-MM-JJJJ\".",
   "app.errors.cannot_contain_ideas": "Er {ideasCount, plural, one {is één idee} other {zijn {ideasCount} ideeën}} in deze fase en de participatiemethode die je koos ondersteunt geen ideeën. Gelieve daarom {ideasCount, plural, one {het idee} other {de ideeën}} eerst uit deze fase te verwijderen en opnieuw te proberen.",
   "app.errors.cant_change_after_first_response": "Dit kan niet meer worden gewijzigd omdat er al mensen deelnamen",
