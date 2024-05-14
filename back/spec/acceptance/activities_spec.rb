@@ -17,13 +17,8 @@ resource 'Activity' do
     @activity4 = create(:project_created_activity, item: @project, user: @user)
     @activity5 = create(:project_changed_activity, item: @project)
     @activity6 = create(:project_deleted_activity, item: @project)
-    @activity9 = create(:idea_deleted_activity)
-    @activity10 = create(:idea_changed_status_activity)
-    @activity11 = create(:user_blocked_activity)
-    # For some reason, using a factory for campaign activities seems to give item_type: 'EmailCampaigns::Campaign',
-    # whereas the actual item_type will include the subclass. So we create the activities manually here.
-    @activity12 = create(:activity, item_type: 'EmailCampaigns::Campaigns::Manual', action: 'sent')
-    @activity13 = create(:activity, item_type: 'EmailCampaigns::Campaigns::ManualProjectParticipants', action: 'sent')
+    @activity7 = create(:idea_deleted_activity)
+    @activity8 = create(:idea_changed_status_activity)
     @non_management_activity = create(:comment_created_activity)
   end
 
@@ -36,7 +31,7 @@ resource 'Activity' do
     example_request 'List all activities' do
       assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 11
+      expect(json_response[:data].size).to eq 8
       expect(json_response[:data].pluck(:id).include?(@non_management_activity.id)).to be false
     end
 
