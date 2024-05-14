@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, KeyboardEvent } from 'react';
 
 import {
   Dropdown,
@@ -161,9 +161,10 @@ const ValuesList = ({
   const tabsRef = useRef({});
   const [focusedIndex, setFocusedIndex] = React.useState(0);
 
-  const handleOnToggleCheckbox = (entry) => (_event) => {
-    onChange(entry.value);
-  };
+  const handleOnToggleCheckbox =
+    (entry: Value) => (_event: React.ChangeEvent) => {
+      onChange(entry.value);
+    };
 
   useEffect(() => {
     if (opened && Object.keys(tabsRef.current).length > 0) {
@@ -171,34 +172,35 @@ const ValuesList = ({
     }
   }, [opened]);
 
-  const handleOnSelectSingleValue = (entry) => (event) => {
-    if (
-      event.type === 'keydown' &&
-      (event.key === 'ArrowUp' || event.key === 'ArrowDown')
-    ) {
-      event.preventDefault();
+  const handleOnSelectSingleValue =
+    (entry: Value) => (event: KeyboardEvent<HTMLLIElement>) => {
+      if (
+        event.type === 'keydown' &&
+        (event.key === 'ArrowUp' || event.key === 'ArrowDown')
+      ) {
+        event.preventDefault();
 
-      const totalItems = values.length;
-      let nextIndex = 0;
-      if (event.key === 'ArrowUp') {
-        nextIndex = focusedIndex === 0 ? totalItems - 1 : focusedIndex - 1;
-      } else {
-        nextIndex = focusedIndex === totalItems - 1 ? 0 : focusedIndex + 1;
+        const totalItems = values.length;
+        let nextIndex = 0;
+        if (event.key === 'ArrowUp') {
+          nextIndex = focusedIndex === 0 ? totalItems - 1 : focusedIndex - 1;
+        } else {
+          nextIndex = focusedIndex === totalItems - 1 ? 0 : focusedIndex + 1;
+        }
+        setFocusedIndex(nextIndex);
+        tabsRef.current[nextIndex].focus();
+      } else if (
+        event.type === 'click' ||
+        (event.type === 'keydown' && event.code === 'Space')
+      ) {
+        event.preventDefault();
+
+        onChange(entry.value);
       }
-      setFocusedIndex(nextIndex);
-      tabsRef.current[nextIndex].focus();
-    } else if (
-      event.type === 'click' ||
-      (event.type === 'keydown' && event.key === 'Enter')
-    ) {
-      event.preventDefault();
-
-      onChange(entry.value);
-    }
-  };
+    };
 
   const handleOnClickOutside = (event) => {
-    onClickOutside && onClickOutside(event);
+    onClickOutside?.(event);
   };
 
   return (
@@ -216,6 +218,8 @@ const ValuesList = ({
       opened={opened}
       onClickOutside={handleOnClickOutside}
       content={
+        // The id is used for aria-labelledby on the group which defines
+        // the accessiblename for the group
         <Box role="group" aria-labelledby={`id-${name}`}>
           <List
             className="e2e-sort-items"
@@ -264,7 +268,11 @@ const ValuesList = ({
                     key={entry.value}
                     onMouseDown={removeFocusAfterMouseClick}
                     className={classNames}
-                    onClick={handleOnSelectSingleValue(entry)}
+                    onClick={(event) => {
+                      event.preventDefault();
+
+                      onChange(entry.value);
+                    }}
                     onKeyDown={handleOnSelectSingleValue(entry)}
                     tabIndex={-1}
                     ref={(el) => el && (tabsRef.current[index] = el)}
