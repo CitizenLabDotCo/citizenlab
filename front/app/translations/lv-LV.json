@@ -1,4 +1,5 @@
 {
+  "EmailSettingsPage.emailSettings": "E-pasta iestatījumi",
   "EmailSettingsPage.initialUnsubscribeError": "Radās problēma ar atteikšanos no šīs abonēšanas, lūdzu, mēģiniet vēlreiz.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Jūsu pieprasījums tiek apstrādāts, lūdzu, uzgaidiet...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Jūs esat veiksmīgi atteicies no {campaignTitle}.",
@@ -1611,7 +1612,6 @@
   "app.containers.UsersShowPage.emptyInfoText": "Jūs nesekojat nevienam no iepriekš norādītā filtra elementiem.",
   "app.containers.UsersShowPage.eventsWithCount": "Notikumi ({eventsCount})",
   "app.containers.UsersShowPage.followingWithCount": "Pēc ({followingCount})",
-  "app.containers.UsersShowPage.goBackToPreviousPage": "Atgriezties uz iepriekšējo lapu",
   "app.containers.UsersShowPage.inputs": "Ieejas",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Viss šī dalībnieka sniegtais ieguldījums",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Visi šī dalībnieka publicētie komentāri",
@@ -1632,7 +1632,6 @@
   "app.containers.UsersShowPage.seePost": "Skatīt iesniegumu",
   "app.containers.UsersShowPage.topics": "Tēmas",
   "app.containers.UsersShowPage.tryAgain": "Radusies kļūda, lūdzu, vēlāk mēģiniet vēlreiz.",
-  "app.containers.UsersShowPage.user404NotFound": "Mēs nevarējām atrast šī lietotāja profilu. Ja iepriekš tas šeit bija izveidots, iespējams, ka tas ir izdzēsts.",
   "app.containers.UsersShowPage.userShowPageMetaDescription": "Šī ir {firstName} {lastName} profila lapa {orgName} tiešsaistes līdzdalības platformā. Šeit ir sniegts pārskats par visu viņu ieguldījumu.",
   "app.containers.VoteControl.close": "Aizvērt",
   "app.containers.VoteControl.voteErrorTitle": "Radās kļūda",
