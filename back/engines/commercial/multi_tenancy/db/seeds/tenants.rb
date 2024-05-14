@@ -37,7 +37,6 @@ module MultiTenancy
               allowed: true,
               enabled: true,
               enable_signup: true,
-              phone: false,
               minimum_length: 8
             },
             facebook_login: {

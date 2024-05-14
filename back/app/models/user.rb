@@ -101,11 +101,7 @@ class User < ApplicationRecord
     # invitees.
     def from_token_request(request)
       email = request.params['auth']['email']
-
-      # Hack to embed phone numbers in email
-      email_or_embedded_phone = PhoneService.new.emailize_email_or_phone(email)
-
-      not_invited.find_by_cimail(email_or_embedded_phone)
+      not_invited.find_by_cimail(email)
     end
 
     def oldest_admin
@@ -149,7 +145,6 @@ class User < ApplicationRecord
   has_many :cosponsors_initiatives, dependent: :destroy
 
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
-  before_validation :assign_email_or_phone, if: :email_changed?
   before_validation :complete_registration
 
   has_many :identities, dependent: :destroy
@@ -219,21 +214,6 @@ class User < ApplicationRecord
       **attributes,
       custom_field_values: custom_field_values.merge(attributes['custom_field_values'] || {})
     )
-  end
-
-  def assign_email_or_phone
-    # Hack to embed phone numbers in email
-    email_or_embedded_phone = PhoneService.new.emailize_email_or_phone(email)
-
-    self.email = email_or_embedded_phone
-  end
-
-  def registered_with_phone?
-    PhoneService.new.encoded_phone_or_email?(email) == :phone
-  end
-
-  def registered_with_email?
-    PhoneService.new.encoded_phone_or_email?(email) == :email
   end
 
   def to_token_payload

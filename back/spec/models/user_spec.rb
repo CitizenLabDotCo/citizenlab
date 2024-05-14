@@ -284,8 +284,7 @@ RSpec.describe User do
         'enabled' => true,
         'allowed' => true,
         'enable_signup' => true,
-        'minimum_length' => 5,
-        'phone' => false
+        'minimum_length' => 5
       }
       AppConfiguration.instance.update! settings: settings
 
@@ -299,8 +298,7 @@ RSpec.describe User do
         'enabled' => true,
         'allowed' => true,
         'enable_signup' => true,
-        'minimum_length' => 5,
-        'phone' => false
+        'minimum_length' => 5
       }
       AppConfiguration.instance.update! settings: settings
 
@@ -1067,13 +1065,6 @@ RSpec.describe User do
       it 'sets true if the user is a normal user' do
         user.save!
         expect(user.confirmation_required?).to be true
-      end
-
-      it 'sets false if the user registered with a phone number' do
-        enable_phone_login
-        user.email = '343938837373'
-        user.save!
-        expect(user.reload.confirmation_required?).to be false
       end
 
       it 'does not perform a commit to the db' do

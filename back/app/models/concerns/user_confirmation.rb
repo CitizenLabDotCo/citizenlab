@@ -47,7 +47,7 @@ module UserConfirmation
   end
 
   def should_send_confirmation_email?
-    confirmation_required? && email_confirmation_code_sent_at.nil? && (PhoneService.new.encoded_phone_or_email?(email) == :email)
+    confirmation_required? && email_confirmation_code_sent_at.nil?
   end
 
   def email_confirmation_code_expiration_at
@@ -74,7 +74,7 @@ module UserConfirmation
 
     not_ordinary_user = highest_role != :user # admin or moderator can be created only by invite or by admin API from cl2-tenant-setup
     confirmation_not_required =
-      registered_with_phone? || sso? || invite_status.present? ||
+      sso? || invite_status.present? ||
       active? || not_ordinary_user
 
     self.confirmation_required = !confirmation_not_required
