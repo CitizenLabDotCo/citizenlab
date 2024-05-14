@@ -54,7 +54,7 @@ resource 'Activity' do
         .to match_array [@activity2.id, @activity4.id, @activity5.id, @activity6.id]
     end
 
-    example 'List all activities does not include activities with acted_at more than 30 days ago', document: false do
+    example 'List all activities excludes activities with acted_at more than 30 days ago', document: false do
       @activity1.update!(acted_at: 31.days.ago)
       do_request
       assert_status 200
@@ -63,7 +63,7 @@ resource 'Activity' do
       expect(json_response[:data].pluck(:id)).not_to include @activity1.id
     end
 
-    example 'List all activities does not include activities where actor is not an admin or moderator', document: false do
+    example 'List all activities excludes activities where actor is not an admin or moderator', document: false do
       @activity1.update!(user: create(:user))
       do_request
       assert_status 200
