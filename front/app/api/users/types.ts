@@ -55,6 +55,7 @@ export interface IUserAttributes {
   no_name?: boolean;
   no_password?: boolean;
   followings_count: number;
+  last_active_at?: string | null;
 }
 
 export interface IUserData {
@@ -108,7 +109,9 @@ export type Sort =
   | 'email'
   | '-email'
   | 'role'
-  | '-role';
+  | '-role'
+  | 'last_active_at'
+  | '-last_active_at';
 
 export interface IQueryParameters {
   pageNumber?: number;

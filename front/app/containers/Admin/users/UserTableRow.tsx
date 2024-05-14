@@ -1,6 +1,6 @@
 import React, { useState, lazy, Suspense } from 'react';
 
-import { Tr, Td, Box, colors } from '@citizenlab/cl2-component-library';
+import { Tr, Td, colors, Box, Text } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import styled from 'styled-components';
 
@@ -9,6 +9,7 @@ import useDeleteUser from 'api/users/useDeleteUser';
 
 import useExceedsSeats from 'hooks/useExceedsSeats';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
 
 import BlockUser from 'components/admin/UserBlockModals/BlockUser';
 import blockUserMessages from 'components/admin/UserBlockModals/messages';
@@ -20,6 +21,7 @@ import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
+import { timeAgo } from 'utils/dateUtils';
 import eventEmitter from 'utils/eventEmitter';
 import { isAdmin, isRegularUser } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
@@ -74,6 +76,7 @@ const UserTableRow = ({
   changeRoles,
   authUser,
 }: Props) => {
+  const locale = useLocale();
   const { formatMessage } = useIntl();
   const isUserBlockingEnabled = useFeatureFlag({
     name: 'user_blocking',
@@ -226,19 +229,28 @@ const UserTableRow = ({
       className={`e2e-user-table-row ${selected ? 'selected' : ''}`}
     >
       <Td>
-        <Box ml="5px">
-          <Checkbox checked={selected} onChange={toggleSelect} />
+        <Checkbox checked={selected} onChange={toggleSelect} />
+      </Td>
+      <Td>
+        <Box display="flex" alignItems="center" gap="8px">
+          <Avatar userId={userInRow.id} size={30} />
+          <Box>
+            <StyledLink to={`/profile/${userInRow.attributes.slug}`}>
+              {getFullName(userInRow)}
+            </StyledLink>
+            <Text fontSize="s" m="0px" color="textSecondary">
+              {userInRow.attributes.email}
+            </Text>
+          </Box>
         </Box>
       </Td>
       <Td>
-        <Avatar userId={userInRow.id} size={30} />
+        <FormattedMessage {...getStatusMessage(userInRow)} />
       </Td>
       <Td>
-        <StyledLink to={`/profile/${userInRow.attributes.slug}`}>
-          {getFullName(userInRow)}
-        </StyledLink>
+        {userInRow.attributes.last_active_at &&
+          timeAgo(Date.parse(userInRow.attributes.last_active_at), locale)}
       </Td>
-      <Td>{userInRow.attributes.email}</Td>
       <RegisteredAt>
         {/*
           For the 'all registered users' group, we do not show invited Users who have not yet accepted their invites,
@@ -257,9 +269,7 @@ const UserTableRow = ({
           </i>
         )}
       </RegisteredAt>
-      <Td>
-        <FormattedMessage {...getStatusMessage(userInRow)} />
-      </Td>
+
       <Td>
         <MoreActionsMenu
           showLabel={false}

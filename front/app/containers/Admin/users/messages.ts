@@ -17,9 +17,13 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.email',
     defaultMessage: 'Email',
   },
-  since: {
-    id: 'app.containers.Admin.Users.since',
-    defaultMessage: 'Since',
+  lastActive: {
+    id: 'app.containers.Admin.Users.lastActive',
+    defaultMessage: 'Last active',
+  },
+  joined: {
+    id: 'app.containers.Admin.Users.joined',
+    defaultMessage: 'Joined',
   },
   admin: {
     id: 'app.containers.Admin.Users.admin',
@@ -49,9 +53,9 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.projectManager',
     defaultMessage: 'Project manager',
   },
-  status: {
-    id: 'app.containers.Admin.Users.status',
-    defaultMessage: 'Status',
+  role: {
+    id: 'app.containers.Admin.Users.role',
+    defaultMessage: 'Role',
   },
   permissionToBuy: {
     id: 'app.containers.Admin.Users.permissionToBuy',
