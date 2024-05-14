@@ -1,10 +1,11 @@
-import React, { PureComponent } from 'react';
+import React, { useRef, useEffect, KeyboardEvent, FormEvent } from 'react';
 
 import {
   Dropdown,
   colors,
   fontSizes,
   isRtl,
+  Box,
 } from '@citizenlab/cl2-component-library';
 import { includes, isNil } from 'lodash-es';
 import styled from 'styled-components';
@@ -138,78 +139,91 @@ interface Props extends DefaultProps {
   name: string;
 }
 
-interface State {}
+const ValuesList = ({
+  values,
+  selected,
+  multipleSelectionAllowed,
+  opened,
+  baseID,
+  width,
+  mobileWidth,
+  maxHeight,
+  mobileMaxHeight,
+  top,
+  left,
+  mobileLeft,
+  right,
+  mobileRight,
+  name,
+  onChange,
+  onClickOutside,
+}: Props) => {
+  const tabsRef = useRef({});
+  const [focusedIndex, setFocusedIndex] = React.useState(0);
 
-export default class ValuesList extends PureComponent<Props, State> {
-  static defaultProps: DefaultProps = {
-    width: undefined,
-    mobileWidth: undefined,
-    maxHeight: undefined,
-    mobileMaxHeight: undefined,
-    top: '34px',
-    left: undefined,
-    mobileLeft: undefined,
-    right: undefined,
-    mobileRight: undefined,
-  };
+  const handleOnToggleCheckbox =
+    (entry: Value) => (_event: React.ChangeEvent) => {
+      onChange(entry.value);
+    };
 
-  handleOnToggleCheckbox = (entry) => (_event: React.ChangeEvent) => {
-    this.props.onChange(entry.value);
-  };
+  useEffect(() => {
+    if (opened && Object.keys(tabsRef.current).length > 0) {
+      tabsRef.current[0].focus();
+    }
+  }, [opened]);
 
-  handleOnSelectSingleValue =
-    (entry) => (event: React.MouseEvent | React.KeyboardEvent) => {
+  const handleOnSelectSingleValue =
+    (entry: Value) => (event: KeyboardEvent<HTMLLIElement>) => {
       if (
-        event.type === 'click' ||
-        (event.type === 'keydown' && event['key'] === 'Enter')
+        event.type === 'keydown' &&
+        (event.key === 'ArrowUp' || event.key === 'ArrowDown')
       ) {
         event.preventDefault();
-        this.props.onChange(entry.value);
+
+        const totalItems = values.length;
+        let nextIndex = 0;
+        if (event.key === 'ArrowUp') {
+          nextIndex = focusedIndex === 0 ? totalItems - 1 : focusedIndex - 1;
+        } else {
+          nextIndex = focusedIndex === totalItems - 1 ? 0 : focusedIndex + 1;
+        }
+        setFocusedIndex(nextIndex);
+        tabsRef.current[nextIndex].focus();
+      } else if (
+        event.type === 'click' ||
+        (event.type === 'keydown' && event.code === 'Space')
+      ) {
+        event.preventDefault();
+
+        onChange(entry.value);
       }
     };
 
-  handleOnClickOutside = (event: React.FormEvent) => {
-    this.props.onClickOutside && this.props.onClickOutside(event);
+  const handleOnClickOutside = (event: FormEvent) => {
+    onClickOutside?.(event);
   };
 
-  render() {
-    const {
-      values,
-      selected,
-      multipleSelectionAllowed,
-      opened,
-      baseID,
-      width,
-      mobileWidth,
-      maxHeight,
-      mobileMaxHeight,
-      top,
-      left,
-      mobileLeft,
-      right,
-      mobileRight,
-      name,
-    } = this.props;
-
-    // ARIA reference example: https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html
-    return (
-      <Dropdown
-        width={width}
-        mobileWidth={mobileWidth}
-        maxHeight={maxHeight}
-        mobileMaxHeight={mobileMaxHeight}
-        top={top}
-        left={left}
-        mobileLeft={mobileLeft}
-        right={right}
-        mobileRight={mobileRight}
-        opened={opened}
-        onClickOutside={this.handleOnClickOutside}
-        content={
+  return (
+    <Dropdown
+      id={baseID} // Used for aria expanded and aria controls
+      width={width}
+      mobileWidth={mobileWidth}
+      maxHeight={maxHeight}
+      mobileMaxHeight={mobileMaxHeight}
+      top={top}
+      left={left}
+      mobileLeft={mobileLeft}
+      right={right}
+      mobileRight={mobileRight}
+      opened={opened}
+      onClickOutside={handleOnClickOutside}
+      content={
+        // The id is used for aria-labelledby on the group which defines
+        // the accessible name for the group. The role group identifies the
+        // group container for the list items.
+        <Box role="group" aria-labelledby={`id-${name}`}>
           <List
             className="e2e-sort-items"
-            tabIndex={-1}
-            role="listbox"
             aria-multiselectable={multipleSelectionAllowed}
           >
             {values &&
@@ -234,13 +248,17 @@ export default class ValuesList extends PureComponent<Props, State> {
                     aria-selected={checked}
                     key={entry.value}
                     onMouseDown={removeFocusAfterMouseClick}
+                    onKeyDown={handleOnSelectSingleValue(entry)}
                     className={classNames}
+                    tabIndex={-1}
+                    ref={(el) => el && (tabsRef.current[index] = el)}
                   >
                     <Checkbox
                       checked={checked}
-                      onChange={this.handleOnToggleCheckbox(entry)}
+                      onChange={handleOnToggleCheckbox(entry)}
                       label={<CheckboxLabel>{entry.text}</CheckboxLabel>}
                       name={name}
+                      checkBoxTabIndex={-1}
                     />
                   </CheckboxListItem>
                 ) : (
@@ -252,9 +270,14 @@ export default class ValuesList extends PureComponent<Props, State> {
                     key={entry.value}
                     onMouseDown={removeFocusAfterMouseClick}
                     className={classNames}
-                    onClick={this.handleOnSelectSingleValue(entry)}
-                    onKeyDown={this.handleOnSelectSingleValue(entry)}
-                    tabIndex={0}
+                    onClick={(event) => {
+                      event.preventDefault();
+
+                      onChange(entry.value);
+                    }}
+                    onKeyDown={handleOnSelectSingleValue(entry)}
+                    tabIndex={-1}
+                    ref={(el) => el && (tabsRef.current[index] = el)}
                   >
                     <ListItemText id={`e2e-item-${entry.value}`}>
                       {entry.text}
@@ -263,10 +286,12 @@ export default class ValuesList extends PureComponent<Props, State> {
                 );
               })}
           </List>
-        }
-      />
-    );
-  }
-}
+        </Box>
+      }
+    />
+  );
+};
+
+export default ValuesList;
 
 // TODO: page jump on landing page (doesn't happen on projects page)
