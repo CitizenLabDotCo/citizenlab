@@ -569,8 +569,6 @@
   "app.containers.Admin.Users.BlockedUsers.blockedUsersSubtitle": "Gerenciar usuários bloqueados.",
   "app.containers.Admin.Users.GroupsHeader.deleteGroup": "Apagar grupo",
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Editar grupo",
-  "app.containers.Admin.Users.GroupsPanel.adminsAndManagers": "Administradores e gestores",
-  "app.containers.Admin.Users.GroupsPanel.adminsAndManagersSubtitle1": "Visualizar quem foi selecionado como administradores, pasta e gestores de projeto.",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Usuários",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Grupos",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Crie grupos e adicione usuários.",

@@ -569,8 +569,6 @@
   "app.containers.Admin.Users.BlockedUsers.blockedUsersSubtitle": "Hallinnoi estettyjä käyttäjiä.",
   "app.containers.Admin.Users.GroupsHeader.deleteGroup": "Poista ryhmä",
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Muokkaa ryhmää",
-  "app.containers.Admin.Users.GroupsPanel.adminsAndManagers": "Järjestelmänvalvojat ja johtajat",
-  "app.containers.Admin.Users.GroupsPanel.adminsAndManagersSubtitle1": "Katso, ketkä on valittu järjestelmänvalvojiksi, kansio- ja projektipäälliköiksi.",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Rekisteröityneet käyttäjät",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Ryhmät",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Saat yleiskatsauksen kaikista alustalle rekisteröityneistä ihmisistä ja organisaatioista. Lisää joukko käyttäjiä manuaalisiin ryhmiin tai älykkäisiin ryhmiin.",
