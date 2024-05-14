@@ -51,6 +51,7 @@ class User < ApplicationRecord
   include Volunteering::UserDecorator
   include UserRoles
   include UserGroups
+  include UserConfirmation
   include PgSearch::Model
 
   GENDERS = %w[male female unspecified].freeze
@@ -149,10 +150,6 @@ class User < ApplicationRecord
 
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :assign_email_or_phone, if: :email_changed?
-  with_options if: -> { user_confirmation_enabled? } do
-    before_validation :set_confirmation_required
-    before_validation :confirm, if: ->(user) { user.invite_status_change&.last == 'accepted' }
-  end
   before_validation :complete_registration
 
   has_many :identities, dependent: :destroy
@@ -200,12 +197,6 @@ class User < ApplicationRecord
   validate :validate_not_duplicate_new_email
   validate :validate_can_update_email, on: :form_submission
   validate :validate_email_domains_blacklist
-
-  with_options if: -> { user_confirmation_enabled? } do
-    validates :email_confirmation_code, format: { with: USER_CONFIRMATION_CODE_PATTERN }, allow_nil: true
-    validates :email_confirmation_retry_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
-    validates :email_confirmation_code_reset_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
-  end
 
   before_destroy :remove_initiated_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
@@ -322,78 +313,7 @@ class User < ApplicationRecord
     sso? && email.blank? && new_email.blank? && password_digest.blank? && identity_ids.count == 1
   end
 
-  # true if the user has not yet confirmed their email address and the platform requires it
-  def confirmation_required?
-    user_confirmation_enabled? && confirmation_required
-  end
-
-  def confirm
-    self.email_confirmed_at = Time.zone.now
-    self.confirmation_required = false
-  end
-
-  def confirm!
-    return if !confirmation_required? && !new_email
-
-    confirm_new_email if new_email.present?
-    confirm
-    save!
-  end
-
-  def reset_confirmation_and_counts
-    if !confirmation_required?
-      # Only reset code and retry/reset counts if account has already been confirmed
-      # To keep limits in place for retries when not confirmed
-      self.email_confirmation_code = nil
-      self.email_confirmation_retry_count = 0
-      self.email_confirmation_code_reset_count = 0
-    end
-    self.confirmation_required = true
-    self.email_confirmation_code_sent_at = nil
-  end
-
-  def should_send_confirmation_email?
-    confirmation_required? && email_confirmation_code_sent_at.nil? && (PhoneService.new.encoded_phone_or_email?(email) == :email)
-  end
-
-  def email_confirmation_code_expiration_at
-    email_confirmation_code_sent_at + 1.day
-  end
-
-  def reset_confirmation_code
-    self.email_confirmation_code = Rails.env.development? ? '1234' : rand.to_s[2..5]
-  end
-
-  def increment_confirmation_code_reset_count
-    self.email_confirmation_code_reset_count += 1
-  end
-
-  def increment_confirmation_retry_count!
-    self.email_confirmation_retry_count += 1
-    save!
-  end
-
   private
-
-  def set_confirmation_required
-    return unless new_record? && email_changed?
-
-    not_ordinary_user = highest_role != :user # admin or moderator can be created only by invite or by admin API from cl2-tenant-setup
-    confirmation_not_required =
-      registered_with_phone? || sso? || invite_status.present? ||
-      active? || not_ordinary_user
-
-    self.confirmation_required = !confirmation_not_required
-    self.email_confirmed_at = nil
-    self.email_confirmation_code_sent_at = nil
-  end
-
-  def confirm_new_email
-    return unless new_email
-
-    self.email = new_email
-    self.new_email = nil
-  end
 
   def validate_not_duplicate_new_email
     return unless new_email
@@ -439,10 +359,6 @@ class User < ApplicationRecord
     invite_pending? ||
       unique_code.present? || # user created in input importer
       (email_was.blank? && sso? && identities.none?(&:email_always_present?))
-  end
-
-  def user_confirmation_enabled?
-    AppConfiguration.instance.feature_activated?('user_confirmation')
   end
 
   # NOTE: registration_completed_at_changed? added to allow tests to change this date manually
@@ -525,5 +441,4 @@ end
 User.include(IdeaAssignment::Extensions::User)
 User.include(ReportBuilder::Patches::User)
 User.include(Verification::Patches::User)
-
 User.prepend(MultiTenancy::Patches::User)
