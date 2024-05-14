@@ -263,6 +263,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
               background={colors.white}
               maxWidth="700px"
               w="100%"
+              // TODO: recalculate on resize
               h={calculateDynamicHeight()}
               pb={isSmallerThanPhone ? '0' : '80px'}
             >
