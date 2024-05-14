@@ -569,8 +569,6 @@
   "app.containers.Admin.Users.BlockedUsers.blockedUsersSubtitle": "Beheer geblokkeerde gebruikers.",
   "app.containers.Admin.Users.GroupsHeader.deleteGroup": "Verwijder groep",
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Bewerk groep",
-  "app.containers.Admin.Users.GroupsPanel.adminsAndManagers": "Beheerders",
-  "app.containers.Admin.Users.GroupsPanel.adminsAndManagersSubtitle1": "Overzicht van alle platform-, map- en projectbeheerders.",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Geregistreerde gebruikers",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Groepen",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Beheer alle gebruikers op je platform. Maak handmatige of slimme groepen aan om hen te segmenteren.",
