@@ -2,6 +2,8 @@ import { useMemo, useState } from 'react';
 
 import { useRegistrationsLive } from 'api/graph_data_units';
 
+import { getComparedPeriod } from 'components/admin/GraphCards/_utils/query';
+
 import { useIntl } from 'utils/cl-intl';
 
 import { parseTimeSeries, parseStats, parseExcelData } from './parse';
@@ -20,6 +22,8 @@ export default function useRegistrations({
     {
       start_at: startAtMoment?.toISOString(),
       end_at: endAtMoment?.toISOString(),
+      resolution,
+      ...getComparedPeriod(resolution),
     },
     {
       onSuccess: () => setCurrentResolution(resolution),
