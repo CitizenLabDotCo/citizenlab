@@ -1712,6 +1712,7 @@
   "app.errors.bulk_import_malformed_pdf": "Čini se da je učitana PDF datoteka neispravna. Pokušajte ponovno izvesti PDF iz svog izvora, a zatim ponovno prenesite.",
   "app.errors.bulk_import_maximum_ideas_exceeded": "Premašen je maksimum od {value} ideja.",
   "app.errors.bulk_import_maximum_pdf_pages_exceeded": "Premašen je maksimum od {value} stranica u PDF-u.",
+  "app.errors.bulk_import_not_enough_pdf_pages": "Učitani PDF nema dovoljno stranica - trebao bi imati barem isti broj stranica kao preuzeti predložak.",
   "app.errors.bulk_import_publication_date_invalid_format": "Ideja s nevažećim formatom datuma objave \"{value}\". Molimo koristite format \"DD-MM-GGGG\".",
   "app.errors.cannot_contain_ideas": "Odabrana participativna metoda ne podržava ovaj tip unosa. Molimo vas da promenite vaš izbor i pokušate ponovo.",
   "app.errors.cant_change_after_first_response": "Ovo ne možete izmijeniti jer su određeni korisnici već odgovorili",
