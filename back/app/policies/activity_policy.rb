@@ -11,16 +11,17 @@ class ActivityPolicy < ApplicationPolicy
 
     def resolve
       if user&.admin? && user&.active?
-        activities = scope.none
+        activities = scope.where(acted_at: 30.days.ago..Time.now).where(user: User.admin_or_moderator)
+        result = scope.none
 
         Activity::MANAGEMENT_FILTERS.each do |filter|
-          activities = activities.or(scope.where(
+          result = result.or(activities.where(
             item_type: filter[:item_type],
             action: filter[:actions]
           ))
         end
 
-        activities
+        result
       else
         scope.none
       end

@@ -9,18 +9,19 @@ resource 'Activity' do
   before do
     header 'Content-Type', 'application/json'
     admin_header_token
-    @user = create(:admin)
+    @user1 = create(:admin)
+    @user2 = create(:user, roles: [{ type: 'project_moderator', project_id: SecureRandom.uuid }])
     @project = create(:project)
-    @activity1 = create(:phase_created_activity, user: @user)
-    @activity2 = create(:phase_changed_activity, project_id: @project.id)
-    @activity3 = create(:phase_deleted_activity)
-    @activity4 = create(:project_created_activity, item: @project, user: @user)
-    @activity5 = create(:project_changed_activity, item: @project)
-    @activity6 = create(:project_deleted_activity, item: @project)
-    @activity7 = create(:idea_created_activity)
-    @activity8 = create(:idea_deleted_activity)
-    @activity9 = create(:idea_changed_activity)
-    @non_management_activity = create(:comment_created_activity)
+    @activity1 = create(:phase_created_activity, user: @user1)
+    @activity2 = create(:phase_changed_activity, project_id: @project.id, user: @user2)
+    @activity3 = create(:phase_deleted_activity, user: @user2)
+    @activity4 = create(:project_created_activity, item: @project, user: @user1)
+    @activity5 = create(:project_changed_activity, item: @project, user: @user2)
+    @activity6 = create(:project_deleted_activity, item: @project, user: @user2)
+    @activity7 = create(:idea_created_activity, user: @user2)
+    @activity8 = create(:idea_deleted_activity, user: @user2)
+    @activity9 = create(:idea_changed_activity, user: @user2)
+    @non_management_activity = create(:comment_created_activity, user: @user2)
   end
 
   get 'web_api/v1/activities' do
@@ -37,7 +38,7 @@ resource 'Activity' do
     end
 
     example 'List all activities associated with a user' do
-      do_request user_ids: [@user.id]
+      do_request user_ids: [@user1.id]
       assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
@@ -51,6 +52,24 @@ resource 'Activity' do
       expect(json_response[:data].size).to eq 4
       expect(json_response[:data].pluck(:id))
         .to match_array [@activity2.id, @activity4.id, @activity5.id, @activity6.id]
+    end
+
+    example 'List all activities does not include activities with acted_at more than 30 days ago', document: false do
+      @activity1.update!(acted_at: 31.days.ago)
+      do_request
+      assert_status 200
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 8
+      expect(json_response[:data].pluck(:id)).not_to include @activity1.id
+    end
+
+    example 'List all activities does not include activities where actor is not an admin or moderator', document: false do
+      @activity1.update!(user: create(:user))
+      do_request
+      assert_status 200
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 8
+      expect(json_response[:data].pluck(:id)).not_to include @activity1.id
     end
   end
 end
