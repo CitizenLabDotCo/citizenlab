@@ -18,7 +18,8 @@ export default defineMessages({
     defaultMessage: 'Registration rate',
   },
   registrationRateTooltip: {
-    id: 'app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip',
-    defaultMessage: 'Percentage of all registrations compared to all visitors.',
+    id: 'app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip2',
+    defaultMessage:
+      'Percentage of visitors that become registered users. Only users and visitors that accepted cookies are counted.',
   },
 });
