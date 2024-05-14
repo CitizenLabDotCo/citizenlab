@@ -1712,6 +1712,7 @@
   "app.errors.bulk_import_malformed_pdf": "يبدو أن ملف PDF الذي تم تحميله مشوه. حاول تصدير ملف PDF مرة أخرى من المصدر الخاص بك ثم قم بتحميله مرة أخرى.",
   "app.errors.bulk_import_maximum_ideas_exceeded": "تم تجاوز الحد الأقصى {value} من الأفكار.",
   "app.errors.bulk_import_maximum_pdf_pages_exceeded": "تم تجاوز الحد الأقصى {value} من الصفحات في ملف PDF.",
+  "app.errors.bulk_import_not_enough_pdf_pages": "لا يحتوي ملف PDF الذي تم تحميله على صفحات كافية - يجب أن يحتوي على الأقل على نفس عدد الصفحات الموجودة في القالب الذي تم تنزيله.",
   "app.errors.bulk_import_publication_date_invalid_format": "الفكرة ذات تنسيق تاريخ النشر غير صالح \"{value}\". الرجاء استخدام التنسيق \"DD-MM-YYYY\".",
   "app.errors.cannot_contain_ideas": "تحتوي هذه المرحلة على {ideasCount, plural, one {فكرة واحدة} other {{ideasCount} أفكار}} وطريقة المشاركة التي تحاول تغييرها لا تدعم الأفكار. يُرجى إزالة {ideasCount, plural, one {الفكرة} other {الأفكار}} من المرحلة والمحاولة مجددًا.",
   "app.errors.cant_change_after_first_response": "لم يعُد بإمكانك تغيير هذا، لأن بعض المستخدمين قد استجابوا بالفعل",
