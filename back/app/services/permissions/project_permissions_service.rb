@@ -6,13 +6,13 @@ module Permissions
       project_not_visible: 'project_not_visible'
     }.freeze
 
-    def denied_reason_for_project(action, user, project, reaction_mode: nil)
+    def denied_reason_for_action(action, user, project, reaction_mode: nil)
       project_visible_reason = project_visible_disabled_reason(project, user)
       if project_visible_reason
         project_visible_reason
       else
         phase = @timeline_service.current_phase_not_archived project
-        denied_reason_for_phase action, user, phase, reaction_mode: reaction_mode
+        super action, user, phase, reaction_mode: reaction_mode
       end
     end
 
@@ -23,15 +23,15 @@ module Permissions
     end
 
     def action_descriptors(project, user)
-      posting_disabled_reason = denied_reason_for_project 'posting_idea', user, project
-      commenting_disabled_reason = denied_reason_for_project 'commenting_idea', user, project
-      reacting_disabled_reason = denied_reason_for_project 'reacting_idea', user, project
-      liking_disabled_reason = denied_reason_for_project 'reacting_idea', user, project, reaction_mode: 'up'
-      disliking_disabled_reason = denied_reason_for_project 'reacting_idea', user, project, reaction_mode: 'down'
-      annotating_document_disabled_reason = denied_reason_for_project 'annotating_document', user, project
-      taking_survey_disabled_reason = denied_reason_for_project 'taking_survey', user, project
-      taking_poll_disabled_reason = denied_reason_for_project 'taking_poll', user, project
-      voting_disabled_reason = denied_reason_for_project 'voting', user, project
+      posting_disabled_reason = denied_reason_for_action 'posting_idea', user, project
+      commenting_disabled_reason = denied_reason_for_action 'commenting_idea', user, project
+      reacting_disabled_reason = denied_reason_for_action 'reacting_idea', user, project
+      liking_disabled_reason = denied_reason_for_action 'reacting_idea', user, project, reaction_mode: 'up'
+      disliking_disabled_reason = denied_reason_for_action 'reacting_idea', user, project, reaction_mode: 'down'
+      annotating_document_disabled_reason = denied_reason_for_action 'annotating_document', user, project
+      taking_survey_disabled_reason = denied_reason_for_action 'taking_survey', user, project
+      taking_poll_disabled_reason = denied_reason_for_action 'taking_poll', user, project
+      voting_disabled_reason = denied_reason_for_action 'voting', user, project
       {
         posting_idea: {
           enabled: !posting_disabled_reason,

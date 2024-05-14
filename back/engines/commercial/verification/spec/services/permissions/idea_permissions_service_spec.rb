@@ -14,7 +14,7 @@ describe Permissions::IdeaPermissionsService do
       verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
       permission.update!(permitted_by: 'groups', group_ids: [create(:group).id, verified_members.id])
       idea = create(:idea, project: project, phases: [project.phases[2]])
-      expect(service.denied_reason_for_idea('commenting_idea', user, idea)).to eq 'not_verified'
+      expect(service.denied_reason_for_action('commenting_idea', user, idea)).to eq 'not_verified'
     end
   end
 
@@ -28,8 +28,8 @@ describe Permissions::IdeaPermissionsService do
         permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'reacting_idea')
         verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
         permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
-        expect(service.denied_reason_for_idea('reacting_idea', user, idea, reaction_mode: 'up')).to eq 'not_verified'
-        expect(service.denied_reason_for_idea('reacting_idea', user, idea, reaction_mode: 'down')).to eq 'not_verified'
+        expect(service.denied_reason_for_action('reacting_idea', user, idea, reaction_mode: 'up')).to eq 'not_verified'
+        expect(service.denied_reason_for_action('reacting_idea', user, idea, reaction_mode: 'down')).to eq 'not_verified'
       end
     end
 
@@ -42,8 +42,8 @@ describe Permissions::IdeaPermissionsService do
         permission = project.phases.first.permissions.find_by(action: 'reacting_idea')
         group = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
         permission.update!(permitted_by: 'groups', groups: [create(:group), group])
-        expect(service.denied_reason_for_idea('reacting_idea', user, idea, reaction_mode: 'up')).to eq 'not_signed_in'
-        expect(service.denied_reason_for_idea('reacting_idea', user, idea, reaction_mode: 'down')).to eq 'not_signed_in'
+        expect(service.denied_reason_for_action('reacting_idea', user, idea, reaction_mode: 'up')).to eq 'not_signed_in'
+        expect(service.denied_reason_for_action('reacting_idea', user, idea, reaction_mode: 'down')).to eq 'not_signed_in'
       end
     end
   end
@@ -56,7 +56,7 @@ describe Permissions::IdeaPermissionsService do
       permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'voting')
       verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
       permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
-      expect(service.denied_reason_for_idea('voting', create(:user), idea)).to eq 'not_verified'
+      expect(service.denied_reason_for_action('voting', create(:user), idea)).to eq 'not_verified'
     end
   end
 end

@@ -19,8 +19,8 @@ describe Permissions::PhasePermissionsService do
       )
       phase = project.phases.order(:start_at)[1]
 
-      expect(service.denied_reason_for_phase('reacting_idea', user, phase, reaction_mode: 'up')).to be_nil
-      expect(service.denied_reason_for_phase('reacting_idea', user, phase, reaction_mode: 'down')).to be_nil
+      expect(service.denied_reason_for_action('reacting_idea', user, phase, reaction_mode: 'up')).to be_nil
+      expect(service.denied_reason_for_action('reacting_idea', user, phase, reaction_mode: 'down')).to be_nil
     end
 
     it 'returns nil when reacting is enabled for that phase, but disabled for the current phase' do
@@ -30,8 +30,8 @@ describe Permissions::PhasePermissionsService do
       )
       phase = project.phases.order(:start_at).first
 
-      expect(service.denied_reason_for_phase('reacting_idea', user, phase, reaction_mode: 'up')).to be_nil
-      expect(service.denied_reason_for_phase('reacting_idea', user, phase, reaction_mode: 'down')).to be_nil
+      expect(service.denied_reason_for_action('reacting_idea', user, phase, reaction_mode: 'up')).to be_nil
+      expect(service.denied_reason_for_action('reacting_idea', user, phase, reaction_mode: 'down')).to be_nil
     end
 
     it 'returns `reacting_like_limited_max_reached` if the like limit was reached for that phase' do
@@ -46,8 +46,8 @@ describe Permissions::PhasePermissionsService do
         create(:reaction, mode: 'up', reactable: idea, user: user)
       end
 
-      expect(service.denied_reason_for_phase('reacting_idea', user, phase, reaction_mode: 'up')).to eq 'reacting_like_limited_max_reached'
-      expect(service.denied_reason_for_phase('reacting_idea', user, phase, reaction_mode: 'down')).to be_nil
+      expect(service.denied_reason_for_action('reacting_idea', user, phase, reaction_mode: 'up')).to eq 'reacting_like_limited_max_reached'
+      expect(service.denied_reason_for_action('reacting_idea', user, phase, reaction_mode: 'down')).to be_nil
     end
   end
 end

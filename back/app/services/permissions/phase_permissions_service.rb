@@ -42,7 +42,7 @@ module Permissions
       already_responded: 'already_responded'
     }.freeze
 
-    def denied_reason_for_phase(action, user, phase, reaction_mode: nil)
+    def denied_reason_for_action(action, user, phase, reaction_mode: nil)
       return PHASE_DENIED_REASONS[:project_inactive] unless phase
 
       phase_denied_reason = case action
@@ -65,8 +65,10 @@ module Permissions
       end
       return phase_denied_reason if phase_denied_reason
 
-      denied_reason_for_action(action, user, phase)
+      super action, user, phase
     end
+
+    alias denied_reason_for_phase denied_reason_for_action
 
     private
 
