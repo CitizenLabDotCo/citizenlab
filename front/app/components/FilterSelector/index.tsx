@@ -218,6 +218,8 @@ const FilterSelector = ({
             onClick={toggleExpanded}
             minWidth={minWidth ? minWidth : undefined}
             onKeyDown={handleKeyDown}
+            ariaExpanded={opened}
+            aria-controls={baseID}
           >
             <Box display="flex" gap="8px">
               {currentTitle}

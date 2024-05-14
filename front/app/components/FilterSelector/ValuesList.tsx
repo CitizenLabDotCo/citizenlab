@@ -203,6 +203,7 @@ const ValuesList = ({
 
   return (
     <Dropdown
+      id={baseID} // Used for aria expanded and aria controls
       width={width}
       mobileWidth={mobileWidth}
       maxHeight={maxHeight}

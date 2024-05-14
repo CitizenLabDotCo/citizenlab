@@ -82,6 +82,7 @@ const Title = ({
       onKeyDown={handleKeyDown}
       onClick={handleOnClick}
       aria-expanded={opened}
+      aria-controls={baseID}
       id={`${baseID}-label`}
       className={`e2e-filter-selector-button FilterSelectorTitle ${
         opened ? 'opened' : ''
