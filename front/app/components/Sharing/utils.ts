@@ -19,6 +19,7 @@ export function getUrlWithUtm(
   let resUrl = url;
 
   if (medium !== 'facebook') {
+    // Only add UTM params to non-Facebook links
     resUrl += `?utm_source=${encodeURIComponent(
       utmParams.source
     )}&utm_campaign=${encodeURIComponent(
