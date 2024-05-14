@@ -157,7 +157,7 @@ const FilterSelector = ({
     return newTitle;
   };
 
-  const toggleExpanded = () => {
+  const toggleValuesList = () => {
     setOpened((current) => !current);
   };
 
@@ -199,7 +199,7 @@ const FilterSelector = ({
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.key === 'ArrowDown' && !opened) {
       event.preventDefault();
-      toggleExpanded();
+      toggleValuesList();
     }
   };
 
@@ -211,11 +211,13 @@ const FilterSelector = ({
       }`}
     >
       <Box id={`id-${name}`}>
+        {' '}
+        {/* The id is used for aria-labelledby on the group which defines the accessible name for the group */}
         {filterSelectorStyle === 'button' ? (
           <Button
             height={isPhoneOrSmaller ? '32px' : '36px'}
             borderRadius="24px"
-            onClick={toggleExpanded}
+            onClick={toggleValuesList}
             minWidth={minWidth ? minWidth : undefined}
             onKeyDown={handleKeyDown}
             ariaExpanded={opened}
@@ -234,7 +236,7 @@ const FilterSelector = ({
             key={baseID}
             title={currentTitle}
             opened={opened}
-            onClick={toggleExpanded}
+            onClick={toggleValuesList}
             baseID={baseID}
             textColor={textColor}
             handleKeyDown={handleKeyDown}
