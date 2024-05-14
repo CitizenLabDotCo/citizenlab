@@ -1,5 +1,7 @@
 import React, { FormEvent } from 'react';
 
+import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
+import { isString } from 'lodash-es';
 import { parse } from 'qs';
 import { Helmet } from 'react-helmet';
 import { WrappedComponentProps } from 'react-intl';
@@ -9,7 +11,7 @@ import { IAppConfiguration } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import resetPassword from 'api/authentication/reset_password/resetPassword';
 
-import PasswordResetSuccess from 'containers/PasswordReset/PasswordResetSuccess';
+import { PasswordResetSuccess } from 'containers/PasswordReset/PasswordResetSuccess';
 
 import {
   StyledContentContainer,
@@ -59,7 +61,7 @@ class PasswordReset extends React.PureComponent<Props, State> {
   constructor(props: Props & WrappedComponentProps) {
     super(props);
     const query = parse(clHistory.location.search, { ignoreQueryPrefix: true });
-    const token = typeof query.token === 'string' ? query.token : null;
+    const token = isString(query.token) ? query.token : null;
     this.state = {
       token,
       password: null,
@@ -76,7 +78,7 @@ class PasswordReset extends React.PureComponent<Props, State> {
   componentDidMount() {
     const { token } = this.state;
 
-    if (typeof token !== 'string') {
+    if (!isString(token)) {
       clHistory.push('/');
     } else if (this.passwordInputElement) {
       this.passwordInputElement.focus();
@@ -178,62 +180,62 @@ class PasswordReset extends React.PureComponent<Props, State> {
     const passwordPlaceholder = formatMessage(messages.passwordPlaceholder);
     const updatePassword = formatMessage(messages.updatePassword);
 
-    return (
-      <>
+    return success ? (
+      <PasswordResetSuccess />
+    ) : (
+      <Box
+        width="100%"
+        minHeight={`calc(100vh - ${
+          stylingConsts.menuHeight + stylingConsts.footerHeight
+        }px)`}
+      >
         <Helmet
           title={helmetTitle}
           meta={[{ name: 'description', content: helmetDescription }]}
         />
+
         <main>
           <StyledContentContainer>
-            {success ? (
-              <PasswordResetSuccess />
-            ) : (
-              <>
-                <Title>{title}</Title>
+            <Title>{title}</Title>
 
-                <Form onSubmit={this.handleOnSubmit}>
-                  <LabelContainer>
-                    <FormLabel
-                      width="max-content"
-                      margin-right="5px"
-                      labelMessage={messages.passwordLabel}
-                      htmlFor="password"
-                    />
-                    <StyledPasswordIconTooltip />
-                  </LabelContainer>
-                  <PasswordInput
-                    id="password"
-                    autocomplete="new-password"
-                    password={password}
-                    placeholder={passwordPlaceholder}
-                    onChange={this.handlePasswordOnChange}
-                    setRef={this.handlePasswordInputSetRef}
-                    errors={{ minimumLengthError }}
+            <Form onSubmit={this.handleOnSubmit}>
+              <LabelContainer>
+                <FormLabel
+                  width="max-content"
+                  margin-right="5px"
+                  labelMessage={messages.passwordLabel}
+                  htmlFor="password"
+                />
+                <StyledPasswordIconTooltip />
+              </LabelContainer>
+              <PasswordInput
+                id="password"
+                autocomplete="new-password"
+                password={password}
+                placeholder={passwordPlaceholder}
+                onChange={this.handlePasswordOnChange}
+                setRef={this.handlePasswordInputSetRef}
+                errors={{ minimumLengthError }}
+              />
+              {apiErrors &&
+                Object.keys(apiErrors).map((errorField: ApiErrorFieldName) => (
+                  <Error
+                    key={errorField}
+                    apiErrors={apiErrors[errorField]}
+                    fieldName={errorField}
                   />
-                  {apiErrors &&
-                    Object.keys(apiErrors).map(
-                      (errorField: ApiErrorFieldName) => (
-                        <Error
-                          key={errorField}
-                          apiErrors={apiErrors[errorField]}
-                          fieldName={errorField}
-                        />
-                      )
-                    )}
+                ))}
 
-                  <StyledButton
-                    size="m"
-                    processing={processing}
-                    text={updatePassword}
-                    onClick={this.handleOnSubmit}
-                  />
-                </Form>
-              </>
-            )}
+              <StyledButton
+                size="m"
+                processing={processing}
+                text={updatePassword}
+                onClick={this.handleOnSubmit}
+              />
+            </Form>
           </StyledContentContainer>
         </main>
-      </>
+      </Box>
     );
   }
 }

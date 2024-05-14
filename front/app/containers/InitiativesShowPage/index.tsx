@@ -9,7 +9,6 @@ import useInitiativeBySlug from 'api/initiatives/useInitiativeBySlug';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import InitiativesShow from 'containers/InitiativesShow';
-import InitiativeMeta from 'containers/InitiativesShow/InitiativeMeta';
 
 import PageNotFound from 'components/PageNotFound';
 import Unauthorized from 'components/Unauthorized';
@@ -18,6 +17,10 @@ import VerticalCenterer from 'components/VerticalCenterer';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 
 import InitiativeShowPageTopBar from './InitiativeShowPageTopBar';
+
+const Container = styled.div`
+  background: #fff;
+`;
 
 const StyledInitiativeShowPageTopBar = styled(InitiativeShowPageTopBar)`
   position: fixed;
@@ -61,16 +64,11 @@ const InitiativesShowPage = () => {
     return <PageNotFound />;
   }
 
-  const initiativeId = initiative.data.id;
-
   return (
-    <>
-      <InitiativeMeta initiativeId={initiativeId} />
-      <>
-        <StyledInitiativeShowPageTopBar initiativeId={initiativeId} />
-        <StyledInitiativesShow initiativeId={initiativeId} />
-      </>
-    </>
+    <Container>
+      <StyledInitiativeShowPageTopBar initiativeId={initiative.data.id} />
+      <StyledInitiativesShow initiativeId={initiative.data.id} />
+    </Container>
   );
 };
 

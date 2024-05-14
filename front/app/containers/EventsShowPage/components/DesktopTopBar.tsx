@@ -39,7 +39,7 @@ const TopBar = ({ project, event }: Props) => {
 
   return (
     <Bar>
-      <Box display="flex" width="100%" justifyContent="space-between">
+      <Box mb="40px" display="flex" width="100%" justifyContent="space-between">
         <GoBackButtonSolid
           text={formatMessage(messages.goBack)}
           onClick={() => {

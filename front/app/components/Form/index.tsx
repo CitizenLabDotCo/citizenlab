@@ -14,15 +14,17 @@ import {
   Layout,
 } from '@jsonforms/core';
 import styled from 'styled-components';
-import { CLErrors } from 'typings';
+import { CLErrors, SupportedLocale } from 'typings';
 
 import useLocale from 'hooks/useLocale';
 import useObserveEvent from 'hooks/useObserveEvent';
 
 import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 import ButtonBar from './Components/ButtonBar';
 import Fields from './Components/Fields';
+import Wrapper from './Components/Wrapper';
 import messages from './messages';
 import { parseRequiredMultilocsData } from './parseRequiredMultilocs';
 import { ApiErrorGetter, AjvErrorGetter, FormData } from './typings';
@@ -80,8 +82,13 @@ interface Props {
   footer?: React.ReactNode;
 }
 
+interface InnerProps extends Props {
+  locale: SupportedLocale;
+}
+
 const Form = memo(
   ({
+    locale,
     schema,
     uiSchema,
     initialFormData,
@@ -95,9 +102,8 @@ const Form = memo(
     footer,
     onChange,
     onSubmit,
-  }: Props) => {
+  }: InnerProps) => {
     const { formatMessage } = useIntl();
-    const locale = useLocale();
 
     const [data, setData] = useState<FormData>(() => {
       return parseRequiredMultilocsData(schema, locale, initialFormData);
@@ -124,8 +130,11 @@ const Form = memo(
       setData(parseRequiredMultilocsData(schema, locale, initialFormData));
     }, [schema, locale, initialFormData]);
 
-    const layoutType =
-      layout || (isCategorization(uiSchema) ? 'fullpage' : 'inline');
+    const layoutType = layout
+      ? layout
+      : isCategorization(uiSchema)
+      ? 'fullpage'
+      : 'inline';
 
     const handleChange = (data: FormData) => {
       setData(data);
@@ -157,24 +166,13 @@ const Form = memo(
     useObserveEvent(submitOnEvent, handleSubmit);
 
     return (
-      /*
-        This form should contain as few styles as possible!
-        Customization should happen in places where this component is imported!
-      */
-      <Box
+      <Wrapper
         id={uiSchema?.options?.formId}
-        as="form"
-        display="flex"
-        flexDirection="column"
-        // This is necessary for the form to grow with the content and still be scrollable
-        height="100%"
+        layoutType={layoutType}
+        isSurvey={config === 'survey'}
       >
         <Box
           overflow={layoutType === 'inline' ? 'visible' : 'auto'}
-          /*
-            Grows the content to take full height,
-            so we can center the form content vertically for survey form pages with only 1 field
-          */
           flex="1"
           marginBottom={
             layoutType === 'fullpage' && showSubmitButton ? '32px' : 'auto'
@@ -225,9 +223,16 @@ const Form = memo(
             )}
           </>
         )}
-      </Box>
+      </Wrapper>
     );
   }
 );
 
-export default Form;
+const OuterForm = (props: Props) => {
+  const locale = useLocale();
+  if (isNilOrError(locale)) return null;
+
+  return <Form locale={locale} {...props} />;
+};
+
+export default OuterForm;

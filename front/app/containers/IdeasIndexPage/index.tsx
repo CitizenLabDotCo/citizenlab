@@ -20,7 +20,7 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import IdeasIndexMeta from './IdeaIndexMeta';
 import messages from './messages';
 
-const Container = styled.div`
+const Container = styled.main`
   min-height: calc(
     100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
   );
@@ -110,21 +110,19 @@ export default () => {
   return (
     <>
       <IdeasIndexMeta />
-      <main>
-        <Container>
-          <StyledContentContainer maxWidth="100%">
-            <PageTitle>
-              <FormattedMessage {...messages.inputsPageTitle} />
-            </PageTitle>
-            <IdeaCardsWithFiltersSidebar
-              invisibleTitleMessage={messages.a11y_IdeasListTitle}
-              ideaQueryParameters={ideasQueryParameters}
-              onUpdateQuery={updateSearchParams}
-            />
-          </StyledContentContainer>
-          <CityLogoSection />
-        </Container>
-      </main>
+      <Container>
+        <StyledContentContainer maxWidth="100%">
+          <PageTitle>
+            <FormattedMessage {...messages.inputsPageTitle} />
+          </PageTitle>
+          <IdeaCardsWithFiltersSidebar
+            invisibleTitleMessage={messages.a11y_IdeasListTitle}
+            ideaQueryParameters={ideasQueryParameters}
+            onUpdateQuery={updateSearchParams}
+          />
+        </StyledContentContainer>
+        <CityLogoSection />
+      </Container>
     </>
   );
 };

@@ -12,7 +12,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import ProjectsIndexMeta from './ProjectsIndexMeta';
 
-const Container = styled.div`
+const Container = styled.main`
   min-height: calc(
     100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
   );
@@ -63,23 +63,21 @@ const ProjectsIndex = () => {
   return (
     <>
       <ProjectsIndexMeta />
-      <main>
-        <Container>
-          <StyledContentContainer mode="page">
-            <PageTitle>
-              <FormattedMessage {...messages.pageTitle} />
-            </PageTitle>
+      <Container>
+        <StyledContentContainer mode="page">
+          <PageTitle>
+            <FormattedMessage {...messages.pageTitle} />
+          </PageTitle>
 
-            <ProjectAndFolderCards
-              showTitle={false}
-              showSearch={true}
-              layout="threecolumns"
-              publicationStatusFilter={['published', 'archived']}
-            />
-          </StyledContentContainer>
-          <CityLogoSection />
-        </Container>
-      </main>
+          <ProjectAndFolderCards
+            showTitle={false}
+            showSearch={true}
+            layout="threecolumns"
+            publicationStatusFilter={['published', 'archived']}
+          />
+        </StyledContentContainer>
+        <CityLogoSection />
+      </Container>
     </>
   );
 };

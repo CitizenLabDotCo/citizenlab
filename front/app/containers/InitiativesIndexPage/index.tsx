@@ -19,6 +19,8 @@ import InitiativesHeader from './InitiativesHeader';
 import InitiativesIndexMeta from './InitiativesIndexMeta';
 import messages from './messages';
 
+const Container = styled.main``;
+
 const FooterBanner = styled.div`
   background: ${({ theme }) => theme.colors.tenantPrimary};
   width: 100%;
@@ -81,7 +83,7 @@ const InitiativeIndexPage = () => {
     return (
       <>
         <InitiativesIndexMeta />
-        <main>
+        <Container>
           <InitiativesHeader />
           <StyledContentContainer maxWidth="100%">
             <Padding />
@@ -102,7 +104,7 @@ const InitiativeIndexPage = () => {
             </FooterBanner>
           )}
           <CityLogoSection />
-        </main>
+        </Container>
       </>
     );
   }

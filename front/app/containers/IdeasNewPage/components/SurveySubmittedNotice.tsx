@@ -26,32 +26,30 @@ const SurveySubmittedNotice = ({ project }: Props) => {
   const isMobileOrSmaller = useBreakpoint('phone');
 
   return (
-    <main>
-      <PageContainer>
-        <Box mx="auto">
-          <Title mt={isMobileOrSmaller ? '80px' : '160px'} textAlign="center">
-            {formatMessage(messages.surveySubmittedTitle)}
-          </Title>
-          <Text m="0px" textAlign="center">
-            {formatMessage(messages.surveySubmittedDescription)}
-          </Text>
-          <Text mt="4px" mb="24px" textAlign="center">
-            {formatMessage(messages.thanksForResponse)}
-          </Text>
-          <Box display="flex" justifyContent="center">
-            <Button
-              icon="arrow-left"
-              pl="12px"
-              onClick={() => {
-                clHistory.push(`/projects/${project.attributes.slug}`);
-              }}
-            >
-              {formatMessage(messages.returnToProject)}
-            </Button>
-          </Box>
+    <PageContainer>
+      <Box mx="auto">
+        <Title mt={isMobileOrSmaller ? '80px' : '160px'} textAlign="center">
+          {formatMessage(messages.surveySubmittedTitle)}
+        </Title>
+        <Text m="0px" textAlign="center">
+          {formatMessage(messages.surveySubmittedDescription)}
+        </Text>
+        <Text mt="4px" mb="24px" textAlign="center">
+          {formatMessage(messages.thanksForResponse)}
+        </Text>
+        <Box display="flex" justifyContent="center">
+          <Button
+            icon="arrow-left"
+            pl="12px"
+            onClick={() => {
+              clHistory.push(`/projects/${project.attributes.slug}`);
+            }}
+          >
+            {formatMessage(messages.returnToProject)}
+          </Button>
         </Box>
-      </PageContainer>
-    </main>
+      </Box>
+    </PageContainer>
   );
 };
 

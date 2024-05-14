@@ -35,20 +35,20 @@ import { useIntl } from 'utils/cl-intl';
 import Navigate from 'utils/cl-router/Navigate';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
-import { anyIsUndefined } from 'utils/helperUtils';
+import { anyIsUndefined, isNilOrError } from 'utils/helperUtils';
 import messages from 'utils/messages';
 import { scrollToElement } from 'utils/scroll';
 
 import { isValidPhase } from './phaseParam';
 import ProjectCTABar from './ProjectCTABar';
 import ProjectHeader from './shared/header/ProjectHeader';
-import ProjectShowPageMeta from './shared/header/ProjectShowPageMeta';
+import ProjectHelmet from './shared/header/ProjectHelmet';
 import SuccessModal from './SucessModal';
 import TimelineContainer from './timeline';
 
 const confetti = new JSConfetti();
 
-const Container = styled.div<{ background: string }>`
+const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
   height: 100%;
   min-height: calc(
@@ -131,52 +131,53 @@ const ProjectsShowPage = ({ project }: Props) => {
         <ProjectHeader projectId={projectId} />
         <ProjectCTABar projectId={projectId} />
 
-        <main>
-          <div id="participation-detail">
-            <TimelineContainer projectId={projectId} />
-          </div>
-          {!!events?.data.length && (
-            <Box
-              id="e2e-events-section-project-page"
-              display="flex"
-              flexDirection="column"
-              gap="48px"
-              mx="auto"
-              my="48px"
-              maxWidth="1166px"
-              padding={isSmallerThanTablet ? '20px' : '0px'}
-            >
-              <EventsViewer
-                showProjectFilter={false}
-                projectId={projectId}
-                eventsTime="currentAndFuture"
-                title={formatMessage(messages.upcomingAndOngoingEvents)}
-                fallbackMessage={messages.noUpcomingOrOngoingEvents}
-                projectPublicationStatuses={['published', 'draft', 'archived']}
-              />
-              <EventsViewer
-                showProjectFilter={false}
-                projectId={projectId}
-                eventsTime="past"
-                title={formatMessage(messages.pastEvents)}
-                fallbackMessage={messages.noPastEvents}
-                projectPublicationStatuses={['published', 'draft', 'archived']}
-                showDateFilter={false}
-              />
-            </Box>
-          )}
-        </main>
+        <div id="participation-detail">
+          <TimelineContainer projectId={projectId} />
+        </div>
+        {!!events?.data.length && (
+          <Box
+            id="e2e-events-section-project-page"
+            display="flex"
+            flexDirection="column"
+            gap="48px"
+            mx="auto"
+            my="48px"
+            maxWidth="1166px"
+            padding={isSmallerThanTablet ? '20px' : '0px'}
+          >
+            <EventsViewer
+              showProjectFilter={false}
+              projectId={projectId}
+              eventsTime="currentAndFuture"
+              title={formatMessage(messages.upcomingAndOngoingEvents)}
+              fallbackMessage={messages.noUpcomingOrOngoingEvents}
+              projectPublicationStatuses={['published', 'draft', 'archived']}
+            />
+            <EventsViewer
+              showProjectFilter={false}
+              projectId={projectId}
+              eventsTime="past"
+              title={formatMessage(messages.pastEvents)}
+              fallbackMessage={messages.noPastEvents}
+              projectPublicationStatuses={['published', 'draft', 'archived']}
+              showDateFilter={false}
+            />
+          </Box>
+        )}
+
         <SuccessModal projectId={projectId} />
       </ContentWrapper>
     );
   }
 
+  const bgColor =
+    !isNilOrError(events) && events.data.length > 0
+      ? '#fff'
+      : colors.background;
+
   return (
-    <Container
-      background={
-        events && events?.data.length > 0 ? colors.white : colors.background
-      }
-    >
+    <Container background={bgColor}>
+      <ProjectHelmet project={project} />
       {content}
     </Container>
   );
@@ -252,12 +253,9 @@ const ProjectsShowPageWrapper = () => {
   if (!project) return null;
 
   return (
-    <>
-      <ProjectShowPageMeta project={project.data} />
-      <VotingContext projectId={project.data.id}>
-        <ProjectsShowPage project={project.data} />
-      </VotingContext>
-    </>
+    <VotingContext projectId={project.data.id}>
+      <ProjectsShowPage project={project.data} />
+    </VotingContext>
   );
 };
 

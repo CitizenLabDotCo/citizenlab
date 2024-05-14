@@ -15,7 +15,7 @@ import clHistory from 'utils/cl-router/history';
 
 import messages from './messages';
 
-const PasswordResetSuccess = () => {
+export const PasswordResetSuccess = () => {
   const signIn = () => {
     clHistory.push('/');
     triggerAuthenticationFlow({ flow: 'signin' });
@@ -52,5 +52,3 @@ const PasswordResetSuccess = () => {
     </Box>
   );
 };
-
-export default PasswordResetSuccess;

@@ -19,7 +19,7 @@ interface Props {
 
 const GoBackButtonSolid = ({
   text,
-  iconSize = '28px',
+  iconSize = '26px',
   onClick,
   linkTo,
 }: Props) => {

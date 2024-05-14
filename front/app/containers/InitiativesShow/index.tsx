@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
 
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
 import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
@@ -9,6 +9,7 @@ import Footer from 'components/PostShowComponents/Footer';
 import { trackEventByName } from 'utils/analytics';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
+import InitiativeMeta from './InitiativeMeta';
 const Modals = lazy(() => import('./modals'));
 import LargerThanPhone from './LargerThanPhone';
 import Phone from './Phone';
@@ -20,7 +21,7 @@ interface Props {
 }
 
 const InitiativesShow = ({ initiativeId, className }: Props) => {
-  const isSmallerThanTablet = useBreakpoint('tablet');
+  const isSmallerThanPhone = useBreakpoint('phone');
   const [searchParams] = useSearchParams();
   const newInitiativeId = searchParams.get('new_initiative_id');
 
@@ -88,40 +89,39 @@ const InitiativesShow = ({ initiativeId, className }: Props) => {
   };
 
   return (
-    <div id="e2e-initiative-show" className={className}>
-      <main>
-        {isSmallerThanTablet ? (
-          <Phone
-            initiativeId={initiativeId}
-            translateButtonClicked={translateButtonClicked}
-            a11y_pronounceLatestOfficialFeedbackPost={
-              a11y_pronounceLatestOfficialFeedbackPost
-            }
-            onScrollToOfficialFeedback={onScrollToOfficialFeedback}
-            onTranslateInitiative={onTranslateInitiative}
-          />
-        ) : (
-          <LargerThanPhone
-            initiativeId={initiativeId}
-            translateButtonClicked={translateButtonClicked}
-            a11y_pronounceLatestOfficialFeedbackPost={
-              a11y_pronounceLatestOfficialFeedbackPost
-            }
-            onScrollToOfficialFeedback={onScrollToOfficialFeedback}
-            onTranslateInitiative={onTranslateInitiative}
-          />
-        )}
-        <Suspense fallback={<LoadingComments />}>
-          <Footer postId={initiativeId} postType="initiative" />
-        </Suspense>
-      </main>
+    <Box id="e2e-initiative-show" className={className}>
+      <InitiativeMeta initiativeId={initiativeId} />
+      {isSmallerThanPhone ? (
+        <Phone
+          initiativeId={initiativeId}
+          translateButtonClicked={translateButtonClicked}
+          a11y_pronounceLatestOfficialFeedbackPost={
+            a11y_pronounceLatestOfficialFeedbackPost
+          }
+          onScrollToOfficialFeedback={onScrollToOfficialFeedback}
+          onTranslateInitiative={onTranslateInitiative}
+        />
+      ) : (
+        <LargerThanPhone
+          initiativeId={initiativeId}
+          translateButtonClicked={translateButtonClicked}
+          a11y_pronounceLatestOfficialFeedbackPost={
+            a11y_pronounceLatestOfficialFeedbackPost
+          }
+          onScrollToOfficialFeedback={onScrollToOfficialFeedback}
+          onTranslateInitiative={onTranslateInitiative}
+        />
+      )}
+      <Suspense fallback={<LoadingComments />}>
+        <Footer postId={initiativeId} postType="initiative" />
+      </Suspense>
       <Suspense fallback={null}>
         <Modals
           closeInitiativeSocialSharingModal={closeInitiativeSocialSharingModal}
           initiativeIdForSocialSharing={initiativeIdForSocialSharing}
         />
       </Suspense>
-    </div>
+    </Box>
   );
 };
 

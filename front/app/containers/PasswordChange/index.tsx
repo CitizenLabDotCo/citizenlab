@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Helmet } from 'react-helmet';
 import { useForm, FormProvider } from 'react-hook-form';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import { string, object } from 'yup';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import meKeys from 'api/me/keys';
 import useAuthUser from 'api/me/useAuthUser';
 import useChangePassword from 'api/users/useChangePassword';
@@ -37,8 +39,11 @@ type FormValues = {
   password: string;
 };
 
-const ChangePassword = () => {
-  const { data: tenant } = useAppConfiguration();
+type Props = {
+  tenant: GetAppConfigurationChildProps;
+};
+
+const ChangePassword = ({ tenant }: Props) => {
   const { data: authUser } = useAuthUser();
   const { mutateAsync: changePassword } = useChangePassword();
   const { formatMessage } = useIntl();
@@ -50,7 +55,9 @@ const ChangePassword = () => {
     : messages.titleAddPassword;
 
   const minimumPasswordLength =
-    tenant?.data.attributes.settings.password_login?.minimum_length || 0;
+    (!isNilOrError(tenant) &&
+      tenant.attributes.settings.password_login?.minimum_length) ||
+    0;
 
   const schemaPreviousPasswordExists = object({
     current_password: string().required(
@@ -105,29 +112,33 @@ const ChangePassword = () => {
   };
 
   if (success) return <ChangePasswordSuccess />;
-
   return (
-    <>
-      <Helmet
-        title={formatMessage(messages.helmetTitle)}
-        meta={[
-          {
-            name: 'description',
-            content: formatMessage(messages.helmetDescription),
-          },
-        ]}
-      />
-      <Box p="32px" pb="0">
-        <GoBackButton
-          onClick={() => {
-            clHistory.goBack();
-          }}
+    <Box
+      width="100%"
+      minHeight={`calc(100vh - ${
+        stylingConsts.menuHeight + stylingConsts.footerHeight
+      }px)`}
+    >
+      <FormProvider {...methods}>
+        <Helmet
+          title={formatMessage(messages.helmetTitle)}
+          meta={[
+            {
+              name: 'description',
+              content: formatMessage(messages.helmetDescription),
+            },
+          ]}
         />
-      </Box>
-      <main>
-        <StyledContentContainer>
-          <Title>{formatMessage(pageTitle)}</Title>
-          <FormProvider {...methods}>
+        <main>
+          <StyledContentContainer>
+            <Box mt="30px">
+              <GoBackButton
+                onClick={() => {
+                  clHistory.goBack();
+                }}
+              />
+            </Box>
+            <Title>{formatMessage(pageTitle)}</Title>
             <Form>
               {userHasPreviousPassword && (
                 <>
@@ -165,11 +176,15 @@ const ChangePassword = () => {
                 text={formatMessage(messages.submitButton)}
               />
             </Form>
-          </FormProvider>
-        </StyledContentContainer>
-      </main>
-    </>
+          </StyledContentContainer>
+        </main>
+      </FormProvider>
+    </Box>
   );
 };
 
-export default ChangePassword;
+export default () => (
+  <GetAppConfiguration>
+    {(tenant) => <ChangePassword tenant={tenant} />}
+  </GetAppConfiguration>
+);
