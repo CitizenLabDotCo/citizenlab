@@ -17,8 +17,6 @@ resource 'Activity' do
     @activity4 = create(:project_created_activity, item: @project, user: @user)
     @activity5 = create(:project_changed_activity, item: @project)
     @activity6 = create(:project_deleted_activity, item: @project)
-    @activity7 = create(:project_published_activity, item: create(:project))
-    @activity8 = create(:project_changed_publication_status_activity, item: create(:project))
     @activity9 = create(:idea_deleted_activity)
     @activity10 = create(:idea_changed_status_activity)
     @activity11 = create(:user_blocked_activity)
@@ -38,7 +36,7 @@ resource 'Activity' do
     example_request 'List all activities' do
       assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 13
+      expect(json_response[:data].size).to eq 11
       expect(json_response[:data].pluck(:id).include?(@non_management_activity.id)).to be false
     end
 

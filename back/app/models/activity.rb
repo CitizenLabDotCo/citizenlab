@@ -28,7 +28,7 @@
 #
 class Activity < ApplicationRecord
   MANAGEMENT_FILTERS = [
-    { item_type: 'Project', actions: %w[created changed changed_publication_status deleted published] },
+    { item_type: 'Project', actions: %w[created changed deleted] },
     { item_type: 'Phase', actions: %w[created changed deleted] },
     { item_type: 'EmailCampaigns::Campaigns::Manual', actions: ['sent'] },
     { item_type: 'EmailCampaigns::Campaigns::ManualProjectParticipants', actions: ['sent'] },
