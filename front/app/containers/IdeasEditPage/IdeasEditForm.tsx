@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { PreviousPathnameContext } from 'context';
 import { omit } from 'lodash-es';
 import { Multiloc } from 'typings';
@@ -12,7 +12,6 @@ import { IIdeaUpdate } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useAuthUser from 'api/me/useAuthUser';
-import useProjectById from 'api/projects/useProjectById';
 
 import useInputSchema from 'hooks/useInputSchema';
 
@@ -27,7 +26,6 @@ import PageContainer from 'components/UI/PageContainer';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { isError, isNilOrError } from 'utils/helperUtils';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { usePermission } from 'utils/permissions';
 
@@ -67,14 +65,17 @@ const IdeasEditForm = ({ ideaId }: Props) => {
   });
 
   const { mutateAsync: updateIdea } = useUpdateIdea();
-  const { data: project } = useProjectById(
-    isNilOrError(idea) ? null : idea.data.relationships.project.data.id
-  );
   const { data: remoteImages } = useIdeaImages(ideaId);
   const { data: remoteFiles } = useIdeaFiles(ideaId);
+  const projectId = idea?.data.relationships.project.data.id;
 
-  const { schema, uiSchema, inputSchemaError } = useInputSchema({
-    projectId: project?.data.id,
+  const {
+    schema,
+    uiSchema,
+    inputSchemaError,
+    isLoading: isLoadingInputSchema,
+  } = useInputSchema({
+    projectId,
     inputId: ideaId,
   });
 
@@ -84,18 +85,61 @@ const IdeasEditForm = ({ ideaId }: Props) => {
     }
   }, [idea, granted, previousPathName, authUser]);
 
-  const initialFormData =
-    isNilOrError(idea) || !schema
-      ? null
-      : getFormValues(idea, schema, remoteImages, remoteFiles);
+  const getApiErrorMessage: ApiErrorGetter = useCallback(
+    (error) => {
+      return (
+        ideaFormMessages[
+          `api_error_${uiSchema?.options?.inputTerm}_${error}`
+        ] ||
+        ideaFormMessages[`api_error_${error}`] ||
+        ideaFormMessages[`api_error_invalid`]
+      );
+    },
+    [uiSchema]
+  );
+
+  const getAjvErrorMessage: AjvErrorGetter = useCallback(
+    (error) => {
+      return (
+        messages[
+          `ajv_error_${uiSchema?.options?.inputTerm}_${
+            getFieldNameFromPath(error.instancePath) ||
+            error?.params?.missingProperty
+          }_${error.keyword}`
+        ] ||
+        messages[
+          `ajv_error_${
+            getFieldNameFromPath(error.instancePath) ||
+            error?.params?.missingProperty
+          }_${error.keyword}`
+        ] ||
+        undefined
+      );
+    },
+    [uiSchema]
+  );
+
+  if (isLoadingInputSchema) return <FullPageSpinner />;
+  if (
+    // inputSchemaError should display an error page instead
+    inputSchemaError ||
+    !schema ||
+    !uiSchema ||
+    !projectId ||
+    !idea
+  ) {
+    return null;
+  }
+
+  const initialFormData = getFormValues(
+    idea,
+    schema,
+    remoteImages,
+    remoteFiles
+  );
 
   // Set initial location point if exists
-  if (
-    initialFormData &&
-    !isNilOrError(idea) &&
-    idea.data.attributes &&
-    idea.data.attributes.location_point_geojson
-  ) {
+  if (initialFormData && idea.data.attributes.location_point_geojson) {
     initialFormData['location_point_geojson'] =
       idea.data.attributes.location_point_geojson;
   }
@@ -147,7 +191,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
       ...ideaWithoutImages,
       idea_images_attributes,
       location_point_geojson,
-      project_id: project?.data.id,
+      project_id: projectId,
       publication_status: 'published',
     };
 
@@ -166,99 +210,59 @@ const IdeasEditForm = ({ ideaId }: Props) => {
     );
   };
 
-  const getApiErrorMessage: ApiErrorGetter = useCallback(
-    (error) => {
-      return (
-        ideaFormMessages[
-          `api_error_${uiSchema?.options?.inputTerm}_${error}`
-        ] ||
-        ideaFormMessages[`api_error_${error}`] ||
-        ideaFormMessages[`api_error_invalid`]
-      );
-    },
-    [uiSchema]
-  );
-
-  const getAjvErrorMessage: AjvErrorGetter = useCallback(
-    (error) => {
-      return (
-        messages[
-          `ajv_error_${uiSchema?.options?.inputTerm}_${
-            getFieldNameFromPath(error.instancePath) ||
-            error?.params?.missingProperty
-          }_${error.keyword}`
-        ] ||
-        messages[
-          `ajv_error_${
-            getFieldNameFromPath(error.instancePath) ||
-            error?.params?.missingProperty
-          }_${error.keyword}`
-        ] ||
-        undefined
-      );
-    },
-    [uiSchema]
-  );
-
-  if (isNilOrError(project)) {
-    return null;
-  }
-
-  const TitleComponent = !isNilOrError(idea) ? (
-    <Box
-      width="100%"
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-      pt="60px"
-      pb="40px"
-    >
-      <GoBackToIdeaPage idea={idea.data} />
-
-      <FormattedMessage
-        {...{
-          idea: messages.formTitle,
-          option: messages.optionFormTitle,
-          project: messages.projectFormTitle,
-          question: messages.questionFormTitle,
-          issue: messages.issueFormTitle,
-          contribution: messages.contributionFormTitle,
-        }[
-          uiSchema && uiSchema?.options?.inputTerm
-            ? uiSchema.options.inputTerm
-            : 'idea'
-        ]}
-      />
-    </Box>
-  ) : undefined;
-
   return (
-    <PageContainer overflow="hidden" id="e2e-idea-edit-page">
-      {project && !isNilOrError(idea) && schema && uiSchema ? (
-        <>
-          <IdeasEditMeta ideaId={ideaId} projectId={project.data.id} />
-          <Form
-            schema={schema}
-            uiSchema={uiSchema}
-            onSubmit={handleDisclaimer}
-            initialFormData={initialFormData}
-            inputId={idea.data.id}
-            getAjvErrorMessage={getAjvErrorMessage}
-            getApiErrorMessage={getApiErrorMessage}
-            config={'input'}
-            title={TitleComponent}
+    <>
+      <IdeasEditMeta ideaId={ideaId} projectId={projectId} />
+      <Box bg={colors.grey100}>
+        <Box p="32px">
+          <GoBackToIdeaPage idea={idea.data} />
+        </Box>
+        <main id="e2e-idea-edit-page">
+          <PageContainer>
+            <Form
+              schema={schema}
+              uiSchema={uiSchema}
+              onSubmit={handleDisclaimer}
+              initialFormData={initialFormData}
+              inputId={idea.data.id}
+              getAjvErrorMessage={getAjvErrorMessage}
+              getApiErrorMessage={getApiErrorMessage}
+              config={'input'}
+              title={
+                <Box
+                  width="100%"
+                  display="flex"
+                  flexDirection="column"
+                  justifyContent="center"
+                  alignItems="center"
+                  mb="40px"
+                >
+                  <FormattedMessage
+                    {...{
+                      idea: messages.formTitle,
+                      option: messages.optionFormTitle,
+                      project: messages.projectFormTitle,
+                      question: messages.questionFormTitle,
+                      issue: messages.issueFormTitle,
+                      contribution: messages.contributionFormTitle,
+                    }[
+                      uiSchema && uiSchema?.options?.inputTerm
+                        ? uiSchema.options.inputTerm
+                        : 'idea'
+                    ]}
+                  />
+                </Box>
+              }
+            />
+          </PageContainer>
+          <ContentUploadDisclaimer
+            isDisclaimerOpened={isDisclaimerOpened}
+            onAcceptDisclaimer={() => onAcceptDisclaimer(formData)}
+            onCancelDisclaimer={onCancelDisclaimer}
           />
-        </>
-      ) : isError(project) || inputSchemaError ? null : (
-        <FullPageSpinner />
-      )}
-      <ContentUploadDisclaimer
-        isDisclaimerOpened={isDisclaimerOpened}
-        onAcceptDisclaimer={() => onAcceptDisclaimer(formData)}
-        onCancelDisclaimer={onCancelDisclaimer}
-      />
-    </PageContainer>
+        </main>
+      </Box>
+    </>
   );
 };
 

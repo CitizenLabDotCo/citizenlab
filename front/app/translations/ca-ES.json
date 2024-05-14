@@ -1,4 +1,5 @@
 {
+  "EmailSettingsPage.emailSettings": "Configuració del correu electrònic",
   "EmailSettingsPage.initialUnsubscribeError": "S'ha produït un problema en cancel·lar la subscripció d'aquesta campanya. Torneu-ho a provar.",
   "EmailSettingsPage.initialUnsubscribeLoading": "La vostra sol·licitud s'està processant, espereu...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Heu cancel·lat correctament la subscripció a {campaignTitle}.",
@@ -1611,7 +1612,6 @@
   "app.containers.UsersShowPage.emptyInfoText": "No esteu seguint cap element del filtre especificat anteriorment.",
   "app.containers.UsersShowPage.eventsWithCount": "Esdeveniments ({eventsCount})",
   "app.containers.UsersShowPage.followingWithCount": "Seguint ({followingCount})",
-  "app.containers.UsersShowPage.goBackToPreviousPage": "Tornar a la pàgina anterior",
   "app.containers.UsersShowPage.inputs": "Entrades",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Totes les aportacions enviades per aquest participant",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Tots els comentaris publicats per aquest participant",
@@ -1632,7 +1632,6 @@
   "app.containers.UsersShowPage.seePost": "Veure presentació",
   "app.containers.UsersShowPage.topics": "Temes",
   "app.containers.UsersShowPage.tryAgain": "Hi ha hagut un error. Si us plau proveu-ho més tard.",
-  "app.containers.UsersShowPage.user404NotFound": "No hem pogut trobar el perfil d'aquest usuari. Si era aquí abans, és possible que s'hagi esborrat.",
   "app.containers.UsersShowPage.userShowPageMetaDescription": "Aquesta és la pàgina de perfil de {firstName} {lastName} a la plataforma de participació en línia de {orgName}. Aquí teniu una visió general de totes les seves aportacions.",
   "app.containers.VoteControl.close": "Tancar",
   "app.containers.VoteControl.voteErrorTitle": "Alguna cosa ha anat malament",

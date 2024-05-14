@@ -1,4 +1,5 @@
 {
+  "EmailSettingsPage.emailSettings": "Sähköpostiasetukset",
   "EmailSettingsPage.initialUnsubscribeError": "Tämän kampanjan tilauksen peruuttamisessa ilmeni ongelma. Yritä uudelleen.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Pyyntöäsi käsitellään, odota...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Olet onnistuneesti peruuttanut tilauksen {campaignTitle}.",
@@ -1611,7 +1612,6 @@
   "app.containers.UsersShowPage.emptyInfoText": "Et seuraa mitään yllä määritetyn suodattimen kohteita.",
   "app.containers.UsersShowPage.eventsWithCount": "Tapahtumat ({eventsCount})",
   "app.containers.UsersShowPage.followingWithCount": "Seurataan ({followingCount})",
-  "app.containers.UsersShowPage.goBackToPreviousPage": "palaa edelliselle sivulle",
   "app.containers.UsersShowPage.inputs": "Tulot",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Kaikki tämän osallistujan lähettämät tiedot",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Kaikki tämän osallistujan lähettämät kommentit",
@@ -1632,7 +1632,6 @@
   "app.containers.UsersShowPage.seePost": "Katso lähetys",
   "app.containers.UsersShowPage.topics": "Aiheet",
   "app.containers.UsersShowPage.tryAgain": "Tapahtui virhe, yritä myöhemmin uudelleen.",
-  "app.containers.UsersShowPage.user404NotFound": "Emme löytäneet tämän käyttäjän profiilia. Jos se oli täällä aiemmin, se on ehkä poistettu.",
   "app.containers.UsersShowPage.userShowPageMetaDescription": "Tämä on {firstName} {lastName} profiilisivu verkkoosallistumisalustalla {orgName}. Tässä on yleiskatsaus heidän panoksestaan.",
   "app.containers.VoteControl.close": "kiinni",
   "app.containers.VoteControl.voteErrorTitle": "Jotain meni pieleen",

@@ -1,4 +1,5 @@
 {
+  "EmailSettingsPage.emailSettings": "Ρυθμίσεις email",
   "EmailSettingsPage.initialUnsubscribeError": "Υπήρξε ένα πρόβλημα με τη διαγραφή από αυτή την εκστρατεία, παρακαλούμε προσπαθήστε ξανά.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Το αίτημά σας επεξεργάζεται, παρακαλούμε περιμένετε...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Διαγράψατε επιτυχώς την εγγραφή σας από την εκστρατεία {campaignTitle}.",
@@ -1611,7 +1612,6 @@
   "app.containers.UsersShowPage.emptyInfoText": "Δεν ακολουθείτε κανένα στοιχείο του καθορισμένου φίλτρου παραπάνω.",
   "app.containers.UsersShowPage.eventsWithCount": "Εκδηλώσεις ({eventsCount})",
   "app.containers.UsersShowPage.followingWithCount": "Ακολουθώντας ({followingCount})",
-  "app.containers.UsersShowPage.goBackToPreviousPage": "Επιστροφή στην προηγούμενη σελίδα",
   "app.containers.UsersShowPage.inputs": "Είσοδοι",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Όλες οι εισηγήσεις που υποβλήθηκαν από αυτόν τον συμμετέχοντα",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Όλα τα σχόλια που δημοσιεύτηκαν από αυτόν τον συμμετέχοντα",
@@ -1632,7 +1632,6 @@
   "app.containers.UsersShowPage.seePost": "Δείτε την υποβολή",
   "app.containers.UsersShowPage.topics": "Θέματα",
   "app.containers.UsersShowPage.tryAgain": "Εμφανίστηκε σφάλμα, παρακαλούμε προσπαθήστε ξανά αργότερα.",
-  "app.containers.UsersShowPage.user404NotFound": "Δεν μπορέσαμε να βρούμε το προφίλ αυτού του χρήστη. Αν υπήρχε εδώ στο παρελθόν, μπορεί να έχει διαγραφεί.",
   "app.containers.UsersShowPage.userShowPageMetaDescription": "Αυτή είναι η σελίδα του προφίλ του/της {firstName} {lastName} στην διαδικτυακή πλατφόρμα συμμετοχής του {orgName}. Εδώ είναι μια επισκόπηση όλων των εισηγήσεών τους.",
   "app.containers.VoteControl.close": "Κλείσιμο",
   "app.containers.VoteControl.voteErrorTitle": "Κάτι πήγε στραβά",

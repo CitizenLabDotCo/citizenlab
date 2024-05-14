@@ -420,6 +420,7 @@ export default function createRoutes() {
             </PageLoading>
           ),
         },
+        // Should not be in citizenRoutes, but in adminRoutes
         {
           path: citizenRoutes.reportPrintPage,
           element: (

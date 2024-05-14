@@ -1,4 +1,5 @@
 {
+  "EmailSettingsPage.emailSettings": "E-posta ayarları",
   "EmailSettingsPage.initialUnsubscribeError": "Bu kampanya için aboneliğiniz iptal edilirken bir sorun oluştu. Lütfen yeniden deneyin.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Talebiniz işleniyor, lütfen bekleyin...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "{campaignTitle} adlı kampanya için aboneliğiniz başarıyla iptal edildi.",
@@ -1611,7 +1612,6 @@
   "app.containers.UsersShowPage.emptyInfoText": "Yukarıda belirtilen filtrenin hiçbir öğesini takip etmiyorsunuz.",
   "app.containers.UsersShowPage.eventsWithCount": "Etkinlikler ({eventsCount})",
   "app.containers.UsersShowPage.followingWithCount": "Takip ({followingCount})",
-  "app.containers.UsersShowPage.goBackToPreviousPage": "Önceki sayfaya dönün",
   "app.containers.UsersShowPage.inputs": "Girişler",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Bu katılımcı tarafından gönderilen tüm girdiler",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Bu katılımcı tarafından yayınlanan tüm yorumlar",
@@ -1632,7 +1632,6 @@
   "app.containers.UsersShowPage.seePost": "Gönderimi göster",
   "app.containers.UsersShowPage.topics": "Konular",
   "app.containers.UsersShowPage.tryAgain": "Bir hata oluştu, lütfen daha sonra tekrar deneyin.",
-  "app.containers.UsersShowPage.user404NotFound": "Bu kullanıcının profilini bulamadık. Daha önce burada olduğunu biliyorsanız silinmiş olabilir.",
   "app.containers.UsersShowPage.userShowPageMetaDescription": "Bu, {firstName} {lastName} adlı kişinin {orgName} çevrimiçi katılım platformundaki profil sayfasıdır.",
   "app.containers.VoteControl.close": "Kapat",
   "app.containers.VoteControl.voteErrorTitle": "Bir sorun oluştu",
