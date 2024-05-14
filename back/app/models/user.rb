@@ -273,6 +273,7 @@ class User < ApplicationRecord
     where.not(id: project_folder_moderator(*project_folder_ids))
   }
 
+  scope :admin_or_moderator, -> { where(id: admin).or(where(id: project_moderator)).or(where(id: project_folder_moderator)) }
   scope :not_invited, -> { where.not(invite_status: 'pending').or(where(invite_status: nil)) }
   scope :registered, -> { where.not(registration_completed_at: nil) }
   scope :blocked, -> { where('? < block_end_at', Time.zone.now) }
