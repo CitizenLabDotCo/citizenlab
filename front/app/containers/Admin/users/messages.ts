@@ -210,8 +210,8 @@ export default defineMessages({
     defaultMessage: 'Are you sure you want to delete this group?',
   },
   moveUsersTableAction: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.moveUsersTableAction',
-    defaultMessage: 'Add selected users to a group',
+    id: 'app.containers.AdminPage.Users.UsersGroup.moveUsersAction',
+    defaultMessage: 'Add users to group',
   },
   moveUsersButton: {
     id: 'app.containers.AdminPage.Users.UsersGroup.moveUsersButton',
@@ -236,16 +236,16 @@ export default defineMessages({
       'An error occured while deleting users from the group, please try again.',
   },
   exportAllUsers: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.exportAllUsers',
-    defaultMessage: 'Export all users',
+    id: 'app.containers.AdminPage.Users.UsersGroup.exportAll',
+    defaultMessage: 'Export all',
   },
   exportGroup: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.exportGroup',
-    defaultMessage: 'Export group',
+    id: 'app.containers.AdminPage.Users.UsersGroup.exportGroupUsers',
+    defaultMessage: 'Export users in group',
   },
   exportSelectedUsers: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.exportSelectedUsers',
-    defaultMessage: 'Export selected users',
+    id: 'app.containers.AdminPage.Users.UsersGroup.exportSelected',
+    defaultMessage: 'Export selected',
   },
   userInvitationPending: {
     id: 'app.containers.Admin.Users.UserTableRow.userInvitationPending',
