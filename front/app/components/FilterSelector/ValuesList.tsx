@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, KeyboardEvent } from 'react';
+import React, { useRef, useEffect, KeyboardEvent, FormEvent } from 'react';
 
 import {
   Dropdown,
@@ -199,7 +199,7 @@ const ValuesList = ({
       }
     };
 
-  const handleOnClickOutside = (event) => {
+  const handleOnClickOutside = (event: FormEvent) => {
     onClickOutside?.(event);
   };
 
