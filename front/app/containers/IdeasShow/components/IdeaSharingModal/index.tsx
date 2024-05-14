@@ -27,7 +27,7 @@ const IdeaSharingModal = ({
 
   return (
     <Modal
-      opened={!!newIdeaId}
+      opened
       close={closeIdeaSocialSharingModal}
       hasSkipButton={true}
       skipText={<>{formatMessage(messages.skipSharing)}</>}
