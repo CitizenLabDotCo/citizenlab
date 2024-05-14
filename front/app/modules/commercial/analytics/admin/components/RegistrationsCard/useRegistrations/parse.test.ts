@@ -1,7 +1,8 @@
 import moment from 'moment';
 
+import { RegistrationsResponse } from 'api/graph_data_units/responseTypes/RegistrationsWidget';
+
 import { parseTimeSeries, parseStats } from './parse';
-import { Response } from './typings';
 
 describe('parseTimeSeries', () => {
   it('works', () => {
@@ -35,12 +36,14 @@ describe('parseTimeSeries', () => {
 
 describe('parseStats', () => {
   it('works', () => {
-    const response: Response['data']['attributes'] = [
+    const response: RegistrationsResponse['data']['attributes'] = [
       [],
       [{ count: 10 }],
-      [{ count: 8 }],
       [{ count_visitor_id: 20 }],
+      [{ count: 10 }],
+      [{ count: 8 }],
       [{ count_visitor_id: 32 }],
+      [{ count: 8 }],
     ];
 
     const expectedOutput = {

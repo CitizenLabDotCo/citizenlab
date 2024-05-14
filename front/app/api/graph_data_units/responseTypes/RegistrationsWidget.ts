@@ -2,7 +2,7 @@ interface RegistrationsCountRow {
   count: number;
 }
 
-interface TimeSeriesResponseRow extends RegistrationsCountRow {
+export interface TimeSeriesResponseRow extends RegistrationsCountRow {
   first_dimension_date_registration_date: string;
 }
 

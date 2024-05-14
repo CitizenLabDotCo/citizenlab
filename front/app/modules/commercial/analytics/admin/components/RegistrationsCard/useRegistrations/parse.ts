@@ -1,5 +1,10 @@
 import moment, { Moment } from 'moment';
 
+import {
+  TimeSeriesResponseRow,
+  RegistrationsResponse,
+} from 'api/graph_data_units/responseTypes/RegistrationsWidget';
+
 import { getConversionRate } from 'components/admin/GraphCards/_utils/parse';
 import { RESOLUTION_TO_MESSAGE_KEY } from 'components/admin/GraphCards/_utils/resolution';
 import { timeSeriesParser } from 'components/admin/GraphCards/_utils/timeSeries';
@@ -8,13 +13,7 @@ import { IResolution } from 'components/admin/ResolutionControl';
 import { keys, get } from 'utils/helperUtils';
 
 import { Translations } from './translations';
-import {
-  Response,
-  TimeSeriesResponseRow,
-  TimeSeries,
-  TimeSeriesRow,
-  Stats,
-} from './typings';
+import { TimeSeries, TimeSeriesRow, Stats } from './typings';
 
 export const getEmptyRow = (date: Moment) => ({
   date: date.format('YYYY-MM-DD'),
@@ -37,7 +36,7 @@ const getDate = (row: TimeSeriesResponseRow) => {
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
 
 export const parseTimeSeries = (
-  responseTimeSeries: Response['data']['attributes'][0],
+  responseTimeSeries: RegistrationsResponse['data']['attributes'][0],
   startAtMoment: Moment | null | undefined,
   endAtMoment: Moment | null,
   resolution: IResolution
@@ -50,19 +49,25 @@ export const parseTimeSeries = (
   );
 };
 
-export const parseStats = (data: Response['data']['attributes']): Stats => {
+export const parseStats = (
+  data: RegistrationsResponse['data']['attributes']
+): Stats => {
   const registrationsWholePeriod = data[1][0];
-  const registrationsLastPeriod = data[2][0];
-  const visitsWholePeriod = data[3][0];
-  const visitsLastPeriod = data[4][0];
+  const registrationsLastPeriod = data[4]?.[0];
+
+  const visitsWholePeriod = data[2][0];
+  const visitsLastPeriod = data[5]?.[0];
+
+  const registrationsVisitorsWholePeriod = data[3][0];
+  const registrationsVisitorsLastPeriod = data[6]?.[0];
 
   const registrationRateWholePeriod = getConversionRate(
-    registrationsWholePeriod?.count ?? 0,
+    registrationsVisitorsWholePeriod?.count ?? 0,
     visitsWholePeriod?.count_visitor_id ?? 0
   );
 
   const registrationRateLastPeriod = getConversionRate(
-    registrationsLastPeriod?.count ?? 0,
+    registrationsVisitorsLastPeriod?.count ?? 0,
     visitsLastPeriod?.count_visitor_id ?? 0
   );
 
