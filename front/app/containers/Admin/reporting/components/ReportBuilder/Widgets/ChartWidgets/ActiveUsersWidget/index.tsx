@@ -3,14 +3,14 @@ import React from 'react';
 import Card from '../../_shared/Card';
 import messages from '../messages';
 
-import ActiveUsers from './ActiveUsersCard';
+import ActiveUsersCard from './ActiveUsersCard';
 import ChartWidgetSettings from './ChartWidgetSettings';
 import { Props } from './typings';
 
 const ActiveUsersWidget = ({ title, ...props }: Props) => {
   return (
     <Card title={title} pagebreak>
-      <ActiveUsers {...props} />
+      <ActiveUsersCard {...props} />
     </Card>
   );
 };
