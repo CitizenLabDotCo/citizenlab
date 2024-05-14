@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 
 import {
   Box,
@@ -97,6 +97,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     ? phaseFromUrl.data
     : getCurrentPhase(phases?.data);
   const allowAnonymousPosting = phase?.attributes.allow_anonymous_participation;
+  const surveyHeadingRef = useRef<HTMLDivElement>(null);
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
     (error) => {
@@ -250,6 +251,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
         >
           <SurveyHeading
             titleText={localize(phase?.attributes.native_survey_title_multiloc)}
+            ref={surveyHeadingRef}
           />
         </Box>
         <main id="e2e-idea-new-page">
