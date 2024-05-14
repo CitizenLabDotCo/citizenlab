@@ -598,8 +598,6 @@
   "app.containers.Admin.Users.seeProfile": "Види профил",
   "app.containers.Admin.Users.setAsAdmin": "Постави као администратор",
   "app.containers.Admin.Users.setAsNormalUser": "Постави као нормалан корисник",
-  "app.containers.Admin.Users.since": "Регистрован на",
-  "app.containers.Admin.Users.status": "Статус",
   "app.containers.Admin.Users.userBlockModal.allDone": "Завршено",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Блокирај корисника",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "Садржај овог корисника неће бити уклоњен овом радњом. Не заборавите да модерирате њихов садржај ако је потребно.",

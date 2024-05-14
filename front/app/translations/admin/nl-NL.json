@@ -598,8 +598,6 @@
   "app.containers.Admin.Users.seeProfile": "Bekijk het profiel van deze gebruiker",
   "app.containers.Admin.Users.setAsAdmin": "Instellen als platformbeheerder",
   "app.containers.Admin.Users.setAsNormalUser": "Instellen als normale gebruiker",
-  "app.containers.Admin.Users.since": "Geregistreerd op",
-  "app.containers.Admin.Users.status": "Rol",
   "app.containers.Admin.Users.userBlockModal.allDone": "Helemaal klaar.",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Blokkeer gebruiker",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "De inhoud van deze gebruiker zal niet verwijderd worden door deze actie. Vergeet niet hun inhoud te modereren indien nodig.",

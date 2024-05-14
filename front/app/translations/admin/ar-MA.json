@@ -350,7 +350,6 @@
   "app.containers.Admin.Users.name": "الاسم",
   "app.containers.Admin.Users.options": "الخيارات",
   "app.containers.Admin.Users.seeProfile": "شاهد الملف التعريفي لهذا المستخدم",
-  "app.containers.Admin.Users.since": "تم التسجيل في",
   "app.containers.Admin.Users.userDeletionConfirmation": "أتود إزالة هذا المستخدم نهائيًا؟",
   "app.containers.Admin.Users.userDeletionFailed": "حدث خطأ أثناء حذف هذا المستخدم، يُرجى المحاولة مجددًا.",
   "app.containers.Admin.Users.userExportFileName": "user_export",

@@ -598,8 +598,6 @@
   "app.containers.Admin.Users.seeProfile": "Veja o perfil deste usuário",
   "app.containers.Admin.Users.setAsAdmin": "Definir como administrador",
   "app.containers.Admin.Users.setAsNormalUser": "Definir como utilizador normal",
-  "app.containers.Admin.Users.since": "Registrado em",
-  "app.containers.Admin.Users.status": "Status",
   "app.containers.Admin.Users.userBlockModal.allDone": "Tudo feito",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Utilizador de bloco",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "O conteúdo deste usuário não será removido por meio desta ação. Não se esqueça de moderar o conteúdo, se necessário.",

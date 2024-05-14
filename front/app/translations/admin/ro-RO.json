@@ -350,7 +350,6 @@
   "app.containers.Admin.Users.name": "Nume",
   "app.containers.Admin.Users.options": "Opțiuni",
   "app.containers.Admin.Users.seeProfile": "See profile",
-  "app.containers.Admin.Users.since": "Registered on",
   "app.containers.Admin.Users.userDeletionConfirmation": "Permanently remove this user?",
   "app.containers.Admin.Users.userDeletionFailed": "An error occurred while deleting this user, please try again.",
   "app.containers.Admin.Users.userExportFileName": "user_export",

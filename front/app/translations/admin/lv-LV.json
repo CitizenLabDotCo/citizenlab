@@ -598,8 +598,6 @@
   "app.containers.Admin.Users.seeProfile": "Skatīt profilu",
   "app.containers.Admin.Users.setAsAdmin": "Iestatīts kā administrators",
   "app.containers.Admin.Users.setAsNormalUser": "Iestatīts kā parasts lietotājs",
-  "app.containers.Admin.Users.since": "Reģistrēšanas datums",
-  "app.containers.Admin.Users.status": "Statuss",
   "app.containers.Admin.Users.userBlockModal.allDone": "Viss izdarīts",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Bloķēt lietotāju",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "Izmantojot šo darbību, šī lietotāja saturs netiks dzēsts. Neaizmirstiet vajadzības gadījumā moderēt viņa saturu.",

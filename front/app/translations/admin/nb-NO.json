@@ -598,8 +598,6 @@
   "app.containers.Admin.Users.seeProfile": "Se profil",
   "app.containers.Admin.Users.setAsAdmin": "Sett som administrator",
   "app.containers.Admin.Users.setAsNormalUser": "Sett som vanlig bruker",
-  "app.containers.Admin.Users.since": "Registrert",
-  "app.containers.Admin.Users.status": "Status",
   "app.containers.Admin.Users.userBlockModal.allDone": "Ferdig",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Blokker bruker",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "Innholdet til denne brukeren vil ikke bli fjernet gjennom denne handlingen. Ikke glem å moderere innholdet deres om nødvendig.",
