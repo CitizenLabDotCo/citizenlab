@@ -9,7 +9,7 @@ describe Permissions::BasePermissionsService do
     SettingsService.new.activate_feature! 'user_confirmation'
   end
 
-  # Note: Most of the logic here is tested in the parent class tests - BasePermissionsService
+  # NOTE: Most of the logic here is tested in the parent class tests - BasePermissionsService
   describe '"posting_initiative" denied_reason_for_action' do
     let(:action) { 'posting_initiative' }
     let(:permission) { Permission.find_by(permission_scope: nil, action: action) }

@@ -94,7 +94,7 @@ describe Permissions::BasePermissionsService do
           user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
         end
 
-        it { expect(denied_reason).to eq 'missing_data' }
+        it { expect(denied_reason).to eq 'missing_user_requirements' }
       end
 
       context 'when light unconfirmed inactive resident' do
@@ -103,7 +103,7 @@ describe Permissions::BasePermissionsService do
           user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}, registration_completed_at: nil)
         end
 
-        it { expect(denied_reason).to eq 'missing_data' }
+        it { expect(denied_reason).to eq 'missing_user_requirements' }
       end
 
       context 'when light confirmed resident' do
@@ -115,7 +115,7 @@ describe Permissions::BasePermissionsService do
       context 'when fully registered unconfirmed resident' do
         before { user.reset_confirmation_and_counts }
 
-        it { expect(denied_reason).to eq 'missing_data' }
+        it { expect(denied_reason).to eq 'missing_user_requirements' }
       end
 
       context 'when fully registered confirmed resident' do
@@ -134,7 +134,7 @@ describe Permissions::BasePermissionsService do
           user.update!(roles: [{ type: 'admin' }])
         end
 
-        it { expect(denied_reason).to eq 'missing_data' }
+        it { expect(denied_reason).to eq 'missing_user_requirements' }
       end
 
       context 'when confirmed admin' do
@@ -162,7 +162,7 @@ describe Permissions::BasePermissionsService do
       context 'when light confirmed resident' do
         before { user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}) }
 
-        it { expect(denied_reason).to eq 'missing_data' }
+        it { expect(denied_reason).to eq 'missing_user_requirements' }
       end
 
       context 'when light confirmed inactive resident' do
@@ -174,7 +174,7 @@ describe Permissions::BasePermissionsService do
       context 'when fully registered unconfirmed resident' do
         before { user.reset_confirmation_and_counts }
 
-        it { expect(denied_reason).to eq 'missing_data' }
+        it { expect(denied_reason).to eq 'missing_user_requirements' }
       end
 
       context 'when fully registered confirmed resident' do
@@ -204,7 +204,7 @@ describe Permissions::BasePermissionsService do
           user.update!(roles: [{ type: 'admin' }])
         end
 
-        it { expect(denied_reason).to eq 'missing_data' }
+        it { expect(denied_reason).to eq 'missing_user_requirements' }
       end
 
       context 'when confirmed admin' do
@@ -236,7 +236,7 @@ describe Permissions::BasePermissionsService do
           user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}, manual_groups: [groups.last])
         end
 
-        it { expect(denied_reason).to eq 'missing_data' }
+        it { expect(denied_reason).to eq 'missing_user_requirements' }
       end
 
       context 'when light confirmed resident who is not a group member' do
@@ -286,7 +286,7 @@ describe Permissions::BasePermissionsService do
       context 'when fully registered unconfirmed resident' do
         before { user.reset_confirmation_and_counts }
 
-        it { expect(denied_reason).to eq 'missing_data' }
+        it { expect(denied_reason).to eq 'missing_user_requirements' }
       end
 
       context 'when unconfirmed admin' do
@@ -295,7 +295,7 @@ describe Permissions::BasePermissionsService do
           user.update!(roles: [{ type: 'admin' }])
         end
 
-        it { expect(denied_reason).to eq 'missing_data' }
+        it { expect(denied_reason).to eq 'missing_user_requirements' }
       end
 
       context 'when confirmed admin' do

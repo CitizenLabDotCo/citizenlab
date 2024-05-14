@@ -20,7 +20,7 @@ module Permissions
       not_active: 'not_active',
       not_permitted: 'not_permitted',
       not_in_group: 'not_in_group',
-      missing_data: 'missing_data',
+      missing_user_requirements: 'missing_user_requirements',
       not_verified: 'not_verified',
       blocked: 'blocked'
     }.freeze
@@ -84,7 +84,7 @@ module Permissions
       end
       return if Permissions::UserRequirementsService.new.requirements(permission, user)[:permitted]
 
-      USER_DENIED_REASONS[:missing_data]
+      USER_DENIED_REASONS[:missing_user_requirements]
     end
 
     # NOTE: method overridden in the verification engine when enabled
