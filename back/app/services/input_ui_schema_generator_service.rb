@@ -47,7 +47,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
 
   def default_options(field)
     defaults = {
-      isAdminField: admin_field?(field),
+      isAdminField: field.admin_field?,
       hasRule: field.logic?
     }
     if @supports_answer_visible_to
@@ -142,7 +142,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
     {
       type: 'Category',
       label: (MultilocService.new.t(current_section.title_multiloc) if current_section.title_multiloc),
-      options: { id: current_section.id, description: description_option(current_section) },
+      options: { id: current_section.id, description: description_option(current_section) }, # TODO: Use key instead of id?
       elements: section_fields.filter_map { |field| visit field }
     }
   end
@@ -160,8 +160,4 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   private
 
   attr_reader :input_term
-
-  def admin_field?(field)
-    field.code == 'budget' || field.code == 'author_id'
-  end
 end
