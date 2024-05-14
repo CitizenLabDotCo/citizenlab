@@ -118,14 +118,13 @@ export default defineMessages({
     defaultMessage:
       'Get an overview of all the people and organisations that registered on the platform. Add a selection of users to Manual groups or Smart groups.',
   },
-  adminsAndManagers: {
-    id: 'app.containers.Admin.Users.GroupsPanel.adminsAndManagers',
-    defaultMessage: 'Admins & managers',
+  admins: {
+    id: 'app.containers.Admin.Users.GroupsPanel.admins',
+    defaultMessage: 'Admins',
   },
-  adminsAndManagersSubtitle: {
-    id: 'app.containers.Admin.Users.GroupsPanel.adminsAndManagersSubtitle1',
-    defaultMessage:
-      'View who are selected as admins, folder and project managers.',
+  managers: {
+    id: 'app.containers.Admin.Users.GroupsPanel.managers',
+    defaultMessage: 'Project managers',
   },
   groupsTitle: {
     id: 'app.containers.Admin.Users.GroupsPanel.groupsTitle',

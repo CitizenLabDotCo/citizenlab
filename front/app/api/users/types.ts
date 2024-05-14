@@ -121,7 +121,7 @@ export interface IQueryParameters {
   group?: string;
   can_moderate_project?: string;
   can_moderate?: true;
-  can_admin?: true;
+  can_admin?: boolean;
   only_blocked?: boolean;
   not_citizenlab_member?: boolean;
   include_inactive?: boolean;
