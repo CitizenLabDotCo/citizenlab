@@ -12,6 +12,14 @@ FactoryBot.define do
       action { 'published' }
     end
 
+    factory :idea_created_activity do
+      action { 'created' }
+    end
+
+    factory :idea_changed_activity do
+      action { 'changed' }
+    end
+
     factory :idea_deleted_activity do
       action { 'deleted' }
     end
