@@ -13,7 +13,8 @@ export type ResolvedName =
   | 'ActiveUsersWidget'
   | 'PostsByTimeWidget'
   | 'CommentsByTimeWidget'
-  | 'ReactionsByTimeWidget';
+  | 'ReactionsByTimeWidget'
+  | 'RegistrationsWidget';
 
 export interface BaseParams {
   resolved_name: ResolvedName;
@@ -32,7 +33,8 @@ export type ParametersLive =
   | ActiveUsersParams
   | PostsByTimeParams
   | CommentsByTimeParams
-  | ReactionsByTimeParams;
+  | ReactionsByTimeParams
+  | RegistrationsParams;
 
 export type GroupMode = 'user_field' | 'survey_question';
 
@@ -53,6 +55,11 @@ export interface AnalyticsProps {
   start_at?: string | null | undefined;
   end_at?: string | null;
   resolution?: IResolution;
+}
+
+interface CompareProps {
+  compare_start_at?: string;
+  compare_end_at?: string;
 }
 
 export interface MostReactedIdeasProps {
@@ -114,10 +121,7 @@ export interface AgeParams extends BaseParams {
   props: BaseDemographicsProps;
 }
 
-export interface ActiveUsersProps extends AnalyticsProps {
-  compare_start_at?: string;
-  compare_end_at?: string;
-}
+export interface ActiveUsersProps extends AnalyticsProps, CompareProps {}
 
 export interface ActiveUsersParams extends BaseParams {
   resolved_name: 'ActiveUsersWidget';
@@ -137,6 +141,15 @@ export interface CommentsByTimeParams extends BaseParams {
 export interface ReactionsByTimeParams extends BaseParams {
   resolved_name: 'ReactionsByTimeWidget';
   props: AnalyticsProps;
+}
+
+export interface RegistrationsProps
+  extends Omit<AnalyticsProps, 'project_id'>,
+    CompareProps {}
+
+interface RegistrationsParams {
+  resolved_name: 'RegistrationsWidget';
+  props: RegistrationsProps;
 }
 
 // published
