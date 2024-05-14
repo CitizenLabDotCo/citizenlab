@@ -46,7 +46,6 @@ const EventCard = memo<Props>((props) => {
     <Container
       className={className || ''}
       id={id}
-      role="button"
       onKeyDown={(e) => {
         // We want this to trigger when the user interacts with the card itself, not its children. The buttons inside the card for example should not trigger this.
         if (e.target === e.currentTarget && e.key === 'Enter') {
