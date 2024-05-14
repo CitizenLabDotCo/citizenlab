@@ -21,32 +21,13 @@ class WebApi::V1::UsersController < ApplicationController
     @users = @users.admin.or(@users.project_moderator).or(@users.project_folder_moderator) if params[:can_moderate].present?
     @users = @users.not_project_folder_moderator(params[:is_not_folder_moderator]) if params[:is_not_folder_moderator].present?
     @users = @users.not_citizenlab_member if params[:not_citizenlab_member].present?
-    @users = @users.admin if params[:can_admin].present?
 
-    if params[:search].blank?
-      @users = case params[:sort]
-      when 'created_at'
-        @users.order(created_at: :asc)
-      when '-created_at'
-        @users.order(created_at: :desc)
-      when 'last_name'
-        @users.order(last_name: :asc)
-      when '-last_name'
-        @users.order(last_name: :desc)
-      when 'email'
-        @users.order(email: :asc) if view_private_attributes?
-      when '-email'
-        @users.order(email: :desc) if view_private_attributes?
-      when 'role'
-        @users.order_role(:asc)
-      when '-role'
-        @users.order_role(:desc)
-      when nil
-        @users
-      else
-        raise 'Unsupported sort method'
-      end
+    case params[:can_admin]&.downcase
+    when 'true' then @users = @users.admin
+    when 'false' then @users = @users.not_admin
     end
+
+    sort_by_sort_param if params[:search].blank?
 
     @users = paginate @users
 
@@ -278,6 +259,35 @@ class WebApi::V1::UsersController < ApplicationController
     true
   end
 
+  def sort_by_sort_param
+    @users = case params[:sort]
+    when 'created_at'
+      @users.order(created_at: :asc)
+    when '-created_at'
+      @users.order(created_at: :desc)
+    when 'last_active_at'
+      @users.order(last_active_at: :asc)
+    when '-last_active_at'
+      @users.order(last_active_at: :desc)
+    when 'last_name'
+      @users.order(last_name: :asc)
+    when '-last_name'
+      @users.order(last_name: :desc)
+    when 'email'
+      @users.order(email: :asc) if view_private_attributes?
+    when '-email'
+      @users.order(email: :desc) if view_private_attributes?
+    when 'role'
+      @users.order_role(:asc)
+    when '-role'
+      @users.order_role(:desc)
+    when nil
+      @users
+    else
+      raise 'Unsupported sort method'
+    end
+  end
+
   def view_private_attributes?
     Pundit.policy!(current_user, (@user || User)).view_private_attributes?
   end
@@ -285,7 +295,7 @@ class WebApi::V1::UsersController < ApplicationController
   def update_params
     @update_params ||= permitted_attributes(@user).tap do |attrs|
       attrs[:onboarding] = @user.onboarding.merge(attrs[:onboarding].to_h)
-      attrs[:custom_field_values] = @user.custom_field_values.merge(attrs[:custom_field_values].to_h)
+      attrs[:custom_field_values] = params_service.updated_custom_field_values(@user.custom_field_values, attrs[:custom_field_values].to_h)
       CustomFieldService.new.compact_custom_field_values!(attrs[:custom_field_values])
 
       # Even if the feature is not activated, we still want to allow the user to remove
@@ -298,5 +308,9 @@ class WebApi::V1::UsersController < ApplicationController
 
   def app_configuration
     @app_configuration ||= AppConfiguration.instance
+  end
+
+  def params_service
+    @params_service ||= CustomFieldParamsService.new
   end
 end

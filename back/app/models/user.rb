@@ -34,7 +34,7 @@
 #  followings_count                    :integer          default(0), not null
 #  onboarding                          :jsonb            not null
 #  unique_code                         :string
-#  last_acted_at                       :datetime
+#  last_active_at                      :datetime
 #
 # Indexes
 #
@@ -210,7 +210,7 @@ class User < ApplicationRecord
 
   # NOTE: All validation except for required
   validates :custom_field_values, json: {
-    schema: -> { CustomFieldService.new.fields_to_json_schema_ignore_required(CustomField.with_resource_type('User')) }
+    schema: -> { CustomFieldService.new.fields_to_json_schema_ignore_required(CustomField.registration) }
   }, on: :form_submission
 
   validates :password, length: { maximum: 72 }, allow_nil: true

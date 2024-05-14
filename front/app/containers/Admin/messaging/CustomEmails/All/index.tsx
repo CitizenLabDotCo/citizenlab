@@ -5,14 +5,14 @@ import {
   Box,
   Title,
   Text,
-  fontSizes,
   colors,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import useCampaigns from 'api/campaigns/useCampaigns';
 import { isDraft } from 'api/campaigns/util';
 
+import DraftCampaignRow from 'components/admin/Email/DraftCampaignRow';
+import SentCampaignRow from 'components/admin/Email/SentCampaignRow';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import Pagination from 'components/admin/Pagination';
 import { List } from 'components/admin/ResourceList';
@@ -22,36 +22,12 @@ import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import messages from '../../messages';
 
-import DraftCampaignRow from './DraftCampaignRow';
 import NewCampaignButton from './NewCampaignButton';
-import SentCampaignRow from './SentCampaignRow';
-
-const NoCampaignsWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 80px 0 100px;
-  text-align: center;
-`;
-
-const NoCampaignsHeader = styled.h2`
-  font-size: ${fontSizes.xl}px;
-  font-weight: 600;
-  margin-bottom: 10px;
-`;
-
-const NoCampaignsDescription = styled.p`
-  color: ${colors.textSecondary};
-  font-weight: 400;
-  font-size: ${fontSizes.base}px;
-  margin-bottom: 30px;
-  max-width: 450px;
-`;
 
 const CustomEmails = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const { data: campaigns, fetchNextPage } = useCampaigns({
-    campaignNames: ['manual'],
+    campaignNames: ['manual', 'manual_project_participants'],
     pageSize: 10,
   });
 
@@ -69,16 +45,21 @@ const CustomEmails = () => {
   if (campaignsList.data.length === 0) {
     return (
       <Box background={colors.white} p="40px">
-        <NoCampaignsWrapper>
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          padding="80px 0 100px"
+        >
           <Icon name="email-2" width="80px" height="80px" />
-          <NoCampaignsHeader>
+          <Title fontSize="xl" fontWeight="bold" marginBottom="10px">
             <FormattedMessage {...messages.noCampaignsHeader} />
-          </NoCampaignsHeader>
-          <NoCampaignsDescription>
+          </Title>
+          <Text color="textSecondary" mb="30px" maxWidth="450px">
             <FormattedMessage {...messages.noCampaignsDescription} />
-          </NoCampaignsDescription>
+          </Text>
           <NewCampaignButton />
-        </NoCampaignsWrapper>
+        </Box>
       </Box>
     );
   } else {
@@ -108,9 +89,17 @@ const CustomEmails = () => {
           <List key={campaignsList.data.map((c) => c.id).join()}>
             {campaignsList.data.map((campaign) =>
               isDraft(campaign) ? (
-                <DraftCampaignRow key={campaign.id} campaign={campaign} />
+                <DraftCampaignRow
+                  key={campaign.id}
+                  campaign={campaign}
+                  context="global"
+                />
               ) : (
-                <SentCampaignRow key={campaign.id} campaign={campaign} />
+                <SentCampaignRow
+                  key={campaign.id}
+                  campaign={campaign}
+                  context="global"
+                />
               )
             )}
           </List>

@@ -59,6 +59,10 @@ module ParticipationMethod
       ]
     end
 
+    def allowed_extra_field_input_types
+      %w[page number linear_scale text multiline_text select multiselect multiselect_image file_upload point]
+    end
+
     # NOTE: This is only ever used by the analyses controller - otherwise the front-end always persists the form
     def create_default_form!
       form = CustomForm.new(participation_context: phase)

@@ -14,6 +14,7 @@ import { SupportedLocale } from 'typings';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
 import useProjects from 'api/projects/useProjects';
+import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
@@ -36,9 +37,8 @@ import { isModerator } from 'utils/permissions/roles';
 import Analysis from '../Analysis';
 import { WIDGET_TITLES } from '../Widgets';
 import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
-import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
 import CommentsByTimeWidget from '../Widgets/ChartWidgets/CommentsByTimeWidget';
-import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
+import DemographicsWidget from '../Widgets/ChartWidgets/DemographicsWidget';
 import PostsByTimeWidget from '../Widgets/ChartWidgets/PostsByTimeWidget';
 import ReactionsByTimeWidget from '../Widgets/ChartWidgets/ReactionsByTimeWidget';
 import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
@@ -87,8 +87,14 @@ const ReportBuilderToolbox = ({
   );
 
   const { data: phases } = usePhases(projectId);
+  const { data: userFields } = useUserCustomFields({ inputTypes: ['select'] });
 
-  if (!appConfigurationLocales || !authUser || (userIsModerator && !projects)) {
+  if (
+    !appConfigurationLocales ||
+    !authUser ||
+    (userIsModerator && !projects) ||
+    !userFields
+  ) {
     return (
       <Container>
         <Box
@@ -121,6 +127,13 @@ const ReportBuilderToolbox = ({
 
   const surveyPhaseId = phases ? findSurveyPhaseId(phases) : undefined;
   const ideationPhaseId = phases ? findIdeationPhaseId(phases) : undefined;
+
+  const genderField = userFields.data.find(
+    (field) => field.attributes.code === 'gender'
+  );
+
+  const genderFieldId = genderField?.id;
+  const genderFieldTitle = genderField?.attributes.title_multiloc;
 
   return (
     <Transition in={selectedTab === 'ai'} timeout={1000}>
@@ -259,30 +272,18 @@ const ReportBuilderToolbox = ({
               label={formatMessage(WIDGET_TITLES.VisitorsTrafficSourcesWidget)}
             />
             <DraggableElement
-              id="e2e-draggable-users-by-gender-widget"
+              id="e2e-draggable-demographics-widget"
               component={
-                <GenderWidget
-                  title={toMultiloc(WIDGET_TITLES.GenderWidget)}
+                <DemographicsWidget
+                  title={genderFieldTitle}
                   projectId={selectedProjectId}
                   startAt={undefined}
                   endAt={chartEndDate}
+                  customFieldId={genderFieldId}
                 />
               }
               icon="chart-bar"
-              label={formatMessage(WIDGET_TITLES.GenderWidget)}
-            />
-            <DraggableElement
-              id="e2e-draggable-users-by-age-widget"
-              component={
-                <AgeWidget
-                  title={toMultiloc(WIDGET_TITLES.AgeWidget)}
-                  projectId={selectedProjectId}
-                  startAt={undefined}
-                  endAt={chartEndDate}
-                />
-              }
-              icon="chart-bar"
-              label={formatMessage(WIDGET_TITLES.AgeWidget)}
+              label={formatMessage(WIDGET_TITLES.DemographicsWidget)}
             />
             <DraggableElement
               id="e2e-draggable-active-users-widget"
