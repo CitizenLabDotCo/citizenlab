@@ -598,8 +598,6 @@
   "app.containers.Admin.Users.seeProfile": "شاهد الملف التعريفي لهذا المستخدم",
   "app.containers.Admin.Users.setAsAdmin": "تعيين كمسؤول",
   "app.containers.Admin.Users.setAsNormalUser": "تعيين كمستخدم عادي",
-  "app.containers.Admin.Users.since": "تم التسجيل في",
-  "app.containers.Admin.Users.status": "الحالة",
   "app.containers.Admin.Users.userBlockModal.allDone": "كله تمام",
   "app.containers.Admin.Users.userBlockModal.blockAction": "مستخدم محضور",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "لن تتم إزالة محتوى هذا المستخدم من خلال هذا الإجراء. لا تنس تعديل محتواها إذا لزم الأمر.",

@@ -372,7 +372,6 @@
   "app.containers.Admin.Users.options": "Options",
   "app.containers.Admin.Users.permissionToBuy": "Fir {name} Verwalterrechter ze ginn, musst Dir 1 zousätzlech Plaz kafen.",
   "app.containers.Admin.Users.seeProfile": "See profile",
-  "app.containers.Admin.Users.since": "Registered on",
   "app.containers.Admin.Users.userBlockModal.allDone": "Alles fäerdeg",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Benotzer blockéieren",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "Den Inhalt vun dësem Benotzer gëtt net duerch dës Aktioun geläscht. Vergiesst net hiren Inhalt ze moderéieren wann néideg.",

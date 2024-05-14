@@ -598,8 +598,6 @@
   "app.containers.Admin.Users.seeProfile": "See profile",
   "app.containers.Admin.Users.setAsAdmin": "Set as admin",
   "app.containers.Admin.Users.setAsNormalUser": "Set as normal user",
-  "app.containers.Admin.Users.since": "Registered on",
-  "app.containers.Admin.Users.status": "Status",
   "app.containers.Admin.Users.userBlockModal.allDone": "All done",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Block user",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "The content of this user won't be removed through this action. Don't forget to moderate their content if needed.",

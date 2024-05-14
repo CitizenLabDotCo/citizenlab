@@ -456,8 +456,6 @@
   "app.containers.Admin.Users.seeProfile": "Veure perfil",
   "app.containers.Admin.Users.setAsAdmin": "Estableix com a administrador",
   "app.containers.Admin.Users.setAsNormalUser": "Estableix com a usuari normal",
-  "app.containers.Admin.Users.since": "Registrat a",
-  "app.containers.Admin.Users.status": "Estat",
   "app.containers.Admin.Users.userBlockModal.allDone": "Tot fet",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Bloquejar usuari",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "El contingut d'aquest usuari no s'eliminarà mitjançant aquesta acció. No us oblideu de moderar el seu contingut si cal.",
