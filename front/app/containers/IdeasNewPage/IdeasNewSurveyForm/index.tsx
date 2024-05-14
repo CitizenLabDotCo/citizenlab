@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 
 import {
   Box,
@@ -7,6 +7,7 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
+import { FocusOn } from 'react-focus-on';
 import { useSearchParams } from 'react-router-dom';
 
 import { IdeaPublicationStatus } from 'api/ideas/types';
@@ -97,7 +98,6 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     ? phaseFromUrl.data
     : getCurrentPhase(phases?.data);
   const allowAnonymousPosting = phase?.attributes.allow_anonymous_participation;
-  const surveyHeadingRef = useRef<HTMLDivElement>(null);
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
     (error) => {
@@ -251,7 +251,6 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
         >
           <SurveyHeading
             titleText={localize(phase?.attributes.native_survey_title_multiloc)}
-            ref={surveyHeadingRef}
           />
         </Box>
         <main id="e2e-idea-new-page">
@@ -297,7 +296,14 @@ const IdeasNewSurveyFormWrapperModal = (props: Props) => {
           bgColor={colors.grey100}
           h="100vh"
         >
-          <IdeasNewSurveyForm {...props} />
+          <FocusOn>
+            {/*
+              FocusOn is used to trap focus within the modal.
+              Otherwise the focus would escape the modal and go to the background page.
+              This impedes the user experience for screen reader users and keyboard users.
+            */}
+            <IdeasNewSurveyForm {...props} />
+          </FocusOn>
         </Box>,
         modalPortalElement
       )
