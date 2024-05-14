@@ -8,7 +8,7 @@ describe ActivityPolicy do
   let(:scope) { described_class::Scope.new(user, Activity) }
 
   context 'on an activity for the management feed' do
-    let!(:activity) { create(:phase_created_activity) }
+    let!(:activity) { create(:phase_created_activity, user: create(:admin)) }
 
     context 'for a visitor' do
       let(:user) { nil }
