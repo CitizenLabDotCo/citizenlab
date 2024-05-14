@@ -51,6 +51,12 @@ const Wide = ({
               startAtMoment={startAt ? moment(startAt) : null}
               endAtMoment={endAt ? moment(endAt) : null}
               resolution={currentResolution}
+              yaxis={hideStatistics ? { orientation: 'right' } : undefined}
+              margin={
+                hideStatistics
+                  ? { top: 0, right: -16, bottom: 0, left: 0 }
+                  : undefined
+              }
             />
           </Box>
         </Box>
