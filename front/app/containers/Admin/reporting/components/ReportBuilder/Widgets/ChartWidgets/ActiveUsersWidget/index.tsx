@@ -2,12 +2,12 @@ import React from 'react';
 
 import Card from '../../_shared/Card';
 import messages from '../messages';
-import { TimeSeriesWidgetProps } from '../typings';
 
 import ActiveUsers from './ActiveUsersCard';
 import ChartWidgetSettings from './ChartWidgetSettings';
+import { Props } from './typings';
 
-const ActiveUsersWidget = ({ title, ...props }: TimeSeriesWidgetProps) => {
+const ActiveUsersWidget = ({ title, ...props }: Props) => {
   return (
     <Card title={title} pagebreak>
       <ActiveUsers {...props} />
