@@ -171,5 +171,13 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
       expect(idea_rows[0][:custom_field_values][:text_field]).to eq 'First text field'
       expect(idea_rows[0][:custom_field_values][:text_field2]).to eq 'Second text field'
     end
+
+    it 'correctly parses the rows of a real xlsx file' do
+      base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/import.xlsx').read
+      file = service.send(:upload_source_file, "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{base_64_content}")
+      parsed = service.send(:parse_xlsx_ideas(file))
+      binding.pry
+    end
+
   end
 end
