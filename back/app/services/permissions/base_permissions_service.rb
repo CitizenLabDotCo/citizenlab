@@ -27,6 +27,7 @@ module Permissions
 
     def initialize
       super
+      # @permissions = Permission.includes(:groups).where(permission_scope: phases)
       @timeline_service = TimelineService.new
     end
 
@@ -52,6 +53,7 @@ module Permissions
     def find_permission(action, phase)
       scope = phase&.permission_scope
       permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
+      # permission = @permissions.find_by(permission_scope_id: scope&.id, action: action)
 
       if permission.blank? && Permission.available_actions(scope)
         Permissions::PermissionsUpdateService.new.update_permissions_for_scope scope
@@ -82,7 +84,7 @@ module Permissions
           end
         end
       end
-      return if Permissions::UserRequirementsService.new.requirements(permission, user)[:permitted]
+      return if user_requirements_service.requirements(permission, user)[:permitted]
 
       USER_DENIED_REASONS[:missing_user_requirements]
     end
@@ -90,6 +92,10 @@ module Permissions
     # NOTE: method overridden in the verification engine when enabled
     def denied_when_permitted_by_groups?(permission, user)
       :not_in_group unless user.in_any_groups?(permission.groups)
+    end
+
+    def user_requirements_service
+      @user_requirements_service ||= Permissions::UserRequirementsService.new
     end
   end
 end

@@ -553,4 +553,32 @@ describe Permissions::ProjectPermissionsService do
       expect(service.future_enabled_phase('voting', create(:user), project)).to be_nil
     end
   end
+
+  describe 'action_descriptors' do
+    it 'does not run loads of queries' do
+      user = create(:user)
+      current_phase = TimelineService.new.current_phase(create(:project_with_current_phase))
+      create(:permission, action: 'posting_idea', permission_scope: current_phase, permitted_by: 'users')
+      create(:permission, action: 'commenting_idea', permission_scope: current_phase, permitted_by: 'users')
+      create(:permission, action: 'reacting_idea', permission_scope: current_phase, permitted_by: 'users')
+
+      # Load project as loaded by the controller
+      project = Project.preload(
+                           :project_images,
+                           :areas,
+                           :topics,
+                           :content_builder_layouts, # Defined in ContentBuilder engine
+                           phases: [:report],
+                           admin_publication: [:children]
+                         )
+                       .first
+
+      # This doesn't seem to do much
+      test_user = User.includes(:memberships).find(user.id)
+
+      # service = described_class.new([current_phase])
+
+      expect { service.action_descriptors(project, test_user) }.not_to exceed_query_limit(69) # Down from 111
+    end
+  end
 end

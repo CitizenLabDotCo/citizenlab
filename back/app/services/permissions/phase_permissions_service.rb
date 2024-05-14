@@ -132,6 +132,7 @@ module Permissions
     end
 
     # Helper methods
+    # Preload phase ideas for a user
     def posting_limit_reached?(phase, user)
       return true if phase.posting_limited? &&
                      phase.ideas.where(author: user, publication_status: 'published').size >= phase.posting_limited_max
