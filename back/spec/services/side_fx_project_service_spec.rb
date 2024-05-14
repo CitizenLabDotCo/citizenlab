@@ -80,19 +80,6 @@ describe SideFxProjectService do
         .with(project, 'published', user, project.updated_at.to_i, anything)
     end
 
-    it "logs a 'changed_publication_status' action when publication_status is changed" do
-      project.admin_publication.update!(publication_status: 'published')
-
-      project.assign_attributes(admin_publication_attributes: { publication_status: 'archived' })
-      service.before_update project, user
-
-      project.save!
-
-      expect { service.after_update(project, user) }
-        .to have_enqueued_job(LogActivityJob)
-        .with(project, 'changed_publication_status', user, project.updated_at.to_i, anything)
-    end
-
     it "does not log a 'changed_publication_status' action when a draft project is published" do
       project.admin_publication.update!(publication_status: 'draft')
 

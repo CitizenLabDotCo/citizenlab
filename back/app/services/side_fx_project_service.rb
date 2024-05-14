@@ -51,7 +51,8 @@ class SideFxProjectService
     end
 
     after_folder_changed project, user if @folder_id_was != project.folder_id
-    after_admin_publication_changes project, user
+    # We don't want to send out the "project published" campaign when e.g. changing from "archived" to "published"
+    after_publish project, user if project.admin_publication.published? && @publication_status_was == 'draft'
   end
 
   def before_destroy(project, user); end
@@ -72,24 +73,6 @@ class SideFxProjectService
   end
 
   private
-
-  def after_admin_publication_changes(project, user)
-    admin_publication_changes = project.admin_publication.saved_changes
-    return unless admin_publication_changes.key?('publication_status')
-
-    if project.admin_publication.published? && @publication_status_was == 'draft'
-      # We don't want to send out the "project published" campaign when e.g. changing from "archived" to "published"
-      after_publish project, user
-    else
-      LogActivityJob.perform_later(
-        project,
-        'changed_publication_status',
-        user,
-        project.updated_at.to_i,
-        payload: { change: admin_publication_changes }
-      )
-    end
-  end
 
   def after_publish(project, user)
     LogActivityJob.perform_later project, 'published', user, project.updated_at.to_i
