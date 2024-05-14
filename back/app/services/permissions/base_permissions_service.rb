@@ -91,11 +91,6 @@ module Permissions
     def denied_when_permitted_by_groups?(permission, user)
       :not_in_group unless user.in_any_groups?(permission.groups)
     end
-
-    # TODO: JS - use in specs that list them all
-    def all_denied_reasons
-      USER_DENIED_REASONS
-    end
   end
 end
 
