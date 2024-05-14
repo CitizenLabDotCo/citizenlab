@@ -31,13 +31,13 @@ class WebApi::V1::PermissionsController < ApplicationController
 
   def requirements
     authorize @permission
-    json_requirements = registration_requirements_service.requirements @permission, current_user
+    json_requirements = user_requirements_service.requirements @permission, current_user
     render json: raw_json({ requirements: json_requirements }), status: :ok
   end
 
   def schema
     authorize @permission
-    fields = registration_requirements_service.requirements_fields @permission
+    fields = user_requirements_service.requirements_fields @permission
     render json: raw_json(JsonFormsService.new.user_ui_and_json_multiloc_schemas(fields))
   end
 
@@ -51,12 +51,12 @@ class WebApi::V1::PermissionsController < ApplicationController
     ).serializable_hash
   end
 
-  def permissions_service
-    @permissions_service ||= Permissions::PermissionsUpdateService.new
+  def permissions_update_service
+    @permissions_update_service ||= Permissions::PermissionsUpdateService.new
   end
 
-  def registration_requirements_service
-    @registration_requirements_service ||= Permissions::UserRequirementsService.new
+  def user_requirements_service
+    @user_requirements_service ||= Permissions::UserRequirementsService.new
   end
 
   def set_permission
@@ -64,7 +64,7 @@ class WebApi::V1::PermissionsController < ApplicationController
   end
 
   def permission_scope
-    permissions_service.permission_scope_from_permissions_params(params)
+    permissions_update_service.permission_scope_from_permissions_params(params)
   end
 
   def permission_action

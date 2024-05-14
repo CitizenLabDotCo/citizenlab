@@ -3,7 +3,7 @@
 class SideFxPhaseService
   include SideFxHelper
 
-  attr_writer :permissions_service
+  attr_writer :permissions_update_service
 
   def before_create(phase, user); end
 

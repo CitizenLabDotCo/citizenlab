@@ -108,7 +108,7 @@ describe SideFxPhaseService do
       described_class.new.tap { |s| s.permissions_service = permissions_service }
     end
 
-    let(:permissions_service) { instance_double(Permissions::PermissionsUpdateService) }
+    let(:permissions_update_service) { instance_double(Permissions::PermissionsUpdateService) }
 
     describe 'after_create' do
       specify do
