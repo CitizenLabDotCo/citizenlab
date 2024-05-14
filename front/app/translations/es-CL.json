@@ -1,5 +1,4 @@
 {
-  "EmailSettingsPage.emailSettings": "Configuración del correo electrónico",
   "EmailSettingsPage.initialUnsubscribeError": "Hubo un problema al cancelar su suscripción a esta campaña. Inténtelo nuevamente.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Su solicitud se está procesando, espere por favor...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Ha cancelado correctamente su suscripción a {Títulodecampaña}.",
@@ -1612,6 +1611,7 @@
   "app.containers.UsersShowPage.emptyInfoText": "No sigues ningún elemento del filtro especificado anteriormente.",
   "app.containers.UsersShowPage.eventsWithCount": "Eventos ({eventsCount})",
   "app.containers.UsersShowPage.followingWithCount": "Siguiendo ({followingCount})",
+  "app.containers.UsersShowPage.goBackToPreviousPage": "Vuelva a la página anterior",
   "app.containers.UsersShowPage.inputs": "Aportes",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Todas las entradas enviadas por este participante",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Todos los comentarios publicados por este usuario",
@@ -1632,6 +1632,7 @@
   "app.containers.UsersShowPage.seePost": "Ver publicación",
   "app.containers.UsersShowPage.topics": "Temas",
   "app.containers.UsersShowPage.tryAgain": "Un error ha ocurrido, por favor inténtalo más tarde.",
+  "app.containers.UsersShowPage.user404NotFound": "No pudimos encontrar el perfil de este usuario. Si estaba aquí antes, puede haber sido borrado.",
   "app.containers.UsersShowPage.userShowPageMetaDescription": "Esta es la página de perfil de {firstName} {lastName} en la plataforma de participación en línea de {orgName}. Esta es una descripción general de todas sus publicaciones.",
   "app.containers.VoteControl.close": "Cerrar",
   "app.containers.VoteControl.voteErrorTitle": "Ups, algo salió mal",

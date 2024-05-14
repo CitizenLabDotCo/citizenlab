@@ -1,5 +1,4 @@
 {
-  "EmailSettingsPage.emailSettings": "Ustawienia poczty e-mail",
   "EmailSettingsPage.initialUnsubscribeError": "Zaistniał problem z wypisaniem się z tej kampanii, proszę spróbuj ponownie później.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Twoja prośba jest rozpatrywana, proszę poczekaj...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Pomyślnie wypisałeś się z {campaignTitle}.",
@@ -1612,6 +1611,7 @@
   "app.containers.UsersShowPage.emptyInfoText": "Nie podążasz za żadnymi elementami określonego powyżej filtra.",
   "app.containers.UsersShowPage.eventsWithCount": "Wydarzenia ({eventsCount})",
   "app.containers.UsersShowPage.followingWithCount": "Following ({followingCount})",
+  "app.containers.UsersShowPage.goBackToPreviousPage": "Wróć do poprzedniej strony",
   "app.containers.UsersShowPage.inputs": "Wejścia",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Wszystkie posty zgłoszone przez tego uczestnika",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Wszystkie komentarze zamieszczone przez tego użytkownika",
@@ -1632,6 +1632,7 @@
   "app.containers.UsersShowPage.seePost": "Zobacz post",
   "app.containers.UsersShowPage.topics": "Tematy",
   "app.containers.UsersShowPage.tryAgain": "Wystąpił błąd, proszę spróbuj ponownie później.",
+  "app.containers.UsersShowPage.user404NotFound": "Nie mogliśmy znaleźć tego profilu użytkownika. Jeśli był tu wcześniej, mógł zostać usunięty.",
   "app.containers.UsersShowPage.userShowPageMetaDescription": "Jest to strona profilowa {firstName} {lastName} na platformie uczestnictwa {orgName}. Poniżej znajduje się podgląd jej postów.",
   "app.containers.VoteControl.close": "Zamknij",
   "app.containers.VoteControl.voteErrorTitle": "Coś poszło nie tak",

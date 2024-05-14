@@ -1,5 +1,4 @@
 {
-  "EmailSettingsPage.emailSettings": "E-mail instellingen",
   "EmailSettingsPage.initialUnsubscribeError": "Er was een probleem bij het uitschrijven van deze campagne, probeer het later opnieuw.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Je verzoek wordt verwerkt, even geduld...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Je hebt je succesvol afgemeld voor {campaignTitle}.",
@@ -1612,6 +1611,7 @@
   "app.containers.UsersShowPage.emptyInfoText": "Je volgt geen items van het opgegeven filter hierboven.",
   "app.containers.UsersShowPage.eventsWithCount": "Activiteiten ({eventsCount})",
   "app.containers.UsersShowPage.followingWithCount": "Volgen ({followingCount})",
+  "app.containers.UsersShowPage.goBackToPreviousPage": "Ga terug naar de vorige pagina",
   "app.containers.UsersShowPage.inputs": "Bijdragen",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Alle bijdrages die door deze deelnemer zijn ingediend",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Alle reacties die door deze gebruiker zijn geplaatst",
@@ -1632,6 +1632,7 @@
   "app.containers.UsersShowPage.seePost": "Zie bijdrage",
   "app.containers.UsersShowPage.topics": "Tags",
   "app.containers.UsersShowPage.tryAgain": "Er ging iets fout, probeer het later opnieuw.",
+  "app.containers.UsersShowPage.user404NotFound": "We konden het profiel van deze gebruiker niet vinden. Als het hier eerder was, kan het profiel zijn verwijderd.",
   "app.containers.UsersShowPage.userShowPageMetaDescription": "Dit is de profielpagina van {firstName} {lastName} op het online participatieplatform van {orgName}. Hier vind je een overzicht van al hun bijdragen.",
   "app.containers.VoteControl.close": "Sluiten",
   "app.containers.VoteControl.voteErrorTitle": "Er ging iets mis",

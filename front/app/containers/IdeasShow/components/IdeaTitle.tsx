@@ -31,9 +31,15 @@ interface Props {
   idea: IIdea;
   projectId: string;
   translateButtonClicked: boolean;
+  showActions: boolean;
 }
 
-const IdeaTitle = ({ idea, projectId, translateButtonClicked }: Props) => {
+const IdeaTitle = ({
+  idea,
+  projectId,
+  translateButtonClicked,
+  showActions,
+}: Props) => {
   const localize = useLocalize();
 
   const ideaTitle = localize(idea.data.attributes.title_multiloc);
@@ -46,9 +52,11 @@ const IdeaTitle = ({ idea, projectId, translateButtonClicked }: Props) => {
         title={ideaTitle}
         translateButtonClicked={translateButtonClicked}
       />
-      <Box ml="30px">
-        <IdeaMoreActions idea={idea.data} projectId={projectId} />
-      </Box>
+      {showActions && (
+        <Box ml="30px">
+          <IdeaMoreActions idea={idea.data} projectId={projectId} />
+        </Box>
+      )}
     </IdeaHeader>
   );
 };

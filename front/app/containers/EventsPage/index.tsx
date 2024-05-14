@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 
-import ContentContainer from 'components/ContentContainer';
+import SectionContainer from 'components/SectionContainer';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -17,21 +17,35 @@ const EventsPage = () => {
 
   return (
     <>
+      <Box width="100vw">
+        <Title
+          px={'16px'}
+          maxWidth="1100px"
+          color="tenantPrimary"
+          style={{ fontSize: isTabletOrSmaller ? '40px' : '80px' }}
+          zIndex="10000"
+          mx="auto"
+          pt={isTabletOrSmaller ? '40px' : '0px'}
+          mb="0px"
+        >
+          {formatMessage(messages.events)}
+        </Title>
+      </Box>
       <EventsPageMeta />
-      <main id="e2e-events-container">
-        <Box pb={isTabletOrSmaller ? '80px' : '160px'}>
-          <ContentContainer mode="page">
-            <Title
-              color="tenantPrimary"
-              style={{ fontSize: isTabletOrSmaller ? '40px' : '80px' }}
-            >
-              {formatMessage(messages.events)}
-            </Title>
+      <Box as="main">
+        <SectionContainer>
+          <Box
+            id="e2e-events-container"
+            mx="auto"
+            px="24px"
+            width="100%"
+            maxWidth="1100px"
+          >
             <CurrentAndUpcomingEvents />
             <PastEvents />
-          </ContentContainer>
-        </Box>
-      </main>
+          </Box>
+        </SectionContainer>
+      </Box>
     </>
   );
 };

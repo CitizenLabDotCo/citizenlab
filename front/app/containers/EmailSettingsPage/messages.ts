@@ -14,8 +14,4 @@ export default defineMessages({
     id: 'EmailSettingsPage.initialUnsubscribeLoading',
     defaultMessage: 'Your request is being processed, please wait...',
   },
-  emailSettings: {
-    id: 'EmailSettingsPage.emailSettings',
-    defaultMessage: 'Email settings',
-  },
 });

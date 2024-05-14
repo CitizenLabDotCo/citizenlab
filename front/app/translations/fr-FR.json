@@ -1,5 +1,4 @@
 {
-  "EmailSettingsPage.emailSettings": "Paramètres des e-mails",
   "EmailSettingsPage.initialUnsubscribeError": "Il y a eu un problème lors de votre désabonnement à cette campagne, veuillez réessayer.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Votre demande est en cours de traitement, veuillez patienter...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Vous avez réussi à vous désabonner de {campaignTitle}.",
@@ -1612,6 +1611,7 @@
   "app.containers.UsersShowPage.emptyInfoText": "Vous ne suivez aucun élément correspondant au filtre spécifié ci-dessus.",
   "app.containers.UsersShowPage.eventsWithCount": "Événements ({eventsCount})",
   "app.containers.UsersShowPage.followingWithCount": "Suivis ({followingCount})",
+  "app.containers.UsersShowPage.goBackToPreviousPage": "Retour à la page précédente",
   "app.containers.UsersShowPage.inputs": "Contributions",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Tous les contributions soumis par ce participant",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Tous les commentaires postés par cet utilisateur",
@@ -1632,6 +1632,7 @@
   "app.containers.UsersShowPage.seePost": "Voir l'article",
   "app.containers.UsersShowPage.topics": "Étiquettes",
   "app.containers.UsersShowPage.tryAgain": "Une erreur s’est produite, veuillez réessayer ",
+  "app.containers.UsersShowPage.user404NotFound": "Nous n'avons pas trouvé le profil de cet utilisateur. S'il existait avant, il a peut-être été supprimé.",
   "app.containers.UsersShowPage.userShowPageMetaDescription": "Voici la page de profil de {firstName} {lastName} sur la plate-forme de participation en ligne de {orgName}. Voici un aperçu de tous leurs articles.",
   "app.containers.VoteControl.close": "Fermer",
   "app.containers.VoteControl.voteErrorTitle": "Oups... Une erreur est survenue",

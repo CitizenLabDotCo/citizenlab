@@ -1,14 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
 
+import { Spinner } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 
+import usePhases from 'api/phases/usePhases';
+import { getInputTerm } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
+import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
+import Modal from 'components/UI/Modal';
+
+import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { isString } from 'utils/helperUtils';
+import { getInputTermMessage } from 'utils/i18n';
 
+import messages from '../messages';
 import {
   pageContentMaxWidth,
   contentFadeInDuration,
@@ -16,9 +25,7 @@ import {
   contentFadeInDelay,
 } from '../styleConstants';
 
-import IdeaSharingModal from './IdeaSharingModal';
-
-const Container = styled.div`
+const Main = styled.main`
   width: 100%;
   max-width: ${pageContentMaxWidth}px;
   position: relative;
@@ -55,26 +62,23 @@ const Container = styled.div`
 
 interface Props {
   projectId: string;
+  isLoaded: boolean;
   className?: string;
   children: React.ReactNode;
   handleContainerRef: (element: HTMLElement | null) => void;
 }
 
-{
-  /*
-  On "Container2" naming: I didn't try to come up with a better name because this shouldn't be a separate component.
-  It makes it harder to understand IdeasShow with no benefits.
-  This component needs to be reintegrated into IdeasShow instead, then extract
-  the modal perhaps.
-*/
-}
-const Container2 = ({
+const Container = ({
   projectId,
+  isLoaded,
   className,
   children,
   handleContainerRef,
 }: Props) => {
   const { data: project } = useProjectById(projectId);
+  const { data: phases } = usePhases(projectId);
+  const { formatMessage } = useIntl();
+
   const [searchParams] = useSearchParams();
   const ideaIdParameter = searchParams.get('new_idea_id');
   const [newIdeaId, setNewIdeaId] = useState<string | null>(null);
@@ -99,11 +103,18 @@ const Container2 = ({
 
   if (!project) return null;
 
+  const inputTerm = getInputTerm(phases?.data);
+
   return (
     <>
+      {!isLoaded && (
+        <Main className={`loading ${className || ''}`}>
+          <Spinner />
+        </Main>
+      )}
       <CSSTransition
         classNames="content"
-        in={true}
+        in={isLoaded}
         timeout={{
           enter: contentFadeInDuration + contentFadeInDelay,
           exit: 0,
@@ -111,22 +122,40 @@ const Container2 = ({
         enter={true}
         exit={false}
       >
-        <Container
+        <Main
+          id="e2e-idea-show"
           className={`loaded ${className || ''}`}
           ref={handleContainerRef}
         >
           {children}
-        </Container>
+        </Main>
       </CSSTransition>
-      {typeof newIdeaId === 'string' && (
-        <IdeaSharingModal
-          projectId={projectId}
-          newIdeaId={newIdeaId}
-          closeIdeaSocialSharingModal={closeIdeaSocialSharingModal}
-        />
-      )}
+      <Modal
+        opened={!!newIdeaId}
+        close={closeIdeaSocialSharingModal}
+        hasSkipButton={true}
+        skipText={<>{formatMessage(messages.skipSharing)}</>}
+      >
+        {newIdeaId && (
+          <SharingModalContent
+            postType="idea"
+            postId={newIdeaId}
+            title={formatMessage(
+              getInputTermMessage(inputTerm, {
+                idea: messages.sharingModalTitle,
+                option: messages.optionSharingModalTitle,
+                project: messages.projectSharingModalTitle,
+                question: messages.questionSharingModalTitle,
+                issue: messages.issueSharingModalTitle,
+                contribution: messages.contributionSharingModalTitle,
+              })
+            )}
+            subtitle={formatMessage(messages.sharingModalSubtitle)}
+          />
+        )}
+      </Modal>
     </>
   );
 };
 
-export default Container2;
+export default Container;

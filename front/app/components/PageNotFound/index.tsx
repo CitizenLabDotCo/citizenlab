@@ -27,19 +27,17 @@ const PageNotFound = () => {
   const { formatMessage } = useIntl();
 
   return (
-    <main>
-      <PageNotFoundWrapper>
-        <Title mb="0">{formatMessage(messages.notFoundTitle)}</Title>
-        <Text fontSize="l" color={'textSecondary'} mb="36px">
-          {formatMessage(messages.pageNotFoundDescription)}
-        </Text>
-        <Button
-          linkTo="/"
-          text={formatMessage(messages.goBackToHomePage)}
-          icon="arrow-left"
-        />
-      </PageNotFoundWrapper>
-    </main>
+    <PageNotFoundWrapper>
+      <Title mb="0">{formatMessage(messages.notFoundTitle)}</Title>
+      <Text fontSize="l" color={'textSecondary'} mb="36px">
+        {formatMessage(messages.pageNotFoundDescription)}
+      </Text>
+      <Button
+        linkTo="/"
+        text={formatMessage(messages.goBackToHomePage)}
+        icon="arrow-left"
+      />
+    </PageNotFoundWrapper>
   );
 };
 

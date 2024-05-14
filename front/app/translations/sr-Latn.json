@@ -1,5 +1,4 @@
 {
-  "EmailSettingsPage.emailSettings": "Email settings",
   "EmailSettingsPage.initialUnsubscribeError": "Došlo je do greške prilikom odjave. Molimo pokušajte ponovo.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Vaš zahtev se obrađuje, molimo sačekajte...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Uspešno ste se odjavili sa {campaignTitle}.",
@@ -1612,6 +1611,7 @@
   "app.containers.UsersShowPage.emptyInfoText": "You are not following any items of the specified filter above.",
   "app.containers.UsersShowPage.eventsWithCount": "Events ({eventsCount})",
   "app.containers.UsersShowPage.followingWithCount": "Following ({followingCount})",
+  "app.containers.UsersShowPage.goBackToPreviousPage": "Vratite se na prethodnu stranicu",
   "app.containers.UsersShowPage.inputs": "Inputs",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Svi postovi ovog učesnika",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Svi komentari ovog učesnika",
@@ -1632,6 +1632,7 @@
   "app.containers.UsersShowPage.seePost": "Pogledajte post",
   "app.containers.UsersShowPage.topics": "Topics",
   "app.containers.UsersShowPage.tryAgain": "Došlo je do greške. Molimo vas pokušajte kasnije.",
+  "app.containers.UsersShowPage.user404NotFound": "Nismo mogli da pronađemo profil ovog korisnika. Ako je ovde bio ranije, možda je izbrisan.",
   "app.containers.UsersShowPage.userShowPageMetaDescription": "Ovo je stranica profila {firstName} {lastName} na platformi za online učešće organizacije {orgName}. U nastavku pregledajte sve objavljene postove.",
   "app.containers.VoteControl.close": "Zatvori",
   "app.containers.VoteControl.voteErrorTitle": "Došlo je do greške",

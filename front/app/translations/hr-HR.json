@@ -1,5 +1,4 @@
 {
-  "EmailSettingsPage.emailSettings": "Postavke e-pošte",
   "EmailSettingsPage.initialUnsubscribeError": "Došlo je do pogreške prilikom otkazivanja pretplate na ovu kampanju. Pokušajte ponovo.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Vaš se zahtjev obrađuje, pričekajte...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Uspješno ste se odjavili s {campaignTitle}.",
@@ -1612,6 +1611,7 @@
   "app.containers.UsersShowPage.emptyInfoText": "Ne pratite nijednu stavku gore navedenog filtera.",
   "app.containers.UsersShowPage.eventsWithCount": "Događaji ({eventsCount})",
   "app.containers.UsersShowPage.followingWithCount": "Slijedi ({followingCount})",
+  "app.containers.UsersShowPage.goBackToPreviousPage": "Vrati se na prethodnu stranicu",
   "app.containers.UsersShowPage.inputs": "Unosi",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Svi unosi ovog sudionika",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Svi komentari koje je objavio ovaj sudionik",
@@ -1632,6 +1632,7 @@
   "app.containers.UsersShowPage.seePost": "Pogledajte predaju",
   "app.containers.UsersShowPage.topics": "teme",
   "app.containers.UsersShowPage.tryAgain": "Došlo je do pogreške. Pokušajte ponovno kasnije.",
+  "app.containers.UsersShowPage.user404NotFound": "Nismo mogli pronaći profil ovog korisnika. Ako je ovdje bio ranije, možda je izbrisan.",
   "app.containers.UsersShowPage.userShowPageMetaDescription": "Ovo je stranica profila {firstName} {lastName} na platformi za mrežno sudjelovanje organizacije {orgName}. U nastavku pregledajte sve njihove unose.",
   "app.containers.VoteControl.close": "Zatvori",
   "app.containers.VoteControl.voteErrorTitle": "Nešto je pošlo po krivu",
