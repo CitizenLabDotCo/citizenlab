@@ -166,7 +166,7 @@ const ValuesList = ({
   };
 
   useEffect(() => {
-    if (opened) {
+    if (opened && Object.keys(tabsRef.current).length > 0) {
       tabsRef.current[0].focus();
     }
   }, [opened]);
@@ -266,6 +266,7 @@ const ValuesList = ({
                     onClick={handleOnSelectSingleValue(entry)}
                     onKeyDown={handleOnSelectSingleValue(entry)}
                     tabIndex={0}
+                    ref={(el) => el && (tabsRef.current[index] = el)}
                   >
                     <ListItemText id={`e2e-item-${entry.value}`}>
                       {entry.text}
