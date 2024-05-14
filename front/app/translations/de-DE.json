@@ -1,5 +1,4 @@
 {
-  "EmailSettingsPage.emailSettings": "E-Mail-Einstellungen",
   "EmailSettingsPage.initialUnsubscribeError": "Beim Abmelden von diesem E-Mailverteiler ist ein Fehler aufgetreten.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Ihre Anfrage wird gerade bearbeitet, bitte haben Sie noch etwas Geduld...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Sie haben sich erfolgreich von {campaignTitle} abgemeldet.",

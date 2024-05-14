@@ -1,5 +1,4 @@
 {
-  "EmailSettingsPage.emailSettings": "E-postinställningar",
   "EmailSettingsPage.initialUnsubscribeError": "Det uppstod ett problem med att avsluta prenumerationen på denna kampanjen, vänligen försök igen.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Din begäran bearbetas, vänligen vänta...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Du har framgångsrikt avslutat prenumerationen på {campaignTitle}.",

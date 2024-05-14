@@ -1,5 +1,4 @@
 {
-  "EmailSettingsPage.emailSettings": "Impostazioni e-mail",
   "EmailSettingsPage.initialUnsubscribeError": "C'è stato un problema nel cancellarsi da questa campagna, per favore riprova.",
   "EmailSettingsPage.initialUnsubscribeLoading": "La sua richiesta è in fase di elaborazione, la preghiamo di attendere...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Ti sei cancellato con successo da {campaignTitle}.",

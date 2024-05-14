@@ -1,5 +1,4 @@
 {
-  "EmailSettingsPage.emailSettings": "Sähköpostiasetukset",
   "EmailSettingsPage.initialUnsubscribeError": "Tämän kampanjan tilauksen peruuttamisessa ilmeni ongelma. Yritä uudelleen.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Pyyntöäsi käsitellään, odota...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Olet onnistuneesti peruuttanut tilauksen {campaignTitle}.",

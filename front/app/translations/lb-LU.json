@@ -1,5 +1,4 @@
 {
-  "EmailSettingsPage.emailSettings": "E-Mail Astellungen",
   "EmailSettingsPage.initialUnsubscribeError": "Beim Ofmellen aus der Mailinglëscht ass e Feeler opgetratt. Probéiert et wgl. nach eng Kéier.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Är Ufro gëtt beaarbecht, hutt wgl. e bësse Gedold...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Dir hutt Iech erfollegräich vun {campaignTitle} ofgemellt.",

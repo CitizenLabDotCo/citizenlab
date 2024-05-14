@@ -1,5 +1,4 @@
 {
-  "EmailSettingsPage.emailSettings": "Ρυθμίσεις email",
   "EmailSettingsPage.initialUnsubscribeError": "Υπήρξε ένα πρόβλημα με τη διαγραφή από αυτή την εκστρατεία, παρακαλούμε προσπαθήστε ξανά.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Το αίτημά σας επεξεργάζεται, παρακαλούμε περιμένετε...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Διαγράψατε επιτυχώς την εγγραφή σας από την εκστρατεία {campaignTitle}.",

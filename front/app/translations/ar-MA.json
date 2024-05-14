@@ -1,5 +1,4 @@
 {
-  "EmailSettingsPage.emailSettings": "إعدادات البريد الإلكتروني",
   "EmailSettingsPage.initialUnsubscribeError": "حدث خطأ أثناء إلغاء الاشتراك في هذه الحملة، يُرجى المحاولة مجددًا.",
   "EmailSettingsPage.initialUnsubscribeLoading": "تتم معالجة طلبك، يُرجى الانتظار قليلا",
   "EmailSettingsPage.initialUnsubscribeSuccess": "تم إلغاء اشتراكك في {campaignTitle} بنجاح ",
