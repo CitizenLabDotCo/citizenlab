@@ -173,7 +173,7 @@ class User < ApplicationRecord
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :assign_email_or_phone, if: :email_changed?
   with_options if: -> { user_confirmation_enabled? } do
-    before_validation :set_confirmation_required, if: :email_changed?, on: :create
+    before_validation :set_confirmation_required
     before_validation :confirm, if: ->(user) { user.invite_status_change&.last == 'accepted' }
   end
   before_validation :complete_registration
@@ -193,7 +193,7 @@ class User < ApplicationRecord
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
   store_accessor :onboarding, :topics_and_areas
 
-  validates :email, presence: true, if: :requires_email?
+  validates :email, presence: true, unless: :allows_empty_email?
   validates :locale, presence: true, unless: :invite_pending?
   validates :email, uniqueness: true, allow_nil: true
   validates :email, format: { with: EMAIL_REGEX }, allow_nil: true
@@ -211,7 +211,7 @@ class User < ApplicationRecord
   # NOTE: All validation except for required
   validates :custom_field_values, json: {
     schema: -> { CustomFieldService.new.fields_to_json_schema_ignore_required(CustomField.registration) }
-  }, on: :form_submission
+  }, on: :form_submission, if: :custom_field_values_changed?
 
   validates :password, length: { maximum: 72 }, allow_nil: true
   # Custom validation is required to deal with the
@@ -224,7 +224,7 @@ class User < ApplicationRecord
 
   validate :validate_not_duplicate_email
   validate :validate_not_duplicate_new_email
-  validate :validate_can_update_email
+  validate :validate_can_update_email, on: :form_submission
   validate :validate_email_domains_blacklist
 
   with_options if: -> { user_confirmation_enabled? } do
@@ -354,10 +354,6 @@ class User < ApplicationRecord
 
   def avatar_blank?
     avatar.file.nil?
-  end
-
-  def invited?
-    invite_status.present?
   end
 
   def invite_pending?
@@ -498,10 +494,6 @@ class User < ApplicationRecord
     manual_groups.merge(groups).exists?
   end
 
-  def should_require_confirmation?
-    !(registered_with_phone? || highest_role != :user || sso? || invited? || active?)
-  end
-
   # true if the user has not yet confirmed their email address and the platform requires it
   def confirmation_required?
     user_confirmation_enabled? && confirmation_required
@@ -518,12 +510,6 @@ class User < ApplicationRecord
     confirm_new_email if new_email.present?
     confirm
     save!
-  end
-
-  def set_confirmation_required
-    self.confirmation_required = should_require_confirmation?
-    self.email_confirmed_at = nil
-    self.email_confirmation_code_sent_at = nil
   end
 
   def reset_confirmation_and_counts
@@ -547,7 +533,7 @@ class User < ApplicationRecord
   end
 
   def reset_confirmation_code
-    self.email_confirmation_code = use_fake_code? ? '1234' : rand.to_s[2..5]
+    self.email_confirmation_code = Rails.env.development? ? '1234' : rand.to_s[2..5]
   end
 
   def increment_confirmation_code_reset_count
@@ -559,14 +545,27 @@ class User < ApplicationRecord
     save!
   end
 
+  private
+
+  def set_confirmation_required
+    return unless new_record? && email_changed?
+
+    not_ordinary_user = highest_role != :user # admin or moderator can be created only by invite or by admin API from cl2-tenant-setup
+    confirmation_not_required =
+      registered_with_phone? || sso? || invite_status.present? ||
+      active? || not_ordinary_user
+
+    self.confirmation_required = !confirmation_not_required
+    self.email_confirmed_at = nil
+    self.email_confirmation_code_sent_at = nil
+  end
+
   def confirm_new_email
     return unless new_email
 
     self.email = new_email
     self.new_email = nil
   end
-
-  private
 
   def validate_not_duplicate_new_email
     return unless new_email
@@ -594,18 +593,24 @@ class User < ApplicationRecord
   end
 
   def validate_can_update_email
-    return unless persisted? && (new_email_changed? || email_changed?)
+    return unless persisted? &&
+                  (new_email_changed? || email_changed?) &&
+                  email_was.present? && # see #allows_empty_email?
+                  user_confirmation_enabled?
 
-    # no_password? - here it's only for light registration
-    # confirmation_required? - it's always false for SSO providers that return email (all except ClaveUnica and MitID)
-    # !sso? - exclude ClaveUnica and MitID registrations (no email)
-    if no_password? && confirmation_required? && !sso? && email_was.present?
+    if no_password? && confirmation_required # only for light registration
       # Avoid security hole where passwordless user can change when they are authenticated without confirmation
       errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - user not active'
-    elsif user_confirmation_enabled? && active? && email_changed? && !email_changed?(to: new_email_was) && email_was.present?
+    elsif active? && email_changed? && !email_changed?(to: new_email_was)
       # When new_email is used, email can only be updated from the value in that column
       errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - email not matching new email'
     end
+  end
+
+  def allows_empty_email?
+    invite_pending? ||
+      unique_code.present? || # user created in input importer
+      (email_was.blank? && sso? && identities.none?(&:email_always_present?))
   end
 
   def user_confirmation_enabled?
@@ -684,16 +689,8 @@ class User < ApplicationRecord
     write_attribute :confirmation_required, val
   end
 
-  def use_fake_code?
-    Rails.env.development?
-  end
-
   def destroy_baskets
     baskets.each(&:destroy_or_keep!)
-  end
-
-  def requires_email?
-    !invite_pending? && unique_code.blank? && !(sso? && identities.none?(&:email_always_present?))
   end
 end
 
@@ -702,5 +699,4 @@ User.include(ReportBuilder::Patches::User)
 User.include(Verification::Patches::User)
 
 User.prepend(MultiTenancy::Patches::User)
-User.prepend(MultiTenancy::Patches::UserConfirmation::User)
 User.prepend(SmartGroups::Patches::User)
