@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Permissions::PermissionsUpdateService
-  # TODO: JS - Scope here is probably just phase OR null now
+  # scope = phase or null
   def update_permissions_for_scope(scope)
     actions = Permission.available_actions scope
     remove_extras_actions(scope, actions)

@@ -11,7 +11,7 @@ class SideFxPhaseService
     phase.update!(description_multiloc: TextImageService.new.swap_data_images_multiloc(phase.description_multiloc, field: :description_multiloc, imageable: phase))
     LogActivityJob.perform_later(phase, 'created', user, phase.created_at.to_i)
 
-    permissions_service.update_permissions_for_scope(phase)
+    permissions_update_service.update_permissions_for_scope(phase)
 
     Surveys::WebhookManagerJob.perform_later(
       'participation_context_created',
@@ -34,7 +34,7 @@ class SideFxPhaseService
   def after_update(phase, user)
     LogActivityJob.perform_later(phase, 'changed', user, phase.updated_at.to_i)
 
-    permissions_service.update_permissions_for_scope(phase)
+    permissions_update_service.update_permissions_for_scope(phase)
 
     %i[
       description_multiloc voting_method voting_max_votes_per_idea voting_max_total voting_min_total
@@ -91,7 +91,7 @@ class SideFxPhaseService
 
   private
 
-  def permissions_service
-    @permissions_service ||= Permissions::PermissionsUpdateService.new
+  def permissions_update_service
+    @permissions_update_service ||= Permissions::PermissionsUpdateService.new
   end
 end
