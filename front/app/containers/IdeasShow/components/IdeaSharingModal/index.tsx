@@ -32,23 +32,21 @@ const IdeaSharingModal = ({
       hasSkipButton={true}
       skipText={<>{formatMessage(messages.skipSharing)}</>}
     >
-      {newIdeaId && (
-        <SharingModalContent
-          postType="idea"
-          postId={newIdeaId}
-          title={formatMessage(
-            getInputTermMessage(getInputTerm(phases?.data), {
-              idea: messages.sharingModalTitle,
-              option: messages.optionSharingModalTitle,
-              project: messages.projectSharingModalTitle,
-              question: messages.questionSharingModalTitle,
-              issue: messages.issueSharingModalTitle,
-              contribution: messages.contributionSharingModalTitle,
-            })
-          )}
-          subtitle={formatMessage(messages.sharingModalSubtitle)}
-        />
-      )}
+      <SharingModalContent
+        postType="idea"
+        postId={newIdeaId}
+        title={formatMessage(
+          getInputTermMessage(getInputTerm(phases?.data), {
+            idea: messages.sharingModalTitle,
+            option: messages.optionSharingModalTitle,
+            project: messages.projectSharingModalTitle,
+            question: messages.questionSharingModalTitle,
+            issue: messages.issueSharingModalTitle,
+            contribution: messages.contributionSharingModalTitle,
+          })
+        )}
+        subtitle={formatMessage(messages.sharingModalSubtitle)}
+      />
     </Modal>
   );
 };
