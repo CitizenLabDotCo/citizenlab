@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import { Spinner } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
@@ -62,7 +61,6 @@ const Container = styled.div`
 
 interface Props {
   projectId: string;
-  isLoaded: boolean;
   className?: string;
   children: React.ReactNode;
   handleContainerRef: (element: HTMLElement | null) => void;
@@ -78,7 +76,6 @@ interface Props {
 }
 const Container2 = ({
   projectId,
-  isLoaded,
   className,
   children,
   handleContainerRef,
@@ -115,14 +112,9 @@ const Container2 = ({
 
   return (
     <>
-      {!isLoaded && (
-        <Container className={`loading ${className || ''}`}>
-          <Spinner />
-        </Container>
-      )}
       <CSSTransition
         classNames="content"
-        in={isLoaded}
+        in={true}
         timeout={{
           enter: contentFadeInDuration + contentFadeInDelay,
           exit: 0,
