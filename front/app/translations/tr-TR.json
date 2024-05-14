@@ -1712,6 +1712,7 @@
   "app.errors.bulk_import_malformed_pdf": "Yüklenen PDF dosyası hatalı biçimlendirilmiş görünüyor. PDF'yi kaynağınızdan tekrar dışa aktarmayı ve ardından tekrar yüklemeyi deneyin.",
   "app.errors.bulk_import_maximum_ideas_exceeded": "Maksimum {value} fikir sayısı aşılmıştır.",
   "app.errors.bulk_import_maximum_pdf_pages_exceeded": "Bir PDF'deki maksimum {value} sayfa sayısı aşıldı.",
+  "app.errors.bulk_import_not_enough_pdf_pages": "Yüklenen PDF'nin yeterli sayfası yok - en azından indirilen şablonla aynı sayıda sayfası olmalıdır.",
   "app.errors.bulk_import_publication_date_invalid_format": "Geçersiz yayın tarihi formatına sahip fikir \"{value}\". Lütfen \"DD-MM-YYYY\" formatını kullanın.",
   "app.errors.cannot_contain_ideas": "Seçtiğiniz katılım yöntemi bu tür yayınları desteklemiyor. Lütfen seçiminizi düzenleyin ve tekrar deneyin.",
   "app.errors.cant_change_after_first_response": "Bazı kullanıcılar zaten yanıt verdiği için bunu artık değiştiremezsiniz",
