@@ -2508,7 +2508,6 @@
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Participants are users or visitors that have participated in a project, posted or interacted with a proposal, attended events or followed things.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Participants",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Стопа учешћа",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip": "Проценат свих учесника у поређењу са свим посетиоцима.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalParticipants": "Укупно учесника",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedCampaigns": "Аутоматизоване кампање",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedEmails": "Аутоматизоване е-поруке",

@@ -2508,7 +2508,6 @@
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Deltagere er brugere eller besøgende, der har deltaget i et projekt, postet eller interageret med et forslag, deltaget i begivenheder eller fulgt ting.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Deltagere",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Deltagelsesprocent",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip": "Procentdel af alle deltagere i forhold til alle besøgende.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalParticipants": "Deltagere i alt",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedCampaigns": "Automatiserede kampagner",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedEmails": "Automatiserede e-mails",

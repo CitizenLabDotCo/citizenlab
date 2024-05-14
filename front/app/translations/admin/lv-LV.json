@@ -2508,7 +2508,6 @@
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Dalībnieki ir lietotāji vai apmeklētāji, kas ir piedalījušies projektā, publicējuši vai mijiedarbojušies ar priekšlikumu, apmeklējuši pasākumus vai sekojuši notikumiem.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Dalībnieki",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Līdzdalības līmenis",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip": "Visu dalībnieku procentuālais īpatsvars salīdzinājumā ar visiem apmeklētājiem.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalParticipants": "Kopējais dalībnieku skaits",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedCampaigns": "Automatizētas kampaņas",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedEmails": "Automatizēti e-pasta ziņojumi",

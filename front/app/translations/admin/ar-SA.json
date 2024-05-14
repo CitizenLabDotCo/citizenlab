@@ -2508,7 +2508,6 @@
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "المشاركون هم المستخدمون أو الزوار الذين شاركوا في مشروع، أو نشروا أو تفاعلوا مع اقتراح، أو حضروا الأحداث أو تابعوا الأشياء.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "مشاركون",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "معدل المشاركة",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip": "نسبة جميع المشاركين إلى جميع الزائرين.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalParticipants": "إجمالي المشاركين",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedCampaigns": "حملات مؤتمتة",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedEmails": "رسائل إلكترونية تلقائية",

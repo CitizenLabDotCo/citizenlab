@@ -2508,7 +2508,6 @@
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Teilnehmende sind Nutzer*innen oder Besucher*innen, die an einem Projekt teilgenommen haben, einen Vorschlag gepostet oder mit ihm interagiert haben, an Veranstaltungen teilgenommen oder Plattform-Elementen folgen.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Teilnehmende",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Beteiligungsrate",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip": "Prozentualer Anteil aller Teilnehmenden im Vergleich zu allen Besucher*innen",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalParticipants": "Teilnehmende insgesamt",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedCampaigns": "Automatisierte E-Mails",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedEmails": "Automatisierte E-Mails",

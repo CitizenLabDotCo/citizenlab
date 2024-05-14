@@ -1307,7 +1307,6 @@
   "app.containers.admin.project.permissions.permissionsUsersLabel": "جميع المستخدمين",
   "app.containers.admin.project.permissions.viewingRightsTitle": "من يمكنه رؤية هذا المشروع؟",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "معدل المشاركة",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip": "نسبة جميع المشاركين إلى جميع الزائرين.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalParticipants": "إجمالي المشاركين",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedCampaigns": "حملات مؤتمتة",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedEmails": "رسائل إلكترونية تلقائية",

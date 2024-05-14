@@ -1722,7 +1722,6 @@
   "app.containers.admin.project.permissions.permissionsUsersLabelDescription": "Hi poden participar els usuaris que hagin creat els seus comptes amb contrasenyes.",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Qui pot veure aquest projecte?",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Taxa de participació",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip": "Percentatge de tots els participants en comparació amb tots els visitants.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalParticipants": "Total participants",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedCampaigns": "Campanyes automatitzades",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedEmails": "Automated emails",

@@ -1722,7 +1722,6 @@
   "app.containers.admin.project.permissions.permissionsUsersLabelDescription": "Gli utenti che hanno creato i loro account con password possono partecipare.",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Who can see this project?",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Tasso di partecipazione",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip": "Percentuale di tutti i partecipanti rispetto a tutti i visitatori.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalParticipants": "Total participants",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedCampaigns": "Automated campaigns",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedEmails": "Automated emails",

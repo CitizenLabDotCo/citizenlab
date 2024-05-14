@@ -1307,7 +1307,6 @@
   "app.containers.admin.project.permissions.permissionsUsersLabel": "Registered users",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Who can see this project?",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Rata de participare",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip": "Procentul tuturor participanților în raport cu toți vizitatorii.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalParticipants": "Total participants",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedCampaigns": "Automated campaigns",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedEmails": "Automated emails",

@@ -2508,7 +2508,6 @@
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Osallistujat ovat käyttäjiä tai vierailijoita, jotka ovat osallistuneet projektiin, lähettäneet ehdotuksen tai olleet vuorovaikutuksessa sen kanssa, osallistuneet tapahtumiin tai seuranneet asioita.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Osallistujat",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Osallistumisprosentti",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip": "Prosenttiosuus kaikista osallistujista verrattuna kaikkiin vierailijoihin.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalParticipants": "Osallistujia yhteensä",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedCampaigns": "Automaattiset kampanjat",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedEmails": "Automaattiset sähköpostit",

@@ -2508,7 +2508,6 @@
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Deelnemers zijn gebruikers of bezoekers die hebben deelgenomen aan een project, een bericht hebben geplaatst of interactie hebben gehad met een voorstel, evenementen hebben bijgewoond of dingen hebben gevolgd.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Deelnemers",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Deelnameratio",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip": "Percentage van alle deelnemers ten opzichte van alle bezoekers.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalParticipants": "Totaal aantal deelnemers",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedCampaigns": "Geautomatiseerde campagnes",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedEmails": "Geautomatiseerde e-mails",
