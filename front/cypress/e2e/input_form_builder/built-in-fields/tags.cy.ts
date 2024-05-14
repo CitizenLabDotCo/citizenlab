@@ -64,7 +64,7 @@ describe('Input form builder', () => {
     // Title should not be present or editable
     cy.get('#e2e-title-multiloc').should('not.exist');
 
-    cy.get('[data-cy="e2e-more-field-actions"]').eq(6).click({ force: true });
+    cy.get('[data-cy="e2e-more-field-actions"]').eq(3).click({ force: true });
     cy.get('.e2e-more-actions-list button').contains('Delete').click();
 
     // The tags tool box item should be enabled as it has been removed from the canvas
