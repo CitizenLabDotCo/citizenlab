@@ -27,6 +27,7 @@ import VerticalCenterer from 'components/VerticalCenterer';
 
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 
+import DesktopTopBar from './DesktopTopBar';
 import IdeaShowPageTopBar from './IdeaShowPageTopBar';
 
 const StyledIdeaShowPageTopBar = styled(IdeaShowPageTopBar)`
@@ -105,18 +106,22 @@ const IdeasShowPage = () => {
             showCTABarAtTopOfPage ? `${stylingConsts.menuHeight}px` : undefined
           }
         >
-          {isSmallerThanTablet && (
+          {isSmallerThanTablet ? (
             <StyledIdeaShowPageTopBar
               projectId={idea.data.relationships.project.data.id}
               ideaId={idea.data.id}
               phase={phase}
             />
+          ) : (
+            <DesktopTopBar project={project.data} />
           )}
-          <StyledIdeasShow
-            ideaId={idea.data.id}
-            projectId={idea.data.relationships.project.data.id}
-            compact={isSmallerThanTablet}
-          />
+          <main id="e2e-idea-show">
+            <StyledIdeasShow
+              ideaId={idea.data.id}
+              projectId={idea.data.relationships.project.data.id}
+              compact={isSmallerThanTablet}
+            />
+          </main>
         </Box>
         {showCTABar && (
           <Box
