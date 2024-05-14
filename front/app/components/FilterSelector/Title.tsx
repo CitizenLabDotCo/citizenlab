@@ -70,24 +70,20 @@ const Title = ({
   textColor,
   handleKeyDown,
 }: Props) => {
-  const handleOnClick = (event) => {
-    onClick(event);
-  };
-
   const adminPage = isPage('admin', location.pathname);
 
   return (
     <Container
       onMouseDown={removeFocusAfterMouseClick}
       onKeyDown={handleKeyDown}
-      onClick={handleOnClick}
+      onClick={onClick}
       aria-expanded={opened}
       aria-controls={baseID}
+      aria-live="polite"
       id={`${baseID}-label`}
       className={`e2e-filter-selector-button FilterSelectorTitle ${
         opened ? 'opened' : ''
       } ${className} ${adminPage ? 'adminpage' : ''}`}
-      aria-live="polite"
       textColor={textColor}
     >
       <Text className="FilterSelectorTitleText" textColor={textColor}>
