@@ -1,5 +1,30 @@
 module ReportBuilder
   class Queries::Analytics::Registrations < Queries::Analytics::Base
+    def registrations_query(start_at, end_at, apply_visitor_filter: false)
+      {
+        fact: 'registration',
+        filters: {
+          **date_filter('dimension_date_registration', start_at, end_at),
+          **visitor_filter(apply_visitor_filter)
+        },
+        aggregations: {
+          all: 'count'
+        }
+      }
+    end
+
+    def visitors_query(start_at, end_at)
+      {
+        fact: 'visit',
+        filters: {
+          **date_filter('dimension_date_first_action', start_at, end_at)
+        },
+        aggregations: {
+          visitor_id: 'count'
+        }
+      }
+    end
+
     protected
 
     def query(
@@ -55,32 +80,5 @@ module ReportBuilder
 
       queries
     end
-  end
-
-  private
-
-  def registrations_query(start_at, end_at, apply_visitor_filter: false)
-    {
-      fact: 'registration',
-      filters: {
-        **date_filter('dimension_date_registration', start_at, end_at),
-        **visitor_filter(apply_visitor_filter)
-      },
-      aggregations: {
-        all: 'count'
-      }
-    }
-  end
-
-  def visitors_query(start_at, end_at)
-    {
-      fact: 'visit',
-      filters: {
-        **date_filter('dimension_date_first_action', start_at, end_at)
-      },
-      aggregations: {
-        visitor_id: 'count'
-      }
-    }
   end
 end

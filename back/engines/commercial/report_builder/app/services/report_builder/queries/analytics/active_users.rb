@@ -1,5 +1,32 @@
 module ReportBuilder
   class Queries::Analytics::ActiveUsers < Queries::Analytics::Base
+    def active_users_query(start_at, end_at, project_id, apply_visitor_filter: false)
+      {
+        fact: 'participation',
+        filters: {
+          **project_filter('dimension_project_id', project_id),
+          **date_filter('dimension_date_created', start_at, end_at),
+          **visitor_filter(apply_visitor_filter)
+        },
+        aggregations: {
+          participant_id: 'count'
+        }
+      }
+    end
+
+    def visitors_query(start_at, end_at, project_id)
+      {
+        fact: 'visit',
+        filters: {
+            **project_filter('dimension_projects.id', project_id),
+            **date_filter('dimension_date_first_action', start_at, end_at)
+        },
+        aggregations: {
+          visitor_id: 'count'
+        }
+      }
+    end
+
     protected
 
     def query(
@@ -65,34 +92,5 @@ module ReportBuilder
 
       queries
     end
-  end
-
-  private
-
-  def active_users_query(start_at, end_at, project_id, apply_visitor_filter: false)
-    {
-      fact: 'participation',
-      filters: {
-        **project_filter('dimension_project_id', project_id),
-        **date_filter('dimension_date_created', start_at, end_at),
-        **visitor_filter(apply_visitor_filter)
-      },
-      aggregations: {
-        participant_id: 'count'
-      }
-    }
-  end
-
-  def visitors_query(start_at, end_at, project_id)
-    {
-      fact: 'visit',
-      filters: {
-          **project_filter('dimension_projects.id', project_id),
-          **date_filter('dimension_date_first_action', start_at, end_at)
-      },
-      aggregations: {
-        visitor_id: 'count'
-      }
-    }
   end
 end
