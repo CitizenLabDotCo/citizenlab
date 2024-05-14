@@ -812,7 +812,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Gescannte Formulare importieren (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Gescannte Formulare importieren",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Importierte Beiträge",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing": "Importieren...",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Dieser Beitrag wurde anonym importiert.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsImported": "{numIdeas} Beiträge wurden importiert und erfordern eine Freigabe.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved2": "{numNotApproved} Beiträge konnten nicht freigegeben werden. Bitte überprüfen Sie jeden Beitrag auf Validierungsprobleme und geben Sie sie einzeln frei.",

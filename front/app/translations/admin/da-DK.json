@@ -812,7 +812,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFile": "Importer scannede formularer (.pdf)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPDFFileTitle": "Importer scannede formularer",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Importerede input",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing": "Importerer...",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImportedAnonymously": "Dette input blev importeret anonymt.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsImported": "{numIdeas} input er blevet importeret og kræver godkendelse.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved2": "{numNotApproved} input kunne ikke godkendes. Tjek venligst hvert input for valideringsproblemer og bekræft individuelt.",
