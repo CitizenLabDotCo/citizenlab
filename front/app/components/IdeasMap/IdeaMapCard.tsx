@@ -192,7 +192,6 @@ const IdeaMapCard = memo<Props>(
           className={`${className || ''} ${hovered ? 'hover' : ''}`}
           onClick={handleOnClick}
           onKeyPress={handleOnKeyPress}
-          role="button"
           tabIndex={0}
           id="e2e-idea-map-card"
         >
