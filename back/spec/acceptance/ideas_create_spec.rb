@@ -26,7 +26,6 @@ resource 'Ideas' do
 
     context 'in an ideation phase' do
       with_options scope: :idea do
-        parameter :idea_status_id, 'The status of the idea, only allowed for admins', extra: "Defaults to status with code 'proposed'"
         parameter :title_multiloc, 'Multi-locale field with the idea title', required: true, extra: 'Maximum 100 characters'
         parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
         parameter :topic_ids, 'Array of ids of the associated topics'
@@ -36,6 +35,7 @@ resource 'Ideas' do
         parameter :budget, 'The budget needed to realize the idea, as determined by the city'
         parameter :idea_images_attributes, 'an array of base64 images to create'
         parameter :idea_files_attributes, 'an array of base64 files to create'
+        parameter :anonymous, 'Post this idea anonymously'
       end
 
       let(:with_permissions) { false }
@@ -82,10 +82,6 @@ resource 'Ideas' do
 
       context 'when resident' do
         before { header_token_for(resident) }
-
-        with_options scope: :idea do
-          parameter :anonymous, 'Post this idea anonymously'
-        end
 
         let(:resident) { create(:user) }
         let(:topic_ids) { create_list(:topic, 2, projects: [project]).map(&:id) }
@@ -299,6 +295,87 @@ resource 'Ideas' do
             blocked_error = json_response.dig(:errors, :base)&.select { |err| err[:error] == 'includes_banned_words' }&.first
             expect(blocked_error).to be_present
             expect(blocked_error[:blocked_words].pluck(:attribute).uniq).to include('title_multiloc', 'body_multiloc')
+          end
+        end
+      end
+
+      context 'when admin' do
+        before { admin_header_token }
+
+        parameter :idea_status_id, 'The status of the idea, only allowed for admins', scope: :idea, extra: "Defaults to status with code 'proposed'"
+
+        let(:location_point_geojson) { { type: 'Point', coordinates: [51.11520776293035, 3.921154106874878] } }
+
+        describe do
+          let(:project) { create(:project_with_current_phase, phases_config: { sequence: 'xxcx' }) }
+          let(:phase_ids) { project.phases.sample(1).map(&:id) }
+  
+          example_request 'Creating an idea in specific phases' do
+            assert_status 201
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data, :relationships, :phases, :data).pluck(:id)).to match_array phase_ids
+          end
+        end
+  
+        describe 'when posting an idea in an ideation phase, the form of the project is used for accepting the input' do
+          let(:project) { create(:project_with_active_ideation_phase) }
+          let!(:custom_form) do
+            create(:custom_form, :with_default_fields, participation_context: project).tap do |form|
+              fields = IdeaCustomFieldsService.new(form).all_fields
+              # proposed_budget is disabled by default
+              enabled_field_keys = %w[title_multiloc body_multiloc proposed_budget]
+              fields.each do |field|
+                field.enabled = enabled_field_keys.include? field.code
+                field.save!
+              end
+            end
+          end
+          let(:phase_ids) { [project.phases.first.id] }
+          let(:title_multiloc) { { 'nl-BE' => 'An idea with a proposed budget' } }
+          let(:body_multiloc) { { 'nl-BE' => 'An idea with a proposed budget for testing' } }
+          let(:proposed_budget) { 1234 }
+  
+          example_request 'Post an idea in an ideation phase' do
+            assert_status 201
+            json_response = json_parse response_body
+            # Enabled fields have a value
+            expect(json_response.dig(:data, :attributes, :title_multiloc)).to eq({ 'nl-BE': 'An idea with a proposed budget' })
+            expect(json_response.dig(:data, :attributes, :body_multiloc)).to eq({ 'nl-BE': 'An idea with a proposed budget for testing' })
+            expect(json_response.dig(:data, :attributes, :proposed_budget)).to eq proposed_budget
+            # Disabled fields do not have a value
+            expect(json_response.dig(:data, :attributes, :budget)).to be_nil
+            expect(json_response.dig(:data, :attributes, :location_description)).to be_nil
+            expect(json_response.dig(:data, :attributes)).not_to have_key :topic_ids
+            expect(json_response.dig(:data, :attributes)).not_to have_key :idea_images_attributes
+            expect(json_response.dig(:data, :attributes)).not_to have_key :idea_files_attributes
+            # location_point_geojson is not a field and cannot be disabled, so it has a value
+            expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
+          end
+        end
+  
+        describe 'when posting an idea in an ideation phase, the creation_phase is not set' do
+          let(:project) { create(:project_with_active_ideation_phase) }
+          let!(:custom_form) { create(:custom_form, participation_context: project) }
+          let(:phase_ids) { [project.phases.first.id] }
+  
+          example 'Post an idea in an ideation phase', document: false do
+            do_request
+            assert_status 201
+            json_response = json_parse response_body
+            idea = Idea.find(json_response.dig(:data, :id))
+            expect(idea.creation_phase).to be_nil
+          end
+        end
+  
+        describe do
+          let(:project) { create(:project_with_active_ideation_phase) }
+          let(:other_project) { create(:project_with_active_ideation_phase) }
+          let(:phase_ids) { [other_project.phases.first.id] }
+  
+          example_request '[error] Creating an idea linked to a phase from a different project' do
+            assert_status 422
+            json_response = json_parse response_body
+            expect(json_response).to include_response_error(:ideas_phases, 'invalid')
           end
         end
       end
