@@ -605,6 +605,7 @@
   "app.containers.Admin.Users.reachedLimitMessage": "You have reached the limit of seats within your plan, 1 additional seat for {name} will be added.",
   "app.containers.Admin.Users.registeredUser": "Registered user",
   "app.containers.Admin.Users.remove": "Remove",
+  "app.containers.Admin.Users.removeModeratorFrom": "The user is moderating the folder this project belongs to. Remove assignment from \"{folderTitle}\" instead.",
   "app.containers.Admin.Users.role": "Role",
   "app.containers.Admin.Users.seeProfile": "See profile",
   "app.containers.Admin.Users.setAsAdmin": "Set as admin",
