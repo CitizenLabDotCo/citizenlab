@@ -56,7 +56,11 @@ const Wide = ({
           </Box>
         )}
 
-        <Box flexGrow={1} display="flex" justifyContent="flex-end">
+        <Box
+          flexGrow={1}
+          display="flex"
+          justifyContent={hideStatistics ? 'flex-start' : 'flex-end'}
+        >
           <Box pt="8px" width="100%" maxWidth="800px" h="100%">
             <Chart
               timeSeries={timeSeries}
