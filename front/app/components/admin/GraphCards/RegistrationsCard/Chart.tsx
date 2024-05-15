@@ -1,15 +1,14 @@
 import React, { useMemo } from 'react';
 
-import { MARGINS } from 'components/admin/GraphCards/_utils/style';
 import {
   ProjectId,
   Dates,
   Resolution,
-  Layout,
 } from 'components/admin/GraphCards/typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import LineChart from 'components/admin/Graphs/LineChart';
 import { colors } from 'components/admin/Graphs/styling';
+import { Margin, YAxisProps } from 'components/admin/Graphs/typings';
 
 import { useIntl } from 'utils/cl-intl';
 import { toThreeLetterMonth } from 'utils/dateUtils';
@@ -25,7 +24,8 @@ type Props = ProjectId &
   Resolution & {
     timeSeries: TimeSeries | NilOrError;
     innerRef: React.RefObject<any>;
-    layout?: Layout;
+    margin?: Margin;
+    yaxis?: YAxisProps;
   };
 
 const emptyLineConfig = { strokeWidths: [0] };
@@ -41,7 +41,8 @@ const Chart = ({
   endAtMoment,
   resolution,
   innerRef,
-  layout = 'wide',
+  margin,
+  yaxis,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -78,10 +79,11 @@ const Chart = ({
         x: 'date',
         y: ['registrations'],
       }}
-      margin={MARGINS[layout]}
+      margin={margin}
       lines={noData ? emptyLineConfig : lineConfig}
       grid={{ vertical: true }}
       xaxis={{ tickFormatter: formatTick }}
+      yaxis={yaxis}
       tooltip={noData ? undefined : renderTooltip(resolution)}
       legend={{
         marginTop: 16,
