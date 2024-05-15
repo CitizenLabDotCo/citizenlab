@@ -158,9 +158,9 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
             </Box>
           )}
           {onlineLink && (
+            // The zIndex and position relative are needed to make sure
+            // the link is clickable by moving it to the top of the card
             <Box display="flex" mb="12px" position="relative" zIndex="2">
-              {' '}
-              {/* zIndex and position relative needed to make sure the link is clickable by moving it to the top of the card */}
               <Icon
                 my="auto"
                 fill={theme.colors.tenantPrimary}
@@ -217,8 +217,8 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
         </Box>
       </Box>
       <Box position="relative" zIndex="2">
-        {' '}
-        {/* zIndex and position relative needed to make these clickable by moving them to the top of the card */}
+        {/* The zIndex and position relative are needed to make sure these
+          are clickable by moving them to the top of the card */}
         {isPastEvent ? (
           <Button
             ml="auto"
