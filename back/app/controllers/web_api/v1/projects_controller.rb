@@ -26,7 +26,7 @@ class WebApi::V1::ProjectsController < ApplicationController
         :areas,
         :topics,
         :content_builder_layouts, # Defined in ContentBuilder engine
-        phases: [:report],
+        phases: [:report, permissions: [:groups]],
         admin_publication: [:children]
       )
     @projects = paginate @projects
@@ -52,6 +52,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     )
   end
 
+  # TODO: JS - preload phases & permissions here too?
   def show
     render json: WebApi::V1::ProjectSerializer.new(
       @project,

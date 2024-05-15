@@ -47,13 +47,11 @@ module Permissions
       raise "Unsupported action: #{action}"
     end
 
-    # TODO: JS - Need to preload these permissions - else this is being called for every call to denied_reason_for_resource
-    # 10 x per project
-    # 11 x per idea
     def find_permission(action, phase)
-      permission = phase.permissions.find_by(action: action)
+      permission = phase&.permissions&.find { |p| p[:action] == action }
 
       if permission.blank?
+        # TODO: JS - be explicit here about nil scopes for initiatives
         scope = phase&.permission_scope
         permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
 

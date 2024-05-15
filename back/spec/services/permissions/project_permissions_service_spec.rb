@@ -555,7 +555,7 @@ describe Permissions::ProjectPermissionsService do
   end
 
   describe 'action_descriptors' do
-    it 'does not run loads of queries' do
+    it 'does not run more than 22 queries for an ideation project with default permissions' do
       user = create(:user)
       current_phase = TimelineService.new.current_phase(create(:project_with_current_phase))
       create(:permission, action: 'posting_idea', permission_scope: current_phase, permitted_by: 'users')
@@ -568,10 +568,13 @@ describe Permissions::ProjectPermissionsService do
                            :areas,
                            :topics,
                            :content_builder_layouts,
-                           phases: [:report, :permissions],
+                           phases: [:report, permissions: [:groups]], # :permissions
                            admin_publication: [:children]
                          )
                        .first
+
+      # test_phase = Phase.includes(permissions: [:groups]).find(current_phase.id)
+      # expect { Phase.includes(permissions: [:groups]).find(current_phase.id) }.not_to exceed_query_limit(0)
 
       # user as loaded by the controller
       test_user = User.includes(:identities).find(user.id)
@@ -579,11 +582,10 @@ describe Permissions::ProjectPermissionsService do
 
       # QUERY ISSUES ARE NOT IN THE project or phase permissions_service
 
-      # user - include identitities
 
-      # expect { Permissions::BasePermissionsService.new.denied_reason_for_action('reacting_idea', user, current_phase) }.not_to exceed_query_limit(0)
+      # expect { Permissions::BasePermissionsService.new.denied_reason_for_action('posting_idea', test_user, test_phase) }.not_to exceed_query_limit(0)
 
-      expect { service.action_descriptors(project, test_user) }.not_to exceed_query_limit(32) # Down from 111
+      expect { service.action_descriptors(project, test_user) }.not_to exceed_query_limit(22) # Down from an original 111
     end
   end
 end
