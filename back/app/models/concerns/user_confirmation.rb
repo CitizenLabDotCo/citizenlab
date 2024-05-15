@@ -5,7 +5,7 @@ module UserConfirmation
 
   included do
     with_options if: -> { user_confirmation_enabled? } do
-      before_validation :set_confirmation_required
+      before_validation :set_confirmation_required, on: :create
       before_validation :confirm, if: ->(user) { user.invite_status_change&.last == 'accepted' }
     end
 
@@ -70,7 +70,7 @@ module UserConfirmation
   private
 
   def set_confirmation_required
-    return unless new_record? && email_changed?
+    return unless email_changed?
 
     not_ordinary_user = highest_role != :user # admin or moderator can be created only by invite or by admin API from cl2-tenant-setup
     confirmation_not_required =
