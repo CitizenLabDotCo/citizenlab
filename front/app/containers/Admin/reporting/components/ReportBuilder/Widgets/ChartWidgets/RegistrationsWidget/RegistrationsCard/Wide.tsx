@@ -49,7 +49,7 @@ const Wide = ({ startAt, endAt, hideStatistics, stats }: Props) => {
         <Box flexGrow={1} display="flex" justifyContent="flex-end">
           <Box pt="8px" width="100%" maxWidth="800px" h="100%">
             {/* TODO */}
-            <Box bgColor="red" w="100%" h="250px" />
+            <Box bgColor="red" ml="160px" h="250px" />
           </Box>
         </Box>
       </Box>
