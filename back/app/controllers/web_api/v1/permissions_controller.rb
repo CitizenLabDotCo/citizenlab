@@ -31,7 +31,7 @@ class WebApi::V1::PermissionsController < ApplicationController
 
   def requirements
     authorize @permission
-    json_requirements = user_requirements_service.requirements @permission, current_user
+    json_requirements = user_requirements_service.requirements @permission
     render json: raw_json({ requirements: json_requirements }), status: :ok
   end
 

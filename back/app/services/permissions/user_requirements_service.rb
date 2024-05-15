@@ -80,10 +80,10 @@ class Permissions::UserRequirementsService
   end
 
   def mark_satisfied_requirements!(requirements, permission, user)
-    return requirements if !user
+    return requirements unless user
 
     requirements[:built_in]&.each_key do |attribute|
-      requirements[:built_in][attribute] = 'satisfied' if !user.send(attribute).nil?
+      requirements[:built_in][attribute] = 'satisfied' unless user.send(attribute).nil?
     end
     requirements[:custom_fields]&.each_key do |key|
       requirements[:custom_fields][key] = 'satisfied' if user.custom_field_values.key?(key)
@@ -98,23 +98,19 @@ class Permissions::UserRequirementsService
       when :confirmation
         !user.confirmation_required?
       when :group_membership
-        user.in_any_groups?(permission.groups)
+        permission.groups.present? && user.in_any_groups?(permission.groups)
       end
       requirements[:special][special_key] = 'satisfied' if is_satisfied
     end
   end
 
   def onboarding_possible?
-    app_configuration.settings.dig('core', 'onboarding') && topic_or_area_onboarding
-  end
-
-  # TODO: JS - why does this not work?
-  def topic_or_area_onboarding
-    @topic_or_area_onboarding ||= (Topic.where(include_in_onboarding: true).count > 0 || Area.where(include_in_onboarding: true).count > 0)
+    return @onboarding_possible unless @onboarding_possible.nil?
+    @onboarding_possible = app_configuration.settings.dig('core', 'onboarding') && (Topic.where(include_in_onboarding: true).count > 0 || Area.where(include_in_onboarding: true).count > 0)
   end
 
   def ignore_password_for_sso!(requirements, user)
-    return requirements if !user
+    return requirements unless user
 
     requirements[:special][:password] = 'dont_ask' if user.sso?
   end

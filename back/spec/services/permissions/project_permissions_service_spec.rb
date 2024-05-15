@@ -567,20 +567,23 @@ describe Permissions::ProjectPermissionsService do
                            :project_images,
                            :areas,
                            :topics,
-                           :content_builder_layouts, # Defined in ContentBuilder engine
-                           phases: [:report],
+                           :content_builder_layouts,
+                           phases: [:report, :permissions],
                            admin_publication: [:children]
                          )
                        .first
 
-      # This doesn't seem to do much
-      test_user = User.includes(:memberships).find(user.id)
-
+      # user as loaded by the controller
+      test_user = User.includes(:identities).find(user.id)
       # service = described_class.new([current_phase])
 
-      # TODO: Try the block thingy so we can output the SQL queries inline
+      # QUERY ISSUES ARE NOT IN THE project or phase permissions_service
 
-      expect { service.action_descriptors(project, test_user) }.not_to exceed_query_limit(69) # Down from 111
+      # user - include identitities
+
+      # expect { Permissions::BasePermissionsService.new.denied_reason_for_action('reacting_idea', user, current_phase) }.not_to exceed_query_limit(0)
+
+      expect { service.action_descriptors(project, test_user) }.not_to exceed_query_limit(32) # Down from 111
     end
   end
 end

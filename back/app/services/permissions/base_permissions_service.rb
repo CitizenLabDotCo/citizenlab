@@ -51,13 +51,16 @@ module Permissions
     # 10 x per project
     # 11 x per idea
     def find_permission(action, phase)
-      scope = phase&.permission_scope
-      permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
-      # permission = @permissions.find_by(permission_scope_id: scope&.id, action: action)
+      permission = phase.permissions.find_by(action: action)
 
-      if permission.blank? && Permission.available_actions(scope)
-        Permissions::PermissionsUpdateService.new.update_permissions_for_scope scope
+      if permission.blank?
+        scope = phase&.permission_scope
         permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
+
+        if permission.blank? && Permission.available_actions(scope)
+          Permissions::PermissionsUpdateService.new.update_permissions_for_scope scope
+          permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
+        end
       end
 
       raise "Unknown action '#{action}' for phase: #{phase}" unless permission
@@ -84,18 +87,22 @@ module Permissions
           end
         end
       end
-      return if user_requirements_service.requirements(permission, user)[:permitted]
+      return if user_requirements_service(user).requirements(permission, user)[:permitted]
 
       USER_DENIED_REASONS[:missing_user_requirements]
     end
 
     # NOTE: method overridden in the verification engine when enabled
     def denied_when_permitted_by_groups?(permission, user)
-      :not_in_group unless user.in_any_groups?(permission.groups)
+      :not_in_group unless permission.groups && user.in_any_groups?(permission.groups)
     end
 
-    def user_requirements_service
+    def user_requirements_service(user)
       @user_requirements_service ||= Permissions::UserRequirementsService.new
+    end
+
+    def user_can_moderate_something?(user)
+      @user_requirements_service ||= (user.admin? || UserRoleService.new.moderates_something?(user))
     end
   end
 end
