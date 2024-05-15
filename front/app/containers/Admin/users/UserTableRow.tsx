@@ -258,19 +258,21 @@ const UserTableRow = ({
         </Td>
         <Td>
           <FormattedMessage {...getStatusMessage(userInRow)} />
-          <Box display="flex">
-            <Button
-              buttonStyle="text"
-              icon="chevron-down"
-              iconPos="right"
-              fontSize={`${fontSizes.s}px`}
-              p="0px"
-              iconSize="18px"
-              onClick={() => setIsAssignedItemsOpened(true)}
-            >
-              <FormattedMessage {...messages.seeAssignedItems} />
-            </Button>
-          </Box>
+          {userInRow.attributes.highest_role !== 'user' && (
+            <Box display="flex">
+              <Button
+                buttonStyle="text"
+                icon="chevron-down"
+                iconPos="right"
+                fontSize={`${fontSizes.s}px`}
+                p="0px"
+                iconSize="18px"
+                onClick={() => setIsAssignedItemsOpened(true)}
+              >
+                <FormattedMessage {...messages.seeAssignedItems} />
+              </Button>
+            </Box>
+          )}
         </Td>
         <Td>
           {userInRow.attributes.last_active_at &&

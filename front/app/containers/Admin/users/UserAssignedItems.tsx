@@ -1,10 +1,19 @@
 import React from 'react';
 
-import { Title, Icon, colors, Box } from '@citizenlab/cl2-component-library';
+import {
+  Title,
+  Icon,
+  colors,
+  Box,
+  Text,
+  Button,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
+import useDeleteProjectFolderModerator from 'api/project_folder_moderators/useDeleteProjectFolderModerator';
+import useDeleteProjectModerator from 'api/project_moderators/useDeleteProjectModerator';
 import { IUserData } from 'api/users/types';
 
 import useLocalize from 'hooks/useLocalize';
@@ -12,6 +21,7 @@ import useLocalize from 'hooks/useLocalize';
 import Divider from 'components/admin/Divider';
 
 import Link from 'utils/cl-router/Link';
+import { getFullName } from 'utils/textUtils';
 
 const StyledLink = styled(Link)`
   color: ${colors.textSecondary};
@@ -20,16 +30,64 @@ const StyledLink = styled(Link)`
     color: ${colors.textPrimary};
 `;
 
+const RemoveButton = ({
+  item,
+  isFolder,
+  userId,
+}: {
+  item: IAdminPublicationData;
+  isFolder: boolean;
+  userId: string;
+}) => {
+  const {
+    mutate: deleteProjectModerator,
+    isLoading: deleteProjectModeratorLoading,
+  } = useDeleteProjectModerator();
+  const {
+    mutate: deleteFolderModerator,
+    isLoading: deleteFolderModeratorLoading,
+  } = useDeleteProjectFolderModerator();
+
+  const handleRemove = () => {
+    if (isFolder) {
+      deleteFolderModerator({
+        projectFolderId: item.id,
+        id: userId,
+      });
+    } else {
+      deleteProjectModerator({
+        projectId: item.id,
+        id: userId,
+      });
+    }
+  };
+
+  return (
+    <Button
+      buttonStyle="text"
+      processing={deleteProjectModeratorLoading || deleteFolderModeratorLoading}
+      onClick={handleRemove}
+      ml="auto"
+    >
+      Remove
+    </Button>
+  );
+};
+
 const UserAssignedItems = ({ user }: { user: IUserData }) => {
   const localize = useLocalize();
   const { data: assignedItems } = useAdminPublications({});
   const flatAssignedItems = assignedItems?.pages?.flatMap((page) => page.data);
   const isFolder = (item: IAdminPublicationData) =>
     item.relationships.publication.data.type === 'folder';
+
   return (
     <div>
-      <Title m="0px">UserAssignedItems</Title>
+      <Title m="0px">Assigned items for {getFullName(user)}</Title>
       <Divider />
+      {flatAssignedItems?.length === 0 && (
+        <Text py="4px">No assigned items</Text>
+      )}
       {flatAssignedItems?.map((item) => (
         <Box
           key={item.id}
@@ -51,6 +109,11 @@ const UserAssignedItems = ({ user }: { user: IUserData }) => {
           >
             {localize(item.attributes.publication_title_multiloc)}
           </StyledLink>
+          <RemoveButton
+            item={item}
+            isFolder={isFolder(item)}
+            userId={user.id}
+          />
         </Box>
       ))}
     </div>
