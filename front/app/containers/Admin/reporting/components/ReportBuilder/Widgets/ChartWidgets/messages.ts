@@ -46,10 +46,6 @@ export default defineMessages({
     id: 'app.containers.admin.ReportBuilder.charts.users',
     defaultMessage: 'Users',
   },
-  registrations: {
-    id: 'app.containers.admin.ReportBuilder.charts.registrations',
-    defaultMessage: 'Registrations',
-  },
   comparedToPreviousXDays: {
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.comparedToPreviousXDays',
     defaultMessage: 'Compared to previous {days} days',
