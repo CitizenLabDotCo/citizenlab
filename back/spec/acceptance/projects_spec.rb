@@ -30,8 +30,8 @@ resource 'Projects' do
 
       parameter :areas, 'Filter by areas (AND)', required: false
       parameter :publication_statuses, 'Return only projects with the specified publication statuses (i.e. given an array of publication statuses); returns all projects by default', required: false
-      parameter :filter_can_moderate, 'Filter out the projects the current_user is allowed to moderate. False by default', required: false
-      parameter :filter_user_is_moderator_of, 'Filter out the projects the given user is moderator of', required: false
+      parameter :filter_can_moderate, 'Filter out the projects the current_user is not allowed to moderate. False by default', required: false
+      parameter :filter_user_is_moderator_of, 'Filter out the projects the given user is moderator of (user id)', required: false
       parameter :filter_ids, 'Filter out only projects with the given list of IDs', required: false
       parameter :folder, 'Filter by folder (project folder id)', required: false
 

@@ -41,9 +41,9 @@ resource 'AdminPublication' do
       parameter :folder, 'Filter by folder (project folder id)', required: false
       parameter :remove_not_allowed_parents, 'Filter out folders which contain only projects that are not visible to the user', required: false
       parameter :only_projects, 'Include projects only (no folders)', required: false
-      parameter :filter_can_moderate, 'Filter out the projects the current_user is allowed to moderate. False by default', required: false
+      parameter :filter_can_moderate, 'Filter out the projects the current_user is not allowed to moderate. False by default', required: false
       parameter :filter_is_moderator_of, 'Filter out the publications the current_user is not moderator of. False by default', required: false
-      parameter :filter_user_is_moderator_of, 'Filter out the publications the given user is moderator of', required: false
+      parameter :filter_user_is_moderator_of, 'Filter out the publications the given user is moderator of (user id)', required: false
 
       example_request 'List all admin publications' do
         expect(status).to eq(200)
