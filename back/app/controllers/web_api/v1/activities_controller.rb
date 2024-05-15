@@ -13,7 +13,7 @@ class WebApi::V1::ActivitiesController < ApplicationController
       paginated_activities,
       WebApi::V1::ActivitySerializer,
       params: jsonapi_serializer_params,
-      include: [:user]
+      include: %i[user item]
     )
   end
 end
