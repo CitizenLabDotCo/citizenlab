@@ -755,7 +755,7 @@ GEM
       activerecord
       kaminari-core (= 1.2.2)
     kaminari-core (1.2.2)
-    koala (3.4.0)
+    koala (3.5.0)
       addressable
       faraday
       faraday-multipart
@@ -769,7 +769,7 @@ GEM
       tomlrb (>= 1.3, < 2.1)
       with_env (= 1.1.0)
       xml-simple (~> 1.1.9)
-    liquid (5.4.0)
+    liquid (5.5.0)
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -803,7 +803,7 @@ GEM
     msgpack (1.6.0)
     multi_json (1.15.0)
     multi_xml (0.6.0)
-    multipart-post (2.4.0)
+    multipart-post (2.4.1)
     mustache (1.1.1)
     mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
@@ -1298,7 +1298,7 @@ DEPENDENCIES
   jwt (~> 2.8.1)
   kaminari (~> 1.2)
   license_finder
-  liquid (~> 5.4)
+  liquid (~> 5.5)
   listen (>= 3.0.5, < 4.0)
   machine_translations!
   mailgun-ruby (~> 1.2.14)
