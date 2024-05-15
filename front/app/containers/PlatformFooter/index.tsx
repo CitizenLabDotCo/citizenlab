@@ -180,8 +180,8 @@ const PoweredByText = styled.span`
   `}
 `;
 
-const CitizenlabLink = styled.a`
-  width: 130px;
+const GoVocalLink = styled.a`
+  width: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -189,8 +189,8 @@ const CitizenlabLink = styled.a`
   cursor: pointer;
 `;
 
-const CitizenLabLogo = styled(Icon)`
-  height: 28px;
+const GoVocalLogo = styled(Icon)`
+  height: 32px;
   fill: ${colors.textSecondary};
   &:hover {
     fill: #000;
@@ -321,9 +321,9 @@ const PlatformFooter = ({ className }: Props) => {
               <PoweredByText>
                 <FormattedMessage {...messages.poweredBy} />
               </PoweredByText>
-              <CitizenlabLink href="https://www.citizenlab.co/" target="_blank">
-                <CitizenLabLogo name="cl-logo" title="CitizenLab" />
-              </CitizenlabLink>
+              <GoVocalLink href="https://govocal.com/" target="_blank">
+                <GoVocalLogo name="cl-logo" title="GoVocal" />
+              </GoVocalLink>
             </PoweredBy>
           </Right>
         )}
