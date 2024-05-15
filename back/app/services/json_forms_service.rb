@@ -45,8 +45,8 @@ class JsonFormsService
     return if fields.empty?
 
     add_author_budget_fields! fields, current_user, participation_method
-    json_schema_multiloc = InputJsonSchemaGeneratorService.new.generate_for visible_fields
-    ui_schema_multiloc = InputUiSchemaGeneratorService.new(input_term, participation_method.supports_answer_visible_to?).generate_for visible_fields
+    json_schema_multiloc = InputJsonSchemaGeneratorService.new.generate_for fields
+    ui_schema_multiloc = InputUiSchemaGeneratorService.new(input_term, participation_method.supports_answer_visible_to?).generate_for fields
     {
       json_schema_multiloc: json_schema_multiloc,
       ui_schema_multiloc: ui_schema_multiloc
