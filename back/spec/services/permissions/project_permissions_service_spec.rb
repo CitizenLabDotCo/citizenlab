@@ -578,6 +578,8 @@ describe Permissions::ProjectPermissionsService do
 
       # service = described_class.new([current_phase])
 
+      # TODO: Try the block thingy so we can output the SQL queries inline
+
       expect { service.action_descriptors(project, test_user) }.not_to exceed_query_limit(69) # Down from 111
     end
   end
