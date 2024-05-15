@@ -43,7 +43,7 @@ resource 'AdminPublication' do
       parameter :only_projects, 'Include projects only (no folders)', required: false
       parameter :filter_can_moderate, 'Filter out the projects the current_user is allowed to moderate. False by default', required: false
       parameter :filter_is_moderator_of, 'Filter out the publications the current_user is not moderator of. False by default', required: false
-      parameter :filter_user_is_moderator_of, 'Filter out the publications the given user is not moderator of. False by default', required: false
+      parameter :filter_user_is_moderator_of, 'Filter out the publications the given user is moderator of', required: false
 
       example_request 'List all admin publications' do
         expect(status).to eq(200)
