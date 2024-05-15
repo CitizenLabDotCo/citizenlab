@@ -125,12 +125,12 @@ resource 'Ideas' do
         describe 'when posting an idea in an active ideation phase, the correct form is used' do
           let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
           let(:proposed_budget) { 1234 }
-  
+
           example 'Post an idea in an ideation phase', document: false do
             custom_form.custom_fields.find_by(code: 'proposed_budget').update!(enabled: true)
-  
+
             do_request
-  
+
             assert_status 201
             idea = Idea.find(response_data[:id])
             expect(idea.proposed_budget).to eq 1234
@@ -139,7 +139,7 @@ resource 'Ideas' do
 
         describe 'when posting an idea in an active ideation phase, the creation_phase is not set' do
           let!(:custom_form) { create(:custom_form, participation_context: project) }
-  
+
           example 'Post an idea in an ideation phase', document: false do
             do_request
 
@@ -153,27 +153,27 @@ resource 'Ideas' do
         describe 'Creating an idea anonymously' do
           let(:allow_anonymous_participation) { true }
           let(:anonymous) { true }
-  
+
           before { project.phases.first.update! allow_anonymous_participation: allow_anonymous_participation }
-  
+
           example_request 'Posting an idea anonymously does not save an author id' do
             assert_status 201
             expect(response_data.dig(:attributes, :anonymous)).to be true
             expect(response_data.dig(:attributes, :author_name)).to be_nil
             expect(response_data.dig(:relationships, :author, :data)).to be_nil
           end
-  
+
           example 'Does not add the author as a follower', document: false do
             expect { do_request }.not_to change(Follower, :count)
           end
-  
+
           example 'Does not log activities for the author', document: false do
             expect { do_request }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, resident, anything, anything)
           end
-  
+
           describe 'when anonymous posting is not allowed' do
             let(:allow_anonymous_participation) { false }
-  
+
             example_request 'Rejects the anonymous parameter' do
               assert_status 422
               json_response = json_parse response_body
@@ -184,7 +184,7 @@ resource 'Ideas' do
 
         describe 'For projects without ideas_order' do
           let(:project) { create(:single_phase_ideation_project, phase_attrs: { ideas_order: nil }) }
-  
+
           example 'Creates an idea', document: false do
             do_request
             assert_status 201
@@ -196,61 +196,61 @@ resource 'Ideas' do
             expect(project.reload.ideas_count).to eq 1
           end
         end
-  
+
         describe 'Errors' do
           describe do
             let(:publication_status) { 'fake_status' }
-  
+
             example_request '[error] Creating an invalid idea' do
               assert_status 422
               json_response = json_parse response_body
               expect(json_response).to include_response_error(:publication_status, 'inclusion', value: 'fake_status')
             end
           end
-  
+
           describe do
             let(:idea_image) { file_as_base64 'header.jpg', 'image/jpeg' }
             let(:idea_images_attributes) { [{ image: idea_image }] }
-  
+
             example_request 'Create an idea with an image' do
               assert_status 201
               json_response = json_parse(response_body)
               expect(json_response.dig(:data, :relationships, :idea_images)).to be_present
             end
           end
-  
+
           describe do
             let(:idea_files_attributes) { [{ name: 'afvalkalender.pdf', file: encode_file_as_base64('afvalkalender.pdf') }] }
-  
+
             example_request 'Create an idea with a file' do
               assert_status 201
               json_response = json_parse(response_body)
               expect(Idea.find(json_response.dig(:data, :id)).idea_files.size).to eq 1
             end
           end
-  
+
           describe do
             let(:project) do
               create(:project_with_current_phase, current_phase_attrs: {
                 participation_method: 'information'
               })
             end
-  
+
             example_request '[error] Creating an idea in a project with an active information phase' do
               assert_status 401
               json_response = json_parse(response_body)
               expect(json_response.dig(:errors, :base).first[:error]).to eq 'not_ideation'
             end
           end
-  
+
           describe do
             let(:project_id) { nil }
-  
+
             example_request '[error] Create an idea without a project' do
               expect(response_status).to be >= 400
             end
           end
-  
+
           example '[error] Create an idea when there is a posting disabled reason' do
             expect_any_instance_of(ParticipationPermissionsService)
               .to receive(:posting_idea_disabled_reason_for_phase).with(project.phases.first, resident).and_return('i_dont_like_you')
@@ -261,34 +261,34 @@ resource 'Ideas' do
             expect(json_parse(response_body)).to include_response_error(:base, 'i_dont_like_you')
           end
         end
-  
+
         example_group 'with permissions on phase' do
           let(:with_permissions) { true }
           let(:group) { create(:group) }
-  
+
           before do
             project.phases.first.permissions.find_by(action: 'posting_idea')
               .update!(permitted_by: 'groups', groups: [group])
           end
-  
+
           example '[error] Create an idea in a project with groups posting permission', document: false do
             do_request
             assert_status 401
           end
-  
+
           example 'Create an idea in a project with groups posting permission', document: false do
             group.add_member(resident).save!
             do_request
             assert_status 201
           end
         end
-  
+
         describe do
           before { SettingsService.new.activate_feature! 'blocking_profanity' }
-  
+
           let(:title_multiloc) { { 'nl-BE' => 'Fuck' } }
           let(:body_multiloc) { { 'fr-FR' => 'cocksucker' } }
-  
+
           example_request '[error] Create an idea with blocked words' do
             assert_status 422
             json_response = json_parse(response_body)
@@ -309,14 +309,14 @@ resource 'Ideas' do
         describe do
           let(:project) { create(:project_with_current_phase, phases_config: { sequence: 'xxcx' }) }
           let(:phase_ids) { project.phase_ids.take(1) }
-  
+
           example_request 'Creating an idea in specific (inactive) phases' do
             assert_status 201
             json_response = json_parse(response_body)
             expect(json_response.dig(:data, :relationships, :phases, :data).pluck(:id)).to match_array phase_ids
           end
         end
-  
+
         describe 'when posting an idea in an ideation phase, the form of the project is used for accepting the input' do
           let!(:custom_form) do
             create(:custom_form, :with_default_fields, participation_context: project).tap do |form|
@@ -333,7 +333,7 @@ resource 'Ideas' do
           let(:title_multiloc) { { 'nl-BE' => 'An idea with a proposed budget' } }
           let(:body_multiloc) { { 'nl-BE' => 'An idea with a proposed budget for testing' } }
           let(:proposed_budget) { 1234 }
-  
+
           example 'Post an idea in an ideation phase', document: false do
             do_request
 
@@ -353,11 +353,11 @@ resource 'Ideas' do
             expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
           end
         end
-  
+
         describe 'when posting an idea in an ideation phase, the creation_phase is not set' do
           let!(:custom_form) { create(:custom_form, participation_context: project) }
           let(:phase_ids) { project.phase_ids.take(1) }
-  
+
           example 'Post an idea in an ideation phase', document: false do
             do_request
             assert_status 201
@@ -366,11 +366,11 @@ resource 'Ideas' do
             expect(idea.creation_phase).to be_nil
           end
         end
-  
+
         describe do
           let(:other_project) { create(:project_with_active_ideation_phase) }
           let(:phase_ids) { other_project.phase_ids.take(1) }
-  
+
           example_request '[error] Creating an idea linked to a phase from a different project', document: false do
             do_request
 
