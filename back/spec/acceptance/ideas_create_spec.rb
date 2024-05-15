@@ -308,9 +308,9 @@ resource 'Ideas' do
 
         describe do
           let(:project) { create(:project_with_current_phase, phases_config: { sequence: 'xxcx' }) }
-          let(:phase_ids) { project.phases.sample(1).map(&:id) }
+          let(:phase_ids) { project.phase_ids.take(1) }
   
-          example_request 'Creating an idea in specific phases' do
+          example_request 'Creating an idea in specific (inactive) phases' do
             assert_status 201
             json_response = json_parse(response_body)
             expect(json_response.dig(:data, :relationships, :phases, :data).pluck(:id)).to match_array phase_ids
@@ -318,7 +318,6 @@ resource 'Ideas' do
         end
   
         describe 'when posting an idea in an ideation phase, the form of the project is used for accepting the input' do
-          let(:project) { create(:project_with_active_ideation_phase) }
           let!(:custom_form) do
             create(:custom_form, :with_default_fields, participation_context: project).tap do |form|
               fields = IdeaCustomFieldsService.new(form).all_fields
@@ -330,12 +329,14 @@ resource 'Ideas' do
               end
             end
           end
-          let(:phase_ids) { [project.phases.first.id] }
+          let(:phase_ids) { project.phase_ids.take(1) }
           let(:title_multiloc) { { 'nl-BE' => 'An idea with a proposed budget' } }
           let(:body_multiloc) { { 'nl-BE' => 'An idea with a proposed budget for testing' } }
           let(:proposed_budget) { 1234 }
   
-          example_request 'Post an idea in an ideation phase' do
+          example 'Post an idea in an ideation phase', document: false do
+            do_request
+
             assert_status 201
             json_response = json_parse response_body
             # Enabled fields have a value
@@ -354,9 +355,8 @@ resource 'Ideas' do
         end
   
         describe 'when posting an idea in an ideation phase, the creation_phase is not set' do
-          let(:project) { create(:project_with_active_ideation_phase) }
           let!(:custom_form) { create(:custom_form, participation_context: project) }
-          let(:phase_ids) { [project.phases.first.id] }
+          let(:phase_ids) { project.phase_ids.take(1) }
   
           example 'Post an idea in an ideation phase', document: false do
             do_request
@@ -368,11 +368,12 @@ resource 'Ideas' do
         end
   
         describe do
-          let(:project) { create(:project_with_active_ideation_phase) }
           let(:other_project) { create(:project_with_active_ideation_phase) }
-          let(:phase_ids) { [other_project.phases.first.id] }
+          let(:phase_ids) { other_project.phase_ids.take(1) }
   
-          example_request '[error] Creating an idea linked to a phase from a different project' do
+          example_request '[error] Creating an idea linked to a phase from a different project', document: false do
+            do_request
+
             assert_status 422
             json_response = json_parse response_body
             expect(json_response).to include_response_error(:ideas_phases, 'invalid')
