@@ -270,4 +270,16 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.userInsights',
     defaultMessage: 'User insights',
   },
+  remove: {
+    id: 'app.containers.Admin.Users.remove',
+    defaultMessage: 'Remove',
+  },
+  assignedItemsFor: {
+    id: 'app.containers.Admin.Users.assignedItems',
+    defaultMessage: 'Assigned items for {name}',
+  },
+  noAssignedItems: {
+    id: 'app.containers.Admin.Users.noAssignedItems',
+    defaultMessage: 'No assigned items',
+  },
 });

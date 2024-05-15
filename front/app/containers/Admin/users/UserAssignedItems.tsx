@@ -20,8 +20,11 @@ import useLocalize from 'hooks/useLocalize';
 
 import Divider from 'components/admin/Divider';
 
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { getFullName } from 'utils/textUtils';
+
+import messages from './messages';
 
 const StyledLink = styled(Link)`
   color: ${colors.textSecondary};
@@ -39,6 +42,7 @@ const RemoveButton = ({
   isFolder: boolean;
   userId: string;
 }) => {
+  const { formatMessage } = useIntl();
   const {
     mutate: deleteProjectModerator,
     isLoading: deleteProjectModeratorLoading,
@@ -69,7 +73,7 @@ const RemoveButton = ({
       onClick={handleRemove}
       ml="auto"
     >
-      Remove
+      {formatMessage(messages.remove)}
     </Button>
   );
 };
@@ -83,10 +87,17 @@ const UserAssignedItems = ({ user }: { user: IUserData }) => {
 
   return (
     <div>
-      <Title m="0px">Assigned items for {getFullName(user)}</Title>
+      <Title m="0px">
+        <FormattedMessage
+          {...messages.assignedItemsFor}
+          values={{ name: getFullName(user) }}
+        />
+      </Title>
       <Divider />
       {flatAssignedItems?.length === 0 && (
-        <Text py="4px">No assigned items</Text>
+        <Text py="4px">
+          <FormattedMessage {...messages.noAssignedItems} />
+        </Text>
       )}
       {flatAssignedItems?.map((item) => (
         <Box
