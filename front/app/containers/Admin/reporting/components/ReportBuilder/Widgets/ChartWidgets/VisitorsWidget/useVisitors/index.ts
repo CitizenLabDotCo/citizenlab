@@ -36,7 +36,7 @@ export default function useVisitors({
     () =>
       analytics?.data
         ? parseTimeSeries(
-            analytics.data.attributes[1],
+            analytics.data.attributes[0],
             startAt ? moment(startAt) : null,
             endAt ? moment(endAt) : null,
             currentResolution

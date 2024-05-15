@@ -15,6 +15,6 @@ export interface TimeSeriesResponseRow extends BaseRow {
 export type VisitorsResponse = {
   data: {
     type: 'report_builder_data_units';
-    attributes: [[TotalsRow] | [], TimeSeriesResponseRow[] | []];
+    attributes: [TimeSeriesResponseRow[] | [], [TotalsRow] | []];
   };
 };
