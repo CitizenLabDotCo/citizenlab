@@ -11,7 +11,7 @@ const getDeltaColor = (delta: number) => {
 const getDeltaSymbol = (delta: number) => {
   if (delta === 0) return '+';
   if (delta > 0) return '+';
-  return '-';
+  return ''; // negative numbers already display a minus sign
 };
 
 interface Props {
