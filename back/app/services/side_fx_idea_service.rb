@@ -124,7 +124,18 @@ class SideFxIdeaService
   def sanitize_location_point(change)
     return change if change['location_point'].blank?
 
-    change['location_point'].map(&:to_s)
+    geojson_change = change['location_point'].map { |point| RGeo::GeoJSON.encode(point) }
+
+    # We encode the location_point to GeoJSON and then check for changes, else it would always be considered changed
+    # when a location_point was set, due to the fact that the location_point previous change is encoded as
+    # RGeo::Geographic::SphericalPointImpl, while the current change is encoded as RGeo::Geos::CAPIPointImpl.
+    if geojson_change[0] == geojson_change[1]
+      change.delete('location_point')
+    else
+      change['location_point'] = geojson_change
+    end
+
+    change
   end
 end
 
