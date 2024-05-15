@@ -8,9 +8,11 @@ import {
   Text,
   Button,
 } from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
 import styled from 'styled-components';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
+import useAdminPublication from 'api/admin_publications/useAdminPublication';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import useDeleteProjectFolderModerator from 'api/project_folder_moderators/useDeleteProjectFolderModerator';
 import useDeleteProjectModerator from 'api/project_moderators/useDeleteProjectModerator';
@@ -48,7 +50,11 @@ const RemoveButton = ({
   userId: string;
   disabled?: boolean;
 }) => {
+  const localize = useLocalize();
   const { formatMessage } = useIntl();
+  const { data: folder } = useAdminPublication(
+    item.relationships.parent?.data?.id || null
+  );
   const {
     mutate: deleteProjectModerator,
     isLoading: deleteProjectModeratorLoading,
@@ -61,27 +67,45 @@ const RemoveButton = ({
   const handleRemove = () => {
     if (isFolder) {
       deleteFolderModerator({
-        projectFolderId: item.id,
+        projectFolderId: item.relationships.publication.data.id,
         id: userId,
       });
     } else {
       deleteProjectModerator({
-        projectId: item.id,
+        projectId: item.relationships.publication.data.id,
         id: userId,
       });
     }
   };
 
+  const folderTitle = localize(
+    folder?.data.attributes.publication_title_multiloc
+  );
+
   return (
-    <Button
-      buttonStyle="text"
-      processing={deleteProjectModeratorLoading || deleteFolderModeratorLoading}
-      onClick={handleRemove}
-      ml="auto"
-      disabled={disabled}
+    <Tippy
+      content={
+        <FormattedMessage
+          {...messages.removeModeratorFrom}
+          values={{ folderTitle }}
+        />
+      }
+      zIndex={9999999}
+      disabled={!disabled || !folderTitle}
     >
-      {formatMessage(messages.remove)}
-    </Button>
+      <Box ml="auto">
+        <Button
+          buttonStyle="text"
+          processing={
+            deleteProjectModeratorLoading || deleteFolderModeratorLoading
+          }
+          onClick={handleRemove}
+          disabled={disabled}
+        >
+          {formatMessage(messages.remove)}
+        </Button>
+      </Box>
+    </Tippy>
   );
 };
 
@@ -102,7 +126,6 @@ const UserAssignedItems = ({ user }: { user: IUserData }) => {
     }
   });
 
-  console.log('moderatedIds', moderatedIds);
   return (
     <div>
       <Title m="0px">

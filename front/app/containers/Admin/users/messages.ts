@@ -282,4 +282,9 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.noAssignedItems',
     defaultMessage: 'No assigned items',
   },
+  removeModeratorFrom: {
+    id: 'app.containers.Admin.Users.removeModeratorFrom',
+    defaultMessage:
+      'The user is moderating the folder this project belongs to. Remove assignment from "{folderTitle}" instead.',
+  },
 });

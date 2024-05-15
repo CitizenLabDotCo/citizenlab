@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 import usersKeys from 'api/users/keys';
+import userCountKeys from 'api/users_count/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
@@ -32,6 +33,10 @@ const useDeleteProjectFolderModerator = () => {
       });
 
       queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
+
+      queryClient.invalidateQueries({
+        queryKey: userCountKeys.items(),
+      });
       invalidateSeatsCache();
     },
   });
