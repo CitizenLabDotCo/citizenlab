@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Confirmations' do
-  explanation 'User can confirm their phones or emails using a 6 digit code'
+  explanation 'User can confirm their emails using a 6 digit code'
 
   before do
     set_api_content_type
