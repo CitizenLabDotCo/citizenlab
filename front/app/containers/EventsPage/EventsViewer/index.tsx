@@ -12,6 +12,8 @@ import { PublicationStatus } from 'api/projects/types';
 import EventCard from 'components/EventCard';
 import Pagination from 'components/Pagination';
 
+import { ScreenReaderOnly } from 'utils/a11y';
+import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
@@ -96,6 +98,7 @@ const EventsViewer = ({
   showDateFilter = true,
 }: Props) => {
   const [searchParams] = useSearchParams();
+  const { formatMessage } = useIntl();
 
   // Get any URL params
   const projectIdsParam = searchParams.get(
@@ -206,6 +209,11 @@ const EventsViewer = ({
       {isLoading && <EventsSpinner />}
       {!isNilOrError(events) && (
         <>
+          <ScreenReaderOnly aria-live="assertive">
+            {formatMessage(messages.a11y_eventsHaveChanged, {
+              numberOfEvents: events.data.length,
+            })}
+          </ScreenReaderOnly>
           <Box display="flex" flexWrap="wrap" gap="16px">
             {events.data.length > 0 &&
               events.data.map((event, i) => (
