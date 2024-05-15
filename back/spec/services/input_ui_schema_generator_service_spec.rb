@@ -1094,8 +1094,6 @@ RSpec.describe InputUiSchemaGeneratorService do
     end
 
     context 'for author_id built-in field' do
-      # let(:code) { 'author_id' }
-      # let(:title_multiloc) { MultilocService.new.i18n_to_multiloc('custom_fields.ideas.author_id.title', locales: CL2_SUPPORTED_LOCALES) }
       let(:field) { JsonFormsService::AUTHOR_FIELD }
 
       it 'returns the schema for the author_id field with isAdminField set to true' do

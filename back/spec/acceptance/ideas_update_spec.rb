@@ -57,7 +57,7 @@ resource 'Ideas' do
 
         describe do
           let(:publication_status) { 'published' }
-  
+
           example_request 'Change the publication status' do
             assert_status 200
             json_response = json_parse response_body
@@ -170,25 +170,25 @@ resource 'Ideas' do
             project.update! allowed_input_topics: create_list(:topic, 2)
             input.update! topics: project.allowed_input_topics
           end
-  
+
           let(:project_id) { create(:project, allowed_input_topics: [project.allowed_input_topics.first]).id }
-  
+
           example_request 'Change the project' do
             assert_status 200
             json_response = json_parse response_body
             expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
-  
+
             expect(input.reload).to be_valid
           end
         end
-  
+
         example '[error] Removing the author of a published idea', document: false do
           input.update! publication_status: 'published'
           do_request idea: { author_id: nil }
           assert_status 422
           expect(json_response_body).to include_response_error(:author, 'blank')
         end
-  
+
         example '[error] Publishing an idea without author', document: false do
           input.update! publication_status: 'draft', author: nil
           do_request idea: { publication_status: 'published' }
@@ -198,20 +198,20 @@ resource 'Ideas' do
 
         describe 'draft ideas' do
           before { input.update! publication_status: 'draft' }
-  
+
           context 'Editing an idea' do
             let(:title_multiloc) { { 'en' => 'Changed the title' } }
-  
+
             example_request 'Can edit a draft idea' do
               assert_status 200
               expect(response_data[:attributes][:publication_status]).to eq 'draft'
               expect(response_data[:attributes][:title_multiloc][:en]).to eq 'Changed the title'
             end
           end
-  
+
           context 'Publishing an idea' do
             let(:publication_status) { 'published' }
-  
+
             example_request 'Can change an idea from draft to published' do
               assert_status 200
               expect(response_data[:attributes][:publication_status]).to eq 'published'
@@ -231,26 +231,26 @@ resource 'Ideas' do
 
         describe 'phase_ids' do
           let(:phase) { project.phases.first }
-  
+
           context 'when passing some phase ids' do
             let(:phase_ids) { [phase.id] }
-  
+
             example_request 'Change the idea phases' do
               assert_status 200
 
               json_response = json_parse response_body
               expect(json_response.dig(:data, :relationships, :phases, :data).pluck(:id)).to match_array phase_ids
             end
-  
+
             example 'Changes the ideas count of a phase', document: false do
               do_request
               expect(phase.reload.ideas_count).to eq 1
             end
           end
-  
+
           context 'when passing an empty array of phase ids' do
             let(:phase_ids) { [] }
-  
+
             example 'Change the idea phases', document: false do
               do_request
 
@@ -258,7 +258,7 @@ resource 'Ideas' do
               json_response = json_parse response_body
               expect(json_response.dig(:data, :relationships, :phases, :data).pluck(:id)).to match_array phase_ids
             end
-  
+
             example 'Changes the ideas count of a phase when the phases change', document: false do
               do_request
               expect(phase.reload.ideas_count).to eq 0
@@ -268,7 +268,7 @@ resource 'Ideas' do
 
         describe 'budget' do
           let(:budget) { 1800 }
-  
+
           example_request 'Change the participatory budget' do
             assert_status 200
             json_response = json_parse response_body
@@ -278,16 +278,16 @@ resource 'Ideas' do
 
         describe 'Changing an idea to anonymous' do
           let(:allow_anonymous_participation) { true }
-  
+
           before { project.phases.first.update! allow_anonymous_participation: allow_anonymous_participation }
-  
+
           example 'Updating values of an anonymously posted idea', document: false do
             input.update! publication_status: 'published', anonymous: true, author: nil
             do_request idea: { location_description: 'HERE' }
             assert_status 200
             expect(response_data.dig(:attributes, :location_description)).to eq 'HERE'
           end
-  
+
           example 'Changing an idea to anonymous', document: false do
             input.update! publication_status: 'published', anonymous: false, author: admin
             do_request idea: { anonymous: true }
@@ -295,7 +295,7 @@ resource 'Ideas' do
             expect(response_data.dig(:attributes, :anonymous)).to be true
             expect(response_data.dig(:attributes, :author_name)).to be_nil
           end
-  
+
           example 'Updating an anonymously posted idea with an author', document: false do
             input.update! publication_status: 'published', anonymous: true, author: nil
             do_request idea: { author_id: admin.id, publication_status: 'published' }
@@ -303,7 +303,7 @@ resource 'Ideas' do
             expect(response_data.dig(:relationships, :author, :data, :id)).to eq admin.id
             expect(response_data.dig(:attributes, :anonymous)).to be false
           end
-  
+
           describe 'when anonymous posting is not allowed' do
             let(:allow_anonymous_participation) { false }
   
@@ -314,11 +314,11 @@ resource 'Ideas' do
               expect(json_response).to include_response_error(:base, 'anonymous_participation_not_allowed')
             end
           end
-  
+
           example 'Does not log activities for the author', document: false do
             expect { do_request(idea: { anonymous: true }) }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, admin, anything, anything)
           end
-  
+
           example 'Does not log activities for the author and clears the author from past activities', document: false do
             clear_activity = create(:activity, item: input, user: admin)
             other_item_activity = create(:activity, item: input, user: create(:user))
@@ -355,8 +355,9 @@ resource 'Ideas' do
 
         describe 'Submitting a final native survey response' do
           before { input.update!(publication_status: 'draft') }
+
           let(:publication_status) { 'published' }
-  
+
           example_request 'Can change a survey response from draft to published' do
             assert_status 200
             expect(response_data[:attributes][:publication_status]).to eq 'published'
