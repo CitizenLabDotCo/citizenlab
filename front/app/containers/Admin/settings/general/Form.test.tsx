@@ -40,6 +40,7 @@ describe('Form', () => {
       locales: ['en', 'nl-NL'],
       organization_name: { en: orgNameEN, 'nl-NL': newOrgNameNl },
       organization_site: 'https://mywebsite.com',
+      population: 12500,
     });
     expect(screen.getByTestId('feedbackSuccessMessage')).toBeInTheDocument();
   });
