@@ -149,7 +149,7 @@ hr:
         title: Pojedinosti
         description:
       other_text_field:
-        title: If you picked '{other_option}', what are you thinking of?
+        title: Ako ste odabrali '{other_option}', na što mislite?
   custom_forms:
     categories:
       main_content:
@@ -204,11 +204,15 @@ hr:
       input_id: 'ID'
       latitude: 'Geografska širina'
       longitude: 'Geografska duljina'
+      location: 'Mjesto'
       author_fullname: 'Ime autora'
       author_email: 'E-pošta autora'
       author_id: 'ID autora'
+      attachments: 'Prilozi'
       budget: 'Proračun'
+      cost: 'trošak'
       created_at: 'Predano'
+      submitted_at: 'Predano u'
       published_at: 'Objavljeno'
       comments_count: 'Komentari'
       likes_count: 'Sviđa mi se'
@@ -217,11 +221,14 @@ hr:
       participants: 'Sudionici'
       votes_count: 'Glasovi'
       input_url: 'URL'
+      tags: 'Oznake'
       project: 'Projekt'
       status: 'Stanje'
       assignee_fullname: 'Opunomoćenik'
       assignee_email: 'E-pošta opunomoćenika'
       image_url: 'URL slike'
+      title: 'Titula'
+      description: 'Opis'
     anonymous: 'Anonimno'
   form_builder:
     default_select_field:

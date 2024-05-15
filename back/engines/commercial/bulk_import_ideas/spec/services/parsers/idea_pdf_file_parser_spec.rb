@@ -238,24 +238,38 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
     end
   end
 
-  describe 'merge_pdf_rows' do
+  describe 'merge_parsed_ideas_into_idea_row' do
     let(:form_parsed_idea) do
       {
         pdf_pages: [1, 2],
-        fields: { 'Title' => 'Form title 2', 'Description' => 'Form description 2', 'A text field' => 'Something', 'Select field' => 'Yes' }
+        fields: {
+          'Title' => 'Form title 2',
+          'Description' => 'Form description 2',
+          'A text field' => 'Something',
+          'Select field' => 'Yes',
+          'Another select field' => 'Yes',
+          'Multi select field' => ['This']
+        }
       }
     end
 
     let(:text_parsed_idea) do
       {
         pdf_pages: [1, 2],
-        fields: { 'Title' => 'Text title 2', 'Description' => 'Text description 2', 'Location' => 'Textington', 'Select field' => 'No', 'Another select field' => 'No' }
+        fields: {
+          'Title' => 'Text title 2',
+          'Description' => 'Text description 2',
+          'Location' => 'Textington',
+          'Select field' => nil,
+          'Another select field' => 'No',
+          'Multi select field' => ['That']
+        }
       }
     end
 
-    it 'merges both sources, prioritising those from the form parser' do
-      rows = service.send(:merge_pdf_rows, form_parsed_idea, text_parsed_idea, nil)
-      expect(rows.first).to include({
+    it 'merges both sources of core fields, prioritising those from the form parser' do
+      row = service.send(:merge_parsed_ideas_into_idea_row, form_parsed_idea, text_parsed_idea, nil)
+      expect(row).to include({
         title_multiloc: { en: 'Form title 2' },
         body_multiloc: { en: 'Form description 2' },
         location_description: 'Textington'
@@ -263,8 +277,19 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
     end
 
     it 'merges custom fields successfully and prefers the answers from the text parser' do
-      rows = service.send(:merge_pdf_rows, form_parsed_idea, text_parsed_idea, nil)
-      expect(rows.first[:custom_field_values]).to match_array({ a_text_field: 'Something', select_field: 'no', another_select_field: 'no' })
+      row = service.send(:merge_parsed_ideas_into_idea_row, form_parsed_idea, text_parsed_idea, nil)
+      expect(row[:custom_field_values]).to match({
+        a_text_field: 'Something',
+        select_field: 'yes',
+        another_select_field: 'no',
+        multiselect_field: %w[that this]
+      })
+    end
+
+    it 'does not duplicate multiselect values where present in both' do
+      form_parsed_idea[:fields]['Multi select field'] = %w[This That]
+      row = service.send(:merge_parsed_ideas_into_idea_row, form_parsed_idea, text_parsed_idea, nil)
+      expect(row[:custom_field_values][:multiselect_field]).to match %w[that this]
     end
   end
 
@@ -281,7 +306,7 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
 
       expect_any_instance_of(BulkImportIdeas::Parsers::Pdf::IdeaGoogleFormParserService).to receive(:parse_pdf).and_return(form_parser_output)
       expect_any_instance_of(BulkImportIdeas::Parsers::Pdf::IdeaGoogleFormParserService).to receive(:raw_text_page_array).and_raise(BulkImportIdeas::Error.new('something'))
-      expect(service).to receive(:merge_pdf_rows).with(form_parser_output, [], file)
+      expect(service).to receive(:merge_parsed_ideas_into_idea_row).with(form_parser_output, [], file)
 
       service.send(:parse_rows, file)
     end

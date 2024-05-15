@@ -58,7 +58,7 @@ resource 'Ideas' do
         let(:project_id) { project.id }
         let(:extra_field_name) { 'custom_field_name1' }
         let(:form) { create(:custom_form, participation_context: project.phases.first) }
-        let!(:text_field) { create(:custom_field_extra_custom_form, key: extra_field_name, required: true, resource: form) }
+        let!(:text_field) { create(:custom_field_text, key: extra_field_name, required: true, resource: form) }
         let(:custom_field_name1) { 'test value' }
 
         example_request 'Create a native survey response without author' do
@@ -706,7 +706,7 @@ resource 'Ideas' do
     get 'web_api/v1/ideas/:idea_id/json_forms_schema' do
       let(:project) { create(:project_with_active_ideation_phase) }
       let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
-      let!(:custom_field) { create(:custom_field_extra_custom_form, resource: custom_form) }
+      let!(:custom_field) { create(:custom_field, resource: custom_form) }
       let(:idea) { create(:idea, project: project) }
       let(:idea_id) { idea.id }
 

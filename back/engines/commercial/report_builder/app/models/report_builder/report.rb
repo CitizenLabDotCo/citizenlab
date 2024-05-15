@@ -18,7 +18,7 @@
 #  index_report_builder_reports_on_name           (name) UNIQUE
 #  index_report_builder_reports_on_name_tsvector  (name_tsvector) USING gin
 #  index_report_builder_reports_on_owner_id       (owner_id)
-#  index_report_builder_reports_on_phase_id       (phase_id)
+#  index_report_builder_reports_on_phase_id       (phase_id) UNIQUE
 #
 # Foreign Keys
 #
@@ -47,6 +47,8 @@ module ReportBuilder
     }
 
     validates :name, uniqueness: true, allow_nil: true
+    validates :phase_id, uniqueness: true, allow_nil: true
+    validates :visible, inclusion: { in: [false], unless: :phase? }
 
     def phase?
       !phase_id.nil?

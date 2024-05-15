@@ -17,7 +17,7 @@ module Sluggable
     def slug(options = {})
       @has_slug = true
       @slug_attribute = options[:attribute] || :slug
-      @slug_from ||= (options[:from] || proc { |sluggable| sluggable.id || SecureRandom.uuid })
+      @slug_from ||= (options[:from] || proc { |_| generate_fallback_slug })
       @slug_if = options[:if]
     end
   end
@@ -32,6 +32,7 @@ module Sluggable
 
     from_value = self.class.slug_from.call(self)
     self.slug = SlugService.new.generate_slug self, from_value
+    self.slug = generate_fallback_slug if !SLUG_REGEX.match?(slug)
   end
 
   private
@@ -39,4 +40,8 @@ module Sluggable
   def slug_enabled?
     self.class.slug? && (!self.class.slug_if || self.class.slug_if&.call(self))
   end
+end
+
+def generate_fallback_slug
+  SecureRandom.uuid
 end

@@ -151,8 +151,9 @@ class Idea < ApplicationRecord
   }
 
   scope :activity_after, lambda { |time_ago|
-    left_joins(:comments, :reactions)
+    ideas = left_joins(:comments, :reactions)
       .where('ideas.updated_at >= ? OR comments.updated_at >= ? OR reactions.created_at >= ?', time_ago, time_ago, time_ago)
+    where(id: ideas)
   }
 
   scope :feedback_needed, lambda {
