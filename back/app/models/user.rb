@@ -248,8 +248,8 @@ class User < ApplicationRecord
   end
 
   def anon_last_name
-    # Generate a numeric last name based on email in the format of '123456'
-    name_key = email || unique_code
+    # Generate a numeric last name in the format of '123456'
+    name_key = email || unique_code || id
     (name_key.sum**2).to_s[0, 6]
   end
 
