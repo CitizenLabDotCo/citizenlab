@@ -6,7 +6,7 @@ import {
   SetError,
 } from '../../typings';
 
-import { claveUnicaFlow } from './claveUnicaFlow';
+import { emaillessSsoFlow } from './emaillessSsoFlow';
 import { lightFlow } from './lightFlow';
 import { missingDataFlow } from './missingDataFlow';
 import { sharedSteps } from './sharedSteps';
@@ -56,7 +56,7 @@ export const getStepConfig = (
       anySSOEnabled
     ),
 
-    ...claveUnicaFlow(getRequirements, setCurrentStep),
+    ...emaillessSsoFlow(getRequirements, setCurrentStep, updateState),
 
     'verification-only': {
       CLOSE: () => setCurrentStep('closed'),

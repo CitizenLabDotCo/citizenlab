@@ -28,6 +28,7 @@ interface Props {
   dropRow: (itemId: string, toIndex: number) => void;
   isLastItem: boolean;
   publication: IAdminPublicationData;
+  search?: string;
 }
 
 const publicationStatuses: PublicationStatus[] = [
@@ -55,7 +56,7 @@ const SortableFolderRow = ({
     .map((page) => page.data)
     .flat();
 
-  const [folderOpen, setFolderOpen] = useState(true);
+  const [folderOpen, setFolderOpen] = useState(false);
 
   if (isNilOrError(authUser)) {
     return null;
@@ -95,6 +96,7 @@ const SortableFolderRow = ({
         <FolderChildProjects
           folderChildAdminPublications={folderChildAdminPublications}
           folderId={folderId}
+          isLastFolder={isLastItem}
         />
       )}
     </>

@@ -3,7 +3,7 @@
 module EmailCampaigns
   class WebApi::V1::CampaignSerializer < ::WebApi::V1::BaseSerializer
     extend GroupOrderingHelper
-    attributes :created_at, :updated_at
+    attributes :created_at, :updated_at, :context_id
 
     attribute :campaign_name do |object|
       object.class.campaign_name

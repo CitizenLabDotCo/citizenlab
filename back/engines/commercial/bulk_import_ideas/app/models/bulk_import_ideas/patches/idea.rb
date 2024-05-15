@@ -40,7 +40,7 @@ module BulkImportIdeas::Patches::Idea
       end
 
       def remove_import_author
-        return unless idea_import&.user_created == true && publication_status == 'draft'
+        return unless author && idea_import&.user_created == true && publication_status == 'draft' && author.ideas.count == 1 && author.no_password? && !author.sso?
 
         author.destroy!
       end

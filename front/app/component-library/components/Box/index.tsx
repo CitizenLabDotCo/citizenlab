@@ -227,7 +227,7 @@ const Box = styled.div<BoxProps>`
     ${props.paddingRight ? `padding-right: ${props.paddingRight}` : ''};
     ${props.pr ? `padding-right: ${props.pr}` : ''};
   `}
- 
+
   // margin
   ${(props) => css`
     ${props.margin ? `margin: ${props.margin}` : ''};
@@ -265,7 +265,7 @@ const Box = styled.div<BoxProps>`
     ${props.maxHeight ? `max-height: ${props.maxHeight}` : ''};
     ${props.minHeight ? `min-height: ${props.minHeight}` : ''};
   `}
- 
+
   // width
   ${(props) => css`
     ${props.width ? `width: ${props.width}` : ''};
@@ -273,7 +273,7 @@ const Box = styled.div<BoxProps>`
     ${props.maxWidth ? `max-width: ${props.maxWidth}` : ''};
     ${props.minWidth ? `min-width: ${props.minWidth}` : ''};
   `}
- 
+
   // display
   ${(props) => css`
     ${props.display ? `display: ${props.display}` : ''};

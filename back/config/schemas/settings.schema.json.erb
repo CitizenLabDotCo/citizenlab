@@ -334,7 +334,7 @@
         "description": "Allow users to register with an email and password.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["minimum_length", "phone", "enable_signup"],
+        "required-settings": ["minimum_length", "enable_signup"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
@@ -351,21 +351,6 @@
             "minimum": 5,
             "maximum": 72,
             "default": 8
-          },
-          "phone": {
-            "title": "Phone",
-            "description": "Allow users to register with a phone number. This option is not advised, please check with development team before enabling this field.",
-            "type": "boolean",
-            "default": false
-          },
-          "phone_email_pattern": {
-            "title": "Phone Number Format",
-            "description": "Specify how phone numbers should be stored in the database (needs to be in email format - e.g., 'phone+__PHONE__@test.com' stores the phone number as 'phone+32478637483@test.com'.",
-            "type": "string",
-            "format": "email",
-            "default": "phone+__PHONE__@test.com",
-            "pattern": "^.*__PHONE__.*@.*$",
-            "private": true
           }
         }
       },
@@ -917,18 +902,6 @@
         }
       },
 
-      "volunteering": {
-        "type": "object",
-        "title": "Volunteering",
-        "description": "Allow volunteering.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
       "workshops": {
         "title": "Workshops",
         "type": "object",
@@ -1286,13 +1259,25 @@
 
       "import_printed_forms": {
         "type": "object",
-        "title": "Import printed forms",
-        "description": "Enables the importing from handwritten idea and surveys on printed forms.",
+        "title": "Form Sync (fka import printed forms)",
+        "description": "Enables the importing of PDF files from handwritten ideas and surveys on printed forms.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "input_importer": {
+        "type": "object",
+        "title": "Input importer",
+        "description": "Enables the importing of Excel (XLSX) files with ideas and surveys.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
         }
       },
 
@@ -1396,7 +1381,8 @@
 
     "large_summaries": ["analysis"],
     "ask_a_question": ["analysis"],
-    "advanced_autotagging": ["analysis"]
+    "advanced_autotagging": ["analysis"],
+    "import_printed_forms": ["input_importer"]
   },
   "definitions": {
     "multiloc_string": {

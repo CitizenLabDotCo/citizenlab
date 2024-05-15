@@ -4,7 +4,10 @@ ReportBuilder::Engine.routes.draw do
   namespace :web_api do
     namespace :v1 do
       resources :reports, only: %i[index show create destroy update] do
-        get :layout, on: :member
+        member do
+          get :layout
+          post :copy
+        end
 
         collection do
           resources :graph_data_units, only: %i[] do

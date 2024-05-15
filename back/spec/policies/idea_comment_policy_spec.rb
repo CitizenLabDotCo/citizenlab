@@ -14,10 +14,11 @@ describe IdeaCommentPolicy do
 
   context 'on comment on idea in a public project' do
     context 'for a user who is not the author of the comment' do
-      it { is_expected.to     permit(:show)    }
-      it { is_expected.not_to permit(:create)  }
-      it { is_expected.not_to permit(:update)  }
-      it { is_expected.not_to permit(:destroy) }
+      it { is_expected.to     permit(:show)       }
+      it { is_expected.not_to permit(:create)     }
+      it { is_expected.not_to permit(:update)     }
+      it { is_expected.not_to permit(:destroy)    }
+      it { is_expected.not_to permit(:index_xlsx) }
 
       it 'indexes the comment' do
         expect(scope.resolve.size).to eq 1
@@ -27,10 +28,11 @@ describe IdeaCommentPolicy do
     context 'for a visitor' do
       let(:user) { nil }
 
-      it { is_expected.to     permit(:show)    }
-      it { is_expected.not_to permit(:create)  }
-      it { is_expected.not_to permit(:update)  }
-      it { is_expected.not_to permit(:destroy) }
+      it { is_expected.to     permit(:show)       }
+      it { is_expected.not_to permit(:create)     }
+      it { is_expected.not_to permit(:update)     }
+      it { is_expected.not_to permit(:destroy)    }
+      it { is_expected.not_to permit(:index_xlsx) }
 
       it 'indexes the comment' do
         expect(scope.resolve.size).to eq 1
@@ -40,10 +42,11 @@ describe IdeaCommentPolicy do
     context 'for a user who is the author of the comment' do
       let(:user) { comment.author }
 
-      it { is_expected.to     permit(:show)    }
-      it { is_expected.to     permit(:create)  }
-      it { is_expected.to     permit(:update)  }
-      it { is_expected.not_to permit(:destroy) }
+      it { is_expected.to     permit(:show)       }
+      it { is_expected.to     permit(:create)     }
+      it { is_expected.to     permit(:update)     }
+      it { is_expected.not_to permit(:destroy)    }
+      it { is_expected.not_to permit(:index_xlsx) }
 
       it 'indexes the comment' do
         expect(scope.resolve.size).to eq 1
@@ -64,6 +67,7 @@ describe IdeaCommentPolicy do
       it { is_expected.to     permit(:create)  }
       it { is_expected.to     permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
+      it { is_expected.to permit(:index_xlsx)  }
 
       it 'indexes the comment' do
         expect(scope.resolve.size).to eq 1
@@ -77,6 +81,7 @@ describe IdeaCommentPolicy do
       it { is_expected.to     permit(:create)  }
       it { is_expected.to     permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
+      it { is_expected.to permit(:index_xlsx)  }
 
       it 'indexes the comment' do
         expect(scope.resolve.size).to eq 1
@@ -88,10 +93,11 @@ describe IdeaCommentPolicy do
     let!(:user) { nil }
     let!(:project) { create(:private_groups_project) }
 
-    it { is_expected.not_to permit(:show)    }
-    it { is_expected.not_to permit(:create)  }
-    it { is_expected.not_to permit(:update)  }
-    it { is_expected.not_to permit(:destroy) }
+    it { is_expected.not_to permit(:show)       }
+    it { is_expected.not_to permit(:create)     }
+    it { is_expected.not_to permit(:update)     }
+    it { is_expected.not_to permit(:destroy)    }
+    it { is_expected.not_to permit(:index_xlsx) }
 
     it 'does not index the comment' do
       expect(scope.resolve.size).to eq 0
@@ -102,10 +108,11 @@ describe IdeaCommentPolicy do
     let!(:project) { create(:private_groups_project) }
     let!(:comment) { create(:comment, post: idea, author: user) }
 
-    it { is_expected.not_to permit(:show)    }
-    it { is_expected.not_to permit(:create)  }
-    it { is_expected.not_to permit(:update)  }
-    it { is_expected.not_to permit(:destroy) }
+    it { is_expected.not_to permit(:show)       }
+    it { is_expected.not_to permit(:create)     }
+    it { is_expected.not_to permit(:update)     }
+    it { is_expected.not_to permit(:destroy)    }
+    it { is_expected.not_to permit(:index_xlsx) }
 
     it 'does not index the comment' do
       expect(scope.resolve.size).to eq 0
@@ -116,10 +123,11 @@ describe IdeaCommentPolicy do
     let!(:project) { create(:private_groups_project, user: user) }
     let!(:comment) { create(:comment, post: idea, author: user) }
 
-    it { is_expected.to     permit(:show)    }
-    it { is_expected.to     permit(:create)  }
-    it { is_expected.to     permit(:update)  }
-    it { is_expected.not_to permit(:destroy) }
+    it { is_expected.to     permit(:show)       }
+    it { is_expected.to     permit(:create)     }
+    it { is_expected.to     permit(:update)     }
+    it { is_expected.not_to permit(:destroy)    }
+    it { is_expected.not_to permit(:index_xlsx) }
 
     it 'indexes the comment' do
       expect(scope.resolve.size).to eq 1
@@ -135,10 +143,11 @@ describe IdeaCommentPolicy do
       end
     end
 
-    it { is_expected.to     permit(:show) }
-    it { is_expected.not_to permit(:create) }
-    it { is_expected.not_to permit(:update) }
-    it { is_expected.not_to permit(:destroy) }
+    it { is_expected.to     permit(:show)       }
+    it { is_expected.not_to permit(:create)     }
+    it { is_expected.not_to permit(:update)     }
+    it { is_expected.not_to permit(:destroy)    }
+    it { is_expected.not_to permit(:index_xlsx) }
 
     it 'indexes the comment' do
       expect(scope.resolve.size).to eq 1

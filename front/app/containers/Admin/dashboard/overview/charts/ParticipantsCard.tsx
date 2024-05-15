@@ -50,7 +50,12 @@ const ParticipantsCard = ({
         resolution: currentResolution,
       }}
     >
-      <Box w="100%" display="flex" justifyContent="flex-start">
+      <Box
+        w="100%"
+        display="flex"
+        justifyContent="flex-start"
+        id="e2e-participants-by-time-chart"
+      >
         <Box
           pt="8px"
           height="200px"

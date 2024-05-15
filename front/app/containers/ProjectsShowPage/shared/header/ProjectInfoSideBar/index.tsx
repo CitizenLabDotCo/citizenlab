@@ -138,9 +138,6 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const { formatMessage } = useIntl();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const [shareModalOpened, setShareModalOpened] = useState(false);
-  const isAdminUser = !isNilOrError(authUser)
-    ? isAdmin({ data: authUser.data })
-    : false;
 
   useEffect(() => {
     setCurrentPhase(
@@ -229,7 +226,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                 {...messages.xParticipants}
                 values={{ participantsCount: projectParticipantsCount }}
               />
-              {isAdminUser && hasNativeSurvey(phases?.data) && (
+              {isAdmin(authUser) && hasNativeSurvey(phases?.data) && (
                 <Box ml="4px">
                   <IconTooltip
                     placement="auto"

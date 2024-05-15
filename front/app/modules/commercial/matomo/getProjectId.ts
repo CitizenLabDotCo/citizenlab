@@ -1,6 +1,7 @@
 import ideasKeys from 'api/ideas/keys';
 import { fetchIdea } from 'api/ideas/useIdeaBySlug';
 import getProjectbySlug from 'api/projects/getProjectBySlug';
+
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
 const projectPathRegex =

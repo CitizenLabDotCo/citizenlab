@@ -42,7 +42,7 @@ resource 'Phase level Custom Fields' do
     let(:phase) { project.phases.first }
     let(:phase_id) { phase.id }
     let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
-    let!(:custom_field) { create(:custom_field_extra_custom_form, resource: custom_form) }
+    let!(:custom_field) { create(:custom_field, resource: custom_form) }
 
     before do
       phase.update!(input_term: 'question')
@@ -73,6 +73,47 @@ resource 'Phase level Custom Fields' do
         expect(ui_schema[:options]).to eq({ formId: 'idea-form', inputTerm: 'question' })
         expect(ui_schema[:elements].size).to eq 3
       end
+
+      describe 'Random ordering' do
+        let(:field_key) { :my_field_key }
+        let(:options_mapping) do
+          20.times.map.to_h do |i|
+            multiloc = {
+              en: "My en option #{i}",
+              'fr-FR': "My fr option #{i}",
+              'nl-NL': "My nl option #{i}"
+            }
+            ["my_option_#{i}", multiloc]
+          end
+        end
+        let!(:custom_field) do
+          create(:custom_field_select, resource: custom_form, random_option_ordering: true, key: field_key).tap do |field|
+            options_mapping.each do |key, multiloc|
+              create(:custom_field_option, custom_field: field, key: key, title_multiloc: multiloc)
+            end
+          end
+        end
+
+        # Important: If at some point we would have different endpoint for getting the JSON and UI schemas, we risk
+        # getting back this terrible bug: https://citizenlabco.slack.com/archives/C06CJ4D3B0R/p1713959696610869
+        example_request 'returns the options in the same random order in the JSON and UI schemas' do
+          assert_status 200
+          json_response = json_parse response_body
+          json_schemas = json_response.dig(:data, :attributes, :json_schema_multiloc)
+          ui_schemas = json_response.dig(:data, :attributes, :ui_schema_multiloc)
+          %i[en fr-FR nl-NL].each do |locale|
+            json_keys = json_schemas.dig(locale, :properties, field_key, :enum)
+            ui_details = ui_schemas.dig(locale, :elements).find { |elt| elt[:label] == 'Details' }
+            ui_names = ui_details[:elements].find { |elt| elt[:scope] == "#/properties/#{field_key}" }.dig(:options, :enumNames)
+
+            expect(json_keys.size).to eq 20
+            expect(ui_names.size).to eq 20
+            json_keys.zip(ui_names).each do |json_key, ui_name|
+              expect(ui_name).to eq options_mapping[json_key][locale]
+            end
+          end
+        end
+      end
     end
   end
 
@@ -80,7 +121,7 @@ resource 'Phase level Custom Fields' do
     let(:project) { create(:project_with_active_native_survey_phase) }
     let(:phase_id) { project.phases.first.id }
     let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
-    let!(:custom_field) { create(:custom_field_extra_custom_form, resource: custom_form) }
+    let!(:custom_field) { create(:custom_field, resource: custom_form) }
 
     get 'web_api/v1/phases/:phase_id/custom_fields/json_forms_schema' do
       example_request 'Get the jsonforms.io json schema and ui schema for the custom fields' do

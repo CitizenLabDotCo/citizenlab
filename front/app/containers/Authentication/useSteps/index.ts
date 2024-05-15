@@ -299,19 +299,19 @@ export default function useSteps() {
         window.history.replaceState(null, '', '/');
       }
 
-      const enterClaveUnicaEmail =
+      const enterEmaillessSsoEmail =
         !isNilOrError(authUser) && isNil(authUser.data.attributes.email);
 
-      transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(enterClaveUnicaEmail);
+      transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(enterEmaillessSsoEmail);
     }
   }, [pathname, search, currentStep, transition, authUser, setError]);
 
-  // always show ClaveUnica modal to user
+  // always show EmaillessSso modal to user
   useEffect(() => {
     if (isNilOrError(authUser)) return;
     if (currentStep !== 'closed') return;
     if (isNil(authUser.data.attributes.email)) {
-      transition(currentStep, 'REOPEN_CLAVE_UNICA')();
+      transition(currentStep, 'REOPEN_EMAILLESS_SSO')();
     }
   }, [authUser, currentStep, transition]);
 

@@ -148,8 +148,8 @@ lv:
       section3:
         title: Sīkāka informācija
         description:
-      other:
-        title: Tā kā jūs izvēlējāties "cits", par ko jūs domājat?
+      other_text_field:
+        title: Ja esat izvēlējies "{other_option}", par ko jūs domājat?
   custom_forms:
     categories:
       main_content:
@@ -204,11 +204,15 @@ lv:
       input_id: 'ID'
       latitude: 'Ģeogrāfiskais platums'
       longitude: 'Ģeogrāfiskais garums'
+      location: 'Atrašanās vieta'
       author_fullname: 'Autora vārds'
       author_email: 'Autora e-pasts'
       author_id: 'Autora ID'
+      attachments: 'Pielikumi'
       budget: 'Budžets'
+      cost: 'Izmaksas'
       created_at: 'Iesniegts'
+      submitted_at: 'Iesniegts vietnē'
       published_at: 'Publicēts'
       comments_count: 'Komentāri'
       likes_count: 'Patīk'
@@ -217,11 +221,14 @@ lv:
       participants: 'Dalībnieki'
       votes_count: 'Balsis'
       input_url: 'URL'
+      tags: 'Tags'
       project: 'Projekts'
       status: 'Statuss'
       assignee_fullname: 'Izpildītājs'
       assignee_email: 'Izpildītāja e-pasts'
       image_url: 'Attēla URL'
+      title: 'Nosaukums'
+      description: 'Apraksts'
     anonymous: 'Anonīms'
   form_builder:
     default_select_field:
@@ -248,6 +255,7 @@ lv:
       instructions: 'Instrukcijas'
       write_as_clearly: 'Rakstiet pēc iespējas skaidrāk <b>skaidri</b> - šīs veidlapas var tikt skenētas.'
       write_in_language: 'Atbildes rakstiet tajā pašā valodā, kurā ir šī veidlapa.'
+      linear_scale_print_description: 'Lūdzu, ierakstiet tikai skaitli no %{min_label} līdz %{max_label} .'
   project_copy:
     title_suffix: 'Kopija'
   confirmations_mailer:

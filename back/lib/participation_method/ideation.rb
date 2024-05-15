@@ -6,12 +6,9 @@ module ParticipationMethod
       phase.ideas_order ||= 'trending'
     end
 
-    # This method is invoked after creation of the input,
-    # so store the new slug.
-    def assign_slug(input)
-      title = MultilocService.new.t input.title_multiloc, input.author&.locale
-      new_slug = SlugService.new.generate_slug input, title
-      input.update_column :slug, new_slug
+    def generate_slug(input)
+      title = MultilocService.new.t(input.title_multiloc, input.author&.locale).presence
+      SlugService.new.generate_slug input, title
     end
 
     def assign_defaults(input)
@@ -249,6 +246,10 @@ module ParticipationMethod
           answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         )
       ]
+    end
+
+    def allowed_extra_field_input_types
+      %w[section number linear_scale text multiline_text select multiselect multiselect_image]
     end
 
     # Locks mirror the name of the fields whose default values cannot be changed (ie are locked)

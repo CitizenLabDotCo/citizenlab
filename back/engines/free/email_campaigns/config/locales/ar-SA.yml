@@ -2,6 +2,7 @@ ar:
   email_campaigns:
     campaign_type_description:
       "manual": رسائل رسمية
+      "manual_project_participants": الرسائل الرسمية للمشاركين في المشروع
       "admin_rights_received": تم استلام حقوق المسؤول
       "comment_deleted_by_admin": حذف حسابي
       "comment_marked_as_spam": الإبلاغ عن التعليق كـ مزعج
@@ -559,6 +560,7 @@ ar:
         admins: 'للمسؤولين'
         admins_and_managers: 'للمسؤولين والمديرين'
         managers: 'للمديرين'
+        project_participants: 'للمشاركين في المشروع'
         registered_users: 'للمستخدمين المسجلين'
       recipient_segment:
         admins: 'المشرفون'

@@ -34,6 +34,14 @@ resource 'Impact tracking session' do
       })
     end
 
+    example 'Creating a session also updates user last_active_at', document: false do
+      last_active_at = 2.days.ago
+      user = create(:user, last_active_at: last_active_at)
+      header_token_for(user)
+      do_request
+      expect(user.reload.last_active_at.to_i).to be > last_active_at.to_i
+    end
+
     example 'Don\'t track the session start of a crawler', document: false do
       header 'User-Agent', 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'
       do_request
@@ -95,6 +103,16 @@ resource 'Impact tracking session' do
       expect(session.monthly_user_hash).not_to eq(@visitor_hash)
       expect(session.updated_at).not_to eq(@created_at)
       expect(session.user_id).to eq(user.id)
+    end
+
+    example 'Upgrading a session also updates user last_active_at', document: false do
+      header 'User-Agent', @user_agent
+      header 'X-Forwarded-For', @ip
+      last_active_at = 2.days.ago
+      user = create(:user, last_active_at: last_active_at)
+      header_token_for(user)
+      do_request
+      expect(user.reload.last_active_at.to_i).to be > last_active_at.to_i
     end
 
     example 'Returns unauthorized when the user is not signed in', document: false do

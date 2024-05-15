@@ -8,6 +8,8 @@ import ExportIdeasButton from './ExportIdeasButton';
 import ExportIdeasCommentsButton from './ExportIdeasCommentsButton';
 import ExportInitiativesButton from './ExportInitiativesButton';
 import ExportInitiativesCommentsButton from './ExportInitiativesCommentsButton';
+import ExportVotesByInput from './ExportVotesByInput';
+import ExportVotesByUser from './ExportVotesByUser';
 
 import { exportType } from './';
 
@@ -36,8 +38,10 @@ const ExportButtons = ({
   type,
 }: Props) => {
   return (
+    // TODO: use DropdownListItem instead of custom styles in Container.
+    // E.g., see front/app/containers/Admin/projects/project/nativeSurvey/index.tsx
     <Container className={className}>
-      {type === 'Initiatives' ? (
+      {type === 'Initiatives' && (
         <>
           <ExportInitiativesButton
             exportType={exportType}
@@ -48,7 +52,8 @@ const ExportButtons = ({
             exportQueryParameter={exportQueryParameter}
           />
         </>
-      ) : type === 'AllIdeas' || type === 'ProjectIdeas' ? (
+      )}
+      {(type === 'AllIdeas' || type === 'ProjectIdeas') && (
         <>
           <ExportIdeasButton
             exportType={exportType}
@@ -59,7 +64,13 @@ const ExportButtons = ({
             exportQueryParameter={exportQueryParameter}
           />
         </>
-      ) : null}
+      )}
+      {type === 'ProjectIdeas' && (
+        <>
+          <ExportVotesByInput />
+          <ExportVotesByUser />
+        </>
+      )}
     </Container>
   );
 };

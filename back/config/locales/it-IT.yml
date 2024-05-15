@@ -148,8 +148,8 @@ it:
       section3:
         title: Dettagli
         description:
-      other:
-        title: Visto che hai scelto "altro", a cosa stai pensando?
+      other_text_field:
+        title: Se hai scelto '{other_option}', a cosa stai pensando?
   custom_forms:
     categories:
       main_content:
@@ -204,11 +204,15 @@ it:
       input_id: 'ID'
       latitude: 'Latitudine'
       longitude: 'Longitudine'
+      location: 'Posizione'
       author_fullname: 'Nome dell''autore'
       author_email: 'Email dell''autore'
       author_id: 'ID autore'
+      attachments: 'Allegati'
       budget: 'Bilancio'
+      cost: 'Costo'
       created_at: 'Presentato a'
+      submitted_at: 'Inviato a'
       published_at: 'Pubblicato presso'
       comments_count: 'Commenti'
       likes_count: 'Preferiti'
@@ -217,11 +221,14 @@ it:
       participants: 'Partecipanti'
       votes_count: 'Voti'
       input_url: 'URL'
+      tags: 'Tag'
       project: 'Progetto'
       status: 'Stato'
       assignee_fullname: 'Assegnatario'
       assignee_email: 'Email del destinatario'
       image_url: 'URL immagine'
+      title: 'Titolo'
+      description: 'Descrizione'
     anonymous: 'Anonimo'
   form_builder:
     default_select_field:
@@ -248,6 +255,7 @@ it:
       instructions: 'Istruzioni'
       write_as_clearly: 'Scrivi il più chiaramente possibile <b></b> - questi moduli potrebbero essere scannerizzati.'
       write_in_language: 'Scrivi le tue risposte nella stessa lingua di questo modulo'
+      linear_scale_print_description: 'Scrivi solo un numero compreso tra %{min_label} e %{max_label}'
   project_copy:
     title_suffix: 'Copia'
   confirmations_mailer:

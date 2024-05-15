@@ -37,7 +37,6 @@ module MultiTenancy
               allowed: true,
               enabled: true,
               enable_signup: true,
-              phone: false,
               minimum_length: 8
             },
             facebook_login: {
@@ -69,6 +68,10 @@ module MultiTenancy
               client_id: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_CLIENT_ID'),
               logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
               login_mechanism_name: 'Azure AD B2C'
+            },
+            criipto_login: {
+              allowed: true,
+              enabled: true
             },
             franceconnect_login: {
               allowed: true,
@@ -438,6 +441,10 @@ module MultiTenancy
               allowed: true
             },
             power_bi: {
+              enabled: true,
+              allowed: true
+            },
+            input_importer: {
               enabled: true,
               allowed: true
             },

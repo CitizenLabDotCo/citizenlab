@@ -20,13 +20,14 @@ module IdCriipto
     end
 
     def name_for_hashing
-      config[:method_name_for_hashing].presence || super
+      config[:method_name_for_hashing].presence || config[:identity_source].presence || super
     end
 
     def config_parameters
       %i[
         identity_source
         birthday_custom_field_key
+        birthyear_custom_field_key
         municipality_code_custom_field_key
         domain
         client_id
@@ -34,6 +35,7 @@ module IdCriipto
         method_name_multiloc
         uid_field_pattern
         method_name_for_hashing
+        minimum_age
       ]
     end
 
@@ -67,15 +69,31 @@ module IdCriipto
         uid_field_pattern: {
           private: true,
           type: 'string',
-          description: 'It is the legacy of tenants migrated from Auth0, but can be used with other MitID providers too. Pattern used for getting UID value. Use ${value} for values from the auth->extra->raw_info object. Example: adfs|criipto-verify-DK-NemID-POCES|%{nameidentifier}. See the specs for all possible values.',
+          description: 'Pattern used for getting UID value. It can be used to switch (migrate) between different MitID verification (not SSO) providers that return different values in `sub`. Use ${value} for values from the auth->extra->raw_info object. Example: adfs|criipto-verify-DK-NemID-POCES|%{nameidentifier}. See the specs for all possible values.',
           default: DEFAULT_UID_FIELD_PATTERN
         },
         method_name_for_hashing: {
           private: true,
           type: 'string',
-          description: 'It is the legacy of tenants migrated from Auth0, but can be used with other MitID providers too. If present, this method name will be used for hashing. Leave empty to use the default Criipto value. Example: auth0.'
+          description: 'If present, this method name will be used for hashing. It can be used to switch (migrate) between different MitID verification (not SSO) providers that return different values in `sub`. Leave empty to use the default MitID value. Example: auth0.'
+        },
+        minimum_age: {
+          private: true,
+          type: 'integer',
+          description: 'Minimum age required to verify (in years). No value means no age minimum.'
         }
       }
+    end
+
+    # copied from back/engines/commercial/id_nemlog_in/app/lib/id_nemlog_in/nemlog_in_verification.rb
+    def entitled?(auth)
+      minimum_age = config[:minimum_age]
+      return true if minimum_age.blank?
+
+      age = auth.extra.raw_info.age.to_i
+      raise Verification::VerificationService::NotEntitledError, 'under_minimum_age' if age < minimum_age
+
+      true
     end
 
     def exposed_config_parameters
@@ -106,7 +124,7 @@ module IdCriipto
     end
 
     def updateable_user_attrs
-      %i[custom_field_values birthyear]
+      super + %i[custom_field_values birthyear]
     end
   end
 end
