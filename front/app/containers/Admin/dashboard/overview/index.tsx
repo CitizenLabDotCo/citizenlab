@@ -6,9 +6,9 @@ import moment, { Moment } from 'moment';
 import useAuthUser from 'api/me/useAuthUser';
 
 import CommentsByTimeCard from 'components/admin/GraphCards/CommentsByTimeCard';
-import RegistrationsByTimeCard from 'components/admin/GraphCards/OldRegistrationsByTimeCard';
 import PostByTimeCard from 'components/admin/GraphCards/PostsByTimeCard';
 import ReactionsByTimeCard from 'components/admin/GraphCards/ReactionsByTimeCard';
+import RegistrationsCard from 'components/admin/GraphCards/RegistrationsCard';
 import { GraphsContainer, Column } from 'components/admin/GraphWrappers';
 import { IResolution } from 'components/admin/ResolutionControl';
 import Outlet from 'components/Outlet';
@@ -128,7 +128,7 @@ const OverviewDashboard = () => {
       />
       <GraphsContainer>
         <Column>
-          <RegistrationsByTimeCard
+          <RegistrationsCard
             projectId={currentProjectFilter}
             startAtMoment={startAtMoment}
             endAtMoment={endAtMoment}
