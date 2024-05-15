@@ -268,7 +268,7 @@ const UserTableRow = ({
               iconSize="18px"
               onClick={() => setIsAssignedItemsOpened(true)}
             >
-              Assigned items
+              <FormattedMessage {...messages.seeAssignedItems} />
             </Button>
           </Box>
         </Td>
@@ -334,7 +334,7 @@ const UserTableRow = ({
         opened={isAssignedItemsOpened}
         close={() => setIsAssignedItemsOpened(false)}
       >
-        <UserAssignedItems />
+        <UserAssignedItems user={userInRow} />
       </Modal>
     </>
   );

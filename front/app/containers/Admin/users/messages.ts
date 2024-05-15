@@ -126,6 +126,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.GroupsPanel.managers',
     defaultMessage: 'Project managers',
   },
+  seeAssignedItems: {
+    id: 'app.containers.Admin.Users.GroupsPanel.seeAssignedItems',
+    defaultMessage: 'Assigned items',
+  },
   groupsTitle: {
     id: 'app.containers.Admin.Users.GroupsPanel.groupsTitle',
     defaultMessage: 'Groups',
