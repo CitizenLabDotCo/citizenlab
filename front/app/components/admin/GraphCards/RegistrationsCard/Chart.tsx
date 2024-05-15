@@ -1,10 +1,6 @@
 import React, { useMemo } from 'react';
 
-import {
-  ProjectId,
-  Dates,
-  Resolution,
-} from 'components/admin/GraphCards/typings';
+import { Dates, Resolution } from 'components/admin/GraphCards/typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import LineChart from 'components/admin/Graphs/LineChart';
 import { colors } from 'components/admin/Graphs/styling';
@@ -19,11 +15,11 @@ import messages from './messages';
 import renderTooltip from './renderTooltip';
 import { TimeSeries } from './useRegistrations/typings';
 
-type Props = ProjectId &
-  Dates &
+type Props = Dates &
   Resolution & {
+    projectId?: string;
     timeSeries: TimeSeries | NilOrError;
-    innerRef: React.RefObject<any>;
+    innerRef?: React.RefObject<any>;
     margin?: Margin;
     yaxis?: YAxisProps;
   };

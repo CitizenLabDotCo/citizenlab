@@ -1,6 +1,9 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
+import moment from 'moment';
+
+import Chart from 'components/admin/GraphCards/RegistrationsCard/Chart';
 
 import {
   RegistrationsStatistic,
@@ -12,10 +15,10 @@ const Narrow = ({
   startAt,
   endAt,
   hideStatistics,
-  // timeSeries,
+  timeSeries,
   stats,
-}: // currentResolution,
-Props) => {
+  currentResolution,
+}: Props) => {
   return (
     <Box width="100%" pb="8px" className="e2e-participants-timeline-widget">
       <Box height="100%" display="flex" flexDirection="column">
@@ -38,8 +41,19 @@ Props) => {
 
         <Box display="flex" height="200px" w="100%">
           <Box pt="8px" width="100%" maxWidth="800px" h="100%">
-            {/* TODO */}
-            <Box bgColor="red" w="100%" h="250px" />
+            <Chart
+              timeSeries={timeSeries}
+              startAtMoment={startAt ? moment(startAt) : null}
+              endAtMoment={endAt ? moment(endAt) : null}
+              resolution={currentResolution}
+              margin={{
+                left: 5,
+                right: -20,
+                top: 0,
+                bottom: 0,
+              }}
+              yaxis={{ orientation: 'right' }}
+            />
           </Box>
         </Box>
       </Box>
