@@ -1,6 +1,14 @@
 import React, { useState, lazy, Suspense } from 'react';
 
-import { Tr, Td, colors, Box, Text } from '@citizenlab/cl2-component-library';
+import {
+  Tr,
+  Td,
+  colors,
+  Box,
+  Text,
+  Button,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import styled from 'styled-components';
 
@@ -16,6 +24,7 @@ import blockUserMessages from 'components/admin/UserBlockModals/messages';
 import UnblockUser from 'components/admin/UserBlockModals/UnblockUser';
 import Avatar from 'components/Avatar';
 import Checkbox from 'components/UI/Checkbox';
+import Modal from 'components/UI/Modal';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
@@ -28,6 +37,7 @@ import { getFullName } from 'utils/textUtils';
 
 import events from './events';
 import messages from './messages';
+import UserAssignedItems from './UserAssignedItems';
 
 const ChangeSeatModal = lazy(
   () => import('components/admin/SeatBasedBilling/ChangeSeatModal')
@@ -76,6 +86,7 @@ const UserTableRow = ({
   changeRoles,
   authUser,
 }: Props) => {
+  const [isAssignedItemsOpened, setIsAssignedItemsOpened] = useState(false);
   const locale = useLocale();
   const { formatMessage } = useIntl();
   const isUserBlockingEnabled = useFeatureFlag({
@@ -223,36 +234,50 @@ const UserTableRow = ({
   */
 
   return (
-    <Tr
-      key={userInRow.id}
-      background={selected ? colors.background : undefined}
-      className={`e2e-user-table-row ${selected ? 'selected' : ''}`}
-    >
-      <Td>
-        <Checkbox checked={selected} onChange={toggleSelect} />
-      </Td>
-      <Td>
-        <Box display="flex" alignItems="center" gap="8px">
-          <Avatar userId={userInRow.id} size={30} />
-          <Box>
-            <StyledLink to={`/profile/${userInRow.attributes.slug}`}>
-              {getFullName(userInRow)}
-            </StyledLink>
-            <Text fontSize="s" m="0px" color="textSecondary">
-              {userInRow.attributes.email}
-            </Text>
+    <>
+      <Tr
+        key={userInRow.id}
+        background={selected ? colors.background : undefined}
+        className={`e2e-user-table-row ${selected ? 'selected' : ''}`}
+      >
+        <Td>
+          <Checkbox checked={selected} onChange={toggleSelect} />
+        </Td>
+        <Td>
+          <Box display="flex" alignItems="center" gap="8px">
+            <Avatar userId={userInRow.id} size={30} />
+            <Box>
+              <StyledLink to={`/profile/${userInRow.attributes.slug}`}>
+                {getFullName(userInRow)}
+              </StyledLink>
+              <Text fontSize="s" m="0px" color="textSecondary">
+                {userInRow.attributes.email}
+              </Text>
+            </Box>
           </Box>
-        </Box>
-      </Td>
-      <Td>
-        <FormattedMessage {...getStatusMessage(userInRow)} />
-      </Td>
-      <Td>
-        {userInRow.attributes.last_active_at &&
-          timeAgo(Date.parse(userInRow.attributes.last_active_at), locale)}
-      </Td>
-      <RegisteredAt>
-        {/*
+        </Td>
+        <Td>
+          <FormattedMessage {...getStatusMessage(userInRow)} />
+          <Box display="flex">
+            <Button
+              buttonStyle="text"
+              icon="chevron-down"
+              iconPos="right"
+              fontSize={`${fontSizes.s}px`}
+              p="0px"
+              iconSize="18px"
+              onClick={() => setIsAssignedItemsOpened(true)}
+            >
+              Assigned items
+            </Button>
+          </Box>
+        </Td>
+        <Td>
+          {userInRow.attributes.last_active_at &&
+            timeAgo(Date.parse(userInRow.attributes.last_active_at), locale)}
+        </Td>
+        <RegisteredAt>
+          {/*
           For the 'all registered users' group, we do not show invited Users who have not yet accepted their invites,
           but we do in groups they have been added to when invited.
 
@@ -261,50 +286,57 @@ const UserTableRow = ({
           https://citizenlab.atlassian.net/browse/CL-2255
         */}
 
-        {userInRowHasRegistered ? (
-          moment(userInRow.attributes.registration_completed_at).format('LL')
-        ) : (
-          <i>
-            <FormattedMessage {...messages.userInvitationPending} />
-          </i>
-        )}
-      </RegisteredAt>
+          {userInRowHasRegistered ? (
+            moment(userInRow.attributes.registration_completed_at).format('LL')
+          ) : (
+            <i>
+              <FormattedMessage {...messages.userInvitationPending} />
+            </i>
+          )}
+        </RegisteredAt>
 
-      <Td>
-        <MoreActionsMenu
-          showLabel={false}
-          actions={
-            userInRowHasRegistered
-              ? [
-                  showProfileAction,
-                  ...getSeatChangeActions(),
-                  deleteUserAction,
-                  ...userBlockingRelatedActions,
-                ]
-              : [deleteUserAction]
-          }
+        <Td>
+          <MoreActionsMenu
+            showLabel={false}
+            actions={
+              userInRowHasRegistered
+                ? [
+                    showProfileAction,
+                    ...getSeatChangeActions(),
+                    deleteUserAction,
+                    ...userBlockingRelatedActions,
+                  ]
+                : [deleteUserAction]
+            }
+          />
+        </Td>
+        <BlockUser
+          user={userInRow}
+          setClose={() => setShowBlockUserModal(false)}
+          open={showBlockUserModal}
         />
-      </Td>
-      <BlockUser
-        user={userInRow}
-        setClose={() => setShowBlockUserModal(false)}
-        open={showBlockUserModal}
-      />
-      <UnblockUser
-        user={userInRow}
-        setClose={() => setShowUnblockUserModal(false)}
-        open={showUnblockUserModal}
-      />
-      <Suspense fallback={null}>
-        <ChangeSeatModal
-          userToChangeSeat={userInRow}
-          changeRoles={changeRoles}
-          showModal={showChangeSeatModal}
-          closeModal={closeChangeSeatModal}
-          isChangingToNormalUser={isChangingToNormalUser}
+        <UnblockUser
+          user={userInRow}
+          setClose={() => setShowUnblockUserModal(false)}
+          open={showUnblockUserModal}
         />
-      </Suspense>
-    </Tr>
+        <Suspense fallback={null}>
+          <ChangeSeatModal
+            userToChangeSeat={userInRow}
+            changeRoles={changeRoles}
+            showModal={showChangeSeatModal}
+            closeModal={closeChangeSeatModal}
+            isChangingToNormalUser={isChangingToNormalUser}
+          />
+        </Suspense>
+      </Tr>
+      <Modal
+        opened={isAssignedItemsOpened}
+        close={() => setIsAssignedItemsOpened(false)}
+      >
+        <UserAssignedItems />
+      </Modal>
+    </>
   );
 };
 
