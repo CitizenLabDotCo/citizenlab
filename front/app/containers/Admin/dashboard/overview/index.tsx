@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useMemo } from 'react';
 
-import { Title } from '@citizenlab/cl2-component-library';
+import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import moment, { Moment } from 'moment';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -30,6 +30,7 @@ import overviewMessages from './messages';
 export type IResource = 'ideas' | 'comments' | 'reactions';
 
 const OverviewDashboard = () => {
+  const isSmallerThanSmallDesktop = useBreakpoint('smallDesktop');
   const { data: user } = useAuthUser();
   const { formatMessage } = useIntl();
 
@@ -133,6 +134,8 @@ const OverviewDashboard = () => {
             startAtMoment={startAtMoment}
             endAtMoment={endAtMoment}
             resolution={resolution}
+            layout={isSmallerThanSmallDesktop ? 'narrow' : 'wide'}
+            hideRegistrationRate
           />
         </Column>
         <Column>
@@ -141,6 +144,8 @@ const OverviewDashboard = () => {
             startAtMoment={startAtMoment}
             endAtMoment={endAtMoment}
             resolution={resolution}
+            layout={isSmallerThanSmallDesktop ? 'narrow' : 'wide'}
+            hideParticipationRate
           />
         </Column>
         <Title
