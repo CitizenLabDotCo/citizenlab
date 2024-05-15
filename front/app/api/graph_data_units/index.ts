@@ -227,11 +227,17 @@ export const useReactionsByTimeLive = (
   );
 };
 
-export const useRegistrations = (props: RegistrationsProps) => {
-  return useGraphDataUnits<RegistrationsResponse>({
-    resolved_name: 'RegistrationsWidget',
-    props,
-  });
+export const useRegistrations = (
+  props: RegistrationsProps,
+  { onSuccess }: { onSuccess?: () => void }
+) => {
+  return useGraphDataUnits<RegistrationsResponse>(
+    {
+      resolved_name: 'RegistrationsWidget',
+      props,
+    },
+    { onSuccess }
+  );
 };
 
 export const useRegistrationsLive = (
