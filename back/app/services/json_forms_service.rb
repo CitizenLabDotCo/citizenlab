@@ -44,10 +44,7 @@ class JsonFormsService
   def input_ui_and_json_multiloc_schemas(fields, current_user, participation_method, input_term)
     return if fields.empty?
 
-    add_author_budget_fields! fields, current_user, participation_method 
-    # visible_fields = fields.reject do |field|
-    #   !field.enabled? || field.hidden?
-    # end
+    add_author_budget_fields! fields, current_user, participation_method
     json_schema_multiloc = InputJsonSchemaGeneratorService.new.generate_for visible_fields
     ui_schema_multiloc = InputUiSchemaGeneratorService.new(input_term, participation_method.supports_answer_visible_to?).generate_for visible_fields
     {

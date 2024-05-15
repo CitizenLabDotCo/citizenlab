@@ -1101,7 +1101,7 @@ RSpec.describe InputUiSchemaGeneratorService do
       it 'returns the schema for the author_id field with isAdminField set to true' do
         expect(generator.visit_text(field)).to eq({
           type: 'Control',
-          scope: "#/properties/author_id",
+          scope: '#/properties/author_id',
           label: 'Author',
           options: {
             input_type: field.input_type,
@@ -1154,7 +1154,7 @@ RSpec.describe InputUiSchemaGeneratorService do
       it 'returns the schema for the budget field with isAdminField set to true' do
         expect(generator.visit_number(field)).to eq({
           type: 'Control',
-          scope: "#/properties/budget",
+          scope: '#/properties/budget',
           label: 'Budget',
           options: {
             input_type: 'number',
