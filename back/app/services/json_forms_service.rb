@@ -41,18 +41,15 @@ class JsonFormsService
     }
   end
 
-  def input_ui_and_json_multiloc_schemas(fields, current_user, input_term)
+  def input_ui_and_json_multiloc_schemas(fields, current_user, participation_method, input_term)
     return if fields.empty?
 
-    add_author_budget_fields! fields, current_user
-    participation_context = fields.first.resource.participation_context
-    supports_answer_visible_to = Factory.instance.participation_method_for(participation_context).supports_answer_visible_to?
-
-    visible_fields = fields.reject do |field|
-      !field.enabled? || field.hidden?
-    end
+    add_author_budget_fields! fields, current_user, participation_method 
+    # visible_fields = fields.reject do |field|
+    #   !field.enabled? || field.hidden?
+    # end
     json_schema_multiloc = InputJsonSchemaGeneratorService.new.generate_for visible_fields
-    ui_schema_multiloc = InputUiSchemaGeneratorService.new(input_term, supports_answer_visible_to).generate_for visible_fields
+    ui_schema_multiloc = InputUiSchemaGeneratorService.new(input_term, participation_method.supports_answer_visible_to?).generate_for visible_fields
     {
       json_schema_multiloc: json_schema_multiloc,
       ui_schema_multiloc: ui_schema_multiloc
@@ -61,9 +58,7 @@ class JsonFormsService
 
   private
 
-  def add_author_budget_fields!(fields, current_user)
-    participation_method = Factory.instance.participation_method_for fields.first.resource.participation_context # TODO: Move to callers
-
+  def add_author_budget_fields!(fields, current_user, participation_method)
     if participation_method.author_in_form? current_user
       title_idx = fields.index { |field| field.code == 'title_multiloc' }
       author_idx = title_idx + 1 # Insert below the title field

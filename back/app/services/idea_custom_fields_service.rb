@@ -55,7 +55,7 @@ class IdeaCustomFieldsService
   end
 
   def enabled_fields
-    all_fields.select(&:enabled?)
+    all_fields.select(&:enabled?).reject(&:hidden?)
   end
 
   def enabled_fields_with_other_options
