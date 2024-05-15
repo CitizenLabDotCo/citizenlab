@@ -76,13 +76,13 @@ const EventPreviewCard = ({ event }: EventPreviewCardProps) => {
         theme.isRtl ? `4px solid ${theme.colors.tenantPrimary}` : undefined
       }
       w={isTablet ? (isMobile ? '100%' : '300px') : '340px'}
-      role="button"
       h="58px"
       onClick={() => {
         clHistory.push(`/events/${event.id}`, { scrollToTop: true });
       }}
       py="4px"
       flexShrink={0}
+      as="li"
     >
       <Box display="flex" flexDirection="column" alignItems="stretch">
         <EventDate mr={theme.isRtl ? '8px' : '0px'}>
