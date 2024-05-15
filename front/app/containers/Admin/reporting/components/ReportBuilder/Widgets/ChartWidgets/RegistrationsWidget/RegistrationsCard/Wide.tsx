@@ -2,7 +2,9 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import { TimeSeries } from 'components/admin/GraphCards/RegistrationsCard/useRegistrations/typings';
 import { DatesStrings } from 'components/admin/GraphCards/typings';
+import { IResolution } from 'components/admin/ResolutionControl';
 
 import { Stats } from '../typings';
 
@@ -11,9 +13,11 @@ import {
   RegistrationsStatistic,
 } from './Statistics';
 
-interface Props extends DatesStrings {
-  hideStatistics?: boolean;
+export interface Props extends DatesStrings {
+  timeSeries: TimeSeries | null;
+  hideStatistics: boolean;
   stats: Stats;
+  currentResolution: IResolution;
 }
 
 const Wide = ({ startAt, endAt, hideStatistics, stats }: Props) => {

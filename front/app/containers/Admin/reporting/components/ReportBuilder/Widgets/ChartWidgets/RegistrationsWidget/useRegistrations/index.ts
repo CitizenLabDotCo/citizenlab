@@ -7,6 +7,8 @@ import { RegistrationsProps } from 'api/graph_data_units/requestTypes';
 
 import { parseTimeSeries } from 'components/admin/GraphCards/RegistrationsCard/useRegistrations/parse';
 
+import { parseStats } from './parse';
+
 export default function useRegistrations({
   start_at,
   end_at,
@@ -38,5 +40,7 @@ export default function useRegistrations({
       : null;
   }, [analytics, start_at, end_at, currentResolution]);
 
-  return { timeSeries, currentResolution };
+  const stats = analytics ? parseStats(analytics.data.attributes) : null;
+
+  return { timeSeries, stats, currentResolution };
 }
