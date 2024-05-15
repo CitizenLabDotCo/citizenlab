@@ -18,9 +18,12 @@ resource 'Activity' do
     @activity4 = create(:project_created_activity, item: @project, user: @user1)
     @activity5 = create(:project_changed_activity, item: @project, user: @user2)
     @activity6 = create(:project_deleted_activity, item: @project, user: @user2)
-    @activity7 = create(:idea_created_activity, user: @user2)
-    @activity8 = create(:idea_deleted_activity, user: @user2)
-    @activity9 = create(:idea_changed_activity, user: @user2)
+    @activity7 = create(:project_folder_created_activity, user: @user2)
+    @activity8 = create(:project_folder_changed_activity, user: @user2)
+    @activity9 = create(:project_folder_deleted_activity, user: @user2)
+    @activity10 = create(:idea_created_activity, user: @user2)
+    @activity11 = create(:idea_deleted_activity, user: @user2)
+    @activity12 = create(:idea_changed_activity, user: @user2)
     @non_management_activity = create(:comment_created_activity, user: @user2)
   end
 
@@ -33,7 +36,7 @@ resource 'Activity' do
     example_request 'List all activities' do
       assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 9
+      expect(json_response[:data].size).to eq 12
       expect(json_response[:data].pluck(:id).include?(@non_management_activity.id)).to be false
     end
 
@@ -45,6 +48,7 @@ resource 'Activity' do
       expect(json_response[:data].pluck(:id)).to match_array [@activity1.id, @activity4.id]
     end
 
+    # TODO: Improve to include item that matches project_id also
     example 'List all activities with a specific project_id' do
       do_request project_ids: [@project.id]
       assert_status 200
@@ -59,7 +63,7 @@ resource 'Activity' do
       do_request
       assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 8
+      expect(json_response[:data].size).to eq 11
       expect(json_response[:data].pluck(:id)).not_to include @activity1.id
     end
 
@@ -68,7 +72,7 @@ resource 'Activity' do
       do_request
       assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 8
+      expect(json_response[:data].size).to eq 11
       expect(json_response[:data].pluck(:id)).not_to include @activity1.id
     end
   end

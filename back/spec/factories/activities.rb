@@ -135,5 +135,21 @@ FactoryBot.define do
       association :item, factory: :phase
       action { 'deleted' }
     end
+
+    factory :project_folder_created_activity do
+      association :item, factory: :project_folder
+      action { 'created' }
+    end
+
+    # TODO: Add payload to this factory
+    factory :project_folder_changed_activity do
+      association :item, factory: :project_folder
+      action { 'changed' }
+    end
+
+    factory :project_folder_deleted_activity do
+      association :item, factory: :project_folder
+      action { 'deleted' }
+    end
   end
 end

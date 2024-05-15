@@ -28,9 +28,10 @@
 #
 class Activity < ApplicationRecord
   MANAGEMENT_FILTERS = [
-    { item_type: 'Project', actions: %w[created changed deleted] },
+    { item_type: 'Idea', actions: %w[created changed deleted] },
     { item_type: 'Phase', actions: %w[created changed deleted] },
-    { item_type: 'Idea', actions: %w[created changed deleted] }
+    { item_type: 'Project', actions: %w[created changed deleted] },
+    { item_type: 'ProjectFolders::Folder', actions: %w[created changed deleted] }
   ].freeze
 
   belongs_to :user, optional: true
