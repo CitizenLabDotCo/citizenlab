@@ -7,6 +7,18 @@ class WebApi::V1::ActivitiesController < ApplicationController
     @activities = policy_scope Activity
     @activities = @activities.where(user_id: params[:user_ids]) if params[:user_ids]
     @activities = @activities.for_projects(params[:project_ids]) if params[:project_ids]
+
+    @activities = case params[:sort]
+    when 'action'
+      @activities.order(action: :asc, acted_at: :desc)
+    when '-action'
+      @users.order(action: :desc)
+    when nil
+      @activities.order(acted_at: :desc)
+    else
+      raise 'Unsupported sort method'
+    end
+
     paginated_activities = paginate @activities
 
     render json: linked_json(
