@@ -15,6 +15,7 @@ resource 'Ideas' do
       parameter :phase_ids, 'The phases the idea is part of, defaults to the current only, only allowed by admins'
       parameter :author_id, 'The user id of the user owning the idea. This can only be specified by moderators and is inferred from the JWT token for residents.'
       parameter :publication_status, 'Publication status', required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(',')}"
+      parameter :anonymous, 'Post this idea anonymously'
       parameter :custom_field_name1, 'A value for one custom field'
     end
     ValidationErrorHelper.new.error_fields self, Idea
@@ -35,7 +36,6 @@ resource 'Ideas' do
         parameter :budget, 'The budget needed to realize the idea, as determined by the city'
         parameter :idea_images_attributes, 'an array of base64 images to create'
         parameter :idea_files_attributes, 'an array of base64 files to create'
-        parameter :anonymous, 'Post this idea anonymously'
       end
 
       let(:with_permissions) { false }

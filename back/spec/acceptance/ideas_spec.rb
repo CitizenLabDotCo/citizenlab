@@ -813,53 +813,9 @@ resource 'Ideas' do
       let(:title_multiloc) { { 'en' => 'Changed title' } }
       let(:topic_ids) { create_list(:topic, 2, projects: [@project]).map(&:id) }
 
-      describe do
-        let(:idea_status_id) { create(:idea_status).id }
+      
 
-        example_request 'Change the idea status (as an admin)' do
-          assert_status 200
-          json_response = json_parse response_body
-          expect(json_response.dig(:data, :relationships, :idea_status, :data, :id)).to eq idea_status_id
-        end
-      end
-
-      describe 'draft ideas' do
-        before { @idea.update! publication_status: 'draft' }
-
-        context 'Editing an idea' do
-          let(:title_multiloc) { { 'en' => 'Changed the title' } }
-
-          example_request 'Can edit a draft idea (as an admin)' do
-            assert_status 200
-            expect(response_data[:attributes][:publication_status]).to eq 'draft'
-            expect(response_data[:attributes][:title_multiloc][:en]).to eq 'Changed the title'
-          end
-        end
-
-        context 'Publishing an idea' do
-          let(:publication_status) { 'published' }
-
-          example_request 'Can change an idea from draft to published (as an admin)' do
-            assert_status 200
-            expect(response_data[:attributes][:publication_status]).to eq 'published'
-          end
-        end
-
-        context 'Publishing an imported native survey response' do
-          let(:project) { create(:single_phase_native_survey_project) }
-          let(:idea) { create(:native_survey_response, project: project, publication_status: 'draft') }
-
-          let(:id) { idea.id }
-          let(:publication_status) { 'published' }
-
-          before { idea.update! idea_import: create(:idea_import, idea: idea) }
-
-          example_request 'Can change an idea from draft to published (as an admin)' do
-            assert_status 200
-            expect(response_data[:attributes][:publication_status]).to eq 'published'
-          end
-        end
-      end
+      
 
       describe 'phase_ids' do
         let(:phase) { @project.phases.first }

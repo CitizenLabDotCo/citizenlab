@@ -17,7 +17,6 @@ resource 'Ideas' do
 
         let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
         let!(:custom_field) { create(:custom_field, resource: custom_form) }
-        
 
         example_request 'Get the jsonforms.io json schema and ui schema for an ideation input' do
           assert_status 200
@@ -66,8 +65,8 @@ resource 'Ideas' do
                 hasRule: false,
                 answer_visible_to: 'public',
                 transform: 'trim_on_blur'
-                }
-              })
+              }
+            })
           end
         end
       end
