@@ -130,7 +130,7 @@ const UserAssignedItems = ({ user }: { user: IUserData }) => {
 
   return (
     <div>
-      <Title m="0px">
+      <Title mb="0px">
         <FormattedMessage
           {...messages.assignedItemsFor}
           values={{ name: getFullName(user) }}
