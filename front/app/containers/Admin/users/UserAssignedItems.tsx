@@ -111,7 +111,9 @@ const RemoveButton = ({
 
 const UserAssignedItems = ({ user }: { user: IUserData }) => {
   const localize = useLocalize();
-  const { data: assignedItems } = useAdminPublications({});
+  const { data: assignedItems } = useAdminPublications({
+    filter_user_is_moderator_of: user.id,
+  });
   const flatAssignedItems = assignedItems?.pages?.flatMap((page) => page.data);
   const isFolder = (item: IAdminPublicationData) =>
     item.relationships.publication.data.type === 'folder';
