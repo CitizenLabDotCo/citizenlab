@@ -44,11 +44,11 @@ const CookiePolicy = memo((props: WrappedComponentProps) => {
                     values={{
                       citizenLabLink: (
                         <a
-                          href="https://www.citizenlab.co/"
+                          href="https://www.govocal.com/"
                           target="_blank"
                           rel="noreferrer"
                         >
-                          CitizenLab
+                          GoVocal
                         </a>
                       ),
                     }}
