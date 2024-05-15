@@ -5,6 +5,7 @@ import moment, { Moment } from 'moment';
 
 import useAuthUser from 'api/me/useAuthUser';
 
+import ActiveUsersCard from 'components/admin/GraphCards/ActiveUsersCard';
 import CommentsByTimeCard from 'components/admin/GraphCards/CommentsByTimeCard';
 import PostByTimeCard from 'components/admin/GraphCards/PostsByTimeCard';
 import ReactionsByTimeCard from 'components/admin/GraphCards/ReactionsByTimeCard';
@@ -21,7 +22,6 @@ import messages from '../messages';
 import tracks from '../tracks';
 
 import ChartFilters from './ChartFilters';
-import ParticipantsCard from './charts/ParticipantsCard';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
 import { getSensibleResolution } from './getSensibleResolution';
@@ -136,7 +136,7 @@ const OverviewDashboard = () => {
           />
         </Column>
         <Column>
-          <ParticipantsCard
+          <ActiveUsersCard
             projectId={currentProjectFilter}
             startAtMoment={startAtMoment}
             endAtMoment={endAtMoment}
