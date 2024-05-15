@@ -12,7 +12,7 @@ class WebApi::V1::ActivitiesController < ApplicationController
     when 'action'
       @activities.order(action: :asc, acted_at: :desc)
     when '-action'
-      @users.order(action: :desc)
+      @users.order(action: :desc, acted_at: :desc)
     when nil
       @activities.order(acted_at: :desc)
     else

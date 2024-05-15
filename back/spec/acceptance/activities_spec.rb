@@ -90,7 +90,7 @@ resource 'Activity' do
       expect(json_response[:data].pluck(:id)).not_to include activity1.id
     end
 
-    example 'List all activities sorts by acted_at (desc) when no sort is specified', document: false do
+    example 'List all activities sorts by acted_at (desc) when no sort is specified' do
       activity1 = create(:phase_created_activity, user: @user1, acted_at: 1.day.ago)
       activity2 = create(:project_deleted_activity, user: @user1, acted_at: 3.days.ago)
       activity3 = create(:project_changed_activity, user: @user1, acted_at: 2.days.ago)
@@ -102,7 +102,7 @@ resource 'Activity' do
       expect(json_response[:data].pluck(:id)).to eq [activity1.id, activity3.id, activity2.id]
     end
 
-    example 'List all activities, sorted by action, sorts also by acted_at for same action', document: false do
+    example 'List all activities, sorted by action, sorts also by acted_at for activities for same action' do
       activity1 = create(:phase_created_activity, user: @user1)
       activity2 = create(:project_deleted_activity, user: @user1, acted_at: 3.days.ago)
       activity3 = create(:project_deleted_activity, user: @user1, acted_at: 1.day.ago)
@@ -114,6 +114,30 @@ resource 'Activity' do
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 5
       expect(json_response[:data].pluck(:id)).to eq [activity5.id, activity1.id, activity3.id, activity4.id, activity2.id]
+    end
+
+    example 'List all activities handles case where user has been deleted', document: false do
+      activity1 = create(:phase_created_activity, user: @user1)
+      _activity2 = create(:project_deleted_activity, user: @user2)
+      @user1.destroy!
+
+      do_request
+      assert_status 200
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 1
+      expect(json_response[:data].pluck(:id)).not_to include activity1.id
+    end
+
+    example 'List all activities handles case where item has been deleted', document: false do
+      activity1 = create(:phase_created_activity, user: @user1)
+      activity2 = create(:project_deleted_activity, user: @user1, item: @project)
+      @project.destroy!
+
+      do_request
+      assert_status 200
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 2
+      expect(json_response[:data].pluck(:id)).to match_array [activity1.id, activity2.id]
     end
   end
 end
