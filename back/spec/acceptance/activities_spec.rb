@@ -54,10 +54,10 @@ resource 'Activity' do
       expect(json_response[:data].pluck(:id)).to match_array [activity2.id, activity3.id]
     end
 
-    example 'List all activities where either item_id or project_id matches a given project_id' do
+    example 'List all activities where project_id matches a given project_id' do
       _activity1 = create(:phase_created_activity, user: @user1)
       activity2 = create(:phase_created_activity, user: @user1, project_id: @project.id)
-      activity3 = create(:project_created_activity, user: @user1, item: @project)
+      activity3 = create(:project_created_activity, user: @user1, project_id: @project.id)
 
       do_request project_ids: [@project.id]
       assert_status 200

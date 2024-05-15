@@ -38,8 +38,4 @@ class Activity < ApplicationRecord
   belongs_to :item, polymorphic: true, optional: true
 
   validates :action, :item_type, :item_id, presence: true
-
-  scope :for_projects, lambda { |*project_ids|
-    where(project_id: project_ids).or(where(item_id: project_ids))
-  }
 end
