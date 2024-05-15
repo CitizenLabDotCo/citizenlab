@@ -583,7 +583,7 @@ describe Permissions::ProjectPermissionsService do
         projects.each do |project|
           service.action_descriptors(project, user)
         end
-      end.not_to exceed_query_limit(90) # Down from an original 111
+      end.not_to exceed_query_limit(90) # Down from an original 470
     end
   end
 end
