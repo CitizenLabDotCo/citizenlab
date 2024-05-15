@@ -7,6 +7,15 @@ describe SideFxIdeaService do
   let(:user) { create(:user) }
 
   describe 'after_create' do
+    it "logs a 'created' action activity job" do
+      idea = create(:idea, author: user)
+
+      expect { service.after_create(idea, user) }
+        .to enqueue_job(LogActivityJob)
+        .with(idea, 'created', user, idea.created_at.to_i, project_id: idea.project_id)
+        .exactly(1).times
+    end
+
     it "logs a 'published' action job when publication_state is published" do
       idea = create(:idea, publication_status: 'published', author: user)
 
@@ -21,6 +30,7 @@ describe SideFxIdeaService do
       idea = create(:idea, publication_status: 'draft')
       expect { service.after_create(idea, user) }
         .not_to enqueue_job(LogActivityJob)
+        .with(idea, 'published', any_args)
     end
 
     it 'creates a follower' do

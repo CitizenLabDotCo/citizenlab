@@ -13,6 +13,14 @@ class SideFxIdeaService
 
   def after_create(idea, user)
     idea.update!(body_multiloc: TextImageService.new.swap_data_images_multiloc(idea.body_multiloc, field: :body_multiloc, imageable: idea))
+
+    LogActivityJob.perform_later(
+      idea,
+      'created',
+      user_for_activity_on_anonymizable_item(idea, user),
+      idea.updated_at.to_i
+    )
+
     after_publish idea, user if idea.published?
   end
 
