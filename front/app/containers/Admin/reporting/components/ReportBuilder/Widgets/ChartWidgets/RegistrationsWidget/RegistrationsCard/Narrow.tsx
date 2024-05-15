@@ -1,9 +1,50 @@
 import React from 'react';
 
-import { Props } from '../typings';
+import { Box } from '@citizenlab/cl2-component-library';
 
-const Narrow = (_props: Props) => {
-  return <></>;
+import {
+  RegistrationsStatistic,
+  RegistrationRateStatistic,
+} from './Statistics';
+import { Props } from './Wide';
+
+const Narrow = ({
+  startAt,
+  endAt,
+  hideStatistics,
+  // timeSeries,
+  stats,
+}: // currentResolution,
+Props) => {
+  return (
+    <Box width="100%" pb="8px" className="e2e-participants-timeline-widget">
+      <Box height="100%" display="flex" flexDirection="column">
+        {!hideStatistics && (
+          <Box mb="8px">
+            <RegistrationsStatistic
+              stats={stats}
+              startAt={startAt}
+              endAt={endAt}
+            />
+            <Box mt="12px">
+              <RegistrationRateStatistic
+                stats={stats}
+                startAt={startAt}
+                endAt={endAt}
+              />
+            </Box>
+          </Box>
+        )}
+
+        <Box display="flex" height="200px" w="100%">
+          <Box pt="8px" width="100%" maxWidth="800px" h="100%">
+            {/* TODO */}
+            <Box bgColor="red" w="100%" h="250px" />
+          </Box>
+        </Box>
+      </Box>
+    </Box>
+  );
 };
 
 export default Narrow;
