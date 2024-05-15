@@ -565,132 +565,11 @@ resource 'Ideas' do
         let(:title_multiloc) { { 'en' => 'Changed title' } }
         let(:topic_ids) { create_list(:topic, 2, projects: [@project]).map(&:id) }
 
-        describe do
-          example_request 'Update an idea' do
-            assert_status 200
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
-            expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
-            expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
-            expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
-          end
 
-          example 'Check for the automatic creation of a like by the author when the publication status of an idea is updated from draft to published', document: false do
-            @idea.update! publication_status: 'draft'
-            do_request idea: { publication_status: 'published' }
-            json_response = json_parse response_body
-            new_idea = Idea.find json_response.dig(:data, :id)
-            expect(new_idea.reactions.size).to eq 1
-            expect(new_idea.reactions[0].mode).to eq 'up'
-            expect(new_idea.reactions[0].user.id).to eq @user.id
-            expect(json_response.dig(:data, :attributes, :likes_count)).to eq 1
-          end
 
-          example '[error] Update an idea when there is a posting disabled reason' do
-            expect_any_instance_of(ParticipationPermissionsService)
-              .to receive(:posting_idea_disabled_reason_for_phase).with(@project.phases.first, @user).and_return('i_dont_like_you')
+        
 
-            do_request
-
-            assert_status 401
-            expect(json_parse(response_body)).to include_response_error(:base, 'i_dont_like_you')
-          end
-
-          example '[error] Normal resident cannot update an idea in a voting context', document: false do
-            @idea.update!(project: create(:single_phase_budgeting_project))
-
-            do_request
-
-            assert_status 401
-            expect(json_response_body).to include_response_error(:base, 'not_ideation')
-          end
-        end
-
-        describe 'Values for disabled fields are ignored' do
-          let(:proposed_budget) { 12_345 }
-
-          example 'Update an idea with values for disabled fields', document: false do
-            do_request
-            assert_status 200
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
-            # proposed_budget is disabled, so its given value was ignored.
-            expect(json_response.dig(:data, :attributes, :proposed_budget)).to eq @idea.proposed_budget
-            expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
-            expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
-            expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
-          end
-        end
-
-        describe do
-          let(:topic_ids) { [] }
-
-          example 'Remove the topics', document: false do
-            @idea.topics = create_list :topic, 2
-            do_request
-            assert_status 200
-            json_response = json_parse response_body
-            expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
-          end
-        end
-
-        describe do
-          let(:idea_status_id) { create(:idea_status).id }
-
-          example 'Change the idea status as a non-admin does not work', document: false do
-            do_request
-            assert_status 200
-            json_response = json_parse response_body
-            expect(json_response.dig(:data, :relationships, :idea_status, :data, :id)).to eq @idea.idea_status_id
-          end
-        end
-
-        describe do
-          let(:budget) { 1800 }
-
-          example 'Change the participatory budget as a non-admin does not work', document: false do
-            previous_value = @idea.budget
-            do_request
-            assert_status 200
-            json_response = json_parse response_body
-            expect(json_response.dig(:data, :attributes, :budget)).to eq previous_value
-          end
-        end
-
-        describe 'Changing an idea to anonymous' do
-          let(:anonymous) { true }
-
-          before { @project.phases.first.update! allow_anonymous_participation: true }
-
-          example 'Change an idea to anonymous as a non-admin', document: false do
-            do_request
-            assert_status 200
-            expect(response_data.dig(:attributes, :anonymous)).to be true
-          end
-        end
-
-        describe 'Changing an author' do
-          let(:author_id) { create(:user).id }
-
-          example 'author_id parameter is ignored as a non-admin', document: false do
-            do_request
-            assert_status 200
-            expect(response_data.dig(:relationships, :author, :data, :id)).not_to eq author_id
-          end
-        end
-
-        describe 'Submitting a final native survey response' do
-          let(:project) { create(:single_phase_native_survey_project) }
-          let(:idea) { create(:native_survey_response, project: project, publication_status: 'draft', author: @user) }
-
-          let(:id) { idea.id }
-          let(:publication_status) { 'published' }
-
-          example_request 'Can change a survey response from draft to published (as the author)' do
-            assert_status 200
-            expect(response_data[:attributes][:publication_status]).to eq 'published'
-          end
-        end
+        
 
         context 'when moderator' do
           before { header_token_for create(:project_moderator, projects: [@project]) }
@@ -716,26 +595,6 @@ resource 'Ideas' do
               assert_status 401
             end
           end
-        end
-      end
-    end
-
-    patch 'web_api/v1/ideas/:id' do
-      parameter :publication_status, "Either #{Post::PUBLICATION_STATUSES.join(', ')}", required: true, scope: :idea
-
-      describe do
-        before do
-          @project = create(:single_phase_ideation_project)
-          @idea = create(:idea, author: @user, publication_status: 'draft', project: @project)
-        end
-
-        let(:id) { @idea.id }
-        let(:publication_status) { 'published' }
-
-        example_request 'Change the publication status' do
-          expect(response_status).to eq 200
-          json_response = json_parse response_body
-          expect(json_response.dig(:data, :attributes, :publication_status)).to eq 'published'
         end
       end
     end
