@@ -34,16 +34,17 @@ const StyledContainer = styled(Box)`
 interface Props {
   children: React.ReactNode;
   containerRole?: string; // If the scrollable container needs a specific role, pass it in
+  asList?: boolean; // If the scrollable container is a list, pass this in
 }
 
 /*
  * HorizontalScroll:
  * Wraps children elements with a horizontal scroll container with arrow buttons to scroll left and right.
  */
-const HorizontalScroll = ({ children, containerRole }: Props) => {
+const HorizontalScroll = ({ children, containerRole, asList }: Props) => {
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
-  const containerRef = React.useRef<HTMLDivElement>(null);
+  const containerRef = React.useRef<HTMLDivElement | HTMLUListElement>(null);
 
   // Used to determine when the scroll buttons should be disabled (E.g. At scroll end, disable the right button)
   const [atScrollStart, setAtScrollStart] = useState(true);
@@ -103,9 +104,25 @@ const HorizontalScroll = ({ children, containerRole }: Props) => {
           id="e2e-event-previews-scroll-left"
         />
       </Box>
-      <StyledContainer ref={containerRef} role={containerRole}>
-        {children}
-      </StyledContainer>
+      {/* This allows us to use the same component for both lists and
+        divs without typescript complaining */}
+      {asList ? (
+        <StyledContainer
+          ref={containerRef as React.MutableRefObject<HTMLUListElement>}
+          role={containerRole}
+          as="ul"
+          px="0px"
+        >
+          {children}
+        </StyledContainer>
+      ) : (
+        <StyledContainer
+          ref={containerRef as React.MutableRefObject<HTMLDivElement>}
+          role={containerRole}
+        >
+          {children}
+        </StyledContainer>
+      )}
       <Box
         aria-hidden="true"
         my="auto"
