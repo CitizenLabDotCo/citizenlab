@@ -245,6 +245,7 @@ class WebApi::V1::UsersController < ApplicationController
     return false unless errors.any? { |hash| hash[:error] == :taken }
 
     existing_user = User.find_by(email: @user.email)
+    return false unless existing_user
     return false unless existing_user.no_password?
 
     # If any attributes try to change then ignore this found user
