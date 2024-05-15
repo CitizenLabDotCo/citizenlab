@@ -14,7 +14,10 @@ module ProjectFolders
     end
 
     def after_update(folder, user)
-      LogActivityJob.perform_later(folder, 'changed', user, folder.updated_at.to_i)
+      change = folder.saved_changes
+      payload = change.present? ? { change: change } : {}
+
+      LogActivityJob.perform_later(folder, 'changed', user, folder.updated_at.to_i, payload: payload)
     end
 
     def after_destroy(frozen_folder, user)
