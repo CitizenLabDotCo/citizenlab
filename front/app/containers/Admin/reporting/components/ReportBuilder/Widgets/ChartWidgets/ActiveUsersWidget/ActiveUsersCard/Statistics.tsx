@@ -39,9 +39,12 @@ export const ParticipantsStatistic = ({ stats, startAt, endAt }: Props) => {
       </Box>
       {stats.activeUsers.delta !== undefined && (
         <StatisticBottomLabel
-          bottomLabel={formatMessage(messages.comparedToPreviousXDays, {
-            days: previousDays,
-          })}
+          bottomLabel={formatMessage(
+            chartWidgetMessages.comparedToPreviousXDays,
+            {
+              days: previousDays,
+            }
+          )}
         />
       )}
     </Box>
@@ -78,9 +81,12 @@ export const ParticipationRateStatistic = ({
       </Box>
       {stats.activeUsers.delta !== undefined && (
         <StatisticBottomLabel
-          bottomLabel={formatMessage(messages.comparedToPreviousXDays, {
-            days: previousDays,
-          })}
+          bottomLabel={formatMessage(
+            chartWidgetMessages.comparedToPreviousXDays,
+            {
+              days: previousDays,
+            }
+          )}
         />
       )}
     </Box>

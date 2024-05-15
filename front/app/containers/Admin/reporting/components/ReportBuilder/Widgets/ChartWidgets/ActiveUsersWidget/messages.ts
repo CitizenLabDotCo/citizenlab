@@ -5,10 +5,6 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.showComparisonLastPeriod',
     defaultMessage: 'Show comparison with last period',
   },
-  comparedToPreviousXDays: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.comparedToPreviousXDays',
-    defaultMessage: 'Compared to previous {days} days',
-  },
   hideStatistics: {
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.hideStatistics',
     defaultMessage: 'Hide statistics',
