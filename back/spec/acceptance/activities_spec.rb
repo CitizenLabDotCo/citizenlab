@@ -55,7 +55,7 @@ resource 'Activity' do
     end
 
     example 'List all activities where project_id matches a given project_id' do
-      _activity1 = create(:phase_created_activity, user: @user1)
+      _activity1 = create(:phase_created_activity, user: @user1, project_id: SecureRandom.uuid)
       activity2 = create(:phase_created_activity, user: @user1, project_id: @project.id)
       activity3 = create(:project_created_activity, user: @user1, project_id: @project.id)
 

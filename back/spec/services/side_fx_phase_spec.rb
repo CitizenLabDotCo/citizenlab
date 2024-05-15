@@ -93,7 +93,7 @@ describe SideFxPhaseService do
       freeze_time do
         frozen_phase = phase.destroy
         expect { service.after_destroy(frozen_phase, user) }
-          .to have_enqueued_job(LogActivityJob)
+          .to have_enqueued_job(LogActivityJob).exactly(1).times
       end
     end
   end
