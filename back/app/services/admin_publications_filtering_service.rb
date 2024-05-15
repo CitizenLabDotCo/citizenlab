@@ -90,11 +90,8 @@ class AdminPublicationsFilteringService
     next scope unless (['true', true, '1'].include? options[:filter_is_moderator_of]) ||
                       options[:filter_user_is_moderator_of].present?
 
-    user = if options[:filter_user_is_moderator_of].present?
-      User.find_by(id: options[:filter_user_is_moderator_of])
-    else
-      options[:current_user]
-    end
+    moderator = User.find_by(id: options[:filter_user_is_moderator_of])
+    user = moderator.presence || options[:current_user]
 
     next scope.where(children_allowed: false) unless user
 
