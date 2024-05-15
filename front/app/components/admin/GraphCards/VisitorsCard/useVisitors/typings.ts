@@ -6,7 +6,7 @@ export type QueryParameters = ProjectId & Dates & Resolution;
 export type Response = {
   data: {
     type: 'analytics';
-    attributes: [[TotalsRow] | [], [TotalsRow] | [], TimeSeriesResponse | []];
+    attributes: [TimeSeriesResponse | [], [TotalsRow] | [], [TotalsRow] | []];
   };
 };
 
