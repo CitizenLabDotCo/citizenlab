@@ -98,7 +98,6 @@
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "Komentari tokom vremena",
   "app.components.admin.GraphsCards.PostsByTime.hooks.usePostsByTime.timeSeries": "Objave tokom vremena",
   "app.components.admin.GraphsCards.ReactionsByTime.hooks.useReactionsByTime.timeSeries": "Реакције током времена",
-  "app.components.admin.GraphsCards.RegistrationsByTime.hooks.useRegistrationsByTime.timeSeries": "Registracije tokom vremena",
   "app.components.admin.InputManager.onePost": "1 unos",
   "app.components.admin.PostManager.PostPreview.assignee": "Zadužena osoba",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Prekinite izmene",

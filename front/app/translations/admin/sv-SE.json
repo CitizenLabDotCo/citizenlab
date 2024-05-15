@@ -98,7 +98,6 @@
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "Kommentarer över tid",
   "app.components.admin.GraphsCards.PostsByTime.hooks.usePostsByTime.timeSeries": "Inlägg över tid",
   "app.components.admin.GraphsCards.ReactionsByTime.hooks.useReactionsByTime.timeSeries": "Reaktioner över tid",
-  "app.components.admin.GraphsCards.RegistrationsByTime.hooks.useRegistrationsByTime.timeSeries": "Registreringar över tid",
   "app.components.admin.InputManager.onePost": "1 indata",
   "app.components.admin.PostManager.PostPreview.assignee": "Tilldelad person",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Avbryt redigering",

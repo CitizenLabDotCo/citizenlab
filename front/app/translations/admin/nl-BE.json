@@ -98,7 +98,6 @@
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "Opmerkingen in de tijd",
   "app.components.admin.GraphsCards.PostsByTime.hooks.usePostsByTime.timeSeries": "Berichten in de tijd",
   "app.components.admin.GraphsCards.ReactionsByTime.hooks.useReactionsByTime.timeSeries": "Reacties in de loop van de tijd",
-  "app.components.admin.GraphsCards.RegistrationsByTime.hooks.useRegistrationsByTime.timeSeries": "Registraties in de tijd",
   "app.components.admin.InputManager.onePost": "1 bijdrage",
   "app.components.admin.PostManager.PostPreview.assignee": "Toegewezen aan",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Annuleer de wijzigingen",

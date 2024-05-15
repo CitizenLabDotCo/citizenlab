@@ -98,7 +98,6 @@
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "Piezīmes laika gaitā",
   "app.components.admin.GraphsCards.PostsByTime.hooks.usePostsByTime.timeSeries": "Ziņojumi laika gaitā",
   "app.components.admin.GraphsCards.ReactionsByTime.hooks.useReactionsByTime.timeSeries": "Reakcijas laika gaitā",
-  "app.components.admin.GraphsCards.RegistrationsByTime.hooks.useRegistrationsByTime.timeSeries": "Reģistrācijas laika gaitā",
   "app.components.admin.InputManager.onePost": "1 ievades elements",
   "app.components.admin.PostManager.PostPreview.assignee": "Izpildītājs",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Atcelt rediģējumu",

@@ -98,7 +98,6 @@
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "Zaman içindeki yorumlar",
   "app.components.admin.GraphsCards.PostsByTime.hooks.usePostsByTime.timeSeries": "Zaman içindeki gönderiler",
   "app.components.admin.GraphsCards.ReactionsByTime.hooks.useReactionsByTime.timeSeries": "Zaman içindeki tepkiler",
-  "app.components.admin.GraphsCards.RegistrationsByTime.hooks.useRegistrationsByTime.timeSeries": "Zaman içinde kayıtlar",
   "app.components.admin.InputManager.onePost": "1 girdi",
   "app.components.admin.PostManager.PostPreview.assignee": "Atanan",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Düzenlemeyi iptal et",

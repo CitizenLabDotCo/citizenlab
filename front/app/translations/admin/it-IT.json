@@ -74,7 +74,6 @@
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "Comments over time",
   "app.components.admin.GraphsCards.PostsByTime.hooks.usePostsByTime.timeSeries": "Posts over time",
   "app.components.admin.GraphsCards.ReactionsByTime.hooks.useReactionsByTime.timeSeries": "Reazioni nel tempo",
-  "app.components.admin.GraphsCards.RegistrationsByTime.hooks.useRegistrationsByTime.timeSeries": "Registrations over time",
   "app.components.admin.InputManager.onePost": "1 ingresso",
   "app.components.admin.PostManager.PostPreview.assignee": "Assegnatario",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Annullare la modifica",

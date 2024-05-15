@@ -98,7 +98,6 @@
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "Commentaires",
   "app.components.admin.GraphsCards.PostsByTime.hooks.usePostsByTime.timeSeries": "Postes au fil du temps",
   "app.components.admin.GraphsCards.ReactionsByTime.hooks.useReactionsByTime.timeSeries": "Réactions dans le temps",
-  "app.components.admin.GraphsCards.RegistrationsByTime.hooks.useRegistrationsByTime.timeSeries": "Inscriptions au fil du temps",
   "app.components.admin.InputManager.onePost": "1 contribution",
   "app.components.admin.PostManager.PostPreview.assignee": "Attribué",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Annuler la modification",
