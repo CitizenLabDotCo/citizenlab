@@ -26,7 +26,7 @@ class WebApi::V1::ProjectsController < ApplicationController
         :areas,
         :topics,
         :content_builder_layouts, # Defined in ContentBuilder engine
-        phases: [:report, permissions: [:groups]],
+        phases: [:report, { permissions: [:groups] }],
         admin_publication: [:children]
       )
     @projects = paginate @projects
