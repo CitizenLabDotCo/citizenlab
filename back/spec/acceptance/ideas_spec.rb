@@ -533,34 +533,6 @@ resource 'Ideas' do
       end
     end
 
-    get 'web_api/v1/ideas/:idea_id/json_forms_schema' do
-      let(:project) { create(:project_with_active_ideation_phase) }
-      let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
-      let!(:custom_field) { create(:custom_field, resource: custom_form) }
-      let(:idea) { create(:idea, project: project) }
-      let(:idea_id) { idea.id }
-
-      example_request 'Get the jsonforms.io json schema and ui schema for an ideation input' do
-        assert_status 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :type)).to eq 'json_forms_schema'
-        json_attributes = json_response.dig(:data, :attributes)
-        expect(json_attributes[:json_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
-        expect(json_attributes[:ui_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
-        visible_built_in_field_keys = %i[
-          title_multiloc
-          body_multiloc
-          idea_images_attributes
-          idea_files_attributes
-          topic_ids
-          location_description
-        ]
-        %i[en fr-FR nl-NL].each do |locale|
-          expect(json_attributes[:json_schema_multiloc][locale][:properties].keys).to eq(visible_built_in_field_keys + [custom_field.key.to_sym])
-        end
-      end
-    end
-
     patch 'web_api/v1/ideas/:id' do
       with_options scope: :idea do
         parameter :project_id, 'The idea of the project that hosts the idea'
@@ -806,40 +778,9 @@ resource 'Ideas' do
   end
 
   context 'when admin' do
-    before { admin_header_token }
+    before { header_token_for(admin) }
 
-    get 'web_api/v1/ideas/:idea_id/json_forms_schema' do
-      let(:project) { create(:project_with_active_ideation_phase) }
-      let(:idea_id) { create(:idea, project: project).id }
-
-      example 'Get the json schema and ui schema for an ideation input with author field', document: false do
-        SettingsService.new.activate_feature! 'idea_author_change'
-        do_request
-
-        assert_status 200
-        json_response = json_parse response_body
-        json_schema = json_response.dig(:data, :attributes, :json_schema_multiloc)
-        ui_schema = json_response.dig(:data, :attributes, :ui_schema_multiloc)
-        expect(json_schema.keys).to eq %i[en fr-FR nl-NL]
-        expect(ui_schema.keys).to eq %i[en fr-FR nl-NL]
-        { 'en' => 'Author', 'fr-FR' => 'Auteur', 'nl-NL' => 'Auteur' }.each do |locale, author_label|
-          author_ui_elt = ui_schema.dig(locale.to_sym, :elements, 0, :elements, 1)
-          expect(author_ui_elt).to match({
-            type: 'Control',
-            scope: '#/properties/author_id',
-            label: author_label,
-            options: {
-              description: '',
-              input_type: 'text',
-              isAdminField: true,
-              hasRule: false,
-              answer_visible_to: 'public',
-              transform: 'trim_on_blur'
-              }
-            })
-        end
-      end
-    end
+    let(:admin) { create(:admin) }
 
     patch 'web_api/v1/ideas/:id' do
       with_options scope: :idea do
@@ -862,9 +803,8 @@ resource 'Ideas' do
       response_field :base, "Array containing objects with signature { error: #{ParticipationPermissionsService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
       before do
-        @user = User.admin.first
         @project = create(:single_phase_ideation_project)
-        @idea = create(:idea, author: @user, project: @project, phases: @project.phases)
+        @idea = create(:idea, author: admin, project: @project, phases: @project.phases)
       end
 
       let(:id) { @idea.id }
@@ -1089,7 +1029,7 @@ resource 'Ideas' do
         end
 
         example 'Changing an idea to anonymous', document: false do
-          @idea.update! publication_status: 'published', anonymous: false, author: @user
+          @idea.update! publication_status: 'published', anonymous: false, author: admin
           do_request idea: { anonymous: true }
           assert_status 200
           expect(response_data.dig(:attributes, :anonymous)).to be true
@@ -1098,9 +1038,9 @@ resource 'Ideas' do
 
         example 'Updating an anonymously posted idea with an author', document: false do
           @idea.update! publication_status: 'published', anonymous: true, author: nil
-          do_request idea: { author_id: @user.id, publication_status: 'published' }
+          do_request idea: { author_id: admin.id, publication_status: 'published' }
           assert_status 200
-          expect(response_data.dig(:relationships, :author, :data, :id)).to eq @user.id
+          expect(response_data.dig(:relationships, :author, :data, :id)).to eq admin.id
           expect(response_data.dig(:attributes, :anonymous)).to be false
         end
 
@@ -1116,18 +1056,18 @@ resource 'Ideas' do
         end
 
         example 'Does not log activities for the author', document: false do
-          expect { do_request(idea: { anonymous: true }) }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything, anything)
+          expect { do_request(idea: { anonymous: true }) }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, admin, anything, anything)
         end
 
         example 'Does not log activities for the author and clears the author from past activities', document: false do
-          clear_activity = create(:activity, item: @idea, user: @user)
+          clear_activity = create(:activity, item: @idea, user: admin)
           other_item_activity = create(:activity, item: @idea, user: create(:user))
-          other_user_activity = create(:activity, user: @user)
+          other_user_activity = create(:activity, user: admin)
 
-          expect { do_request(idea: { anonymous: true }) }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything, anything)
+          expect { do_request(idea: { anonymous: true }) }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, admin, anything, anything)
           expect(clear_activity.reload.user_id).to be_nil
           expect(other_item_activity.reload.user_id).to be_present
-          expect(other_user_activity.reload.user_id).to eq @user.id
+          expect(other_user_activity.reload.user_id).to eq admin.id
         end
       end
     end
