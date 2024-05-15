@@ -22,6 +22,10 @@ import Divider from 'components/admin/Divider';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
+import {
+  IProjectFolderModeratorRole,
+  IProjectModeratorRole,
+} from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
 
 import messages from './messages';
@@ -37,10 +41,12 @@ const RemoveButton = ({
   item,
   isFolder,
   userId,
+  disabled,
 }: {
   item: IAdminPublicationData;
   isFolder: boolean;
   userId: string;
+  disabled?: boolean;
 }) => {
   const { formatMessage } = useIntl();
   const {
@@ -72,6 +78,7 @@ const RemoveButton = ({
       processing={deleteProjectModeratorLoading || deleteFolderModeratorLoading}
       onClick={handleRemove}
       ml="auto"
+      disabled={disabled}
     >
       {formatMessage(messages.remove)}
     </Button>
@@ -85,6 +92,17 @@ const UserAssignedItems = ({ user }: { user: IUserData }) => {
   const isFolder = (item: IAdminPublicationData) =>
     item.relationships.publication.data.type === 'folder';
 
+  const moderatedIds = user.attributes.roles?.map((role) => {
+    if (role.type === 'project_moderator') {
+      return (role as IProjectModeratorRole).project_id;
+    } else if (role.type === 'project_folder_moderator') {
+      return (role as IProjectFolderModeratorRole).project_folder_id;
+    } else {
+      return null;
+    }
+  });
+
+  console.log('moderatedIds', moderatedIds);
   return (
     <div>
       <Title m="0px">
@@ -124,6 +142,9 @@ const UserAssignedItems = ({ user }: { user: IUserData }) => {
             item={item}
             isFolder={isFolder(item)}
             userId={user.id}
+            disabled={
+              !moderatedIds?.includes(item.relationships.publication.data.id)
+            }
           />
         </Box>
       ))}
