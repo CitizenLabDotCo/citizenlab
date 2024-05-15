@@ -21,7 +21,6 @@ resource 'Ideas' do
     response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
     response_field :base, "Array containing objects with signature { error: #{ParticipationPermissionsService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
-    
     let(:project_id) { project.id }
     let(:publication_status) { 'published' }
 
@@ -128,11 +127,10 @@ resource 'Ideas' do
         end
 
         describe 'when posting an idea in an active ideation phase, the correct form is used' do
-          let(:project) { create(:project_with_active_ideation_phase) }
           let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
           let(:proposed_budget) { 1234 }
   
-          example 'Post an idea in an ideation phase' do
+          example 'Post an idea in an ideation phase', document: false do
             custom_form.custom_fields.find_by(code: 'proposed_budget').update!(enabled: true)
   
             do_request
@@ -144,10 +142,11 @@ resource 'Ideas' do
         end
 
         describe 'when posting an idea in an active ideation phase, the creation_phase is not set' do
-          let(:project) { create(:project_with_active_ideation_phase) }
           let!(:custom_form) { create(:custom_form, participation_context: project) }
   
-          example_request 'Post an idea in an ideation phase' do
+          example 'Post an idea in an ideation phase', document: false do
+            do_request
+
             assert_status 201
             json_response = json_parse response_body
             idea = Idea.find(json_response.dig(:data, :id))
@@ -281,7 +280,7 @@ resource 'Ideas' do
             assert_status 401
           end
   
-          example 'Create an idea in a project with groups posting permission' do
+          example 'Create an idea in a project with groups posting permission', document: false do
             group.add_member(resident).save!
             do_request
             assert_status 201
