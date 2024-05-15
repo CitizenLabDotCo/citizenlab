@@ -183,7 +183,7 @@ const ProjectTemplateCard = memo<Props>(
         >
           <Box width="100%" display="flex" justifyContent="center">
             <ProjectTemplatePreviewAdmin
-              projectTemplateId={'selected-template-id'}
+              projectTemplateId={projectTemplateId}
             />
           </Box>
         </Modal>
