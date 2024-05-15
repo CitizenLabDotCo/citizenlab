@@ -8,14 +8,18 @@ import { TimeSeries } from 'components/admin/GraphCards/ActiveUsersCard/useActiv
 import { DatesStrings } from 'components/admin/GraphCards/typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 
-import { parseStats } from '../useActiveUsers/parse';
+import { Stats } from '../typings';
 
-import Statistics from './Statistics';
+// import Statistics from './Statistics';
+import {
+  ParticipantsStatistic,
+  ParticipationRateStatistic,
+} from './Statistics';
 
 export interface Props extends DatesStrings {
   timeSeries: TimeSeries | null;
   hideStatistics: boolean;
-  stats: ReturnType<typeof parseStats>;
+  stats: Stats;
   currentResolution: IResolution;
 }
 
@@ -36,12 +40,20 @@ const Wide = ({
     >
       <Box height="100%" display="flex" flexDirection="row">
         {!hideStatistics && (
-          <Statistics
-            startAt={startAt}
-            endAt={endAt}
-            stats={stats}
-            layout="wide"
-          />
+          <Box>
+            <ParticipantsStatistic
+              stats={stats}
+              startAt={startAt}
+              endAt={endAt}
+            />
+            <Box mt="32px">
+              <ParticipationRateStatistic
+                stats={stats}
+                startAt={startAt}
+                endAt={endAt}
+              />
+            </Box>
+          </Box>
         )}
 
         <Box flexGrow={1} display="flex" justifyContent="flex-end">

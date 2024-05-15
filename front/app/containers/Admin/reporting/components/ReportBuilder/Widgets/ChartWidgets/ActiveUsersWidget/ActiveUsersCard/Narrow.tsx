@@ -5,7 +5,10 @@ import moment from 'moment';
 
 import Chart from 'components/admin/GraphCards/ActiveUsersCard/Chart';
 
-import Statistics from './Statistics';
+import {
+  ParticipantsStatistic,
+  ParticipationRateStatistic,
+} from './Statistics';
 import { Props } from './Wide';
 
 const Narrow = ({
@@ -20,12 +23,20 @@ const Narrow = ({
     <Box width="100%" pb="8px" className="e2e-participants-timeline-widget">
       <Box height="100%" display="flex" flexDirection="column">
         {!hideStatistics && (
-          <Statistics
-            startAt={startAt}
-            endAt={endAt}
-            stats={stats}
-            layout="narrow"
-          />
+          <Box mb="8px">
+            <ParticipantsStatistic
+              stats={stats}
+              startAt={startAt}
+              endAt={endAt}
+            />
+            <Box mt="12px">
+              <ParticipationRateStatistic
+                stats={stats}
+                startAt={startAt}
+                endAt={endAt}
+              />
+            </Box>
+          </Box>
         )}
 
         <Box display="flex" height="200px" w="100%">
