@@ -95,12 +95,12 @@ module Permissions
       :not_in_group unless permission.groups && user.in_any_groups?(permission.groups)
     end
 
-    def user_requirements_service(user)
+    def user_requirements_service(_user)
       @user_requirements_service ||= Permissions::UserRequirementsService.new
     end
 
     def user_can_moderate_something?(user)
-      @user_requirements_service ||= (user.admin? || UserRoleService.new.moderates_something?(user))
+      @user_can_moderate_something ||= (user.admin? || UserRoleService.new.moderates_something?(user))
     end
   end
 end

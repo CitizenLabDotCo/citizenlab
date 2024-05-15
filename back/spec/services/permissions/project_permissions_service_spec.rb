@@ -555,37 +555,35 @@ describe Permissions::ProjectPermissionsService do
   end
 
   describe 'action_descriptors' do
-    it 'does not run more than 22 queries for an ideation project with default permissions' do
-      user = create(:user)
-      current_phase = TimelineService.new.current_phase(create(:project_with_current_phase))
-      create(:permission, action: 'posting_idea', permission_scope: current_phase, permitted_by: 'users')
-      create(:permission, action: 'commenting_idea', permission_scope: current_phase, permitted_by: 'users')
-      create(:permission, action: 'reacting_idea', permission_scope: current_phase, permitted_by: 'users')
+    it 'does not run more than 90 queries for 5 ideation projects with default permissions' do
+      5.times do
+        phase = TimelineService.new.current_phase(create(:project_with_current_phase))
+        create(:permission, action: 'posting_idea', permission_scope: phase, permitted_by: 'users')
+        create(:permission, action: 'commenting_idea', permission_scope: phase, permitted_by: 'users')
+        create(:permission, action: 'reacting_idea', permission_scope: phase, permitted_by: 'users')
+      end
 
-      # Load project as loaded by the controller
-      project = Project.preload(
-                           :project_images,
-                           :areas,
-                           :topics,
-                           :content_builder_layouts,
-                           phases: [:report, permissions: [:groups]], # :permissions
-                           admin_publication: [:children]
-                         )
-                       .first
+      # Load project with pre-loading as loaded by the controller
+      projects = Project.preload(
+        :project_images,
+        :areas,
+        :topics,
+        :content_builder_layouts,
+        phases: [:report, { permissions: [:groups] }], # :permissions
+        admin_publication: [:children]
+      )
 
-      # test_phase = Phase.includes(permissions: [:groups]).find(current_phase.id)
-      # expect { Phase.includes(permissions: [:groups]).find(current_phase.id) }.not_to exceed_query_limit(0)
+      # User with pre-loading as loaded by the controller
+      created_user = create(:user)
+      user = User.includes(:identities).find(created_user.id)
 
-      # user as loaded by the controller
-      test_user = User.includes(:identities).find(user.id)
-      # service = described_class.new([current_phase])
-
-      # QUERY ISSUES ARE NOT IN THE project or phase permissions_service
-
-
-      # expect { Permissions::BasePermissionsService.new.denied_reason_for_action('posting_idea', test_user, test_phase) }.not_to exceed_query_limit(0)
-
-      expect { service.action_descriptors(project, test_user) }.not_to exceed_query_limit(22) # Down from an original 111
+      # Check project length sure all the 'projects' queries are preloaded
+      expect(projects.length).to eq 5
+      expect do
+        projects.each do |project|
+          service.action_descriptors(project, user)
+        end
+      end.not_to exceed_query_limit(90) # Down from an original 111
     end
   end
 end
