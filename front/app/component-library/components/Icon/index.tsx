@@ -1444,7 +1444,7 @@ export const icons = {
   'volunteer-off': (props: IconPropsWithoutName) => (
     <Svg
       className={`cl-icon ${props.className ? props.className : ''}`}
-      viewBox="0 0 719.42 240.99"
+      viewBox="0 0 25.34 28"
       {...props}
     >
       <path d="M.001 3.804L1.465 2.34l23.872 23.872-1.464 1.464zM16.6 16.2l2.67 2.68a2.41 2.41 0 00.19-.88 2 2 0 00-2-2 2.05 2.05 0 00-.86.2zM15.46 23s.54-.38 1.21-1l-5-5a2 2 0 00-.24.93C11.46 20 15.46 23 15.46 23z" />
