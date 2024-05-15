@@ -8,4 +8,5 @@ class WebApi::V1::ActivitySerializer < WebApi::V1::BaseSerializer
   end
 
   belongs_to :user
+  belongs_to :item, polymorphic: true
 end
