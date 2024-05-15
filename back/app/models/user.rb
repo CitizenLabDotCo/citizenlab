@@ -52,6 +52,7 @@ class User < ApplicationRecord
   include UserRoles
   include UserGroups
   include UserConfirmation
+  include UserPasswordValidations
   include PgSearch::Model
 
   GENDERS = %w[male female unspecified].freeze
@@ -179,12 +180,6 @@ class User < ApplicationRecord
   validates :custom_field_values, json: {
     schema: -> { CustomFieldService.new.fields_to_json_schema_ignore_required(CustomField.registration) }
   }, on: :form_submission, if: :custom_field_values_changed?
-
-  validates :password, length: { maximum: 72 }, allow_nil: true
-  # Custom validation is required to deal with the
-  # dynamic nature of the minimum password length.
-  validate :validate_minimum_password_length
-  validate :validate_password_not_common
 
   validates :onboarding, json: { schema: -> { User.onboarding_json_schema } }
 
@@ -370,31 +365,6 @@ class User < ApplicationRecord
     return unless domain
 
     errors.add(:email, :domain_blacklisted, value: domain) if EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
-  end
-
-  def validate_minimum_password_length
-    return unless password && password.size < password_min_length
-
-    errors.add(
-      :password,
-      :too_short,
-      message: 'The chosen password is shorter than the minimum required character length',
-      count: password_min_length
-    )
-  end
-
-  def password_min_length
-    AppConfiguration.instance.settings('password_login', 'minimum_length') || 0
-  end
-
-  def validate_password_not_common
-    return unless password && CommonPassword.check(password)
-
-    errors.add(
-      :password,
-      :too_common,
-      message: 'The chosen password matched with our common password blacklist'
-    )
   end
 
   def remove_initiated_notifications
