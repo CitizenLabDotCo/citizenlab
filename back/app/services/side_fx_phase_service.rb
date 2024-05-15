@@ -88,7 +88,8 @@ class SideFxPhaseService
     LogActivityJob.perform_later(
       encode_frozen_resource(frozen_phase), 'deleted',
       user, Time.now.to_i,
-      payload: { phase: serialized_phase }
+      payload: { phase: serialized_phase },
+      project_id: frozen_phase&.project&.id
     )
   end
 
