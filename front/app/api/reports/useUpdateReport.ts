@@ -11,14 +11,15 @@ import { ReportResponse } from './types';
 
 type UpdateReport = {
   id: string;
-  visible: boolean;
+  visible?: boolean;
+  name?: string;
 };
 
-const updateReport = async ({ id, visible }: UpdateReport) =>
+const updateReport = async ({ id, ...requestBody }: UpdateReport) =>
   fetcher<ReportResponse>({
     path: `/reports/${id}`,
     action: 'patch',
-    body: { report: { visible } },
+    body: { report: requestBody },
   });
 
 const useUpdateReport = () => {
