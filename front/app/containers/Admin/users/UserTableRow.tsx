@@ -37,6 +37,7 @@ import { getFullName } from 'utils/textUtils';
 
 import events from './events';
 import messages from './messages';
+import SetAsProjectManager from './SetAsProjectManager';
 import UserAssignedItems from './UserAssignedItems';
 
 const ChangeSeatModal = lazy(
@@ -87,6 +88,8 @@ const UserTableRow = ({
   authUser,
 }: Props) => {
   const [isAssignedItemsOpened, setIsAssignedItemsOpened] = useState(false);
+  const [isSetAsProjectManagerOpened, setIsSetAsProjectManagerOpened] =
+    useState(false);
   const locale = useLocale();
   const { formatMessage } = useIntl();
   const isUserBlockingEnabled = useFeatureFlag({
@@ -202,6 +205,12 @@ const UserTableRow = ({
       icon: 'shield-checkered' as const,
     };
 
+    const setAsProjectManagerAction = {
+      handler: () => setIsSetAsProjectManagerOpened(true),
+      label: formatMessage(messages.setAsProjectManager),
+      icon: 'user-check' as const,
+    };
+
     const setAsNormalUserAction = {
       handler: () => {
         changeRoleHandler(true);
@@ -211,11 +220,15 @@ const UserTableRow = ({
     };
 
     if (isUserInRowAdmin) {
-      return [setAsNormalUserAction];
+      return [setAsNormalUserAction, setAsProjectManagerAction];
     } else if (isUserInRowModerator) {
-      return [setAsNormalUserAction, setAsAdminAction];
+      return [
+        setAsNormalUserAction,
+        setAsAdminAction,
+        setAsProjectManagerAction,
+      ];
     } else {
-      return [setAsAdminAction];
+      return [setAsAdminAction, setAsProjectManagerAction];
     }
   };
 
@@ -331,13 +344,19 @@ const UserTableRow = ({
             isChangingToNormalUser={isChangingToNormalUser}
           />
         </Suspense>
+        <Modal
+          opened={isAssignedItemsOpened}
+          close={() => setIsAssignedItemsOpened(false)}
+        >
+          <UserAssignedItems user={userInRow} />
+        </Modal>
+        <Modal
+          opened={isSetAsProjectManagerOpened}
+          close={() => setIsSetAsProjectManagerOpened(false)}
+        >
+          <SetAsProjectManager />
+        </Modal>
       </Tr>
-      <Modal
-        opened={isAssignedItemsOpened}
-        close={() => setIsAssignedItemsOpened(false)}
-      >
-        <UserAssignedItems user={userInRow} />
-      </Modal>
     </>
   );
 };
