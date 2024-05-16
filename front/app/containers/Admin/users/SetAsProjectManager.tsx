@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Button } from '@citizenlab/cl2-component-library';
+import { Button, Title, Box } from '@citizenlab/cl2-component-library';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
@@ -12,7 +12,8 @@ import useLocalize from 'hooks/useLocalize';
 
 import MultipleSelect from 'components/UI/MultipleSelect';
 
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { getFullName } from 'utils/textUtils';
 
 import messages from './messages';
 
@@ -81,22 +82,30 @@ const SetAsProjectManager = ({
 
   return (
     <div>
-      <h1>SetAsProjectManager</h1>
+      <Title mb="40px">
+        <FormattedMessage
+          {...messages.setUserAsProjectManager}
+          values={{ name: getFullName(user) }}
+        />
+      </Title>
       <MultipleSelect
         value={selectedPublications}
         options={options}
         onChange={(selectedOptions) =>
           setSelectedPublications(selectedOptions.map((option) => option.value))
         }
-        placeholder="Select projects or folders"
+        label={formatMessage(messages.selectPublications)}
+        placeholder={formatMessage(messages.selectPublicationsPlaceholder)}
       />
-      <Button
-        onClick={handleAssign}
-        disabled={selectedPublications.length === 0}
-        processing={isLoading}
-      >
-        Set as project manager
-      </Button>
+      <Box display="flex" justifyContent="flex-end" mt="20px">
+        <Button
+          onClick={handleAssign}
+          disabled={selectedPublications.length === 0}
+          processing={isLoading}
+        >
+          {formatMessage(messages.assign)}
+        </Button>
+      </Box>
     </div>
   );
 };

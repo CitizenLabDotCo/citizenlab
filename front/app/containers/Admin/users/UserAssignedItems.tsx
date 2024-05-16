@@ -24,6 +24,7 @@ import Divider from 'components/admin/Divider';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
+import { IProjectFolderModeratorRole } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
 
 import messages from './messages';
@@ -115,8 +116,26 @@ const UserAssignedItems = ({ user }: { user: IUserData }) => {
   const isFolder = (item: IAdminPublicationData) =>
     item.relationships.publication.data.type === 'folder';
 
+  // Get the folder ids that the user is a moderator of
+  const moderatedFolderIds = user.attributes.roles
+    ?.filter((role) => role.type === 'project_folder_moderator')
+    .map((role: IProjectFolderModeratorRole) => role.project_folder_id);
+
+  // Get the ids for the admin publications of the folder ids that the user is a moderator of
+  const moderatedAdminPublicationFolderIds = flatAssignedItems
+    ?.filter((item) =>
+      moderatedFolderIds?.includes(item.relationships.publication.data.id)
+    )
+    .map((item) => item.id);
+
+  // Do not allow removing the user from the project if it belongs to a folder that the user is a moderator of
   const isRemoveDisabled = (item: IAdminPublicationData) =>
-    Boolean(!isFolder(item) && item.relationships.parent.data?.id); // Project is in a folder
+    Boolean(
+      item.relationships.parent.data?.id &&
+        moderatedAdminPublicationFolderIds?.includes(
+          item.relationships.parent.data?.id
+        )
+    );
 
   return (
     <div>

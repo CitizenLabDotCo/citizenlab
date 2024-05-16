@@ -289,10 +289,26 @@ export default defineMessages({
   },
   setAsProjectManager: {
     id: 'app.containers.Admin.Users.setAsProjectManager',
-    defaultMessage: 'Set as project manager',
+    defaultMessage: 'Assign as project manager',
   },
   folder: {
     id: 'app.containers.Admin.Users.folder',
     defaultMessage: 'Folder',
+  },
+  setUserAsProjectManager: {
+    id: 'app.containers.Admin.Users.setUserAsProjectManager',
+    defaultMessage: 'Assign {name} as project manager',
+  },
+  assign: {
+    id: 'app.containers.Admin.Users.assign',
+    defaultMessage: 'Assign',
+  },
+  selectPublications: {
+    id: 'app.containers.Admin.Users.selectPublications',
+    defaultMessage: 'Select projects or folders',
+  },
+  selectPublicationsPlaceholder: {
+    id: 'app.containers.Admin.Users.selectPublicationsPlaceholder',
+    defaultMessage: 'Type to search',
   },
 });
