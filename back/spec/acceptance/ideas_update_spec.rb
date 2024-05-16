@@ -306,7 +306,7 @@ resource 'Ideas' do
 
           describe 'when anonymous posting is not allowed' do
             let(:allow_anonymous_participation) { false }
-  
+
             example 'Rejects the anonymous parameter' do
               do_request idea: { anonymous: true }
               assert_status 422
@@ -323,7 +323,7 @@ resource 'Ideas' do
             clear_activity = create(:activity, item: input, user: admin)
             other_item_activity = create(:activity, item: input, user: create(:user))
             other_user_activity = create(:activity, user: admin)
-  
+
             expect { do_request(idea: { anonymous: true }) }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, admin, anything, anything)
             expect(clear_activity.reload.user_id).to be_nil
             expect(other_item_activity.reload.user_id).to be_present
