@@ -1,6 +1,6 @@
 module ReportBuilder
   class Queries::Analytics::Visitors < Queries::Analytics::Base
-    def visit_aggregations_query(start_at, end_at)
+    def visit_aggregations_query(start_at, end_at, project_id)
       {
         fact: 'visit',
         filters: {
@@ -49,12 +49,17 @@ module ReportBuilder
         }
       }
 
-      totals_whole_period_query = visit_aggregations_query(start_at, end_at)
+      totals_whole_period_query = visit_aggregations_query(
+        start_at, end_at, project_id
+      )
 
       queries = [time_series_query, totals_whole_period_query]
 
       if compare_start_at.present? && compare_end_at.present?
-        totals_compared_period_query = visit_aggregations_query(start_at, end_at)
+        totals_compared_period_query = visit_aggregations_query(
+          start_at, end_at, project_id
+        )
+
         queries << totals_compared_period_query
       end
 
