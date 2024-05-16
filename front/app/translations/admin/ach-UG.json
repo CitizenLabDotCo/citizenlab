@@ -590,6 +590,7 @@
   "app.containers.Admin.Users.confirmSetManagerAsNormalUserQuestion": "crwdns2239574:0{name}crwdne2239574:0",
   "app.containers.Admin.Users.deleteUser": "crwdns2239576:0crwdne2239576:0",
   "app.containers.Admin.Users.email": "crwdns2239578:0crwdne2239578:0",
+  "app.containers.Admin.Users.folder": "crwdns2245510:0crwdne2245510:0",
   "app.containers.Admin.Users.folderManager": "crwdns2239580:0crwdne2239580:0",
   "app.containers.Admin.Users.helmetDescription": "crwdns2239582:0crwdne2239582:0",
   "app.containers.Admin.Users.helmetTitle": "crwdns2239584:0crwdne2239584:0",
