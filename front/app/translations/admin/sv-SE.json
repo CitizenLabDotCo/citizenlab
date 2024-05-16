@@ -610,6 +610,7 @@
   "app.containers.Admin.Users.seeProfile": "Se profil",
   "app.containers.Admin.Users.setAsAdmin": "Ställ in som administratör",
   "app.containers.Admin.Users.setAsNormalUser": "Ställ in som normal användare",
+  "app.containers.Admin.Users.setAsProjectManager": "Set som projektledare",
   "app.containers.Admin.Users.userBlockModal.allDone": "Allt är klart",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Blockera användare",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "Den här användarens innehåll kommer inte att tas bort genom denna åtgärd. Glöm inte att moderera deras innehåll om det behövs.",
