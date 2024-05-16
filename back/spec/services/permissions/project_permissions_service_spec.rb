@@ -555,7 +555,7 @@ describe Permissions::ProjectPermissionsService do
   end
 
   describe 'action_descriptors' do
-    it 'does not run more than 90 queries for 5 ideation projects with default permissions' do
+    it 'does not run more than 90 queries for 5 ideation projects with default user permissions' do
       user = create(:user)
       5.times do
         phase = TimelineService.new.current_phase(create(:project_with_current_phase))
