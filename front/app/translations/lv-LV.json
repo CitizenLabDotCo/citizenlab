@@ -1756,6 +1756,7 @@
   "app.errors.too_common": "Šo paroli var viegli uzminēt. Lūdzu, izvēlieties stiprāku paroli.",
   "app.errors.too_long": "Lūdzu, izvēlieties īsāku paroli (ne vairāk kā 72 rakstu zīmes)",
   "app.errors.too_short": "Lūdzu, izvēlieties paroli ar vismaz 8 rakstu zīmēm",
+  "app.errors.uncaught_error": "Notika nezināma kļūda.",
   "app.errors.unknown_group": "Rindā {row} atrodamā grupa {vērtība} nav zināma grupa",
   "app.errors.unknown_locale": "Rindā {row} atrodamā valoda {vērtība} nav konfigurēta valoda",
   "app.errors.unparseable_excel": "Izvēlēto Excel failu nav iespējams apstrādāt.",
