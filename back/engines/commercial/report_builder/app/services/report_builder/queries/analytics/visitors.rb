@@ -17,7 +17,7 @@ module ReportBuilder
       }
     end
 
-    def visit_aggregations_query(start_at, end_at)
+    def matomo_visit_aggregations_query(start_at, end_at)
       {
         fact: 'visit',
         filters: {
@@ -65,14 +65,14 @@ module ReportBuilder
         start_at, end_at
       )
 
-      total_visits_whole_period_query = visit_aggregations_query(
+      total_matomo_visits_whole_period_query = matomo_visit_aggregations_query(
         start_at, end_at
       )
 
       queries = [
         time_series_query,
         total_sessions_whole_period_query,
-        total_visits_whole_period_query
+        total_matomo_visits_whole_period_query
       ]
 
       if compare_start_at.present? && compare_end_at.present?
@@ -80,12 +80,12 @@ module ReportBuilder
           compare_start_at, compare_end_at
         )
 
-        total_visits_compared_period_query = visit_aggregations_query(
+        total_matomo_visits_compared_period_query = matomo_visit_aggregations_query(
           compare_start_at, compare_end_at
         )
 
         queries << total_sessions_compared_period_query
-        queries << total_visits_compared_period_query
+        queries << total_matomo_visits_compared_period_query
       end
 
       queries

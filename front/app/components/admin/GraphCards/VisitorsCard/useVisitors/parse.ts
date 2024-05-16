@@ -55,29 +55,32 @@ export const parseTimeSeries = (
 export const parseStats = (
   attributes: VisitorsResponse['data']['attributes']
 ): Stats => {
-  const sessionTotalsWholePeriodRows = attributes[1][0];
-  const sessionTotalsLastPeriodRows = attributes[3]?.[0];
+  const sessionTotalsWholePeriod = attributes[1][0];
+  const sessionTotalsLastPeriod = attributes[3]?.[0];
+
+  const matomoVisitsWholePeriod = attributes[2][0];
+  const matomoVisitsLastPeriod = attributes[4]?.[0];
 
   return {
     visitors: {
       value:
-        sessionTotalsWholePeriodRows?.count_monthly_user_hash.toLocaleString() ??
+        sessionTotalsWholePeriod?.count_monthly_user_hash.toLocaleString() ??
         '0',
       lastPeriod:
-        sessionTotalsLastPeriodRows?.count_monthly_user_hash.toLocaleString() ??
+        sessionTotalsLastPeriod?.count_monthly_user_hash.toLocaleString() ??
         '0',
     },
     visits: {
-      value: sessionTotalsWholePeriodRows?.count.toLocaleString() ?? '0',
-      lastPeriod: sessionTotalsLastPeriodRows?.count.toLocaleString() ?? '0',
+      value: sessionTotalsWholePeriod?.count.toLocaleString() ?? '0',
+      lastPeriod: sessionTotalsLastPeriod?.count.toLocaleString() ?? '0',
     },
     visitDuration: {
-      value: parseVisitDuration(wholePeriod?.avg_duration),
-      lastPeriod: parseVisitDuration(lastPeriod?.avg_duration),
+      value: parseVisitDuration(matomoVisitsWholePeriod?.avg_duration),
+      lastPeriod: parseVisitDuration(matomoVisitsLastPeriod?.avg_duration),
     },
     pageViews: {
-      value: parsePageViews(wholePeriod?.avg_pages_visited),
-      lastPeriod: parsePageViews(lastPeriod?.avg_pages_visited),
+      value: parsePageViews(matomoVisitsWholePeriod?.avg_pages_visited),
+      lastPeriod: parsePageViews(matomoVisitsLastPeriod?.avg_pages_visited),
     },
   };
 };

@@ -7,7 +7,7 @@ export interface TimeSeriesResponseRow extends BaseSessionRow {
   first_dimension_date_created_date: string;
 }
 
-interface VisitsRow {
+interface MatomoVisitsRow {
   avg_duration: string | null;
   avg_pages_visited: string | null;
 }
@@ -18,9 +18,9 @@ export type VisitorsResponse = {
     attributes: [
       TimeSeriesResponseRow[] | [],
       [BaseSessionRow] | [],
-      [VisitsRow] | [],
+      [MatomoVisitsRow] | [],
       [BaseSessionRow] | [] | undefined,
-      [VisitsRow] | [] | undefined
+      [MatomoVisitsRow] | [] | undefined
     ];
   };
 };
