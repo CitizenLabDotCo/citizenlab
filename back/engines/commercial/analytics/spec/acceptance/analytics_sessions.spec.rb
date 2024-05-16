@@ -14,6 +14,27 @@ resource 'Analytics - Sessions model' do
   end
 
   post 'web_api/v1/analytics' do
-    # TODO: add test
+    before do
+      create_list(:session, 5)
+    end
+
+    example 'correct number of sessions, visitors and users' do
+      do_request({
+        query: {
+          fact: 'session',
+          aggregations: {
+            all: 'count',
+            monthly_user_hash: 'count'
+          }
+        }
+      })
+      assert_status 200
+
+      expect(response_data[:attributes])
+        .to match_array([{
+          count: 5,
+          count_monthly_user_hash: 1
+        }])
+    end
   end
 end
