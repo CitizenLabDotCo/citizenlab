@@ -82,6 +82,7 @@ class SideFxIdeaService
   def after_destroy(frozen_idea, user)
     serialized_idea = clean_time_attributes(frozen_idea.attributes)
     serialized_idea['location_point'] = serialized_idea['location_point'].to_s
+
     LogActivityJob.perform_later(
       encode_frozen_resource(frozen_idea),
       'deleted',
@@ -90,6 +91,11 @@ class SideFxIdeaService
       payload: { idea: serialized_idea },
       project_id: frozen_idea&.project&.id
     )
+
+    Activity.where(item: frozen_idea).each do |activity|
+      activity.payload[:title_multiloc] = frozen_idea.title_multiloc
+      activity.save!
+    end
   end
 
   private
