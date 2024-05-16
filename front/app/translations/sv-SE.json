@@ -1756,6 +1756,7 @@
   "app.errors.too_common": "Det här lösenordet är lätt att gissa. Välj ett starkare lösenord.",
   "app.errors.too_long": "Välj ett kortare lösenord (max 72 tecken)",
   "app.errors.too_short": "Välj ett lösenord med minst 8 tecken",
+  "app.errors.uncaught_error": "Ett okänt fel har inträffat.",
   "app.errors.unknown_group": "Gruppen {value} som finns på rad {row} är inte en känd grupp",
   "app.errors.unknown_locale": "Språket {value} som finns på rad {row} är inte ett konfigurerat språk",
   "app.errors.unparseable_excel": "Den valda Excel-filen kunde inte bearbetas.",
