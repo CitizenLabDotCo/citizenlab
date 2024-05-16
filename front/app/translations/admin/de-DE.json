@@ -590,6 +590,7 @@
   "app.containers.Admin.Users.confirmSetManagerAsNormalUserQuestion": "Sind Sie sicher, dass Sie {name} als normale*n Nutzer*in einrichten wollen? Bitte beachten Sie, dass die Person nach der Bestätigung Managementrechte für alle Projekte und Ordner verliert, die ihm*ihr zugewiesen sind.",
   "app.containers.Admin.Users.deleteUser": "Nutzer*in löschen",
   "app.containers.Admin.Users.email": "E-Mail",
+  "app.containers.Admin.Users.folder": "Mappe",
   "app.containers.Admin.Users.folderManager": "Ordner-Manager*in",
   "app.containers.Admin.Users.helmetDescription": "Nutzer*innenliste",
   "app.containers.Admin.Users.helmetTitle": "Admin - Nutzer*innen-Dashboard",
