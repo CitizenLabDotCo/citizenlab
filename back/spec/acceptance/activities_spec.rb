@@ -90,30 +90,30 @@ resource 'Activity' do
       expect(json_response[:data].pluck(:id)).not_to include activity1.id
     end
 
-    example 'List all activities sorts by acted_at (desc) when no sort is specified' do
-      activity1 = create(:phase_created_activity, user: @user1, acted_at: 1.day.ago)
-      activity2 = create(:project_deleted_activity, user: @user1, acted_at: 3.days.ago)
-      activity3 = create(:project_changed_activity, user: @user1, acted_at: 2.days.ago)
+    describe 'Sorting by acted_at' do
+      let!(:activity1) { create(:phase_created_activity, user: @user1, acted_at: 1.day.ago) }
+      let!(:activity2) { create(:project_deleted_activity, user: @user1, acted_at: 3.days.ago) }
+      let!(:activity3) { create(:project_changed_activity, user: @user1, acted_at: 2.days.ago) }
 
-      do_request
-      assert_status 200
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 3
-      expect(json_response[:data].pluck(:id)).to eq [activity1.id, activity3.id, activity2.id]
-    end
+      example_request 'List all activities sorts by acted_at (desc) when no sort is specified' do
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].pluck(:id)).to eq [activity1.id, activity3.id, activity2.id]
+      end
 
-    example 'List all activities, sorted by action, sorts also by acted_at for activities for same action' do
-      activity1 = create(:phase_created_activity, user: @user1)
-      activity2 = create(:project_deleted_activity, user: @user1, acted_at: 3.days.ago)
-      activity3 = create(:project_deleted_activity, user: @user1, acted_at: 1.day.ago)
-      activity4 = create(:project_deleted_activity, user: @user1, acted_at: 2.days.ago)
-      activity5 = create(:project_changed_activity, user: @user1)
+      example 'List all activities sorts by sort: acted_at param (asc)' do
+        do_request sort: 'acted_at'
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].pluck(:id)).to eq [activity2.id, activity3.id, activity1.id]
+      end
 
-      do_request sort: 'action'
-      assert_status 200
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 5
-      expect(json_response[:data].pluck(:id)).to eq [activity5.id, activity1.id, activity3.id, activity4.id, activity2.id]
+      example 'List all activities sorts by sort: -acted_at param (asc)' do
+        do_request sort: '-acted_at'
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].pluck(:id)).to eq [activity1.id, activity3.id, activity2.id]
+      end
     end
 
     example 'List all activities handles case where user has been deleted', document: false do

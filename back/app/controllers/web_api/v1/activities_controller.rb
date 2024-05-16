@@ -9,10 +9,10 @@ class WebApi::V1::ActivitiesController < ApplicationController
     @activities = @activities.where(project_id: params[:project_ids]) if params[:project_ids]
 
     @activities = case params[:sort]
-    when 'action'
-      @activities.order(action: :asc, acted_at: :desc)
-    when '-action'
-      @users.order(action: :desc, acted_at: :desc)
+    when 'acted_at'
+      @activities.order(acted_at: :asc)
+    when '-acted_at'
+      @activities.order(acted_at: :desc)
     when nil
       @activities.order(acted_at: :desc)
     else
