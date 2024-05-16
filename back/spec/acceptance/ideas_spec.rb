@@ -341,9 +341,113 @@ resource 'Ideas' do
       parameter :project, 'Filter by project', required: false
       parameter :ideas, 'Filter by a given list of idea ids', required: false
 
-      example '[error] XLSX export', document: false do
-        do_request
-        assert_status 401
+      describe do
+        before do
+          @user = create(:admin)
+          header_token_for @user
+
+          @ideas = %w[published published draft published published published].map do |ps|
+            create(:idea, publication_status: ps)
+          end
+        end
+
+        example_request 'XLSX export' do
+          expect(status).to eq 200
+        end
+
+        describe do
+          before do
+            @project = create(:single_phase_ideation_project)
+            @selected_ideas = @ideas.select(&:published?).shuffle.take 3
+            @selected_ideas.each do |idea|
+              idea.update! project: @project
+            end
+          end
+
+          let(:project) { @project.id }
+
+          example_request 'XLSX export by project' do
+            expect(status).to eq 200
+            worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+            expect(worksheet.count).to eq(@selected_ideas.size + 1)
+          end
+        end
+
+        describe do
+          before do
+            @selected_ideas = @ideas.select(&:published?).shuffle.take 2
+          end
+
+          let(:ideas) { @selected_ideas.map(&:id) }
+
+          example_request 'XLSX export by idea ids' do
+            expect(status).to eq 200
+            worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+            expect(worksheet.count).to eq(@selected_ideas.size + 1)
+          end
+        end
+
+        context 'when the user moderates the project' do
+          before do
+            @project = create(:project)
+            @user = create(:project_moderator, projects: [@project])
+            header_token_for(@user)
+          end
+
+          let(:project) { @project.id }
+
+          example 'XLSX export', document: false do
+            do_request
+            expect(status).to eq 200
+          end
+        end
+
+        context 'when the user moderates another project' do
+          before do
+            @project = create(:project)
+            @user = create(:project_moderator, projects: [create(:project)])
+            header_token_for(@user)
+          end
+
+          let(:project) { @project.id }
+
+          example '[error] XLSX export', document: false do
+            do_request
+            expect(status).to eq 401
+          end
+        end
+
+        context 'when a moderator exports all comments' do
+          before do
+            @project = create(:project)
+
+            @ideas = create_list(:idea, 3, project: @project)
+            @unmoderated_idea = create(:idea)
+
+            @user = create(:project_moderator, projects: [@project])
+            header_token_for(@user)
+          end
+
+          example 'XLSX export', document: false do
+            do_request
+            assert_status 200
+
+            worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+            ideas_ids = worksheet.drop(1).collect { |row| row[0].value }
+
+            expect(ideas_ids).to match_array @ideas.pluck(:id)
+            expect(ideas_ids).not_to include(@unmoderated_idea.id)
+          end
+        end
+
+        describe 'when resident' do
+          before { resident_header_token }
+
+          example '[error] XLSX export', document: false do
+            do_request
+            assert_status 401
+          end
+        end
       end
     end
 
@@ -565,112 +669,6 @@ resource 'Ideas' do
         example_request '[error] Normal resident cannot delete an idea in a voting context', document: false do
           assert_status 401
           expect(json_parse(response_body)).to include_response_error(:base, 'Unauthorized!')
-        end
-      end
-    end
-  end
-
-  context 'when admin' do
-    before { admin_header_token }
-
-    get 'web_api/v1/ideas/as_xlsx' do
-      parameter :project, 'Filter by project', required: false
-      parameter :ideas, 'Filter by a given list of idea ids', required: false
-
-      describe do
-        before do
-          @ideas = %w[published published draft published published published].map do |ps|
-            create(:idea, publication_status: ps)
-          end
-        end
-
-        example_request 'XLSX export' do
-          expect(status).to eq 200
-        end
-
-        describe do
-          before do
-            @project = create(:single_phase_ideation_project)
-            @selected_ideas = @ideas.select(&:published?).take 3
-            @selected_ideas.each do |idea|
-              idea.update! project: @project
-            end
-          end
-
-          let(:project) { @project.id }
-
-          example_request 'XLSX export by project' do
-            expect(status).to eq 200
-            worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-            expect(worksheet.count).to eq(@selected_ideas.size + 1)
-          end
-        end
-
-        describe do
-          before do
-            @selected_ideas = @ideas.select(&:published?).take 2
-          end
-
-          let(:ideas) { @selected_ideas.map(&:id) }
-
-          example_request 'XLSX export by idea ids' do
-            expect(status).to eq 200
-            worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-            expect(worksheet.count).to eq(@selected_ideas.size + 1)
-          end
-        end
-
-        context 'when the user moderates the project' do
-          before do
-            @project = create(:project)
-            @user = create(:project_moderator, projects: [@project])
-            header_token_for(@user)
-          end
-
-          let(:project) { @project.id }
-
-          example 'XLSX export', document: false do
-            do_request
-            expect(status).to eq 200
-          end
-        end
-
-        context 'when the user moderates another project' do
-          before do
-            @project = create(:project)
-            @user = create(:project_moderator, projects: [create(:project)])
-            header_token_for(@user)
-          end
-
-          let(:project) { @project.id }
-
-          example '[error] XLSX export', document: false do
-            do_request
-            expect(status).to eq 401
-          end
-        end
-
-        context 'when a moderator exports all comments' do
-          before do
-            @project = create(:project)
-
-            @ideas = create_list(:idea, 3, project: @project)
-            @unmoderated_idea = create(:idea)
-
-            @user = create(:project_moderator, projects: [@project])
-            header_token_for(@user)
-          end
-
-          example 'XLSX export', document: false do
-            do_request
-            assert_status 200
-
-            worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-            ideas_ids = worksheet.drop(1).collect { |row| row[0].value }
-
-            expect(ideas_ids).to match_array @ideas.pluck(:id)
-            expect(ideas_ids).not_to include(@unmoderated_idea.id)
-          end
         end
       end
     end
