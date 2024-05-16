@@ -871,7 +871,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Yazar:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.disabledPDFImportTooltip": "Taranan formların PDF dosyalarını içe aktarmak premium lisansın bir parçasıdır. Bu konuda daha fazla bilgi edinmek için GovSuccess Yöneticinize ulaşın.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "E-posta:",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImporting1": "İçe aktarma sırasında bir hata oluştu. Lütfen içe aktarılan öğeleri kontrol edin ve eksik olanları yeniden içe aktarın.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "İçe aktarma sırasında hatalar oluştu ve bazı girdiler içe aktarılmadı. Lütfen hataları düzeltin ve eksik girdileri yeniden içe aktarın.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Geçersiz form verileri. Yukarıdaki formda hata olup olmadığını kontrol edin.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "Excel dosyasını içe aktar (.xlsx)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "İthalat",
