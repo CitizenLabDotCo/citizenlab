@@ -354,7 +354,10 @@ const UserTableRow = ({
           opened={isSetAsProjectManagerOpened}
           close={() => setIsSetAsProjectManagerOpened(false)}
         >
-          <SetAsProjectManager />
+          <SetAsProjectManager
+            user={userInRow}
+            onClose={() => setIsSetAsProjectManagerOpened(false)}
+          />
         </Modal>
       </Tr>
     </>

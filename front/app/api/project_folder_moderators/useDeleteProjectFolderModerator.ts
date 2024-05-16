@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import adminPublicationsKeys from 'api/admin_publications/keys';
 import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 import usersKeys from 'api/users/keys';
 import userCountKeys from 'api/users_count/keys';
@@ -36,6 +37,10 @@ const useDeleteProjectFolderModerator = () => {
 
       queryClient.invalidateQueries({
         queryKey: userCountKeys.items(),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: adminPublicationsKeys.lists(),
       });
       invalidateSeatsCache();
     },

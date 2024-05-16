@@ -291,4 +291,8 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.setAsProjectManager',
     defaultMessage: 'Set as project manager',
   },
+  folder: {
+    id: 'app.containers.Admin.Users.folder',
+    defaultMessage: 'Folder',
+  },
 });

@@ -24,10 +24,6 @@ import Divider from 'components/admin/Divider';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-import {
-  IProjectFolderModeratorRole,
-  IProjectModeratorRole,
-} from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
 
 import messages from './messages';
@@ -91,7 +87,7 @@ const RemoveButton = ({
         />
       }
       zIndex={9999999}
-      disabled={!disabled || !folderTitle}
+      disabled={!disabled}
     >
       <Box ml="auto">
         <Button
@@ -115,18 +111,12 @@ const UserAssignedItems = ({ user }: { user: IUserData }) => {
     filter_user_is_moderator_of: user.id,
   });
   const flatAssignedItems = assignedItems?.pages?.flatMap((page) => page.data);
+
   const isFolder = (item: IAdminPublicationData) =>
     item.relationships.publication.data.type === 'folder';
 
-  const moderatedIds = user.attributes.roles?.map((role) => {
-    if (role.type === 'project_moderator') {
-      return (role as IProjectModeratorRole).project_id;
-    } else if (role.type === 'project_folder_moderator') {
-      return (role as IProjectFolderModeratorRole).project_folder_id;
-    } else {
-      return null;
-    }
-  });
+  const isRemoveDisabled = (item: IAdminPublicationData) =>
+    Boolean(!isFolder(item) && item.relationships.parent.data?.id); // Project is in a folder
 
   return (
     <div>
@@ -167,9 +157,7 @@ const UserAssignedItems = ({ user }: { user: IUserData }) => {
             item={item}
             isFolder={isFolder(item)}
             userId={user.id}
-            disabled={
-              !moderatedIds?.includes(item.relationships.publication.data.id)
-            }
+            disabled={isRemoveDisabled(item)}
           />
         </Box>
       ))}
