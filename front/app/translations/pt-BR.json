@@ -1757,6 +1757,7 @@
   "app.errors.too_common": "Essa senha não é segura. Por favor escolha uma senha mais segura.",
   "app.errors.too_long": "A senha deve ter pelo menos 72 caracteres",
   "app.errors.too_short": "A senha deve ter pelo menos 8 caracteres",
+  "app.errors.uncaught_error": "Ocorreu um erro desconhecido.",
   "app.errors.unknown_group": "O grupo {value} encontrado na linha {row} não é um grupo conhecido",
   "app.errors.unknown_locale": "O idioma {value} encontrado na linha {row} não é um idioma configurado",
   "app.errors.unparseable_excel": "O arquivo Excel selecionado não pôde ser processado.",
