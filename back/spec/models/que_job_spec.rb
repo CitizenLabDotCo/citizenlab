@@ -41,6 +41,49 @@ RSpec.describe QueJob, :active_job_que_adapter do
     end
   end
 
+  describe '#last_error' do
+    let!(:que_job) do
+      id = TestJob.perform_later.job_id
+      described_class.by_job_id!(id)
+    end
+
+    context 'when the job has no errors' do
+      it 'returns nil' do
+        expect(que_job.last_error).to be_nil
+      end
+    end
+
+    context 'when the job has errors' do
+      it 'returns "uncaught_error" if the error is not one we have set an error_string for' do
+        que_job.update!(error_count: 1, last_error_message: 'NoMethodError: undefined method')
+        expect(que_job.last_error).to eq({ error: 'uncaught_error' })
+      end
+
+      it 'returns specific error message and values for BulkImportIdeas errors' do
+        que_job.update!(error_count: 1, last_error_message: 'BulkImportIdeas::Error: bulk_import_image_url_not_valid##https://citizenlab.co/image.doc##14')
+        expect(que_job.last_error).to match({
+          error: 'bulk_import_image_url_not_valid',
+          value: 'https://citizenlab.co/image.doc',
+          row: '14'
+        })
+      end
+
+      it 'returns for BulkImportIdeas errors without a row value' do
+        que_job.update!(error_count: 1, last_error_message: 'BulkImportIdeas::Error: bulk_import_another_error##some_value')
+        expect(que_job.last_error).to match({
+          error: 'bulk_import_another_error',
+          value: 'some_value',
+          row: nil
+        })
+      end
+
+      it 'returns for BulkImportIdeas errors without any additional values' do
+        que_job.update!(error_count: 1, last_error_message: 'BulkImportIdeas::Error: bulk_import_no_values')
+        expect(que_job.last_error).to eq({ error: 'bulk_import_no_values' })
+      end
+    end
+  end
+
   describe '#failed?' do
     let!(:que_job) do
       id = TestJob.perform_later.job_id

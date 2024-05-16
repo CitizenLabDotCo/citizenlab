@@ -1757,6 +1757,7 @@
   "app.errors.too_common": "This password can be easily guessed. Please choose a stronger password.",
   "app.errors.too_long": "Please choose a shorter password (max 72 characters)",
   "app.errors.too_short": "Please choose a password with at least 8 characters",
+  "app.errors.uncaught_error": "An unknown error occurred.",
   "app.errors.unknown_group": "The group {value} found in row {row} is not a known group",
   "app.errors.unknown_locale": "The language {value} found in row {row} is not a configured language",
   "app.errors.unparseable_excel": "The selected Excel file could not be processed.",
