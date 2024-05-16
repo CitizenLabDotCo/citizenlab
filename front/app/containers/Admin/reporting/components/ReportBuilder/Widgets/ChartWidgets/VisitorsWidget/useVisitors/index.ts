@@ -11,7 +11,6 @@ import { parseStats } from './parse';
 import { QueryParameters } from './typings';
 
 export default function useVisitors({
-  projectId,
   startAt,
   endAt,
   resolution,
@@ -21,7 +20,6 @@ export default function useVisitors({
 
   const { data: analytics } = useVisitorsData(
     {
-      project_id: projectId,
       start_at: startAt,
       end_at: endAt,
       resolution,

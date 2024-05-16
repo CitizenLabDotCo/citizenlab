@@ -32,14 +32,4 @@ export default defineMessages({
     defaultMessage:
       '"Visits" is the number of sessions. If a person visited the platform multiple times, each visit is counted.',
   },
-  durationStatTooltipMessage: {
-    id: 'app.modules.commercial.analytics.admin.components.VisitorsCard.durationStatTooltipMessage',
-    defaultMessage:
-      'When the project filter is active, this shows the average duration of any visit that included the selected project. This counts the entire period a user was on the platform, not just the time spent on the selected project page(s).',
-  },
-  pageViewsStatTooltipMessage: {
-    id: 'app.modules.commercial.analytics.admin.components.VisitorsCard.pageViewsStatTooltipMessage',
-    defaultMessage:
-      'When the project filter is active, this shows the average page views for any visit that included the selected project. This counts all pages that a user viewed during the visit, not just the selected project page(s).',
-  },
 });

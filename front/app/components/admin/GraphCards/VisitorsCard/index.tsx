@@ -7,26 +7,20 @@ import GraphCard from 'components/admin/GraphCard';
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-import { ProjectId, Dates, Resolution } from '../typings';
+import { Dates, Resolution } from '../typings';
 
 import Chart from './Chart';
 import messages from './messages';
 import useVisitors from './useVisitors';
 import VisitorStats from './VisitorStats';
 
-type Props = ProjectId & Dates & Resolution;
+type Props = Dates & Resolution;
 
-const VisitorsCard = ({
-  projectId,
-  startAtMoment,
-  endAtMoment,
-  resolution,
-}: Props) => {
+const VisitorsCard = ({ startAtMoment, endAtMoment, resolution }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
 
   const { currentResolution, stats, timeSeries, xlsxData } = useVisitors({
-    projectId,
     startAtMoment,
     endAtMoment,
     resolution,
@@ -46,17 +40,12 @@ const VisitorsCard = ({
         xlsx: isNilOrError(xlsxData) ? undefined : { data: xlsxData },
         startAt,
         endAt,
-        currentProjectFilter: projectId,
         resolution: currentResolution,
       }}
     >
       <Box px="20px" width="100%" display="flex" flexDirection="row">
         <Box display="flex" flexDirection="row">
-          <VisitorStats
-            stats={stats}
-            projectId={projectId}
-            resolution={currentResolution}
-          />
+          <VisitorStats stats={stats} resolution={currentResolution} />
         </Box>
 
         <Box flexGrow={1} display="flex" justifyContent="flex-end">

@@ -13,22 +13,16 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import NoData from '../../_shared/NoData';
 import messages from '../messages';
-import { TimeSeriesWidgetProps } from '../typings';
 
 import Chart from './Chart';
+import { Props } from './typings';
 import useVisitors from './useVisitors';
 
 // Report specific version of <VisitorsCard/>
-const VisitorsCard = ({
-  projectId,
-  startAt,
-  endAt,
-  resolution = 'month',
-}: TimeSeriesWidgetProps) => {
+const VisitorsCard = ({ startAt, endAt, resolution = 'month' }: Props) => {
   const { formatMessage } = useIntl();
 
   const { currentResolution, stats, timeSeries } = useVisitors({
-    projectId,
     startAt,
     endAt,
     resolution,

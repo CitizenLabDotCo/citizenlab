@@ -1,6 +1,6 @@
-import { ProjectId, Dates, Resolution, Stat } from '../../typings';
+import { Dates, Resolution, Stat } from '../../typings';
 
-export type QueryParameters = ProjectId & Dates & Resolution;
+export type QueryParameters = Dates & Resolution;
 
 // Hook return value
 export interface TimeSeriesRow {

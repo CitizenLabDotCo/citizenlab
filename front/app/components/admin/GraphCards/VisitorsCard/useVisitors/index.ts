@@ -12,7 +12,6 @@ import { getTranslations } from './translations';
 import { QueryParameters } from './typings';
 
 export default function useVisitorsData({
-  projectId,
   startAtMoment,
   endAtMoment,
   resolution = 'month',
@@ -25,7 +24,6 @@ export default function useVisitorsData({
     {
       start_at: startAtMoment?.toISOString(),
       end_at: endAtMoment?.toISOString(),
-      project_id: projectId,
       resolution,
       ...getComparedPeriod(resolution),
     },
