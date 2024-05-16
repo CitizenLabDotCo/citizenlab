@@ -27,7 +27,6 @@ module Permissions
 
     def initialize
       super
-      # @permissions = Permission.includes(:groups).where(permission_scope: phases)
       @timeline_service = TimelineService.new
     end
 
@@ -85,7 +84,7 @@ module Permissions
           end
         end
       end
-      return if user_requirements_service(user).requirements(permission, user)[:permitted]
+      return if user_requirements_service.requirements(permission, user)[:permitted]
 
       USER_DENIED_REASONS[:missing_user_requirements]
     end
@@ -95,7 +94,7 @@ module Permissions
       :not_in_group unless permission.groups && user.in_any_groups?(permission.groups)
     end
 
-    def user_requirements_service(_user)
+    def user_requirements_service
       @user_requirements_service ||= Permissions::UserRequirementsService.new
     end
 

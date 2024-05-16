@@ -556,6 +556,7 @@ describe Permissions::ProjectPermissionsService do
 
   describe 'action_descriptors' do
     it 'does not run more than 90 queries for 5 ideation projects with default permissions' do
+      user = create(:user)
       5.times do
         phase = TimelineService.new.current_phase(create(:project_with_current_phase))
         create(:permission, action: 'posting_idea', permission_scope: phase, permitted_by: 'users')
@@ -573,11 +574,7 @@ describe Permissions::ProjectPermissionsService do
         admin_publication: [:children]
       )
 
-      # User with pre-loading as loaded by the controller
-      created_user = create(:user)
-      user = User.includes(:identities).find(created_user.id)
-
-      # Check project length sure all the 'projects' queries are preloaded
+      # First check project length sure all the 'projects' queries are preloaded
       expect(projects.length).to eq 5
       expect do
         projects.each do |project|
