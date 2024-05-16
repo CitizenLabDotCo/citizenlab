@@ -548,7 +548,6 @@ DROP TABLE IF EXISTS public.initiatives_topics;
 DROP VIEW IF EXISTS public.initiative_initiative_statuses;
 DROP TABLE IF EXISTS public.initiative_images;
 DROP TABLE IF EXISTS public.initiative_files;
-DROP TABLE IF EXISTS public.impact_tracking_sessions;
 DROP TABLE IF EXISTS public.impact_tracking_salts;
 DROP TABLE IF EXISTS public.identities;
 DROP TABLE IF EXISTS public.ideas_topics;
@@ -588,6 +587,8 @@ DROP TABLE IF EXISTS public.areas_ideas;
 DROP TABLE IF EXISTS public.areas;
 DROP TABLE IF EXISTS public.ar_internal_metadata;
 DROP TABLE IF EXISTS public.app_configurations;
+DROP VIEW IF EXISTS public.analytics_fact_sessions;
+DROP TABLE IF EXISTS public.impact_tracking_sessions;
 DROP VIEW IF EXISTS public.analytics_fact_registrations;
 DROP TABLE IF EXISTS public.invites;
 DROP VIEW IF EXISTS public.analytics_fact_project_statuses;
@@ -1961,6 +1962,33 @@ CREATE VIEW public.analytics_fact_registrations AS
 
 
 --
+-- Name: impact_tracking_sessions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.impact_tracking_sessions (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    monthly_user_hash character varying NOT NULL,
+    highest_role character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    user_id uuid
+);
+
+
+--
+-- Name: analytics_fact_sessions; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.analytics_fact_sessions AS
+ SELECT impact_tracking_sessions.id,
+    impact_tracking_sessions.monthly_user_hash,
+    (impact_tracking_sessions.created_at)::date AS dimension_date_created_id,
+    (impact_tracking_sessions.updated_at)::date AS dimension_date_updated_id,
+    impact_tracking_sessions.user_id AS dimension_user_id
+   FROM public.impact_tracking_sessions;
+
+
+--
 -- Name: app_configurations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2534,20 +2562,6 @@ CREATE TABLE public.impact_tracking_salts (
     salt character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: impact_tracking_sessions; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.impact_tracking_sessions (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    monthly_user_hash character varying NOT NULL,
-    highest_role character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    user_id uuid
 );
 
 
@@ -7498,6 +7512,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240504212048'),
 ('20240508124400'),
 ('20240508133950'),
-('20240510103700');
+('20240510103700'),
+('20240516113700');
 
 
