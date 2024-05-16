@@ -216,7 +216,9 @@ class User < ApplicationRecord
     {
       sub: id,
       roles: compacted_roles,
-      exp: token_lifetime.from_now.to_i
+      exp: token_lifetime.from_now.to_i,
+      cluster: CL2_CLUSTER,
+      tenant: Tenant.current.id
     }
   end
 
@@ -391,4 +393,3 @@ end
 User.include(IdeaAssignment::Extensions::User)
 User.include(ReportBuilder::Patches::User)
 User.include(Verification::Patches::User)
-User.prepend(MultiTenancy::Patches::User)
