@@ -108,7 +108,7 @@ module BulkImportIdeas::Parsers
     # @param [Array<Hash>] idea_fields - comes from IdeaBaseFileParser#structure_raw_fields
     def merge_idea_with_form_fields(idea_fields)
       merged_fields = []
-      form_fields = import_form_data[:fields] # Array<Hash> comes from IdeaPdfFormExporter#add_to_importer_fields
+      form_fields = import_form_data[:fields].deep_dup # Array<Hash> comes from IdeaPdfFormExporter#add_to_importer_fields
       form_fields.each do |form_field|
         idea_fields.each do |idea_field|
           if form_field[:name] == idea_field[:name] || form_field[:description] == idea_field[:name]
