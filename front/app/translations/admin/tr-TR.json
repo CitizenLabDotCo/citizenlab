@@ -610,6 +610,7 @@
   "app.containers.Admin.Users.seeProfile": "Profili göster",
   "app.containers.Admin.Users.setAsAdmin": "Yönetici olarak ayarla",
   "app.containers.Admin.Users.setAsNormalUser": "Normal kullanıcı olarak ayarla",
+  "app.containers.Admin.Users.setAsProjectManager": "Proje yöneticisi olarak ayarlayın",
   "app.containers.Admin.Users.userBlockModal.allDone": "Hepsi tamam",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Kullanıcıyı engelle",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "Bu kullanıcının içeriği bu işlemle kaldırılmayacaktır. Gerekirse içeriklerini denetlemeyi unutmayın.",
