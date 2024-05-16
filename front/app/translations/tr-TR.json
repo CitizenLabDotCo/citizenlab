@@ -1757,6 +1757,7 @@
   "app.errors.too_common": "Bu parola kolayca tahmin edilebilir. Lütfen daha güçlü bir parola seçin.",
   "app.errors.too_long": "Lütfen daha kısa bir parola seçin (en fazla 72 karakter)",
   "app.errors.too_short": "Lütfen en az 8 karakter uzunluğunda bir parola seçin",
+  "app.errors.uncaught_error": "Bilinmeyen bir hata oluştu.",
   "app.errors.unknown_group": "{row} satırında bulunan {value} grubu bilinen bir grup değil",
   "app.errors.unknown_locale": "{row} satırında bulunan {value} dili yapılandırılmış bir dil değil",
   "app.errors.unparseable_excel": "Seçilen Excel dosyası işlenemedi.",
