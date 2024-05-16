@@ -72,10 +72,10 @@ module UserConfirmation
   def set_confirmation_required
     return unless new_record? && email_changed?
 
-    confirmation_not_required = sso? || invite_status.present? || active?
+    return unless confirmation_required
+
+    confirmation_not_required = invite_status.present? || active?
     self.confirmation_required = !confirmation_not_required
-    self.email_confirmed_at = nil
-    self.email_confirmation_code_sent_at = nil
   end
 
   def confirm_new_email
