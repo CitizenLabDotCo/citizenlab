@@ -1757,6 +1757,7 @@
   "app.errors.too_common": "Esta contraseña es fácil de adivinar. Por favor, elige una contraseña más fuerte.",
   "app.errors.too_long": "La contraseña debe tener al menos 72 caracteres",
   "app.errors.too_short": "La contraseña debe tener al menos 8 caracteres",
+  "app.errors.uncaught_error": "Se ha producido un error desconocido.",
   "app.errors.unknown_group": "El grupo {value} en la fila {row} no es un grupo conocido",
   "app.errors.unknown_locale": "El idioma {value} en la fila {row} no es un idioma configurado",
   "app.errors.unparseable_excel": "El archivo de Excel seleccionado podría no ser procesado.",
