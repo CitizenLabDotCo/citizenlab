@@ -590,6 +590,7 @@
   "app.containers.Admin.Users.confirmSetManagerAsNormalUserQuestion": "Да ли сте сигурни да желите да поставите {name} као обичан корисник? Имајте на уму да ће изгубити права менаџера за све пројекте и фасцикле којима су додељени након потврде.",
   "app.containers.Admin.Users.deleteUser": "Obrišite ovog korisnika",
   "app.containers.Admin.Users.email": "Е-pošta",
+  "app.containers.Admin.Users.folder": "Folder",
   "app.containers.Admin.Users.folderManager": "Menadžer fascikle",
   "app.containers.Admin.Users.helmetDescription": "Korisnici u admin listi",
   "app.containers.Admin.Users.helmetTitle": "Admin - korisnički panel",
