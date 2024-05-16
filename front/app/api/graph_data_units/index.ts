@@ -77,6 +77,21 @@ export const useVisitors = (
   );
 };
 
+export const useVisitorsLive = (
+  props: VisitorsProps,
+  { onSuccess }: { onSuccess?: () => void }
+) => {
+  return useGraphDataUnitsLive<VisitorsResponse>(
+    {
+      resolved_name: 'VisitorsWidget',
+      props,
+    },
+    {
+      onSuccess,
+    }
+  );
+};
+
 export const useVisitorsTrafficSources = (
   props: VisitorsTrafficSourcesProps
 ) => {
