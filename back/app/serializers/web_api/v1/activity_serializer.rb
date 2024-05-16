@@ -7,6 +7,10 @@ class WebApi::V1::ActivitySerializer < WebApi::V1::BaseSerializer
     object.item_type.demodulize.downcase
   end
 
+  attribute :item_slug do |object|
+    object&.item&.try(:slug)
+  end
+
   attribute :change do |object|
     object.payload&.dig('change')
   end
