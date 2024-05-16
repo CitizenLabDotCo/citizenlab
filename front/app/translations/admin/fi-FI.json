@@ -590,6 +590,7 @@
   "app.containers.Admin.Users.confirmSetManagerAsNormalUserQuestion": "Haluatko varmasti asettaa {name} tavalliseksi käyttäjäksi? Huomaa, että he menettävät hallinnoijan oikeudet kaikkiin projekteihin ja kansioihin, jotka heille on vahvistettu vahvistuksen yhteydessä.",
   "app.containers.Admin.Users.deleteUser": "Poista käyttäjä",
   "app.containers.Admin.Users.email": "Sähköposti",
+  "app.containers.Admin.Users.folder": "Kansio",
   "app.containers.Admin.Users.folderManager": "Kansionhallinta",
   "app.containers.Admin.Users.helmetDescription": "Käyttäjälista järjestelmänvalvojassa",
   "app.containers.Admin.Users.helmetTitle": "Järjestelmänvalvoja - käyttäjien kojelauta",
