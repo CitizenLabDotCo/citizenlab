@@ -1,6 +1,11 @@
 import { round } from 'lodash-es';
 import moment, { Moment } from 'moment';
 
+import {
+  VisitorsResponse,
+  TimeSeriesResponseRow,
+} from 'api/graph_data_units/responseTypes/VisitorsWidget';
+
 import { IResolution } from 'components/admin/ResolutionControl';
 
 import { keys, get } from 'utils/helperUtils';
@@ -9,13 +14,7 @@ import { RESOLUTION_TO_MESSAGE_KEY } from '../../_utils/resolution';
 import { timeSeriesParser } from '../../_utils/timeSeries';
 
 import { Translations } from './translations';
-import {
-  Response,
-  Stats,
-  TimeSeries,
-  TimeSeriesResponseRow,
-  TimeSeriesRow,
-} from './typings';
+import { Stats, TimeSeries, TimeSeriesRow } from './typings';
 
 export const getEmptyRow = (date: Moment) => ({
   date: date.format('YYYY-MM-DD'),
@@ -40,7 +39,7 @@ const getDate = (row: TimeSeriesResponseRow) => {
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
 
 export const parseTimeSeries = (
-  responseTimeSeries: Response['data']['attributes'][0],
+  responseTimeSeries: VisitorsResponse['data']['attributes'][0],
   startAtMoment: Moment | null | undefined,
   endAtMoment: Moment | null,
   resolution: IResolution
@@ -57,9 +56,9 @@ export const parseStats = ([
   _,
   totalsWholePeriodRows,
   totalsLastPeriodRows,
-]: Response['data']['attributes']): Stats => {
+]: VisitorsResponse['data']['attributes']): Stats => {
   const wholePeriod = totalsWholePeriodRows[0];
-  const lastPeriod = totalsLastPeriodRows[0];
+  const lastPeriod = totalsLastPeriodRows?.[0];
 
   return {
     visitors: {
