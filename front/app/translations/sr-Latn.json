@@ -1757,6 +1757,7 @@
   "app.errors.too_common": "Ovu lozinku je moguće lako pogoditi. Molimo vas izaberite snažniju lozinku.",
   "app.errors.too_long": "Molimo odaberite kraću lozinku (najviše 72 znaka)",
   "app.errors.too_short": "Izaberite lozinku sa najmanje 8 znakova",
+  "app.errors.uncaught_error": "An unknown error occurred.",
   "app.errors.unknown_group": "Grupa {value} pronađena u redu {row} nije poznata grupa",
   "app.errors.unknown_locale": "Jezik {value} pronađen u redu {row} nije konfigurisani jezik",
   "app.errors.unparseable_excel": "Odabrana Excel datoteka nije mogla da se obradi.",
