@@ -14,7 +14,7 @@ class WebApi::V1::ActivitiesController < ApplicationController
     when '-acted_at'
       @activities.order(acted_at: :desc)
     when nil
-      @activities.order(acted_at: :desc)
+      @activities
     else
       raise 'Unsupported sort method'
     end
