@@ -23,7 +23,7 @@ import {
   isCLErrorsWrapper,
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
-import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
+import { isValidEmail } from 'utils/validate';
 
 import containerMessages from '../../messages';
 import tracks from '../../tracks';
@@ -76,25 +76,13 @@ const EmailAndPassword = ({
   const appConfigSettings = appConfiguration?.data.attributes.settings;
   const tokenLifetime =
     appConfigSettings?.core.authentication_token_lifetime_in_days;
-  const phoneLoginEnabled = !!appConfigSettings?.password_login?.phone;
 
   const { formatMessage } = useIntl();
 
-  const emailSchema = phoneLoginEnabled
-    ? string()
-        .required(formatMessage(sharedMessages.emailOrPhoneMissingError))
-        .test(
-          '',
-          formatMessage(sharedMessages.emailOrPhoneNumberError),
-          (value) => {
-            if (value === undefined) return false;
-            return isValidEmail(value) || isValidPhoneNumber(value);
-          }
-        )
-    : string()
-        .required(formatMessage(sharedMessages.emailMissingError))
-        .email(formatMessage(sharedMessages.emailFormatError))
-        .test('', formatMessage(sharedMessages.emailFormatError), isValidEmail);
+  const emailSchema = string()
+    .required(formatMessage(sharedMessages.emailMissingError))
+    .email(formatMessage(sharedMessages.emailFormatError))
+    .test('', formatMessage(sharedMessages.emailFormatError), isValidEmail);
 
   const schema = object({
     email: emailSchema,
@@ -137,11 +125,7 @@ const EmailAndPassword = ({
               id="email"
               type="email"
               autocomplete="email"
-              label={
-                phoneLoginEnabled
-                  ? formatMessage(sharedMessages.emailOrPhone)
-                  : formatMessage(sharedMessages.email)
-              }
+              label={formatMessage(sharedMessages.email)}
             />
           </Box>
           <Box id="e2e-password-container" mt="16px">
