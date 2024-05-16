@@ -871,7 +871,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Autor*in:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.disabledPDFImportTooltip": "Der Import von PDF-Dateien gescannter Formulare ist Teil der Premium-Lizenz. Wenden Sie sich an Ihre Kundnebetreuerin, um mehr darüber zu erfahren.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "E-Mail-Adresse:",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImporting1": "Während des Imports ist ein Fehler aufgetreten. Bitte überprüfen Sie die importierten Beiträge und importieren Sie die fehlenden Beiträge erneut.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Ungültige Formulardaten. Überprüfen Sie das Formular oben auf Fehler.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "Excel-Datei importieren (.xlsx)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "Importieren",

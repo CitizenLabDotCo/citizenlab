@@ -871,7 +871,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Forfatter:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.disabledPDFImportTooltip": "Import av PDF-filer av skannede skjemaer er en del av premiumlisensen. Ta kontakt med GovSuccess Manager for å lære mer om det.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "E-post:",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImporting1": "Det oppstod en feil under importen. Vennligst sjekk de importerte varene og importer alle som mangler på nytt.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Ugyldige skjemadata. Sjekk skjemaet ovenfor for feil.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "Importer Excel-fil (.xlsx)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "Import",
