@@ -610,6 +610,7 @@
   "app.containers.Admin.Users.seeProfile": "Δείτε το προφίλ",
   "app.containers.Admin.Users.setAsAdmin": "Ορισμός ως διαχειριστής",
   "app.containers.Admin.Users.setAsNormalUser": "Ορισμός ως κανονικός χρήστης",
+  "app.containers.Admin.Users.setAsProjectManager": "Ορισμός ως διαχειριστής έργου",
   "app.containers.Admin.Users.userBlockModal.allDone": "Όλα έτοιμα",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Αποκλεισμός χρήστη",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "Το περιεχόμενο αυτού του χρήστη δεν θα αφαιρεθεί μέσω αυτής της ενέργειας. Μην ξεχάσετε να μετριάσετε το περιεχόμενό του αν χρειαστεί.",
