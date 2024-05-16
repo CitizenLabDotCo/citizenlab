@@ -1757,6 +1757,7 @@
   "app.errors.too_common": "Det er for nemt at gætte",
   "app.errors.too_long": "Må maximum være 72 karakterer langt",
   "app.errors.too_short": "Adgangskoden skal være på mindst 8 tegn",
+  "app.errors.uncaught_error": "Der opstod en ukendt fejl.",
   "app.errors.unknown_group": "Gruppen {value} fundet i række {row} er ikke en kendt gruppe",
   "app.errors.unknown_locale": "Sproget {value} fundet i række {row} er ikke et konfigureret sprog",
   "app.errors.unparseable_excel": "Den valgte Excel-fil kunne ikke behandles",
