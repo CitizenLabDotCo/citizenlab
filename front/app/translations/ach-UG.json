@@ -1757,6 +1757,7 @@
   "app.errors.too_common": "crwdns215940:0crwdne215940:0",
   "app.errors.too_long": "crwdns215942:0crwdne215942:0",
   "app.errors.too_short": "crwdns215944:0crwdne215944:0",
+  "app.errors.uncaught_error": "crwdns2245858:0crwdne2245858:0",
   "app.errors.unknown_group": "crwdns215946:0{value}crwdnd215946:0{row}crwdne215946:0",
   "app.errors.unknown_locale": "crwdns215948:0{value}crwdnd215948:0{row}crwdne215948:0",
   "app.errors.unparseable_excel": "crwdns215950:0crwdne215950:0",
