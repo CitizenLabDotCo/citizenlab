@@ -610,6 +610,7 @@
   "app.containers.Admin.Users.seeProfile": "Katso profiili",
   "app.containers.Admin.Users.setAsAdmin": "Aseta järjestelmänvalvojaksi",
   "app.containers.Admin.Users.setAsNormalUser": "Aseta tavalliseksi käyttäjäksi",
+  "app.containers.Admin.Users.setAsProjectManager": "Aseta projektipäälliköksi",
   "app.containers.Admin.Users.userBlockModal.allDone": "Valmista",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Estä käyttäjä",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "Tämän käyttäjän sisältöä ei poisteta tällä toiminnolla. Älä unohda moderoida niiden sisältöä tarvittaessa.",
