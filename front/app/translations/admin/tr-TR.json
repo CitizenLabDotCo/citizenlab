@@ -590,6 +590,7 @@
   "app.containers.Admin.Users.confirmSetManagerAsNormalUserQuestion": "{name} adresini normal bir kullanıcı olarak ayarlamak istediğinizden emin misiniz? Lütfen onaylandığında atandıkları tüm proje ve klasörlerin yönetici haklarını kaybedeceklerini unutmayın.",
   "app.containers.Admin.Users.deleteUser": "Kullanıcıyı sil",
   "app.containers.Admin.Users.email": "E-posta",
+  "app.containers.Admin.Users.folder": "Klasör",
   "app.containers.Admin.Users.folderManager": "Klasör yöneticisi",
   "app.containers.Admin.Users.helmetDescription": "Yöneticide kullanıcı listesi",
   "app.containers.Admin.Users.helmetTitle": "Yönetici - kullanıcılar panosu",
