@@ -76,7 +76,7 @@ class QueJob < Que::ActiveRecord::Model
 
       # Additional error values are separated by '##' - See BulkImportIdeas::Error
       split_error_params = last_error_string&.split('##')
-      if split_error_params&.length > 1
+      if split_error_params&.length&.> 1
         { error: split_error_params[0], value: split_error_params[1], row: split_error_params[2] }
       else
         { error: split_error_params[0] }
