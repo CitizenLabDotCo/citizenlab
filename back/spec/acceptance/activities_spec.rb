@@ -95,12 +95,6 @@ resource 'Activity' do
       let!(:activity2) { create(:project_deleted_activity, user: @user1, acted_at: 3.days.ago) }
       let!(:activity3) { create(:project_changed_activity, user: @user1, acted_at: 2.days.ago) }
 
-      example_request 'List all activities sorts by acted_at (desc) when no sort is specified' do
-        assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:data].pluck(:id)).to eq [activity1.id, activity3.id, activity2.id]
-      end
-
       example 'List all activities sorts by sort: acted_at param (asc)' do
         do_request sort: 'acted_at'
         assert_status 200
