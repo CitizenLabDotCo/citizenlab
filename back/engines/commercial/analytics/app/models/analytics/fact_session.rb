@@ -10,6 +10,7 @@
 #
 module Analytics
   class FactSession < Analytics::ApplicationRecord
+    self.primary_key = :id
     belongs_to :dimension_user, class_name: 'Analytics::DimensionUser', optional: true
     belongs_to :dimension_date_created, class_name: 'Analytics::DimensionDate', primary_key: 'date'
     belongs_to :dimension_date_updated, class_name: 'Analytics::DimensionDate', primary_key: 'date'
