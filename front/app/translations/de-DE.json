@@ -1907,7 +1907,7 @@
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsPreferredOptions2": "Wählen Sie Ihre bevorzugten Optionen, indem Sie auf \"Auswählen\" klicken.",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalVotes": "Sie haben insgesamt <b>{totalVotes} {voteTerm}, die Sie auf {optionCount} Optionen</b> aufteilen können.",
   "app.utils.votingMethodUtils.finalResults": "Endgültige Ergebnisse",
-  "app.utils.votingMethodUtils.finalTally": "Finale Zählung",
+  "app.utils.votingMethodUtils.finalTally": "Endergebnis",
   "app.utils.votingMethodUtils.howToParticipate": "So nehmen Sie teil",
   "app.utils.votingMethodUtils.howToVote": "Wie man abstimmt",
   "app.utils.votingMethodUtils.midSentenceVote": "Stimme",
