@@ -576,7 +576,7 @@
   "app.containers.Admin.Users.GroupsPanel.admins": "Platformbeheerders",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Geregistreerde gebruikers",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Groepen",
-  "app.containers.Admin.Users.GroupsPanel.managers": "Projectmanagers",
+  "app.containers.Admin.Users.GroupsPanel.managers": "Projectbeheerders",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Toegewezen items",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Beheer alle gebruikers op je platform. Maak handmatige of slimme groepen aan om hen te segmenteren.",
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "Uitnodiging in behandeling",
