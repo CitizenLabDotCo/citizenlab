@@ -1756,6 +1756,7 @@
   "app.errors.too_common": "يمكن تخمين كلمة المرور هذه بسهولة. اختر رجاءً كلمة مرور أقوى.",
   "app.errors.too_long": "يُرجى اختيار كلمة مرور أقصر (لا تتجاوز الـ 72 حرفًا)",
   "app.errors.too_short": "يُرجى اختيار كلمة مرور بطول لا يقل عن 8 أحرف",
+  "app.errors.uncaught_error": "حدث خطأ غير معروف.",
   "app.errors.unknown_group": "المجموعة {value} التي تم العثور عليها في الصف {row} ليست مجموعة معروفة",
   "app.errors.unknown_locale": "اللغة {value} التي تم العثور عليها في الصف {row} هي لغة لم تتم تهيئتها",
   "app.errors.unparseable_excel": "تعذرت معالجة ملف إكسل المحدد.",
