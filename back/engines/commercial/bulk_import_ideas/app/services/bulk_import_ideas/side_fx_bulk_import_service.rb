@@ -12,8 +12,8 @@ module BulkImportIdeas
       end
     end
 
-    def after_failure(user, phase, model, format)
-      options = { payload: { model: model, format: format } }
+    def after_failure(user, phase, model, format, error)
+      options = { payload: { model: model, format: format, error: error } }
       activity_object = phase
       LogActivityJob.perform_later activity_object, 'bulk_import_failed', user, Time.now.to_i, options
     end

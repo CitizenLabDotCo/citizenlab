@@ -871,7 +871,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "مؤلف:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.disabledPDFImportTooltip": "يعد استيراد ملفات PDF للنماذج الممسوحة ضوئيًا جزءًا من الترخيص المميز. تواصل مع مدير GovSuccess الخاص بك لمعرفة المزيد حول هذا الموضوع.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "بريد إلكتروني:",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImporting1": "حدث خطأ أثناء الاستيراد. الرجاء التحقق من العناصر المستوردة وإعادة استيراد العناصر المفقودة.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "بيانات النموذج غير صالحة. تحقق من النموذج أعلاه بحثًا عن الأخطاء.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "استيراد ملف Excel (.xlsx)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "يستورد",

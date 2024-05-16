@@ -871,7 +871,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Autor:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.disabledPDFImportTooltip": "Importowanie plików PDF zeskanowanych formularzy jest częścią licencji premium. Skontaktuj się ze swoim GovSuccess Managerem, aby dowiedzieć się więcej na ten temat.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "Email:",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImporting1": "Podczas importu wystąpił błąd. Sprawdź zaimportowane elementy i zaimportuj ponownie te, których brakuje.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Nieprawidłowe dane formularza. Sprawdź powyższy formularz pod kątem błędów.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "Importuj plik Excel (.xlsx)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "Import",
