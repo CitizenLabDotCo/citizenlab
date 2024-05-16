@@ -1757,6 +1757,7 @@
   "app.errors.too_common": "Hasło jest zbyt łatwe do odgadnięcia. Wybierz mocniejsze hasło.",
   "app.errors.too_long": "Hasło musi mieć co najwyżej 72 znaki",
   "app.errors.too_short": "Hasło musi mieć długość co najmniej 8 znaków",
+  "app.errors.uncaught_error": "Wystąpił nieznany błąd.",
   "app.errors.unknown_group": "Grupa {value} znajdująca się w rzędzie {row} nie jest znaną grupą",
   "app.errors.unknown_locale": "Język {value} znajdujący się w wierszu {row} nie jest skonfigurowany",
   "app.errors.unparseable_excel": "Wybrany plik Excela nie mógł zostać przetworzony.",

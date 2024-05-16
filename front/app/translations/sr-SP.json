@@ -1757,6 +1757,7 @@
   "app.errors.too_common": "Ова лозинка се може лако погодити. Изаберите јачу лозинку.",
   "app.errors.too_long": "Изаберите краћу лозинку (максимално 72 знака)",
   "app.errors.too_short": "Изаберите лозинку са најмање 8 знакова",
+  "app.errors.uncaught_error": "An unknown error occurred.",
   "app.errors.unknown_group": "Група {value} која се налази у реду {row} није позната група",
   "app.errors.unknown_locale": "Језик {value} који се налази у реду {row} није конфигурисани језик",
   "app.errors.unparseable_excel": "Није могуће обрадити изабрану Екцел датотеку.",

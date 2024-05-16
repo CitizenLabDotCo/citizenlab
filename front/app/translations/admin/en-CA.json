@@ -871,6 +871,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Author:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.disabledPDFImportTooltip": "Importing PDF files of scanned forms is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "Email:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Errors occurred during the import and some inputs have not imported. Please correct the errors and re-import any missing inputs.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Invalid form data. Check the form above for errors.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "Import Excel file (.xlsx)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "Import",

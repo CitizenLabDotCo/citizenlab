@@ -1757,6 +1757,7 @@
   "app.errors.too_common": "Dëst Passwuert ass liicht ze erroden. Wielt wgl. e méi séchert Passwuert.",
   "app.errors.too_long": "Wielt wgl. e méi kuerzt Passwuert (max 72 Zeechen)",
   "app.errors.too_short": "Wielt wgl. e Passwuert mat mindestens 8 Zeechen",
+  "app.errors.uncaught_error": "En onbekannte Feeler ass geschitt.",
   "app.errors.unknown_group": "De Grupp {value}, aus der Rei {row} , ass onbekannt",
   "app.errors.unknown_locale": "D’Sprooch {value}, aus der Rei {row}, ass keng konfiguréiert Sprooch",
   "app.errors.unparseable_excel": "Déi ausgewielten Excel-Datei kann net beaarbecht ginn.",

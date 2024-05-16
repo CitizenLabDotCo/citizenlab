@@ -1757,6 +1757,7 @@
   "app.errors.too_common": "Dit wachtwoord is makkelijk te raden. Kies een sterker wachtwoord.",
   "app.errors.too_long": "Het wachtwoord mag maximaal 72 tekens lang zijn",
   "app.errors.too_short": "Het wachtwoord moet minstens 8 tekens lang zijn",
+  "app.errors.uncaught_error": "Er is een onbekende fout opgetreden.",
   "app.errors.unknown_group": "De groep {value} in rij {row} is geen geldige groep",
   "app.errors.unknown_locale": "De {value} van de taal in rij {row} is geen geconfigureerde taal",
   "app.errors.unparseable_excel": "Het geselecteerde Excel-bestand kan niet worden verwerkt.",

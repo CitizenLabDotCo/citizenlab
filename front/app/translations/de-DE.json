@@ -1757,6 +1757,7 @@
   "app.errors.too_common": "Ihr Passwort ist zu leicht zu erraten. Bitte wählen Sie ein stärkeres Passwort.",
   "app.errors.too_long": "Das Passwort darf höchstens 72 Zeichen lang sein",
   "app.errors.too_short": "Bitte wählen Sie ein Passwort mit mindestens 8 Zeichen",
+  "app.errors.uncaught_error": "Ein unbekannter Fehler ist aufgetreten.",
   "app.errors.unknown_group": "Die Gruppe {value} in der Zeile {row} ist ungültig oder unbekannt.",
   "app.errors.unknown_locale": "Die Sprache {value} in der Zeile {row} ist derzeit nicht konfiguriert.",
   "app.errors.unparseable_excel": "Die ausgewählte Datei konnte nicht verarbeitet werden.",
