@@ -4,9 +4,10 @@ import moment from 'moment';
 
 import { useVisitors as useVisitorsData } from 'api/graph_data_units';
 
+import { parseTimeSeries } from 'components/admin/GraphCards/VisitorsCard/useVisitors/parse';
 import { IResolution } from 'components/admin/ResolutionControl';
 
-import { parseStats, parseTimeSeries } from './parse';
+import { parseStats } from './parse';
 import { QueryParameters } from './typings';
 
 export default function useVisitors({
