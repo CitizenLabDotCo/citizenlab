@@ -26,14 +26,14 @@ const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
   if (!row) return getEmptyRow(date);
 
   return {
-    visitors: row.count_visitor_id,
+    visitors: row.count_monthly_user_hash,
     visits: row.count,
     date: date.format('YYYY-MM-DD'),
   };
 };
 
 const getDate = (row: TimeSeriesResponseRow) => {
-  return moment(get(row, 'first_dimension_date_first_action_date'));
+  return moment(get(row, 'first_dimension_date_created_date'));
 };
 
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
@@ -52,22 +52,24 @@ export const parseTimeSeries = (
   );
 };
 
-export const parseStats = ([
-  _,
-  totalsWholePeriodRows,
-  totalsLastPeriodRows,
-]: VisitorsResponse['data']['attributes']): Stats => {
-  const wholePeriod = totalsWholePeriodRows[0];
-  const lastPeriod = totalsLastPeriodRows?.[0];
+export const parseStats = (
+  attributes: VisitorsResponse['data']['attributes']
+): Stats => {
+  const sessionTotalsWholePeriodRows = attributes[1][0];
+  const sessionTotalsLastPeriodRows = attributes[3]?.[0];
 
   return {
     visitors: {
-      value: wholePeriod?.count_visitor_id.toLocaleString() ?? '0',
-      lastPeriod: lastPeriod?.count_visitor_id.toLocaleString() ?? '0',
+      value:
+        sessionTotalsWholePeriodRows?.count_monthly_user_hash.toLocaleString() ??
+        '0',
+      lastPeriod:
+        sessionTotalsLastPeriodRows?.count_monthly_user_hash.toLocaleString() ??
+        '0',
     },
     visits: {
-      value: wholePeriod?.count.toLocaleString() ?? '0',
-      lastPeriod: lastPeriod?.count.toLocaleString() ?? '0',
+      value: sessionTotalsWholePeriodRows?.count.toLocaleString() ?? '0',
+      lastPeriod: sessionTotalsLastPeriodRows?.count.toLocaleString() ?? '0',
     },
     visitDuration: {
       value: parseVisitDuration(wholePeriod?.avg_duration),
