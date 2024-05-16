@@ -590,6 +590,7 @@
   "app.containers.Admin.Users.confirmSetManagerAsNormalUserQuestion": "Είστε σίγουροι ότι θέλετε να ορίσετε το {name} ως κανονικό χρήστη; Λάβετε υπόψη ότι θα χάσει τα δικαιώματα διαχειριστή σε όλα τα έργα και τους φακέλους που του έχουν ανατεθεί κατά την επιβεβαίωση.",
   "app.containers.Admin.Users.deleteUser": "Διαγραφή χρήστη",
   "app.containers.Admin.Users.email": "Email",
+  "app.containers.Admin.Users.folder": "Φάκελος",
   "app.containers.Admin.Users.folderManager": "Διαχειριστής φακέλων",
   "app.containers.Admin.Users.helmetDescription": "Λίστα χρηστών στο διαχειριστή",
   "app.containers.Admin.Users.helmetTitle": "Διαχειριστής - πίνακας εργαλείων χρηστών",
