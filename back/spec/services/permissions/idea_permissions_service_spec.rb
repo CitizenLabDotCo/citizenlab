@@ -423,7 +423,7 @@ describe Permissions::IdeaPermissionsService do
         ideas.each do |idea|
           service.action_descriptors(idea, user)
         end
-      end.not_to exceed_query_limit(86) # Down from an original 470
+      end.not_to exceed_query_limit(86) # Down from an original 486
     end
   end
 end
