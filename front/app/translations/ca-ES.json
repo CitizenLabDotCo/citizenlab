@@ -1756,6 +1756,7 @@
   "app.errors.too_common": "Aquesta contrasenya es pot endevinar fàcilment. Si us plau, trieu una contrasenya més segura.",
   "app.errors.too_long": "Si us plau, trieu una contrasenya més curta (màxim 72 caràcters)",
   "app.errors.too_short": "Si us plau, trieu una contrasenya amb almenys 8 caràcters",
+  "app.errors.uncaught_error": "S'ha produït un error desconegut.",
   "app.errors.unknown_group": "El grup {value} que es troba a la fila {row} no és un grup conegut",
   "app.errors.unknown_locale": "L'idioma {value} que es troba a la fila {row} no és un idioma configurat",
   "app.errors.unparseable_excel": "No s'ha pogut processar el fitxer Excel seleccionat.",
