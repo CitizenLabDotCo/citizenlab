@@ -181,7 +181,7 @@ const PoweredByText = styled.span`
 `;
 
 const GoVocalLink = styled.a`
-  width: 60px;
+  width: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -190,7 +190,7 @@ const GoVocalLink = styled.a`
 `;
 
 const GoVocalLogo = styled(Icon)`
-  height: 28px;
+  height: 32px;
   fill: ${colors.textSecondary};
   &:hover {
     fill: #000;
