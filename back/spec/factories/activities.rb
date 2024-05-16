@@ -13,6 +13,7 @@ FactoryBot.define do
     end
 
     factory :idea_created_activity do
+      association :item, factory: :idea
       action { 'created' }
     end
 

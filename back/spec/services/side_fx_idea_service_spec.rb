@@ -161,5 +161,20 @@ describe SideFxIdeaService do
           .to enqueue_job(LogActivityJob).exactly(1).times
       end
     end
+
+    it "logs an UpdateActivityJob for every 'created' or 'changed' activity for the idea when the idea is destroyed" do
+      idea = create(:idea)
+      create(:activity, item: idea, action: 'created')
+      create(:activity, item: idea, action: 'changed')
+      create(:activity, item: idea, action: 'changed')
+      create(:activity, item: idea, action: 'published')
+      create(:activity, item: idea, action: 'changed_status')
+
+      freeze_time do
+        frozen_idea = idea.destroy
+        expect { service.after_destroy(frozen_idea, user) }
+          .to enqueue_job(UpdateActivityJob).exactly(3).times
+      end
+    end
   end
 end
