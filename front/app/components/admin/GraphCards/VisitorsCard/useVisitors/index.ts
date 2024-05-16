@@ -20,15 +20,7 @@ export default function useVisitorsData({
   const { formatMessage } = useIntl();
   const [currentResolution, setCurrentResolution] =
     useState<IResolution>(resolution);
-  // const { data: analytics } = useAnalytics<Response>(
-  //   query({
-  //     projectId,
-  //     startAtMoment,
-  //     endAtMoment,
-  //     resolution,
-  //   }),
-  //   () => setCurrentResolution(resolution)
-  // );
+
   const { data: analytics } = useVisitorsLive(
     {
       start_at: startAtMoment?.toISOString(),
