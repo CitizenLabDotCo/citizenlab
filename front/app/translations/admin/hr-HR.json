@@ -610,6 +610,7 @@
   "app.containers.Admin.Users.seeProfile": "Pogledajte profil",
   "app.containers.Admin.Users.setAsAdmin": "Postavi kao administratora",
   "app.containers.Admin.Users.setAsNormalUser": "Postavi kao normalnog korisnika",
+  "app.containers.Admin.Users.setAsProjectManager": "Postavi kao voditelja projekta",
   "app.containers.Admin.Users.userBlockModal.allDone": "Gotovo",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Blokirati korisnika",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "Sadržaj ovog korisnika neće biti uklonjen ovom radnjom. Ne zaboravite moderirati njihov sadržaj ako je potrebno.",
