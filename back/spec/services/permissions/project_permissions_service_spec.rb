@@ -582,5 +582,35 @@ describe Permissions::ProjectPermissionsService do
         end
       end.not_to exceed_query_limit(90) # Down from an original 470
     end
+
+    it 'does not run more than 90 queries for 5 ideation projects with group based user permissions' do
+      user = create(:user)
+      group = create(:group)
+      user.groups << group
+      5.times do
+        phase = TimelineService.new.current_phase(create(:project_with_current_phase))
+        create(:permission, action: 'posting_idea', permission_scope: phase, permitted_by: 'groups', groups: [group])
+        create(:permission, action: 'commenting_idea', permission_scope: phase, permitted_by: 'groups', groups: [group])
+        create(:permission, action: 'reacting_idea', permission_scope: phase, permitted_by: 'groups', groups: [group])
+      end
+
+      # Load project with pre-loading as loaded by the controller
+      projects = Project.preload(
+        :project_images,
+        :areas,
+        :topics,
+        :content_builder_layouts,
+        phases: [:report, { permissions: [:groups] }], # :permissions
+        admin_publication: [:children]
+      )
+
+      # First check project length sure all the 'projects' queries are preloaded
+      expect(projects.length).to eq 5
+      expect do
+        projects.each do |project|
+          service.action_descriptors(project, user)
+        end
+      end.not_to exceed_query_limit(90) # Down from an original 470
+    end
   end
 end
