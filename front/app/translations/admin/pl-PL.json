@@ -590,6 +590,7 @@
   "app.containers.Admin.Users.confirmSetManagerAsNormalUserQuestion": "Czy na pewno chcesz ustawić {name} jako zwykłego użytkownika? Proszę pamiętać, że stracą oni prawa kierownika do wszystkich projektów i folderów, do których są przypisani w momencie potwierdzenia.",
   "app.containers.Admin.Users.deleteUser": "Usuń tego użytkownika",
   "app.containers.Admin.Users.email": "E-mail",
+  "app.containers.Admin.Users.folder": "Folder",
   "app.containers.Admin.Users.folderManager": "Menedżer folderów",
   "app.containers.Admin.Users.helmetDescription": "Lista użytkowników w panelu administracyjnym",
   "app.containers.Admin.Users.helmetTitle": "Admin - panel administracyjny",
