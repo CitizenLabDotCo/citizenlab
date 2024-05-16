@@ -83,9 +83,11 @@ class SideFxIdeaService
     serialized_idea = clean_time_attributes(frozen_idea.attributes)
     serialized_idea['location_point'] = serialized_idea['location_point'].to_s
 
-    Activity.where(item: frozen_idea).each do |activity|
-      UpdateActivityJob.perform_now(activity, 'idea', serialized_idea)
-    end
+    Activity.where(item: frozen_idea).where(action: 'created')
+      .or(Activity.where(item: frozen_idea).where(action: 'changed'))
+      .each do |activity|
+        UpdateActivityJob.perform_later(activity, 'idea', serialized_idea)
+      end
 
     LogActivityJob.perform_later(
       encode_frozen_resource(frozen_idea),
