@@ -82,12 +82,7 @@ class SideFxIdeaService
   def after_destroy(frozen_idea, user)
     serialized_idea = clean_time_attributes(frozen_idea.attributes)
     serialized_idea['location_point'] = serialized_idea['location_point'].to_s
-
-    Activity.where(item: frozen_idea).where(action: 'created')
-      .or(Activity.where(item: frozen_idea).where(action: 'changed'))
-      .each do |activity|
-        UpdateActivityJob.perform_later(activity, 'idea', serialized_idea)
-      end
+    update_activities_when_item_deleted(frozen_idea, serialized_idea, 'idea')
 
     LogActivityJob.perform_later(
       encode_frozen_resource(frozen_idea),
