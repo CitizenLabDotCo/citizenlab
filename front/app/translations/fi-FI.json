@@ -1756,6 +1756,7 @@
   "app.errors.too_common": "Tämä salasana on helppo arvata. Valitse vahvempi salasana.",
   "app.errors.too_long": "Valitse lyhyempi salasana (enintään 72 merkkiä)",
   "app.errors.too_short": "Valitse salasana, jossa on vähintään 8 merkkiä",
+  "app.errors.uncaught_error": "Tapahtui tuntematon virhe.",
   "app.errors.unknown_group": "Riviltä {row} löytynyt ryhmä {value} ei ole tunnettu ryhmä",
   "app.errors.unknown_locale": "Riviltä {row} löytyvä kieli {value} ei ole määritetty kieli",
   "app.errors.unparseable_excel": "Valittua Excel-tiedostoa ei voitu käsitellä.",
