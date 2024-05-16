@@ -21,7 +21,17 @@ FactoryBot.define do
     end
 
     factory :idea_deleted_activity do
+      association :item, factory: :idea
       action { 'deleted' }
+      payload do
+        {
+          idea: {
+            id: SecureRandom.uuid,
+            title_multiloc: { 'en' => 'title' },
+            body_multiloc: { 'en' => 'body' }
+          }
+        }
+      end
     end
 
     factory :idea_changed_status_activity do
@@ -113,6 +123,15 @@ FactoryBot.define do
     factory :project_deleted_activity do
       association :item, factory: :project
       action { 'deleted' }
+      payload do
+        {
+          project: {
+            id: SecureRandom.uuid,
+            title_multiloc: { 'en' => 'title' },
+            body_multiloc: { 'en' => 'body' }
+          }
+        }
+      end
     end
 
     factory :project_published_activity do
@@ -134,6 +153,15 @@ FactoryBot.define do
     factory :phase_deleted_activity do
       association :item, factory: :phase
       action { 'deleted' }
+      payload do
+        {
+          phase: {
+            id: SecureRandom.uuid,
+            title_multiloc: { 'en' => 'title' },
+            body_multiloc: { 'en' => 'body' }
+          }
+        }
+      end
     end
 
     factory :project_folder_created_activity do
@@ -150,6 +178,15 @@ FactoryBot.define do
     factory :project_folder_deleted_activity do
       association :item, factory: :project_folder
       action { 'deleted' }
+      payload do
+        {
+          project_folder: {
+            id: SecureRandom.uuid,
+            title_multiloc: { 'en' => 'title' },
+            body_multiloc: { 'en' => 'body' }
+          }
+        }
+      end
     end
   end
 end
