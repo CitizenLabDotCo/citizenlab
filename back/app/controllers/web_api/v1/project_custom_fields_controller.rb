@@ -20,8 +20,7 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
   end
 
   def phase
-    # TODO: JS - surely this will result in the same result?
-    @phase ||= TimelineService.new.current_phase_not_archived(project) || TimelineService.new.current_or_last_can_contain_ideas_phase(project)
+    @phase ||= TimelineService.new.current_or_last_can_contain_ideas_phase(project)
   end
 
   def input_term

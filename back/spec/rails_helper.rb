@@ -72,7 +72,6 @@ RSpec.configure do |config|
   config.include ActiveSupport::Testing::TimeHelpers
   config.include ApiAuthenticationHelper
   config.include ApiHelper
-  config.include AppConfigurationHelper
   config.include Base64Helper
   config.include GeneralHelper
   config.include RakeHelper
@@ -94,18 +93,3 @@ RSpec.configure do |config|
 end
 
 ActiveJob::Base.queue_adapter = :test
-
-# Helper method analyse performance by counting how many queries are executed in a particular block of code.
-def count_queries(&)
-  count = 0
-
-  counter_f = lambda { |_name, _started, _finished, _unique_id, payload|
-    unless payload[:name].in? %w[CACHE SCHEMA]
-      count += 1
-    end
-  }
-
-  ActiveSupport::Notifications.subscribed(counter_f, 'sql.active_record', &)
-
-  count
-end
