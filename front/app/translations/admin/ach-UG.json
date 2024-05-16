@@ -610,6 +610,7 @@
   "app.containers.Admin.Users.seeProfile": "crwdns2239614:0crwdne2239614:0",
   "app.containers.Admin.Users.setAsAdmin": "crwdns2239616:0crwdne2239616:0",
   "app.containers.Admin.Users.setAsNormalUser": "crwdns2239618:0crwdne2239618:0",
+  "app.containers.Admin.Users.setAsProjectManager": "crwdns2245346:0crwdne2245346:0",
   "app.containers.Admin.Users.userBlockModal.allDone": "crwdns2239620:0crwdne2239620:0",
   "app.containers.Admin.Users.userBlockModal.blockAction": "crwdns2239622:0crwdne2239622:0",
   "app.containers.Admin.Users.userBlockModal.blockInfo1": "crwdns2239624:0crwdne2239624:0",
