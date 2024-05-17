@@ -13,10 +13,18 @@ import Narrow from './Narrow';
 import Wide from './Wide';
 
 // Report specific version of <VisitorsCard/>
-const VisitorsCard = ({ startAt, endAt, resolution = 'month' }: Props) => {
+const VisitorsCard = ({
+  startAt,
+  endAt,
+  compareStartAt,
+  compareEndAt,
+  resolution = 'month',
+}: Props) => {
   const { currentResolution, stats, timeSeries } = useVisitors({
     startAt,
     endAt,
+    compareStartAt,
+    compareEndAt,
     resolution,
   });
 

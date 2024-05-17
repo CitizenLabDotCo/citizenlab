@@ -13,6 +13,8 @@ import { QueryParameters } from './typings';
 export default function useVisitors({
   startAt,
   endAt,
+  compareStartAt,
+  compareEndAt,
   resolution,
 }: QueryParameters) {
   const [currentResolution, setCurrentResolution] =
@@ -23,6 +25,8 @@ export default function useVisitors({
       start_at: startAt,
       end_at: endAt,
       resolution,
+      compare_start_at: compareStartAt,
+      compare_end_at: compareEndAt,
     },
     {
       onSuccess: () => setCurrentResolution(resolution),
