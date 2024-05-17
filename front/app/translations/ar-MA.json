@@ -1,4 +1,5 @@
 {
+  "EmailSettingsPage.emailSettings": "إعدادات البريد الإلكتروني",
   "EmailSettingsPage.initialUnsubscribeError": "حدث خطأ أثناء إلغاء الاشتراك في هذه الحملة، يُرجى المحاولة مجددًا.",
   "EmailSettingsPage.initialUnsubscribeLoading": "تتم معالجة طلبك، يُرجى الانتظار قليلا",
   "EmailSettingsPage.initialUnsubscribeSuccess": "تم إلغاء اشتراكك في {campaignTitle} بنجاح ",
@@ -1606,7 +1607,6 @@
   "app.containers.UsersShowPage.emptyInfoText": "أنت لا تتابع أي عناصر من الفلتر المحدد أعلاه.",
   "app.containers.UsersShowPage.eventsWithCount": "أحداث ({eventsCount})",
   "app.containers.UsersShowPage.followingWithCount": "متابعة ({followingCount})",
-  "app.containers.UsersShowPage.goBackToPreviousPage": "عد للصفحة السابقة",
   "app.containers.UsersShowPage.inputs": "المدخلات",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "جميع المنشورات التي قدّمها هذا المُشارك",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "كل التعليقات التي نُشرت بواسطة هذا المستخدم",
@@ -1627,7 +1627,6 @@
   "app.containers.UsersShowPage.seePost": "اعرض المنشور",
   "app.containers.UsersShowPage.topics": "المواضيع",
   "app.containers.UsersShowPage.tryAgain": "حدث خطأ ما، يُرجى المحاولة مجددًا في وقت لاحق.",
-  "app.containers.UsersShowPage.user404NotFound": "لم نتمكن من العثور على ملف تعريف هذا المستخدم. إذا كان موجود من قبل، فربما تم حذفه.",
   "app.containers.UsersShowPage.userShowPageMetaDescription": "هذه هي صفحة ملف المُستخدم {firstName} {lastName}  على منصة {orgName} للمُشاركة عبر الإنترنت. إليك لمحة عامة عن كل منشوراتهم.",
   "app.containers.VoteControl.close": "إغلاق ",
   "app.containers.VoteControl.voteErrorTitle": "حدث خطأ ما",
