@@ -242,7 +242,13 @@ const CLSurveyPageLayout = memo(
                   >
                     <Box display="flex" flexDirection="column">
                       {page.options.title && (
-                        <Title variant="h1" mb="8px" color="tenantPrimary">
+                        <Title
+                          as="h1"
+                          variant={isSmallerThanPhone ? 'h2' : 'h1'}
+                          m="0"
+                          mb="8px"
+                          color="tenantPrimary"
+                        >
                           {page.options.title}
                         </Title>
                       )}
