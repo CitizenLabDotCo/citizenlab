@@ -22,6 +22,7 @@ describe WebApi::V1::ActivitySerializer do
         serialized_idea = clean_time_attributes(idea.attributes)
         activity = create(:idea_created_activity, item: idea, payload: { idea: serialized_idea })
         idea.destroy!
+        expect(activity.reload&.item&.title_multiloc).to be_nil
 
         serialized_output = described_class.new(activity.reload).serializable_hash
         expect(serialized_output.dig(:data, :attributes, :item_title_multiloc)).to match expected_title
