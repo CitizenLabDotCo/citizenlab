@@ -1131,7 +1131,7 @@
   "app.containers.InitiativesIndexPage.header": "Post your proposal here and place it on the agenda of {styledOrgName}",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Explore proposals for {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Discover proposals",
-  "app.containers.InitiativesIndexPage.invisibleTitleProposalsCards": "All the proposals taking place",
+  "app.containers.InitiativesIndexPage.invisibleTitleProposalsCards1": "All proposals",
   "app.containers.InitiativesIndexPage.learnMoreAboutProposals": "Learn more about how proposals work.",
   "app.containers.InitiativesIndexPage.metaDescription2": "Explore and support proposals conducted",
   "app.containers.InitiativesIndexPage.metaTitle1": "All proposals | {orgName}",
