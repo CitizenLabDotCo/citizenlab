@@ -1,24 +1,18 @@
 import { VisitorsResponse } from 'api/graph_data_units/responseTypes/VisitorsWidget';
 
 import {
-  parsePageViews,
+  formatPageViews,
   formatVisitDuration,
 } from 'components/admin/GraphCards/VisitorsCard/useVisitors/parse';
 
 export const parseStats = (
   attributes: VisitorsResponse['data']['attributes']
 ) => {
-  const matomoVisitsWholePeriod = attributes[2][0];
-  const matomoVisitsComparedPeriod = attributes[4]?.[0];
-
   return {
     visitors: parseVisitors(attributes),
     visits: parseVisits(attributes),
     visitDuration: parseVisitDuration(attributes),
-    pageViews: {
-      value: parsePageViews(matomoVisitsWholePeriod?.avg_pages_visited),
-      lastPeriod: parsePageViews(matomoVisitsComparedPeriod?.avg_pages_visited),
-    },
+    pageViews: parsePageViews(attributes),
   };
 };
 
@@ -31,10 +25,7 @@ const parseVisitors = (attributes: VisitorsResponse['data']['attributes']) => {
   const visitorsTotalComparedPeriod =
     sessionTotalsComparedPeriod?.count_monthly_user_hash;
 
-  const delta =
-    visitorsTotalComparedPeriod === undefined
-      ? undefined
-      : visitorsWholePeriod - visitorsTotalComparedPeriod;
+  const delta = getDelta(visitorsWholePeriod, visitorsTotalComparedPeriod);
 
   return {
     value: visitorsWholePeriod,
@@ -49,10 +40,7 @@ const parseVisits = (attributes: VisitorsResponse['data']['attributes']) => {
   const visitsWholePeriod = sessionTotalsWholePeriod?.count ?? 0;
   const visitsTotalComparedPeriod = sessionTotalsComparedPeriod?.count;
 
-  const delta =
-    visitsTotalComparedPeriod === undefined
-      ? undefined
-      : visitsWholePeriod - visitsTotalComparedPeriod;
+  const delta = getDelta(visitsWholePeriod, visitsTotalComparedPeriod);
 
   return {
     value: visitsWholePeriod,
@@ -71,13 +59,31 @@ const parseVisitDuration = (
   const visitDurationComparedPeriod =
     Number(matomoVisitsComparedPeriod?.avg_duration) || undefined;
 
-  const delta =
-    visitDurationComparedPeriod === undefined
-      ? undefined
-      : visitDurationWholePeriod - visitDurationComparedPeriod;
+  const delta = getDelta(visitDurationWholePeriod, visitDurationComparedPeriod);
 
   return {
     value: formatVisitDuration(visitDurationWholePeriod),
     delta: delta === undefined ? undefined : formatVisitDuration(delta),
   };
+};
+
+const parsePageViews = (attributes: VisitorsResponse['data']['attributes']) => {
+  const matomoVisitsWholePeriod = attributes[2][0];
+  const matomoVisitsComparedPeriod = attributes[4]?.[0];
+
+  const pageViewsWholePeriod =
+    Number(matomoVisitsWholePeriod?.avg_pages_visited) || 0;
+  const pageViewsComparedPeriod =
+    Number(matomoVisitsComparedPeriod?.avg_pages_visited) || undefined;
+
+  const delta = getDelta(pageViewsWholePeriod, pageViewsComparedPeriod);
+
+  return {
+    value: formatPageViews(pageViewsWholePeriod),
+    delta: delta === undefined ? undefined : formatPageViews(delta),
+  };
+};
+
+const getDelta = (total: number, compared: number | undefined) => {
+  return compared === undefined ? undefined : total - compared;
 };

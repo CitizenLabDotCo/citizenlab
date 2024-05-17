@@ -111,9 +111,13 @@ export const parseExcelData = (
   };
 };
 
-export const parsePageViews = (pageViews: string | null | undefined) => {
+const parsePageViews = (pageViews: string | null | undefined) => {
   if (!pageViews) return '-';
-  return round(+pageViews, 2).toLocaleString();
+  return formatPageViews(+pageViews);
+};
+
+export const formatPageViews = (pageViews: number) => {
+  return round(pageViews, 2).toLocaleString();
 };
 
 const parseVisitDuration = (seconds: string | null | undefined) => {
@@ -122,5 +126,10 @@ const parseVisitDuration = (seconds: string | null | undefined) => {
 };
 
 export const formatVisitDuration = (seconds: number) => {
-  return new Date(seconds * 1000).toISOString().substring(11, 19);
+  const isNegative = seconds < 0;
+  const value = new Date(Math.abs(seconds) * 1000)
+    .toISOString()
+    .substring(11, 19);
+
+  return isNegative ? `-${value}` : value;
 };
