@@ -52,7 +52,7 @@ const TopBar = memo<Props>(
         mb="28px"
         flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
       >
-        <Title color={'tenantText'} m="0px" my="auto" variant="h3" as="h1">
+        <Title color="tenantText" m="0px" my="auto" as="h2">
           {title}
         </Title>
         <ProjectFilterDropdownPositioner>
