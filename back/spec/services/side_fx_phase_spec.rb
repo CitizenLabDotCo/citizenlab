@@ -97,12 +97,16 @@ describe SideFxPhaseService do
       end
     end
 
-    it "logs an UpdateActivityJob for every 'created' or 'changed' activity for the phase when phase is destroyed" do
-      create(:activity, item: phase, action: 'created')
-      create(:activity, item: phase, action: 'changed')
-      create(:activity, item: phase, action: 'changed')
-      create(:activity, item: phase, action: 'changed_voting_method')
-      create(:activity, item: phase, action: 'changed_description_multiloc')
+    it "logs an UpdateActivityJob for every 'Management Feed' activity for the phase when the phase is destroyed" do
+      admin = create(:admin)
+      create(:activity, item: phase, user: admin, acted_at: 1.day.ago, action: 'created')
+      create(:activity, item: phase, user: admin, acted_at: 1.day.ago, action: 'changed')
+      create(:activity, item: phase, user: admin, acted_at: 1.day.ago, action: 'changed')
+      create(:activity, item: phase, user: create(:user), acted_at: 1.day.ago, action: 'changed')
+      create(:activity, item: create(:phase), user: admin, acted_at: 1.day.ago, action: 'changed')
+      create(:activity, item: phase, user: admin, acted_at: 31.days.ago, action: 'changed')
+      create(:activity, item: phase, user: admin, acted_at: 1.day.ago, action: 'changed_voting_method')
+      create(:activity, item: phase, user: admin, acted_at: 1.day.ago, action: 'changed_description_multiloc')
 
       freeze_time do
         frozen_phase = phase.destroy

@@ -57,10 +57,14 @@ describe ProjectFolders::SideFxProjectFolderService do
     end
 
     it "logs an UpdateActivityJob for every 'created' or 'changed' activity for the folder when folder is destroyed" do
-      create(:activity, item: project_folder, action: 'created')
-      create(:activity, item: project_folder, action: 'changed')
-      create(:activity, item: project_folder, action: 'changed')
-      create(:activity, item: project_folder, action: 'another_action')
+      admin = create(:admin)
+      create(:activity, item: project_folder, user: admin, acted_at: 1.day.ago, action: 'created')
+      create(:activity, item: project_folder, user: admin, acted_at: 1.day.ago, action: 'changed')
+      create(:activity, item: project_folder, user: admin, acted_at: 1.day.ago, action: 'changed')
+      create(:activity, item: project_folder, user: admin, acted_at: 31.days.ago, action: 'changed')
+      create(:activity, item: project_folder, user: create(:user), acted_at: 1.day.ago, action: 'changed')
+      create(:activity, item: create(:project_folder), user: admin, acted_at: 1.day.ago, action: 'changed')
+      create(:activity, item: project_folder, user: admin, acted_at: 1.day.ago, action: 'another_action')
 
       freeze_time do
         frozen_project_folder = project_folder.destroy

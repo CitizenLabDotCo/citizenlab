@@ -162,13 +162,17 @@ describe SideFxIdeaService do
       end
     end
 
-    it "logs an UpdateActivityJob for every 'created' or 'changed' activity for the idea when the idea is destroyed" do
+    it "logs an UpdateActivityJob for every 'Management Feed' activity for the idea when the idea is destroyed" do
       idea = create(:idea)
-      create(:activity, item: idea, action: 'created')
-      create(:activity, item: idea, action: 'changed')
-      create(:activity, item: idea, action: 'changed')
-      create(:activity, item: idea, action: 'published')
-      create(:activity, item: idea, action: 'changed_status')
+      admin = create(:admin)
+      create(:activity, item: idea, user: admin, acted_at: 1.day.ago, action: 'created')
+      create(:activity, item: idea, user: admin, acted_at: 1.day.ago, action: 'changed')
+      create(:activity, item: idea, user: admin, acted_at: 1.day.ago, action: 'changed')
+      create(:activity, item: idea, user: admin, acted_at: 31.days.ago, action: 'changed')
+      create(:activity, item: idea, user: create(:user), acted_at: 1.day.ago, action: 'changed')
+      create(:activity, item: create(:idea), user: admin, acted_at: 1.day.ago, action: 'changed')
+      create(:activity, item: idea, user: admin, acted_at: 1.day.ago, action: 'published')
+      create(:activity, item: idea, user: admin, acted_at: 1.day.ago, action: 'changed_status')
 
       freeze_time do
         frozen_idea = idea.destroy
