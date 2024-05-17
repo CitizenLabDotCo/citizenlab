@@ -11,12 +11,12 @@ import Statistic from 'components/admin/Graphs/Statistic';
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-import NoData from '../../_shared/NoData';
-import messages from '../messages';
+import NoData from '../../../_shared/NoData';
+import messages from '../../messages';
+import { Props } from '../typings';
+import useVisitors from '../useVisitors';
 
 import Chart from './Chart';
-import { Props } from './typings';
-import useVisitors from './useVisitors';
 
 // Report specific version of <VisitorsCard/>
 const VisitorsCard = ({ startAt, endAt, resolution = 'month' }: Props) => {

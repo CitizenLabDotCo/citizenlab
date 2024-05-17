@@ -13,7 +13,7 @@ import { useIntl } from 'utils/cl-intl';
 import { toThreeLetterMonth } from 'utils/dateUtils';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
-import { formatLargeNumber } from '../utils';
+import { formatLargeNumber } from '../../utils';
 
 type Props = Dates &
   Resolution & {

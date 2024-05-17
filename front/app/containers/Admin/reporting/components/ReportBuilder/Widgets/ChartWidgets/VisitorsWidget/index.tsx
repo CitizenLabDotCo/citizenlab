@@ -5,7 +5,7 @@ import messages from '../messages';
 
 import ChartWidgetSettings from './ChartWidgetSettings';
 import { Props } from './typings';
-import VisitorsCard from './VisitorsCard';
+import VisitorsCard from './VisitorsCard/VisitorsCard';
 
 const VisitorsWidget = ({ title, ...props }: Props) => {
   return (
