@@ -94,12 +94,6 @@ module Permissions
       :not_in_group unless permission.groups && user.in_any_groups?(permission.groups)
     end
 
-    # def user_in_group?(user, groups)
-    #   # TODO: Don't know if this does the right thing with smart groups
-    #   @user_groups ||= user.groups
-    #   @user_groups.intersection(groups).any?
-    # end
-
     def user_requirements_service
       @user_requirements_service ||= Permissions::UserRequirementsService.new
     end
