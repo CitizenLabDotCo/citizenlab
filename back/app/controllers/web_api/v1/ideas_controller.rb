@@ -48,8 +48,7 @@ class WebApi::V1::IdeasController < ApplicationController
     ideas = IdeasFinder.new(
       params,
       scope: policy_scope(Idea).where(publication_status: 'published'),
-      current_user: current_user,
-      includes: %i[idea_trending_info]
+      current_user: current_user
     ).find_records
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
     ideas = ideas.includes(:idea_trending_info)
