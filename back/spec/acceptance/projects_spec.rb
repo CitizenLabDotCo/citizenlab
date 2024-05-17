@@ -41,6 +41,10 @@ resource 'Projects' do
         expect(json_response[:data].map { |d| json_response[:included].find { |x| x[:id] == d.dig(:relationships, :admin_publication, :data, :id) }.dig(:attributes, :publication_status) }.uniq).to match_array %w[published archived draft]
       end
 
+      example 'Test performance' do
+        expect { do_request }.not_to exceed_query_limit(18)
+      end
+
       example 'List only projects with specified IDs' do
         filter_ids = [@projects.first.id, @projects.last.id]
         do_request(filter_ids: filter_ids)
