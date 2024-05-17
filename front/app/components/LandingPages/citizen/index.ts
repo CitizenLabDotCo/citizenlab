@@ -1,7 +1,7 @@
 import { colors, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-export const Container = styled.main`
+export const Container = styled.div`
   height: 100%;
   min-height: calc(
     100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px

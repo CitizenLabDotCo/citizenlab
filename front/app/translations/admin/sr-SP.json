@@ -871,7 +871,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Аутор:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.disabledPDFImportTooltip": "Importing PDF files of scanned forms is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "Емаил:",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImporting1": "An error occurred during the import. Please check the imported items and re-import any that are missing.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Errors occurred during the import and some inputs have not imported. Please correct the errors and re-import any missing inputs.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Неважећи подаци обрасца. Проверите да ли постоје грешке у формулару изнад.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "Import Excel file (.xlsx)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "Увоз",

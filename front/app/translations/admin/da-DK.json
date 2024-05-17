@@ -871,7 +871,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Forfatter:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.disabledPDFImportTooltip": "Import af PDF-filer af scannede formularer er en del af premium-licensen. Kontakt din GovSuccess Manager for at høre mere om det.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "E-mail:",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImporting1": "Der opstod en fejl under importen. Tjek venligst de importerede varer, og genimporter dem, der mangler.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Der opstod fejl under importen, og nogle input er ikke blevet importeret. Ret venligst fejlene, og genimporter eventuelle manglende input.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Ugyldige formulardata. Tjek formularen ovenfor for fejl.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "Importer Excel-fil (.xlsx)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "Import",
