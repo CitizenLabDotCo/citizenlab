@@ -20,7 +20,7 @@ interface Props {
   project: IProjectData;
 }
 
-const ProjectHelmet = ({ project }: Props) => {
+const ProjectShowPageMeta = ({ project }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const tenantLocales = useAppConfigurationLocales();
@@ -73,4 +73,4 @@ const ProjectHelmet = ({ project }: Props) => {
   );
 };
 
-export default ProjectHelmet;
+export default ProjectShowPageMeta;

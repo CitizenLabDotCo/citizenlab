@@ -871,7 +871,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Autor:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.disabledPDFImportTooltip": "Uvoz PDF datoteka skeniranih obrazaca dio je premium licence. Obratite se svom GovSuccess Manageru da saznate više o tome.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "Email:",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImporting1": "Došlo je do pogreške tijekom uvoza. Provjerite uvezene artikle i ponovno uvezite one koji nedostaju.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Došlo je do pogrešaka tijekom uvoza i neki unosi nisu uvezeni. Ispravite pogreške i ponovno uvezite unose koji nedostaju.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Nevažeći podaci obrasca. Provjerite gornji obrazac za pogreške.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importExcelFile": "Uvezi Excel datoteku (.xlsx)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2": "Uvoz",
