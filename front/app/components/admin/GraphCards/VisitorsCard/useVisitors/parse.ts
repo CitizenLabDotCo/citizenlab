@@ -111,12 +111,16 @@ export const parseExcelData = (
   };
 };
 
-const parsePageViews = (pageViews: string | null | undefined) => {
+export const parsePageViews = (pageViews: string | null | undefined) => {
   if (!pageViews) return '-';
   return round(+pageViews, 2).toLocaleString();
 };
 
 const parseVisitDuration = (seconds: string | null | undefined) => {
   if (!seconds) return '-';
-  return new Date(+seconds * 1000).toISOString().substring(11, 19);
+  return formatVisitDuration(+seconds);
+};
+
+export const formatVisitDuration = (seconds: number) => {
+  return new Date(seconds * 1000).toISOString().substring(11, 19);
 };
