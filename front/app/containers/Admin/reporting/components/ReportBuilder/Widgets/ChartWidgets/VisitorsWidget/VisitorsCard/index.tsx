@@ -4,8 +4,6 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
-import { isNilOrError } from 'utils/helperUtils';
-
 import NoData from '../../../_shared/NoData';
 import messages from '../../messages';
 import { Props } from '../typings';
@@ -24,7 +22,7 @@ const VisitorsCard = ({ startAt, endAt, resolution = 'month' }: Props) => {
 
   const layout = useLayout();
 
-  if (isNilOrError(stats) || stats.visits.value === '0') {
+  if (!stats || stats.visits.value === '0') {
     return <NoData message={messages.noData} />;
   }
 

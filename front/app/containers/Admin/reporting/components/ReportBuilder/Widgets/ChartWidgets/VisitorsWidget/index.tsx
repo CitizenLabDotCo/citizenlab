@@ -21,6 +21,9 @@ VisitorsWidget.craft = {
     startAt: undefined,
     endAt: undefined,
     resolution: undefined,
+    compareStartAt: undefined,
+    compareEndAt: undefined,
+    hideStatistics: undefined,
   },
   related: {
     settings: ChartWidgetSettings,
