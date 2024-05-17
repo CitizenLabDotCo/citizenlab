@@ -31,7 +31,7 @@ module BulkImportIdeas
         params: jsonapi_serializer_params
       ).serializable_hash
     rescue BulkImportIdeas::Error => e
-      sidefx.after_failure current_user, @phase, params[:model], params[:format]
+      sidefx.after_failure current_user, @phase, params[:model], params[:format], e.key
       render json: { errors: { file: [{ error: e.key, **e.params }] } }, status: :unprocessable_entity
     end
 

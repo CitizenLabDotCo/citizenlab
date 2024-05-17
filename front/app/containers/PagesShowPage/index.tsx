@@ -30,7 +30,7 @@ export const StyledContentContainer = styled(ContentContainer)`
   margin-bottom: 30px;
 `;
 
-export const PageContent = styled.main`
+export const PageContent = styled.div`
   flex-shrink: 0;
   flex-grow: 1;
   background: #fff;
