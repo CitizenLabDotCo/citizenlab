@@ -224,22 +224,7 @@ const CLSurveyPageLayout = memo(
               );
               return (
                 currentStep === index && (
-                  <Box
-                    key={index}
-                    p="24px"
-                    w="100%"
-                    /*
-                      Used to center fields vertically if there is only one field on the page.
-                      Also used to center the final "Thank you for participating" page,
-                      which has zero elements.
-                      Removing this line may not look to change anything.
-                      However, two-field pages (or any number that doesn't take the full page height)
-                      would be centered without this line, which looks odd.
-                    */
-                    alignSelf={
-                      pageElements.length <= 1 ? 'center' : 'flex-start'
-                    }
-                  >
+                  <Box key={index} p="24px" w="100%">
                     <Box display="flex" flexDirection="column">
                       {page.options.title && (
                         <Title
