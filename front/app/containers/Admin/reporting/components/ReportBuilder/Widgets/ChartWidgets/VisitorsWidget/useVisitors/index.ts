@@ -5,20 +5,19 @@ import moment from 'moment';
 import { useVisitors as useVisitorsData } from 'api/graph_data_units';
 
 import { parseTimeSeries } from 'components/admin/GraphCards/VisitorsCard/useVisitors/parse';
-import { IResolution } from 'components/admin/ResolutionControl';
+
+import { Props } from '../typings';
 
 import { parseStats } from './parse';
-import { QueryParameters } from './typings';
 
 export default function useVisitors({
   startAt,
   endAt,
   compareStartAt,
   compareEndAt,
-  resolution,
-}: QueryParameters) {
-  const [currentResolution, setCurrentResolution] =
-    useState<IResolution>(resolution);
+  resolution = 'month',
+}: Props) {
+  const [currentResolution, setCurrentResolution] = useState(resolution);
 
   const { data: analytics } = useVisitorsData(
     {
@@ -42,7 +41,7 @@ export default function useVisitors({
             analytics.data.attributes[0],
             startAt ? moment(startAt) : null,
             endAt ? moment(endAt) : null,
-            currentResolution
+            currentResolution ?? 'month'
           )
         : null,
     [analytics?.data, startAt, endAt, currentResolution]

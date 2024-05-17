@@ -5,12 +5,10 @@ import moment from 'moment';
 
 import Chart from 'components/admin/GraphCards/VisitorsCard/Chart';
 import visitorsCardMessages from 'components/admin/GraphCards/VisitorsCard/messages';
-import Statistic from 'components/admin/Graphs/Statistic';
-
-import { useIntl } from 'utils/cl-intl';
 
 import { formatLargeNumber } from '../../utils';
 
+import { AbsoluteStatistic } from './Statistics';
 import { Props } from './Wide';
 
 const Narrow = ({
@@ -20,22 +18,22 @@ const Narrow = ({
   stats,
   timeSeries,
 }: Props) => {
-  const { formatMessage } = useIntl();
-
   return (
     <Box height="100%" display="flex" flexDirection="column">
       <Box display="flex" flexDirection="row">
         <Box display="flex" flexDirection="row" mb="8px">
-          <Statistic
-            name={formatMessage(visitorsCardMessages.visitors)}
-            value={stats.visitors.value}
-            nameColor="black"
+          <AbsoluteStatistic
+            nameMessage={visitorsCardMessages.visitors}
+            stat={stats.visitors}
+            startAt={startAt}
+            endAt={endAt}
           />
           <Box mt="0px" ml="32px">
-            <Statistic
-              name={formatMessage(visitorsCardMessages.visits)}
-              value={stats.visits.value}
-              nameColor="black"
+            <AbsoluteStatistic
+              nameMessage={visitorsCardMessages.visits}
+              stat={stats.visits}
+              startAt={startAt}
+              endAt={endAt}
             />
           </Box>
         </Box>

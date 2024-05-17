@@ -18,7 +18,7 @@ const VisitorsCard = ({
   endAt,
   compareStartAt,
   compareEndAt,
-  resolution = 'month',
+  resolution,
 }: Props) => {
   const { currentResolution, stats, timeSeries } = useVisitors({
     startAt,
