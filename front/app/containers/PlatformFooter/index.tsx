@@ -15,6 +15,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { TPolicyPage } from 'api/custom_pages/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -222,6 +223,7 @@ const MESSAGES_MAP: { [key in TFooterPage]: MessageDescriptor } = {
 
 const PlatformFooter = ({ className }: Props) => {
   const { formatMessage } = useIntl();
+  const locale = useLocale();
   const isTabletOrSmaller = useBreakpoint('tablet');
   const { data: appConfiguration } = useAppConfiguration();
   const customizedA11yHrefEnabled = useFeatureFlag({
@@ -270,6 +272,27 @@ const PlatformFooter = ({ className }: Props) => {
   const removeVendorBranding = useFeatureFlag({
     name: 'remove_vendor_branding',
   });
+
+  const getLocalizedLogoName = () => {
+    switch (locale) {
+      case 'es-CL':
+      case 'es-ES':
+      case 'ca-ES':
+        return 'gv-logo-es';
+      case 'nl-NL':
+      case 'nl-BE':
+        return 'gv-logo-nl';
+      case 'fr-FR':
+      case 'fr-BE':
+        return 'gv-logo-fr';
+      case 'da-DK':
+        return 'gv-logo-dk';
+      case 'de-DE':
+        return 'gv-logo-de';
+      default:
+        return 'gv-logo-en'; // Default is English
+    }
+  };
 
   return (
     <Container id="hook-footer" className={className}>
@@ -322,7 +345,7 @@ const PlatformFooter = ({ className }: Props) => {
                 <FormattedMessage {...messages.poweredBy} />
               </PoweredByText>
               <GoVocalLink href="https://govocal.com/" target="_blank">
-                <GoVocalLogo name="cl-logo" title="GoVocal" />
+                <GoVocalLogo name={getLocalizedLogoName()} title="Go Vocal" />
               </GoVocalLink>
             </PoweredBy>
           </Right>
