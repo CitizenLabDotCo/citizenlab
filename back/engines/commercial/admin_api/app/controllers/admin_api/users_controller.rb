@@ -30,7 +30,7 @@ module AdminApi
     end
 
     def create
-      user = UserService.new.admin_api_create(user_params, confirm_user?)
+      user = UserService.create_in_admin_api(user_params, confirm_user?)
 
       if user.persisted?
         SideFxUserService.new.after_create user, nil
@@ -42,7 +42,7 @@ module AdminApi
     end
 
     def update
-      UserService.new.admin_api_update(@user, user_params, confirm_user?)
+      UserService.update_in_admin_api(@user, user_params, confirm_user?)
 
       if @user.errors.empty?
         SideFxUserService.new.after_update(@user, nil)

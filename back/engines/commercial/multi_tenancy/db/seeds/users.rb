@@ -51,21 +51,21 @@ module MultiTenancy
       private
 
       def run_for_empty_localhost
-        User.create!(attrs.merge({ **ADMIN_1_ATTRS, id: 'e0d698fc-5969-439f-9fe6-e74fe82b567a' }))
+        User.create!(build_attrs.merge({ **ADMIN_1_ATTRS, id: 'e0d698fc-5969-439f-9fe6-e74fe82b567a' }))
       end
 
       def run_for_localhost
-        User.new(attrs.merge(ADMIN_1_ATTRS)).tap(&:confirm).save!
-        User.new(attrs.merge(ADMIN_2_ATTRS)).tap(&:confirm).save!
-        User.new(attrs.merge(MODERATOR_ATTRS)).tap(&:confirm).save!
-        User.new(attrs.merge(USER_ATTRS)).tap(&:confirm).save!
+        [ADMIN_1_ATTRS, ADMIN_2_ATTRS, MODERATOR_ATTRS, USER_ATTRS].each do |user_attrs|
+          UserService.update_in_tenant_template!(User.new, build_attrs.merge(user_attrs))
+        end
 
         runner.num_users.times do
-          User.new(attrs.merge({ password: 'democracy2.0' })).tap(&:confirm).save!
+          user_attrs = build_attrs.merge({ password: 'democracy2.0' })
+          UserService.update_in_tenant_template!(User.new, user_attrs)
         end
       end
 
-      def attrs
+      def build_attrs
         locales = AppConfiguration.instance.settings('core', 'locales')
         anonymizer.anonymized_attributes(locales)
       end

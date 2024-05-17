@@ -110,7 +110,7 @@ class WebApi::V1::UsersController < ApplicationController
 
   def create
     @user = User.new
-    saved = UserService.new.web_api_create(@user, permitted_attributes(@user)) do
+    saved = UserService.create_in_web_api(@user, permitted_attributes(@user)) do
       authorize @user
     end
     if saved
@@ -131,7 +131,7 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def update
-    saved = UserService.new.web_api_update(@user, update_params) do
+    saved = UserService.update_in_web_api(@user, update_params) do
       remove_image_if_requested!(@user, update_params, :avatar)
       authorize(@user)
     end

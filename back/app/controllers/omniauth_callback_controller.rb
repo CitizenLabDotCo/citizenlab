@@ -90,7 +90,7 @@ class OmniauthCallbackController < ApplicationController
           failure
           return
         end
-        UserService.new.accept_invite_assign_params(@user, user_attrs)
+        UserService.assign_params_in_accept_invite(@user, user_attrs)
         ActiveRecord::Base.transaction do
           SideFxInviteService.new.before_accept @invite
           @user.save!
@@ -119,7 +119,7 @@ class OmniauthCallbackController < ApplicationController
     else # New user
       confirm = authver_method.email_confirmed?(auth)
       locale = selected_locale(omniauth_params)
-      @user = UserService.new.sso_build(user_attrs, confirm, locale)
+      @user = UserService.build_in_sso(user_attrs, confirm, locale)
 
       @user.identities << @identity
       begin
@@ -190,7 +190,7 @@ class OmniauthCallbackController < ApplicationController
     user_params = authver_method.profile_to_user_attrs(auth).slice(*attrs).compact
     user_params.delete(:remote_avatar_url) if user.avatar.present? # don't overwrite avatar if already present
     confirm_user = authver_method.email_confirmed?(auth)
-    UserService.new.sso_update!(user, user_params, confirm_user)
+    UserService.update_in_sso!(user, user_params, confirm_user)
   end
 
   # Return locale if a locale can be parsed from pathname which matches an app locale

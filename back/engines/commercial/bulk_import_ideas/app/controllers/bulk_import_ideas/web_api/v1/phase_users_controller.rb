@@ -10,7 +10,7 @@ module BulkImportIdeas
     # called when approving individual inputs
     def create_user
       user = User.new
-      UserService.new.input_importer_build(user_params(user), user)
+      UserService.build_in_input_importer(user_params(user), user)
 
       if user.save
         render json: ::WebApi::V1::UserSerializer.new(

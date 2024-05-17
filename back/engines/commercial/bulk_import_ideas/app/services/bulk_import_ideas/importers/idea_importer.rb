@@ -84,7 +84,7 @@ module BulkImportIdeas::Importers
             last_name: idea_row[:user_last_name],
             email: idea_row[:user_email]
           }
-          author = UserService.new.input_importer_build(user_params)
+          author = UserService.build_in_input_importer(user_params)
           if author.save
             @imported_users << author
           else
