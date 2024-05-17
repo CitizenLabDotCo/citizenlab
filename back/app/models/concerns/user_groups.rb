@@ -24,7 +24,7 @@ module UserGroups
   end
 
   def groups
-    @groups ||= manual_groups + smart_groups
+    manual_groups + smart_groups
   end
 
   def group_ids
@@ -32,9 +32,8 @@ module UserGroups
   end
 
   def in_any_groups?(groups_to_check)
-    groups.intersection(groups_to_check).any?
-    # TODO: JS - why is the second part of the condition necessary?
-    # manual_groups.merge(groups).exists? || rules_service.groups_for_user(self, groups.rules).exists?
+    @groups ||= groups # Memoized here to avoid .groups not returning correctly when groups are added / rmeoved
+    @groups.intersection(groups_to_check).any?
   end
 
   def member_of?(group_id)

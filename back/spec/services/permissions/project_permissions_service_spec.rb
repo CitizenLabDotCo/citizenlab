@@ -605,18 +605,8 @@ describe Permissions::ProjectPermissionsService do
         admin_publication: [:children]
       )
 
-      # Oddly it returns fewer queries without the includes
-      # Doesn't seem to check identities for SSO when called normally
-      # test_user = User.includes(:memberships).find(user.id)
-
-
-      # TODO: JS - could we lazy load the memberships for this user and all phases in the list
-
       # First check project length sure all the 'projects' queries are preloaded
       expect(projects.length).to eq 5
-
-      # expect { service.denied_reason_for_action('posting_idea', user, projects[0]) }.not_to exceed_query_limit(0)
-
       expect do
         projects.each do |project|
           service.action_descriptors(project, user)
