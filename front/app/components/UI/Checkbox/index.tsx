@@ -42,6 +42,7 @@ const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
 const StyledCheckbox = styled.div<{
   checkedOrIndeterminate: boolean;
   size: string;
+  selectedBorderColor?: string;
 }>`
   width: ${({ size }) => parseInt(size, 10)}px;
   height: ${({ size }) => parseInt(size, 10)}px;
@@ -51,8 +52,10 @@ const StyledCheckbox = styled.div<{
   align-items: center;
   border-radius: ${(props) => props.theme.borderRadius};
   border: solid 1px
-    ${({ checkedOrIndeterminate }) =>
-      checkedOrIndeterminate ? colors.success : colors.grey600};
+    ${({ checkedOrIndeterminate, selectedBorderColor }) =>
+      checkedOrIndeterminate
+        ? selectedBorderColor || colors.success
+        : colors.coolGrey600};
   background: ${({ checkedOrIndeterminate }) =>
     checkedOrIndeterminate ? colors.success : '#fff'};
   transition: all 120ms ease-out;
@@ -85,6 +88,7 @@ type Props = DefaultProps & {
   id?: string;
   name?: string;
   checkBoxTabIndex?: number;
+  selectedBorderColor?: string;
 };
 
 export default class Checkbox extends PureComponent<Props> {
@@ -106,6 +110,7 @@ export default class Checkbox extends PureComponent<Props> {
       onChange,
       name,
       checkBoxTabIndex,
+      selectedBorderColor,
     } = this.props;
     const hasLabel = !!label;
 
@@ -132,6 +137,7 @@ export default class Checkbox extends PureComponent<Props> {
               className={`${checked ? 'checked' : ''} ${
                 disabled ? 'disabled' : 'enabled'
               } e2e-checkbox`}
+              selectedBorderColor={selectedBorderColor}
             >
               {checked && <CheckMarkIcon ariaHidden name="check" size={size} />}
               {indeterminate && (
