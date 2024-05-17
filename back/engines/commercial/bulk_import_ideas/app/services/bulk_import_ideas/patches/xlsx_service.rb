@@ -21,6 +21,8 @@ module BulkImportIdeas
             new_sheet.add_row(header.cells.map { |c| c&.value })
 
             rows.each do |row|
+              next unless row&.cells
+
               new_sheet.add_row(row.cells.map { |c| c&.value })
             end
           end
