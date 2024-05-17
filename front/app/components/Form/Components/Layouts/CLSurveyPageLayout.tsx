@@ -210,11 +210,7 @@ const CLSurveyPageLayout = memo(
       <>
         <Box display="flex" flexDirection="column" height="100%">
           {allowAnonymousPosting && (
-            <Box
-              w="100%"
-              px={isSmallerThanPhone ? '16px' : '24px'}
-              mt={isSmallerThanPhone ? '64px' : '12px'}
-            >
+            <Box w="100%" px={isSmallerThanPhone ? '16px' : '24px'} mt="12px">
               <Warning icon="shield-checkered">
                 {formatMessage(messages.anonymousSurveyMessage)}
               </Warning>
