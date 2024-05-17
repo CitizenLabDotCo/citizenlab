@@ -248,6 +248,10 @@ module ParticipationMethod
       ]
     end
 
+    def allowed_extra_field_input_types
+      %w[section number linear_scale text multiline_text select multiselect multiselect_image]
+    end
+
     # Locks mirror the name of the fields whose default values cannot be changed (ie are locked)
     def constraints
       {

@@ -27,6 +27,10 @@ module ParticipationMethod
       []
     end
 
+    def allowed_extra_field_input_types
+      []
+    end
+
     def constraints
       {}
     end

@@ -67,13 +67,13 @@ export default defineMessages({
       '{numIdeas} inputs have been imported and require approval.',
   },
   importing: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing',
-    defaultMessage: 'Importing...',
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importing2',
+    defaultMessage: 'Importing. This process may take a few minutes.',
   },
   errorImporting: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImporting1',
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel',
     defaultMessage:
-      'An error occurred during the import. Please check the imported items and re-import any that are missing.',
+      'Errors occurred during the import and some inputs have not imported. Please correct the errors and re-import any missing inputs.',
   },
   inputsNotApproved: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved2',

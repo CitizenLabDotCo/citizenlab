@@ -17,6 +17,8 @@ module ImpactTracking
         )
 
         if session
+          side_fx_session_service.after_create(current_user)
+
           head :created
         else
           head :internal_server_error
@@ -31,6 +33,8 @@ module ImpactTracking
           highest_role: current_user&.highest_role,
           user_id: current_user.id
         )
+          side_fx_session_service.after_upgrade(current_user)
+
           head :accepted
         else
           head :internal_server_error
@@ -58,6 +62,10 @@ module ImpactTracking
 
         visitor_hash = SessionHashService.new.generate_for_visitor(request.remote_ip, request.user_agent)
         @session = Session.where(monthly_user_hash: visitor_hash).order(created_at: :desc).first!
+      end
+
+      def side_fx_session_service
+        @side_fx_session_service ||= SideFxSessionService.new
       end
     end
   end

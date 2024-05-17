@@ -337,7 +337,7 @@ describe('<ProjectAndFolderCards />', () => {
     debug();
 
     const filterSelectorButton = container.querySelector(
-      '.e2e-filter-selector-areas > .e2e-filter-selector-button'
+      '.e2e-filter-selector-areas .e2e-filter-selector-button'
     );
 
     // Open filter selector
@@ -441,7 +441,7 @@ describe('<ProjectAndFolderCards />', () => {
     );
 
     const filterSelector = container.querySelector(
-      '.e2e-filter-selector-topics > .e2e-filter-selector-button'
+      '.e2e-filter-selector-topics .e2e-filter-selector-button'
     );
 
     // Open filter selector

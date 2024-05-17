@@ -149,7 +149,7 @@ it:
         title: Dettagli
         description:
       other_text_field:
-        title: If you picked '{other_option}', what are you thinking of?
+        title: Se hai scelto '{other_option}', a cosa stai pensando?
   custom_forms:
     categories:
       main_content:
@@ -204,11 +204,15 @@ it:
       input_id: 'ID'
       latitude: 'Latitudine'
       longitude: 'Longitudine'
+      location: 'Posizione'
       author_fullname: 'Nome dell''autore'
       author_email: 'Email dell''autore'
       author_id: 'ID autore'
+      attachments: 'Allegati'
       budget: 'Bilancio'
+      cost: 'Costo'
       created_at: 'Presentato a'
+      submitted_at: 'Inviato a'
       published_at: 'Pubblicato presso'
       comments_count: 'Commenti'
       likes_count: 'Preferiti'
@@ -217,11 +221,14 @@ it:
       participants: 'Partecipanti'
       votes_count: 'Voti'
       input_url: 'URL'
+      tags: 'Tag'
       project: 'Progetto'
       status: 'Stato'
       assignee_fullname: 'Assegnatario'
       assignee_email: 'Email del destinatario'
       image_url: 'URL immagine'
+      title: 'Titolo'
+      description: 'Descrizione'
     anonymous: 'Anonimo'
   form_builder:
     default_select_field:
