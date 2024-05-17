@@ -6,13 +6,12 @@ import moment from 'moment';
 import Chart from 'components/admin/GraphCards/VisitorsCard/Chart';
 import visitorsCardMessages from 'components/admin/GraphCards/VisitorsCard/messages';
 import { TimeSeries } from 'components/admin/GraphCards/VisitorsCard/useVisitors/typings';
-import Statistic from 'components/admin/Graphs/Statistic';
 import { IResolution } from 'components/admin/ResolutionControl';
-
-import { useIntl } from 'utils/cl-intl';
 
 import { formatLargeNumber } from '../../utils';
 import { Stats } from '../typings';
+
+import { AbsoluteStatistic } from './Statistics';
 
 export interface Props {
   startAt?: string;
@@ -29,22 +28,22 @@ const Wide = ({
   stats,
   timeSeries,
 }: Props) => {
-  const { formatMessage } = useIntl();
-
   return (
     <Box height="100%" display="flex" flexDirection="row">
       <Box display="flex" flexDirection="row">
         <Box>
-          <Statistic
-            name={formatMessage(visitorsCardMessages.visitors)}
-            value={stats.visitors.value}
-            nameColor="black"
+          <AbsoluteStatistic
+            nameMessage={visitorsCardMessages.visitors}
+            stat={stats.visitors}
+            startAt={startAt}
+            endAt={endAt}
           />
           <Box mt="32px" ml="0px">
-            <Statistic
-              name={formatMessage(visitorsCardMessages.visits)}
-              value={stats.visits.value}
-              nameColor="black"
+            <AbsoluteStatistic
+              nameMessage={visitorsCardMessages.visits}
+              stat={stats.visits}
+              startAt={startAt}
+              endAt={endAt}
             />
           </Box>
         </Box>
