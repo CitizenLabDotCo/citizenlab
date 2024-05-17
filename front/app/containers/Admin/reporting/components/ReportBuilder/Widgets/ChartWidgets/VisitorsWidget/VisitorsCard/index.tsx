@@ -1,27 +1,21 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import moment from 'moment';
 
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
-import Chart from 'components/admin/GraphCards/VisitorsCard/Chart';
-import visitorsCardMessages from 'components/admin/GraphCards/VisitorsCard/messages';
-import Statistic from 'components/admin/Graphs/Statistic';
-
-import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import NoData from '../../../_shared/NoData';
 import messages from '../../messages';
-import { formatLargeNumber } from '../../utils';
 import { Props } from '../typings';
 import useVisitors from '../useVisitors';
 
+import Narrow from './Narrow';
+import Wide from './Wide';
+
 // Report specific version of <VisitorsCard/>
 const VisitorsCard = ({ startAt, endAt, resolution = 'month' }: Props) => {
-  const { formatMessage } = useIntl();
-
   const { currentResolution, stats, timeSeries } = useVisitors({
     startAt,
     endAt,
@@ -36,68 +30,23 @@ const VisitorsCard = ({ startAt, endAt, resolution = 'month' }: Props) => {
 
   return (
     <Box width="100%" height="260px" pb="8px">
-      <Box
-        height="100%"
-        display="flex"
-        flexDirection={layout === 'wide' ? 'row' : 'column'}
-      >
-        <Box display="flex" flexDirection="row">
-          <Box
-            {...(layout === 'wide'
-              ? {}
-              : {
-                  display: 'flex',
-                  flexDirection: 'row',
-                  mb: '8px',
-                })}
-          >
-            <Statistic
-              name={formatMessage(visitorsCardMessages.visitors)}
-              value={stats.visitors.value}
-              nameColor="black"
-            />
-            <Box
-              mt={layout === 'wide' ? '32px' : '0px'}
-              ml={layout === 'wide' ? '0px' : '32px'}
-            >
-              <Statistic
-                name={formatMessage(visitorsCardMessages.visits)}
-                value={stats.visits.value}
-                nameColor="black"
-              />
-            </Box>
-          </Box>
-        </Box>
-
-        <Box flexGrow={1} display="flex" justifyContent="flex-end">
-          <Box
-            pt="8px"
-            width={layout === 'wide' ? '95%' : '100%'}
-            maxWidth="800px"
-          >
-            <Chart
-              timeSeries={timeSeries}
-              startAtMoment={startAt ? moment(startAt) : null}
-              endAtMoment={endAt ? moment(endAt) : null}
-              resolution={currentResolution}
-              margin={
-                layout === 'narrow'
-                  ? {
-                      left: 5,
-                      right: -20,
-                      top: 0,
-                      bottom: 0,
-                    }
-                  : undefined
-              }
-              yaxis={{
-                orientation: layout === 'narrow' ? 'right' : 'left',
-                tickFormatter: formatLargeNumber,
-              }}
-            />
-          </Box>
-        </Box>
-      </Box>
+      {layout === 'wide' ? (
+        <Wide
+          startAt={startAt}
+          endAt={endAt}
+          currentResolution={currentResolution}
+          stats={stats}
+          timeSeries={timeSeries}
+        />
+      ) : (
+        <Narrow
+          startAt={startAt}
+          endAt={endAt}
+          currentResolution={currentResolution}
+          stats={stats}
+          timeSeries={timeSeries}
+        />
+      )}
     </Box>
   );
 };
