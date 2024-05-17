@@ -19,17 +19,16 @@ class WebApi::V1::ProjectsController < ApplicationController
     # For unknown reasons, `includes` uses joins here. It makes the query complex and slow. So, we use `preload`.
     # Using `pluck(:publication_id)` instead of `select(:publication_id)` also helps if used with `includes`,
     # but it doesn't make any difference with `preload`. Still using it in case the query changes.
-    @projects = Project.where(id: publications.pluck(:publication_id))
-      .ordered
-      .preload(
-        :project_images,
-        :areas,
-        :topics,
-        :content_builder_layouts, # Defined in ContentBuilder engine
-        phases: [:report, { permissions: [:groups] }],
-        admin_publication: [:children]
-      )
+    @projects = Project.where(id: publications.pluck(:publication_id)).ordered
     @projects = paginate @projects
+    @projects = @projects.preload(
+      :project_images,
+      :areas,
+      :topics,
+      :content_builder_layouts, # Defined in ContentBuilder engine
+      phases: [:report, { permissions: [:groups] }],
+      admin_publication: [:children]
+    )
 
     user_followers = current_user&.follows
       &.where(followable_type: 'Project')
