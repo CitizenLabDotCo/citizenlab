@@ -29,8 +29,8 @@ const Wide = ({
   timeSeries,
 }: Props) => {
   return (
-    <Box height="100%" display="flex" flexDirection="row">
-      <Box display="flex" flexDirection="row">
+    <Box width="100%" height="260px" pb="8px">
+      <Box height="100%" display="flex" flexDirection="row">
         <Box>
           <AbsoluteStatistic
             nameMessage={visitorsCardMessages.visitors}
@@ -38,7 +38,7 @@ const Wide = ({
             startAt={startAt}
             endAt={endAt}
           />
-          <Box mt="32px" ml="0px">
+          <Box mt="32px">
             <AbsoluteStatistic
               nameMessage={visitorsCardMessages.visits}
               stat={stats.visits}
@@ -50,7 +50,7 @@ const Wide = ({
       </Box>
 
       <Box flexGrow={1} display="flex" justifyContent="flex-end">
-        <Box pt="8px" width="95%" maxWidth="800px">
+        <Box pt="8px" w="100%" maxWidth="800px" h="100%">
           <Chart
             timeSeries={timeSeries}
             startAtMoment={startAt ? moment(startAt) : null}

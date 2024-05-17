@@ -20,27 +20,25 @@ const Narrow = ({
 }: Props) => {
   return (
     <Box height="100%" display="flex" flexDirection="column">
-      <Box display="flex" flexDirection="row">
-        <Box display="flex" flexDirection="row" mb="8px">
+      <Box display="flex" flexDirection="column" mb="8px">
+        <AbsoluteStatistic
+          nameMessage={visitorsCardMessages.visitors}
+          stat={stats.visitors}
+          startAt={startAt}
+          endAt={endAt}
+        />
+        <Box mt="12px">
           <AbsoluteStatistic
-            nameMessage={visitorsCardMessages.visitors}
-            stat={stats.visitors}
+            nameMessage={visitorsCardMessages.visits}
+            stat={stats.visits}
             startAt={startAt}
             endAt={endAt}
           />
-          <Box mt="0px" ml="32px">
-            <AbsoluteStatistic
-              nameMessage={visitorsCardMessages.visits}
-              stat={stats.visits}
-              startAt={startAt}
-              endAt={endAt}
-            />
-          </Box>
         </Box>
       </Box>
 
-      <Box flexGrow={1} display="flex" justifyContent="flex-end">
-        <Box pt="8px" width="100%" maxWidth="800px">
+      <Box flexGrow={1} display="flex" justifyContent="flex-end" height="200px">
+        <Box pt="8px" width="100%" maxWidth="800px" h="100%">
           <Chart
             timeSeries={timeSeries}
             startAtMoment={startAt ? moment(startAt) : null}

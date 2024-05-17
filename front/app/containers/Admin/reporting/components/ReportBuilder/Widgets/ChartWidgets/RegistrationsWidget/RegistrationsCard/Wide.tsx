@@ -60,7 +60,7 @@ const Wide = ({
           display="flex"
           justifyContent={hideStatistics ? 'flex-start' : 'flex-end'}
         >
-          <Box pt="8px" width="100%" maxWidth="800px" h="100%">
+          <Box pt="8px" w="100%" maxWidth="800px" h="100%">
             <Chart
               timeSeries={timeSeries}
               startAtMoment={startAt ? moment(startAt) : null}

@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
-
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
 import NoData from '../../../_shared/NoData';
@@ -35,7 +33,7 @@ const VisitorsCard = ({
   }
 
   return (
-    <Box width="100%" height="260px" pb="8px">
+    <>
       {layout === 'wide' ? (
         <Wide
           startAt={startAt}
@@ -53,7 +51,7 @@ const VisitorsCard = ({
           timeSeries={timeSeries}
         />
       )}
-    </Box>
+    </>
   );
 };
 
