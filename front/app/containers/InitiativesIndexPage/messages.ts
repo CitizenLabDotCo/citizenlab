@@ -5,9 +5,9 @@ export default defineMessages({
     id: 'app.containers.InitiativesIndexPage.metaTitle1',
     defaultMessage: 'All proposals | {orgName}',
   },
-  invisibleTitleProposalsCards: {
-    id: 'app.containers.InitiativesIndexPage.invisibleTitleProposalsCards',
-    defaultMessage: 'All the proposals taking place',
+  invisibleTitleProposalsCards1: {
+    id: 'app.containers.InitiativesIndexPage.invisibleTitleProposalsCards1',
+    defaultMessage: 'All proposals',
   },
   invisibleInitiativesPageTitle: {
     id: 'app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle',
