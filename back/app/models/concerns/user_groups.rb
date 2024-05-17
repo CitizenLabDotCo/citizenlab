@@ -24,15 +24,17 @@ module UserGroups
   end
 
   def groups
-    manual_groups + smart_groups
+    @groups ||= manual_groups + smart_groups
   end
 
   def group_ids
     manual_group_ids + smart_groups.pluck(:id)
   end
 
-  def in_any_groups?(groups)
-    manual_groups.merge(groups).exists? || rules_service.groups_for_user(self, groups.rules).exists?
+  def in_any_groups?(groups_to_check)
+    groups.intersection(groups_to_check).any?
+    # TODO: JS - why is the second part of the condition necessary?
+    # manual_groups.merge(groups).exists? || rules_service.groups_for_user(self, groups.rules).exists?
   end
 
   def member_of?(group_id)

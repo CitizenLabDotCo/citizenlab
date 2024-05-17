@@ -555,7 +555,7 @@ describe Permissions::ProjectPermissionsService do
   end
 
   describe 'action_descriptors' do
-    it 'does not run more than 90 queries for 5 ideation projects with default user permissions' do
+    it 'does not run more than 15 queries for 5 ideation projects with default user permissions' do
       user = create(:user)
       5.times do
         phase = TimelineService.new.current_phase(create(:project_with_current_phase))
@@ -580,18 +580,19 @@ describe Permissions::ProjectPermissionsService do
         projects.each do |project|
           service.action_descriptors(project, user)
         end
-      end.not_to exceed_query_limit(90) # Down from an original 470
+      end.not_to exceed_query_limit(15) # Down from an original 470
     end
 
-    it 'does not run more than 90 queries for 5 ideation projects with group based user permissions' do
+    it 'does not run more than 18 queries for 5 ideation projects with group based user permissions' do
       user = create(:user)
       group = create(:group)
-      user.groups << group
+      create(:membership, group: group, user: user)
       5.times do
-        phase = TimelineService.new.current_phase(create(:project_with_current_phase))
-        create(:permission, action: 'posting_idea', permission_scope: phase, permitted_by: 'groups', groups: [group])
-        create(:permission, action: 'commenting_idea', permission_scope: phase, permitted_by: 'groups', groups: [group])
-        create(:permission, action: 'reacting_idea', permission_scope: phase, permitted_by: 'groups', groups: [group])
+        project = create(:single_phase_ideation_project, phase_attrs: { with_permissions: true })
+        current_phase = TimelineService.new.current_phase(project)
+        current_phase.permissions.each do |permission|
+          permission.update!(permitted_by: 'groups', groups: [group])
+        end
       end
 
       # Load project with pre-loading as loaded by the controller
@@ -604,13 +605,23 @@ describe Permissions::ProjectPermissionsService do
         admin_publication: [:children]
       )
 
+      # Oddly it returns fewer queries without the includes
+      # Doesn't seem to check identities for SSO when called normally
+      # test_user = User.includes(:memberships).find(user.id)
+
+
+      # TODO: JS - could we lazy load the memberships for this user and all phases in the list
+
       # First check project length sure all the 'projects' queries are preloaded
       expect(projects.length).to eq 5
+
+      # expect { service.denied_reason_for_action('posting_idea', user, projects[0]) }.not_to exceed_query_limit(0)
+
       expect do
         projects.each do |project|
           service.action_descriptors(project, user)
         end
-      end.not_to exceed_query_limit(90) # Down from an original 470
+      end.not_to exceed_query_limit(18) # Down from an original 490
     end
   end
 end
