@@ -6,10 +6,10 @@ class WebApi::V1::PhasesController < ApplicationController
 
   def index
     @phases = policy_scope(Phase)
-      .includes(:permissions, :report, :custom_form)
       .where(project_id: params[:project_id])
       .order(:start_at)
     @phases = paginate @phases
+    @phases = @phases.includes(:permissions, :report, :custom_form)
 
     render json: linked_json(@phases, WebApi::V1::PhaseSerializer, params: jsonapi_serializer_params, include: %i[permissions])
   end
