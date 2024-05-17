@@ -38,4 +38,18 @@ class Activity < ApplicationRecord
   belongs_to :item, polymorphic: true, optional: true
 
   validates :action, :item_type, :item_id, presence: true
+
+  scope :management, lambda {
+    activities = where(acted_at: 30.days.ago..Time.now).where(user: User.admin_or_moderator)
+    result = Activity.none
+
+    Activity::MANAGEMENT_FILTERS.each do |filter|
+      result = result.or(activities.where(
+        item_type: filter[:item_type],
+        action: filter[:actions]
+      ))
+    end
+
+    result
+  }
 end

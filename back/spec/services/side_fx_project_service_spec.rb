@@ -103,12 +103,16 @@ describe SideFxProjectService do
       end
     end
 
-    it "logs an UpdateActivityJob for every 'created' or 'changed' activity for the project when project destroyed" do
-      create(:activity, item: project, action: 'created')
-      create(:activity, item: project, action: 'changed')
-      create(:activity, item: project, action: 'changed')
-      create(:activity, item: project, action: 'published')
-      create(:activity, item: project, action: 'local_copy_created')
+    it "logs an UpdateActivityJob for every 'Management Feed' activity for the project when the project is destroyed" do
+      admin = create(:admin)
+      create(:activity, item: project, user: admin, acted_at: 1.day.ago, action: 'created')
+      create(:activity, item: project, user: admin, acted_at: 1.day.ago, action: 'changed')
+      create(:activity, item: project, user: admin, acted_at: 1.day.ago, action: 'changed')
+      create(:activity, item: project, user: admin, acted_at: 31.days.ago, action: 'changed')
+      create(:activity, item: project, user: create(:user), acted_at: 1.day.ago, action: 'changed')
+      create(:activity, item: create(:project), user: admin, acted_at: 1.day.ago, action: 'changed')
+      create(:activity, item: project, user: admin, acted_at: 1.day.ago, action: 'published')
+      create(:activity, item: project, user: admin, acted_at: 1.day.ago, action: 'local_copy_created')
 
       freeze_time do
         frozen_project = project.destroy
