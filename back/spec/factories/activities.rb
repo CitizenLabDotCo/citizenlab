@@ -115,7 +115,6 @@ FactoryBot.define do
       action { 'created' }
     end
 
-    # TODO: Add payload to this factory
     factory :project_changed_activity do
       association :item, factory: :project
       action { 'changed' }
@@ -145,7 +144,6 @@ FactoryBot.define do
       action { 'created' }
     end
 
-    # TODO: Add payload to this factory
     factory :phase_changed_activity do
       association :item, factory: :phase
       action { 'changed' }
@@ -170,7 +168,6 @@ FactoryBot.define do
       action { 'created' }
     end
 
-    # TODO: Add payload to this factory
     factory :project_folder_changed_activity do
       association :item, factory: :project_folder
       action { 'changed' }
