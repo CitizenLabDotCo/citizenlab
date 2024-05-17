@@ -5,6 +5,7 @@ import moment from 'moment';
 
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
+import Chart from 'components/admin/GraphCards/VisitorsCard/Chart';
 import visitorsCardMessages from 'components/admin/GraphCards/VisitorsCard/messages';
 import Statistic from 'components/admin/Graphs/Statistic';
 
@@ -13,10 +14,9 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import NoData from '../../../_shared/NoData';
 import messages from '../../messages';
+import { formatLargeNumber } from '../../utils';
 import { Props } from '../typings';
 import useVisitors from '../useVisitors';
-
-import Chart from './Chart';
 
 // Report specific version of <VisitorsCard/>
 const VisitorsCard = ({ startAt, endAt, resolution = 'month' }: Props) => {
@@ -80,7 +80,20 @@ const VisitorsCard = ({ startAt, endAt, resolution = 'month' }: Props) => {
               startAtMoment={startAt ? moment(startAt) : null}
               endAtMoment={endAt ? moment(endAt) : null}
               resolution={currentResolution}
-              layout={layout}
+              margin={
+                layout === 'narrow'
+                  ? {
+                      left: 5,
+                      right: -20,
+                      top: 0,
+                      bottom: 0,
+                    }
+                  : undefined
+              }
+              yaxis={{
+                orientation: layout === 'narrow' ? 'right' : 'left',
+                tickFormatter: formatLargeNumber,
+              }}
             />
           </Box>
         </Box>
