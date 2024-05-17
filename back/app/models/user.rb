@@ -179,13 +179,13 @@ class User < ApplicationRecord
   # NOTE: All validation except for required
   validates :custom_field_values, json: {
     schema: -> { CustomFieldService.new.fields_to_json_schema_ignore_required(CustomField.registration) }
-  }, on: :form_submission, if: :custom_field_values_changed?
+  }, on: :form_submission, if: :custom_field_values_changed? # only called if `save` is called w/ `context: :form_submission`
 
   validates :onboarding, json: { schema: -> { User.onboarding_json_schema } }
 
   validate :validate_not_duplicate_email
   validate :validate_not_duplicate_new_email
-  validate :validate_can_update_email, on: :form_submission
+  validate :validate_can_update_email, on: :form_submission # only called if `save` is called w/ `context: :form_submission`
   validate :validate_email_domains_blacklist
 
   before_destroy :remove_initiated_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)

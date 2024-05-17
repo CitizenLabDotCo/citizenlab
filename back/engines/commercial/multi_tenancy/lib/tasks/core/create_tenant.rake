@@ -371,7 +371,7 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
     )
 
     tenant.switch do
-      User.create!(
+      UserService.new.tenant_template_update!(User.new, {
         roles: [{ type: 'admin' }],
         first_name: 'Citizen',
         last_name: 'Lab',
@@ -379,8 +379,9 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
         password: 'democrazy',
         locale: tenant.configuration.settings('core', 'locales')&.first || 'en',
         registration_completed_at: Time.zone.now
-      ).tap(&:confirm).save
-      User.find_by(email: 'admin@citizenlab.co')&.tap(&:confirm)&.save
+      })
+      admin = User.find_by(email: 'admin@citizenlab.co')
+      UserService.new.tenant_template_update!(admin) if admin
       Analytics::PopulateDimensionsService.run
     end
 

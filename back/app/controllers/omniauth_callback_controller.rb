@@ -90,7 +90,7 @@ class OmniauthCallbackController < ApplicationController
           failure
           return
         end
-        @user.assign_attributes(user_attrs.merge(invite_status: 'accepted'))
+        UserService.new.accept_invite_assign_params(@user, user_attrs)
         ActiveRecord::Base.transaction do
           SideFxInviteService.new.before_accept @invite
           @user.save!
