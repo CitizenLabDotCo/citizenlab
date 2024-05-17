@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module ProjectFolders
-  class SideFxService
+  class SideFxProjectFolderService
     include SideFxHelper
 
     def after_create(folder, user)
@@ -22,6 +22,8 @@ module ProjectFolders
 
     def after_destroy(frozen_folder, user)
       serialized_folder = clean_time_attributes(frozen_folder.attributes)
+      update_activities_when_item_deleted(frozen_folder, serialized_folder, 'project_folder')
+
       LogActivityJob.perform_later(
         encode_frozen_resource(frozen_folder), 'deleted',
         user, Time.now.to_i,

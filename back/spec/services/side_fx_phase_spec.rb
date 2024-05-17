@@ -96,6 +96,20 @@ describe SideFxPhaseService do
           .to have_enqueued_job(LogActivityJob).exactly(1).times
       end
     end
+
+    it "logs an UpdateActivityJob for every 'created' or 'changed' activity for the phase when phase is destroyed" do
+      create(:activity, item: phase, action: 'created')
+      create(:activity, item: phase, action: 'changed')
+      create(:activity, item: phase, action: 'changed')
+      create(:activity, item: phase, action: 'changed_voting_method')
+      create(:activity, item: phase, action: 'changed_description_multiloc')
+
+      freeze_time do
+        frozen_phase = phase.destroy
+        expect { service.after_destroy(frozen_phase, user) }
+          .to enqueue_job(UpdateActivityJob).exactly(3).times
+      end
+    end
   end
 
   describe 'after_delete_inputs' do

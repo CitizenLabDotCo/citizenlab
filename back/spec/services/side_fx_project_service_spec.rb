@@ -102,6 +102,20 @@ describe SideFxProjectService do
           .to have_enqueued_job(LogActivityJob)
       end
     end
+
+    it "logs an UpdateActivityJob for every 'created' or 'changed' activity for the project when project destroyed" do
+      create(:activity, item: project, action: 'created')
+      create(:activity, item: project, action: 'changed')
+      create(:activity, item: project, action: 'changed')
+      create(:activity, item: project, action: 'published')
+      create(:activity, item: project, action: 'local_copy_created')
+
+      freeze_time do
+        frozen_project = project.destroy
+        expect { service.after_destroy(frozen_project, user) }
+          .to enqueue_job(UpdateActivityJob).exactly(3).times
+      end
+    end
   end
 
   describe 'after_delete_inputs' do
