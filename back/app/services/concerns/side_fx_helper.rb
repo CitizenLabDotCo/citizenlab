@@ -35,13 +35,15 @@ module SideFxHelper
   end
 
   def update_activities_when_item_deleted(frozen_item, serialized_item, item_name)
-    # Add the serialized item to the payload of the existing activities for the item,
-    # where the activity is one that will be shown in the Management Feed of activities,
-    # excluding 'deleted' activities (as the serialized item is added to those activites at creation).
+    # Add the serialized item to the payload of the existing activities for the item, where the activity is one that
+    # will be shown in the Management Feed of activities - excluding 'deleted' activities, as the serialized item is
+    # added to those activity payloads at creation.
+    #
+    # TODO: Make this exactly only the activities that are shown in the Management Feed. Use a common model scope for this & for the policy.
     Activity.where(item: frozen_item).where(action: 'created')
       .or(Activity.where(item: frozen_item).where(action: 'changed'))
       .each do |activity|
-        UpdateActivityJob.perform_later(activity, item_name, serialized_item)
+        UpdateActivityJob.perform_later(activity, serialized_item, item_name)
       end
   end
 end

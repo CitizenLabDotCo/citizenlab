@@ -55,6 +55,8 @@ class SideFxProjectService
 
   def after_destroy(frozen_project, user)
     serialized_project = clean_time_attributes(frozen_project.attributes)
+    update_activities_when_item_deleted(frozen_project, serialized_project, 'project')
+
     LogActivityJob.perform_later(
       encode_frozen_resource(frozen_project), 'deleted',
       user, Time.now.to_i,

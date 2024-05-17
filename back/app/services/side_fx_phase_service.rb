@@ -85,6 +85,8 @@ class SideFxPhaseService
 
   def after_destroy(frozen_phase, user)
     serialized_phase = clean_time_attributes(frozen_phase.attributes)
+    update_activities_when_item_deleted(frozen_phase, serialized_phase, 'phase')
+
     LogActivityJob.perform_later(
       encode_frozen_resource(frozen_phase), 'deleted',
       user, Time.now.to_i,
