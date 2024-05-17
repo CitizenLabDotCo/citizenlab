@@ -379,7 +379,8 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
         password: 'democrazy',
         locale: tenant.configuration.settings('core', 'locales')&.first || 'en',
         registration_completed_at: Time.zone.now
-      )
+      ).tap(&:confirm).save
+      User.find_by(email: 'admin@citizenlab.co')&.tap(&:confirm)&.save
       Analytics::PopulateDimensionsService.run
     end
 
