@@ -22,7 +22,7 @@ const VisitorsCard = ({ startAt, endAt, resolution = 'month' }: Props) => {
 
   const layout = useLayout();
 
-  if (!stats || stats.visits.value === '0') {
+  if (!stats) {
     return <NoData message={messages.noData} />;
   }
 
