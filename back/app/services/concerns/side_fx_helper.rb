@@ -33,12 +33,4 @@ module SideFxHelper
   def remove_user_from_past_activities_with_item(item, user)
     user.activities.where(item: item).update_all(user_id: nil)
   end
-
-  def update_activities_when_item_deleted(frozen_item, serialized_item, item_name)
-    # Add the serialized item to the payload of the existing activities for the item, where the activity is one that
-    # will be shown in the Management Feed of activities.
-    Activity.where(item: frozen_item).management.each do |activity|
-      UpdateActivityJob.perform_later(activity, serialized_item, item_name)
-    end
-  end
 end

@@ -12,7 +12,14 @@ describe SideFxIdeaService do
 
       expect { service.after_create(idea, user) }
         .to enqueue_job(LogActivityJob)
-        .with(idea, 'created', user, idea.created_at.to_i, project_id: idea.project_id)
+        .with(
+          idea,
+          'created',
+          user,
+          idea.created_at.to_i,
+          project_id: idea.project_id,
+          payload: { idea: service.send(:serialize_idea, idea) }
+        )
         .exactly(1).times
     end
 
@@ -73,7 +80,8 @@ describe SideFxIdeaService do
             change: {
               title_multiloc: [old_title_multiloc, { en: 'something else' }],
               updated_at: [old_updated_at, idea.updated_at]
-            }
+            },
+            idea: service.send(:serialize_idea, idea)
           },
           project_id: idea.project_id
         ).exactly(1).times
@@ -97,7 +105,8 @@ describe SideFxIdeaService do
             change: {
               location_point: [old_location_point, { type: 'Point', coordinates: [42.42, 42.42] }],
               updated_at: [old_updated_at, idea.updated_at]
-            }
+            },
+            idea: service.send(:serialize_idea, idea)
           },
           project_id: idea.project_id
         ).exactly(1).times
@@ -159,25 +168,6 @@ describe SideFxIdeaService do
         frozen_idea = idea.destroy
         expect { service.after_destroy(frozen_idea, user) }
           .to enqueue_job(LogActivityJob).exactly(1).times
-      end
-    end
-
-    it "logs an UpdateActivityJob for every 'Management Feed' activity for the idea when the idea is destroyed" do
-      idea = create(:idea)
-      admin = create(:admin)
-      create(:activity, item: idea, user: admin, acted_at: 1.day.ago, action: 'created')
-      create(:activity, item: idea, user: admin, acted_at: 1.day.ago, action: 'changed')
-      create(:activity, item: idea, user: admin, acted_at: 1.day.ago, action: 'changed')
-      create(:activity, item: idea, user: admin, acted_at: 31.days.ago, action: 'changed')
-      create(:activity, item: idea, user: create(:user), acted_at: 1.day.ago, action: 'changed')
-      create(:activity, item: create(:idea), user: admin, acted_at: 1.day.ago, action: 'changed')
-      create(:activity, item: idea, user: admin, acted_at: 1.day.ago, action: 'published')
-      create(:activity, item: idea, user: admin, acted_at: 1.day.ago, action: 'changed_status')
-
-      freeze_time do
-        frozen_idea = idea.destroy
-        expect { service.after_destroy(frozen_idea, user) }
-          .to enqueue_job(UpdateActivityJob).exactly(3).times
       end
     end
   end

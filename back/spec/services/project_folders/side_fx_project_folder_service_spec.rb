@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 describe ProjectFolders::SideFxProjectFolderService do
+  include SideFxHelper
+
   let(:service) { described_class.new }
   let(:user) { create(:user) }
   let(:project_folder) { create(:project_folder, title_multiloc: { en: 'original title' }) }
@@ -11,7 +13,13 @@ describe ProjectFolders::SideFxProjectFolderService do
     it "logs a 'created' action when a project is created" do
       expect { service.after_create(project_folder, user) }
         .to have_enqueued_job(LogActivityJob)
-        .with(project_folder, 'created', user, project_folder.created_at.to_i)
+        .with(
+          project_folder,
+          'created',
+          user,
+          project_folder.created_at.to_i,
+          payload: { project_folder: clean_time_attributes(project_folder.attributes) }
+        )
     end
   end
 
@@ -41,7 +49,8 @@ describe ProjectFolders::SideFxProjectFolderService do
             change: {
               title_multiloc: [old_title_multiloc, { en: 'something else' }],
               updated_at: [old_updated_at, project_folder.updated_at]
-            }
+            },
+            project_folder: clean_time_attributes(project_folder.attributes)
           }
         ).exactly(1).times
     end
@@ -53,23 +62,6 @@ describe ProjectFolders::SideFxProjectFolderService do
         frozen_project_folder = project_folder.destroy
         expect { service.after_destroy(frozen_project_folder, user) }
           .to enqueue_job(LogActivityJob).exactly(1).times
-      end
-    end
-
-    it "logs an UpdateActivityJob for every 'created' or 'changed' activity for the folder when folder is destroyed" do
-      admin = create(:admin)
-      create(:activity, item: project_folder, user: admin, acted_at: 1.day.ago, action: 'created')
-      create(:activity, item: project_folder, user: admin, acted_at: 1.day.ago, action: 'changed')
-      create(:activity, item: project_folder, user: admin, acted_at: 1.day.ago, action: 'changed')
-      create(:activity, item: project_folder, user: admin, acted_at: 31.days.ago, action: 'changed')
-      create(:activity, item: project_folder, user: create(:user), acted_at: 1.day.ago, action: 'changed')
-      create(:activity, item: create(:project_folder), user: admin, acted_at: 1.day.ago, action: 'changed')
-      create(:activity, item: project_folder, user: admin, acted_at: 1.day.ago, action: 'another_action')
-
-      freeze_time do
-        frozen_project_folder = project_folder.destroy
-        expect { service.after_destroy(frozen_project_folder, user) }
-          .to enqueue_job(UpdateActivityJob).exactly(3).times
       end
     end
   end

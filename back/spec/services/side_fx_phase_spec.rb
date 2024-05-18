@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 describe SideFxPhaseService do
+  include SideFxHelper
+
   let(:service) { described_class.new }
   let(:user) { create(:user) }
   let(:phase) { create(:phase) }
@@ -11,7 +13,14 @@ describe SideFxPhaseService do
     it "logs a 'created' action when a phase is created" do
       expect { service.after_create(phase, user) }
         .to have_enqueued_job(LogActivityJob)
-        .with(phase, 'created', user, phase.created_at.to_i, project_id: phase.project_id)
+        .with(
+          phase,
+          'created',
+          user,
+          phase.created_at.to_i,
+          project_id: phase.project_id,
+          payload: { phase: clean_time_attributes(phase.attributes) }
+        )
     end
 
     it 'runs the description through the necessary steps' do
@@ -40,7 +49,7 @@ describe SideFxPhaseService do
           user,
           phase.updated_at.to_i,
           project_id: phase.project_id,
-          payload: { change: phase.saved_changes }
+          payload: { change: phase.saved_changes, phase: clean_time_attributes(phase.attributes) }
         )
     end
 
@@ -94,24 +103,6 @@ describe SideFxPhaseService do
         frozen_phase = phase.destroy
         expect { service.after_destroy(frozen_phase, user) }
           .to have_enqueued_job(LogActivityJob).exactly(1).times
-      end
-    end
-
-    it "logs an UpdateActivityJob for every 'Management Feed' activity for the phase when the phase is destroyed" do
-      admin = create(:admin)
-      create(:activity, item: phase, user: admin, acted_at: 1.day.ago, action: 'created')
-      create(:activity, item: phase, user: admin, acted_at: 1.day.ago, action: 'changed')
-      create(:activity, item: phase, user: admin, acted_at: 1.day.ago, action: 'changed')
-      create(:activity, item: phase, user: create(:user), acted_at: 1.day.ago, action: 'changed')
-      create(:activity, item: create(:phase), user: admin, acted_at: 1.day.ago, action: 'changed')
-      create(:activity, item: phase, user: admin, acted_at: 31.days.ago, action: 'changed')
-      create(:activity, item: phase, user: admin, acted_at: 1.day.ago, action: 'changed_voting_method')
-      create(:activity, item: phase, user: admin, acted_at: 1.day.ago, action: 'changed_description_multiloc')
-
-      freeze_time do
-        frozen_phase = phase.destroy
-        expect { service.after_destroy(frozen_phase, user) }
-          .to enqueue_job(UpdateActivityJob).exactly(3).times
       end
     end
   end

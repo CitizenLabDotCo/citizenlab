@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 describe SideFxProjectService do
+  include SideFxHelper
+
   let(:service) { described_class.new }
   let(:user) { create(:user) }
   let(:project) { create(:project) }
@@ -11,7 +13,14 @@ describe SideFxProjectService do
     it "logs a 'created' action when a project is created" do
       expect { service.after_create(project, user) }
         .to have_enqueued_job(LogActivityJob)
-        .with(project, 'created', user, project.created_at.to_i, project_id: project.id)
+        .with(
+          project,
+          'created',
+          user,
+          project.created_at.to_i,
+          project_id: project.id,
+          payload: { project: clean_time_attributes(project.attributes) }
+        )
     end
 
     it 'runs the description through the text image service' do
@@ -52,7 +61,7 @@ describe SideFxProjectService do
           user,
           project.updated_at.to_i,
           project_id: project.id,
-          payload: { change: project.saved_changes }
+          payload: { change: project.saved_changes, project: clean_time_attributes(project.attributes) }
         )
     end
 
@@ -100,24 +109,6 @@ describe SideFxProjectService do
         frozen_project = project.destroy
         expect { service.after_destroy(frozen_project, user) }
           .to have_enqueued_job(LogActivityJob)
-      end
-    end
-
-    it "logs an UpdateActivityJob for every 'Management Feed' activity for the project when the project is destroyed" do
-      admin = create(:admin)
-      create(:activity, item: project, user: admin, acted_at: 1.day.ago, action: 'created')
-      create(:activity, item: project, user: admin, acted_at: 1.day.ago, action: 'changed')
-      create(:activity, item: project, user: admin, acted_at: 1.day.ago, action: 'changed')
-      create(:activity, item: project, user: admin, acted_at: 31.days.ago, action: 'changed')
-      create(:activity, item: project, user: create(:user), acted_at: 1.day.ago, action: 'changed')
-      create(:activity, item: create(:project), user: admin, acted_at: 1.day.ago, action: 'changed')
-      create(:activity, item: project, user: admin, acted_at: 1.day.ago, action: 'published')
-      create(:activity, item: project, user: admin, acted_at: 1.day.ago, action: 'local_copy_created')
-
-      freeze_time do
-        frozen_project = project.destroy
-        expect { service.after_destroy(frozen_project, user) }
-          .to enqueue_job(UpdateActivityJob).exactly(3).times
       end
     end
   end

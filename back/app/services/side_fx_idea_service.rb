@@ -18,7 +18,8 @@ class SideFxIdeaService
       idea,
       'created',
       user_for_activity_on_anonymizable_item(idea, user),
-      idea.updated_at.to_i
+      idea.updated_at.to_i,
+      payload: { idea: serialize_idea(idea) }
     )
 
     after_publish idea, user if idea.published?
@@ -36,7 +37,8 @@ class SideFxIdeaService
       after_publish idea, user
     elsif idea.published?
       change = idea.saved_changes
-      payload = change.present? ? { change: sanitize_location_point(change) } : {}
+      payload = { idea: serialize_idea(idea) }
+      payload[:change] = sanitize_location_point(change) if change.present?
 
       LogActivityJob.perform_later(
         idea,
@@ -80,9 +82,7 @@ class SideFxIdeaService
   end
 
   def after_destroy(frozen_idea, user)
-    serialized_idea = clean_time_attributes(frozen_idea.attributes)
-    serialized_idea['location_point'] = serialized_idea['location_point'].to_s
-    update_activities_when_item_deleted(frozen_idea, serialized_idea, 'idea')
+    serialized_idea = serialize_idea(frozen_idea)
 
     LogActivityJob.perform_later(
       encode_frozen_resource(frozen_idea),
@@ -129,6 +129,13 @@ class SideFxIdeaService
     return if !idea.project.in_folder?
 
     Follower.find_or_create_by(followable: idea.project.folder, user: user)
+  end
+
+  def serialize_idea(frozen_idea)
+    serialized_idea = clean_time_attributes(frozen_idea.attributes)
+    serialized_idea['location_point'] = serialized_idea['location_point'].to_s
+
+    serialized_idea
   end
 
   def sanitize_location_point(change)
