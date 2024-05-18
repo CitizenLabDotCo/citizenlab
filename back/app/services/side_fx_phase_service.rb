@@ -9,7 +9,13 @@ class SideFxPhaseService
 
   def after_create(phase, user)
     phase.update!(description_multiloc: TextImageService.new.swap_data_images_multiloc(phase.description_multiloc, field: :description_multiloc, imageable: phase))
-    LogActivityJob.perform_later(phase, 'created', user, phase.created_at.to_i)
+    LogActivityJob.perform_later(
+      phase,
+      'created',
+      user,
+      phase.created_at.to_i,
+      payload: { phase: clean_time_attributes(phase.attributes) }
+    )
 
     permissions_service.update_permissions_for_scope(phase)
 
@@ -33,7 +39,8 @@ class SideFxPhaseService
 
   def after_update(phase, user)
     change = phase.saved_changes
-    payload = change.present? ? { change: change } : {}
+    payload = { phase: clean_time_attributes(phase.attributes) }
+    payload[:change] = change if change.present?
 
     LogActivityJob.perform_later(
       phase,
@@ -85,7 +92,6 @@ class SideFxPhaseService
 
   def after_destroy(frozen_phase, user)
     serialized_phase = clean_time_attributes(frozen_phase.attributes)
-    update_activities_when_item_deleted(frozen_phase, serialized_phase, 'phase')
 
     LogActivityJob.perform_later(
       encode_frozen_resource(frozen_phase), 'deleted',

@@ -8,8 +8,15 @@ class SideFxProjectService
   def after_create(project, user)
     project.set_default_topics!
     project.update!(description_multiloc: TextImageService.new.swap_data_images_multiloc(project.description_multiloc, field: :description_multiloc, imageable: project))
+    serialized_project = clean_time_attributes(project.attributes)
 
-    LogActivityJob.perform_later(project, 'created', user, project.created_at.to_i)
+    LogActivityJob.perform_later(
+      project,
+      'created',
+      user,
+      project.created_at.to_i,
+      payload: { project: serialized_project }
+    )
 
     after_publish project, user if project.admin_publication.published?
   end
@@ -36,7 +43,8 @@ class SideFxProjectService
 
   def after_update(project, user)
     change = project.saved_changes
-    payload = change.present? ? { change: change } : {}
+    payload = { project: clean_time_attributes(project.attributes) }
+    payload[:change] = change if change.present?
 
     LogActivityJob.perform_later(
       project,
@@ -55,7 +63,6 @@ class SideFxProjectService
 
   def after_destroy(frozen_project, user)
     serialized_project = clean_time_attributes(frozen_project.attributes)
-    update_activities_when_item_deleted(frozen_project, serialized_project, 'project')
 
     LogActivityJob.perform_later(
       encode_frozen_resource(frozen_project), 'deleted',

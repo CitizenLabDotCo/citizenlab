@@ -12,12 +12,10 @@ class WebApi::V1::ActivitySerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :item_title_multiloc do |object|
-    if object&.item.respond_to?(:title_multiloc)
-      object.item.try(:title_multiloc)
-    else
-      item_name = object.item_type == 'ProjectFolders::Folder' ? 'project_folder' : object.item_type.demodulize.downcase
-      object.payload[item_name]['title_multiloc'] if object.payload[item_name].present?
-    end
+    item_name = object.item_type == 'ProjectFolders::Folder' ? 'project_folder' : object.item_type.demodulize.downcase
+    payload_title = object.payload.dig(item_name, 'title_multiloc')
+
+    payload_title || object.item.try(:title_multiloc)
   end
 
   attribute :change do |object|
