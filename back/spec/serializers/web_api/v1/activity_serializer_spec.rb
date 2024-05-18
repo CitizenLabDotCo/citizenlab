@@ -20,7 +20,7 @@ describe WebApi::V1::ActivitySerializer do
     end
 
     context 'when the item has been deleted' do
-      it "returns the item's title multiloc from the activity payload data" do
+      it "returns the item's title multiloc" do
         idea.destroy!
         expect(activity.reload&.item&.title_multiloc).to be_nil
 
