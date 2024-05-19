@@ -9,7 +9,7 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import styled from 'styled-components';
-import { object, array, string } from 'yup';
+import { object, array, string, number } from 'yup';
 
 import { IAppConfigurationSettingsCore } from 'api/app_configuration/types';
 
@@ -43,6 +43,7 @@ interface FormValues {
   organization_name: IAppConfigurationSettingsCore['organization_name'];
   locales: IAppConfigurationSettingsCore['locales'];
   organization_site: IAppConfigurationSettingsCore['organization_site'];
+  population: IAppConfigurationSettingsCore['population'];
 }
 
 export interface Props {
@@ -65,6 +66,16 @@ const Form = ({ defaultValues, onSubmit }: Props) => {
       /^$|^((http:\/\/.+)|(https:\/\/.+))/,
       formatMessage(messages.urlPatternError)
     ),
+    population: number()
+      .integer()
+      .nullable(true)
+      .min(0, formatMessage(messages.populationMinError))
+      .transform((value, originalValue) => {
+        // Population should be allowed to be empty (null), but the input field
+        // returns an empty string instead. This converts the empty string to
+        // null.
+        return originalValue === '' ? null : value;
+      }),
   });
   const methods = useForm({
     mode: 'onBlur',
@@ -138,6 +149,21 @@ const Form = ({ defaultValues, onSubmit }: Props) => {
               type="text"
               name="organization_site"
               placeholder="https://..."
+            />
+          </SectionField>
+          <SectionField>
+            <Label htmlFor="population">
+              <FormattedMessage {...messages.population} />
+              <IconTooltip
+                content={formatMessage(messages.populationTooltip)}
+              />
+            </Label>
+            <Input
+              id="population"
+              type="number"
+              required={false}
+              name="population"
+              placeholder="100000"
             />
           </SectionField>
           <Box display="flex">
