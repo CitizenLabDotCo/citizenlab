@@ -43,7 +43,7 @@ class Activity < ApplicationRecord
     activities = where(acted_at: 30.days.ago..Time.now).where(user: User.admin_or_moderator)
     result = Activity.none
 
-    Activity::MANAGEMENT_FILTERS.each do |filter|
+    MANAGEMENT_FILTERS.each do |filter|
       result = result.or(activities.where(
         item_type: filter[:item_type],
         action: filter[:actions]
