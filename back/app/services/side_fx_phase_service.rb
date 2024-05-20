@@ -40,7 +40,7 @@ class SideFxPhaseService
   def after_update(phase, user)
     change = phase.saved_changes
     payload = { phase: clean_time_attributes(phase.attributes) }
-    payload[:change] = change if change.present?
+    payload[:change] = sanitize_change(change) if change.present?
 
     LogActivityJob.perform_later(
       phase,

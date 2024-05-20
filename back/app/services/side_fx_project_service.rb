@@ -44,7 +44,7 @@ class SideFxProjectService
   def after_update(project, user)
     change = project.saved_changes
     payload = { project: clean_time_attributes(project.attributes) }
-    payload[:change] = change if change.present?
+    payload[:change] = sanitize_change(change) if change.present?
 
     LogActivityJob.perform_later(
       project,

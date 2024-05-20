@@ -22,7 +22,7 @@ module ProjectFolders
     def after_update(folder, user)
       change = folder.saved_changes
       payload = { project_folder: clean_time_attributes(folder.attributes) }
-      payload[:change] = change if change.present?
+      payload[:change] = sanitize_change(change) if change.present?
 
       LogActivityJob.perform_later(folder, 'changed', user, folder.updated_at.to_i, payload: payload)
     end
