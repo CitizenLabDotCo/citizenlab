@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module UserRoles
+module UserRoles # rubocop:disable Metrics/ModuleLength
   extend ActiveSupport::Concern
 
   ROLES = %w[admin project_moderator project_folder_moderator].freeze
