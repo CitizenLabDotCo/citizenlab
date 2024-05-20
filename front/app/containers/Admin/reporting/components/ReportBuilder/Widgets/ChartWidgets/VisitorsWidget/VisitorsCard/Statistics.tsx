@@ -16,11 +16,13 @@ import chartWidgetMessages from '../../messages';
 
 interface PropsAbsolute extends DatesStrings {
   nameMessage: MessageDescriptor;
+  tooltipMessage: MessageDescriptor;
   stat: { value: number; delta?: number };
 }
 
 export const AbsoluteStatistic = ({
   nameMessage,
+  tooltipMessage,
   stat,
   startAt,
   endAt,
@@ -30,7 +32,11 @@ export const AbsoluteStatistic = ({
 
   return (
     <Box>
-      <StatisticName name={formatMessage(nameMessage)} nameColor="black" />
+      <StatisticName
+        name={formatMessage(nameMessage)}
+        tooltipContent={formatMessage(tooltipMessage)}
+        nameColor="black"
+      />
       <Box mt="2px">
         <Text color="textPrimary" fontSize="xl" display="inline">
           {stat.value}

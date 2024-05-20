@@ -29,6 +29,7 @@ const Narrow = ({
         <Box display="flex" flexDirection="column" mb="8px">
           <AbsoluteStatistic
             nameMessage={visitorsCardMessages.visitors}
+            tooltipMessage={visitorsCardMessages.visitorsStatTooltipMessage}
             stat={stats.visitors}
             startAt={startAt}
             endAt={endAt}
@@ -36,6 +37,7 @@ const Narrow = ({
           <Box mt="12px">
             <AbsoluteStatistic
               nameMessage={visitorsCardMessages.visits}
+              tooltipMessage={visitorsCardMessages.visitsStatTooltipMessage}
               stat={stats.visits}
               startAt={startAt}
               endAt={endAt}

@@ -46,6 +46,7 @@ const Wide = ({
             <Box maxWidth="25%" pr="12px">
               <AbsoluteStatistic
                 nameMessage={visitorsCardMessages.visitors}
+                tooltipMessage={visitorsCardMessages.visitorsStatTooltipMessage}
                 stat={stats.visitors}
                 startAt={startAt}
                 endAt={endAt}
@@ -54,6 +55,7 @@ const Wide = ({
             <Box maxWidth="25%" pr="12px">
               <AbsoluteStatistic
                 nameMessage={visitorsCardMessages.visits}
+                tooltipMessage={visitorsCardMessages.visitsStatTooltipMessage}
                 stat={stats.visits}
                 startAt={startAt}
                 endAt={endAt}
