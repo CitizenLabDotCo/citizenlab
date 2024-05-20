@@ -1,7 +1,12 @@
 import React from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  colors,
+  fontSizes,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import styled from 'styled-components';
@@ -42,6 +47,10 @@ const Container = styled.div`
     color: ${colors.black};
     border: 1px solid ${colors.black};
     border-radius: ${stylingConsts.borderRadius};
+  }
+
+  .react-datepicker__day--keyboard-selected {
+    background-color: ${colors.white};
   }
 
   input {

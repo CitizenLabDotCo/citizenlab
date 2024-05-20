@@ -20,13 +20,6 @@ const Container = styled.div`
   border-radius: ${(props) => props.theme.borderRadius};
   border: solid 1px ${colors.borderDark};
 
-  input {
-    width: 100%;
-    color: ${colors.grey800};
-    font-size: ${fontSizes.base}px;
-    padding: 12px;
-  }
-
   /*
     Added to ensure the color contrast required to meet WCAG AA standards.
   */
@@ -35,6 +28,17 @@ const Container = styled.div`
     color: ${colors.black};
     border: 1px solid ${colors.black};
     border-radius: ${stylingConsts.borderRadius};
+  }
+
+  .react-datepicker__day--keyboard-selected {
+    background-color: ${colors.white};
+  }
+
+  input {
+    width: 100%;
+    color: ${colors.grey800};
+    font-size: ${fontSizes.base}px;
+    padding: 12px;
   }
 `;
 
