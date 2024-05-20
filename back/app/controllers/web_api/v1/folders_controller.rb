@@ -56,7 +56,7 @@ class WebApi::V1::FoldersController < ApplicationController
     authorize @project_folder
 
     if @project_folder.save
-      ProjectFolders::SideFxService.new.after_create(@project_folder, current_user)
+      ProjectFolders::SideFxProjectFolderService.new.after_create(@project_folder, current_user)
 
       render json: WebApi::V1::FolderSerializer.new(
         @project_folder,
@@ -73,9 +73,9 @@ class WebApi::V1::FoldersController < ApplicationController
     authorize @project_folder
     remove_image_if_requested!(@project_folder, project_folder_params, :header_bg)
 
-    ProjectFolders::SideFxService.new.before_update(@project_folder, current_user)
+    ProjectFolders::SideFxProjectFolderService.new.before_update(@project_folder, current_user)
     if @project_folder.save
-      ProjectFolders::SideFxService.new.after_update(@project_folder, current_user)
+      ProjectFolders::SideFxProjectFolderService.new.after_update(@project_folder, current_user)
       render json: WebApi::V1::FolderSerializer.new(
         @project_folder,
         params: jsonapi_serializer_params,
@@ -97,7 +97,7 @@ class WebApi::V1::FoldersController < ApplicationController
       frozen_folder = @project_folder.destroy
     end
     if frozen_folder.destroyed?
-      ProjectFolders::SideFxService.new.after_destroy(frozen_folder, current_user)
+      ProjectFolders::SideFxProjectFolderService.new.after_destroy(frozen_folder, current_user)
       frozen_projects.each do |project|
         SideFxProjectService.new.after_destroy(project, current_user)
       end

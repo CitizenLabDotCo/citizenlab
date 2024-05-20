@@ -256,18 +256,14 @@ context 'criipto verification' do
     end
   end
 
-  describe 'update email after registration with ClaveUnica' do
+  describe 'update email after registration with Criipto' do
     before do
       configuration = AppConfiguration.instance
-      # We enable phone registration, because this part is rarely used (so, can be broken) and specific for Chile.
-      # The normal email flow should work the same way as with phone registration turned off.
       configuration.settings['password_login'] = {
-        'phone' => true,
         'allowed' => true,
         'enabled' => true,
         'enable_signup' => true,
-        'minimum_length' => 8,
-        'phone_email_pattern' => 'phone+__PHONE__@test.com'
+        'minimum_length' => 8
       }
       configuration.save!
     end

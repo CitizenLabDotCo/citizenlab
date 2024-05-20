@@ -83,12 +83,12 @@ const EmailChange = () => {
     }
   };
 
-  if (isNilOrError(authUser)) {
+  if (!authUser) {
     return null;
   }
 
   return (
-    <Box>
+    <>
       <Helmet
         title={formatMessage(messages.helmetTitle)}
         meta={[
@@ -98,57 +98,59 @@ const EmailChange = () => {
           },
         ]}
       />
-      <StyledContentContainer>
-        <Box mt="30px">
-          <GoBackButton
-            onClick={() => {
-              clHistory.goBack();
-            }}
-          />
-        </Box>
-        {updateCancelled && <CancelUpdate />}
-        {!updateCancelled && (
-          <UpdateEmailForm
-            updateSuccessful={updateSuccessful}
-            setOpenConfirmationModal={setOpenConfirmationModal}
-            setUpdateSuccessful={setUpdateSuccessful}
-            methods={methods}
-            user={authUser.data}
-          />
-        )}
-      </StyledContentContainer>
-      <Modal
-        fullScreen={false}
-        width="580px"
-        opened={openConfirmationModal}
-        close={() => {
-          setOpenConfirmationModal(false);
-          setUpdateCancelled(true);
-        }}
-        hideCloseButton={false}
-        header={formatMessage(messages.confirmationModalTitle)}
-      >
-        <Box padding="32px">
-          {confirmationError && (
-            <Box mb="16px">
-              <Error
-                text={formatMessage(ERROR_CODE_MESSAGES[confirmationError])}
-              />
-            </Box>
+      <Box p="32px" pb="0">
+        <GoBackButton
+          onClick={() => {
+            clHistory.goBack();
+          }}
+        />
+      </Box>
+      <main>
+        <StyledContentContainer>
+          {updateCancelled && <CancelUpdate />}
+          {!updateCancelled && (
+            <UpdateEmailForm
+              updateSuccessful={updateSuccessful}
+              setOpenConfirmationModal={setOpenConfirmationModal}
+              setUpdateSuccessful={setUpdateSuccessful}
+              methods={methods}
+              user={authUser.data}
+            />
           )}
-          <EmailConfirmation
-            state={{
-              email: methods.watch('email'),
-              token: null,
-              prefilledBuiltInFields: null,
-            }}
-            loading={loading}
-            setError={setConfirmationError}
-            onConfirm={onEmailConfirmation}
-          />
-        </Box>
-      </Modal>
-    </Box>
+        </StyledContentContainer>
+        <Modal
+          fullScreen={false}
+          width="580px"
+          opened={openConfirmationModal}
+          close={() => {
+            setOpenConfirmationModal(false);
+            setUpdateCancelled(true);
+          }}
+          hideCloseButton={false}
+          header={formatMessage(messages.confirmationModalTitle)}
+        >
+          <Box padding="32px">
+            {confirmationError && (
+              <Box mb="16px">
+                <Error
+                  text={formatMessage(ERROR_CODE_MESSAGES[confirmationError])}
+                />
+              </Box>
+            )}
+            <EmailConfirmation
+              state={{
+                email: methods.watch('email'),
+                token: null,
+                prefilledBuiltInFields: null,
+              }}
+              loading={loading}
+              setError={setConfirmationError}
+              onConfirm={onEmailConfirmation}
+            />
+          </Box>
+        </Modal>
+      </main>
+    </>
   );
 };
 
