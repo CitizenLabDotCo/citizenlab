@@ -20,6 +20,7 @@ class WebApi::V1::ActivitiesController < ApplicationController
     end
 
     paginated_activities = paginate @activities
+    paginated_activities = paginated_activities.includes(:user)
 
     render json: linked_json(
       paginated_activities,
