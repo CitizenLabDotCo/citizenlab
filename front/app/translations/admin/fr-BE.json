@@ -2573,7 +2573,6 @@
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.title": "Types de visiteurs",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.visitors": "Visiteurs",
   "app.modules.commercial.analytics.admin.components.totalParticipants": "Nombre total de participants",
-  "app.modules.commercial.analytics.admin.containers.visitors.cookieBannerUpdatedInfo": "Depuis décembre 2023, il est plus facile pour les utilisateurs de refuser les cookies, ce qui a un effet négatif sur le trafic mesuré.",
   "app.modules.commercial.analytics.admin.containers.visitors.noData": "Il n'y a pas encore de données sur les visiteurs.",
   "app.modules.commercial.analytics.admin.hooks.useEmailDeliveries.timeSeries": "Livraisons d'e-mails dans le temps",
   "app.modules.commercial.analytics.admin.hooks.useParticipants.timeSeries": "Participants",
