@@ -8,7 +8,7 @@ import visitorsCardMessages from 'components/admin/GraphCards/VisitorsCard/messa
 import { TimeSeries } from 'components/admin/GraphCards/VisitorsCard/useVisitors/typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 
-import { formatLargeNumber } from '../../utils';
+import { formatLargeNumber, getDaysInRange } from '../../utils';
 import { Stats } from '../typings';
 
 import {
@@ -34,6 +34,8 @@ const Wide = ({
   timeSeries,
   hideStatistics,
 }: Props) => {
+  const previousDays = getDaysInRange(startAt, endAt);
+
   return (
     <Box width="100%" pb="8px">
       <Box height="100%" display="flex" flexDirection="column">
@@ -48,8 +50,7 @@ const Wide = ({
                 nameMessage={visitorsCardMessages.visitors}
                 tooltipMessage={visitorsCardMessages.visitorsStatTooltipMessage}
                 stat={stats.visitors}
-                startAt={startAt}
-                endAt={endAt}
+                previousDays={previousDays}
               />
             </Box>
             <Box maxWidth="25%" pr="12px">
@@ -57,24 +58,21 @@ const Wide = ({
                 nameMessage={visitorsCardMessages.visits}
                 tooltipMessage={visitorsCardMessages.visitsStatTooltipMessage}
                 stat={stats.visits}
-                startAt={startAt}
-                endAt={endAt}
+                previousDays={previousDays}
               />
             </Box>
             <Box maxWidth="25%" pr="12px">
               <VisitDurationStatistic
                 nameMessage={visitorsCardMessages.visitDuration}
                 stat={stats.visitDuration}
-                startAt={startAt}
-                endAt={endAt}
+                previousDays={previousDays}
               />
             </Box>
             <Box maxWidth="25%" pr="12px">
               <PageViewsStatistic
                 nameMessage={visitorsCardMessages.pageViews}
                 stat={stats.pageViews}
-                startAt={startAt}
-                endAt={endAt}
+                previousDays={previousDays}
               />
             </Box>
           </Box>

@@ -6,7 +6,7 @@ import moment from 'moment';
 import Chart from 'components/admin/GraphCards/VisitorsCard/Chart';
 import visitorsCardMessages from 'components/admin/GraphCards/VisitorsCard/messages';
 
-import { formatLargeNumber } from '../../utils';
+import { formatLargeNumber, getDaysInRange } from '../../utils';
 
 import {
   AbsoluteStatistic,
@@ -23,6 +23,8 @@ const Narrow = ({
   timeSeries,
   hideStatistics,
 }: Props) => {
+  const previousDays = getDaysInRange(startAt, endAt);
+
   return (
     <Box height="100%" display="flex" flexDirection="column">
       {!hideStatistics && (
@@ -31,32 +33,28 @@ const Narrow = ({
             nameMessage={visitorsCardMessages.visitors}
             tooltipMessage={visitorsCardMessages.visitorsStatTooltipMessage}
             stat={stats.visitors}
-            startAt={startAt}
-            endAt={endAt}
+            previousDays={previousDays}
           />
           <Box mt="12px">
             <AbsoluteStatistic
               nameMessage={visitorsCardMessages.visits}
               tooltipMessage={visitorsCardMessages.visitsStatTooltipMessage}
               stat={stats.visits}
-              startAt={startAt}
-              endAt={endAt}
+              previousDays={previousDays}
             />
           </Box>
           <Box mt="12px">
             <VisitDurationStatistic
               nameMessage={visitorsCardMessages.visitDuration}
               stat={stats.visitDuration}
-              startAt={startAt}
-              endAt={endAt}
+              previousDays={previousDays}
             />
           </Box>
           <Box mt="12px">
             <PageViewsStatistic
               nameMessage={visitorsCardMessages.pageViews}
               stat={stats.pageViews}
-              startAt={startAt}
-              endAt={endAt}
+              previousDays={previousDays}
             />
           </Box>
         </Box>

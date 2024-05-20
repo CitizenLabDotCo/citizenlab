@@ -1,10 +1,8 @@
 import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import moment from 'moment';
 
 import dashboardCardMessages from 'components/admin/GraphCards/ActiveUsersCard/messages';
-import { DatesStrings } from 'components/admin/GraphCards/typings';
 import StatisticBottomLabel from 'components/admin/Graphs/Statistic/StatisticBottomLabel';
 import StatisticDelta, {
   getSignNumber,
@@ -17,13 +15,13 @@ import chartWidgetMessages from '../../messages';
 import messages from '../messages';
 import { Stats } from '../typings';
 
-interface Props extends DatesStrings {
+interface Props {
   stats: Stats;
+  previousDays?: number;
 }
 
-export const ParticipantsStatistic = ({ stats, startAt, endAt }: Props) => {
+export const ParticipantsStatistic = ({ stats, previousDays }: Props) => {
   const { formatMessage } = useIntl();
-  const previousDays = moment(endAt).diff(moment(startAt), 'days');
 
   return (
     <Box>
@@ -42,7 +40,7 @@ export const ParticipantsStatistic = ({ stats, startAt, endAt }: Props) => {
           />
         )}
       </Box>
-      {stats.activeUsers.delta !== undefined && (
+      {stats.activeUsers.delta !== undefined && previousDays && (
         <StatisticBottomLabel
           bottomLabel={formatMessage(
             chartWidgetMessages.comparedToPreviousXDays,
@@ -56,13 +54,8 @@ export const ParticipantsStatistic = ({ stats, startAt, endAt }: Props) => {
   );
 };
 
-export const ParticipationRateStatistic = ({
-  stats,
-  startAt,
-  endAt,
-}: Props) => {
+export const ParticipationRateStatistic = ({ stats, previousDays }: Props) => {
   const { formatMessage } = useIntl();
-  const previousDays = moment(endAt).diff(moment(startAt), 'days');
 
   return (
     <Box>
@@ -85,7 +78,7 @@ export const ParticipationRateStatistic = ({
           />
         )}
       </Box>
-      {stats.activeUsers.delta !== undefined && (
+      {stats.activeUsers.delta !== undefined && previousDays && (
         <StatisticBottomLabel
           bottomLabel={formatMessage(
             chartWidgetMessages.comparedToPreviousXDays,

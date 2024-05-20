@@ -5,6 +5,8 @@ import moment from 'moment';
 
 import Chart from 'components/admin/GraphCards/RegistrationsCard/Chart';
 
+import { getDaysInRange } from '../../utils';
+
 import {
   RegistrationsStatistic,
   RegistrationRateStatistic,
@@ -19,21 +21,18 @@ const Narrow = ({
   stats,
   currentResolution,
 }: Props) => {
+  const previousDays = getDaysInRange(startAt, endAt);
+
   return (
     <Box width="100%" pb="8px" className="e2e-participants-timeline-widget">
       <Box height="100%" display="flex" flexDirection="column">
         {!hideStatistics && (
           <Box mb="8px">
-            <RegistrationsStatistic
-              stats={stats}
-              startAt={startAt}
-              endAt={endAt}
-            />
+            <RegistrationsStatistic stats={stats} previousDays={previousDays} />
             <Box mt="12px">
               <RegistrationRateStatistic
                 stats={stats}
-                startAt={startAt}
-                endAt={endAt}
+                previousDays={previousDays}
               />
             </Box>
           </Box>

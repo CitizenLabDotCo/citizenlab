@@ -1,9 +1,7 @@
 import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import moment from 'moment';
 
-import { DatesStrings } from 'components/admin/GraphCards/typings';
 import StatisticBottomLabel from 'components/admin/Graphs/Statistic/StatisticBottomLabel';
 import StatisticDelta, {
   getSignNumber,
@@ -14,9 +12,10 @@ import { useIntl, MessageDescriptor } from 'utils/cl-intl';
 
 import chartWidgetMessages from '../../messages';
 
-interface PropsAbsolute extends DatesStrings {
+interface PropsAbsolute {
   nameMessage: MessageDescriptor;
   tooltipMessage: MessageDescriptor;
+  previousDays?: number;
   stat: { value: number; delta?: number };
 }
 
@@ -24,11 +23,9 @@ export const AbsoluteStatistic = ({
   nameMessage,
   tooltipMessage,
   stat,
-  startAt,
-  endAt,
+  previousDays,
 }: PropsAbsolute) => {
   const { formatMessage } = useIntl();
-  const previousDays = moment(endAt).diff(moment(startAt), 'days');
 
   return (
     <Box>
@@ -45,7 +42,7 @@ export const AbsoluteStatistic = ({
           <StatisticDelta delta={stat.delta} sign={getSignNumber(stat.delta)} />
         )}
       </Box>
-      {stat.delta !== undefined && (
+      {stat.delta !== undefined && previousDays && (
         <StatisticBottomLabel
           bottomLabel={formatMessage(
             chartWidgetMessages.comparedToPreviousXDays,
@@ -59,9 +56,10 @@ export const AbsoluteStatistic = ({
   );
 };
 
-interface PropsDuration extends DatesStrings {
+interface PropsDuration {
   nameMessage: MessageDescriptor;
   stat: { value: string; delta?: string };
+  previousDays?: number;
 }
 
 const getDurationDeltaSign = (delta: string) => {
@@ -73,11 +71,9 @@ const getDurationDeltaSign = (delta: string) => {
 export const VisitDurationStatistic = ({
   nameMessage,
   stat,
-  startAt,
-  endAt,
+  previousDays,
 }: PropsDuration) => {
   const { formatMessage } = useIntl();
-  const previousDays = moment(endAt).diff(moment(startAt), 'days');
 
   return (
     <Box>
@@ -93,7 +89,7 @@ export const VisitDurationStatistic = ({
           />
         )}
       </Box>
-      {stat.delta !== undefined && (
+      {stat.delta !== undefined && previousDays && (
         <StatisticBottomLabel
           bottomLabel={formatMessage(
             chartWidgetMessages.comparedToPreviousXDays,
@@ -116,11 +112,9 @@ const getPageViewsDeltaSign = (delta: string) => {
 export const PageViewsStatistic = ({
   nameMessage,
   stat,
-  startAt,
-  endAt,
+  previousDays,
 }: PropsDuration) => {
   const { formatMessage } = useIntl();
-  const previousDays = moment(endAt).diff(moment(startAt), 'days');
 
   return (
     <Box>
@@ -136,7 +130,7 @@ export const PageViewsStatistic = ({
           />
         )}
       </Box>
-      {stat.delta !== undefined && (
+      {stat.delta !== undefined && previousDays && (
         <StatisticBottomLabel
           bottomLabel={formatMessage(
             chartWidgetMessages.comparedToPreviousXDays,
