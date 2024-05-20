@@ -13,7 +13,7 @@ import { AdminRoute } from '../routes';
 export enum usersRoutes {
   users = 'users',
   admins = 'admins',
-  managers = 'moderators',
+  moderators = 'moderators',
   groupId = `:groupId`,
   blocked = 'blocked',
 }
@@ -24,7 +24,7 @@ type UsersRoute<T extends string = string> =
 export type userRouteTypes =
   | AdminRoute<`${usersRoutes.users}`>
   | UsersRoute<`${usersRoutes.admins}`>
-  | UsersRoute<`${usersRoutes.managers}`>
+  | UsersRoute<`${usersRoutes.moderators}`>
   | UsersRoute<`${usersRoutes.blocked}`>
   | UsersRoute<`${string}`>;
 
@@ -53,7 +53,7 @@ const createAdminUsersRoutes = () => ({
       ),
     },
     {
-      path: usersRoutes.managers,
+      path: usersRoutes.moderators,
       element: (
         <PageLoading>
           <AdminModerators />
