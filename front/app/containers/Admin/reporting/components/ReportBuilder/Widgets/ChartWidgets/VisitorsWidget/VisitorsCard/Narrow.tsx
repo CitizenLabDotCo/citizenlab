@@ -21,41 +21,44 @@ const Narrow = ({
   currentResolution,
   stats,
   timeSeries,
+  hideStatistics,
 }: Props) => {
   return (
     <Box height="100%" display="flex" flexDirection="column">
-      <Box display="flex" flexDirection="column" mb="8px">
-        <AbsoluteStatistic
-          nameMessage={visitorsCardMessages.visitors}
-          stat={stats.visitors}
-          startAt={startAt}
-          endAt={endAt}
-        />
-        <Box mt="12px">
+      {!hideStatistics && (
+        <Box display="flex" flexDirection="column" mb="8px">
           <AbsoluteStatistic
-            nameMessage={visitorsCardMessages.visits}
-            stat={stats.visits}
+            nameMessage={visitorsCardMessages.visitors}
+            stat={stats.visitors}
             startAt={startAt}
             endAt={endAt}
           />
+          <Box mt="12px">
+            <AbsoluteStatistic
+              nameMessage={visitorsCardMessages.visits}
+              stat={stats.visits}
+              startAt={startAt}
+              endAt={endAt}
+            />
+          </Box>
+          <Box mt="12px">
+            <VisitDurationStatistic
+              nameMessage={visitorsCardMessages.visitDuration}
+              stat={stats.visitDuration}
+              startAt={startAt}
+              endAt={endAt}
+            />
+          </Box>
+          <Box mt="12px">
+            <PageViewsStatistic
+              nameMessage={visitorsCardMessages.pageViews}
+              stat={stats.pageViews}
+              startAt={startAt}
+              endAt={endAt}
+            />
+          </Box>
         </Box>
-        <Box mt="12px">
-          <VisitDurationStatistic
-            nameMessage={visitorsCardMessages.visitDuration}
-            stat={stats.visitDuration}
-            startAt={startAt}
-            endAt={endAt}
-          />
-        </Box>
-        <Box mt="12px">
-          <PageViewsStatistic
-            nameMessage={visitorsCardMessages.pageViews}
-            stat={stats.pageViews}
-            startAt={startAt}
-            endAt={endAt}
-          />
-        </Box>
-      </Box>
+      )}
 
       <Box flexGrow={1} display="flex" justifyContent="flex-end" height="200px">
         <Box pt="8px" width="100%" maxWidth="800px" h="100%">

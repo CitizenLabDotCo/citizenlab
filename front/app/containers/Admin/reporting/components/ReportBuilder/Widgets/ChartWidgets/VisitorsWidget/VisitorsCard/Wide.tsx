@@ -23,6 +23,7 @@ export interface Props {
   currentResolution: IResolution;
   stats: Stats;
   timeSeries: TimeSeries | null;
+  hideStatistics?: boolean;
 }
 
 const Wide = ({
@@ -31,44 +32,51 @@ const Wide = ({
   currentResolution,
   stats,
   timeSeries,
+  hideStatistics,
 }: Props) => {
   return (
     <Box width="100%" pb="8px">
       <Box height="100%" display="flex" flexDirection="column">
-        <Box display="flex" flexDirection="row" justifyContent="space-between">
-          <Box maxWidth="25%" pr="12px">
-            <AbsoluteStatistic
-              nameMessage={visitorsCardMessages.visitors}
-              stat={stats.visitors}
-              startAt={startAt}
-              endAt={endAt}
-            />
+        {!hideStatistics && (
+          <Box
+            display="flex"
+            flexDirection="row"
+            justifyContent="space-between"
+          >
+            <Box maxWidth="25%" pr="12px">
+              <AbsoluteStatistic
+                nameMessage={visitorsCardMessages.visitors}
+                stat={stats.visitors}
+                startAt={startAt}
+                endAt={endAt}
+              />
+            </Box>
+            <Box maxWidth="25%" pr="12px">
+              <AbsoluteStatistic
+                nameMessage={visitorsCardMessages.visits}
+                stat={stats.visits}
+                startAt={startAt}
+                endAt={endAt}
+              />
+            </Box>
+            <Box maxWidth="25%" pr="12px">
+              <VisitDurationStatistic
+                nameMessage={visitorsCardMessages.visitDuration}
+                stat={stats.visitDuration}
+                startAt={startAt}
+                endAt={endAt}
+              />
+            </Box>
+            <Box maxWidth="25%" pr="12px">
+              <PageViewsStatistic
+                nameMessage={visitorsCardMessages.pageViews}
+                stat={stats.pageViews}
+                startAt={startAt}
+                endAt={endAt}
+              />
+            </Box>
           </Box>
-          <Box maxWidth="25%" pr="12px">
-            <AbsoluteStatistic
-              nameMessage={visitorsCardMessages.visits}
-              stat={stats.visits}
-              startAt={startAt}
-              endAt={endAt}
-            />
-          </Box>
-          <Box maxWidth="25%" pr="12px">
-            <VisitDurationStatistic
-              nameMessage={visitorsCardMessages.visitDuration}
-              stat={stats.visitDuration}
-              startAt={startAt}
-              endAt={endAt}
-            />
-          </Box>
-          <Box maxWidth="25%" pr="12px">
-            <PageViewsStatistic
-              nameMessage={visitorsCardMessages.pageViews}
-              stat={stats.pageViews}
-              startAt={startAt}
-              endAt={endAt}
-            />
-          </Box>
-        </Box>
+        )}
 
         <Box flexGrow={1} display="flex" justifyContent="flex-start" mt="20px">
           <Box pt="8px" w="100%" maxWidth="800px" h="240px">
