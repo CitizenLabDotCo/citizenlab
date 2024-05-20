@@ -1,4 +1,5 @@
 import React from 'react';
+import 'react-datepicker/dist/react-datepicker.css';
 
 import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
