@@ -32,7 +32,7 @@ module UserGroups
   end
 
   def in_any_groups?(groups_to_check)
-    @groups ||= groups # Memoized here to avoid .groups not returning correctly when groups are added / rmeoved
+    @groups ||= groups # Memoized here to avoid .groups not returning correctly when groups are added / removed
     @groups.intersection(groups_to_check).any?
   end
 
