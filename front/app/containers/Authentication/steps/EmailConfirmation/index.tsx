@@ -115,7 +115,9 @@ const EmailConfirmation = ({
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(handleConfirm)}>
-        <Box mt="-8px">
+        {/* Using the key on aria-live to force screen
+          readers to read the message on resend */}
+        <Box mt="-8px" aria-live="assertive" key={`${codeResent}`}>
           <CodeSentMessage email={state.email ?? undefined} />
         </Box>
         <Box>
