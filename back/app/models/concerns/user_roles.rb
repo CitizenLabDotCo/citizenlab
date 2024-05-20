@@ -35,6 +35,7 @@ module UserRoles
         where("roles @> '[{\"type\":\"project_moderator\"}]'")
       end
     }
+
     scope :not_project_moderator, lambda { |project_id = nil|
       return where.not(id: project_moderator) if project_id.nil?
 
@@ -45,6 +46,7 @@ module UserRoles
         where.not(id: project_moderator(project_id))
       end
     }
+
     scope :project_folder_moderator, lambda { |*project_folder_ids|
       return where("roles @> '[{\"type\":\"project_folder_moderator\"}]'") if project_folder_ids.empty?
 
@@ -53,6 +55,10 @@ module UserRoles
       end
 
       where('roles @> ?', JSON.generate(query))
+    }
+
+    scope :not_project_folder_moderator, lambda { |*project_folder_ids|
+      where.not(id: project_folder_moderator(*project_folder_ids))
     }
 
     scope :admin_or_moderator, -> { where(id: admin).or(where(id: project_moderator)).or(where(id: project_folder_moderator)) }
