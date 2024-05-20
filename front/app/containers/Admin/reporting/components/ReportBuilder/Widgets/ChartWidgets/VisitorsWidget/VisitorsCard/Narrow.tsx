@@ -8,7 +8,11 @@ import visitorsCardMessages from 'components/admin/GraphCards/VisitorsCard/messa
 
 import { formatLargeNumber } from '../../utils';
 
-import { AbsoluteStatistic } from './Statistics';
+import {
+  AbsoluteStatistic,
+  VisitDurationStatistic,
+  PageViewsStatistic,
+} from './Statistics';
 import { Props } from './Wide';
 
 const Narrow = ({
@@ -31,6 +35,22 @@ const Narrow = ({
           <AbsoluteStatistic
             nameMessage={visitorsCardMessages.visits}
             stat={stats.visits}
+            startAt={startAt}
+            endAt={endAt}
+          />
+        </Box>
+        <Box mt="12px">
+          <VisitDurationStatistic
+            nameMessage={visitorsCardMessages.visitDuration}
+            stat={stats.visitDuration}
+            startAt={startAt}
+            endAt={endAt}
+          />
+        </Box>
+        <Box mt="12px">
+          <PageViewsStatistic
+            nameMessage={visitorsCardMessages.pageViews}
+            stat={stats.pageViews}
             startAt={startAt}
             endAt={endAt}
           />
