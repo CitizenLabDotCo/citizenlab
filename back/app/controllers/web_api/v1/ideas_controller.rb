@@ -31,13 +31,13 @@ class WebApi::V1::IdeasController < ApplicationController
       :idea_images,
       :idea_trending_info,
       :topics,
-      :idea_import, # defined through BulkImportIdeas engine
       {
         project: [:phases, { custom_form: [:custom_fields] }],
         phases: [:permissions],
         author: [:unread_notifications]
       }
     )
+    ideas = ideas.includes(:idea_import) unless current_user&.normal_user? # defined through BulkImportIdeas engine
 
     ideas = convert_phase_voting_counts ideas, params
 
