@@ -78,6 +78,6 @@ export default defineMessages({
   },
   a11y_itemsHaveChanged: {
     id: 'app.containers.SearchInput.a11y_itemsHaveChanged',
-    defaultMessage: '{sortOder} items have loaded.',
+    defaultMessage: '{sortOder} proposals have loaded.',
   },
 });
