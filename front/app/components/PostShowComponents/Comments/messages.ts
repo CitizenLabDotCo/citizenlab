@@ -289,4 +289,8 @@ export default defineMessages({
     id: 'app.containers.Comments.visibleToUsersPlaceholder',
     defaultMessage: 'This comment is visible to regular users',
   },
+  a11y_commentsHaveChanged: {
+    id: 'app.containers.SearchInput.a11y_commentsHaveChanged',
+    defaultMessage: '{sortOder} comments have loaded.',
+  },
 });
