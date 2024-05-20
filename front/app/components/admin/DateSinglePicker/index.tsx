@@ -30,6 +30,11 @@ const Container = styled.div`
     border-radius: ${stylingConsts.borderRadius};
   }
 
+  /*
+    If today's date is 20/5 and you go back to the previous month, 20/4 receives the "...keyboard-selected" class,
+    also resulting in the default light-blue background that the "...today" class receives.
+    No border is needed here because on focus, the browser adds a border
+  */
   .react-datepicker__day--keyboard-selected {
     background-color: ${colors.white};
   }
