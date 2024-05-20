@@ -2573,7 +2573,6 @@
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.title": "Tipovi posetioca",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.visitors": "Posetioci",
   "app.modules.commercial.analytics.admin.components.totalParticipants": "Total participants",
-  "app.modules.commercial.analytics.admin.containers.visitors.cookieBannerUpdatedInfo": "Since December 2023 it's easier for users to reject cookies, which has a negative effect on perceived traffic.",
   "app.modules.commercial.analytics.admin.containers.visitors.noData": "There is no visitor data yet.",
   "app.modules.commercial.analytics.admin.hooks.useEmailDeliveries.timeSeries": "Isporuka e-pošte tokom vremena",
   "app.modules.commercial.analytics.admin.hooks.useParticipants.timeSeries": "Participants over time",

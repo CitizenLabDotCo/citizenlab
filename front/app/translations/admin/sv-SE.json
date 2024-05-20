@@ -2573,7 +2573,6 @@
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.title": "Typer av besökare",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.visitors": "Besökare",
   "app.modules.commercial.analytics.admin.components.totalParticipants": "Totalt antal deltagare",
-  "app.modules.commercial.analytics.admin.containers.visitors.cookieBannerUpdatedInfo": "Sedan december 2023 är det lättare för användare att avvisa cookies, vilket har en negativ effekt på den upplevda trafiken.",
   "app.modules.commercial.analytics.admin.containers.visitors.noData": "Det finns ännu inga besöksdata.",
   "app.modules.commercial.analytics.admin.hooks.useEmailDeliveries.timeSeries": "E-postleveranser över tid",
   "app.modules.commercial.analytics.admin.hooks.useParticipants.timeSeries": "Deltagare över tid",

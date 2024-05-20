@@ -2573,7 +2573,6 @@
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.title": "Vierailijatyypit",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.visitors": "Vierailijat",
   "app.modules.commercial.analytics.admin.components.totalParticipants": "Osallistujia yhteensä",
-  "app.modules.commercial.analytics.admin.containers.visitors.cookieBannerUpdatedInfo": "Joulukuusta 2023 lähtien käyttäjien on ollut helpompi hylätä evästeet, millä on negatiivinen vaikutus havaittuun liikenteeseen.",
   "app.modules.commercial.analytics.admin.containers.visitors.noData": "Kävijätietoja ei vielä ole.",
   "app.modules.commercial.analytics.admin.hooks.useEmailDeliveries.timeSeries": "Sähköpostitoimitukset ajan mittaan",
   "app.modules.commercial.analytics.admin.hooks.useParticipants.timeSeries": "Osallistujat ajan myötä",
