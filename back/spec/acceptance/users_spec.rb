@@ -123,8 +123,6 @@ resource 'Users' do
           'allowed' => true,
           'enabled' => true,
           'enable_signup' => true,
-          'phone' => true,
-          'phone_email_pattern' => 'phone+__PHONE__@test.com',
           'minimum_length' => 6
         }
         AppConfiguration.instance.update!(settings: settings)
@@ -192,8 +190,7 @@ resource 'Users' do
               'enabled' => true,
               'allowed' => true,
               'enable_signup' => true,
-              'minimum_length' => 5,
-              'phone' => false
+              'minimum_length' => 5
             }
             AppConfiguration.instance.update! settings: settings
           end
@@ -216,8 +213,7 @@ resource 'Users' do
               'enabled' => true,
               'allowed' => true,
               'enable_signup' => true,
-              'minimum_length' => 5,
-              'phone' => false
+              'minimum_length' => 5
             }
             AppConfiguration.instance.update! settings: settings
           end
@@ -258,41 +254,6 @@ resource 'Users' do
           example '[error] Registering a user with case insensitive email duplicate', document: false do
             do_request
             assert_status 422
-          end
-        end
-
-        context 'with phone password_login turned on' do
-          before do
-            settings = AppConfiguration.instance.settings
-            settings['password_login'] = {
-              'allowed' => true,
-              'enabled' => true,
-              'enable_signup' => true,
-              'phone' => true,
-              'phone_email_pattern' => 'phone+__PHONE__@test.com',
-              'minimum_length' => 6
-            }
-            AppConfiguration.instance.update!(settings: settings)
-          end
-
-          describe 'email registration' do
-            let(:email) { 'someone@citizenlab.co' }
-
-            example 'Register with email when an email is passed', document: false do
-              do_request
-              assert_status 201
-              expect(User.find_by(email: email)).to be_present
-            end
-          end
-
-          describe 'phone registration' do
-            let(:email) { '+32 487 36 58 98' }
-
-            example 'Registers a user with a phone number in the email when a phone number is passed', document: false do
-              do_request
-              assert_status 201
-              expect(User.find_by(email: 'phone+32487365898@test.com')).to be_present
-            end
           end
         end
       end
@@ -1050,13 +1011,33 @@ resource 'Users' do
 
             example_request '[error] is not allowed' do
               expect(@user.reload.email).not_to eq(email)
+              assert_status 422
+            end
+
+            context 'when email was empty' do # see User#allows_empty_email?
+              before { @user.update_columns(email: nil) }
+
+              example_request 'is allowed' do
+                expect(@user.reload.email).to eq(email)
+                assert_status 200
+              end
+            end
+
+            context 'when new_email was set properly' do
+              before { @user.update!(new_email: email) }
+
+              example_request 'is allowed' do
+                expect(@user.reload.email).to eq(email)
+                assert_status 200
+              end
             end
           end
 
           context 'when the user_confirmation module is not active' do
             example_request 'is allowed' do
-              json_response = json_parse(response_body)
+              expect(@user.reload.email).to eq(email)
               assert_status 200
+              json_response = json_parse(response_body)
               expect(json_response.dig(:data, :attributes, :email)).to eq(email)
             end
           end

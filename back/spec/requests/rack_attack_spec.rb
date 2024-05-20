@@ -87,8 +87,7 @@ describe 'Rack::Attack' do
       'enabled' => true,
       'allowed' => true,
       'enable_signup' => true,
-      'minimum_length' => 5,
-      'phone' => false
+      'minimum_length' => 5
     }
     AppConfiguration.instance.update! settings: settings
 
