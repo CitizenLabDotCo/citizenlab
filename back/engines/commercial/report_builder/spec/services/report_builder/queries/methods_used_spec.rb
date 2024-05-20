@@ -44,6 +44,9 @@ RSpec.describe ReportBuilder::Queries::MethodsUsed do
         start_at: Date.new(2021, 5, 11),
         end_at: Date.new(2021, 6, 10)
       )
+
+      # Make TimeBoundariesParser work as expected
+      AppConfiguration.instance.update!(created_at: Date.new(2020, 12, 31))
     end
 
     context 'when start_at and end_at are provided' do

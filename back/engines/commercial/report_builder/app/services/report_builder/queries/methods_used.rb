@@ -5,7 +5,7 @@ module ReportBuilder
 
       count_per_method = Phase
         .where.not('end_at <= ? OR start_at >= ?', filter_start_date, filter_end_date)
-        .group_by(:participation_method)
+        .group(:participation_method)
         .count
 
       { count_per_method: count_per_method }
