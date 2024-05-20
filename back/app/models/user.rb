@@ -198,10 +198,6 @@ class User < ApplicationRecord
   has_many :unread_notifications, -> { where read_at: nil }, class_name: 'Notification', foreign_key: :recipient_id
   has_many :initiator_notifications, class_name: 'Notification', foreign_key: :initiating_user_id, dependent: :nullify
 
-  scope :not_project_folder_moderator, lambda { |*project_folder_ids|
-    where.not(id: project_folder_moderator(*project_folder_ids))
-  }
-
   scope :not_invited, -> { where.not(invite_status: 'pending').or(where(invite_status: nil)) }
   scope :registered, -> { where.not(registration_completed_at: nil) }
   scope :blocked, -> { where('? < block_end_at', Time.zone.now) }
