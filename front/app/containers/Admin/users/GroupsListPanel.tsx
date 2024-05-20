@@ -199,7 +199,7 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
           </MembersCount>
         )}
       </MenuLink>
-      <MenuLink to="/admin/users/managers">
+      <MenuLink to="/admin/users/moderators">
         <GroupName>
           <FormattedMessage {...messages.managers} />
         </GroupName>

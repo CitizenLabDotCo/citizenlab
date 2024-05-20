@@ -13,7 +13,7 @@ import { AdminRoute } from '../routes';
 export enum usersRoutes {
   users = 'users',
   admins = 'admins',
-  managers = 'managers',
+  managers = 'moderators',
   groupId = `:groupId`,
   blocked = 'blocked',
 }

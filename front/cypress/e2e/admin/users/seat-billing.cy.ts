@@ -408,7 +408,7 @@ describe('Seat based billing', () => {
     });
 
     it('updates remaining seats and used seats', () => {
-      cy.visit('/admin/users/managers');
+      cy.visit('/admin/users/moderators');
       cy.acceptCookies();
 
       // We get updated seat data from the API and use that to compare with the UI. This is to avoid using hardcoded values as those could be flaky depending on user data left by other tests in other files.
@@ -442,7 +442,7 @@ describe('Seat based billing', () => {
           testShowModalOnAddingModerator(usedSeats);
           cy.get('.e2e-admin-list').contains(user7Email);
 
-          cy.visit('/admin/users/managers');
+          cy.visit('/admin/users/moderators');
 
           // We make a fresh request to the backend to get the updated values since the additionalModerators can change
           cy.apiGetAppConfiguration().then((newAppConfigurationResponse) => {
@@ -611,7 +611,7 @@ describe('Seat based billing', () => {
     });
 
     it('updates admin and moderators number', () => {
-      cy.visit('/admin/users/managers');
+      cy.visit('/admin/users/moderators');
       cy.acceptCookies();
 
       cy.apiGetUsersCount().then((response) => {
@@ -634,7 +634,7 @@ describe('Seat based billing', () => {
         testShowModalOnAddingModerator(noOfUsedModeratorSeats);
         cy.get('.e2e-admin-list').contains(user12Email);
 
-        cy.visit('/admin/users/managers');
+        cy.visit('/admin/users/moderators');
         cy.get('[data-cy="e2e-moderator-count"]').contains(
           `${response.body.data.attributes.moderators_count + 1}`
         );
@@ -642,7 +642,7 @@ describe('Seat based billing', () => {
     });
 
     it('updates remaining seats and used seats', () => {
-      cy.visit('/admin/users/managers');
+      cy.visit('/admin/users/moderators');
       cy.acceptCookies();
       // We get updated seat data from the API and use that to compare with the UI. This is to avoid using hardcoded values as those could be flaky depending on user data left by other tests in other files.
       cy.apiGetAppConfiguration().then((appConfigurationResponse) => {
@@ -679,7 +679,7 @@ describe('Seat based billing', () => {
           testShowModalOnAddingModerator(usedSeats);
           cy.get('.e2e-admin-list').contains(user13Email);
 
-          cy.visit('/admin/users/managers');
+          cy.visit('/admin/users/moderators');
 
           // We make a fresh request to the backend to get the updated values since the additionalModerators can change
           cy.apiGetAppConfiguration().then((newAppConfigurationResponse) => {
