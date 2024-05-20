@@ -61,7 +61,10 @@ describe SideFxProjectService do
           user,
           project.updated_at.to_i,
           project_id: project.id,
-          payload: { change: project.saved_changes, project: clean_time_attributes(project.attributes) }
+          payload: {
+            change: sanitize_change(project.saved_changes),
+            project: clean_time_attributes(project.attributes)
+          }
         )
     end
 

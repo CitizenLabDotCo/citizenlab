@@ -33,4 +33,10 @@ module SideFxHelper
   def remove_user_from_past_activities_with_item(item, user)
     user.activities.where(item: item).update_all(user_id: nil)
   end
+
+  def sanitize_change(change)
+    change.delete(:updated_at)
+
+    change
+  end
 end

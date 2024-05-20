@@ -38,7 +38,7 @@ class SideFxIdeaService
     elsif idea.published?
       change = idea.saved_changes
       payload = { idea: serialize_idea(idea) }
-      payload[:change] = sanitize_location_point(change) if change.present?
+      payload[:change] = sanitize_change sanitize_location_point(change) if change.present?
 
       LogActivityJob.perform_later(
         idea,

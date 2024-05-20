@@ -36,7 +36,6 @@ describe ProjectFolders::SideFxProjectFolderService do
   describe 'after_update' do
     it "logs a 'changed' action job when the folder has changed" do
       old_title_multiloc = project_folder.title_multiloc
-      old_updated_at = project_folder.updated_at
 
       project_folder.update!(title_multiloc: { en: 'something else' })
       expect { service.after_update(project_folder, user) }
@@ -46,10 +45,7 @@ describe ProjectFolders::SideFxProjectFolderService do
           user,
           project_folder.updated_at.to_i,
           payload: {
-            change: {
-              title_multiloc: [old_title_multiloc, { en: 'something else' }],
-              updated_at: [old_updated_at, project_folder.updated_at]
-            },
+            change: { title_multiloc: [old_title_multiloc, { en: 'something else' }] },
             project_folder: clean_time_attributes(project_folder.attributes)
           }
         ).exactly(1).times

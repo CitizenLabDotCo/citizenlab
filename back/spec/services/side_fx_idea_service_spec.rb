@@ -67,7 +67,6 @@ describe SideFxIdeaService do
     it "logs a 'changed' action job when the idea has changed" do
       idea = create(:idea)
       old_title_multiloc = idea.title_multiloc
-      old_updated_at = idea.updated_at
 
       idea.update!(title_multiloc: { en: 'something else' })
       expect { service.after_update(idea, user) }
@@ -77,10 +76,7 @@ describe SideFxIdeaService do
           user,
           idea.updated_at.to_i,
           payload: {
-            change: {
-              title_multiloc: [old_title_multiloc, { en: 'something else' }],
-              updated_at: [old_updated_at, idea.updated_at]
-            },
+            change: { title_multiloc: [old_title_multiloc, { en: 'something else' }] },
             idea: service.send(:serialize_idea, idea)
           },
           project_id: idea.project_id
@@ -91,7 +87,6 @@ describe SideFxIdeaService do
     it "logs changes to location_point in 'changed' action payload" do
       idea = create(:idea)
       old_location_point = idea.location_point_geojson
-      old_updated_at = idea.updated_at
 
       idea.update!(location_point_geojson: { 'type' => 'Point', 'coordinates' => [42.42, 42.42] })
 
@@ -102,10 +97,7 @@ describe SideFxIdeaService do
           user,
           idea.updated_at.to_i,
           payload: {
-            change: {
-              location_point: [old_location_point, { type: 'Point', coordinates: [42.42, 42.42] }],
-              updated_at: [old_updated_at, idea.updated_at]
-            },
+            change: { location_point: [old_location_point, { type: 'Point', coordinates: [42.42, 42.42] }] },
             idea: service.send(:serialize_idea, idea)
           },
           project_id: idea.project_id

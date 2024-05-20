@@ -49,7 +49,10 @@ describe SideFxPhaseService do
           user,
           phase.updated_at.to_i,
           project_id: phase.project_id,
-          payload: { change: phase.saved_changes, phase: clean_time_attributes(phase.attributes) }
+          payload: {
+            change: sanitize_change(phase.saved_changes),
+            phase: clean_time_attributes(phase.attributes)
+          }
         )
     end
 
