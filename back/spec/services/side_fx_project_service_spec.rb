@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 describe SideFxProjectService do
+  include SideFxHelper
+
   let(:service) { described_class.new }
   let(:user) { create(:user) }
   let(:project) { create(:project) }
@@ -11,7 +13,14 @@ describe SideFxProjectService do
     it "logs a 'created' action when a project is created" do
       expect { service.after_create(project, user) }
         .to have_enqueued_job(LogActivityJob)
-        .with(project, 'created', user, project.created_at.to_i, project_id: project.id)
+        .with(
+          project,
+          'created',
+          user,
+          project.created_at.to_i,
+          project_id: project.id,
+          payload: { project: clean_time_attributes(project.attributes) }
+        )
     end
 
     it 'runs the description through the text image service' do
@@ -46,7 +55,17 @@ describe SideFxProjectService do
       project.update!(title_multiloc: { en: 'changed' })
       expect { service.after_update(project, user) }
         .to have_enqueued_job(LogActivityJob)
-        .with(project, 'changed', user, project.updated_at.to_i, project_id: project.id)
+        .with(
+          project,
+          'changed',
+          user,
+          project.updated_at.to_i,
+          project_id: project.id,
+          payload: {
+            change: sanitize_change(project.saved_changes),
+            project: clean_time_attributes(project.attributes)
+          }
+        )
     end
 
     it "logs a 'published' action when a draft project is published" do
@@ -71,6 +90,19 @@ describe SideFxProjectService do
       expect { service.after_update(project, user) }
         .not_to have_enqueued_job(LogActivityJob)
         .with(project, 'published', user, project.updated_at.to_i, anything)
+    end
+
+    it "does not log a 'changed_publication_status' action when a draft project is published" do
+      project.admin_publication.update!(publication_status: 'draft')
+
+      project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
+      service.before_update project, user
+
+      project.save!
+
+      expect { service.after_update(project, user) }
+        .not_to have_enqueued_job(LogActivityJob)
+        .with(project, 'changed_publication_status', user, project.updated_at.to_i, anything)
     end
   end
 

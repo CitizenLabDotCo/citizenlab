@@ -77,6 +77,12 @@
             "minItems": 1,
             "default": ["en"]
           },
+          "population": {
+            "title": "Population",
+            "description": "Number of inhabitants in the territory. Leave empty if not applicable.",
+            "type": ["integer", "null"],
+            "minimum": 0
+          },
           "weglot_api_key": {
             "title": "Weglot API key",
             "description": "Set the API key of Weglot to enable automatic page translations.",
@@ -334,7 +340,7 @@
         "description": "Allow users to register with an email and password.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["minimum_length", "phone", "enable_signup"],
+        "required-settings": ["minimum_length", "enable_signup"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
@@ -351,21 +357,6 @@
             "minimum": 5,
             "maximum": 72,
             "default": 8
-          },
-          "phone": {
-            "title": "Phone",
-            "description": "Allow users to register with a phone number. This option is not advised, please check with development team before enabling this field.",
-            "type": "boolean",
-            "default": false
-          },
-          "phone_email_pattern": {
-            "title": "Phone Number Format",
-            "description": "Specify how phone numbers should be stored in the database (needs to be in email format - e.g., 'phone+__PHONE__@test.com' stores the phone number as 'phone+32478637483@test.com'.",
-            "type": "string",
-            "format": "email",
-            "default": "phone+__PHONE__@test.com",
-            "pattern": "^.*__PHONE__.*@.*$",
-            "private": true
           }
         }
       },

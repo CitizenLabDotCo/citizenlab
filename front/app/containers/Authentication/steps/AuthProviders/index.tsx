@@ -99,8 +99,6 @@ const AuthProviders = memo<Props>(
       [onSwitchFlow]
     );
 
-    const phone = tenantSettings?.password_login?.phone;
-
     const isPasswordSigninOrSignupAllowed =
       passwordLoginEnabled &&
       (flow === 'signin' ||
@@ -189,17 +187,9 @@ const AuthProviders = memo<Props>(
             id="e2e-login-with-email"
           >
             {flow === 'signup' ? (
-              <FormattedMessage
-                {...(phone
-                  ? messages.signUpWithPhoneOrEmail
-                  : messages.signUpWithEmail)}
-              />
+              <FormattedMessage {...messages.signUpWithEmail} />
             ) : (
-              <FormattedMessage
-                {...(phone
-                  ? messages.logInWithPhoneOrEmail
-                  : messages.logInWithEmail)}
-              />
+              <FormattedMessage {...messages.logInWithEmail} />
             )}
           </StyledAuthProviderButton>
         )}
