@@ -35,14 +35,16 @@ const Wide = ({
   return (
     <Box width="100%" pb="8px">
       <Box height="100%" display="flex" flexDirection="column">
-        <Box display="flex" flexDirection="row">
-          <AbsoluteStatistic
-            nameMessage={visitorsCardMessages.visitors}
-            stat={stats.visitors}
-            startAt={startAt}
-            endAt={endAt}
-          />
-          <Box ml="12px">
+        <Box display="flex" flexDirection="row" justifyContent="space-between">
+          <Box maxWidth="25%" pr="12px">
+            <AbsoluteStatistic
+              nameMessage={visitorsCardMessages.visitors}
+              stat={stats.visitors}
+              startAt={startAt}
+              endAt={endAt}
+            />
+          </Box>
+          <Box maxWidth="25%" pr="12px">
             <AbsoluteStatistic
               nameMessage={visitorsCardMessages.visits}
               stat={stats.visits}
@@ -50,7 +52,7 @@ const Wide = ({
               endAt={endAt}
             />
           </Box>
-          <Box ml="12px">
+          <Box maxWidth="25%" pr="12px">
             <VisitDurationStatistic
               nameMessage={visitorsCardMessages.visitDuration}
               stat={stats.visitDuration}
@@ -58,7 +60,7 @@ const Wide = ({
               endAt={endAt}
             />
           </Box>
-          <Box ml="12px">
+          <Box maxWidth="25%" pr="12px">
             <PageViewsStatistic
               nameMessage={visitorsCardMessages.pageViews}
               stat={stats.pageViews}

@@ -6,7 +6,9 @@ import moment from 'moment';
 import dashboardCardMessages from 'components/admin/GraphCards/RegistrationsCard/messages';
 import { DatesStrings } from 'components/admin/GraphCards/typings';
 import StatisticBottomLabel from 'components/admin/Graphs/Statistic/StatisticBottomLabel';
-import StatisticDelta from 'components/admin/Graphs/Statistic/StatisticDelta';
+import StatisticDelta, {
+  getSignNumber,
+} from 'components/admin/Graphs/Statistic/StatisticDelta';
 import StatisticName from 'components/admin/Graphs/Statistic/StatisticName';
 
 import { useIntl } from 'utils/cl-intl';
@@ -34,7 +36,10 @@ export const RegistrationsStatistic = ({ stats, startAt, endAt }: Props) => {
           {stats.registrations.value}
         </Text>
         {stats.registrations.delta !== undefined && (
-          <StatisticDelta delta={stats.registrations.delta} />
+          <StatisticDelta
+            delta={stats.registrations.delta}
+            sign={getSignNumber(stats.registrations.delta)}
+          />
         )}
       </Box>
       {stats.registrations.delta !== undefined && (
@@ -71,6 +76,7 @@ export const RegistrationRateStatistic = ({ startAt, endAt, stats }: Props) => {
         {stats.registrationRate.delta !== undefined && (
           <StatisticDelta
             delta={stats.registrationRate.delta}
+            sign={getSignNumber(stats.registrationRate.delta)}
             deltaType="percentage"
           />
         )}
