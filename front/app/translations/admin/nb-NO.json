@@ -2544,7 +2544,6 @@
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Registreringer over tid",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Totalt antall registreringer",
   "app.modules.commercial.analytics.admin.components.Tab": "Besøkende",
-  "app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage2": "Kun brukere som har akseptert sporing av informasjonskapsler vil telles. Administratorer og prosjektledere telles også hvis de godtar sporing av informasjonskapsler.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last30Days": "Siste 30 dager:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last7Days": "Siste 7 dager:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.pageViews": "Sidevisninger per besøk",

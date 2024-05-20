@@ -2544,7 +2544,6 @@
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Registros",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Registros totales",
   "app.modules.commercial.analytics.admin.components.Tab": "Visitantes",
-  "app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage2": "Solo se contabilizarán los usuarios que hayan aceptado el seguimiento de cookies. Los administradores y gestores de proyecto también se contabilizan si aceptan el seguimiento de cookies.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last30Days": "Últimos 30 días",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last7Days": "Últimos 7 días",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.pageViews": "Pageviews por visita",

@@ -2544,7 +2544,6 @@
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Inscrições",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Total de inscritos",
   "app.modules.commercial.analytics.admin.components.Tab": "Visitantes",
-  "app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage2": "Somente os usuários que aceitaram o rastreamento de cookies serão contados. Os administradores e gerentes de projeto também são contados se aceitarem o rastreamento de cookies.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last30Days": "Durante 30 dias:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last7Days": "Durante 7 dias:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.pageViews": "Visualizações da página por visita",

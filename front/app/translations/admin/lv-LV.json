@@ -2544,7 +2544,6 @@
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Reģistrācijas",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Kopējais reģistrāciju skaits",
   "app.modules.commercial.analytics.admin.components.Tab": "Apmeklētāji",
-  "app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage2": "Tiks ieskaitīti tikai tie lietotāji, kuri ir piekrituši sīkfailu izsekošanai. Tiek ieskaitīti arī administratori un projektu vadītāji, ja viņi piekrīt sīkfailu izsekošanai.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last30Days": "Pēdējās 30 dienas:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last7Days": "Pēdējās 7 dienas:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.pageViews": "Lapas skatījumu skaits vienā apmeklējumā",

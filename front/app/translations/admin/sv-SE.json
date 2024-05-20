@@ -2544,7 +2544,6 @@
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Registreringar",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Totalt antal registreringar",
   "app.modules.commercial.analytics.admin.components.Tab": "Besökare",
-  "app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage2": "Endast användare som har accepterat cookie tracking kommer att räknas. Administratörer och projektledare räknas också om de accepterar cookie tracking.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last30Days": "De senaste 30 dagarna:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last7Days": "De senaste 7 dagarna:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.pageViews": "Sidvisningar per besök",

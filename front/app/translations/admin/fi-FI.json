@@ -2544,7 +2544,6 @@
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Rekisteröinnit",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Ilmoittautumiset yhteensä",
   "app.modules.commercial.analytics.admin.components.Tab": "Vierailijat",
-  "app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage2": "Vain käyttäjät, jotka ovat hyväksyneet evästeiden seurannan, lasketaan. Järjestelmänvalvojat ja projektipäälliköt lasketaan myös, jos he hyväksyvät evästeiden seurannan.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last30Days": "Viimeiset 30 päivää:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last7Days": "Viimeiset 7 päivää:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.pageViews": "Sivun katselut käyntiä kohden",

@@ -2544,7 +2544,6 @@
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Registrierungen",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Registrierungen insgesamt",
   "app.modules.commercial.analytics.admin.components.Tab": "Besucher*innen",
-  "app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage2": "Es werden nur Nutzer*innen gezählt, die Cookies akzeptiert haben. Admins und Projektmanager*innen werden ebenfalls gezählt, wenn sie Cookies akzeptieren.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last30Days": "Letzte 30 Tage:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last7Days": "Letzte 7 Tage:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.pageViews": "Seitenaufrufe pro Besuch",

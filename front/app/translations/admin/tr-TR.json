@@ -2544,7 +2544,6 @@
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Kayıtlar",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Toplam kayıtlar",
   "app.modules.commercial.analytics.admin.components.Tab": "Ziyaretçiler",
-  "app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage2": "Yalnızca çerez izlemeyi kabul eden kullanıcılar sayılır. Yöneticiler ve proje yöneticileri de çerez izlemeyi kabul ederlerse sayılırlar.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last30Days": "Son 30 gün:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last7Days": "Son 7 gün:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.pageViews": "Ziyaret başına sayfa görüntülemesi",

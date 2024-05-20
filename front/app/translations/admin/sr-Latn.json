@@ -2544,7 +2544,6 @@
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Registracije",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Ukupno registracija",
   "app.modules.commercial.analytics.admin.components.Tab": "Posetioci",
-  "app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage2": "Only users who have accepted cookie tracking will be counted. Admins and project managers are also counted if they accept cookie tracking.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last30Days": "Poslednjih 30 dana:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last7Days": "Poslednjih 7 dana:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.pageViews": "Pregledi stranice po poseti",

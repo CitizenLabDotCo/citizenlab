@@ -2544,7 +2544,6 @@
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Registraties",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Totale registraties",
   "app.modules.commercial.analytics.admin.components.Tab": "Bezoekers",
-  "app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage2": "Alleen gebruikers die cookie-tracking hebben geaccepteerd worden meegeteld. Admins en projectmanagers worden ook meegeteld als zij cookietracking accepteren.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last30Days": "Laatste 30 dagen:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last7Days": "Laatste 7 dagen:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.pageViews": "Paginaweergaven per bezoek",

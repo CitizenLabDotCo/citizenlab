@@ -2544,7 +2544,6 @@
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "التسجيلات",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "إجمالي التسجيلات",
   "app.modules.commercial.analytics.admin.components.Tab": "زوار",
-  "app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage2": "سيتم احتساب المستخدمين الذين قبلوا تتبع ملفات تعريف الارتباط فقط. يتم احتساب المسؤولين ومديري المشاريع أيضًا إذا قبلوا تتبع ملفات تعريف الارتباط.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last30Days": "آخر 30 يومًا:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last7Days": "آخر 7 أيام:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.pageViews": "مشاهدات الصفحة في كل زيارة",

@@ -2544,7 +2544,6 @@
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Rejestracje",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Rejestracje ogółem",
   "app.modules.commercial.analytics.admin.components.Tab": "Odwiedzający",
-  "app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage2": "Zliczani są tylko użytkownicy, którzy zaakceptowali śledzenie plików cookie. Administratorzy i kierownicy projektów są również liczeni, jeśli zaakceptują śledzenie plików cookie.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last30Days": "Ostatnie 30 dni:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last7Days": "Ostatnie 7 dni:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.pageViews": "Odsłony na odwiedziny",
