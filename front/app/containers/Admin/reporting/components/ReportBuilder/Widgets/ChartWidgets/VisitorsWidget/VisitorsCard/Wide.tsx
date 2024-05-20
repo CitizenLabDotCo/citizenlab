@@ -11,7 +11,11 @@ import { IResolution } from 'components/admin/ResolutionControl';
 import { formatLargeNumber } from '../../utils';
 import { Stats } from '../typings';
 
-import { AbsoluteStatistic } from './Statistics';
+import {
+  AbsoluteStatistic,
+  VisitDurationStatistic,
+  PageViewsStatistic,
+} from './Statistics';
 
 export interface Props {
   startAt?: string;
@@ -47,17 +51,17 @@ const Wide = ({
             />
           </Box>
           <Box ml="12px">
-            <AbsoluteStatistic
-              nameMessage={visitorsCardMessages.visitors}
-              stat={stats.visitors}
+            <VisitDurationStatistic
+              nameMessage={visitorsCardMessages.visitDuration}
+              stat={stats.visitDuration}
               startAt={startAt}
               endAt={endAt}
             />
           </Box>
           <Box ml="12px">
-            <AbsoluteStatistic
-              nameMessage={visitorsCardMessages.visits}
-              stat={stats.visits}
+            <PageViewsStatistic
+              nameMessage={visitorsCardMessages.pageViews}
+              stat={stats.pageViews}
               startAt={startAt}
               endAt={endAt}
             />
