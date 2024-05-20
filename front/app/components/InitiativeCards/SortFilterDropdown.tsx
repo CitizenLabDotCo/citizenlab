@@ -3,13 +3,13 @@ import React, { useState, useEffect } from 'react';
 import FilterSelector from 'components/FilterSelector';
 
 import { ScreenReaderOnly } from 'utils/a11y';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
 export type Sort = 'random' | 'likes_count' | 'new' | '-new';
 
-const optionMessages = {
+const optionMessages: { [key in Sort]: MessageDescriptor } = {
   random: messages.random,
   likes_count: messages.popular,
   new: messages.newest,
