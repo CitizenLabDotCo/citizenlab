@@ -32,27 +32,15 @@ const VisitorsCard = ({
     return <NoData message={messages.noData} />;
   }
 
-  return (
-    <>
-      {layout === 'wide' ? (
-        <Wide
-          startAt={startAt}
-          endAt={endAt}
-          currentResolution={currentResolution}
-          stats={stats}
-          timeSeries={timeSeries}
-        />
-      ) : (
-        <Narrow
-          startAt={startAt}
-          endAt={endAt}
-          currentResolution={currentResolution}
-          stats={stats}
-          timeSeries={timeSeries}
-        />
-      )}
-    </>
-  );
+  const props = {
+    startAt,
+    endAt,
+    timeSeries,
+    stats,
+    currentResolution,
+  };
+
+  return layout === 'wide' ? <Wide {...props} /> : <Narrow {...props} />;
 };
 
 export default VisitorsCard;

@@ -7,7 +7,7 @@ import { Margin, YAxisProps } from 'components/admin/Graphs/typings';
 
 import { useIntl } from 'utils/cl-intl';
 import { toThreeLetterMonth } from 'utils/dateUtils';
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { NilOrError } from 'utils/helperUtils';
 
 import { Dates, Resolution } from '../../typings';
 import messages from '../messages';
@@ -68,7 +68,7 @@ const Chart = ({
     return null;
   }
 
-  const noData = isNilOrError(timeSeries);
+  const noData = timeSeries === null;
 
   return (
     <LineChart

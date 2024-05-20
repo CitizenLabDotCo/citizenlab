@@ -29,16 +29,32 @@ const Wide = ({
   timeSeries,
 }: Props) => {
   return (
-    <Box width="100%" height="260px" pb="8px">
-      <Box height="100%" display="flex" flexDirection="row">
-        <Box>
+    <Box width="100%" pb="8px">
+      <Box height="100%" display="flex" flexDirection="column">
+        <Box display="flex" flexDirection="row">
           <AbsoluteStatistic
             nameMessage={visitorsCardMessages.visitors}
             stat={stats.visitors}
             startAt={startAt}
             endAt={endAt}
           />
-          <Box mt="32px">
+          <Box ml="12px">
+            <AbsoluteStatistic
+              nameMessage={visitorsCardMessages.visits}
+              stat={stats.visits}
+              startAt={startAt}
+              endAt={endAt}
+            />
+          </Box>
+          <Box ml="12px">
+            <AbsoluteStatistic
+              nameMessage={visitorsCardMessages.visitors}
+              stat={stats.visitors}
+              startAt={startAt}
+              endAt={endAt}
+            />
+          </Box>
+          <Box ml="12px">
             <AbsoluteStatistic
               nameMessage={visitorsCardMessages.visits}
               stat={stats.visits}
@@ -47,20 +63,21 @@ const Wide = ({
             />
           </Box>
         </Box>
-      </Box>
 
-      <Box flexGrow={1} display="flex" justifyContent="flex-end">
-        <Box pt="8px" w="100%" maxWidth="800px" h="100%">
-          <Chart
-            timeSeries={timeSeries}
-            startAtMoment={startAt ? moment(startAt) : null}
-            endAtMoment={endAt ? moment(endAt) : null}
-            resolution={currentResolution}
-            yaxis={{
-              orientation: 'left',
-              tickFormatter: formatLargeNumber,
-            }}
-          />
+        <Box flexGrow={1} display="flex" justifyContent="flex-start" mt="20px">
+          <Box pt="8px" w="100%" maxWidth="800px" h="240px">
+            <Chart
+              timeSeries={timeSeries}
+              startAtMoment={startAt ? moment(startAt) : null}
+              endAtMoment={endAt ? moment(endAt) : null}
+              resolution={currentResolution}
+              yaxis={{
+                orientation: 'right',
+                tickFormatter: formatLargeNumber,
+              }}
+              margin={{ top: 0, right: -16, bottom: 0, left: 0 }}
+            />
+          </Box>
         </Box>
       </Box>
     </Box>
