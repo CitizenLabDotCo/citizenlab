@@ -287,16 +287,16 @@ export default defineMessages({
     defaultMessage:
       'The user is moderating the folder this project belongs to. Remove assignment from "{folderTitle}" instead.',
   },
-  setAsProjectManager: {
-    id: 'app.containers.Admin.Users.setAsProjectManager',
+  setAsProjectModerator: {
+    id: 'app.containers.Admin.Users.setAsProjectModerator',
     defaultMessage: 'Assign as project manager',
   },
   folder: {
     id: 'app.containers.Admin.Users.folder',
     defaultMessage: 'Folder',
   },
-  setUserAsProjectManager: {
-    id: 'app.containers.Admin.Users.setUserAsProjectManager',
+  setUserAsProjectModerator: {
+    id: 'app.containers.Admin.Users.setUserAsProjectModerator',
     defaultMessage: 'Assign {name} as project manager',
   },
   assign: {

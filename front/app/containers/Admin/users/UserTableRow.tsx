@@ -37,7 +37,7 @@ import { getFullName } from 'utils/textUtils';
 
 import events from './events';
 import messages from './messages';
-import SetAsProjectManager from './SetAsProjectManager';
+import SetSetAsProjectModerator from './SetAsProjectModerator';
 import UserAssignedItems from './UserAssignedItems';
 
 const ChangeSeatModal = lazy(
@@ -88,8 +88,10 @@ const UserTableRow = ({
   authUser,
 }: Props) => {
   const [isAssignedItemsOpened, setIsAssignedItemsOpened] = useState(false);
-  const [isSetAsProjectManagerOpened, setIsSetAsProjectManagerOpened] =
-    useState(false);
+  const [
+    isSetSetAsProjectModeratorOpened,
+    setIsSetSetAsProjectModeratorOpened,
+  ] = useState(false);
   const locale = useLocale();
   const { formatMessage } = useIntl();
   const isUserBlockingEnabled = useFeatureFlag({
@@ -205,9 +207,9 @@ const UserTableRow = ({
       icon: 'shield-checkered' as const,
     };
 
-    const setAsProjectManagerAction = {
-      handler: () => setIsSetAsProjectManagerOpened(true),
-      label: formatMessage(messages.setAsProjectManager),
+    const setSetAsProjectModeratorAction = {
+      handler: () => setIsSetSetAsProjectModeratorOpened(true),
+      label: formatMessage(messages.setAsProjectModerator),
       icon: 'user-check' as const,
     };
 
@@ -220,15 +222,15 @@ const UserTableRow = ({
     };
 
     if (isUserInRowAdmin) {
-      return [setAsNormalUserAction, setAsProjectManagerAction];
+      return [setAsNormalUserAction, setSetAsProjectModeratorAction];
     } else if (isUserInRowModerator) {
       return [
         setAsNormalUserAction,
         setAsAdminAction,
-        setAsProjectManagerAction,
+        setSetAsProjectModeratorAction,
       ];
     } else {
-      return [setAsAdminAction, setAsProjectManagerAction];
+      return [setAsAdminAction, setSetAsProjectModeratorAction];
     }
   };
 
@@ -351,12 +353,12 @@ const UserTableRow = ({
           <UserAssignedItems user={userInRow} />
         </Modal>
         <Modal
-          opened={isSetAsProjectManagerOpened}
-          close={() => setIsSetAsProjectManagerOpened(false)}
+          opened={isSetSetAsProjectModeratorOpened}
+          close={() => setIsSetSetAsProjectModeratorOpened(false)}
         >
-          <SetAsProjectManager
+          <SetSetAsProjectModerator
             user={userInRow}
-            onClose={() => setIsSetAsProjectManagerOpened(false)}
+            onClose={() => setIsSetSetAsProjectModeratorOpened(false)}
           />
         </Modal>
       </Tr>

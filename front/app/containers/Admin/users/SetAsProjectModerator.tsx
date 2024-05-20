@@ -17,7 +17,7 @@ import { getFullName } from 'utils/textUtils';
 
 import messages from './messages';
 
-const SetAsProjectManager = ({
+const SetAsProjectModerator = ({
   user,
   onClose,
 }: {
@@ -84,7 +84,7 @@ const SetAsProjectManager = ({
     <div>
       <Title mb="40px">
         <FormattedMessage
-          {...messages.setUserAsProjectManager}
+          {...messages.setUserAsProjectModerator}
           values={{ name: getFullName(user) }}
         />
       </Title>
@@ -110,4 +110,4 @@ const SetAsProjectManager = ({
   );
 };
 
-export default SetAsProjectManager;
+export default SetAsProjectModerator;
