@@ -34,6 +34,16 @@ const Container = styled.div`
     }
   }
 
+  /*
+    Added to ensure the color contrast required to meet WCAG AA standards.
+  */
+  .react-datepicker__day--today {
+    background-color: ${colors.white};
+    color: ${colors.black};
+    border: 1px solid ${colors.black};
+    border-radius: ${stylingConsts.borderRadius};
+  }
+
   input {
     font-size: ${fontSizes.base}px;
     font-weight: 400;

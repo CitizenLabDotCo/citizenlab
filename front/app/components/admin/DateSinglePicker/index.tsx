@@ -1,7 +1,11 @@
 import React from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import { colors, fontSizes } from '@citizenlab/cl2-component-library';
+import {
+  colors,
+  fontSizes,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 import DatePicker from 'react-datepicker';
 import styled from 'styled-components';
 
@@ -21,6 +25,16 @@ const Container = styled.div`
     color: ${colors.grey800};
     font-size: ${fontSizes.base}px;
     padding: 12px;
+  }
+
+  /*
+    Added to ensure the color contrast required to meet WCAG AA standards.
+  */
+  .react-datepicker__day--today {
+    background-color: ${colors.white};
+    color: ${colors.black};
+    border: 1px solid ${colors.black};
+    border-radius: ${stylingConsts.borderRadius};
   }
 `;
 
