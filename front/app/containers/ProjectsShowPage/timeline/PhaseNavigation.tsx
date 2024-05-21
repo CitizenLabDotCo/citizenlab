@@ -166,6 +166,7 @@ const PhaseNavigation = memo<Props & WrappedComponentProps>(
                 disabled={selectedPhaseId === phases.data[0].id}
                 ariaLabel={formatMessage(messages.previousPhase)}
                 className="e2e-previous-phase"
+                borderColor={colors.primary}
               />
             </div>
           </Tippy>
@@ -221,6 +222,8 @@ const PhaseNavigation = memo<Props & WrappedComponentProps>(
                 }
                 ariaLabel={formatMessage(messages.nextPhase)}
                 className="e2e-next-phase"
+                borderColor={colors.primary}
+                borderThickness="1px"
               />
             </div>
           </Tippy>
