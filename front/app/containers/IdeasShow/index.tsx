@@ -122,7 +122,7 @@ export const IdeasShow = ({
           )}
           {compact && (
             <Box mb="8px">
-              <IdeaNavigationButtons />
+              <IdeaNavigationButtons projectId={project.data.id} />
             </Box>
           )}
           <IdeaTitle
