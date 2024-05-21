@@ -474,6 +474,7 @@
   "app.components.StatusModule.modifyYourSubmission": "Ändra din {submissionTerm}",
   "app.components.StatusModule.submittedUntil3": "Din röst kan avges fram till",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Valde {numberOfSelectedTopics, plural, =0 {noll ämnen} one {ett ämne} other {# ämnen}}. {selectedTopicNames}",
+  "app.components.UI.MoreActionsMenu.moreOptions": "Fler alternativ",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Visa fler åtgärder",
   "app.components.UI.NewLabel.newBadge": "NY",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "Inga lämpliga faser hittades för detta projekt",
