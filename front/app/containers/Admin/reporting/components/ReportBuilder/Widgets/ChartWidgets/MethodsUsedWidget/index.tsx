@@ -3,6 +3,7 @@ import React from 'react';
 import Card from '../../_shared/Card';
 
 import ChartWidgetSettings from './ChartWidgetSettings';
+import messages from './messages';
 import MethodsUsedCard from './MethodsUsedCard';
 import { Props } from './typings';
 
@@ -23,5 +24,7 @@ MethodsUsedWidget.craft = {
     settings: ChartWidgetSettings,
   },
 };
+
+export const methodsUsedTitle = messages.methodsUsed;
 
 export default MethodsUsedWidget;

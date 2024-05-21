@@ -39,6 +39,7 @@ import { WIDGET_TITLES } from '../Widgets';
 import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
 import CommentsByTimeWidget from '../Widgets/ChartWidgets/CommentsByTimeWidget';
 import DemographicsWidget from '../Widgets/ChartWidgets/DemographicsWidget';
+import MethodsUsedWidget from '../Widgets/ChartWidgets/MethodsUsedWidget';
 import PostsByTimeWidget from '../Widgets/ChartWidgets/PostsByTimeWidget';
 import ReactionsByTimeWidget from '../Widgets/ChartWidgets/ReactionsByTimeWidget';
 import RegistrationsWidget from '../Widgets/ChartWidgets/RegistrationsWidget';
@@ -348,6 +349,18 @@ const ReportBuilderToolbox = ({
               }
               icon="chart-bar"
               label={formatMessage(WIDGET_TITLES.ReactionsByTimeWidget)}
+            />
+            <DraggableElement
+              id="e2e-draggable-methods-used-widget"
+              component={
+                <MethodsUsedWidget
+                  title={toMultiloc(WIDGET_TITLES.MethodsUsedWidget)}
+                  startAt={undefined}
+                  endAt={chartEndDate}
+                />
+              }
+              icon="chart-bar"
+              label={formatMessage(WIDGET_TITLES.MethodsUsedWidget)}
             />
           </Section>
         </Box>
