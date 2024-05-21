@@ -228,7 +228,7 @@ fr:
       picks: 'Choix'
       project: 'Projet'
       published_at: 'Publié le'
-      registration_completed_at: 'L''inscription se fait à l''adresse suivante'
+      registration_completed_at: 'Inscription finalisée à'
       status: 'Statut'
       submitted_at: 'Soumis le'
       tags: 'Thèmes'
