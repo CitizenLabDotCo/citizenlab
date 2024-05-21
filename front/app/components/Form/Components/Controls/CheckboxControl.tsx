@@ -41,7 +41,7 @@ const CheckboxControl = ({
           checked={Boolean(data)}
           onChange={() => handleChange(path, !data)}
           disabled={uischema?.options?.readonly}
-          mr="4px"
+          mr="8px"
         />
         <FormLabel
           htmlFor={sanitizeForClassname(id)}
