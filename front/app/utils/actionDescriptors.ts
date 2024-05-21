@@ -28,11 +28,11 @@ export type ActionDescriptor<DisabledReason> =
   | { enabled: true; disabled_reason: null }
   | { enabled: false; disabled_reason: DisabledReason };
 
-// If future_enabled is a string, it's a date
+// If future_enabled_at is a string, it's a date
 export type ActionDescriptorFutureEnabled<DisabledReason> =
-  | { enabled: true; disabled_reason: null; future_enabled: null }
+  | { enabled: true; disabled_reason: null; future_enabled_at: null }
   | {
       enabled: false;
       disabled_reason: DisabledReason;
-      future_enabled: string | null;
+      future_enabled_at: string | null;
     };

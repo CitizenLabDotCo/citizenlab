@@ -144,7 +144,6 @@ type ProjectDisabledReason =
 export type ProjectPostingDisabledReason =
   | 'posting_not_supported'
   | 'posting_disabled'
-  // TODO: JS - is this still true?
   // Only applicable to taking surveys at the moment.
   // Not configurable via admin UI, determined in BE
   | 'posting_limited_max_reached'

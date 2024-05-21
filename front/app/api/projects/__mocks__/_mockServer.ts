@@ -38,7 +38,7 @@ export const project1: IProjectData = {
       posting_idea: {
         enabled: true,
         disabled_reason: null,
-        future_enabled: null,
+        future_enabled_at: null,
       },
       commenting_idea: {
         enabled: true,
@@ -165,7 +165,7 @@ export const project2: IProjectData = {
       posting_idea: {
         enabled: true,
         disabled_reason: null,
-        future_enabled: null,
+        future_enabled_at: null,
       },
       commenting_idea: {
         enabled: true,
@@ -295,7 +295,7 @@ const votingProject: IProject = {
         posting_idea: {
           enabled: false,
           disabled_reason: 'posting_not_supported',
-          future_enabled: null,
+          future_enabled_at: null,
         },
         commenting_idea: {
           enabled: true,

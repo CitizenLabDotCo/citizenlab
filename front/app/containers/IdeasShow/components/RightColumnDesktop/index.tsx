@@ -59,8 +59,8 @@ const RightColumnDesktop = ({
   const reactingActionDescriptor =
     idea.data.attributes.action_descriptors.reacting_idea;
   const reactingFutureEnabled = !!(
-    reactingActionDescriptor.up.future_enabled ||
-    reactingActionDescriptor.down.future_enabled
+    reactingActionDescriptor.up.future_enabled_at ||
+    reactingActionDescriptor.down.future_enabled_at
   );
   const cancellingEnabled = reactingActionDescriptor.cancelling_enabled;
   const likesCount = idea.data.attributes.likes_count;

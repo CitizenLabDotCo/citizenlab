@@ -599,7 +599,7 @@ resource 'Ideas' do
             commenting_idea: {
               enabled: true,
               disabled_reason: nil,
-              future_enabled: nil
+              future_enabled_at: nil
             },
             reacting_idea: {
               enabled: false,
@@ -608,23 +608,23 @@ resource 'Ideas' do
               up: {
                 enabled: false,
                 disabled_reason: 'reacting_not_supported',
-                future_enabled: nil
+                future_enabled_at: nil
               },
               down: {
                 enabled: false,
                 disabled_reason: 'reacting_not_supported',
-                future_enabled: nil
+                future_enabled_at: nil
               }
             },
             comment_reacting_idea: {
               enabled: true,
               disabled_reason: nil,
-              future_enabled: nil
+              future_enabled_at: nil
             },
             voting: {
               enabled: true,
               disabled_reason: nil,
-              future_enabled: nil
+              future_enabled_at: nil
             }
           }
         )

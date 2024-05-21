@@ -155,7 +155,7 @@ resource 'Projects' do
           slug: @projects.first.slug,
           timeline_active: nil,
           action_descriptors: {
-            posting_idea: { enabled: false, disabled_reason: 'project_inactive', future_enabled: nil },
+            posting_idea: { enabled: false, disabled_reason: 'project_inactive', future_enabled_at: nil },
             commenting_idea: { enabled: false, disabled_reason: 'project_inactive' },
             reacting_idea: {
               enabled: false,

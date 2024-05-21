@@ -44,8 +44,8 @@ export function getProject(
       action_descriptors: {
         posting_idea: {
           enabled: true,
-          future_enabled: null, // string | null,
           disabled_reason: null, // PostingDisabledReasons | null,
+          future_enabled_at: null, // string | null,
         },
         commenting_idea: {
           enabled: true,

@@ -393,9 +393,9 @@ const ReactionButton = ({
     const disabledReason =
       idea.data.attributes.action_descriptors.reacting_idea[buttonReactionMode]
         .disabled_reason;
-    const futureEnabled =
+    const futureEnabledAt =
       idea.data.attributes.action_descriptors.reacting_idea[buttonReactionMode]
-        .future_enabled;
+        .future_enabled_at;
     const cancellingEnabled = reactingDescriptor.cancelling_enabled;
     const notYetReacted = userReactionMode !== buttonReactionMode;
     const alreadyReacted = userReactionMode === buttonReactionMode;
@@ -407,12 +407,12 @@ const ReactionButton = ({
 
     const disabledReasonMessage = getDisabledReasonMessage(
       disabledReason,
-      futureEnabled
+      futureEnabledAt
     );
 
-    const enabledFromDate = futureEnabled ? (
+    const enabledFromDate = futureEnabledAt ? (
       <FormattedDate
-        value={futureEnabled}
+        value={futureEnabledAt}
         year="numeric"
         month="long"
         day="numeric"
