@@ -27,7 +27,7 @@ export default defineMessages({
   },
   document_annotation: {
     id: 'app.containers.Admin.reporting.widgets.MethodsUsed.document_annotation',
-    defaultMessage: 'Document Annotation',
+    defaultMessage: 'Konveio',
   },
   poll: {
     id: 'app.containers.Admin.reporting.widgets.MethodsUsed.poll',
