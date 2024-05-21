@@ -50,7 +50,6 @@ const CheckboxControl = ({
           subtextValue={getSubtextElement(uischema.options?.description)}
           subtextSupportsHtml
         />
-        {/* TO DO: add to FormLabel? */}
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
       <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={false} />
