@@ -447,7 +447,6 @@ describe Permissions::ProjectPermissionsService do
           c: { posting_enabled: false }
         }
       )
-      binding.pry
       expect(service.future_enabled_phase('posting_idea', create(:user), project)).to eq project.phases.order(:start_at)[7]
     end
 
