@@ -1,6 +1,10 @@
 {
   "UI.FormComponents.required": "required",
+  "app.Admin.ManagementFeed.action": "Action",
+  "app.Admin.ManagementFeed.date": "Date",
+  "app.Admin.ManagementFeed.item": "Item",
   "app.Admin.ManagementFeed.title": "Management feed",
+  "app.Admin.ManagementFeed.user": "User",
   "app.Admin.Moderation.managementFeed": "Management feed",
   "app.Admin.Moderation.participationFeed": "Participation feed",
   "app.components.Admin.Campaigns.campaignDeletionConfirmation": "Are you sure?",
