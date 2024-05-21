@@ -5,9 +5,11 @@ import moduleConfiguration from 'modules';
 import PageLoading from 'components/UI/PageLoading';
 
 import { AdminRoute } from '../routes';
+
 const DashboardWrapper = lazy(() => import('.'));
 const Overview = lazy(() => import('./overview'));
 const Users = lazy(() => import('./users'));
+const ManagementFeed = lazy(() => import('./ManagementFeed'));
 
 export enum dashboardRoutes {
   dashboard = 'dashboard',
@@ -51,7 +53,7 @@ const createAdminDashboardRoutes = () => {
         path: dashboardRoutes.management_feed,
         element: (
           <PageLoading>
-            <div>Management Feed</div>
+            <ManagementFeed />
           </PageLoading>
         ),
       },

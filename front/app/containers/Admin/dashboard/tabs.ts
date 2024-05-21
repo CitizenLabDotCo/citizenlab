@@ -43,7 +43,7 @@ const MODERATION_TAB: TabRoute = {
 
 const MANAGEMENT_FEED_TAB: TabRoute = {
   message: messages.managementFeed,
-  name: 'managementFeed',
+  name: 'management_feed',
   url: '/admin/dashboard/management-feed',
 };
 
