@@ -2,6 +2,7 @@ import React, { lazy, Suspense, useState } from 'react';
 
 import { Box, Badge } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useIdeaImages from 'api/idea_images/useIdeaImages';
@@ -72,6 +73,9 @@ export const IdeasShow = ({
   });
   const { data: phases } = usePhases(project?.data.id);
 
+  const [searchParams] = useSearchParams();
+  const phaseContext = searchParams.get('phase_context');
+
   const handleContainerRef = (element: HTMLDivElement) => {
     setRef?.(element);
   };
@@ -120,9 +124,12 @@ export const IdeasShow = ({
               </Tippy>
             </Box>
           )}
-          {compact && (
+          {compact && phaseContext && (
             <Box mb="8px">
-              <IdeaNavigationButtons projectId={project.data.id} />
+              <IdeaNavigationButtons
+                projectId={project.data.id}
+                phaseContext={phaseContext}
+              />
             </Box>
           )}
           <IdeaTitle
