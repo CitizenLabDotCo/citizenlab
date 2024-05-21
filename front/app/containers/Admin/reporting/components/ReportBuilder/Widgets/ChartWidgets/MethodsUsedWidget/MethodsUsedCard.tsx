@@ -49,23 +49,37 @@ const MethodsUsedCard = ({
     compare_end_at: compareEndAt,
   });
 
+  const comparedCounts = data?.data.attributes.count_per_method_compared_period;
+
   return (
     <Box>
-      {PARTICIPATION_METHODS.map((method) => (
-        <Box
-          key={method}
-          display="inline-block"
-          width="120px"
-          mb="8px"
-          mr="12px"
-        >
-          <Statistic
-            name={formatMessage(LABELS[method])}
-            value={data?.data.attributes.count_per_method[method] ?? 0}
-            nameColor="black"
-          />
-        </Box>
-      ))}
+      {PARTICIPATION_METHODS.map((method) => {
+        const bottomLabelValue = comparedCounts?.[method];
+
+        return (
+          <Box
+            key={method}
+            display="inline-block"
+            width="120px"
+            mb="8px"
+            mr="12px"
+          >
+            <Statistic
+              name={formatMessage(LABELS[method])}
+              value={data?.data.attributes.count_per_method[method] ?? 0}
+              nameColor="black"
+              bottomLabel={
+                comparedCounts
+                  ? formatMessage(messages.lastXDays, {
+                      days: 30,
+                      count: bottomLabelValue ?? '-',
+                    })
+                  : undefined
+              }
+            />
+          </Box>
+        );
+      })}
     </Box>
   );
 };
