@@ -474,6 +474,7 @@
   "app.components.StatusModule.modifyYourSubmission": "Endre din {submissionTerm}",
   "app.components.StatusModule.submittedUntil3": "Din stemme kan sendes inn til kl",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Valgte {numberOfSelectedTopics, plural, =0 {zero topics} one {one topic} other {# topics}}. {selectedTopicNames}",
+  "app.components.UI.MoreActionsMenu.moreOptions": "Flere valg",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Vis flere handlinger",
   "app.components.UI.NewLabel.newBadge": "NY",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "Fant ingen passende faser for dette prosjektet",
