@@ -474,6 +474,7 @@
   "app.components.StatusModule.modifyYourSubmission": "Τροποποιήστε το {submissionTerm}",
   "app.components.StatusModule.submittedUntil3": "Η ψήφος σας μπορεί να υποβληθεί έως",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Επιλεγμένα {numberOfSelectedTopics, plural, =0 {μηδενικές ετικέτες} one {μια ετικέτα} other {# ετικέτες}}. {selectedTopicNames}",
+  "app.components.UI.MoreActionsMenu.moreOptions": "Περισσότερες επιλογές",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Εμφάνιση περισσότερων ενεργειών",
   "app.components.UI.NewLabel.newBadge": "ΝΕΟ",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "Δεν βρέθηκαν κατάλληλες φάσεις για αυτό το έργο",
