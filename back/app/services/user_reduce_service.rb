@@ -10,7 +10,7 @@ class UserReduceService
     activities email_campaigns_campaign_email_commands
     email_campaigns_campaigns email_campaigns_consents
     email_campaigns_unsubscription_tokens email_campaigns_deliveries
-    identities initiative_status_changes invites memberships
+    followers identities initiative_status_changes invites memberships
     notifications onboarding_campaign_dismissals spam_reports
     users verification_verifications
   ].freeze
