@@ -50,8 +50,7 @@ module Permissions
       permission = phase&.permissions&.find { |p| p[:action] == action }
 
       if permission.blank?
-        # TODO: JS - be explicit here about nil scopes for initiatives
-        scope = phase&.permission_scope
+        scope = phase&.permission_scope # If phase is nil, then this is a global permission (ie for initiatives)
         permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
 
         if permission.blank? && Permission.available_actions(scope)
