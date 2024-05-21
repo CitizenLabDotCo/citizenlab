@@ -40,7 +40,6 @@ const CheckboxControl = ({
           id={sanitizeForClassname(id)}
           checked={Boolean(data)}
           onChange={() => handleChange(path, !data)}
-          label={schema.description || null}
           disabled={uischema?.options?.readonly}
           mr="4px"
         />
