@@ -425,6 +425,12 @@ RSpec.describe Phase do
         expect(project.phases.count).to eq 5
       end
     end
+
+    it 'allows increasing the start date of a phase with no end date' do
+      phase = create(:phase, start_at: Date.today, end_at: nil)
+      phase.start_at += 1.day
+      expect(phase).to be_valid
+    end
   end
 
   describe '#custom_form_persisted?' do
