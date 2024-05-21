@@ -474,6 +474,7 @@
   "app.components.StatusModule.modifyYourSubmission": "Zmodyfikuj swoją stronę {submissionTerm}",
   "app.components.StatusModule.submittedUntil3": "Twój głos może zostać oddany do",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Zaznaczono {numberOfSelectedTopics, plural, =0 {zero tematów} one {jeden temat} few {# tematy} many {# tematów} other {# tematy}}. {selectedTopicNames}",
+  "app.components.UI.MoreActionsMenu.moreOptions": "Więcej opcji",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Pokaż więcej działań",
   "app.components.UI.NewLabel.newBadge": "NOWOŚĆ",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "Nie znaleziono odpowiednich faz dla tego projektu",
