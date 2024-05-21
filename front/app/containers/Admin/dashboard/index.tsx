@@ -24,6 +24,7 @@ export const DashboardsPage = memo(() => {
     name: 'representativeness',
   });
   const moderationEnabled = useFeatureFlag({ name: 'moderation' });
+  const managementFeedEnabled = useFeatureFlag({ name: 'management_feed' });
 
   if (!authUser || !isAdmin(authUser)) {
     return null;
@@ -34,6 +35,7 @@ export const DashboardsPage = memo(() => {
       visitorsEnabled,
       representativenessEnabled,
       moderationEnabled,
+      managementFeedEnabled,
     },
     formatMessage
   );

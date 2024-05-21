@@ -23,6 +23,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.tabRepresentativeness2',
     defaultMessage: 'Representation',
   },
+  managementFeed: {
+    id: 'app.Admin.Moderation.managementFeed',
+    defaultMessage: 'Management feed',
+  },
   feed: {
     id: 'app.Admin.Moderation.feed',
     defaultMessage: 'Feed',
