@@ -10,6 +10,7 @@ import {
   VisitorsTrafficSourcesProps,
   DemographicsProps,
   RegistrationsProps,
+  MethodsUsedProps,
 } from './requestTypes';
 // Response types
 import {
@@ -19,6 +20,7 @@ import {
 import { ActiveUsersResponse } from './responseTypes/ActiveUsersWidget';
 import { CommentsByTimeResponse } from './responseTypes/CommentsByTimeWidget';
 import { DemographicsResponse } from './responseTypes/DemographicsWidget';
+import { MethodsUsedResponse } from './responseTypes/MethodsUsedWidget';
 import { MostReactedIdeasResponse } from './responseTypes/MostReactedIdeasWidget';
 import { PostsByTimeResponse } from './responseTypes/PostsByTimeWidget';
 import { ReactionsByTimeResponse } from './responseTypes/ReactionsByTimeWidget';
@@ -267,4 +269,11 @@ export const useRegistrationsLive = (
     },
     { onSuccess }
   );
+};
+
+export const useMethodsUsed = (props: MethodsUsedProps = {}) => {
+  return useGraphDataUnits<MethodsUsedResponse>({
+    resolved_name: 'MethodsUsedWidget',
+    props,
+  });
 };
