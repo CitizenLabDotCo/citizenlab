@@ -1899,7 +1899,7 @@
   "app.containers.AdminPage.SettingsPage.platformConfiguration": "Configuration de la plateforme",
   "app.containers.AdminPage.SettingsPage.population": "Population",
   "app.containers.AdminPage.SettingsPage.populationMinError": "La population doit être un nombre positif.",
-  "app.containers.AdminPage.SettingsPage.populationTooltip": "Le nombre total d'habitants sur votre territoire. Il est utilisé pour calculer le taux de participation. Laissez vide si non applicable.",
+  "app.containers.AdminPage.SettingsPage.populationTooltip": "Population cible (généralement, le nombre d'habitants de la ville ou de la région). Cette information est utilisée pour calculer le taux de participation. Laissez ce champ vide si non applicable.",
   "app.containers.AdminPage.SettingsPage.profanityBlockerSetting": "Bloqueur de contenu inapproprié",
   "app.containers.AdminPage.SettingsPage.profanityBlockerSettingDescription": "Bloquer les contributions, propositions et commentaires contenant les mots offensants les plus fréquemment signalés",
   "app.containers.AdminPage.SettingsPage.projectsHeaderDescription": "Ce texte s'affiche sur la page d'accueil au dessus des projets.",
