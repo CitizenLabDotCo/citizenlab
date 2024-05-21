@@ -23,14 +23,6 @@ const IndeterminateIcon = styled(Icon)<{ size: string }>`
   fill: #fff;
 `;
 
-const StyledBox = styled(Box)<{ disabled: boolean }>`
-  position: relative;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-`;
-
 const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
   ${hideVisually()};
 `;
@@ -133,10 +125,14 @@ const Checkbox = ({
   const checkedOrIndeterminate = checked || indeterminate;
 
   return (
-    <StyledBox
+    <Box
       as="label"
       className={className || ''}
-      disabled={disabled}
+      position="relative"
+      display="flex"
+      flex="1"
+      alignItems="center"
+      style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
       onClick={handleLabelClick}
       data-testid={testEnv('check-mark-label')}
       {...rest}
@@ -176,7 +172,7 @@ const Checkbox = ({
         {label}
       </Box>
       {labelTooltipText && <IconTooltip content={labelTooltipText} />}
-    </StyledBox>
+    </Box>
   );
 };
 
