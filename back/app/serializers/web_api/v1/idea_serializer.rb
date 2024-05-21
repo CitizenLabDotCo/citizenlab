@@ -37,7 +37,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
   }
 
   attribute :action_descriptor do |object, params|
-    @idea_permissions_service = Permissions::IdeaPermissionsService.new
+    @idea_permissions_service ||= Permissions::IdeaPermissionsService.new
     @idea_permissions_service.action_descriptors object, current_user(params)
   end
 
