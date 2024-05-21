@@ -39,14 +39,14 @@ interface Props {
 const disabledMessages: { [key in ProjectPollDisabledReason] } = {
   project_inactive: messages.pollDisabledProjectInactive,
   project_not_visible: messages.pollDisabledNotPermitted,
-  not_active: undefined,
-  not_verified: undefined,
-  missing_user_requirements: undefined,
-  not_signed_in: undefined,
-  not_in_group: globalMessages.notInGroup,
+  user_not_active: undefined,
+  user_not_verified: undefined,
+  user_missing_requirements: undefined,
+  user_not_signed_in: undefined,
+  user_not_in_group: globalMessages.notInGroup,
   not_poll: messages.pollDisabledNotActivePhase,
   already_responded: messages.pollDisabledAlreadyResponded,
-  not_permitted: messages.pollDisabledNotPermitted,
+  user_not_permitted: messages.pollDisabledNotPermitted,
 };
 
 const Poll = ({ projectId, phaseId }: Props) => {

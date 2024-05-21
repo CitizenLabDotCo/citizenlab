@@ -25,12 +25,12 @@ const disabledMessages: {
 } = {
   project_inactive: messages.documentAnnotationDisabledProjectInactive,
   project_not_visible: messages.documentAnnotationDisabledNotPermitted,
-  not_active: messages.documentAnnotationDisabledNotActiveUser,
-  not_verified: messages.documentAnnotationDisabledNotVerified,
-  missing_user_requirements: messages.documentAnnotationDisabledNotActiveUser,
-  not_signed_in: messages.documentAnnotationDisabledMaybeNotPermitted,
-  not_in_group: globalMessages.notInGroup,
-  not_permitted: messages.documentAnnotationDisabledNotPermitted,
+  user_not_active: messages.documentAnnotationDisabledNotActiveUser,
+  user_not_verified: messages.documentAnnotationDisabledNotVerified,
+  user_missing_requirements: messages.documentAnnotationDisabledNotActiveUser,
+  user_not_signed_in: messages.documentAnnotationDisabledMaybeNotPermitted,
+  user_not_in_group: globalMessages.notInGroup,
+  user_not_permitted: messages.documentAnnotationDisabledNotPermitted,
   not_document_annotation: messages.documentAnnotationDisabledNotActivePhase,
 };
 
@@ -39,8 +39,8 @@ const isEnabled = (
 ) => {
   const reasonsToHideDocument: ProjectDocumentAnnotationDisabledReason[] = [
     'project_inactive',
-    'not_in_group',
-    'not_permitted',
+    'user_not_in_group',
+    'user_not_permitted',
     'not_document_annotation',
   ];
 

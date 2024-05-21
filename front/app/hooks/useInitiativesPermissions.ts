@@ -9,7 +9,7 @@ import { ActionPermission } from 'utils/actionTakingRules';
 
 export type InitiativePermissionsDisabledReason =
   // Only the ones set below via setActionPermissions's disabledReason
-  'not_permitted' | 'not_in_group';
+  'user_not_permitted' | 'user_not_in_group';
 
 export default function useInitiativesPermissions(
   actionDescriptorName: IInitiativeActionDescriptorName
@@ -35,7 +35,7 @@ export default function useInitiativesPermissions(
         });
       } else {
         switch (actionDescriptor.disabled_reason) {
-          case 'missing_user_requirements': {
+          case 'user_missing_requirements': {
             setActionPermission({
               show: true,
               enabled: 'maybe',
@@ -44,7 +44,7 @@ export default function useInitiativesPermissions(
             });
             break;
           }
-          case 'not_verified':
+          case 'user_not_verified':
             if (!authUser) {
               setActionPermission({
                 show: true,
@@ -61,7 +61,7 @@ export default function useInitiativesPermissions(
               });
             }
             break;
-          case 'not_signed_in':
+          case 'user_not_signed_in':
             setActionPermission({
               show: true,
               enabled: 'maybe',
@@ -69,7 +69,7 @@ export default function useInitiativesPermissions(
               authenticationRequirements: 'sign_in_up',
             });
             break;
-          case 'not_active':
+          case 'user_not_active':
             setActionPermission({
               show: true,
               enabled: 'maybe',
@@ -77,11 +77,11 @@ export default function useInitiativesPermissions(
               authenticationRequirements: 'complete_registration',
             });
             break;
-          case 'not_in_group':
+          case 'user_not_in_group':
             setActionPermission({
               show: true,
               enabled: false,
-              disabledReason: 'not_in_group',
+              disabledReason: 'user_not_in_group',
               authenticationRequirements: null,
             });
             break;
@@ -89,7 +89,7 @@ export default function useInitiativesPermissions(
             setActionPermission({
               show: true,
               enabled: false,
-              disabledReason: 'not_permitted',
+              disabledReason: 'user_not_permitted',
               authenticationRequirements: null,
             });
         }

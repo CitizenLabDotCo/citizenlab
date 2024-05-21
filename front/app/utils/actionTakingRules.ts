@@ -67,17 +67,17 @@ const ideaPostingDisabledReason = (
   authenticationRequirements: AuthenticationRequirements | null;
 } => {
   switch (backendReason) {
-    case 'missing_user_requirements':
+    case 'user_missing_requirements':
       return {
         disabledReason: null,
         authenticationRequirements: 'complete_registration',
       };
-    case 'not_in_group':
+    case 'user_not_in_group':
       return {
         disabledReason: 'notInGroup',
         authenticationRequirements: null,
       };
-    case 'not_verified':
+    case 'user_not_verified':
       return signedIn
         ? {
             disabledReason: null,
@@ -87,7 +87,7 @@ const ideaPostingDisabledReason = (
             disabledReason: null,
             authenticationRequirements: 'sign_in_up_and_verify',
           };
-    case 'not_signed_in':
+    case 'user_not_signed_in':
       return {
         disabledReason: null,
         authenticationRequirements: 'sign_in_up',
@@ -109,12 +109,12 @@ const ideaPostingDisabledReason = (
         disabledReason: 'postingLimitedMaxReached',
         authenticationRequirements: null,
       };
-    case 'not_permitted':
+    case 'user_not_permitted':
       return {
         disabledReason: signedIn ? 'notPermitted' : 'maybeNotPermitted',
         authenticationRequirements: null,
       };
-    case 'not_active':
+    case 'user_not_active':
       return {
         disabledReason: null,
         authenticationRequirements: 'complete_registration',

@@ -69,8 +69,8 @@ interface Props {
 const disabledMessages: {
   [key in InitiativePermissionsDisabledReason]: MessageDescriptor;
 } = {
-  not_permitted: messages.votingNotPermitted,
-  not_in_group: globalMessages.notInGroup,
+  user_not_permitted: messages.votingNotPermitted,
+  user_not_in_group: globalMessages.notInGroup,
 };
 
 const DisabledReasonTooltip = ({ disabledReason }: Props) => {

@@ -56,7 +56,7 @@ const CommentingIdeaDisabled = ({ phaseId, idea }: Props) => {
 
     if (commentingEnabled) {
       return null;
-    } else if (commentingDisabledReason === 'not_in_group') {
+    } else if (commentingDisabledReason === 'user_not_in_group') {
       return globalMessages.notInGroup;
     } else if (commentingDisabledReason === 'project_inactive') {
       return messages.commentingDisabledInactiveProject;
@@ -64,13 +64,16 @@ const CommentingIdeaDisabled = ({ phaseId, idea }: Props) => {
       return messages.commentingDisabledProject;
     } else if (commentingDisabledReason === 'idea_not_in_current_phase') {
       return messages.commentingDisabledInCurrentPhase;
-    } else if (isLoggedIn && commentingDisabledReason === 'not_verified') {
+    } else if (isLoggedIn && commentingDisabledReason === 'user_not_verified') {
       return messages.commentingDisabledUnverified;
-    } else if (isLoggedIn && commentingDisabledReason === 'not_permitted') {
+    } else if (
+      isLoggedIn &&
+      commentingDisabledReason === 'user_not_permitted'
+    ) {
       return messages.commentingDisabledProject;
     } else if (
-      (isLoggedIn && commentingDisabledReason === 'not_active') ||
-      commentingDisabledReason === 'missing_user_requirements'
+      (isLoggedIn && commentingDisabledReason === 'user_not_active') ||
+      commentingDisabledReason === 'user_missing_requirements'
     ) {
       return messages.completeProfileToComment;
     } else if (!isLoggedIn) {

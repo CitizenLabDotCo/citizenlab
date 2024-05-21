@@ -63,7 +63,7 @@ const AddToBasketButton = ({
 
   const isPermitted =
     actionDescriptor.enabled ||
-    actionDescriptor.disabled_reason !== 'not_permitted';
+    actionDescriptor.disabled_reason !== 'user_not_permitted';
   const buttonVisible =
     isPermitted &&
     actionDescriptor.disabled_reason !== 'idea_not_in_current_phase';

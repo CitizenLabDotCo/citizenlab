@@ -55,7 +55,7 @@ export const ideaData: IIdeaData[] = [
         },
         commenting_idea: {
           enabled: false,
-          disabled_reason: 'not_permitted',
+          disabled_reason: 'user_not_permitted',
           future_enabled_at: null,
         },
         comment_reacting_idea: {
@@ -65,7 +65,7 @@ export const ideaData: IIdeaData[] = [
         },
         voting: {
           enabled: false,
-          disabled_reason: 'not_permitted',
+          disabled_reason: 'user_not_permitted',
           future_enabled_at: null,
         },
       },
@@ -167,7 +167,7 @@ export const ideaData: IIdeaData[] = [
         },
         commenting_idea: {
           enabled: false,
-          disabled_reason: 'not_permitted',
+          disabled_reason: 'user_not_permitted',
           future_enabled_at: null,
         },
         comment_reacting_idea: {
@@ -177,7 +177,7 @@ export const ideaData: IIdeaData[] = [
         },
         voting: {
           enabled: false,
-          disabled_reason: 'not_permitted',
+          disabled_reason: 'user_not_permitted',
           future_enabled_at: null,
         },
       },

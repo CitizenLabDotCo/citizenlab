@@ -46,12 +46,12 @@ const disabledMessages: {
 } = {
   project_inactive: messages.surveyDisabledProjectInactive,
   project_not_visible: messages.surveyDisabledNotPermitted,
-  not_active: messages.surveyDisabledNotActiveUser,
-  not_verified: messages.surveyDisabledNotVerified,
-  missing_user_requirements: messages.surveyDisabledNotActiveUser,
-  not_signed_in: messages.surveyDisabledMaybeNotPermitted,
-  not_in_group: globalMessages.notInGroup,
-  not_permitted: messages.surveyDisabledNotPermitted,
+  user_not_active: messages.surveyDisabledNotActiveUser,
+  user_not_verified: messages.surveyDisabledNotVerified,
+  user_missing_requirements: messages.surveyDisabledNotActiveUser,
+  user_not_signed_in: messages.surveyDisabledMaybeNotPermitted,
+  user_not_in_group: globalMessages.notInGroup,
+  user_not_permitted: messages.surveyDisabledNotPermitted,
   not_survey: messages.surveyDisabledNotActivePhase,
 };
 

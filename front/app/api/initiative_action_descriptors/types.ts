@@ -12,12 +12,12 @@ export type IInitiativeAction =
   | 'reacting_initiative';
 
 export type InitiativeDisabledReason =
-  | 'not_permitted'
-  | 'not_verified'
-  | 'not_in_group'
-  | 'not_signed_in'
-  | 'not_active'
-  | 'missing_user_requirements';
+  | 'user_not_permitted'
+  | 'user_not_verified'
+  | 'user_not_in_group'
+  | 'user_not_signed_in'
+  | 'user_not_active'
+  | 'user_missing_requirements';
 
 // Confusingly, 'comment_reacting_initiative' is an action descriptor, but
 // not an action, and it doesn't have its own granular permissions.

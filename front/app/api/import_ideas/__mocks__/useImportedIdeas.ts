@@ -46,7 +46,7 @@ export const ideasData: IIdeaData[] = [
         },
         commenting_idea: {
           enabled: false,
-          disabled_reason: 'not_permitted',
+          disabled_reason: 'user_not_permitted',
           future_enabled_at: null,
         },
         comment_reacting_idea: {
@@ -56,7 +56,7 @@ export const ideasData: IIdeaData[] = [
         },
         voting: {
           enabled: false,
-          disabled_reason: 'not_permitted',
+          disabled_reason: 'user_not_permitted',
           future_enabled_at: null,
         },
       },
