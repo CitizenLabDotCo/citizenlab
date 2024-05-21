@@ -122,9 +122,19 @@ const Checkbox = ({
   const handleLabelClick = (event: React.MouseEvent) => {
     stopLabelPropagation && event.stopPropagation();
   };
+
+  const handleOnCheckboxClick = (event: React.MouseEvent) => {
+    event.preventDefault();
+    onChange({
+      target: {
+        checked: !checked,
+      },
+    } as React.ChangeEvent<HTMLInputElement>);
+  };
+
   const checkedOrIndeterminate = checked || indeterminate;
 
-  return (
+  return label ? (
     <Box
       as="label"
       className={className || ''}
@@ -172,6 +182,44 @@ const Checkbox = ({
         {label}
       </Box>
       {labelTooltipText && <IconTooltip content={labelTooltipText} />}
+    </Box>
+  ) : (
+    <Box
+      className={className || ''}
+      style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
+      data-testid={testEnv('check-mark-label')}
+      {...rest}
+    >
+      <HiddenCheckbox
+        id={id}
+        onChange={onChange}
+        checked={checked}
+        disabled={disabled}
+        tabIndex={0}
+        name={name}
+      />
+      <StyledCheckbox
+        data-testid={testEnv('check-mark-background')}
+        checkedColor={checkedColor}
+        checkedOrIndeterminate={checkedOrIndeterminate}
+        size={size}
+        className={`${checked ? 'checked' : ''} ${
+          disabled ? 'disabled' : 'enabled'
+        } e2e-checkbox`}
+        onClick={handleOnCheckboxClick}
+      >
+        {checked && (
+          <CheckMarkIcon
+            ariaHidden
+            name="check"
+            size={size}
+            data-testid={testEnv('check-mark')}
+          />
+        )}
+        {indeterminate && (
+          <IndeterminateIcon ariaHidden name="minus" size={size} />
+        )}
+      </StyledCheckbox>
     </Box>
   );
 };
