@@ -40,6 +40,7 @@ export type ActionPermission<DisabledReasons> =
 /* ----------- Idea Posting ------------ */
 
 // When disabled, these are the reasons to explain to the user
+// TODO: JS - these types sound too similar to the ones in the backend. Maybe we can reuse them?
 export type IIdeaPostingDisabledReason =
   | 'notPermitted'
   | 'postingDisabled'
@@ -133,6 +134,7 @@ const ideaPostingDisabledReason = (
  *  authUser: The currently authenticated user
  */
 
+// TODO: JS - we should probably always have a phase now?
 export const getIdeaPostingRules = ({
   project,
   phase,
