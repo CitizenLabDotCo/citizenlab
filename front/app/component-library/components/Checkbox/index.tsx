@@ -135,7 +135,6 @@ const Checkbox = ({
   return (
     <StyledBox
       as="label"
-      id={id || ''}
       className={className || ''}
       disabled={disabled}
       onClick={handleLabelClick}
@@ -144,6 +143,7 @@ const Checkbox = ({
     >
       <CheckboxContainer hasLabel={hasLabel}>
         <HiddenCheckbox
+          id={id}
           onChange={onChange}
           checked={checked}
           disabled={disabled}
