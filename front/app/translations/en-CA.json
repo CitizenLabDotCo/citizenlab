@@ -1462,7 +1462,6 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Please {completeRegistrationLink} to take the survey.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "This survey is not currently enabled",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "Taking this survey requires verification of your identity. {verificationLink}",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "The survey is no longer available, since this project is no longer active.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "Verify your identity now.",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.completeRegistrationLinkText": "complete registration",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.logInLinkText": "log in",

@@ -1462,7 +1462,6 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Vänligen {completeRegistrationLink} för att svara på enkäten.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Den här undersökningen är för närvarande inte aktiverad",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "För att göra den här undersökningen krävs verifiering av din identitet. {verificationLink}",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "Undersökningen är inte längre tillgänglig eftersom det här projektet inte längre är aktivt.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "Verifiera din identitet nu.",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.completeRegistrationLinkText": "fullständig registrering",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.logInLinkText": "logga in",

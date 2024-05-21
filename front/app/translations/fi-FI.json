@@ -1462,7 +1462,6 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Ole hyvä ja {completeRegistrationLink} vastaa kyselyyn.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Tämä kysely ei ole tällä hetkellä käytössä",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "Kyselyyn vastaaminen edellyttää henkilöllisyytesi vahvistamista. {verificationLink}",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "Kysely ei ole enää saatavilla, koska tämä projekti ei ole enää aktiivinen.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "Vahvista henkilöllisyytesi nyt.",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.completeRegistrationLinkText": "täydellinen rekisteröinti",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.logInLinkText": "Kirjaudu sisään",

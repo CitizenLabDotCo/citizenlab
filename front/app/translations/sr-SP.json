@@ -1462,7 +1462,6 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Молимо {completeRegistrationLink} да попуните анкету.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Ова анкета тренутно није омогућена",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "За попуњавање ове анкете потребна је верификација вашег идентитета. {verificationLink}",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "Анкета више није доступна јер овај пројекат више није активан.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "Потврдите свој идентитет сада.",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.completeRegistrationLinkText": "комплетне регистрације",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.logInLinkText": "Пријавите се",

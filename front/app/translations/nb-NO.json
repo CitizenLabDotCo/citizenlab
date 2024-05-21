@@ -1462,7 +1462,6 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Vennligst {completeRegistrationLink} for å svare på undersøkelsen.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Dessverre har du ikke rettighetene til å ta denne undersøkelsen.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "Du må bekrefte identiteten din for å svare på undersøkelsen. {verificationLink}",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "Prosjektet er ikke lenger aktivt, og undersøkelsen er derfor ikke aktiv.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "Bekreft identiteten din nå.",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.completeRegistrationLinkText": "Fullfør registrering",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.logInLinkText": "Logg Inn",

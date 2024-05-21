@@ -1462,7 +1462,6 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Por favor, {completeRegistrationLink} para realizar la encuesta.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Lamentablemente, no tienes los permisos para participar en esta consulta",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "Para realizar esta consulta se requiere la verificación de tu identidad. {verificationLink}",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "La consulta no está disponible, porque el proyecto ya no está activo.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "Verifica tu identidad ahora.",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.completeRegistrationLinkText": "completa el registro",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.logInLinkText": "inicia sesión",

@@ -882,7 +882,6 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "This survey can only be taken when this phase in the timeline is active.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "This survey is not currently enabled",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "Taking this survey requires verification of your identity. {verificationLink}",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "The survey is no longer available, since this project is no longer active.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "Verify your identity now.",
   "app.containers.SearchInput.removeSearchTerm": "Remove search term",
   "app.containers.SearchInput.searchAriaLabel": "Search",
