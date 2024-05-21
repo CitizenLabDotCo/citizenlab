@@ -78,7 +78,7 @@ const MethodsUsedCard = ({
                 comparedCounts
                   ? formatMessage(messages.lastXDays, {
                       days: 30,
-                      count: bottomLabelValue ?? '-',
+                      count: bottomLabelValue ?? 0,
                     })
                   : undefined
               }
