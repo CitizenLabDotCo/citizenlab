@@ -474,6 +474,7 @@
   "app.components.StatusModule.modifyYourSubmission": "{submissionTerm} ändern",
   "app.components.StatusModule.submittedUntil3": "Ihre Stimme kann abgegeben werden bis",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Ausgewählt {numberOfSelectedTopics, plural, =0 {Null Themenfilter} ein { ein Themenfilter} other {# Themenfilter}}. {selectedTopicNames}",
+  "app.components.UI.MoreActionsMenu.moreOptions": "Weitere Optionen",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Weitere Aktionen anzeigen",
   "app.components.UI.NewLabel.newBadge": "NEU",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "Keine geeigneten Phasen für dieses Projekt gefunden",
