@@ -427,7 +427,7 @@ RSpec.describe Phase do
     end
 
     it 'allows increasing the start date of a phase with no end date' do
-      phase = create(:phase, start_at: Date.today, end_at: nil)
+      phase = create(:phase, start_at: Time.zone.today, end_at: nil)
       phase.start_at += 1.day
       expect(phase).to be_valid
     end
