@@ -1462,7 +1462,6 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Bitte {completeRegistrationLink}, um an der Umfrage teilzunehmen.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Leider verfügst du über keine Rechte, um an dieser Umfrage teilzunehmen.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "Die Teilnahme an dieser Umfrage erfordert eine Überprüfung Ihrer Identität. {verificationLink}",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "Diese Umfrage ist nicht länger zugänglich, da dieses Projekt nicht mehr aktiv ist.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "Verifiziere jetzt das Konto.",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.completeRegistrationLinkText": "Registrierung abschließen",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.logInLinkText": "anmelden",

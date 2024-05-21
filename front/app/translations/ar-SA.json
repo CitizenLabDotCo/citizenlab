@@ -1462,7 +1462,6 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "الرجاء {completeRegistrationLink} لإجراء الاستطلاع.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "للأسف، ليس لديك الحق بالمشاركة في هذا الاستبيان.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "تتطلب المشاركة في الاستبيان التحقق من هويتك. {verificationLink}",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "لم يعُد هذا الاستبيان متاحًا لأن هذا المشروع لم يعُد نشطًا بعد الآن.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "تحقق من هويتك الآن.",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.completeRegistrationLinkText": "اكمل التسجيل",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.logInLinkText": "تسجيل الدخول",

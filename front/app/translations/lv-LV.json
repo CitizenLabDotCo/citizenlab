@@ -1462,7 +1462,6 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Lūdzu, {completeRegistrationLink} , lai piedalītos aptaujā.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Šis pētījums pašlaik nav aktivizēts",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "Lai piedalītos šajā pētījumā, ir jāpārbauda jūsu identitāte. {verificationLink}",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "Aptauja vairs nav pieejama, jo šis projekts vairs nav aktīvs.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "Pārbaudiet savu identitāti tūlīt.",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.completeRegistrationLinkText": "pabeigt reģistrāciju",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.logInLinkText": "pieteikties",

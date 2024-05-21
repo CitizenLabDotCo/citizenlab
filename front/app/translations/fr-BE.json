@@ -1462,7 +1462,6 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Veuillez {completeRegistrationLink} pour répondre à l'enquête.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Malheureusement, vous n’avez pas le droit de participer à cette enquête.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "La participation à cette enquête nécessite une vérification de votre identité. {verificationLink}",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "L'enquête n'est pas disponible étant donné que ce projet n'est pas actif.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "Vérifiez votre identité maintenant.",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.completeRegistrationLinkText": "compléter l'inscription",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.logInLinkText": "connecter",

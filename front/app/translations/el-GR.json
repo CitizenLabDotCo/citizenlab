@@ -1462,7 +1462,6 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Παρακαλούμε {completeRegistrationLink} για να λάβετε μέρος στην έρευνα.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Αυτή η έρευνα δεν είναι προς το παρόν ενεργοποιημένη",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "Η συμμετοχή σε αυτή την έρευνα απαιτεί επαλήθευση της ταυτότητάς σας. {verificationLink}",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "Η έρευνα δεν είναι πλέον διαθέσιμη, καθώς αυτό το έργο δεν είναι πλέον ενεργό.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "Επαληθεύστε την ταυτότητά σας τώρα.",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.completeRegistrationLinkText": "πλήρης εγγραφή",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.logInLinkText": "Σύνδεση",

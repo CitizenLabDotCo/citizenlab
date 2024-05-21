@@ -1462,7 +1462,6 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Si us plau, {completeRegistrationLink} per respondre l'enquesta.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Aquesta enquesta no està activada actualment",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "Per fer aquesta enquesta cal verificar la vostra identitat. {verificationLink}",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "L'enquesta ja no està disponible perquè aquest projecte ja no està actiu.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "Verifiqueu ara la vostra identitat.",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.completeRegistrationLinkText": "registre complet",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.logInLinkText": "iniciar Sessió",

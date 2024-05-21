@@ -1462,7 +1462,6 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "Prosimy o {completeRegistrationLink} , aby wziąć udział w ankiecie.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Niestety, nie masz uprawnień do wzięcia udziału w tej ankiecie.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "Wzięcie udziału w tej ankiecie wymaga weryfikacji tożsamości. {verificationLink}",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "Ankieta nie jest już dostępna, ponieważ ten projekt nie jest już aktywny.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "Zweryfikuj swoją tożsamość.",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.completeRegistrationLinkText": "zakończ rejestrację",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.logInLinkText": "zaloguj się",
