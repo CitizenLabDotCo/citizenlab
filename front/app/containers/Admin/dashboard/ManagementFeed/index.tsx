@@ -27,7 +27,7 @@ import messages from './messages';
 const ManagementFeed = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const { formatMessage } = useIntl();
-  const { data: managementFeed, isLoading } = useManagementFeed({
+  const { data: managementFeed } = useManagementFeed({
     pageNumber,
   });
 

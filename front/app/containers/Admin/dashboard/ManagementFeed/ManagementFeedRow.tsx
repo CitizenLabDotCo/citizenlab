@@ -14,10 +14,40 @@ import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { getFullName } from 'utils/textUtils';
 
+import messages from './messages';
+
 const ManagementFeedRow = ({ item }: { item: ManagementFeedData }) => {
   const localize = useLocalize();
-  const { formatMessage, formatDate } = useIntl();
+  const { formatMessage, formatDate, formatTime } = useIntl();
   const { data: user } = useUserById(item.relationships.user.data?.id);
+
+  const getActionTranslation = () => {
+    switch (item.attributes.action) {
+      case 'created':
+        return formatMessage(messages.created);
+      case 'changed':
+        return formatMessage(messages.changed);
+      case 'deleted':
+        return formatMessage(messages.deleted);
+      default:
+        return item.attributes.action;
+    }
+  };
+
+  const getItemTranslation = () => {
+    switch (item.attributes.item_type) {
+      case 'idea':
+        return formatMessage(messages.idea);
+      case 'phase':
+        return formatMessage(messages.phase);
+      case 'project':
+        return formatMessage(messages.project);
+      case 'folder':
+        return formatMessage(messages.folder);
+      default:
+        return item.attributes.item_type;
+    }
+  };
 
   const getLink: () => RouteType = () => {
     if (item.attributes.action === 'deleted') return '';
@@ -32,9 +62,14 @@ const ManagementFeedRow = ({ item }: { item: ManagementFeedData }) => {
     }
     return '';
   };
+
   return (
     <Tr key={item.id}>
-      <Td>{formatDate(item.attributes.acted_at)}</Td>
+      <Td>
+        {formatDate(item.attributes.acted_at)}
+        <br />
+        {formatTime(item.attributes.acted_at)}
+      </Td>
       <Td>
         {user && (
           <Box display="flex" gap="8px" alignItems="center">
@@ -53,10 +88,10 @@ const ManagementFeedRow = ({ item }: { item: ManagementFeedData }) => {
             localize(item.attributes.item_title_multiloc)
           )}
           <br />
-          {item.attributes.item_type}
+          {getItemTranslation()}
         </Box>
       </Td>
-      <Td>{item.attributes.action}</Td>
+      <Td>{getActionTranslation()}</Td>
     </Tr>
   );
 };
