@@ -474,6 +474,7 @@
   "app.components.StatusModule.modifyYourSubmission": "Muokkaa {submissionTerm}",
   "app.components.StatusModule.submittedUntil3": "Äänesi voi antaa asti",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Valitut {numberOfSelectedTopics, plural, =0 {nolla tagia} one {yksi tunniste} other {# tagia}}. {selectedTopicNames}",
+  "app.components.UI.MoreActionsMenu.moreOptions": "Lisää vaihtoehtoja",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Näytä lisää toimintoja",
   "app.components.UI.NewLabel.newBadge": "UUSI",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "Tälle hankkeelle ei löytynyt sopivia vaiheita",
