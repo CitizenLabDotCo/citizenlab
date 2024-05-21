@@ -6,6 +6,7 @@ import {
   Title,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -43,6 +44,9 @@ const SharingButtons = ({
   hideTitle,
   justifyContent,
 }: Props) => {
+  const [searchParams] = useSearchParams();
+  const phaseContext = searchParams.get('phase_context');
+
   const isSmallerThanTablet = useBreakpoint('tablet');
 
   const getUrl = (medium: Medium) => {
@@ -55,6 +59,17 @@ const SharingButtons = ({
     folder: <FormattedMessage {...messages.shareThisFolder} />,
     event: <FormattedMessage {...messages.shareThisEvent} />,
   }[context];
+
+  const addPhaseContext = (url: string) => {
+    if (phaseContext) {
+      if (url.indexOf('?') >= 0) {
+        return `${url}&phase_context=${phaseContext}`;
+      } else {
+        return `${url}?phase_context=${phaseContext}`;
+      }
+    }
+    return url;
+  };
 
   return (
     <>
@@ -80,12 +95,17 @@ const SharingButtons = ({
       >
         <Box display="flex" gap="4px">
           <Facebook url={getUrl('facebook')} />
-          {isSmallerThanTablet && <Messenger url={getUrl('messenger')} />}
+          {isSmallerThanTablet && (
+            <Messenger url={addPhaseContext(getUrl('messenger'))} />
+          )}
           <WhatsApp
             whatsAppMessage={whatsAppMessage}
             url={getUrl('whatsapp')}
           />
-          <Twitter twitterMessage={twitterMessage} url={getUrl('twitter')} />
+          <Twitter
+            twitterMessage={twitterMessage}
+            url={addPhaseContext(getUrl('twitter'))}
+          />
           <Email
             emailSubject={emailSubject}
             emailBody={emailBody}
@@ -97,7 +117,7 @@ const SharingButtons = ({
             <FormattedMessage {...messages.or} />
           </Box>
         )}
-        <CopyLink copyLink={url} />
+        <CopyLink copyLink={addPhaseContext(url)} />
       </Box>
     </>
   );
