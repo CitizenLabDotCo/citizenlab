@@ -1,7 +1,5 @@
 import React, { memo } from 'react';
 
-import styled from 'styled-components';
-
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 
 import ActionBarLayout from 'components/PostShowComponents/ActionBar';
@@ -12,8 +10,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import messages from '../messages';
 
 import InitiativeMoreActions from './InitiativeMoreActions';
-
-const StyledInitiativeMoreActions = styled(InitiativeMoreActions)``;
 
 interface Props {
   initiativeId: string;
@@ -46,7 +42,7 @@ const ActionBar = memo<Props>(
         }
         rightContent={
           isNilOrError(initiative) ? null : (
-            <StyledInitiativeMoreActions
+            <InitiativeMoreActions
               id="e2e-initiative-more-actions-desktop"
               initiative={initiative.data}
             />
