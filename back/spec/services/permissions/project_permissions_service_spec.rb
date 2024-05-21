@@ -384,11 +384,20 @@ describe Permissions::ProjectPermissionsService do
       expect(service.denied_reason_for_action('taking_poll', nil, project)).to eq 'not_signed_in'
     end
 
-    it 'return `not_permitted` when taking the poll is not permitted' do
+    it 'returns `not_permitted` when taking the poll is not permitted' do
       project = create(:single_phase_poll_project, phase_attrs: { with_permissions: true })
       permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'taking_poll')
       permission.update!(permitted_by: 'admins_moderators')
       expect(service.denied_reason_for_action('taking_poll', create(:user), project)).to eq 'not_permitted'
+    end
+
+    it 'returns `missing_user_requirements` when the user has not completed all registration fields' do
+      project = create(:single_phase_poll_project, phase_attrs: { with_permissions: true })
+      permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'taking_poll')
+      permission.update!(permitted_by: 'users')
+      create(:custom_field_gender, required: true) # Created a required field that has not been filled in
+      user = create(:user)
+      expect(service.denied_reason_for_action('taking_poll', user, project)).to eq 'missing_user_requirements'
     end
   end
 
@@ -438,6 +447,7 @@ describe Permissions::ProjectPermissionsService do
           c: { posting_enabled: false }
         }
       )
+      binding.pry
       expect(service.future_enabled_phase('posting_idea', create(:user), project)).to eq project.phases.order(:start_at)[7]
     end
 
