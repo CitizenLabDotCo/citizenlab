@@ -124,7 +124,7 @@ const RightColumnDesktop = ({
             />
           </Box>
         )}
-        <IdeaNavigationButtons />
+        <IdeaNavigationButtons projectId={projectId} />
         <Box mb="16px">
           <IdeaSharingButton
             ideaId={ideaId}
