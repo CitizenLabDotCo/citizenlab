@@ -1,7 +1,8 @@
 {
   "UI.FormComponents.required": "required",
-  "app.Admin.Moderation.feed": "Feed",
+  "app.Admin.ManagementFeed.title": "Management feed",
   "app.Admin.Moderation.managementFeed": "Management feed",
+  "app.Admin.Moderation.participationFeed": "Participation feed",
   "app.components.Admin.Campaigns.campaignDeletionConfirmation": "Are you sure?",
   "app.components.Admin.Campaigns.clicked": "Clicked",
   "app.components.Admin.Campaigns.deleteCampaignButton": "Delete campaign",

@@ -1,6 +1,5 @@
 {
   "UI.FormComponents.required": "Campo requerido",
-  "app.Admin.Moderation.feed": "Conteúdos",
   "app.components.Admin.Campaigns.campaignDeletionConfirmation": "Você tem certeza?",
   "app.components.Admin.Campaigns.clicked": "Clicado",
   "app.components.Admin.Campaigns.deleteCampaignButton": "Excluir campanha",
