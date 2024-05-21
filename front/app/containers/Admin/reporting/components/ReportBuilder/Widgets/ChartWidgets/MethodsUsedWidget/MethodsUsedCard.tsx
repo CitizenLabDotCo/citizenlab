@@ -35,7 +35,13 @@ const MethodsUsedCard = (_props: Props) => {
   return (
     <Box>
       {PARTICIPATION_METHODS.map((method) => (
-        <Box key={method} display="inline-block" width="120px" mb="12px">
+        <Box
+          key={method}
+          display="inline-block"
+          width="120px"
+          mb="12px"
+          mr="12px"
+        >
           <Statistic
             name={formatMessage(LABELS[method])}
             value={Math.floor(Math.random() * 100)}
