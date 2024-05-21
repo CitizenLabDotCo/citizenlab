@@ -8,7 +8,7 @@ type DisabledReasonFixable =
 
 type DisabledReasonUnfixable = 'not_permitted' | 'not_in_group';
 
-export type PermissionsDisabledReason =
+export type UserDisabledReason =
   | DisabledReasonFixable
   | DisabledReasonUnfixable;
 

@@ -294,7 +294,7 @@ const votingProject: IProject = {
       action_descriptors: {
         posting_idea: {
           enabled: false,
-          disabled_reason: 'not_ideation',
+          disabled_reason: 'posting_not_supported',
           future_enabled: null,
         },
         commenting_idea: {
@@ -307,14 +307,14 @@ const votingProject: IProject = {
         },
         reacting_idea: {
           enabled: false,
-          disabled_reason: 'not_ideation',
+          disabled_reason: 'reacting_not_supported',
           up: {
             enabled: false,
-            disabled_reason: 'not_ideation',
+            disabled_reason: 'reacting_not_supported',
           },
           down: {
             enabled: false,
-            disabled_reason: 'not_ideation',
+            disabled_reason: 'reacting_not_supported',
           },
         },
         voting: {

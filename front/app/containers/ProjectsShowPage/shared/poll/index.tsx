@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
 import usePollQuestions from 'api/poll_questions/usePollQuestions';
-import { PollDisabledReason } from 'api/projects/types';
+import { ProjectPollDisabledReason } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
@@ -36,8 +36,9 @@ interface Props {
   projectId: string;
 }
 
-const disabledMessages: { [key in PollDisabledReason] } = {
+const disabledMessages: { [key in ProjectPollDisabledReason] } = {
   project_inactive: messages.pollDisabledProjectInactive,
+  project_not_visible: messages.pollDisabledNotPermitted,
   not_active: undefined,
   not_verified: undefined,
   missing_user_requirements: undefined,

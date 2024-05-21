@@ -274,16 +274,16 @@ const votingIdea = {
         },
         reacting_idea: {
           enabled: false,
-          disabled_reason: 'not_ideation',
+          disabled_reason: 'reacting_not_supported',
           cancelling_enabled: false,
           up: {
             enabled: false,
-            disabled_reason: 'not_ideation',
+            disabled_reason: 'reacting_not_supported',
             future_enabled: null,
           },
           down: {
             enabled: false,
-            disabled_reason: 'not_ideation',
+            disabled_reason: 'reacting_not_supported',
             future_enabled: null,
           },
         },

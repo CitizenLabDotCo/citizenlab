@@ -1,7 +1,7 @@
 import { ILinks, IRelationship, Multiloc } from 'typings';
 
 import {
-  PermissionsDisabledReason,
+  UserDisabledReason,
   ActionDescriptor,
   ActionDescriptorFutureEnabled,
 } from 'utils/actionDescriptors';
@@ -79,18 +79,18 @@ export interface IProjectAttributes {
   include_all_areas: boolean;
   folder_id?: string | null;
   action_descriptors: {
-    posting_idea: ActionDescriptorFutureEnabled<PostingDisabledReason>;
-    commenting_idea: ActionDescriptor<CommentingDisabledReason>;
-    // Same disabled reasons as commenting_idea at time of writing - TODO: JS change to just be an alias in the types?
-    comment_reacting_idea: ActionDescriptor<CommentingDisabledReason>;
+    posting_idea: ActionDescriptorFutureEnabled<ProjectPostingDisabledReason>;
+    commenting_idea: ActionDescriptor<ProjectCommentingDisabledReason>;
+    // Same disabled reasons as commenting_idea at time of writing
+    comment_reacting_idea: ActionDescriptor<ProjectCommentingDisabledReason>;
     reacting_idea: ActionDescriptor<ProjectReactingDisabledReason> & {
       up: ActionDescriptor<ProjectReactingDisabledReason>;
       down: ActionDescriptor<ProjectReactingDisabledReason>;
     };
-    taking_survey: ActionDescriptor<SurveyDisabledReason>;
-    taking_poll: ActionDescriptor<PollDisabledReason>;
-    annotating_document: ActionDescriptor<DocumentAnnotationDisabledReason>;
-    voting: ActionDescriptor<VotingDisabledReason>;
+    taking_survey: ActionDescriptor<ProjectSurveyDisabledReason>;
+    taking_poll: ActionDescriptor<ProjectPollDisabledReason>;
+    annotating_document: ActionDescriptor<ProjectDocumentAnnotationDisabledReason>;
+    voting: ActionDescriptor<ProjectVotingDisabledReason>;
   };
   uses_content_builder: boolean;
 }
@@ -136,50 +136,45 @@ export interface IProjectData {
 type Visibility = 'public' | 'groups' | 'admins';
 type PresentationMode = 'map' | 'card';
 
-export type CommentingDisabledReason =
+type ProjectDisabledReason =
+  | 'project_not_visible'
   | 'project_inactive'
-  | 'not_supported'
-  | 'commenting_disabled'
-  | PermissionsDisabledReason;
+  | UserDisabledReason;
 
-type ProjectReactingDisabledReason =
-  | 'project_inactive'
-  | 'not_ideation'
+export type ProjectPostingDisabledReason =
+  | 'posting_not_supported'
+  | 'posting_disabled'
+  // TODO: JS - is this still true?
+  // Only applicable to taking surveys at the moment.
+  // Not configurable via admin UI, determined in BE
+  | 'posting_limited_max_reached'
+  | ProjectDisabledReason;
+
+export type ProjectCommentingDisabledReason =
+  | 'commenting_not_supported'
+  | 'commenting_disabled'
+  | ProjectDisabledReason;
+
+export type ProjectReactingDisabledReason =
+  | 'reacting_not_supported'
   | 'reacting_disabled'
   | 'reacting_dislike_disabled'
   | 'reacting_like_limited_max_reached'
   | 'reacting_dislike_limited_max_reached'
-  | PermissionsDisabledReason;
+  | ProjectDisabledReason;
 
-export type PostingDisabledReason =
-  | 'project_inactive'
-  | 'not_ideation'
-  | 'posting_disabled'
-  // Only applicable to taking surveys at the moment.
-  // Not configurable via admin UI, determined in BE
-  | 'posting_limited_max_reached'
-  | PermissionsDisabledReason;
+export type ProjectSurveyDisabledReason = 'not_survey' | ProjectDisabledReason;
 
-export type SurveyDisabledReason =
-  | 'project_inactive'
-  | 'not_survey'
-  | PermissionsDisabledReason;
-
-export type PollDisabledReason =
-  | 'project_inactive'
+export type ProjectPollDisabledReason =
   | 'not_poll'
   | 'already_responded'
-  | PermissionsDisabledReason;
+  | ProjectDisabledReason;
 
-export type DocumentAnnotationDisabledReason =
-  | 'project_inactive'
+export type ProjectDocumentAnnotationDisabledReason =
   | 'not_document_annotation'
-  | PermissionsDisabledReason;
+  | ProjectDisabledReason;
 
-export type VotingDisabledReason =
-  | 'project_inactive'
-  | 'not_voting'
-  | PermissionsDisabledReason;
+export type ProjectVotingDisabledReason = 'not_voting' | ProjectDisabledReason;
 
 interface ProjectHeaderBgImageSizes {
   large: string | null;

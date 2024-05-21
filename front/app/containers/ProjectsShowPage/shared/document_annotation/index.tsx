@@ -3,7 +3,7 @@ import React from 'react';
 import { MessageDescriptor } from 'react-intl';
 
 import {
-  DocumentAnnotationDisabledReason,
+  ProjectDocumentAnnotationDisabledReason,
   IProjectData,
 } from 'api/projects/types';
 
@@ -21,9 +21,10 @@ interface Props {
 }
 
 const disabledMessages: {
-  [key in DocumentAnnotationDisabledReason]: MessageDescriptor;
+  [key in ProjectDocumentAnnotationDisabledReason]: MessageDescriptor;
 } = {
   project_inactive: messages.documentAnnotationDisabledProjectInactive,
+  project_not_visible: messages.documentAnnotationDisabledNotPermitted,
   not_active: messages.documentAnnotationDisabledNotActiveUser,
   not_verified: messages.documentAnnotationDisabledNotVerified,
   missing_user_requirements: messages.documentAnnotationDisabledNotActiveUser,
@@ -33,8 +34,10 @@ const disabledMessages: {
   not_document_annotation: messages.documentAnnotationDisabledNotActivePhase,
 };
 
-const isEnabled = (disabledReason: DocumentAnnotationDisabledReason | null) => {
-  const reasonsToHideDocument: DocumentAnnotationDisabledReason[] = [
+const isEnabled = (
+  disabledReason: ProjectDocumentAnnotationDisabledReason | null
+) => {
+  const reasonsToHideDocument: ProjectDocumentAnnotationDisabledReason[] = [
     'project_inactive',
     'not_in_group',
     'not_permitted',

@@ -603,16 +603,16 @@ resource 'Ideas' do
             },
             reacting_idea: {
               enabled: false,
-              disabled_reason: 'not_ideation',
+              disabled_reason: 'reacting_not_supported',
               cancelling_enabled: false,
               up: {
                 enabled: false,
-                disabled_reason: 'not_ideation',
+                disabled_reason: 'reacting_not_supported',
                 future_enabled: nil
               },
               down: {
                 enabled: false,
-                disabled_reason: 'not_ideation',
+                disabled_reason: 'reacting_not_supported',
                 future_enabled: nil
               }
             },
@@ -963,7 +963,7 @@ resource 'Ideas' do
           example_request '[error] Creating an idea in a project with an active information phase' do
             assert_status 401
             json_response = json_parse(response_body)
-            expect(json_response.dig(:errors, :base).first[:error]).to eq 'not_ideation'
+            expect(json_response.dig(:errors, :base).first[:error]).to eq 'posting_not_supported'
           end
         end
 
@@ -1172,7 +1172,7 @@ resource 'Ideas' do
             do_request
 
             assert_status 401
-            expect(json_response_body).to include_response_error(:base, 'not_ideation')
+            expect(json_response_body).to include_response_error(:base, 'posting_not_supported')
           end
         end
 

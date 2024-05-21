@@ -29,17 +29,17 @@ describe Permissions::ProjectPermissionsService do
       expect(service.denied_reason_for_action('posting_idea', create(:user), project)).to be_nil
     end
 
-    it "returns `not_ideation` when we're not in an ideation or native_survey context" do
+    it "returns `posting_not_supported` when we're not in an ideation or native_survey context" do
       project = create(:project_with_current_phase, current_phase_attrs: { participation_method: 'information' })
-      expect(service.denied_reason_for_action('posting_idea', create(:user), project)).to eq 'not_ideation'
+      expect(service.denied_reason_for_action('posting_idea', create(:user), project)).to eq 'posting_not_supported'
     end
 
-    it "returns `not_ideation` when we're in a voting context" do
+    it "returns `posting_not_supported` when we're in a voting context" do
       project = create(
         :project_with_current_phase,
         current_phase_attrs: { participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 1200 }
       )
-      expect(service.denied_reason_for_action('posting_idea', create(:user), project)).to eq 'not_ideation'
+      expect(service.denied_reason_for_action('posting_idea', create(:user), project)).to eq 'posting_not_supported'
     end
 
     it 'returns `project_inactive` when the timeline is over' do
@@ -206,11 +206,11 @@ describe Permissions::ProjectPermissionsService do
       expect(service.denied_reason_for_action('reacting_idea', user, project, reaction_mode: 'down')).to eq 'project_inactive'
     end
 
-    it "returns `not_ideation` when we're in a participatory budgeting context" do
+    it "returns `reacting_not_supported` when we're in a participatory budgeting context" do
       project = create(:project_with_current_phase, current_phase_attrs: { participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 1000 })
 
-      expect(service.denied_reason_for_action('reacting_idea', user, project, reaction_mode: 'up')).to eq 'not_ideation'
-      expect(service.denied_reason_for_action('reacting_idea', user, project, reaction_mode: 'down')).to eq 'not_ideation'
+      expect(service.denied_reason_for_action('reacting_idea', user, project, reaction_mode: 'up')).to eq 'reacting_not_supported'
+      expect(service.denied_reason_for_action('reacting_idea', user, project, reaction_mode: 'down')).to eq 'reacting_not_supported'
     end
 
     it 'returns `reacting_disabled` if reacting is disabled' do

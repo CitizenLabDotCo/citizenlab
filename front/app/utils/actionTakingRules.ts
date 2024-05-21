@@ -1,5 +1,5 @@
 import { IPhaseData } from 'api/phases/types';
-import { IProjectData, PostingDisabledReason } from 'api/projects/types';
+import { IProjectData, ProjectPostingDisabledReason } from 'api/projects/types';
 import { IUserData } from 'api/users/types';
 
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -58,7 +58,7 @@ export type AuthenticationRequirements =
   | 'complete_registration';
 
 const ideaPostingDisabledReason = (
-  backendReason: PostingDisabledReason | null,
+  backendReason: ProjectPostingDisabledReason | null,
   signedIn: boolean,
   futureEnabled: string | null
 ): {
@@ -159,13 +159,13 @@ export const getIdeaPostingRules = ({
 
     // timeline
     if (phase) {
-      // not an enabled ideation phase
+      // not an enabled ideation or native survey phase
       if (
         !(
           (phase.attributes.participation_method === 'ideation' ||
             phase.attributes.participation_method === 'native_survey') &&
           phase.attributes.posting_enabled &&
-          disabled_reason !== 'not_ideation'
+          disabled_reason !== 'posting_not_supported'
         )
       ) {
         return {

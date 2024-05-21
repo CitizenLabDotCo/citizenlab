@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { TSurveyService } from 'api/phases/types';
-import { IProjectData, SurveyDisabledReason } from 'api/projects/types';
+import { IProjectData, ProjectSurveyDisabledReason } from 'api/projects/types';
 
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
@@ -41,8 +41,11 @@ interface Props {
   className?: string;
 }
 
-const disabledMessages: { [key in SurveyDisabledReason]: MessageDescriptor } = {
+const disabledMessages: {
+  [key in ProjectSurveyDisabledReason]: MessageDescriptor;
+} = {
   project_inactive: messages.surveyDisabledProjectInactive,
+  project_not_visible: messages.surveyDisabledNotPermitted,
   not_active: messages.surveyDisabledNotActiveUser,
   not_verified: messages.surveyDisabledNotVerified,
   missing_user_requirements: messages.surveyDisabledNotActiveUser,

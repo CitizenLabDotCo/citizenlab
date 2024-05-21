@@ -200,11 +200,11 @@ describe Permissions::IdeaPermissionsService do
           expect(service.denied_reason_for_action('reacting_idea', user, idea, reaction_mode: 'down')).to eq 'project_inactive'
         end
 
-        it "returns `not_ideation` when we're in a voting (budgeting) phase" do
+        it "returns `reacting_not_supported` when we're in a voting (budgeting) phase" do
           project = create(:single_phase_budgeting_project)
           idea = create(:idea, project: project)
-          expect(service.denied_reason_for_action('reacting_idea', user, idea, reaction_mode: 'up')).to eq 'not_ideation'
-          expect(service.denied_reason_for_action('reacting_idea', user, idea, reaction_mode: 'down')).to eq 'not_ideation'
+          expect(service.denied_reason_for_action('reacting_idea', user, idea, reaction_mode: 'up')).to eq 'reacting_not_supported'
+          expect(service.denied_reason_for_action('reacting_idea', user, idea, reaction_mode: 'down')).to eq 'reacting_not_supported'
         end
 
         it "returns `idea_not_in_current_phase` when it's not in the current phase" do
@@ -258,13 +258,13 @@ describe Permissions::IdeaPermissionsService do
           expect(service.denied_reason_for_action('reacting_idea', idea.author, idea)).to eq 'project_inactive'
         end
 
-        it "returns `not_ideation` when we're in a participatory budgeting context" do
+        it "returns `reacting_not_supported` when we're in a participatory budgeting context" do
           project = create(
             :project_with_current_phase,
             current_phase_attrs: { participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 1200 }
           )
           idea = create(:idea, project: project, phases: project.phases)
-          expect(service.denied_reason_for_action('reacting_idea', idea.author, idea)).to eq 'not_ideation'
+          expect(service.denied_reason_for_action('reacting_idea', idea.author, idea)).to eq 'reacting_not_supported'
         end
 
         it "returns 'project_inactive' when the project is archived" do
