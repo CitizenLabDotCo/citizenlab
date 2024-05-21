@@ -10,6 +10,7 @@ import Statistic from 'components/admin/Graphs/Statistic';
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import MissingData from '../../_shared/MissingData';
+import { getDaysInRange } from '../utils';
 
 import messages from './messages';
 import { Props } from './typings';
@@ -56,6 +57,7 @@ const MethodsUsedCard = ({
   }
 
   const comparedCounts = data?.data.attributes.count_per_method_compared_period;
+  const previousDays = getDaysInRange(startAt, endAt);
 
   return (
     <Box>
@@ -75,9 +77,9 @@ const MethodsUsedCard = ({
               value={data?.data.attributes.count_per_method[method] ?? 0}
               nameColor="black"
               bottomLabel={
-                comparedCounts
+                comparedCounts && previousDays
                   ? formatMessage(messages.lastXDays, {
-                      days: 30,
+                      days: previousDays,
                       count: bottomLabelValue ?? 0,
                     })
                   : undefined
