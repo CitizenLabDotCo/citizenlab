@@ -53,7 +53,7 @@ const isEnabled = (disabledReason: DocumentAnnotationDisabledReason | null) => {
 
 const DocumentAnnotation = ({ project, phaseId, documentUrl }: Props) => {
   const { enabled: _enabled, disabled_reason } =
-    project.attributes.action_descriptor.annotating_document;
+    project.attributes.action_descriptors.annotating_document;
 
   if (documentUrl) {
     return (

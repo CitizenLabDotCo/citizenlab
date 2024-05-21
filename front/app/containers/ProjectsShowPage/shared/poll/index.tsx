@@ -60,7 +60,7 @@ const Poll = ({ projectId, phaseId }: Props) => {
   }
 
   const { enabled, disabled_reason } =
-    project.data.attributes.action_descriptor.taking_poll;
+    project.data.attributes.action_descriptors.taking_poll;
 
   const message = !enabled
     ? disabledMessages[disabled_reason] ?? messages.pollDisabledNotPossible

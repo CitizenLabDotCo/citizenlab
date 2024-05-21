@@ -25,7 +25,7 @@ const CommentingIdeaDisabled = ({ phaseId, idea }: Props) => {
   const {
     enabled: commentingEnabled,
     disabled_reason: commentingDisabledReason,
-  } = idea.data.attributes.action_descriptor.commenting_idea;
+  } = idea.data.attributes.action_descriptors.commenting_idea;
 
   const signUpIn = (flow: 'signin' | 'signup') => {
     if (!phaseId) return;

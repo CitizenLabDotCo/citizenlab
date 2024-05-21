@@ -99,7 +99,7 @@ export interface IIdeaData {
     created_at: string;
     updated_at: string;
     published_at: string;
-    action_descriptor: {
+    action_descriptors: {
       reacting_idea: ReactingIdeaActionDescriptor & {
         up: ActionDescriptorFutureEnabled<IdeaReactingDisabledReason>;
         down: ActionDescriptorFutureEnabled<IdeaReactingDisabledReason>;

@@ -64,7 +64,7 @@ const AssignMultipleVotesInput = ({
   const isPhoneOrSmaller = useBreakpoint('phone');
 
   // action descriptors
-  const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
+  const actionDescriptor = idea?.data.attributes.action_descriptors.voting;
   const votingDisabledReason = actionDescriptor?.disabled_reason;
 
   const onAdd = async (event) => {

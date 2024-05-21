@@ -58,7 +58,7 @@ const AddToBasketButton = ({
 
   const phaseId = phase.id;
 
-  const actionDescriptor = idea.data.attributes.action_descriptor.voting;
+  const actionDescriptor = idea.data.attributes.action_descriptors.voting;
   if (!actionDescriptor) return null;
 
   const isPermitted =

@@ -28,7 +28,7 @@ export const ideasData: IIdeaData[] = [
       proposed_budget: null,
       baskets_count: 0,
       votes_count: 0,
-      action_descriptor: {
+      action_descriptors: {
         reacting_idea: {
           enabled: true,
           disabled_reason: null,

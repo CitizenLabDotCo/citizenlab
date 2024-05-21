@@ -78,11 +78,11 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   };
 
   const { disabled_reason } =
-    project.data.attributes.action_descriptor.taking_survey;
+    project.data.attributes.action_descriptors.taking_survey;
 
   const handleTakeSurveyClick = () => {
     const { enabled, disabled_reason } =
-      project.data.attributes.action_descriptor.taking_survey;
+      project.data.attributes.action_descriptors.taking_survey;
 
     if (enabled) {
       scrollToElementWithId('project-survey');
@@ -115,7 +115,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
 
   const handleReviewDocumentClick = () => {
     const { enabled, disabled_reason } =
-      project.data.attributes.action_descriptor.annotating_document;
+      project.data.attributes.action_descriptors.annotating_document;
 
     if (enabled) {
       scrollToElementWithId('document-annotation');

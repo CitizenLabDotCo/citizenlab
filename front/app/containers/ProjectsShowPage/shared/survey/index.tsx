@@ -61,7 +61,7 @@ const Survey = ({
 }: Props) => {
   const { data: authUser } = useAuthUser();
   const { enabled, disabled_reason } =
-    project.attributes.action_descriptor.taking_survey;
+    project.attributes.action_descriptors.taking_survey;
   const email =
     !isNilOrError(authUser) && authUser.data.attributes.email
       ? authUser.data.attributes.email

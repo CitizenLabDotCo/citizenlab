@@ -595,7 +595,7 @@ resource 'Ideas' do
         expect(json_response.dig(:data, :attributes)).to include(
           slug: idea.slug,
           budget: idea.budget,
-          action_descriptor: {
+          action_descriptors: {
             commenting_idea: {
               enabled: true,
               disabled_reason: nil,

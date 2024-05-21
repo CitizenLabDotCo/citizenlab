@@ -78,10 +78,10 @@ export interface IProjectAttributes {
   publication_status: PublicationStatus;
   include_all_areas: boolean;
   folder_id?: string | null;
-  action_descriptor: {
+  action_descriptors: {
     posting_idea: ActionDescriptorFutureEnabled<PostingDisabledReason>;
     commenting_idea: ActionDescriptor<CommentingDisabledReason>;
-    // Same disabled reasons as commenting_idea at time of writing
+    // Same disabled reasons as commenting_idea at time of writing - TODO: JS change to just be an alias in the types?
     comment_reacting_idea: ActionDescriptor<CommentingDisabledReason>;
     reacting_idea: ActionDescriptor<ProjectReactingDisabledReason> & {
       up: ActionDescriptor<ProjectReactingDisabledReason>;

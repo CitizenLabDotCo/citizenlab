@@ -41,7 +41,7 @@ export function getProject(
       survey_service: surveyService,
       survey_embed_url: `mockProject${id}${surveyService}Url`,
       ordering: 0,
-      action_descriptor: {
+      action_descriptors: {
         posting_idea: {
           enabled: true,
           future_enabled: null, // string | null,

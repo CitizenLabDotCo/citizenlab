@@ -146,7 +146,7 @@ export const getIdeaPostingRules = ({
 
   if (project) {
     const { disabled_reason, future_enabled, enabled } =
-      project.attributes.action_descriptor.posting_idea;
+      project.attributes.action_descriptors.posting_idea;
 
     if (signedIn && canModerateProject(project.id, { data: authUser })) {
       return {

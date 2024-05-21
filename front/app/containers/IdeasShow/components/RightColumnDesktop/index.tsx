@@ -53,11 +53,11 @@ const RightColumnDesktop = ({
     phase && idea ? isIdeaInParticipationContext(idea, phase) : undefined;
 
   const commentingEnabled =
-    !!idea?.data.attributes.action_descriptor.commenting_idea.enabled;
+    !!idea?.data.attributes.action_descriptors.commenting_idea.enabled;
 
   // showReactionControl
   const reactingActionDescriptor =
-    idea.data.attributes.action_descriptor.reacting_idea;
+    idea.data.attributes.action_descriptors.reacting_idea;
   const reactingFutureEnabled = !!(
     reactingActionDescriptor.up.future_enabled ||
     reactingActionDescriptor.down.future_enabled

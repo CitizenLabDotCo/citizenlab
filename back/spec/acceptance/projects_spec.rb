@@ -154,7 +154,7 @@ resource 'Projects' do
         expect(json_response.dig(:data, :attributes)).to include(
           slug: @projects.first.slug,
           timeline_active: nil,
-          action_descriptor: {
+          action_descriptors: {
             posting_idea: { enabled: false, disabled_reason: 'project_inactive', future_enabled: nil },
             commenting_idea: { enabled: false, disabled_reason: 'project_inactive' },
             reacting_idea: {

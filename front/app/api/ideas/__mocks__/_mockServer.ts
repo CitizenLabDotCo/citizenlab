@@ -37,7 +37,7 @@ export const ideaData: IIdeaData[] = [
       proposed_budget: 45,
       baskets_count: 0,
       votes_count: 0,
-      action_descriptor: {
+      action_descriptors: {
         reacting_idea: {
           enabled: true,
           disabled_reason: null,
@@ -149,7 +149,7 @@ export const ideaData: IIdeaData[] = [
       proposed_budget: 45,
       votes_count: 0,
       baskets_count: 0,
-      action_descriptor: {
+      action_descriptors: {
         reacting_idea: {
           enabled: true,
           disabled_reason: null,
@@ -266,7 +266,7 @@ const votingIdea = {
       anonymous: false,
       author_hash: '5d78eb7936e_d99f2f3b7518aeddde3d45d78eb7936ed99f2f3b75',
       author_name: 'Citizenlab Hermansen',
-      action_descriptor: {
+      action_descriptors: {
         commenting_idea: {
           enabled: true,
           disabled_reason: null,

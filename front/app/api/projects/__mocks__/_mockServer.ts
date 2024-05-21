@@ -34,7 +34,7 @@ export const project1: IProjectData = {
       large:
         'https://demo.stg.citizenlab.co/uploads/c7e20cb9-f253-4c0c-aea1-e6e3c23c04c7/project/header_bg/be3f645b-3e1d-4afc-b91b-d68c4dc0100b/large_header_bg.jpeg',
     },
-    action_descriptor: {
+    action_descriptors: {
       posting_idea: {
         enabled: true,
         disabled_reason: null,
@@ -161,7 +161,7 @@ export const project2: IProjectData = {
     header_bg: {
       large: null,
     },
-    action_descriptor: {
+    action_descriptors: {
       posting_idea: {
         enabled: true,
         disabled_reason: null,
@@ -291,7 +291,7 @@ const votingProject: IProject = {
       header_bg: {
         large: null,
       },
-      action_descriptor: {
+      action_descriptors: {
         posting_idea: {
           enabled: false,
           disabled_reason: 'not_ideation',

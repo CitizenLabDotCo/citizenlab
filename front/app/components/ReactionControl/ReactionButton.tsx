@@ -387,14 +387,14 @@ const ReactionButton = ({
 
   if (!isNilOrError(idea) && !isNilOrError(project)) {
     const reactingDescriptor =
-      idea.data.attributes.action_descriptor.reacting_idea;
+      idea.data.attributes.action_descriptors.reacting_idea;
     const buttonReactionModeEnabled =
       reactingDescriptor[buttonReactionMode].enabled;
     const disabledReason =
-      idea.data.attributes.action_descriptor.reacting_idea[buttonReactionMode]
+      idea.data.attributes.action_descriptors.reacting_idea[buttonReactionMode]
         .disabled_reason;
     const futureEnabled =
-      idea.data.attributes.action_descriptor.reacting_idea[buttonReactionMode]
+      idea.data.attributes.action_descriptors.reacting_idea[buttonReactionMode]
         .future_enabled;
     const cancellingEnabled = reactingDescriptor.cancelling_enabled;
     const notYetReacted = userReactionMode !== buttonReactionMode;

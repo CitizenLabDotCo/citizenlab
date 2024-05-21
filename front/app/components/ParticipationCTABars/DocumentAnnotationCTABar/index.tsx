@@ -27,7 +27,7 @@ const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const { pathname } = useLocation();
   const { enabled, disabled_reason } =
-    project.attributes.action_descriptor.annotating_document;
+    project.attributes.action_descriptors.annotating_document;
   const showSignIn = enabled || isFixableByAuthentication(disabled_reason);
 
   useEffect(() => {

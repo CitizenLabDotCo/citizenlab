@@ -26,7 +26,7 @@ export const reportsData: Report[] = [
       name: 'Report 1',
       created_at: '2020-10-20T09:00:00.000Z',
       updated_at: '2020-10-20T09:00:00.000Z',
-      action_descriptor: {
+      action_descriptors: {
         editing_report: {
           enabled: true,
           disabled_reason: null,
@@ -56,7 +56,7 @@ export const reportsData: Report[] = [
       name: 'Report 1',
       created_at: '2020-10-20T09:00:00.000Z',
       updated_at: '2020-10-20T09:00:00.000Z',
-      action_descriptor: {
+      action_descriptors: {
         editing_report: {
           enabled: true,
           disabled_reason: null,
