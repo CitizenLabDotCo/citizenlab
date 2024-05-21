@@ -8,7 +8,7 @@ import {
   media,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { VotingContext } from 'api/baskets_ideas/useVoting';
@@ -68,6 +68,10 @@ const IdeasShowPage = () => {
     idea?.data.relationships.project.data.id
   );
   const { data: phases } = usePhases(project?.data.id);
+
+  const [searchParams] = useSearchParams();
+  const phase_context = searchParams.get('phase_context');
+  console.log({ phase_context });
 
   if (!project) return null;
 

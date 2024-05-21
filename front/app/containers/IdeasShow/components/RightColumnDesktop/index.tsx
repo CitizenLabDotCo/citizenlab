@@ -21,6 +21,7 @@ import { rightColumnWidthDesktop } from '../../styleConstants';
 import GoToCommentsButton from '../Buttons/GoToCommentsButton';
 import IdeaSharingButton from '../Buttons/IdeaSharingButton';
 import SharingButtonComponent from '../Buttons/SharingButtonComponent';
+import IdeaNavigationButtons from '../IdeaNavigationButtons';
 import MetaInformation from '../MetaInformation';
 
 interface Props {
@@ -123,6 +124,7 @@ const RightColumnDesktop = ({
             />
           </Box>
         )}
+        <IdeaNavigationButtons />
         <Box mb="16px">
           <IdeaSharingButton
             ideaId={ideaId}

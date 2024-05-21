@@ -26,6 +26,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
 
 import Container from './components/Container';
+import IdeaNavigationButtons from './components/IdeaNavigationButtons';
 import IdeaTitle from './components/IdeaTitle';
 import MetaInformation from './components/MetaInformation';
 import ProposedBudget from './components/ProposedBudget';
@@ -117,6 +118,11 @@ export const IdeasShow = ({
                   </Badge>
                 </Box>
               </Tippy>
+            </Box>
+          )}
+          {compact && (
+            <Box mb="8px">
+              <IdeaNavigationButtons />
             </Box>
           )}
           <IdeaTitle
