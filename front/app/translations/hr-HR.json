@@ -474,6 +474,7 @@
   "app.components.StatusModule.modifyYourSubmission": "Izmijenite svoju {submissionTerm}",
   "app.components.StatusModule.submittedUntil3": "Vaš glas može biti poslan do",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Odabrani {numberOfSelectedTopics, plural, =0 {nula oznaka} one {jedna oznaka} other {# oznaka}}. {selectedTopicNames}",
+  "app.components.UI.MoreActionsMenu.moreOptions": "Više mogućnosti",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Prikaži više radnji",
   "app.components.UI.NewLabel.newBadge": "NOVI",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "Nisu pronađene odgovarajuće faze za ovaj projekt",
