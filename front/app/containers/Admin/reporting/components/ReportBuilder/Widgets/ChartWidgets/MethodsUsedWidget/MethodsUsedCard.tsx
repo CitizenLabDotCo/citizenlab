@@ -9,6 +9,8 @@ import Statistic from 'components/admin/Graphs/Statistic';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
+import MissingData from '../../_shared/MissingData';
+
 import messages from './messages';
 import { Props } from './typings';
 
@@ -42,12 +44,16 @@ const MethodsUsedCard = ({
 }: Props) => {
   const { formatMessage } = useIntl();
 
-  const { data } = useMethodsUsed({
+  const { data, error } = useMethodsUsed({
     start_at: startAt,
     end_at: endAt,
     compare_start_at: compareStartAt,
     compare_end_at: compareEndAt,
   });
+
+  if (error) {
+    return <MissingData />;
+  }
 
   const comparedCounts = data?.data.attributes.count_per_method_compared_period;
 

@@ -24,14 +24,12 @@ module ReportBuilder
 
       json_response
     end
-  end
 
-  private
-
-  def get_methods_used_in_overlapping_phases(start_date, end_date)
-    Phase
-      .where.not('end_at <= ? OR start_at >= ?', start_date, end_date)
-      .group(:participation_method)
-      .count
+    def get_methods_used_in_overlapping_phases(start_date, end_date)
+      Phase
+        .where.not('end_at <= ? OR start_at >= ?', start_date, end_date)
+        .group(:participation_method)
+        .count
+    end
   end
 end
