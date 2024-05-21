@@ -474,6 +474,7 @@
   "app.components.StatusModule.modifyYourSubmission": "Modifiez votre {submissionTerm}",
   "app.components.StatusModule.submittedUntil3": "Vous pouvez voter jusqu'au",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Sélectionné {numberOfSelectedTopics, plural, =0 {zéro sujet} one {un sujet} other {# topics}}. {selectedTopicNames}> <notr",
+  "app.components.UI.MoreActionsMenu.moreOptions": "Plus d’options",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Afficher plus d'actions",
   "app.components.UI.NewLabel.newBadge": "NOUVEAU",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "Aucune phase compatible n'a été trouvée pour ce projet",
