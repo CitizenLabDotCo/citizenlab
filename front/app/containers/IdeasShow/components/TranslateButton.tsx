@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { SupportedLocale } from 'typings';
+
 import { IIdea } from 'api/ideas/types';
 
 import useLocale from 'hooks/useLocale';
@@ -8,10 +10,9 @@ import Outlet from 'components/Outlet';
 
 import { trackEventByName } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
+import { getLanguage } from 'utils/i18n';
 
 import tracks from '../tracks';
-import { getLanguage } from 'utils/i18n';
-import { SupportedLocale } from 'typings';
 
 interface Props {
   idea: IIdea;

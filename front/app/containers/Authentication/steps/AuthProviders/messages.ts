@@ -9,14 +9,6 @@ export default defineMessages({
     id: 'app.components.AuthProviders.logInWithEmail',
     defaultMessage: 'Log in with Email',
   },
-  signUpWithPhoneOrEmail: {
-    id: 'app.components.AuthProviders.signUpWithPhoneOrEmail',
-    defaultMessage: 'Sign up with Phone or Email',
-  },
-  logInWithPhoneOrEmail: {
-    id: 'app.components.AuthProviders.logInWithPhoneOrEmail',
-    defaultMessage: 'Log in with Phone or Email',
-  },
   continueWithGoogle: {
     id: 'app.components.AuthProviders.continueWithGoogle',
     defaultMessage: 'Continue with Google',

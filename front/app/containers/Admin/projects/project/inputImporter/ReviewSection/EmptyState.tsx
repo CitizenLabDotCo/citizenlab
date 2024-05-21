@@ -115,6 +115,7 @@ const EmptyState = () => {
         <Box display="flex" flexDirection="row">
           <Box mr="8px">
             <Button
+              bgColor={colors.primary}
               onClick={handleDownloadPDF}
               width="auto"
               icon="download"

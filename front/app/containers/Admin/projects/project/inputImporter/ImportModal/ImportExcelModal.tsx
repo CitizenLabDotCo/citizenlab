@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { Box, Button, Text, Title } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  colors,
+  Text,
+  Title,
+} from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
@@ -131,6 +137,7 @@ const ImportExcelModal = ({ open, onClose, onImport }: Props) => {
 
             <Box w="100%" display="flex" mt="32px">
               <Button
+                bgColor={colors.primary}
                 width="auto"
                 type="submit"
                 processing={isLoading}

@@ -1,16 +1,16 @@
 import React from 'react';
 
 import Card from '../../_shared/Card';
-import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
+import TimeSeriesWidgetSettings from '../_shared/TimeSeriesWidgetSettings';
 import messages from '../messages';
-import { ChartWidgetProps } from '../typings';
+import { TimeSeriesWidgetProps } from '../typings';
 
 import VisitorsCard from './VisitorsCard';
 
-const VisitorsWidget = ({ title, ...props }: ChartWidgetProps) => {
+const VisitorsWidget = ({ title, ...props }: TimeSeriesWidgetProps) => {
   return (
     <Card title={title} pagebreak>
-      <VisitorsCard {...props} resolution="month" />
+      <VisitorsCard {...props} />
     </Card>
   );
 };
@@ -21,9 +21,10 @@ VisitorsWidget.craft = {
     projectId: undefined,
     startAt: undefined,
     endAt: undefined,
+    resolution: undefined,
   },
   related: {
-    settings: ChartWidgetSettings,
+    settings: TimeSeriesWidgetSettings,
   },
 };
 

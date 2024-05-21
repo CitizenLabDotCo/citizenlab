@@ -264,7 +264,7 @@ class XlsxService
   def user_custom_field_columns(record_to_user)
     # options keys are only unique in the scope of their field, namespacing to avoid collisions
     options = CustomFieldOption.all.index_by { |option| namespace(option.custom_field_id, option.key) }
-    user_custom_fields = CustomField.with_resource_type('User').order(:ordering)
+    user_custom_fields = CustomField.registration.order(:ordering)
 
     fields_to_columns = map_user_custom_fields_to_columns(user_custom_fields)
 
@@ -272,6 +272,12 @@ class XlsxService
       column_name = fields_to_columns[field.id]
       { header: column_name, f: value_getter_for_user_custom_field_columns(field, record_to_user, options) }
     end
+  end
+
+  def format_author_name(input)
+    return input.author_name unless input.anonymous?
+
+    I18n.t 'xlsx_export.anonymous'
   end
 
   private
@@ -333,12 +339,6 @@ class XlsxService
 
   def namespace(field_id, option_key)
     "#{field_id}/#{option_key}"
-  end
-
-  def format_author_name(input)
-    return input.author_name unless input.anonymous?
-
-    I18n.t 'xlsx_export.anonymous'
   end
 
   # Remove any suffixes added for duplicate column names
