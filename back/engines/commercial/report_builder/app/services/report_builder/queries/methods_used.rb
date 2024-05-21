@@ -1,14 +1,37 @@
 module ReportBuilder
   class Queries::MethodsUsed < ReportBuilder::Queries::Base
-    def run_query(start_at: nil, end_at: nil, **_other_props)
-      filter_start_date, filter_end_date = TimeBoundariesParser.new(start_at, end_at).parse
+    def run_query(
+      start_at: nil,
+      end_at: nil,
+      compare_start_at: nil,
+      compare_end_at: nil,
+      **_other_props
+    )
+      start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
 
-      count_per_method = Phase
-        .where.not('end_at <= ? OR start_at >= ?', filter_start_date, filter_end_date)
-        .group(:participation_method)
-        .count
+      json_response = {
+        count_per_method: get_methods_used_in_overlapping_phases(
+          start_date,
+          end_date
+        )
+      }
 
-      { count_per_method: count_per_method }
+      if compare_start_at.present? && compare_end_at.present?
+        json_response[:count_per_method_compared_period] = get_methods_used_in_overlapping_phases(
+          compare_start_at, compare_end_at
+        )
+      end
+
+      json_response
     end
+  end
+
+  private
+
+  def get_methods_used_in_overlapping_phases(start_date, end_date)
+    Phase
+      .where.not('end_at <= ? OR start_at >= ?', start_date, end_date)
+      .group(:participation_method)
+      .count
   end
 end

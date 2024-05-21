@@ -158,7 +158,7 @@ interface RegistrationsParams {
   props: RegistrationsProps;
 }
 
-export interface MethodsUsedProps {
+export interface MethodsUsedProps extends CompareProps {
   start_at?: string | null | undefined;
   end_at?: string | null;
 }

@@ -34,9 +34,20 @@ const LABELS: Record<ParticipationMethod, MessageDescriptor> = {
   document_annotation: messages.document_annotation,
 };
 
-const MethodsUsedCard = ({ startAt, endAt }: Props) => {
+const MethodsUsedCard = ({
+  startAt,
+  endAt,
+  compareStartAt,
+  compareEndAt,
+}: Props) => {
   const { formatMessage } = useIntl();
-  const { data } = useMethodsUsed({ start_at: startAt, end_at: endAt });
+
+  const { data } = useMethodsUsed({
+    start_at: startAt,
+    end_at: endAt,
+    compare_start_at: compareStartAt,
+    compare_end_at: compareEndAt,
+  });
 
   return (
     <Box>

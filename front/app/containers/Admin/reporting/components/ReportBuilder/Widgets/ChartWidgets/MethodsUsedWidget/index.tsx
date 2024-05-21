@@ -19,6 +19,8 @@ MethodsUsedWidget.craft = {
   props: {
     startAt: undefined,
     endAt: undefined,
+    compareStartAt: undefined,
+    compareEndAt: undefined,
   },
   related: {
     settings: ChartWidgetSettings,
