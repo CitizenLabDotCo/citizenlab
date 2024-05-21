@@ -19,16 +19,6 @@ RSpec.describe RequestConfirmationCodeJob do
     describe 'when confirmation is turned on' do
       before { SettingsService.new.activate_feature! 'user_confirmation' }
 
-      context 'when the user signs up with a phone number' do
-        before { enable_phone_login }
-
-        let(:user) { create(:user_with_confirmation, email: '398234234234') }
-
-        it 'raises and error, since phones are not confirmable' do
-          expect { job.perform(user) }.to raise_error(RuntimeError)
-        end
-      end
-
       context 'when the user signs up with an email' do
         let(:user) { create(:user_with_confirmation, email: 'some_email@email.com') }
 

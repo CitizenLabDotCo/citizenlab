@@ -30,7 +30,8 @@ resource 'Projects' do
 
       parameter :areas, 'Filter by areas (AND)', required: false
       parameter :publication_statuses, 'Return only projects with the specified publication statuses (i.e. given an array of publication statuses); returns all projects by default', required: false
-      parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
+      parameter :filter_can_moderate, 'Filter out the projects the current_user is not allowed to moderate. False by default', required: false
+      parameter :filter_user_is_moderator_of, 'Filter out the projects the given user is moderator of (user id)', required: false
       parameter :filter_ids, 'Filter out only projects with the given list of IDs', required: false
       parameter :folder, 'Filter by folder (project folder id)', required: false
 
@@ -119,6 +120,20 @@ resource 'Projects' do
         do_request filter_can_moderate: true, publication_statuses: ['published']
         assert_status 200
         expect(json_response[:data].size).to eq 4
+      end
+
+      example 'List projects a specific user can moderate', document: false do
+        moderator = create(
+          :user,
+          roles: [
+            { type: 'project_moderator', project_id: @projects[0].id },
+            { type: 'project_moderator', project_id: @projects[1].id }
+          ]
+        )
+
+        do_request filter_user_is_moderator_of: moderator.id
+        assert_status 200
+        expect(json_response[:data].pluck(:id)).to match_array [@projects[0].id, @projects[1].id]
       end
     end
 
@@ -449,7 +464,7 @@ resource 'Projects' do
     get 'web_api/v1/projects/:id/as_xlsx' do
       let(:project) { create(:project) }
       let(:project_form) { create(:custom_form, :with_default_fields, participation_context: project) }
-      let!(:extra_idea_field) { create(:custom_field_extra_custom_form, resource: project_form) }
+      let!(:extra_idea_field) { create(:custom_field, resource: project_form) }
       let(:ideation_phase) do
         create(
           :phase,

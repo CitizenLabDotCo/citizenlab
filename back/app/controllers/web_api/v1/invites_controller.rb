@@ -176,19 +176,6 @@ class WebApi::V1::InvitesController < ApplicationController
 
   private
 
-  def create_params
-    params.require(:invite).permit(
-      :email,
-      :first_name,
-      :last_name,
-      :avatar,
-      :locale,
-      :invite_text,
-      roles: %i[type project_id],
-      group_ids: []
-    )
-  end
-
   def accept_params
     params.require(:invite).permit(
       :email,
