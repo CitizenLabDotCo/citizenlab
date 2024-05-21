@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import { ParticipationMethod } from 'api/phases/types';
+
 import Statistic from 'components/admin/Graphs/Statistic';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
@@ -9,23 +11,25 @@ import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { Props } from './typings';
 
-const PARTICIPATION_METHODS = [
+const PARTICIPATION_METHODS: ParticipationMethod[] = [
   'information',
   'ideation',
-  'survey',
+  'native_survey',
   'voting',
   'volunteering',
+  'poll',
+  'survey',
   'document_annotation',
-] as const;
-
-type ParticipationMethod = (typeof PARTICIPATION_METHODS)[number];
+];
 
 const LABELS: Record<ParticipationMethod, MessageDescriptor> = {
   information: messages.information,
   ideation: messages.ideation,
-  survey: messages.survey,
+  native_survey: messages.nativeSurvey,
   voting: messages.voting,
   volunteering: messages.volunteering,
+  poll: messages.poll,
+  survey: messages.survey,
   document_annotation: messages.document_annotation,
 };
 

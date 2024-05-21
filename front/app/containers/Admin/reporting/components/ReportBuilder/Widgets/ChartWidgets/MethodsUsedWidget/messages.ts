@@ -13,8 +13,8 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.widgets.MethodsUsed.ideation',
     defaultMessage: 'Ideation',
   },
-  survey: {
-    id: 'app.containers.Admin.reporting.widgets.MethodsUsed.survey',
+  nativeSurvey: {
+    id: 'app.containers.Admin.reporting.widgets.MethodsUsed.nativeSurvey',
     defaultMessage: 'Survey',
   },
   voting: {
@@ -28,5 +28,13 @@ export default defineMessages({
   document_annotation: {
     id: 'app.containers.Admin.reporting.widgets.MethodsUsed.document_annotation',
     defaultMessage: 'Document Annotation',
+  },
+  poll: {
+    id: 'app.containers.Admin.reporting.widgets.MethodsUsed.poll',
+    defaultMessage: 'Poll',
+  },
+  survey: {
+    id: 'app.containers.Admin.reporting.widgets.MethodsUsed.survey',
+    defaultMessage: 'External survey',
   },
 });
