@@ -1,12 +1,9 @@
 import React, { ReactNode } from 'react';
 
-import {
-  Box,
-  Text,
-  colors,
-  stylingConsts,
-} from '@citizenlab/cl2-component-library';
+import { Box, Text, stylingConsts } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
+import { transparentize } from 'polished';
+import { useTheme } from 'styled-components';
 
 interface Props {
   votesPercentage: number;
@@ -15,6 +12,8 @@ interface Props {
 }
 
 const ProgressBarWrapper = ({ children, votesPercentage, tooltip }: Props) => {
+  const theme = useTheme();
+
   return (
     <Tippy
       disabled={false}
@@ -26,13 +25,13 @@ const ProgressBarWrapper = ({ children, votesPercentage, tooltip }: Props) => {
         w="100%"
         h="28px"
         borderRadius={stylingConsts.borderRadius}
-        bgColor={colors.coolGrey600}
+        bgColor={transparentize(0.9, theme.colors.tenantPrimary)}
         position="relative"
       >
         <Box
           w={`${votesPercentage}%`}
           h="100%"
-          bgColor={colors.success}
+          bgColor={transparentize(0.75, theme.colors.primary)}
           borderRadius={stylingConsts.borderRadius}
         />
         <Box
@@ -43,7 +42,13 @@ const ProgressBarWrapper = ({ children, votesPercentage, tooltip }: Props) => {
           display="flex"
           alignItems="center"
         >
-          <Text m="0" color="white" ml="12px" fontSize="s" fontWeight="bold">
+          <Text
+            m="0"
+            color="tenantPrimary"
+            ml="12px"
+            fontSize="s"
+            fontWeight="bold"
+          >
             {children}
           </Text>
         </Box>
