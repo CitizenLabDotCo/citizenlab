@@ -95,11 +95,12 @@ const ReportTitle = ({ reportId }) => {
   };
 
   const handleOnBlur = async () => {
-    try {
-      if (!updateTitleOnBlurRef.current) return;
-      newTitle ? await updateTitle() : resetTitle();
-    } catch {
-      // Do nothing
+    if (updateTitleOnBlurRef.current) {
+      try {
+        newTitle ? await updateTitle() : resetTitle();
+      } catch {
+        // Do nothing
+      }
     }
 
     // Reset the cursor position to the beginning of the input in order to show the
