@@ -474,6 +474,7 @@
   "app.components.StatusModule.modifyYourSubmission": "{submissionTerm}adresinizi değiştirin",
   "app.components.StatusModule.submittedUntil3": "Oyunuzu şu tarihe kadar verebilirsiniz",
   "app.components.TopicsPicker.numberOfSelectedTopics": "{numberOfSelectedTopics, plural, =0 {Sıfır etiket} one {bir etiket} other {# etiket}} seçildi. {selectedTopicNames}",
+  "app.components.UI.MoreActionsMenu.moreOptions": "Daha fazla seçenek",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Daha fazla eylem göster",
   "app.components.UI.NewLabel.newBadge": "YENİ",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "Bu proje için uygun bir aşama bulunamamıştır",
