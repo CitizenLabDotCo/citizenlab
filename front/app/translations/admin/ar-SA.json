@@ -1,6 +1,5 @@
 {
   "UI.FormComponents.required": "مطلوب",
-  "app.Admin.Moderation.feed": "يٌطعم",
   "app.components.Admin.Campaigns.campaignDeletionConfirmation": "هل أنت متأكد؟",
   "app.components.Admin.Campaigns.clicked": "تم النقر عليه",
   "app.components.Admin.Campaigns.deleteCampaignButton": "حذف الحملة",
