@@ -35,13 +35,14 @@ const CheckboxControl = ({
 
   return (
     <>
-      <Box display="flex">
+      <Box display="flex" alignItems="flex-start">
         <Checkbox
           id={sanitizeForClassname(id)}
           checked={Boolean(data)}
           onChange={() => handleChange(path, !data)}
           label={schema.description || null}
           disabled={uischema?.options?.readonly}
+          mr="4px"
         />
         <FormLabel
           htmlFor={sanitizeForClassname(id)}
