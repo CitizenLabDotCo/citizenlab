@@ -474,6 +474,7 @@
   "app.components.StatusModule.modifyYourSubmission": "Ændre din {submissionTerm}",
   "app.components.StatusModule.submittedUntil3": "Din stemme kan afgives indtil",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Valgt {numberOfSelectedTopics, plural, =0 {zero topics} et {zero topics} andet {# topics}}.{selectedTopicNames}",
+  "app.components.UI.MoreActionsMenu.moreOptions": "Flere valgmuligheder",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Vis flere handlinger",
   "app.components.UI.NewLabel.newBadge": "NY",
   "app.components.UI.PhaseFilter.noAppropriatePhases": "Ingen passende faser fundet til dette projekt",
