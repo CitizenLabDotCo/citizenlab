@@ -31,7 +31,8 @@ module MultiTenancy
               maximum_admins_number: 2,
               maximum_moderators_number: 2,
               additional_admins_number: 1,
-              additional_moderators_number: 1
+              additional_moderators_number: 1,
+              population: 27_500
             },
             password_login: {
               allowed: true,
