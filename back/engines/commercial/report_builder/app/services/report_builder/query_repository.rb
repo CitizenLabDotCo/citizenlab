@@ -16,7 +16,8 @@ module ReportBuilder
       'SingleIdeaWidget' => Queries::SingleIdea,
       'DemographicsWidget' => Queries::Demographics,
       'RegistrationsWidget' => Queries::Analytics::Registrations,
-      'MethodsUsedWidget' => Queries::MethodsUsed
+      'MethodsUsedWidget' => Queries::MethodsUsed,
+      'ParticipationWidget' => Queries::Participation
     }.freeze
 
     def initialize(current_user)
