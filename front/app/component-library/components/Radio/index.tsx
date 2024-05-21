@@ -30,7 +30,7 @@ const CustomRadio = styled.div`
   position: relative;
   background: #fff;
   border-radius: 50%;
-  border: solid 1px ${(props) => props.color};
+  border: solid 1px ${colors.grey500};
   transition: all 120ms ease-out;
 
   ${isRtl`
@@ -112,7 +112,6 @@ export type Props = {
   name: string | undefined;
   disabled?: boolean;
   buttonColor?: string | undefined;
-  borderColor?: string | undefined;
   className?: string;
   isRequired?: boolean;
 } & BoxPaddingProps &
@@ -127,7 +126,6 @@ const Radio = ({
   name,
   currentValue,
   buttonColor,
-  borderColor = colors.grey500,
   label,
   className,
   isRequired,
@@ -185,7 +183,6 @@ const Radio = ({
             ${checked ? 'checked' : ''}
             ${disabled ? 'disabled' : 'enabled'}
             circle`}
-        color={borderColor}
       >
         {checked && (
           <Checked aria-hidden color={buttonColor || colors.success} />
