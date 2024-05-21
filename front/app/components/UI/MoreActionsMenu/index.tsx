@@ -210,6 +210,7 @@ const MoreActionsMenu = (props: Props) => {
             name="dots-horizontal"
             color={color}
             ariaHidden={!showLabel}
+            aria-labelledby={labelAndTitle}
           />
           {showLabel && <MoreOptionsLabel>{labelAndTitle}</MoreOptionsLabel>}
         </MoreOptionsButton>
