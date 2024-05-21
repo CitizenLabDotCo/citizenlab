@@ -135,8 +135,7 @@ class WebApi::V1::UsersController < ApplicationController
     remove_image_if_requested!(@user, update_params, :avatar)
     authorize(@user)
 
-    save_params = update_params.key?(:custom_field_values) ? { context: :form_submission } : {}
-    if @user.save(**save_params)
+    if @user.save(context: :form_submission)
       SideFxUserService.new.after_update(@user, current_user)
       render json: WebApi::V1::UserSerializer.new(
         @user,
@@ -295,7 +294,7 @@ class WebApi::V1::UsersController < ApplicationController
   def update_params
     @update_params ||= permitted_attributes(@user).tap do |attrs|
       attrs[:onboarding] = @user.onboarding.merge(attrs[:onboarding].to_h)
-      attrs[:custom_field_values] = @user.custom_field_values.merge(attrs[:custom_field_values].to_h)
+      attrs[:custom_field_values] = params_service.updated_custom_field_values(@user.custom_field_values, attrs[:custom_field_values].to_h)
       CustomFieldService.new.compact_custom_field_values!(attrs[:custom_field_values])
 
       # Even if the feature is not activated, we still want to allow the user to remove
@@ -308,5 +307,9 @@ class WebApi::V1::UsersController < ApplicationController
 
   def app_configuration
     @app_configuration ||= AppConfiguration.instance
+  end
+
+  def params_service
+    @params_service ||= CustomFieldParamsService.new
   end
 end

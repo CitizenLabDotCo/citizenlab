@@ -47,7 +47,7 @@ import {
   contentFadeInEasing,
 } from './styleConstants';
 
-const Container = styled.main`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
 
@@ -138,7 +138,6 @@ const StyledOfficialFeedback = styled(OfficialFeedback)`
 
 interface Props {
   initiativeId: string;
-  className?: string;
   translateButtonClicked: boolean;
   onScrollToOfficialFeedback: () => void;
   onTranslateInitiative: () => void;
@@ -146,7 +145,6 @@ interface Props {
 }
 
 const LargerThanPhone = ({
-  className,
   initiativeId,
   translateButtonClicked,
   onScrollToOfficialFeedback,
@@ -195,7 +193,7 @@ const LargerThanPhone = ({
   const initiativeUrl = location.href;
 
   return (
-    <Container className={className}>
+    <Container>
       {initiativeHeaderImageLarge && (
         <InitiativeBanner
           initiativeHeaderImageLarge={initiativeHeaderImageLarge}

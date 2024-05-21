@@ -6,6 +6,7 @@ import {
   useBreakpoint,
   media,
   colors,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import JSConfetti from 'js-confetti';
 import { isError } from 'lodash-es';
@@ -34,24 +35,24 @@ import { useIntl } from 'utils/cl-intl';
 import Navigate from 'utils/cl-router/Navigate';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
-import { anyIsUndefined, isNilOrError } from 'utils/helperUtils';
+import { anyIsUndefined } from 'utils/helperUtils';
 import messages from 'utils/messages';
 import { scrollToElement } from 'utils/scroll';
 
 import { isValidPhase } from './phaseParam';
 import ProjectCTABar from './ProjectCTABar';
 import ProjectHeader from './shared/header/ProjectHeader';
-import ProjectHelmet from './shared/header/ProjectHelmet';
+import ProjectShowPageMeta from './shared/header/ProjectShowPageMeta';
 import SuccessModal from './SucessModal';
 import TimelineContainer from './timeline';
 
 const confetti = new JSConfetti();
 
-const Container = styled.main<{ background: string }>`
+const Container = styled.div<{ background: string }>`
   flex: 1 0 auto;
   height: 100%;
   min-height: calc(
-    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+    100vh - ${stylingConsts.menuHeight + stylingConsts.footerHeight}px
   );
   display: flex;
   flex-direction: column;
@@ -59,16 +60,7 @@ const Container = styled.main<{ background: string }>`
   background: ${(props) => props.background};
 
   ${media.tablet`
-    min-height: calc(100vh - ${({ theme: { mobileMenuHeight } }) =>
-      mobileMenuHeight}px - ${({ theme: { mobileTopBarHeight } }) =>
-    mobileTopBarHeight}px);
-  `}
-
-  ${media.phone`
-    min-height: calc(100vh - ${({ theme: { mobileMenuHeight } }) =>
-      mobileMenuHeight}px - ${({ theme: { mobileTopBarHeight } }) =>
-    mobileTopBarHeight}px);
-  `}
+    min-height: calc(100vh - ${stylingConsts.mobileMenuHeight}px - ${stylingConsts.mobileTopBarHeight}px);`}
 `;
 
 const ContentWrapper = styled.div`
@@ -139,53 +131,52 @@ const ProjectsShowPage = ({ project }: Props) => {
         <ProjectHeader projectId={projectId} />
         <ProjectCTABar projectId={projectId} />
 
-        <div id="participation-detail">
-          <TimelineContainer projectId={projectId} />
-        </div>
-        {!!events?.data.length && (
-          <Box
-            id="e2e-events-section-project-page"
-            display="flex"
-            flexDirection="column"
-            gap="48px"
-            mx="auto"
-            my="48px"
-            maxWidth="1166px"
-            padding={isSmallerThanTablet ? '20px' : '0px'}
-          >
-            <EventsViewer
-              showProjectFilter={false}
-              projectId={projectId}
-              eventsTime="currentAndFuture"
-              title={formatMessage(messages.upcomingAndOngoingEvents)}
-              fallbackMessage={messages.noUpcomingOrOngoingEvents}
-              projectPublicationStatuses={['published', 'draft', 'archived']}
-            />
-            <EventsViewer
-              showProjectFilter={false}
-              projectId={projectId}
-              eventsTime="past"
-              title={formatMessage(messages.pastEvents)}
-              fallbackMessage={messages.noPastEvents}
-              projectPublicationStatuses={['published', 'draft', 'archived']}
-              showDateFilter={false}
-            />
-          </Box>
-        )}
-
+        <main>
+          <div id="participation-detail">
+            <TimelineContainer projectId={projectId} />
+          </div>
+          {!!events?.data.length && (
+            <Box
+              id="e2e-events-section-project-page"
+              display="flex"
+              flexDirection="column"
+              gap="48px"
+              mx="auto"
+              my="48px"
+              maxWidth="1166px"
+              padding={isSmallerThanTablet ? '20px' : '0px'}
+            >
+              <EventsViewer
+                showProjectFilter={false}
+                projectId={projectId}
+                eventsTime="currentAndFuture"
+                title={formatMessage(messages.upcomingAndOngoingEvents)}
+                fallbackMessage={messages.noUpcomingOrOngoingEvents}
+                projectPublicationStatuses={['published', 'draft', 'archived']}
+              />
+              <EventsViewer
+                showProjectFilter={false}
+                projectId={projectId}
+                eventsTime="past"
+                title={formatMessage(messages.pastEvents)}
+                fallbackMessage={messages.noPastEvents}
+                projectPublicationStatuses={['published', 'draft', 'archived']}
+                showDateFilter={false}
+              />
+            </Box>
+          )}
+        </main>
         <SuccessModal projectId={projectId} />
       </ContentWrapper>
     );
   }
 
-  const bgColor =
-    !isNilOrError(events) && events.data.length > 0
-      ? '#fff'
-      : colors.background;
-
   return (
-    <Container background={bgColor}>
-      <ProjectHelmet project={project} />
+    <Container
+      background={
+        events && events?.data.length > 0 ? colors.white : colors.background
+      }
+    >
       {content}
     </Container>
   );
@@ -261,9 +252,12 @@ const ProjectsShowPageWrapper = () => {
   if (!project) return null;
 
   return (
-    <VotingContext projectId={project.data.id}>
-      <ProjectsShowPage project={project.data} />
-    </VotingContext>
+    <>
+      <ProjectShowPageMeta project={project.data} />
+      <VotingContext projectId={project.data.id}>
+        <ProjectsShowPage project={project.data} />
+      </VotingContext>
+    </>
   );
 };
 

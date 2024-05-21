@@ -71,13 +71,8 @@ module AdminApi
     end
 
     def allowed_custom_field_keys
-      enabled_fields = CustomField
-        .with_resource_type('User')
-        .enabled
-      simple_keys = enabled_fields.support_single_value.pluck(:key).map(&:to_sym)
-      array_keys = enabled_fields.support_multiple_values.pluck(:key).map(&:to_sym)
-
-      [*simple_keys, array_keys.index_with { |_k| [] }]
+      enabled_fields = CustomField.registration.enabled
+      CustomFieldParamsService.new.custom_field_values_params(enabled_fields)
     end
 
     def user_params

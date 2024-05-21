@@ -86,7 +86,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: true,
           allowed: true,
           enable_signup: true,
-          phone: false,
           minimum_length: 8
         },
         pages: {

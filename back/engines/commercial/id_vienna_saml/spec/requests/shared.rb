@@ -3,17 +3,6 @@
 require 'rails_helper'
 
 RSpec.shared_context 'with Vienna SAML authentication enabled' do |provider_name|
-  define_method :enable_vienna_login do
-    configuration = AppConfiguration.instance
-    settings = configuration.settings
-    settings["#{provider_name}_login"] = {
-      allowed: true,
-      enabled: true,
-      environment: 'test'
-    }
-    configuration.save!
-  end
-
   define_method :send_auth_request do
     @uid = "_#{SecureRandom.hex}" # uid is unique per request, not per user
     saml_auth_response.uid = @uid # make sure it's overwritten even if saml_auth_response is cached
@@ -22,7 +11,7 @@ RSpec.shared_context 'with Vienna SAML authentication enabled' do |provider_name
   end
 
   def set_raw_info_attribute(attribute_name, value)
-    saml_auth_response.extra.raw_info[attribute_name] = value
+    saml_auth_response.extra.raw_info[attribute_name] = Array.wrap(value)
   end
 
   def delete_raw_info_attribute(attribute_name)
@@ -31,7 +20,6 @@ RSpec.shared_context 'with Vienna SAML authentication enabled' do |provider_name
     saml_auth_response.extra.raw_info = new_raw_info
   end
 
-  let(:user) { create(:user) }
   let(:saml_auth_response) do
     OmniAuth::AuthHash.new(
       {
@@ -68,7 +56,15 @@ RSpec.shared_context 'with Vienna SAML authentication enabled' do |provider_name
   before do
     OmniAuth.config.test_mode = true
     OmniAuth.config.mock_auth[provider_name.to_sym] = saml_auth_response
-    enable_vienna_login
+
+    configuration = AppConfiguration.instance
+    settings = configuration.settings
+    settings["#{provider_name}_login"] = {
+      allowed: true,
+      enabled: true,
+      environment: 'test'
+    }
+    configuration.save!
   end
 end
 
@@ -105,13 +101,62 @@ RSpec.shared_examples 'authenticates when the user was already registered with V
 
     context 'when the user changed their email address' do
       before do
-        set_raw_info_attribute('urn:oid:0.9.2342.19200300.100.1.3', 'test@citizenlab.co')
+        set_raw_info_attribute('urn:oid:0.9.2342.19200300.100.1.3', 'test393@citizenlab.co')
       end
 
       it 'does not create another identity and user account' do
         expect do
           send_auth_request
         end.not_to change { [Identity.count, User.count] }
+        expect(User.count).to eq(1)
+      end
+
+      context 'when password login is disabled' do
+        before do
+          configuration = AppConfiguration.instance
+          configuration.settings['password_login'] = { allowed: true, enabled: false }
+          configuration.save!
+        end
+
+        it "updates user's email" do
+          expect do
+            send_auth_request
+          end.to(change { User.first.email }.from('philipp.test@extern.wien.gv.at').to('test393@citizenlab.co'))
+        end
+
+        context 'when email confirmation is enabled' do
+          before do
+            configuration = AppConfiguration.instance
+            configuration.settings['user_confirmation'] = { allowed: true, enabled: true }
+            configuration.save!
+          end
+
+          it "updates user's email" do
+            expect do
+              send_auth_request
+            end.to(change { User.first.email }.from('philipp.test@extern.wien.gv.at').to('test393@citizenlab.co'))
+          end
+        end
+      end
+
+      context 'when password login is enabled' do
+        before do
+          configuration = AppConfiguration.instance
+          configuration.settings['password_login'] = {
+            allowed: true,
+            enabled: true,
+            minimum_length: 8,
+            enable_signup: true
+          }
+          configuration.save!
+        end
+
+        it "doesn't update user's email" do
+          expect do
+            send_auth_request
+          end.not_to(change { User.first.email })
+          expect(User.first.email).to eq('philipp.test@extern.wien.gv.at')
+        end
       end
     end
   end

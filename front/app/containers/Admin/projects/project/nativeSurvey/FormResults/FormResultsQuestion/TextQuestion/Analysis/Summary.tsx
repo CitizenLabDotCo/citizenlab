@@ -35,7 +35,6 @@ const Summary = ({
 
   const largeSummariesEnabled = useFeatureFlag({
     name: 'large_summaries',
-    onlyCheckAllowed: true,
   });
 
   const { projectId, phaseId } = useParams() as {
@@ -62,7 +61,7 @@ const Summary = ({
 
   const refreshDisabled =
     missingInputsCount === 0 ||
-    (largeSummariesEnabled && filteredInputCount > 30);
+    (!largeSummariesEnabled && filteredInputCount > 30);
 
   return (
     <>
