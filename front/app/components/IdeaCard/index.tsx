@@ -9,6 +9,7 @@ import {
   media,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
+import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useIdeaImage from 'api/idea_images/useIdeaImage';
@@ -128,7 +129,11 @@ const IdeaCard = ({
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     updateSearchParams({ scroll_to_card: idea.data.id });
-    clHistory.push(`/ideas/${slug}?go_back=true&phase_context=${phaseId}`, {
+    let ideaUrl = `/ideas/${slug}?go_back=true`;
+    if (phaseId) {
+      ideaUrl += `&phase_context=${phaseId}`;
+    }
+    clHistory.push(ideaUrl as RouteType, {
       scrollToTop: true,
     });
   };
@@ -139,7 +144,11 @@ const IdeaCard = ({
     <Container
       className={`e2e-card e2e-idea-card ${className ?? ''}`.trim()}
       id={idea.data.id}
-      to={`/ideas/${slug}?go_back=true&phase_context=${phaseId}`}
+      to={
+        phaseId
+          ? `/ideas/${slug}?go_back=true&phase_context=${phaseId}`
+          : `/ideas/${slug}?go_back=true`
+      }
       onClick={handleClick}
     >
       <CardImage
