@@ -35,14 +35,7 @@ const CheckboxControl = ({
 
   return (
     <>
-      <FormLabel
-        htmlFor={sanitizeForClassname(id)}
-        labelValue={getLabel(uischema, schema, path)}
-        optional={!required}
-        subtextValue={getSubtextElement(uischema.options?.description)}
-        subtextSupportsHtml
-      />
-      <Box display="flex" flexDirection="row">
+      <Box display="flex">
         <Checkbox
           id={sanitizeForClassname(id)}
           checked={Boolean(data)}
@@ -50,6 +43,14 @@ const CheckboxControl = ({
           label={schema.description || null}
           disabled={uischema?.options?.readonly}
         />
+        <FormLabel
+          htmlFor={sanitizeForClassname(id)}
+          labelValue={getLabel(uischema, schema, path)}
+          optional={!required}
+          subtextValue={getSubtextElement(uischema.options?.description)}
+          subtextSupportsHtml
+        />
+        {/* TO DO: add to FormLabel? */}
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
       <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={false} />
