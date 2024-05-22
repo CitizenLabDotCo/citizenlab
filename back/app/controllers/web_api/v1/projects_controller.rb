@@ -40,7 +40,8 @@ class WebApi::V1::ProjectsController < ApplicationController
     instance_options = {
       user_followers: user_followers,
       timeline_active: TimelineService.new.timeline_active_on_collection(@projects.to_a),
-      visible_children_count_by_parent_id: {} # projects don't have children
+      visible_children_count_by_parent_id: {}, # projects don't have children
+      permission_service: Permissions::ProjectPermissionsService.new
     }
 
     render json: linked_json(
@@ -51,7 +52,6 @@ class WebApi::V1::ProjectsController < ApplicationController
     )
   end
 
-  # TODO: JS - preload phases & permissions here too?
   def show
     render json: WebApi::V1::ProjectSerializer.new(
       @project,

@@ -20,7 +20,7 @@ interface Props {
   project: IProjectData;
 }
 
-const ProjectHelmet = ({ project }: Props) => {
+const ProjectShowPageMeta = ({ project }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const tenantLocales = useAppConfigurationLocales();
@@ -28,7 +28,7 @@ const ProjectHelmet = ({ project }: Props) => {
 
   if (!tenantLocales) return null;
 
-  const metaTitle = formatMessage(messages.metaTitle, {
+  const metaTitle = formatMessage(messages.metaTitle1, {
     projectTitle: localize(project.attributes.title_multiloc, {
       maxChar: 50,
     }),
@@ -73,4 +73,4 @@ const ProjectHelmet = ({ project }: Props) => {
   );
 };
 
-export default ProjectHelmet;
+export default ProjectShowPageMeta;

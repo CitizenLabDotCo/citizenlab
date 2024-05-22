@@ -6,7 +6,7 @@ namespace :fix_existing_tenants do
     Rails.logger.info 'fix_existing_tenants:update_permissions started'
     Tenant.creation_finalized.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
-        PermissionsUpdateService.new.update_all_permissions
+        Permissions::PermissionsUpdateService.new.update_all_permissions
       end
     end
     Rails.logger.info 'fix_existing_tenants:update_permissions finished'

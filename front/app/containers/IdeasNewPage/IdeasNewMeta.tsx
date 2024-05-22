@@ -38,16 +38,15 @@ const IdeasNewMeta = ({ isSurvey }: Props) => {
     const inputTerm = getInputTerm(phases?.data);
     const ideasIndexTitle = formatMessage(
       isSurvey
-        ? messages.surveyNewMetaTitle
+        ? messages.surveyNewMetaTitle1
         : getInputTermMessage(inputTerm, {
-            idea: messages.ideaNewMetaTitle,
-            option: messages.optionMetaTitle,
-            project: messages.projectMetaTitle,
-            question: messages.questionMetaTitle,
-            issue: messages.issueMetaTitle,
-            contribution: messages.contributionMetaTitle,
-          }),
-      { projectName }
+            idea: messages.ideaNewMetaTitle1,
+            option: messages.optionMetaTitle1,
+            project: messages.projectMetaTitle1,
+            question: messages.questionMetaTitle1,
+            issue: messages.issueMetaTitle1,
+            contribution: messages.contributionMetaTitle1,
+          })
     );
     const ideasIndexDescription = formatMessage(
       messages.ideaNewMetaDescription,

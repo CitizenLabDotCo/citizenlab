@@ -38,7 +38,8 @@ const BillingInfo = ({ seatType }: SeatInfoProps) => {
   const { pathname } = useLocation();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
-  const adminsAndMangersLink: RouteType = '/admin/users/admins-managers';
+  const adminsAndMangersLink: RouteType =
+    '/admin/users/admins' || '/admin/users/moderators';
   const isOnAdminsAndManagersPage = pathname.includes(adminsAndMangersLink);
 
   const maximumSeatNumbers: SeatNumbersType = {

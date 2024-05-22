@@ -80,8 +80,7 @@ const UserHeader = ({ userSlug }: Props) => {
   });
 
   const isBlocked = user.data.attributes?.blocked;
-  const isCurrentUserAdmin =
-    !isNilOrError(authUser) && isAdmin({ data: authUser.data });
+  const isCurrentUserAdmin = isAdmin(authUser);
   const canBlock = isCurrentUserAdmin && user.data.id !== authUser?.data.id;
 
   const userBlockingRelatedActions: IAction[] = isUserBlockingEnabled

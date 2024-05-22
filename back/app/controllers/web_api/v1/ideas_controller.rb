@@ -13,7 +13,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def json_forms_schema
     input = Idea.find params[:id]
     enabled_fields = IdeaCustomFieldsService.new(input.custom_form).enabled_fields
-    json_attributes = JsonFormsService.new.input_ui_and_json_multiloc_schemas enabled_fields, current_user, input.input_term
+    json_attributes = JsonFormsService.new.input_ui_and_json_multiloc_schemas enabled_fields, current_user, input.participation_method_on_creation, input.input_term
     render json: raw_json(json_attributes)
   end
 
@@ -386,7 +386,11 @@ class WebApi::V1::IdeasController < ApplicationController
         end
       user_followers ||= {}
       {
-        params: jsonapi_serializer_params(vbii: reactions.index_by(&:reactable_id), user_followers: user_followers),
+        params: jsonapi_serializer_params(
+          vbii: reactions.index_by(&:reactable_id),
+          user_followers: user_followers,
+          permission_service: Permissions::IdeaPermissionsService.new
+        ),
         include: include
       }
     else

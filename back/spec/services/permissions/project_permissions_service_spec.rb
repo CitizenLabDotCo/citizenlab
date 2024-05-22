@@ -384,11 +384,23 @@ describe Permissions::ProjectPermissionsService do
       expect(service.denied_reason_for_action('taking_poll', nil, project)).to eq 'user_not_signed_in'
     end
 
-    it 'return `user_not_permitted` when taking the poll is not permitted' do
+    it 'returns `user_not_permitted` when taking the poll is not permitted' do
       project = create(:single_phase_poll_project, phase_attrs: { with_permissions: true })
       permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'taking_poll')
       permission.update!(permitted_by: 'admins_moderators')
       expect(service.denied_reason_for_action('taking_poll', create(:user), project)).to eq 'user_not_permitted'
+    end
+
+    it 'returns `missing_user_requirements` when the user has not completed all registration fields' do
+      project = create(:single_phase_poll_project, phase_attrs: { with_permissions: true })
+      permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'taking_poll')
+      permission.update!(permitted_by: 'users')
+      gender_field = create(:custom_field_gender, required: true) # Created a required field that has not been filled in
+      user = create(:user)
+      expect(service.denied_reason_for_action('taking_poll', user, project)).to eq 'missing_user_requirements'
+      gender_field.update!(required: false) # Removed the required field
+      service = described_class.new
+      expect(service.denied_reason_for_action('taking_poll', user, project)).to be_nil
     end
   end
 
@@ -583,7 +595,7 @@ describe Permissions::ProjectPermissionsService do
       end.not_to exceed_query_limit(5) # Down from an original 470
     end
 
-    it 'does not run more than 18 queries for 5 ideation projects with group based user permissions' do
+    it 'does not run more than 8 queries for 5 ideation projects with group based user permissions' do
       user = create(:user)
       group = create(:group)
       create(:membership, group: group, user: user)
