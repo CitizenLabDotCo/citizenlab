@@ -100,6 +100,7 @@ type Props = DefaultProps &
     name?: string;
     stopLabelPropagation?: boolean;
     checkedColor?: Color;
+    dataTestId?: string;
   };
 
 const Checkbox = ({
@@ -115,6 +116,7 @@ const Checkbox = ({
   onChange,
   name,
   checkedColor,
+  dataTestId,
   ...rest
 }: Props) => {
   const hasLabel = !!label;
@@ -144,7 +146,7 @@ const Checkbox = ({
       alignItems="center"
       style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
       onClick={handleLabelClick}
-      data-testid={testEnv('check-mark-label')}
+      data-testid={dataTestId || `${testEnv('check-mark-label')}`}
       {...rest}
     >
       <CheckboxContainer hasLabel={hasLabel}>

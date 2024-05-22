@@ -43,6 +43,7 @@ const PoliciesMarkup = () => {
       <Box id="e2e-terms-conditions-container">
         <Checkbox
           name="termsAndConditionsAccepted"
+          dataTestId="termsAndConditionsAccepted"
           label={
             <ConsentText>
               <FormattedMessage
@@ -64,6 +65,7 @@ const PoliciesMarkup = () => {
       <Box mt="8px" id="e2e-privacy-policy-container">
         <Checkbox
           name="privacyPolicyAccepted"
+          dataTestId="privacyPolicyAccepted"
           label={
             <ConsentText>
               <FormattedMessage

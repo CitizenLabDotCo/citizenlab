@@ -13,10 +13,11 @@ interface Props
     'checked' | 'onChange'
   > {
   name: string;
+  dataTestId?: string;
   handleSideEffects?: () => void;
 }
 
-const Checkbox = ({ name, handleSideEffects, ...rest }: Props) => {
+const Checkbox = ({ name, dataTestId, handleSideEffects, ...rest }: Props) => {
   const {
     formState: { errors: formContextErrors },
     control,
@@ -43,6 +44,7 @@ const Checkbox = ({ name, handleSideEffects, ...rest }: Props) => {
         render={({ field: { ref: _ref, value, ...field } }) => (
           <CheckboxComponent
             id={name}
+            dataTestId={dataTestId}
             {...field}
             {...rest}
             checked={value}
