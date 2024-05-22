@@ -21,7 +21,7 @@ import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { getFullName } from 'utils/textUtils';
 
-import ChangesTable from './ChangesTable';
+import ChangesTables from './ChangesTables';
 import messages from './messages';
 
 const ManagementFeedRow = ({ item }: { item: ManagementFeedData }) => {
@@ -124,7 +124,7 @@ const ManagementFeedRow = ({ item }: { item: ManagementFeedData }) => {
         close={() => setIsChangedModalOpened(false)}
         width="1000px"
       >
-        <ChangesTable changes={item.attributes.change} />
+        <ChangesTables changes={item.attributes.change} />
       </Modal>
     </>
   );

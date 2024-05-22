@@ -12,12 +12,14 @@ import {
   colors,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { isObject } from 'react-jsonschema-form/lib/utils';
 
-const ChangesTable = ({ changes }: { changes: Record<string, any> | null }) => {
-  if (!changes) {
-    return null;
-  }
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
+
+const ChangesTable = ({ changes }: { changes: Record<string, any> }) => {
+  const { formatMessage } = useIntl();
+
   const keys = Object.keys(changes);
 
   return (
@@ -31,14 +33,15 @@ const ChangesTable = ({ changes }: { changes: Record<string, any> | null }) => {
     >
       <Thead>
         <Tr>
-          <Th>Key</Th>
-          <Th>Value</Th>
+          <Th>{formatMessage(messages.key)}</Th>
+          <Th>{formatMessage(messages.value)}</Th>
         </Tr>
       </Thead>
       <Tbody>
         {keys.map((key, index) => {
           const value = changes[key];
-          if (isObject(value)) {
+          // When the value is multiloc, we display each language separately
+          if (typeof value === 'object') {
             const valueKeys = Object.keys(value);
 
             return (
@@ -50,6 +53,7 @@ const ChangesTable = ({ changes }: { changes: Record<string, any> | null }) => {
                       <Text fontWeight="bold" color="primary" fontSize="s">
                         {valueKey.toUpperCase()}:
                       </Text>
+                      {/* When the value might be a project / folder / idea description, we display it as HTML */}
                       <Box
                         maxWidth="280px"
                         overflowY="auto"
@@ -81,6 +85,7 @@ const ChangesTables = ({
 }: {
   changes: Record<string, any[]> | null;
 }) => {
+  const { formatMessage } = useIntl();
   if (!changes) {
     return null;
   }
@@ -105,13 +110,13 @@ const ChangesTables = ({
       <Box display="flex" gap="8px">
         <Box flex="1">
           <Title color="primary" variant="h2">
-            Before
+            {formatMessage(messages.before)}
           </Title>
           <ChangesTable changes={beforeChanges} />
         </Box>
         <Box flex="1">
           <Title color="primary" variant="h2">
-            After
+            {formatMessage(messages.after)}
           </Title>
           <ChangesTable changes={afterChanges} />
         </Box>

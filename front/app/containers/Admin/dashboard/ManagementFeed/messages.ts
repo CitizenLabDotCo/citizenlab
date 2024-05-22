@@ -57,4 +57,20 @@ export default defineMessages({
     id: 'app.Admin.ManagementFeed.viewDetails',
     defaultMessage: 'View details',
   },
+  key: {
+    id: 'app.Admin.ManagementFeed.key',
+    defaultMessage: 'Key',
+  },
+  value: {
+    id: 'app.Admin.ManagementFeed.value',
+    defaultMessage: 'Value',
+  },
+  before: {
+    id: 'app.Admin.ManagementFeed.before',
+    defaultMessage: 'Before',
+  },
+  after: {
+    id: 'app.Admin.ManagementFeed.after',
+    defaultMessage: 'After',
+  },
 });
