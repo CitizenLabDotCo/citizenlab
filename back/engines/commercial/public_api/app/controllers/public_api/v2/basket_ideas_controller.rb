@@ -5,7 +5,7 @@ module PublicApi
     include DeletedItemsAction
 
     def index
-      list_items BasketsIdea.where(query_filters).includes(basket: :phase), V2::BasketIdeaSerializer
+      list_items BasketsIdea.where(query_filters), V2::BasketIdeaSerializer, includes: [basket: :phase]
     end
 
     private
