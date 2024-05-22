@@ -26,6 +26,7 @@ const ChangesTable = ({ changes }: { changes: Record<string, any> | null }) => {
       innerBorders={{
         headerCells: true,
         bodyCells: true,
+        bodyRows: true,
       }}
     >
       <Thead>
