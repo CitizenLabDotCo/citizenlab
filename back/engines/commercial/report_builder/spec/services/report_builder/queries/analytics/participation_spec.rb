@@ -41,5 +41,36 @@ RSpec.describe ReportBuilder::Queries::Analytics::Participation do
         ]
       )
     end
+
+    it 'returns correct compared period' do
+      params = {
+        start_at: @date - 1.day,
+        end_at: @date + 1.day,
+        compare_start_at: @date - 1.day,
+        compare_end_at: @date + 1.day
+      }
+      expect(query.run_query(**params)).to eq(
+        [
+          [{
+            'count' => 1,
+            'dimension_date_created.month' => '2022-09',
+            'first_dimension_date_created_date' => @date
+          }],
+          [{
+            'count' => 1,
+            'dimension_date_created.month' => '2022-09',
+            'first_dimension_date_created_date' => @date
+          }],
+          [{
+            'count' => 1,
+            'dimension_date_created.month' => '2022-09',
+            'first_dimension_date_created_date' => @date
+          }],
+          [{ 'count' => 1 }],
+          [{ 'count' => 1 }],
+          [{ 'count' => 1 }]
+        ]
+      )
+    end
   end
 end
