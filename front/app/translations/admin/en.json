@@ -12,6 +12,8 @@
   "app.Admin.ManagementFeed.project": "Project",
   "app.Admin.ManagementFeed.title": "Management feed",
   "app.Admin.ManagementFeed.user": "User",
+  "app.Admin.ManagementFeed.userPlaceholder": "Select a user",
+  "app.Admin.ManagementFeed.viewDetails": "View details",
   "app.Admin.Moderation.managementFeed": "Management feed",
   "app.Admin.Moderation.participationFeed": "Participation feed",
   "app.components.Admin.Campaigns.campaignDeletionConfirmation": "Are you sure?",
