@@ -31,7 +31,6 @@ const ProfileVisiblity = ({ postAnonymously, onChange }: Props) => {
       background="white"
     >
       <FormLabel
-        htmlFor="e2e-post-anonymously-checkbox"
         labelValue={<>{formatMessage(messages.profileVisiblity)}</>}
         display="flex"
         alignItems="center"
