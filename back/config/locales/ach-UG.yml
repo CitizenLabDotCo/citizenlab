@@ -149,7 +149,7 @@ ach:
         title: crwdns2092002:0crwdne2092002:0
         description: crwdns2092004:0crwdne2092004:0
       other_text_field:
-        title: crwdns2136332:0crwdne2136332:0
+        title: crwdns2136332:0{other_option}crwdne2136332:0
   custom_forms:
     categories:
       main_content:
