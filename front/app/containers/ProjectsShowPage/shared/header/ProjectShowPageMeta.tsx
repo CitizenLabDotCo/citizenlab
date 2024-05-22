@@ -28,7 +28,7 @@ const ProjectShowPageMeta = ({ project }: Props) => {
 
   if (!tenantLocales) return null;
 
-  const metaTitle = formatMessage(messages.metaTitle, {
+  const metaTitle = formatMessage(messages.metaTitle1, {
     projectTitle: localize(project.attributes.title_multiloc, {
       maxChar: 50,
     }),
