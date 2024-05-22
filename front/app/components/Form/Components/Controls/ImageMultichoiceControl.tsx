@@ -132,7 +132,6 @@ const ImageMultichoiceControl = ({
                 <Box
                   as="label"
                   htmlFor={`${path}-checkbox-${index}`}
-                  flex="1"
                   style={{ cursor: 'pointer' }}
                 >
                   <Box
