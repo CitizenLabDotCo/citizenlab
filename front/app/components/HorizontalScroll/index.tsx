@@ -34,7 +34,10 @@ const StyledContainer = styled(Box)`
 interface Props {
   children: ReactNode;
   containerRole?: AriaRole; // If the scrollable container needs a specific role, pass it in
-  asList?: boolean; // If the scrollable container is a list, pass this in
+  // If the scrollable container is a list, pass this in. If we need to support
+  // other types of containers in future, we should consider using different components
+  // for each type to reduce complexity. For example HorizontalScrollList for lists
+  asList?: boolean;
 }
 
 /*
