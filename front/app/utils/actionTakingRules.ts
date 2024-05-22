@@ -40,14 +40,14 @@ export type ActionPermission<DisabledReasons> =
 /* ----------- Idea Posting ------------ */
 
 // When disabled, these are the reasons to explain to the user
-// TODO: JS - these types sound too similar to the ones in the backend. Maybe we can reuse them?
+// TODO: JS - these types sound too similar to the ones in the backend. Can we use the same ones?
+// TODO: JS - this entire file does things in a different way than is done elsewhere
 export type IIdeaPostingDisabledReason =
   | 'notPermitted'
   | 'postingDisabled'
   | 'postingLimitedMaxReached'
   | 'projectInactive'
   | 'notActivePhase'
-  | 'maybeNotPermitted'
   | 'futureEnabled'
   | 'notInGroup';
 
@@ -109,9 +109,9 @@ const ideaPostingDisabledReason = (
         disabledReason: 'postingLimitedMaxReached',
         authenticationRequirements: null,
       };
-    case 'user_not_permitted':
+    case 'user_not_permitted' || 'user_blocked':
       return {
-        disabledReason: signedIn ? 'notPermitted' : 'maybeNotPermitted',
+        disabledReason: 'notPermitted',
         authenticationRequirements: null,
       };
     case 'user_not_active':
