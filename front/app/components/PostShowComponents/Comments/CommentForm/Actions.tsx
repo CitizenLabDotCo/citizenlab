@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-  CheckboxWithLabel,
+  Checkbox,
   useBreakpoint,
   Text,
   IconTooltip,
