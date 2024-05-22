@@ -395,9 +395,12 @@ describe Permissions::ProjectPermissionsService do
       project = create(:single_phase_poll_project, phase_attrs: { with_permissions: true })
       permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'taking_poll')
       permission.update!(permitted_by: 'users')
-      create(:custom_field_gender, required: true) # Created a required field that has not been filled in
+      gender_field = create(:custom_field_gender, required: true) # Created a required field that has not been filled in
       user = create(:user)
       expect(service.denied_reason_for_action('taking_poll', user, project)).to eq 'missing_user_requirements'
+      gender_field.update!(required: false) # Removed the required field
+      service = Permissions::ProjectPermissionsService.new
+      expect(service.denied_reason_for_action('taking_poll', user, project)).to be_nil
     end
   end
 
@@ -592,7 +595,7 @@ describe Permissions::ProjectPermissionsService do
       end.not_to exceed_query_limit(5) # Down from an original 470
     end
 
-    it 'does not run more than 18 queries for 5 ideation projects with group based user permissions' do
+    it 'does not run more than 8 queries for 5 ideation projects with group based user permissions' do
       user = create(:user)
       group = create(:group)
       create(:membership, group: group, user: user)

@@ -386,7 +386,11 @@ class WebApi::V1::IdeasController < ApplicationController
         end
       user_followers ||= {}
       {
-        params: jsonapi_serializer_params(vbii: reactions.index_by(&:reactable_id), user_followers: user_followers),
+        params: jsonapi_serializer_params(
+          vbii: reactions.index_by(&:reactable_id),
+          user_followers: user_followers,
+          permission_service: Permissions::IdeaPermissionsService.new
+        ),
         include: include
       }
     else
