@@ -203,6 +203,7 @@ module MultiTenancy
 
         return {} if record_class.nil? && scope.size == 0 # rubocop:disable Style/ZeroLengthPredicate
 
+        Rails.logger.info "Serializing #{record_class.name}"
         serializer_class = MultiTenancy::Templates::Serializers.const_get(record_class.name)
         serializer = serializer_class.new(**@serialization_params)
         scope.to_h { |record| [record.id, serializer.serialize(record)] }
