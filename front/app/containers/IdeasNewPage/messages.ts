@@ -59,33 +59,33 @@ export default defineMessages({
     defaultMessage:
       'A file failed to upload. Please check the file size and format and try again.',
   },
-  surveyNewMetaTitle: {
-    id: 'app.containers.IdeasNewPage.surveyNewMetaTitle',
-    defaultMessage: 'Add survey response | {projectName}',
+  surveyNewMetaTitle1: {
+    id: 'app.containers.IdeasNewPage.surveyNewMetaTitle1',
+    defaultMessage: 'Add survey response to project | {orgName}',
   },
-  ideaNewMetaTitle: {
-    id: 'app.containers.IdeasNewPage.ideaNewMetaTitle',
-    defaultMessage: 'Add new idea | {projectName}',
+  ideaNewMetaTitle1: {
+    id: 'app.containers.IdeasNewPage.ideaNewMetaTitle1',
+    defaultMessage: 'Add new idea to project | {orgName}',
   },
-  optionMetaTitle: {
-    id: 'app.containers.IdeasNewPage.optionMetaTitle',
-    defaultMessage: 'Add new option | {projectName}',
+  optionMetaTitle1: {
+    id: 'app.containers.IdeasNewPage.optionMetaTitle1',
+    defaultMessage: 'Add new option to project | {orgName}',
   },
-  projectMetaTitle: {
-    id: 'app.containers.IdeasNewPage.projectMetaTitle',
-    defaultMessage: 'Add new project | {projectName}',
+  projectMetaTitle1: {
+    id: 'app.containers.IdeasNewPage.projectMetaTitle1',
+    defaultMessage: 'Add new project to project | {orgName}',
   },
-  questionMetaTitle: {
-    id: 'app.containers.IdeasNewPage.questionMetaTitle',
-    defaultMessage: 'Add new question | {projectName}',
+  questionMetaTitle1: {
+    id: 'app.containers.IdeasNewPage.questionMetaTitle1',
+    defaultMessage: 'Add new question to project | {orgName}',
   },
-  issueMetaTitle: {
-    id: 'app.containers.IdeasNewPage.issueMetaTitle',
-    defaultMessage: 'Add new issue | {projectName}',
+  issueMetaTitle1: {
+    id: 'app.containers.IdeasNewPage.issueMetaTitle1',
+    defaultMessage: 'Add new issue to project | {orgName}',
   },
-  contributionMetaTitle: {
-    id: 'app.containers.IdeasNewPage.contributionMetaTitle',
-    defaultMessage: 'Add new contribution | {projectName}',
+  contributionMetaTitle1: {
+    id: 'app.containers.IdeasNewPage.contributionMetaTitle1',
+    defaultMessage: 'Add new contribution to project | {orgName}',
   },
   ideaNewMetaDescription: {
     id: 'app.containers.IdeasNewPage.ideaNewMetaDescription',
