@@ -15,18 +15,14 @@ const StyledBox = styled(Box)`
   grid-auto-rows: 1fr;
 `;
 
-const AdminsAndModerators = () => (
+const Admins = () => (
   <>
-    <UsersHeader
-      title={messages.adminsAndManagers}
-      subtitle={messages.adminsAndManagersSubtitle}
-    />
-    <UserManager canModerate notCitizenlabMember includeInactive />
+    <UsersHeader title={messages.admins} />
+    <UserManager canAdmin notCitizenlabMember includeInactive />
     <StyledBox mt="20px">
       <SeatInfo seatType="admin" />
-      <SeatInfo seatType="moderator" />
     </StyledBox>
   </>
 );
 
-export default AdminsAndModerators;
+export default Admins;
