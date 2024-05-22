@@ -22,6 +22,7 @@ import Button, {
   ButtonStyles,
 } from './components/Button';
 import CardButton from './components/CardButton';
+import Checkbox from './components/Checkbox';
 import CheckboxWithLabel from './components/CheckboxWithLabel';
 import ColorPickerInput, {
   Props as ColorPickerInputProps,
@@ -177,6 +178,7 @@ export {
   Td,
   Th,
   Tfoot,
+  Checkbox,
   CheckboxWithLabel,
   Box,
   useWindowSize,

@@ -4,7 +4,7 @@ import {
   Thead,
   Tr,
   Th,
-  CheckboxWithLabel,
+  Checkbox,
   colors,
 } from '@citizenlab/cl2-component-library';
 
@@ -43,7 +43,7 @@ const InitiativesHeaderRow = ({
     <Thead>
       <Tr background={colors.grey50}>
         <Th width={getWidth(1)}>
-          <CheckboxWithLabel
+          <Checkbox
             checked={!!allSelected}
             onChange={toggleSelectAll}
             size="21px"

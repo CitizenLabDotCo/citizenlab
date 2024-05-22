@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, CheckboxWithLabel } from '@citizenlab/cl2-component-library';
+import { Box, Checkbox } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
   isBooleanControl,
@@ -36,7 +36,7 @@ const CheckboxControl = ({
   return (
     <>
       <Box display="flex" alignItems="flex-start">
-        <CheckboxWithLabel
+        <Checkbox
           id={sanitizeForClassname(id)}
           checked={Boolean(data)}
           onChange={() => handleChange(path, !data)}
