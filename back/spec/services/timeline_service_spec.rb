@@ -52,11 +52,13 @@ describe TimelineService do
       settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = 'Europe/Brussels'
       AppConfiguration.instance.update!(settings: settings)
+      service = described_class.new
       expect(service.current_phase(project, t)&.id).to be_nil
 
       settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = 'America/Santiago'
       AppConfiguration.instance.update!(settings: settings)
+      service = described_class.new
       expect(service.current_phase(project, t)&.id).to eq phase.id
     end
 
@@ -65,6 +67,27 @@ describe TimelineService do
       phase2 = create(:phase, project: project, start_at: Time.now.to_date - 1.day, end_at: nil)
       project.phases << [phase1, phase2]
       expect(service.current_phase(project)&.id).to eq(phase2.id)
+    end
+  end
+
+  describe 'current_phase_not_archived' do
+    it 'returns the active phase for a timeline project' do
+      random_title = SecureRandom.uuid
+      project = create(
+        :project_with_current_phase,
+        current_phase_attrs: { title_multiloc: { 'en' => random_title } }
+      )
+      expect(service.current_phase_not_archived(project).title_multiloc['en']).to eq random_title
+    end
+
+    it 'returns nil for a timeline project without an active phase' do
+      project = create(:project_with_past_phases)
+      expect(service.current_phase_not_archived(project)).to be_nil
+    end
+
+    it "returns nil for a timeline project that's archived" do
+      project = create(:project_with_current_phase, admin_publication_attributes: { publication_status: 'archived' })
+      expect(service.current_phase_not_archived(project)).to be_nil
     end
   end
 
@@ -164,11 +187,13 @@ describe TimelineService do
       settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = 'Europe/Brussels'
       AppConfiguration.instance.update!(settings: settings)
+      service = described_class.new
       expect(service.current_and_future_phases(project, t)).to eq []
 
       settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = 'America/Santiago'
       AppConfiguration.instance.update!(settings: settings)
+      service = described_class.new
       expect(service.current_and_future_phases(project, t)).to eq [phase]
     end
   end
@@ -235,11 +260,13 @@ describe TimelineService do
         settings = AppConfiguration.instance.settings
         settings['core']['timezone'] = 'Europe/Brussels'
         AppConfiguration.instance.update!(settings: settings)
+        service = described_class.new
         expect(service.timeline_active(project)).to eq :past
 
         settings = AppConfiguration.instance.settings
         settings['core']['timezone'] = 'America/Santiago'
         AppConfiguration.instance.update!(settings: settings)
+        service = described_class.new
         expect(service.timeline_active(project)).to eq :present
       end
     end

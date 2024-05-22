@@ -6,7 +6,6 @@ class WebApi::V1::GroupsProjectsController < ApplicationController
   def index
     @groups_projects = policy_scope(GroupsProject)
       .where(project_id: params[:project_id])
-      .includes(:group)
 
     @groups_projects = case params[:sort]
     when 'new'
@@ -20,6 +19,8 @@ class WebApi::V1::GroupsProjectsController < ApplicationController
     end
 
     @groups_projects = paginate @groups_projects
+    @groups_projects = @groups_projects.includes(:group)
+
     render json: linked_json(
       @groups_projects,
       WebApi::V1::GroupsProjectSerializer,
