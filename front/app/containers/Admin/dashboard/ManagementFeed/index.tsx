@@ -16,7 +16,9 @@ import {
 
 import useManagementFeed from 'api/management_feed/useManagementFeed';
 
+import ProjectSelector from 'components/admin/ProjectSelector';
 import Pagination from 'components/Pagination';
+import UserSelect from 'components/UI/UserSelect';
 
 import { useIntl } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
@@ -25,10 +27,14 @@ import ManagementFeedRow from './ManagementFeedRow';
 import messages from './messages';
 
 const ManagementFeed = () => {
+  const [selectedProjectIds, setSelectedProjects] = useState<string[]>([]);
+  const [selectedUserId, setSelectedUser] = useState<string | undefined>();
   const [pageNumber, setPageNumber] = useState(1);
   const { formatMessage } = useIntl();
   const { data: managementFeed } = useManagementFeed({
     pageNumber,
+    userIds: selectedUserId ? [selectedUserId] : undefined,
+    projectIds: selectedProjectIds.length ? selectedProjectIds : undefined,
   });
 
   if (!managementFeed) {
@@ -40,6 +46,20 @@ const ManagementFeed = () => {
   return (
     <>
       <Title color="primary">{formatMessage(messages.title)}</Title>
+      <Box display="flex" alignItems="center" my="20px" w="50%">
+        <ProjectSelector
+          title={formatMessage(messages.project)}
+          selectedProjectIds={selectedProjectIds}
+          onChange={(projectIds) => setSelectedProjects(projectIds)}
+        />
+        <Box flex="1">
+          <UserSelect
+            placeholder={formatMessage(messages.userPlaceholder)}
+            selectedUserId={selectedUserId || null}
+            onChange={(user) => setSelectedUser(user?.id)}
+          />
+        </Box>
+      </Box>
       <Table
         bgColor={colors.white}
         innerBorders={{

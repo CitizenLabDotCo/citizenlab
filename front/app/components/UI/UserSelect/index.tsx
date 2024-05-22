@@ -11,9 +11,9 @@ import { optionIsUser } from './utils';
 
 interface Props {
   selectedUserId: string | null;
-  placeholder: string;
-  id: string;
-  inputId: string;
+  placeholder?: string;
+  id?: string;
+  inputId?: string;
   // Exclude users that can moderate the project from selectable users.
   // We pass the projectId here.
   isNotProjectModeratorOfProjectId?: string;
@@ -66,7 +66,7 @@ const UserSelect = ({
       // We check if selectedUserId is present because setting it to null won't trigger a refetch so will have old data.
       // I'm preferring this over refetching on clear because it's faster and avoids a fetch that we technically don't need.
       value={(selectedUserId && selectedUser?.data) || null}
-      placeholder={placeholder}
+      placeholder={placeholder || ''}
       options={hasNextPage ? [...usersList, { value: 'loadMore' }] : usersList}
       getOptionLabel={(option) => (
         <OptionLabel

@@ -10,8 +10,8 @@ export type ManagementFeedKeys = Keys<typeof managementFeedKeys>;
 export type IQueryParameters = {
   pageNumber?: number;
   pageSize?: number;
-  projects?: string[];
-  users?: string[];
+  projectIds?: string[];
+  userIds?: string[];
 };
 
 export interface ManagementFeedData {

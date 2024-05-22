@@ -20,6 +20,8 @@ const fetchManagementFeed = ({
       sort: '-acted_at',
       'page[number]': pageNumber || 1,
       'page[size]': pageSize || defaultPageSize,
+      user_ids: queryParams.userIds,
+      project_ids: queryParams.projectIds,
       ...queryParams,
     },
   });

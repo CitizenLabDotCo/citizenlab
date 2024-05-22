@@ -49,4 +49,8 @@ export default defineMessages({
     id: 'app.Admin.ManagementFeed.idea',
     defaultMessage: 'Idea',
   },
+  userPlaceholder: {
+    id: 'app.Admin.ManagementFeed.userPlaceholder',
+    defaultMessage: 'Select a user',
+  },
 });
