@@ -200,8 +200,8 @@ de:
       subject: '%{organizationName}: Ihr Passwort zurücksetzen'
       title_reset_your_password: 'Wählen Sie ein neues Passwort'
   xlsx_export:
+    anonymous: 'Anonym'
     column_headers:
-      anonymous: 'Anonym'
       assignee_fullname: 'Zugewiesen an'
       assignee_email: 'E-Mail-Adresse des Empfängers / der Empfängerin'
       attachments: 'Anhänge'
