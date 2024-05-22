@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 import { Color, defaultOutline } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
+import Box, { BoxMarginProps, BoxPaddingProps } from '../Box';
 import Icon from '../Icon';
 
 import { getColor } from './utils';
@@ -79,7 +80,7 @@ const StyledCheckbox = styled.div<{
   }
 `;
 
-interface Props {
+type Props = {
   id: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   checked: boolean;
@@ -89,7 +90,8 @@ interface Props {
   indeterminate?: boolean;
   size: string;
   name?: string;
-}
+} & BoxPaddingProps &
+  BoxMarginProps;
 
 const Checkbox = ({
   id,
@@ -101,6 +103,7 @@ const Checkbox = ({
   indeterminate,
   size,
   name,
+  ...boxProps
 }: Props) => {
   const handleOnCheckboxClick = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -112,7 +115,7 @@ const Checkbox = ({
   };
 
   return (
-    <>
+    <Box {...boxProps}>
       <HiddenCheckbox
         id={id}
         onChange={onChange}
@@ -144,7 +147,7 @@ const Checkbox = ({
           <IndeterminateIcon ariaHidden name="minus" size={size} />
         )}
       </StyledCheckbox>
-    </>
+    </Box>
   );
 };
 

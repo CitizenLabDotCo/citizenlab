@@ -45,7 +45,7 @@ const CheckboxWithLabel = ({
   name,
   checkedColor,
   dataTestId,
-  ...rest
+  ...boxProps
 }: Props) => {
   const hasLabel = !!label;
 
@@ -64,7 +64,7 @@ const CheckboxWithLabel = ({
       alignItems="center"
       onClick={handleLabelClick}
       data-testid={dataTestId || `${testEnv('check-mark-label')}`}
-      {...rest}
+      {...boxProps}
     >
       <CheckboxContainer hasLabel={hasLabel}>
         <Checkbox
@@ -85,19 +85,18 @@ const CheckboxWithLabel = ({
       {labelTooltipText && <IconTooltip content={labelTooltipText} />}
     </Box>
   ) : (
-    <Box data-testid={testEnv('check-mark-label')} {...rest}>
-      <Checkbox
-        id={id || ''}
-        onChange={onChange}
-        checked={checked}
-        disabled={disabled}
-        checkedColor={checkedColor}
-        checkedOrIndeterminate={checkedOrIndeterminate}
-        indeterminate={indeterminate}
-        size={size}
-        name={name}
-      />
-    </Box>
+    <Checkbox
+      id={id || ''}
+      onChange={onChange}
+      checked={checked}
+      disabled={disabled}
+      checkedColor={checkedColor}
+      checkedOrIndeterminate={checkedOrIndeterminate}
+      indeterminate={indeterminate}
+      size={size}
+      name={name}
+      {...boxProps}
+    />
   );
 };
 
