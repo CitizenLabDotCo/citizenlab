@@ -97,7 +97,7 @@ const MultiSelectCheckboxControl = ({
             <FormattedMessage {...messages.notPublic} />
           </Text>
         )}
-        {options?.map((option, index: number) => (
+        {options?.map((option) => (
           <StyledBox
             style={{ cursor: 'pointer' }}
             mb="12px"
@@ -113,7 +113,6 @@ const MultiSelectCheckboxControl = ({
               size="20px"
               padding="18px 20px 18px 20px"
               checkedColor={'tenantSecondary'}
-              id={`${path}-checkbox-${index}`}
               label={option.label}
               checked={dataArray.includes(option.value)}
               onChange={() => {
