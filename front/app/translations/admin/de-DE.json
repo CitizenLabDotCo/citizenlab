@@ -582,7 +582,7 @@
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "Einladung ausstehend",
   "app.containers.Admin.Users.admin": "Admin",
   "app.containers.Admin.Users.assign": "Zuordnen",
-  "app.containers.Admin.Users.assignedItems": "Zugewiesene Elemente für {name}",
+  "app.containers.Admin.Users.assignedItems": "Zugewiesene Elemente an {name}",
   "app.containers.Admin.Users.buyOneAditionalSeat": "Einen zusätzlichen Zugang kaufen",
   "app.containers.Admin.Users.changeUserRights": "Nutzungsrechte ändern",
   "app.containers.Admin.Users.confirm": "Bestätigen",
