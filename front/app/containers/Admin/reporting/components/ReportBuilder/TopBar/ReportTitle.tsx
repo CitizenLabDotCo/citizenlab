@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-
-import styled from 'styled-components';
+import React, { useState, useRef } from 'react';
 
 import {
   Box,
@@ -9,16 +7,18 @@ import {
   Input,
   Title,
 } from '@citizenlab/cl2-component-library';
-
-import Error from 'components/UI/Error';
+import styled from 'styled-components';
 
 import useReport from 'api/reports/useReport';
 import useUpdateReport from 'api/reports/useUpdateReport';
 
+import Error from 'components/UI/Error';
+
 import { useIntl } from 'utils/cl-intl';
 
-import messages from './messages';
 import reportTitleIsTaken from '../../../utils/reportTitleIsTaken';
+
+import messages from './messages';
 
 const StyledInput = styled(Input)<{ errorBorder?: boolean }>`
   width: 500px;
@@ -63,6 +63,8 @@ const ReportTitle = ({ reportId }) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [inputRef, setInputRef] = useState<HTMLInputElement | null>(null);
 
+  const updateTitleOnBlurRef = useRef(true);
+
   const updateTitle = async () => {
     clearError();
     if (!newTitle || newTitle.trim() === reportTitle?.trim()) return;
@@ -73,23 +75,33 @@ const ReportTitle = ({ reportId }) => {
       if (reportTitleIsTaken(error)) {
         showError(formatMessage(messages.titleTaken));
       }
+
+      throw error;
     }
   };
 
-  const handleOnKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      // To save the new title, we just remove focus from the input. The onBlur event
-      // will handle the rest. However, if the title is empty, enter does nothing.
-      //
-      // TODO: Ideally, we should find a way to keep the focus in the input if there is an error.
-      // However, I could not find a elegant way to do it that does not send multiple
-      // patch requests (one on enter, one on blur).
-      if (newTitle) inputRef?.blur();
+  const handleOnKeyDown = async (e) => {
+    if (e.key === 'Enter' && newTitle) {
+      try {
+        await updateTitle();
+
+        updateTitleOnBlurRef.current = false;
+        inputRef?.blur();
+        updateTitleOnBlurRef.current = true;
+      } catch {
+        // Do nothing
+      }
     }
   };
 
   const handleOnBlur = async () => {
-    newTitle ? await updateTitle() : resetTitle();
+    if (updateTitleOnBlurRef.current) {
+      try {
+        newTitle ? await updateTitle() : resetTitle();
+      } catch {
+        // Do nothing
+      }
+    }
 
     // Reset the cursor position to the beginning of the input in order to show the
     // beginning of the title in case it's too long to fit in the input.
