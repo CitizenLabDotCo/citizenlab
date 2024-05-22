@@ -399,7 +399,7 @@ describe Permissions::ProjectPermissionsService do
       user = create(:user)
       expect(service.denied_reason_for_action('taking_poll', user, project)).to eq 'missing_user_requirements'
       gender_field.update!(required: false) # Removed the required field
-      service = Permissions::ProjectPermissionsService.new
+      service = described_class.new
       expect(service.denied_reason_for_action('taking_poll', user, project)).to be_nil
     end
   end
