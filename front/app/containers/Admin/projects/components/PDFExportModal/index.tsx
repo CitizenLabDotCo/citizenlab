@@ -7,7 +7,7 @@ import { object, boolean } from 'yup';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import Checkbox from 'components/HookForm/Checkbox';
+import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import Feedback from 'components/HookForm/Feedback';
 import Modal from 'components/UI/Modal';
 
@@ -116,7 +116,7 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
                     <FormattedMessage {...messages.personalDataExplanation} />
                   </Text>
                   <Box mb="24px" ml="-20px">
-                    <Checkbox
+                    <CheckboxWithLabel
                       name="personal_data"
                       label={
                         <Text m="0">

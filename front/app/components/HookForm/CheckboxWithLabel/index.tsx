@@ -17,7 +17,12 @@ interface Props
   handleSideEffects?: () => void;
 }
 
-const Checkbox = ({ name, dataTestId, handleSideEffects, ...rest }: Props) => {
+const CheckboxWithLabel = ({
+  name,
+  dataTestId,
+  handleSideEffects,
+  ...rest
+}: Props) => {
   const {
     formState: { errors: formContextErrors },
     control,
@@ -77,4 +82,4 @@ const Checkbox = ({ name, dataTestId, handleSideEffects, ...rest }: Props) => {
   );
 };
 
-export default Checkbox;
+export default CheckboxWithLabel;
