@@ -200,8 +200,8 @@ ach:
       subject: 'crwdns2277334:0%{organizationName}crwdne2277334:0'
       title_reset_your_password: 'crwdns2277336:0crwdne2277336:0'
   xlsx_export:
+    anonymous: 'crwdns2289892:0crwdne2289892:0'
     column_headers:
-      anonymous: 'crwdns2277338:0crwdne2277338:0'
       assignee_fullname: 'crwdns2277340:0crwdne2277340:0'
       assignee_email: 'crwdns2277342:0crwdne2277342:0'
       attachments: 'crwdns2277344:0crwdne2277344:0'
