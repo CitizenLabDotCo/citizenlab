@@ -200,8 +200,8 @@
       subject: '%{organizationName}: tilbakestill passordet ditt'
       title_reset_your_password: 'Velg et nytt passord'
   xlsx_export:
+    anonymous: 'Anonym'
     column_headers:
-      anonymous: 'Anonym'
       assignee_fullname: 'Anvist til'
       assignee_email: 'Oppdragstakerens e-postadresse'
       attachments: 'Vedlegg'
