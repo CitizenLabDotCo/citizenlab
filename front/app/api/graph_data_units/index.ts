@@ -11,6 +11,7 @@ import {
   DemographicsProps,
   RegistrationsProps,
   MethodsUsedProps,
+  ParticipationProps,
 } from './requestTypes';
 // Response types
 import {
@@ -274,6 +275,13 @@ export const useRegistrationsLive = (
 export const useMethodsUsed = (props: MethodsUsedProps = {}) => {
   return useGraphDataUnits<MethodsUsedResponse>({
     resolved_name: 'MethodsUsedWidget',
+    props,
+  });
+};
+
+export const useParticipation = (props: ParticipationProps = {}) => {
+  return useGraphDataUnits({
+    resolved_name: 'ParticipationWidget',
     props,
   });
 };

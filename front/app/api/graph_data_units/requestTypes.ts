@@ -15,7 +15,8 @@ export type ResolvedName =
   | 'CommentsByTimeWidget'
   | 'ReactionsByTimeWidget'
   | 'RegistrationsWidget'
-  | 'MethodsUsedWidget';
+  | 'MethodsUsedWidget'
+  | 'ParticipationWidget';
 
 export interface BaseParams {
   resolved_name: ResolvedName;
@@ -36,7 +37,8 @@ export type ParametersLive =
   | CommentsByTimeParams
   | ReactionsByTimeParams
   | RegistrationsParams
-  | MethodsUsedParams;
+  | MethodsUsedParams
+  | ParticipationParams;
 
 export type GroupMode = 'user_field' | 'survey_question';
 
@@ -166,6 +168,13 @@ export interface MethodsUsedProps extends CompareProps {
 interface MethodsUsedParams extends BaseParams {
   resolved_name: 'MethodsUsedWidget';
   props: MethodsUsedProps;
+}
+
+export interface ParticipationProps extends AnalyticsProps, CompareProps {}
+
+interface ParticipationParams extends BaseParams {
+  resolved_name: 'ParticipationWidget';
+  props: ParticipationProps;
 }
 
 // published
