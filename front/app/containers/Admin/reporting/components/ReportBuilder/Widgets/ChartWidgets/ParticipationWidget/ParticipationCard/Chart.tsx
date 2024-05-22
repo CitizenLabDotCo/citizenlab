@@ -25,7 +25,7 @@ type Props = Dates &
 
 const emptyLineConfig = { strokeWidths: [0] };
 const lineConfig = {
-  strokes: [colors.categorical01],
+  strokes: [colors.categorical01, colors.categorical02, colors.categorical03],
   activeDot: { r: 4 },
 };
 

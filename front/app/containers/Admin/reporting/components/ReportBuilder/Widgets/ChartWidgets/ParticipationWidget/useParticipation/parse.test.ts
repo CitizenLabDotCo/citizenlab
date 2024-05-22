@@ -76,7 +76,7 @@ describe('parseCombinedTimeSeries', () => {
     ]);
   });
 
-  it('works with provided start/end at', () => {
+  it('works with provided start at', () => {
     const combinedTimeSeries = parseCombinedTimeSeries(
       responseAttributes,
       moment('2024-03-05'),
