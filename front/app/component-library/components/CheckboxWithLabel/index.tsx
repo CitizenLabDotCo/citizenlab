@@ -8,14 +8,13 @@ import IconTooltip from '../IconTooltip';
 type Props = {
   label: string | JSX.Element | null;
   labelTooltipText?: string | JSX.Element | null;
-  id?: string;
+  // This should be used for testing. Only add id prop if there's no other option
   dataTestId?: string;
 } & CheckboxProps &
   BoxPaddingProps &
   BoxMarginProps;
 
 const CheckboxWithLabel = ({
-  id,
   size,
   disabled,
   indeterminate,
@@ -45,7 +44,6 @@ const CheckboxWithLabel = ({
       {...boxProps}
     >
       <Checkbox
-        id={id || ''}
         onChange={onChange}
         checked={checked}
         disabled={disabled}
