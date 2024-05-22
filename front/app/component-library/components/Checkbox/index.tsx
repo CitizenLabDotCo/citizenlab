@@ -25,7 +25,10 @@ const StyledCheckbox = styled.div<{
   checkedOrIndeterminate: boolean;
   checkedColor?: Color;
   size: string;
+  disabled: boolean;
 }>`
+  cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
+
   ${(props) => `
     background: ${getColor({
       checkedColor: props.checkedColor
@@ -80,7 +83,7 @@ interface Props {
   id: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   checked: boolean;
-  disabled?: boolean;
+  disabled: boolean;
   checkedColor?: Color;
   checkedOrIndeterminate: boolean;
   indeterminate?: boolean;
@@ -127,6 +130,7 @@ const Checkbox = ({
           disabled ? 'disabled' : 'enabled'
         } e2e-checkbox`}
         onClick={handleOnCheckboxClick}
+        disabled={disabled}
       >
         {checked && (
           <CheckMarkIcon

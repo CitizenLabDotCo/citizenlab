@@ -65,7 +65,6 @@ const CheckboxWithLabel = ({
       display="flex"
       flex="1"
       alignItems="center"
-      style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
       onClick={handleLabelClick}
       data-testid={dataTestId || `${testEnv('check-mark-label')}`}
       {...rest}
@@ -91,7 +90,6 @@ const CheckboxWithLabel = ({
   ) : (
     <Box
       className={className || ''}
-      style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
       data-testid={testEnv('check-mark-label')}
       {...rest}
     >
