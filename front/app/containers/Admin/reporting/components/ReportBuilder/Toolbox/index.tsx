@@ -37,12 +37,9 @@ import { isModerator } from 'utils/permissions/roles';
 import Analysis from '../Analysis';
 import { WIDGET_TITLES } from '../Widgets';
 import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
-import CommentsByTimeWidget from '../Widgets/ChartWidgets/CommentsByTimeWidget';
 import DemographicsWidget from '../Widgets/ChartWidgets/DemographicsWidget';
 import MethodsUsedWidget from '../Widgets/ChartWidgets/MethodsUsedWidget';
 import ParticipationWidget from '../Widgets/ChartWidgets/ParticipationWidget';
-import PostsByTimeWidget from '../Widgets/ChartWidgets/PostsByTimeWidget';
-import ReactionsByTimeWidget from '../Widgets/ChartWidgets/ReactionsByTimeWidget';
 import RegistrationsWidget from '../Widgets/ChartWidgets/RegistrationsWidget';
 import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
 import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
@@ -313,7 +310,7 @@ const ReportBuilderToolbox = ({
               label={formatMessage(WIDGET_TITLES.DemographicsWidget)}
             />
             <DraggableElement
-              id="e2e-draggable-participation"
+              id="e2e-draggable-participation-widget"
               component={
                 <ParticipationWidget
                   title={toMultiloc(WIDGET_TITLES.ParticipationWidget)}
@@ -325,45 +322,6 @@ const ReportBuilderToolbox = ({
               }
               icon="chart-bar"
               label={formatMessage(WIDGET_TITLES.ParticipationWidget)}
-            />
-            <DraggableElement
-              id="e2e-draggable-posts-by-time-widget"
-              component={
-                <PostsByTimeWidget
-                  title={toMultiloc(WIDGET_TITLES.PostsByTimeWidget)}
-                  projectId={selectedProjectId}
-                  startAt={undefined}
-                  endAt={chartEndDate}
-                />
-              }
-              icon="chart-bar"
-              label={formatMessage(WIDGET_TITLES.PostsByTimeWidget)}
-            />
-            <DraggableElement
-              id="e2e-draggable-comments-by-time-widget"
-              component={
-                <CommentsByTimeWidget
-                  title={toMultiloc(WIDGET_TITLES.CommentsByTimeWidget)}
-                  projectId={selectedProjectId}
-                  startAt={undefined}
-                  endAt={chartEndDate}
-                />
-              }
-              icon="chart-bar"
-              label={formatMessage(WIDGET_TITLES.CommentsByTimeWidget)}
-            />
-            <DraggableElement
-              id="e2e-draggable-reactions-by-time-widget"
-              component={
-                <ReactionsByTimeWidget
-                  title={toMultiloc(WIDGET_TITLES.ReactionsByTimeWidget)}
-                  projectId={selectedProjectId}
-                  startAt={undefined}
-                  endAt={chartEndDate}
-                />
-              }
-              icon="chart-bar"
-              label={formatMessage(WIDGET_TITLES.ReactionsByTimeWidget)}
             />
             <DraggableElement
               id="e2e-draggable-methods-used-widget"

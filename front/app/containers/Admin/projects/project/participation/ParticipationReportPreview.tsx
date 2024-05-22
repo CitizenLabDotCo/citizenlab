@@ -9,12 +9,12 @@ import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 import useLocale from 'hooks/useLocale';
 
 import Editor from 'containers/Admin/reporting/components/ReportBuilder/Editor';
+import CommentsByTimeWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/_deprecated/CommentsByTimeWidget';
+import PostsByTimeWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/_deprecated/PostsByTimeWidget';
+import ReactionsByTimeWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/_deprecated/ReactionsByTimeWidget';
 import ActiveUsersWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/ActiveUsersWidget';
-import CommentsByTimeWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/CommentsByTimeWidget';
 import DemographicsWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/DemographicsWidget';
 import { INPUT_TYPES } from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/DemographicsWidget/Settings';
-import PostsByTimeWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/PostsByTimeWidget';
-import ReactionsByTimeWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/ReactionsByTimeWidget';
 import TwoColumn from 'containers/Admin/reporting/components/ReportBuilder/Widgets/TwoColumn';
 import { MAX_REPORT_WIDTH } from 'containers/Admin/reporting/constants';
 import { ReportContextProvider } from 'containers/Admin/reporting/context/ReportContext';

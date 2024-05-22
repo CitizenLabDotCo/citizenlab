@@ -3,23 +3,23 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 
-import Chart from 'components/admin/GraphCards/PostsByTimeCard/Chart';
+import Chart from 'components/admin/GraphCards/CommentsByTimeCard/Chart';
 
 import { isNilOrError } from 'utils/helperUtils';
 
-import NoData from '../../_shared/NoData';
-import messages from '../messages';
-import { TimeSeriesWidgetProps } from '../typings';
+import NoData from '../../../_shared/NoData';
+import messages from '../../messages';
+import { TimeSeriesWidgetProps } from '../../typings';
 
-import usePostsByTime from './usePostsByTime';
+import useCommentsByTime from './useCommentsByTime';
 
-const PostsByTime = ({
+const CommentsByTime = ({
   projectId,
   startAt,
   endAt,
   resolution = 'month',
 }: TimeSeriesWidgetProps) => {
-  const { currentResolution, timeSeries } = usePostsByTime({
+  const { currentResolution, timeSeries } = useCommentsByTime({
     projectId,
     startAt,
     endAt,
@@ -32,7 +32,7 @@ const PostsByTime = ({
 
   return (
     <Box
-      className="e2e-posts-by-time-widget"
+      id="e2e-comments-by-time-widget"
       width="100%"
       height="220px"
       mt="20px"
@@ -48,4 +48,4 @@ const PostsByTime = ({
   );
 };
 
-export default PostsByTime;
+export default CommentsByTime;
