@@ -80,28 +80,28 @@ const StyledCheckbox = styled.div<{
   }
 `;
 
-type Props = {
-  id: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  checked: boolean;
-  disabled: boolean;
-  checkedColor?: Color;
-  checkedOrIndeterminate: boolean;
+export type CheckboxProps = {
+  size?: string;
   indeterminate?: boolean;
-  size: string;
+  disabled?: boolean;
+  checked: boolean;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  id?: string;
   name?: string;
-} & BoxPaddingProps &
-  BoxMarginProps;
+  stopLabelPropagation?: boolean;
+  checkedColor?: Color;
+};
+
+type Props = CheckboxProps & BoxPaddingProps & BoxMarginProps;
 
 const Checkbox = ({
   id,
+  size = '24px',
+  disabled = false,
+  indeterminate = false,
   onChange,
   checked,
-  disabled,
   checkedColor,
-  checkedOrIndeterminate,
-  indeterminate,
-  size,
   name,
   ...boxProps
 }: Props) => {
@@ -113,6 +113,8 @@ const Checkbox = ({
       },
     } as React.ChangeEvent<HTMLInputElement>);
   };
+
+  const checkedOrIndeterminate = checked || indeterminate;
 
   return (
     <Box {...boxProps}>
