@@ -53,9 +53,9 @@ const Actions = ({
   const visible = focused || processing;
 
   const checkbox = (
-    <Box display="flex" alignItems="center">
-      <CheckboxWithLabel
-        id="e2e-anonymous-comment-checkbox"
+    <Box as="label" display="flex" alignItems="center">
+      <Checkbox
+        dataTestId="e2e-post-comment-anonymously-checkbox"
         ml="8px"
         mr="4px"
         checked={postAnonymously}
@@ -114,13 +114,7 @@ const Actions = ({
       >
         <Box display="flex" flexDirection="column">
           {allowAnonymousParticipation && (
-            <Box
-              display="flex"
-              flexDirection="row"
-              justifyContent="flex-end"
-              w="100%"
-              mb="12px"
-            >
+            <Box display="flex" justifyContent="flex-end" w="100%" mb="12px">
               {checkbox}
             </Box>
           )}

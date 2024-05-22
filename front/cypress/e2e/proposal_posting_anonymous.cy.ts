@@ -44,7 +44,7 @@ describe('Initiatives with anonymous participation allowed', () => {
     cy.get('.e2e-topics-picker').find('button').eq(3).click();
 
     // set to anonymous
-    cy.get('#e2e-post-anonymously-checkbox').click();
+    cy.get('[data-testid="e2e-post-proposal-anonymously-checkbox"]').click();
     cy.get('#e2e-continue-anonymous-participation-btn').click();
 
     // save the form
@@ -81,7 +81,7 @@ describe('Initiatives with anonymous participation allowed', () => {
     cy.get('.e2e-topics-picker').find('button').eq(3).click();
 
     // set to anonymous
-    cy.get('#e2e-post-anonymously-checkbox').click();
+    cy.get('[data-testid="e2e-post-proposal-anonymously-checkbox"]').click();
     cy.get('#e2e-continue-anonymous-participation-btn').click();
 
     // save the form
