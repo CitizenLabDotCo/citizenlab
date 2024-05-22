@@ -1,11 +1,18 @@
 import React from 'react';
 
+import Card from '../../_shared/Card';
+
 import ChartWidgetSettings from './ChartWidgetSettings';
 import messages from './messages';
+import ParticipationCard from './ParticipationCard';
 import { Props } from './typings';
 
-const ParticipationWidget = (_props: Props) => {
-  return <></>;
+const ParticipationWidget = ({ title, ...props }: Props) => {
+  return (
+    <Card title={title} pagebreak>
+      <ParticipationCard {...props} />
+    </Card>
+  );
 };
 
 ParticipationWidget.craft = {

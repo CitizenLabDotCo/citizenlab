@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import { ParticipationResponse } from 'api/graph_data_units/responseTypes/ParticipationWidget';
 
 import { parseCombinedTimeSeries } from './parse';
@@ -37,6 +39,69 @@ describe('parseCombinedTimeSeries', () => {
         inputs: 1,
         comments: 2,
         votes: 3,
+      },
+    ]);
+  });
+
+  const responseAttributes: ParticipationResponse['data']['attributes'] = [
+    [{ count: 1, first_dimension_date_created_date: '2024-04-21' }],
+    [{ count: 2, first_dimension_date_created_date: '2024-05-14' }],
+    [],
+    undefined,
+    undefined,
+    undefined,
+  ];
+
+  it('works if one time series is empty and they all have different dates', () => {
+    const combinedTimeSeries = parseCombinedTimeSeries(
+      responseAttributes,
+      null,
+      null,
+      'month'
+    );
+
+    expect(combinedTimeSeries).toEqual([
+      {
+        date: '2024-04-01',
+        inputs: 1,
+        comments: 0,
+        votes: 0,
+      },
+      {
+        date: '2024-05-01',
+        inputs: 0,
+        comments: 2,
+        votes: 0,
+      },
+    ]);
+  });
+
+  it('works with provided start/end at', () => {
+    const combinedTimeSeries = parseCombinedTimeSeries(
+      responseAttributes,
+      moment('2024-03-05'),
+      null,
+      'month'
+    );
+
+    expect(combinedTimeSeries).toEqual([
+      {
+        date: '2024-03-01',
+        inputs: 0,
+        comments: 0,
+        votes: 0,
+      },
+      {
+        date: '2024-04-01',
+        inputs: 1,
+        comments: 0,
+        votes: 0,
+      },
+      {
+        date: '2024-05-01',
+        inputs: 0,
+        comments: 2,
+        votes: 0,
       },
     ]);
   });
