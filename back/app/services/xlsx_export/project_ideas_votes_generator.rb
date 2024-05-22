@@ -18,7 +18,7 @@ module XlsxExport
 
     def generate_phase_ideas_votes_sheet(workbook, sheet_name, phase)
       url_service = Frontend::UrlService.new
-      ideas = phase.ideas.includes(:author, :idea_status, :topics, :idea_files, :project, [:ideas_phases], [baskets_ideas: :basket])
+      ideas = phase.ideas.includes(:author, :idea_status, :topics, :idea_files, :project, :ideas_phases, [baskets_ideas: :basket])
       t_scope = 'xlsx_export.column_headers'
 
       columns = [

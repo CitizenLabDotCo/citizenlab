@@ -17,7 +17,7 @@ module XlsxExport
     private
 
     def generate_phase_baskets_votes_sheet(workbook, sheet_name, phase)
-      baskets = Basket.where(phase: phase).where.not(submitted_at: nil).includes([:user], [:baskets_ideas])
+      baskets = Basket.where(phase: phase).where.not(submitted_at: nil).includes(:user, :baskets_ideas)
       columns = xlsx_service.user_custom_field_columns(:user)
       ideas = phase.ideas
       ideas_to_titles = add_suffix_to_duplicate_titles(ideas) # avoid losing columns with duplicate headers
