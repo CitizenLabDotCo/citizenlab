@@ -1,6 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { Tr, Td, Box } from '@citizenlab/cl2-component-library';
+import {
+  Tr,
+  Td,
+  Box,
+  Button,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
 
 import { ManagementFeedData } from 'api/management_feed/types';
@@ -9,14 +15,17 @@ import useUserById from 'api/users/useUserById';
 import useLocalize from 'hooks/useLocalize';
 
 import Avatar from 'components/Avatar';
+import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { getFullName } from 'utils/textUtils';
 
+import ChangesTable from './ChangesTable';
 import messages from './messages';
 
 const ManagementFeedRow = ({ item }: { item: ManagementFeedData }) => {
+  const [isChangedModalOpened, setIsChangedModalOpened] = useState(false);
   const localize = useLocalize();
   const { formatMessage, formatDate, formatTime } = useIntl();
   const { data: user } = useUserById(item.relationships.user.data?.id);
@@ -64,35 +73,60 @@ const ManagementFeedRow = ({ item }: { item: ManagementFeedData }) => {
   };
 
   return (
-    <Tr key={item.id}>
-      <Td>
-        {formatDate(item.attributes.acted_at)}
-        <br />
-        {formatTime(item.attributes.acted_at)}
-      </Td>
-      <Td>
-        {user && (
-          <Box display="flex" gap="8px" alignItems="center">
-            <Avatar userId={user?.data.id} size={24} />
-            {getFullName(user.data)}
-          </Box>
-        )}
-      </Td>
-      <Td>
-        <Box>
-          {getLink() ? (
-            <Link target="_blank" to={getLink()}>
-              {localize(item.attributes.item_title_multiloc)}
-            </Link>
-          ) : (
-            localize(item.attributes.item_title_multiloc)
-          )}
+    <>
+      <Tr key={item.id}>
+        <Td>
+          {formatDate(item.attributes.acted_at)}
           <br />
-          {getItemTranslation()}
-        </Box>
-      </Td>
-      <Td>{getActionTranslation()}</Td>
-    </Tr>
+          {formatTime(item.attributes.acted_at)}
+        </Td>
+        <Td>
+          {user && (
+            <Box display="flex" gap="8px" alignItems="center">
+              <Avatar userId={user?.data.id} size={24} />
+              {getFullName(user.data)}
+            </Box>
+          )}
+        </Td>
+        <Td>
+          <Box>
+            {getLink() ? (
+              <Link target="_blank" to={getLink()}>
+                {localize(item.attributes.item_title_multiloc)}
+              </Link>
+            ) : (
+              localize(item.attributes.item_title_multiloc)
+            )}
+            <br />
+            {getItemTranslation()}
+          </Box>
+        </Td>
+        <Td>
+          {getActionTranslation()}
+          {item.attributes.action === 'changed' && (
+            <Button
+              buttonStyle="text"
+              icon="chevron-down"
+              iconPos="right"
+              w="fit-content"
+              p="0px"
+              iconSize="18px"
+              fontSize={`${fontSizes.s}px`}
+              onClick={() => setIsChangedModalOpened(true)}
+            >
+              {formatMessage(messages.viewDetails)}
+            </Button>
+          )}
+        </Td>
+      </Tr>
+      <Modal
+        opened={isChangedModalOpened}
+        close={() => setIsChangedModalOpened(false)}
+        width="1000px"
+      >
+        <ChangesTable changes={item.attributes.change} />
+      </Modal>
+    </>
   );
 };
 

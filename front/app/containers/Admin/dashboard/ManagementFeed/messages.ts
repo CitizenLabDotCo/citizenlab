@@ -53,4 +53,8 @@ export default defineMessages({
     id: 'app.Admin.ManagementFeed.userPlaceholder',
     defaultMessage: 'Select a user',
   },
+  viewDetails: {
+    id: 'app.Admin.ManagementFeed.viewDetails',
+    defaultMessage: 'View details',
+  },
 });
