@@ -15,7 +15,7 @@ import messages from '../messages';
 import { CombinedTimeSeriesRow } from '../typings';
 
 import { generateEmptyData } from './generateEmptyData';
-// import renderTooltip from './renderTooltip';
+import renderTooltip from './renderTooltip';
 
 type Props = Dates &
   Resolution & {
@@ -100,7 +100,7 @@ const Chart = ({
       grid={{ vertical: true }}
       xaxis={{ tickFormatter: formatTick }}
       yaxis={yaxis}
-      // tooltip={noData ? undefined : renderTooltip(resolution)}
+      tooltip={noData ? undefined : renderTooltip(resolution)}
       legend={{
         marginTop: 16,
         items: legendItems,
