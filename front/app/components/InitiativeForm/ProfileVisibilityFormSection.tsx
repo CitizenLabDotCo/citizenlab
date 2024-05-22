@@ -68,7 +68,7 @@ const ProfileVisibilityFormSection = ({ triggerModal }: Props) => {
             </FormLabel>
             <Checkbox
               name="anonymous"
-              dataTestId="e2e-post-anonymously-checkbox"
+              dataTestId="e2e-post-proposal-anonymously-checkbox"
               label={
                 <Text>
                   {formatMessage(profileVisibilityMessages.postAnonymously)}
