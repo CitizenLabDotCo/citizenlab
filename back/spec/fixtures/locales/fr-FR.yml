@@ -78,8 +78,8 @@ fr:
         option:
           title: Quelle est votre option ?
   xlsx_export:
+    anonymous: 'Anonyme'
     column_headers:
-      anonymous: 'Anonyme'
       assignee_fullname: 'Cessionnaire'
       assignee_email: 'E-mail du cessionnaire'
       attachments: 'Pièces jointes'

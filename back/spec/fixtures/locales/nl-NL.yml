@@ -60,8 +60,8 @@ nl:
         option:
           title: Wat is je optie?
   xlsx_export:
+    anonymous: 'Anoniem'
     column_headers:
-      anonymous: 'Anoniem'
       assignee_fullname: 'Cessionaris'
       assignee_email: 'E-mail van de cessionaris'
       attachments: 'Bijlagen'

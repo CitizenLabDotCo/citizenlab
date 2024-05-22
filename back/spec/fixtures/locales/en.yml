@@ -78,8 +78,8 @@ en:
   user:
     anon_first_name: "User"
   xlsx_export:
+    anonymous: 'Anonymous'
     column_headers:
-      anonymous: 'Anonymous'
       assignee_fullname: 'Assignee'
       assignee_email: 'Assignee email'
       attachments: 'Attachments'
