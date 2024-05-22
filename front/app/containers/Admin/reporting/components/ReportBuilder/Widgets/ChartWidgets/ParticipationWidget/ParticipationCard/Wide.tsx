@@ -6,14 +6,17 @@ import moment from 'moment';
 import { DatesStrings } from 'components/admin/GraphCards/typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 
-import { CombinedTimeSeriesRow } from '../typings';
+import { getDaysInRange } from '../../utils';
+import messages from '../messages';
+import { CombinedTimeSeriesRow, Stats } from '../typings';
 
 import Chart from './Chart';
+import { Statistic } from './Statistics';
 
 export interface Props extends DatesStrings {
   timeSeries: CombinedTimeSeriesRow[] | null;
   hideStatistics: boolean;
-  // stats: Stats;
+  stats: Stats | null;
   currentResolution: IResolution;
 }
 
@@ -22,9 +25,11 @@ const Wide = ({
   endAt,
   hideStatistics,
   timeSeries,
-  // stats,
+  stats,
   currentResolution,
 }: Props) => {
+  const previousDays = getDaysInRange(startAt, endAt);
+
   return (
     <Box
       width="100%"
@@ -33,8 +38,29 @@ const Wide = ({
       className="e2e-participants-timeline-widget"
     >
       <Box height="100%" display="flex" flexDirection="row">
-        {!hideStatistics && <Box>TODO statistics</Box>}
-
+        {!hideStatistics && stats && (
+          <Box>
+            <Statistic
+              nameMessage={messages.inputs}
+              {...stats.inputs}
+              previousDays={previousDays}
+            />
+            <Box mt="20px">
+              <Statistic
+                nameMessage={messages.comments}
+                {...stats.comments}
+                previousDays={previousDays}
+              />
+            </Box>
+            <Box mt="20px">
+              <Statistic
+                nameMessage={messages.votes}
+                {...stats.votes}
+                previousDays={previousDays}
+              />
+            </Box>
+          </Box>
+        )}
         <Box
           flexGrow={1}
           display="flex"

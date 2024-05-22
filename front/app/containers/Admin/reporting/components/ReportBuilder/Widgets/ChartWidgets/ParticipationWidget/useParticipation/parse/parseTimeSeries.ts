@@ -14,7 +14,7 @@ import { IResolution } from 'components/admin/ResolutionControl';
 
 import { get } from 'utils/helperUtils';
 
-import { CombinedTimeSeriesRow, GenericTimeSeriesRow } from '../typings';
+import { CombinedTimeSeriesRow, GenericTimeSeriesRow } from '../../typings';
 
 const getEmptyRow = (date: Moment) => ({
   date: date.format('YYYY-MM-DD'),

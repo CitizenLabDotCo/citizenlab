@@ -21,7 +21,7 @@ const ParticipationCard = ({
 }: Props) => {
   const layout = useLayout();
 
-  const { timeSeries, currentResolution } = useParticipation({
+  const { timeSeries, stats, currentResolution } = useParticipation({
     project_id: projectId,
     start_at: startAt,
     end_at: endAt,
@@ -30,7 +30,11 @@ const ParticipationCard = ({
     compare_end_at: compareEndAt,
   });
 
-  if (!timeSeries) {
+  if (
+    stats?.inputs.value === 0 &&
+    stats?.comments.value === 0 &&
+    stats?.votes.value === 0
+  ) {
     return <NoData message={chartWidgetMessages.noData} />;
   }
 
@@ -39,7 +43,7 @@ const ParticipationCard = ({
     endAt,
     hideStatistics,
     timeSeries,
-    // stats,
+    stats,
     currentResolution,
   };
 

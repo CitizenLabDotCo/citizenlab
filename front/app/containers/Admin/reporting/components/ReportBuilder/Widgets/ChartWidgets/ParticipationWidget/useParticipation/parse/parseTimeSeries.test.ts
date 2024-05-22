@@ -2,7 +2,7 @@ import moment from 'moment';
 
 import { ParticipationResponse } from 'api/graph_data_units/responseTypes/ParticipationWidget';
 
-import { parseCombinedTimeSeries } from './parse';
+import { parseCombinedTimeSeries } from './parseTimeSeries';
 
 describe('parseCombinedTimeSeries', () => {
   it('return null if all time series are empty', () => {

@@ -5,7 +5,8 @@ import moment from 'moment';
 import { useParticipation as useParticipationData } from 'api/graph_data_units';
 import { ParticipationProps } from 'api/graph_data_units/requestTypes';
 
-import { parseCombinedTimeSeries } from './parse';
+import { parseStats } from './parse/parseStats';
+import { parseCombinedTimeSeries } from './parse/parseTimeSeries';
 
 export default function useParticipation({
   project_id,
@@ -44,5 +45,13 @@ export default function useParticipation({
     [analytics?.data, start_at, end_at, currentResolution]
   );
 
-  return { timeSeries, currentResolution };
+  const stats = useMemo(() => {
+    if (!analytics?.data) {
+      return null;
+    }
+
+    return parseStats(analytics.data.attributes);
+  }, [analytics?.data]);
+
+  return { timeSeries, stats, currentResolution };
 }

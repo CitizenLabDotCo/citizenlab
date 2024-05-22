@@ -1,5 +1,7 @@
 import { TimeSeriesWidgetProps } from '../typings';
 
+import { parseStats } from './useParticipation/parse/parseStats';
+
 export interface Props extends TimeSeriesWidgetProps {
   compareStartAt?: string;
   compareEndAt?: string;
@@ -17,3 +19,5 @@ export type CombinedTimeSeriesRow = {
   comments: number;
   votes: number;
 };
+
+export type Stats = ReturnType<typeof parseStats>;

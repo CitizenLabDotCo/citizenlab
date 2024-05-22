@@ -1,4 +1,4 @@
-type BaseRow = {
+export type BaseRow = {
   count: number;
 };
 
