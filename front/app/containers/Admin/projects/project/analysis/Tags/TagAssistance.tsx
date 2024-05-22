@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
-  Checkbox,
+  CheckboxWithLabel,
   Label,
   Title,
   Text,
@@ -133,7 +133,7 @@ const FirstTagAssistance = ({ tagId, onHide }: Props) => {
           {step === 'step2-auto' && <Step2Auto />}
           <Box display="flex" justifyContent="flex-start" mt="24px">
             <Label>
-              <Checkbox
+              <CheckboxWithLabel
                 checked={dontShowAgainCheckbox}
                 onChange={() =>
                   setDontShowAgainCheckbox(!dontShowAgainCheckbox)

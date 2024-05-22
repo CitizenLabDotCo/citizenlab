@@ -5,15 +5,9 @@ import styled from 'styled-components';
 
 import { Color, defaultOutline } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
-import Box, { BoxMarginProps, BoxPaddingProps } from '../Box';
 import Icon from '../Icon';
-import IconTooltip from '../IconTooltip';
 
 import { getColor } from './utils';
-
-const CheckboxContainer = styled.div<{ hasLabel: boolean }>`
-  margin-right: ${({ hasLabel }) => (hasLabel ? '10px' : '0px')};
-`;
 
 const CheckMarkIcon = styled(Icon)<{ size: string }>`
   fill: #fff;
@@ -82,49 +76,29 @@ const StyledCheckbox = styled.div<{
   }
 `;
 
-type DefaultProps = {
-  size?: string;
+interface Props {
+  id: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  checked: boolean;
   disabled?: boolean;
+  checkedColor?: Color;
+  checkedOrIndeterminate: boolean;
   indeterminate?: boolean;
-};
-
-type Props = DefaultProps &
-  BoxPaddingProps &
-  BoxMarginProps & {
-    checked: boolean;
-    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    className?: string;
-    label?: string | JSX.Element | null;
-    labelTooltipText?: string | JSX.Element | null;
-    id?: string;
-    name?: string;
-    stopLabelPropagation?: boolean;
-    checkedColor?: Color;
-    dataTestId?: string;
-  };
+  size: string;
+  name?: string;
+}
 
 const Checkbox = ({
   id,
-  label,
-  labelTooltipText,
-  stopLabelPropagation,
-  size = '24px',
-  checked,
-  className,
-  disabled = false,
-  indeterminate = false,
   onChange,
-  name,
+  checked,
+  disabled,
   checkedColor,
-  dataTestId,
-  ...rest
+  checkedOrIndeterminate,
+  indeterminate,
+  size,
+  name,
 }: Props) => {
-  const hasLabel = !!label;
-
-  const handleLabelClick = (event: React.MouseEvent) => {
-    stopLabelPropagation && event.stopPropagation();
-  };
-
   const handleOnCheckboxClick = (event: React.MouseEvent) => {
     event.preventDefault();
     onChange({
@@ -134,64 +108,8 @@ const Checkbox = ({
     } as React.ChangeEvent<HTMLInputElement>);
   };
 
-  const checkedOrIndeterminate = checked || indeterminate;
-
-  return label ? (
-    <Box
-      as="label"
-      className={className || ''}
-      position="relative"
-      display="flex"
-      flex="1"
-      alignItems="center"
-      style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
-      onClick={handleLabelClick}
-      data-testid={dataTestId || `${testEnv('check-mark-label')}`}
-      {...rest}
-    >
-      <CheckboxContainer hasLabel={hasLabel}>
-        <HiddenCheckbox
-          id={id}
-          onChange={onChange}
-          checked={checked}
-          disabled={disabled}
-          tabIndex={0}
-          name={name}
-        />
-        <StyledCheckbox
-          data-testid={testEnv('check-mark-background')}
-          checkedColor={checkedColor}
-          checkedOrIndeterminate={checkedOrIndeterminate}
-          size={size}
-          className={`${checked ? 'checked' : ''} ${
-            disabled ? 'disabled' : 'enabled'
-          } e2e-checkbox`}
-        >
-          {checked && (
-            <CheckMarkIcon
-              ariaHidden
-              name="check"
-              size={size}
-              data-testid={testEnv('check-mark')}
-            />
-          )}
-          {indeterminate && (
-            <IndeterminateIcon ariaHidden name="minus" size={size} />
-          )}
-        </StyledCheckbox>
-      </CheckboxContainer>
-      <Box as="span" mr="4px">
-        {label}
-      </Box>
-      {labelTooltipText && <IconTooltip content={labelTooltipText} />}
-    </Box>
-  ) : (
-    <Box
-      className={className || ''}
-      style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
-      data-testid={testEnv('check-mark-label')}
-      {...rest}
-    >
+  return (
+    <>
       <HiddenCheckbox
         id={id}
         onChange={onChange}
@@ -222,7 +140,7 @@ const Checkbox = ({
           <IndeterminateIcon ariaHidden name="minus" size={size} />
         )}
       </StyledCheckbox>
-    </Box>
+    </>
   );
 };
 

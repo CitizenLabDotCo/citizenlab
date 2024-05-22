@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-  Checkbox,
+  CheckboxWithLabel,
   useBreakpoint,
   Text,
   IconTooltip,
@@ -54,7 +54,7 @@ const Actions = ({
 
   const checkbox = (
     <Box display="flex" alignItems="center">
-      <Checkbox
+      <CheckboxWithLabel
         id="e2e-anonymous-comment-checkbox"
         ml="8px"
         mr="4px"

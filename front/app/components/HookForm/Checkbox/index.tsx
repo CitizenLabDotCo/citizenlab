@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Checkbox as CheckboxComponent } from '@citizenlab/cl2-component-library';
+import { CheckboxWithLabel as CheckboxComponent } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';

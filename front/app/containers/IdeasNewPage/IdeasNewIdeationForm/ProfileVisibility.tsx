@@ -4,7 +4,7 @@ import {
   Box,
   Text,
   IconTooltip,
-  Checkbox,
+  CheckboxWithLabel,
 } from '@citizenlab/cl2-component-library';
 
 import { FormLabel } from 'components/UI/FormComponents';
@@ -49,7 +49,7 @@ const ProfileVisiblity = ({ postAnonymously, onChange }: Props) => {
           transform="translate(0,-1)"
         />
       </FormLabel>
-      <Checkbox
+      <CheckboxWithLabel
         id="e2e-post-anonymously-checkbox"
         dataTestId="e2e-post-anonymously-checkbox"
         checked={postAnonymously}

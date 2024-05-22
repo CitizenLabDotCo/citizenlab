@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import {
   Box,
   Button,
-  Checkbox,
+  CheckboxWithLabel,
   Text,
   Title,
 } from '@citizenlab/cl2-component-library';
@@ -46,7 +46,7 @@ const Step2LabelClassification = ({ onLaunch }: Props) => {
         {customTags && customTags.length > 0 && (
           <>
             <Divider />
-            <Checkbox
+            <CheckboxWithLabel
               indeterminate={
                 selectedTagIds.length > 0 &&
                 selectedTagIds.length !== customTags?.length
@@ -66,7 +66,7 @@ const Step2LabelClassification = ({ onLaunch }: Props) => {
         )}
         {customTags?.map((tag) => (
           <Box key={tag.id} display="flex" justifyContent="flex-start" mb="8px">
-            <Checkbox
+            <CheckboxWithLabel
               checked={selectedTagIds.includes(tag.id)}
               onChange={() => handleTagSelect(tag.id)}
               label={

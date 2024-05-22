@@ -4,7 +4,7 @@ import {
   Thead,
   Tr,
   Th,
-  Checkbox,
+  CheckboxWithLabel,
   colors,
 } from '@citizenlab/cl2-component-library';
 import { CellConfiguration, Override } from 'typings';
@@ -61,7 +61,11 @@ const IdeaHeaderRow = ({
       >) => {
         return (
           <Th>
-            <Checkbox checked={!!allSelected} onChange={onChange} size="21px" />
+            <CheckboxWithLabel
+              checked={!!allSelected}
+              onChange={onChange}
+              size="21px"
+            />
           </Th>
         );
       },

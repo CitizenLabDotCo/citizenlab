@@ -5,7 +5,7 @@ import {
   Input,
   Icon,
   Success,
-  Checkbox,
+  CheckboxWithLabel,
   Error,
   colors,
 } from '@citizenlab/cl2-component-library';
@@ -151,7 +151,7 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
         </Box>
       ) : null}
       <Box mt="8px">
-        <Checkbox
+        <CheckboxWithLabel
           checked={userFormData.consent}
           onChange={() =>
             updateUserFormData({ consent: !userFormData.consent })

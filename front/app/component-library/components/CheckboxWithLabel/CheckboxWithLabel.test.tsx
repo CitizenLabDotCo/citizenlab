@@ -2,13 +2,17 @@ import React from 'react';
 
 import { render, screen, fireEvent } from '../../utils/testUtils/rtl';
 
-import Checkbox from '.';
+import CheckboxWithLabel from '.';
 
-describe('<Checkbox />', () => {
+describe('<CheckboxWithLabel />', () => {
   it('renders', () => {
     const handleChange = jest.fn();
     render(
-      <Checkbox checked={true} label="Test checkbox" onChange={handleChange} />
+      <CheckboxWithLabel
+        checked={true}
+        label="Test checkbox"
+        onChange={handleChange}
+      />
     );
     expect(screen.getByLabelText('Test checkbox')).toBeInTheDocument();
   });
@@ -17,7 +21,11 @@ describe('<Checkbox />', () => {
     const handleChange = () => {};
 
     render(
-      <Checkbox checked={true} label="Test checkbox" onChange={handleChange} />
+      <CheckboxWithLabel
+        checked={true}
+        label="Test checkbox"
+        onChange={handleChange}
+      />
     );
     expect(screen.queryByTestId('check-mark')).toBeInTheDocument();
   });
@@ -26,7 +34,7 @@ describe('<Checkbox />', () => {
     const handleChange = () => {};
 
     render(
-      <Checkbox
+      <CheckboxWithLabel
         checked={true}
         checkedColor={'black'}
         label="Test checkbox"
@@ -43,7 +51,7 @@ describe('<Checkbox />', () => {
     const handleChange = () => {};
 
     render(
-      <Checkbox
+      <CheckboxWithLabel
         checked={true}
         padding="20px"
         label="Test checkbox"
@@ -60,7 +68,11 @@ describe('<Checkbox />', () => {
     const handleChange = () => {};
 
     render(
-      <Checkbox checked={false} label="Test checkbox" onChange={handleChange} />
+      <CheckboxWithLabel
+        checked={false}
+        label="Test checkbox"
+        onChange={handleChange}
+      />
     );
     expect(screen.queryByTestId('check-mark')).not.toBeInTheDocument();
   });
@@ -73,7 +85,7 @@ describe('<Checkbox />', () => {
     };
 
     const { rerender } = render(
-      <Checkbox
+      <CheckboxWithLabel
         checked={checked}
         label="Test checkbox"
         onChange={handleChange}
@@ -87,7 +99,7 @@ describe('<Checkbox />', () => {
     fireEvent.click(checkbox);
 
     rerender(
-      <Checkbox
+      <CheckboxWithLabel
         checked={checked}
         label="Test checkbox"
         onChange={handleChange}
@@ -100,7 +112,7 @@ describe('<Checkbox />', () => {
     fireEvent.click(checkbox);
 
     rerender(
-      <Checkbox
+      <CheckboxWithLabel
         checked={checked}
         label="Test checkbox"
         onChange={handleChange}

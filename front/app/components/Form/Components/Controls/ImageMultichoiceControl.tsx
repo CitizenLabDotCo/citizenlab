@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import {
   Box,
-  Checkbox,
+  CheckboxWithLabel,
   colors,
   Text,
   Image,
@@ -167,7 +167,7 @@ const ImageMultichoiceControl = ({
                     event.stopPropagation();
                   }}
                 >
-                  <Checkbox
+                  <CheckboxWithLabel
                     size="20px"
                     checkedColor="tenantSecondary"
                     id={`${path}-checkbox-${index}`}

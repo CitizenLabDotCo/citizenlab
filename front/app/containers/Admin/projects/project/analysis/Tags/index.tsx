@@ -8,7 +8,7 @@ import {
   Text,
   Icon,
   ListItem,
-  Checkbox,
+  CheckboxWithLabel,
   Spinner,
 } from '@citizenlab/cl2-component-library';
 import { useQueryClient } from '@tanstack/react-query';
@@ -268,7 +268,7 @@ const Tags = () => {
                 e.stopPropagation();
               }}
             >
-              <Checkbox
+              <CheckboxWithLabel
                 checked={!!selectedTags?.includes(tag.id)}
                 onChange={() => {
                   toggleТаgCheckboxClick(tag.id);

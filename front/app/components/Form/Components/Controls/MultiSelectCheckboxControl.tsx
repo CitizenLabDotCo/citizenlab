@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 
-import { Box, Checkbox, colors, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  CheckboxWithLabel,
+  colors,
+  Text,
+} from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
   isPrimitiveArrayControl,
@@ -104,7 +109,7 @@ const MultiSelectCheckboxControl = ({
               }, 300);
             }}
           >
-            <Checkbox
+            <CheckboxWithLabel
               size="20px"
               padding="18px 20px 18px 20px"
               checkedColor={'tenantSecondary'}

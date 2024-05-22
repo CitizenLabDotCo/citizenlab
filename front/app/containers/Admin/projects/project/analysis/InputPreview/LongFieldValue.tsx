@@ -4,7 +4,7 @@ import {
   Box,
   Title,
   Text,
-  Checkbox,
+  CheckboxWithLabel,
   Button,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
@@ -264,7 +264,11 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
               </Title>
               <Text>
                 {rawValue === true || rawValue === false ? (
-                  <Checkbox disabled checked={rawValue} onChange={() => {}} />
+                  <CheckboxWithLabel
+                    disabled
+                    checked={rawValue}
+                    onChange={() => {}}
+                  />
                 ) : (
                   formatMessage(messages.noAnswer)
                 )}
