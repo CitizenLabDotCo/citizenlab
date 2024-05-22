@@ -24,9 +24,8 @@ describe('Idea reacting permissions', () => {
       cy.get('#password').type(password);
       cy.get('[data-testid="termsAndConditionsAccepted"] .e2e-checkbox')
         .click()
-        .click()
         .should('have.class', 'checked');
-      cy.get('[data-testid="termsAndConditionsAccepted"] .e2e-checkbox')
+      cy.get('[data-testid="privacyPolicyAccepted"] .e2e-checkbox')
         .click()
         .should('have.class', 'checked');
       cy.get('#e2e-signup-password-submit-button').click();

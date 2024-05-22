@@ -90,6 +90,7 @@ export type CheckboxProps = {
   name?: string;
   stopLabelPropagation?: boolean;
   checkedColor?: Color;
+  dataTestId?: string;
 };
 
 type Props = CheckboxProps & BoxPaddingProps & BoxMarginProps;
