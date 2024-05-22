@@ -57,7 +57,7 @@ const FullscreenImage = ({ src, altText }: Props) => {
       justifyContent="center"
       alignItems="center"
     >
-      <Box position="relative" w="100%">
+      <Box position="relative">
         <Box
           maxWidth="100%"
           display="flex"
