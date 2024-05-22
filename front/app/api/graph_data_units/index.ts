@@ -23,6 +23,7 @@ import { CommentsByTimeResponse } from './responseTypes/CommentsByTimeWidget';
 import { DemographicsResponse } from './responseTypes/DemographicsWidget';
 import { MethodsUsedResponse } from './responseTypes/MethodsUsedWidget';
 import { MostReactedIdeasResponse } from './responseTypes/MostReactedIdeasWidget';
+import { ParticipationResponse } from './responseTypes/ParticipationWidget';
 import { PostsByTimeResponse } from './responseTypes/PostsByTimeWidget';
 import { ReactionsByTimeResponse } from './responseTypes/ReactionsByTimeWidget';
 import { RegistrationsResponse } from './responseTypes/RegistrationsWidget';
@@ -279,9 +280,15 @@ export const useMethodsUsed = (props: MethodsUsedProps = {}) => {
   });
 };
 
-export const useParticipation = (props: ParticipationProps = {}) => {
-  return useGraphDataUnits({
-    resolved_name: 'ParticipationWidget',
-    props,
-  });
+export const useParticipation = (
+  props: ParticipationProps = {},
+  { onSuccess }: { onSuccess?: () => void }
+) => {
+  return useGraphDataUnits<ParticipationResponse>(
+    {
+      resolved_name: 'ParticipationWidget',
+      props,
+    },
+    { onSuccess }
+  );
 };

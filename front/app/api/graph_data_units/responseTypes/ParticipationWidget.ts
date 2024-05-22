@@ -2,7 +2,7 @@ type BaseRow = {
   count: number;
 };
 
-type TimeSeriesResponseRow = BaseRow & {
+export type TimeSeriesResponseRow = BaseRow & {
   first_dimension_date_created_date: string;
 };
 
