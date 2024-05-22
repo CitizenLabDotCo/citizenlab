@@ -200,8 +200,8 @@ sr-Latn:
       subject: '%{organizationName}: Resetujte lozinku'
       title_reset_your_password: 'Izaberite novu lozinku'
   xlsx_export:
+    anonymous: 'Анонимоус'
     column_headers:
-      anonymous: 'Anonymous'
       assignee_fullname: 'Dodeljeni korisnik'
       assignee_email: 'E-pošta dodeljenog korisnika'
       attachments: 'Attachments'
