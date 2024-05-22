@@ -75,7 +75,7 @@ const EventInformation = ({ event, goToEvent, titleFontSize }: Props) => {
         >
           <Title
             variant="h4"
-            as="h2"
+            as="h3"
             style={{ fontSize: titleFontSize, fontWeight: '600' }}
             pr="8px"
             color="tenantText"
