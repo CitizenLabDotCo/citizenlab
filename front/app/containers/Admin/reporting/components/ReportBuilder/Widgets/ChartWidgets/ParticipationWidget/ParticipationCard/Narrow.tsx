@@ -3,6 +3,8 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 
+import { ParticipationType } from 'api/graph_data_units/requestTypes';
+
 import { formatLargeNumber, getDaysInRange } from '../../utils';
 import messages from '../messages';
 
@@ -17,32 +19,42 @@ const Narrow = ({
   stats,
   timeSeries,
   hideStatistics,
+  participationTypes,
 }: Props) => {
   const previousDays = getDaysInRange(startAt, endAt);
+  const show = (type: ParticipationType) => participationTypes.includes(type);
+  const showInputs = show('inputs');
+  const showComments = show('comments');
 
   return (
     <Box height="100%" display="flex" flexDirection="column">
       {!hideStatistics && stats && (
         <Box display="flex" flexDirection="column" mb="8px">
-          <Statistic
-            nameMessage={messages.inputs}
-            {...stats.inputs}
-            previousDays={previousDays}
-          />
-          <Box mt="12px">
+          {showInputs && (
             <Statistic
-              nameMessage={messages.comments}
-              {...stats.comments}
+              nameMessage={messages.inputs}
+              {...stats.inputs}
               previousDays={previousDays}
             />
-          </Box>
-          <Box mt="12px">
-            <Statistic
-              nameMessage={messages.votes}
-              {...stats.votes}
-              previousDays={previousDays}
-            />
-          </Box>
+          )}
+          {showComments && (
+            <Box mt={showInputs ? '12px' : undefined}>
+              <Statistic
+                nameMessage={messages.comments}
+                {...stats.comments}
+                previousDays={previousDays}
+              />
+            </Box>
+          )}
+          {show('votes') && (
+            <Box mt={showInputs || showComments ? '12px' : undefined}>
+              <Statistic
+                nameMessage={messages.votes}
+                {...stats.votes}
+                previousDays={previousDays}
+              />
+            </Box>
+          )}
         </Box>
       )}
 
@@ -63,6 +75,7 @@ const Narrow = ({
               orientation: 'right',
               tickFormatter: formatLargeNumber,
             }}
+            participationTypes={participationTypes}
           />
         </Box>
       </Box>

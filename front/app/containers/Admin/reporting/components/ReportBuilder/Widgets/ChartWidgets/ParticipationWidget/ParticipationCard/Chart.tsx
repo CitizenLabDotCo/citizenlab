@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react';
 
+import { ParticipationType } from 'api/graph_data_units/requestTypes';
+
 import { Dates, Resolution } from 'components/admin/GraphCards/typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import LineChart from 'components/admin/Graphs/LineChart';
@@ -21,12 +23,24 @@ type Props = Dates &
     innerRef?: React.RefObject<any>;
     margin?: Margin;
     yaxis?: YAxisProps;
+    participationTypes: ParticipationType[];
   };
 
 const emptyLineConfig = { strokeWidths: [0] };
-const lineConfig = {
-  strokes: [colors.categorical01, colors.categorical02, colors.categorical03],
-  activeDot: { r: 4 },
+
+const LEGEND_ITEMS = {
+  inputs: {
+    color: colors.categorical01,
+    message: messages.inputs,
+  },
+  comments: {
+    color: colors.categorical02,
+    message: messages.comments,
+  },
+  votes: {
+    color: colors.categorical03,
+    message: messages.votes,
+  },
 };
 
 const Chart = ({
@@ -37,6 +51,7 @@ const Chart = ({
   innerRef,
   margin,
   yaxis,
+  participationTypes,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -45,23 +60,20 @@ const Chart = ({
     [startAtMoment, endAtMoment, resolution]
   );
 
-  const legendItems: LegendItem[] = [
-    {
+  const lineConfig = {
+    strokes: participationTypes.map((type) => LEGEND_ITEMS[type].color),
+    activeDot: { r: 4 },
+  };
+
+  const legendItems: LegendItem[] = participationTypes.map((type) => {
+    const { color, message } = LEGEND_ITEMS[type];
+
+    return {
       icon: 'circle',
-      color: colors.categorical01,
-      label: formatMessage(messages.inputs),
-    },
-    {
-      icon: 'circle',
-      color: colors.categorical02,
-      label: formatMessage(messages.comments),
-    },
-    {
-      icon: 'circle',
-      color: colors.categorical03,
-      label: formatMessage(messages.votes),
-    },
-  ];
+      color,
+      label: formatMessage(message),
+    };
+  });
 
   const formatTick = (date: string) => {
     return toThreeLetterMonth(date, resolution);
@@ -81,7 +93,7 @@ const Chart = ({
       data={noData ? emptyData : timeSeries}
       mapping={{
         x: 'date',
-        y: ['inputs', 'comments', 'votes'],
+        y: participationTypes,
       }}
       margin={margin}
       lines={noData ? emptyLineConfig : lineConfig}

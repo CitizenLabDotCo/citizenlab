@@ -25,6 +25,7 @@ ParticipationWidget.craft = {
     compareStartAt: undefined,
     compareEndAt: undefined,
     hideStatistics: undefined,
+    participationTypes: ['inputs', 'comments', 'votes'],
   },
   related: {
     settings: ChartWidgetSettings,

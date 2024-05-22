@@ -18,6 +18,7 @@ const ParticipationCard = ({
   compareStartAt,
   compareEndAt,
   hideStatistics = false,
+  participationTypes,
 }: Props) => {
   const layout = useLayout();
 
@@ -45,6 +46,7 @@ const ParticipationCard = ({
     timeSeries,
     stats,
     currentResolution,
+    participationTypes,
   };
 
   return layout === 'wide' ? <Wide {...props} /> : <Narrow {...props} />;

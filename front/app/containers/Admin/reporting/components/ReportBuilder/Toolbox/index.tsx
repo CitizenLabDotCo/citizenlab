@@ -320,6 +320,7 @@ const ReportBuilderToolbox = ({
                   projectId={selectedProjectId}
                   startAt={undefined}
                   endAt={chartEndDate}
+                  participationTypes={['inputs', 'comments', 'votes']}
                 />
               }
               icon="chart-bar"

@@ -170,6 +170,8 @@ interface MethodsUsedParams extends BaseParams {
   props: MethodsUsedProps;
 }
 
+export type ParticipationType = 'inputs' | 'comments' | 'votes';
+
 export interface ParticipationProps extends AnalyticsProps, CompareProps {}
 
 interface ParticipationParams extends BaseParams {
