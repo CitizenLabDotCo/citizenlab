@@ -61,15 +61,15 @@ module XlsxExport
 
     def picks_column(translation_scope, phase)
       { header: "#{I18n.t('picks', scope: translation_scope)} / #{I18n.t('participants', scope: translation_scope)}",
-        f: picks_lamda(phase),
+        f: picks_lambda(phase),
         skip_sanitization: true }
     end
 
     def participants_column(translation_scope, phase)
-      { header: I18n.t('participants', scope: translation_scope), f: picks_lamda(phase), skip_sanitization: true }
+      { header: I18n.t('participants', scope: translation_scope), f: picks_lambda(phase), skip_sanitization: true }
     end
 
-    def picks_lamda(phase)
+    def picks_lambda(phase)
       # We want the n of times each idea was selected (by a unique user), not the total votes or budget allocated
       # to each idea (ideas_phase.votes_count)
       lambda { |i|
