@@ -8,6 +8,7 @@ import IconTooltip from '../IconTooltip';
 type Props = {
   label: string | JSX.Element | null;
   labelTooltipText?: string | JSX.Element | null;
+  id?: string;
   dataTestId?: string;
 } & CheckboxProps &
   BoxPaddingProps &

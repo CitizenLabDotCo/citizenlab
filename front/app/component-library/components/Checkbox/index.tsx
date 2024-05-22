@@ -86,14 +86,17 @@ export type CheckboxProps = {
   disabled?: boolean;
   checked: boolean;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  id?: string;
   name?: string;
   stopLabelPropagation?: boolean;
   checkedColor?: Color;
-  dataTestId?: string;
 };
 
-type Props = CheckboxProps & BoxPaddingProps & BoxMarginProps;
+type Props = {
+  id?: string;
+  dataTestId?: string;
+} & CheckboxProps &
+  BoxPaddingProps &
+  BoxMarginProps;
 
 const Checkbox = ({
   id,
