@@ -23,7 +23,6 @@ type Props = DefaultProps &
   BoxMarginProps & {
     checked: boolean;
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    className?: string;
     label?: string | JSX.Element | null;
     labelTooltipText?: string | JSX.Element | null;
     id?: string;
@@ -40,7 +39,6 @@ const CheckboxWithLabel = ({
   stopLabelPropagation,
   size = '24px',
   checked,
-  className,
   disabled = false,
   indeterminate = false,
   onChange,
@@ -60,7 +58,6 @@ const CheckboxWithLabel = ({
   return label ? (
     <Box
       as="label"
-      className={className || ''}
       position="relative"
       display="flex"
       flex="1"
@@ -88,11 +85,7 @@ const CheckboxWithLabel = ({
       {labelTooltipText && <IconTooltip content={labelTooltipText} />}
     </Box>
   ) : (
-    <Box
-      className={className || ''}
-      data-testid={testEnv('check-mark-label')}
-      {...rest}
-    >
+    <Box data-testid={testEnv('check-mark-label')} {...rest}>
       <Checkbox
         id={id || ''}
         onChange={onChange}
