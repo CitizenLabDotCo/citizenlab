@@ -48,7 +48,7 @@ const ProfileVisiblity = ({ postAnonymously, onChange }: Props) => {
           transform="translate(0,-1)"
         />
       </FormLabel>
-      <Checkbox
+      <CheckboxWithLabel
         dataTestId="e2e-post-idea-anonymously-checkbox"
         checked={postAnonymously}
         label={<Text>{formatMessage(messages.postAnonymously)}</Text>}
