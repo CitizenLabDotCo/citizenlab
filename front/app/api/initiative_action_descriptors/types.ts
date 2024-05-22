@@ -1,7 +1,7 @@
 import { Keys } from 'utils/cl-react-query/types';
 
 import initiativeActionDescriptorsKeys from './keys';
-import { UserDisabledReason } from 'utils/actionDescriptors';
+import { ActionDescriptor, UserDisabledReason } from 'utils/actionDescriptors';
 
 export type InitiativeActionDescriptorsKeys = Keys<
   typeof initiativeActionDescriptorsKeys
@@ -30,10 +30,7 @@ export type IInitiativeActionDescriptors = {
   data: {
     type: 'action_descriptors';
     attributes: {
-      [key in IInitiativeActionDescriptorName]: {
-        enabled: boolean;
-        disabled_reason: InitiativeDisabledReason | null;
-      };
+      [key in IInitiativeActionDescriptorName]: ActionDescriptor<InitiativeDisabledReason>;
     };
   };
 };
