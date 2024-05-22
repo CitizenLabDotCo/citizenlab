@@ -10,6 +10,7 @@ import {
   Td,
   Tbody,
   colors,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import { isObject } from 'react-jsonschema-form/lib/utils';
 
@@ -48,7 +49,9 @@ const ChangesTable = ({ changes }: { changes: Record<string, any> | null }) => {
                       <Text fontWeight="bold" color="primary" fontSize="s">
                         {valueKey.toUpperCase()}:
                       </Text>
-                      <div
+                      <Box
+                        maxWidth="280px"
+                        overflowY="auto"
                         dangerouslySetInnerHTML={{
                           __html: value[valueKey],
                         }}
@@ -98,12 +101,19 @@ const ChangesTables = ({
 
   return (
     <div>
-      <h1>Changes Table</h1>
       <Box display="flex" gap="8px">
-        {/* Before */}
-        <ChangesTable changes={beforeChanges} />
-        {/* After */}
-        <ChangesTable changes={afterChanges} />
+        <Box flex="1">
+          <Title color="primary" variant="h2">
+            Before
+          </Title>
+          <ChangesTable changes={beforeChanges} />
+        </Box>
+        <Box flex="1">
+          <Title color="primary" variant="h2">
+            After
+          </Title>
+          <ChangesTable changes={afterChanges} />
+        </Box>
       </Box>
     </div>
   );
