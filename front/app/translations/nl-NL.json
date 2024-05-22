@@ -931,7 +931,6 @@
   "app.containers.IdeaButton.postingInNonActivePhases": "Nieuwe bijdragen kunnen alleen in actieve fasen worden toegevoegd.",
   "app.containers.IdeaButton.postingInactive": "Nieuwe bijdragen plaatsen is momenteel niet mogelijk",
   "app.containers.IdeaButton.postingLimitedMaxReached": "Je hebt deze vragenlijst al ingevuld. Bedankt voor je reactie!",
-  "app.containers.IdeaButton.postingMayNotBePermitted": "{signInLink} om te zien welke acties je kan ondernemen.",
   "app.containers.IdeaButton.postingNoPermission": "Nieuwe bijdragen plaatsen is momenteel niet mogelijk",
   "app.containers.IdeaButton.postingNotYetPossible": "Nieuwe bijdragen plaatsen is momenteel niet mogelijk",
   "app.containers.IdeaButton.signInLinkText": "inloggen",

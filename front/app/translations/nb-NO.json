@@ -931,7 +931,6 @@
   "app.containers.IdeaButton.postingInNonActivePhases": "Nye innlegg kan bare tilføyes i aktive faser.",
   "app.containers.IdeaButton.postingInactive": "Nye innlegg blir ikke akseptert for tiden.",
   "app.containers.IdeaButton.postingLimitedMaxReached": "Du har allerede besvart denne undersøkelsen. Takk for din respons!",
-  "app.containers.IdeaButton.postingMayNotBePermitted": "Vennligst {signInLink} på plattformen for å se hvilke handlinger du kan gjøre.",
   "app.containers.IdeaButton.postingNoPermission": "Nye innlegg er kun tilgjengelig for utvalgte grupper.",
   "app.containers.IdeaButton.postingNotYetPossible": "Nye innlegg er ennå ikke akseptert her.",
   "app.containers.IdeaButton.signInLinkText": "logg inn",

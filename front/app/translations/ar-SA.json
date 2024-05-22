@@ -931,7 +931,6 @@
   "app.containers.IdeaButton.postingInNonActivePhases": "يُمكن إضافة الطلبات الجديدة في المراحل النشطة فقط. ",
   "app.containers.IdeaButton.postingInactive": "لا يتم قبول الطلبات الجديدة حالياً",
   "app.containers.IdeaButton.postingLimitedMaxReached": "لقد أكملت هذا الاستبيان فعلاً. نشكرك على استجابتك!",
-  "app.containers.IdeaButton.postingMayNotBePermitted": "يُرجى {signInLink} إلى المنصة لمعرفة الإجراءات التي يُمكنك القيام بها. ",
   "app.containers.IdeaButton.postingNoPermission": "عمليات الإرسال الجديدة غير ممكنة حاليًا",
   "app.containers.IdeaButton.postingNotYetPossible": "لا تُقبل الطلبات الجديدة هنا بعد. ",
   "app.containers.IdeaButton.signInLinkText": "تسجيل الدخول",

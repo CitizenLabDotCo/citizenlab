@@ -931,7 +931,6 @@
   "app.containers.IdeaButton.postingInNonActivePhases": "Nowe zgłoszenia mogą być dodawane tylko w aktywnych etapach.",
   "app.containers.IdeaButton.postingInactive": "Nowe zgłoszenia nie są obecnie przyjmowane.",
   "app.containers.IdeaButton.postingLimitedMaxReached": "Wypełniłeś już ankietę. Dziękujemy za odpowiedź!",
-  "app.containers.IdeaButton.postingMayNotBePermitted": "Proszę {signInLink} do platformy, aby zobaczyć, jakie działania możesz podjąć.",
   "app.containers.IdeaButton.postingNoPermission": "Nowe zgłoszenia nie są obecnie dostępne",
   "app.containers.IdeaButton.postingNotYetPossible": "Nowe zgłoszenia nie są jeszcze przyjmowane.",
   "app.containers.IdeaButton.signInLinkText": "zaloguj się",

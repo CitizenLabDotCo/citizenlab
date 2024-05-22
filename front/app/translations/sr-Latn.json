@@ -931,7 +931,6 @@
   "app.containers.IdeaButton.postingInNonActivePhases": "Novi unosi mogu biti dodati samo u sklopu aktivnih faza.",
   "app.containers.IdeaButton.postingInactive": "Novi unosi se trenutno ne prihvataju.",
   "app.containers.IdeaButton.postingLimitedMaxReached": "Već ste popunili ovu anketu. Hvala vam na odgovoru!",
-  "app.containers.IdeaButton.postingMayNotBePermitted": "Molimo vas {signInLink} kako biste videli akcije koje možete preduzeti.",
   "app.containers.IdeaButton.postingNoPermission": "Novi unosi se trenutno ne prihvataju",
   "app.containers.IdeaButton.postingNotYetPossible": "Novi unosi se još uvek ne prihvataju",
   "app.containers.IdeaButton.signInLinkText": "Prijavi se",

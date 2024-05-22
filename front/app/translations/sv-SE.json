@@ -931,7 +931,6 @@
   "app.containers.IdeaButton.postingInNonActivePhases": "Nya bidrag kan endast läggas till i aktiva faser.",
   "app.containers.IdeaButton.postingInactive": "Nya bidrag tas för närvarande inte emot.",
   "app.containers.IdeaButton.postingLimitedMaxReached": "Du har redan slutfört den här undersökningen. Tack för ditt svar!",
-  "app.containers.IdeaButton.postingMayNotBePermitted": "{signInLink} på plattformen för att se vilka åtgärder du kan vidta.",
   "app.containers.IdeaButton.postingNoPermission": "Nya bidrag tas för närvarande inte emot",
   "app.containers.IdeaButton.postingNotYetPossible": "Nya bidrag tas inte emot ännu.",
   "app.containers.IdeaButton.signInLinkText": "logga in",

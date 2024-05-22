@@ -931,7 +931,6 @@
   "app.containers.IdeaButton.postingInNonActivePhases": "Los nuevos entradas solo se pueden agregar en fases activas.",
   "app.containers.IdeaButton.postingInactive": "Por el momento no aceptar nuevas entradas",
   "app.containers.IdeaButton.postingLimitedMaxReached": "Ya ha completado esta encuesta. ¡Gracias por su respuesta!",
-  "app.containers.IdeaButton.postingMayNotBePermitted": "{signInLink} a la plataforma para ver qué medidas puedes tomar.",
   "app.containers.IdeaButton.postingNoPermission": "Por el momento no aceptar nuevas entradas",
   "app.containers.IdeaButton.postingNotYetPossible": "Aún no se aceptan nuevas entradas aquí.",
   "app.containers.IdeaButton.signInLinkText": "conectarte",

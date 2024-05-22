@@ -931,7 +931,6 @@
   "app.containers.IdeaButton.postingInNonActivePhases": "Jaunus iesniegumus var pievienot tikai aktīvajos posmos.",
   "app.containers.IdeaButton.postingInactive": "Pašlaik jauni iesniegumi netiek pieņemti.",
   "app.containers.IdeaButton.postingLimitedMaxReached": "Jūs jau esat aizpildījis šo aptauju. Paldies par atbildi!",
-  "app.containers.IdeaButton.postingMayNotBePermitted": "Lūdzu, {signInLink} platformai, lai uzzinātu, kādas darbības varat veikt.",
   "app.containers.IdeaButton.postingNoPermission": "Jauni pieteikumi pašlaik netiek pieņemti",
   "app.containers.IdeaButton.postingNotYetPossible": "Jauni iesniegumi vēl netiek pieņemti.",
   "app.containers.IdeaButton.signInLinkText": "pierakstīties",

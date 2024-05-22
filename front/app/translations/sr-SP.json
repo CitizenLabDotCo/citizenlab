@@ -931,7 +931,6 @@
   "app.containers.IdeaButton.postingInNonActivePhases": "Нове пријаве се могу додати само у активним фазама.",
   "app.containers.IdeaButton.postingInactive": "Нове пријаве се тренутно не прихватају.",
   "app.containers.IdeaButton.postingLimitedMaxReached": "Већ сте попунили ову анкету. Хвала на одговору!",
-  "app.containers.IdeaButton.postingMayNotBePermitted": "Молимо {signInLink} на платформи да видите које акције можете да предузмете.",
   "app.containers.IdeaButton.postingNoPermission": "Нове пријаве се тренутно не прихватају",
   "app.containers.IdeaButton.postingNotYetPossible": "Нове пријаве се још не прихватају.",
   "app.containers.IdeaButton.signInLinkText": "Пријавите се",

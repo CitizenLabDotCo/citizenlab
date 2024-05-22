@@ -931,7 +931,6 @@
   "app.containers.IdeaButton.postingInNonActivePhases": "Els nous enviaments només es poden afegir en fases actives.",
   "app.containers.IdeaButton.postingInactive": "Actualment no s'accepten noves presentacions.",
   "app.containers.IdeaButton.postingLimitedMaxReached": "Ja heu completat aquesta enquesta. Gràcies per la teva resposta!",
-  "app.containers.IdeaButton.postingMayNotBePermitted": "{signInLink} a la plataforma per veure quines accions podeu dur a terme.",
   "app.containers.IdeaButton.postingNoPermission": "Actualment no s'accepten noves presentacions",
   "app.containers.IdeaButton.postingNotYetPossible": "Encara no s'accepten noves presentacions.",
   "app.containers.IdeaButton.signInLinkText": "iniciar Sessió",

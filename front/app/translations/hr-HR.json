@@ -931,7 +931,6 @@
   "app.containers.IdeaButton.postingInNonActivePhases": "Novi unosi mogu biti dodani samo u sklopu aktivnih faza.",
   "app.containers.IdeaButton.postingInactive": "Trenutno ne prihvaćamo nove predaje.",
   "app.containers.IdeaButton.postingLimitedMaxReached": "Već ste ispunili ovu anketu. Hvala na odgovoru!",
-  "app.containers.IdeaButton.postingMayNotBePermitted": "Kako biste saznali koje radnje možete poduzeti, molimo vas da se prijavite {signInLink} na platformu.",
   "app.containers.IdeaButton.postingNoPermission": "Trenutno ne prihvaćamo nove predaje",
   "app.containers.IdeaButton.postingNotYetPossible": "Još uvijek ne prihvaćamo nove predaje.",
   "app.containers.IdeaButton.signInLinkText": "prijava",

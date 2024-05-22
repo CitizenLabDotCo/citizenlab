@@ -657,7 +657,6 @@
   "app.containers.IdeaButton.postingInNonActivePhases": "Înscrierile noi pot fi adăugate numai când fazele sunt active.",
   "app.containers.IdeaButton.postingInactive": "Înscrierile noi nu sunt acceptate momentan.",
   "app.containers.IdeaButton.postingLimitedMaxReached": "Ați completat deja acest sondaj. Vă mulțumim pentru răspuns!",
-  "app.containers.IdeaButton.postingMayNotBePermitted": "Vă rugăm să {signInLink} pe platformă pentru a vedea ce acțiuni puteți întreprinde.",
   "app.containers.IdeaButton.postingNoPermission": "Înscrierile noi nu sunt acceptate momentan",
   "app.containers.IdeaButton.postingNotYetPossible": "Înscrierile noi nu sunt acceptate momentan.",
   "app.containers.IdeaButton.signInLinkText": "Autentifică-te",
