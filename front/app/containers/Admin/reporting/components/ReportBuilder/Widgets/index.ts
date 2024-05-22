@@ -22,6 +22,9 @@ import DemographicsWidget, {
 import MethodsUsedWidget, {
   methodsUsedTitle,
 } from './ChartWidgets/MethodsUsedWidget';
+import ParticipationWidget, {
+  participationTitle,
+} from './ChartWidgets/ParticipationWidget';
 import PostsByTimeWidget, {
   postsByTimeTitle,
 } from './ChartWidgets/PostsByTimeWidget';
@@ -65,6 +68,7 @@ export const WIDGETS = {
   IframeMultiloc,
   RegistrationsWidget,
   MethodsUsedWidget,
+  ParticipationWidget,
   // DEPRECATED
   AgeWidget,
   GenderWidget,
@@ -91,6 +95,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   IframeMultiloc: iframeMultilocTitle,
   RegistrationsWidget: registrationsTitle,
   MethodsUsedWidget: methodsUsedTitle,
+  ParticipationWidget: participationTitle,
   // DEPRECATED
   AgeWidget: ageTitle,
   GenderWidget: genderTitle,
@@ -117,6 +122,7 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'IframeMultiloc',
   'RegistrationsWidget',
   'MethodsUsedWidget',
+  'ParticipationWidget',
   // DEPRECATED
   'AgeWidget',
   'GenderWidget',

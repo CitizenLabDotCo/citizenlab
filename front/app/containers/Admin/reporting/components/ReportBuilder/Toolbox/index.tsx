@@ -40,6 +40,7 @@ import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
 import CommentsByTimeWidget from '../Widgets/ChartWidgets/CommentsByTimeWidget';
 import DemographicsWidget from '../Widgets/ChartWidgets/DemographicsWidget';
 import MethodsUsedWidget from '../Widgets/ChartWidgets/MethodsUsedWidget';
+import ParticipationWidget from '../Widgets/ChartWidgets/ParticipationWidget';
 import PostsByTimeWidget from '../Widgets/ChartWidgets/PostsByTimeWidget';
 import ReactionsByTimeWidget from '../Widgets/ChartWidgets/ReactionsByTimeWidget';
 import RegistrationsWidget from '../Widgets/ChartWidgets/RegistrationsWidget';
@@ -310,6 +311,19 @@ const ReportBuilderToolbox = ({
               }
               icon="chart-bar"
               label={formatMessage(WIDGET_TITLES.DemographicsWidget)}
+            />
+            <DraggableElement
+              id="e2e-draggable-participation"
+              component={
+                <ParticipationWidget
+                  title={toMultiloc(WIDGET_TITLES.ParticipationWidget)}
+                  projectId={selectedProjectId}
+                  startAt={undefined}
+                  endAt={chartEndDate}
+                />
+              }
+              icon="chart-bar"
+              label={formatMessage(WIDGET_TITLES.ParticipationWidget)}
             />
             <DraggableElement
               id="e2e-draggable-posts-by-time-widget"
