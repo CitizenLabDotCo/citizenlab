@@ -6,7 +6,7 @@ import moment from 'moment';
 import { DatesStrings } from 'components/admin/GraphCards/typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 
-import { getDaysInRange } from '../../utils';
+import { getDaysInRange, formatLargeNumber } from '../../utils';
 import messages from '../messages';
 import { CombinedTimeSeriesRow, Stats } from '../typings';
 
@@ -31,28 +31,25 @@ const Wide = ({
   const previousDays = getDaysInRange(startAt, endAt);
 
   return (
-    <Box
-      width="100%"
-      height="260px"
-      pb="8px"
-      className="e2e-participants-timeline-widget"
-    >
-      <Box height="100%" display="flex" flexDirection="row">
+    <Box width="100%" pb="8px" className="e2e-participation-widget">
+      <Box height="100%" display="flex" flexDirection="column">
         {!hideStatistics && stats && (
-          <Box>
-            <Statistic
-              nameMessage={messages.inputs}
-              {...stats.inputs}
-              previousDays={previousDays}
-            />
-            <Box mt="20px">
+          <Box display="flex" flexDirection="row" justifyContent="flex-start">
+            <Box w="25%" pr="12px">
+              <Statistic
+                nameMessage={messages.inputs}
+                {...stats.inputs}
+                previousDays={previousDays}
+              />
+            </Box>
+            <Box w="25%" pr="12px">
               <Statistic
                 nameMessage={messages.comments}
                 {...stats.comments}
                 previousDays={previousDays}
               />
             </Box>
-            <Box mt="20px">
+            <Box w="25%" pr="12px">
               <Statistic
                 nameMessage={messages.votes}
                 {...stats.votes}
@@ -61,23 +58,18 @@ const Wide = ({
             </Box>
           </Box>
         )}
-        <Box
-          flexGrow={1}
-          display="flex"
-          justifyContent={hideStatistics ? 'flex-start' : 'flex-end'}
-        >
-          <Box pt="8px" width="100%" maxWidth="800px" h="100%">
+        <Box flexGrow={1} display="flex" justifyContent="flex-start" mt="20px">
+          <Box pt="8px" w="100%" maxWidth="800px" h="240px">
             <Chart
               timeSeries={timeSeries}
               startAtMoment={startAt ? moment(startAt) : null}
               endAtMoment={endAt ? moment(endAt) : null}
               resolution={currentResolution}
-              yaxis={hideStatistics ? { orientation: 'right' } : undefined}
-              margin={
-                hideStatistics
-                  ? { top: 0, right: -16, bottom: 0, left: 0 }
-                  : undefined
-              }
+              yaxis={{
+                orientation: 'right',
+                tickFormatter: formatLargeNumber,
+              }}
+              margin={{ top: 0, right: -16, bottom: 0, left: 0 }}
             />
           </Box>
         </Box>
