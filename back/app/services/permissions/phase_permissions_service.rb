@@ -42,7 +42,7 @@ module Permissions
       already_responded: 'already_responded'
     }.freeze
 
-    def denied_reason_for_action(action, user, phase, reaction_mode: nil)
+    def denied_reason_for_action(action, user, phase, project: phase&.project, reaction_mode: nil)
       return PHASE_DENIED_REASONS[:project_inactive] unless phase
 
       phase_denied_reason = case action
@@ -65,7 +65,7 @@ module Permissions
       end
       return phase_denied_reason if phase_denied_reason
 
-      super action, user, phase
+      super action, user, phase, project: project
     end
 
     alias denied_reason_for_phase denied_reason_for_action
@@ -132,13 +132,17 @@ module Permissions
     end
 
     # Helper methods
-    def posting_limit_reached?(phase, user)
-      return true if phase.posting_limited? &&
-                     phase.ideas.where(author: user, publication_status: 'published').size >= phase.posting_limited_max
 
-      if phase.posting_limited? && phase.allow_anonymous_participation?
-        author_hash = Idea.create_author_hash user.id, phase.project.id, true
-        return phase.ideas.where(author_hash: author_hash).or(phase.ideas.where(author: user)).size >= phase.posting_limited_max
+    def posting_limit_reached?(phase, user)
+      if phase.posting_limited?
+        num_authored = phase.ideas.where(author: user, publication_status: 'published').size
+        return true if num_authored >= phase.posting_limited_max
+
+        if phase.allow_anonymous_participation?
+          author_hash = Idea.create_author_hash user.id, phase.project.id, true
+          num_authored_anonymously = phase.ideas.where(author_hash: author_hash).size
+          return true if (num_authored + num_authored_anonymously) >= phase.posting_limited_max
+        end
       end
 
       false

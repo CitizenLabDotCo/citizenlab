@@ -52,11 +52,13 @@ describe TimelineService do
       settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = 'Europe/Brussels'
       AppConfiguration.instance.update!(settings: settings)
+      service = described_class.new
       expect(service.current_phase(project, t)&.id).to be_nil
 
       settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = 'America/Santiago'
       AppConfiguration.instance.update!(settings: settings)
+      service = described_class.new
       expect(service.current_phase(project, t)&.id).to eq phase.id
     end
 
@@ -185,11 +187,13 @@ describe TimelineService do
       settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = 'Europe/Brussels'
       AppConfiguration.instance.update!(settings: settings)
+      service = described_class.new
       expect(service.current_and_future_phases(project, t)).to eq []
 
       settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = 'America/Santiago'
       AppConfiguration.instance.update!(settings: settings)
+      service = described_class.new
       expect(service.current_and_future_phases(project, t)).to eq [phase]
     end
   end
@@ -256,11 +260,13 @@ describe TimelineService do
         settings = AppConfiguration.instance.settings
         settings['core']['timezone'] = 'Europe/Brussels'
         AppConfiguration.instance.update!(settings: settings)
+        service = described_class.new
         expect(service.timeline_active(project)).to eq :past
 
         settings = AppConfiguration.instance.settings
         settings['core']['timezone'] = 'America/Santiago'
         AppConfiguration.instance.update!(settings: settings)
+        service = described_class.new
         expect(service.timeline_active(project)).to eq :present
       end
     end

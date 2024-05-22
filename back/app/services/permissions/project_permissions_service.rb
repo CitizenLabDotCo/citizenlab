@@ -12,7 +12,7 @@ module Permissions
         project_visible_reason
       else
         phase = @timeline_service.current_phase_not_archived project
-        super action, user, phase, reaction_mode: reaction_mode
+        super action, user, phase, project: project, reaction_mode: reaction_mode
       end
     end
 
@@ -82,8 +82,8 @@ module Permissions
 
     # Project methods
     def project_visible_disabled_reason(project, user)
-      if (project.visible_to == 'admins' && !user.admin?) ||
-         (project.visible_to == 'groups' && !user.in_any_groups?(project.groups))
+      if (project&.visible_to == 'admins' && !user.admin?) ||
+         (project&.visible_to == 'groups' && !user.in_any_groups?(project.groups))
         PROJECT_DENIED_REASONS[:project_not_visible]
       end
     end

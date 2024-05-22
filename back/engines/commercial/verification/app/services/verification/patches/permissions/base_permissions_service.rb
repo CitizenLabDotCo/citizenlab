@@ -4,6 +4,8 @@ module Verification
   module Patches
     module Permissions
       module BasePermissionsService
+        private
+
         def denied_when_permitted_by_groups?(permission, user)
           denied_reason = super
 

@@ -6,11 +6,11 @@ module PublicApi
 
     def index
       ideas = IdeasFinder.new(
-        Idea.includes(:idea_images, :project, :idea_status).order(created_at: :desc),
+        Idea.order(created_at: :desc),
         **finder_params
       ).execute
 
-      list_items(ideas, V2::IdeaSerializer)
+      list_items(ideas, V2::IdeaSerializer, includes: %i[idea_images project idea_status])
     end
 
     def show

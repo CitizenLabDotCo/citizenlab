@@ -396,4 +396,34 @@ describe Permissions::IdeaPermissionsService do
       expect(service.denied_reason_for_action('voting', create(:user), idea)).to eq 'project_inactive'
     end
   end
+
+  describe 'action_descriptors' do
+    it 'does not run more than 11 queries for 5 ideas in a project with default user permissions' do
+      user = create(:user)
+      phase = TimelineService.new.current_phase(create(:project_with_current_phase))
+      create(:permission, action: 'posting_idea', permission_scope: phase, permitted_by: 'users')
+      create(:permission, action: 'commenting_idea', permission_scope: phase, permitted_by: 'users')
+      create(:permission, action: 'reacting_idea', permission_scope: phase, permitted_by: 'users')
+      create_list(:idea, 5, project: phase.project, phases: [phase])
+
+      # Load ideas with pre-loading as loaded by the controller
+      ideas = Idea.includes(
+        :idea_images, :idea_trending_info, :topics,
+        :idea_import,
+        :phases,
+        {
+          project: [:admin_publication, { phases: { permissions: [:groups] } }, { custom_form: [:custom_fields] }],
+          author: [:unread_notifications]
+        }
+      )
+
+      # First check ideas length sure all the 'ideas' queries are preloaded
+      expect(ideas.length).to eq 5
+      expect do
+        ideas.each do |idea|
+          service.action_descriptors(idea, user)
+        end
+      end.not_to exceed_query_limit(7) # Down from an original 486
+    end
+  end
 end

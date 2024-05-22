@@ -16,7 +16,7 @@ class Permissions::UserRequirementsService
 
   def requirements_fields(permission)
     if permission.global_custom_fields
-      CustomField.registration.enabled.order(:ordering)
+      registration_fields
     else
       permission.permissions_custom_fields.map do |permissions_custom_field|
         permissions_custom_field.custom_field.tap do |field|
@@ -49,7 +49,7 @@ class Permissions::UserRequirementsService
     everyone_confirmed_email = everyone.deep_dup.tap do |requirements|
       requirements[:built_in][:email] = 'require'
       requirements[:custom_fields] = requirements_fields(permission).to_h { |field| [field.key, (field.required ? 'require' : 'ask')] }
-      requirements[:special][:confirmation] = 'require' if AppConfiguration.instance.feature_activated?('user_confirmation')
+      requirements[:special][:confirmation] = 'require' if app_configuration.feature_activated?('user_confirmation')
     end
 
     users = everyone_confirmed_email.deep_dup.tap do |requirements|
@@ -68,9 +68,9 @@ class Permissions::UserRequirementsService
       everyone
     when 'everyone_confirmed_email'
       if permission.action == 'following'
-        AppConfiguration.instance.feature_activated?('user_confirmation') && AppConfiguration.instance.feature_activated?('password_login') ? everyone_confirmed_email : users
+        app_configuration.feature_activated?('user_confirmation') && app_configuration.feature_activated?('password_login') ? everyone_confirmed_email : users
       else
-        AppConfiguration.instance.feature_activated?('user_confirmation') ? everyone_confirmed_email : users
+        app_configuration.feature_activated?('user_confirmation') ? everyone_confirmed_email : users
       end
     when 'groups'
       groups
@@ -80,10 +80,10 @@ class Permissions::UserRequirementsService
   end
 
   def mark_satisfied_requirements!(requirements, permission, user)
-    return requirements if !user
+    return requirements unless user
 
     requirements[:built_in]&.each_key do |attribute|
-      requirements[:built_in][attribute] = 'satisfied' if !user.send(attribute).nil?
+      requirements[:built_in][attribute] = 'satisfied' unless user.send(attribute).nil?
     end
     requirements[:custom_fields]&.each_key do |key|
       requirements[:custom_fields][key] = 'satisfied' if user.custom_field_values.key?(key)
@@ -98,26 +98,30 @@ class Permissions::UserRequirementsService
       when :confirmation
         !user.confirmation_required?
       when :group_membership
-        user.in_any_groups?(permission.groups)
+        permission.groups.present? && user.in_any_groups?(permission.groups)
       end
       requirements[:special][special_key] = 'satisfied' if is_satisfied
     end
   end
 
   def onboarding_possible?
-    app_configuration.settings.dig('core', 'onboarding') && (
-      Topic.where(include_in_onboarding: true).count > 0 || Area.where(include_in_onboarding: true).count > 0
-    )
+    return @onboarding_possible unless @onboarding_possible.nil?
+
+    @onboarding_possible = app_configuration.settings.dig('core', 'onboarding') && (Topic.where(include_in_onboarding: true).count > 0 || Area.where(include_in_onboarding: true).count > 0)
   end
 
   def ignore_password_for_sso!(requirements, user)
-    return requirements if !user
+    return requirements unless user
 
     requirements[:special][:password] = 'dont_ask' if user.sso?
   end
 
   def app_configuration
     @app_configuration ||= AppConfiguration.instance
+  end
+
+  def registration_fields
+    @registration_fields ||= CustomField.registration.enabled.order(:ordering)
   end
 end
 
