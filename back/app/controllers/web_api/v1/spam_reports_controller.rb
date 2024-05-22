@@ -7,8 +7,8 @@ class WebApi::V1::SpamReportsController < ApplicationController
   def index
     @spam_reports = policy_scope(SpamReport)
       .where(spam_reportable_type: @spam_reportable_type, spam_reportable_id: @spam_reportable_id)
-      .includes(:user)
     @spam_reports = paginate @spam_reports
+    @spam_reports = @spam_reports.includes(:user)
 
     render json: linked_json(@spam_reports, WebApi::V1::SpamReportSerializer, params: jsonapi_serializer_params, include: [:user])
   end

@@ -5,7 +5,7 @@ module PublicApi
     include DeletedItemsAction
 
     def index
-      list_items Volunteering::Cause.all.includes(:phase), V2::VolunteeringCauseSerializer, root_key: 'volunteering_causes'
+      list_items Volunteering::Cause.all, V2::VolunteeringCauseSerializer, includes: [:phase], root_key: 'volunteering_causes'
     end
 
     def show

@@ -30,12 +30,12 @@ module Permissions
       @timeline_service = TimelineService.new
     end
 
-    # NOTE: Where phase is nil, the check is for global permissions (ie initiatives)
-    def denied_reason_for_action(action, user, phase = nil)
+    # NOTE: Where phase and project are nil, the check is for global permissions (ie initiatives)
+    def denied_reason_for_action(action, user, phase = nil, project: nil)
       return unless supported_action? action
 
       permission = find_permission(action, phase)
-      user_denied_reason(permission, user)
+      user_denied_reason(permission, user, project)
     end
 
     private
@@ -50,8 +50,7 @@ module Permissions
       permission = phase&.permissions&.find { |p| p[:action] == action }
 
       if permission.blank?
-        # TODO: JS - be explicit here about nil scopes for initiatives
-        scope = phase&.permission_scope
+        scope = phase&.permission_scope # If phase is nil, then this is a global permission (ie for initiatives)
         permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
 
         if permission.blank? && Permission.available_actions(scope)
@@ -66,7 +65,7 @@ module Permissions
     end
 
     # User methods
-    def user_denied_reason(permission, user)
+    def user_denied_reason(permission, user, scope = nil)
       if permission.permitted_by == 'everyone'
         user ||= User.new
       else
@@ -75,7 +74,7 @@ module Permissions
 
         unless user.confirmation_required? # Ignore non confirmed users as this will be picked up by UserRequirementsService
           return USER_DENIED_REASONS[:not_active] unless user.active?
-          return if UserRoleService.new.can_moderate? permission.permission_scope, user
+          return if UserRoleService.new.can_moderate? scope, user
           return USER_DENIED_REASONS[:not_permitted] if permission.permitted_by == 'admins_moderators'
 
           if permission.permitted_by == 'groups'
@@ -89,7 +88,7 @@ module Permissions
       USER_DENIED_REASONS[:missing_user_requirements]
     end
 
-    # NOTE: method overridden in the verification engine when enabled
+    # NOTE: method overridden in the verification engine
     def denied_when_permitted_by_groups?(permission, user)
       :not_in_group unless permission.groups && user.in_any_groups?(permission.groups)
     end

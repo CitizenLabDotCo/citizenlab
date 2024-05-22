@@ -384,11 +384,23 @@ describe Permissions::ProjectPermissionsService do
       expect(service.denied_reason_for_action('taking_poll', nil, project)).to eq 'not_signed_in'
     end
 
-    it 'return `not_permitted` when taking the poll is not permitted' do
+    it 'returns `not_permitted` when taking the poll is not permitted' do
       project = create(:single_phase_poll_project, phase_attrs: { with_permissions: true })
       permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'taking_poll')
       permission.update!(permitted_by: 'admins_moderators')
       expect(service.denied_reason_for_action('taking_poll', create(:user), project)).to eq 'not_permitted'
+    end
+
+    it 'returns `missing_user_requirements` when the user has not completed all registration fields' do
+      project = create(:single_phase_poll_project, phase_attrs: { with_permissions: true })
+      permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'taking_poll')
+      permission.update!(permitted_by: 'users')
+      gender_field = create(:custom_field_gender, required: true) # Created a required field that has not been filled in
+      user = create(:user)
+      expect(service.denied_reason_for_action('taking_poll', user, project)).to eq 'missing_user_requirements'
+      gender_field.update!(required: false) # Removed the required field
+      service = described_class.new
+      expect(service.denied_reason_for_action('taking_poll', user, project)).to be_nil
     end
   end
 
@@ -555,7 +567,7 @@ describe Permissions::ProjectPermissionsService do
   end
 
   describe 'action_descriptors' do
-    it 'does not run more than 90 queries for 5 ideation projects with default user permissions' do
+    it 'does not run more than 5 queries for 5 ideation projects with default user permissions' do
       user = create(:user)
       5.times do
         phase = TimelineService.new.current_phase(create(:project_with_current_phase))
@@ -580,7 +592,38 @@ describe Permissions::ProjectPermissionsService do
         projects.each do |project|
           service.action_descriptors(project, user)
         end
-      end.not_to exceed_query_limit(90) # Down from an original 470
+      end.not_to exceed_query_limit(5) # Down from an original 470
+    end
+
+    it 'does not run more than 8 queries for 5 ideation projects with group based user permissions' do
+      user = create(:user)
+      group = create(:group)
+      create(:membership, group: group, user: user)
+      5.times do
+        project = create(:single_phase_ideation_project, phase_attrs: { with_permissions: true })
+        current_phase = TimelineService.new.current_phase(project)
+        current_phase.permissions.each do |permission|
+          permission.update!(permitted_by: 'groups', groups: [group])
+        end
+      end
+
+      # Load project with pre-loading as loaded by the controller
+      projects = Project.preload(
+        :project_images,
+        :areas,
+        :topics,
+        :content_builder_layouts,
+        phases: [:report, { permissions: [:groups] }], # :permissions
+        admin_publication: [:children]
+      )
+
+      # First check project length sure all the 'projects' queries are preloaded
+      expect(projects.length).to eq 5
+      expect do
+        projects.each do |project|
+          service.action_descriptors(project, user)
+        end
+      end.not_to exceed_query_limit(8) # Down from an original 490
     end
   end
 end

@@ -80,8 +80,7 @@ class SideFxIdeaService
   end
 
   def add_autoreaction(idea)
-    pcs = Permissions::IdeaPermissionsService.new
-    return if pcs.denied_reason_for_action 'reacting_idea', idea.author, idea, reaction_mode: 'up'
+    return if Permissions::IdeaPermissionsService.new.denied_reason_for_action 'reacting_idea', idea.author, idea, reaction_mode: 'up'
 
     idea.reactions.create!(mode: 'up', user: idea.author)
     idea.reload

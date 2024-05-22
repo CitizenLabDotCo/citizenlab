@@ -21,18 +21,23 @@ class WebApi::V1::IdeasController < ApplicationController
     ideas = IdeasFinder.new(
       params,
       scope: policy_scope(Idea).where(publication_status: 'published'),
-      current_user: current_user,
-      includes: [
-        :idea_images, :idea_trending_info, :topics,
-        :idea_import, # defined through BulkImportIdeas engine
-        {
-          project: [:phases, { custom_form: [:custom_fields] }],
-          phases: [:permissions],
-          author: [:unread_notifications]
-        }
-      ]
+      current_user: current_user
     ).find_records
+
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
+
+    # Only include after pagination - so we only get associations we need
+    ideas = ideas.includes(
+      :idea_images,
+      :idea_trending_info,
+      :topics,
+      :phases,
+      {
+        project: [:phases, { phases: { permissions: [:groups] } }, { custom_form: [:custom_fields] }],
+        author: [:unread_notifications]
+      }
+    )
+    ideas = ideas.includes(:idea_import) unless current_user&.normal_user? # defined through BulkImportIdeas engine
 
     ideas = convert_phase_voting_counts ideas, params
 
@@ -43,10 +48,10 @@ class WebApi::V1::IdeasController < ApplicationController
     ideas = IdeasFinder.new(
       params,
       scope: policy_scope(Idea).where(publication_status: 'published'),
-      current_user: current_user,
-      includes: %i[idea_trending_info]
+      current_user: current_user
     ).find_records
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
+    ideas = ideas.includes(:idea_trending_info)
 
     render json: linked_json(ideas, WebApi::V1::IdeaMiniSerializer, params: jsonapi_serializer_params)
   end
@@ -55,10 +60,10 @@ class WebApi::V1::IdeasController < ApplicationController
     ideas = IdeasFinder.new(
       params,
       scope: policy_scope(Idea).where(publication_status: 'published'),
-      current_user: current_user,
-      includes: %i[author topics project idea_status idea_files]
+      current_user: current_user
     ).find_records
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
+    ideas = ideas.includes(:author, :topics, :project, :idea_status, :idea_files)
 
     render json: linked_json(ideas, WebApi::V1::PostMarkerSerializer, params: jsonapi_serializer_params)
   end
@@ -67,10 +72,10 @@ class WebApi::V1::IdeasController < ApplicationController
     ideas = IdeasFinder.new(
       params.merge(filter_can_moderate: true),
       scope: policy_scope(Idea).where(publication_status: 'published'),
-      current_user: current_user,
-      includes: %i[author topics project idea_status idea_files]
+      current_user: current_user
     ).find_records
     ideas = SortByParamsService.new.sort_ideas(ideas, params, current_user)
+    ideas = ideas.includes(:author, :topics, :project, :idea_status, :idea_files)
 
     I18n.with_locale(current_user&.locale) do
       xlsx = XlsxService.new.generate_ideas_xlsx ideas, view_private_attributes: true
@@ -82,10 +87,10 @@ class WebApi::V1::IdeasController < ApplicationController
     all_ideas = IdeasFinder.new(
       params,
       scope: policy_scope(Idea),
-      current_user: current_user,
-      includes: %i[idea_trending_info]
+      current_user: current_user
     ).find_records
     all_ideas = paginate SortByParamsService.new.sort_ideas(all_ideas, params, current_user)
+    all_ideas = all_ideas.includes(:idea_trending_info)
     counts = {
       'idea_status_id' => {},
       'topic_id' => {}
@@ -381,12 +386,16 @@ class WebApi::V1::IdeasController < ApplicationController
         end
       user_followers ||= {}
       {
-        params: jsonapi_serializer_params(vbii: reactions.index_by(&:reactable_id), user_followers: user_followers, pcs: Permissions::IdeaPermissionsService.new),
+        params: jsonapi_serializer_params(
+          vbii: reactions.index_by(&:reactable_id),
+          user_followers: user_followers,
+          permission_service: Permissions::IdeaPermissionsService.new
+        ),
         include: include
       }
     else
       {
-        params: jsonapi_serializer_params(pcs: Permissions::IdeaPermissionsService.new),
+        params: jsonapi_serializer_params,
         include: include
       }
     end
