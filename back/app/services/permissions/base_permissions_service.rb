@@ -22,7 +22,7 @@ module Permissions
       user_not_in_group: 'user_not_in_group',
       user_missing_requirements: 'user_missing_requirements',
       user_not_verified: 'user_not_verified',
-      blocked: 'blocked'
+      user_blocked: 'user_blocked'
     }.freeze
 
     def initialize
@@ -71,7 +71,7 @@ module Permissions
         user ||= User.new
       else
         return USER_DENIED_REASONS[:user_not_signed_in] unless user
-        return USER_DENIED_REASONS[:blocked] if user.blocked?
+        return USER_DENIED_REASONS[:user_blocked] if user.blocked?
 
         unless user.confirmation_required? # Ignore non confirmed users as this will be picked up by UserRequirementsService
           return USER_DENIED_REASONS[:user_not_active] unless user.active?

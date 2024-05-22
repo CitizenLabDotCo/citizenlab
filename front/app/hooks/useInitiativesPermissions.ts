@@ -1,23 +1,20 @@
 import { useState, useEffect } from 'react';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { IInitiativeActionDescriptorName } from 'api/initiative_action_descriptors/types';
+import {
+  IInitiativeActionDescriptorName,
+  InitiativeDisabledReason,
+} from 'api/initiative_action_descriptors/types';
 import useInitativeActionDescriptors from 'api/initiative_action_descriptors/useInitiativeActionDescriptors';
 import useAuthUser from 'api/me/useAuthUser';
 
 import { ActionPermission } from 'utils/actionTakingRules';
 
-export type InitiativePermissionsDisabledReason =
-  // Only the ones set below via setActionPermissions's disabledReason
-  'user_not_permitted' | 'user_not_in_group';
-
 export default function useInitiativesPermissions(
   actionDescriptorName: IInitiativeActionDescriptorName
 ) {
   const [actionPermission, setActionPermission] =
-    useState<ActionPermission<InitiativePermissionsDisabledReason> | null>(
-      null
-    );
+    useState<ActionPermission<InitiativeDisabledReason> | null>(null);
   const { data: appConfiguration } = useAppConfiguration();
   const { data: actionDescriptors } = useInitativeActionDescriptors();
   const { data: authUser } = useAuthUser();

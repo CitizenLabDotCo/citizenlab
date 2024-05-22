@@ -14,6 +14,7 @@ import globalMessages from 'utils/messages';
 import FormCompleted from './FormCompleted';
 import messages from './messages';
 import PollForm from './PollForm';
+import { MessageDescriptor } from 'react-intl';
 
 const Container = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -36,17 +37,20 @@ interface Props {
   projectId: string;
 }
 
-const disabledMessages: { [key in ProjectPollDisabledReason] } = {
+const disabledMessages: {
+  [key in ProjectPollDisabledReason]: MessageDescriptor | undefined;
+} = {
   project_inactive: messages.pollDisabledProjectInactive,
   project_not_visible: messages.pollDisabledNotPermitted,
+  not_poll: messages.pollDisabledNotActivePhase,
+  already_responded: messages.pollDisabledAlreadyResponded,
   user_not_active: undefined,
   user_not_verified: undefined,
   user_missing_requirements: undefined,
   user_not_signed_in: undefined,
   user_not_in_group: globalMessages.notInGroup,
-  not_poll: messages.pollDisabledNotActivePhase,
-  already_responded: messages.pollDisabledAlreadyResponded,
   user_not_permitted: messages.pollDisabledNotPermitted,
+  user_blocked: messages.pollDisabledNotPermitted,
 };
 
 const Poll = ({ projectId, phaseId }: Props) => {

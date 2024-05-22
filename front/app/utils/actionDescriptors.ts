@@ -6,7 +6,10 @@ type DisabledReasonFixable =
   | 'user_not_verified'
   | 'user_missing_requirements';
 
-type DisabledReasonUnfixable = 'user_not_permitted' | 'user_not_in_group';
+type DisabledReasonUnfixable =
+  | 'user_not_permitted'
+  | 'user_not_in_group'
+  | 'user_blocked';
 
 export type UserDisabledReason =
   | DisabledReasonFixable

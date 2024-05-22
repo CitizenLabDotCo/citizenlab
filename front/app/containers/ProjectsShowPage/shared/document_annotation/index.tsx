@@ -25,13 +25,14 @@ const disabledMessages: {
 } = {
   project_inactive: messages.documentAnnotationDisabledProjectInactive,
   project_not_visible: messages.documentAnnotationDisabledNotPermitted,
+  not_document_annotation: messages.documentAnnotationDisabledNotActivePhase,
   user_not_active: messages.documentAnnotationDisabledNotActiveUser,
   user_not_verified: messages.documentAnnotationDisabledNotVerified,
   user_missing_requirements: messages.documentAnnotationDisabledNotActiveUser,
   user_not_signed_in: messages.documentAnnotationDisabledMaybeNotPermitted,
   user_not_in_group: globalMessages.notInGroup,
   user_not_permitted: messages.documentAnnotationDisabledNotPermitted,
-  not_document_annotation: messages.documentAnnotationDisabledNotActivePhase,
+  user_blocked: messages.documentAnnotationDisabledNotPermitted,
 };
 
 const isEnabled = (
