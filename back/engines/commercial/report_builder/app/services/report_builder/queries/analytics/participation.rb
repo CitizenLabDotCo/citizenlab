@@ -8,7 +8,8 @@ module ReportBuilder
       project_id: nil,
       resolution: nil,
       compare_start_at: nil,
-      compare_end_at: nil
+      compare_end_at: nil,
+      **_other_props
     )
       # First, the time series
       inputs_time_series = {
