@@ -78,7 +78,7 @@ const MethodsUsedCard = ({
               nameColor="black"
               bottomLabel={
                 comparedCounts && previousDays
-                  ? formatMessage(messages.lastXDays, {
+                  ? formatMessage(messages.previousXDays, {
                       days: previousDays,
                       count: bottomLabelValue ?? 0,
                     })
