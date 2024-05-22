@@ -55,7 +55,7 @@ const Actions = ({
   const checkbox = (
     <Box as="label" display="flex" alignItems="center">
       <Checkbox
-        dataTestId="e2e-post-anonymously-checkbox"
+        dataTestId="e2e-post-proposal-anonymously-checkbox"
         ml="8px"
         mr="4px"
         checked={postAnonymously}
