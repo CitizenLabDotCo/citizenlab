@@ -36,5 +36,13 @@ describe XlsxExport::AttendeesGenerator do
       field_idx = headers.find_index 'Hidden field'
       expect(field_idx).to be_present
     end
+
+    context 'when event has no attendees' do
+      let(:xlsx) { service.generate_attendees_xlsx([]) }
+
+      it 'contains only the header row' do
+        expect(worksheet.sheet_data.size).to eq(1)
+      end
+    end
   end
 end
