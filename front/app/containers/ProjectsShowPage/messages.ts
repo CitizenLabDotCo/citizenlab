@@ -49,9 +49,9 @@ export default defineMessages({
     id: 'app.containers.Projects.events',
     defaultMessage: 'Events',
   },
-  metaTitle: {
-    id: 'app.containers.Projects.metaTitle',
-    defaultMessage: 'Project: {projectTitle}',
+  metaTitle1: {
+    id: 'app.containers.Projects.metaTitle1',
+    defaultMessage: 'Project: {projectTitle} | {orgName}',
   },
   upcomingEvents: {
     id: 'app.containers.Projects.upcomingEvents',

@@ -391,6 +391,23 @@ describe TimelineService do
     end
   end
 
+  describe '#last_phase?' do
+    let(:project) { create(:project_with_phases) }
+
+    it 'returns true for the last phase in a project' do
+      old_last_phase = project.phases.last
+      expect(service.last_phase?(old_last_phase)).to be true
+
+      new_last_phase = create(:phase, project: project, start_at: (old_last_phase.end_at + 1.day).to_s)
+      expect(service.last_phase?(new_last_phase)).to be true
+      expect(service.last_phase?(old_last_phase)).to be false
+    end
+
+    it 'returns false for any other phase' do
+      expect(service.last_phase?(project.phases.first)).to be false
+    end
+  end
+
   def create_active_phase(project, factory: :phase)
     now = Time.now.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     create(factory, project: project, start_at: now - 2.weeks, end_at: now)

@@ -21,7 +21,6 @@ import { FormLabel } from 'components/UI/FormComponents';
 
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 
@@ -32,7 +31,7 @@ type UpdateEmailFormProps = {
   setUpdateSuccessful: (updateSuccessful: boolean) => void;
   setOpenConfirmationModal: (openConfirmationModal: boolean) => void;
   methods: UseFormReturn<FormValues, any>;
-  user: IUserData | undefined;
+  user: IUserData;
 };
 
 const UpdateEmailForm = ({
@@ -46,10 +45,6 @@ const UpdateEmailForm = ({
   const { mutateAsync: updateUser } = useUpdateUser();
   const [error, setError] = useState<'taken' | undefined>(undefined);
   const userConfirmationEnabled = useFeatureFlag({ name: 'user_confirmation' });
-
-  if (isNilOrError(user)) {
-    return null;
-  }
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {

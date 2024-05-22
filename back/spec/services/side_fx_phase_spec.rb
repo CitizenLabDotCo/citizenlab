@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 describe SideFxPhaseService do
+  include SideFxHelper
+
   let(:service) { described_class.new }
   let(:user) { create(:user) }
   let(:phase) { create(:phase) }
@@ -11,7 +13,14 @@ describe SideFxPhaseService do
     it "logs a 'created' action when a phase is created" do
       expect { service.after_create(phase, user) }
         .to have_enqueued_job(LogActivityJob)
-        .with(phase, 'created', user, phase.created_at.to_i, project_id: phase.project_id)
+        .with(
+          phase,
+          'created',
+          user,
+          phase.created_at.to_i,
+          project_id: phase.project_id,
+          payload: { phase: clean_time_attributes(phase.attributes) }
+        )
     end
 
     it 'runs the description through the necessary steps' do
@@ -34,7 +43,17 @@ describe SideFxPhaseService do
       phase.update(title_multiloc: { en: 'changed' })
       expect { service.after_update(phase, user) }
         .to have_enqueued_job(LogActivityJob)
-        .with(phase, 'changed', user, phase.updated_at.to_i, project_id: phase.project_id)
+        .with(
+          phase,
+          'changed',
+          user,
+          phase.updated_at.to_i,
+          project_id: phase.project_id,
+          payload: {
+            change: sanitize_change(phase.saved_changes),
+            phase: clean_time_attributes(phase.attributes)
+          }
+        )
     end
 
     describe 'changing attributes' do
@@ -86,7 +105,7 @@ describe SideFxPhaseService do
       freeze_time do
         frozen_phase = phase.destroy
         expect { service.after_destroy(frozen_phase, user) }
-          .to have_enqueued_job(LogActivityJob)
+          .to have_enqueued_job(LogActivityJob).exactly(1).times
       end
     end
   end

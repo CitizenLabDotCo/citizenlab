@@ -111,7 +111,20 @@ class TimelineService
   end
 
   def previous_phase(phase)
-    Phase.where('project_id = ? AND start_at < ?', phase.project_id, phase.start_at).order(start_at: :desc).take
+    Phase
+      .where.not(id: phase.id)
+      .where(project_id: phase.project_id)
+      .where('start_at < ?', phase.start_at)
+      .order(start_at: :desc)
+      .first
+  end
+
+  def last_phase?(phase)
+    other_project_phases = Phase.where(project_id: phase.project_id).where.not(id: phase.id)
+    return true if other_project_phases.blank?
+    return false if !phase.start_at
+
+    other_project_phases.maximum(:start_at) < phase.start_at
   end
 
   private
