@@ -239,10 +239,10 @@ describe Permissions::BasePermissionsService do
         it { expect(denied_reason).to eq 'missing_user_requirements' }
       end
 
-      context 'when light confirmed resident who is not a group member' do
+      context 'when light unconfirmed resident who is not a group member' do
         before { user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}) }
 
-        it { expect(denied_reason).to eq 'not_in_group' }
+        it { expect(denied_reason).to eq 'missing_user_requirements' }
       end
 
       context 'when fully registered resident who is not a group member' do

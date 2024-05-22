@@ -67,25 +67,24 @@ module Permissions
     # User methods
     def user_denied_reason(permission, user, scope = nil)
       if permission.permitted_by == 'everyone'
-        user ||= User.new
+        nil
       else
         return USER_DENIED_REASONS[:not_signed_in] unless user
         return USER_DENIED_REASONS[:blocked] if user.blocked?
 
-        unless user.confirmation_required? # Ignore non confirmed users as this will be picked up by UserRequirementsService
-          return USER_DENIED_REASONS[:not_active] unless user.active?
-          return if UserRoleService.new.can_moderate? scope, user
-          return USER_DENIED_REASONS[:not_permitted] if permission.permitted_by == 'admins_moderators'
+        # TODO: JS - Can we change this some more?
+        return USER_DENIED_REASONS[:missing_user_requirements] if user.confirmation_required?
+        return USER_DENIED_REASONS[:not_active] unless user.active?
+        return if UserRoleService.new.can_moderate? scope, user
+        return USER_DENIED_REASONS[:not_permitted] if permission.permitted_by == 'admins_moderators'
+        return USER_DENIED_REASONS[:missing_user_requirements] unless user_requirements_service.requirements(permission, user)[:permitted]
 
-          if permission.permitted_by == 'groups'
-            reason = denied_when_permitted_by_groups?(permission, user)
-            return USER_DENIED_REASONS[reason] if reason.present?
-          end
+        if permission.permitted_by == 'groups'
+          reason = denied_when_permitted_by_groups?(permission, user)
+          return USER_DENIED_REASONS[reason] if reason.present?
         end
       end
-      return if user_requirements_service.requirements(permission, user)[:permitted]
-
-      USER_DENIED_REASONS[:missing_user_requirements]
+      nil
     end
 
     # NOTE: method overridden in the verification engine
@@ -94,7 +93,7 @@ module Permissions
     end
 
     def user_requirements_service
-      @user_requirements_service ||= Permissions::UserRequirementsService.new
+      @user_requirements_service ||= Permissions::UserRequirementsService.new(check_groups: false)
     end
 
     def user_can_moderate_something?(user)

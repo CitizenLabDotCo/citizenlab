@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 class Permissions::UserRequirementsService
+
+  def initialize(check_groups: true)
+    # This allows us to ignore groups when calling from within PermissionsService where groups are separately checked
+    @check_groups = check_groups
+  end
+
   def requirements(permission, user)
     requirements = base_requirements permission
     mark_satisfied_requirements! requirements, permission, user if user
@@ -60,7 +66,7 @@ class Permissions::UserRequirementsService
     end
 
     groups = users.deep_dup.tap do |requirements|
-      requirements[:special][:group_membership] = 'require'
+      requirements[:special][:group_membership] = 'require' if @check_groups
     end
 
     case permission.permitted_by
