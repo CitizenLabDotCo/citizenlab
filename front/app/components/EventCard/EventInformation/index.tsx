@@ -159,7 +159,9 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
           )}
           {onlineLink && (
             // The zIndex and position relative are needed to make sure
-            // the link is clickable by moving it to the top of the card
+            // the link is clickable by moving it to the top of the card.
+            // Without them, the link is not clickable because the primary
+            // link is extending the hitbox over the whole card
             <Box display="flex" mb="12px" position="relative" zIndex="2">
               <Icon
                 my="auto"
@@ -218,7 +220,9 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
       </Box>
       <Box position="relative" zIndex="2">
         {/* The zIndex and position relative are needed to make sure these
-          are clickable by moving them to the top of the card */}
+          are clickable by moving them to the top of the card. Without them,
+          these are not clickable because the primary link is extending
+          the hitbox over the whole card */}
         {isPastEvent ? (
           <Button
             ml="auto"
