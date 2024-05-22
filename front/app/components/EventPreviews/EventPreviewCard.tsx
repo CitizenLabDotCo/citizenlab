@@ -77,8 +77,18 @@ const EventPreviewCard = ({ event }: EventPreviewCardProps) => {
       }
       w={isTablet ? (isMobile ? '100%' : '300px') : '340px'}
       h="58px"
+      tabIndex={0}
       onClick={() => {
         clHistory.push(`/events/${event.id}`, { scrollToTop: true });
+      }}
+      onKeyDown={(
+        e:
+          | React.KeyboardEvent<HTMLLIElement>
+          | React.KeyboardEvent<HTMLDivElement>
+      ) => {
+        if (e.key === 'Enter') {
+          clHistory.push(`/events/${event.id}`, { scrollToTop: true });
+        }
       }}
       py="4px"
       flexShrink={0}
