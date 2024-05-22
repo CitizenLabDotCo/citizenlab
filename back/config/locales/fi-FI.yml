@@ -200,8 +200,8 @@ fi:
       subject: '%{organizationName}: Palauta salasanasi'
       title_reset_your_password: 'Valitse uusi salasana'
   xlsx_export:
+    anonymous: 'Nimetön'
     column_headers:
-      anonymous: 'Nimetön'
       assignee_fullname: 'Valtuutettu'
       assignee_email: 'Valtuutetun sähköpostiosoite'
       attachments: 'Liitteet'
