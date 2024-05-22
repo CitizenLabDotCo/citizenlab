@@ -200,8 +200,8 @@ lb:
       subject: '%{organizationName}: Äert Passwuert zerécksetzen'
       title_reset_your_password: 'Wielt en neit Passwuert'
   xlsx_export:
+    anonymous: 'Anonym'
     column_headers:
-      anonymous: 'Anonym'
       assignee_fullname: 'Mandataire'
       assignee_email: 'E-Mail vum Beoptragten'
       attachments: 'Uschlëss'
