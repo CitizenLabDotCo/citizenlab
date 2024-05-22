@@ -200,8 +200,8 @@ ar-MA:
       subject: '%{organizationName}: إعادة تعيين كلمة المرور'
       title_reset_your_password: 'اختر كلمة مرور جديدة'
   xlsx_export:
+    anonymous: 'مجهول'
     column_headers:
-      anonymous: 'مجهول'
       assignee_fullname: 'المعيّن إليه'
       assignee_email: 'البريد الإلكتروني للمعيَّن إليه'
       attachments: 'المرفقات'
