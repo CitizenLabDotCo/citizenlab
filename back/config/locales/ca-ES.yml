@@ -200,8 +200,8 @@ ca:
       subject: '%{organizationName}: Restableix la teva contrasenya'
       title_reset_your_password: 'Trieu una contrasenya nova'
   xlsx_export:
+    anonymous: 'Anònim'
     column_headers:
-      anonymous: 'Anònim'
       assignee_fullname: 'Cesionari'
       assignee_email: 'Correu electrònic del cessionari'
       attachments: 'Adjunts'
