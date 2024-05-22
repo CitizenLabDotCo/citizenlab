@@ -103,7 +103,7 @@ const ManagementFeedRow = ({ item }: { item: ManagementFeedData }) => {
         </Td>
         <Td>
           {getActionTranslation()}
-          {item.attributes.action === 'changed' && (
+          {item.attributes.action === 'changed' && item.attributes.change && (
             <Button
               buttonStyle="text"
               icon="chevron-down"

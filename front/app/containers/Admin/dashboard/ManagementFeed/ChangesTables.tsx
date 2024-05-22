@@ -86,6 +86,7 @@ const ChangesTables = ({
   changes: Record<string, any[]> | null;
 }) => {
   const { formatMessage } = useIntl();
+
   if (!changes) {
     return null;
   }
