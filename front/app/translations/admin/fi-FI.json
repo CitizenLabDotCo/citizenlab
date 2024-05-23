@@ -2549,7 +2549,6 @@
   "app.modules.commercial.analytics.admin.components.Proposals.totalProposals": "Ehdotuksia yhteensä",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "Uudet rekisteröinnit",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRate": "Rekisteröintiprosentti",
-  "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip": "Prosenttiosuus kaikista rekisteröinneistä verrattuna kaikkiin vierailijoihin.",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Rekisteröinnit",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Ilmoittautumiset yhteensä",
   "app.modules.commercial.analytics.admin.components.Tab": "Vierailijat",

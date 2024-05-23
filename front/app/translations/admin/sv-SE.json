@@ -2549,7 +2549,6 @@
   "app.modules.commercial.analytics.admin.components.Proposals.totalProposals": "Totalt antal förslag",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "Nya registreringar",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRate": "Registreringsfrekvens",
-  "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip": "Procentuell andel av alla registreringar jämfört med alla besökare.",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Registreringar",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Totalt antal registreringar",
   "app.modules.commercial.analytics.admin.components.Tab": "Besökare",

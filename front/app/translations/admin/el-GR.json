@@ -1756,7 +1756,6 @@
   "app.modules.commercial.analytics.admin.components.Proposals.totalProposals": "Σύνολο προτάσεων",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "Νέες εγγραφές",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRate": "Ποσοστό εγγραφής",
-  "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip": "Ποσοστό όλων των εγγραφών σε σύγκριση με όλους τους επισκέπτες.",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Registrations",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Σύνολο εγγραφών",
   "app.modules.commercial.analytics.admin.components.Tab": "Επισκέπτες",

@@ -8,6 +8,7 @@ import {
   SurveyQuestionResultProps,
   VisitorsTrafficSourcesProps,
   DemographicsProps,
+  RegistrationsProps,
 } from './requestTypes';
 // Response types
 import {
@@ -20,6 +21,7 @@ import { DemographicsResponse } from './responseTypes/DemographicsWidget';
 import { MostReactedIdeasResponse } from './responseTypes/MostReactedIdeasWidget';
 import { PostsByTimeResponse } from './responseTypes/PostsByTimeWidget';
 import { ReactionsByTimeResponse } from './responseTypes/ReactionsByTimeWidget';
+import { RegistrationsResponse } from './responseTypes/RegistrationsWidget';
 import { SingleIdeaResponse } from './responseTypes/SingleIdeaWidget';
 import { SurveyQuestionResultResponse } from './responseTypes/SurveyQuestionResultWidget';
 import { VisitorsTrafficSourcesResponse } from './responseTypes/VisitorsTrafficSourcesWidget';
@@ -219,6 +221,32 @@ export const useReactionsByTimeLive = (
   return useGraphDataUnitsLive<ReactionsByTimeResponse>(
     {
       resolved_name: 'ReactionsByTimeWidget',
+      props,
+    },
+    { onSuccess }
+  );
+};
+
+export const useRegistrations = (
+  props: RegistrationsProps,
+  { onSuccess }: { onSuccess?: () => void }
+) => {
+  return useGraphDataUnits<RegistrationsResponse>(
+    {
+      resolved_name: 'RegistrationsWidget',
+      props,
+    },
+    { onSuccess }
+  );
+};
+
+export const useRegistrationsLive = (
+  props: RegistrationsProps,
+  { onSuccess }: { onSuccess?: () => void }
+) => {
+  return useGraphDataUnitsLive<RegistrationsResponse>(
+    {
+      resolved_name: 'RegistrationsWidget',
       props,
     },
     { onSuccess }

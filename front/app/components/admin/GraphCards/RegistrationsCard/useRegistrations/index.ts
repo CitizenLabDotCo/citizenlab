@@ -1,13 +1,14 @@
 import { useMemo, useState } from 'react';
 
-import useAnalytics from 'api/analytics/useAnalytics';
+import { useRegistrationsLive } from 'api/graph_data_units';
+
+import { getComparedPeriod } from 'components/admin/GraphCards/_utils/query';
 
 import { useIntl } from 'utils/cl-intl';
 
 import { parseTimeSeries, parseStats, parseExcelData } from './parse';
-import { query } from './query';
 import { getTranslations } from './translations';
-import { QueryParameters, Response } from './typings';
+import { QueryParameters } from './typings';
 
 export default function useRegistrations({
   startAtMoment,
@@ -17,13 +18,16 @@ export default function useRegistrations({
   const { formatMessage } = useIntl();
   const [currentResolution, setCurrentResolution] = useState(resolution);
 
-  const { data: analytics } = useAnalytics<Response>(
-    query({
-      startAtMoment,
-      endAtMoment,
+  const { data: analytics } = useRegistrationsLive(
+    {
+      start_at: startAtMoment?.toISOString(),
+      end_at: endAtMoment?.toISOString(),
       resolution,
-    }),
-    () => setCurrentResolution(resolution)
+      ...getComparedPeriod(resolution),
+    },
+    {
+      onSuccess: () => setCurrentResolution(resolution),
+    }
   );
 
   const translations = getTranslations(formatMessage);

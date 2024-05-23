@@ -2549,7 +2549,6 @@
   "app.modules.commercial.analytics.admin.components.Proposals.totalProposals": "إجمالي المقترحات",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "تسجيلات جديدة",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRate": "معدل التسجيل",
-  "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip": "نسبة جميع التسجيلات إلى جميع الزائرين.",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "التسجيلات",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "إجمالي التسجيلات",
   "app.modules.commercial.analytics.admin.components.Tab": "زوار",

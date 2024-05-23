@@ -4,6 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import GraphCard from 'components/admin/GraphCard';
 import { getTimePeriodTranslationByResolution } from 'components/admin/GraphCards/_utils/resolution';
+import { MARGINS } from 'components/admin/GraphCards/_utils/style';
 import {
   ProjectId,
   Dates,
@@ -106,7 +107,7 @@ const RegistrationsCard = ({
                 endAtMoment={endAtMoment}
                 resolution={currentResolution}
                 innerRef={graphRef}
-                layout={layout}
+                margin={MARGINS[layout]}
               />
             </Box>
           </Box>
@@ -121,7 +122,7 @@ const RegistrationsCard = ({
               endAtMoment={endAtMoment}
               resolution={currentResolution}
               innerRef={graphRef}
-              layout={layout}
+              margin={MARGINS[layout]}
             />
           </Box>
         )}

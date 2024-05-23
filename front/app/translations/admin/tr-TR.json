@@ -2549,7 +2549,6 @@
   "app.modules.commercial.analytics.admin.components.Proposals.totalProposals": "Toplam teklifler",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "Yeni kayıtlar",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRate": "Kayıt ücreti",
-  "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip": "Tüm ziyaretçilere kıyasla tüm kayıtların yüzdesi.",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Kayıtlar",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Toplam kayıtlar",
   "app.modules.commercial.analytics.admin.components.Tab": "Ziyaretçiler",

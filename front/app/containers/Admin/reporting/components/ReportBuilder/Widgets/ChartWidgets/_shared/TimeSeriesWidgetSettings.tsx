@@ -27,7 +27,7 @@ const TimeSeriesWidgetSettings = ({ onChangeDateRange }: Props) => {
   );
 };
 
-const ResolutionInput = () => {
+export const ResolutionInput = () => {
   const {
     actions: { setProp },
     resolution,

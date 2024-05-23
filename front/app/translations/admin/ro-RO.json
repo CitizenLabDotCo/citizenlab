@@ -1341,7 +1341,6 @@
   "app.modules.commercial.analytics.admin.components.Proposals.totalProposals": "Total propuneri",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "New registrations",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRate": "Rata de înregistrare",
-  "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip": "Procentul tuturor înregistrărilor în comparație cu toți vizitatorii.",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Registrations",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Total registrations",
   "app.modules.commercial.analytics.admin.components.Tab": "Vizitatori",
