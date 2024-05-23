@@ -27,13 +27,13 @@ const SortFilterDropdown = ({
   defaultSortingMethod = 'new',
   onChange,
 }: Props) => {
-  const [selectedValue, setSelectedValue] = useState<Sort[]>([
+  const [sortingMethod, setSortingMethod] = useState<Sort[]>([
     defaultSortingMethod,
   ]);
   const { formatMessage } = useIntl();
 
   const handleOnChange = (value: Sort[]) => {
-    setSelectedValue(value);
+    setSortingMethod(value);
     onChange(value[0]);
   };
 
@@ -45,7 +45,7 @@ const SortFilterDropdown = ({
   });
 
   useEffect(() => {
-    setSelectedValue([defaultSortingMethod]);
+    setSortingMethod([defaultSortingMethod]);
   }, [defaultSortingMethod]);
 
   return (
@@ -54,7 +54,7 @@ const SortFilterDropdown = ({
         <FormattedMessage
           {...messages.a11y_itemsHaveChanged}
           values={{
-            sortOder: formatMessage(optionMessages[selectedValue[0]]),
+            sortOder: formatMessage(optionMessages[sortingMethod[0]]),
           }}
         />
       </ScreenReaderOnly>
@@ -62,7 +62,7 @@ const SortFilterDropdown = ({
         id="e2e-initiatives-sort-dropdown"
         title={<FormattedMessage {...messages.sortTitle} />}
         name="sort"
-        selected={selectedValue}
+        selected={sortingMethod}
         values={options}
         onChange={handleOnChange}
         multipleSelectionAllowed={false}
