@@ -1348,9 +1348,10 @@ CREATE VIEW public.analytics_dimension_users AS
  SELECT u.id,
     COALESCE(((u.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role,
     u.invite_status,
-    (v.id IS NOT NULL) AS is_visitor
+    (users_with_visits.dimension_user_id IS NOT NULL) AS has_visits
    FROM (public.users u
-     LEFT JOIN public.analytics_fact_visits v ON ((v.dimension_user_id = u.id)));
+     LEFT JOIN ( SELECT DISTINCT analytics_fact_visits.dimension_user_id
+           FROM public.analytics_fact_visits) users_with_visits ON ((users_with_visits.dimension_user_id = u.id)));
 
 
 --

@@ -147,7 +147,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
       )
     end
 
-    it 'returns visitors and a separate count for participants filtered by is_visitor' do
+    it 'returns visitors and a separate count for participants filtered by has_visits' do
       user = create(:user)
 
       create(:fact_visit, dimension_date_first_action: @dimension_date_sept, dimension_user_id: user.id)
@@ -181,7 +181,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
       )
     end
 
-    it 'returns visitors and a separate count for participants filtered by is_visitor in compared period' do
+    it 'returns visitors and a separate count for participants filtered by has_visits in compared period' do
       user1 = create(:user)
       user2 = create(:user)
 
