@@ -56,12 +56,12 @@ module MultiTenancy
 
       def run_for_localhost
         [ADMIN_1_ATTRS, ADMIN_2_ATTRS, MODERATOR_ATTRS, USER_ATTRS].each do |user_attrs|
-          UserService.update_in_tenant_template!(User.new, build_attrs.merge(user_attrs))
+          UserService.create_in_tenant_template!(build_attrs.merge(user_attrs))
         end
 
         runner.num_users.times do
           user_attrs = build_attrs.merge({ password: 'democracy2.0' })
-          UserService.update_in_tenant_template!(User.new, user_attrs)
+          UserService.create_in_tenant_template!(user_attrs)
         end
       end
 

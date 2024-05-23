@@ -42,9 +42,9 @@ module AdminApi
     end
 
     def update
-      UserService.update_in_admin_api(@user, user_params, confirm_user?)
+      updated = UserService.update_in_admin_api(@user, user_params, confirm_user?)
 
-      if @user.errors.empty?
+      if updated
         SideFxUserService.new.after_update(@user, nil)
         # This uses default model serialization
         render json: @user, status: :ok

@@ -6,16 +6,11 @@
 #
 class UserService
   class << self
-    def create_in_web_api(new_user, user_params, &)
-      new_user.assign_attributes(user_params)
+    def upsert_in_web_api(new_or_existing_user, user_params, &)
+      new_or_existing_user.assign_attributes(user_params)
       yield
-      new_user.save(context: :form_submission) # `on: :create` and `on: :update` callbacks/validations are not called
-    end
-
-    def update_in_web_api(user, user_params, &)
-      user.assign_attributes(user_params)
-      yield
-      user.save(context: :form_submission) # `on: :create` and `on: :update` callbacks/validations are not called
+      # `on: :create` and `on: :update` callbacks/validations are not called
+      new_or_existing_user.save(context: :form_submission)
     end
 
     def create_in_admin_api(user_params, confirm_user)
@@ -48,6 +43,7 @@ class UserService
 
     def assign_params_in_accept_invite(user, user_params)
       user.assign_attributes(user_params.merge(invite_status: 'accepted'))
+      user
     end
 
     # User can also be updated in input importer by PATCH /users/:id (`update_in_web_api` is called)
@@ -57,6 +53,10 @@ class UserService
         new_user.unique_code = SecureRandom.uuid
       end
       new_user
+    end
+
+    def create_in_tenant_template!(user_params = {})
+      update_in_tenant_template!(User.new, user_params)
     end
 
     def update_in_tenant_template!(user, user_params = {})
