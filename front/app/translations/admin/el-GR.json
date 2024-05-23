@@ -2561,7 +2561,7 @@
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Registrations",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Σύνολο εγγραφών",
   "app.modules.commercial.analytics.admin.components.Tab": "Επισκέπτες",
-  "app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage3": "Η \"διάρκεια επίσκεψης\" και οι \"προβολές σελίδων ανά επίσκεψη\" υπολογίζονται μόνο για τους χρήστες που αποδέχθηκαν τα cookies. Οι επισκέψεις και οι επισκέπτες βασίζονται σε όλους τους χρήστες.",
+  "app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage4": "Η \"διάρκεια επίσκεψης\" και οι \"προβολές σελίδων ανά επίσκεψη\" καταμετρώνται μόνο για τους επισκέπτες που αποδέχτηκαν τα cookies. Οι επισκέψεις και οι επισκέπτες βασίζονται σε όλους τους επισκέπτες.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last30Days": "Τελευταίες 30 ημέρες:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last7Days": "Τελευταίες 7 ημέρες:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.pageViews": "Προβολές σελίδων ανά επίσκεψη",
