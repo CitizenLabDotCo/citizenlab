@@ -2561,7 +2561,7 @@
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Registrations",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Total registrations",
   "app.modules.commercial.analytics.admin.components.Tab": "Visitatori",
-  "app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage3": "La \"durata della visita\" e le \"pagine viste per visita\" sono conteggiate solo per gli utenti che hanno accettato i cookie. Le visite e i visitatori si basano su tutti gli utenti.",
+  "app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage4": "La \"durata della visita\" e le \"pagine viste per visita\" sono conteggiate solo per i visitatori che hanno accettato i cookie. Le visite e i visitatori si basano su tutti i visitatori.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last30Days": "Ultimi 30 giorni:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last7Days": "Ultimi 7 giorni:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.pageViews": "Visite pagina per visita",
