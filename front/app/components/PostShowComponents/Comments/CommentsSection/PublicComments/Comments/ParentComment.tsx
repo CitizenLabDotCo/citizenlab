@@ -81,7 +81,7 @@ const ParentComment = ({
     const commentingDisabledReason =
       postType === 'initiative'
         ? commentingPermissionInitiative?.disabledReason
-        : idea?.data.attributes.action_descriptor.commenting_idea
+        : idea?.data.attributes.action_descriptors.commenting_idea
             .disabled_reason;
     const showCommentForm = isNil(commentingDisabledReason);
     const hasChildComments = childCommentIds && childCommentIds.length > 0;

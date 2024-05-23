@@ -405,7 +405,7 @@ resource 'Ideas' do
           do_request
 
           assert_status 401
-          expect(json_response_body).to include_response_error(:base, 'not_ideation')
+          expect(json_response_body).to include_response_error(:base, 'posting_not_supported')
         end
       end
 

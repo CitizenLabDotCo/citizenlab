@@ -13,9 +13,7 @@ import {
 import useInitiativeStatus from 'api/initiative_statuses/useInitiativeStatus';
 import { IInitiative, IInitiativeData } from 'api/initiatives/types';
 
-import useInitiativesPermissions, {
-  InitiativePermissionsDisabledReason,
-} from 'hooks/useInitiativesPermissions';
+import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
@@ -29,6 +27,7 @@ import Ineligible from './Status/Ineligible';
 import Proposed from './Status/Proposed';
 import ReviewPending from './Status/ReviewPending';
 import ThresholdReached from './Status/ThresholdReached';
+import { InitiativeDisabledReason } from 'api/initiative_action_descriptors/types';
 
 export interface StatusComponentProps {
   initiative: IInitiativeData;
@@ -38,7 +37,7 @@ export interface StatusComponentProps {
   onReaction: () => void;
   onCancelReaction: () => void;
   onScrollToOfficialFeedback: () => void;
-  disabledReason?: InitiativePermissionsDisabledReason | null | undefined;
+  disabledReason?: InitiativeDisabledReason | null | undefined;
 }
 
 /** Maps the initiative status and whether the user reacted or not to the right component to render */

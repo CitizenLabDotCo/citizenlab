@@ -39,7 +39,7 @@ const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
   }, [divId]);
 
   const { enabled, disabled_reason } =
-    project.attributes.action_descriptor.taking_survey;
+    project.attributes.action_descriptors.taking_survey;
 
   const showSignIn = enabled || isFixableByAuthentication(disabled_reason);
 

@@ -48,7 +48,7 @@ const AssignSingleVoteButton = ({
   const maxVotes = phase?.attributes.voting_max_total;
   const maxVotesReached = maxVotes && numberOfVotesCast === maxVotes;
 
-  const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
+  const actionDescriptor = idea?.data.attributes.action_descriptors.voting;
 
   if (
     !actionDescriptor ||

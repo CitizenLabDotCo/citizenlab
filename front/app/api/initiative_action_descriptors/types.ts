@@ -1,6 +1,7 @@
 import { Keys } from 'utils/cl-react-query/types';
 
 import initiativeActionDescriptorsKeys from './keys';
+import { ActionDescriptor, UserDisabledReason } from 'utils/actionDescriptors';
 
 export type InitiativeActionDescriptorsKeys = Keys<
   typeof initiativeActionDescriptorsKeys
@@ -11,13 +12,7 @@ export type IInitiativeAction =
   | 'commenting_initiative'
   | 'reacting_initiative';
 
-export type InitiativeDisabledReason =
-  | 'not_permitted'
-  | 'not_verified'
-  | 'not_in_group'
-  | 'not_signed_in'
-  | 'not_active'
-  | 'missing_user_requirements';
+export type InitiativeDisabledReason = UserDisabledReason;
 
 // Confusingly, 'comment_reacting_initiative' is an action descriptor, but
 // not an action, and it doesn't have its own granular permissions.
@@ -35,10 +30,7 @@ export type IInitiativeActionDescriptors = {
   data: {
     type: 'action_descriptors';
     attributes: {
-      [key in IInitiativeActionDescriptorName]: {
-        enabled: boolean;
-        disabled_reason: InitiativeDisabledReason | null;
-      };
+      [key in IInitiativeActionDescriptorName]: ActionDescriptor<InitiativeDisabledReason>;
     };
   };
 };

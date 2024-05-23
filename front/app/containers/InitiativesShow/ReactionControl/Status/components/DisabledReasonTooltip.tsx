@@ -7,8 +7,6 @@ import styled from 'styled-components';
 
 import { InitiativeDisabledReason } from 'api/initiative_action_descriptors/types';
 
-import { InitiativePermissionsDisabledReason } from 'hooks/useInitiativesPermissions';
-
 import { FormattedMessage } from 'utils/cl-intl';
 import globalMessages from 'utils/messages';
 
@@ -46,12 +44,11 @@ const TooltipContentText = styled.div`
     white-space: normal;
     overflow-wrap: break-word;
     word-wrap: break-word;
-    word-break: break-all;
     word-break: break-word;
     hyphens: auto;
     display: inline;
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
     cursor: pointer;
     transition: all 100ms ease-out;
 
@@ -67,10 +64,15 @@ interface Props {
 }
 
 const disabledMessages: {
-  [key in InitiativePermissionsDisabledReason]: MessageDescriptor;
+  [key in InitiativeDisabledReason]: MessageDescriptor | undefined;
 } = {
-  not_permitted: messages.votingNotPermitted,
-  not_in_group: globalMessages.notInGroup,
+  user_not_permitted: messages.votingNotPermitted,
+  user_not_in_group: globalMessages.notInGroup,
+  user_blocked: messages.votingNotPermitted,
+  user_not_signed_in: undefined,
+  user_not_active: undefined,
+  user_not_verified: undefined,
+  user_missing_requirements: undefined,
 };
 
 const DisabledReasonTooltip = ({ disabledReason }: Props) => {

@@ -22,7 +22,7 @@ const PrintReportButton = ({ reportId }: Props) => {
   if (!report) return null;
 
   const canEdit =
-    report.data.attributes.action_descriptor.editing_report.enabled;
+    report.data.attributes.action_descriptors.editing_report.enabled;
 
   return (
     <Button

@@ -31,7 +31,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     object.header_bg && object.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
   end
 
-  attribute :action_descriptor do |object, params|
+  attribute :action_descriptors do |object, params|
     @project_permissions_service = params[:permissions_service] || Permissions::ProjectPermissionsService.new
     @project_permissions_service.action_descriptors object, current_user(params)
   end

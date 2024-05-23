@@ -45,7 +45,7 @@ const reports = [
       name: 'Report 1',
       created_at: '2022-12-18',
       updated_at: '2022-12-19',
-      action_descriptor: {
+      action_descriptors: {
         editing_report: {
           enabled: true,
           disabled_reason: null,
@@ -66,7 +66,7 @@ const reports = [
       name: 'Report 2',
       created_at: '2022-12-20',
       updated_at: '2022-12-21',
-      action_descriptor: {
+      action_descriptors: {
         editing_report: {
           enabled: true,
           disabled_reason: null,

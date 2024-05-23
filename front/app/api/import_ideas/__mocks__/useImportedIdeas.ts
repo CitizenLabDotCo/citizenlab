@@ -28,7 +28,7 @@ export const ideasData: IIdeaData[] = [
       proposed_budget: null,
       baskets_count: 0,
       votes_count: 0,
-      action_descriptor: {
+      action_descriptors: {
         reacting_idea: {
           enabled: true,
           disabled_reason: null,
@@ -36,28 +36,28 @@ export const ideasData: IIdeaData[] = [
           up: {
             enabled: true,
             disabled_reason: null,
-            future_enabled: null,
+            future_enabled_at: null,
           },
           down: {
             enabled: true,
             disabled_reason: null,
-            future_enabled: null,
+            future_enabled_at: null,
           },
         },
         commenting_idea: {
           enabled: false,
-          disabled_reason: 'not_permitted',
-          future_enabled: null,
+          disabled_reason: 'user_not_permitted',
+          future_enabled_at: null,
         },
         comment_reacting_idea: {
           enabled: true,
           disabled_reason: null,
-          future_enabled: null,
+          future_enabled_at: null,
         },
         voting: {
           enabled: false,
-          disabled_reason: 'not_permitted',
-          future_enabled: null,
+          disabled_reason: 'user_not_permitted',
+          future_enabled_at: null,
         },
       },
       anonymous: false,
