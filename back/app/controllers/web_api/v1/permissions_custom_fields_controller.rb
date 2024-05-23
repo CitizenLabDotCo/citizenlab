@@ -6,8 +6,9 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
 
   def index
     authorize PermissionsCustomField.new(permission: permission)
-    permissions_custom_fields = permission.permissions_custom_fields.includes(:custom_field)
+    permissions_custom_fields = permission.permissions_custom_fields
     permissions_custom_fields = paginate permissions_custom_fields
+    permissions_custom_fields = permissions_custom_fields.includes(:custom_field)
 
     render json: linked_json(
       permissions_custom_fields,
@@ -77,7 +78,7 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
   end
 
   def permission_scope
-    PermissionsService.new.permission_scope_from_permissions_params(params)
+    Permissions::PermissionsUpdateService.new.permission_scope_from_permissions_params(params)
   end
 
   def permission_action

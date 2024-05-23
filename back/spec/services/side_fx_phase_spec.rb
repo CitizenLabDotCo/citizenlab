@@ -124,21 +124,21 @@ describe SideFxPhaseService do
 
   context 'with phase permissions' do
     subject(:service) do
-      described_class.new.tap { |s| s.permissions_service = permissions_service }
+      described_class.new.tap { |s| s.permissions_update_service = permissions_update_service }
     end
 
-    let(:permissions_service) { instance_double(PermissionsService) }
+    let(:permissions_update_service) { instance_double(Permissions::PermissionsUpdateService) }
 
     describe 'after_create' do
       specify do
-        expect(permissions_service).to receive(:update_permissions_for_scope).with(phase)
+        expect(permissions_update_service).to receive(:update_permissions_for_scope).with(phase)
         service.after_create(phase, user)
       end
     end
 
     describe 'after_update' do
       specify do
-        expect(permissions_service).to receive(:update_permissions_for_scope).with(phase)
+        expect(permissions_update_service).to receive(:update_permissions_for_scope).with(phase)
         service.after_update(phase, user)
       end
     end

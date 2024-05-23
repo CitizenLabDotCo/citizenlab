@@ -103,7 +103,7 @@ resource 'Ideas' do
       end
       ValidationErrorHelper.new.error_fields self, Idea
       response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
-      response_field :base, "Array containing objects with signature { error: #{ParticipationPermissionsService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
+      response_field :base, "Array containing objects with signature { error: #{Permissions::IdeaPermissionsService::POSTING_DENIED_REASONS.values.join(' | ')} }", scope: :errors
 
       before do
         create(:idea_status, code: 'proposed')
@@ -141,7 +141,7 @@ resource 'Ideas' do
       parameter :assignee_id, 'The user id of the admin/moderator that takes ownership. Only allowed for admins/moderators.'
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
-    response_field :base, "Array containing objects with signature { error: #{ParticipationPermissionsService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
+    response_field :base, "Array containing objects with signature { error: #{Permissions::IdeaPermissionsService::POSTING_DENIED_REASONS.values.join(' | ')} }", scope: :errors
 
     before do
       @project = create(:single_phase_ideation_project)

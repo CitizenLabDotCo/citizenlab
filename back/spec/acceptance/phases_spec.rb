@@ -23,7 +23,7 @@ resource 'Phases' do
     let(:project_id) { @project.id }
 
     example 'List all phases of a project' do
-      PermissionsService.new.update_all_permissions
+      Permissions::PermissionsUpdateService.new.update_all_permissions
       do_request
       assert_status 200
       expect(json_response[:data].size).to eq 2
@@ -38,7 +38,7 @@ resource 'Phases' do
 
     example 'Get one phase by id' do
       create_list(:idea, 2, project: @project, phases: @project.phases)
-      PermissionsService.new.update_all_permissions
+      Permissions::PermissionsUpdateService.new.update_all_permissions
       @phase.update!(report: build(:report))
       do_request
       assert_status 200
@@ -484,7 +484,7 @@ resource 'Phases' do
         let(:participation_method) { 'information' }
 
         example 'Change a phase with ideas into an information phase' do
-          expect_any_instance_of(PermissionsService).to receive(:update_permissions_for_scope).with(phase)
+          expect_any_instance_of(Permissions::PermissionsUpdateService).to receive(:update_permissions_for_scope).with(phase)
           do_request
           assert_status 200
         end

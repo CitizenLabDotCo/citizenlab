@@ -265,9 +265,9 @@ class WebApi::V1::UsersController < ApplicationController
     when '-created_at'
       @users.order(created_at: :desc)
     when 'last_active_at'
-      @users.order(last_active_at: :asc)
+      @users.order(Arel.sql('last_active_at IS NOT NULL, last_active_at ASC'))
     when '-last_active_at'
-      @users.order(last_active_at: :desc)
+      @users.order(Arel.sql('last_active_at IS NULL, last_active_at DESC'))
     when 'last_name'
       @users.order(last_name: :asc)
     when '-last_name'
