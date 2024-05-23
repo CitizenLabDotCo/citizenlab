@@ -3,7 +3,7 @@
 class SideFxPhaseService
   include SideFxHelper
 
-  attr_writer :permissions_service
+  attr_writer :permissions_update_service
 
   def before_create(phase, user); end
 
@@ -17,7 +17,7 @@ class SideFxPhaseService
       payload: { phase: clean_time_attributes(phase.attributes) }
     )
 
-    permissions_service.update_permissions_for_scope(phase)
+    permissions_update_service.update_permissions_for_scope(phase)
 
     Surveys::WebhookManagerJob.perform_later(
       'participation_context_created',
@@ -50,7 +50,7 @@ class SideFxPhaseService
       payload: payload
     )
 
-    permissions_service.update_permissions_for_scope(phase)
+    permissions_update_service.update_permissions_for_scope(phase)
 
     %i[
       description_multiloc voting_method voting_max_votes_per_idea voting_max_total voting_min_total
@@ -109,7 +109,7 @@ class SideFxPhaseService
 
   private
 
-  def permissions_service
-    @permissions_service ||= PermissionsService.new
+  def permissions_update_service
+    @permissions_update_service ||= Permissions::PermissionsUpdateService.new
   end
 end

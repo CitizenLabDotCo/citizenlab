@@ -37,46 +37,8 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
   }
 
   attribute :action_descriptor do |object, params|
-    @participation_context_service = params[:pcs] || ParticipationPermissionsService.new
-    commenting_disabled_reason = @participation_context_service.commenting_disabled_reason_for_idea(object, current_user(params))
-    liking_disabled_reason = @participation_context_service.idea_reacting_disabled_reason_for(object, current_user(params), mode: 'up')
-    disliking_disabled_reason = @participation_context_service.idea_reacting_disabled_reason_for(object, current_user(params), mode: 'down')
-    cancelling_reactions_disabled_reason = @participation_context_service.cancelling_reacting_disabled_reason_for_idea(object, current_user(params))
-    voting_disabled_reason = @participation_context_service.voting_disabled_reason_for_idea(object, current_user(params))
-    comment_reacting_disabled_reason = @participation_context_service.reacting_disabled_reason_for_idea_comment(Comment.new(post: object), current_user(params))
-
-    {
-      commenting_idea: {
-        enabled: !commenting_disabled_reason,
-        disabled_reason: commenting_disabled_reason,
-        future_enabled: commenting_disabled_reason && @participation_context_service.future_commenting_idea_enabled_phase(object.project, current_user(params))&.start_at
-      },
-      reacting_idea: {
-        enabled: !liking_disabled_reason,
-        disabled_reason: liking_disabled_reason,
-        cancelling_enabled: !cancelling_reactions_disabled_reason,
-        up: {
-          enabled: !liking_disabled_reason,
-          disabled_reason: liking_disabled_reason,
-          future_enabled: liking_disabled_reason && @participation_context_service.future_liking_idea_enabled_phase(object.project, current_user(params))&.start_at
-        },
-        down: {
-          enabled: !disliking_disabled_reason,
-          disabled_reason: disliking_disabled_reason,
-          future_enabled: disliking_disabled_reason && @participation_context_service.future_disliking_idea_enabled_phase(object.project, current_user(params))&.start_at
-        }
-      },
-      comment_reacting_idea: {
-        enabled: !comment_reacting_disabled_reason,
-        disabled_reason: comment_reacting_disabled_reason,
-        future_enabled: comment_reacting_disabled_reason && @participation_context_service.future_comment_reacting_idea_enabled_phase(object.project, current_user(params))&.start_at
-      },
-      voting: {
-        enabled: !voting_disabled_reason,
-        disabled_reason: voting_disabled_reason,
-        future_enabled: voting_disabled_reason && @participation_context_service.future_voting_enabled_phase(object.project, current_user(params))&.start_at
-      }
-    }
+    @idea_permissions_service = params[:permissions_service] || Permissions::IdeaPermissionsService.new
+    @idea_permissions_service.action_descriptors object, current_user(params)
   end
 
   has_many :topics
