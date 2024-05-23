@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { Badge, colors, Button } from '@citizenlab/cl2-component-library';
 import { useLocation } from 'react-router-dom';
+import { useTheme } from 'styled-components';
 
 import { IAreaData } from 'api/areas/types';
 import useAddFollower from 'api/follow_unfollow/useAddFollower';
@@ -29,10 +30,13 @@ const UpdateFollowArea = ({ area }: Props) => {
   const { pathname } = useLocation();
   const localize = useLocalize();
   const { formatMessage } = useIntl();
+  const theme = useTheme();
   const isLoading = isAddingFollower || isDeletingFollower;
   const followerId = area.relationships.user_follower?.data?.id;
   const isFollowing = !!followerId;
-  const color = isFollowing ? colors.success : colors.coolGrey300;
+  const areaButtonContentColor = isFollowing
+    ? colors.white
+    : theme.colors.tenantPrimary;
   const iconName = isFollowing ? 'check-circle' : 'plus-circle';
   const localizedAreaTitle = localize(area.attributes.title_multiloc);
   const [announcement, setAnnouncement] = useState('');
@@ -76,15 +80,20 @@ const UpdateFollowArea = ({ area }: Props) => {
   };
 
   return (
-    <Badge color={color} onClick={handleFollowOrUnfollow}>
+    <Badge
+      color={theme.colors.tenantPrimary}
+      className={isFollowing ? 'inverse' : ''}
+      onClick={handleFollowOrUnfollow}
+    >
       <Button
         buttonStyle="text"
         icon={iconName}
-        iconColor={color}
+        iconColor={areaButtonContentColor}
         iconPos="right"
         padding="0px"
         my="0px"
         processing={isLoading}
+        textColor={areaButtonContentColor}
         ariaPressed={!isLoading ? isFollowing : undefined}
         data-cy={
           isFollowing ? 'e2e-unfollow-area-button' : 'e2e-follow-area-button'

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { Badge, colors, Button } from '@citizenlab/cl2-component-library';
 import { useLocation } from 'react-router-dom';
+import { useTheme } from 'styled-components';
 
 import useAddFollower from 'api/follow_unfollow/useAddFollower';
 import useDeleteFollower from 'api/follow_unfollow/useDeleteFollower';
@@ -27,12 +28,15 @@ const UpdateFollowTopic = ({ topic }: Props) => {
   const { mutate: deleteFollower, isLoading: isDeletingFollower } =
     useDeleteFollower();
   const { pathname } = useLocation();
+  const theme = useTheme();
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const isLoading = isAddingFollower || isDeletingFollower;
   const followerId = topic.relationships.user_follower?.data?.id;
   const isFollowing = !!followerId;
-  const color = isFollowing ? colors.success : colors.coolGrey300;
+  const topicButtonContentColor = isFollowing
+    ? colors.white
+    : theme.colors.tenantPrimary;
   const iconName = isFollowing ? 'check-circle' : 'plus-circle';
   const localizedTopicTitle = localize(topic.attributes.title_multiloc);
   const [announcement, setAnnouncement] = useState('');
@@ -76,15 +80,21 @@ const UpdateFollowTopic = ({ topic }: Props) => {
   };
 
   return (
-    <Badge color={color} onClick={handleFollowOrUnfollow} aria-busy={isLoading}>
+    <Badge
+      color={theme.colors.tenantPrimary}
+      className={isFollowing ? 'inverse' : ''}
+      onClick={handleFollowOrUnfollow}
+      aria-busy={isLoading}
+    >
       <Button
         buttonStyle="text"
         icon={iconName}
-        iconColor={color}
+        iconColor={topicButtonContentColor}
         iconPos="right"
         padding="0px"
         my="0px"
         processing={isLoading}
+        textColor={topicButtonContentColor}
         ariaPressed={!isLoading ? isFollowing : undefined}
         data-cy={
           isFollowing ? 'e2e-unfollow-topic-button' : 'e2e-follow-topic-button'
