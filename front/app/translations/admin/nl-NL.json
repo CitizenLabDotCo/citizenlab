@@ -18,7 +18,7 @@
   "app.Admin.ManagementFeed.userPlaceholder": "Selecteer een gebruiker",
   "app.Admin.ManagementFeed.value": "Waarde",
   "app.Admin.ManagementFeed.viewDetails": "Bekijk details",
-  "app.Admin.ManagementFeed.warning": "Experimentele functie: Een minimale lijst van geselecteerde acties die in de afgelopen 30 dagen zijn uitgevoerd door admins of managers. Niet alle acties zijn opgenomen.",
+  "app.Admin.ManagementFeed.warning": "Experimentele functionaliteit: Een minimale lijst van geselecteerde acties die in de afgelopen 30 dagen zijn uitgevoerd door platform- of projectbeheerders. Niet alle acties zijn opgenomen.",
   "app.Admin.Moderation.managementFeed": "Beheer feed",
   "app.Admin.Moderation.participationFeed": "Deelname feed",
   "app.components.Admin.Campaigns.campaignDeletionConfirmation": "Zeker weten?",
