@@ -149,7 +149,7 @@ el:
         title: Λεπτομέρειες
         description:
       other_text_field:
-        title: Αν επιλέξατε το "{other_option}", τι σκέφτεστε;
+        title: If you picked '{other_option}', what are you thinking of?
   custom_forms:
     categories:
       main_content:
