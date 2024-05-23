@@ -48,21 +48,21 @@ const ChangesTable = ({ changes }: { changes: Record<string, any> }) => {
               <Tr key={index}>
                 <Td>{key}</Td>
                 <Td>
-                  {valueKeys.map((valueKey) => (
-                    <Box key={valueKey}>
-                      <Text fontWeight="bold" color="primary" fontSize="s">
-                        {valueKey.toUpperCase()}:
-                      </Text>
-                      {/* When the value might be a project / folder / idea description, we display it as HTML */}
-                      <Box
-                        maxWidth="280px"
-                        overflowY="auto"
-                        dangerouslySetInnerHTML={{
-                          __html: value[valueKey],
-                        }}
-                      />
-                    </Box>
-                  ))}
+                  <Box maxWidth="280px" overflowY="auto">
+                    {valueKeys.map((valueKey) => (
+                      <Box key={valueKey}>
+                        <Text fontWeight="bold" color="primary" fontSize="s">
+                          {valueKey.toUpperCase()}:
+                        </Text>
+                        {/* When the value might be a project / folder / idea description, we display it as HTML */}
+                        <Box
+                          dangerouslySetInnerHTML={{
+                            __html: value[valueKey],
+                          }}
+                        />
+                      </Box>
+                    ))}
+                  </Box>
                 </Td>
               </Tr>
             );
@@ -71,7 +71,11 @@ const ChangesTable = ({ changes }: { changes: Record<string, any> }) => {
           return (
             <Tr key={index}>
               <Td>{key}</Td>
-              <Td>{value}</Td>
+              <Td>
+                <Text fontSize="s" wordBreak="break-word" color="primary">
+                  {value}
+                </Text>
+              </Td>
             </Tr>
           );
         })}
