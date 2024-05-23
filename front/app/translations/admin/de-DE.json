@@ -18,7 +18,7 @@
   "app.Admin.ManagementFeed.userPlaceholder": "Wählen Sie eine*n Nutzer*in",
   "app.Admin.ManagementFeed.value": "Wert",
   "app.Admin.ManagementFeed.viewDetails": "Details anzeigen",
-  "app.Admin.ManagementFeed.warning": "Experimentelle Funktion: Eine minimale Liste ausgewählter Aktionen, die von Admins oder Managern in den letzten 30 Tagen durchgeführt wurden. Es sind nicht alle Aktionen enthalten.",
+  "app.Admin.ManagementFeed.warning": "Experimentelle Funktion: Eine minimale Liste ausgewählter Aktionen, die von Admins oder Projektmanager*innen in den letzten 30 Tagen durchgeführt wurden. Es sind nicht alle Aktionen enthalten.",
   "app.Admin.Moderation.managementFeed": "Management-Feed",
   "app.Admin.Moderation.participationFeed": "Teilnahme-Feed",
   "app.components.Admin.Campaigns.campaignDeletionConfirmation": "Sind Sie sicher?",
