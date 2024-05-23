@@ -39,20 +39,20 @@ const UpdateFollowTopic = ({ topic }: Props) => {
     : theme.colors.tenantPrimary;
   const iconName = isFollowing ? 'check-circle' : 'plus-circle';
   const localizedTopicTitle = localize(topic.attributes.title_multiloc);
-  const [announcement, setAnnouncement] = useState('');
+  const [screenReaderAnnouncement, setScreenReaderAnnouncement] = useState('');
+  const messageToAnnounce = isFollowing
+    ? formatMessage(messages.followedTopic, {
+        topicTitle: localizedTopicTitle,
+      })
+    : formatMessage(messages.unfollowedTopic, {
+        topicTitle: localizedTopicTitle,
+      });
 
   useEffect(() => {
     if (!isLoading) {
-      const message = isFollowing
-        ? formatMessage(messages.followedTopic, {
-            topicTitle: localizedTopicTitle,
-          })
-        : formatMessage(messages.unfollowedTopic, {
-            topicTitle: localizedTopicTitle,
-          });
-      setAnnouncement(message);
+      setScreenReaderAnnouncement(messageToAnnounce);
     }
-  }, [isLoading, isFollowing, formatMessage, localizedTopicTitle]);
+  }, [isLoading, messageToAnnounce]);
 
   const handleFollowOrUnfollow = () => {
     if (isFollowing) {
@@ -84,7 +84,6 @@ const UpdateFollowTopic = ({ topic }: Props) => {
       color={theme.colors.tenantPrimary}
       className={isFollowing ? 'inverse' : ''}
       onClick={handleFollowOrUnfollow}
-      aria-busy={isLoading}
     >
       <Button
         buttonStyle="text"
@@ -102,7 +101,9 @@ const UpdateFollowTopic = ({ topic }: Props) => {
       >
         <T value={topic.attributes.title_multiloc} />
       </Button>
-      <ScreenReaderOnly aria-live="polite">{announcement}</ScreenReaderOnly>
+      <ScreenReaderOnly aria-live="polite">
+        {screenReaderAnnouncement}
+      </ScreenReaderOnly>
     </Badge>
   );
 };

@@ -39,20 +39,20 @@ const UpdateFollowArea = ({ area }: Props) => {
     : theme.colors.tenantPrimary;
   const iconName = isFollowing ? 'check-circle' : 'plus-circle';
   const localizedAreaTitle = localize(area.attributes.title_multiloc);
-  const [announcement, setAnnouncement] = useState('');
+  const [screenReaderAnnouncement, setScreenReaderAnnouncement] = useState('');
+  const messageToAnnounce = isFollowing
+    ? formatMessage(messages.followedArea, {
+        areaTitle: localizedAreaTitle,
+      })
+    : formatMessage(messages.unfollowedArea, {
+        areaTitle: localizedAreaTitle,
+      });
 
   useEffect(() => {
     if (!isLoading) {
-      const message = isFollowing
-        ? formatMessage(messages.followedArea, {
-            areaTitle: localizedAreaTitle,
-          })
-        : formatMessage(messages.unfollowedArea, {
-            areaTitle: localizedAreaTitle,
-          });
-      setAnnouncement(message);
+      setScreenReaderAnnouncement(messageToAnnounce);
     }
-  }, [isLoading, isFollowing, formatMessage, localizedAreaTitle]);
+  }, [isLoading, messageToAnnounce]);
 
   const handleFollowOrUnfollow = () => {
     if (isFollowing) {
@@ -101,7 +101,9 @@ const UpdateFollowArea = ({ area }: Props) => {
       >
         <T value={area.attributes.title_multiloc} />
       </Button>
-      <ScreenReaderOnly aria-live="polite">{announcement}</ScreenReaderOnly>
+      <ScreenReaderOnly aria-live="polite">
+        {screenReaderAnnouncement}
+      </ScreenReaderOnly>
     </Badge>
   );
 };
