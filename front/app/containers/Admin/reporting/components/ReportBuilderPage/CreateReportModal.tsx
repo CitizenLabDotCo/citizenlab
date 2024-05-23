@@ -23,6 +23,7 @@ import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import messages from './messages';
+import reportTitleIsTaken from '../../utils/reportTitleIsTaken';
 
 interface Props {
   open: boolean;
@@ -40,10 +41,6 @@ const RadioLabel = ({ message }: RadioLabelProps) => (
     <FormattedMessage {...message} />
   </Text>
 );
-
-const reportTitleIsTaken = (error: any) => {
-  return error?.errors?.name?.[0]?.error === 'taken';
-};
 
 const CreateReportModal = ({ open, onClose }: Props) => {
   const { mutate: createReport, isLoading } = useAddReport();
