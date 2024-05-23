@@ -39,7 +39,7 @@ describe WebApi::V1::ActivitySerializer do
       expect(serialized_output.dig(:data, :attributes, :item_exists)).to be true
     end
 
-    it 'returns false when the item exists' do
+    it 'returns false when the item does not exist' do
       idea.destroy!
       expect(activity.reload&.item).to be_nil
 
