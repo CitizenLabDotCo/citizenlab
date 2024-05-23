@@ -335,6 +335,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                 },
               }
             );
+            setSubmitState('success');
           }
         } catch (errors) {
           setErrors(errors.errors);
@@ -441,6 +442,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               );
             }
             setProjectFolderFilesToRemove([]);
+            setSubmitState('success');
           } else {
             setSubmitState('apiError');
           }
@@ -593,9 +595,12 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           ) : (
             <ProjectFolderCardImageDropzone
               images={folderCardImage && [folderCardImage]}
-              onAddImage={getHandler((cards: UploadFile[]) =>
-                setFolderCardImage(cards[0])
-              )}
+              onAddImage={getHandler((cards: UploadFile[]) => {
+                setFolderCardImage(cards[0]);
+                if (cards[0]?.base64) {
+                  setCroppedFolderCardBase64(cards[0].base64);
+                }
+              })}
               onRemoveImage={handleFolderCardImageOnRemove}
             />
           )}

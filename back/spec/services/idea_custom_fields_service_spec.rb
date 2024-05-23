@@ -116,13 +116,6 @@ describe IdeaCustomFieldsService do
         expect(output).to be_empty
       end
     end
-
-    describe 'allowed_extra_field_keys' do
-      it 'excludes disabled and built-in field keys' do
-        output = service.allowed_extra_field_keys
-        expect(output).to be_empty
-      end
-    end
   end
 
   context 'with persisted fields' do
@@ -266,21 +259,6 @@ describe IdeaCustomFieldsService do
         expect(output).to include extra_field1
         expect(output).not_to include extra_field2
         expect(output.map(&:code)).to eq [nil]
-      end
-    end
-
-    describe 'allowed_extra_field_keys' do
-      it 'excludes disabled and built-in field keys' do
-        create(
-          :custom_field_multiselect,
-          :for_custom_form,
-          resource: custom_form,
-          required: false,
-          key: 'multiselect_field'
-        )
-
-        output = service.allowed_extra_field_keys
-        expect(output).to match_array [:extra_field1, { multiselect_field: [] }]
       end
     end
 

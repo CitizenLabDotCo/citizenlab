@@ -1,13 +1,16 @@
 import moment, { Moment } from 'moment';
 
-import { ActiveUsersResponse } from 'api/graph_data_units/responseTypes';
+import {
+  ActiveUsersResponse,
+  TimeSeriesResponseRow,
+} from 'api/graph_data_units/responseTypes/ActiveUsersWidget';
 
 import { timeSeriesParser } from 'components/admin/GraphCards/_utils/timeSeries';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 import { get } from 'utils/helperUtils';
 
-import { TimeSeriesResponseRow, TimeSeriesRow, TimeSeries } from './typings';
+import { TimeSeriesRow, TimeSeries } from './typings';
 
 export const getEmptyRow = (date: Moment) => ({
   date: date.format('YYYY-MM-DD'),
@@ -18,7 +21,7 @@ const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
   if (!row) return getEmptyRow(date);
 
   return {
-    activeUsers: row.count_dimension_user_id,
+    activeUsers: row.count_participant_id,
     date: date.format('YYYY-MM-DD'),
   };
 };
@@ -48,7 +51,7 @@ export const parseStats = (data: ActiveUsersResponse['data']['attributes']) => {
 
   return {
     activeUsers: {
-      value: (activeUsersWholePeriod?.count_dimension_user_id ?? 0).toString(),
+      value: (activeUsersWholePeriod?.count_participant_id ?? 0).toString(),
     },
   };
 };

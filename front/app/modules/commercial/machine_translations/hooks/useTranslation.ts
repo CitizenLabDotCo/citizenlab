@@ -7,9 +7,10 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 interface Parameters {
   attributeName: 'body_multiloc' | 'title_multiloc';
-  localeTo?: SupportedLocale;
+  localeTo: SupportedLocale;
   id: string;
   context: 'idea' | 'initiative' | 'comment';
+  machineTranslationButtonClicked: boolean;
 }
 
 export default function useTranslation({
@@ -17,6 +18,7 @@ export default function useTranslation({
   localeTo,
   id,
   context,
+  machineTranslationButtonClicked,
 }: Parameters) {
   const isMachineTranslationsEnabled = useFeatureFlag({
     name: 'machine_translations',
@@ -28,7 +30,11 @@ export default function useTranslation({
       locale_to: localeTo,
       attribute_name: attributeName,
     },
-    enabled: isMachineTranslationsEnabled && context === 'initiative',
+    enabled:
+      machineTranslationButtonClicked &&
+      isMachineTranslationsEnabled &&
+      localeTo &&
+      context === 'initiative',
   });
   const { data: ideaTranslation } = useMachineTranslationByIdeaId({
     ideaId: id,
@@ -36,7 +42,11 @@ export default function useTranslation({
       locale_to: localeTo,
       attribute_name: attributeName,
     },
-    enabled: isMachineTranslationsEnabled && context === 'idea',
+    enabled:
+      machineTranslationButtonClicked &&
+      isMachineTranslationsEnabled &&
+      localeTo &&
+      context === 'idea',
   });
   const { data: commentTranslation } = useMachineTranslationByCommentId({
     commentId: id,
@@ -44,7 +54,11 @@ export default function useTranslation({
       locale_to: localeTo,
       attribute_name: attributeName,
     },
-    enabled: isMachineTranslationsEnabled && context === 'comment',
+    enabled:
+      machineTranslationButtonClicked &&
+      isMachineTranslationsEnabled &&
+      localeTo &&
+      context === 'comment',
   });
 
   if (context === 'idea') {

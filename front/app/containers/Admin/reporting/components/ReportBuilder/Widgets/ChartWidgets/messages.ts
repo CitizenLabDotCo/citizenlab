@@ -22,7 +22,7 @@ export default defineMessages({
     defaultMessage: 'Participants timeline',
   },
   totalParticipants: {
-    id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalParticipants',
+    id: 'app.modules.commercial.analytics.admin.components.totalParticipants',
     defaultMessage: 'Total participants',
   },
   trafficSources: {
@@ -41,5 +41,9 @@ export default defineMessages({
     id: 'app.containers.admin.ReportBuilder.charts.noData',
     defaultMessage:
       'There is no data available for the filters you have selected.',
+  },
+  users: {
+    id: 'app.containers.admin.ReportBuilder.charts.users',
+    defaultMessage: 'Users',
   },
 });

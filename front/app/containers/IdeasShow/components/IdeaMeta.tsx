@@ -12,11 +12,14 @@ import useUserById from 'api/users/useUserById';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
+import { useIntl } from 'utils/cl-intl';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 import { imageSizes } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { getFullName, stripHtml } from 'utils/textUtils';
+
+import messages from './messages';
 
 interface Props {
   ideaId: string;
@@ -24,6 +27,7 @@ interface Props {
 
 const IdeaMeta = ({ ideaId }: Props) => {
   const locale = useLocale();
+  const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: idea } = useIdeaById(ideaId);
@@ -40,7 +44,9 @@ const IdeaMeta = ({ ideaId }: Props) => {
     const { title_multiloc, body_multiloc } = idea.data.attributes;
     const appConfigurationLocales =
       appConfiguration.data.attributes.settings.core.locales;
-    const localizedTitle = localize(title_multiloc, { maxChar: 50 });
+    const localizedTitle = formatMessage(messages.metaTitle, {
+      inputTitle: localize(title_multiloc, { maxChar: 50 }),
+    });
     const ideaDescription = stripHtml(localize(body_multiloc), 250);
 
     const ideaImage =

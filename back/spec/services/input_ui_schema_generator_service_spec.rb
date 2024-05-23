@@ -16,7 +16,8 @@ RSpec.describe InputUiSchemaGeneratorService do
     context 'ideation form' do
       subject(:generator) { described_class.new input_term, true }
 
-      let(:ui_schema) { generator.generate_for IdeaCustomFieldsService.new(custom_form).enabled_fields }
+      let(:fields) { IdeaCustomFieldsService.new(custom_form).enabled_fields }
+      let(:ui_schema) { generator.generate_for fields }
 
       context 'for a project with an ideation phase, a changed built-in field and an extra section and field' do
         let(:project) { create(:single_phase_ideation_project, phase_attrs: { input_term: input_term }) }
@@ -701,15 +702,14 @@ RSpec.describe InputUiSchemaGeneratorService do
 
       context 'for projects with multiple phases' do
         let(:input_term) { 'contribution' }
-        let(:timeline_fields) do
+        let(:fields) do
           project_with_current_phase = create(:project_with_current_phase)
           TimelineService.new.current_phase(project_with_current_phase).update!(input_term: 'option')
           IdeaCustomFieldsService.new(create(:custom_form, participation_context: project_with_current_phase)).all_fields
         end
 
         it 'uses the right input_term' do
-          ui_schema = generator.generate_for(timeline_fields)['en']
-          expect(ui_schema.dig(:options, :inputTerm)).to eq 'contribution'
+          expect(ui_schema.dig('en', :options, :inputTerm)).to eq 'contribution'
         end
       end
     end
@@ -1019,7 +1019,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 }, {
                   type: 'Control',
                   scope: "#/properties/#{field_in_page2.key}_other",
-                  label: "Since you picked 'other', what are you thinking of?",
+                  label: "If you picked 'Other', what are you thinking of?",
                   options: {
                     description: '',
                     hasRule: false,
@@ -1094,16 +1094,16 @@ RSpec.describe InputUiSchemaGeneratorService do
     end
 
     context 'for author_id built-in field' do
-      let(:code) { 'author_id' }
+      let(:field) { JsonFormsService::AUTHOR_FIELD }
 
       it 'returns the schema for the author_id field with isAdminField set to true' do
         expect(generator.visit_text(field)).to eq({
           type: 'Control',
-          scope: "#/properties/#{field_key}",
-          label: 'Text field title',
+          scope: '#/properties/author_id',
+          label: 'Author',
           options: {
             input_type: field.input_type,
-            description: 'Text field description',
+            description: '',
             transform: 'trim_on_blur',
             isAdminField: true,
             hasRule: false
@@ -1146,17 +1146,17 @@ RSpec.describe InputUiSchemaGeneratorService do
       )
     end
 
-    context 'for author_id built-in field' do
-      let(:code) { 'budget' }
+    context 'for budget built-in field' do
+      let(:field) { JsonFormsService::BUDGET_FIELD }
 
       it 'returns the schema for the budget field with isAdminField set to true' do
         expect(generator.visit_number(field)).to eq({
           type: 'Control',
-          scope: "#/properties/#{field_key}",
-          label: 'Number field title',
+          scope: '#/properties/budget',
+          label: 'Budget',
           options: {
-            input_type: field.input_type,
-            description: 'Number field description',
+            input_type: 'number',
+            description: '',
             isAdminField: true,
             hasRule: false
           }

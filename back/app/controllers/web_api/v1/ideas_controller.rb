@@ -13,7 +13,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def json_forms_schema
     input = Idea.find params[:id]
     enabled_fields = IdeaCustomFieldsService.new(input.custom_form).enabled_fields
-    json_attributes = JsonFormsService.new.input_ui_and_json_multiloc_schemas enabled_fields, current_user, input.input_term
+    json_attributes = JsonFormsService.new.input_ui_and_json_multiloc_schemas enabled_fields, current_user, input.participation_method_on_creation, input.input_term
     render json: raw_json(json_attributes)
   end
 
@@ -21,18 +21,23 @@ class WebApi::V1::IdeasController < ApplicationController
     ideas = IdeasFinder.new(
       params,
       scope: policy_scope(Idea).where(publication_status: 'published'),
-      current_user: current_user,
-      includes: [
-        :idea_images, :idea_trending_info, :topics,
-        :idea_import, # defined through BulkImportIdeas engine
-        {
-          project: [:phases, { custom_form: [:custom_fields] }],
-          phases: [:permissions],
-          author: [:unread_notifications]
-        }
-      ]
+      current_user: current_user
     ).find_records
+
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
+
+    # Only include after pagination - so we only get associations we need
+    ideas = ideas.includes(
+      :idea_images,
+      :idea_trending_info,
+      :topics,
+      :phases,
+      {
+        project: [:phases, { phases: { permissions: [:groups] } }, { custom_form: [:custom_fields] }],
+        author: [:unread_notifications]
+      }
+    )
+    ideas = ideas.includes(:idea_import) unless current_user&.normal_user? # defined through BulkImportIdeas engine
 
     ideas = convert_phase_voting_counts ideas, params
 
@@ -43,22 +48,22 @@ class WebApi::V1::IdeasController < ApplicationController
     ideas = IdeasFinder.new(
       params,
       scope: policy_scope(Idea).where(publication_status: 'published'),
-      current_user: current_user,
-      includes: %i[idea_trending_info]
+      current_user: current_user
     ).find_records
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
+    ideas = ideas.includes(:idea_trending_info)
 
-    render json: linked_json(ideas, WebApi::V1::IdeaMiniSerializer, params: jsonapi_serializer_params(pcs: ParticipationPermissionsService.new))
+    render json: linked_json(ideas, WebApi::V1::IdeaMiniSerializer, params: jsonapi_serializer_params)
   end
 
   def index_idea_markers
     ideas = IdeasFinder.new(
       params,
       scope: policy_scope(Idea).where(publication_status: 'published'),
-      current_user: current_user,
-      includes: %i[author topics project idea_status idea_files]
+      current_user: current_user
     ).find_records
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
+    ideas = ideas.includes(:author, :topics, :project, :idea_status, :idea_files)
 
     render json: linked_json(ideas, WebApi::V1::PostMarkerSerializer, params: jsonapi_serializer_params)
   end
@@ -67,13 +72,13 @@ class WebApi::V1::IdeasController < ApplicationController
     ideas = IdeasFinder.new(
       params.merge(filter_can_moderate: true),
       scope: policy_scope(Idea).where(publication_status: 'published'),
-      current_user: current_user,
-      includes: %i[author topics project idea_status idea_files]
+      current_user: current_user
     ).find_records
     ideas = SortByParamsService.new.sort_ideas(ideas, params, current_user)
+    ideas = ideas.includes(:author, :topics, :project, :idea_status, :idea_files)
 
     I18n.with_locale(current_user&.locale) do
-      xlsx = XlsxService.new.generate_ideas_xlsx ideas, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?
+      xlsx = XlsxService.new.generate_ideas_xlsx ideas, view_private_attributes: true
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
     end
   end
@@ -82,10 +87,10 @@ class WebApi::V1::IdeasController < ApplicationController
     all_ideas = IdeasFinder.new(
       params,
       scope: policy_scope(Idea),
-      current_user: current_user,
-      includes: %i[idea_trending_info]
+      current_user: current_user
     ).find_records
     all_ideas = paginate SortByParamsService.new.sort_ideas(all_ideas, params, current_user)
+    all_ideas = all_ideas.includes(:idea_trending_info)
     counts = {
       'idea_status_id' => {},
       'topic_id' => {}
@@ -136,13 +141,12 @@ class WebApi::V1::IdeasController < ApplicationController
     phase = if is_moderator && phase_ids.any?
       Phase.find(phase_ids.first)
     else
-      ParticipationPermissionsService.new.get_current_phase(project)
+      TimelineService.new.current_phase_not_archived(project)
     end
     send_error and return unless phase
 
     participation_method = Factory.instance.participation_method_for(phase)
-
-    extract_custom_field_values_from_params! participation_method.custom_form
+    extract_custom_field_values_from_params!(participation_method.custom_form)
     params_for_create = idea_params participation_method.custom_form, is_moderator
     input = Idea.new params_for_create
     input.creation_phase = (phase if participation_method.creation_phase?)
@@ -153,7 +157,7 @@ class WebApi::V1::IdeasController < ApplicationController
       input.anonymous = true
     end
     input.author ||= current_user
-    service.before_create(input, current_user)
+    sidefx.before_create(input, current_user)
 
     authorize input
     if anonymous_not_allowed?(phase)
@@ -167,7 +171,7 @@ class WebApi::V1::IdeasController < ApplicationController
     ActiveRecord::Base.transaction do
       if input.save(**save_options)
         update_file_upload_fields input, participation_method.custom_form, params_for_create
-        service.after_create(input, current_user)
+        sidefx.after_create(input, current_user)
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
           params: jsonapi_serializer_params,
@@ -182,7 +186,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def update
     input = Idea.find params[:id]
     project = input.project
-    phase = ParticipationPermissionsService.new.get_current_phase project
+    phase = TimelineService.new.current_phase_not_archived project
     authorize input
 
     if invalid_blank_author_for_update? input, params
@@ -190,14 +194,14 @@ class WebApi::V1::IdeasController < ApplicationController
       return
     end
 
-    extract_custom_field_values_from_params! input.custom_form
+    extract_custom_field_values_from_params!(input.custom_form)
     params[:idea][:topic_ids] ||= [] if params[:idea].key?(:topic_ids)
     params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
-    mark_custom_field_values_to_clear! input
+    params_service.mark_custom_field_values_to_clear!(input.custom_field_values, params[:idea][:custom_field_values])
 
     user_can_moderate_project = UserRoleService.new.can_moderate_project?(project, current_user)
     update_params = idea_params(input.custom_form, user_can_moderate_project).to_h
-    update_params[:custom_field_values] = input.custom_field_values.merge(update_params[:custom_field_values] || {})
+    update_params[:custom_field_values] = params_service.updated_custom_field_values(input.custom_field_values, update_params[:custom_field_values])
     CustomFieldService.new.compact_custom_field_values! update_params[:custom_field_values]
     input.assign_attributes update_params
     authorize input
@@ -207,13 +211,13 @@ class WebApi::V1::IdeasController < ApplicationController
     end
     verify_profanity input
 
-    service.before_update(input, current_user)
+    sidefx.before_update(input, current_user)
 
     save_options = {}
     save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
       if input.save(**save_options)
-        service.after_update(input, current_user)
+        sidefx.after_update(input, current_user)
         update_file_upload_fields input, input.custom_form, update_params
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
@@ -231,7 +235,7 @@ class WebApi::V1::IdeasController < ApplicationController
     authorize input
     input = input.destroy
     if input.destroyed?
-      service.after_destroy(input, current_user)
+      sidefx.after_destroy(input, current_user)
       head :ok
     else
       head :internal_server_error
@@ -250,21 +254,13 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def extract_custom_field_values_from_params!(custom_form)
-    return unless custom_form
+    return if !custom_form
 
-    all_fields = IdeaCustomFieldsService.new(custom_form).submittable_fields_with_other_options
-    extra_field_values = all_fields.each_with_object({}) do |field, accu|
-      next if field.built_in?
-
-      given_value = params[:idea].delete field.key
-      next unless given_value && field.enabled?
-
-      accu[field.key] = given_value
-    end
-    return if extra_field_values.empty?
-
-    extra_field_values = reject_other_text_values(extra_field_values)
-    params[:idea][:custom_field_values] = extra_field_values
+    custom_field_values = params_service.extract_custom_field_values_from_params!(
+      params[:idea],
+      submittable_custom_fields(custom_form)
+    )
+    params[:idea][:custom_field_values] = custom_field_values if custom_field_values.present?
   end
 
   def extract_params_for_file_upload_fields(custom_form, params)
@@ -299,25 +295,20 @@ class WebApi::V1::IdeasController < ApplicationController
     input.save! if file_uploads_exist
   end
 
-  # Do not save any 'other' text values if the select field does not include 'other' as an option
-  def reject_other_text_values(extra_field_values)
-    extra_field_values.each do |key, _value|
-      if key.end_with? '_other'
-        parent_field_key = key.delete_suffix '_other'
-        parent_field_values = extra_field_values[parent_field_key].is_a?(Array) ? extra_field_values[parent_field_key] : [extra_field_values[parent_field_key]]
-        if parent_field_values.exclude? 'other'
-          extra_field_values.delete key
-        end
-      end
-    end
+  def sidefx
+    @sidefx ||= SideFxIdeaService.new
   end
 
-  def service
-    @service ||= SideFxIdeaService.new
+  def params_service
+    @params_service ||= CustomFieldParamsService.new
+  end
+
+  def idea_params(custom_form, user_can_moderate_project)
+    params.require(:idea).permit(idea_attributes(custom_form, user_can_moderate_project))
   end
 
   def idea_attributes(custom_form, user_can_moderate_project)
-    submittable_field_keys = IdeaCustomFieldsService.new(custom_form).submittable_fields_with_other_options.map { |field| field.key.to_sym }
+    submittable_field_keys = submittable_custom_fields(custom_form).map(&:key).map(&:to_sym)
     attributes = idea_simple_attributes(submittable_field_keys)
     complex_attributes = idea_complex_attributes(custom_form, submittable_field_keys)
     attributes << complex_attributes if complex_attributes.any?
@@ -343,24 +334,30 @@ class WebApi::V1::IdeasController < ApplicationController
     complex_attributes = {
       location_point_geojson: [:type, { coordinates: [] }]
     }
-    allowed_extra_field_keys = IdeaCustomFieldsService.new(custom_form).allowed_extra_field_keys
-    if allowed_extra_field_keys.any?
-      complex_attributes[:custom_field_values] = allowed_extra_field_keys
+
+    allowed_custom_fields = submittable_custom_fields(custom_form).reject(&:built_in?)
+    custom_field_values_params = params_service.custom_field_values_params(allowed_custom_fields)
+    if custom_field_values_params.any?
+      complex_attributes[:custom_field_values] = custom_field_values_params
     end
+
     if submittable_field_keys.include?(:title_multiloc)
       complex_attributes[:title_multiloc] = CL2_SUPPORTED_LOCALES
     end
+
     if submittable_field_keys.include?(:body_multiloc)
       complex_attributes[:body_multiloc] = CL2_SUPPORTED_LOCALES
     end
+
     if submittable_field_keys.include?(:topic_ids)
       complex_attributes[:topic_ids] = []
     end
+
     complex_attributes
   end
 
-  def idea_params(custom_form, user_can_moderate_project)
-    params.require(:idea).permit(idea_attributes(custom_form, user_can_moderate_project))
+  def submittable_custom_fields(custom_form)
+    IdeaCustomFieldsService.new(custom_form).submittable_fields_with_other_options
   end
 
   def authorize_project_or_ideas
@@ -389,27 +386,18 @@ class WebApi::V1::IdeasController < ApplicationController
         end
       user_followers ||= {}
       {
-        params: jsonapi_serializer_params(vbii: reactions.index_by(&:reactable_id), user_followers: user_followers, pcs: ParticipationPermissionsService.new),
+        params: jsonapi_serializer_params(
+          vbii: reactions.index_by(&:reactable_id),
+          user_followers: user_followers,
+          permission_service: Permissions::IdeaPermissionsService.new
+        ),
         include: include
       }
     else
       {
-        params: jsonapi_serializer_params(pcs: ParticipationPermissionsService.new),
+        params: jsonapi_serializer_params,
         include: include
       }
-    end
-  end
-
-  def mark_custom_field_values_to_clear!(input)
-    # We need to explicitly mark which custom field values
-    # should be cleared so we can distinguish those from
-    # the custom field value updates cleared out by the
-    # policy (which should stay like before instead of
-    # being cleared out).
-    return unless input&.custom_field_values.present? && params[:idea][:custom_field_values].present?
-
-    (input.custom_field_values.keys - (params[:idea][:custom_field_values].keys || [])).each do |clear_key|
-      params[:idea][:custom_field_values][clear_key] = nil
     end
   end
 

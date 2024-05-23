@@ -15,7 +15,7 @@ describe('Admin: access rights', () => {
     }).then((project) => {
       const projectId = project.body.data.id;
 
-      cy.visit('/admin/projects/');
+      cy.visit('/admin/projects/all');
       cy.acceptCookies();
       cy.get('[data-cy="e2e-admins-only-permissions-tag"]').first().click();
 
@@ -36,7 +36,7 @@ describe('Admin: access rights', () => {
     }).then((project) => {
       const projectId = project.body.data.id;
 
-      cy.visit('/admin/projects/');
+      cy.visit('/admin/projects/all');
       cy.get('[data-cy="e2e-groups-permissions-tag"]').first().click();
 
       cy.location('pathname').should(

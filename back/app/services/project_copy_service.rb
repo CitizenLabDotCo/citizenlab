@@ -34,6 +34,7 @@ class ProjectCopyService < TemplateService
     @local_copy = local_copy
     @project = project
     @template = { 'models' => {} }
+    new_slug = SlugService.new.generate_slug(nil, new_slug) if new_slug
 
     # TODO: deal with linking idea_statuses, topics, custom field values and maybe areas and groups
     @template['models']['project']                    = yml_projects new_slug: new_slug, new_publication_status: new_publication_status, new_title_multiloc: new_title_multiloc, shift_timestamps: shift_timestamps
@@ -462,7 +463,6 @@ class ProjectCopyService < TemplateService
       'last_name' => user.last_name,
       'locale' => user.locale,
       'bio_multiloc' => user.bio_multiloc,
-      'cl1_migrated' => user.cl1_migrated,
       'custom_field_values' => user.custom_field_values.delete_if { |_k, v| v.nil? },
       'registration_completed_at' => shift_timestamp(user.registration_completed_at, shift_timestamps)&.iso8601,
       'verified' => user.verified,

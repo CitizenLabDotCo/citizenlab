@@ -66,7 +66,7 @@ const ideaPostingDisabledReason = (
   authenticationRequirements: AuthenticationRequirements | null;
 } => {
   switch (backendReason) {
-    case 'missing_data':
+    case 'missing_user_requirements':
       return {
         disabledReason: null,
         authenticationRequirements: 'complete_registration',

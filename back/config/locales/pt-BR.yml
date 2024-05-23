@@ -148,8 +148,8 @@ pt:
       section3:
         title: Detalhes
         description:
-      other:
-        title: Já que você escolheu "outro", no que está pensando?
+      other_text_field:
+        title: Se você escolheu "{other_option}", no que está pensando?
   custom_forms:
     categories:
       main_content:
@@ -200,29 +200,40 @@ pt:
       subject: '%{organizationName}: Redefina sua senha'
       title_reset_your_password: 'Alterar senha'
   xlsx_export:
+    anonymous: 'Anônimo'
     column_headers:
-      input_id: 'ID'
-      latitude: 'Latitude'
-      longitude: 'Longitude'
-      author_fullname: 'Nome do autor'
-      author_email: 'E-mail do autor'
-      author_id: 'Identificação do autor'
-      budget: 'Orçamento'
-      created_at: 'Submetido em'
-      published_at: 'Publicado em'
-      comments_count: 'Comentários'
-      likes_count: 'Curtidas'
-      dislikes_count: 'Não curtidas'
-      picks: 'Escolhas'
-      participants: 'Participantes'
-      votes_count: 'Votos'
-      input_url: 'URL'
-      project: 'Projeto'
-      status: 'Status'
       assignee_fullname: 'Atribuído'
       assignee_email: 'E-mail do assinante'
+      attachments: 'Anexos'
+      author_email: 'E-mail do autor'
+      author_fullname: 'Nome do autor'
+      author_id: 'Identificação do autor'
+      budget: 'Orçamento'
+      comments_count: 'Comentários'
+      cost: 'Custo'
+      created_at: 'Submetido em'
+      description: 'Descrição'
+      dislikes_count: 'Não curtidas'
+      email: 'E-mail'
+      first_name: 'Nome(s) próprio(s)'
       image_url: 'imagem URL'
-    anonymous: 'Anônimo'
+      input_id: 'ID'
+      input_url: 'URL'
+      last_name: 'Sobrenome'
+      latitude: 'Latitude'
+      likes_count: 'Curtidas'
+      location: 'Localização'
+      longitude: 'Longitude'
+      participants: 'Participantes'
+      picks: 'Escolhas'
+      project: 'Projeto'
+      published_at: 'Publicado em'
+      registration_completed_at: 'Registro concluído em'
+      status: 'Status'
+      submitted_at: 'Enviado em'
+      tags: 'Tags'
+      title: 'Título'
+      votes_count: 'Votos'
   form_builder:
     default_select_field:
       title: 'Sua pergunta'
@@ -248,6 +259,7 @@ pt:
       instructions: 'Instruções'
       write_as_clearly: 'Escreva <b>com a</b> clareza possível - esses formulários podem ser digitalizados'
       write_in_language: 'Escreva suas respostas no mesmo idioma deste formulário'
+      linear_scale_print_description: 'Por favor, escreva um número entre %{min_label} e %{max_label} apenas'
   project_copy:
     title_suffix: 'Cópia'
   confirmations_mailer:

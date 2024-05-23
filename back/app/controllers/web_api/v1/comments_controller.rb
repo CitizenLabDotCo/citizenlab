@@ -101,7 +101,7 @@ class WebApi::V1::CommentsController < ApplicationController
       service = XlsxService.new
       xlsx = case @post_type
       when 'Idea'
-        service.generate_idea_comments_xlsx @comments, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?
+        service.generate_idea_comments_xlsx @comments, view_private_attributes: true
       when 'Initiative'
         service.generate_initiative_comments_xlsx @comments, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?
       else
@@ -272,7 +272,7 @@ class WebApi::V1::CommentsController < ApplicationController
 
     case @post_type
     when 'Idea'
-      !ParticipationPermissionsService.new.get_current_phase(@comment.post.project).allow_anonymous_participation
+      !TimelineService.new.current_phase_not_archived(@comment.post.project).allow_anonymous_participation
     when 'Initiative'
       !AppConfiguration.instance.settings.dig('initiatives', 'allow_anonymous_participation')
     else raise "Unsupported post type #{@post_type}"

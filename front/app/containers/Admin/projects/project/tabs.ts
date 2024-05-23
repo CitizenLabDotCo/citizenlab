@@ -72,7 +72,6 @@ export const getTabs = (
     phase.attributes.participation_method === 'volunteering' && {
       label: formatMessage(messages.volunteeringTab),
       url: 'volunteering',
-      feature: 'volunteering',
       name: 'volunteering',
     },
     phase.attributes.participation_method === 'information' && {

@@ -27,7 +27,7 @@ import SurveySubmittedNotice from './components/SurveySubmittedNotice';
 import IdeasNewIdeationForm from './IdeasNewIdeationForm';
 import IdeasNewSurveyForm from './IdeasNewSurveyForm';
 
-const NewIdeaPage = () => {
+const IdeasNewPage = () => {
   const { slug } = useParams();
   const {
     data: project,
@@ -56,7 +56,7 @@ const NewIdeaPage = () => {
     return <PageNotFound />;
   }
 
-  if (!phases || !project) {
+  if (!phases) {
     return null;
   }
 
@@ -75,12 +75,9 @@ const NewIdeaPage = () => {
       authUser: authUser?.data,
     });
 
-  const userIsModerator =
-    !isNilOrError(authUser) &&
-    canModerateProject(project.data.id, { data: authUser.data });
-
   const userCannotViewSurvey =
-    !userIsModerator && phase_id !== currentPhase?.id;
+    !canModerateProject(project.data.id, authUser) &&
+    phase_id !== currentPhase?.id;
 
   if (isSurvey) {
     if (disabledReason === 'postingLimitedMaxReached') {
@@ -121,4 +118,4 @@ const NewIdeaPage = () => {
   }
 };
 
-export default NewIdeaPage;
+export default IdeasNewPage;

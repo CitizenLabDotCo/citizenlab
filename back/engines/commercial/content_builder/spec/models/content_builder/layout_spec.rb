@@ -74,6 +74,29 @@ RSpec.describe ContentBuilder::Layout do
     end
   end
 
+  describe '#duplicate!' do
+    it 'creates a copy of the layout' do
+      layout = create(
+        :layout,
+        code: 'layout-1',
+        craftjs_json: craftjson_with_iframe_url('https://www.example.com')
+      )
+
+      layout_copy = layout.duplicate!
+
+      expect(layout_copy).to be_instance_of(described_class)
+      expect(layout_copy.content_buildable).to be_nil
+      expect(layout_copy.code).to eq(layout.code)
+      expect(layout_copy.enabled).to eq(layout.enabled)
+      expect(layout_copy.craftjs_json).to eq(layout.craftjs_json)
+    end
+
+    it 'copies the images associated with the layout' do
+      layout = create(:layout, :with_image)
+      expect { layout.duplicate! }.to change(ContentBuilder::LayoutImage, :count).by(1)
+    end
+  end
+
   describe 'craftjs_json' do
     it 'is uses the .json.erb as default value' do
       layout = create(:homepage_layout)

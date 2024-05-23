@@ -16,6 +16,8 @@ EmailCampaigns::Engine.routes.draw do
       resources :consents, only: %i[index update] do
         patch 'by_campaign_id/:campaign_id', action: 'update_by_campaign_id', on: :collection
       end
+
+      get 'projects/:context_id/email_campaigns', to: 'campaigns#index'
     end
   end
 

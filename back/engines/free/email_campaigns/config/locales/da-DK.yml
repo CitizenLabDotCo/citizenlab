@@ -2,6 +2,7 @@ da:
   email_campaigns:
     campaign_type_description:
       "manual": Officielle beskeder
+      "manual_project_participants": Officielle meddelelser til projektdeltagerne
       "admin_rights_received": Administratorrettigheder modtaget
       "comment_deleted_by_admin": Sletning af min kommentar
       "comment_marked_as_spam": Rapportering af kommentar-spam
@@ -559,6 +560,7 @@ da:
         admins: 'Til administratorer'
         admins_and_managers: 'Til administratorer og projektledere'
         managers: 'Til projektledere'
+        project_participants: 'Til projektdeltagere'
         registered_users: 'Til registrerede brugere'
       recipient_segment:
         admins: 'Administratorer'

@@ -6,14 +6,6 @@ import {
 
 export type QueryParameters = ProjectId & DatesStrings & Resolution;
 
-export interface TimeSeriesResponseRow extends ActiveUsersRow {
-  first_dimension_date_created_date: string;
-}
-
-export interface ActiveUsersRow {
-  count_dimension_user_id: number;
-}
-
 // Hook return value
 export interface TimeSeriesRow {
   /* Date format: YYYY-MM-DD */

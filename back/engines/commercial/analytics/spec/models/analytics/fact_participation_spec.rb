@@ -14,26 +14,23 @@ RSpec.describe Analytics::FactParticipation do
 
   context 'when dimension types have been created' do
     before_all do
-      # Type dimensions
-      [
-        { name: 'idea', parent: 'post' },
-        { name: 'initiative', parent: 'post' },
-        { name: 'comment', parent: 'idea' },
-        { name: 'reaction', parent: 'idea' },
-        { name: 'poll', parent: nil },
-        { name: 'volunteer', parent: nil },
-        { name: 'survey', parent: nil }
-      ].each do |type|
-        create(:dimension_type, name: type[:name], parent: type[:parent])
-      end
+      Analytics::PopulateDimensionsService.populate_types
     end
 
-    context 'when an idea is created' do
+    context 'when an idea is created and published' do
       let!(:idea) { create(:idea) }
 
       it 'is also available as a participation fact' do
-        described_class.find(idea.id)
-        expect(described_class.find(idea.id).dimension_type.name).to eq('idea')
+        participation = described_class.find(idea.id)
+        expect(participation.dimension_type.name).to eq('idea')
+      end
+    end
+
+    context 'when an idea is created but not published' do
+      let!(:idea) { create(:idea, publication_status: 'draft') }
+
+      it 'is not available as a participation fact' do
+        expect(described_class.count).to eq(0)
       end
     end
 
@@ -41,8 +38,8 @@ RSpec.describe Analytics::FactParticipation do
       let!(:initiative) { create(:initiative) }
 
       it 'is also available as a participation fact' do
-        described_class.find(initiative.id)
-        expect(described_class.find(initiative.id).dimension_type.name).to eq('initiative')
+        participation = described_class.find(initiative.id)
+        expect(participation.dimension_type.name).to eq('initiative')
       end
     end
 
@@ -50,8 +47,8 @@ RSpec.describe Analytics::FactParticipation do
       let!(:comment) { create(:comment) }
 
       it 'is also available as a participation fact' do
-        described_class.find(comment.id)
-        expect(described_class.find(comment.id).dimension_type.name).to eq('comment')
+        participation = described_class.find(comment.id)
+        expect(participation.dimension_type.name).to eq('comment')
       end
     end
 
@@ -59,8 +56,8 @@ RSpec.describe Analytics::FactParticipation do
       let!(:reaction) { create(:reaction) }
 
       it 'is also available as a participation fact' do
-        described_class.find(reaction.id)
-        expect(described_class.find(reaction.id).dimension_type.name).to eq('reaction')
+        participation = described_class.find(reaction.id)
+        expect(participation.dimension_type.name).to eq('reaction')
       end
     end
 
@@ -68,8 +65,8 @@ RSpec.describe Analytics::FactParticipation do
       let!(:volunteer) { create(:volunteer) }
 
       it 'is also available as a participation fact' do
-        described_class.find(volunteer.id)
-        expect(described_class.find(volunteer.id).dimension_type.name).to eq('volunteer')
+        participation = described_class.find(volunteer.id)
+        expect(participation.dimension_type.name).to eq('volunteer')
       end
     end
 
@@ -77,8 +74,8 @@ RSpec.describe Analytics::FactParticipation do
       let!(:poll_response) { create(:poll_response) }
 
       it 'is also available as a participation fact' do
-        described_class.find(poll_response.id)
-        expect(described_class.find(poll_response.id).dimension_type.name).to eq('poll')
+        participation = described_class.find(poll_response.id)
+        expect(participation.dimension_type.name).to eq('poll')
       end
     end
 
@@ -88,8 +85,36 @@ RSpec.describe Analytics::FactParticipation do
       let(:input) { create(:idea, project: project, idea_status: idea_status, creation_phase: project.phases.first) }
 
       it 'is also available as a participation fact' do
-        described_class.find(input.id)
-        expect(described_class.find(input.id).dimension_type.name).to eq('survey')
+        participation = described_class.find(input.id)
+        expect(participation.dimension_type.name).to eq('survey')
+      end
+    end
+
+    context 'when a basket is created' do
+      let(:basket) { create(:basket) }
+
+      it 'is also available as a participation fact' do
+        participation = described_class.find(basket.id)
+        expect(participation.dimension_type.name).to eq('basket')
+      end
+    end
+
+    context 'when an event is attended' do
+      let(:event_attendance) { create(:event_attendance) }
+
+      it 'is also available as a participation fact' do
+        participation = described_class.find(event_attendance.id)
+        expect(participation.dimension_type.name).to eq('event_attendance')
+      end
+    end
+
+    context 'when a follower is created' do
+      let(:follower) { create(:follower) }
+
+      it 'is also available as a participation fact' do
+        participation = described_class.find(follower.id)
+        expect(participation.dimension_type.name).to eq('follower')
+        expect(participation.dimension_type.parent).to eq('project')
       end
     end
   end

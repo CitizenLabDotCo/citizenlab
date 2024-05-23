@@ -64,6 +64,14 @@ class ProjectPolicy < ApplicationPolicy
     active_moderator?
   end
 
+  def votes_by_user_xlsx?
+    index_xlsx?
+  end
+
+  def votes_by_input_xlsx?
+    index_xlsx?
+  end
+
   def create?
     return false unless active?
     return true if admin?

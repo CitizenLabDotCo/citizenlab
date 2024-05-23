@@ -266,6 +266,17 @@ describe XlsxService do
       expect(worksheet[0].cells.map(&:value)).to match %w[a b c f]
       expect(worksheet[2].cells.map(&:value)).to match [2, 'three', 'fiesta', nil]
     end
+
+    it 'can convert a hash array with duplicate column names' do
+      hash_array = [
+        { 'a' => 'value a', 'b' => 'value b', 'b__2' => 'value b__2' }
+      ]
+      xlsx = service.hash_array_to_xlsx(hash_array)
+      workbook = RubyXL::Parser.parse_buffer(xlsx)
+      worksheet = workbook.worksheets[0]
+      expect(worksheet[0].cells.map(&:value)).to match %w[a b b]
+      expect(worksheet[1].cells.map(&:value)).to match ['value a', 'value b', 'value b__2']
+    end
   end
 
   describe 'xlsx_to_hash_array' do
@@ -284,6 +295,14 @@ describe XlsxService do
 
     it 'correctly converts an xlsx to a hash array' do
       expect(round_trip_hash_array).to eq hash_array
+    end
+
+    it 'can convert duplicate field titles' do
+      xlsx_file = Rails.root.join('spec/fixtures/example.xlsx').binread
+      xlsx_hash_array = service.xlsx_to_hash_array(xlsx_file)
+      expect(xlsx_hash_array[0].keys).to include 'Duplicate field', 'Duplicate field__2'
+      expect(xlsx_hash_array[0]['Duplicate field']).to eq 'Duplicate field value 1'
+      expect(xlsx_hash_array[0]['Duplicate field__2']).to eq 'Duplicate field value 2'
     end
   end
 

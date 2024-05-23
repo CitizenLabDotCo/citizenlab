@@ -36,14 +36,28 @@ class ProjectsFilteringService
     keep_ids ? scope.where(id: keep_ids) : scope
   end
 
-  add_filter('by_moderator') do |scope, options|
-    next scope unless options.key? :moderator
+  add_filter('can_moderate') do |scope, options|
+    next scope unless ['true', true, '1'].include? options[:filter_can_moderate]
 
-    moderator = options[:moderator] # nil means the user is not logged in
-    if moderator
-      ::UserRoleService.new.moderatable_projects moderator, scope
+    current_user = options[:current_user] # nil means the user is not logged in
+    if current_user
+      ::UserRoleService.new.moderatable_projects current_user, scope
     else
       scope.none
     end
+  end
+
+  add_filter('is_moderator_of') do |scope, options|
+    next scope unless (['true', true, '1'].include? options[:filter_is_moderator_of]) ||
+                      options[:filter_user_is_moderator_of].present?
+
+    moderator = User.find_by(id: options[:filter_user_is_moderator_of])
+    user = moderator.presence || options[:current_user]
+
+    next scope.none unless user
+
+    moderated_project_ids = user.roles.select { |r| r['type'] == 'project_moderator' }.pluck('project_id')
+
+    scope.where(id: moderated_project_ids)
   end
 end

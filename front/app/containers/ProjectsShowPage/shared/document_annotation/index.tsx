@@ -26,7 +26,7 @@ const disabledMessages: {
   project_inactive: messages.documentAnnotationDisabledProjectInactive,
   not_active: messages.documentAnnotationDisabledNotActiveUser,
   not_verified: messages.documentAnnotationDisabledNotVerified,
-  missing_data: messages.documentAnnotationDisabledNotActiveUser,
+  missing_user_requirements: messages.documentAnnotationDisabledNotActiveUser,
   not_signed_in: messages.documentAnnotationDisabledMaybeNotPermitted,
   not_in_group: globalMessages.notInGroup,
   not_permitted: messages.documentAnnotationDisabledNotPermitted,

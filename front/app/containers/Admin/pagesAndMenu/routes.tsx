@@ -169,7 +169,7 @@ export default () => ({
           ),
         },
         {
-          path: pagesAndMenuRoutes.customPageIdTopInfoSection,
+          path: pagesAndMenuRoutes.customPageIdBottomInfoSection,
           element: (
             <PageLoading>
               <CustomPageBottomInfoSection />
