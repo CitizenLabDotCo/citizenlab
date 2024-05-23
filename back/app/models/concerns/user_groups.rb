@@ -31,8 +31,9 @@ module UserGroups
     manual_group_ids + smart_groups.pluck(:id)
   end
 
-  def in_any_groups?(groups)
-    manual_groups.merge(groups).exists? || rules_service.groups_for_user(self, groups.rules).exists?
+  def in_any_groups?(groups_to_check)
+    @groups ||= groups # Memoized here to avoid .groups not returning correctly when groups are added / removed
+    @groups.intersection(groups_to_check).any?
   end
 
   def member_of?(group_id)
