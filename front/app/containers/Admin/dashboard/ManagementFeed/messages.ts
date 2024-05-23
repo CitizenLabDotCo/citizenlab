@@ -73,4 +73,9 @@ export default defineMessages({
     id: 'app.Admin.ManagementFeed.after',
     defaultMessage: 'After',
   },
+  warning: {
+    id: 'app.Admin.ManagementFeed.warning',
+    defaultMessage:
+      'Experimental feature: A minimal list of selected actions performed by admins or managers in the last 30 days. Not all actions are included.',
+  },
 });

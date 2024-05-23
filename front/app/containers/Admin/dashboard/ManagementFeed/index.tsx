@@ -20,6 +20,7 @@ import useManagementFeed from 'api/management_feed/useManagementFeed';
 import ProjectSelector from 'components/admin/ProjectSelector';
 import Pagination from 'components/Pagination';
 import UserSelect from 'components/UI/UserSelect';
+import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
@@ -49,6 +50,9 @@ const ManagementFeed = () => {
   return (
     <>
       <Title color="primary">{formatMessage(messages.title)}</Title>
+      <Box my="8px">
+        <Warning>{formatMessage(messages.warning)}</Warning>
+      </Box>
       <Box display="flex" alignItems="center" my="20px" w="50%">
         <ProjectSelector
           title={formatMessage(messages.project)}
@@ -63,6 +67,7 @@ const ManagementFeed = () => {
           />
         </Box>
       </Box>
+
       <Table
         bgColor={colors.white}
         innerBorders={{
