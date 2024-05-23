@@ -544,8 +544,8 @@ GEM
       bigdecimal
       rexml
     crass (1.0.6)
-    crawler_detect (1.2.3)
-      qonfig (~> 0.24)
+    crawler_detect (1.2.4)
+      qonfig (>= 0.24)
     css_parser (1.14.0)
       addressable
     csv (3.3.0)
@@ -925,7 +925,7 @@ GEM
       nio4r (~> 2.0)
     pundit (2.3.0)
       activesupport (>= 3.0.0)
-    qonfig (0.28.0)
+    qonfig (0.29.0)
     que (2.3.0)
     que-web (0.10.0)
       que (>= 1)
