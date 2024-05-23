@@ -149,7 +149,7 @@ ca:
         title: Detalls
         description:
       other_text_field:
-        title: Si has triat "{other_option}", en què estàs pensant?
+        title: If you picked '{other_option}', what are you thinking of?
   custom_forms:
     categories:
       main_content:
