@@ -23,6 +23,7 @@ const managementFeedData: ManagementFeed = {
           en: 'Idea title',
         },
         change: null,
+        item_exists: true,
       },
       relationships: {
         user: {

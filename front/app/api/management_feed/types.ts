@@ -12,8 +12,9 @@ export type IQueryParameters = {
   pageSize?: number;
   projectIds?: string[];
   userIds?: string[];
+  sort?: Sort;
 };
-
+type Sort = '-acted_at' | 'acted_at';
 export interface ManagementFeedData {
   id: string;
   type: 'activity';
@@ -26,6 +27,7 @@ export interface ManagementFeedData {
     item_slug: string | null;
     item_title_multiloc: Multiloc;
     change: Record<string, any[]> | null;
+    item_exists: boolean;
   };
   relationships: {
     user: { data: IRelationship | null };

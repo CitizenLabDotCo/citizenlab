@@ -90,7 +90,7 @@ const ManagementFeedRow = ({ item }: { item: ManagementFeedData }) => {
         </Td>
         <Td>
           <Box>
-            {getLink() ? (
+            {getLink() && item.attributes.item_exists ? (
               <Link target="_blank" to={getLink()}>
                 {localize(item.attributes.item_title_multiloc)}
               </Link>

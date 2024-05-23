@@ -14,6 +14,7 @@ import {
   Spinner,
 } from '@citizenlab/cl2-component-library';
 
+import { IQueryParameters } from 'api/management_feed/types';
 import useManagementFeed from 'api/management_feed/useManagementFeed';
 
 import ProjectSelector from 'components/admin/ProjectSelector';
@@ -27,6 +28,7 @@ import ManagementFeedRow from './ManagementFeedRow';
 import messages from './messages';
 
 const ManagementFeed = () => {
+  const [sort, setSort] = useState<IQueryParameters['sort']>('-acted_at');
   const [selectedProjectIds, setSelectedProjects] = useState<string[]>([]);
   const [selectedUserId, setSelectedUser] = useState<string | undefined>();
   const [pageNumber, setPageNumber] = useState(1);
@@ -35,6 +37,7 @@ const ManagementFeed = () => {
     pageNumber,
     userIds: selectedUserId ? [selectedUserId] : undefined,
     projectIds: selectedProjectIds.length ? selectedProjectIds : undefined,
+    sort,
   });
 
   if (!managementFeed) {
@@ -69,7 +72,15 @@ const ManagementFeed = () => {
       >
         <Thead>
           <Tr>
-            <Th>{formatMessage(messages.date)}</Th>
+            <Th
+              clickable
+              sortDirection={sort === '-acted_at' ? 'descending' : 'ascending'}
+              onClick={() =>
+                setSort(sort === '-acted_at' ? 'acted_at' : '-acted_at')
+              }
+            >
+              {formatMessage(messages.date)}
+            </Th>
             <Th>{formatMessage(messages.user)}</Th>
             <Th>{formatMessage(messages.item)}</Th>
             <Th>{formatMessage(messages.action)}</Th>

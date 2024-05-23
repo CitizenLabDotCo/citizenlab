@@ -21,7 +21,7 @@ const PUBLICATION_STATUSES: PublicationStatus[] = [
   'draft',
 ];
 
-const SelectProject = ({ onChange, selectedProjectIds, title }: Props) => {
+const ProjectSelector = ({ onChange, selectedProjectIds, title }: Props) => {
   const localize = useLocalize();
   const { data: projects } = useProjects({
     publicationStatuses: PUBLICATION_STATUSES,
@@ -55,4 +55,4 @@ const SelectProject = ({ onChange, selectedProjectIds, title }: Props) => {
   return null;
 };
 
-export default SelectProject;
+export default ProjectSelector;
