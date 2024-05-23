@@ -6,10 +6,8 @@ import { useTheme } from 'styled-components';
 
 import { IEventData } from 'api/events/types';
 
-import { ScreenReaderOnly } from 'utils/a11y';
-import { useIntl } from 'utils/cl-intl';
+import ScreenReadableEventDate from 'components/ScreenReadableEventDate';
 
-import messages from './messages';
 import SingleDateStylized from './SingleDateStylized';
 
 interface Props {
@@ -18,7 +16,6 @@ interface Props {
 
 const EventDateStylized = ({ event }: Props) => {
   const theme = useTheme();
-  const { formatMessage } = useIntl();
   const startAtMoment = moment(event.attributes.start_at);
   const endAtMoment = moment(event.attributes.end_at);
   const startDateMonth = startAtMoment.format('MMM');
@@ -36,26 +33,7 @@ const EventDateStylized = ({ event }: Props) => {
       justifyContent="center"
       id="e2e-event-date-stylized"
     >
-      <ScreenReaderOnly>
-        {isEventMultipleDays ? (
-          <p>
-            {formatMessage(messages.multiDayScreenReaderDate, {
-              startDate: startAtMoment.format('MMMM Do, YYYY'),
-              startTime: startAtMoment.format('LT'),
-              endDate: endAtMoment.format('MMMM Do, YYYY'),
-              endTime: endAtMoment.format('LT'),
-            })}
-          </p>
-        ) : (
-          <p>
-            {formatMessage(messages.singleDayScreenReaderDate, {
-              eventDate: startAtMoment.format('MMMM Do, YYYY'),
-              startTime: startAtMoment.format('LT'),
-              endTime: endAtMoment.format('LT'),
-            })}
-          </p>
-        )}
-      </ScreenReaderOnly>
+      <ScreenReadableEventDate event={event} />
       <div aria-hidden="true">
         <SingleDateStylized
           day={startAtMoment.format('DD')}
