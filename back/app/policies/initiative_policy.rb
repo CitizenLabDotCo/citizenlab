@@ -86,7 +86,7 @@ class InitiativePolicy < ApplicationPolicy
   private
 
   def posting_denied_reason(user)
-    PermissionsService.new.denied_reason_for_resource user, 'posting_initiative'
+    Permissions::InitiativePermissionsService.new.denied_reason_for_action 'posting_initiative', user
   end
 
   def owner?

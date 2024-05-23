@@ -373,7 +373,7 @@ const ReactionButton = ({
       return messages.reactingNotPermitted;
     } else if (
       (authUser && disabledReason === 'not_active') ||
-      disabledReason === 'missing_data'
+      disabledReason === 'missing_user_requirements'
     ) {
       return messages.completeProfileToReact;
     } else if (disabledReason === 'not_signed_in') {

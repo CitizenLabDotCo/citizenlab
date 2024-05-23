@@ -4,7 +4,7 @@ type DisabledReasonFixable =
   | 'not_signed_in'
   | 'not_active'
   | 'not_verified'
-  | 'missing_data';
+  | 'missing_user_requirements';
 
 type DisabledReasonUnfixable = 'not_permitted' | 'not_in_group';
 
@@ -17,7 +17,7 @@ const FIXABLE_REASONS = new Set<string>([
   // not_active here means "not registered or blocked or confirmation still required, see user.rb"
   'not_active',
   'not_verified',
-  'missing_data',
+  'missing_user_requirements',
 ] satisfies DisabledReasonFixable[]);
 
 export const isFixableByAuthentication = (disabledReason: string) => {

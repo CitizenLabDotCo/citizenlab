@@ -278,10 +278,10 @@ export default defineMessages({
   /*
    * Meta
    */
-  metaTitle: {
-    id: 'app.containers.UsersEditPage.metaTitle',
+  metaTitle1: {
+    id: 'app.containers.UsersEditPage.metaTitle1',
     defaultMessage:
-      'Profile settings page of {firstName} {lastName} | CitizenLab',
+      'Profile settings page of {firstName} {lastName} | {orgName}',
   },
   metaDescription: {
     id: 'app.containers.UsersEditPage.metaDescription',
