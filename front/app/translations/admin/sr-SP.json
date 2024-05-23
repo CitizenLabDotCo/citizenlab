@@ -98,7 +98,6 @@
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "Коментари током времена",
   "app.components.admin.GraphsCards.PostsByTime.hooks.usePostsByTime.timeSeries": "Постови током времена",
   "app.components.admin.GraphsCards.ReactionsByTime.hooks.useReactionsByTime.timeSeries": "Реакције током времена",
-  "app.components.admin.GraphsCards.RegistrationsByTime.hooks.useRegistrationsByTime.timeSeries": "Регистрације током времена",
   "app.components.admin.InputManager.onePost": "1 улаз",
   "app.components.admin.PostManager.PostPreview.assignee": "Асигнее",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Откажи уређивање",

@@ -98,7 +98,6 @@
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "Kommentarer over tid",
   "app.components.admin.GraphsCards.PostsByTime.hooks.usePostsByTime.timeSeries": "Indlæg over tid",
   "app.components.admin.GraphsCards.ReactionsByTime.hooks.useReactionsByTime.timeSeries": "Stemmer over tid",
-  "app.components.admin.GraphsCards.RegistrationsByTime.hooks.useRegistrationsByTime.timeSeries": "Registreringer over tid",
   "app.components.admin.InputManager.onePost": "1 indgang",
   "app.components.admin.PostManager.PostPreview.assignee": "Modtager",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Annuller redigering",

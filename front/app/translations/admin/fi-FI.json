@@ -98,7 +98,6 @@
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "Kommentteja ajan mittaan",
   "app.components.admin.GraphsCards.PostsByTime.hooks.usePostsByTime.timeSeries": "Viestit ajan mittaan",
   "app.components.admin.GraphsCards.ReactionsByTime.hooks.useReactionsByTime.timeSeries": "Reaktiot ajan myötä",
-  "app.components.admin.GraphsCards.RegistrationsByTime.hooks.useRegistrationsByTime.timeSeries": "Ilmoittautumiset ajan myötä",
   "app.components.admin.InputManager.onePost": "1 sisääntulo",
   "app.components.admin.PostManager.PostPreview.assignee": "Valtuutettu",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Peruuta muokkaus",

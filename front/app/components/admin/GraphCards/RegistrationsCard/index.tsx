@@ -25,6 +25,7 @@ type Props = ProjectId &
   Dates &
   Resolution & {
     layout?: Layout;
+    hideRegistrationRate?: boolean;
   };
 
 const RegistrationsCard = ({
@@ -33,6 +34,7 @@ const RegistrationsCard = ({
   endAtMoment,
   resolution,
   layout = 'wide',
+  hideRegistrationRate = false,
 }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
@@ -83,19 +85,21 @@ const RegistrationsCard = ({
               bottomLabelValue={shownStatsData.registrations.lastPeriod}
             />
           </Box>
-          <Box
-            mt={layout === 'wide' ? '32px' : 'auto'}
-            ml={layout === 'narrow' ? '32px' : 'auto'}
-            width={layout === 'narrow' ? '50%' : 'auto'}
-          >
-            <Statistic
-              name={formatMessage(messages.registrationRate)}
-              tooltipContent={formatMessage(messages.registrationRateTooltip)}
-              value={shownStatsData.registrationRate.value}
-              bottomLabel={bottomLabel}
-              bottomLabelValue={shownStatsData.registrationRate.lastPeriod}
-            />
-          </Box>
+          {!hideRegistrationRate && (
+            <Box
+              mt={layout === 'wide' ? '32px' : 'auto'}
+              ml={layout === 'narrow' ? '32px' : 'auto'}
+              width={layout === 'narrow' ? '50%' : 'auto'}
+            >
+              <Statistic
+                name={formatMessage(messages.registrationRate)}
+                tooltipContent={formatMessage(messages.registrationRateTooltip)}
+                value={shownStatsData.registrationRate.value}
+                bottomLabel={bottomLabel}
+                bottomLabelValue={shownStatsData.registrationRate.lastPeriod}
+              />
+            </Box>
+          )}
         </Box>
         {layout === 'wide' && (
           <Box flexGrow={1} display="flex" justifyContent="flex-end" pr="20px">

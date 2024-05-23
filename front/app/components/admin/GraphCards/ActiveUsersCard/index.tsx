@@ -24,6 +24,7 @@ type Props = ProjectId &
   Dates &
   Resolution & {
     layout?: Layout;
+    hideParticipationRate?: boolean;
   };
 
 const ActiveUsersCard = ({
@@ -32,6 +33,7 @@ const ActiveUsersCard = ({
   endAtMoment,
   resolution,
   layout = 'wide',
+  hideParticipationRate = false,
 }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
@@ -78,19 +80,23 @@ const ActiveUsersCard = ({
               bottomLabelValue={stats?.activeUsers.lastPeriod ?? '-'}
             />
           </Box>
-          <Box
-            mt={layout === 'wide' ? '32px' : 'auto'}
-            ml={layout === 'narrow' ? '32px' : 'auto'}
-            width={layout === 'narrow' ? '50%' : 'auto'}
-          >
-            <Statistic
-              name={formatMessage(messages.participationRate)}
-              tooltipContent={formatMessage(messages.participationRateTooltip)}
-              value={stats?.participationRate.value ?? '-'}
-              bottomLabel={bottomLabel}
-              bottomLabelValue={stats?.participationRate.lastPeriod ?? '-'}
-            />
-          </Box>
+          {!hideParticipationRate && (
+            <Box
+              mt={layout === 'wide' ? '32px' : 'auto'}
+              ml={layout === 'narrow' ? '32px' : 'auto'}
+              width={layout === 'narrow' ? '50%' : 'auto'}
+            >
+              <Statistic
+                name={formatMessage(messages.participationRate)}
+                tooltipContent={formatMessage(
+                  messages.participationRateTooltip
+                )}
+                value={stats?.participationRate.value ?? '-'}
+                bottomLabel={bottomLabel}
+                bottomLabelValue={stats?.participationRate.lastPeriod ?? '-'}
+              />
+            </Box>
+          )}
         </Box>
         {layout === 'wide' && (
           <Box flexGrow={1} display="flex" justifyContent="flex-end" pr="20px">
