@@ -20,7 +20,7 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
   end
 
   def phase
-    @phase ||= ParticipationPermissionsService.new.get_current_phase(project) || TimelineService.new.current_or_last_can_contain_ideas_phase(project)
+    @phase ||= TimelineService.new.current_or_last_can_contain_ideas_phase(project)
   end
 
   def input_term

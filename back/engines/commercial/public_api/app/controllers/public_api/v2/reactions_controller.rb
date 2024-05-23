@@ -5,8 +5,8 @@ module PublicApi
     REACTABLE_TYPES = %w[idea initiative comment idea-comment initiative-comment]
 
     def index
-      reactions = PublicApi::ReactionsFinder.new(Reaction.all.includes([reactable: :post]), **finder_params).execute
-      list_items(reactions, V2::ReactionSerializer)
+      reactions = PublicApi::ReactionsFinder.new(Reaction.all, **finder_params).execute
+      list_items(reactions, V2::ReactionSerializer, includes: [reactable: :post])
     end
 
     private
