@@ -14,6 +14,8 @@ import Statistic from 'components/admin/Graphs/Statistic';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { MARGINS } from '../_utils/style';
+
 import Chart from './Chart';
 import messages from './messages';
 import useActiveUsers from './useActiveUsers';
@@ -22,6 +24,7 @@ type Props = ProjectId &
   Dates &
   Resolution & {
     layout?: Layout;
+    hideParticipationRate?: boolean;
   };
 
 const ActiveUsersCard = ({
@@ -30,6 +33,7 @@ const ActiveUsersCard = ({
   endAtMoment,
   resolution,
   layout = 'wide',
+  hideParticipationRate = false,
 }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
@@ -76,19 +80,23 @@ const ActiveUsersCard = ({
               bottomLabelValue={stats?.activeUsers.lastPeriod ?? '-'}
             />
           </Box>
-          <Box
-            mt={layout === 'wide' ? '32px' : 'auto'}
-            ml={layout === 'narrow' ? '32px' : 'auto'}
-            width={layout === 'narrow' ? '50%' : 'auto'}
-          >
-            <Statistic
-              name={formatMessage(messages.participationRate)}
-              tooltipContent={formatMessage(messages.participationRateTooltip)}
-              value={stats?.participationRate.value ?? '-'}
-              bottomLabel={bottomLabel}
-              bottomLabelValue={stats?.participationRate.lastPeriod ?? '-'}
-            />
-          </Box>
+          {!hideParticipationRate && (
+            <Box
+              mt={layout === 'wide' ? '32px' : 'auto'}
+              ml={layout === 'narrow' ? '32px' : 'auto'}
+              width={layout === 'narrow' ? '50%' : 'auto'}
+            >
+              <Statistic
+                name={formatMessage(messages.participationRate)}
+                tooltipContent={formatMessage(
+                  messages.participationRateTooltip
+                )}
+                value={stats?.participationRate.value ?? '-'}
+                bottomLabel={bottomLabel}
+                bottomLabelValue={stats?.participationRate.lastPeriod ?? '-'}
+              />
+            </Box>
+          )}
         </Box>
         {layout === 'wide' && (
           <Box flexGrow={1} display="flex" justifyContent="flex-end" pr="20px">
@@ -99,7 +107,7 @@ const ActiveUsersCard = ({
                 endAtMoment={endAtMoment}
                 resolution={currentResolution}
                 innerRef={graphRef}
-                layout={layout}
+                margin={MARGINS.wide}
               />
             </Box>
           </Box>
@@ -113,7 +121,7 @@ const ActiveUsersCard = ({
               endAtMoment={endAtMoment}
               resolution={currentResolution}
               innerRef={graphRef}
-              layout={layout}
+              margin={MARGINS.narrow}
             />
           </Box>
         )}

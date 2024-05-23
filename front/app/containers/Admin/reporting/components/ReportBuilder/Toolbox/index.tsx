@@ -41,6 +41,7 @@ import CommentsByTimeWidget from '../Widgets/ChartWidgets/CommentsByTimeWidget';
 import DemographicsWidget from '../Widgets/ChartWidgets/DemographicsWidget';
 import PostsByTimeWidget from '../Widgets/ChartWidgets/PostsByTimeWidget';
 import ReactionsByTimeWidget from '../Widgets/ChartWidgets/ReactionsByTimeWidget';
+import RegistrationsWidget from '../Widgets/ChartWidgets/RegistrationsWidget';
 import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
 import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
 import IframeMultiloc from '../Widgets/IframeMultiloc';
@@ -250,13 +251,37 @@ const ReportBuilderToolbox = ({
               component={
                 <VisitorsWidget
                   title={toMultiloc(WIDGET_TITLES.VisitorsWidget)}
-                  projectId={selectedProjectId}
                   startAt={undefined}
                   endAt={chartEndDate}
                 />
               }
               icon="chart-bar"
               label={formatMessage(WIDGET_TITLES.VisitorsWidget)}
+            />
+            <DraggableElement
+              id="e2e-draggable-active-users-widget"
+              component={
+                <ActiveUsersWidget
+                  title={toMultiloc(WIDGET_TITLES.ActiveUsersWidget)}
+                  projectId={selectedProjectId}
+                  startAt={undefined}
+                  endAt={chartEndDate}
+                />
+              }
+              icon="chart-bar"
+              label={formatMessage(WIDGET_TITLES.ActiveUsersWidget)}
+            />
+            <DraggableElement
+              id="e2e-draggable-registrations-widget"
+              component={
+                <RegistrationsWidget
+                  title={toMultiloc(WIDGET_TITLES.RegistrationsWidget)}
+                  startAt={undefined}
+                  endAt={chartEndDate}
+                />
+              }
+              icon="chart-bar"
+              label={formatMessage(WIDGET_TITLES.RegistrationsWidget)}
             />
             <DraggableElement
               id="e2e-draggable-visitors-traffic-sources-widget"
@@ -284,19 +309,6 @@ const ReportBuilderToolbox = ({
               }
               icon="chart-bar"
               label={formatMessage(WIDGET_TITLES.DemographicsWidget)}
-            />
-            <DraggableElement
-              id="e2e-draggable-active-users-widget"
-              component={
-                <ActiveUsersWidget
-                  title={toMultiloc(WIDGET_TITLES.ActiveUsersWidget)}
-                  projectId={selectedProjectId}
-                  startAt={undefined}
-                  endAt={chartEndDate}
-                />
-              }
-              icon="chart-bar"
-              label={formatMessage(WIDGET_TITLES.ActiveUsersWidget)}
             />
             <DraggableElement
               id="e2e-draggable-posts-by-time-widget"

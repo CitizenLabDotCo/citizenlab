@@ -2,6 +2,8 @@ import moment, { Moment } from 'moment';
 
 import { IResolution } from 'components/admin/ResolutionControl';
 
+import { momentToIsoDate } from 'utils/dateUtils';
+
 type ProjectFilter = { [key: string]: string };
 type EmptyObject = Record<string, unknown>;
 
@@ -63,17 +65,32 @@ const getLastPeriod = (resolution: IResolution) => {
   return moment().subtract({ days: 1 }).format('YYYY-MM-DD');
 };
 
-export const getDateFilterLastPeriod = (
-  filter: string,
-  resolution: IResolution
+export const getComparedTimeRange = (
+  startAt: string | Moment,
+  endAt: string | Moment
 ) => {
+  if (!startAt || !endAt) return {};
+
+  const startAtMoment = moment(startAt, 'YYYY-MM-DD');
+  const endAtMoment = moment(endAt, 'YYYY-MM-DD');
+
+  const days = endAtMoment.diff(startAtMoment, 'days');
+
+  const prevEndAtMoment = startAtMoment.clone().subtract(1, 'days');
+  const prevStartAtMoment = prevEndAtMoment.clone().subtract(days, 'days');
+
+  return {
+    compare_start_at: momentToIsoDate(prevStartAtMoment),
+    compare_end_at: momentToIsoDate(prevEndAtMoment),
+  };
+};
+
+export const getComparedPeriod = (resolution: IResolution) => {
   const today = moment().format('YYYY-MM-DD');
   const lastPeriod = getLastPeriod(resolution);
 
   return {
-    [`${filter}.date`]: {
-      from: lastPeriod,
-      to: today,
-    },
+    compare_start_at: lastPeriod,
+    compare_end_at: today,
   };
 };

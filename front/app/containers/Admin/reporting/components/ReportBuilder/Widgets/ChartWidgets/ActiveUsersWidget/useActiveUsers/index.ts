@@ -3,24 +3,30 @@ import { useMemo, useState } from 'react';
 import moment from 'moment';
 
 import { useActiveUsers as useActiveUsersData } from 'api/graph_data_units';
+import { ActiveUsersProps } from 'api/graph_data_units/requestTypes';
 
-import { parseTimeSeries, parseStats } from './parse';
-import { QueryParameters } from './typings';
+import { parseTimeSeries } from 'components/admin/GraphCards/ActiveUsersCard/useActiveUsers/parse';
+
+import { parseStats } from './parse';
 
 export default function useActiveUsers({
-  projectId,
-  startAt,
-  endAt,
-  resolution,
-}: QueryParameters) {
+  project_id,
+  start_at,
+  end_at,
+  resolution = 'month',
+  compare_start_at,
+  compare_end_at,
+}: ActiveUsersProps) {
   const [currentResolution, setCurrentResolution] = useState(resolution);
 
   const { data: analytics } = useActiveUsersData(
     {
-      project_id: projectId,
-      start_at: startAt,
-      end_at: endAt,
+      project_id,
+      start_at,
+      end_at,
       resolution,
+      compare_start_at,
+      compare_end_at,
     },
     {
       onSuccess: () => setCurrentResolution(resolution),
@@ -34,12 +40,12 @@ export default function useActiveUsers({
       analytics?.data
         ? parseTimeSeries(
             analytics.data.attributes[0],
-            startAt ? moment(startAt) : null,
-            endAt ? moment(endAt) : null,
+            start_at ? moment(start_at) : null,
+            end_at ? moment(end_at) : null,
             currentResolution
           )
         : null,
-    [analytics?.data, startAt, endAt, currentResolution]
+    [analytics?.data, start_at, end_at, currentResolution]
   );
 
   return { timeSeries, stats, currentResolution };
