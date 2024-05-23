@@ -54,7 +54,7 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
         >
           {formatMessage(messages.eventPreviewTimelineTitle)}
         </Title>
-        <HorizontalScroll containerRole="listbox" asList>
+        <HorizontalScroll containerRole="listbox">
           {events.data.map((event) => (
             <EventPreviewCard key={event.id} event={event} />
           ))}
