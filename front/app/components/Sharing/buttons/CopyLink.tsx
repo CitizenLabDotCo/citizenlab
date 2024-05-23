@@ -31,7 +31,7 @@ const CopyLink = ({ copyLink }: Props) => {
   return (
     <Box display="flex" flexGrow={setFullWidth ? 1 : 0}>
       <Button
-        buttonStyle="secondary"
+        buttonStyle="primary-outlined"
         minWidth="154px"
         height="40px"
         onClick={handleClick()}
