@@ -5,10 +5,11 @@ class WebApi::V1::FoldersController < ApplicationController
   skip_before_action :authenticate_user
 
   def index
-    @project_folders = policy_scope(ProjectFolders::Folder).includes(:images, admin_publication: [:children])
+    @project_folders = policy_scope(ProjectFolders::Folder)
     @project_folders = @project_folders.where(id: params[:filter_ids]) if params[:filter_ids]
 
     @project_folders = paginate @project_folders
+    @project_folders = @project_folders.includes(:images, admin_publication: [:children])
 
     # Array of publication IDs for folders that
     # still have visible children left.

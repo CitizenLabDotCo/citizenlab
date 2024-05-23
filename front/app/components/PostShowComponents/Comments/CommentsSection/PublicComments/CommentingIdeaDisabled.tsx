@@ -70,7 +70,7 @@ const CommentingIdeaDisabled = ({ phaseId, idea }: Props) => {
       return messages.commentingDisabledProject;
     } else if (
       (isLoggedIn && commentingDisabledReason === 'not_active') ||
-      commentingDisabledReason === 'missing_data'
+      commentingDisabledReason === 'missing_user_requirements'
     ) {
       return messages.completeProfileToComment;
     } else if (!isLoggedIn) {

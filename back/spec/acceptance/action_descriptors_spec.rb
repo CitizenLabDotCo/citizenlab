@@ -24,7 +24,7 @@ resource 'ActionDescriptors' do
 
     context 'with permissions on a phase enabled', document: false do
       before do
-        PermissionsService.new.update_all_permissions
+        Permissions::PermissionsUpdateService.new.update_all_permissions
         Permission.find_by(permission_scope: nil, action: 'commenting_initiative')
           .update!(permitted_by: 'groups', groups: create_list(:group, 2))
       end
