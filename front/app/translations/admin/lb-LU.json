@@ -118,7 +118,7 @@
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "Comments over time",
   "app.components.admin.GraphsCards.PostsByTime.hooks.usePostsByTime.timeSeries": "Posts over time",
   "app.components.admin.GraphsCards.ReactionsByTime.hooks.useReactionsByTime.timeSeries": "Reaktiounen iwwer Zäit",
-  "app.components.admin.GraphsCards.RegistrationsByTime.hooks.useRegistrationsByTime.timeSeries": "Registrations over time",
+  "app.components.admin.GraphsCards.RegistrationsByTime.hooks.useRegistrationsByTime.timeSeries": "Aschreiwungen iwwer Zäit",
   "app.components.admin.InputManager.onePost": "1 input",
   "app.components.admin.PostManager.PostPreview.assignee": "Assignee",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Cancel edit",
