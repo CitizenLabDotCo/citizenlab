@@ -59,7 +59,7 @@ const ManagementFeedRow = ({ item }: { item: ManagementFeedData }) => {
   };
 
   const getLink: () => RouteType = () => {
-    if (item.attributes.action === 'deleted') return '';
+    if (!item.attributes.item_exists) return '';
     if (item.attributes.item_type === 'project') {
       return `/admin/projects/${item.attributes.item_id}`;
     } else if (item.attributes.item_type === 'phase') {
@@ -90,7 +90,7 @@ const ManagementFeedRow = ({ item }: { item: ManagementFeedData }) => {
         </Td>
         <Td>
           <Box>
-            {getLink() && item.attributes.item_exists ? (
+            {getLink() ? (
               <Link target="_blank" to={getLink()}>
                 {localize(item.attributes.item_title_multiloc)}
               </Link>
