@@ -413,11 +413,11 @@ const ButtonText = styled.span``;
 const StyledIcon = styled(Icon)`
   &.hasText {
     &.left {
-      margin-right: 10px;
+      margin-right: 8px;
     }
 
     &.right {
-      margin-left: 10px;
+      margin-left: 8px;
     }
   }
 
@@ -425,12 +425,12 @@ const StyledIcon = styled(Icon)`
         &.hasText {
             &.left {
             margin-right: 0px;
-            margin-left: 10px;
+            margin-left: 8px;
             }
 
             &.right {
             margin-left: 0px;
-            margin-right: 10px;
+            margin-right: 8px;
             }
         }
         `}

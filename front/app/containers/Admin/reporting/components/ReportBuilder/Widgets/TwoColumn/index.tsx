@@ -5,7 +5,6 @@ import { Element } from '@craftjs/core';
 import styled from 'styled-components';
 
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
-import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 import { ColumnLayout } from 'components/admin/ContentBuilder/typings';
@@ -57,15 +56,9 @@ const StyledBox = styled(Box)<{
 
 export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
   const layout = useLayout();
-  const px = useReportDefaultPadding();
 
   return (
-    <StyledBox
-      id="e2e-two-column"
-      columnLayout={columnLayout}
-      layout={layout}
-      px={px}
-    >
+    <StyledBox id="e2e-two-column" columnLayout={columnLayout} layout={layout}>
       {children || (
         <>
           <Element id={'left'} is={Container} canvas />

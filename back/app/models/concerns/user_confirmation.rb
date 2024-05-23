@@ -86,6 +86,6 @@ module UserConfirmation
   end
 
   def user_confirmation_enabled?
-    AppConfiguration.instance.feature_activated?('user_confirmation')
+    @user_confirmation_enabled ||= AppConfiguration.instance.feature_activated?('user_confirmation')
   end
 end
