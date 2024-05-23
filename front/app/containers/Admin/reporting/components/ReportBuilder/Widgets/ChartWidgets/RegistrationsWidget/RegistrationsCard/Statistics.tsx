@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import moment from 'moment';
 
 import dashboardCardMessages from 'components/admin/GraphCards/RegistrationsCard/messages';
-import { DatesStrings } from 'components/admin/GraphCards/typings';
 import StatisticBottomLabel from 'components/admin/Graphs/Statistic/StatisticBottomLabel';
-import StatisticDelta from 'components/admin/Graphs/Statistic/StatisticDelta';
+import StatisticDelta, {
+  getSignNumber,
+} from 'components/admin/Graphs/Statistic/StatisticDelta';
 import StatisticName from 'components/admin/Graphs/Statistic/StatisticName';
 
 import { useIntl } from 'utils/cl-intl';
@@ -15,13 +15,13 @@ import chartWidgetMessages from '../../messages';
 import messages from '../messages';
 import { Stats } from '../typings';
 
-interface Props extends DatesStrings {
+interface Props {
   stats: Stats;
+  previousDays?: number;
 }
 
-export const RegistrationsStatistic = ({ stats, startAt, endAt }: Props) => {
+export const RegistrationsStatistic = ({ stats, previousDays }: Props) => {
   const { formatMessage } = useIntl();
-  const previousDays = moment(endAt).diff(moment(startAt), 'days');
 
   return (
     <Box>
@@ -34,10 +34,13 @@ export const RegistrationsStatistic = ({ stats, startAt, endAt }: Props) => {
           {stats.registrations.value}
         </Text>
         {stats.registrations.delta !== undefined && (
-          <StatisticDelta delta={stats.registrations.delta} />
+          <StatisticDelta
+            delta={stats.registrations.delta}
+            sign={getSignNumber(stats.registrations.delta)}
+          />
         )}
       </Box>
-      {stats.registrations.delta !== undefined && (
+      {stats.registrations.delta !== undefined && previousDays && (
         <StatisticBottomLabel
           bottomLabel={formatMessage(
             chartWidgetMessages.comparedToPreviousXDays,
@@ -51,9 +54,8 @@ export const RegistrationsStatistic = ({ stats, startAt, endAt }: Props) => {
   );
 };
 
-export const RegistrationRateStatistic = ({ startAt, endAt, stats }: Props) => {
+export const RegistrationRateStatistic = ({ stats, previousDays }: Props) => {
   const { formatMessage } = useIntl();
-  const previousDays = moment(endAt).diff(moment(startAt), 'days');
 
   return (
     <Box>
@@ -71,11 +73,12 @@ export const RegistrationRateStatistic = ({ startAt, endAt, stats }: Props) => {
         {stats.registrationRate.delta !== undefined && (
           <StatisticDelta
             delta={stats.registrationRate.delta}
+            sign={getSignNumber(stats.registrationRate.delta)}
             deltaType="percentage"
           />
         )}
       </Box>
-      {stats.registrationRate.delta !== undefined && (
+      {stats.registrationRate.delta !== undefined && previousDays && (
         <StatisticBottomLabel
           bottomLabel={formatMessage(
             chartWidgetMessages.comparedToPreviousXDays,

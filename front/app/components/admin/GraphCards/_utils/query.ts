@@ -65,21 +65,6 @@ const getLastPeriod = (resolution: IResolution) => {
   return moment().subtract({ days: 1 }).format('YYYY-MM-DD');
 };
 
-export const getDateFilterLastPeriod = (
-  filter: string,
-  resolution: IResolution
-) => {
-  const today = moment().format('YYYY-MM-DD');
-  const lastPeriod = getLastPeriod(resolution);
-
-  return {
-    [`${filter}.date`]: {
-      from: lastPeriod,
-      to: today,
-    },
-  };
-};
-
 export const getComparedTimeRange = (startAt: string, endAt: string) => {
   if (!startAt || !endAt) return {};
 

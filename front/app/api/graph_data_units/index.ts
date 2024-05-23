@@ -6,6 +6,7 @@ import {
   MostReactedIdeasProps,
   SingleIdeaProps,
   SurveyQuestionResultProps,
+  VisitorsProps,
   VisitorsTrafficSourcesProps,
   DemographicsProps,
   RegistrationsProps,
@@ -64,7 +65,7 @@ export const useSingleIdea = (
 };
 
 export const useVisitors = (
-  props: AnalyticsProps,
+  props: VisitorsProps,
   { onSuccess }: { onSuccess?: () => void }
 ) => {
   return useGraphDataUnits<VisitorsResponse>(
@@ -73,6 +74,21 @@ export const useVisitors = (
       props,
     },
     { onSuccess }
+  );
+};
+
+export const useVisitorsLive = (
+  props: VisitorsProps,
+  { onSuccess }: { onSuccess?: () => void }
+) => {
+  return useGraphDataUnitsLive<VisitorsResponse>(
+    {
+      resolved_name: 'VisitorsWidget',
+      props,
+    },
+    {
+      onSuccess,
+    }
   );
 };
 

@@ -251,7 +251,6 @@ const ReportBuilderToolbox = ({
               component={
                 <VisitorsWidget
                   title={toMultiloc(WIDGET_TITLES.VisitorsWidget)}
-                  projectId={selectedProjectId}
                   startAt={undefined}
                   endAt={chartEndDate}
                 />

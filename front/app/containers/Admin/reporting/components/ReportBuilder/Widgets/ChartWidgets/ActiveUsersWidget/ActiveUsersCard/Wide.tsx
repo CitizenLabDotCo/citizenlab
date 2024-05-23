@@ -8,9 +8,9 @@ import { TimeSeries } from 'components/admin/GraphCards/ActiveUsersCard/useActiv
 import { DatesStrings } from 'components/admin/GraphCards/typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 
+import { getDaysInRange } from '../../utils';
 import { Stats } from '../typings';
 
-// import Statistics from './Statistics';
 import {
   ParticipantsStatistic,
   ParticipationRateStatistic,
@@ -31,6 +31,8 @@ const Wide = ({
   stats,
   currentResolution,
 }: Props) => {
+  const previousDays = getDaysInRange(startAt, endAt);
+
   return (
     <Box
       width="100%"
@@ -41,16 +43,11 @@ const Wide = ({
       <Box height="100%" display="flex" flexDirection="row">
         {!hideStatistics && (
           <Box>
-            <ParticipantsStatistic
-              stats={stats}
-              startAt={startAt}
-              endAt={endAt}
-            />
+            <ParticipantsStatistic stats={stats} previousDays={previousDays} />
             <Box mt="32px">
               <ParticipationRateStatistic
                 stats={stats}
-                startAt={startAt}
-                endAt={endAt}
+                previousDays={previousDays}
               />
             </Box>
           </Box>

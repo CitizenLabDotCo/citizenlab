@@ -8,6 +8,7 @@ import { TimeSeries } from 'components/admin/GraphCards/RegistrationsCard/useReg
 import { DatesStrings } from 'components/admin/GraphCards/typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 
+import { getDaysInRange } from '../../utils';
 import { Stats } from '../typings';
 
 import {
@@ -30,6 +31,8 @@ const Wide = ({
   stats,
   currentResolution,
 }: Props) => {
+  const previousDays = getDaysInRange(startAt, endAt);
+
   return (
     <Box
       width="100%"
@@ -40,16 +43,11 @@ const Wide = ({
       <Box height="100%" display="flex" flexDirection="row">
         {!hideStatistics && (
           <Box>
-            <RegistrationsStatistic
-              stats={stats}
-              startAt={startAt}
-              endAt={endAt}
-            />
+            <RegistrationsStatistic stats={stats} previousDays={previousDays} />
             <Box mt="32px">
               <RegistrationRateStatistic
                 stats={stats}
-                startAt={startAt}
-                endAt={endAt}
+                previousDays={previousDays}
               />
             </Box>
           </Box>
@@ -60,7 +58,7 @@ const Wide = ({
           display="flex"
           justifyContent={hideStatistics ? 'flex-start' : 'flex-end'}
         >
-          <Box pt="8px" width="100%" maxWidth="800px" h="100%">
+          <Box pt="8px" w="100%" maxWidth="800px" h="100%">
             <Chart
               timeSeries={timeSeries}
               startAtMoment={startAt ? moment(startAt) : null}

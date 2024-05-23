@@ -80,9 +80,13 @@ export interface SingleIdeaParams extends BaseParams {
   props: SingleIdeaProps;
 }
 
+export interface VisitorsProps
+  extends Omit<AnalyticsProps, 'project_id'>,
+    CompareProps {}
+
 export interface VisitorsParams extends BaseParams {
   resolved_name: 'VisitorsWidget';
-  props: AnalyticsProps;
+  props: VisitorsProps;
 }
 
 export interface VisitorsTrafficSourcesProps {
