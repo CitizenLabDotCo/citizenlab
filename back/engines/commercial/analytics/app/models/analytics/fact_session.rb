@@ -2,7 +2,7 @@
 #
 # Table name: analytics_fact_sessions
 #
-#  id                        :uuid
+#  id                        :uuid             primary key
 #  monthly_user_hash         :string
 #  dimension_date_created_id :date
 #  dimension_date_updated_id :date

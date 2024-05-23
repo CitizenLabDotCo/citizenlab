@@ -35,7 +35,7 @@ RSpec.describe Analytics::DimensionUser do
     let!(:visit2) { create(:fact_visit, dimension_user_id: user1.id) }
 
     it 'returns the correct number of users' do
-      expect(described_class.where(is_visitor: true).count).to eq(1)
+      expect(described_class.where(has_visits: true).count).to eq(1)
     end
   end
 end

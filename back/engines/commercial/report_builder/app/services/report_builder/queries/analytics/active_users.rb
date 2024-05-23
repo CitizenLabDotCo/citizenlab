@@ -55,7 +55,7 @@ module ReportBuilder
       visitors_whole_period_query = visitors_query(start_at, end_at, project_id)
 
       # We request the active user count again,
-      # but this time we filter by is_visitor = true
+      # but this time we filter by has_visits = true
       # This is so that we can calculate a more accurate
       # conversion rate on the FE, where we only compare
       # visitors (i.e. people that accepted cookies)
@@ -76,7 +76,7 @@ module ReportBuilder
         visitors_compared_period_query = visitors_query(compare_start_at, compare_end_at, project_id)
 
         # We request the active user count again,
-        # but this time we filter by is_visitor = true
+        # but this time we filter by has_visits = true
         # This is so that we can calculate a more accurate
         # conversion rate on the FE, where we only compare
         # visitors (i.e. people that accepted cookies)
