@@ -391,13 +391,13 @@ describe Permissions::ProjectPermissionsService do
       expect(service.denied_reason_for_action('taking_poll', create(:user), project)).to eq 'user_not_permitted'
     end
 
-    it 'returns `missing_user_requirements` when the user has not completed all registration fields' do
+    it 'returns `user_missing_requirements` when the user has not completed all registration fields' do
       project = create(:single_phase_poll_project, phase_attrs: { with_permissions: true })
       permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'taking_poll')
       permission.update!(permitted_by: 'users')
       gender_field = create(:custom_field_gender, required: true) # Created a required field that has not been filled in
       user = create(:user)
-      expect(service.denied_reason_for_action('taking_poll', user, project)).to eq 'missing_user_requirements'
+      expect(service.denied_reason_for_action('taking_poll', user, project)).to eq 'user_missing_requirements'
       gender_field.update!(required: false) # Removed the required field
       service = described_class.new
       expect(service.denied_reason_for_action('taking_poll', user, project)).to be_nil
