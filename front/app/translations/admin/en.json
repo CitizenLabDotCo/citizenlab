@@ -18,6 +18,7 @@
   "app.Admin.ManagementFeed.userPlaceholder": "Select a user",
   "app.Admin.ManagementFeed.value": "Value",
   "app.Admin.ManagementFeed.viewDetails": "View details",
+  "app.Admin.ManagementFeed.warning": "Experimental feature: A minimal list of selected actions performed by admins or managers in the last 30 days. Not all actions are included.",
   "app.Admin.Moderation.managementFeed": "Management feed",
   "app.Admin.Moderation.participationFeed": "Participation feed",
   "app.components.Admin.Campaigns.campaignDeletionConfirmation": "Are you sure?",
