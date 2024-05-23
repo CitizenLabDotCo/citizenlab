@@ -165,12 +165,34 @@ resource 'Events' do
     end
 
     context 'as an admin' do
-      before { admin_header_token }
+      before do
+        @admin = create(:admin)
+        header_token_for(@admin)
+      end
 
       example_request 'Get xlsx of attendees of an event' do
         expect(status).to eq 200
         expect(response_headers['Content-Type']).to include('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         expect(response_headers['Content-Disposition']).to include('attendees.xlsx')
+      end
+
+      example 'Get xlsx of attendees of an event successfully translates column headers', document: false do
+        fixtures = YAML.load_file(Rails.root.join('spec/fixtures/locales/fr-FR.yml'))
+        french_column_headers = fixtures['fr']['xlsx_export']['column_headers']
+        @admin.update!(locale: 'fr-FR')
+
+        do_request
+        expect(status).to eq 200
+
+        workbook = RubyXL::Parser.parse_buffer(response_body)
+        header_row = workbook.worksheets[0][0].cells.map(&:value)
+
+        expect(header_row).to match_array([
+          french_column_headers['first_name'],
+          french_column_headers['last_name'],
+          french_column_headers['email'],
+          french_column_headers['registration_completed_at']
+        ])
       end
     end
 

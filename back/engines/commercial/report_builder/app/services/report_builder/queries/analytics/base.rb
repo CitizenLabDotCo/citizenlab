@@ -45,6 +45,6 @@ class ReportBuilder::Queries::Analytics::Base < ReportBuilder::Queries::Base
   def visitor_filter(apply)
     return {} unless apply
 
-    { 'dimension_user.is_visitor': 'true' }
+    { 'dimension_user.has_visits': 'true' }
   end
 end

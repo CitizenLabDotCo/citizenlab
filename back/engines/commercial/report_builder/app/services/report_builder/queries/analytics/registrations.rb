@@ -51,7 +51,7 @@ module ReportBuilder
       visitors_whole_period_query = visitors_query(start_at, end_at)
 
       # Similar to active_users.rb, we request the registrations another
-      # time, but this time we filter by is_visitor = true
+      # time, but this time we filter by has_visits = true
       registrations_visitors_whole_period_query = registrations_query(
         start_at, end_at, apply_visitor_filter: true
       )
@@ -68,7 +68,7 @@ module ReportBuilder
         visitors_compared_period_query = visitors_query(compare_start_at, compare_end_at)
 
         # Similar to active_users.rb, we request the registrations another
-        # time, but this time we filter by is_visitor = true
+        # time, but this time we filter by has_visits = true
         registrations_visitors_compared_period_query = registrations_query(
           compare_start_at, compare_end_at, apply_visitor_filter: true
         )

@@ -16,8 +16,8 @@ const InitiativesEditMeta = () => {
   const tenantLocales = useAppConfigurationLocales();
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
-  const initiativesIndexTitle = formatMessage(messages.metaTitle);
-  const initiativesIndexDescription = formatMessage(messages.metaDescription);
+  const initiativesIndexTitle = formatMessage(messages.metaTitle1);
+  const initiativesIndexDescription = formatMessage(messages.metaDescription1);
 
   return (
     <Helmet>

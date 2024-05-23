@@ -44,10 +44,6 @@ const RegistrationsCard = ({
     resolution,
   });
 
-  if (isNilOrError(stats)) {
-    return null;
-  }
-
   const cardTitle = formatMessage(messages.registrations);
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
@@ -80,9 +76,9 @@ const RegistrationsCard = ({
           <Box width={layout === 'narrow' ? '50%' : undefined}>
             <Statistic
               name={formatMessage(messages.totalRegistrations)}
-              value={shownStatsData.registrations.value}
+              value={shownStatsData?.registrations.value ?? '-'}
               bottomLabel={bottomLabel}
-              bottomLabelValue={shownStatsData.registrations.lastPeriod}
+              bottomLabelValue={shownStatsData?.registrations.lastPeriod ?? '-'}
             />
           </Box>
           {!hideRegistrationRate && (
@@ -94,9 +90,11 @@ const RegistrationsCard = ({
               <Statistic
                 name={formatMessage(messages.registrationRate)}
                 tooltipContent={formatMessage(messages.registrationRateTooltip)}
-                value={shownStatsData.registrationRate.value}
+                value={shownStatsData?.registrationRate.value ?? '-'}
                 bottomLabel={bottomLabel}
-                bottomLabelValue={shownStatsData.registrationRate.lastPeriod}
+                bottomLabelValue={
+                  shownStatsData?.registrationRate.lastPeriod ?? '-'
+                }
               />
             </Box>
           )}

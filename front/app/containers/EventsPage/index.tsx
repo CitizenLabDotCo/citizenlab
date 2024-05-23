@@ -24,6 +24,7 @@ const EventsPage = () => {
             <Title
               color="tenantPrimary"
               style={{ fontSize: isTabletOrSmaller ? '40px' : '80px' }}
+              as="h1"
             >
               {formatMessage(messages.events)}
             </Title>
