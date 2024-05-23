@@ -17,7 +17,7 @@ export type InitiativeDisabledReason =
   | 'not_in_group'
   | 'not_signed_in'
   | 'not_active'
-  | 'missing_data';
+  | 'missing_user_requirements';
 
 // Confusingly, 'comment_reacting_initiative' is an action descriptor, but
 // not an action, and it doesn't have its own granular permissions.

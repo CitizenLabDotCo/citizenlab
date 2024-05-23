@@ -1,9 +1,8 @@
 import React from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { WrappedComponentProps } from 'react-intl';
 
-import { injectIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 
 import EventsViewer from './EventsViewer';
 import messages from './messages';
@@ -11,10 +10,8 @@ import messages from './messages';
 type Props = {
   attendeeId?: string;
 };
-const CurrentAndUpcomingEvents = ({
-  intl: { formatMessage },
-  attendeeId,
-}: Props & WrappedComponentProps) => {
+const CurrentAndUpcomingEvents = ({ attendeeId }: Props) => {
+  const { formatMessage } = useIntl();
   const isPhoneOrSmaller = useBreakpoint('phone');
 
   return (
@@ -33,4 +30,4 @@ const CurrentAndUpcomingEvents = ({
   );
 };
 
-export default injectIntl(CurrentAndUpcomingEvents);
+export default CurrentAndUpcomingEvents;

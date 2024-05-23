@@ -35,7 +35,7 @@ export default function useInitiativesPermissions(
         });
       } else {
         switch (actionDescriptor.disabled_reason) {
-          case 'missing_data': {
+          case 'missing_user_requirements': {
             setActionPermission({
               show: true,
               enabled: 'maybe',

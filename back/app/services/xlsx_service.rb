@@ -134,19 +134,6 @@ class XlsxService
     generate_xlsx 'Users', columns, users
   end
 
-  def generate_attendees_xlsx(users, view_private_attributes: false)
-    columns = [
-      { header: 'first_name', f: ->(u) { u.first_name } },
-      { header: 'last_name', f: ->(u) { u.last_name } },
-      { header: 'email', f: ->(u) { u.email } },
-      { header: 'registration_completed_at', f: ->(u) { u.registration_completed_at }, skip_sanitization: true },
-      *user_custom_field_columns(:itself)
-    ]
-    columns.reject! { |c| %w[email first_name last_name].include?(c[:header]) } unless view_private_attributes
-
-    generate_xlsx 'Users', columns, users
-  end
-
   def generate_idea_xlsx_columns(_ideas, view_private_attributes: false, with_tags: false)
     columns = [
       { header: 'id',                   f: ->(i) { i.id }, skip_sanitization: true },

@@ -45,7 +45,7 @@ const disabledMessages: { [key in SurveyDisabledReason]: MessageDescriptor } = {
   project_inactive: messages.surveyDisabledProjectInactive,
   not_active: messages.surveyDisabledNotActiveUser,
   not_verified: messages.surveyDisabledNotVerified,
-  missing_data: messages.surveyDisabledNotActiveUser,
+  missing_user_requirements: messages.surveyDisabledNotActiveUser,
   not_signed_in: messages.surveyDisabledMaybeNotPermitted,
   not_in_group: globalMessages.notInGroup,
   not_permitted: messages.surveyDisabledNotPermitted,

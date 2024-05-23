@@ -117,7 +117,7 @@ export default () => {
               <FormattedMessage {...messages.inputsPageTitle} />
             </PageTitle>
             <IdeaCardsWithFiltersSidebar
-              invisibleTitleMessage={messages.a11y_IdeasListTitle}
+              invisibleTitleMessage={messages.a11y_IdeasListTitle1}
               ideaQueryParameters={ideasQueryParameters}
               onUpdateQuery={updateSearchParams}
             />

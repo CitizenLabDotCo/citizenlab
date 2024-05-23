@@ -42,7 +42,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::Registrations do
       )
     end
 
-    it 'returns visitors and a separate count for registrations filtered by is_visitor' do
+    it 'returns visitors and a separate count for registrations filtered by has_visits' do
       u1, _, __, ___ = create_list(:user, 4, invite_status: nil, registration_completed_at: september)
 
       create(:fact_visit, dimension_date_first_action: dimension_date_september, dimension_user_id: u1.id)
@@ -73,7 +73,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::Registrations do
       )
     end
 
-    it 'returns visitors and a separate count for registrations filtered by is_visitor in compared period' do
+    it 'returns visitors and a separate count for registrations filtered by has_visits in compared period' do
       october = Date.new(2022, 10, 10)
       dimension_date_october = create(:dimension_date, date: october)
 

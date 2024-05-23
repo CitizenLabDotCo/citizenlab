@@ -18,9 +18,9 @@ export default defineMessages({
     defaultMessage: 'Pageviews per visit ',
   },
   cardTitleTooltipMessage: {
-    id: 'app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage3',
+    id: 'app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage4',
     defaultMessage:
-      '"Visit duration" and "Pageviews per visit" are only counted for users who accepted cookies. Visits and visitors are based on all users.',
+      '"Visit duration" and "Pageviews per visit" are only counted for visitors who accepted cookies. Visits and visitors are based on all visitors.',
   },
   visitorsStatTooltipMessage: {
     id: 'app.modules.commercial.analytics.admin.components.VisitorsCard.visitorsStatTooltipMessage',
