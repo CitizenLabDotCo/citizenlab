@@ -29,7 +29,6 @@ const UpdateFollowArea = ({ area }: Props) => {
   const areaButtonContentColor = isFollowing
     ? colors.white
     : theme.colors.tenantPrimary;
-  const className = isFollowing ? 'inverse' : '';
   const iconName = isFollowing ? 'check-circle' : 'plus-circle';
   const handleFollowOrUnfollow = () => {
     if (isFollowing) {
@@ -59,7 +58,7 @@ const UpdateFollowArea = ({ area }: Props) => {
   return (
     <Badge
       color={theme.colors.tenantPrimary}
-      className={className}
+      className={isFollowing ? 'inverse' : ''}
       onClick={handleFollowOrUnfollow}
     >
       <Button
