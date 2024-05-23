@@ -24,4 +24,12 @@ export default defineMessages({
     defaultMessage:
       'You have reached the maximum number of votes you can submit.',
   },
+  votingNotPermitted: {
+    id: 'app.components.AssignVoteControl.votingNotPermitted',
+    defaultMessage: 'You are not permitted to vote.',
+  },
+  notInGroup: {
+    id: 'app.components.AssignVoteControl.votingNotPermitted',
+    defaultMessage: 'You do not meet the requirements to vote.',
+  },
 });
