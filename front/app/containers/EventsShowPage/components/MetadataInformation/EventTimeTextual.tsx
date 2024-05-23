@@ -21,7 +21,7 @@ const FullEventTime = ({ event }: Props) => {
     <Container>
       <StyledIcon name="calendar" ariaHidden />
       <Content>
-        <Text my="4px" color="coolGrey600" fontSize="s">
+        <Text my="4px" color="coolGrey600" fontSize="s" aria-hidden={true}>
           {eventDateString}
         </Text>
         <AddEventToCalendarButton eventId={event.id} />
