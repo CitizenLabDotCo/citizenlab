@@ -100,6 +100,7 @@ type Props = {
 
 const Checkbox = ({
   id,
+  dataTestId,
   size = '24px',
   disabled = false,
   indeterminate = false,
@@ -131,7 +132,7 @@ const Checkbox = ({
         name={name}
       />
       <StyledCheckbox
-        data-testid={testEnv('check-mark-background')}
+        data-testid={dataTestId || testEnv('check-mark-background')}
         checkedColor={checkedColor}
         checkedOrIndeterminate={checkedOrIndeterminate}
         size={size}
