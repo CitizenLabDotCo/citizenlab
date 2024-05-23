@@ -6,6 +6,10 @@ import { useTheme } from 'styled-components';
 
 import { IEventData } from 'api/events/types';
 
+import { ScreenReaderOnly } from 'utils/a11y';
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 import SingleDateStylized from './SingleDateStylized';
 
 interface Props {
@@ -14,6 +18,7 @@ interface Props {
 
 const EventDateStylized = ({ event }: Props) => {
   const theme = useTheme();
+  const { formatMessage } = useIntl();
   const startAtMoment = moment(event.attributes.start_at);
   const endAtMoment = moment(event.attributes.end_at);
   const startDateMonth = startAtMoment.format('MMM');
@@ -31,27 +36,51 @@ const EventDateStylized = ({ event }: Props) => {
       justifyContent="center"
       id="e2e-event-date-stylized"
     >
-      <SingleDateStylized
-        day={startAtMoment.format('DD')}
-        month={startDateMonth}
-        time={
-          isEventMultipleDays
-            ? `${startAtMoment.format('LT')}`
-            : oneDayEventTime
-        }
-      />
+      <ScreenReaderOnly>
+        {isEventMultipleDays ? (
+          <p>
+            {formatMessage(messages.multiDayScreenReaderDate, {
+              startDate: startAtMoment.format('MMMM Do, YYYY'),
+              startTime: startAtMoment.format('LT'),
+              endDate: endAtMoment.format('MMMM Do, YYYY'),
+              endTime: endAtMoment.format('LT'),
+            })}
+          </p>
+        ) : (
+          <p>
+            {formatMessage(messages.singleDayScreenReaderDate, {
+              eventDate: startAtMoment.format('MMMM Do, YYYY'),
+              startTime: startAtMoment.format('LT'),
+              endTime: endAtMoment.format('LT'),
+            })}
+          </p>
+        )}
+      </ScreenReaderOnly>
+      <div aria-hidden="true">
+        <SingleDateStylized
+          day={startAtMoment.format('DD')}
+          month={startDateMonth}
+          time={
+            isEventMultipleDays
+              ? `${startAtMoment.format('LT')}`
+              : oneDayEventTime
+          }
+        />
+      </div>
       {isEventMultipleDays && (
         <>
-          <Box mx="16px" my="auto">
+          <Box mx="16px" my="auto" aria-hidden>
             <Text m="0px" fontWeight="bold" fontSize="xxl">
               {theme.isRtl ? '←' : '→'}
             </Text>
           </Box>
-          <SingleDateStylized
-            day={endAtMoment.format('DD')}
-            month={endDateMonth}
-            time={`${endAtMoment.format('LT')}`}
-          />
+          <div aria-hidden>
+            <SingleDateStylized
+              day={endAtMoment.format('DD')}
+              month={endDateMonth}
+              time={`${endAtMoment.format('LT')}`}
+            />
+          </div>
         </>
       )}
     </Box>
