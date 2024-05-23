@@ -46,7 +46,6 @@ const CommentingIdeaDisabled = ({ phaseId, idea }: Props) => {
     signUpIn('signup');
   };
 
-  // TODO: JS - Define a set of defaults for this and then override when needed
   const disabledMessages: {
     [key in IdeaCommentingDisabledReason]: MessageDescriptor | undefined;
   } = {
