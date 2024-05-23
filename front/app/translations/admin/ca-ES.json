@@ -2561,7 +2561,7 @@
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Registrations",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Total d'inscripcions",
   "app.modules.commercial.analytics.admin.components.Tab": "Visitants",
-  "app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage3": "La \"Durada de la visita\" i les \"Pàgines vistes per visita\" només es compten per als usuaris que han acceptat les galetes. Les visites i visitants es basen en tots els usuaris.",
+  "app.modules.commercial.analytics.admin.components.VisitorsCard.cardTitleTooltipMessage4": "La \"Durada de la visita\" i les \"Pàgines vistes per visita\" només es compten per als visitants que han acceptat galetes. Les visites i els visitants es basen en tots els visitants.",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last30Days": "Darrers 30 dies:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.last7Days": "Darrers 7 dies:",
   "app.modules.commercial.analytics.admin.components.VisitorsCard.pageViews": "Pàgines vistes per visita",
