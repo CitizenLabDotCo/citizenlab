@@ -40,7 +40,15 @@ class Activity < ApplicationRecord
   validates :action, :item_type, :item_id, presence: true
 
   scope :management, lambda {
-    activities = where(acted_at: 30.days.ago..Time.now).where(user: User.admin_or_moderator)
+    # We exclude activities that are older than 2024-05-20, because this is when we released the code that adds
+    # a serialized copy of the item to the payload of 'created' and 'changed' activities,
+    # and the change(s) to the payload of the 'changed' activities, when these activities are created.
+    # Without this additional info, the activities cannot display correctly in the management feed.
+    # This condition can be removed when the cutoff date is before the period used for the acted_at condition.
+    activities = where('created_at > ?', Date.new(2024, 5, 20))
+      .where('acted_at > ?', 30.days.ago)
+      .where(user: User.admin_or_moderator)
+
     result = Activity.none
 
     MANAGEMENT_FILTERS.each do |filter|
