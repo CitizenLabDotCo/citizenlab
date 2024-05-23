@@ -57,6 +57,9 @@ const AssignSingleVoteButton = ({
     return null;
   }
 
+  console.log(actionDescriptor);
+  // console.log(isFixableByAuthentication(actionDescriptor.disabled_reason));
+
   const vote = () => {
     if (actionDescriptor.enabled) {
       ideaInBasket ? onRemove() : onAdd();
@@ -103,6 +106,12 @@ const AssignSingleVoteButton = ({
   };
 
   const getButtonDisabledExplanation = () => {
+    if (
+      actionDescriptor.disabled_reason &&
+      !isFixableByAuthentication(actionDescriptor.disabled_reason)
+    ) {
+      return 'YO';
+    }
     if (basket?.data?.attributes.submitted_at) {
       return formatMessage(
         onIdeaPage ? messages.votesSubmittedIdeaPage : messages.votesSubmitted,
