@@ -34,6 +34,10 @@ const EventDateStylized = ({ event }: Props) => {
       id="e2e-event-date-stylized"
     >
       <ScreenReadableEventDate event={event} />
+      {/* We need to wrap the single date in a div to make sure it's
+        not read by screen readers. This is because we handle the screen
+        reader output in the ScreenReadableEventDate component
+        */}
       <div aria-hidden="true">
         <SingleDateStylized
           day={startAtMoment.format('DD')}

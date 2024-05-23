@@ -21,6 +21,8 @@ const FullEventTime = ({ event }: Props) => {
     <Container>
       <StyledIcon name="calendar" ariaHidden />
       <Content>
+        {/* We hide this from screen readers because the date is
+         already read out in the child component above */}
         <Text my="4px" color="coolGrey600" fontSize="s" aria-hidden>
           {eventDateString}
         </Text>
