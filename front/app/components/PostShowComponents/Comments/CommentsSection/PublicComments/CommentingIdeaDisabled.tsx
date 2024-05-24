@@ -54,7 +54,7 @@ const CommentingIdeaDisabled = ({ phaseId, idea }: Props) => {
     commenting_disabled: messages.commentingDisabledProject,
     commenting_not_supported: undefined,
     user_not_permitted: messages.commentingDisabledProject,
-    user_not_verified: undefined,
+    user_not_verified: messages.commentingDisabledUnverified,
     user_not_in_group: globalMessages.notInGroup,
     user_blocked: messages.commentingDisabledProject,
     user_not_active: messages.completeProfileToComment,
