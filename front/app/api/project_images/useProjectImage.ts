@@ -16,7 +16,7 @@ const fetchProjectImage = ({ projectId, imageId }: Params) =>
 
 const useProjectImage = ({ projectId, imageId }: Params) => {
   return useQuery<IProjectImage, CLErrors, IProjectImage, ProjectImagesKeys>({
-    queryKey: projectImagesKeys.item({ id: imageId, projectId }),
+    queryKey: projectImagesKeys.item({ id: imageId }),
     queryFn: () => fetchProjectImage({ imageId, projectId }),
     enabled: !!projectId && !!imageId,
   });
