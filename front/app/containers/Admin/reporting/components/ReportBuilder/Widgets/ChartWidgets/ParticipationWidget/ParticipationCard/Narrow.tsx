@@ -22,23 +22,21 @@ const Narrow = ({
   participationTypes,
 }: Props) => {
   const previousDays = getDaysInRange(startAt, endAt);
-  const show = (type: ParticipationType) => participationTypes.includes(type);
-  const showInputs = show('inputs');
-  const showComments = show('comments');
+  const show = (type: ParticipationType) => participationTypes[type];
 
   return (
     <Box height="100%" display="flex" flexDirection="column">
       {!hideStatistics && stats && (
         <Box display="flex" flexDirection="column" mb="8px">
-          {showInputs && (
+          {show('inputs') && (
             <Statistic
               nameMessage={messages.inputs}
               {...stats.inputs}
               previousDays={previousDays}
             />
           )}
-          {showComments && (
-            <Box mt={showInputs ? '12px' : undefined}>
+          {show('comments') && (
+            <Box mt={show('inputs') ? '12px' : undefined}>
               <Statistic
                 nameMessage={messages.comments}
                 {...stats.comments}
@@ -47,7 +45,7 @@ const Narrow = ({
             </Box>
           )}
           {show('votes') && (
-            <Box mt={showInputs || showComments ? '12px' : undefined}>
+            <Box mt={show('inputs') || show('comments') ? '12px' : undefined}>
               <Statistic
                 nameMessage={messages.votes}
                 {...stats.votes}
