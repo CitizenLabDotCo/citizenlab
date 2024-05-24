@@ -16,6 +16,7 @@ import AssignMultipleVotesInput from 'components/VoteInputs/multiple/AssignMulti
 import AssignSingleVoteBox from 'components/VoteInputs/single/AssignSingleVoteBox';
 import AssignSingleVoteButton from 'components/VoteInputs/single/AssignSingleVoteButton';
 
+import { UserDisabledReason } from 'utils/actionDescriptors';
 import { FormattedMessage } from 'utils/cl-intl';
 import { getLocalisedDateString } from 'utils/dateUtils';
 
@@ -80,7 +81,9 @@ export type VotingMethodConfig = {
   getSubmissionTerm: (form: 'singular' | 'plural') => MessageDescriptor;
   preSubmissionWarning: () => MessageDescriptor;
   useVoteTerm: boolean;
-  permissionsDisabledMessages?: {};
+  permissionsDisabledMessages?: {
+    [key in UserDisabledReason]?: MessageDescriptor;
+  };
 };
 
 const budgetingConfig: VotingMethodConfig = {

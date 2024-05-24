@@ -18,13 +18,13 @@ import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { getPermissionsDisabledMessage } from 'utils/configs/participationMethodConfig';
 import eventEmitter from 'utils/eventEmitter';
 import { isNil } from 'utils/helperUtils';
 
 import messages from './messages';
 import tracks from './tracks';
 import { isButtonEnabled } from './utils';
-import { getPermissionsDisabledMessage } from 'utils/configs/participationMethodConfig';
 
 interface Props {
   ideaId: string;

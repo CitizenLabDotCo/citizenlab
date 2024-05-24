@@ -7,10 +7,10 @@ import { Localize } from 'hooks/useLocalize';
 
 import voteInputMessages from 'components/VoteInputs/_shared/messages';
 
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isNil } from 'utils/helperUtils';
 
 import messages from './messages';
-import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 export const getNumberOfVotesDisabledExplanation = (
   formatMessage: FormatMessage,

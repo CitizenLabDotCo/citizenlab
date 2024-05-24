@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Permissions::UserRequirementsService
-
   def initialize(check_groups: true)
     # This allows us to ignore groups when calling from within PermissionsService where groups are separately checked
     @check_groups = check_groups

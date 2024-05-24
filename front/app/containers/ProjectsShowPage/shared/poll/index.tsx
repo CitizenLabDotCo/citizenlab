@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { MessageDescriptor } from 'react-intl';
 import styled from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
@@ -14,7 +15,6 @@ import globalMessages from 'utils/messages';
 import FormCompleted from './FormCompleted';
 import messages from './messages';
 import PollForm from './PollForm';
-import { MessageDescriptor } from 'react-intl';
 
 const Container = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};

@@ -1,5 +1,7 @@
 import React, { ReactNode } from 'react';
 
+import { MessageDescriptor } from 'react-intl';
+
 import { IIdea } from 'api/ideas/types';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import { getCurrentPhase, getInputTerm } from 'api/phases/utils';
@@ -16,14 +18,18 @@ import VolunteeringCTABar from 'components/ParticipationCTABars/VolunteeringCTAB
 import VotingCTABar from 'components/ParticipationCTABars/VotingCTABar';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 
+import {
+  isFixableByAuthentication,
+  UserDisabledReason,
+} from 'utils/actionDescriptors';
 import clHistory from 'utils/cl-router/history';
+import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 
 import { FormattedMessage } from '../../cl-intl';
 import { isNilOrError, NilOrError } from '../../helperUtils';
 import messages from '../../messages';
+
 import votingMessages from './voting/messages';
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
-import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 
 export const defaultSortingOptions = [
   { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
@@ -86,7 +92,9 @@ export type ParticipationMethodConfig = {
   hideAuthorOnIdeas?: boolean; // Hides the author on the idea pages/cards
   showIdeaFilters?: boolean; // Shows filters on the idea list
   inputsPageSize?: number;
-  permissionsDisabledMessages?: {};
+  permissionsDisabledMessages?: {
+    [key in UserDisabledReason]?: MessageDescriptor;
+  };
 };
 
 const ideationConfig: ParticipationMethodConfig = {

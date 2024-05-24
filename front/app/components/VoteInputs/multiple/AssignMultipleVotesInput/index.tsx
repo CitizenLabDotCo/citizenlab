@@ -23,6 +23,7 @@ import { SuccessAction } from 'containers/Authentication/SuccessActions/actions'
 
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { useIntl } from 'utils/cl-intl';
+import { getPermissionsDisabledMessage } from 'utils/configs/participationMethodConfig';
 import { isNil } from 'utils/helperUtils';
 
 import messages from './messages';
@@ -31,7 +32,6 @@ import {
   getMinusButtonDisabledMessage,
   getPlusButtonDisabledMessage,
 } from './utils';
-import { getPermissionsDisabledMessage } from 'utils/configs/participationMethodConfig';
 
 interface Props {
   ideaId: string;

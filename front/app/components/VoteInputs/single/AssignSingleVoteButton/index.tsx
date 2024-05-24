@@ -16,10 +16,10 @@ import { VOTES_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
 
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { useIntl } from 'utils/cl-intl';
+import { getPermissionsDisabledMessage } from 'utils/configs/participationMethodConfig';
 import eventEmitter from 'utils/eventEmitter';
 
 import messages from './messages';
-import { getPermissionsDisabledMessage } from 'utils/configs/participationMethodConfig';
 
 interface Props {
   phase: IPhaseData;
@@ -110,7 +110,7 @@ const AssignSingleVoteButton = ({
       true
     );
     if (permissionDisabledMessage)
-      return formatMessage(permissionDisabledMessage);
+      {return formatMessage(permissionDisabledMessage);}
 
     if (basket?.data?.attributes.submitted_at) {
       return formatMessage(

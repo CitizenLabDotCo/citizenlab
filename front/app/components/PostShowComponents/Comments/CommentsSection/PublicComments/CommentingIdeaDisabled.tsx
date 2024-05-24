@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
+import { MessageDescriptor } from 'react-intl';
 
 import { IIdea, IdeaCommentingDisabledReason } from 'api/ideas/types';
 
@@ -12,7 +13,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import globalMessages from 'utils/messages';
 
 import messages from '../../messages';
-import { MessageDescriptor } from 'react-intl';
 
 interface Props {
   phaseId: string | undefined;
