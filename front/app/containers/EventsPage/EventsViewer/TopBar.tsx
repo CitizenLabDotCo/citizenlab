@@ -39,34 +39,40 @@ const TopBar = memo<Props>(
   }) => {
     const { formatMessage } = useIntl();
     const theme = useTheme();
-    const isPhoneOrSmaller = useBreakpoint('phone');
+    const isSmallerThanPhone = useBreakpoint('phone');
 
-    const mobileLeft = isPhoneOrSmaller && !theme.isRtl ? '-70px' : 'auto';
+    const mobileLeft = isSmallerThanPhone && !theme.isRtl ? '-70px' : 'auto';
 
     return (
       <Box
-        display={isPhoneOrSmaller ? 'block' : 'flex'}
+        display={isSmallerThanPhone ? 'block' : 'flex'}
         justifyContent="space-between"
         pb="14px"
         borderBottom="solid 1px #ccc"
         mb="28px"
         flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
       >
-        <Title color={'tenantText'} m="0px" my="auto" variant="h3" as="h1">
+        <Title
+          color="tenantText"
+          m="0px"
+          my="auto"
+          as="h2"
+          variant={isSmallerThanPhone ? 'h3' : 'h2'}
+        >
           {title}
         </Title>
         <ProjectFilterDropdownPositioner>
           <Box
             display="flex"
             flexWrap="wrap"
-            flexDirection={isPhoneOrSmaller ? 'row-reverse' : 'row'}
+            flexDirection={isSmallerThanPhone ? 'row-reverse' : 'row'}
             gap="8px"
             mt="8px"
             ml="auto"
           >
             {showDateFilter && (
               <Box
-                width={isPhoneOrSmaller ? '100%' : 'auto'}
+                width={isSmallerThanPhone ? '100%' : 'auto'}
                 flexShrink={0}
                 style={{ textAlign: 'right' }}
               >
@@ -74,7 +80,7 @@ const TopBar = memo<Props>(
                   onChange={setDateFilter}
                   textColor={theme.colors.tenantText}
                   listTop="44px"
-                  mobileLeft={isPhoneOrSmaller ? '-70px' : mobileLeft}
+                  mobileLeft={isSmallerThanPhone ? '-70px' : mobileLeft}
                 />
               </Box>
             )}
@@ -85,7 +91,9 @@ const TopBar = memo<Props>(
                 textColor={theme.colors.tenantText}
                 filterSelectorStyle="button"
                 listTop="44px"
-                mobileLeft={isPhoneOrSmaller && !theme.isRtl ? '-70px' : 'auto'}
+                mobileLeft={
+                  isSmallerThanPhone && !theme.isRtl ? '-70px' : 'auto'
+                }
                 eventsTime={eventsTime}
               />
             )}

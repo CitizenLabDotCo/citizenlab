@@ -6,11 +6,12 @@ class UserReduceService
   #
   # See: https://docs.google.com/document/d/1REUc69m2fn1vCtBOMosWjAXDPSSRB9Hgh-Lf1OmXnX0/edit?usp=sharing
 
+  # Ideally, "followers" should not be blacklisted, but there was no time to tackle the uniqueness constraint issue. This is a temporary solution.
   MERGE_TABLES_BLACKLIST = %w[
     activities email_campaigns_campaign_email_commands
     email_campaigns_campaigns email_campaigns_consents
     email_campaigns_unsubscription_tokens email_campaigns_deliveries
-    identities initiative_status_changes invites memberships
+    followers identities initiative_status_changes invites memberships
     notifications onboarding_campaign_dismissals spam_reports
     users verification_verifications
   ].freeze

@@ -149,7 +149,7 @@ tr:
         title: Detaylar
         description:
       other_text_field:
-        title: If you picked '{other_option}', what are you thinking of?
+        title: Eğer '{other_option}' adresini seçtiyseniz, ne düşünüyorsunuz?
   custom_forms:
     categories:
       main_content:
@@ -200,29 +200,40 @@ tr:
       subject: '%{organizationName}: Parolanızı sıfırlayın'
       title_reset_your_password: 'Yeni bir parola seçin'
   xlsx_export:
+    anonymous: 'Anonim'
     column_headers:
-      input_id: 'KIMLIK'
-      latitude: 'Enlem'
-      longitude: 'Boylam'
-      author_fullname: 'Yazar adı'
-      author_email: 'Yazar e-postası'
-      author_id: 'Yazar Kimliği'
-      budget: 'Bütçe'
-      created_at: 'Şu adrese gönderildi'
-      published_at: 'Şu adreste yayınlandı'
-      comments_count: 'Yorumlar'
-      likes_count: 'Beğeniler'
-      dislikes_count: 'Sevmediğim'
-      picks: 'Seçimler'
-      participants: 'Katılımcılar'
-      votes_count: 'Oylar'
-      input_url: 'URL'
-      project: 'Proje'
-      status: 'Durum'
       assignee_fullname: 'Atanan'
       assignee_email: 'Atanan e-posta'
+      attachments: 'Ekler'
+      author_email: 'Yazar e-postası'
+      author_fullname: 'Yazar adı'
+      author_id: 'Yazar Kimliği'
+      budget: 'Bütçe'
+      comments_count: 'Yorumlar'
+      cost: 'Maliyet'
+      created_at: 'Şu adrese gönderildi'
+      description: 'Açıklama'
+      dislikes_count: 'Sevmediğim'
+      email: 'E-posta'
+      first_name: 'İlk isim(ler)'
       image_url: 'Resim URL''si'
-    anonymous: 'Anonim'
+      input_id: 'KIMLIK'
+      input_url: 'URL'
+      last_name: 'Soyadı'
+      latitude: 'Enlem'
+      likes_count: 'Beğeniler'
+      location: 'Konum'
+      longitude: 'Boylam'
+      participants: 'Katılımcılar'
+      picks: 'Seçimler'
+      project: 'Proje'
+      published_at: 'Şu adreste yayınlandı'
+      registration_completed_at: 'Kayıt şu adreste tamamlandı'
+      status: 'Durum'
+      submitted_at: 'Şu adrese gönderildi'
+      tags: 'Etiketler'
+      title: 'Başlık'
+      votes_count: 'Oylar'
   form_builder:
     default_select_field:
       title: 'Sizin sorunuz'

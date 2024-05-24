@@ -34,6 +34,7 @@ class ProjectCopyService < TemplateService
     @local_copy = local_copy
     @project = project
     @template = { 'models' => {} }
+    new_slug = SlugService.new.generate_slug(nil, new_slug) if new_slug
 
     # TODO: deal with linking idea_statuses, topics, custom field values and maybe areas and groups
     @template['models']['project']                    = yml_projects new_slug: new_slug, new_publication_status: new_publication_status, new_title_multiloc: new_title_multiloc, shift_timestamps: shift_timestamps

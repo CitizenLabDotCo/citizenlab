@@ -404,7 +404,7 @@ resource 'Initiatives' do
       let(:group) { create(:group) }
 
       before do
-        PermissionsService.new.update_global_permissions
+        Permissions::PermissionsUpdateService.new.update_global_permissions
         Permission.find_by(permission_scope: nil, action: 'posting_initiative')
           .update!(permitted_by: 'groups', groups: [group])
       end

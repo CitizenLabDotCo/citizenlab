@@ -4,7 +4,7 @@ import { IResolution } from 'components/admin/ResolutionControl';
 
 // Parameters
 export interface ProjectId {
-  projectId: string | undefined;
+  projectId?: string | undefined;
 }
 
 export interface Dates {

@@ -1,33 +1,35 @@
 import { useMemo, useState } from 'react';
 
-import useAnalytics from 'api/analytics/useAnalytics';
+import { useVisitorsLive } from 'api/graph_data_units';
 
+import { getComparedPeriod } from 'components/admin/GraphCards/_utils/query';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 import { useIntl } from 'utils/cl-intl';
 
 import { parseStats, parseTimeSeries, parseExcelData } from './parse';
-import { query } from './query';
 import { getTranslations } from './translations';
-import { QueryParameters, Response } from './typings';
+import { QueryParameters } from './typings';
 
 export default function useVisitorsData({
-  projectId,
   startAtMoment,
   endAtMoment,
-  resolution,
+  resolution = 'month',
 }: QueryParameters) {
   const { formatMessage } = useIntl();
   const [currentResolution, setCurrentResolution] =
     useState<IResolution>(resolution);
-  const { data: analytics } = useAnalytics<Response>(
-    query({
-      projectId,
-      startAtMoment,
-      endAtMoment,
+
+  const { data: analytics } = useVisitorsLive(
+    {
+      start_at: startAtMoment?.toISOString(),
+      end_at: endAtMoment?.toISOString(),
       resolution,
-    }),
-    () => setCurrentResolution(resolution)
+      ...getComparedPeriod(resolution),
+    },
+    {
+      onSuccess: () => setCurrentResolution(resolution),
+    }
   );
 
   const translations = getTranslations(formatMessage);
@@ -38,7 +40,7 @@ export default function useVisitorsData({
     () =>
       analytics?.data
         ? parseTimeSeries(
-            analytics.data.attributes[2],
+            analytics.data.attributes[0],
             startAtMoment,
             endAtMoment,
             currentResolution

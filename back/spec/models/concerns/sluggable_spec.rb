@@ -47,6 +47,14 @@ RSpec.describe Sluggable do
         sluggable = create(sluggable_factories[:slug_on_publication], publication_status: 'published')
         expect(sluggable.slug).to be_present
       end
+
+      it 'generates valid slugs for various user names' do
+        titles = ['将太', 'константин', '-']
+        titles.each do |title|
+          sluggable = build(sluggable_factories[:slug_from_first_title], title_multiloc: { en: title })
+          expect(sluggable).to be_valid
+        end
+      end
     end
 
     describe 'validate' do

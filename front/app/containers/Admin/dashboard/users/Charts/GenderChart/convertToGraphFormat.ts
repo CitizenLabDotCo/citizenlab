@@ -1,6 +1,6 @@
 import { FormatMessage } from 'typings';
 
-import { GenderOption } from 'api/graph_data_units/responseTypes';
+import { GenderOption } from 'api/graph_data_units/responseTypes/_deprecated';
 
 import messages from 'containers/Admin/dashboard/messages';
 

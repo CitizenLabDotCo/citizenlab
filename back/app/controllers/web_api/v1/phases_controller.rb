@@ -6,10 +6,10 @@ class WebApi::V1::PhasesController < ApplicationController
 
   def index
     @phases = policy_scope(Phase)
-      .includes(:permissions, :report, :custom_form)
       .where(project_id: params[:project_id])
       .order(:start_at)
     @phases = paginate @phases
+    @phases = @phases.includes(:permissions, :report, :custom_form)
 
     render json: linked_json(@phases, WebApi::V1::PhaseSerializer, params: jsonapi_serializer_params, include: %i[permissions])
   end
@@ -76,7 +76,7 @@ class WebApi::V1::PhasesController < ApplicationController
 
   def index_xlsx
     I18n.with_locale(current_user.locale) do
-      xlsx = XlsxExport::GeneratorService.new.generate_inputs_for_phase @phase.id, view_private_attributes: true
+      xlsx = XlsxExport::InputsGenerator.new.generate_inputs_for_phase @phase.id, view_private_attributes: true
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'inputs.xlsx'
     end
   end
