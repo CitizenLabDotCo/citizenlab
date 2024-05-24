@@ -378,6 +378,9 @@ const ProjectCard = memo<InputProps>(
     });
     const { data: project } = useProjectById(projectId);
     const { data: authUser } = useAuthUser();
+
+    // We use this one instead of useProjectFolderImages,
+    // because that one doesn't work with our caching system.
     const { data: projectImage } = useProjectImage({
       projectId,
       imageId: project?.data.relationships.project_images.data[0]?.id,
