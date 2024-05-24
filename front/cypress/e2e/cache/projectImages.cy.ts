@@ -1,4 +1,5 @@
 import { randomString } from '../../support/commands';
+import { base64 } from '../../fixtures/base64img';
 
 // describe('Project images', () => {
 
@@ -16,6 +17,7 @@ describe('Project folder images', () => {
       publicationStatus: 'published',
     }).then((folder) => {
       folderId = folder.body.data.id;
+      cy.uploadProjectFolderImage(folderId, base64);
     });
   });
 
@@ -33,7 +35,12 @@ describe('Project folder images', () => {
     });
 
     cy.goToLandingPage();
-    cy.get('.e2e-folder-card-folder-title').contains(title);
-    cy.wait(10000);
+
+    // If the card title is found, the project folder image should already have been
+    // taken out of the cache (or a request would have been made if there is a bug)
+    cy.get('.e2e-folder-card-folder-title > span').contains(title);
+
+    // But, just to be sure, we will wait 5 more seconds
+    cy.wait(5000);
   });
 });

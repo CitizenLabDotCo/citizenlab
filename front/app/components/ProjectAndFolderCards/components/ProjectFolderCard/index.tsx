@@ -322,7 +322,7 @@ const ProjectFolderCard = memo<Props>(
     // because that one doesn't work well with our caching system
     const { data: projectFolderImage } = useProjectFolderImage({
       folderId,
-      imageId: projectFolder?.data.relationships.images.data?.[0].id,
+      imageId: projectFolder?.data.relationships.images.data?.[0]?.id,
     });
 
     const { data: publication } = useAdminPublication(
