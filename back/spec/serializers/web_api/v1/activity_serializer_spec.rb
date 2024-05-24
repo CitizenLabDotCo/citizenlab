@@ -29,4 +29,22 @@ describe WebApi::V1::ActivitySerializer do
       end
     end
   end
+
+  context 'item_exists' do
+    let(:idea) { create(:idea) }
+    let(:activity) { create(:idea_created_activity, item: idea) }
+
+    it 'returns true when the item exists' do
+      serialized_output = described_class.new(activity.reload).serializable_hash
+      expect(serialized_output.dig(:data, :attributes, :item_exists)).to be true
+    end
+
+    it 'returns false when the item does not exist' do
+      idea.destroy!
+      expect(activity.reload&.item).to be_nil
+
+      serialized_output = described_class.new(activity.reload).serializable_hash
+      expect(serialized_output.dig(:data, :attributes, :item_exists)).to be false
+    end
+  end
 end

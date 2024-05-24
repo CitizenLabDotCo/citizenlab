@@ -44,6 +44,7 @@ const Settings = ({ selectedNode, onClose, onDelete }: Props) => {
       h={`calc(100vh - ${stylingConsts.menuHeight}px)`}
       background="#ffffff"
       overflowY="auto"
+      id="e2e-content-builder-settings"
     >
       <StyledCloseIconButton
         className="e2eBuilderSettingsClose"

@@ -145,6 +145,6 @@ describe('Report builder Posts By Time widget', () => {
     cy.wait('@saveReportLayout');
 
     cy.visit(`projects/${projectSlug}`);
-    cy.get('#e2e-posts-by-time-widget').should('not.exist');
+    cy.get('.e2e-posts-by-time-widget').should('not.exist');
   });
 });
