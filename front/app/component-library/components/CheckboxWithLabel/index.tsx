@@ -6,7 +6,7 @@ import Checkbox, { CheckboxProps } from '../Checkbox';
 import IconTooltip from '../IconTooltip';
 
 type Props = {
-  label: string | JSX.Element | null;
+  label: string | JSX.Element;
   labelTooltipText?: string | JSX.Element | null;
   // This should be used for testing. Only add id prop if there's no other option
   dataTestId?: string;
