@@ -11,16 +11,26 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { isAdmin } from 'utils/permissions/roles';
 
-import { Response } from '../../components/VisitorsLanguageCard/useVisitorLanguages/typings';
-
 import VisitorsOverview from './VisitorsOverview';
+
+type Response = {
+  data: {
+    type: 'analytics';
+    attributes: [
+      {
+        count: number;
+        first_dimension_date_created_date: string | null;
+      }
+    ];
+  };
+};
 
 const query: Query = {
   query: {
-    fact: 'visit',
+    fact: 'session',
     aggregations: {
       all: 'count',
-      'dimension_date_first_action.date': 'first',
+      'dimension_date_created.date': 'first',
     },
   },
 };
@@ -51,7 +61,7 @@ const Visitors = () => {
   const [countData] = analytics.data.attributes;
   if (!countData) return null;
 
-  const firstDate = countData.first_dimension_date_first_action_date;
+  const firstDate = countData.first_dimension_date_created_date;
 
   const uniqueVisitorDataDate =
     typeof firstDate === 'string' ? moment(firstDate) : undefined;

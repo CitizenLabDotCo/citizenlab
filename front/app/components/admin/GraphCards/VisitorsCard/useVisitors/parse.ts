@@ -1,6 +1,11 @@
 import { round } from 'lodash-es';
 import moment, { Moment } from 'moment';
 
+import {
+  VisitorsResponse,
+  TimeSeriesResponseRow,
+} from 'api/graph_data_units/responseTypes/VisitorsWidget';
+
 import { IResolution } from 'components/admin/ResolutionControl';
 
 import { keys, get } from 'utils/helperUtils';
@@ -9,13 +14,7 @@ import { RESOLUTION_TO_MESSAGE_KEY } from '../../_utils/resolution';
 import { timeSeriesParser } from '../../_utils/timeSeries';
 
 import { Translations } from './translations';
-import {
-  Response,
-  Stats,
-  TimeSeries,
-  TimeSeriesResponseRow,
-  TimeSeriesRow,
-} from './typings';
+import { Stats, TimeSeries, TimeSeriesRow } from './typings';
 
 export const getEmptyRow = (date: Moment) => ({
   date: date.format('YYYY-MM-DD'),
@@ -27,20 +26,20 @@ const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
   if (!row) return getEmptyRow(date);
 
   return {
-    visitors: row.count_visitor_id,
+    visitors: row.count_monthly_user_hash,
     visits: row.count,
     date: date.format('YYYY-MM-DD'),
   };
 };
 
 const getDate = (row: TimeSeriesResponseRow) => {
-  return moment(get(row, 'first_dimension_date_first_action_date'));
+  return moment(get(row, 'first_dimension_date_created_date'));
 };
 
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
 
 export const parseTimeSeries = (
-  responseTimeSeries: Response['data']['attributes'][2],
+  responseTimeSeries: VisitorsResponse['data']['attributes'][0],
   startAtMoment: Moment | null | undefined,
   endAtMoment: Moment | null,
   resolution: IResolution
@@ -53,29 +52,35 @@ export const parseTimeSeries = (
   );
 };
 
-export const parseStats = ([
-  totalsWholePeriodRows,
-  totalsLastPeriodRows,
-]: Response['data']['attributes']): Stats => {
-  const wholePeriod = totalsWholePeriodRows[0];
-  const lastPeriod = totalsLastPeriodRows[0];
+export const parseStats = (
+  attributes: VisitorsResponse['data']['attributes']
+): Stats => {
+  const sessionTotalsWholePeriod = attributes[1][0];
+  const sessionTotalsLastPeriod = attributes[3]?.[0];
+
+  const matomoVisitsWholePeriod = attributes[2][0];
+  const matomoVisitsLastPeriod = attributes[4]?.[0];
 
   return {
     visitors: {
-      value: wholePeriod?.count_visitor_id.toLocaleString() ?? '0',
-      lastPeriod: lastPeriod?.count_visitor_id.toLocaleString() ?? '0',
+      value:
+        sessionTotalsWholePeriod?.count_monthly_user_hash.toLocaleString() ??
+        '0',
+      lastPeriod:
+        sessionTotalsLastPeriod?.count_monthly_user_hash.toLocaleString() ??
+        '0',
     },
     visits: {
-      value: wholePeriod?.count.toLocaleString() ?? '0',
-      lastPeriod: lastPeriod?.count.toLocaleString() ?? '0',
+      value: sessionTotalsWholePeriod?.count.toLocaleString() ?? '0',
+      lastPeriod: sessionTotalsLastPeriod?.count.toLocaleString() ?? '0',
     },
     visitDuration: {
-      value: parseVisitDuration(wholePeriod?.avg_duration),
-      lastPeriod: parseVisitDuration(lastPeriod?.avg_duration),
+      value: parseVisitDuration(matomoVisitsWholePeriod?.avg_duration),
+      lastPeriod: parseVisitDuration(matomoVisitsLastPeriod?.avg_duration),
     },
     pageViews: {
-      value: parsePageViews(wholePeriod?.avg_pages_visited),
-      lastPeriod: parsePageViews(lastPeriod?.avg_pages_visited),
+      value: parsePageViews(matomoVisitsWholePeriod?.avg_pages_visited),
+      lastPeriod: parsePageViews(matomoVisitsLastPeriod?.avg_pages_visited),
     },
   };
 };
@@ -108,10 +113,23 @@ export const parseExcelData = (
 
 const parsePageViews = (pageViews: string | null | undefined) => {
   if (!pageViews) return '-';
-  return round(+pageViews, 2).toLocaleString();
+  return formatPageViews(+pageViews);
+};
+
+export const formatPageViews = (pageViews: number) => {
+  return round(pageViews, 2).toLocaleString();
 };
 
 const parseVisitDuration = (seconds: string | null | undefined) => {
   if (!seconds) return '-';
-  return new Date(+seconds * 1000).toISOString().substring(11, 19);
+  return formatVisitDuration(+seconds);
+};
+
+export const formatVisitDuration = (seconds: number) => {
+  const isNegative = seconds < 0;
+  const value = new Date(Math.abs(seconds) * 1000)
+    .toISOString()
+    .substring(11, 19);
+
+  return isNegative ? `-${value}` : value;
 };
