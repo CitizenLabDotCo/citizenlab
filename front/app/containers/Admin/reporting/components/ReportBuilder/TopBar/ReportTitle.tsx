@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import Tippy from '@tippyjs/react';
 
 import {
   Box,
@@ -127,14 +128,22 @@ const ReportTitle = ({ reportId }) => {
       alignItems="center"
       justifyContent="flex-start"
     >
-      <StyledInput
-        type="text"
-        value={newTitle}
-        onChange={setNewTitle}
-        onBlur={handleOnBlur}
-        onKeyDown={handleOnKeyDown}
-        setRef={setInputRef}
-      />
+      <Tippy
+        content={formatMessage(messages.reportTitleTooltip)}
+        zIndex={99999}
+        placement="right"
+      >
+        <div>
+          <StyledInput
+            type="text"
+            value={newTitle}
+            onChange={setNewTitle}
+            onBlur={handleOnBlur}
+            onKeyDown={handleOnKeyDown}
+            setRef={setInputRef}
+          />
+        </div>
+      </Tippy>
 
       {errorMessage && <StyledError text={errorMessage} />}
     </Box>

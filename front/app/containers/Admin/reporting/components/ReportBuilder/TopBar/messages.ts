@@ -34,4 +34,8 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.TopBar.titleTaken',
     defaultMessage: 'Title is already taken',
   },
+  reportTitleTooltip: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.TopBar.reportTitleTooltip',
+    defaultMessage: 'Rename',
+  },
 });
