@@ -22,9 +22,9 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.allReports',
     defaultMessage: 'All reports',
   },
-  serviceReports: {
-    id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.serviceReports',
-    defaultMessage: 'Strategic reports',
+  progressReports: {
+    id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.progressReports',
+    defaultMessage: 'Progress reports',
   },
   personalReportsPlaceholder: {
     id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.personalReportsPlaceholder',

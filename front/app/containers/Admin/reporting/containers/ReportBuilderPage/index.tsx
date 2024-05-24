@@ -204,7 +204,7 @@ const ReportBuilderPage = () => {
                   {isAdmin(me) && (
                     <Tab
                       label={`${formatMessage(
-                        messages.serviceReports
+                        messages.progressReports
                       )} (${serviceReportsCount})`}
                       url={`/admin/reporting/report-builder?tab=service-reports`}
                       active={currentTab === 'service-reports'}
