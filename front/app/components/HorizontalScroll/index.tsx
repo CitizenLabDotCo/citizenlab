@@ -102,10 +102,7 @@ const HorizontalScroll = ({ children, containerRole }: Props) => {
           id="e2e-event-previews-scroll-left"
         />
       </Box>
-      <StyledContainer
-        ref={containerRef as React.MutableRefObject<HTMLDivElement>}
-        role={containerRole}
-      >
+      <StyledContainer ref={containerRef} role={containerRole}>
         {children}
       </StyledContainer>
       <Box
