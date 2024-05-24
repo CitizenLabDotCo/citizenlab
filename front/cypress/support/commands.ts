@@ -86,6 +86,7 @@ declare global {
       uploadSurveyImageQuestionImage: typeof uploadSurveyImageQuestionImage;
       apiGetSurveySchema: typeof apiGetSurveySchema;
       uploadProjectFolderImage: typeof uploadProjectFolderImage;
+      uploadProjectImage: typeof uploadProjectImage;
     }
   }
 }
@@ -1826,6 +1827,24 @@ function uploadProjectFolderImage(folderId: string, base64: string) {
   });
 }
 
+function uploadProjectImage(projectId: string, base64: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/projects/${projectId}/images`,
+      body: {
+        image: { image: base64 },
+      },
+    });
+  });
+}
+
 // https://stackoverflow.com/a/16012490
 interface Bbox {
   left: number;
@@ -1973,3 +1992,4 @@ Cypress.Commands.add(
 );
 Cypress.Commands.add('apiGetSurveySchema', apiGetSurveySchema);
 Cypress.Commands.add('uploadProjectFolderImage', uploadProjectFolderImage);
+Cypress.Commands.add('uploadProjectImage', uploadProjectImage);
