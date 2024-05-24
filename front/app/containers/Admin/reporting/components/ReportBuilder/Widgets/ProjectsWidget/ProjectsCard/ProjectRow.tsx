@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Title } from '@citizenlab/cl2-component-library';
 
 import { IProjectData } from 'api/projects/types';
 
@@ -13,7 +13,11 @@ interface Props {
 const ProjectRow = ({ project }: Props) => {
   const localize = useLocalize();
 
-  return <Box>{localize(project.attributes.title_multiloc)}</Box>;
+  return (
+    <Box>
+      <Title variant="h5">{localize(project.attributes.title_multiloc)}</Title>
+    </Box>
+  );
 };
 
 export default ProjectRow;
