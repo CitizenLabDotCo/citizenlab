@@ -1022,7 +1022,6 @@
   "app.containers.Admin.reporting.containers.ReportBuilderPage.personalReportsPlaceholder": "Your reports will appear here.",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.progressReports": "Progress reports",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.searchReports": "Search reports",
-  "app.containers.Admin.reporting.containers.ReportBuilderPage.serviceReportsPlaceholder": "The reports of your GovSuccess manager will appear here.",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.yourReports": "Your reports",
   "app.containers.Admin.reporting.deprecated": "DEPRECATED",
   "app.containers.Admin.reporting.helmetDescription": "Admin reporting page",
