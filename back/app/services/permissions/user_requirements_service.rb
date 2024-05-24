@@ -32,6 +32,11 @@ class Permissions::UserRequirementsService
     end
   end
 
+  # This method is overridden in the Verification engine
+  def requires_verification?(_permission, _user)
+    false
+  end
+
   private
 
   def base_requirements(permission)

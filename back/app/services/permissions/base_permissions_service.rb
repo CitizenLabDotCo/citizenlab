@@ -66,30 +66,22 @@ module Permissions
 
     # User methods
     def user_denied_reason(permission, user, scope = nil)
-      if permission.permitted_by == 'everyone'
-        nil
-      else
-        return USER_DENIED_REASONS[:user_not_signed_in] unless user
-        return USER_DENIED_REASONS[:user_blocked] if user.blocked?
+      return if permission.permitted_by == 'everyone'
+      return USER_DENIED_REASONS[:user_not_signed_in] unless user
+      return USER_DENIED_REASONS[:user_blocked] if user.blocked?
+      return USER_DENIED_REASONS[:user_missing_requirements] if user.confirmation_required?
+      return USER_DENIED_REASONS[:user_not_active] unless user.active?
+      return if UserRoleService.new.can_moderate? scope, user
+      return USER_DENIED_REASONS[:user_not_permitted] if permission.permitted_by == 'admins_moderators'
+      return USER_DENIED_REASONS[:user_missing_requirements] unless user_requirements_service.requirements(permission, user)[:permitted]
+      return USER_DENIED_REASONS[:user_not_verified] if user_requirements_service.requires_verification?(permission, user)
+      return USER_DENIED_REASONS[:user_not_in_group] if denied_when_permitted_by_groups?(permission, user)
 
-        # TODO: JS - Can we change this some more?
-        return USER_DENIED_REASONS[:user_missing_requirements] if user.confirmation_required?
-        return USER_DENIED_REASONS[:user_not_active] unless user.active?
-        return if UserRoleService.new.can_moderate? scope, user
-        return USER_DENIED_REASONS[:user_not_permitted] if permission.permitted_by == 'admins_moderators'
-        return USER_DENIED_REASONS[:user_missing_requirements] unless user_requirements_service.requirements(permission, user)[:permitted]
-
-        if permission.permitted_by == 'groups'
-          reason = denied_when_permitted_by_groups?(permission, user)
-          return USER_DENIED_REASONS[reason] if reason.present?
-        end
-      end
       nil
     end
 
-    # NOTE: method overridden in the verification engine
     def denied_when_permitted_by_groups?(permission, user)
-      :user_not_in_group unless permission.groups && user.in_any_groups?(permission.groups)
+      permission.permitted_by == 'groups' && permission.groups && !user.in_any_groups?(permission.groups)
     end
 
     def user_requirements_service
@@ -101,5 +93,3 @@ module Permissions
     end
   end
 end
-
-Permissions::BasePermissionsService.prepend(Verification::Patches::Permissions::BasePermissionsService)
