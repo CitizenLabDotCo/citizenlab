@@ -40,19 +40,34 @@ resource 'Ideas' do
 
     context 'when the extra field is required' do
       let(:form) { create(:custom_form, :with_default_fields, participation_context: project) }
-      let!(:text_field) { create(:custom_field_extra_custom_form, key: extra_field_name, required: true, resource: form) }
 
       context 'when the field value is given' do
-        let(:custom_field_name1) { 'test value' }
-
+        # TODO: Refactoring
+        # - Validate input types in params + spec (can't create html_multiloc field in ideation or native survey)
         post 'web_api/v1/ideas' do
-          example_request 'Create an idea with an extra field' do
-            assert_status 201
-            json_response = json_parse(response_body)
-            idea_from_db = Idea.find(json_response[:data][:id])
-            expect(idea_from_db.custom_field_values.to_h).to eq({
-              extra_field_name => 'test value'
-            })
+          [
+            { factory: :custom_field_number, value: 42 },
+            { factory: :custom_field_linear_scale, value: 3 },
+            { factory: :custom_field_text, value: 'test value' },
+            { factory: :custom_field_multiline_text, value: 'test value' },
+            { factory: :custom_field_select, options: [:with_options], value: 'option1' },
+            { factory: :custom_field_multiselect, options: [:with_options], value: %w[option1 option2] },
+            { factory: :custom_field_multiselect_image, options: [:with_options], value: %w[image1] },
+            { factory: :custom_field_html_multiloc, value: { 'fr-FR' => '<p>test value</p>' } } # This field is not supported but rarely occurs on production, because it was possible at some point to make a copy of the description field.
+          ].each do |field_desc|
+            describe do
+              let!(:extra_field) { create(field_desc[:factory], key: extra_field_name, required: true, resource: form) }
+              let(:custom_field_name1) { field_desc[:value] }
+
+              example_request "Create an idea with a #{field_desc[:factory]} field" do
+                assert_status 201
+                json_response = json_parse(response_body)
+                idea_from_db = Idea.find(json_response[:data][:id])
+                expect(idea_from_db.custom_field_values).to eq({
+                  extra_field_name => field_desc[:value]
+                })
+              end
+            end
           end
         end
       end
@@ -93,7 +108,7 @@ resource 'Ideas' do
     context 'when the extra field is optional' do
       before do
         form = create(:custom_form, :with_default_fields, participation_context: project)
-        create(:custom_field_extra_custom_form, key: extra_field_name, required: false, resource: form)
+        create(:custom_field, key: extra_field_name, required: false, resource: form)
       end
 
       context 'when the field value is given' do
@@ -138,7 +153,7 @@ resource 'Ideas' do
     end
 
     context 'when the extra field is required' do
-      let!(:text_field) { create(:custom_field_extra_custom_form, key: extra_field_name1, required: true, resource: form) }
+      let!(:text_field) { create(:custom_field, key: extra_field_name1, required: true, resource: form) }
       let(:custom_field_name1) { 'Changed Value' }
 
       context 'when the field value is given' do
@@ -199,7 +214,7 @@ resource 'Ideas' do
     end
 
     context 'when the extra field is optional' do
-      let!(:text_field) { create(:custom_field_extra_custom_form, key: extra_field_name1, required: false, resource: form) }
+      let!(:text_field) { create(:custom_field, key: extra_field_name1, required: false, resource: form) }
 
       context 'when the field value is given' do
         let(:custom_field_name1) { 'Changed Value' }

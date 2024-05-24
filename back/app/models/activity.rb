@@ -27,8 +27,37 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Activity < ApplicationRecord
+  MANAGEMENT_FILTERS = [
+    { item_type: 'Idea', actions: %w[created changed deleted] },
+    { item_type: 'Phase', actions: %w[created changed deleted] },
+    { item_type: 'Project', actions: %w[created changed deleted] },
+    { item_type: 'ProjectFolders::Folder', actions: %w[created changed deleted] }
+  ].freeze
+
   belongs_to :user, optional: true
   belongs_to :item, polymorphic: true, optional: true
 
   validates :action, :item_type, :item_id, presence: true
+
+  scope :management, lambda {
+    # We exclude activities that are older than 2024-05-20, because this is when we released the code that adds
+    # a serialized copy of the item to the payload of 'created' and 'changed' activities,
+    # and the change(s) to the payload of the 'changed' activities, when these activities are created.
+    # Without this additional info, the activities cannot display correctly in the management feed.
+    # This condition can be removed when the cutoff date is before the period used for the acted_at condition.
+    activities = where('created_at > ?', Date.new(2024, 5, 20))
+      .where('acted_at > ?', 30.days.ago)
+      .where(user: User.admin_or_moderator)
+
+    result = Activity.none
+
+    MANAGEMENT_FILTERS.each do |filter|
+      result = result.or(activities.where(
+        item_type: filter[:item_type],
+        action: filter[:actions]
+      ))
+    end
+
+    result
+  }
 end

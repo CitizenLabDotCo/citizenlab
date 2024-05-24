@@ -41,7 +41,7 @@ resource 'Project level Custom Fields' do
     let(:project) { create(:project_with_active_ideation_phase) }
     let(:project_id) { project.id }
     let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
-    let!(:custom_field) { create(:custom_field_extra_custom_form, resource: custom_form) }
+    let!(:custom_field) { create(:custom_field, resource: custom_form) }
     let(:enabled_built_in_field_keys) do
       %i[
         title_multiloc

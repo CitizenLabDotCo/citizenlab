@@ -1,7 +1,5 @@
 import React from 'react';
 
-import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
-
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 import NoData from '../_shared/NoData';
@@ -20,12 +18,11 @@ const SurveyQuestionResultWidget = ({
   groupFieldId,
   heatmap,
 }: Props) => {
-  const px = useReportDefaultPadding();
   const hasEverything = projectId && phaseId && questionId;
   const projectOrPhaseEmptyMessage = getEmptyMessage({ projectId, phaseId });
 
   return (
-    <PageBreakBox px={px}>
+    <PageBreakBox>
       {hasEverything ? (
         <Question
           projectId={projectId}

@@ -13,6 +13,15 @@ class SideFxIdeaService
 
   def after_create(idea, user)
     idea.update!(body_multiloc: TextImageService.new.swap_data_images_multiloc(idea.body_multiloc, field: :body_multiloc, imageable: idea))
+
+    LogActivityJob.perform_later(
+      idea,
+      'created',
+      user_for_activity_on_anonymizable_item(idea, user),
+      idea.updated_at.to_i,
+      payload: { idea: serialize_idea(idea) }
+    )
+
     after_publish idea, user if idea.published?
   end
 
@@ -27,7 +36,17 @@ class SideFxIdeaService
     if idea.just_published?
       after_publish idea, user
     elsif idea.published?
-      LogActivityJob.perform_later(idea, 'changed', user_for_activity_on_anonymizable_item(idea, user), idea.updated_at.to_i)
+      change = idea.saved_changes
+      payload = { idea: serialize_idea(idea) }
+      payload[:change] = sanitize_change sanitize_location_point(change) if change.present?
+
+      LogActivityJob.perform_later(
+        idea,
+        'changed',
+        user_for_activity_on_anonymizable_item(idea, user),
+        idea.updated_at.to_i,
+        payload: payload
+      )
       scrape_facebook(idea)
     end
 
@@ -63,10 +82,16 @@ class SideFxIdeaService
   end
 
   def after_destroy(frozen_idea, user)
-    serialized_idea = clean_time_attributes(frozen_idea.attributes)
-    serialized_idea['location_point'] = serialized_idea['location_point'].to_s
-    LogActivityJob.perform_later(encode_frozen_resource(frozen_idea), 'deleted', user, Time.now.to_i,
-      payload: { idea: serialized_idea })
+    serialized_idea = serialize_idea(frozen_idea)
+
+    LogActivityJob.perform_later(
+      encode_frozen_resource(frozen_idea),
+      'deleted',
+      user,
+      Time.now.to_i,
+      payload: { idea: serialized_idea },
+      project_id: frozen_idea&.project&.id
+    )
   end
 
   private
@@ -80,8 +105,7 @@ class SideFxIdeaService
   end
 
   def add_autoreaction(idea)
-    pcs = ParticipationPermissionsService.new
-    return if pcs.idea_reacting_disabled_reason_for idea, idea.author, mode: 'up'
+    return if Permissions::IdeaPermissionsService.new.denied_reason_for_action 'reacting_idea', idea.author, idea, reaction_mode: 'up'
 
     idea.reactions.create!(mode: 'up', user: idea.author)
     idea.reload
@@ -104,6 +128,30 @@ class SideFxIdeaService
     return if !idea.project.in_folder?
 
     Follower.find_or_create_by(followable: idea.project.folder, user: user)
+  end
+
+  def serialize_idea(frozen_idea)
+    serialized_idea = clean_time_attributes(frozen_idea.attributes)
+    serialized_idea['location_point'] = serialized_idea['location_point'].to_s
+
+    serialized_idea
+  end
+
+  def sanitize_location_point(change)
+    return change if change['location_point'].blank?
+
+    geojson_change = change['location_point'].map { |point| RGeo::GeoJSON.encode(point) }
+
+    # We encode the location_point to GeoJSON and then check for changes, else it would always be considered changed
+    # when a location_point was set, due to the fact that the location_point previous change is encoded as
+    # RGeo::Geographic::SphericalPointImpl, while the current change is encoded as RGeo::Geos::CAPIPointImpl.
+    if geojson_change[0] == geojson_change[1]
+      change.delete('location_point')
+    else
+      change['location_point'] = geojson_change
+    end
+
+    change
   end
 end
 

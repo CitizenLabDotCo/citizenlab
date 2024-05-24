@@ -41,4 +41,10 @@ class ReportBuilder::Queries::Analytics::Base < ReportBuilder::Queries::Base
   def interval(resolution)
     RESOLUTION_TO_INTERVAL.fetch(resolution || 'month')
   end
+
+  def visitor_filter(apply)
+    return {} unless apply
+
+    { 'dimension_user.has_visits': 'true' }
+  end
 end

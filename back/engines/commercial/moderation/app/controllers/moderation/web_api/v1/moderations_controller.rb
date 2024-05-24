@@ -7,14 +7,13 @@ module Moderation
 
     def index
       @moderations = policy_scope(published_moderations)
-        .includes(*include_load_resources)
         .order(created_at: :desc)
 
       index_filter
 
-      @moderations = @moderations
-        .page(params.dig(:page, :number))
-        .per(params.dig(:page, :size))
+      @moderations = paginate @moderations
+      @moderations = @moderations.includes(*include_load_resources)
+
       render json: linked_json(@moderations, WebApi::V1::ModerationSerializer, params: jsonapi_serializer_params, include: include_serialize_resources)
     end
 

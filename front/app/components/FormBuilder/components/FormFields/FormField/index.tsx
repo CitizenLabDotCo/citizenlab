@@ -242,7 +242,7 @@ export const FormField = ({
   };
 
   const actions = [
-    ...(field.input_type !== groupingType
+    ...(field.input_type !== groupingType && !field.code // Do not copy built-in fields
       ? [
           {
             handler: async (event: React.MouseEvent) => {

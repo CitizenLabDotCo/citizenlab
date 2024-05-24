@@ -4,22 +4,21 @@ import { Box } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 
 import Chart from 'components/admin/GraphCards/CommentsByTimeCard/Chart';
-import {
-  ProjectId,
-  DatesStrings,
-  Resolution,
-} from 'components/admin/GraphCards/typings';
 
 import { isNilOrError } from 'utils/helperUtils';
 
 import NoData from '../../_shared/NoData';
 import messages from '../messages';
+import { TimeSeriesWidgetProps } from '../typings';
 
 import useCommentsByTime from './useCommentsByTime';
 
-type Props = ProjectId & DatesStrings & Resolution;
-
-const CommentsByTime = ({ projectId, startAt, endAt, resolution }: Props) => {
+const CommentsByTime = ({
+  projectId,
+  startAt,
+  endAt,
+  resolution = 'month',
+}: TimeSeriesWidgetProps) => {
   const { currentResolution, timeSeries } = useCommentsByTime({
     projectId,
     startAt,

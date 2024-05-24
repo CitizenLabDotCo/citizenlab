@@ -48,12 +48,15 @@ class ProjectsFilteringService
   end
 
   add_filter('is_moderator_of') do |scope, options|
-    next scope unless ['true', true, '1'].include? options[:filter_is_moderator_of]
+    next scope unless (['true', true, '1'].include? options[:filter_is_moderator_of]) ||
+                      options[:filter_user_is_moderator_of].present?
 
-    current_user = options[:current_user]
-    next scope.none unless current_user
+    moderator = User.find_by(id: options[:filter_user_is_moderator_of])
+    user = moderator.presence || options[:current_user]
 
-    moderated_project_ids = current_user.roles.select { |r| r['type'] == 'project_moderator' }.pluck('project_id')
+    next scope.none unless user
+
+    moderated_project_ids = user.roles.select { |r| r['type'] == 'project_moderator' }.pluck('project_id')
 
     scope.where(id: moderated_project_ids)
   end

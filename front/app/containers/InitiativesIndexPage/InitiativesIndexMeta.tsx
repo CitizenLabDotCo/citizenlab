@@ -17,8 +17,8 @@ const InitiativesIndexMeta = () => {
   const { data: authUser } = useAuthUser();
   const tenantLocales = useAppConfigurationLocales();
   const { location } = window;
-  const initiativesIndexTitle = formatMessage(messages.metaTitle);
-  const initiativesIndexDescription = formatMessage(messages.metaDescription);
+  const initiativesIndexTitle = formatMessage(messages.metaTitle1);
+  const initiativesIndexDescription = formatMessage(messages.metaDescription2);
 
   return (
     <Helmet>

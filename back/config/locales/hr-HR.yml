@@ -149,7 +149,7 @@ hr:
         title: Pojedinosti
         description:
       other_text_field:
-        title: If you picked '{other_option}', what are you thinking of?
+        title: Ako ste odabrali '{other_option}', na što mislite?
   custom_forms:
     categories:
       main_content:
@@ -200,29 +200,40 @@ hr:
       subject: '%{organizationName}: Poništite zaporku'
       title_reset_your_password: 'Odaberite novu zaporku'
   xlsx_export:
+    anonymous: 'Anonimno'
     column_headers:
-      input_id: 'ID'
-      latitude: 'Geografska širina'
-      longitude: 'Geografska duljina'
-      author_fullname: 'Ime autora'
-      author_email: 'E-pošta autora'
-      author_id: 'ID autora'
-      budget: 'Proračun'
-      created_at: 'Predano'
-      published_at: 'Objavljeno'
-      comments_count: 'Komentari'
-      likes_count: 'Sviđa mi se'
-      dislikes_count: 'Nesviđanja'
-      picks: 'Pijuci'
-      participants: 'Sudionici'
-      votes_count: 'Glasovi'
-      input_url: 'URL'
-      project: 'Projekt'
-      status: 'Stanje'
       assignee_fullname: 'Opunomoćenik'
       assignee_email: 'E-pošta opunomoćenika'
+      attachments: 'Prilozi'
+      author_email: 'E-pošta autora'
+      author_fullname: 'Ime autora'
+      author_id: 'ID autora'
+      budget: 'Proračun'
+      comments_count: 'Komentari'
+      cost: 'trošak'
+      created_at: 'Predano'
+      description: 'Opis'
+      dislikes_count: 'Nesviđanja'
+      email: 'E-mail'
+      first_name: 'Imena)'
       image_url: 'URL slike'
-    anonymous: 'Anonimno'
+      input_id: 'ID'
+      input_url: 'URL'
+      last_name: 'Prezime'
+      latitude: 'Geografska širina'
+      likes_count: 'Sviđa mi se'
+      location: 'Mjesto'
+      longitude: 'Geografska duljina'
+      participants: 'Sudionici'
+      picks: 'Pijuci'
+      project: 'Projekt'
+      published_at: 'Objavljeno'
+      registration_completed_at: 'Registracija završena u'
+      status: 'Stanje'
+      submitted_at: 'Predano u'
+      tags: 'Oznake'
+      title: 'Titula'
+      votes_count: 'Glasovi'
   form_builder:
     default_select_field:
       title: 'Vaše pitanje'
