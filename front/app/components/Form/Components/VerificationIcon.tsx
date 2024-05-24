@@ -6,7 +6,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-const VerificationIcon = ({ show }) => {
+const VerificationIcon = ({ show }: { show: boolean }) => {
   if (show) {
     return (
       <IconTooltip
