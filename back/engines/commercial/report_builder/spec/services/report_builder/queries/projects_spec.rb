@@ -10,6 +10,9 @@ RSpec.describe ReportBuilder::Queries::Projects do
       @overlapping_project = create(:project)
       create(:phase, project: @overlapping_project, start_at: Date.new(2021, 2, 1), end_at: Date.new(2021, 3, 1))
 
+      @overlapping_project2 = create(:project)
+      create(:phase, project: @overlapping_project2, start_at: Date.new(2021, 2, 1), end_at: nil)
+
       # Past project
       past_project = create(:project)
       create(:phase, project: past_project, start_at: Date.new(2020, 2, 1), end_at: Date.new(2020, 3, 1))
@@ -24,8 +27,9 @@ RSpec.describe ReportBuilder::Queries::Projects do
 
     it 'returns overlapping project' do
       result = query.run_query(start_at: Date.new(2021, 1, 1), end_at: Date.new(2021, 4, 1))
-      expect(result[:projects].count).to eq(1)
+      expect(result[:projects].count).to eq(2)
       expect(result[:projects].first[:id]).to eq(@overlapping_project.id)
+      expect(result[:projects].last[:id]).to eq(@overlapping_project2.id)
     end
   end
 end
