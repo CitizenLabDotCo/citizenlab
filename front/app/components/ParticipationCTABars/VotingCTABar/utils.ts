@@ -7,7 +7,7 @@ import { Localize } from 'hooks/useLocalize';
 
 import voteInputMessages from 'components/VoteInputs/_shared/messages';
 
-import { getPermissionsDisabledMessage } from 'utils/configs/participationMethodConfig';
+import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
 import { isNil } from 'utils/helperUtils';
 
 import messages from './messages';
@@ -24,6 +24,7 @@ export const getVoteSubmissionDisabledExplanation = (
   const maxVotes = phase.attributes.voting_max_total;
 
   const permissionsMessage = getPermissionsDisabledMessage(
+    'voting',
     permissionsDisabledReason,
     phase
   );

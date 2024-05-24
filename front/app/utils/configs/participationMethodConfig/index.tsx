@@ -1,7 +1,5 @@
 import React, { ReactNode } from 'react';
 
-import { MessageDescriptor } from 'react-intl';
-
 import { IIdea } from 'api/ideas/types';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import { getCurrentPhase, getInputTerm } from 'api/phases/utils';
@@ -18,18 +16,11 @@ import VolunteeringCTABar from 'components/ParticipationCTABars/VolunteeringCTAB
 import VotingCTABar from 'components/ParticipationCTABars/VotingCTABar';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 
-import {
-  isFixableByAuthentication,
-  UserDisabledReason,
-} from 'utils/actionDescriptors';
 import clHistory from 'utils/cl-router/history';
-import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 
 import { FormattedMessage } from '../../cl-intl';
 import { isNilOrError, NilOrError } from '../../helperUtils';
 import messages from '../../messages';
-
-import votingMessages from './voting/messages';
 
 export const defaultSortingOptions = [
   { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
@@ -92,9 +83,6 @@ export type ParticipationMethodConfig = {
   hideAuthorOnIdeas?: boolean; // Hides the author on the idea pages/cards
   showIdeaFilters?: boolean; // Shows filters on the idea list
   inputsPageSize?: number;
-  permissionsDisabledMessages?: {
-    [key in UserDisabledReason]?: MessageDescriptor;
-  };
 };
 
 const ideationConfig: ParticipationMethodConfig = {
@@ -276,13 +264,6 @@ const votingConfig: ParticipationMethodConfig = {
     (option) => option.value !== 'trending' && option.value !== 'popular'
   ),
   hideAuthorOnIdeas: true,
-  permissionsDisabledMessages: {
-    user_not_signed_in: votingMessages.votingNotSignedIn,
-    user_not_permitted: votingMessages.votingNotPermitted,
-    user_not_in_group: votingMessages.votingNotInGroup,
-    user_blocked: votingMessages.votingNotPermitted,
-    user_not_verified: votingMessages.votingNotVerified,
-  },
 };
 
 const pollConfig: ParticipationMethodConfig = {
@@ -383,33 +364,3 @@ export function showInputManager(
   }
   return false;
 }
-
-/**
- * Return a disabled message ID based on the disabled reason returned by the backend
- */
-export const getPermissionsDisabledMessage = (
-  disabledReason: string | null | undefined,
-  phase: IPhaseData,
-  notFixableOnly?: boolean
-) => {
-  if (!disabledReason) return;
-  if (notFixableOnly && isFixableByAuthentication(disabledReason)) return;
-
-  const participationMethod = phase.attributes.participation_method;
-
-  // Return the message if exists in the voting method config
-  const votingMethod =
-    participationMethod === 'voting' && phase?.attributes.voting_method;
-  if (votingMethod) {
-    const config = getVotingMethodConfig(votingMethod);
-    const message = config?.permissionsDisabledMessages?.[disabledReason];
-    if (message) return message;
-  }
-
-  // Return the message if exists in the participation method config
-  const config = getMethodConfig(participationMethod);
-  const message = config?.permissionsDisabledMessages?.[disabledReason];
-  if (message) return message;
-
-  // Could potentially add global defaults as a final fallback
-};

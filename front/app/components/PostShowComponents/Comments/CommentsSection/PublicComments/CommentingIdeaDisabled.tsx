@@ -47,12 +47,10 @@ const CommentingIdeaDisabled = ({ phaseId, idea }: Props) => {
   };
 
   const disabledMessages: {
-    [key in IdeaCommentingDisabledReason]: MessageDescriptor | undefined;
+    [key in IdeaCommentingDisabledReason]?: MessageDescriptor | undefined;
   } = {
-    project_not_visible: undefined,
     project_inactive: messages.commentingDisabledInactiveProject,
     commenting_disabled: messages.commentingDisabledProject,
-    commenting_not_supported: undefined,
     user_not_permitted: messages.commentingDisabledProject,
     user_not_verified: messages.commentingDisabledUnverified,
     user_not_in_group: globalMessages.notInGroup,

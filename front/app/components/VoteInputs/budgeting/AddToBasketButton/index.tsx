@@ -18,7 +18,7 @@ import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { getPermissionsDisabledMessage } from 'utils/configs/participationMethodConfig';
+import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
 import eventEmitter from 'utils/eventEmitter';
 import { isNil } from 'utils/helperUtils';
 
@@ -123,6 +123,7 @@ const AddToBasketButton = ({
   const currency = appConfig?.data.attributes.settings.core.currency;
 
   const permissionsDisabledMessage = getPermissionsDisabledMessage(
+    'voting',
     actionDescriptor.disabled_reason,
     phase,
     true
