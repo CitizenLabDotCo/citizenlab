@@ -14,4 +14,8 @@ export default defineMessages({
     id: 'app.utils.participationMethodConfig.voting.votingNotInGroup',
     defaultMessage: 'You do not meet the requirements to vote.',
   },
+  votingNotVerified: {
+    id: 'app.utils.participationMethodConfig.voting.votingNotVerified',
+    defaultMessage: 'You must verify your account before you can vote.',
+  },
 });

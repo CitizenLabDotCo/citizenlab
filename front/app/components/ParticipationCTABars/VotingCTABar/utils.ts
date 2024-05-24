@@ -7,12 +7,12 @@ import { Localize } from 'hooks/useLocalize';
 
 import voteInputMessages from 'components/VoteInputs/_shared/messages';
 
-import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { getPermissionsDisabledMessage } from 'utils/configs/participationMethodConfig';
 import { isNil } from 'utils/helperUtils';
 
 import messages from './messages';
 
-export const getNumberOfVotesDisabledExplanation = (
+export const getVoteSubmissionDisabledExplanation = (
   formatMessage: FormatMessage,
   localize: Localize,
   phase: IPhaseData,
@@ -23,13 +23,11 @@ export const getNumberOfVotesDisabledExplanation = (
   const { voting_method } = phase.attributes;
   const maxVotes = phase.attributes.voting_max_total;
 
-  if (permissionsDisabledReason) {
-    const permissionsMessages = getMethodConfig(
-      phase.attributes.participation_method
-    )?.permissionsDisabledMessages;
-    const message = permissionsMessages?.[permissionsDisabledReason];
-    if (message) return formatMessage(message);
-  }
+  const permissionsMessage = getPermissionsDisabledMessage(
+    permissionsDisabledReason,
+    phase
+  );
+  if (permissionsMessage) return formatMessage(permissionsMessage);
 
   const maxNumberOfVotesExceeded =
     typeof maxVotes === 'number' && numberOfVotesCast !== undefined

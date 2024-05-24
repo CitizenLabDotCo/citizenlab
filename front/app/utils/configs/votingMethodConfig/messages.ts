@@ -234,4 +234,9 @@ export default defineMessages({
     id: 'app.utils.votingMethodUtils.budgetingNotInGroup',
     defaultMessage: 'You do not meet the requirements to assign budgets.',
   },
+  budgetingNotVerified: {
+    id: 'app.utils.votingMethodUtils.budgetingNotVerified',
+    defaultMessage:
+      'You must verify your account before you can assign budgets.',
+  },
 });

@@ -20,7 +20,7 @@ import { scrollToElement } from 'utils/scroll';
 
 import messages from '../messages';
 
-import { getNumberOfVotesDisabledExplanation } from './utils';
+import { getVoteSubmissionDisabledExplanation } from './utils';
 
 const confetti = new JSConfetti();
 
@@ -118,7 +118,7 @@ const CTAButton = ({ phase, project }: Props) => {
 
   const permissionsDisabledReason =
     project.attributes.action_descriptors.voting.disabled_reason;
-  const disabledExplanation = getNumberOfVotesDisabledExplanation(
+  const disabledExplanation = getVoteSubmissionDisabledExplanation(
     formatMessage,
     localize,
     phase,

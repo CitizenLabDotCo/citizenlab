@@ -253,6 +253,7 @@ const budgetingConfig: VotingMethodConfig = {
     user_not_permitted: messages.budgetingNotPermitted,
     user_not_in_group: messages.budgetingNotInGroup,
     user_blocked: messages.budgetingNotPermitted,
+    user_not_verified: messages.budgetingNotVerified,
   },
 };
 

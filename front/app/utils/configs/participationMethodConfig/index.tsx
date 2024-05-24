@@ -281,6 +281,7 @@ const votingConfig: ParticipationMethodConfig = {
     user_not_permitted: votingMessages.votingNotPermitted,
     user_not_in_group: votingMessages.votingNotInGroup,
     user_blocked: votingMessages.votingNotPermitted,
+    user_not_verified: votingMessages.votingNotVerified,
   },
 };
 
@@ -410,5 +411,5 @@ export const getPermissionsDisabledMessage = (
   const message = config?.permissionsDisabledMessages?.[disabledReason];
   if (message) return message;
 
-  // TODO: Also check defaults?
+  // Could potentially add global defaults as a final fallback
 };
