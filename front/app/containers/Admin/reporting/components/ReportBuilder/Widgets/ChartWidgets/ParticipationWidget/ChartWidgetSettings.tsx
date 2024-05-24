@@ -15,24 +15,6 @@ import TimeSeriesWidgetSettings from '../_shared/TimeSeriesWidgetSettings';
 
 import messages from './messages';
 
-const getParticipationTypes = ({
-  inputs,
-  comments,
-  votes,
-}: {
-  inputs: boolean;
-  comments: boolean;
-  votes: boolean;
-}) => {
-  const participationTypes: ParticipationType[] = [];
-
-  if (inputs) participationTypes.push('inputs');
-  if (comments) participationTypes.push('comments');
-  if (votes) participationTypes.push('votes');
-
-  return participationTypes;
-};
-
 const ChartWidgetSettings = () => {
   const { formatMessage } = useIntl();
 
@@ -40,13 +22,13 @@ const ChartWidgetSettings = () => {
     actions: { setProp },
     participationTypes,
   } = useNode((node) => ({
-    participationTypes: node.data.props
-      .participationTypes as ParticipationType[],
+    participationTypes: node.data.props.participationTypes as Record<
+      ParticipationType,
+      boolean
+    >,
   }));
 
-  const inputsVisible = participationTypes.includes('inputs');
-  const commentsVisible = participationTypes.includes('comments');
-  const votesVisible = participationTypes.includes('votes');
+  const { inputs, comments, votes } = participationTypes;
 
   return (
     <Box>
@@ -66,42 +48,42 @@ const ChartWidgetSettings = () => {
       <HideStatisticsToggle />
       <Box mb="20px">
         <Checkbox
-          checked={inputsVisible}
+          checked={inputs}
           onChange={() => {
             setProp((props) => {
-              props.participationTypes = getParticipationTypes({
-                inputs: !inputsVisible,
-                comments: commentsVisible,
-                votes: votesVisible,
-              });
+              props.participationTypes = {
+                inputs: !inputs,
+                comments,
+                votes,
+              };
             });
           }}
           label={formatMessage(messages.showInputs)}
           marginBottom="12px"
         />
         <Checkbox
-          checked={commentsVisible}
+          checked={comments}
           onChange={() => {
             setProp((props) => {
-              props.participationTypes = getParticipationTypes({
-                inputs: inputsVisible,
-                comments: !commentsVisible,
-                votes: votesVisible,
-              });
+              props.participationTypes = {
+                inputs,
+                comments: !comments,
+                votes,
+              };
             });
           }}
           label={formatMessage(messages.showComments)}
           marginBottom="12px"
         />
         <Checkbox
-          checked={votesVisible}
+          checked={votes}
           onChange={() => {
             setProp((props) => {
-              props.participationTypes = getParticipationTypes({
-                inputs: inputsVisible,
-                comments: commentsVisible,
-                votes: !votesVisible,
-              });
+              props.participationTypes = {
+                inputs,
+                comments,
+                votes: !votes,
+              };
             });
           }}
           label={formatMessage(messages.showVotes)}

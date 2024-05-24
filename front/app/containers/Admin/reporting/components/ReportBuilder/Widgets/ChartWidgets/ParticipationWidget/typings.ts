@@ -8,7 +8,7 @@ export interface Props extends TimeSeriesWidgetProps {
   compareStartAt?: string;
   compareEndAt?: string;
   hideStatistics?: boolean;
-  participationTypes: ParticipationType[];
+  participationTypes: Record<ParticipationType, boolean>;
 }
 
 export type GenericTimeSeriesRow = {

@@ -23,7 +23,7 @@ type Props = Dates &
     innerRef?: React.RefObject<any>;
     margin?: Margin;
     yaxis?: YAxisProps;
-    participationTypes: ParticipationType[];
+    participationTypes: Record<ParticipationType, boolean>;
   };
 
 const emptyLineConfig = { strokeWidths: [0] };
@@ -43,6 +43,12 @@ const LEGEND_ITEMS = {
   },
 };
 
+const PARTICIPATION_TYPES: ParticipationType[] = [
+  'inputs',
+  'comments',
+  'votes',
+];
+
 const Chart = ({
   timeSeries,
   startAtMoment,
@@ -60,12 +66,16 @@ const Chart = ({
     [startAtMoment, endAtMoment, resolution]
   );
 
+  const visibleParticipationTypes = PARTICIPATION_TYPES.filter(
+    (type) => participationTypes[type]
+  );
+
   const lineConfig = {
-    strokes: participationTypes.map((type) => LEGEND_ITEMS[type].color),
+    strokes: visibleParticipationTypes.map((type) => LEGEND_ITEMS[type].color),
     activeDot: { r: 4 },
   };
 
-  const legendItems: LegendItem[] = participationTypes.map((type) => {
+  const legendItems: LegendItem[] = visibleParticipationTypes.map((type) => {
     const { color, message } = LEGEND_ITEMS[type];
 
     return {
@@ -93,7 +103,7 @@ const Chart = ({
       data={noData ? emptyData : timeSeries}
       mapping={{
         x: 'date',
-        y: participationTypes,
+        y: visibleParticipationTypes,
       }}
       margin={margin}
       lines={noData ? emptyLineConfig : lineConfig}

@@ -20,7 +20,7 @@ export interface Props extends DatesStrings {
   hideStatistics: boolean;
   stats: Stats | null;
   currentResolution: IResolution;
-  participationTypes: ParticipationType[];
+  participationTypes: Record<ParticipationType, boolean>;
 }
 
 const Wide = ({
@@ -33,7 +33,7 @@ const Wide = ({
   participationTypes,
 }: Props) => {
   const previousDays = getDaysInRange(startAt, endAt);
-  const show = (type: ParticipationType) => participationTypes.includes(type);
+  const show = (type: ParticipationType) => participationTypes[type];
 
   return (
     <Box width="100%" pb="8px" className="e2e-participation-widget">

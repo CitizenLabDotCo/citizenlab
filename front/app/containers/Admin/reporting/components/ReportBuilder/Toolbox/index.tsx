@@ -317,7 +317,11 @@ const ReportBuilderToolbox = ({
                   projectId={selectedProjectId}
                   startAt={undefined}
                   endAt={chartEndDate}
-                  participationTypes={['inputs', 'comments', 'votes']}
+                  participationTypes={{
+                    inputs: true,
+                    comments: true,
+                    votes: true,
+                  }}
                 />
               }
               icon="chart-bar"
