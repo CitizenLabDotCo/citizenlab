@@ -26,8 +26,10 @@ module ReportBuilder
     end
 
     def get_methods_used_in_overlapping_phases(start_date, end_date)
+      non_overlapping_phase_ids = Phase.where('end_at <= ? OR start_at >= ?', start_date, end_date).select(:id)
+
       Phase
-        .where.not('end_at <= ? OR start_at >= ?', start_date, end_date)
+        .where.not(id: non_overlapping_phase_ids)
         .group(:participation_method)
         .count
     end
