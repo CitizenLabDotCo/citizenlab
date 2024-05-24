@@ -30,32 +30,21 @@ module AdminApi
     end
 
     def create
-      @user = User.new user_params
-      @user.locale ||= AppConfiguration.instance.settings('core', 'locales').first
+      user = UserService.create_in_admin_api(user_params, confirm_user?)
 
-      if @user.save
-        SideFxUserService.new.after_create @user, nil
-
-        # The validations and hooks on the user model don't allow us to set
-        # confirm before save on creation, they'll get reset. So we're forced to
-        # do a 2nd save operation.
-        if confirm_user?
-          @user.confirm
-          @user.save
-        end
-
+      if user.persisted?
+        SideFxUserService.new.after_create user, nil
         # This uses default model serialization
-        render json: @user, status: :created
+        render json: user, status: :created
       else
-        render json: { errors: @user.errors.details }, status: :unprocessable_entity
+        render json: { errors: user.errors.details }, status: :unprocessable_entity
       end
     end
 
     def update
-      @user.assign_attributes user_params
-      @user.confirm if confirm_user?
+      updated = UserService.update_in_admin_api(@user, user_params, confirm_user?)
 
-      if @user.save
+      if updated
         SideFxUserService.new.after_update(@user, nil)
         # This uses default model serialization
         render json: @user, status: :ok

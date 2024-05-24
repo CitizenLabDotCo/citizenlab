@@ -1040,33 +1040,6 @@ RSpec.describe User do
     end
 
     describe '#set_confirmation_required' do
-      it 'sets the confirmation required field' do
-        user.email_confirmed_at = Time.now
-        user.email_confirmation_code_sent_at = Time.now
-        user.validate
-
-        expect(user.confirmation_required?).to be true
-        expect(user.email_confirmed_at).to be_nil
-        expect(user.email_confirmation_code_sent_at).to be_nil
-      end
-
-      it 'sets false if the user is an admin' do
-        user.add_role('admin')
-        user.save!
-        expect(user.confirmation_required?).to be false
-      end
-
-      it 'sets false if the user is a project moderator' do
-        user.add_role('project_moderator', 'project_id' => 'some_id')
-        user.save!
-        expect(user.confirmation_required?).to be false
-      end
-
-      it 'sets true if the user is a normal user' do
-        user.save!
-        expect(user.confirmation_required?).to be true
-      end
-
       it 'does not perform a commit to the db' do
         user.validate
         expect(user.saved_change_to_confirmation_required?).to be false

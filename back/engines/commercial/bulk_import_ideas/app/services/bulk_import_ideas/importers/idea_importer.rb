@@ -78,17 +78,13 @@ module BulkImportIdeas::Importers
       if idea_row[:user_email].present? || idea_row[:user_first_name].present?
         author = idea_row[:user_email].present? ? User.find_by_cimail(idea_row[:user_email]) : nil
         unless author
-          author = User.new(
+          user_params = {
             locale: @locale,
             first_name: idea_row[:user_first_name],
-            last_name: idea_row[:user_last_name]
-          )
-          if idea_row[:user_email].present?
-            author.email = idea_row[:user_email]
-          else
-            author.unique_code = SecureRandom.uuid
-          end
-
+            last_name: idea_row[:user_last_name],
+            email: idea_row[:user_email]
+          }
+          author = UserService.build_in_input_importer(user_params)
           if author.save
             @imported_users << author
           else

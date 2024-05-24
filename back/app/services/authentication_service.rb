@@ -42,7 +42,7 @@ class AuthenticationService
     return nil if !user
 
     if user.confirmation_required? && !user.email_confirmed_at && user.password_digest
-      user.destroy!
+      DeleteUserJob.perform_now(user)
       return nil
     end
 
