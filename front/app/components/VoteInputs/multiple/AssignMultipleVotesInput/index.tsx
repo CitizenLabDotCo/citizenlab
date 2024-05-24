@@ -31,6 +31,7 @@ import {
   getMinusButtonDisabledMessage,
   getPlusButtonDisabledMessage,
 } from './utils';
+import { getPermissionsDisabledMessage } from 'utils/configs/participationMethodConfig';
 
 interface Props {
   ideaId: string;
@@ -141,17 +142,24 @@ const AssignMultipleVotesInput = ({
   const maxVotesPerIdeaReached = votes === voting_max_votes_per_idea;
   const maxVotes = voting_max_total ?? 0;
 
-  const minusButtonDisabledMessage = getMinusButtonDisabledMessage(
-    basketSubmitted,
-    onIdeaPage
+  const permissionsDisabledMessage = getPermissionsDisabledMessage(
+    actionDescriptor.disabled_reason,
+    phase,
+    true
   );
 
-  const plusButtonDisabledMessage = getPlusButtonDisabledMessage(
-    userHasVotesLeft,
-    basketSubmitted,
-    maxVotesPerIdeaReached,
-    onIdeaPage
-  );
+  const minusButtonDisabledMessage =
+    permissionsDisabledMessage ||
+    getMinusButtonDisabledMessage(basketSubmitted, onIdeaPage);
+
+  const plusButtonDisabledMessage =
+    permissionsDisabledMessage ||
+    getPlusButtonDisabledMessage(
+      userHasVotesLeft,
+      basketSubmitted,
+      maxVotesPerIdeaReached,
+      onIdeaPage
+    );
 
   const minusButtonDisabledExplanation = minusButtonDisabledMessage
     ? formatMessage(minusButtonDisabledMessage)

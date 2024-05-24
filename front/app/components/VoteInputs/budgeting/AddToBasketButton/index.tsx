@@ -24,6 +24,7 @@ import { isNil } from 'utils/helperUtils';
 import messages from './messages';
 import tracks from './tracks';
 import { isButtonEnabled } from './utils';
+import { getPermissionsDisabledMessage } from 'utils/configs/participationMethodConfig';
 
 interface Props {
   ideaId: string;
@@ -121,11 +122,19 @@ const AddToBasketButton = ({
   const buttonEnabled = isButtonEnabled(basket, actionDescriptor);
   const currency = appConfig?.data.attributes.settings.core.currency;
 
-  const disabledMessage = basket?.data.attributes.submitted_at
-    ? onIdeaPage
-      ? messages.basketAlreadySubmittedIdeaPage
-      : messages.basketAlreadySubmitted
-    : undefined;
+  const permissionsDisabledMessage = getPermissionsDisabledMessage(
+    actionDescriptor.disabled_reason,
+    phase,
+    true
+  );
+
+  const disabledMessage =
+    permissionsDisabledMessage ||
+    (basket?.data.attributes.submitted_at
+      ? onIdeaPage
+        ? messages.basketAlreadySubmittedIdeaPage
+        : messages.basketAlreadySubmitted
+      : undefined);
 
   const disabledExplanation = disabledMessage
     ? formatMessage(disabledMessage)

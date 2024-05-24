@@ -116,10 +116,13 @@ const CTAButton = ({ phase, project }: Props) => {
     }
   };
 
+  const permissionsDisabledReason =
+    project.attributes.action_descriptors.voting.disabled_reason;
   const disabledExplanation = getNumberOfVotesDisabledExplanation(
     formatMessage,
     localize,
     phase,
+    permissionsDisabledReason,
     numberOfVotesCast,
     appConfig.data.attributes.settings.core.currency
   );

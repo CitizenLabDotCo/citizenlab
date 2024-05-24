@@ -80,6 +80,7 @@ export type VotingMethodConfig = {
   getSubmissionTerm: (form: 'singular' | 'plural') => MessageDescriptor;
   preSubmissionWarning: () => MessageDescriptor;
   useVoteTerm: boolean;
+  permissionsDisabledMessages?: {};
 };
 
 const budgetingConfig: VotingMethodConfig = {
@@ -244,6 +245,12 @@ const budgetingConfig: VotingMethodConfig = {
     }
   },
   useVoteTerm: false,
+  permissionsDisabledMessages: {
+    user_not_signed_in: messages.budgetingNotSignedIn,
+    user_not_permitted: messages.budgetingNotPermitted,
+    user_not_in_group: messages.budgetingNotInGroup,
+    user_blocked: messages.budgetingNotPermitted,
+  },
 };
 
 const multipleVotingConfig: VotingMethodConfig = {

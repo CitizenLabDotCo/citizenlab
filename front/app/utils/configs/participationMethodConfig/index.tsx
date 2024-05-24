@@ -21,6 +21,9 @@ import clHistory from 'utils/cl-router/history';
 import { FormattedMessage } from '../../cl-intl';
 import { isNilOrError, NilOrError } from '../../helperUtils';
 import messages from '../../messages';
+import votingMessages from './voting/messages';
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 
 export const defaultSortingOptions = [
   { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
@@ -64,6 +67,7 @@ renderCTABar: Returns whether the CTA bar should be rendered.
 postSortingOptions?: Returns the sorting options for posts.
 showInputCount: Returns the input count to be used on project cards.
 inputsPageSize?: Returns the page size the ideas endpoint should use.
+permissionsDisabledMessages?: Returns the messages to be displayed when the CTA in a method is disabled by permissions (only implemented for voting so far).
 */
 
 export type ParticipationMethodConfig = {
@@ -82,6 +86,7 @@ export type ParticipationMethodConfig = {
   hideAuthorOnIdeas?: boolean; // Hides the author on the idea pages/cards
   showIdeaFilters?: boolean; // Shows filters on the idea list
   inputsPageSize?: number;
+  permissionsDisabledMessages?: {};
 };
 
 const ideationConfig: ParticipationMethodConfig = {
@@ -263,6 +268,12 @@ const votingConfig: ParticipationMethodConfig = {
     (option) => option.value !== 'trending' && option.value !== 'popular'
   ),
   hideAuthorOnIdeas: true,
+  permissionsDisabledMessages: {
+    user_not_signed_in: votingMessages.votingNotSignedIn,
+    user_not_permitted: votingMessages.votingNotPermitted,
+    user_not_in_group: votingMessages.votingNotInGroup,
+    user_blocked: votingMessages.votingNotPermitted,
+  },
 };
 
 const pollConfig: ParticipationMethodConfig = {
@@ -363,3 +374,33 @@ export function showInputManager(
   }
   return false;
 }
+
+/**
+ * Return a disabled message ID based on the disabled reason returned by the backend
+ */
+export const getPermissionsDisabledMessage = (
+  disabledReason: string | null | undefined,
+  phase: IPhaseData,
+  notFixableOnly?: boolean
+) => {
+  if (!disabledReason) return;
+  if (notFixableOnly && isFixableByAuthentication(disabledReason)) return;
+
+  const participationMethod = phase.attributes.participation_method;
+
+  // Return the message if exists in the voting method config
+  const votingMethod =
+    participationMethod === 'voting' && phase?.attributes.voting_method;
+  if (votingMethod) {
+    const config = getVotingMethodConfig(votingMethod);
+    const message = config?.permissionsDisabledMessages?.[disabledReason];
+    if (message) return message;
+  }
+
+  // Return the message if exists in the participation method config
+  const config = getMethodConfig(participationMethod);
+  const message = config?.permissionsDisabledMessages?.[disabledReason];
+  if (message) return message;
+
+  // TODO: Also check defaults?
+};

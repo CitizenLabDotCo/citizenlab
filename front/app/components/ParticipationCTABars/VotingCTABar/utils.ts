@@ -10,16 +10,26 @@ import voteInputMessages from 'components/VoteInputs/_shared/messages';
 import { isNil } from 'utils/helperUtils';
 
 import messages from './messages';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 export const getNumberOfVotesDisabledExplanation = (
   formatMessage: FormatMessage,
   localize: Localize,
   phase: IPhaseData,
+  permissionsDisabledReason: string | null,
   numberOfVotesCast: number,
   currency: TCurrency | undefined
 ) => {
   const { voting_method } = phase.attributes;
   const maxVotes = phase.attributes.voting_max_total;
+
+  if (permissionsDisabledReason) {
+    const permissionsMessages = getMethodConfig(
+      phase.attributes.participation_method
+    )?.permissionsDisabledMessages;
+    const message = permissionsMessages?.[permissionsDisabledReason];
+    if (message) return formatMessage(message);
+  }
 
   const maxNumberOfVotesExceeded =
     typeof maxVotes === 'number' && numberOfVotesCast !== undefined

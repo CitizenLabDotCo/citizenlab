@@ -19,8 +19,7 @@ import { useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
 
 import messages from './messages';
-import { MessageDescriptor } from 'react-intl';
-import { ProjectVotingDisabledReason } from 'api/projects/types';
+import { getPermissionsDisabledMessage } from 'utils/configs/participationMethodConfig';
 
 interface Props {
   phase: IPhaseData;
@@ -104,29 +103,15 @@ const AssignSingleVoteButton = ({
     setVotes?.(ideaId, 0);
   };
 
-  // TODO: This should only have the reasons that are relevant to voting
-  const disabledMessages: {
-    [key in ProjectVotingDisabledReason]: MessageDescriptor | undefined;
-  } = {
-    project_not_visible: undefined,
-    project_inactive: undefined,
-    not_voting: undefined,
-    user_not_permitted: messages.votingNotPermitted,
-    user_not_in_group: messages.notInGroup,
-    user_blocked: messages.votingNotPermitted,
-    user_not_signed_in: undefined,
-    user_not_active: undefined,
-    user_not_verified: undefined,
-    user_missing_requirements: undefined,
-  };
-
   const getButtonDisabledExplanation = () => {
-    if (
-      actionDescriptor.disabled_reason &&
-      !isFixableByAuthentication(actionDescriptor.disabled_reason)
-    ) {
-      return formatMessage(disabledMessages[actionDescriptor.disabled_reason]);
-    }
+    const permissionDisabledMessage = getPermissionsDisabledMessage(
+      actionDescriptor.disabled_reason,
+      phase,
+      true
+    );
+    if (permissionDisabledMessage)
+      return formatMessage(permissionDisabledMessage);
+
     if (basket?.data?.attributes.submitted_at) {
       return formatMessage(
         onIdeaPage ? messages.votesSubmittedIdeaPage : messages.votesSubmitted,
