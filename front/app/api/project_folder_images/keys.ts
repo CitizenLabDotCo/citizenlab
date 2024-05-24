@@ -13,6 +13,13 @@ const projectFolderImagesKeys = {
   list: (parameters: IQueryParameters) => [
     { ...baseKey, operation: 'list', parameters },
   ],
+  item: ({ id }: { id?: string }) => [
+    {
+      type: 'image',
+      operation: 'item',
+      parameters: { id },
+    },
+  ],
 } satisfies QueryKeys;
 
 export default projectFolderImagesKeys;
