@@ -295,17 +295,9 @@ export const useParticipation = (
   );
 };
 
-export const useProjects = (
-  props: ProjectsProps = {},
-  { onSuccess }: { onSuccess?: () => void }
-) => {
-  return useGraphDataUnits<ProjectsResponse>(
-    {
-      resolved_name: 'ProjectsWidget',
-      props,
-    },
-    {
-      onSuccess,
-    }
-  );
+export const useProjects = (props: ProjectsProps = {}) => {
+  return useGraphDataUnits<ProjectsResponse>({
+    resolved_name: 'ProjectsWidget',
+    props,
+  });
 };

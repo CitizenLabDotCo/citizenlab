@@ -46,6 +46,7 @@ import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
 import IframeMultiloc from '../Widgets/IframeMultiloc';
 import ImageMultiloc from '../Widgets/ImageMultiloc';
 import MostReactedIdeasWidget from '../Widgets/MostReactedIdeasWidget';
+import ProjectsWidget from '../Widgets/ProjectsWidget';
 import SingleIdeaWidget from '../Widgets/SingleIdeaWidget';
 import SurveyQuestionResultWidget from '../Widgets/SurveyQuestionResultWidget';
 import TextMultiloc from '../Widgets/TextMultiloc';
@@ -338,6 +339,18 @@ const ReportBuilderToolbox = ({
               }
               icon="chart-bar"
               label={formatMessage(WIDGET_TITLES.MethodsUsedWidget)}
+            />
+            <DraggableElement
+              id="e2e-draggable-projects-widget"
+              component={
+                <ProjectsWidget
+                  title={toMultiloc(WIDGET_TITLES.ProjectsWidget)}
+                  startAt={undefined}
+                  endAt={chartEndDate}
+                />
+              }
+              icon="projects"
+              label={formatMessage(WIDGET_TITLES.ProjectsWidget)}
             />
           </Section>
         </Box>

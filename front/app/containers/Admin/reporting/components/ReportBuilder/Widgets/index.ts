@@ -43,6 +43,7 @@ import ImageMultiloc, { imageMultilocTitle } from './ImageMultiloc';
 import MostReactedIdeasWidget, {
   mostReactedIdeasTitle,
 } from './MostReactedIdeasWidget';
+import ProjectsWidget, { projectsTitle } from './ProjectsWidget';
 import SingleIdeaWidget, { singleIdeaTitle } from './SingleIdeaWidget';
 import SurveyQuestionResultWidget, {
   surveyQuestionResultTitle,
@@ -66,6 +67,7 @@ export const WIDGETS = {
   RegistrationsWidget,
   MethodsUsedWidget,
   ParticipationWidget,
+  ProjectsWidget,
 
   // DEPRECATED
   AgeWidget,
@@ -94,6 +96,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   RegistrationsWidget: registrationsTitle,
   MethodsUsedWidget: methodsUsedTitle,
   ParticipationWidget: participationTitle,
+  ProjectsWidget: projectsTitle,
 
   // DEPRECATED
   AgeWidget: ageTitle,
