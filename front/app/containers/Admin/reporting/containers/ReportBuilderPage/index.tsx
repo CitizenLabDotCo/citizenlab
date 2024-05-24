@@ -94,9 +94,12 @@ const ReportBuilderPage = () => {
     };
   }
 
-  const { data: yourReports } = useReports(getParams('your-reports'));
-  const { data: serviceReports } = useReports(getParams('service-reports'));
-  const { data: allReports } = useReports(getParams('all-reports'));
+  const { data: yourReports, isLoading: isLoadingYourRpts } = useReports(getParams('your-reports')); // prettier-ignore
+  const { data: serviceReports, isLoading: isLoadingServiceRpts} = useReports(getParams('service-reports')); // prettier-ignore
+  const { data: allReports, isLoading: isLoadingAllRpts } = useReports(getParams('all-reports')); // prettier-ignore
+
+  if (isLoadingYourRpts || isLoadingServiceRpts || isLoadingAllRpts)
+    return null;
 
   const defaultTab = isAdmin(me) ? 'all-reports' : 'your-reports';
   const currentTab =
