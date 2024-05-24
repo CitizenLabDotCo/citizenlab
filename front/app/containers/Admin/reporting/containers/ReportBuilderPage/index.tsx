@@ -122,6 +122,8 @@ const ReportBuilderPage = () => {
   const yourReportsCount = yourReports?.data.length ?? 0;
   const serviceReportsCount = serviceReports?.data.length ?? 0;
 
+  const showServiceReportsTab = isAdmin(me) && serviceReportsCount > 0;
+
   const showEmptyState =
     currentTab === defaultTab &&
     reports.data.length === 0 &&
@@ -135,15 +137,9 @@ const ReportBuilderPage = () => {
   const noReportMessage = (() => {
     if (search) return null;
     if (sortedReports.length > 0) return null;
+    if (currentTab !== 'your-reports') return null;
 
-    switch (currentTab) {
-      case 'your-reports':
-        return formatMessage(messages.personalReportsPlaceholder);
-      case 'service-reports':
-        return formatMessage(messages.serviceReportsPlaceholder);
-      default:
-        return null;
-    }
+    return formatMessage(messages.personalReportsPlaceholder);
   })();
 
   return (
@@ -204,7 +200,7 @@ const ReportBuilderPage = () => {
                     active={currentTab === 'your-reports'}
                   />
 
-                  {isAdmin(me) && (
+                  {showServiceReportsTab && (
                     <Tab
                       label={`${formatMessage(
                         messages.progressReports

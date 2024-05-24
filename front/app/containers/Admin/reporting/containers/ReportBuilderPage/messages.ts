@@ -30,8 +30,4 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.personalReportsPlaceholder',
     defaultMessage: 'Your reports will appear here.',
   },
-  serviceReportsPlaceholder: {
-    id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.serviceReportsPlaceholder',
-    defaultMessage: 'The reports of your GovSuccess manager will appear here.',
-  },
 });
