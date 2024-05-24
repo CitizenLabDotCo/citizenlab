@@ -43,7 +43,7 @@ interface Props {
 const HorizontalScroll = ({ children, containerRole }: Props) => {
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
-  const containerRef = React.useRef<HTMLDivElement | HTMLUListElement>(null);
+  const containerRef = React.useRef<HTMLDivElement>(null);
   // Used to determine when the scroll buttons should be disabled (E.g. At scroll end, disable the right button)
   const [atScrollStart, setAtScrollStart] = useState(true);
   const [atScrollEnd, setAtScrollEnd] = useState(false);
@@ -102,28 +102,12 @@ const HorizontalScroll = ({ children, containerRole }: Props) => {
           id="e2e-event-previews-scroll-left"
         />
       </Box>
-      {/*
-        Do not add more types this. If we need more than ul and div, it's a clear sign
-        we should refactor this component to have a prop (take out this conditional part)
-        For example HorizontalScrollList for lists.
-      */}
-      {containerRef.current?.nodeName === 'UL' ? (
-        <StyledContainer
-          ref={containerRef as React.MutableRefObject<HTMLUListElement>}
-          role={containerRole}
-          as="ul"
-          px="0px"
-        >
-          {children}
-        </StyledContainer>
-      ) : (
-        <StyledContainer
-          ref={containerRef as React.MutableRefObject<HTMLDivElement>}
-          role={containerRole}
-        >
-          {children}
-        </StyledContainer>
-      )}
+      <StyledContainer
+        ref={containerRef as React.MutableRefObject<HTMLDivElement>}
+        role={containerRole}
+      >
+        {children}
+      </StyledContainer>
       <Box
         aria-hidden="true"
         my="auto"
