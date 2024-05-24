@@ -4,6 +4,7 @@ import moment from 'moment';
 
 import { ProposalsSettings } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { InitiativeDisabledReason } from 'api/initiative_action_descriptors/types';
 import useAddInitiativeReaction from 'api/initiative_reactions/useAddInitiativeReaction';
 import useDeleteInitiativeReaction from 'api/initiative_reactions/useDeleteInitiativeReaction';
 import {
@@ -27,7 +28,6 @@ import Ineligible from './Status/Ineligible';
 import Proposed from './Status/Proposed';
 import ReviewPending from './Status/ReviewPending';
 import ThresholdReached from './Status/ThresholdReached';
-import { InitiativeDisabledReason } from 'api/initiative_action_descriptors/types';
 
 export interface StatusComponentProps {
   initiative: IInitiativeData;
