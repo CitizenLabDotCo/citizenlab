@@ -12,7 +12,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { SetError } from 'containers/Authentication/typings';
 import useAnySSOEnabled from 'containers/Authentication/useAnySSOEnabled';
 
-import Checkbox from 'components/HookForm/Checkbox';
+import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import Input from 'components/HookForm/Input';
 import PasswordInput from 'components/HookForm/PasswordInput';
 import Button from 'components/UI/Button';
@@ -138,7 +138,7 @@ const EmailAndPassword = ({
             />
           </Box>
           <Box mt="28px">
-            <Checkbox
+            <CheckboxWithLabel
               name="rememberMe"
               label={
                 <Text mt="0" mb="0" mr="4px">

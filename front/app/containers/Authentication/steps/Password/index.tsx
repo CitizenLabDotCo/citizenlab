@@ -7,7 +7,7 @@ import { string, object, boolean } from 'yup';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-import Checkbox from 'components/HookForm/Checkbox';
+import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import PasswordInput from 'components/HookForm/PasswordInput';
 import Button from 'components/UI/Button';
 
@@ -117,7 +117,7 @@ const Password = ({ state, loading, setError, onSubmit }: Props) => {
           />
         </Box>
         <Box mt="28px">
-          <Checkbox
+          <CheckboxWithLabel
             name="rememberMe"
             label={
               <Text mt="0" mb="0" mr="4px" color="tenantText">

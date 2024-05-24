@@ -87,6 +87,7 @@ type Props = DefaultProps & {
   checkBoxTabIndex?: number;
 };
 
+/** @deprecated Use CheckboxWithLabel or Checkbox from component-library instead. */
 export default class Checkbox extends PureComponent<Props> {
   static defaultProps: DefaultProps = {
     size: '22px',

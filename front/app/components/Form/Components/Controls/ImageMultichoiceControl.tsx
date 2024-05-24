@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 
 import {
   Box,
-  Checkbox,
   colors,
   Text,
   Image,
   useBreakpoint,
+  Checkbox,
 } from '@citizenlab/cl2-component-library';
 import { ControlProps } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
@@ -27,14 +27,10 @@ import { getOptions, getSubtextElement } from './controlUtils';
 import imageFile from './emptyImage.png';
 import messages from './messages';
 
-const StyledBox = styled(Box)`
-  background-color: ${colors.grey100};
-  position: relative;
-  flex: 1 1 auto;
+const HoverBox = styled(Box)`
   &:hover {
     background-color: ${darken(0.05, colors.grey100)};
   }
-  cursor: pointer;
 `;
 
 const ImageMultichoiceControl = ({
@@ -123,66 +119,59 @@ const ImageMultichoiceControl = ({
               }
             };
             return (
-              <StyledBox
-                mb="12px"
+              <HoverBox
                 key={option.value}
                 borderRadius="3px"
-                onBlur={() => {
-                  setTimeout(() => {
-                    setDidBlur(true);
-                  }, 300);
-                }}
-                display="flex"
-                flexDirection="column"
-                alignItems="center"
-                p="8px"
+                bgColor={colors.grey100}
                 border={
                   dataArray.includes(option.value)
                     ? `2px solid ${colors.primary}`
                     : undefined
                 }
-                onClick={onChange}
               >
-                {option.value === 'other' ? (
-                  <Image
-                    width="100%"
-                    src={option.image?.medium || imageFile}
-                    alt={option.label}
-                    style={{ borderRadius: '3px 3px 0 0' }}
-                  />
-                ) : (
-                  <Box minHeight="200px">
-                    <FullscreenImage
-                      src={option.image?.large || imageFile}
-                      altText={option.label}
-                    />
-                  </Box>
-                )}
-
                 <Box
-                  position="absolute"
-                  top="18px"
-                  right="12px"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                  }}
+                  as="label"
+                  htmlFor={`${path}-checkbox-${index}`}
+                  style={{ cursor: 'pointer' }}
                 >
-                  <Checkbox
-                    size="20px"
-                    checkedColor="tenantSecondary"
-                    id={`${path}-checkbox-${index}`}
-                    label=""
-                    data-cy="e2e-image-multichoice-control-checkbox"
-                    checked={dataArray.includes(option.value)}
-                    onChange={onChange}
-                  />
+                  <Box
+                    onBlur={() => {
+                      setTimeout(() => {
+                        setDidBlur(true);
+                      }, 300);
+                    }}
+                    p="16px"
+                    pb="0"
+                  >
+                    {option.value === 'other' ? (
+                      <Image
+                        width="100%"
+                        src={option.image?.medium || imageFile}
+                        alt=""
+                        style={{ borderRadius: '3px 3px 0 0' }}
+                      />
+                    ) : (
+                      <Box minHeight="200px">
+                        <FullscreenImage
+                          src={option.image?.large || imageFile}
+                          altText={option.label}
+                        />
+                      </Box>
+                    )}
+                  </Box>
+                  <Box display="flex" alignItems="flex-start" p="16px">
+                    <Checkbox
+                      checkedColor="tenantSecondary"
+                      id={`${path}-checkbox-${index}`}
+                      data-cy="e2e-image-multichoice-control-checkbox"
+                      checked={dataArray.includes(option.value)}
+                      onChange={onChange}
+                      mr="8px"
+                    />
+                    <Text m="0">{option.label}</Text>
+                  </Box>
                 </Box>
-                <Box display="flex" w="100%" alignSelf="flex-start">
-                  <Text my="12px" mx="4px">
-                    {option.label}
-                  </Text>
-                </Box>
-              </StyledBox>
+              </HoverBox>
             );
           })}
         </Box>

@@ -8,7 +8,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import profileVisibilityMessages from 'containers/IdeasNewPage/IdeasNewIdeationForm/messages';
 import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 
-import Checkbox from 'components/HookForm/Checkbox';
+import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import { FormLabel, FormSection } from 'components/UI/FormComponents';
 
 import { useIntl } from 'utils/cl-intl';
@@ -66,7 +66,7 @@ const ProfileVisibilityFormSection = ({ triggerModal }: Props) => {
                 transform="translate(0,-1)"
               />
             </FormLabel>
-            <Checkbox
+            <CheckboxWithLabel
               name="anonymous"
               dataTestId="e2e-post-proposal-anonymously-checkbox"
               label={
