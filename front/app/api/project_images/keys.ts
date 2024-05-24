@@ -9,7 +9,7 @@ const projectImagesKeys = {
     { ...baseKey, operation: 'list', parameters: { projectId } },
   ],
   items: () => [{ type: 'image', operation: 'item' }],
-  item: ({ id, projectId }: { id: string; projectId: string }) => [
+  item: ({ id, projectId }: { id?: string; projectId?: string }) => [
     {
       type: 'image',
       operation: 'item',

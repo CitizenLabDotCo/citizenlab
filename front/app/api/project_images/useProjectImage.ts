@@ -6,7 +6,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import projectImagesKeys from './keys';
 import { IProjectImage, ProjectImagesKeys } from './types';
 
-type Params = { projectId: string; imageId: string };
+type Params = { projectId?: string; imageId?: string };
 
 const fetchProjectImage = ({ projectId, imageId }: Params) =>
   fetcher<IProjectImage>({
@@ -14,12 +14,12 @@ const fetchProjectImage = ({ projectId, imageId }: Params) =>
     action: 'get',
   });
 
-const useProjectImages = ({ projectId, imageId }: Params) => {
+const useProjectImage = ({ projectId, imageId }: Params) => {
   return useQuery<IProjectImage, CLErrors, IProjectImage, ProjectImagesKeys>({
     queryKey: projectImagesKeys.item({ id: imageId, projectId }),
     queryFn: () => fetchProjectImage({ imageId, projectId }),
-    enabled: !!projectId,
+    enabled: !!projectId && !!imageId,
   });
 };
 
-export default useProjectImages;
+export default useProjectImage;
