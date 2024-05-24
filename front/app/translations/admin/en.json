@@ -895,6 +895,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Add the goal of the project, participation methods used, and the outcome",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Visitors",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.cannotPrint": "This report contains unsaved changes. Please save before printing.",
+  "app.containers.Admin.reporting.components.ReportBuilder.TopBar.reportTitleTooltip": "Rename",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.titleTaken": "Title is already taken",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "The data for this widget is missing. Reconfigure or delete it to be able to save the report.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "No appropriate phases found in this project",
