@@ -568,7 +568,7 @@
   "app.containers.Admin.PagesAndMenu.topInfoSaveAndEnableButton": "Enregistrer et activer la section d'information supérieure",
   "app.containers.Admin.PagesAndMenu.topInfoSaveButton": "Sauvegarder la section d'information supérieure",
   "app.containers.Admin.PagesAndMenu.viewButton": "Voir",
-  "app.containers.Admin.Reporting.Widgets.RegistrationsWidget.registrationsTimeline": "Historique des inscriptions",
+  "app.containers.Admin.Reporting.Widgets.RegistrationsWidget.registrationsTimeline": "Inscriptions",
   "app.containers.Admin.Users.BlockedUsers.blockedUsers": "Utilisateurs bloqués",
   "app.containers.Admin.Users.BlockedUsers.blockedUsersSubtitle": "Gérer les utilisateurs bloqués.",
   "app.containers.Admin.Users.GroupsHeader.deleteGroup": "Supprimer le groupe",
