@@ -55,7 +55,7 @@ class UserService
       new_user
     end
 
-    def create_in_tenant_template!(user_params = {})
+    def create_in_tenant_template!(user_params)
       update_in_tenant_template!(User.new, user_params)
     end
 
