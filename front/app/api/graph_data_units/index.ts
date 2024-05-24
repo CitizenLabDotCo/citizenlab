@@ -12,6 +12,7 @@ import {
   RegistrationsProps,
   MethodsUsedProps,
   ParticipationProps,
+  ProjectsProps,
 } from './requestTypes';
 // Response types
 import {
@@ -25,6 +26,7 @@ import { MethodsUsedResponse } from './responseTypes/MethodsUsedWidget';
 import { MostReactedIdeasResponse } from './responseTypes/MostReactedIdeasWidget';
 import { ParticipationResponse } from './responseTypes/ParticipationWidget';
 import { PostsByTimeResponse } from './responseTypes/PostsByTimeWidget';
+import { ProjectsResponse } from './responseTypes/ProjectsWidget';
 import { ReactionsByTimeResponse } from './responseTypes/ReactionsByTimeWidget';
 import { RegistrationsResponse } from './responseTypes/RegistrationsWidget';
 import { SingleIdeaResponse } from './responseTypes/SingleIdeaWidget';
@@ -290,5 +292,20 @@ export const useParticipation = (
       props,
     },
     { onSuccess }
+  );
+};
+
+export const useProjects = (
+  props: ProjectsProps = {},
+  { onSuccess }: { onSuccess?: () => void }
+) => {
+  return useGraphDataUnits<ProjectsResponse>(
+    {
+      resolved_name: 'ProjectsWidget',
+      props,
+    },
+    {
+      onSuccess,
+    }
   );
 };

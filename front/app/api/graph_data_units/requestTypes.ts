@@ -16,7 +16,8 @@ export type ResolvedName =
   | 'ReactionsByTimeWidget'
   | 'RegistrationsWidget'
   | 'MethodsUsedWidget'
-  | 'ParticipationWidget';
+  | 'ParticipationWidget'
+  | 'ProjectsWidget';
 
 export interface BaseParams {
   resolved_name: ResolvedName;
@@ -38,7 +39,8 @@ export type ParametersLive =
   | ReactionsByTimeParams
   | RegistrationsParams
   | MethodsUsedParams
-  | ParticipationParams;
+  | ParticipationParams
+  | ProjectsParams;
 
 export type GroupMode = 'user_field' | 'survey_question';
 
@@ -54,10 +56,13 @@ export interface SurveyQuestionResultParams extends BaseParams {
   props: SurveyQuestionResultProps;
 }
 
-export interface AnalyticsProps {
-  project_id?: string | undefined;
+interface DateProps {
   start_at?: string | null | undefined;
   end_at?: string | null;
+}
+
+export interface AnalyticsProps extends DateProps {
+  project_id?: string | undefined;
   resolution?: IResolution;
 }
 
@@ -93,20 +98,16 @@ export interface VisitorsParams extends BaseParams {
   props: VisitorsProps;
 }
 
-export interface VisitorsTrafficSourcesProps {
+export interface VisitorsTrafficSourcesProps extends DateProps {
   project_id?: string;
-  start_at?: string | null | undefined;
-  end_at?: string | null;
 }
 export interface VisitorsTrafficSourcesParams extends BaseParams {
   resolved_name: 'VisitorsTrafficSourcesWidget';
   props: VisitorsTrafficSourcesProps;
 }
 
-export interface BaseDemographicsProps {
+export interface BaseDemographicsProps extends DateProps {
   project_id?: string;
-  start_at?: string | null | undefined;
-  end_at?: string | null;
   group_id?: string | null;
 }
 
@@ -160,10 +161,7 @@ interface RegistrationsParams {
   props: RegistrationsProps;
 }
 
-export interface MethodsUsedProps extends CompareProps {
-  start_at?: string | null | undefined;
-  end_at?: string | null;
-}
+export interface MethodsUsedProps extends DateProps, CompareProps {}
 
 interface MethodsUsedParams extends BaseParams {
   resolved_name: 'MethodsUsedWidget';
@@ -177,6 +175,13 @@ export interface ParticipationProps extends AnalyticsProps, CompareProps {}
 interface ParticipationParams extends BaseParams {
   resolved_name: 'ParticipationWidget';
   props: ParticipationProps;
+}
+
+export interface ProjectsProps extends DateProps {}
+
+interface ProjectsParams extends BaseParams {
+  resolved_name: 'ProjectsWidget';
+  props: ProjectsProps;
 }
 
 // published
