@@ -21,6 +21,9 @@ RSpec.describe ReportBuilder::Queries::Projects do
       future_project = create(:project)
       create(:phase, project: future_project, start_at: Date.new(2022, 2, 1), end_at: Date.new(2022, 3, 1))
 
+      # Empty project
+      create(:project)
+
       # Make TimeBoundariesParser work as expected
       AppConfiguration.instance.update!(created_at: Date.new(2019, 12, 31))
     end
