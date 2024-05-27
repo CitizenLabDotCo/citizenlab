@@ -182,6 +182,14 @@ const ReportBuilderPage = () => {
             <Box>
               <TabContainer>
                 <NavigationTabs position="relative">
+                  <Tab
+                    label={`${formatMessage(
+                      messages.yourReports
+                    )} (${yourReportsCount})`}
+                    url={`/admin/reporting/report-builder?tab=your-reports`}
+                    active={currentTab === 'your-reports'}
+                  />
+
                   {isAdmin(me) && (
                     <Tab
                       label={`${formatMessage(
@@ -191,14 +199,6 @@ const ReportBuilderPage = () => {
                       active={currentTab === 'all-reports'}
                     />
                   )}
-
-                  <Tab
-                    label={`${formatMessage(
-                      messages.yourReports
-                    )} (${yourReportsCount})`}
-                    url={`/admin/reporting/report-builder?tab=your-reports`}
-                    active={currentTab === 'your-reports'}
-                  />
 
                   {showServiceReportsTab && (
                     <Tab
