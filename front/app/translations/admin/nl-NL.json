@@ -22,7 +22,7 @@
   "app.Admin.ManagementFeed.viewDetails": "Bekijk details",
   "app.Admin.ManagementFeed.warning": "Experimentele functionaliteit: Een minimale lijst van geselecteerde acties die in de afgelopen 30 dagen zijn uitgevoerd door platform- of projectbeheerders. Niet alle acties zijn opgenomen.",
   "app.Admin.Moderation.managementFeed": "Beheer feed",
-  "app.Admin.Moderation.participationFeed": "Deelname feed",
+  "app.Admin.Moderation.participationFeed": "Participatie feed",
   "app.components.Admin.Campaigns.campaignDeletionConfirmation": "Zeker weten?",
   "app.components.Admin.Campaigns.clicked": "Geklikt",
   "app.components.Admin.Campaigns.deleteCampaignButton": "Campagne verwijderen",
