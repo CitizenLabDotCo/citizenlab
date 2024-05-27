@@ -87,6 +87,23 @@ export type ReactingIdeaActionDescriptor =
     };
 
 // NOTE: Bit of a shim to add in the budgeting action - even though it doesn't really exist
-export type ActionDescriptorActions = 'posting_idea' | 'voting' | 'budgeting';
+export type ActionDescriptorActions =
+  | 'posting_idea'
+  | 'commenting_idea'
+  | 'commenting_initiative'
+  | 'voting'
+  | 'budgeting';
 
-export type DisabledReason = UserDisabledReason | ProjectPostingDisabledReason;
+// All disabled reasons
+export type DisabledReason =
+  | UserDisabledReason
+  | ProjectPostingDisabledReason
+  | ProjectCommentingDisabledReason
+  | ProjectReactingDisabledReason
+  | ProjectSurveyDisabledReason
+  | ProjectPollDisabledReason
+  | ProjectDocumentAnnotationDisabledReason
+  | ProjectVotingDisabledReason
+  | IdeaReactingDisabledReason
+  | IdeaCommentingDisabledReason
+  | IdeaVotingDisabledReason;

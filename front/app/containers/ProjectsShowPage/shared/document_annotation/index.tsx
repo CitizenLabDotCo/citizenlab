@@ -5,12 +5,12 @@ import { MessageDescriptor } from 'react-intl';
 import { IProjectData } from 'api/projects/types';
 
 import globalMessages from 'utils/actionDescriptors/messages';
+import { ProjectDocumentAnnotationDisabledReason } from 'utils/actionDescriptors/types';
 
 import ParticipationPermission from '../ParticipationPermission';
 
 import Konveio from './Konveio';
 import messages from './messages';
-import { ProjectDocumentAnnotationDisabledReason } from 'utils/actionDescriptors/types';
 
 interface Props {
   project: IProjectData;

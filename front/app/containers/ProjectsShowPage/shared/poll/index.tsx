@@ -8,13 +8,14 @@ import usePollQuestions from 'api/poll_questions/usePollQuestions';
 import useProjectById from 'api/projects/useProjectById';
 
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
-import { isNilOrError } from 'utils/helperUtils';
 import globalMessages from 'utils/actionDescriptors/messages';
+import { ProjectPollDisabledReason } from 'utils/actionDescriptors/types';
+import { isNilOrError } from 'utils/helperUtils';
 
 import FormCompleted from './FormCompleted';
 import messages from './messages';
 import PollForm from './PollForm';
-import { ProjectPollDisabledReason } from 'utils/actionDescriptors/types';
+
 
 const Container = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};

@@ -31,7 +31,54 @@ export default defineMessages({
     id: 'app.containers.IdeaButton.postingNotYetPossible',
     defaultMessage: 'New submissions are not yet accepted here.',
   },
-
+  commentingDisabledInactiveProject: {
+    id: 'app.components.Comments.commentingDisabledInactiveProject',
+    defaultMessage:
+      'Commenting is not possible because this project is currently not active.',
+  },
+  commentingDisabledProject: {
+    id: 'app.components.Comments.commentingDisabledProject',
+    defaultMessage: 'Commenting in this project is currently disabled.',
+  },
+  commentingDisabledInCurrentPhase: {
+    id: 'app.components.Comments.commentingDisabledInCurrentPhase',
+    defaultMessage: 'Commenting is not possible in the current phase.',
+  },
+  commentingDisabledUnverified: {
+    id: 'app.components.Comments.commentingDisabledUnverified',
+    defaultMessage: '{verifyIdentityLink} to comment.',
+  },
+  commentingMaybeNotPermitted: {
+    id: 'app.components.Comments.commentingMaybeNotPermitted',
+    defaultMessage:
+      'Not all users are allowed to comment. Please {signUpLink} or {signInLink} to see whether you comply.',
+  },
+  signInToComment: {
+    id: 'app.containers.Comments.signInToComment',
+    defaultMessage: 'Please {signUpLink} or {signInLink} to comment.',
+  },
+  completeProfileToComment: {
+    id: 'app.containers.Comments.completeProfileToComment',
+    defaultMessage: 'Please {completeRegistrationLink} to comment.',
+  },
+  commentingInitiativeNotPermitted: {
+    id: 'app.components.Comments.commentingInitiativeNotPermitted',
+    defaultMessage: "You don't have the rights to comment.",
+  },
+  commentingInitiativeMaybeNotPermitted: {
+    id: 'app.components.Comments.commentingInitiativeMaybeNotPermitted',
+    defaultMessage:
+      'Not all users are allowed to comment. Please {signUpLink} or {signInLink} to see whether you comply.',
+  },
+  signInToCommentInitiative: {
+    id: 'app.containers.Comments.signInToCommentInitiative',
+    defaultMessage: 'Please {signUpLink} or {signInLink} to comment.',
+  },
+  signInAndVerifyToCommentInitiative: {
+    id: 'app.containers.Comments.signInAndVerifyToCommentInitiative',
+    defaultMessage:
+      'You need a verified account to comment, please {signUpLink} or {signInLink}.',
+  },
   votingNotSignedIn: {
     id: 'app.utils.participationMethodConfig.voting.votingNotSignedIn2',
     defaultMessage: 'You must log in or register to vote.',

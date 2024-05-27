@@ -8,9 +8,10 @@ import { IProjectData } from 'api/projects/types';
 
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
+import globalMessages from 'utils/actionDescriptors/messages';
+import { ProjectSurveyDisabledReason } from 'utils/actionDescriptors/types';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import globalMessages from 'utils/actionDescriptors/messages';
 
 import ParticipationPermission from '../ParticipationPermission';
 
@@ -24,7 +25,7 @@ import SnapSurvey from './SnapSurvey';
 import SurveymonkeySurvey from './SurveymonkeySurvey';
 import SurveyXact from './SurveyXact';
 import TypeformSurvey from './TypeformSurvey';
-import { ProjectSurveyDisabledReason } from 'utils/actionDescriptors/types';
+
 
 const Container = styled.div`
   position: relative;

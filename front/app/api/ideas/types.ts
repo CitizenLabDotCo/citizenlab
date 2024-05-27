@@ -2,9 +2,6 @@ import { ILinks, IRelationship, Multiloc } from 'typings';
 
 import { PublicationStatus as ProjectPublicationStatus } from 'api/projects/types';
 
-import { Keys } from 'utils/cl-react-query/types';
-
-import ideasKeys from './keys';
 import {
   ActionDescriptorFutureEnabled,
   IdeaCommentingDisabledReason,
@@ -12,6 +9,9 @@ import {
   IdeaVotingDisabledReason,
   ReactingIdeaActionDescriptor,
 } from 'utils/actionDescriptors/types';
+import { Keys } from 'utils/cl-react-query/types';
+
+import ideasKeys from './keys';
 
 export type IdeasKeys = Keys<typeof ideasKeys>;
 

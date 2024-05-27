@@ -4,8 +4,9 @@ import { IUserData } from 'api/users/types';
 
 // import { pastPresentOrFuture } from 'utils/dateUtils';
 
-import { canModerateProject } from './permissions/rules/projectPermissions';
 import { ProjectPostingDisabledReason } from 'utils/actionDescriptors/types';
+
+import { canModerateProject } from './permissions/rules/projectPermissions';
 
 interface ActionPermissionHide {
   show: false;
@@ -25,16 +26,16 @@ interface ActionPermissionDisabled<DisabledReasons> {
   disabledReason: DisabledReasons;
   authenticationRequirements: null;
 }
-interface ActionPermissionMaybe {
+interface ActionPermissionMaybe<DisabledReasons> {
   show: true;
   enabled: 'maybe';
-  disabledReason: null;
+  disabledReason: DisabledReasons | null;
   authenticationRequirements: AuthenticationRequirements;
 }
 
 export type ActionPermission<DisabledReasons> =
   | ActionPermissionHide
-  | ActionPermissionMaybe
+  | ActionPermissionMaybe<DisabledReasons>
   | ActionPermissionEnabled
   | ActionPermissionDisabled<DisabledReasons>;
 

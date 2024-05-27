@@ -1,11 +1,13 @@
 import { MessageDescriptor } from 'react-intl';
 
-import messages from './messages';
+import globalMessages from 'utils/actionDescriptors/messages';
 import {
   ActionDescriptorActions,
   DisabledReason,
   DisabledReasonFixable,
 } from 'utils/actionDescriptors/types';
+
+import messages from './messages';
 
 const FIXABLE_REASONS = new Set<string>([
   'user_not_signed_in',
@@ -39,6 +41,26 @@ const actionDisabledMessages: {
     project_inactive: messages.postingInactive,
     future_enabled: messages.postingNotYetPossible,
     // idea_not_in_current_phase: messages.postingInNonActivePhases, // TODO: JS is this state able to be triggered?
+  },
+  commenting_idea: {
+    project_inactive: messages.commentingDisabledInactiveProject,
+    commenting_disabled: messages.commentingDisabledProject,
+    user_not_permitted: messages.commentingDisabledProject,
+    user_not_verified: messages.commentingDisabledUnverified,
+    user_not_in_group: globalMessages.defaultNotInGroup,
+    user_blocked: messages.commentingDisabledProject,
+    user_not_active: messages.completeProfileToComment,
+    user_not_signed_in: messages.signInToComment,
+    user_missing_requirements: messages.completeProfileToComment,
+    idea_not_in_current_phase: messages.commentingDisabledInCurrentPhase,
+  },
+  commenting_initiative: {
+    user_not_active: messages.completeProfileToComment,
+    user_not_permitted: messages.commentingInitiativeMaybeNotPermitted,
+    user_not_signed_in: messages.commentingInitiativeMaybeNotPermitted,
+    user_not_verified: messages.commentingDisabledUnverified,
+    user_missing_requirements: messages.completeProfileToComment,
+    // user_not_signed_in_needs_verifying: messages.signInAndVerifyToCommentInitiative, // TODO: JS - a state that the backend can never trigger
   },
   voting: {
     user_not_signed_in: messages.votingNotSignedIn,

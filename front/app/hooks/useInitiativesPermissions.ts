@@ -36,24 +36,25 @@ export default function useInitiativesPermissions(
             setActionPermission({
               show: true,
               enabled: 'maybe',
-              disabledReason: null,
+              disabledReason: 'user_missing_requirements',
               authenticationRequirements: 'complete_registration',
             });
             break;
           }
           case 'user_not_verified':
+            // TODO: This is not possible in the current state of the app - should the backend return not_signed_in_requires_verification instead?
             if (!authUser) {
               setActionPermission({
                 show: true,
                 enabled: 'maybe',
-                disabledReason: null,
+                disabledReason: 'user_not_verified',
                 authenticationRequirements: 'sign_in_up_and_verify',
               });
             } else {
               setActionPermission({
                 show: true,
                 enabled: 'maybe',
-                disabledReason: null,
+                disabledReason: 'user_not_verified',
                 authenticationRequirements: 'verify',
               });
             }
@@ -62,7 +63,7 @@ export default function useInitiativesPermissions(
             setActionPermission({
               show: true,
               enabled: 'maybe',
-              disabledReason: null,
+              disabledReason: 'user_not_signed_in',
               authenticationRequirements: 'sign_in_up',
             });
             break;
@@ -70,7 +71,7 @@ export default function useInitiativesPermissions(
             setActionPermission({
               show: true,
               enabled: 'maybe',
-              disabledReason: null,
+              disabledReason: 'user_not_active',
               authenticationRequirements: 'complete_registration',
             });
             break;

@@ -1,10 +1,10 @@
-import { Keys } from 'utils/cl-react-query/types';
-
-import initiativeActionDescriptorsKeys from './keys';
 import {
   ActionDescriptor,
   UserDisabledReason,
 } from 'utils/actionDescriptors/types';
+import { Keys } from 'utils/cl-react-query/types';
+
+import initiativeActionDescriptorsKeys from './keys';
 
 export type InitiativeActionDescriptorsKeys = Keys<
   typeof initiativeActionDescriptorsKeys
@@ -15,6 +15,7 @@ export type IInitiativeAction =
   | 'commenting_initiative'
   | 'reacting_initiative';
 
+// TODO: JS - move all this to the actionDescriptors folder
 export type InitiativeDisabledReason = UserDisabledReason;
 
 // Confusingly, 'comment_reacting_initiative' is an action descriptor, but

@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { MessageDescriptor } from 'react-intl';
 
 import { IIdea } from 'api/ideas/types';
 
@@ -9,11 +8,10 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import Warning from 'components/UI/Warning';
 
+import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
 import { FormattedMessage } from 'utils/cl-intl';
-import globalMessages from 'utils/actionDescriptors/messages';
 
 import messages from '../../messages';
-import { IdeaCommentingDisabledReason } from 'utils/actionDescriptors/types';
 
 interface Props {
   phaseId: string | undefined;
@@ -47,25 +45,12 @@ const CommentingIdeaDisabled = ({ phaseId, idea }: Props) => {
     signUpIn('signup');
   };
 
-  const disabledMessages: {
-    [key in IdeaCommentingDisabledReason]?: MessageDescriptor | undefined;
-  } = {
-    project_inactive: messages.commentingDisabledInactiveProject,
-    commenting_disabled: messages.commentingDisabledProject,
-    user_not_permitted: messages.commentingDisabledProject,
-    user_not_verified: messages.commentingDisabledUnverified,
-    user_not_in_group: globalMessages.defaultNotInGroup,
-    user_blocked: messages.commentingDisabledProject,
-    user_not_active: messages.completeProfileToComment,
-    user_not_signed_in: messages.signInToComment,
-    user_missing_requirements: messages.completeProfileToComment,
-    idea_not_in_current_phase: messages.commentingDisabledInCurrentPhase,
-  };
+  const disabledMessage = getPermissionsDisabledMessage(
+    'commenting_idea',
+    commentingDisabledReason
+  );
 
-  const message =
-    commentingDisabledReason && disabledMessages[commentingDisabledReason];
-
-  if (commentingEnabled || !message) return null;
+  if (commentingEnabled || !disabledMessage) return null;
 
   return (
     /*
@@ -76,7 +61,7 @@ const CommentingIdeaDisabled = ({ phaseId, idea }: Props) => {
     <Box mb="24px">
       <Warning className="e2e-commenting-disabled">
         <FormattedMessage
-          {...message}
+          {...disabledMessage}
           values={{
             signUpLink: (
               <button onClick={signUp}>

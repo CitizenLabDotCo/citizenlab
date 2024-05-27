@@ -7,8 +7,8 @@ import styled from 'styled-components';
 
 import { InitiativeDisabledReason } from 'api/initiative_action_descriptors/types';
 
-import { FormattedMessage } from 'utils/cl-intl';
 import globalMessages from 'utils/actionDescriptors/messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../messages';
 

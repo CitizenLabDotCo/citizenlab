@@ -22,12 +22,13 @@ import useLocalize from 'hooks/useLocalize';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import globalMessages from 'utils/actionDescriptors/messages';
+import { IdeaReactingDisabledReason } from 'utils/actionDescriptors/types';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
-import globalMessages from 'utils/actionDescriptors/messages';
 
 import messages from './messages';
-import { IdeaReactingDisabledReason } from 'utils/actionDescriptors/types';
+
 
 type TSize = '1' | '2' | '3' | '4';
 type TStyleType = 'border' | 'shadow';

@@ -1,15 +1,5 @@
 import { ILinks, IRelationship, Multiloc } from 'typings';
 
-import { Keys } from 'utils/cl-react-query/types';
-
-import {
-  IdeaDefaultSortMethod,
-  InputTerm,
-  ParticipationMethod,
-  TSurveyService,
-} from '../phases/types';
-
-import projectsKeys from './keys';
 import {
   ActionDescriptor,
   ActionDescriptorFutureEnabled,
@@ -21,6 +11,16 @@ import {
   ProjectSurveyDisabledReason,
   ProjectVotingDisabledReason,
 } from 'utils/actionDescriptors/types';
+import { Keys } from 'utils/cl-react-query/types';
+
+import {
+  IdeaDefaultSortMethod,
+  InputTerm,
+  ParticipationMethod,
+  TSurveyService,
+} from '../phases/types';
+
+import projectsKeys from './keys';
 
 export type ProjectsKeys = Keys<typeof projectsKeys>;
 

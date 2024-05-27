@@ -6,10 +6,9 @@ import styled from 'styled-components';
 import { IPhaseData } from 'api/phases/types';
 import useProjectById from 'api/projects/useProjectById';
 
-import { FormattedMessage } from 'utils/cl-intl';
 import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
-
 import { ProjectPostingDisabledReason } from 'utils/actionDescriptors/types';
+import { FormattedMessage } from 'utils/cl-intl';
 
 const TooltipContent = styled.div<{ inMap?: boolean }>`
   display: flex;

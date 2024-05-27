@@ -17,11 +17,11 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { IdeaReactingDisabledReason } from 'utils/actionDescriptors/types';
 import { isNilOrError } from 'utils/helperUtils';
 
 import ReactionButton from './ReactionButton';
 import ScreenReaderContent from './ScreenReaderContent';
-import { IdeaReactingDisabledReason } from 'utils/actionDescriptors/types';
 
 type TSize = '1' | '2' | '3' | '4';
 type TStyleType = 'border' | 'shadow';
