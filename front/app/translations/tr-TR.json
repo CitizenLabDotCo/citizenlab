@@ -1076,6 +1076,7 @@
   "app.containers.IdeasNewPage.submitApiError": "Form gönderilirken bir sorun oluştu. Lütfen olası hataları düzeltip tekrar deneyin.",
   "app.containers.IdeasNewPage.submitNewIdea": "Gönder",
   "app.containers.IdeasNewPage.surveyNewMetaTitle1": "Anket yanıtını projeye ekleyin | {orgName}",
+  "app.containers.IdeasShow.IdeaNavigationButtons.ideaIndexAriaMessage2": "Şu anda {totalInputs} girişlerinden {currentIndex} numarasını görüntülüyor",
   "app.containers.IdeasShow.MetaInformation.attachments": "Ekler",
   "app.containers.IdeasShow.MetaInformation.byUserOnDate": "{userName} tarafından, {date} tarihinde",
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Şu andaki durum",
