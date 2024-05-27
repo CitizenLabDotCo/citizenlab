@@ -82,4 +82,8 @@ export default defineMessages({
     id: 'app.Admin.ManagementFeed.in',
     defaultMessage: 'in project {project}',
   },
+  noActivityFound: {
+    id: 'app.Admin.ManagementFeed.noActivityFound',
+    defaultMessage: 'No activity found',
+  },
 });

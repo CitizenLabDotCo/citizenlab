@@ -12,6 +12,7 @@ import {
   Td,
   Box,
   Spinner,
+  Text,
 } from '@citizenlab/cl2-component-library';
 
 import { IQueryParameters } from 'api/management_feed/types';
@@ -68,50 +69,59 @@ const ManagementFeed = () => {
         </Box>
       </Box>
 
-      <Table
-        bgColor={colors.white}
-        innerBorders={{
-          headerCells: true,
-          bodyRows: true,
-        }}
-      >
-        <Thead>
-          <Tr>
-            <Th
-              clickable
-              sortDirection={sort === '-acted_at' ? 'descending' : 'ascending'}
-              onClick={() =>
-                setSort(sort === '-acted_at' ? 'acted_at' : '-acted_at')
-              }
-            >
-              {formatMessage(messages.date)}
-            </Th>
-            <Th>{formatMessage(messages.user)}</Th>
-            <Th>{formatMessage(messages.item)}</Th>
-            <Th>{formatMessage(messages.action)}</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {managementFeed?.data.map((item) => (
-            <ManagementFeedRow key={item.id} item={item} />
-          ))}
-        </Tbody>
-        {currentPage && lastPage && lastPage > 1 && (
-          <Tfoot>
-            <Tr background={colors.grey50}>
-              <Td colSpan={4}>
-                <Box display="flex" justifyContent="center">
-                  <Pagination
-                    currentPage={currentPage}
-                    totalPages={lastPage}
-                    loadPage={setPageNumber}
-                  />
-                </Box>
-              </Td>
+      {managementFeed.data.length === 0 && (
+        <Box my="20px">
+          <Text fontSize="l">{formatMessage(messages.noActivityFound)}</Text>
+        </Box>
+      )}
+      {managementFeed.data.length > 0 && (
+        <Table
+          bgColor={colors.white}
+          innerBorders={{
+            headerCells: true,
+            bodyRows: true,
+          }}
+        >
+          <Thead>
+            <Tr>
+              <Th
+                clickable
+                sortDirection={
+                  sort === '-acted_at' ? 'descending' : 'ascending'
+                }
+                onClick={() =>
+                  setSort(sort === '-acted_at' ? 'acted_at' : '-acted_at')
+                }
+              >
+                {formatMessage(messages.date)}
+              </Th>
+              <Th>{formatMessage(messages.user)}</Th>
+              <Th>{formatMessage(messages.item)}</Th>
+              <Th>{formatMessage(messages.action)}</Th>
             </Tr>
-          </Tfoot>
-        )}
-      </Table>
+          </Thead>
+          <Tbody>
+            {managementFeed?.data.map((item) => (
+              <ManagementFeedRow key={item.id} item={item} />
+            ))}
+          </Tbody>
+          {currentPage && lastPage && lastPage > 1 && (
+            <Tfoot>
+              <Tr background={colors.grey50}>
+                <Td colSpan={4}>
+                  <Box display="flex" justifyContent="center">
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={lastPage}
+                      loadPage={setPageNumber}
+                    />
+                  </Box>
+                </Td>
+              </Tr>
+            </Tfoot>
+          )}
+        </Table>
+      )}
     </>
   );
 };
