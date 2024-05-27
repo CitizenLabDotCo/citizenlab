@@ -23,10 +23,11 @@ export const getVoteSubmissionDisabledExplanation = (
   const { voting_method } = phase.attributes;
   const maxVotes = phase.attributes.voting_max_total;
 
+  const action =
+    phase.attributes.voting_method === 'budgeting' ? 'budgeting' : 'voting';
   const permissionsMessage = getPermissionsDisabledMessage(
-    'voting',
-    permissionsDisabledReason,
-    phase
+    action,
+    permissionsDisabledReason
   );
   if (permissionsMessage) return formatMessage(permissionsMessage);
 

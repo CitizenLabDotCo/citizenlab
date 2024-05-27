@@ -1,8 +1,5 @@
-// These are all disabled reason that can potentially be fixed by
-// authenticating
-import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import { MessageDescriptor } from 'react-intl';
-import votingMessages from 'utils/configs/participationMethodConfig/voting/messages';
+import messages from './messages';
 
 type DisabledReasonFixable =
   | 'user_not_signed_in'
@@ -48,52 +45,39 @@ export type ActionDescriptorFutureEnabled<DisabledReason> =
 type ActionDescriptorActions = 'voting' | 'budgeting';
 
 const disabledMessages: {
-  [method in ParticipationMethod]?: {
-    [action in ActionDescriptorActions]?: {
-      [reason in UserDisabledReason]?: MessageDescriptor;
-    };
+  [action in ActionDescriptorActions]?: {
+    [reason in UserDisabledReason]?: MessageDescriptor;
   };
 } = {
   voting: {
-    voting: {
-      user_not_signed_in: votingMessages.votingNotSignedIn,
-      user_not_permitted: votingMessages.votingNotPermitted,
-      user_not_in_group: votingMessages.votingNotInGroup,
-      user_blocked: votingMessages.votingNotPermitted,
-      user_not_verified: votingMessages.votingNotVerified,
-    },
-    budgeting: {
-      user_not_signed_in: votingMessages.budgetingNotSignedIn,
-      user_not_permitted: votingMessages.budgetingNotPermitted,
-      user_not_in_group: votingMessages.budgetingNotInGroup,
-      user_blocked: votingMessages.budgetingNotPermitted,
-      user_not_verified: votingMessages.budgetingNotVerified,
-    },
+    user_not_signed_in: messages.votingNotSignedIn,
+    user_not_permitted: messages.votingNotPermitted,
+    user_not_in_group: messages.votingNotInGroup,
+    user_blocked: messages.votingNotPermitted,
+    user_not_verified: messages.votingNotVerified,
+  },
+  budgeting: {
+    user_not_signed_in: messages.budgetingNotSignedIn,
+    user_not_permitted: messages.budgetingNotPermitted,
+    user_not_in_group: messages.budgetingNotInGroup,
+    user_blocked: messages.budgetingNotPermitted,
+    user_not_verified: messages.budgetingNotVerified,
   },
 };
 
 /**
- * Return a disabled message ID based on the disabled reason returned by the backend
- * TODO: JS - this isn't going to work with multiple actions per method - oh poo
- * TODO: JS - Add action into array?
+ * Return a disabled message ID based on the disabled reason returned by the action descriptors
  */
 export const getPermissionsDisabledMessage = (
-  action: string,
+  action: ActionDescriptorActions,
   disabledReason: string | null | undefined,
-  phase: IPhaseData,
   notFixableOnly?: boolean
 ) => {
   if (!disabledReason) return;
   if (notFixableOnly && isFixableByAuthentication(disabledReason)) return;
 
-  const participationMethod = phase.attributes.participation_method;
-
   // Shim for budgeting voting action
-  const message =
-    participationMethod === 'voting' &&
-    phase?.attributes.voting_method === 'budgeting'
-      ? disabledMessages.voting?.budgeting?.[disabledReason]
-      : disabledMessages[participationMethod]?.[action]?.[disabledReason];
+  const message = disabledMessages[action]?.[disabledReason];
   if (message) return message;
 
   // Could potentially add global defaults as a fallback

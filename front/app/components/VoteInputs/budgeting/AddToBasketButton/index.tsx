@@ -122,10 +122,11 @@ const AddToBasketButton = ({
   const buttonEnabled = isButtonEnabled(basket, actionDescriptor);
   const currency = appConfig?.data.attributes.settings.core.currency;
 
+  const action =
+    phase.attributes.voting_method === 'budgeting' ? 'budgeting' : 'voting';
   const permissionsDisabledMessage = getPermissionsDisabledMessage(
-    'voting',
+    action,
     actionDescriptor.disabled_reason,
-    phase,
     true
   );
 

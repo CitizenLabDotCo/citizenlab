@@ -142,10 +142,11 @@ const AssignMultipleVotesInput = ({
   const maxVotesPerIdeaReached = votes === voting_max_votes_per_idea;
   const maxVotes = voting_max_total ?? 0;
 
+  const action =
+    phase.attributes.voting_method === 'budgeting' ? 'budgeting' : 'voting';
   const permissionsDisabledMessage = getPermissionsDisabledMessage(
-    'voting',
+    action,
     actionDescriptor.disabled_reason,
-    phase,
     true
   );
 
