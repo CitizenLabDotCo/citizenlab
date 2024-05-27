@@ -10,13 +10,13 @@ class WebApi::V1::NotificationsController < ApplicationController
   def index
     @notifications = policy_scope(Notification)
       .order(created_at: :desc)
-      .includes(*include_load_resources)
 
     if params[:only_unread]
       @notifications = @notifications.where(read_at: nil)
     end
 
     @notifications = paginate @notifications
+    @notifications = @notifications.includes(*include_load_resources)
     render json: {
       data: serialize_heterogeneous_collection(@notifications, serializers_classes),
       links: page_links(@notifications)

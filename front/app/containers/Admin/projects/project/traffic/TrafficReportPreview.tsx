@@ -6,7 +6,6 @@ import useLocale from 'hooks/useLocale';
 
 import Editor from 'containers/Admin/reporting/components/ReportBuilder/Editor';
 import VisitorsTrafficSourcesWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
-import VisitorsWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/VisitorsWidget';
 import { MAX_REPORT_WIDTH } from 'containers/Admin/reporting/constants';
 import { ReportContextProvider } from 'containers/Admin/reporting/context/ReportContext';
 
@@ -34,12 +33,6 @@ const TrafficReportPreview = ({
       <Box maxWidth={MAX_REPORT_WIDTH} w="100%">
         <Editor isPreview={true}>
           <ContentBuilderFrame key={`${startAt} + ${endAt}`}>
-            <VisitorsWidget
-              startAt={startAt}
-              endAt={endAt}
-              projectId={projectId}
-              title={{ [locale]: formatMessage(messages.visitorsTimeline) }}
-            />
             <WhiteSpace />
             <VisitorsTrafficSourcesWidget
               startAt={startAt}

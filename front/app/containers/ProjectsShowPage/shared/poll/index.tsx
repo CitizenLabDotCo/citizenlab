@@ -40,7 +40,7 @@ const disabledMessages: { [key in PollDisabledReason] } = {
   project_inactive: messages.pollDisabledProjectInactive,
   not_active: undefined,
   not_verified: undefined,
-  missing_data: undefined,
+  missing_user_requirements: undefined,
   not_signed_in: undefined,
   not_in_group: globalMessages.notInGroup,
   not_poll: messages.pollDisabledNotActivePhase,

@@ -6,11 +6,11 @@ class WebApi::V1::PermissionsController < ApplicationController
 
   def index
     @permissions = policy_scope(Permission)
-      .includes(:permission_scope, :custom_fields, permissions_custom_fields: [:custom_field])
       .where(permission_scope: permission_scope)
       .filter_enabled_actions(permission_scope)
       .order_by_action(permission_scope)
     @permissions = paginate @permissions
+    @permissions = @permissions.includes(:permission_scope, :custom_fields, permissions_custom_fields: [:custom_field])
 
     render json: linked_json(@permissions, WebApi::V1::PermissionSerializer, params: jsonapi_serializer_params, include: %i[permissions_custom_fields custom_fields])
   end
@@ -31,13 +31,13 @@ class WebApi::V1::PermissionsController < ApplicationController
 
   def requirements
     authorize @permission
-    json_requirements = permissions_service.requirements @permission, current_user
+    json_requirements = user_requirements_service.requirements @permission, current_user
     render json: raw_json({ requirements: json_requirements }), status: :ok
   end
 
   def schema
     authorize @permission
-    fields = permissions_service.requirements_fields @permission
+    fields = user_requirements_service.requirements_fields @permission
     render json: raw_json(JsonFormsService.new.user_ui_and_json_multiloc_schemas(fields))
   end
 
@@ -51,8 +51,12 @@ class WebApi::V1::PermissionsController < ApplicationController
     ).serializable_hash
   end
 
-  def permissions_service
-    @permissions_service ||= PermissionsService.new
+  def permissions_update_service
+    @permissions_update_service ||= Permissions::PermissionsUpdateService.new
+  end
+
+  def user_requirements_service
+    @user_requirements_service ||= Permissions::UserRequirementsService.new
   end
 
   def set_permission
@@ -60,7 +64,7 @@ class WebApi::V1::PermissionsController < ApplicationController
   end
 
   def permission_scope
-    permissions_service.permission_scope_from_permissions_params(params)
+    permissions_update_service.permission_scope_from_permissions_params(params)
   end
 
   def permission_action

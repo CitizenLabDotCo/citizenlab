@@ -1,14 +1,14 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  metaTitle: {
-    id: 'app.containers.InitiativesNewPage.metaTitle',
-    defaultMessage: 'Start an Initiative • {orgName}',
+  metaTitle1: {
+    id: 'app.containers.InitiativesNewPage.metaTitle1',
+    defaultMessage: 'Start a proposal | {orgName}',
   },
-  metaDescription: {
-    id: 'app.containers.InitiativesNewPage.metaDescription',
+  metaDescription1: {
+    id: 'app.containers.InitiativesNewPage.metaDescription1',
     defaultMessage:
-      'Start your own initiative and make your voice heard by {orgName}',
+      'Start your own proposal and make your voice heard by {orgName}',
   },
   locationNotFound: {
     id: 'app.containers.InitiativesNewPage.locationNotFound',

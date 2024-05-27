@@ -21,7 +21,6 @@ Rails.application.routes.draw do
         resources :followers, only: [:create]
       end
       concern :post do
-        resources :activities, only: [:index]
         resources :comments, shallow: true,
           concerns: %i[reactable spam_reportable],
           defaults: { reactable: 'Comment', spam_reportable: 'Comment' } do
@@ -48,6 +47,8 @@ Rails.application.routes.draw do
       end
 
       concerns :permissionable # for the global permission scope (with parent_param = nil)
+
+      resources :activities, only: [:index]
 
       resources :ideas,
         concerns: %i[reactable spam_reportable post followable permissionable],

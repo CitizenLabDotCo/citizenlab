@@ -10,8 +10,6 @@ import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 
-import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
-
 import { IMAGE_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 import messages from 'components/admin/ContentBuilder/Widgets/ImageMultiloc/messages';
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
@@ -30,8 +28,6 @@ export interface Props {
 }
 
 const Image = ({ alt = {}, image, stretch = true }: Props) => {
-  const componentDefaultPadding = useReportDefaultPadding();
-
   const localize = useLocalize();
   const { enabled } = useEditor((state) => {
     return {
@@ -54,7 +50,6 @@ const Image = ({ alt = {}, image, stretch = true }: Props) => {
       maxWidth="1200px"
       margin="0 auto"
       justifyContent="center"
-      px={componentDefaultPadding}
     >
       {image?.imageUrl && (
         <ImageComponent

@@ -476,6 +476,10 @@ module MultiTenancy
             multi_language_platform: {
               enabled: true,
               allowed: true
+            },
+            management_feed: {
+              enabled: true,
+              allowed: true
             }
           })
         )
