@@ -48,14 +48,15 @@ const ManagementFeedRow = ({ item }: { item: ManagementFeedData }) => {
 
   const getItemTranslation = () => {
     switch (item.attributes.item_type) {
-      case 'idea':
-        return formatMessage(messages.idea);
-      case 'phase':
-        return formatMessage(messages.phase);
       case 'project':
         return formatMessage(messages.project);
+      case 'phase':
+        return formatMessage(messages.phase);
       case 'folder':
         return formatMessage(messages.folder);
+      case 'idea':
+        return formatMessage(messages.idea);
+
       default:
         return item.attributes.item_type;
     }
@@ -63,16 +64,18 @@ const ManagementFeedRow = ({ item }: { item: ManagementFeedData }) => {
 
   const getLink: () => RouteType = () => {
     if (!item.attributes.item_exists) return '';
-    if (item.attributes.item_type === 'project') {
-      return `/admin/projects/${item.attributes.item_id}`;
-    } else if (item.attributes.item_type === 'phase') {
-      return `/admin/projects/${item.attributes.project_id}/phases/${item.attributes.item_id}`;
-    } else if (item.attributes.item_type === 'folder') {
-      return `/admin/projects/folders/${item.attributes.item_id}/projects`;
-    } else if (item.attributes.item_type === 'idea') {
-      return `/ideas/${item.attributes.item_slug}`;
+    switch (item.attributes.item_type) {
+      case 'project':
+        return `/admin/projects/${item.attributes.item_id}`;
+      case 'phase':
+        return `/admin/projects/${item.attributes.project_id}/phases/${item.attributes.item_id}`;
+      case 'folder':
+        return `/admin/projects/folders/${item.attributes.item_id}/projects`;
+      case 'idea':
+        return `/ideas/${item.attributes.item_slug}`;
+      default:
+        return '';
     }
-    return '';
   };
 
   return (
@@ -110,7 +113,10 @@ const ManagementFeedRow = ({ item }: { item: ManagementFeedData }) => {
                     {...messages.in}
                     values={{
                       project: (
-                        <Link to={`/admin/projects/${project.data.id}`}>
+                        <Link
+                          to={`/admin/projects/${project.data.id}`}
+                          target="_blank"
+                        >
                           {localize(project.data.attributes.title_multiloc)}
                         </Link>
                       ),
