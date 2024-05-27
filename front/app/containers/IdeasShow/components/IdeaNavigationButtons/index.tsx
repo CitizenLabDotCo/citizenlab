@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { Box, Text, Button } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
-import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
+import useMiniatureIdeas from 'api/ideas/useMiniatureIdeas';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -21,9 +21,10 @@ const IdeaNavigationButtons = ({ projectId, phaseContext }: Props) => {
   const { slug } = useParams() as { slug: string };
   const { data: idea } = useIdeaBySlug(slug);
 
-  const { data: ideaMarkers } = useIdeaMarkers({
-    projectIds: [projectId],
-    phaseId: phaseContext,
+  const { data: ideasList } = useMiniatureIdeas({
+    projects: [projectId],
+    phase: phaseContext,
+    sort: 'trending',
   });
 
   const [ideaIndex, setIdeaIndex] = useState<number | undefined>(undefined);
@@ -35,30 +36,29 @@ const IdeaNavigationButtons = ({ projectId, phaseContext }: Props) => {
   );
 
   useEffect(() => {
-    const index = ideaMarkers?.data.findIndex(
-      (marker) => marker.id === idea?.data.id
+    const index = ideasList?.data.findIndex(
+      (miniIdea) => miniIdea.id === idea?.data.id
     );
-    const ideaMarkersLength = ideaMarkers?.data.length;
+    const ideaListLength = ideasList?.data.length;
 
-    if (typeof index === 'number' && index !== -1 && ideaMarkersLength) {
+    if (typeof index === 'number' && index !== -1 && ideaListLength) {
       setIdeaIndex(index + 1); // Add 1 so the count in the UI displays correctly
 
       // Set the slugs for the next and previous idea buttons
-      if (index + 1 < ideaMarkersLength) {
-        setNextIdeaSlug(ideaMarkers?.data[index + 1]?.attributes.slug || '');
+      if (index + 1 < ideaListLength) {
+        setNextIdeaSlug(ideasList?.data[index + 1]?.attributes.slug || '');
       } else {
         setNextIdeaSlug(undefined);
       }
 
       if (index - 1 >= 0) {
-        setPreviousIdeaSlug(
-          ideaMarkers?.data[index - 1]?.attributes.slug || ''
-        );
+        console.log(ideasList?.data[index - 1]?.attributes);
+        setPreviousIdeaSlug(ideasList?.data[index - 1]?.attributes.slug || '');
       } else {
         setPreviousIdeaSlug(undefined);
       }
     }
-  }, [idea?.data.id, ideaMarkers?.data]);
+  }, [idea?.data.id, ideasList?.data]);
 
   if (ideaIndex) {
     return (
@@ -79,10 +79,10 @@ const IdeaNavigationButtons = ({ projectId, phaseContext }: Props) => {
           color="coolGrey600"
           aria-label={formatMessage(messages.ideaIndexAriaMessage, {
             currentIndex: ideaIndex,
-            totalInputs: ideaMarkers?.data.length || 0,
+            totalInputs: ideasList?.data.length || 0,
           })}
         >
-          {ideaIndex}/{ideaMarkers?.data.length}
+          {ideaIndex}/{ideasList?.data.length}
         </Text>
         <Button
           px="12px"
