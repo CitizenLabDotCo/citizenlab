@@ -32,11 +32,10 @@ interface Props {
   event: IEventData;
   className?: string;
   id?: string;
-  titleFontSize?: number;
 }
 
 const EventCard = memo<Props>((props) => {
-  const { event, className, id, ...otherProps } = props;
+  const { event, className, id } = props;
 
   const navigateToEventPage = () => {
     clHistory.push(`/events/${event.id}`, { scrollToTop: true });
@@ -54,7 +53,7 @@ const EventCard = memo<Props>((props) => {
       }}
       tabIndex={0}
     >
-      <EventInformation event={event} {...otherProps} />
+      <EventInformation event={event} />
     </Container>
   );
 });
