@@ -14,14 +14,14 @@ import { SuccessAction } from 'containers/Authentication/SuccessActions/actions'
 
 import { VOTES_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
 
-import { useIntl } from 'utils/cl-intl';
-import eventEmitter from 'utils/eventEmitter';
-
-import messages from './messages';
 import {
   getPermissionsDisabledMessage,
   isFixableByAuthentication,
 } from 'utils/actionDescriptors';
+import { useIntl } from 'utils/cl-intl';
+import eventEmitter from 'utils/eventEmitter';
+
+import messages from './messages';
 
 interface Props {
   phase: IPhaseData;

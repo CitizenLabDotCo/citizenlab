@@ -21,9 +21,11 @@ import useLocalize from 'hooks/useLocalize';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import {
+  isFixableByAuthentication,
+  getPermissionsDisabledMessage,
+} from 'utils/actionDescriptors';
 import { useIntl } from 'utils/cl-intl';
-import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
 import { isNil } from 'utils/helperUtils';
 
 import messages from './messages';

@@ -64,7 +64,6 @@ renderCTABar: Returns whether the CTA bar should be rendered.
 postSortingOptions?: Returns the sorting options for posts.
 showInputCount: Returns the input count to be used on project cards.
 inputsPageSize?: Returns the page size the ideas endpoint should use.
-permissionsDisabledMessages?: Returns the messages to be displayed when the CTA in a method is disabled by permissions (only implemented for voting so far).
 */
 
 export type ParticipationMethodConfig = {

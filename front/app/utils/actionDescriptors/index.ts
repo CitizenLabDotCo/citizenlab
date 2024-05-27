@@ -1,4 +1,5 @@
 import { MessageDescriptor } from 'react-intl';
+
 import messages from './messages';
 
 type DisabledReasonFixable =
