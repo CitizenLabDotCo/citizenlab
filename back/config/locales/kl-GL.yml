@@ -15,6 +15,10 @@ kl:
     rejected: itigartinneqarpoq
     rejected_description: Isumassarsiaq una itigartinneqarpoq
   initiative_statuses:
+    review_pending: review pending
+    review_pending_description: review pending
+    changes_requested: changes requested
+    changes_requested_description: changes requested
     proposed: siunnersuutigineqareerpoq
     proposed_description: siunnersuutigineqareerpoq
     expired: ulloq qaangiutereerpoq
@@ -92,6 +96,10 @@ kl:
     open_idea_project_description_preview: Immaqa isumassarsiaqarput suli suliniutigineqaleriinngitsunik? Uunga nassiuguk, tapersersortissannik katersigit, taamaalillutillu politikkikkut oqallisitigiguk!
     open_idea_project_description: >
       <p>Here, you can start your own idea if it doesn't fit within one of the existing projects.</p><p><strong>The objective?</strong> To get your idea on the political agenda.</p><p><strong>How?</strong> By gathering support, namely at least 100 votes in 3 months. You can do that by first making your idea 'attractive'. Write it in a clear and engaging way, add images, give strong arguments based on facts, add attachments with further details or background information, ... After you've done that, start sharing your idea on social media or through email. Invite people to join the discussion on your idea, or simply convince them to support it by voting in favour.</p><p><strong>About what?</strong> Your idea can be about a lot of things, as long as it is related to your city and its policy. It can be a problem you experience, a solution you envision or even a combination of both. It can be wild and on the long term, or very tangible and a quick win.</p><p><strong>And then? </strong>Did you reach 100 votes in 3 months? Congratulations! The city will now take your idea in consideration. If your idea is considered to be feasible and does not harm specific groups or individuals, you will get the chance to present your proposal during the council meeting. During that same meeting, the council members will give you direct feedback on what they will or won't do with your idea and why. If you don't gather 100 votes in 3 months, your proposal won't be considered.</p><p>We're curious to learn about your ideas!</p>
+  phases:
+    open_idea_phase_title: Current phase
+    native_survey_title: Survey
+    native_survey_button: Take the survey
   events:
     council_meeting_title: Siunnersuisooqatigiit ataatsimiinnerat
     council_meeting_description: >
@@ -140,6 +148,8 @@ kl:
       section3:
         title: Details
         description:
+      other_text_field:
+        title: If you picked '{other_option}', what are you thinking of?
   custom_forms:
     categories:
       main_content:
@@ -181,6 +191,8 @@ kl:
       <p> Tagerne er inviteret til at præsentere deres borgerforslag på næste rådsmøde. Vi bringer en officiel opdatering. </p>
     default_eligibility_criteria: >
       Kommunimi politikkeqarfiit piginnaasallu iluaniissaaq. Tamanna illit nammineq soqutigisat pinnagu tamat soqutigisaannut iluaqutaassaaq. Innuttaasut allat arnat angutillu, sumi inunngorsimaneq, ukiut imaluunniit tunuliaqutaasut piinnarlugit assigiinngisitsisoqarneq ajorpoq. Allanut ajoqutaanngilaq.
+    default_posting_tips: >
+      <ul><li>Take the time to elaborate on your proposal. If necessary, type a draft first and then copy-paste it here.</li><li>Choose a meaningful title that explains clearly what your proposal entails.</li><li>Visualize your proposal with a fitting image to help it stand out!</li><li>Add relevant attachments, such as videos, inspiring examples, technical details or plans.</li><li>Share your idea on social media and other channels to gather support from others.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Kode isissutit allanngortiguk'
@@ -188,32 +200,66 @@ kl:
       subject: '%{organizationName}: Kode isissutissat aallaqqaataaneeruk'
       title_reset_your_password: 'Kode isissutissat nutaaq allaguk'
   xlsx_export:
+    anonymous: 'Anonymous'
     column_headers:
-      input_id: 'ID'
-      latitude: 'Latitude'
-      longitude: 'Longitude'
-      author_fullname: 'Author name'
-      author_email: 'Author email'
-      author_id: 'Author ID'
-      budget: 'Budget'
-      created_at: 'Submitted at'
-      published_at: 'Published at'
-      comments_count: 'Comments'
-      upvotes_count: 'Upvotes'
-      downvotes_count: 'Downvotes'
-      input_url: 'URL'
-      project: 'Project'
-      status: 'Status'
       assignee_fullname: 'Assignee'
       assignee_email: 'Assignee email'
+      attachments: 'Attachments'
+      author_email: 'Author email'
+      author_fullname: 'Author name'
+      author_id: 'Author ID'
+      budget: 'Budget'
+      comments_count: 'Comments'
+      cost: 'Cost'
+      created_at: 'Submitted at'
+      description: 'Description'
+      dislikes_count: 'Dislikes'
+      email: 'Email'
+      first_name: 'First name(s)'
+      image_url: 'Image URL'
+      input_id: 'ID'
+      input_url: 'URL'
+      last_name: 'Last name'
+      latitude: 'Latitude'
+      likes_count: 'Likes'
+      location: 'Location'
+      longitude: 'Longitude'
+      participants: 'Participants'
+      picks: 'Picks'
+      project: 'Project'
+      published_at: 'Published at'
+      registration_completed_at: 'Registration completed at'
+      status: 'Status'
+      submitted_at: 'Submitted at'
+      tags: 'Tags'
+      title: 'Title'
+      votes_count: 'Votes'
   form_builder:
     default_select_field:
       title: 'Your question'
       option1: 'Option 1'
       option2: 'Option 2'
-    survey_end_page:
-      title: 'Survey end'
-      description: "Please submit your answers by selecting 'Submit survey' below."
+    form_end_page:
+      title: 'Thanks for participating'
+      description: "Please submit your answers by selecting 'Submit' below."
+    pdf_export:
+      personal_data: 'Inummut paasissutissat'
+      personal_data_explanation_ideation: "We will submit your input to %{organizationName}'s online participation platform. If you want your name to be displayed as author of this input and receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. Your email will not be public and will only be used by %{organizationName}. If you want to remain anonymous, or do not agree for us to use your personal data in this way, you can leave them empty."
+      personal_data_explanation_native_survey: "We will submit your input to %{organizationName}'s online participation platform. If you want to receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. Your data will not be public and will only be used by %{organizationName}. If you do not agree for us to use your personal data in this way, you can leave them empty."
+      first_name: 'First name(s)'
+      last_name: 'Last name'
+      email_address: 'Mailadressi'
+      by_checking_this_box: "By checking this box I consent to my data being used to create an account on %{organizationName}'s participation platform."
+      optional: 'nammineq toqqarsinnaasaq'
+      permission: 'Permission'
+      choose_as_many: 'Qanorlunniit amerlatigisunik toqqaasinnaavutit'
+      this_answer: 'This answer will only be shared with moderators, and not to the public.'
+      page: 'Qupperneq'
+      date_published: 'Date Published (dd-mm-yyyy)'
+      instructions: 'Instructions'
+      write_as_clearly: 'Write as <b>clearly</b> as you can— these forms might be scanned'
+      write_in_language: 'Write your answers in the same language as this form'
+      linear_scale_print_description: 'Please write a number between %{min_label} and %{max_label} only'
   project_copy:
     title_suffix: 'Copy'
   confirmations_mailer:
@@ -221,8 +267,30 @@ kl:
       subject: "%{organizationName} peqataatitsinikkut nittartagaanut emailit uppernarsaruk"
       header: "Uppernarsaaninnut isissutissat"
       header_message: "Aluu %{firstName}!"
+      confirm_email_address: "Emailit uppernarsaruk"
       thanks_for_signing_up: "Qujanaq, %{organizationName} peqataatitsinikkut nittartagaanut ilaasortanngoravit."
-      please_confirm_your_email_address: "Ilaasortanngornissat naammassiniarlugu, emailit uppernarsaruk."
+      best_regards: "Best regards,"
+      ignore_email: "If you didn't request a code, you can safely ignore this email."
+      expire_code: "This code will be expired in "
+      24_hours: "24 hours."
       copy_paste_the_link_below: "Isissutissaq ataaniittoq ilaasortanngornissamut immersugassamut ikkuguk."
       the_link_is_valid_for: "Una linkeq nalunaaquttap akunneri 24-it atuutissaaq. <a href=\"%{link}\"> qaangiuppat isissutissamik nutaamik qinusinnaavutit."
       did_you_receive_this_email_in_error: "Ajornartoornermi una emaili pissarsiaraajuk? <a href=\"%{link}\">."
+  user_blocked_mailer:
+    send_user_blocked_email:
+      subject: 'Your account has been temporarily disabled'
+      title_user_blocked: 'Your account has been temporarily disabled'
+      paragraph_1_without_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for a violation of the community guidelines."
+      paragraph_1_with_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for the following reason:"
+      for_more_information: "For more information on this, you can consult the %{termsAndConditionsPage}"
+      you_can_sign_in_again_from: "You can sign in again from %{date}"
+  user:
+    anon_first_name: "User"
+  time:
+    am: am
+    formats:
+      hour_of_day: "%H:%M"
+    pm: pm
+  voting_method:
+    default_voting_term_singular: "vote"
+    default_voting_term_plural: "votes"
