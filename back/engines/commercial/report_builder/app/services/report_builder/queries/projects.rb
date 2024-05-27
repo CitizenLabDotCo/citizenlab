@@ -3,10 +3,24 @@ module ReportBuilder
     def run_query(start_at: nil, end_at: nil, **_other_props)
       start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
 
-      periods_query = Phase
-        .where(project_id: overlapping_projects.select(:id))
+      projects_that_have_phases_ids = Phase.select(:project_id)
+
+      far_future_date = Time.zone.today + 10.years
+
+      project_periods = Phase
         .group(:project_id)
-        .select('project_id, min(start_at) as start_at, max(end_at) as end_at')
+        .select("project_id, min(start_at) as start_at, max(coalesce(end_at, '#{far_future_date}'::DATE)) as end_at")
+        .to_a
+
+      non_overlapping_project_period_ids = project_periods
+        .select do |period|
+          period.start_at >= end_date || period.end_at <= start_date
+        end
+        .map(&:project_id)
+
+      overlapping_projects = Project
+        .where(id: projects_that_have_phases_ids)
+        .where.not(id: non_overlapping_project_period_ids)
 
       project_images_hash = ProjectImage
         .where(project_id: overlapping_projects.select(:id))
@@ -15,11 +29,14 @@ module ReportBuilder
           hash[project_image.id] = serialize(project_image, ::WebApi::V1::ImageSerializer)
         end
 
-      periods = periods_query
-        .to_a
-        .each_with_object({}) do |row, hash|
-          hash[row.project_id] = { start_at: row.start_at, end_at: row.end_at }
-        end
+      periods = project_periods.each_with_object({}) do |period, hash|
+        next if period.project_id.in?(non_overlapping_project_period_ids)
+
+        hash[period.project_id] = {
+          start_at: period.start_at,
+          end_at: period.end_at == far_future_date ? nil : period.end_at
+        }
+      end
 
       {
         projects: serialize(overlapping_projects, ::WebApi::V1::ProjectSerializer),

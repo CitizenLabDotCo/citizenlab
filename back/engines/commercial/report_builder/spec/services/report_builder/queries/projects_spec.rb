@@ -28,6 +28,9 @@ RSpec.describe ReportBuilder::Queries::Projects do
 
       # Make TimeBoundariesParser work as expected
       AppConfiguration.instance.update!(created_at: Date.new(2019, 12, 31))
+
+      # Add project image
+      create(:project_image, project: @project1)
     end
 
     it 'returns overlapping project in 2021' do
@@ -44,21 +47,22 @@ RSpec.describe ReportBuilder::Queries::Projects do
       expect(result[:projects].last[:id]).to eq(@project3.id)
     end
 
-    # it 'returns project images' do
+    it 'returns project images' do
+      result = query.run_query(start_at: Date.new(2021, 1, 1), end_at: Date.new(2021, 4, 1))
+      expect(result[:project_images].count).to eq(1)
+    end
 
-    # end
-
-    # it 'returns correct project periods' do
-    #   result = query.run_query(start_at: Date.new(2021, 1, 1), end_at: Date.new(2021, 4, 1))
-    #   expect(result[:periods].count).to eq(2)
-    #   expect(result[:periods][@overlapping_project.id]).to eq({
-    #     start_at: Date.new(2021, 2, 1),
-    #     end_at: Date.new(2021, 3, 1)
-    #   })
-    #   expect(result[:periods][@project2.id]).to eq({
-    #     start_at: Date.new(2021, 2, 1),
-    #     end_at: nil
-    #   })
-    # end
+    it 'returns correct project periods' do
+      result = query.run_query(start_at: Date.new(2021, 1, 1), end_at: Date.new(2021, 4, 1))
+      expect(result[:periods].count).to eq(2)
+      expect(result[:periods][@project1.id]).to eq({
+        start_at: Date.new(2021, 2, 1),
+        end_at: Date.new(2021, 3, 1)
+      })
+      expect(result[:periods][@project2.id]).to eq({
+        start_at: Date.new(2021, 2, 1),
+        end_at: nil
+      })
+    end
   end
 end
