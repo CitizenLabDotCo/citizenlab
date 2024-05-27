@@ -3,23 +3,28 @@ module ReportBuilder
     def run_query(start_at: nil, end_at: nil, **_other_props)
       start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
 
-      project_that_have_phases_ids = Phase.all.select(:project_id)
-      non_overlapping_project_ids = Phase.where('end_at <= ? OR start_at >= ?', start_date, end_date).select(:project_id)
-
-      overlapping_projects = Project
-        .where(id: project_that_have_phases_ids)
-        .where.not(id: non_overlapping_project_ids)
+      periods_query = Phase
+        .where(project_id: overlapping_projects.select(:id))
+        .group(:project_id)
+        .select('project_id, min(start_at) as start_at, max(end_at) as end_at')
 
       project_images_hash = ProjectImage
-        .where(project_id: overlapping_projects.pluck(:id))
+        .where(project_id: overlapping_projects.select(:id))
         .to_a
         .each_with_object({}) do |project_image, hash|
           hash[project_image.id] = serialize(project_image, ::WebApi::V1::ImageSerializer)
         end
 
+      periods = periods_query
+        .to_a
+        .each_with_object({}) do |row, hash|
+          hash[row.project_id] = { start_at: row.start_at, end_at: row.end_at }
+        end
+
       {
         projects: serialize(overlapping_projects, ::WebApi::V1::ProjectSerializer),
-        project_images: project_images_hash
+        project_images: project_images_hash,
+        periods: periods
       }
     end
 

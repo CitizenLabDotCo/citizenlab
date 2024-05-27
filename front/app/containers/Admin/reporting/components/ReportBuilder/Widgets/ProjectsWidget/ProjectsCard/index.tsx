@@ -13,9 +13,21 @@ const ProjectsCard = ({ startAt, endAt }: Props) => {
 
   return (
     <Box>
-      {response?.data.attributes.projects.map((project) => (
-        <ProjectRow key={project.id} project={project} />
-      ))}
+      {response?.data.attributes.projects.map((project, i) => {
+        const imageId = project.relationships.project_images?.data[0]?.id;
+        const projectImage = imageId
+          ? response.data.attributes.project_images[imageId]
+          : undefined;
+
+        return (
+          <ProjectRow
+            key={project.id}
+            project={project}
+            projectImage={projectImage}
+            first={i === 0}
+          />
+        );
+      })}
     </Box>
   );
 };
