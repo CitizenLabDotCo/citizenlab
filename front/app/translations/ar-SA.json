@@ -1076,6 +1076,7 @@
   "app.containers.IdeasNewPage.submitApiError": "حدثت مشكلة أثناء إرسال النموذج. يرجى التحقق بحثًا عن أي أخطاء وإعادة المحاولة.",
   "app.containers.IdeasNewPage.submitNewIdea": "إرسال",
   "app.containers.IdeasNewPage.surveyNewMetaTitle1": "إضافة استجابة الاستطلاع للمشروع | {orgName}",
+  "app.containers.IdeasShow.IdeaNavigationButtons.ideaIndexAriaMessage2": "يتم حاليًا عرض الرقم {currentIndex} من {totalInputs} المدخلات",
   "app.containers.IdeasShow.MetaInformation.attachments": "المُرفقات",
   "app.containers.IdeasShow.MetaInformation.byUserOnDate": "{userName} في {date}",
   "app.containers.IdeasShow.MetaInformation.currentStatus": "الحالة الحالية",
