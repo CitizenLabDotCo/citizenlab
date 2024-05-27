@@ -190,5 +190,26 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
         :custom_field_values => {}
       )
     end
+
+    it 'processes select fields with integer values' do
+      create(
+        :custom_field_select,
+        resource: custom_form,
+        key: 'select_integer',
+        title_multiloc: { 'en' => 'Select integer field' },
+        options: [create(:custom_field_option, key: '2', title_multiloc: { 'en' => '2' })]
+      )
+      xlsx_ideas_array = [
+        {
+          pdf_pages: [1],
+          fields: {
+            'Select integer field' => 2
+          }
+        }
+      ]
+      idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file)
+      expect(idea_rows.count).to eq 1
+      expect(idea_rows[0][:custom_field_values][:select_integer]).to eq '2'
+    end
   end
 end

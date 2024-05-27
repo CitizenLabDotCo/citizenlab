@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React from 'react';
 
 import { PublicationStatus } from 'api/projects/types';
 import useProjects from 'api/projects/useProjects';
@@ -7,12 +7,10 @@ import useLocalize from 'hooks/useLocalize';
 
 import FilterSelector from 'components/FilterSelector';
 
-import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-import messages from './messages';
-
 interface Props {
+  title: string;
   onChange: (projectIds: string[]) => void;
   selectedProjectIds: string[];
 }
@@ -23,17 +21,16 @@ const PUBLICATION_STATUSES: PublicationStatus[] = [
   'draft',
 ];
 
-const SelectProject = memo(({ onChange, selectedProjectIds }: Props) => {
+const ProjectSelector = ({ onChange, selectedProjectIds, title }: Props) => {
   const localize = useLocalize();
   const { data: projects } = useProjects({
     publicationStatuses: PUBLICATION_STATUSES,
     canModerate: true,
   });
 
-  const handleOnChange = useCallback((newProjectIds: string[]) => {
+  const handleOnChange = (newProjectIds: string[]) => {
     onChange(newProjectIds);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  };
 
   if (!isNilOrError(projects) && projects.data.length > 0) {
     const values = projects.data.map((project) => {
@@ -45,7 +42,7 @@ const SelectProject = memo(({ onChange, selectedProjectIds }: Props) => {
 
     return (
       <FilterSelector
-        title={<FormattedMessage {...messages.project} />}
+        title={title}
         name="building"
         selected={selectedProjectIds}
         values={values}
@@ -56,6 +53,6 @@ const SelectProject = memo(({ onChange, selectedProjectIds }: Props) => {
   }
 
   return null;
-});
+};
 
-export default SelectProject;
+export default ProjectSelector;
