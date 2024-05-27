@@ -1,7 +1,7 @@
 class Locale
   attr_reader :locale_sym
 
-  def self.monolingual(config)
+  def self.monolingual(config: nil)
     config ||= AppConfiguration.instance
     config_locales = config.settings('core', 'locales')
     config_locales.size == 1 ? new(config_locales.first) : nil
