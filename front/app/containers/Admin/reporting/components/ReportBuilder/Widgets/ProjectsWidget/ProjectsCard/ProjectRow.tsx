@@ -18,13 +18,12 @@ import useLocalize from 'hooks/useLocalize';
 interface Props {
   project: IProjectData;
   projectImage?: IProjectImageData;
+  periods: { start_at: string; end_at: string | null };
   first?: boolean;
 }
 
-const ProjectRow = ({ project, projectImage, first }: Props) => {
+const ProjectRow = ({ project, projectImage, periods, first }: Props) => {
   const localize = useLocalize();
-
-  // const startDate = toFullMonth(project.attributes.start_at);
 
   return (
     <Box
@@ -49,6 +48,7 @@ const ProjectRow = ({ project, projectImage, first }: Props) => {
         <Title variant="h5" m="0">
           {localize(project.attributes.title_multiloc)}
         </Title>
+        {periods.start_at} - {periods.end_at}
       </Box>
     </Box>
   );
