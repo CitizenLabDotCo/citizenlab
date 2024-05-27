@@ -10,7 +10,7 @@ class Locale
   def initialize(locale)
     @locale_sym = locale.to_sym
 
-    raise ClErrors::AssertionError 'Locale #{locale} is not supported' if !CL2_SUPPORTED_LOCALES.include?(locale)
+    raise ClErrors::AssertionError "Locale #{locale} is not supported" if CL2_SUPPORTED_LOCALES.exclude?(locale)
   end
 
   def language
