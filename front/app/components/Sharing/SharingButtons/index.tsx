@@ -61,8 +61,9 @@ const SharingButtons = ({
   }[context];
 
   const addPhaseContext = (url: string) => {
+    const hasExistingParams = url.indexOf('?') >= 0;
     if (phaseContext) {
-      if (url.indexOf('?') >= 0) {
+      if (hasExistingParams) {
         return `${url}&phase_context=${phaseContext}`;
       } else {
         return `${url}?phase_context=${phaseContext}`;
