@@ -14,7 +14,7 @@ import { IEventData } from 'api/events/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import DayAndMonth from 'components/EventCard/DateBlocks/DayAndMonth';
+import DayAndMonth from 'components/EventCards/DateBlocks/DayAndMonth';
 
 const Container = styled(Box)`
   ${defaultCardStyle};
