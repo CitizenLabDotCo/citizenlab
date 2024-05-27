@@ -14,6 +14,6 @@ class Locale
   end
 
   def language
-    locale # TODO
+    I18n.t("locales.#{locale_sym}")
   end
 end

@@ -25,4 +25,14 @@ RSpec.describe Locale do
       expect(locale.locale_sym).to eq(:'nl-NL')
     end
   end
+
+  describe 'language' do
+    it 'returns the language of the locale' do
+      locale = described_class.new('fr-FR')
+      expect(locale.language).to eq('French')
+      I18n.with_locale(:'nl-NL') do
+        expect(locale.language).to eq('Frans')
+      end
+    end
+  end
 end
