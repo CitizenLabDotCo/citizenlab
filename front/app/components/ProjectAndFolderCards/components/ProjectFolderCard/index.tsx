@@ -19,7 +19,7 @@ import {
   getCardImageUrl,
   CARD_IMAGE_ASPECT_RATIO,
 } from 'api/project_folder_images/types';
-import useProjectFolderImages from 'api/project_folder_images/useProjectFolderImages';
+import useProjectFolderImage from 'api/project_folder_images/useProjectFolderImage';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
 import AvatarBubbles from 'components/AvatarBubbles';
@@ -32,7 +32,6 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 import tracks from './tracks';
@@ -318,9 +317,14 @@ const ProjectFolderCard = memo<Props>(
   ({ folderId, size, layout, className, showFollowButton }) => {
     const isSmallerThanPhone = useBreakpoint('phone');
     const { data: projectFolder } = useProjectFolderById(folderId);
-    const { data: projectFolderImages } = useProjectFolderImages({
+
+    // We use this hook instead of useProjectFolderImages
+    // because that one doesn't work well with our caching system
+    const { data: projectFolderImage } = useProjectFolderImage({
       folderId,
+      imageId: projectFolder?.data.relationships.images.data?.[0]?.id,
     });
+
     const { data: publication } = useAdminPublication(
       projectFolder?.data.relationships.admin_publication.data?.id || null
     );
@@ -360,9 +364,9 @@ const ProjectFolderCard = memo<Props>(
     const showFooter = showAvatarBubbles;
 
     // Images
-    const imageVersions = isNilOrError(projectFolderImages)
+    const imageVersions = !projectFolderImage
       ? null
-      : projectFolderImages.data[0]?.attributes.versions;
+      : projectFolderImage.data.attributes.versions;
 
     const imageUrl = imageVersions
       ? getCardImageUrl(imageVersions, isSmallerThanPhone, size)
