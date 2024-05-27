@@ -25,6 +25,9 @@ import PostsByTimeWidget, {
 import ReactionsByTimeWidget, {
   reactionsByTimeTitle,
 } from './ChartWidgets/ReactionsByTimeWidget';
+import RegistrationsWidget, {
+  registrationsTitle,
+} from './ChartWidgets/RegistrationsWidget';
 import VisitorsTrafficSourcesWidget, {
   visitorsTrafficSourcesTitle,
 } from './ChartWidgets/VisitorsTrafficSourcesWidget';
@@ -57,6 +60,7 @@ export const WIDGETS = {
   ReactionsByTimeWidget,
   DemographicsWidget,
   IframeMultiloc,
+  RegistrationsWidget,
   // DEPRECATED
   AgeWidget,
   GenderWidget,
@@ -81,6 +85,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   ReactionsByTimeWidget: reactionsByTimeTitle,
   DemographicsWidget: demographicsTitle,
   IframeMultiloc: iframeMultilocTitle,
+  RegistrationsWidget: registrationsTitle,
   // DEPRECATED
   AgeWidget: ageTitle,
   GenderWidget: genderTitle,
@@ -105,6 +110,7 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'SurveyQuestionResultWidget',
   'DemographicsWidget',
   'IframeMultiloc',
+  'RegistrationsWidget',
   // DEPRECATED
   'AgeWidget',
   'GenderWidget',

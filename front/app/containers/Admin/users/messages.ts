@@ -17,9 +17,13 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.email',
     defaultMessage: 'Email',
   },
-  since: {
-    id: 'app.containers.Admin.Users.since',
-    defaultMessage: 'Since',
+  lastActive: {
+    id: 'app.containers.Admin.Users.lastActive',
+    defaultMessage: 'Last active',
+  },
+  joined: {
+    id: 'app.containers.Admin.Users.joined',
+    defaultMessage: 'Joined',
   },
   admin: {
     id: 'app.containers.Admin.Users.admin',
@@ -49,9 +53,9 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.projectManager',
     defaultMessage: 'Project manager',
   },
-  status: {
-    id: 'app.containers.Admin.Users.status',
-    defaultMessage: 'Status',
+  role: {
+    id: 'app.containers.Admin.Users.role',
+    defaultMessage: 'Role',
   },
   permissionToBuy: {
     id: 'app.containers.Admin.Users.permissionToBuy',
@@ -114,14 +118,17 @@ export default defineMessages({
     defaultMessage:
       'Get an overview of all the people and organisations that registered on the platform. Add a selection of users to Manual groups or Smart groups.',
   },
-  adminsAndManagers: {
-    id: 'app.containers.Admin.Users.GroupsPanel.adminsAndManagers',
-    defaultMessage: 'Admins & managers',
+  admins: {
+    id: 'app.containers.Admin.Users.GroupsPanel.admins',
+    defaultMessage: 'Admins',
   },
-  adminsAndManagersSubtitle: {
-    id: 'app.containers.Admin.Users.GroupsPanel.adminsAndManagersSubtitle1',
-    defaultMessage:
-      'View who are selected as admins, folder and project managers.',
+  managers: {
+    id: 'app.containers.Admin.Users.GroupsPanel.managers',
+    defaultMessage: 'Project managers',
+  },
+  seeAssignedItems: {
+    id: 'app.containers.Admin.Users.GroupsPanel.seeAssignedItems',
+    defaultMessage: 'Assigned items',
   },
   groupsTitle: {
     id: 'app.containers.Admin.Users.GroupsPanel.groupsTitle',
@@ -206,8 +213,8 @@ export default defineMessages({
     defaultMessage: 'Are you sure you want to delete this group?',
   },
   moveUsersTableAction: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.moveUsersTableAction',
-    defaultMessage: 'Add selected users to a group',
+    id: 'app.containers.AdminPage.Users.UsersGroup.moveUsersAction',
+    defaultMessage: 'Add users to group',
   },
   moveUsersButton: {
     id: 'app.containers.AdminPage.Users.UsersGroup.moveUsersButton',
@@ -232,16 +239,16 @@ export default defineMessages({
       'An error occured while deleting users from the group, please try again.',
   },
   exportAllUsers: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.exportAllUsers',
-    defaultMessage: 'Export all users',
+    id: 'app.containers.AdminPage.Users.UsersGroup.exportAll',
+    defaultMessage: 'Export all',
   },
   exportGroup: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.exportGroup',
-    defaultMessage: 'Export group',
+    id: 'app.containers.AdminPage.Users.UsersGroup.exportGroupUsers',
+    defaultMessage: 'Export users in group',
   },
   exportSelectedUsers: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.exportSelectedUsers',
-    defaultMessage: 'Export selected users',
+    id: 'app.containers.AdminPage.Users.UsersGroup.exportSelected',
+    defaultMessage: 'Export selected',
   },
   userInvitationPending: {
     id: 'app.containers.Admin.Users.UserTableRow.userInvitationPending',
@@ -262,5 +269,46 @@ export default defineMessages({
   userInsights: {
     id: 'app.containers.Admin.Users.userInsights',
     defaultMessage: 'User insights',
+  },
+  remove: {
+    id: 'app.containers.Admin.Users.remove',
+    defaultMessage: 'Remove',
+  },
+  assignedItemsFor: {
+    id: 'app.containers.Admin.Users.assignedItems',
+    defaultMessage: 'Assigned items for {name}',
+  },
+  noAssignedItems: {
+    id: 'app.containers.Admin.Users.noAssignedItems',
+    defaultMessage: 'No assigned items',
+  },
+  removeModeratorFrom: {
+    id: 'app.containers.Admin.Users.removeModeratorFrom',
+    defaultMessage:
+      'The user is moderating the folder this project belongs to. Remove assignment from "{folderTitle}" instead.',
+  },
+  setAsProjectModerator: {
+    id: 'app.containers.Admin.Users.setAsProjectModerator',
+    defaultMessage: 'Assign as project manager',
+  },
+  folder: {
+    id: 'app.containers.Admin.Users.folder',
+    defaultMessage: 'Folder',
+  },
+  setUserAsProjectModerator: {
+    id: 'app.containers.Admin.Users.setUserAsProjectModerator',
+    defaultMessage: 'Assign {name} as project manager',
+  },
+  assign: {
+    id: 'app.containers.Admin.Users.assign',
+    defaultMessage: 'Assign',
+  },
+  selectPublications: {
+    id: 'app.containers.Admin.Users.selectPublications',
+    defaultMessage: 'Select projects or folders',
+  },
+  selectPublicationsPlaceholder: {
+    id: 'app.containers.Admin.Users.selectPublicationsPlaceholder',
+    defaultMessage: 'Type to search',
   },
 });

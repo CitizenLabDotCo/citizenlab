@@ -14,6 +14,8 @@ import ProjectFilter from '../../_shared/ProjectFilter';
 import messages from '../messages';
 import { ChartWidgetProps } from '../typings';
 
+import { Props } from './typings';
+
 const ChartWidgetSettings = () => {
   return (
     <Box>
@@ -57,7 +59,7 @@ export const TitleInput = () => {
   );
 };
 
-export const DateRangeInput = () => {
+export const DateRangeInput = ({ onChangeDateRange }: Props) => {
   const { formatMessage } = useIntl();
   const {
     actions: { setProp },
@@ -81,6 +83,8 @@ export const DateRangeInput = () => {
       props.startAt = startDate?.format('YYYY-MM-DDTHH:mm:ss.sss');
       props.endAt = endDate?.format('YYYY-MM-DDTHH:mm:ss.sss');
     });
+
+    onChangeDateRange?.({ startDate, endDate });
   };
 
   return (

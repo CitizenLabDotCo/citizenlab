@@ -18,9 +18,9 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
     )
       .joins('LEFT OUTER JOIN admin_publications AS parents ON parents.id = admin_publications.parent_id')
       .order('root_ordering, admin_publications.ordering')
-      .includes(:publication, :children)
 
     @publications = paginate publications
+    @publications = @publications.includes(:publication, :children)
 
     render json: linked_json(
       @publications,

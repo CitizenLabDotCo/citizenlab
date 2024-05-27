@@ -32,7 +32,7 @@ const PostsByTime = ({
 
   return (
     <Box
-      id="e2e-posts-by-time-widget"
+      className="e2e-posts-by-time-widget"
       width="100%"
       height="220px"
       mt="20px"

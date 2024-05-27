@@ -9,8 +9,9 @@ module Volunteering
         skip_before_action :authenticate_user
 
         def index
-          @volunteers = policy_scope(Volunteer).where(cause: @cause).includes(:user)
+          @volunteers = policy_scope(Volunteer).where(cause: @cause)
           @volunteers = paginate @volunteers
+          @volunteers = @volunteers.includes(:user)
 
           render json: linked_json(
             @volunteers,

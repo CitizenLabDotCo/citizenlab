@@ -23,9 +23,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.tabRepresentativeness2',
     defaultMessage: 'Representation',
   },
+  managementFeed: {
+    id: 'app.Admin.Moderation.managementFeed',
+    defaultMessage: 'Management feed',
+  },
   feed: {
-    id: 'app.Admin.Moderation.feed',
-    defaultMessage: 'Feed',
+    id: 'app.Admin.Moderation.participationFeed',
+    defaultMessage: 'Participation feed',
   },
   tabVisitors: {
     id: 'app.modules.commercial.analytics.admin.components.Tab',

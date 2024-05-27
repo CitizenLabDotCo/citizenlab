@@ -156,7 +156,7 @@ describe XlsxExport::ProjectIdeasVotesGenerator do
       )
 
       header_row = workbook.worksheets[0][0].cells.map(&:value)
-      idea_row = workbook.worksheets[0][1].cells.map(&:value)
+      idea_row = workbook.worksheets[0].find { |row| row[0].value == ideas[0].id }.cells.map(&:value)
 
       expect(idea_row[header_row.find_index 'ID']).to eq ideas[0].id
       expect(idea_row[header_row.find_index 'Title']).to eq ideas[0].title_multiloc['en']

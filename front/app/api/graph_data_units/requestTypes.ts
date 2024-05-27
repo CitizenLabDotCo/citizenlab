@@ -13,7 +13,8 @@ export type ResolvedName =
   | 'ActiveUsersWidget'
   | 'PostsByTimeWidget'
   | 'CommentsByTimeWidget'
-  | 'ReactionsByTimeWidget';
+  | 'ReactionsByTimeWidget'
+  | 'RegistrationsWidget';
 
 export interface BaseParams {
   resolved_name: ResolvedName;
@@ -32,7 +33,8 @@ export type ParametersLive =
   | ActiveUsersParams
   | PostsByTimeParams
   | CommentsByTimeParams
-  | ReactionsByTimeParams;
+  | ReactionsByTimeParams
+  | RegistrationsParams;
 
 export type GroupMode = 'user_field' | 'survey_question';
 
@@ -55,6 +57,11 @@ export interface AnalyticsProps {
   resolution?: IResolution;
 }
 
+interface CompareProps {
+  compare_start_at?: string;
+  compare_end_at?: string;
+}
+
 export interface MostReactedIdeasProps {
   phase_id?: string | null;
   number_of_ideas?: number;
@@ -73,9 +80,13 @@ export interface SingleIdeaParams extends BaseParams {
   props: SingleIdeaProps;
 }
 
+export interface VisitorsProps
+  extends Omit<AnalyticsProps, 'project_id'>,
+    CompareProps {}
+
 export interface VisitorsParams extends BaseParams {
   resolved_name: 'VisitorsWidget';
-  props: AnalyticsProps;
+  props: VisitorsProps;
 }
 
 export interface VisitorsTrafficSourcesProps {
@@ -114,9 +125,11 @@ export interface AgeParams extends BaseParams {
   props: BaseDemographicsProps;
 }
 
+export interface ActiveUsersProps extends AnalyticsProps, CompareProps {}
+
 export interface ActiveUsersParams extends BaseParams {
   resolved_name: 'ActiveUsersWidget';
-  props: AnalyticsProps;
+  props: ActiveUsersProps;
 }
 
 export interface PostsByTimeParams extends BaseParams {
@@ -132,6 +145,15 @@ export interface CommentsByTimeParams extends BaseParams {
 export interface ReactionsByTimeParams extends BaseParams {
   resolved_name: 'ReactionsByTimeWidget';
   props: AnalyticsProps;
+}
+
+export interface RegistrationsProps
+  extends Omit<AnalyticsProps, 'project_id'>,
+    CompareProps {}
+
+interface RegistrationsParams {
+  resolved_name: 'RegistrationsWidget';
+  props: RegistrationsProps;
 }
 
 // published

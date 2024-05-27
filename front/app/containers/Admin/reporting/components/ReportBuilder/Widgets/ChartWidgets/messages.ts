@@ -46,4 +46,20 @@ export default defineMessages({
     id: 'app.containers.admin.ReportBuilder.charts.users',
     defaultMessage: 'Users',
   },
+  comparedToPreviousXDays: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.comparedToPreviousXDays',
+    defaultMessage: 'Compared to previous {days} days',
+  },
+  showComparisonLastPeriod: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.showComparisonLastPeriod',
+    defaultMessage: 'Show comparison with last period',
+  },
+  hideStatistics: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.hideStatistics',
+    defaultMessage: 'Hide statistics',
+  },
+  youNeedToSelectADateRange: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.youNeedToSelectADateRange',
+    defaultMessage: 'You need to select a date range first.',
+  },
 });

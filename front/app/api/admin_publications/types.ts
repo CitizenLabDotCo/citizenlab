@@ -20,6 +20,7 @@ export interface IQueryParameters {
   removeNotAllowedParents?: boolean;
   onlyProjects?: boolean;
   filter_is_moderator_of?: boolean;
+  filter_user_is_moderator_of?: string;
 }
 
 /**

@@ -55,7 +55,7 @@ class WebApi::V1::BasketsIdeasController < ApplicationController
   def upsert
     # 1. Create or get basket
     idea = Idea.find(params[:idea_id])
-    phase = ParticipationPermissionsService.new.get_current_phase(idea.project)
+    phase = TimelineService.new.current_phase_not_archived(idea.project)
 
     basket = Basket.find_or_initialize_by(
       phase: phase,

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ActivitySerializer < WebApi::V1::BaseSerializer
-  attributes :action, :acted_at, :item_id, :project_id
+  attributes :action, :acted_at, :project_id, :item_id
 
   attribute :item_type do |object|
     object.item_type.demodulize.downcase
@@ -9,6 +9,10 @@ class WebApi::V1::ActivitySerializer < WebApi::V1::BaseSerializer
 
   attribute :item_slug do |object|
     object&.item&.try(:slug)
+  end
+
+  attribute :item_exists do |object|
+    object.item.present?
   end
 
   attribute :item_title_multiloc do |object|
