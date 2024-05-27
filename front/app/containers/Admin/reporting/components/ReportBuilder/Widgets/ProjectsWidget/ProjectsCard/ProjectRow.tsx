@@ -97,7 +97,8 @@ const ProjectRow = ({ project, projectImage, period, participants }: Props) => {
             mr="6px"
             pt="1px"
             pb="0px"
-            px="8px"
+            pr="9px"
+            pl="6px"
             borderRadius="3px"
             style={{
               color: labelStyle.color,
