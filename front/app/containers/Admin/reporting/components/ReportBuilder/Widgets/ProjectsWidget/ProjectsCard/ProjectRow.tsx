@@ -4,6 +4,7 @@ import {
   Box,
   Title,
   Image,
+  Text,
   stylingConsts,
   colors,
 } from '@citizenlab/cl2-component-library';
@@ -13,7 +14,10 @@ import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-// import { toFullMonth } from 'utils/dateUtils';
+import { useIntl } from 'utils/cl-intl';
+import { toFullMonth } from 'utils/dateUtils';
+
+import messages from '../messages';
 
 interface Props {
   project: IProjectData;
@@ -24,6 +28,12 @@ interface Props {
 
 const ProjectRow = ({ project, projectImage, periods, first }: Props) => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
+
+  const startMonth = toFullMonth(periods.start_at, 'month');
+  const endMonth = periods.end_at
+    ? toFullMonth(periods.end_at, 'month')
+    : formatMessage(messages.noEndDate);
 
   return (
     <Box
@@ -48,7 +58,9 @@ const ProjectRow = ({ project, projectImage, periods, first }: Props) => {
         <Title variant="h5" m="0">
           {localize(project.attributes.title_multiloc)}
         </Title>
-        {periods.start_at} - {periods.end_at}
+        <Text fontSize="s">
+          {startMonth} - {endMonth}
+        </Text>
       </Box>
     </Box>
   );
