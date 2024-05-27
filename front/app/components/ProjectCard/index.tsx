@@ -21,9 +21,8 @@ import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import { getInputTerm } from 'api/phases/utils';
-import useProjectImages, {
-  CARD_IMAGE_ASPECT_RATIO,
-} from 'api/project_images/useProjectImages';
+import useProjectImage from 'api/project_images/useProjectImage';
+import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
 import useProjectById from 'api/projects/useProjectById';
 import { getProjectUrl } from 'api/projects/utils';
 
@@ -379,7 +378,14 @@ const ProjectCard = memo<InputProps>(
     });
     const { data: project } = useProjectById(projectId);
     const { data: authUser } = useAuthUser();
-    const { data: projectImages } = useProjectImages(projectId);
+
+    // We use this hook instead of useProjectImages,
+    // because that one doesn't work with our caching system.
+    const { data: projectImage } = useProjectImage({
+      projectId,
+      imageId: project?.data.relationships.project_images.data[0]?.id,
+    });
+
     const currentPhaseId =
       project?.data?.relationships?.current_phase?.data?.id ?? null;
     const { data: phase } = usePhase(currentPhaseId);
@@ -428,9 +434,9 @@ const ProjectCard = memo<InputProps>(
       const canComment =
         project.data.attributes.action_descriptor.commenting_idea.enabled;
 
-      const imageUrl = !projectImages
+      const imageUrl = !projectImage
         ? null
-        : projectImages.data[0]?.attributes.versions?.large;
+        : projectImage.data.attributes.versions?.large;
 
       const projectUrl: RouteType = getProjectUrl(project.data);
       const isFinished = project.data.attributes.timeline_active === 'past';
