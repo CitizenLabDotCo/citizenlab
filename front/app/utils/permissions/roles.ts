@@ -7,7 +7,7 @@ export interface IProjectModeratorRole {
   project_id: string;
 }
 
-interface IProjectFolderModeratorRole {
+export interface IProjectFolderModeratorRole {
   type: 'project_folder_moderator';
   project_folder_id: string;
 }

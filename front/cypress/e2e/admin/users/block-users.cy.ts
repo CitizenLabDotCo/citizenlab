@@ -1,5 +1,6 @@
 describe('Block user', () => {
   beforeEach(() => {
+    cy.setAdminLoginCookie();
     cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
       const adminJwt = response.body.jwt;
       cy.request({
@@ -19,7 +20,7 @@ describe('Block user', () => {
         },
       });
     });
-    cy.setAdminLoginCookie();
+
     cy.visit('/admin/users');
   });
 
@@ -92,7 +93,7 @@ describe('Block user', () => {
       .not(':contains("admin@citizenlab.co")')
       .first()
       .find('td')
-      .eq(2)
+      .eq(1)
       .find('a')
       .click();
 
@@ -124,7 +125,7 @@ describe('Block user', () => {
       .not(':contains("admin@citizenlab.co")')
       .first()
       .find('td')
-      .eq(2)
+      .eq(1)
       .find('a')
       .click();
 

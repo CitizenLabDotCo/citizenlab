@@ -17,7 +17,7 @@ resource 'Ideas' do
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
     response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
-    response_field :base, "Array containing objects with signature { error: #{ParticipationPermissionsService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
+    response_field :base, "Array containing objects with signature { error: #{Permissions::IdeaPermissionsService::POSTING_DENIED_REASONS.values.join(' | ')} }", scope: :errors
 
     let(:id) { input.id }
 
@@ -88,8 +88,8 @@ resource 'Ideas' do
         end
 
         example '[error] Update an idea when there is a posting disabled reason' do
-          expect_any_instance_of(ParticipationPermissionsService)
-            .to receive(:posting_idea_disabled_reason_for_phase).with(project.phases.first, author).and_return('i_dont_like_you')
+          expect_any_instance_of(Permissions::ProjectPermissionsService)
+            .to receive(:denied_reason_for_action).with('posting_idea', author, project).and_return('i_dont_like_you')
 
           do_request
 

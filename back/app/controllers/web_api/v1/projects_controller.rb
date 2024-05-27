@@ -16,20 +16,19 @@ class WebApi::V1::ProjectsController < ApplicationController
     # But could not find a way to eager-load the polymorphic type in the publication
     # scope.
 
-    # For unknown reasons, `includes` uses joins here. It makes the query complex and slow. So, we use `preload`.
+    # `includes` tries to be smart & use joins here, but it makes the query complex and slow. So, we use `preload`.
     # Using `pluck(:publication_id)` instead of `select(:publication_id)` also helps if used with `includes`,
     # but it doesn't make any difference with `preload`. Still using it in case the query changes.
-    @projects = Project.where(id: publications.pluck(:publication_id))
-      .ordered
-      .preload(
-        :project_images,
-        :areas,
-        :topics,
-        :content_builder_layouts, # Defined in ContentBuilder engine
-        phases: [:report],
-        admin_publication: [:children]
-      )
+    @projects = Project.where(id: publications.pluck(:publication_id)).ordered
     @projects = paginate @projects
+    @projects = @projects.preload(
+      :project_images,
+      :areas,
+      :topics,
+      :content_builder_layouts, # Defined in ContentBuilder engine
+      phases: [:report, { permissions: [:groups] }],
+      admin_publication: [:children]
+    )
 
     user_followers = current_user&.follows
       &.where(followable_type: 'Project')
@@ -41,7 +40,8 @@ class WebApi::V1::ProjectsController < ApplicationController
     instance_options = {
       user_followers: user_followers,
       timeline_active: TimelineService.new.timeline_active_on_collection(@projects.to_a),
-      visible_children_count_by_parent_id: {} # projects don't have children
+      visible_children_count_by_parent_id: {}, # projects don't have children
+      permission_service: Permissions::ProjectPermissionsService.new
     }
 
     render json: linked_json(

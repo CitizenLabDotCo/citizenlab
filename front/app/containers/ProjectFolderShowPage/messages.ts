@@ -9,9 +9,9 @@ export default defineMessages({
     id: 'app.containers.ProjectFolderShowPage.projectFolderWhatsAppMessage',
     defaultMessage: '{title} | {orgName}',
   },
-  metaTitle: {
-    id: 'app.containers.ProjectFolderShowPage.metaTitle',
-    defaultMessage: '{title}',
+  metaTitle1: {
+    id: 'app.containers.ProjectFolderShowPage.metaTitle1',
+    defaultMessage: 'Folder: {title} | {orgName}',
   },
   invisibleTitleMainContent: {
     id: 'app.containers.ProjectFolderShowPage.invisibleTitleMainContent',

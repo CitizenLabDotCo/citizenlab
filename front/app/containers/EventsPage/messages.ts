@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  eventsPageTitle: {
-    id: 'app.containers.eventspage.eventsPageTitle',
-    defaultMessage: 'Events',
+  eventsPageTitle1: {
+    id: 'app.containers.eventspage.eventsPageTitle1',
+    defaultMessage: 'Events | {orgName}',
   },
   eventsPageDescription: {
     id: 'app.containers.eventspage.eventsPageDescription',

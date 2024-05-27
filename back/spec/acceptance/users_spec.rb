@@ -419,6 +419,52 @@ resource 'Users' do
           expect(json_response[:data].map { |u| u.dig(:attributes, :email) }).to eq sorted_by_last_active_at_emails
         end
 
+        example 'List all users sorted by last_active_at lists nil values first', document: false do
+          User.all.each_with_index do |user, i|
+            user.update!(last_active_at: Time.now - i.days)
+          end
+
+          inactive_user = User.last
+          inactive_user.update!(last_active_at: nil)
+
+          do_request sort: 'last_active_at'
+
+          assert_status 200
+          json_response = json_parse(response_body)
+
+          expect(json_response[:data].map { |u| u.dig(:attributes, :email) }.first).to eq inactive_user.email
+        end
+
+        example 'List all users sorted by -last_active_at' do
+          User.all.each_with_index do |user, i|
+            user.update!(last_active_at: Time.now - i.days)
+          end
+
+          do_request sort: '-last_active_at'
+
+          assert_status 200
+          json_response = json_parse(response_body)
+
+          sorted_by_last_active_at_emails = User.order(last_active_at: :desc).pluck(:email)
+          expect(json_response[:data].map { |u| u.dig(:attributes, :email) }).to eq sorted_by_last_active_at_emails
+        end
+
+        example 'List all users sorted by -last_active_at lists nil values last', document: false do
+          User.all.each_with_index do |user, i|
+            user.update!(last_active_at: Time.now - i.days)
+          end
+
+          inactive_user = User.first
+          inactive_user.update!(last_active_at: nil)
+
+          do_request sort: '-last_active_at'
+
+          assert_status 200
+          json_response = json_parse(response_body)
+
+          expect(json_response[:data].map { |u| u.dig(:attributes, :email) }.last).to eq inactive_user.email
+        end
+
         example 'List all users in group' do
           group = create(:group)
           group_users = create_list(:user, 3, manual_groups: [group])

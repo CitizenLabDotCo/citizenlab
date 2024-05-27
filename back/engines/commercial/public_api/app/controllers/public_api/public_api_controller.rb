@@ -24,12 +24,13 @@ module PublicApi
       render json: problem_details, status: :bad_request
     end
 
-    def list_items(base_query, serializer, root_key: nil)
+    def list_items(base_query, serializer, includes: [], root_key: nil)
       @items = base_query
         .order(created_at: :desc)
         .page(params[:page_number])
         .per(num_per_page)
       @items = common_date_filters @items
+      @items = @items.includes(includes) if includes.any?
 
       render json: @items,
         each_serializer: serializer,

@@ -1,13 +1,14 @@
 import { useMemo, useState } from 'react';
 
-import useAnalytics from 'api/analytics/useAnalytics';
+import { useActiveUsersLive } from 'api/graph_data_units';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { getComparedPeriod } from '../../_utils/query';
+
 import { parseTimeSeries, parseStats, parseExcelData } from './parse';
-import { query } from './query';
 import { getTranslations } from './translations';
-import { QueryParameters, Response } from './typings';
+import { QueryParameters } from './typings';
 
 export default function useActiveUsers({
   projectId,
@@ -18,14 +19,17 @@ export default function useActiveUsers({
   const { formatMessage } = useIntl();
   const [currentResolution, setCurrentResolution] = useState(resolution);
 
-  const { data: analytics } = useAnalytics<Response>(
-    query({
-      projectId,
-      startAtMoment,
-      endAtMoment,
+  const { data: analytics } = useActiveUsersLive(
+    {
+      project_id: projectId,
+      start_at: startAtMoment?.toISOString(),
+      end_at: endAtMoment?.toISOString(),
       resolution,
-    }),
-    () => setCurrentResolution(resolution)
+      ...getComparedPeriod(resolution),
+    },
+    {
+      onSuccess: () => setCurrentResolution(resolution),
+    }
   );
 
   const stats = analytics ? parseStats(analytics.data.attributes) : null;

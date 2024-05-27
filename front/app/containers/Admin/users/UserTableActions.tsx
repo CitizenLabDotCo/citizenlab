@@ -21,6 +21,7 @@ import usersKeys from 'api/users/keys';
 
 import { API_PATH } from 'containers/App/constants';
 
+import Divider from 'components/admin/Divider';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import Checkbox from 'components/UI/Checkbox';
@@ -34,10 +35,6 @@ import { requestBlob } from 'utils/requestBlob';
 import events, { MembershipAdd } from './events';
 import messages from './messages';
 import tracks from './tracks';
-
-const StyledBox = styled(Box)`
-  user-select: none;
-`;
 
 const UserCount = styled.span`
   color: ${colors.textSecondary};
@@ -303,16 +300,9 @@ const UserTableActions = ({
       : 'exportSelectedUsers';
 
   return (
-    <Box borderBottom={`solid 1px ${colors.primary}`} mt="20px">
-      <Box width="100%" display="flex" justifyContent="space-between">
-        <StyledBox
-          minHeight="60px"
-          display="flex"
-          alignItems="center"
-          paddingBottom="15px"
-          paddingLeft="5px"
-          paddingRight="5px"
-        >
+    <Box>
+      <Box width="100%" display="flex" justifyContent="flex-end">
+        <Box display="flex" alignItems="center">
           {showSelectAndExport && (
             <SelectAllCheckbox
               label={
@@ -330,30 +320,22 @@ const UserTableActions = ({
               onChange={toggleAllUsers}
             />
           )}
-        </StyledBox>
-        <Box flex="0 0 250px">
-          <SearchInput
-            onChange={onSearch}
-            a11y_numberOfSearchResults={usersDataLength}
-          />
         </Box>
-      </Box>
-      {showSelectAndExport && (
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Box flex="1">
+        {showSelectAndExport && (
+          <>
             <Button
+              ml="auto"
               onClick={exportUsers}
               className={`export e2e-${exportType} hasLeftMargin`}
               buttonStyle="admin-dark-text"
               whiteSpace="wrap"
               icon="user-data"
               iconColor={colors.textPrimary}
+              fontSize={`${fontSizes.s}px`}
             >
               <FormattedMessage {...messages[exportType]} />
             </Button>
-          </Box>
-          {selectedUsers !== 'none' && manualGroups && (
-            <Box flex="1">
+            {selectedUsers !== 'none' && manualGroups && (
               <ActionButtonWrapper>
                 <Button
                   className="e2e-move-users"
@@ -362,6 +344,7 @@ const UserTableActions = ({
                   whiteSpace="wrap"
                   icon="folder-move"
                   iconColor={colors.textPrimary}
+                  fontSize={`${fontSizes.s}px`}
                 >
                   <FormattedMessage {...messages.moveUsersTableAction} />
                 </Button>
@@ -409,11 +392,9 @@ const UserTableActions = ({
                   }
                 />
               </ActionButtonWrapper>
-            </Box>
-          )}
+            )}
 
-          {groupType === 'manual' && selectedUsers !== 'none' && (
-            <Box flex="1">
+            {groupType === 'manual' && selectedUsers !== 'none' && (
               <Button
                 onClick={handleGroupsDeleteClick}
                 className="hasLeftMargin"
@@ -421,13 +402,19 @@ const UserTableActions = ({
                 whiteSpace="wrap"
                 icon="delete"
                 iconColor={colors.textPrimary}
+                fontSize={`${fontSizes.s}px`}
               >
                 <FormattedMessage {...messages.membershipDelete} />
               </Button>
-            </Box>
-          )}
-        </Box>
-      )}
+            )}
+          </>
+        )}
+        <SearchInput
+          onChange={onSearch}
+          a11y_numberOfSearchResults={usersDataLength}
+        />
+      </Box>
+      <Divider />
     </Box>
   );
 };

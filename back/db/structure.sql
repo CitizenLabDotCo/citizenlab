@@ -548,7 +548,6 @@ DROP TABLE IF EXISTS public.initiatives_topics;
 DROP VIEW IF EXISTS public.initiative_initiative_statuses;
 DROP TABLE IF EXISTS public.initiative_images;
 DROP TABLE IF EXISTS public.initiative_files;
-DROP TABLE IF EXISTS public.impact_tracking_sessions;
 DROP TABLE IF EXISTS public.impact_tracking_salts;
 DROP TABLE IF EXISTS public.identities;
 DROP TABLE IF EXISTS public.ideas_topics;
@@ -588,7 +587,8 @@ DROP TABLE IF EXISTS public.areas_ideas;
 DROP TABLE IF EXISTS public.areas;
 DROP TABLE IF EXISTS public.ar_internal_metadata;
 DROP TABLE IF EXISTS public.app_configurations;
-DROP TABLE IF EXISTS public.analytics_fact_visits;
+DROP VIEW IF EXISTS public.analytics_fact_sessions;
+DROP TABLE IF EXISTS public.impact_tracking_sessions;
 DROP VIEW IF EXISTS public.analytics_fact_registrations;
 DROP TABLE IF EXISTS public.invites;
 DROP VIEW IF EXISTS public.analytics_fact_project_statuses;
@@ -614,6 +614,7 @@ DROP TABLE IF EXISTS public.email_campaigns_deliveries;
 DROP TABLE IF EXISTS public.email_campaigns_campaigns;
 DROP VIEW IF EXISTS public.analytics_dimension_users;
 DROP TABLE IF EXISTS public.users;
+DROP TABLE IF EXISTS public.analytics_fact_visits;
 DROP TABLE IF EXISTS public.analytics_dimension_types;
 DROP VIEW IF EXISTS public.analytics_dimension_statuses;
 DROP TABLE IF EXISTS public.initiative_statuses;
@@ -1280,6 +1281,27 @@ CREATE TABLE public.analytics_dimension_types (
 
 
 --
+-- Name: analytics_fact_visits; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.analytics_fact_visits (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    visitor_id character varying NOT NULL,
+    dimension_user_id uuid,
+    dimension_referrer_type_id uuid NOT NULL,
+    dimension_date_first_action_id date NOT NULL,
+    dimension_date_last_action_id date NOT NULL,
+    duration integer NOT NULL,
+    pages_visited integer NOT NULL,
+    returning_visitor boolean DEFAULT false NOT NULL,
+    referrer_name character varying,
+    referrer_url character varying,
+    matomo_visit_id integer NOT NULL,
+    matomo_last_action_time timestamp without time zone NOT NULL
+);
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1323,10 +1345,13 @@ CREATE TABLE public.users (
 --
 
 CREATE VIEW public.analytics_dimension_users AS
- SELECT users.id,
-    COALESCE(((users.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role,
-    users.invite_status
-   FROM public.users;
+ SELECT u.id,
+    COALESCE(((u.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role,
+    u.invite_status,
+    (users_with_visits.dimension_user_id IS NOT NULL) AS has_visits
+   FROM (public.users u
+     LEFT JOIN ( SELECT DISTINCT analytics_fact_visits.dimension_user_id
+           FROM public.analytics_fact_visits) users_with_visits ON ((users_with_visits.dimension_user_id = u.id)));
 
 
 --
@@ -1938,24 +1963,30 @@ CREATE VIEW public.analytics_fact_registrations AS
 
 
 --
--- Name: analytics_fact_visits; Type: TABLE; Schema: public; Owner: -
+-- Name: impact_tracking_sessions; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.analytics_fact_visits (
+CREATE TABLE public.impact_tracking_sessions (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    visitor_id character varying NOT NULL,
-    dimension_user_id uuid,
-    dimension_referrer_type_id uuid NOT NULL,
-    dimension_date_first_action_id date NOT NULL,
-    dimension_date_last_action_id date NOT NULL,
-    duration integer NOT NULL,
-    pages_visited integer NOT NULL,
-    returning_visitor boolean DEFAULT false NOT NULL,
-    referrer_name character varying,
-    referrer_url character varying,
-    matomo_visit_id integer NOT NULL,
-    matomo_last_action_time timestamp without time zone NOT NULL
+    monthly_user_hash character varying NOT NULL,
+    highest_role character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    user_id uuid
 );
+
+
+--
+-- Name: analytics_fact_sessions; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.analytics_fact_sessions AS
+ SELECT impact_tracking_sessions.id,
+    impact_tracking_sessions.monthly_user_hash,
+    (impact_tracking_sessions.created_at)::date AS dimension_date_created_id,
+    (impact_tracking_sessions.updated_at)::date AS dimension_date_updated_id,
+    impact_tracking_sessions.user_id AS dimension_user_id
+   FROM public.impact_tracking_sessions;
 
 
 --
@@ -2532,20 +2563,6 @@ CREATE TABLE public.impact_tracking_salts (
     salt character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: impact_tracking_sessions; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.impact_tracking_sessions (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    monthly_user_hash character varying NOT NULL,
-    highest_role character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    user_id uuid
 );
 
 
@@ -7495,6 +7512,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240419100508'),
 ('20240504212048'),
 ('20240508124400'),
-('20240508133950');
+('20240508133950'),
+('20240510103700'),
+('20240516113700');
 
 
