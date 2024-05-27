@@ -1076,6 +1076,7 @@
   "app.containers.IdeasNewPage.submitApiError": "Ha habido un problema al enviar el formulario. Por favor, compruebe si hay algún error y vuelva a intentarlo.",
   "app.containers.IdeasNewPage.submitNewIdea": "Enviar",
   "app.containers.IdeasNewPage.surveyNewMetaTitle1": "Añade la respuesta de la encuesta al proyecto | {orgName}",
+  "app.containers.IdeasShow.IdeaNavigationButtons.ideaIndexAriaMessage2": "Actualmente viendo el número {currentIndex} de {totalInputs} entradas",
   "app.containers.IdeasShow.MetaInformation.attachments": "Archivos adjuntos",
   "app.containers.IdeasShow.MetaInformation.byUserOnDate": "Por {userName} el {date}",
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Estado actual",
