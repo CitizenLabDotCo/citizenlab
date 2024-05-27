@@ -149,7 +149,7 @@ fr-BE:
         title: Détails
         description:
       other_text_field:
-        title: Puisque vous avez choisi « {other_option} », à quoi pensez-vous ?
+        title: Veuillez spécifier
   custom_forms:
     categories:
       main_content:
@@ -241,7 +241,7 @@ fr-BE:
       option2: 'Option 2'
     form_end_page:
       title: 'Merci pour votre participation'
-      description: "Veuillez soumettre vos réponses en cliquant sur « Soumettre » ci-dessous."
+      description: "Veuillez soumettre vos réponses en cliquant sur « Envoyer » ci-dessous."
     pdf_export:
       personal_data: 'Données personnelles'
       personal_data_explanation_ideation: "Cette contribution sera soumise sur la plateforme de participation en ligne de %{organizationName}. Si vous souhaitez que votre nom soit affiché en tant qu'auteur et recevoir par e-mail des mises à jours concernant votre soumission, veuillez remplir les champs suivants et nous créerons un compte pour vous. Votre adresse e-mail ne sera pas publique et ne sera uniquement utilisée par %{organizationName}. Si vous préférez rester anonyme ou ne souhaitez pas que nous utilisions vos données personnelles à cette fin, vous pouvez laisser ces champs vides."
