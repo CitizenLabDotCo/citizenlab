@@ -63,7 +63,7 @@ module ImpactTracking
         visitor_hash = SessionHashService.new.generate_for_visitor(request.remote_ip, request.user_agent)
         @session = Session.where(monthly_user_hash: visitor_hash).order(created_at: :desc)&.first
 
-        # If the visitor has no session, create one. e.g. user logs out and in again, without refreshing the page.
+        # If the visitor has no session, return a new one. e.g. user logs out and in again, without refreshing the page.
         @session = Session.new if @session.nil?
       end
 
