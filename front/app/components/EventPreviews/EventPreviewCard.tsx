@@ -16,9 +16,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import DayAndMonth from 'components/EventCard/DateBlocks/DayAndMonth';
 
-import clHistory from 'utils/cl-router/history';
-
-const EventCard = styled(Box)`
+const Container = styled(Box)`
   ${defaultCardStyle};
   flex-shrink: 0;
 
@@ -59,14 +57,13 @@ type EventPreviewCardProps = {
 };
 
 const EventPreviewCard = ({ event }: EventPreviewCardProps) => {
-  const isMobile = useBreakpoint('phone');
-  const isTablet = useBreakpoint('tablet');
-
   const localize = useLocalize();
+  const isMobile = useBreakpoint('phone');
+
   const theme = useTheme();
 
   return (
-    <EventCard
+    <Container
       display="flex"
       flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
       borderLeft={
@@ -75,14 +72,8 @@ const EventPreviewCard = ({ event }: EventPreviewCardProps) => {
       borderRight={
         theme.isRtl ? `4px solid ${theme.colors.tenantPrimary}` : undefined
       }
-      w={isTablet ? (isMobile ? '100%' : '300px') : '340px'}
-      role="button"
       h="58px"
-      onClick={() => {
-        clHistory.push(`/events/${event.id}`, { scrollToTop: true });
-      }}
       py="4px"
-      flexShrink={0}
     >
       <Box display="flex" flexDirection="column" alignItems="stretch">
         <EventDate mr={theme.isRtl ? '8px' : '0px'}>
@@ -103,7 +94,7 @@ const EventPreviewCard = ({ event }: EventPreviewCardProps) => {
       >
         {localize(event.attributes.title_multiloc)}
       </StyledEventTitle>
-    </EventCard>
+    </Container>
   );
 };
 

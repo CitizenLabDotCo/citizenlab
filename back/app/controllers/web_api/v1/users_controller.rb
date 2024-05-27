@@ -110,10 +110,10 @@ class WebApi::V1::UsersController < ApplicationController
 
   def create
     @user = User.new
-    @user.assign_attributes(permitted_attributes(@user))
-    authorize @user
-
-    if @user.save(context: :form_submission)
+    saved = UserService.upsert_in_web_api(@user, permitted_attributes(@user)) do
+      authorize @user
+    end
+    if saved
       SideFxUserService.new.after_create(@user, current_user)
       render json: WebApi::V1::UserSerializer.new(
         @user,
@@ -131,11 +131,12 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def update
-    @user.assign_attributes(update_params)
-    remove_image_if_requested!(@user, update_params, :avatar)
-    authorize(@user)
+    saved = UserService.upsert_in_web_api(@user, update_params) do
+      remove_image_if_requested!(@user, update_params, :avatar)
+      authorize(@user)
+    end
 
-    if @user.save(context: :form_submission)
+    if saved
       SideFxUserService.new.after_update(@user, current_user)
       render json: WebApi::V1::UserSerializer.new(
         @user,
@@ -245,6 +246,7 @@ class WebApi::V1::UsersController < ApplicationController
     return false unless errors.any? { |hash| hash[:error] == :taken }
 
     existing_user = User.find_by(email: @user.email)
+    return false unless existing_user
     return false unless existing_user.no_password?
 
     # If any attributes try to change then ignore this found user

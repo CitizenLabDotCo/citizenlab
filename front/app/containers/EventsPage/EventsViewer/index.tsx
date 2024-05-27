@@ -206,7 +206,7 @@ const EventsViewer = ({
       {isLoading && <EventsSpinner />}
       {!isNilOrError(events) && (
         <>
-          <Box display="flex" flexWrap="wrap" gap="16px">
+          <Box display="flex" flexWrap="wrap" gap="16px" as="ul" px="0px">
             {events.data.length > 0 &&
               events.data.map((event, i) => (
                 <StyledEventCard

@@ -44,9 +44,6 @@ class OmniauthCallbackController < ApplicationController
   private
 
   def find_existing_user(authver_method, auth, user_attrs, verify:)
-    @identity = Identity.find_or_build_with_omniauth(auth, authver_method)
-    return @identity.user if @identity.user
-
     user = User.find_by_cimail(user_attrs.fetch(:email)) if user_attrs.key?(:email) # some providers (emailless) don't return email
     return user if user
 
@@ -63,7 +60,8 @@ class OmniauthCallbackController < ApplicationController
     provider = auth['provider']
     user_attrs = authver_method.profile_to_user_attrs(auth)
 
-    @user = find_existing_user(authver_method, auth, user_attrs, verify: verify)
+    @identity = Identity.find_or_build_with_omniauth(auth, authver_method)
+    @user = @identity.user || find_existing_user(authver_method, auth, user_attrs, verify: verify)
     @user = authentication_service.prevent_user_account_hijacking @user
 
     # https://github.com/CitizenLabDotCo/citizenlab/pull/3055#discussion_r1019061643
@@ -90,7 +88,7 @@ class OmniauthCallbackController < ApplicationController
           failure
           return
         end
-        @user.assign_attributes(user_attrs.merge(invite_status: 'accepted'))
+        UserService.assign_params_in_accept_invite(@user, user_attrs)
         ActiveRecord::Base.transaction do
           SideFxInviteService.new.before_accept @invite
           @user.save!
@@ -117,8 +115,9 @@ class OmniauthCallbackController < ApplicationController
       handle_sso_verification(auth, @user) if verify
 
     else # New user
-      @user = User.new(user_attrs)
-      @user.locale = selected_locale(omniauth_params) if selected_locale(omniauth_params)
+      confirm = authver_method.email_confirmed?(auth)
+      locale = selected_locale(omniauth_params)
+      @user = UserService.build_in_sso(user_attrs, confirm, locale)
 
       @user.identities << @identity
       begin
@@ -186,13 +185,10 @@ class OmniauthCallbackController < ApplicationController
   # @param [User] user
   def update_user!(auth, user, authver_method)
     attrs = authver_method.updateable_user_attrs
-    return if attrs.empty?
-
-    update_hash = authver_method.profile_to_user_attrs(auth).slice(*attrs).compact
-    update_hash.delete(:remote_avatar_url) if user.avatar.present? # don't overwrite avatar if already present
-    user.confirm! if authver_method.email_confirmed?(auth) # confirm user email if not already confirmed
-
-    user.update_merging_custom_fields!(update_hash)
+    user_params = authver_method.profile_to_user_attrs(auth).slice(*attrs).compact
+    user_params.delete(:remote_avatar_url) if user.avatar.present? # don't overwrite avatar if already present
+    confirm_user = authver_method.email_confirmed?(auth)
+    UserService.update_in_sso!(user, user_params, confirm_user)
   end
 
   # Return locale if a locale can be parsed from pathname which matches an app locale

@@ -12,13 +12,14 @@ import clHistory from 'utils/cl-router/history';
 
 import EventInformation from './EventInformation';
 
-const Container = styled.div<{ clickable?: boolean }>`
+const Container = styled.li`
   ${defaultCardStyle};
   padding: 16px;
   display: flex;
   box-shadow: none;
   border: solid 1px #ccc;
   border-radius: 6px;
+  position: relative;
 
   &:hover {
     ${defaultCardHoverStyle};
@@ -45,8 +46,6 @@ const EventCard = memo<Props>((props) => {
     <Container
       className={className || ''}
       id={id}
-      role="button"
-      onClick={navigateToEventPage}
       onKeyDown={(e) => {
         // We want this to trigger when the user interacts with the card itself, not its children. The buttons inside the card for example should not trigger this.
         if (e.target === e.currentTarget && e.key === 'Enter') {
@@ -55,11 +54,7 @@ const EventCard = memo<Props>((props) => {
       }}
       tabIndex={0}
     >
-      <EventInformation
-        event={event}
-        goToEvent={navigateToEventPage}
-        {...otherProps}
-      />
+      <EventInformation event={event} {...otherProps} />
     </Container>
   );
 });
