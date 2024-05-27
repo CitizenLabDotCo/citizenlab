@@ -26,6 +26,6 @@ ProjectsWidget.craft = {
   },
 };
 
-export const projectsTitle = messages.projects;
+export const projectsTitle = messages.publishedProjects;
 
 export default ProjectsWidget;
