@@ -9,7 +9,7 @@ module ReportBuilder
 
       project_periods = Phase
         .group(:project_id)
-        .select("project_id, min(start_at) as start_at, max(coalesce(end_at, '#{far_future_date}'::DATE)) as end_at")
+        .select("project_id, min(start_at) as start_at, max(start_at) as last_phase_start_at, max(coalesce(end_at, '#{far_future_date}'::DATE)) as end_at")
         .to_a
 
       non_overlapping_project_period_ids = project_periods
@@ -36,6 +36,7 @@ module ReportBuilder
 
         hash[period.project_id] = {
           start_at: period.start_at,
+          last_phase_start_at: period.last_phase_start_at,
           end_at: period.end_at == far_future_date ? nil : period.end_at
         }
       end
