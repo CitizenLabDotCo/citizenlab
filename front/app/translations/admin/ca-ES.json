@@ -1,6 +1,5 @@
 {
   "UI.FormComponents.required": "requerit",
-  "app.Admin.Moderation.feed": "Alimentació",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.components.Admin.ImageCropper.info": "This image is always cropped to a certain ratio to make sure all crucial aspects are on display at all times. The {link} for this image type is {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "recommended ratio",

@@ -240,6 +240,7 @@ export interface IAppConfigurationSettings {
   user_session_recording?: AppConfigurationFeature;
   user_avatars?: AppConfigurationFeature;
   multi_language_platform?: AppConfigurationFeature;
+  management_feed?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
