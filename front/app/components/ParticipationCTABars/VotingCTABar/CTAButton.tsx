@@ -14,6 +14,7 @@ import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { scrollToElement } from 'utils/scroll';
@@ -131,7 +132,9 @@ const CTAButton = ({ phase, project }: Props) => {
       placement="bottom"
       content={disabledExplanation}
     >
-      <Box width="100%">
+      {/* We need to add a tabIndex when the explanation is shown to
+      make sure this is focusable when disabled to read the explanation */}
+      <Box width="100%" tabIndex={disabledExplanation ? 0 : -1}>
         <StyledButton
           icon="vote-ballot"
           buttonStyle="secondary"
@@ -147,9 +150,15 @@ const CTAButton = ({ phase, project }: Props) => {
           disabled={!!disabledExplanation}
           processing={processing}
           className={disabledExplanation ? '' : 'pulse'}
+          ariaDescribedby="disabled-explanation"
         >
           <FormattedMessage {...messages.submit} />
         </StyledButton>
+        {disabledExplanation && (
+          <ScreenReaderOnly id="disabled-explanation">
+            {disabledExplanation}
+          </ScreenReaderOnly>
+        )}
       </Box>
     </Tippy>
   );
