@@ -149,7 +149,7 @@ lv:
         title: Sīkāka informācija
         description:
       other_text_field:
-        title: Ja esat izvēlējies "{other_option}", par ko jūs domājat?
+        title: If you picked '{other_option}', what are you thinking of?
   custom_forms:
     categories:
       main_content:
