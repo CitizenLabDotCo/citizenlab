@@ -6,10 +6,12 @@ import {
   Box,
   Button,
   fontSizes,
+  Text,
 } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
 
 import { ManagementFeedData } from 'api/management_feed/types';
+import useProjectById from 'api/projects/useProjectById';
 import useUserById from 'api/users/useUserById';
 
 import useLocalize from 'hooks/useLocalize';
@@ -17,7 +19,7 @@ import useLocalize from 'hooks/useLocalize';
 import Avatar from 'components/Avatar';
 import Modal from 'components/UI/Modal';
 
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { getFullName } from 'utils/textUtils';
 
@@ -29,6 +31,7 @@ const ManagementFeedRow = ({ item }: { item: ManagementFeedData }) => {
   const localize = useLocalize();
   const { formatMessage, formatDate, formatTime } = useIntl();
   const { data: user } = useUserById(item.relationships.user.data?.id);
+  const { data: project } = useProjectById(item.attributes.project_id);
 
   const getActionTranslation = () => {
     switch (item.attributes.action) {
@@ -98,7 +101,23 @@ const ManagementFeedRow = ({ item }: { item: ManagementFeedData }) => {
               localize(item.attributes.item_title_multiloc)
             )}
             <br />
-            {getItemTranslation()}
+            <Text fontSize="s" m="0px">
+              {getItemTranslation()}{' '}
+              {(item.attributes.item_type === 'idea' ||
+                item.attributes.item_type === 'phase') &&
+                project && (
+                  <FormattedMessage
+                    {...messages.in}
+                    values={{
+                      project: (
+                        <Link to={`/admin/projects/${project.data.id}`}>
+                          {localize(project.data.attributes.title_multiloc)}
+                        </Link>
+                      ),
+                    }}
+                  />
+                )}
+            </Text>
           </Box>
         </Td>
         <Td>

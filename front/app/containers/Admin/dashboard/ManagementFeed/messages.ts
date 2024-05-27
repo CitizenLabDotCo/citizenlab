@@ -78,4 +78,8 @@ export default defineMessages({
     defaultMessage:
       'Experimental feature: A minimal list of selected actions performed by admins or managers in the last 30 days. Not all actions are included.',
   },
+  in: {
+    id: 'app.Admin.ManagementFeed.in',
+    defaultMessage: 'in project {project}',
+  },
 });
