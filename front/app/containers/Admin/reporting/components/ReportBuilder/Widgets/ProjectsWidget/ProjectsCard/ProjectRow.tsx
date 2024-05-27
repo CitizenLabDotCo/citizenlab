@@ -6,8 +6,10 @@ import {
   Image,
   Text,
   stylingConsts,
+  Icon,
   colors,
 } from '@citizenlab/cl2-component-library';
+import moment from 'moment';
 
 import { Period } from 'api/graph_data_units/responseTypes/ProjectsWidget';
 import { IProjectImageData } from 'api/project_images/types';
@@ -15,26 +17,50 @@ import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { useIntl } from 'utils/cl-intl';
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { toFullMonth } from 'utils/dateUtils';
 
 import messages from '../messages';
+
+import { deriveProjectStatus, ProjectStatus } from './utils';
 
 interface Props {
   project: IProjectData;
   projectImage?: IProjectImageData;
   period: Period;
   participants: number;
-  first?: boolean;
 }
 
-const ProjectRow = ({
-  project,
-  projectImage,
-  period,
-  participants,
-  first,
-}: Props) => {
+const MESSAGES: Record<ProjectStatus, MessageDescriptor> = {
+  finished: messages.finished,
+  active: messages.active,
+  stale: messages.stale,
+  planned: messages.planned,
+};
+
+const LABEL_STYLE: Record<
+  ProjectStatus,
+  { background: string; color: string }
+> = {
+  finished: {
+    background: colors.teal100,
+    color: colors.teal500,
+  },
+  active: {
+    background: colors.green100,
+    color: colors.green500,
+  },
+  stale: {
+    background: colors.grey100,
+    color: colors.coolGrey600,
+  },
+  planned: {
+    background: colors.orange100,
+    color: colors.orange500,
+  },
+};
+
+const ProjectRow = ({ project, projectImage, period, participants }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
@@ -43,22 +69,19 @@ const ProjectRow = ({
     ? toFullMonth(period.end_at, 'month')
     : formatMessage(messages.noEndDate);
 
-  const { title_multiloc, ideas_count, comments_count } = project.attributes;
+  const { title_multiloc } = project.attributes;
+
+  const status = deriveProjectStatus(period, moment());
+  const labelStyle = LABEL_STYLE[status];
 
   return (
-    <Box
-      display="flex"
-      flexDirection="row"
-      pt={first ? '0' : '28px'}
-      pb="28px"
-      borderBottom={`1px solid ${colors.divider}`}
-    >
+    <Box display="flex" flexDirection="row" pb="16px">
       {projectImage?.attributes.versions.large && (
         <Image
           src={projectImage?.attributes.versions.large}
           alt={''}
-          w="100px"
-          h="100px"
+          w="52px"
+          h="52px"
           objectFit="cover"
           borderRadius={stylingConsts.borderRadius}
           mr="20px"
@@ -68,16 +91,39 @@ const ProjectRow = ({
         <Title variant="h5" m="0">
           {localize(title_multiloc)}
         </Title>
-        <Text fontSize="s">
-          {startMonth} - {endMonth}
-        </Text>
-        <Text fontSize="s">
-          {formatMessage(messages.xParticipants, { participants })}
-          {' • '}
-          {formatMessage(messages.xIdeas, { ideas: ideas_count })}
-          {' • '}
-          {formatMessage(messages.xComments, { comments: comments_count })}
-        </Text>
+        <Box display="flex" mt="8px" alignItems="center">
+          <Box
+            background={labelStyle.background}
+            mr="6px"
+            pt="1px"
+            pb="0px"
+            px="8px"
+            borderRadius="3px"
+            style={{
+              color: labelStyle.color,
+              fontWeight: '700',
+              fontSize: '12px',
+            }}
+          >
+            <Icon
+              name="dot"
+              width="14px"
+              transform="translate(0,-1)"
+              fill={labelStyle.color}
+              mr="2px"
+            />
+            {formatMessage(MESSAGES[status]).toUpperCase()}
+          </Box>
+          •
+          <Box mx="6px">
+            <Icon name="user" width="18px" transform="translate(0,-2)" />
+            {participants}
+          </Box>
+          •
+          <Text ml="6px" fontSize="s" m="0">
+            {startMonth} - {endMonth}
+          </Text>
+        </Box>
       </Box>
     </Box>
   );

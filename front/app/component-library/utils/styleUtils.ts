@@ -93,10 +93,16 @@ export const themeColors = {
   green500: '#04884C', // formerly clGreen
   green400: '#32B67A',
   green100: '#e4f7ef', // formerly clGreenSuccessBackground
+
+  /**
+   * Orange
+   */
+  orange100: '#FFECE6',
+  orange500: '#FF672F', // formerly adminOrangeIcons
+
   /**
    * Other
    */
-  orange: '#FF672F', // formerly adminOrangeIcons
   brown: '#8C680D', // formerly draftYellow
 };
 

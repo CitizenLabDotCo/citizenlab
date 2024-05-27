@@ -21,7 +21,7 @@ const ProjectsCard = ({ startAt, endAt }: Props) => {
 
   return (
     <Box>
-      {publishedProjects?.map((project, i) => {
+      {publishedProjects?.map((project) => {
         const imageId = project.relationships.project_images?.data[0]?.id;
         const projectImage = imageId
           ? response?.data.attributes.project_images[imageId]
@@ -38,7 +38,6 @@ const ProjectsCard = ({ startAt, endAt }: Props) => {
             projectImage={projectImage}
             period={period}
             participants={participants}
-            first={i === 0}
           />
         );
       })}

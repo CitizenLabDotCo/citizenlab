@@ -2,7 +2,7 @@ import moment, { Moment } from 'moment';
 
 import { Period } from 'api/graph_data_units/responseTypes/ProjectsWidget';
 
-export const deriveProjectLabel = (period: Period, now: Moment) => {
+export const deriveProjectStatus = (period: Period, now: Moment) => {
   const startAt = moment(period.start_at);
   const lastPhaseStartAt = moment(period.last_phase_start_at);
   const endAt = period.end_at ? moment(period.end_at) : null;
@@ -16,5 +16,7 @@ export const deriveProjectLabel = (period: Period, now: Moment) => {
     return daysSinceLastPhaseStart < 30 ? 'active' : 'stale';
   }
 
-  return now.isAfter(endAt) ? 'completed' : 'active';
+  return now.isAfter(endAt) ? 'finished' : 'active';
 };
+
+export type ProjectStatus = ReturnType<typeof deriveProjectStatus>;

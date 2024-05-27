@@ -1,8 +1,8 @@
 import moment from 'moment';
 
-import { deriveProjectLabel } from './utils';
+import { deriveProjectStatus } from './utils';
 
-describe('deriveProjectLabel', () => {
+describe('deriveProjectStatus', () => {
   it('returns "planned" if startAt is after now', () => {
     const period = {
       start_at: '2021-01-01',
@@ -12,7 +12,7 @@ describe('deriveProjectLabel', () => {
 
     const now = moment('2020-01-01');
 
-    expect(deriveProjectLabel(period, now)).toBe('planned');
+    expect(deriveProjectStatus(period, now)).toBe('planned');
   });
 
   it('returns "stale" if no end_at and more than 30 days after last phase start', () => {
@@ -24,7 +24,7 @@ describe('deriveProjectLabel', () => {
 
     const now = moment('2021-07-01');
 
-    expect(deriveProjectLabel(period, now)).toBe('stale');
+    expect(deriveProjectStatus(period, now)).toBe('stale');
   });
 
   it('returns "completed" if endAt is before now', () => {
@@ -36,7 +36,7 @@ describe('deriveProjectLabel', () => {
 
     const now = moment('2021-07-01');
 
-    expect(deriveProjectLabel(period, now)).toBe('completed');
+    expect(deriveProjectStatus(period, now)).toBe('completed');
   });
 
   it('returns "active" if endAt is after now', () => {
@@ -48,6 +48,6 @@ describe('deriveProjectLabel', () => {
 
     const now = moment('2021-07-01');
 
-    expect(deriveProjectLabel(period, now)).toBe('active');
+    expect(deriveProjectStatus(period, now)).toBe('active');
   });
 });
