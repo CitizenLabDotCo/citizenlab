@@ -3,8 +3,8 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   // Defaults
   votingNotSignedIn: {
-    id: 'app.utils.participationMethodConfig.voting.votingNotSignedIn',
-    defaultMessage: 'You must login or register to vote.',
+    id: 'app.utils.participationMethodConfig.voting.votingNotSignedIn2',
+    defaultMessage: 'You must log in or register to vote.',
   },
   votingNotPermitted: {
     id: 'app.utils.participationMethodConfig.voting.votingNotPermitted',
@@ -19,8 +19,8 @@ export default defineMessages({
     defaultMessage: 'You must verify your account before you can vote.',
   },
   budgetingNotSignedIn: {
-    id: 'app.utils.votingMethodUtils.budgetingNotSignedIn',
-    defaultMessage: 'You must login or register to assign budgets.',
+    id: 'app.utils.votingMethodUtils.budgetingNotSignedIn2',
+    defaultMessage: 'You must log in or register to assign budgets.',
   },
   budgetingNotPermitted: {
     id: 'app.utils.votingMethodUtils.budgetingNotPermitted',
