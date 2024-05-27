@@ -98,6 +98,13 @@ type Props = {
   BoxPaddingProps &
   BoxMarginProps;
 
+/*
+  CheckboxWithLabel should be used for most cases. Ideally this is only used inside generic components,
+  such as CheckboxWithLabel.
+
+  Can also be used for custom use cases,
+  but don't forget to handle the label separately in that case to comply with WCAG.
+*/
 const Checkbox = ({
   id,
   dataTestId,
