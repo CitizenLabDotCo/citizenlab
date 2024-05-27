@@ -1076,6 +1076,7 @@
   "app.containers.IdeasNewPage.submitApiError": "Det oppstod et problem med å sende inn skjemaet. Kontroller om det er feil, og prøv på nytt.",
   "app.containers.IdeasNewPage.submitNewIdea": "Send inn",
   "app.containers.IdeasNewPage.surveyNewMetaTitle1": "Legg til undersøkelsessvar til prosjekt | {orgName}",
+  "app.containers.IdeasShow.IdeaNavigationButtons.ideaIndexAriaMessage2": "Viser for øyeblikket nummer {currentIndex} av {totalInputs} innganger",
   "app.containers.IdeasShow.MetaInformation.attachments": "Vedlegg",
   "app.containers.IdeasShow.MetaInformation.byUserOnDate": "{userName} den {date}",
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Nåværende status",
