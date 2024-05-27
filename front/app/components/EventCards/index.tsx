@@ -7,11 +7,7 @@ import { IEvents } from 'api/events/types';
 
 import EventCard from 'components/EventCards/EventCard';
 
-interface IStyledEventCard {
-  last: boolean;
-}
-
-const StyledEventCard = styled(EventCard)<IStyledEventCard>`
+const StyledEventCard = styled(EventCard)`
   flex: 0 0 32.3%;
 
   ${media.tablet`
@@ -31,13 +27,8 @@ const EventCards = ({ events }: Props) => {
   return (
     <Box display="flex" flexWrap="wrap" gap="16px" as="ul" px="0px">
       {events.data.length > 0 &&
-        events.data.map((event, i) => (
-          <StyledEventCard
-            id={event.id}
-            event={event}
-            last={events.data.length - 1 === i}
-            key={event.id}
-          />
+        events.data.map((event) => (
+          <StyledEventCard id={event.id} event={event} key={event.id} />
         ))}
     </Box>
   );
