@@ -1076,6 +1076,7 @@
   "app.containers.IdeasNewPage.submitApiError": "Došlo je do problema prilikom slanja obrasca. Molimo vas da provjerite pogreške i pokušate ponovo.",
   "app.containers.IdeasNewPage.submitNewIdea": "Pošalji",
   "app.containers.IdeasNewPage.surveyNewMetaTitle1": "Dodajte odgovor na anketu projektu | {orgName}",
+  "app.containers.IdeasShow.IdeaNavigationButtons.ideaIndexAriaMessage2": "Trenutno gledate broj {currentIndex} od {totalInputs} unosa",
   "app.containers.IdeasShow.MetaInformation.attachments": "Privici",
   "app.containers.IdeasShow.MetaInformation.byUserOnDate": "Od {userName} dana {date}",
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Trenutačni status",
