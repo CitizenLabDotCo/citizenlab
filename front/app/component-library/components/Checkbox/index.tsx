@@ -101,8 +101,7 @@ type Props = {
 /*
   CheckboxWithLabel should be used for most cases. Ideally this is only used inside generic components, such as CheckboxWithLabel.
 
-  Can also be used for custom use cases, such as in ImageMultichoiceControl
-  but don't forget to handle the label separately in that case to comply with WCAG.
+  Can also be used for custom use cases, like we do in ImageMultichoiceControl where the image is part of the label (and the layout is a bit different). Make sure to handle the label separately in that case to comply with WCAG.
 */
 const Checkbox = ({
   id,
