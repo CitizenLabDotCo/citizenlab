@@ -2,7 +2,30 @@ import { rest } from 'msw';
 
 import { API_PATH } from 'containers/App/constants';
 
-import { IIdeaData } from '../types';
+import { IIdeaData, IMiniIdeaData } from '../types';
+
+export const miniIdeaData: IMiniIdeaData[] = [
+  {
+    id: '2e902e6f-59cd-4864-83f9-96e0f65f81aa',
+    type: 'idea_mini',
+    attributes: {
+      title_multiloc: {
+        en: 'Idea from the current ideation phase 4',
+      },
+      slug: 'idea-from-the-current-ideation-phase-4',
+    },
+  },
+  {
+    id: '214a2be1-1b16-4900-8f8c-3550e401572b',
+    type: 'idea_mini',
+    attributes: {
+      title_multiloc: {
+        en: 'Idea from the current ideation phase 3',
+      },
+      slug: 'idea-from-the-current-ideation-phase-3',
+    },
+  },
+];
 
 export const ideaData: IIdeaData[] = [
   {
@@ -232,6 +255,7 @@ export const links = {
 };
 
 export const apiPathIdeas = `${API_PATH}/ideas`;
+export const apiPathMiniIdeas = `${API_PATH}/ideas/mini`;
 export const apiPathById = `${API_PATH}/ideas/:ideaId`;
 export const apiPathBySlug = `${API_PATH}/ideas/by_slug/:slug`;
 
@@ -355,6 +379,9 @@ const votingIdea = {
 const endpoints = {
   'GET ideas': rest.get(apiPathIdeas, (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json({ data: ideaData }));
+  }),
+  'GET ideas/mini': rest.get(apiPathMiniIdeas, (_req, res, ctx) => {
+    return res(ctx.status(200), ctx.json({ data: miniIdeaData }));
   }),
   'GET ideas/:id': rest.get(apiPathById, (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json({ data: ideaData[0] }));

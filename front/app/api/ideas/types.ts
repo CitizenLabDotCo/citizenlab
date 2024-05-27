@@ -70,6 +70,15 @@ type ReactingIdeaActionDescriptor =
       cancelling_enabled: boolean;
     };
 
+export interface IMiniIdeaData {
+  id: string;
+  type: string;
+  attributes: {
+    title_multiloc: Multiloc;
+    slug: string;
+  };
+}
+
 export interface IIdeaData {
   id: string;
   type: string;
@@ -201,6 +210,10 @@ export interface IIdeaUpdate {
 export interface IIdeas {
   data: IIdeaData[];
   links: ILinks;
+}
+
+export interface IMiniIdeas {
+  data: IMiniIdeaData[];
 }
 
 export interface IIdea {
