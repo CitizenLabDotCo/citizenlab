@@ -40,7 +40,9 @@ const EventCardImage = styled(Image)`
 `;
 
 const PrimaryLink = styled(Link)`
-  // For reference https://kittygiraudel.com/2022/04/02/accessible-cards/
+  // For reference: 
+  // https://kittygiraudel.com/2022/04/02/accessible-cards/ 
+  // https://inclusive-components.design/cards/
   ::before {
     // Use a pseudo-element to expand the hitbox of the link over the whole card.
     content: ''; /* 1 */
