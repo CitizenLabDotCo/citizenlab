@@ -78,12 +78,7 @@ module Analysis
 
     def prompt(project, inputs_text)
       project_title = MultilocService.new.t(project.title_multiloc)
-      LLM::Prompt.new.fetch('summarization', project_title: project_title, inputs_text: inputs_text, locale: monolingual_locale)
-    end
-
-    def monolingual_locale
-      config_locales = AppConfiguration.instance.settings('core', 'locales')
-      config_locales.size == 1 ? config_locales.first : nil
+      LLM::Prompt.new.fetch('summarization', project_title: project_title, inputs_text: inputs_text, locale: Locale.monolingual(AppConfiguration.instance))
     end
   end
 end
