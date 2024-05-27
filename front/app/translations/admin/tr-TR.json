@@ -1,6 +1,5 @@
 {
   "UI.FormComponents.required": "gerekli",
-  "app.Admin.Moderation.feed": "Besleme",
   "app.components.Admin.Campaigns.campaignDeletionConfirmation": "Emin misin?",
   "app.components.Admin.Campaigns.clicked": "Tıklandı",
   "app.components.Admin.Campaigns.deleteCampaignButton": "Kampanyayı sil",

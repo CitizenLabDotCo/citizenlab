@@ -1,6 +1,5 @@
 {
   "UI.FormComponents.required": "vereist",
-  "app.Admin.Moderation.feed": "Activiteit",
   "app.components.Admin.Campaigns.campaignDeletionConfirmation": "Zeker weten?",
   "app.components.Admin.Campaigns.clicked": "Geklikt",
   "app.components.Admin.Campaigns.deleteCampaignButton": "Campagne verwijderen",

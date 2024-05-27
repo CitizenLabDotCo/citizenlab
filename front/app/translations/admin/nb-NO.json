@@ -1,6 +1,5 @@
 {
   "UI.FormComponents.required": "påkrevd",
-  "app.Admin.Moderation.feed": "Mate",
   "app.components.Admin.Campaigns.campaignDeletionConfirmation": "Er du sikker?",
   "app.components.Admin.Campaigns.clicked": "Klikket",
   "app.components.Admin.Campaigns.deleteCampaignButton": "Slett kampanje",

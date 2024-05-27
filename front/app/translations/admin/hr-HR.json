@@ -1,6 +1,5 @@
 {
   "UI.FormComponents.required": "potrebno",
-  "app.Admin.Moderation.feed": "hraniti se",
   "app.components.Admin.Campaigns.campaignDeletionConfirmation": "Jesi li siguran?",
   "app.components.Admin.Campaigns.clicked": "Kliknuo",
   "app.components.Admin.Campaigns.deleteCampaignButton": "Izbriši kampanju",

@@ -1,6 +1,5 @@
 {
   "UI.FormComponents.required": "obligatoire",
-  "app.Admin.Moderation.feed": "Flux",
   "app.components.Admin.Campaigns.campaignDeletionConfirmation": "Êtes-vous sûr(e) ?",
   "app.components.Admin.Campaigns.clicked": "Cliqué",
   "app.components.Admin.Campaigns.deleteCampaignButton": "Supprimer la campagne",

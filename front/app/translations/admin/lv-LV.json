@@ -1,6 +1,5 @@
 {
   "UI.FormComponents.required": "nepieciešams",
-  "app.Admin.Moderation.feed": "Laika josla",
   "app.components.Admin.Campaigns.campaignDeletionConfirmation": "Vai esat pārliecināts?",
   "app.components.Admin.Campaigns.clicked": "Noklikšķiniet uz",
   "app.components.Admin.Campaigns.deleteCampaignButton": "Kampaņas dzēšana",

@@ -1,6 +1,5 @@
 {
   "UI.FormComponents.required": "edellytetään",
-  "app.Admin.Moderation.feed": "Syötä",
   "app.components.Admin.Campaigns.campaignDeletionConfirmation": "Oletko varma?",
   "app.components.Admin.Campaigns.clicked": "Napsautettu",
   "app.components.Admin.Campaigns.deleteCampaignButton": "Poista kampanja",
