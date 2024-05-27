@@ -9,6 +9,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
+import { Period } from 'api/graph_data_units/responseTypes/ProjectsWidget';
 import { IProjectImageData } from 'api/project_images/types';
 import { IProjectData } from 'api/projects/types';
 
@@ -22,7 +23,7 @@ import messages from '../messages';
 interface Props {
   project: IProjectData;
   projectImage?: IProjectImageData;
-  period: { start_at: string; end_at: string | null };
+  period: Period;
   participants: number;
   first?: boolean;
 }

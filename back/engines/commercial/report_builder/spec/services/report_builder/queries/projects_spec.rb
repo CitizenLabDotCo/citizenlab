@@ -12,15 +12,15 @@ RSpec.describe ReportBuilder::Queries::Projects do
       create(:phase, project: past_project, start_at: Date.new(2020, 2, 1), end_at: Date.new(2020, 3, 1))
 
       # 2021
-      @project1 = create(:project, title_multiloc: { 'en' => 'Project 1' })
+      @project1 = create(:project)
       create(:phase, project: @project1, start_at: Date.new(2021, 2, 1), end_at: Date.new(2021, 3, 1))
 
-      @project2 = create(:project, title_multiloc: { 'en' => 'Project 2' })
+      @project2 = create(:project)
       create(:phase, project: @project2, start_at: Date.new(2021, 2, 1), end_at: Date.new(2021, 3, 1))
       create(:phase, project: @project2, start_at: Date.new(2021, 3, 2), end_at: nil)
 
       # 2022
-      @project3 = create(:project, title_multiloc: { 'en' => 'Project 3' })
+      @project3 = create(:project)
       create(:phase, project: @project3, start_at: Date.new(2022, 2, 1), end_at: nil)
 
       # Empty project

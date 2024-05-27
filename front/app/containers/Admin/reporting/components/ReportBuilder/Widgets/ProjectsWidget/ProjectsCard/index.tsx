@@ -11,12 +11,20 @@ import ProjectRow from './ProjectRow';
 const ProjectsCard = ({ startAt, endAt }: Props) => {
   const { data: response } = useProjects({ start_at: startAt, end_at: endAt });
 
+  const publishedProjects = response?.data.attributes.projects.filter(
+    (project) => {
+      return project.attributes.publication_status === 'published';
+    }
+  );
+
+  if (!publishedProjects || !response) return null;
+
   return (
     <Box>
-      {response?.data.attributes.projects.map((project, i) => {
+      {publishedProjects?.map((project, i) => {
         const imageId = project.relationships.project_images?.data[0]?.id;
         const projectImage = imageId
-          ? response.data.attributes.project_images[imageId]
+          ? response?.data.attributes.project_images[imageId]
           : undefined;
 
         const period = response.data.attributes.periods[project.id];

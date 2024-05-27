@@ -22,7 +22,7 @@ module ReportBuilder
         .where(id: projects_that_have_phases_ids)
         .where.not(id: non_overlapping_project_period_ids)
 
-      overlapping_project_ids = overlapping_projects.pluck(:id)
+      overlapping_project_ids = overlapping_projects.select(:id)
 
       project_images_hash = ProjectImage
         .where(project_id: overlapping_project_ids)
