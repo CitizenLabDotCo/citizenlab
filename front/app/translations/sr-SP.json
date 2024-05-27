@@ -450,7 +450,7 @@
   "app.components.ReactionControl.reactingDisabledPhaseOver": "У овој фази више није могуће реаговати",
   "app.components.ReactionControl.reactingDisabledProjectInactive": "Више не можете реаговати на идеје у {projectName}",
   "app.components.ReactionControl.reactingNotEnabled": "Реаговање тренутно није омогућено за овај пројекат",
-  "app.components.ReactionControl.reactingNotPermitted": "Реаговање је омогућено само за одређене групе",
+  "app.components.ReactionControl.reactingNotPermitted": "Гласање у овом пројекту је завршено",
   "app.components.ReactionControl.reactingNotSignedIn": "Пријавите се да бисте реаговали.",
   "app.components.ReactionControl.reactingPossibleLater": "Реаговање ће почети {enabledFromDate}",
   "app.components.ReactionControl.reactingVerifyToReact": "Потврдите свој идентитет да бисте реаговали.",
