@@ -26,9 +26,9 @@ module ImpactTracking
       end
 
       # PATCH /sessions/current/upgrade
-      # Called after the user has authenticated to upgrade its current visitor session, if it exists.
+      # Called after the user has authenticated to upgrade its current session
       def upgrade
-        if @session.nil? || @session.update(
+        if @session.update(
           monthly_user_hash: generate_hash,
           highest_role: current_user&.highest_role,
           user_id: current_user.id
@@ -62,6 +62,9 @@ module ImpactTracking
 
         visitor_hash = SessionHashService.new.generate_for_visitor(request.remote_ip, request.user_agent)
         @session = Session.where(monthly_user_hash: visitor_hash).order(created_at: :desc)&.first
+
+        # If the visitor has no session, create one. e.g. user logs out and in again, without refreshing the page.
+        @session = Session.new if @session.nil?
       end
 
       def side_fx_session_service
