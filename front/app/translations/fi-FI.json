@@ -1076,6 +1076,7 @@
   "app.containers.IdeasNewPage.submitApiError": "Lomakkeen lähettämisessä oli ongelma. Tarkista mahdolliset virheet ja yritä uudelleen.",
   "app.containers.IdeasNewPage.submitNewIdea": "Lähetä",
   "app.containers.IdeasNewPage.surveyNewMetaTitle1": "Lisää kyselyvastaus projektiin | {orgName}",
+  "app.containers.IdeasShow.IdeaNavigationButtons.ideaIndexAriaMessage2": "Tällä hetkellä katsotaan {currentIndex} / {totalInputs} tuloa",
   "app.containers.IdeasShow.MetaInformation.attachments": "Liitteet",
   "app.containers.IdeasShow.MetaInformation.byUserOnDate": "{userName} osoitteessa {date}",
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Nykyinen tila",
