@@ -43,29 +43,27 @@ RSpec.describe Analysis::QAndAMethod do
   end
 
   describe 'OnePassLLM q_and_a' do
-    it 'works' do
-      analysis = create(:analysis, main_custom_field: create(
+    let(:analysis) do
+      create(:analysis, main_custom_field: create(
         :custom_field,
         :for_custom_form,
         code: 'title_multiloc',
         key: 'title_multiloc'
       ))
-
-      q_and_a_task = create(
-        :q_and_a_task,
-        analysis: analysis,
-        state: 'queued',
-        question: create(:analysis_question, q_and_a_method: 'one_pass_llm', question: 'What is the most popular theme?', insight_attributes: { analysis: analysis, filters: { comments_from: 5 } })
-      )
-      question = q_and_a_task.question
-      inputs = with_options project: q_and_a_task.analysis.project do
+    end
+    let(:question) { create(:analysis_question, q_and_a_method: 'one_pass_llm', question: 'What is the most popular theme?', insight_attributes: { analysis: analysis, filters: { comments_from: 5 } }) }
+    let(:q_and_a_task) { create(:q_and_a_task, analysis: analysis, state: 'queued', question: question) }
+    let(:inputs) do
+      with_options project: analysis.project do
         [
           create(:idea, comments_count: 0),
           create(:idea, comments_count: 5),
           create(:idea, comments_count: 10)
         ]
       end
+    end
 
+    it 'works' do
       mock_llm = instance_double(Analysis::LLM::GPT4Turbo)
       plan = Analysis::QAndAMethod::OnePassLLM.new(question).generate_plan
 

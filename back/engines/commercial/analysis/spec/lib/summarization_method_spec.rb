@@ -54,7 +54,7 @@ RSpec.describe Analysis::SummarizationMethod do
     let(:summary) { create(:summary, summary: nil, summarization_method: 'one_pass_llm', insight_attributes: { analysis: analysis, filters: { comments_from: 5 } }) }
     let(:summarization_task) { create(:summarization_task, analysis: analysis, state: 'queued', summary: summary) }
     let(:inputs) do
-      with_options project: summarization_task.analysis.project do
+      with_options project: analysis.project do
         [
           create(:idea, comments_count: 0),
           create(:idea, comments_count: 5),
