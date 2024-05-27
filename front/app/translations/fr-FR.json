@@ -1076,6 +1076,7 @@
   "app.containers.IdeasNewPage.submitApiError": "Un problème est survenu lors de la soumission du formulaire. Veuillez vérifier s'il y a des erreurs et réessayer.",
   "app.containers.IdeasNewPage.submitNewIdea": "Envoyer",
   "app.containers.IdeasNewPage.surveyNewMetaTitle1": "Répondre à l'enquête | {orgName}",
+  "app.containers.IdeasShow.IdeaNavigationButtons.ideaIndexAriaMessage2": "Vous visualisez actuellement le numéro {currentIndex} sur {totalInputs} entrées",
   "app.containers.IdeasShow.MetaInformation.attachments": "Pièces jointes",
   "app.containers.IdeasShow.MetaInformation.byUserOnDate": "{userName}, le {date}",
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Statut actuel",
