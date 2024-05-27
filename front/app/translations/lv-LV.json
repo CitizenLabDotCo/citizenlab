@@ -1076,6 +1076,7 @@
   "app.containers.IdeasNewPage.submitApiError": "Iesniedzot veidlapu, radās kļūda. Lūdzu, pārbaudiet, vai nav kļūdu, un mēģiniet vēlreiz.",
   "app.containers.IdeasNewPage.submitNewIdea": "Iesniegt",
   "app.containers.IdeasNewPage.surveyNewMetaTitle1": "Aptaujas atbilžu pievienošana projektam | {orgName}",
+  "app.containers.IdeasShow.IdeaNavigationButtons.ideaIndexAriaMessage2": "Pašlaik skatīts numurs {currentIndex} no {totalInputs} ievadi",
   "app.containers.IdeasShow.MetaInformation.attachments": "Pielikumi",
   "app.containers.IdeasShow.MetaInformation.byUserOnDate": "{userName} {date}",
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Pašreizējais statuss",
