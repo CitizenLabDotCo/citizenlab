@@ -19,14 +19,17 @@ const ProjectsCard = ({ startAt, endAt }: Props) => {
           ? response.data.attributes.project_images[imageId]
           : undefined;
 
-        const periods = response.data.attributes.periods[project.id];
+        const period = response.data.attributes.periods[project.id];
+
+        const participants = response.data.attributes.participants[project.id];
 
         return (
           <ProjectRow
             key={project.id}
             project={project}
             projectImage={projectImage}
-            periods={periods}
+            period={period}
+            participants={participants}
             first={i === 0}
           />
         );

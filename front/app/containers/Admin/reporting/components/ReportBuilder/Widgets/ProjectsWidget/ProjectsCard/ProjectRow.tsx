@@ -22,18 +22,27 @@ import messages from '../messages';
 interface Props {
   project: IProjectData;
   projectImage?: IProjectImageData;
-  periods: { start_at: string; end_at: string | null };
+  period: { start_at: string; end_at: string | null };
+  participants: number;
   first?: boolean;
 }
 
-const ProjectRow = ({ project, projectImage, periods, first }: Props) => {
+const ProjectRow = ({
+  project,
+  projectImage,
+  period,
+  participants,
+  first,
+}: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  const startMonth = toFullMonth(periods.start_at, 'month');
-  const endMonth = periods.end_at
-    ? toFullMonth(periods.end_at, 'month')
+  const startMonth = toFullMonth(period.start_at, 'month');
+  const endMonth = period.end_at
+    ? toFullMonth(period.end_at, 'month')
     : formatMessage(messages.noEndDate);
+
+  const { title_multiloc, ideas_count, comments_count } = project.attributes;
 
   return (
     <Box
@@ -56,10 +65,17 @@ const ProjectRow = ({ project, projectImage, periods, first }: Props) => {
       )}
       <Box>
         <Title variant="h5" m="0">
-          {localize(project.attributes.title_multiloc)}
+          {localize(title_multiloc)}
         </Title>
         <Text fontSize="s">
           {startMonth} - {endMonth}
+        </Text>
+        <Text fontSize="s">
+          {formatMessage(messages.xParticipants, { participants })}
+          {' • '}
+          {formatMessage(messages.xIdeas, { ideas: ideas_count })}
+          {' • '}
+          {formatMessage(messages.xComments, { comments: comments_count })}
         </Text>
       </Box>
     </Box>

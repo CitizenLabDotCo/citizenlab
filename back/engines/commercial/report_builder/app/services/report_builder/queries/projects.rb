@@ -22,8 +22,10 @@ module ReportBuilder
         .where(id: projects_that_have_phases_ids)
         .where.not(id: non_overlapping_project_period_ids)
 
+      overlapping_project_ids = overlapping_projects.pluck(:id)
+
       project_images_hash = ProjectImage
-        .where(project_id: overlapping_projects.select(:id))
+        .where(project_id: overlapping_project_ids)
         .to_a
         .each_with_object({}) do |project_image, hash|
           hash[project_image.id] = serialize(project_image, ::WebApi::V1::ImageSerializer)
@@ -38,10 +40,20 @@ module ReportBuilder
         }
       end
 
+      participants = Analytics::FactParticipation
+        .where(dimension_project_id: overlapping_project_ids)
+        .group(:dimension_project_id)
+        .select('COUNT(DISTINCT participant_id) as participants_count, dimension_project_id')
+        .to_a
+        .each_with_object({}) do |participant, hash|
+          hash[participant.dimension_project_id] = participant.participants_count
+        end
+
       {
         projects: serialize(overlapping_projects, ::WebApi::V1::ProjectSerializer),
         project_images: project_images_hash,
-        periods: periods
+        periods: periods,
+        participants: participants
       }
     end
 

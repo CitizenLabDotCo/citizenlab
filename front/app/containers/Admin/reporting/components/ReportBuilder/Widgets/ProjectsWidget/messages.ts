@@ -9,4 +9,16 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.noEndDate',
     defaultMessage: 'No end date',
   },
+  xParticipants: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.xParticipants',
+    defaultMessage: '{participants} participants',
+  },
+  xIdeas: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.xIdeas',
+    defaultMessage: '{ideas} ideas',
+  },
+  xComments: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.xComments',
+    defaultMessage: '{comments} comments',
+  },
 });

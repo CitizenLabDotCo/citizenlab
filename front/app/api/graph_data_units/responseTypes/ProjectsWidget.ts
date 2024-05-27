@@ -8,6 +8,7 @@ export type ProjectsResponse = {
       projects: IProjectData[];
       project_images: Record<string, IProjectImageData>;
       periods: Record<string, { start_at: string; end_at: string | null }>;
+      participants: Record<string, number>;
     };
   };
 };
