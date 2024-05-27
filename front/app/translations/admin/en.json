@@ -9,6 +9,7 @@
   "app.Admin.ManagementFeed.deleted": "Deleted",
   "app.Admin.ManagementFeed.folder": "Folder",
   "app.Admin.ManagementFeed.idea": "Idea",
+  "app.Admin.ManagementFeed.in": "in project {project}",
   "app.Admin.ManagementFeed.item": "Item",
   "app.Admin.ManagementFeed.key": "Key",
   "app.Admin.ManagementFeed.phase": "Phase",
