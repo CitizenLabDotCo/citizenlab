@@ -36,15 +36,19 @@ RSpec.describe ReportBuilder::Queries::Projects do
     it 'returns overlapping projects' do
       result = query.run_query(start_at: Date.new(2021, 1, 1), end_at: Date.new(2021, 4, 1))
       expect(result[:projects].count).to eq(2)
-      expect(result[:projects].first[:id]).to eq(@project1.id)
-      expect(result[:projects].last[:id]).to eq(@project2.id)
+
+      expect(
+        result[:projects].pluck(:id).sort
+      ).to eq([@project1.id, @project2.id].sort)
     end
 
     it 'returns overlapping projects when last phase has no end date' do
       result = query.run_query(start_at: Date.new(2022, 1, 1), end_at: Date.new(2022, 4, 1))
       expect(result[:projects].count).to eq(2)
-      expect(result[:projects].first[:id]).to eq(@project2.id) # should still be included since it has no end date
-      expect(result[:projects].last[:id]).to eq(@project3.id)
+
+      expect(
+        result[:projects].pluck(:id).sort
+      ).to eq([@project2.id, @project3.id].sort)
     end
 
     it 'returns project images' do
