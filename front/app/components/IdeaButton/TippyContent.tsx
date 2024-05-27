@@ -77,7 +77,6 @@ const disabledMessages: {
 };
 
 const TippyContent = ({ projectId, inMap, disabledReason }: Props) => {
-  // const { formatMessage } = useIntl();
   const { data: project } = useProjectById(projectId);
   if (!project) return null;
 
