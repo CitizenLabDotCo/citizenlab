@@ -54,14 +54,6 @@ const actionDisabledMessages: {
     user_missing_requirements: messages.completeProfileToComment,
     idea_not_in_current_phase: messages.commentingDisabledInCurrentPhase,
   },
-  commenting_initiative: {
-    user_not_active: messages.completeProfileToComment,
-    user_not_permitted: messages.commentingInitiativeMaybeNotPermitted,
-    user_not_signed_in: messages.commentingInitiativeMaybeNotPermitted,
-    user_not_verified: messages.commentingDisabledUnverified,
-    user_missing_requirements: messages.completeProfileToComment,
-    // user_not_signed_in_needs_verifying: messages.signInAndVerifyToCommentInitiative, // TODO: JS - a state that the backend can never trigger
-  },
   voting: {
     user_not_signed_in: messages.votingNotSignedIn,
     user_not_permitted: messages.votingNotPermitted,

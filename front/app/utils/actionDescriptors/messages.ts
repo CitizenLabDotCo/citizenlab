@@ -61,24 +61,6 @@ export default defineMessages({
     id: 'app.containers.Comments.completeProfileToComment',
     defaultMessage: 'Please {completeRegistrationLink} to comment.',
   },
-  commentingInitiativeNotPermitted: {
-    id: 'app.components.Comments.commentingInitiativeNotPermitted',
-    defaultMessage: "You don't have the rights to comment.",
-  },
-  commentingInitiativeMaybeNotPermitted: {
-    id: 'app.components.Comments.commentingInitiativeMaybeNotPermitted',
-    defaultMessage:
-      'Not all users are allowed to comment. Please {signUpLink} or {signInLink} to see whether you comply.',
-  },
-  signInToCommentInitiative: {
-    id: 'app.containers.Comments.signInToCommentInitiative',
-    defaultMessage: 'Please {signUpLink} or {signInLink} to comment.',
-  },
-  signInAndVerifyToCommentInitiative: {
-    id: 'app.containers.Comments.signInAndVerifyToCommentInitiative',
-    defaultMessage:
-      'You need a verified account to comment, please {signUpLink} or {signInLink}.',
-  },
   votingNotSignedIn: {
     id: 'app.utils.participationMethodConfig.voting.votingNotSignedIn2',
     defaultMessage: 'You must log in or register to vote.',
