@@ -64,9 +64,7 @@ RSpec.describe Analysis::QAndAMethod do
     end
 
     it 'works' do
-      mock_llm = instance_double(Analysis::LLM::GPT4Turbo)
       plan = Analysis::QAndAMethod::OnePassLLM.new(question).generate_plan
-
       expect(plan).to have_attributes({
         q_and_a_method_class: Analysis::QAndAMethod::OnePassLLM,
         llm: kind_of(Analysis::LLM::Base),
@@ -74,14 +72,25 @@ RSpec.describe Analysis::QAndAMethod do
         include_id: true,
         shorten_labels: false
       })
-      plan.llm = mock_llm
 
+      mock_llm = instance_double(Analysis::LLM::GPT4Turbo)
+      plan.llm = mock_llm
       expect(mock_llm).to receive(:chat_async).with(kind_of(String)) do |prompt, &block|
         expect(prompt).to include(inputs[2].id)
         expect(prompt).to include('What is the most popular theme?')
         block.call 'Nothing'
         block.call ' else'
       end
+
+      mock_locale = instance_double(Locale)
+      expect(Locale)
+        .to receive(:monolingual)
+        .and_return(mock_locale)
+      expect(mock_locale).to receive(:language).and_return('High Valyrian')
+      expect_any_instance_of(Analysis::LLM::Prompt)
+        .to receive(:fetch)
+        .with('q_and_a', project_title: kind_of(String), question: kind_of(String), inputs_text: kind_of(String), language: 'High Valyrian')
+        .and_call_original
 
       expect { plan.q_and_a_method_class.new(question).execute(plan) }
         .to change { q_and_a_task.question.answer }.from(nil).to('Nothing else')
