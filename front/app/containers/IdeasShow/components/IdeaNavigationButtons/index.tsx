@@ -46,13 +46,14 @@ const IdeaNavigationButtons = ({ projectId, phaseContext }: Props) => {
 
       // Set the slugs for the next and previous idea buttons
       if (index + 1 < ideaListLength) {
+        // Has next ideas
         setNextIdeaSlug(ideasList?.data[index + 1]?.attributes.slug || '');
       } else {
         setNextIdeaSlug(undefined);
       }
 
       if (index - 1 >= 0) {
-        console.log(ideasList?.data[index - 1]?.attributes);
+        // Has previous ideas
         setPreviousIdeaSlug(ideasList?.data[index - 1]?.attributes.slug || '');
       } else {
         setPreviousIdeaSlug(undefined);
