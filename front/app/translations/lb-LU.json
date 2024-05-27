@@ -1076,6 +1076,7 @@
   "app.containers.IdeasNewPage.submitApiError": "Et gouf e Problem beim Ofschécken vum Formulaire. Préift wgl. ob et Feeler gëtt a probéiert et nach eng Kéier.",
   "app.containers.IdeasNewPage.submitNewIdea": "Areechen",
   "app.containers.IdeasNewPage.surveyNewMetaTitle1": "Füügt Ëmfro Äntwert op Projet | {orgName}",
+  "app.containers.IdeasShow.IdeaNavigationButtons.ideaIndexAriaMessage2": "Momentan kuckt d'Zuel {currentIndex} aus {totalInputs} Input",
   "app.containers.IdeasShow.MetaInformation.attachments": "Annexen",
   "app.containers.IdeasShow.MetaInformation.byUserOnDate": "{userName} de(n) {date}",
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Aktuelle Status",
