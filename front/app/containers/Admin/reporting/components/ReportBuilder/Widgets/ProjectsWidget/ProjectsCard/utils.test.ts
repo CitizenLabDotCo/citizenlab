@@ -27,7 +27,7 @@ describe('deriveProjectStatus', () => {
     expect(deriveProjectStatus(period, now)).toBe('stale');
   });
 
-  it('returns "completed" if endAt is before now', () => {
+  it('returns "finished" if endAt is before now', () => {
     const period = {
       start_at: '2021-01-01',
       last_phase_start_at: '2021-05-01',
@@ -36,7 +36,7 @@ describe('deriveProjectStatus', () => {
 
     const now = moment('2021-07-01');
 
-    expect(deriveProjectStatus(period, now)).toBe('completed');
+    expect(deriveProjectStatus(period, now)).toBe('finished');
   });
 
   it('returns "active" if endAt is after now', () => {
