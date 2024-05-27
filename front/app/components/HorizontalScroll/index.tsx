@@ -34,21 +34,16 @@ const StyledContainer = styled(Box)`
 interface Props {
   children: ReactNode;
   containerRole?: AriaRole; // If the scrollable container needs a specific role, pass it in
-  // If the scrollable container is a list, pass this in. If we need to support
-  // other types of containers in future, we should consider using different components
-  // for each type to reduce complexity. For example HorizontalScrollList for lists
-  asList?: boolean;
 }
 
 /*
  * HorizontalScroll:
  * Wraps children elements with a horizontal scroll container with arrow buttons to scroll left and right.
  */
-const HorizontalScroll = ({ children, containerRole, asList }: Props) => {
+const HorizontalScroll = ({ children, containerRole }: Props) => {
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
-  const containerRef = React.useRef<HTMLDivElement | HTMLUListElement>(null);
-
+  const containerRef = React.useRef<HTMLDivElement>(null);
   // Used to determine when the scroll buttons should be disabled (E.g. At scroll end, disable the right button)
   const [atScrollStart, setAtScrollStart] = useState(true);
   const [atScrollEnd, setAtScrollEnd] = useState(false);
@@ -107,25 +102,9 @@ const HorizontalScroll = ({ children, containerRole, asList }: Props) => {
           id="e2e-event-previews-scroll-left"
         />
       </Box>
-      {/* This allows us to use the same component for both lists and
-        divs without typescript complaining */}
-      {asList ? (
-        <StyledContainer
-          ref={containerRef as React.MutableRefObject<HTMLUListElement>}
-          role={containerRole}
-          as="ul"
-          px="0px"
-        >
-          {children}
-        </StyledContainer>
-      ) : (
-        <StyledContainer
-          ref={containerRef as React.MutableRefObject<HTMLDivElement>}
-          role={containerRole}
-        >
-          {children}
-        </StyledContainer>
-      )}
+      <StyledContainer ref={containerRef} role={containerRole}>
+        {children}
+      </StyledContainer>
       <Box
         aria-hidden="true"
         my="auto"
