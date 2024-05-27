@@ -201,13 +201,21 @@ const ReportBuilderPage = () => {
                   )}
 
                   {showServiceReportsTab && (
-                    <Tab
-                      label={`${formatMessage(
-                        messages.progressReports
-                      )} (${serviceReportsCount})`}
-                      url={`/admin/reporting/report-builder?tab=service-reports`}
-                      active={currentTab === 'service-reports'}
-                    />
+                    <Tippy
+                      content={formatMessage(messages.serviceReportsTooltip)}
+                      placement="top-start"
+                      delay={500}
+                    >
+                      <div>
+                        <Tab
+                          label={`${formatMessage(
+                            messages.serviceReports
+                          )} (${serviceReportsCount})`}
+                          url={`/admin/reporting/report-builder?tab=service-reports`}
+                          active={currentTab === 'service-reports'}
+                        />
+                      </div>
+                    </Tippy>
                   )}
                 </NavigationTabs>
               </TabContainer>

@@ -22,9 +22,14 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.allReports',
     defaultMessage: 'All reports',
   },
-  progressReports: {
-    id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.progressReports',
+  serviceReports: {
+    id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.serviceReports',
     defaultMessage: 'Progress reports',
+  },
+  serviceReportsTooltip: {
+    id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.serviceReportsTooltip',
+    defaultMessage:
+      'These are reports created by your Government Success Manager',
   },
   personalReportsPlaceholder: {
     id: 'app.containers.Admin.reporting.containers.ReportBuilderPage.personalReportsPlaceholder',
