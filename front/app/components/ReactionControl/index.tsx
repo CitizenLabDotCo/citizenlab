@@ -8,7 +8,6 @@ import { TReactionMode } from 'api/idea_reactions/types';
 import useAddIdeaReaction from 'api/idea_reactions/useAddIdeaReaction';
 import useDeleteIdeaReaction from 'api/idea_reactions/useDeleteIdeaReaction';
 import useIdeaReaction from 'api/idea_reactions/useIdeaReaction';
-import { IdeaReactingDisabledReason } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
@@ -22,6 +21,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import ReactionButton from './ReactionButton';
 import ScreenReaderContent from './ScreenReaderContent';
+import { IdeaReactingDisabledReason } from 'utils/actionDescriptors/types';
 
 type TSize = '1' | '2' | '3' | '4';
 type TStyleType = 'border' | 'shadow';

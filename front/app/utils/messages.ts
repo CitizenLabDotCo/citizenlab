@@ -222,9 +222,4 @@ export default defineMessages({
     id: 'app.containers.Projects.noPastEvents',
     defaultMessage: 'No past events to display',
   },
-  // Action descriptor utils
-  notInGroup: {
-    id: 'app.utils.notInGroup',
-    defaultMessage: 'You do not meet the requirements to participate.',
-  },
 });

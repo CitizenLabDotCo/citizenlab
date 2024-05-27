@@ -2,17 +2,15 @@ import React from 'react';
 
 import { MessageDescriptor } from 'react-intl';
 
-import {
-  ProjectDocumentAnnotationDisabledReason,
-  IProjectData,
-} from 'api/projects/types';
+import { IProjectData } from 'api/projects/types';
 
-import globalMessages from 'utils/messages';
+import globalMessages from 'utils/actionDescriptors/messages';
 
 import ParticipationPermission from '../ParticipationPermission';
 
 import Konveio from './Konveio';
 import messages from './messages';
+import { ProjectDocumentAnnotationDisabledReason } from 'utils/actionDescriptors/types';
 
 interface Props {
   project: IProjectData;
@@ -30,7 +28,7 @@ const disabledMessages: {
   user_not_verified: messages.documentAnnotationDisabledNotVerified,
   user_missing_requirements: messages.documentAnnotationDisabledNotActiveUser,
   user_not_signed_in: messages.documentAnnotationDisabledMaybeNotPermitted,
-  user_not_in_group: globalMessages.notInGroup,
+  user_not_in_group: globalMessages.defaultNotInGroup,
   user_not_permitted: messages.documentAnnotationDisabledNotPermitted,
   user_blocked: messages.documentAnnotationDisabledNotPermitted,
 };

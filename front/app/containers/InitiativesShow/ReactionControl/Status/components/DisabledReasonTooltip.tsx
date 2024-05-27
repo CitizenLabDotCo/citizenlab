@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { InitiativeDisabledReason } from 'api/initiative_action_descriptors/types';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import globalMessages from 'utils/messages';
+import globalMessages from 'utils/actionDescriptors/messages';
 
 import messages from '../../messages';
 
@@ -67,7 +67,7 @@ const disabledMessages: {
   [key in InitiativeDisabledReason]: MessageDescriptor | undefined;
 } = {
   user_not_permitted: messages.votingNotPermitted,
-  user_not_in_group: globalMessages.notInGroup,
+  user_not_in_group: globalMessages.defaultNotInGroup,
   user_blocked: messages.votingNotPermitted,
   user_not_signed_in: undefined,
   user_not_active: undefined,

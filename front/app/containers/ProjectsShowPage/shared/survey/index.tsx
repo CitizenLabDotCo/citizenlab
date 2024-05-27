@@ -4,13 +4,13 @@ import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { TSurveyService } from 'api/phases/types';
-import { IProjectData, ProjectSurveyDisabledReason } from 'api/projects/types';
+import { IProjectData } from 'api/projects/types';
 
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import globalMessages from 'utils/messages';
+import globalMessages from 'utils/actionDescriptors/messages';
 
 import ParticipationPermission from '../ParticipationPermission';
 
@@ -24,6 +24,7 @@ import SnapSurvey from './SnapSurvey';
 import SurveymonkeySurvey from './SurveymonkeySurvey';
 import SurveyXact from './SurveyXact';
 import TypeformSurvey from './TypeformSurvey';
+import { ProjectSurveyDisabledReason } from 'utils/actionDescriptors/types';
 
 const Container = styled.div`
   position: relative;
@@ -51,7 +52,7 @@ const disabledMessages: {
   user_not_verified: messages.surveyDisabledNotVerified,
   user_missing_requirements: messages.surveyDisabledNotActiveUser,
   user_not_signed_in: messages.surveyDisabledMaybeNotPermitted,
-  user_not_in_group: globalMessages.notInGroup,
+  user_not_in_group: globalMessages.defaultNotInGroup,
   user_not_permitted: messages.surveyDisabledNotPermitted,
   user_blocked: messages.surveyDisabledNotPermitted,
 };

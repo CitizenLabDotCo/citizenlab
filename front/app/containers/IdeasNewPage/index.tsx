@@ -80,7 +80,7 @@ const IdeasNewPage = () => {
     phase_id !== currentPhase?.id;
 
   if (isSurvey) {
-    if (disabledReason === 'postingLimitedMaxReached') {
+    if (disabledReason === 'posting_limited_max_reached') {
       return <SurveySubmittedNotice project={project.data} />;
     } else if (userCannotViewSurvey) {
       return <SurveyNotActiveNotice project={project.data} />;

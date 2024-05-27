@@ -35,7 +35,7 @@ export const redirectToIdeaForm =
       authUser,
     });
 
-    if (disabledReason !== 'postingLimitedMaxReached') {
+    if (disabledReason !== 'posting_limited_max_reached') {
       trackEventByName(tracks.redirectedToIdeaFrom);
       const positionParams = latLng
         ? { lat: latLng.coordinates[1], lng: latLng.coordinates[0] }

@@ -29,19 +29,6 @@ export default defineMessages({
     id: 'app.containers.IdeaButton.addAContribution',
     defaultMessage: 'Add a contribution',
   },
-  postingDisabled: {
-    id: 'app.containers.IdeaButton.postingDisabled',
-    defaultMessage: 'New submissions are not currently being accepted',
-  },
-  postingLimitedMaxReached: {
-    id: 'app.containers.IdeaButton.postingLimitedMaxReached',
-    defaultMessage:
-      'You have already completed this survey. Thanks for your response!',
-  },
-  postingNoPermission: {
-    id: 'app.containers.IdeaButton.postingNoPermission',
-    defaultMessage: 'New submissions are only enabled for certain groups',
-  },
   signInLinkText: {
     id: 'app.containers.IdeaButton.signInLinkText',
     defaultMessage: 'sign in',
@@ -49,18 +36,6 @@ export default defineMessages({
   signUpLinkText: {
     id: 'app.containers.IdeaButton.signUpLinkText',
     defaultMessage: 'sign up',
-  },
-  postingInactive: {
-    id: 'app.containers.IdeaButton.postingInactive',
-    defaultMessage: 'New submissions are not currently being accepted.',
-  },
-  postingInNonActivePhases: {
-    id: 'app.containers.IdeaButton.postingInNonActivePhases',
-    defaultMessage: 'New submissions can only be added in active phases.',
-  },
-  postingNotYetPossible: {
-    id: 'app.containers.IdeaButton.postingNotYetPossible',
-    defaultMessage: 'New submissions are not yet accepted here.',
   },
   verificationLinkText: {
     id: 'app.containers.IdeaButton.verificationLinkText',

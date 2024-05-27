@@ -2,6 +2,36 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   // Defaults
+  defaultNotInGroup: {
+    id: 'app.utils.notInGroup',
+    defaultMessage: 'You do not meet the requirements to participate.',
+  },
+  postingDisabled: {
+    id: 'app.containers.IdeaButton.postingDisabled',
+    defaultMessage: 'New submissions are not currently being accepted',
+  },
+  postingLimitedMaxReached: {
+    id: 'app.containers.IdeaButton.postingLimitedMaxReached',
+    defaultMessage:
+      'You have already completed this survey. Thanks for your response!',
+  },
+  postingNoPermission: {
+    id: 'app.containers.IdeaButton.postingNoPermission',
+    defaultMessage: 'New submissions are only enabled for certain groups',
+  },
+  postingInactive: {
+    id: 'app.containers.IdeaButton.postingInactive',
+    defaultMessage: 'New submissions are not currently being accepted.',
+  },
+  postingInNonActivePhases: {
+    id: 'app.containers.IdeaButton.postingInNonActivePhases',
+    defaultMessage: 'New submissions can only be added in active phases.',
+  },
+  postingNotYetPossible: {
+    id: 'app.containers.IdeaButton.postingNotYetPossible',
+    defaultMessage: 'New submissions are not yet accepted here.',
+  },
+
   votingNotSignedIn: {
     id: 'app.utils.participationMethodConfig.voting.votingNotSignedIn2',
     defaultMessage: 'You must log in or register to vote.',

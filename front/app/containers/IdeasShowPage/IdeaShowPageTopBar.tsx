@@ -10,7 +10,6 @@ import { lighten } from 'polished';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { IdeaReactingDisabledReason } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData } from 'api/phases/types';
@@ -27,6 +26,7 @@ import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
+import { IdeaReactingDisabledReason } from 'utils/actionDescriptors/types';
 
 const Container = styled.div`
   flex: 0 0 ${(props) => props.theme.mobileTopBarHeight}px;

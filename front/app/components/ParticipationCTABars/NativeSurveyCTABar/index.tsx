@@ -35,7 +35,7 @@ const NativeSurveyCTABar = ({ project }: CTABarProps) => {
     phase: currentPhase,
     authUser: authUser?.data,
   });
-  const hasUserParticipated = disabledReason === 'postingLimitedMaxReached';
+  const hasUserParticipated = disabledReason === 'posting_limited_max_reached';
 
   if (hasProjectEndedOrIsArchived(project, currentPhase)) {
     return null;

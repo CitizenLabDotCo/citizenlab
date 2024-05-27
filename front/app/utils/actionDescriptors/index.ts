@@ -1,21 +1,11 @@
 import { MessageDescriptor } from 'react-intl';
 
 import messages from './messages';
-
-type DisabledReasonFixable =
-  | 'user_not_signed_in'
-  | 'user_not_active'
-  | 'user_not_verified'
-  | 'user_missing_requirements';
-
-type DisabledReasonUnfixable =
-  | 'user_not_permitted'
-  | 'user_not_in_group'
-  | 'user_blocked';
-
-export type UserDisabledReason =
-  | DisabledReasonFixable
-  | DisabledReasonUnfixable;
+import {
+  ActionDescriptorActions,
+  DisabledReason,
+  DisabledReasonFixable,
+} from 'utils/actionDescriptors/types';
 
 const FIXABLE_REASONS = new Set<string>([
   'user_not_signed_in',
@@ -29,27 +19,27 @@ export const isFixableByAuthentication = (disabledReason: string) => {
   return FIXABLE_REASONS.has(disabledReason);
 };
 
-export type ActionDescriptor<DisabledReason> =
-  | { enabled: true; disabled_reason: null }
-  | { enabled: false; disabled_reason: DisabledReason };
+// Fall back messages for disabled reasons
+const globalDisabledMessages: {
+  [reason in DisabledReason]?: MessageDescriptor;
+} = {
+  user_not_in_group: messages.defaultNotInGroup,
+};
 
-// If future_enabled_at is a string, it's a date
-export type ActionDescriptorFutureEnabled<DisabledReason> =
-  | { enabled: true; disabled_reason: null; future_enabled_at: null }
-  | {
-      enabled: false;
-      disabled_reason: DisabledReason;
-      future_enabled_at: string | null;
-    };
-
-// NOTE: Bit of a shim to add in the budgeting action - even though it doesn't really exist
-type ActionDescriptorActions = 'voting' | 'budgeting';
-
-const disabledMessages: {
+// Messages specific to a particular
+const actionDisabledMessages: {
   [action in ActionDescriptorActions]?: {
-    [reason in UserDisabledReason]?: MessageDescriptor;
+    [reason in DisabledReason]?: MessageDescriptor;
   };
 } = {
+  posting_idea: {
+    user_not_permitted: messages.postingNoPermission,
+    posting_disabled: messages.postingDisabled,
+    posting_limited_max_reached: messages.postingLimitedMaxReached,
+    project_inactive: messages.postingInactive,
+    future_enabled: messages.postingNotYetPossible,
+    // idea_not_in_current_phase: messages.postingInNonActivePhases, // TODO: JS is this state able to be triggered?
+  },
   voting: {
     user_not_signed_in: messages.votingNotSignedIn,
     user_not_permitted: messages.votingNotPermitted,
@@ -78,8 +68,10 @@ export const getPermissionsDisabledMessage = (
   if (notFixableOnly && isFixableByAuthentication(disabledReason)) return;
 
   // Shim for budgeting voting action
-  const message = disabledMessages[action]?.[disabledReason];
+  const message = actionDisabledMessages[action]?.[disabledReason];
   if (message) return message;
 
-  // Could potentially add global defaults as a fallback
+  // Fallback to defaults if no specific message for the action
+  const globalMessage = globalDisabledMessages[disabledReason];
+  if (globalMessage) return globalMessage;
 };

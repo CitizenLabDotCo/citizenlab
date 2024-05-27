@@ -14,7 +14,6 @@ import { FormattedDate } from 'react-intl';
 import styled, { keyframes } from 'styled-components';
 
 import { TReactionMode } from 'api/idea_reactions/types';
-import { IdeaReactingDisabledReason } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
@@ -25,9 +24,10 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
-import globalMessages from 'utils/messages';
+import globalMessages from 'utils/actionDescriptors/messages';
 
 import messages from './messages';
+import { IdeaReactingDisabledReason } from 'utils/actionDescriptors/types';
 
 type TSize = '1' | '2' | '3' | '4';
 type TStyleType = 'border' | 'shadow';
@@ -358,7 +358,7 @@ const ReactionButton = ({
         ? messages.reactingPossibleLater
         : messages.reactingDisabledProjectInactive;
     } else if (disabledReason === 'user_not_in_group') {
-      return globalMessages.notInGroup;
+      return globalMessages.defaultNotInGroup;
     } else if (disabledReason === 'reacting_disabled' && futureEnabled) {
       return messages.reactingPossibleLater;
     } else if (disabledReason === 'reacting_like_limited_max_reached') {

@@ -3,16 +3,17 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { MessageDescriptor } from 'react-intl';
 
-import { IIdea, IdeaCommentingDisabledReason } from 'api/ideas/types';
+import { IIdea } from 'api/ideas/types';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import globalMessages from 'utils/messages';
+import globalMessages from 'utils/actionDescriptors/messages';
 
 import messages from '../../messages';
+import { IdeaCommentingDisabledReason } from 'utils/actionDescriptors/types';
 
 interface Props {
   phaseId: string | undefined;
@@ -53,7 +54,7 @@ const CommentingIdeaDisabled = ({ phaseId, idea }: Props) => {
     commenting_disabled: messages.commentingDisabledProject,
     user_not_permitted: messages.commentingDisabledProject,
     user_not_verified: messages.commentingDisabledUnverified,
-    user_not_in_group: globalMessages.notInGroup,
+    user_not_in_group: globalMessages.defaultNotInGroup,
     user_blocked: messages.commentingDisabledProject,
     user_not_active: messages.completeProfileToComment,
     user_not_signed_in: messages.signInToComment,

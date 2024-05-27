@@ -1,7 +1,10 @@
-import { ActionDescriptor, UserDisabledReason } from 'utils/actionDescriptors';
 import { Keys } from 'utils/cl-react-query/types';
 
 import initiativeActionDescriptorsKeys from './keys';
+import {
+  ActionDescriptor,
+  UserDisabledReason,
+} from 'utils/actionDescriptors/types';
 
 export type InitiativeActionDescriptorsKeys = Keys<
   typeof initiativeActionDescriptorsKeys

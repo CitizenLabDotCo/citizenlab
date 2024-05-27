@@ -5,16 +5,16 @@ import styled from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
 import usePollQuestions from 'api/poll_questions/usePollQuestions';
-import { ProjectPollDisabledReason } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { isNilOrError } from 'utils/helperUtils';
-import globalMessages from 'utils/messages';
+import globalMessages from 'utils/actionDescriptors/messages';
 
 import FormCompleted from './FormCompleted';
 import messages from './messages';
 import PollForm from './PollForm';
+import { ProjectPollDisabledReason } from 'utils/actionDescriptors/types';
 
 const Container = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -48,7 +48,7 @@ const disabledMessages: {
   user_not_verified: undefined,
   user_missing_requirements: undefined,
   user_not_signed_in: undefined,
-  user_not_in_group: globalMessages.notInGroup,
+  user_not_in_group: globalMessages.defaultNotInGroup,
   user_not_permitted: messages.pollDisabledNotPermitted,
   user_blocked: messages.pollDisabledNotPermitted,
 };

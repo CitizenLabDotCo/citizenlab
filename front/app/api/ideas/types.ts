@@ -1,32 +1,21 @@
-import { ILinks, Multiloc, IRelationship } from 'typings';
+import { ILinks, IRelationship, Multiloc } from 'typings';
 
-import {
-  ProjectReactingDisabledReason,
-  ProjectCommentingDisabledReason,
-  PublicationStatus as ProjectPublicationStatus,
-  ProjectVotingDisabledReason,
-} from 'api/projects/types';
+import { PublicationStatus as ProjectPublicationStatus } from 'api/projects/types';
 
-import { ActionDescriptorFutureEnabled } from 'utils/actionDescriptors';
 import { Keys } from 'utils/cl-react-query/types';
 
 import ideasKeys from './keys';
+import {
+  ActionDescriptorFutureEnabled,
+  IdeaCommentingDisabledReason,
+  IdeaReactingDisabledReason,
+  IdeaVotingDisabledReason,
+  ReactingIdeaActionDescriptor,
+} from 'utils/actionDescriptors/types';
 
 export type IdeasKeys = Keys<typeof ideasKeys>;
 
 export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
-
-export type IdeaReactingDisabledReason =
-  | 'idea_not_in_current_phase'
-  | ProjectReactingDisabledReason;
-
-export type IdeaCommentingDisabledReason =
-  | 'idea_not_in_current_phase'
-  | ProjectCommentingDisabledReason;
-
-export type IdeaVotingDisabledReason =
-  | 'idea_not_in_current_phase'
-  | ProjectVotingDisabledReason;
 
 export type Sort =
   | 'random'
@@ -52,14 +41,6 @@ export type Sort =
   | '-comments_count'
   | 'budget'
   | '-budget';
-
-type ReactingIdeaActionDescriptor =
-  | { enabled: true; disabled_reason: null; cancelling_enabled: boolean }
-  | {
-      enabled: false;
-      disabled_reason: IdeaReactingDisabledReason;
-      cancelling_enabled: boolean;
-    };
 
 export interface IIdeaData {
   id: string;
