@@ -87,9 +87,10 @@ export type ReactingIdeaActionDescriptor =
     };
 
 // NOTE: Bit of a shim to add in the budgeting action - even though it doesn't really exist
-export type ActionDescriptorActions =
+export type ActionDescriptorAction =
   | 'posting_idea'
   | 'commenting_idea'
+  | 'reacting_idea'
   | 'commenting_initiative'
   | 'voting'
   | 'budgeting';

@@ -2,7 +2,7 @@ import { MessageDescriptor } from 'react-intl';
 
 import globalMessages from 'utils/actionDescriptors/messages';
 import {
-  ActionDescriptorActions,
+  ActionDescriptorAction,
   DisabledReason,
   DisabledReasonFixable,
 } from 'utils/actionDescriptors/types';
@@ -30,7 +30,7 @@ const globalDisabledMessages: {
 
 // Messages specific to a particular
 const actionDisabledMessages: {
-  [action in ActionDescriptorActions]?: {
+  [action in ActionDescriptorAction]?: {
     [reason in DisabledReason]?: MessageDescriptor;
   };
 } = {
@@ -54,6 +54,21 @@ const actionDisabledMessages: {
     user_missing_requirements: messages.completeProfileToComment,
     idea_not_in_current_phase: messages.commentingDisabledInCurrentPhase,
   },
+  reacting_idea: {
+    project_inactive: messages.reactingDisabledProjectInactive,
+    reacting_disabled: messages.reactingNotEnabled,
+    reacting_like_limited_max_reached: messages.likingDisabledMaxReached,
+    reacting_dislike_limited_max_reached: messages.dislikingDisabledMaxReached,
+    idea_not_in_current_phase: messages.reactingDisabledPhaseOver,
+    user_not_permitted: messages.reactingNotPermitted,
+    user_not_verified: messages.reactingVerifyToReact,
+    user_not_in_group: globalMessages.defaultNotInGroup,
+    user_blocked: messages.reactingNotPermitted,
+    user_not_active: messages.completeProfileToReact,
+    user_not_signed_in: messages.reactingNotSignedIn,
+    user_missing_requirements: messages.completeProfileToReact,
+    future_enabled: messages.reactingDisabledFutureEnabled,
+  },
   voting: {
     user_not_signed_in: messages.votingNotSignedIn,
     user_not_permitted: messages.votingNotPermitted,
@@ -74,7 +89,7 @@ const actionDisabledMessages: {
  * Return a disabled message ID based on the disabled reason returned by the action descriptors
  */
 export const getPermissionsDisabledMessage = (
-  action: ActionDescriptorActions,
+  action: ActionDescriptorAction,
   disabledReason: string | null | undefined,
   notFixableOnly?: boolean
 ) => {

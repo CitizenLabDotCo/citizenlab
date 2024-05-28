@@ -15,20 +15,20 @@ import styled, { keyframes } from 'styled-components';
 
 import { TReactionMode } from 'api/idea_reactions/types';
 import useIdeaById from 'api/ideas/useIdeaById';
-import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
 import { ScreenReaderOnly } from 'utils/a11y';
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
-import globalMessages from 'utils/actionDescriptors/messages';
+import {
+  getPermissionsDisabledMessage,
+  isFixableByAuthentication,
+} from 'utils/actionDescriptors';
 import { IdeaReactingDisabledReason } from 'utils/actionDescriptors/types';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 import messages from './messages';
-
 
 type TSize = '1' | '2' | '3' | '4';
 type TStyleType = 'border' | 'shadow';
@@ -341,7 +341,6 @@ const ReactionButton = ({
   ideaId,
   userReactionMode,
 }: Props) => {
-  const { data: authUser } = useAuthUser();
   const { data: idea } = useIdeaById(ideaId);
   const projectId = !isNilOrError(idea)
     ? idea.data.relationships.project.data.id
@@ -349,42 +348,6 @@ const ReactionButton = ({
 
   const { data: project } = useProjectById(projectId);
   const localize = useLocalize();
-
-  const getDisabledReasonMessage = (
-    disabledReason: IdeaReactingDisabledReason | null,
-    futureEnabled: string | null
-  ) => {
-    if (disabledReason === 'project_inactive') {
-      return futureEnabled
-        ? messages.reactingPossibleLater
-        : messages.reactingDisabledProjectInactive;
-    } else if (disabledReason === 'user_not_in_group') {
-      return globalMessages.defaultNotInGroup;
-    } else if (disabledReason === 'reacting_disabled' && futureEnabled) {
-      return messages.reactingPossibleLater;
-    } else if (disabledReason === 'reacting_like_limited_max_reached') {
-      return messages.likingDisabledMaxReached;
-    } else if (disabledReason === 'reacting_dislike_limited_max_reached') {
-      return messages.dislikingDisabledMaxReached;
-    } else if (disabledReason === 'idea_not_in_current_phase') {
-      return futureEnabled
-        ? messages.reactingDisabledFutureEnabled
-        : messages.reactingDisabledPhaseOver;
-    } else if (disabledReason === 'user_not_permitted') {
-      return messages.reactingNotPermitted;
-    } else if (
-      (authUser && disabledReason === 'user_not_active') ||
-      disabledReason === 'user_missing_requirements'
-    ) {
-      return messages.completeProfileToReact;
-    } else if (disabledReason === 'user_not_signed_in') {
-      return messages.reactingNotSignedIn;
-    } else if (authUser && disabledReason === 'user_not_verified') {
-      return messages.reactingVerifyToReact;
-    } else {
-      return messages.reactingNotEnabled;
-    }
-  };
 
   if (!isNilOrError(idea) && !isNilOrError(project)) {
     const reactingDescriptor =
@@ -397,6 +360,7 @@ const ReactionButton = ({
     const futureEnabledAt =
       idea.data.attributes.action_descriptors.reacting_idea[buttonReactionMode]
         .future_enabled_at;
+
     const cancellingEnabled = reactingDescriptor.cancelling_enabled;
     const notYetReacted = userReactionMode !== buttonReactionMode;
     const alreadyReacted = userReactionMode === buttonReactionMode;
@@ -406,9 +370,20 @@ const ReactionButton = ({
         (alreadyReacted && cancellingEnabled) ||
         (disabledReason && isFixableByAuthentication(disabledReason)));
 
-    const disabledReasonMessage = getDisabledReasonMessage(
-      disabledReason,
-      futureEnabledAt
+    // TODO: JS - Move this logic centrally/to the backend as others may need exactly the same
+    const disabledOrFutureEnabled =
+      futureEnabledAt &&
+      disabledReason &&
+      [
+        'project_inactive',
+        'reacting_disabled',
+        'idea_not_in_current_phase',
+      ].includes(disabledReason)
+        ? 'future_enabled'
+        : disabledReason;
+    const disabledReasonMessage = getPermissionsDisabledMessage(
+      'reacting_idea',
+      disabledOrFutureEnabled
     );
 
     const enabledFromDate = futureEnabledAt ? (
