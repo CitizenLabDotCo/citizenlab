@@ -79,14 +79,14 @@ const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
 
   const gsQuote = buildMultiloc(createGSQuote);
 
-  const participationIndicators = buildMultiloc((formatMessage) => {
-    return withoutSpacing`
-      <h3>${formatMessage(messages.participationIndicators)}</h3>
-      <p>${formatMessage(
-        messages.participationIndicatorsDescriptionPlaceholder
-      )}</p>
-    `;
-  });
+  const getSectionTitleAndDescription = (title: MessageDescriptor) => {
+    return buildMultiloc((formatMessage) => {
+      return withoutSpacing`
+        <h3>${formatMessage(title)}</h3>
+        <p>${formatMessage(messages.placeholderDescription)}</p>
+      `;
+    });
+  };
 
   const toMultiloc = (message: MessageDescriptor) => {
     return createMultiloc(appConfigurationLocales, (locale) => {
@@ -107,7 +107,9 @@ const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
       <WhiteSpace size="small" />
       <TextMultiloc text={gsQuote} />
       <WhiteSpace size="small" />
-      <TextMultiloc text={participationIndicators} />
+      <TextMultiloc
+        text={getSectionTitleAndDescription(messages.participationIndicators)}
+      />
       <WhiteSpace size="small" />
       <VisitorsWidget
         title={toMultiloc(WIDGET_TITLES.VisitorsWidget)}

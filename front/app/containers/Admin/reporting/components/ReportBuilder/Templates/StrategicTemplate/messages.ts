@@ -30,9 +30,13 @@ export default defineMessages({
     id: 'app.containers.Admin.Reporting.Templates.StrategicReportTemplate.participationIndicators',
     defaultMessage: 'Top-level participation indicators',
   },
-  participationIndicatorsDescriptionPlaceholder: {
-    id: 'app.containers.Admin.Reporting.Templates.StrategicReportTemplate.participationIndicatorsDescription',
+  placeholderDescription: {
+    id: 'app.containers.Admin.Reporting.Templates.StrategicReportTemplate.placeholderDescription',
     defaultMessage:
       'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+  },
+  inclusionIndicators: {
+    id: 'app.containers.Admin.Reporting.Templates.StrategicReportTemplate.inclusionIndicators',
+    defaultMessage: 'Top-level inclusion indicators',
   },
 });
