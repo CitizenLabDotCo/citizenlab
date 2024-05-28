@@ -134,6 +134,7 @@ class User < ApplicationRecord
   end)
 
   has_many :ideas, -> { order(:project_id) }, foreign_key: :author_id, dependent: :nullify
+  has_many :idea_imports, class_name: 'BulkImportIdeas::IdeaImport', foreign_key: :import_user_id, dependent: :nullify
   has_many :initiatives, foreign_key: :author_id, dependent: :nullify
   has_many :assigned_initiatives, class_name: 'Initiative', foreign_key: :assignee_id, dependent: :nullify
   has_many :comments, foreign_key: :author_id, dependent: :nullify
