@@ -397,7 +397,7 @@ const ReactionButton = ({
     const projectName = localize(project.data.attributes.title_multiloc);
     const buttonReactionModeIsActive = buttonReactionMode === userReactionMode;
 
-    const disabledMessage = (
+    const disabledMessage = disabledReasonMessage && (
       <FormattedMessage
         {...disabledReasonMessage}
         values={{
