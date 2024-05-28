@@ -30,9 +30,9 @@ export default defineMessages({
     id: 'app.containers.Admin.Reporting.Templates.StrategicReportTemplate.participationIndicators',
     defaultMessage: 'Top-level participation indicators',
   },
-  participationIndicatorsDescription: {
+  participationIndicatorsDescriptionPlaceholder: {
     id: 'app.containers.Admin.Reporting.Templates.StrategicReportTemplate.participationIndicatorsDescription',
     defaultMessage:
-      'This quarter your platform experienced a steep increase in visitors and visit duration. You are making your experience more sticky by providing your residents with rich information and a true opportunity to have their voices heard.',
+      'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
   },
 });

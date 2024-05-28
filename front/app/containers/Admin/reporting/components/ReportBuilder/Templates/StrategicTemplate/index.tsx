@@ -8,13 +8,19 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 
+import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
 import { FormatMessageValues } from 'utils/cl-intl/useIntl';
 import { withoutSpacing } from 'utils/textUtils';
 
+import { WIDGET_TITLES } from '../../Widgets';
+import ActiveUsersWidget from '../../Widgets/ChartWidgets/ActiveUsersWidget';
+import RegistrationsWidget from '../../Widgets/ChartWidgets/RegistrationsWidget';
+import VisitorsWidget from '../../Widgets/ChartWidgets/VisitorsWidget';
 import TextMultiloc from '../../Widgets/TextMultiloc';
+import TwoColumn from '../../Widgets/TwoColumn';
 import { TemplateContext } from '../context';
 import { getPeriod } from '../utils';
 
@@ -76,9 +82,22 @@ const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
   const participationIndicators = buildMultiloc((formatMessage) => {
     return withoutSpacing`
       <h3>${formatMessage(messages.participationIndicators)}</h3>
-      <p>${formatMessage(messages.participationIndicatorsDescription)}</p>
+      <p>${formatMessage(
+        messages.participationIndicatorsDescriptionPlaceholder
+      )}</p>
     `;
   });
+
+  const toMultiloc = (message: MessageDescriptor) => {
+    return createMultiloc(appConfigurationLocales, (locale) => {
+      return formatMessageWithLocale(locale, message);
+    });
+  };
+
+  const dateRange = {
+    startAt: startDate,
+    endAt: endDate,
+  };
 
   return (
     <Element id="strategic-report-template" is={Box} canvas>
@@ -87,6 +106,27 @@ const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
       <TextMultiloc text={gsQuote} />
       <WhiteSpace size="small" />
       <TextMultiloc text={participationIndicators} />
+      <WhiteSpace size="small" />
+      <VisitorsWidget
+        title={toMultiloc(WIDGET_TITLES.VisitorsWidget)}
+        {...dateRange}
+      />
+      <WhiteSpace size="small" />
+      <TwoColumn columnLayout="1-1">
+        <Element id="left" is={Container} canvas>
+          <RegistrationsWidget
+            title={toMultiloc(WIDGET_TITLES.RegistrationsWidget)}
+            {...dateRange}
+          />
+        </Element>
+        <Element id="right" is={Container} canvas>
+          <ActiveUsersWidget
+            title={toMultiloc(WIDGET_TITLES.ActiveUsersWidget)}
+            {...dateRange}
+            projectId={undefined}
+          />
+        </Element>
+      </TwoColumn>
     </Element>
   );
 };
