@@ -3,7 +3,7 @@ import { randomString, randomEmail } from '../support/commands';
 // OS-133
 describe('Idea reacting permissions', () => {
   describe('a project that requires verification to reaction', () => {
-    it('sends non-registred user to sign up, verifies the user and reactions successfully', () => {
+    it('sends non-registered user to sign up, verifies the user and reactions successfully', () => {
       const firstName = randomString();
       const lastName = randomString();
       const email = randomEmail();
@@ -128,15 +128,17 @@ describe('Idea reacting permissions', () => {
   });
 
   describe('a project that does not require verification', () => {
-    it("sends signed out user to log in and doesn't ask for verification", () => {
+    it.only("sends signed out user to log in and doesn't ask for verification", () => {
       const firstName = randomString();
       const lastName = randomString();
       const email = randomEmail();
       const password = randomString();
 
       // Go to an idea of a project that doesn't require verification
-      // and try to reaction
+      // and try to react
       cy.visit('ideas/very-new-idea');
+      cy.get('.e2e-ideacard-like-button').should('exist');
+      cy.wait(1000);
       cy.get('.e2e-ideacard-like-button').click();
 
       // Sign up flow

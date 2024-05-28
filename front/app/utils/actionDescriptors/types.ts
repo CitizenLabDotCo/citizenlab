@@ -20,6 +20,7 @@ type ProjectDisabledReason =
 
 export type ProjectPostingDisabledReason =
   | 'future_enabled' // Note: Not returned by backend but needed for posting
+  | 'inactive_phase' // Note: Not returned by backend but needed for posting
   | 'posting_not_supported'
   | 'posting_disabled'
   // Only applicable to taking surveys at the moment.

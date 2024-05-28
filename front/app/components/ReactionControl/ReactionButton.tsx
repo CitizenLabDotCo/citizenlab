@@ -360,7 +360,6 @@ const ReactionButton = ({
     const futureEnabledAt =
       idea.data.attributes.action_descriptors.reacting_idea[buttonReactionMode]
         .future_enabled_at;
-
     const cancellingEnabled = reactingDescriptor.cancelling_enabled;
     const notYetReacted = userReactionMode !== buttonReactionMode;
     const alreadyReacted = userReactionMode === buttonReactionMode;
@@ -370,8 +369,7 @@ const ReactionButton = ({
         (alreadyReacted && cancellingEnabled) ||
         (disabledReason && isFixableByAuthentication(disabledReason)));
 
-    // TODO: JS - Move this logic centrally/to the backend as others may need exactly the same
-    const disabledOrFutureEnabled =
+    const disabledOrFutureEnabledReason =
       futureEnabledAt &&
       disabledReason &&
       [
@@ -381,9 +379,10 @@ const ReactionButton = ({
       ].includes(disabledReason)
         ? 'future_enabled'
         : disabledReason;
+
     const disabledReasonMessage = getPermissionsDisabledMessage(
       'reacting_idea',
-      disabledOrFutureEnabled
+      disabledOrFutureEnabledReason
     );
 
     const enabledFromDate = futureEnabledAt ? (

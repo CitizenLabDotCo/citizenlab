@@ -2,7 +2,7 @@ import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import { IUserData } from 'api/users/types';
 
-// import { pastPresentOrFuture } from 'utils/dateUtils';
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 import { ProjectPostingDisabledReason } from 'utils/actionDescriptors/types';
 
@@ -167,9 +167,7 @@ export const getIdeaPostingRules = ({
         };
       }
 
-      // if not in current phase
-      // TODO: JS - Can this ever be triggered?
-      /*
+      // if not in current phase - not sure this is possible to trigger
       if (
         pastPresentOrFuture([
           phase.attributes.start_at,
@@ -179,11 +177,10 @@ export const getIdeaPostingRules = ({
         return {
           show: true,
           enabled: false,
-          disabledReason: disabled_reason,
+          disabledReason: 'inactive_phase',
           authenticationRequirements: null,
         };
       }
-      */
     }
 
     if (enabled) {

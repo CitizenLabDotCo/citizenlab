@@ -40,7 +40,7 @@ const actionDisabledMessages: {
     posting_limited_max_reached: messages.postingLimitedMaxReached,
     project_inactive: messages.postingInactive,
     future_enabled: messages.postingNotYetPossible,
-    // idea_not_in_current_phase: messages.postingInNonActivePhases, // TODO: JS is this state able to be triggered?
+    inactive_phase: messages.postingInNonActivePhases,
   },
   commenting_idea: {
     project_inactive: messages.commentingDisabledInactiveProject,
