@@ -8,7 +8,6 @@ import {
   Label,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 import { IOption } from 'typings';
 
 import useAddReport from 'api/reports/useAddReport';
@@ -26,6 +25,7 @@ import messages from '../messages';
 
 import RadioButtons from './RadioButtons';
 import { Template } from './typings';
+import { getRedirectUrl } from './utils';
 
 interface Props {
   open: boolean;
@@ -41,7 +41,9 @@ const CreateReportModal = ({ open, onClose }: Props) => {
 
   const [reportTitle, setReportTitle] = useState('');
   const [template, setTemplate] = useState<Template>('blank');
-  const [selectedProject, setSelectedProject] = useState<string | undefined>();
+  const [selectedProjectId, setSelectedProjectId] = useState<
+    string | undefined
+  >();
   const [dates, setDates] = useState<Dates>({ startDate: null, endDate: null });
 
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
@@ -50,11 +52,11 @@ const CreateReportModal = ({ open, onClose }: Props) => {
 
   const blockSubmit =
     reportTitleTooShort ||
-    (template === 'project' ? selectedProject === undefined : false) ||
+    (template === 'project' ? selectedProjectId === undefined : false) ||
     (template === 'strategic' ? !dates.startDate || !dates.endDate : false);
 
   const handleProjectFilter = (option: IOption) => {
-    setSelectedProject(option.value === '' ? undefined : option.value);
+    setSelectedProjectId(option.value === '' ? undefined : option.value);
   };
 
   const onCreateReport = async () => {
@@ -65,15 +67,14 @@ const CreateReportModal = ({ open, onClose }: Props) => {
       { name: reportTitle },
       {
         onSuccess: (report) => {
-          const route = '/admin/reporting/report-builder';
-          const path = `${route}/${report.data.id}/editor`;
-          const params =
-            template === 'project' && selectedProject
-              ? `?templateProjectId=${selectedProject}`
-              : '';
-          const url = `${path}${params}` as RouteType;
-
-          clHistory.push(url);
+          clHistory.push(
+            getRedirectUrl({
+              reportId: report.data.id,
+              selectedProjectId,
+              template,
+              dates,
+            })
+          );
         },
         onError: (e) => {
           if (reportTitleIsTaken(e)) {
@@ -116,7 +117,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
         {template === 'project' && (
           <Box width="100%" mt="12px">
             <ProjectFilter
-              projectId={selectedProject}
+              projectId={selectedProjectId}
               emptyOptionMessage={messages.noProjectSelected}
               onProjectFilter={handleProjectFilter}
             />
