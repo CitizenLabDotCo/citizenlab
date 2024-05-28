@@ -187,6 +187,7 @@ resource 'Ideas' do
               project.update!(visible_to: 'groups', groups: [group])
               resident.update!(manual_groups: [group])
             end
+
             example_request 'Posting an idea anonymously to a group restricted project' do
               assert_status 201
               expect(response_data.dig(:attributes, :anonymous)).to be true
