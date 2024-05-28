@@ -82,8 +82,11 @@ module Permissions
 
     # Project methods
     def project_visible_disabled_reason(project, user)
-      if (project&.visible_to == 'admins' && !user.admin?) ||
-         (project&.visible_to == 'groups' && !user.in_any_groups?(project.groups))
+      user_can_moderate = user && UserRoleService.new.can_moderate?(project, user)
+      return if user_can_moderate
+
+      if (project&.visible_to == 'admins' && !user_can_moderate) ||
+         (project&.visible_to == 'groups' && project.groups && !user&.in_any_groups?(project.groups))
         PROJECT_DENIED_REASONS[:project_not_visible]
       end
     end
