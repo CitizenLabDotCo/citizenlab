@@ -997,7 +997,7 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.delete": "Supprimer",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.duplicate": "Dupliquer",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.edit": "Modifier",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.lastUpdate1": "Modifié {days, plural, no {# jours} one {# jour} other {# jours}} il y a",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.lastUpdate1": "Modifié il y a {days, plural, no {# jour} one {# jour} other {# jours}}",
   "app.containers.Admin.reporting.components.ReportBuilderPage.anErrorOccurred": "Une erreur s'est produite lors de la création de ce rapport. Veuillez réessayer plus tard.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.blankTemplate": "Commencez par une page blanche",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel": "Titre du rapport",
