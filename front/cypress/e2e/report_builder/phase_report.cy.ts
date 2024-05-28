@@ -236,8 +236,16 @@ describe('Phase report', () => {
           `/admin/reporting/report-builder/${reportId}/editor?templatePhaseId=${ideationPhaseId}`
         );
 
+        // Wait for autosave
+        // We expect the save button to indicate that the report is saved (has svg icon)
+        cy.get('#e2e-content-builder-topbar-save > button > svg').should(
+          'exist'
+        );
+
         addTextWidget();
-        cy.wait('@saveReportLayout');
+
+        // Now we save again
+        saveReport(reportId);
 
         reportShouldBeVisible();
         cy.contains('Total inputs: 1').should('exist');
@@ -265,8 +273,16 @@ describe('Phase report', () => {
           `/admin/reporting/report-builder/${reportId}/editor?templatePhaseId=${surveyPhaseId}`
         );
 
+        // Wait for autosave
+        // We expect the save button to indicate that the report is saved (has svg icon)
+        cy.get('#e2e-content-builder-topbar-save > button > svg').should(
+          'exist'
+        );
+
         addTextWidget();
-        cy.wait('@saveReportLayout');
+
+        // Now we save again
+        saveReport(reportId);
 
         reportShouldBeVisible();
         cy.contains('0/0 - Multiple choice').should('exist');

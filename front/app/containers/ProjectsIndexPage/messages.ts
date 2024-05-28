@@ -5,9 +5,9 @@ export default defineMessages({
     id: 'app.containers.ProjectsIndexPage.pageTitle',
     defaultMessage: 'Projects',
   },
-  metaTitle: {
-    id: 'app.containers.ProjectsIndexPage.metaTitle',
-    defaultMessage: 'Projects • {orgName}',
+  metaTitle1: {
+    id: 'app.containers.ProjectsIndexPage.metaTitle1',
+    defaultMessage: 'Projects | {orgName}',
   },
   metaDescription: {
     id: 'app.containers.ProjectsIndexPage.metaDescription',

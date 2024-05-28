@@ -21,11 +21,9 @@ import { IGroupDataAttributes, MembershipType } from 'api/groups/types';
 import { IIdeaData } from 'api/ideas/types';
 import { IInitiativeData } from 'api/initiatives/types';
 import { TNotificationData } from 'api/notifications/types';
-import { IPhaseData } from 'api/phases/types';
-import { IProjectData } from 'api/projects/types';
 import { TVerificationMethod } from 'api/verification_methods/types';
 
-import { TTabName } from 'containers/Admin/projects/all/CreateProject';
+import { TTabName } from 'containers/Admin/projects/new';
 import { NavItem } from 'containers/Admin/sideBar/navItems';
 import { GroupCreationModal } from 'containers/Admin/users';
 import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
@@ -57,9 +55,6 @@ export interface OutletsPropertyMap {
   };
   'app.containers.Admin.projects.all.createProject.tabs': {
     onData: (data: InsertConfigurationOptions<ITabItem>) => void;
-  };
-  'app.containers.Admin.projects.all.container': {
-    onRender: (hasRendered: boolean) => void;
   };
   'app.containers.Admin.projects.edit.description.projectDescriptionBuilder': {
     onMount: () => void;
@@ -124,11 +119,6 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.project.edit.permissions.moderatorRights': {
     projectId: string;
     children: OutletRenderProps;
-  };
-  'app.containers.Admin.projects.edit.settings': {
-    onData: (data: InsertConfigurationOptions<ITab>) => void;
-    project: IProjectData;
-    phases: IPhaseData[] | null;
   };
   'app.containers.Admin.settings.tabs': {
     onData: (data: InsertConfigurationOptions<ITab>) => void;

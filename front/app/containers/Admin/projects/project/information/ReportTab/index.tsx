@@ -29,14 +29,13 @@ const ReportTab = () => {
     phase?.data.relationships.report?.data?.id
   );
 
-  const phaseReportsEnabled = useFeatureFlag({ name: 'phase_reports' });
   const reportBuilderEnabled = useFeatureFlag({ name: 'report_builder' });
   const { formatMessage } = useIntl();
 
   const { mutate: deleteReport, isLoading } = useDeleteReport();
   const { mutate: updateReport } = useUpdateReport();
 
-  if (!(phaseReportsEnabled && reportBuilderEnabled) || !phase) return null;
+  if (!reportBuilderEnabled || !phase) return null;
 
   const handleDeleteReport = async () => {
     if (!report) return;

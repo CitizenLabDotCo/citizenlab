@@ -81,17 +81,22 @@ class ActivitiesService
 
   def create_basket_not_submitted_activities(now)
     Basket.not_submitted.each do |basket|
-      if Activity.find_by(item: basket, action: 'not_submitted').nil? && basket.baskets_ideas.present? && basket.baskets_ideas.order(:updated_at).last.updated_at <= now - 1.day
-        LogActivityJob.perform_later(basket, 'not_submitted', nil, now)
-      end
+      next if Activity.find_by(item: basket, action: 'not_submitted')
+      next if basket.baskets_ideas.blank?
+      next if basket.baskets_ideas.order(:updated_at).last.updated_at > now - 1.day
+      next if basket.phase.ends_before?(now)
+
+      LogActivityJob.perform_later(basket, 'not_submitted', nil, now)
     end
   end
 
   def create_survey_not_submitted_activities(now)
     Idea.draft_surveys.each do |idea|
-      if Activity.find_by(item: idea, action: 'survey_not_submitted').nil? && idea.updated_at <= now - 1.day
-        LogActivityJob.perform_later(idea, 'survey_not_submitted', nil, now)
-      end
+      next if Activity.find_by(item: idea, action: 'survey_not_submitted')
+      next if idea.updated_at > now - 1.day
+      next if idea.creation_phase.ends_before?(now)
+
+      LogActivityJob.perform_later(idea, 'survey_not_submitted', nil, now)
     end
   end
 

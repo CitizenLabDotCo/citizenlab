@@ -1,4 +1,38 @@
 ar:
+  locales:
+    en: إنجليزي
+    ar-MA: العربية (المغرب)
+    ar-SA: العربية (المملكة العربية السعودية)
+    ca-ES: الكاتالونية
+    cy-GB: تهرب من دفع الرهان
+    da-DK: دانماركي
+    de-DE: ألمانية
+    el-GR: اليونانية
+    en-CA: الإنجليزية (كندا)
+    en-GB: الإنجليزية (المملكة المتحدة)
+    en-IE: الإنجليزية (أيرلندا)
+    es-CL: الإسبانية (تشيلي)
+    es-ES: الإسبانية (إسبانيا)
+    fi-FI: الفنلندية
+    fr-BE: الفرنسية (بلجيكا)
+    fr-FR: فرنسي
+    hr-HR: الكرواتية
+    hu-HU: المجرية
+    it-IT: ايطالي
+    kl-GL: جرينلاند
+    lb-LU: اللوكسمبرجية
+    lv-LV: لاتفيا
+    mi: الماوري
+    nb-NO: النرويجية (بوكمال)
+    nl-BE: الهولندية (بلجيكا)
+    nl-NL: هولندي
+    pl-PL: تلميع
+    pt-BR: البرتغالية (البرازيل).
+    ro-RO: روماني
+    sr-Latn: الصربية (اللاتينية)
+    sr-SP: الصربية (السيريلية)
+    sv-SE: السويدية
+    tr-TR: اللغة التركية
   symbols:
     outside: في مكان آخر
   idea_statuses:
@@ -148,8 +182,8 @@ ar:
       section3:
         title: تفاصيل
         description:
-      other:
-        title: بما أنك اخترت "أخرى"، ما الذي تفكر فيه؟
+      other_text_field:
+        title: إذا اخترت '{other_option}'، ما الذي تفكر فيه؟
   custom_forms:
     categories:
       main_content:
@@ -200,29 +234,40 @@ ar:
       subject: '%{organizationName}: إعادة تعيين كلمة المرور'
       title_reset_your_password: 'اختر كلمة مرور جديدة'
   xlsx_export:
+    anonymous: 'مجهول'
     column_headers:
-      input_id: 'المعرِّف'
-      latitude: 'دائرة العرض'
-      longitude: 'خط الطول'
-      author_fullname: 'اسم المؤلف'
-      author_email: 'البريد الإلكتروني للمؤلف'
-      author_id: 'معرِّف المؤلف'
-      budget: 'ميزانية'
-      created_at: 'تم التقديم في'
-      published_at: 'تم النشر في'
-      comments_count: 'التعليقات'
-      likes_count: 'الإعجابات'
-      dislikes_count: 'يكره'
-      picks: 'مختارات'
-      participants: 'مشاركون'
-      votes_count: 'الأصوات'
-      input_url: 'URL'
-      project: 'المشروع'
-      status: 'الحالة'
       assignee_fullname: 'المعيّن إليه'
       assignee_email: 'البريد الإلكتروني للمعيَّن إليه'
+      attachments: 'المرفقات'
+      author_email: 'البريد الإلكتروني للمؤلف'
+      author_fullname: 'اسم المؤلف'
+      author_id: 'معرِّف المؤلف'
+      budget: 'ميزانية'
+      comments_count: 'التعليقات'
+      cost: 'يكلف'
+      created_at: 'تم التقديم في'
+      description: 'وصف'
+      dislikes_count: 'يكره'
+      email: 'بريد إلكتروني'
+      first_name: 'الأسماء الأولى)'
       image_url: 'رابط الصورة'
-    anonymous: 'مجهول'
+      input_id: 'المعرِّف'
+      input_url: 'URL'
+      last_name: 'اسم العائلة'
+      latitude: 'دائرة العرض'
+      likes_count: 'الإعجابات'
+      location: 'موقع'
+      longitude: 'خط الطول'
+      participants: 'مشاركون'
+      picks: 'مختارات'
+      project: 'المشروع'
+      published_at: 'تم النشر في'
+      registration_completed_at: 'تم الانتهاء من التسجيل في'
+      status: 'الحالة'
+      submitted_at: 'قدمت في'
+      tags: 'العلامات'
+      title: 'عنوان'
+      votes_count: 'الأصوات'
   form_builder:
     default_select_field:
       title: 'سؤالك'
@@ -248,6 +293,7 @@ ar:
       instructions: 'تعليمات'
       write_as_clearly: 'اكتب <b>بوضوح</b> قدر الإمكان - قد يتم مسح هذه النماذج ضوئيًا'
       write_in_language: 'اكتب إجاباتك بنفس لغة هذا النموذج'
+      linear_scale_print_description: 'الرجاء كتابة رقم بين %{min_label} و %{max_label} فقط'
   project_copy:
     title_suffix: 'نسخة'
   confirmations_mailer:

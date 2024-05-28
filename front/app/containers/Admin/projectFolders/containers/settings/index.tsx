@@ -47,7 +47,7 @@ const StyledGoBackButton = styled(GoBackButton)`
 `;
 
 const goBack = () => {
-  clHistory.push('/admin/projects');
+  clHistory.goBack();
 };
 
 const FolderSettings = ({ params }: WithRouterProps) => {

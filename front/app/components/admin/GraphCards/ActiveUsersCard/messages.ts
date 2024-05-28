@@ -1,25 +1,26 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  activeUsers: {
-    id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.activeUsers',
-    defaultMessage: 'Active users',
+  participants: {
+    id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants',
+    defaultMessage: 'Participants',
   },
-  totalActiveUsers: {
-    id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalActiveUsers',
-    defaultMessage: 'Total active users',
+  totalParticipants: {
+    id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalParticipants',
+    defaultMessage: 'Total participants',
   },
   cardTitleTooltipMessage: {
-    id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage',
+    id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3',
     defaultMessage:
-      'The number of users who have participated in one or more project(s). Participants embedded surveys will not be counted here.',
+      'Participants are users or visitors that have participated in a project, posted or interacted with a proposal, attended events or followed things.',
   },
   participationRate: {
     id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate',
     defaultMessage: 'Participation rate',
   },
   participationRateTooltip: {
-    id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip',
-    defaultMessage: 'Percentage of all participants compared to all visitors.',
+    id: 'app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip3',
+    defaultMessage:
+      'Percentage of visitors that become participants. Only participants and visitors that accepted cookies are counted.',
   },
 });

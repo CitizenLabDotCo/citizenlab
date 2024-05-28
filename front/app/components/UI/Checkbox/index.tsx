@@ -84,8 +84,10 @@ type Props = DefaultProps & {
   label?: string | JSX.Element | null;
   id?: string;
   name?: string;
+  checkBoxTabIndex?: number;
 };
 
+/** @deprecated Use CheckboxWithLabel or Checkbox from component-library instead. */
 export default class Checkbox extends PureComponent<Props> {
   static defaultProps: DefaultProps = {
     size: '22px',
@@ -104,18 +106,25 @@ export default class Checkbox extends PureComponent<Props> {
       indeterminate,
       onChange,
       name,
+      checkBoxTabIndex,
     } = this.props;
     const hasLabel = !!label;
 
     if (size && isBoolean(disabled) && isBoolean(indeterminate)) {
       return (
-        <Label id={id} className={className || ''} disabled={disabled}>
+        <Label
+          id={id}
+          className={className || ''}
+          disabled={disabled}
+          role="checkbox"
+          aria-checked={checked}
+        >
           <CheckboxContainer hasLabel={hasLabel}>
             <HiddenCheckbox
               onChange={onChange}
               checked={checked}
               disabled={disabled}
-              tabIndex={0}
+              tabIndex={checkBoxTabIndex}
               name={name}
             />
             <StyledCheckbox

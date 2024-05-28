@@ -27,10 +27,12 @@ const confetti = new JSConfetti();
 const StyledButton = styled(Button)`
   &.pulse {
     animation-name: pulse;
-    animation-duration: 1.3s;
     animation-timing-function: ease;
+    /* We set 1 second for the animation and run it 4 times to make sure we are a11y compliant (Under 5 seconds) */
+    animation-iteration-count: 4;
+    animation-duration: 1s;
     animation-delay: 0.3s;
-    animation-iteration-count: infinite;
+    animation-fill-mode: forwards;
   }
 
   /* border-radius */

@@ -12,9 +12,7 @@ import useDeleteInitiativeImage from 'api/initiative_images/useDeleteInitiativeI
 import { IInitiativeData } from 'api/initiatives/types';
 import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
 
-import InitiativeForm, {
-  FormValues as FormValues2,
-} from 'components/InitiativeForm';
+import InitiativeForm, { FormValues } from 'components/InitiativeForm';
 
 import clHistory from 'utils/cl-router/history';
 import { parsePosition } from 'utils/locationTools';
@@ -48,7 +46,7 @@ const InitiativesEditFormWrapper = ({
     images,
     header_bg,
     anonymous,
-  }: FormValues2) => {
+  }: FormValues) => {
     const { location_description, location_point_geojson } =
       await parsePosition(position);
 

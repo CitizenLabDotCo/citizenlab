@@ -6,10 +6,10 @@ class WebApi::V1::PhasesController < ApplicationController
 
   def index
     @phases = policy_scope(Phase)
-      .includes(:permissions, :report, :custom_form)
       .where(project_id: params[:project_id])
       .order(:start_at)
     @phases = paginate @phases
+    @phases = @phases.includes(:permissions, :report, :custom_form)
 
     render json: linked_json(@phases, WebApi::V1::PhaseSerializer, params: jsonapi_serializer_params, include: %i[permissions])
   end
@@ -23,7 +23,12 @@ class WebApi::V1::PhasesController < ApplicationController
     @phase.project_id = params[:project_id]
     sidefx.before_create(@phase, current_user)
     authorize @phase
-    if @phase.save
+    saved = false
+    ActiveRecord::Base.transaction do
+      saved = @phase.save
+      check_timeline_inconsistencies! @phase.project if saved
+    end
+    if saved
       sidefx.after_create(@phase, current_user)
       render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash, status: :created
     else
@@ -35,7 +40,12 @@ class WebApi::V1::PhasesController < ApplicationController
     @phase.assign_attributes phase_params
     authorize @phase
     sidefx.before_update(@phase, current_user)
-    if @phase.save
+    saved = false
+    ActiveRecord::Base.transaction do
+      saved = @phase.save
+      check_timeline_inconsistencies! @phase.project if saved
+    end
+    if saved
       sidefx.after_update(@phase, current_user)
       render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash, status: :ok
     else
@@ -45,11 +55,13 @@ class WebApi::V1::PhasesController < ApplicationController
 
   def destroy
     sidefx.before_destroy(@phase, current_user)
-    phase = ActiveRecord::Base.transaction do
+    phase = nil
+    ActiveRecord::Base.transaction do
       participation_method = Factory.instance.participation_method_for @phase
       @phase.ideas.each(&:destroy!) if participation_method.delete_inputs_on_pc_deletion?
 
-      @phase.destroy
+      phase = @phase.destroy
+      check_timeline_inconsistencies! @phase.project if phase.destroyed?
     end
     if phase.destroyed?
       sidefx.after_destroy(@phase, current_user)
@@ -76,8 +88,7 @@ class WebApi::V1::PhasesController < ApplicationController
 
   def index_xlsx
     I18n.with_locale(current_user.locale) do
-      include_private_attributes = Pundit.policy!(current_user, User).view_private_attributes?
-      xlsx = XlsxExport::GeneratorService.new.generate_inputs_for_phase @phase.id, include_private_attributes
+      xlsx = XlsxExport::InputsGenerator.new.generate_inputs_for_phase @phase.id, view_private_attributes: true
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'inputs.xlsx'
     end
   end
@@ -141,5 +152,12 @@ class WebApi::V1::PhasesController < ApplicationController
       permitted += %i[reacting_dislike_enabled reacting_dislike_method reacting_dislike_limited_max]
     end
     params.require(:phase).permit(permitted)
+  end
+
+  def check_timeline_inconsistencies!(project)
+    # This code is meant to be temporary to find the cause of the timeline inconsistency bugs
+    if project.reload.phases.any? { |phase| !phase.valid? }
+      raise 'Timeline change would lead to inconsistencies!'
+    end
   end
 end

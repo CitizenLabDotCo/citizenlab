@@ -83,6 +83,14 @@ resource 'Baskets' do
 
         expect(response_status).to be >= 400
       end
+
+      context 'when the voting phase is over' do
+        before { @project.phases.first.update!(start_at: (Time.now - 5.days), end_at: (Time.now - 3.days)) }
+
+        example_request '[error] Create a basket' do
+          assert_status 401
+        end
+      end
     end
   end
 
@@ -154,6 +162,19 @@ resource 'Baskets' do
             @basket.reload
             expect(@basket.baskets_ideas.map(&:votes)).to contain_exactly 7, 2, 2
             expect(@basket.total_votes).to eq 11
+          end
+
+          context 'when the voting phase is over' do
+            before do
+              @project.phases.first.update!(start_at: (Time.now - 5.days), end_at: (Time.now - 3.days))
+              @basket.update!(submitted_at: nil)
+            end
+
+            let(:submitted) { true }
+
+            example_request '[error] Submit a basket' do
+              assert_status 401
+            end
           end
         end
       end

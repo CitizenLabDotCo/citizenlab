@@ -582,7 +582,7 @@ class Modal extends PureComponent<Props, State> {
                         onClick={this.clickCloseButton}
                         iconColor={colors.textSecondary}
                         iconColorOnHover={'#000'}
-                        a11y_buttonActionMessage={messages.closeModal}
+                        a11y_buttonActionMessage={messages.closeWindow}
                       />
                     )}
 
@@ -626,7 +626,7 @@ class Modal extends PureComponent<Props, State> {
                           className="e2e-modal-close-button"
                           iconColor={colors.textSecondary}
                           iconColorOnHover={colors.black}
-                          a11y_buttonActionMessage={messages.closeModal}
+                          a11y_buttonActionMessage={messages.closeWindow}
                           onClick={this.clickCloseButton}
                         />
                       </Box>

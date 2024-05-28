@@ -2,6 +2,7 @@ ca:
   email_campaigns:
     campaign_type_description:
       "manual": Missatges oficials
+      "manual_project_participants": Missatges oficials als participants del projecte
       "admin_rights_received": S'han rebut els drets d'administrador
       "comment_deleted_by_admin": Eliminació del meu comentari
       "comment_marked_as_spam": Comenteu l'informe de correu brossa
@@ -559,6 +560,7 @@ ca:
         admins: 'Als administradors'
         admins_and_managers: 'A administradors i gestors'
         managers: 'Als directius'
+        project_participants: 'Als participants del projecte'
         registered_users: 'A usuaris registrats'
       recipient_segment:
         admins: 'Administradors'

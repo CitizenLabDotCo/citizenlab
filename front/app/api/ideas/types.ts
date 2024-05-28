@@ -225,3 +225,13 @@ export interface IQueryParameters {
   filter_can_moderate?: boolean;
   basket_id?: string;
 }
+
+export interface IIdeaApprovals {
+  data: {
+    type: 'idea_approvals';
+    attributes: {
+      approved: number;
+      not_approved: number;
+    };
+  };
+}

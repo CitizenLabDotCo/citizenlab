@@ -116,13 +116,6 @@ describe IdeaCustomFieldsService do
         expect(output).to be_empty
       end
     end
-
-    describe 'allowed_extra_field_keys' do
-      it 'excludes disabled and built-in field keys' do
-        output = service.allowed_extra_field_keys
-        expect(output).to be_empty
-      end
-    end
   end
 
   context 'with persisted fields' do
@@ -266,21 +259,6 @@ describe IdeaCustomFieldsService do
         expect(output).to include extra_field1
         expect(output).not_to include extra_field2
         expect(output.map(&:code)).to eq [nil]
-      end
-    end
-
-    describe 'allowed_extra_field_keys' do
-      it 'excludes disabled and built-in field keys' do
-        create(
-          :custom_field_multiselect,
-          :for_custom_form,
-          resource: custom_form,
-          required: false,
-          key: 'multiselect_field'
-        )
-
-        output = service.allowed_extra_field_keys
-        expect(output).to match_array [:extra_field1, { multiselect_field: [] }]
       end
     end
 
@@ -547,6 +525,71 @@ describe IdeaCustomFieldsService do
 
         expect(errors.length).to eq 1
         expect(errors['1']).not_to be_nil
+      end
+    end
+
+    describe '#duplicate_all_fields' do
+      let(:survey_project) { create(:single_phase_native_survey_project) }
+      let(:custom_form) { create(:custom_form, participation_context: survey_project.phases.first) }
+
+      it 'creates non-persisted duplicates of all fields' do
+        page1 = create(:custom_field_page, resource: custom_form)
+        select_field = create(:custom_field_select, resource: custom_form)
+        select_option = create(:custom_field_option, custom_field: select_field)
+        page2 = create(:custom_field_page, resource: custom_form)
+        text_field = create(:custom_field_text, resource: custom_form)
+        page3 = create(:custom_field_page, resource: custom_form)
+        multi_select_field = create(:custom_field_multiselect, resource: custom_form)
+        _multi_select_option = create(:custom_field_option, custom_field: multi_select_field)
+        map_field = create(:custom_field_point, resource: custom_form, map_config: create(:map_config))
+        map_field_no_config = create(:custom_field_point, resource: custom_form)
+        select_field.update!(logic: { rules: [{ if: select_option.id, goto_page_id: page3.id }] })
+        page2.update!(logic: { next_page_id: page3.id })
+
+        expect(CustomField.count).to eq 8
+        expect(CustomMaps::MapConfig.count).to eq 1
+
+        fields = service.duplicate_all_fields
+
+        expect(CustomField.count).to eq 8
+        expect(CustomMaps::MapConfig.count).to eq 2
+        expect(fields.count).to eq 8
+
+        # page 1
+        expect(fields[0].id).not_to eq page1.id
+
+        # select field
+        expect(fields[1].id).not_to eq select_field.id
+        expect(fields[1].logic).to match({
+          'rules' => [
+            { 'if' => fields[1].options[0].temp_id, 'goto_page_id' => fields[4].id }
+          ]
+        })
+        expect(fields[1].options[0].temp_id).to match 'TEMP-ID-'
+
+        # page 2
+        expect(fields[2].id).not_to eq page2.id
+        expect(fields[2].logic).to match({
+          'next_page_id' => fields[4].id
+        })
+
+        # text field
+        expect(fields[3].id).not_to eq text_field.id
+
+        # page 3
+        expect(fields[4].id).not_to eq page3.id
+
+        # multi select field
+        expect(fields[5].id).not_to eq multi_select_field.id
+        expect(fields[5].options[0].temp_id).to match 'TEMP-ID-'
+
+        # map field - duplicates map config
+        expect(fields[6].id).not_to eq map_field.id
+        expect(fields[6].map_config.id).not_to eq map_field.map_config.id
+
+        # map field 2 - has no map config
+        expect(fields[7].id).not_to eq map_field_no_config.id
+        expect(fields[7].map_config).to be_nil
       end
     end
   end

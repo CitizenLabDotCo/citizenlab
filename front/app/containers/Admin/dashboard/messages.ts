@@ -23,9 +23,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.tabRepresentativeness2',
     defaultMessage: 'Representation',
   },
+  managementFeed: {
+    id: 'app.Admin.Moderation.managementFeed',
+    defaultMessage: 'Management feed',
+  },
   feed: {
-    id: 'app.Admin.Moderation.feed',
-    defaultMessage: 'Feed',
+    id: 'app.Admin.Moderation.participationFeed',
+    defaultMessage: 'Participation feed',
   },
   tabVisitors: {
     id: 'app.modules.commercial.analytics.admin.components.Tab',
@@ -110,13 +114,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.usersByTimeTitle',
     defaultMessage: 'Users',
   },
-  activeUsers: {
-    id: 'app.containers.AdminPage.DashboardPage.activeUsers',
-    defaultMessage: 'Active users',
-  },
-  activeUsersByTimeTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.activeUsersByTimeTitle',
-    defaultMessage: 'Active users',
+  participants: {
+    id: 'app.containers.AdminPage.DashboardPage.participants',
+    defaultMessage: 'Participants',
   },
   numberOfActiveParticipantsDescription: {
     id: 'app.containers.AdminPage.DashboardPage.numberOfActiveParticipantsDescription2',
@@ -220,10 +220,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.false',
     defaultMessage: 'false',
   },
-  otherArea: {
-    id: 'app.containers.AdminPage.DashboardPage.otherArea',
-    defaultMessage: 'Other',
-  },
   mostActiveUsersRankingDescription: {
     id: 'app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription2',
     defaultMessage:
@@ -237,10 +233,6 @@ export default defineMessages({
   titleDashboard: {
     id: 'app.containers.AdminPage.DashboardPage.titleDashboard',
     defaultMessage: 'Dashboard',
-  },
-  participants: {
-    id: 'app.containers.AdminPage.DashboardPage.Report.participants',
-    defaultMessage: 'participants',
   },
   totalUsers: {
     id: 'app.containers.AdminPage.DashboardPage.Report.totalUsers',
@@ -277,5 +269,9 @@ export default defineMessages({
   showLess: {
     id: 'app.containers.AdminPage.DashboardPage.overview.showLess',
     defaultMessage: 'Show less',
+  },
+  labelGroupFilter: {
+    id: 'app.containers.AdminPage.DashboardPage.labelGroupFilter',
+    defaultMessage: 'Select user group',
   },
 });

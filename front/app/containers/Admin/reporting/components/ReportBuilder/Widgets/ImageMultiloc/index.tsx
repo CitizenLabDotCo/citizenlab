@@ -10,14 +10,13 @@ import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 
-import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
-
 import { IMAGE_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
-import { ImageSettings } from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import messages from 'components/admin/ContentBuilder/Widgets/ImageMultiloc/messages';
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 import eventEmitter from 'utils/eventEmitter';
+
+import Settings from './Settings';
 
 export interface Props {
   image?: {
@@ -25,11 +24,10 @@ export interface Props {
     imageUrl?: string;
   };
   alt?: Multiloc;
+  stretch?: boolean;
 }
 
-const Image = ({ alt = {}, image }: Props) => {
-  const componentDefaultPadding = useReportDefaultPadding();
-
+const Image = ({ alt = {}, image, stretch = true }: Props) => {
   const localize = useLocalize();
   const { enabled } = useEditor((state) => {
     return {
@@ -51,11 +49,11 @@ const Image = ({ alt = {}, image }: Props) => {
       minHeight="26px"
       maxWidth="1200px"
       margin="0 auto"
-      px={componentDefaultPadding}
+      justifyContent="center"
     >
       {image?.imageUrl && (
         <ImageComponent
-          width="100%"
+          width={stretch ? '100%' : undefined}
           src={image?.imageUrl}
           alt={localize(alt) || ''}
           data-code={image?.dataCode}
@@ -79,7 +77,7 @@ const Image = ({ alt = {}, image }: Props) => {
 
 Image.craft = {
   related: {
-    settings: ImageSettings,
+    settings: Settings,
   },
 };
 

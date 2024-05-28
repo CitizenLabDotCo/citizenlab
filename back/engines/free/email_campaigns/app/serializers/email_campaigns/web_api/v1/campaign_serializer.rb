@@ -3,7 +3,7 @@
 module EmailCampaigns
   class WebApi::V1::CampaignSerializer < ::WebApi::V1::BaseSerializer
     extend GroupOrderingHelper
-    attributes :created_at, :updated_at
+    attributes :created_at, :updated_at, :context_id
 
     attribute :campaign_name do |object|
       object.class.campaign_name
@@ -68,6 +68,12 @@ module EmailCampaigns
           result[locale] = object.schedule_multiloc_value
         end
       end
+    end
+
+    attribute :delivery_stats, if: proc { |object|
+      object.manual? && object.sent?
+    } do |object|
+      Delivery.status_counts(object.id)
     end
 
     attribute :sender, if: proc { |object|

@@ -38,7 +38,7 @@ const TopBar = ({ project, event }: Props) => {
 
   return (
     <Bar>
-      <Box mb="40px" display="flex" width="100%" justifyContent="space-between">
+      <Box display="flex" width="100%" justifyContent="space-between">
         <GoBackButtonSolid
           text={formatMessage(messages.goBack)}
           onClick={() => {
@@ -57,9 +57,7 @@ const TopBar = ({ project, event }: Props) => {
             py="4px"
             text={formatMessage(messages.editEvent)}
             onClick={() => {
-              clHistory.push(
-                `/admin/projects/${project.id}/settings/events/${event.id}`
-              );
+              clHistory.push(`/admin/projects/${projectId}/events/${event.id}`);
             }}
           />
         )}

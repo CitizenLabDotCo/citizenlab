@@ -35,12 +35,12 @@ export interface Report {
         type: 'content-builder-layout';
       };
     };
-    owner: {
+    owner?: {
       data: {
         id: string;
         type: 'user';
       };
-    };
+    } | null;
     phase?: {
       data: {
         id: string;

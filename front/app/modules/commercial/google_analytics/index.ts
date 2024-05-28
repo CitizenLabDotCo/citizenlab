@@ -15,10 +15,6 @@ declare module 'components/ConsentManager/destinations' {
   export interface IDestinationMap {
     google_analytics: 'google_analytics';
   }
-
-  interface IConsentManagerFeatureMap {
-    google_analytics: 'google_analytics';
-  }
 }
 
 const destinationConfig: IDestinationConfig = {

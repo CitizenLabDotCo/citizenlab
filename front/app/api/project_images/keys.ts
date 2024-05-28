@@ -8,6 +8,13 @@ const projectImagesKeys = {
   list: ({ projectId }: { projectId: string | null }) => [
     { ...baseKey, operation: 'list', parameters: { projectId } },
   ],
+  item: ({ id }: { id?: string }) => [
+    {
+      type: 'image',
+      operation: 'item',
+      parameters: { id },
+    },
+  ],
 } satisfies QueryKeys;
 
 export default projectImagesKeys;

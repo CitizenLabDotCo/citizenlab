@@ -121,7 +121,7 @@ const ReportBuilder = ({
             setSelectedLocale={setSelectedLocale}
           />
           <Box mt={`${stylingConsts.menuHeight}px`}>
-            <Toolbox reportId={reportId} selectedLocale={selectedLocale} />
+            <Toolbox selectedLocale={selectedLocale} />
             <LanguageProvider
               contentBuilderLocale={selectedLocale}
               platformLocale={platformLocale}

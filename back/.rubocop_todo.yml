@@ -177,7 +177,7 @@ Metrics/AbcSize:
 # Configuration parameters: CountComments, CountAsOne, AllowedMethods, AllowedPatterns, inherit_mode.
 # AllowedMethods: refine
 Metrics/BlockLength:
-  Max: 346
+  Max: 355
 
 # Offense count: 5
 # Configuration parameters: CountBlocks.
@@ -188,6 +188,9 @@ Metrics/BlockNesting:
 # Configuration parameters: CountComments, CountAsOne.
 Metrics/ClassLength:
   Max: 689
+
+Metrics/ModuleLength:
+  Max: 120
 
 # Offense count: 1
 # Configuration parameters: LengthThreshold.
@@ -203,7 +206,7 @@ Metrics/CyclomaticComplexity:
 # Offense count: 391
 # Configuration parameters: CountComments, CountAsOne, AllowedMethods, AllowedPatterns.
 Metrics/MethodLength:
-  Max: 58
+  Max: 60
 
 # Offense count: 7
 # Configuration parameters: CountKeywordArgs, MaxOptionalParameters.
@@ -810,7 +813,6 @@ Style/ReturnNilInPredicateMethodDefinition:
     - 'app/policies/stat_idea_policy.rb'
     - 'app/policies/stat_reaction_policy.rb'
     - 'app/policies/stat_user_policy.rb'
-    - 'app/services/phone_service.rb'
 
 # Offense count: 2035
 # This cop supports safe autocorrection (--autocorrect).

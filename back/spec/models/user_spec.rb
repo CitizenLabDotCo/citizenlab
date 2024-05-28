@@ -38,20 +38,12 @@ RSpec.describe User do
     end
   end
 
-  describe 'creating a user' do
-    it 'generates a slug' do
-      u = build(:user)
-      u.first_name = 'Not Really_%40)'
-      u.last_name = '286^$@sluggable'
-      u.save
-      expect(u.slug).to eq('not-really--40-286-sluggable')
-    end
-  end
+  describe 'generate_slug' do
+    let(:user) { build(:user) }
 
-  describe 'creating an invited user' do
-    it 'has correct linking between invite and invitee' do
-      invitee = create(:invited_user)
-      expect(invitee.invitee_invite.invitee.id).to eq invitee.id
+    it 'generates a slug based on the first and last name' do
+      user.update!(first_name: 'Not Really_%40)', last_name: '286^$@sluggable')
+      expect(user.slug).to eq 'not-really-40-286-sluggable'
     end
 
     it 'does not generate a slug if an invited user' do
@@ -60,13 +52,19 @@ RSpec.describe User do
     end
   end
 
+  describe 'creating an invited user' do
+    it 'has correct linking between invite and invitee' do
+      invitee = create(:invited_user)
+      expect(invitee.invitee_invite.invitee.id).to eq invitee.id
+    end
+  end
+
   describe 'creating a light user - email & locale only' do
-    it 'is valid and generates a slug' do
+    it 'is valid' do
       SettingsService.new.activate_feature! 'user_confirmation'
       u = described_class.new(email: 'test@test.com', locale: 'en')
-      u.save
+      u.save!
       expect(u).to be_valid
-      expect(u.slug).not_to be_nil
     end
 
     it 'is still valid if user confirmation is not turned on' do
@@ -122,33 +120,6 @@ RSpec.describe User do
       expect(blocked_users.count).to eq 2
       expect(blocked_users).to match_array([user1, user3])
       expect(blocked_users).not_to include(user2)
-    end
-  end
-
-  describe 'user password authentication' do
-    it 'should be compatible with meteor encryption' do
-      u = build(:user)
-      u.first_name = 'Sebi'
-      u.last_name = 'Hoorens'
-      u.email = 'sebastien@citizenlab.co'
-      u.password_digest = '$2a$10$npkXzpkkyO.g6LjmSYHbOeq76gxpOYeei8SVsjr0LqsBiAdTeDhHK'
-      u.save
-      expect(!!u.authenticate('supersecret')).to be(true)
-      expect(!!u.authenticate('totallywrong')).to be(false)
-    end
-
-    it 'should replace the CL1 hash by the CL2 hash' do
-      u = build(:user)
-      u.first_name = 'Sebi'
-      u.last_name = 'Hoorens'
-      u.email = 'sebastien@citizenlab.co'
-      u.password_digest = '$2a$10$npkXzpkkyO.g6LjmSYHbOeq76gxpOYeei8SVsjr0LqsBiAdTeDhHK'
-      u.save
-      expect(!!u.authenticate('supersecret')).to be(true)
-      expect(u.password_digest).not_to eq('$2a$10$npkXzpkkyO.g6LjmSYHbOeq76gxpOYeei8SVsjr0LqsBiAdTeDhHK')
-      expect(!!BCrypt::Password.new(u.password_digest).is_password?('supersecret')).to be(true)
-      expect(!!u.authenticate('supersecret')).to be(true)
-      expect(!!u.authenticate('totallywrong')).to be(false)
     end
   end
 
@@ -313,8 +284,7 @@ RSpec.describe User do
         'enabled' => true,
         'allowed' => true,
         'enable_signup' => true,
-        'minimum_length' => 5,
-        'phone' => false
+        'minimum_length' => 5
       }
       AppConfiguration.instance.update! settings: settings
 
@@ -328,8 +298,7 @@ RSpec.describe User do
         'enabled' => true,
         'allowed' => true,
         'enable_signup' => true,
-        'minimum_length' => 5,
-        'phone' => false
+        'minimum_length' => 5
       }
       AppConfiguration.instance.update! settings: settings
 
@@ -367,13 +336,6 @@ RSpec.describe User do
     it "is invalid when it's not one of the configured locales" do
       user = build(:user, locale: 'pt')
       expect { user.valid? }.to(change { user.errors[:locale] })
-    end
-  end
-
-  describe 'slug' do
-    it 'is generated on create when not given' do
-      user = create(:user, slug: nil)
-      expect(user.slug).to be_present
     end
   end
 
@@ -1009,13 +971,19 @@ RSpec.describe User do
   end
 
   describe 'in_any_groups?' do
-    it 'returns truety iff the user is a member of one of the given groups' do
+    it 'returns true if the user is a member of one of the given groups' do
       group1, group2 = create_list(:group, 2)
       user = create(:user, manual_groups: [group1])
       expect(user.in_any_groups?(Group.none)).to be false
       expect(user.in_any_groups?(Group.where(id: group1))).to be true
       expect(user.in_any_groups?(Group.where(id: [group1, group2]))).to be true
       expect(user).not_to be_in_any_groups(Group.where(id: group2))
+    end
+
+    it 'returns false if the user is not in any groups' do
+      group = create(:group)
+      user = create(:user)
+      expect(user.in_any_groups?([group])).to be false
     end
   end
 
@@ -1045,31 +1013,6 @@ RSpec.describe User do
 
     it 'is initialized without a confirmation code' do
       expect(user.email_confirmation_code).to be_nil
-    end
-
-    describe '#should_require_confirmation?' do
-      it 'returns false if the user is an admin' do
-        user.add_role('admin')
-        user.save!
-        expect(user.should_require_confirmation?).to be false
-      end
-
-      it 'returns false if the user is a project moderator' do
-        user.add_role('project_moderator', 'project_id' => 'some_id')
-        user.save!
-        expect(user.should_require_confirmation?).to be false
-      end
-
-      it 'returns false if the user is a normal user' do
-        expect(user.should_require_confirmation?).to be true
-      end
-
-      it 'returns false if the user registered with a phone number' do
-        enable_phone_login
-        user.email = '343938837373'
-        user.save!
-        expect(user.reload.should_require_confirmation?).to be false
-      end
     end
 
     describe '#confirmation_required?' do
@@ -1103,16 +1046,8 @@ RSpec.describe User do
     end
 
     describe '#set_confirmation_required' do
-      it 'sets the confirmation required field' do
-        user.save!
-        user.set_confirmation_required
-        expect(user.confirmation_required?).to be true
-        expect(user.email_confirmed_at).to be_nil
-      end
-
       it 'does not perform a commit to the db' do
-        user.save!
-        user.set_confirmation_required
+        user.validate
         expect(user.saved_change_to_confirmation_required?).to be false
         expect(user.saved_change_to_email_confirmed_at?).to be false
       end
@@ -1211,10 +1146,13 @@ RSpec.describe User do
           expect { user.update!(email: invalid_email) }.to raise_error(ActiveRecord::RecordInvalid)
         end
 
-        context 'the user is not active' do
+        context 'when form submitted' do
+          let(:save_options) { { context: :form_submission } }
+
           it 'cannot change the email if the user is passwordless' do
             user.update!(password: nil)
-            expect { user.update!(email: email) }.to raise_error(ActiveRecord::RecordInvalid)
+            user.assign_attributes(email: email)
+            expect { user.save!(**save_options) }.to raise_error(ActiveRecord::RecordInvalid)
           end
         end
       end
@@ -1247,13 +1185,6 @@ RSpec.describe User do
     it 'returns false if invite is pending' do
       user = described_class.new(email: 'test@citizenlab.co', invite_status: 'pending')
       expect(user.no_name?).to be false
-    end
-
-    it 'returns an anonymous full_name and slug in format "User 123456" if true' do
-      user = described_class.new(email: 'test@citizenlab.co')
-      user.save
-      expect(user.full_name).to match(/User \d{6}/)
-      expect(user.slug).to match(/user-\d{6}/)
     end
   end
 

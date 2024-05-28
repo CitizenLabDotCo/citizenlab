@@ -1,4 +1,38 @@
 lb:
+  locales:
+    en: Englesch
+    ar-MA: Arabesch (Marokko)
+    ar-SA: Arabesch (Saudi Arabien)
+    ca-ES: katalanesch
+    cy-GB: Waliser
+    da-DK: Dänesch
+    de-DE: Däitsch
+    el-GR: Griichesch
+    en-CA: Englesch (Kanada)
+    en-GB: Englesch (UK)
+    en-IE: Englesch (Irland)
+    es-CL: Spuenesch (Chile)
+    es-ES: Spuenesch (Spuenien)
+    fi-FI: Finnesch
+    fr-BE: Franséisch (Belsch)
+    fr-FR: Franséisch
+    hr-HR: Kroatesch
+    hu-HU: Ungaresch
+    it-IT: Italienesch
+    kl-GL: grönlännesch
+    lb-LU: lëtzebuergesch
+    lv-LV: Lettesch
+    mi: maoresch
+    nb-NO: Norwegesch (Bokmål)
+    nl-BE: Hollännesch (Belsch)
+    nl-NL: Hollänesch
+    pl-PL: Polnesch
+    pt-BR: Portugisesch (Brasilien)
+    ro-RO: Rumänesch
+    sr-Latn: Serbesch (Latäin)
+    sr-SP: Serbesch (Kyrillesch)
+    sv-SE: Schweedesch
+    tr-TR: tierkesch
   symbols:
     outside: anzwousch anescht
   idea_statuses:
@@ -148,8 +182,8 @@ lb:
       section3:
         title: Detailer
         description:
-      other:
-        title: Well Dir 'aner' gewielt hutt, wat denkt Dir un?
+      other_text_field:
+        title: Wann Dir '{other_option}' gewielt hutt, un wat denkt Dir?
   custom_forms:
     categories:
       main_content:
@@ -200,29 +234,40 @@ lb:
       subject: '%{organizationName}: Äert Passwuert zerécksetzen'
       title_reset_your_password: 'Wielt en neit Passwuert'
   xlsx_export:
+    anonymous: 'Anonym'
     column_headers:
-      input_id: 'ID'
-      latitude: 'Héicht'
-      longitude: 'Längt'
-      author_fullname: 'Numm vum Auteur'
-      author_email: 'E-Mail vum Auteur'
-      author_id: 'ID vum Auteur'
-      budget: 'Budget'
-      created_at: 'Agereecht bei'
-      published_at: 'Verëffentlecht bei'
-      comments_count: 'Kommentaren'
-      likes_count: 'Gefällt'
-      dislikes_count: 'Net gär'
-      picks: 'Wielt'
-      participants: 'Participanten'
-      votes_count: 'Stëmmen'
-      input_url: 'URL'
-      project: 'Projet'
-      status: 'Status'
       assignee_fullname: 'Mandataire'
       assignee_email: 'E-Mail vum Beoptragten'
+      attachments: 'Uschlëss'
+      author_email: 'E-Mail vum Auteur'
+      author_fullname: 'Numm vum Auteur'
+      author_id: 'ID vum Auteur'
+      budget: 'Budget'
+      comments_count: 'Kommentaren'
+      cost: 'Käschten'
+      created_at: 'Agereecht bei'
+      description: 'Beschreiwung'
+      dislikes_count: 'Net gär'
+      email: 'E-Mail'
+      first_name: 'Virnumm (en)'
       image_url: 'Bild URL'
-    anonymous: 'Anonym'
+      input_id: 'ID'
+      input_url: 'URL'
+      last_name: 'Familljennumm'
+      latitude: 'Héicht'
+      likes_count: 'Gefällt'
+      location: 'Location'
+      longitude: 'Längt'
+      participants: 'Participanten'
+      picks: 'Wielt'
+      project: 'Projet'
+      published_at: 'Verëffentlecht bei'
+      registration_completed_at: 'Aschreiwung ofgeschloss um'
+      status: 'Status'
+      submitted_at: 'Erlaabt am'
+      tags: 'Tags'
+      title: 'Titel'
+      votes_count: 'Stëmmen'
   form_builder:
     default_select_field:
       title: 'Är Fro'
@@ -248,6 +293,7 @@ lb:
       instructions: 'Uweisungen'
       write_as_clearly: 'Schreift esou <b>kloer</b> wéi Dir kënnt - dës Forme kënne gescannt ginn'
       write_in_language: 'Schreift Är Äntwerten an der selwechter Sprooch wéi dëse Formulaire'
+      linear_scale_print_description: 'Schreift w.e.g. nëmmen eng Zuel tëscht %{min_label} an %{max_label}'
   project_copy:
     title_suffix: 'Kopie'
   confirmations_mailer:

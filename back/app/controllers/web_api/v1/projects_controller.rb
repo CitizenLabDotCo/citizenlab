@@ -1,16 +1,14 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectsController < ApplicationController
-  before_action :set_project, only: %i[show update reorder destroy index_xlsx delete_inputs]
+  before_action :set_project, only: %i[show update reorder destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx delete_inputs]
 
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
 
   def index
-    params['moderator'] = current_user if params[:filter_can_moderate]
-
     publications = policy_scope(AdminPublication)
-    publications = AdminPublicationsFilteringService.new.filter(publications, params)
+    publications = AdminPublicationsFilteringService.new.filter(publications, params.merge(current_user: current_user))
       .where(publication_type: Project.name)
 
     # Not very satisfied with this ping-pong of SQL queries (knowing that the
@@ -18,20 +16,19 @@ class WebApi::V1::ProjectsController < ApplicationController
     # But could not find a way to eager-load the polymorphic type in the publication
     # scope.
 
-    # For unknown reasons, `includes` uses joins here. It makes the query complex and slow. So, we use `preload`.
+    # `includes` tries to be smart & use joins here, but it makes the query complex and slow. So, we use `preload`.
     # Using `pluck(:publication_id)` instead of `select(:publication_id)` also helps if used with `includes`,
     # but it doesn't make any difference with `preload`. Still using it in case the query changes.
-    @projects = Project.where(id: publications.pluck(:publication_id))
-      .ordered
-      .preload(
-        :project_images,
-        :areas,
-        :topics,
-        :content_builder_layouts, # Defined in ContentBuilder engine
-        phases: [:report],
-        admin_publication: [:children]
-      )
+    @projects = Project.where(id: publications.pluck(:publication_id)).ordered
     @projects = paginate @projects
+    @projects = @projects.preload(
+      :project_images,
+      :areas,
+      :topics,
+      :content_builder_layouts, # Defined in ContentBuilder engine
+      phases: [:report, { permissions: [:groups] }],
+      admin_publication: [:children]
+    )
 
     user_followers = current_user&.follows
       &.where(followable_type: 'Project')
@@ -43,7 +40,8 @@ class WebApi::V1::ProjectsController < ApplicationController
     instance_options = {
       user_followers: user_followers,
       timeline_active: TimelineService.new.timeline_active_on_collection(@projects.to_a),
-      visible_children_count_by_parent_id: {} # projects don't have children
+      visible_children_count_by_parent_id: {}, # projects don't have children
+      permission_service: Permissions::ProjectPermissionsService.new
     }
 
     render json: linked_json(
@@ -140,9 +138,36 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def index_xlsx
     I18n.with_locale(current_user.locale) do
-      include_private_attributes = Pundit.policy!(current_user, User).view_private_attributes?
-      xlsx = XlsxExport::GeneratorService.new.generate_inputs_for_project @project.id, include_private_attributes
+      xlsx = XlsxExport::InputsGenerator.new.generate_inputs_for_project @project.id, view_private_attributes: true
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'inputs.xlsx'
+    end
+  end
+
+  def votes_by_user_xlsx
+    if @project.phases.where(participation_method: 'voting').present?
+      I18n.with_locale(current_user&.locale) do
+        xlsx = XlsxExport::ProjectBasketsVotesGenerator.new.generate_project_baskets_votes_xlsx(@project)
+        send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          filename: 'votes_by_user.xlsx'
+      end
+
+      sidefx.after_votes_by_user_xlsx(@project, current_user)
+    else
+      raise 'Project has no voting phase.'
+    end
+  end
+
+  def votes_by_input_xlsx
+    if @project.phases.where(participation_method: 'voting').present?
+      I18n.with_locale(current_user&.locale) do
+        xlsx = XlsxExport::ProjectIdeasVotesGenerator.new.generate_project_ideas_votes_xlsx @project
+        send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          filename: 'votes_by_input.xlsx'
+      end
+
+      sidefx.after_votes_by_input_xlsx(@project, current_user)
+    else
+      raise 'Project has no voting phase.'
     end
   end
 

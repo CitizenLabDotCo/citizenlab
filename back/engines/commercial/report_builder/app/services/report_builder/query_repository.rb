@@ -3,7 +3,6 @@
 module ReportBuilder
   class QueryRepository
     GRAPH_RESOLVED_NAMES_CLASSES = {
-      # 'GenderWidget' => Queries::Analytics::UsersByGender,
       'GenderWidget' => Queries::UsersByCustomField::Gender,
       'AgeWidget' => Queries::UsersByCustomField::Birthyear,
       'ReactionsByTimeWidget' => Queries::Analytics::ReactionsByTime,
@@ -14,7 +13,9 @@ module ReportBuilder
       'VisitorsTrafficSourcesWidget' => Queries::Analytics::TrafficSources,
       'SurveyQuestionResultWidget' => Queries::SurveyQuestionResult,
       'MostReactedIdeasWidget' => Queries::MostReactedIdeas,
-      'SingleIdeaWidget' => Queries::SingleIdea
+      'SingleIdeaWidget' => Queries::SingleIdea,
+      'DemographicsWidget' => Queries::Demographics,
+      'RegistrationsWidget' => Queries::Analytics::Registrations
     }.freeze
 
     def initialize(current_user)

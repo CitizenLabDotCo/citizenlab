@@ -74,6 +74,9 @@ const AuthProviders = memo<Props>(
     const hoplrLoginEnabled = useFeatureFlag({
       name: 'hoplr_login',
     });
+    const criiptoLoginEnabled = useFeatureFlag({
+      name: 'criipto_login',
+    });
 
     const azureProviderName =
       tenantSettings?.azure_ad_login?.login_mechanism_name;
@@ -96,8 +99,6 @@ const AuthProviders = memo<Props>(
       [onSwitchFlow]
     );
 
-    const phone = tenantSettings?.password_login?.phone;
-
     const isPasswordSigninOrSignupAllowed =
       passwordLoginEnabled &&
       (flow === 'signin' ||
@@ -113,7 +114,8 @@ const AuthProviders = memo<Props>(
       azureAdB2cLoginEnabled ||
       viennaCitizenLoginEnabled ||
       claveUnicaLoginEnabled ||
-      hoplrLoginEnabled;
+      hoplrLoginEnabled ||
+      criiptoLoginEnabled;
 
     return (
       <Container
@@ -151,6 +153,25 @@ const AuthProviders = memo<Props>(
           </StyledAuthProviderButton>
         )}
 
+        {criiptoLoginEnabled && (
+          <StyledAuthProviderButton
+            icon="mitid"
+            flow={flow}
+            authProvider="criipto"
+            onContinue={onSelectAuthProvider}
+          >
+            <FormattedMessage
+              {...messages.continueWithLoginMechanism}
+              values={{
+                loginMechanismName:
+                  process.env.NODE_ENV === 'development'
+                    ? 'MitID (Criipto)'
+                    : 'MitID',
+              }}
+            />
+          </StyledAuthProviderButton>
+        )}
+
         <Outlet
           id="app.components.SignUpIn.AuthProviders.ContainerStart"
           flow={flow}
@@ -166,17 +187,9 @@ const AuthProviders = memo<Props>(
             id="e2e-login-with-email"
           >
             {flow === 'signup' ? (
-              <FormattedMessage
-                {...(phone
-                  ? messages.signUpWithPhoneOrEmail
-                  : messages.signUpWithEmail)}
-              />
+              <FormattedMessage {...messages.signUpWithEmail} />
             ) : (
-              <FormattedMessage
-                {...(phone
-                  ? messages.logInWithPhoneOrEmail
-                  : messages.logInWithEmail)}
-              />
+              <FormattedMessage {...messages.logInWithEmail} />
             )}
           </StyledAuthProviderButton>
         )}

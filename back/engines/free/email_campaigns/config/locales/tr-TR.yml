@@ -2,6 +2,7 @@ tr:
   email_campaigns:
     campaign_type_description:
       "manual": Resmi mesajlar
+      "manual_project_participants": Proje katılımcılarına resmi mesajlar
       "admin_rights_received": Yönetici hakları alındı
       "comment_deleted_by_admin": Yorumumun silinmesi
       "comment_marked_as_spam": Yorumun spam olarak bildirilmesi
@@ -559,6 +560,7 @@ tr:
         admins: 'Yöneticilere'
         admins_and_managers: 'Yöneticilere ve müdürlere'
         managers: 'Yöneticilere'
+        project_participants: 'Proje katılımcılarına'
         registered_users: 'Kayıtlı kullanıcılara'
       recipient_segment:
         admins: 'Yöneticiler'

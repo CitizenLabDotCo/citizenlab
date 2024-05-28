@@ -1,19 +1,13 @@
 biji-bo
-bogal jobio
 bustachu
 bwchio
 cachgi
 cachiad
 cachu
-cachu iar
-cachu planciau
-cael cachiad
 calar
 cedor
 ceilliau
-cer i grafu
 cetors
-cig a llysiau
 cnych
 cnychu
 codiad
@@ -21,54 +15,20 @@ cont
 corris
 cryniadur
 cwd
-dim gwerth rhech dafad
-disgleirio/sgleinio fel ceilliau ci
-dos i chwarae efo dy nain
-fel rhech jet
 ffwrch
 ffwrcho
 ffyc
 ffycio
-haliad hallt
 lembo
-llawes goch
-mae hi wedi cachi arna i
-malu cachu
-mewn cachiad
-mewn cachiad chwanan
-mewn cachiad nico
-mewn dau gachiad
-min dwr
-paid â chodi pais wedi pisio
-pen pidlan gawsog
 pen-coc
-pidin tarw
 pis
 pisio
-pisio bwrw
-pisio cath
-pisio glaw
 piso
-piso dryw
-piso dryw bach yn y môr
-piso gwidw
 putain
 putainfeistr
-pwdin blew
-rhech mewn potel
-saim serch
 sguthan
 shinach
 siani
 silffo
 sioncen
 slebog
-spwng dorth
-swydd chwythiant
-tafod bach
-twll dy din
-twll tin
-y cachwr
-y cedor lama
-y coc oen
-yn twll tin Ifan saer

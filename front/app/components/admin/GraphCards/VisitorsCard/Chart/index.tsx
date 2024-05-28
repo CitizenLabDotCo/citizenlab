@@ -3,10 +3,11 @@ import React, { useMemo } from 'react';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import LineChart from 'components/admin/Graphs/LineChart';
 import { colors } from 'components/admin/Graphs/styling';
+import { Margin, YAxisProps } from 'components/admin/Graphs/typings';
 
 import { useIntl } from 'utils/cl-intl';
 import { toThreeLetterMonth } from 'utils/dateUtils';
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { NilOrError } from 'utils/helperUtils';
 
 import { Dates, Resolution } from '../../typings';
 import messages from '../messages';
@@ -18,7 +19,9 @@ import renderTooltip from './renderTooltip';
 type Props = Dates &
   Resolution & {
     timeSeries: TimeSeries | NilOrError;
-    innerRef: React.RefObject<any>;
+    margin?: Margin;
+    yaxis?: YAxisProps;
+    innerRef?: React.RefObject<any>;
   };
 
 const emptyLineConfig = { strokeWidths: [0, 0] };
@@ -32,6 +35,8 @@ const Chart = ({
   startAtMoment,
   endAtMoment,
   resolution,
+  margin,
+  yaxis,
   innerRef,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -63,7 +68,7 @@ const Chart = ({
     return null;
   }
 
-  const noData = isNilOrError(timeSeries);
+  const noData = timeSeries === null;
 
   return (
     <LineChart
@@ -74,9 +79,11 @@ const Chart = ({
         x: 'date',
         y: ['visitors', 'visits'],
       }}
+      margin={margin}
       lines={noData ? emptyLineConfig : lineConfig}
       grid={{ vertical: true }}
       xaxis={{ tickFormatter: formatTick }}
+      yaxis={yaxis}
       tooltip={noData ? undefined : renderTooltip(resolution)}
       legend={{
         marginTop: 16,

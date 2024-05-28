@@ -41,6 +41,10 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
     view_private_attributes? object, params
   }
 
+  attribute :last_active_at, if: proc { |object, params|
+    view_private_attributes? object, params
+  }
+
   attribute :custom_field_values, if: proc { |object, params|
     view_private_attributes? object, params
   } do |object|

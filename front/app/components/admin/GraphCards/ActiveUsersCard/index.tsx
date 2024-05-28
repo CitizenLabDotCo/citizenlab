@@ -13,7 +13,8 @@ import {
 import Statistic from 'components/admin/Graphs/Statistic';
 
 import { useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
+
+import { MARGINS } from '../_utils/style';
 
 import Chart from './Chart';
 import messages from './messages';
@@ -23,6 +24,7 @@ type Props = ProjectId &
   Dates &
   Resolution & {
     layout?: Layout;
+    hideParticipationRate?: boolean;
   };
 
 const ActiveUsersCard = ({
@@ -31,6 +33,7 @@ const ActiveUsersCard = ({
   endAtMoment,
   resolution,
   layout = 'wide',
+  hideParticipationRate = false,
 }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
@@ -41,11 +44,7 @@ const ActiveUsersCard = ({
     resolution,
   });
 
-  if (isNilOrError(stats)) {
-    return null;
-  }
-
-  const cardTitle = formatMessage(messages.activeUsers);
+  const cardTitle = formatMessage(messages.participants);
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
   const bottomLabel = getTimePeriodTranslationByResolution(
@@ -56,11 +55,12 @@ const ActiveUsersCard = ({
   return (
     <GraphCard
       title={cardTitle}
+      id="e2e-participants-by-time-chart"
       infoTooltipContent={formatMessage(messages.cardTitleTooltipMessage)}
       exportMenu={{
         name: cardTitle,
         svgNode: graphRef,
-        xlsx: isNilOrError(xlsxData) ? undefined : { data: xlsxData },
+        xlsx: xlsxData ? { data: xlsxData } : undefined,
         startAt,
         endAt,
         resolution: currentResolution,
@@ -75,25 +75,29 @@ const ActiveUsersCard = ({
         >
           <Box width={layout === 'narrow' ? '50%' : undefined}>
             <Statistic
-              name={formatMessage(messages.totalActiveUsers)}
-              value={stats.activeUsers.value}
+              name={formatMessage(messages.totalParticipants)}
+              value={stats?.activeUsers.value ?? '-'}
               bottomLabel={bottomLabel}
-              bottomLabelValue={stats.activeUsers.lastPeriod}
+              bottomLabelValue={stats?.activeUsers.lastPeriod ?? '-'}
             />
           </Box>
-          <Box
-            mt={layout === 'wide' ? '32px' : 'auto'}
-            ml={layout === 'narrow' ? '32px' : 'auto'}
-            width={layout === 'narrow' ? '50%' : 'auto'}
-          >
-            <Statistic
-              name={formatMessage(messages.participationRate)}
-              tooltipContent={formatMessage(messages.participationRateTooltip)}
-              value={stats.participationRate.value}
-              bottomLabel={bottomLabel}
-              bottomLabelValue={stats.participationRate.lastPeriod}
-            />
-          </Box>
+          {!hideParticipationRate && (
+            <Box
+              mt={layout === 'wide' ? '32px' : 'auto'}
+              ml={layout === 'narrow' ? '32px' : 'auto'}
+              width={layout === 'narrow' ? '50%' : 'auto'}
+            >
+              <Statistic
+                name={formatMessage(messages.participationRate)}
+                tooltipContent={formatMessage(
+                  messages.participationRateTooltip
+                )}
+                value={stats?.participationRate.value ?? '-'}
+                bottomLabel={bottomLabel}
+                bottomLabelValue={stats?.participationRate.lastPeriod ?? '-'}
+              />
+            </Box>
+          )}
         </Box>
         {layout === 'wide' && (
           <Box flexGrow={1} display="flex" justifyContent="flex-end" pr="20px">
@@ -104,7 +108,7 @@ const ActiveUsersCard = ({
                 endAtMoment={endAtMoment}
                 resolution={currentResolution}
                 innerRef={graphRef}
-                layout={layout}
+                margin={MARGINS.wide}
               />
             </Box>
           </Box>
@@ -118,7 +122,7 @@ const ActiveUsersCard = ({
               endAtMoment={endAtMoment}
               resolution={currentResolution}
               innerRef={graphRef}
-              layout={layout}
+              margin={MARGINS.narrow}
             />
           </Box>
         )}

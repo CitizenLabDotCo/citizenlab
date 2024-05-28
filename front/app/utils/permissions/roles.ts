@@ -1,11 +1,11 @@
 import { IUser } from 'api/users/types';
 
-interface IProjectModeratorRole {
+export interface IProjectModeratorRole {
   type: 'project_moderator';
   project_id: string;
 }
 
-interface IProjectFolderModeratorRole {
+export interface IProjectFolderModeratorRole {
   type: 'project_folder_moderator';
   project_folder_id: string;
 }

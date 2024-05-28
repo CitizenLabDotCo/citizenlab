@@ -4,9 +4,6 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 context 'criipto verification' do
-  let(:user) { create(:user, first_name: 'Rudolphi', last_name: 'Raindeari') }
-  let(:token) { AuthToken::AuthToken.new(payload: user.to_token_payload).token }
-
   let(:auth_hash) do
     {
       'provider' => 'criipto',
@@ -83,6 +80,9 @@ context 'criipto verification' do
   end
 
   before do
+    @user = create(:user, first_name: 'Bulenga', last_name: 'Poulsen')
+    @token = AuthToken::AuthToken.new(payload: @user.to_token_payload).token
+
     OmniAuth.config.test_mode = true
     OmniAuth.config.mock_auth[:criipto] = OmniAuth::AuthHash.new(auth_hash)
 
@@ -109,36 +109,70 @@ context 'criipto verification' do
     host! 'example.org'
   end
 
+  def expect_to_create_verified_user(user)
+    expect(user.reload).to have_attributes({
+      verified: true,
+      first_name: 'Bulenga',
+      last_name: 'Poulsen',
+      custom_field_values: {
+        'birthdate' => '1977-12-31',
+        'birthyear' => 1977,
+        'municipality_code' => '0173'
+      }
+    })
+    expect(user.verifications.first).to have_attributes({
+      method_name: 'DK MitID',
+      user_id: user.id,
+      active: true,
+      hashed_uid: Verification::VerificationService.new.send(:hashed_uid, '410a77ec-4f85-46e4-aaef-bdbbd1a951f2', 'DK MitID')
+    })
+  end
+
+  def expect_to_create_verified_and_identified_user(user)
+    expect_to_create_verified_user(user)
+    expect(user.identities.first).to have_attributes({
+      provider: 'criipto',
+      user_id: user.id,
+      uid: '410a77ec-4f85-46e4-aaef-bdbbd1a951f2',
+      auth_hash: nil
+    })
+  end
+
   it 'successfully verifies a user' do
-    get "/auth/criipto?token=#{token}&random-passthrough-param=somevalue&pathname=/yipie"
+    get "/auth/criipto?token=#{@token}&random-passthrough-param=somevalue&pathname=/yipie"
     follow_redirect!
 
-    expect(response).to redirect_to('/en/yipie?random-passthrough-param=somevalue&verification_success=true')
+    expect_to_create_verified_user(@user)
 
-    expect(user.reload).to have_attributes(verified: true)
-    expect(user.custom_field_values['municipality_code']).to eq '0173'
-    expect(user.custom_field_values['birthyear']).to eq 1977
-    expect(user.custom_field_values['birthdate']).to eq '1977-12-31'
-    expect(user.verifications.first).to have_attributes({
-      method_name: 'criipto',
-      user_id: user.id,
-      active: true
-    })
-    hash_value = Verification::VerificationService.new.send(:hashed_uid, '{29d14ea0-6e16-4732-86ac-5de87a941784}', 'criipto')
-    expect(user.verifications.first.hashed_uid).to eq(hash_value)
-    expect(user.verifications.first.hashed_uid).to eq('d006d4bf453dcd6abf792b0a18f330796a715bdf19315c2c1db8714371bcb025')
+    expect(response).to redirect_to('/en/yipie?random-passthrough-param=somevalue&verification_success=true')
+  end
+
+  it 'successfully authenticates a user that was previously verified' do
+    get "/auth/criipto?token=#{@token}"
+    follow_redirect!
+
+    expect(User.count).to eq(1)
+    expect(@user.identities.count).to eq(0)
+    expect_to_create_verified_user(@user)
+
+    get '/auth/criipto'
+    follow_redirect!
+
+    expect(User.count).to eq(1)
+    expect(@user.identities.count).to eq(1)
+    expect_to_create_verified_and_identified_user(@user)
   end
 
   it 'successfully verifies another user with another MitID account' do
-    get "/auth/criipto?token=#{token}"
+    get "/auth/criipto?token=#{@token}"
     follow_redirect!
-    expect(user.reload).to have_attributes({
+    expect(@user.reload).to have_attributes({
       verified: true
     })
 
     user2 = create(:user)
     token2 = AuthToken::AuthToken.new(payload: user2.to_token_payload).token
-    auth_hash['uid'] = '12345'
+    auth_hash['extra']['raw_info']['uuid'] = '12345'
     OmniAuth.config.mock_auth[:criipto] = OmniAuth::AuthHash.new(auth_hash)
 
     get "/auth/criipto?token=#{token2}"
@@ -147,16 +181,197 @@ context 'criipto verification' do
   end
 
   it 'fails when uid has already been used' do
-    uid = '{29d14ea0-6e16-4732-86ac-5de87a941784}'
+    uid = '410a77ec-4f85-46e4-aaef-bdbbd1a951f2'
     create(
       :verification,
-      method_name: 'criipto',
-      hashed_uid: Verification::VerificationService.new.send(:hashed_uid, uid, 'criipto')
+      method_name: 'DK MitID',
+      hashed_uid: Verification::VerificationService.new.send(:hashed_uid, uid, 'DK MitID')
     )
 
-    get "/auth/criipto?token=#{token}"
+    get "/auth/criipto?token=#{@token}"
     follow_redirect!
 
-    expect(user.reload).to have_attributes(verified: false)
+    expect(@user.reload).to have_attributes(verified: false)
+  end
+
+  it 'creates user when the authentication token is not passed' do
+    expect(User.count).to eq(1)
+    get '/auth/criipto?param=/some-param'
+    follow_redirect!
+
+    expect(User.count).to eq(2)
+
+    user = User.order(created_at: :asc).last
+    expect_to_create_verified_and_identified_user(user)
+
+    expect(user).not_to eq(@user)
+    expect(user).to have_attributes({
+      email: nil,
+      password_digest: nil
+    })
+
+    expect(response).to redirect_to('/en/complete-signup?param=%2Fsome-param')
+  end
+
+  context 'when verification is already taken by new user' do
+    before do
+      get '/auth/criipto'
+      follow_redirect!
+    end
+
+    let!(:new_user) do
+      User.order(created_at: :asc).last.tap do |user|
+        expect(user).to have_attributes({ email: nil })
+        expect_to_create_verified_and_identified_user(user)
+      end
+    end
+
+    context 'when verified registration is completed by new user' do
+      before { new_user.update!(email: Faker::Internet.email) }
+
+      it 'does not verify another user and does not delete previously verified new user' do
+        get "/auth/criipto?token=#{@token}&pathname=/some-page"
+        follow_redirect!
+
+        expect(response).to redirect_to('/some-page?verification_error=true&error=taken')
+        expect(@user.reload).to have_attributes({
+          verified: false,
+          first_name: 'Bulenga',
+          last_name: 'Poulsen'
+        })
+
+        expect(new_user.reload).to eq(new_user)
+      end
+    end
+
+    context 'when verified registration is not completed by new user' do
+      it 'successfully verifies another user and deletes previously verified blank new user' do
+        get "/auth/criipto?token=#{@token}&pathname=/some-page"
+        follow_redirect!
+
+        expect(response).to redirect_to('/en/some-page?verification_success=true')
+        expect_to_create_verified_user(@user.reload)
+        expect { new_user.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
+
+  describe 'update email after registration with Criipto' do
+    before do
+      configuration = AppConfiguration.instance
+      configuration.settings['password_login'] = {
+        'allowed' => true,
+        'enabled' => true,
+        'enable_signup' => true,
+        'minimum_length' => 8
+      }
+      configuration.save!
+    end
+
+    context 'email confirmation enabled' do
+      before do
+        configuration = AppConfiguration.instance
+        configuration.settings['user_confirmation'] = {
+          'enabled' => true,
+          'allowed' => true
+        }
+        configuration.save!
+      end
+
+      it 'creates user that can confirm her email' do
+        get '/auth/criipto'
+        follow_redirect!
+
+        user = User.order(created_at: :asc).last
+        expect_to_create_verified_and_identified_user(user)
+
+        token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
+        headers = { 'Authorization' => "Bearer #{token}" }
+        post '/web_api/v1/user/resend_code', params: { new_email: 'newcoolemail@example.org' }, headers: headers
+        expect(response).to have_http_status(:ok)
+        expect(user.reload).to have_attributes({ new_email: 'newcoolemail@example.org' })
+        expect(user.confirmation_required?).to be(true)
+
+        post '/web_api/v1/user/confirm', params: { confirmation: { code: user.email_confirmation_code } }, headers: headers
+        expect(response).to have_http_status(:ok)
+        expect(user.reload.confirmation_required?).to be(false)
+        expect(user).to have_attributes({ email: 'newcoolemail@example.org' })
+        expect(user.new_email).to be_nil
+      end
+
+      it 'prevents bypassing email confirmation by logging in when signup is partially completed' do
+        get '/auth/criipto'
+        follow_redirect!
+
+        get '/auth/criipto'
+        follow_redirect!
+
+        user = User.order(created_at: :asc).last
+
+        token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
+        headers = { 'Authorization' => "Bearer #{token}" }
+        post '/web_api/v1/user/resend_code', params: { new_email: 'newcoolemail@example.org' }, headers: headers
+
+        expect(user.confirmation_required?).to be(true)
+      end
+    end
+
+    context 'email confirmation disabled' do
+      before do
+        configuration = AppConfiguration.instance
+        configuration.settings['user_confirmation'] = {
+          'enabled' => false,
+          'allowed' => false
+        }
+        configuration.save!
+
+        create(:custom_field, key: 'birthdate')
+        create(:custom_field, key: 'birthyear', input_type: 'number')
+        create(:custom_field, key: 'municipality_code')
+      end
+
+      it 'creates user that can update her email' do
+        get '/auth/criipto'
+        follow_redirect!
+
+        user = User.order(created_at: :asc).last
+        expect_to_create_verified_and_identified_user(user)
+
+        token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
+        headers = { 'Authorization' => "Bearer #{token}" }
+        patch "/web_api/v1/users/#{user.id}", params: { user: { email: 'newcoolemail@example.org' } }, headers: headers
+        expect(response).to have_http_status(:ok)
+        expect(user.reload).to have_attributes({ email: 'newcoolemail@example.org' })
+        expect(user.confirmation_required?).to be(false)
+      end
+    end
+  end
+
+  context 'when configured for auth0 backward compatibility' do
+    before do
+      config = AppConfiguration.instance
+      criipto = config.settings('verification', 'verification_methods').first
+      criipto[:method_name_for_hashing] = 'auth0'
+      criipto[:uid_field_pattern] = 'adfs|cl-test-criipto-verify-DK-NemID-POCES|%{nameidentifier}'
+      config.save!
+    end
+
+    it 'successfully verifies a user like auth0' do
+      get "/auth/criipto?token=#{@token}&random-passthrough-param=somevalue&pathname=/yipie"
+      follow_redirect!
+
+      expect(response).to redirect_to('/en/yipie?random-passthrough-param=somevalue&verification_success=true')
+
+      expect(@user.reload).to have_attributes(verified: true)
+      expect(@user.custom_field_values['birthdate']).to eq '1977-12-31'
+      expect(@user.verifications.first).to have_attributes({
+        method_name: 'auth0',
+        user_id: @user.id,
+        active: true
+      })
+      hash_value = Verification::VerificationService.new.send(:hashed_uid, 'adfs|cl-test-criipto-verify-DK-NemID-POCES|29d14ea06e16473286ac5de87a941784', 'auth0')
+      expect(@user.verifications.first.hashed_uid).to eq(hash_value)
+      expect(@user.verifications.first.hashed_uid).to eq('106ba51c378a87edd55f322f0c4c9ae7ba4f6ef9141aeec0fc1ebef68d01f128')
+    end
   end
 end

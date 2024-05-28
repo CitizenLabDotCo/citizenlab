@@ -65,7 +65,7 @@ const StatusLabel: FC<Props> = memo<Props>(
           <Icon
             name={icon}
             height="16px"
-            marginRight="8px"
+            marginRight="4px"
             fill={variant === 'outlined' ? colors.textSecondary : '#fff'}
           />
         )}

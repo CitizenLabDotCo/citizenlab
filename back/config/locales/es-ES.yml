@@ -1,4 +1,38 @@
 es:
+  locales:
+    en: Inglés
+    ar-MA: Árabe (Marruecos)
+    ar-SA: Árabe (Arabia Saudí)
+    ca-ES: Catalán
+    cy-GB: Galés
+    da-DK: Danés
+    de-DE: Alemán
+    el-GR: Griego
+    en-CA: Inglés (Canadá)
+    en-GB: Inglés (UK)
+    en-IE: Inglés (Irlanda)
+    es-CL: Español (Chile)
+    es-ES: Español (España)
+    fi-FI: Finlandés
+    fr-BE: Francés (Bélgica)
+    fr-FR: Francés
+    hr-HR: Croata
+    hu-HU: Húngaro
+    it-IT: Italiano
+    kl-GL: Groenlandia
+    lb-LU: En luxemburgués
+    lv-LV: Letón
+    mi: Maorí
+    nb-NO: Noruego (Bokmål)
+    nl-BE: Neerlandés (Bélgica)
+    nl-NL: Holandés
+    pl-PL: Polaco
+    pt-BR: Portugués (Brasil)
+    ro-RO: Rumano
+    sr-Latn: Serbio (latín)
+    sr-SP: Serbio (cirílico)
+    sv-SE: Sueco
+    tr-TR: Turco
   symbols:
     outside: en otro lugar
   idea_statuses:
@@ -148,8 +182,8 @@ es:
       section3:
         title: Detalles
         description:
-      other:
-        title: Ya que has elegido "otro", ¿en qué estás pensando?
+      other_text_field:
+        title: Ya que has elegido "{other_option}", ¿en qué estás pensando?
   custom_forms:
     categories:
       main_content:
@@ -200,29 +234,40 @@ es:
       subject: '%{organizationName}: Restablecer tu contraseña'
       title_reset_your_password: 'Elige una nueva contraseña'
   xlsx_export:
+    anonymous: 'Anónimo'
     column_headers:
-      input_id: 'ID'
-      latitude: 'Latitud'
-      longitude: 'Longitud'
-      author_fullname: 'Nombre del autor'
-      author_email: 'Correo electrónico del autor'
-      author_id: 'ID del autor'
-      budget: 'Presupuesto'
-      created_at: 'Enviado en'
-      published_at: 'Publicado en'
-      comments_count: 'Comentarios'
-      likes_count: 'Me gusta'
-      dislikes_count: 'No me gusta'
-      picks: 'Recoge'
-      participants: 'Participantes'
-      votes_count: 'Votos'
-      input_url: 'URL'
-      project: 'Proyecto'
-      status: 'Estado'
       assignee_fullname: 'Asignado'
       assignee_email: 'Correo electrónico del destinatario'
+      attachments: 'Archivos adjuntos'
+      author_email: 'Correo electrónico del autor'
+      author_fullname: 'Nombre del autor'
+      author_id: 'ID del autor'
+      budget: 'Presupuesto'
+      comments_count: 'Comentarios'
+      cost: 'Coste'
+      created_at: 'Enviado en'
+      description: 'Descripción'
+      dislikes_count: 'No me gusta'
+      email: 'Correo'
+      first_name: 'Nombre(s)'
       image_url: 'URL de la imagen'
-    anonymous: 'Anónimo'
+      input_id: 'ID'
+      input_url: 'URL'
+      last_name: 'Apellido'
+      latitude: 'Latitud'
+      likes_count: 'Me gusta'
+      location: 'Ubicación'
+      longitude: 'Longitud'
+      participants: 'Participantes'
+      picks: 'Recoge'
+      project: 'Proyecto'
+      published_at: 'Publicado en'
+      registration_completed_at: 'Inscripción completada en'
+      status: 'Estado'
+      submitted_at: 'Enviado en'
+      tags: 'Temas'
+      title: 'Nombre'
+      votes_count: 'Votos'
   form_builder:
     default_select_field:
       title: 'Su pregunta'
@@ -248,6 +293,7 @@ es:
       instructions: 'Instrucciones'
       write_as_clearly: 'Escribe tan claramente <b></b> como puedas - estos formularios podrían ser escaneados'
       write_in_language: 'Escribe tus respuestas en la misma lengua que este formulario'
+      linear_scale_print_description: 'Escribe sólo un número entre %{min_label} y %{max_label}'
   project_copy:
     title_suffix: 'Copia'
   confirmations_mailer:

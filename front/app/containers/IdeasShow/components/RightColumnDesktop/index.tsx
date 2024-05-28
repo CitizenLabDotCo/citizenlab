@@ -119,6 +119,7 @@ const RightColumnDesktop = ({
               followableId={ideaId}
               followersCount={idea.data.attributes.followers_count}
               followerId={idea.data.relationships.user_follower?.data?.id}
+              toolTipType="input"
             />
           </Box>
         )}

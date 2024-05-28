@@ -17,6 +17,7 @@ export interface SSOProviderMap {
   google: 'google';
   clave_unica: 'clave_unica';
   hoplr: 'hoplr';
+  criipto: 'criipto';
 }
 
 export type SSOProvider = SSOProviderMap[keyof SSOProviderMap];

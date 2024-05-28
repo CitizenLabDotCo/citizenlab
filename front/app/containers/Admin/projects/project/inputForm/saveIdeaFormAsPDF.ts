@@ -8,22 +8,20 @@ import { requestBlob } from 'utils/requestBlob';
 
 interface Params {
   locale: SupportedLocale;
-  projectId: string;
+  phaseId: string;
   personal_data: boolean;
-  phase_id?: string;
 }
 
 export async function saveIdeaFormAsPDF({
-  projectId,
+  phaseId,
   locale,
   personal_data,
-  phase_id,
 }: Params) {
   try {
     const blob = await requestBlob(
-      `${API_PATH}/projects/${projectId}/custom_fields/to_pdf`,
+      `${API_PATH}/phases/${phaseId}/importer/export_form/idea/pdf`,
       'application/pdf' as any,
-      { locale, personal_data, phase_id }
+      { locale, personal_data, phaseId }
     );
 
     saveAs(blob, 'idea_form.pdf');

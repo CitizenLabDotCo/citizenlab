@@ -26,4 +26,16 @@ RSpec.describe Analytics::DimensionUser do
       expect(described_class.find(admin.id).role).to eq('admin')
     end
   end
+
+  context 'when there are two users and one has 2 visits' do
+    let!(:user1) { create(:user) }
+    let!(:user2) { create(:user) }
+
+    let!(:visit1) { create(:fact_visit, dimension_user_id: user1.id) }
+    let!(:visit2) { create(:fact_visit, dimension_user_id: user1.id) }
+
+    it 'returns the correct number of users' do
+      expect(described_class.where(has_visits: true).count).to eq(1)
+    end
+  end
 end

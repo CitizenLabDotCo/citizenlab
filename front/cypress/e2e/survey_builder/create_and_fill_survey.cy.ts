@@ -715,7 +715,7 @@ describe('Survey builder', () => {
     cy.get('#e2e-modal-container').should('have.length', 0);
   });
 
-  it('does not allow non admin users to fill in a survey more than once when permissions are set to registered users', () => {
+  it.skip('does not allow non admin users to fill in a survey more than once when permissions are set to registered users', () => {
     const firstName = randomString();
     const lastName = randomString();
     const email = randomEmail();

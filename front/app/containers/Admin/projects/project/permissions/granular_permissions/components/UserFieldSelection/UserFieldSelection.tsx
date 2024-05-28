@@ -28,7 +28,6 @@ import useLocale from 'hooks/useLocale';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import FormattedMessageComponent from 'utils/cl-intl/FormattedMessage';
 import { isNilOrError } from 'utils/helperUtils';
-import { isAdmin } from 'utils/permissions/roles';
 
 import messages from '../../containers/Granular/messages';
 import { HandlePermissionChangeProps } from '../../containers/Granular/utils';
@@ -124,8 +123,6 @@ const UserFieldSelection = ({
     return null;
   }
 
-  const userIsAdmin = authUser && isAdmin(authUser);
-
   const showQuestionToggle =
     permission.attributes.permitted_by !== 'everyone_confirmed_email';
 
@@ -162,59 +159,45 @@ const UserFieldSelection = ({
 
         <Box>
           {showQuestionToggle && (
-            <Tippy
-              interactive={true}
-              placement={'bottom'}
-              disabled={userIsAdmin}
-              theme={'dark'}
-              content={
-                <Box style={{ cursor: 'default' }}>
-                  <Text my="8px" color="white" fontSize="s">
-                    {formatMessage(messages.onlyAdmins)}
-                  </Text>
-                </Box>
-              }
-            >
-              <Box mb="10px">
-                <Toggle
-                  checked={permission.attributes.global_custom_fields}
-                  disabled={!permissionsCustomFieldsEnabled || !userIsAdmin}
-                  onChange={() => {
-                    onChange({
-                      phaseId,
-                      permission,
-                      groupIds,
-                      globalCustomFields:
-                        !permission.attributes.global_custom_fields,
-                    });
-                  }}
-                  label={
-                    <Box display="flex">
-                      <span
-                        style={
-                          !permissionsCustomFieldsEnabled || !userIsAdmin
-                            ? { color: colors.disabled }
-                            : { color: colors.primary }
-                        }
-                      >
-                        <FormattedMessage
-                          {...messages.useExistingRegistrationQuestions}
-                        />
-                      </span>
-                      {permissionsCustomFieldsEnabled && (
-                        <IconTooltip
-                          ml="4px"
-                          icon="info-solid"
-                          content={formatMessage(
-                            messages.useExistingRegistrationQuestionsDescription
-                          )}
-                        />
-                      )}
-                    </Box>
-                  }
-                />
-              </Box>
-            </Tippy>
+            <Box mb="10px">
+              <Toggle
+                checked={permission.attributes.global_custom_fields}
+                disabled={!permissionsCustomFieldsEnabled}
+                onChange={() => {
+                  onChange({
+                    phaseId,
+                    permission,
+                    groupIds,
+                    globalCustomFields:
+                      !permission.attributes.global_custom_fields,
+                  });
+                }}
+                label={
+                  <Box display="flex">
+                    <span
+                      style={{
+                        color: permissionsCustomFieldsEnabled
+                          ? colors.primary
+                          : colors.disabled,
+                      }}
+                    >
+                      <FormattedMessage
+                        {...messages.useExistingRegistrationQuestions}
+                      />
+                    </span>
+                    {permissionsCustomFieldsEnabled && (
+                      <IconTooltip
+                        ml="4px"
+                        icon="info-solid"
+                        content={formatMessage(
+                          messages.useExistingRegistrationQuestionsDescription
+                        )}
+                      />
+                    )}
+                  </Box>
+                }
+              />
+            </Box>
           )}
           {showQuestions && (
             <>
@@ -230,11 +213,11 @@ const UserFieldSelection = ({
                     borderColor={colors.grey300}
                   >
                     <Text
-                      style={
-                        !permissionsCustomFieldsEnabled
-                          ? { color: colors.disabled }
-                          : { color: colors.primary }
-                      }
+                      style={{
+                        color: permissionsCustomFieldsEnabled
+                          ? colors.primary
+                          : colors.disabled,
+                      }}
                     >
                       {getTitleFromGlobalFieldId(field, locale)}
                     </Text>

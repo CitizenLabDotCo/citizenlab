@@ -1,4 +1,38 @@
 hr:
+  locales:
+    en: Engleski
+    ar-MA: arapski (Maroko)
+    ar-SA: arapski (Saudijska Arabija)
+    ca-ES: katalonski
+    cy-GB: velški
+    da-DK: danski
+    de-DE: njemački
+    el-GR: grčki
+    en-CA: engleski (Kanada)
+    en-GB: engleski (UK)
+    en-IE: engleski (Irska)
+    es-CL: španjolski (Čile)
+    es-ES: španjolski (Španjolska)
+    fi-FI: finski
+    fr-BE: francuski (Belgija)
+    fr-FR: francuski
+    hr-HR: Hrvatski
+    hu-HU: mađarski
+    it-IT: talijanski
+    kl-GL: grenlandski
+    lb-LU: luksemburški
+    lv-LV: latvijski
+    mi: maorski
+    nb-NO: norveški (bokmol)
+    nl-BE: nizozemski (Belgija)
+    nl-NL: nizozemski
+    pl-PL: Polirati
+    pt-BR: portugalski (Brazil)
+    ro-RO: rumunjski
+    sr-Latn: srpski (latinica)
+    sr-SP: srpski (ćirilica)
+    sv-SE: švedski
+    tr-TR: turski
   symbols:
     outside: negdje drugdje
   idea_statuses:
@@ -148,8 +182,8 @@ hr:
       section3:
         title: Pojedinosti
         description:
-      other:
-        title: Budući da ste odabrali 'drugo', o čemu razmišljate?
+      other_text_field:
+        title: Ako ste odabrali '{other_option}', na što mislite?
   custom_forms:
     categories:
       main_content:
@@ -200,29 +234,40 @@ hr:
       subject: '%{organizationName}: Poništite zaporku'
       title_reset_your_password: 'Odaberite novu zaporku'
   xlsx_export:
+    anonymous: 'Anonimno'
     column_headers:
-      input_id: 'ID'
-      latitude: 'Geografska širina'
-      longitude: 'Geografska duljina'
-      author_fullname: 'Ime autora'
-      author_email: 'E-pošta autora'
-      author_id: 'ID autora'
-      budget: 'Proračun'
-      created_at: 'Predano'
-      published_at: 'Objavljeno'
-      comments_count: 'Komentari'
-      likes_count: 'Sviđa mi se'
-      dislikes_count: 'Nesviđanja'
-      picks: 'Pijuci'
-      participants: 'Sudionici'
-      votes_count: 'Glasovi'
-      input_url: 'URL'
-      project: 'Projekt'
-      status: 'Stanje'
       assignee_fullname: 'Opunomoćenik'
       assignee_email: 'E-pošta opunomoćenika'
+      attachments: 'Prilozi'
+      author_email: 'E-pošta autora'
+      author_fullname: 'Ime autora'
+      author_id: 'ID autora'
+      budget: 'Proračun'
+      comments_count: 'Komentari'
+      cost: 'trošak'
+      created_at: 'Predano'
+      description: 'Opis'
+      dislikes_count: 'Nesviđanja'
+      email: 'E-mail'
+      first_name: 'Imena)'
       image_url: 'URL slike'
-    anonymous: 'Anonimno'
+      input_id: 'ID'
+      input_url: 'URL'
+      last_name: 'Prezime'
+      latitude: 'Geografska širina'
+      likes_count: 'Sviđa mi se'
+      location: 'Mjesto'
+      longitude: 'Geografska duljina'
+      participants: 'Sudionici'
+      picks: 'Pijuci'
+      project: 'Projekt'
+      published_at: 'Objavljeno'
+      registration_completed_at: 'Registracija završena u'
+      status: 'Stanje'
+      submitted_at: 'Predano u'
+      tags: 'Oznake'
+      title: 'Titula'
+      votes_count: 'Glasovi'
   form_builder:
     default_select_field:
       title: 'Vaše pitanje'
@@ -248,6 +293,7 @@ hr:
       instructions: 'upute'
       write_as_clearly: 'Napišite što jasnije <b></b> ti se obrasci mogu skenirati'
       write_in_language: 'Napišite svoje odgovore na istom jeziku kao i ovaj obrazac'
+      linear_scale_print_description: 'Napišite samo broj između %{min_label} i %{max_label}'
   project_copy:
     title_suffix: 'Kopija'
   confirmations_mailer:

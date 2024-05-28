@@ -10,6 +10,7 @@ resource 'Idea Custom Fields' do
 
   get 'web_api/v1/admin/phases/:phase_id/custom_fields' do
     parameter :support_free_text_value, 'Only return custom fields that have a freely written textual answer', type: :boolean, required: false
+    parameter :copy, 'Return non-persisted copies of all custom fields with new IDs', type: :boolean, required: false
 
     let(:context) { create(:native_survey_phase) }
     let(:phase_id) { context.id }
@@ -22,9 +23,8 @@ resource 'Idea Custom Fields' do
 
       example_request 'List all allowed custom fields for a phase' do
         assert_status 200
-        json_response = json_parse response_body
-        expect(json_response[:data].size).to eq 2
-        expect(json_response[:data].map { |d| d.dig(:attributes, :key) }).to eq [
+        expect(response_data.size).to eq 2
+        expect(response_data.map { |d| d.dig(:attributes, :key) }).to eq [
           custom_field1.key,
           custom_field2.key
         ]
@@ -33,11 +33,19 @@ resource 'Idea Custom Fields' do
       example 'List all allowed custom fields for a phase with a textual answer', document: false do
         do_request(support_free_text_value: true)
         assert_status 200
-        json_response = json_parse response_body
-        expect(json_response[:data].size).to eq 1
-        expect(json_response[:data].map { |d| d.dig(:attributes, :key) }).to eq [
+        expect(response_data.size).to eq 1
+        expect(response_data.map { |d| d.dig(:attributes, :key) }).to eq [
           custom_field1.key
         ]
+      end
+
+      example 'List all custom fields for a phase reset for copying', document: false do
+        do_request(copy: true)
+        assert_status 200
+
+        expect(response_data.size).to eq 2
+        expect(response_data[0][:id]).not_to eq custom_field1.id
+        expect(response_data[1][:id]).not_to eq custom_field2.id
       end
     end
   end

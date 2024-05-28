@@ -9,11 +9,9 @@ module ParticipationMethod
 
     # Survey responses do not have a fixed field that can be used
     # to generate a slug, so use the id as the basis for the slug.
-    # This method is invoked after creation of the input,
-    # so store the new slug.
-    def assign_slug(input)
-      new_slug = SlugService.new.generate_slug input, input.id
-      input.update_column :slug, new_slug
+    def generate_slug(input)
+      input.id ||= SecureRandom.uuid # Generate the ID if the input is not persisted yet.
+      SlugService.new.generate_slug input, input.id
     end
 
     def assign_defaults(input)
@@ -61,15 +59,20 @@ module ParticipationMethod
       ]
     end
 
+    def allowed_extra_field_input_types
+      %w[page number linear_scale text multiline_text select multiselect multiselect_image file_upload point]
+    end
+
     # NOTE: This is only ever used by the analyses controller - otherwise the front-end always persists the form
     def create_default_form!
-      form = CustomForm.create(participation_context: phase)
+      form = CustomForm.new(participation_context: phase)
 
       default_fields(form).reverse_each do |field|
         field.save!
         field.move_to_top
       end
 
+      form.save!
       phase.reload
 
       form
@@ -112,6 +115,10 @@ module ParticipationMethod
     end
 
     def supports_survey_form?
+      true
+    end
+
+    def supports_permitted_by_everyone?
       true
     end
 

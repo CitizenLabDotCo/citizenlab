@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   IconTooltip,
@@ -81,12 +81,6 @@ const ParticipationMethodPicker = ({
   const nativeSurveysEnabled = useFeatureFlag({
     name: 'native_surveys',
   });
-  const volunteeringEnabled = useFeatureFlag({
-    name: 'volunteering',
-  });
-  const phaseReportsEnabled = useFeatureFlag({
-    name: 'phase_reports',
-  });
 
   const changeMethod = (newMethod?: ParticipationMethod) => {
     const method = newMethod || methodToChangeTo;
@@ -113,6 +107,11 @@ const ParticipationMethodPicker = ({
       changeMethod(method);
     }
   };
+
+  useEffect(() => {
+    setSelectedMethod(participation_method);
+    setShowSurveyOptions(participation_method === 'native_survey');
+  }, [participation_method]);
 
   return (
     <>
@@ -163,26 +162,20 @@ const ParticipationMethodPicker = ({
             <ParticipationMethodChoice
               key="information"
               title={formatMessage(messages2.informationTitle)}
-              subtitle={formatMessage(
-                phaseReportsEnabled
-                  ? messages2.reportingDescription
-                  : messages.shareInformationDescription
-              )}
+              subtitle={formatMessage(messages2.reportingDescription)}
               onClick={(event) => handleMethodSelect(event, 'information')}
               image={informationImage}
               selected={selectedMethod === 'information'}
             />
 
-            {volunteeringEnabled && (
-              <ParticipationMethodChoice
-                key="volunteering"
-                title={formatMessage(messages2.volunteeringTitle)}
-                subtitle={formatMessage(messages2.volunteeringDescription)}
-                onClick={(event) => handleMethodSelect(event, 'volunteering')}
-                image={volunteeringImage}
-                selected={selectedMethod === 'volunteering'}
-              />
-            )}
+            <ParticipationMethodChoice
+              key="volunteering"
+              title={formatMessage(messages2.volunteeringTitle)}
+              subtitle={formatMessage(messages2.volunteeringDescription)}
+              onClick={(event) => handleMethodSelect(event, 'volunteering')}
+              image={volunteeringImage}
+              selected={selectedMethod === 'volunteering'}
+            />
 
             {documentAnnotationAllowed && (
               <Box position="relative">

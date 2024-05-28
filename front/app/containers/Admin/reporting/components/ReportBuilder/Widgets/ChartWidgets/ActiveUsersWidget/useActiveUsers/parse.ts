@@ -1,54 +1,70 @@
-import moment, { Moment } from 'moment';
+import { ActiveUsersResponse } from 'api/graph_data_units/responseTypes/ActiveUsersWidget';
 
-import { ActiveUsersResponse } from 'api/graph_data_units/responseTypes';
+import { calculateConversionRate } from 'components/admin/GraphCards/_utils/parse';
 
-import { timeSeriesParser } from 'components/admin/GraphCards/_utils/timeSeries';
-import { IResolution } from 'components/admin/ResolutionControl';
-
-import { get } from 'utils/helperUtils';
-
-import { TimeSeriesResponseRow, TimeSeriesRow, TimeSeries } from './typings';
-
-export const getEmptyRow = (date: Moment) => ({
-  date: date.format('YYYY-MM-DD'),
-  activeUsers: 0,
-});
-
-const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
-  if (!row) return getEmptyRow(date);
-
+export const parseStats = (data: ActiveUsersResponse['data']['attributes']) => {
   return {
-    activeUsers: row.count_dimension_user_id,
-    date: date.format('YYYY-MM-DD'),
+    activeUsers: calculateActiveUsersStats(data),
+    participationRate: calculateParticipationStats(data),
   };
 };
 
-const getDate = (row: TimeSeriesResponseRow) => {
-  return moment(get(row, 'first_dimension_date_created_date'));
-};
-
-const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
-
-export const parseTimeSeries = (
-  responseTimeSeries: ActiveUsersResponse['data']['attributes'][0],
-  startAtMoment: Moment | null | undefined,
-  endAtMoment: Moment | null,
-  resolution: IResolution
-): TimeSeries | null => {
-  return _parseTimeSeries(
-    responseTimeSeries,
-    startAtMoment,
-    endAtMoment,
-    resolution
-  );
-};
-
-export const parseStats = (data: ActiveUsersResponse['data']['attributes']) => {
+const calculateActiveUsersStats = (
+  data: ActiveUsersResponse['data']['attributes']
+) => {
   const activeUsersWholePeriod = data[1][0];
+  const activeUsersPreviousPeriod = data[4]?.[0];
+
+  const activeUsersWholePeriodValue =
+    activeUsersWholePeriod?.count_participant_id ?? 0;
+  const activeUsersPreviousPeriodValue =
+    activeUsersPreviousPeriod?.count_participant_id;
+
+  const activeUsersDelta =
+    activeUsersPreviousPeriodValue !== undefined
+      ? activeUsersWholePeriodValue - activeUsersPreviousPeriodValue
+      : undefined;
 
   return {
-    activeUsers: {
-      value: (activeUsersWholePeriod?.count_dimension_user_id ?? 0).toString(),
-    },
+    value: activeUsersWholePeriodValue,
+    delta: activeUsersDelta,
+  };
+};
+
+const calculateParticipationStats = (
+  data: ActiveUsersResponse['data']['attributes']
+) => {
+  const visitorsWholePeriod = data[2][0];
+  const visitorsPreviousPeriod = data[5]?.[0];
+
+  const activeVisitorUsersWholePeriod = data[3][0];
+  const activeVisitorUsersLastPeriod = data[6]?.[0];
+
+  const participationRateWholePeriod = calculateConversionRate(
+    activeVisitorUsersWholePeriod?.count_participant_id ?? 0,
+    visitorsWholePeriod?.count_visitor_id ?? 0
+  );
+
+  const aactiveVisitorUsersLastPeriodValue =
+    activeVisitorUsersLastPeriod?.count_participant_id;
+
+  const visitorsPreviousPeriodValue = visitorsPreviousPeriod?.count_visitor_id;
+
+  const participationRateRateLastPeriod =
+    aactiveVisitorUsersLastPeriodValue !== undefined
+      ? calculateConversionRate(
+          aactiveVisitorUsersLastPeriodValue,
+          visitorsPreviousPeriodValue ?? 0
+        )
+      : undefined;
+
+  const participationRateDelta =
+    participationRateRateLastPeriod !== undefined
+      ? participationRateWholePeriod - participationRateRateLastPeriod
+      : undefined;
+
+  return {
+    value: participationRateWholePeriod,
+    delta: participationRateDelta,
   };
 };
