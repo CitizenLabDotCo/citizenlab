@@ -1,5 +1,7 @@
 import { FormatMessage } from 'typings';
 
+import { getComparedTimeRange } from 'components/admin/GraphCards/_utils/query';
+
 import messages from './messages';
 
 export const createGSQuote = (formatMessage: FormatMessage) => {
@@ -11,4 +13,22 @@ export const createGSQuote = (formatMessage: FormatMessage) => {
   )}</strong></p>`;
 
   return `${quote}\n${manager}`;
+};
+
+export const getComparedDateRange = ({
+  startDate,
+  endDate,
+}: {
+  startDate: string;
+  endDate: string;
+}) => {
+  const { compare_start_at, compare_end_at } = getComparedTimeRange(
+    startDate,
+    endDate
+  );
+
+  return {
+    compareStartAt: compare_start_at,
+    compareEndAt: compare_end_at,
+  };
 };

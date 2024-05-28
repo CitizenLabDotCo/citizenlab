@@ -25,7 +25,7 @@ import { TemplateContext } from '../context';
 import { getPeriod } from '../utils';
 
 import messages from './messages';
-import { createGSQuote } from './utils';
+import { createGSQuote, getComparedDateRange } from './utils';
 
 interface Props {
   startDate: string;
@@ -99,6 +99,8 @@ const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
     endAt: endDate,
   };
 
+  const comparedDateRange = getComparedDateRange({ startDate, endDate });
+
   return (
     <Element id="strategic-report-template" is={Box} canvas>
       <TextMultiloc text={reportStats} />
@@ -110,6 +112,7 @@ const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
       <VisitorsWidget
         title={toMultiloc(WIDGET_TITLES.VisitorsWidget)}
         {...dateRange}
+        {...comparedDateRange}
       />
       <WhiteSpace size="small" />
       <TwoColumn columnLayout="1-1">
@@ -117,12 +120,14 @@ const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
           <RegistrationsWidget
             title={toMultiloc(WIDGET_TITLES.RegistrationsWidget)}
             {...dateRange}
+            {...comparedDateRange}
           />
         </Element>
         <Element id="right" is={Container} canvas>
           <ActiveUsersWidget
             title={toMultiloc(WIDGET_TITLES.ActiveUsersWidget)}
             {...dateRange}
+            {...comparedDateRange}
             projectId={undefined}
           />
         </Element>
