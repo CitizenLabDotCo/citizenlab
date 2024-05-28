@@ -10,11 +10,11 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import Warning from 'components/UI/Warning';
 
+import actionDescriptorMessages from 'utils/actionDescriptors/messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../messages';
-import actionDescriptorMessages from 'utils/actionDescriptors/messages';
 
 const CommentingProposalDisabled = () => {
   const { data: authUser } = useAuthUser();
