@@ -26,4 +26,13 @@ export default defineMessages({
     id: 'app.containers.Admin.Reporting.Templates.StrategicReportTemplate.clGSManager',
     defaultMessage: 'CitizenLab GovSuccess Manager',
   },
+  participationIndicators: {
+    id: 'app.containers.Admin.Reporting.Templates.StrategicReportTemplate.participationIndicators',
+    defaultMessage: 'Top-level participation indicators',
+  },
+  participationIndicatorsDescription: {
+    id: 'app.containers.Admin.Reporting.Templates.StrategicReportTemplate.participationIndicatorsDescription',
+    defaultMessage:
+      'This quarter your platform experienced a steep increase in visitors and visit duration. You are making your experience more sticky by providing your residents with rich information and a true opportunity to have their voices heard.',
+  },
 });

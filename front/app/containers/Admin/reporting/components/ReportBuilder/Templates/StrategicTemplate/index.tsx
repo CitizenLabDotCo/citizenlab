@@ -2,10 +2,13 @@ import React, { useContext } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { Element } from '@craftjs/core';
+import { FormatMessage } from 'typings';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
+
+import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
 import { FormatMessageValues } from 'utils/cl-intl/useIntl';
@@ -16,6 +19,7 @@ import { TemplateContext } from '../context';
 import { getPeriod } from '../utils';
 
 import messages from './messages';
+import { createGSQuote } from './utils';
 
 interface Props {
   startDate: string;
@@ -36,12 +40,18 @@ const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
 
   if (!appConfigurationLocales) return null;
 
-  const reportStats = createMultiloc(appConfigurationLocales, (locale) => {
-    const formatMessage = (
-      message: MessageDescriptor,
-      values?: FormatMessageValues
-    ) => formatMessageWithLocale(locale, message, values);
+  const buildMultiloc = (fn: (formatMessage: FormatMessage) => string) => {
+    return createMultiloc(appConfigurationLocales, (locale) => {
+      const formatMessage = (
+        message: MessageDescriptor,
+        values?: FormatMessageValues
+      ) => formatMessageWithLocale(locale, message, values);
 
+      return fn(formatMessage);
+    });
+  };
+
+  const reportStats = buildMultiloc((formatMessage) => {
     const period = getPeriod({
       startAt: startDate,
       endAt: endDate,
@@ -61,29 +71,22 @@ const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
     `;
   });
 
-  const gsQuote = createMultiloc(appConfigurationLocales, (locale) => {
-    const formatMessage = (
-      message: MessageDescriptor,
-      values?: FormatMessageValues
-    ) => formatMessageWithLocale(locale, message, values);
+  const gsQuote = buildMultiloc(createGSQuote);
 
-    return `
-      <p><strong>${formatMessage(messages.placeholderQuote)}</strong></p>
-      <p class="ql-align-center">
-        <strong>
-          (NAME),
-          ${formatMessage(messages.clGSManager)}
-        </strong>
-      </p>
+  const participationIndicators = buildMultiloc((formatMessage) => {
+    return withoutSpacing`
+      <h3>${formatMessage(messages.participationIndicators)}</h3>
+      <p>${formatMessage(messages.participationIndicatorsDescription)}</p>
     `;
   });
-
-  console.log({ gsQuote });
 
   return (
     <Element id="strategic-report-template" is={Box} canvas>
       <TextMultiloc text={reportStats} />
+      <WhiteSpace size="small" />
       <TextMultiloc text={gsQuote} />
+      <WhiteSpace size="small" />
+      <TextMultiloc text={participationIndicators} />
     </Element>
   );
 };
