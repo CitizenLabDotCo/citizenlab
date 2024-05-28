@@ -45,4 +45,12 @@ describe SideFxEventService do
       end
     end
   end
+
+  describe 'after_attendees_xlsx' do
+    it "logs an 'exported_attendees' action job when the attendess are exported" do
+      expect { service.after_attendees_xlsx(event, user) }
+        .to enqueue_job(LogActivityJob)
+        .with(event, 'exported_attendees', user, event.updated_at.to_i, project_id: event.project_id)
+    end
+  end
 end
