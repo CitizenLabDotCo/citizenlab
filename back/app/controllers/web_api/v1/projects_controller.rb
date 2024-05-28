@@ -151,7 +151,7 @@ class WebApi::V1::ProjectsController < ApplicationController
           filename: 'votes_by_user.xlsx'
       end
 
-      after_votes_by_user_xlsx(project, user)
+      sidefx.after_votes_by_user_xlsx(@project, current_user)
     else
       raise 'Project has no voting phase.'
     end
@@ -165,7 +165,7 @@ class WebApi::V1::ProjectsController < ApplicationController
           filename: 'votes_by_input.xlsx'
       end
 
-      after_votes_by_input_xlsx(project, user)
+      sidefx.after_votes_by_input_xlsx(@project, current_user)
     else
       raise 'Project has no voting phase.'
     end
