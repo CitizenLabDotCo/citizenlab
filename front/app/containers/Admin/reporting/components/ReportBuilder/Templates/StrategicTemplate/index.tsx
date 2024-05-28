@@ -4,6 +4,8 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { Element } from '@craftjs/core';
 import { FormatMessage } from 'typings';
 
+import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
+
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
@@ -17,6 +19,11 @@ import { withoutSpacing } from 'utils/textUtils';
 
 import { WIDGET_TITLES } from '../../Widgets';
 import ActiveUsersWidget from '../../Widgets/ChartWidgets/ActiveUsersWidget';
+import DemographicsWidget from '../../Widgets/ChartWidgets/DemographicsWidget';
+import {
+  INPUT_TYPES,
+  isSupportedField,
+} from '../../Widgets/ChartWidgets/DemographicsWidget/Settings';
 import RegistrationsWidget from '../../Widgets/ChartWidgets/RegistrationsWidget';
 import VisitorsWidget from '../../Widgets/ChartWidgets/VisitorsWidget';
 import TextMultiloc from '../../Widgets/TextMultiloc';
@@ -43,8 +50,11 @@ console.error = (...args: any[]) => {
 const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
+  const { data: userFields } = useUserCustomFields({
+    inputTypes: INPUT_TYPES,
+  });
 
-  if (!appConfigurationLocales) return null;
+  if (!appConfigurationLocales || !userFields) return null;
 
   const buildMultiloc = (fn: (formatMessage: FormatMessage) => string) => {
     return createMultiloc(appConfigurationLocales, (locale) => {
@@ -101,6 +111,8 @@ const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
 
   const comparedDateRange = getComparedDateRange({ startDate, endDate });
 
+  const supportedFields = userFields.data.filter(isSupportedField);
+
   return (
     <Element id="strategic-report-template" is={Box} canvas>
       <TextMultiloc text={reportStats} />
@@ -139,6 +151,15 @@ const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
         text={getSectionTitleAndDescription(messages.inclusionIndicators)}
       />
       <WhiteSpace size="small" />
+      {supportedFields.map((field) => (
+        <Element is={Container} canvas key={field.id}>
+          <DemographicsWidget
+            title={field.attributes.title_multiloc}
+            {...dateRange}
+            customFieldId={field.id}
+          />
+        </Element>
+      ))}
     </Element>
   );
 };
