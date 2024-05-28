@@ -183,7 +183,7 @@ tr:
         title: Detaylar
         description:
       other_text_field:
-        title: Eğer '{other_option}' adresini seçtiyseniz, ne düşünüyorsunuz?
+        title: If you picked '{other_option}', what are you thinking of?
   custom_forms:
     categories:
       main_content:
