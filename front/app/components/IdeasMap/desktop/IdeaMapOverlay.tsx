@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useState, useEffect, useRef } from 'react';
 
 import {
   useWindowSize,
@@ -41,6 +41,9 @@ const InnerOverlay = styled.div<{ right: string }>`
   ${defaultCardStyle};
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.15);
   transition: all ${timeout}ms cubic-bezier(0.19, 1, 0.22, 1);
+  &:focus {
+    outline: none;
+  }
 
   &.animation-enter {
     opacity: 0;
@@ -72,8 +75,6 @@ const InnerOverlay = styled.div<{ right: string }>`
   }
 `;
 
-const StyledIdeaShowPageTopBar = styled(IdeaShowPageTopBar)``;
-
 const StyledIdeasShow = styled(IdeasShow)`
   flex: 1;
   overflow-x: hidden;
@@ -81,9 +82,10 @@ const StyledIdeasShow = styled(IdeasShow)`
   padding: 30px;
 `;
 
-const StyledIdeasList = styled(MapIdeasList)`
+const StyledIdeasList = styled(MapIdeasList)<{ hide: boolean }>`
   flex: 1;
   overflow: hidden;
+  display: ${(props) => (props.hide ? 'none' : 'flex')};
 `;
 
 interface Props {
@@ -103,6 +105,8 @@ const IdeaMapOverlay = memo<Props>(
     const [scrollContainerElement, setScrollContainerElement] =
       useState<HTMLDivElement | null>(null);
 
+    const overlayRef = useRef<HTMLDivElement | null>(null);
+
     useEffect(() => {
       if (scrollContainerElement && selectedIdea) {
         scrollContainerElement.scrollTop = 0;
@@ -113,25 +117,38 @@ const IdeaMapOverlay = memo<Props>(
       setScrollContainerElement(element);
     };
 
+    const handleSelectIdea = (ideaId: string | null) => {
+      onSelectIdea(ideaId);
+      if (overlayRef.current) {
+        // Move focus to the idea overlay on selection of an idea
+        overlayRef.current.focus();
+      }
+    };
+
     if (project) {
       return (
         <Container className={className || ''}>
           <StyledIdeasList
             projectId={projectId}
             phaseId={phaseId}
-            onSelectIdea={onSelectIdea}
+            onSelectIdea={handleSelectIdea}
+            hide={!!selectedIdea}
           />
           <CSSTransition
             classNames="animation"
             in={!!selectedIdea}
             timeout={timeout}
-            mounOnEnter={true}
+            mountOnEnter={true}
             unmountOnExit={true}
             enter={true}
             exit={true}
           >
-            <InnerOverlay right={smallerThan1440px ? '-100px' : '-150px'}>
-              <StyledIdeaShowPageTopBar
+            <InnerOverlay
+              right={smallerThan1440px ? '-100px' : '-150px'}
+              tabIndex={-1}
+              ref={overlayRef}
+            >
+              <IdeaShowPageTopBar
                 ideaId={selectedIdea ?? undefined}
                 deselectIdeaOnMap={() => {
                   onSelectIdea(null);
