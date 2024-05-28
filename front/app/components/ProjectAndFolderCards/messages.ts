@@ -25,9 +25,9 @@ export default defineMessages({
     id: 'app.components.ProjectFolderCards.tryChangingFilters',
     defaultMessage: 'Try changing selected filters.',
   },
-  a11y_projectsHaveChanged: {
-    id: 'app.containers.SearchInput.a11y_projectsHaveChanged',
+  a11y_projectsHaveChanged1: {
+    id: 'app.containers.SearchInput.a11y_projectsHaveChanged1',
     defaultMessage:
-      '{numberOfFilteredResults, plural, zero {# results have loaded} one {# result has loaded} other {# results have loaded}}.',
+      '{numberOfFilteredResults, plural, =0 {# results have loaded} one {# result has loaded} other {# results have loaded}}.',
   },
 });

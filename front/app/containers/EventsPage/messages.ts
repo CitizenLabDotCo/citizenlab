@@ -39,9 +39,9 @@ export default defineMessages({
     id: 'app.containers.eventspage.events',
     defaultMessage: 'Events',
   },
-  a11y_eventsHaveChanged: {
-    id: 'app.containers.SearchInput.a11y_eventsHaveChanged',
+  a11y_eventsHaveChanged1: {
+    id: 'app.containers.SearchInput.a11y_eventsHaveChanged1',
     defaultMessage:
-      '{numberOfEvents, plural, zero {# events have loaded} one {# event has loaded} other {# events have loaded}}.',
+      '{numberOfEvents, plural, =0 {# events have loaded} one {# event has loaded} other {# events have loaded}}.',
   },
 });

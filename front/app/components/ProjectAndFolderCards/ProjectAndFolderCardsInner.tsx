@@ -122,7 +122,7 @@ const ProjectAndFolderCardsInner = ({
   return (
     <Box id="e2e-projects-container" display="flex" flexDirection="column">
       <ScreenReaderOnly aria-live="assertive">
-        {formatMessage(messages.a11y_projectsHaveChanged, {
+        {formatMessage(messages.a11y_projectsHaveChanged1, {
           numberOfFilteredResults: adminPublications.length,
         })}
       </ScreenReaderOnly>

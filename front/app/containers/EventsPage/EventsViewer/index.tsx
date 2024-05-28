@@ -210,7 +210,7 @@ const EventsViewer = ({
       {!isNilOrError(events) && (
         <>
           <ScreenReaderOnly aria-live="assertive">
-            {formatMessage(messages.a11y_eventsHaveChanged, {
+            {formatMessage(messages.a11y_eventsHaveChanged1, {
               numberOfEvents: events.data.length,
             })}
           </ScreenReaderOnly>
