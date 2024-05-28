@@ -24,7 +24,7 @@ import usePhase from 'api/phases/usePhase';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
-import Checkbox from 'components/HookForm/Checkbox';
+import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import Feedback from 'components/HookForm/Feedback';
 import SingleFileUploader from 'components/HookForm/SingleFileUploader';
 import Modal from 'components/UI/Modal';
@@ -188,13 +188,13 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
             </Box>
 
             <Box mt="24px">
-              <Checkbox
+              <CheckboxWithLabel
                 name="personal_data"
                 label={<FormattedMessage {...messages.formHasPersonalData} />}
               />
             </Box>
             <Box mt="24px">
-              <Checkbox
+              <CheckboxWithLabel
                 name="google_consent"
                 label={<FormattedMessage {...messages.googleConsent} />}
               />

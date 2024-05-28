@@ -8,8 +8,8 @@ import {
   Text,
   Icon,
   ListItem,
-  Checkbox,
   Spinner,
+  CheckboxWithLabel,
 } from '@citizenlab/cl2-component-library';
 import { useQueryClient } from '@tanstack/react-query';
 import { isEqual, omit, uniq } from 'lodash-es';
@@ -262,34 +262,29 @@ const Tags = () => {
             data-cy="e2e-analysis-tag-container"
           >
             <Box
-              position="absolute"
-              top="20px"
               onClick={(e) => {
                 e.stopPropagation();
               }}
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
             >
-              <Checkbox
+              <CheckboxWithLabel
                 checked={!!selectedTags?.includes(tag.id)}
                 onChange={() => {
                   toggleТаgCheckboxClick(tag.id);
                 }}
                 size="20px"
+                label={
+                  <Tag
+                    name={tag.attributes.name}
+                    tagType={tag.attributes.tag_type}
+                  />
+                }
               />
+              <TagActions tag={tag} />
             </Box>
             <Box ml={'28px'}>
-              <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-              >
-                <Tag
-                  name={tag.attributes.name}
-                  tagType={tag.attributes.tag_type}
-                />
-                <Box display="flex">
-                  <TagActions tag={tag} />
-                </Box>
-              </Box>
               <TagCount
                 count={tag.attributes.total_input_count}
                 totalCount={inputsTotal}

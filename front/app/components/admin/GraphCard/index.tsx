@@ -16,6 +16,7 @@ import ViewToggle, { Props as ViewToggleProps } from './ViewToggle';
 
 interface Props {
   title: string | React.ReactNode;
+  id?: string;
   infoTooltipContent?: React.ReactChild;
   exportMenu?: ReportExportMenuProps;
   viewToggle?: ViewToggleProps;
@@ -25,13 +26,14 @@ interface Props {
 
 const GraphCard = ({
   title,
+  id,
   infoTooltipContent,
   exportMenu,
   viewToggle,
   topRightStat,
   children,
 }: Props) => (
-  <Box p="10px" width="100%">
+  <Box p="10px" width="100%" id={id}>
     <GraphCardInnerClean>
       <Box
         display="flex"
