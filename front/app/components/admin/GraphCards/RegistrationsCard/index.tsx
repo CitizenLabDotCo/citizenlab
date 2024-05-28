@@ -56,6 +56,7 @@ const RegistrationsCard = ({
 
   return (
     <GraphCard
+      id="e2e-registrations-by-time-chart"
       title={cardTitle}
       exportMenu={{
         name: cardTitle,
