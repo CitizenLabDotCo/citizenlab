@@ -19,11 +19,9 @@ export const getPeriod = ({
       endAt
     ).format('LL')}`;
 
-    return formatMessage(messages.periodLabel, {
-      startEndDates,
-    });
+    return `<b>${formatMessage(messages.periodLabel)}</b>: ${startEndDates}`;
   }
 
   const startDate = moment(startAt).format('LL');
-  return formatMessage(messages.start, { startDate });
+  return `<b>${formatMessage(messages.start)}</b>: ${startDate}`;
 };

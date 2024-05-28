@@ -9,10 +9,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Reporting.Templates.StrategicReportTemplate.executiveSummary',
     defaultMessage: 'Executive summary',
   },
-  period: {
-    id: 'app.containers.Admin.Reporting.Templates.StrategicReportTemplate.period',
-    defaultMessage: 'Period',
-  },
   community: {
     id: 'app.containers.Admin.Reporting.Templates.StrategicReportTemplate.community',
     defaultMessage: 'Community',

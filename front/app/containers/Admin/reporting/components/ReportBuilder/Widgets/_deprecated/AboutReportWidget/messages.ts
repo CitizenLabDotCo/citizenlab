@@ -6,12 +6,12 @@ export default defineMessages({
     defaultMessage: 'About this report',
   },
   projectLabel: {
-    id: 'app.containers.admin.ReportBuilder.projectLabel',
-    defaultMessage: 'Project: {projectsList}',
+    id: 'app.containers.admin.ReportBuilder.projectLabel1',
+    defaultMessage: 'Project',
   },
   managerLabel: {
-    id: 'app.containers.admin.ReportBuilder.managerLabel',
-    defaultMessage: 'Project manager: {managerName}',
+    id: 'app.containers.admin.ReportBuilder.managerLabel1',
+    defaultMessage: 'Project manager',
   },
   continuousProject: {
     id: 'app.containers.admin.ReportBuilder.continuousProject',

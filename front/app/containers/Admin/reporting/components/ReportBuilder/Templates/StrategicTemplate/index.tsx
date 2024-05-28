@@ -39,13 +39,12 @@ const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
       endAt: endDate,
       formatMessage,
     });
-    if (!period) throw new Error('startDate and endDate should be defined');
 
     return withoutSpacing`
       <h2>${formatMessage(messages.reportTitle)}</h2>
       <h3>${formatMessage(messages.executiveSummary)}</h3>
       <ul>
-        <li><b>${formatMessage(messages.period)}</b>: ${period}</li>
+        ${period ? `<li>${period}</li>` : ''}
         <li><b>${formatMessage(messages.community)}</b>: PARTICIPANTS TODO</li>
         <li><b>${formatMessage(messages.projects)}</b>: PROJECTS TODO</li>
       </ul>

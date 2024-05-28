@@ -22,6 +22,7 @@ import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
+import { FormatMessageValues } from 'utils/cl-intl/useIntl';
 import { withoutSpacing, getFullName } from 'utils/textUtils';
 
 import { SURVEY_QUESTION_INPUT_TYPES } from '../../constants';
@@ -103,21 +104,25 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
   const aboutTextMultiloc = createMultiloc(
     appConfigurationLocales,
     (locale) => {
-      const formatMessage = (message, values) =>
-        formatMessageWithLocale(locale, message, values);
+      const formatMessage = (
+        message: MessageDescriptor,
+        values?: FormatMessageValues
+      ) => formatMessageWithLocale(locale, message, values);
 
       const { startAt, endAt } = projectPeriod;
       const period = getPeriod({ startAt, endAt, formatMessage });
 
       return withoutSpacing`
         <ul>
-          <li>${formatMessage(aboutMessages.projectLabel, {
-            projectsList: projectTitle?.[locale] ?? '',
-          })}</li>
+          <li>
+            <b>${formatMessage(aboutMessages.projectLabel)}</b>:
+            ${projectTitle?.[locale] ?? ''}
+          </li>
           ${period ? `<li>${period}</li>` : ''}
-          <li>${formatMessage(aboutMessages.managerLabel, {
-            managerName: projectModerator,
-          })}</li>
+          <li>
+            <b>${formatMessage(aboutMessages.managerLabel)}</b>:
+            ${projectModerator}
+          </li>
         </ul>
       `;
     }

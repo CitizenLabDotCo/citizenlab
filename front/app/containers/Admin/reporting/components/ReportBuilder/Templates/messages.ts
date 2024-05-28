@@ -2,11 +2,11 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   periodLabel: {
-    id: 'app.containers.admin.ReportBuilder.periodLabel',
-    defaultMessage: 'Period: {startEndDates}',
+    id: 'app.containers.admin.ReportBuilder.periodLabel1',
+    defaultMessage: 'Period',
   },
   start: {
-    id: 'app.containers.admin.ReportBuilder.start',
-    defaultMessage: 'Start: {startDate}',
+    id: 'app.containers.admin.ReportBuilder.start1',
+    defaultMessage: 'Start',
   },
 });
