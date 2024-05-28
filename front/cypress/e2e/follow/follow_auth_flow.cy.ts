@@ -13,10 +13,10 @@ const signUp = (email = randomEmail(), password = randomString()) => {
   cy.get('#lastName').type(lastName);
   cy.get('#email').type(email);
   cy.get('#password').type(password);
-  cy.get('#termsAndConditionsAccepted .e2e-checkbox')
+  cy.get('[data-testid="termsAndConditionsAccepted"] .e2e-checkbox')
     .click()
     .should('have.class', 'checked');
-  cy.get('#privacyPolicyAccepted .e2e-checkbox')
+  cy.get('[data-testid="privacyPolicyAccepted"] .e2e-checkbox')
     .click()
     .should('have.class', 'checked');
   cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);

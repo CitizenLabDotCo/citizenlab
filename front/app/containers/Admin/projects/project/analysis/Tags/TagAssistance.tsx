@@ -3,10 +3,9 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
-  Checkbox,
-  Label,
   Title,
   Text,
+  CheckboxWithLabel,
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
@@ -132,15 +131,11 @@ const FirstTagAssistance = ({ tagId, onHide }: Props) => {
           {step === 'step2-manual' && <Step2Manual />}
           {step === 'step2-auto' && <Step2Auto />}
           <Box display="flex" justifyContent="flex-start" mt="24px">
-            <Label>
-              <Checkbox
-                checked={dontShowAgainCheckbox}
-                onChange={() =>
-                  setDontShowAgainCheckbox(!dontShowAgainCheckbox)
-                }
-              />
-              <FormattedMessage {...messages.dontShowAgain} />
-            </Label>
+            <CheckboxWithLabel
+              checked={dontShowAgainCheckbox}
+              onChange={() => setDontShowAgainCheckbox(!dontShowAgainCheckbox)}
+              label={<FormattedMessage {...messages.dontShowAgain} />}
+            />
           </Box>
         </Box>
       }
