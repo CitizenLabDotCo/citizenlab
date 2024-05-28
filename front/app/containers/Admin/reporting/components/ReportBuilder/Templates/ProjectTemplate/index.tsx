@@ -110,18 +110,19 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
       ) => formatMessageWithLocale(locale, message, values);
 
       const { startAt, endAt } = projectPeriod;
+
       const period = getPeriod({ startAt, endAt, formatMessage });
 
       return withoutSpacing`
         <ul>
           <li>
             <b>${formatMessage(aboutMessages.projectLabel)}</b>:
-            ${projectTitle?.[locale] ?? ''}
+            ${` ${projectTitle?.[locale] ?? ''}`}
           </li>
           ${period ? `<li>${period}</li>` : ''}
           <li>
             <b>${formatMessage(aboutMessages.managerLabel)}</b>:
-            ${projectModerator}
+            ${` ${projectModerator}`}
           </li>
         </ul>
       `;
