@@ -57,7 +57,9 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
           {formatMessage(messages.eventPreviewTimelineTitle)}
         </Title>
         <HorizontalScroll>
-          <ul style={{ display: 'flex', listStyleType: 'none', padding: '0px' }}>
+          <ul
+            style={{ display: 'flex', listStyleType: 'none', padding: '0px' }}
+          >
             {events.data.map((event) => (
               <li
                 key={event.id}

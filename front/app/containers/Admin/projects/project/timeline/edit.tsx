@@ -2,7 +2,7 @@ import React, { FormEvent, useEffect, useState, MouseEvent } from 'react';
 
 import {
   Text,
-  Checkbox,
+  CheckboxWithLabel,
   Box,
   Title,
   IconTooltip,
@@ -522,7 +522,7 @@ const AdminPhaseEdit = () => {
             />
             <Error apiErrors={errors && errors.start_at} />
             <Error apiErrors={errors && errors.end_at} />
-            <Checkbox
+            <CheckboxWithLabel
               checked={!hasEndDate}
               onChange={setNoEndDate}
               disabled={disableNoEndDate}

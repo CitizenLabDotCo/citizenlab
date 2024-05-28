@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Checkbox as CheckboxComponent } from '@citizenlab/cl2-component-library';
+import { CheckboxWithLabel as CheckboxWithLabelComponent } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
@@ -9,14 +9,20 @@ import Error, { TFieldName } from 'components/UI/Error';
 
 interface Props
   extends Omit<
-    React.ComponentProps<typeof CheckboxComponent>,
+    React.ComponentProps<typeof CheckboxWithLabelComponent>,
     'checked' | 'onChange'
   > {
   name: string;
+  dataTestId?: string;
   handleSideEffects?: () => void;
 }
 
-const Checkbox = ({ name, handleSideEffects, ...rest }: Props) => {
+const CheckboxWithLabel = ({
+  name,
+  dataTestId,
+  handleSideEffects,
+  ...rest
+}: Props) => {
   const {
     formState: { errors: formContextErrors },
     control,
@@ -41,8 +47,8 @@ const Checkbox = ({ name, handleSideEffects, ...rest }: Props) => {
         control={control}
         defaultValue={defaultValue}
         render={({ field: { ref: _ref, value, ...field } }) => (
-          <CheckboxComponent
-            id={name}
+          <CheckboxWithLabelComponent
+            dataTestId={dataTestId}
             {...field}
             {...rest}
             checked={value}
@@ -75,4 +81,4 @@ const Checkbox = ({ name, handleSideEffects, ...rest }: Props) => {
   );
 };
 
-export default Checkbox;
+export default CheckboxWithLabel;
