@@ -1,4 +1,38 @@
 fr:
+  locales:
+    en: Anglais
+    ar-MA: Arabe (Maroc)
+    ar-SA: Arabe (Arabie Saoudite)
+    ca-ES: Catalan
+    cy-GB: Gallois
+    da-DK: Danois
+    de-DE: Allemand
+    el-GR: Grecque
+    en-CA: Anglais (Canada)
+    en-GB: Anglais (UK)
+    en-IE: Anglais (Irlande)
+    es-CL: Espagnol (Chili)
+    es-ES: Espagnol (Espagne)
+    fi-FI: Finlandais
+    fr-BE: Français (Belgique)
+    fr-FR: Français
+    hr-HR: Croate
+    hu-HU: Hongrois
+    it-IT: Italien
+    kl-GL: Groenlandais
+    lb-LU: luxembourgeois
+    lv-LV: Letton
+    mi: Maori
+    nb-NO: Norvégien (Bokmål)
+    nl-BE: Néerlandais (Belgique)
+    nl-NL: Néerlandais
+    pl-PL: Polonais
+    pt-BR: Portugais (Brésil)
+    ro-RO: Roumain
+    sr-Latn: Serbe (latin)
+    sr-SP: Serbe (cyrillique)
+    sv-SE: Suédois
+    tr-TR: Turc
   symbols:
     outside: autre lieu
   idea_statuses:
