@@ -134,6 +134,11 @@ const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
           />
         </Element>
       </TwoColumn>
+      <WhiteSpace size="small" />
+      <TextMultiloc
+        text={getSectionTitleAndDescription(messages.inclusionIndicators)}
+      />
+      <WhiteSpace size="small" />
     </Element>
   );
 };
