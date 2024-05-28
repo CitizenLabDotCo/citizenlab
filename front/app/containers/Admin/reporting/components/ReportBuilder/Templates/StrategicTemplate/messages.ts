@@ -39,4 +39,8 @@ export default defineMessages({
     id: 'app.containers.Admin.Reporting.Templates.StrategicReportTemplate.inclusionIndicators',
     defaultMessage: 'Top-level inclusion indicators',
   },
+  yourQuartersProjects: {
+    id: 'app.containers.Admin.Reporting.Templates.StrategicReportTemplate.yourQuartersProjects',
+    defaultMessage: "Your quarter's projects",
+  },
 });

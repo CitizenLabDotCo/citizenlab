@@ -26,6 +26,7 @@ import {
 } from '../../Widgets/ChartWidgets/DemographicsWidget/Settings';
 import RegistrationsWidget from '../../Widgets/ChartWidgets/RegistrationsWidget';
 import VisitorsWidget from '../../Widgets/ChartWidgets/VisitorsWidget';
+import ProjectsWidget from '../../Widgets/ProjectsWidget';
 import TextMultiloc from '../../Widgets/TextMultiloc';
 import TwoColumn from '../../Widgets/TwoColumn';
 import { TemplateContext } from '../context';
@@ -160,6 +161,15 @@ const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
           />
         </Element>
       ))}
+      <WhiteSpace size="small" />
+      <TextMultiloc
+        text={getSectionTitleAndDescription(messages.yourQuartersProjects)}
+      />
+      <WhiteSpace size="small" />
+      <ProjectsWidget
+        title={toMultiloc(WIDGET_TITLES.ProjectsWidget)}
+        {...dateRange}
+      />
     </Element>
   );
 };
