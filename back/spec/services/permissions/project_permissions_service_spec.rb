@@ -566,6 +566,50 @@ describe Permissions::ProjectPermissionsService do
     end
   end
 
+  describe 'project_visible_disabled_reason' do
+    it 'returns nil when a user is an admin and the project is visible to admins' do
+      project = create(:project, visible_to: 'admins')
+      user = create(:admin)
+      expect(service.send(:project_visible_disabled_reason, project, user)).to be_nil
+    end
+
+    it 'returns "project_not_visible" when a user is not admin and the project is visible to admins' do
+      project = create(:project, visible_to: 'admins')
+      user = create(:user)
+      expect(service.send(:project_visible_disabled_reason, project, user)).to eq 'project_not_visible'
+    end
+
+    it 'returns "project_not_visible" when there is no logged in user and the project is visible to admins' do
+      project = create(:project, visible_to: 'admins')
+      user = nil
+      expect(service.send(:project_visible_disabled_reason, project, user)).to eq 'project_not_visible'
+    end
+
+    it 'returns nil when a user is in a project group' do
+      project = create(:project, visible_to: 'groups', groups: [create(:group)])
+      user = create(:user, manual_groups: [project.groups.first])
+      expect(service.send(:project_visible_disabled_reason, project, user)).to be_nil
+    end
+
+    it 'returns nil when a user is a project moderator' do
+      project = create(:project, visible_to: 'groups', groups: [create(:group)])
+      user = create(:user, roles: [{ type: 'project_moderator', project_id: project.id }])
+      expect(service.send(:project_visible_disabled_reason, project, user)).to be_nil
+    end
+
+    it 'returns "project_not_visible" when a user is not in a project group' do
+      project = create(:project, visible_to: 'groups', groups: [create(:group)])
+      user = create(:user)
+      expect(service.send(:project_visible_disabled_reason, project, user)).to eq 'project_not_visible'
+    end
+
+    it 'returns "project_not_visible" when there is no logged in user and the project is visible to groups' do
+      project = create(:project, visible_to: 'groups', groups: [create(:group)])
+      user = nil
+      expect(service.send(:project_visible_disabled_reason, project, user)).to eq 'project_not_visible'
+    end
+  end
+
   describe 'action_descriptors' do
     it 'does not run more than 5 queries for 5 ideation projects with default user permissions' do
       user = create(:user)
