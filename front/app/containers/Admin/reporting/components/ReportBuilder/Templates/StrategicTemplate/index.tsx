@@ -45,8 +45,10 @@ const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
       <h3>${formatMessage(messages.executiveSummary)}</h3>
       <ul>
         ${period ? `<li>${period}</li>` : ''}
-        <li><b>${formatMessage(messages.community)}</b>: PARTICIPANTS TODO</li>
-        <li><b>${formatMessage(messages.projects)}</b>: PROJECTS TODO</li>
+        <li><b>${formatMessage(
+          messages.community
+        )}</b>: ${` PARTICIPANTS TODO`}</li>
+        <li><b>${formatMessage(messages.projects)}</b>: ${` PROJECTS TODO`}</li>
       </ul>
     `;
   });
