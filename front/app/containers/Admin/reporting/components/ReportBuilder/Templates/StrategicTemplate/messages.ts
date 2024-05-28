@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Reporting.Templates.StrategicReportTemplate.projects',
     defaultMessage: 'Projects',
   },
+  projectsPublished: {
+    id: 'app.containers.Admin.Reporting.Templates.StrategicReportTemplate.projectsPublished',
+    defaultMessage: 'projects published',
+  },
   placeholderQuote: {
     id: 'app.containers.Admin.Reporting.Templates.StrategicReportTemplate.placeholderQuote',
     defaultMessage:

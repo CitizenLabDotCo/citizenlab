@@ -4,6 +4,24 @@ import { getComparedTimeRange } from 'components/admin/GraphCards/_utils/query';
 
 import messages from './messages';
 
+export const getComparedDateRange = ({
+  startDate,
+  endDate,
+}: {
+  startDate: string;
+  endDate: string;
+}) => {
+  const { compare_start_at, compare_end_at } = getComparedTimeRange(
+    startDate,
+    endDate
+  );
+
+  return {
+    compareStartAt: compare_start_at,
+    compareEndAt: compare_end_at,
+  };
+};
+
 export const getCommunity = ({
   participantsNumber,
   formatMessage,
@@ -28,20 +46,15 @@ export const createGSQuote = (formatMessage: FormatMessage) => {
   return `${quote}\n${manager}`;
 };
 
-export const getComparedDateRange = ({
-  startDate,
-  endDate,
+export const getProjects = ({
+  projectsNumber,
+  formatMessage,
 }: {
-  startDate: string;
-  endDate: string;
+  projectsNumber: number;
+  formatMessage: FormatMessage;
 }) => {
-  const { compare_start_at, compare_end_at } = getComparedTimeRange(
-    startDate,
-    endDate
-  );
+  const projects = formatMessage(messages.projects);
+  const published = formatMessage(messages.projectsPublished);
 
-  return {
-    compareStartAt: compare_start_at,
-    compareEndAt: compare_end_at,
-  };
+  return `<li><b>${projects}</b>: ${` ${projectsNumber} ${published}`}</li>`;
 };

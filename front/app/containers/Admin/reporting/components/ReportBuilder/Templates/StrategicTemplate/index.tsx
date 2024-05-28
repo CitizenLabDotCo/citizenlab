@@ -4,6 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { Element } from '@craftjs/core';
 import { FormatMessage } from 'typings';
 
+import { useProjects } from 'api/graph_data_units';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -36,7 +37,12 @@ import { TemplateContext } from '../context';
 import { getPeriod } from '../utils';
 
 import messages from './messages';
-import { createGSQuote, getCommunity, getComparedDateRange } from './utils';
+import {
+  createGSQuote,
+  getCommunity,
+  getComparedDateRange,
+  getProjects,
+} from './utils';
 
 interface Props {
   startDate: string;
@@ -67,14 +73,21 @@ const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
 
   const { stats } = useActiveUsers({
     project_id: undefined,
-    start_at: dateRange.startAt,
-    end_at: dateRange.endAt,
+    start_at: startDate,
+    end_at: endDate,
     resolution: 'month',
     compare_start_at: comparedDateRange.compareStartAt,
     compare_end_at: comparedDateRange.compareEndAt,
   });
 
-  if (!appConfigurationLocales || !userFields || !stats) return null;
+  const { data: projects } = useProjects({
+    start_at: startDate,
+    end_at: endDate,
+  });
+
+  if (!appConfigurationLocales || !userFields || !stats || !projects) {
+    return null;
+  }
 
   const buildMultiloc = (fn: (formatMessage: FormatMessage) => string) => {
     return createMultiloc(appConfigurationLocales, (locale) => {
@@ -99,13 +112,18 @@ const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
       formatMessage,
     });
 
+    const projectsStat = getProjects({
+      projectsNumber: projects.data.attributes.projects.length,
+      formatMessage,
+    });
+
     return withoutSpacing`
       <h2>${formatMessage(messages.reportTitle)}</h2>
       <h3>${formatMessage(messages.executiveSummary)}</h3>
       <ul>
         ${period ? `<li>${period}</li>` : ''}
         ${community}
-        <li><b>${formatMessage(messages.projects)}</b>: ${` PROJECTS TODO`}</li>
+        ${projectsStat}
       </ul>
     `;
   });
