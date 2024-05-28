@@ -33,7 +33,6 @@ module ImpactTracking
           highest_role: current_user&.highest_role,
           user_id: current_user.id
         )
-          side_fx_session_service.after_upgrade(current_user)
 
           head :accepted
         else
@@ -60,11 +59,10 @@ module ImpactTracking
       def set_current_session
         return head(:not_found) unless params[:id] == 'current'
 
-        visitor_hash = SessionHashService.new.generate_for_visitor(request.remote_ip, request.user_agent)
-        @session = Session.where(monthly_user_hash: visitor_hash).order(created_at: :desc)&.first
+        side_fx_session_service.before_set_current_session(current_user)
 
-        # If the visitor has no session, return a new one. e.g. user logs out and in again, without refreshing the page.
-        @session = Session.new if @session.nil?
+        visitor_hash = SessionHashService.new.generate_for_visitor(request.remote_ip, request.user_agent)
+        @session = Session.where(monthly_user_hash: visitor_hash).order(created_at: :desc).first!
       end
 
       def side_fx_session_service
