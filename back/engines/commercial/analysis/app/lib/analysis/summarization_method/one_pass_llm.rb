@@ -74,22 +74,11 @@ module Analysis
       raise SummarizationFailedError, e
     end
 
+    private
+
     def prompt(project, inputs_text)
       project_title = MultilocService.new.t(project.title_multiloc)
-      @prompt = <<~GPT_PROMPT
-        At the end of this message is a list of form responses filled out by respondents in the context of an online participation project titled '#{project_title}'. The responses are separated by lines.
-
-        Summarize what respondents have said. Keep it brief. Put the most emphasis on things that were mentioned most often.
-        The goal is for the reader to get an understanding of what respondents have been talking about, without having to read through it all. Focus more on the trends across the responses, than on individual responses.
-        
-        Do NOT start your summary with any kind of introduction, start right away with the content, because the reader already knows the project context and the fact that this is a summary.
-        
-        You can refer to individual responses within the summary where relevant as example, by adding their ID between square brackets. E.g. [52247442-b9a9-4a74-a6a1-898e9d6e2da7].
-        
-        Write the summary in the same language as the majority of the responses.
-        
-        #{inputs_text}
-      GPT_PROMPT
+      LLM::Prompt.new.fetch('summarization', project_title: project_title, inputs_text: inputs_text, language: Locale.monolingual&.language)
     end
   end
 end
