@@ -12,6 +12,11 @@ import clHistory from 'utils/cl-router/history';
 
 import EventInformation from './EventInformation';
 
+/*
+  Ideally the li is not part of this component, but we rather wrap EventCard where it's used in a list.
+  Then the ul/li logic for accessible cards is in one place.
+  It also allows this component to be used in other contexts.
+*/
 const Container = styled.li`
   ${defaultCardStyle};
   padding: 16px;
@@ -32,11 +37,10 @@ interface Props {
   event: IEventData;
   className?: string;
   id?: string;
-  titleFontSize?: number;
 }
 
 const EventCard = memo<Props>((props) => {
-  const { event, className, id, ...otherProps } = props;
+  const { event, className, id } = props;
 
   const navigateToEventPage = () => {
     clHistory.push(`/events/${event.id}`, { scrollToTop: true });
@@ -54,7 +58,7 @@ const EventCard = memo<Props>((props) => {
       }}
       tabIndex={0}
     >
-      <EventInformation event={event} {...otherProps} />
+      <EventInformation event={event} />
     </Container>
   );
 });

@@ -40,8 +40,8 @@ const EventCardImage = styled(Image)`
 `;
 
 const PrimaryLink = styled(Link)`
-  // For reference: 
-  // https://kittygiraudel.com/2022/04/02/accessible-cards/ 
+  // For reference:
+  // https://kittygiraudel.com/2022/04/02/accessible-cards/
   // https://inclusive-components.design/cards/
   ::before {
     // Use a pseudo-element to expand the hitbox of the link over the whole card.
@@ -58,10 +58,9 @@ const PrimaryLink = styled(Link)`
 
 interface Props {
   event: IEventData;
-  titleFontSize?: number;
 }
 
-const EventInformation = ({ event, titleFontSize }: Props) => {
+const EventInformation = ({ event }: Props) => {
   const { formatMessage } = useIntl();
   const theme = useTheme();
 
@@ -95,7 +94,7 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
             <Title
               variant="h4"
               as="h3"
-              style={{ fontSize: titleFontSize, fontWeight: '600' }}
+              style={{ fontWeight: '600' }}
               pr="8px"
               color="tenantText"
               m="0px"
