@@ -25,6 +25,7 @@ import {
   isSupportedField,
 } from '../../Widgets/ChartWidgets/DemographicsWidget/Settings';
 import MethodsUsedWidget from '../../Widgets/ChartWidgets/MethodsUsedWidget';
+import ParticipationWidget from '../../Widgets/ChartWidgets/ParticipationWidget';
 import RegistrationsWidget from '../../Widgets/ChartWidgets/RegistrationsWidget';
 import VisitorsWidget from '../../Widgets/ChartWidgets/VisitorsWidget';
 import ProjectsWidget from '../../Widgets/ProjectsWidget';
@@ -175,6 +176,17 @@ const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
         title={toMultiloc(WIDGET_TITLES.MethodsUsedWidget)}
         {...dateRange}
         {...comparedDateRange}
+      />
+      <WhiteSpace size="small" />
+      <ParticipationWidget
+        title={toMultiloc(WIDGET_TITLES.ParticipationWidget)}
+        {...dateRange}
+        {...comparedDateRange}
+        participationTypes={{
+          inputs: true,
+          comments: true,
+          votes: true,
+        }}
       />
     </Element>
   );
