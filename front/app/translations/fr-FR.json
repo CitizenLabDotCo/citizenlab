@@ -1483,7 +1483,6 @@
   "app.containers.ReactionControl.a11y_likesDislikes": "Total des j'aime : {likesCount}, total des je n'aime pas : {dislikesCount}",
   "app.containers.ReactionControl.reactionErrorSubTitle": "En raison d'une erreur, votre réaction n'a pas pu être enregistrée. Veuillez réessayer dans quelques minutes.",
   "app.containers.ReactionControl.reactionSuccessTitle": "Votre réaction a été enregistrée avec succès !",
-  "app.containers.SearchInput.a11y_searchResultsHaveChanged": "{numberOfSearchResults, plural, zero {# résultats de recherche chargés} one {# résultat de recherche chargé} other {# résultats de recherche chargés}}.",
   "app.containers.SearchInput.removeSearchTerm": "Supprimer le terme de recherche",
   "app.containers.SearchInput.searchAriaLabel": "Chercher",
   "app.containers.SearchInput.searchLabel": "Chercher",
