@@ -38,6 +38,7 @@ const reportTitleIsTaken = (error: any) => {
 
 const CreateReportModal = ({ open, onClose }: Props) => {
   const { mutate: createReport, isLoading } = useAddReport();
+
   const [reportTitle, setReportTitle] = useState('');
   const [template, setTemplate] = useState<Template>('blank');
   const [selectedProject, setSelectedProject] = useState<string | undefined>();

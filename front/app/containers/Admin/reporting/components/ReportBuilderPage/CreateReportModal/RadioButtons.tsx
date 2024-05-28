@@ -2,7 +2,10 @@ import React from 'react';
 
 import { Radio, Text } from '@citizenlab/cl2-component-library';
 
+import useAuthUser from 'api/me/useAuthUser';
+
 import { MessageDescriptor, FormattedMessage } from 'utils/cl-intl';
+import { isSuperAdmin } from 'utils/permissions/roles';
 
 import messages from '../messages';
 
@@ -22,9 +25,15 @@ interface Props {
 }
 
 const RadioButtons = ({ value, onChange }: Props) => {
+  const { data: user } = useAuthUser();
+
+  const templateTypes = isSuperAdmin(user)
+    ? TEMPLATE_TYPES
+    : TEMPLATE_TYPES.filter((type) => type !== 'strategic');
+
   return (
     <>
-      {TEMPLATE_TYPES.map((templateType) => (
+      {templateTypes.map((templateType) => (
         <Radio
           key={templateType}
           id={`${templateType}-template-radio`}
