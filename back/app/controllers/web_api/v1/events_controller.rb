@@ -46,7 +46,7 @@ class WebApi::V1::EventsController < ApplicationController
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'attendees.xlsx'
     end
 
-    side_fx_event_service.after_attendees_xlsx(event, current_user)
+    side_fx.after_attendees_xlsx(event, current_user)
   end
 
   def show
@@ -71,12 +71,12 @@ class WebApi::V1::EventsController < ApplicationController
     event = Event.new(event_params)
     event.project_id = params[:project_id]
 
-    side_fx_event_service.before_create(event, current_user)
+    side_fx.before_create(event, current_user)
 
     authorize(event)
 
     if event.save
-      side_fx_event_service.after_create(event, current_user)
+      side_fx.after_create(event, current_user)
       render json: WebApi::V1::EventSerializer.new(event, params: jsonapi_serializer_params, include: %i[event_images]).serializable_hash, status: :created
     else
       render json: { errors: event.errors.details }, status: :unprocessable_entity
@@ -86,9 +86,9 @@ class WebApi::V1::EventsController < ApplicationController
   def update
     @event.assign_attributes event_params
     authorize @event
-    side_fx_event_service.before_update(@event, current_user)
+    side_fx.before_update(@event, current_user)
     if @event.save
-      side_fx_event_service.after_update(@event, current_user)
+      side_fx.after_update(@event, current_user)
       render json: WebApi::V1::EventSerializer.new(@event, params: jsonapi_serializer_params, include: %i[event_images]).serializable_hash, status: :ok
     else
       render json: { errors: @event.errors.details }, status: :unprocessable_entity
@@ -98,7 +98,7 @@ class WebApi::V1::EventsController < ApplicationController
   def destroy
     event = @event.destroy
     if event.destroyed?
-      side_fx_event_service.after_destroy(@event, current_user)
+      side_fx.after_destroy(@event, current_user)
       head :ok
     else
       head :internal_server_error
@@ -193,7 +193,7 @@ class WebApi::V1::EventsController < ApplicationController
     AppConfiguration.instance.settings('core', 'locales').first
   end
 
-  def side_fx_event_service
-    @side_fx_event_service ||= SideFxEventService.new
+  def side_fx
+    @side_fx ||= SideFxEventService.new
   end
 end

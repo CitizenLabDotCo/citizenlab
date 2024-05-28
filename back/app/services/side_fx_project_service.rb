@@ -77,6 +77,26 @@ class SideFxProjectService
     LogActivityJob.perform_later project, 'inputs_deleted', user, Time.now.to_i
   end
 
+  def after_votes_by_user_xlsx(project, user)
+    LogActivityJob.perform_later(
+      project,
+      'exported_votes_by_user',
+      user,
+      project.updated_at.to_i,
+      project_id: project.id
+    )
+  end
+
+  def after_votes_by_input_xlsx(project, user)
+    LogActivityJob.perform_later(
+      project,
+      'exported_votes_by_input',
+      user,
+      project.updated_at.to_i,
+      project_id: project.id
+    )
+  end
+
   private
 
   def after_publish(project, user)

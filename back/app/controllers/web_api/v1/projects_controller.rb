@@ -150,6 +150,8 @@ class WebApi::V1::ProjectsController < ApplicationController
         send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
           filename: 'votes_by_user.xlsx'
       end
+
+      after_votes_by_user_xlsx(project, user)
     else
       raise 'Project has no voting phase.'
     end
@@ -162,6 +164,8 @@ class WebApi::V1::ProjectsController < ApplicationController
         send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
           filename: 'votes_by_input.xlsx'
       end
+
+      after_votes_by_input_xlsx(project, user)
     else
       raise 'Project has no voting phase.'
     end

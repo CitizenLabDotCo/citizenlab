@@ -127,4 +127,30 @@ describe SideFxProjectService do
       service.after_delete_inputs project, user
     end
   end
+
+  describe 'after_votes_by_user_xlsx' do
+    it 'logs "exported_votes_by_user" activity' do
+      expect(LogActivityJob).to receive(:perform_later).with(
+        project,
+        'exported_votes_by_user',
+        user,
+        project.updated_at.to_i,
+        project_id: project.id
+      )
+      service.after_votes_by_user_xlsx project, user
+    end
+  end
+
+  describe 'after_votes_by_input_xlsx' do
+    it 'logs "exported_votes_by_input" activity' do
+      expect(LogActivityJob).to receive(:perform_later).with(
+        project,
+        'exported_votes_by_input',
+        user,
+        project.updated_at.to_i,
+        project_id: project.id
+      )
+      service.after_votes_by_input_xlsx project, user
+    end
+  end
 end
