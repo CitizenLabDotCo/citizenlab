@@ -627,7 +627,7 @@
   "app.components.form.controls.back": "Zurück",
   "app.components.form.controls.clickOnMapToAdd": "Klicken Sie auf die Karte oder geben Sie unten eine Adresse ein, um Ihre Antwort hinzuzufügen.",
   "app.components.form.controls.confirm": "Bestätigen",
-  "app.components.form.controls.notPublic1": "*This answer will only be shared with project managers, and not to the public.",
+  "app.components.form.controls.notPublic1": "*Diese Antwort wird nur an die Projektmanager*innen und nicht an die Öffentlichkeit weitergegeben.",
   "app.components.form.controls.selectAsManyAsYouLike": "*Beliebig viele auswählen",
   "app.components.form.controls.selectBetween": "*Wählen Sie zwischen {minItems} und {maxItems} Optionen",
   "app.components.form.controls.selectExactly2": "*Wählen Sie genau {selectExactly, plural, one {# Option} other {# Optionen}}",
