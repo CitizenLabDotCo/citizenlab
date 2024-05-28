@@ -971,13 +971,19 @@ RSpec.describe User do
   end
 
   describe 'in_any_groups?' do
-    it 'returns truety iff the user is a member of one of the given groups' do
+    it 'returns true if the user is a member of one of the given groups' do
       group1, group2 = create_list(:group, 2)
       user = create(:user, manual_groups: [group1])
       expect(user.in_any_groups?(Group.none)).to be false
       expect(user.in_any_groups?(Group.where(id: group1))).to be true
       expect(user.in_any_groups?(Group.where(id: [group1, group2]))).to be true
       expect(user).not_to be_in_any_groups(Group.where(id: group2))
+    end
+
+    it 'returns false if the user is not in any groups' do
+      group = create(:group)
+      user = create(:user)
+      expect(user.in_any_groups?([group])).to be false
     end
   end
 
