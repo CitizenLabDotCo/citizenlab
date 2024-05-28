@@ -12,6 +12,11 @@ import clHistory from 'utils/cl-router/history';
 
 import EventInformation from './EventInformation';
 
+/*
+  Ideally the li is not part of this component, but we rather wrap EventCard where it's used in a list.
+  Then the ul/li logic for accessible cards is in one place.
+  It also allows this component to be used in other contexts.
+*/
 const Container = styled.li`
   ${defaultCardStyle};
   padding: 16px;
