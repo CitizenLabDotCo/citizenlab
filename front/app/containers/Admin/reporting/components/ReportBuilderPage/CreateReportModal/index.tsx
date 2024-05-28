@@ -6,7 +6,6 @@ import {
   Text,
   Input,
   Label,
-  Radio,
   colors,
 } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
@@ -19,27 +18,18 @@ import Error from 'components/UI/Error';
 import Modal from 'components/UI/Modal';
 import ProjectFilter from 'components/UI/ProjectFilter';
 
-import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
-import messages from './messages';
+import messages from '../messages';
+
+import RadioButtons from './RadioButtons';
+import { Template } from './typings';
 
 interface Props {
   open: boolean;
   onClose: () => void;
 }
-
-type Template = 'blank' | 'project';
-
-interface RadioLabelProps {
-  message: MessageDescriptor;
-}
-
-const RadioLabel = ({ message }: RadioLabelProps) => (
-  <Text mt="0px" mb="0px" variant="bodyS" color="primary">
-    <FormattedMessage {...message} />
-  </Text>
-);
 
 const reportTitleIsTaken = (error: any) => {
   return error?.errors?.name?.[0]?.error === 'taken';
@@ -58,10 +48,6 @@ const CreateReportModal = ({ open, onClose }: Props) => {
   const blockSubmit =
     reportTitleTooShort ||
     (template === 'project' ? selectedProject === undefined : false);
-
-  const toggleTemplate = () => {
-    setTemplate((template) => (template === 'blank' ? 'project' : 'blank'));
-  };
 
   const handleProjectFilter = (option: IOption) => {
     setSelectedProject(option.value === '' ? undefined : option.value);
@@ -121,24 +107,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
         />
         <Box as="fieldset" border="0px" width="100%" p="0px" mt="28px">
           <Label>{formatMessage(messages.reportTemplate)}</Label>
-          <Radio
-            id="blank-template-radio"
-            name="blank-template-radio"
-            isRequired
-            value="blank"
-            currentValue={template}
-            label={<RadioLabel message={messages.blankTemplate} />}
-            onChange={toggleTemplate}
-          />
-          <Radio
-            id="project-template-radio"
-            name="project-template-radio"
-            isRequired
-            value="project"
-            currentValue={template}
-            label={<RadioLabel message={messages.projectTemplate} />}
-            onChange={toggleTemplate}
-          />
+          <RadioButtons value={template} onChange={setTemplate} />
         </Box>
         {template === 'project' && (
           <Box width="100%" mt="12px">

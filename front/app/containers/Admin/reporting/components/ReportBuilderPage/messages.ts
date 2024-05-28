@@ -34,6 +34,10 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.projectTemplate',
     defaultMessage: 'Start with a project template',
   },
+  strategicTemplate: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.strategicTemplate',
+    defaultMessage: 'Start with a strategic template',
+  },
   shareReportTitle: {
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.shareReportTitle',
     defaultMessage: 'Share',
