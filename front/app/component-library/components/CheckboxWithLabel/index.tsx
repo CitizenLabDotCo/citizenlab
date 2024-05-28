@@ -41,6 +41,7 @@ const CheckboxWithLabel = ({
       alignItems="center"
       onClick={handleLabelClick}
       data-testid={dataTestId || `${testEnv('check-mark-label')}`}
+      style={{ cursor: 'pointer' }}
       {...boxProps}
     >
       <Checkbox

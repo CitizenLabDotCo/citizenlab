@@ -98,6 +98,11 @@ type Props = {
   BoxPaddingProps &
   BoxMarginProps;
 
+/*
+  CheckboxWithLabel should be used for most cases. Ideally, this component is only used inside generic components (such as CheckboxWithLabel).
+
+  Checkbox can also be used for custom use cases as we do in ImageMultichoiceControl, where the image is part of the label (and the layout is a bit different). When using the Checkbox component, make sure to handle the label separately to comply with WCAG.
+*/
 const Checkbox = ({
   id,
   dataTestId,

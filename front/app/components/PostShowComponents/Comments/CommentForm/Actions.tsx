@@ -1,11 +1,11 @@
 import React from 'react';
 
 import {
-  Checkbox,
   useBreakpoint,
   Text,
   IconTooltip,
   Box,
+  CheckboxWithLabel,
 } from '@citizenlab/cl2-component-library';
 import { useLocation } from 'react-router-dom';
 
@@ -53,30 +53,30 @@ const Actions = ({
   const visible = focused || processing;
 
   const checkbox = (
-    <Box as="label" display="flex" alignItems="center">
-      <Checkbox
-        dataTestId="e2e-post-comment-anonymously-checkbox"
-        ml="8px"
-        mr="4px"
-        checked={postAnonymously}
-        onChange={() => togglePostAnonymously(!postAnonymously)}
-      />
-      <Text m="0px" fontSize="s" color="coolGrey600">
-        {formatMessage(messages.postAnonymously)}
-        <IconTooltip
-          content={
-            <Text color="white" fontSize="s" m="0">
-              {formatMessage(messages.inputsAssociatedWithProfile)}
-            </Text>
-          }
-          iconSize="16px"
-          placement="top-start"
-          display="inline"
-          ml="4px"
-          transform="translate(0,-1)"
-        />
-      </Text>
-    </Box>
+    <CheckboxWithLabel
+      dataTestId="e2e-post-comment-anonymously-checkbox"
+      ml="8px"
+      mr="4px"
+      checked={postAnonymously}
+      onChange={() => togglePostAnonymously(!postAnonymously)}
+      label={
+        <Text m="0px" fontSize="s" color="coolGrey600">
+          {formatMessage(messages.postAnonymously)}
+          <IconTooltip
+            content={
+              <Text color="white" fontSize="s" m="0">
+                {formatMessage(messages.inputsAssociatedWithProfile)}
+              </Text>
+            }
+            iconSize="16px"
+            placement="top-start"
+            display="inline"
+            ml="4px"
+            transform="translate(0,-1)"
+          />
+        </Text>
+      }
+    />
   );
 
   const cancelAndSubmit = (
