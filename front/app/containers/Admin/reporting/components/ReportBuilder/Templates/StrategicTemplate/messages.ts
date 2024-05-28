@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Reporting.Templates.StrategicReportTemplate.community',
     defaultMessage: 'Community',
   },
+  participants: {
+    id: 'app.containers.Admin.Reporting.Templates.StrategicReportTemplate.participants',
+    defaultMessage: 'participants',
+  },
   projects: {
     id: 'app.containers.Admin.Reporting.Templates.StrategicReportTemplate.projects',
     defaultMessage: 'Projects',

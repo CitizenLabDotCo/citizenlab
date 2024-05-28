@@ -4,6 +4,19 @@ import { getComparedTimeRange } from 'components/admin/GraphCards/_utils/query';
 
 import messages from './messages';
 
+export const getCommunity = ({
+  participantsNumber,
+  formatMessage,
+}: {
+  participantsNumber: number;
+  formatMessage: FormatMessage;
+}) => {
+  const community = `<b>${formatMessage(messages.community)}</b>`;
+  const participants = formatMessage(messages.participants);
+
+  return `<li>${community}: ${` ${participantsNumber} ${participants}`}</li>`;
+};
+
 export const createGSQuote = (formatMessage: FormatMessage) => {
   const quote = `<p><strong>${formatMessage(
     messages.placeholderQuote

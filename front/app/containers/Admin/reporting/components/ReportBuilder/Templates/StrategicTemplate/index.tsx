@@ -8,6 +8,7 @@ import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
+import useActiveUsers from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/ActiveUsersWidget/useActiveUsers';
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
@@ -35,7 +36,7 @@ import { TemplateContext } from '../context';
 import { getPeriod } from '../utils';
 
 import messages from './messages';
-import { createGSQuote, getComparedDateRange } from './utils';
+import { createGSQuote, getCommunity, getComparedDateRange } from './utils';
 
 interface Props {
   startDate: string;
@@ -51,13 +52,29 @@ console.error = (...args: any[]) => {
 };
 
 const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
+  const dateRange = {
+    startAt: startDate,
+    endAt: endDate,
+  };
+
+  const comparedDateRange = getComparedDateRange({ startDate, endDate });
+
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
   const { data: userFields } = useUserCustomFields({
     inputTypes: INPUT_TYPES,
   });
 
-  if (!appConfigurationLocales || !userFields) return null;
+  const { stats } = useActiveUsers({
+    project_id: undefined,
+    start_at: dateRange.startAt,
+    end_at: dateRange.endAt,
+    resolution: 'month',
+    compare_start_at: comparedDateRange.compareStartAt,
+    compare_end_at: comparedDateRange.compareEndAt,
+  });
+
+  if (!appConfigurationLocales || !userFields || !stats) return null;
 
   const buildMultiloc = (fn: (formatMessage: FormatMessage) => string) => {
     return createMultiloc(appConfigurationLocales, (locale) => {
@@ -77,14 +94,17 @@ const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
       formatMessage,
     });
 
+    const community = getCommunity({
+      participantsNumber: stats.activeUsers.value,
+      formatMessage,
+    });
+
     return withoutSpacing`
       <h2>${formatMessage(messages.reportTitle)}</h2>
       <h3>${formatMessage(messages.executiveSummary)}</h3>
       <ul>
         ${period ? `<li>${period}</li>` : ''}
-        <li><b>${formatMessage(
-          messages.community
-        )}</b>: ${` PARTICIPANTS TODO`}</li>
+        ${community}
         <li><b>${formatMessage(messages.projects)}</b>: ${` PROJECTS TODO`}</li>
       </ul>
     `;
@@ -106,13 +126,6 @@ const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
       return formatMessageWithLocale(locale, message);
     });
   };
-
-  const dateRange = {
-    startAt: startDate,
-    endAt: endDate,
-  };
-
-  const comparedDateRange = getComparedDateRange({ startDate, endDate });
 
   const supportedFields = userFields.data.filter(isSupportedField);
 
