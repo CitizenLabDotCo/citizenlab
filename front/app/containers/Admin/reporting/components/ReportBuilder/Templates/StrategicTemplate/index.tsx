@@ -22,6 +22,14 @@ interface Props {
   endDate: string;
 }
 
+// TODO remove
+const error = console.error.bind(console);
+
+console.error = (...args: any[]) => {
+  if (args[0].code === 'MISSING_TRANSLATION') return;
+  error(...args);
+};
+
 const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
@@ -53,9 +61,29 @@ const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
     `;
   });
 
+  const gsQuote = createMultiloc(appConfigurationLocales, (locale) => {
+    const formatMessage = (
+      message: MessageDescriptor,
+      values?: FormatMessageValues
+    ) => formatMessageWithLocale(locale, message, values);
+
+    return `
+      <p><strong>${formatMessage(messages.placeholderQuote)}</strong></p>
+      <p class="ql-align-center">
+        <strong>
+          (NAME),
+          ${formatMessage(messages.clGSManager)}
+        </strong>
+      </p>
+    `;
+  });
+
+  console.log({ gsQuote });
+
   return (
     <Element id="strategic-report-template" is={Box} canvas>
       <TextMultiloc text={reportStats} />
+      <TextMultiloc text={gsQuote} />
     </Element>
   );
 };
