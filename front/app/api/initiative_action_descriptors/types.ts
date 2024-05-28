@@ -15,7 +15,6 @@ export type IInitiativeAction =
   | 'commenting_initiative'
   | 'reacting_initiative';
 
-// TODO: JS - move all this to the actionDescriptors folder
 export type InitiativeDisabledReason = UserDisabledReason;
 
 // Confusingly, 'comment_reacting_initiative' is an action descriptor, but

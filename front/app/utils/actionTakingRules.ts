@@ -2,9 +2,9 @@ import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import { IUserData } from 'api/users/types';
 
+import { ProjectPostingDisabledReason } from 'utils/actionDescriptors/types';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
-import { ProjectPostingDisabledReason } from 'utils/actionDescriptors/types';
 
 import { canModerateProject } from './permissions/rules/projectPermissions';
 
