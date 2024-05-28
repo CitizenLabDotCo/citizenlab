@@ -70,6 +70,7 @@ export type ActionDescriptor<DisabledReason> =
   | { enabled: false; disabled_reason: DisabledReason };
 
 // If future_enabled_at is a string, it's a date
+// Note: Only applicable to 'posting_idea', 'commenting_idea', 'reacting_idea', 'voting'
 export type ActionDescriptorFutureEnabled<DisabledReason> =
   | { enabled: true; disabled_reason: null; future_enabled_at: null }
   | {
