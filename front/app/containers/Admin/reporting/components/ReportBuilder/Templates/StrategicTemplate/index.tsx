@@ -24,6 +24,7 @@ import {
   INPUT_TYPES,
   isSupportedField,
 } from '../../Widgets/ChartWidgets/DemographicsWidget/Settings';
+import MethodsUsedWidget from '../../Widgets/ChartWidgets/MethodsUsedWidget';
 import RegistrationsWidget from '../../Widgets/ChartWidgets/RegistrationsWidget';
 import VisitorsWidget from '../../Widgets/ChartWidgets/VisitorsWidget';
 import ProjectsWidget from '../../Widgets/ProjectsWidget';
@@ -143,7 +144,6 @@ const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
             title={toMultiloc(WIDGET_TITLES.ActiveUsersWidget)}
             {...dateRange}
             {...comparedDateRange}
-            projectId={undefined}
           />
         </Element>
       </TwoColumn>
@@ -169,6 +169,12 @@ const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
       <ProjectsWidget
         title={toMultiloc(WIDGET_TITLES.ProjectsWidget)}
         {...dateRange}
+      />
+      <WhiteSpace size="small" />
+      <MethodsUsedWidget
+        title={toMultiloc(WIDGET_TITLES.MethodsUsedWidget)}
+        {...dateRange}
+        {...comparedDateRange}
       />
     </Element>
   );
