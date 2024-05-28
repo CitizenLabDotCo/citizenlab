@@ -82,7 +82,7 @@ class SideFxProjectService
       project,
       'exported_votes_by_user',
       user,
-      project.updated_at.to_i,
+      Time.now.to_i,
       project_id: project.id
     )
   end
@@ -92,7 +92,7 @@ class SideFxProjectService
       project,
       'exported_votes_by_input',
       user,
-      project.updated_at.to_i,
+      Time.now.to_i,
       project_id: project.id
     )
   end

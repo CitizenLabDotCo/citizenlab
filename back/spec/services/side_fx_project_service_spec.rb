@@ -134,7 +134,7 @@ describe SideFxProjectService do
         project,
         'exported_votes_by_user',
         user,
-        project.updated_at.to_i,
+        anything,
         project_id: project.id
       )
       service.after_votes_by_user_xlsx project, user
@@ -147,7 +147,7 @@ describe SideFxProjectService do
         project,
         'exported_votes_by_input',
         user,
-        project.updated_at.to_i,
+        anything,
         project_id: project.id
       )
       service.after_votes_by_input_xlsx project, user
