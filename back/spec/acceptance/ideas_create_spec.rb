@@ -180,6 +180,20 @@ resource 'Ideas' do
               expect(json_response).to include_response_error(:base, 'anonymous_participation_not_allowed')
             end
           end
+
+          describe 'when anonymous posting is not allowed and project is restricted to groups' do
+            before do
+              group = create(:group)
+              project.update!(visible_to: 'groups', groups: [group])
+              resident.update!(manual_groups: [group])
+            end
+            example_request 'Posting an idea anonymously to a group restricted project' do
+              assert_status 201
+              expect(response_data.dig(:attributes, :anonymous)).to be true
+              expect(response_data.dig(:attributes, :author_name)).to be_nil
+              expect(response_data.dig(:relationships, :author, :data)).to be_nil
+            end
+          end
         end
 
         describe 'For projects without ideas_order' do
