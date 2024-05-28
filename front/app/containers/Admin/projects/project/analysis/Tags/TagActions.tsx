@@ -103,6 +103,7 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
 
   return (
     <div data-cy="e2e-analysis-tag-action">
+      {/* Could be replaced by reusable MoreActionsMenu? */}
       <IconButton
         iconName="dots-horizontal"
         iconColor={colors.textSecondary}
