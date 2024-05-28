@@ -54,7 +54,7 @@ const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
   });
 
   return (
-    <Element id="phase-report-template" is={Box} canvas>
+    <Element id="strategic-report-template" is={Box} canvas>
       <TextMultiloc text={reportStats} />
     </Element>
   );
