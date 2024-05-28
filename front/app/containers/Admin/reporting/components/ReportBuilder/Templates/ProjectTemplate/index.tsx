@@ -26,7 +26,6 @@ import { withoutSpacing, getFullName } from 'utils/textUtils';
 
 import { SURVEY_QUESTION_INPUT_TYPES } from '../../constants';
 import aboutMessages from '../../Widgets/_deprecated/AboutReportWidget/messages';
-import { getPeriod } from '../../Widgets/_deprecated/AboutReportWidget/utils';
 import ActiveUsersWidget from '../../Widgets/ChartWidgets/ActiveUsersWidget';
 import DemographicsWidget from '../../Widgets/ChartWidgets/DemographicsWidget';
 import { INPUT_TYPES } from '../../Widgets/ChartWidgets/DemographicsWidget/Settings';
@@ -36,6 +35,7 @@ import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget
 import TextMultiloc from '../../Widgets/TextMultiloc';
 import TwoColumn from '../../Widgets/TwoColumn';
 import { TemplateContext } from '../context';
+import { getPeriod } from '../utils';
 
 import { getTemplateData } from './getTemplateData';
 import messages from './messages';

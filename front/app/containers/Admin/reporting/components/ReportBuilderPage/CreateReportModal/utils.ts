@@ -27,7 +27,14 @@ export const getRedirectUrl = ({
   }
 
   if (template === 'strategic' && startDate && endDate) {
-    params = `?startDateStrategicReport=${startDate}&endDateStrategicReport=${endDate}`;
+    const startDateParam = `startDateStrategicReport=${startDate.format(
+      'YYYY-MM-DD'
+    )}`;
+    const endDateParam = `endDateStrategicReport=${endDate.format(
+      'YYYY-MM-DD'
+    )}`;
+
+    params = `?${startDateParam}&${endDateParam}`;
   }
 
   return `${reportRoute}${params}` as RouteType;
