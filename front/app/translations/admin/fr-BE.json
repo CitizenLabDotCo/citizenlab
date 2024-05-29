@@ -52,7 +52,7 @@
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "Section personnalisée de la page d’accueil",
   "app.components.AnonymousPostingToggle.betaLabel": "BETA",
   "app.components.AnonymousPostingToggle.userAnonymity": "Anonymat de l'utilisateur",
-  "app.components.AnonymousPostingToggle.userAnonymityLabelSubtext": "Les utilisateurs pourront masquer leur identité vis-à-vis des autres utilisateurs, des gestionnaires de projet et des administrateurs. Toutefois, leurs contributions pourront toujours être modérées.",
+  "app.components.AnonymousPostingToggle.userAnonymityLabelSubtext": "Les auteurs pourront masquer leur identité aux autres utilisateurs, aux gestionnaires de projet et aux administrateurs. Toutefois, leurs contributions pourront toujours être modérées.",
   "app.components.AnonymousPostingToggle.userAnonymityLabelText": "Permettre aux utilisateurs de participer de façon anonyme",
   "app.components.AnonymousPostingToggle.userAnonymityLabelTooltip2": "Les utilisateurs pourront choisir de participer avec leur vrai nom ou de manière anonyme s'ils le souhaitent. Cependant, tous les utilisateurs devront toujours se conformer aux critères de participation définis dans l'onglet « Droits d'accès » pour pouvoir soumettre leurs contributions. Il est important de noter que dans le cas d'une participation anonyme, les données du profil utilisateur ne seront pas incluses dans l'exportation des données de participation.",
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltip": "Pour en savoir plus sur la participation anonyme, consultez notre {supportArticle}.",
