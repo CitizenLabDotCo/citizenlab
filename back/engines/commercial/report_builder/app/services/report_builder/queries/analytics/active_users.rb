@@ -60,7 +60,7 @@ module ReportBuilder
       # conversion rate on the FE, where we only compare
       # visitors (i.e. people that accepted cookies)
       # to active users that also accepted cookies
-      active_visitor_users_whole_period_query = active_users_query(
+      active_users_who_accepted_cookies_whole_period_query = active_users_query(
         start_at, end_at, project_id, apply_visitor_filter: true
       )
 
@@ -68,7 +68,7 @@ module ReportBuilder
         time_series_query,
         active_users_whole_period_query,
         visitors_whole_period_query,
-        active_visitor_users_whole_period_query
+        active_users_who_accepted_cookies_whole_period_query
       ]
 
       if compare_start_at.present? && compare_end_at.present?
@@ -81,13 +81,13 @@ module ReportBuilder
         # conversion rate on the FE, where we only compare
         # visitors (i.e. people that accepted cookies)
         # to active users that also accepted cookies
-        active_visitor_users_compared_period_query = active_users_query(
+        active_users_who_accepted_cookies_compared_period_query = active_users_query(
           compare_start_at, compare_end_at, project_id, apply_visitor_filter: true
         )
 
         queries << active_users_compared_period_query
         queries << visitors_compared_period_query
-        queries << active_visitor_users_compared_period_query
+        queries << active_users_who_accepted_cookies_compared_period_query
       end
 
       queries
