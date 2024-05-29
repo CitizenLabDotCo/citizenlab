@@ -32,8 +32,8 @@ const VotingResults = ({ phaseId, votingMethod }: Props) => {
 
   const smallerThanPhone = useBreakpoint('phone');
 
-  const list = ideas?.pages.map((page) => page.data).flat();
-  if (!list) return null;
+  const ideasList = ideas?.pages.map((page) => page.data).flat();
+  if (!ideasList) return null;
 
   const getMx = (i: number) =>
     smallerThanPhone ? {} : i % 2 ? { ml: '8px' } : { mr: '8px' };
@@ -46,7 +46,7 @@ const VotingResults = ({ phaseId, votingMethod }: Props) => {
       flexWrap="wrap"
       justifyContent="space-between"
     >
-      {list.map((idea, i) => (
+      {ideasList.map((idea, i) => (
         <Box
           key={idea.id}
           mb={smallerThanPhone ? '8px' : '20px'}
@@ -60,7 +60,7 @@ const VotingResults = ({ phaseId, votingMethod }: Props) => {
             rank={
               getRanks(
                 getCounts(
-                  list,
+                  ideasList,
                   votingMethod === 'budgeting' ? 'baskets_count' : 'votes_count'
                 )
               )[i]
