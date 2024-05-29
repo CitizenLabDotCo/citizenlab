@@ -45,11 +45,11 @@ const AccessibilityStatement = () => {
                         values={{
                           citizenLabLink: (
                             <a
-                              href="https://www.citizenlab.co/"
+                              href="https://www.govocal.com/"
                               target="_blank"
                               rel="noreferrer"
                             >
-                              CitizenLab
+                              Go Vocal
                             </a>
                           ),
                         }}
