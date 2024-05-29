@@ -1480,6 +1480,7 @@
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "Tämän vaihtoehdon valinneiden osallistujien prosenttiosuus.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "Tämän vaihtoehdon saamien äänien prosenttiosuus.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Kustannus:",
+  "app.containers.ProjectsShowPage.timeline.VotingResults.showMore": "Näytä lisää",
   "app.containers.ReactionControl.a11y_likesDislikes": "Tykkäyksiä yhteensä: {likesCount}, ei-tykkäyksiä yhteensä: {dislikesCount}",
   "app.containers.ReactionControl.reactionErrorSubTitle": "Reaktiota ei voitu rekisteröidä virheen vuoksi. Yritä uudelleen muutaman minuutin kuluttua.",
   "app.containers.ReactionControl.reactionSuccessTitle": "Reaktiosi rekisteröitiin onnistuneesti!",
