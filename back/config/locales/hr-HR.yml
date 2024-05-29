@@ -1,4 +1,38 @@
 hr:
+  locales:
+    en: Engleski
+    ar-MA: arapski (Maroko)
+    ar-SA: arapski (Saudijska Arabija)
+    ca-ES: katalonski
+    cy-GB: velški
+    da-DK: danski
+    de-DE: njemački
+    el-GR: grčki
+    en-CA: engleski (Kanada)
+    en-GB: engleski (UK)
+    en-IE: engleski (Irska)
+    es-CL: španjolski (Čile)
+    es-ES: španjolski (Španjolska)
+    fi-FI: finski
+    fr-BE: francuski (Belgija)
+    fr-FR: francuski
+    hr-HR: Hrvatski
+    hu-HU: mađarski
+    it-IT: talijanski
+    kl-GL: grenlandski
+    lb-LU: luksemburški
+    lv-LV: latvijski
+    mi: maorski
+    nb-NO: norveški (bokmol)
+    nl-BE: nizozemski (Belgija)
+    nl-NL: nizozemski
+    pl-PL: Polirati
+    pt-BR: portugalski (Brazil)
+    ro-RO: rumunjski
+    sr-Latn: srpski (latinica)
+    sr-SP: srpski (ćirilica)
+    sv-SE: švedski
+    tr-TR: turski
   symbols:
     outside: negdje drugdje
   idea_statuses:
@@ -149,7 +183,7 @@ hr:
         title: Pojedinosti
         description:
       other_text_field:
-        title: Ako ste odabrali '{other_option}', na što mislite?
+        title: If you picked '{other_option}', what are you thinking of?
   custom_forms:
     categories:
       main_content:
