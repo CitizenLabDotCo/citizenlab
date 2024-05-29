@@ -28,11 +28,15 @@ export const userHasRole = (user: IUser, role: TRole['type']) => {
   return result !== undefined;
 };
 
-export const isAdmin = (user: IUser) => {
+export const isAdmin = (user: IUser | undefined) => {
+  if (!user) return false;
+
   return userHasRole(user, 'admin');
 };
 
-export const isModerator = (user: IUser) => {
+export const isModerator = (user: IUser | undefined) => {
+  if (!user) return false;
+
   return ['project_moderator', 'project_folder_moderator'].includes(
     user.data.attributes.highest_role
   );
@@ -46,15 +50,22 @@ export const isModerator = (user: IUser) => {
   In the backend, it's used for data integrity.
   Most of the times it's used it's to make sure that we don't accept test data from CL employees as valid data.
 */
-export const isSuperAdmin = (user: IUser) => {
+export const isSuperAdmin = (user: IUser | undefined) => {
+  if (!user) return false;
+
   return user.data.attributes.highest_role === 'super_admin';
 };
 
-export const isRegularUser = (user: IUser) => {
-  return user.data.attributes.highest_role === 'user';
+export const isRegularUser = (user: IUser | undefined) => {
+  return user?.data.attributes.highest_role === 'user';
 };
 
-export const isProjectModerator = (user: IUser, projectId: string) => {
+export const isProjectModerator = (
+  user: IUser | undefined,
+  projectId: string
+) => {
+  if (!user) return false;
+
   const role = user.data.attributes.roles?.find(
     (r) => r.type === 'project_moderator' && r.project_id === projectId
   );

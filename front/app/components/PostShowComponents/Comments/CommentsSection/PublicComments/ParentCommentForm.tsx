@@ -4,10 +4,8 @@ import { Box, colors, defaultStyles } from '@citizenlab/cl2-component-library';
 import { isString, trim } from 'lodash-es';
 import { hideVisually } from 'polished';
 import { useLocation } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
@@ -26,7 +24,6 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import clickOutside from 'utils/containers/clickOutside';
 import { isNilOrError, isPage } from 'utils/helperUtils';
-import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
 import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 

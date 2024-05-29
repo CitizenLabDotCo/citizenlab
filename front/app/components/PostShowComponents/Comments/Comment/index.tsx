@@ -4,6 +4,7 @@ import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useComment from 'api/comments/useComment';
+import useProjectById from 'api/projects/useProjectById';
 import useUserById from 'api/users/useUserById';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -77,6 +78,7 @@ const Comment = ({
   const { data: author } = useUserById(
     comment?.data.relationships?.author?.data?.id
   );
+  const { data: project } = useProjectById(projectId);
 
   const [editing, setEditing] = useState(false);
 
@@ -94,7 +96,7 @@ const Comment = ({
 
   const authorCanModerate = author
     ? {
-        idea: canModerateProject(projectId, author),
+        idea: project ? canModerateProject(project.data, author) : false,
         initiative: canModerateInitiative(author),
       }[postType]
     : false;

@@ -57,7 +57,7 @@ const SurveyHeading = ({ titleText }: Props) => {
   if (!project) return null;
 
   const showEditSurveyButton =
-    !isSmallerThanPhone && canModerateProject(project.data.id, authUser);
+    !isSmallerThanPhone && canModerateProject(project.data, authUser);
   const phaseId =
     searchParams.get('phase_id') ||
     project.data.relationships.current_phase?.data?.id;

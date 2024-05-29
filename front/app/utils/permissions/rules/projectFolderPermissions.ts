@@ -12,7 +12,12 @@ import {
   isModeratorRoute,
 } from 'utils/permissions/rules/routePermissions';
 
-export function userModeratesFolder(user: IUserData, projectFolderId: string) {
+export function userModeratesFolder(
+  user: IUserData | undefined,
+  projectFolderId: string
+) {
+  if (!user) return false;
+
   return (
     isAdmin({ data: user }) ||
     !!user.attributes?.roles?.find((role: TRole) => {

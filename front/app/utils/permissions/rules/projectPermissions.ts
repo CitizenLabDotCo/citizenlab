@@ -19,9 +19,14 @@ definePermissionRule('project', 'reorder', (_project: IProjectData, user) => {
   return user ? isAdmin(user) : false;
 });
 
-export function canModerateProject(project: IProjectData, user: IUser) {
+export function canModerateProject(
+  project: IProjectData,
+  user: IUser | undefined
+) {
   const projectId = project.id;
   const projectFolderId = project.attributes.folder_id;
+
+  if (!user) return false;
 
   return (
     isAdmin(user) ||

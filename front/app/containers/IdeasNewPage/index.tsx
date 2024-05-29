@@ -76,7 +76,7 @@ const IdeasNewPage = () => {
     });
 
   const userCannotViewSurvey =
-    !canModerateProject(project.data.id, authUser) &&
+    !canModerateProject(project.data, authUser) &&
     phase_id !== currentPhase?.id;
 
   if (isSurvey) {

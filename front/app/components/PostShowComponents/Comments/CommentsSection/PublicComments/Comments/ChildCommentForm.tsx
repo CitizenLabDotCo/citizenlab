@@ -25,7 +25,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clickOutside from 'utils/containers/clickOutside';
 import { isNilOrError } from 'utils/helperUtils';
 import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
-import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import { commentReplyButtonClicked$, commentAdded } from '../../../events';
