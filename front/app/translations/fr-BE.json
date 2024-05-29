@@ -635,6 +635,7 @@
   "app.components.form.controls.tapOnFullscreenMapToAdd": "Cliquez sur la carte pour ajouter votre réponse.",
   "app.components.form.controls.tapOnMapToAdd2": "Cliquez sur la carte ou saisissez une adresse ci-dessous pour ajouter votre réponse.",
   "app.components.form.controls.tapToAddAPoint": "Cliquez pour ajouter un point",
+  "app.components.form.controls.validCordinatesTooltip2": "Si l'emplacement n'est pas affiché parmi les options au fur et à mesure de la saisie, vous pouvez ajouter des coordonnées valides au format \"latitude, longitude\" pour spécifier un emplacement précis (par exemple : -33.019808, -71.495676).",
   "app.components.form.error": "Erreur",
   "app.components.form.locationGoogleUnavailable": "Impossible de charger le champ de localisation fourni par Google Maps.",
   "app.components.form.submit": "Envoyer",
