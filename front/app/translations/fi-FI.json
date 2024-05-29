@@ -294,6 +294,7 @@
   "app.components.ParticipationCTABars.seeEvents3": "Katso tapahtumat",
   "app.components.ParticipationCTABars.seeIdeas": "Katso ideoita",
   "app.components.ParticipationCTABars.submit": "Lähetä",
+  "app.components.ParticipationCTABars.submitSuccess": "Lähetys onnistui",
   "app.components.ParticipationCTABars.takeTheSurvey": "Vastaa kyselyyn",
   "app.components.ParticipationCTABars.userHasParticipated": "Olet osallistunut tähän projektiin.",
   "app.components.ParticipationCTABars.volunteer": "Vapaaehtoinen",
