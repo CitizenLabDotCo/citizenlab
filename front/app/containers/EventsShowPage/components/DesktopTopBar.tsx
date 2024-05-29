@@ -34,7 +34,6 @@ const TopBar = ({ project, event }: Props) => {
   const location = useLocation();
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
-  const canModerate = authUser ? canModerateProject(project, authUser) : false;
 
   return (
     <Bar>
@@ -48,7 +47,7 @@ const TopBar = ({ project, event }: Props) => {
               : clHistory.push(`/projects/${project.attributes.slug}`);
           }}
         />
-        {canModerate && (
+        {canModerateProject(project, authUser) && (
           <Button
             buttonStyle="secondary"
             m="0px"
