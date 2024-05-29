@@ -30,12 +30,12 @@ module EmailCampaigns
     end
 
     def from_email
-      email_address_with_name (raw_from_email || 'hello@citizenlab.co'), from_name(command[:sender], command[:author], recipient)
+      email_address_with_name (raw_from_email || 'hello@citizenlab.co'), from_name(command[:sender], command[:author])
     end
 
     private
 
-    def from_name(sender_type, author, recipient)
+    def from_name(sender_type, author)
       case sender_type
       when 'author'
         "#{author.first_name} #{author.last_name}"
@@ -48,7 +48,7 @@ module EmailCampaigns
       {
         'first_name' => user.first_name,
         'last_name' => user.last_name,
-        'locale' => user.locale.locale_sym,
+        'locale' => user.locale,
         'email' => user.email,
         'unsubscription_token' => EmailCampaigns::UnsubscriptionToken.find_by(user_id: user.id)&.token
       }

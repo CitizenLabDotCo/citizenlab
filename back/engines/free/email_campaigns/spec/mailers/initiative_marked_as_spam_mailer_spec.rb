@@ -51,7 +51,7 @@ RSpec.describe EmailCampaigns::InitiativeMarkedAsSpamMailer do
     end
 
     it 'assigns go to initiative CTA' do
-      initiative_url = Frontend::UrlService.new.model_to_url(initiative, locale: recipient.locale)
+      initiative_url = Frontend::UrlService.new.model_to_url(initiative, locale: Locale.new(recipient.locale))
       expect(mail.body.encoded).to match(initiative_url)
     end
   end
