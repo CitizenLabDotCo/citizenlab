@@ -59,9 +59,9 @@ RSpec.describe ReportBuilder::Queries::Analytics::Visitors do
       # Create visits
       dim_sept = create(:dimension_date, date: september)
 
-      create(:fact_visit, visitor_id: 'v-1', duration: 100, pages_visited: 1,
+      create(:fact_visit, visitor_id: 'visitor-1', duration: 100, pages_visited: 1,
         dimension_date_first_action: dim_sept, dimension_date_last_action: dim_sept, dimension_referrer_type: referrer_type)
-      create(:fact_visit, visitor_id: 'v-1', duration: 200, pages_visited: 2,
+      create(:fact_visit, visitor_id: 'visitor-1', duration: 200, pages_visited: 2,
         dimension_date_first_action: dim_sept, dimension_date_last_action: dim_sept, dimension_referrer_type: referrer_type)
 
       ### OCTOBER
@@ -74,7 +74,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::Visitors do
       # Create visit
       dim_oct = create(:dimension_date, date: october)
 
-      create(:fact_visit, visitor_id: 'v-3', duration: 100, pages_visited: 1,
+      create(:fact_visit, visitor_id: 'visitor-3', duration: 100, pages_visited: 1,
         dimension_date_first_action: dim_oct, dimension_date_last_action: dim_oct, dimension_referrer_type: referrer_type)
 
       params = {
