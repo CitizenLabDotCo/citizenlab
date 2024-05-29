@@ -1,4 +1,38 @@
 pt:
+  locales:
+    en: Inglês
+    ar-MA: Árabe (Marrocos)
+    ar-SA: Árabe (Arábia Saudita)
+    ca-ES: Catalão
+    cy-GB: Galês
+    da-DK: Dinamarquês
+    de-DE: Alemão
+    el-GR: Grego
+    en-CA: Inglês (Canadá)
+    en-GB: Inglês (Reino Unido)
+    en-IE: Inglês (Irlanda)
+    es-CL: Espanhol (Chile)
+    es-ES: Espanhol (Espanha)
+    fi-FI: Finlandês
+    fr-BE: Francês (Bélgica)
+    fr-FR: Francês
+    hr-HR: Croata
+    hu-HU: Húngaro
+    it-IT: Italiano
+    kl-GL: Groenlandês
+    lb-LU: Luxemburguês
+    lv-LV: Letão
+    mi: Maori
+    nb-NO: Norueguês (Bokmål)
+    nl-BE: Holandês (Bélgica)
+    nl-NL: Holandês
+    pl-PL: Polonês
+    pt-BR: Português (Brasil)
+    ro-RO: Romeno
+    sr-Latn: Sérvio (latim)
+    sr-SP: Sérvio (cirílico)
+    sv-SE: Sueco
+    tr-TR: Turco
   symbols:
     outside: em outro lugar
   idea_statuses:
@@ -149,7 +183,7 @@ pt:
         title: Detalhes
         description:
       other_text_field:
-        title: Se você escolheu "{other_option}", no que está pensando?
+        title: If you picked '{other_option}', what are you thinking of?
   custom_forms:
     categories:
       main_content:
