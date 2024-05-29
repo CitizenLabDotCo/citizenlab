@@ -1480,6 +1480,7 @@
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "النسبة المئوية للمشاركين الذين اختاروا هذا الخيار.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "النسبة المئوية لإجمالي الأصوات التي حصل عليها هذا الخيار.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "يكلف:",
+  "app.containers.ProjectsShowPage.timeline.VotingResults.showMore": "أظهر المزيد",
   "app.containers.ReactionControl.a11y_likesDislikes": "إجمالي المعجبين: {likesCount}، إجمالي غير المعجبين: {dislikesCount}",
   "app.containers.ReactionControl.reactionErrorSubTitle": "بسبب خطأ لا يمكن تسجيل رد فعلك. يرجى المحاولة مرة أخرى في بضع دقائق.",
   "app.containers.ReactionControl.reactionSuccessTitle": "تم تسجيل رد فعلك بنجاح!",
