@@ -294,6 +294,7 @@
   "app.components.ParticipationCTABars.seeEvents3": "Pogledajte događaje",
   "app.components.ParticipationCTABars.seeIdeas": "Pogledajte ideje",
   "app.components.ParticipationCTABars.submit": "podnijeti",
+  "app.components.ParticipationCTABars.submitSuccess": "Slanje je uspješno obavljeno",
   "app.components.ParticipationCTABars.takeTheSurvey": "Popunite upitnik",
   "app.components.ParticipationCTABars.userHasParticipated": "Sudjelovali ste u ovom projektu.",
   "app.components.ParticipationCTABars.volunteer": "Volonter",
