@@ -57,7 +57,9 @@ export const isSuperAdmin = (user: IUser | undefined) => {
 };
 
 export const isRegularUser = (user: IUser | undefined) => {
-  return user?.data.attributes.highest_role === 'user';
+  if (!user) return false;
+
+  return user.data.attributes.highest_role === 'user';
 };
 
 export const isProjectModerator = (
