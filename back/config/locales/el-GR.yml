@@ -1,4 +1,38 @@
 el:
+  locales:
+    en: Αγγλικά
+    ar-MA: Αραβικά (Μαρόκο)
+    ar-SA: Αραβικά (Σαουδική Αραβία)
+    ca-ES: Καταλανικά
+    cy-GB: Ουαλικά
+    da-DK: Δανικά
+    de-DE: Γερμανικά
+    el-GR: Ελληνική
+    en-CA: Αγγλικά (Καναδάς)
+    en-GB: Αγγλικά (Ηνωμένο Βασίλειο)
+    en-IE: Αγγλικά (Ιρλανδία)
+    es-CL: Ισπανικά (Χιλή)
+    es-ES: Ισπανικά (Ισπανία)
+    fi-FI: Φινλανδική
+    fr-BE: Γαλλικά (Βέλγιο)
+    fr-FR: Γαλλικά
+    hr-HR: Κροατικά
+    hu-HU: Ουγγρικό
+    it-IT: Ιταλικά
+    kl-GL: Γροιλανδική
+    lb-LU: Λουξεμβούργο
+    lv-LV: Λετονία
+    mi: Μαορί
+    nb-NO: Νορβηγικά (Bokmål)
+    nl-BE: Ολλανδικά (Βέλγιο)
+    nl-NL: Ολλανδικά
+    pl-PL: Πολωνικά
+    pt-BR: Πορτογαλικά (Βραζιλία)
+    ro-RO: Ρουμανικά
+    sr-Latn: Σερβικά (Λατινικά)
+    sr-SP: Σερβικά (κυριλλικά)
+    sv-SE: Σουηδικά
+    tr-TR: Τουρκικά
   symbols:
     outside: κάπου αλλού
   idea_statuses:
@@ -149,7 +183,7 @@ el:
         title: Λεπτομέρειες
         description:
       other_text_field:
-        title: Αν επιλέξατε το "{other_option}", τι σκέφτεστε;
+        title: If you picked '{other_option}', what are you thinking of?
   custom_forms:
     categories:
       main_content:
