@@ -16,11 +16,12 @@ const ScreenReaderCurrencyValue = ({ amount, currency }: Props) => {
   const { formatMessage } = useIntl();
 
   // We add a comma for a reading pause between the amount and the currency
-  const currencyLabel = currency
-    ? `, ${formatMessage(messages.currency)}: ${formatMessage(
-        messages[currency]
-      )}`
-    : '';
+  const currencyLabel =
+    currency && messages[currency]
+      ? `, ${formatMessage(messages.currency)}: ${formatMessage(
+          messages[currency]
+        )}`
+      : '';
 
   return (
     <span
