@@ -99,6 +99,7 @@ const IdeaMapOverlay = memo<Props>(
   ({ projectId, phaseId, className, selectedIdea, onSelectIdea }) => {
     const { data: project } = useProjectById(projectId);
     const { windowWidth } = useWindowSize();
+    const timeoutRef = useRef<number>();
     const smallerThan1440px = !!(windowWidth && windowWidth <= 1440);
 
     const [scrollContainerElement, setScrollContainerElement] =
@@ -112,16 +113,31 @@ const IdeaMapOverlay = memo<Props>(
       }
     }, [scrollContainerElement, selectedIdea]);
 
+    useEffect(() => {
+      const currentTimeout = timeoutRef.current;
+      // Cleanup the timeout if the component unmounts before the timeout executes
+      return () => {
+        if (currentTimeout) {
+          clearTimeout(currentTimeout);
+        }
+      };
+    }, []);
+
     const handleIdeasShowSetRef = (element: HTMLDivElement) => {
       setScrollContainerElement(element);
     };
 
     const handleSelectIdea = (ideaId: string | null) => {
       onSelectIdea(ideaId);
-      if (overlayRef.current) {
-        // Move focus to the idea overlay on selection of an idea
-        overlayRef.current.focus();
-      }
+
+      timeoutRef.current = window.setTimeout(() => {
+        overlayRef.current?.focus();
+        // Clear the timeout after it has been used
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+          timeoutRef.current = undefined;
+        }
+      }, 0);
     };
 
     if (project) {

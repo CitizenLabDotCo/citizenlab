@@ -39,21 +39,26 @@ interface Props {
 const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
   const { formatMessage } = useIntl();
   const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
+  const timeoutRef = useRef<number>();
 
   const [isSpamModalVisible, setIsSpamModalVisible] = useState(false);
   const [warningModalOpen, setWarningModalOpen] = useState(false);
 
   const openWarningModal = () => setWarningModalOpen(true);
-  const closeWarningModal = () => setWarningModalOpen(false);
+  const closeWarningModal = () => {
+    setWarningModalOpen(false);
+    focusOnMoreActionsButton();
+  };
 
   useEffect(() => {
-    if (!isSpamModalVisible && !warningModalOpen) {
-      setTimeout(() => {
-        moreActionsButtonRef.current?.focus();
-        // We use a timeout to wait for the dom to be updated
-      }, 0);
-    }
-  }, [isSpamModalVisible, warningModalOpen]);
+    const currentTimeout = timeoutRef.current;
+    // Cleanup the timeout if the component unmounts before the timeout executes
+    return () => {
+      if (currentTimeout) {
+        clearTimeout(currentTimeout);
+      }
+    };
+  }, []);
 
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
@@ -72,6 +77,18 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
 
   const closeSpamModal = () => {
     setIsSpamModalVisible(false);
+    focusOnMoreActionsButton();
+  };
+
+  const focusOnMoreActionsButton = () => {
+    timeoutRef.current = window.setTimeout(() => {
+      moreActionsButtonRef.current?.focus();
+      // Clear the timeout after it has been used
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = undefined;
+      }
+    }, 0);
   };
 
   const onEditIdea = () => {
