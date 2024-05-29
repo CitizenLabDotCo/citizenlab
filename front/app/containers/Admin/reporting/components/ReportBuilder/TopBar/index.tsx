@@ -48,6 +48,14 @@ type ContentBuilderTopBarProps = {
   setSelectedLocale: React.Dispatch<React.SetStateAction<SupportedLocale>>;
 };
 
+// TODO remove
+const error = console.error.bind(console);
+
+console.error = (...args: any[]) => {
+  if (args[0].code === 'MISSING_TRANSLATION') return;
+  error(...args);
+};
+
 const ContentBuilderTopBar = ({
   selectedLocale,
   hasPendingState,
@@ -137,7 +145,11 @@ const ContentBuilderTopBar = ({
 
       const displayName = nodes?.[firstNode].displayName;
 
-      if (!['ProjectTemplate', 'PhaseTemplate'].includes(displayName)) {
+      if (
+        !['ProjectTemplate', 'PhaseTemplate', 'PlatformTemplate'].includes(
+          displayName
+        )
+      ) {
         // In theory this should not be possible, but handling
         // it gracefully just in case
         setInitialized(true);
@@ -145,8 +157,13 @@ const ContentBuilderTopBar = ({
         return;
       }
 
+      // Nodes take some time to load. We don't want to save if not
+      // all nodes are loaded yet. That's why we add these checks-
+      // if we early return here, we basically wait for the next interval and check
+      // again if the number of nodes is already correct.
       const numberOfNodes = Object.keys(nodes).length;
       if (displayName === 'ProjectTemplate' && numberOfNodes < 5) return;
+      if (displayName === 'PlatformTemplate' && numberOfNodes < 30) return;
 
       updateReportLayout(
         {
