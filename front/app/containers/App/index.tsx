@@ -259,8 +259,7 @@ const App = ({ children }: Props) => {
   const isIdeaEditPage = isPage('idea_edit', location.pathname);
   const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
   const isEventPage = isPage('event_page', location.pathname);
-  const isNativeSurveyPage =
-    isIdeaFormPage && searchParams.get('native_survey') === 'true';
+  const isNativeSurveyPage = isPage('native_survey', location.pathname);
 
   const theme = getTheme(appConfiguration);
   const showFooter =
@@ -268,7 +267,8 @@ const App = ({ children }: Props) => {
     !isIdeaFormPage &&
     !isInitiativeFormPage &&
     !isIdeaEditPage &&
-    !isInitiativeEditPage;
+    !isInitiativeEditPage &&
+    !isNativeSurveyPage;
   const { pathname } = removeLocale(location.pathname);
   const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
   const disableScroll = fullscreenModalEnabled && signUpInModalOpened;

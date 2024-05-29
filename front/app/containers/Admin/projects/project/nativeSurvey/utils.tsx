@@ -77,8 +77,7 @@ export const getFormActionsConfig = (
   return {
     phaseId: phase.id,
     editFormLink: `/admin/projects/${project.id}/phases/${phase.id}/native-survey/edit`,
-    // The native_survey parameter is needed to distinguish between the native survey and regular ideas for layout purposes
-    viewFormLink: `/projects/${project.attributes.slug}/ideas/new?phase_id=${phase.id}&native_survey=true`,
+    viewFormLink: `/projects/${project.attributes.slug}/surveys/new?phase_id=${phase.id}`,
     inputImporterLink: `/admin/projects/${project.id}/phases/${phase.id}/input-importer`,
     downloadExcelLink: `${API_PATH}/phases/${phase.id}/importer/export_form/idea/xlsx`,
     downloadPdfLink: `${API_PATH}/phases/${phase.id}/importer/export_form/idea/pdf`,

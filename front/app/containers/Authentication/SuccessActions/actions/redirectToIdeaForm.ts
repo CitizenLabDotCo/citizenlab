@@ -40,14 +40,14 @@ export const redirectToIdeaForm =
         : {};
       clHistory.push(
         {
-          pathname: `/projects/${projectSlug}/ideas/new`,
+          pathname:
+            phase.attributes.participation_method === 'native_survey'
+              ? `/projects/${project.attributes.slug}/surveys/new`
+              : `/projects/${project.attributes.slug}/ideas/new`,
           search: stringify(
             {
               ...positionParams,
               phase_id: phaseId,
-              ...(phase.attributes.participation_method === 'native_survey'
-                ? { native_survey: true }
-                : {}),
             },
             { addQueryPrefix: true }
           ),

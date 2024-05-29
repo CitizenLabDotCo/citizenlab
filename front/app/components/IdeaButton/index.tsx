@@ -59,6 +59,7 @@ const IdeaButton = memo<Props>(
     const { data: phases } = usePhases(projectId);
     const { data: authUser } = useAuthUser();
     const localize = useLocalize();
+    const isNativeSurvey = participationMethod === 'native_survey';
 
     if (!project || !phase) return null;
 
@@ -86,14 +87,16 @@ const IdeaButton = memo<Props>(
 
       clHistory.push(
         {
-          pathname: `/projects/${project.data.attributes.slug}/ideas/new`,
+          pathname: isNativeSurvey
+            ? `/projects/${project.data.attributes.slug}/surveys/new`
+            : `/projects/${project.data.attributes.slug}/ideas/new`,
           search: stringify(
             {
               ...positionParams,
               phase_id: phase?.id,
-              ...(participationMethod === 'native_survey'
-                ? { native_survey: true }
-                : {}),
+              // ...(participationMethod === 'native_survey'
+              //   ? { native_survey: true }
+              //   : {}),
             },
             { addQueryPrefix: true }
           ),
@@ -190,7 +193,7 @@ const IdeaButton = memo<Props>(
               ariaDisabled={false}
               id="e2e-idea-button"
             >
-              {participationMethod === 'native_survey' ? (
+              {isNativeSurvey ? (
                 <>{localize(phase.attributes.native_survey_button_multiloc)}</>
               ) : (
                 <FormattedMessage
