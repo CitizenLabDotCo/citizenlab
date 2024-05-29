@@ -76,7 +76,7 @@ const ProjectRow = ({ project, projectImage, period, participants }: Props) => {
 
   return (
     <Box display="flex" flexDirection="row" pb="16px">
-      {projectImage?.attributes.versions.large && (
+      {projectImage?.attributes.versions.large ? (
         <Image
           src={projectImage?.attributes.versions.large}
           alt={''}
@@ -86,6 +86,23 @@ const ProjectRow = ({ project, projectImage, period, participants }: Props) => {
           borderRadius={stylingConsts.borderRadius}
           mr="20px"
         />
+      ) : (
+        <Box
+          display="flex"
+          w="52px"
+          h="52px"
+          background={colors.grey300}
+          mr="20px"
+          borderRadius={stylingConsts.borderRadius}
+        >
+          <Icon
+            name="building"
+            width="52px"
+            height="52px"
+            transform="translate(1,0)"
+            fill={colors.white}
+          />
+        </Box>
       )}
       <Box>
         <Title variant="h5" m="0">
