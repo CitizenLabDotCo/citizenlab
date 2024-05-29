@@ -6,10 +6,6 @@ RSpec.describe ReportBuilder::Queries::Analytics::Visitors do
   subject(:query) { described_class.new(build(:user)) }
 
   describe '#run_query' do
-    before do
-      FactoryBot.rewind_sequences
-    end
-
     it 'returns correct data for current period' do
       september = Date.new(2022, 9, 1)
 
