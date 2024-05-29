@@ -25,7 +25,7 @@ de:
     mi: Maori
     nb-NO: Norwegisch (Bokmål)
     nl-BE: Niederländisch (Belgien)
-    nl-NL: Holländisch
+    nl-NL: Niederländisch
     pl-PL: Polnisch
     pt-BR: Portugiesisch (Brasilien)
     ro-RO: Rumänisch
@@ -183,7 +183,7 @@ de:
         title: Details
         description:
       other_text_field:
-        title: '"{other_option}" erläutern'
+        title: Bitte erläutern
   custom_forms:
     categories:
       main_content:
