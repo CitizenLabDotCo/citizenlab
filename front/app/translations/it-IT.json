@@ -1480,6 +1480,7 @@
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "La percentuale di partecipanti che ha scelto questa opzione.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "La percentuale di voti totali ricevuti da questa opzione.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Costo:",
+  "app.containers.ProjectsShowPage.timeline.VotingResults.showMore": "Mostra di più",
   "app.containers.ReactionControl.a11y_likesDislikes": "Totale Mi piace: {likesCount}, totale dislikes: {dislikesCount}",
   "app.containers.ReactionControl.reactionErrorSubTitle": "A causa di un errore non è stato possibile registrare la tua reazione. Riprova tra qualche minuto.",
   "app.containers.ReactionControl.reactionSuccessTitle": "La tua reazione è stata registrata con successo!",
