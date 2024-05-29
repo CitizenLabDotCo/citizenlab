@@ -6,7 +6,6 @@ import {
   stylingConsts,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { createPortal } from 'react-dom';
 import { useSearchParams } from 'react-router-dom';
 
 import { IdeaPublicationStatus } from 'api/ideas/types';
@@ -241,7 +240,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   return (
     <>
       <IdeasNewMeta isSurvey={true} />
-      <>
+      <Box w="100%" bgColor={colors.grey100} h="100vh">
         <Box
           mx="auto"
           position="relative"
@@ -279,28 +278,9 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
             </Box>
           </Box>
         </main>
-      </>
+      </Box>
     </>
   );
 };
 
-const IdeasNewSurveyFormWrapperModal = (props: Props) => {
-  const modalPortalElement = document.getElementById('modal-portal');
-
-  return modalPortalElement
-    ? createPortal(
-        <Box
-          w="100%"
-          zIndex="1010"
-          position="fixed"
-          bgColor={colors.grey100}
-          h="100vh"
-        >
-          <IdeasNewSurveyForm {...props} />
-        </Box>,
-        modalPortalElement
-      )
-    : null;
-};
-
-export default IdeasNewSurveyFormWrapperModal;
+export default IdeasNewSurveyForm;

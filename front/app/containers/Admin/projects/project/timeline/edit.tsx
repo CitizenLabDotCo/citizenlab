@@ -601,7 +601,8 @@ const AdminPhaseEdit = () => {
                   onClick={(event: MouseEvent) => {
                     if (phase) {
                       window.open(
-                        `/projects/${project?.data.attributes.slug}/ideas/new?phase_id=${phaseId}`,
+                        // The native_survey parameter is needed to distinguish between the native survey and regular ideas for layout purposes
+                        `/projects/${project?.data.attributes.slug}/ideas/new?phase_id=${phaseId}&native_survey=true`,
                         '_blank'
                       );
                     }

@@ -16,7 +16,7 @@ import 'intersection-observer';
 import { includes, uniq } from 'lodash-es';
 import 'moment-timezone';
 import moment from 'moment';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 import { ThemeProvider } from 'styled-components';
 import { SupportedLocale } from 'typings';
@@ -62,7 +62,10 @@ interface Props {
 const locale$ = localeStream().observable;
 
 const App = ({ children }: Props) => {
+  const isSmallerThanTablet = useBreakpoint('tablet');
   const location = useLocation();
+  const [searchParams] = useSearchParams();
+
   const { mutate: signOutAndDeleteAccount } = useDeleteSelf();
   const [isAppInitialized, setIsAppInitialized] = useState(false);
   const [previousPathname, setPreviousPathname] = useState<RouteType | null>(
@@ -256,7 +259,8 @@ const App = ({ children }: Props) => {
   const isIdeaEditPage = isPage('idea_edit', location.pathname);
   const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
   const isEventPage = isPage('event_page', location.pathname);
-  const isSmallerThanTablet = useBreakpoint('tablet');
+  const isNativeSurveyPage =
+    isIdeaFormPage && searchParams.get('native_survey') === 'true';
 
   const theme = getTheme(appConfiguration);
   const showFooter =
@@ -283,6 +287,8 @@ const App = ({ children }: Props) => {
     }
 
     // citizen
+    if (isNativeSurveyPage) return false;
+
     if (isSmallerThanTablet) {
       if (
         isEventPage ||

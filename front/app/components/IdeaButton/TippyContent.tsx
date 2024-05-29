@@ -67,7 +67,7 @@ interface Props {
   projectId: string;
   inMap: boolean;
   disabledReason: IIdeaPostingDisabledReason;
-  phase: IPhaseData | undefined;
+  phase: IPhaseData;
 }
 
 const disabledMessages: {
@@ -88,13 +88,11 @@ const TippyContent = ({ projectId, inMap, disabledReason, phase }: Props) => {
   const { data: project } = useProjectById(projectId);
   if (!project) return null;
 
-  const context = phase?.id
-    ? ({
-        action: 'posting_idea',
-        id: phase?.id,
-        type: 'phase',
-      } as const)
-    : null;
+  const context = {
+    action: 'posting_idea',
+    id: phase.id,
+    type: 'phase',
+  } as const;
   const signUpIn =
     (flow: 'signup' | 'signin') => (event?: React.MouseEvent) => {
       event?.preventDefault();
@@ -103,7 +101,7 @@ const TippyContent = ({ projectId, inMap, disabledReason, phase }: Props) => {
         name: 'redirectToIdeaForm',
         params: {
           projectSlug: project.data.attributes.slug,
-          phaseId: phase?.id,
+          phaseId: phase.id,
         },
       };
 
