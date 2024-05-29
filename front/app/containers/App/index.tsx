@@ -269,7 +269,6 @@ const App = ({ children }: Props) => {
   const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
   const disableScroll = fullscreenModalEnabled && signUpInModalOpened;
   const isAuthenticationPending = authUser === undefined;
-  console.log(authUser, isLoading, isAuthenticationPending);
   const canAccessRoute = usePermission({
     item: {
       type: 'route',
