@@ -150,12 +150,12 @@ const CTAButton = ({ phase, project }: Props) => {
           disabled={!!disabledExplanation}
           processing={processing}
           className={disabledExplanation ? '' : 'pulse'}
-          ariaDescribedby="disabled-explanation"
+          ariaDescribedby="explanation"
         >
           <FormattedMessage {...messages.submit} />
         </StyledButton>
         {disabledExplanation && (
-          <ScreenReaderOnly id="disabled-explanation">
+          <ScreenReaderOnly id="explanation">
             {disabledExplanation}
           </ScreenReaderOnly>
         )}
