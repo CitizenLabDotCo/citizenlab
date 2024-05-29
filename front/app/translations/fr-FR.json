@@ -605,7 +605,7 @@
   "app.components.anonymousParticipationModal.cancel": "Annuler",
   "app.components.anonymousParticipationModal.continue": "Continuer",
   "app.components.anonymousParticipationModal.participateAnonymously": "Participer de façon anonyme",
-  "app.components.anonymousParticipationModal.participateAnonymouslyModalText": "Cela permettra de <b>masquer votre profil</b> aux administrateurs, gestionnaires et autres utilisateurs de la plateforme pour cette contribution en particulier, empêchant ainsi toute possibilité de faire le lien entre cette contribution et votre profil. Les contributions anonymes ne peuvent pas être modifiées et sont considérées comme définitives.",
+  "app.components.anonymousParticipationModal.participateAnonymouslyModalText": "Cela <b>masquera votre profil</b> aux administrateurs, gestionnaires et autres utilisateurs de la plateforme pour cette contribution, de sorte que personne ne pourra faire le lien entre celle-ci et vous. Les contributions anonymes ne peuvent pas être modifiées ou supprimées et sont considérées comme définitives.",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalTextSection2": "Rendre notre plateforme sûre pour chaque utilisateur est une priorité absolue pour nous. Les mots ont de l'importance, alors prêtez-y attention et veillez à être bienveillants les uns envers les autres.",
   "app.components.followUnfollow.follow": "Suivre",
   "app.components.followUnfollow.followADiscussion": "Suivez la discussion",
