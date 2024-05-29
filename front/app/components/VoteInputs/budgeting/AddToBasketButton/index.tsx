@@ -14,6 +14,7 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
+import ScreenReaderCurrencyValue from 'components/ScreenReaderCurrencyValue';
 
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { trackEventByName } from 'utils/analytics';
@@ -156,7 +157,8 @@ const AddToBasketButton = ({
         >
           {ideaInBasket && <Icon mb="4px" fill="white" name="check" />}
           <FormattedMessage {...buttonMessage} />
-          {` (${ideaBudget} ${currency})`}
+          <span aria-hidden>{` (${ideaBudget} ${currency})`}</span>
+          <ScreenReaderCurrencyValue amount={ideaBudget} currency={currency} />
         </Button>
       </div>
     </Tippy>
