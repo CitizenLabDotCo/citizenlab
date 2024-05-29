@@ -1480,6 +1480,7 @@
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "Postotak sudionika koji su odabrali ovu opciju.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "Postotak ukupnih glasova koje je ova opcija dobila.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Cijena:",
+  "app.containers.ProjectsShowPage.timeline.VotingResults.showMore": "Prikaži više",
   "app.containers.ReactionControl.a11y_likesDislikes": "Ukupno lajkova: {likesCount}, ukupno nesviđanja: {dislikesCount}",
   "app.containers.ReactionControl.reactionErrorSubTitle": "Zbog pogreške vaša reakcija nije mogla biti registrirana. Molim pokušajte ponovno za par minuta.",
   "app.containers.ReactionControl.reactionSuccessTitle": "Vaša reakcija je uspješno registrirana!",
