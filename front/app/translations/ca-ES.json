@@ -1480,6 +1480,7 @@
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "El percentatge de participants que van triar aquesta opció.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "El percentatge del total de vots que ha rebut aquesta opció.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Cost:",
+  "app.containers.ProjectsShowPage.timeline.VotingResults.showMore": "Mostra més",
   "app.containers.ReactionControl.a11y_likesDislikes": "Total de m'agrada: {likesCount}, total de no m'agrada: {dislikesCount}",
   "app.containers.ReactionControl.reactionErrorSubTitle": "A causa d'un error, la vostra reacció no s'ha pogut registrar. Si us plau, torna-ho a provar d'aquí a uns minuts.",
   "app.containers.ReactionControl.reactionSuccessTitle": "La teva reacció s'ha registrat correctament!",
