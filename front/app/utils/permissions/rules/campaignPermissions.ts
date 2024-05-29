@@ -6,10 +6,10 @@ definePermissionRule(
   'automatedCampaign',
   'manage',
   (_campaign: string, user) => {
-    return user ? isAdmin(user) : false;
+    return isAdmin(user);
   }
 );
 
 definePermissionRule('manualCampaign', 'manage', (_campaign: string, user) => {
-  return user ? isAdmin(user) : false;
+  return isAdmin(user);
 });

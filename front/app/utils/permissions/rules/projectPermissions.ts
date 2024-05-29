@@ -8,15 +8,16 @@ import { isAdmin, isProjectModerator } from '../roles';
 import { userModeratesFolder } from './projectFolderPermissions';
 
 definePermissionRule('project', 'create', (_project: IProjectData, user) => {
-  return user ? isAdmin(user) : false;
+  return isAdmin(user);
+  w;
 });
 
 definePermissionRule('project', 'delete', (_project: IProjectData, user) => {
-  return user ? isAdmin(user) : false;
+  return isAdmin(user);
 });
 
 definePermissionRule('project', 'reorder', (_project: IProjectData, user) => {
-  return user ? isAdmin(user) : false;
+  return isAdmin(user);
 });
 
 export function canModerateProject(
@@ -37,5 +38,5 @@ export function canModerateProject(
 }
 
 definePermissionRule('project', 'moderate', (project: IProjectData, user) => {
-  return user ? canModerateProject(project, user) : false;
+  return canModerateProject(project, user);
 });
