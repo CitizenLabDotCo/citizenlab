@@ -59,26 +59,23 @@ const Narrow = ({
           </Box>
         </Box>
       )}
-
-      <Box flexGrow={1} display="flex" justifyContent="flex-end" height="200px">
-        <Box pt="8px" width="100%" maxWidth="800px" h="100%">
-          <Chart
-            timeSeries={timeSeries}
-            startAtMoment={startAt ? moment(startAt) : null}
-            endAtMoment={endAt ? moment(endAt) : null}
-            resolution={currentResolution}
-            margin={{
-              left: 5,
-              right: -20,
-              top: 0,
-              bottom: 0,
-            }}
-            yaxis={{
-              orientation: 'right',
-              tickFormatter: formatLargeNumber,
-            }}
-          />
-        </Box>
+      <Box pt="8px" width="100%" h="200px">
+        <Chart
+          timeSeries={timeSeries}
+          startAtMoment={startAt ? moment(startAt) : null}
+          endAtMoment={endAt ? moment(endAt) : null}
+          resolution={currentResolution}
+          margin={{
+            left: 5,
+            right: -20,
+            top: 0,
+            bottom: 0,
+          }}
+          yaxis={{
+            orientation: 'right',
+            tickFormatter: formatLargeNumber,
+          }}
+        />
       </Box>
     </Box>
   );
