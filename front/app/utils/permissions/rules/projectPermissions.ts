@@ -31,7 +31,7 @@ export function canModerateProject(
   return (
     isAdmin(user) ||
     (typeof projectFolderId === 'string' &&
-      userModeratesFolder(user.data, projectFolderId)) ||
+      userModeratesFolder(user, projectFolderId)) ||
     isProjectModerator(user, projectId)
   );
 }

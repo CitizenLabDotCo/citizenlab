@@ -47,8 +47,7 @@ const ProjectMoreActionsMenu = ({
   const userCanCopyProject =
     isAdmin(authUser) ||
     // If folderId is string, it means project is in a folder
-    (typeof folderId === 'string' &&
-      userModeratesFolder(authUser.data, folderId));
+    (typeof folderId === 'string' && userModeratesFolder(authUser, folderId));
 
   const setLoadingState = (
     type: 'deleting' | 'copying',

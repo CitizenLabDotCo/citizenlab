@@ -1,6 +1,6 @@
 import { IAppConfigurationData } from 'api/app_configuration/types';
 import { IProjectFolderData } from 'api/project_folders/types';
-import { IUserData, IUser } from 'api/users/types';
+import { IUser } from 'api/users/types';
 
 import {
   definePermissionRule,
@@ -13,14 +13,14 @@ import {
 } from 'utils/permissions/rules/routePermissions';
 
 export function userModeratesFolder(
-  user: IUserData | undefined,
+  user: IUser | undefined,
   projectFolderId: string
 ) {
   if (!user) return false;
 
   return (
-    isAdmin({ data: user }) ||
-    !!user.attributes?.roles?.find((role: TRole) => {
+    isAdmin(user) ||
+    !!user.data.attributes?.roles?.find((role: TRole) => {
       return (
         role.type === 'project_folder_moderator' &&
         role.project_folder_id === projectFolderId
@@ -82,7 +82,7 @@ definePermissionRule(
   'project_folder',
   'moderate',
   (folder: IProjectFolderData, user) => {
-    return userModeratesFolder(user?.data, folder.id);
+    return userModeratesFolder(user, folder.id);
   }
 );
 

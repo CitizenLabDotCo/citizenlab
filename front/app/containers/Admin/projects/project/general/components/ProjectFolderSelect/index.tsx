@@ -105,7 +105,7 @@ const ProjectFolderSelect = ({
             label: '',
           },
           ...projectFolders.data
-            .filter((folder) => userModeratesFolder(authUser.data, folder.id))
+            .filter((folder) => userModeratesFolder(authUser, folder.id))
             .map((folder) => {
               return {
                 value: folder.id,
