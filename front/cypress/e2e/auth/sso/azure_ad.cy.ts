@@ -1,22 +1,44 @@
-describe('Azure Active Directory Authentication', () => {
-  beforeEach(() => {
-    // log into Azure Active Directory through our sample SPA using our custom command
-    // cy.loginViaAAD(Cypress.env('aad_username'), Cypress.env('aad_password'))
-    cy.loginViaAAD('alexander@citizenlab.co', '******');
-    cy.visit('http://localhost:3000');
-  });
+describe('Azure Active Directory B2C Authentication', () => {
+  // https://docs.cypress.io/guides/end-to-end-testing/azure-active-directory-authentication
+  function loginViaAAD(username: string, password: string) {
+    cy.visit('/');
+    cy.get('#e2e-navbar');
+    cy.get('#e2e-navbar-login-menu-item').click();
+    cy.get('#e2e-authentication-modal');
+    cy.get('#azure-ad-b2c-login-button').click();
 
-  it('verifies the user logged in has the correct name', () => {
-    cy.get('#table-body-div td:contains("name") + td').should(
-      'contain',
-      `${Cypress.env('aad_name')}`
+    // Login to your AAD tenant.
+    cy.origin(
+      `${Cypress.env('DEFAULT_AZURE_AD_B2C_LOGIN_TENANT_NAME')}.b2clogin.com`,
+      {
+        args: {
+          username,
+          password,
+        },
+      },
+      ({ username, password }) => {
+        cy.get('input[type="email"]').type(username, {
+          log: false,
+        });
+        cy.get('input[type="password"]').type(password, {
+          log: false,
+        });
+        cy.get('[type="submit"]').click();
+      }
     );
-  });
+  }
 
-  it('verifies the user logged in has the correct preferred name', () => {
-    cy.get('#table-body-div td:contains("preferred_username") + td').should(
-      'contain',
-      `${'alexander@citizenlab.co'}`
+  it('signs in with Azure AD B2C account', () => {
+    loginViaAAD(
+      Cypress.env('DEFAULT_AZURE_AD_B2C_LOGIN_E2E_EMAIL'),
+      Cypress.env('DEFAULT_AZURE_AD_B2C_LOGIN_E2E_PASSWORD')
     );
+
+    // Ensure Azure has redirected us back to the app with our logged in user.
+    cy.url().should('equal', 'http://localhost:3000/en/');
+
+    cy.visit('/'); // For some reason, cookies are not set on the first visit, and so the user is not logged in.
+    cy.get('#e2e-user-menu-container').should('exist');
+    cy.get('.e2e-not-verified').should('exist');
   });
 });

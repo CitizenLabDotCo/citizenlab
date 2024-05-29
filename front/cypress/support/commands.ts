@@ -5,7 +5,6 @@ import { IUpdatedAppConfigurationProperties } from '../../app/api/app_configurat
 import { IProjectAttributes } from '../../app/api/projects/types';
 import { ICustomFieldInputType } from '../../app/api/custom_fields/types';
 import { Multiloc } from '../../app/typings';
-import { loginViaAAD } from './sso_commands';
 
 import jwtDecode from 'jwt-decode';
 import { ParticipationMethod, VotingMethod } from '../../app/api/phases/types';
@@ -84,7 +83,6 @@ declare global {
       apiCreateSurveyQuestions: typeof apiCreateSurveyQuestions;
       apiUpdateUserCustomFields: typeof apiUpdateUserCustomFields;
       apiCreateSurveyResponse: typeof apiCreateSurveyResponse;
-      loginViaAAD: typeof loginViaAAD;
       uploadSurveyImageQuestionImage: typeof uploadSurveyImageQuestionImage;
       apiGetSurveySchema: typeof apiGetSurveySchema;
       uploadProjectFolderImage: typeof uploadProjectFolderImage;
@@ -1988,21 +1986,6 @@ Cypress.Commands.add(
 Cypress.Commands.add('apiCreateSurveyQuestions', apiCreateSurveyQuestions);
 Cypress.Commands.add('apiUpdateUserCustomFields', apiUpdateUserCustomFields);
 Cypress.Commands.add('apiCreateSurveyResponse', apiCreateSurveyResponse);
-
-Cypress.Commands.add('loginViaAAD', (username: string, password: string) => {
-  const log = Cypress.log({
-    displayName: 'Azure Active Directory Login',
-    message: [`🔐 Authenticating | ${username}`],
-    autoEnd: false,
-  });
-  log.snapshot('before');
-
-  loginViaAAD(username, password);
-
-  log.snapshot('after');
-  log.end();
-});
-
 Cypress.Commands.add(
   'uploadSurveyImageQuestionImage',
   uploadSurveyImageQuestionImage

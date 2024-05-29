@@ -222,7 +222,6 @@ const AuthProviders = memo<Props>(
             flow={flow}
             authProvider="azureactivedirectory"
             onContinue={onSelectAuthProvider}
-            id="azure-ad-login-button"
           >
             <FormattedMessage
               {...messages.continueWithAzure}
@@ -237,6 +236,7 @@ const AuthProviders = memo<Props>(
             flow={flow}
             authProvider="azureactivedirectory_b2c"
             onContinue={onSelectAuthProvider}
+            id="azure-ad-b2c-login-button"
           >
             <FormattedMessage
               {...messages.continueWithAzure}

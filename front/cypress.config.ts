@@ -20,6 +20,14 @@ export default defineConfig({
     ? Number(process.env.CYPRESS_RETRIES)
     : 2,
   pageLoadTimeout: 15000,
+  env: {
+    DEFAULT_AZURE_AD_B2C_LOGIN_E2E_EMAIL:
+      process.env.DEFAULT_AZURE_AD_B2C_LOGIN_E2E_EMAIL,
+    DEFAULT_AZURE_AD_B2C_LOGIN_E2E_PASSWORD:
+      process.env.DEFAULT_AZURE_AD_B2C_LOGIN_E2E_PASSWORD,
+    DEFAULT_AZURE_AD_B2C_LOGIN_TENANT_NAME:
+      process.env.DEFAULT_AZURE_AD_B2C_LOGIN_TENANT_NAME,
+  },
   e2e: {
     // We've imported your old cypress plugins here.
     // You may want to clean this up later by importing these.
@@ -27,5 +35,6 @@ export default defineConfig({
       return require('./cypress/plugins/index.js')(on, config);
     },
     baseUrl: 'http://localhost:3000',
+    experimentalSessionAndOrigin: true,
   },
 });
