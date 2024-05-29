@@ -1480,6 +1480,7 @@
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "Το ποσοστό των συμμετεχόντων που επέλεξαν αυτή την επιλογή.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "Το ποσοστό των συνολικών ψήφων που έλαβε αυτή η επιλογή.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Κόστος:",
+  "app.containers.ProjectsShowPage.timeline.VotingResults.showMore": "Εμφάνιση περισσότερων",
   "app.containers.ReactionControl.a11y_likesDislikes": "Συνολικά likes: {likesCount}, total dislikes: {dislikesCount}",
   "app.containers.ReactionControl.reactionErrorSubTitle": "Λόγω σφάλματος η αντίδρασή σας δεν μπόρεσε να καταχωρηθεί. Παρακαλώ δοκιμάστε ξανά σε λίγα λεπτά.",
   "app.containers.ReactionControl.reactionSuccessTitle": "Η αντίδρασή σας καταχωρήθηκε επιτυχώς!",
