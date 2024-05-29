@@ -40,7 +40,6 @@ const ParticipationReportPreview = ({
 
   const { data: userFields } = useUserCustomFields({ inputTypes: INPUT_TYPES });
 
-  console.log(userFields?.data);
   const hasIdeationPhase = phases?.data.some(
     (phase) => phase.attributes.participation_method === 'ideation'
   );
