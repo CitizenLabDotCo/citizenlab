@@ -81,7 +81,7 @@ module EmailCampaigns
           post_created_at: notification.post.created_at.iso8601,
           post_title_multiloc: notification.post.title_multiloc,
           post_author_name: notification.post.author_name,
-          post_url: Frontend::UrlService.new.model_to_url(notification.post, locale: locale),
+          post_url: Frontend::UrlService.new.model_to_url(notification.post, locale: Locale.new(recipient.locale)),
           initiative_reactions_needed: notification.post.reactions_needed,
           initiative_expires_at: notification.post.expires_at.iso8601,
           spam_report_reason_code: notification.spam_report.reason_code,

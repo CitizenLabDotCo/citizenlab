@@ -79,7 +79,7 @@ module EmailCampaigns
           post_type: notification.post_type,
           official_feedback_author_multiloc: notification.official_feedback.author_multiloc,
           official_feedback_body_multiloc: notification.official_feedback.body_multiloc,
-          official_feedback_url: Frontend::UrlService.new.model_to_url(notification.official_feedback, locale: locale)
+          official_feedback_url: Frontend::UrlService.new.model_to_url(notification.official_feedback, locale: Locale.new(recipient.locale))
         }
       }]
     end

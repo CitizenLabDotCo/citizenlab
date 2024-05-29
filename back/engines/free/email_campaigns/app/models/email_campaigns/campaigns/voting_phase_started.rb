@@ -73,7 +73,7 @@ module EmailCampaigns
       if notification.phase.voting?
         [{
           event_payload: {
-            project_url: Frontend::UrlService.new.model_to_url(notification.phase.project, locale: locale),
+            project_url: Frontend::UrlService.new.model_to_url(notification.phase.project, locale: Locale.new(recipient.locale)),
             project_title_multiloc: notification.phase.project.title_multiloc,
             phase_title_multiloc: notification.phase.title_multiloc,
             ideas: EmailCampaigns::PayloadFormatterService.new.format_ideas_list(notification.phase.ideas, recipient)

@@ -75,7 +75,7 @@ module EmailCampaigns
           post_id: idea.id,
           post_title_multiloc: idea.title_multiloc,
           post_body_multiloc: idea.body_multiloc,
-          post_url: Frontend::UrlService.new.model_to_url(idea, locale: locale),
+          post_url: Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient.locale)),
           post_images: idea.idea_images.map do |image|
             {
               ordering: image.ordering,

@@ -52,7 +52,7 @@ RSpec.describe Locale do
   end
 
   describe 'fallback_languages' do
-    it 'returns the fallback languages of the locale' do 
+    it 'returns the fallback languages of the locale' do
       CL2_SUPPORTED_LOCALES.each do |locale_sym|
         locale = described_class.new locale_sym
         languages = locale.fallback_languages
