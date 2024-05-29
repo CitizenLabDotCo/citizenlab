@@ -6,12 +6,14 @@ RSpec.describe ReportBuilder::Queries::Analytics::ReactionsByTime do
   subject(:query) { described_class.new(build(:user)) }
 
   describe '#run_query' do
-    Analytics::PopulateDimensionsService.populate_types
-
     let(:date) { Date.new(2022, 9, 1) }
     let(:idea) do
       create(:dimension_date, date: date)
       create(:idea, created_at: date)
+    end
+
+    before_all do
+      Analytics::PopulateDimensionsService.populate_types
     end
 
     before do
