@@ -1480,6 +1480,7 @@
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "Prosentandelen av deltakerne som valgte dette alternativet.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "Prosentandelen av de totale stemmene dette alternativet fikk.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Koste:",
+  "app.containers.ProjectsShowPage.timeline.VotingResults.showMore": "Vis mer",
   "app.containers.ReactionControl.a11y_likesDislikes": "Totalt liker: {likesCount}, totalt misliker: {dislikesCount}",
   "app.containers.ReactionControl.reactionErrorSubTitle": "På grunn av en feil kunne ikke reaksjonen din registreres. Vennligst prøv igjen om noen minutter.",
   "app.containers.ReactionControl.reactionSuccessTitle": "Reaksjonen din ble registrert!",
