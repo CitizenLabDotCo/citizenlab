@@ -1480,6 +1480,7 @@
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "The percentage of participants who picked this option.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "The percentage of total votes this option received.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Cost:",
+  "app.containers.ProjectsShowPage.timeline.VotingResults.showMore": "Show more",
   "app.containers.ReactionControl.a11y_likesDislikes": "Укупно свиђања: {likesCount}, укупно несвиђања: {dislikesCount}",
   "app.containers.ReactionControl.reactionErrorSubTitle": "Због грешке није било могуће регистровати вашу реакцију. Молим покушајте поново за неколико минута.",
   "app.containers.ReactionControl.reactionSuccessTitle": "Ваша реакција је успешно регистрована!",
