@@ -71,7 +71,7 @@ const VotingResults = ({ phaseId, votingMethod }: Props) => {
       {hasNextPage && (
         <Box width="100%" display="flex" justifyContent="center" mt="30px">
           <Button
-            onClick={fetchNextPage}
+            onClick={() => fetchNextPage()}
             buttonStyle="secondary-outlined"
             text={formatMessage(messages.showMore)}
             processing={isLoading || isFetchingNextPage}
