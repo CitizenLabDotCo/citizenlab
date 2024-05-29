@@ -8,8 +8,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
 
-import ExternalLink from './ExternalLink';
-import InternalLink from './InternalLink';
+import Link from 'utils/cl-router/Link';
 
 interface Props extends ButtonProps {
   linkTo?: RouteType | null;
@@ -30,7 +29,7 @@ const ButtonWrapper = ({
   ...rest
 }: Props) => {
   const isExternalLink =
-    linkTo?.startsWith('http') || linkTo?.startsWith('www');
+    linkTo && (linkTo.startsWith('http') || linkTo.startsWith('www'));
 
   const link =
     linkTo && !disabled
@@ -39,27 +38,29 @@ const ButtonWrapper = ({
             children,
             ...rest
           }: ButtonProps & React.HTMLAttributes<HTMLAnchorElement>) => (
-            <ExternalLink
-              linkTo={linkTo}
-              openLinkInNewTab={openLinkInNewTab}
+            <a
+              href={linkTo}
+              target={openLinkInNewTab ? '_blank' : undefined}
+              rel="noreferrer"
               {...rest}
             >
               {children}
-            </ExternalLink>
+            </a>
           )
         : ({
             children,
             ...rest
           }: Omit<ButtonProps, 'as' | 'size'> &
             React.HTMLAttributes<HTMLAnchorElement>) => (
-            <InternalLink
-              linkTo={linkTo}
-              openLinkInNewTab={openLinkInNewTab}
+            <Link
+              to={linkTo}
+              target={openLinkInNewTab ? '_blank' : undefined}
+              rel="noreferrer"
               scrollToTop={scrollToTop}
               {...rest}
             >
               {children}
-            </InternalLink>
+            </Link>
           )
       : undefined;
 
