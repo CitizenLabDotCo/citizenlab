@@ -1,4 +1,38 @@
 lv:
+  locales:
+    en: Angļu valodā
+    ar-MA: arābu (Maroka)
+    ar-SA: arābu (Saūda Arābija)
+    ca-ES: Kataloniski
+    cy-GB: Velsiešu
+    da-DK: Dānijas
+    de-DE: Vācu
+    el-GR: Grieķu
+    en-CA: angļu (Kanāda)
+    en-GB: Angļu (Apvienotā Karaliste)
+    en-IE: angļu (Īrija)
+    es-CL: spāņu (Čīle)
+    es-ES: spāņu (Spānija)
+    fi-FI: Somu
+    fr-BE: franču (Beļģija)
+    fr-FR: Franču
+    hr-HR: Horvātijas
+    hu-HU: Ungāru
+    it-IT: Itāļu
+    kl-GL: Grenlandiešu
+    lb-LU: Luksemburgas
+    lv-LV: Latviešu
+    mi: Maori
+    nb-NO: Norvēģu (Bokmål)
+    nl-BE: holandiešu (Beļģija)
+    nl-NL: Holandiešu
+    pl-PL: Polijas
+    pt-BR: portugāļu (Brazīlija)
+    ro-RO: Rumāņu
+    sr-Latn: serbu (latīņu)
+    sr-SP: serbu (kirilicas)
+    sv-SE: Zviedru
+    tr-TR: Turcijas
   symbols:
     outside: kaut kur citur
   idea_statuses:
@@ -149,7 +183,7 @@ lv:
         title: Sīkāka informācija
         description:
       other_text_field:
-        title: Ja esat izvēlējies "{other_option}", par ko jūs domājat?
+        title: If you picked '{other_option}', what are you thinking of?
   custom_forms:
     categories:
       main_content:
