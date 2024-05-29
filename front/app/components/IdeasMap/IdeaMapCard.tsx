@@ -20,6 +20,8 @@ import useProjectById from 'api/projects/useProjectById';
 import T from 'components/T';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
@@ -234,17 +236,33 @@ const IdeaMapCard = memo<Props>(
                 <>
                   <FooterItem>
                     <LikeIcon name="vote-up" />
-                    <FooterValue id="e2e-map-card-like-count">
+                    {/* Hidden to use easier to understand text for screen readers */}
+                    <FooterValue id="e2e-map-card-like-count" aria-hidden>
                       {idea.attributes.likes_count}
                     </FooterValue>
+                    <ScreenReaderOnly>
+                      <FormattedMessage
+                        {...messages.xLikes}
+                        values={{ noOfLikes: idea.attributes.likes_count }}
+                      />
+                    </ScreenReaderOnly>
                   </FooterItem>
 
                   {showDislike && (
                     <FooterItem>
                       <DislikeIcon name="vote-down" />
-                      <FooterValue id="e2e-map-card-dislike-count">
+                      {/* Hidden to use easier to understand text for screen readers */}
+                      <FooterValue id="e2e-map-card-dislike-count" aria-hidden>
                         {idea.attributes.dislikes_count}
                       </FooterValue>
+                      <ScreenReaderOnly>
+                        <FormattedMessage
+                          {...messages.xDislikes}
+                          values={{
+                            noOfDislikes: idea.attributes.dislikes_count,
+                          }}
+                        />
+                      </ScreenReaderOnly>
                     </FooterItem>
                   )}
                 </>
@@ -252,7 +270,16 @@ const IdeaMapCard = memo<Props>(
             {showCommentCount && (
               <FooterItem>
                 <CommentIcon name="comments" />
-                <FooterValue>{idea.attributes.comments_count}</FooterValue>
+                {/* Hidden to use easier to understand text for screen readers */}
+                <FooterValue aria-hidden>
+                  {idea.attributes.comments_count}
+                </FooterValue>
+                <ScreenReaderOnly>
+                  <FormattedMessage
+                    {...messages.xComments}
+                    values={{ noOfComments: idea.attributes.comments_count }}
+                  />
+                </ScreenReaderOnly>
               </FooterItem>
             )}
           </Box>
