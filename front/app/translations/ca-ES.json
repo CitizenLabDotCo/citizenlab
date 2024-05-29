@@ -635,7 +635,6 @@
   "app.components.form.controls.tapOnFullscreenMapToAdd": "Toqueu el mapa per afegir la vostra resposta.",
   "app.components.form.controls.tapOnMapToAdd2": "Toqueu el mapa o escriviu una adreça a continuació per afegir la vostra resposta.",
   "app.components.form.controls.tapToAddAPoint": "Toqueu per afegir un punt",
-  "app.components.form.controls.validCordinatesTooltip": "Si la ubicació no es mostra entre les opcions mentre escriviu, podeu afegir coordenades vàlides en el format \"latitud, longitud\" per especificar una ubicació precisa.",
   "app.components.form.error": "Error",
   "app.components.form.locationGoogleUnavailable": "No s'ha pogut carregar el camp d'ubicació proporcionat per Google Maps.",
   "app.components.form.submit": "Presentar",

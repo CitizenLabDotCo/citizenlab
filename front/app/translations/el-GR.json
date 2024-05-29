@@ -635,7 +635,6 @@
   "app.components.form.controls.tapOnFullscreenMapToAdd": "Πατήστε στο χάρτη για να προσθέσετε την απάντησή σας.",
   "app.components.form.controls.tapOnMapToAdd2": "Πατήστε στο χάρτη ή πληκτρολογήστε μια διεύθυνση παρακάτω για να προσθέσετε την απάντησή σας.",
   "app.components.form.controls.tapToAddAPoint": "Πατήστε για να προσθέσετε ένα σημείο",
-  "app.components.form.controls.validCordinatesTooltip": "Εάν η τοποθεσία δεν εμφανίζεται μεταξύ των επιλογών καθώς πληκτρολογείτε, μπορείτε να προσθέσετε έγκυρες συντεταγμένες με τη μορφή \"γεωγραφικό πλάτος, γεωγραφικό μήκος\" για να καθορίσετε μια ακριβή τοποθεσία.",
   "app.components.form.error": "Σφάλμα",
   "app.components.form.locationGoogleUnavailable": "Δεν ήταν δυνατή η φόρτωση του πεδίου τοποθεσίας που παρέχεται από τους χάρτες Google.",
   "app.components.form.submit": "Υποβολή",

@@ -635,7 +635,6 @@
   "app.components.form.controls.tapOnFullscreenMapToAdd": "Tryck på kartan för att lägga till ditt svar.",
   "app.components.form.controls.tapOnMapToAdd2": "Klicka på kartan eller skriv en adress nedan för att lägga till ditt svar.",
   "app.components.form.controls.tapToAddAPoint": "Tryck för att lägga till en punkt",
-  "app.components.form.controls.validCordinatesTooltip": "Om platsen inte visas bland alternativen när du skriver kan du lägga till giltiga koordinater i formatet \"latitud, longitud\" för att ange en exakt plats.",
   "app.components.form.error": "Fel",
   "app.components.form.locationGoogleUnavailable": "Det gick inte att läsa in platsfältet från Google Maps.",
   "app.components.form.submit": "Skicka",

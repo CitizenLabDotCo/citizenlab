@@ -635,7 +635,6 @@
   "app.components.form.controls.tapOnFullscreenMapToAdd": "Pieskarieties kartei, lai pievienotu atbildi.",
   "app.components.form.controls.tapOnMapToAdd2": "Pieskarieties kartei vai ierakstiet adresi, lai pievienotu atbildi.",
   "app.components.form.controls.tapToAddAPoint": "Pieskarieties, lai pievienotu punktu",
-  "app.components.form.controls.validCordinatesTooltip": "Ja ievadīšanas laikā atrašanās vieta nav redzama starp opcijām, varat pievienot derīgas koordinātas formātā \"platums, garums\", lai norādītu precīzu atrašanās vietu.",
   "app.components.form.error": "Kļūda",
   "app.components.form.locationGoogleUnavailable": "Nevarēja ielādēt google maps norādīto atrašanās vietas lauku.",
   "app.components.form.submit": "Iesniegt",

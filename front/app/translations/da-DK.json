@@ -635,7 +635,6 @@
   "app.components.form.controls.tapOnFullscreenMapToAdd": "Tryk på kortet for at tilføje dit svar.",
   "app.components.form.controls.tapOnMapToAdd2": "Tryk på kortet, eller skriv en adresse nedenfor for at tilføje dit svar.",
   "app.components.form.controls.tapToAddAPoint": "Tryk for at tilføje et punkt",
-  "app.components.form.controls.validCordinatesTooltip": "Hvis placeringen ikke vises blandt mulighederne, mens du skriver, kan du tilføje gyldige koordinater i formatet 'breddegrad, længdegrad' for at angive en præcis placering.",
   "app.components.form.error": "Fejl",
   "app.components.form.locationGoogleUnavailable": "Kunne ikke indlæse feltet for placering leveret af Google Maps.",
   "app.components.form.submit": "Indsend",

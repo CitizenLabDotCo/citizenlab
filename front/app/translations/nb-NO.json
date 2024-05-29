@@ -635,7 +635,6 @@
   "app.components.form.controls.tapOnFullscreenMapToAdd": "Trykk på kartet for å legge til svaret ditt.",
   "app.components.form.controls.tapOnMapToAdd2": "Trykk på kartet eller skriv inn en adresse nedenfor for å legge til svaret ditt.",
   "app.components.form.controls.tapToAddAPoint": "Trykk for å legge til et punkt",
-  "app.components.form.controls.validCordinatesTooltip": "Hvis plasseringen ikke vises blant alternativene mens du skriver, kan du legge til gyldige koordinater i formatet 'breddegrad, lengdegrad' for å spesifisere en nøyaktig plassering.",
   "app.components.form.error": "Feil",
   "app.components.form.locationGoogleUnavailable": "Kunne ikke laste område for lokalisering basert på opplysninger fra google maps.",
   "app.components.form.submit": "Send inn",

@@ -635,7 +635,6 @@
   "app.components.form.controls.tapOnFullscreenMapToAdd": "Napauta karttaa lisätäksesi vastauksesi.",
   "app.components.form.controls.tapOnMapToAdd2": "Napauta karttaa tai kirjoita osoite alle lisätäksesi vastauksesi.",
   "app.components.form.controls.tapToAddAPoint": "Lisää piste napauttamalla",
-  "app.components.form.controls.validCordinatesTooltip": "Jos sijainti ei näy vaihtoehtojen joukossa kirjoittaessasi, voit määrittää tarkan sijainnin lisäämällä kelvollisia koordinaatteja muodossa \"leveysaste, pituusaste\".",
   "app.components.form.error": "Virhe",
   "app.components.form.locationGoogleUnavailable": "Google Mapsin toimittamaa sijaintikenttää ei voitu ladata.",
   "app.components.form.submit": "Lähetä",
