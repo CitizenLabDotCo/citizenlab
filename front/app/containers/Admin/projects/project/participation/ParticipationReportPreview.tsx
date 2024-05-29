@@ -60,7 +60,7 @@ const ParticipationReportPreview = ({
             <WhiteSpace />
             {userFields?.data.map((field) => {
               return (
-                <Box key={field.id}>
+                <Element is="div" canvas key={field.id}>
                   <DemographicsWidget
                     startAt={startAt}
                     endAt={endAt}
@@ -69,7 +69,7 @@ const ParticipationReportPreview = ({
                     title={field.attributes.title_multiloc}
                   />
                   <WhiteSpace />
-                </Box>
+                </Element>
               );
             })}
 
