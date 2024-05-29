@@ -93,9 +93,7 @@ const ProjectRow = ({
     return null;
   }
 
-  const userCanModerateProject = canModerateProject(project.data, {
-    data: authUser.data,
-  });
+  const userCanModerateProject = canModerateProject(project.data, authUser);
 
   const handleActionLoading = (actionType: ActionType, isRunning: boolean) => {
     if (actionType === 'copying') {
