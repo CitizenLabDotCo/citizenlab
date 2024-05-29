@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useRef, useEffect } from 'react';
 
 import styled from 'styled-components';
 
@@ -38,12 +38,22 @@ interface Props {
 
 const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
   const { formatMessage } = useIntl();
+  const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
 
   const [isSpamModalVisible, setIsSpamModalVisible] = useState(false);
   const [warningModalOpen, setWarningModalOpen] = useState(false);
 
   const openWarningModal = () => setWarningModalOpen(true);
   const closeWarningModal = () => setWarningModalOpen(false);
+
+  useEffect(() => {
+    if (!isSpamModalVisible && !warningModalOpen) {
+      setTimeout(() => {
+        moreActionsButtonRef.current?.focus();
+        // We use a timeout to wait for the dom to be updated
+      }, 0);
+    }
+  }, [isSpamModalVisible, warningModalOpen]);
 
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
@@ -109,6 +119,7 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
         <Container className={className}>
           <MoreActionsMenuWrapper>
             <MoreActionsMenu
+              ref={moreActionsButtonRef}
               id="e2e-idea-more-actions"
               labelAndTitle={<FormattedMessage {...messages.moreOptions} />}
               showLabel={false}
