@@ -712,6 +712,17 @@ const QuillEditor = memo<Props>(
       .filter((className) => className)
       .join(' ');
 
+    // Function to save the latest state of the content.
+    // We call this when the mouse leaves the editor, to ensure the
+    // latest content (and image size + alt text) is proprely saved.
+    const saveLatestContent = () => {
+      if (editor) {
+        const html = editor.root.innerHTML;
+        contentRef.current = html;
+        onChange && onChange(html, locale);
+      }
+    };
+
     return (
       <Container
         maxHeight={maxHeight}
@@ -724,6 +735,7 @@ const QuillEditor = memo<Props>(
         edit={formatMessage(messages.edit)}
         remove={formatMessage(messages.remove)}
         scrollTop={scrollTop}
+        onMouseLeave={saveLatestContent}
       >
         {label && (
           <Label htmlFor={id} onClick={handleLabelOnClick}>
