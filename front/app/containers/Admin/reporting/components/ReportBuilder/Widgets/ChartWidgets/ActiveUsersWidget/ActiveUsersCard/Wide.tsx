@@ -39,40 +39,40 @@ const Wide = ({
       height="260px"
       pb="8px"
       className="e2e-participants-timeline-widget"
+      display="flex"
+      flexDirection="row"
     >
-      <Box height="100%" display="flex" flexDirection="row">
-        {!hideStatistics && (
-          <Box>
-            <ParticipantsStatistic stats={stats} previousDays={previousDays} />
-            <Box mt="32px">
-              <ParticipationRateStatistic
-                stats={stats}
-                previousDays={previousDays}
-              />
-            </Box>
-          </Box>
-        )}
-
-        <Box
-          flexGrow={1}
-          display="flex"
-          justifyContent={hideStatistics ? 'flex-start' : 'flex-end'}
-        >
-          <Box pt="8px" width="100%" maxWidth="800px" h="100%">
-            <Chart
-              timeSeries={timeSeries}
-              startAtMoment={startAt ? moment(startAt) : null}
-              endAtMoment={endAt ? moment(endAt) : null}
-              resolution={currentResolution}
-              yaxis={hideStatistics ? { orientation: 'right' } : undefined}
-              margin={
-                hideStatistics
-                  ? { top: 0, right: -16, bottom: 0, left: 0 }
-                  : undefined
-              }
+      {!hideStatistics && (
+        <Box>
+          <ParticipantsStatistic stats={stats} previousDays={previousDays} />
+          <Box mt="32px">
+            <ParticipationRateStatistic
+              stats={stats}
+              previousDays={previousDays}
             />
           </Box>
         </Box>
+      )}
+      <Box
+        flexGrow={1}
+        display="flex"
+        justifyContent={hideStatistics ? 'flex-start' : 'flex-end'}
+        pt="8px"
+        maxWidth="800px"
+        h="100%"
+      >
+        <Chart
+          timeSeries={timeSeries}
+          startAtMoment={startAt ? moment(startAt) : null}
+          endAtMoment={endAt ? moment(endAt) : null}
+          resolution={currentResolution}
+          yaxis={hideStatistics ? { orientation: 'right' } : undefined}
+          margin={
+            hideStatistics
+              ? { top: 0, right: -16, bottom: 0, left: 0 }
+              : undefined
+          }
+        />
       </Box>
     </Box>
   );
