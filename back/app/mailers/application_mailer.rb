@@ -177,7 +177,7 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def home_url
-    @home_url ||= url_service.home_url(app_configuration: app_configuration, locale: locale.locale_sym)
+    @home_url ||= url_service.home_url(app_configuration: app_configuration, locale: locale)
   end
 
   def tenant_logo_url
