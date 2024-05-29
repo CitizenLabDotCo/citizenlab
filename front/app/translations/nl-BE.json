@@ -294,6 +294,7 @@
   "app.components.ParticipationCTABars.seeEvents3": "Bekijk evenementen",
   "app.components.ParticipationCTABars.seeIdeas": "Bekijk ideeën",
   "app.components.ParticipationCTABars.submit": "Verzenden",
+  "app.components.ParticipationCTABars.submitSuccess": "Verzenden is gelukt",
   "app.components.ParticipationCTABars.takeTheSurvey": "Naar de enquête",
   "app.components.ParticipationCTABars.userHasParticipated": "U heeft deelgenomen aan dit project.",
   "app.components.ParticipationCTABars.volunteer": "Vrijwilliger",
