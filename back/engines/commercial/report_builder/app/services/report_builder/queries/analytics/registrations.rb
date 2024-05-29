@@ -52,7 +52,7 @@ module ReportBuilder
 
       # Similar to active_users.rb, we request the registrations another
       # time, but this time we filter by has_visits = true
-      registrations_visitors_whole_period_query = registrations_query(
+      registrations_who_accepted_cookies_whole_period_query = registrations_query(
         start_at, end_at, apply_visitor_filter: true
       )
 
@@ -60,7 +60,7 @@ module ReportBuilder
         time_series_query,
         registrations_whole_period_query,
         visitors_whole_period_query,
-        registrations_visitors_whole_period_query
+        registrations_who_accepted_cookies_whole_period_query
       ]
 
       if compare_start_at.present? && compare_end_at.present?
@@ -69,13 +69,13 @@ module ReportBuilder
 
         # Similar to active_users.rb, we request the registrations another
         # time, but this time we filter by has_visits = true
-        registrations_visitors_compared_period_query = registrations_query(
+        registrations_who_accepted_cookies_compared_period_query = registrations_query(
           compare_start_at, compare_end_at, apply_visitor_filter: true
         )
 
         queries << registrations_compared_period_query
         queries << visitors_compared_period_query
-        queries << registrations_visitors_compared_period_query
+        queries << registrations_who_accepted_cookies_compared_period_query
       end
 
       queries
