@@ -314,6 +314,7 @@ const IdeasMap = memo<Props>(
         // Save clicked location
         setClickedMapLocation(esriPointToGeoJson(event.mapPoint));
 
+        //
         const ideaPostingEnabled =
           (phase?.data.attributes.posting_enabled && authUser) ||
           isAdmin(authUser);
