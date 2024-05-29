@@ -1480,6 +1480,7 @@
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "Den procentdel af deltagerne, der valgte denne mulighed.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "Den procentdel af det samlede antal stemmer, som denne mulighed fik.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Omkostninger:",
+  "app.containers.ProjectsShowPage.timeline.VotingResults.showMore": "Vis mere ",
   "app.containers.ReactionControl.a11y_likesDislikes": "Antal likes i alt: {likesCount}, total dislikes: {dislikesCount}",
   "app.containers.ReactionControl.reactionErrorSubTitle": "På grund af en fejl kunne din stemme ikke registreres. Prøv venligst igen om et par minutter.",
   "app.containers.ReactionControl.reactionSuccessTitle": "Din stemte blev registreret med succes!",
