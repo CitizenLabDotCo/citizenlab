@@ -15,7 +15,6 @@ import DemographicsWidget from 'containers/Admin/reporting/components/ReportBuil
 import { INPUT_TYPES } from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/DemographicsWidget/Settings';
 import PostsByTimeWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/PostsByTimeWidget';
 import ReactionsByTimeWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/ReactionsByTimeWidget';
-import TwoColumn from 'containers/Admin/reporting/components/ReportBuilder/Widgets/TwoColumn';
 import { MAX_REPORT_WIDTH } from 'containers/Admin/reporting/constants';
 import { ReportContextProvider } from 'containers/Admin/reporting/context/ReportContext';
 
@@ -41,18 +40,12 @@ const ParticipationReportPreview = ({
 
   const { data: userFields } = useUserCustomFields({ inputTypes: INPUT_TYPES });
 
+  console.log(userFields?.data);
   const hasIdeationPhase = phases?.data.some(
     (phase) => phase.attributes.participation_method === 'ideation'
   );
 
-  const genderField = userFields?.data.find(
-    (field) => field.attributes.code === 'gender'
-  );
-  const ageField = userFields?.data.find(
-    (field) => field.attributes.code === 'birthyear'
-  );
-
-  if (!genderField || !ageField) return null;
+  if (!userFields) return null;
 
   return (
     <ReportContextProvider width="desktop">
@@ -66,34 +59,21 @@ const ParticipationReportPreview = ({
               title={{ [locale]: formatMessage(messages.participantsTimeline) }}
             />
             <WhiteSpace />
-            <TwoColumn columnLayout="1-1">
-              {/* <GenderWidget
-                startAt={startAt}
-                endAt={endAt}
-                projectId={projectId}
-                title={{ [locale]: formatMessage(messages.usersByGender) }}
-              />
-              <AgeWidget
-                startAt={startAt}
-                endAt={endAt}
-                projectId={projectId}
-                title={{ [locale]: formatMessage(messages.usersByAge) }}
-              /> */}
-              <DemographicsWidget
-                startAt={startAt}
-                endAt={endAt}
-                projectId={projectId}
-                customFieldId={genderField.id}
-                title={{ [locale]: formatMessage(messages.usersByGender) }}
-              />
-              <DemographicsWidget
-                startAt={startAt}
-                endAt={endAt}
-                projectId={projectId}
-                customFieldId={ageField.id}
-                title={{ [locale]: formatMessage(messages.usersByAge) }}
-              />
-            </TwoColumn>
+            {userFields?.data.map((field) => {
+              return (
+                <Box key={field.id}>
+                  <DemographicsWidget
+                    startAt={startAt}
+                    endAt={endAt}
+                    projectId={projectId}
+                    customFieldId={field.id}
+                    title={field.attributes.title_multiloc}
+                  />
+                  <WhiteSpace />
+                </Box>
+              );
+            })}
+
             {hasIdeationPhase && (
               <Element is="div" canvas>
                 <PostsByTimeWidget
