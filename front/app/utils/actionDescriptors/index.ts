@@ -90,7 +90,7 @@ const actionDisabledMessages: {
  */
 export const getPermissionsDisabledMessage = (
   action: ActionDescriptorAction,
-  disabledReason: string | null | undefined,
+  disabledReason: DisabledReason | null | undefined,
   notFixableOnly?: boolean
 ) => {
   if (!disabledReason) return;
@@ -101,6 +101,5 @@ export const getPermissionsDisabledMessage = (
   if (message) return message;
 
   // Fallback to defaults if no specific message for the action
-  const globalMessage = globalDisabledMessages[disabledReason];
-  if (globalMessage) return globalMessage;
+  return globalDisabledMessages[disabledReason];
 };
