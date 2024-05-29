@@ -25,7 +25,7 @@ const InstructionMessage = ({ projectId }: Props) => {
   if (!project) return null;
 
   const getInstructionMessage = () => {
-    if (authUser && canModerateProject(project.data, authUser)) {
+    if (canModerateProject(project.data, authUser)) {
       return isTabletOrSmaller
         ? formatMessage(messages.tapOnMapToAddAdmin)
         : formatMessage(messages.clickOnMapToAddAdmin);
