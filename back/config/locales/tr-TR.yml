@@ -1,4 +1,38 @@
 tr:
+  locales:
+    en: İngilizce
+    ar-MA: Arapça (Fas)
+    ar-SA: Arapça (Suudi Arabistan)
+    ca-ES: Katalanca
+    cy-GB: Welsh
+    da-DK: Danimarka
+    de-DE: Alman
+    el-GR: Yunan
+    en-CA: İngilizce (Kanada)
+    en-GB: İngilizce (UK)
+    en-IE: İngilizce (İrlanda)
+    es-CL: İspanyolca (Şili)
+    es-ES: İspanyolca (İspanya)
+    fi-FI: Fince
+    fr-BE: Fransızca (Belçika)
+    fr-FR: Fransızca
+    hr-HR: Hırvatça
+    hu-HU: Macarca
+    it-IT: İtalyan
+    kl-GL: Grönlandca
+    lb-LU: Lüksemburgca
+    lv-LV: Letonca
+    mi: Maori
+    nb-NO: Norveççe (Bokmål)
+    nl-BE: Hollandaca (Belçika)
+    nl-NL: Hollandaca
+    pl-PL: Lehçe
+    pt-BR: Portekizce (Brezilya)
+    ro-RO: Romence
+    sr-Latn: Sırpça (Latince)
+    sr-SP: Sırpça (Kiril)
+    sv-SE: İsveç
+    tr-TR: Türkçe
   symbols:
     outside: başka bir yerde
   idea_statuses:
@@ -149,7 +183,7 @@ tr:
         title: Detaylar
         description:
       other_text_field:
-        title: Eğer '{other_option}' adresini seçtiyseniz, ne düşünüyorsunuz?
+        title: If you picked '{other_option}', what are you thinking of?
   custom_forms:
     categories:
       main_content:
