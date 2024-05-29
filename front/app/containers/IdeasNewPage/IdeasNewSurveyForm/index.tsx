@@ -30,6 +30,7 @@ import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { isNilOrError } from 'utils/helperUtils';
 import { getElementType, getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
@@ -155,7 +156,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
 
   const handleDraftIdeas = async (data: FormValues) => {
     if (data.publication_status === 'draft') {
-      if (allowAnonymousPosting || authUser === undefined) {
+      if (allowAnonymousPosting || isNilOrError(authUser)) {
         // Anonymous or not logged in surveys should not save drafts
         return;
       }
