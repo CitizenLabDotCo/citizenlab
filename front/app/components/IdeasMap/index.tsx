@@ -116,7 +116,6 @@ const IdeasMap = memo<Props>(
     const [searchParams] = useSearchParams();
     const isMobileOrSmaller = useBreakpoint('phone');
     const isTabletOrSmaller = useBreakpoint('tablet');
-    console.log('isTabletOrSmaller', isTabletOrSmaller);
 
     // Create div elements to use for inserting React components into Esri map popup
     // Docs: https://developers.arcgis.com/javascript/latest/custom-ui/#introduction
