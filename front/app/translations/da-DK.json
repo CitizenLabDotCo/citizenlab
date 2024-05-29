@@ -294,6 +294,7 @@
   "app.components.ParticipationCTABars.seeEvents3": "Se begivenheder",
   "app.components.ParticipationCTABars.seeIdeas": "Se idéer",
   "app.components.ParticipationCTABars.submit": "Indsend",
+  "app.components.ParticipationCTABars.submitSuccess": "Indsendelsen blev gennemført med succes",
   "app.components.ParticipationCTABars.takeTheSurvey": "Besvar spørgeskemaet ",
   "app.components.ParticipationCTABars.userHasParticipated": "Du har deltaget i dette projekt.",
   "app.components.ParticipationCTABars.volunteer": "Frivillig",
