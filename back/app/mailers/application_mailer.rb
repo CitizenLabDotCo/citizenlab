@@ -34,7 +34,7 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def locale
-    @locale ||= recipient.locale
+    @locale ||= recipient ? Locale.new(recipient.locale) : Locale.default
   end
 
   def subject
@@ -188,12 +188,8 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def gv_gray_logo_url
-    lang_part = case locale.to_sym
-    when :'nl-NL', :'nl-BE'
-      'nl'
-    else
-      'en'
-    end
+    logo_languages = %i[en nl fr es dk de]
+    lang_part = (locale.fallback_languages & logo_languages).first.to_s
     "https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/formerly-logo/formerly_gray_#{lang_part}.png"
   end
 

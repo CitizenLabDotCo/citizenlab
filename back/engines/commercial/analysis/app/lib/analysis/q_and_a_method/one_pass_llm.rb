@@ -75,7 +75,7 @@ module Analysis
 
     def prompt(project, inputs_text)
       project_title = MultilocService.new.t(project.title_multiloc)
-      LLM::Prompt.new.fetch('q_and_a', project_title: project_title, question: question.question, inputs_text: inputs_text, language: Locale.monolingual&.language)
+      LLM::Prompt.new.fetch('q_and_a', project_title: project_title, question: question.question, inputs_text: inputs_text, language: Locale.monolingual&.language_copy)
     end
   end
 end

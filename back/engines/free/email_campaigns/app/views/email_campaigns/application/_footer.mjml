@@ -51,7 +51,7 @@
                       display: inline-block;
                       margin-bottom: 10px"><%= format_message('powered_by', component: 'footer') %></span>
       </mj-text>
-      <mj-image align="left" width="80px" padding-top="0" href="https://govocal.com/"
+      <mj-image align="left" width="155px" padding-top="0" href="https://govocal.com/"
         src="<%= gv_gray_logo_url %>" alt="GoVocal logo" />
     <% end %>
   </mj-column>
