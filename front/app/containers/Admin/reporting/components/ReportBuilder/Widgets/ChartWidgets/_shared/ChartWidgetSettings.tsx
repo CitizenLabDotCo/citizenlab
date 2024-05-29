@@ -80,8 +80,8 @@ export const DateRangeInput = ({ onChangeDateRange }: Props) => {
     endDate: Moment | null;
   }) => {
     setProp((props: ChartWidgetProps) => {
-      props.startAt = startDate?.format('YYYY-MM-DDTHH:mm:ss.sss');
-      props.endAt = endDate?.format('YYYY-MM-DDTHH:mm:ss.sss');
+      props.startAt = startDate?.format('YYYY-MM-DD');
+      props.endAt = endDate?.format('YYYY-MM-DD');
     });
 
     onChangeDateRange?.({ startDate, endDate });
