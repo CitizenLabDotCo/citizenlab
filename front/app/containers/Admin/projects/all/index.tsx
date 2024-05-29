@@ -91,7 +91,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
   const userIsFolderModerator =
     (authUser &&
       isProjectFoldersEnabled &&
-      isProjectFolderModerator(authUser.data)) ??
+      isProjectFolderModerator(authUser)) ??
     false;
   const userCanCreateProject = userIsAdmin || userIsFolderModerator;
 
