@@ -7,8 +7,8 @@ import { QueryCallbacksFor } from '@craftjs/utils';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 
 import PhaseTemplate from '../Templates/PhaseTemplate';
+import PlatformTemplate from '../Templates/PlatformTemplate';
 import ProjectTemplate from '../Templates/ProjectTemplate';
-import StrategicTemplate from '../Templates/StrategicTemplate';
 import { WIDGETS } from '../Widgets';
 
 import RenderNode from './RenderNode';
@@ -25,7 +25,7 @@ const resolver = {
   ...WIDGETS,
   ProjectTemplate,
   PhaseTemplate,
-  StrategicTemplate,
+  PlatformTemplate,
 };
 
 // Without this, craftjs sometimes crashes.

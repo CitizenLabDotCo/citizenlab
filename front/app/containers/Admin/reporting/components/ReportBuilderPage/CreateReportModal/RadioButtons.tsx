@@ -11,12 +11,12 @@ import messages from '../messages';
 
 import { Template } from './typings';
 
-const TEMPLATE_TYPES: Template[] = ['blank', 'project', 'strategic'];
+const TEMPLATE_TYPES: Template[] = ['blank', 'project', 'platform'];
 
 const MESSAGES: Record<Template, MessageDescriptor> = {
   blank: messages.blankTemplate,
   project: messages.projectTemplate,
-  strategic: messages.strategicTemplate,
+  platform: messages.platformTemplate,
 };
 
 interface Props {
@@ -29,7 +29,7 @@ const RadioButtons = ({ value, onChange }: Props) => {
 
   const templateTypes = isSuperAdmin(user)
     ? TEMPLATE_TYPES
-    : TEMPLATE_TYPES.filter((type) => type !== 'strategic');
+    : TEMPLATE_TYPES.filter((type) => type !== 'platform');
 
   return (
     <>

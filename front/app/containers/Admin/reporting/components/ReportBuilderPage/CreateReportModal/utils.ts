@@ -26,11 +26,11 @@ export const getRedirectUrl = ({
     params = `?templateProjectId=${selectedProjectId}`;
   }
 
-  if (template === 'strategic' && startDate && endDate) {
-    const startDateParam = `startDateStrategicReport=${startDate.format(
+  if (template === 'platform' && startDate && endDate) {
+    const startDateParam = `startDatePlatformReport=${startDate.format(
       'YYYY-MM-DD'
     )}`;
-    const endDateParam = `endDateStrategicReport=${endDate.format(
+    const endDateParam = `endDatePlatformReport=${endDate.format(
       'YYYY-MM-DD'
     )}`;
 

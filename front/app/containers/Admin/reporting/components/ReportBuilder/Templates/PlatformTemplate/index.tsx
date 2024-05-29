@@ -49,15 +49,7 @@ interface Props {
   endDate: string;
 }
 
-// TODO remove
-const error = console.error.bind(console);
-
-console.error = (...args: any[]) => {
-  if (args[0].code === 'MISSING_TRANSLATION') return;
-  error(...args);
-};
-
-const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
+const PlatformTemplateContent = ({ startDate, endDate }: Props) => {
   const dateRange = {
     startAt: startDate,
     endAt: endDate,
@@ -148,7 +140,7 @@ const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
   const supportedFields = userFields.data.filter(isSupportedField);
 
   return (
-    <Element id="strategic-report-template" is={Box} canvas>
+    <Element id="platform-report-template" is={Box} canvas>
       <TextMultiloc text={reportStats} />
       <WhiteSpace size="small" />
       <TextMultiloc text={gsQuote} />
@@ -223,14 +215,14 @@ const StrategicTemplateContent = ({ startDate, endDate }: Props) => {
   );
 };
 
-const StrategicTemplate = (props: Props) => {
+const PlatformTemplate = (props: Props) => {
   const enabled = useContext(TemplateContext);
 
   if (enabled) {
-    return <StrategicTemplateContent {...props} />;
+    return <PlatformTemplateContent {...props} />;
   } else {
-    return <Element id="strategic-report-template" is={Box} canvas />;
+    return <Element id="platform-report-template" is={Box} canvas />;
   }
 };
 
-export default StrategicTemplate;
+export default PlatformTemplate;

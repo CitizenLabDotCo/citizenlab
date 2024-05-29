@@ -26,8 +26,8 @@ import Editor from '../../components/ReportBuilder/Editor';
 import Settings from '../../components/ReportBuilder/Settings';
 import { TemplateContext } from '../../components/ReportBuilder/Templates/context';
 import PhaseTemplate from '../../components/ReportBuilder/Templates/PhaseTemplate';
+import PlatformTemplate from '../../components/ReportBuilder/Templates/PlatformTemplate';
 import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTemplate';
-import StrategicTemplate from '../../components/ReportBuilder/Templates/StrategicTemplate';
 import Toolbox from '../../components/ReportBuilder/Toolbox';
 import TopBar from '../../components/ReportBuilder/TopBar';
 import ViewContainer from '../../components/ReportBuilder/ViewContainer';
@@ -143,8 +143,8 @@ const ReportBuilder = ({ report, reportLayout, templateConfig }: Props) => {
                       templateConfig?.template === 'phase' ? (
                       <PhaseTemplate phaseId={templateConfig.phaseId} />
                     ) : emptyReportOnInit &&
-                      templateConfig?.template === 'strategic' ? (
-                      <StrategicTemplate
+                      templateConfig?.template === 'platform' ? (
+                      <PlatformTemplate
                         startDate={templateConfig.startDate}
                         endDate={templateConfig.endDate}
                       />
@@ -171,19 +171,17 @@ const ReportBuilderWrapper = () => {
   const [search] = useSearchParams();
   const [templateProjectId] = useState(search.get('templateProjectId'));
   const [templatePhaseId] = useState(search.get('templatePhaseId'));
-  const [startDateStrategicReport] = useState(
-    search.get('startDateStrategicReport')
+  const [startDatePlatformReport] = useState(
+    search.get('startDatePlatformReport')
   );
-  const [endDateStrategicReport] = useState(
-    search.get('endDateStrategicReport')
-  );
+  const [endDatePlatformReport] = useState(search.get('endDatePlatformReport'));
 
   useEffect(() => {
     removeSearchParams([
       'templateProjectId',
       'templatePhaseId',
-      'startDateStrategicReport',
-      'endDateStrategicReport',
+      'startDatePlatformReport',
+      'endDatePlatformReport',
     ]);
   }, []);
 
@@ -199,8 +197,8 @@ const ReportBuilderWrapper = () => {
   const templateConfig = getTemplateConfig({
     templateProjectId,
     templatePhaseId,
-    startDateStrategicReport,
-    endDateStrategicReport,
+    startDatePlatformReport,
+    endDatePlatformReport,
   });
 
   return (

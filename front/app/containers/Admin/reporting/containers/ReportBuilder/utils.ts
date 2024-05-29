@@ -1,15 +1,15 @@
 interface Params {
   templateProjectId: string | null;
   templatePhaseId: string | null;
-  startDateStrategicReport: string | null;
-  endDateStrategicReport: string | null;
+  startDatePlatformReport: string | null;
+  endDatePlatformReport: string | null;
 }
 
 export const getTemplateConfig = ({
   templateProjectId,
   templatePhaseId,
-  startDateStrategicReport,
-  endDateStrategicReport,
+  startDatePlatformReport,
+  endDatePlatformReport,
 }: Params): TemplateConfig | undefined => {
   if (templateProjectId) {
     return {
@@ -25,11 +25,11 @@ export const getTemplateConfig = ({
     };
   }
 
-  if (startDateStrategicReport && endDateStrategicReport) {
+  if (startDatePlatformReport && endDatePlatformReport) {
     return {
-      template: 'strategic',
-      startDate: startDateStrategicReport,
-      endDate: endDateStrategicReport,
+      template: 'platform',
+      startDate: startDatePlatformReport,
+      endDate: endDatePlatformReport,
     };
   }
 
@@ -39,7 +39,7 @@ export const getTemplateConfig = ({
 export type TemplateConfig =
   | ProjectTemplateConfig
   | PhaseTemplateConfig
-  | StrategicTemplateConfig;
+  | PlatformTemplateConfig;
 
 type ProjectTemplateConfig = {
   template: 'project';
@@ -51,8 +51,8 @@ type PhaseTemplateConfig = {
   phaseId: string;
 };
 
-type StrategicTemplateConfig = {
-  template: 'strategic';
+type PlatformTemplateConfig = {
+  template: 'platform';
   startDate: string;
   endDate: string;
 };

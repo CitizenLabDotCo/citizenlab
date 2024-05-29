@@ -53,7 +53,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
   const blockSubmit =
     reportTitleTooShort ||
     (template === 'project' ? selectedProjectId === undefined : false) ||
-    (template === 'strategic' ? !dates.startDate || !dates.endDate : false);
+    (template === 'platform' ? !dates.startDate || !dates.endDate : false);
 
   const handleProjectFilter = (option: IOption) => {
     setSelectedProjectId(option.value === '' ? undefined : option.value);
@@ -123,7 +123,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
             />
           </Box>
         )}
-        {template === 'strategic' && (
+        {template === 'platform' && (
           <Box width="100%" mt="12px">
             <DateRangePicker
               startDate={dates.startDate}

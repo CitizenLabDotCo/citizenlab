@@ -1,1 +1,1 @@
-export type Template = 'blank' | 'project' | 'strategic';
+export type Template = 'blank' | 'project' | 'platform';
