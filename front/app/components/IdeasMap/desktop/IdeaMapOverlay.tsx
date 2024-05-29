@@ -82,10 +82,9 @@ const StyledIdeasShow = styled(IdeasShow)`
   padding: 30px;
 `;
 
-const StyledIdeasList = styled(MapIdeasList)<{ hide: boolean }>`
+const StyledIdeasList = styled(MapIdeasList)`
   flex: 1;
   overflow: hidden;
-  display: ${(props) => (props.hide ? 'none' : 'flex')};
 `;
 
 interface Props {
@@ -128,12 +127,13 @@ const IdeaMapOverlay = memo<Props>(
     if (project) {
       return (
         <Container className={className || ''}>
-          <StyledIdeasList
-            projectId={projectId}
-            phaseId={phaseId}
-            onSelectIdea={handleSelectIdea}
-            hide={!!selectedIdea}
-          />
+          {!selectedIdea && (
+            <StyledIdeasList
+              projectId={projectId}
+              phaseId={phaseId}
+              onSelectIdea={handleSelectIdea}
+            />
+          )}
           <CSSTransition
             classNames="animation"
             in={!!selectedIdea}
