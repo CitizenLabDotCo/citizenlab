@@ -69,7 +69,7 @@ const App = ({ children }: Props) => {
     null
   );
   const { data: appConfiguration } = useAppConfiguration();
-  const { data: authUser, isLoading } = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const appContainerClassName =
     isAdmin(authUser) || isProjectModerator(authUser) ? 'admin-user-view' : '';
   const [
