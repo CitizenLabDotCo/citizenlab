@@ -294,6 +294,7 @@
   "app.components.ParticipationCTABars.seeEvents3": "Vedi gli eventi",
   "app.components.ParticipationCTABars.seeIdeas": "Vedi idee",
   "app.components.ParticipationCTABars.submit": "Invia",
+  "app.components.ParticipationCTABars.submitSuccess": "L'invio è avvenuto con successo",
   "app.components.ParticipationCTABars.takeTheSurvey": "Prendi il sondaggio",
   "app.components.ParticipationCTABars.userHasParticipated": "Avete partecipato a questo progetto.",
   "app.components.ParticipationCTABars.volunteer": "Volontario",
