@@ -87,12 +87,15 @@ class AdminPublicationsFilteringService
   end
 
   add_filter('remove_unmoderated_folders') do |scope, options|
-    next scope unless ['true', true, '1'].include? options[:filter_is_moderator_of]
+    next scope unless (['true', true, '1'].include? options[:filter_is_moderator_of]) ||
+                      options[:filter_user_is_moderator_of].present?
 
-    current_user = options[:current_user]
-    next scope.where(children_allowed: false) unless current_user
+    moderator = User.find_by(id: options[:filter_user_is_moderator_of])
+    user = moderator.presence || options[:current_user]
 
-    moderated_folder_ids = current_user.roles.select { |r| r['type'] == 'project_folder_moderator' }.pluck('project_folder_id')
+    next scope.where(children_allowed: false) unless user
+
+    moderated_folder_ids = user.roles.select { |r| r['type'] == 'project_folder_moderator' }.pluck('project_folder_id')
     unmoderated_parents = scope.where(children_allowed: true).where.not(publication_id: moderated_folder_ids)
 
     scope.where.not(id: unmoderated_parents)

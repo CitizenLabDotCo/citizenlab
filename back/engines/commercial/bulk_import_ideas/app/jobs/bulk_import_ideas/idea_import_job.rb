@@ -3,13 +3,14 @@
 module BulkImportIdeas
   class IdeaImportJob < ApplicationJob
     self.priority = 60
+    perform_retries false
 
     FILE_PARSERS = {
       'xlsx' => BulkImportIdeas::Parsers::IdeaXlsxFileParser,
       'pdf' => BulkImportIdeas::Parsers::IdeaPdfFileParser
     }
 
-    def run(format, idea_import_files, import_user, locale, phase, personal_data_enabled)
+    def run(format, idea_import_files, import_user, locale, phase, personal_data_enabled, first_idea_index)
       file_parser = FILE_PARSERS.fetch(format).new(import_user, locale, phase.id, personal_data_enabled)
       import_service = BulkImportIdeas::Importers::IdeaImporter.new(import_user, locale)
 
@@ -23,6 +24,10 @@ module BulkImportIdeas
       users = import_service.imported_users
 
       SideFxBulkImportService.new.after_success(import_user, phase, 'idea', format, ideas, users)
+    rescue StandardError => e
+      e.params[:row] += first_idea_index if e.instance_of?(BulkImportIdeas::Error) && e.params[:row]
+      SideFxBulkImportService.new.after_failure(import_user, phase, 'idea', format, e.to_s)
+      raise e
     end
 
     private

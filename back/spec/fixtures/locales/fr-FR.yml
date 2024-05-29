@@ -1,4 +1,6 @@
 fr:
+  locales:
+    fr-FR: Français
   symbols:
     outside: quelque part d'autre
   nav_bar_items:
@@ -77,6 +79,41 @@ fr:
           title: Quel est votre problème ?
         option:
           title: Quelle est votre option ?
+  xlsx_export:
+    anonymous: 'Anonyme'
+    column_headers:
+      assignee_fullname: 'Cessionnaire'
+      assignee_email: 'E-mail du cessionnaire'
+      attachments: 'Pièces jointes'
+      author_email: "E-mail de l'auteur"
+      author_fullname: "Nom de l'auteur"
+      author_id: "Identifiant de l'auteur"
+      budget: 'Budget'
+      comments_count: 'Commentaires'
+      cost: 'Coût'
+      created_at: 'Soumis à'
+      description: 'Description'
+      dislikes_count: 'Dégoûts'
+      email: 'E-mail'
+      first_name: 'Prénom(s)'
+      image_url: "URL de l'image"
+      input_id: 'Identifiant'
+      input_url: 'URL'
+      last_name: 'Nom de famille'
+      latitude: 'Latitude'
+      likes_count: 'Likes'
+      location: 'Emplacement'
+      longitude: 'Longitude' 
+      participants: 'Participants'
+      picks: 'Sélections'
+      project: 'Projet'
+      published_at: 'Publié à'
+      registration_completed_at: 'Inscription complétée à'
+      status: 'Statut'
+      submitted_at: 'Soumis à'
+      tags: 'Étiquettes'
+      title: 'Titre'
+      votes_count: 'Voix'
   voting_method:
     default_voting_term_singular: vote
     default_voting_term_plural: votes

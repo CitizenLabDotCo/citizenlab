@@ -26,13 +26,13 @@ describe BulkImportIdeas::SideFxBulkImportService do
     it "logs a 'failed' action job with model and format against a phase" do
       time_now = Time.now
       allow(Time).to receive(:now).and_return(time_now)
-      expect { service.after_failure(current_user, phase.id, 'idea', 'xlsx') }
+      expect { service.after_failure(current_user, phase.id, 'idea', 'xlsx', 'bulk_import_error') }
         .to have_enqueued_job(LogActivityJob).with(
           phase.id,
           'bulk_import_failed',
           current_user,
           time_now.to_i,
-          { payload: { model: 'idea', format: 'xlsx' } }
+          { payload: { model: 'idea', format: 'xlsx', error: 'bulk_import_error' } }
         )
     end
   end

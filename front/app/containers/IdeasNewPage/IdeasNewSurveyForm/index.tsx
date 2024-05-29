@@ -1,6 +1,11 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
-import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  colors,
+  stylingConsts,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 import { useSearchParams } from 'react-router-dom';
 
@@ -18,11 +23,11 @@ import { getCurrentPhase } from 'api/phases/utils';
 import { IProject } from 'api/projects/types';
 
 import useInputSchema from 'hooks/useInputSchema';
+import useLocalize from 'hooks/useLocalize';
 
 import Form from 'components/Form';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
-import PageContainer from 'components/UI/PageContainer';
 
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
@@ -32,6 +37,8 @@ import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import { getFormValues } from '../../IdeasEditPage/utils';
 import IdeasNewMeta from '../IdeasNewMeta';
 import messages from '../messages';
+
+import SurveyHeading from './SurveyHeading';
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,
@@ -60,6 +67,8 @@ interface Props {
 }
 
 const IdeasNewSurveyForm = ({ project }: Props) => {
+  const localize = useLocalize();
+  const isSmallerThanPhone = useBreakpoint('phone');
   const { mutateAsync: addIdea } = useAddIdea();
   const { mutateAsync: updateIdea } = useUpdateIdea();
   const { data: authUser } = useAuthUser();
@@ -67,11 +76,15 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   const phaseId = queryParams.get('phase_id') || undefined;
   const { data: phases } = usePhases(project.data.id);
   const { data: phaseFromUrl } = usePhase(phaseId);
-  const { schema, uiSchema, inputSchemaError } = useInputSchema({
+  const {
+    schema,
+    uiSchema,
+    inputSchemaError,
+    isLoading: isLoadingInputSchema,
+  } = useInputSchema({
     projectId: project.data.id,
     phaseId,
   });
-  const isSmallerThanPhone = useBreakpoint('phone');
 
   const { data: draftIdea, status: draftIdeaStatus } =
     useDraftIdeaByPhaseId(phaseId);
@@ -84,10 +97,6 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     ? phaseFromUrl.data
     : getCurrentPhase(phases?.data);
   const allowAnonymousPosting = phase?.attributes.allow_anonymous_participation;
-
-  const userIsModerator =
-    !isNilOrError(authUser) &&
-    canModerateProject(project.data.id, { data: authUser.data });
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
     (error) => {
@@ -123,12 +132,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
 
   // Try and load in a draft idea if one exists
   useEffect(() => {
-    if (
-      draftIdeaStatus === 'success' &&
-      !isNilOrError(draftIdea) &&
-      !ideaId &&
-      schema
-    ) {
+    if (draftIdeaStatus === 'success' && !ideaId && schema) {
       const formValues = getFormValues(draftIdea, schema);
       setInitialFormData(formValues);
       setIdeaId(draftIdea.data.id);
@@ -138,7 +142,15 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     }
   }, [draftIdeaStatus, draftIdea, schema, ideaId]);
 
-  if (!participationMethodConfig || !phaseId) {
+  if (isLoadingInputSchema || loadingDraftIdea) return <FullPageSpinner />;
+  if (
+    // inputSchemaError should display an error page instead
+    inputSchemaError ||
+    !participationMethodConfig ||
+    !phaseId ||
+    !schema ||
+    !uiSchema
+  ) {
     return null;
   }
 
@@ -159,7 +171,9 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     const requestBody = {
       ...data,
       project_id: project.data.id,
-      ...(userIsModerator ? { phase_ids: [phaseId] } : {}), // Moderators can submit survey responses for inactive phases, in which case the backend cannot infer the correct phase (the current phase).
+      ...(canModerateProject(project.data.id, authUser)
+        ? { phase_ids: [phaseId] }
+        : {}), // Moderators can submit survey responses for inactive phases, in which case the backend cannot infer the correct phase (the current phase).
       publication_status: data.publication_status || 'published',
     };
 
@@ -202,7 +216,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
 
     if (published) {
       clearDraftIdea(phaseId);
-      participationMethodConfig?.onFormSubmission({
+      participationMethodConfig.onFormSubmission({
         project: project.data,
         ideaId,
         idea,
@@ -210,38 +224,63 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     }
   };
 
+  function calculateDynamicHeight() {
+    const viewportHeight = window.innerHeight;
+    const menuHeight = stylingConsts.menuHeight;
+    const mobileTopBarHeight = stylingConsts.mobileTopBarHeight;
+    const extraSpace = 80;
+
+    const dynamicHeight =
+      viewportHeight -
+      (isSmallerThanPhone ? mobileTopBarHeight : menuHeight) -
+      extraSpace;
+
+    return `${dynamicHeight}px`;
+  }
+
   return (
-    <PageContainer id="e2e-idea-new-page" overflow="hidden">
-      {!loadingDraftIdea && schema && uiSchema && participationMethodConfig ? (
+    <>
+      <IdeasNewMeta isSurvey={true} />
+      <>
         <Box
-          width="100%"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
+          mx="auto"
+          position="relative"
+          top={isSmallerThanPhone ? '0' : '40px'}
+          maxWidth="700px"
         >
-          <Box
-            background={colors.white}
-            width="700px"
-            h={isSmallerThanPhone ? '100vh' : `calc(100vh - 80px)`}
-            my={isSmallerThanPhone ? '0px' : '40px'}
-          >
-            <IdeasNewMeta isSurvey={true} />
-            <Form
-              schema={schema}
-              uiSchema={uiSchema}
-              onSubmit={handleDraftIdeas}
-              initialFormData={initialFormData}
-              getAjvErrorMessage={getAjvErrorMessage}
-              getApiErrorMessage={getApiErrorMessage}
-              inputId={ideaId}
-              config={'survey'}
-            />
-          </Box>
+          <SurveyHeading
+            titleText={localize(phase?.attributes.native_survey_title_multiloc)}
+          />
         </Box>
-      ) : inputSchemaError ? null : (
-        <FullPageSpinner />
-      )}
-    </PageContainer>
+        <main id="e2e-idea-new-page">
+          <Box
+            display="flex"
+            justifyContent="center"
+            pt={isSmallerThanPhone ? '0' : '40px'}
+          >
+            <Box
+              background={colors.white}
+              maxWidth="700px"
+              w="100%"
+              // TODO: recalculate on resize
+              h={calculateDynamicHeight()}
+              pb={isSmallerThanPhone ? '0' : '80px'}
+            >
+              <Form
+                schema={schema}
+                uiSchema={uiSchema}
+                onSubmit={handleDraftIdeas}
+                initialFormData={initialFormData}
+                getAjvErrorMessage={getAjvErrorMessage}
+                getApiErrorMessage={getApiErrorMessage}
+                inputId={ideaId}
+                config={'survey'}
+              />
+            </Box>
+          </Box>
+        </main>
+      </>
+    </>
   );
 };
 
@@ -251,15 +290,11 @@ const IdeasNewSurveyFormWrapperModal = (props: Props) => {
   return modalPortalElement
     ? createPortal(
         <Box
-          display="flex"
-          // flexDirection="column"
           w="100%"
           zIndex="1010"
           position="fixed"
-          // position="sticky"
           bgColor={colors.grey100}
           h="100vh"
-          borderRadius="2px"
         >
           <IdeasNewSurveyForm {...props} />
         </Box>,

@@ -41,8 +41,9 @@ resource 'AdminPublication' do
       parameter :folder, 'Filter by folder (project folder id)', required: false
       parameter :remove_not_allowed_parents, 'Filter out folders which contain only projects that are not visible to the user', required: false
       parameter :only_projects, 'Include projects only (no folders)', required: false
-      parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
-      parameter :filter_is_moderator_of, 'Filter out the publications the user is not moderator of. False by default', required: false
+      parameter :filter_can_moderate, 'Filter out the projects the current_user is not allowed to moderate. False by default', required: false
+      parameter :filter_is_moderator_of, 'Filter out the publications the current_user is not moderator of. False by default', required: false
+      parameter :filter_user_is_moderator_of, 'Filter out the publications the given user is moderator of (user id)', required: false
 
       example_request 'List all admin publications' do
         expect(status).to eq(200)
@@ -90,6 +91,22 @@ resource 'AdminPublication' do
         json_response = json_parse(response_body)
         assert_status 200
         expect(json_response[:data].size).to eq 10
+      end
+
+      example 'List publications a specific user can moderate', document: false do
+        moderated_folder = create(:project_folder, projects: [projects[0], projects[1]])
+        moderator = create(
+          :user,
+          roles: [
+            { type: 'project_moderator', project_id: projects[0].id },
+            { type: 'project_moderator', project_id: projects[1].id },
+            { type: 'project_folder_moderator', project_folder_id: moderated_folder.id }
+          ]
+        )
+
+        do_request filter_user_is_moderator_of: moderator.id
+        assert_status 200
+        expect(publication_ids).to match_array [projects[0].id, projects[1].id, moderated_folder.id]
       end
 
       context 'when admin is moderator of publications' do

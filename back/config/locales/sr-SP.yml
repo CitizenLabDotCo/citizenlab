@@ -1,4 +1,38 @@
 sr-Cyrl:
+  locales:
+    en: English
+    ar-MA: Arabic (Morocco)
+    ar-SA: Arabic (Saudi Arabia)
+    ca-ES: Catalan
+    cy-GB: Welsh
+    da-DK: Danish
+    de-DE: German
+    el-GR: Greek
+    en-CA: English (Canada)
+    en-GB: English (UK)
+    en-IE: English (Ireland)
+    es-CL: Spanish (Chile)
+    es-ES: Spanish (Spain)
+    fi-FI: Finnish
+    fr-BE: French (Belgium)
+    fr-FR: French
+    hr-HR: Croatian
+    hu-HU: Hungarian
+    it-IT: Italian
+    kl-GL: Greenlandic
+    lb-LU: Luxembourgish
+    lv-LV: Latvian
+    mi: Maori
+    nb-NO: Norwegian (Bokmål)
+    nl-BE: Dutch (Belgium)
+    nl-NL: Dutch
+    pl-PL: Polish
+    pt-BR: Portuguese (Brazil)
+    ro-RO: Romanian
+    sr-Latn: Serbian (Latin)
+    sr-SP: Serbian (Cyrillic)
+    sv-SE: Swedish
+    tr-TR: Turkish
   symbols:
     outside: негде другде
   idea_statuses:
@@ -200,36 +234,40 @@ sr-Cyrl:
       subject: '%{organizationName}: Ресетујте лозинку'
       title_reset_your_password: 'Изаберите нову лозинку'
   xlsx_export:
+    anonymous: 'Анонимоус'
     column_headers:
-      input_id: 'ИД'
-      latitude: 'Географска ширина'
-      longitude: 'Географска дужина'
-      location: 'Location'
-      author_fullname: 'Име аутора'
-      author_email: 'Имејл аутора'
-      author_id: 'ИД аутора'
-      attachments: 'Attachments'
-      budget: 'Буџет'
-      cost: 'Cost'
-      created_at: 'Послано на'
-      submitted_at: 'Submitted at'
-      published_at: 'Објављено на'
-      comments_count: 'Коментари'
-      likes_count: 'Свиђа'
-      dislikes_count: 'Не свиђа ми се'
-      picks: 'Пицкс'
-      participants: 'Учесници'
-      votes_count: 'Гласови'
-      input_url: 'УРЛ'
-      tags: 'Tags'
-      project: 'Пројекат'
-      status: 'Статус'
       assignee_fullname: 'Асигнее'
       assignee_email: 'Имејл примаоца'
-      image_url: 'УРЛ слике'
-      title: 'Title'
+      attachments: 'Attachments'
+      author_email: 'Имејл аутора'
+      author_fullname: 'Име аутора'
+      author_id: 'ИД аутора'
+      budget: 'Буџет'
+      comments_count: 'Коментари'
+      cost: 'Cost'
+      created_at: 'Послано на'
       description: 'Description'
-    anonymous: 'Анонимоус'
+      dislikes_count: 'Не свиђа ми се'
+      email: 'Email'
+      first_name: 'First name(s)'
+      image_url: 'УРЛ слике'
+      input_id: 'ИД'
+      input_url: 'УРЛ'
+      last_name: 'Last name'
+      latitude: 'Географска ширина'
+      likes_count: 'Свиђа'
+      location: 'Location'
+      longitude: 'Географска дужина'
+      participants: 'Учесници'
+      picks: 'Пицкс'
+      project: 'Пројекат'
+      published_at: 'Објављено на'
+      registration_completed_at: 'Registration completed at'
+      status: 'Статус'
+      submitted_at: 'Submitted at'
+      tags: 'Tags'
+      title: 'Title'
+      votes_count: 'Гласови'
   form_builder:
     default_select_field:
       title: 'Ваше питање'

@@ -55,7 +55,11 @@ const ReviewSection = ({
     refetchIdeas();
   };
 
-  const { active: importing, failed: importFailed } = useTrackBackgroundJobs({
+  const {
+    active: importing,
+    failed: importFailed,
+    errors: importErrors,
+  } = useTrackBackgroundJobs({
     jobs: importJobs,
     onChange: jobsChanged,
   });
@@ -211,8 +215,16 @@ const ReviewSection = ({
               borderBottom={`1px ${colors.grey400} solid`}
               position="relative"
             >
-              {importFailed ? (
-                <Error text={formatMessage(messages.errorImporting)} />
+              {importErrors.length > 0 ? (
+                <>
+                  <Error
+                    text={formatMessage(messages.errorImporting)}
+                    showIcon={false}
+                  />
+                  {importErrors.map((error, index) => (
+                    <Error key={index} apiErrors={[error]} />
+                  ))}
+                </>
               ) : (
                 <Box
                   justifyContent="flex-start"
