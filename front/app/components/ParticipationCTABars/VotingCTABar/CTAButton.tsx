@@ -65,7 +65,7 @@ const CTAButton = ({ phase, project }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const [processing, setProcessing] = useState(false);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [isSubmitSuccessful, setIsSubmitSuccessful] = useState<boolean>(false);
 
   if (
     !appConfig ||
@@ -86,7 +86,7 @@ const CTAButton = ({ phase, project }: Props) => {
           {
             onSuccess: () => {
               setProcessing(false);
-              setSuccessMessage(formatMessage(messages.submitSuccess)); // Set success message
+              setIsSubmitSuccessful(true);
 
               // If on the project page, scroll down to the status module
               if (location.pathname.includes('/projects/')) {
@@ -136,7 +136,7 @@ const CTAButton = ({ phase, project }: Props) => {
         content={disabledExplanation}
       >
         {/* We need to add a tabIndex when the explanation is shown to
-        make sure this is focusable when disabled to read the explanation */}
+        make sure this is focusable to read the explanation */}
         <Box width="100%" tabIndex={disabledExplanation ? 0 : -1}>
           <StyledButton
             icon="vote-ballot"
@@ -164,8 +164,10 @@ const CTAButton = ({ phase, project }: Props) => {
           )}
         </Box>
       </Tippy>
-      {successMessage && (
-        <ScreenReaderOnly role="alert">{successMessage}</ScreenReaderOnly>
+      {isSubmitSuccessful && (
+        <ScreenReaderOnly role="alert">
+          {formatMessage(messages.submitSuccess)}
+        </ScreenReaderOnly>
       )}
     </>
   );

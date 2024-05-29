@@ -15,7 +15,7 @@ interface Props {
 const ScreenReaderCurrencyValue = ({ amount, currency }: Props) => {
   const { formatMessage } = useIntl();
 
-  // We add a comma and currency label to the aria-label to make it easier to read. The comma is for natural pauses when reading.
+  // We add a comma for a reading pause between the amount and the currency
   const currencyLabel = currency
     ? `, ${formatMessage(messages.currency)}: ${formatMessage(
         messages[currency]
