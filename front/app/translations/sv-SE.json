@@ -1480,6 +1480,7 @@
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "Procentandel av deltagarna som valde detta alternativ.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "Den procentandel av det totala antalet röster som detta alternativ fick.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Kostnad:",
+  "app.containers.ProjectsShowPage.timeline.VotingResults.showMore": "Visa mer",
   "app.containers.ReactionControl.a11y_likesDislikes": "Totalt antal likes: {likesCount}, totalt antal ogillanden: {dislikesCount}",
   "app.containers.ReactionControl.reactionErrorSubTitle": "På grund av ett fel kunde din reaktion inte registreras. Vänligen försök igen om några minuter.",
   "app.containers.ReactionControl.reactionSuccessTitle": "Din reaktion har registrerats framgångsrikt!",
