@@ -18,6 +18,10 @@ class Locale
     raise ClErrors::AssertionError, "Locale #{locale_sym} is not supported" if CL2_SUPPORTED_LOCALES.exclude?(locale_sym)
   end
 
+  def text_direction
+    /^ar.*$/.match?(locale_sym) ? 'rtl' : 'ltr'
+  end
+
   def fallback_languages
     mapping_without_en = {
       :'ca-ES' => [:es],

@@ -12,8 +12,7 @@ class ApplicationMailer < ActionMailer::Base
   delegate :first_name, to: :recipient, prefix: true
 
   helper_method :app_configuration, :app_settings, :header_title, :header_message,
-    :show_header?, :preheader, :subject, :user, :recipient, :locale, :count_from, :days_since_publishing,
-    :text_direction
+    :show_header?, :preheader, :subject, :user, :recipient, :locale, :count_from, :days_since_publishing
 
   helper_method :organization_name, :recipient_name, :url_service, :multiloc_service, :organization_name,
     :loc, :localize_for_recipient, :localize_for_recipient_and_truncate, :recipient_first_name
@@ -67,7 +66,7 @@ class ApplicationMailer < ActionMailer::Base
     when OpenStruct then multiloc_or_struct.to_h.stringify_keys
     end
 
-    multiloc_service.t(multiloc, recipient.locale).html_safe if multiloc
+    multiloc_service.t(multiloc, locale.locale_sym).html_safe if multiloc
   end
 
   # Truncates localized multiloc string, avoiding cutting string in the middle of HTML link and breaking the mail view.
@@ -178,7 +177,7 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def home_url
-    @home_url ||= url_service.home_url(app_configuration: app_configuration, locale: locale)
+    @home_url ||= url_service.home_url(app_configuration: app_configuration, locale: locale.locale_sym)
   end
 
   def tenant_logo_url
@@ -201,10 +200,6 @@ class ApplicationMailer < ActionMailer::Base
     return unless resource.respond_to?(:published_at)
 
     (Time.zone.today - resource.published_at.to_date).to_i
-  end
-
-  def text_direction
-    /^ar.*$/.match?(locale) ? 'rtl' : 'ltr'
   end
 
   def to_deep_struct(obj)

@@ -68,7 +68,6 @@ module EmailCampaigns
     end
 
     def generate_commands(recipient:, activity:)
-      locale = recipient.locale
       project = activity.item.project
       [{
         event_payload: {

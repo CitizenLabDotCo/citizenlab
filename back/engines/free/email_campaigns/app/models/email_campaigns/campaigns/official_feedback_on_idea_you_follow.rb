@@ -74,7 +74,7 @@ module EmailCampaigns
         event_payload: {
           official_feedback_author_multiloc: notification.official_feedback.author_multiloc,
           official_feedback_body_multiloc: notification.official_feedback.body_multiloc,
-          official_feedback_url: Frontend::UrlService.new.model_to_url(notification.official_feedback, locale: recipient.locale),
+          official_feedback_url: Frontend::UrlService.new.model_to_url(notification.official_feedback, locale: locale),
           post_published_at: notification.post.published_at.iso8601,
           post_title_multiloc: notification.post.title_multiloc,
           post_author_name: name_service.display_name!(notification.post.author),

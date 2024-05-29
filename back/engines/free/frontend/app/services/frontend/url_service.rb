@@ -52,8 +52,8 @@ module Frontend
     end
 
     def admin_project_folder_url(project_folder_id, locale: nil)
-      locale ||= app_config_instance.settings('core', 'locales').first
-      "#{app_config_instance.base_frontend_uri}/#{locale}/admin/projects/folders/#{project_folder_id}"
+      locale ||= Locale.default(config: app_config_instance)
+      "#{app_config_instance.base_frontend_uri}/#{locale.to_sym.to_s}/admin/projects/folders/#{project_folder_id}"
     end
 
     def slug_to_url(slug, classname, options = {})
@@ -76,7 +76,7 @@ module Frontend
     def home_url(options = {})
       url = config_from_options(options).base_frontend_uri
       locale = options[:locale]
-      locale ? "#{url}/#{locale}" : url
+      locale ? "#{url}/#{locale.locale_sym.to_s}" : url
     end
 
     def verification_url(options = {})
@@ -131,7 +131,7 @@ module Frontend
     end
 
     def unfollow_url(follower)
-      url = model_to_url(follower.followable, locale: follower.user&.locale)
+      url = model_to_url(follower.followable, locale: Locale.new(follower.user&.locale))
       url || "#{home_url(locale: follower.user.locale)}/profile/#{follower.user.slug}/following"
     end
 

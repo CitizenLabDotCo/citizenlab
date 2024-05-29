@@ -26,6 +26,18 @@ RSpec.describe Locale do
     end
   end
 
+  describe 'text_direction' do
+    it 'returns ltr when the locale is not RTL' do
+      locale = described_class.new('fr-FR')
+      expect(locale.text_direction).to eq('ltr')
+    end
+
+    it 'returns rtl when the locale is RTL' do
+      locale = described_class.new('ar-SA')
+      expect(locale.text_direction).to eq('rtl')
+    end
+  end
+
   describe 'monolingual' do
     it 'returns nil when the tenant uses multiple languages' do
       expect(described_class.monolingual).to be_nil

@@ -81,7 +81,7 @@ module EmailCampaigns
         statistics = statistics project
         next if project.admin_publication.archived? || zero_statistics?(statistics)
 
-        project_name = project.title_multiloc[recipient.locale] || project.title_multiloc[I18n.default_locale]
+        project_name = project.title_multiloc[locale.locale_sym]
         top_ideas = top_ideas project, name_service
         idea_ids = top_ideas.pluck(:id)
         {
