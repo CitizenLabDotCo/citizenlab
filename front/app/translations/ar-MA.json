@@ -294,6 +294,7 @@
   "app.components.ParticipationCTABars.seeEvents3": "مشاهدة الأحداث",
   "app.components.ParticipationCTABars.seeIdeas": "راجع الأفكار",
   "app.components.ParticipationCTABars.submit": "يُقدِّم",
+  "app.components.ParticipationCTABars.submitSuccess": "تم الإرسال بنجاح",
   "app.components.ParticipationCTABars.takeTheSurvey": "شارك في الاستبيان",
   "app.components.ParticipationCTABars.userHasParticipated": "لقد شاركت في هذا المشروع.",
   "app.components.ParticipationCTABars.volunteer": "متطوع",
