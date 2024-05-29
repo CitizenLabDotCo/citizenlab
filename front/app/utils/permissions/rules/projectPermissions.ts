@@ -9,7 +9,6 @@ import { userModeratesFolder } from './projectFolderPermissions';
 
 definePermissionRule('project', 'create', (_project: IProjectData, user) => {
   return isAdmin(user);
-  w;
 });
 
 definePermissionRule('project', 'delete', (_project: IProjectData, user) => {
