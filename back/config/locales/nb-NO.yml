@@ -1,4 +1,38 @@
 "nb-NO":
+  locales:
+    en: Engelsk
+    ar-MA: Arabisk (Marokko)
+    ar-SA: Arabisk (Saudi-Arabia)
+    ca-ES: katalansk
+    cy-GB: walisisk
+    da-DK: dansk
+    de-DE: tysk
+    el-GR: gresk
+    en-CA: Engelsk (Canada)
+    en-GB: engelsk (Storbritannia)
+    en-IE: Engelsk (Irland)
+    es-CL: spansk (Chile)
+    es-ES: Spansk (Spania)
+    fi-FI: finsk
+    fr-BE: fransk (Belgia)
+    fr-FR: fransk
+    hr-HR: Kroatisk
+    hu-HU: ungarsk
+    it-IT: italiensk
+    kl-GL: Grønlandsk
+    lb-LU: luxemburgsk
+    lv-LV: latvisk
+    mi: Maori
+    nb-NO: norsk (bokmål)
+    nl-BE: Nederlandsk (Belgia)
+    nl-NL: nederlandsk
+    pl-PL: Pusse
+    pt-BR: Portugisisk (Brasil)
+    ro-RO: rumensk
+    sr-Latn: serbisk (latinsk)
+    sr-SP: serbisk (kyrillisk)
+    sv-SE: svensk
+    tr-TR: tyrkisk
   symbols:
     outside: annet sted
   idea_statuses:
@@ -149,7 +183,7 @@
         title: Detaljer
         description:
       other_text_field:
-        title: Hvis du valgte '{other_option}', hva tenker du på?
+        title: If you picked '{other_option}', what are you thinking of?
   custom_forms:
     categories:
       main_content:
