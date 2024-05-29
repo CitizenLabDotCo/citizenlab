@@ -13,6 +13,7 @@ RSpec.describe User do
     subject(:user) { build(:user) }
 
     it { is_expected.to have_many(:ideas).dependent(:nullify) }
+    it { is_expected.to have_many(:idea_imports).dependent(:nullify) }
     it { is_expected.to have_many(:initiatives).dependent(:nullify) }
     it { is_expected.to have_many(:assigned_initiatives).class_name('Initiative').dependent(:nullify) }
     it { is_expected.to have_many(:comments).dependent(:nullify) }
@@ -21,6 +22,12 @@ RSpec.describe User do
     it { is_expected.to have_many(:reactions).dependent(:nullify) }
     it { is_expected.to have_many(:event_attendances).class_name('Events::Attendance').dependent(:destroy) }
     it { is_expected.to have_many(:attended_events).through(:event_attendances).source(:event) }
+
+    it 'nullifies idea import association' do
+      idea_import = create(:idea_import, import_user: user)
+      expect { user.destroy }.not_to raise_error
+      expect(idea_import.reload.import_user).to be_nil
+    end
   end
 
   describe '.destroy_all_async' do
