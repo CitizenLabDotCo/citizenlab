@@ -1,4 +1,38 @@
 ar:
+  locales:
+    en: إنجليزي
+    ar-MA: العربية (المغرب)
+    ar-SA: العربية (المملكة العربية السعودية)
+    ca-ES: الكاتالونية
+    cy-GB: تهرب من دفع الرهان
+    da-DK: دانماركي
+    de-DE: ألمانية
+    el-GR: اليونانية
+    en-CA: الإنجليزية (كندا)
+    en-GB: الإنجليزية (المملكة المتحدة)
+    en-IE: الإنجليزية (أيرلندا)
+    es-CL: الإسبانية (تشيلي)
+    es-ES: الإسبانية (إسبانيا)
+    fi-FI: الفنلندية
+    fr-BE: الفرنسية (بلجيكا)
+    fr-FR: فرنسي
+    hr-HR: الكرواتية
+    hu-HU: المجرية
+    it-IT: ايطالي
+    kl-GL: جرينلاند
+    lb-LU: اللوكسمبرجية
+    lv-LV: لاتفيا
+    mi: الماوري
+    nb-NO: النرويجية (بوكمال)
+    nl-BE: الهولندية (بلجيكا)
+    nl-NL: هولندي
+    pl-PL: تلميع
+    pt-BR: البرتغالية (البرازيل).
+    ro-RO: روماني
+    sr-Latn: الصربية (اللاتينية)
+    sr-SP: الصربية (السيريلية)
+    sv-SE: السويدية
+    tr-TR: اللغة التركية
   symbols:
     outside: في مكان آخر
   idea_statuses:
@@ -149,7 +183,7 @@ ar:
         title: تفاصيل
         description:
       other_text_field:
-        title: إذا اخترت '{other_option}'، ما الذي تفكر فيه؟
+        title: If you picked '{other_option}', what are you thinking of?
   custom_forms:
     categories:
       main_content:
