@@ -13,8 +13,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
 
       @dimension_date_sept = create(:dimension_date, date: @date_september)
       @dimension_date_oct = create(:dimension_date, date: @date_october)
-      create(:dimension_type, name: 'idea', parent: 'post')
-      create(:dimension_type, name: 'comment', parent: 'idea')
+      Analytics::PopulateDimensionsService.populate_types
     end
 
     it 'returns active users' do
