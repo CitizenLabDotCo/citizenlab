@@ -315,9 +315,8 @@ const IdeasMap = memo<Props>(
         setClickedMapLocation(esriPointToGeoJson(event.mapPoint));
 
         const ideaPostingEnabled =
-          authUser &&
-          (phase?.data.attributes.posting_enabled ||
-            isAdmin({ data: authUser.data }));
+          (phase?.data.attributes.posting_enabled && authUser) ||
+          isAdmin(authUser);
 
         // On map click, we either open an existing idea OR show the "submit an idea" popup.
         // This depends on whether the user has clicked an existing map pin.
