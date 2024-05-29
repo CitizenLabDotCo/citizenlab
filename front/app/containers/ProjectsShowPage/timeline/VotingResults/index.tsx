@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Button, useBreakpoint } from '@citizenlab/cl2-component-library';
 
-import { IIdeaData, Sort } from 'api/ideas/types';
+import { IIdeaData } from 'api/ideas/types';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 import { VotingMethod } from 'api/phases/types';
 
@@ -19,20 +19,16 @@ interface Props {
 const VotingResults = ({ phaseId, votingMethod }: Props) => {
   const { formatMessage } = useIntl();
 
-  const queryParameters = {
-    phase: phaseId,
-    sort: (votingMethod === 'budgeting'
-      ? 'baskets_count'
-      : 'votes_count') as Sort,
-  };
-
   const {
     data: ideas,
     isLoading,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useInfiniteIdeas(queryParameters);
+  } = useInfiniteIdeas({
+    phase: phaseId,
+    sort: votingMethod === 'budgeting' ? 'baskets_count' : 'votes_count',
+  });
 
   const smallerThanPhone = useBreakpoint('phone');
 
