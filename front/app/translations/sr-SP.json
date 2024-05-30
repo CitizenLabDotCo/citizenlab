@@ -1481,7 +1481,6 @@
   "app.containers.ReactionControl.a11y_likesDislikes": "Укупно свиђања: {likesCount}, укупно несвиђања: {dislikesCount}",
   "app.containers.ReactionControl.reactionErrorSubTitle": "Због грешке није било могуће регистровати вашу реакцију. Молим покушајте поново за неколико минута.",
   "app.containers.ReactionControl.reactionSuccessTitle": "Ваша реакција је успешно регистрована!",
-  "app.containers.SearchInput.a11y_searchResultsHaveChanged": "{numberOfSearchResults, plural, zero {# резултата претраге су учитани} one {# резултат претраге је учитан} other {# резултата претраге су учитани}}.",
   "app.containers.SearchInput.removeSearchTerm": "Уклони термин за претрагу",
   "app.containers.SearchInput.searchAriaLabel": "Претрага",
   "app.containers.SearchInput.searchLabel": "Претрага",

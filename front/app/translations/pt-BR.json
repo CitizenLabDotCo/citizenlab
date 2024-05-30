@@ -1481,7 +1481,6 @@
   "app.containers.ReactionControl.a11y_likesDislikes": "Total de curtidas: {likesCount}, total de não curtidas: {dislikesCount}",
   "app.containers.ReactionControl.reactionErrorSubTitle": "Devido a um erro, não foi possível registar a sua reação. Por favor, tente novamente dentro de alguns minutos.",
   "app.containers.ReactionControl.reactionSuccessTitle": "A sua reação foi registada com sucesso!",
-  "app.containers.SearchInput.a11y_searchResultsHaveChanged": "{numberOfSearchResults, plural, one {# o resultado da pesquisa foi carregado} other {# os resultados da pesquisa foram carregados}}.",
   "app.containers.SearchInput.removeSearchTerm": "Remover termo de pesquisa",
   "app.containers.SearchInput.searchAriaLabel": "Salvar",
   "app.containers.SearchInput.searchLabel": "Salvar",

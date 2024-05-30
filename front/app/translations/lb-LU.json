@@ -1481,7 +1481,6 @@
   "app.containers.ReactionControl.a11y_likesDislikes": "Total Likes: {likesCount}, Total Dislikes: {dislikesCount}",
   "app.containers.ReactionControl.reactionErrorSubTitle": "Wéinst engem Feeler konnt Är Reaktioun net registréiert ginn. Probéiert w.e.g. nach eng Kéier an e puer Minutten.",
   "app.containers.ReactionControl.reactionSuccessTitle": "Är Reaktioun gouf erfollegräich registréiert!",
-  "app.containers.SearchInput.a11y_searchResultsHaveChanged": "{numberOfSearchResults, plural, zero {# Sichresultater goufe gelueden} one {# Sichresultater goufe gelueden} other {# Sichresultater goufe gelueden}}.",
   "app.containers.SearchInput.removeSearchTerm": "Sichgbegrëff ewechmaachen",
   "app.containers.SearchInput.searchAriaLabel": "Sichen",
   "app.containers.SearchInput.searchLabel": "Sichen",

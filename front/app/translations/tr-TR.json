@@ -1481,7 +1481,6 @@
   "app.containers.ReactionControl.a11y_likesDislikes": "Toplam beğeni: {likesCount}, total dislikees: {dislikesCount}",
   "app.containers.ReactionControl.reactionErrorSubTitle": "Bir hata nedeniyle tepkiniz kaydedilemedi. Lütfen birkaç dakika içinde tekrar deneyin.",
   "app.containers.ReactionControl.reactionSuccessTitle": "Tepkiniz başarıyla kaydedildi!",
-  "app.containers.SearchInput.a11y_searchResultsHaveChanged": "{numberOfSearchResults, plural, one {# arama sonucu yüklendi} other {# arama sonucu yüklendi}}.",
   "app.containers.SearchInput.removeSearchTerm": "Arama terimini kaldır",
   "app.containers.SearchInput.searchAriaLabel": "Arama",
   "app.containers.SearchInput.searchLabel": "Arama",

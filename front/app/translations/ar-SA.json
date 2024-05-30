@@ -1481,7 +1481,6 @@
   "app.containers.ReactionControl.a11y_likesDislikes": "إجمالي المعجبين: {likesCount}، إجمالي غير المعجبين: {dislikesCount}",
   "app.containers.ReactionControl.reactionErrorSubTitle": "بسبب خطأ لا يمكن تسجيل رد فعلك. يرجى المحاولة مرة أخرى في بضع دقائق.",
   "app.containers.ReactionControl.reactionSuccessTitle": "تم تسجيل رد فعلك بنجاح!",
-  "app.containers.SearchInput.a11y_searchResultsHaveChanged": "{numberOfSearchResults, plural, zero {#تم تحميل نتيجة/نتائج بحث} one {# تم تحميل نتيجة بحث} other {#تم تحميل نتيجة/نتائج بحث}}.",
   "app.containers.SearchInput.removeSearchTerm": "إزالة مصطلح البحث",
   "app.containers.SearchInput.searchAriaLabel": "بحث",
   "app.containers.SearchInput.searchLabel": "بحث",

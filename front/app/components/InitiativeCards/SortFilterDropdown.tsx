@@ -1,58 +1,70 @@
-import React, { PureComponent } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import FilterSelector from 'components/FilterSelector';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
 export type Sort = 'random' | 'likes_count' | 'new' | '-new';
 
+const optionMessages: { [key in Sort]: MessageDescriptor } = {
+  random: messages.random,
+  likes_count: messages.popular,
+  new: messages.newest,
+  '-new': messages.oldest,
+};
+
 type Props = {
-  id?: string | undefined;
   alignment: 'left' | 'right';
   defaultSortingMethod?: Sort;
   onChange: (value: Sort) => void;
 };
 
-type State = {
-  selectedValue: string[];
-};
+const SortFilterDropdown = ({
+  alignment,
+  defaultSortingMethod = 'new',
+  onChange,
+}: Props) => {
+  const [sortingMethod, setSortingMethod] = useState<Sort[]>([
+    defaultSortingMethod,
+  ]);
+  const { formatMessage } = useIntl();
 
-class SortFilterDropdown extends PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      selectedValue: [props.defaultSortingMethod ?? 'new'],
-    };
-  }
-
-  handleOnChange = (selectedValue: Sort[]) => {
-    this.setState({ selectedValue });
-    this.props.onChange(selectedValue[0]);
+  const handleOnChange = (value: Sort[]) => {
+    setSortingMethod(value);
+    onChange(value[0]);
   };
 
-  render() {
-    const { alignment } = this.props;
-    const { selectedValue } = this.state;
-    const options = [
-      { text: <FormattedMessage {...messages.random} />, value: 'random' },
-      {
-        text: <FormattedMessage {...messages.popular} />,
-        value: 'likes_count',
-      },
-      { text: <FormattedMessage {...messages.newest} />, value: 'new' },
-      { text: <FormattedMessage {...messages.oldest} />, value: '-new' },
-    ];
+  const options = Object.keys(optionMessages).map((key) => {
+    return {
+      text: <FormattedMessage {...optionMessages[key]} />,
+      value: key,
+    };
+  });
 
-    return (
+  useEffect(() => {
+    setSortingMethod([defaultSortingMethod]);
+  }, [defaultSortingMethod]);
+
+  return (
+    <>
+      <ScreenReaderOnly aria-live="assertive">
+        <FormattedMessage
+          {...messages.a11y_itemsHaveChanged}
+          values={{
+            sortOder: formatMessage(optionMessages[sortingMethod[0]]),
+          }}
+        />
+      </ScreenReaderOnly>
       <FilterSelector
         id="e2e-initiatives-sort-dropdown"
         title={<FormattedMessage {...messages.sortTitle} />}
         name="sort"
-        selected={selectedValue}
+        selected={sortingMethod}
         values={options}
-        onChange={this.handleOnChange}
+        onChange={handleOnChange}
         multipleSelectionAllowed={false}
         width="180px"
         left={alignment === 'left' ? '-5px' : undefined}
@@ -60,8 +72,8 @@ class SortFilterDropdown extends PureComponent<Props, State> {
         right={alignment === 'right' ? '-5px' : undefined}
         mobileRight={alignment === 'right' ? '-5px' : undefined}
       />
-    );
-  }
-}
+    </>
+  );
+};
 
 export default SortFilterDropdown;

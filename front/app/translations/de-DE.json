@@ -1481,7 +1481,6 @@
   "app.containers.ReactionControl.a11y_likesDislikes": "Gefällt mir insgesamt: {likesCount}, Gefällt mir nicht insgesamt: {dislikesCount}",
   "app.containers.ReactionControl.reactionErrorSubTitle": "Aufgrund eines Fehlers konnte Ihre Reaktion nicht gespeichert werden. Bitte versuchen Sie es in ein paar Minuten erneut.",
   "app.containers.ReactionControl.reactionSuccessTitle": "Ihre Reaktion wurde erfolgreich gespeichert!",
-  "app.containers.SearchInput.a11y_searchResultsHaveChanged": "{numberOfSearchResults, plural, zero {# Suchergebnisse wurden geladen} one {# Suchergebnis wurde geladen} other {# Suchergebnisse wurden geladen}}.",
   "app.containers.SearchInput.removeSearchTerm": "Suchbegriff entfernen",
   "app.containers.SearchInput.searchAriaLabel": "Suche",
   "app.containers.SearchInput.searchLabel": "Suche",

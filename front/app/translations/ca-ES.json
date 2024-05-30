@@ -1481,7 +1481,6 @@
   "app.containers.ReactionControl.a11y_likesDislikes": "Total de m'agrada: {likesCount}, total de no m'agrada: {dislikesCount}",
   "app.containers.ReactionControl.reactionErrorSubTitle": "A causa d'un error, la vostra reacció no s'ha pogut registrar. Si us plau, torna-ho a provar d'aquí a uns minuts.",
   "app.containers.ReactionControl.reactionSuccessTitle": "La teva reacció s'ha registrat correctament!",
-  "app.containers.SearchInput.a11y_searchResultsHaveChanged": "{numberOfSearchResults, plural, zero {# resultats de cerca s'han carregat} one {# resultat de cerca s'ha carregat} other {# resultats de cerca s'han carregat}}.",
   "app.containers.SearchInput.removeSearchTerm": "Eliminar el terme de cerca",
   "app.containers.SearchInput.searchAriaLabel": "Cercar",
   "app.containers.SearchInput.searchLabel": "Cercar",

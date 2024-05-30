@@ -1035,7 +1035,6 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "Pentru a putea completa acest chestionar trebuie să vă verificăm identitatea. {verificationLink}",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "Chestionarul nu mai este disponibil, deoarece acest proiect nu mai este activ.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "Confirmați-vă identitatea acum.",
-  "app.containers.SearchInput.a11y_searchResultsHaveChanged": "{numberOfSearchResults, plural, zero {# rezultate de căutare au fost încărcate} one {# rezultat de căutare a fost încărcat} other {# rezultate de căutare au fost încărcate}}.",
   "app.containers.SearchInput.removeSearchTerm": "Eliminați termenul de căutare",
   "app.containers.SearchInput.searchAriaLabel": "Căutare",
   "app.containers.SearchInput.searchLabel": "Căutare",

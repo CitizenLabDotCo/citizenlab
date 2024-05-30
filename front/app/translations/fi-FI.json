@@ -1481,7 +1481,6 @@
   "app.containers.ReactionControl.a11y_likesDislikes": "Tykkäyksiä yhteensä: {likesCount}, ei-tykkäyksiä yhteensä: {dislikesCount}",
   "app.containers.ReactionControl.reactionErrorSubTitle": "Reaktiota ei voitu rekisteröidä virheen vuoksi. Yritä uudelleen muutaman minuutin kuluttua.",
   "app.containers.ReactionControl.reactionSuccessTitle": "Reaktiosi rekisteröitiin onnistuneesti!",
-  "app.containers.SearchInput.a11y_searchResultsHaveChanged": "{numberOfSearchResults, plural, zero {# hakutulos on ladattu} one {# hakutulos on ladattu} other {# hakutulos on ladattu}}.",
   "app.containers.SearchInput.removeSearchTerm": "Poista hakutermi",
   "app.containers.SearchInput.searchAriaLabel": "Hae",
   "app.containers.SearchInput.searchLabel": "Hae",
