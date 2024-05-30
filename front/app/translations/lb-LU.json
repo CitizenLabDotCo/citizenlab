@@ -460,6 +460,8 @@
   "app.components.ReactionControl.reactingNotSignedIn": "Mellt Iech un fir ze reagéieren.",
   "app.components.ReactionControl.reactingPossibleLater": "D'Reaktioun fänkt um {enabledFromDate}",
   "app.components.ReactionControl.reactingVerifyToReact": "Verifizéiert Är Identitéit fir ze reagéieren.",
+  "app.components.ScreenReadableEventDate..multiDayScreenReaderDate": "Event Datum: {startDate} um {startTime} bis {endDate} um {endTime}.",
+  "app.components.ScreenReadableEventDate..singleDayScreenReaderDate": "Event Datum: {eventDate} vun {startTime} bis {endTime}.",
   "app.components.Sharing.linkCopied": "Link kopéiert",
   "app.components.Sharing.or": "oder",
   "app.components.Sharing.share": "Deelen",

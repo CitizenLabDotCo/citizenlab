@@ -460,6 +460,8 @@
   "app.components.ReactionControl.reactingNotSignedIn": "Log in om te reageren.",
   "app.components.ReactionControl.reactingPossibleLater": "Reageren begint op {enabledFromDate}",
   "app.components.ReactionControl.reactingVerifyToReact": "Verifieer je identiteit om te kunnen reageren.",
+  "app.components.ScreenReadableEventDate..multiDayScreenReaderDate": "Datum activiteit: {startDate} om {startTime} tot {endDate} om {endTime}.",
+  "app.components.ScreenReadableEventDate..singleDayScreenReaderDate": "Datum activiteit: {eventDate} van {startTime} tot {endTime}.",
   "app.components.Sharing.linkCopied": "Link gekopieerd",
   "app.components.Sharing.or": "of",
   "app.components.Sharing.share": "Delen",
