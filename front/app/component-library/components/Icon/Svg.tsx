@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import styled from 'styled-components';
 
@@ -45,8 +45,18 @@ const Svg = ({
   height = '24px',
   width = '24px',
   transform,
+  name,
   ...rest
 }: SvgProps) => {
+  // Generate a unique id for the title element to ensure it doesn't conflict
+  // with other instances of the same icon on the same page.
+  // useMemo is used to ensure the id is calculated only once when the component is mounted
+  // and remains stable unless the name prop changes.
+  const titleId = useMemo(
+    () => `icon-${name}-${Math.random().toString(36).slice(2, 11)}`,
+    [name]
+  );
+
   return (
     <StyledBox
       as="svg"
@@ -59,9 +69,11 @@ const Svg = ({
       width={width}
       fill={fill}
       transform={transform}
+      aria-labelledby={titleId}
+      name={name}
       {...rest}
     >
-      {title && <title>{title}</title>}
+      {title && <title id={titleId}>{title}</title>}
       {children}
     </StyledBox>
   );
