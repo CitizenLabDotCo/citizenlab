@@ -460,6 +460,8 @@
   "app.components.ReactionControl.reactingNotSignedIn": "Faça login para votar.",
   "app.components.ReactionControl.reactingPossibleLater": "A reação terá início em {enabledFromDate}",
   "app.components.ReactionControl.reactingVerifyToReact": "Verifique sua identidade para reagir.",
+  "app.components.ScreenReadableEventDate..multiDayScreenReaderDate": "Data do evento: {startDate} em {startTime} a {endDate} em {endTime}.",
+  "app.components.ScreenReadableEventDate..singleDayScreenReaderDate": "Data do evento: {eventDate} de {startTime} a {endTime}.",
   "app.components.Sharing.linkCopied": "Link copiado",
   "app.components.Sharing.or": "ou",
   "app.components.Sharing.share": "Compartilhar",
