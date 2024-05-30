@@ -22,7 +22,7 @@ RSpec.describe EmailCampaigns::Campaigns::VotingLastChance do
       ).first
 
       expect(command.dig(:event_payload, :project_url))
-        .to eq Frontend::UrlService.new.model_to_url(project, locale: notification_activity.item.recipient.locale)
+        .to eq Frontend::UrlService.new.model_to_url(project, locale: Locale.new(notification_activity.item.recipient.locale))
       expect(command.dig(:event_payload, :project_title_multiloc))
         .to eq project.title_multiloc
       expect(command.dig(:event_payload, :phase_title_multiloc))

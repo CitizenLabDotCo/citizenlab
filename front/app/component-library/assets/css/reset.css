@@ -384,23 +384,6 @@ button,
 }
 
 /**
-  * Remove the inner border and padding in Firefox.
-  */
-
-::-moz-focus-inner {
-  border-style: none;
-  padding: 0;
-}
-
-/**
-  * Correct the focus styles unset by the previous rule.
-  */
-
-:-moz-focusring {
-  outline: 1px dotted ButtonText;
-}
-
-/**
   * Correct the border, margin, and padding in all browsers.
   */
 
