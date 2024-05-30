@@ -6,7 +6,7 @@ describe('isValidUrl', () => {
     expect(isValidUrl('http://www.example.com')).toStrictEqual(true);
     expect(isValidUrl('https://example.com')).toStrictEqual(true);
     expect(
-      isValidUrl('https://example.realyreallysuperduperlongurlsuffix')
+      isValidUrl('https://example.reallyreallysuperduperlongurlsuffix')
     ).toStrictEqual(true);
   });
   it('tests invalid URLs', () => {
