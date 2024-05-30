@@ -1,4 +1,38 @@
 ach:
+  locales:
+    en: crwdns2400560:0crwdne2400560:0
+    ar-MA: crwdns2400562:0crwdne2400562:0
+    ar-SA: crwdns2400564:0crwdne2400564:0
+    ca-ES: crwdns2400566:0crwdne2400566:0
+    cy-GB: crwdns2400568:0crwdne2400568:0
+    da-DK: crwdns2400570:0crwdne2400570:0
+    de-DE: crwdns2400572:0crwdne2400572:0
+    el-GR: crwdns2400574:0crwdne2400574:0
+    en-CA: crwdns2400576:0crwdne2400576:0
+    en-GB: crwdns2400578:0crwdne2400578:0
+    en-IE: crwdns2400580:0crwdne2400580:0
+    es-CL: crwdns2400582:0crwdne2400582:0
+    es-ES: crwdns2400584:0crwdne2400584:0
+    fi-FI: crwdns2400586:0crwdne2400586:0
+    fr-BE: crwdns2400588:0crwdne2400588:0
+    fr-FR: crwdns2400590:0crwdne2400590:0
+    hr-HR: crwdns2400592:0crwdne2400592:0
+    hu-HU: crwdns2400594:0crwdne2400594:0
+    it-IT: crwdns2400596:0crwdne2400596:0
+    kl-GL: crwdns2400598:0crwdne2400598:0
+    lb-LU: crwdns2400600:0crwdne2400600:0
+    lv-LV: crwdns2400602:0crwdne2400602:0
+    mi: crwdns2400604:0crwdne2400604:0
+    nb-NO: crwdns2400606:0crwdne2400606:0
+    nl-BE: crwdns2400608:0crwdne2400608:0
+    nl-NL: crwdns2400610:0crwdne2400610:0
+    pl-PL: crwdns2400612:0crwdne2400612:0
+    pt-BR: crwdns2400614:0crwdne2400614:0
+    ro-RO: crwdns2400616:0crwdne2400616:0
+    sr-Latn: crwdns2400618:0crwdne2400618:0
+    sr-SP: crwdns2400620:0crwdne2400620:0
+    sv-SE: crwdns2400622:0crwdne2400622:0
+    tr-TR: crwdns2400624:0crwdne2400624:0
   symbols:
     outside: crwdns2266160:0crwdne2266160:0
   idea_statuses:
