@@ -59,19 +59,19 @@ export default defineMessages({
     id: 'app.components.IdeasMap.multipleInputsAtLocation',
     defaultMessage: 'Multiple inputs at this location',
   },
-  xLikes: {
-    id: 'app.components.IdeasMap.xLikes',
+  screenReaderLikesText: {
+    id: 'app.components.IdeasMap.screenReaderLikesText',
     defaultMessage:
-      '{noOfLikes, plural, =0 {, no likes} one {, 1 like} other {, # likes}}',
+      '{noOfLikes, plural, =0 {, no likes.} one {, 1 like.} other {, # likes.}}',
   },
-  xDislikes: {
-    id: 'app.components.IdeasMap.xDislikes',
+  screenReaderDislikesText: {
+    id: 'app.components.IdeasMap.screenReaderDislikesText',
     defaultMessage:
-      '{noOfDislikes, plural, =0 {, no dislikes} one {1 dislike} other {, # dislikes}}',
+      '{noOfDislikes, plural, =0 {, no dislikes.} one {1 dislike.} other {, # dislikes.}}',
   },
-  xComments: {
+  screenReaderCommentsText: {
     id: 'app.components.IdeasMap.xComments',
     defaultMessage:
-      '{noOfComments, plural, =0 {, no comments} one {, 1 comment} other {, # comments}}',
+      '{noOfComments, plural, =0 {, no comments.} one {, 1 comment.} other {, # comments.}}',
   },
 });
