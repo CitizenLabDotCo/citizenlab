@@ -336,7 +336,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.questionTerm": "Frage",
   "app.components.app.containers.AdminPage.ProjectEdit.report": "Bericht",
   "app.components.app.containers.AdminPage.ProjectEdit.timelineTab": "Zeitleiste",
-  "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Verkehr",
+  "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Daten",
   "app.components.formBuilder.cancelMethodChange1": "Abbrechen",
   "app.components.formBuilder.changeMethodWarning1": "Das Ändern der Methoden kann dazu führen, dass alle Eingabedaten ausgeblendet werden, die bei Verwendung der vorherigen Methode generiert oder empfangen wurden.",
   "app.components.formBuilder.changingMethod1": "Methode ändern",
