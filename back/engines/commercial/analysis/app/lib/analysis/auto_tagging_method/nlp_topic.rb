@@ -41,7 +41,7 @@ module Analysis
 
     def inputs_prompt(inputs, project_title)
       inputs_text = input_to_text.format_all(inputs)
-      LLM::Prompt.new.fetch('topic_modeling', project_title: project_title, inputs_text: inputs_text, max_topics: max_topics(inputs.size), language: Locale.monolingual&.language)
+      LLM::Prompt.new.fetch('topic_modeling', project_title: project_title, inputs_text: inputs_text, max_topics: max_topics(inputs.size), language: Locale.monolingual&.language_copy)
     end
 
     def parse_topic_modeling_response(response)

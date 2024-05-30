@@ -14,7 +14,7 @@ module EmailCampaigns
           post_body_multiloc: idea.body_multiloc,
           post_author_name: UserDisplayNameService.new(AppConfiguration.instance, recipient_user).display_name!(idea.author),
           post_published_at: idea.published_at&.iso8601,
-          post_url: Frontend::UrlService.new.model_to_url(idea, locale: recipient_user.locale),
+          post_url: Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient_user.locale)),
           post_assigned_at: (idea.assigned_at&.iso8601 || Time.now.iso8601)
         }
       }

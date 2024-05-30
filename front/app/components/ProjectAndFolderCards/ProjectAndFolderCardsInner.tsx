@@ -7,7 +7,9 @@ import { IAdminPublicationData } from 'api/admin_publications/types';
 import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
 import { PublicationStatus } from 'api/projects/types';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import EmptyContainer from './components/EmptyContainer';
@@ -57,6 +59,7 @@ const ProjectAndFolderCardsInner = ({
   currentlyWorkingOnText,
 }: Props) => {
   const [currentTab, setCurrentTab] = useState<PublicationTab | null>(null);
+  const { formatMessage } = useIntl();
 
   useEffect(() => {
     if (currentTab) return;
@@ -118,6 +121,11 @@ const ProjectAndFolderCardsInner = ({
 
   return (
     <Box id="e2e-projects-container" display="flex" flexDirection="column">
+      <ScreenReaderOnly aria-live="assertive">
+        {formatMessage(messages.a11y_projectsHaveChanged1, {
+          numberOfFilteredResults: adminPublications.length,
+        })}
+      </ScreenReaderOnly>
       <Box mb="30px">
         <Topbar
           showTitle={showTitle}
