@@ -242,7 +242,7 @@ const IdeaMapCard = memo<Props>(
                     </FooterValue>
                     <ScreenReaderOnly>
                       <FormattedMessage
-                        {...messages.xLikes}
+                        {...messages.screenReaderLikesText}
                         values={{ noOfLikes: idea.attributes.likes_count }}
                       />
                     </ScreenReaderOnly>
@@ -257,7 +257,7 @@ const IdeaMapCard = memo<Props>(
                       </FooterValue>
                       <ScreenReaderOnly>
                         <FormattedMessage
-                          {...messages.xDislikes}
+                          {...messages.screenReaderDislikesText}
                           values={{
                             noOfDislikes: idea.attributes.dislikes_count,
                           }}
@@ -276,7 +276,7 @@ const IdeaMapCard = memo<Props>(
                 </FooterValue>
                 <ScreenReaderOnly>
                   <FormattedMessage
-                    {...messages.xComments}
+                    {...messages.screenReaderCommentsText}
                     values={{ noOfComments: idea.attributes.comments_count }}
                   />
                 </ScreenReaderOnly>
