@@ -10,9 +10,9 @@ export default defineMessages({
     defaultMessage: 'Field only visible to admins',
   },
   notPublic: {
-    id: 'app.components.form.controls.notPublic',
+    id: 'app.components.form.controls.notPublic1',
     defaultMessage:
-      '*This answer will only be shared with moderators, and not to the public.',
+      '*This answer will only be shared with project managers, and not to the public.',
   },
   selectBetween: {
     id: 'app.components.form.controls.selectBetween',
