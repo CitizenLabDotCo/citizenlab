@@ -8,7 +8,7 @@ import ideasKeys from './keys';
 import { IIdea, IdeasKeys } from './types';
 
 export const fetchIdea = ({ phaseId }: { phaseId?: string }) =>
-  fetcher<IIdea>({ path: `/ideas/draft_records/${phaseId}`, action: 'get' });
+  fetcher<IIdea>({ path: `/ideas/draft/${phaseId}`, action: 'get' });
 
 const useDraftIdeaByPhaseId = (phaseId?: string) => {
   return useQuery<IIdea, CLErrors, IIdea, IdeasKeys>({

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import authProvidersMessages from 'containers/Authentication/steps/AuthProviders/messages';
 
-import Checkbox from 'components/HookForm/Checkbox';
+import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -41,8 +41,9 @@ const PoliciesMarkup = () => {
   return (
     <>
       <Box id="e2e-terms-conditions-container">
-        <Checkbox
+        <CheckboxWithLabel
           name="termsAndConditionsAccepted"
+          dataTestId="termsAndConditionsAccepted"
           label={
             <ConsentText>
               <FormattedMessage
@@ -62,8 +63,9 @@ const PoliciesMarkup = () => {
         />
       </Box>
       <Box mt="8px" id="e2e-privacy-policy-container">
-        <Checkbox
+        <CheckboxWithLabel
           name="privacyPolicyAccepted"
+          dataTestId="privacyPolicyAccepted"
           label={
             <ConsentText>
               <FormattedMessage

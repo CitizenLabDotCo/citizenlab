@@ -16,7 +16,7 @@ import EventsMessage from 'containers/EventsPage/EventsViewer/EventsMessage';
 import EventsSpinner from 'containers/EventsPage/EventsViewer/EventsSpinner';
 import eventsPageMessages from 'containers/EventsPage/messages';
 
-import EventCard from 'components/EventCard';
+import EventCards from 'components/EventCards';
 import VerticalCenterer from 'components/VerticalCenterer';
 
 import { useIntl } from 'utils/cl-intl';
@@ -30,26 +30,6 @@ const NoEventsText = styled.div`
   text-align: center;
   color: ${colors.textSecondary};
   font-size: ${fontSizes.xl}px;
-`;
-
-const CardsContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 16px;
-
-  flex-wrap: wrap;
-`;
-
-const StyledEventCard = styled(EventCard)`
-  flex: 0 0 32.3%;
-
-  ${media.tablet`
-    flex: 0 0 48.8%;
-  `}
-
-  ${media.phone`
-    flex: 0 0 100%;
-  `}
 `;
 
 const Header = styled.div`
@@ -135,17 +115,7 @@ const EventsWidget = ({ staticPageId }: Props) => {
               </VerticalCenterer>
             )}
 
-            {!isNilOrError(events) && events.data.length > 0 && (
-              <CardsContainer>
-                {events.data.map((event) => (
-                  <StyledEventCard
-                    event={event}
-                    key={event.id}
-                    titleFontSize={18}
-                  />
-                ))}
-              </CardsContainer>
-            )}
+            <EventCards events={events} />
           </Box>
 
           <Box alignSelf="center">

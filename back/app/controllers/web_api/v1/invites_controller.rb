@@ -133,9 +133,8 @@ class WebApi::V1::InvitesController < ApplicationController
     invitee = @invite.invitee
     begin
       ActiveRecord::Base.transaction do
-        invitee.assign_attributes accept_params
+        invitee = UserService.assign_params_in_accept_invite(invitee, accept_params)
         SideFxInviteService.new.before_accept @invite
-        invitee.invite_status = 'accepted'
         unless invitee.save(context: :form_submission)
           raise ClErrors::TransactionError.new(error_key: :unprocessable_invitee)
         end

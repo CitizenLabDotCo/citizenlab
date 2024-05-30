@@ -447,7 +447,6 @@
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Începeți să tastați pentru a căuta după adresa de e-mail sau numele utilizatorului...",
   "app.components.form.blockedVerified": "Nu puteți edita acest câmp deoarece conține informații verificate.",
   "app.components.form.controls.adminFieldTooltip": "Câmp vizibil doar pentru administratori",
-  "app.components.form.controls.notPublic": "*Acest răspuns va fi comunicat doar moderatorilor, nu și publicului.",
   "app.components.form.controls.selectMany": "*Alegeți câte doriți",
   "app.components.form.error": "Eroare",
   "app.components.form.locationGoogleUnavailable": "Nu s-a putut încărca câmpul de locație furnizat de Google Maps.",

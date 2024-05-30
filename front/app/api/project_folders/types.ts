@@ -47,13 +47,13 @@ export interface IProjectFolderData {
     followers_count: number;
   };
   relationships: {
-    projects: {
-      data: { id: string; type: 'project' }[];
-    };
     admin_publication: {
       data: IRelationship | null;
     };
     avatars: {
+      data: IRelationship[] | null;
+    };
+    images: {
       data: IRelationship[] | null;
     };
     user_follower: {

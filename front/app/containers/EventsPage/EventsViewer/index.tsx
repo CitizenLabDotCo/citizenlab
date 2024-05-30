@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Box, media } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import { MessageDescriptor } from 'react-intl';
 import { useSearchParams } from 'react-router-dom';
@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import useEvents from 'api/events/useEvents';
 import { PublicationStatus } from 'api/projects/types';
 
-import EventCard from 'components/EventCard';
+import EventCards from 'components/EventCards';
 import Pagination from 'components/Pagination';
 
 import { ScreenReaderOnly } from 'utils/a11y';
@@ -23,22 +23,6 @@ import messages from '../messages';
 import EventsMessage from './EventsMessage';
 import EventsSpinner from './EventsSpinner';
 import TopBar from './TopBar';
-
-interface IStyledEventCard {
-  last: boolean;
-}
-
-const StyledEventCard = styled(EventCard)<IStyledEventCard>`
-  flex: 0 0 32.3%;
-
-  ${media.tablet`
-  flex: 0 0 48.8%;
-`}
-
-  ${media.phone`
-  flex: 0 0 100%;
-`}
-`;
 
 const StyledPagination = styled(Pagination)`
   justify-content: center;
@@ -209,22 +193,13 @@ const EventsViewer = ({
       {isLoading && <EventsSpinner />}
       {!isNilOrError(events) && (
         <>
+          <EventCards events={events} />
+
           <ScreenReaderOnly aria-live="assertive">
             {formatMessage(messages.a11y_eventsHaveChanged1, {
               numberOfEvents: events.data.length,
             })}
           </ScreenReaderOnly>
-          <Box display="flex" flexWrap="wrap" gap="16px">
-            {events.data.length > 0 &&
-              events.data.map((event, i) => (
-                <StyledEventCard
-                  id={event.id}
-                  event={event}
-                  last={events.data.length - 1 === i}
-                  key={event.id}
-                />
-              ))}
-          </Box>
 
           {events.data.length === 0 && (
             <EventsMessage message={fallbackMessage} />

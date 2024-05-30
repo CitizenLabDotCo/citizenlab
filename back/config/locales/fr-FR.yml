@@ -1,4 +1,38 @@
 fr:
+  locales:
+    en: Anglais
+    ar-MA: Arabe (Maroc)
+    ar-SA: Arabe (Arabie Saoudite)
+    ca-ES: Catalan
+    cy-GB: Gallois
+    da-DK: Danois
+    de-DE: Allemand
+    el-GR: Grecque
+    en-CA: Anglais (Canada)
+    en-GB: Anglais (UK)
+    en-IE: Anglais (Irlande)
+    es-CL: Espagnol (Chili)
+    es-ES: Espagnol (Espagne)
+    fi-FI: Finlandais
+    fr-BE: Français (Belgique)
+    fr-FR: Français
+    hr-HR: Croate
+    hu-HU: Hongrois
+    it-IT: Italien
+    kl-GL: Groenlandais
+    lb-LU: luxembourgeois
+    lv-LV: Letton
+    mi: Maori
+    nb-NO: Norvégien (Bokmål)
+    nl-BE: Néerlandais (Belgique)
+    nl-NL: Néerlandais
+    pl-PL: Polonais
+    pt-BR: Portugais (Brésil)
+    ro-RO: Roumain
+    sr-Latn: Serbe (latin)
+    sr-SP: Serbe (cyrillique)
+    sv-SE: Suédois
+    tr-TR: Turc
   symbols:
     outside: autre lieu
   idea_statuses:
@@ -241,7 +275,7 @@ fr:
       option2: 'Option 2'
     form_end_page:
       title: 'Merci pour votre participation'
-      description: "Veuillez soumettre vos réponses en cliquant sur « Soumettre » ci-dessous."
+      description: "Veuillez soumettre vos réponses en cliquant sur « Envoyer » ci-dessous."
     pdf_export:
       personal_data: 'Données personnelles'
       personal_data_explanation_ideation: "Cette contribution sera soumise sur la plateforme de participation en ligne de %{organizationName}. Si vous souhaitez que votre nom soit affiché en tant qu'auteur et recevoir par e-mail des mises à jours concernant votre soumission, veuillez remplir les champs suivants et nous créerons un compte pour vous. Votre adresse e-mail ne sera pas publique et ne sera uniquement utilisée par %{organizationName}. Si vous préférez rester anonyme ou ne souhaitez pas que nous utilisions vos données personnelles à cette fin, vous pouvez laisser ces champs vides."
