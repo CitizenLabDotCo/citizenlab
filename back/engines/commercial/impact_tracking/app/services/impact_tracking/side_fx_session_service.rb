@@ -6,7 +6,9 @@ module ImpactTracking
       update_user_last_active_at(user)
     end
 
-    def after_upgrade(user)
+    # Called before setting the current session, to catch cases where upgrade returns a 404 when no visitor session
+    # exists for the user. This can happen when a user logs out and in again without refreshing the page, for example.
+    def before_set_current_session(user)
       update_user_last_active_at(user)
     end
 

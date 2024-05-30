@@ -20,7 +20,7 @@ export default defineMessages({
       'http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step/set-up/pointing-out-the-right-project-moderators',
   },
   moderatorSearchFieldLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel',
-    defaultMessage: 'Who are the project moderators?',
+    id: 'app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel1',
+    defaultMessage: 'Who are the project managers?',
   },
 });
