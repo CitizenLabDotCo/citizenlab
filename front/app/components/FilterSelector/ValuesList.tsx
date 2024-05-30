@@ -57,12 +57,26 @@ const ListItem = styled.li`
   &:hover,
   &:focus,
   &.selected {
-    background: ${colors.grey300};
+    background: ${(props) => props.theme.colors.tenantSecondary};
 
     ${ListItemText} {
-      color: #000;
+      color: ${colors.white};
     }
   }
+`;
+
+const CheckboxLabel = styled.span`
+  flex: 1;
+  color: ${colors.textSecondary};
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  line-height: 21px;
+  text-align: left;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  display: block;
+  padding: 10px 0;
 `;
 
 const CheckboxListItem = styled.li`
@@ -86,26 +100,12 @@ const CheckboxListItem = styled.li`
   &:hover,
   &:focus,
   &.selected {
-    background: ${colors.grey300};
+    background: ${(props) => props.theme.colors.tenantSecondary};
 
-    ${ListItemText} {
-      color: #000;
+    ${ListItemText}, ${CheckboxLabel} {
+      color: ${colors.white};
     }
   }
-`;
-
-const CheckboxLabel = styled.span`
-  flex: 1;
-  color: ${colors.textSecondary};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: 21px;
-  text-align: left;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-  display: block;
-  padding: 10px 0;
 `;
 
 interface Value {
@@ -259,6 +259,7 @@ const ValuesList = ({
                       label={<CheckboxLabel>{entry.text}</CheckboxLabel>}
                       name={name}
                       checkBoxTabIndex={-1}
+                      selectedBorderColor={colors.white}
                     />
                   </CheckboxListItem>
                 ) : (

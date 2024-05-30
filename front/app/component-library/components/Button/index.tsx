@@ -530,6 +530,7 @@ export interface Props extends ButtonContainerProps {
   autoFocus?: boolean;
   fontSize?: string;
   ariaExpanded?: boolean;
+  ariaPressed?: boolean;
   ariaDescribedby?: string;
   ariaDisabled?: boolean;
   as?: React.ElementType;
@@ -602,6 +603,7 @@ class Button extends PureComponent<Props> {
       fontSize,
       autoFocus,
       ariaExpanded,
+      ariaPressed,
       ariaDescribedby,
       ariaDisabled,
       opacityDisabled,
@@ -705,6 +707,7 @@ class Button extends PureComponent<Props> {
           role={role}
           aria-label={ariaLabel}
           aria-expanded={ariaExpanded}
+          aria-pressed={ariaPressed}
           aria-describedby={ariaDescribedby}
           aria-disabled={ariaDisabled}
           disabled={disabled}
