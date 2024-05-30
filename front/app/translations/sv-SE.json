@@ -460,6 +460,8 @@
   "app.components.ReactionControl.reactingNotSignedIn": "Logga in för att reagera.",
   "app.components.ReactionControl.reactingPossibleLater": "Reacting kommer att starta på {enabledFromDate}",
   "app.components.ReactionControl.reactingVerifyToReact": "Verifiera din identitet för att kunna reagera.",
+  "app.components.ScreenReadableEventDate..multiDayScreenReaderDate": "Händelsedatum: {startDate} på {startTime} till {endDate} på {endTime}.",
+  "app.components.ScreenReadableEventDate..singleDayScreenReaderDate": "Händelsedatum: {eventDate} från {startTime} till {endTime}.",
   "app.components.Sharing.linkCopied": "Länk kopierad",
   "app.components.Sharing.or": "eller",
   "app.components.Sharing.share": "Dela",
