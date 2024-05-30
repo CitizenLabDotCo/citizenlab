@@ -460,6 +460,8 @@
   "app.components.ReactionControl.reactingNotSignedIn": "Συνδεθείτε για να αντιδράσετε.",
   "app.components.ReactionControl.reactingPossibleLater": "Το Reacting θα ξεκινήσει στο {enabledFromDate}",
   "app.components.ReactionControl.reactingVerifyToReact": "Επαληθεύστε την ταυτότητά σας για να αντιδράσετε.",
+  "app.components.ScreenReadableEventDate..multiDayScreenReaderDate": "Ημερομηνία εκδήλωσης: {startDate} στο {startTime} έως {endDate} στο {endTime}.",
+  "app.components.ScreenReadableEventDate..singleDayScreenReaderDate": "Ημερομηνία εκδήλωσης: {eventDate} από {startTime} έως {endTime}.",
   "app.components.Sharing.linkCopied": "Σύνδεσμος που αντιγράφηκε",
   "app.components.Sharing.or": "ή",
   "app.components.Sharing.share": "Κοινοποίηση",
