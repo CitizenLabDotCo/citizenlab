@@ -460,6 +460,8 @@
   "app.components.ReactionControl.reactingNotSignedIn": "Inicia sessió per reaccionar.",
   "app.components.ReactionControl.reactingPossibleLater": "La reacció començarà el {enabledFromDate}",
   "app.components.ReactionControl.reactingVerifyToReact": "Verifica la teva identitat per reaccionar.",
+  "app.components.ScreenReadableEventDate..multiDayScreenReaderDate": "Data de l'esdeveniment: {startDate} a les {startTime} al {endDate} a les {endTime}.",
+  "app.components.ScreenReadableEventDate..singleDayScreenReaderDate": "Data de l'esdeveniment: {eventDate} del {startTime} al {endTime}.",
   "app.components.Sharing.linkCopied": "S'ha copiat l'enllaç",
   "app.components.Sharing.or": "o",
   "app.components.Sharing.share": "Compartir",
