@@ -460,6 +460,8 @@
   "app.components.ReactionControl.reactingNotSignedIn": "Logg på for å reagere.",
   "app.components.ReactionControl.reactingPossibleLater": "Reaksjonen starter på {enabledFromDate}",
   "app.components.ReactionControl.reactingVerifyToReact": "Bekreft identiteten din for å reagere.",
+  "app.components.ScreenReadableEventDate..multiDayScreenReaderDate": "Arrangementsdato: {startDate} kl. {startTime} til {endDate} kl. {endTime}.",
+  "app.components.ScreenReadableEventDate..singleDayScreenReaderDate": "Arrangementsdato: {eventDate} fra {startTime} til {endTime}.",
   "app.components.Sharing.linkCopied": "Lenke kopiert",
   "app.components.Sharing.or": "eller",
   "app.components.Sharing.share": "Del",
