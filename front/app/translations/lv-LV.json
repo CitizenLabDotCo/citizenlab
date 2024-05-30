@@ -460,6 +460,8 @@
   "app.components.ReactionControl.reactingNotSignedIn": "Pierakstīties, lai reaģētu.",
   "app.components.ReactionControl.reactingPossibleLater": "Reaģēšana sāksies vietnē {enabledFromDate}",
   "app.components.ReactionControl.reactingVerifyToReact": "Lai varētu reaģēt, pārbaudiet savu identitāti.",
+  "app.components.ScreenReadableEventDate..multiDayScreenReaderDate": "Pasākuma datums: {startDate} vietnē {startTime} līdz {endDate} vietnē {endTime}.",
+  "app.components.ScreenReadableEventDate..singleDayScreenReaderDate": "Pasākuma datums: {eventDate} no {startTime} līdz {endTime}.",
   "app.components.Sharing.linkCopied": "Saite nokopēta",
   "app.components.Sharing.or": "vai",
   "app.components.Sharing.share": "Koplietot",

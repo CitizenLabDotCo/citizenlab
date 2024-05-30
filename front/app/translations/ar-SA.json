@@ -460,6 +460,8 @@
   "app.components.ReactionControl.reactingNotSignedIn": "تسجيل الدخول للرد.",
   "app.components.ReactionControl.reactingPossibleLater": "سيبدأ الرد على {enabledFromDate}",
   "app.components.ReactionControl.reactingVerifyToReact": "تحقق من هويتك من أجل الرد.",
+  "app.components.ScreenReadableEventDate..multiDayScreenReaderDate": "تاريخ الحدث: {startDate} في {startTime} إلى {endDate} في {endTime}.",
+  "app.components.ScreenReadableEventDate..singleDayScreenReaderDate": "تاريخ الحدث: {eventDate} من {startTime} إلى {endTime}.",
   "app.components.Sharing.linkCopied": "تم نسخ الرابط",
   "app.components.Sharing.or": "أو",
   "app.components.Sharing.share": "مشاركة",

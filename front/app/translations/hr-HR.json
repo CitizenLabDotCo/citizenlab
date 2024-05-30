@@ -460,6 +460,8 @@
   "app.components.ReactionControl.reactingNotSignedIn": "Prijavite se kako biste reagirali.",
   "app.components.ReactionControl.reactingPossibleLater": "Reagiranje će započeti {enabledFromDate}",
   "app.components.ReactionControl.reactingVerifyToReact": "Potvrdite svoj identitet kako biste mogli reagirati.",
+  "app.components.ScreenReadableEventDate..multiDayScreenReaderDate": "Datum događaja: {startDate} u {startTime} do {endDate} u {endTime}.",
+  "app.components.ScreenReadableEventDate..singleDayScreenReaderDate": "Datum događaja: {eventDate} od {startTime} do {endTime}.",
   "app.components.Sharing.linkCopied": "Veza kopirana",
   "app.components.Sharing.or": "ili",
   "app.components.Sharing.share": "Podijeli",

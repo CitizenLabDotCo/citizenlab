@@ -460,6 +460,8 @@
   "app.components.ReactionControl.reactingNotSignedIn": "crwdns777599:0crwdne777599:0",
   "app.components.ReactionControl.reactingPossibleLater": "crwdns777601:0{enabledFromDate}crwdne777601:0",
   "app.components.ReactionControl.reactingVerifyToReact": "crwdns777603:0crwdne777603:0",
+  "app.components.ScreenReadableEventDate..multiDayScreenReaderDate": "crwdns2400762:0{startDate}crwdnd2400762:0{startTime}crwdnd2400762:0{endDate}crwdnd2400762:0{endTime}crwdne2400762:0",
+  "app.components.ScreenReadableEventDate..singleDayScreenReaderDate": "crwdns2400764:0{eventDate}crwdnd2400764:0{startTime}crwdnd2400764:0{endTime}crwdne2400764:0",
   "app.components.Sharing.linkCopied": "crwdns213654:0crwdne213654:0",
   "app.components.Sharing.or": "crwdns904273:0crwdne904273:0",
   "app.components.Sharing.share": "crwdns213658:0crwdne213658:0",

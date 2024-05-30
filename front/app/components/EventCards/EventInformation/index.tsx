@@ -14,6 +14,7 @@ import useEventImage from 'api/event_images/useEventImage';
 import { IEventData } from 'api/events/types';
 
 import EventAttendanceButton from 'components/EventAttendanceButton';
+import ScreenReadableEventDate from 'components/ScreenReadableEventDate';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import Image from 'components/UI/Image';
@@ -130,7 +131,14 @@ const EventInformation = ({ event }: Props) => {
                 ml={theme.isRtl ? '8px' : '0px'}
               />
             </Box>
-            <Text m="0px" pt="2px" color={'coolGrey700'} fontSize="s">
+            <ScreenReadableEventDate event={event} />
+            <Text
+              m="0px"
+              pt="2px"
+              color={'coolGrey700'}
+              fontSize="s"
+              aria-hidden
+            >
               {eventDateTime}
             </Text>
           </Box>

@@ -460,6 +460,8 @@
   "app.components.ReactionControl.reactingNotSignedIn": "Melden Sie sich an, um sich zu beteiligen.",
   "app.components.ReactionControl.reactingPossibleLater": "Die Beteiligung beginnt am {enabledFromDate}",
   "app.components.ReactionControl.reactingVerifyToReact": "Verifizieren Sie Ihre Identität, um sich beteiligen zu können.",
+  "app.components.ScreenReadableEventDate..multiDayScreenReaderDate": "Veranstaltungsdatum: {startDate} um {startTime} bis {endDate} um {endTime}.",
+  "app.components.ScreenReadableEventDate..singleDayScreenReaderDate": "Veranstaltungsdatum: {eventDate} von {startTime} bis {endTime}.",
   "app.components.Sharing.linkCopied": "Link kopiert",
   "app.components.Sharing.or": "oder",
   "app.components.Sharing.share": "Teilen",

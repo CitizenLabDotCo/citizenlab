@@ -460,6 +460,8 @@
   "app.components.ReactionControl.reactingNotSignedIn": "Kirjaudu sisään reagoidaksesi.",
   "app.components.ReactionControl.reactingPossibleLater": "Reagoiminen alkaa {enabledFromDate}",
   "app.components.ReactionControl.reactingVerifyToReact": "Vahvista henkilöllisyytesi, jotta voit reagoida.",
+  "app.components.ScreenReadableEventDate..multiDayScreenReaderDate": "Event date: {startDate} at {startTime} to {endDate} at {endTime}.",
+  "app.components.ScreenReadableEventDate..singleDayScreenReaderDate": "Tapahtuman päivämäärä: {eventDate} {startTime} - {endTime}.",
   "app.components.Sharing.linkCopied": "Linkki kopioitu",
   "app.components.Sharing.or": "tai",
   "app.components.Sharing.share": "Jaa",

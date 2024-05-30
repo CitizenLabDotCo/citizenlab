@@ -460,6 +460,8 @@
   "app.components.ReactionControl.reactingNotSignedIn": "Sign in to react.",
   "app.components.ReactionControl.reactingPossibleLater": "Reacting will start on {enabledFromDate}",
   "app.components.ReactionControl.reactingVerifyToReact": "Verify your identity in order to react.",
+  "app.components.ScreenReadableEventDate..multiDayScreenReaderDate": "Event date: {startDate} at {startTime} to {endDate} at {endTime}.",
+  "app.components.ScreenReadableEventDate..singleDayScreenReaderDate": "Event date: {eventDate} from {startTime} to {endTime}.",
   "app.components.Sharing.linkCopied": "Link copied",
   "app.components.Sharing.or": "or",
   "app.components.Sharing.share": "Share",

@@ -460,6 +460,8 @@
   "app.components.ReactionControl.reactingNotSignedIn": "Zaloguj się, aby zareagować.",
   "app.components.ReactionControl.reactingPossibleLater": "Reagowanie rozpocznie się na stronie {enabledFromDate}",
   "app.components.ReactionControl.reactingVerifyToReact": "Zweryfikuj swoją tożsamość, aby móc zareagować.",
+  "app.components.ScreenReadableEventDate..multiDayScreenReaderDate": "Data wydarzenia: {startDate} na {startTime} do {endDate} na {endTime}.",
+  "app.components.ScreenReadableEventDate..singleDayScreenReaderDate": "Data wydarzenia: {eventDate} od {startTime} do {endTime}.",
   "app.components.Sharing.linkCopied": "Link skopiowany",
   "app.components.Sharing.or": "lub",
   "app.components.Sharing.share": "Podziel się",

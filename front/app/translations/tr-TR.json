@@ -460,6 +460,8 @@
   "app.components.ReactionControl.reactingNotSignedIn": "Tepki vermek için oturum açın.",
   "app.components.ReactionControl.reactingPossibleLater": "Tepki verme {enabledFromDate}adresinde başlayacaktır.",
   "app.components.ReactionControl.reactingVerifyToReact": "Tepki verebilmek için kimliğinizi doğrulayın.",
+  "app.components.ScreenReadableEventDate..multiDayScreenReaderDate": "Etkinlik tarihi: {startDate} {startTime} adresinden {endDate} {endTime}adresine.",
+  "app.components.ScreenReadableEventDate..singleDayScreenReaderDate": "Etkinlik tarihi: {eventDate} ile {startTime} arasında {endTime}.",
   "app.components.Sharing.linkCopied": "Bağlantı kopyalandı",
   "app.components.Sharing.or": "veya",
   "app.components.Sharing.share": "Paylaş",
