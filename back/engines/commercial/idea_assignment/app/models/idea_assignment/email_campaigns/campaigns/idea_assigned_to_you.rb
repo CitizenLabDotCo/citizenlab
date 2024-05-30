@@ -82,7 +82,7 @@ module IdeaAssignment
             post_body_multiloc: notification.post.body_multiloc,
             post_author_name: name_service.display_name!(notification.post.author),
             post_published_at: notification.post.published_at&.iso8601,
-            post_url: Frontend::UrlService.new.model_to_url(notification.post, locale: locale),
+            post_url: Frontend::UrlService.new.model_to_url(notification.post, locale: Locale.new(recipient.locale)),
             post_assigned_at: notification.post.assigned_at&.iso8601
           }
         }]
