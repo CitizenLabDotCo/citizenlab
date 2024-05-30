@@ -14,10 +14,10 @@ RSpec.describe 'Footer' do
     create(:comment_on_initiative_you_follow_campaign).generate_commands(
       activity: create(:activity, item: create(:comment_on_initiative_you_follow), action: 'created'),
       recipient: recipient
-      ).first.merge({ recipient: recipient })
-    end
+    ).first.merge({ recipient: recipient })
+  end
   let(:campaign) { EmailCampaigns::Campaigns::CommentOnInitiativeYouFollow.create! }
-    
+
   let(:mail) { EmailCampaigns::CommentOnInitiativeYouFollowMailer.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
   it 'includes Go Vocal logo' do
