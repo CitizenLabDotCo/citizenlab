@@ -1936,7 +1936,7 @@
   "app.utils.votingMethodUtils.votesCast": "Abgegebene Stimmen",
   "app.utils.votingMethodUtils.votingClosed": "Abstimmung geschlossen",
   "app.utils.votingMethodUtils.votingPreSubmissionWarning": "<b>Ihre Stimmen werden erst gezählt</b>, wenn Sie auf \"Senden\" klicken",
-  "app.utils.votingMethodUtils.votingSubmittedInstructions": "<b>Herzlichen Glückwunsch, Ihre Stimme wurde abgegeben!</b> Sie können Ihre Stimmen jederzeit unten überprüfen oder sie vor dem <b>{endDate}</b>ändern.",
+  "app.utils.votingMethodUtils.votingSubmittedInstructions": "<b>Herzlichen Glückwunsch, Ihre Stimme wurde abgegeben!</b> Sie können Ihre Stimmen jederzeit unten überprüfen oder sie vor dem <b>{endDate}</b> ändern.",
   "app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous": "<b>Herzlichen Glückwunsch, Ihre Stimme wurde abgegeben!</b> Sie können Ihre Stimmen unten jederzeit überprüfen oder ändern.",
   "app.utils.votingMethodUtils.votingSubmittedInstructionsNoEndDate": "<b>Herzlichen Glückwunsch, Ihre Stimme(n) wurde abgegeben!</b> Sie können Ihre Stimme(n) unten jederzeit überprüfen oder ändern.",
   "components.UI.IdeaSelect.noIdeaAvailable": "Es sind keine Beiträge vorhanden.",
