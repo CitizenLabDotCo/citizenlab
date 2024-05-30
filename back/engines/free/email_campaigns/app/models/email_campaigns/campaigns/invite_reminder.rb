@@ -64,7 +64,7 @@ module EmailCampaigns
           invitee_last_name: activity.item.invitee.last_name,
           invite_text: activity.item.invite_text,
           invite_created_at: activity.item.created_at,
-          activate_invite_url: Frontend::UrlService.new.invite_url(activity.item.token, locale: activity.item.invitee.locale)
+          activate_invite_url: Frontend::UrlService.new.invite_url(activity.item.token, locale: Locale.new(activity.item.invitee.locale))
         }
       }]
     end
