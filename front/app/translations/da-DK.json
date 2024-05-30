@@ -460,6 +460,8 @@
   "app.components.ReactionControl.reactingNotSignedIn": "Log ind for at stemme.",
   "app.components.ReactionControl.reactingPossibleLater": "Afstemningen starter den {enabledFromDate}",
   "app.components.ReactionControl.reactingVerifyToReact": "Bekræft din identitet for at kunne stemme.",
+  "app.components.ScreenReadableEventDate..multiDayScreenReaderDate": "Begivenhedsdato: {startDate} på {startTime} til {endDate} på {endTime}.",
+  "app.components.ScreenReadableEventDate..singleDayScreenReaderDate": "Begivenhedsdato: {eventDate} fra {startTime} til {endTime}.",
   "app.components.Sharing.linkCopied": "Link kopieret",
   "app.components.Sharing.or": "eller",
   "app.components.Sharing.share": "Del",
