@@ -1458,6 +1458,7 @@
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "I withdraw my offer to volunteer",
   "app.containers.ProjectsShowPage.VolunteeringSection.xVolunteers": "{x, plural, =0 {no participants} one {# participant} other {# participants}}",
   "app.containers.ProjectsShowPage.process.survey.completeRegistrationLinkText": "complete registration",
+  "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning": ", Warning: The embedded survey may have accessibility issues for screenreader users. If you experience any challenges, please reach out to the platform admin to receive a link to the survey from the original platform. Alternatively, you can request other ways to fill out the survey.",
   "app.containers.ProjectsShowPage.process.survey.logInLinkText": "log in",
   "app.containers.ProjectsShowPage.process.survey.signUpLinkText": "sign up",
   "app.containers.ProjectsShowPage.process.survey.survey": "Survey",
