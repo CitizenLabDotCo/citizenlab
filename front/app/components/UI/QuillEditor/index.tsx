@@ -719,7 +719,7 @@ const QuillEditor = memo<Props>(
       if (editor) {
         const html = editor.root.innerHTML;
         contentRef.current = html;
-        onChange && onChange(html, locale);
+        onChange?.(html, locale);
       }
     };
 
