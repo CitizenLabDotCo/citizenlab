@@ -643,6 +643,7 @@
   "app.components.form.controls.tapOnFullscreenMapToAdd": "Cevabınızı eklemek için haritaya dokunun.",
   "app.components.form.controls.tapOnMapToAdd2": "Cevabınızı eklemek için haritaya dokunun veya aşağıya bir adres yazın.",
   "app.components.form.controls.tapToAddAPoint": "Nokta eklemek için dokunun",
+  "app.components.form.controls.validCordinatesTooltip2": "Yazarken seçenekler arasında konum görüntülenmezse, kesin bir konum belirtmek için 'enlem, boylam' biçiminde geçerli koordinatlar ekleyebilirsiniz (örneğin: -33.019808, -71.495676).",
   "app.components.form.error": "Hata",
   "app.components.form.locationGoogleUnavailable": "Google Maps tarafından sağlanan konum alanı yüklenemedi.",
   "app.components.form.submit": "Gönder",

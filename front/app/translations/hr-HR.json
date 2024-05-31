@@ -643,6 +643,7 @@
   "app.components.form.controls.tapOnFullscreenMapToAdd": "Dodirnite kartu da dodate svoj odgovor.",
   "app.components.form.controls.tapOnMapToAdd2": "Dodirnite kartu ili upišite adresu ispod kako biste dodali svoj odgovor.",
   "app.components.form.controls.tapToAddAPoint": "Dodirnite za dodavanje točke",
+  "app.components.form.controls.validCordinatesTooltip2": "Ako se lokacija ne prikazuje među opcijama dok upisujete, možete dodati valjane koordinate u formatu 'geografska širina, dužina' kako biste odredili točnu lokaciju (npr.: -33.019808, -71.495676).",
   "app.components.form.error": "Pogreška",
   "app.components.form.locationGoogleUnavailable": "Učitavanje polja s lokacijom s Google Mapa nije uspjelo.",
   "app.components.form.submit": "Pošalji",

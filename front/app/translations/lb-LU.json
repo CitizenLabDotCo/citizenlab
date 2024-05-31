@@ -643,6 +643,7 @@
   "app.components.form.controls.tapOnFullscreenMapToAdd": "Tippen op der Kaart fir Är Äntwert ze addéieren.",
   "app.components.form.controls.tapOnMapToAdd2": "Tippen op der Kaart oder gitt eng Adress hei ënnen fir Är Äntwert derbäi ze ginn.",
   "app.components.form.controls.tapToAddAPoint": "Tippen fir e Punkt ze addéieren",
+  "app.components.form.controls.validCordinatesTooltip2": "Wann d'Plaz net ënnert den Optiounen ugewise gëtt wéi Dir tippt, kënnt Dir gëlteg Koordinaten am Format 'Latitude, Longitude' addéieren fir eng präzis Plaz ze spezifizéieren (zB: -33.019808, -71.495676).",
   "app.components.form.error": "Feeler",
   "app.components.form.locationGoogleUnavailable": "Konnt d’Standuertfeld, dat vu Google Maps zur Verfügung gestallt gouf, net lueden.",
   "app.components.form.submit": "Schécken",
