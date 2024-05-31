@@ -643,7 +643,6 @@
   "app.components.form.controls.tapOnFullscreenMapToAdd": "Tik op de kaart om je antwoord toe te voegen.",
   "app.components.form.controls.tapOnMapToAdd2": "Tik op de kaart of typ hieronder een adres om je antwoord toe te voegen.",
   "app.components.form.controls.tapToAddAPoint": "Tik om een punt toe te voegen",
-  "app.components.form.controls.validCordinatesTooltip": "Als de locatie niet wordt weergegeven tussen de opties terwijl je typt of als je een precieze locatie op wilt geven, kun je geldige coördinaten toevoegen in het formaat 'breedtegraad, lengtegraad'.",
   "app.components.form.error": "Fout",
   "app.components.form.locationGoogleUnavailable": "Kan locatieveld geleverd door google maps niet laden.",
   "app.components.form.submit": "Verzenden",
