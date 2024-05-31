@@ -764,7 +764,6 @@
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Select user group",
   "app.containers.AdminPage.DashboardPage.male": "male",
   "app.containers.AdminPage.DashboardPage.month": "month",
-  "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription2": "La classifica si basa sul numero di input (5 punti per input), commenti (3 punti per commento) e reazioni (1 punto per reazione) inviati da ciascun partecipante.",
   "app.containers.AdminPage.DashboardPage.noData": "There is no data to be shown.",
   "app.containers.AdminPage.DashboardPage.noPhase": "No phase created for this project",
   "app.containers.AdminPage.DashboardPage.numberOfActiveParticipantsDescription2": "Il numero di partecipanti che hanno inviato input, reagito o commentato.",

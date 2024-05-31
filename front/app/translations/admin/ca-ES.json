@@ -764,7 +764,6 @@
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Seleccioneu el grup d'usuaris",
   "app.containers.AdminPage.DashboardPage.male": "home",
   "app.containers.AdminPage.DashboardPage.month": "month",
-  "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription2": "La classificació es basa en el nombre d'entrades (5 punts per entrada), comentaris (3 punts per comentari) i reaccions (1 punt per reacció) enviades per cada participant.",
   "app.containers.AdminPage.DashboardPage.noData": "There is no data to be shown.",
   "app.containers.AdminPage.DashboardPage.noPhase": "No phase created for this project",
   "app.containers.AdminPage.DashboardPage.numberOfActiveParticipantsDescription2": "El nombre de participants que han publicat aportacions, han reaccionat o han comentat.",

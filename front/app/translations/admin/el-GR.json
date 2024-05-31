@@ -764,7 +764,6 @@
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Επιλογή ομάδας χρηστών",
   "app.containers.AdminPage.DashboardPage.male": "άνδρας",
   "app.containers.AdminPage.DashboardPage.month": "month",
-  "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription2": "Η κατάταξη βασίζεται στον αριθμό των εισροών (5 βαθμοί ανά εισροή), των σχολίων (3 βαθμοί ανά σχόλιο) και των αντιδράσεων (1 βαθμός ανά αντίδραση) που υποβλήθηκαν από κάθε συμμετέχοντα.",
   "app.containers.AdminPage.DashboardPage.noData": "There is no data to be shown.",
   "app.containers.AdminPage.DashboardPage.noPhase": "No phase created for this project",
   "app.containers.AdminPage.DashboardPage.numberOfActiveParticipantsDescription2": "Ο αριθμός των συμμετεχόντων που δημοσίευσαν πληροφορίες, αντέδρασαν ή σχολίασαν.",
