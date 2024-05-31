@@ -1076,6 +1076,8 @@
   "app.containers.IdeasNewPage.submitApiError": "crwdns2336022:0crwdne2336022:0",
   "app.containers.IdeasNewPage.submitNewIdea": "crwdns2336024:0crwdne2336024:0",
   "app.containers.IdeasNewPage.surveyNewMetaTitle1": "crwdns2336026:0{orgName}crwdne2336026:0",
+  "app.containers.IdeasShow.IdeaNavigationButtons.goToNextInput": "crwdns2411868:0crwdne2411868:0",
+  "app.containers.IdeasShow.IdeaNavigationButtons.goToPreviousInput": "crwdns2411870:0crwdne2411870:0",
   "app.containers.IdeasShow.IdeaNavigationButtons.ideaIndexAriaMessage2": "crwdns2336028:0{currentIndex}crwdnd2336028:0{totalInputs}crwdne2336028:0",
   "app.containers.IdeasShow.MetaInformation.attachments": "crwdns2336030:0crwdne2336030:0",
   "app.containers.IdeasShow.MetaInformation.byUserOnDate": "crwdns2336032:0{userName}crwdnd2336032:0{date}crwdne2336032:0",
