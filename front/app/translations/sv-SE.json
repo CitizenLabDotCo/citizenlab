@@ -1076,6 +1076,8 @@
   "app.containers.IdeasNewPage.submitApiError": "Det fanns ett problem med att skicka in formuläret. Vänligen kontrollera om det finns några fel och försök igen.",
   "app.containers.IdeasNewPage.submitNewIdea": "Skicka",
   "app.containers.IdeasNewPage.surveyNewMetaTitle1": "Lägg till enkätsvar i projektet | {orgName}",
+  "app.containers.IdeasShow.IdeaNavigationButtons.goToNextInput": "Gå till nästa inmatning.",
+  "app.containers.IdeasShow.IdeaNavigationButtons.goToPreviousInput": "Gå till föregående inmatning.",
   "app.containers.IdeasShow.IdeaNavigationButtons.ideaIndexAriaMessage2": "Visar för närvarande nummer {currentIndex} av {totalInputs} inmatningar",
   "app.containers.IdeasShow.MetaInformation.attachments": "Bilagor",
   "app.containers.IdeasShow.MetaInformation.byUserOnDate": "{userName} {date}",
