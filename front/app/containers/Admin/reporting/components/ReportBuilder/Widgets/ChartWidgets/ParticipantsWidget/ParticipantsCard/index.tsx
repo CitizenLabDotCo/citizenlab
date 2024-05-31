@@ -5,12 +5,12 @@ import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 import NoData from '../../../_shared/NoData';
 import chartWidgetMessages from '../../messages';
 import { Props } from '../typings';
-import useActiveUsers from '../useActiveUsers';
+import useActiveUsers from '../useParticipants';
 
 import Narrow from './Narrow';
 import Wide from './Wide';
 
-const ActiveUsers = ({
+const ParticipantsCard = ({
   projectId,
   startAt,
   endAt,
@@ -30,7 +30,7 @@ const ActiveUsers = ({
 
   const layout = useLayout();
 
-  if (!stats || stats.activeUsers.value === 0) {
+  if (!stats || stats.participants.value === 0) {
     return <NoData message={chartWidgetMessages.noData} />;
   }
 
@@ -46,4 +46,4 @@ const ActiveUsers = ({
   return layout === 'wide' ? <Wide {...props} /> : <Narrow {...props} />;
 };
 
-export default ActiveUsers;
+export default ParticipantsCard;

@@ -1,38 +1,40 @@
-import { ActiveUsersResponse } from 'api/graph_data_units/responseTypes/ActiveUsersWidget';
+import { ParticipantsResponse } from 'api/graph_data_units/responseTypes/ParticipantsWidget';
 
 import { calculateConversionRate } from 'components/admin/GraphCards/_utils/parse';
 
-export const parseStats = (data: ActiveUsersResponse['data']['attributes']) => {
+export const parseStats = (
+  data: ParticipantsResponse['data']['attributes']
+) => {
   return {
-    activeUsers: calculateActiveUsersStats(data),
+    participants: calculateParticipantsStats(data),
     participationRate: calculateParticipationStats(data),
   };
 };
 
-const calculateActiveUsersStats = (
-  data: ActiveUsersResponse['data']['attributes']
+const calculateParticipantsStats = (
+  data: ParticipantsResponse['data']['attributes']
 ) => {
-  const activeUsersWholePeriod = data[1][0];
-  const activeUsersPreviousPeriod = data[4]?.[0];
+  const participantsWholePeriod = data[1][0];
+  const participantsPreviousPeriod = data[4]?.[0];
 
-  const activeUsersWholePeriodValue =
-    activeUsersWholePeriod?.count_participant_id ?? 0;
-  const activeUsersPreviousPeriodValue =
-    activeUsersPreviousPeriod?.count_participant_id;
+  const participantsWholePeriodValue =
+    participantsWholePeriod?.count_participant_id ?? 0;
+  const participantsPreviousPeriodValue =
+    participantsPreviousPeriod?.count_participant_id;
 
-  const activeUsersDelta =
-    activeUsersPreviousPeriodValue !== undefined
-      ? activeUsersWholePeriodValue - activeUsersPreviousPeriodValue
+  const participantsDelta =
+    participantsPreviousPeriodValue !== undefined
+      ? participantsWholePeriodValue - participantsPreviousPeriodValue
       : undefined;
 
   return {
-    value: activeUsersWholePeriodValue,
-    delta: activeUsersDelta,
+    value: participantsWholePeriodValue,
+    delta: participantsDelta,
   };
 };
 
 const calculateParticipationStats = (
-  data: ActiveUsersResponse['data']['attributes']
+  data: ParticipantsResponse['data']['attributes']
 ) => {
   const visitorsWholePeriod = data[2][0];
   const visitorsPreviousPeriod = data[5]?.[0];

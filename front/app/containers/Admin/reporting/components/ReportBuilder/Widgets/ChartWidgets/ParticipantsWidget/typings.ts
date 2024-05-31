@@ -1,6 +1,6 @@
 import { TimeSeriesWidgetProps } from '../typings';
 
-import { parseStats } from './useActiveUsers/parse';
+import { parseStats } from './useParticipants/parse';
 
 export interface Props extends TimeSeriesWidgetProps {
   compareStartAt?: string;

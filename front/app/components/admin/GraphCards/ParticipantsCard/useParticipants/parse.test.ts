@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { ActiveUsersResponse } from 'api/graph_data_units/responseTypes/ActiveUsersWidget';
+import { ParticipantsResponse } from 'api/graph_data_units/responseTypes/ParticipantsWidget';
 
 import { parseTimeSeries, parseStats } from './parse';
 
@@ -31,19 +31,19 @@ describe('parseTimeSeries', () => {
     const expectedOutput = [
       {
         date: '2022-09-01',
-        activeUsers: 1,
+        participants: 1,
       },
       {
         date: '2022-10-01',
-        activeUsers: 4,
+        participants: 4,
       },
       {
         date: '2022-11-01',
-        activeUsers: 3,
+        participants: 3,
       },
       {
         date: '2022-12-01',
-        activeUsers: 0,
+        participants: 0,
       },
     ];
 
@@ -53,7 +53,7 @@ describe('parseTimeSeries', () => {
 
 describe('parseStats', () => {
   it('works', () => {
-    const responseData: ActiveUsersResponse['data']['attributes'] = [
+    const responseData: ParticipantsResponse['data']['attributes'] = [
       [],
       [{ count_participant_id: 8 }],
       [{ count_visitor_id: 4 }],
@@ -65,7 +65,7 @@ describe('parseStats', () => {
     ];
 
     const expectedOutput = {
-      activeUsers: {
+      participants: {
         value: '8',
         lastPeriod: '6',
       },
@@ -79,7 +79,7 @@ describe('parseStats', () => {
   });
 
   it('works when last period visitors is empty array', () => {
-    const responseData: ActiveUsersResponse['data']['attributes'] = [
+    const responseData: ParticipantsResponse['data']['attributes'] = [
       [
         {
           first_dimension_date_created_date: '2022-11-09',
@@ -96,7 +96,7 @@ describe('parseStats', () => {
     ];
 
     const expectedOutput = {
-      activeUsers: {
+      participants: {
         value: '3',
         lastPeriod: '3',
       },

@@ -3,7 +3,7 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 
-import Chart from 'components/admin/GraphCards/ActiveUsersCard/Chart';
+import Chart from 'components/admin/GraphCards/ParticipantsCard/Chart';
 
 import { getDaysInRange } from '../../utils';
 

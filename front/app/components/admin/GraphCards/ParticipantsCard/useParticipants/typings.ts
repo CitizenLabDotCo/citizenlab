@@ -11,12 +11,12 @@ export type QueryParameters = ProjectId & Dates & Resolution;
 export interface TimeSeriesRow {
   /* Date format: YYYY-MM-DD */
   date: string;
-  activeUsers: number;
+  participants: number;
 }
 
 export type TimeSeries = TimeSeriesRow[];
 
 export interface Stats {
-  activeUsers: Stat;
+  participants: Stat;
   participationRate: Stat;
 }

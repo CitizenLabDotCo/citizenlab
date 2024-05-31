@@ -18,7 +18,7 @@ type CustomTooltipProps = {
     | [
         {
           payload?: {
-            activeUsers: number;
+            participants: number;
             date: string;
           };
         }
@@ -34,7 +34,7 @@ const CustomTooltip = ({ label, payload, resolution }: CustomTooltipProps) => {
     <TooltipOutline label={toFullMonth(label, resolution)}>
       <Box py="0px">
         <FormattedMessage {...messages.participants} />:{' '}
-        {payload[0].payload.activeUsers}
+        {payload[0].payload.participants}
       </Box>
     </TooltipOutline>
   );

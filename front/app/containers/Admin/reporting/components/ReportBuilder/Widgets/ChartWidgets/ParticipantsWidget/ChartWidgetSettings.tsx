@@ -8,7 +8,7 @@ import {
   Icon,
 } from '@citizenlab/cl2-component-library';
 
-import activeUsersMessages from 'components/admin/GraphCards/ActiveUsersCard/messages';
+import activeUsersMessages from 'components/admin/GraphCards/ParticipantsCard/messages';
 
 import { useIntl } from 'utils/cl-intl';
 

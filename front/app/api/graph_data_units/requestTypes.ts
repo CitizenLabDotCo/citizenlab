@@ -10,7 +10,7 @@ export type ResolvedName =
   | 'DemographicsWidget'
   | 'GenderWidget'
   | 'AgeWidget'
-  | 'ActiveUsersWidget'
+  | 'ParticipantsWidget'
   | 'PostsByTimeWidget'
   | 'CommentsByTimeWidget'
   | 'ReactionsByTimeWidget'
@@ -33,7 +33,7 @@ export type ParametersLive =
   | DemographicsParams
   | GenderParams
   | AgeParams
-  | ActiveUsersParams
+  | ParticipantsParams
   | PostsByTimeParams
   | CommentsByTimeParams
   | ReactionsByTimeParams
@@ -130,11 +130,11 @@ export interface AgeParams extends BaseParams {
   props: BaseDemographicsProps;
 }
 
-export interface ActiveUsersProps extends AnalyticsProps, CompareProps {}
+export interface ParticipantsProps extends AnalyticsProps, CompareProps {}
 
-export interface ActiveUsersParams extends BaseParams {
-  resolved_name: 'ActiveUsersWidget';
-  props: ActiveUsersProps;
+export interface ParticipantsParams extends BaseParams {
+  resolved_name: 'ParticipantsWidget';
+  props: ParticipantsProps;
 }
 
 export interface PostsByTimeParams extends BaseParams {
