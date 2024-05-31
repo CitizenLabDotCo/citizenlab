@@ -795,7 +795,7 @@
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "Die Verifizierung ist für Ihre Plattform deaktiviert, entfernen Sie die Verifizierungsregel oder kontaktieren Sie den Support.",
   "app.containers.App.appMetaDescription": "Willkommen auf der Online-Partizipationsplattform der {orgName}. \nErkunden Sie Projekte und beteiligen Sie sich!",
   "app.containers.App.loading": "Lädt...",
-  "app.containers.App.metaTitle1": "Bürger*innenbeteiligungsplattform | {orgName}",
+  "app.containers.App.metaTitle1": "Beteiligungsplattform | {orgName}",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Es existiert bereits ein Konto mit dieser E-Mail-Adresse. Sie können sich abmelden, mit dieser E-Mail-Adresse anmelden und Ihr Konto auf der Einstellungsseite verifizieren.",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Bitte geben Sie einen Einladungscode ein",
   "app.containers.Authentication.steps.Invitation.token": "Einladungscode",
