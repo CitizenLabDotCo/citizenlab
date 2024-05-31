@@ -1076,6 +1076,8 @@
   "app.containers.IdeasNewPage.submitApiError": "Es gab ein Problem beim Absenden des Formulars. Bitte prüfe auf Fehler und versuche es erneut.",
   "app.containers.IdeasNewPage.submitNewIdea": "Einreichen",
   "app.containers.IdeasNewPage.surveyNewMetaTitle1": "Umfrageantwort zum Projekt hinzufügen | {orgName}",
+  "app.containers.IdeasShow.IdeaNavigationButtons.goToNextInput": "Gehen Sie zur nächsten Eingabe.",
+  "app.containers.IdeasShow.IdeaNavigationButtons.goToPreviousInput": "Gehen Sie zur vorherigen Eingabe.",
   "app.containers.IdeasShow.IdeaNavigationButtons.ideaIndexAriaMessage2": "Sie sehen derzeit Nummer {currentIndex} von {totalInputs} Beiträgen",
   "app.containers.IdeasShow.MetaInformation.attachments": "Anhänge",
   "app.containers.IdeasShow.MetaInformation.byUserOnDate": "{userName} am {date}",
