@@ -643,7 +643,7 @@
   "app.components.form.controls.tapOnFullscreenMapToAdd": "Tap on the map to add your answer.",
   "app.components.form.controls.tapOnMapToAdd2": "Tap on the map or type an address below to add your answer.",
   "app.components.form.controls.tapToAddAPoint": "Tap to add a point",
-  "app.components.form.controls.validCordinatesTooltip": "If the location is not displayed among the options as you type, you can add valid coordinates in the format 'latitude, longitude' to specify a precise location.",
+  "app.components.form.controls.validCordinatesTooltip2": "If the location is not displayed among the options as you type, you can add valid coordinates in the format 'latitude, longitude' to specify a precise location (eg: -33.019808, -71.495676).",
   "app.components.form.error": "Greška",
   "app.components.form.locationGoogleUnavailable": "Učitavanje polja sa lokacijom google mape nije uspelo.",
   "app.components.form.submit": "Pošalji",
