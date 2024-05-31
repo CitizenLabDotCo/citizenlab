@@ -183,7 +183,7 @@ de:
         title: Details
         description:
       other_text_field:
-        title: '"{other_option}" erläutern'
+        title: Bitte erläutern
   custom_forms:
     categories:
       main_content:
