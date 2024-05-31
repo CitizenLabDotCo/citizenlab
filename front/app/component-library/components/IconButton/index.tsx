@@ -2,6 +2,7 @@ import React, { MouseEvent, KeyboardEvent } from 'react';
 
 import styled from 'styled-components';
 
+import { colors } from '../../utils/styleUtils';
 import Box, {
   BoxPositionProps,
   BoxMarginProps,
@@ -39,6 +40,11 @@ const StyledBox = styled(Box)<{
       fill: ${({ iconColorOnHover }) => iconColorOnHover};
     }
   }
+
+  &.disabled {
+    color: ${colors.coolGrey600};
+    cursor: not-allowed;
+  }
 `;
 
 export type IconButtonProps = {
@@ -49,13 +55,16 @@ export type IconButtonProps = {
   a11y_buttonActionMessage: string;
   onClick: (event?: MouseEvent | KeyboardEvent) => void;
   iconWidth?: string;
+  disabled?: boolean;
   iconHeight?: string;
   iconColor: string;
   iconColorOnHover: string;
+  ariaHidden?: boolean;
   ariaExpanded?: boolean;
   ariaControls?: string;
   buttonType?: 'submit' | 'button' | 'reset';
   transform?: string;
+  opacity?: number;
 } & BoxPositionProps &
   BoxMarginProps &
   BoxPaddingProps &
@@ -72,24 +81,32 @@ const IconButton = ({
   iconHeight = '24px',
   iconColor,
   iconColorOnHover,
+  ariaHidden,
+  disabled,
   ariaExpanded,
   ariaControls,
   buttonType,
+  opacity,
   transform,
   ...rest
 }: IconButtonProps) => {
+  const classname = disabled ? 'disabled' : className || '';
+
   return (
     <StyledBox
       as="button"
-      className={className ?? ''}
+      className={classname}
+      disabled={disabled}
       onClick={onClick}
       iconColorOnHover={iconColorOnHover}
       aria-expanded={ariaExpanded}
       aria-controls={ariaControls}
+      aria-hidden={ariaHidden}
       type={buttonType}
       display="flex"
       alignItems="center"
       justifyContent="center"
+      opacity={opacity}
       role="button"
       {...rest}
     >

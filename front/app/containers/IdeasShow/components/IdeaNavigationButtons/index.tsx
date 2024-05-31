@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-import { Box, Text, Button } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  IconButton,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
@@ -64,17 +69,20 @@ const IdeaNavigationButtons = ({ projectId, phaseContext }: Props) => {
   if (ideaIndex) {
     return (
       <Box alignContent="center" display="flex" justifyContent="space-between">
-        <Button
-          px="12px"
-          iconSize="16px"
-          icon="chevron-left"
-          buttonStyle="secondary-outlined"
+        <IconButton
+          p="0px !important"
+          iconName="chevron-left"
           disabled={!previousIdeaSlug}
           onClick={() => {
             clHistory.replace(
               `/ideas/${previousIdeaSlug}?phase_context=${phaseContext}`
             );
           }}
+          a11y_buttonActionMessage={formatMessage(messages.goToPreviousInput)}
+          iconColor={colors.coolGrey500}
+          iconColorOnHover={colors.coolGrey600}
+          opacity={previousIdeaSlug ? 1 : 0}
+          ariaHidden={!previousIdeaSlug}
         />
         <Text
           color="coolGrey600"
@@ -85,17 +93,20 @@ const IdeaNavigationButtons = ({ projectId, phaseContext }: Props) => {
         >
           {ideaIndex}/{ideasList?.data.length}
         </Text>
-        <Button
-          px="12px"
-          iconSize="16px"
-          icon="chevron-right"
-          buttonStyle="secondary-outlined"
+        <IconButton
+          p="0px !important"
+          iconName="chevron-right"
           disabled={!nextIdeaSlug}
           onClick={() => {
             clHistory.replace(
               `/ideas/${nextIdeaSlug}?phase_context=${phaseContext}`
             );
           }}
+          a11y_buttonActionMessage={formatMessage(messages.goToNextInput)}
+          opacity={nextIdeaSlug ? 1 : 0}
+          iconColor={colors.coolGrey500}
+          iconColorOnHover={colors.coolGrey600}
+          ariaHidden={!nextIdeaSlug}
         />
       </Box>
     );
