@@ -1076,6 +1076,8 @@
   "app.containers.IdeasNewPage.submitApiError": "There was an issue submitting the form. Please check for any errors and try again.",
   "app.containers.IdeasNewPage.submitNewIdea": "Submit",
   "app.containers.IdeasNewPage.surveyNewMetaTitle1": "Add survey response to project | {orgName}",
+  "app.containers.IdeasShow.IdeaNavigationButtons.goToNextInput": "Go to next input.",
+  "app.containers.IdeasShow.IdeaNavigationButtons.goToPreviousInput": "Go to previous input.",
   "app.containers.IdeasShow.IdeaNavigationButtons.ideaIndexAriaMessage2": "Currently viewing number {currentIndex} out of {totalInputs} inputs",
   "app.containers.IdeasShow.MetaInformation.attachments": "Attachments",
   "app.containers.IdeasShow.MetaInformation.byUserOnDate": "{userName} on {date}",
