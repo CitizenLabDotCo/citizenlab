@@ -149,12 +149,12 @@ de:
         title: Details
         description:
       other_text_field:
-        title: '"{other_option}" erläutern'
+        title: Bitte erläutern
   custom_forms:
     categories:
       main_content:
         idea:
-          title: Was ist Ihre Idee?
+          title: Was ist Ihr Beitrag?
         question:
           title: Was ist Ihre Frage?
         contribution:
