@@ -643,6 +643,7 @@
   "app.components.form.controls.tapOnFullscreenMapToAdd": "Toque no mapa para adicionar sua resposta.",
   "app.components.form.controls.tapOnMapToAdd2": "Toque no mapa ou digite um endereço abaixo para adicionar sua resposta.",
   "app.components.form.controls.tapToAddAPoint": "Toque para adicionar um ponto",
+  "app.components.form.controls.validCordinatesTooltip2": "Se o local não for exibido entre as opções à medida que você digita, é possível adicionar coordenadas válidas no formato \"latitude, longitude\" para especificar um local preciso (por exemplo: -33.019808, -71.495676).",
   "app.components.form.error": "Erro",
   "app.components.form.locationGoogleUnavailable": "Não foi possível carregar o campo de localização fornecido pelo google maps.",
   "app.components.form.submit": "Enviar",
