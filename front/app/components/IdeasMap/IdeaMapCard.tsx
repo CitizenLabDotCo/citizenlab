@@ -236,7 +236,7 @@ const IdeaMapCard = memo<Props>(
                 <>
                   <FooterItem>
                     <LikeIcon name="vote-up" />
-                    {/* Hidden to use easier to understand text for screen readers */}
+                    {/* Hidden to use easier-to-understand text for screen readers */}
                     <FooterValue id="e2e-map-card-like-count" aria-hidden>
                       {idea.attributes.likes_count}
                     </FooterValue>
