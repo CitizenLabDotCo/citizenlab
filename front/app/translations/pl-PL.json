@@ -1076,6 +1076,8 @@
   "app.containers.IdeasNewPage.submitApiError": "Wystąpił problem z przesłaniem formularza. Proszę sprawdź, czy nie wystąpiły błędy i spróbuj ponownie.",
   "app.containers.IdeasNewPage.submitNewIdea": "Prześlij",
   "app.containers.IdeasNewPage.surveyNewMetaTitle1": "Dodaj odpowiedź z ankiety do projektu | {orgName}",
+  "app.containers.IdeasShow.IdeaNavigationButtons.goToNextInput": "Przejdź do następnego wejścia.",
+  "app.containers.IdeasShow.IdeaNavigationButtons.goToPreviousInput": "Przejdź do poprzedniego wejścia.",
   "app.containers.IdeasShow.IdeaNavigationButtons.ideaIndexAriaMessage2": "Obecnie przeglądasz numer {currentIndex} z {totalInputs} wejść",
   "app.containers.IdeasShow.MetaInformation.attachments": "Załączniki",
   "app.containers.IdeasShow.MetaInformation.byUserOnDate": "{userName}, {date}",
