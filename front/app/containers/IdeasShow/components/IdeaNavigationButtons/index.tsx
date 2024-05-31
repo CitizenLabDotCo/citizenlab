@@ -86,6 +86,7 @@ const IdeaNavigationButtons = ({ projectId, phaseContext }: Props) => {
         />
         <Text
           color="coolGrey600"
+          aria-live="polite"
           aria-label={formatMessage(messages.ideaIndexAriaMessage, {
             currentIndex: ideaIndex,
             totalInputs: ideasList?.data.length || 0,
