@@ -1076,6 +1076,8 @@
   "app.containers.IdeasNewPage.submitApiError": "Immersukkavit nassiunniarnissaanut ajalusoortoqarpoq. Kukkuneqarnersoq misissoriarlugu misileqqiguk.",
   "app.containers.IdeasNewPage.submitNewIdea": "Nassiuguk",
   "app.containers.IdeasNewPage.surveyNewMetaTitle1": "Add survey response to project | {orgName}",
+  "app.containers.IdeasShow.IdeaNavigationButtons.goToNextInput": "Go to next input.",
+  "app.containers.IdeasShow.IdeaNavigationButtons.goToPreviousInput": "Go to previous input.",
   "app.containers.IdeasShow.IdeaNavigationButtons.ideaIndexAriaMessage2": "Currently viewing number {currentIndex} out of {totalInputs} inputs",
   "app.containers.IdeasShow.MetaInformation.attachments": "Filit ilanngussat",
   "app.containers.IdeasShow.MetaInformation.byUserOnDate": "{userName} qanga {date}",
