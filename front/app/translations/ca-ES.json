@@ -1076,6 +1076,8 @@
   "app.containers.IdeasNewPage.submitApiError": "Hi ha hagut un problema en enviar el formulari. Comproveu si hi ha errors i torneu-ho a provar.",
   "app.containers.IdeasNewPage.submitNewIdea": "Presentar",
   "app.containers.IdeasNewPage.surveyNewMetaTitle1": "Afegeix la resposta de l'enquesta al projecte | {orgName}",
+  "app.containers.IdeasShow.IdeaNavigationButtons.goToNextInput": "Aneu a la següent entrada.",
+  "app.containers.IdeasShow.IdeaNavigationButtons.goToPreviousInput": "Anar a l'entrada anterior.",
   "app.containers.IdeasShow.IdeaNavigationButtons.ideaIndexAriaMessage2": "S'està visualitzant el número {currentIndex} de les entrades {totalInputs}",
   "app.containers.IdeasShow.MetaInformation.attachments": "Adjunts",
   "app.containers.IdeasShow.MetaInformation.byUserOnDate": "{userName} el {date}",
