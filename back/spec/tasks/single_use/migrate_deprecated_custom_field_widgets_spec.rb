@@ -52,7 +52,7 @@ RSpec.describe 'single_use:migrate_deprecated_custom_field_widgets' do # rubocop
           'endAt' => '2024-05-30T00:00:00.000',
           'title' => { 'en' => 'Users by age' },
           'startAt' => '2024-01-29T01:00:00.000',
-          'projectId' => '386ddf25-2d3c-41d2-a53a-0821b25a9fd5'
+          'projectId' => '40562cd4-9379-48e0-81ce-769c30041090'
         },
         'custom' => {},
         'hidden' => false,
@@ -64,43 +64,71 @@ RSpec.describe 'single_use:migrate_deprecated_custom_field_widgets' do # rubocop
     }
   end
 
-  let!(:age_gender_layout) do
-    create(:report_layout, craftjs_json: craftjs_json.deep_dup)
+  context 'when several layouts have GenderWidget and AgeWidget widgets' do
+    let!(:age_gender_layout) do
+      create(:report_layout, craftjs_json: craftjs_json.deep_dup)
+    end
+
+    let!(:age_layout) do
+      state = ContentBuilder::Craftjs::State.new(craftjs_json.deep_dup)
+      state.delete_node('08OC4-ZDgc')
+      create(:report_layout, craftjs_json: state.json)
+    end
+
+    let!(:gender_layout) do
+      state = ContentBuilder::Craftjs::State.new(craftjs_json.deep_dup)
+      state.delete_node('Ve2_h93h5f')
+      create(:report_layout, craftjs_json: state.json)
+    end
+
+    it 'converts all widgets to DemographicsWidget' do
+      expect do
+        Rake::Task['single_use:migrate_deprecated_custom_field_widgets'].invoke
+      end.to change { ContentBuilder::Layout.with_widget_type('GenderWidget').count }.by(-2)
+        .and change { ContentBuilder::Layout.with_widget_type('AgeWidget').count }.by(-2)
+        .and change { ContentBuilder::Layout.with_widget_type('DemographicsWidget').count }.by(3)
+
+      expect(gender_layout.reload.craftjs_json['08OC4-ZDgc']).to match(
+        craftjs_json['08OC4-ZDgc'].deep_dup.tap do |json|
+          json['type']['resolvedName'] = 'DemographicsWidget'
+          json['displayName'] = 'DemographicsWidget'
+          json['props']['customFieldId'] = gender_cf.id
+        end
+      )
+
+      expect(age_layout.reload.craftjs_json['Ve2_h93h5f']).to match(
+        craftjs_json['Ve2_h93h5f'].deep_dup.tap do |json|
+          json['type']['resolvedName'] = 'DemographicsWidget'
+          json['displayName'] = 'DemographicsWidget'
+          json['props']['customFieldId'] = birthyear_cf.id
+        end
+      )
+    end
   end
 
-  let!(:age_layout) do
-    state = ContentBuilder::Craftjs::State.new(craftjs_json.deep_dup)
-    state.delete_node('08OC4-ZDgc')
-    create(:report_layout, craftjs_json: state.json)
-  end
-
-  let!(:gender_layout) do
-    state = ContentBuilder::Craftjs::State.new(craftjs_json.deep_dup)
-    state.delete_node('Ve2_h93h5f')
-    create(:report_layout, craftjs_json: state.json)
-  end
-
-  it 'converts GenderWidget and AgeWidget to DemographicsWidget' do
-    expect do
-      Rake::Task['single_use:migrate_deprecated_custom_field_widgets'].invoke
-    end.to change { ContentBuilder::Layout.with_widget_type('GenderWidget').count }.by(-2)
-      .and change { ContentBuilder::Layout.with_widget_type('AgeWidget').count }.by(-2)
-      .and change { ContentBuilder::Layout.with_widget_type('DemographicsWidget').count }.by(3)
-
-    expect(gender_layout.reload.craftjs_json['08OC4-ZDgc']).to match(
-      craftjs_json['08OC4-ZDgc'].deep_dup.tap do |json|
-        json['type']['resolvedName'] = 'DemographicsWidget'
-        json['displayName'] = 'DemographicsWidget'
-        json['props']['customFieldId'] = gender_cf.id
+  context 'when the layout belongs to a phase report' do
+    let!(:report) do
+      create(
+        :report,
+        :with_phase,
+        owner: create(:admin),
+        layout: create(:report_layout, craftjs_json: craftjs_json.deep_dup)
+      ).tap do |report|
+        # We must create the report that the layout refers to in order to publish it.
+        create(:project).update!(id: '40562cd4-9379-48e0-81ce-769c30041090')
+        ReportBuilder::ReportPublisher.new(report, report.owner).publish
       end
-    )
+    end
 
-    expect(age_layout.reload.craftjs_json['Ve2_h93h5f']).to match(
-      craftjs_json['Ve2_h93h5f'].deep_dup.tap do |json|
-        json['type']['resolvedName'] = 'DemographicsWidget'
-        json['displayName'] = 'DemographicsWidget'
-        json['props']['customFieldId'] = birthyear_cf.id
-      end
-    )
+    it 'refreshes the graph data units of the report' do
+      expect(report.published_graph_data_units.count).to eq(2)
+
+      expect do
+        Rake::Task['single_use:migrate_deprecated_custom_field_widgets'].invoke
+      end.to change { report.reload.published_graph_data_units.ids.to_set }
+        .and change { report.published_graph_data_units.pluck(:created_at).to_set }
+        # graph_ids should not change since the nodes are updated in place
+        .and not_change { report.published_graph_data_units.pluck(:graph_id).to_set }
+    end
   end
 end

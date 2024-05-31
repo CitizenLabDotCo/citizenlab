@@ -63,4 +63,25 @@ RSpec.describe 'single_use:migrate_visitor_timeline_widgets_craftjs_state' do # 
 
     expect(layout.reload.craftjs_json).to match(expected_json)
   end
+
+  context 'when the layout belongs to a phase report' do
+    let!(:report) do
+      layout.content_buildable.tap do |report|
+        owner = create(:admin)
+        report.update!(phase: create(:phase), owner: owner)
+        ReportBuilder::ReportPublisher.new(report, owner).publish
+      end
+    end
+
+    it 'refreshes the published graph data units of the report' do
+      expect(report.published_graph_data_units.size).to eq(1)
+
+      expect do
+        Rake::Task['single_use:migrate_visitor_timeline_widgets_craftjs_state'].invoke
+      end.to change { report.reload.published_graph_data_units.sole.id }
+        .and change { report.published_graph_data_units.sole.created_at }
+        # graph_id should not change since the node is updated in place
+        .and not_change { report.published_graph_data_units.sole.graph_id }
+    end
+  end
 end

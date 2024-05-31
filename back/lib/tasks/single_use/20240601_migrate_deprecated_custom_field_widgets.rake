@@ -24,6 +24,12 @@ namespace :single_use do
       end
 
       layout.save!
+
+      if layout.content_buildable_type == 'ReportBuilder::Report'
+        report = layout.content_buildable
+        user = report.owner || User.super_admins.first || User.admins.first
+        ReportBuilder::ReportPublisher.new(report, user).publish
+      end
     end
     # endregion HELPER METHODS
 
@@ -32,6 +38,7 @@ namespace :single_use do
         layouts = ContentBuilder::Layout
           .where.not('code LIKE ?', 'backup/%')
           .with_widget_type('GenderWidget', 'AgeWidget')
+          .preload(content_buildable: :owner)
 
         layouts.each { |layout| migrate_layout(layout) }
       end
