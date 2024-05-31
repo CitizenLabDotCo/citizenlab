@@ -10,8 +10,9 @@ import { formatLargeNumber, getDaysInRange } from '../../utils';
 
 import {
   AbsoluteStatistic,
-  VisitDurationStatistic,
-  PageViewsStatistic,
+  OtherStatistic,
+  getDurationDeltaSign,
+  getPageViewsDeltaSign,
 } from './Statistics';
 import { Props } from './Wide';
 
@@ -44,17 +45,19 @@ const Narrow = ({
             />
           </Box>
           <Box mt="12px">
-            <VisitDurationStatistic
+            <OtherStatistic
               nameMessage={visitorsCardMessages.visitDuration}
               stat={stats.visitDuration}
               previousDays={previousDays}
+              sign={getDurationDeltaSign(stats.visitDuration.delta)}
             />
           </Box>
           <Box mt="12px">
-            <PageViewsStatistic
+            <OtherStatistic
               nameMessage={visitorsCardMessages.pageViews}
               stat={stats.pageViews}
               previousDays={previousDays}
+              sign={getPageViewsDeltaSign(stats.pageViews.delta)}
             />
           </Box>
         </Box>

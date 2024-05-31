@@ -13,8 +13,9 @@ import { Stats } from '../typings';
 
 import {
   AbsoluteStatistic,
-  VisitDurationStatistic,
-  PageViewsStatistic,
+  OtherStatistic,
+  getDurationDeltaSign,
+  getPageViewsDeltaSign,
 } from './Statistics';
 
 export interface Props {
@@ -63,17 +64,19 @@ const Wide = ({
             />
           </Box>
           <Box maxWidth="25%" pr="12px">
-            <VisitDurationStatistic
+            <OtherStatistic
               nameMessage={visitorsCardMessages.visitDuration}
               stat={stats.visitDuration}
               previousDays={previousDays}
+              sign={getDurationDeltaSign(stats.visitDuration.delta)}
             />
           </Box>
           <Box maxWidth="25%" pr="12px">
-            <PageViewsStatistic
+            <OtherStatistic
               nameMessage={visitorsCardMessages.pageViews}
               stat={stats.pageViews}
               previousDays={previousDays}
+              sign={getPageViewsDeltaSign(stats.pageViews.delta)}
             />
           </Box>
         </Box>
