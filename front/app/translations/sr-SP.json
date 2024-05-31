@@ -1076,6 +1076,8 @@
   "app.containers.IdeasNewPage.submitApiError": "Дошло је до проблема при слању обрасца. Проверите да ли постоје грешке и покушајте поново.",
   "app.containers.IdeasNewPage.submitNewIdea": "прихвати",
   "app.containers.IdeasNewPage.surveyNewMetaTitle1": "Add survey response to project | {orgName}",
+  "app.containers.IdeasShow.IdeaNavigationButtons.goToNextInput": "Go to next input.",
+  "app.containers.IdeasShow.IdeaNavigationButtons.goToPreviousInput": "Go to previous input.",
   "app.containers.IdeasShow.IdeaNavigationButtons.ideaIndexAriaMessage2": "Currently viewing number {currentIndex} out of {totalInputs} inputs",
   "app.containers.IdeasShow.MetaInformation.attachments": "Прилози",
   "app.containers.IdeasShow.MetaInformation.byUserOnDate": "{userName} на дан {date}",
