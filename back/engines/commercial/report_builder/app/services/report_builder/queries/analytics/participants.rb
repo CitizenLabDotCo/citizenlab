@@ -1,6 +1,6 @@
 module ReportBuilder
-  class Queries::Analytics::ActiveUsers < Queries::Analytics::Base
-    def active_users_query(start_at, end_at, project_id, apply_visitor_filter: false)
+  class Queries::Analytics::Participants < Queries::Analytics::Base
+    def participants_query(start_at, end_at, project_id, apply_visitor_filter: false)
       {
         fact: 'participation',
         filters: {
@@ -51,43 +51,43 @@ module ReportBuilder
         }
       }
 
-      active_users_whole_period_query = active_users_query(start_at, end_at, project_id)
+      participants_whole_period_query = participants_query(start_at, end_at, project_id)
       visitors_whole_period_query = visitors_query(start_at, end_at, project_id)
 
-      # We request the active user count again,
+      # We request the participants count again,
       # but this time we filter by has_visits = true
       # This is so that we can calculate a more accurate
       # conversion rate on the FE, where we only compare
       # visitors (i.e. people that accepted cookies)
-      # to active users that also accepted cookies
-      active_users_who_accepted_cookies_whole_period_query = active_users_query(
+      # to participants that also accepted cookies
+      participants_who_accepted_cookies_whole_period_query = participants_query(
         start_at, end_at, project_id, apply_visitor_filter: true
       )
 
       queries = [
         time_series_query,
-        active_users_whole_period_query,
+        participants_whole_period_query,
         visitors_whole_period_query,
-        active_users_who_accepted_cookies_whole_period_query
+        participants_who_accepted_cookies_whole_period_query
       ]
 
       if compare_start_at.present? && compare_end_at.present?
-        active_users_compared_period_query = active_users_query(compare_start_at, compare_end_at, project_id)
+        participants_compared_period_query = participants_query(compare_start_at, compare_end_at, project_id)
         visitors_compared_period_query = visitors_query(compare_start_at, compare_end_at, project_id)
 
-        # We request the active user count again,
+        # We request the participants count again,
         # but this time we filter by has_visits = true
         # This is so that we can calculate a more accurate
         # conversion rate on the FE, where we only compare
         # visitors (i.e. people that accepted cookies)
-        # to active users that also accepted cookies
-        active_users_who_accepted_cookies_compared_period_query = active_users_query(
+        # to participants that also accepted cookies
+        participants_who_accepted_cookies_compared_period_query = participants_query(
           compare_start_at, compare_end_at, project_id, apply_visitor_filter: true
         )
 
-        queries << active_users_compared_period_query
+        queries << participants_compared_period_query
         queries << visitors_compared_period_query
-        queries << active_users_who_accepted_cookies_compared_period_query
+        queries << participants_who_accepted_cookies_compared_period_query
       end
 
       queries
