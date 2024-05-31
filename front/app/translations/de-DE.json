@@ -643,7 +643,7 @@
   "app.components.form.controls.tapOnFullscreenMapToAdd": "Tippen Sie auf die Karte, um Ihre Antwort hinzuzufügen.",
   "app.components.form.controls.tapOnMapToAdd2": "Tippen Sie auf die Karte oder geben Sie unten eine Adresse ein, um Ihre Antwort hinzuzufügen.",
   "app.components.form.controls.tapToAddAPoint": "Tippen, um einen Punkt hinzuzufügen",
-  "app.components.form.controls.validCordinatesTooltip": "Wenn der Ort während der Eingabe nicht unter den Optionen angezeigt wird, können Sie gültige Koordinaten im Format 'Breitengrad, Längengrad' hinzufügen, um einen genauen Ort anzugeben.",
+  "app.components.form.controls.validCordinatesTooltip2": "Wenn der Ort bei der Eingabe nicht unter den Optionen angezeigt wird, können Sie gültige Koordinaten im Format 'Breitengrad, Längengrad' hinzufügen, um einen genauen Ort anzugeben (z.B.: -33.019808, -71.495676).",
   "app.components.form.error": "Fehler",
   "app.components.form.locationGoogleUnavailable": "Das von Google Maps zur Verfügung gestellte Standort-Feld konnte nicht geladen werden.",
   "app.components.form.submit": "Einreichen",
