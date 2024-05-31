@@ -2593,7 +2593,6 @@
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.visitors": "Besøgende",
   "app.modules.commercial.analytics.admin.components.totalParticipants": "Deltagere i alt",
   "app.modules.commercial.analytics.admin.containers.visitors.noData": "Der er endnu ingen besøgsdata.",
-  "app.modules.commercial.analytics.admin.containers.visitors.visitorCountHigherBanner": "Siden maj 2024 har antallet af besøgende og besøg været højere og mere præcist. Det skyldes, at vi nu inkluderer alle besøgende og ikke kun dem, der har accepteret cookies.",
   "app.modules.commercial.analytics.admin.hooks.useEmailDeliveries.timeSeries": "E-mail-leverancer over tid",
   "app.modules.commercial.analytics.admin.hooks.useParticipants.timeSeries": "Deltagere over tid",
   "app.modules.commercial.analytics.admin.hooks.useRegistrations.timeSeries": "Registreringer over tid",

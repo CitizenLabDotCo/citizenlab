@@ -2593,7 +2593,6 @@
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.visitors": "Posjetitelji",
   "app.modules.commercial.analytics.admin.components.totalParticipants": "Ukupno sudionika",
   "app.modules.commercial.analytics.admin.containers.visitors.noData": "Još nema podataka o posjetiteljima.",
-  "app.modules.commercial.analytics.admin.containers.visitors.visitorCountHigherBanner": "Od svibnja 2024. broj posjetitelja i posjeta viši je i precizniji. To je zato što sada uključujemo sve posjetitelje, a ne samo one koji su prihvatili kolačiće.",
   "app.modules.commercial.analytics.admin.hooks.useEmailDeliveries.timeSeries": "Dostavljeno e-poruka kroz vrijeme",
   "app.modules.commercial.analytics.admin.hooks.useParticipants.timeSeries": "Sudionici tijekom vremena",
   "app.modules.commercial.analytics.admin.hooks.useRegistrations.timeSeries": "Registracija kroz vrijeme",

@@ -2593,7 +2593,6 @@
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.visitors": "Apmeklētāji",
   "app.modules.commercial.analytics.admin.components.totalParticipants": "Kopējais dalībnieku skaits",
   "app.modules.commercial.analytics.admin.containers.visitors.noData": "Pagaidām nav apmeklētāju datu.",
-  "app.modules.commercial.analytics.admin.containers.visitors.visitorCountHigherBanner": "Kopš 2024. gada maija apmeklētāju un apmeklējumu skaits ir lielāks un precīzāks. Tas ir tāpēc, ka tagad mēs iekļaujam visus apmeklētājus, nevis tikai tos, kuri ir pieņēmuši sīkfailus.",
   "app.modules.commercial.analytics.admin.hooks.useEmailDeliveries.timeSeries": "E-pasta sūtījumi laika gaitā",
   "app.modules.commercial.analytics.admin.hooks.useParticipants.timeSeries": "Dalībnieki laika gaitā",
   "app.modules.commercial.analytics.admin.hooks.useRegistrations.timeSeries": "Reģistrācijas laika gaitā",

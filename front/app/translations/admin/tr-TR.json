@@ -2593,7 +2593,6 @@
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.visitors": "Ziyaretçiler",
   "app.modules.commercial.analytics.admin.components.totalParticipants": "Toplam katılımcılar",
   "app.modules.commercial.analytics.admin.containers.visitors.noData": "Henüz ziyaretçi verisi bulunmamaktadır.",
-  "app.modules.commercial.analytics.admin.containers.visitors.visitorCountHigherBanner": "Mayıs 2024'ten bu yana, ziyaretçi ve ziyaret sayıları daha yüksek ve daha doğrudur. Bunun nedeni, artık yalnızca çerezleri kabul edenleri değil, tüm ziyaretçileri dahil etmemizdir.",
   "app.modules.commercial.analytics.admin.hooks.useEmailDeliveries.timeSeries": "Zaman içinde e-posta teslimatları",
   "app.modules.commercial.analytics.admin.hooks.useParticipants.timeSeries": "Zaman içinde katılımcılar",
   "app.modules.commercial.analytics.admin.hooks.useRegistrations.timeSeries": "Zaman içinde kayıtlar",

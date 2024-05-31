@@ -2593,7 +2593,6 @@
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.visitors": "زوار",
   "app.modules.commercial.analytics.admin.components.totalParticipants": "إجمالي المشاركين",
   "app.modules.commercial.analytics.admin.containers.visitors.noData": "لا توجد بيانات الزوار حتى الآن.",
-  "app.modules.commercial.analytics.admin.containers.visitors.visitorCountHigherBanner": "منذ مايو 2024، أصبح عدد الزوار والزيارات أعلى وأكثر دقة. وذلك لأننا قمنا الآن بتضمين جميع الزوار، وليس فقط أولئك الذين قبلوا ملفات تعريف الارتباط.",
   "app.modules.commercial.analytics.admin.hooks.useEmailDeliveries.timeSeries": "عمليات تسليم البريد الإلكتروني بمرور الوقت",
   "app.modules.commercial.analytics.admin.hooks.useParticipants.timeSeries": "المشاركون مع مرور الوقت",
   "app.modules.commercial.analytics.admin.hooks.useRegistrations.timeSeries": "تسجيلات بمرور الوقت",

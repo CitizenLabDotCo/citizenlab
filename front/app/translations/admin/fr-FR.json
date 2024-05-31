@@ -2593,7 +2593,6 @@
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.visitors": "Visiteurs",
   "app.modules.commercial.analytics.admin.components.totalParticipants": "Nombre total de participants",
   "app.modules.commercial.analytics.admin.containers.visitors.noData": "Il n'y a pas encore de données sur les visiteurs.",
-  "app.modules.commercial.analytics.admin.containers.visitors.visitorCountHigherBanner": "Depuis mai 2024, les chiffres de visiteurs et de visites sont plus élevés et plus précis. En effet, nous comptabilisons désormais tous les visiteurs, et non plus seulement ceux ayant accepté les cookies.",
   "app.modules.commercial.analytics.admin.hooks.useEmailDeliveries.timeSeries": "Livraisons d'e-mails dans le temps",
   "app.modules.commercial.analytics.admin.hooks.useParticipants.timeSeries": "Participants",
   "app.modules.commercial.analytics.admin.hooks.useRegistrations.timeSeries": "Inscriptions au fil du temps",
