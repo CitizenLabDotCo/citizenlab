@@ -1076,6 +1076,8 @@
   "app.containers.IdeasNewPage.submitApiError": "C'è stato un problema nell'invio del modulo. Si prega di controllare eventuali errori e riprovare.",
   "app.containers.IdeasNewPage.submitNewIdea": "Invia",
   "app.containers.IdeasNewPage.surveyNewMetaTitle1": "Aggiungi la risposta al sondaggio al progetto | {orgName}",
+  "app.containers.IdeasShow.IdeaNavigationButtons.goToNextInput": "Passa all'input successivo.",
+  "app.containers.IdeasShow.IdeaNavigationButtons.goToPreviousInput": "Passa all'input precedente.",
   "app.containers.IdeasShow.IdeaNavigationButtons.ideaIndexAriaMessage2": "Attualmente stai visualizzando il numero {currentIndex} di {totalInputs} ingressi",
   "app.containers.IdeasShow.MetaInformation.attachments": "Allegati",
   "app.containers.IdeasShow.MetaInformation.byUserOnDate": "{userName} su {date}",
