@@ -1076,6 +1076,8 @@
   "app.containers.IdeasNewPage.submitApiError": "Υπήρξε πρόβλημα με την υποβολή της φόρμας. Ελέγξτε για τυχόν σφάλματα και προσπαθήστε ξανά.",
   "app.containers.IdeasNewPage.submitNewIdea": "Υποβολή",
   "app.containers.IdeasNewPage.surveyNewMetaTitle1": "Προσθέστε την απάντηση της έρευνας στο έργο | {orgName}",
+  "app.containers.IdeasShow.IdeaNavigationButtons.goToNextInput": "Πηγαίνετε στην επόμενη είσοδο.",
+  "app.containers.IdeasShow.IdeaNavigationButtons.goToPreviousInput": "Μετάβαση στην προηγούμενη είσοδο.",
   "app.containers.IdeasShow.IdeaNavigationButtons.ideaIndexAriaMessage2": "Προς το παρόν βλέπετε τον αριθμό {currentIndex} από τις εισόδους {totalInputs}",
   "app.containers.IdeasShow.MetaInformation.attachments": "Συνημμένα αρχεία",
   "app.containers.IdeasShow.MetaInformation.byUserOnDate": "{userName} στις {date}",
