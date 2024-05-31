@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe 'single_use:migrate_deprecated_about_this_report_widget' do
-  before(:all) do
+RSpec.describe 'single_use:migrate_deprecated_about_this_report_widget' do # rubocop:disable RSpec/DescribeClass
+  before(:all) do # rubocop:disable RSpec/BeforeAfterAll
     task_path = 'tasks/single_use/20240527_migrate_deprecated_about_this_report_widget'
     Rake.application.rake_require(task_path)
     Rake::Task.define_task(:environment)

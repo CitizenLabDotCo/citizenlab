@@ -1,4 +1,6 @@
 en:
+  locales:
+    fr-FR: French
   symbols:
     outside: somewhere else
   nav_bar_items:

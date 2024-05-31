@@ -34,7 +34,7 @@ namespace :single_use do
     # @param [ContentBuilder::Craftjs::State] state
     # @return [String, nil]
     def create_logo_node!(state)
-      logo = AppConfiguration.instance.logo.versions[:small]
+      logo = AppConfiguration.instance.logo.versions[:medium]
       return if logo.blank?
 
       data_code = ContentBuilder::LayoutImage.create!(image: logo).code
@@ -73,7 +73,7 @@ namespace :single_use do
     Tenant.prioritize(Tenant.creation_finalized).each do |tenant|
       tenant.switch do
         layouts = ContentBuilder::Layout
-          .where(code: 'report')
+          .where.not('code LIKE ?', 'backup/%')
           .with_widget_type('AboutReportWidget')
 
         layouts.each do |layout|

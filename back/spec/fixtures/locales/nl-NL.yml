@@ -1,4 +1,6 @@
 nl:
+  locales:
+    fr-FR: Frans
   symbols:
     outside: ergens anders
   nav_bar_items:
