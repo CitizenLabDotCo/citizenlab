@@ -94,9 +94,6 @@ const IdeaButton = memo<Props>(
             {
               ...positionParams,
               phase_id: phase?.id,
-              // ...(participationMethod === 'native_survey'
-              //   ? { native_survey: true }
-              //   : {}),
             },
             { addQueryPrefix: true }
           ),
