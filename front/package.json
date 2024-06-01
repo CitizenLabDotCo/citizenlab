@@ -160,7 +160,7 @@
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^9.0.2",
     "@sentry/webpack-plugin": "^1.18.8",
-    "@storybook/react": "^7.5.1",
+    "@storybook/react": "^8.1.5",
     "@storybook/react-webpack5": "^7.5.2",
     "@tanstack/react-query-devtools": "^4.22.4",
     "@testing-library/jest-dom": "^5.16.5",
