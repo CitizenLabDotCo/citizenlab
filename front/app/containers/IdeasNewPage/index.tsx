@@ -94,7 +94,9 @@ const IdeasNewPage = () => {
     );
   }
 
-  // TODO: document the why of this
+  // We arrive in this component via the /ideas/new route, which in the past
+  // was also used to render the survey form. In order for old links to surveys not to break,
+  // we are redirecting /ideas/new requests to the new /surveys/new URL.
   if (currentPhase && participationMethod === 'native_survey') {
     return (
       <Navigate
