@@ -44,12 +44,12 @@ type pageKeys =
   | 'initiative_form'
   | 'idea_edit'
   | 'initiative_edit'
+  | 'native_survey'
   | 'sign_in'
   | 'sign_up'
   | 'email-settings'
   | 'pages_menu'
-  | 'event_page'
-  | 'native_survey';
+  | 'event_page';
 
 export function isPage(pageKey: pageKeys, pathName: string) {
   /**
@@ -74,12 +74,12 @@ export function isPage(pageKey: pageKeys, pathName: string) {
       return pathnameWithoutLocale.endsWith('/initiatives/new');
     case 'idea_form':
       return pathnameWithoutLocale.endsWith('/ideas/new');
-    case 'native_survey':
-      return pathnameWithoutLocale.endsWith('/surveys/new');
     case 'idea_edit':
       return pathnameWithoutLocale.startsWith('/ideas/edit/');
     case 'initiative_edit':
       return pathnameWithoutLocale.startsWith('/initiatives/edit/');
+    case 'native_survey':
+      return pathnameWithoutLocale.endsWith('/surveys/new');
     case 'sign_in':
       return pathnameWithoutLocale.startsWith('/sign-in');
     case 'sign_up':
