@@ -24,11 +24,6 @@ import { IProject } from 'api/projects/types';
 import useInputSchema from 'hooks/useInputSchema';
 import useLocalize from 'hooks/useLocalize';
 
-import {
-  schema,
-  uiSchema,
-} from 'containers/IdeasNewSurveyPage/IdeasNewSurveyForm/schemas';
-
 import Form from 'components/Form';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
@@ -81,8 +76,8 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   const { data: phases } = usePhases(project.data.id);
   const { data: phaseFromUrl } = usePhase(phaseId);
   const {
-    // schema,
-    // uiSchema,
+    schema,
+    uiSchema,
     inputSchemaError,
     isLoading: isLoadingInputSchema,
   } = useInputSchema({
