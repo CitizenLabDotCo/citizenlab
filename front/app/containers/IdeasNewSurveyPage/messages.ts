@@ -1,30 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  ideaFormTitle: {
-    id: 'app.containers.IdeasNewPage.ideaFormTitle',
-    defaultMessage: 'Add new idea',
-  },
-  optionFormTitle: {
-    id: 'app.containers.IdeasNewPage.optionFormTitle',
-    defaultMessage: 'Add new option',
-  },
-  contributionFormTitle: {
-    id: 'app.containers.IdeasNewPage.contributionFormTitle',
-    defaultMessage: 'Add new contribution',
-  },
-  projectFormTitle: {
-    id: 'app.containers.IdeasNewPage.projectFormTitle',
-    defaultMessage: 'Add new project',
-  },
-  questionFormTitle: {
-    id: 'app.containers.IdeasNewPage.questionFormTitle',
-    defaultMessage: 'Add new question',
-  },
-  issueFormTitle: {
-    id: 'app.containers.IdeasNewPage.issueFormTitle',
-    defaultMessage: 'Add new issue',
-  },
   submitNewIdea: {
     id: 'app.containers.IdeasNewPage.submitNewIdea',
     defaultMessage: 'Submit',

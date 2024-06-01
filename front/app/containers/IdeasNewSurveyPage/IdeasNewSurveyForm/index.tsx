@@ -39,7 +39,7 @@ import { getElementType, getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import { getFormValues } from '../../IdeasEditPage/utils';
-import IdeasNewMeta from '../IdeasNewMeta';
+import IdeasNewSurveyMeta from '../IdeasNewSurveyMeta';
 import messages from '../messages';
 
 import SurveyHeading from './SurveyHeading';
@@ -244,7 +244,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
 
   return (
     <>
-      <IdeasNewMeta isSurvey={true} />
+      <IdeasNewSurveyMeta />
       <Box
         w="100%"
         bgColor={colors.grey100}

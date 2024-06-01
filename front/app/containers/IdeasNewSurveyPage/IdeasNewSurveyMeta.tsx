@@ -4,8 +4,6 @@ import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
 
 import useAuthUser from 'api/me/useAuthUser';
-import usePhases from 'api/phases/usePhases';
-import { getInputTerm } from 'api/phases/utils';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -14,40 +12,21 @@ import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
-import { getInputTermMessage } from 'utils/i18n';
 
 import messages from './messages';
 
-interface Props {
-  isSurvey?: boolean;
-}
-
-const IdeasNewMeta = ({ isSurvey }: Props) => {
+const IdeasNewSurveyMeta = () => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { slug } = useParams();
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectBySlug(slug);
-  const { data: phases } = usePhases(project ? project.data.id : undefined);
   const locales = useAppConfigurationLocales();
   const { location } = window;
 
   if (project) {
     const projectName = localize(project.data.attributes.title_multiloc);
-
-    const inputTerm = getInputTerm(phases?.data);
-    const ideasIndexTitle = formatMessage(
-      isSurvey
-        ? messages.surveyNewMetaTitle1
-        : getInputTermMessage(inputTerm, {
-            idea: messages.ideaNewMetaTitle1,
-            option: messages.optionMetaTitle1,
-            project: messages.projectMetaTitle1,
-            question: messages.questionMetaTitle1,
-            issue: messages.issueMetaTitle1,
-            contribution: messages.contributionMetaTitle1,
-          })
-    );
+    const ideasIndexTitle = formatMessage(messages.surveyNewMetaTitle1);
     const ideasIndexDescription = formatMessage(
       messages.ideaNewMetaDescription,
       {
@@ -81,4 +60,4 @@ const IdeasNewMeta = ({ isSurvey }: Props) => {
   return null;
 };
 
-export default IdeasNewMeta;
+export default IdeasNewSurveyMeta;

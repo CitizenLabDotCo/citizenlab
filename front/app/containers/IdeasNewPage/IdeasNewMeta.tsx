@@ -18,11 +18,7 @@ import { getInputTermMessage } from 'utils/i18n';
 
 import messages from './messages';
 
-interface Props {
-  isSurvey?: boolean;
-}
-
-const IdeasNewMeta = ({ isSurvey }: Props) => {
+const IdeasNewMeta = () => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { slug } = useParams();
@@ -37,16 +33,14 @@ const IdeasNewMeta = ({ isSurvey }: Props) => {
 
     const inputTerm = getInputTerm(phases?.data);
     const ideasIndexTitle = formatMessage(
-      isSurvey
-        ? messages.surveyNewMetaTitle1
-        : getInputTermMessage(inputTerm, {
-            idea: messages.ideaNewMetaTitle1,
-            option: messages.optionMetaTitle1,
-            project: messages.projectMetaTitle1,
-            question: messages.questionMetaTitle1,
-            issue: messages.issueMetaTitle1,
-            contribution: messages.contributionMetaTitle1,
-          })
+      getInputTermMessage(inputTerm, {
+        idea: messages.ideaNewMetaTitle1,
+        option: messages.optionMetaTitle1,
+        project: messages.projectMetaTitle1,
+        question: messages.questionMetaTitle1,
+        issue: messages.issueMetaTitle1,
+        contribution: messages.contributionMetaTitle1,
+      })
     );
     const ideasIndexDescription = formatMessage(
       messages.ideaNewMetaDescription,
