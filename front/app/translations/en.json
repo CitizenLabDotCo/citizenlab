@@ -2055,7 +2055,7 @@
   "app.utils.errors.default.ajv_error_minItems": "Must include at least {limit, plural, one {# item} other {# items}}",
   "app.utils.errors.default.ajv_error_number_any": "Please fill in a valid number",
   "app.utils.errors.default.ajv_error_politician_required": "Please fill in whether you are a politician",
-  "app.utils.errors.default.ajv_error_required": "This field is required",
+  "app.utils.errors.default.ajv_error_required2": "{fieldName} field is required",
   "app.utils.errors.default.ajv_error_type": "Can't be blank",
   "app.utils.errors.default.api_error_accepted": "Must be accepted",
   "app.utils.errors.default.api_error_blank": "Can't be blank",

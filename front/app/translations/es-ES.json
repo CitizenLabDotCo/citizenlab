@@ -2055,7 +2055,6 @@
   "app.utils.errors.default.ajv_error_minItems": "Debe incluir al menos {limit, plural, one {# item} other {# items}}",
   "app.utils.errors.default.ajv_error_number_any": "Introduzca un número válido",
   "app.utils.errors.default.ajv_error_politician_required": "Indique si usted es político",
-  "app.utils.errors.default.ajv_error_required": "Este campo es requerido",
   "app.utils.errors.default.ajv_error_type": "No puede estar en blanco",
   "app.utils.errors.default.api_error_accepted": "Debe ser aceptado",
   "app.utils.errors.default.api_error_blank": "No puede estar en blanco",

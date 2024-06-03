@@ -2055,7 +2055,6 @@
   "app.utils.errors.default.ajv_error_minItems": "Мора укључити најмање {limit, plural, one {# ставка} other {# предмета}}",
   "app.utils.errors.default.ajv_error_number_any": "Унесите исправан број",
   "app.utils.errors.default.ajv_error_politician_required": "Унесите да ли сте политичар",
-  "app.utils.errors.default.ajv_error_required": "Поље је обавезно",
   "app.utils.errors.default.ajv_error_type": "Не може бити празно",
   "app.utils.errors.default.api_error_accepted": "Мора се прихватити",
   "app.utils.errors.default.api_error_blank": "Не може бити празно",

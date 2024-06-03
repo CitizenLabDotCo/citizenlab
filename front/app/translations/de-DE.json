@@ -2055,7 +2055,6 @@
   "app.utils.errors.default.ajv_error_minItems": "Mindestens {limit, plural, one {# Antwort} other {# Antworten}} auswählen",
   "app.utils.errors.default.ajv_error_number_any": "Bitte geben Sie eine gültige Zahl ein",
   "app.utils.errors.default.ajv_error_politician_required": "Bitte geben Sie ein, ob Sie ein Politiker/in sind",
-  "app.utils.errors.default.ajv_error_required": "Dieses Feld ist erforderlich",
   "app.utils.errors.default.ajv_error_type": "Kann nicht leer sein",
   "app.utils.errors.default.api_error_accepted": "Muss akzeptiert werden",
   "app.utils.errors.default.api_error_blank": "Kann nicht leer sein",
