@@ -8,6 +8,7 @@ import { Localize } from 'hooks/useLocalize';
 import voteInputMessages from 'components/VoteInputs/_shared/messages';
 
 import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
+import { DisabledReason } from 'utils/actionDescriptors/types';
 import { isNil } from 'utils/helperUtils';
 
 import messages from './messages';
@@ -16,7 +17,7 @@ export const getVoteSubmissionDisabledExplanation = (
   formatMessage: FormatMessage,
   localize: Localize,
   phase: IPhaseData,
-  permissionsDisabledReason: string | null,
+  permissionsDisabledReason: DisabledReason | null,
   numberOfVotesCast: number,
   currency: TCurrency | undefined
 ) => {
