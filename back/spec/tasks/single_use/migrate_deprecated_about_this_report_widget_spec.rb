@@ -2,15 +2,13 @@
 
 require 'rails_helper'
 
-# rubocop:disable RSpec/DescribeClass
-# RSpec.describe 'single_use:migrate_deprecated_about_this_report_widget' do
-#   # rubocop:disable RSpec/BeforeAfterAll
-#   before(:all) do
+# RSpec.describe 'single_use:migrate_deprecated_about_this_report_widget' do # __rubocop:disable RSpec/DescribeClass
+#
+#   before(:all) do # __rubocop:disable RSpec/BeforeAfterAll
 #     task_path = 'tasks/single_use/20240527_migrate_deprecated_about_this_report_widget'
 #     Rake.application.rake_require(task_path)
 #     Rake::Task.define_task(:environment)
 #   end
-#   # rubocop:enable RSpec/BeforeAfterAll
 #
 #   before do
 #     Rake::Task['single_use:migrate_deprecated_about_this_report_widget'].reenable
@@ -123,4 +121,3 @@ require 'rails_helper'
 #     expect(backup.content_buildable).to be_nil
 #   end
 # end
-# # rubocop:enable RSpec/DescribeClass
