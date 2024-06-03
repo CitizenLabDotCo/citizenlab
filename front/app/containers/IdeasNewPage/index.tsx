@@ -37,6 +37,10 @@ const IdeasNewPage = () => {
     ignoreQueryPrefix: true,
   }) as { [key: string]: string };
 
+  /*
+    TO DO: simplify this logic, then merge with that of the IdeasNewSurveyPage
+  */
+
   if (projectStatus === 'loading' || phasesStatus === 'loading') {
     return (
       <VerticalCenterer>
