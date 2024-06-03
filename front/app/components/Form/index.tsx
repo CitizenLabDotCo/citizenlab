@@ -66,7 +66,7 @@ interface Props {
   /** A function that returns a translation message given the fieldname and the error key returned by the API */
   getApiErrorMessage?: ApiErrorGetter;
   /** A function that returns a translation message for json-schema originating errors, given tje Ajv error object */
-  getAjvErrorMessage?: AjvErrorGetter;
+  getAjvErrorMessage: AjvErrorGetter;
   /**
    * If you use this as a controlled form, you'll lose some extra validation and transformations as defined in the handleSubmit.
    */

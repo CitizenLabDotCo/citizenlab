@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 
 import {
   Box,
@@ -25,15 +25,17 @@ import useInputSchema from 'hooks/useInputSchema';
 import useLocalize from 'hooks/useLocalize';
 
 import Form from 'components/Form';
+import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
-import { getElementType } from 'utils/JSONFormUtils';
+import { getElementType, getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import { getFormValues } from '../../IdeasEditPage/utils';
 import IdeasNewSurveyMeta from '../IdeasNewSurveyMeta';
+import messages from '../messages';
 
 import SurveyHeading from './SurveyHeading';
 
@@ -94,6 +96,38 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     ? phaseFromUrl.data
     : getCurrentPhase(phases?.data);
   const allowAnonymousPosting = phase?.attributes.allow_anonymous_participation;
+
+  const getApiErrorMessage: ApiErrorGetter = useCallback(
+    (error) => {
+      return (
+        messages[`api_error_${uiSchema?.options?.inputTerm}_${error}`] ||
+        messages[`api_error_${error}`] ||
+        messages[`api_error_invalid`]
+      );
+    },
+    [uiSchema]
+  );
+
+  const getAjvErrorMessage: AjvErrorGetter = useCallback(
+    (error) => {
+      return (
+        messages[
+          `ajv_error_${uiSchema?.options?.inputTerm}_${
+            getFieldNameFromPath(error.instancePath) ||
+            error?.params?.missingProperty
+          }_${error.keyword}`
+        ] ||
+        messages[
+          `ajv_error_${
+            getFieldNameFromPath(error.instancePath) ||
+            error?.params?.missingProperty
+          }_${error.keyword}`
+        ] ||
+        undefined
+      );
+    },
+    [uiSchema]
+  );
 
   // Try and load in a draft idea if one exists
   useEffect(() => {
@@ -242,6 +276,8 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
                 uiSchema={uiSchema}
                 onSubmit={handleDraftIdeas}
                 initialFormData={initialFormData}
+                getAjvErrorMessage={getAjvErrorMessage}
+                getApiErrorMessage={getApiErrorMessage}
                 inputId={ideaId}
                 config={'survey'}
               />
