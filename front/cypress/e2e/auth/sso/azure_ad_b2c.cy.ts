@@ -1,6 +1,26 @@
 // If you want to run this test locally, you need to set the DEFAULT_AZURE_AD_B2C_* ENV variables in the cypress.env file.
 // `cp front/cypress.env.sample front/cypress.env`
 describe('Azure Active Directory B2C Authentication', () => {
+  // We want to keep the original settings both locally and on CI.
+  let existingAzureSettings: any;
+
+  before(() => {
+    cy.apiGetAppConfiguration().then((response) => {
+      existingAzureSettings =
+        response.body.data.attributes.settings.azure_ad_b2c_login;
+    });
+    cy.apiUpdateAppConfiguration({
+      settings: { azure_ad_b2c_login: { enabled: true, allowed: true } },
+    });
+  });
+
+  after(() => {
+    cy.apiUpdateAppConfiguration({
+      // we need it to make login via email/password easier in the next tests
+      settings: { azure_ad_b2c_login: existingAzureSettings },
+    });
+  });
+
   // https://docs.cypress.io/guides/end-to-end-testing/azure-active-directory-authentication
   function loginViaAAD(username: string, password: string) {
     cy.visit('/');

@@ -1,7 +1,10 @@
 import 'cypress-file-upload';
 import './dnd';
 import { IUserUpdate } from '../../app/api/users/types';
-import { IUpdatedAppConfigurationProperties } from '../../app/api/app_configuration/types';
+import {
+  IAppConfiguration,
+  IUpdatedAppConfigurationProperties,
+} from '../../app/api/app_configuration/types';
 import { IProjectAttributes } from '../../app/api/projects/types';
 import { ICustomFieldInputType } from '../../app/api/custom_fields/types';
 import { Multiloc } from '../../app/typings';
@@ -419,7 +422,7 @@ function apiGetAppConfiguration() {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
+    return cy.request<IAppConfiguration>({
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${adminJwt}`,

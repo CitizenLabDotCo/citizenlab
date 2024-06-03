@@ -355,7 +355,7 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
         },
         azure_ad_b2c_login: {
           allowed: true,
-          enabled: true,
+          enabled: false,
           tenant_name: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_TENANT_NAME'),
           tenant_id: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_TENANT_ID'),
           policy_name: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_POLICY_NAME'),
