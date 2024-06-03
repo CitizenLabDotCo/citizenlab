@@ -5,10 +5,6 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publishedProjects',
     defaultMessage: 'Published projects',
   },
-  noEndDate: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.noEndDate',
-    defaultMessage: 'No end date',
-  },
   xParticipants: {
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.xParticipants',
     defaultMessage: '{participants} participants',

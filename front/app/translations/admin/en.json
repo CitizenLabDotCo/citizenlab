@@ -1004,7 +1004,6 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": "Stretch",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.active": "Active",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.finished": "Finished",
-  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.noEndDate": "No end date",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.planned": "Planned",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publishedProjects": "Published projects",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.stale": "Stale",
