@@ -1876,7 +1876,6 @@
   "app.utils.errors.default.ajv_error_minItems": "Ha d'incloure com a mínim {limit, plural, one {# element} other {# elements}}",
   "app.utils.errors.default.ajv_error_number_any": "Si us plau, ompliu un número vàlid",
   "app.utils.errors.default.ajv_error_politician_required": "Si us plau, ompliu si sou polític",
-  "app.utils.errors.default.ajv_error_required": "Aquest camp és obligatori",
   "app.utils.errors.default.ajv_error_type": "No pot estar en blanc",
   "app.utils.errors.default.api_error_accepted": "S'ha d'acceptar",
   "app.utils.errors.default.api_error_blank": "No pot estar en blanc",

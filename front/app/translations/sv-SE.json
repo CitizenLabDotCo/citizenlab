@@ -1876,7 +1876,6 @@
   "app.utils.errors.default.ajv_error_minItems": "Måste inkludera minst {limit, plural, one {# objekt} other {# objekt}}",
   "app.utils.errors.default.ajv_error_number_any": "Fyll i ett giltigt nummer",
   "app.utils.errors.default.ajv_error_politician_required": "Fyll i om du är politiker",
-  "app.utils.errors.default.ajv_error_required": "Det här fältet är obligatoriskt",
   "app.utils.errors.default.ajv_error_type": "Får inte vara tomt",
   "app.utils.errors.default.api_error_accepted": "Måste accepteras",
   "app.utils.errors.default.api_error_blank": "Får inte vara tomt",
