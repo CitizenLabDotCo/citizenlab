@@ -1876,6 +1876,7 @@
   "app.utils.errors.default.ajv_error_minItems": "Musi zawierać co najmniej {limit, plural, one {# element} few {# elementy} many {# elementy} other {# elementy}}",
   "app.utils.errors.default.ajv_error_number_any": "Proszę wpisać prawidłowy numer",
   "app.utils.errors.default.ajv_error_politician_required": "Proszę wpisać, czy jest Pan/Pani politykiem",
+  "app.utils.errors.default.ajv_error_required2": "{fieldName} field is required",
   "app.utils.errors.default.ajv_error_type": "Nie może być puste",
   "app.utils.errors.default.api_error_accepted": "Należy zaakceptować",
   "app.utils.errors.default.api_error_blank": "Nie może być puste",
