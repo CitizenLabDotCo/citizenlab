@@ -9,7 +9,10 @@ module ReportBuilder
         .select(:project_id)
         .where("(start_at, coalesce(end_at, '#{far_future_date}'::DATE)) OVERLAPS (?, ?)", start_date, end_date)
 
-      overlapping_projects = Project.where(id: overlapping_project_ids)
+      overlapping_projects = Project
+        .joins(:admin_publication)
+        .where(id: overlapping_project_ids)
+        .where(admin_publication: { publication_status: 'published' })
 
       periods = Phase
         .select(

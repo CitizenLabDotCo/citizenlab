@@ -23,6 +23,11 @@ RSpec.describe ReportBuilder::Queries::Projects do
       @project3 = create(:project)
       create(:phase, project: @project3, start_at: Date.new(2022, 2, 1), end_at: nil)
 
+      # Project not published (should be filtered out)
+      project4 = create(:project)
+      project4.admin_publication.update!(publication_status: 'draft')
+      create(:phase, project: project4, start_at: Date.new(2022, 2, 1), end_at: nil)
+
       # Empty project
       create(:project)
 
