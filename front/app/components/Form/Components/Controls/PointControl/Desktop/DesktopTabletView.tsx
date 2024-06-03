@@ -99,7 +99,12 @@ const DesktopView = ({
           <ResetMapViewButton mapConfig={mapConfig} mapView={mapView} />
         </>
       </Box>
-      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
+      <ErrorDisplay
+        inputId={id}
+        ajvErrors={errors}
+        fieldPath={path}
+        didBlur={didBlur}
+      />
     </>
   );
 };

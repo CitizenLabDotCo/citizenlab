@@ -138,7 +138,12 @@ const LinearScaleControl = ({
         </Box>
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
-      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={false} />
+      <ErrorDisplay
+        inputId={id}
+        ajvErrors={errors}
+        fieldPath={path}
+        didBlur={false}
+      />
     </>
   );
 };

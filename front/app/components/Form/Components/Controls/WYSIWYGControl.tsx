@@ -52,7 +52,12 @@ const WYSIWYGControl = ({
         withCTAButton
         onBlur={() => setDidBlur(true)}
       />
-      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
+      <ErrorDisplay
+        inputId={id}
+        ajvErrors={errors}
+        fieldPath={path}
+        didBlur={didBlur}
+      />
     </>
   );
 };
