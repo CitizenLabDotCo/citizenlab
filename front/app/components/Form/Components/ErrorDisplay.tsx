@@ -127,9 +127,9 @@ interface Props {
   fieldPath: string;
   ajvErrors?: string;
   didBlur?: boolean;
+  inputId: string;
 }
-
-export default ({ fieldPath, ajvErrors, didBlur }: Props) => {
+const ErrorDisplay = ({ fieldPath, ajvErrors, didBlur, inputId }: Props) => {
   // shows ajv errors
   // shows apiErrors whenever present, along ajv errors.
 
@@ -163,7 +163,12 @@ export default ({ fieldPath, ajvErrors, didBlur }: Props) => {
       enter={true}
       exit={true}
     >
-      <Container role="alert" className="e2e-error-message" id="error-display">
+      <Container
+        role="alert"
+        className="e2e-error-message"
+        id="error-display"
+        aria-describedby={inputId}
+      >
         <ContainerInner>
           <ErrorIcon name="alert-circle" fill={colors.error} />
 
@@ -210,3 +215,5 @@ export default ({ fieldPath, ajvErrors, didBlur }: Props) => {
     </CSSTransition>
   );
 };
+
+export default ErrorDisplay;

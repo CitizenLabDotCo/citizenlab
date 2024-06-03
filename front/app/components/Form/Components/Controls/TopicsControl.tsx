@@ -59,7 +59,12 @@ const TopicsControl = ({
         availableTopics={availableTopics}
         id={sanitizeForClassname(id)}
       />
-      <ErrorDisplay fieldPath={path} ajvErrors={errors} didBlur={didBlur} />
+      <ErrorDisplay
+        inputId={id}
+        fieldPath={path}
+        ajvErrors={errors}
+        didBlur={didBlur}
+      />
     </Box>
   );
 };

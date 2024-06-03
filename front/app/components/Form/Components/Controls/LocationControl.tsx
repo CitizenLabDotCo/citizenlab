@@ -77,7 +77,12 @@ const LocationControl = ({
         className="e2e-idea-form-location-input-field"
       />
 
-      <ErrorDisplay didBlur={didBlur} ajvErrors={errors} fieldPath={path} />
+      <ErrorDisplay
+        inputId={id}
+        didBlur={didBlur}
+        ajvErrors={errors}
+        fieldPath={path}
+      />
     </>
   );
 };

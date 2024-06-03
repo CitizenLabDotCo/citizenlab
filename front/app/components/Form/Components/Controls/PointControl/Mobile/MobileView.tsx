@@ -105,7 +105,12 @@ const MobileView = ({
           />
         </Box>
       </Box>
-      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
+      <ErrorDisplay
+        inputId={id}
+        ajvErrors={errors}
+        fieldPath={path}
+        didBlur={didBlur}
+      />
       {showFullscreenMapInput && (
         <FullscreenMapInput
           setShowFullscreenMap={setShowFullscreenMap}
