@@ -58,7 +58,7 @@ const IdeasNewSurveyPage = () => {
     return null;
   }
 
-  const currentPhase = getCurrentPhase(phases?.data);
+  const currentPhase = getCurrentPhase(phases.data);
 
   const { enabled, disabledReason, authenticationRequirements } =
     getIdeaPostingRules({
