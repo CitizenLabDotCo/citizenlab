@@ -3,7 +3,7 @@ import React from 'react';
 import { MessageDescriptor } from 'react-intl';
 
 import {
-  DocumentAnnotationDisabledReason,
+  ProjectDocumentAnnotationDisabledReason,
   IProjectData,
 } from 'api/projects/types';
 
@@ -21,23 +21,27 @@ interface Props {
 }
 
 const disabledMessages: {
-  [key in DocumentAnnotationDisabledReason]: MessageDescriptor;
+  [key in ProjectDocumentAnnotationDisabledReason]: MessageDescriptor;
 } = {
   project_inactive: messages.documentAnnotationDisabledProjectInactive,
-  not_active: messages.documentAnnotationDisabledNotActiveUser,
-  not_verified: messages.documentAnnotationDisabledNotVerified,
-  missing_user_requirements: messages.documentAnnotationDisabledNotActiveUser,
-  not_signed_in: messages.documentAnnotationDisabledMaybeNotPermitted,
-  not_in_group: globalMessages.notInGroup,
-  not_permitted: messages.documentAnnotationDisabledNotPermitted,
+  project_not_visible: messages.documentAnnotationDisabledNotPermitted,
   not_document_annotation: messages.documentAnnotationDisabledNotActivePhase,
+  user_not_active: messages.documentAnnotationDisabledNotActiveUser,
+  user_not_verified: messages.documentAnnotationDisabledNotVerified,
+  user_missing_requirements: messages.documentAnnotationDisabledNotActiveUser,
+  user_not_signed_in: messages.documentAnnotationDisabledMaybeNotPermitted,
+  user_not_in_group: globalMessages.notInGroup,
+  user_not_permitted: messages.documentAnnotationDisabledNotPermitted,
+  user_blocked: messages.documentAnnotationDisabledNotPermitted,
 };
 
-const isEnabled = (disabledReason: DocumentAnnotationDisabledReason | null) => {
-  const reasonsToHideDocument: DocumentAnnotationDisabledReason[] = [
+const isEnabled = (
+  disabledReason: ProjectDocumentAnnotationDisabledReason | null
+) => {
+  const reasonsToHideDocument: ProjectDocumentAnnotationDisabledReason[] = [
     'project_inactive',
-    'not_in_group',
-    'not_permitted',
+    'user_not_in_group',
+    'user_not_permitted',
     'not_document_annotation',
   ];
 
@@ -53,7 +57,7 @@ const isEnabled = (disabledReason: DocumentAnnotationDisabledReason | null) => {
 
 const DocumentAnnotation = ({ project, phaseId, documentUrl }: Props) => {
   const { enabled: _enabled, disabled_reason } =
-    project.attributes.action_descriptor.annotating_document;
+    project.attributes.action_descriptors.annotating_document;
 
   if (documentUrl) {
     return (

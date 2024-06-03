@@ -4,12 +4,20 @@ module Verification
   module Patches
     module Permissions
       module UserRequirementsService
+        def requires_verification?(permission, user)
+          return false unless permission.permitted_by == 'groups'
+          return false if user.in_any_groups? permission.groups # if the user meets the requirements of any other group we don't need to ask for verification
+          return false unless verification_service.find_verification_group(permission.groups)
+
+          !user.verified?
+        end
+
         private
 
         def base_requirements(permission)
           requirements = super
 
-          if verification_service.find_verification_group(permission.groups)
+          if @check_groups && permission.permitted_by == 'groups' && verification_service.find_verification_group(permission.groups)
             requirements[:special][:verification] = 'require'
           end
           requirements
@@ -17,7 +25,7 @@ module Verification
 
         def mark_satisfied_requirements!(requirements, permission, user)
           super
-          return unless permission.permitted_by == 'groups' && verification_service.find_verification_group(permission.groups)
+          return unless requirements[:special][:verification] == 'require'
 
           if user.verified?
             requirements[:special][:verification] = 'satisfied'
