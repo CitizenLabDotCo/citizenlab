@@ -24,6 +24,8 @@ import { IProject } from 'api/projects/types';
 import useInputSchema from 'hooks/useInputSchema';
 import useLocalize from 'hooks/useLocalize';
 
+import ideaFormMessages from 'containers/IdeasNewPage/messages';
+
 import Form from 'components/Form';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
@@ -35,7 +37,6 @@ import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import { getFormValues } from '../../IdeasEditPage/utils';
 import IdeasNewSurveyMeta from '../IdeasNewSurveyMeta';
-import messages from '../messages';
 
 import SurveyHeading from './SurveyHeading';
 
@@ -100,9 +101,11 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   const getApiErrorMessage: ApiErrorGetter = useCallback(
     (error) => {
       return (
-        messages[`api_error_${uiSchema?.options?.inputTerm}_${error}`] ||
-        messages[`api_error_${error}`] ||
-        messages[`api_error_invalid`]
+        ideaFormMessages[
+          `api_error_${uiSchema?.options?.inputTerm}_${error}`
+        ] ||
+        ideaFormMessages[`api_error_${error}`] ||
+        ideaFormMessages[`api_error_invalid`]
       );
     },
     [uiSchema]
@@ -111,13 +114,13 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   const getAjvErrorMessage: AjvErrorGetter = useCallback(
     (error) => {
       return (
-        messages[
+        ideaFormMessages[
           `ajv_error_${uiSchema?.options?.inputTerm}_${
             getFieldNameFromPath(error.instancePath) ||
             error?.params?.missingProperty
           }_${error.keyword}`
         ] ||
-        messages[
+        ideaFormMessages[
           `ajv_error_${
             getFieldNameFromPath(error.instancePath) ||
             error?.params?.missingProperty
