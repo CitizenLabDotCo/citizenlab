@@ -1,3 +1,5 @@
+// If you want to run this test locally, you need to set the DEFAULT_AZURE_AD_B2C_* ENV variables in the cypress.env file.
+// `cp front/cypress.env.sample front/cypress.env`
 describe('Azure Active Directory B2C Authentication', () => {
   // https://docs.cypress.io/guides/end-to-end-testing/azure-active-directory-authentication
   function loginViaAAD(username: string, password: string) {
@@ -37,7 +39,10 @@ describe('Azure Active Directory B2C Authentication', () => {
     // Ensure Azure has redirected us back to the app with our logged in user.
     cy.url().should('equal', 'http://localhost:3000/en/');
 
-    cy.visit('/'); // For some reason, cookies are not set on the first visit, and so the user is not logged in.
+    // For some reason, cookies are not set on the first visit, and so the user is not logged in.
+    // Revisit the page to get the cookies set.
+    cy.visit('/');
+    // Check that the user is logged in but not verified.
     cy.get('#e2e-user-menu-container').should('exist');
     cy.get('.e2e-not-verified').should('exist');
   });
