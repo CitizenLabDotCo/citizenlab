@@ -15,6 +15,8 @@ import ResetMapViewButton from 'components/EsriMap/components/ResetMapViewButton
 import { esriPointToGeoJson, goToMapLocation } from 'components/EsriMap/utils';
 import { Option } from 'components/UI/LocationInput';
 
+import { sanitizeForClassname } from 'utils/JSONFormUtils';
+
 import ErrorDisplay from '../../../ErrorDisplay';
 import LocationTextInput from '../components/LocationTextInput';
 import { clearPointData, handleDataPointChange } from '../utils';
@@ -38,6 +40,7 @@ const DesktopView = ({
   handlePointChange,
   didBlur,
   mapView,
+  id,
 }: ControlProps & Props) => {
   const theme = useTheme();
   const locale = useLocale();
