@@ -7,16 +7,11 @@ import styled from 'styled-components';
 import { IPhaseData } from 'api/phases/types';
 import useProjectById from 'api/projects/useProjectById';
 
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-
 import { IIdeaPostingDisabledReason } from 'utils/actionTakingRules';
-import { trackEventByName } from 'utils/analytics';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import globalMessages from 'utils/messages';
 
 import messages from './messages';
-import tracks from './tracks';
 
 const TooltipContent = styled.div<{ inMap?: boolean }>`
   display: flex;
@@ -49,12 +44,11 @@ const TooltipContentText = styled.div`
     white-space: normal;
     overflow-wrap: break-word;
     word-wrap: break-word;
-    word-break: break-all;
     word-break: break-word;
     hyphens: auto;
     display: inline;
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
     cursor: pointer;
     transition: all 100ms ease-out;
     &:hover {
@@ -79,50 +73,12 @@ const disabledMessages: {
   projectInactive: messages.postingInactive,
   futureEnabled: messages.postingNotYetPossible,
   notActivePhase: messages.postingInNonActivePhases,
-  maybeNotPermitted: messages.postingMayNotBePermitted,
   notInGroup: globalMessages.notInGroup,
 };
 
-const TippyContent = ({ projectId, inMap, disabledReason, phase }: Props) => {
-  const { formatMessage } = useIntl();
+const TippyContent = ({ projectId, inMap, disabledReason }: Props) => {
   const { data: project } = useProjectById(projectId);
   if (!project) return null;
-
-  const context = {
-    action: 'posting_idea',
-    id: phase.id,
-    type: 'phase',
-  } as const;
-  const signUpIn =
-    (flow: 'signup' | 'signin') => (event?: React.MouseEvent) => {
-      event?.preventDefault();
-
-      const successAction: SuccessAction = {
-        name: 'redirectToIdeaForm',
-        params: {
-          projectSlug: project.data.attributes.slug,
-          phaseId: phase.id,
-        },
-      };
-
-      if (context) {
-        trackEventByName(tracks.signUpInModalOpened);
-
-        triggerAuthenticationFlow({
-          flow,
-          context,
-          successAction,
-        });
-      }
-    };
-
-  const signIn = (event?: React.MouseEvent) => {
-    signUpIn('signin')(event);
-  };
-
-  const signUp = (event?: React.MouseEvent) => {
-    signUpIn('signup')(event);
-  };
 
   return (
     <TooltipContent
@@ -132,26 +88,7 @@ const TippyContent = ({ projectId, inMap, disabledReason, phase }: Props) => {
     >
       <TooltipContentIcon name="lock" ariaHidden />
       <TooltipContentText>
-        <FormattedMessage
-          {...disabledMessages[disabledReason]}
-          values={{
-            verificationLink: (
-              <button onClick={signUp}>
-                {formatMessage(messages.verificationLinkText)}
-              </button>
-            ),
-            signUpLink: (
-              <button onClick={signUp}>
-                {formatMessage(messages.signUpLinkText)}
-              </button>
-            ),
-            signInLink: (
-              <button onClick={signIn}>
-                {formatMessage(messages.signInLinkText)}
-              </button>
-            ),
-          }}
-        />
+        <FormattedMessage {...disabledMessages[disabledReason]} />
       </TooltipContentText>
     </TooltipContent>
   );
