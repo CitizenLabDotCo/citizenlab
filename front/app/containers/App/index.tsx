@@ -16,7 +16,7 @@ import 'intersection-observer';
 import { includes, uniq } from 'lodash-es';
 import 'moment-timezone';
 import moment from 'moment';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { RouteType } from 'routes';
 import { ThemeProvider } from 'styled-components';
 import { SupportedLocale } from 'typings';
@@ -64,7 +64,6 @@ const locale$ = localeStream().observable;
 const App = ({ children }: Props) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const location = useLocation();
-  const [searchParams] = useSearchParams();
 
   const { mutate: signOutAndDeleteAccount } = useDeleteSelf();
   const [isAppInitialized, setIsAppInitialized] = useState(false);
