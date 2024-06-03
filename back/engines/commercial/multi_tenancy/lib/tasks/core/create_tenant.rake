@@ -357,8 +357,10 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           allowed: true,
           enabled: false,
           tenant_name: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_TENANT_NAME'),
-          tenant_id: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_TENANT_ID'),
           policy_name: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_POLICY_NAME'),
+          # These IDs are not secret, so it's fine if they are printed in CI
+          # https://stackoverflow.com/a/45663968
+          tenant_id: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_TENANT_ID'),
           client_id: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_CLIENT_ID'),
           logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
           login_mechanism_name: 'Azure AD B2C'
