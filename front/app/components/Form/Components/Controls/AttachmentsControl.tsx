@@ -144,7 +144,7 @@ const AttachmentsControl = ({
         files={files}
       />
       <ErrorDisplay
-        inputId={id}
+        inputId={sanitizeForClassname(id)}
         ajvErrors={errors}
         fieldPath={path}
         didBlur={didBlur}
