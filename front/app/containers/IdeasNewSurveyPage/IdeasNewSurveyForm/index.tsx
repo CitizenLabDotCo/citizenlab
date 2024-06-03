@@ -98,6 +98,10 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     : getCurrentPhase(phases?.data);
   const allowAnonymousPosting = phase?.attributes.allow_anonymous_participation;
 
+  /*
+    TODO: Both the api and ajv errors parts need a review. For now I've just copied this from the original (IdeasNewPage), but I'm not sure
+    the survey form is using any of these errros.
+  */
   const getApiErrorMessage: ApiErrorGetter = useCallback(
     (error) => {
       return (
