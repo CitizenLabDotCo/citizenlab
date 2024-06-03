@@ -11,9 +11,9 @@ import {
 
 import { IProjectData } from 'api/projects/types';
 
-import PageContainer from 'components/UI/PageContainer';
-
 // intl
+import ContentContainer from 'components/ContentContainer';
+
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
@@ -33,27 +33,25 @@ const SurveyNotActiveNotice = ({ project }: Props) => {
 
   return (
     <main>
-      <PageContainer>
-        <Box mx="auto">
-          <Title mt={isMobileOrSmaller ? '80px' : '160px'} textAlign="center">
-            {formatMessage(messages.surveyNotActiveTitle)}
-          </Title>
-          <Text mb="30px" textAlign="center">
-            {formatMessage(messages.surveyNotActiveDescription)}
-          </Text>
-          <Box display="flex" justifyContent="center">
-            <Button
-              icon="arrow-left"
-              pl="12px"
-              onClick={() => {
-                clHistory.push(`/projects/${project.attributes.slug}`);
-              }}
-            >
-              {formatMessage(messages.returnToProject)}
-            </Button>
-          </Box>
+      <ContentContainer>
+        <Title mt={isMobileOrSmaller ? '80px' : '160px'} textAlign="center">
+          {formatMessage(messages.surveyNotActiveTitle)}
+        </Title>
+        <Text mb="30px" textAlign="center">
+          {formatMessage(messages.surveyNotActiveDescription)}
+        </Text>
+        <Box display="flex" justifyContent="center">
+          <Button
+            icon="arrow-left"
+            pl="12px"
+            onClick={() => {
+              clHistory.push(`/projects/${project.attributes.slug}`);
+            }}
+          >
+            {formatMessage(messages.returnToProject)}
+          </Button>
         </Box>
-      </PageContainer>
+      </ContentContainer>
     </main>
   );
 };
