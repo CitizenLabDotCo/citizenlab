@@ -21,9 +21,9 @@ import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
-import SurveyNotActiveNotice from './components/SurveyNotActiveNotice';
-import SurveySubmittedNotice from './components/SurveySubmittedNotice';
 import IdeasNewSurveyForm from './IdeasNewSurveyForm';
+import SurveyNotActiveNotice from './SurveyNotActiveNotice';
+import SurveySubmittedNotice from './SurveySubmittedNotice';
 
 const IdeasNewSurveyPage = () => {
   const { slug } = useParams();
