@@ -1876,7 +1876,7 @@
   "app.utils.errors.default.ajv_error_minItems": "Moet ten minste {limit, plural, one {# artikel} other {# artikelen}}",
   "app.utils.errors.default.ajv_error_number_any": "Vul een geldig nummer in",
   "app.utils.errors.default.ajv_error_politician_required": "Vul a.u.b in of je actief bent als politicus",
-  "app.utils.errors.default.ajv_error_required2": "{fieldName} field is required",
+  "app.utils.errors.default.ajv_error_required2": "{fieldName} veld is vereist",
   "app.utils.errors.default.ajv_error_type": "Kan niet leeg zijn",
   "app.utils.errors.default.api_error_accepted": "Moet geaccepteerd worden",
   "app.utils.errors.default.api_error_blank": "Kan niet leeg zijn",
