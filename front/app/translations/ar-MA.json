@@ -939,7 +939,6 @@
   "app.containers.IdeaButton.postingInNonActivePhases": "يُمكن إضافة الطلبات الجديدة في المراحل المفعلة فقط.",
   "app.containers.IdeaButton.postingInactive": "لا يتم قبول الطلبات الجديدة حالياً",
   "app.containers.IdeaButton.postingLimitedMaxReached": "لقد أكملت هذا الاستبيان فعلاً. نشكرك على استجابتك!",
-  "app.containers.IdeaButton.postingMayNotBePermitted": "لتعرف إن كان بإمكانك نشر أفكار هنا، يُرجى {signInLink} إلى المنصة أولًا.",
   "app.containers.IdeaButton.postingNoPermission": "نشر فكرة هنا غير ممكن حاليًا.",
   "app.containers.IdeaButton.postingNotYetPossible": "لا تُقبل الطلبات الجديدة هنا بعد.",
   "app.containers.IdeaButton.signInLinkText": "تسجيل الدخول",
@@ -1472,7 +1471,7 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser": "الرجاء {completeRegistrationLink} لإجراء الاستطلاع.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "للأسف، ليس لديك الحق بالمشاركة في هذا الاستبيان.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "تتطلب المشاركة في الاستبيان التحقق من هويتك. {verificationLink}",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "لم يعُد هذا الاستبيان متاحًا لأن هذا المشروع لم يعُد مفعلا بعد الآن.",
+  "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive2": "الاستبيان لم يعد متاحا، لأن هذا المشروع لم يعد نشطا.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "تحقق من هويتك الآن.",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.completeRegistrationLinkText": "اكمل التسجيل",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.logInLinkText": "تسجيل الدخول",
@@ -1902,10 +1901,18 @@
   "app.utils.errors.defaultapi_error_.odd": "يجب أن يكون فرديًا",
   "app.utils.notInGroup": "أنت لا تفي بمتطلبات المشاركة.",
   "app.utils.participationMethod.onSurveySubmission": "شكرًا لك. تم تسلم استجابتك.",
+  "app.utils.participationMethodConfig.voting.votingNotInGroup": "أنت لا تستوفي متطلبات التصويت.",
+  "app.utils.participationMethodConfig.voting.votingNotPermitted": "لا يسمح لك بالتصويت.",
+  "app.utils.participationMethodConfig.voting.votingNotSignedIn2": "يجب عليك تسجيل الدخول أو التسجيل للتصويت.",
+  "app.utils.participationMethodConfig.voting.votingNotVerified": "يجب عليك التحقق من حسابك قبل أن تتمكن من التصويت.",
   "app.utils.votingMethodUtils.budget": "ميزانية",
   "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>أغلق إرسال الميزانيات في {endDate}.</b> كان لدى المشاركين ما مجموعه <b>{maxBudget} {currency} للتوزيع بين {optionCount} خيارات.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "تم تقديم الميزانية",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "الميزانية المقدمة 🎉",
+  "app.utils.votingMethodUtils.budgetingNotInGroup": "أنت لا تستوفي متطلبات تعيين الميزانيات.",
+  "app.utils.votingMethodUtils.budgetingNotPermitted": "لا يسمح لك بتعيين الميزانيات.",
+  "app.utils.votingMethodUtils.budgetingNotSignedIn2": "يجب عليك تسجيل الدخول أو التسجيل لتعيين الميزانيات.",
+  "app.utils.votingMethodUtils.budgetingNotVerified": "يجب عليك التحقق من حسابك قبل أن تتمكن من تعيين الميزانيات.",
   "app.utils.votingMethodUtils.budgetingPreSubmissionWarning": "<b>لن يتم احتساب ميزانيتك</b> حتى تنقر على \"إرسال\"",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsMinBudget": "الحد الأدنى للميزانية المطلوبة هو {amount} {currency}.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsOnceYouAreDone": "بمجرد الانتهاء ، انقر فوق \"إرسال\" لإرسال ميزانيتك.",
