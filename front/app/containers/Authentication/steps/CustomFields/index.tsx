@@ -29,7 +29,7 @@ interface Props {
   authenticationData: AuthenticationData;
   loading: boolean;
   setError: SetError;
-  onSubmit: (id: string, formData: Record<string, any>) => void;
+  onSubmit: (id: string, formData: Record<string, any>) => Promise<void>;
   onSkip: () => void;
 }
 
