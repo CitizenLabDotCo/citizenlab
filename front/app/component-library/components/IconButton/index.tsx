@@ -85,7 +85,7 @@ const IconButton = ({
   return (
     <StyledBox
       as="button"
-      className={className || ''}
+      className={className ?? ''}
       onClick={onClick}
       iconColorOnHover={iconColorOnHover}
       aria-expanded={ariaExpanded}
