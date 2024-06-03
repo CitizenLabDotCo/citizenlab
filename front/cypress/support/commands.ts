@@ -430,42 +430,6 @@ function apiGetAppConfiguration() {
   });
 }
 
-function apiCreateModeratorForProject(
-  firstName: string,
-  lastName: string,
-  email: string,
-  password: string,
-  projectId: string
-) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
-    const adminJwt = response.body.jwt;
-
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
-      },
-      method: 'POST',
-      url: 'web_api/v1/users',
-      body: {
-        user: {
-          email,
-          password,
-          locale: 'en',
-          first_name: firstName,
-          last_name: lastName,
-          roles: [
-            {
-              type: 'project_moderator',
-              project_id: projectId,
-            },
-          ],
-        },
-      },
-    });
-  });
-}
-
 function logout() {
   cy.clearCookies();
   cy.reload();
