@@ -71,7 +71,7 @@ const Fields = ({
     (
       error: ErrorObject,
       _translate: Translator,
-      uischema?: UISchemaElement
+      uischema?: UISchemaElement & { label?: string }
     ) => {
       const message =
         getAjvErrorMessage?.(error, uischema) ||
@@ -80,7 +80,10 @@ const Fields = ({
           format: error?.parentSchema?.format,
           type: error?.parentSchema?.type,
         });
-      return formatMessage(message, error.params);
+      return formatMessage(message, {
+        ...error.params,
+        fieldName: uischema?.label || '',
+      });
     },
     [formatMessage, getAjvErrorMessage]
   );
