@@ -1,4 +1,4 @@
-import React, { useState, lazy } from 'react';
+import React, { useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
@@ -11,12 +11,12 @@ import PDFExportModal, {
   FormValues,
 } from 'containers/Admin/projects/components/PDFExportModal';
 
+import FormBuilder from 'components/FormBuilder/edit';
+
 import { isNilOrError } from 'utils/helperUtils';
 
 import { saveIdeaFormAsPDF } from '../saveIdeaFormAsPDF';
 import { ideationConfig } from '../utils';
-
-const FormBuilder = lazy(() => import('components/FormBuilder/edit'));
 
 const IdeaFormBuilder = () => {
   const [exportModalOpen, setExportModalOpen] = useState(false);
