@@ -1876,7 +1876,7 @@
   "app.utils.errors.default.ajv_error_minItems": "Deve includere almeno {limit, plural, one {# item} other {# elementi}}",
   "app.utils.errors.default.ajv_error_number_any": "Si prega di inserire un numero valido",
   "app.utils.errors.default.ajv_error_politician_required": "Si prega di compilare se sei un politico",
-  "app.utils.errors.default.ajv_error_required2": "{fieldName} field is required",
+  "app.utils.errors.default.ajv_error_required2": "{fieldName} il campo è obbligatorio",
   "app.utils.errors.default.ajv_error_type": "Non può essere vuoto",
   "app.utils.errors.default.api_error_accepted": "Deve essere accettato",
   "app.utils.errors.default.api_error_blank": "Non può essere vuoto",
