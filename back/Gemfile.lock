@@ -40,6 +40,7 @@ PATH
   specs:
     content_builder (0.1.0)
       active_model_serializers (~> 0.10.7)
+      nanoid (~> 2.0)
       pundit (~> 2.0)
       rails (~> 7.0)
       ros-apartment (>= 2.9.0)
@@ -808,6 +809,7 @@ GEM
     mustache (1.1.1)
     mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
+    nanoid (2.0.0)
     net-http (0.4.1)
       uri
     net-imap (0.4.10)

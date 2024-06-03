@@ -14,6 +14,7 @@ import useEventImage from 'api/event_images/useEventImage';
 import { IEventData } from 'api/events/types';
 
 import EventAttendanceButton from 'components/EventAttendanceButton';
+import ScreenReadableEventDate from 'components/ScreenReadableEventDate';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import Image from 'components/UI/Image';
@@ -58,10 +59,9 @@ const PrimaryLink = styled(Link)`
 
 interface Props {
   event: IEventData;
-  titleFontSize?: number;
 }
 
-const EventInformation = ({ event, titleFontSize }: Props) => {
+const EventInformation = ({ event }: Props) => {
   const { formatMessage } = useIntl();
   const theme = useTheme();
 
@@ -95,7 +95,7 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
             <Title
               variant="h4"
               as="h3"
-              style={{ fontSize: titleFontSize, fontWeight: '600' }}
+              style={{ fontWeight: '600' }}
               pr="8px"
               color="tenantText"
               m="0px"
@@ -131,7 +131,14 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
                 ml={theme.isRtl ? '8px' : '0px'}
               />
             </Box>
-            <Text m="0px" pt="2px" color={'coolGrey700'} fontSize="s">
+            <ScreenReadableEventDate event={event} />
+            <Text
+              m="0px"
+              pt="2px"
+              color={'coolGrey700'}
+              fontSize="s"
+              aria-hidden
+            >
               {eventDateTime}
             </Text>
           </Box>

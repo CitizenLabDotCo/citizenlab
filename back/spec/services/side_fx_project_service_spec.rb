@@ -91,19 +91,6 @@ describe SideFxProjectService do
         .not_to have_enqueued_job(LogActivityJob)
         .with(project, 'published', user, project.updated_at.to_i, anything)
     end
-
-    it "does not log a 'changed_publication_status' action when a draft project is published" do
-      project.admin_publication.update!(publication_status: 'draft')
-
-      project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
-      service.before_update project, user
-
-      project.save!
-
-      expect { service.after_update(project, user) }
-        .not_to have_enqueued_job(LogActivityJob)
-        .with(project, 'changed_publication_status', user, project.updated_at.to_i, anything)
-    end
   end
 
   describe 'after_destroy' do
@@ -125,6 +112,32 @@ describe SideFxProjectService do
         anything
       )
       service.after_delete_inputs project, user
+    end
+  end
+
+  describe 'after_votes_by_user_xlsx' do
+    it 'logs "exported_votes_by_user" activity' do
+      expect(LogActivityJob).to receive(:perform_later).with(
+        project,
+        'exported_votes_by_user',
+        user,
+        anything,
+        project_id: project.id
+      )
+      service.after_votes_by_user_xlsx project, user
+    end
+  end
+
+  describe 'after_votes_by_input_xlsx' do
+    it 'logs "exported_votes_by_input" activity' do
+      expect(LogActivityJob).to receive(:perform_later).with(
+        project,
+        'exported_votes_by_input',
+        user,
+        anything,
+        project_id: project.id
+      )
+      service.after_votes_by_input_xlsx project, user
     end
   end
 end

@@ -69,7 +69,7 @@ const App = ({ children }: Props) => {
     null
   );
   const { data: appConfiguration } = useAppConfiguration();
-  const { data: authUser, isLoading } = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const appContainerClassName =
     isAdmin(authUser) || isProjectModerator(authUser) ? 'admin-user-view' : '';
   const [
@@ -268,7 +268,7 @@ const App = ({ children }: Props) => {
   const { pathname } = removeLocale(location.pathname);
   const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
   const disableScroll = fullscreenModalEnabled && signUpInModalOpened;
-  const isAuthenticationPending = !authUser && isLoading;
+  const isAuthenticationPending = authUser === undefined;
   const canAccessRoute = usePermission({
     item: {
       type: 'route',

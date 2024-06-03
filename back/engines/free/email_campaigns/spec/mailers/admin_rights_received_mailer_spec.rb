@@ -34,7 +34,7 @@ RSpec.describe EmailCampaigns::AdminRightsReceivedMailer do
     end
 
     it 'assigns moderate CTA' do
-      expect(mail.body.encoded).to match(Frontend::UrlService.new.home_url(app_configuration: AppConfiguration.instance, locale: 'en'))
+      expect(mail.body.encoded).to match(Frontend::UrlService.new.home_url(app_configuration: AppConfiguration.instance, locale: Locale.new('en')))
     end
   end
 end
