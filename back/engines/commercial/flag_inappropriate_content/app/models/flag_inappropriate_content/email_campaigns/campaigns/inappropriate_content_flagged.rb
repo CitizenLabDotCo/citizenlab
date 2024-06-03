@@ -92,7 +92,7 @@ module FlagInappropriateContent
           flaggable_type: data[:flaggable_type],
           flag_automatically_detected: data[:flag_automatically_detected],
           flaggable_author_name: UserDisplayNameService.new(AppConfiguration.instance, recipient).display_name!(data[:flaggable_author]),
-          flaggable_url: Frontend::UrlService.new.model_to_url(data[:flaggable], locale: recipient.locale)
+          flaggable_url: Frontend::UrlService.new.model_to_url(data[:flaggable], locale: Locale.new(recipient.locale))
         }
 
         case data[:flaggable_type]

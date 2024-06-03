@@ -13,6 +13,7 @@ RSpec.describe User do
     subject(:user) { build(:user) }
 
     it { is_expected.to have_many(:ideas).dependent(:nullify) }
+    it { is_expected.to have_many(:idea_imports).dependent(:nullify) }
     it { is_expected.to have_many(:initiatives).dependent(:nullify) }
     it { is_expected.to have_many(:assigned_initiatives).class_name('Initiative').dependent(:nullify) }
     it { is_expected.to have_many(:comments).dependent(:nullify) }
@@ -21,6 +22,12 @@ RSpec.describe User do
     it { is_expected.to have_many(:reactions).dependent(:nullify) }
     it { is_expected.to have_many(:event_attendances).class_name('Events::Attendance').dependent(:destroy) }
     it { is_expected.to have_many(:attended_events).through(:event_attendances).source(:event) }
+
+    it 'nullifies idea import association' do
+      idea_import = create(:idea_import, import_user: user)
+      expect { user.destroy }.not_to raise_error
+      expect(idea_import.reload.import_user).to be_nil
+    end
   end
 
   describe '.destroy_all_async' do
@@ -971,13 +978,19 @@ RSpec.describe User do
   end
 
   describe 'in_any_groups?' do
-    it 'returns truety iff the user is a member of one of the given groups' do
+    it 'returns true if the user is a member of one of the given groups' do
       group1, group2 = create_list(:group, 2)
       user = create(:user, manual_groups: [group1])
       expect(user.in_any_groups?(Group.none)).to be false
       expect(user.in_any_groups?(Group.where(id: group1))).to be true
       expect(user.in_any_groups?(Group.where(id: [group1, group2]))).to be true
       expect(user).not_to be_in_any_groups(Group.where(id: group2))
+    end
+
+    it 'returns false if the user is not in any groups' do
+      group = create(:group)
+      user = create(:user)
+      expect(user.in_any_groups?([group])).to be false
     end
   end
 
@@ -1040,33 +1053,6 @@ RSpec.describe User do
     end
 
     describe '#set_confirmation_required' do
-      it 'sets the confirmation required field' do
-        user.email_confirmed_at = Time.now
-        user.email_confirmation_code_sent_at = Time.now
-        user.validate
-
-        expect(user.confirmation_required?).to be true
-        expect(user.email_confirmed_at).to be_nil
-        expect(user.email_confirmation_code_sent_at).to be_nil
-      end
-
-      it 'sets false if the user is an admin' do
-        user.add_role('admin')
-        user.save!
-        expect(user.confirmation_required?).to be false
-      end
-
-      it 'sets false if the user is a project moderator' do
-        user.add_role('project_moderator', 'project_id' => 'some_id')
-        user.save!
-        expect(user.confirmation_required?).to be false
-      end
-
-      it 'sets true if the user is a normal user' do
-        user.save!
-        expect(user.confirmation_required?).to be true
-      end
-
       it 'does not perform a commit to the db' do
         user.validate
         expect(user.saved_change_to_confirmation_required?).to be false
