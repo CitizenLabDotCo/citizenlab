@@ -60,7 +60,7 @@ const TopicsControl = ({
         id={sanitizeForClassname(id)}
       />
       <ErrorDisplay
-        inputId={id}
+        inputId={sanitizeForClassname(id)}
         fieldPath={path}
         ajvErrors={errors}
         didBlur={didBlur}

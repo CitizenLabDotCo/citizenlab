@@ -105,7 +105,7 @@ const SingleSelectRadioEnumControl = ({
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
       <ErrorDisplay
-        inputId={id}
+        inputId={sanitizeForClassname(id)}
         ajvErrors={errors}
         fieldPath={path}
         didBlur={didBlur}

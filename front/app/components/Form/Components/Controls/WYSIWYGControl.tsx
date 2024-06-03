@@ -53,7 +53,7 @@ const WYSIWYGControl = ({
         onBlur={() => setDidBlur(true)}
       />
       <ErrorDisplay
-        inputId={id}
+        inputId={sanitizeForClassname(id)}
         ajvErrors={errors}
         fieldPath={path}
         didBlur={didBlur}

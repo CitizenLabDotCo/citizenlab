@@ -106,7 +106,7 @@ const MobileView = ({
         </Box>
       </Box>
       <ErrorDisplay
-        inputId={id}
+        inputId={sanitizeForClassname(id)}
         ajvErrors={errors}
         fieldPath={path}
         didBlur={didBlur}

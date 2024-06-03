@@ -78,7 +78,7 @@ const LocationControl = ({
       />
 
       <ErrorDisplay
-        inputId={id}
+        inputId={sanitizeForClassname(id)}
         didBlur={didBlur}
         ajvErrors={errors}
         fieldPath={path}
