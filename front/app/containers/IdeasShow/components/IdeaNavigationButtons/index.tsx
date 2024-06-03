@@ -79,6 +79,7 @@ const IdeaNavigationButtons = ({ projectId, phaseContext }: Props) => {
             );
           }}
           a11y_buttonActionMessage={formatMessage(messages.goToPreviousInput)}
+          aria-label={formatMessage(messages.goToPreviousInput)}
           iconColor={colors.coolGrey500}
           iconColorOnHover={colors.coolGrey600}
           opacity={previousIdeaSlug ? 1 : 0}
@@ -86,6 +87,7 @@ const IdeaNavigationButtons = ({ projectId, phaseContext }: Props) => {
         />
         <Text
           color="coolGrey600"
+          tabIndex={0}
           aria-live="polite"
           aria-label={formatMessage(messages.ideaIndexAriaMessage, {
             currentIndex: ideaIndex,
@@ -103,6 +105,7 @@ const IdeaNavigationButtons = ({ projectId, phaseContext }: Props) => {
               `/ideas/${nextIdeaSlug}?phase_context=${phaseContext}`
             );
           }}
+          aria-label={formatMessage(messages.goToNextInput)}
           a11y_buttonActionMessage={formatMessage(messages.goToNextInput)}
           opacity={nextIdeaSlug ? 1 : 0}
           iconColor={colors.coolGrey500}
