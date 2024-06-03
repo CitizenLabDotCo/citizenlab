@@ -1876,7 +1876,7 @@
   "app.utils.errors.default.ajv_error_minItems": "Pode incluir ao menos {limit, plural, one {# item} other {# itens}}",
   "app.utils.errors.default.ajv_error_number_any": "Por favor, preencha uma data válida",
   "app.utils.errors.default.ajv_error_politician_required": "Por favor, preencha se você é um político",
-  "app.utils.errors.default.ajv_error_required2": "{fieldName} field is required",
+  "app.utils.errors.default.ajv_error_required2": "{fieldName} campo é obrigatório",
   "app.utils.errors.default.ajv_error_type": "Não pode estar em branco",
   "app.utils.errors.default.api_error_accepted": "Deve ser aceito",
   "app.utils.errors.default.api_error_blank": "Não pode estar em branco",
