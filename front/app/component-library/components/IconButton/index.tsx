@@ -2,7 +2,6 @@ import React, { MouseEvent, KeyboardEvent } from 'react';
 
 import styled from 'styled-components';
 
-import { colors } from '../../utils/styleUtils';
 import Box, {
   BoxPositionProps,
   BoxMarginProps,
@@ -40,11 +39,6 @@ const StyledBox = styled(Box)<{
       fill: ${({ iconColorOnHover }) => iconColorOnHover};
     }
   }
-
-  &.disabled {
-    color: ${colors.coolGrey600};
-    cursor: not-allowed;
-  }
 `;
 
 export type IconButtonProps = {
@@ -55,7 +49,6 @@ export type IconButtonProps = {
   a11y_buttonActionMessage: string;
   onClick: (event?: MouseEvent | KeyboardEvent) => void;
   iconWidth?: string;
-  disabled?: boolean;
   iconHeight?: string;
   iconColor: string;
   iconColorOnHover: string;
@@ -82,7 +75,6 @@ const IconButton = ({
   iconColor,
   iconColorOnHover,
   ariaHidden,
-  disabled,
   ariaExpanded,
   ariaControls,
   buttonType,
@@ -90,13 +82,10 @@ const IconButton = ({
   transform,
   ...rest
 }: IconButtonProps) => {
-  const classname = disabled ? 'disabled' : className || '';
-
   return (
     <StyledBox
       as="button"
-      className={classname}
-      disabled={disabled}
+      className={className || ''}
       onClick={onClick}
       iconColorOnHover={iconColorOnHover}
       aria-expanded={ariaExpanded}

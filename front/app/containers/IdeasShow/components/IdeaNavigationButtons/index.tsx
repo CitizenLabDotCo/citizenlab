@@ -72,7 +72,6 @@ const IdeaNavigationButtons = ({ projectId, phaseContext }: Props) => {
         <IconButton
           p="0px !important"
           iconName="chevron-left"
-          disabled={!previousIdeaSlug}
           onClick={() => {
             clHistory.replace(
               `/ideas/${previousIdeaSlug}?phase_context=${phaseContext}`
@@ -99,7 +98,6 @@ const IdeaNavigationButtons = ({ projectId, phaseContext }: Props) => {
         <IconButton
           p="0px !important"
           iconName="chevron-right"
-          disabled={!nextIdeaSlug}
           onClick={() => {
             clHistory.replace(
               `/ideas/${nextIdeaSlug}?phase_context=${phaseContext}`
