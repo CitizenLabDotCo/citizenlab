@@ -69,7 +69,7 @@ describe('Form builder number field', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
 
     // Try filling in the survey
-    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.acceptCookies();
     cy.contains(questionTitle).should('exist');
 
@@ -81,7 +81,7 @@ describe('Form builder number field', () => {
       'eq',
       `${
         Cypress.config().baseUrl
-      }/en/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`
+      }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
     );
 
     // Try entering text that isn't a number
