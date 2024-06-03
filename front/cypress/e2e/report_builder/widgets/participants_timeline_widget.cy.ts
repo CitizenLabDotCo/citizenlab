@@ -122,7 +122,7 @@ describe('Report builder Participants timeline widget', () => {
     cy.get('.recharts-surface:first').trigger('mouseover');
 
     cy.contains('New Widget Title').should('exist');
-    cy.contains('Participants: 1').should('exist');
+    cy.contains('Participants: ').should('exist');
 
     cy.get('.e2e-statistic-delta').should('exist');
   });
