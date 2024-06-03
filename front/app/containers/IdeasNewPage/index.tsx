@@ -38,7 +38,7 @@ const IdeasNewPage = () => {
   }) as { [key: string]: string };
 
   /*
-    TO DO: simplify this logic, then merge with that of the IdeasNewSurveyPage
+    TO DO: simplify these loading & auth checks, then if possible abstract and use the same the IdeasNewSurveyPage
   */
 
   if (projectStatus === 'loading' || phasesStatus === 'loading') {
