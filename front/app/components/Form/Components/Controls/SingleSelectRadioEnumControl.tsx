@@ -25,6 +25,7 @@ import messages from './messages';
 const StyledBox = styled(Box)`
   cursor: pointer;
   background-color: ${colors.grey100};
+  border: 1px solid ${colors.grey800};
   &:hover {
     background-color: ${darken(0.05, colors.grey100)};
   }
