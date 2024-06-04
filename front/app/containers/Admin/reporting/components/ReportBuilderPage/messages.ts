@@ -15,8 +15,8 @@ export default defineMessages({
     defaultMessage: 'Create a report',
   },
   createReportModalTitle: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalTitle',
-    defaultMessage: 'Create a project report',
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalTitle2',
+    defaultMessage: 'Create a report',
   },
   createReportModalInputLabel: {
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel',

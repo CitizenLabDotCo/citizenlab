@@ -483,7 +483,6 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.anErrorOccurred": "An error occurred when trying to create this report. Please try again later.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.blankTemplate": "Fänkt mat enger eideler Säit un",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel": "Rapportstitel",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalTitle": "Leet e Rapportstitel un",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateButtonText": "Leet e Rapport un",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateTitle": "Leet Ären éischte Projetsrapport un",
   "app.containers.Admin.reporting.components.ReportBuilderPage.printToPdf": "Eng PDF-Datei erstellen",

@@ -999,7 +999,6 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.anErrorOccurred": "Er is een fout opgetreden bij het maken van dit rapport. Probeer het later nog eens.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.blankTemplate": "Begin met een lege pagina",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel": "Titel van het rapport",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalTitle": "Maak een projectrapport",
   "app.containers.Admin.reporting.components.ReportBuilderPage.customizeReport": "Pas je rapport aan en deel het als PDF-bestand met interne belanghebbenden of de community.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateButtonText": "Maak een rapport",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateTitle": "Maak je eerste projectrapport",
