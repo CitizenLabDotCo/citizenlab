@@ -13,8 +13,9 @@ import { Stats } from '../typings';
 
 import {
   AbsoluteStatistic,
-  VisitDurationStatistic,
-  PageViewsStatistic,
+  OtherStatistic,
+  getDurationDeltaSign,
+  getPageViewsDeltaSign,
 } from './Statistics';
 
 export interface Props {
@@ -37,62 +38,69 @@ const Wide = ({
   const previousDays = getDaysInRange(startAt, endAt);
 
   return (
-    <Box width="100%" pb="8px">
-      <Box height="100%" display="flex" flexDirection="column">
-        {!hideStatistics && (
-          <Box
-            display="flex"
-            flexDirection="row"
-            justifyContent="space-between"
-          >
-            <Box maxWidth="25%" pr="12px">
-              <AbsoluteStatistic
-                nameMessage={visitorsCardMessages.visitors}
-                tooltipMessage={visitorsCardMessages.visitorsStatTooltipMessage}
-                stat={stats.visitors}
-                previousDays={previousDays}
-              />
-            </Box>
-            <Box maxWidth="25%" pr="12px">
-              <AbsoluteStatistic
-                nameMessage={visitorsCardMessages.visits}
-                tooltipMessage={visitorsCardMessages.visitsStatTooltipMessage}
-                stat={stats.visits}
-                previousDays={previousDays}
-              />
-            </Box>
-            <Box maxWidth="25%" pr="12px">
-              <VisitDurationStatistic
-                nameMessage={visitorsCardMessages.visitDuration}
-                stat={stats.visitDuration}
-                previousDays={previousDays}
-              />
-            </Box>
-            <Box maxWidth="25%" pr="12px">
-              <PageViewsStatistic
-                nameMessage={visitorsCardMessages.pageViews}
-                stat={stats.pageViews}
-                previousDays={previousDays}
-              />
-            </Box>
+    <Box
+      width="100%"
+      pb="8px"
+      height="100%"
+      display="flex"
+      flexDirection="column"
+    >
+      {!hideStatistics && (
+        <Box display="flex" flexDirection="row" justifyContent="space-between">
+          <Box maxWidth="25%" pr="12px">
+            <AbsoluteStatistic
+              nameMessage={visitorsCardMessages.visitors}
+              tooltipMessage={visitorsCardMessages.visitorsStatTooltipMessage}
+              stat={stats.visitors}
+              previousDays={previousDays}
+            />
           </Box>
-        )}
-
-        <Box flexGrow={1} display="flex" justifyContent="flex-start" mt="20px">
-          <Box pt="8px" w="100%" maxWidth="800px" h="240px">
-            <Chart
-              timeSeries={timeSeries}
-              startAtMoment={startAt ? moment(startAt) : null}
-              endAtMoment={endAt ? moment(endAt) : null}
-              resolution={currentResolution}
-              yaxis={{
-                orientation: 'right',
-                tickFormatter: formatLargeNumber,
-              }}
-              margin={{ top: 0, right: -16, bottom: 0, left: 0 }}
+          <Box maxWidth="25%" pr="12px">
+            <AbsoluteStatistic
+              nameMessage={visitorsCardMessages.visits}
+              tooltipMessage={visitorsCardMessages.visitsStatTooltipMessage}
+              stat={stats.visits}
+              previousDays={previousDays}
+            />
+          </Box>
+          <Box maxWidth="25%" pr="12px">
+            <OtherStatistic
+              nameMessage={visitorsCardMessages.visitDuration}
+              stat={stats.visitDuration}
+              previousDays={previousDays}
+              sign={getDurationDeltaSign(stats.visitDuration.delta)}
+            />
+          </Box>
+          <Box maxWidth="25%" pr="12px">
+            <OtherStatistic
+              nameMessage={visitorsCardMessages.pageViews}
+              stat={stats.pageViews}
+              previousDays={previousDays}
+              sign={getPageViewsDeltaSign(stats.pageViews.delta)}
             />
           </Box>
         </Box>
+      )}
+
+      <Box
+        flexGrow={1}
+        display="flex"
+        justifyContent="flex-start"
+        mt="28px"
+        maxWidth="800px"
+        h="240px"
+      >
+        <Chart
+          timeSeries={timeSeries}
+          startAtMoment={startAt ? moment(startAt) : null}
+          endAtMoment={endAt ? moment(endAt) : null}
+          resolution={currentResolution}
+          yaxis={{
+            orientation: 'right',
+            tickFormatter: formatLargeNumber,
+          }}
+          margin={{ top: 0, right: -16, bottom: 0, left: 0 }}
+        />
       </Box>
     </Box>
   );

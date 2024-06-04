@@ -36,9 +36,9 @@ import { isModerator } from 'utils/permissions/roles';
 
 import Analysis from '../Analysis';
 import { WIDGET_TITLES } from '../Widgets';
-import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
 import DemographicsWidget from '../Widgets/ChartWidgets/DemographicsWidget';
 import MethodsUsedWidget from '../Widgets/ChartWidgets/MethodsUsedWidget';
+import ParticipantsWidget from '../Widgets/ChartWidgets/ParticipantsWidget';
 import ParticipationWidget from '../Widgets/ChartWidgets/ParticipationWidget';
 import RegistrationsWidget from '../Widgets/ChartWidgets/RegistrationsWidget';
 import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
@@ -259,17 +259,17 @@ const ReportBuilderToolbox = ({
               label={formatMessage(WIDGET_TITLES.VisitorsWidget)}
             />
             <DraggableElement
-              id="e2e-draggable-active-users-widget"
+              id="e2e-draggable-participants-widget"
               component={
-                <ActiveUsersWidget
-                  title={toMultiloc(WIDGET_TITLES.ActiveUsersWidget)}
+                <ParticipantsWidget
+                  title={toMultiloc(WIDGET_TITLES.ParticipantsWidget)}
                   projectId={selectedProjectId}
                   startAt={undefined}
                   endAt={chartEndDate}
                 />
               }
               icon="chart-bar"
-              label={formatMessage(WIDGET_TITLES.ActiveUsersWidget)}
+              label={formatMessage(WIDGET_TITLES.ParticipantsWidget)}
             />
             <DraggableElement
               id="e2e-draggable-registrations-widget"
