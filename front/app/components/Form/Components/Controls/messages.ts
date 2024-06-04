@@ -10,9 +10,9 @@ export default defineMessages({
     defaultMessage: 'Field only visible to admins',
   },
   notPublic: {
-    id: 'app.components.form.controls.notPublic',
+    id: 'app.components.form.controls.notPublic1',
     defaultMessage:
-      '*This answer will only be shared with moderators, and not to the public.',
+      '*This answer will only be shared with project managers, and not to the public.',
   },
   selectBetween: {
     id: 'app.components.form.controls.selectBetween',
@@ -28,9 +28,9 @@ export default defineMessages({
     defaultMessage: '*Select as many as you like',
   },
   validCordinatesTooltip: {
-    id: 'app.components.form.controls.validCordinatesTooltip',
+    id: 'app.components.form.controls.validCordinatesTooltip2',
     defaultMessage:
-      "If the location is not displayed among the options as you type, you can add valid coordinates in the format 'latitude, longitude' to specify a precise location.",
+      "If the location is not displayed among the options as you type, you can add valid coordinates in the format 'latitude, longitude' to specify a precise location (eg: -33.019808, -71.495676).",
   },
   tapOnMapToAdd: {
     id: 'app.components.form.controls.tapOnMapToAdd2',

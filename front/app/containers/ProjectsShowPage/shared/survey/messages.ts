@@ -2,9 +2,9 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   surveyDisabledProjectInactive: {
-    id: 'app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive',
+    id: 'app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive2',
     defaultMessage:
-      'The survey is no longer available, since this proect is no longer active.',
+      'The survey is no longer available, since this project is no longer active.',
   },
   surveyDisabledNotPermitted: {
     id: 'app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted',

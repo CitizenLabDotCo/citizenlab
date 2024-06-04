@@ -168,7 +168,7 @@ const IdeaMapCard = memo<Props>(
       const tenantCurrency = appConfig.data.attributes.settings.core.currency;
       const ideaBudget = idea.attributes?.budget;
       const reactingActionDescriptor =
-        project.data.attributes.action_descriptor.reacting_idea;
+        project.data.attributes.action_descriptors.reacting_idea;
 
       const showDislike =
         reactingActionDescriptor.down.enabled === true ||
@@ -177,7 +177,7 @@ const IdeaMapCard = memo<Props>(
             'reacting_dislike_disabled');
 
       const commentingEnabled =
-        project.data.attributes.action_descriptor.commenting_idea.enabled;
+        project.data.attributes.action_descriptors.commenting_idea.enabled;
       const ideaHasComments = idea.attributes.comments_count > 0;
       const showCommentCount = commentingEnabled || ideaHasComments;
       const phaseButNotCurrentPhase =

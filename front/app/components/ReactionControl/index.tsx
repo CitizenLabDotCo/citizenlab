@@ -168,7 +168,7 @@ const ReactionControl = ({
 
   const ideaAttributes = idea.data.attributes;
   const reactingActionDescriptor =
-    ideaAttributes.action_descriptor.reacting_idea;
+    ideaAttributes.action_descriptors.reacting_idea;
   const cancellingEnabled = reactingActionDescriptor.cancelling_enabled;
 
   // participationContext
