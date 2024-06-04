@@ -6,6 +6,10 @@ RSpec.describe ReportBuilder::Queries::Analytics::Registrations do
   subject(:query) { described_class.new(build(:user)) }
 
   describe '#run_query' do
+    before do
+      FactoryBot.rewind_sequences
+    end
+
     september = Date.new(2022, 9, 10)
     let!(:dimension_date_september) { create(:dimension_date, date: september) }
 
