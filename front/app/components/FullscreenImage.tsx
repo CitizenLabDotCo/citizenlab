@@ -19,7 +19,8 @@ const FullscreenImage = ({ src, altText }: Props) => {
   const [isImagedLoaded, setIsImageLoaded] = useState(false);
   const isSmallerThanPhone = useBreakpoint('phone');
 
-  const toggleFullscreen = () => {
+  const toggleFullscreen = (event: any) => {
+    event.preventDefault(); // prevent the image option from being checked (selected)
     setFullscreen(!fullscreen);
   };
 
