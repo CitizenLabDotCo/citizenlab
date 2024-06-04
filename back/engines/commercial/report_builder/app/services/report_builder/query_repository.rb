@@ -8,7 +8,7 @@ module ReportBuilder
       'ReactionsByTimeWidget' => Queries::Analytics::ReactionsByTime,
       'CommentsByTimeWidget' => Queries::Analytics::CommentsByTime,
       'PostsByTimeWidget' => Queries::Analytics::PostsByTime,
-      'ActiveUsersWidget' => Queries::Analytics::ActiveUsers,
+      'ParticipantsWidget' => Queries::Analytics::Participants,
       'VisitorsWidget' => Queries::Analytics::Visitors,
       'VisitorsTrafficSourcesWidget' => Queries::Analytics::TrafficSources,
       'SurveyQuestionResultWidget' => Queries::SurveyQuestionResult,
@@ -16,7 +16,9 @@ module ReportBuilder
       'SingleIdeaWidget' => Queries::SingleIdea,
       'DemographicsWidget' => Queries::Demographics,
       'RegistrationsWidget' => Queries::Analytics::Registrations,
-      'MethodsUsedWidget' => Queries::MethodsUsed
+      'MethodsUsedWidget' => Queries::MethodsUsed,
+      'ParticipationWidget' => Queries::Analytics::Participation,
+      'ProjectsWidget' => Queries::Projects
     }.freeze
 
     def initialize(current_user)

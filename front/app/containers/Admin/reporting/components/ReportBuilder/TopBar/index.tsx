@@ -29,6 +29,8 @@ import Button from 'components/UI/Button';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
+import { PLATFORM_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE } from '../Templates/PlatformTemplate/constants';
+import { PROJECT_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE } from '../Templates/ProjectTemplate/constants';
 import { View } from '../ViewContainer/typings';
 import ViewPicker from '../ViewContainer/ViewPicker';
 
@@ -137,7 +139,11 @@ const ContentBuilderTopBar = ({
 
       const displayName = nodes?.[firstNode].displayName;
 
-      if (!['ProjectTemplate', 'PhaseTemplate'].includes(displayName)) {
+      if (
+        !['ProjectTemplate', 'PhaseTemplate', 'PlatformTemplate'].includes(
+          displayName
+        )
+      ) {
         // In theory this should not be possible, but handling
         // it gracefully just in case
         setInitialized(true);
@@ -145,8 +151,24 @@ const ContentBuilderTopBar = ({
         return;
       }
 
+      // Nodes take some time to load. We don't want to save if not
+      // all nodes are loaded yet. That's why we add these checks-
+      // if we early return here, we basically wait for the next interval and check
+      // again if the number of nodes is already correct.
       const numberOfNodes = Object.keys(nodes).length;
-      if (displayName === 'ProjectTemplate' && numberOfNodes < 5) return;
+
+      if (
+        displayName === 'ProjectTemplate' &&
+        numberOfNodes < PROJECT_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE
+      ) {
+        return;
+      }
+      if (
+        displayName === 'PlatformTemplate' &&
+        numberOfNodes < PLATFORM_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE
+      ) {
+        return;
+      }
 
       updateReportLayout(
         {

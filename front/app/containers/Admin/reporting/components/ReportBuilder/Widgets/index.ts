@@ -7,27 +7,30 @@ import AboutReportWidget, {
   aboutReportTitle,
 } from './_deprecated/AboutReportWidget';
 import AgeWidget, { ageTitle } from './ChartWidgets/_deprecated/AgeWidget';
+import CommentsByTimeWidget, {
+  commentsByTimeTitle,
+} from './ChartWidgets/_deprecated/CommentsByTimeWidget';
 import GenderWidget, {
   genderTitle,
 } from './ChartWidgets/_deprecated/GenderWidget';
-import ActiveUsersWidget, {
-  activeUsersTitle,
-} from './ChartWidgets/ActiveUsersWidget';
-import CommentsByTimeWidget, {
-  commentsByTimeTitle,
-} from './ChartWidgets/CommentsByTimeWidget';
+import PostsByTimeWidget, {
+  postsByTimeTitle,
+} from './ChartWidgets/_deprecated/PostsByTimeWidget';
+import ReactionsByTimeWidget, {
+  reactionsByTimeTitle,
+} from './ChartWidgets/_deprecated/ReactionsByTimeWidget';
 import DemographicsWidget, {
   demographicsTitle,
 } from './ChartWidgets/DemographicsWidget';
 import MethodsUsedWidget, {
   methodsUsedTitle,
 } from './ChartWidgets/MethodsUsedWidget';
-import PostsByTimeWidget, {
-  postsByTimeTitle,
-} from './ChartWidgets/PostsByTimeWidget';
-import ReactionsByTimeWidget, {
-  reactionsByTimeTitle,
-} from './ChartWidgets/ReactionsByTimeWidget';
+import ParticipantsWidget, {
+  participantsTitle,
+} from './ChartWidgets/ParticipantsWidget';
+import ParticipationWidget, {
+  participationTitle,
+} from './ChartWidgets/ParticipationWidget';
 import RegistrationsWidget, {
   registrationsTitle,
 } from './ChartWidgets/RegistrationsWidget';
@@ -40,6 +43,7 @@ import ImageMultiloc, { imageMultilocTitle } from './ImageMultiloc';
 import MostReactedIdeasWidget, {
   mostReactedIdeasTitle,
 } from './MostReactedIdeasWidget';
+import ProjectsWidget, { projectsTitle } from './ProjectsWidget';
 import SingleIdeaWidget, { singleIdeaTitle } from './SingleIdeaWidget';
 import SurveyQuestionResultWidget, {
   surveyQuestionResultTitle,
@@ -55,20 +59,26 @@ export const WIDGETS = {
   SurveyQuestionResultWidget,
   VisitorsWidget,
   VisitorsTrafficSourcesWidget,
-  ActiveUsersWidget,
   MostReactedIdeasWidget,
   SingleIdeaWidget,
-  PostsByTimeWidget,
-  CommentsByTimeWidget,
-  ReactionsByTimeWidget,
   DemographicsWidget,
   IframeMultiloc,
   RegistrationsWidget,
   MethodsUsedWidget,
+  ParticipationWidget,
+  ProjectsWidget,
+  ParticipantsWidget,
+
+  // RENAMED (TODO rename in migration)
+  ActiveUsersWidget: ParticipantsWidget,
+
   // DEPRECATED
   AgeWidget,
   GenderWidget,
   AboutReportWidget,
+  PostsByTimeWidget,
+  CommentsByTimeWidget,
+  ReactionsByTimeWidget,
 };
 
 type WidgetName = keyof typeof WIDGETS;
@@ -83,18 +93,24 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   SingleIdeaWidget: singleIdeaTitle,
   VisitorsWidget: visitorsTitle,
   VisitorsTrafficSourcesWidget: visitorsTrafficSourcesTitle,
-  ActiveUsersWidget: activeUsersTitle,
-  PostsByTimeWidget: postsByTimeTitle,
-  CommentsByTimeWidget: commentsByTimeTitle,
-  ReactionsByTimeWidget: reactionsByTimeTitle,
   DemographicsWidget: demographicsTitle,
   IframeMultiloc: iframeMultilocTitle,
   RegistrationsWidget: registrationsTitle,
   MethodsUsedWidget: methodsUsedTitle,
+  ParticipationWidget: participationTitle,
+  ProjectsWidget: projectsTitle,
+  ParticipantsWidget: participantsTitle,
+
+  // RENAMED (TODO rename in migration)
+  ActiveUsersWidget: participantsTitle,
+
   // DEPRECATED
   AgeWidget: ageTitle,
   GenderWidget: genderTitle,
   AboutReportWidget: aboutReportTitle,
+  PostsByTimeWidget: postsByTimeTitle,
+  CommentsByTimeWidget: commentsByTimeTitle,
+  ReactionsByTimeWidget: reactionsByTimeTitle,
 };
 
 const WIDGETS_WITH_CHILDREN = new Set<string>([
@@ -106,10 +122,6 @@ export const hasChildren = (nodeName: string) => {
 };
 
 const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
-  'ActiveUsersWidget',
-  'CommentsByTimeWidget',
-  'PostsByTimeWidget',
-  'ReactionsByTimeWidget',
   'VisitorsTrafficSourcesWidget',
   'VisitorsWidget',
   'SurveyQuestionResultWidget',
@@ -117,9 +129,18 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'IframeMultiloc',
   'RegistrationsWidget',
   'MethodsUsedWidget',
+  'ParticipationWidget',
+  'ParticipantsWidget',
+
+  // RENAMED (TODO rename in migration)
+  'ActiveUsersWidget',
+
   // DEPRECATED
   'AgeWidget',
   'GenderWidget',
+  'PostsByTimeWidget',
+  'CommentsByTimeWidget',
+  'ReactionsByTimeWidget',
 ] satisfies WidgetName[]);
 
 export const hasNoPointerEvents = (nodeName: string) => {

@@ -1,0 +1,36 @@
+import { defineMessages } from 'react-intl';
+
+export default defineMessages({
+  publishedProjects: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publishedProjects',
+    defaultMessage: 'Published projects',
+  },
+  xParticipants: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.xParticipants',
+    defaultMessage: '{participants} participants',
+  },
+  xIdeas: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.xIdeas',
+    defaultMessage: '{ideas} ideas',
+  },
+  xComments: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.xComments',
+    defaultMessage: '{comments} comments',
+  },
+  finished: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.finished',
+    defaultMessage: 'Finished',
+  },
+  active: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.active',
+    defaultMessage: 'Active',
+  },
+  stale: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.stale',
+    defaultMessage: 'Stale',
+  },
+  planned: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.planned',
+    defaultMessage: 'Planned',
+  },
+});

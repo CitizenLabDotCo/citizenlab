@@ -45,6 +45,14 @@ RSpec.describe ReportBuilder::Queries::MethodsUsed do
         end_at: Date.new(2021, 6, 10)
       )
 
+      project2 = create(:project)
+      create(
+        :single_voting_phase,
+        project: project2,
+        start_at: Date.new(2021, 3, 11),
+        end_at: nil
+      )
+
       # Make TimeBoundariesParser work as expected
       AppConfiguration.instance.update!(created_at: Date.new(2020, 12, 31))
     end
@@ -59,7 +67,8 @@ RSpec.describe ReportBuilder::Queries::MethodsUsed do
         expect(result[:count_per_method]).to eq({
           'information' => 1,
           'ideation' => 1,
-          'volunteering' => 1
+          'volunteering' => 1,
+          'voting' => 1
         })
       end
     end
