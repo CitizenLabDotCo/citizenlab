@@ -3,8 +3,6 @@ import React from 'react';
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import Button from 'components/UI/Button';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -14,7 +12,7 @@ import messages from '../messages';
 import apiImage from './api.png';
 
 export const PublicAPI = () => {
-  const isPublicAPIEnabled = useFeatureFlag({ name: 'public_api_tokens' });
+  const isPublicAPIEnabled = false;
   const { formatMessage } = useIntl();
 
   return (
@@ -35,12 +33,36 @@ export const PublicAPI = () => {
           {formatMessage(messages.publicAPIDescription)}
         </Text>
         <Tippy
+          plugins={[
+            {
+              name: 'hideOnEsc',
+              defaultValue: true,
+              fn({ hide }) {
+                function onKeyDown(event) {
+                  if (event.keyCode === 27) {
+                    hide();
+                  }
+                }
+
+                return {
+                  onShow() {
+                    document.addEventListener('keydown', onKeyDown);
+                  },
+                  onHide() {
+                    document.removeEventListener('keydown', onKeyDown);
+                  },
+                };
+              },
+            },
+          ]}
           content={<FormattedMessage {...messages.publicAPIDisabled} />}
           disabled={isPublicAPIEnabled}
           placement="top"
           theme="dark"
+          interactive={false}
+          role="tooltip"
         >
-          <div>
+          <Box tabIndex={0} width="fit-content">
             <Button
               disabled={!isPublicAPIEnabled}
               height="45px"
@@ -54,7 +76,7 @@ export const PublicAPI = () => {
             >
               {formatMessage(messages.managePublicAPIKeys)}
             </Button>
-          </div>
+          </Box>
         </Tippy>
       </Box>
     </Box>
