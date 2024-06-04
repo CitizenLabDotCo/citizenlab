@@ -30,7 +30,7 @@ describe('parseStats', () => {
     expect(parseStats(responseData)).toEqual(expectedOutput);
   });
 
-  it('works when only data for active users in whole period', () => {
+  it('works when only data for participants in whole period', () => {
     const responseData: ParticipantsResponse['data']['attributes'] = [
       TIME_SERIES,
       [{ count_participant_id: 4 }],
@@ -55,7 +55,7 @@ describe('parseStats', () => {
     expect(parseStats(responseData)).toEqual(expectedOutput);
   });
 
-  it('correctly calculates active users delta', () => {
+  it('correctly calculates participants delta', () => {
     const responseData: ParticipantsResponse['data']['attributes'] = [
       TIME_SERIES,
       [{ count_participant_id: 4 }],

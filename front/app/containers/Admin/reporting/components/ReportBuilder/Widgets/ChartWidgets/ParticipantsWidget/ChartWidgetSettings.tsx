@@ -8,7 +8,7 @@ import {
   Icon,
 } from '@citizenlab/cl2-component-library';
 
-import activeUsersMessages from 'components/admin/GraphCards/ParticipantsCard/messages';
+import participantsMessages from 'components/admin/GraphCards/ParticipantsCard/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -42,7 +42,7 @@ const ChartWidgetSettings = () => {
             fill="textSecondary"
             display="inline"
           />
-          {formatMessage(activeUsersMessages.cardTitleTooltipMessage)}
+          {formatMessage(participantsMessages.cardTitleTooltipMessage)}
         </Text>
       </Box>
       <TimeSeriesWidgetSettings resetComparePeriod />
