@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 import { RouteType } from 'routes';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
 import useAuthUser from 'api/me/useAuthUser';
 
 import useKeyPress from 'hooks/useKeyPress';
@@ -19,7 +18,6 @@ import Viewer from './Viewer';
 export const adminRedirectPath: RouteType = '/admin';
 
 const HomePage = () => {
-  const { data: homepageLayout } = useHomepageLayout();
   const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
 
