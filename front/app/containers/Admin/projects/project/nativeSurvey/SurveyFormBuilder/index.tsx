@@ -55,15 +55,13 @@ const SurveyFormBuilder = () => {
     await saveSurveyAsPDF({ downloadPdfLink, locale, personal_data });
   };
 
-  const goBackUrl: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/native-survey`;
-
   return (
     <>
       <FormBuilder
         builderConfig={{
           ...nativeSurveyConfig,
           formCustomFields: newCustomFields,
-          goBackUrl,
+          goBackUrl: `/admin/projects/${projectId}/phases/${phaseId}/native-survey`,
           onDownloadPDF: handleDownloadPDF,
         }}
       />
