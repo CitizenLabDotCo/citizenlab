@@ -529,36 +529,36 @@ resource 'Ideas' do
         expect(json_response.dig(:data, :attributes)).to include(
           slug: idea.slug,
           budget: idea.budget,
-          action_descriptor: {
+          action_descriptors: {
             commenting_idea: {
               enabled: true,
               disabled_reason: nil,
-              future_enabled: nil
+              future_enabled_at: nil
             },
             reacting_idea: {
               enabled: false,
-              disabled_reason: 'not_ideation',
+              disabled_reason: 'reacting_not_supported',
               cancelling_enabled: false,
               up: {
                 enabled: false,
-                disabled_reason: 'not_ideation',
-                future_enabled: nil
+                disabled_reason: 'reacting_not_supported',
+                future_enabled_at: nil
               },
               down: {
                 enabled: false,
-                disabled_reason: 'not_ideation',
-                future_enabled: nil
+                disabled_reason: 'reacting_not_supported',
+                future_enabled_at: nil
               }
             },
             comment_reacting_idea: {
               enabled: true,
               disabled_reason: nil,
-              future_enabled: nil
+              future_enabled_at: nil
             },
             voting: {
               enabled: true,
               disabled_reason: nil,
-              future_enabled: nil
+              future_enabled_at: nil
             }
           }
         )
