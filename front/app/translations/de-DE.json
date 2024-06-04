@@ -650,7 +650,7 @@
   "app.components.form.locationGoogleUnavailable": "Das von Google Maps zur Verfügung gestellte Standort-Feld konnte nicht geladen werden.",
   "app.components.form.submit": "Einreichen",
   "app.components.form.submitApiError": "Es gab ein Problem beim Absenden des Formulars. Bitte prüfe auf Fehler und versuche es erneut.",
-  "app.components.form.verifiedBlocked": "Dieses Feld kann nicht bearbeiten, weil es verifizierte Informationen enthält",
+  "app.components.form.verifiedBlocked": "Sie können dieses Feld nicht bearbeiten, da es verifizierte Informationen enthält",
   "app.components.formBuilder.Page": "Seite",
   "app.components.formBuilder.addAnswer": "Antwort hinzufügen",
   "app.components.formBuilder.ai1": "KI",
