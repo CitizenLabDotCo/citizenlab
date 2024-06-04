@@ -122,7 +122,8 @@ const ProfileForm = () => {
     label: appLocalePairs[locale],
   }));
 
-  const handleDisclaimer = () => {
+  const handleDisclaimer = (e) => {
+    e.preventDefault();
     if (
       methods.formState.dirtyFields.avatar &&
       methods.getValues('avatar') &&
@@ -191,7 +192,7 @@ const ProfileForm = () => {
   return (
     <FormSection>
       <FormProvider {...methods}>
-        <form>
+        <form onSubmit={handleDisclaimer}>
           <FormSectionTitle
             message={messages.h1}
             subtitleMessage={messages.h1sub}
@@ -272,21 +273,19 @@ const ProfileForm = () => {
               label={formatMessage(messages.language)}
             />
           </SectionField>
+
+          <UserCustomFieldsForm
+            authUser={authUser.data}
+            authenticationContext={GLOBAL_CONTEXT}
+            onChange={handleCustomFieldsChange}
+            parentSubmit={handleDisclaimer}
+          />
+          <Box display="flex">
+            <Button type="submit" processing={methods.formState.isSubmitting}>
+              {formatMessage(messages.submit)}
+            </Button>
+          </Box>
         </form>
-        <UserCustomFieldsForm
-          authUser={authUser.data}
-          authenticationContext={GLOBAL_CONTEXT}
-          onChange={handleCustomFieldsChange}
-        />
-        <Box display="flex">
-          <Button
-            type="submit"
-            processing={methods.formState.isSubmitting}
-            onClick={handleDisclaimer}
-          >
-            {formatMessage(messages.submit)}
-          </Button>
-        </Box>
       </FormProvider>
       <ContentUploadDisclaimer
         isDisclaimerOpened={isDisclaimerOpened}

@@ -78,6 +78,7 @@ interface Props {
   config?: 'default' | 'input' | 'survey';
   layout?: 'inline' | 'fullpage';
   footer?: React.ReactNode;
+  parentSubmit?: (e: any) => void;
 }
 
 const Form = memo(
@@ -95,6 +96,7 @@ const Form = memo(
     footer,
     onChange,
     onSubmit,
+    parentSubmit,
   }: Props) => {
     const { formatMessage } = useIntl();
     const locale = useLocale();
@@ -152,6 +154,10 @@ const Form = memo(
         setLoading(false);
       }
       setScrollToError(true);
+    };
+
+    const invisibleSubmit = (e) => {
+      parentSubmit ? parentSubmit(e) : handleSubmit();
     };
 
     useObserveEvent(submitOnEvent, handleSubmit);
@@ -217,7 +223,7 @@ const Form = memo(
                 processing={loading}
               />
             ) : submitOnEvent ? (
-              <InvisibleSubmitButton onClick={handleSubmit} />
+              <InvisibleSubmitButton onClick={invisibleSubmit} />
             ) : (
               <Button onClick={handleSubmit}>
                 {formatMessage(messages.save)}

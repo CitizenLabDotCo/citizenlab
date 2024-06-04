@@ -29,6 +29,7 @@ interface UserCustomFieldsFormProps {
   authenticationContext: AuthenticationContext;
   onSubmit?: (data: { key: string; formData: Record<string, any> }) => void;
   onChange?: (data: { key: string; formData: Record<string, any> }) => void;
+  parentSubmit?: (e: any) => void;
 }
 
 const UserCustomFieldsForm = ({
@@ -36,6 +37,7 @@ const UserCustomFieldsForm = ({
   authenticationContext,
   onSubmit,
   onChange,
+  parentSubmit,
 }: UserCustomFieldsFormProps) => {
   const { data: userCustomFieldsSchema } = useCustomFieldsSchema(
     authenticationContext
@@ -92,6 +94,7 @@ const UserCustomFieldsForm = ({
         getAjvErrorMessage={getAjvErrorMessage}
         submitOnEvent="customFieldsSubmitEvent"
         initialFormData={authUser.attributes.custom_field_values}
+        parentSubmit={parentSubmit}
       />
     );
   }
