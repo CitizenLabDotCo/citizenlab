@@ -7,7 +7,7 @@ namespace :gv_transition do
     Tenant.safe_switch_each do |tenant|
       StaticPage.all.each do |page|
         page.title_multiloc.transform_values! do |old_v|
-          substitute_gv(old_v).tap do |new_v|
+          rake_20240531_substitute_gv(old_v).tap do |new_v|
             if new_v != old_v
               reporter.add_change(
                 old_v,
@@ -18,7 +18,7 @@ namespace :gv_transition do
           end
         end
         page.body_multiloc.transform_values! do |old_v|
-          substitute_gv(old_v).tap do |new_v|
+          rake_20240531_substitute_gv(old_v).tap do |new_v|
             if new_v != old_v
               reporter.add_change(
                 old_v,
@@ -43,13 +43,20 @@ namespace :gv_transition do
   task :substitute_translation_files, [] => [:environment] do |_t, args|
     translation_files.each do |yml_file|
       yml_file.map_leaves do |leaf_str|
-        substitute_gv leaf_str
+        rake_20240531_substitute_gv leaf_str
       end
       yml_file.write!
     end
   end
 end
 
-def substitute_gv(str)
+def rake_20240531_substitute_gv(str)
+  {
+    'citizenlab.co' => 'govocal.com',
+    /citizenlab/i => 'Go Vocal',
+    'Anspachlaan 65' => 'Pachecolaan 34'
+  }.each do |old_v, new_v|
+    str = str.gsub(old_v, new_v)
+  end
   str
 end
