@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
+RSpec.describe ReportBuilder::Queries::Analytics::Participants do
   subject(:query) { described_class.new(build(:user)) }
 
   describe '#run_query' do
@@ -13,11 +13,10 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
 
       @dimension_date_sept = create(:dimension_date, date: @date_september)
       @dimension_date_oct = create(:dimension_date, date: @date_october)
-      create(:dimension_type, name: 'idea', parent: 'post')
-      create(:dimension_type, name: 'comment', parent: 'idea')
+      Analytics::PopulateDimensionsService.populate_types
     end
 
-    it 'returns active users' do
+    it 'returns participants' do
       project = create(:single_phase_ideation_project)
       create(:idea, created_at: @date_september, project: project)
 
@@ -99,7 +98,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
       )
     end
 
-    it 'returns active users in compared period' do
+    it 'returns participants in compared period' do
       project = create(:project)
       pp1, pp2, pp3, pp4 = create_list(:user, 4)
 

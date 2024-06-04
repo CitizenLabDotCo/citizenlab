@@ -12,7 +12,7 @@ import { toThreeLetterMonth } from 'utils/dateUtils';
 import { generateEmptyData } from './generateEmptyData';
 import messages from './messages';
 import renderTooltip from './renderTooltip';
-import { TimeSeries } from './useActiveUsers/typings';
+import { TimeSeries } from './useParticipants/typings';
 
 type Props = Dates &
   Resolution & {
@@ -70,7 +70,7 @@ const Chart = ({
       data={noData ? emptyData : timeSeries}
       mapping={{
         x: 'date',
-        y: ['activeUsers'],
+        y: ['participants'],
       }}
       margin={margin}
       lines={noData ? emptyLineConfig : lineConfig}

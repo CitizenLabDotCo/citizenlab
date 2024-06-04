@@ -8,7 +8,7 @@ module ReportBuilder
       'ReactionsByTimeWidget' => Queries::Analytics::ReactionsByTime,
       'CommentsByTimeWidget' => Queries::Analytics::CommentsByTime,
       'PostsByTimeWidget' => Queries::Analytics::PostsByTime,
-      'ActiveUsersWidget' => Queries::Analytics::ActiveUsers,
+      'ParticipantsWidget' => Queries::Analytics::Participants,
       'VisitorsWidget' => Queries::Analytics::Visitors,
       'VisitorsTrafficSourcesWidget' => Queries::Analytics::TrafficSources,
       'SurveyQuestionResultWidget' => Queries::SurveyQuestionResult,

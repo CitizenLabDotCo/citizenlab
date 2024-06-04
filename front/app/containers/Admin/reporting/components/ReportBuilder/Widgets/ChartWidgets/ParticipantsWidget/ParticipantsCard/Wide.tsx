@@ -3,8 +3,8 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 
-import Chart from 'components/admin/GraphCards/RegistrationsCard/Chart';
-import { TimeSeries } from 'components/admin/GraphCards/RegistrationsCard/useRegistrations/typings';
+import Chart from 'components/admin/GraphCards/ParticipantsCard/Chart';
+import { TimeSeries } from 'components/admin/GraphCards/ParticipantsCard/useParticipants/typings';
 import { DatesStrings } from 'components/admin/GraphCards/typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 
@@ -12,8 +12,8 @@ import { getDaysInRange } from '../../utils';
 import { Stats } from '../typings';
 
 import {
-  RegistrationRateStatistic,
-  RegistrationsStatistic,
+  ParticipantsStatistic,
+  ParticipationRateStatistic,
 } from './Statistics';
 
 export interface Props extends DatesStrings {
@@ -26,8 +26,8 @@ export interface Props extends DatesStrings {
 const Wide = ({
   startAt,
   endAt,
-  timeSeries,
   hideStatistics,
+  timeSeries,
   stats,
   currentResolution,
 }: Props) => {
@@ -38,27 +38,26 @@ const Wide = ({
       width="100%"
       height="260px"
       pb="8px"
-      className="e2e-registrations-timeline-widget"
+      className="e2e-participants-timeline-widget"
       display="flex"
       flexDirection="row"
     >
       {!hideStatistics && (
         <Box>
-          <RegistrationsStatistic stats={stats} previousDays={previousDays} />
+          <ParticipantsStatistic stats={stats} previousDays={previousDays} />
           <Box mt="32px">
-            <RegistrationRateStatistic
+            <ParticipationRateStatistic
               stats={stats}
               previousDays={previousDays}
             />
           </Box>
         </Box>
       )}
-
       <Box
         flexGrow={1}
         display="flex"
         justifyContent={hideStatistics ? 'flex-start' : 'flex-end'}
-        mt="8x"
+        pt="8px"
         maxWidth="800px"
         h="100%"
       >

@@ -1,9 +1,9 @@
 import moment, { Moment } from 'moment';
 
 import {
-  ActiveUsersResponse,
+  ParticipantsResponse,
   TimeSeriesResponseRow,
-} from 'api/graph_data_units/responseTypes/ActiveUsersWidget';
+} from 'api/graph_data_units/responseTypes/ParticipantsWidget';
 
 import { getConversionRate } from 'components/admin/GraphCards/_utils/parse';
 import { RESOLUTION_TO_MESSAGE_KEY } from 'components/admin/GraphCards/_utils/resolution';
@@ -17,14 +17,14 @@ import { TimeSeries, TimeSeriesRow, Stats } from './typings';
 
 export const getEmptyRow = (date: Moment) => ({
   date: date.format('YYYY-MM-DD'),
-  activeUsers: 0,
+  participants: 0,
 });
 
 const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
   if (!row) return getEmptyRow(date);
 
   return {
-    activeUsers: row.count_participant_id,
+    participants: row.count_participant_id,
     date: date.format('YYYY-MM-DD'),
   };
 };
@@ -36,7 +36,7 @@ const getDate = (row: TimeSeriesResponseRow) => {
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
 
 export const parseTimeSeries = (
-  responseTimeSeries: ActiveUsersResponse['data']['attributes'][0],
+  responseTimeSeries: ParticipantsResponse['data']['attributes'][0],
   startAtMoment: Moment | null | undefined,
   endAtMoment: Moment | null,
   resolution: IResolution
@@ -50,10 +50,10 @@ export const parseTimeSeries = (
 };
 
 export const parseStats = (
-  data: ActiveUsersResponse['data']['attributes']
+  data: ParticipantsResponse['data']['attributes']
 ): Stats => {
-  const activeUsersWholePeriod = data[1][0];
-  const activeUsersLastPeriod = data[4]?.[0];
+  const participantsWholePeriod = data[1][0];
+  const participantsLastPeriod = data[4]?.[0];
 
   const visitorsWholePeriod = data[2][0];
   const visitorsLastPeriod = data[5]?.[0];
@@ -72,9 +72,11 @@ export const parseStats = (
   );
 
   return {
-    activeUsers: {
-      value: (activeUsersWholePeriod?.count_participant_id ?? 0).toString(),
-      lastPeriod: (activeUsersLastPeriod?.count_participant_id ?? 0).toString(),
+    participants: {
+      value: (participantsWholePeriod?.count_participant_id ?? 0).toString(),
+      lastPeriod: (
+        participantsLastPeriod?.count_participant_id ?? 0
+      ).toString(),
     },
     participationRate: {
       value: participationRateWholePeriod,
@@ -99,7 +101,7 @@ export const parseExcelData = (
 
   const timeSeriesData = timeSeries?.map((row) => ({
     [translations.date]: row.date,
-    [translations.participants]: row.activeUsers,
+    [translations.participants]: row.participants,
   }));
 
   return {
