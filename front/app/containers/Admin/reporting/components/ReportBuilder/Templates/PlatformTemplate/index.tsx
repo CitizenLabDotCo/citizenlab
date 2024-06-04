@@ -188,8 +188,8 @@ const PlatformTemplateContent = ({ startDate, endDate }: Props) => {
       <WhiteSpace size="small" />
       <TextMultiloc
         text={getSectionTitleAndDescription(
-          messages.yourQuartersProjects,
-          messages.yourQuartersProjectsDescription
+          messages.yourProjects,
+          messages.yourProjectsDescription
         )}
       />
       <WhiteSpace size="small" />
