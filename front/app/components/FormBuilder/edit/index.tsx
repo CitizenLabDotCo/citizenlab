@@ -64,7 +64,7 @@ type FormEditProps = {
   totalSubmissions: number;
 } & WrappedComponentProps;
 
-export const FormEdit = ({
+const FormEdit = ({
   intl: { formatMessage },
   defaultValues,
   phaseId,
