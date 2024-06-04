@@ -25,30 +25,31 @@ export default defineMessages({
     id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.projectsPublished',
     defaultMessage: 'projects published',
   },
-  placeholderQuote: {
-    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.placeholderQuote',
-    defaultMessage:
-      '"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."',
-  },
-  clGSManager: {
-    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.clGSManager',
-    defaultMessage: 'CitizenLab GovSuccess Manager',
-  },
   participationIndicators: {
     id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.participationIndicators',
     defaultMessage: 'Top-level participation indicators',
   },
-  placeholderDescription: {
-    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.placeholderDescription',
+  participationIndicatorsDescription: {
+    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.participationIndicatorsDescription',
     defaultMessage:
-      'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      'The following section outlines the key participation indicators for the selected time range, providing an overview of engagement trends and performance metrics.',
   },
   inclusionIndicators: {
     id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators',
     defaultMessage: 'Top-level inclusion indicators',
   },
+  inclusionIndicatorsDescription: {
+    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription',
+    defaultMessage:
+      'The following section outlines inclusion indicators, highlighting your our progress towards fostering a more inclusive and representative participation platform.',
+  },
   yourQuartersProjects: {
     id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.yourQuartersProjects',
     defaultMessage: "Your quarter's projects",
+  },
+  yourQuartersProjectsDescription: {
+    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.yourQuartersProjectsDescription',
+    defaultMessage:
+      'The following section provides an overview of publicly visible projects that overlap with the selected time range, the most used methods in these projects, and metrics concerning the total amount of participation.',
   },
 });

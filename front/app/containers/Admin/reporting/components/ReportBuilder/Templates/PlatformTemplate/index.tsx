@@ -37,12 +37,7 @@ import { TemplateContext } from '../context';
 import { getPeriod } from '../utils';
 
 import messages from './messages';
-import {
-  createGSQuote,
-  getCommunity,
-  getComparedDateRange,
-  getProjects,
-} from './utils';
+import { getCommunity, getComparedDateRange, getProjects } from './utils';
 
 interface Props {
   startDate: string;
@@ -120,13 +115,14 @@ const PlatformTemplateContent = ({ startDate, endDate }: Props) => {
     `;
   });
 
-  const gsQuote = buildMultiloc(createGSQuote);
-
-  const getSectionTitleAndDescription = (title: MessageDescriptor) => {
+  const getSectionTitleAndDescription = (
+    title: MessageDescriptor,
+    description: MessageDescriptor
+  ) => {
     return buildMultiloc((formatMessage) => {
       return withoutSpacing`
         <h3>${formatMessage(title)}</h3>
-        <p>${formatMessage(messages.placeholderDescription)}</p>
+        <p>${formatMessage(description)}</p>
       `;
     });
   };
@@ -143,10 +139,11 @@ const PlatformTemplateContent = ({ startDate, endDate }: Props) => {
     <Element id="platform-report-template" is={Box} canvas>
       <TextMultiloc text={reportStats} />
       <WhiteSpace size="small" />
-      <TextMultiloc text={gsQuote} />
-      <WhiteSpace size="small" />
       <TextMultiloc
-        text={getSectionTitleAndDescription(messages.participationIndicators)}
+        text={getSectionTitleAndDescription(
+          messages.participationIndicators,
+          messages.participationIndicatorsDescription
+        )}
       />
       <WhiteSpace size="small" />
       <VisitorsWidget
@@ -173,7 +170,10 @@ const PlatformTemplateContent = ({ startDate, endDate }: Props) => {
       </TwoColumn>
       <WhiteSpace size="small" />
       <TextMultiloc
-        text={getSectionTitleAndDescription(messages.inclusionIndicators)}
+        text={getSectionTitleAndDescription(
+          messages.inclusionIndicators,
+          messages.inclusionIndicatorsDescription
+        )}
       />
       <WhiteSpace size="small" />
       {supportedFields.map((field) => (
@@ -187,7 +187,10 @@ const PlatformTemplateContent = ({ startDate, endDate }: Props) => {
       ))}
       <WhiteSpace size="small" />
       <TextMultiloc
-        text={getSectionTitleAndDescription(messages.yourQuartersProjects)}
+        text={getSectionTitleAndDescription(
+          messages.yourQuartersProjects,
+          messages.yourQuartersProjectsDescription
+        )}
       />
       <WhiteSpace size="small" />
       <ProjectsWidget
