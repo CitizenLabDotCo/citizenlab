@@ -999,7 +999,6 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.anErrorOccurred": "Mēģinot izveidot šo pārskatu, radās kļūda. Lūdzu, mēģiniet vēlreiz vēlāk.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.blankTemplate": "Sāciet ar tukšu lapu",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel": "Ziņojuma nosaukums",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalTitle": "Izveidot projekta ziņojumu",
   "app.containers.Admin.reporting.components.ReportBuilderPage.customizeReport": "Pielāgojiet savu ziņojumu un kopīgojiet to ar iekšējām ieinteresētajām personām vai sabiedrību PDF faila veidā.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateButtonText": "Izveidot ziņojumu",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateTitle": "Izveidojiet savu pirmo projekta ziņojumu",

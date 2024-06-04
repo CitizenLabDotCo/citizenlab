@@ -624,7 +624,6 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.anErrorOccurred": "An error occurred when trying to create this report. Please try again later.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.blankTemplate": "Start with a blank page",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel": "Títol de l'informe",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalTitle": "Creeu un informe del projecte",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateButtonText": "Creeu un informe",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateTitle": "Creeu el vostre primer informe del projecte",
   "app.containers.Admin.reporting.components.ReportBuilderPage.printToPdf": "Print to PDF",

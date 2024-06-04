@@ -999,7 +999,6 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.anErrorOccurred": "Došlo je do greške prilikom pokušaja kreiranja ovog izveštaja. Pokušajte ponovo kasnije.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.blankTemplate": "Započni praznom stranicom",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel": "Naziv izveštaja",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalTitle": "Kreiraj izveštaj o projektu",
   "app.containers.Admin.reporting.components.ReportBuilderPage.customizeReport": "Customise your report and share it with internal stakeholders or community as a PDF file.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateButtonText": "Kreiraj izveštaj",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateTitle": "Kreiraj svoj prvi izveštaj o projektu",

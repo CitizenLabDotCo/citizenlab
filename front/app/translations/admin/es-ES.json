@@ -999,7 +999,6 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.anErrorOccurred": "Se ha producido un error al intentar crear este informe. Vuelva a intentarlo más tarde.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.blankTemplate": "Empezar con una página en blanco",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel": "Título del informe",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalTitle": "Crear un informe de proyecto",
   "app.containers.Admin.reporting.components.ReportBuilderPage.customizeReport": "Personaliza tu informe y compártelo con las partes interesadas internas o con la comunidad como archivo PDF.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateButtonText": "Crear un informe",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateTitle": "Crear su primer informe del proyecto",

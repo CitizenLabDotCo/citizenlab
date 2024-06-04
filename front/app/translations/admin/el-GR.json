@@ -624,7 +624,6 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.anErrorOccurred": "An error occurred when trying to create this report. Please try again later.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.blankTemplate": "Start with a blank page",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel": "Αναφορά τίτλου",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalTitle": "Δημιουργία αναφοράς έργου",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateButtonText": "Δημιουργία αναφοράς",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateTitle": "Δημιουργήστε το πρώτο σας έργο",
   "app.containers.Admin.reporting.components.ReportBuilderPage.printToPdf": "Print to PDF",

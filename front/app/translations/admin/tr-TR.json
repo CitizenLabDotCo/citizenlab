@@ -999,7 +999,6 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.anErrorOccurred": "Bu raporu oluşturmaya çalışırken bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.blankTemplate": "Boş bir sayfa ile başlayın",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel": "Rapor başlığı",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalTitle": "Proje raporu oluşturma",
   "app.containers.Admin.reporting.components.ReportBuilderPage.customizeReport": "Raporunuzu özelleştirin ve PDF dosyası olarak şirket içi paydaşlarla veya toplulukla paylaşın.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateButtonText": "Bir rapor oluşturun",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateTitle": "İlk proje raporunuzu oluşturun",

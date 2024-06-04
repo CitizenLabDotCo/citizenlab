@@ -999,7 +999,6 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.anErrorOccurred": "Det oppstod en feil under forsøket på å opprette denne rapporten. Prøv på nytt senere.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.blankTemplate": "Start med en tom side",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel": "Rapporttittel",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalTitle": "Opprett en prosjektrapport",
   "app.containers.Admin.reporting.components.ReportBuilderPage.customizeReport": "Tilpass rapporten din og del den med interne interessenter eller fellesskap som en PDF-fil.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateButtonText": "Opprett en rapport",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateTitle": "Opprett din første prosjektrapport",

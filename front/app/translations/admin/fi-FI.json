@@ -999,7 +999,6 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.anErrorOccurred": "Tätä raporttia luotaessa tapahtui virhe. Yritä uudelleen myöhemmin.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.blankTemplate": "Aloita tyhjältä sivulta",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel": "Raportin otsikko",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalTitle": "Luo projektiraportti",
   "app.containers.Admin.reporting.components.ReportBuilderPage.customizeReport": "Mukauta raporttisi ja jaa se sisäisten sidosryhmien tai yhteisön kanssa PDF-tiedostona.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateButtonText": "Luo raportti",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateTitle": "Luo ensimmäinen projektiraporttisi",

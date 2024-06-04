@@ -999,7 +999,6 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.anErrorOccurred": "An error occurred when trying to create this report. Please try again later.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.blankTemplate": "Start with a blank page",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel": "Report title",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalTitle": "Create a project report",
   "app.containers.Admin.reporting.components.ReportBuilderPage.customizeReport": "Customise your report and share it with internal stakeholders or community as a PDF file.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateButtonText": "Create a report",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateTitle": "Create your first project report",

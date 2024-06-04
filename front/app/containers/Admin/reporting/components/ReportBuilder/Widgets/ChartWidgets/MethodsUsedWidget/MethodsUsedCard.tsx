@@ -5,6 +5,8 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { useMethodsUsed } from 'api/graph_data_units';
 import { ParticipationMethod } from 'api/phases/types';
 
+import useLayout from 'containers/Admin/reporting/hooks/useLayout';
+
 import Statistic from 'components/admin/Graphs/Statistic';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
@@ -52,6 +54,8 @@ const MethodsUsedCard = ({
     compare_end_at: compareEndAt,
   });
 
+  const layout = useLayout();
+
   if (error) {
     return <MissingData />;
   }
@@ -68,7 +72,7 @@ const MethodsUsedCard = ({
           <Box
             key={method}
             display="inline-block"
-            width="120px"
+            width={layout === 'narrow' ? '120px' : '160px'}
             mb="8px"
             mr="12px"
           >

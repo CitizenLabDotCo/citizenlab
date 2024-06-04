@@ -999,7 +999,6 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.anErrorOccurred": "Дошло је до грешке при покушају креирања овог извештаја. Покушајте поново касније.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.blankTemplate": "Почните са празном страном",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel": "Наслов извештаја",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalTitle": "Направите извештај о пројекту",
   "app.containers.Admin.reporting.components.ReportBuilderPage.customizeReport": "Customise your report and share it with internal stakeholders or community as a PDF file.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateButtonText": "Направите извештај",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateTitle": "Направите свој први извештај о пројекту",

@@ -28,7 +28,7 @@ interface Props {
   project: IProjectData;
   projectImage?: IProjectImageData;
   period: Period;
-  participants: number;
+  participants?: number;
 }
 
 const MESSAGES: Record<ProjectStatus, MessageDescriptor> = {
@@ -67,7 +67,7 @@ const ProjectRow = ({ project, projectImage, period, participants }: Props) => {
   const startMonth = toFullMonth(period.start_at, 'month');
   const endMonth = period.end_at
     ? toFullMonth(period.end_at, 'month')
-    : formatMessage(messages.noEndDate);
+    : undefined;
 
   const { title_multiloc } = project.attributes;
 
@@ -135,11 +135,11 @@ const ProjectRow = ({ project, projectImage, period, participants }: Props) => {
           •
           <Box mx="6px">
             <Icon name="user" width="18px" transform="translate(0,-2)" />
-            {participants}
+            {participants ?? 0}
           </Box>
           •
           <Text ml="6px" fontSize="s" m="0">
-            {startMonth} - {endMonth}
+            {startMonth} → {endMonth ?? '...'}
           </Text>
         </Box>
       </Box>
