@@ -167,13 +167,15 @@ const ContentBuilderTopBar = ({
       if (
         displayName === 'ProjectTemplate' &&
         numberOfNodes < PROJECT_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE
-      )
+      ) {
         return;
+      }
       if (
         displayName === 'PlatformTemplate' &&
         numberOfNodes < PLATFORM_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE
-      )
+      ) {
         return;
+      }
 
       updateReportLayout(
         {
