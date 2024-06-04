@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 
-import { Spinner } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -39,8 +38,6 @@ const HomePage = () => {
       clHistory.push(adminRedirectPath);
     }
   }, [pressedLetterAKey, userHasAdminAccess]);
-
-  if (!homepageLayout) return <Spinner />;
 
   return (
     <main id="e2e-landing-page">
