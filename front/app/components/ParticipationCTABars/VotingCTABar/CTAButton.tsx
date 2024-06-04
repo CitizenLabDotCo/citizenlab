@@ -135,8 +135,8 @@ const CTAButton = ({ phase, project }: Props) => {
         placement="bottom"
         content={disabledExplanation}
       >
-        {/* We need to add a tabIndex when the explanation is shown to
-        make sure this is focusable to read the explanation */}
+        {/* We need to add a tabIndex of 0 to
+        make sure this is keyboard-focusable so screen reader software can read the explanation */}
         <Box width="100%" tabIndex={disabledExplanation ? 0 : -1}>
           <StyledButton
             icon="vote-ballot"
