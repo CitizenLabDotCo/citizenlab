@@ -50,8 +50,8 @@ export default defineMessages({
     id: 'app.components.ParticipationCTABars.submit',
     defaultMessage: 'Submit',
   },
-  submitSuccess: {
-    id: 'app.components.ParticipationCTABars.submitSuccess',
-    defaultMessage: 'Submit was done successfully',
+  budgetSubmitSuccess: {
+    id: 'app.components.ParticipationCTABars.budgetSubmitSuccess',
+    defaultMessage: 'Your budget has been submitted successfully.',
   },
 });

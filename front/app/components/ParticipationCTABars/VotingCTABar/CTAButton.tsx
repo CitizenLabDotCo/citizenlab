@@ -166,7 +166,9 @@ const CTAButton = ({ phase, project }: Props) => {
         </Box>
       </Tippy>
       <ScreenReaderOnly role="alert">
-        {isSubmitSuccessful && <FormattedMessage {...messages.submitSuccess} />}
+        {isSubmitSuccessful && (
+          <FormattedMessage {...messages.budgetSubmitSuccess} />
+        )}
       </ScreenReaderOnly>
     </>
   );
