@@ -76,7 +76,7 @@ describe('Homepage builder', () => {
     });
   });
 
-  it.skip('updates and delete homepage builder content correctly', () => {
+  it('updates and delete homepage builder content correctly', () => {
     cy.setAdminLoginCookie();
     cy.apiUpdateHomepageLayout({
       craftjs_json: homepageMinimalData,
@@ -220,7 +220,7 @@ describe('Homepage builder', () => {
     });
   });
 
-  it.skip('updates homepage banner correctly', () => {
+  it('updates homepage banner correctly', () => {
     cy.setAdminLoginCookie();
     cy.apiUpdateHomepageLayout({
       craftjs_json: homepageMinimalData,
@@ -442,7 +442,7 @@ describe('Homepage builder', () => {
     cy.get('[data-cy="e2e-fixed-ratio-layout-container"]').should('exist');
   });
 
-  it.skip('updates homepage banner layout correctly two row', () => {
+  it('updates homepage banner layout correctly two row', () => {
     cy.intercept(
       'POST',
       '**/home_pages/content_builder_layouts/homepage/upsert'
