@@ -3,11 +3,9 @@ module ReportBuilder
     def run_query(start_at: nil, end_at: nil, **_other_props)
       start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
 
-      far_future_date = Time.zone.today + 10.years
-
       overlapping_project_ids = Phase
         .select(:project_id)
-        .where("(start_at, coalesce(end_at, '#{far_future_date}'::DATE)) OVERLAPS (?, ?)", start_date, end_date)
+        .where("(start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, ?)", start_date, end_date)
 
       overlapping_projects = Project
         .joins(:admin_publication)
