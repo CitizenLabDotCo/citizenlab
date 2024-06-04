@@ -39,16 +39,15 @@ const StylingWrapper = styled.div`
   }
 `;
 
+export type Dates = {
+  startDate: Moment | null;
+  endDate: Moment | null;
+};
+
 interface Props {
   startDate: Moment | null;
   endDate: Moment | null;
-  onDatesChange: ({
-    startDate,
-    endDate,
-  }: {
-    startDate: Moment | null;
-    endDate: Moment | null;
-  }) => void;
+  onDatesChange: ({ startDate, endDate }: Dates) => void;
   minDate?: Moment;
   maxDate?: Moment;
   startDatePlaceholderText?: string;

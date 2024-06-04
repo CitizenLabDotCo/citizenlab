@@ -12,9 +12,9 @@ import Editor from 'containers/Admin/reporting/components/ReportBuilder/Editor';
 import CommentsByTimeWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/_deprecated/CommentsByTimeWidget';
 import PostsByTimeWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/_deprecated/PostsByTimeWidget';
 import ReactionsByTimeWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/_deprecated/ReactionsByTimeWidget';
-import ActiveUsersWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/ActiveUsersWidget';
 import DemographicsWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/DemographicsWidget';
 import { INPUT_TYPES } from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/DemographicsWidget/Settings';
+import ParticipantsWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/ParticipantsWidget';
 import TwoColumn from 'containers/Admin/reporting/components/ReportBuilder/Widgets/TwoColumn';
 import { MAX_REPORT_WIDTH } from 'containers/Admin/reporting/constants';
 import { ReportContextProvider } from 'containers/Admin/reporting/context/ReportContext';
@@ -59,7 +59,7 @@ const ParticipationReportPreview = ({
       <Box maxWidth={MAX_REPORT_WIDTH} w="100%">
         <Editor isPreview={true}>
           <ContentBuilderFrame key={`${startAt} + ${endAt}`}>
-            <ActiveUsersWidget
+            <ParticipantsWidget
               startAt={startAt}
               endAt={endAt}
               projectId={projectId}

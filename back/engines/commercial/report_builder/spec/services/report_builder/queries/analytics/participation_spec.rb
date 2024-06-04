@@ -10,9 +10,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::Participation do
       @date = Date.new(2022, 9, 1)
       create(:dimension_date, date: @date)
 
-      create(:dimension_type, name: 'idea', parent: 'post')
-      create(:dimension_type, name: 'comment', parent: 'idea')
-      create(:dimension_type, name: 'basket')
+      Analytics::PopulateDimensionsService.populate_types
 
       idea = create(:idea, created_at: @date)
       create(:comment, created_at: @date, post: idea)

@@ -19,15 +19,15 @@ import PostsByTimeWidget, {
 import ReactionsByTimeWidget, {
   reactionsByTimeTitle,
 } from './ChartWidgets/_deprecated/ReactionsByTimeWidget';
-import ActiveUsersWidget, {
-  activeUsersTitle,
-} from './ChartWidgets/ActiveUsersWidget';
 import DemographicsWidget, {
   demographicsTitle,
 } from './ChartWidgets/DemographicsWidget';
 import MethodsUsedWidget, {
   methodsUsedTitle,
 } from './ChartWidgets/MethodsUsedWidget';
+import ParticipantsWidget, {
+  participantsTitle,
+} from './ChartWidgets/ParticipantsWidget';
 import ParticipationWidget, {
   participationTitle,
 } from './ChartWidgets/ParticipationWidget';
@@ -43,6 +43,7 @@ import ImageMultiloc, { imageMultilocTitle } from './ImageMultiloc';
 import MostReactedIdeasWidget, {
   mostReactedIdeasTitle,
 } from './MostReactedIdeasWidget';
+import ProjectsWidget, { projectsTitle } from './ProjectsWidget';
 import SingleIdeaWidget, { singleIdeaTitle } from './SingleIdeaWidget';
 import SurveyQuestionResultWidget, {
   surveyQuestionResultTitle,
@@ -58,7 +59,6 @@ export const WIDGETS = {
   SurveyQuestionResultWidget,
   VisitorsWidget,
   VisitorsTrafficSourcesWidget,
-  ActiveUsersWidget,
   MostReactedIdeasWidget,
   SingleIdeaWidget,
   DemographicsWidget,
@@ -66,6 +66,11 @@ export const WIDGETS = {
   RegistrationsWidget,
   MethodsUsedWidget,
   ParticipationWidget,
+  ProjectsWidget,
+  ParticipantsWidget,
+
+  // RENAMED (TODO rename in migration)
+  ActiveUsersWidget: ParticipantsWidget,
 
   // DEPRECATED
   AgeWidget,
@@ -88,12 +93,16 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   SingleIdeaWidget: singleIdeaTitle,
   VisitorsWidget: visitorsTitle,
   VisitorsTrafficSourcesWidget: visitorsTrafficSourcesTitle,
-  ActiveUsersWidget: activeUsersTitle,
   DemographicsWidget: demographicsTitle,
   IframeMultiloc: iframeMultilocTitle,
   RegistrationsWidget: registrationsTitle,
   MethodsUsedWidget: methodsUsedTitle,
   ParticipationWidget: participationTitle,
+  ProjectsWidget: projectsTitle,
+  ParticipantsWidget: participantsTitle,
+
+  // RENAMED (TODO rename in migration)
+  ActiveUsersWidget: participantsTitle,
 
   // DEPRECATED
   AgeWidget: ageTitle,
@@ -113,7 +122,6 @@ export const hasChildren = (nodeName: string) => {
 };
 
 const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
-  'ActiveUsersWidget',
   'VisitorsTrafficSourcesWidget',
   'VisitorsWidget',
   'SurveyQuestionResultWidget',
@@ -122,6 +130,10 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'RegistrationsWidget',
   'MethodsUsedWidget',
   'ParticipationWidget',
+  'ParticipantsWidget',
+
+  // RENAMED (TODO rename in migration)
+  'ActiveUsersWidget',
 
   // DEPRECATED
   'AgeWidget',

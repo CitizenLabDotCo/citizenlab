@@ -17,6 +17,7 @@ const MethodsUsedWidget = ({ title, ...props }: Props) => {
 
 MethodsUsedWidget.craft = {
   props: {
+    title: {},
     startAt: undefined,
     endAt: undefined,
     compareStartAt: undefined,

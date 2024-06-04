@@ -383,7 +383,7 @@ const ProjectCard = memo<InputProps>(
     // because that one doesn't work with our caching system.
     const { data: projectImage } = useProjectImage({
       projectId,
-      imageId: project?.data.relationships.project_images.data[0]?.id,
+      imageId: project?.data.relationships.project_images?.data[0]?.id,
     });
 
     const currentPhaseId =
