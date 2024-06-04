@@ -1384,7 +1384,7 @@
   "app.containers.Projects.navSurvey": "Анкета",
   "app.containers.Projects.newPhase": "Нова фаза",
   "app.containers.Projects.nextPhase": "Следећа фаза",
-  "app.containers.Projects.noEndDate": "Континуирано",
+  "app.containers.Projects.noEndDate": "Нема крајњег датума",
   "app.containers.Projects.noItems": "Још увек нисте изабрали ниједну ставку",
   "app.containers.Projects.noPastEvents": "Нема прошлих догађаја за приказ",
   "app.containers.Projects.noPhaseSelected": "Ниједна фаза није изабрана",
