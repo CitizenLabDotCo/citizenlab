@@ -131,6 +131,8 @@ const IdeaMapOverlay = memo<Props>(
       onSelectIdea(ideaId);
 
       timeoutRef.current = window.setTimeout(() => {
+        // We move focus from the idea list to the overlay so that user can easily
+        // tab through the idea details in the overlay after selecting an idea
         overlayRef.current?.focus();
         // Clear the timeout after it has been used
         if (timeoutRef.current) {
@@ -162,6 +164,7 @@ const IdeaMapOverlay = memo<Props>(
             <InnerOverlay
               right={smallerThan1440px ? '-100px' : '-150px'}
               tabIndex={-1}
+              // Ref to use to focus on the overlay after selecting an idea
               ref={overlayRef}
             >
               <IdeaShowPageTopBar
