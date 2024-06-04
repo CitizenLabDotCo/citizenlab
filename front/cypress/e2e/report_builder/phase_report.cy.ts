@@ -177,7 +177,7 @@ describe('Phase report', () => {
         addTextWidget();
 
         // Add posts by time widget
-        cy.get('#e2e-draggable-posts-by-time-widget').dragAndDrop(
+        cy.get('#e2e-draggable-visitors-timeline-widget').dragAndDrop(
           '#e2e-content-builder-frame',
           {
             position: 'inside',
