@@ -160,18 +160,14 @@ const CTAButton = ({ phase, project }: Props) => {
           >
             <FormattedMessage {...messages.submit} />
           </StyledButton>
-          {disabledExplanation && (
-            <ScreenReaderOnly id="explanation">
-              {disabledExplanation}
-            </ScreenReaderOnly>
-          )}
+          <ScreenReaderOnly id="explanation">
+            {!!disabledExplanation && <>{disabledExplanation}</>}
+          </ScreenReaderOnly>
         </Box>
       </Tippy>
-      {isSubmitSuccessful && (
-        <ScreenReaderOnly role="alert">
-          {formatMessage(messages.submitSuccess)}
-        </ScreenReaderOnly>
-      )}
+      <ScreenReaderOnly role="alert">
+        {isSubmitSuccessful && <FormattedMessage {...messages.submitSuccess} />}
+      </ScreenReaderOnly>
     </>
   );
 };
