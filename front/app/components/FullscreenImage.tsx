@@ -20,7 +20,7 @@ const FullscreenImage = ({ src, altText }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const fullscreenButtonRef = useRef<HTMLButtonElement | null>(null);
 
-  const toggleFullscreen = (event: any) => {
+  const toggleFullscreen = (event: React.MouseEvent) => {
     event.preventDefault(); // prevent the image option from being checked (selected)
     setFullscreen(!fullscreen);
   };
