@@ -14,11 +14,13 @@ import useEventImage from 'api/event_images/useEventImage';
 import { IEventData } from 'api/events/types';
 
 import EventAttendanceButton from 'components/EventAttendanceButton';
+import ScreenReadableEventDate from 'components/ScreenReadableEventDate';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import Image from 'components/UI/Image';
 
 import { useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 import { getEventDateString } from 'utils/dateUtils';
 
 import DateBlocks from '../DateBlocks';
@@ -38,13 +40,28 @@ const EventCardImage = styled(Image)`
   border-top-right-radius: 6px;
 `;
 
+const PrimaryLink = styled(Link)`
+  // For reference:
+  // https://kittygiraudel.com/2022/04/02/accessible-cards/
+  // https://inclusive-components.design/cards/
+  ::before {
+    // Use a pseudo-element to expand the hitbox of the link over the whole card.
+    content: ''; /* 1 */
+
+    // Expand the hitbox over the whole card.
+    position: absolute; /* 2 */
+    inset: 0; /* 2 */
+
+    // Place the pseudo-element on top of the whole card.
+    z-index: 1; /* 3 */
+  }
+`;
+
 interface Props {
   event: IEventData;
-  titleFontSize?: number;
-  goToEvent: () => void;
 }
 
-const EventInformation = ({ event, goToEvent, titleFontSize }: Props) => {
+const EventInformation = ({ event }: Props) => {
   const { formatMessage } = useIntl();
   const theme = useTheme();
 
@@ -59,6 +76,7 @@ const EventInformation = ({ event, goToEvent, titleFontSize }: Props) => {
   const address1 = event?.attributes?.address_1;
   const onlineLink = event?.attributes?.online_link;
   const eventDateTime = getEventDateString(event);
+
   return (
     <EventInformationContainer data-testid="EventInformation">
       <Box id="e2e-event-card">
@@ -73,18 +91,20 @@ const EventInformation = ({ event, goToEvent, titleFontSize }: Props) => {
           flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
           mt={eventImage ? '32px' : 'auto'}
         >
-          <Title
-            variant="h4"
-            as="h3"
-            style={{ fontSize: titleFontSize, fontWeight: '600' }}
-            pr="8px"
-            color="tenantText"
-            m="0px"
-            mt="auto"
-            mb="auto"
-          >
-            <T value={event.attributes.title_multiloc} />
-          </Title>
+          <PrimaryLink to={`/events/${event.id}`}>
+            <Title
+              variant="h4"
+              as="h3"
+              style={{ fontWeight: '600' }}
+              pr="8px"
+              color="tenantText"
+              m="0px"
+              mt="auto"
+              mb="auto"
+            >
+              <T value={event.attributes.title_multiloc} />
+            </Title>
+          </PrimaryLink>
           <DateBlocks
             startAtMoment={startAtMoment}
             endAtMoment={endAtMoment}
@@ -111,7 +131,14 @@ const EventInformation = ({ event, goToEvent, titleFontSize }: Props) => {
                 ml={theme.isRtl ? '8px' : '0px'}
               />
             </Box>
-            <Text m="0px" pt="2px" color={'coolGrey700'} fontSize="s">
+            <ScreenReadableEventDate event={event} />
+            <Text
+              m="0px"
+              pt="2px"
+              color={'coolGrey700'}
+              fontSize="s"
+              aria-hidden
+            >
               {eventDateTime}
             </Text>
           </Box>
@@ -140,7 +167,11 @@ const EventInformation = ({ event, goToEvent, titleFontSize }: Props) => {
             </Box>
           )}
           {onlineLink && (
-            <Box display="flex" mb="12px">
+            // The zIndex and position relative are needed to make sure
+            // the link is clickable by moving it to the top of the card.
+            // Without them, the link is not clickable because the primary
+            // link is extending the hitbox over the whole card
+            <Box display="flex" mb="12px" position="relative" zIndex="2">
               <Icon
                 my="auto"
                 fill={theme.colors.tenantPrimary}
@@ -196,18 +227,25 @@ const EventInformation = ({ event, goToEvent, titleFontSize }: Props) => {
           )}
         </Box>
       </Box>
-      {isPastEvent ? (
-        <Button
-          ml="auto"
-          width={'100%'}
-          bgColor={theme.colors.tenantPrimary}
-          onClick={goToEvent}
-        >
-          {formatMessage(messages.readMore)}
-        </Button>
-      ) : (
-        <EventAttendanceButton event={event} />
-      )}
+      <Box position="relative" zIndex="2">
+        {/* The zIndex and position relative are needed to make sure these
+          are clickable by moving them to the top of the card. Without them,
+          these are not clickable because the primary link is extending
+          the hitbox over the whole card */}
+        {isPastEvent ? (
+          <Button
+            ml="auto"
+            width={'100%'}
+            bgColor={theme.colors.tenantPrimary}
+            linkTo={`/events/${event.id}`}
+            scrollToTop
+          >
+            {formatMessage(messages.readMore)}
+          </Button>
+        ) : (
+          <EventAttendanceButton event={event} />
+        )}
+      </Box>
     </EventInformationContainer>
   );
 };

@@ -29,7 +29,7 @@ export interface Report {
     name: string | null;
     created_at: string;
     updated_at: string;
-    action_descriptor: {
+    action_descriptors: {
       editing_report: EditingReport;
     };
     visible: boolean;

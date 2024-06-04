@@ -42,7 +42,7 @@ const Buttons = ({ reportId, showDuplicate = true }: Props) => {
 
   const isLoading = isDuplicating || isDeleting;
   const canEdit =
-    report.data.attributes.action_descriptor.editing_report.enabled;
+    report.data.attributes.action_descriptors.editing_report.enabled;
 
   const handleDeleteReport = async () => {
     const reportName = report.data.attributes.name;

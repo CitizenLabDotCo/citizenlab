@@ -6,7 +6,7 @@ module ReportBuilder
       class ReportSerializer < ::WebApi::V1::BaseSerializer
         attributes :name, :created_at, :updated_at, :visible
 
-        attribute :action_descriptor do |object, params|
+        attribute :action_descriptors do |object, params|
           @permissions_service = ReportBuilder::Permissions::ReportPermissionsService.new
           @permissions_service.action_descriptors(object, current_user(params))
         end
