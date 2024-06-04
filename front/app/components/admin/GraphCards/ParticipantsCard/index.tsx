@@ -18,7 +18,7 @@ import { MARGINS } from '../_utils/style';
 
 import Chart from './Chart';
 import messages from './messages';
-import useActiveUsers from './useActiveUsers';
+import useParticipants from './useParticipants';
 
 type Props = ProjectId &
   Dates &
@@ -27,7 +27,7 @@ type Props = ProjectId &
     hideParticipationRate?: boolean;
   };
 
-const ActiveUsersCard = ({
+const ParticipantsCard = ({
   projectId,
   startAtMoment,
   endAtMoment,
@@ -37,7 +37,7 @@ const ActiveUsersCard = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
-  const { timeSeries, stats, xlsxData, currentResolution } = useActiveUsers({
+  const { timeSeries, stats, xlsxData, currentResolution } = useParticipants({
     projectId,
     startAtMoment,
     endAtMoment,
@@ -75,9 +75,9 @@ const ActiveUsersCard = ({
           <Box width={layout === 'narrow' ? '50%' : undefined}>
             <Statistic
               name={formatMessage(messages.totalParticipants)}
-              value={stats?.activeUsers.value ?? '-'}
+              value={stats?.participants.value ?? '-'}
               bottomLabel={bottomLabel}
-              bottomLabelValue={stats?.activeUsers.lastPeriod ?? '-'}
+              bottomLabelValue={stats?.participants.lastPeriod ?? '-'}
             />
           </Box>
           {!hideParticipationRate && (
@@ -131,4 +131,4 @@ const ActiveUsersCard = ({
 };
 
 // ts-prune-ignore-next
-export default ActiveUsersCard;
+export default ParticipantsCard;

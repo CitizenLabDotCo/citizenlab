@@ -3,7 +3,7 @@ import { Moment } from 'moment';
 import { emptyDateRange } from 'components/admin/GraphCards/_utils/timeSeries';
 import { IResolution } from 'components/admin/ResolutionControl';
 
-import { getEmptyRow } from './useActiveUsers/parse';
+import { getEmptyRow } from './useParticipants/parse';
 
 export const generateEmptyData = (
   startAtMoment: Moment | null | undefined,
@@ -12,6 +12,6 @@ export const generateEmptyData = (
 ) => {
   return emptyDateRange(startAtMoment, endAtMoment, resolution, (date, i) => ({
     ...getEmptyRow(date),
-    ...(i === 0 ? { activeUsers: 10 } : {}),
+    ...(i === 0 ? { participants: 10 } : {}),
   }));
 };

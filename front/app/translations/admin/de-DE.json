@@ -1177,7 +1177,6 @@
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "NutzerInnengruppe auswählen",
   "app.containers.AdminPage.DashboardPage.male": "männlich",
   "app.containers.AdminPage.DashboardPage.month": "Monat",
-  "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription2": "Die Rangliste basiert auf der Anzahl der Beiträge (5 Punkte pro Beitrag), Kommentare (3 Punkte pro Kommentar) und Reaktionen (1 Punkt pro Reaktion), die von jedem Teilnehmenden eingereicht wurden.",
   "app.containers.AdminPage.DashboardPage.noData": "Es können keine Daten angezeigt werden.",
   "app.containers.AdminPage.DashboardPage.noPhase": "Keine Phase für dieses Projekt erstellt",
   "app.containers.AdminPage.DashboardPage.numberOfActiveParticipantsDescription2": "Die Anzahl der Teilnehmenden, die Beiträge gepostet, reagiert oder kommentiert haben.",

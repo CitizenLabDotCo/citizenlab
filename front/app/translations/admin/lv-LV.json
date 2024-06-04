@@ -1177,7 +1177,6 @@
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Izvēlēties lietotāju grupu",
   "app.containers.AdminPage.DashboardPage.male": "vīrietis",
   "app.containers.AdminPage.DashboardPage.month": "mēnesis",
-  "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription2": "Rangu veido, pamatojoties uz katra dalībnieka iesniegto ievades datu (5 punkti par ievades datiem), komentāru (3 punkti par komentāru) un reakciju (1 punkts par reakciju) skaitu.",
   "app.containers.AdminPage.DashboardPage.noData": "Nav datu, ko parādīt.",
   "app.containers.AdminPage.DashboardPage.noPhase": "Šim projektam nav izveidots neviens posms",
   "app.containers.AdminPage.DashboardPage.numberOfActiveParticipantsDescription2": "To dalībnieku skaits, kuri ir iesūtījuši ievaddatus, reaģējuši vai komentējuši.",

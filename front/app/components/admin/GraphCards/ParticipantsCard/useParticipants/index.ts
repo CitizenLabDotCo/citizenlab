@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 
-import { useActiveUsersLive } from 'api/graph_data_units';
+import { useParticipantsLive } from 'api/graph_data_units';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -10,7 +10,7 @@ import { parseTimeSeries, parseStats, parseExcelData } from './parse';
 import { getTranslations } from './translations';
 import { QueryParameters } from './typings';
 
-export default function useActiveUsers({
+export default function useParticipants({
   projectId,
   startAtMoment,
   endAtMoment,
@@ -19,7 +19,7 @@ export default function useActiveUsers({
   const { formatMessage } = useIntl();
   const [currentResolution, setCurrentResolution] = useState(resolution);
 
-  const { data: analytics } = useActiveUsersLive(
+  const { data: analytics } = useParticipantsLive(
     {
       project_id: projectId,
       start_at: startAtMoment?.toISOString(),

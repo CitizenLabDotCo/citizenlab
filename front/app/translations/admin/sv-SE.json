@@ -1177,7 +1177,6 @@
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Välj användargrupp",
   "app.containers.AdminPage.DashboardPage.male": "man",
   "app.containers.AdminPage.DashboardPage.month": "månad",
-  "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription2": "Rangordningen baseras på antalet input (5 poäng per input), kommentarer (3 poäng per kommentar) och reaktioner (1 poäng per reaktion) som varje deltagare har lämnat in.",
   "app.containers.AdminPage.DashboardPage.noData": "Det finns inga data att visa.",
   "app.containers.AdminPage.DashboardPage.noPhase": "Ingen fas har skapats för det här projektet",
   "app.containers.AdminPage.DashboardPage.numberOfActiveParticipantsDescription2": "Antalet deltagare som postade inputs, reagerade eller kommenterade.",

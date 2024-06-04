@@ -1177,7 +1177,6 @@
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "تحديد مجموعة مستخدمين",
   "app.containers.AdminPage.DashboardPage.male": "ذكر",
   "app.containers.AdminPage.DashboardPage.month": "شهر",
-  "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription2": "يعتمد الترتيب على عدد المدخلات (5 نقاط لكل إدخال) والتعليقات (3 نقاط لكل تعليق) وردود الفعل (نقطة واحدة لكل رد فعل) المقدمة من كل مشارك.",
   "app.containers.AdminPage.DashboardPage.noData": "لا توجد بيانات لعرضها",
   "app.containers.AdminPage.DashboardPage.noPhase": "لم تتم تهيئة أي مرحلة لهذا المشروع",
   "app.containers.AdminPage.DashboardPage.numberOfActiveParticipantsDescription2": "عدد المشاركين الذين نشروا المدخلات أو ردوا أو علقوا.",

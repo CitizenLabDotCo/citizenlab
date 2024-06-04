@@ -1,4 +1,4 @@
-import { ActiveUsersResponse } from 'api/graph_data_units/responseTypes/ActiveUsersWidget';
+import { ParticipantsResponse } from 'api/graph_data_units/responseTypes/ParticipantsWidget';
 
 import { parseStats } from './parse';
 
@@ -6,7 +6,7 @@ const TIME_SERIES = [];
 
 describe('parseStats', () => {
   it('works when all stats data is empty', () => {
-    const responseData: ActiveUsersResponse['data']['attributes'] = [
+    const responseData: ParticipantsResponse['data']['attributes'] = [
       TIME_SERIES,
       [],
       [],
@@ -17,7 +17,7 @@ describe('parseStats', () => {
     ];
 
     const expectedOutput = {
-      activeUsers: {
+      participants: {
         value: 0,
         delta: undefined,
       },
@@ -30,8 +30,8 @@ describe('parseStats', () => {
     expect(parseStats(responseData)).toEqual(expectedOutput);
   });
 
-  it('works when only data for active users in whole period', () => {
-    const responseData: ActiveUsersResponse['data']['attributes'] = [
+  it('works when only data for participants in whole period', () => {
+    const responseData: ParticipantsResponse['data']['attributes'] = [
       TIME_SERIES,
       [{ count_participant_id: 4 }],
       [],
@@ -42,7 +42,7 @@ describe('parseStats', () => {
     ];
 
     const expectedOutput = {
-      activeUsers: {
+      participants: {
         value: 4,
         delta: undefined,
       },
@@ -55,8 +55,8 @@ describe('parseStats', () => {
     expect(parseStats(responseData)).toEqual(expectedOutput);
   });
 
-  it('correctly calculates active users delta', () => {
-    const responseData: ActiveUsersResponse['data']['attributes'] = [
+  it('correctly calculates participants delta', () => {
+    const responseData: ParticipantsResponse['data']['attributes'] = [
       TIME_SERIES,
       [{ count_participant_id: 4 }],
       [],
@@ -67,7 +67,7 @@ describe('parseStats', () => {
     ];
 
     const expectedOutput = {
-      activeUsers: {
+      participants: {
         value: 4,
         delta: 3,
       },
@@ -81,7 +81,7 @@ describe('parseStats', () => {
   });
 
   it('correctly calculates participation rate whole period', () => {
-    const responseData: ActiveUsersResponse['data']['attributes'] = [
+    const responseData: ParticipantsResponse['data']['attributes'] = [
       TIME_SERIES,
       [{ count_participant_id: 4 }],
       [{ count_visitor_id: 6 }],
@@ -92,7 +92,7 @@ describe('parseStats', () => {
     ];
 
     const expectedOutput = {
-      activeUsers: {
+      participants: {
         value: 4,
         delta: undefined,
       },
@@ -106,7 +106,7 @@ describe('parseStats', () => {
   });
 
   it('correctly calculates participation rate previous period', () => {
-    const responseData: ActiveUsersResponse['data']['attributes'] = [
+    const responseData: ParticipantsResponse['data']['attributes'] = [
       TIME_SERIES,
       [{ count_participant_id: 4 }],
       [{ count_visitor_id: 6 }],
@@ -117,7 +117,7 @@ describe('parseStats', () => {
     ];
 
     const expectedOutput = {
-      activeUsers: {
+      participants: {
         value: 4,
         delta: 1,
       },

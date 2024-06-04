@@ -9,7 +9,7 @@ import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
-import useActiveUsers from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/ActiveUsersWidget/useActiveUsers';
+import useParticipants from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/ParticipantsWidget/useParticipants';
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
@@ -20,13 +20,13 @@ import { FormatMessageValues } from 'utils/cl-intl/useIntl';
 import { withoutSpacing } from 'utils/textUtils';
 
 import { WIDGET_TITLES } from '../../Widgets';
-import ActiveUsersWidget from '../../Widgets/ChartWidgets/ActiveUsersWidget';
 import DemographicsWidget from '../../Widgets/ChartWidgets/DemographicsWidget';
 import {
   INPUT_TYPES,
   isSupportedField,
 } from '../../Widgets/ChartWidgets/DemographicsWidget/Settings';
 import MethodsUsedWidget from '../../Widgets/ChartWidgets/MethodsUsedWidget';
+import ParticipantsWidget from '../../Widgets/ChartWidgets/ParticipantsWidget';
 import ParticipationWidget from '../../Widgets/ChartWidgets/ParticipationWidget';
 import RegistrationsWidget from '../../Widgets/ChartWidgets/RegistrationsWidget';
 import VisitorsWidget from '../../Widgets/ChartWidgets/VisitorsWidget';
@@ -58,7 +58,7 @@ const PlatformTemplateContent = ({ startDate, endDate }: Props) => {
     inputTypes: INPUT_TYPES,
   });
 
-  const { stats } = useActiveUsers({
+  const { stats } = useParticipants({
     project_id: undefined,
     start_at: startDate,
     end_at: endDate,
@@ -95,7 +95,7 @@ const PlatformTemplateContent = ({ startDate, endDate }: Props) => {
     });
 
     const community = getCommunity({
-      participantsNumber: stats.activeUsers.value,
+      participantsNumber: stats.participants.value,
       formatMessage,
     });
 
@@ -161,8 +161,8 @@ const PlatformTemplateContent = ({ startDate, endDate }: Props) => {
           />
         </Element>
         <Element id="right" is={Container} canvas>
-          <ActiveUsersWidget
-            title={toMultiloc(WIDGET_TITLES.ActiveUsersWidget)}
+          <ParticipantsWidget
+            title={toMultiloc(WIDGET_TITLES.ParticipantsWidget)}
             {...dateRange}
             {...comparedDateRange}
           />

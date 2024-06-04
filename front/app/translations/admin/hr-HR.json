@@ -1177,7 +1177,6 @@
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Odaberite grupu korisnika",
   "app.containers.AdminPage.DashboardPage.male": "muški",
   "app.containers.AdminPage.DashboardPage.month": "mjesec",
-  "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription2": "Poredak se temelji na broju unosa (5 bodova po unosu), komentara (3 boda po komentaru) i reakcija (1 bod po reakciji) koje je poslao svaki sudionik.",
   "app.containers.AdminPage.DashboardPage.noData": "Nema podataka za prikaz.",
   "app.containers.AdminPage.DashboardPage.noPhase": "Za ovaj projekt nisu kreirane faze",
   "app.containers.AdminPage.DashboardPage.numberOfActiveParticipantsDescription2": "Broj sudionika koji su objavili unose, reagirali ili komentirali.",

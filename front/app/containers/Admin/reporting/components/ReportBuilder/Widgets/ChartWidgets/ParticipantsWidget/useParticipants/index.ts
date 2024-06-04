@@ -2,24 +2,24 @@ import { useMemo, useState } from 'react';
 
 import moment from 'moment';
 
-import { useActiveUsers as useActiveUsersData } from 'api/graph_data_units';
-import { ActiveUsersProps } from 'api/graph_data_units/requestTypes';
+import { useParticipants as useParticipantsData } from 'api/graph_data_units';
+import { ParticipantsProps } from 'api/graph_data_units/requestTypes';
 
-import { parseTimeSeries } from 'components/admin/GraphCards/ActiveUsersCard/useActiveUsers/parse';
+import { parseTimeSeries } from 'components/admin/GraphCards/ParticipantsCard/useParticipants/parse';
 
 import { parseStats } from './parse';
 
-export default function useActiveUsers({
+export default function useParticipants({
   project_id,
   start_at,
   end_at,
   resolution = 'month',
   compare_start_at,
   compare_end_at,
-}: ActiveUsersProps) {
+}: ParticipantsProps) {
   const [currentResolution, setCurrentResolution] = useState(resolution);
 
-  const { data: analytics } = useActiveUsersData(
+  const { data: analytics } = useParticipantsData(
     {
       project_id,
       start_at,

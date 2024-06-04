@@ -27,9 +27,9 @@ import { withoutSpacing, getFullName } from 'utils/textUtils';
 
 import { SURVEY_QUESTION_INPUT_TYPES } from '../../constants';
 import aboutMessages from '../../Widgets/_deprecated/AboutReportWidget/messages';
-import ActiveUsersWidget from '../../Widgets/ChartWidgets/ActiveUsersWidget';
 import DemographicsWidget from '../../Widgets/ChartWidgets/DemographicsWidget';
 import { INPUT_TYPES } from '../../Widgets/ChartWidgets/DemographicsWidget/Settings';
+import ParticipantsWidget from '../../Widgets/ChartWidgets/ParticipantsWidget';
 import ImageMultilocWidget from '../../Widgets/ImageMultiloc';
 import MostReactedIdeasWidget from '../../Widgets/MostReactedIdeasWidget';
 import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget';
@@ -186,9 +186,9 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
         )}
       />
       <WhiteSpace />
-      <ActiveUsersWidget
+      <ParticipantsWidget
         projectId={projectId}
-        title={toMultiloc(WIDGET_TITLES.ActiveUsersWidget)}
+        title={toMultiloc(WIDGET_TITLES.ParticipantsWidget)}
         {...projectPeriod}
       />
       <WhiteSpace />

@@ -1177,7 +1177,6 @@
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Vælg brugergruppe",
   "app.containers.AdminPage.DashboardPage.male": "mandlige",
   "app.containers.AdminPage.DashboardPage.month": "måned",
-  "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription2": "Rangeringen er baseret på antallet af input (5 point pr. input), kommentarer (3 point pr. kommentar) og stemmer (1 point pr. stemme), som hver deltager har indsendt.",
   "app.containers.AdminPage.DashboardPage.noData": "Der er ingen data, der skal vises.",
   "app.containers.AdminPage.DashboardPage.noPhase": "Der er ikke oprettet nogen fase for dette projekt",
   "app.containers.AdminPage.DashboardPage.numberOfActiveParticipantsDescription2": "Antallet af deltagere, der har sendt input, stemt eller kommenteret.",

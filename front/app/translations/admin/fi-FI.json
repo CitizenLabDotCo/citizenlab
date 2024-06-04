@@ -1177,7 +1177,6 @@
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Valitse käyttäjäryhmä",
   "app.containers.AdminPage.DashboardPage.male": "Uros",
   "app.containers.AdminPage.DashboardPage.month": "kuukausi",
-  "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription2": "Sijoitus perustuu kunkin osallistujan lähettämien syötteiden (5 pistettä per syöttö), kommenttien (3 pistettä per kommentti) ja reaktioiden (1 piste per vastaus) määrään.",
   "app.containers.AdminPage.DashboardPage.noData": "Näytettäviä tietoja ei ole.",
   "app.containers.AdminPage.DashboardPage.noPhase": "Tälle projektille ei ole luotu vaihetta",
   "app.containers.AdminPage.DashboardPage.numberOfActiveParticipantsDescription2": "Osallistujien määrä, jotka lähettivät palautetta, reagoivat tai kommentoivat.",

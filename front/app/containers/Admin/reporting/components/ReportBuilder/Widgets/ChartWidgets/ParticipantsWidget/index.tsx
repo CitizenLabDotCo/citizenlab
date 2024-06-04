@@ -3,19 +3,19 @@ import React from 'react';
 import Card from '../../_shared/Card';
 import messages from '../messages';
 
-import ActiveUsersCard from './ActiveUsersCard';
 import ChartWidgetSettings from './ChartWidgetSettings';
+import ParticipantsCard from './ParticipantsCard';
 import { Props } from './typings';
 
-const ActiveUsersWidget = ({ title, ...props }: Props) => {
+const ParticipantsWidget = ({ title, ...props }: Props) => {
   return (
     <Card title={title} pagebreak>
-      <ActiveUsersCard {...props} />
+      <ParticipantsCard {...props} />
     </Card>
   );
 };
 
-ActiveUsersWidget.craft = {
+ParticipantsWidget.craft = {
   props: {
     title: {},
     projectId: undefined,
@@ -31,6 +31,6 @@ ActiveUsersWidget.craft = {
   },
 };
 
-export const activeUsersTitle = messages.activeUsersTimeline;
+export const participantsTitle = messages.participantsTimeline;
 
-export default ActiveUsersWidget;
+export default ParticipantsWidget;

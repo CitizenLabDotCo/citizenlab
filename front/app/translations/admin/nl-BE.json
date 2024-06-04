@@ -1177,7 +1177,6 @@
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Selecteer gebruikersgroep",
   "app.containers.AdminPage.DashboardPage.male": "man",
   "app.containers.AdminPage.DashboardPage.month": "maand",
-  "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription2": "De ranglijst is gebaseerd op het aantal bijdragen (5 punten per bijdrage), likes (3 punten per like) en reacties (1 punt per reactie) die door elke deelnemer zijn ingediend.",
   "app.containers.AdminPage.DashboardPage.noData": "Er zijn geen gegevens om te tonen",
   "app.containers.AdminPage.DashboardPage.noPhase": "Geen fase aangemaakt voor dit project",
   "app.containers.AdminPage.DashboardPage.numberOfActiveParticipantsDescription2": "Het aantal deelnemers dat bijdragen heeft gepost, heeft geliked of een reactie heeft gegeven.",
