@@ -999,7 +999,6 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.anErrorOccurred": "Došlo je do pogreške prilikom pokušaja izrade ovog izvješća. Pokušajte ponovno kasnije.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.blankTemplate": "Započni s praznom stranicom",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel": "Naslov izvješća",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalTitle": "Kreirajte izvješće projekta",
   "app.containers.Admin.reporting.components.ReportBuilderPage.customizeReport": "Prilagodite svoje izvješće i podijelite ga s internim dionicima ili zajednicom kao PDF datoteku.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateButtonText": "Izradite izvješće",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateTitle": "Kreirajte svoje prvo izvješće projekta",

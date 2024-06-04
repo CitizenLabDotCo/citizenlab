@@ -999,7 +999,6 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.anErrorOccurred": "حدث خطأ عند محاولة إنشاء هذا التقرير. يرجى إعادة المحاولة لاحقًا.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.blankTemplate": "البدء بصفحة فارغة",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel": "عنوان التقرير",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalTitle": "إنشاء تقرير مشروع",
   "app.containers.Admin.reporting.components.ReportBuilderPage.customizeReport": "قم بتخصيص تقريرك ومشاركته مع أصحاب المصلحة الداخليين أو المجتمع كملف PDF.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateButtonText": "إنشاء تقرير",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateTitle": "أنشئ التقرير الأول لمشروعك",
