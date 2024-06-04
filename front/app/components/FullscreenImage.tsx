@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Box,
@@ -24,6 +24,19 @@ const FullscreenImage = ({ src, altText }: Props) => {
   };
 
   const modalPortalElement = document?.getElementById('modal-portal');
+
+  useEffect(() => {
+    window.addEventListener('keyup', handleKeyup);
+    return () => {
+      window.removeEventListener('keyup', handleKeyup);
+    };
+  }, []);
+
+  const handleKeyup = (event: any) => {
+    if (event.key === 'Escape') {
+      setFullscreen(false);
+    }
+  };
 
   if (fullscreen && modalPortalElement) {
     return createPortal(
