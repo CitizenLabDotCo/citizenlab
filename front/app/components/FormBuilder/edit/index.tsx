@@ -65,7 +65,7 @@ type FormEditProps = {
   viewFormLink: RouteType;
 };
 
-export const FormEdit = ({
+const FormEdit = ({
   defaultValues,
   phaseId,
   projectId,
