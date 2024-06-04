@@ -293,7 +293,7 @@
   "app.components.ParticipationCTABars.VotingCTABar.votesExceedLimit": "Vous avez attribué {votesCast} votes, ce qui dépasse la limite de {votesLimit}. Veuillez retirer certains votes et réessayer.",
   "app.components.ParticipationCTABars.VotingCTABar.votesLeft2": "{votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm} restants} one {{voteTerm} restant} other {{votesTerm} restants}}",
   "app.components.ParticipationCTABars.allocateBudget": "Allouez votre budget",
-  "app.components.ParticipationCTABars.budgetSubmitSuccess": "Votre budget a été soumis avec succès.",
+  "app.components.ParticipationCTABars.budgetSubmitSuccess": "Votre budget a bien été soumis.",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Ouvert à la participation",
   "app.components.ParticipationCTABars.poll": "Participez au sondage",
   "app.components.ParticipationCTABars.reviewDocument": "Révisez le document",
