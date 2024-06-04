@@ -25,7 +25,7 @@ RSpec.describe EmailCampaigns::Campaigns::VotingBasketSubmitted do
       ).first
 
       expect(command.dig(:event_payload, :project_url))
-        .to eq Frontend::UrlService.new.model_to_url(project, locale: notification_activity.item.recipient.locale)
+        .to eq Frontend::UrlService.new.model_to_url(project, locale: Locale.new(notification_activity.item.recipient.locale))
       expect(command.dig(:event_payload, :voted_ideas, 0, :title_multiloc))
         .to eq idea.title_multiloc
     end

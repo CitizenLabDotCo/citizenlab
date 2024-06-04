@@ -430,9 +430,9 @@ const ProjectCard = memo<InputProps>(
 
       const canPost = !!postingPermission.enabled;
       const canReact =
-        project.data.attributes.action_descriptor.reacting_idea.enabled;
+        project.data.attributes.action_descriptors.reacting_idea.enabled;
       const canComment =
-        project.data.attributes.action_descriptor.commenting_idea.enabled;
+        project.data.attributes.action_descriptors.commenting_idea.enabled;
 
       const imageUrl = !projectImage
         ? null
