@@ -120,7 +120,7 @@ const PublicComments = ({
   const showCommentCount = !isAdminPage && hasComments;
   const showHeader = !isAdminPage || hasComments;
   const canComment = {
-    idea: !idea?.data.attributes.action_descriptor.commenting_idea
+    idea: !idea?.data.attributes.action_descriptors.commenting_idea
       .disabled_reason,
     initiative:
       !commentingPermissionInitiative?.disabledReason &&

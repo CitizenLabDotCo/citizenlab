@@ -21,7 +21,10 @@ import useLocalize from 'hooks/useLocalize';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import {
+  isFixableByAuthentication,
+  getPermissionsDisabledMessage,
+} from 'utils/actionDescriptors';
 import { useIntl } from 'utils/cl-intl';
 import { isNil } from 'utils/helperUtils';
 
@@ -64,7 +67,7 @@ const AssignMultipleVotesInput = ({
   const isPhoneOrSmaller = useBreakpoint('phone');
 
   // action descriptors
-  const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
+  const actionDescriptor = idea?.data.attributes.action_descriptors.voting;
   const votingDisabledReason = actionDescriptor?.disabled_reason;
 
   const onAdd = async (event) => {
@@ -141,17 +144,26 @@ const AssignMultipleVotesInput = ({
   const maxVotesPerIdeaReached = votes === voting_max_votes_per_idea;
   const maxVotes = voting_max_total ?? 0;
 
-  const minusButtonDisabledMessage = getMinusButtonDisabledMessage(
-    basketSubmitted,
-    onIdeaPage
+  const action =
+    phase.attributes.voting_method === 'budgeting' ? 'budgeting' : 'voting';
+  const permissionsDisabledMessage = getPermissionsDisabledMessage(
+    action,
+    actionDescriptor.disabled_reason,
+    true
   );
 
-  const plusButtonDisabledMessage = getPlusButtonDisabledMessage(
-    userHasVotesLeft,
-    basketSubmitted,
-    maxVotesPerIdeaReached,
-    onIdeaPage
-  );
+  const minusButtonDisabledMessage =
+    permissionsDisabledMessage ||
+    getMinusButtonDisabledMessage(basketSubmitted, onIdeaPage);
+
+  const plusButtonDisabledMessage =
+    permissionsDisabledMessage ||
+    getPlusButtonDisabledMessage(
+      userHasVotesLeft,
+      basketSubmitted,
+      maxVotesPerIdeaReached,
+      onIdeaPage
+    );
 
   const minusButtonDisabledExplanation = minusButtonDisabledMessage
     ? formatMessage(minusButtonDisabledMessage)

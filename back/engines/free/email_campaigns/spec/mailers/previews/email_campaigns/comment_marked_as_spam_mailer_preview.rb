@@ -17,7 +17,7 @@ module EmailCampaigns
           post_type: comment.post_type,
           comment_author_name: comment.author_name,
           comment_body_multiloc: comment.body_multiloc,
-          comment_url: Frontend::UrlService.new.model_to_url(comment, locale: recipient_user.locale),
+          comment_url: Frontend::UrlService.new.model_to_url(comment, locale: Locale.new(recipient_user.locale)),
           spam_report_reason_code: 'inappropriate',
           spam_report_other_reason: nil
         }

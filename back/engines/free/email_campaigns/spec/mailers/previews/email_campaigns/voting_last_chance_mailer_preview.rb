@@ -9,7 +9,7 @@ module EmailCampaigns
       command = {
         recipient: recipient_user,
         event_payload: {
-          project_url: Frontend::UrlService.new.model_to_url(project, locale: recipient_user.locale),
+          project_url: Frontend::UrlService.new.model_to_url(project, locale: Locale.new(recipient_user.locale)),
           phase_title_multiloc: project.phases.first.title_multiloc || 'PHASE TITLE',
           project_title_multiloc: project.title_multiloc
         }
