@@ -28,7 +28,7 @@ const FullscreenImage = ({ src, altText }: Props) => {
   const modalPortalElement = document?.getElementById('modal-portal');
 
   const handleKeyup = useCallback(
-    (event: any) => {
+    (event: KeyboardEvent) => {
       if (event.key === 'Escape' && fullscreen) {
         setFullscreen(false);
         fullscreenButtonRef.current?.focus();
