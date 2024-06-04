@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FormEvent } from 'react';
 
 import { IconTooltip, Box, Button } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -122,8 +122,8 @@ const ProfileForm = () => {
     label: appLocalePairs[locale],
   }));
 
-  const handleDisclaimer = (e) => {
-    e.preventDefault();
+  const handleDisclaimer = (event: FormEvent) => {
+    event.preventDefault();
     if (
       methods.formState.dirtyFields.avatar &&
       methods.getValues('avatar') &&
@@ -278,7 +278,7 @@ const ProfileForm = () => {
             authUser={authUser.data}
             authenticationContext={GLOBAL_CONTEXT}
             onChange={handleCustomFieldsChange}
-            parentSubmit={handleDisclaimer}
+            onParentSubmit={handleDisclaimer}
           />
           <Box display="flex">
             <Button type="submit" processing={methods.formState.isSubmitting}>

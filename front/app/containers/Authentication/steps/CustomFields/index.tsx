@@ -85,6 +85,7 @@ const CustomFields = ({
         authUser={authUser.data}
         authenticationContext={authenticationData.context}
         onSubmit={handleSubmit}
+        onParentSubmit={handleOnSubmitButtonClick}
       />
 
       <Box

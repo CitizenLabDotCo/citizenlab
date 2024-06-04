@@ -1,4 +1,10 @@
-import React, { memo, ReactElement, useEffect, useState } from 'react';
+import React, {
+  FormEvent,
+  memo,
+  ReactElement,
+  useEffect,
+  useState,
+} from 'react';
 
 // jsonforms
 import {
@@ -78,7 +84,7 @@ interface Props {
   config?: 'default' | 'input' | 'survey';
   layout?: 'inline' | 'fullpage';
   footer?: React.ReactNode;
-  parentSubmit?: (e: any) => void;
+  onParentSubmit?: (event: FormEvent) => void;
 }
 
 const Form = memo(
@@ -96,7 +102,7 @@ const Form = memo(
     footer,
     onChange,
     onSubmit,
-    parentSubmit,
+    onParentSubmit,
   }: Props) => {
     const { formatMessage } = useIntl();
     const locale = useLocale();
@@ -156,8 +162,8 @@ const Form = memo(
       setScrollToError(true);
     };
 
-    const invisibleSubmit = (e) => {
-      parentSubmit ? parentSubmit(e) : handleSubmit();
+    const invisibleSubmit = (event: FormEvent) => {
+      onParentSubmit ? onParentSubmit(event) : handleSubmit();
     };
 
     useObserveEvent(submitOnEvent, handleSubmit);
