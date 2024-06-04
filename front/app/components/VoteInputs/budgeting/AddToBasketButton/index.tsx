@@ -50,13 +50,14 @@ const AddToBasketButton = ({
   const basketId = phase.relationships?.user_basket?.data?.id;
   const { data: basket } = useBasket(basketId);
   const ideaBudget = idea?.data.attributes.budget;
+  const currency = appConfig?.data.attributes.settings.core.currency;
 
   const ideaInBasket = !!getVotes?.(ideaId);
 
   const [searchParams] = useSearchParams();
   const isProcessing = searchParams.get('processing_vote') === ideaId;
 
-  if (!idea || !ideaBudget) {
+  if (!idea || !ideaBudget || !currency) {
     return null;
   }
 
@@ -123,7 +124,6 @@ const AddToBasketButton = ({
 
   const buttonMessage = ideaInBasket ? messages.added : messages.add;
   const buttonEnabled = isButtonEnabled(basket, actionDescriptor);
-  const currency = appConfig?.data.attributes.settings.core.currency;
 
   const action =
     phase.attributes.voting_method === 'budgeting' ? 'budgeting' : 'voting';

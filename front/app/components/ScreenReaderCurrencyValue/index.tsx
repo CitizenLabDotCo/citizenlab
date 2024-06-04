@@ -9,32 +9,20 @@ import messages from './messages';
 
 interface Props {
   amount: number;
-  currency?: TCurrency;
+  currency: TCurrency;
 }
 
 const ScreenReaderCurrencyValue = ({ amount, currency }: Props) => {
   const { formatMessage } = useIntl();
 
-  // We add a comma for a reading pause between the amount and the currency
-  const currencyLabel =
-    currency && messages[currency]
-      ? `, ${formatMessage(messages.currency)}: ${formatMessage(
-          messages[currency]
-        )}`
-      : '';
+  // An extra check to prevent the component from crashing if the message is missing
+  if (!messages[currency]) return null;
 
-  return (
-    <span
-      aria-label={`${formatMessage(
-        messages.amount
-      )}: ${amount}${currencyLabel}`}
-    >
-      <ScreenReaderOnly>
-        ({formatMessage(messages.amount)}: {amount}
-        {currencyLabel})
-      </ScreenReaderOnly>
-    </span>
-  );
+  // We add a comma for a reading pause between the amount and the currency
+  const label = `${formatMessage(messages.amount)}: ${amount},
+    ${formatMessage(messages.currency)}: ${formatMessage(messages[currency])}`;
+
+  return <ScreenReaderOnly>({label})</ScreenReaderOnly>;
 };
 
 export default ScreenReaderCurrencyValue;
