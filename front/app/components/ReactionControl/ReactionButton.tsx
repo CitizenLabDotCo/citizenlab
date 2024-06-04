@@ -357,7 +357,7 @@ const ReactionButton = ({
       return futureEnabled
         ? messages.reactingPossibleLater
         : messages.reactingDisabledProjectInactive;
-    } else if (disabledReason === 'not_in_group') {
+    } else if (disabledReason === 'user_not_in_group') {
       return globalMessages.notInGroup;
     } else if (disabledReason === 'reacting_disabled' && futureEnabled) {
       return messages.reactingPossibleLater;
@@ -369,16 +369,16 @@ const ReactionButton = ({
       return futureEnabled
         ? messages.reactingDisabledFutureEnabled
         : messages.reactingDisabledPhaseOver;
-    } else if (disabledReason === 'not_permitted') {
+    } else if (disabledReason === 'user_not_permitted') {
       return messages.reactingNotPermitted;
     } else if (
-      (authUser && disabledReason === 'not_active') ||
-      disabledReason === 'missing_user_requirements'
+      (authUser && disabledReason === 'user_not_active') ||
+      disabledReason === 'user_missing_requirements'
     ) {
       return messages.completeProfileToReact;
-    } else if (disabledReason === 'not_signed_in') {
+    } else if (disabledReason === 'user_not_signed_in') {
       return messages.reactingNotSignedIn;
-    } else if (authUser && disabledReason === 'not_verified') {
+    } else if (authUser && disabledReason === 'user_not_verified') {
       return messages.reactingVerifyToReact;
     } else {
       return messages.reactingNotEnabled;
@@ -387,15 +387,15 @@ const ReactionButton = ({
 
   if (!isNilOrError(idea) && !isNilOrError(project)) {
     const reactingDescriptor =
-      idea.data.attributes.action_descriptor.reacting_idea;
+      idea.data.attributes.action_descriptors.reacting_idea;
     const buttonReactionModeEnabled =
       reactingDescriptor[buttonReactionMode].enabled;
     const disabledReason =
-      idea.data.attributes.action_descriptor.reacting_idea[buttonReactionMode]
+      idea.data.attributes.action_descriptors.reacting_idea[buttonReactionMode]
         .disabled_reason;
-    const futureEnabled =
-      idea.data.attributes.action_descriptor.reacting_idea[buttonReactionMode]
-        .future_enabled;
+    const futureEnabledAt =
+      idea.data.attributes.action_descriptors.reacting_idea[buttonReactionMode]
+        .future_enabled_at;
     const cancellingEnabled = reactingDescriptor.cancelling_enabled;
     const notYetReacted = userReactionMode !== buttonReactionMode;
     const alreadyReacted = userReactionMode === buttonReactionMode;
@@ -407,12 +407,12 @@ const ReactionButton = ({
 
     const disabledReasonMessage = getDisabledReasonMessage(
       disabledReason,
-      futureEnabled
+      futureEnabledAt
     );
 
-    const enabledFromDate = futureEnabled ? (
+    const enabledFromDate = futureEnabledAt ? (
       <FormattedDate
-        value={futureEnabled}
+        value={futureEnabledAt}
         year="numeric"
         month="long"
         day="numeric"

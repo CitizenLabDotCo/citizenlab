@@ -34,11 +34,11 @@ export const project1: IProjectData = {
       large:
         'https://demo.stg.citizenlab.co/uploads/c7e20cb9-f253-4c0c-aea1-e6e3c23c04c7/project/header_bg/be3f645b-3e1d-4afc-b91b-d68c4dc0100b/large_header_bg.jpeg',
     },
-    action_descriptor: {
+    action_descriptors: {
       posting_idea: {
         enabled: true,
         disabled_reason: null,
-        future_enabled: null,
+        future_enabled_at: null,
       },
       commenting_idea: {
         enabled: true,
@@ -161,11 +161,11 @@ export const project2: IProjectData = {
     header_bg: {
       large: null,
     },
-    action_descriptor: {
+    action_descriptors: {
       posting_idea: {
         enabled: true,
         disabled_reason: null,
-        future_enabled: null,
+        future_enabled_at: null,
       },
       commenting_idea: {
         enabled: true,
@@ -291,11 +291,11 @@ const votingProject: IProject = {
       header_bg: {
         large: null,
       },
-      action_descriptor: {
+      action_descriptors: {
         posting_idea: {
           enabled: false,
-          disabled_reason: 'not_ideation',
-          future_enabled: null,
+          disabled_reason: 'posting_not_supported',
+          future_enabled_at: null,
         },
         commenting_idea: {
           enabled: true,
@@ -307,14 +307,14 @@ const votingProject: IProject = {
         },
         reacting_idea: {
           enabled: false,
-          disabled_reason: 'not_ideation',
+          disabled_reason: 'reacting_not_supported',
           up: {
             enabled: false,
-            disabled_reason: 'not_ideation',
+            disabled_reason: 'reacting_not_supported',
           },
           down: {
             enabled: false,
-            disabled_reason: 'not_ideation',
+            disabled_reason: 'reacting_not_supported',
           },
         },
         voting: {
