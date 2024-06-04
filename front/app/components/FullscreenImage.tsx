@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import {
   Box,
@@ -18,6 +18,7 @@ const FullscreenImage = ({ src, altText }: Props) => {
   const [fullscreen, setFullscreen] = useState(false);
   const [isImagedLoaded, setIsImageLoaded] = useState(false);
   const isSmallerThanPhone = useBreakpoint('phone');
+  const fullscreenButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const toggleFullscreen = (event: any) => {
     event.preventDefault(); // prevent the image option from being checked (selected)
@@ -26,18 +27,22 @@ const FullscreenImage = ({ src, altText }: Props) => {
 
   const modalPortalElement = document?.getElementById('modal-portal');
 
+  const handleKeyup = useCallback(
+    (event: any) => {
+      if (event.key === 'Escape' && fullscreen) {
+        setFullscreen(false);
+        fullscreenButtonRef.current?.focus();
+      }
+    },
+    [setFullscreen, fullscreenButtonRef, fullscreen]
+  );
+
   useEffect(() => {
     window.addEventListener('keyup', handleKeyup);
     return () => {
       window.removeEventListener('keyup', handleKeyup);
     };
-  }, []);
-
-  const handleKeyup = (event: any) => {
-    if (event.key === 'Escape') {
-      setFullscreen(false);
-    }
-  };
+  }, [handleKeyup]);
 
   if (fullscreen && modalPortalElement) {
     return createPortal(
@@ -99,6 +104,7 @@ const FullscreenImage = ({ src, altText }: Props) => {
             onClick={toggleFullscreen}
           >
             <IconButton
+              iconRef={fullscreenButtonRef}
               buttonType="button"
               iconName="layout-white-space"
               a11y_buttonActionMessage={
