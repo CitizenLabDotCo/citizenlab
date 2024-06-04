@@ -43,12 +43,12 @@ export default defineMessages({
     defaultMessage:
       'The following section outlines inclusion indicators, highlighting your our progress towards fostering a more inclusive and representative participation platform.',
   },
-  yourQuartersProjects: {
-    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.yourQuartersProjects',
-    defaultMessage: "Your quarter's projects",
+  yourProjects: {
+    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.yourProjects',
+    defaultMessage: 'Your projects',
   },
-  yourQuartersProjectsDescription: {
-    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.yourQuartersProjectsDescription',
+  yourProjectsDescription: {
+    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.yourProjectsDescription',
     defaultMessage:
       'The following section provides an overview of publicly visible projects that overlap with the selected time range, the most used methods in these projects, and metrics concerning the total amount of participation.',
   },
