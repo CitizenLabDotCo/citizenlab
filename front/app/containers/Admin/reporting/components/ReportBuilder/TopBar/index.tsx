@@ -50,14 +50,6 @@ type ContentBuilderTopBarProps = {
   setSelectedLocale: React.Dispatch<React.SetStateAction<SupportedLocale>>;
 };
 
-// TODO remove
-const error = console.error.bind(console);
-
-console.error = (...args: any[]) => {
-  if (args[0].code === 'MISSING_TRANSLATION') return;
-  error(...args);
-};
-
 const ContentBuilderTopBar = ({
   selectedLocale,
   hasPendingState,
