@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
+import usePhase from 'api/phases/usePhase';
+import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
 
@@ -29,6 +31,9 @@ const IdeaFormBuilder = () => {
   const { data: formCustomFields } = useFormCustomFields({
     projectId,
   });
+  const { data: phase } = usePhase(phaseId);
+  const { data: project } = useProjectById(projectId);
+
   const locale = useLocale();
 
   const goBackUrl: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/ideaform`;
@@ -40,6 +45,8 @@ const IdeaFormBuilder = () => {
     await saveIdeaFormAsPDF({ phaseId, locale, personal_data });
   };
 
+  if (!project || !phase) return null;
+
   return (
     <>
       <FormBuilder
@@ -49,6 +56,7 @@ const IdeaFormBuilder = () => {
           goBackUrl,
           onDownloadPDF: handleDownloadPDF,
         }}
+        viewFormLink={`/projects/${project.data.attributes.slug}/ideas/new?phase_id=${phase.data.id}`}
       />
       <PDFExportModal
         open={exportModalOpen}

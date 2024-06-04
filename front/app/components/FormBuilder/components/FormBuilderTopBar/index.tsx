@@ -10,6 +10,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
+import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
@@ -41,11 +42,13 @@ const StyledStatusLabel = styled(StatusLabel)`
 type FormBuilderTopBarProps = {
   isSubmitting: boolean;
   builderConfig: FormBuilderConfig;
+  viewFormLink: RouteType;
 };
 
 const FormBuilderTopBar = ({
   isSubmitting,
   builderConfig,
+  viewFormLink,
 }: FormBuilderTopBarProps) => {
   const printedFormsEnabled =
     useFeatureFlag({
@@ -72,9 +75,6 @@ const FormBuilderTopBar = ({
   }
 
   const isPostingEnabled = getIsPostingEnabled(phase?.data);
-  const viewFormLink =
-    builderConfig.viewFormLink ||
-    `/projects/${project.data.attributes.slug}/ideas/new?phase_id=${phaseId}`;
 
   const handleGoback = () => {
     if (isDirty) {
