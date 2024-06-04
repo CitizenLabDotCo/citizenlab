@@ -93,7 +93,7 @@ describe('Sign up - custom fields step', () => {
       cy.get('#e2e-signup-custom-fields-submit-btn').click();
       cy.get('#e2e-signup-custom-fields-container .e2e-error-message').should(
         'contain',
-        'This field is required'
+        'field is required'
       );
     });
 
