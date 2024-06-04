@@ -1,4 +1,38 @@
 ca:
+  locales:
+    en: Anglès
+    ar-MA: Àrab (Marroc)
+    ar-SA: Àrab (Aràbia Saudita)
+    ca-ES: català
+    cy-GB: gal·lès
+    da-DK: danès
+    de-DE: alemany
+    el-GR: grec
+    en-CA: Anglès (Canadà)
+    en-GB: Anglès (Regne Unit)
+    en-IE: Anglès (Irlanda)
+    es-CL: espanyol (Xile)
+    es-ES: espanyol (Espanya)
+    fi-FI: finès
+    fr-BE: francès (Bèlgica)
+    fr-FR: francès
+    hr-HR: croat
+    hu-HU: hongarès
+    it-IT: italià
+    kl-GL: groenlandès
+    lb-LU: luxemburguesa
+    lv-LV: letó
+    mi: Maori
+    nb-NO: noruec (bokmål)
+    nl-BE: Holandès (Bèlgica)
+    nl-NL: holandès
+    pl-PL: polonès
+    pt-BR: portuguès (Brasil)
+    ro-RO: romanès
+    sr-Latn: serbi (llatí)
+    sr-SP: Serbi (ciríl·lic)
+    sv-SE: suec
+    tr-TR: turc
   symbols:
     outside: algun altre lloc
   idea_statuses:
