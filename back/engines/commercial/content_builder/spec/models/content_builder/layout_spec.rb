@@ -14,6 +14,38 @@ RSpec.describe ContentBuilder::Layout do
     its(:updated_at) { is_expected.to be_nil }
   end
 
+  describe 'with_widget_type scope' do
+    let_it_be(:layout1) do
+      create(:layout, craftjs_json: {
+        'ROOT' => { 'type' => 'div' },
+        'node-1' => { 'type' => { 'resolvedName' => 'Widget1' } },
+        'node-2' => { 'type' => { 'resolvedName' => 'Widget2' } },
+        'node-3' => { 'type' => { 'resolvedName' => 'Widget2' } }
+      })
+    end
+
+    let_it_be(:layout2) do
+      create(:layout, craftjs_json: {
+        'ROOT' => { 'type' => 'div' },
+        'node-1' => { 'type' => { 'resolvedName' => 'Widget1' } }
+      })
+    end
+
+    it 'returns all the layouts that contain the specified widget type' do
+      expect(described_class.with_widget_type('Widget1'))
+        .to match_array([layout1, layout2])
+    end
+
+    it 'does not duplicate layouts that contain multiple instances of the widget type' do
+      expect(described_class.with_widget_type('Widget2'))
+        .to match_array([layout1])
+    end
+
+    it 'returns an empty array when no layout contains the specified widget type' do
+      expect(described_class.with_widget_type('Widget3')).to be_empty
+    end
+  end
+
   describe '#valid?' do
     it 'returns false when code is not present' do
       layout = build(:layout, code: nil)

@@ -110,7 +110,7 @@ const Status = ({
           <T value={initiativeStatus.attributes.title_multiloc} />
         </StatusHeading>
       </Box>
-      <Box mb="24px">
+      <Box mb="24px" aria-live="polite">
         <StatusExplanation>{statusExplanation}</StatusExplanation>
       </Box>
       {showProgressBar && (

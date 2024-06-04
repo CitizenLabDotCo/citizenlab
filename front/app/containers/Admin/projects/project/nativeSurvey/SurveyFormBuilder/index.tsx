@@ -1,4 +1,4 @@
-import React, { useState, lazy } from 'react';
+import React, { useState } from 'react';
 
 import { useParams, useSearchParams } from 'react-router-dom';
 import { RouteType } from 'routes';
@@ -13,12 +13,12 @@ import PDFExportModal, {
 } from 'containers/Admin/projects/components/PDFExportModal';
 import { API_PATH } from 'containers/App/constants';
 
+import FormBuilder from 'components/FormBuilder/edit';
+
 import { isNilOrError } from 'utils/helperUtils';
 
 import { saveSurveyAsPDF } from '../saveSurveyAsPDF';
 import { nativeSurveyConfig, clearOptionIds } from '../utils';
-
-const FormBuilder = lazy(() => import('components/FormBuilder/edit'));
 
 const SurveyFormBuilder = () => {
   const [exportModalOpen, setExportModalOpen] = useState(false);

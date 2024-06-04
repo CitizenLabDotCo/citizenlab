@@ -6,6 +6,8 @@ import { useTheme } from 'styled-components';
 
 import { IEventData } from 'api/events/types';
 
+import ScreenReadableEventDate from 'components/ScreenReadableEventDate';
+
 import SingleDateStylized from './SingleDateStylized';
 
 interface Props {
@@ -31,27 +33,36 @@ const EventDateStylized = ({ event }: Props) => {
       justifyContent="center"
       id="e2e-event-date-stylized"
     >
-      <SingleDateStylized
-        day={startAtMoment.format('DD')}
-        month={startDateMonth}
-        time={
-          isEventMultipleDays
-            ? `${startAtMoment.format('LT')}`
-            : oneDayEventTime
-        }
-      />
+      <ScreenReadableEventDate event={event} />
+      {/* We need to wrap the single date in a div to make sure it's
+        not read by screen readers. This is because we handle the screen
+        reader output in the ScreenReadableEventDate component
+        */}
+      <div aria-hidden="true">
+        <SingleDateStylized
+          day={startAtMoment.format('DD')}
+          month={startDateMonth}
+          time={
+            isEventMultipleDays
+              ? `${startAtMoment.format('LT')}`
+              : oneDayEventTime
+          }
+        />
+      </div>
       {isEventMultipleDays && (
         <>
-          <Box mx="16px" my="auto">
+          <Box mx="16px" my="auto" aria-hidden>
             <Text m="0px" fontWeight="bold" fontSize="xxl">
               {theme.isRtl ? '←' : '→'}
             </Text>
           </Box>
-          <SingleDateStylized
-            day={endAtMoment.format('DD')}
-            month={endDateMonth}
-            time={`${endAtMoment.format('LT')}`}
-          />
+          <div aria-hidden>
+            <SingleDateStylized
+              day={endAtMoment.format('DD')}
+              month={endDateMonth}
+              time={`${endAtMoment.format('LT')}`}
+            />
+          </div>
         </>
       )}
     </Box>

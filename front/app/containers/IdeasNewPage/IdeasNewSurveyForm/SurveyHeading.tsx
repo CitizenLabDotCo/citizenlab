@@ -22,6 +22,7 @@ import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
+import clHistory from 'utils/cl-router/history';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import messages from '../messages';
@@ -148,6 +149,7 @@ const SurveyHeading = ({ titleText }: Props) => {
               width="100%"
               mb={isSmallerThanPhone ? '16px' : undefined}
               onClick={() => {
+                clHistory.push(`/projects/${projectSlug}`);
                 // We need to invalidate any previously cached draft idea.
                 // Invalidating the draft while "in" the survey (I.e. In the useUpdateIdea
                 // when survey page next/previous buttons clicked) causes issues.
@@ -156,7 +158,6 @@ const SurveyHeading = ({ titleText }: Props) => {
                   queryKey: ideasKeys.item({ id: phaseId }),
                 });
               }}
-              linkTo={`/projects/${projectSlug}`}
             >
               <FormattedMessage {...messages.confirmLeaveFormButtonText} />
             </Button>

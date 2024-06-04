@@ -12,6 +12,8 @@ import { IOption } from 'typings';
 
 import useAddReport from 'api/reports/useAddReport';
 
+import reportTitleIsTaken from 'containers/Admin/reporting/utils/reportTitleIsTaken';
+
 import DateRangePicker, { Dates } from 'components/admin/DateRangePicker';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
@@ -31,10 +33,6 @@ interface Props {
   open: boolean;
   onClose: () => void;
 }
-
-const reportTitleIsTaken = (error: any) => {
-  return error?.errors?.name?.[0]?.error === 'taken';
-};
 
 const CreateReportModal = ({ open, onClose }: Props) => {
   const { mutate: createReport, isLoading } = useAddReport();

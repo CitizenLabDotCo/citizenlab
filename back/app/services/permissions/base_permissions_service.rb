@@ -16,13 +16,13 @@ module Permissions
     ].freeze
 
     USER_DENIED_REASONS = {
-      not_signed_in: 'not_signed_in',
-      not_active: 'not_active',
-      not_permitted: 'not_permitted',
-      not_in_group: 'not_in_group',
-      missing_user_requirements: 'missing_user_requirements',
-      not_verified: 'not_verified',
-      blocked: 'blocked'
+      user_not_signed_in: 'user_not_signed_in',
+      user_not_active: 'user_not_active',
+      user_not_permitted: 'user_not_permitted',
+      user_not_in_group: 'user_not_in_group',
+      user_missing_requirements: 'user_missing_requirements',
+      user_not_verified: 'user_not_verified',
+      user_blocked: 'user_blocked'
     }.freeze
 
     def initialize
@@ -66,35 +66,26 @@ module Permissions
 
     # User methods
     def user_denied_reason(permission, user, scope = nil)
-      if permission.permitted_by == 'everyone'
-        user ||= User.new
-      else
-        return USER_DENIED_REASONS[:not_signed_in] unless user
-        return USER_DENIED_REASONS[:blocked] if user.blocked?
+      return if permission.permitted_by == 'everyone'
+      return USER_DENIED_REASONS[:user_not_signed_in] unless user
+      return USER_DENIED_REASONS[:user_blocked] if user.blocked?
+      return USER_DENIED_REASONS[:user_missing_requirements] if user.confirmation_required?
+      return USER_DENIED_REASONS[:user_not_active] unless user.active?
+      return if UserRoleService.new.can_moderate? scope, user
+      return USER_DENIED_REASONS[:user_not_permitted] if permission.permitted_by == 'admins_moderators'
+      return USER_DENIED_REASONS[:user_missing_requirements] unless user_requirements_service.requirements(permission, user)[:permitted]
+      return USER_DENIED_REASONS[:user_not_verified] if user_requirements_service.requires_verification?(permission, user)
+      return USER_DENIED_REASONS[:user_not_in_group] if denied_when_permitted_by_groups?(permission, user)
 
-        unless user.confirmation_required? # Ignore non confirmed users as this will be picked up by UserRequirementsService
-          return USER_DENIED_REASONS[:not_active] unless user.active?
-          return if UserRoleService.new.can_moderate? scope, user
-          return USER_DENIED_REASONS[:not_permitted] if permission.permitted_by == 'admins_moderators'
-
-          if permission.permitted_by == 'groups'
-            reason = denied_when_permitted_by_groups?(permission, user)
-            return USER_DENIED_REASONS[reason] if reason.present?
-          end
-        end
-      end
-      return if user_requirements_service.requirements(permission, user)[:permitted]
-
-      USER_DENIED_REASONS[:missing_user_requirements]
+      nil
     end
 
-    # NOTE: method overridden in the verification engine
     def denied_when_permitted_by_groups?(permission, user)
-      :not_in_group unless permission.groups && user.in_any_groups?(permission.groups)
+      permission.permitted_by == 'groups' && permission.groups && !user.in_any_groups?(permission.groups)
     end
 
     def user_requirements_service
-      @user_requirements_service ||= Permissions::UserRequirementsService.new
+      @user_requirements_service ||= Permissions::UserRequirementsService.new(check_groups: false)
     end
 
     def user_can_moderate_something?(user)
@@ -102,5 +93,3 @@ module Permissions
     end
   end
 end
-
-Permissions::BasePermissionsService.prepend(Verification::Patches::Permissions::BasePermissionsService)

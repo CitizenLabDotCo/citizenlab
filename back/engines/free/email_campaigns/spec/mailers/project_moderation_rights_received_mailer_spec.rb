@@ -14,7 +14,7 @@ RSpec.describe EmailCampaigns::ProjectModerationRightsReceivedMailer do
           project_id: project.id,
           project_title_multiloc: project.title_multiloc,
           project_ideas_count: project.ideas_count,
-          project_url: Frontend::UrlService.new.model_to_url(project, locale: recipient.locale)
+          project_url: Frontend::UrlService.new.model_to_url(project, locale: Locale.new(recipient.locale))
         }
       }
     end

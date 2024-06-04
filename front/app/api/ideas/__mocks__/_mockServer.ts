@@ -37,7 +37,7 @@ export const ideaData: IIdeaData[] = [
       proposed_budget: 45,
       baskets_count: 0,
       votes_count: 0,
-      action_descriptor: {
+      action_descriptors: {
         reacting_idea: {
           enabled: true,
           disabled_reason: null,
@@ -45,28 +45,28 @@ export const ideaData: IIdeaData[] = [
           up: {
             enabled: true,
             disabled_reason: null,
-            future_enabled: null,
+            future_enabled_at: null,
           },
           down: {
             enabled: true,
             disabled_reason: null,
-            future_enabled: null,
+            future_enabled_at: null,
           },
         },
         commenting_idea: {
           enabled: false,
-          disabled_reason: 'not_permitted',
-          future_enabled: null,
+          disabled_reason: 'user_not_permitted',
+          future_enabled_at: null,
         },
         comment_reacting_idea: {
           enabled: true,
           disabled_reason: null,
-          future_enabled: null,
+          future_enabled_at: null,
         },
         voting: {
           enabled: false,
-          disabled_reason: 'not_permitted',
-          future_enabled: null,
+          disabled_reason: 'user_not_permitted',
+          future_enabled_at: null,
         },
       },
       anonymous: false,
@@ -149,7 +149,7 @@ export const ideaData: IIdeaData[] = [
       proposed_budget: 45,
       votes_count: 0,
       baskets_count: 0,
-      action_descriptor: {
+      action_descriptors: {
         reacting_idea: {
           enabled: true,
           disabled_reason: null,
@@ -157,28 +157,28 @@ export const ideaData: IIdeaData[] = [
           up: {
             enabled: true,
             disabled_reason: null,
-            future_enabled: null,
+            future_enabled_at: null,
           },
           down: {
             enabled: true,
             disabled_reason: null,
-            future_enabled: null,
+            future_enabled_at: null,
           },
         },
         commenting_idea: {
           enabled: false,
-          disabled_reason: 'not_permitted',
-          future_enabled: null,
+          disabled_reason: 'user_not_permitted',
+          future_enabled_at: null,
         },
         comment_reacting_idea: {
           enabled: true,
           disabled_reason: null,
-          future_enabled: null,
+          future_enabled_at: null,
         },
         voting: {
           enabled: false,
-          disabled_reason: 'not_permitted',
-          future_enabled: null,
+          disabled_reason: 'user_not_permitted',
+          future_enabled_at: null,
         },
       },
       anonymous: false,
@@ -266,36 +266,36 @@ const votingIdea = {
       anonymous: false,
       author_hash: '5d78eb7936e_d99f2f3b7518aeddde3d45d78eb7936ed99f2f3b75',
       author_name: 'Citizenlab Hermansen',
-      action_descriptor: {
+      action_descriptors: {
         commenting_idea: {
           enabled: true,
           disabled_reason: null,
-          future_enabled: null,
+          future_enabled_at: null,
         },
         reacting_idea: {
           enabled: false,
-          disabled_reason: 'not_ideation',
+          disabled_reason: 'reacting_not_supported',
           cancelling_enabled: false,
           up: {
             enabled: false,
-            disabled_reason: 'not_ideation',
-            future_enabled: null,
+            disabled_reason: 'reacting_not_supported',
+            future_enabled_at: null,
           },
           down: {
             enabled: false,
-            disabled_reason: 'not_ideation',
-            future_enabled: null,
+            disabled_reason: 'reacting_not_supported',
+            future_enabled_at: null,
           },
         },
         comment_reacting_idea: {
           enabled: true,
           disabled_reason: null,
-          future_enabled: null,
+          future_enabled_at: null,
         },
         voting: {
           enabled: true,
           disabled_reason: null,
-          future_enabled: null,
+          future_enabled_at: null,
         },
       },
     },

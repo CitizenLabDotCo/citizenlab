@@ -14,7 +14,7 @@ RSpec.describe FlagInappropriateContent::EmailCampaigns::InappropriateContentFla
           flaggable_type: flaggable.class.name,
           flag_automatically_detected: false,
           flaggable_author_name: UserDisplayNameService.new(AppConfiguration.instance, recipient).display_name!(flaggable.author),
-          flaggable_url: Frontend::UrlService.new.model_to_url(flaggable, locale: recipient.locale),
+          flaggable_url: Frontend::UrlService.new.model_to_url(flaggable, locale: Locale.new(recipient.locale)),
           flaggable_title_multiloc: flaggable.title_multiloc,
           flaggable_body_multiloc: flaggable.body_multiloc
         }

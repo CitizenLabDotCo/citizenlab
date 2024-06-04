@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Checkbox } from '@citizenlab/cl2-component-library';
+import { Box, CheckboxWithLabel } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 
 import { ParticipationType } from 'api/graph_data_units/requestTypes';
@@ -36,7 +36,7 @@ const ChartWidgetSettings = () => {
       <ComparisonToggle />
       <HideStatisticsToggle />
       <Box mb="20px">
-        <Checkbox
+        <CheckboxWithLabel
           checked={inputs}
           onChange={() => {
             setProp((props) => {
@@ -50,7 +50,7 @@ const ChartWidgetSettings = () => {
           label={formatMessage(messages.showInputs)}
           marginBottom="12px"
         />
-        <Checkbox
+        <CheckboxWithLabel
           checked={comments}
           onChange={() => {
             setProp((props) => {
@@ -64,7 +64,7 @@ const ChartWidgetSettings = () => {
           label={formatMessage(messages.showComments)}
           marginBottom="12px"
         />
-        <Checkbox
+        <CheckboxWithLabel
           checked={votes}
           onChange={() => {
             setProp((props) => {

@@ -55,6 +55,7 @@ const ParticipantsCard = ({
   return (
     <GraphCard
       title={cardTitle}
+      id="e2e-participants-by-time-chart"
       infoTooltipContent={formatMessage(messages.cardTitleTooltipMessage)}
       exportMenu={{
         name: cardTitle,

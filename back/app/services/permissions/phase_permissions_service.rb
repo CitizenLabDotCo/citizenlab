@@ -7,18 +7,18 @@ module Permissions
     }.freeze
 
     POSTING_DENIED_REASONS = {
-      not_ideation: 'not_ideation',
+      posting_not_supported: 'posting_not_supported',
       posting_disabled: 'posting_disabled',
       posting_limited_max_reached: 'posting_limited_max_reached'
     }.freeze
 
     COMMENTING_DENIED_REASONS = {
-      not_supported: 'not_supported',
+      commenting_not_supported: 'commenting_not_supported',
       commenting_disabled: 'commenting_disabled'
     }.freeze
 
     REACTING_DENIED_REASONS = {
-      not_ideation: 'not_ideation',
+      reacting_not_supported: 'reacting_not_supported',
       reacting_disabled: 'reacting_disabled',
       reacting_dislike_disabled: 'reacting_dislike_disabled',
       reacting_like_limited_max_reached: 'reacting_like_limited_max_reached',
@@ -75,7 +75,7 @@ module Permissions
     # Phase methods
     def posting_idea_denied_reason_for_phase(phase, user)
       if !Factory.instance.participation_method_for(phase).posting_allowed?
-        POSTING_DENIED_REASONS[:not_ideation] # TODO: native surveys allow posting too - change reason code?
+        POSTING_DENIED_REASONS[:posting_not_supported] # not ideation or native_survey
       elsif !phase.posting_enabled
         POSTING_DENIED_REASONS[:posting_disabled]
       elsif user && posting_limit_reached?(phase, user)
@@ -85,7 +85,7 @@ module Permissions
 
     def commenting_idea_denied_reason_for_phase(phase)
       if !phase.can_contain_ideas?
-        COMMENTING_DENIED_REASONS[:not_supported]
+        COMMENTING_DENIED_REASONS[:commenting_not_supported] # not ideation or voting
       elsif !phase.commenting_enabled
         COMMENTING_DENIED_REASONS[:commenting_disabled]
       end
@@ -93,7 +93,7 @@ module Permissions
 
     def reacting_denied_reason_for_phase(phase, user, reaction_mode: nil)
       if !phase.ideation?
-        REACTING_DENIED_REASONS[:not_ideation]
+        REACTING_DENIED_REASONS[:reacting_not_supported]
       elsif !phase.reacting_enabled
         REACTING_DENIED_REASONS[:reacting_disabled]
       elsif reaction_mode == 'down' && !phase.reacting_dislike_enabled

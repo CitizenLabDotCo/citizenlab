@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import {
   Box,
   Text,
-  Title,
   colors,
   IconButton,
   TooltipContentWrapper,
@@ -26,7 +25,7 @@ import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import Button from 'components/UI/Button';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import { PLATFORM_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE } from '../Templates/PlatformTemplate/constants';
@@ -37,6 +36,7 @@ import ViewPicker from '../ViewContainer/ViewPicker';
 import LocaleSelect from './LocaleSelect';
 import messages from './messages';
 import QuitModal from './QuitModal';
+import ReportTitle from './ReportTitle';
 
 type ContentBuilderTopBarProps = {
   hasPendingState: boolean;
@@ -72,8 +72,8 @@ const ContentBuilderTopBar = ({
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  const disableSave = !!hasPendingState || saved;
-  const disablePrint = !!hasPendingState || !saved;
+  const disableSave = hasPendingState || saved;
+  const disablePrint = hasPendingState || !saved;
 
   const closeModal = () => {
     setShowQuitModal(false);
@@ -217,9 +217,8 @@ const ContentBuilderTopBar = ({
       />
       <Box display="flex" p="15px" pl="8px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
-          <Title variant="h3" as="h1" mb="0px" mt="0px">
-            <FormattedMessage {...messages.reportBuilder} />
-          </Title>
+          <ReportTitle reportId={reportId} />
+
           {project && phase && (
             <Text m="0" color="textSecondary">
               {localize(project.data.attributes.title_multiloc)}{' '}

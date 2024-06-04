@@ -26,6 +26,14 @@ module ContentBuilder
     validates :code, presence: true
     validate :validate_iframe_urls
 
+    scope :with_widget_type, lambda { |widget_type|
+      with_widget = joins('CROSS JOIN jsonb_each(content_builder_layouts.craftjs_json) AS jsonb_each')
+        .where("jsonb_each.value->'type'->>'resolvedName' = ?", widget_type)
+        .select(:id)
+
+      where(id: with_widget)
+    }
+
     def project_id
       content_buildable.try(:project_id)
     end

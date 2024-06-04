@@ -141,12 +141,12 @@ class OmniauthCallbackController < ApplicationController
   # NOTE: sso_flow params corrected as sometimes an sso user may start from signin but actually signup and vice versa
   def signin_success_redirect
     request.env['omniauth.params']['sso_flow'] = 'signin' if request.env['omniauth.params']['sso_flow']
-    redirect_to(add_uri_params(Frontend::UrlService.new.signin_success_url(locale: @user.locale), request.env['omniauth.params']))
+    redirect_to(add_uri_params(Frontend::UrlService.new.signin_success_url(locale: Locale.new(@user.locale)), request.env['omniauth.params']))
   end
 
   def signup_success_redirect
     request.env['omniauth.params']['sso_flow'] = 'signup' if request.env['omniauth.params']['sso_flow']
-    redirect_to(add_uri_params(Frontend::UrlService.new.signup_success_url(locale: @user.locale), request.env['omniauth.params']))
+    redirect_to(add_uri_params(Frontend::UrlService.new.signup_success_url(locale: Locale.new(@user.locale)), request.env['omniauth.params']))
   end
 
   def add_uri_params(uri, params = {})
