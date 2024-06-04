@@ -183,7 +183,7 @@ fr:
         title: Détails
         description:
       other_text_field:
-        title: Puisque vous avez choisi « {other_option} », à quoi pensez-vous ?
+        title: Veuillez spécifier
   custom_forms:
     categories:
       main_content:
