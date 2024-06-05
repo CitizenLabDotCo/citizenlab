@@ -35,6 +35,13 @@ export const PrimaryOutlined = {
   },
 };
 
+export const PrimaryInverse = {
+  args: {
+    buttonStyle: 'primary-inverse',
+    children: 'Button',
+  },
+};
+
 export const SecondaryOutlined = {
   args: {
     buttonStyle: 'secondary-outlined',
