@@ -27,6 +27,7 @@ import { getOptions, getSubtextElement } from './controlUtils';
 import messages from './messages';
 
 const StyledBox = styled(Box)<{ hoverColor?: string }>`
+  cursor: pointer;
   &:hover {
     background-color: ${({ hoverColor }) => hoverColor};
   }
