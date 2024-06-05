@@ -41,7 +41,7 @@ namespace :gv_transition do
       'front_translations/*.json'
     ]
     translation_file_patterns.each do |file_pattern|
-      Dir.glob file_pattern.each do |file|
+      Dir.glob(file_pattern).each do |file|
         contentstr = File.read(file)
         new_contentstr = rake_20240531_substitute_gv(contentstr)
         if new_contentstr != contentstr
@@ -54,8 +54,11 @@ end
 
 def rake_20240531_substitute_gv(str)
   {
-    'citizenlab.co' => 'govocal.com',
-    /citizenlab/i => 'Go Vocal',
+    '@citizenlab.co' => '@govocal.com',
+    'www.citizenlab.co' => 'www.govocal.com',
+    /citizenlab /i => 'Go Vocal ',
+    /citizenlab,/i => 'Go Vocal,',
+    / citizenlab./i => ' Go Vocal.',
     'Anspachlaan 65' => 'Pachecolaan 34'
   }.each do |old_v, new_v|
     str = str.gsub(old_v, new_v)

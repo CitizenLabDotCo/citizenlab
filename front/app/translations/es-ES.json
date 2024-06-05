@@ -109,7 +109,7 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.title": "Sus preferencias de cookies",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Herramientas",
   "app.components.ContentUploadDisclaimer.contentDisclaimerModalHeader": "Cláusula de exención de responsabilidad sobre la carga de contenidos",
-  "app.components.ContentUploadDisclaimer.contentUploadDisclaimerFull2": "Al subir contenido, declaras que este contenido no viola ninguna normativa o derecho de terceros, como derechos de propiedad intelectual, derechos de privacidad, derechos sobre secretos comerciales, etc. En consecuencia, al subir este contenido, te comprometes a asumir la responsabilidad total y exclusiva de todos los daños directos e indirectos derivados del contenido subido. Además, te comprometes a indemnizar al propietario de la plataforma y a CitizenLab por cualquier reclamación o responsabilidad de terceros contra terceros, y por cualquier coste asociado, que surja o resulte del contenido que subiste.",
+  "app.components.ContentUploadDisclaimer.contentUploadDisclaimerFull2": "Al subir contenido, declaras que este contenido no viola ninguna normativa o derecho de terceros, como derechos de propiedad intelectual, derechos de privacidad, derechos sobre secretos comerciales, etc. En consecuencia, al subir este contenido, te comprometes a asumir la responsabilidad total y exclusiva de todos los daños directos e indirectos derivados del contenido subido. Además, te comprometes a indemnizar al propietario de la plataforma y a Go Vocal por cualquier reclamación o responsabilidad de terceros contra terceros, y por cualquier coste asociado, que surja o resulte del contenido que subiste.",
   "app.components.ContentUploadDisclaimer.onAccept": "Comprendo",
   "app.components.ContentUploadDisclaimer.onCancel": "Cancelar",
   "app.components.ErrorBoundary.errorFormErrorFormEntry": "Algunos campos son inválidos. Por favor inténtalo nuevamente.",
@@ -884,7 +884,7 @@
   "app.containers.Comments.visibleToUsersWarning": "Los comentarios publicados aquí serán visibles para los usuarios habituales.",
   "app.containers.CookiePolicy.advertisingContent": "En {orgName}, no utilizamos herramientas de publicidad en las plataformas de participación.",
   "app.containers.CookiePolicy.advertisingTitle": "Publicidad",
-  "app.containers.CookiePolicy.analyticsContents": "Las cookies analíticas rastrean el comportamiento de los visitantes, por ejemplo, qué páginas se visitan y durante cuánto tiempo. También pueden recoger algunos datos técnicos, como la información del navegador, la ubicación aproximada y las direcciones IP. Solo utilizamos estos datos de manera interna para seguir mejorando la experiencia general del usuario y el funcionamiento de la plataforma. Estos datos también pueden ser compartidos entre CitizenLab y {orgName} para evaluar y mejorar el compromiso con los proyectos en la plataforma. Tenga en cuenta que los datos son anónimos y se utilizan a nivel agregado, es decir no lo identifican personalmente. Sin embargo, es posible que si estos datos se combinan con otras fuentes de datos, dicha identificación tenga lugar.",
+  "app.containers.CookiePolicy.analyticsContents": "Las cookies analíticas rastrean el comportamiento de los visitantes, por ejemplo, qué páginas se visitan y durante cuánto tiempo. También pueden recoger algunos datos técnicos, como la información del navegador, la ubicación aproximada y las direcciones IP. Solo utilizamos estos datos de manera interna para seguir mejorando la experiencia general del usuario y el funcionamiento de la plataforma. Estos datos también pueden ser compartidos entre Go Vocal y {orgName} para evaluar y mejorar el compromiso con los proyectos en la plataforma. Tenga en cuenta que los datos son anónimos y se utilizan a nivel agregado, es decir no lo identifican personalmente. Sin embargo, es posible que si estos datos se combinan con otras fuentes de datos, dicha identificación tenga lugar.",
   "app.containers.CookiePolicy.analyticsTitle": "Analytics",
   "app.containers.CookiePolicy.cookiePolicyDescription": "Una explicación detallada de cómo usamos cookies en esta plataforma",
   "app.containers.CookiePolicy.cookiePolicyTitle": "Política de cookies",
@@ -1569,7 +1569,7 @@
   "app.containers.UsersEditPage.deleteMyAccount": "Borrar mi cuenta",
   "app.containers.UsersEditPage.deleteYourAccount": "Borrar mi cuenta",
   "app.containers.UsersEditPage.deletionSection": "Borra tu cuenta",
-  "app.containers.UsersEditPage.deletionSubtitle": "Esta acción no se puede deshacer. El contenido que publiques en la plataforma será anonimizado. Si desea eliminar todo su contenido, puedes ponerte en contacto con nosotros en support@citizenlab.co.",
+  "app.containers.UsersEditPage.deletionSubtitle": "Esta acción no se puede deshacer. El contenido que publiques en la plataforma será anonimizado. Si desea eliminar todo su contenido, puedes ponerte en contacto con nosotros en support@govocal.com.",
   "app.containers.UsersEditPage.email": "Correo electrónico",
   "app.containers.UsersEditPage.emailEmptyError": "Proporcionar una dirección de correo electrónico",
   "app.containers.UsersEditPage.emailInvalidError": "Proporcionar una dirección de correo electrónico en el formato correcto, por ejemplo name@provider.com",
@@ -1588,7 +1588,7 @@
   "app.containers.UsersEditPage.loading": "Cargando...",
   "app.containers.UsersEditPage.loginCredentialsSubtitle": "Puede cambiar su correo electrónico o contraseña aquí.",
   "app.containers.UsersEditPage.loginCredentialsTitle": "Credenciales de acceso",
-  "app.containers.UsersEditPage.messageError": "No pudimos guardar su perfil. Inténtelo más tarde o comuníquese con support@citizenlab.co.",
+  "app.containers.UsersEditPage.messageError": "No pudimos guardar su perfil. Inténtelo más tarde o comuníquese con support@govocal.com.",
   "app.containers.UsersEditPage.messageSuccess": "Su perfil se ha guardado.",
   "app.containers.UsersEditPage.metaDescription": "Esta es la página de configuración del perfil de {Nombre} {Apellidos} en la plataforma de participación en línea de {Nombredelposeedor}. Aquí puede confirmar su identidad, editar la información de su cuenta, eliminar su cuenta y editar sus preferencias de correo electrónico.",
   "app.containers.UsersEditPage.metaTitle1": "Página de configuración del perfil de {firstName} {lastName} | {orgName}",
@@ -1981,5 +1981,5 @@
   "containers.SiteMap.timeline": "Fases del proyecto",
   "containers.SiteMap.userSpaceSection": "Tu perfil",
   "containers.SubscriptionEndedPage.accessDenied": "Ya no tienes acceso",
-  "containers.SubscriptionEndedPage.subscriptionEnded": "It appears that you no longer can access this page, since your CitizenLab subscription has ended."
+  "containers.SubscriptionEndedPage.subscriptionEnded": "It appears that you no longer can access this page, since your Go Vocal subscription has ended."
 }

@@ -21,7 +21,7 @@
   "app.components.ConfirmationModal.disabled": "Απενεργοποιημένη",
   "app.components.ConfirmationModal.enabled": "Ενεργοποιημένη",
   "app.components.ConfirmationModal.whenTurnedOnUsersWillHaveToConfirm": "Όταν είναι ενεργοποιημένη, οι νέοι χρήστες θα πρέπει να επιβεβαιώσουν τη διεύθυνση email τους με έναν τετραψήφιο κωδικό που λαμβάνουν μέσω ηλεκτρονικού ταχυδρομείου για να ολοκληρώσουν την εγγραφή τους.",
-  "app.components.ProjectTemplatePreview.govocalExpert": "Ειδικός του CitizenLab",
+  "app.components.ProjectTemplatePreview.govocalExpert": "Ειδικός του Go Vocal.,
   "app.components.ProjectTemplatePreview.close": "Close",
   "app.components.ProjectTemplatePreview.createProject": "Δημιουργία έργου",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Δημιουργήστε ένα έργο με βάση το πρότυπο '{templateTitle}'",
