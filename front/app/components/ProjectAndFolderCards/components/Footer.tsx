@@ -1,8 +1,7 @@
 import React from 'react';
 
 import { media } from '@citizenlab/cl2-component-library';
-import { rgba } from 'polished';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 
 import Button from 'components/UI/Button';
 
@@ -30,23 +29,17 @@ interface Props {
 }
 
 const Footer = ({ loadingMore, onShowMore }: Props) => {
-  const theme = useTheme();
-
   return (
     <Container>
       <Button
         data-testid="show-more-button"
         onClick={onShowMore}
-        buttonStyle="secondary-outlined"
+        buttonStyle="primary-outlined"
         text={<FormattedMessage {...messages.showMore} />}
         processing={loadingMore}
         height="50px"
         icon="refresh"
         iconPos="left"
-        textColor={theme.colors.tenantText}
-        bgColor={rgba(theme.colors.tenantText, 0.08)}
-        bgHoverColor={rgba(theme.colors.tenantText, 0.12)}
-        fontWeight="500"
         className={`e2e-project-cards-show-more-button ${
           loadingMore ? 'loading' : ''
         }`}

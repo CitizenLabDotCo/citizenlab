@@ -7,7 +7,6 @@ import {
   Spinner,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { rgba } from 'polished';
 import styled, { useTheme } from 'styled-components';
 
 import { IIdeaData } from 'api/ideas/types';
@@ -130,15 +129,12 @@ const IdeasList = ({
               <Button
                 id="e2e-idea-cards-show-more-button"
                 onClick={loadMoreIdeas}
-                buttonStyle="secondary-outlined"
+                buttonStyle="primary-outlined"
                 text={<FormattedMessage {...messages.showMore} />}
                 processing={loadingMore}
                 height="50px"
                 icon="refresh"
                 iconPos="left"
-                textColor={theme.colors.tenantText}
-                bgColor={rgba(theme.colors.tenantText, 0.08)}
-                bgHoverColor={rgba(theme.colors.tenantText, 0.12)}
                 fontWeight="500"
               />
             </Footer>
