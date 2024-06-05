@@ -25,6 +25,8 @@ class ScriptReporter
         errors.each do |error|
           Rails.logger.error "  #{error[:error]} (#{error[:context].map { |k, v| "#{k}: #{v}" }.join(', ')})"
         end
+      else
+        Rails.logger.info 'No errors.'
       end
     end
 

@@ -4,24 +4,19 @@ namespace :gv_transition do
     reporter = ScriptReporter.new
     Tenant.safe_switch_each do |tenant|
       StaticPage.all.each do |page|
-        page.title_multiloc.transform_values! do |old_v|
-          rake_20240531_substitute_gv(old_v).tap do |new_v|
+        {
+          page.title_multiloc => 'title',
+          page.top_info_section_multiloc => 'top_info_section',
+          page.bottom_info_section_multiloc => 'bottom_info_section'
+        }.each do |multiloc, attrstr|
+          multiloc.each do |locale, old_v|
+            new_v = rake_20240531_substitute_gv(old_v)
             if new_v != old_v
+              multiloc[locale] = new_v
               reporter.add_change(
                 old_v,
                 new_v,
-                context: { tenant: tenant.host, page: page.slug, attribute: 'title', locale: locale }
-              )
-            end
-          end
-        end
-        page.body_multiloc.transform_values! do |old_v|
-          rake_20240531_substitute_gv(old_v).tap do |new_v|
-            if new_v != old_v
-              reporter.add_change(
-                old_v,
-                new_v,
-                context: { tenant: tenant.host, page: page.slug, attribute: 'body', locale: locale }
+                context: { tenant: tenant.host, page: page.slug, attribute: attrstr, locale: locale }
               )
             end
           end
