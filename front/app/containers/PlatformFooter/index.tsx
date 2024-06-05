@@ -345,7 +345,11 @@ const PlatformFooter = ({ className }: Props) => {
                 <FormattedMessage {...messages.poweredBy} />
               </PoweredByText>
               <GoVocalLink href="https://govocal.com/" target="_blank">
-                <GoVocalLogo name={getLocalizedLogoName()} title="Go Vocal" />
+                <GoVocalLogo
+                  ariaHidden={false}
+                  name={getLocalizedLogoName()}
+                  title="Go Vocal"
+                />
               </GoVocalLink>
             </PoweredBy>
           </Right>
