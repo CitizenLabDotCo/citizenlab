@@ -83,7 +83,8 @@ const SingleSelectRadioEnumControl = ({
               id={`${path}-radio-${index}`}
               name="name-temp"
               label={
-                <Text color={'tenantPrimary'} p="0px" m="0px">
+                // TODO: Find better solution for styling the Radio label. Requires small offset for alignment.
+                <Text color={'tenantPrimary'} p="0px" m="0px" mt="-1px">
                   {option.label}
                 </Text>
               }
