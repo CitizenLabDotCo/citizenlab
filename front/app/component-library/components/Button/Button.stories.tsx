@@ -35,13 +35,6 @@ export const PrimaryOutlined = {
   },
 };
 
-export const Secondary = {
-  args: {
-    buttonStyle: 'secondary-outlined',
-    children: 'Button',
-  },
-};
-
 export const SecondaryOutlined = {
   args: {
     buttonStyle: 'secondary-outlined',
