@@ -885,7 +885,7 @@
   "app.containers.Admin.projects.project.information.ReportTab.modalDescription": "Générez un rapport basé sur une phase précédente ou commencez avec une page blanche.",
   "app.containers.Admin.projects.project.information.ReportTab.notVisibleNotStarted1": "Ce rapport n'est pas public. Pour le rendre public, activez l'option « Publié ».",
   "app.containers.Admin.projects.project.information.ReportTab.notVisibleStarted1": "Cette phase a débuté, mais le rapport n'est pas encore public. Pour le rendre public, activez l'option « Publié ».",
-  "app.containers.Admin.projects.project.information.ReportTab.phaseTemplate": "Commencez à partir d'un modèle",
+  "app.containers.Admin.projects.project.information.ReportTab.phaseTemplate": "Rapport de phase",
   "app.containers.Admin.projects.project.information.ReportTab.report": "Rapport",
   "app.containers.Admin.projects.project.information.ReportTab.shareResults": "partager les résultats d'une enquête ou d'une phase de vote passée ;",
   "app.containers.Admin.projects.project.information.ReportTab.visible": "Publié",
