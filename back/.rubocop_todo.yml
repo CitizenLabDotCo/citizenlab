@@ -396,7 +396,7 @@ RSpec/PendingWithoutReason:
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: EnforcedStyle.
 # SupportedStyles: not_to, be_invalid
-RSpec/Rails/NegationBeValid:
+RSpecRails/NegationBeValid:
   Enabled: false
 
 # Offense count: 4

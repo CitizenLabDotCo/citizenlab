@@ -1,6 +1,6 @@
 namespace :gv_transition do
   desc 'Replace Citizenlab by Go Vocal in all static pages.'
-  task :substitute_tenants, [] => [:environment] do |_t, args|
+  task :substitute_tenants, [] => [:environment] do
     reporter = ScriptReporter.new
     Tenant.safe_switch_each do |tenant|
       StaticPage.all.each do |page|
@@ -29,7 +29,7 @@ namespace :gv_transition do
         if !page.save
           reporter.add_error(
             page.errors.details,
-            context: { tenant: tenant.host, page: page.slug },
+            context: { tenant: tenant.host, page: page.slug }
           )
         end
       end
@@ -38,7 +38,7 @@ namespace :gv_transition do
   end
 
   desc 'Prepare translation files for the transition to Go Vocal'
-  task :substitute_translation_files, [] => [:environment] do |_t, args|
+  task :substitute_translation_files, [] => [:environment] do
     translation_files.each do |yml_file|
       yml_file.map_leaves do |leaf_str|
         rake_20240531_substitute_gv leaf_str
