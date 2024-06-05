@@ -1043,7 +1043,7 @@
   "app.containers.Admin.reporting.helmetDescription": "Page de rapport de l'administrateur",
   "app.containers.Admin.reporting.helmetTitle": "Rapports",
   "app.containers.Admin.reporting.printPrepare": "Préparation de l'impression...",
-  "app.containers.Admin.reporting.reportBuilder": "Éditeur de rapports",
+  "app.containers.Admin.reporting.reportBuilder": "Rapports",
   "app.containers.Admin.reporting.reportHeader": "En-tête du rapport",
   "app.containers.Admin.reporting.warningBanner3": "Les graphiques et les chiffres de ce rapport ne se mettent à jour automatiquement que sur cette page. Enregistrez le rapport pour les actualiser sur les autres pages.",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Créer un nouveau jeton",
