@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useRef } from 'react';
 
 import styled from 'styled-components';
 
@@ -44,6 +44,8 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
 
   const openWarningModal = () => setWarningModalOpen(true);
   const closeWarningModal = () => setWarningModalOpen(false);
+
+  const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
 
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
@@ -113,12 +115,15 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
               labelAndTitle={<FormattedMessage {...messages.moreOptions} />}
               showLabel={false}
               actions={actions}
+              ref={moreActionsButtonRef}
             />
           </MoreActionsMenuWrapper>
           <Modal
             opened={isSpamModalVisible}
             close={closeSpamModal}
             header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
+            // Return focus to the More Actions button on close
+            returnFocusRef={moreActionsButtonRef}
           >
             <SpamReportForm targetId={idea.id} targetType="ideas" />
           </Modal>
