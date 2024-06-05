@@ -17,7 +17,7 @@ const HiddenRadio = styled.input.attrs({ type: 'radio' })`
   ${hideVisually()};
 `;
 
-const CustomRadio = styled.div<{ borderColor?: string }>`
+const CustomRadio = styled.div<{ borderColor: string | undefined }>`
   flex: 0 0 20px;
   width: 20px;
   height: 20px;
