@@ -1,7 +1,7 @@
 import React, { PureComponent, MouseEvent, ButtonHTMLAttributes } from 'react';
 
 import { isNil, get } from 'lodash-es';
-import { darken, lighten, transparentize, opacify, rgba } from 'polished';
+import { darken, transparentize, opacify, rgba } from 'polished';
 import styled from 'styled-components';
 
 import {
@@ -129,7 +129,7 @@ function getButtonStyle(
       bgColor: 'transparent',
       bgHoverColor: transparentize(0.95, colors.textSecondary),
       textColor: colors.textSecondary,
-      borderColor: lighten(0.25, colors.textSecondary),
+      borderColor: colors.textSecondary,
     },
     white: {
       bgColor: '#fff',
