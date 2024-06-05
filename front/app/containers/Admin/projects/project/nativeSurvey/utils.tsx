@@ -60,7 +60,6 @@ export const nativeSurveyConfig: FormBuilderConfig = {
 type FormActionsConfig = {
   phaseId?: string;
   editFormLink: RouteType;
-  viewFormLink: RouteType;
   inputImporterLink: RouteType;
   downloadExcelLink: string;
   downloadPdfLink: string;
@@ -77,7 +76,6 @@ export const getFormActionsConfig = (
   return {
     phaseId: phase.id,
     editFormLink: `/admin/projects/${project.id}/phases/${phase.id}/native-survey/edit`,
-    viewFormLink: `/projects/${project.attributes.slug}/ideas/new?phase_id=${phase.id}`,
     inputImporterLink: `/admin/projects/${project.id}/phases/${phase.id}/input-importer`,
     downloadExcelLink: `${API_PATH}/phases/${phase.id}/importer/export_form/idea/xlsx`,
     downloadPdfLink: `${API_PATH}/phases/${phase.id}/importer/export_form/idea/pdf`,

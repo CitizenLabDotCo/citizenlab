@@ -66,7 +66,7 @@ const ProjectHeader = ({ projectId }: Props) => {
 
   let statusMessage = messages.draft;
   let publicationStatusIcon: IconNames = 'flag';
-  let publicationStatusIconColor = colors.orange;
+  let publicationStatusIconColor = colors.orange500;
   switch (project.data.attributes.publication_status) {
     case 'published':
       if (phases?.data.length === 0) {
@@ -85,7 +85,7 @@ const ProjectHeader = ({ projectId }: Props) => {
       break;
     case 'draft':
       publicationStatusIcon = 'flag';
-      publicationStatusIconColor = colors.orange;
+      publicationStatusIconColor = colors.orange500;
       statusMessage = messages.draft;
       break;
     case 'archived':
