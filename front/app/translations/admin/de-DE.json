@@ -63,7 +63,7 @@
   "app.components.ConfirmationModal.disabled": "Deaktiviert",
   "app.components.ConfirmationModal.enabled": "Aktiviert",
   "app.components.ConfirmationModal.whenTurnedOnUsersWillHaveToConfirm": "Wenn diese Funktion aktiviert ist, müssen neue Nutzer*innen ihre E-Mail-Adresse mit einem 4-stelligen Code bestätigen, den sie per E-Mail erhalten, um ihre Registrierung abzuschließen.",
-  "app.components.ProjectTemplatePreview.citizenlabExpert": "CitizenLab-Experte",
+  "app.components.ProjectTemplatePreview.govocalExpert": "CitizenLab-Experte",
   "app.components.ProjectTemplatePreview.close": "Schließen",
   "app.components.ProjectTemplatePreview.createProject": "Projekt erstellen",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Erstellen Sie ein Projekt basierend auf der Vorlage '{templateTitle}'",

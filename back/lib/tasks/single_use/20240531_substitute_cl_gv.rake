@@ -34,11 +34,20 @@ namespace :gv_transition do
 
   desc 'Prepare translation files for the transition to Go Vocal'
   task :substitute_translation_files, [] => [:environment] do
-    translation_files.each do |yml_file|
-      yml_file.map_leaves do |leaf_str|
-        rake_20240531_substitute_gv leaf_str
+    translation_file_patterns = [
+      'config/locales/*.yml',
+      'engines/free/email_campaigns/config/locales/*.yml',
+      'front_translations/admin/*.json',
+      'front_translations/*.json'
+    ]
+    translation_file_patterns.each do |file_pattern|
+      Dir.glob file_pattern.each do |file|
+        contentstr = File.read(file)
+        new_contentstr = rake_20240531_substitute_gv(contentstr)
+        if new_contentstr != contentstr
+          File.write(file, new_contentstr)
+        end
       end
-      yml_file.write!
     end
   end
 end

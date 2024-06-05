@@ -13,7 +13,7 @@
   "app.components.ConfirmationModal.disabled": "Disabled",
   "app.components.ConfirmationModal.enabled": "Enabled",
   "app.components.ConfirmationModal.whenTurnedOnUsersWillHaveToConfirm": "When turned on, new users will have to confirm their email address with a 4-digit code they receive via email to complete their registration.",
-  "app.components.ProjectTemplatePreview.citizenlabExpert": "expert CitizenLab",
+  "app.components.ProjectTemplatePreview.govocalExpert": "expert CitizenLab",
   "app.components.ProjectTemplatePreview.close": "Închide",
   "app.components.ProjectTemplatePreview.createProject": "Create project",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Creați un proiect pe baza șablonului '{templateTitle}'",

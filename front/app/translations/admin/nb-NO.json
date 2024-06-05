@@ -63,7 +63,7 @@
   "app.components.ConfirmationModal.disabled": "Deaktivert",
   "app.components.ConfirmationModal.enabled": "Aktivert",
   "app.components.ConfirmationModal.whenTurnedOnUsersWillHaveToConfirm": "Når den er slått på, må nye brukere bekrefte e-postadressene med en firesifret kode som de mottar via e-post for å fullføre registreringen.",
-  "app.components.ProjectTemplatePreview.citizenlabExpert": "CitizenLab-ekspert",
+  "app.components.ProjectTemplatePreview.govocalExpert": "CitizenLab-ekspert",
   "app.components.ProjectTemplatePreview.close": "Lukk",
   "app.components.ProjectTemplatePreview.createProject": "Opprett prosjekt",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Opprett et prosjekt basert på malen «{templateTitle}»",

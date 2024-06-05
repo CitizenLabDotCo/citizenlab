@@ -123,7 +123,7 @@ const ProjectTemplatePreviewCitizen = memo<Props & WithRouterProps>(
             target="_blank"
             rel="noreferrer"
           >
-            <FormattedMessage {...messages.citizenlabExpert} />
+            <FormattedMessage {...messages.govocalExpert} />
           </a>
         );
 

@@ -63,7 +63,7 @@
   "app.components.ConfirmationModal.disabled": "Онемогућено",
   "app.components.ConfirmationModal.enabled": "Омогућено",
   "app.components.ConfirmationModal.whenTurnedOnUsersWillHaveToConfirm": "Када је укључено, нови корисници ће морати да потврде своју адресу е-поште са четвороцифреним кодом који добију путем е-поште да би завршили регистрацију.",
-  "app.components.ProjectTemplatePreview.citizenlabExpert": "Стручњак за ЦитизенЛаб",
+  "app.components.ProjectTemplatePreview.govocalExpert": "Стручњак за ЦитизенЛаб",
   "app.components.ProjectTemplatePreview.close": "Близу",
   "app.components.ProjectTemplatePreview.createProject": "Креирајте пројекат",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Креирајте пројекат на основу шаблона '{templateTitle}'",

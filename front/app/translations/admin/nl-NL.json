@@ -63,7 +63,7 @@
   "app.components.ConfirmationModal.disabled": "Uitgeschakeld",
   "app.components.ConfirmationModal.enabled": "Ingeschakeld",
   "app.components.ConfirmationModal.whenTurnedOnUsersWillHaveToConfirm": "Wanneer dit is ingesteld, moeten nieuwe gebruikers hun e-mailadres bevestigen met een 4-cijferige code die zij via e-mail ontvangen om hun registratie te voltooien.",
-  "app.components.ProjectTemplatePreview.citizenlabExpert": "CitizenLab-expert",
+  "app.components.ProjectTemplatePreview.govocalExpert": "CitizenLab-expert",
   "app.components.ProjectTemplatePreview.close": "Sluiten",
   "app.components.ProjectTemplatePreview.createProject": "Maak een project aan",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Maak een project aan op basis van het sjabloon '{templateTitle}'",

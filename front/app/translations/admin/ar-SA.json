@@ -63,7 +63,7 @@
   "app.components.ConfirmationModal.disabled": "تم التعطيل",
   "app.components.ConfirmationModal.enabled": "تم التمكين",
   "app.components.ConfirmationModal.whenTurnedOnUsersWillHaveToConfirm": "عند تشغيل هذه الميزة، سيتوجب على المستخدمين الجدد تأكيد عناوين بريدهم الإلكتروني بإدخال رمز من 4 أرقام يُرسل إليهم عبر البريد الإلكتروني لإتمام عملية التسجيل.",
-  "app.components.ProjectTemplatePreview.citizenlabExpert": "خبير CitizenLab",
+  "app.components.ProjectTemplatePreview.govocalExpert": "خبير CitizenLab",
   "app.components.ProjectTemplatePreview.close": "إغلاق",
   "app.components.ProjectTemplatePreview.createProject": "أنشئ مشروعًا",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "أنشئ مشروعًا بناءً على القالب '{templateTitle}'",

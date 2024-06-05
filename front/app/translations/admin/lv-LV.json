@@ -63,7 +63,7 @@
   "app.components.ConfirmationModal.disabled": "atspējots",
   "app.components.ConfirmationModal.enabled": "iespējots",
   "app.components.ConfirmationModal.whenTurnedOnUsersWillHaveToConfirm": "Ja šī funkcija ir ieslēgta, jaunajiem lietotājiem būs jāapstiprina sava e-pasta adrese ar 4 ciparu kodu, ko viņi saņems e-pastā, lai pabeigtu reģistrāciju.",
-  "app.components.ProjectTemplatePreview.citizenlabExpert": "CitizenLab eksperts",
+  "app.components.ProjectTemplatePreview.govocalExpert": "CitizenLab eksperts",
   "app.components.ProjectTemplatePreview.close": "Aizvērt",
   "app.components.ProjectTemplatePreview.createProject": "Izveidot projektu",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Izveidot projektu, pamatojoties uz veidni '{templateTitle}'",
