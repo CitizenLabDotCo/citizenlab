@@ -21,10 +21,23 @@ describe('<Button />', () => {
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
+  it('renders primary-inverse button', () => {
+    render(
+      <Button
+        buttonStyle="primary-inverse"
+        fontWeight="500"
+        padding="13px 22px"
+      >
+        Test button
+      </Button>
+    );
+    expect(screen.getByText('Test button')).toBeInTheDocument();
+  });
+
   it('renders an anchor tag and HREF properly with the "as" property', () => {
     const { getByRole } = render(
       <Button
-        buttonStyle="primary"
+        buttonStyle="primary-inverse"
         fontWeight="500"
         padding="13px 22px"
         as={() => {
