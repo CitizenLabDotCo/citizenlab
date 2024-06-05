@@ -1084,7 +1084,7 @@
   "app.containers.Admin.reporting.widgets.MethodsUsed.methodsUsed": "Méthodes de participation utilisées",
   "app.containers.Admin.reporting.widgets.MethodsUsed.nativeSurvey": "Enquête",
   "app.containers.Admin.reporting.widgets.MethodsUsed.poll": "Sondage",
-  "app.containers.Admin.reporting.widgets.MethodsUsed.previousXDays": "Précédent {days} jours : {count}",
+  "app.containers.Admin.reporting.widgets.MethodsUsed.previousXDays": "{days} jours précédents : {count}",
   "app.containers.Admin.reporting.widgets.MethodsUsed.survey": "Enquête externe",
   "app.containers.Admin.reporting.widgets.MethodsUsed.volunteering": "Volontariat",
   "app.containers.Admin.reporting.widgets.MethodsUsed.voting": "Vote",
