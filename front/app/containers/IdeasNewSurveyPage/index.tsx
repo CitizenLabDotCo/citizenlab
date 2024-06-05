@@ -17,14 +17,15 @@ import VerticalCenterer from 'components/VerticalCenterer';
 
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
-import Navigate from 'utils/cl-router/Navigate';
-import { getParticipationMethod } from 'utils/configs/participationMethodConfig';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
-import IdeasNewIdeationForm from './IdeasNewIdeationForm';
+import IdeasNewSurveyForm from './IdeasNewSurveyForm';
+import SurveyNotActiveNotice from './SurveyNotActiveNotice';
+import SurveySubmittedNotice from './SurveySubmittedNotice';
 
-const IdeasNewPage = () => {
+const IdeasNewSurveyPage = () => {
   const { slug } = useParams();
   const {
     data: project,
@@ -38,7 +39,7 @@ const IdeasNewPage = () => {
   }) as { [key: string]: string };
 
   /*
-    TO DO: simplify these loading & auth checks, then if possible abstract and use the same the IdeasNewSurveyPage
+    TO DO: simplify these loading & auth checks, then if possible abstract and use the same the IdeasNewPage
   */
 
   if (projectStatus === 'loading' || phasesStatus === 'loading') {
@@ -62,17 +63,23 @@ const IdeasNewPage = () => {
   }
 
   const currentPhase = getCurrentPhase(phases.data);
-  const participationMethod = getParticipationMethod(
-    project.data,
-    phases?.data,
-    phase_id
-  );
+
   const { enabled, disabledReason, authenticationRequirements } =
     getIdeaPostingRules({
       project: project.data,
       phase: currentPhase,
       authUser: authUser?.data,
     });
+
+  const userCannotViewSurvey =
+    !canModerateProject(project.data.id, authUser) &&
+    phase_id !== currentPhase?.id;
+
+  if (disabledReason === 'postingLimitedMaxReached') {
+    return <SurveySubmittedNotice project={project.data} />;
+  } else if (userCannotViewSurvey) {
+    return <SurveyNotActiveNotice project={project.data} />;
+  }
 
   if ((enabled === 'maybe' && authenticationRequirements) || disabledReason) {
     const triggerAuthFlow = () => {
@@ -98,22 +105,7 @@ const IdeasNewPage = () => {
     );
   }
 
-  /*
-    We arrive in this component via the /ideas/new route, which in the past
-    was also used to render the survey form. In order for old links to surveys not to break,
-    we are redirecting /ideas/new requests to the new /surveys/new URL. This code can be removed
-    once we've verified all surveys started before the date this got merged have been completed.
-  */
-  if (currentPhase && participationMethod === 'native_survey') {
-    return (
-      <Navigate
-        to={`/projects/${slug}/surveys/new?phase_id=${currentPhase.id}`}
-        replace
-      />
-    );
-  }
-
-  return <IdeasNewIdeationForm project={project} />;
+  return <IdeasNewSurveyForm project={project} />;
 };
 
-export default IdeasNewPage;
+export default IdeasNewSurveyPage;

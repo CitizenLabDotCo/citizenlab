@@ -25,7 +25,7 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 import clHistory from 'utils/cl-router/history';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
-import messages from '../messages';
+import messages from './messages';
 
 const StyledSurveyTitle = styled(Text)`
   text-overflow: ellipsis;
