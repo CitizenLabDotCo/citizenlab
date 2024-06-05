@@ -24,7 +24,6 @@ const StyledSelect = styled(Select)`
 `;
 
 const SingleSelectEnumControl = ({
-  data,
   handleChange,
   path,
   errors,
@@ -52,10 +51,6 @@ const SingleSelectEnumControl = ({
       />
       <Box display="flex" flexDirection="row">
         <StyledSelect
-          value={{
-            value: data,
-            label: 'any',
-          }} /* sad workaround waiting for PR in component library */
           options={options as IOption[]}
           onChange={(val) => {
             setDidBlur(true);
@@ -64,7 +59,7 @@ const SingleSelectEnumControl = ({
           key={sanitizeForClassname(id)}
           id={sanitizeForClassname(id)}
           aria-label={getLabel(uischema, schema, path)}
-          canBeEmpty={!required}
+          canBeEmpty={true}
           disabled={uischema?.options?.readonly}
         />
         <VerificationIcon show={uischema?.options?.verificationLocked} />
