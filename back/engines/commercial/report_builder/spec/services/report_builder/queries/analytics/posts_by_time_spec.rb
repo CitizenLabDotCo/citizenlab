@@ -9,7 +9,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::PostsByTime do
     let(:date) { Date.new(2022, 9, 1) }
     let(:idea) do
       create(:dimension_date, date: date)
-      create(:dimension_type, name: 'idea', parent: 'post')
+      Analytics::PopulateDimensionsService.populate_types
 
       create(:idea, created_at: date)
     end
