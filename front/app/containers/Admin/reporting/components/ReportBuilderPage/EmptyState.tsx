@@ -1,12 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  Image,
-  Title,
-  Text,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Image, Title, Text } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
 import styled from 'styled-components';
@@ -64,10 +58,9 @@ const EmptyState = ({ onOpenModal }: Props) => {
           >
             <div>
               <Button
-                mt="8px"
-                py="6px"
-                bgColor={colors.primary}
                 onClick={onOpenModal}
+                icon="plus-circle"
+                buttonStyle="admin-dark"
                 disabled={!isReportBuilderAllowed}
                 id="e2e-create-report-button"
               >

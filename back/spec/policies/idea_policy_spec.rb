@@ -145,8 +145,8 @@ describe IdeaPolicy do
         end
       end
 
-      context "when the disabled reason is not excluded for update: 'not_ideation'" do
-        let(:disabled_reason) { 'not_ideation' }
+      context "when the disabled reason is not excluded for update: 'posting_not_supported'" do
+        let(:disabled_reason) { 'posting_not_supported' }
 
         context 'for an admin' do
           let(:user) { create(:admin) }

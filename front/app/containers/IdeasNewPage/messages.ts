@@ -1,68 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  ideaFormTitle: {
-    id: 'app.containers.IdeasNewPage.ideaFormTitle',
-    defaultMessage: 'Add new idea',
-  },
-  optionFormTitle: {
-    id: 'app.containers.IdeasNewPage.optionFormTitle',
-    defaultMessage: 'Add new option',
-  },
-  contributionFormTitle: {
-    id: 'app.containers.IdeasNewPage.contributionFormTitle',
-    defaultMessage: 'Add new contribution',
-  },
-  projectFormTitle: {
-    id: 'app.containers.IdeasNewPage.projectFormTitle',
-    defaultMessage: 'Add new project',
-  },
-  questionFormTitle: {
-    id: 'app.containers.IdeasNewPage.questionFormTitle',
-    defaultMessage: 'Add new question',
-  },
-  issueFormTitle: {
-    id: 'app.containers.IdeasNewPage.issueFormTitle',
-    defaultMessage: 'Add new issue',
-  },
-  submitNewIdea: {
-    id: 'app.containers.IdeasNewPage.submitNewIdea',
-    defaultMessage: 'Submit',
-  },
-  submitApiError: {
-    id: 'app.containers.IdeasNewPage.submitApiError',
-    defaultMessage:
-      'There was an issue submitting the form. Please check for any errors and try again.',
-  },
-  or: {
-    id: 'app.containers.IdeasNewPage.or',
-    defaultMessage: 'Or',
-  },
-  goBack: {
-    id: 'app.containers.IdeasNewPage.goBack',
-    defaultMessage: 'Go back',
-  },
-  editSurvey: {
-    id: 'app.containers.IdeasNewPage.editSurvey',
-    defaultMessage: 'Edit survey',
-  },
-  shareViaMessenger: {
-    id: 'app.containers.IdeasNewPage.shareViaMessenger',
-    defaultMessage: 'Share via Messenger',
-  },
-  shareOnTwitter: {
-    id: 'app.containers.IdeasNewPage.shareOnTwitter',
-    defaultMessage: 'Share on Twitter',
-  },
-  fileUploadError: {
-    id: 'app.containers.IdeasNewPage.fileUploadError',
-    defaultMessage:
-      'A file failed to upload. Please check the file size and format and try again.',
-  },
-  surveyNewMetaTitle1: {
-    id: 'app.containers.IdeasNewPage.surveyNewMetaTitle1',
-    defaultMessage: 'Add survey response to project | {orgName}',
-  },
   ideaNewMetaTitle1: {
     id: 'app.containers.IdeasNewPage.ideaNewMetaTitle1',
     defaultMessage: 'Add new idea to project | {orgName}',
@@ -366,30 +304,5 @@ export default defineMessages({
   ajv_error_number_required: {
     id: 'app.containers.IdeasNewPage.ajv_error_number_required',
     defaultMessage: 'This field is required, please enter a valid number',
-  },
-  leaveFormConfirmationQuestion: {
-    id: 'app.containers.IdeasNewPage.leaveFormConfirmationQuestion',
-    defaultMessage: 'Are you sure you want to leave?',
-  },
-  leaveSurveyText: {
-    id: 'app.containers.IdeasNewPage.leaveSurveyText',
-    defaultMessage: "Your answers won't be saved.",
-  },
-  leaveFormTextLoggedIn: {
-    id: 'app.containers.IdeasNewPage.leaveFormTextLoggedIn',
-    defaultMessage:
-      'Your draft answers have been saved privately and you can return to complete this later.',
-  },
-  confirmLeaveFormButtonText: {
-    id: 'app.containers.IdeasNewPage.confirmLeaveFormButtonText',
-    defaultMessage: 'Yes, I want to leave',
-  },
-  cancelLeaveSurveyButtonText: {
-    id: 'app.containers.IdeasNewPage.cancelLeaveSurveyButtonText',
-    defaultMessage: 'Cancel',
-  },
-  leaveSurvey: {
-    id: 'app.containers.IdeasNewPage.leaveSurvey',
-    defaultMessage: 'Leave survey',
   },
 });

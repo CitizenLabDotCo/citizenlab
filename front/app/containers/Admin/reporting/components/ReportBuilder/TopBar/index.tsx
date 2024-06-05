@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import {
   Box,
   Text,
-  Title,
   colors,
   IconButton,
   TooltipContentWrapper,
@@ -26,15 +25,18 @@ import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import Button from 'components/UI/Button';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
+import { PLATFORM_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE } from '../Templates/PlatformTemplate/constants';
+import { PROJECT_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE } from '../Templates/ProjectTemplate/constants';
 import { View } from '../ViewContainer/typings';
 import ViewPicker from '../ViewContainer/ViewPicker';
 
 import LocaleSelect from './LocaleSelect';
 import messages from './messages';
 import QuitModal from './QuitModal';
+import ReportTitle from './ReportTitle';
 
 type ContentBuilderTopBarProps = {
   hasPendingState: boolean;
@@ -70,8 +72,8 @@ const ContentBuilderTopBar = ({
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  const disableSave = !!hasPendingState || saved;
-  const disablePrint = !!hasPendingState || !saved;
+  const disableSave = hasPendingState || saved;
+  const disablePrint = hasPendingState || !saved;
 
   const closeModal = () => {
     setShowQuitModal(false);
@@ -137,7 +139,11 @@ const ContentBuilderTopBar = ({
 
       const displayName = nodes?.[firstNode].displayName;
 
-      if (!['ProjectTemplate', 'PhaseTemplate'].includes(displayName)) {
+      if (
+        !['ProjectTemplate', 'PhaseTemplate', 'PlatformTemplate'].includes(
+          displayName
+        )
+      ) {
         // In theory this should not be possible, but handling
         // it gracefully just in case
         setInitialized(true);
@@ -145,8 +151,24 @@ const ContentBuilderTopBar = ({
         return;
       }
 
+      // Nodes take some time to load. We don't want to save if not
+      // all nodes are loaded yet. That's why we add these checks-
+      // if we early return here, we basically wait for the next interval and check
+      // again if the number of nodes is already correct.
       const numberOfNodes = Object.keys(nodes).length;
-      if (displayName === 'ProjectTemplate' && numberOfNodes < 5) return;
+
+      if (
+        displayName === 'ProjectTemplate' &&
+        numberOfNodes < PROJECT_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE
+      ) {
+        return;
+      }
+      if (
+        displayName === 'PlatformTemplate' &&
+        numberOfNodes < PLATFORM_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE
+      ) {
+        return;
+      }
 
       updateReportLayout(
         {
@@ -195,9 +217,8 @@ const ContentBuilderTopBar = ({
       />
       <Box display="flex" p="15px" pl="8px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
-          <Title variant="h3" as="h1" mb="0px" mt="0px">
-            <FormattedMessage {...messages.reportBuilder} />
-          </Title>
+          <ReportTitle reportId={reportId} />
+
           {project && phase && (
             <Text m="0" color="textSecondary">
               {localize(project.data.attributes.title_multiloc)}{' '}
