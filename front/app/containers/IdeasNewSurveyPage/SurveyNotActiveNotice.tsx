@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   Button,
@@ -11,17 +10,12 @@ import {
 
 import { IProjectData } from 'api/projects/types';
 
-// intl
 import ContentContainer from 'components/ContentContainer';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import messages from './messages';
-
-// util
-
-// types
 
 type Props = {
   project: IProjectData;
