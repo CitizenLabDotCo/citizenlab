@@ -115,7 +115,7 @@ const Checkbox = ({
   onChange,
   checked,
   checkedColor,
-  usePrimaryBorder,
+  usePrimaryBorder = false,
   name,
   ...boxProps
 }: Props) => {
