@@ -7,6 +7,22 @@ import ReportBuilderPage from '.';
 // hook mocks
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => true));
 
+jest.mock('api/me/useAuthUser', () =>
+  jest.fn(() => ({
+    data: {
+      data: {
+        id: '_1',
+        type: 'user',
+        attributes: {
+          slug: 'user-1',
+          locale: 'en',
+          roles: [{ type: 'admin' }],
+        },
+      },
+    },
+  }))
+);
+
 let mockReports;
 jest.mock('api/reports/useReports', () =>
   jest.fn(() => ({ data: { data: mockReports } }))
@@ -45,7 +61,7 @@ const reports = [
       name: 'Report 1',
       created_at: '2022-12-18',
       updated_at: '2022-12-19',
-      action_descriptor: {
+      action_descriptors: {
         editing_report: {
           enabled: true,
           disabled_reason: null,
@@ -66,7 +82,7 @@ const reports = [
       name: 'Report 2',
       created_at: '2022-12-20',
       updated_at: '2022-12-21',
-      action_descriptor: {
+      action_descriptors: {
         editing_report: {
           enabled: true,
           disabled_reason: null,
@@ -95,6 +111,7 @@ describe('<ReportBuilderPage />', () => {
       mockReports = [];
       render(<ReportBuilderPage />);
 
+      document.body.innerHTML;
       expect(
         screen.getByText('Create your first project report')
       ).toBeInTheDocument();
@@ -159,9 +176,9 @@ describe('<ReportBuilderPage />', () => {
     it('has print buttons', () => {
       mockReports = reports;
       render(<ReportBuilderPage />);
-      const printButtons = screen.getAllByText('Print');
+      const printButtons = screen.getAllByText('Duplicate');
 
-      expect(printButtons).toHaveLength(2);
+      expect(printButtons).toHaveLength(reports.length);
     });
   });
 });

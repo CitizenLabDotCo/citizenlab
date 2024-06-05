@@ -77,7 +77,7 @@ const AnalysisBanner = () => {
       bgColor={colors.errorLight}
     >
       <Box display="flex" gap="16px" alignItems="center">
-        <Icon name="stars" width="50px" height="50px" fill={colors.orange} />
+        <Icon name="stars" width="50px" height="50px" fill={colors.orange500} />
         <Text fontWeight="bold">
           {formatMessage(messages.analysisSubtitle)}
         </Text>
@@ -89,11 +89,11 @@ const AnalysisBanner = () => {
         <Box>
           <Button
             buttonStyle="text"
-            textColor={colors.orange}
+            textColor={colors.orange500}
             onClick={handleGoToAnalysis}
             fontWeight="bold"
             icon={isAnalysisEnabled ? 'stars' : 'lock'}
-            iconColor={colors.orange}
+            iconColor={colors.orange500}
             id="e2e-analysis-banner-button"
             processing={isLoading}
             disabled={!isAnalysisEnabled}

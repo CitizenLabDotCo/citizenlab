@@ -120,8 +120,8 @@ const UsersTable = ({
         {process.env.NODE_ENV === 'development' && notCitizenlabMember && (
           <Warning>
             <span>
-              <b>@citizenlab.co</b> email addresses are not included as admins &
-              managers.
+              <b>@govocal.com & @citizenlab.co</b> email addresses are not
+              included as admins & managers.
             </span>
           </Warning>
         )}

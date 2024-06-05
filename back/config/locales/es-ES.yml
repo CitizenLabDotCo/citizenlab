@@ -293,7 +293,7 @@ es:
       instructions: 'Instrucciones'
       write_as_clearly: 'Escribe tan claramente <b></b> como puedas - estos formularios podrían ser escaneados'
       write_in_language: 'Escribe tus respuestas en la misma lengua que este formulario'
-      linear_scale_print_description: 'Escribe sólo un número entre %{min_label} y %{max_label}'
+      linear_scale_print_description: 'Por favor, escribe sólo un número entre %{min_label} y %{max_label}'
   project_copy:
     title_suffix: 'Copia'
   confirmations_mailer:

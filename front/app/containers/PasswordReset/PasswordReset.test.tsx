@@ -3,14 +3,12 @@ import React from 'react';
 import { screen, render, userEvent } from 'utils/testUtils/rtl';
 
 jest.mock('utils/cl-router/Link', () => 'Link');
-
 jest.mock('utils/cl-router/history', () => ({
   location: {
     search: '?token=test-token',
   },
   push: jest.fn(),
 }));
-
 jest.mock('api/authentication/reset_password/resetPassword', () => jest.fn());
 
 import PasswordReset from './index';
@@ -20,7 +18,10 @@ describe('PasswordReset', () => {
     const user = userEvent.setup();
     render(<PasswordReset />);
 
-    const passwordInput = screen.getByLabelText(/password/i);
+    // Refining the query to specifically target the input field
+    const passwordInput = screen.getByLabelText(/password/i, {
+      selector: 'input',
+    });
     await user.type(passwordInput, 'test-new-password');
 
     const submitButton = screen.getByRole('button', {
