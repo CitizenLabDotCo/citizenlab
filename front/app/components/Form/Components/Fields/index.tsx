@@ -1,12 +1,7 @@
 import React, { useCallback, useState } from 'react';
 
 // jsonforms
-import {
-  JsonSchema7,
-  UISchemaElement,
-  Translator,
-  Layout,
-} from '@jsonforms/core';
+import { JsonSchema7, Translator, Layout } from '@jsonforms/core';
 import { JsonForms } from '@jsonforms/react';
 import Ajv, { ErrorObject } from 'ajv';
 import { CLErrors, SupportedLocale } from 'typings';
@@ -18,6 +13,7 @@ import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
 
 import { APIErrorsContext, FormContext } from '../../contexts';
 import { ApiErrorGetter, AjvErrorGetter, FormData } from '../../typings';
+import { ExtendedUISchema } from '../Controls/visibilityUtils';
 
 import { selectRenderers } from './formConfig';
 
@@ -71,7 +67,7 @@ const Fields = ({
     (
       error: ErrorObject,
       _translate: Translator,
-      uischema?: UISchemaElement & { label?: string }
+      uischema?: ExtendedUISchema
     ) => {
       const message =
         getAjvErrorMessage?.(error, uischema) ||
