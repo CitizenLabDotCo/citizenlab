@@ -71,7 +71,7 @@ const TopicsAndAreas = ({ onSubmit, onSkip }: Props) => {
       )}
       <Box display="flex" justifyContent="flex-end">
         <Box my="20px" w="auto" display="flex" alignSelf="flex-end" gap="8px">
-          <Button onClick={onSkip} buttonStyle="primary-outlined">
+          <Button onClick={onSkip} buttonStyle="secondary-outlined">
             {formatMessage(messages.skipForNow)}
           </Button>
           <Button onClick={handleSubmit}>

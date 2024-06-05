@@ -37,7 +37,7 @@ const ReactionControl = ({
         followableId={initiative.data.id}
         followersCount={initiative.data.attributes.followers_count}
         followerId={initiative.data.relationships.user_follower?.data?.id}
-        buttonStyle="primary-outlined"
+        buttonStyle="secondary-outlined"
         toolTipType="input"
       />
     </BorderContainer>
