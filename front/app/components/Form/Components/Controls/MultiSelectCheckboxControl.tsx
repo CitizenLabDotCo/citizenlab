@@ -125,6 +125,7 @@ const MultiSelectCheckboxControl = ({
                 </Text>
               }
               checked={dataArray.includes(option.value)}
+              usePrimaryBorder={true}
               onChange={() => {
                 if (dataArray.includes(option.value)) {
                   dataArray.length === 1

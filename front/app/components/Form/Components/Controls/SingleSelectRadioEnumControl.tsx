@@ -79,6 +79,7 @@ const SingleSelectRadioEnumControl = ({
             <Radio
               padding="20px 20px 4px 20px"
               buttonColor={theme.colors.tenantPrimary}
+              usePrimaryBorder={true}
               id={`${path}-radio-${index}`}
               name="name-temp"
               label={
