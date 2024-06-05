@@ -6,7 +6,6 @@ import {
   stylingConsts,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { createPortal } from 'react-dom';
 import { useSearchParams } from 'react-router-dom';
 
 import { IdeaPublicationStatus } from 'api/ideas/types';
@@ -25,6 +24,8 @@ import { IProject } from 'api/projects/types';
 import useInputSchema from 'hooks/useInputSchema';
 import useLocalize from 'hooks/useLocalize';
 
+import ideaFormMessages from 'containers/IdeasNewPage/messages';
+
 import Form from 'components/Form';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
@@ -35,8 +36,7 @@ import { getElementType, getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import { getFormValues } from '../../IdeasEditPage/utils';
-import IdeasNewMeta from '../IdeasNewMeta';
-import messages from '../messages';
+import IdeasNewSurveyMeta from '../IdeasNewSurveyMeta';
 
 import SurveyHeading from './SurveyHeading';
 
@@ -98,12 +98,18 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     : getCurrentPhase(phases?.data);
   const allowAnonymousPosting = phase?.attributes.allow_anonymous_participation;
 
+  /*
+    TODO: Both the api and ajv errors parts need a review. For now I've just copied this from the original (IdeasNewPage), but I'm not sure
+    the survey form is using any of these errros.
+  */
   const getApiErrorMessage: ApiErrorGetter = useCallback(
     (error) => {
       return (
-        messages[`api_error_${uiSchema?.options?.inputTerm}_${error}`] ||
-        messages[`api_error_${error}`] ||
-        messages[`api_error_invalid`]
+        ideaFormMessages[
+          `api_error_${uiSchema?.options?.inputTerm}_${error}`
+        ] ||
+        ideaFormMessages[`api_error_${error}`] ||
+        ideaFormMessages[`api_error_invalid`]
       );
     },
     [uiSchema]
@@ -112,13 +118,13 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   const getAjvErrorMessage: AjvErrorGetter = useCallback(
     (error) => {
       return (
-        messages[
+        ideaFormMessages[
           `ajv_error_${uiSchema?.options?.inputTerm}_${
             getFieldNameFromPath(error.instancePath) ||
             error?.params?.missingProperty
           }_${error.keyword}`
         ] ||
-        messages[
+        ideaFormMessages[
           `ajv_error_${
             getFieldNameFromPath(error.instancePath) ||
             error?.params?.missingProperty
@@ -240,8 +246,14 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
 
   return (
     <>
-      <IdeasNewMeta isSurvey={true} />
-      <>
+      <IdeasNewSurveyMeta />
+      <Box
+        w="100%"
+        bgColor={colors.grey100}
+        h="100vh"
+        position="fixed"
+        zIndex="1010"
+      >
         <Box
           mx="auto"
           position="relative"
@@ -279,28 +291,9 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
             </Box>
           </Box>
         </main>
-      </>
+      </Box>
     </>
   );
 };
 
-const IdeasNewSurveyFormWrapperModal = (props: Props) => {
-  const modalPortalElement = document.getElementById('modal-portal');
-
-  return modalPortalElement
-    ? createPortal(
-        <Box
-          w="100%"
-          zIndex="1010"
-          position="fixed"
-          bgColor={colors.grey100}
-          h="100vh"
-        >
-          <IdeasNewSurveyForm {...props} />
-        </Box>,
-        modalPortalElement
-      )
-    : null;
-};
-
-export default IdeasNewSurveyFormWrapperModal;
+export default IdeasNewSurveyForm;

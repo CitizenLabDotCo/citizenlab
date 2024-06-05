@@ -1,6 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  surveyNewMetaTitle1: {
+    id: 'app.containers.IdeasNewPage.surveyNewMetaTitle1',
+    defaultMessage: 'Add survey response to project | {orgName}',
+  },
   surveySubmittedTitle: {
     id: 'app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedTitle',
     defaultMessage: 'Survey submitted',
