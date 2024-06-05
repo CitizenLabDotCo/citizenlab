@@ -25,7 +25,7 @@ import { getOptions, getSubtextElement } from './controlUtils';
 import imageFile from './emptyImage.png';
 import messages from './messages';
 
-const HoverBox = styled(Box)<{ hoverColor?: string }>`
+const HoverBox = styled(Box)<{ hoverColor: string }>`
   cursor: pointer;
   &:hover {
     background-color: ${({ hoverColor }) => hoverColor};
