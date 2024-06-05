@@ -138,7 +138,7 @@ const AllCauses = ({ phaseId, projectId }: Props) => {
                 <Button
                   linkTo={`/admin/projects/${projectId}/phases/${phaseId}/volunteering/causes/${cause.id}`}
                   icon="edit"
-                  buttonStyle="secondary"
+                  buttonStyle="secondary-outlined"
                 >
                   <FormattedMessage {...messages.editButtonLabel} />
                 </Button>

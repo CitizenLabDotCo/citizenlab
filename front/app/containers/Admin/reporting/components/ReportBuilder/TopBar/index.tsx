@@ -229,7 +229,7 @@ const ContentBuilderTopBar = ({
             <div>
               <Button
                 icon="print"
-                buttonStyle="secondary"
+                buttonStyle="secondary-outlined"
                 iconColor={colors.textPrimary}
                 iconSize="16px"
                 px="12px"

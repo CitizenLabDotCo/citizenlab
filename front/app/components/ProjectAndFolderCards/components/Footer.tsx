@@ -37,7 +37,7 @@ const Footer = ({ loadingMore, onShowMore }: Props) => {
       <Button
         data-testid="show-more-button"
         onClick={onShowMore}
-        buttonStyle="secondary"
+        buttonStyle="secondary-outlined"
         text={<FormattedMessage {...messages.showMore} />}
         processing={loadingMore}
         height="50px"

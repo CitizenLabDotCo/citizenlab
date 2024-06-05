@@ -107,7 +107,7 @@ const RegistrationCustomFieldOptions = memo(
                         </TextCell>
                         <Button
                           linkTo={`/admin/settings/registration/custom-fields/${userCustomFieldId}/options/${userCustomFieldOptionId}`}
-                          buttonStyle="secondary"
+                          buttonStyle="secondary-outlined"
                           icon="edit"
                         >
                           {formatMessage(messages.editButtonLabel)}

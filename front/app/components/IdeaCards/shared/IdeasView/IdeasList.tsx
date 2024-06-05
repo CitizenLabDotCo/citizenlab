@@ -130,7 +130,7 @@ const IdeasList = ({
               <Button
                 id="e2e-idea-cards-show-more-button"
                 onClick={loadMoreIdeas}
-                buttonStyle="secondary"
+                buttonStyle="secondary-outlined"
                 text={<FormattedMessage {...messages.showMore} />}
                 processing={loadingMore}
                 height="50px"

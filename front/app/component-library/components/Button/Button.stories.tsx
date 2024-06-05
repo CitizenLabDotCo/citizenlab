@@ -35,16 +35,9 @@ export const PrimaryOutlined = {
   },
 };
 
-export const PrimaryInverse = {
-  args: {
-    buttonStyle: 'primary-inverse',
-    children: 'Button',
-  },
-};
-
 export const Secondary = {
   args: {
-    buttonStyle: 'secondary',
+    buttonStyle: 'secondary-outlined',
     children: 'Button',
   },
 };
@@ -66,13 +59,6 @@ export const Success = {
 export const TextStyle = {
   args: {
     buttonStyle: 'text',
-    children: 'Button',
-  },
-};
-
-export const CLBlue = {
-  args: {
-    buttonStyle: 'cl-blue',
     children: 'Button',
   },
 };

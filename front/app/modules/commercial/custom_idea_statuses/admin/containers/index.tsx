@@ -165,7 +165,7 @@ const IdeaStatuses = () => {
 
             <Button
               linkTo={`/admin/settings/statuses/${defaultStatus.id}`}
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               icon="edit"
             >
               <FormattedMessage {...messages.editButtonLabel} />
@@ -223,7 +223,7 @@ const IdeaStatuses = () => {
                     </Tippy>
                     <Button
                       linkTo={`/admin/settings/statuses/${ideaStatus.id}`}
-                      buttonStyle="secondary"
+                      buttonStyle="secondary-outlined"
                       icon="edit"
                     >
                       <FormattedMessage {...messages.editButtonLabel} />

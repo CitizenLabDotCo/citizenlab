@@ -179,7 +179,7 @@ const AdminProjectEventsIndex = () => {
                         <FormattedMessage {...messages.deleteButtonLabel} />
                       </Button>
                       <Button
-                        buttonStyle="secondary"
+                        buttonStyle="secondary-outlined"
                         disabled={event.attributes.attendees_count === 0}
                         icon="download"
                         onClick={() => handleAttendeesExport(event)}
@@ -187,7 +187,7 @@ const AdminProjectEventsIndex = () => {
                         <FormattedMessage {...messages.exportAttendees} />
                       </Button>
                       <Button
-                        buttonStyle="secondary"
+                        buttonStyle="secondary-outlined"
                         icon="edit"
                         linkTo={`/admin/projects/${projectId}/events/${event.id}`}
                       >

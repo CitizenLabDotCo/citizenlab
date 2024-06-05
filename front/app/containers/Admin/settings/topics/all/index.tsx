@@ -102,7 +102,7 @@ const AllTopics = () => {
           </Content>
           <ButtonsWrapper>
             <Button
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               onClick={closeSendConfirmationModal}
             >
               <FormattedMessage {...messages.cancel} />

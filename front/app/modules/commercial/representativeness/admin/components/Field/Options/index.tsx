@@ -117,7 +117,7 @@ const Options = injectIntl(
         {showSeeMoreButton && (
           <Box width="100%" display="flex" mt="16px" mb="12px">
             <Button
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               text={
                 seeMore
                   ? formatMessage(messages.seeLess)
@@ -135,7 +135,7 @@ const Options = injectIntl(
         {showEditAgeGroupsButton && (
           <Box width="100%" display="flex" mt="16px" mb="12px">
             <Button
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               text={formatMessage(messages.editAgeGroups)}
               width="auto"
               icon="edit"

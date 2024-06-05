@@ -188,7 +188,7 @@ const AreaListRow = ({
       </Button>
       <Button
         linkTo={`/admin/settings/areas/${item.id}`}
-        buttonStyle="secondary"
+        buttonStyle="secondary-outlined"
         icon="edit"
       >
         <FormattedMessage {...messages.editButtonLabel} />

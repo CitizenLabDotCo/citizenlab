@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { colors } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
 import Button from 'components/UI/Button';
@@ -34,11 +35,11 @@ const VoteButtons = ({
     <>
       {userReacted ? (
         <Button
-          buttonStyle="success"
           iconSize="20px"
           icon="check"
           onClick={onCancelReaction}
           id="e2e-proposal-cancel-vote-button"
+          bgColor={colors.success}
           disabled={cancelReactionDisabled}
         >
           <FormattedMessage {...messages.voted} />

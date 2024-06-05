@@ -268,7 +268,7 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
               <Button
                 onClick={handleOnVolunteerButtonClick}
                 icon={!isVolunteer ? 'volunteer' : 'volunteer-off'}
-                buttonStyle={!isVolunteer ? 'primary' : 'secondary'}
+                buttonStyle={!isVolunteer ? 'primary' : 'secondary-outlined'}
                 fullWidth={smallerThanSmallTablet}
                 disabled={disabled}
               >

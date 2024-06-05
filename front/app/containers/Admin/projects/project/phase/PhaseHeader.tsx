@@ -274,7 +274,11 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
             >
               {formatMessage(messages.deletePhaseButtonText)}
             </Button>
-            <Button buttonStyle="secondary" width="auto" onClick={closeModal}>
+            <Button
+              buttonStyle="secondary-outlined"
+              width="auto"
+              onClick={closeModal}
+            >
               {formatMessage(messages.cancelDeletePhaseText)}
             </Button>
           </Box>

@@ -191,7 +191,7 @@ const Forms = () => {
                   linkTo={inputImporterLink}
                   icon="page"
                   iconSize="20px"
-                  buttonStyle="secondary"
+                  buttonStyle="secondary-outlined"
                   width="auto"
                   mr="8px"
                   disabled={!inputImporterEnabled}
@@ -204,7 +204,7 @@ const Forms = () => {
               linkTo={viewFormLink}
               icon="eye"
               iconSize="20px"
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               width="auto"
               openLinkInNewTab
               mr="8px"
@@ -386,7 +386,7 @@ const Forms = () => {
               {formatMessage(messages.confirmDeleteButtonText)}
             </Button>
             <Button
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               width="auto"
               onClick={closeDeleteModal}
             >
