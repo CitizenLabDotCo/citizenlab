@@ -12,7 +12,7 @@ type Props = {
   checkedColor?: string;
   checkedOrIndeterminate: boolean;
   element: CheckboxElement;
-  usePrimaryBorder?: boolean;
+  usePrimaryBorder: boolean;
 };
 
 export const getColor = ({
