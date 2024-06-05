@@ -105,7 +105,7 @@ export type Props = {
   onChange?: (arg: any) => void;
   currentValue?: any;
   value: any;
-  usePrimaryBorder: boolean;
+  usePrimaryBorder?: boolean;
   /**
    * Name should be a string that is the same for all radios of the same radio group and unique for each radio group.
    * E.g. if you have a poll with two questions and each question has four answers/radios,
@@ -132,7 +132,7 @@ const Radio = ({
   label,
   className,
   isRequired,
-  usePrimaryBorder,
+  usePrimaryBorder = false,
   onChange: _onChange,
   ...rest
 }: Props) => {

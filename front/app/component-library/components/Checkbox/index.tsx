@@ -27,7 +27,7 @@ const StyledCheckbox = styled.div<{
   checkedColor?: Color;
   size: string;
   disabled: boolean;
-  usePrimaryBorder: boolean;
+  usePrimaryBorder?: boolean;
 }>`
   cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
 
