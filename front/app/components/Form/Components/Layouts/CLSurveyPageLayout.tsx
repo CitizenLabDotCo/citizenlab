@@ -285,7 +285,8 @@ const CLSurveyPageLayout = memo(
           It doesn't belong here as it's not part of the form fields layout. This would also allow us
           to put the progress bar back on top of the form (as part of the survey header) without
           the scroll bar of the form fields interfering with it. This in turn would allow us to improve
-          the form progress UX for screen readers.
+          the form progress UX for screen readers. Our current stance is that it makes more sense to get a
+          progress update before entering a new page, rather than after leaving it.
         */}
         <Box
           maxWidth="700px"
