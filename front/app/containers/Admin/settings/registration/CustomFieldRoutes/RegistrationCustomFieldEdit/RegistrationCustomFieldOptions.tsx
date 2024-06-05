@@ -67,7 +67,7 @@ const RegistrationCustomFieldOptions = memo(
         <>
           <ButtonWrapper>
             <Button
-              buttonStyle="cl-blue"
+              buttonStyle="admin-dark"
               icon="plus-circle"
               linkTo={`/admin/settings/registration/custom-fields/${userCustomFieldId}/options/new`}
             >

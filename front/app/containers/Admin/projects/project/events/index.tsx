@@ -90,7 +90,7 @@ const AdminProjectEventsIndex = () => {
         </SectionDescription>
         <ListWrapper className="e2e-projects-events">
           <AddButton
-            buttonStyle="cl-blue"
+            buttonStyle="admin-dark"
             icon="plus-circle"
             linkTo={`/admin/projects/${projectId}/events/new`}
           >

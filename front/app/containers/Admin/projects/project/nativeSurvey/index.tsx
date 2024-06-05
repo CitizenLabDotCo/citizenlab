@@ -213,7 +213,7 @@ const Forms = () => {
             <Button
               icon="edit"
               iconSize="20px"
-              buttonStyle="cl-blue"
+              buttonStyle="admin-dark"
               width="auto"
               onClick={() => {
                 haveSubmissionsComeIn

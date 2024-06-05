@@ -125,7 +125,7 @@ const IdeaStatuses = () => {
         </SectionDescription>
         <ButtonWrapper>
           <Button
-            buttonStyle="cl-blue"
+            buttonStyle="admin-dark"
             icon="plus-circle"
             linkTo="/admin/settings/statuses/new"
           >

@@ -78,7 +78,7 @@ const AreaList = () => {
 
       <ButtonWrapper>
         <Button
-          buttonStyle="cl-blue"
+          buttonStyle="admin-dark"
           icon="plus-circle"
           linkTo="/admin/settings/areas/new"
         >
