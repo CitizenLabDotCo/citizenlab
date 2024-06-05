@@ -20,6 +20,8 @@ import useProjectById from 'api/projects/useProjectById';
 import T from 'components/T';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
@@ -166,7 +168,7 @@ const IdeaMapCard = memo<Props>(
       const tenantCurrency = appConfig.data.attributes.settings.core.currency;
       const ideaBudget = idea.attributes?.budget;
       const reactingActionDescriptor =
-        project.data.attributes.action_descriptor.reacting_idea;
+        project.data.attributes.action_descriptors.reacting_idea;
 
       const showDislike =
         reactingActionDescriptor.down.enabled === true ||
@@ -175,7 +177,7 @@ const IdeaMapCard = memo<Props>(
             'reacting_dislike_disabled');
 
       const commentingEnabled =
-        project.data.attributes.action_descriptor.commenting_idea.enabled;
+        project.data.attributes.action_descriptors.commenting_idea.enabled;
       const ideaHasComments = idea.attributes.comments_count > 0;
       const showCommentCount = commentingEnabled || ideaHasComments;
       const phaseButNotCurrentPhase =
@@ -234,17 +236,33 @@ const IdeaMapCard = memo<Props>(
                 <>
                   <FooterItem>
                     <LikeIcon name="vote-up" />
-                    <FooterValue id="e2e-map-card-like-count">
+                    {/* Hidden to use easier-to-understand text for screen readers */}
+                    <FooterValue id="e2e-map-card-like-count" aria-hidden>
                       {idea.attributes.likes_count}
                     </FooterValue>
+                    <ScreenReaderOnly>
+                      <FormattedMessage
+                        {...messages.screenReaderLikesText}
+                        values={{ noOfLikes: idea.attributes.likes_count }}
+                      />
+                    </ScreenReaderOnly>
                   </FooterItem>
 
                   {showDislike && (
                     <FooterItem>
                       <DislikeIcon name="vote-down" />
-                      <FooterValue id="e2e-map-card-dislike-count">
+                      {/* Hidden to use easier to understand text for screen readers */}
+                      <FooterValue id="e2e-map-card-dislike-count" aria-hidden>
                         {idea.attributes.dislikes_count}
                       </FooterValue>
+                      <ScreenReaderOnly>
+                        <FormattedMessage
+                          {...messages.screenReaderDislikesText}
+                          values={{
+                            noOfDislikes: idea.attributes.dislikes_count,
+                          }}
+                        />
+                      </ScreenReaderOnly>
                     </FooterItem>
                   )}
                 </>
@@ -252,7 +270,16 @@ const IdeaMapCard = memo<Props>(
             {showCommentCount && (
               <FooterItem>
                 <CommentIcon name="comments" />
-                <FooterValue>{idea.attributes.comments_count}</FooterValue>
+                {/* Hidden to use easier to understand text for screen readers */}
+                <FooterValue aria-hidden>
+                  {idea.attributes.comments_count}
+                </FooterValue>
+                <ScreenReaderOnly>
+                  <FormattedMessage
+                    {...messages.screenReaderCommentsText}
+                    values={{ noOfComments: idea.attributes.comments_count }}
+                  />
+                </ScreenReaderOnly>
               </FooterItem>
             )}
           </Box>

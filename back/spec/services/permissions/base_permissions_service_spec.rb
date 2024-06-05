@@ -85,7 +85,7 @@ describe Permissions::BasePermissionsService do
       context 'when not signed in' do
         let(:user) { nil }
 
-        it { expect(denied_reason).to eq 'not_signed_in' }
+        it { expect(denied_reason).to eq 'user_not_signed_in' }
       end
 
       context 'when light unconfirmed resident' do
@@ -94,7 +94,7 @@ describe Permissions::BasePermissionsService do
           user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
         end
 
-        it { expect(denied_reason).to eq 'missing_user_requirements' }
+        it { expect(denied_reason).to eq 'user_missing_requirements' }
       end
 
       context 'when light unconfirmed inactive resident' do
@@ -103,7 +103,7 @@ describe Permissions::BasePermissionsService do
           user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}, registration_completed_at: nil)
         end
 
-        it { expect(denied_reason).to eq 'missing_user_requirements' }
+        it { expect(denied_reason).to eq 'user_missing_requirements' }
       end
 
       context 'when light confirmed resident' do
@@ -115,7 +115,7 @@ describe Permissions::BasePermissionsService do
       context 'when fully registered unconfirmed resident' do
         before { user.reset_confirmation_and_counts }
 
-        it { expect(denied_reason).to eq 'missing_user_requirements' }
+        it { expect(denied_reason).to eq 'user_missing_requirements' }
       end
 
       context 'when fully registered confirmed resident' do
@@ -125,7 +125,7 @@ describe Permissions::BasePermissionsService do
       context 'when fully registered confirmed inactive resident' do
         before { user.update!(registration_completed_at: nil) }
 
-        it { expect(denied_reason).to eq 'not_active' }
+        it { expect(denied_reason).to eq 'user_not_active' }
       end
 
       context 'when unconfirmed admin' do
@@ -134,7 +134,7 @@ describe Permissions::BasePermissionsService do
           user.update!(roles: [{ type: 'admin' }])
         end
 
-        it { expect(denied_reason).to eq 'missing_user_requirements' }
+        it { expect(denied_reason).to eq 'user_missing_requirements' }
       end
 
       context 'when confirmed admin' do
@@ -146,7 +146,7 @@ describe Permissions::BasePermissionsService do
       context 'when confirmed inactive admin' do
         before { user.update!(roles: [{ type: 'admin' }], registration_completed_at: nil) }
 
-        it { expect(denied_reason).to eq 'not_active' }
+        it { expect(denied_reason).to eq 'user_not_active' }
       end
     end
 
@@ -156,25 +156,25 @@ describe Permissions::BasePermissionsService do
       context 'when not signed in' do
         let(:user) { nil }
 
-        it { expect(denied_reason).to eq 'not_signed_in' }
+        it { expect(denied_reason).to eq 'user_not_signed_in' }
       end
 
       context 'when light confirmed resident' do
         before { user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}) }
 
-        it { expect(denied_reason).to eq 'missing_user_requirements' }
+        it { expect(denied_reason).to eq 'user_missing_requirements' }
       end
 
       context 'when light confirmed inactive resident' do
         before { user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}, registration_completed_at: nil) }
 
-        it { expect(denied_reason).to eq 'not_active' }
+        it { expect(denied_reason).to eq 'user_not_active' }
       end
 
       context 'when fully registered unconfirmed resident' do
         before { user.reset_confirmation_and_counts }
 
-        it { expect(denied_reason).to eq 'missing_user_requirements' }
+        it { expect(denied_reason).to eq 'user_missing_requirements' }
       end
 
       context 'when fully registered confirmed resident' do
@@ -195,7 +195,7 @@ describe Permissions::BasePermissionsService do
       context 'when fully registered confirmed inactive resident' do
         before { user.update!(registration_completed_at: nil) }
 
-        it { expect(denied_reason).to eq 'not_active' }
+        it { expect(denied_reason).to eq 'user_not_active' }
       end
 
       context 'when unconfirmed admin' do
@@ -204,7 +204,7 @@ describe Permissions::BasePermissionsService do
           user.update!(roles: [{ type: 'admin' }])
         end
 
-        it { expect(denied_reason).to eq 'missing_user_requirements' }
+        it { expect(denied_reason).to eq 'user_missing_requirements' }
       end
 
       context 'when confirmed admin' do
@@ -216,7 +216,7 @@ describe Permissions::BasePermissionsService do
       context 'when confirmed inactive admin' do
         before { user.update!(roles: [{ type: 'admin' }], registration_completed_at: nil) }
 
-        it { expect(denied_reason).to eq 'not_active' }
+        it { expect(denied_reason).to eq 'user_not_active' }
       end
     end
 
@@ -227,7 +227,7 @@ describe Permissions::BasePermissionsService do
       context 'when not signed in' do
         let(:user) { nil }
 
-        it { expect(denied_reason).to eq 'not_signed_in' }
+        it { expect(denied_reason).to eq 'user_not_signed_in' }
       end
 
       context 'when light unconfirmed resident who is group member' do
@@ -236,17 +236,17 @@ describe Permissions::BasePermissionsService do
           user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}, manual_groups: [groups.last])
         end
 
-        it { expect(denied_reason).to eq 'missing_user_requirements' }
+        it { expect(denied_reason).to eq 'user_missing_requirements' }
       end
 
-      context 'when light confirmed resident who is not a group member' do
+      context 'when light unconfirmed resident who is not a group member' do
         before { user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}) }
 
-        it { expect(denied_reason).to eq 'not_in_group' }
+        it { expect(denied_reason).to eq 'user_missing_requirements' }
       end
 
       context 'when fully registered resident who is not a group member' do
-        it { expect(denied_reason).to eq 'not_in_group' }
+        it { expect(denied_reason).to eq 'user_not_in_group' }
       end
 
       context 'when admin' do
@@ -258,7 +258,7 @@ describe Permissions::BasePermissionsService do
       context 'when confirmed inactive admin' do
         before { user.update!(roles: [{ type: 'admin' }], registration_completed_at: nil) }
 
-        it { expect(denied_reason).to eq 'not_active' }
+        it { expect(denied_reason).to eq 'user_not_active' }
       end
 
       context 'when permitted by is changed from groups to users' do
@@ -274,19 +274,19 @@ describe Permissions::BasePermissionsService do
       context 'when not signed in' do
         let(:user) { nil }
 
-        it { expect(denied_reason).to eq 'not_signed_in' }
+        it { expect(denied_reason).to eq 'user_not_signed_in' }
       end
 
       context 'when light confirmed resident' do
         before { user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}) }
 
-        it { expect(denied_reason).to eq 'not_permitted' }
+        it { expect(denied_reason).to eq 'user_not_permitted' }
       end
 
       context 'when fully registered unconfirmed resident' do
         before { user.reset_confirmation_and_counts }
 
-        it { expect(denied_reason).to eq 'missing_user_requirements' }
+        it { expect(denied_reason).to eq 'user_missing_requirements' }
       end
 
       context 'when unconfirmed admin' do
@@ -295,7 +295,7 @@ describe Permissions::BasePermissionsService do
           user.update!(roles: [{ type: 'admin' }])
         end
 
-        it { expect(denied_reason).to eq 'missing_user_requirements' }
+        it { expect(denied_reason).to eq 'user_missing_requirements' }
       end
 
       context 'when confirmed admin' do
@@ -307,7 +307,7 @@ describe Permissions::BasePermissionsService do
       context 'when confirmed inactive admin' do
         before { user.update!(roles: [{ type: 'admin' }], registration_completed_at: nil) }
 
-        it { expect(denied_reason).to eq 'not_active' }
+        it { expect(denied_reason).to eq 'user_not_active' }
       end
     end
   end
