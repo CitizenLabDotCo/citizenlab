@@ -27,7 +27,7 @@ export interface Props {
   stretch?: boolean;
 }
 
-const Image = ({ alt = {}, image, stretch = true }: Props) => {
+const ImageMultiloc = ({ alt = {}, image, stretch = true }: Props) => {
   const localize = useLocalize();
   const { enabled } = useEditor((state) => {
     return {
@@ -75,7 +75,7 @@ const Image = ({ alt = {}, image, stretch = true }: Props) => {
   );
 };
 
-Image.craft = {
+ImageMultiloc.craft = {
   related: {
     settings: Settings,
   },
@@ -83,4 +83,4 @@ Image.craft = {
 
 export const imageMultilocTitle = messages.imageMultiloc;
 
-export default Image;
+export default ImageMultiloc;
