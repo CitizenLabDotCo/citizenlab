@@ -84,18 +84,27 @@ const LinearScaleControl = ({
                 <Button
                   py="12px"
                   id={`linear-scale-option-${visualIndex}`}
-                  borderColor={colors.grey800}
+                  borderColor={theme.colors.tenantPrimary}
+                  borderHoverColor={theme.colors.tenantPrimary}
                   bgColor={
                     data === visualIndex
-                      ? theme.colors.tenantSecondary
-                      : colors.grey100
+                      ? theme.colors.tenantPrimary
+                      : theme.colors.tenantPrimaryLighten95
                   }
                   bgHoverColor={
-                    theme.colors.tenantSecondary || colors.coolGrey500
+                    data === visualIndex
+                      ? theme.colors.tenantPrimary
+                      : theme.colors.tenantPrimaryLighten75
                   }
-                  textHoverColor={colors.white}
+                  textHoverColor={
+                    data === visualIndex
+                      ? colors.white
+                      : theme.colors.tenantPrimary
+                  }
                   textColor={
-                    data === visualIndex ? colors.white : colors.textPrimary
+                    data === visualIndex
+                      ? colors.white
+                      : theme.colors.tenantPrimary
                   }
                   width="100%"
                   onClick={() => handleChange(path, visualIndex)}
