@@ -7,7 +7,7 @@ import {
   Spinner,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 
 import { IIdeaData } from 'api/ideas/types';
 
@@ -80,7 +80,6 @@ const IdeasList = ({
   hideIdeaStatus = false,
   phaseId,
 }: Props) => {
-  const theme = useTheme();
   const smallerThanPhone = useBreakpoint('phone');
   const loadMoreIdeas = () => {
     onLoadMore();
