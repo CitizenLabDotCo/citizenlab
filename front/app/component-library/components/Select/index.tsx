@@ -99,8 +99,8 @@ export interface Props extends DefaultProps {
   placeholder?: string;
 }
 
-const defaultValue = 'DEFAULT_SELECT_VALUE';
-const placeholderValue = 'PLACEHOLDER_SELECT_VALUE';
+const DEFAULT_VALUE = 'DEFAULT_SELECT_VALUE';
+const PLACEHOLDER_VALUE = 'PLACEHOLDER_SELECT_VALUE';
 
 const getSelectedValue = (
   options: IOption[] | null,
@@ -112,7 +112,7 @@ const getSelectedValue = (
   )?.value;
   if (selectedValue) return selectedValue;
 
-  return placeholder !== undefined ? placeholderValue : defaultValue;
+  return placeholder !== undefined ? PLACEHOLDER_VALUE : DEFAULT_VALUE;
 };
 
 class Select extends PureComponent<Props> {
@@ -148,12 +148,13 @@ class Select extends PureComponent<Props> {
       value,
       placeholder,
     } = this.props;
+
     const safeValue =
       isString(value) || isNumber(value) ? value : get(value, 'value', null);
 
     const selectedValue = getSelectedValue(options, safeValue, placeholder);
 
-    const showPlaceholder = selectedValue === placeholderValue;
+    const showPlaceholder = selectedValue === PLACEHOLDER_VALUE;
 
     return (
       <Container
@@ -184,7 +185,7 @@ class Select extends PureComponent<Props> {
           >
             {placeholder !== undefined && (
               <option
-                value={placeholderValue}
+                value={PLACEHOLDER_VALUE}
                 aria-selected={showPlaceholder}
                 hidden
                 disabled
@@ -194,8 +195,8 @@ class Select extends PureComponent<Props> {
             )}
 
             <option
-              value={defaultValue}
-              aria-selected={selectedValue === defaultValue}
+              value={DEFAULT_VALUE}
+              aria-selected={selectedValue === DEFAULT_VALUE}
               hidden={!canBeEmpty}
               disabled={!canBeEmpty}
             />

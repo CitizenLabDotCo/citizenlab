@@ -24,6 +24,7 @@ const StyledSelect = styled(Select)`
 `;
 
 const SingleSelectControl = ({
+  data,
   handleChange,
   path,
   errors,
@@ -51,6 +52,7 @@ const SingleSelectControl = ({
       />
       <Box display="flex" flexDirection="row">
         <StyledSelect
+          value={data}
           options={options as IOption[]}
           onChange={(val) => {
             setDidBlur(true);
@@ -59,7 +61,7 @@ const SingleSelectControl = ({
           key={sanitizeForClassname(id)}
           id={sanitizeForClassname(id)}
           aria-label={getLabel(uischema, schema, path)}
-          canBeEmpty={true}
+          canBeEmpty
           disabled={uischema?.options?.readonly}
         />
         <VerificationIcon show={uischema?.options?.verificationLocked} />
