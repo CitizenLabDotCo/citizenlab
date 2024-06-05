@@ -215,7 +215,7 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
     it 'text fields return text values if xlsx values are integers or floats' do
       xlsx_ideas_array = [
         { pdf_pages: [1], fields: { 'Text field' => 2 } },
-        { pdf_pages: [1], fields: { 'Text field' => 2.2 } },
+        { pdf_pages: [1], fields: { 'Text field' => 2.2 } }
       ]
       idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file)
       expect(idea_rows.count).to eq 2
