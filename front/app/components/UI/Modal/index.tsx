@@ -412,6 +412,12 @@ interface Props {
   fullScreen?: boolean;
   zIndex?: number;
   hideCloseButton?: boolean;
+  /**
+   * Optional ref to return focus on close.
+   * By default, focus returns to the control that opened the modal.
+   * Use this ref if you want to return focus to another ref.
+   */
+  returnFocusRef?: React.RefObject<HTMLElement>;
 }
 
 const Modal: React.FC<Props> = ({
@@ -431,6 +437,7 @@ const Modal: React.FC<Props> = ({
   fullScreen,
   zIndex,
   hideCloseButton,
+  returnFocusRef,
 }) => {
   const [windowDimensions, setWindowDimensions] = useState({
     windowWidth: window.innerWidth,
@@ -464,6 +471,23 @@ const Modal: React.FC<Props> = ({
     window.removeEventListener('keydown', handleKeypress);
     eventEmitter.emit('modalClosed');
   }, [handlePopstateEvent, handleKeypress]);
+
+  useEffect(() => {
+    let timeoutId: number | undefined;
+
+    if (!opened && returnFocusRef?.current) {
+      timeoutId = window.setTimeout(() => {
+        returnFocusRef.current?.focus();
+      }, 0);
+    }
+
+    // Cleanup function to clear the timeout on unmount
+    return () => {
+      if (timeoutId !== undefined) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [opened, returnFocusRef]);
 
   useEffect(() => {
     const subscription = fromEvent(window, 'resize')
