@@ -75,9 +75,9 @@ class Tenant < ApplicationRecord
 
     def safe_switch_each(scope: nil)
       scope ||= not_deleted.where.not(creation_finalized_at: nil)
-      prioritize(not_deleted.where.not(creation_finalized_at: nil)).each do |tenant|
+      prioritize(scope).each do |tenant|
         next if !Tenant.exists?(id: tenant.id)
-  
+
         tenant.switch do
           yield tenant
         end

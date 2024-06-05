@@ -129,7 +129,7 @@ RSpec.describe Tenant do
 
   describe 'safe_switch_each' do
     it 'switches to each tenant by priority (using current tenant)' do
-      Tenant.find_by(host: 'example.org').update!(creation_finalized_at: nil)
+      described_class.find_by(host: 'example.org').update!(creation_finalized_at: nil)
       {
         'tenant1.example.com' => 'expired_trial',
         'tenant2.example.com' => 'active',
@@ -143,7 +143,7 @@ RSpec.describe Tenant do
     end
 
     it 'switches to each tenant by priority (using tenant param)' do
-      Tenant.find_by(host: 'example.org').update!(creation_finalized_at: nil)
+      described_class.find_by(host: 'example.org').update!(creation_finalized_at: nil)
       {
         'tenant1.example.com' => 'demo',
         'tenant2.example.com' => 'active',
@@ -157,7 +157,7 @@ RSpec.describe Tenant do
     end
 
     it 'skips tenants that are marked as deleted or didn\'t finalize creation by default' do
-      Tenant.find_by(host: 'example.org')
+      described_class.find_by(host: 'example.org')
       create(:tenant, host: 'tenant1.example.com', creation_finalized_at: Time.zone.now, deleted_at: Time.zone.now)
       create(:tenant, host: 'tenant2.example.com', creation_finalized_at: nil, deleted_at: nil)
       collected_hosts = []
@@ -166,7 +166,7 @@ RSpec.describe Tenant do
     end
 
     it 'skips deleted tenants during iteration' do
-      Tenant.find_by(host: 'example.org').update!(creation_finalized_at: nil)
+      described_class.find_by(host: 'example.org').update!(creation_finalized_at: nil)
       {
         'tenant1.example.com' => 'active',
         'tenant2.example.com' => 'demo'
@@ -176,7 +176,7 @@ RSpec.describe Tenant do
       collected_hosts = []
       expect do
         described_class.safe_switch_each do |tenant|
-          Tenant.find_by(host: 'tenant2.example.com').destroy!
+          described_class.find_by(host: 'tenant2.example.com').destroy!
           collected_hosts << tenant.host
         end
       end.not_to raise_error
