@@ -126,4 +126,61 @@ RSpec.describe Tenant do
       expect(AppConfiguration.instance.reload.created_at).to eq(new_created_at)
     end
   end
+
+  describe 'safe_switch_each' do
+    it 'switches to each tenant by priority (using current tenant)' do
+      Tenant.find_by(host: 'example.org').update!(creation_finalized_at: nil)
+      {
+        'tenant1.example.com' => 'expired_trial',
+        'tenant2.example.com' => 'active',
+        'tenant3.example.com' => 'demo'
+      }.each do |host, lifecycle|
+        create(:tenant, host: host, lifecycle: lifecycle, creation_finalized_at: Time.zone.now)
+      end
+      collected_hosts = []
+      described_class.safe_switch_each { collected_hosts << described_class.current.host }
+      expect(collected_hosts).to eq(%w[tenant2.example.com tenant3.example.com tenant1.example.com])
+    end
+
+    it 'switches to each tenant by priority (using tenant param)' do
+      Tenant.find_by(host: 'example.org').update!(creation_finalized_at: nil)
+      {
+        'tenant1.example.com' => 'demo',
+        'tenant2.example.com' => 'active',
+        'tenant3.example.com' => 'expired_trial'
+      }.each do |host, lifecycle|
+        create(:tenant, host: host, lifecycle: lifecycle, creation_finalized_at: Time.zone.now)
+      end
+      collected_hosts = []
+      described_class.safe_switch_each { |tenant| collected_hosts << tenant.host }
+      expect(collected_hosts).to eq(%w[tenant2.example.com tenant1.example.com tenant3.example.com])
+    end
+
+    it 'skips tenants that are marked as deleted or didn\'t finalize creation by default' do
+      Tenant.find_by(host: 'example.org')
+      create(:tenant, host: 'tenant1.example.com', creation_finalized_at: Time.zone.now, deleted_at: Time.zone.now)
+      create(:tenant, host: 'tenant2.example.com', creation_finalized_at: nil, deleted_at: nil)
+      collected_hosts = []
+      described_class.safe_switch_each { |tenant| collected_hosts << tenant.host }
+      expect(collected_hosts).to eq(%w[example.org])
+    end
+
+    it 'skips deleted tenants during iteration' do
+      Tenant.find_by(host: 'example.org').update!(creation_finalized_at: nil)
+      {
+        'tenant1.example.com' => 'active',
+        'tenant2.example.com' => 'demo'
+      }.each do |host, lifecycle|
+        create(:tenant, host: host, lifecycle: lifecycle, creation_finalized_at: Time.zone.now)
+      end
+      collected_hosts = []
+      expect do
+        described_class.safe_switch_each do |tenant|
+          Tenant.find_by(host: 'tenant2.example.com').destroy!
+          collected_hosts << tenant.host
+        end
+      end.not_to raise_error
+      expect(collected_hosts).to eq(%w[tenant1.example.com])
+    end
+  end
 end

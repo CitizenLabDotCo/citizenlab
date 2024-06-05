@@ -1,6 +1,4 @@
 namespace :gv_transition do
-  # TODO: Log all changes to a file
-
   desc 'Replace Citizenlab by Go Vocal in all static pages.'
   task :substitute_tenants, [] => [:environment] do |_t, args|
     reporter = ScriptReporter.new
