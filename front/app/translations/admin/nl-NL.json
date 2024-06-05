@@ -996,7 +996,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Bezoekers",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.cannotPrint": "Dit rapport bevat niet-opgeslagen wijzigingen. Sla het op voordat je het afdrukt.",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.reportTitleTooltip": "Hernoemen",
-  "app.containers.Admin.reporting.components.ReportBuilder.TopBar.titleTaken": "Titel is al bezet",
+  "app.containers.Admin.reporting.components.ReportBuilder.TopBar.titleTaken": "Deze titel is al bezet",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.comparedToPreviousXDays": "Vergeleken met vorige {days} dagen",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.hideStatistics": "Verberg statistieken",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.participationRate": "Deelnameratio",
