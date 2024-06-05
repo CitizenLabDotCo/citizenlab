@@ -1,8 +1,3 @@
-/*
- * This component is invisible to screen readers, if you ever need to show it to
- * screen readers, please adapt inner content to be intelligible before removing aria-hidden prop
- */
-
 import React, { memo } from 'react';
 
 import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
@@ -15,8 +10,12 @@ import useUserById from 'api/users/useUserById';
 
 import FeatureFlag from 'components/FeatureFlag';
 
+import useIntl from 'utils/cl-intl/useIntl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
+import { getFullName } from 'utils/textUtils';
+
+import messages from './messages';
 
 export const Container = styled.div<{ size: number }>`
   flex: 0 0 ${({ size }) => size}px;
@@ -116,7 +115,6 @@ export interface Props {
   moderator?: boolean | null;
   addVerificationBadge?: boolean | null;
   padding?: number;
-  hideIfNoAvatar?: boolean;
   authorHash?: string;
 }
 
@@ -166,7 +164,6 @@ const AvatarInner = ({
   className,
   addVerificationBadge,
   userId,
-  hideIfNoAvatar,
   authorHash,
   ...props
 }: Props) => {
@@ -184,13 +181,14 @@ const AvatarInner = ({
   const borderHoverColor = colors.textSecondary;
   const borderColor = props.borderColor || 'transparent';
   const bgColor = props.bgColor || 'transparent';
+  const { formatMessage } = useIntl();
 
   if (isNilOrError(user)) {
     if (authorHash === null) {
       return null;
     } else {
       return (
-        <Container aria-hidden className={className} size={containerSize}>
+        <Container className={className} size={containerSize}>
           <Box padding={paddingValue.toString()}>
             <BoringAvatar
               size={avatarSize}
@@ -217,14 +215,17 @@ const AvatarInner = ({
   const hasValidProfileLink = profileLink !== '/profile/undefined';
   const hasHoverEffect = (isLinkToProfile && hasValidProfileLink) || false;
   const avatarSrc = avatar ? avatar[imageSizeLabel] : null;
+  const alt = `${getFullName(user.data)}, ${formatMessage(
+    messages.titleForAccessibility
+  )}`;
 
   return (
-    <Container aria-hidden className={className} size={containerSize}>
-      {avatarSrc && (
+    <Container className={className} size={containerSize}>
+      {avatarSrc ? (
         <AvatarImage
           className={`avatarImage ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
           src={avatarSrc}
-          alt=""
+          alt={alt}
           size={containerSize}
           borderThickness={borderThickness}
           borderColor={borderColor}
@@ -232,9 +233,7 @@ const AvatarInner = ({
           bgColor={bgColor}
           padding={paddingValue}
         />
-      )}
-
-      {!avatarSrc && !hideIfNoAvatar && (
+      ) : (
         <AvatarIcon
           className={`avatarIcon ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
           name="user-circle"
@@ -246,6 +245,8 @@ const AvatarInner = ({
           borderHoverColor={moderator ? colors.red600 : borderHoverColor}
           bgColor={bgColor}
           paddingValue={paddingValue}
+          ariaHidden={false}
+          title={alt}
         />
       )}
 
