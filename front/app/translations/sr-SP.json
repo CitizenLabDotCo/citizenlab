@@ -752,7 +752,7 @@
   "app.containers.AccessibilityStatement.assesmentText2022": "Приступачност овог сајта је проценио спољни ентитет који није укључен у процес дизајна и развоја. Усклађеност горе поменутог {demoPlatformLink} може се идентификовати на овом {statusPageLink}.",
   "app.containers.AccessibilityStatement.changePreferencesButtonText": "можете променити своја подешавања",
   "app.containers.AccessibilityStatement.changePreferencesText": "У било ком тренутку, {changePreferencesButton}.",
-  "app.containers.AccessibilityStatement.citizenLabAddress2022": "Боулевард Пацхецо 34, 1000 Брисел, Белгија",
+  "app.containers.AccessibilityStatement.govocalAddress2022": "Боулевард Пацхецо 34, 1000 Брисел, Белгија",
   "app.containers.AccessibilityStatement.compatibilityTitle2022": "Компатибилност са помоћном технологијом",
   "app.containers.AccessibilityStatement.conformanceExceptions": "Изузеци усклађености",
   "app.containers.AccessibilityStatement.conformanceStatus": "Статус усаглашености",

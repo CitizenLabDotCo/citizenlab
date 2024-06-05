@@ -752,7 +752,7 @@
   "app.containers.AccessibilityStatement.assesmentText2022": "Šīs vietnes pieejamību novērtēja ārēja struktūra, kas nav iesaistīta projektēšanas un izstrādes procesā. Iepriekšminētā {demoPlatformLink} atbilstību var noteikt šajā {statusPageLink}.",
   "app.containers.AccessibilityStatement.changePreferencesButtonText": "varat mainīt savas preferences",
   "app.containers.AccessibilityStatement.changePreferencesText": "Jebkurā laikā, {changePreferencesButton}.",
-  "app.containers.AccessibilityStatement.citizenLabAddress2022": "Boulevard Pachéco 34, 1000 Brisele, Beļģija",
+  "app.containers.AccessibilityStatement.govocalAddress2022": "Boulevard Pachéco 34, 1000 Brisele, Beļģija",
   "app.containers.AccessibilityStatement.compatibilityTitle2022": "Savietojamība ar atbalsta tehnoloģiju",
   "app.containers.AccessibilityStatement.conformanceExceptions": "Atbilstības izņēmumi",
   "app.containers.AccessibilityStatement.conformanceStatus": "Atbilstības statuss",

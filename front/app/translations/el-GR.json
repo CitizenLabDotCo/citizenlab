@@ -752,7 +752,7 @@
   "app.containers.AccessibilityStatement.assesmentText2022": "Η προσβασιμότητα αυτού του ιστότοπου αξιολογήθηκε από εξωτερικό φορέα που δεν συμμετείχε στη διαδικασία σχεδιασμού και ανάπτυξης. Η συμμόρφωση του προαναφερθέντος {demoPlatformLink} μπορεί να διαπιστωθεί σε αυτό το {statusPageLink}.",
   "app.containers.AccessibilityStatement.changePreferencesButtonText": "μπορείτε να αλλάξετε τις προτιμήσεις σας",
   "app.containers.AccessibilityStatement.changePreferencesText": "Ανά πάσα στιγμή, {changePreferencesButton}.",
-  "app.containers.AccessibilityStatement.citizenLabAddress2022": "Boulevard Pachéco 34, 1000 Βρυξέλλες, Βέλγιο",
+  "app.containers.AccessibilityStatement.govocalAddress2022": "Boulevard Pachéco 34, 1000 Βρυξέλλες, Βέλγιο",
   "app.containers.AccessibilityStatement.compatibilityTitle2022": "Συμβατότητα με υποστηρικτική τεχνολογία",
   "app.containers.AccessibilityStatement.conformanceExceptions": "Εξαιρέσεις συμμόρφωσης",
   "app.containers.AccessibilityStatement.conformanceStatus": "Κατάσταση συμμόρφωσης",

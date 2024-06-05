@@ -11,6 +11,7 @@ describe 'rake substitute_cl_gv' do
         'test support@citizenlab.co to CitizenLab text' => 'test support@govocal.com to Go Vocal text',
         'The citizenlab address is: CitizenLab NV - Anspachlaan 65 - 1000 Brussels - Belgium' => 'The Go Vocal address is: Go Vocal NV - Pachecolaan 34 - 1000 Brussels - Belgium',
         'citizenlab.co/citizenlab-test' => 'citizenlab.co/citizenlab-test',
+        'citizenlabco.typeform.com' => 'citizenlabco.typeform.com'
       }.each do |old_v, new_v|
         expect(rake_20240531_substitute_gv(old_v)).to eq(new_v)
       end

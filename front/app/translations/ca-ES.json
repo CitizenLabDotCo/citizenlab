@@ -752,7 +752,7 @@
   "app.containers.AccessibilityStatement.assesmentText2022": "L'accessibilitat d'aquest lloc ha estat avaluada per una entitat externa no implicada en el procés de disseny i desenvolupament. El compliment de l'esmentat {demoPlatformLink} es pot identificar en aquest {statusPageLink}.",
   "app.containers.AccessibilityStatement.changePreferencesButtonText": "podeu canviar les vostres preferències",
   "app.containers.AccessibilityStatement.changePreferencesText": "En qualsevol moment, {changePreferencesButton}.",
-  "app.containers.AccessibilityStatement.citizenLabAddress2022": "Boulevard Pachéco 34, 1000 Brussel·les, Bèlgica",
+  "app.containers.AccessibilityStatement.govocalAddress2022": "Boulevard Pachéco 34, 1000 Brussel·les, Bèlgica",
   "app.containers.AccessibilityStatement.compatibilityTitle2022": "Compatibilitat amb tecnologia d'assistència",
   "app.containers.AccessibilityStatement.conformanceExceptions": "Excepcions de conformitat",
   "app.containers.AccessibilityStatement.conformanceStatus": "Estat de conformitat",

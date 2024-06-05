@@ -752,7 +752,7 @@
   "app.containers.AccessibilityStatement.assesmentText2022": "Pristupačnost ovog web-mjesta procijenjena je od strane vanjskog subjekta koji nije uključen u postupak dizajna i razvoja Usklađenost prije spomenutog {demoPlatformLink} može se identificirati ovdje {statusPageLink}.",
   "app.containers.AccessibilityStatement.changePreferencesButtonText": "možete izmijeniti svoje postavke",
   "app.containers.AccessibilityStatement.changePreferencesText": "U bilo kojem trenutku, {changePreferencesButton}.",
-  "app.containers.AccessibilityStatement.citizenLabAddress2022": "Boulevard Pachéco 34, 1000 Bruxelles, Belgija",
+  "app.containers.AccessibilityStatement.govocalAddress2022": "Boulevard Pachéco 34, 1000 Bruxelles, Belgija",
   "app.containers.AccessibilityStatement.compatibilityTitle2022": "Kompatibilnost s asistivnom tehnologijom",
   "app.containers.AccessibilityStatement.conformanceExceptions": "Iznimke kod usklađenosti",
   "app.containers.AccessibilityStatement.conformanceStatus": "Status sukladnosti",
