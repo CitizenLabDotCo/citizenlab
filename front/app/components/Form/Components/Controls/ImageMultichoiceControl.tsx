@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import {
   Box,
-  colors,
   Text,
   Image,
   useBreakpoint,
@@ -126,8 +125,8 @@ const ImageMultichoiceControl = ({
                 bgColor={theme.colors.tenantPrimaryLighten95}
                 border={
                   dataArray.includes(option.value)
-                    ? `2px solid ${colors.primary}`
-                    : `1px solid ${colors.primary}`
+                    ? `2px solid ${theme.colors.tenantPrimary}`
+                    : `1px solid ${theme.colors.tenantPrimary}`
                 }
                 hoverColor={theme.colors.tenantPrimaryLighten75}
               >
