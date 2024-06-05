@@ -215,6 +215,7 @@ const CommentsMoreActions = ({
       <Modal
         opened={modalVisible_spam}
         close={closeSpamModal}
+        returnFocusRef={moreActionsButtonRef}
         header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
       >
         <SpamReportForm targetId={comment.id} targetType="comments" />
