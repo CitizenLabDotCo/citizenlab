@@ -129,6 +129,8 @@ export const colors = {
 export type Color =
   | keyof typeof colors
   | 'tenantPrimary'
+  | 'tenantPrimaryLighten75'
+  | 'tenantPrimaryLighten95'
   | 'tenantSecondary'
   | 'tenantText';
 
@@ -447,6 +449,12 @@ export function getTheme(tenant: any = null): MainThemeProps {
       ...colors,
       tenantPrimary: core ? core.color_main : '#ef0071',
       tenantSecondary: core ? core.color_secondary : '#000000',
+      tenantPrimaryLighten75: core
+        ? transparentize(0.75, core.color_main)
+        : transparentize(0.75, '#ef0071'),
+      tenantPrimaryLighten95: core
+        ? transparentize(0.95, core.color_main)
+        : transparentize(0.95, '#ef0071'),
       tenantText: core ? core.color_text : '#333333',
     },
     fontFamily,
