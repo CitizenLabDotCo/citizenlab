@@ -135,6 +135,7 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
           explanation={formatMessage(warningMessages.deleteInputExplanation)}
           onClose={closeWarningModal}
           onConfirm={onDeleteIdea}
+          returnFocusRef={moreActionsButtonRef}
         />
       </>
     );
