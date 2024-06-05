@@ -197,6 +197,25 @@ class Select extends PureComponent<Props> {
             <option
               value={DEFAULT_VALUE}
               aria-selected={selectedValue === DEFAULT_VALUE}
+              // The `canBeEmpty` prop adds an 'empty' option to the select,
+              // which doesn't work very well because you can't actually select
+              // it.
+              // For this reason, usually we implement this 'empty option'
+              // in a different way, see e.g. components/UI/ProjectFilter.
+
+              // At the moment, the canBeEmpty prop is not used a lot-
+              // it's only used in the JSON form select controls
+              // (SingleSelectControl and SingleSelectEnumControl)
+              // It's NOT recommended to use it.
+              // In the two cases above, it's used because otherwise
+              // the select cannot be used with keyboard navigation
+              // in Firefox, in some cases, for some unknown reason.
+              // It's very likely this keyboard navigation is broken
+              // in other places, but at the moment of writing
+              // we don't have time to fix it everywhere else.
+              //
+              // In the future we really need to refactor this component
+              // and fix this situation, so that it works properly.
               hidden={!canBeEmpty}
               disabled={!canBeEmpty}
             />

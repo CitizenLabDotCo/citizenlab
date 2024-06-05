@@ -61,7 +61,7 @@ const SingleSelectControl = ({
           key={sanitizeForClassname(id)}
           id={sanitizeForClassname(id)}
           aria-label={getLabel(uischema, schema, path)}
-          canBeEmpty
+          canBeEmpty // see Select component for more info
           disabled={uischema?.options?.readonly}
         />
         <VerificationIcon show={uischema?.options?.verificationLocked} />
