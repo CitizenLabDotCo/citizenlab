@@ -16,9 +16,15 @@ type Props = {
   open: boolean;
   setClose: () => void;
   user: IUserData;
+  /**
+   * Optional ref to return focus on close.
+   * By default, focus returns to the control that opened the modal.
+   * Use this ref if you want to return focus to another ref.
+   */
+  returnFocusRef?: React.RefObject<HTMLElement>;
 };
 
-export default ({ open, setClose, user }: Props) => {
+const UnblockUserModal = ({ open, setClose, user, returnFocusRef }: Props) => {
   const { formatMessage } = useIntl();
   const { mutate: unBlockUser } = useUnblockUser();
 
@@ -30,7 +36,12 @@ export default ({ open, setClose, user }: Props) => {
     });
   };
   return (
-    <Modal width={400} close={setClose} opened={open}>
+    <Modal
+      width={400}
+      close={setClose}
+      opened={open}
+      returnFocusRef={returnFocusRef}
+    >
       <Title variant="h3" m="35px 0 30px">
         {formatMessage(messages.confirmUnblock, {
           name: getFullName(user),
@@ -45,3 +56,5 @@ export default ({ open, setClose, user }: Props) => {
     </Modal>
   );
 };
+
+export default UnblockUserModal;
