@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-
+// eslint-disable-next-line no-restricted-imports
 import Tippy from '@tippyjs/react';
 
 import Box from '../Box';
