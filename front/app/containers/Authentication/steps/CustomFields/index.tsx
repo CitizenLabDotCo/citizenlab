@@ -82,7 +82,6 @@ const CustomFields = ({
       id="e2e-signup-custom-fields-container"
     >
       <UserCustomFieldsForm
-        authUser={authUser.data}
         authenticationContext={authenticationData.context}
         onSubmit={handleSubmit}
       />

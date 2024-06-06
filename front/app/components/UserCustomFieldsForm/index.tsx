@@ -5,15 +5,13 @@ import { forOwn } from 'lodash-es';
 
 import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
 import useCustomFieldsSchema from 'api/custom_fields_json_form_schema/useCustomFieldsSchema';
-import { IUserData } from 'api/users/types';
+import useAuthUser from 'api/me/useAuthUser';
 
 import useLocale from 'hooks/useLocale';
 
 import Form from 'components/Form';
 import FormWrapper from 'components/Form/FormWrapper';
 import { FormData } from 'components/Form/typings';
-
-import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 
@@ -26,18 +24,18 @@ import messages from './messages';
 */
 
 interface UserCustomFieldsFormProps {
-  authUser: IUserData;
   authenticationContext: AuthenticationContext;
   onSubmit?: (data: { key: string; formData: Record<string, any> }) => void;
   onChange?: (data: { key: string; formData: Record<string, any> }) => void;
 }
 
 const UserCustomFieldsForm = ({
-  authUser,
   authenticationContext,
   onSubmit,
   onChange,
 }: UserCustomFieldsFormProps) => {
+  const { data: authUser } = useAuthUser();
+
   const { data: userCustomFieldsSchema } = useCustomFieldsSchema(
     authenticationContext
   );
@@ -68,7 +66,7 @@ const UserCustomFieldsForm = ({
     }
   };
 
-  if (userCustomFieldsSchema && !isNilOrError(locale)) {
+  if (userCustomFieldsSchema && locale && authUser) {
     if (!userCustomFieldsSchema.data.attributes) return null;
     const { json_schema_multiloc, ui_schema_multiloc } =
       userCustomFieldsSchema.data.attributes;
@@ -92,7 +90,7 @@ const UserCustomFieldsForm = ({
             })
           }
           getAjvErrorMessage={getAjvErrorMessage}
-          initialFormData={authUser.attributes.custom_field_values}
+          initialFormData={authUser.data.attributes.custom_field_values}
         />
       </FormWrapper>
     );

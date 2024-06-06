@@ -274,7 +274,6 @@ const ProfileForm = () => {
           </SectionField>
         </form>
         <UserCustomFieldsForm
-          authUser={authUser.data}
           authenticationContext={GLOBAL_CONTEXT}
           onChange={handleCustomFieldsChange}
         />
