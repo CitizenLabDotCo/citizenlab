@@ -35,7 +35,7 @@ const ProgressBarWrapper = ({ children, votesPercentage, tooltip }: Props) => {
           h="8px"
           borderRadius="2px"
           border={`1px solid ${theme.colors.tenantPrimary}`}
-          bgColor="rgba(81, 91, 161, 0.20)"
+          bgColor={theme.colors.tenantPrimaryLighten75}
           position="relative"
         >
           <Box
