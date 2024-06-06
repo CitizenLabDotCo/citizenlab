@@ -6,8 +6,8 @@ import {
   fontSizes,
   Input,
   Title,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import styled from 'styled-components';
 
 import useReport from 'api/reports/useReport';
@@ -128,7 +128,7 @@ const ReportTitle = ({ reportId }) => {
       alignItems="center"
       justifyContent="flex-start"
     >
-      <Tippy
+      <Tooltip
         content={formatMessage(messages.reportTitleTooltip)}
         zIndex={99999}
         placement="right"
@@ -143,7 +143,7 @@ const ReportTitle = ({ reportId }) => {
             setRef={setInputRef}
           />
         </div>
-      </Tippy>
+      </Tooltip>
 
       {errorMessage && <StyledError text={errorMessage} />}
     </Box>

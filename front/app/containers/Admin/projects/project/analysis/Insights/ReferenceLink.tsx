@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
+import { Box, Icon, colors, Tooltip } from '@citizenlab/cl2-component-library';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -65,7 +64,7 @@ const ReferenceLink = ({
 
   const isAnalysisScreen = pathname.includes('/analysis/');
   return (
-    <Tippy
+    <Tooltip
       content={
         <Box>
           <p>{localize(titleMultiloc)}</p>
@@ -74,7 +73,6 @@ const ReferenceLink = ({
       }
       zIndex={9999}
       placement="top"
-      interactive={true}
       theme="light"
       disabled={!titleMultiloc && !mainQuestionResponse}
     >
@@ -87,7 +85,7 @@ const ReferenceLink = ({
           <Icon name="comment" width="12px" height="12px" />
         </StyledLink>
       </Box>
-    </Tippy>
+    </Tooltip>
   );
 };
 

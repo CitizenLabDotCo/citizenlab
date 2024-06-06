@@ -4,8 +4,8 @@ import {
   TooltipContentWrapper,
   colors,
   fontSizes,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import { RouteType } from 'routes';
 import styled, { css } from 'styled-components';
 
@@ -92,8 +92,7 @@ const Tab = ({
   disabledTooltipText,
   ...props
 }: TabProps) => (
-  <Tippy
-    interactive={false}
+  <Tooltip
     placement="bottom"
     theme={''}
     disabled={!disabledTooltipText}
@@ -110,6 +109,6 @@ const Tab = ({
         {badge && <>{badge}</>}
       </Link>
     </Container>
-  </Tippy>
+  </Tooltip>
 );
 export default Tab;

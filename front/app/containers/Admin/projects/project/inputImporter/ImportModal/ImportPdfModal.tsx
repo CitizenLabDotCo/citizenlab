@@ -9,9 +9,9 @@ import {
   Icon,
   stylingConsts,
   colors,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
-import Tippy from '@tippyjs/react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { UploadFile, SupportedLocale } from 'typings';
@@ -200,8 +200,7 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
               />
             </Box>
             <Box w="100%" display="flex" mt="32px">
-              <Tippy
-                interactive={true}
+              <Tooltip
                 theme={''}
                 maxWidth={350}
                 disabled={importPrintedFormsEnabled}
@@ -222,7 +221,7 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
                     <FormattedMessage {...messages.upload} />
                   </Button>
                 </Box>
-              </Tippy>
+              </Tooltip>
             </Box>
           </Box>
         </form>

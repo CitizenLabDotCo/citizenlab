@@ -4,7 +4,7 @@ import Tippy from '@tippyjs/react';
 
 import Box from '../Box';
 
-type TippyProps = Omit<
+export type TooltipProps = Omit<
   React.ComponentProps<typeof Tippy>,
   'interactive' | 'plugins' | 'role'
 >;
@@ -25,7 +25,7 @@ const useActiveElement = () => {
 
   return active;
 };
-const Tooltip = ({ children, ...rest }: TippyProps) => {
+const Tooltip = ({ children, ...rest }: TooltipProps) => {
   const tooltipId = useRef(
     `tooltip-${Math.random().toString(36).substring(7)}`
   );
@@ -38,10 +38,8 @@ const Tooltip = ({ children, ...rest }: TippyProps) => {
     const tooltip = document.getElementById(tooltipId.current);
     if (tooltip && tooltip.contains(activeElement)) {
       setIsFocused(true);
-    } else {
-      if (isFocused) {
-        setIsFocused(false);
-      }
+    } else if (isFocused) {
+      setIsFocused(false);
     }
   }, [activeElement, isFocused]);
 
@@ -78,7 +76,6 @@ const Tooltip = ({ children, ...rest }: TippyProps) => {
         setIsFocused(undefined);
         setKey((prev) => prev + 1);
       }}
-      appendTo={() => document.body}
       {...rest}
     >
       <Box id={tooltipId.current} width="fit-content">

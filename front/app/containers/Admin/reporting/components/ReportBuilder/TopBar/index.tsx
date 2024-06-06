@@ -6,9 +6,9 @@ import {
   colors,
   IconButton,
   TooltipContentWrapper,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { useEditor } from '@craftjs/core';
-import Tippy from '@tippyjs/react';
 import { RouteType } from 'routes';
 import { SupportedLocale } from 'typings';
 
@@ -237,8 +237,7 @@ const ContentBuilderTopBar = ({
           </Box>
         )}
         <Box ml="32px">
-          <Tippy
-            interactive={false}
+          <Tooltip
             placement="bottom"
             disabled={!disablePrint}
             zIndex={CONTENT_BUILDER_Z_INDEX.tooltip}
@@ -261,7 +260,7 @@ const ContentBuilderTopBar = ({
                 disabled={disablePrint}
               />
             </div>
-          </Tippy>
+          </Tooltip>
         </Box>
         <SaveButton
           disabled={disableSave}

@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
-import Tooltip from 'component-library/components/Tooltip';
+import { Box, Text, colors, Tooltip } from '@citizenlab/cl2-component-library';
 
 import Button from 'components/UI/Button';
 

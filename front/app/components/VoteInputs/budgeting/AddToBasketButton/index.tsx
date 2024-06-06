@@ -1,7 +1,11 @@
 import React, { FormEvent } from 'react';
 
-import { Button, Icon, colors } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
+import {
+  Button,
+  Icon,
+  colors,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -145,9 +149,8 @@ const AddToBasketButton = ({
     : undefined;
 
   return (
-    <Tippy
+    <Tooltip
       disabled={!disabledExplanation}
-      interactive={true}
       placement="bottom"
       content={disabledExplanation}
     >
@@ -172,7 +175,7 @@ const AddToBasketButton = ({
           {` (${ideaBudget} ${currency})`}
         </Button>
       </div>
-    </Tippy>
+    </Tooltip>
   );
 };
 
