@@ -32,7 +32,6 @@ import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 import messages from './messages';
@@ -46,8 +45,6 @@ const InputContainer = styled.div`
   display: flex;
   flex-direction: row;
 `;
-
-type ExtraFormDataKey = 'custom_field_values';
 
 type FormValues = {
   first_name?: string;
@@ -66,9 +63,7 @@ const ProfileForm = () => {
   const { data: authUser } = useAuthUser();
   const { data: lockedAttributes } = useUserLockedAttributes();
   const { formatMessage } = useIntl();
-  const [extraFormData, setExtraFormData] = useState<{
-    [field in ExtraFormDataKey]?: Record<string, any>;
-  }>({});
+  const [extraFormData, setExtraFormData] = useState<Record<string, any>>({});
 
   const schema = object({
     first_name: string().when('last_name', (last_name, schema) => {
@@ -145,18 +140,13 @@ const ProfileForm = () => {
 
   const onFormSubmit = async (formValues: FormValues) => {
     const avatar = formValues.avatar ? formValues.avatar[0].base64 : null;
-    // Add custom fields values to form
-    const newFormValues = Object.entries(extraFormData).reduce(
-      (acc, [key, extraFormDataConfiguration]) => {
-        return {
-          ...acc,
-          [key]: extraFormDataConfiguration?.formData,
-        };
-      },
-      formValues
-    );
 
-    eventEmitter.emit('customFieldsSubmitEvent');
+    // Add custom fields values to form
+    const newFormValues = {
+      custom_field_values: extraFormData,
+      ...formValues,
+    };
+
     Object.values(extraFormData).forEach((configuration) => {
       configuration?.submit?.();
     });
