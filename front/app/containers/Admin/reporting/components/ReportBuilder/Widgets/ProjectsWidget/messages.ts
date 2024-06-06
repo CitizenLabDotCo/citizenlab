@@ -13,9 +13,9 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.active',
     defaultMessage: 'Active',
   },
-  stale: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.stale',
-    defaultMessage: 'Stale',
+  openEnded: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.openEnded',
+    defaultMessage: 'Open-ended',
   },
   planned: {
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.planned',
