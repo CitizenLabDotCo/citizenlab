@@ -13,13 +13,13 @@ import {
   SetError,
 } from 'containers/Authentication/typings';
 
+import FormWrapper from 'components/Form/FormWrapper';
 import Button from 'components/UI/Button';
 import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
-import { isNilOrError } from 'utils/helperUtils';
 
 import tracks from '../../tracks';
 
@@ -52,7 +52,7 @@ const CustomFields = ({
     trackEventByName(tracks.signUpCustomFieldsStepEntered);
   }, []);
 
-  if (isNilOrError(authUser) || isNilOrError(userCustomFieldsSchema)) {
+  if (!authUser || !userCustomFieldsSchema) {
     return null;
   }
 
@@ -73,7 +73,11 @@ const CustomFields = ({
     eventEmitter.emit('customFieldsSubmitEvent');
   };
 
-  if (isNilOrError(locale)) return null;
+  if (!locale) return null;
+
+  const { ui_schema_multiloc } = userCustomFieldsSchema.data.attributes;
+
+  const uiSchema = ui_schema_multiloc[locale];
 
   return (
     <Box
@@ -81,41 +85,42 @@ const CustomFields = ({
       pb={smallerThanPhone ? '14px' : '28px'}
       id="e2e-signup-custom-fields-container"
     >
-      <UserCustomFieldsForm
-        authenticationContext={authenticationData.context}
-        onSubmit={handleSubmit}
-      />
-
-      <Box
-        display="flex"
-        flexDirection={smallerThanPhone ? 'column' : undefined}
-        alignItems={smallerThanPhone ? 'stretch' : 'center'}
-        justifyContent={smallerThanPhone ? 'center' : 'space-between'}
-      >
-        <Button
-          id="e2e-signup-custom-fields-submit-btn"
-          processing={loading}
-          disabled={loading}
-          text={formatMessage(messages.continue)}
-          onClick={handleOnSubmitButtonClick}
+      <FormWrapper formId={uiSchema?.options?.formId}>
+        <UserCustomFieldsForm
+          authenticationContext={authenticationData.context}
         />
 
-        {!hasRequiredFields(userCustomFieldsSchema, locale) && (
+        <Box
+          display="flex"
+          flexDirection={smallerThanPhone ? 'column' : undefined}
+          alignItems={smallerThanPhone ? 'stretch' : 'center'}
+          justifyContent={smallerThanPhone ? 'center' : 'space-between'}
+        >
           <Button
-            id="e2e-signup-custom-fields-skip-btn"
-            buttonStyle="text"
-            padding="0"
-            textDecoration="underline"
-            textDecorationHover="underline"
+            id="e2e-signup-custom-fields-submit-btn"
             processing={loading}
-            onClick={onSkip}
-            mt={smallerThanPhone ? '20px' : undefined}
-            mb={smallerThanPhone ? '16px' : undefined}
-          >
-            {formatMessage(messages.skip)}
-          </Button>
-        )}
-      </Box>
+            disabled={loading}
+            text={formatMessage(messages.continue)}
+            onClick={handleOnSubmitButtonClick}
+          />
+
+          {!hasRequiredFields(userCustomFieldsSchema, locale) && (
+            <Button
+              id="e2e-signup-custom-fields-skip-btn"
+              buttonStyle="text"
+              padding="0"
+              textDecoration="underline"
+              textDecorationHover="underline"
+              processing={loading}
+              onClick={onSkip}
+              mt={smallerThanPhone ? '20px' : undefined}
+              mb={smallerThanPhone ? '16px' : undefined}
+            >
+              {formatMessage(messages.skip)}
+            </Button>
+          )}
+        </Box>
+      </FormWrapper>
     </Box>
   );
 };

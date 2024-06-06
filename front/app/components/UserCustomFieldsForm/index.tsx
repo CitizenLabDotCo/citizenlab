@@ -10,7 +10,6 @@ import useAuthUser from 'api/me/useAuthUser';
 import useLocale from 'hooks/useLocale';
 
 import Form from 'components/Form';
-import FormWrapper from 'components/Form/FormWrapper';
 import { FormData } from 'components/Form/typings';
 
 import messages from './messages';
@@ -78,22 +77,20 @@ const UserCustomFieldsForm = ({
     if (!schema || !uiSchema) return null;
 
     return (
-      <FormWrapper formId={uiSchema?.options?.formId}>
-        <Form
-          schema={schema}
-          uiSchema={uiSchema}
-          onSubmit={handleOnSubmit}
-          onChange={(formData) =>
-            formData &&
-            onChange?.({
-              formData,
-              key: 'custom_field_values',
-            })
-          }
-          getAjvErrorMessage={getAjvErrorMessage}
-          initialFormData={authUser.data.attributes.custom_field_values}
-        />
-      </FormWrapper>
+      <Form
+        schema={schema}
+        uiSchema={uiSchema}
+        onSubmit={handleOnSubmit}
+        onChange={(formData) =>
+          formData &&
+          onChange?.({
+            formData,
+            key: 'custom_field_values',
+          })
+        }
+        getAjvErrorMessage={getAjvErrorMessage}
+        initialFormData={authUser.data.attributes.custom_field_values}
+      />
     );
   }
 
