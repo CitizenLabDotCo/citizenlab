@@ -12,7 +12,6 @@ import styled from 'styled-components';
 import { CLErrors } from 'typings';
 
 import useLocale from 'hooks/useLocale';
-import useObserveEvent from 'hooks/useObserveEvent';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -39,18 +38,12 @@ const Title = styled.h1`
   `}
 `;
 
-const InvisibleSubmitButton = styled.button`
-  visibility: hidden;
-`;
-
 interface Props {
   schema: JsonSchema7;
   uiSchema: Layout;
   onSubmit: (formData: FormData) => void | Promise<any>;
   initialFormData: FormData;
   title?: ReactElement;
-  /** The event name on which the form should automatically submit, as received from the eventEmitter. If this is set, no submit button is displayed. */
-  submitOnEvent?: string;
   /** A function that returns a translation message given the fieldname and the error key returned by the API */
   getApiErrorMessage?: ApiErrorGetter;
   /** A function that returns a translation message for json-schema originating errors, given tje Ajv error object */
@@ -75,7 +68,6 @@ const Form = memo(
     initialFormData,
     title,
     inputId,
-    submitOnEvent,
     getAjvErrorMessage,
     getApiErrorMessage,
     config,
@@ -142,8 +134,6 @@ const Form = memo(
       setScrollToError(true);
     };
 
-    useObserveEvent(submitOnEvent, handleSubmit);
-
     return (
       /*
         This form should contain as few styles as possible!
@@ -204,8 +194,6 @@ const Form = memo(
                 )}
                 processing={loading}
               />
-            ) : submitOnEvent ? (
-              <InvisibleSubmitButton onClick={handleSubmit} />
             ) : (
               <Button onClick={handleSubmit}>
                 {formatMessage(messages.save)}

@@ -90,7 +90,6 @@ const UserCustomFieldsForm = ({
           })
         }
         getAjvErrorMessage={getAjvErrorMessage}
-        submitOnEvent="customFieldsSubmitEvent"
         initialFormData={authUser.attributes.custom_field_values}
       />
     );
