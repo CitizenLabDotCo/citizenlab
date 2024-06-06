@@ -67,7 +67,11 @@ module Analytics
             year: date.year
           }
         end
-        Analytics::DimensionDate.insert_all(insert_dates) if insert_dates.present?
+        if insert_dates.present?
+          insert_dates.each_slice(200) do |dates|
+            Analytics::DimensionDate.insert_all(dates)
+          end
+        end
       end
 
       def populate_locales
