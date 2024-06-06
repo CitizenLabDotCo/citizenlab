@@ -1474,7 +1474,7 @@
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotPermitted": "Leider haben Sie nicht das Recht, dieses Dokument zu überprüfen.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotVerified": "Für die Durchsicht dieses Dokuments ist eine Verifizierung Ihres Kontos erforderlich. {verificationLink}",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledProjectInactive": "Das Dokument ist nicht mehr verfügbar, da dieses Projekt nicht mehr aktiv ist.",
-  "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBar.numberOfPicks": "{baskets, plural, one {1 Pick} other {# Picks}}",
+  "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBar.numberOfPicks": "{baskets, plural, one {1 Option} other {# Optionen}}",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "Der Prozentsatz der Teilnehmenden, die diese Option gewählt haben.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "Der Prozentsatz der Gesamtstimmen, die diese Option erhalten hat.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Kosten:",
