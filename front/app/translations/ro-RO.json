@@ -1339,7 +1339,6 @@
   "app.utils.errors.default.ajv_error_minItems": "Trebuie să includă cel puțin {limit, plural, one {# element} other {# elemente}}",
   "app.utils.errors.default.ajv_error_number_any": "Vă rugăm să introduceți un număr valid",
   "app.utils.errors.default.ajv_error_politician_required": "Vă rugăm să introduceți dacă sunteți politician",
-  "app.utils.errors.default.ajv_error_required": "Acest câmp este obligatoriu",
   "app.utils.errors.default.ajv_error_type": "Nu poate fi gol",
   "app.utils.errors.default.api_error_accepted": "Trebuie să fie acceptată",
   "app.utils.errors.default.api_error_blank": "Nu poate fi gol",

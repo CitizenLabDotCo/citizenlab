@@ -1871,7 +1871,6 @@
   "app.utils.errors.default.ajv_error_minItems": "En az {limit, plural, one {# öğe} other {# öğe}} bulunmalıdır",
   "app.utils.errors.default.ajv_error_number_any": "Lütfen geçerli bir sayı girin",
   "app.utils.errors.default.ajv_error_politician_required": "Lütfen politikacı olup olmadığınız bilgisini girin",
-  "app.utils.errors.default.ajv_error_required": "Bu alanın doldurulması zorunludur",
   "app.utils.errors.default.ajv_error_type": "Boş olamaz",
   "app.utils.errors.default.api_error_accepted": "Kabul edilmeli",
   "app.utils.errors.default.api_error_blank": "Boş olamaz",

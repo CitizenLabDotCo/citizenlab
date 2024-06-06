@@ -25,7 +25,10 @@ import messages from './messages';
 
 interface UserCustomFieldsFormProps {
   authenticationContext: AuthenticationContext;
-  onSubmit?: (data: { key: string; formData: Record<string, any> }) => void;
+  onSubmit?: (data: {
+    key: string;
+    formData: Record<string, any>;
+  }) => Promise<void>;
   onChange?: (data: { key: string; formData: Record<string, any> }) => void;
 }
 
@@ -42,19 +45,17 @@ const UserCustomFieldsForm = ({
 
   const locale = useLocale();
 
-  const handleOnSubmit = (formData: FormData) => {
+  const handleOnSubmit = async (formData: FormData) => {
     const sanitizedFormData = {};
 
     forOwn(formData, (value, key) => {
       sanitizedFormData[key] = value === null ? undefined : value;
     });
 
-    onSubmit?.({
+    return await onSubmit?.({
       formData: sanitizedFormData,
       key: 'custom_field_values',
     });
-    // Todo change usage of this compnent so submit returns the promise (better error handling)
-    return new Promise(() => {});
   };
 
   const getAjvErrorMessage = (error: ErrorObject) => {
