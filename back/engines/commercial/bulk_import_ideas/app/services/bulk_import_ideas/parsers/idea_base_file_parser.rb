@@ -178,6 +178,8 @@ module BulkImportIdeas::Parsers
         end
       elsif %w[number linear_scale].include?(field[:input_type]) && field[:value].present?
         field[:value] = field[:value].to_i
+      else
+        field[:value] = field[:value].to_s
       end
 
       field

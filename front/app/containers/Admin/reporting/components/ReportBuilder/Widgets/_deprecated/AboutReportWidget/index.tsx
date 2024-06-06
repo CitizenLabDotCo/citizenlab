@@ -19,10 +19,10 @@ import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import { useFormatMessageWithLocale } from 'utils/cl-intl';
 import { getFullName, withoutSpacing } from 'utils/textUtils';
 
+import { getPeriod } from '../../../Templates/utils';
 import TextMultiloc from '../../TextMultiloc';
 
 import messages from './messages';
-import { getPeriod } from './utils';
 
 export type Props = {
   startAt?: string;

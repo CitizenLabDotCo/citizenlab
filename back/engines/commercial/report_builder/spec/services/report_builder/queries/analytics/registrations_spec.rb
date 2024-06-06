@@ -78,13 +78,13 @@ RSpec.describe ReportBuilder::Queries::Analytics::Registrations do
       dimension_date_october = create(:dimension_date, date: october)
 
       # OCTOBER
-      u1, _, __, ___ = create_list(:user, 4, invite_status: nil, registration_completed_at: october)
+      u1, = create_list(:user, 4, invite_status: nil, registration_completed_at: october)
 
       create(:fact_visit, dimension_date_first_action: dimension_date_october, dimension_user_id: u1.id)
       create(:fact_visit, dimension_date_first_action: dimension_date_october)
 
       # SEPTEMBER
-      u2, u3, _, __, ___ = create_list(:user, 5, invite_status: nil, registration_completed_at: september)
+      u2, u3, = create_list(:user, 5, invite_status: nil, registration_completed_at: september)
       create(:fact_visit, dimension_date_first_action: dimension_date_september, dimension_user_id: u2.id)
       create(:fact_visit, dimension_date_first_action: dimension_date_september, dimension_user_id: u3.id)
       create(:fact_visit, dimension_date_first_action: dimension_date_september)

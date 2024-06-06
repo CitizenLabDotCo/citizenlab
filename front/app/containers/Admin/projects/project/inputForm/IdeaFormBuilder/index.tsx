@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
+import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
 
@@ -12,8 +13,6 @@ import PDFExportModal, {
 } from 'containers/Admin/projects/components/PDFExportModal';
 
 import FormBuilder from 'components/FormBuilder/edit';
-
-import { isNilOrError } from 'utils/helperUtils';
 
 import { saveIdeaFormAsPDF } from '../saveIdeaFormAsPDF';
 import { ideationConfig } from '../utils';
@@ -29,6 +28,8 @@ const IdeaFormBuilder = () => {
   const { data: formCustomFields } = useFormCustomFields({
     projectId,
   });
+  const { data: project } = useProjectById(projectId);
+
   const locale = useLocale();
 
   const goBackUrl: RouteType = `/admin/projects/${projectId}/phases/${phaseId}/ideaform`;
@@ -36,9 +37,10 @@ const IdeaFormBuilder = () => {
   const handleDownloadPDF = () => setExportModalOpen(true);
 
   const handleExportPDF = async ({ personal_data }: FormValues) => {
-    if (isNilOrError(locale)) return;
     await saveIdeaFormAsPDF({ phaseId, locale, personal_data });
   };
+
+  if (!project) return null;
 
   return (
     <>
@@ -49,6 +51,7 @@ const IdeaFormBuilder = () => {
           goBackUrl,
           onDownloadPDF: handleDownloadPDF,
         }}
+        viewFormLink={`/projects/${project.data.attributes.slug}/ideas/new?phase_id=${phaseId}`}
       />
       <PDFExportModal
         open={exportModalOpen}

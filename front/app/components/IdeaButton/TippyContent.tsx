@@ -61,7 +61,7 @@ interface Props {
   projectId: string;
   inMap: boolean;
   disabledReason: IIdeaPostingDisabledReason;
-  phase: IPhaseData | undefined;
+  phase: IPhaseData;
 }
 
 const disabledMessages: {

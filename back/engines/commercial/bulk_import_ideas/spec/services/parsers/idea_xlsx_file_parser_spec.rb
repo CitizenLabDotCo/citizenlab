@@ -211,5 +211,16 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
       expect(idea_rows.count).to eq 1
       expect(idea_rows[0][:custom_field_values][:select_integer]).to eq '2'
     end
+
+    it 'text fields return text values if xlsx values are integers or floats' do
+      xlsx_ideas_array = [
+        { pdf_pages: [1], fields: { 'Text field' => 2 } },
+        { pdf_pages: [1], fields: { 'Text field' => 2.2 } }
+      ]
+      idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file)
+      expect(idea_rows.count).to eq 2
+      expect(idea_rows[0][:custom_field_values][:text_field]).to eq '2'
+      expect(idea_rows[1][:custom_field_values][:text_field]).to eq '2.2'
+    end
   end
 end

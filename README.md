@@ -28,7 +28,7 @@ For more information about CitizenLab, consult our **[website](https://www.citiz
 
 ## Contributing
 
-We welcome contributions through GitHub pull request, discussions or issues. In order to get your Pull Request merged, we require you to sign our [Contributor License Agreement](https://eform.pandadoc.com/?eform=c6bd99bc-538c-4899-b073-a4ffb0b3d0a8).
+We welcome contributions through GitHub pull requests, discussions or issues. In order to get your Pull Request merged, we require you to sign our [Contributor License Agreement](https://eform.pandadoc.com/?eform=c6bd99bc-538c-4899-b073-a4ffb0b3d0a8).
 
 You can also contribute [translations](https://developers.citizenlab.co/guide-contribute-translations). The platform is currently available in +10 languages.
 
