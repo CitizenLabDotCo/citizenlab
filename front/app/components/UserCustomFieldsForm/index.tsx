@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
+import { JsonSchema7, Layout, isCategorization } from '@jsonforms/core';
 import { ErrorObject } from 'ajv';
-import { forOwn } from 'lodash-es';
+import { CLErrors } from 'typings';
 
 import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
 import useCustomFieldsSchema from 'api/custom_fields_json_form_schema/useCustomFieldsSchema';
 import useAuthUser from 'api/me/useAuthUser';
+import { IUser } from 'api/users/types';
 
 import useLocale from 'hooks/useLocale';
 
-import Form from 'components/Form';
-import { FormData } from 'components/Form/typings';
+import Fields from 'components/Form/Components/Fields';
+import { parseRequiredMultilocsData } from 'components/Form/parseRequiredMultilocs';
+import { customAjv } from 'components/Form/utils';
 
 import messages from './messages';
 
@@ -22,40 +26,39 @@ import messages from './messages';
 - Multi select enum : move options to uischema
 */
 
-interface UserCustomFieldsFormProps {
-  authenticationContext: AuthenticationContext;
-  onSubmit?: (data: {
-    key: string;
-    formData: Record<string, any>;
-  }) => Promise<void>;
+interface Props {
+  apiErrors?: CLErrors;
   onChange?: (data: { key: string; formData: Record<string, any> }) => void;
 }
 
+interface OuterProps extends Props {
+  authenticationContext: AuthenticationContext;
+}
+
+interface InnerProps extends Props {
+  authUser: IUser;
+  schema: JsonSchema7;
+  uiSchema: Layout;
+}
+
 const UserCustomFieldsForm = ({
-  authenticationContext,
-  onSubmit,
+  authUser,
+  schema,
+  uiSchema,
+  apiErrors,
   onChange,
-}: UserCustomFieldsFormProps) => {
-  const { data: authUser } = useAuthUser();
-
-  const { data: userCustomFieldsSchema } = useCustomFieldsSchema(
-    authenticationContext
-  );
-
+}: InnerProps) => {
   const locale = useLocale();
 
-  const handleOnSubmit = async (formData: FormData) => {
-    const sanitizedFormData = {};
+  const [data] = useState(() => {
+    return parseRequiredMultilocsData(
+      schema,
+      locale,
+      authUser.data.attributes.custom_field_values
+    );
+  });
 
-    forOwn(formData, (value, key) => {
-      sanitizedFormData[key] = value === null ? undefined : value;
-    });
-
-    return await onSubmit?.({
-      formData: sanitizedFormData,
-      key: 'custom_field_values',
-    });
-  };
+  const [showAllErrors, setShowAllErrors] = useState(false);
 
   const getAjvErrorMessage = (error: ErrorObject) => {
     switch (error.keyword) {
@@ -66,21 +69,20 @@ const UserCustomFieldsForm = ({
     }
   };
 
-  if (userCustomFieldsSchema && locale && authUser) {
-    if (!userCustomFieldsSchema.data.attributes) return null;
-    const { json_schema_multiloc, ui_schema_multiloc } =
-      userCustomFieldsSchema.data.attributes;
+  const layout = isCategorization(uiSchema) ? 'fullpage' : 'inline';
 
-    const schema = json_schema_multiloc[locale];
-    const uiSchema = ui_schema_multiloc[locale];
-
-    if (!schema || !uiSchema) return null;
-
-    return (
-      <Form
+  return (
+    <Box overflow={layout === 'inline' ? 'visible' : 'auto'} flex="1">
+      <Fields
+        data={data}
+        apiErrors={apiErrors}
+        showAllErrors={showAllErrors}
+        setShowAllErrors={setShowAllErrors}
         schema={schema}
         uiSchema={uiSchema}
-        onSubmit={handleOnSubmit}
+        ajv={customAjv}
+        getAjvErrorMessage={getAjvErrorMessage}
+        locale={locale}
         onChange={(formData) =>
           formData &&
           onChange?.({
@@ -88,13 +90,39 @@ const UserCustomFieldsForm = ({
             key: 'custom_field_values',
           })
         }
-        getAjvErrorMessage={getAjvErrorMessage}
-        initialFormData={authUser.data.attributes.custom_field_values}
       />
-    );
-  }
-
-  return null;
+    </Box>
+  );
 };
 
-export default UserCustomFieldsForm;
+const UserCustomFieldsFormWrapper = ({
+  authenticationContext,
+  ...props
+}: OuterProps) => {
+  const { data: authUser } = useAuthUser();
+  const { data: userCustomFieldsSchema } = useCustomFieldsSchema(
+    authenticationContext
+  );
+  const locale = useLocale();
+
+  if (!authUser || !userCustomFieldsSchema) return null;
+
+  const { json_schema_multiloc, ui_schema_multiloc } =
+    userCustomFieldsSchema.data.attributes;
+
+  const schema = json_schema_multiloc[locale];
+  const uiSchema = ui_schema_multiloc[locale];
+
+  if (!schema || !uiSchema) return null;
+
+  return (
+    <UserCustomFieldsForm
+      authUser={authUser}
+      schema={schema}
+      uiSchema={uiSchema}
+      {...props}
+    />
+  );
+};
+
+export default UserCustomFieldsFormWrapper;
