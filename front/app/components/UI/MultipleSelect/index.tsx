@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { KeyboardEvent } from 'react';
 
 import { Label } from '@citizenlab/cl2-component-library';
 import ReactSelect from 'react-select';
@@ -58,6 +58,10 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
     return value;
   };
 
+  preventModalCloseOnEscape = (event: KeyboardEvent) => {
+    if (event.code === 'Escape') event.stopPropagation();
+  };
+
   render() {
     const { id, className, disabled, label, isSearchable = true } = this.props;
     let { value, placeholder, options, autoBlur } = this.props;
@@ -90,6 +94,7 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
           menuPosition="fixed"
           menuPlacement="auto"
           hideSelectedOptions
+          onKeyDown={this.preventModalCloseOnEscape}
         />
       </div>
     );
