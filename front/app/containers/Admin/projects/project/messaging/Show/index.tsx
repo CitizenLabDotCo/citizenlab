@@ -16,7 +16,7 @@ import useCampaign from 'api/campaigns/useCampaign';
 import useSendCampaign from 'api/campaigns/useSendCampaign';
 import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
 import { isDraft } from 'api/campaigns/util';
-import useAuthUser from 'api/me/useAuthUser';
+import useUserById from 'api/users/useUserById';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -69,7 +69,6 @@ const Show = () => {
     campaignId: string;
   };
 
-  const { data: user } = useAuthUser();
   const { data: tenant } = useAppConfiguration();
   const { data: campaign } = useCampaign(campaignId);
 
@@ -81,6 +80,9 @@ const Show = () => {
   const { mutate: sendCampaignPreview, isLoading: isSendingCampaignPreview } =
     useSendCampaignPreview();
 
+  const { data: sender } = useUserById(
+    campaign?.data.relationships.author.data.id
+  );
   const isLoading = isSendingCampaign || isSendingCampaignPreview;
 
   const localize = useLocalize();
@@ -104,8 +106,8 @@ const Show = () => {
   const getSenderName = (senderType: string) => {
     let senderName: string | null = null;
 
-    if (senderType === 'author' && user) {
-      senderName = getFullName(user.data);
+    if (senderType === 'author' && sender) {
+      senderName = getFullName(sender.data);
     } else if (senderType === 'organization' && tenant) {
       senderName = localize(
         tenant?.data.attributes.settings.core.organization_name

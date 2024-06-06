@@ -1,4 +1,4 @@
-import React, { memo, useState, useRef, useEffect } from 'react';
+import React, { memo, useState, useRef } from 'react';
 
 import styled from 'styled-components';
 
@@ -38,27 +38,14 @@ interface Props {
 
 const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
   const { formatMessage } = useIntl();
-  const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
-  const timeoutRef = useRef<number>();
 
   const [isSpamModalVisible, setIsSpamModalVisible] = useState(false);
   const [warningModalOpen, setWarningModalOpen] = useState(false);
 
   const openWarningModal = () => setWarningModalOpen(true);
-  const closeWarningModal = () => {
-    setWarningModalOpen(false);
-    focusOnMoreActionsButton();
-  };
+  const closeWarningModal = () => setWarningModalOpen(false);
 
-  useEffect(() => {
-    const currentTimeout = timeoutRef.current;
-    // Cleanup the timeout if the component unmounts before the timeout executes
-    return () => {
-      if (currentTimeout) {
-        clearTimeout(currentTimeout);
-      }
-    };
-  }, []);
+  const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
 
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
@@ -77,18 +64,6 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
 
   const closeSpamModal = () => {
     setIsSpamModalVisible(false);
-    focusOnMoreActionsButton();
-  };
-
-  const focusOnMoreActionsButton = () => {
-    timeoutRef.current = window.setTimeout(() => {
-      moreActionsButtonRef.current?.focus();
-      // Clear the timeout after it has been used
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-        timeoutRef.current = undefined;
-      }
-    }, 0);
   };
 
   const onEditIdea = () => {
@@ -136,17 +111,19 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
         <Container className={className}>
           <MoreActionsMenuWrapper>
             <MoreActionsMenu
-              ref={moreActionsButtonRef}
               id="e2e-idea-more-actions"
               labelAndTitle={<FormattedMessage {...messages.moreOptions} />}
               showLabel={false}
               actions={actions}
+              ref={moreActionsButtonRef}
             />
           </MoreActionsMenuWrapper>
           <Modal
             opened={isSpamModalVisible}
             close={closeSpamModal}
             header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
+            // Return focus to the More Actions button on close
+            returnFocusRef={moreActionsButtonRef}
           >
             <SpamReportForm targetId={idea.id} targetType="ideas" />
           </Modal>
@@ -158,6 +135,7 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
           explanation={formatMessage(warningMessages.deleteInputExplanation)}
           onClose={closeWarningModal}
           onConfirm={onDeleteIdea}
+          returnFocusRef={moreActionsButtonRef}
         />
       </>
     );

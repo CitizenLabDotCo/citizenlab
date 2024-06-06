@@ -66,13 +66,15 @@ const Insights = () => {
         alignItems="center"
         gap="4px"
       >
-        {applyInputsLimit && <Icon name="alert-circle" fill={colors.orange} />}
+        {applyInputsLimit && (
+          <Icon name="alert-circle" fill={colors.orange500} />
+        )}
 
         <Text
           fontSize="s"
           m="0"
           variant="bodyXs"
-          color={applyInputsLimit ? 'orange' : 'textSecondary'}
+          color={applyInputsLimit ? 'orange500' : 'textSecondary'}
         >
           {`${filteredInputsCount} / ${inputsCount}`}{' '}
           {formatMessage(messages.inputsSelected)}
