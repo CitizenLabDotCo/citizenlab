@@ -1030,7 +1030,6 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.finished": "Gotovo",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.planned": "Planirani",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publishedProjects": "Objavljeni projekti",
-  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.stale": "Mokraća",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "Podaci za ovaj widget nedostaju. Ponovno ga konfigurirajte ili izbrišite da biste mogli spremiti izvješće.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "U ovom projektu nisu pronađene odgovarajuće faze",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noPhaseSelected": "Nije odabrana faza. Prvo odaberite fazu.",

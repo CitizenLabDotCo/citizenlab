@@ -1030,7 +1030,6 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.finished": "Färdig",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.planned": "Planerad",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publishedProjects": "Publicerade projekt",
-  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.stale": "Gammal",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "Data för denna widget saknas. Konfigurera om eller ta bort den för att kunna spara rapporten.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "Inga lämpliga faser hittades i detta projekt",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noPhaseSelected": "Ingen fas vald. Vänligen välj en fas först.",
