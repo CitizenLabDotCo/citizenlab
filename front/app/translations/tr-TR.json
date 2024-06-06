@@ -1474,7 +1474,6 @@
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotPermitted": "Ne yazık ki, bu belgeyi inceleme hakkına sahip değilsiniz.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotVerified": "Bu belgenin incelenmesi hesabınızın doğrulanmasını gerektirir. {verificationLink}",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledProjectInactive": "Bu proje artık aktif olmadığı için belge artık mevcut değildir.",
-  "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBar.xPicks1": "{baskets, plural, one {1 kez seçildi} other {# kez seçildi}}",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "Bu seçeneği işaretleyen katılımcıların yüzdesi.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "Bu seçeneğin aldığı toplam oyların yüzdesi.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Maliyet:",

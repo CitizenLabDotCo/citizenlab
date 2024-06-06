@@ -1474,7 +1474,6 @@
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotPermitted": "Leider hutt Dir net d'Rechter dëst Dokument ze iwwerpréiwen.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotVerified": "Iwwerpréift vun dësem Dokument erfuerdert d'Verifizéierung vun Ärem Kont. {verificationLink}",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledProjectInactive": "D'Dokument ass net méi verfügbar, well dëse Projet net méi aktiv ass.",
-  "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBar.xPicks1": "{baskets, plural, one {1 Mol erausgewielt} other {# Mol ausgewielt}}",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "De Prozentsaz vun de Participanten déi dës Optioun gewielt hunn.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "De Prozentsaz vun de Stëmmen, déi dës Optioun krut.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Käschten:",
