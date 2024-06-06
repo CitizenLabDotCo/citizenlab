@@ -13,6 +13,7 @@ import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { scrollToElement } from 'utils/scroll';
@@ -63,6 +64,7 @@ const CTAButton = ({ phase, project }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const [processing, setProcessing] = useState(false);
+  const [isSubmitSuccessful, setIsSubmitSuccessful] = useState<boolean>(false);
 
   if (
     !appConfig ||
@@ -83,6 +85,7 @@ const CTAButton = ({ phase, project }: Props) => {
           {
             onSuccess: () => {
               setProcessing(false);
+              setIsSubmitSuccessful(true);
 
               // If on the project page, scroll down to the status module
               if (location.pathname.includes('/projects/')) {
@@ -127,32 +130,46 @@ const CTAButton = ({ phase, project }: Props) => {
   );
 
   return (
-    <Tooltip
-      disabled={!disabledExplanation}
-      placement="bottom"
-      content={disabledExplanation}
-    >
-      <Box width="100%">
-        <StyledButton
-          icon="vote-ballot"
-          buttonStyle="secondary"
-          iconColor={theme.colors.tenantText}
-          onClick={handleSubmitOnClick}
-          fontWeight="500"
-          bgColor={theme.colors.white}
-          textColor={theme.colors.tenantText}
-          id="e2e-voting-submit-button"
-          textHoverColor={theme.colors.black}
-          padding="6px 12px"
-          fontSize="14px"
-          disabled={!!disabledExplanation}
-          processing={processing}
-          className={disabledExplanation ? '' : 'pulse'}
-        >
-          <FormattedMessage {...messages.submit} />
-        </StyledButton>
-      </Box>
-    </Tooltip>
+    <>
+      <Tooltip
+        disabled={!disabledExplanation}
+        interactive={true}
+        placement="bottom"
+        content={disabledExplanation}
+      >
+        {/* We need to add a tabIndex of 0 to
+        make sure this is keyboard-focusable so screen reader software can read the explanation */}
+        <Box width="100%" tabIndex={disabledExplanation ? 0 : -1}>
+          <StyledButton
+            icon="vote-ballot"
+            buttonStyle="secondary"
+            iconColor={theme.colors.tenantText}
+            onClick={handleSubmitOnClick}
+            fontWeight="500"
+            bgColor={theme.colors.white}
+            textColor={theme.colors.tenantText}
+            id="e2e-voting-submit-button"
+            textHoverColor={theme.colors.black}
+            padding="6px 12px"
+            fontSize="14px"
+            disabled={!!disabledExplanation}
+            processing={processing}
+            className={disabledExplanation ? '' : 'pulse'}
+            ariaDescribedby="explanation"
+          >
+            <FormattedMessage {...messages.submit} />
+          </StyledButton>
+          <ScreenReaderOnly id="explanation">
+            {!!disabledExplanation && <>{disabledExplanation}</>}
+          </ScreenReaderOnly>
+        </Box>
+      </Tooltip>
+      <ScreenReaderOnly role="alert">
+        {isSubmitSuccessful && (
+          <FormattedMessage {...messages.budgetSubmitSuccess} />
+        )}
+      </ScreenReaderOnly>
+    </>
   );
 };
 

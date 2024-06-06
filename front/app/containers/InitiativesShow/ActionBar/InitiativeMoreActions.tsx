@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 import styled from 'styled-components';
 
@@ -35,6 +35,7 @@ interface Props {
 
 const InitiativeMoreActions = ({ initiative, className, color, id }: Props) => {
   const { formatMessage } = useIntl();
+  const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
   const canEditInitiative = usePermission({
     action: 'edit',
     item: initiative,
@@ -87,6 +88,7 @@ const InitiativeMoreActions = ({ initiative, className, color, id }: Props) => {
             labelAndTitle={<FormattedMessage {...messages.moreOptions} />}
             color={color}
             id={id}
+            ref={moreActionsButtonRef}
             actions={[
               {
                 label: <FormattedMessage {...messages.reportAsSpam} />,
@@ -113,6 +115,8 @@ const InitiativeMoreActions = ({ initiative, className, color, id }: Props) => {
           opened={spamModalVisible}
           close={closeSpamModal}
           header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
+          // Return focus to the More Actions button on close
+          returnFocusRef={moreActionsButtonRef}
         >
           <SpamReportForm targetId={initiative.id} targetType="initiatives" />
         </Modal>
@@ -124,6 +128,7 @@ const InitiativeMoreActions = ({ initiative, className, color, id }: Props) => {
         explanation={formatMessage(warningMessages.deleteInitiativeExplanation)}
         onClose={closeWarningModal}
         onConfirm={onDeleteInitiative}
+        returnFocusRef={moreActionsButtonRef}
       />
     </>
   );
