@@ -8,13 +8,13 @@ import { ImportedIdeaMetadataResponse } from 'api/import_ideas/types';
 
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
 
-import { customAjv } from 'components/Form';
 import Fields from 'components/Form/Components/Fields';
 import {
   FormData,
   ApiErrorGetter,
   AjvErrorGetter,
 } from 'components/Form/typings';
+import { customAjv } from 'components/Form/utils';
 
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 

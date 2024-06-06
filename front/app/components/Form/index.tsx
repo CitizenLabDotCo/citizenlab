@@ -7,12 +7,7 @@ import {
   media,
   Button,
 } from '@citizenlab/cl2-component-library';
-import {
-  createAjv,
-  JsonSchema7,
-  isCategorization,
-  Layout,
-} from '@jsonforms/core';
+import { JsonSchema7, isCategorization, Layout } from '@jsonforms/core';
 import styled from 'styled-components';
 import { CLErrors } from 'typings';
 
@@ -26,7 +21,7 @@ import Fields from './Components/Fields';
 import messages from './messages';
 import { parseRequiredMultilocsData } from './parseRequiredMultilocs';
 import { ApiErrorGetter, AjvErrorGetter, FormData } from './typings';
-import { sanitizeFormData, isValidData } from './utils';
+import { sanitizeFormData, isValidData, customAjv } from './utils';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
@@ -47,13 +42,6 @@ const Title = styled.h1`
 const InvisibleSubmitButton = styled.button`
   visibility: hidden;
 `;
-
-export const customAjv = createAjv({
-  useDefaults: 'empty',
-  removeAdditional: true,
-});
-// The image key word is used for the image choice option
-customAjv.addKeyword('image');
 
 interface Props {
   schema: JsonSchema7;
