@@ -1474,6 +1474,7 @@
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotPermitted": "Nažalost, nemate prava na pregled ovog dokumenta.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotVerified": "Pregledavanje ovog dokumenta zahtijeva potvrdu vašeg računa. {verificationLink}",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledProjectInactive": "Dokument više nije dostupan jer ovaj projekt više nije aktivan.",
+  "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBar.numberOfPicks": "{baskets, plural, one {1 odabir} other {# odabira}}",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "Postotak sudionika koji su odabrali ovu opciju.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "Postotak ukupnih glasova koje je ova opcija dobila.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Cijena:",
