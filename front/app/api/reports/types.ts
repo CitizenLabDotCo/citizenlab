@@ -4,6 +4,12 @@ import reportsKeys from './keys';
 
 export type ReportsKeys = Keys<typeof reportsKeys>;
 
+export interface ReportsParams {
+  search?: string;
+  owner_id?: string;
+  service?: boolean;
+}
+
 type EditingReportEnabled = {
   enabled: true;
   disabled_reason: null;
@@ -23,7 +29,7 @@ export interface Report {
     name: string | null;
     created_at: string;
     updated_at: string;
-    action_descriptor: {
+    action_descriptors: {
       editing_report: EditingReport;
     };
     visible: boolean;

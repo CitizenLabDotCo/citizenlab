@@ -69,7 +69,7 @@ module EmailCampaigns
 
     def generate_commands(recipient:, activity:)
       idea = activity.item.post
-      project_url = Frontend::UrlService.new.model_to_url(idea.project, locale: recipient.locale)
+      project_url = Frontend::UrlService.new.model_to_url(idea.project, locale: Locale.new(recipient.locale))
       [{
         event_payload: {
           survey_url: "#{project_url}/ideas/new?phase_id=#{idea.creation_phase.id}",

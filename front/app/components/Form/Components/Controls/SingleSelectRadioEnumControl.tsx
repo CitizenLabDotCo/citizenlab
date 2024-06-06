@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, colors, Text, Radio } from '@citizenlab/cl2-component-library';
+import { Box, Text, Radio } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
   isEnumControl,
@@ -8,7 +8,6 @@ import {
   rankWith,
 } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { darken } from 'polished';
 import styled, { useTheme } from 'styled-components';
 
 import { FormLabel } from 'components/UI/FormComponents';
@@ -22,11 +21,10 @@ import VerificationIcon from '../VerificationIcon';
 import { getOptions, getSubtextElement } from './controlUtils';
 import messages from './messages';
 
-const StyledBox = styled(Box)`
+const StyledBox = styled(Box)<{ hoverColor: string }>`
   cursor: pointer;
-  background-color: ${colors.grey100};
   &:hover {
-    background-color: ${darken(0.05, colors.grey100)};
+    background-color: ${({ hoverColor }) => hoverColor};
   }
 `;
 
@@ -41,8 +39,8 @@ const SingleSelectRadioEnumControl = ({
   id,
   visible,
 }: ControlProps) => {
-  const [didBlur, setDidBlur] = useState(false);
   const theme = useTheme();
+  const [didBlur, setDidBlur] = useState(false);
   const options = getOptions(schema, 'singleEnum', uischema);
   const answerNotPublic = uischema.options?.answer_visible_to === 'admins';
 
@@ -66,15 +64,27 @@ const SingleSelectRadioEnumControl = ({
       )}
       <Box display="block" id="e2e-single-select-control">
         {options?.map((option, index: number) => (
-          <StyledBox mb="12px" key={option.value} borderRadius="3px">
+          <StyledBox
+            background={theme.colors.tenantPrimaryLighten95}
+            hoverColor={theme.colors.tenantPrimaryLighten75}
+            border={
+              data === option.value
+                ? `2px solid ${theme.colors.tenantPrimary}`
+                : `1px solid ${theme.colors.tenantPrimary}`
+            }
+            mb="12px"
+            key={option.value}
+            borderRadius="3px"
+          >
             <Radio
               padding="20px 20px 4px 20px"
-              marginTop="8px"
-              buttonColor={theme.colors.tenantSecondary}
+              buttonColor={theme.colors.tenantPrimary}
+              usePrimaryBorder={true}
               id={`${path}-radio-${index}`}
               name="name-temp"
               label={
-                <Text p="0px" m="0px" fontSize="s">
+                // TODO: Find better solution for styling the Radio label. Requires small offset for alignment.
+                <Text color={'tenantPrimary'} p="0px" m="0px" mt="-1px">
                   {option.label}
                 </Text>
               }

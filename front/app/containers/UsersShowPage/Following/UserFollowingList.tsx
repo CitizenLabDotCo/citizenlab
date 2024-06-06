@@ -46,7 +46,7 @@ const UserFollowingList = ({ value }: Props) => {
     <Box display="flex" w="100%" flexDirection="column">
       {isLoading && <Spinner />}
       {!isLoading && flatFollowers.length === 0 ? (
-        <Box background={colors.white} p="36px">
+        <Box background={colors.white} p="36px" aria-live="polite">
           <Text variant="bodyL">
             <FormattedMessage {...messages.emptyInfoText} />
           </Text>

@@ -7,13 +7,8 @@ import { Color, defaultOutline } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 import Box, { BoxMarginProps, BoxPaddingProps } from '../Box';
 import Icon from '../Icon';
-import IconTooltip from '../IconTooltip';
 
 import { getColor } from './utils';
-
-const CheckboxContainer = styled.div<{ hasLabel: boolean }>`
-  margin-right: ${({ hasLabel }) => (hasLabel ? '10px' : '0px')};
-`;
 
 const CheckMarkIcon = styled(Icon)<{ size: string }>`
   fill: #fff;
@@ -21,14 +16,6 @@ const CheckMarkIcon = styled(Icon)<{ size: string }>`
 
 const IndeterminateIcon = styled(Icon)<{ size: string }>`
   fill: #fff;
-`;
-
-const StyledBox = styled(Box)<{ disabled: boolean }>`
-  position: relative;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 `;
 
 const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
@@ -39,7 +26,11 @@ const StyledCheckbox = styled.div<{
   checkedOrIndeterminate: boolean;
   checkedColor?: Color;
   size: string;
+  disabled: boolean;
+  usePrimaryBorder?: boolean;
 }>`
+  cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
+
   ${(props) => `
     background: ${getColor({
       checkedColor: props.checkedColor
@@ -53,6 +44,7 @@ const StyledCheckbox = styled.div<{
         ? props.theme.colors[props.checkedColor]
         : undefined,
       checkedOrIndeterminate: props.checkedOrIndeterminate,
+      usePrimaryBorder: props.usePrimaryBorder,
       element: 'border',
     })};
     &.enabled {
@@ -90,93 +82,89 @@ const StyledCheckbox = styled.div<{
   }
 `;
 
-type DefaultProps = {
+export type CheckboxProps = {
   size?: string;
-  disabled?: boolean;
   indeterminate?: boolean;
+  disabled?: boolean;
+  checked: boolean;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  name?: string;
+  stopLabelPropagation?: boolean;
+  checkedColor?: Color;
+  usePrimaryBorder?: boolean;
 };
 
-type Props = DefaultProps &
+type Props = {
+  id?: string;
+  dataTestId?: string;
+} & CheckboxProps &
   BoxPaddingProps &
-  BoxMarginProps & {
-    checked: boolean;
-    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    className?: string;
-    label?: string | JSX.Element | null;
-    labelTooltipText?: string | JSX.Element | null;
-    id?: string;
-    name?: string;
-    stopLabelPropagation?: boolean;
-    checkedColor?: Color;
-  };
+  BoxMarginProps;
 
+/*
+  CheckboxWithLabel should be used for most cases. Ideally, this component is only used inside generic components (such as CheckboxWithLabel).
+
+  Checkbox can also be used for custom use cases as we do in ImageMultichoiceControl, where the image is part of the label (and the layout is a bit different). When using the Checkbox component, make sure to handle the label separately to comply with WCAG.
+*/
 const Checkbox = ({
   id,
-  label,
-  labelTooltipText,
-  stopLabelPropagation,
+  dataTestId,
   size = '24px',
-  checked,
-  className,
   disabled = false,
   indeterminate = false,
   onChange,
-  name,
+  checked,
   checkedColor,
-  ...rest
+  usePrimaryBorder = false,
+  name,
+  ...boxProps
 }: Props) => {
-  const hasLabel = !!label;
-
-  const handleLabelClick = (event: React.MouseEvent) => {
-    stopLabelPropagation && event.stopPropagation();
+  const handleOnCheckboxClick = (event: React.MouseEvent) => {
+    event.preventDefault();
+    onChange({
+      target: {
+        checked: !checked,
+      },
+    } as React.ChangeEvent<HTMLInputElement>);
   };
+
   const checkedOrIndeterminate = checked || indeterminate;
 
   return (
-    <StyledBox
-      as="label"
-      id={id || ''}
-      className={className || ''}
-      disabled={disabled}
-      onClick={handleLabelClick}
-      data-testid={testEnv('check-mark-label')}
-      {...rest}
-    >
-      <CheckboxContainer hasLabel={hasLabel}>
-        <HiddenCheckbox
-          onChange={onChange}
-          checked={checked}
-          disabled={disabled}
-          tabIndex={0}
-          name={name}
-        />
-        <StyledCheckbox
-          data-testid={testEnv('check-mark-background')}
-          checkedColor={checkedColor}
-          checkedOrIndeterminate={checkedOrIndeterminate}
-          size={size}
-          className={`${checked ? 'checked' : ''} ${
-            disabled ? 'disabled' : 'enabled'
-          } e2e-checkbox`}
-        >
-          {checked && (
-            <CheckMarkIcon
-              ariaHidden
-              name="check"
-              size={size}
-              data-testid={testEnv('check-mark')}
-            />
-          )}
-          {indeterminate && (
-            <IndeterminateIcon ariaHidden name="minus" size={size} />
-          )}
-        </StyledCheckbox>
-      </CheckboxContainer>
-      <Box as="span" mr="4px">
-        {label}
-      </Box>
-      {labelTooltipText && <IconTooltip content={labelTooltipText} />}
-    </StyledBox>
+    <Box {...boxProps}>
+      <HiddenCheckbox
+        id={id}
+        onChange={onChange}
+        checked={checked}
+        disabled={disabled}
+        tabIndex={0}
+        name={name}
+      />
+      <StyledCheckbox
+        data-testid={dataTestId || testEnv('check-mark-background')}
+        checkedColor={checkedColor}
+        checkedOrIndeterminate={checkedOrIndeterminate}
+        size={size}
+        className={`${checked ? 'checked' : ''} ${
+          disabled ? 'disabled' : 'enabled'
+        } e2e-checkbox`}
+        onClick={handleOnCheckboxClick}
+        usePrimaryBorder={usePrimaryBorder}
+        disabled={disabled}
+      >
+        {checked && (
+          <CheckMarkIcon
+            ariaHidden
+            name="check"
+            size={size}
+            data-testid={testEnv('check-mark')}
+          />
+        )}
+        {indeterminate && (
+          <IndeterminateIcon ariaHidden name="minus" size={size} />
+        )}
+      </StyledCheckbox>
+    </Box>
   );
 };
 

@@ -88,7 +88,7 @@ const InsightFooter = ({
       >
         <Box display="flex" gap="4px" alignItems="center">
           {!largeSummariesEnabled ? (
-            <Icon name="alert-circle" fill={colors.orange} />
+            <Icon name="alert-circle" fill={colors.orange500} />
           ) : (
             <Icon
               name="comment"
@@ -102,7 +102,7 @@ const InsightFooter = ({
           <Text
             m="0px"
             fontSize="s"
-            color={!largeSummariesEnabled ? 'orange' : 'textPrimary'}
+            color={!largeSummariesEnabled ? 'orange500' : 'textPrimary'}
             display="flex"
           >
             {filteredInputCount} / {totalInputCount}

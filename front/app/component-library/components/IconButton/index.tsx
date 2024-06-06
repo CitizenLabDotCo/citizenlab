@@ -56,6 +56,7 @@ export type IconButtonProps = {
   ariaControls?: string;
   buttonType?: 'submit' | 'button' | 'reset';
   transform?: string;
+  iconRef?: React.Ref<any>;
 } & BoxPositionProps &
   BoxMarginProps &
   BoxPaddingProps &
@@ -76,6 +77,7 @@ const IconButton = ({
   ariaControls,
   buttonType,
   transform,
+  iconRef,
   ...rest
 }: IconButtonProps) => {
   return (
@@ -91,6 +93,7 @@ const IconButton = ({
       alignItems="center"
       justifyContent="center"
       role="button"
+      ref={iconRef}
       {...rest}
     >
       <StyledIcon

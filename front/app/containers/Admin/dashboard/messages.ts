@@ -23,9 +23,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.tabRepresentativeness2',
     defaultMessage: 'Representation',
   },
+  managementFeed: {
+    id: 'app.Admin.Moderation.managementFeed',
+    defaultMessage: 'Management feed',
+  },
   feed: {
-    id: 'app.Admin.Moderation.feed',
-    defaultMessage: 'Feed',
+    id: 'app.Admin.Moderation.participationFeed',
+    defaultMessage: 'Participation feed',
   },
   tabVisitors: {
     id: 'app.modules.commercial.analytics.admin.components.Tab',
@@ -215,11 +219,6 @@ export default defineMessages({
   false: {
     id: 'app.containers.AdminPage.DashboardPage.false',
     defaultMessage: 'false',
-  },
-  mostActiveUsersRankingDescription: {
-    id: 'app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription2',
-    defaultMessage:
-      'The ranking is based on the number of inputs (5 points per input), comments (3 points per comment) and reactions (1 point per reaction) submitted by each participant.',
   },
   subtitleDashboard: {
     id: 'app.containers.AdminPage.DashboardPage.subtitleDashboard',

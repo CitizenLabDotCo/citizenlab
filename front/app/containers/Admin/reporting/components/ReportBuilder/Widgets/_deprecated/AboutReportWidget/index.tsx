@@ -9,7 +9,6 @@ import useUserById from 'api/users/useUserById';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
-import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 import TenantLogo from 'containers/MainHeader/Components/TenantLogo';
 
@@ -20,10 +19,10 @@ import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import { useFormatMessageWithLocale } from 'utils/cl-intl';
 import { getFullName, withoutSpacing } from 'utils/textUtils';
 
+import { getPeriod } from '../../../Templates/utils';
 import TextMultiloc from '../../TextMultiloc';
 
 import messages from './messages';
-import { getPeriod } from './utils';
 
 export type Props = {
   startAt?: string;
@@ -34,7 +33,6 @@ export type Props = {
 
 const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
   const formatMessageWithLocale = useFormatMessageWithLocale();
-  const px = useReportDefaultPadding();
   const locales = useAppConfigurationLocales();
 
   // Title
@@ -77,7 +75,7 @@ const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
   });
 
   return (
-    <PageBreakBox px={px}>
+    <PageBreakBox>
       <Box
         width="100%"
         display="flex"

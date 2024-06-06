@@ -1,10 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  cookieBannerUpdatedInfo: {
-    id: 'app.modules.commercial.analytics.admin.containers.visitors.cookieBannerUpdatedInfo',
+  visitorCountHigherBanner: {
+    id: 'app.modules.commercial.analytics.admin.containers.visitors.visitorCountHigherBanner2',
     defaultMessage:
-      "Since December 2023 it's easier for users to reject cookies, which has a negative effect on perceived traffic.",
+      'Since May 2024, visitor and visit counts are higher and more accurate. This is because we now include all visitors, and not just those who accepted cookies. We do not store personally identifiable information of visitors who did not accept cookies, so this method complies with GDPR.',
   },
   noData: {
     id: 'app.modules.commercial.analytics.admin.containers.visitors.noData',
