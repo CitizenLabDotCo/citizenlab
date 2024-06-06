@@ -133,7 +133,6 @@ const CTAButton = ({ phase, project }: Props) => {
     <>
       <Tooltip
         disabled={!disabledExplanation}
-        interactive={true}
         placement="bottom"
         content={disabledExplanation}
       >
