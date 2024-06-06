@@ -8,27 +8,35 @@ type TippyProps = Omit<
   'interactive' | 'plugins' | 'role'
 >;
 
-const Tooltip = ({ children, ...rest }: TippyProps) => {
-  const [key, setKey] = useState<number>(0);
-  const [isFocused, setIsFocused] = useState<boolean | undefined>();
+const useActiveElement = () => {
+  const [active, setActive] = useState(document.activeElement);
+
+  const handleFocusIn = () => {
+    setActive(document.activeElement);
+  };
 
   useEffect(() => {
-    const tooltip = document.getElementById('tooltip');
-    if (!tooltip) return;
-    const onFocus = () => {
-      setIsFocused(true);
-    };
-    const onBlur = () => {
-      setIsFocused(false);
-    };
-    tooltip.addEventListener('focusin', onFocus);
-    tooltip.addEventListener('focusout', onBlur);
-
+    document.addEventListener('focusin', handleFocusIn);
     return () => {
-      tooltip.removeEventListener('focusin', onFocus);
-      tooltip.removeEventListener('focusout', onBlur);
+      document.removeEventListener('focusin', handleFocusIn);
     };
   }, []);
+
+  return active;
+};
+
+const Tooltip = ({ children, ...rest }: TippyProps) => {
+  const [isFocused, setIsFocused] = useState<boolean | undefined>(undefined);
+  const [key, setKey] = useState<number>(0);
+  const activeElement = useActiveElement();
+
+  // Check if the active element is inside the tooltip
+  useEffect(() => {
+    const tooltip = document.getElementById('tooltip');
+    if (tooltip && tooltip.contains(activeElement)) {
+      setIsFocused(true);
+    } else setIsFocused(false);
+  }, [activeElement]);
 
   return (
     <Tippy
@@ -58,8 +66,8 @@ const Tooltip = ({ children, ...rest }: TippyProps) => {
       interactive={true}
       role="tooltip"
       visible={isFocused}
+      // Ensures tippy works with both keyboard and mouse
       onHidden={() => {
-        console.log('called');
         setIsFocused(undefined);
         setKey((prev) => prev + 1);
       }}
