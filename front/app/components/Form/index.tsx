@@ -102,10 +102,6 @@ const Form = memo(
     const layoutType =
       layout || (isCategorization(uiSchema) ? 'fullpage' : 'inline');
 
-    const handleChange = (data: FormData) => {
-      setData(data);
-    };
-
     const handleSubmit = async (formData?: any, showErrors = true) => {
       // Any specified formData has priority over data attribute
       const submissionData = formData && formData.data ? formData.data : data;
@@ -157,8 +153,7 @@ const Form = memo(
             inputId={inputId}
             config={config}
             locale={locale}
-            setFormData={setData}
-            onChange={handleChange}
+            onChange={setData}
             onSubmit={handleSubmit}
           />
           {footer && (

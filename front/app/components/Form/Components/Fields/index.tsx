@@ -31,7 +31,6 @@ interface Props {
   config?: 'default' | 'input' | 'survey';
   locale: SupportedLocale;
   onChange: (formData: FormData) => void;
-  setFormData?: (formData: FormData) => void;
   onSubmit?: (formData: FormData) => Promise<any>;
 }
 
@@ -48,7 +47,6 @@ const Fields = ({
   config,
   locale,
   onChange,
-  setFormData,
   onSubmit,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -94,7 +92,7 @@ const Fields = ({
           getApiErrorMessage: safeApiErrorMessages(),
           onSubmit,
           setShowAllErrors,
-          setFormData,
+          setFormData: onChange,
           locale,
         }}
       >
