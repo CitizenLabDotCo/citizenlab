@@ -27,6 +27,7 @@ import useLocalize from 'hooks/useLocalize';
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
 
 import Form from 'components/Form';
+import FormWrapper from 'components/Form/FormWrapper';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 
@@ -278,16 +279,18 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
               h={calculateDynamicHeight()}
               pb={isSmallerThanPhone ? '0' : '80px'}
             >
-              <Form
-                schema={schema}
-                uiSchema={uiSchema}
-                onSubmit={handleDraftIdeas}
-                initialFormData={initialFormData}
-                getAjvErrorMessage={getAjvErrorMessage}
-                getApiErrorMessage={getApiErrorMessage}
-                inputId={ideaId}
-                config={'survey'}
-              />
+              <FormWrapper formId={uiSchema.options?.formId}>
+                <Form
+                  schema={schema}
+                  uiSchema={uiSchema}
+                  onSubmit={handleDraftIdeas}
+                  initialFormData={initialFormData}
+                  getAjvErrorMessage={getAjvErrorMessage}
+                  getApiErrorMessage={getApiErrorMessage}
+                  inputId={ideaId}
+                  config={'survey'}
+                />
+              </FormWrapper>
             </Box>
           </Box>
         </main>

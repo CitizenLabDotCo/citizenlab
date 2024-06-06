@@ -139,14 +139,7 @@ const Form = memo(
         This form should contain as few styles as possible!
         Customization should happen in places where this component is imported!
       */
-      <Box
-        id={uiSchema?.options?.formId}
-        as="form"
-        display="flex"
-        flexDirection="column"
-        // This is necessary for the form to grow with the content and still be scrollable
-        height="100%"
-      >
+      <>
         <Box
           overflow={layoutType === 'inline' ? 'visible' : 'auto'}
           /*
@@ -201,7 +194,7 @@ const Form = memo(
             )}
           </>
         )}
-      </Box>
+      </>
     );
   }
 );
