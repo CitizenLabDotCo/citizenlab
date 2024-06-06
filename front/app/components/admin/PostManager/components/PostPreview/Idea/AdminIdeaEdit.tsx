@@ -21,7 +21,6 @@ import {
   Top,
 } from 'components/admin/PostManager/components/PostPreview';
 import Form from 'components/Form';
-import FormWrapper from 'components/Form/FormWrapper';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -170,19 +169,17 @@ const AdminIdeaEdit = ({
 
       <Content className="idea-form">
         {schema && uiSchema ? (
-          <FormWrapper formId={uiSchema.options?.formId}>
-            <Form
-              schema={schema}
-              uiSchema={uiSchema}
-              onSubmit={onSubmit}
-              initialFormData={initialFormData}
-              inputId={idea.data.id}
-              getAjvErrorMessage={getAjvErrorMessage}
-              getApiErrorMessage={getApiErrorMessage}
-              config={'input'}
-              layout={'inline'}
-            />
-          </FormWrapper>
+          <Form
+            schema={schema}
+            uiSchema={uiSchema}
+            onSubmit={onSubmit}
+            initialFormData={initialFormData}
+            inputId={idea.data.id}
+            getAjvErrorMessage={getAjvErrorMessage}
+            getApiErrorMessage={getApiErrorMessage}
+            config={'input'}
+            layout={'inline'}
+          />
         ) : projectStatus === 'error' || inputSchemaError ? null : (
           <Spinner />
         )}

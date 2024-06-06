@@ -21,7 +21,6 @@ import useLocalize from 'hooks/useLocalize';
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 import Form from 'components/Form';
-import FormWrapper from 'components/Form/FormWrapper';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
@@ -260,40 +259,38 @@ const IdeasNewIdeationForm = ({ project }: Props) => {
         </Box>
         <main id="e2e-idea-new-page">
           <PageContainer overflow="hidden">
-            <FormWrapper formId={uiSchema.options?.formId}>
-              <Form
-                schema={schema}
-                uiSchema={uiSchema}
-                onSubmit={handleDisclaimer}
-                initialFormData={initialFormData}
-                getAjvErrorMessage={getAjvErrorMessage}
-                getApiErrorMessage={getApiErrorMessage}
-                title={
-                  participationMethodConfig.getFormTitle ? (
-                    <Box mb="40px">
-                      <NewIdeaHeading
-                        titleText={participationMethodConfig.getFormTitle({
-                          project: project.data,
-                          phases: phases?.data,
-                          phaseFromUrl: phaseFromUrl?.data,
-                        })}
-                      />
-                    </Box>
-                  ) : undefined
-                }
-                config={'input'}
-                footer={
-                  allowAnonymousPosting ? (
-                    <Suspense fallback={null}>
-                      <ProfileVisiblity
-                        postAnonymously={postAnonymously}
-                        onChange={handleOnChangeAnonymousPosting}
-                      />
-                    </Suspense>
-                  ) : undefined
-                }
-              />
-            </FormWrapper>
+            <Form
+              schema={schema}
+              uiSchema={uiSchema}
+              onSubmit={handleDisclaimer}
+              initialFormData={initialFormData}
+              getAjvErrorMessage={getAjvErrorMessage}
+              getApiErrorMessage={getApiErrorMessage}
+              title={
+                participationMethodConfig.getFormTitle ? (
+                  <Box mb="40px">
+                    <NewIdeaHeading
+                      titleText={participationMethodConfig.getFormTitle({
+                        project: project.data,
+                        phases: phases?.data,
+                        phaseFromUrl: phaseFromUrl?.data,
+                      })}
+                    />
+                  </Box>
+                ) : undefined
+              }
+              config={'input'}
+              footer={
+                allowAnonymousPosting ? (
+                  <Suspense fallback={null}>
+                    <ProfileVisiblity
+                      postAnonymously={postAnonymously}
+                      onChange={handleOnChangeAnonymousPosting}
+                    />
+                  </Suspense>
+                ) : undefined
+              }
+            />
           </PageContainer>
           {showAnonymousConfirmationModal && (
             <AnonymousParticipationConfirmationModal

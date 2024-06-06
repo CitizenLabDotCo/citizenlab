@@ -13,7 +13,7 @@ import {
   SetError,
 } from 'containers/Authentication/typings';
 
-import FormWrapper from 'components/Form/FormWrapper';
+import FormWrapper from 'components/Form/Components/FormWrapper';
 import Button from 'components/UI/Button';
 import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
 

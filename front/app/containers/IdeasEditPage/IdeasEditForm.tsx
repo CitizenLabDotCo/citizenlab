@@ -20,7 +20,6 @@ import ideaFormMessages from 'containers/IdeasNewPage/messages';
 
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 import Form from 'components/Form';
-import FormWrapper from 'components/Form/FormWrapper';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import PageContainer from 'components/UI/PageContainer';
@@ -220,43 +219,41 @@ const IdeasEditForm = ({ ideaId }: Props) => {
         </Box>
         <main id="e2e-idea-edit-page">
           <PageContainer>
-            <FormWrapper formId={uiSchema.options?.formId}>
-              <Form
-                schema={schema}
-                uiSchema={uiSchema}
-                onSubmit={handleDisclaimer}
-                initialFormData={initialFormData}
-                inputId={idea.data.id}
-                getAjvErrorMessage={getAjvErrorMessage}
-                getApiErrorMessage={getApiErrorMessage}
-                config={'input'}
-                title={
-                  <Box
-                    width="100%"
-                    display="flex"
-                    flexDirection="column"
-                    justifyContent="center"
-                    alignItems="center"
-                    mb="40px"
-                  >
-                    <FormattedMessage
-                      {...{
-                        idea: messages.formTitle,
-                        option: messages.optionFormTitle,
-                        project: messages.projectFormTitle,
-                        question: messages.questionFormTitle,
-                        issue: messages.issueFormTitle,
-                        contribution: messages.contributionFormTitle,
-                      }[
-                        uiSchema && uiSchema?.options?.inputTerm
-                          ? uiSchema.options.inputTerm
-                          : 'idea'
-                      ]}
-                    />
-                  </Box>
-                }
-              />
-            </FormWrapper>
+            <Form
+              schema={schema}
+              uiSchema={uiSchema}
+              onSubmit={handleDisclaimer}
+              initialFormData={initialFormData}
+              inputId={idea.data.id}
+              getAjvErrorMessage={getAjvErrorMessage}
+              getApiErrorMessage={getApiErrorMessage}
+              config={'input'}
+              title={
+                <Box
+                  width="100%"
+                  display="flex"
+                  flexDirection="column"
+                  justifyContent="center"
+                  alignItems="center"
+                  mb="40px"
+                >
+                  <FormattedMessage
+                    {...{
+                      idea: messages.formTitle,
+                      option: messages.optionFormTitle,
+                      project: messages.projectFormTitle,
+                      question: messages.questionFormTitle,
+                      issue: messages.issueFormTitle,
+                      contribution: messages.contributionFormTitle,
+                    }[
+                      uiSchema && uiSchema?.options?.inputTerm
+                        ? uiSchema.options.inputTerm
+                        : 'idea'
+                    ]}
+                  />
+                </Box>
+              }
+            />
           </PageContainer>
           <ContentUploadDisclaimer
             isDisclaimerOpened={isDisclaimerOpened}

@@ -17,6 +17,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import ButtonBar from './Components/ButtonBar';
 import Fields from './Components/Fields';
+import FormWrapper from './Components/FormWrapper';
 import messages from './messages';
 import { parseRequiredMultilocsData } from './parseRequiredMultilocs';
 import { ApiErrorGetter, AjvErrorGetter, FormData } from './typings';
@@ -128,7 +129,7 @@ const Form = memo(
         This form should contain as few styles as possible!
         Customization should happen in places where this component is imported!
       */
-      <>
+      <FormWrapper formId={uiSchema.options?.formId}>
         <Box
           overflow={layoutType === 'inline' ? 'visible' : 'auto'}
           /*
@@ -181,7 +182,7 @@ const Form = memo(
             )}
           </>
         )}
-      </>
+      </FormWrapper>
     );
   }
 );
