@@ -164,7 +164,7 @@ const ProfileForm = () => {
   return (
     <FormSection>
       <FormProvider {...methods}>
-        <form>
+        <form onSubmit={handleDisclaimer}>
           <FormSectionTitle
             message={messages.h1}
             subtitleMessage={messages.h1sub}
@@ -249,16 +249,12 @@ const ProfileForm = () => {
             authenticationContext={GLOBAL_CONTEXT}
             onChange={setExtraFormData}
           />
+          <Box display="flex">
+            <Button type="submit" processing={methods.formState.isSubmitting}>
+              {formatMessage(messages.submit)}
+            </Button>
+          </Box>
         </form>
-        <Box display="flex">
-          <Button
-            type="submit"
-            processing={methods.formState.isSubmitting}
-            onClick={handleDisclaimer}
-          >
-            {formatMessage(messages.submit)}
-          </Button>
-        </Box>
       </FormProvider>
       <ContentUploadDisclaimer
         isDisclaimerOpened={isDisclaimerOpened}
