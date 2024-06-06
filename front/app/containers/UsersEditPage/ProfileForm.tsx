@@ -147,10 +147,6 @@ const ProfileForm = () => {
       ...formValues,
     };
 
-    Object.values(extraFormData).forEach((configuration) => {
-      configuration?.submit?.();
-    });
-
     try {
       await updateUser({ userId: authUser.data.id, ...newFormValues, avatar });
       queryClient.invalidateQueries({
