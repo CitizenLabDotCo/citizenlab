@@ -598,7 +598,7 @@
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.participationIndicators": "Top-Level-Indikatoren für Beteiligung",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.participationIndicatorsDescription": "Der folgende Abschnitt gibt einen Überblick über die wichtigsten Beteiligungsindikatoren für die ausgewählte Zeitspanne und bietet einen Überblick über Beteiligungstrends und Leistungskennzahlen.",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.projects": "Projekte",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.projectsPublished": "Veröffentlichte Projekte",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.projectsPublished": "veröffentlichte Projekte",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.reportTitle": "Plattform-Bericht",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.yourProjects": "Ihre Projekte",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.yourProjectsDescription": "Der folgende Abschnitt gibt einen Überblick über die öffentlich sichtbaren Projekte, die sich mit dem ausgewählten Zeitraum überschneiden, über die in diesen Projekten am häufigsten verwendeten Methoden und über die Metriken, die den Gesamtumfang der Beteiligung betreffen.",
