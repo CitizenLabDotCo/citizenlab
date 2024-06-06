@@ -95,7 +95,10 @@ export type ActionDescriptorAction =
   | 'reacting_idea'
   | 'commenting_initiative'
   | 'voting'
-  | 'budgeting';
+  | 'budgeting'
+  | 'annotating_document'
+  | 'taking_survey'
+  | 'taking_poll';
 
 // All disabled reasons
 export type DisabledReason =

@@ -11,8 +11,7 @@ import messages from './messages';
 
 const FIXABLE_REASONS = new Set<string>([
   'user_not_signed_in',
-  // user_not_active here means "not registered or blocked or confirmation still required, see user.rb"
-  'user_not_active',
+  'user_not_active', // means "not registered or blocked or confirmation still required, see user.rb"
   'user_not_verified',
   'user_missing_requirements',
 ] satisfies DisabledReasonFixable[]);
@@ -28,7 +27,7 @@ const globalDisabledMessages: {
   user_not_in_group: messages.defaultNotInGroup,
 };
 
-// Messages specific to a particular
+// Messages specific to each action
 const actionDisabledMessages: {
   [action in ActionDescriptorAction]?: {
     [reason in DisabledReason]?: MessageDescriptor;
@@ -82,6 +81,36 @@ const actionDisabledMessages: {
     user_not_in_group: messages.budgetingNotInGroup,
     user_blocked: messages.budgetingNotPermitted,
     user_not_verified: messages.budgetingNotVerified,
+  },
+  annotating_document: {
+    project_inactive: messages.documentAnnotationDisabledProjectInactive,
+    project_not_visible: messages.documentAnnotationDisabledNotPermitted,
+    not_document_annotation: messages.documentAnnotationDisabledNotActivePhase,
+    user_not_active: messages.documentAnnotationDisabledNotActiveUser,
+    user_not_verified: messages.documentAnnotationDisabledNotVerified,
+    user_missing_requirements: messages.documentAnnotationDisabledNotActiveUser,
+    user_not_signed_in: messages.documentAnnotationDisabledMaybeNotPermitted,
+    user_not_permitted: messages.documentAnnotationDisabledNotPermitted,
+    user_blocked: messages.documentAnnotationDisabledNotPermitted,
+  },
+  taking_survey: {
+    project_inactive: messages.surveyDisabledProjectInactive,
+    project_not_visible: messages.surveyDisabledNotPermitted,
+    not_survey: messages.surveyDisabledNotActivePhase,
+    user_not_active: messages.surveyDisabledNotActiveUser,
+    user_not_verified: messages.surveyDisabledNotVerified,
+    user_missing_requirements: messages.surveyDisabledNotActiveUser,
+    user_not_signed_in: messages.surveyDisabledMaybeNotPermitted,
+    user_not_permitted: messages.surveyDisabledNotPermitted,
+    user_blocked: messages.surveyDisabledNotPermitted,
+  },
+  taking_poll: {
+    project_inactive: messages.pollDisabledProjectInactive,
+    project_not_visible: messages.pollDisabledNotPermitted,
+    not_poll: messages.pollDisabledNotActivePhase,
+    already_responded: messages.pollDisabledAlreadyResponded,
+    user_not_permitted: messages.pollDisabledNotPermitted,
+    user_blocked: messages.pollDisabledNotPermitted,
   },
 };
 

@@ -148,4 +148,89 @@ export default defineMessages({
     defaultMessage:
       'You must verify your account before you can assign budgets.',
   },
+  documentAnnotationDisabledProjectInactive: {
+    id: 'app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledProjectInactive',
+    defaultMessage:
+      'The document is no longer available, since this project is no longer active.',
+  },
+  documentAnnotationDisabledNotPermitted: {
+    id: 'app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotPermitted',
+    defaultMessage:
+      "Unfortunately, you don't have the rights to review this document.",
+  },
+  documentAnnotationDisabledMaybeNotPermitted: {
+    id: 'app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledMaybeNotPermitted',
+    defaultMessage:
+      'Only certain users can review this document. Please {signUpLink} or {logInLink} first.',
+  },
+  documentAnnotationDisabledNotActiveUser: {
+    id: 'app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotActiveUser',
+    defaultMessage: 'Please {completeRegistrationLink} to review the document.',
+  },
+  documentAnnotationDisabledNotActivePhase: {
+    id: 'app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotActivePhase1',
+    defaultMessage:
+      'This document can only be reviewed when this phase is active.',
+  },
+  documentAnnotationDisabledNotVerified: {
+    id: 'app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotVerified',
+    defaultMessage:
+      'Reviewing this document requires verification of your account. {verificationLink}',
+  },
+
+  // 'taking_survey'
+  surveyDisabledProjectInactive: {
+    id: 'app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive2',
+    defaultMessage:
+      'The survey is no longer available, since this project is no longer active.',
+  },
+  surveyDisabledNotPermitted: {
+    id: 'app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted',
+    defaultMessage:
+      "Unfortunately, you don't have the rights to take this survey.",
+  },
+  surveyDisabledMaybeNotPermitted: {
+    id: 'app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted',
+    defaultMessage:
+      'Only certain users can take this survey. Please {signUpLink} or {logInLink} first.',
+  },
+  surveyDisabledMaybeNotVerified: {
+    id: 'app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotVerified',
+    defaultMessage:
+      'Only verified users can take this survey. Please {signUpLink} or {logInLink} first.',
+  },
+  surveyDisabledNotActiveUser: {
+    id: 'app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser',
+    defaultMessage: 'Please {completeRegistrationLink} to take the survey.',
+  },
+  surveyDisabledNotActivePhase: {
+    id: 'app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase',
+    defaultMessage:
+      'This survey can only be taken when this phase in the timeline is active.',
+  },
+  surveyDisabledNotVerified: {
+    id: 'app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified',
+    defaultMessage:
+      'Taking this survey requires verification of your account. {verificationLink}',
+  },
+
+  // 'taking_poll'
+  pollDisabledProjectInactive: {
+    id: 'app.containers.Projects.PollForm.pollDisabledProjectInactive',
+    defaultMessage:
+      'The poll is no longer available, since this project is no longer active.',
+  },
+  pollDisabledNotPermitted: {
+    id: 'app.containers.Projects.PollForm.pollDisabledNotPermitted',
+    defaultMessage:
+      "Unfortunately, you don't have the rights to take this poll.",
+  },
+  pollDisabledNotActivePhase: {
+    id: 'app.containers.Projects.PollForm.pollDisabledNotActivePhase1',
+    defaultMessage: 'This poll can only be taken when this phase is active.',
+  },
+  pollDisabledAlreadyResponded: {
+    id: 'app.containers.Projects.PollForm.pollDisabledAlreadyResponded',
+    defaultMessage: "You've already taken this poll.",
+  },
 });

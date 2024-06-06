@@ -18,8 +18,8 @@ import { SuccessAction } from 'containers/Authentication/SuccessActions/actions'
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
-import { useIntl } from 'utils/cl-intl';
 import { IdeaReactingDisabledReason } from 'utils/actionDescriptors/types';
+import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
