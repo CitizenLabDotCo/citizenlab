@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { JsonSchema7, Layout, isCategorization } from '@jsonforms/core';
@@ -28,7 +28,7 @@ import messages from './messages';
 
 interface Props {
   apiErrors?: CLErrors;
-  onChange?: (data: { key: string; formData: Record<string, any> }) => void;
+  onChange?: (formData: Record<string, any>) => void;
 }
 
 interface OuterProps extends Props {
@@ -50,13 +50,15 @@ const UserCustomFieldsForm = ({
 }: InnerProps) => {
   const locale = useLocale();
 
-  const [data] = useState(() => {
-    return parseRequiredMultilocsData(
-      schema,
-      locale,
-      authUser.data.attributes.custom_field_values
-    );
+  const initialFormData = authUser.data.attributes.custom_field_values;
+
+  const [data, setData] = useState(() => {
+    return parseRequiredMultilocsData(schema, locale, initialFormData);
   });
+
+  useEffect(() => {
+    setData(parseRequiredMultilocsData(schema, locale, initialFormData));
+  }, [schema, locale, initialFormData]);
 
   const [showAllErrors, setShowAllErrors] = useState(false);
 

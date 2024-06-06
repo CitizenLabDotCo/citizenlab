@@ -1,4 +1,4 @@
-import React, { useEffect, FormEvent } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
@@ -19,7 +19,6 @@ import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
-import eventEmitter from 'utils/eventEmitter';
 
 import tracks from '../../tracks';
 
@@ -47,6 +46,7 @@ const CustomFields = ({
   );
   const smallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
+  const [formData, setFormData] = useState<Record<string, any>>({});
 
   useEffect(() => {
     trackEventByName(tracks.signUpCustomFieldsStepEntered);
@@ -56,21 +56,12 @@ const CustomFields = ({
     return null;
   }
 
-  const handleSubmit = async ({
-    formData,
-  }: {
-    formData: Record<string, any>;
-  }) => {
+  const handleSubmit = async () => {
     try {
       await onSubmit(authUser.data.id, formData);
     } catch (e) {
       setError('unknown');
     }
-  };
-
-  const handleOnSubmitButtonClick = (event: FormEvent) => {
-    event.preventDefault();
-    eventEmitter.emit('customFieldsSubmitEvent');
   };
 
   if (!locale) return null;
@@ -88,6 +79,7 @@ const CustomFields = ({
       <FormWrapper formId={uiSchema?.options?.formId}>
         <UserCustomFieldsForm
           authenticationContext={authenticationData.context}
+          onChange={setFormData}
         />
 
         <Box
@@ -101,7 +93,7 @@ const CustomFields = ({
             processing={loading}
             disabled={loading}
             text={formatMessage(messages.continue)}
-            onClick={handleOnSubmitButtonClick}
+            onClick={handleSubmit}
           />
 
           {!hasRequiredFields(userCustomFieldsSchema, locale) && (

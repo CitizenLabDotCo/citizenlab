@@ -175,19 +175,6 @@ const ProfileForm = () => {
     ? []
     : lockedAttributes.data.map((field) => field.attributes.name);
 
-  const handleCustomFieldsChange = ({
-    key,
-    formData,
-  }: {
-    key: ExtraFormDataKey;
-    formData: Record<string, any>;
-  }) => {
-    setExtraFormData({
-      ...extraFormData,
-      [key]: { ...(extraFormData?.[key] ?? {}), formData },
-    });
-  };
-
   return (
     <FormSection>
       <FormProvider {...methods}>
@@ -272,11 +259,11 @@ const ProfileForm = () => {
               label={formatMessage(messages.language)}
             />
           </SectionField>
+          <UserCustomFieldsForm
+            authenticationContext={GLOBAL_CONTEXT}
+            onChange={setExtraFormData}
+          />
         </form>
-        <UserCustomFieldsForm
-          authenticationContext={GLOBAL_CONTEXT}
-          onChange={handleCustomFieldsChange}
-        />
         <Box display="flex">
           <Button
             type="submit"

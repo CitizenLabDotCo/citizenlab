@@ -49,10 +49,6 @@ interface Props {
   /** A function that returns a translation message for json-schema originating errors, given tje Ajv error object */
   getAjvErrorMessage: AjvErrorGetter;
   /**
-   * If you use this as a controlled form, you'll lose some extra validation and transformations as defined in the handleSubmit.
-   */
-  onChange?: (formData: FormData) => void;
-  /**
    * Idea id for update form, used to load and udpate image and files.
    */
   inputId?: string | undefined;
@@ -73,7 +69,6 @@ const Form = memo(
     config,
     layout,
     footer,
-    onChange,
     onSubmit,
   }: Props) => {
     const { formatMessage } = useIntl();
@@ -109,7 +104,6 @@ const Form = memo(
 
     const handleChange = (data: FormData) => {
       setData(data);
-      onChange?.(data);
     };
 
     const handleSubmit = async (formData?: any, showErrors = true) => {
@@ -118,7 +112,6 @@ const Form = memo(
       const sanitizedFormData = sanitizeFormData(submissionData);
 
       setData(sanitizedFormData);
-      onChange?.(sanitizedFormData);
       setShowAllErrors(showErrors);
 
       if (isValidData(schema, uiSchema, submissionData, customAjv, isSurvey)) {
