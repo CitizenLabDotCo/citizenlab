@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Box, Text, colors, Tooltip } from '@citizenlab/cl2-component-library';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import Button from 'components/UI/Button';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -11,7 +13,7 @@ import messages from '../messages';
 import apiImage from './api.png';
 
 export const PublicAPI = () => {
-  const isPublicAPIEnabled = false;
+  const isPublicAPIEnabled = useFeatureFlag({ name: 'public_api' });
   const { formatMessage } = useIntl();
 
   return (
