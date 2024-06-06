@@ -1,4 +1,4 @@
-import React, { useState, lazy, Suspense } from 'react';
+import React, { useState, lazy, Suspense, useRef } from 'react';
 
 import {
   Tr,
@@ -87,6 +87,7 @@ const UserTableRow = ({
   changeRoles,
   authUser,
 }: Props) => {
+  const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
   const [isAssignedItemsOpened, setIsAssignedItemsOpened] = useState(false);
   const [
     isSetSetAsProjectModeratorOpened,
@@ -315,6 +316,7 @@ const UserTableRow = ({
         <Td>
           <MoreActionsMenu
             showLabel={false}
+            ref={moreActionsButtonRef}
             actions={
               userInRowHasRegistered
                 ? [
@@ -331,11 +333,13 @@ const UserTableRow = ({
           user={userInRow}
           setClose={() => setShowBlockUserModal(false)}
           open={showBlockUserModal}
+          returnFocusRef={moreActionsButtonRef}
         />
         <UnblockUser
           user={userInRow}
           setClose={() => setShowUnblockUserModal(false)}
           open={showUnblockUserModal}
+          returnFocusRef={moreActionsButtonRef}
         />
         <Suspense fallback={null}>
           <ChangeSeatModal
@@ -344,17 +348,22 @@ const UserTableRow = ({
             showModal={showChangeSeatModal}
             closeModal={closeChangeSeatModal}
             isChangingToNormalUser={isChangingToNormalUser}
+            returnFocusRef={moreActionsButtonRef}
           />
         </Suspense>
         <Modal
           opened={isAssignedItemsOpened}
           close={() => setIsAssignedItemsOpened(false)}
+          // Return focus to the More Actions button on close
+          returnFocusRef={moreActionsButtonRef}
         >
           <UserAssignedItems user={userInRow} />
         </Modal>
         <Modal
           opened={isSetSetAsProjectModeratorOpened}
           close={() => setIsSetSetAsProjectModeratorOpened(false)}
+          // Return focus to the More Actions button on close
+          returnFocusRef={moreActionsButtonRef}
         >
           <SetSetAsProjectModerator
             user={userInRow}

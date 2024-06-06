@@ -336,6 +336,64 @@ describe XlsxExport::ValueVisitor do
       end
     end
 
+    describe '#visit_multiselect_image' do
+      let(:input_type) { 'multiselect_image' }
+      let!(:field_option1) do
+        create(
+          :custom_field_option,
+          custom_field: field,
+          image: create(:custom_field_option_image),
+          key: 'cat',
+          title_multiloc: { 'en' => 'Cat' }
+        )
+      end
+      let!(:field_option2) do
+        create(
+          :custom_field_option,
+          custom_field: field,
+          image: create(:custom_field_option_image),
+          key: 'dog',
+          title_multiloc: { 'en' => 'Dog' }
+        )
+      end
+      let(:option_index) do
+        {
+          field_option1.key => field_option1,
+          field_option2.key => field_option2
+        }
+      end
+
+      context 'when there are no options selected' do
+        let(:value) { [] }
+
+        it 'returns the empty string' do
+          I18n.with_locale('en') do
+            expect(visitor.visit_multiselect(field)).to eq ''
+          end
+        end
+      end
+
+      context 'when there is one option selected' do
+        let(:value) { ['dog'] }
+
+        it 'returns the value for the report' do
+          I18n.with_locale('en') do
+            expect(visitor.visit_multiselect(field)).to eq 'Dog'
+          end
+        end
+      end
+
+      context 'when there are multiple options selected' do
+        let(:value) { %w[cat dog] }
+
+        it 'returns the value for the report' do
+          I18n.with_locale('en') do
+            expect(visitor.visit_multiselect(field)).to eq 'Cat, Dog'
+          end
+        end
+      end
+    end
+
     describe '#visit_checkbox' do
       let(:input_type) { 'checkbox' }
       let(:value) { true }

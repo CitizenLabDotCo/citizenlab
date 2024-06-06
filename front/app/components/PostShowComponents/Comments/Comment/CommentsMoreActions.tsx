@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useState, useRef } from 'react';
 
 import { isRtl } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
@@ -70,6 +70,7 @@ const CommentsMoreActions = ({
   ideaId,
   initiativeId,
 }: Props) => {
+  const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
   const parentCommentId = comment.relationships?.parent?.data?.id;
   const { mutate: markForDeletion, isLoading } = useMarkCommentForDeletion({
     ideaId,
@@ -175,13 +176,18 @@ const CommentsMoreActions = ({
   return (
     <>
       <Container className={className || ''}>
-        <MoreActionsMenu showLabel={false} actions={actions} />
+        <MoreActionsMenu
+          showLabel={false}
+          actions={actions}
+          ref={moreActionsButtonRef}
+        />
       </Container>
 
       <Modal
         opened={modalVisible_delete}
         close={closeDeleteModal}
         className="e2e-comment-deletion-modal"
+        returnFocusRef={moreActionsButtonRef}
         header={<FormattedMessage {...messages.confirmCommentDeletion} />}
       >
         {needsToJustifyDeletion ? (
@@ -209,6 +215,7 @@ const CommentsMoreActions = ({
       <Modal
         opened={modalVisible_spam}
         close={closeSpamModal}
+        returnFocusRef={moreActionsButtonRef}
         header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
       >
         <SpamReportForm targetId={comment.id} targetType="comments" />

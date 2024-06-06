@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Color, Text } from '@citizenlab/cl2-component-library';
 
-type Sign = 'positive' | 'negative' | 'zero';
+export type Sign = 'positive' | 'negative' | 'zero';
 
 export const getSignNumber = (delta: number) => {
   if (delta > 0) return 'positive';

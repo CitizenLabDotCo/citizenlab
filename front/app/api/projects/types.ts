@@ -106,7 +106,7 @@ export interface IProjectData {
   type: 'project';
   attributes: IProjectAttributes;
   relationships: {
-    project_images: {
+    project_images?: {
       data: IRelationship[];
     };
     areas: {

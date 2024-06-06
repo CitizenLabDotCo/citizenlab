@@ -8,6 +8,7 @@ import { IProjectData } from 'api/projects/types';
 
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import globalMessages from 'utils/actionDescriptors/messages';
 import { ProjectSurveyDisabledReason } from 'utils/actionDescriptors/types';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
@@ -88,6 +89,10 @@ const Survey = ({
         <ProjectPageSectionTitle>
           <FormattedMessage {...messages.survey} />
         </ProjectPageSectionTitle>
+
+        <ScreenReaderOnly>
+          <FormattedMessage {...messages.embeddedSurveyScreenReaderWarning} />
+        </ScreenReaderOnly>
 
         {surveyService === 'typeform' && (
           <TypeformSurvey

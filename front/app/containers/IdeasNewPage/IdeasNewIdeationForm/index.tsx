@@ -33,9 +33,9 @@ import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { reverseGeocode } from 'utils/locationTools';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
-import NewIdeaHeading from '../components/NewIdeaHeading';
 import IdeasNewMeta from '../IdeasNewMeta';
 import messages from '../messages';
+import NewIdeaHeading from '../NewIdeaHeading';
 import { getLocationGeojson } from '../utils';
 
 const ProfileVisiblity = lazy(() => import('./ProfileVisibility'));

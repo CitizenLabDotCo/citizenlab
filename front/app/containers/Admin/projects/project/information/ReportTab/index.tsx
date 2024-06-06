@@ -4,7 +4,6 @@ import { Box, Title, Toggle } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import usePhase from 'api/phases/usePhase';
-import useDeleteReport from 'api/reports/useDeleteReport';
 import useReport from 'api/reports/useReport';
 import useUpdateReport from 'api/reports/useUpdateReport';
 
@@ -32,17 +31,9 @@ const ReportTab = () => {
   const reportBuilderEnabled = useFeatureFlag({ name: 'report_builder' });
   const { formatMessage } = useIntl();
 
-  const { mutate: deleteReport, isLoading } = useDeleteReport();
   const { mutate: updateReport } = useUpdateReport();
 
   if (!reportBuilderEnabled || !phase) return null;
-
-  const handleDeleteReport = async () => {
-    if (!report) return;
-    if (window.confirm(formatMessage(messages.areYouSureYouWantToDelete))) {
-      deleteReport(report.data.id);
-    }
-  };
 
   const reportId = phase.data.relationships.report?.data?.id;
   const hasReport = !!reportId;
@@ -94,11 +85,7 @@ const ReportTab = () => {
                 label={formatMessage(messages.visible)}
               />
             </Box>
-            <Buttons
-              reportId={reportId}
-              isLoading={isLoading}
-              onDelete={handleDeleteReport}
-            />
+            <Buttons reportId={reportId} showDuplicate={false} />
           </Box>
         )}
       </Box>

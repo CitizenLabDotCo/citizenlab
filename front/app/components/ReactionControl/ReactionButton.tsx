@@ -462,7 +462,11 @@ const ReactionButton = ({
             {reactionsCount}
           </ReactionCount>
           {disabledReason && (
-            <ScreenReaderOnly>{disabledMessage}</ScreenReaderOnly>
+            // Adding a dot as a hack to make the screen reader read the message with the correct pause after the previous text. Ideally all messages should have a dot at the end.
+            <ScreenReaderOnly>
+              {`. `}
+              {disabledMessage}
+            </ScreenReaderOnly>
           )}
         </Button>
       </Tippy>

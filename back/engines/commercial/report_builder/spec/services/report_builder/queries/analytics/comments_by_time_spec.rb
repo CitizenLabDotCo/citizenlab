@@ -9,13 +9,11 @@ RSpec.describe ReportBuilder::Queries::Analytics::CommentsByTime do
     let(:date) { Date.new(2022, 9, 1) }
     let(:idea) do
       create(:dimension_date, date: date)
-      create(:dimension_type, name: 'idea', parent: 'post')
-
       create(:idea, created_at: date)
     end
 
     before do
-      create(:dimension_type, name: 'comment', parent: 'idea')
+      Analytics::PopulateDimensionsService.populate_types
       create(:comment, created_at: date, post: idea)
     end
 

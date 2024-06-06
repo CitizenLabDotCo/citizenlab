@@ -32,14 +32,16 @@ describe('Project images', () => {
 
     cy.goToLandingPage();
 
+    // Sometimes the next command just times out because our BE is crazy slow?
+    // So we add another cy.wait...
+    cy.wait(5000);
+
     // If the card title is found, the project image should already have been
     // taken out of the cache (or a request would have been made if there is a bug)
-    cy.get('[data-testid="project-card-project-title"] > span')
-      .first()
-      .contains(title);
+    cy.contains('[data-testid="project-card-project-title"] > span', title);
 
-    // But, just to be sure, we will wait 5 more seconds
-    cy.wait(5000);
+    // But, just to be sure, we will wait 1 more second
+    cy.wait(1000);
   });
 });
 
@@ -74,11 +76,15 @@ describe('Project folder images', () => {
 
     cy.goToLandingPage();
 
+    // Sometimes the next command just times out because our BE is crazy slow?
+    // So we add another cy.wait...
+    cy.wait(5000);
+
     // If the card title is found, the project folder image should already have been
     // taken out of the cache (or a request would have been made if there is a bug)
-    cy.get('.e2e-folder-card-folder-title > span').first().contains(title);
+    cy.contains('.e2e-folder-card-folder-title > span', title);
 
-    // But, just to be sure, we will wait 5 more seconds
-    cy.wait(5000);
+    // But, just to be sure, we will wait 1 more second
+    cy.wait(1000);
   });
 });

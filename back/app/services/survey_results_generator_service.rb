@@ -188,7 +188,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     inputs
       .select("custom_field_values->'#{field_key}' as value")
       .where("custom_field_values->'#{field_key}' IS NOT NULL")
-      .map { |answer| { answer: answer.value } }
+      .map { |answer| { answer: answer.value.to_s } }
       .sort_by { |a| a[:answer] }
   end
 

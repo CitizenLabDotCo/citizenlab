@@ -15,6 +15,13 @@ RSpec.describe ContentBuilder::Layout do
   end
 
   describe 'with_widget_type scope' do
+    before_all do
+      _non_matching_layout = create(:layout, craftjs_json: {
+        'ROOT' => { 'type' => 'div' },
+        'node-1' => { 'type' => { 'resolvedName' => 'NotQueried' } }
+      })
+    end
+
     let_it_be(:layout1) do
       create(:layout, craftjs_json: {
         'ROOT' => { 'type' => 'div' },
@@ -27,7 +34,8 @@ RSpec.describe ContentBuilder::Layout do
     let_it_be(:layout2) do
       create(:layout, craftjs_json: {
         'ROOT' => { 'type' => 'div' },
-        'node-1' => { 'type' => { 'resolvedName' => 'Widget1' } }
+        'node-1' => { 'type' => { 'resolvedName' => 'Widget1' } },
+        'node-2' => { 'type' => { 'resolvedName' => 'Widget3' } }
       })
     end
 
@@ -41,8 +49,13 @@ RSpec.describe ContentBuilder::Layout do
         .to match_array([layout1])
     end
 
+    it 'returns all the layouts that contain the specified widget types' do
+      expect(described_class.with_widget_type('Widget2', 'Widget3'))
+        .to match_array([layout1, layout2])
+    end
+
     it 'returns an empty array when no layout contains the specified widget type' do
-      expect(described_class.with_widget_type('Widget3')).to be_empty
+      expect(described_class.with_widget_type('Widget4')).to be_empty
     end
   end
 
