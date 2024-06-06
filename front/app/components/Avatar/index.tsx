@@ -10,7 +10,8 @@ import useUserById from 'api/users/useUserById';
 
 import FeatureFlag from 'components/FeatureFlag';
 
-import useIntl from 'utils/cl-intl/useIntl';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 import { getFullName } from 'utils/textUtils';
@@ -139,6 +140,12 @@ const Avatar = memo(
     if (isLinkToProfile && hasValidProfileLink) {
       return (
         <Link to={profileLink} scrollToTop>
+          <ScreenReaderOnly>
+            <FormattedMessage
+              {...messages.titleForAccessibility}
+              values={{ fullName: getFullName(user.data) }}
+            />
+          </ScreenReaderOnly>
           <AvatarInner
             userId={userId}
             isLinkToProfile={isLinkToProfile}
@@ -181,14 +188,13 @@ const AvatarInner = ({
   const borderHoverColor = colors.textSecondary;
   const borderColor = props.borderColor || 'transparent';
   const bgColor = props.bgColor || 'transparent';
-  const { formatMessage } = useIntl();
 
   if (isNilOrError(user)) {
     if (authorHash === null) {
       return null;
     } else {
       return (
-        <Container className={className} size={containerSize}>
+        <Container aria-hidden className={className} size={containerSize}>
           <Box padding={paddingValue.toString()}>
             <BoringAvatar
               size={avatarSize}
@@ -215,17 +221,14 @@ const AvatarInner = ({
   const hasValidProfileLink = profileLink !== '/profile/undefined';
   const hasHoverEffect = (isLinkToProfile && hasValidProfileLink) || false;
   const avatarSrc = avatar ? avatar[imageSizeLabel] : null;
-  const alt = formatMessage(messages.titleForAccessibility, {
-    fullName: getFullName(user.data),
-  });
 
   return (
-    <Container className={className} size={containerSize}>
+    <Container aria-hidden className={className} size={containerSize}>
       {avatarSrc ? (
         <AvatarImage
           className={`avatarImage ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
           src={avatarSrc}
-          alt={alt}
+          alt=""
           size={containerSize}
           borderThickness={borderThickness}
           borderColor={borderColor}
@@ -245,8 +248,6 @@ const AvatarInner = ({
           borderHoverColor={moderator ? colors.red600 : borderHoverColor}
           bgColor={bgColor}
           paddingValue={paddingValue}
-          ariaHidden={false}
-          title={alt}
         />
       )}
 
