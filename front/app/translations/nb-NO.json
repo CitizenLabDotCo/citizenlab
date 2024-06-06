@@ -1474,6 +1474,7 @@
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotPermitted": "Dessverre har du ikke rettighetene til å se gjennom dette dokumentet.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotVerified": "Gjennomgang av dette dokumentet krever bekreftelse av kontoen din. {verificationLink}",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledProjectInactive": "Dokumentet er ikke lenger tilgjengelig, siden dette prosjektet ikke lenger er aktivt.",
+  "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBar.numberOfPicks": "{baskets, plural, one {1 valg} other {# valg}}",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "Prosentandelen av deltakerne som valgte dette alternativet.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "Prosentandelen av de totale stemmene dette alternativet fikk.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Koste:",
