@@ -164,9 +164,10 @@ module.exports = {
               "Import React testing library exports from 'utils/testUtils/rtl' instead",
           },
           {
-            name: '@tippyjs/react'
-            message: "Import Tooltip from component library instead of directly from '@tippyjs/react'"
-          }
+            name: '@tippyjs/react',
+            message:
+              "Import Tooltip from component library instead of directly from '@tippyjs/react'",
+          },
         ],
       },
     ],
