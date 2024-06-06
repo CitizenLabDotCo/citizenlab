@@ -36,9 +36,14 @@ const Tooltip = ({ children, ...rest }: TooltipProps) => {
   // Check if the active element is inside the tooltip
   useEffect(() => {
     const tooltip = document.getElementById(tooltipId.current);
+    const tooltipContent = document.querySelector('.tippy-content');
     if (tooltip && tooltip.contains(activeElement)) {
       setIsFocused(true);
-    } else if (isFocused) {
+    } else if (
+      isFocused &&
+      tooltipContent &&
+      !tooltipContent.contains(activeElement)
+    ) {
       setIsFocused(false);
     }
   }, [activeElement, isFocused]);
@@ -78,7 +83,7 @@ const Tooltip = ({ children, ...rest }: TooltipProps) => {
       }}
       {...rest}
     >
-      <Box id={tooltipId.current} width="fit-content">
+      <Box as="span" id={tooltipId.current}>
         {children}
       </Box>
     </Tippy>

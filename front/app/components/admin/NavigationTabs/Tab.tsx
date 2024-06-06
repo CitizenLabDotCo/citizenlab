@@ -36,9 +36,7 @@ const Container = styled.div`
       text-transform: uppercase;
     }
 
-    &:not(:last-child) {
-      margin-right: 40px;
-    }
+    margin-right: 40px;
 
     ${disable ? 'cursor: not-allowed;' : 'cursor: pointer;'}
 
