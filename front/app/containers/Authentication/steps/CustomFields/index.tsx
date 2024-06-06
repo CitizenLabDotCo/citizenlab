@@ -47,6 +47,7 @@ const CustomFields = ({
   const smallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
   const [formData, setFormData] = useState<Record<string, any>>({});
+  console.log({ formData });
 
   useEffect(() => {
     trackEventByName(tracks.signUpCustomFieldsStepEntered);

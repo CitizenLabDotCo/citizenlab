@@ -85,13 +85,9 @@ const UserCustomFieldsForm = ({
         ajv={customAjv}
         getAjvErrorMessage={getAjvErrorMessage}
         locale={locale}
-        onChange={(formData) =>
-          formData &&
-          onChange?.({
-            formData,
-            key: 'custom_field_values',
-          })
-        }
+        onChange={(data) => {
+          data && onChange?.(data);
+        }}
       />
     </Box>
   );
