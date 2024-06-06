@@ -14,6 +14,7 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
+import ScreenReaderCurrencyValue from 'components/ScreenReaderCurrencyValue';
 
 import {
   isFixableByAuthentication,
@@ -49,13 +50,14 @@ const AddToBasketButton = ({
   const basketId = phase.relationships?.user_basket?.data?.id;
   const { data: basket } = useBasket(basketId);
   const ideaBudget = idea?.data.attributes.budget;
+  const currency = appConfig?.data.attributes.settings.core.currency;
 
   const ideaInBasket = !!getVotes?.(ideaId);
 
   const [searchParams] = useSearchParams();
   const isProcessing = searchParams.get('processing_vote') === ideaId;
 
-  if (!idea || !ideaBudget) {
+  if (!idea || !ideaBudget || !currency) {
     return null;
   }
 
@@ -122,7 +124,6 @@ const AddToBasketButton = ({
 
   const buttonMessage = ideaInBasket ? messages.added : messages.add;
   const buttonEnabled = isButtonEnabled(basket, actionDescriptor);
-  const currency = appConfig?.data.attributes.settings.core.currency;
 
   const action =
     phase.attributes.voting_method === 'budgeting' ? 'budgeting' : 'voting';
@@ -169,7 +170,8 @@ const AddToBasketButton = ({
         >
           {ideaInBasket && <Icon mb="4px" fill="white" name="check" />}
           <FormattedMessage {...buttonMessage} />
-          {` (${ideaBudget} ${currency})`}
+          <span aria-hidden>{` (${ideaBudget} ${currency})`}</span>
+          <ScreenReaderCurrencyValue amount={ideaBudget} currency={currency} />
         </Button>
       </div>
     </Tippy>
