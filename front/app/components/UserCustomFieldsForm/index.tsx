@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { JsonSchema7, Layout, isCategorization } from '@jsonforms/core';
 import { ErrorObject } from 'ajv';
-import { CLErrors } from 'typings';
 
 import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
 import useCustomFieldsSchema from 'api/custom_fields_json_form_schema/useCustomFieldsSchema';
@@ -14,7 +13,6 @@ import useLocale from 'hooks/useLocale';
 
 import Fields from 'components/Form/Components/Fields';
 import { parseRequiredMultilocsData } from 'components/Form/parseRequiredMultilocs';
-import { customAjv } from 'components/Form/utils';
 
 import messages from './messages';
 
@@ -27,7 +25,6 @@ import messages from './messages';
 */
 
 interface Props {
-  apiErrors?: CLErrors;
   onChange?: (formData: Record<string, any>) => void;
 }
 
@@ -45,7 +42,6 @@ const UserCustomFieldsForm = ({
   authUser,
   schema,
   uiSchema,
-  apiErrors,
   onChange,
 }: InnerProps) => {
   const locale = useLocale();
@@ -59,8 +55,6 @@ const UserCustomFieldsForm = ({
   useEffect(() => {
     setData(parseRequiredMultilocsData(schema, locale, initialFormData));
   }, [schema, locale, initialFormData]);
-
-  const [showAllErrors, setShowAllErrors] = useState(false);
 
   const getAjvErrorMessage = (error: ErrorObject) => {
     switch (error.keyword) {
@@ -77,12 +71,8 @@ const UserCustomFieldsForm = ({
     <Box overflow={layout === 'inline' ? 'visible' : 'auto'} flex="1">
       <Fields
         data={data}
-        apiErrors={apiErrors}
-        showAllErrors={showAllErrors}
-        setShowAllErrors={setShowAllErrors}
         schema={schema}
         uiSchema={uiSchema}
-        ajv={customAjv}
         getAjvErrorMessage={getAjvErrorMessage}
         locale={locale}
         onChange={(data) => {

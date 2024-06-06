@@ -3,10 +3,11 @@ import React, { useCallback, useState } from 'react';
 // jsonforms
 import { JsonSchema7, Translator, Layout } from '@jsonforms/core';
 import { JsonForms } from '@jsonforms/react';
-import Ajv, { ErrorObject } from 'ajv';
+import { ErrorObject } from 'ajv';
 import { CLErrors, SupportedLocale } from 'typings';
 
 import { parseRequiredMultilocsSchema } from 'components/Form/parseRequiredMultilocs';
+import { customAjv } from 'components/Form/utils';
 
 import { useIntl } from 'utils/cl-intl';
 import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
@@ -18,10 +19,9 @@ import { ExtendedUISchema } from '../Controls/visibilityUtils';
 import { selectRenderers } from './formConfig';
 
 interface Props {
-  ajv: Ajv;
   data: FormData;
   apiErrors?: CLErrors;
-  showAllErrors: boolean;
+  showAllErrors?: boolean;
   setShowAllErrors?: (showAllErrors: boolean) => void;
   schema: JsonSchema7;
   uiSchema: Layout;
@@ -36,7 +36,6 @@ interface Props {
 }
 
 const Fields = ({
-  ajv,
   data,
   apiErrors,
   showAllErrors,
@@ -108,7 +107,7 @@ const Fields = ({
             onChange(data);
           }}
           validationMode="ValidateAndShow"
-          ajv={ajv}
+          ajv={customAjv}
           i18n={{
             translateError,
           }}

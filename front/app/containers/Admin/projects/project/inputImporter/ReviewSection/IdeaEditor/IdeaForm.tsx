@@ -14,7 +14,6 @@ import {
   ApiErrorGetter,
   AjvErrorGetter,
 } from 'components/Form/typings';
-import { customAjv } from 'components/Form/utils';
 
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 
@@ -74,7 +73,6 @@ const IdeaForm = ({
   return (
     <Box w="90%">
       <Fields
-        ajv={customAjv}
         showAllErrors={showAllErrors}
         apiErrors={apiErrors}
         schema={schema}

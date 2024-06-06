@@ -152,7 +152,6 @@ const Form = memo(
             setShowAllErrors={setShowAllErrors}
             schema={schema}
             uiSchema={uiSchema}
-            ajv={customAjv}
             getApiErrorMessage={getApiErrorMessage}
             getAjvErrorMessage={getAjvErrorMessage}
             inputId={inputId}
