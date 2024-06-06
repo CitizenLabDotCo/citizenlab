@@ -112,7 +112,7 @@ const FormBuilderSettings = ({
         />
       </Box>
       {translatedStringKey && (
-        <Title variant="h4" as="h2" mb="8px">
+        <Title styleVariant="h4" as="h2" mb="8px">
           <FormattedMessage {...translatedStringKey} />
         </Title>
       )}

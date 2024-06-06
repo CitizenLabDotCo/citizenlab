@@ -115,7 +115,7 @@ const IdeaCard = ({
           </Box>
         )}
         <Link to={url} target="_blank">
-          <Title variant="h5" display="inline" mt="0px" mb="0px">
+          <Title styleVariant="h5" display="inline" mt="0px" mb="0px">
             {title}
           </Title>
         </Link>

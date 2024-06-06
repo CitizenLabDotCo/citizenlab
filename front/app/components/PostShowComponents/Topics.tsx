@@ -48,7 +48,7 @@ const Topics = memo(
     return (
       <Box display="flex" flexDirection="column">
         {showTitle && (
-          <Title variant="h3">{formatMessage(messages.topics)}</Title>
+          <Title styleVariant="h3">{formatMessage(messages.topics)}</Title>
         )}
         <Box
           id={`e2e-${postType}-topics`}

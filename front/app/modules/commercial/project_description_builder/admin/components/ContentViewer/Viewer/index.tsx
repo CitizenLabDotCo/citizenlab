@@ -52,7 +52,7 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
       {isInitialLoading && <Spinner />}
       {!isInitialLoading && projectDescriptionBuilderContent && (
         <Box data-testid="projectDescriptionBuilderPreviewContent">
-          <Title color="tenantText" variant="h1">
+          <Title color="tenantText" styleVariant="h1">
             {localize(projectTitle)}
           </Title>
           <Editor isPreview={true}>

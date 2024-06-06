@@ -174,7 +174,7 @@ const ActionForm = ({
               pb="20px"
             >
               <Title
-                variant="h4"
+                styleVariant="h4"
                 color="primary"
                 style={{ fontWeight: 600 }}
                 mt="5px"

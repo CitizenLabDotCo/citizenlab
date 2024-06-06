@@ -41,7 +41,7 @@ const SentCampaignRow = ({ campaign, context }: Props) => {
   return (
     <Row id={campaign.id}>
       <Box>
-        <Title color="primary" variant="h4" m="0px">
+        <Title color="primary" styleVariant="h4" m="0px">
           <T value={campaign.attributes.subject_multiloc} />
         </Title>
         <Box display="flex" alignItems="center" gap="12px">
@@ -72,7 +72,7 @@ const SentCampaignRow = ({ campaign, context }: Props) => {
         alignItems="center"
       >
         <Box display="flex" flexDirection="column" justifyContent="center">
-          <Title color="primary" variant="h4" m="0px">
+          <Title color="primary" styleVariant="h4" m="0px">
             {(
               ((campaign.attributes.delivery_stats?.opened || 0) /
                 (campaign.attributes.delivery_stats?.total || 1)) *
@@ -85,7 +85,7 @@ const SentCampaignRow = ({ campaign, context }: Props) => {
           </Text>
         </Box>
         <Box display="flex" flexDirection="column" justifyContent="center">
-          <Title color="primary" variant="h4" m="0px">
+          <Title color="primary" styleVariant="h4" m="0px">
             {(
               ((campaign.attributes.delivery_stats?.clicked || 0) /
                 (campaign.attributes.delivery_stats?.total || 1)) *

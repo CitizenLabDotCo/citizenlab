@@ -16,7 +16,7 @@ const InitiativeCreatedModalContent = () => {
       alignItems="center"
       justifyContent="center"
     >
-      <Title variant="h2" textAlign="center">
+      <Title styleVariant="h2" textAlign="center">
         {formatMessage(messages.createdModalTitle)}
       </Title>
       <Text

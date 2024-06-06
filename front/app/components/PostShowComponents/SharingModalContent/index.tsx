@@ -158,7 +158,7 @@ const SharingModalContent = ({
       >
         <Image width="80px" height="80px" src={rocket} alt="" />
         <Title
-          variant="h2"
+          styleVariant="h2"
           textAlign="center"
           className={`e2e-${postType}-social-sharing-modal-title`}
         >

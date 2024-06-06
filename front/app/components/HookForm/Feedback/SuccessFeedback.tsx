@@ -32,7 +32,7 @@ const SuccessFeedback = ({
         width="24px"
         height="24px"
       />
-      <Title color="success" variant="h4" as="h3">
+      <Title color="success" styleVariant="h4" as="h3">
         {successMessage}
       </Title>
     </Box>

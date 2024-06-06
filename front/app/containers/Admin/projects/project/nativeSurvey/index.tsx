@@ -164,7 +164,7 @@ const Forms = () => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Title variant="h3" color="primary">
+          <Title styleVariant="h3" color="primary">
             {formatMessage(messages.surveyResponses)}
           </Title>
           <Box display="flex" justifyContent="center" alignItems="center">
@@ -361,7 +361,7 @@ const Forms = () => {
       <Modal opened={showDeleteModal} close={closeDeleteModal}>
         <Box display="flex" flexDirection="column" width="100%" p="20px">
           <Box mb="40px">
-            <Title variant="h3" color="primary">
+            <Title styleVariant="h3" color="primary">
               {formatMessage(messages.deleteResultsConfirmationQuestion)}
             </Title>
             <Text color="primary" fontSize="l">

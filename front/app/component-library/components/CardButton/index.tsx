@@ -67,7 +67,7 @@ const CardButton = ({
       {icon ?? null}
       {title && (
         <Title
-          variant="h5"
+          styleVariant="h5"
           color={selected ? 'primary' : 'coolGrey700'}
           textAlign="left"
         >

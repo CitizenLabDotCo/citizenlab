@@ -63,7 +63,7 @@ const WarningModal = ({
       </Box>
       <Box display="flex" flexDirection="column" width="100%">
         <Box mb="24px">
-          <Title variant="h4" color="tenantText">
+          <Title styleVariant="h4" color="tenantText">
             {title}
           </Title>
           <Text color="tenantText" fontSize="s">

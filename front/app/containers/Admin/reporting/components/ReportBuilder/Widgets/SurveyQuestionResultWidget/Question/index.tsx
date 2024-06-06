@@ -55,7 +55,7 @@ const SurveyQuestionResult = ({
   return (
     <Box mb="8px">
       <Title
-        variant="h4"
+        styleVariant="h4"
         mt="0px"
         mb="8px"
         className="e2e-survey-question-widget-title"

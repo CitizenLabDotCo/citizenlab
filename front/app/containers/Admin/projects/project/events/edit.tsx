@@ -580,7 +580,7 @@ const AdminProjectEventEdit = () => {
                 />
               </SectionField>
               <Title
-                variant="h4"
+                styleVariant="h4"
                 fontWeight="bold"
                 color="primary"
                 style={{ fontWeight: '600' }}
@@ -612,7 +612,7 @@ const AdminProjectEventEdit = () => {
               </Box>
 
               <Title
-                variant="h4"
+                styleVariant="h4"
                 fontWeight="bold"
                 color="primary"
                 style={{ fontWeight: '600' }}
@@ -711,7 +711,7 @@ const AdminProjectEventEdit = () => {
               </SectionField>
 
               <Title
-                variant="h4"
+                styleVariant="h4"
                 fontWeight="bold"
                 color="primary"
                 style={{ fontWeight: '600' }}
@@ -799,7 +799,7 @@ const AdminProjectEventEdit = () => {
               )}
 
               <Title
-                variant="h4"
+                styleVariant="h4"
                 fontWeight="bold"
                 color="primary"
                 style={{ fontWeight: '600' }}

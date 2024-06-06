@@ -43,7 +43,7 @@ const EmptyState = ({ onOpenModal }: Props) => {
         justifyContent="center"
       >
         <Box display="flex" flexDirection="column" alignItems="center">
-          <Title variant="h3" mb="0px">
+          <Title styleVariant="h3" mb="0px">
             <FormattedMessage {...messages.emptyStateTitle} />
           </Title>
           <Text>

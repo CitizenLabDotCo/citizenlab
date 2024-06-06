@@ -54,7 +54,7 @@ const Settings = ({ selectedNode, onClose, onDelete }: Props) => {
         iconColorOnHover={'#000'}
       />
       {selectedNode.title && (
-        <Title variant="h2" mt="-4px" mb="32px">
+        <Title styleVariant="h2" mt="-4px" mb="32px">
           <FormattedMessage {...selectedNode.title} />
         </Title>
       )}

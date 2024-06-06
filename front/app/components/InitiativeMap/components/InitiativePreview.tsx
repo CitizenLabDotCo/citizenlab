@@ -71,7 +71,7 @@ const InitiativePreview = ({ className, initiativeId }: Props) => {
 
   return (
     <Container className={className}>
-      <Title variant="h3" as="h1" m="0px">
+      <Title styleVariant="h3" as="h1" m="0px">
         {initiativeTitle}
       </Title>
       {initiativeAddress && (

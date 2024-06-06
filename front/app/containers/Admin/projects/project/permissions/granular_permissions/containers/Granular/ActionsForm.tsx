@@ -122,7 +122,7 @@ const ActionsForm = ({
                 index === permissions.length - 1 ? 'last' : ''
               }`}
             >
-              <Title variant="h3" color="primary">
+              <Title styleVariant="h3" color="primary">
                 <FormattedMessage
                   {...getPermissionActionSectionSubtitle({
                     permissionAction,

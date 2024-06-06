@@ -54,7 +54,7 @@ const PublicAPITokens = () => {
         <GoBackButton onClick={clHistory.goBack} />
       </Box>
 
-      <Title variant="h1">{formatMessage(messages.title)}</Title>
+      <Title styleVariant="h1">{formatMessage(messages.title)}</Title>
       <Box display="flex" justifyContent={'space-between'} mb="12px">
         <Text>
           <FormattedMessage
@@ -116,7 +116,7 @@ const PublicAPITokens = () => {
       )}
       {apiTokens && apiTokens.data.length === 0 && (
         <Box display="flex" justifyContent="center" w="100%">
-          <Title variant="h3">{formatMessage(messages.noTokens)}</Title>
+          <Title styleVariant="h3">{formatMessage(messages.noTokens)}</Title>
         </Box>
       )}
       <Modal opened={isModalOpen} close={closeTokenModal}>

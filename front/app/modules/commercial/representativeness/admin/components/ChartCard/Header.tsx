@@ -40,7 +40,7 @@ const Header = ({
     display="flex"
     justifyContent="space-between"
   >
-    <Title color="primary" variant="h3" as="h2">
+    <Title color="primary" styleVariant="h3" as="h2">
       {title}
     </Title>
     <Box display="flex" alignItems="center" mt="4px">

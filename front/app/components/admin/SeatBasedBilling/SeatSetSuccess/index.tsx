@@ -60,7 +60,7 @@ const SeatSetSuccess = ({
           height="60px"
         />
       </Box>
-      <Title variant="h3" textAlign="center">
+      <Title styleVariant="h3" textAlign="center">
         {formatMessage(titleMessage)}
       </Title>
       <Text textAlign="center" fontSize="l">

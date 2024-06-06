@@ -42,7 +42,7 @@ const AnonymousParticipationConfirmationModal = ({ onCloseModal }: Props) => {
       </Box>
       <Box display="flex" flexDirection="column" width="100%">
         <Box mb="40px">
-          <Title variant="h4" color="tenantText">
+          <Title styleVariant="h4" color="tenantText">
             {formatMessage(messages.participateAnonymously)}
           </Title>
           <Text color="tenantText" fontSize="s">

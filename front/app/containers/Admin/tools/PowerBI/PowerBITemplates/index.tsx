@@ -50,7 +50,7 @@ const PowerBITemplates = () => {
         <GoBackButton onClick={clHistory.goBack} />
       </Box>
 
-      <Title variant="h1" mb="0">
+      <Title styleVariant="h1" mb="0">
         {formatMessage(messages.title)}
       </Title>
       <Text>
@@ -66,7 +66,7 @@ const PowerBITemplates = () => {
         />
       </Text>
       <Box background="white" px="20px" pb="10px" mb="20px">
-        <Title variant="h2" mb="0">
+        <Title styleVariant="h2" mb="0">
           {formatMessage(messages.reportTemplateTitle)}
         </Title>
         <Box display="flex">
@@ -88,7 +88,7 @@ const PowerBITemplates = () => {
         </Box>
       </Box>
       <Box background="white" px="20px" pb="10px" mb="20px">
-        <Title variant="h2" mb="0">
+        <Title styleVariant="h2" mb="0">
           {formatMessage(messages.dataflowTemplateTitle)}
         </Title>
         <Box display="flex">

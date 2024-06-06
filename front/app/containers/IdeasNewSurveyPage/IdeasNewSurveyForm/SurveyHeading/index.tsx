@@ -121,7 +121,7 @@ const SurveyHeading = ({ titleText }: Props) => {
       <Modal opened={showLeaveModal} close={closeModal}>
         <Box display="flex" flexDirection="column" width="100%" p="20px">
           <Box mb="40px">
-            <Title variant="h1" as="h3" color="primary">
+            <Title styleVariant="h1" as="h3" color="primary">
               <FormattedMessage {...messages.leaveFormConfirmationQuestion} />
             </Title>
             <Text color="primary" fontSize="l">

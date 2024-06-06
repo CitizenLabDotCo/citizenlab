@@ -80,7 +80,7 @@ const ProjectInfo = ({ projectId, className }: Props) => {
       <Container className={`${className || ''} e2e-project-info`}>
         <Fragment name={`projects/${project.data.id}/info`}>
           <Left>
-            <Title variant="h1" color="tenantText">
+            <Title styleVariant="h1" color="tenantText">
               <T value={project.data.attributes.title_multiloc} />
             </Title>
 

@@ -42,7 +42,7 @@ const UnblockUserModal = ({ open, setClose, user, returnFocusRef }: Props) => {
       opened={open}
       returnFocusRef={returnFocusRef}
     >
-      <Title variant="h3" m="35px 0 30px">
+      <Title styleVariant="h3" m="35px 0 30px">
         {formatMessage(messages.confirmUnblock, {
           name: getFullName(user),
         })}

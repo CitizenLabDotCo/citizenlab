@@ -138,7 +138,7 @@ const PublicComments = ({
         >
           <Title
             color="tenantText"
-            variant="h2"
+            styleVariant="h2"
             fontSize={isSmallerThanPhone ? 'xl' : 'xxl'}
             id="comments-main-title"
           >

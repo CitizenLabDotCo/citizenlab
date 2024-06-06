@@ -73,7 +73,14 @@ const FieldTitle = ({
       className={className}
     >
       <Box display="flex" alignItems="center">
-        <Title color="primary" variant="h4" as="h3" mt="0px" mb="0px" ml="12px">
+        <Title
+          color="primary"
+          styleVariant="h4"
+          as="h3"
+          mt="0px"
+          mb="0px"
+          ml="12px"
+        >
           {isBirthyear ? (
             <FormattedMessage {...messages.birthyearCustomTitle} />
           ) : (

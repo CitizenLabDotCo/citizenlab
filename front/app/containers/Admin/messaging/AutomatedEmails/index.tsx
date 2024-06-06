@@ -105,7 +105,7 @@ const CampaignsGroup = ({
   onClickViewExample,
 }: CampaignsGroupProps) => (
   <Box mb="30px">
-    <Title color="primary" variant="h3" mt="20px">
+    <Title color="primary" styleVariant="h3" mt="20px">
       {recipient_role}
     </Title>
     {group.map((groupedCampaignsEntry: GroupedCampaignsEntry) => (
@@ -127,7 +127,7 @@ const CampaignsSubGroup = ({
   onClickViewExample,
 }: CampaignsSubGroupProps) => (
   <Box>
-    <Title color="primary" variant="h4" mt="24px" fontWeight="normal">
+    <Title color="primary" styleVariant="h4" mt="24px" fontWeight="normal">
       {content_type}
     </Title>
     {campaigns.map((campaign: CampaignData) => (

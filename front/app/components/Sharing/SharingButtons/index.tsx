@@ -63,7 +63,7 @@ const SharingButtons = ({
           textAlign={isSmallerThanTablet ? 'center' : 'inherit'}
           mb="20px"
           color="textPrimary"
-          variant="h3"
+          styleVariant="h3"
           as="h2"
         >
           {titleMessage}

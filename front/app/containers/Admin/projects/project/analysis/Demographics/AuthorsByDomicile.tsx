@@ -44,7 +44,7 @@ const CustomTooltip = ({ payload }: { payload?: any }) => {
       borderRadius="3px"
       w="120px"
     >
-      <Title variant="h6" my="4px">
+      <Title styleVariant="h6" my="4px">
         {payload[0]?.payload?.name}
       </Title>
       <Text m="2px">
@@ -156,7 +156,7 @@ const AuthorsByDomicile = ({ customFieldId }: Props) => {
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
-      <Title my="0" variant="h6" fontWeight="normal">
+      <Title my="0" styleVariant="h6" fontWeight="normal">
         <FormattedMessage {...messages.authorsByDomicile} />
       </Title>
       <ResponsiveContainer width="100%" height={100}>

@@ -54,7 +54,7 @@ const EsriKeyInput = () => {
           </Box>
           <Title
             color="primary"
-            variant="h1"
+            styleVariant="h1"
             mb="0"
             style={{ fontWeight: 600 }}
           >

@@ -44,7 +44,7 @@ const Card = ({ title, infoTooltipContent, children, ...rest }: Props) => {
     <Container className="report-widget-card" {...rest}>
       {title && (
         <Box display="flex" flexDirection="row" alignItems="center" mb="16px">
-          <Title variant="h4" mt="0px" mb="0px">
+          <Title styleVariant="h4" mt="0px" mb="0px">
             {localize(title)}
           </Title>
           {infoTooltipContent && (

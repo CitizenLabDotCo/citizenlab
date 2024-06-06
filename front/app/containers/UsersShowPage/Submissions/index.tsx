@@ -47,7 +47,7 @@ const Submissions = () => {
   return (
     <Box display="flex" w="100%" flexDirection="column">
       {isSmallerThanPhone && (
-        <Title mt="0px" variant="h3" as="h1">
+        <Title mt="0px" styleVariant="h3" as="h1">
           <FormattedMessage
             {...messages.postsWithCount}
             values={{

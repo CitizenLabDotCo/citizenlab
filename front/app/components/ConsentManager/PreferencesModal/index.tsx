@@ -64,7 +64,7 @@ const PreferencesModal = ({
         />
       ) : (
         <ContentContainer role="dialog" aria-modal>
-          <Title variant="h5" as="h1">
+          <Title styleVariant="h5" as="h1">
             <FormattedMessage {...messages.confirmation} />
           </Title>
         </ContentContainer>

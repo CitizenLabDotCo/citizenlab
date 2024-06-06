@@ -12,7 +12,7 @@ const SectionTitle = ({ children }: Props) => (
     mb="4px"
     mt="24px"
     ml="10px"
-    variant="h6"
+    styleVariant="h6"
     as="h3"
     color="textSecondary"
   >

@@ -146,7 +146,7 @@ const UserFieldSelection = ({
     >
       <Box>
         <Title
-          variant="h4"
+          styleVariant="h4"
           color="primary"
           style={{ fontWeight: 600 }}
           mt="5px"

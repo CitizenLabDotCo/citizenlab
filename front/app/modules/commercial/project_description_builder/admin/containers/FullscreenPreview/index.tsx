@@ -53,7 +53,7 @@ export const FullScreenPreview = () => {
       contentBuilderLocale={selectedLocale}
     >
       <FullScreenWrapper onUpdateDraftData={setDraftData} padding="0px">
-        <Title color="tenantText" variant="h1" px="20px">
+        <Title color="tenantText" styleVariant="h1" px="20px">
           {localize(project.data.attributes.title_multiloc)}
         </Title>
         {isLoadingProjectDescriptionBuilderLayout && <Spinner />}

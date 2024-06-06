@@ -43,7 +43,7 @@ const ProjectManagement = ({ projectId }: Props) => {
   return (
     <ModeratorSubSection>
       <Box display="flex" mb="16px">
-        <Title my="0px" mr="4px" variant="h2" color="primary">
+        <Title my="0px" mr="4px" styleVariant="h2" color="primary">
           <FormattedMessage {...messages.projectManagementTitle} />
         </Title>
         <IconTooltip

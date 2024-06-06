@@ -68,7 +68,7 @@ const ReportTab = () => {
         justifyContent="space-between"
         alignItems="center"
       >
-        <Title variant="h3" color="primary">
+        <Title styleVariant="h3" color="primary">
           {formatMessage(messages.report)}
         </Title>
         {hasReport && report && (

@@ -47,7 +47,7 @@ const EmptyCard = ({ titleMultiloc, isComingSoon }: Props) => {
         flexDirection="column"
       >
         <Box flex="0 1 auto">
-          <Title variant="h3" as="h2" mb="28px">
+          <Title styleVariant="h3" as="h2" mb="28px">
             {title}
 
             {isComingSoon && (
@@ -66,7 +66,7 @@ const EmptyCard = ({ titleMultiloc, isComingSoon }: Props) => {
           justifyContent="center"
           alignItems="center"
         >
-          <Title variant="h3" mb="8px" color="textPrimary">
+          <Title styleVariant="h3" mb="8px" color="textPrimary">
             {isComingSoon ? (
               <FormattedMessage {...messages.comingSoon} />
             ) : (

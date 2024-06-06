@@ -67,7 +67,7 @@ const ParticipationMethodChoice = ({
       {title && (
         <Title
           my="0px"
-          variant="h6"
+          styleVariant="h6"
           color={selected ? 'primary' : 'coolGrey500'}
           textAlign="left"
           width="100%"

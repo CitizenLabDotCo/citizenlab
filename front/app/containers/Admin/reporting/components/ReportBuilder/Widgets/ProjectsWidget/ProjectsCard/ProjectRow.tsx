@@ -105,7 +105,7 @@ const ProjectRow = ({ project, projectImage, period, participants }: Props) => {
         </Box>
       )}
       <Box>
-        <Title variant="h5" m="0">
+        <Title styleVariant="h5" m="0">
           {localize(title_multiloc)}
         </Title>
         <Box display="flex" mt="8px" alignItems="center">

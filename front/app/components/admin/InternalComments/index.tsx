@@ -108,7 +108,7 @@ const InternalCommentsSection = ({ postId, postType, className }: Props) => {
           justifyContent="space-between"
           mt="16px"
         >
-          <Title color="tenantText" variant="h2" id="comments-main-title">
+          <Title color="tenantText" styleVariant="h2" id="comments-main-title">
             <FormattedMessage {...commentsMessages.invisibleTitleComments} />
           </Title>
           <StyledCommentSorting

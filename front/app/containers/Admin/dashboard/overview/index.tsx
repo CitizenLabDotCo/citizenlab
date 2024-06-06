@@ -152,7 +152,7 @@ const OverviewDashboard = () => {
           ml="12px"
           mt="40px"
           width="100%"
-          variant="h2"
+          styleVariant="h2"
           color="primary"
           fontWeight="normal"
         >
@@ -211,7 +211,7 @@ const OverviewDashboard = () => {
             ml="12px"
             mt="40px"
             width="100%"
-            variant="h2"
+            styleVariant="h2"
             color="primary"
             fontWeight="normal"
           >

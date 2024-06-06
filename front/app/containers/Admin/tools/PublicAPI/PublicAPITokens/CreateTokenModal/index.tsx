@@ -68,7 +68,9 @@ const CreateTokenModal = ({ onClose }: CreateTokenModalProps) => {
     <Box w="100%" m="24px auto" pr="24px">
       {!success ? (
         <>
-          <Title variant="h2">{formatMessage(messages.createTokenTitle)}</Title>
+          <Title styleVariant="h2">
+            {formatMessage(messages.createTokenTitle)}
+          </Title>
           <Text>{formatMessage(messages.createTokenDescription)}</Text>
           <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(onFormSubmit)}>
@@ -103,7 +105,7 @@ const CreateTokenModal = ({ onClose }: CreateTokenModalProps) => {
         </>
       ) : (
         <Box data-testid="tokenCreateSuccess">
-          <Title variant="h2">
+          <Title styleVariant="h2">
             {formatMessage(messages.createTokenModalSuccess)}
           </Title>
           <Text>

@@ -10,14 +10,14 @@ import messages from './messages';
 const Header = ({ intl: { formatMessage } }: WrappedComponentProps) => (
   <Box display="flex">
     <Box width="60%">
-      <Title variant="h6" as="h4" mt="0px" mb="8px" color="textSecondary">
+      <Title styleVariant="h6" as="h4" mt="0px" mb="8px" color="textSecondary">
         {formatMessage(messages.options).toUpperCase()}
       </Title>
     </Box>
     <Box width="40%" display="flex">
       <Title
         width="70%"
-        variant="h6"
+        styleVariant="h6"
         as="h4"
         mt="0px"
         mb="0px"

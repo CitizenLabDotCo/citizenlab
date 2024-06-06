@@ -488,7 +488,7 @@ const AdminPhaseEdit = () => {
 
   return (
     <Box ref={containerRef}>
-      <Title variant="h3" color="primary">
+      <Title styleVariant="h3" color="primary">
         {phase && <FormattedMessage {...messages.editPhaseTitle} />}
         {!phase && <FormattedMessage {...messages.newPhaseTitle} />}
       </Title>

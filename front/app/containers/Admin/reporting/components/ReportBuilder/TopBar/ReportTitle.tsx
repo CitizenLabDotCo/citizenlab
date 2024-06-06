@@ -148,7 +148,7 @@ const ReportTitle = ({ reportId }) => {
       {errorMessage && <StyledError text={errorMessage} />}
     </Box>
   ) : (
-    <Title variant="h3" as="h1" mb="0px" mt="0px">
+    <Title styleVariant="h3" as="h1" mb="0px" mt="0px">
       {formatMessage(messages.reportBuilder)}
     </Title>
   );

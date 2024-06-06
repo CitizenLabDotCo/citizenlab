@@ -23,7 +23,7 @@ type Props = {
 const Step1 = ({ onSetStep }) => {
   return (
     <Box>
-      <Title variant="h3">
+      <Title styleVariant="h3">
         <FormattedMessage {...messages.autoAssignQuestion} />
       </Title>
 

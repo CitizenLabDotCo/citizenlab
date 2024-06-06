@@ -111,7 +111,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
     case 'title_multiloc':
       return (
         <Box>
-          <Title variant="h3" my="0px">
+          <Title styleVariant="h3" my="0px">
             <T
               value={input.attributes[customField.data.attributes.key]}
               supportHtml={true}
@@ -132,7 +132,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
       if (input.attributes.location_description) {
         return (
           <Box>
-            <Title variant="h5" m="0px">
+            <Title styleVariant="h5" m="0px">
               <T value={customField.data.attributes.title_multiloc} />
             </Title>
             <Text>{input.attributes.location_description}</Text>
@@ -148,7 +148,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
         case 'text':
           return (
             <Box>
-              <Title variant="h5" m="0px">
+              <Title styleVariant="h5" m="0px">
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
               <Text m="0">
@@ -162,7 +162,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
         case 'linear_scale': {
           return (
             <Box>
-              <Title variant="h5" m="0px">
+              <Title styleVariant="h5" m="0px">
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
               <Box
@@ -188,7 +188,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
         case 'multiline_text': {
           return (
             <Box>
-              <Title variant="h5" m="0px">
+              <Title styleVariant="h5" m="0px">
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
               <Text whiteSpace="pre-line">
@@ -202,7 +202,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
         case 'select': {
           return (
             <Box>
-              <Title variant="h5" m="0px">
+              <Title styleVariant="h5" m="0px">
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
               <Box
@@ -229,7 +229,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
         case 'multiselect': {
           return (
             <Box>
-              <Title variant="h5" m="0px">
+              <Title styleVariant="h5" m="0px">
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
               <Text>
@@ -259,7 +259,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
         case 'checkbox': {
           return (
             <Box>
-              <Title variant="h5" m="0px">
+              <Title styleVariant="h5" m="0px">
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
               <Text>
@@ -275,7 +275,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
         case 'date': {
           return (
             <Box>
-              <Title variant="h5" m="0px">
+              <Title styleVariant="h5" m="0px">
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
               <Text>

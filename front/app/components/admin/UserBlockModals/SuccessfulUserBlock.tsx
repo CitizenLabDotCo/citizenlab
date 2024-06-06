@@ -41,7 +41,7 @@ export default ({ opened, resetSuccess, date, name }: Props) => {
             height="60px"
           />
         </Box>
-        <Title variant="h2" textAlign="center">
+        <Title styleVariant="h2" textAlign="center">
           {formatMessage(messages.allDone)}
         </Title>
         <Text textAlign="center">

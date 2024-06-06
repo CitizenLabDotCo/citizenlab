@@ -138,7 +138,7 @@ const TopBar = () => {
             </Text>
           </Box>
 
-          <TruncatedTitle variant="h4" m="0px">
+          <TruncatedTitle styleVariant="h4" m="0px">
             {localize(projectTitle)}
           </TruncatedTitle>
         </Box>

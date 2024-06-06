@@ -36,7 +36,7 @@ const TextingHeader = ({
         justifyContent="space-between"
         alignItems="flex-start"
       >
-        <Title variant="h1" margin="0">
+        <Title styleVariant="h1" margin="0">
           {headerMessage}
         </Title>
         {children}

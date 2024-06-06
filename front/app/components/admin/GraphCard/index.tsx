@@ -44,7 +44,7 @@ const GraphCard = ({
         px="20px"
       >
         <Box display="flex" flexDirection="row" alignItems="center">
-          <Title m="0px" mb="0px" variant="h2" as="h3" color="primary">
+          <Title m="0px" mb="0px" styleVariant="h2" as="h3" color="primary">
             {title}
           </Title>
 

@@ -99,7 +99,7 @@ const ImportExcelModal = ({ open, onClose, onImport }: Props) => {
       opened={open}
       close={onClose}
       header={
-        <Title variant="h2" color="primary" px="24px" m="0">
+        <Title styleVariant="h2" color="primary" px="24px" m="0">
           <FormattedMessage {...messages.importExcelFileTitle} />
         </Title>
       }

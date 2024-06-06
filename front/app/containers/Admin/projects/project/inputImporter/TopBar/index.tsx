@@ -75,7 +75,7 @@ const TopBar = ({ onClickPDFImport, onClickExcelImport }: Props) => {
             </Badge>
           </Box>
 
-          <Title variant="h4" m="0px" mt="1px">
+          <Title styleVariant="h4" m="0px" mt="1px">
             {topBarTitle}
           </Title>
         </Box>

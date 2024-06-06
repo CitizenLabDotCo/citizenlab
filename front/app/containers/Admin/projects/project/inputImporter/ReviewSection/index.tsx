@@ -135,7 +135,7 @@ const ReviewSection = ({
         borderTop={`10px ${colors.grey100} solid`}
         borderBottom={`5px ${colors.grey200} solid`}
       >
-        <Title variant="h2" color="primary" mt="8px" mb="20px">
+        <Title styleVariant="h2" color="primary" mt="8px" mb="20px">
           <FormattedMessage {...messages.importedInputs} />
         </Title>
       </Box>

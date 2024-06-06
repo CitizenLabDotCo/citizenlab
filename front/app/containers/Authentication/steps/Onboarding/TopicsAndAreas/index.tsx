@@ -49,7 +49,7 @@ const TopicsAndAreas = ({ onSubmit, onSkip }: Props) => {
         <Accordion
           isOpenByDefault
           title={
-            <Title variant="h4">
+            <Title styleVariant="h4">
               {formatMessage(messages.followYourFavoriteTopics)}
             </Title>
           }
@@ -61,7 +61,7 @@ const TopicsAndAreas = ({ onSubmit, onSkip }: Props) => {
         <Accordion
           isOpenByDefault={!hasTopics}
           title={
-            <Title variant="h4">
+            <Title styleVariant="h4">
               {formatMessage(messages.followAreasOfFocus)}
             </Title>
           }

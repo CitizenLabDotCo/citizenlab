@@ -100,7 +100,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
             <ConfettiSvg />
           </Box>
         )}
-        <Title mt="4px" color="tenantPrimary" variant="h4" as="h3">
+        <Title mt="4px" color="tenantPrimary" styleVariant="h4" as="h3">
           {config?.getStatusTitle &&
             formatMessage(config.getStatusTitle(basketStatus))}
         </Title>

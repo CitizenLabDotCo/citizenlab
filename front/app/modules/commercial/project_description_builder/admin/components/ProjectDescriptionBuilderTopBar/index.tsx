@@ -89,7 +89,7 @@ const ProjectDescriptionBuilderTopBar = ({
               <Text mb="0px" color="textSecondary">
                 {localize(project.data.attributes.title_multiloc)}
               </Text>
-              <Title variant="h4" as="h1">
+              <Title styleVariant="h4" as="h1">
                 <FormattedMessage {...messages.descriptionTopicManagerText} />
               </Title>
             </>

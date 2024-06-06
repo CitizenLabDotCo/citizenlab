@@ -136,7 +136,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
           setConfirmationModalVisible(false);
         }}
         header={
-          <Title mt="4px" mb="0px" variant="h3">
+          <Title mt="4px" mb="0px" styleVariant="h3">
             {user?.data?.attributes?.first_name
               ? formatMessage(messages.seeYouThereName, {
                   userFirstName: user?.data?.attributes?.first_name,
@@ -148,7 +148,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
       >
         <EventModalConfetti />
         <Box pt="0px" p="36px">
-          <Title my="12px" variant="h3" style={{ fontWeight: 600 }}>
+          <Title my="12px" styleVariant="h3" style={{ fontWeight: 600 }}>
             {localize(event?.attributes?.title_multiloc)}
           </Title>
           <Text my="4px" color="coolGrey600" fontSize="m">

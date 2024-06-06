@@ -40,7 +40,7 @@ const PhaseEmailSettingsModal = ({
 
   return (
     <Modal close={close} opened={open}>
-      <Title variant="h3" m="35px 0 30px">
+      <Title styleVariant="h3" m="35px 0 30px">
         <FormattedMessage
           {...(isEnabled
             ? messages.turnEmailCampaignOff

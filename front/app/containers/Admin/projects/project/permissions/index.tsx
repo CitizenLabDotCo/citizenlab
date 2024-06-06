@@ -52,7 +52,7 @@ const ProjectPermissions = () => {
   if (phase && project) {
     return isGranularPermissionsEnabled && isProjectVisibilityEnabled ? (
       <StyledSection>
-        <Title variant="h2" color="primary">
+        <Title styleVariant="h2" color="primary">
           <FormattedMessage {...messages.participationRequirementsTitle} />
         </Title>
         <Text color="coolGrey600" pb="8px">
@@ -68,7 +68,7 @@ const ProjectPermissions = () => {
       <>
         {isProjectVisibilityEnabled && (
           <>
-            <Title variant="h2" color="primary">
+            <Title styleVariant="h2" color="primary">
               <FormattedMessage {...messages.projectVisibilityTitle} />
             </Title>
             <Text color="coolGrey600">
@@ -79,7 +79,7 @@ const ProjectPermissions = () => {
         )}
         {isGranularPermissionsEnabled && isProjectVisibilityEnabled && (
           <StyledSection>
-            <Title variant="h2" color="primary">
+            <Title styleVariant="h2" color="primary">
               <FormattedMessage {...messages.participationRequirementsTitle} />
             </Title>
             <Text color="coolGrey600" pb="8px">

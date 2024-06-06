@@ -111,7 +111,7 @@ const Feedback = ({ successMessage, onlyShowErrors }: FeedbackProps) => {
                 <>
                   {formContextErrors.submissionError ? (
                     <>
-                      <Title color="red600" variant="h4">
+                      <Title color="red600" styleVariant="h4">
                         {formatMessage(messages.submissionErrorTitle)}
                       </Title>
                       <Text
@@ -123,7 +123,7 @@ const Feedback = ({ successMessage, onlyShowErrors }: FeedbackProps) => {
                     </>
                   ) : (
                     <Box data-testid="feedbackErrorMessage">
-                      <Title color="red600" variant="h4" mt="0px" mb="0px">
+                      <Title color="red600" styleVariant="h4" mt="0px" mb="0px">
                         {formatMessage(messages.errorTitle)}
                       </Title>
                       {getAllErrorMessages().map((error) => {

@@ -57,7 +57,7 @@ const TopBar = memo<Props>(
           m="0px"
           my="auto"
           as="h2"
-          variant={isSmallerThanPhone ? 'h3' : 'h2'}
+          styleVariant={isSmallerThanPhone ? 'h3' : 'h2'}
         >
           {title}
         </Title>

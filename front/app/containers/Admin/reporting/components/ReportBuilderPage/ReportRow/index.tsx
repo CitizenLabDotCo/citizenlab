@@ -22,7 +22,7 @@ const ReportRow = ({ report }: Props) => {
         py="12px"
       >
         <Box>
-          <Title variant="h5" color="primary" mt="0px" mb="0px">
+          <Title styleVariant="h5" color="primary" mt="0px" mb="0px">
             {report.attributes.name}
           </Title>
           <EditedText

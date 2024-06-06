@@ -37,13 +37,13 @@ const ChangesTablesBeforeAndAfter = ({
     <div>
       <Box display="flex" gap="8px">
         <Box flex="1">
-          <Title color="primary" variant="h2">
+          <Title color="primary" styleVariant="h2">
             {formatMessage(messages.before)}
           </Title>
           <ChangesTable changes={beforeChanges} />
         </Box>
         <Box flex="1">
-          <Title color="primary" variant="h2">
+          <Title color="primary" styleVariant="h2">
             {formatMessage(messages.after)}
           </Title>
           <ChangesTable changes={afterChanges} />

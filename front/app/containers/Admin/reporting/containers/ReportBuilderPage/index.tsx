@@ -14,10 +14,11 @@ import useReports from 'api/reports/useReports';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import Button from 'components/UI/Button';
 import NavigationTabs from 'components/admin/NavigationTabs';
-import SearchInput from 'components/UI/SearchInput';
 import Tab from 'components/admin/NavigationTabs/Tab';
+import Button from 'components/UI/Button';
+import SearchInput from 'components/UI/SearchInput';
+import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
@@ -25,9 +26,8 @@ import { isAdmin } from 'utils/permissions/roles';
 import CreateReportModal from '../../components/ReportBuilderPage/CreateReportModal';
 import EmptyState from '../../components/ReportBuilderPage/EmptyState';
 import ReportRow from '../../components/ReportBuilderPage/ReportRow';
-import Warning from 'components/UI/Warning';
-
 import sharedMessages from '../../messages';
+
 import messages from './messages';
 
 const BuilderNotAllowedTooltip = ({ disabled, children }) => {
@@ -98,8 +98,9 @@ const ReportBuilderPage = () => {
   const { data: serviceReports, isLoading: isLoadingServiceRpts} = useReports(getParams('service-reports')); // prettier-ignore
   const { data: allReports, isLoading: isLoadingAllRpts } = useReports(getParams('all-reports')); // prettier-ignore
 
-  if (isLoadingYourRpts || isLoadingServiceRpts || isLoadingAllRpts)
+  if (isLoadingYourRpts || isLoadingServiceRpts || isLoadingAllRpts) {
     return null;
+  }
 
   const defaultTab = isAdmin(me) ? 'all-reports' : 'your-reports';
   const currentTab =
@@ -145,7 +146,7 @@ const ReportBuilderPage = () => {
   return (
     <>
       <Box display="flex" justifyContent="space-between" mb="24px">
-        <Title variant="h1" color="primary">
+        <Title styleVariant="h1" color="primary">
           <FormattedMessage {...sharedMessages.reportBuilder} />
         </Title>
 

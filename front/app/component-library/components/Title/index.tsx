@@ -21,7 +21,7 @@ import Box, {
   BoxVisibilityProps,
 } from '../Box';
 
-type Variant = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+type StyleVariant = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 type FontSize = keyof typeof fontSizes;
 type FontWeight = 'bold' | 'normal';
 type FontStyle = 'italic' | 'normal';
@@ -34,10 +34,10 @@ type TextAlign =
   | 'inherit';
 
 export type TitleProps = {
-  variant?: Variant;
+  styleVariant?: StyleVariant;
   color?: Color;
   fontSize?: FontSize;
-  as?: Variant;
+  as?: StyleVariant;
   fontWeight?: FontWeight;
   fontStyle?: FontStyle;
   textAlign?: TextAlign;
@@ -58,7 +58,7 @@ const StyledTitle = styled(Box)`
   ${isRtl`direction: rtl;`}
 
   ${({
-    variant,
+    styleVariant,
     color,
     fontSize,
     fontWeight,
@@ -71,32 +71,32 @@ const StyledTitle = styled(Box)`
     font-style: ${fontStyle ? fontStyle : 'normal'};
 
     ${textAlign ? `text-align: ${textAlign};` : ''}
-    ${variant === 'h1'
+    ${styleVariant === 'h1'
       ? `
           font-size: ${fontSize ? fontSizes[fontSize] : fontSizes.xxxl}px;
         `
       : ''}
-    ${variant === 'h2'
+    ${styleVariant === 'h2'
       ? `
           font-size: ${fontSize ? fontSizes[fontSize] : fontSizes.xxl}px;
         `
       : ''}
-    ${variant === 'h3'
+    ${styleVariant === 'h3'
       ? `
           font-size: ${fontSize ? fontSizes[fontSize] : fontSizes.xl}px;
         `
       : ''}
-    ${variant === 'h4'
+    ${styleVariant === 'h4'
       ? `
           font-size: ${fontSize ? fontSizes[fontSize] : fontSizes.l}px;
         `
       : ''}
-    ${variant === 'h5'
+    ${styleVariant === 'h5'
       ? `
           font-size: ${fontSize ? fontSizes[fontSize] : fontSizes.m}px;
         `
       : ''}
-    ${variant === 'h6'
+    ${styleVariant === 'h6'
       ? `
           font-size: ${fontSize ? fontSizes[fontSize] : fontSizes.s}px;
         `
@@ -106,7 +106,7 @@ const StyledTitle = styled(Box)`
 
 const Title: React.FC<TitleProps> = ({
   children,
-  variant = 'h1',
+  styleVariant = 'h1',
   color,
   as,
   fontSize,
@@ -117,9 +117,9 @@ const Title: React.FC<TitleProps> = ({
 
   return (
     <StyledTitle
-      variant={variant}
+      styleVariant={styleVariant}
       color={color}
-      as={as || variant}
+      as={as || styleVariant}
       fontSize={fontSize}
       fontWeight={fontWeight}
       mb={mb}

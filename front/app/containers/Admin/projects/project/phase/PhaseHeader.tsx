@@ -118,7 +118,7 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
       <Container mb="8px">
         <Box p="24px 40px">
           <Box display="flex" justifyContent="space-between">
-            <Title my="0px" variant="h3" color="primary">
+            <Title my="0px" styleVariant="h3" color="primary">
               {localize(phase.attributes.title_multiloc)}
             </Title>
 
@@ -251,7 +251,7 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
       <Modal opened={showDeleteModal} close={closeModal}>
         <Box display="flex" flexDirection="column" width="100%" p="20px">
           <Box mb="40px">
-            <Title variant="h3" color="primary">
+            <Title styleVariant="h3" color="primary">
               {formatMessage(messages.deletePhaseConfirmationQuestion)}
             </Title>
             <Text color="primary" fontSize="l">

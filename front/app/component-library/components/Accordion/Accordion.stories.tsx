@@ -22,7 +22,7 @@ export const Default: Story = {
     transitionHeightPx: 600,
     title: (
       <Box display="flex">
-        <Title variant="h3">Section Title</Title>
+        <Title styleVariant="h3">Section Title</Title>
         <IconTooltip
           m="8px"
           mt="16px"

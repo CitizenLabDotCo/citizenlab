@@ -40,7 +40,7 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
   return (
     <Row id={campaign.id}>
       <Box>
-        <Title color="primary" variant="h4" m="0px">
+        <Title color="primary" styleVariant="h4" m="0px">
           <T value={campaign.attributes.subject_multiloc} />
         </Title>
         <Box display="flex" alignItems="center" gap="12px">

@@ -68,7 +68,7 @@ const SuccessModal = ({ projectId }: Props) => {
         justifyContent="center"
       >
         <Image width="80px" height="80px" src={rocket} alt="" />
-        <Title variant="h2" textAlign="center">
+        <Title styleVariant="h2" textAlign="center">
           {config.getModalContent({})}
         </Title>
       </Box>

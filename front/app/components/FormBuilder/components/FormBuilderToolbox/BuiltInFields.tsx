@@ -51,7 +51,7 @@ const BuiltInFields = ({ move }: BuiltInFieldsProps) => {
         fontWeight="normal"
         mb="4px"
         ml="16px"
-        variant="h6"
+        styleVariant="h6"
         as="h3"
         color="textSecondary"
         style={{ textTransform: 'uppercase' }}

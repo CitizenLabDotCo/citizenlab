@@ -121,7 +121,7 @@ export const UserComments = () => {
         </ScreenReaderOnly>
         <>
           {isSmallerThanPhone && (
-            <Title mt="0px" variant="h3" as="h1">
+            <Title mt="0px" styleVariant="h3" as="h1">
               <FormattedMessage
                 {...messages.commentsWithCount}
                 values={{

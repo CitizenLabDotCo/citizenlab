@@ -229,7 +229,7 @@ const CLSurveyPageLayout = memo(
                       {page.options.title && (
                         <Title
                           as="h1"
-                          variant={isSmallerThanPhone ? 'h2' : 'h1'}
+                          styleVariant={isSmallerThanPhone ? 'h2' : 'h1'}
                           m="0"
                           mb="8px"
                           color="tenantPrimary"

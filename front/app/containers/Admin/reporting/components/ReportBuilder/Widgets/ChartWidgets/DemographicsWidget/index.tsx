@@ -50,7 +50,7 @@ const DemographicsWidget = ({
   if (layout === 'narrow') {
     return (
       <Card pagebreak className="e2e-demographics-widget">
-        <Title variant="h4" mt="1px">
+        <Title styleVariant="h4" mt="1px">
           {localize(title)}
         </Title>
         <Chart response={demographicsResponse} />
@@ -62,7 +62,7 @@ const DemographicsWidget = ({
     <Card pagebreak className="e2e-demographics-widget">
       <Box width="100%" pb="0px" display="flex">
         <Box w="300px" display="flex" flexDirection="column">
-          <Title variant="h4" mt="1px" pr="16px">
+          <Title styleVariant="h4" mt="1px" pr="16px">
             {localize(title)}
           </Title>
         </Box>

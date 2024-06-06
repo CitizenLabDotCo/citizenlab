@@ -112,7 +112,7 @@ const FormBuilderTopBar = ({
             {localize(project.data.attributes.title_multiloc)}
           </Text>
           <Box display="flex" alignContent="center" mt="4px">
-            <Title marginRight="8px" marginTop="0" variant="h4" as="h1">
+            <Title marginRight="8px" marginTop="0" styleVariant="h4" as="h1">
               <FormattedMessage {...builderConfig.formBuilderTitle} />
             </Title>
             {builderConfig.showStatusBadge && (
@@ -167,7 +167,7 @@ const FormBuilderTopBar = ({
       <Modal opened={showLeaveModal} close={closeModal}>
         <Box display="flex" flexDirection="column" width="100%" p="20px">
           <Box mb="40px">
-            <Title variant="h3" color="primary">
+            <Title styleVariant="h3" color="primary">
               <FormattedMessage
                 {...messages.leaveBuilderConfirmationQuestion}
               />

@@ -139,7 +139,7 @@ const CategoryCard = ({
   return (
     <Container className="e2e-category">
       <TextContainer>
-        <Title variant="h4" as="h2">
+        <Title styleVariant="h4" as="h2">
           <FormattedMessage
             {...{
               functional: messages.functional,

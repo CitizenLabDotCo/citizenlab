@@ -139,7 +139,7 @@ const AutoTagOption = ({
           alignItems="center"
           gap="6px"
         >
-          <Title variant="h6" m="0px">
+          <Title styleVariant="h6" m="0px">
             {title}
           </Title>
           {isLoading && (
@@ -202,7 +202,7 @@ const Step1 = ({
       </Title>
       <Text mb="32px">{formatMessage(messages.autoTagDescription)}</Text>
 
-      <Title variant="h4">{formatMessage(messages.whatToTag)}</Title>
+      <Title styleVariant="h4">{formatMessage(messages.whatToTag)}</Title>
 
       <Box display="flex" gap="16px">
         <AutoTagTargetContainer
@@ -255,7 +255,7 @@ const Step1 = ({
         </AutoTagTargetContainer>
       </Box>
 
-      <Title variant="h4">{formatMessage(messages.howToTag)}</Title>
+      <Title styleVariant="h4">{formatMessage(messages.howToTag)}</Title>
 
       <Box display="flex" gap="16px" flexWrap="wrap">
         <AutoTagOption

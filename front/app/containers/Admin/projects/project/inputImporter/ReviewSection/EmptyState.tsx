@@ -99,7 +99,7 @@ const EmptyState = () => {
         px="20px"
         pb="16px"
       >
-        <Title variant="h1" color="primary">
+        <Title styleVariant="h1" color="primary">
           <FormattedMessage {...sharedMessages.inputImporter} />
         </Title>
         <Text>

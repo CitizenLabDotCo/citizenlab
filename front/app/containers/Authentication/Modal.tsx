@@ -200,13 +200,13 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             {fullscreenModalEnabled ? (
               <Box w="100%" display="flex" justifyContent="center">
                 <Box w="580px" px={marginX}>
-                  <Title variant="h3" as="h1" mt="0px" mb="0px">
+                  <Title styleVariant="h3" as="h1" mt="0px" mb="0px">
                     {formatMessage(headerMessage)}
                   </Title>
                 </Box>
               </Box>
             ) : (
-              <Title variant="h3" as="h1" mt="0px" mb="0px" ml={marginX}>
+              <Title styleVariant="h3" as="h1" mt="0px" mb="0px" ml={marginX}>
                 {formatMessage(headerMessage)}
               </Title>
             )}

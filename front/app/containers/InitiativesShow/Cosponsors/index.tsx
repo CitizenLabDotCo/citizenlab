@@ -50,7 +50,7 @@ const Cosponsors = ({ initiativeId }: Props) => {
 
   return (
     <BorderContainer>
-      <Title variant="h5" as="h2">
+      <Title styleVariant="h5" as="h2">
         {formatMessage(messages.titleCosponsorsTile)}
       </Title>
       <ListOfCosponsors

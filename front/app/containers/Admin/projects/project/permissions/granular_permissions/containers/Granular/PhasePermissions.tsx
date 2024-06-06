@@ -62,7 +62,7 @@ const PhasePermissions = ({ project, phase, phaseNumber }: Props) => {
       title={
         <Title
           id="e2e-granular-permissions-phase-accordion"
-          variant="h3"
+          styleVariant="h3"
           color="primary"
           my="20px"
           style={{ fontWeight: 500 }}

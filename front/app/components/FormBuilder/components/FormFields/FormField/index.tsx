@@ -348,7 +348,7 @@ export const FormField = ({
       >
         <Box display="flex" flexDirection="column" width="100%" p="20px">
           <Box mb="40px">
-            <Title variant="h3" color="primary">
+            <Title styleVariant="h3" color="primary">
               {formatMessage(messages.deleteFieldWithLogicConfirmationQuestion)}
             </Title>
             <Text color="primary" fontSize="l">

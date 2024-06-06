@@ -93,7 +93,7 @@ const EventInformation = ({ event }: Props) => {
         >
           <PrimaryLink to={`/events/${event.id}`}>
             <Title
-              variant="h4"
+              styleVariant="h4"
               as="h3"
               style={{ fontWeight: '600' }}
               pr="8px"

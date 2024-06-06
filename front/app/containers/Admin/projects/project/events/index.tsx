@@ -154,7 +154,7 @@ const AdminProjectEventsIndex = () => {
                       </div>
                       <Box>
                         <Title
-                          variant="h6"
+                          styleVariant="h6"
                           color="primary"
                           fontSize="xl"
                           p="0px"

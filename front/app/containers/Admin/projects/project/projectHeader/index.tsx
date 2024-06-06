@@ -105,7 +105,7 @@ const ProjectHeader = ({ projectId }: Props) => {
         py="16px"
       >
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <StyledTitle color="primary" variant="h4" my="0px">
+          <StyledTitle color="primary" styleVariant="h4" my="0px">
             {localize(project.data.attributes.title_multiloc)}
           </StyledTitle>
           <Box display="flex">

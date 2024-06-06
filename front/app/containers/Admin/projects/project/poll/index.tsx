@@ -46,7 +46,7 @@ const AdminProjectPoll = () => {
   return (
     <Box display="flex" flexDirection="column">
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Title variant="h3" color="primary">
+        <Title styleVariant="h3" color="primary">
           <FormattedMessage {...messages.titlePollTab} />
         </Title>
         <ExportPollButton

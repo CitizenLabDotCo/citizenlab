@@ -32,7 +32,7 @@ export const UserEvents = () => {
   return (
     <Container className="e2e-profile-events">
       {isPhoneOrSmaller && (
-        <Title mt="0px" variant="h3" as="h1">
+        <Title mt="0px" styleVariant="h3" as="h1">
           <FormattedMessage
             {...messages.eventsWithCount}
             values={{ eventsCount }}

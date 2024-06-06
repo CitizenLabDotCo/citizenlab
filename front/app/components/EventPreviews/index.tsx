@@ -50,7 +50,7 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
           color="tenantText"
           mt="36px"
           mb="8px"
-          variant="h5"
+          styleVariant="h5"
           style={{ fontWeight: 600 }}
           id="e2e-event-previews"
         >

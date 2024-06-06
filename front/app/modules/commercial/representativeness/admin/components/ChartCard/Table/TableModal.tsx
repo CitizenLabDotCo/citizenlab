@@ -42,7 +42,7 @@ const TableModal = ({
         alignItems="center"
         mt="-7px"
       >
-        <Title variant="h2" as="h3" mt="0px" mb="3px">
+        <Title styleVariant="h2" as="h3" mt="0px" mb="3px">
           {title}
         </Title>
         <Box display="flex" alignItems="center">
