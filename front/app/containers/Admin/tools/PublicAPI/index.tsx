@@ -13,7 +13,7 @@ import messages from '../messages';
 import apiImage from './api.png';
 
 export const PublicAPI = () => {
-  const isPublicAPIEnabled = useFeatureFlag({ name: 'public_api' });
+  const isPublicAPIEnabled = useFeatureFlag({ name: 'public_api_tokens' });
   const { formatMessage } = useIntl();
 
   return (
