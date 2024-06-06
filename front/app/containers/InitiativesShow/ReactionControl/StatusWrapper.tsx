@@ -4,6 +4,7 @@ import moment from 'moment';
 
 import { ProposalsSettings } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { InitiativeDisabledReason } from 'api/initiative_action_descriptors/types';
 import useAddInitiativeReaction from 'api/initiative_reactions/useAddInitiativeReaction';
 import useDeleteInitiativeReaction from 'api/initiative_reactions/useDeleteInitiativeReaction';
 import {
@@ -13,9 +14,7 @@ import {
 import useInitiativeStatus from 'api/initiative_statuses/useInitiativeStatus';
 import { IInitiative, IInitiativeData } from 'api/initiatives/types';
 
-import useInitiativesPermissions, {
-  InitiativePermissionsDisabledReason,
-} from 'hooks/useInitiativesPermissions';
+import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
@@ -38,7 +37,7 @@ export interface StatusComponentProps {
   onReaction: () => void;
   onCancelReaction: () => void;
   onScrollToOfficialFeedback: () => void;
-  disabledReason?: InitiativePermissionsDisabledReason | null | undefined;
+  disabledReason?: InitiativeDisabledReason | null | undefined;
 }
 
 /** Maps the initiative status and whether the user reacted or not to the right component to render */

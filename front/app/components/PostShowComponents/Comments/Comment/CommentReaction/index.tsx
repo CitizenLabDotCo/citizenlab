@@ -116,7 +116,7 @@ const CommentReaction = ({
       // Wondering why 'comment_reacting_idea' and not 'commenting_idea'?
       // See app/api/ideas/types.ts
       const actionDescriptor =
-        idea.data.attributes.action_descriptor.comment_reacting_idea;
+        idea.data.attributes.action_descriptors.comment_reacting_idea;
 
       if (actionDescriptor.enabled) {
         reaction();
@@ -168,7 +168,7 @@ const CommentReaction = ({
       // Wondering why 'comment_reacting_idea' and not 'commenting_idea'?
       // See app/api/ideas/types.ts
       const { enabled, disabled_reason } =
-        idea.data.attributes.action_descriptor.comment_reacting_idea;
+        idea.data.attributes.action_descriptors.comment_reacting_idea;
       disabled = !enabled && !isFixableByAuthentication(disabled_reason);
     } else {
       disabled = !commentReactingPermissionInitiative?.enabled;

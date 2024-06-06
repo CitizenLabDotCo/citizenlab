@@ -66,7 +66,7 @@ describe('Light authentication flow', () => {
 
     cy.location('pathname').should(
       'eq',
-      `/en/projects/${projectTitle}/ideas/new`
+      `/en/projects/${projectTitle}/surveys/new`
     );
     cy.logout();
   });
@@ -85,7 +85,7 @@ describe('Light authentication flow', () => {
 
     cy.location('pathname').should(
       'eq',
-      `/en/projects/${projectTitle}/ideas/new`
+      `/en/projects/${projectTitle}/surveys/new`
     );
     cy.logout();
   });

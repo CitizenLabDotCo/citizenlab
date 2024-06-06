@@ -26,6 +26,7 @@ import Editor from '../../components/ReportBuilder/Editor';
 import Settings from '../../components/ReportBuilder/Settings';
 import { TemplateContext } from '../../components/ReportBuilder/Templates/context';
 import PhaseTemplate from '../../components/ReportBuilder/Templates/PhaseTemplate';
+import PlatformTemplate from '../../components/ReportBuilder/Templates/PlatformTemplate';
 import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTemplate';
 import Toolbox from '../../components/ReportBuilder/Toolbox';
 import TopBar from '../../components/ReportBuilder/TopBar';
@@ -36,19 +37,15 @@ import { ReportContextProvider } from '../../context/ReportContext';
 import messages from '../../messages';
 import areCraftjsObjectsEqual from '../../utils/areCraftjsObjectsEqual';
 
+import { getTemplateConfig, TemplateConfig } from './utils';
+
 interface Props {
   report: ReportResponse;
   reportLayout: ReportLayout;
-  templateProjectId: string | null;
-  templatePhaseId: string | null;
+  templateConfig?: TemplateConfig;
 }
 
-const ReportBuilder = ({
-  report,
-  reportLayout,
-  templateProjectId,
-  templatePhaseId,
-}: Props) => {
+const ReportBuilder = ({ report, reportLayout, templateConfig }: Props) => {
   const reportId = report.data.id;
   const phaseId = report.data.relationships.phase?.data?.id;
 
@@ -113,7 +110,7 @@ const ReportBuilder = ({
             hasPendingState={imageUploading}
             selectedLocale={selectedLocale}
             reportId={reportId}
-            isTemplate={!!templateProjectId || !!templatePhaseId}
+            isTemplate={!!templateConfig}
             saved={saved}
             view={view}
             setView={setView}
@@ -136,13 +133,21 @@ const ReportBuilder = ({
                 )}
                 <ViewContainer view={view}>
                   <Frame editorData={initialData}>
-                    {emptyReportOnInit && templateProjectId ? (
+                    {emptyReportOnInit &&
+                    templateConfig?.template === 'project' ? (
                       <ProjectTemplate
                         reportId={reportId}
-                        projectId={templateProjectId}
+                        projectId={templateConfig.projectId}
                       />
-                    ) : emptyReportOnInit && templatePhaseId ? (
-                      <PhaseTemplate phaseId={templatePhaseId} />
+                    ) : emptyReportOnInit &&
+                      templateConfig?.template === 'phase' ? (
+                      <PhaseTemplate phaseId={templateConfig.phaseId} />
+                    ) : emptyReportOnInit &&
+                      templateConfig?.template === 'platform' ? (
+                      <PlatformTemplate
+                        startDate={templateConfig.startDate}
+                        endDate={templateConfig.endDate}
+                      />
                     ) : null}
                   </Frame>
                 </ViewContainer>
@@ -166,9 +171,18 @@ const ReportBuilderWrapper = () => {
   const [search] = useSearchParams();
   const [templateProjectId] = useState(search.get('templateProjectId'));
   const [templatePhaseId] = useState(search.get('templatePhaseId'));
+  const [startDatePlatformReport] = useState(
+    search.get('startDatePlatformReport')
+  );
+  const [endDatePlatformReport] = useState(search.get('endDatePlatformReport'));
 
   useEffect(() => {
-    removeSearchParams(['templateProjectId', 'templatePhaseId']);
+    removeSearchParams([
+      'templateProjectId',
+      'templatePhaseId',
+      'startDatePlatformReport',
+      'endDatePlatformReport',
+    ]);
   }, []);
 
   const renderReportBuilder =
@@ -180,13 +194,19 @@ const ReportBuilderWrapper = () => {
 
   if (!renderReportBuilder) return null;
 
+  const templateConfig = getTemplateConfig({
+    templateProjectId,
+    templatePhaseId,
+    startDatePlatformReport,
+    endDatePlatformReport,
+  });
+
   return (
-    <TemplateContext.Provider value={!!(templateProjectId || templatePhaseId)}>
+    <TemplateContext.Provider value={!!templateConfig}>
       <ReportBuilder
         report={report}
         reportLayout={reportLayout.data}
-        templateProjectId={templateProjectId}
-        templatePhaseId={templatePhaseId}
+        templateConfig={templateConfig}
       />
     </TemplateContext.Provider>
   );
