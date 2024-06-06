@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import {
   Box,
-  colors,
   Text,
   Image,
   useBreakpoint,
@@ -10,8 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { ControlProps } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { darken } from 'polished';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
 import FullscreenImage from 'components/FullscreenImage';
 import { FormLabel } from 'components/UI/FormComponents';
@@ -27,9 +25,10 @@ import { getOptions, getSubtextElement } from './controlUtils';
 import imageFile from './emptyImage.png';
 import messages from './messages';
 
-const HoverBox = styled(Box)`
+const HoverBox = styled(Box)<{ hoverColor: string }>`
+  cursor: pointer;
   &:hover {
-    background-color: ${darken(0.05, colors.grey100)};
+    background-color: ${({ hoverColor }) => hoverColor};
   }
 `;
 
@@ -44,6 +43,7 @@ const ImageMultichoiceControl = ({
   id,
   visible,
 }: ControlProps) => {
+  const theme = useTheme();
   const [didBlur, setDidBlur] = useState(false);
   const { formatMessage } = useIntl();
   const answerNotPublic = uischema.options?.answer_visible_to === 'admins';
@@ -122,12 +122,13 @@ const ImageMultichoiceControl = ({
               <HoverBox
                 key={option.value}
                 borderRadius="3px"
-                bgColor={colors.grey100}
+                bgColor={theme.colors.tenantPrimaryLighten95}
                 border={
                   dataArray.includes(option.value)
-                    ? `2px solid ${colors.primary}`
-                    : undefined
+                    ? `2px solid ${theme.colors.tenantPrimary}`
+                    : `1px solid ${theme.colors.tenantPrimary}`
                 }
+                hoverColor={theme.colors.tenantPrimaryLighten75}
               >
                 <Box
                   as="label"
@@ -161,14 +162,17 @@ const ImageMultichoiceControl = ({
                   </Box>
                   <Box display="flex" alignItems="flex-start" p="16px">
                     <Checkbox
-                      checkedColor="tenantSecondary"
+                      checkedColor="tenantPrimary"
+                      usePrimaryBorder={true}
                       id={`${path}-checkbox-${index}`}
                       data-cy="e2e-image-multichoice-control-checkbox"
                       checked={dataArray.includes(option.value)}
                       onChange={onChange}
                       mr="8px"
                     />
-                    <Text m="0">{option.label}</Text>
+                    <Text color="tenantPrimary" m="0">
+                      {option.label}
+                    </Text>
                   </Box>
                 </Box>
               </HoverBox>
