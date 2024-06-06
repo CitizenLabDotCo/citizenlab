@@ -1474,6 +1474,7 @@
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotPermitted": "للأسف ، ليس لديك حقوق مراجعة هذا المستند.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotVerified": "مراجعة هذا المستند يتطلب التحقق من حسابك. {verificationLink}",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledProjectInactive": "لم يعد المستند متاحًا ، نظرًا لأن هذا المشروع لم يعد نشطًا.",
+  "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBar.numberOfPicks": "{baskets, plural, one {اختيار واحد} other {# اختيارات}}",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "النسبة المئوية للمشاركين الذين اختاروا هذا الخيار.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "النسبة المئوية لإجمالي الأصوات التي حصل عليها هذا الخيار.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "يكلف:",
