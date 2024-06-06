@@ -118,23 +118,6 @@ const Header = styled.header`
   `}
 `;
 
-// const Title = styled.h3`
-//   color: ${(props) => props.theme.colors.tenantText};
-//   font-size: 21px;
-//   font-weight: 500;
-//   display: -webkit-box;
-//   -webkit-line-clamp: 3;
-//   -webkit-box-orient: vertical;
-//   line-height: 26px;
-//   max-height: 78px;
-//   padding: 0;
-//   margin: 0;
-//   overflow: hidden;
-//   overflow-wrap: break-word;
-//   word-wrap: break-word;
-//   word-break: break-word;
-// `;
-
 const Body = styled.div`
   flex-grow: 1;
 
