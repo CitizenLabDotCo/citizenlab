@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
+
+import Box from '../Box';
 
 type TippyProps = Omit<
   React.ComponentProps<typeof Tippy>,
@@ -24,19 +25,25 @@ const useActiveElement = () => {
 
   return active;
 };
-
 const Tooltip = ({ children, ...rest }: TippyProps) => {
+  const tooltipId = useRef(
+    `tooltip-${Math.random().toString(36).substring(7)}`
+  );
   const [isFocused, setIsFocused] = useState<boolean | undefined>(undefined);
   const [key, setKey] = useState<number>(0);
   const activeElement = useActiveElement();
 
   // Check if the active element is inside the tooltip
   useEffect(() => {
-    const tooltip = document.getElementById('tooltip');
+    const tooltip = document.getElementById(tooltipId.current);
     if (tooltip && tooltip.contains(activeElement)) {
       setIsFocused(true);
-    } else setIsFocused(false);
-  }, [activeElement]);
+    } else {
+      if (isFocused) {
+        setIsFocused(false);
+      }
+    }
+  }, [activeElement, isFocused]);
 
   return (
     <Tippy
@@ -71,9 +78,10 @@ const Tooltip = ({ children, ...rest }: TippyProps) => {
         setIsFocused(undefined);
         setKey((prev) => prev + 1);
       }}
+      appendTo={() => document.body}
       {...rest}
     >
-      <Box id="tooltip" width="fit-content">
+      <Box id={tooltipId.current} width="fit-content">
         {children}
       </Box>
     </Tippy>

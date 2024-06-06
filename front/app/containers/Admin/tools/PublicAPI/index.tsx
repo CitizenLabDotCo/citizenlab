@@ -52,6 +52,9 @@ export const PublicAPI = () => {
             {formatMessage(messages.managePublicAPIKeys)}
           </Button>
         </Tooltip>
+        <Tooltip content="hover over me">
+          <p>hover</p>
+        </Tooltip>
       </Box>
     </Box>
   );
