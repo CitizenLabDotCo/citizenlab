@@ -16,7 +16,7 @@ PATH
       concurrent-ruby (~> 1.2.3)
       nlpcloud (~> 1.0)
       rails (~> 7.0)
-      ruby-openai (~> 6.3)
+      ruby-openai (>= 6.3, < 8.0)
       tiktoken_ruby (~> 0.0.7)
 
 PATH
@@ -1095,7 +1095,7 @@ GEM
       rubocop-rspec_rails (~> 2.28)
     rubocop-rspec_rails (2.28.3)
       rubocop (~> 1.40)
-    ruby-openai (6.5.0)
+    ruby-openai (7.0.1)
       event_stream_parser (>= 0.3.0, < 2.0.0)
       faraday (>= 1)
       faraday-multipart (>= 1)
