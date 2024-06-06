@@ -215,9 +215,9 @@ const AvatarInner = ({
   const hasValidProfileLink = profileLink !== '/profile/undefined';
   const hasHoverEffect = (isLinkToProfile && hasValidProfileLink) || false;
   const avatarSrc = avatar ? avatar[imageSizeLabel] : null;
-  const alt = `${getFullName(user.data)}, ${formatMessage(
-    messages.titleForAccessibility
-  )}`;
+  const alt = formatMessage(messages.titleForAccessibility, {
+    fullName: getFullName(user.data),
+  });
 
   return (
     <Container className={className} size={containerSize}>
