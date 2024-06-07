@@ -3,12 +3,6 @@ import whiteSpaceMessages from 'components/admin/ContentBuilder/Widgets/WhiteSpa
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
-import CommentsByTimeWidget, {
-  commentsByTimeTitle,
-} from './ChartWidgets/_deprecated/CommentsByTimeWidget';
-import PostsByTimeWidget, {
-  postsByTimeTitle,
-} from './ChartWidgets/_deprecated/PostsByTimeWidget';
 import ReactionsByTimeWidget, {
   reactionsByTimeTitle,
 } from './ChartWidgets/_deprecated/ReactionsByTimeWidget';
@@ -66,8 +60,6 @@ export const WIDGETS = {
   ActiveUsersWidget: ParticipantsWidget,
 
   // DEPRECATED
-  PostsByTimeWidget,
-  CommentsByTimeWidget,
   ReactionsByTimeWidget,
 };
 
@@ -95,8 +87,6 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   ActiveUsersWidget: participantsTitle,
 
   // DEPRECATED
-  PostsByTimeWidget: postsByTimeTitle,
-  CommentsByTimeWidget: commentsByTimeTitle,
   ReactionsByTimeWidget: reactionsByTimeTitle,
 };
 
@@ -123,8 +113,6 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'ActiveUsersWidget',
 
   // DEPRECATED
-  'PostsByTimeWidget',
-  'CommentsByTimeWidget',
   'ReactionsByTimeWidget',
 ] satisfies WidgetName[]);
 
