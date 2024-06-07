@@ -20,7 +20,6 @@ import { MethodsUsedResponse } from './responseTypes/MethodsUsedWidget';
 import { MostReactedIdeasResponse } from './responseTypes/MostReactedIdeasWidget';
 import { ParticipantsResponse } from './responseTypes/ParticipantsWidget';
 import { ParticipationResponse } from './responseTypes/ParticipationWidget';
-import { PostsByTimeResponse } from './responseTypes/PostsByTimeWidget';
 import { ProjectsResponse } from './responseTypes/ProjectsWidget';
 import { ReactionsByTimeResponse } from './responseTypes/ReactionsByTimeWidget';
 import { RegistrationsResponse } from './responseTypes/RegistrationsWidget';
@@ -157,26 +156,6 @@ export const useParticipantsLive = (
   );
 };
 
-export const usePostsByTime = (props: AnalyticsProps) => {
-  return useGraphDataUnits<PostsByTimeResponse>({
-    resolved_name: 'PostsByTimeWidget',
-    props,
-  });
-};
-
-export const usePostsByTimeLive = (
-  props: AnalyticsProps,
-  { onSuccess }: { onSuccess?: () => void }
-) => {
-  return useGraphDataUnitsLive<PostsByTimeResponse>(
-    {
-      resolved_name: 'PostsByTimeWidget',
-      props,
-    },
-    { onSuccess }
-  );
-};
-
 export const useCommentsByTime = (
   props: AnalyticsProps,
   { onSuccess }: { onSuccess?: () => void }
@@ -261,6 +240,19 @@ export const useParticipation = (
   { onSuccess }: { onSuccess?: () => void }
 ) => {
   return useGraphDataUnits<ParticipationResponse>(
+    {
+      resolved_name: 'ParticipationWidget',
+      props,
+    },
+    { onSuccess }
+  );
+};
+
+export const useParticipationLive = (
+  props: ParticipationProps = {},
+  { onSuccess }: { onSuccess?: () => void }
+) => {
+  return useGraphDataUnitsLive<ParticipationResponse>(
     {
       resolved_name: 'ParticipationWidget',
       props,

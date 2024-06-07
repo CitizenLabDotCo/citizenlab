@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 
-import { usePostsByTimeLive } from 'api/graph_data_units';
+import { useParticipationLive } from 'api/graph_data_units';
 
 import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
 
@@ -19,7 +19,7 @@ export default function usePostsByTime({
 }: QueryParameters) {
   const { formatMessage } = useIntl();
   const [currentResolution, setCurrentResolution] = useState(resolution);
-  const { data: analytics } = usePostsByTimeLive(
+  const { data: analytics } = useParticipationLive(
     {
       project_id: projectId,
       start_at: momentToIsoDate(startAtMoment),
@@ -38,8 +38,7 @@ export default function usePostsByTime({
             analytics.data.attributes[0],
             startAtMoment,
             endAtMoment,
-            currentResolution,
-            analytics.data.attributes[1]
+            currentResolution
           )
         : null,
     [analytics?.data, startAtMoment, endAtMoment, currentResolution]
@@ -47,10 +46,10 @@ export default function usePostsByTime({
 
   const xlsxData = useMemo(
     () =>
-      analytics?.data && timeSeries
+      timeSeries
         ? parseExcelData(timeSeries, getTranslations(formatMessage))
         : null,
-    [analytics?.data, timeSeries, formatMessage]
+    [timeSeries, formatMessage]
   );
 
   const formattedNumbers = timeSeries

@@ -10,12 +10,12 @@ export type ParticipationResponse = {
   data: {
     type: 'report_builder_data_units';
     attributes: [
-      TimeSeriesResponseRow[] | [],
-      TimeSeriesResponseRow[] | [],
-      TimeSeriesResponseRow[] | [],
-      [BaseRow] | [] | undefined,
-      [BaseRow] | [] | undefined,
-      [BaseRow] | [] | undefined
+      TimeSeriesResponseRow[] | [], // posts
+      TimeSeriesResponseRow[] | [], // comments
+      TimeSeriesResponseRow[] | [], // votes
+      [BaseRow] | [] | undefined, // posts
+      [BaseRow] | [] | undefined, // comments
+      [BaseRow] | [] | undefined // votes
     ];
   };
 };
