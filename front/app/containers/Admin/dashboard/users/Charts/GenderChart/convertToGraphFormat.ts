@@ -1,19 +1,12 @@
 import { FormatMessage } from 'typings';
 
-import { GenderOption } from 'api/graph_data_units/responseTypes/_deprecated';
-
 import messages from 'containers/Admin/dashboard/messages';
 
 import { roundPercentages } from 'utils/math';
 
 import { GenderSerie } from './typings';
 
-const genderOptions: GenderOption[] = [
-  'male',
-  'female',
-  'unspecified',
-  '_blank',
-];
+const genderOptions = ['male', 'female', 'unspecified', '_blank'];
 
 const convertToGraphFormat = (
   users: Record<string, number> | undefined,
