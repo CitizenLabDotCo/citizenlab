@@ -619,6 +619,7 @@
   "app.components.anonymousParticipationModal.participateAnonymously": "Maacht anonym mat",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText": "Dëst wäert Äre Profil</b> sécher <b>vun Administrateuren, Projektmanager an aner Awunner fir dëse spezifesche Bäitrag verstoppen, sou datt kee fäeg ass dëse Bäitrag mat Iech ze verbannen. Anonym Contributiounen kënnen net geännert ginn, a ginn als final ugesinn.",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalTextSection2": "Eis Plattform sécher fir all Benotzer ze maachen ass eng Haaptprioritéit fir eis. Wierder Matière, also w.e.g. léif mateneen.",
+  "app.components.avatar.titleForAccessibility": "Profil vun {fullName}",
   "app.components.followUnfollow.follow": "Follegt",
   "app.components.followUnfollow.followADiscussion": "Follegt d'Diskussioun",
   "app.components.followUnfollow.followTooltipInputPage2": "Folgend triggert E-Mailupdates iwwer Statusännerungen, offiziell Updates a Kommentaren. Dir kënnt {unsubscribeLink} zu all Moment.",
