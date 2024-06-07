@@ -619,6 +619,7 @@
   "app.components.anonymousParticipationModal.participateAnonymously": "Doe anoniem mee",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText": "Dit zal veilig <b>je profiel verbergen</b> voor beheerders en andere bewoners voor deze specifieke bijdrage, zodat niemand deze bijdrage aan jou kan linken. Anonieme bijdragen kunnen niet bewerkt worden, en worden als definitief beschouwd.",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalTextSection2": "Ons platform veilig maken voor elke gebruiker is voor ons een topprioriteit. Woorden doen ertoe, dus wees alsjeblieft aardig voor elkaar.",
+  "app.components.avatar.titleForAccessibility": "Profiel van {fullName}",
   "app.components.followUnfollow.follow": "Volgen",
   "app.components.followUnfollow.followADiscussion": "Volg de discussie",
   "app.components.followUnfollow.followTooltipInputPage2": "Door te volgen ontvang je e-mailupdates over statuswijzigingen, officiële updates en opmerkingen. Je kunt op elk moment {unsubscribeLink} gebruiken.",
