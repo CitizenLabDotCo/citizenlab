@@ -26,8 +26,7 @@ import useLocalize from 'hooks/useLocalize';
 import { getFormValues as getIdeaFormValues } from 'containers/IdeasEditPage/utils';
 
 import { FormData } from 'components/Form/typings';
-import { customAjv } from 'components/Form/utils';
-import { isValidData } from 'components/Form/utils';
+import { customAjv, isValidData } from 'components/Form/utils';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { geocode } from 'utils/locationTools';
