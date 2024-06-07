@@ -40,7 +40,16 @@ namespace :single_use do
           .with_widget_type('GenderWidget', 'AgeWidget')
           .preload(content_buildable: :owner)
 
-        layouts.each { |layout| migrate_layout(layout) }
+        layouts.each do |layout|
+          Rails.logger.info(
+            'migrate_deprecated_custom_field_widgets',
+            tenant_id: tenant.id,
+            tenant_host: tenant.host,
+            layout_id: layout.id
+          )
+
+          migrate_layout(layout)
+        end
       end
     end
   end
