@@ -2486,7 +2486,6 @@
   "app.containers.admin.ContentBuilder.imageTextCards": "Bilde- og tekstkort",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Informasjon og trekkspill",
   "app.containers.admin.ContentBuilder.layout": "OPPSETT",
-  "app.containers.admin.ContentBuilder.noSettings": "Det er ingen innstillinger for denne widget.",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 kolonner",
   "app.containers.admin.ContentBuilder.projectDescription": "Prosjektbeskrivelse",
   "app.containers.admin.ContentBuilder.sections": "SEKSJONER",

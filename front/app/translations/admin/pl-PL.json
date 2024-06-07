@@ -2486,7 +2486,6 @@
   "app.containers.admin.ContentBuilder.imageTextCards": "Karty obrazkowe i tekstowe",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Informacje i akordeony",
   "app.containers.admin.ContentBuilder.layout": "UKŁAD",
-  "app.containers.admin.ContentBuilder.noSettings": "Nie ma żadnych ustawień dla tego widgetu.",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 kolumna",
   "app.containers.admin.ContentBuilder.projectDescription": "Opis projektu",
   "app.containers.admin.ContentBuilder.sections": "SEKCJE",

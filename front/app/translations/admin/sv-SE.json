@@ -2486,7 +2486,6 @@
   "app.containers.admin.ContentBuilder.imageTextCards": "Bild- och textkort",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Info och dragspel",
   "app.containers.admin.ContentBuilder.layout": "LAYOUT",
-  "app.containers.admin.ContentBuilder.noSettings": "Det finns inga inställningar för den här widgeten.",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 kolumn",
   "app.containers.admin.ContentBuilder.projectDescription": "Projektbeskrivning",
   "app.containers.admin.ContentBuilder.sections": "AVSNITT",

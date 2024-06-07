@@ -2486,7 +2486,6 @@
   "app.containers.admin.ContentBuilder.imageTextCards": "Kuva- ja tekstikortit",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Info & harmonikka",
   "app.containers.admin.ContentBuilder.layout": "LAYOUT",
-  "app.containers.admin.ContentBuilder.noSettings": "Tälle widgetille ei ole asetuksia.",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 sarake",
   "app.containers.admin.ContentBuilder.projectDescription": "Hankkeen kuvaus",
   "app.containers.admin.ContentBuilder.sections": "OSIOT",

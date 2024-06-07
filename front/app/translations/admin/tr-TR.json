@@ -2486,7 +2486,6 @@
   "app.containers.admin.ContentBuilder.imageTextCards": "Görsel ve metin kartları",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Bilgi ve akordeonlar",
   "app.containers.admin.ContentBuilder.layout": "DÜZEN",
-  "app.containers.admin.ContentBuilder.noSettings": "Bu widget için herhangi bir ayar yoktur.",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 sütun",
   "app.containers.admin.ContentBuilder.projectDescription": "Proje açıklaması",
   "app.containers.admin.ContentBuilder.sections": "BÖLÜMLER",

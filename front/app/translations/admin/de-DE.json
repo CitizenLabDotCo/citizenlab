@@ -2486,7 +2486,6 @@
   "app.containers.admin.ContentBuilder.imageTextCards": "Bild & Textkarten",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Info & Akkordeons",
   "app.containers.admin.ContentBuilder.layout": "LAYOUT",
-  "app.containers.admin.ContentBuilder.noSettings": "Es gibt keine Einstellungen für dieses Widget.",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 Spalte",
   "app.containers.admin.ContentBuilder.projectDescription": "Projektbeschreibung",
   "app.containers.admin.ContentBuilder.sections": "ABSCHNITTE",
