@@ -13,26 +13,24 @@ resource 'Graph data units' do
   before do
     @gender = 'female'
 
+    @custom_field = create(:custom_field_select, key: :gender, resource_type: 'User', options: [create(:custom_field_option, key: 'female')])
+
     filtered_date = Date.new(2022, 9, 1)
     craftjs_json = {
       'ROOT' => { 'type' => 'div', 'nodes' => ['gJxirq8X7m'], 'props' => { 'id' => 'e2e-content-builder-frame' }, 'custom' => {}, 'hidden' => false, 'isCanvas' => true, 'displayName' => 'div', 'linkedNodes' => {} },
       'gJxirq8X7m' => {
-        'type' => { 'resolvedName' => 'GenderWidget' },
+        'type' => { 'resolvedName' => 'DemographicsWidget' },
         'nodes' => [],
         'props' => {
           'endAt' => (filtered_date + 1.year).to_time.iso8601,
-          'title' => 'Users by gender',
+          'title' => 'Demographics',
           'startAt' => (filtered_date - 1.year).to_time.iso8601,
-          'projectId' => project.id
-        },
-        'custom' => {
-          'title' => { 'id' => 'app.containers.admin.ReportBuilder.charts.usersByGender', 'defaultMessage' => 'Users by gender' },
-          'noPointerEvents' => true
+          'customFieldId' => @custom_field.id
         },
         'hidden' => false,
         'parent' => 'ROOT',
         'isCanvas' => false,
-        'displayName' => 'GenderWidget',
+        'displayName' => 'DemographicsWidget',
         'linkedNodes' => {}
       }
     }
@@ -58,12 +56,11 @@ resource 'Graph data units' do
     # With the current implementation, registration_completed_at is used to filter users by startAt/endAt.
     # But the participation date can be used instead in the future (Idea#created_at).
     participant = create(:user, gender: @gender, registration_completed_at: filtered_date)
-    create(:custom_field_select, key: :gender, resource_type: 'User', options: [create(:custom_field_option, key: 'female')])
     create(:idea, project: project, created_at: filtered_date, author: participant)
     _not_returned_idea = create(:idea, project: create(:project), created_at: filtered_date, author: create(:user, gender: @gender))
   end
 
-  def expected_attributes
+  def expected_series
     { :_blank => 0, @gender => 1 }.symbolize_keys
   end
 
@@ -74,12 +71,12 @@ resource 'Graph data units' do
     describe 'when user authorized' do
       before { admin_header_token }
 
-      let(:resolved_name) { 'GenderWidget' }
-      let(:props) { { project_id: project.id } }
+      let(:resolved_name) { 'DemographicsWidget' }
+      let(:props) { { project_id: project.id, custom_field_id: @custom_field.id } }
 
       example_request 'Get live data for graph only for relevant project' do
         assert_status 200
-        expect(json_response_body.dig(:data, :attributes)).to eq(expected_attributes)
+        expect(json_response_body.dig(:data, :attributes, :series)).to eq(expected_series)
       end
     end
 
@@ -112,7 +109,7 @@ resource 'Graph data units' do
 
       example_request 'Get published data for graph' do
         assert_status 200
-        expect(json_response_body.dig(:data, :attributes)).to eq(expected_attributes)
+        expect(json_response_body.dig(:data, :attributes, :series)).to eq(expected_series)
       end
     end
 
@@ -131,7 +128,7 @@ resource 'Graph data units' do
     context 'when user is not logged in' do
       example_request 'Get published data for graph' do
         assert_status 200
-        expect(json_response_body.dig(:data, :attributes)).to eq(expected_attributes)
+        expect(json_response_body.dig(:data, :attributes, :series)).to eq(expected_series)
       end
     end
   end
