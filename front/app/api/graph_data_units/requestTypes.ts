@@ -106,7 +106,7 @@ export interface VisitorsTrafficSourcesParams extends BaseParams {
   props: VisitorsTrafficSourcesProps;
 }
 
-export interface BaseDemographicsProps extends DateProps {
+interface BaseDemographicsProps extends DateProps {
   project_id?: string;
   group_id?: string | null;
 }
