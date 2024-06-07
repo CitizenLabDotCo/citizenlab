@@ -44,6 +44,7 @@ const FormResults = () => {
         </Text>
       </Box>
       <Box>
+        TEST
         {totalSubmissions > 0 &&
           results.map((result, index) => {
             return (
