@@ -58,7 +58,7 @@ const FiltersArea = styled.div`
 const StyledSearchInput = styled(SearchInput)`
   width: 300px;
   margin-right: 30px;
-  flex-shrink: 0; /* Prevent the search input from shrinking */
+  flex-shrink: 0;
 
   ${isRtl`
     margin-right: 0;
