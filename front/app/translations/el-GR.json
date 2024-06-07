@@ -619,6 +619,7 @@
   "app.components.anonymousParticipationModal.participateAnonymously": "Συμμετέχετε ανώνυμα",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText": "Αυτό θα <b>αποκρύψει</b> με ασφάλεια <b>το προφίλ σας</b> από τους διαχειριστές, τους διαχειριστές έργων και άλλους κατοίκους για τη συγκεκριμένη συνεισφορά, ώστε κανείς να μην είναι σε θέση να συνδέσει τη συνεισφορά αυτή με εσάς. Οι ανώνυμες συνεισφορές δεν μπορούν να επεξεργαστούν και θεωρούνται οριστικές.",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalTextSection2": "Το να κάνουμε την πλατφόρμα μας ασφαλή για κάθε χρήστη αποτελεί ύψιστη προτεραιότητα για εμάς. Οι λέξεις έχουν σημασία, γι' αυτό παρακαλούμε να είστε ευγενικοί μεταξύ σας.",
+  "app.components.avatar.titleForAccessibility": "Προφίλ του {fullName}",
   "app.components.followUnfollow.follow": "Ακολουθήστε το",
   "app.components.followUnfollow.followADiscussion": "Ακολουθήστε τη συζήτηση",
   "app.components.followUnfollow.followTooltipInputPage2": "Ακολουθώντας ενεργοποιεί ενημερώσεις ηλεκτρονικού ταχυδρομείου σχετικά με αλλαγές κατάστασης, επίσημες ενημερώσεις και σχόλια. Μπορείτε να {unsubscribeLink} ανά πάσα στιγμή.",
