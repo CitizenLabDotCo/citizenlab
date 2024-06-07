@@ -1,9 +1,9 @@
 import moment, { Moment } from 'moment';
 
 import {
-  PostsByTimeResponse,
+  ParticipationResponse,
   TimeSeriesResponseRow,
-} from 'api/graph_data_units/responseTypes/PostsByTimeWidget';
+} from 'api/graph_data_units/responseTypes/ParticipationWidget';
 
 import {
   timeSeriesParser,
@@ -39,7 +39,7 @@ const getDate = (row: TimeSeriesResponseRow) => {
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
 
 export const parseTimeSeries = (
-  responseTimeSeries: PostsByTimeResponse['data']['attributes'][0],
+  responseTimeSeries: ParticipationResponse['data']['attributes'][0],
   startAtMoment: Moment | null | undefined,
   endAtMoment: Moment | null,
   resolution: IResolution

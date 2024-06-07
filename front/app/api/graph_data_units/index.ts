@@ -14,7 +14,6 @@ import {
   ProjectsProps,
 } from './requestTypes';
 // Response types
-import { CommentsByTimeResponse } from './responseTypes/CommentsByTimeWidget';
 import { DemographicsResponse } from './responseTypes/DemographicsWidget';
 import { MethodsUsedResponse } from './responseTypes/MethodsUsedWidget';
 import { MostReactedIdeasResponse } from './responseTypes/MostReactedIdeasWidget';
@@ -150,32 +149,6 @@ export const useParticipantsLive = (
   return useGraphDataUnitsLive<ParticipantsResponse>(
     {
       resolved_name: 'ParticipantsWidget',
-      props,
-    },
-    { onSuccess }
-  );
-};
-
-export const useCommentsByTime = (
-  props: AnalyticsProps,
-  { onSuccess }: { onSuccess?: () => void }
-) => {
-  return useGraphDataUnits<CommentsByTimeResponse>(
-    {
-      resolved_name: 'CommentsByTimeWidget',
-      props,
-    },
-    { onSuccess }
-  );
-};
-
-export const useCommentsByTimeLive = (
-  props: AnalyticsProps,
-  { onSuccess }: { onSuccess?: () => void }
-) => {
-  return useGraphDataUnitsLive<CommentsByTimeResponse>(
-    {
-      resolved_name: 'CommentsByTimeWidget',
       props,
     },
     { onSuccess }
