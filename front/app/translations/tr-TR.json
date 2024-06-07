@@ -619,6 +619,7 @@
   "app.components.anonymousParticipationModal.participateAnonymously": "Anonim olarak katılın",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText": "Bu, <b>profilinizi</b> yöneticilerden, proje yöneticilerinden ve diğer sakinlerden bu özel katkı için güvenli bir şekilde <b>gizler</b>, böylece kimse bu katkıyı sizinle ilişkilendiremez. Anonim katkılar düzenlenemez ve nihai olarak kabul edilir.",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalTextSection2": "Platformumuzu her kullanıcı için güvenli hale getirmek bizim için en önemli önceliktir. Kelimeler önemlidir, bu yüzden lütfen birbirinize karşı nazik olun.",
+  "app.components.avatar.titleForAccessibility": "Profil {fullName}",
   "app.components.followUnfollow.follow": "Takip et",
   "app.components.followUnfollow.followADiscussion": "Tartışmayı takip edin",
   "app.components.followUnfollow.followTooltipInputPage2": "Aşağıdaki durum değişiklikleri, resmi güncellemeler ve yorumlar hakkında e-posta güncellemelerini tetikler. İstediğiniz zaman {unsubscribeLink} adresini ziyaret edebilirsiniz.",
