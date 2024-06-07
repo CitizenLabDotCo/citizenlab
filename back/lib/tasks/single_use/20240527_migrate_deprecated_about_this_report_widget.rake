@@ -77,6 +77,12 @@ namespace :single_use do
           .with_widget_type('AboutReportWidget')
 
         layouts.each do |layout|
+          Rails.logger.info(
+            'Migrating deprecated AboutThisReportWidget',
+            tenant_id: tenant.id,
+            layout_id: layout.id
+          )
+
           migrate_about_this_report_widgets!(layout)
         end
       end
