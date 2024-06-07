@@ -114,16 +114,6 @@ export interface DemographicsParams extends BaseParams {
   props: DemographicsProps;
 }
 
-export interface GenderParams extends BaseParams {
-  resolved_name: 'GenderWidget';
-  props: BaseDemographicsProps;
-}
-
-export interface AgeParams extends BaseParams {
-  resolved_name: 'AgeWidget';
-  props: BaseDemographicsProps;
-}
-
 export interface ParticipantsProps extends AnalyticsProps, CompareProps {}
 
 export interface ParticipantsParams extends BaseParams {
