@@ -23,14 +23,17 @@ namespace :single_use do
         node['props']['customFieldId'] = cf_ids[resolved_name]
       end
 
-      layout.save!
+      ContentBuilder::Layout.transaction do
+        layout.save!
 
-      if layout.content_buildable_type == 'ReportBuilder::Report'
-        report = layout.content_buildable
-        user = report.owner || User.super_admins.first || User.admins.first
-        ReportBuilder::ReportPublisher.new(report, user).publish
+        if layout.content_buildable_type == 'ReportBuilder::Report'
+          report = layout.content_buildable
+          user = report.owner || User.super_admins.first || User.admins.first
+          ReportBuilder::ReportPublisher.new(report, user).publish
+        end
       end
     end
+
     # endregion HELPER METHODS
 
     Tenant.prioritize(Tenant.creation_finalized).each do |tenant|
@@ -40,7 +43,16 @@ namespace :single_use do
           .with_widget_type('GenderWidget', 'AgeWidget')
           .preload(content_buildable: :owner)
 
-        layouts.each { |layout| migrate_layout(layout) }
+        layouts.each do |layout|
+          Rails.logger.info(
+            'migrate_deprecated_custom_field_widgets',
+            tenant_id: tenant.id,
+            tenant_host: tenant.host,
+            layout_id: layout.id
+          )
+
+          migrate_layout(layout)
+        end
       end
     end
   end
