@@ -618,6 +618,7 @@
   "app.components.anonymousParticipationModal.participateAnonymously": "شارك بشكل مجهول",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText": "سيؤدي هذا <b>إلى إخفاء ملفك الشخصي</b> بأمان عن المسؤولين ومديري المشاريع والمقيمين الآخرين لهذه المساهمة المحددة حتى لا يتمكن أي شخص من ربط هذه المساهمة بك. لا يمكن تعديل المساهمات المجهولة، وتعتبر نهائية.",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalTextSection2": "يعد جعل منصتنا آمنة لكل مستخدم أولوية قصوى بالنسبة لنا. الكلمات مهمة ، لذا يرجى أن تكون لطيفًا مع بعضكما البعض.",
+  "app.components.avatar.titleForAccessibility": "الملف الشخصي لـ {fullName}",
   "app.components.followUnfollow.follow": "يتبع",
   "app.components.followUnfollow.followADiscussion": "تابع المناقشة",
   "app.components.followUnfollow.followTooltipInputPage2": "تؤدي المتابعة إلى تشغيل تحديثات البريد الإلكتروني حول تغييرات الحالة والتحديثات الرسمية والتعليقات. يمكنك {unsubscribeLink} في أي وقت.",
