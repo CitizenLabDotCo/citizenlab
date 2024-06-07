@@ -8,13 +8,11 @@ describe('Existing single phase project with poll', () => {
     cy.wait(1000);
   });
 
-  it('shows the correct project header', () => {
+  it('shows the correct project header and the poll', () => {
     cy.get('#e2e-project-description');
     cy.get('#e2e-project-sidebar');
     cy.get('#e2e-project-sidebar-share-button');
-  });
 
-  it('shows the poll', () => {
     cy.get('.e2e-timeline-project-poll-container');
     cy.get('.e2e-poll-form');
   });

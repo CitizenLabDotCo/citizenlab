@@ -172,28 +172,25 @@ describe('New timeline project with active ideation phase', () => {
       });
   });
 
-  it('shows the correct project header', () => {
+  it('shows the buttons and the idea cards', () => {
+    // shows the correct project header
     cy.get('#e2e-project-description');
     cy.get('#e2e-project-sidebar');
     cy.get('#e2e-project-sidebar-phases-count');
     cy.get('#e2e-project-sidebar-share-button');
-  });
 
-  it('shows the see-the-ideas button', () => {
-    cy.get('#e2e-project-see-ideas-button');
+    cy.get('#e2e-project-see-ideas-button'); // shows the see-the-ideas button
 
     // Does not show an event CTA if "see idea" button is present
     cy.get('#e2e-project-see-events-button').should('not.exist');
-  });
 
-  it('shows the post-your-idea button and authentication modal when you click on it', () => {
+    // shows the post-your-idea button and authentication modal when you click on it
     cy.get('#project-ideabutton').should('be.visible');
     cy.get('#project-ideabutton').click();
     cy.get('#e2e-authentication-modal');
     cy.get('.e2e-modal-close-button').click();
-  });
 
-  it('shows the idea cards', () => {
+    // shows the idea cards
     cy.get('.e2e-timeline-project-idea-cards');
     cy.get('#e2e-ideas-list');
     cy.get('.e2e-idea-card');
@@ -287,15 +284,11 @@ describe('Archived timeline project with ideation phase', () => {
       });
   });
 
-  it('shows the see-the-ideas button', () => {
-    cy.get('#e2e-project-see-ideas-button');
-  });
+  it('shows the buttons and the idea cards', () => {
+    cy.get('#e2e-project-see-ideas-button'); // shows the see-the-ideas button
+    cy.contains('Add your idea').should('not.exist'); // does not show the post-your-idea button
 
-  it('does not show the post-your-idea button', () => {
-    cy.contains('Add your idea').should('not.exist');
-  });
-
-  it('shows the idea cards', () => {
+    // shows the idea cards
     cy.get('.e2e-timeline-project-idea-cards');
     cy.get('#e2e-ideas-list');
     cy.get('.e2e-idea-card');
