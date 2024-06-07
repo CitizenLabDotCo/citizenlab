@@ -205,7 +205,7 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
         )}
 
         <Header>
-          <Title color="tenantText" variant="h5" my="0px">
+          <Title title={ideaTitle} color="tenantText" variant="h5" my="0px">
             {ideaTitle}
           </Title>
           {phase.data.attributes.voting_method === 'budgeting' &&
