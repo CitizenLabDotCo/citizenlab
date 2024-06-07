@@ -619,6 +619,7 @@
   "app.components.anonymousParticipationModal.participateAnonymously": "crwdns604461:0crwdne604461:0",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText": "crwdns2400478:0crwdne2400478:0",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalTextSection2": "crwdns604465:0crwdne604465:0",
+  "app.components.avatar.titleForAccessibility": "crwdns2503144:0{fullName}crwdne2503144:0",
   "app.components.followUnfollow.follow": "crwdns855783:0crwdne855783:0",
   "app.components.followUnfollow.followADiscussion": "crwdns1081592:0crwdne1081592:0",
   "app.components.followUnfollow.followTooltipInputPage2": "crwdns2016740:0{unsubscribeLink}crwdne2016740:0",
