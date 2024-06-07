@@ -278,7 +278,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
               background={colors.white}
               maxWidth="700px"
               w="100%"
-              // TODO: recalculate on resize
+              // Height is recalculated on window resize via useWindowSize hook
               h={calculateDynamicHeight()}
               pb={isSmallerThanPhone ? '0' : '80px'}
             >
