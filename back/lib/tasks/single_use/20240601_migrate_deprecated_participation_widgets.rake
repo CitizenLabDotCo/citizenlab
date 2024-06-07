@@ -26,14 +26,17 @@ namespace :single_use do
         )
       end
 
-      layout.save!
+      ContentBuilder::Layout.transaction do
+        layout.save!
 
-      if layout.content_buildable_type == 'ReportBuilder::Report'
-        report = layout.content_buildable
-        user = report.owner || User.super_admins.first || User.admins.first
-        ReportBuilder::ReportPublisher.new(report, user).publish
+        if layout.content_buildable_type == 'ReportBuilder::Report'
+          report = layout.content_buildable
+          user = report.owner || User.super_admins.first || User.admins.first
+          ReportBuilder::ReportPublisher.new(report, user).publish
+        end
       end
     end
+
     # endregion HELPER METHODS
 
     Tenant.prioritize(Tenant.creation_finalized).each do |tenant|
