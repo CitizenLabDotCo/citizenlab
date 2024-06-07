@@ -28,7 +28,7 @@ module Analytics
         ]
 
         current_types = Analytics::DimensionType.all.as_json(only: %i[name parent])
-        return unless current_types.to_set != types.as_json.to_set
+        return if current_types.to_set == types.as_json.to_set
 
         Analytics::DimensionType.insert_all(types)
       end
@@ -80,7 +80,7 @@ module Analytics
         end
 
         current_locales = Analytics::DimensionLocale.all.as_json(only: %i[name])
-        return unless current_locales.to_set != locales.as_json.to_set
+        return if current_locales.to_set == locales.as_json.to_set
 
         Analytics::DimensionLocale.insert_all(locales)
       end
@@ -95,7 +95,7 @@ module Analytics
         ]
 
         current_types = Analytics::DimensionReferrerType.all.as_json(only: %i[key name])
-        return unless current_types.to_set != types.as_json.to_set
+        return if current_types.to_set == types.as_json.to_set
 
         Analytics::DimensionReferrerType.insert_all(types)
       end
