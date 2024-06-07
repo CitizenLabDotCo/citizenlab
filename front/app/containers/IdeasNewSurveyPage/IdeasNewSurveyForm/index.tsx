@@ -5,6 +5,7 @@ import {
   colors,
   stylingConsts,
   useBreakpoint,
+  useWindowSize,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
@@ -97,6 +98,9 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     ? phaseFromUrl.data
     : getCurrentPhase(phases?.data);
   const allowAnonymousPosting = phase?.attributes.allow_anonymous_participation;
+
+  // Used only to rerender the component when window is resized https://stackoverflow.com/a/38641993
+  useWindowSize();
 
   /*
     TODO: Both the api and ajv errors parts need a review. For now I've just copied this from the original (IdeasNewPage), but I'm not sure
