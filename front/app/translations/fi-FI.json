@@ -618,6 +618,7 @@
   "app.components.anonymousParticipationModal.participateAnonymously": "Osallistu anonyymisti",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText": "This will safely <b>hide your profile</b> from admins, project managers and other residents for this specific contribution so that nobody is able to link this contribution to you. Anonymous contributions cannot be edited, and are considered final.",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalTextSection2": "Alustamme tekeminen turvalliseksi jokaiselle käyttäjälle on meille ensisijaisen tärkeää. Sanoilla on väliä, joten olkaa ystävällisiä toisillenne.",
+  "app.components.avatar.titleForAccessibility": "Käyttäjän {fullName}profiili",
   "app.components.followUnfollow.follow": "Seuraa",
   "app.components.followUnfollow.followADiscussion": "Seuraa keskustelua",
   "app.components.followUnfollow.followTooltipInputPage2": "Seuraaminen käynnistää sähköpostipäivitykset tilamuutoksista, virallisista päivityksistä ja kommenteista. Voit {unsubscribeLink} milloin tahansa.",
