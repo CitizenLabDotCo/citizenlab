@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import Tippy from '@tippyjs/react';
 
 import {
   Box,
@@ -8,6 +7,7 @@ import {
   Input,
   Title,
 } from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
 import styled from 'styled-components';
 
 import useReport from 'api/reports/useReport';

@@ -63,7 +63,7 @@ const PageControlButtons = ({
             onClick={handlePrevious}
             data-cy="e2e-previous-page"
             icon="chevron-left"
-            buttonStyle="white"
+            buttonStyle="primary-outlined"
             marginRight={isSmallerThanPhone ? '8px' : '16px'}
           >
             <FormattedMessage {...messages.previous} />

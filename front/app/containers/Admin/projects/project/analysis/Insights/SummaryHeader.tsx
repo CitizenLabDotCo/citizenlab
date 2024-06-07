@@ -24,7 +24,7 @@ const SummaryHeader = () => {
         mb="12px"
         w="fit-content"
       >
-        <Icon name="alert-circle" fill={colors.orange} mr="4px" />
+        <Icon name="alert-circle" fill={colors.orange500} mr="4px" />
         <Text m="0px" fontWeight="bold">
           {formatMessage(messages.aiSummary)}
         </Text>

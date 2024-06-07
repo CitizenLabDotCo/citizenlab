@@ -25,7 +25,7 @@ const QuestionHeader = ({ question }: { question: string }) => {
         w="fit-content"
       >
         <Box>
-          <Icon name="alert-circle" fill={colors.orange} />
+          <Icon name="alert-circle" fill={colors.orange500} />
         </Box>
         <Text fontWeight="bold" m="0px">
           {question}
