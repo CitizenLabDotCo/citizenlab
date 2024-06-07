@@ -3,9 +3,6 @@ import whiteSpaceMessages from 'components/admin/ContentBuilder/Widgets/WhiteSpa
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
-import AboutReportWidget, {
-  aboutReportTitle,
-} from './_deprecated/AboutReportWidget';
 import AgeWidget, { ageTitle } from './ChartWidgets/_deprecated/AgeWidget';
 import CommentsByTimeWidget, {
   commentsByTimeTitle,
@@ -75,7 +72,6 @@ export const WIDGETS = {
   // DEPRECATED
   AgeWidget,
   GenderWidget,
-  AboutReportWidget,
   PostsByTimeWidget,
   CommentsByTimeWidget,
   ReactionsByTimeWidget,
@@ -107,7 +103,6 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   // DEPRECATED
   AgeWidget: ageTitle,
   GenderWidget: genderTitle,
-  AboutReportWidget: aboutReportTitle,
   PostsByTimeWidget: postsByTimeTitle,
   CommentsByTimeWidget: commentsByTimeTitle,
   ReactionsByTimeWidget: reactionsByTimeTitle,
