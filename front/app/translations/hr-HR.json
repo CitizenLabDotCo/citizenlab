@@ -619,6 +619,7 @@
   "app.components.anonymousParticipationModal.participateAnonymously": "Sudjelujte anonimno",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText": "Ovo će sigurno <b>sakriti vaš profil</b> od administratora, voditelja projekta i drugih stanovnika za ovaj specifični doprinos tako da nitko ne može povezati ovaj doprinos s vama. Anonimni doprinosi se ne mogu uređivati i smatraju se konačnima.",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalTextSection2": "Učiniti našu platformu sigurnom za svakog korisnika glavni nam je prioritet. Riječi su važne, stoga budite ljubazni jedni prema drugima.",
+  "app.components.avatar.titleForAccessibility": "Profil od {fullName}",
   "app.components.followUnfollow.follow": "slijediti",
   "app.components.followUnfollow.followADiscussion": "Pratite raspravu",
   "app.components.followUnfollow.followTooltipInputPage2": "Sljedeće pokreće ažuriranja e-poštom o promjenama statusa, službenim ažuriranjima i komentarima. Možete {unsubscribeLink} bilo kada.",
