@@ -619,6 +619,7 @@
   "app.components.anonymousParticipationModal.participateAnonymously": "Piedalieties anonīmi",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText": "Tas droši <b>paslēps jūsu profilu</b> no administratoriem, projektu vadītājiem un citiem šī konkrētā ieguldījuma iedzīvotājiem, lai neviens nevarētu saistīt šo ieguldījumu ar jums. Anonīmus ieguldījumus nevar rediģēt, un tie tiek uzskatīti par galīgiem.",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalTextSection2": "Drošas platformas nodrošināšana ikvienam lietotājam ir mūsu galvenā prioritāte. Vārdi ir svarīgi, tāpēc, lūdzu, esiet laipni cits pret citu.",
+  "app.components.avatar.titleForAccessibility": "{fullName}profils",
   "app.components.followUnfollow.follow": "Sekojiet",
   "app.components.followUnfollow.followADiscussion": "Sekojiet līdzi diskusijai",
   "app.components.followUnfollow.followTooltipInputPage2": "Pēc tiek aktivizēti e-pasta atjauninājumi par statusa izmaiņām, oficiāliem atjauninājumiem un komentāriem. Jebkurā laikā varat rakstīt uz {unsubscribeLink} .",
