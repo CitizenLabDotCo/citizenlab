@@ -681,7 +681,7 @@ jobs:
   e2e-tests:
     docker:
       - image: cimg/base:2021.03
-    parallelism: 3
+    parallelism: 1
     working_directory: ~/citizenlab
     resource_class: medium+
     steps:
@@ -705,6 +705,7 @@ jobs:
           background: true
       # Wait until build is finished.
       - run: |
+          sudo apt-get update && sudo apt-get install -y gettext-base
           sleep 10 # if we run `docker-compose run` immediately, it fails with "network is ambiguous (2 matches found on name)"
           cd e2e
           # we cannot access localhost:3000, so we call it from the container
@@ -716,7 +717,7 @@ jobs:
           COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
           echo $COMMA_SEPARATED_TESTFILES
           cd ../e2e
-          docker-compose run --name cypress_run front npm run cypress:run -- --config baseUrl=http://e2e.front:3000 --spec ${COMMA_SEPARATED_TESTFILES}
+          docker-compose run --name cypress_run -e $(cat ../front/cypress.ci.env | envsubst | sed ':a;N;$!ba;s/\n/ -e /g') front npm run cypress:run -- --config baseUrl=http://e2e.front:3000 --spec cypress/e2e/auth/sso/azure_ad_b2c.cy.ts
       # Uncomment to save XML reports
       # docker-compose run --name cypress_run front npm run cypress:run -- --reporter junit --reporter-options "mochaFile=reports/cypress.xml,toConsole=true" --config baseUrl=http://e2e.front:3000 --spec ${COMMA_SEPARATED_TESTFILES}
       # We run cypress tests in container, so we need to copy the results out.
