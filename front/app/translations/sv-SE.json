@@ -618,6 +618,7 @@
   "app.components.anonymousParticipationModal.participateAnonymously": "Delta anonymt",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText": "Detta <b>döljer din profil</b> på ett säkert sätt för administratörer, projektledare och andra invånare för detta specifika bidrag så att ingen kan koppla detta bidrag till dig. Anonyma bidrag kan inte redigeras och anses vara slutgiltiga.",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalTextSection2": "Att göra vår plattform säker för alla användare är en topprioritet för oss. Ord är viktiga, så var snälla mot varandra.",
+  "app.components.avatar.titleForAccessibility": "Profil på {fullName}",
   "app.components.followUnfollow.follow": "Följ",
   "app.components.followUnfollow.followADiscussion": "Följ diskussionen",
   "app.components.followUnfollow.followTooltipInputPage2": "Följande triggar e-postuppdateringar om statusändringar, officiella uppdateringar och kommentarer. Du kan när som helst lämna {unsubscribeLink} .",
