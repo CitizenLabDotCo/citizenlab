@@ -9,7 +9,7 @@ class DeleteInvitesJob < ApplicationJob
     invites_to_destroy = Invite.where(created_at: Invite::NO_EXPIRY_BEFORE_CREATED_AT..expiry_time)
     destroyed_invites_ids = []
 
-    invites_to_destroy.find_each(batch_size: 50) do |invite|
+    invites_to_destroy.includes(:invitee).find_each(batch_size: 50) do |invite|
       ErrorReporter.handle do
         invite.destroy!
         destroyed_invites_ids << invite.id
