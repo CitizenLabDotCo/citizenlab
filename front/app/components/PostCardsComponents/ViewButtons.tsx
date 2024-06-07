@@ -12,9 +12,10 @@ import {
   defaultStyles,
   fontSizes,
   colors,
+  Box,
 } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
 
@@ -24,13 +25,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 import tracks from './tracks';
-
-const Container = styled.div`
-  display: flex;
-  padding: 4px;
-  background: ${colors.white};
-  border-radius: ${(props) => props.theme.borderRadius};
-`;
 
 const StyledIcon = styled(Icon)`
   color: ${colors.textSecondary};
@@ -101,6 +95,7 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
   const mapButtonRef = useRef<HTMLButtonElement | null>(null);
   const [viewChanged, setViewChanged] = useState<boolean | null>(null);
   const locale = useLocale();
+  const theme = useTheme();
 
   useEffect(() => {
     if (viewChanged) {
@@ -133,7 +128,11 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
 
   if (!isNilOrError(locale)) {
     return (
-      <Container
+      <Box
+        display="flex"
+        p="4px"
+        borderRadius={theme.borderRadius}
+        w="fit-content"
         className={`e2e-list-map-viewbuttons ${className || ''}`}
         role="tablist"
       >
@@ -165,7 +164,7 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
           <StyledIcon name="map" />
           <FormattedMessage {...messages.map} />
         </MapButton>
-      </Container>
+      </Box>
     );
   }
 
