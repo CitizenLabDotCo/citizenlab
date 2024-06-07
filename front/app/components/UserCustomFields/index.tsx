@@ -25,7 +25,7 @@ import messages from './messages';
 */
 
 interface Props {
-  onChange?: (formData: Record<string, any>) => void;
+  onChange: (formData: Record<string, any>) => void;
 }
 
 interface OuterProps extends Props {

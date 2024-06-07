@@ -15,7 +15,7 @@ import {
 
 import FormWrapper from 'components/Form/Components/FormWrapper';
 import Button from 'components/UI/Button';
-import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
+import UserCustomFieldsForm from 'components/UserCustomFields';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -63,8 +63,6 @@ const CustomFields = ({
       setError('unknown');
     }
   };
-
-  if (!locale) return null;
 
   const { ui_schema_multiloc } = userCustomFieldsSchema.data.attributes;
 

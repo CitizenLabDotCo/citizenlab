@@ -27,7 +27,7 @@ import Input from 'components/HookForm/Input';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Select from 'components/HookForm/Select';
 import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
-import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
+import UserCustomFieldsForm from 'components/UserCustomFields';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
@@ -118,6 +118,7 @@ const ProfileForm = () => {
   }));
 
   const handleDisclaimer = (event: FormEvent) => {
+    // Prevent page from reloading
     event.preventDefault();
 
     if (
@@ -252,7 +253,7 @@ const ProfileForm = () => {
             onChange={setExtraFormData}
           />
           <Box display="flex">
-            <Button type="submit" processing={methods.formState.isSubmitting}>
+            <Button processing={methods.formState.isSubmitting}>
               {formatMessage(messages.submit)}
             </Button>
           </Box>
