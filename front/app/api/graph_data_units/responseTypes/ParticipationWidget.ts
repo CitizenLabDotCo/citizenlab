@@ -10,10 +10,10 @@ export type ParticipationResponse = {
   data: {
     type: 'report_builder_data_units';
     attributes: [
-      TimeSeriesResponseRow[] | [], // posts
+      TimeSeriesResponseRow[] | [], // inputs
       TimeSeriesResponseRow[] | [], // comments
       TimeSeriesResponseRow[] | [], // votes
-      [BaseRow] | [] | undefined, // posts
+      [BaseRow] | [] | undefined, // inputs
       [BaseRow] | [] | undefined, // comments
       [BaseRow] | [] | undefined // votes
     ];

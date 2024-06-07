@@ -11,7 +11,7 @@ import { parseTimeSeries, parseExcelData } from './parse';
 import { getTranslations } from './translations';
 import { QueryParameters } from './typings';
 
-export default function usePostsByTime({
+export default function useInputsByTime({
   projectId,
   startAtMoment,
   endAtMoment,

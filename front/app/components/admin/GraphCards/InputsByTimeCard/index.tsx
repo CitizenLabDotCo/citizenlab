@@ -17,7 +17,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import Title from '../_components/Title';
 
 import Chart from './Chart';
-import usePostsByTime from './usePostsByTime';
+import usePostsByTime from './useInputsByTime';
 
 type Props = ProjectId & Dates & Resolution;
 
