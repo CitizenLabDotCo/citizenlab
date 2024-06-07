@@ -99,7 +99,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     : getCurrentPhase(phases?.data);
   const allowAnonymousPosting = phase?.attributes.allow_anonymous_participation;
 
-  // Used only to rerender the component when window is resized https://stackoverflow.com/a/38641993
+  // Used only to rerender the component when window is resized to recalculate the form's height https://stackoverflow.com/a/38641993
   useWindowSize();
 
   /*
