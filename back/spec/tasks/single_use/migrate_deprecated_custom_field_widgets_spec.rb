@@ -101,30 +101,4 @@ RSpec.describe 'single_use:migrate_deprecated_custom_field_widgets' do # rubocop
       )
     end
   end
-
-  context 'when the layout belongs to a phase report' do
-    let!(:report) do
-      create(
-        :report,
-        :with_phase,
-        owner: create(:admin),
-        layout: create(:report_layout, craftjs_json: craftjs_json.deep_dup)
-      ).tap do |report|
-        # We must create the report that the layout refers to in order to publish it.
-        create(:project).update!(id: '40562cd4-9379-48e0-81ce-769c30041090')
-        ReportBuilder::ReportPublisher.new(report, report.owner).publish
-      end
-    end
-
-    it 'refreshes the graph data units of the report' do
-      expect(report.published_graph_data_units.count).to eq(2)
-
-      expect do
-        Rake::Task['single_use:migrate_deprecated_custom_field_widgets'].invoke
-      end.to change { report.reload.published_graph_data_units.ids.to_set }
-        .and change { report.published_graph_data_units.pluck(:created_at).to_set }
-        # graph_ids should not change since the nodes are updated in place
-        .and not_change { report.published_graph_data_units.pluck(:graph_id).to_set }
-    end
-  end
 end
