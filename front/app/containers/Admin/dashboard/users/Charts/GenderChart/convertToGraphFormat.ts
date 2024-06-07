@@ -8,14 +8,6 @@ import { roundPercentages } from 'utils/math';
 
 import { GenderSerie } from './typings';
 
-interface GraphData {
-  data: {
-    attributes: {
-      [key: string]: number;
-    };
-  };
-}
-
 const genderOptions: GenderOption[] = [
   'male',
   'female',
@@ -24,11 +16,10 @@ const genderOptions: GenderOption[] = [
 ];
 
 const convertToGraphFormat = (
-  data: GraphData | undefined,
+  users: Record<string, number> | undefined,
   formatMessage: FormatMessage
 ): GenderSerie | null => {
-  if (!data) return null;
-  const users = data.data.attributes;
+  if (!users) return null;
 
   const percentages = roundPercentages(
     genderOptions.map((gender) => users[gender])

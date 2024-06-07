@@ -1,7 +1,6 @@
 // Props
 import {
   ParticipantsProps,
-  BaseDemographicsProps,
   AnalyticsProps,
   MostReactedIdeasProps,
   SingleIdeaProps,
@@ -15,10 +14,6 @@ import {
   ProjectsProps,
 } from './requestTypes';
 // Response types
-import {
-  UsersByAgeResponse,
-  UsersByGenderResponse,
-} from './responseTypes/_deprecated';
 import { CommentsByTimeResponse } from './responseTypes/CommentsByTimeWidget';
 import { DemographicsResponse } from './responseTypes/DemographicsWidget';
 import { MethodsUsedResponse } from './responseTypes/MethodsUsedWidget';
@@ -129,30 +124,9 @@ export const useDemographics = ({
   );
 };
 
-export const useUsersByGender = (props: BaseDemographicsProps) => {
-  return useGraphDataUnits<UsersByGenderResponse>({
-    resolved_name: 'GenderWidget',
-    props,
-  });
-};
-
-export const useUsersByGenderLive = (props: BaseDemographicsProps) => {
-  return useGraphDataUnitsLive<UsersByGenderResponse>({
-    resolved_name: 'GenderWidget',
-    props,
-  });
-};
-
-export const useUsersByAge = (props: BaseDemographicsProps) => {
-  return useGraphDataUnits<UsersByAgeResponse>({
-    resolved_name: 'AgeWidget',
-    props,
-  });
-};
-
-export const useUsersByAgeLive = (props: BaseDemographicsProps) => {
-  return useGraphDataUnitsLive<UsersByAgeResponse>({
-    resolved_name: 'AgeWidget',
+export const useDemographicsLive = (props: DemographicsProps) => {
+  return useGraphDataUnitsLive<DemographicsResponse>({
+    resolved_name: 'DemographicsWidget',
     props,
   });
 };
