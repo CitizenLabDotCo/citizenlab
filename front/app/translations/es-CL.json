@@ -618,6 +618,7 @@
   "app.components.anonymousParticipationModal.participateAnonymously": "Participa de manera anónima",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText": "Esto ocultará con seguridad <b>tu perfil</b> hacia administradores, moderadores y otros residentes. Nadie podrá vincular esta contribución o aporte específico a ti. Las contribuciones o aportes anónimos no pueden ser editados una vez enviados.",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalTextSection2": "Hacer que nuestra plataforma sea segura para todos los usuarios es una de nuestras prioridades más importantes. Las palabras importan, así que seamos amables entre nosotros.",
+  "app.components.avatar.titleForAccessibility": "Perfil de {fullName}",
   "app.components.followUnfollow.follow": "Sigue",
   "app.components.followUnfollow.followADiscussion": "Seguir la discusión",
   "app.components.followUnfollow.followTooltipInputPage2": "Seguir activa las actualizaciones por correo electrónico sobre cambios de estado, actualizaciones oficiales y comentarios. Puedes {unsubscribeLink} en cualquier momento.",
