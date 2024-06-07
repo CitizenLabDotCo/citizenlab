@@ -19,11 +19,14 @@ namespace :single_use do
         about_nodes = state.nodes_by_resolved_name('AboutReportWidget')
 
         about_nodes.each do |node_id, about_node|
-          logo_node = create_logo_node!(state)
-          title_node = create_multiloc_node(about_node, 'about-title', state)
-          text_node = create_multiloc_node(about_node, 'about-text', state)
+          new_node_ids = [create_logo_node!(state)].compact
 
-          new_node_ids = [logo_node].compact + [title_node, text_node]
+          title_node_id = about_node.dig('linkedNodes', 'about-title')
+          new_node_ids += state.node(title_node_id)['nodes'] if title_node_id
+
+          text_node_id = about_node.dig('linkedNodes', 'about-text')
+          new_node_ids += state.node(text_node_id)['nodes'] if text_node_id
+
           state.replace_node(node_id, new_node_ids)
         end
 
@@ -46,25 +49,6 @@ namespace :single_use do
           image: { dataCode: data_code },
           stretch: false
         }
-      )
-    end
-
-    # @param [Hash] about_report_node
-    # @param [String] linked_node_label
-    # @param [ContentBuilder::Craftjs::State] state
-    def create_multiloc_node(about_report_node, linked_node_label, state)
-      container_node_id = about_report_node.dig('linkedNodes', linked_node_label)
-      container_node = state.node(container_node_id)
-
-      title_node_id = container_node['nodes'].first
-      title_node = state.node(title_node_id)
-
-      multiloc = title_node['props']['text']
-      raise 'Cannot find title node text' if multiloc.blank?
-
-      state.add_node(
-        resolved_name: 'TextMultiloc',
-        props: { text: multiloc }
       )
     end
 
