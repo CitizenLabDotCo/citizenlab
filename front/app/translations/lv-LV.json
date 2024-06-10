@@ -1658,7 +1658,7 @@
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotPermitted": "Diemžēl jums nav tiesību pārskatīt šo dokumentu.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotVerified": "Lai pārskatītu šo dokumentu, ir nepieciešama jūsu konta verifikācija. {verificationLink}",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledProjectInactive": "Dokuments vairs nav pieejams, jo šis projekts vairs nav aktīvs.",
-  "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBar.xPicks1": "{baskets, plural, one {izvēlēts 1 reizi} other {izvēlēts # reizes}}",
+  "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBar.numberOfPicks": "{baskets, plural, one {1 pick} other {# picks}}",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "To dalībnieku procentuālā daļa, kuri izvēlējās šo iespēju.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "Procentuālā daļa no kopējā balsu skaita, ko saņēma šī iespēja.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Izmaksas:",
