@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
+import { Box, Button, Tooltip } from '@citizenlab/cl2-component-library';
 import JSConfetti from 'js-confetti';
 import styled, { useTheme } from 'styled-components';
 
@@ -132,9 +131,8 @@ const CTAButton = ({ phase, project }: Props) => {
 
   return (
     <>
-      <Tippy
+      <Tooltip
         disabled={!disabledExplanation}
-        interactive={true}
         placement="bottom"
         content={disabledExplanation}
       >
@@ -164,7 +162,7 @@ const CTAButton = ({ phase, project }: Props) => {
             {!!disabledExplanation && <>{disabledExplanation}</>}
           </ScreenReaderOnly>
         </Box>
-      </Tippy>
+      </Tooltip>
       <ScreenReaderOnly role="alert">
         {isSubmitSuccessful && (
           <FormattedMessage {...messages.budgetSubmitSuccess} />
