@@ -15,6 +15,10 @@ describe 'rake substitute_cl_gv' do
         '{citizenLabLink}' => '{citizenLabLink}',
         '<a href=\"https://www.citizenlab.co/en\" target=\"_blank\">CitizenLab,</a>' => '<a href=\"https://www.govocal.com/en\" target=\"_blank\">Go Vocal,</a>',
         'provide your personal data to Citizenlab.' => 'provide your personal data to Go Vocal.',
+        'платформе и ЦитизенЛаб од било' => 'платформе и Go Vocal од било',
+        'суппорт@цитизенлаб.цо' => 'support@govocal.com',
+        'хттпс://суппорт.цитизенлаб.цо/артицлес/1771605' => 'https://support.citizenlab.co/articles/1771605'
+
       }.each do |old_v, new_v|
         expect(rake_20240531_substitute_gv(old_v)).to eq(new_v)
       end
