@@ -58,6 +58,7 @@ export type IconButtonProps = {
   buttonType?: 'submit' | 'button' | 'reset';
   transform?: string;
   opacity?: number;
+  iconRef?: React.Ref<any>;
 } & BoxPositionProps &
   BoxMarginProps &
   BoxPaddingProps &
@@ -80,6 +81,7 @@ const IconButton = ({
   buttonType,
   opacity,
   transform,
+  iconRef,
   ...rest
 }: IconButtonProps) => {
   return (
@@ -97,6 +99,7 @@ const IconButton = ({
       justifyContent="center"
       opacity={opacity}
       role="button"
+      ref={iconRef}
       {...rest}
     >
       <StyledIcon

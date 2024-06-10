@@ -14,7 +14,10 @@ import { SuccessAction } from 'containers/Authentication/SuccessActions/actions'
 
 import { VOTES_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
 
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import {
+  getPermissionsDisabledMessage,
+  isFixableByAuthentication,
+} from 'utils/actionDescriptors';
 import { useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
 
@@ -48,7 +51,7 @@ const AssignSingleVoteButton = ({
   const maxVotes = phase?.attributes.voting_max_total;
   const maxVotesReached = maxVotes && numberOfVotesCast === maxVotes;
 
-  const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
+  const actionDescriptor = idea?.data.attributes.action_descriptors.voting;
 
   if (
     !actionDescriptor ||
@@ -103,6 +106,17 @@ const AssignSingleVoteButton = ({
   };
 
   const getButtonDisabledExplanation = () => {
+    const action =
+      phase.attributes.voting_method === 'budgeting' ? 'budgeting' : 'voting';
+    const permissionDisabledMessage = getPermissionsDisabledMessage(
+      action,
+      actionDescriptor.disabled_reason,
+      true
+    );
+    if (permissionDisabledMessage) {
+      return formatMessage(permissionDisabledMessage);
+    }
+
     if (basket?.data?.attributes.submitted_at) {
       return formatMessage(
         onIdeaPage ? messages.votesSubmittedIdeaPage : messages.votesSubmitted,

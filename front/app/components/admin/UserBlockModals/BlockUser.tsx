@@ -31,13 +31,19 @@ type Props = {
   open: boolean;
   setClose: () => void;
   user: IUserData;
+  /**
+   * Optional ref to return focus on close.
+   * By default, focus returns to the control that opened the modal.
+   * Use this ref if you want to return focus to another ref.
+   */
+  returnFocusRef?: React.RefObject<HTMLElement>;
 };
 
 type FormValues = {
   reason: string;
 };
 
-const BlockUserModal = ({ open, setClose, user }: Props) => {
+const BlockUserModal = ({ open, setClose, user, returnFocusRef }: Props) => {
   const [success, setSuccess] = useState(false);
   const [updatedUser, setUpdatedUser] = useState<IUserData | undefined>();
   const { data: appConfiguration } = useAppConfiguration();
@@ -95,6 +101,7 @@ const BlockUserModal = ({ open, setClose, user }: Props) => {
       close={setClose}
       opened={open}
       header={formatMessage(messages.header)}
+      returnFocusRef={returnFocusRef}
     >
       <Box p="30px">
         <FormProvider {...methods}>

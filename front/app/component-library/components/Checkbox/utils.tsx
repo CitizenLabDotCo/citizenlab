@@ -12,14 +12,16 @@ type Props = {
   checkedColor?: string;
   checkedOrIndeterminate: boolean;
   element: CheckboxElement;
+  usePrimaryBorder?: boolean;
 };
 
 export const getColor = ({
   checkedColor,
   checkedOrIndeterminate,
   element,
+  usePrimaryBorder = false,
 }: Props) => {
-  if (!checkedOrIndeterminate) {
+  if (!checkedOrIndeterminate && !usePrimaryBorder) {
     switch (element) {
       case 'border':
         return colors.grey600;

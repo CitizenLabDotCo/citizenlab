@@ -14,8 +14,12 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
+import ScreenReaderCurrencyValue from 'components/ScreenReaderCurrencyValue';
 
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import {
+  isFixableByAuthentication,
+  getPermissionsDisabledMessage,
+} from 'utils/actionDescriptors';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
@@ -46,24 +50,25 @@ const AddToBasketButton = ({
   const basketId = phase.relationships?.user_basket?.data?.id;
   const { data: basket } = useBasket(basketId);
   const ideaBudget = idea?.data.attributes.budget;
+  const currency = appConfig?.data.attributes.settings.core.currency;
 
   const ideaInBasket = !!getVotes?.(ideaId);
 
   const [searchParams] = useSearchParams();
   const isProcessing = searchParams.get('processing_vote') === ideaId;
 
-  if (!idea || !ideaBudget) {
+  if (!idea || !ideaBudget || !currency) {
     return null;
   }
 
   const phaseId = phase.id;
 
-  const actionDescriptor = idea.data.attributes.action_descriptor.voting;
+  const actionDescriptor = idea.data.attributes.action_descriptors.voting;
   if (!actionDescriptor) return null;
 
   const isPermitted =
     actionDescriptor.enabled ||
-    actionDescriptor.disabled_reason !== 'not_permitted';
+    actionDescriptor.disabled_reason !== 'user_not_permitted';
   const buttonVisible =
     isPermitted &&
     actionDescriptor.disabled_reason !== 'idea_not_in_current_phase';
@@ -119,13 +124,22 @@ const AddToBasketButton = ({
 
   const buttonMessage = ideaInBasket ? messages.added : messages.add;
   const buttonEnabled = isButtonEnabled(basket, actionDescriptor);
-  const currency = appConfig?.data.attributes.settings.core.currency;
 
-  const disabledMessage = basket?.data.attributes.submitted_at
-    ? onIdeaPage
-      ? messages.basketAlreadySubmittedIdeaPage
-      : messages.basketAlreadySubmitted
-    : undefined;
+  const action =
+    phase.attributes.voting_method === 'budgeting' ? 'budgeting' : 'voting';
+  const permissionsDisabledMessage = getPermissionsDisabledMessage(
+    action,
+    actionDescriptor.disabled_reason,
+    true
+  );
+
+  const disabledMessage =
+    permissionsDisabledMessage ||
+    (basket?.data.attributes.submitted_at
+      ? onIdeaPage
+        ? messages.basketAlreadySubmittedIdeaPage
+        : messages.basketAlreadySubmitted
+      : undefined);
 
   const disabledExplanation = disabledMessage
     ? formatMessage(disabledMessage)
@@ -156,7 +170,8 @@ const AddToBasketButton = ({
         >
           {ideaInBasket && <Icon mb="4px" fill="white" name="check" />}
           <FormattedMessage {...buttonMessage} />
-          {` (${ideaBudget} ${currency})`}
+          <span aria-hidden>{` (${ideaBudget} ${currency})`}</span>
+          <ScreenReaderCurrencyValue amount={ideaBudget} currency={currency} />
         </Button>
       </div>
     </Tippy>

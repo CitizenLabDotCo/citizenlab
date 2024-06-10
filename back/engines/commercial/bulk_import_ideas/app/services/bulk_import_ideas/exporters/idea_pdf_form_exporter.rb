@@ -219,8 +219,8 @@ module BulkImportIdeas::Exporters
       # inside of it will be on a new page if there
       # is not enough space on the current page
       pdf.group do |pdf_group|
-        # Add print description to linear scale fields (if not overriden by the admin)
-        if custom_field.linear_scale? && custom_field.description_multiloc.blank?
+        # Add print description to linear scale fields (if not overridden by the admin)
+        if custom_field.linear_scale? && custom_field.description_multiloc[@locale].blank?
           custom_field.description_multiloc[@locale] = custom_field.linear_scale_print_description(@locale)
         end
 

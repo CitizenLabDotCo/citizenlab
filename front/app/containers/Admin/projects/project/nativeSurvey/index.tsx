@@ -80,7 +80,6 @@ const Forms = () => {
     downloadExcelLink,
     postingEnabled,
     togglePostingEnabled,
-    viewFormLink,
     editFormLink,
     inputImporterLink,
   } = getFormActionsConfig(project.data, updatePhase, phase.data);
@@ -201,7 +200,7 @@ const Forms = () => {
               </Box>
             </Tippy>
             <Button
-              linkTo={viewFormLink}
+              linkTo={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`}
               icon="eye"
               iconSize="20px"
               buttonStyle="secondary"
@@ -338,7 +337,6 @@ const Forms = () => {
             </Box>
           </Box>
         </Box>
-
         <FormResults />
         <EditWarningModal
           editFormLink={editFormLink}
