@@ -115,7 +115,9 @@ describe('Block user', () => {
 
     cy.get('#e2e-usersshowpage').contains('Blocked');
 
-    cy.get('.e2e-more-actions').click().parent().contains('Unblock');
+    cy.get('.e2e-more-actions').click();
+
+    cy.get('.tippy-content').contains('Unblock');
   });
 
   it('Unblock from User Profile', () => {
@@ -129,12 +131,16 @@ describe('Block user', () => {
       .find('a')
       .click();
 
-    cy.get('.e2e-more-actions').click().parent().contains('Unblock').click();
+    cy.get('.e2e-more-actions').click();
+
+    cy.get('.tippy-content').contains('Unblock').click();
 
     cy.intercept({ method: 'PATCH', url: '**/unblock' }).as('unblockRequest');
     cy.get('#e2e-modal-container').contains('button', 'Yes').click();
     cy.wait('@unblockRequest');
 
-    cy.get('.e2e-more-actions').click().parent().contains('Block');
+    cy.get('.e2e-more-actions').click();
+
+    cy.get('.tippy-content').contains('Block');
   });
 });
