@@ -1657,7 +1657,6 @@
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotPermitted": "Tyvärr har du inte rätt att granska detta dokument.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotVerified": "För att granska detta dokument krävs verifiering av ditt konto. {verificationLink}",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledProjectInactive": "Dokumentet är inte längre tillgängligt, eftersom detta projekt inte längre är aktivt.",
-  "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBar.xPicks1": "{baskets, plural, one {plockas 1 gång} other {plockas # gånger}}",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "Procentandel av deltagarna som valde detta alternativ.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "Den procentandel av det totala antalet röster som detta alternativ fick.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Kostnad:",

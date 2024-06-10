@@ -1657,7 +1657,6 @@
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotPermitted": "Malauradament, no teniu els drets per revisar aquest document.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotVerified": "La revisió d'aquest document requereix la verificació del vostre compte. {verificationLink}",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledProjectInactive": "El document ja no està disponible, ja que aquest projecte ja no està actiu.",
-  "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBar.xPicks1": "{baskets, plural, one {triat 1 cop} other {triat # vegades}}",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "El percentatge de participants que van triar aquesta opció.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "El percentatge del total de vots que ha rebut aquesta opció.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Cost:",

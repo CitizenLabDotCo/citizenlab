@@ -1657,7 +1657,6 @@
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotPermitted": "Unfortunately, you don't have the rights to review this document.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotVerified": "Reviewing this document requires verification of your account. {verificationLink}",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledProjectInactive": "The document is no longer available, since this project is no longer active.",
-  "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBar.xPicks1": "{baskets, plural, one {picked 1 time} other {picked # times}}",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "The percentage of participants who picked this option.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "The percentage of total votes this option received.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Cost:",

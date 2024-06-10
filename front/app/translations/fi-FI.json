@@ -1657,7 +1657,6 @@
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotPermitted": "Valitettavasti sinulla ei ole oikeutta tarkistaa tätä asiakirjaa.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotVerified": "Tämän asiakirjan tarkistaminen edellyttää tilisi vahvistamista. {verificationLink}",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledProjectInactive": "Asiakirja ei ole enää saatavilla, koska tämä projekti ei ole enää aktiivinen.",
-  "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBar.xPicks1": "{baskets, plural, one {poimittu 1 kerran} other {poimittu # kertaa}}",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "Tämän vaihtoehdon valinneiden osallistujien prosenttiosuus.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "Tämän vaihtoehdon saamien äänien prosenttiosuus.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Kustannus:",

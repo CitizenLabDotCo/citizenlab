@@ -1657,7 +1657,6 @@
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotPermitted": "Niestety, nie masz uprawnień do przeglądania tego dokumentu.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotVerified": "Zapoznanie się z tym dokumentem wymaga weryfikacji Twojego konta. {verificationLink}",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledProjectInactive": "Dokument nie jest już dostępny, ponieważ projekt ten nie jest już aktywny.",
-  "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBar.xPicks1": "{baskets, plural, one {wybrany 1 raz} other {wybrany # razy}}",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "Odsetek uczestników, którzy wybrali tę opcję.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "Procent całkowitej liczby głosów otrzymanych przez tę opcję.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Koszt:",

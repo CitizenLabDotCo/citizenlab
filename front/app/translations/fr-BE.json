@@ -1657,7 +1657,6 @@
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotPermitted": "Malheureusement, vous n'avez pas les permissions nécessaires pour réviser ce document.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotVerified": "Pour pouvoir réviser ce document, il est nécessaire de vérifier votre compte. {verificationLink}",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledProjectInactive": "Le document n'est plus disponible, car ce projet n'est plus actif.",
-  "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBar.xPicks1": "{baskets, plural, one {choisi 1 fois} other {choisi # fois}}",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "Le pourcentage de participants qui ont choisi cette option.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "Le pourcentage des votes totaux recueilli par cette option.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Coût :",
