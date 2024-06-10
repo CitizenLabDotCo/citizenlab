@@ -102,7 +102,7 @@ kl:
       "link_terms_conditions": "Piumasaqaatit atugassarititaasullu"
       "link_unsubscribe": "Atuisuujunnaarneq"
       "powered_by": "Ingerlanneqartoq"
-      "statement": "Emaili una %{organizationName} sinnerlugu Go Vocal.mit nassiunneqarpoq, %{organizationLink}-imut atuisutut nalunaarsimagavit. Siunissami emailinik ima ittunik nassinneqartarusunngikkuit una %{unsubscribeLink} tooruk."
+      "statement": "Emaili una %{organizationName} sinnerlugu CitizenLabimit nassiunneqarpoq, %{organizationLink}-imut atuisutut nalunaarsimagavit. Siunissami emailinik ima ittunik nassinneqartarusunngikkuit una %{unsubscribeLink} tooruk."
       "unsubscribe_text": "atuisuujunnaarit"
     comment_deleted_by_admin:
       reason: 'Oqaaseqaativit peerneqarneranut pissutaasoq:'

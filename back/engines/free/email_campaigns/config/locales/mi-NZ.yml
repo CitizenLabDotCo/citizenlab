@@ -102,7 +102,7 @@ mi:
       "link_terms_conditions": "Terms & Conditions"
       "link_unsubscribe": "Unsubscribe"
       "powered_by": "He mea whakahiko e"
-      "statement": "This e-mail was sent to you by Go Vocal on behalf of %{organizationName}, because you are a registered user of %{organizationLink}. You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
+      "statement": "This e-mail was sent to you by CitizenLab on behalf of %{organizationName}, because you are a registered user of %{organizationLink}. You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
       "unsubscribe_text": "unsubscribe"
     comment_deleted_by_admin:
       reason: 'The reason why your comment was deleted:'

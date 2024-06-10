@@ -63,7 +63,7 @@
   "app.components.ConfirmationModal.disabled": "crwdns209088:0crwdne209088:0",
   "app.components.ConfirmationModal.enabled": "crwdns209090:0crwdne209090:0",
   "app.components.ConfirmationModal.whenTurnedOnUsersWillHaveToConfirm": "crwdns209092:0crwdne209092:0",
-  "app.components.ProjectTemplatePreview.govocalExpert": "crwdns209094:0crwdne209094:0",
+  "app.components.ProjectTemplatePreview.citizenlabExpert": "crwdns209094:0crwdne209094:0",
   "app.components.ProjectTemplatePreview.close": "crwdns209096:0crwdne209096:0",
   "app.components.ProjectTemplatePreview.createProject": "crwdns209098:0crwdne209098:0",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "crwdns209100:0{templateTitle}crwdne209100:0",

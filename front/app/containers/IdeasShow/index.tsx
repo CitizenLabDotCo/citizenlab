@@ -1,7 +1,6 @@
 import React, { lazy, Suspense, useState } from 'react';
 
-import { Box, Badge } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
+import { Box, Badge, Tooltip } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useIdeaImages from 'api/idea_images/useIdeaImages';
@@ -99,8 +98,7 @@ export const IdeasShow = ({
         <Box flex="1 1 100%">
           {wasImported && (
             <Box display="flex">
-              <Tippy
-                interactive={true}
+              <Tooltip
                 theme={'dark'}
                 content={
                   <Box>
@@ -116,7 +114,7 @@ export const IdeasShow = ({
                     <FormattedMessage {...messages.imported} />
                   </Badge>
                 </Box>
-              </Tippy>
+              </Tooltip>
             </Box>
           )}
           <IdeaTitle

@@ -77,7 +77,7 @@ nl-BE:
       "link_terms_conditions": "Gebruiksvoorwaarden"
       "link_unsubscribe": "Uitschrijven"
       "powered_by": "Mogelijk gemaakt door"
-      "statement": "Je kreeg deze e-mail van Go Vocal in naam van %{organizationName} omdat je geregistreerd bent als gebruiker op %{organizationLink}. Je kan je %{unsubscribeLink} als je deze e-mails niet meer wil ontvangen in de toekomst."
+      "statement": "Je kreeg deze e-mail van CitizenLab in naam van %{organizationName} omdat je geregistreerd bent als gebruiker op %{organizationLink}. Je kan je %{unsubscribeLink} als je deze e-mails niet meer wil ontvangen in de toekomst."
       "unsubscribe_text": "uitschrijven"
     follow:
       "unfollow_here": "Je hebt deze melding ontvangen vanwege een item dat je volgt. <a href=\"%{unfollow_url}\">Je kunt het hier ontvolgen.</a>"

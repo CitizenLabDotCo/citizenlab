@@ -26,6 +26,7 @@ const CheckboxWithLabel = ({
   checkedColor,
   labelTooltipText,
   dataTestId,
+  usePrimaryBorder,
   ...boxProps
 }: Props) => {
   const handleLabelClick = (event: React.MouseEvent) => {
@@ -51,6 +52,7 @@ const CheckboxWithLabel = ({
         checkedColor={checkedColor}
         indeterminate={indeterminate}
         size={size}
+        usePrimaryBorder={usePrimaryBorder}
         name={name}
         mr="8px"
       />

@@ -98,12 +98,9 @@ describe('Seat based billing', () => {
           // Set user as admin
           cy.get('@firstRow').contains(user1Email);
           cy.get('@firstRow').contains('Registered user');
-          cy.get('@firstRow')
-            .find('.e2e-more-actions')
-            .click()
-            .parent()
-            .contains('Set as admin')
-            .click();
+          cy.get('@firstRow').find('.e2e-more-actions').click();
+
+          cy.get('.tippy-content').contains('Set as admin').click();
 
           if (usedSeats >= totalSeats) {
             // Verify that user is required to confirm
@@ -147,12 +144,9 @@ describe('Seat based billing', () => {
             // Navigate to users page
             cy.visit('/admin/users');
             // Set user as normal user
-            cy.get('@firstRow')
-              .find('.e2e-more-actions')
-              .click()
-              .parent()
-              .contains('Set as normal user')
-              .click();
+            cy.get('@firstRow').find('.e2e-more-actions').click();
+
+            cy.get('.tippy-content').contains('Set as normal user').click();
 
             cy.get('[data-cy="e2e-confirm-change-seat-body"]').should('exist');
             // Confirm setting user to normal user

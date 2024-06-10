@@ -77,7 +77,7 @@ fr-BE:
       "link_terms_conditions": "Conditions Générales d'Utilisation"
       "link_unsubscribe": "Se désabonner"
       "powered_by": "Généré par"
-      "statement": "Cet e-mail vous a été envoyé par %{organizationName} via Go Vocal, car vous êtes un utilisateur de la plateforme %{organizationLink}. Vous pouvez %{unsubscribeLink} si vous ne voulez plus recevoir ces e-mails à l'avenir."
+      "statement": "Cet e-mail vous a été envoyé par %{organizationName} via CitizenLab, car vous êtes un utilisateur de la plateforme %{organizationLink}. Vous pouvez %{unsubscribeLink} si vous ne voulez plus recevoir ces e-mails à l'avenir."
       "unsubscribe_text": "vous désabonner"
     follow:
       "unfollow_here": "Vous avez reçu cette notification parce que vous suivez ce sujet. <a href=\"%{unfollow_url}\">Vous pouvez vous désabonner ici.</a>"

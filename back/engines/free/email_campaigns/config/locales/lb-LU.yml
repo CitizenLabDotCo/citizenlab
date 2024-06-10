@@ -77,7 +77,7 @@ lb:
       "link_terms_conditions": "Geschäftsbedéngungen"
       "link_unsubscribe": "Ofmellen"
       "powered_by": "Ënnerstëtzt vun"
-      "statement": "Dës E-Mail gouf Iech vu Go Vocal am Numm vun %{organizationName} geschéckt, well Dir e registréierten Notzer vun %{organizationLink} sidd. Dir kënnt Iech %{unsubscribeLink}, wann Dir an Zukunft dës E-Mailen net méi kréie wëllt."
+      "statement": "Dës E-Mail gouf Iech vu CitizenLab am Numm vun %{organizationName} geschéckt, well Dir e registréierten Notzer vun %{organizationLink} sidd. Dir kënnt Iech %{unsubscribeLink}, wann Dir an Zukunft dës E-Mailen net méi kréie wëllt."
       "unsubscribe_text": "ofmellen"
     follow:
       "unfollow_here": "Dir hutt dës Notifikatioun kritt wéinst engem Artikel deen Dir verfollegt. <a href=\"%{unfollow_url}\">Dir kënnt et hei ofschléissen.</a>"

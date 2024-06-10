@@ -99,8 +99,8 @@ export interface Props extends DefaultProps {
   placeholder?: string;
 }
 
-const defaultValue = 'DEFAULT_SELECT_VALUE';
-const placeholderValue = 'PLACEHOLDER_SELECT_VALUE';
+const DEFAULT_VALUE = 'DEFAULT_SELECT_VALUE';
+const PLACEHOLDER_VALUE = 'PLACEHOLDER_SELECT_VALUE';
 
 const getSelectedValue = (
   options: IOption[] | null,
@@ -112,7 +112,7 @@ const getSelectedValue = (
   )?.value;
   if (selectedValue) return selectedValue;
 
-  return placeholder !== undefined ? placeholderValue : defaultValue;
+  return placeholder !== undefined ? PLACEHOLDER_VALUE : DEFAULT_VALUE;
 };
 
 class Select extends PureComponent<Props> {
@@ -148,12 +148,13 @@ class Select extends PureComponent<Props> {
       value,
       placeholder,
     } = this.props;
+
     const safeValue =
       isString(value) || isNumber(value) ? value : get(value, 'value', null);
 
     const selectedValue = getSelectedValue(options, safeValue, placeholder);
 
-    const showPlaceholder = selectedValue === placeholderValue;
+    const showPlaceholder = selectedValue === PLACEHOLDER_VALUE;
 
     return (
       <Container
@@ -184,7 +185,7 @@ class Select extends PureComponent<Props> {
           >
             {placeholder !== undefined && (
               <option
-                value={placeholderValue}
+                value={PLACEHOLDER_VALUE}
                 aria-selected={showPlaceholder}
                 hidden
                 disabled
@@ -194,8 +195,27 @@ class Select extends PureComponent<Props> {
             )}
 
             <option
-              value={defaultValue}
-              aria-selected={selectedValue === defaultValue}
+              value={DEFAULT_VALUE}
+              aria-selected={selectedValue === DEFAULT_VALUE}
+              // The `canBeEmpty` prop adds an 'empty' option to the select,
+              // which doesn't work very well because you can't actually select
+              // it.
+              // For this reason, usually we implement this 'empty option'
+              // in a different way, see e.g. components/UI/ProjectFilter.
+
+              // At the moment, the canBeEmpty prop is not used a lot-
+              // it's only used in the JSON form select controls
+              // (SingleSelectControl and SingleSelectEnumControl)
+              // It's NOT recommended to use it.
+              // In the two cases above, it's used because otherwise
+              // the select cannot be used with keyboard navigation
+              // in Firefox, in some cases, for some unknown reason.
+              // It's very likely this keyboard navigation is broken
+              // in other places, but at the moment of writing
+              // we don't have time to fix it everywhere else.
+              //
+              // In the future we really need to refactor this component
+              // and fix this situation, so that it works properly.
               hidden={!canBeEmpty}
               disabled={!canBeEmpty}
             />
