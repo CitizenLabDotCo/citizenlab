@@ -439,6 +439,7 @@ const Modal: React.FC<Props> = ({
   hideCloseButton,
   returnFocusRef,
 }) => {
+  const [modalHasBeenOpened, setModalHasBeenOpened] = useState(false);
   const [windowDimensions, setWindowDimensions] = useState({
     windowWidth: window.innerWidth,
     windowHeight: window.innerHeight,
@@ -473,9 +474,15 @@ const Modal: React.FC<Props> = ({
   }, [handlePopstateEvent, handleKeypress]);
 
   useEffect(() => {
+    if (opened) {
+      setModalHasBeenOpened(true);
+    }
+  }, [opened]);
+
+  useEffect(() => {
     let timeoutId: number | undefined;
 
-    if (!opened && returnFocusRef?.current) {
+    if (modalHasBeenOpened && !opened && returnFocusRef?.current) {
       timeoutId = window.setTimeout(() => {
         returnFocusRef.current?.focus();
       }, 0);
