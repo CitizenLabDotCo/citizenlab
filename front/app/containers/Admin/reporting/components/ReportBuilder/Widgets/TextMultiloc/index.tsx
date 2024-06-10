@@ -51,7 +51,9 @@ const TextMultilocSettings = () => {
         id="quill-editor"
         valueMultiloc={text}
         onChange={(value) => {
-          setProp((props: Props) => (props.text = value));
+          setProp((props: Props) => {
+            props.text = value;
+          });
         }}
       />
     </Box>

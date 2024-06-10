@@ -17,7 +17,7 @@ const StyledIconTooltip = styled(IconTooltip)`
 
 const Indicator = styled(TextCell)<{ isWarning?: boolean }>`
   display: flex;
-  color: ${({ isWarning }) => (isWarning ? colors.orange : colors.error)};
+  color: ${({ isWarning }) => (isWarning ? colors.orange500 : colors.error)};
   margin-right: 15px;
 `;
 

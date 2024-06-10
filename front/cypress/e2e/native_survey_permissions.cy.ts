@@ -148,7 +148,7 @@ describe('Native survey permissions', () => {
       cy.wait(5000);
       cy.location('pathname').should(
         'eq',
-        `/en/projects/${projectSlug}/ideas/new`
+        `/en/projects/${projectSlug}/surveys/new`
       );
     });
 

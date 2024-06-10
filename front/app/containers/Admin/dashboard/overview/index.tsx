@@ -5,8 +5,8 @@ import moment, { Moment } from 'moment';
 
 import useAuthUser from 'api/me/useAuthUser';
 
-import ActiveUsersCard from 'components/admin/GraphCards/ActiveUsersCard';
 import CommentsByTimeCard from 'components/admin/GraphCards/CommentsByTimeCard';
+import ParticipantsCard from 'components/admin/GraphCards/ParticipantsCard';
 import PostByTimeCard from 'components/admin/GraphCards/PostsByTimeCard';
 import ReactionsByTimeCard from 'components/admin/GraphCards/ReactionsByTimeCard';
 import RegistrationsCard from 'components/admin/GraphCards/RegistrationsCard';
@@ -139,7 +139,7 @@ const OverviewDashboard = () => {
           />
         </Column>
         <Column>
-          <ActiveUsersCard
+          <ParticipantsCard
             projectId={currentProjectFilter}
             startAtMoment={startAtMoment}
             endAtMoment={endAtMoment}
