@@ -15,15 +15,18 @@ namespace :single_use do
       end
 
       if updated
-        layout.save!
+        ContentBuilder::Layout.transaction do
+          layout.save!
 
-        if layout.content_buildable_type == 'ReportBuilder::Report'
-          report = layout.content_buildable
-          user = report.owner || User.super_admins.first || User.admins.first
-          ReportBuilder::ReportPublisher.new(report, user).publish
+          if layout.content_buildable_type == 'ReportBuilder::Report'
+            report = layout.content_buildable
+            user = report.owner || User.super_admins.first || User.admins.first
+            ReportBuilder::ReportPublisher.new(report, user).publish
+          end
         end
       end
     end
+
     # endregion HELPER METHODS
 
     Tenant.prioritize(Tenant.creation_finalized).each do |tenant|
@@ -33,7 +36,16 @@ namespace :single_use do
           .with_widget_type('VisitorsWidget')
           .preload(content_buildable: :owner)
 
-        layouts.each { |layout| migrate_layout(layout) }
+        layouts.each do |layout|
+          Rails.logger.info(
+            'migrate_visitor_timeline_widgets_craftjs_state',
+            tenant_id: tenant.id,
+            tenant_host: tenant.host,
+            layout_id: layout.id
+          )
+
+          migrate_layout(layout)
+        end
       end
     end
   end

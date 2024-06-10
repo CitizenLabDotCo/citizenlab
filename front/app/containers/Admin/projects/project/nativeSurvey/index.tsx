@@ -337,7 +337,6 @@ const Forms = () => {
             </Box>
           </Box>
         </Box>
-
         <FormResults />
         <EditWarningModal
           editFormLink={editFormLink}
