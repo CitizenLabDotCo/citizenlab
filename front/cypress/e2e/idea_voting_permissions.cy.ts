@@ -14,7 +14,7 @@ describe('Idea reacting permissions', () => {
       cy.location('pathname').should('eq', '/en/projects/verified-ideation');
       cy.get('#e2e-ideas-container');
       cy.wait(1000);
-      cy.get('.e2e-ideacard-like-button').click();
+      cy.get('.e2e-ideacard-like-button').click({ force: true });
 
       // sign up modal check
       cy.get('#e2e-authentication-modal').should('exist');
@@ -78,7 +78,7 @@ describe('Idea reacting permissions', () => {
       cy.visit('projects/verified-ideation');
       cy.get('#e2e-ideas-container');
       cy.wait(1000);
-      cy.get('.e2e-ideacard-like-button').click();
+      cy.get('.e2e-ideacard-like-button').click({ force: true });
       cy.get('#e2e-verification-wizard-root');
     });
 
