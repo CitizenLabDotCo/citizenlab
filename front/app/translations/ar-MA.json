@@ -939,7 +939,6 @@
   "app.containers.AccessibilityStatement.assesmentText2022": "تم تقييم إمكانية وصول هذا الموقع من قِبل كيان خارجي غير مشترك في عملية التصميم والتطوير. يمكن تحديد توافق {demoPlatformLink} المتقدم ذكرها في {statusPageLink} هذه.",
   "app.containers.AccessibilityStatement.changePreferencesButtonText": "يمكنك تغيير تفضيلاتك",
   "app.containers.AccessibilityStatement.changePreferencesText": "في أي وقت، {changePreferencesButton}.",
-  "app.containers.AccessibilityStatement.citizenLabAddress2022": "Boulevard Pachéco 34، 1000 Brussels، Belgium",
   "app.containers.AccessibilityStatement.compatibilityTitle2022": "التوافق مع التقنية المساعدة",
   "app.containers.AccessibilityStatement.conformanceExceptions": "استثناءات التوافق",
   "app.containers.AccessibilityStatement.conformanceStatus": "حالة التوافق",
