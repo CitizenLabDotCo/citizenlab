@@ -74,7 +74,7 @@ describe('Project description builder Iframe component', () => {
       .type('https://citizen');
     cy.get('.e2e-error-message').should('be.visible');
     // Check that save is disabled
-    cy.contains('Save').should('be.disabled');
+    cy.contains('Save').should('have.attr', 'aria-disabled', 'true');
     // Check that red border is present
     cy.get('.e2e-render-node')
       .last()

@@ -494,7 +494,7 @@ const Modal: React.FC<Props> = ({
         clearTimeout(timeoutId);
       }
     };
-  }, [opened, returnFocusRef]);
+  }, [opened, returnFocusRef, modalHasBeenOpened]);
 
   useEffect(() => {
     const subscription = fromEvent(window, 'resize')
