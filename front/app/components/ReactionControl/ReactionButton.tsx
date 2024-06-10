@@ -453,7 +453,6 @@ const ReactionButton = ({
             }[buttonReactionMode],
             buttonReactionModeEnabled ? 'enabled' : '',
           ].join(' ')}
-          aria-disabled={!buttonEnabled}
         >
           <ReactionIconContainer
             styleType={styleType}
