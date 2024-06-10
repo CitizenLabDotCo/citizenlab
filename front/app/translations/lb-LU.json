@@ -2055,7 +2055,7 @@
   "app.utils.errors.default.ajv_error_minItems": "Muss mindestens {limit, plural, one {# objet} other {# objeten}}enthalen",
   "app.utils.errors.default.ajv_error_number_any": "W.e.g. drot eng gëlteg Zuel an",
   "app.utils.errors.default.ajv_error_politician_required": "W.e.g. drot an, ob Dir e Politiker sidd",
-  "app.utils.errors.default.ajv_error_required": "Dëst Feld muss ausgefëllt ginn.",
+  "app.utils.errors.default.ajv_error_required3": "Feld ass erfuerderlech: \"{fieldName}\"",
   "app.utils.errors.default.ajv_error_type": "Däerf net eidel sinn",
   "app.utils.errors.default.api_error_accepted": "Muss akzeptéiert ginn",
   "app.utils.errors.default.api_error_blank": "Däerf net eidel sinn",
