@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# The bulk_replace method is invoked by cl2-admin/lib/admin_api.rb#verification_id_cards_replace_all
+# and it seems we need to require CSV.
+require 'csv'
+
 module IdIdCardLookup
   module AdminApi
     class IdCardsController < ::AdminApi::AdminApiController
