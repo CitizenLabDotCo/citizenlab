@@ -1658,7 +1658,7 @@
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotPermitted": "crwdns649421:0crwdne649421:0",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotVerified": "crwdns649423:0{verificationLink}crwdne649423:0",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledProjectInactive": "crwdns649425:0crwdne649425:0",
-  "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBar.xPicks1": "crwdns1646274:0baskets={baskets}crwdne1646274:0",
+  "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBar.numberOfPicks": "crwdns2503146:0baskets={baskets}crwdne2503146:0",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "crwdns1646276:0crwdne1646276:0",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "crwdns1646278:0crwdne1646278:0",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "crwdns777669:0crwdne777669:0",
