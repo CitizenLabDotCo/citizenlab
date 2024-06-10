@@ -2055,7 +2055,7 @@
   "app.utils.errors.default.ajv_error_minItems": "Jāietver vismaz {limit, plural, one {# item} other {# items}}",
   "app.utils.errors.default.ajv_error_number_any": "Lūdzu, ievadiet derīgu numuru",
   "app.utils.errors.default.ajv_error_politician_required": "Lūdzu, norādiet, vai esat politiķis",
-  "app.utils.errors.default.ajv_error_required": "Šis lauks ir obligāts",
+  "app.utils.errors.default.ajv_error_required3": "Lauks ir obligāts: \"{fieldName}\"",
   "app.utils.errors.default.ajv_error_type": "Nevar būt neaizpildīts",
   "app.utils.errors.default.api_error_accepted": "Jāpieņem",
   "app.utils.errors.default.api_error_blank": "Nevar būt neaizpildīts",
