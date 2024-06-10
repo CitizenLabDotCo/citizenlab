@@ -1,12 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import {
-  Box,
-  Text,
-  stylingConsts,
-  Tooltip,
-} from '@citizenlab/cl2-component-library';
-import { transparentize } from 'polished';
+import { Box, Text, Tooltip } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 interface Props {
@@ -20,36 +14,30 @@ const ProgressBarWrapper = ({ children, votesPercentage, tooltip }: Props) => {
 
   return (
     <Tooltip disabled={false} content={tooltip} placement="bottom">
-      <Box
-        w="100%"
-        h="28px"
-        borderRadius={stylingConsts.borderRadius}
-        bgColor={transparentize(0.9, theme.colors.tenantPrimary)}
-        position="relative"
-      >
-        <Box
-          w={`${votesPercentage}%`}
-          h="100%"
-          bgColor={transparentize(0.75, theme.colors.primary)}
-          borderRadius={stylingConsts.borderRadius}
-        />
-        <Box
-          position="absolute"
-          left="0"
-          top="0"
-          h="28px"
-          display="flex"
-          alignItems="center"
+      <Box display="flex" alignItems="center" flexDirection="column" w="100%">
+        <Text
+          m="0"
+          color="tenantPrimary"
+          fontSize="s"
+          fontWeight="bold"
+          w="100%"
         >
-          <Text
-            m="0"
-            color="tenantPrimary"
-            ml="12px"
-            fontSize="s"
-            fontWeight="bold"
-          >
-            {children}
-          </Text>
+          {children}
+        </Text>
+        <Box
+          w="100%"
+          h="8px"
+          borderRadius="2px"
+          border={`1px solid ${theme.colors.tenantPrimary}`}
+          bgColor={theme.colors.tenantPrimaryLighten75}
+          position="relative"
+        >
+          <Box
+            w={`${votesPercentage}%`}
+            h="100%"
+            bgColor={theme.colors.tenantPrimary}
+            borderRadius="2px"
+          />
         </Box>
       </Box>
     </Tooltip>
