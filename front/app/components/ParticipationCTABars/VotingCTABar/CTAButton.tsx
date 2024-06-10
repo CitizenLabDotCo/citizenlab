@@ -141,7 +141,7 @@ const CTAButton = ({ phase, project }: Props) => {
         <Box width="100%" tabIndex={disabledExplanation ? 0 : -1}>
           <StyledButton
             icon="vote-ballot"
-            buttonStyle="secondary"
+            buttonStyle="secondary-outlined"
             iconColor={theme.colors.tenantText}
             onClick={handleSubmitOnClick}
             fontWeight="500"

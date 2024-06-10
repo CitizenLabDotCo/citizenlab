@@ -121,7 +121,7 @@ const ProjectHeader = ({ projectId }: Props) => {
             </Button>
             <Button
               linkTo={`/admin/projects/${project.data.id}/settings`}
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               icon="settings"
               size="s"
               padding="4px 8px"

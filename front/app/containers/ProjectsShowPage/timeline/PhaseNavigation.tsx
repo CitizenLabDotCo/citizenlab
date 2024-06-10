@@ -59,7 +59,7 @@ const NextPhaseButton = styled(Button)`
 
 interface Props {
   projectId: string;
-  buttonStyle?: 'secondary' | 'white';
+  buttonStyle?: 'secondary-outlined' | 'white';
   className?: string;
 }
 
@@ -139,7 +139,7 @@ const PhaseNavigation = memo<Props>(({ projectId, buttonStyle, className }) => {
 
   if (phases && phases.data.length > 1) {
     const navButtonSize = '34px';
-    const navButtonStyle = buttonStyle || 'secondary';
+    const navButtonStyle = buttonStyle || 'secondary-outlined';
     const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
     const currentPhase = getCurrentPhase(phases.data);
     const currentPhaseId = currentPhase ? currentPhase.id : null;

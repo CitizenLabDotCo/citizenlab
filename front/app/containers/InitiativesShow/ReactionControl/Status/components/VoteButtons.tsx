@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Tooltip } from '@citizenlab/cl2-component-library';
+import { colors, Tooltip } from '@citizenlab/cl2-component-library';
 
 import Button from 'components/UI/Button';
 
@@ -34,11 +34,11 @@ const VoteButtons = ({
     <>
       {userReacted ? (
         <Button
-          buttonStyle="success"
           iconSize="20px"
           icon="check"
           onClick={onCancelReaction}
           id="e2e-proposal-cancel-vote-button"
+          bgColor={colors.success}
           disabled={cancelReactionDisabled}
         >
           <FormattedMessage {...messages.voted} />

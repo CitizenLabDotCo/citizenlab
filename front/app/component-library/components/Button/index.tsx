@@ -1,7 +1,7 @@
 import React, { MouseEvent, ButtonHTMLAttributes } from 'react';
 
 import { isNil, get } from 'lodash-es';
-import { darken, lighten, transparentize, opacify, rgba } from 'polished';
+import { darken, transparentize, opacify, rgba } from 'polished';
 import styled from 'styled-components';
 
 import {
@@ -26,13 +26,9 @@ export type ButtonStyles =
   | 'primary'
   | 'primary-inverse'
   | 'primary-outlined'
-  | 'secondary'
   | 'secondary-outlined'
   | 'white'
-  | 'success'
   | 'text'
-  | 'cl-blue'
-  | 'cl-blue-outlined'
   | 'admin-dark'
   | 'admin-dark-outlined'
   | 'admin-dark-text'
@@ -129,16 +125,11 @@ function getButtonStyle(
       textColor: get(props.theme.colors, 'tenantText'),
       textHoverColor: get(props.theme.colors, 'tenantText'),
     },
-    secondary: {
-      bgColor: colors.grey200,
-      textColor: darken(0.1, colors.textSecondary),
-      bgHoverColor: darken(0.05, colors.grey200),
-    },
     'secondary-outlined': {
       bgColor: 'transparent',
       bgHoverColor: transparentize(0.95, colors.textSecondary),
       textColor: colors.textSecondary,
-      borderColor: lighten(0.25, colors.textSecondary),
+      borderColor: colors.textSecondary,
     },
     white: {
       bgColor: '#fff',
@@ -155,26 +146,7 @@ function getButtonStyle(
       textColor: colors.textSecondary,
       iconColor: colors.textSecondary,
     },
-    success: {
-      bgColor: colors.green500,
-      bgHoverColor: colors.green700,
-      textColor: colors.white,
-      textHoverColor: colors.white,
-      iconHoverColor: colors.white,
-    },
-    'cl-blue': {
-      bgColor: colors.primary,
-      textColor: '#fff',
-      textHoverColor: '#fff',
-      iconColor: '#fff',
-      iconHoverColor: '#fff',
-    },
-    'cl-blue-outlined': {
-      bgColor: 'transparent',
-      bgHoverColor: 'transparent',
-      textColor: colors.primary,
-      borderColor: colors.primary,
-    },
+
     'admin-dark': {
       bgColor: colors.primary,
       textColor: '#fff',
