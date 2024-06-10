@@ -2055,7 +2055,6 @@
   "app.utils.errors.default.ajv_error_minItems": "Doit inclure au moins {limit, plural, one {# article} other {# articles}}",
   "app.utils.errors.default.ajv_error_number_any": "Veuillez renseigner un chiffre valide",
   "app.utils.errors.default.ajv_error_politician_required": "Veuillez indiquer si vous êtes un politicien",
-  "app.utils.errors.default.ajv_error_required": "Ce champ est requis",
   "app.utils.errors.default.ajv_error_type": "Ne peut pas être vide",
   "app.utils.errors.default.api_error_accepted": "Doit être accepté",
   "app.utils.errors.default.api_error_blank": "Ne peut pas être vide",

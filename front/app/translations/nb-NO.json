@@ -2055,7 +2055,6 @@
   "app.utils.errors.default.ajv_error_minItems": "Må inneholde minst {limit, plural, one {# element} other {# elementer}}",
   "app.utils.errors.default.ajv_error_number_any": "Fyll ut et gyldig nummer",
   "app.utils.errors.default.ajv_error_politician_required": "Fyll ut hvorvidt du er politiker",
-  "app.utils.errors.default.ajv_error_required": "Dette feltet er påkrevd",
   "app.utils.errors.default.ajv_error_type": "Kan ikke være tom",
   "app.utils.errors.default.api_error_accepted": "Må godtas",
   "app.utils.errors.default.api_error_blank": "Kan ikke være tom",
