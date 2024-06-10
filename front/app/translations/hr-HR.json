@@ -2055,7 +2055,7 @@
   "app.utils.errors.default.ajv_error_minItems": "Mora sadržavati najmanje {limit, plural, one {# stavke} other {# stavki}}",
   "app.utils.errors.default.ajv_error_number_any": "Unesite valjani broj",
   "app.utils.errors.default.ajv_error_politician_required": "Unesite jeste li političar",
-  "app.utils.errors.default.ajv_error_required": "Ovo je polje obavezno",
+  "app.utils.errors.default.ajv_error_required3": "Polje je obavezno: \"{fieldName}\"",
   "app.utils.errors.default.ajv_error_type": "Ne može biti prazno",
   "app.utils.errors.default.api_error_accepted": "Mora se prihvatiti",
   "app.utils.errors.default.api_error_blank": "Ne može biti prazno",
