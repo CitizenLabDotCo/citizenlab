@@ -63,7 +63,7 @@
   "app.components.ConfirmationModal.disabled": "Liikuntarajoitteinen",
   "app.components.ConfirmationModal.enabled": "Käytössä",
   "app.components.ConfirmationModal.whenTurnedOnUsersWillHaveToConfirm": "Kun tämä on käytössä, uusien käyttäjien on vahvistettava sähköpostiosoitteensa 4-numeroisella koodilla, jonka he saavat sähköpostitse rekisteröinnin viimeistelemiseksi.",
-  "app.components.ProjectTemplatePreview.govocalExpert": "CitizenLabin asiantuntija",
+  "app.components.ProjectTemplatePreview.govocalExpert": "Go Vocalin asiantuntija",
   "app.components.ProjectTemplatePreview.close": "kiinni",
   "app.components.ProjectTemplatePreview.createProject": "Luo projekti",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Luo projekti mallin{templateTitle}perusteella",

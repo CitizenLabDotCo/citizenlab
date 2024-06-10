@@ -20,7 +20,7 @@ export default defineMessages({
   },
   govocalExpert: {
     id: 'app.components.ProjectTemplatePreview.govocalExpert',
-    defaultMessage: 'CitizenLab expert',
+    defaultMessage: 'Go Vocal expert',
   },
   useTemplate: {
     id: 'app.components.ProjectTemplatePreview.useTemplate',

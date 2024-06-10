@@ -21,7 +21,7 @@
   "app.components.ConfirmationModal.disabled": "Inhabilitat",
   "app.components.ConfirmationModal.enabled": "Habilitat",
   "app.components.ConfirmationModal.whenTurnedOnUsersWillHaveToConfirm": "Quan estigui activat, els nous usuaris hauran de confirmar la seva adreça de correu electrònic amb un codi de 4 dígits que reben per correu electrònic per completar el seu registre.",
-  "app.components.ProjectTemplatePreview.govocalExpert": "Expert en Go Vocal.,
+  "app.components.ProjectTemplatePreview.govocalExpert": "Expert en Go Vocal",
   "app.components.ProjectTemplatePreview.close": "Close",
   "app.components.ProjectTemplatePreview.createProject": "Crear projecte",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Crear un projecte basat en la plantilla '{templateTitle}'",

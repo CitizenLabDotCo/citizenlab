@@ -21,7 +21,7 @@
   "app.components.ConfirmationModal.disabled": "Disabled",
   "app.components.ConfirmationModal.enabled": "Enabled",
   "app.components.ConfirmationModal.whenTurnedOnUsersWillHaveToConfirm": "Quando è attivata, i nuovi utenti dovranno confermare il loro indirizzo email con un codice di 4 cifre che riceveranno via email per completare la loro registrazione.",
-  "app.components.ProjectTemplatePreview.govocalExpert": "Esperto di Go Vocal.,
+  "app.components.ProjectTemplatePreview.govocalExpert": "Esperto di Go Vocal",
   "app.components.ProjectTemplatePreview.close": "Close",
   "app.components.ProjectTemplatePreview.createProject": "Creare un progetto",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Creare un progetto basato sul modello '{templateTitle}'",

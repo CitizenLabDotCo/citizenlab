@@ -58,7 +58,7 @@ def rake_20240531_substitute_gv(str)
     'www.citizenlab.co' => 'www.govocal.com',
     /citizenlab /i => 'Go Vocal ',
     /citizenlab,/i => 'Go Vocal,',
-    / citizenlab./i => ' Go Vocal.',
+    / citizenlab\./i => ' Go Vocal.',
     'Anspachlaan 65' => 'Pachecolaan 34'
   }.each do |old_v, new_v|
     str = str.gsub(old_v, new_v)

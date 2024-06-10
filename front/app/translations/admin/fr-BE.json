@@ -63,7 +63,7 @@
   "app.components.ConfirmationModal.disabled": "Désactivée",
   "app.components.ConfirmationModal.enabled": "Activée",
   "app.components.ConfirmationModal.whenTurnedOnUsersWillHaveToConfirm": "Lorsqu'activé, les nouveaux utilisateurs devront confirmer leur adresse e-mail avec un code à quatre chiffres qu'ils reçoivent par e-mail afin de terminer leur inscription.",
-  "app.components.ProjectTemplatePreview.govocalExpert": "Expert Go Vocal.,
+  "app.components.ProjectTemplatePreview.govocalExpert": "Expert Go Vocal",
   "app.components.ProjectTemplatePreview.close": "Fermer",
   "app.components.ProjectTemplatePreview.createProject": "Créer un projet",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Créer un projet basé sur le modèle '{templateTitle}'.",
