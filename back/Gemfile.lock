@@ -429,7 +429,7 @@ GEM
     activerecord (7.0.8.4)
       activemodel (= 7.0.8.4)
       activesupport (= 7.0.8.4)
-    activerecord-import (1.6.0)
+    activerecord-import (1.7.0)
       activerecord (>= 4.2)
     activerecord-postgis-adapter (8.0.3)
       activerecord (~> 7.0.0)
@@ -1238,7 +1238,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers (~> 0.10.12)
-  activerecord-import (~> 1.6)
+  activerecord-import (~> 1.7)
   activerecord-postgis-adapter (~> 8.0)
   acts_as_list (~> 1.1)
   admin_api!

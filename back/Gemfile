@@ -91,7 +91,7 @@ gem 'jwt', '~> 2.8.1'
 gem 'que', '~> 2.3.0'
 gem 'que-web', '~> 0.10.0'
 
-gem 'activerecord-import', '~> 1.6'
+gem 'activerecord-import', '~> 1.7'
 gem 'json-schema', '~> 4.3'
 gem 'activerecord-postgis-adapter', '~> 8.0'
 
