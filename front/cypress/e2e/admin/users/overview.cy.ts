@@ -11,8 +11,10 @@ describe('/admin/users/ page', () => {
   });
 
   it('Has a functional search field, shows the user correctly', () => {
+    cy.get('.e2e-user-table')
+      .find('.e2e-user-table-row')
+      .should('not.have.length', 1);
     cy.get('.e2e-search-input').type('Sylvester');
-    cy.wait(500);
     cy.get('.e2e-user-table')
       .find('.e2e-user-table-row')
       .should('have.length', 1);

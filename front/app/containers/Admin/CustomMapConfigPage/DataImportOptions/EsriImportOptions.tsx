@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
+import { Box, Button, Tooltip } from '@citizenlab/cl2-component-library';
 
 import { IMapConfig } from 'api/map_config/types';
 
@@ -44,7 +43,7 @@ const EsriImportOptions = memo<Props>(({ setView, mapConfig }) => {
   return (
     <Box mb="12px">
       <Box display="flex" gap="12px" flexWrap="wrap">
-        <Tippy
+        <Tooltip
           maxWidth="250px"
           placement="top"
           zIndex={9999999}
@@ -75,8 +74,8 @@ const EsriImportOptions = memo<Props>(({ setView, mapConfig }) => {
               {formatMessage(messages.importEsriFeatureLayer)}
             </Button>
           </div>
-        </Tippy>
-        <Tippy
+        </Tooltip>
+        <Tooltip
           maxWidth="250px"
           placement="top"
           zIndex={9999999}
@@ -97,7 +96,7 @@ const EsriImportOptions = memo<Props>(({ setView, mapConfig }) => {
               {formatMessage(messages.importEsriWebMap)}
             </Button>
           </div>
-        </Tippy>
+        </Tooltip>
       </Box>
     </Box>
   );

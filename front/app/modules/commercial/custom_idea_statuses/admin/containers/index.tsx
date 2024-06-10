@@ -4,8 +4,8 @@ import {
   colors,
   IconTooltip,
   Spinner,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
@@ -145,7 +145,7 @@ const IdeaStatuses = () => {
             <T value={defaultStatus.attributes.title_multiloc} />
           </FlexTextCell>
           <Buttons>
-            <Tippy
+            <Tooltip
               placement="top"
               theme="light"
               disabled={false}
@@ -161,7 +161,7 @@ const IdeaStatuses = () => {
                   <FormattedMessage {...messages.deleteButtonLabel} />
                 </DummyButton>
               </div>
-            </Tippy>
+            </Tooltip>
 
             <Button
               linkTo={`/admin/settings/statuses/${defaultStatus.id}`}
@@ -190,7 +190,7 @@ const IdeaStatuses = () => {
                     <T value={ideaStatus.attributes.title_multiloc} />
                   </FlexTextCell>
                   <Buttons>
-                    <Tippy
+                    <Tooltip
                       placement="top"
                       theme="light"
                       disabled={isDeletable(ideaStatus)}
@@ -220,7 +220,7 @@ const IdeaStatuses = () => {
                           <FormattedMessage {...messages.deleteButtonLabel} />
                         </DeleteButton>
                       </div>
-                    </Tippy>
+                    </Tooltip>
                     <Button
                       linkTo={`/admin/settings/statuses/${ideaStatus.id}`}
                       buttonStyle="secondary-outlined"

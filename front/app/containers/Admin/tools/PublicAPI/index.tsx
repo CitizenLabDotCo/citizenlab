@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
+import { Box, Text, colors, Tooltip } from '@citizenlab/cl2-component-library';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -34,28 +33,29 @@ export const PublicAPI = () => {
         <Text color="coolGrey700">
           {formatMessage(messages.publicAPIDescription)}
         </Text>
-        <Tippy
+        <Tooltip
           content={<FormattedMessage {...messages.publicAPIDisabled} />}
           disabled={isPublicAPIEnabled}
           placement="top"
           theme="dark"
         >
-          <div>
-            <Button
-              disabled={!isPublicAPIEnabled}
-              height="45px"
-              icon={isPublicAPIEnabled ? 'arrow-right' : 'lock'}
-              iconColor={colors.white}
-              iconPos="right"
-              width="fit-content"
-              linkTo="/admin/tools/public-api-tokens"
-              textColor="white"
-              bgColor={colors.primary}
-            >
-              {formatMessage(messages.managePublicAPIKeys)}
-            </Button>
-          </div>
-        </Tippy>
+          <Button
+            disabled={!isPublicAPIEnabled}
+            height="45px"
+            icon={isPublicAPIEnabled ? 'arrow-right' : 'lock'}
+            iconColor={colors.white}
+            iconPos="right"
+            width="fit-content"
+            linkTo="/admin/tools/public-api-tokens"
+            textColor="white"
+            bgColor={colors.primary}
+          >
+            {formatMessage(messages.managePublicAPIKeys)}
+          </Button>
+        </Tooltip>
+        <Tooltip content="hover over me">
+          <p>hover</p>
+        </Tooltip>
       </Box>
     </Box>
   );

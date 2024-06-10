@@ -1,4 +1,4 @@
-import React, { PureComponent, MouseEvent, ButtonHTMLAttributes } from 'react';
+import React, { MouseEvent, ButtonHTMLAttributes } from 'react';
 
 import { isNil, get } from 'lodash-es';
 import { darken, transparentize, opacify, rgba } from 'polished';
@@ -504,13 +504,12 @@ export interface Props extends ButtonContainerProps {
   ariaExpanded?: boolean;
   ariaPressed?: boolean;
   ariaDescribedby?: string;
-  ariaDisabled?: boolean;
   as?: React.ElementType;
 }
 
-class Button extends PureComponent<Props> {
-  handleOnClick = (event: any) => {
-    const { onClick, processing, disabled } = this.props;
+const Button = (props: Props) => {
+  const handleOnClick = (event: MouseEvent<HTMLDivElement>) => {
+    const { onClick, processing, disabled } = props;
 
     if (onClick) {
       event.preventDefault();
@@ -522,11 +521,7 @@ class Button extends PureComponent<Props> {
     }
   };
 
-  removeFocus = (event: MouseEvent<HTMLElement>) => {
-    event.preventDefault();
-  };
-
-  getSpinnerSize = (size: Size) => {
+  const getSpinnerSize = (size: Size) => {
     switch (size) {
       case 'm':
         return '26px';
@@ -539,163 +534,157 @@ class Button extends PureComponent<Props> {
     }
   };
 
-  render() {
-    const {
-      type = 'submit',
-      text,
-      form,
-      iconColor,
-      iconHoverColor,
-      textColor,
-      textHoverColor,
-      textDisabledColor,
-      bgColor,
-      bgHoverColor,
-      bgDisabledColor,
-      borderColor,
-      borderHoverColor,
-      borderDisabledColor,
-      borderThickness,
-      boxShadow,
-      boxShadowHover,
-      borderRadius,
-      justify,
-      justifyWrapper,
-      icon,
-      hiddenText,
-      children,
-      fontWeight,
-      lineHeight,
-      textDecoration,
-      textDecorationHover,
-      whiteSpace,
-      fullWidth,
-      role,
-      ariaLabel,
-      fontSize,
-      autoFocus,
-      ariaExpanded,
-      ariaPressed,
-      ariaDescribedby,
-      ariaDisabled,
-      opacityDisabled,
-      className,
-      onClick: _onClick,
-      processing = false,
-      disabled = false,
-      as,
-      ...rest
-    } = this.props;
+  const {
+    type = 'submit',
+    text,
+    form,
+    iconColor,
+    iconHoverColor,
+    textColor,
+    textHoverColor,
+    textDisabledColor,
+    bgColor,
+    bgHoverColor,
+    bgDisabledColor,
+    borderColor,
+    borderHoverColor,
+    borderDisabledColor,
+    borderThickness,
+    boxShadow,
+    boxShadowHover,
+    borderRadius,
+    justify,
+    justifyWrapper,
+    icon,
+    hiddenText,
+    children,
+    fontWeight,
+    lineHeight,
+    textDecoration,
+    textDecorationHover,
+    whiteSpace,
+    fullWidth,
+    role,
+    ariaLabel,
+    fontSize,
+    autoFocus,
+    ariaExpanded,
+    ariaPressed,
+    ariaDescribedby,
+    opacityDisabled,
+    className,
+    onClick: _onClick,
+    processing = false,
+    disabled = false,
+    as,
+    ...rest
+  } = props;
 
-    const id = this.props.id || '';
-    const size = this.props.size || 's';
-    const buttonStyle = this.props.buttonStyle || 'primary';
-    const iconPos = this.props.iconPos || 'left';
-    const spinnerSize = this.getSpinnerSize(size);
-    const hasText = !isNil(text) || !isNil(children);
-    const buttonType = type && !as ? type : undefined;
-    const containerClassNames = [
-      className,
-      disabled ? 'disabled' : null,
-      processing ? 'processing' : null,
-      fullWidth ? 'fullWidth' : null,
-    ]
-      .filter((item: any) => !isNil(item))
-      .join(' ');
-    const buttonClassNames = [
-      'button',
-      'Button',
-      buttonStyle,
-      disabled ? 'disabled' : null,
-      processing ? 'processing' : null,
-      fullWidth ? 'fullWidth' : null,
-    ]
-      .filter((item: any) => !isNil(item))
-      .join(' ');
+  const id = props.id || '';
+  const size = props.size || 's';
+  const buttonStyle = props.buttonStyle || 'primary';
+  const iconPos = props.iconPos || 'left';
+  const spinnerSize = getSpinnerSize(size);
+  const hasText = !isNil(text) || !isNil(children);
+  const buttonType = type && !as ? type : undefined;
+  const containerClassNames = [
+    className,
+    disabled ? 'disabled' : null,
+    processing ? 'processing' : null,
+    fullWidth ? 'fullWidth' : null,
+  ]
+    .filter((item: any) => !isNil(item))
+    .join(' ');
+  const buttonClassNames = [
+    'button',
+    'Button',
+    buttonStyle,
+    disabled ? 'disabled' : null,
+    processing ? 'processing' : null,
+    fullWidth ? 'fullWidth' : null,
+  ]
+    .filter((item: any) => !isNil(item))
+    .join(' ');
 
-    const childContent = (
-      <>
-        {icon && iconPos === 'left' && (
-          <StyledIcon
-            name={icon}
-            className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`}
-          />
-        )}
-        {hasText && (
-          <ButtonText className="buttonText">{text || children}</ButtonText>
-        )}
-        {hiddenText && <HiddenText>{hiddenText}</HiddenText>}
-        {icon && iconPos === 'right' && (
-          <StyledIcon
-            name={icon}
-            className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`}
-          />
-        )}
-        {processing && (
-          <SpinnerWrapper>
-            <Spinner size={spinnerSize} />
-          </SpinnerWrapper>
-        )}
-      </>
-    );
+  const childContent = (
+    <>
+      {icon && iconPos === 'left' && (
+        <StyledIcon
+          name={icon}
+          className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`}
+        />
+      )}
+      {hasText && (
+        <ButtonText className="buttonText">{text || children}</ButtonText>
+      )}
+      {hiddenText && <HiddenText>{hiddenText}</HiddenText>}
+      {icon && iconPos === 'right' && (
+        <StyledIcon
+          name={icon}
+          className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`}
+        />
+      )}
+      {processing && (
+        <SpinnerWrapper>
+          <Spinner size={spinnerSize} />
+        </SpinnerWrapper>
+      )}
+    </>
+  );
 
-    return (
-      <Container
-        onClick={this.handleOnClick}
-        className={containerClassNames}
-        onMouseDown={this.removeFocus}
-        buttonStyle={buttonStyle}
-        id={id}
-        size={size}
-        justify={justify}
-        justifyWrapper={justifyWrapper}
-        processing={processing}
-        disabled={disabled}
-        iconColor={iconColor}
-        iconHoverColor={iconHoverColor}
-        textColor={textColor}
-        textHoverColor={textHoverColor}
-        textDisabledColor={textDisabledColor}
-        bgColor={bgColor}
-        bgHoverColor={bgHoverColor}
-        bgDisabledColor={bgDisabledColor}
-        borderColor={borderColor}
-        borderHoverColor={borderHoverColor}
-        borderDisabledColor={borderDisabledColor}
-        borderThickness={borderThickness}
-        boxShadow={boxShadow}
-        boxShadowHover={boxShadowHover}
-        borderRadius={borderRadius}
-        fontWeight={fontWeight}
-        lineHeight={lineHeight}
-        textDecoration={textDecoration}
-        textDecorationHover={textDecorationHover}
-        whiteSpace={whiteSpace}
-        fontSize={fontSize}
-        opacityDisabled={opacityDisabled}
-        {...rest}
+  return (
+    <Container
+      onClick={handleOnClick}
+      className={containerClassNames}
+      buttonStyle={buttonStyle}
+      id={id}
+      size={size}
+      justify={justify}
+      justifyWrapper={justifyWrapper}
+      processing={processing}
+      iconColor={iconColor}
+      iconHoverColor={iconHoverColor}
+      textColor={textColor}
+      textHoverColor={textHoverColor}
+      textDisabledColor={textDisabledColor}
+      bgColor={bgColor}
+      bgHoverColor={bgHoverColor}
+      bgDisabledColor={bgDisabledColor}
+      borderColor={borderColor}
+      borderHoverColor={borderHoverColor}
+      borderDisabledColor={borderDisabledColor}
+      borderThickness={borderThickness}
+      boxShadow={boxShadow}
+      boxShadowHover={boxShadowHover}
+      borderRadius={borderRadius}
+      fontWeight={fontWeight}
+      lineHeight={lineHeight}
+      textDecoration={textDecoration}
+      textDecorationHover={textDecorationHover}
+      whiteSpace={whiteSpace}
+      fontSize={fontSize}
+      opacityDisabled={opacityDisabled}
+      {...rest}
+    >
+      <StyledButton
+        role={role}
+        aria-label={ariaLabel}
+        aria-expanded={ariaExpanded}
+        aria-pressed={ariaPressed}
+        aria-describedby={ariaDescribedby}
+        aria-disabled={disabled || processing}
+        ref={props.setSubmitButtonRef}
+        className={buttonClassNames}
+        form={form}
+        type={buttonType}
+        // eslint-disable-next-line jsx-a11y/no-autofocus
+        autoFocus={autoFocus}
+        as={as}
       >
-        <StyledButton
-          role={role}
-          aria-label={ariaLabel}
-          aria-expanded={ariaExpanded}
-          aria-pressed={ariaPressed}
-          aria-describedby={ariaDescribedby}
-          aria-disabled={ariaDisabled}
-          disabled={disabled}
-          ref={this.props.setSubmitButtonRef}
-          className={buttonClassNames}
-          form={form}
-          type={buttonType}
-          // eslint-disable-next-line jsx-a11y/no-autofocus
-          autoFocus={autoFocus}
-          as={as}
-        >
-          {childContent}
-        </StyledButton>
-      </Container>
-    );
-  }
-}
+        {childContent}
+      </StyledButton>
+    </Container>
+  );
+};
 
 export default Button;

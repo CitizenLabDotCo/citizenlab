@@ -11,8 +11,8 @@ import {
   Label,
   Radio,
   stylingConsts,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import { isEmpty } from 'lodash-es';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -90,7 +90,7 @@ const AutoTagOption = ({
 }) => {
   const { formatMessage } = useIntl();
   return (
-    <Tippy
+    <Tooltip
       content={
         <p>{formatMessage(messages.advancedAutotaggingUpsellMessage)}</p>
       }
@@ -153,7 +153,7 @@ const AutoTagOption = ({
           {children}
         </Text>
       </AutoTagMethodContainer>
-    </Tippy>
+    </Tooltip>
   );
 };
 

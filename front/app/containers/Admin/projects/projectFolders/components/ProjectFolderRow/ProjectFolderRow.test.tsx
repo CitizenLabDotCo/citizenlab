@@ -3,7 +3,7 @@ import React from 'react';
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import { IUserData } from 'api/users/types';
 
-import { render, screen } from 'utils/testUtils/rtl';
+import { render, screen, within } from 'utils/testUtils/rtl';
 
 import ProjectFolderRow, { Props } from '.';
 
@@ -116,8 +116,10 @@ describe('ProjectFolderRow', () => {
       ];
       render(<ProjectFolderRow {...props} />);
 
-      const editButton = screen.getByTestId('folder-row-edit-button');
-      expect(editButton).toHaveAttribute('disabled');
+      const editButton = within(
+        screen.getByTestId('folder-row-edit-button')
+      ).getByRole('button');
+      expect(editButton).toHaveAttribute('aria-disabled', 'true');
     });
 
     it('does not show the MoreActionsMenu', () => {
