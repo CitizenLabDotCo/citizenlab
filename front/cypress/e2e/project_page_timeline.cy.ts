@@ -171,7 +171,9 @@ describe('New timeline project', () => {
     cy.get('.e2e-previous-phase').should('exist');
     cy.get('.e2e-previous-phase').click({ force: true });
     cy.wait('@phaseRequests');
-    cy.get('.e2e-previous-phase').should('have.attr', 'disabled');
+    cy.get('.e2e-previous-phase')
+      .find('button')
+      .should('have.attr', 'aria-disabled', 'true');
 
     // shows the current phase in the timeline as active, with its title
     cy.get('.e2e-phases')
@@ -191,7 +193,9 @@ describe('New timeline project', () => {
     cy.wait('@phaseRequests');
     // verify it's not possible to go to a next phase
     // and this is our last phase
-    cy.get('.e2e-next-phase').should('have.attr', 'disabled');
+    cy.get('.e2e-next-phase')
+      .find('button')
+      .should('have.attr', 'aria-disabled', 'true');
     // shows the current phase in the timeline as active, with its title
     cy.get('.e2e-phases')
       .find('.selectedPhase')

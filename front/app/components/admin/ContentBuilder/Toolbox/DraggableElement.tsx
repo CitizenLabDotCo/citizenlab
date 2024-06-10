@@ -6,9 +6,9 @@ import {
   IconNames,
   Text,
   colors,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { useEditor } from '@craftjs/core';
-import Tippy from '@tippyjs/react';
 import styled from 'styled-components';
 
 const StyledBox = styled(Box)`
@@ -95,7 +95,7 @@ const DraggableElement = ({
         })
       }
     >
-      <Tippy
+      <Tooltip
         content={tooltipContent}
         maxWidth="250px"
         placement="bottom-end"
@@ -104,7 +104,7 @@ const DraggableElement = ({
         zIndex={999999}
       >
         <ToolboxItem icon={icon} label={label} disabled={disabled} />
-      </Tippy>
+      </Tooltip>
     </DraggableContainer>
   );
 };

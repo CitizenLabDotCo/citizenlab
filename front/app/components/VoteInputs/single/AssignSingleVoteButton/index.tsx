@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { Button, colors } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
+import { Button, colors, Tooltip } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
 import useBasket from 'api/baskets/useBasket';
@@ -134,9 +133,8 @@ const AssignSingleVoteButton = ({
   const disabledButtonExplanation = getButtonDisabledExplanation();
 
   return (
-    <Tippy
+    <Tooltip
       disabled={!disabledButtonExplanation}
-      interactive={true}
       placement="bottom"
       content={disabledButtonExplanation}
     >
@@ -157,7 +155,7 @@ const AssignSingleVoteButton = ({
           }
         />
       </div>
-    </Tippy>
+    </Tooltip>
   );
 };
 
