@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useState, useRef } from 'react';
 
 import { isRtl } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
@@ -65,6 +65,7 @@ const InternalCommentsMoreActions = ({
   ideaId,
   initiativeId,
 }: Props) => {
+  const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
   const parentCommentId = comment.relationships?.parent?.data?.id;
   const { data: authUser } = useAuthUser();
   const { mutate: markForDeletion, isLoading } =
@@ -135,6 +136,7 @@ const InternalCommentsMoreActions = ({
           showLabel={false}
           actions={actions}
           data-cy="e2e-internal-comments-more-actions"
+          ref={moreActionsButtonRef}
         />
       </Container>
 
@@ -142,6 +144,7 @@ const InternalCommentsMoreActions = ({
         opened={modalVisible_delete}
         close={closeDeleteModal}
         className="e2e-comment-deletion-modal"
+        returnFocusRef={moreActionsButtonRef}
         header={
           <FormattedMessage {...commentsMessages.confirmCommentDeletion} />
         }

@@ -135,6 +135,8 @@ export const colors = {
 export type Color =
   | keyof typeof colors
   | 'tenantPrimary'
+  | 'tenantPrimaryLighten75'
+  | 'tenantPrimaryLighten95'
   | 'tenantSecondary'
   | 'tenantText';
 
@@ -454,6 +456,14 @@ export function getTheme(tenant: any = null): MainThemeProps {
       tenantPrimary: core ? core.color_main : '#ef0071',
       tenantSecondary: core ? core.color_secondary : '#000000',
       tenantText: core ? core.color_text : '#333333',
+      // tenantPrimary variants to use for lightened/darkened variants
+      // instead of using Polished library functions directly.
+      tenantPrimaryLighten75: core
+        ? transparentize(0.75, core.color_main)
+        : transparentize(0.75, '#ef0071'),
+      tenantPrimaryLighten95: core
+        ? transparentize(0.95, core.color_main)
+        : transparentize(0.95, '#ef0071'),
     },
     fontFamily,
     fontSizes,

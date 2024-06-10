@@ -473,7 +473,7 @@ const createAdminProjectsRoutes = () => {
                 path: projectsRoutes.projectPhaseNativeSurvey,
                 element: (
                   <PageLoading>
-                    <AdminProjectsSurvey />,
+                    <AdminProjectsSurvey />
                   </PageLoading>
                 ),
               },
@@ -481,7 +481,7 @@ const createAdminProjectsRoutes = () => {
                 path: projectsRoutes.projectPhaseIdeaFormEdit,
                 element: (
                   <PageLoading>
-                    <IdeaFormBuilder />,
+                    <IdeaFormBuilder />
                   </PageLoading>
                 ),
               },
@@ -489,7 +489,7 @@ const createAdminProjectsRoutes = () => {
                 path: projectsRoutes.projectPhaseNativeSurveyEdit,
                 element: (
                   <PageLoading>
-                    <SurveyFormBuilder />,
+                    <SurveyFormBuilder />
                   </PageLoading>
                 ),
               },
