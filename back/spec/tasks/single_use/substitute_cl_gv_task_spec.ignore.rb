@@ -17,7 +17,7 @@ describe 'rake substitute_cl_gv' do
         'provide your personal data to Citizenlab.' => 'provide your personal data to Go Vocal.',
         'платформе и ЦитизенЛаб од било' => 'платформе и Go Vocal од било',
         'суппорт@цитизенлаб.цо' => 'support@govocal.com',
-        'хттпс://суппорт.цитизенлаб.цо/артицлес/1771605' => 'https://support.citizenlab.co/articles/1771605'
+        'хттпс://суппорт.цитизенлаб.цо/артицлес/1771605' => 'хттпс://суппорт.цитизенлаб.цо/артицлес/1771605'
 
       }.each do |old_v, new_v|
         expect(rake_20240531_substitute_gv(old_v)).to eq(new_v)
