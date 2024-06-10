@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import usePhases from 'api/phases/usePhases';
@@ -21,6 +22,7 @@ import { rightColumnWidthDesktop } from '../../styleConstants';
 import GoToCommentsButton from '../Buttons/GoToCommentsButton';
 import IdeaSharingButton from '../Buttons/IdeaSharingButton';
 import SharingButtonComponent from '../Buttons/SharingButtonComponent';
+import IdeaNavigationButtons from '../IdeaNavigationButtons';
 import MetaInformation from '../MetaInformation';
 
 interface Props {
@@ -43,6 +45,9 @@ const RightColumnDesktop = ({
   const followEnabled = useFeatureFlag({
     name: 'follow',
   });
+
+  const [searchParams] = useSearchParams();
+  const phaseContext = searchParams.get('phase_context');
 
   if (!idea) return null;
 
@@ -122,6 +127,12 @@ const RightColumnDesktop = ({
               toolTipType="input"
             />
           </Box>
+        )}
+        {phaseContext && (
+          <IdeaNavigationButtons
+            projectId={projectId}
+            phaseContext={phaseContext}
+          />
         )}
         <Box mb="16px">
           <IdeaSharingButton
