@@ -2055,7 +2055,7 @@
   "app.utils.errors.default.ajv_error_minItems": "يجب تضمين {limit, plural, one {# عنصر} other {# عنصر/عناصر}} على الأقل",
   "app.utils.errors.default.ajv_error_number_any": "يرجى إدخال رقم صالح",
   "app.utils.errors.default.ajv_error_politician_required": "يرجى تحديد إذا كنت سياسيًا",
-  "app.utils.errors.default.ajv_error_required": "هذا الحقل مطلوب",
+  "app.utils.errors.default.ajv_error_required3": "الحقل مطلوب: \"{fieldName}\"",
   "app.utils.errors.default.ajv_error_type": "لا يمكن تركه فارغًا",
   "app.utils.errors.default.api_error_accepted": "يجب القبول",
   "app.utils.errors.default.api_error_blank": "لا يمكن تركه فارغًا",
