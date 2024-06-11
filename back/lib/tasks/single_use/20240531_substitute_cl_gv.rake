@@ -57,11 +57,17 @@ def rake_20240531_substitute_gv(str)
     'citizenLabAddress2022' => 'govocalAddress2022',
     'citizenlabExpert' => 'govocalExpert',
     /\>citizenlab\,\<\/a\>/i => '>Go Vocal</a>,',
+    /^citizenlab-/i => 'Go Vocal-',
+    'soren@citizenlab.dk' => 'soren@govocal.dk',
+    'eva.mayer@citizenlab.de' => 'eva.mayer@go-vocal.de',
     '@citizenlab.co' => '@govocal.com',
     'www.citizenlab.co' => 'www.govocal.com',
     'Anspachlaan 65' => 'Pachecolaan 34',
+    'суппорт@цитизенлаб.цо' => 'support@govocal.com',
     /citizenlab ([^n][^v])/i => 'Go Vocal \1', # Do not match "Citizenlab NV"
-    / citizenlab/i => ' Go Vocal'
+    / citizenlab/i => ' Go Vocal',
+    /ЦитизенЛаб ([^n][^v])/i => 'Go Vocal \1', # Do not match "Citizenlab NV"
+    / ЦитизенЛаб/i => ' Go Vocal'
   }
   allowed_chars_before = '>'
   allowed_chars_after = ".,:<'`"
@@ -70,6 +76,7 @@ def rake_20240531_substitute_gv(str)
     allowed_chars_after.chars.each do |char_after|
       regex_after = '\\' + char_after
       substitutions[/#{regex_before}citizenlab#{regex_after}/i] = "#{char_before}Go Vocal#{char_after}"
+      substitutions[/#{regex_before}ЦитизенЛаб#{regex_after}/i] = "#{char_before}Go Vocal#{char_after}"
     end
   end
   substitutions.each do |old_v, new_v|
