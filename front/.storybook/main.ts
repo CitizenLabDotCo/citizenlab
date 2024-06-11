@@ -17,9 +17,7 @@ const config: StorybookConfig = {
     name: '@storybook/react-webpack5',
     options: {},
   },
-  docs: {
-    autodocs: 'tag',
-  },
+  docs: {},
   babel: async () => {
     const opt = require('./.babelrc.json');
     return opt;
