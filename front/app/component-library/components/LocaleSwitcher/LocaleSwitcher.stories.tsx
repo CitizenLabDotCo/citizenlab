@@ -1,10 +1,18 @@
+import React from 'react';
+
 import LocaleSwitcher from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   title: 'Components/LocaleSwitcher',
-  component: LocaleSwitcher,
+  render: (props) => {
+    return (
+      <div style={{ width: '250px' }}>
+        <LocaleSwitcher {...props} />
+      </div>
+    );
+  },
   parameters: {
     layout: 'centered',
   },
