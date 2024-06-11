@@ -20,6 +20,7 @@ describe 'rake substitute_cl_gv' do
      ].each do |original|
         expect(rake_20240531_substitute_gv(original)).to eq(original)
       end
+
       {
         'citizenLabAddress2022' => 'govocalAddress2022',
         'citizenlabExpert' => 'govocalExpert', 
@@ -31,14 +32,14 @@ describe 'rake substitute_cl_gv' do
         '<p>CitizenLab, Kullanıcıları' => '<p>Go Vocal, Kullanıcıları',
         'durch CitizenLab.</p>' => 'durch Go Vocal.</p>',
         '<h2>Eigentumsrechte CitizenLab</h2>' => '<h2>Eigentumsrechte Go Vocal</h2>',
-        "TMG:\nCitizenLab (Hauptgeschäftsstelle)" => "TMG:\nGoVocal (Hauptgeschäftsstelle)",
+        "TMG:\nCitizenLab (Hauptgeschäftsstelle)" => "TMG:\nGo Vocal (Hauptgeschäftsstelle)",
         'την Citizenlab, είτε' => 'την Go Vocal, είτε',
         'η CitizenLab: Drukpersstraat' => 'η Go Vocal: Drukpersstraat',
         'test support@citizenlab.co to CitizenLab text' => 'test support@govocal.com to Go Vocal text',
         '<p>Kontakt-E-Mail-Adresse: support@citizenlab.co</p>' => '<p>Kontakt-E-Mail-Adresse: support@govocal.com</p>',
         '<a href="mailto:support@citizenlab.co" target="_blank">Contactez-nous</a>' => '<a href="mailto:support@govocal.com" target="_blank">Contactez-nous</a>',
         'volgend e-mailadres: hello@citizenlab.co.</p>' => 'volgend e-mailadres: hello@govocal.com.</p>',
-        'The citizenlab address is: <p>CitizenLab NV - Anspachlaan 65 - 1000 Brussels - Belgium</p>' => 'The Go Vocal address is: <p>Citizenlab NV - Pachecolaan 34 - 1000 Brussels - Belgium</p>',
+        'The citizenlab address is: <p>CitizenLab NV - Anspachlaan 65 - 1000 Brussels - Belgium</p>' => 'The Go Vocal address is: <p>CitizenLab NV - Pachecolaan 34 - 1000 Brussels - Belgium</p>',
         'citizenlab.co/citizenlab-test' => 'citizenlab.co/citizenlab-test',
         "(<a href=\"https://www.citizenlab.co/en\" target=\"_blank\">CitizenLab</a>," => "(<a href=\"https://www.govocal.com/en\" target=\"_blank\">Go Vocal</a>,",
         "(<a href=\"https://www.citizenlab.co/en\" target=\"_blank\">CitizenLab,</a>" => "(<a href=\"https://www.govocal.com/en\" target=\"_blank\">Go Vocal</a>,",

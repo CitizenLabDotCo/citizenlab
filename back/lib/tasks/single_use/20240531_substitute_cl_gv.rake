@@ -53,14 +53,26 @@ namespace :gv_transition do
 end
 
 def rake_20240531_substitute_gv(str)
-  {
+  substitutions = {
+    'citizenLabAddress2022' => 'govocalAddress2022',
+    'citizenlabExpert' => 'govocalExpert',
+    /\>citizenlab\,\<\/a\>/i => '>Go Vocal</a>,',
     '@citizenlab.co' => '@govocal.com',
     'www.citizenlab.co' => 'www.govocal.com',
-    /citizenlab /i => 'Go Vocal ',
-    /citizenlab,/i => 'Go Vocal,',
-    / citizenlab\./i => ' Go Vocal.',
-    'Anspachlaan 65' => 'Pachecolaan 34'
-  }.each do |old_v, new_v|
+    'Anspachlaan 65' => 'Pachecolaan 34',
+    /citizenlab ([^n][^v])/i => 'Go Vocal \1', # Do not match "Citizenlab NV"
+    / citizenlab/i => ' Go Vocal'
+  }
+  allowed_chars_before = '>'
+  allowed_chars_after = ".,:<'`"
+  allowed_chars_before.chars.each do |char_before|
+    regex_before = '\\' + char_before
+    allowed_chars_after.chars.each do |char_after|
+      regex_after = '\\' + char_after
+      substitutions[/#{regex_before}citizenlab#{regex_after}/i] = "#{char_before}Go Vocal#{char_after}"
+    end
+  end
+  substitutions.each do |old_v, new_v|
     str = str.gsub(old_v, new_v)
   end
   str
