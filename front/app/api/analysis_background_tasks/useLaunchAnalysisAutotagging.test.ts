@@ -10,7 +10,7 @@ const apiPath = '*analyses/:analysisId/auto_taggings';
 
 const server = setupServer(
   http.post(apiPath, () => {
-    return HttpResponse.json({ data: {} }, { status: 201 });
+    return HttpResponse.json(null, { status: 201 });
   })
 );
 
