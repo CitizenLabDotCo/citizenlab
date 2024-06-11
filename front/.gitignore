@@ -41,3 +41,7 @@ cypress.env
 # Rollup generated output
 .rollup.cache
 dist
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
