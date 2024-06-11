@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { ITab } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
@@ -16,8 +17,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isAdmin } from 'utils/permissions/roles';
 
-// Localisation
-
 import messages from './messages';
 
 const TopContainer = styled.div`
@@ -29,6 +28,13 @@ const TopContainer = styled.div`
   justify-content: space-between;
   position: relative;
 `;
+
+type TabbedPropsType = {
+  resource: {
+    title: string;
+  };
+  tabs: ITab[];
+};
 
 const AdminProjectFolderEdition = () => {
   const { projectFolderId } = useParams() as { projectFolderId: string };
@@ -43,7 +49,7 @@ const AdminProjectFolderEdition = () => {
     clHistory.push('/admin/projects');
   };
 
-  let tabbedProps = {
+  let tabbedProps: TabbedPropsType = {
     resource: {
       title: localize(projectFolder.data.attributes.title_multiloc),
     },
@@ -61,7 +67,7 @@ const AdminProjectFolderEdition = () => {
     ],
   };
 
-  if (isAdmin({ data: authUser.data })) {
+  if (isAdmin(authUser)) {
     tabbedProps = {
       ...tabbedProps,
       tabs: tabbedProps.tabs.concat({
@@ -77,7 +83,7 @@ const AdminProjectFolderEdition = () => {
       <TopContainer>
         <GoBackButton onClick={goBack} />
         <Button
-          buttonStyle="cl-blue"
+          buttonStyle="admin-dark"
           icon="eye"
           id="to-projectFolder"
           linkTo={`/folders/${projectFolder.data.attributes.slug}`}

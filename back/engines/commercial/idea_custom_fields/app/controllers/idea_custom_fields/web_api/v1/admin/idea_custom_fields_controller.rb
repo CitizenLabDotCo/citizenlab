@@ -30,8 +30,9 @@ module IdeaCustomFields
 
     def index
       authorize CustomField.new(resource: @custom_form), :index?, policy_class: IdeaCustomFieldPolicy
-      fields = IdeaCustomFieldsService.new(@custom_form).all_fields
+      service = IdeaCustomFieldsService.new(@custom_form)
 
+      fields = params[:copy] == 'true' ? service.duplicate_all_fields : service.all_fields
       fields = fields.filter(&:support_free_text_value?) if params[:support_free_text_value].present?
 
       render json: ::WebApi::V1::CustomFieldSerializer.new(
@@ -110,6 +111,11 @@ module IdeaCustomFields
     end
 
     def create_field!(field_params, errors, page_temp_ids_to_ids_mapping, index)
+      if field_params['code'].nil? && @participation_method.allowed_extra_field_input_types.exclude?(field_params['input_type'])
+        errors[index.to_s] = { input_type: [{ error: 'inclusion', value: field_params['input_type'] }] }
+        return false
+      end
+
       create_params = field_params.except('temp_id').to_h
       if create_params.key?('code') && !create_params['code'].nil?
         default_field = @participation_method.default_fields(@custom_form).find do |field|

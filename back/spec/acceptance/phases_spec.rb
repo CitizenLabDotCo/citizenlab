@@ -23,7 +23,7 @@ resource 'Phases' do
     let(:project_id) { @project.id }
 
     example 'List all phases of a project' do
-      PermissionsService.new.update_all_permissions
+      Permissions::PermissionsUpdateService.new.update_all_permissions
       do_request
       assert_status 200
       expect(json_response[:data].size).to eq 2
@@ -38,7 +38,7 @@ resource 'Phases' do
 
     example 'Get one phase by id' do
       create_list(:idea, 2, project: @project, phases: @project.phases)
-      PermissionsService.new.update_all_permissions
+      Permissions::PermissionsUpdateService.new.update_all_permissions
       @phase.update!(report: build(:report))
       do_request
       assert_status 200
@@ -484,7 +484,7 @@ resource 'Phases' do
         let(:participation_method) { 'information' }
 
         example 'Change a phase with ideas into an information phase' do
-          expect_any_instance_of(PermissionsService).to receive(:update_permissions_for_scope).with(phase)
+          expect_any_instance_of(Permissions::PermissionsUpdateService).to receive(:update_permissions_for_scope).with(phase)
           do_request
           assert_status 200
         end
@@ -722,7 +722,7 @@ resource 'Phases' do
           end
 
           example 'Download native survey phase inputs in one sheet' do
-            expected_params = [[survey_response1, survey_response2], active_phase, true]
+            expected_params = [[survey_response1, survey_response2], active_phase, { view_private_attributes: true }]
             allow(XlsxExport::InputSheetGenerator).to receive(:new).and_return(XlsxExport::InputSheetGenerator.new(*expected_params))
             do_request
             expect(XlsxExport::InputSheetGenerator).to have_received(:new).with(*expected_params)
@@ -762,6 +762,21 @@ resource 'Phases' do
                 ]
               }
             ])
+          end
+
+          example 'Draft responses are not included' do
+            create(
+              :idea,
+              project: project,
+              creation_phase: active_phase,
+              phases: [active_phase],
+              publication_status: 'draft'
+            )
+            do_request
+
+            assert_status 200
+            xlsx = xlsx_contents(response_body)
+            expect(xlsx.first[:rows].size).to eq 2
           end
         end
       end
@@ -827,8 +842,8 @@ resource 'Phases' do
         )
       end
 
-      example 'Download phase inputs without private user data', document: false do
-        expected_params = [[survey_response], active_phase, false]
+      example 'Download phase inputs WITH private user data', document: false do
+        expected_params = [[survey_response], active_phase, { view_private_attributes: true }]
         allow(XlsxExport::InputSheetGenerator).to receive(:new).and_return(XlsxExport::InputSheetGenerator.new(*expected_params))
         do_request
         expect(XlsxExport::InputSheetGenerator).to have_received(:new).with(*expected_params)
@@ -839,6 +854,9 @@ resource 'Phases' do
             column_headers: [
               'ID',
               multiselect_field.title_multiloc['en'],
+              'Author name',
+              'Author email',
+              'Author ID',
               'Submitted at',
               'Project'
             ],
@@ -846,6 +864,9 @@ resource 'Phases' do
               [
                 survey_response.id,
                 'Cat, Dog',
+                survey_response.author_name,
+                survey_response.author.email,
+                survey_response.author_id,
                 an_instance_of(DateTime), # created_at
                 project.title_multiloc['en']
               ]

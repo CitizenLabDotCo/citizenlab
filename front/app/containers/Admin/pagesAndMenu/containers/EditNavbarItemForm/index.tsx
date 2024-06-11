@@ -7,7 +7,10 @@ import useUpdateNavbarItem from 'api/navbar/useUpdateNavbarItem';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
+import {
+  pagesAndMenuBreadcrumb,
+  pagesAndMenuBreadcrumbLinkTo,
+} from 'containers/Admin/pagesAndMenu/breadcrumbs';
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 
 import { useIntl } from 'utils/cl-intl';
@@ -44,7 +47,7 @@ const EditNavbarItemForm = () => {
       breadcrumbs={[
         {
           label: formatMessage(pagesAndMenuBreadcrumb.label),
-          linkTo: pagesAndMenuBreadcrumb.linkTo,
+          linkTo: pagesAndMenuBreadcrumbLinkTo,
         },
         {
           label: localize(navbarItem.attributes.title_multiloc),

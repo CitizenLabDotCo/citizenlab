@@ -9,8 +9,8 @@ import {
   viewportWidths,
   defaultCardStyle,
   isRtl,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import styled, { useTheme } from 'styled-components';
 
 import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
@@ -258,9 +258,8 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
         </Content>
 
         <ActionWrapper>
-          <Tippy
+          <Tooltip
             disabled={!disabled}
-            interactive={true}
             placement="bottom"
             content={formatMessage(messages.notOpenParticipation)}
           >
@@ -268,7 +267,7 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
               <Button
                 onClick={handleOnVolunteerButtonClick}
                 icon={!isVolunteer ? 'volunteer' : 'volunteer-off'}
-                buttonStyle={!isVolunteer ? 'primary' : 'secondary'}
+                buttonStyle={!isVolunteer ? 'primary' : 'secondary-outlined'}
                 fullWidth={smallerThanSmallTablet}
                 disabled={disabled}
               >
@@ -279,7 +278,7 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
                 )}
               </Button>
             </div>
-          </Tippy>
+          </Tooltip>
         </ActionWrapper>
       </Right>
     </Container>

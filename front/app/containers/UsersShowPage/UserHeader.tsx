@@ -7,8 +7,8 @@ import {
   Title,
   Text,
   colors,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import { isEmpty, forOwn } from 'lodash-es';
 import moment from 'moment';
 import styled from 'styled-components';
@@ -80,8 +80,7 @@ const UserHeader = ({ userSlug }: Props) => {
   });
 
   const isBlocked = user.data.attributes?.blocked;
-  const isCurrentUserAdmin =
-    !isNilOrError(authUser) && isAdmin({ data: authUser.data });
+  const isCurrentUserAdmin = isAdmin(authUser);
   const canBlock = isCurrentUserAdmin && user.data.id !== authUser?.data.id;
 
   const userBlockingRelatedActions: IAction[] = isUserBlockingEnabled
@@ -119,8 +118,7 @@ const UserHeader = ({ userSlug }: Props) => {
         mt="0px"
       >
         {isCurrentUserAdmin && isBlocked && (
-          <Tippy
-            interactive={true}
+          <Tooltip
             placement={'top'}
             theme={'dark'}
             content={formatMessage(blockUserMessages.bocknigInfo, {
@@ -131,7 +129,7 @@ const UserHeader = ({ userSlug }: Props) => {
             <Badge color={colors.error}>
               {formatMessage(blockUserMessages.blocked)}
             </Badge>
-          </Tippy>
+          </Tooltip>
         )}
         <Box display="flex" alignItems="center" color="tenantText">
           <Title id="e2e-usersshowpage-fullname" color="tenantText" mr="10px">

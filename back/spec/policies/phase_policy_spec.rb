@@ -65,11 +65,14 @@ describe PhasePolicy do
     context 'for a moderator' do
       let(:user) { create(:project_moderator, projects: [project]) }
 
-      it { is_expected.to     permit(:show)    }
-      it { is_expected.to     permit(:create)  }
-      it { is_expected.to     permit(:update)  }
-      it { is_expected.to     permit(:destroy) }
-      it { is_expected.to     permit(:delete_inputs) }
+      it { is_expected.to permit(:show)    }
+      it { is_expected.to permit(:create)  }
+      it { is_expected.to permit(:update)  }
+      it { is_expected.to permit(:destroy) }
+      it { is_expected.to permit(:survey_results) }
+      it { is_expected.to permit(:submission_count) }
+      it { is_expected.to permit(:index_xlsx) }
+      it { is_expected.to permit(:delete_inputs) }
 
       it 'indexes the phase' do
         expect(scope.resolve.size).to eq 1

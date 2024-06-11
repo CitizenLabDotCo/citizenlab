@@ -6,14 +6,6 @@ import {
 
 export type QueryParameters = ProjectId & Dates & Resolution;
 
-export interface TimeSeriesResponseRow extends CommentsCountRow {
-  first_dimension_date_created_date: string;
-}
-
-export interface CommentsCountRow {
-  count: number;
-}
-
 // Hook return value
 export interface TimeSeriesRow {
   /* Date format: YYYY-MM-DD */

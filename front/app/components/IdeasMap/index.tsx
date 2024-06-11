@@ -16,7 +16,6 @@ import MapView from '@arcgis/core/views/MapView';
 import {
   Box,
   colors,
-  media,
   useBreakpoint,
   useWindowSize,
   viewportWidths,
@@ -49,7 +48,7 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { isAdmin } from 'utils/permissions/roles';
 
-import DesktopIdeaMapOverlay from './desktop/IdeaMapOverlay';
+import IdeaMapOverlay from './desktop/IdeaMapOverlay';
 import IdeaMapCard from './IdeaMapCard';
 import IdeasAtLocationPopup from './IdeasAtLocationPopup';
 import InstructionMessage from './InstructionMessage';
@@ -63,21 +62,6 @@ import {
   mapHeightDesktop,
   mapHeightMobile,
 } from './utils';
-
-// Note: Existing custom styling
-const StyledDesktopIdeaMapOverlay = styled(DesktopIdeaMapOverlay)`
-  width: 390px;
-  height: calc(${mapHeightDesktop} - 80px);
-  position: absolute;
-  display: flex;
-  top: 25px;
-  left: 25px;
-  z-index: 900;
-
-  ${media.tablet`
-    display: none;
-  `}
-`;
 
 // Note: Existing custom styling
 const StyledIdeaMapCard = styled(IdeaMapCard)<{ isClickable: boolean }>`
@@ -510,6 +494,7 @@ const IdeasMap = memo<Props>(
               layers={layers}
               onHover={onMapHover}
               onClick={onMapClick}
+              id="e2e-ideas-map"
             />
             <LayerHoverLabel
               layer={mapConfig?.data.attributes.layers.find(
@@ -554,12 +539,22 @@ const IdeasMap = memo<Props>(
                 </Box>
               </CSSTransition>
             )}
-            <StyledDesktopIdeaMapOverlay
-              projectId={projectId}
-              phaseId={phaseId}
-              onSelectIdea={onSelectIdeaFromList}
-              selectedIdea={selectedIdea}
-            />
+            <Box
+              width="390px"
+              height={`calc(${mapHeightDesktop} - 80px)`}
+              position="absolute"
+              display="flex"
+              top="25px"
+              left="25px"
+              zIndex="900"
+            >
+              <IdeaMapOverlay
+                projectId={projectId}
+                phaseId={phaseId}
+                onSelectIdea={onSelectIdeaFromList}
+                selectedIdea={selectedIdea}
+              />
+            </Box>
             <InstructionMessage projectId={projectId} />
           </InnerContainer>
         </StyledMapContainer>

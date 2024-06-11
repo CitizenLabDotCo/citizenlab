@@ -8,7 +8,7 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
     Tenant.find_by(host: host)&.destroy!
 
     settings = SettingsService.new.minimal_required_settings(
-      locales: (args[:locales]&.split(';')&.map(&:strip) || %w[en nl-BE nl-NL fr-BE]),
+      locales: args[:locales]&.split(';')&.map(&:strip) || %w[en nl-BE nl-NL fr-BE],
       lifecycle_stage: 'not_applicable'
     ).deep_merge(
       {
@@ -34,7 +34,11 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           },
           zoom_level: 12
         },
-        private_projects: {
+        custom_maps: {
+          enabled: true,
+          allowed: true
+        },
+        esri_integration: {
           enabled: true,
           allowed: true
         },
@@ -62,19 +66,7 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: true,
           allowed: true
         },
-        initiativeflow_social_sharing: {
-          enabled: true,
-          allowed: true
-        },
         idea_author_change: {
-          enabled: true,
-          allowed: true
-        },
-        idea_custom_copy: {
-          enabled: true,
-          allowed: true
-        },
-        project_reports: {
           enabled: true,
           allowed: true
         },
@@ -86,14 +78,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: true,
           allowed: true
         },
-        manual_emailing: {
-          enabled: true,
-          allowed: true
-        },
-        automated_emailing_control: {
-          enabled: true,
-          allowed: true
-        },
         granular_permissions: {
           enabled: true,
           allowed: true
@@ -102,7 +86,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: true,
           allowed: true,
           enable_signup: true,
-          phone: false,
           minimum_length: 8
         },
         pages: {
@@ -263,10 +246,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: true,
           allowed: true
         },
-        volunteering: {
-          enabled: true,
-          allowed: true
-        },
         project_description_builder: {
           enabled: true,
           allowed: true
@@ -321,6 +300,10 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: true,
           allowed: true
         },
+        input_form_mapping_question: {
+          enabled: true,
+          allowed: true
+        },
         posthog_integration: {
           enabled: false,
           allowed: false
@@ -350,11 +333,27 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: false,
           allowed: false
         },
-        phase_reports: {
+        analysis: {
+          enabled: true,
+          allowed: true
+        },
+        large_summaries: {
+          enabled: true,
+          allowed: true
+        },
+        ask_a_question: {
+          enabled: true,
+          allowed: true
+        },
+        advanced_autotagging: {
           enabled: true,
           allowed: true
         },
         report_data_grouping: {
+          enabled: true,
+          allowed: true
+        },
+        multi_language_platform: {
           enabled: true,
           allowed: true
         }
@@ -372,7 +371,7 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
     )
 
     tenant.switch do
-      User.create!(
+      UserService.create_in_tenant_template!(
         roles: [{ type: 'admin' }],
         first_name: 'Citizen',
         last_name: 'Lab',
@@ -381,6 +380,8 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
         locale: tenant.configuration.settings('core', 'locales')&.first || 'en',
         registration_completed_at: Time.zone.now
       )
+      admin = User.find_by(email: 'admin@citizenlab.co')
+      UserService.update_in_tenant_template!(admin) if admin
       Analytics::PopulateDimensionsService.run
     end
 

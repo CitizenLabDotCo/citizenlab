@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import { useParams, useSearchParams } from 'react-router-dom';
 
 import useAnalysis from 'api/analyses/useAnalysis';
+import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';
 import useAnalysisInput from 'api/analysis_inputs/useAnalysisInput';
 import useAnalysisUserById from 'api/analysis_users/useAnalysisUserById';
 
@@ -11,17 +17,21 @@ import Divider from 'components/admin/Divider';
 import Avatar from 'components/Avatar';
 import Button from 'components/UI/Button';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
 import { useSelectedInputContext } from '../SelectedInputContext';
 import Taggings from '../Taggings';
+import tracks from '../tracks';
 
 import LongFieldValue from './LongFieldValue';
 import messages from './messages';
 
 const InputListItem = () => {
+  const [showAllQuestions, setShowAllQuestions] = useState(false);
   const [searchParams] = useSearchParams();
+  const { mutate: updateAnalysis } = useUpdateAnalysis();
 
   const phaseId = searchParams.get('phase_id');
   const { formatMessage } = useIntl();
@@ -45,6 +55,45 @@ const InputListItem = () => {
   const showManageIdeaButton =
     analysis.data.attributes.participation_method === 'ideation' && phaseId;
 
+  const isSurveyAnalysis =
+    analysis.data.attributes.participation_method === 'native_survey';
+
+  const mainCustomFieldId =
+    analysis.data.relationships?.main_custom_field?.data?.id;
+
+  const additionalCustomFieldIds =
+    analysis.data.relationships?.additional_custom_fields?.data.map(
+      (field) => field.id
+    );
+
+  const allCustomFields = analysis.data.relationships.all_custom_fields.data;
+  const customFieldsInAnalysisIds =
+    [mainCustomFieldId, ...(additionalCustomFieldIds || [])] || [];
+
+  const handleAddRemoveAdditionalCustomField = (customFieldId: string) => {
+    const newAdditionalCustomFieldIds = additionalCustomFieldIds?.includes(
+      customFieldId
+    )
+      ? additionalCustomFieldIds.filter((id) => id !== customFieldId)
+      : [...(additionalCustomFieldIds || []), customFieldId];
+
+    updateAnalysis(
+      {
+        id: analysisId,
+        additional_custom_field_ids: newAdditionalCustomFieldIds,
+      },
+      {
+        onSuccess: () => {
+          trackEventByName(
+            additionalCustomFieldIds?.includes(customFieldId)
+              ? tracks.removeQuestionFromAIAnalysis.name
+              : tracks.addQuestionToAIAnalysis.name
+          );
+        },
+      }
+    );
+  };
+
   return (
     <Box data-cy="e2e-analysis-input-preview">
       {showManageIdeaButton && (
@@ -52,7 +101,7 @@ const InputListItem = () => {
           <Button
             linkTo={`/admin/projects/${analysis.data.relationships.project?.data?.id}/phases/${phaseId}/ideas?selected_idea_id=${selectedInputId}`}
             openLinkInNewTab
-            buttonStyle="secondary"
+            buttonStyle="secondary-outlined"
             icon="settings"
             size="s"
             padding="4px 8px"
@@ -61,23 +110,110 @@ const InputListItem = () => {
           </Button>
         </Box>
       )}
-      {analysis.data.relationships.custom_fields.data.map((customField) => (
-        <LongFieldValue
-          key={customField.id}
-          customFieldId={customField.id}
-          input={input.data}
-          projectId={analysis.data.relationships.project?.data?.id}
-          phaseId={analysis.data.relationships.phase?.data?.id}
-        />
-      ))}
+      {isSurveyAnalysis && (
+        <Button
+          id="e2e-analysis-toggle-show-all-questions-button"
+          onClick={() =>
+            setShowAllQuestions((showAllQuestions) => !showAllQuestions)
+          }
+          buttonStyle="secondary-outlined"
+          size="s"
+          icon={showAllQuestions ? 'minus' : 'plus'}
+          mb="20px"
+        >
+          {showAllQuestions
+            ? formatMessage(messages.viewSelectedQuestions)
+            : `${formatMessage(messages.viewAllQuestions)} (${
+                allCustomFields.length
+              })`}
+        </Button>
+      )}
       {authorId && author && !isRefetchingAuthor && (
         <Box mt="20px" display="flex" alignItems="center">
           <Avatar size={40} userId={author.data.id} />
           <Text m="0px">{getFullName(author?.data)}</Text>
+          <Divider />
         </Box>
       )}
-      <Divider />
-      <Box id="tags-control">
+
+      {allCustomFields
+        .filter((customField) =>
+          showAllQuestions
+            ? true
+            : customFieldsInAnalysisIds.includes(customField.id)
+        )
+        .map((customField) => (
+          <Box key={customField.id}>
+            <Box
+              bg={
+                customFieldsInAnalysisIds.includes(customField.id) &&
+                isSurveyAnalysis
+                  ? colors.background
+                  : colors.white
+              }
+              px="8px"
+              py="16px"
+              data-cy="e2e-analysis-custom-field-item"
+            >
+              {isSurveyAnalysis && (
+                <Box mb="8px">
+                  {customField.id === mainCustomFieldId ? (
+                    <Box
+                      p="4px 12px"
+                      background={colors.primary}
+                      w="fit-content"
+                      borderRadius="3px"
+                    >
+                      <Text
+                        m="0px"
+                        color="white"
+                        fontSize="xs"
+                        fontWeight="bold"
+                      >
+                        {formatMessage(messages.mainQuestion).toUpperCase()}
+                      </Text>
+                    </Box>
+                  ) : (
+                    <Box display="flex">
+                      <Button
+                        data-cy={
+                          'e2e-analysis-add-remove-additional-custom-field'
+                        }
+                        onClick={() =>
+                          handleAddRemoveAdditionalCustomField(customField.id)
+                        }
+                        buttonStyle="secondary-outlined"
+                        size="s"
+                        p="0px 8px"
+                        fontSize={`${fontSizes.xs}px`}
+                        fontWeight="bold"
+                        icon={
+                          additionalCustomFieldIds?.includes(customField.id)
+                            ? 'close'
+                            : 'plus'
+                        }
+                        iconSize="16px"
+                      >
+                        {additionalCustomFieldIds?.includes(customField.id)
+                          ? formatMessage(messages.remove).toUpperCase()
+                          : formatMessage(messages.addToAnalysis).toUpperCase()}
+                      </Button>
+                    </Box>
+                  )}
+                </Box>
+              )}
+              <LongFieldValue
+                customFieldId={customField.id}
+                input={input.data}
+                projectId={analysis.data.relationships.project?.data?.id}
+                phaseId={analysis.data.relationships.phase?.data?.id}
+              />
+            </Box>
+            {isSurveyAnalysis && <Divider m="0px" />}
+          </Box>
+        ))}
+
+      <Box id="tags-control" my="12px">
         <Taggings onlyShowTagged={false} inputId={selectedInputId} />
       </Box>
     </Box>

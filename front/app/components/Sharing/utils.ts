@@ -18,14 +18,17 @@ export function getUrlWithUtm(
 ) {
   let resUrl = url;
 
-  resUrl += `?utm_source=${encodeURIComponent(
-    utmParams.source
-  )}&utm_campaign=${encodeURIComponent(
-    utmParams.campaign
-  )}&utm_medium=${encodeURIComponent(medium)}`;
+  if (medium !== 'facebook') {
+    // Only add UTM params to non-Facebook links
+    resUrl += `?utm_source=${encodeURIComponent(
+      utmParams.source
+    )}&utm_campaign=${encodeURIComponent(
+      utmParams.campaign
+    )}&utm_medium=${encodeURIComponent(medium)}`;
 
-  if (utmParams.content) {
-    resUrl += `&utm_content=${encodeURIComponent(utmParams.content)}`;
+    if (utmParams.content) {
+      resUrl += `&utm_content=${encodeURIComponent(utmParams.content)}`;
+    }
   }
 
   return resUrl;

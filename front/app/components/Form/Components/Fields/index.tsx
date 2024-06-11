@@ -1,15 +1,10 @@
 import React, { useCallback, useState } from 'react';
 
 // jsonforms
-import {
-  JsonSchema7,
-  UISchemaElement,
-  Translator,
-  Layout,
-} from '@jsonforms/core';
+import { JsonSchema7, Translator, Layout } from '@jsonforms/core';
 import { JsonForms } from '@jsonforms/react';
 import Ajv, { ErrorObject } from 'ajv';
-import { CLErrors, Locale } from 'typings';
+import { CLErrors, SupportedLocale } from 'typings';
 
 import { parseRequiredMultilocsSchema } from 'components/Form/parseRequiredMultilocs';
 
@@ -18,6 +13,7 @@ import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
 
 import { APIErrorsContext, FormContext } from '../../contexts';
 import { ApiErrorGetter, AjvErrorGetter, FormData } from '../../typings';
+import { ExtendedUISchema } from '../Controls/visibilityUtils';
 
 import { selectRenderers } from './formConfig';
 
@@ -33,7 +29,7 @@ interface Props {
   getAjvErrorMessage?: AjvErrorGetter;
   inputId?: string;
   config?: 'default' | 'input' | 'survey';
-  locale: Locale;
+  locale: SupportedLocale;
   onChange: (formData: FormData) => void;
   setFormData?: (formData: FormData) => void;
   onSubmit?: (formData: FormData) => Promise<any>;
@@ -71,7 +67,7 @@ const Fields = ({
     (
       error: ErrorObject,
       _translate: Translator,
-      uischema?: UISchemaElement
+      uischema?: ExtendedUISchema
     ) => {
       const message =
         getAjvErrorMessage?.(error, uischema) ||
@@ -80,7 +76,10 @@ const Fields = ({
           format: error?.parentSchema?.format,
           type: error?.parentSchema?.type,
         });
-      return formatMessage(message, error.params);
+      return formatMessage(message, {
+        ...error.params,
+        fieldName: uischema?.label || '',
+      });
     },
     [formatMessage, getAjvErrorMessage]
   );

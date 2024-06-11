@@ -31,6 +31,7 @@ module EmailCampaigns
       Campaigns::InviteReceived,
       Campaigns::InviteReminder,
       Campaigns::Manual,
+      Campaigns::ManualProjectParticipants,
       Campaigns::MentionInInternalComment,
       Campaigns::MentionInOfficialFeedback,
       Campaigns::ModeratorDigest,
@@ -49,18 +50,25 @@ module EmailCampaigns
       Campaigns::StatusChangeOnInitiativeYouFollow,
       Campaigns::ThresholdReachedForAdmin,
       Campaigns::UserDigest,
+      Campaigns::VotingBasketNotSubmitted,
+      Campaigns::VotingBasketSubmitted,
+      Campaigns::VotingLastChance,
       Campaigns::VotingPhaseStarted,
       Campaigns::VotingResults,
       Campaigns::Welcome,
       Campaigns::YourProposedInitiativesDigest
     ].freeze
 
+    def campaign_classes
+      CAMPAIGN_CLASSES
+    end
+
     def campaign_types
       campaign_classes.map(&:name)
     end
 
-    def campaign_classes
-      CAMPAIGN_CLASSES
+    def manual_campaign_types
+      campaign_classes.select { |campaign| campaign.new.manual? }.map(&:name)
     end
 
     def consentable_campaign_types_for(user)

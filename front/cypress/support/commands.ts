@@ -55,6 +55,7 @@ declare global {
       apiCreateFolder: typeof apiCreateFolder;
       apiRemoveFolder: typeof apiRemoveFolder;
       apiRemoveProject: typeof apiRemoveProject;
+      apiRemovePhase: typeof apiRemovePhase;
       apiRemoveCustomPage: typeof apiRemoveCustomPage;
       apiCreateCustomPage: typeof apiCreateCustomPage;
       apiAddProjectsToFolder: typeof apiAddProjectsToFolder;
@@ -84,6 +85,8 @@ declare global {
       apiCreateSurveyResponse: typeof apiCreateSurveyResponse;
       uploadSurveyImageQuestionImage: typeof uploadSurveyImageQuestionImage;
       apiGetSurveySchema: typeof apiGetSurveySchema;
+      uploadProjectFolderImage: typeof uploadProjectFolderImage;
+      uploadProjectImage: typeof uploadProjectImage;
     }
   }
 }
@@ -121,10 +124,7 @@ function unregisterServiceWorkers() {
 }
 
 function goToLandingPage() {
-  cy.wait(500);
   cy.visit('/');
-  cy.get('#e2e-landing-page');
-  cy.wait(500);
 }
 
 function login(email: string, password: string) {
@@ -600,22 +600,11 @@ function apiCreateIdea({
   anonymous,
   phaseIds,
 }: IdeaType) {
-  let headers: { 'Content-Type': string; Authorization: string } | null = null;
-
-  if (jwt) {
-    headers = {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${jwt}`,
-    };
-  }
-
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
-    const adminJwt = response.body.jwt;
-
-    return cy.request({
-      headers: headers || {
+  const doRequest = (jwt: string) =>
+    cy.request({
+      headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
+        Authorization: `Bearer ${jwt}`,
       },
       method: 'POST',
       url: 'web_api/v1/ideas',
@@ -639,6 +628,14 @@ function apiCreateIdea({
         },
       },
     });
+
+  if (jwt) {
+    return doRequest(jwt);
+  }
+
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+    return doRequest(adminJwt);
   });
 }
 
@@ -1071,6 +1068,21 @@ function apiRemoveProject(projectId: string) {
   });
 }
 
+function apiRemovePhase(phaseId: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'DELETE',
+      url: `web_api/v1/phases/${phaseId}`,
+    });
+  });
+}
+
 function apiRemoveFolder(folderId: string) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1424,7 +1436,7 @@ function apiCreateReportBuilder(phaseId?: string, visible: boolean = true) {
         report: {
           name: phaseId ? undefined : randomString(),
           phase_id: phaseId,
-          visible,
+          visible: phaseId ? visible : undefined,
         },
       },
     });
@@ -1712,10 +1724,17 @@ function apiCreateSurveyQuestions(
 }
 
 function apiCreateSurveyResponse(
-  email: string,
-  password: string,
-  project_id: string,
-  fields: Record<string, any>,
+  {
+    email,
+    password,
+    project_id,
+    fields,
+  }: {
+    email?: string;
+    password?: string;
+    project_id: string;
+    fields: Record<string, any>;
+  },
   jwt?: any
 ) {
   const makeRequest = (jwt: any) => {
@@ -1732,6 +1751,15 @@ function apiCreateSurveyResponse(
           project_id,
           ...fields,
         },
+        method: 'POST',
+        url: 'web_api/v1/ideas',
+        body: {
+          idea: {
+            publication_status: 'published',
+            project_id,
+            ...fields,
+          },
+        },
       },
     });
   };
@@ -1739,10 +1767,12 @@ function apiCreateSurveyResponse(
   if (jwt) {
     return makeRequest(jwt);
   } else {
-    return cy.apiLogin(email, password).then((response) => {
-      const jwt = response.body.jwt;
-      return makeRequest(jwt);
-    });
+    return cy
+      .apiLogin(email || 'admin@citizenlab.co', password || 'democracy2.0')
+      .then((response) => {
+        const jwt = response.body.jwt;
+        return makeRequest(jwt);
+      });
   }
 }
 
@@ -1775,6 +1805,42 @@ function apiGetSurveySchema(phaseId: string) {
       },
       method: 'GET',
       url: `web_api/v1/phases/${phaseId}/custom_fields/json_forms_schema`,
+    });
+  });
+}
+
+function uploadProjectFolderImage(folderId: string, base64: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/project_folders/${folderId}/images`,
+      body: {
+        image: { image: base64 },
+      },
+    });
+  });
+}
+
+function uploadProjectImage(projectId: string, base64: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/projects/${projectId}/images`,
+      body: {
+        image: { image: base64 },
+      },
     });
   });
 }
@@ -1869,6 +1935,7 @@ Cypress.Commands.add('apiEditProject', apiEditProject);
 Cypress.Commands.add('apiCreateFolder', apiCreateFolder);
 Cypress.Commands.add('apiRemoveFolder', apiRemoveFolder);
 Cypress.Commands.add('apiRemoveProject', apiRemoveProject);
+Cypress.Commands.add('apiRemovePhase', apiRemovePhase);
 Cypress.Commands.add('apiAddProjectsToFolder', apiAddProjectsToFolder);
 Cypress.Commands.add('apiCreatePhase', apiCreatePhase);
 Cypress.Commands.add('apiCreateCustomField', apiCreateCustomField);
@@ -1924,3 +1991,5 @@ Cypress.Commands.add(
   uploadSurveyImageQuestionImage
 );
 Cypress.Commands.add('apiGetSurveySchema', apiGetSurveySchema);
+Cypress.Commands.add('uploadProjectFolderImage', uploadProjectFolderImage);
+Cypress.Commands.add('uploadProjectImage', uploadProjectImage);

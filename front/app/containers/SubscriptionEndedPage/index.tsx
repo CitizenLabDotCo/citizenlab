@@ -40,15 +40,19 @@ const Title = styled.h1`
   `}
 `;
 
-export default React.memo(() => (
-  <Container>
-    <ContentContainer>
-      <Title>
-        <FormattedMessage {...messages.accessDenied} />
-      </Title>
-      <div>
-        <FormattedMessage {...messages.subscriptionEnded} />
-      </div>
-    </ContentContainer>
-  </Container>
-));
+const SubscriptionEndedPage = () => (
+  <main>
+    <Container>
+      <ContentContainer>
+        <Title>
+          <FormattedMessage {...messages.accessDenied} />
+        </Title>
+        <div>
+          <FormattedMessage {...messages.subscriptionEnded} />
+        </div>
+      </ContentContainer>
+    </Container>
+  </main>
+);
+
+export default SubscriptionEndedPage;

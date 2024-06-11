@@ -66,7 +66,7 @@ const AddToBasketBox = memo(({ ideaId, phase }: Props) => {
   const { numberOfVotesCast } = useVoting();
 
   const ideaBudget = idea?.data.attributes.budget;
-  const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
+  const actionDescriptor = idea?.data.attributes.action_descriptors.voting;
   const { voting_max_total } = phase.attributes;
 
   if (!actionDescriptor || !ideaBudget || isNil(voting_max_total)) {

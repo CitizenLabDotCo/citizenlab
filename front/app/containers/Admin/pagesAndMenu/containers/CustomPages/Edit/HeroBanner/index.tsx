@@ -10,7 +10,10 @@ import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
+import {
+  pagesAndMenuBreadcrumb,
+  pagesAndMenuBreadcrumbLinkTo,
+} from 'containers/Admin/pagesAndMenu/breadcrumbs';
 import ShownOnPageBadge from 'containers/Admin/pagesAndMenu/components/ShownOnPageBadge';
 import CTAButtonFields from 'containers/Admin/pagesAndMenu/containers/CustomPages/Edit/HeroBanner/CTAButtonFields';
 import BannerHeaderFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerHeaderFields';
@@ -218,7 +221,7 @@ const EditCustomPageHeroBannerForm = ({
           breadcrumbs={[
             {
               label: formatMessage(pagesAndMenuBreadcrumb.label),
-              linkTo: pagesAndMenuBreadcrumb.linkTo,
+              linkTo: pagesAndMenuBreadcrumbLinkTo,
             },
             {
               label: localize(customPage.data.attributes.title_multiloc),

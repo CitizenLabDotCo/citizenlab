@@ -10,6 +10,8 @@ import {
   Toggle,
   Spinner,
   colors,
+  TooltipContentWrapper,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { saveAs } from 'file-saver';
 import { useParams } from 'react-router-dom';
@@ -64,8 +66,8 @@ const Forms = () => {
     phaseId,
   });
   const { uiSchema } = useInputSchema({ projectId, phaseId });
-  const importPrintedFormsEnabled = useFeatureFlag({
-    name: 'import_printed_forms',
+  const inputImporterEnabled = useFeatureFlag({
+    name: 'input_importer',
   });
   const { mutate: deleteFormResults } = useDeleteSurveyResults();
 
@@ -78,9 +80,8 @@ const Forms = () => {
     downloadExcelLink,
     postingEnabled,
     togglePostingEnabled,
-    viewFormLink,
     editFormLink,
-    offlineInputsLink,
+    inputImporterLink,
   } = getFormActionsConfig(project.data, updatePhase, phase.data);
 
   const closeDeleteModal = () => {
@@ -176,21 +177,43 @@ const Forms = () => {
                 }}
               />
             </Box>
+            <Tooltip
+              disabled={inputImporterEnabled}
+              content={
+                <TooltipContentWrapper tippytheme="light">
+                  {formatMessage(messages.disabledImportInputsTooltip)}
+                </TooltipContentWrapper>
+              }
+            >
+              <Box>
+                <Button
+                  linkTo={inputImporterLink}
+                  icon="page"
+                  iconSize="20px"
+                  buttonStyle="secondary-outlined"
+                  width="auto"
+                  mr="8px"
+                  disabled={!inputImporterEnabled}
+                >
+                  {formatMessage(messages.importInputs)}
+                </Button>
+              </Box>
+            </Tooltip>
             <Button
-              linkTo={viewFormLink}
-              buttonStyle="secondary"
+              linkTo={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`}
               icon="eye"
               iconSize="20px"
-              openLinkInNewTab
+              buttonStyle="secondary-outlined"
               width="auto"
-              mx="8px"
+              openLinkInNewTab
+              mr="8px"
             >
               {formatMessage(messages.viewSurveyText)}
             </Button>
             <Button
               icon="edit"
               iconSize="20px"
-              buttonStyle="cl-blue"
+              buttonStyle="admin-dark"
               width="auto"
               onClick={() => {
                 haveSubmissionsComeIn
@@ -250,20 +273,8 @@ const Forms = () => {
                             </Text>
                           </Box>
                         </DropdownListItem>
-                        {importPrintedFormsEnabled && (
+                        {inputImporterEnabled && (
                           <>
-                            <DropdownListItem
-                              onClick={() => {
-                                clHistory.push(offlineInputsLink);
-                              }}
-                            >
-                              <Box display="flex" gap="4px" alignItems="center">
-                                <Icon name="plus" fill={colors.coolGrey600} />
-                                <Text my="0px">
-                                  {formatMessage(messages.addOfflineInputs)}
-                                </Text>
-                              </Box>
-                            </DropdownListItem>
                             <DropdownListItem onClick={handleDownloadPDF}>
                               <Box display="flex" gap="4px" alignItems="center">
                                 <Icon
@@ -326,7 +337,6 @@ const Forms = () => {
             </Box>
           </Box>
         </Box>
-
         <FormResults />
         <EditWarningModal
           editFormLink={editFormLink}
@@ -374,7 +384,7 @@ const Forms = () => {
               {formatMessage(messages.confirmDeleteButtonText)}
             </Button>
             <Button
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               width="auto"
               onClick={closeDeleteModal}
             >

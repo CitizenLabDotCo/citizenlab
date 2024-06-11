@@ -2,7 +2,7 @@
 
 module Analysis
   class AutoTaggingJob < ApplicationJob
-    queue_as :default
+    self.priority = 45 # Slighltly more important than emails (50)
 
     def run(auto_tagging_task)
       auto_tagging_task.execute

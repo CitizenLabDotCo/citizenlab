@@ -5,23 +5,17 @@ import { screen, render, fireEvent, waitFor } from 'utils/testUtils/rtl';
 import AreaForm from './';
 
 const titleEN = 'en title';
-const titleNL = 'nl title';
+const newTitleEN = 'new en title';
 
 const descriptionEN = 'en description';
-const descriptionNL = 'nl description';
 
 const defaultProps = {
   onSubmit: jest.fn(),
   defaultValues: {
-    title_multiloc: { en: '', 'nl-NL': '' },
-    description_multiloc: { en: descriptionEN, 'nl-NL': descriptionNL },
+    title_multiloc: { en: titleEN },
+    description_multiloc: { en: descriptionEN },
   },
 };
-
-jest.mock('hooks/useAppConfigurationLocales', () =>
-  jest.fn(() => ['en', 'nl-NL'])
-);
-
 describe('AreaForm', () => {
   it('renders', () => {
     render(<AreaForm {...defaultProps} />);
@@ -30,17 +24,9 @@ describe('AreaForm', () => {
   it('submits correct data', async () => {
     const { container } = render(<AreaForm {...defaultProps} />);
 
-    fireEvent.change(screen.getByRole('textbox', { name: 'Area name' }), {
+    fireEvent.change(screen.getByRole('textbox'), {
       target: {
-        value: titleEN,
-      },
-    });
-
-    fireEvent.click(screen.getAllByText(/nl-NL/i)[0]);
-
-    fireEvent.change(screen.getByRole('textbox', { name: 'Area name' }), {
-      target: {
-        value: titleNL,
+        value: newTitleEN,
       },
     });
 
@@ -48,15 +34,23 @@ describe('AreaForm', () => {
 
     await waitFor(() => {
       expect(defaultProps.onSubmit).toHaveBeenCalledWith({
-        title_multiloc: { en: titleEN, 'nl-NL': titleNL },
-        description_multiloc: { en: descriptionEN, 'nl-NL': descriptionNL },
+        title_multiloc: { en: newTitleEN },
+        description_multiloc: { en: descriptionEN },
       });
       expect(screen.getByTestId('feedbackSuccessMessage')).toBeInTheDocument();
     });
   });
   it('shows error summary and error message when title is missing', async () => {
     const { container } = render(<AreaForm {...defaultProps} />);
+
+    fireEvent.change(screen.getByRole('textbox'), {
+      target: {
+        value: '',
+      },
+    });
+
     fireEvent.click(container.querySelector('button[type="submit"]'));
+
     await waitFor(() => {
       expect(screen.getAllByTestId('error-message')).toHaveLength(2);
       expect(screen.getByTestId('feedbackErrorMessage')).toBeInTheDocument();

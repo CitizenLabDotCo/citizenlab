@@ -6,7 +6,8 @@ describe Analysis::InputToText do
   describe '#execute' do
     it 'works with ideation built-in textual fields' do
       custom_form = create(:custom_form, :with_default_fields)
-      service = described_class.new(custom_form.custom_fields.filter(&:support_free_text_value?))
+      custom_fields = custom_form.custom_fields.filter(&:support_free_text_value?)
+      service = described_class.new(custom_fields)
       input = build(
         :idea,
         title_multiloc: { en: 'New pool' },
@@ -85,6 +86,23 @@ describe Analysis::InputToText do
       service = described_class.new(custom_form.custom_fields.filter(&:support_free_text_value?))
       input = build(:idea, body_multiloc: { en: 'This is a way too long sentence!' })
       expect(service.execute(input, truncate_values: 20)).to include({ 'Description' => 'This is a way too...' })
+    end
+
+    it 'includes the other field' do
+      custom_field = create(:custom_field_select, title_multiloc: { en: 'What\'s your favourite option?' })
+      create(:custom_field_option, custom_field: custom_field, key: 'other', title_multiloc: { 'en' => 'Other' }, other: true)
+      service = described_class.new([custom_field])
+      input = build(
+        :idea,
+        custom_field_values: {
+          custom_field.key => 'other',
+          "#{custom_field.key}_other" => 'Because none of the above'
+        }
+      )
+      expect(service.execute(input)).to eq({
+        'What\'s your favourite option?' => 'Other',
+        "If you picked 'Other', what are you thinking of?" => 'Because none of the above'
+      })
     end
   end
 

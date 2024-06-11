@@ -42,7 +42,7 @@ const InitiativeMeta = ({ initiativeId }: Props) => {
   const { title_multiloc, body_multiloc } = initiative.data.attributes;
   const tenantLocales = appConfiguration.data.attributes.settings.core.locales;
   const localizedTitle = localize(title_multiloc, { maxChar: 50 });
-  const initiativeTitle = formatMessage(messages.metaTitle, {
+  const initiativeTitle = formatMessage(messages.metaTitle1, {
     initiativeTitle: localizedTitle,
   });
   const initiativeDescription = stripHtml(localize(body_multiloc), 250);

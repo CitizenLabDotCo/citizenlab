@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
+import { RouteType } from 'routes';
 
 import { Section } from 'components/admin/Section';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
@@ -27,7 +28,7 @@ interface Props {
   bannerHeaderFieldsComponent: ReactElement;
   ctaButtonFieldsComponent: ReactElement;
   badge: JSX.Element;
-  linkToViewPage: string;
+  linkToViewPage: RouteType;
 }
 
 const GenericHeroBannerForm = ({

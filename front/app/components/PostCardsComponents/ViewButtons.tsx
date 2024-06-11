@@ -28,7 +28,7 @@ import tracks from './tracks';
 const Container = styled.div`
   display: flex;
   padding: 4px;
-  background: ${darken(0.06, colors.grey200)};
+  background: ${colors.white};
   border-radius: ${(props) => props.theme.borderRadius};
 `;
 
@@ -41,22 +41,44 @@ const ViewButton = styled.button<{ active: boolean }>`
   padding: 10px 12px;
   font-size: ${fontSizes.base}px;
   border-radius: 3px;
-  background-color: ${(props) => (props.active ? '#fff' : 'transparent')};
-  color: ${colors.textSecondary};
   border-color: transparent;
   box-shadow: ${defaultStyles.boxShadow};
   margin-right: 0;
   display: flex;
   align-items: center;
+  ${({ active, theme }) =>
+    active
+      ? {
+          backgroundColor: theme.colors.tenantSecondary,
+          color: colors.white,
+        }
+      : {
+          backgroundColor: 'transparent',
+          color: theme.colors.tenantText,
+        }};
+
+  ${StyledIcon} {
+    ${({ active, theme }) =>
+      active
+        ? {
+            fill: colors.white,
+          }
+        : {
+            fill: darken(0.2, theme.colors.tenantText),
+          }};
+  }
 
   &:hover {
-    background-color: ${(props) =>
-      props.active ? '#fff' : 'rgba(0,0,0,0.12)'};
-    color: ${darken(0.2, colors.textSecondary)};
-
-    ${StyledIcon} {
-      color: ${darken(0.2, colors.textSecondary)};
-    }
+    ${({ active, theme }) =>
+      active
+        ? {
+            backgroundColor: darken(0.15, theme.colors.tenantSecondary),
+            color: colors.white,
+          }
+        : {
+            backgroundColor: 'rgba(132, 147, 158, 0.15)',
+            color: darken(0.2, theme.colors.tenantText),
+          }};
   }
 `;
 

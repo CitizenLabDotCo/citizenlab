@@ -1,131 +1,114 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   Box,
   IconButton,
   colors,
   Text,
+  Spinner,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
 
 import { IAnalysisData } from 'api/analyses/types';
-import useAnalysisInsightsWithIds from 'api/analysis_insights/useAnalysisInsightsById';
-import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
-import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
+import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
+import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
+import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
+import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { replaceIdRefsWithLinks } from '../../../../../analysis/Insights/util';
 import messages from '../../../messages';
 
-const StyledInsightsText = styled(Text)`
-  white-space: pre-wrap;
-  word-break: break-word;
-`;
+import Question from './Question';
+import Summary from './Summary';
 
-type AnalysisInsight = {
-  analysisId: string;
-  relationship: {
-    id: string;
-    type: 'summary' | 'analysis_question';
-  };
-};
-
-const Summary = ({
-  summaryId,
-  analysisId,
-}: {
-  summaryId: string;
-  analysisId: string;
-}) => {
-  const { projectId, phaseId } = useParams() as {
-    projectId: string;
-    phaseId: string;
-  };
-  const { data } = useAnalysisSummary({ analysisId, id: summaryId });
-
-  const summary = data?.data.attributes.summary;
-  if (!summary) {
-    return null;
-  }
-  return (
-    <StyledInsightsText mt="0px">
-      {replaceIdRefsWithLinks({
-        insight: summary,
-        analysisId,
-        projectId,
-        phaseId,
-      })}
-    </StyledInsightsText>
-  );
-};
-
-const Question = ({
-  summaryId,
-  analysisId,
-}: {
-  summaryId: string;
-  analysisId: string;
-}) => {
-  const { data } = useAnalysisQuestion({ analysisId, id: summaryId });
-  const { projectId, phaseId } = useParams() as {
-    projectId: string;
-    phaseId: string;
-  };
-  const question = data?.data.attributes.question;
-  const answer = data?.data.attributes.answer;
-  if (!question || !answer) {
-    return null;
-  }
-  return (
-    <>
-      <Text fontSize="s" mt="0px" fontWeight="bold">
-        {question}
-      </Text>
-      <StyledInsightsText mt="0px">
-        {replaceIdRefsWithLinks({
-          insight: answer,
-          analysisId,
-          projectId,
-          phaseId,
-        })}
-      </StyledInsightsText>
-    </>
-  );
-};
-
-const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
-  const { formatMessage } = useIntl();
+const AnalysisInsights = ({ analysis }: { analysis: IAnalysisData }) => {
+  const [automaticSummaryCreated, setAutomaticSummaryCreated] = useState(false);
   const [selectedInsightIndex, setSelectedInsightIndex] = useState(0);
-  const result = useAnalysisInsightsWithIds({
-    analysisIds: analyses?.map((a) => a.id) || [],
+
+  const { formatMessage } = useIntl();
+
+  const { data: inputs } = useInfiniteAnalysisInputs({
+    analysisId: analysis.id,
+  });
+  const { data: insights } = useAnalysisInsights({
+    analysisId: analysis.id,
+  });
+  const { mutate: addAnalysisSummary, isLoading: addSummaryIsLoading } =
+    useAddAnalysisSummary();
+  const { mutate: preCheck, isLoading: preCheckIsLoading } =
+    useAddAnalysisSummaryPreCheck();
+
+  const largeSummariesEnabled = useFeatureFlag({
+    name: 'large_summaries',
+    onlyCheckAllowed: true,
   });
 
-  const insights = result
-    .flatMap(({ data }, i) =>
-      data?.data.map((insight) => ({
-        analysisId: analyses[i].id,
+  const inputCount = inputs?.pages[0].meta.filtered_count || 0;
+  const selectedInsight = insights?.data[selectedInsightIndex];
 
-        relationship: insight.relationships.insightable.data,
-      }))
-    )
-    .filter((relationship) => relationship !== undefined) as AnalysisInsight[];
+  // Create a summary if there are no insights yet
 
-  const selectedInsight = insights[selectedInsightIndex];
+  useEffect(() => {
+    if (
+      analysis.id &&
+      insights?.data.length === 0 &&
+      !automaticSummaryCreated &&
+      inputCount > 10
+    ) {
+      setAutomaticSummaryCreated(true);
+      preCheck(
+        {
+          analysisId: analysis.id,
+          filters: {
+            input_custom_field_no_empty_values: true,
+          },
+        },
+        {
+          onSuccess: (data) => {
+            if (!data.data.attributes.impossible_reason) {
+              addAnalysisSummary({
+                analysisId: analysis.id,
+                filters: {
+                  input_custom_field_no_empty_values: true,
+                  limit: !largeSummariesEnabled ? 30 : undefined,
+                },
+              });
+            }
+          },
+        }
+      );
+    }
+  }, [
+    analysis.id,
+    addAnalysisSummary,
+    insights,
+    automaticSummaryCreated,
+    inputCount,
+    largeSummariesEnabled,
+    preCheck,
+  ]);
 
-  if (insights.length === 0) {
+  if (addSummaryIsLoading || preCheckIsLoading) {
+    return <Spinner />;
+  }
+
+  if (!insights || insights.data.length === 0) {
     return null;
   }
 
   return (
-    <Box>
-      {insights.length > 1 && (
+    <Box position="relative">
+      {insights.data.length > 1 && (
         <Box
           display="flex"
           justifyContent="center"
           alignItems="center"
           w="100%"
+          mb="20px"
+          position="absolute"
+          top="-50px"
         >
           <IconButton
             iconName="chevron-left"
@@ -138,12 +121,12 @@ const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
             a11y_buttonActionMessage={formatMessage(messages.previousInsight)}
           />
           <Text>
-            {selectedInsightIndex + 1} / {insights.length}
+            {selectedInsightIndex + 1} / {insights.data.length}
           </Text>
           <IconButton
             iconName="chevron-right"
             onClick={() => {
-              selectedInsightIndex < insights.length - 1 &&
+              selectedInsightIndex < insights.data.length - 1 &&
                 setSelectedInsightIndex(selectedInsightIndex + 1);
             }}
             iconColor={colors.black}
@@ -152,23 +135,26 @@ const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
           />
         </Box>
       )}
-      {selectedInsight && (
-        <>
-          {selectedInsight.relationship.type === 'analysis_question' ? (
-            <Question
-              key={selectedInsight.relationship.id}
-              summaryId={selectedInsight.relationship.id}
-              analysisId={selectedInsight.analysisId}
-            />
-          ) : (
-            <Summary
-              key={selectedInsight.relationship.id}
-              summaryId={selectedInsight.relationship.id}
-              analysisId={selectedInsight.analysisId}
-            />
-          )}
-        </>
-      )}
+      <Box>
+        {selectedInsight && (
+          <>
+            {selectedInsight.relationships.insightable.data.type ===
+            'analysis_question' ? (
+              <Question
+                key={selectedInsight.relationships.insightable.data.id}
+                questionId={selectedInsight.relationships.insightable.data.id}
+                analysisId={analysis.id}
+              />
+            ) : (
+              <Summary
+                key={selectedInsight.relationships.insightable.data.id}
+                summaryId={selectedInsight.relationships.insightable.data.id}
+                analysisId={analysis.id}
+              />
+            )}
+          </>
+        )}
+      </Box>
     </Box>
   );
 };

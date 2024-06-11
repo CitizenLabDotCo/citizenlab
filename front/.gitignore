@@ -38,5 +38,6 @@ storybook-static/*
 
 cypress.env
 
-# Component library src copy for unit tests
-internals/jest/cl2-component-library/*
+# Rollup generated output
+.rollup.cache
+dist

@@ -31,9 +31,10 @@
 // -----------------------------------------------------------------------------
 // imports and definitions
 import { includes, get } from 'lodash-es';
+import { RouteType } from 'routes';
 import { combineLatest } from 'rxjs';
 import { first, map, distinctUntilChanged } from 'rxjs/operators';
-import { Locale, Multiloc } from 'typings';
+import { SupportedLocale, Multiloc } from 'typings';
 
 import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 import { IAppConfiguration } from 'api/app_configuration/types';
@@ -63,7 +64,7 @@ combineLatest([$authUser, $tenantLocales]).subscribe(
   ([user, tenantLocales]) => {
     // gets the current user's locale of choice if they both exist
     // and checks if it's a possible locale to have on this tenant
-    const userLocale: Locale | null =
+    const userLocale: SupportedLocale | null =
       user &&
       user.data.attributes.locale &&
       includes(tenantLocales, user.data.attributes.locale)
@@ -74,15 +75,16 @@ combineLatest([$authUser, $tenantLocales]).subscribe(
     const cookieLocale = getCookieLocale();
     // and checks if it's a possible locale to have on this tenant
     // the tenant only allows Locales so we can cast the Locale type safely here
-    const safeCookieLocale: Locale | false =
-      includes(tenantLocales, cookieLocale) && (cookieLocale as Locale);
+    const safeCookieLocale: SupportedLocale | false =
+      includes(tenantLocales, cookieLocale) &&
+      (cookieLocale as SupportedLocale);
 
     // gets the first part of the url if it resembles a locale enough (cf getUrlLocale's comments)
     const urlLocale: string | null = getUrlLocale(location.pathname);
     // and checks if it's a possible locale to have on this tenant
     // the tenant only allows Locales so we can cast the Locale type safely here
-    const safeUrlLocale: Locale | false =
-      includes(tenantLocales, urlLocale) && (urlLocale as Locale);
+    const safeUrlLocale: SupportedLocale | false =
+      includes(tenantLocales, urlLocale) && (urlLocale as SupportedLocale);
 
     // - use userLocale if it's valid and supported
     // - else use cookieLocale if it's valid and supported
@@ -106,7 +108,10 @@ combineLatest([$authUser, $tenantLocales]).subscribe(
  *   !! only used in the LanguageSelector component. Chances are it should only be used there.
  *   Checks the locale is supported by this tenant before tying to set the new locale
  */
-export function updateLocale(locale: Locale, appConfig: IAppConfiguration) {
+export function updateLocale(
+  locale: SupportedLocale,
+  appConfig: IAppConfiguration
+) {
   const tenantLocales = appConfig.data.attributes.settings.core.locales;
   // "gets" the tenants locale and authUser
   $authUser.pipe(first()).subscribe(async (authUser) => {
@@ -156,12 +161,12 @@ $locale.subscribe((locale) => {
  *   prerequisite NO LOCALE : the current pathname should not already include a locale
  *   !! this function should not leave this component (no importing it except for tests)
  */
-function setUrlLocale(locale: Locale): void {
+function setUrlLocale(locale: SupportedLocale): void {
   const newLocalizedUrl = setPathnameLocale(
     location.pathname,
     locale,
     location.search
-  );
+  ) as RouteType;
   clHistory.replace(newLocalizedUrl);
 }
 
@@ -171,19 +176,19 @@ function setUrlLocale(locale: Locale): void {
  *   !! this function overrides the browsers url and should not leave this component
  *   (no importing it except for tests)
  */
-function replaceUrlLocale(locale: Locale) {
+function replaceUrlLocale(locale: SupportedLocale) {
   const newLocalizedUrl = replacePathnameLocale(
     location.pathname,
     locale,
     location.search
-  );
+  ) as RouteType;
   // replaces current location with updated url
   clHistory.replace(newLocalizedUrl);
 }
 
 export function hasTextInSpecifiedLocale(
   multiloc: Multiloc,
-  locale: Locale
+  locale: SupportedLocale
 ): boolean {
   return (
     Object.prototype.hasOwnProperty.call(multiloc, locale) &&

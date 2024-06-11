@@ -1,5 +1,6 @@
 describe('Block user', () => {
   beforeEach(() => {
+    cy.setAdminLoginCookie();
     cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
       const adminJwt = response.body.jwt;
       cy.request({
@@ -19,7 +20,7 @@ describe('Block user', () => {
         },
       });
     });
-    cy.setAdminLoginCookie();
+
     cy.visit('/admin/users');
   });
 
@@ -29,10 +30,9 @@ describe('Block user', () => {
       .not(':contains("admin@citizenlab.co")')
       .first()
       .find('.e2e-more-actions')
-      .click()
-      .parent()
-      .contains('Block')
       .click();
+
+    cy.get('.tippy-content').contains('Block').click();
 
     cy.intercept({ method: 'PATCH', url: '**/block' }).as('blockRequest');
     cy.get('#e2e-modal-container')
@@ -54,9 +54,9 @@ describe('Block user', () => {
       .find('.e2e-user-table-row')
       .first()
       .find('.e2e-more-actions')
-      .click()
-      .parent()
-      .contains('Unblock');
+      .click();
+
+    cy.get('.tippy-content').contains('Unblock');
   });
 
   it('Unblock from User Manager', () => {
@@ -65,10 +65,9 @@ describe('Block user', () => {
       .not(':contains("admin@citizenlab.co")')
       .first()
       .find('.e2e-more-actions')
-      .click()
-      .parent()
-      .contains('Unblock')
       .click();
+
+    cy.get('.tippy-content').contains('Unblock').click();
 
     cy.intercept({ method: 'PATCH', url: '**/unblock' }).as('unblockRequest');
     cy.get('#e2e-modal-container').contains('button', 'Yes').click();
@@ -80,9 +79,9 @@ describe('Block user', () => {
       .find('.e2e-user-table-row')
       .first()
       .find('.e2e-more-actions')
-      .click()
-      .parent()
-      .contains('Block');
+      .click();
+
+    cy.get('.tippy-content').contains('Block');
   });
 
   it('Block from User Profile', () => {
@@ -92,11 +91,13 @@ describe('Block user', () => {
       .not(':contains("admin@citizenlab.co")')
       .first()
       .find('td')
-      .eq(2)
+      .eq(1)
       .find('a')
       .click();
 
-    cy.get('.e2e-more-actions').click().parent().contains('Block').click();
+    cy.get('.e2e-more-actions').click();
+
+    cy.get('.tippy-content').contains('Block').click();
 
     cy.intercept({ method: 'PATCH', url: '**/block' }).as('blockRequest');
     cy.get('#e2e-modal-container')
@@ -114,7 +115,9 @@ describe('Block user', () => {
 
     cy.get('#e2e-usersshowpage').contains('Blocked');
 
-    cy.get('.e2e-more-actions').click().parent().contains('Unblock');
+    cy.get('.e2e-more-actions').click();
+
+    cy.get('.tippy-content').contains('Unblock');
   });
 
   it('Unblock from User Profile', () => {
@@ -124,16 +127,20 @@ describe('Block user', () => {
       .not(':contains("admin@citizenlab.co")')
       .first()
       .find('td')
-      .eq(2)
+      .eq(1)
       .find('a')
       .click();
 
-    cy.get('.e2e-more-actions').click().parent().contains('Unblock').click();
+    cy.get('.e2e-more-actions').click();
+
+    cy.get('.tippy-content').contains('Unblock').click();
 
     cy.intercept({ method: 'PATCH', url: '**/unblock' }).as('unblockRequest');
     cy.get('#e2e-modal-container').contains('button', 'Yes').click();
     cy.wait('@unblockRequest');
 
-    cy.get('.e2e-more-actions').click().parent().contains('Block');
+    cy.get('.e2e-more-actions').click();
+
+    cy.get('.tippy-content').contains('Block');
   });
 });

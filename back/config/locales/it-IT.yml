@@ -1,4 +1,38 @@
 it:
+  locales:
+    en: Inglese
+    ar-MA: Arabo (Marocco)
+    ar-SA: Arabo (Arabia Saudita)
+    ca-ES: Catalano
+    cy-GB: Gallese
+    da-DK: Danese
+    de-DE: Tedesco
+    el-GR: Greco
+    en-CA: Inglese (Canada)
+    en-GB: Inglese (UK)
+    en-IE: Inglese (Irlanda)
+    es-CL: Spagnolo (Cile)
+    es-ES: Spagnolo (Spagna)
+    fi-FI: Finlandese
+    fr-BE: Francese (Belgio)
+    fr-FR: Francese
+    hr-HR: Croato
+    hu-HU: Ungherese
+    it-IT: Italiano
+    kl-GL: Groenlandese
+    lb-LU: Lussemburghese
+    lv-LV: Lettone
+    mi: Maori
+    nb-NO: Norvegese (Bokmål)
+    nl-BE: Olandese (Belgio)
+    nl-NL: Olandese
+    pl-PL: Polacco
+    pt-BR: Portoghese (Brasile)
+    ro-RO: Rumeno
+    sr-Latn: Serbo (latino)
+    sr-SP: Serbo (cirillico)
+    sv-SE: Svedese
+    tr-TR: Turco
   symbols:
     outside: da qualche altra parte
   idea_statuses:
@@ -148,8 +182,8 @@ it:
       section3:
         title: Dettagli
         description:
-      other:
-        title: Scrivi la tua risposta
+      other_text_field:
+        title: Se hai scelto '{other_option}', a cosa stai pensando?
   custom_forms:
     categories:
       main_content:
@@ -200,29 +234,40 @@ it:
       subject: '%{organizationName}: Resetta la tua password'
       title_reset_your_password: 'Scegliere una nuova password'
   xlsx_export:
+    anonymous: 'Anonimo'
     column_headers:
-      input_id: 'ID'
-      latitude: 'Latitudine'
-      longitude: 'Longitudine'
-      author_fullname: 'Nome dell''autore'
-      author_email: 'Email dell''autore'
-      author_id: 'ID autore'
-      budget: 'Bilancio'
-      created_at: 'Presentato a'
-      published_at: 'Pubblicato presso'
-      comments_count: 'Commenti'
-      likes_count: 'Preferiti'
-      dislikes_count: 'Antipatie'
-      picks: 'Plettri'
-      participants: 'Partecipanti'
-      votes_count: 'Voti'
-      input_url: 'URL'
-      project: 'Progetto'
-      status: 'Stato'
       assignee_fullname: 'Assegnatario'
       assignee_email: 'Email del destinatario'
+      attachments: 'Allegati'
+      author_email: 'Email dell''autore'
+      author_fullname: 'Nome dell''autore'
+      author_id: 'ID autore'
+      budget: 'Bilancio'
+      comments_count: 'Commenti'
+      cost: 'Costo'
+      created_at: 'Presentato a'
+      description: 'Descrizione'
+      dislikes_count: 'Antipatie'
+      email: 'Email'
+      first_name: 'Nome/i'
       image_url: 'URL immagine'
-    anonymous: 'Anonimo'
+      input_id: 'ID'
+      input_url: 'URL'
+      last_name: 'Cognome'
+      latitude: 'Latitudine'
+      likes_count: 'Preferiti'
+      location: 'Posizione'
+      longitude: 'Longitudine'
+      participants: 'Partecipanti'
+      picks: 'Plettri'
+      project: 'Progetto'
+      published_at: 'Pubblicato presso'
+      registration_completed_at: 'Registrazione completata presso'
+      status: 'Stato'
+      submitted_at: 'Inviato a'
+      tags: 'Tag'
+      title: 'Titolo'
+      votes_count: 'Voti'
   form_builder:
     default_select_field:
       title: 'La vostra domanda'
@@ -248,6 +293,7 @@ it:
       instructions: 'Istruzioni'
       write_as_clearly: 'Scrivi il più chiaramente possibile <b></b> - questi moduli potrebbero essere scannerizzati.'
       write_in_language: 'Scrivi le tue risposte nella stessa lingua di questo modulo'
+      linear_scale_print_description: 'Scrivi solo un numero compreso tra %{min_label} e %{max_label}'
   project_copy:
     title_suffix: 'Copia'
   confirmations_mailer:

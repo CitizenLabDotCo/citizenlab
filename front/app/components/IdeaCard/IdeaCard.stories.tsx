@@ -20,6 +20,7 @@ const meta = {
   ),
   parameters: {
     layout: 'centered',
+    chromatic: { disableSnapshot: false },
   },
 } satisfies Meta<typeof IdeaCard>;
 
@@ -45,10 +46,8 @@ export const Voting: Story = {
     </VotingContext>
   ),
   args: {
-    ideaId: '1',
+    ...Standard.args,
     phaseId: 'ph1',
-    hideImage: false,
-    hideImagePlaceholder: false,
   },
   parameters: {
     msw: mockEndpoints({

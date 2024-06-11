@@ -6,6 +6,16 @@ import { render, screen } from 'utils/testUtils/rtl';
 
 import ChangeSeatModal from '.';
 
+jest.mock('react-dom', () => ({
+  ...jest.requireActual('react-dom'),
+  createPortal: (content) => content,
+}));
+
+const getElementById = document.getElementById.bind(document);
+document.getElementById = (id, ...args) => {
+  if (id === 'modal-portal') return true;
+  return getElementById(id, ...args);
+};
 type MockAppConfigurationType = {
   data: {
     id: string;

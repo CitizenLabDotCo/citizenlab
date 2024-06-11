@@ -3,53 +3,10 @@ import { fetchIdea } from 'api/ideas/useIdeaBySlug';
 import getProjectbySlug from 'api/projects/getProjectBySlug';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
-import { slugRegEx } from 'utils/textUtils';
 
-export const getProjectId = async (path: string) => {
-  if (isProjectPage(path)) {
-    // We are using an id in the admin and a slug for citizens
-    if (isOnAdminProjectPage(path)) {
-      return extractProjectIdOrSlug(path);
-    } else {
-      const slug = extractProjectIdOrSlug(path);
-      if (!slug) return null;
-
-      const projectId = await getProjectIdFromProjectSlug(slug);
-      return projectId;
-    }
-  }
-
-  if (isIdeaPage(path)) {
-    const slug = extractIdeaSlug(path);
-    if (!slug) return null;
-
-    const idea = await getIdea(slug);
-    const projectId = idea?.data.relationships?.project?.data?.id;
-    return projectId;
-  }
-
-  return null;
-};
-const slugRegExSource = slugRegEx.source.slice(1, slugRegEx.source.length - 2);
-
-const adminProjectPageDetectRegex = RegExp(
-  `admin/projects/(${slugRegExSource})`
-);
-const projectPageDetectRegex = RegExp(`/projects/(${slugRegExSource})`);
-const projectPageExtractRegex = /\/projects\/([^\s!?/.*#|]+)/;
-
-const isProjectPage = (path: string) => {
-  return projectPageDetectRegex.test(path);
-};
-
-export const isOnAdminProjectPage = (path: string) => {
-  return adminProjectPageDetectRegex.test(path);
-};
-
-const extractProjectIdOrSlug = (path: string) => {
-  const matches = path.match(projectPageExtractRegex);
-  return matches && matches[1];
-};
+const projectPathRegex =
+  /(\/(?<prefix_segment>[^/]+))?\/projects\/(?<slug_or_id>[^/?#]+)/;
+const ideasPathRegex = /\/ideas\/(?<slug>[^/?#]+)/;
 
 const getProjectIdFromProjectSlug = async (slug: string) => {
   try {
@@ -60,20 +17,39 @@ const getProjectIdFromProjectSlug = async (slug: string) => {
   }
 };
 
-const ideaPageDetectRegex = RegExp(`/ideas/(${slugRegExSource})$`);
-const ideaPageExtractRegex = /\/ideas\/([^\s!?/.*#|]+)$/;
+async function extractProjectIdFromProjectPath(path: string) {
+  const match = path.match(projectPathRegex);
 
-const isIdeaPage = (path: string) => {
-  return ideaPageDetectRegex.test(path);
-};
+  if (match?.groups) {
+    const slugOrId = match.groups.slug_or_id;
+    const prefix = match.groups.prefix_segment;
+    return prefix === 'admin'
+      ? slugOrId
+      : await getProjectIdFromProjectSlug(slugOrId);
+  } else {
+    return null;
+  }
+}
 
-export const extractIdeaSlug = (path: string) => {
-  const ideaPageMatches = path.match(ideaPageExtractRegex);
-  return ideaPageMatches && ideaPageMatches[1];
-};
-
-const getIdea = async (slug: string) => {
+async function getIdea(slug: string) {
   return queryClient.fetchQuery(ideasKeys.item({ slug }), () =>
     fetchIdea({ slug })
+  );
+}
+
+async function getProjectIdFromIdeaSlug(slug: string) {
+  const idea = await getIdea(slug);
+  return idea?.data.relationships?.project?.data?.id;
+}
+
+async function extractProjectIdFromIdeaPath(path: string) {
+  const slug = path.match(ideasPathRegex)?.groups?.slug;
+  return slug ? await getProjectIdFromIdeaSlug(slug) : null;
+}
+
+export const getProjectId = async (path: string) => {
+  return (
+    (await extractProjectIdFromProjectPath(path)) ||
+    (await extractProjectIdFromIdeaPath(path))
   );
 };

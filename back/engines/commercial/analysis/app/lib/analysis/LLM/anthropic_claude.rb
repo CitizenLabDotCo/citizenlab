@@ -52,7 +52,7 @@ module Analysis
           'temperature' => 0.1,
           'top_p' => 0.9
         }
-        { model_id: model_id, body: json.to_json }
+        { model_id: model_id, body: json.to_json, content_type: 'application/json' }
       end
 
       def body_completion(body_string)

@@ -10,6 +10,8 @@ import {
   Icon,
   Label,
   Radio,
+  stylingConsts,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { useParams } from 'react-router-dom';
@@ -18,21 +20,25 @@ import styled from 'styled-components';
 import useAnalysis from 'api/analyses/useAnalysis';
 import { AutoTaggingMethod } from 'api/analysis_background_tasks/types';
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
+import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 import { TagType } from 'api/analysis_tags/types';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useIntl } from 'utils/cl-intl';
 
-import FilterItems from '../../FilterItems';
 import messages from '../messages';
 import Tag from '../Tag';
 
-const AutoTagMethodContainer = styled.div<{ disabled: boolean }>`
+const AutoTagMethodContainer = styled.div<{ isDisabled: boolean }>`
   background-color: ${colors.grey100};
+  width: 30%;
   border-radius: 3px;
   padding: 16px;
-  ${({ disabled }) =>
-    disabled
-      ? ''
+  ${({ isDisabled }) =>
+    isDisabled
+      ? `opacity: 0.5;
+         cursor: not-allowed;`
       : `
       cursor: pointer;
       &:hover {
@@ -46,7 +52,7 @@ const AutoTagTargetContainer = styled.div`
   flex: 1;
   background-color: ${colors.grey100};
   border-radius: 3px;
-  padding: 16px;
+  padding: 20px 16px 0px 16px;
   cursor: pointer;
   &:hover {
     box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
@@ -59,48 +65,95 @@ const AutoTagTargetContainer = styled.div`
     cursor: not-allowed;
     opacity: 0.5;
     box-shadow: none;
+    pointer-events: none;
   }
 `;
+
 const AutoTagOption = ({
   children,
   tagType,
   title,
   onSelect,
-  disabled,
+  isDisabled,
   isLoading,
   tooltip,
+  isRecommended,
 }: {
   children: ReactNode;
   tagType: TagType;
   title: string;
   onSelect: () => void;
-  disabled: boolean;
+  isDisabled: boolean;
   isLoading: boolean;
   tooltip?: string;
+  isRecommended?: boolean;
 }) => {
+  const { formatMessage } = useIntl();
   return (
-    <AutoTagMethodContainer onClick={() => onSelect()} disabled={disabled}>
-      <Box
-        display="flex"
-        justifyContent="flex-start"
-        alignItems="center"
-        gap="6px"
+    <Tooltip
+      content={
+        <p>{formatMessage(messages.advancedAutotaggingUpsellMessage)}</p>
+      }
+      zIndex={9999999}
+      disabled={!isDisabled}
+    >
+      <AutoTagMethodContainer
+        onClick={isDisabled || isLoading ? undefined : () => onSelect()}
+        isDisabled={isDisabled || isLoading}
       >
-        <Tag tagType={tagType} name="&nbsp;" />
-        <Title variant="h6" m="0px">
-          {title}
-        </Title>
-        {isLoading && (
-          <Box mx="16px">
-            <Spinner size="24px" />
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          mb="8px"
+        >
+          <Box w="32px">
+            <Tag tagType={tagType} name="&nbsp;" />
           </Box>
-        )}
-        {tooltip && <IconTooltip content={tooltip} icon="info-outline" />}
-      </Box>
-      <Text mt="12px" mb="0px">
-        {children}
-      </Text>
-    </AutoTagMethodContainer>
+          {isRecommended && (
+            <Box
+              bgColor={colors.success}
+              py="4px"
+              px="8px"
+              borderRadius={stylingConsts.borderRadius}
+              display="flex"
+              gap="4px"
+              alignItems="center"
+            >
+              <Icon
+                name="stars"
+                fill={colors.white}
+                width="16px"
+                height="16px"
+              />
+              <Text color="white" m="0px" fontSize="s">
+                {formatMessage(messages.recommended)}
+              </Text>
+            </Box>
+          )}
+          {isDisabled && <Icon name="lock" />}
+        </Box>
+        <Box
+          display="flex"
+          justifyContent="flex-start"
+          alignItems="center"
+          gap="6px"
+        >
+          <Title variant="h6" m="0px">
+            {title}
+          </Title>
+          {isLoading && (
+            <Box mx="16px">
+              <Spinner size="24px" />
+            </Box>
+          )}
+          {tooltip && <IconTooltip content={tooltip} icon="info-outline" />}
+        </Box>
+        <Text mt="12px" mb="0px">
+          {children}
+        </Text>
+      </AutoTagMethodContainer>
+    </Tooltip>
   );
 };
 
@@ -121,14 +174,30 @@ const Step1 = ({
   onChangeAutoTaggingTarget,
   filters,
 }: Props) => {
+  const advancedAutotaggingEnabled = useFeatureFlag({
+    name: 'advanced_autotagging',
+    onlyCheckAllowed: true,
+  });
   const { analysisId } = useParams() as { analysisId: string };
   const { data: analysis } = useAnalysis(analysisId);
+  const { data: allInputs } = useInfiniteAnalysisInputs({
+    analysisId,
+  });
+  const { data: filteredInputs } = useInfiniteAnalysisInputs({
+    analysisId,
+    queryParams: filters,
+  });
+
+  const allInputsCount = allInputs?.pages[0].meta.filtered_count;
+  const filteredInputsCount = filteredInputs?.pages[0].meta.filtered_count;
 
   const { formatMessage } = useIntl();
+  const advancedAutotaggingOptionDisabled = !advancedAutotaggingEnabled;
+
   return (
     <>
       <Title mb="32px">
-        <Icon name="flash" height="32px" width="32px" />{' '}
+        <Icon name="stars" height="32px" width="32px" />{' '}
         {formatMessage(messages.autoTagTitle)}
       </Title>
       <Text mb="32px">{formatMessage(messages.autoTagDescription)}</Text>
@@ -140,14 +209,19 @@ const Step1 = ({
           className={autoTaggingTarget === 'all' ? 'selected' : ''}
           onClick={() => onChangeAutoTaggingTarget('all')}
         >
-          <Box display="flex">
-            <Radio
-              currentValue={autoTaggingTarget}
-              name="auto_tagging_target"
-              value="all"
-            />
-            <Label>{formatMessage(messages.allInput)}</Label>
-          </Box>
+          <Radio
+            currentValue={autoTaggingTarget}
+            name="auto_tagging_target"
+            value="all"
+            id="auto_tagging_target_all"
+            label={
+              <>
+                {formatMessage(messages.allInput)}
+                {` (${allInputsCount})`}
+              </>
+            }
+          />
+          <Label />
         </AutoTagTargetContainer>
         <AutoTagTargetContainer
           className={`${autoTaggingTarget === 'filters' ? 'selected' : ''} ${
@@ -157,41 +231,41 @@ const Step1 = ({
             !isEmpty(filters) && onChangeAutoTaggingTarget('filters')
           }
         >
-          <Box display="flex">
+          <Box>
             <Radio
               currentValue={autoTaggingTarget}
               name="auto_tagging_target"
+              id="auto_tagging_target_filtered"
               value="filters"
               disabled={isEmpty(filters)}
+              label={
+                <>
+                  {formatMessage(messages.useCurrentFilters)}
+                  {` (${filteredInputsCount})`}
+                </>
+              }
             />
-            <Box>
-              <Label>{formatMessage(messages.useCurrentFilters)}</Label>
-              {isEmpty(filters) && (
-                <Text fontSize="s" m="0">
-                  {formatMessage(messages.noActiveFilters)}
-                </Text>
-              )}
-            </Box>
+
+            {isEmpty(filters) && (
+              <Text fontSize="s">
+                {formatMessage(messages.noActiveFilters)}
+              </Text>
+            )}
           </Box>
-          <FilterItems filters={filters} isEditable={false} />
         </AutoTagTargetContainer>
       </Box>
 
       <Title variant="h4">{formatMessage(messages.howToTag)}</Title>
 
-      <Box
-        display="flex"
-        flexDirection="column"
-        gap="16px"
-        opacity={isLoading ? 0.5 : undefined}
-      >
+      <Box display="flex" gap="16px" flexWrap="wrap">
         <AutoTagOption
           tagType="nlp_topic"
           title={formatMessage(messages.fullyAutomatedTitle)}
           onSelect={() => onSelectMethod('nlp_topic')}
-          disabled={isLoading}
+          isDisabled={advancedAutotaggingOptionDisabled}
           isLoading={isLoading && loadingMethod === 'nlp_topic'}
           tooltip={formatMessage(messages.fullyAutomatedTooltip)}
+          isRecommended
         >
           {formatMessage(messages.fullyAutomatedDescription)}
         </AutoTagOption>
@@ -200,7 +274,7 @@ const Step1 = ({
           tagType="custom"
           title={formatMessage(messages.classificationByLabelTitle)}
           onSelect={() => onSelectMethod('label_classification')}
-          disabled={isLoading}
+          isDisabled={isLoading}
           isLoading={isLoading && loadingMethod === 'label_classification'}
           tooltip={formatMessage(messages.classificationByLabelTooltip)}
         >
@@ -211,7 +285,7 @@ const Step1 = ({
           tagType="custom"
           title={formatMessage(messages.classificationByExampleTitle)}
           onSelect={() => onSelectMethod('few_shot_classification')}
-          disabled={isLoading}
+          isDisabled={advancedAutotaggingOptionDisabled}
           isLoading={isLoading && loadingMethod === 'few_shot_classification'}
           tooltip={formatMessage(messages.classificationByExampleTooltip)}
         >
@@ -223,7 +297,7 @@ const Step1 = ({
             tagType="platform_topic"
             title={formatMessage(messages.platformTagsTitle)}
             onSelect={() => onSelectMethod('platform_topic')}
-            disabled={isLoading}
+            isDisabled={advancedAutotaggingOptionDisabled}
             isLoading={isLoading && loadingMethod === 'platform_topic'}
           >
             {formatMessage(messages.platformTagsDescription)}
@@ -234,7 +308,7 @@ const Step1 = ({
           tagType="sentiment"
           title={formatMessage(messages.sentimentTagTitle)}
           onSelect={() => onSelectMethod('sentiment')}
-          disabled={isLoading}
+          isDisabled={advancedAutotaggingOptionDisabled}
           isLoading={isLoading && loadingMethod === 'sentiment'}
         >
           {formatMessage(messages.sentimentTagDescription)}
@@ -245,7 +319,7 @@ const Step1 = ({
             tagType="controversial"
             title={formatMessage(messages.controversialTagTitle)}
             onSelect={() => onSelectMethod('controversial')}
-            disabled={isLoading}
+            isDisabled={advancedAutotaggingOptionDisabled}
             isLoading={isLoading && loadingMethod === 'controversial'}
           >
             {formatMessage(messages.controversialTagDescription)}
@@ -256,7 +330,7 @@ const Step1 = ({
           tagType="language"
           title={formatMessage(messages.languageTagTitle)}
           onSelect={() => onSelectMethod('language')}
-          disabled={isLoading}
+          isDisabled={advancedAutotaggingOptionDisabled}
           isLoading={isLoading && loadingMethod === 'language'}
         >
           {formatMessage(messages.languageTagDescription)}

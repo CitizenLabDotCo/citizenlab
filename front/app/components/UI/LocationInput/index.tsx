@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
+import { Text } from '@citizenlab/cl2-component-library';
 import AsyncSelect from 'react-select/async';
 
 import useLocale from 'hooks/useLocale';
@@ -93,6 +94,7 @@ const LocationInput = (
 
   return (
     <AsyncSelect
+      id="e2e-location-input"
       defaultOptions={defaultOptions}
       loadOptions={promiseOptions}
       styles={selectStyles()}
@@ -102,6 +104,13 @@ const LocationInput = (
       isClearable
       openMenuOnClick={false}
       {...props}
+      placeholder={
+        props.placeholder ? (
+          <Text m="0" color="coolGrey600">
+            {props.placeholder}
+          </Text>
+        ) : undefined
+      }
     />
   );
 };

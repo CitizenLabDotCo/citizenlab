@@ -43,31 +43,37 @@ const Form = () => {
 describe('PasswordInput', () => {
   it('renders', () => {
     render(<Form />);
-    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+    expect(
+      screen.getByLabelText(/password/i, { selector: 'input' })
+    ).toBeInTheDocument();
   });
+
   it('submits correct data from input', async () => {
     render(<Form />);
     const value = 'some password';
 
-    fireEvent.change(screen.getByLabelText(/password/i), {
-      target: {
-        value,
-      },
-    });
+    fireEvent.change(
+      screen.getByLabelText(/password/i, { selector: 'input' }),
+      {
+        target: { value },
+      }
+    );
 
     fireEvent.click(screen.getByText(/submit/i));
     await waitFor(() =>
       expect(onSubmit).toHaveBeenCalledWith({ password: value })
     );
   });
+
   it('shows front-end validation error when there is one', async () => {
     render(<Form />);
 
-    fireEvent.change(screen.getByLabelText(/password/i), {
-      target: {
-        value: 'short',
-      },
-    });
+    fireEvent.change(
+      screen.getByLabelText(/password/i, { selector: 'input' }),
+      {
+        target: { value: 'short' },
+      }
+    );
 
     fireEvent.click(screen.getByText(/submit/i));
     await waitFor(() => {
@@ -75,6 +81,7 @@ describe('PasswordInput', () => {
       expect(screen.getByText('Too short')).toBeInTheDocument();
     });
   });
+
   it('shows API validation error when there is one', async () => {
     const FormWithAPIError = () => {
       const methods = useForm();

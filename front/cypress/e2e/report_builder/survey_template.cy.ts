@@ -100,17 +100,22 @@ describe('Survey template', () => {
             cy.apiUpdateUserCustomFields(email, password, { gender });
           })
           .then(() => {
-            cy.apiCreateSurveyResponse(email, password, projectId, {
-              [selectKey]: selectAnswerKeys[0],
-              [multiSelectKey]: [
-                multiSelectAnswerKeys[0],
-                multiSelectAnswerKeys[1],
-              ],
-              [linearScaleKey]: 2,
-              [multiselectImageKey]: [multiselectImageAnswerKeys[0]],
-              [pointKey]: {
-                type: 'Point',
-                coordinates: [4.349371842575076, 50.85428103529364],
+            cy.apiCreateSurveyResponse({
+              email,
+              password,
+              project_id: projectId,
+              fields: {
+                [selectKey]: selectAnswerKeys[0],
+                [multiSelectKey]: [
+                  multiSelectAnswerKeys[0],
+                  multiSelectAnswerKeys[1],
+                ],
+                [linearScaleKey]: 2,
+                [multiselectImageKey]: [multiselectImageAnswerKeys[0]],
+                [pointKey]: {
+                  type: 'Point',
+                  coordinates: [4.349371842575076, 50.85428103529364],
+                },
               },
             });
           });

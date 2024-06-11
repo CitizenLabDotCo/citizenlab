@@ -126,6 +126,7 @@ const WebMapUpload = ({ mapConfigId, setView }: Props) => {
         {formatMessage(messages.addWebMapInstruction)}
       </Text>
       <Input
+        id="e2e-portal-id-input"
         type="text"
         value={portalId}
         onChange={(value) => {
@@ -136,7 +137,7 @@ const WebMapUpload = ({ mapConfigId, setView }: Props) => {
 
       <Box display="flex" flexWrap="wrap" gap="12px" mt="16px">
         <Button
-          buttonStyle="secondary"
+          buttonStyle="secondary-outlined"
           onClick={() => {
             setView('main');
           }}
@@ -144,6 +145,7 @@ const WebMapUpload = ({ mapConfigId, setView }: Props) => {
           {formatMessage(messages.cancel2)}
         </Button>
         <Button
+          data-cy="e2e-web-map-import-btn"
           disabled={!portalId || portalId === ''}
           onClick={addEsriWebMap}
           processing={apiCallLoading || loading}
@@ -155,7 +157,12 @@ const WebMapUpload = ({ mapConfigId, setView }: Props) => {
         <Success text={formatMessage(messages.layerAdded)} showIcon={true} />
       )}
       {importError && (
-        <Error text={errorMessage} marginTop="10px" showIcon={true} />
+        <Error
+          id="e2e-web-map-error"
+          text={errorMessage}
+          marginTop="10px"
+          showIcon={true}
+        />
       )}
     </>
   );

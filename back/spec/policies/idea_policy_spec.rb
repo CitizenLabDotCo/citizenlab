@@ -14,11 +14,12 @@ describe IdeaPolicy do
     context 'for a visitor' do
       let(:user) { nil }
 
-      it { is_expected.to permit(:show) }
-      it { is_expected.to permit(:by_slug) }
-      it { is_expected.not_to permit(:create) }
-      it { is_expected.not_to permit(:update)  }
-      it { is_expected.not_to permit(:destroy) }
+      it { is_expected.to permit(:show)           }
+      it { is_expected.to permit(:by_slug)        }
+      it { is_expected.not_to permit(:create)     }
+      it { is_expected.not_to permit(:update)     }
+      it { is_expected.not_to permit(:destroy)    }
+      it { is_expected.not_to permit(:index_xlsx) }
 
       it 'indexes the idea' do
         expect(scope.resolve.size).to eq 1
@@ -28,11 +29,12 @@ describe IdeaPolicy do
     context 'for a resident who is not the idea author' do
       let(:user) { create(:user) }
 
-      it { is_expected.to     permit(:show)    }
-      it { is_expected.to     permit(:by_slug) }
-      it { is_expected.not_to permit(:create)  }
-      it { is_expected.not_to permit(:update)  }
-      it { is_expected.not_to permit(:destroy) }
+      it { is_expected.to     permit(:show)       }
+      it { is_expected.to     permit(:by_slug)    }
+      it { is_expected.not_to permit(:create)     }
+      it { is_expected.not_to permit(:update)     }
+      it { is_expected.not_to permit(:destroy)    }
+      it { is_expected.not_to permit(:index_xlsx) }
 
       it 'indexes the idea' do
         expect(scope.resolve.size).to eq 1
@@ -45,11 +47,12 @@ describe IdeaPolicy do
         idea.author
       end
 
-      it { is_expected.to     permit(:show)    }
-      it { is_expected.to     permit(:by_slug) }
-      it { is_expected.not_to permit(:create)  }
-      it { is_expected.not_to permit(:update)  }
-      it { is_expected.not_to permit(:destroy) }
+      it { is_expected.to     permit(:show)       }
+      it { is_expected.to     permit(:by_slug)    }
+      it { is_expected.not_to permit(:create)     }
+      it { is_expected.not_to permit(:update)     }
+      it { is_expected.not_to permit(:destroy)    }
+      it { is_expected.not_to permit(:index_xlsx) }
 
       it 'indexes the idea' do
         expect(scope.resolve.size).to eq 1
@@ -59,11 +62,12 @@ describe IdeaPolicy do
     context 'for a user who is the idea author' do
       let(:user) { idea.author }
 
-      it { is_expected.to permit(:show)    }
-      it { is_expected.to permit(:by_slug) }
-      it { is_expected.to permit(:create)  }
-      it { is_expected.to permit(:update)  }
-      it { is_expected.to permit(:destroy) }
+      it { is_expected.to permit(:show)           }
+      it { is_expected.to permit(:by_slug)        }
+      it { is_expected.to permit(:create)         }
+      it { is_expected.to permit(:update)         }
+      it { is_expected.to permit(:destroy)        }
+      it { is_expected.not_to permit(:index_xlsx) }
 
       it 'indexes the idea' do
         expect(scope.resolve.size).to eq 1
@@ -73,11 +77,12 @@ describe IdeaPolicy do
     context 'for an admin' do
       let(:user) { create(:admin) }
 
-      it { is_expected.to permit(:show)    }
-      it { is_expected.to permit(:by_slug) }
-      it { is_expected.to permit(:create)  }
-      it { is_expected.to permit(:update)  }
-      it { is_expected.to permit(:destroy) }
+      it { is_expected.to permit(:show)       }
+      it { is_expected.to permit(:by_slug)    }
+      it { is_expected.to permit(:create)     }
+      it { is_expected.to permit(:update)     }
+      it { is_expected.to permit(:destroy)    }
+      it { is_expected.to permit(:index_xlsx) }
 
       it 'indexes the idea' do
         expect(scope.resolve.size).to eq 1
@@ -87,10 +92,11 @@ describe IdeaPolicy do
     context 'for a moderator' do
       let(:user) { create(:project_moderator, projects: [project]) }
 
-      it { is_expected.to permit(:show)    }
-      it { is_expected.to permit(:create)  }
-      it { is_expected.to permit(:update)  }
-      it { is_expected.to permit(:destroy) }
+      it { is_expected.to permit(:show)       }
+      it { is_expected.to permit(:create)     }
+      it { is_expected.to permit(:update)     }
+      it { is_expected.to permit(:destroy)    }
+      it { is_expected.to permit(:index_xlsx) }
 
       it 'indexes the idea' do
         expect(scope.resolve.size).to eq 1
@@ -99,8 +105,8 @@ describe IdeaPolicy do
 
     context 'when there is a posting idea disabled reason' do
       before do
-        allow_any_instance_of(ParticipationPermissionsService)
-          .to receive(:posting_idea_disabled_reason_for_project).and_return(disabled_reason)
+        allow_any_instance_of(Permissions::ProjectPermissionsService)
+          .to receive(:denied_reason_for_action).and_return(disabled_reason)
       end
 
       described_class::EXCLUDED_REASONS_FOR_UPDATE.each do |disabled_reason|
@@ -110,11 +116,12 @@ describe IdeaPolicy do
           context 'for an admin' do
             let(:user) { create(:admin) }
 
-            it { is_expected.to permit(:show)    }
-            it { is_expected.to permit(:by_slug) }
-            it { is_expected.to permit(:create)  }
-            it { is_expected.to permit(:update)  }
-            it { is_expected.to permit(:destroy) }
+            it { is_expected.to permit(:show)       }
+            it { is_expected.to permit(:by_slug)    }
+            it { is_expected.to permit(:create)     }
+            it { is_expected.to permit(:update)     }
+            it { is_expected.to permit(:destroy)    }
+            it { is_expected.to permit(:index_xlsx) }
 
             it 'indexes the idea' do
               expect(scope.resolve.size).to eq 1
@@ -129,6 +136,7 @@ describe IdeaPolicy do
             it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
             it { is_expected.to permit(:update)  }
             it { is_expected.to permit(:destroy) }
+            it { is_expected.not_to permit(:index_xlsx) }
 
             it 'indexes the idea' do
               expect(scope.resolve.size).to eq 1
@@ -137,17 +145,18 @@ describe IdeaPolicy do
         end
       end
 
-      context "when the disabled reason is not excluded for update: 'not_ideation'" do
-        let(:disabled_reason) { 'not_ideation' }
+      context "when the disabled reason is not excluded for update: 'posting_not_supported'" do
+        let(:disabled_reason) { 'posting_not_supported' }
 
         context 'for an admin' do
           let(:user) { create(:admin) }
 
-          it { is_expected.to permit(:show)    }
-          it { is_expected.to permit(:by_slug) }
-          it { is_expected.to permit(:create)  }
-          it { is_expected.to permit(:update)  }
-          it { is_expected.to permit(:destroy) }
+          it { is_expected.to permit(:show)       }
+          it { is_expected.to permit(:by_slug)    }
+          it { is_expected.to permit(:create)     }
+          it { is_expected.to permit(:update)     }
+          it { is_expected.to permit(:destroy)    }
+          it { is_expected.to permit(:index_xlsx) }
 
           it 'indexes the idea' do
             expect(scope.resolve.size).to eq 1
@@ -159,6 +168,7 @@ describe IdeaPolicy do
 
           it { is_expected.to permit(:show)    }
           it { is_expected.to permit(:by_slug) }
+          it { is_expected.not_to permit(:index_xlsx) }
           it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
           it { expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError) }
           it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
@@ -178,11 +188,12 @@ describe IdeaPolicy do
     context 'for a visitor' do
       let(:user) { nil }
 
-      it { is_expected.not_to permit(:show) }
-      it { is_expected.not_to permit(:by_slug) }
-      it { is_expected.not_to permit(:create) }
-      it { is_expected.not_to permit(:update)  }
-      it { is_expected.not_to permit(:destroy) }
+      it { is_expected.not_to permit(:show)       }
+      it { is_expected.not_to permit(:by_slug)    }
+      it { is_expected.not_to permit(:create)     }
+      it { is_expected.not_to permit(:update)     }
+      it { is_expected.not_to permit(:destroy)    }
+      it { is_expected.not_to permit(:index_xlsx) }
 
       it 'does not index the idea' do
         expect(scope.resolve.size).to eq 0
@@ -197,6 +208,7 @@ describe IdeaPolicy do
       it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
+      it { is_expected.not_to permit(:index_xlsx) }
 
       it 'does not index the idea' do
         expect(scope.resolve.size).to eq 0
@@ -206,11 +218,12 @@ describe IdeaPolicy do
     context 'for an admin' do
       let(:user) { create(:admin) }
 
-      it { is_expected.to permit(:show)    }
-      it { is_expected.to permit(:by_slug) }
-      it { is_expected.to permit(:create)  }
-      it { is_expected.to permit(:update)  }
-      it { is_expected.to permit(:destroy) }
+      it { is_expected.to permit(:show)       }
+      it { is_expected.to permit(:by_slug)    }
+      it { is_expected.to permit(:create)     }
+      it { is_expected.to permit(:update)     }
+      it { is_expected.to permit(:destroy)    }
+      it { is_expected.to permit(:index_xlsx) }
 
       it 'indexes the idea' do
         expect(scope.resolve.size).to eq 1
@@ -220,10 +233,11 @@ describe IdeaPolicy do
     context 'for a moderator' do
       let(:user) { create(:project_moderator, projects: [project]) }
 
-      it { is_expected.to permit(:show)    }
-      it { is_expected.to permit(:create)  }
-      it { is_expected.to permit(:update)  }
-      it { is_expected.to permit(:destroy) }
+      it { is_expected.to permit(:show)       }
+      it { is_expected.to permit(:create)     }
+      it { is_expected.to permit(:update)     }
+      it { is_expected.to permit(:destroy)    }
+      it { is_expected.to permit(:index_xlsx) }
 
       it 'indexes the idea' do
         expect(scope.resolve.size).to eq 1
@@ -236,11 +250,12 @@ describe IdeaPolicy do
     let!(:project) { create(:private_groups_project) }
     let!(:idea) { create(:idea, project: project) }
 
-    it { is_expected.not_to permit(:show)    }
-    it { is_expected.not_to permit(:by_slug) }
-    it { is_expected.not_to permit(:create)  }
-    it { is_expected.not_to permit(:update)  }
-    it { is_expected.not_to permit(:destroy) }
+    it { is_expected.not_to permit(:show)       }
+    it { is_expected.not_to permit(:by_slug)    }
+    it { is_expected.not_to permit(:create)     }
+    it { is_expected.not_to permit(:update)     }
+    it { is_expected.not_to permit(:destroy)    }
+    it { is_expected.not_to permit(:index_xlsx) }
 
     it 'does not index the idea' do
       expect(scope.resolve.size).to eq 0
@@ -257,6 +272,7 @@ describe IdeaPolicy do
     it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:destroy) }
+    it { is_expected.not_to permit(:index_xlsx) }
 
     it 'does not index the idea' do
       expect(scope.resolve.size).to eq 0
@@ -268,11 +284,12 @@ describe IdeaPolicy do
     let!(:project) { create(:private_groups_project, user: user) }
     let!(:idea) { create(:idea, project: project) }
 
-    it { is_expected.to permit(:show) }
-    it { is_expected.to permit(:by_slug) }
-    it { is_expected.not_to permit(:create) }
-    it { is_expected.not_to permit(:update)  }
-    it { is_expected.not_to permit(:destroy) }
+    it { is_expected.to permit(:show)           }
+    it { is_expected.to permit(:by_slug)        }
+    it { is_expected.not_to permit(:create)     }
+    it { is_expected.not_to permit(:update)     }
+    it { is_expected.not_to permit(:destroy)    }
+    it { is_expected.not_to permit(:index_xlsx) }
 
     it 'indexes the idea' do
       expect(scope.resolve.size).to eq 1
@@ -284,11 +301,12 @@ describe IdeaPolicy do
     let!(:project) { create(:private_groups_project) }
     let!(:idea) { create(:idea, project: project) }
 
-    it { is_expected.to permit(:show)    }
-    it { is_expected.to permit(:by_slug) }
-    it { is_expected.to permit(:create)  }
-    it { is_expected.to permit(:update)  }
-    it { is_expected.to permit(:destroy) }
+    it { is_expected.to permit(:show)       }
+    it { is_expected.to permit(:by_slug)    }
+    it { is_expected.to permit(:create)     }
+    it { is_expected.to permit(:update)     }
+    it { is_expected.to permit(:destroy)    }
+    it { is_expected.to permit(:index_xlsx) }
 
     it 'indexes the idea' do
       expect(scope.resolve.size).to eq 1
@@ -303,11 +321,12 @@ describe IdeaPolicy do
     context 'for a visitor' do
       let(:user) { nil }
 
-      it { is_expected.not_to permit(:show)    }
-      it { is_expected.not_to permit(:by_slug) }
-      it { is_expected.not_to permit(:create)  }
-      it { is_expected.not_to permit(:update)  }
-      it { is_expected.not_to permit(:destroy) }
+      it { is_expected.not_to permit(:show)       }
+      it { is_expected.not_to permit(:by_slug)    }
+      it { is_expected.not_to permit(:create)     }
+      it { is_expected.not_to permit(:update)     }
+      it { is_expected.not_to permit(:destroy)    }
+      it { is_expected.not_to permit(:index_xlsx) }
 
       it 'does not index the idea' do
         expect(scope.resolve.size).to eq 0
@@ -322,6 +341,7 @@ describe IdeaPolicy do
       it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
+      it { is_expected.not_to permit(:index_xlsx) }
 
       it 'does not index the idea' do
         expect(scope.resolve.size).to eq 0
@@ -331,11 +351,12 @@ describe IdeaPolicy do
     context 'for an admin' do
       let(:user) { create(:admin) }
 
-      it { is_expected.to permit(:show)    }
-      it { is_expected.to permit(:by_slug) }
-      it { is_expected.to permit(:create)  }
-      it { is_expected.to permit(:update)  }
-      it { is_expected.to permit(:destroy) }
+      it { is_expected.to permit(:show)       }
+      it { is_expected.to permit(:by_slug)    }
+      it { is_expected.to permit(:create)     }
+      it { is_expected.to permit(:update)     }
+      it { is_expected.to permit(:destroy)    }
+      it { is_expected.to permit(:index_xlsx) }
 
       it 'indexes the idea' do
         expect(scope.resolve.size).to eq 1
@@ -351,11 +372,12 @@ describe IdeaPolicy do
     context 'for a visitor' do
       let(:user) { nil }
 
-      it { is_expected.to permit(:show)        }
-      it { is_expected.to permit(:by_slug)     }
-      it { is_expected.not_to permit(:create)  }
-      it { is_expected.not_to permit(:update)  }
-      it { is_expected.not_to permit(:destroy) }
+      it { is_expected.to permit(:show)           }
+      it { is_expected.to permit(:by_slug)        }
+      it { is_expected.not_to permit(:create)     }
+      it { is_expected.not_to permit(:update)     }
+      it { is_expected.not_to permit(:destroy)    }
+      it { is_expected.not_to permit(:index_xlsx) }
 
       it 'does not index the idea' do
         expect(scope.resolve.size).to eq 1
@@ -367,6 +389,7 @@ describe IdeaPolicy do
 
       it { is_expected.to permit(:show) }
       it { is_expected.to permit(:by_slug) }
+      it { is_expected.not_to permit(:index_xlsx) }
       it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
       it { expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError) }
       it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
@@ -379,11 +402,12 @@ describe IdeaPolicy do
     context 'for an admin' do
       let(:user) { create(:admin) }
 
-      it { is_expected.to permit(:show)    }
-      it { is_expected.to permit(:by_slug) }
-      it { is_expected.to permit(:create)  }
-      it { is_expected.to permit(:update)  }
-      it { is_expected.to permit(:destroy) }
+      it { is_expected.to permit(:show)       }
+      it { is_expected.to permit(:by_slug)    }
+      it { is_expected.to permit(:create)     }
+      it { is_expected.to permit(:update)     }
+      it { is_expected.to permit(:destroy)    }
+      it { is_expected.to permit(:index_xlsx) }
 
       it 'indexes the idea' do
         expect(scope.resolve.size).to eq 1
@@ -403,11 +427,12 @@ describe IdeaPolicy do
     context 'for a visitor' do
       let(:user) { nil }
 
-      it { is_expected.to permit(:show)        }
-      it { is_expected.to permit(:by_slug)     }
-      it { is_expected.not_to permit(:create)  }
-      it { is_expected.not_to permit(:update)  }
-      it { is_expected.not_to permit(:destroy) }
+      it { is_expected.to permit(:show)           }
+      it { is_expected.to permit(:by_slug)        }
+      it { is_expected.not_to permit(:create)     }
+      it { is_expected.not_to permit(:update)     }
+      it { is_expected.not_to permit(:destroy)    }
+      it { is_expected.not_to permit(:index_xlsx) }
 
       it 'does not index the idea' do
         expect(scope.resolve.size).to eq 1
@@ -419,6 +444,7 @@ describe IdeaPolicy do
 
       it { is_expected.to permit(:show) }
       it { is_expected.to permit(:by_slug) }
+      it { is_expected.not_to permit(:index_xlsx) }
       it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
       it { expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError) }
       it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
@@ -431,11 +457,12 @@ describe IdeaPolicy do
     context 'for an admin' do
       let(:user) { create(:admin) }
 
-      it { is_expected.to permit(:show)    }
-      it { is_expected.to permit(:by_slug) }
-      it { is_expected.to permit(:create)  }
-      it { is_expected.to permit(:update)  }
-      it { is_expected.to permit(:destroy) }
+      it { is_expected.to permit(:show)       }
+      it { is_expected.to permit(:by_slug)    }
+      it { is_expected.to permit(:create)     }
+      it { is_expected.to permit(:update)     }
+      it { is_expected.to permit(:destroy)    }
+      it { is_expected.to permit(:index_xlsx) }
 
       it 'indexes the idea' do
         expect(scope.resolve.size).to eq 1
@@ -487,19 +514,21 @@ describe IdeaPolicy do
       describe 'in a participation method where everyone can post' do
         let(:participation_method) { 'native_survey' }
 
-        it { is_expected.not_to permit(:show) }
-        it { is_expected.to permit(:create) }
-        it { is_expected.not_to permit(:update) }
-        it { is_expected.not_to permit(:destroy) }
+        it { is_expected.not_to permit(:show)       }
+        it { is_expected.to permit(:create)         }
+        it { is_expected.not_to permit(:update)     }
+        it { is_expected.not_to permit(:destroy)    }
+        it { is_expected.not_to permit(:index_xlsx) }
       end
 
       describe 'in a participation method where sign-in is required to post' do
         let(:participation_method) { 'ideation' }
 
-        it { is_expected.to permit(:show) }
-        it { is_expected.not_to permit(:create) }
-        it { is_expected.not_to permit(:update) }
-        it { is_expected.not_to permit(:destroy) }
+        it { is_expected.to permit(:show)           }
+        it { is_expected.not_to permit(:create)     }
+        it { is_expected.not_to permit(:update)     }
+        it { is_expected.not_to permit(:destroy)    }
+        it { is_expected.not_to permit(:index_xlsx) }
 
         it 'indexes the idea' do
           expect(scope.resolve.size).to eq 1
@@ -515,6 +544,7 @@ describe IdeaPolicy do
       it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
       it { is_expected.to permit(:update) }
       it { is_expected.to permit(:destroy) }
+      it { is_expected.not_to permit(:index_xlsx) }
 
       it 'indexes the idea' do
         expect(scope.resolve.size).to eq 1

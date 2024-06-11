@@ -6,10 +6,7 @@ import { useParams } from 'react-router-dom';
 import useProjectById from 'api/projects/useProjectById';
 import useFormResults from 'api/survey_results/useSurveyResults';
 
-import useLocale from 'hooks/useLocale';
-
 import { useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 
@@ -21,13 +18,12 @@ const FormResults = () => {
     phaseId: string;
   };
   const { formatMessage } = useIntl();
-  const locale = useLocale();
   const { data: project } = useProjectById(projectId);
   const { data: formResults } = useFormResults({
     phaseId,
   });
 
-  if (isNilOrError(formResults) || isNilOrError(locale) || !project) {
+  if (!formResults || !project) {
     return null;
   }
 
@@ -49,48 +45,16 @@ const FormResults = () => {
       </Box>
       <Box>
         {totalSubmissions > 0 &&
-          results.map(
-            (
-              {
-                question,
-                inputType,
-                answers,
-                totalResponseCount,
-                questionResponseCount,
-                totalPickCount,
-                required,
-                customFieldId,
-                mapConfigId,
-                textResponses,
-                files,
-                multilocs,
-                pointResponses,
-              },
-              index
-            ) => {
-              return (
-                <FormResultsQuestion
-                  key={index}
-                  questionNumber={index + 1}
-                  locale={locale}
-                  question={question}
-                  inputType={inputType}
-                  answers={answers}
-                  totalResponseCount={totalResponseCount}
-                  questionResponseCount={questionResponseCount}
-                  totalPickCount={totalPickCount}
-                  totalSubmissions={totalSubmissions}
-                  required={required}
-                  mapConfigId={mapConfigId}
-                  customFieldId={customFieldId}
-                  textResponses={textResponses}
-                  pointResponses={pointResponses}
-                  files={files}
-                  multilocs={multilocs}
-                />
-              );
-            }
-          )}
+          results.map((result, index) => {
+            return (
+              <FormResultsQuestion
+                key={index}
+                questionNumber={index + 1}
+                result={result}
+                totalSubmissions={totalSubmissions}
+              />
+            );
+          })}
       </Box>
     </Box>
   );

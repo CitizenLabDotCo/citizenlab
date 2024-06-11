@@ -1,4 +1,38 @@
 da:
+  locales:
+    en: Engelsk
+    ar-MA: Arabisk (Marokko)
+    ar-SA: Arabisk (Saudi-Arabien)
+    ca-ES: Catalansk
+    cy-GB: Walisisk
+    da-DK: Dansk
+    de-DE: Tysk
+    el-GR: Græsk
+    en-CA: Engelsk (Canada)
+    en-GB: Engelsk (UK)
+    en-IE: Engelsk (Irland)
+    es-CL: Spansk (Chile)
+    es-ES: Spansk (Spanien)
+    fi-FI: Finsk
+    fr-BE: Fransk (Belgien)
+    fr-FR: Fransk
+    hr-HR: Kroatisk
+    hu-HU: Ungarsk
+    it-IT: Italiensk
+    kl-GL: Grønlandsk
+    lb-LU: Luxembourgsk
+    lv-LV: Lettisk
+    mi: Maori
+    nb-NO: Norsk (bokmål)
+    nl-BE: Hollandsk (Belgien)
+    nl-NL: Hollandsk
+    pl-PL: Polsk
+    pt-BR: Portugisisk (Brasilien)
+    ro-RO: Rumænsk
+    sr-Latn: Serbisk (latin)
+    sr-SP: Serbisk (kyrillisk)
+    sv-SE: Svensk
+    tr-TR: Tyrkisk
   symbols:
     outside: et andet sted
   idea_statuses:
@@ -148,8 +182,8 @@ da:
       section3:
         title: Detaljer
         description:
-      other:
-        title: Skriv dit svar
+      other_text_field:
+        title: Siden du valgte "{other_option}", hvad tænker du så på?
   custom_forms:
     categories:
       main_content:
@@ -200,29 +234,40 @@ da:
       subject: '%{organizationName}: Nulstil din adgangskode'
       title_reset_your_password: 'Vælg en ny adgangskode'
   xlsx_export:
+    anonymous: 'Anonym'
     column_headers:
-      input_id: 'ID'
-      latitude: 'Breddegrad'
-      longitude: 'Længdegrad'
-      author_fullname: 'Forfatterens navn'
-      author_email: 'Forfatter e-mail'
-      author_id: 'Forfatter ID'
-      budget: 'Budget'
-      created_at: 'Indsendt på'
-      published_at: 'Udgivet på'
-      comments_count: 'Kommentarer'
-      likes_count: 'Likes'
-      dislikes_count: 'Dislikes'
-      picks: 'Udvalgt'
-      participants: 'Deltagere'
-      votes_count: 'Afstemninger'
-      input_url: 'URL'
-      project: '{tenantName, select, DeloitteDK {Verdensmål} other {Projekt}}'
-      status: 'Status'
       assignee_fullname: 'Modtager'
       assignee_email: 'E-mail til modtageren'
+      attachments: 'Vedhæftede filer'
+      author_email: 'Forfatter e-mail'
+      author_fullname: 'Forfatterens navn'
+      author_id: 'Forfatter ID'
+      budget: 'Budget'
+      comments_count: 'Kommentarer'
+      cost: 'Omkostninger'
+      created_at: 'Indsendt på'
+      description: 'Beskrivelse'
+      dislikes_count: 'Dislikes'
+      email: 'E-mail'
+      first_name: 'Fornavn(e)'
       image_url: 'Billed-URL'
-    anonymous: 'Anonym'
+      input_id: 'ID'
+      input_url: 'URL'
+      last_name: 'Efternavn'
+      latitude: 'Breddegrad'
+      likes_count: 'Likes'
+      location: 'Placering'
+      longitude: 'Længdegrad'
+      participants: 'Deltagere'
+      picks: 'Udvalgt'
+      project: '{tenantName, select, DeloitteDK {Verdensmål} other {Projekt}}'
+      published_at: 'Udgivet på'
+      registration_completed_at: 'Registrering gennemført på'
+      status: 'Status'
+      submitted_at: 'Indsendt på'
+      tags: 'Emner'
+      title: 'Titel'
+      votes_count: 'Afstemninger'
   form_builder:
     default_select_field:
       title: 'Dit spørgsmål'
@@ -248,6 +293,7 @@ da:
       instructions: 'Instruktioner'
       write_as_clearly: 'Skriv så <b>tydeligt</b> som du kan - disse formularer kan blive scannet.'
       write_in_language: 'Skriv dine svar på samme sprog som denne formular'
+      linear_scale_print_description: 'Skriv kun et tal mellem %{min_label} og %{max_label}'
   project_copy:
     title_suffix: 'Kopi'
   confirmations_mailer:

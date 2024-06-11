@@ -6,7 +6,7 @@ import messages from './messages';
 
 export default () => (
   <PageMeta
-    titleMessage={messages.inputsIndexMetaTitle}
+    titleMessage={messages.inputsIndexMetaTitle1}
     descriptionMessage={messages.inputsIndexMetaDescription}
   />
 );

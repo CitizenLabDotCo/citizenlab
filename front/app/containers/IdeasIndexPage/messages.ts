@@ -5,9 +5,9 @@ export default defineMessages({
     id: 'app.containers.IdeasIndexPage.inputsPageTitle',
     defaultMessage: 'Inputs',
   },
-  a11y_IdeasListTitle: {
-    id: 'app.containers.IdeasIndexPage.a11y_IdeasListTitle',
-    defaultMessage: 'All inputs posted in {orgName}',
+  a11y_IdeasListTitle1: {
+    id: 'app.containers.IdeasIndexPage.a11y_IdeasListTitle1',
+    defaultMessage: 'All inputs posted',
   },
   loadMore: {
     id: 'app.containers.IdeasIndexPage.loadMore',
@@ -17,9 +17,9 @@ export default defineMessages({
     id: 'app.containers.IdeasIndexPage.loading',
     defaultMessage: 'Loading...',
   },
-  inputsIndexMetaTitle: {
-    id: 'app.containers.IdeasIndexPage.inputsIndexMetaTitle',
-    defaultMessage: 'All inputs | {orgName}',
+  inputsIndexMetaTitle1: {
+    id: 'app.containers.IdeasIndexPage.inputsIndexMetaTitle1',
+    defaultMessage: 'Posts | {orgName}',
   },
   inputsIndexMetaDescription: {
     id: 'app.containers.IdeasIndexPage.inputsIndexMetaDescription',

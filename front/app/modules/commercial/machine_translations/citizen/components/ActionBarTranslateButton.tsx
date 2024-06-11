@@ -1,10 +1,11 @@
 import React from 'react';
 
 import { media } from '@citizenlab/cl2-component-library';
-import { GetLocaleChildProps } from 'resources/GetLocale';
 import styled from 'styled-components';
 
 import { IInitiativeData } from 'api/initiatives/types';
+
+import useLocale from 'hooks/useLocale';
 
 import FeatureFlag from 'components/FeatureFlag';
 import TranslateButton from 'components/UI/TranslateButton';
@@ -21,19 +22,16 @@ interface Props {
   translateButtonClicked: boolean;
   onClick: () => void;
   initiative: IInitiativeData;
-  locale: GetLocaleChildProps;
 }
 
 const ActionBarTranslateButton = ({
   initiative,
-  locale,
   onClick,
   translateButtonClicked,
 }: Props) => {
+  const locale = useLocale();
   const showTranslateButton =
-    !isNilOrError(initiative) &&
-    !isNilOrError(locale) &&
-    !initiative.attributes.title_multiloc[locale];
+    !isNilOrError(initiative) && !initiative.attributes.title_multiloc[locale];
 
   return (
     <FeatureFlag name="machine_translations">

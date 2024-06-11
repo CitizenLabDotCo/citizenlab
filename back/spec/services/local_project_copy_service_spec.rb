@@ -267,9 +267,9 @@ describe LocalProjectCopyService do
       let!(:source_project) { create(:project_with_active_ideation_phase) }
       let(:groups) { create_list(:group, 2) }
       let(:permission) do
-        PermissionsService.new.update_all_permissions
-        ParticipationPermissionsService.new
-          .get_current_phase(source_project).permissions
+        Permissions::PermissionsUpdateService.new.update_all_permissions
+        TimelineService.new
+          .current_phase_not_archived(source_project).permissions
           .find_by(action: 'commenting_idea')
       end
 
@@ -415,6 +415,17 @@ describe LocalProjectCopyService do
             'linkedNodes' => {}
           }
         })
+      end
+    end
+
+    describe 'when source project has non-zero baskets_count or votes_count' do
+      let!(:source_project) { create(:project, baskets_count: 42, votes_count: 53) }
+
+      it 'sets baskets_count and votes_count to zero' do
+        copied_project = service.copy(source_project)
+
+        expect(copied_project.baskets_count).to eq 0
+        expect(copied_project.votes_count).to eq 0
       end
     end
 

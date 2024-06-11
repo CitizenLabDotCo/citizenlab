@@ -80,7 +80,7 @@ const AllTopics = () => {
 
       <ButtonWrapper>
         <Button
-          buttonStyle="cl-blue"
+          buttonStyle="admin-dark"
           icon="plus-circle"
           linkTo="/admin/settings/topics/new"
           id="e2e-add-custom-topic-button"
@@ -102,7 +102,7 @@ const AllTopics = () => {
           </Content>
           <ButtonsWrapper>
             <Button
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               onClick={closeSendConfirmationModal}
             >
               <FormattedMessage {...messages.cancel} />

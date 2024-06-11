@@ -108,7 +108,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
                     <EditButton
                       icon="edit"
                       linkTo={adminProjectsProjectPath(project.data.id)}
-                      buttonStyle="secondary"
+                      buttonStyle="secondary-outlined"
                       padding="6px 12px"
                     >
                       {formatMessage(messages.editProject)}
@@ -125,6 +125,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
                 followerId={project.data.relationships.user_follower?.data?.id}
                 py="6px"
                 iconSize="20px"
+                toolTipType="projectOrFolder"
               />
             </Box>
           </Box>

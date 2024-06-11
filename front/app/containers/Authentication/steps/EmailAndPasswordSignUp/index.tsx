@@ -60,16 +60,11 @@ const EmailAndPasswordSignUp = ({
   const { formatMessage } = useIntl();
 
   const appConfigSettings = appConfiguration?.data.attributes.settings;
-  const phoneLoginEnabled = !!appConfigSettings?.password_login?.phone;
   const minimumPasswordLength =
     appConfigSettings?.password_login?.minimum_length ??
     DEFAULT_MINIMUM_PASSWORD_LENGTH;
 
-  const schema = getSchema(
-    phoneLoginEnabled,
-    minimumPasswordLength,
-    formatMessage
-  );
+  const schema = getSchema(minimumPasswordLength, formatMessage);
 
   const methods = useForm({
     mode: 'onSubmit',
@@ -137,11 +132,7 @@ const EmailAndPasswordSignUp = ({
               id="email"
               type="email"
               autocomplete="email"
-              label={
-                phoneLoginEnabled
-                  ? formatMessage(sharedMessages.emailOrPhone)
-                  : formatMessage(sharedMessages.email)
-              }
+              label={formatMessage(sharedMessages.email)}
             />
           </Box>
           <Box id="e2e-password-container" mt="16px">

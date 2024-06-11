@@ -3,6 +3,7 @@ import React from 'react';
 import { useMostReactedIdeas } from 'api/graph_data_units';
 
 import Card from '../_shared/Card';
+import MissingData from '../_shared/MissingData';
 import NoData from '../_shared/NoData';
 import { getEmptyMessage } from '../utils';
 
@@ -19,7 +20,7 @@ const MostReactedIdeasWidget = ({
   numberOfIdeas,
   collapseLongText,
 }: Props) => {
-  const response = useMostReactedIdeas(
+  const { data, error } = useMostReactedIdeas(
     {
       phase_id: phaseId,
       number_of_ideas: numberOfIdeas,
@@ -39,14 +40,17 @@ const MostReactedIdeasWidget = ({
     );
   }
 
-  if (!response) return null;
+  if (error) return <MissingData />;
+  if (!data) return null;
 
   const {
     ideas,
     project,
     phase,
     idea_images: ideaImages,
-  } = response.data.attributes;
+  } = data.data.attributes;
+
+  if (!project || !phase) return null;
 
   return (
     <Card title={title}>

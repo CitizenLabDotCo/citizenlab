@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { AdminRoute } from 'containers/Admin/routes';
+
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 const InputStatusCard = React.lazy(
@@ -24,11 +26,18 @@ const ProjectStatusCard = React.lazy(
   () => import('./admin/components/ProjectStatusCard')
 );
 
+export enum analyticsRoutes {
+  visitors = 'visitors',
+}
+
+// TODO: Replace "dashboards" with link to route in main app once converted.
+export type analyticsRouteTypes = AdminRoute<'dashboard/visitors'>;
+
 const configuration: ModuleConfiguration = {
   routes: {
     'admin.dashboards': [
       {
-        path: 'visitors',
+        path: analyticsRoutes.visitors,
         element: <VisitorsContainer />,
       },
     ],

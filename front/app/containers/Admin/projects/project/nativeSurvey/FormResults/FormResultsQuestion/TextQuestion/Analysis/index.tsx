@@ -1,214 +1,225 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Box,
-  Dropdown,
-  DropdownListItem,
-  Icon,
   IconButton,
   colors,
+  Dropdown,
+  DropdownListItem,
+  Spinner,
 } from '@citizenlab/cl2-component-library';
+import { stringify } from 'qs';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
+import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
-import useDeleteAnalysis from 'api/analyses/useDeleteAnalysis';
-import useFormCustomFields from 'api/custom_fields/useCustomFields';
+import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';
+import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
 
-import tracks from 'containers/Admin/projects/project/analysis/tracks';
-
-import Divider from 'components/admin/Divider';
 import Button from 'components/UI/Button';
-import Modal from 'components/UI/Modal';
 
-import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../../messages';
 
 import AnalysisInsights from './AnalysisInsights';
-import ConsentModal from './ConsentModal';
-import CreateAnalysisModal from './CreateAnalysisModal';
 
-const Analysis = ({ customFieldId }: { customFieldId: string }) => {
-  const [dropdownIsOpened, setDropdownIsOpened] = useState(false);
+const StyledDropdownListItem = styled(DropdownListItem)`
+  text-align: left;
+`;
+
+const Analysis = ({
+  customFieldId,
+  textResponsesCount,
+}: {
+  customFieldId: string;
+  textResponsesCount: number;
+}) => {
+  const [dropdownOpened, setDropdownOpened] = useState(false);
   const { formatMessage } = useIntl();
+  const { mutate: addAnalysis, isLoading: isAddAnalysisLoading } =
+    useAddAnalysis();
+  const { mutate: updateAnalysis, isLoading } = useUpdateAnalysis();
+
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId: string;
   };
 
-  const { mutate: deleteAnalysis } = useDeleteAnalysis();
-  const { data: analyses } = useAnalyses({
+  const { data: analyses, isLoading: isAnalysesLoading } = useAnalyses({
     projectId: phaseId ? undefined : projectId,
     phaseId,
   });
 
-  const { data: formCustomFields } = useFormCustomFields({
-    projectId,
-    phaseId,
+  const relevantAnalysis =
+    analyses?.data &&
+    analyses?.data?.find(
+      (analysis) =>
+        analysis.relationships.main_custom_field?.data?.id === customFieldId
+    );
+  const { data: insights, isLoading: isInsightsLoading } = useAnalysisInsights({
+    analysisId: relevantAnalysis?.id,
   });
 
-  const handleDeleteAnalysis = (analysisId: string) => {
-    if (window.confirm(formatMessage(messages.deleteAnalysisConfirmation))) {
-      deleteAnalysis(analysisId, {
-        onSuccess: () => {
-          trackEventByName(tracks.analysisForSurveyDeleted.name, {
-            extra: { projectId },
-          });
-        },
+  // Create an analysis if there are no analyses yet
+  useEffect(() => {
+    if (
+      analyses &&
+      customFieldId &&
+      !relevantAnalysis &&
+      textResponsesCount > 10
+    ) {
+      addAnalysis({
+        projectId: phaseId ? undefined : projectId,
+        phaseId,
+        mainCustomField: customFieldId,
       });
     }
-  };
-  const [consentModalIsOpened, setConsentModalIsOpened] = useState(false);
-  const [isCreateAnalysisModalOpened, setIsCreateAnalysisModalOpened] =
-    useState(false);
+  }, [
+    customFieldId,
+    relevantAnalysis,
+    analyses,
+    projectId,
+    phaseId,
+    addAnalysis,
+    textResponsesCount,
+  ]);
 
-  const closeCreateAnalysisModal = () => {
-    setIsCreateAnalysisModalOpened(false);
-  };
-
-  const closeConsentModal = () => {
-    setConsentModalIsOpened(false);
-  };
-
-  const openConsentModal = () => {
-    setConsentModalIsOpened(true);
-    updateSearchParams({ customFieldId });
+  const toggleDropdown = () => {
+    setDropdownOpened(!dropdownOpened);
   };
 
-  const onAcceptConsent = () => {
-    setConsentModalIsOpened(false);
-    setIsCreateAnalysisModalOpened(true);
+  const showAnalysisInsights =
+    relevantAnalysis && relevantAnalysis.attributes.show_insights;
+
+  const hideAnalysisInsights =
+    relevantAnalysis && !relevantAnalysis.attributes.show_insights;
+
+  const noInsights = !relevantAnalysis || insights?.data.length === 0;
+
+  const goToAnalysis = () => {
+    if (relevantAnalysis?.id) {
+      clHistory.push(
+        `/admin/projects/${projectId}/analysis/${
+          relevantAnalysis.id
+        }?${stringify({
+          phase_id: phaseId,
+        })}`
+      );
+    } else {
+      addAnalysis(
+        {
+          projectId: phaseId ? undefined : projectId,
+          phaseId,
+          mainCustomField: customFieldId,
+        },
+        {
+          onSuccess: (response) => {
+            clHistory.push(
+              `/admin/projects/${projectId}/analysis/${
+                response.data.id
+              }?${stringify({ phase_id: phaseId })}`
+            );
+          },
+        }
+      );
+    }
   };
 
-  const relevantAnalyses =
-    analyses?.data &&
-    analyses?.data?.filter((analysis) =>
-      analysis.relationships.custom_fields.data.some(
-        (field) => field.id === customFieldId
-      )
-    );
-  const hasAnalyses = relevantAnalyses && relevantAnalyses.length > 0;
+  if (isAnalysesLoading || (relevantAnalysis?.id && isInsightsLoading)) {
+    return <Spinner />;
+  }
 
   return (
-    <Box>
-      <AnalysisInsights analyses={relevantAnalyses || []} />
-
-      <Box
-        my="16px"
-        display="flex"
-        justifyContent="flex-end"
-        position="relative"
-      >
-        <Button
-          buttonStyle="admin-dark"
-          onClick={() => {
-            hasAnalyses
-              ? setDropdownIsOpened(!dropdownIsOpened)
-              : openConsentModal();
-          }}
-          icon="flash"
-        >
-          {formatMessage(messages.openAnalysis)}
-          {hasAnalyses && (
-            <Icon
-              name={dropdownIsOpened ? 'chevron-up' : 'chevron-down'}
-              fill={colors.white}
-              ml="8px"
+    <Box position="relative">
+      {noInsights && (
+        <Box display="flex">
+          <Button
+            processing={isAddAnalysisLoading}
+            onClick={goToAnalysis}
+            buttonStyle="secondary-outlined"
+            icon="stars"
+          >
+            {formatMessage(messages.createAIAnalysis)}
+          </Button>
+        </Box>
+      )}
+      {showAnalysisInsights && (
+        <>
+          <Box
+            justifyContent="flex-end"
+            position="absolute"
+            top="-40px"
+            right="0"
+            zIndex="1000"
+            id="e2e-analysis-actions"
+            display={noInsights ? 'none' : 'flex'}
+          >
+            <IconButton
+              iconName="dots-horizontal"
+              iconColor={colors.textSecondary}
+              iconColorOnHover={colors.black}
+              a11y_buttonActionMessage={formatMessage(
+                messages.openAnalysisActions
+              )}
+              onClick={toggleDropdown}
+              mr="20px"
             />
-          )}
-        </Button>
-        <Dropdown
-          opened={dropdownIsOpened}
-          onClickOutside={() => setDropdownIsOpened(false)}
-          top="48px"
-          content={
-            <div>
-              {relevantAnalyses?.map((analysis) => {
-                return (
-                  <DropdownListItem
-                    key={analysis.id}
-                    onClick={() =>
-                      clHistory.push(
-                        `/admin/projects/${projectId}/analysis/${
-                          analysis.id
-                        }?input_custom_field_no_empty_values=true${
-                          phaseId ? `&phase_id=${phaseId}` : ''
-                        }`
-                      )
-                    }
+            <Dropdown
+              opened={dropdownOpened}
+              onClickOutside={() => setDropdownOpened(false)}
+              content={
+                <>
+                  <StyledDropdownListItem
+                    id="e2e-hide-summaries"
+                    onClick={() => {
+                      updateAnalysis(
+                        {
+                          id: relevantAnalysis.id,
+                          show_insights: false,
+                        },
+                        {
+                          onSuccess: () => {
+                            setDropdownOpened(false);
+                          },
+                        }
+                      );
+                    }}
                   >
-                    <Box
-                      display="flex"
-                      justifyContent="space-between"
-                      alignItems="center"
-                      width="100%"
-                    >
-                      <Box>
-                        {analysis.relationships.custom_fields.data.map(
-                          (field, index, array) => {
-                            return (
-                              <span key={field.id}>
-                                Q
-                                {!isNilOrError(formCustomFields) &&
-                                  formCustomFields?.find(
-                                    (f) => f.id === field.id
-                                  )?.ordering}
-                                {index !== array.length - 1 && ' + '}
-                              </span>
-                            );
-                          }
-                        )}
-                      </Box>
+                    {isLoading ? (
+                      <Spinner />
+                    ) : (
+                      formatMessage(messages.hideSummaries)
+                    )}
+                  </StyledDropdownListItem>
+                </>
+              }
+            />
+          </Box>
 
-                      <IconButton
-                        onClick={(e) => {
-                          e?.stopPropagation();
-                          handleDeleteAnalysis(analysis.id);
-                        }}
-                        iconName="delete"
-                        iconColor={colors.grey800}
-                        iconColorOnHover={colors.black}
-                        a11y_buttonActionMessage={formatMessage(
-                          messages.deleteAnalysis
-                        )}
-                      />
-                    </Box>
-                  </DropdownListItem>
-                );
-              })}
-              <Divider mb="8px" />
-              <DropdownListItem
-                onClick={() => {
-                  setDropdownIsOpened(false);
-                  openConsentModal();
-                }}
-              >
-                <Box display="flex" gap="16px" alignItems="center">
-                  <Icon name="plus" />
-                  {formatMessage(messages.createAnalysis)}
-                </Box>
-              </DropdownListItem>
-            </div>
-          }
-        />
-
-        <Modal
-          opened={isCreateAnalysisModalOpened}
-          close={closeCreateAnalysisModal}
-        >
-          <CreateAnalysisModal onClose={closeCreateAnalysisModal} />
-        </Modal>
-        <Modal opened={consentModalIsOpened} close={closeConsentModal}>
-          <ConsentModal
-            onClose={closeConsentModal}
-            onAccept={onAcceptConsent}
-          />
-        </Modal>
-      </Box>
+          <AnalysisInsights analysis={relevantAnalysis} />
+        </>
+      )}
+      {hideAnalysisInsights && (
+        <Box display="flex">
+          <Button
+            id="e2e-show-summaries"
+            processing={isLoading}
+            onClick={() =>
+              updateAnalysis({
+                id: relevantAnalysis.id,
+                show_insights: true,
+              })
+            }
+            buttonStyle="secondary-outlined"
+            icon="stars"
+          >
+            {formatMessage(messages.showSummaries)}
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 };

@@ -1,7 +1,8 @@
 import { ILinks } from 'typings';
 
+import { ReferrerTypeName } from 'api/graph_data_units/responseTypes/VisitorsTrafficSourcesWidget';
+
 import { ProjectId, Dates, Pagination } from '../../typings';
-import { ReferrerTypeName } from '../useVisitorReferrerTypes/typings';
 
 export type QueryParameters = ProjectId & Dates & Pagination;
 

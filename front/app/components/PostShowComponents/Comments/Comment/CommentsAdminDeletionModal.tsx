@@ -149,7 +149,10 @@ const CommentsAdminDeletionForm = ({
           </TransitionGroup>
 
           <ButtonsWrapper>
-            <Button buttonStyle="secondary" onClick={onCloseDeleteModal}>
+            <Button
+              buttonStyle="secondary-outlined"
+              onClick={onCloseDeleteModal}
+            >
               {formatMessage(messages.adminCommentDeletionCancelButton)}
             </Button>
             <Button

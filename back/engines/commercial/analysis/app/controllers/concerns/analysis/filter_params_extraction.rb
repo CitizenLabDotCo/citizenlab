@@ -48,6 +48,7 @@ module Analysis
           :comments_from,
           :comments_to,
           :input_custom_field_no_empty_values,
+          :limit,
           *permitted_dynamic_keys,
           **permitted_dynamic_array_keys
         )

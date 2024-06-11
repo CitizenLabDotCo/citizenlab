@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
+import { RouteType } from 'routes';
 
 import GoBackButton from 'components/UI/GoBackButton';
 
@@ -13,7 +14,7 @@ import messages from './messages';
 import IdeaPostPreview from './PostPreview/Idea/IdeaPostPreview';
 
 interface Props {
-  goBackUrl: string;
+  goBackUrl: RouteType;
 }
 
 const IdeaPreviewIndex = ({ goBackUrl }: Props) => {

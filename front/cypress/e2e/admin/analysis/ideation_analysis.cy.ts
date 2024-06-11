@@ -60,13 +60,13 @@ describe('Admin: ideation analysis', () => {
   });
 
   it('creates an analysis from an ideation entry point', () => {
+    cy.intercept('GET', '**/insights', {
+      fixture: 'analysis_insights_ideation.json',
+    });
+
     cy.visit('/admin/projects/' + projectId + '/ideas');
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/ideas`);
     cy.get('#e2e-analysis-banner-button').click();
-
-    // Consent modal
-    cy.get('#e2e-analysis-consent-checkbox').click();
-    cy.get('#e2e-analysis-consent-button').click();
 
     cy.location('pathname').should(
       'include',
@@ -76,6 +76,9 @@ describe('Admin: ideation analysis', () => {
     // Launch modal
     cy.get('#e2e-analysis-launch-modal').should('exist');
     cy.get('#e2e-analysis-launch-modal-agree-button').click();
+
+    // Shows insights
+    cy.get('[data-cy="e2e-analysis-summary"]').should('exist');
   });
 
   it('searches inputs correctly', () => {

@@ -1,4 +1,38 @@
 fr:
+  locales:
+    en: Anglais
+    ar-MA: Arabe (Maroc)
+    ar-SA: Arabe (Arabie Saoudite)
+    ca-ES: Catalan
+    cy-GB: Gallois
+    da-DK: Danois
+    de-DE: Allemand
+    el-GR: Grec
+    en-CA: Anglais (Canada)
+    en-GB: Anglais (Royaume-Uni)
+    en-IE: Anglais (Irlande)
+    es-CL: Espagnol (Chili)
+    es-ES: Espagnol (Espagne)
+    fi-FI: Finnois
+    fr-BE: Français (Belgique)
+    fr-FR: Français
+    hr-HR: Croate
+    hu-HU: Hongrois
+    it-IT: Italien
+    kl-GL: Groenlandais
+    lb-LU: Luxembourgeois
+    lv-LV: Letton
+    mi: Maori
+    nb-NO: Norvégien (Bokmål)
+    nl-BE: Néerlandais (Belgique)
+    nl-NL: Néerlandais
+    pl-PL: Polonais
+    pt-BR: Portugais (Brésil)
+    ro-RO: Roumain
+    sr-Latn: Serbe (latin)
+    sr-SP: Serbe (cyrillique)
+    sv-SE: Suédois
+    tr-TR: Turc
   symbols:
     outside: autre lieu
   idea_statuses:
@@ -148,8 +182,8 @@ fr:
       section3:
         title: Détails
         description:
-      other:
-        title: Saisissez votre réponse
+      other_text_field:
+        title: Puisque vous avez choisi « {other_option} », à quoi pensez-vous ?
   custom_forms:
     categories:
       main_content:
@@ -200,29 +234,40 @@ fr:
       subject: '%{organizationName}: réinitialisez votre mot de passe'
       title_reset_your_password: 'Choisissez un nouveau mot de passe'
   xlsx_export:
+    anonymous: 'Anonyme'
     column_headers:
-      input_id: 'ID'
-      latitude: 'Latitude'
-      longitude: 'Longitude'
-      author_fullname: 'Nom de l''auteur'
-      author_email: 'E-mail de l''auteur'
-      author_id: 'ID de l''auteur'
-      budget: 'Budget'
-      created_at: 'Soumis le'
-      published_at: 'Publié le'
-      comments_count: 'Commentaires'
-      likes_count: 'Nombre de « likes »'
-      dislikes_count: 'Nombre de « dislikes »'
-      picks: 'Choix'
-      participants: 'Participants'
-      votes_count: 'Votes'
-      input_url: 'URL'
-      project: 'Projet'
-      status: 'Statut'
       assignee_fullname: 'Attribué'
       assignee_email: 'E-mails du destinataire'
+      attachments: 'Pièces jointes'
+      author_email: 'E-mail de l''auteur'
+      author_fullname: 'Nom de l''auteur'
+      author_id: 'ID de l''auteur'
+      budget: 'Budget'
+      comments_count: 'Commentaires'
+      cost: 'Coût'
+      created_at: 'Soumis le'
+      description: 'Description'
+      dislikes_count: 'Nombre de « dislikes »'
+      email: 'Adresse e-mail'
+      first_name: 'Prénom(s)'
       image_url: 'URL de l''image'
-    anonymous: 'Anonyme'
+      input_id: 'ID'
+      input_url: 'URL'
+      last_name: 'Nom'
+      latitude: 'Latitude'
+      likes_count: 'Nombre de « likes »'
+      location: 'Localisation'
+      longitude: 'Longitude'
+      participants: 'Participants'
+      picks: 'Choix'
+      project: 'Projet'
+      published_at: 'Publié le'
+      registration_completed_at: 'Inscription finalisée à'
+      status: 'Statut'
+      submitted_at: 'Soumis le'
+      tags: 'Thèmes'
+      title: 'Titre'
+      votes_count: 'Votes'
   form_builder:
     default_select_field:
       title: 'Votre question'
@@ -230,7 +275,7 @@ fr:
       option2: 'Option 2'
     form_end_page:
       title: 'Merci pour votre participation'
-      description: "Veuillez soumettre vos réponses en cliquant sur « Soumettre » ci-dessous."
+      description: "Veuillez soumettre vos réponses en cliquant sur « Envoyer » ci-dessous."
     pdf_export:
       personal_data: 'Données personnelles'
       personal_data_explanation_ideation: "Cette contribution sera soumise sur la plateforme de participation en ligne de %{organizationName}. Si vous souhaitez que votre nom soit affiché en tant qu'auteur et recevoir par e-mail des mises à jours concernant votre soumission, veuillez remplir les champs suivants et nous créerons un compte pour vous. Votre adresse e-mail ne sera pas publique et ne sera uniquement utilisée par %{organizationName}. Si vous préférez rester anonyme ou ne souhaitez pas que nous utilisions vos données personnelles à cette fin, vous pouvez laisser ces champs vides."
@@ -248,6 +293,7 @@ fr:
       instructions: 'Instructions'
       write_as_clearly: 'Écrivez aussi <b>clairement</b> que possible — ces formulaires pourraient être numérisés avec reconnaissance automatique du texte'
       write_in_language: 'Rédigez vos réponses dans la même langue que ce formulaire'
+      linear_scale_print_description: 'Veuillez écrire un nombre entre %{min_label} et %{max_label} uniquement'
   project_copy:
     title_suffix: 'Copie'
   confirmations_mailer:

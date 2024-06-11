@@ -266,7 +266,7 @@ RSpec.describe JsonSchemaGeneratorService do
         # NOTE: Checking 10 loops to make sure the chance of a flaky test here is very very low
         attempts = []
         10.times do
-          options = generator.visit_multiselect(field).dig(:items, :oneOf).pluck(:const)
+          options = generator.visit_multiselect(CustomField.find(field.id)).dig(:items, :oneOf).pluck(:const)
           expect(options.last).to eq 'other'
           attempts << options
         end

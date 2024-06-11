@@ -2,6 +2,7 @@
   email_campaigns:
     campaign_type_description:
       "manual": Offisielle beskjed
+      "manual_project_participants": Offisielle meldinger til prosjektdeltakere
       "admin_rights_received": Administratorrettigheter mottatt
       "comment_deleted_by_admin": Sletting  av min kommentar
       "comment_marked_as_spam": Kommenter spamrapport
@@ -559,6 +560,7 @@
         admins: 'Til administratorer'
         admins_and_managers: 'Til administratorer og ledere'
         managers: 'Til ledere'
+        project_participants: 'Til prosjektdeltakere'
         registered_users: 'Til registrerte brukere'
       recipient_segment:
         admins: 'Administratorer'

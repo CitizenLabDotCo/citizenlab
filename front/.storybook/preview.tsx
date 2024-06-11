@@ -18,27 +18,22 @@ const routerDecorator = (Story) => (
 const preview: Preview = {
   parameters: {
     actions: { argTypesRegex: '^on[A-Z].*' },
-
     controls: {
       matchers: {
         color: /(background|color)$/i,
         date: /Date$/i,
       },
     },
-
     msw: Object.values(mockServer),
-
     reactIntl,
-
     chromatic: {
       modes: {
         ...allModes
-      }
+      },
+      disableSnapshot: true
     }
   },
-
   decorators: [mswDecorator, routerDecorator, contexts],
-
   globals: {
     locale: reactIntl.defaultLocale,
   },

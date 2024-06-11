@@ -15,8 +15,8 @@ export type Step =
   | 'sign-up:verification'
   | 'sign-up:custom-fields'
   | 'sign-up:invite'
-  | 'clave-unica:email'
-  | 'clave-unica:email-confirmation'
+  | 'emailless-sso:email'
+  | 'emailless-sso:email-confirmation'
 
   // onboarding sign up flow
   | 'sign-up:onboarding'
@@ -27,6 +27,7 @@ export type Step =
   | 'light-flow:google-policies'
   | 'light-flow:facebook-policies'
   | 'light-flow:azure-ad-policies'
+  | 'light-flow:azure-ad-b2c-policies'
   | 'light-flow:france-connect-login'
   | 'light-flow:email-confirmation'
   | 'light-flow:password'

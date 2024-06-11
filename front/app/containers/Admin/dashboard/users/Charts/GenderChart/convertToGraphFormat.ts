@@ -1,6 +1,6 @@
 import { FormatMessage } from 'typings';
 
-import { genderOptions } from 'api/users_by_gender/types';
+import { GenderOption } from 'api/graph_data_units/responseTypes/_deprecated';
 
 import messages from 'containers/Admin/dashboard/messages';
 
@@ -15,6 +15,13 @@ interface GraphData {
     };
   };
 }
+
+const genderOptions: GenderOption[] = [
+  'male',
+  'female',
+  'unspecified',
+  '_blank',
+];
 
 const convertToGraphFormat = (
   data: GraphData | undefined,

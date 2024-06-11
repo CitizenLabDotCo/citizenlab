@@ -48,10 +48,11 @@ describe('Input form builder', () => {
       cy.contains('Description').click();
     });
 
-    cy.get('[data-cy="e2e-more-field-actions"]').eq(1).click({ force: true });
-    cy.get('.e2e-more-actions-list button')
-      .contains('Delete')
-      .should('not.exist');
+    cy.get('[data-cy="e2e-field-row"]')
+      .eq(1)
+      .within(() => {
+        cy.get('[data-cy="e2e-more-field-actions"]').should('not.exist');
+      });
 
     cy.get('#e2e-title-multiloc').should('not.exist');
   });

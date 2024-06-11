@@ -3,7 +3,10 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 
-import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
+import {
+  pagesAndMenuBreadcrumb,
+  pagesAndMenuBreadcrumbLinkTo,
+} from 'containers/Admin/pagesAndMenu/breadcrumbs';
 
 import TabbedResource from 'components/admin/TabbedResource';
 import HelmetIntl from 'components/HelmetIntl';
@@ -26,7 +29,7 @@ const CustomPagesNewSettings = ({
           breadcrumbs={[
             {
               label: formatMessage(pagesAndMenuBreadcrumb.label),
-              linkTo: pagesAndMenuBreadcrumb.linkTo,
+              linkTo: pagesAndMenuBreadcrumbLinkTo,
             },
             { label: formatMessage(messages.newCustomPagePageTitle) },
           ]}

@@ -8,6 +8,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 import { WrappedComponentProps } from 'react-intl';
+import { RouteType } from 'routes';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
@@ -68,7 +69,7 @@ const LinkText = styled.span``;
 type Message = { message: MessageDescriptor };
 
 interface ILink {
-  to: string;
+  to: RouteType;
   text: Multiloc | Message;
 }
 

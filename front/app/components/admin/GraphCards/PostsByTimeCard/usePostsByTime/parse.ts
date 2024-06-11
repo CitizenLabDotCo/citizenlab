@@ -1,6 +1,9 @@
 import moment, { Moment } from 'moment';
 
-import { PostsByTimeResponse } from 'api/graph_data_units/responseTypes';
+import {
+  PostsByTimeResponse,
+  TimeSeriesResponseRow,
+} from 'api/graph_data_units/responseTypes/PostsByTimeWidget';
 
 import {
   timeSeriesParser,
@@ -11,7 +14,7 @@ import { IResolution } from 'components/admin/ResolutionControl';
 import { get } from 'utils/helperUtils';
 
 import { Translations } from './translations';
-import { TimeSeriesResponseRow, TimeSeries, TimeSeriesRow } from './typings';
+import { TimeSeries, TimeSeriesRow } from './typings';
 
 export const getEmptyRow = (date: Moment) => ({
   date: date.format('YYYY-MM-DD'),

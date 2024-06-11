@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { useLocation } from 'react-router-dom';
+import { RouteType } from 'routes';
 
 import { InputTerm } from 'api/phases/types';
 
@@ -15,7 +16,7 @@ import tracks from '../tracks';
 import messages from './../messages';
 
 interface Props {
-  linkTo: string;
+  linkTo: RouteType;
   inputTerm: InputTerm;
 }
 
@@ -26,7 +27,7 @@ const NewIdeaButton = ({ linkTo, inputTerm }: Props) => {
   return (
     <Button
       id="e2e-new-idea"
-      buttonStyle="cl-blue"
+      buttonStyle="admin-dark"
       icon="plus"
       linkTo={linkTo}
       onClick={() => {

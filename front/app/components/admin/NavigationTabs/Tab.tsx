@@ -4,8 +4,9 @@ import {
   TooltipContentWrapper,
   colors,
   fontSizes,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
+import { RouteType } from 'routes';
 import styled, { css } from 'styled-components';
 
 import Link from 'utils/cl-router/Link';
@@ -35,9 +36,7 @@ const Container = styled.div`
       text-transform: uppercase;
     }
 
-    &:not(:last-child) {
-      margin-right: 40px;
-    }
+    margin-right: 40px;
 
     ${disable ? 'cursor: not-allowed;' : 'cursor: pointer;'}
 
@@ -76,7 +75,7 @@ type TabProps = {
   className?: string;
   'data-cy'?: string;
   label: string;
-  url: string;
+  url: RouteType;
   active: boolean;
   badge?: React.ReactNode;
   handleClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
@@ -91,8 +90,7 @@ const Tab = ({
   disabledTooltipText,
   ...props
 }: TabProps) => (
-  <Tippy
-    interactive={false}
+  <Tooltip
     placement="bottom"
     theme={''}
     disabled={!disabledTooltipText}
@@ -109,6 +107,6 @@ const Tab = ({
         {badge && <>{badge}</>}
       </Link>
     </Container>
-  </Tippy>
+  </Tooltip>
 );
 export default Tab;

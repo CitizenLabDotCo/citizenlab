@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import useAddHomepageBuilderLayout from 'api/home_page_layout/useAddHomepageLayout';
 
@@ -23,9 +23,9 @@ type BuilderTopBarProps = {
   hasError?: boolean;
   previewEnabled: boolean;
   setPreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedLocale: Locale | undefined;
+  selectedLocale: SupportedLocale | undefined;
   onSelectLocale: (args: {
-    locale: Locale;
+    locale: SupportedLocale;
     editorData: SerializedNodes;
   }) => void;
 };
@@ -59,7 +59,7 @@ const BuilderTopBar = ({
     }
   };
 
-  const handleSelectLocale = (locale: Locale) => {
+  const handleSelectLocale = (locale: SupportedLocale) => {
     const editorData = query.getSerializedNodes();
     onSelectLocale({ locale, editorData });
   };
@@ -86,7 +86,7 @@ const BuilderTopBar = ({
         />
         <Button
           id="e2e-view-project-button"
-          buttonStyle="secondary"
+          buttonStyle="secondary-outlined"
           icon="eye"
           mx="20px"
           linkTo={`/`}

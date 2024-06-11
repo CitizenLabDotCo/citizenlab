@@ -1,3 +1,4 @@
+import { RouteType } from 'routes';
 import { Multiloc } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
@@ -16,7 +17,7 @@ export interface OnboardingCampaignAttributes {
   name: OnboardingCampaignName;
   cta_message_multiloc: Multiloc | null;
   cta_button_multiloc: Multiloc | null;
-  cta_button_link: string | null;
+  cta_button_link: RouteType | null;
 }
 
 export interface IOnboardingCampaign {

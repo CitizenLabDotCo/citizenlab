@@ -26,9 +26,7 @@ install-front-dependencies: &install-front-dependencies
         apt-get update
         apt-get install -y jq
         cd ~/citizenlab/front
-        CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
         npm ci
-        npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
 
 parameters:
   # This parameter is used to trigger the main workflow
@@ -78,7 +76,7 @@ executors:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_HOST: localhost
-      - image: "postgis/postgis:12-3.1"
+      - image: "postgis/postgis:13-3.4"
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -462,35 +460,18 @@ jobs:
 
   front-license-check:
     docker:
-      - image: licensefinder/license_finder
+      - image: cimg/ruby:3.3-node
     working_directory: ~/citizenlab/front
     resource_class: small
     steps:
       - shallow-clone
-      - restore_cache:
-          keys:
-            - v2-npm-cache-{{ checksum "package-lock.json" }}
       - run:
-          name: Install jq
+          name: Install dependencies and run license_finder
           command: |
-            curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-            apt-get update
-            apt-get install -y jq
-      - run:
-          name: Install node, dependencies and run license_finder
-          command: |
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-            source ~/.nvm/nvm.sh
-            nvm install 16.15.0
-            nvm use 16.15.0
-            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
-            npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
+            echo "Node version: $(node -v)"
             npm ci
-            /bin/bash -lc "cd ~/citizenlab/front && license_finder"
-      - save_cache:
-          paths:
-            - /root/.npm
-          key: v2-npm-cache-{{ checksum "package-lock.json" }}
+            gem install license_finder -v 7.1.0
+            cd ~/citizenlab/front && license_finder
 
   front-build:
     docker:

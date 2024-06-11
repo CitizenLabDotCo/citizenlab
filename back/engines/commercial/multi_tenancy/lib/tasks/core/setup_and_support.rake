@@ -4,7 +4,7 @@ namespace :setup_and_support do
   desc 'Mass official feedback'
   task :mass_official_feedback, %i[url host locale] => [:environment] do |_t, args|
     # ID, Feedback, Feedback Author Name, Feedback Email, New Status
-    data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
+    data = CSV.parse(open(args[:url]).read, headers: true, col_sep: ',', converters: [])
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       data.each do |d|
         idea = Idea.find d['ID']
@@ -82,7 +82,7 @@ namespace :setup_and_support do
   desc 'Copy manual email campaigns from one platform to another'
   task :copy_manual_campaigns, %i[from_host to_host] => [:environment] do |_t, args|
     campaigns = Apartment::Tenant.switch(args[:from_host].tr('.', '_')) do
-      EmailCampaigns::Campaign.where(type: 'EmailCampaigns::Campaigns::Manual').map do |c|
+      EmailCampaigns::Campaign.manual.map do |c|
         { 'type' => c.type, 'author_ref' => nil, 'enabled' => c.enabled, 'sender' => 'organization',
           'subject_multiloc' => c.subject_multiloc, 'body_multiloc' => c.body_multiloc, 'created_at' => c.created_at.to_s, 'updated_at' => c.updated_at.to_s }
       end
@@ -99,7 +99,7 @@ namespace :setup_and_support do
   desc 'Change the slugs of the project through a provided mapping'
   task :map_project_slugs, %i[url host] => [:environment] do |_t, args|
     issues = []
-    data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
+    data = CSV.parse(open(args[:url]).read, headers: true, col_sep: ',', converters: [])
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       data.each do |d|
         pj = Project.find_by slug: d['old_slug'].strip
@@ -237,7 +237,7 @@ namespace :setup_and_support do
 
   desc 'Add areas'
   task :add_areas, %i[host url] => [:environment] do |_t, args|
-    data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
+    data = CSV.parse(open(args[:url]).read, headers: true, col_sep: ',', converters: [])
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       data.each do |d|
         Area.create!(title_multiloc: d.to_h)
@@ -245,19 +245,28 @@ namespace :setup_and_support do
     end
   end
 
-  desc 'Delete users and reactions'
-  task :delete_users_reactions, %i[host url] => [:environment] do |_t, args|
+  desc 'Delete spam users (from email list) and their contributions'
+  task :delete_users_participation, %i[host url] => [:environment] do |_t, args|
     emails = open(args[:url]).readlines.map(&:strip)
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       users = User.where email: emails
+      Initiative.where(author: users).destroy_all
+      Idea.where(author: users).destroy_all
       Reaction.where(user: users).destroy_all
-      users.destroy_all
+      Comment.where(author: users).destroy_all
+      Basket.where(user: users).destroy_all
+      service = SideFxUserService.new
+      users.each do |user|
+        service.before_destroy(user, nil)
+        user.destroy!
+        service.after_destroy(user, nil)
+      end
     end
   end
 
   desc 'Add anonymous likes/dislikes to ideas'
   task :add_idea_reactions, %i[host url] => [:environment] do |_t, args|
-    data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
+    data = CSV.parse(open(args[:url]).read, headers: true, col_sep: ',', converters: [])
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       errors = []
       data.each do |d|

@@ -7,6 +7,7 @@ import {
   useBreakpoint,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { RouteType } from 'routes';
 import { Popup } from 'semantic-ui-react';
 
 import { useIntl } from 'utils/cl-intl';
@@ -74,7 +75,7 @@ export const SupportMenu = () => {
     >
       <Box width="224px">
         <ItemMenu
-          linkTo={formatMessage(messages.linkToSupport)}
+          linkTo={formatMessage(messages.linkToSupport) as RouteType}
           buttonStyle="text"
           openLinkInNewTab
         >
@@ -86,7 +87,7 @@ export const SupportMenu = () => {
           </Box>
         </ItemMenu>
         <ItemMenu
-          linkTo={formatMessage(messages.linkToAcademy)}
+          linkTo={formatMessage(messages.linkToAcademy) as RouteType}
           buttonStyle="text"
           openLinkInNewTab
         >
@@ -98,7 +99,7 @@ export const SupportMenu = () => {
           </Box>
         </ItemMenu>
         <ItemMenu
-          linkTo={formatMessage(messages.linkToCommunityPlatform)}
+          linkTo={formatMessage(messages.linkToCommunityPlatform) as RouteType}
           buttonStyle="text"
           openLinkInNewTab
         >

@@ -22,6 +22,8 @@ module MachineTranslations
         }
 
         def show
+          require_feature! 'machine_translations'
+
           set_translation_attributes
           @translation = MachineTranslation.find_by @translation_attributes
 

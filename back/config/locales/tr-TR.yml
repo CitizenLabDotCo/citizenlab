@@ -1,4 +1,38 @@
 tr:
+  locales:
+    en: İngilizce
+    ar-MA: Arapça (Fas)
+    ar-SA: Arapça (Suudi Arabistan)
+    ca-ES: Katalanca
+    cy-GB: Welsh
+    da-DK: Danimarka
+    de-DE: Alman
+    el-GR: Yunan
+    en-CA: İngilizce (Kanada)
+    en-GB: İngilizce (UK)
+    en-IE: İngilizce (İrlanda)
+    es-CL: İspanyolca (Şili)
+    es-ES: İspanyolca (İspanya)
+    fi-FI: Fince
+    fr-BE: Fransızca (Belçika)
+    fr-FR: Fransızca
+    hr-HR: Hırvatça
+    hu-HU: Macarca
+    it-IT: İtalyan
+    kl-GL: Grönlandca
+    lb-LU: Lüksemburgca
+    lv-LV: Letonca
+    mi: Maori
+    nb-NO: Norveççe (Bokmål)
+    nl-BE: Hollandaca (Belçika)
+    nl-NL: Hollandaca
+    pl-PL: Lehçe
+    pt-BR: Portekizce (Brezilya)
+    ro-RO: Romence
+    sr-Latn: Sırpça (Latince)
+    sr-SP: Sırpça (Kiril)
+    sv-SE: İsveç
+    tr-TR: Türkçe
   symbols:
     outside: başka bir yerde
   idea_statuses:
@@ -148,8 +182,8 @@ tr:
       section3:
         title: Detaylar
         description:
-      other:
-        title: Cevabınızı yazın
+      other_text_field:
+        title: Eğer '{other_option}' adresini seçtiyseniz, ne düşünüyorsunuz?
   custom_forms:
     categories:
       main_content:
@@ -200,29 +234,40 @@ tr:
       subject: '%{organizationName}: Parolanızı sıfırlayın'
       title_reset_your_password: 'Yeni bir parola seçin'
   xlsx_export:
+    anonymous: 'Anonim'
     column_headers:
-      input_id: 'KIMLIK'
-      latitude: 'Enlem'
-      longitude: 'Boylam'
-      author_fullname: 'Yazar adı'
-      author_email: 'Yazar e-postası'
-      author_id: 'Yazar Kimliği'
-      budget: 'Bütçe'
-      created_at: 'Şu adrese gönderildi'
-      published_at: 'Şu adreste yayınlandı'
-      comments_count: 'Yorumlar'
-      likes_count: 'Beğeniler'
-      dislikes_count: 'Sevmediğim'
-      picks: 'Seçimler'
-      participants: 'Katılımcılar'
-      votes_count: 'Oylar'
-      input_url: 'URL'
-      project: 'Proje'
-      status: 'Durum'
       assignee_fullname: 'Atanan'
       assignee_email: 'Atanan e-posta'
+      attachments: 'Ekler'
+      author_email: 'Yazar e-postası'
+      author_fullname: 'Yazar adı'
+      author_id: 'Yazar Kimliği'
+      budget: 'Bütçe'
+      comments_count: 'Yorumlar'
+      cost: 'Maliyet'
+      created_at: 'Şu adrese gönderildi'
+      description: 'Açıklama'
+      dislikes_count: 'Sevmediğim'
+      email: 'E-posta'
+      first_name: 'İlk isim(ler)'
       image_url: 'Resim URL''si'
-    anonymous: 'Anonim'
+      input_id: 'KIMLIK'
+      input_url: 'URL'
+      last_name: 'Soyadı'
+      latitude: 'Enlem'
+      likes_count: 'Beğeniler'
+      location: 'Konum'
+      longitude: 'Boylam'
+      participants: 'Katılımcılar'
+      picks: 'Seçimler'
+      project: 'Proje'
+      published_at: 'Şu adreste yayınlandı'
+      registration_completed_at: 'Kayıt şu adreste tamamlandı'
+      status: 'Durum'
+      submitted_at: 'Şu adrese gönderildi'
+      tags: 'Etiketler'
+      title: 'Başlık'
+      votes_count: 'Oylar'
   form_builder:
     default_select_field:
       title: 'Sizin sorunuz'
@@ -248,6 +293,7 @@ tr:
       instructions: 'Talimatlar'
       write_as_clearly: 'Mümkün olduğunca açık bir şekilde <b></b> yazın - bu formlar taranabilir'
       write_in_language: 'Cevaplarınızı bu formla aynı dilde yazın'
+      linear_scale_print_description: 'Lütfen sadece %{min_label} ve %{max_label} arasında bir sayı yazın'
   project_copy:
     title_suffix: 'Kopya'
   confirmations_mailer:

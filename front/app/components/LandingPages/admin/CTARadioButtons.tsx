@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box, Input, Label, Radio } from '@citizenlab/cl2-component-library';
+import { RouteType } from 'routes';
 import { CLErrors, Multiloc } from 'typings';
 
 import { TCustomPageCTAType } from 'api/custom_pages/types';
@@ -26,7 +27,7 @@ export interface Props {
   ctaTypes: TCustomPageCTAType[] | CTASignedInType[] | CTASignedOutType[];
   handleCTAButtonTypeOnChange: (ctaType: CTAType) => void;
   handleCTAButtonTextMultilocOnChange: (buttonTextMultiloc: Multiloc) => void;
-  handleCTAButtonUrlOnChange: (url: string) => void;
+  handleCTAButtonUrlOnChange: (url: RouteType) => void;
   apiErrors: CLErrors | null;
   buttonTextMultilocFieldName: TFieldName;
   buttonUrlFieldName: TFieldName;

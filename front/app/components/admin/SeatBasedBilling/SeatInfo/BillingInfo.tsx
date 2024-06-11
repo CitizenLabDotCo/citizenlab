@@ -9,6 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
 import { useLocation } from 'react-router-dom';
+import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -37,7 +38,8 @@ const BillingInfo = ({ seatType }: SeatInfoProps) => {
   const { pathname } = useLocation();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
-  const adminsAndMangersLink = '/admin/users/admins-managers';
+  const adminsAndMangersLink: RouteType =
+    '/admin/users/admins' || '/admin/users/moderators';
   const isOnAdminsAndManagersPage = pathname.includes(adminsAndMangersLink);
 
   const maximumSeatNumbers: SeatNumbersType = {

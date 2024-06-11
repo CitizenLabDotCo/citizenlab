@@ -9,13 +9,13 @@ import {
   fontSizes,
   defaultStyles,
   isRtl,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import { debounce } from 'lodash-es';
 import Quill, { Sources, QuillOptionsStatic, RangeStatic } from 'quill';
 import BlotFormatter from 'quill-blot-formatter';
 import styled from 'styled-components';
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import usePrevious from 'hooks/usePrevious';
 
@@ -269,7 +269,7 @@ export interface Props {
   value?: string;
   label?: string | JSX.Element | null;
   labelTooltipText?: string | JSX.Element | null;
-  locale?: Locale;
+  locale?: SupportedLocale;
   placeholder?: string;
   noToolbar?: boolean;
   noImages?: boolean;
@@ -280,7 +280,7 @@ export interface Props {
   className?: string;
   maxHeight?: string;
   minHeight?: string;
-  onChange?: (html: string, locale: Locale | undefined) => void;
+  onChange?: (html: string, locale: SupportedLocale | undefined) => void;
   onFocus?: () => void;
   onBlur?: () => void;
   setRef?: (arg: HTMLDivElement) => void | undefined;
@@ -712,6 +712,17 @@ const QuillEditor = memo<Props>(
       .filter((className) => className)
       .join(' ');
 
+    // Function to save the latest state of the content.
+    // We call this when the mouse leaves the editor, to ensure the
+    // latest content (and image size + alt text) is properly saved.
+    const saveLatestContent = () => {
+      if (editor) {
+        const html = editor.root.innerHTML;
+        contentRef.current = html;
+        onChange?.(html, locale);
+      }
+    };
+
     return (
       <Container
         maxHeight={maxHeight}
@@ -724,6 +735,7 @@ const QuillEditor = memo<Props>(
         edit={formatMessage(messages.edit)}
         remove={formatMessage(messages.remove)}
         scrollTop={scrollTop}
+        onMouseLeave={saveLatestContent}
       >
         {label && (
           <Label htmlFor={id} onClick={handleLabelOnClick}>
@@ -765,10 +777,9 @@ const QuillEditor = memo<Props>(
                 aria-label={formatMessage(messages.italic)}
               />
               {withCTAButton ? (
-                <Tippy
+                <Tooltip
                   placement="bottom"
                   theme="light"
-                  interactive={true}
                   visible={isButtonsMenuVisible}
                   onClickOutside={hideButtonsMenu}
                   duration={[200, 0]}
@@ -809,7 +820,7 @@ const QuillEditor = memo<Props>(
                       />
                     </svg>
                   </button>
-                </Tippy>
+                </Tooltip>
               ) : (
                 <button
                   className="ql-link"

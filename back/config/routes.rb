@@ -21,7 +21,6 @@ Rails.application.routes.draw do
         resources :followers, only: [:create]
       end
       concern :post do
-        resources :activities, only: [:index]
         resources :comments, shallow: true,
           concerns: %i[reactable spam_reportable],
           defaults: { reactable: 'Comment', spam_reportable: 'Comment' } do
@@ -48,6 +47,8 @@ Rails.application.routes.draw do
       end
 
       concerns :permissionable # for the global permission scope (with parent_param = nil)
+
+      resources :activities, only: [:index]
 
       resources :ideas,
         concerns: %i[reactable spam_reportable post followable permissionable],
@@ -79,6 +80,8 @@ Rails.application.routes.draw do
         get :allowed_transitions, on: :member
         patch :accept_cosponsorship_invite, on: :member
       end
+
+      resources :background_jobs, only: %i[index]
 
       resources :idea_statuses, only: %i[index show]
       resources :initiative_statuses, only: %i[index show]
@@ -152,6 +155,7 @@ Rails.application.routes.draw do
         resources :files, defaults: { container_type: 'Event' }, shallow: false
         resources :images, defaults: { container_type: 'Event' }
         resources :attendances, module: 'events', only: %i[create index]
+        get :attendees_xlsx, on: :member, action: 'attendees_xlsx'
       end
       resources :event_attendances, only: %i[destroy], controller: 'events/attendances'
 
@@ -183,6 +187,8 @@ Rails.application.routes.draw do
         post 'copy', on: :member
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
         get :as_xlsx, on: :member, action: 'index_xlsx'
+        get :votes_by_user_xlsx, on: :member, action: 'votes_by_user_xlsx'
+        get :votes_by_input_xlsx, on: :member, action: 'votes_by_input_xlsx'
       end
 
       resources :projects_allowed_input_topics, only: %i[show create destroy] do
@@ -233,15 +239,6 @@ Rails.application.routes.draw do
       scope 'stats' do
         with_options controller: 'stats_users' do
           get 'users_count'
-
-          get 'users_by_time'
-          get 'users_by_time_cumulative'
-          get 'active_users_by_time'
-          get 'active_users_by_time_cumulative'
-
-          get 'users_by_time_as_xlsx'
-          get 'users_by_time_cumulative_as_xlsx'
-          get 'active_users_by_time_as_xlsx'
         end
 
         with_options controller: 'stats_ideas' do
@@ -249,8 +246,6 @@ Rails.application.routes.draw do
 
           get 'ideas_by_topic'
           get 'ideas_by_project'
-          get 'ideas_by_status'
-          get 'ideas_by_status_as_xlsx'
 
           get 'ideas_by_topic_as_xlsx'
           get 'ideas_by_project_as_xlsx'

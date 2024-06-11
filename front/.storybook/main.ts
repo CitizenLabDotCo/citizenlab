@@ -4,16 +4,12 @@ const webpack = require('webpack');
 import mockModules from './mockModules';
 
 const config: StorybookConfig = {
-  stories: ['../app/**/*.mdx', '../app/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
+  stories: ['../app/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
   addons: [
-    '@storybook/addon-links',
-    '@storybook/addon-essentials',
-
     // This plugin was causing a peer dependency conflict.
     // We first need to upgrade our main app to react-router-dom >=6.4.0
     // This upgrade has breaking changes so those need to be dealt with first.
     // 'storybook-addon-react-router-v6',
-
     'storybook-react-intl',
   ],
   framework: {
@@ -42,6 +38,9 @@ const config: StorybookConfig = {
         'styled-components': path.resolve('./node_modules/styled-components'),
         'react-transition-group': path.resolve(
           './node_modules/react-transition-group'
+        ),
+        '@citizenlab/cl2-component-library': path.resolve(
+          'app/component-library'
         ),
         ...(config?.resolve?.alias ?? {}),
       },

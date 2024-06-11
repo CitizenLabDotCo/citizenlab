@@ -31,7 +31,8 @@ resource 'Inputs' do
       parameter :votes_to, 'Filter by number of votes on the input, smaller than or equal to', type: :integer
       parameter :comments_from, 'Filter by number of comments on the input, larger than or equal to', type: :integer
       parameter :comments_to, 'Filter by number of comments on the input, smaller than or equal to', type: :integer
-      parameter :input_custom_field_no_empty_values, 'Filter out inputs with empty values for custom fields', type: :boolean
+      parameter :input_custom_field_no_empty_values, 'Filter out inputs with empty values for the main custom field', type: :boolean
+      parameter :limit, 'Limit the number of inputs returned', type: :integer
     end
 
     let_it_be(:analysis) { create(:analysis) }
@@ -97,6 +98,17 @@ resource 'Inputs' do
         expect(json_response_body[:meta]).to match({
           filtered_count: 1
         })
+      end
+
+      example 'supports limit', document: false do
+        create(:idea, title_multiloc: { en: 'Idea one' }, project: analysis.source_project)
+        create(:idea, body_multiloc: { en: 'Idea two' }, project: analysis.source_project)
+        do_request(limit: 1)
+        expect(status).to eq(200)
+        expect(json_response_body[:meta]).to match({
+          filtered_count: 1
+        })
+        expect(response_data.size).to eq 1
       end
 
       example 'supports published_at_to filter', document: false do

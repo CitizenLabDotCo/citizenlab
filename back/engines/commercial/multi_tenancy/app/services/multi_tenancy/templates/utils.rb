@@ -267,11 +267,17 @@ module MultiTenancy
         end
 
         def parse_yml(content)
-          YAML.load(
-            content,
-            aliases: true,
-            permitted_classes: [Date, Time, Symbol, *ar_classes]
-          )
+          # [TODO] Ideally, we should use `YAML.load` instead of `YAML.unsafe_load`.
+          # Currently, the tenant templates contain references to ActiveRecord model
+          # classes. If we were to use `YAML.load`, we would need to provide a whitelist
+          # of classes that are allowed to be deserialized. The list can be obtained by
+          # calling `ApplicationRecord.descendants`, but the application has to be eager
+          # loaded for this to return the complete list. The eager loading is causing
+          # issues in some CI workflows where the DB is not completely set up. Therefore,
+          # we resort to `YAML.unsafe_load` for now.
+          # One possible solution would be to rework the template format to encode AR
+          # model class names as strings instead of actual class references.
+          YAML.unsafe_load(content)
         end
         alias parse_yaml parse_yml
 
@@ -282,13 +288,6 @@ module MultiTenancy
         alias parse_yaml_file parse_yml_file
 
         private
-
-        def ar_classes
-          @ar_classes ||= begin
-            Rails.application.eager_load! # Make sure all model classes are loaded.
-            ApplicationRecord.descendants
-          end
-        end
 
         def template_locales(serialized_models)
           locales = Set.new

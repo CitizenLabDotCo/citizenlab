@@ -10,18 +10,20 @@ import {
 } from 'lodash-es';
 import { Moment } from 'moment';
 import { IntlFormatters } from 'react-intl';
-import { GetLocaleChildProps } from 'resources/GetLocale';
-import { InsertConfigurationOptions, ITab, Locale, Multiloc } from 'typings';
+import {
+  InsertConfigurationOptions,
+  ITab,
+  SupportedLocale,
+  Multiloc,
+} from 'typings';
 
 import { IGroupDataAttributes, MembershipType } from 'api/groups/types';
 import { IIdeaData } from 'api/ideas/types';
 import { IInitiativeData } from 'api/initiatives/types';
 import { TNotificationData } from 'api/notifications/types';
-import { IPhaseData } from 'api/phases/types';
-import { IProjectData } from 'api/projects/types';
 import { TVerificationMethod } from 'api/verification_methods/types';
 
-import { TTabName } from 'containers/Admin/projects/all/CreateProject';
+import { TTabName } from 'containers/Admin/projects/new';
 import { NavItem } from 'containers/Admin/sideBar/navItems';
 import { GroupCreationModal } from 'containers/Admin/users';
 import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
@@ -54,13 +56,13 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.projects.all.createProject.tabs': {
     onData: (data: InsertConfigurationOptions<ITabItem>) => void;
   };
-  'app.containers.Admin.projects.all.container': {
-    onRender: (hasRendered: boolean) => void;
-  };
   'app.containers.Admin.projects.edit.description.projectDescriptionBuilder': {
     onMount: () => void;
     valueMultiloc: Multiloc | null | undefined;
-    onChange: (description_multiloc: Multiloc, _locale: Locale) => void;
+    onChange: (
+      description_multiloc: Multiloc,
+      _locale: SupportedLocale
+    ) => void;
     label: string;
     labelTooltipText: string;
   };
@@ -118,11 +120,6 @@ export interface OutletsPropertyMap {
     projectId: string;
     children: OutletRenderProps;
   };
-  'app.containers.Admin.projects.edit.settings': {
-    onData: (data: InsertConfigurationOptions<ITab>) => void;
-    project: IProjectData;
-    phases: IPhaseData[] | null;
-  };
   'app.containers.Admin.settings.tabs': {
     onData: (data: InsertConfigurationOptions<ITab>) => void;
   };
@@ -151,7 +148,6 @@ export interface OutletsPropertyMap {
     translateButtonClicked: boolean;
     onClick: () => void;
     initiative: IInitiativeData;
-    locale: GetLocaleChildProps;
   };
   'app.components.PostShowComponents.CommentFooter.left': {
     commentId: string;
@@ -160,24 +156,21 @@ export interface OutletsPropertyMap {
     translateButtonClicked: boolean;
     onClick: () => void;
     initiative: IInitiativeData;
-    locale: GetLocaleChildProps;
   };
   'app.containers.IdeasShow.left': {
     translateButtonClicked: boolean;
     onClick: () => void;
     idea: IIdeaData;
-    locale: Locale;
+    locale: SupportedLocale;
   };
   'app.components.PostShowComponents.CommentBody.translation': {
     translateButtonClicked: boolean;
     commentContent: string;
-    locale: GetLocaleChildProps;
     commentId: string;
   };
   'app.components.PostShowComponents.Body.translation': {
     postId: string;
     body: string;
-    locale: GetLocaleChildProps;
     translateButtonClicked?: boolean;
     postType: 'idea' | 'initiative';
   };
@@ -185,7 +178,6 @@ export interface OutletsPropertyMap {
     postId: string;
     postType: 'idea' | 'initiative';
     title: string;
-    locale?: GetLocaleChildProps;
     translateButtonClicked?: boolean;
     color?: string;
     align: 'left' | 'center';

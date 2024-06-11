@@ -189,8 +189,7 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
   };
 
   const goBackToCampaignView = () => {
-    const url = `/admin/messaging/texting/${campaignId}/`;
-    clHistory.replace(url);
+    clHistory.replace(`/admin/messaging/texting/${campaignId}/`);
   };
 
   // actual error state when campaign not found
@@ -221,7 +220,7 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
         <ButtonContainer>
           <Button
             onClick={goBackToCampaignView}
-            buttonStyle="secondary"
+            buttonStyle="secondary-outlined"
             text={'Edit'}
           />
           <Button
@@ -298,7 +297,7 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
             width="100%"
           >
             <StyledModalButton
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               onClick={closeSendConfirmationModal}
             >
               Cancel
@@ -340,7 +339,7 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
             width="100%"
           >
             <StyledModalButton
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               onClick={closeDeleteModal}
             >
               Cancel

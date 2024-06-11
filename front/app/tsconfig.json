@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    // "strict": true,
     "baseUrl": "./",
     "mapRoot": "./",
     "target": "esnext",
@@ -13,7 +14,6 @@
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
-    "declaration": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -23,7 +23,10 @@
         "name": "typescript-styled-plugin"
       }
     ],
-    "isolatedModules": true
+    "isolatedModules": true,
+    "paths": {
+      "@citizenlab/cl2-component-library": ["./component-library"]
+    }
   },
   "files": ["custom.d.ts"],
   "include": ["**/*", "../playwright.config.ts"],

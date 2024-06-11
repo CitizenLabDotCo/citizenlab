@@ -7,7 +7,7 @@ import {
   Input,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-import { Locale, UploadFile } from 'typings';
+import { SupportedLocale, UploadFile } from 'typings';
 
 import useAddCustomFieldOptionImage from 'api/content_field_option_images/useAddCustomFieldOptionImage';
 import { ICustomFieldInputType, IOptionsType } from 'api/custom_fields/types';
@@ -27,7 +27,7 @@ interface Props {
   choice: IOptionsType;
   inputType: ICustomFieldInputType;
   canDeleteLastOption: boolean;
-  locale: Locale;
+  locale: SupportedLocale;
   removeOption: (index: number) => void;
   onChoiceUpdate: (choice: IOptionsType, index: number) => void;
   optionImages: OptionImageType | undefined;

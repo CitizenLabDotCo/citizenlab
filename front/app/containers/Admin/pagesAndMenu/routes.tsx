@@ -1,8 +1,11 @@
 import React, { lazy } from 'react';
 
 import { Navigate } from 'react-router-dom';
+import { RouteType } from 'routes';
 
 import PageLoading from 'components/UI/PageLoading';
+
+import { AdminRoute } from '../routes';
 
 import FullScreenPreview from './containers/ContentBuilder/containers/FullscreenPreview';
 
@@ -41,22 +44,50 @@ const CustomPageHeroBannerForm = lazy(
 
 // path utils
 export const ADMIN_PAGES_MENU_PATH = `/admin/pages-menu`;
-const CUSTOM_PAGES_PATH = 'pages';
-const ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH = `${ADMIN_PAGES_MENU_PATH}/${CUSTOM_PAGES_PATH}`;
 
-export const adminCustomPageContentPath = (pageId: string) => {
-  return `${ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH}/${pageId}/content`;
+export const adminCustomPageContentPath = (pageId: string): RouteType => {
+  return `/admin/pages-menu/pages/${pageId}/content`;
 };
 
-export const adminCustomPageSettingsPath = (pageId: string) => {
-  return `${ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH}/${pageId}/settings`;
+export const adminCustomPageSettingsPath = (pageId: string): RouteType => {
+  return `/admin/pages-menu/pages/${pageId}/settings`;
 };
+
+export enum pagesAndMenuRoutes {
+  pagesAndMenu = 'pages-menu',
+  pagesAndMenuDefault = '',
+  homepageBuilder = 'homepage-builder',
+  homepageBuilderPreview = 'homepage-builder/preview',
+  pages = 'pages',
+  pagesNew = 'new',
+  customPageId = ':customPageId',
+  pageSettings = 'settings',
+  pageContent = 'content',
+  customPageIdBanner = ':customPageId/banner',
+  customPageIdTopInfoSection = ':customPageId/top-info-section',
+  customPageIdBottomInfoSection = ':customPageId/bottom-info-section',
+  customPageIdAttachments = ':customPageId/attachments',
+  customPageIdProjects = ':customPageId/projects',
+}
+
+export type pagesAndMenuRouteTypes =
+  | AdminRoute<pagesAndMenuRoutes.pagesAndMenu>
+  | AdminRoute<`${pagesAndMenuRoutes.pagesAndMenu}/${string}`>
+  | AdminRoute<`${pagesAndMenuRoutes.pagesAndMenu}/${pagesAndMenuRoutes.homepageBuilder}`>
+  | AdminRoute<`${pagesAndMenuRoutes.pagesAndMenu}/${pagesAndMenuRoutes.pages}/${pagesAndMenuRoutes.pagesNew}`>
+  | AdminRoute<`${pagesAndMenuRoutes.pagesAndMenu}/${pagesAndMenuRoutes.pages}/${string}/${pagesAndMenuRoutes.pageSettings}`>
+  | AdminRoute<`${pagesAndMenuRoutes.pagesAndMenu}/${pagesAndMenuRoutes.pages}/${string}/${pagesAndMenuRoutes.pageContent}`>
+  | AdminRoute<`${pagesAndMenuRoutes.pagesAndMenu}/${pagesAndMenuRoutes.pages}/${string}/banner`>
+  | AdminRoute<`${pagesAndMenuRoutes.pagesAndMenu}/${pagesAndMenuRoutes.pages}/${string}/top-info-section`>
+  | AdminRoute<`${pagesAndMenuRoutes.pagesAndMenu}/${pagesAndMenuRoutes.pages}/${string}/bottom-info-section`>
+  | AdminRoute<`${pagesAndMenuRoutes.pagesAndMenu}/${pagesAndMenuRoutes.pages}/${string}/attachments`>
+  | AdminRoute<`${pagesAndMenuRoutes.pagesAndMenu}/${pagesAndMenuRoutes.pages}/${string}/projects`>;
 
 export default () => ({
-  path: 'pages-menu', // pages-menu
+  path: pagesAndMenuRoutes.pagesAndMenu, // pages-menu
   children: [
     {
-      path: '',
+      path: pagesAndMenuRoutes.pagesAndMenuDefault,
       element: (
         <PageLoading>
           <PagesAndMenuIndex />
@@ -75,7 +106,7 @@ export default () => ({
     },
 
     {
-      path: `homepage-builder`,
+      path: pagesAndMenuRoutes.homepageBuilder,
       element: (
         <PageLoading>
           <ContentBuilder />
@@ -83,7 +114,7 @@ export default () => ({
       ),
     },
     {
-      path: `homepage-builder/preview`,
+      path: pagesAndMenuRoutes.homepageBuilderPreview,
       element: (
         <PageLoading>
           <FullScreenPreview />
@@ -91,20 +122,20 @@ export default () => ({
       ),
     },
     {
-      path: CUSTOM_PAGES_PATH, // pages
+      path: pagesAndMenuRoutes.pages,
       element: <CustomPagesIndex />,
       children: [
         {
-          path: 'new',
+          path: pagesAndMenuRoutes.pagesNew,
           element: <NewCustomPageIndex />,
         },
         {
-          path: ':customPageId',
+          path: pagesAndMenuRoutes.customPageId,
           element: <EditCustomPageIndex />,
           children: [
             { path: '', element: <Navigate to="settings" /> }, // to handle manually changing URL
             {
-              path: 'settings',
+              path: pagesAndMenuRoutes.pageSettings,
               element: (
                 <PageLoading>
                   <EditCustomPageSettings />
@@ -112,7 +143,7 @@ export default () => ({
               ),
             },
             {
-              path: 'content',
+              path: pagesAndMenuRoutes.pageContent,
               element: (
                 <PageLoading>
                   <EditCustomPageContent />
@@ -122,7 +153,7 @@ export default () => ({
           ],
         },
         {
-          path: ':customPageId/banner',
+          path: pagesAndMenuRoutes.customPageIdBanner,
           element: (
             <PageLoading>
               <CustomPageHeroBannerForm />
@@ -130,7 +161,7 @@ export default () => ({
           ),
         },
         {
-          path: ':customPageId/top-info-section',
+          path: pagesAndMenuRoutes.customPageIdTopInfoSection,
           element: (
             <PageLoading>
               <CustomPageTopInfoSection />
@@ -138,7 +169,7 @@ export default () => ({
           ),
         },
         {
-          path: ':customPageId/bottom-info-section',
+          path: pagesAndMenuRoutes.customPageIdBottomInfoSection,
           element: (
             <PageLoading>
               <CustomPageBottomInfoSection />
@@ -146,7 +177,7 @@ export default () => ({
           ),
         },
         {
-          path: ':customPageId/attachments',
+          path: pagesAndMenuRoutes.customPageIdAttachments,
           element: (
             <PageLoading>
               <AttachmentsForm />
@@ -154,7 +185,7 @@ export default () => ({
           ),
         },
         {
-          path: ':customPageId/projects',
+          path: pagesAndMenuRoutes.customPageIdProjects,
           element: (
             <PageLoading>
               <ProjectsList />

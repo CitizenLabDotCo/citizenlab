@@ -5,7 +5,7 @@ import insightsKeys from './keys';
 export type InsightsKeys = Keys<typeof insightsKeys>;
 
 export interface IInsightsParams {
-  analysisId: string;
+  analysisId?: string;
 }
 
 export interface IInsightData {

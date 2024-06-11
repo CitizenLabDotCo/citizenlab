@@ -70,7 +70,7 @@ ALTER TABLE IF EXISTS ONLY public.areas_projects DROP CONSTRAINT IF EXISTS fk_ra
 ALTER TABLE IF EXISTS ONLY public.static_pages_topics DROP CONSTRAINT IF EXISTS fk_rails_8e3f01dacd;
 ALTER TABLE IF EXISTS ONLY public.user_custom_fields_representativeness_ref_distributions DROP CONSTRAINT IF EXISTS fk_rails_8cabeff294;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaigns DROP CONSTRAINT IF EXISTS fk_rails_87e592c9f5;
-ALTER TABLE IF EXISTS ONLY public.analysis_analyses_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_857115261d;
+ALTER TABLE IF EXISTS ONLY public.analysis_additional_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_857115261d;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_849e0c7eb7;
 ALTER TABLE IF EXISTS ONLY public.ideas_phases DROP CONSTRAINT IF EXISTS fk_rails_845d7ca944;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_828a073a04;
@@ -84,7 +84,7 @@ ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXIS
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaign_email_commands DROP CONSTRAINT IF EXISTS fk_rails_7f284a4f09;
 ALTER TABLE IF EXISTS ONLY public.activities DROP CONSTRAINT IF EXISTS fk_rails_7e11bb717f;
 ALTER TABLE IF EXISTS ONLY public.analysis_questions DROP CONSTRAINT IF EXISTS fk_rails_74e779db86;
-ALTER TABLE IF EXISTS ONLY public.analysis_analyses_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_74744744a6;
+ALTER TABLE IF EXISTS ONLY public.analysis_additional_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_74744744a6;
 ALTER TABLE IF EXISTS ONLY public.groups_projects DROP CONSTRAINT IF EXISTS fk_rails_73e1dee5fd;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_730408dafc;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaigns_groups DROP CONSTRAINT IF EXISTS fk_rails_712f4ad915;
@@ -121,6 +121,7 @@ ALTER TABLE IF EXISTS ONLY public.areas_static_pages DROP CONSTRAINT IF EXISTS f
 ALTER TABLE IF EXISTS ONLY public.idea_import_files DROP CONSTRAINT IF EXISTS fk_rails_229b6de93f;
 ALTER TABLE IF EXISTS ONLY public.project_images DROP CONSTRAINT IF EXISTS fk_rails_2119c24213;
 ALTER TABLE IF EXISTS ONLY public.areas_static_pages DROP CONSTRAINT IF EXISTS fk_rails_1fc601f42c;
+ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS fk_rails_16b3d1e637;
 ALTER TABLE IF EXISTS ONLY public.spam_reports DROP CONSTRAINT IF EXISTS fk_rails_121f3a2011;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_0e5b472696;
 ALTER TABLE IF EXISTS ONLY public.invites DROP CONSTRAINT IF EXISTS fk_rails_0b6ac3e1da;
@@ -166,6 +167,7 @@ DROP INDEX IF EXISTS public.index_spam_reports_on_user_id;
 DROP INDEX IF EXISTS public.index_spam_reports_on_reported_at;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_phase_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_owner_id;
+DROP INDEX IF EXISTS public.index_report_builder_reports_on_name_tsvector;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_name;
 DROP INDEX IF EXISTS public.index_reactions_on_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id_and_user_id;
@@ -297,6 +299,7 @@ DROP INDEX IF EXISTS public.index_email_campaigns_deliveries_on_campaign_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_consents_on_user_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_consents_on_campaign_type_and_user_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_on_type;
+DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_on_context_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_on_author_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_groups_on_group_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_groups_on_campaign_id;
@@ -350,9 +353,10 @@ DROP INDEX IF EXISTS public.index_analysis_insights_on_analysis_id;
 DROP INDEX IF EXISTS public.index_analysis_background_tasks_on_analysis_id;
 DROP INDEX IF EXISTS public.index_analysis_analyses_on_project_id;
 DROP INDEX IF EXISTS public.index_analysis_analyses_on_phase_id;
-DROP INDEX IF EXISTS public.index_analysis_analyses_custom_fields_on_custom_field_id;
-DROP INDEX IF EXISTS public.index_analysis_analyses_custom_fields_on_analysis_id;
+DROP INDEX IF EXISTS public.index_analysis_analyses_on_main_custom_field_id;
 DROP INDEX IF EXISTS public.index_analysis_analyses_custom_fields;
+DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_custom_field_id;
+DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_analysis_id;
 DROP INDEX IF EXISTS public.index_admin_publications_on_rgt;
 DROP INDEX IF EXISTS public.index_admin_publications_on_publication_type_and_publication_id;
 DROP INDEX IF EXISTS public.index_admin_publications_on_parent_id;
@@ -493,7 +497,7 @@ ALTER TABLE IF EXISTS ONLY public.analysis_questions DROP CONSTRAINT IF EXISTS a
 ALTER TABLE IF EXISTS ONLY public.analysis_insights DROP CONSTRAINT IF EXISTS analysis_insights_pkey;
 ALTER TABLE IF EXISTS ONLY public.analysis_background_tasks DROP CONSTRAINT IF EXISTS analysis_background_tasks_pkey;
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS analysis_analyses_pkey;
-ALTER TABLE IF EXISTS ONLY public.analysis_analyses_custom_fields DROP CONSTRAINT IF EXISTS analysis_analyses_custom_fields_pkey;
+ALTER TABLE IF EXISTS ONLY public.analysis_additional_custom_fields DROP CONSTRAINT IF EXISTS analysis_analyses_custom_fields_pkey;
 ALTER TABLE IF EXISTS ONLY public.admin_publications DROP CONSTRAINT IF EXISTS admin_publications_pkey;
 ALTER TABLE IF EXISTS ONLY public.activities DROP CONSTRAINT IF EXISTS activities_pkey;
 ALTER TABLE IF EXISTS public.que_jobs ALTER COLUMN id DROP DEFAULT;
@@ -544,7 +548,6 @@ DROP TABLE IF EXISTS public.initiatives_topics;
 DROP VIEW IF EXISTS public.initiative_initiative_statuses;
 DROP TABLE IF EXISTS public.initiative_images;
 DROP TABLE IF EXISTS public.initiative_files;
-DROP TABLE IF EXISTS public.impact_tracking_sessions;
 DROP TABLE IF EXISTS public.impact_tracking_salts;
 DROP TABLE IF EXISTS public.identities;
 DROP TABLE IF EXISTS public.ideas_topics;
@@ -557,10 +560,8 @@ DROP TABLE IF EXISTS public.id_id_card_lookup_id_cards;
 DROP TABLE IF EXISTS public.groups_projects;
 DROP TABLE IF EXISTS public.groups_permissions;
 DROP TABLE IF EXISTS public.groups;
-DROP TABLE IF EXISTS public.followers;
 DROP TABLE IF EXISTS public.flag_inappropriate_content_inappropriate_content_flags;
 DROP TABLE IF EXISTS public.experiments;
-DROP TABLE IF EXISTS public.events_attendances;
 DROP TABLE IF EXISTS public.event_images;
 DROP TABLE IF EXISTS public.event_files;
 DROP TABLE IF EXISTS public.email_snippets;
@@ -570,6 +571,7 @@ DROP TABLE IF EXISTS public.email_campaigns_consents;
 DROP TABLE IF EXISTS public.email_campaigns_campaigns_groups;
 DROP TABLE IF EXISTS public.email_campaigns_campaign_email_commands;
 DROP TABLE IF EXISTS public.custom_forms;
+DROP TABLE IF EXISTS public.custom_fields;
 DROP TABLE IF EXISTS public.custom_field_options;
 DROP TABLE IF EXISTS public.custom_field_option_images;
 DROP TABLE IF EXISTS public.cosponsors_initiatives;
@@ -577,7 +579,6 @@ DROP TABLE IF EXISTS public.content_builder_layouts;
 DROP TABLE IF EXISTS public.content_builder_layout_images;
 DROP TABLE IF EXISTS public.common_passwords;
 DROP TABLE IF EXISTS public.baskets_ideas;
-DROP TABLE IF EXISTS public.baskets;
 DROP SEQUENCE IF EXISTS public.areas_static_pages_id_seq;
 DROP TABLE IF EXISTS public.areas_static_pages;
 DROP TABLE IF EXISTS public.areas_projects;
@@ -586,7 +587,8 @@ DROP TABLE IF EXISTS public.areas_ideas;
 DROP TABLE IF EXISTS public.areas;
 DROP TABLE IF EXISTS public.ar_internal_metadata;
 DROP TABLE IF EXISTS public.app_configurations;
-DROP TABLE IF EXISTS public.analytics_fact_visits;
+DROP VIEW IF EXISTS public.analytics_fact_sessions;
+DROP TABLE IF EXISTS public.impact_tracking_sessions;
 DROP VIEW IF EXISTS public.analytics_fact_registrations;
 DROP TABLE IF EXISTS public.invites;
 DROP VIEW IF EXISTS public.analytics_fact_project_statuses;
@@ -601,16 +603,18 @@ DROP TABLE IF EXISTS public.polls_responses;
 DROP TABLE IF EXISTS public.phases;
 DROP TABLE IF EXISTS public.initiatives;
 DROP TABLE IF EXISTS public.ideas;
+DROP TABLE IF EXISTS public.followers;
+DROP TABLE IF EXISTS public.events_attendances;
 DROP TABLE IF EXISTS public.comments;
+DROP TABLE IF EXISTS public.baskets;
 DROP VIEW IF EXISTS public.analytics_fact_events;
 DROP TABLE IF EXISTS public.events;
 DROP VIEW IF EXISTS public.analytics_fact_email_deliveries;
 DROP TABLE IF EXISTS public.email_campaigns_deliveries;
 DROP TABLE IF EXISTS public.email_campaigns_campaigns;
 DROP VIEW IF EXISTS public.analytics_dimension_users;
-DROP VIEW IF EXISTS public.analytics_dimension_user_custom_field_values;
 DROP TABLE IF EXISTS public.users;
-DROP TABLE IF EXISTS public.custom_fields;
+DROP TABLE IF EXISTS public.analytics_fact_visits;
 DROP TABLE IF EXISTS public.analytics_dimension_types;
 DROP VIEW IF EXISTS public.analytics_dimension_statuses;
 DROP TABLE IF EXISTS public.initiative_statuses;
@@ -630,8 +634,8 @@ DROP TABLE IF EXISTS public.analysis_summaries;
 DROP TABLE IF EXISTS public.analysis_questions;
 DROP TABLE IF EXISTS public.analysis_insights;
 DROP TABLE IF EXISTS public.analysis_background_tasks;
-DROP TABLE IF EXISTS public.analysis_analyses_custom_fields;
 DROP TABLE IF EXISTS public.analysis_analyses;
+DROP TABLE IF EXISTS public.analysis_additional_custom_fields;
 DROP TABLE IF EXISTS public.admin_publications;
 DROP TABLE IF EXISTS public.activities;
 DROP FUNCTION IF EXISTS public.que_state_notify();
@@ -762,7 +766,6 @@ WITH (fillfactor='90');
 --
 -- Name: TABLE que_jobs; Type: COMMENT; Schema: public; Owner: -
 --
-
 
 COMMENT ON TABLE public.que_jobs IS '6';
 
@@ -958,6 +961,19 @@ CREATE TABLE public.admin_publications (
 
 
 --
+-- Name: analysis_additional_custom_fields; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.analysis_additional_custom_fields (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    analysis_id uuid NOT NULL,
+    custom_field_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: analysis_analyses; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -966,20 +982,9 @@ CREATE TABLE public.analysis_analyses (
     project_id uuid,
     phase_id uuid,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: analysis_analyses_custom_fields; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.analysis_analyses_custom_fields (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    analysis_id uuid,
-    custom_field_id uuid,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    show_insights boolean DEFAULT true NOT NULL,
+    main_custom_field_id uuid
 );
 
 
@@ -1015,7 +1020,8 @@ CREATE TABLE public.analysis_insights (
     filters jsonb DEFAULT '{}'::jsonb NOT NULL,
     inputs_ids jsonb,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    custom_field_ids jsonb DEFAULT '{}'::jsonb NOT NULL
 );
 
 
@@ -1032,7 +1038,8 @@ CREATE TABLE public.analysis_questions (
     q_and_a_method character varying NOT NULL,
     accuracy double precision,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    generated_at timestamp without time zone
 );
 
 
@@ -1048,7 +1055,8 @@ CREATE TABLE public.analysis_summaries (
     summarization_method character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    accuracy double precision
+    accuracy double precision,
+    generated_at timestamp without time zone
 );
 
 
@@ -1273,33 +1281,23 @@ CREATE TABLE public.analytics_dimension_types (
 
 
 --
--- Name: custom_fields; Type: TABLE; Schema: public; Owner: -
+-- Name: analytics_fact_visits; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.custom_fields (
+CREATE TABLE public.analytics_fact_visits (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    resource_type character varying,
-    key character varying,
-    input_type character varying,
-    title_multiloc jsonb DEFAULT '{}'::jsonb,
-    description_multiloc jsonb DEFAULT '{}'::jsonb,
-    required boolean DEFAULT false,
-    ordering integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    enabled boolean DEFAULT true NOT NULL,
-    code character varying,
-    resource_id uuid,
-    hidden boolean DEFAULT false NOT NULL,
-    maximum integer,
-    minimum_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    maximum_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    logic jsonb DEFAULT '{}'::jsonb NOT NULL,
-    answer_visible_to character varying,
-    select_count_enabled boolean DEFAULT false NOT NULL,
-    maximum_select_count integer,
-    minimum_select_count integer,
-    random_option_ordering boolean DEFAULT false NOT NULL
+    visitor_id character varying NOT NULL,
+    dimension_user_id uuid,
+    dimension_referrer_type_id uuid NOT NULL,
+    dimension_date_first_action_id date NOT NULL,
+    dimension_date_last_action_id date NOT NULL,
+    duration integer NOT NULL,
+    pages_visited integer NOT NULL,
+    returning_visitor boolean DEFAULT false NOT NULL,
+    referrer_name character varying,
+    referrer_url character varying,
+    matomo_visit_id integer NOT NULL,
+    matomo_last_action_time timestamp without time zone NOT NULL
 );
 
 
@@ -1321,7 +1319,6 @@ CREATE TABLE public.users (
     last_name character varying,
     locale character varying,
     bio_multiloc jsonb DEFAULT '{}'::jsonb,
-    cl1_migrated boolean DEFAULT false,
     invite_status character varying,
     custom_field_values jsonb DEFAULT '{}'::jsonb,
     registration_completed_at timestamp without time zone,
@@ -1338,24 +1335,9 @@ CREATE TABLE public.users (
     new_email character varying,
     followings_count integer DEFAULT 0 NOT NULL,
     onboarding jsonb DEFAULT '{}'::jsonb NOT NULL,
-    unique_code character varying
+    unique_code character varying,
+    last_active_at timestamp(6) without time zone
 );
-
-
---
--- Name: analytics_dimension_user_custom_field_values; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.analytics_dimension_user_custom_field_values AS
- SELECT DISTINCT u.id AS dimension_user_id,
-    cf.key,
-    cf.value
-   FROM ((public.users u
-     LEFT JOIN LATERAL ( SELECT custom_fields.key,
-            (u.custom_field_values ->> (custom_fields.key)::text) AS value
-           FROM public.custom_fields
-          WHERE ((custom_fields.resource_type)::text = 'User'::text)) cf ON (true))
-     LEFT JOIN LATERAL ( SELECT jsonb_object_keys(u.custom_field_values) AS key) cfv ON (true));
 
 
 --
@@ -1363,10 +1345,13 @@ CREATE VIEW public.analytics_dimension_user_custom_field_values AS
 --
 
 CREATE VIEW public.analytics_dimension_users AS
- SELECT users.id,
-    COALESCE(((users.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role,
-    users.invite_status
-   FROM public.users;
+ SELECT u.id,
+    COALESCE(((u.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role,
+    u.invite_status,
+    (users_with_visits.dimension_user_id IS NOT NULL) AS has_visits
+   FROM (public.users u
+     LEFT JOIN ( SELECT DISTINCT analytics_fact_visits.dimension_user_id
+           FROM public.analytics_fact_visits) users_with_visits ON ((users_with_visits.dimension_user_id = u.id)));
 
 
 --
@@ -1385,7 +1370,8 @@ CREATE TABLE public.email_campaigns_campaigns (
     body_multiloc jsonb DEFAULT '{}'::jsonb,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    deliveries_count integer DEFAULT 0 NOT NULL
+    deliveries_count integer DEFAULT 0 NOT NULL,
+    context_id uuid
 );
 
 
@@ -1456,6 +1442,20 @@ CREATE VIEW public.analytics_fact_events AS
 
 
 --
+-- Name: baskets; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.baskets (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    submitted_at timestamp without time zone,
+    user_id uuid,
+    phase_id uuid,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
 -- Name: comments; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1477,6 +1477,33 @@ CREATE TABLE public.comments (
     post_type character varying,
     author_hash character varying,
     anonymous boolean DEFAULT false NOT NULL
+);
+
+
+--
+-- Name: events_attendances; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.events_attendances (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    attendee_id uuid NOT NULL,
+    event_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: followers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.followers (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    followable_type character varying NOT NULL,
+    followable_id uuid NOT NULL,
+    user_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -1660,6 +1687,7 @@ CREATE TABLE public.volunteering_volunteers (
 CREATE VIEW public.analytics_fact_participations AS
  SELECT i.id,
     i.author_id AS dimension_user_id,
+    COALESCE((i.author_id)::text, (i.author_hash)::text, (i.id)::text) AS participant_id,
     i.project_id AS dimension_project_id,
         CASE
             WHEN ((ph.participation_method)::text = 'native_survey'::text) THEN survey.id
@@ -1674,9 +1702,11 @@ CREATE VIEW public.analytics_fact_participations AS
      LEFT JOIN public.phases ph ON ((ph.id = i.creation_phase_id)))
      JOIN public.analytics_dimension_types idea ON (((idea.name)::text = 'idea'::text)))
      LEFT JOIN public.analytics_dimension_types survey ON (((survey.name)::text = 'survey'::text)))
+  WHERE ((i.publication_status)::text = 'published'::text)
 UNION ALL
  SELECT i.id,
     i.author_id AS dimension_user_id,
+    COALESCE((i.author_id)::text, (i.author_hash)::text, (i.id)::text) AS participant_id,
     NULL::uuid AS dimension_project_id,
     adt.id AS dimension_type_id,
     (i.created_at)::date AS dimension_date_created_id,
@@ -1688,6 +1718,7 @@ UNION ALL
 UNION ALL
  SELECT c.id,
     c.author_id AS dimension_user_id,
+    COALESCE((c.author_id)::text, (c.author_hash)::text, (c.id)::text) AS participant_id,
     i.project_id AS dimension_project_id,
     adt.id AS dimension_type_id,
     (c.created_at)::date AS dimension_date_created_id,
@@ -1700,6 +1731,7 @@ UNION ALL
 UNION ALL
  SELECT r.id,
     r.user_id AS dimension_user_id,
+    COALESCE((r.user_id)::text, (r.id)::text) AS participant_id,
     COALESCE(i.project_id, ic.project_id) AS dimension_project_id,
     adt.id AS dimension_type_id,
     (r.created_at)::date AS dimension_date_created_id,
@@ -1720,7 +1752,8 @@ UNION ALL
 UNION ALL
  SELECT pr.id,
     pr.user_id AS dimension_user_id,
-    COALESCE(p.project_id, pr.phase_id) AS dimension_project_id,
+    COALESCE((pr.user_id)::text, (pr.id)::text) AS participant_id,
+    p.project_id AS dimension_project_id,
     adt.id AS dimension_type_id,
     (pr.created_at)::date AS dimension_date_created_id,
     0 AS reactions_count,
@@ -1732,7 +1765,8 @@ UNION ALL
 UNION ALL
  SELECT vv.id,
     vv.user_id AS dimension_user_id,
-    COALESCE(p.project_id, vc.phase_id) AS dimension_project_id,
+    COALESCE((vv.user_id)::text, (vv.id)::text) AS participant_id,
+    p.project_id AS dimension_project_id,
     adt.id AS dimension_type_id,
     (vv.created_at)::date AS dimension_date_created_id,
     0 AS reactions_count,
@@ -1741,7 +1775,50 @@ UNION ALL
    FROM (((public.volunteering_volunteers vv
      LEFT JOIN public.volunteering_causes vc ON ((vc.id = vv.cause_id)))
      LEFT JOIN public.phases p ON ((p.id = vc.phase_id)))
-     JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'volunteer'::text)));
+     JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'volunteer'::text)))
+UNION ALL
+ SELECT b.id,
+    b.user_id AS dimension_user_id,
+    COALESCE((b.user_id)::text, (b.id)::text) AS participant_id,
+    p.project_id AS dimension_project_id,
+    adt.id AS dimension_type_id,
+    (b.created_at)::date AS dimension_date_created_id,
+    0 AS reactions_count,
+    0 AS likes_count,
+    0 AS dislikes_count
+   FROM ((public.baskets b
+     LEFT JOIN public.phases p ON ((p.id = b.phase_id)))
+     JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'basket'::text)))
+UNION ALL
+ SELECT ea.id,
+    ea.attendee_id AS dimension_user_id,
+    (ea.attendee_id)::text AS participant_id,
+    e.project_id AS dimension_project_id,
+    adt.id AS dimension_type_id,
+    (ea.created_at)::date AS dimension_date_created_id,
+    0 AS reactions_count,
+    0 AS likes_count,
+    0 AS dislikes_count
+   FROM ((public.events_attendances ea
+     LEFT JOIN public.events e ON ((e.id = ea.event_id)))
+     JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'event_attendance'::text)))
+UNION ALL
+ SELECT f.id,
+    f.user_id AS dimension_user_id,
+    (f.user_id)::text AS participant_id,
+        CASE f.followable_type
+            WHEN 'Project'::text THEN f.followable_id
+            WHEN 'Idea'::text THEN i.project_id
+            ELSE NULL::uuid
+        END AS dimension_project_id,
+    adt.id AS dimension_type_id,
+    (f.created_at)::date AS dimension_date_created_id,
+    0 AS reactions_count,
+    0 AS likes_count,
+    0 AS dislikes_count
+   FROM ((public.followers f
+     JOIN public.analytics_dimension_types adt ON ((((adt.name)::text = 'follower'::text) AND ((adt.parent)::text = lower((f.followable_type)::text)))))
+     LEFT JOIN public.ideas i ON ((i.id = f.followable_id)));
 
 
 --
@@ -1886,24 +1963,30 @@ CREATE VIEW public.analytics_fact_registrations AS
 
 
 --
--- Name: analytics_fact_visits; Type: TABLE; Schema: public; Owner: -
+-- Name: impact_tracking_sessions; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.analytics_fact_visits (
+CREATE TABLE public.impact_tracking_sessions (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    visitor_id character varying NOT NULL,
-    dimension_user_id uuid,
-    dimension_referrer_type_id uuid NOT NULL,
-    dimension_date_first_action_id date NOT NULL,
-    dimension_date_last_action_id date NOT NULL,
-    duration integer NOT NULL,
-    pages_visited integer NOT NULL,
-    returning_visitor boolean DEFAULT false NOT NULL,
-    referrer_name character varying,
-    referrer_url character varying,
-    matomo_visit_id integer NOT NULL,
-    matomo_last_action_time timestamp without time zone NOT NULL
+    monthly_user_hash character varying NOT NULL,
+    highest_role character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    user_id uuid
 );
+
+
+--
+-- Name: analytics_fact_sessions; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.analytics_fact_sessions AS
+ SELECT impact_tracking_sessions.id,
+    impact_tracking_sessions.monthly_user_hash,
+    (impact_tracking_sessions.created_at)::date AS dimension_date_created_id,
+    (impact_tracking_sessions.updated_at)::date AS dimension_date_updated_id,
+    impact_tracking_sessions.user_id AS dimension_user_id
+   FROM public.impact_tracking_sessions;
 
 
 --
@@ -2018,20 +2101,6 @@ ALTER SEQUENCE public.areas_static_pages_id_seq OWNED BY public.areas_static_pag
 
 
 --
--- Name: baskets; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.baskets (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    submitted_at timestamp without time zone,
-    user_id uuid,
-    phase_id uuid,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
 -- Name: baskets_ideas; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2125,6 +2194,37 @@ CREATE TABLE public.custom_field_options (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     other boolean DEFAULT false NOT NULL
+);
+
+
+--
+-- Name: custom_fields; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.custom_fields (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    resource_type character varying,
+    key character varying,
+    input_type character varying,
+    title_multiloc jsonb DEFAULT '{}'::jsonb,
+    description_multiloc jsonb DEFAULT '{}'::jsonb,
+    required boolean DEFAULT false,
+    ordering integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    enabled boolean DEFAULT true NOT NULL,
+    code character varying,
+    resource_id uuid,
+    hidden boolean DEFAULT false NOT NULL,
+    maximum integer,
+    minimum_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    maximum_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    logic jsonb DEFAULT '{}'::jsonb NOT NULL,
+    answer_visible_to character varying,
+    select_count_enabled boolean DEFAULT false NOT NULL,
+    maximum_select_count integer,
+    minimum_select_count integer,
+    random_option_ordering boolean DEFAULT false NOT NULL
 );
 
 
@@ -2255,19 +2355,6 @@ CREATE TABLE public.event_images (
 
 
 --
--- Name: events_attendances; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.events_attendances (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    attendee_id uuid NOT NULL,
-    event_id uuid NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
 -- Name: experiments; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2294,20 +2381,6 @@ CREATE TABLE public.flag_inappropriate_content_inappropriate_content_flags (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     ai_reason character varying
-);
-
-
---
--- Name: followers; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.followers (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    followable_type character varying NOT NULL,
-    followable_id uuid NOT NULL,
-    user_id uuid NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -2490,20 +2563,6 @@ CREATE TABLE public.impact_tracking_salts (
     salt character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: impact_tracking_sessions; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.impact_tracking_sessions (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    monthly_user_hash character varying NOT NULL,
-    highest_role character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    user_id uuid
 );
 
 
@@ -3079,11 +3138,12 @@ CREATE TABLE public.report_builder_published_graph_data_units (
 CREATE TABLE public.report_builder_reports (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
     name character varying,
-    owner_id uuid NOT NULL,
+    owner_id uuid,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     phase_id uuid,
-    visible boolean DEFAULT false NOT NULL
+    visible boolean DEFAULT false NOT NULL,
+    name_tsvector tsvector GENERATED ALWAYS AS (to_tsvector('simple'::regconfig, (name)::text)) STORED
 );
 
 
@@ -3358,10 +3418,10 @@ ALTER TABLE ONLY public.admin_publications
 
 
 --
--- Name: analysis_analyses_custom_fields analysis_analyses_custom_fields_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: analysis_additional_custom_fields analysis_analyses_custom_fields_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.analysis_analyses_custom_fields
+ALTER TABLE ONLY public.analysis_additional_custom_fields
     ADD CONSTRAINT analysis_analyses_custom_fields_pkey PRIMARY KEY (id);
 
 
@@ -4461,24 +4521,31 @@ CREATE INDEX index_admin_publications_on_rgt ON public.admin_publications USING 
 
 
 --
+-- Name: index_analysis_additional_custom_fields_on_analysis_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_analysis_additional_custom_fields_on_analysis_id ON public.analysis_additional_custom_fields USING btree (analysis_id);
+
+
+--
+-- Name: index_analysis_additional_custom_fields_on_custom_field_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_analysis_additional_custom_fields_on_custom_field_id ON public.analysis_additional_custom_fields USING btree (custom_field_id);
+
+
+--
 -- Name: index_analysis_analyses_custom_fields; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_analysis_analyses_custom_fields ON public.analysis_analyses_custom_fields USING btree (analysis_id, custom_field_id);
+CREATE UNIQUE INDEX index_analysis_analyses_custom_fields ON public.analysis_additional_custom_fields USING btree (analysis_id, custom_field_id);
 
 
 --
--- Name: index_analysis_analyses_custom_fields_on_analysis_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_analysis_analyses_on_main_custom_field_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_analysis_analyses_custom_fields_on_analysis_id ON public.analysis_analyses_custom_fields USING btree (analysis_id);
-
-
---
--- Name: index_analysis_analyses_custom_fields_on_custom_field_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_analysis_analyses_custom_fields_on_custom_field_id ON public.analysis_analyses_custom_fields USING btree (custom_field_id);
+CREATE INDEX index_analysis_analyses_on_main_custom_field_id ON public.analysis_analyses USING btree (main_custom_field_id);
 
 
 --
@@ -4850,6 +4917,13 @@ CREATE INDEX index_email_campaigns_campaigns_groups_on_group_id ON public.email_
 --
 
 CREATE INDEX index_email_campaigns_campaigns_on_author_id ON public.email_campaigns_campaigns USING btree (author_id);
+
+
+--
+-- Name: index_email_campaigns_campaigns_on_context_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_email_campaigns_campaigns_on_context_id ON public.email_campaigns_campaigns USING btree (context_id);
 
 
 --
@@ -5770,6 +5844,13 @@ CREATE UNIQUE INDEX index_report_builder_reports_on_name ON public.report_builde
 
 
 --
+-- Name: index_report_builder_reports_on_name_tsvector; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_report_builder_reports_on_name_tsvector ON public.report_builder_reports USING gin (name_tsvector);
+
+
+--
 -- Name: index_report_builder_reports_on_owner_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5780,7 +5861,7 @@ CREATE INDEX index_report_builder_reports_on_owner_id ON public.report_builder_r
 -- Name: index_report_builder_reports_on_phase_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_report_builder_reports_on_phase_id ON public.report_builder_reports USING btree (phase_id);
+CREATE UNIQUE INDEX index_report_builder_reports_on_phase_id ON public.report_builder_reports USING btree (phase_id);
 
 
 --
@@ -6092,6 +6173,14 @@ ALTER TABLE ONLY public.spam_reports
 
 
 --
+-- Name: analysis_analyses fk_rails_16b3d1e637; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.analysis_analyses
+    ADD CONSTRAINT fk_rails_16b3d1e637 FOREIGN KEY (main_custom_field_id) REFERENCES public.custom_fields(id);
+
+
+--
 -- Name: areas_static_pages fk_rails_1fc601f42c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6380,10 +6469,10 @@ ALTER TABLE ONLY public.groups_projects
 
 
 --
--- Name: analysis_analyses_custom_fields fk_rails_74744744a6; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: analysis_additional_custom_fields fk_rails_74744744a6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.analysis_analyses_custom_fields
+ALTER TABLE ONLY public.analysis_additional_custom_fields
     ADD CONSTRAINT fk_rails_74744744a6 FOREIGN KEY (analysis_id) REFERENCES public.analysis_analyses(id);
 
 
@@ -6492,10 +6581,10 @@ ALTER TABLE ONLY public.notifications
 
 
 --
--- Name: analysis_analyses_custom_fields fk_rails_857115261d; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: analysis_additional_custom_fields fk_rails_857115261d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.analysis_analyses_custom_fields
+ALTER TABLE ONLY public.analysis_additional_custom_fields
     ADD CONSTRAINT fk_rails_857115261d FOREIGN KEY (custom_field_id) REFERENCES public.custom_fields(id);
 
 
@@ -7402,11 +7491,30 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240126122702'),
 ('20240130142750'),
 ('20240130170644'),
+('20240201141520'),
 ('20240206165004'),
+('20240212133704'),
 ('20240214125557'),
+('20240219104430'),
+('20240219104431'),
+('20240221145522'),
 ('20240226170510'),
 ('20240227092300'),
 ('20240228145938'),
 ('20240229195843'),
 ('20240301120023'),
-('20240305122502');
+('20240305122502'),
+('20240328141200'),
+('20240409150000'),
+('20240417064819'),
+('20240417150820'),
+('20240418081854'),
+('20240419100508'),
+('20240504212048'),
+('20240508124400'),
+('20240508133950'),
+('20240510103700'),
+('20240516113700'),
+('20240606112752');
+
+

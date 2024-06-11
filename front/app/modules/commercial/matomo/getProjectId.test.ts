@@ -2,33 +2,7 @@ import ideasKeys from 'api/ideas/keys';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
-import {
-  extractIdeaSlug,
-  getProjectId,
-  isOnAdminProjectPage,
-} from './getProjectId';
-
-describe('extractIdeaSlug', () => {
-  it('works for /ideas/:slug', () => {
-    expect(extractIdeaSlug('/ideas/some-slug')).toEqual('some-slug');
-  });
-});
-
-describe('isOnAdminProjectPage', () => {
-  it('returns true when the link is a project admin page', () => {
-    const isAdminLink = isOnAdminProjectPage(
-      '/en/admin/projects/e20f63ae-1fe4-49be-8bf9-599cc34e6515'
-    );
-    expect(isAdminLink).toEqual(true);
-  });
-
-  it('returns false when the link is a project admin page', () => {
-    const isAdminLink = isOnAdminProjectPage(
-      '/en/projects/e20f63ae-1fe4-49be-8bf9-599cc34e6515'
-    );
-    expect(isAdminLink).toEqual(false);
-  });
-});
+import { getProjectId } from './getProjectId';
 
 const mockProject = {
   data: { id: 'project-id' },
@@ -47,7 +21,7 @@ describe('getProjectId', () => {
   beforeEach(() => {
     queryClient.setQueryData(ideasKeys.item({ slug: 'some-idea' }), mockIdea);
   });
-  it('returns the project id directly when the project link is an admin link', async () => {
+  it('returns the project id when the project link is an admin link', async () => {
     const projectId = await getProjectId(
       '/en/admin/projects/e20f63ae-1fe4-49be-8bf9-599cc34e6515'
     );
@@ -59,8 +33,24 @@ describe('getProjectId', () => {
     expect(projectId).toEqual('project-id');
   });
 
+  // Regression test
+  it('returns the project id when the slug does not contain any hyphens', async () => {
+    const projectId = await getProjectId('/en/projects/testslug');
+    expect(projectId).toEqual('project-id');
+  });
+
   it('returns the project id when an idea link is passed', async () => {
     const projectId = await getProjectId('/en/ideas/some-idea');
     expect(projectId).toEqual('project-id2');
+  });
+
+  it.each([
+    '/en/',
+    '/en/initiatives/lorem-ipsum',
+    '/initiatives/lorem-ipsum',
+    '/en/pages/cookie-policy',
+  ])('returns null when the path is %s', async (path) => {
+    const projectId = await getProjectId(path);
+    expect(projectId).toBeNull();
   });
 });

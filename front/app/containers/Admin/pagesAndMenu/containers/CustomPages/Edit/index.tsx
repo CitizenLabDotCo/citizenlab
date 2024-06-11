@@ -8,7 +8,10 @@ import useCustomPageById from 'api/custom_pages/useCustomPageById';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
+import {
+  pagesAndMenuBreadcrumb,
+  pagesAndMenuBreadcrumbLinkTo,
+} from 'containers/Admin/pagesAndMenu/breadcrumbs';
 
 import TabbedResource from 'components/admin/TabbedResource';
 import HelmetIntl from 'components/HelmetIntl';
@@ -41,7 +44,7 @@ const CustomPagesEditSettings = ({
           breadcrumbs={[
             {
               label: formatMessage(pagesAndMenuBreadcrumb.label),
-              linkTo: pagesAndMenuBreadcrumb.linkTo,
+              linkTo: pagesAndMenuBreadcrumbLinkTo,
             },
             { label: localize(pageTitleMultiloc) },
           ]}

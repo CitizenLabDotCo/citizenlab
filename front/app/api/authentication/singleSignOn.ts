@@ -1,5 +1,6 @@
 import { omitBy, isNil } from 'lodash-es';
 import { stringify } from 'qs';
+import { RouteType } from 'routes';
 
 import { AUTH_PATH } from 'containers/App/constants';
 import { isProjectContext } from 'containers/Authentication/steps/Verification/utils';
@@ -10,11 +11,13 @@ import {
 
 export interface SSOProviderMap {
   azureactivedirectory: 'azureactivedirectory';
+  azureactivedirectory_b2c: 'azureactivedirectory_b2c';
   facebook: 'facebook';
   franceconnect: 'franceconnect';
   google: 'google';
   clave_unica: 'clave_unica';
   hoplr: 'hoplr';
+  criipto: 'criipto';
 }
 
 export type SSOProvider = SSOProviderMap[keyof SSOProviderMap];
@@ -23,7 +26,7 @@ export type SSOProvider = SSOProviderMap[keyof SSOProviderMap];
 export interface SSOParams {
   sso_response: 'true';
   sso_flow: 'signup' | 'signin';
-  sso_pathname: string;
+  sso_pathname: RouteType;
   sso_verification?: string;
   sso_verification_action?: string;
   sso_verification_id?: string;
@@ -62,7 +65,7 @@ function setHref(
 ) {
   const { context, flow } = authenticationData;
 
-  const pathname = window.location.pathname;
+  const pathname = window.location.pathname as RouteType;
   const ssoParams: SSOParams = {
     sso_response: 'true',
     sso_flow: flow,

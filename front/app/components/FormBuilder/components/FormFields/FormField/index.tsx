@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 import {
   Box,
@@ -17,6 +17,7 @@ import {
   IFlatCustomFieldWithIndex,
   IOptionsType,
 } from 'api/custom_fields/types';
+import useDuplicateMapConfig from 'api/map_config/useDuplicateMapConfig';
 
 import {
   FormBuilderConfig,
@@ -66,6 +67,7 @@ export const FormField = ({
     trigger,
     setValue,
   } = useFormContext();
+  const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
   const { formatMessage } = useIntl();
   const lockedAttributes = field?.constraints?.locks;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -76,6 +78,7 @@ export const FormField = ({
   });
   const { formEndPageLogicOption, displayBuiltInFields, groupingType } =
     builderConfig;
+  const { mutateAsync: duplicateMapConfig } = useDuplicateMapConfig();
 
   const hasErrors = !!errors.customFields?.[index];
 
@@ -109,7 +112,7 @@ export const FormField = ({
     return copiedTitle_multiloc;
   }
 
-  function duplicateField(originalField: IFlatCustomField) {
+  const duplicateField = async (originalField: IFlatCustomField) => {
     const {
       id: _id,
       temp_id: _temp_id,
@@ -146,8 +149,21 @@ export const FormField = ({
       ...rest,
     };
 
+    // Duplicate the map config if this is a mapping question
+    if (
+      originalField.input_type === 'point' &&
+      originalField.map_config?.data?.id
+    ) {
+      const newMapConfig = await duplicateMapConfig(
+        originalField.map_config.data.id
+      );
+
+      duplicatedField.mapConfig = newMapConfig;
+      duplicatedField.map_config_id = newMapConfig.data.id;
+    }
+
     return duplicatedField;
-  }
+  };
 
   const onDelete = (fieldIndex: number) => {
     if (builtInFieldKeys.includes(field.key)) {
@@ -227,12 +243,12 @@ export const FormField = ({
   };
 
   const actions = [
-    ...(field.input_type !== groupingType
+    ...(field.input_type !== groupingType && !field.code // Do not copy built-in fields
       ? [
           {
-            handler: (event: React.MouseEvent) => {
+            handler: async (event: React.MouseEvent) => {
               event.stopPropagation();
-              const duplicatedField = duplicateField(field);
+              const duplicatedField = await duplicateField(field);
               insert(index + 1, duplicatedField);
               trigger();
             },
@@ -320,11 +336,16 @@ export const FormField = ({
               actions={actions}
               onClick={(event) => event.stopPropagation()}
               data-cy="e2e-more-field-actions"
+              ref={moreActionsButtonRef}
             />
           </Box>
         </FlexibleRow>
       </FormFieldsContainer>
-      <Modal opened={showDeleteModal} close={closeModal}>
+      <Modal
+        opened={showDeleteModal}
+        close={closeModal}
+        returnFocusRef={moreActionsButtonRef}
+      >
         <Box display="flex" flexDirection="column" width="100%" p="20px">
           <Box mb="40px">
             <Title variant="h3" color="primary">
@@ -350,7 +371,11 @@ export const FormField = ({
             >
               {formatMessage(messages.confirmDeleteFieldWithLogicButtonText)}
             </Button>
-            <Button buttonStyle="secondary" width="auto" onClick={closeModal}>
+            <Button
+              buttonStyle="secondary-outlined"
+              width="auto"
+              onClick={closeModal}
+            >
               {formatMessage(messages.cancelDeleteButtonText)}
             </Button>
           </Box>

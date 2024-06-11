@@ -9,6 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useNode, useEditor } from '@craftjs/core';
 import { darken } from 'polished';
+import { RouteType } from 'routes';
 import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 
@@ -26,8 +27,8 @@ import messages from './messages';
 
 type ButtonProps = {
   text: Multiloc;
-  url: string;
-  type: 'primary' | 'secondary';
+  url: RouteType;
+  type: 'primary' | 'secondary-outlined';
   alignment: string;
 };
 
@@ -74,8 +75,9 @@ const Button = ({ text, url, type, alignment }: ButtonProps) => {
           id="e2e-button"
           width={alignment === 'fullWidth' ? '100%' : 'auto'}
           buttonStyle={type}
-          text={localize(text)}
-        />
+        >
+          <span style={{ whiteSpace: 'normal' }}>{localize(text)}</span>
+        </ButtonComponent>
       )}
     </Box>
   );
@@ -118,7 +120,7 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
           placeholder={formatMessage(sharedMessages.urlPlaceholder)}
           type="text"
           value={url}
-          onChange={(value) => {
+          onChange={(value: RouteType) => {
             setProp((props: ButtonProps) => (props.url = value));
           }}
         />
@@ -154,7 +156,7 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
         currentValue={type}
         id="style-secondary"
         name="buttonStyle"
-        value="secondary"
+        value="secondary-outlined"
         label={
           <Box
             borderRadius="4px"

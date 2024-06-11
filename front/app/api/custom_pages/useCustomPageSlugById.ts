@@ -1,6 +1,8 @@
+import { RouteType } from 'routes';
+
 import useCustomPages from 'api/custom_pages/useCustomPages';
 
-export type TPageSlugById = Record<string, string>;
+export type TPageSlugById = Record<string, RouteType>;
 
 export default function useCustomPageSlugById() {
   const { data: pages } = useCustomPages();

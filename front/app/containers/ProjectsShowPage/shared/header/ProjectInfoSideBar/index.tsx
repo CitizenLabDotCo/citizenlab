@@ -26,7 +26,6 @@ import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 
-import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 import messages from 'containers/ProjectsShowPage/messages';
 import setPhaseUrl from 'containers/ProjectsShowPage/timeline/setPhaseURL';
 
@@ -139,9 +138,6 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const { formatMessage } = useIntl();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const [shareModalOpened, setShareModalOpened] = useState(false);
-  const isAdminUser = !isNilOrError(authUser)
-    ? isAdmin({ data: authUser.data })
-    : false;
 
   useEffect(() => {
     setCurrentPhase(
@@ -230,7 +226,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                 {...messages.xParticipants}
                 values={{ participantsCount: projectParticipantsCount }}
               />
-              {isAdminUser && hasNativeSurvey(phases?.data) && (
+              {isAdmin(authUser) && hasNativeSurvey(phases?.data) && (
                 <Box ml="4px">
                   <IconTooltip
                     placement="auto"
@@ -242,9 +238,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                         values={{
                           accessRightsLink: (
                             <Link
-                              to={`${adminProjectsProjectPath(
-                                projectId
-                              )}/settings/access-rights`}
+                              to={`/admin/projects/${projectId}/settings/access-rights`}
                             >
                               <FormattedMessage {...messages.accessRights} />
                             </Link>

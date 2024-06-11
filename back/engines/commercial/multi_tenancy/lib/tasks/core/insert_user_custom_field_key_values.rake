@@ -31,7 +31,7 @@ require 'open-uri'
 namespace :cl2_back do
   desc 'Insert key-value pairs to user custom_field_values hashes.'
   task :insert_user_custom_field_key_value_pairs, %i[url host key] => [:environment] do |_t, args|
-    data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
+    data = CSV.parse(open(args[:url]).read, headers: true, col_sep: ',', converters: [])
     count = 0
     key = args[:key]
 

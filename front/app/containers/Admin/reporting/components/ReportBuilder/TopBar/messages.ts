@@ -30,4 +30,12 @@ export default defineMessages({
     defaultMessage:
       'This report contains unsaved changes. Please save before printing.',
   },
+  titleTaken: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.TopBar.titleTaken',
+    defaultMessage: 'Title is already taken',
+  },
+  reportTitleTooltip: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.TopBar.reportTitleTooltip',
+    defaultMessage: 'Rename',
+  },
 });

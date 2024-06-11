@@ -181,6 +181,30 @@ resource 'Idea Custom Fields' do
           ])
         end
 
+        example '[error] Add a field of unsupported input_type' do
+          fields_param = default_fields_param # https://stackoverflow.com/a/58695857/3585671
+          # Add extra field
+          fields_param += [
+            {
+              input_type: 'section',
+              title_multiloc: { 'en' => 'Extra fields' }
+            },
+            {
+              input_type: 'html_multiloc',
+              title_multiloc: { 'en' => 'HTML multliloc field title' },
+              description_multiloc: { 'en' => 'HTML multliloc field description' },
+              required: false,
+              enabled: true
+            }
+          ]
+
+          do_request custom_fields: fields_param
+
+          assert_status 422
+          json_response = json_parse response_body
+          expect(json_response).to eq({ errors: { '11': { input_type: [{ error: 'inclusion', value: 'html_multiloc' }] } } })
+        end
+
         example 'Updating custom fields when there are responses', document: false do
           create(:idea, project: context)
           custom_description = { 'en' => 'Custom description' }

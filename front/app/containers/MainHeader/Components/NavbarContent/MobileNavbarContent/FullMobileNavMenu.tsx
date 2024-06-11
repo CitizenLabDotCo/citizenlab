@@ -158,7 +158,7 @@ const FullMobileNavMenu = ({
                 );
               })}
               <FullMobileNavMenuItem
-                linkTo="/projects?focusSearch=true"
+                linkTo={'/projects?focusSearch=true'}
                 navigationItemTitle={formatMessage(messages.search)}
                 onClick={handleOnMenuItemClick('/projects?focusSearch=true')}
                 iconName="search"

@@ -1,4 +1,38 @@
 el:
+  locales:
+    en: Αγγλικά
+    ar-MA: Αραβικά (Μαρόκο)
+    ar-SA: Αραβικά (Σαουδική Αραβία)
+    ca-ES: Καταλανικά
+    cy-GB: Ουαλικά
+    da-DK: Δανικά
+    de-DE: Γερμανικά
+    el-GR: Ελληνική
+    en-CA: Αγγλικά (Καναδάς)
+    en-GB: Αγγλικά (Ηνωμένο Βασίλειο)
+    en-IE: Αγγλικά (Ιρλανδία)
+    es-CL: Ισπανικά (Χιλή)
+    es-ES: Ισπανικά (Ισπανία)
+    fi-FI: Φινλανδική
+    fr-BE: Γαλλικά (Βέλγιο)
+    fr-FR: Γαλλικά
+    hr-HR: Κροατικά
+    hu-HU: Ουγγρικό
+    it-IT: Ιταλικά
+    kl-GL: Γροιλανδική
+    lb-LU: Λουξεμβούργο
+    lv-LV: Λετονία
+    mi: Μαορί
+    nb-NO: Νορβηγικά (Bokmål)
+    nl-BE: Ολλανδικά (Βέλγιο)
+    nl-NL: Ολλανδικά
+    pl-PL: Πολωνικά
+    pt-BR: Πορτογαλικά (Βραζιλία)
+    ro-RO: Ρουμανικά
+    sr-Latn: Σερβικά (Λατινικά)
+    sr-SP: Σερβικά (κυριλλικά)
+    sv-SE: Σουηδικά
+    tr-TR: Τουρκικά
   symbols:
     outside: κάπου αλλού
   idea_statuses:
@@ -148,8 +182,8 @@ el:
       section3:
         title: Λεπτομέρειες
         description:
-      other:
-        title: Πληκτρολογήστε την απάντησή σας
+      other_text_field:
+        title: Αν επιλέξατε το "{other_option}", τι σκέφτεστε;
   custom_forms:
     categories:
       main_content:
@@ -200,29 +234,40 @@ el:
       subject: '%{organizationName}: Επαναφέρετε τον κωδικό πρόσβασής σας'
       title_reset_your_password: 'Επιλογή νέου κωδικού πρόσβασης'
   xlsx_export:
+    anonymous: 'Ανώνυμος'
     column_headers:
-      input_id: 'ID'
-      latitude: 'Γεωγραφικό πλάτος'
-      longitude: 'Γεωγραφικό μήκος'
-      author_fullname: 'Όνομα συγγραφέα'
-      author_email: 'Συγγραφέας email'
-      author_id: 'Ταυτότητα συγγραφέα'
-      budget: 'Προϋπολογισμός'
-      created_at: 'Υποβλήθηκε στο'
-      published_at: 'Δημοσιεύθηκε στις'
-      comments_count: 'Σχόλια'
-      likes_count: 'Μου αρέσει'
-      dislikes_count: 'Απεχθάνεται το'
-      picks: 'Επιλογές'
-      participants: 'Συμμετέχοντες'
-      votes_count: 'Ψήφοι'
-      input_url: 'ΔΙΕΎΘΥΝΣΗ URL'
-      project: 'Έργο'
-      status: 'Κατάσταση'
       assignee_fullname: 'Αποδέκτης'
       assignee_email: 'Email παραλήπτη'
+      attachments: 'Συνημμένα'
+      author_email: 'Συγγραφέας email'
+      author_fullname: 'Όνομα συγγραφέα'
+      author_id: 'Ταυτότητα συγγραφέα'
+      budget: 'Προϋπολογισμός'
+      comments_count: 'Σχόλια'
+      cost: 'Κόστος'
+      created_at: 'Υποβλήθηκε στο'
+      description: 'Περιγραφή'
+      dislikes_count: 'Απεχθάνεται το'
+      email: 'Ηλεκτρονικό ταχυδρομείο'
+      first_name: 'Όνομα(-α)'
       image_url: 'URL εικόνας'
-    anonymous: 'Ανώνυμος'
+      input_id: 'ID'
+      input_url: 'ΔΙΕΎΘΥΝΣΗ URL'
+      last_name: 'Επώνυμο'
+      latitude: 'Γεωγραφικό πλάτος'
+      likes_count: 'Μου αρέσει'
+      location: 'Τοποθεσία'
+      longitude: 'Γεωγραφικό μήκος'
+      participants: 'Συμμετέχοντες'
+      picks: 'Επιλογές'
+      project: 'Έργο'
+      published_at: 'Δημοσιεύθηκε στις'
+      registration_completed_at: 'Η εγγραφή ολοκληρώθηκε στο'
+      status: 'Κατάσταση'
+      submitted_at: 'Υποβλήθηκε στο'
+      tags: 'Ετικέτες'
+      title: 'Τίτλος'
+      votes_count: 'Ψήφοι'
   form_builder:
     default_select_field:
       title: 'Ερώτηση δημοσκόπησης'
@@ -248,6 +293,7 @@ el:
       instructions: 'Οδηγίες'
       write_as_clearly: 'Γράψτε όσο το δυνατόν πιο καθαρά <b></b> - τα έντυπα αυτά μπορεί να σαρωθούν.'
       write_in_language: 'Γράψτε τις απαντήσεις σας στην ίδια γλώσσα με το παρόν έντυπο.'
+      linear_scale_print_description: 'Παρακαλώ γράψτε έναν αριθμό μεταξύ %{min_label} και %{max_label} μόνο'
   project_copy:
     title_suffix: 'Aντίγραφο'
   confirmations_mailer:

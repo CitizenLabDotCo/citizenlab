@@ -5,11 +5,11 @@ import {
   stylingConsts,
   colors,
   Title,
-  Badge,
   Text,
 } from '@citizenlab/cl2-component-library';
 import { get, set } from 'js-cookie';
 import { useParams, useSearchParams } from 'react-router-dom';
+import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useAnalysis from 'api/analyses/useAnalysis';
@@ -136,9 +136,6 @@ const TopBar = () => {
             <Text m="0px" color="textSecondary">
               {formatMessage(messages.AIAnalysis)}
             </Text>
-            <Badge color={colors.textSecondary} className="inverse">
-              BETA
-            </Badge>
           </Box>
 
           <TruncatedTitle variant="h4" m="0px">
@@ -146,14 +143,14 @@ const TopBar = () => {
           </TruncatedTitle>
         </Box>
         <Button
-          buttonStyle="secondary"
+          buttonStyle="secondary-outlined"
           icon="filter"
           size="s"
           onClick={toggleFilters}
         >
           {formatMessage(messages.filters)}
         </Button>
-        <FilterItems filters={filters} isEditable />
+        <FilterItems filters={filters} isEditable analysisId={analysisId} />
         <Box marginLeft="auto">
           <SearchInput
             key={urlParams.get('reset_filters')}
@@ -168,7 +165,7 @@ const TopBar = () => {
           icon="info-solid"
           buttonStyle="text"
           openLinkInNewTab
-          linkTo={formatMessage(messages.supportArticleLink)}
+          linkTo={formatMessage(messages.supportArticleLink) as RouteType}
           iconColor={colors.grey800}
         />
         {isFiltersOpen && <Filters onClose={() => setIsFiltersOpen(false)} />}

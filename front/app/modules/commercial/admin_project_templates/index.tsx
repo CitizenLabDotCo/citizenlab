@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 
-import { TTabName } from 'containers/Admin/projects/all/CreateProject';
+import { TTabName } from 'containers/Admin/projects/new';
+import { AdminRoute } from 'containers/Admin/routes';
 
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
@@ -8,9 +9,7 @@ const CreateProjectFromTemplate = React.lazy(
   () => import('./admin/containers/CreateProjectFromTemplate')
 );
 const Tab = React.lazy(() => import('./admin/components/Tab'));
-const ProjectTemplatePreviewAdminWithEventWrapper = React.lazy(
-  () => import('./admin/containers/ProjectTemplatePreviewAdminWithEventWrapper')
-);
+
 const FeatureFlag = React.lazy(() => import('components/FeatureFlag'));
 
 const CitizenTemplatePreviewComponent = React.lazy(
@@ -20,7 +19,7 @@ const AdminTemplatePreviewComponent = React.lazy(
   () => import('./admin/containers/ProjectTemplatePreviewAdmin')
 );
 
-declare module 'containers/Admin/projects/all/CreateProject' {
+declare module 'containers/Admin/projects/new' {
   export interface ITabNamesMap {
     template: 'template';
   }
@@ -39,31 +38,31 @@ const RenderOnSelectedTabValue = ({
   return <>{children}</>;
 };
 
+export enum projectTemplateRoutes {
+  projectTemplate = 'templates/:projectTemplateId',
+}
+
+// TODO: Replace "project_templates" with link to route in main app once converted.
+export type projectTemplateRouteTypes =
+  | `${projectTemplateRoutes.projectTemplate}/${string}`
+  | AdminRoute<`project_templates/${projectTemplateRoutes.projectTemplate}/${string}`>;
+
 const configuration: ModuleConfiguration = {
   routes: {
     citizen: [
       {
-        path: 'templates/:projectTemplateId',
+        path: projectTemplateRoutes.projectTemplate,
         element: <CitizenTemplatePreviewComponent />,
       },
     ],
     'admin.project_templates': [
       {
-        path: 'templates/:projectTemplateId',
+        path: projectTemplateRoutes.projectTemplate,
         element: <AdminTemplatePreviewComponent />,
       },
     ],
   },
   outlets: {
-    'app.containers.Admin.projects.all.container': (props) => {
-      return (
-        <FeatureFlag name="admin_project_templates">
-          <ProjectTemplatePreviewAdminWithEventWrapper
-            onRender={props.onRender}
-          />
-        </FeatureFlag>
-      );
-    },
     'app.containers.Admin.projects.all.createProject': (props) => (
       <FeatureFlag name="admin_project_templates">
         <RenderOnSelectedTabValue selectedTabValue={props.selectedTabValue}>

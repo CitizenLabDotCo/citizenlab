@@ -226,6 +226,7 @@ const FormBuilderToolbox = ({
             icon="map"
             label={formatMessage(messages.locationAnswer)}
             onClick={() => addField('point')}
+            data-cy="e2e-point-field"
             fieldsToExclude={builderConfig.toolboxFieldsToExclude}
             inputType="point"
             disabled={isCustomFieldsDisabled}

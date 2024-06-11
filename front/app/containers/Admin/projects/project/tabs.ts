@@ -14,7 +14,6 @@ export type FeatureFlags = {
   surveys_enabled: boolean;
   typeform_enabled: boolean;
   granular_permissions_enabled: boolean;
-  phase_reports_enabled: boolean;
   report_builder_enabled: boolean;
 };
 
@@ -24,7 +23,6 @@ export const getTabs = (
     surveys_enabled,
     typeform_enabled,
     granular_permissions_enabled,
-    phase_reports_enabled,
     report_builder_enabled,
   }: FeatureFlags,
   formatMessage: FormatMessage
@@ -74,18 +72,16 @@ export const getTabs = (
     phase.attributes.participation_method === 'volunteering' && {
       label: formatMessage(messages.volunteeringTab),
       url: 'volunteering',
-      feature: 'volunteering',
       name: 'volunteering',
     },
-    phase.attributes.participation_method === 'information' &&
-      phase_reports_enabled && {
-        label: formatMessage(messages.reportTab),
-        url: 'report',
-        name: 'report',
-        disabledTooltipText: report_builder_enabled
-          ? undefined
-          : formatMessage(messages.lockedTooltip),
-      },
+    phase.attributes.participation_method === 'information' && {
+      label: formatMessage(messages.reportTab),
+      url: 'report',
+      name: 'report',
+      disabledTooltipText: report_builder_enabled
+        ? undefined
+        : formatMessage(messages.lockedTooltip),
+    },
     granular_permissions_enabled && {
       label: formatMessage(messages.phaseAccessRights),
       url: 'access-rights',

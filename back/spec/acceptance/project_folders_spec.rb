@@ -45,6 +45,10 @@ resource 'ProjectFolder' do
   get 'web_api/v1/project_folders/:id' do
     let(:id) { @folders.first.id }
 
+    before do
+      Analytics::PopulateDimensionsService.populate_types
+    end
+
     example_request 'Get one folder by id' do
       assert_status 200
       json_response = json_parse(response_body)

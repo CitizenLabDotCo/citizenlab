@@ -5,7 +5,7 @@ import { SerializedNodes } from '@craftjs/core';
 import { isEmpty } from 'lodash-es';
 import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout';
 import { useParams, useLocation } from 'react-router-dom';
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import useProjectById from 'api/projects/useProjectById';
 
@@ -29,7 +29,9 @@ import ProjectDescriptionBuilderTopBar from '../components/ProjectDescriptionBui
 
 const ProjectDescriptionBuilderPage = () => {
   const [previewEnabled, setPreviewEnabled] = useState(false);
-  const [selectedLocale, setSelectedLocale] = useState<Locale | undefined>();
+  const [selectedLocale, setSelectedLocale] = useState<
+    SupportedLocale | undefined
+  >();
   const [draftData, setDraftData] = useState<Record<string, SerializedNodes>>();
   const { pathname } = useLocation();
   const { projectId } = useParams() as { projectId: string };
@@ -102,7 +104,7 @@ const ProjectDescriptionBuilderPage = () => {
     locale,
     editorData,
   }: {
-    locale: Locale;
+    locale: SupportedLocale;
     editorData: SerializedNodes;
   }) => {
     if (selectedLocale && selectedLocale !== locale) {

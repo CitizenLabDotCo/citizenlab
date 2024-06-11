@@ -18,13 +18,14 @@ export type IInputsFilterParams = {
   tag_ids?: string[] | null[];
   published_at_from?: string;
   published_at_to?: string;
-  reactions_from?: string | number;
-  reactions_to?: string | number;
-  votes_from?: string | number;
-  votes_to?: string | number;
-  comments_from?: string | number;
-  comments_to?: string | number;
+  reactions_from?: number;
+  reactions_to?: number;
+  votes_from?: number;
+  votes_to?: number;
+  comments_from?: number;
+  comments_to?: number;
   input_custom_field_no_empty_values?: boolean;
+  limit?: number;
 } & { [K in AuthorCustomFromFilterKey]?: string } & {
   [K in AuthorCustomToFilterKey]?: string;
 } & { [K in AuthorCustomInFilterKey]?: string[] } & {

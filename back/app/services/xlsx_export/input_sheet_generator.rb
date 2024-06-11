@@ -182,7 +182,7 @@ module XlsxExport
     end
 
     def user_report_fields
-      user_fields.map do |field|
+      registration_fields.map do |field|
         if field.code == 'domicile'
           DomicileFieldForReport.new(field, :author)
         else
@@ -206,8 +206,8 @@ module XlsxExport
       end
     end
 
-    def user_fields
-      @user_fields ||= CustomField.with_resource_type('User').includes(:options).order(:ordering).all
+    def registration_fields
+      @registration_fields ||= CustomField.registration.includes(:options).order(:ordering).all
     end
 
     def voting_context(input, phase)

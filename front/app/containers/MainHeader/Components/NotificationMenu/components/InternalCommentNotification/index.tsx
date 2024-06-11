@@ -1,5 +1,7 @@
 import React, { memo } from 'react';
 
+import { RouteType } from 'routes';
+
 import { IInternalCommentNotificationData } from 'api/notifications/types';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
@@ -16,7 +18,7 @@ interface Props {
 
 const mapPostTypeToLink = (
   notification: IInternalCommentNotificationData
-): string | null => {
+): RouteType | null => {
   const { post_type, project_id, post_id, internal_comment_id } =
     notification.attributes;
 
@@ -63,7 +65,7 @@ const InternalCommentNotification = memo<Props>(({ notification }) => {
   const deletedUser =
     isNilOrError(notification.attributes.initiating_user_first_name) ||
     isNilOrError(notification.attributes.initiating_user_slug);
-  const linkTo = mapPostTypeToLink(notification);
+  const linkTo: RouteType | null = mapPostTypeToLink(notification);
 
   if (!linkTo) {
     return null;

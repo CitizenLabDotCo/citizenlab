@@ -114,7 +114,7 @@ const SettingsGeneralTab = () => {
     const profanityBlockerSetting =
       appConfiguration.data.attributes.settings.blocking_profanity;
 
-    const { organization_name, organization_site, locales } =
+    const { organization_name, organization_site, locales, population } =
       appConfiguration.data.attributes.settings.core;
 
     return (
@@ -124,6 +124,7 @@ const SettingsGeneralTab = () => {
             organization_name,
             organization_site,
             locales,
+            population,
           }}
           onSubmit={handleOnSubmit}
         />

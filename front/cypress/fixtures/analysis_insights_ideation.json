@@ -1,0 +1,62 @@
+{
+  "data": [
+    {
+      "id": "b3590021-53ef-4cf6-ad94-5ce3e217478a",
+      "type": "insight",
+      "relationships": {
+        "insightable": {
+          "data": {
+            "id": "ab779f17-a8e9-42f8-bde2-e4d02fd4c9ce",
+            "type": "summary"
+          }
+        }
+      }
+    }
+  ],
+  "included": [
+    {
+      "id": "2c8192b6-3c32-4fdc-8f2d-e07ecf46bd14",
+      "type": "background_task",
+      "attributes": {
+        "progress": null,
+        "state": "succeeded",
+        "started_at": "2024-03-12T12:43:23.858Z",
+        "ended_at": "2024-03-12T12:43:35.457Z",
+        "updated_at": "2024-03-12T12:43:35.458Z",
+        "created_at": "2024-03-12T12:43:23.602Z",
+        "type": "summarization_task",
+        "auto_tagging_method": null
+      }
+    },
+    {
+      "id": "ab779f17-a8e9-42f8-bde2-e4d02fd4c9ce",
+      "type": "summary",
+      "attributes": {
+        "summary": "Respondents have provided input on three separate ideas, each identified by a unique ID. The content of the responses is not included in the provided text, so the summary cannot reflect specific feedback or trends. However, it is clear that participants are engaging with multiple ideas within the project 'n3bamy708e4ncuw', as indicated by the sequential labeling of their ideas as \"My first idea,\" \"My second idea,\" and \"My third idea.\" Each idea appears to be associated with the same description, \"huah20cbzs3gw64,\" suggesting a common theme or guideline for the submissions. Without additional information on the responses themselves, no further summary can be provided.",
+        "filters": {},
+        "custom_field_ids": {
+          "main_custom_field_id": null,
+          "additional_custom_field_ids": [
+            "5012b8e3-c495-4a7b-b1ea-1c8ce95c83d7",
+            "49fe4d13-118c-4b41-8b4c-95aaea4e9bc1",
+            "21e012dd-df52-4aa0-a689-a7d13ca6880a"
+          ]
+        },
+        "accuracy": 0.8,
+        "created_at": "2024-03-12T12:43:23.613Z",
+        "updated_at": "2024-03-12T12:43:35.573Z",
+        "missing_inputs_count": 0,
+        "generated_at": "2024-03-12T12:43:35.467Z",
+        "inputs_count": 3
+      },
+      "relationships": {
+        "background_task": {
+          "data": {
+            "id": "2c8192b6-3c32-4fdc-8f2d-e07ecf46bd14",
+            "type": "background_task"
+          }
+        }
+      }
+    }
+  ]
+}

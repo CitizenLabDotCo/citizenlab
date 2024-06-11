@@ -1,10 +1,16 @@
 import React, { memo } from 'react';
 
-import { Tr, Td, Icon, colors } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
+import {
+  Tr,
+  Td,
+  Icon,
+  colors,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import { rgba } from 'polished';
 import { WrappedComponentProps } from 'react-intl';
+import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useInappropriateContentFlag from 'api/inappropriate_content_flags/useInappropriateContentFlag';
@@ -131,7 +137,7 @@ const ModerationRow = memo<Props & WrappedComponentProps>(
       : moderation.attributes.moderation_status === 'read'
       ? '#f6f6f6'
       : '#fff';
-    const viewLink = getViewLink(moderatableType);
+    const viewLink: RouteType | null = getViewLink(moderatableType);
 
     const handleOnChecked = (_event: React.ChangeEvent) => {
       onSelect(moderation);
@@ -159,7 +165,7 @@ const ModerationRow = memo<Props & WrappedComponentProps>(
       win && win.focus();
     };
 
-    function getViewLink(moderatableType: TModeratableType) {
+    function getViewLink(moderatableType: TModeratableType): RouteType | null {
       if (moderatableType === 'Comment') {
         if (
           belongsToTypes.includes('initiative') &&
@@ -265,7 +271,7 @@ const ModerationRow = memo<Props & WrappedComponentProps>(
         </Cell>
         {viewLink && (
           <Cell>
-            <Tippy
+            <Tooltip
               placement="bottom-end"
               content={
                 <FormattedMessage
@@ -291,7 +297,7 @@ const ModerationRow = memo<Props & WrappedComponentProps>(
                   />
                 </GoToLink>
               </GoToLinkWrapper>
-            </Tippy>
+            </Tooltip>
           </Cell>
         )}
       </Container>

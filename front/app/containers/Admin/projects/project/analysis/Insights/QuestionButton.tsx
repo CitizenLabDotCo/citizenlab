@@ -1,23 +1,25 @@
 import React, { useEffect, useState } from 'react';
 
-import {
-  Box,
-  Button,
-  Text,
-  IconTooltip,
-} from '@citizenlab/cl2-component-library';
+import { Box, Button, Tooltip } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import { IQuestionPreCheck } from 'api/analysis_question_pre_check/types';
 import useAddAnalysisQuestionPreCheck from 'api/analysis_question_pre_check/useAddAnalysisQuestionPreCheck';
 
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { useIntl } from 'utils/cl-intl';
 
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 
 import messages from './messages';
 
 const QuestionButton = ({ onClick }: { onClick: () => void }) => {
+  const askAQuestionEnabled = useFeatureFlag({
+    name: 'ask_a_question',
+    onlyCheckAllowed: true,
+  });
+
   const { formatMessage } = useIntl();
   const { mutate: addQuestionPreCheck, isLoading: isLoadingPreCheck } =
     useAddAnalysisQuestionPreCheck();
@@ -36,54 +38,41 @@ const QuestionButton = ({ onClick }: { onClick: () => void }) => {
     );
   }, [analysisId, filters, addQuestionPreCheck]);
 
-  const questionPossible = !preCheck?.data.attributes.impossible_reason;
-  const questionAccuracy = preCheck?.data.attributes.accuracy;
+  const tooManyInputs =
+    preCheck?.data.attributes.impossible_reason === 'too_many_inputs';
+
+  const questionPossible = !tooManyInputs && askAQuestionEnabled;
+
+  const tooltipContent = !askAQuestionEnabled
+    ? formatMessage(messages.askAQuestionUpsellMessage)
+    : tooManyInputs
+    ? formatMessage(messages.tooManyInputs)
+    : undefined;
+
   return (
-    <Box>
-      <Button
-        justify="left"
-        icon="question-bubble"
-        mb="4px"
-        size="s"
-        w="100%"
-        buttonStyle="secondary-outlined"
-        processing={isLoadingPreCheck}
-        onClick={onClick}
-        disabled={!questionPossible}
-        whiteSpace="wrap"
-      >
-        {formatMessage(messages.askQuestion)}
-        <br />
-        <Text fontSize="s" m="0" color="grey600" whiteSpace="nowrap">
-          <Box display="flex" gap="4px">
-            {questionPossible && questionAccuracy && (
-              <>
-                <FormattedMessage
-                  {...messages.accuracy}
-                  values={{
-                    accuracy: questionAccuracy * 100,
-                    percentage: formatMessage(messages.percentage),
-                  }}
-                />
-                <IconTooltip
-                  icon="info-outline"
-                  content={formatMessage(messages.questionAccuracyTooltip)}
-                />
-              </>
-            )}
-            {!questionPossible && (
-              <>
-                <FormattedMessage {...messages.tooManyInputs} />
-                <IconTooltip
-                  icon="info-solid"
-                  content={formatMessage(messages.tooManyInputsTooltip)}
-                />
-              </>
-            )}
-          </Box>
-        </Text>
-      </Button>
-    </Box>
+    <Tooltip
+      content={<p>{tooltipContent}</p>}
+      placement="auto-start"
+      zIndex={99999}
+      disabled={!tooltipContent}
+    >
+      <Box h="100%">
+        <Button
+          icon="question-bubble"
+          mb="4px"
+          size="s"
+          w="100%"
+          h="100%"
+          buttonStyle="admin-dark"
+          processing={isLoadingPreCheck}
+          onClick={onClick}
+          disabled={!questionPossible || !askAQuestionEnabled}
+          whiteSpace="wrap"
+        >
+          {formatMessage(messages.askQuestion)}
+        </Button>
+      </Box>
+    </Tooltip>
   );
 };
 

@@ -7,6 +7,7 @@ import {
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
+import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import Link from 'utils/cl-router/Link';
@@ -34,7 +35,7 @@ const StyledLink = styled(Link)`
 `;
 
 interface Props {
-  linkTo: string;
+  linkTo: RouteType;
   navigationItemTitle: string;
   onlyActiveOnIndex?: boolean;
   onClick: () => void;

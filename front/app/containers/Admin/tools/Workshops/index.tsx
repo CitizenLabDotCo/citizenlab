@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import { RouteType } from 'routes';
 
 import Button from 'components/UI/Button';
 
@@ -35,7 +36,7 @@ export const Workshops = () => {
             icon="arrow-right"
             iconColor={colors.white}
             iconPos="right"
-            linkTo={`${window.location.origin}/workshops`}
+            linkTo={`${window.location.origin}/workshops` as RouteType}
             openLinkInNewTab
             textColor="white"
             bgColor={colors.primary}
@@ -45,7 +46,7 @@ export const Workshops = () => {
           <Button
             height="45px"
             buttonStyle="text"
-            linkTo={formatMessage(messages.workshopsSupportLink)}
+            linkTo={formatMessage(messages.workshopsSupportLink) as RouteType}
             openLinkInNewTab
             textColor={colors.primary}
           >

@@ -1,9 +1,17 @@
 import { loadModules } from 'utils/moduleUtils';
 
-import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
-import analyticsConfiguration from './commercial/analytics';
-import bulkIdeaImportConfiguration from './commercial/bulk_idea_import';
-import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
+import adminProjectTemplatesConfiguration, {
+  projectTemplateRouteTypes,
+} from './commercial/admin_project_templates';
+import analyticsConfiguration, {
+  analyticsRouteTypes,
+} from './commercial/analytics';
+import bulkIdeaImportConfiguration, {
+  bulkIdeaImportRouteTypes,
+} from './commercial/bulk_idea_import';
+import customIdeaStatusesConfiguration, {
+  customIdeaStatusesRouteTypes,
+} from './commercial/custom_idea_statuses';
 import flagInappropriateContentConfiguration from './commercial/flag_inappropriate_content';
 import googleAnalyticsConfiguration from './commercial/google_analytics';
 import googleTagManagerConfiguration from './commercial/google_tag_manager';
@@ -21,18 +29,33 @@ import IdOostendeRrnConfiguration from './commercial/id_oostende_rrn';
 import idViennaSamlConfiguration from './commercial/id_vienna_saml';
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import impactTrackingConfiguration from './commercial/impact_tracking';
-import insightsConfiguration from './commercial/insights';
 import intercomConfiguration from './commercial/intercom';
 import machineTranslationsConfiguration from './commercial/machine_translations';
 import matomoConfiguration from './commercial/matomo';
-import moderationConfiguration from './commercial/moderation';
+import moderationConfiguration, {
+  moderationRouteTypes,
+} from './commercial/moderation';
 import posthogConfiguration from './commercial/posthog_integration';
-import projectDescriptionBuilderConfiguration from './commercial/project_description_builder';
-import representativenessConfiguration from './commercial/representativeness';
+import projectDescriptionBuilderConfiguration, {
+  descriptionBuilderRouteTypes,
+} from './commercial/project_description_builder';
+import representativenessConfiguration, {
+  representativenessRouteTypes,
+} from './commercial/representativeness';
 import satismeterConfiguration from './commercial/satismeter';
 import segmentConfiguration from './commercial/segment';
 import smartGroupsConfiguration from './commercial/smart_groups';
-import widgetsConfiguration from './commercial/widgets';
+import widgetsConfiguration, { widgetsRouteTypes } from './commercial/widgets';
+
+export type moduleRouteTypes =
+  | projectTemplateRouteTypes
+  | analyticsRouteTypes
+  | bulkIdeaImportRouteTypes
+  | customIdeaStatusesRouteTypes
+  | moderationRouteTypes
+  | descriptionBuilderRouteTypes
+  | representativenessRouteTypes
+  | widgetsRouteTypes;
 
 export default loadModules([
   {
@@ -118,9 +141,6 @@ export default loadModules([
   },
   {
     configuration: widgetsConfiguration,
-  },
-  {
-    configuration: insightsConfiguration,
   },
   {
     configuration: analyticsConfiguration,

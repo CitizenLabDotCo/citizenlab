@@ -9,10 +9,8 @@ module Analysis
     ]
 
     LLMS = [
-      LLM::GPT48k.new,
-      LLM::GPT432k.new,
       LLM::GPT4Turbo.new,
-      LLM::GPT3516k.new
+      LLM::GPT35Turbo.new
     ]
 
     class QAndAFailedError < StandardError; end
@@ -28,13 +26,21 @@ module Analysis
       @question = question
       @task = question.background_task
       @analysis = question.analysis
-      @input_to_text = InputToText.new(@analysis.custom_fields)
+      @input_to_text = InputToText.new(@analysis.associated_custom_fields)
     end
 
     def execute(plan)
       task.set_in_progress!
-      question.update!(accuracy: plan.accuracy)
-      question.insight.update!(inputs_ids: filtered_inputs.ids)
+      old_answer = question.answer
+      old_accuracy = question.accuracy
+      old_input_ids = question.insight.inputs_ids
+      old_custom_field_ids = question.insight.custom_field_ids
+      question.update!(accuracy: plan.accuracy, answer: '')
+      custom_field_ids = {
+        main_custom_field_id: analysis.main_custom_field_id,
+        additional_custom_field_ids: analysis.additional_custom_field_ids
+      }
+      question.insight.update!(inputs_ids: filtered_inputs.ids, custom_field_ids: custom_field_ids)
 
       begin
         run(plan)
@@ -42,6 +48,8 @@ module Analysis
       rescue QAndAFailedError => e
         ErrorReporter.report(e)
         task.set_failed!
+        question.update!(accuracy: old_accuracy, answer: old_answer)
+        question.insight.update!(inputs_ids: old_input_ids, custom_field_ids: old_custom_field_ids)
       end
     end
 
@@ -75,7 +83,7 @@ module Analysis
 
     # For now, we assume GPT tokenization for all llms
     def token_count(str)
-      LLM::OpenAIGPT.token_count(str)
+      LLM::AzureOpenAI.token_count(str)
     end
   end
 end

@@ -5,16 +5,16 @@ import {
   LocaleSwitcher as LocaleSwitcherComponent,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
-  selectedLocale: Locale | undefined;
-  localesWithError?: Locale[];
-  onSelectLocale: (locale: Locale) => void;
+  selectedLocale: SupportedLocale | undefined;
+  localesWithError?: SupportedLocale[];
+  onSelectLocale: (locale: SupportedLocale) => void;
 }
 
 const LocaleSwitcher = ({

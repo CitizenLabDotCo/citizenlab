@@ -6,7 +6,7 @@ namespace :data_migrate do
   task :update_idea_statuses_and_phases, %i[url host locale live] => [:environment] do |_t, args|
     live = args[:live] == 'true'
     puts "Updating idea statuses and phases. Live: #{live}"
-    data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
+    data = CSV.parse(open(args[:url]).read, headers: true, col_sep: ',', converters: [])
 
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       default_locale = args[:locale]

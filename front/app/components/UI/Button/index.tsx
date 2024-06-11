@@ -6,14 +6,12 @@ import {
   ButtonContainerProps as ComponentLibraryButtonContainerProps,
   ButtonStyles,
 } from '@citizenlab/cl2-component-library';
-
-import useLocale from 'hooks/useLocale';
+import { RouteType } from 'routes';
 
 import Link from 'utils/cl-router/Link';
-import { isNilOrError } from 'utils/helperUtils';
 
 interface Props extends ButtonProps {
-  linkTo?: string | null;
+  linkTo?: RouteType | null;
   openLinkInNewTab?: boolean;
   scrollToTop?: boolean;
 }
@@ -30,7 +28,6 @@ const ButtonWrapper = ({
   scrollToTop,
   ...rest
 }: Props) => {
-  const locale = useLocale();
   const isExternalLink =
     linkTo && (linkTo.startsWith('http') || linkTo.startsWith('www'));
 
@@ -67,11 +64,7 @@ const ButtonWrapper = ({
           )
       : undefined;
 
-  if (!isNilOrError(locale)) {
-    return <Button as={link} disabled={disabled} {...rest} />;
-  }
-
-  return null;
+  return <Button as={link} disabled={disabled} {...rest} />;
 };
 
 export default ButtonWrapper;

@@ -7,6 +7,7 @@ import {
   NavLink as RouterLink,
   NavLinkProps,
 } from 'react-router-dom';
+import { RouteType } from 'routes';
 
 import useLocale from 'hooks/useLocale';
 
@@ -16,7 +17,7 @@ import { scrollToTop as scrollTop } from 'utils/scroll';
 import updateLocationDescriptor from './updateLocationDescriptor';
 
 export type Props = {
-  to: Path | string | { pathname: string };
+  to: Path | RouteType | { pathname: string };
   onlyActiveOnIndex?: boolean;
   scrollToTop?: boolean;
   onClick?: (event: React.MouseEvent) => void;

@@ -1,4 +1,38 @@
 nl-BE:
+  locales:
+    en: Engels
+    ar-MA: Arabisch (Marokko)
+    ar-SA: Arabisch (Saoedi-Arabië)
+    ca-ES: Catalaans
+    cy-GB: Welsh
+    da-DK: Deens
+    de-DE: Duits
+    el-GR: Grieks
+    en-CA: Engels (Canada)
+    en-GB: Engels (VK)
+    en-IE: Engels (Ierland)
+    es-CL: Spaans (Chili)
+    es-ES: Spaans (Spanje)
+    fi-FI: Fins
+    fr-BE: Frans (België)
+    fr-FR: Frans
+    hr-HR: Kroatisch
+    hu-HU: Hongaars
+    it-IT: Italiaans
+    kl-GL: Groenlands
+    lb-LU: Luxemburgs
+    lv-LV: Lets
+    mi: Maori
+    nb-NO: Noors (Bokmål)
+    nl-BE: Nederlands (België)
+    nl-NL: Nederlands
+    pl-PL: Pools
+    pt-BR: Portugees (Brazilië)
+    ro-RO: Roemeens
+    sr-Latn: Servisch (Latijn)
+    sr-SP: Servisch (Cyrillisch)
+    sv-SE: Zweeds
+    tr-TR: Turks
   symbols:
     outside: ergens anders
   idea_statuses:
@@ -148,8 +182,8 @@ nl-BE:
       section3:
         title: Details
         description:
-      other:
-        title: Typ je antwoord
+      other_text_field:
+        title: Als je '{other_option}' hebt geselecteerd, typ dan je antwoord.
   custom_forms:
     categories:
       main_content:
@@ -200,29 +234,40 @@ nl-BE:
       subject: 'Reset je wachtwoord voor het participatieplatform van %{organizationName}'
       title_reset_your_password: 'Kies een nieuw wachtwoord'
   xlsx_export:
+    anonymous: 'Anoniem'
     column_headers:
-      input_id: 'ID'
-      latitude: 'Breedtegraad'
-      longitude: 'Lengtegraad'
-      author_fullname: 'Naam auteur'
-      author_email: 'Email auteur'
-      author_id: 'ID auteur'
-      budget: 'Begroting'
-      created_at: 'Ingediend om'
-      published_at: 'Gepubliceerd om'
-      comments_count: 'Reacties'
-      likes_count: 'Likes'
-      dislikes_count: 'Dislikes'
-      picks: 'Keuzes'
-      participants: 'Deelnemers'
-      votes_count: 'Stemmen'
-      input_url: 'URL'
-      project: 'Project'
-      status: 'Status'
       assignee_fullname: 'Toegewezen aan'
       assignee_email: 'E-mailadres toegewezen persoon'
+      attachments: 'Bijlagen'
+      author_email: 'Email auteur'
+      author_fullname: 'Naam auteur'
+      author_id: 'ID auteur'
+      budget: 'Begroting'
+      comments_count: 'Reacties'
+      cost: 'Kosten'
+      created_at: 'Ingediend om'
+      description: 'Beschrijving'
+      dislikes_count: 'Dislikes'
+      email: 'E-mail'
+      first_name: 'Voorna(a)m(en)'
       image_url: 'Afbeelding URL'
-    anonymous: 'Anoniem'
+      input_id: 'ID'
+      input_url: 'URL'
+      last_name: 'Achternaam'
+      latitude: 'Breedtegraad'
+      likes_count: 'Likes'
+      location: 'Locatie'
+      longitude: 'Lengtegraad'
+      participants: 'Deelnemers'
+      picks: 'Keuzes'
+      project: 'Project'
+      published_at: 'Gepubliceerd om'
+      registration_completed_at: 'Registratie voltooid op'
+      status: 'Status'
+      submitted_at: 'Ingediend op'
+      tags: 'Tags'
+      title: 'Naam'
+      votes_count: 'Stemmen'
   form_builder:
     default_select_field:
       title: 'Jouw vraag'
@@ -248,6 +293,7 @@ nl-BE:
       instructions: 'Richtlijnen'
       write_as_clearly: 'Schrijf zo <b>duidelijk</b> als je kunt - deze formulieren kunnen worden gescand.'
       write_in_language: 'Schrijf je antwoorden in dezelfde taal als dit formulier'
+      linear_scale_print_description: 'Schrijf alleen een getal tussen %{min_label} en %{max_label}'
   project_copy:
     title_suffix: 'Kopie'
   confirmations_mailer:

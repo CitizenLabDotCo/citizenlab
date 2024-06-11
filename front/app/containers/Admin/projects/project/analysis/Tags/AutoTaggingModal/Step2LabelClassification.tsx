@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import {
   Box,
   Button,
-  Checkbox,
+  CheckboxWithLabel,
   Text,
   Title,
 } from '@citizenlab/cl2-component-library';
@@ -11,6 +11,8 @@ import { xor } from 'lodash-es';
 import { useParams } from 'react-router-dom';
 
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
+
+import Divider from 'components/admin/Divider';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -35,18 +37,36 @@ const Step2LabelClassification = ({ onLaunch }: Props) => {
     setSelectedTagIds((tagIds) => xor(tagIds, [tagId]));
   };
 
-  const listFull = selectedTagIds.length >= 9;
-
   return (
     <Box>
       <Title>{formatMessage(messages.byLabelTitle)}</Title>
-      <Text>{formatMessage(messages.byLabelSubtitle1)}</Text>
+      <Text>{formatMessage(messages.byLabelSubtitle)}</Text>
       <Text>{formatMessage(messages.byLabelSubtitle2)}</Text>
       <Box>
+        {customTags && customTags.length > 0 && (
+          <>
+            <Divider />
+            <CheckboxWithLabel
+              indeterminate={
+                selectedTagIds.length > 0 &&
+                selectedTagIds.length !== customTags?.length
+              }
+              checked={selectedTagIds.length === customTags?.length}
+              onChange={() =>
+                setSelectedTagIds(
+                  selectedTagIds.length === customTags?.length
+                    ? []
+                    : customTags?.map((t) => t.id) || []
+                )
+              }
+              label={formatMessage(messages.selectAll)}
+            />
+            <Divider />
+          </>
+        )}
         {customTags?.map((tag) => (
           <Box key={tag.id} display="flex" justifyContent="flex-start" mb="8px">
-            <Checkbox
-              disabled={listFull && !selectedTagIds.includes(tag.id)}
+            <CheckboxWithLabel
               checked={selectedTagIds.includes(tag.id)}
               onChange={() => handleTagSelect(tag.id)}
               label={
@@ -61,7 +81,8 @@ const Step2LabelClassification = ({ onLaunch }: Props) => {
           </Box>
         ))}
       </Box>
-      <Box ml="34px">
+      <Divider />
+      <Box>
         <AddTag />
       </Box>
       <Box mt="32px">

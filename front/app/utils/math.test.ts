@@ -1,8 +1,23 @@
-import { roundPercentages, sum } from './math';
+import { roundPercentage, roundPercentages, sum } from './math';
 
 const e = 10 ** -6;
 const closeTo = (value1: number, value2: number) =>
   Math.abs(value1 - value2) < e;
+
+describe('roundPercentage', () => {
+  it('works', () => {
+    expect(roundPercentage(1, 3)).toBe(33);
+  });
+
+  it('works with decimals', () => {
+    expect(roundPercentage(1, 3, 1)).toBe(33.3);
+  });
+
+  it('works with 0s', () => {
+    expect(roundPercentage(0, 3)).toBe(0);
+    expect(roundPercentage(0, 0)).toBe(0);
+  });
+});
 
 describe('roundPercentages', () => {
   describe('no decimals', () => {

@@ -16,11 +16,13 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  deliveries_count :integer          default(0), not null
+#  context_id       :uuid
 #
 # Indexes
 #
-#  index_email_campaigns_campaigns_on_author_id  (author_id)
-#  index_email_campaigns_campaigns_on_type       (type)
+#  index_email_campaigns_campaigns_on_author_id   (author_id)
+#  index_email_campaigns_campaigns_on_context_id  (context_id)
+#  index_email_campaigns_campaigns_on_type        (type)
 #
 # Foreign Keys
 #
@@ -62,7 +64,7 @@ module EmailCampaigns
           invitee_last_name: activity.item.invitee.last_name,
           invite_text: activity.item.invite_text,
           invite_created_at: activity.item.created_at,
-          activate_invite_url: Frontend::UrlService.new.invite_url(activity.item.token, locale: activity.item.invitee.locale)
+          activate_invite_url: Frontend::UrlService.new.invite_url(activity.item.token, locale: Locale.new(activity.item.invitee.locale))
         }
       }]
     end

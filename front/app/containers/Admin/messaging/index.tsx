@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
+import { RouteType } from 'routes';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -29,10 +30,6 @@ const MessagingDashboard = () => {
     action: 'manage',
     item: 'manualCampaign',
   });
-  const manualEmailingEnabled = useFeatureFlag({ name: 'manual_emailing' });
-  const automatedEmailingEnabled = useFeatureFlag({
-    name: 'automated_emailing_control',
-  });
   const textingEnabled = useFeatureFlag({ name: 'texting' });
 
   useEffect(() => {
@@ -47,10 +44,10 @@ const MessagingDashboard = () => {
       });
     };
 
-    if (canManageManualCampaigns && manualEmailingEnabled) {
+    if (canManageManualCampaigns) {
       return redirect('/admin/messaging/emails/custom');
     }
-    if (canManageAutomatedCampaigns && automatedEmailingEnabled) {
+    if (canManageAutomatedCampaigns) {
       return redirect('/admin/messaging/emails/automated');
     }
     if (textingEnabled) {
@@ -59,9 +56,7 @@ const MessagingDashboard = () => {
   }, [
     pathname,
     canManageManualCampaigns,
-    manualEmailingEnabled,
     canManageAutomatedCampaigns,
-    automatedEmailingEnabled,
     textingEnabled,
   ]);
 
@@ -73,18 +68,18 @@ const MessagingDashboard = () => {
     const tabs: {
       name: string;
       label: string;
-      url: string;
+      url: RouteType;
       statusLabel?: string;
     }[] = [];
 
-    if (canManageManualCampaigns && manualEmailingEnabled) {
+    if (canManageManualCampaigns) {
       tabs.push({
         name: 'manual-emails',
         label: formatMessage(messages.customEmails),
         url: '/admin/messaging/emails/custom',
       });
     }
-    if (canManageAutomatedCampaigns && automatedEmailingEnabled) {
+    if (canManageAutomatedCampaigns) {
       tabs.push({
         name: 'automated-emails',
         label: formatMessage(messages.tabAutomatedEmails),

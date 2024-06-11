@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 import { useSearchParams } from 'react-router-dom';
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
 
@@ -19,7 +19,8 @@ import Editor from '../../components/Editor';
 
 export const FullScreenPreview = () => {
   const [search] = useSearchParams();
-  const selectedLocale = (search.get('selected_locale') as Locale) || undefined;
+  const selectedLocale =
+    (search.get('selected_locale') as SupportedLocale) || undefined;
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
   const platformLocale = useLocale();
   const { data: homepage, isLoading } = useHomepageLayout();

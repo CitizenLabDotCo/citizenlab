@@ -1,4 +1,4 @@
-import { ImageSizes, Locale } from 'typings';
+import { ImageSizes, SupportedLocale } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -10,7 +10,7 @@ export interface IAnalysisUserAttributes {
   first_name?: string | null;
   last_name?: string | null;
   slug: string;
-  locale: Locale;
+  locale: SupportedLocale;
   created_at: string;
   updated_at: string;
   avatar?: ImageSizes;

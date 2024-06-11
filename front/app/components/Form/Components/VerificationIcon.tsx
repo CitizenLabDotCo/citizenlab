@@ -6,14 +6,18 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-export default ({ show }: { show: boolean }) => {
+const VerificationIcon = ({ show }: { show: boolean }) => {
   if (show) {
     return (
       <IconTooltip
-        content={<FormattedMessage {...messages.blockedVerified} />}
+        content={<FormattedMessage {...messages.verifiedBlocked} />}
         icon="lock"
         marginLeft="5px"
       />
     );
-  } else return null;
+  }
+
+  return null;
 };
+
+export default VerificationIcon;

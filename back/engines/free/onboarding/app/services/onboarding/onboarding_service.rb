@@ -32,7 +32,7 @@ module Onboarding
     def profile_incomplete?(user)
       MultilocService.new.empty?(user.bio_multiloc) ||
         user.avatar.blank? ||
-        CustomField.with_resource_type('User').enabled.any? do |cf|
+        CustomField.registration.enabled.any? do |cf|
           user.custom_field_values[cf.key].nil?
         end
     end

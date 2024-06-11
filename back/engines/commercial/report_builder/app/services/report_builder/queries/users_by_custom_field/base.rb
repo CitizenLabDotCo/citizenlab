@@ -17,11 +17,13 @@ module ReportBuilder
     # Copied from UserCustomFields::...::StatsUsersController#find_users
     def find_users(start_at, end_at, project_id, group_id)
       users = StatUserPolicy::Scope.new(@current_user, User.active).resolve
+      start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
       finder_params = {
-        registration_date_range: start_at..end_at,
+        registration_date_range: start_date..end_date,
         project: project_id,
         group: group_id
       }
+
       UserCustomFields::UsersFinder.new(users, finder_params).execute
     end
   end

@@ -4,6 +4,7 @@ class GenerateUserAvatarJob < ApplicationJob
   queue_as :default
 
   def run(user)
+    return unless AppConfiguration.instance.feature_activated?('user_avatars')
     return unless user && !user.avatar? && user.email
 
     hash = Digest::MD5.hexdigest(user.email)

@@ -16,11 +16,13 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  deliveries_count :integer          default(0), not null
+#  context_id       :uuid
 #
 # Indexes
 #
-#  index_email_campaigns_campaigns_on_author_id  (author_id)
-#  index_email_campaigns_campaigns_on_type       (type)
+#  index_email_campaigns_campaigns_on_author_id   (author_id)
+#  index_email_campaigns_campaigns_on_context_id  (context_id)
+#  index_email_campaigns_campaigns_on_type        (type)
 #
 # Foreign Keys
 #
@@ -71,7 +73,7 @@ module EmailCampaigns
       if notification.phase.voting?
         [{
           event_payload: {
-            project_url: Frontend::UrlService.new.model_to_url(notification.phase.project, locale: recipient.locale),
+            project_url: Frontend::UrlService.new.model_to_url(notification.phase.project, locale: Locale.new(recipient.locale)),
             project_title_multiloc: notification.phase.project.title_multiloc,
             phase_title_multiloc: notification.phase.title_multiloc,
             ideas: EmailCampaigns::PayloadFormatterService.new.format_ideas_list(notification.phase.ideas, recipient)

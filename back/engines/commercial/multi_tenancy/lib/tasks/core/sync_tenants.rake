@@ -90,7 +90,7 @@ namespace :sync_tenants do
   task :apply_updates, [:sheet] => [:environment] do |_t, args|
     template_path = Rails.root.join('config/tenant_templates/base.yml')
     template = MultiTenancy::Templates::Utils.parse_yml_file(template_path)
-    instructions = CSV.parse(open(args[:sheet]).read, { headers: true, col_sep: ',', converters: [] })
+    instructions = CSV.parse(open(args[:sheet]).read, headers: true, col_sep: ',', converters: [])
 
     Tenant.where(host: instructions.pluck('Tenant host').uniq).each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
@@ -148,10 +148,10 @@ def object_from_template(classname, attributes)
   when 'Project', 'Event'
     nil
   when 'CustomField'
-    CustomField.with_resource_type('User').where(code: attributes['code']).first
+    CustomField.registration.where(code: attributes['code']).first
   when 'CustomFieldOption'
     CustomFieldOption.where(key: attributes['key'],
-      custom_field: CustomField.with_resource_type('User').where(code: attributes['custom_field_ref']['code'])).first
+      custom_field: CustomField.registration.where(code: attributes['custom_field_ref']['code'])).first
   end
 end
 

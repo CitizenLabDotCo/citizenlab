@@ -40,6 +40,9 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
 
   const { title_multiloc } = input.attributes;
 
+  const mainCustomFieldId =
+    analysis.data.relationships.main_custom_field?.data?.id;
+
   return (
     <Box data-cy="e2e-analysis-input-item">
       <Box
@@ -83,26 +86,23 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
 
         {(!title_multiloc || isEmpty(title_multiloc)) && (
           <Box flex="1" w="100%">
-            {analysis.data.relationships.custom_fields.data
-              .slice(0, 3)
-              .map((customField) => (
-                <Text
-                  key={customField.id}
-                  fontSize="s"
-                  color="textSecondary"
-                  m="0px"
-                  textOverflow="ellipsis"
-                  overflow="hidden"
-                  whiteSpace="nowrap"
-                >
-                  <InputShortFieldValue
-                    customFieldId={customField.id}
-                    input={input}
-                    projectId={analysis.data.relationships.project?.data?.id}
-                    phaseId={analysis.data.relationships.phase?.data?.id}
-                  />
-                </Text>
-              ))}
+            {mainCustomFieldId && (
+              <Text
+                fontSize="s"
+                color="textSecondary"
+                m="0px"
+                textOverflow="ellipsis"
+                overflow="hidden"
+                whiteSpace="nowrap"
+              >
+                <InputShortFieldValue
+                  customFieldId={mainCustomFieldId}
+                  input={input}
+                  projectId={analysis.data.relationships.project?.data?.id}
+                  phaseId={analysis.data.relationships.phase?.data?.id}
+                />
+              </Text>
+            )}
           </Box>
         )}
 
@@ -110,25 +110,25 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
           <Box display="flex" gap="8px">
             {typeof input.attributes.likes_count === 'number' && (
               <Box display="flex" gap="4px">
-                <Icon width="20px" height="20px" name="vote-up" />
+                <Icon width="16px" height="16px" name="vote-up" />
                 <span> {input.attributes.likes_count}</span>
               </Box>
             )}
             {typeof input.attributes.dislikes_count === 'number' && (
               <Box display="flex" gap="4px">
-                <Icon width="20px" height="20px" name="vote-down" />
+                <Icon width="16px" height="16px" name="vote-down" />
                 <span> {input.attributes.dislikes_count}</span>
               </Box>
             )}
             {typeof input.attributes.votes_count === 'number' && (
               <Box display="flex" gap="4px">
-                <Icon width="20px" height="20px" name="vote-ballot" />
+                <Icon width="16px" height="16px" name="vote-ballot" />
                 <span> {input.attributes.votes_count}</span>
               </Box>
             )}
             {typeof input.attributes.comments_count === 'number' && (
               <Box display="flex" gap="4px">
-                <Icon width="20px" height="20px" name="comments" />
+                <Icon width="16px" height="16px" name="comments" />
                 <span> {input.attributes.comments_count}</span>
               </Box>
             )}

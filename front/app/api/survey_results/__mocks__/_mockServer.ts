@@ -18,8 +18,10 @@ export const surveyResultsResponse: SurveyResultsType = {
             en: 'Your question',
           },
           required: false,
+          grouped: false,
           totalResponseCount: 1,
           questionResponseCount: 1,
+          totalPickCount: 1,
           answers: [
             {
               answer: 'option1',
@@ -37,8 +39,10 @@ export const surveyResultsResponse: SurveyResultsType = {
             en: 'Single choice',
           },
           required: true,
+          grouped: false,
           totalResponseCount: 1,
           questionResponseCount: 1,
+          totalPickCount: 1,
           answers: [
             {
               answer: 'option_a',
@@ -49,16 +53,6 @@ export const surveyResultsResponse: SurveyResultsType = {
             answer: { option_a: { title_multiloc: { en: 'Option A' } } },
           },
           customFieldId: '548f7849-837f-447e-831a-51050a403a3b',
-        },
-        {
-          inputType: 'multiline_text',
-          question: {
-            en: 'question',
-          },
-          required: false,
-          totalResponseCount: 1,
-          questionResponseCount: 1,
-          customFieldId: '052befb9-b096-4ded-ba1d-3ee2541bde31',
         },
       ],
       totalSubmissions: 1,

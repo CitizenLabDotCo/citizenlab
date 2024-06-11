@@ -56,6 +56,17 @@ describe Analysis::InputsFinder do
     end
   end
 
+  describe 'limit' do
+    it 'filters correctly' do
+      _idea1 = create(:idea, project: analysis.source_project)
+      _idea2 = create(:idea, project: analysis.source_project)
+      _idea3 = create(:idea, project: analysis.source_project)
+      _idea4 = create(:idea, project: analysis.source_project)
+      @params = { limit: 1 }
+      expect(output.size).to eq 1
+    end
+  end
+
   describe 'published_at' do
     it 'filters correctly' do
       _idea1 = create(:idea, project: analysis.source_project, published_at: '2019-01-01')
@@ -315,19 +326,19 @@ describe Analysis::InputsFinder do
 
   describe 'input_custom_field_no_empty_values' do
     let_it_be(:custom_form) { create(:custom_form) }
-    let_it_be(:custom_field_select) { create(:custom_field_select, :with_options, resource: custom_form) }
-    let_it_be(:analysis) { create(:analysis, custom_fields: [custom_field_select]) }
+    let_it_be(:custom_field_text) { create(:custom_field_text, resource: custom_form) }
+    let_it_be(:analysis) { create(:analysis, main_custom_field: custom_field_text, additional_custom_fields: []) }
 
     let_it_be(:input0) { create(:idea, project: analysis.source_project) }
     let_it_be(:input1) do
       create(:idea, project: analysis.source_project, custom_field_values: {
-        custom_field_select.key => custom_field_select.options[0].key
+        custom_field_text.key => 'value 1'
       })
     end
 
     let_it_be(:input2) do
       create(:idea, project: analysis.source_project, custom_field_values: {
-        custom_field_select.key => custom_field_select.options[1].key
+        custom_field_text.key => 'value 2'
       })
     end
 

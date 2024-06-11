@@ -2,7 +2,7 @@ import React from 'react';
 
 import { get } from 'lodash-es';
 import { Controller, useFormContext, FieldError } from 'react-hook-form';
-import { Locale, CLError, RHFErrors } from 'typings';
+import { SupportedLocale, CLError, RHFErrors } from 'typings';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
@@ -34,7 +34,7 @@ const QuillMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
     return null;
   }
 
-  const defaultValue: Partial<Record<Locale, any>> = locales.reduce(
+  const defaultValue: Partial<Record<SupportedLocale, any>> = locales.reduce(
     (acc, curr) => ((acc[curr] = ''), acc),
     {}
   );
@@ -42,7 +42,7 @@ const QuillMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
   const errors = get(formContextErrors, name) as RHFErrors;
   // Select the first error messages from the field's multiloc validation error
   const validationError = Object.values(
-    (errors as Record<Locale, FieldError> | undefined) || {}
+    (errors as Record<SupportedLocale, FieldError> | undefined) || {}
   )[0]?.message;
 
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item

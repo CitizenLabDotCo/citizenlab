@@ -173,7 +173,7 @@ const Tasks = () => {
                       </Box>
                     )}
                   </Box>
-                  {task.attributes.progress && (
+                  {!!task.attributes.progress && (
                     <StyledProgressBar
                       progress={task.attributes.progress}
                       color={colors.green400}

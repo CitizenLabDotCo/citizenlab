@@ -19,7 +19,7 @@ RSpec.describe EmailCampaigns::InviteReminderMailer do
           invitee_last_name: recipient.last_name,
           invite_text: "<p>#{invite_text}</p>",
           invite_created_at: 50.5.hours.ago,
-          activate_invite_url: Frontend::UrlService.new.invite_url(token, locale: recipient.locale)
+          activate_invite_url: Frontend::UrlService.new.invite_url(token, locale: Locale.new(recipient.locale))
         }
       }
     end

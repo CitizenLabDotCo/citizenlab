@@ -173,12 +173,6 @@ const SettingsRegistrationTab = () => {
                 }
               />
             </SectionField>
-            {userConfirmationIsAllowed && (
-              <ToggleUserConfirmation
-                onChange={handleUserConfirmationToggleChange}
-                isEnabled={userConfirmationToggleIsEnabled}
-              />
-            )}
             <CustomFieldsSignupText
               onCoreSettingWithMultilocChange={
                 handleCoreSettingWithMultilocOnChange
@@ -187,6 +181,12 @@ const SettingsRegistrationTab = () => {
                 latestAppConfigSettings.core.custom_fields_signup_helper_text
               }
             />
+            {userConfirmationIsAllowed && (
+              <ToggleUserConfirmation
+                onChange={handleUserConfirmationToggleChange}
+                isEnabled={userConfirmationToggleIsEnabled}
+              />
+            )}
             <SubmitWrapper
               loading={isFormSubmitting}
               status={getSubmitState({

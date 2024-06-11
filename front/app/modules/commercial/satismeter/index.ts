@@ -22,10 +22,6 @@ declare module 'components/ConsentManager/destinations' {
   export interface IDestinationMap {
     satismeter: 'satismeter';
   }
-
-  interface IConsentManagerFeatureMap {
-    satismeter: 'satismeter';
-  }
 }
 
 const destinationConfig: IDestinationConfig = {

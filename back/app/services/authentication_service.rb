@@ -4,7 +4,8 @@ class AuthenticationService
   @all_methods = {
     'facebook' => OmniauthMethods::Facebook.new,
     'google' => OmniauthMethods::Google.new,
-    'azureactivedirectory' => OmniauthMethods::AzureActiveDirectory.new
+    'azureactivedirectory' => OmniauthMethods::AzureActiveDirectory.new,
+    'azureactivedirectory_b2c' => OmniauthMethods::AzureActiveDirectoryB2c.new
   }
 
   class << self
@@ -41,7 +42,7 @@ class AuthenticationService
     return nil if !user
 
     if user.confirmation_required? && !user.email_confirmed_at && user.password_digest
-      user.destroy!
+      DeleteUserJob.perform_now(user)
       return nil
     end
 

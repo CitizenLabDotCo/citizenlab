@@ -227,6 +227,7 @@ describe('Native survey CTA bar', () => {
 
     // Take the survey
     cy.visit(`/projects/${projectSlug}`);
+    cy.acceptCookies();
     cy.get('#e2e-cta-button')
       .find('button')
       .should('not.have.attr', 'disabled');

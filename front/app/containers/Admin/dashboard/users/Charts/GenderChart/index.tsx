@@ -3,7 +3,7 @@ import React, { useRef } from 'react';
 import moment from 'moment';
 
 import { useUsersByGenderLive } from 'api/graph_data_units';
-import { usersByGenderXlsxEndpoint } from 'api/users_by_gender/util';
+import { usersByCustomFieldXlsxEndpoint } from 'api/users_by_custom_field/util';
 
 import messages from 'containers/Admin/dashboard/messages';
 
@@ -20,6 +20,7 @@ import { QueryParameters } from './typings';
 
 interface Props extends QueryParameters {
   currentGroupFilterLabel?: string;
+  customFieldId: string;
 }
 
 const GenderChart = ({
@@ -27,6 +28,7 @@ const GenderChart = ({
   endAt,
   currentGroupFilter,
   currentGroupFilterLabel,
+  customFieldId,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -45,7 +47,7 @@ const GenderChart = ({
       exportMenu={{
         name: cardTitle,
         svgNode: graphRef,
-        xlsx: { endpoint: usersByGenderXlsxEndpoint },
+        xlsx: { endpoint: usersByCustomFieldXlsxEndpoint(customFieldId) },
         currentGroupFilterLabel,
         currentGroupFilter,
         startAt,

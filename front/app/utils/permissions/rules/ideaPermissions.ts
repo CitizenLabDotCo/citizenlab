@@ -23,7 +23,7 @@ definePermissionRule(
   (_idea: IIdeaData, user, _tenant, { project = null }) => {
     if (project) {
       return (
-        project.attributes.action_descriptor.posting_idea.enabled ||
+        project.attributes.action_descriptors.posting_idea.enabled ||
         isAdmin(user)
       );
     }

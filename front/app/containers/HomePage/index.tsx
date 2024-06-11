@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { Spinner } from '@citizenlab/cl2-component-library';
+import { RouteType } from 'routes';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
@@ -16,7 +17,7 @@ import { canAccessRoute } from 'utils/permissions/rules/routePermissions';
 
 import Viewer from './Viewer';
 
-export const adminRedirectPath = '/admin';
+export const adminRedirectPath: RouteType = '/admin';
 
 const HomePage = () => {
   const { data: homepageLayout } = useHomepageLayout();
@@ -40,11 +41,12 @@ const HomePage = () => {
   }, [pressedLetterAKey, userHasAdminAccess]);
 
   if (!homepageLayout) return <Spinner />;
+
   return (
-    <div id="e2e-landing-page">
+    <main id="e2e-landing-page">
       <Viewer />
       <CityLogoSection />
-    </div>
+    </main>
   );
 };
 

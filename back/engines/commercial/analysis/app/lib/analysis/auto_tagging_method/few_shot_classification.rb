@@ -21,7 +21,7 @@ module Analysis
 
         prompt = genereate_prompt(inputs_slice, tags)
 
-        answer = llm.chat(prompt)
+        answer = gpt4.chat(prompt)
 
         inputs_slice.zip(answer.lines).each do |(input, label)|
           tag = tags.find { |t| t.name.casecmp(label.strip) == 0 }
@@ -33,10 +33,6 @@ module Analysis
     end
 
     private
-
-    def llm
-      @llm ||= LLM::GPT48k.new
-    end
 
     def genereate_prompt(inputs, tags)
       labels = tags.map { |tag| ['"', tag.name, '"'].join }.join(', ')

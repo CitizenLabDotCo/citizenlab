@@ -22,7 +22,7 @@ interface Props {
   type: ManagerType;
   statuses?: IIdeaStatusData[] | IInitiativeStatusData[] | null;
   selectedStatus?: string | null;
-  onChangeStatusFilter?: (status: string | null) => void;
+  onChangeStatusFilter: (status: string | null) => void;
 }
 
 const FilterSidebarStatuses = ({
@@ -38,11 +38,11 @@ const FilterSidebarStatuses = ({
   }
 
   const handleItemClick = (id: string) => () => {
-    onChangeStatusFilter && onChangeStatusFilter(id);
+    onChangeStatusFilter(id);
   };
 
   const clearFilter = () => {
-    onChangeStatusFilter && onChangeStatusFilter(null);
+    onChangeStatusFilter(null);
   };
 
   const isActive = (id: string) => {
@@ -57,7 +57,7 @@ const FilterSidebarStatuses = ({
         </Menu.Item>
         <Divider />
         {/* Only input statuses can be edited and only admins can do this */}
-        {isAdmin({ data: authUser.data }) &&
+        {isAdmin(authUser) &&
           (type === 'AllIdeas' ||
             (type === 'ProjectIdeas' && (
               <Box display="inline-flex">

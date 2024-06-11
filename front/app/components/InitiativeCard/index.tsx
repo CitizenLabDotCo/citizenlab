@@ -140,6 +140,7 @@ const InitiativeCard = ({
                   initiative.data.relationships.user_follower?.data?.id
                 }
                 w="100%"
+                toolTipType="input"
               />
             </Box>
           )}

@@ -157,7 +157,7 @@ const ProjectGroupsList = ({ projectId, onAddButtonClicked }: Props) => {
 
       <AddGroupButton
         text={formatMessage(messages.add)}
-        buttonStyle="cl-blue"
+        buttonStyle="admin-dark"
         icon="plus-circle"
         onClick={handleOnAddGroupClick}
         disabled={!selectedGroups || selectedGroups.length === 0}

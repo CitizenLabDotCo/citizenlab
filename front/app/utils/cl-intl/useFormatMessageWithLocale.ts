@@ -1,7 +1,7 @@
 import { useContext, useCallback } from 'react';
 
 import { MessageDescriptor } from 'react-intl';
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
@@ -15,7 +15,7 @@ const useFormatMessageWithLocale = () => {
 
   const formatMessageWithLocale = useCallback(
     (
-      locale: Locale,
+      locale: SupportedLocale,
       messageDescriptor: MessageDescriptor,
       values?: FormatMessageValues
     ) => {

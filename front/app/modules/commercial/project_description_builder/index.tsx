@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { AdminRoute } from 'containers/Admin/routes';
+
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 const ProjectDescriptionBuilderComponent = React.lazy(
@@ -26,15 +28,25 @@ const ProjectDescriptionBuilderToggle = React.lazy(
     )
 );
 
+export enum descriptionBuilderRoutes {
+  projectdescriptionBuilder = 'project-description-builder',
+  description = `project-description-builder/projects/:projectId/description`,
+  preview = `project-description-builder/projects/:projectId/preview`,
+}
+
+export type descriptionBuilderRouteTypes =
+  | AdminRoute<`${descriptionBuilderRoutes.projectdescriptionBuilder}/projects/${string}/description`>
+  | AdminRoute<`${descriptionBuilderRoutes.projectdescriptionBuilder}/projects/${string}/preview`>;
+
 const configuration: ModuleConfiguration = {
   routes: {
     admin: [
       {
-        path: 'project-description-builder/projects/:projectId/description',
+        path: descriptionBuilderRoutes.description,
         element: <ProjectDescriptionBuilderComponent />,
       },
       {
-        path: 'project-description-builder/projects/:projectId/preview',
+        path: descriptionBuilderRoutes.preview,
         element: <FullscreenPreview />,
       },
     ],

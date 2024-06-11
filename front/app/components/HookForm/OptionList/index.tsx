@@ -12,7 +12,7 @@ import { cloneDeep, get } from 'lodash-es';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
-import { Locale, CLError, RHFErrors, Multiloc } from 'typings';
+import { SupportedLocale, CLError, RHFErrors, Multiloc } from 'typings';
 
 import { IOptionsType } from 'api/custom_fields/types';
 
@@ -31,10 +31,10 @@ export type Option = {
 
 interface Props {
   name: string;
-  onSelectedLocaleChange?: (locale: Locale) => void;
-  locales: Locale[];
+  onSelectedLocaleChange?: (locale: SupportedLocale) => void;
+  locales: SupportedLocale[];
   allowDeletingAllOptions?: boolean;
-  platformLocale: Locale;
+  platformLocale: SupportedLocale;
   fieldLabel: string | JSX.Element | null;
   addButtonLabel: string | JSX.Element | undefined;
 }
@@ -54,13 +54,13 @@ const OptionList = ({
     setValue,
     trigger,
   } = useFormContext();
-  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(
+  const [selectedLocale, setSelectedLocale] = useState<SupportedLocale | null>(
     platformLocale
   );
 
   // Handles locale change
   const handleOnSelectedLocaleChange = useCallback(
-    (newSelectedLocale: Locale) => {
+    (newSelectedLocale: SupportedLocale) => {
       setSelectedLocale(newSelectedLocale);
       onSelectedLocaleChange?.(newSelectedLocale);
     },
@@ -73,7 +73,7 @@ const OptionList = ({
     options: IOptionsType;
     index: number;
     name: string;
-    selectedLocale: Locale;
+    selectedLocale: SupportedLocale;
   };
 
   const handleOptionChange = ({
@@ -238,7 +238,7 @@ const OptionList = ({
                   <Button
                     icon="plus-circle"
                     type="button"
-                    buttonStyle="secondary"
+                    buttonStyle="secondary-outlined"
                     data-cy="e2e-add-answer"
                     onClick={() => handleAddOption(options, name)}
                     text={addButtonLabel}

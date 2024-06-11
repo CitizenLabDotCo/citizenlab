@@ -67,6 +67,8 @@ en:
       reacted_comment_in: "Reacted to a comment on an idea with one of the following statuses %{value}"
       not_reacted_comment_in: "Did not react to a comment on an idea with status %{value}"
     participated_in_project:
+      follows_something: "Follows something in one of the following projects %{value}"
+      not_follows_something: "Does not follow anything in the project %{value}"
       in: "Participation in an idea in one of the following projects %{value}"
       not_in: "No participation in an idea in the project %{value}"
       posted_in: "Posted an idea in one of the following projects %{value}"
@@ -77,8 +79,12 @@ en:
       not_reacted_idea_in: "Did not react to an idea in the project %{value}"
       reacted_comment_in: "Reacted to a comment on an idea in one of the following projects %{value}"
       not_reacted_comment_in: "Did not react to a comment on an idea in the project %{value}"
+      registered_to_an_event: "Registered to an event in one of the following projects %{value}"
+      not_registered_to_an_event: "Did not registered to an event in the project %{value}"
       voted_in: "Voted in one of the following projects %{value}"
       not_voted_in: "Did not vote in the project %{value}"
+      volunteered_in: "Volunteered in one of the following projects %{value}"
+      not_volunteered_in: "Didn't volunteer in the project %{value}"
     participated_in_topic:
       in: "Participation in an idea with one of the following topics %{value}"
       not_in: "No participation in an idea with topic %{value}"

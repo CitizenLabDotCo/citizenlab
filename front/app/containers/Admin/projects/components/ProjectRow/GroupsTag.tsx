@@ -4,8 +4,6 @@ import { colors } from '@citizenlab/cl2-component-library';
 
 import useProjectGroups from 'api/project_groups/useProjectGroups';
 
-import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
-
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
@@ -50,7 +48,7 @@ const GroupsTag = ({ projectId, userCanModerateProject }: Props) => {
     return (
       <Link
         data-cy="e2e-groups-permissions-tag"
-        to={`${adminProjectsProjectPath(projectId)}/settings/access-rights`}
+        to={`/admin/projects/${projectId}/settings/access-rights`}
       >
         <StatusLabel groupCount={groupCount} />
       </Link>
