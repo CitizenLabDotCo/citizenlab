@@ -1,3 +1,3 @@
-Contact: mailto:security@citizenlab.co
+Contact: mailto:security@govocal.co
 Expires: 2025-06-01T00:00:00.000Z
 Policy: https://github.com/CitizenLabDotCo/citizenlab/blob/master/SECURITY.md
