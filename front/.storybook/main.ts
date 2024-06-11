@@ -47,7 +47,7 @@ const config: StorybookConfig = {
   },
   docs: {},
   babel: async () => {
-    const opt = require('./.babelrc.json');
+    const opt = await import('./.babelrc.json');
     return opt;
   },
   async viteFinal(config) {
