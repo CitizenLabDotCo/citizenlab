@@ -44,13 +44,12 @@ const ToggleUserConfirmation = ({ isEnabled, onChange }: Props) => {
   const emailConfirmPermissionEnabled = useFeatureFlag({
     name: 'permission_option_email_confirmation',
   });
-  const showEmailConfirmationToggle = !emailConfirmPermissionEnabled;
 
   const handleChange = () => {
     onChange(!isEnabled);
   };
 
-  if (!showEmailConfirmationToggle) {
+  if (emailConfirmPermissionEnabled) {
     return null;
   }
 
