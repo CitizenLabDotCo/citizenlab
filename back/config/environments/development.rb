@@ -19,7 +19,7 @@ Rails.application.configure do
   # [] => Cross-origin requests are NOT allowed from any origin.
   # ['*'] => Cross-origin requests from any origin are allowed.
   # ['http://some-domain.com', 'https://other-domain.com'] => Cross-origin requests are allowed from specified origins.
-  config.allowed_cors_origins = ['*']
+  config.allowed_cors_origins = []
 
   # In the development environment your application's code is reloaded any time
   # it changes. This slows down response time but is perfect for development
