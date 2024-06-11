@@ -1028,6 +1028,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": "Alongamento",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.active": "Ativo",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.finished": "Terminado",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.openEnded": "Aberto",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.planned": "Planejado",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publishedProjects": "Projetos publicados",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "Os dados desse widget estão faltando. Reconfigure-o ou exclua-o para que você possa salvar o relatório.",

@@ -1028,6 +1028,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": "Stretch",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.active": "Aktiv",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.finished": "Färdig",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.openEnded": "Öppen frågeställning",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.planned": "Planerad",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publishedProjects": "Publicerade projekt",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "Data för denna widget saknas. Konfigurera om eller ta bort den för att kunna spara rapporten.",

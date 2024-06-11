@@ -1028,6 +1028,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": "تمتد",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.active": "نشيط",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.finished": "انتهى",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.openEnded": "مفتوحة",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.planned": "المخطط لها",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publishedProjects": "المشاريع المنشورة",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "البيانات الخاصة بهذه القطعة مفقودة. أعد تكوينه أو احذفه لتتمكن من حفظ التقرير.",

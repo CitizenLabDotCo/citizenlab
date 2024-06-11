@@ -1028,6 +1028,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": "Tøye ut",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.active": "Aktiv",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.finished": "Ferdig",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.openEnded": "Åpen slutt",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.planned": "Planlagt",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publishedProjects": "Publiserte prosjekter",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "Dataene for denne modulen mangler. Konfigurer eller slett den på nytt for å kunne lagre rapporten.",

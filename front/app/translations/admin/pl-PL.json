@@ -1028,6 +1028,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ImageMultiloc.Settings.stretch": "Rozciąganie",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.active": "Aktywny",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.finished": "Zakończony",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.openEnded": "Otwarty",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.planned": "Planowane",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publishedProjects": "Opublikowane projekty",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "Brakuje danych dla tego widżetu. Skonfiguruj go ponownie lub usuń, aby móc zapisać raport.",
