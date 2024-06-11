@@ -396,10 +396,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            visitors_dashboard: {
-              enabled: true,
-              allowed: true
-            },
             report_builder: {
               enabled: true,
               allowed: true

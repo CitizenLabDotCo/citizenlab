@@ -288,10 +288,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: true,
           allowed: true
         },
-        visitors_dashboard: {
-          enabled: true,
-          allowed: true
-        },
         report_builder: {
           enabled: true,
           allowed: true
