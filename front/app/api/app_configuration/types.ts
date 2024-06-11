@@ -173,7 +173,6 @@ export interface IAppConfigurationSettings {
   moderation?: AppConfigurationFeature;
   flag_inappropriate_content?: AppConfigurationFeature;
   disable_disliking?: AppConfigurationFeature;
-  project_visibility?: AppConfigurationFeature;
   project_management?: AppConfigurationFeature;
   idea_assignment?: AppConfigurationFeature;
   blocking_profanity?: AppConfigurationFeature;

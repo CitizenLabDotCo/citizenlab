@@ -370,10 +370,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            project_visibility: {
-              enabled: true,
-              allowed: true
-            },
             disable_disliking: {
               enabled: true,
               allowed: true
