@@ -49,13 +49,6 @@ export const SecondaryOutlined = {
   },
 };
 
-export const Success = {
-  args: {
-    buttonStyle: 'success',
-    children: 'Button',
-  },
-};
-
 export const TextStyle = {
   args: {
     buttonStyle: 'text',
