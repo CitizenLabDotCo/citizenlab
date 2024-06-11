@@ -4,7 +4,7 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
   extend ActiveSupport::Concern
 
   ROLES = %w[admin project_moderator project_folder_moderator].freeze
-  CITIZENLAB_MEMBER_REGEX_CONTENT = 'citizenlab.(eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'
+  CITIZENLAB_MEMBER_REGEX_CONTENT = 'citizenlaab\.(eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'
 
   class << self
     def roles_json_schema
