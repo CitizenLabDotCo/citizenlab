@@ -87,6 +87,6 @@ describe('<ModeratorListRow />', () => {
     );
 
     const deleteButton = screen.getByRole('button', { name: /delete/i });
-    expect(deleteButton).toBeDisabled();
+    expect(deleteButton).toHaveAttribute('aria-disabled', 'true');
   });
 });

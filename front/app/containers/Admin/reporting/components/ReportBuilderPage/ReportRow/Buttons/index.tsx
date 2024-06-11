@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { colors } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
+import { colors, Tooltip } from '@citizenlab/cl2-component-library';
 
 import useCopyReport from 'api/reports/useCopyReport';
 import useDeleteReport from 'api/reports/useDeleteReport';
@@ -10,6 +9,7 @@ import useReport from 'api/reports/useReport';
 import Button from 'components/UI/Button';
 
 import { useIntl } from 'utils/cl-intl';
+
 import messages from '../messages';
 
 const BaseButton = (props) => {
@@ -17,15 +17,10 @@ const BaseButton = (props) => {
   return <Button {...props} mr={'8px'} iconSize={'18px'} />;
 };
 
-const Tooltip = ({ disabled, content, children }) => (
-  <Tippy
-    disabled={disabled}
-    interactive={true}
-    placement="bottom"
-    content={content}
-  >
+const ReportRowTooltip = ({ disabled, content, children }) => (
+  <Tooltip disabled={disabled} placement="bottom" content={content}>
     <div> {children} </div>
-  </Tippy>
+  </Tooltip>
 );
 
 interface Props {
@@ -69,35 +64,35 @@ const Buttons = ({ reportId, showDuplicate = true }: Props) => {
       </BaseButton>
 
       {showDuplicate && (
-        <Tooltip
+        <ReportRowTooltip
           disabled={canEdit}
           content={formatMessage(messages.cannotDuplicateReport)}
         >
           <BaseButton
             icon="copy"
-            buttonStyle="secondary"
+            buttonStyle="secondary-outlined"
             processing={isDuplicating}
             disabled={isLoading || !canEdit}
             onClick={() => duplicateReport({ id: reportId })}
           >
             {formatMessage(messages.duplicate)}
           </BaseButton>
-        </Tooltip>
+        </ReportRowTooltip>
       )}
 
-      <Tooltip
+      <ReportRowTooltip
         disabled={canEdit}
         content={formatMessage(messages.cannotEditReport)}
       >
         <BaseButton
           icon="edit"
-          buttonStyle="secondary"
+          buttonStyle="secondary-outlined"
           disabled={isLoading || !canEdit}
           linkTo={`/admin/reporting/report-builder/${reportId}/editor`}
         >
           {formatMessage(messages.edit)}
         </BaseButton>
-      </Tooltip>
+      </ReportRowTooltip>
     </>
   );
 };

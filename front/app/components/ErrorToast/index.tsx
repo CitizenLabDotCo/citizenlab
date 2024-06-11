@@ -90,6 +90,10 @@ const ErrorToast = () => {
     };
   }, []);
 
+  if (!error) {
+    return null;
+  }
+
   return (
     <StyledBox
       mx="auto"

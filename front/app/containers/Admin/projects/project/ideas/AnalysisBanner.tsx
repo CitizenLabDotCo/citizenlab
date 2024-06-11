@@ -7,8 +7,8 @@ import {
   Button,
   Box,
   stylingConsts,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import { useParams } from 'react-router-dom';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
@@ -82,7 +82,7 @@ const AnalysisBanner = () => {
           {formatMessage(messages.analysisSubtitle)}
         </Text>
       </Box>
-      <Tippy
+      <Tooltip
         content={<p>{formatMessage(messages.analysisUpsellTooltip)}</p>}
         disabled={isAnalysisEnabled}
       >
@@ -101,7 +101,7 @@ const AnalysisBanner = () => {
             {formatMessage(messages.analysisButton)}
           </Button>
         </Box>
-      </Tippy>
+      </Tooltip>
     </Box>
   );
 };
