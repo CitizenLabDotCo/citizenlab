@@ -4,7 +4,8 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
   extend ActiveSupport::Concern
 
   ROLES = %w[admin project_moderator project_folder_moderator].freeze
-  CITIZENLAB_MEMBER_REGEX_CONTENT = 'citizenlaab\.(eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'
+  CITIZENLAB_MEMBER_REGEX_CONTENT = 'citizenlab\.(eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'
+  GOVOCAL_MEMBER_REGEX_CONTENT = 'govocal\.(com|eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'
 
   class << self
     def roles_json_schema
@@ -71,8 +72,8 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
     }
 
     # https://www.postgresql.org/docs/12/functions-matching.html#FUNCTIONS-POSIX-REGEXP
-    scope :citizenlab_member, -> { where('email ~* ?', CITIZENLAB_MEMBER_REGEX_CONTENT) }
-    scope :not_citizenlab_member, -> { where.not('email ~* ?', CITIZENLAB_MEMBER_REGEX_CONTENT) }
+    scope :citizenlab_member, -> { where('email ~* ?', CITIZENLAB_MEMBER_REGEX_CONTENT).or(where('email ~* ?', GOVOCAL_MEMBER_REGEX_CONTENT)) }
+    scope :not_citizenlab_member, -> { where.not('email ~* ?', CITIZENLAB_MEMBER_REGEX_CONTENT).and(where.not('email ~* ?', GOVOCAL_MEMBER_REGEX_CONTENT)) }
     scope :billed_admins, -> { admin.not_citizenlab_member }
     scope :billed_moderators, lambda {
       # use any conditions before `or` very carefully (inspect the generated SQL)
@@ -108,7 +109,7 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
   end
 
   def super_admin?
-    admin? && !!(email =~ Regexp.new(CITIZENLAB_MEMBER_REGEX_CONTENT, 'i'))
+    admin? && !!(email =~ Regexp.new(CITIZENLAB_MEMBER_REGEX_CONTENT, 'i') || email =~ Regexp.new(GOVOCAL_MEMBER_REGEX_CONTENT, 'i'))
   end
 
   def admin?
