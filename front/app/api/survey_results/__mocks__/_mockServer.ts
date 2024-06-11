@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { API_PATH } from 'containers/App/constants';
 
@@ -61,14 +61,11 @@ export const surveyResultsResponse: SurveyResultsType = {
 };
 
 const endpoints = {
-  'GET projects/:id/survey_results': rest.get(
-    projectApiPath,
-    (_req, res, ctx) => {
-      return res(ctx.status(200), ctx.json(surveyResultsResponse));
-    }
-  ),
-  'GET phases/:id/survey_results': rest.get(phaseApiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(surveyResultsResponse));
+  'GET projects/:id/survey_results': http.get(projectApiPath, () => {
+    return HttpResponse.json(surveyResultsResponse, { status: 200 });
+  }),
+  'GET phases/:id/survey_results': http.get(phaseApiPath, () => {
+    return HttpResponse.json(surveyResultsResponse, { status: 200 });
   }),
 };
 

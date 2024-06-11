@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { getOrigin } from 'utils/storybook/getOrigin';
 
@@ -79,15 +79,12 @@ export const getAppConfigurationData = (
 });
 
 const endpoints = {
-  'GET app_configuration': rest.get(
-    '/web_api/v1/app_configuration',
-    (_req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json({ data: getAppConfigurationData() })
-      );
-    }
-  ),
+  'GET app_configuration': http.get('/web_api/v1/app_configuration', () => {
+    return HttpResponse.json(
+      { data: getAppConfigurationData() },
+      { status: 200 }
+    );
+  }),
 };
 
 export default endpoints;

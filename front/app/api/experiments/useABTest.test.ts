@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
@@ -11,8 +11,8 @@ jest.mock('api/me/useAuthUser');
 
 const apiPath = '*experiments';
 const server = setupServer(
-  rest.post(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: experimentsData[0] }));
+  http.post(apiPath, () => {
+    return HttpResponse.json({ data: experimentsData[0] }, { status: 200 });
   })
 );
 

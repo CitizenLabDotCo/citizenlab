@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import { eventData } from 'api/event_images/__mocks__/useEventImage';
@@ -12,8 +12,8 @@ import useEventImage from './useEventImage';
 const apiPath = '*/events/:eventId/images/:imageId';
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: eventImageData }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: eventImageData }, { status: 200 });
   })
 );
 
@@ -36,8 +36,8 @@ describe('useEventImage', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

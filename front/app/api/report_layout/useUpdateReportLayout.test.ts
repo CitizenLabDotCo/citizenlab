@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
@@ -8,8 +8,8 @@ import { reportLayout, apiPathUpdate } from './__mocks__/_mockServer';
 import useUpdateReportLayout from './useUpdateReportLayout';
 
 const server = setupServer(
-  rest.patch(apiPathUpdate, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(reportLayout));
+  http.patch(apiPathUpdate, () => {
+    return HttpResponse.json(reportLayout, { status: 200 });
   })
 );
 
@@ -35,8 +35,8 @@ describe('useUpdateReportLayout', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.patch(apiPathUpdate, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.patch(apiPathUpdate, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

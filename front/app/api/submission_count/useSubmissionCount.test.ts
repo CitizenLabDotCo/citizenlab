@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import { IFormSubmissionCount } from 'api/submission_count/types';
@@ -19,8 +19,8 @@ const statData: IFormSubmissionCount = {
   },
 };
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: statData }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: statData }, { status: 200 });
   })
 );
 
@@ -46,8 +46,8 @@ describe('useSubmissionCount', () => {
   it('returns error correctly', async () => {
     apiPath = '*phases/:phaseId/submission_count';
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { IIdeaStatusData } from '../types';
 
@@ -39,11 +39,11 @@ export const apiPathStatus = '/web_api/v1/idea_statuses/:id';
 export const apiPathStatuses = '/web_api/v1/idea_statuses';
 
 const endpoints = {
-  'GET idea_statuses/:id': rest.get(apiPathStatus, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: ideaStatusesData[0] }));
+  'GET idea_statuses/:id': http.get(apiPathStatus, () => {
+    return HttpResponse.json({ data: ideaStatusesData[0] }, { status: 200 });
   }),
-  'GET idea_statuses': rest.get(apiPathStatuses, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: ideaStatusesData }));
+  'GET idea_statuses': http.get(apiPathStatuses, () => {
+    return HttpResponse.json({ data: ideaStatusesData }, { status: 200 });
   }),
 };
 

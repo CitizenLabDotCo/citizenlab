@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
@@ -10,8 +10,8 @@ import useUpdateMapLayer from './useUpdateMapLayer';
 const apiPath = '*/map_configs/:mapConfigId/layers/:id';
 
 const server = setupServer(
-  rest.patch(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: mapLayerData }));
+  http.patch(apiPath, () => {
+    return HttpResponse.json({ data: mapLayerData }, { status: 200 });
   })
 );
 
@@ -39,8 +39,8 @@ describe('useUpdateMapLayer', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.patch(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.patch(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

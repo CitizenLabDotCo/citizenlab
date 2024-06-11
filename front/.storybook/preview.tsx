@@ -27,10 +27,10 @@ const preview: Preview = {
     reactIntl,
     chromatic: {
       modes: {
-        ...allModes
+        ...allModes,
       },
-      disableSnapshot: true
-    }
+      disableSnapshot: true,
+    },
   },
   decorators: [mswDecorator, routerDecorator, contexts],
   globals: {

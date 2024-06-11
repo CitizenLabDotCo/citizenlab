@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { API_PATH } from 'containers/App/constants';
 
@@ -9,14 +9,14 @@ import responses from './responses';
 const apiPath = `${API_PATH}/analytics`;
 
 const endpoints = {
-  'GET analytics': rest.get(apiPath, (req, res, ctx) => {
-    const response = findResponseByQuery(req, responses);
+  'GET analytics': http.get(apiPath, ({ request }) => {
+    const response = findResponseByQuery(request, responses);
 
     if (!response) {
-      return res(ctx.status(404));
+      return HttpResponse.json(null, { status: 404 });
     }
 
-    return res(ctx.status(200), ctx.json(response));
+    return HttpResponse.json(response, { status: 200 });
   }),
 };
 

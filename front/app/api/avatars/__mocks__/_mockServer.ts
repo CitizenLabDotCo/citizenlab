@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { API_PATH } from 'containers/App/constants';
 
@@ -26,11 +26,11 @@ export const avatarPath = `${API_PATH}/avatars/:id`;
 export const avatarsPath = `${API_PATH}/avatars`;
 
 const endpoints = {
-  'GET /avatars/:id': rest.get(avatarPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: avatarsData[0] }));
+  'GET /avatars/:id': http.get(avatarPath, () => {
+    return HttpResponse.json({ data: avatarsData[0] }, { status: 200 });
   }),
-  'GET /avatars': rest.get(avatarsPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: avatarsData }));
+  'GET /avatars': http.get(avatarsPath, () => {
+    return HttpResponse.json({ data: avatarsData }, { status: 200 });
   }),
 };
 

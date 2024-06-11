@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { API_PATH } from 'containers/App/constants';
 
@@ -353,19 +353,19 @@ const votingIdea = {
 };
 
 const endpoints = {
-  'GET ideas': rest.get(apiPathIdeas, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: ideaData }));
+  'GET ideas': http.get(apiPathIdeas, () => {
+    return HttpResponse.json({ data: ideaData }, { status: 200 });
   }),
-  'GET ideas/:id': rest.get(apiPathById, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: ideaData[0] }));
+  'GET ideas/:id': http.get(apiPathById, () => {
+    return HttpResponse.json({ data: ideaData[0] }, { status: 200 });
   }),
-  'GET ideas/by_slug/:slug': rest.get(apiPathBySlug, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: ideaData[0] }));
+  'GET ideas/by_slug/:slug': http.get(apiPathBySlug, () => {
+    return HttpResponse.json({ data: ideaData[0] }, { status: 200 });
   }),
 };
 
-export const votingIdeaHandler = rest.get(apiPathById, (_req, res, ctx) => {
-  return res(ctx.status(200), ctx.json(votingIdea));
+export const votingIdeaHandler = http.get(apiPathById, () => {
+  return HttpResponse.json(votingIdea, { status: 200 });
 });
 
 export default endpoints;

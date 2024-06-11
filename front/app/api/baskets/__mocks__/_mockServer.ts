@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { IBasketData } from '../types';
 
@@ -40,8 +40,8 @@ export const basketData: IBasketData = {
 export const apiPath = '/web_api/v1/baskets/:id';
 
 const endpoints = {
-  'GET baskets/:id': rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: basketData }));
+  'GET baskets/:id': http.get(apiPath, () => {
+    return HttpResponse.json({ data: basketData }, { status: 200 });
   }),
 };
 

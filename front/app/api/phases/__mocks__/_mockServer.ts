@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { IPhaseData } from '../types';
 
@@ -316,15 +316,12 @@ export const apiPathPhase = '/web_api/v1/phases/:id';
 export const apiPathPhases = '/web_api/v1/projects/:projectId/phases';
 
 const endpoints = {
-  'GET phases/:id': rest.get(apiPathPhase, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: phasesData[0] }));
+  'GET phases/:id': http.get(apiPathPhase, () => {
+    return HttpResponse.json({ data: phasesData[0] }, { status: 200 });
   }),
-  'GET projects/:projectId/phases': rest.get(
-    apiPathPhases,
-    (_req, res, ctx) => {
-      return res(ctx.status(200), ctx.json({ data: phasesData }));
-    }
-  ),
+  'GET projects/:projectId/phases': http.get(apiPathPhases, () => {
+    return HttpResponse.json({ data: phasesData }, { status: 200 });
+  }),
 };
 
 const votingPhase: IPhaseData = {
@@ -397,8 +394,8 @@ const votingPhase: IPhaseData = {
   },
 };
 
-export const votingPhaseHandler = rest.get(apiPathPhase, (_req, res, ctx) => {
-  return res(ctx.status(200), ctx.json({ data: votingPhase }));
+export const votingPhaseHandler = http.get(apiPathPhase, () => {
+  return HttpResponse.json({ data: votingPhase }, { status: 200 });
 });
 
 export default endpoints;

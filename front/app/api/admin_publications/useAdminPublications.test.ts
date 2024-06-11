@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
@@ -12,10 +12,10 @@ import useAdminPublications from './useAdminPublications';
 
 const apiPath = '*admin_publications';
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({ data: mockFolderChildAdminPublicationsList, links })
+  http.get(apiPath, () => {
+    return HttpResponse.json(
+      { data: mockFolderChildAdminPublicationsList, links },
+      { status: 200 }
     );
   })
 );
@@ -50,13 +50,13 @@ describe('useAdminPublications', () => {
   it('returns data correctly with no next page', async () => {
     const newLinks = { ...links, next: null };
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(
-          ctx.status(200),
-          ctx.json({
+      http.get(apiPath, () => {
+        return HttpResponse.json(
+          {
             data: mockFolderChildAdminPublicationsList,
             links: newLinks,
-          })
+          },
+          { status: 200 }
         );
       })
     );
@@ -84,8 +84,8 @@ describe('useAdminPublications', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { API_PATH } from 'containers/App/constants';
 
@@ -9,14 +9,14 @@ import { liveResponses } from './responses';
 const apiPath = `${API_PATH}/reports/graph_data_units/live`;
 
 const endpoints = {
-  'GET graph_data_units/live': rest.get(apiPath, (req, res, ctx) => {
-    const response = findResponseByQuery(req, liveResponses);
+  'GET graph_data_units/live': http.get(apiPath, ({ request }) => {
+    const response = findResponseByQuery(request, liveResponses);
 
     if (!response) {
-      return res(ctx.status(404));
+      return HttpResponse.json(null, { status: 404 });
     }
 
-    return res(ctx.status(200), ctx.json(response));
+    return HttpResponse.json(response, { status: 200 });
   }),
 };
 

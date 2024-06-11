@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
@@ -30,8 +30,8 @@ describe('useAppConfiguration', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get('*app_configuration', (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get('*app_configuration', () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

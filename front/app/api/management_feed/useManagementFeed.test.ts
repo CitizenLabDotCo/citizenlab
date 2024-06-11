@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
@@ -52,8 +52,8 @@ const managementFeedData: ManagementFeed = {
 
 const apiPath = '*activities';
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: managementFeedData }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: managementFeedData }, { status: 200 });
   })
 );
 
@@ -82,8 +82,8 @@ describe('useManagementFeed', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

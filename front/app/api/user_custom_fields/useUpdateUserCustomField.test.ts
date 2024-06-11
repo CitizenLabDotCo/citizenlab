@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
@@ -10,8 +10,11 @@ import useUpdateUserCustomField from './useUpdateUserCustomField';
 const apiPath = '*/users/custom_fields/:customFieldId';
 
 const server = setupServer(
-  rest.patch(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: userCustomFieldsData[0] }));
+  http.patch(apiPath, () => {
+    return HttpResponse.json(
+      { data: userCustomFieldsData[0] },
+      { status: 200 }
+    );
   })
 );
 
@@ -38,8 +41,8 @@ describe('useUpdateUserCustomField', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.patch(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.patch(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

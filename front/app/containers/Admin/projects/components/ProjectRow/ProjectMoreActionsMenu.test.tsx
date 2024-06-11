@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import { IUserData } from 'api/users/types';
@@ -54,11 +54,11 @@ const copyApiPath = '*projects/:projectId/copy';
 const deleteApiPath = '*projects/:id';
 
 const server = setupServer(
-  rest.post(copyApiPath, (_req, res, ctx) => {
-    return res(ctx.status(500));
+  http.post(copyApiPath, () => {
+    return HttpResponse.json(null, { status: 500 });
   }),
-  rest.delete(deleteApiPath, (_req, res, ctx) => {
-    return res(ctx.status(500));
+  http.delete(deleteApiPath, () => {
+    return HttpResponse.json(null, { status: 500 });
   })
 );
 

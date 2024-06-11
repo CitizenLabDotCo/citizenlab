@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
@@ -10,8 +10,8 @@ import useImportedIdeaMetadata from './useImportedIdeaMetadata';
 const apiPath = '*idea_imports/:id';
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: ideaImport }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: ideaImport }, { status: 200 });
   })
 );
 

@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
@@ -28,8 +28,8 @@ describe('usePhase', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPathPhase, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPathPhase, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 
