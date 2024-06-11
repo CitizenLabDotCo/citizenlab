@@ -26,6 +26,7 @@ export type ButtonStyles =
   | 'primary'
   | 'primary-inverse'
   | 'primary-outlined'
+  | 'secondary'
   | 'secondary-outlined'
   | 'white'
   | 'text'
@@ -124,6 +125,13 @@ function getButtonStyle(
       bgColor: '#fff',
       textColor: get(props.theme.colors, 'tenantText'),
       textHoverColor: get(props.theme.colors, 'tenantText'),
+    },
+    // Duplicates the secondary-outlined style for now to avoid breaking changes to the content builder components
+    secondary: {
+      bgColor: 'transparent',
+      bgHoverColor: transparentize(0.95, colors.textSecondary),
+      textColor: colors.textSecondary,
+      borderColor: colors.textSecondary,
     },
     'secondary-outlined': {
       bgColor: 'transparent',
