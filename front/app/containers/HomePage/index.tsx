@@ -41,11 +41,12 @@ const HomePage = () => {
   }, [pressedLetterAKey, userHasAdminAccess]);
 
   if (!homepageLayout) return <Spinner />;
+
   return (
-    <div id="e2e-landing-page">
+    <main id="e2e-landing-page">
       <Viewer />
       <CityLogoSection />
-    </div>
+    </main>
   );
 };
 

@@ -3,7 +3,6 @@
 module EmailCampaigns
   class WebApi::V1::CampaignsController < EmailCampaignsController
     before_action :set_campaign, only: %i[show update do_send send_preview preview deliveries stats destroy]
-    rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
     def index
       @campaigns = policy_scope(Campaign)
@@ -17,6 +16,13 @@ module EmailCampaigns
       if params[:without_campaign_names]
         campaign_types = params[:without_campaign_names].map { |name| Campaign.from_campaign_name(name) }
         @campaigns = @campaigns.where.not(type: campaign_types)
+      end
+
+      @campaigns = @campaigns.where(context_id: params[:context_id]) if params[:context_id]
+
+      case params[:manual]&.downcase
+      when 'true' then @campaigns = @campaigns.manual
+      when 'false' then @campaigns = @campaigns.automatic
       end
 
       @campaigns = @campaigns
@@ -137,20 +143,11 @@ module EmailCampaigns
         :enabled,
         :sender,
         :reply_to,
+        :context_id,
         group_ids: [],
         subject_multiloc: I18n.available_locales,
         body_multiloc: I18n.available_locales
       )
-    end
-
-    def user_not_authorized(exception)
-      return unless %w[create? update? destroy? do_send? send_preview? deliveries? stats?].include? exception.query
-
-      if !current_user.admin? && current_user.project_moderator?
-        render json: { errors: { group_ids: [{ error: 'unauthorized_choice_moderator' }] } }, status: :unauthorized
-      else
-        render json: { errors: { base: [{ error: 'unauthorized' }] } }, status: :unauthorized
-      end
     end
   end
 end

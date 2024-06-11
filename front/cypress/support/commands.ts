@@ -85,6 +85,8 @@ declare global {
       apiCreateSurveyResponse: typeof apiCreateSurveyResponse;
       uploadSurveyImageQuestionImage: typeof uploadSurveyImageQuestionImage;
       apiGetSurveySchema: typeof apiGetSurveySchema;
+      uploadProjectFolderImage: typeof uploadProjectFolderImage;
+      uploadProjectImage: typeof uploadProjectImage;
     }
   }
 }
@@ -598,22 +600,11 @@ function apiCreateIdea({
   anonymous,
   phaseIds,
 }: IdeaType) {
-  let headers: { 'Content-Type': string; Authorization: string } | null = null;
-
-  if (jwt) {
-    headers = {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${jwt}`,
-    };
-  }
-
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
-    const adminJwt = response.body.jwt;
-
-    return cy.request({
-      headers: headers || {
+  const doRequest = (jwt: string) =>
+    cy.request({
+      headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
+        Authorization: `Bearer ${jwt}`,
       },
       method: 'POST',
       url: 'web_api/v1/ideas',
@@ -637,6 +628,14 @@ function apiCreateIdea({
         },
       },
     });
+
+  if (jwt) {
+    return doRequest(jwt);
+  }
+
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+    return doRequest(adminJwt);
   });
 }
 
@@ -1437,7 +1436,7 @@ function apiCreateReportBuilder(phaseId?: string, visible: boolean = true) {
         report: {
           name: phaseId ? undefined : randomString(),
           phase_id: phaseId,
-          visible,
+          visible: phaseId ? visible : undefined,
         },
       },
     });
@@ -1810,6 +1809,42 @@ function apiGetSurveySchema(phaseId: string) {
   });
 }
 
+function uploadProjectFolderImage(folderId: string, base64: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/project_folders/${folderId}/images`,
+      body: {
+        image: { image: base64 },
+      },
+    });
+  });
+}
+
+function uploadProjectImage(projectId: string, base64: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/projects/${projectId}/images`,
+      body: {
+        image: { image: base64 },
+      },
+    });
+  });
+}
+
 // https://stackoverflow.com/a/16012490
 interface Bbox {
   left: number;
@@ -1956,3 +1991,5 @@ Cypress.Commands.add(
   uploadSurveyImageQuestionImage
 );
 Cypress.Commands.add('apiGetSurveySchema', apiGetSurveySchema);
+Cypress.Commands.add('uploadProjectFolderImage', uploadProjectFolderImage);
+Cypress.Commands.add('uploadProjectImage', uploadProjectImage);

@@ -57,7 +57,7 @@ const FilterSidebarStatuses = ({
         </Menu.Item>
         <Divider />
         {/* Only input statuses can be edited and only admins can do this */}
-        {isAdmin({ data: authUser.data }) &&
+        {isAdmin(authUser) &&
           (type === 'AllIdeas' ||
             (type === 'ProjectIdeas' && (
               <Box display="inline-flex">

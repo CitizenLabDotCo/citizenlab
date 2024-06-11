@@ -1,14 +1,13 @@
 import { ILinks, Multiloc, IRelationship } from 'typings';
 
 import {
-  CommentingDisabledReason,
+  ProjectReactingDisabledReason,
+  ProjectCommentingDisabledReason,
   PublicationStatus as ProjectPublicationStatus,
+  ProjectVotingDisabledReason,
 } from 'api/projects/types';
 
-import {
-  PermissionsDisabledReason,
-  ActionDescriptorFutureEnabled,
-} from 'utils/actionDescriptors';
+import { ActionDescriptorFutureEnabled } from 'utils/actionDescriptors';
 import { Keys } from 'utils/cl-react-query/types';
 
 import ideasKeys from './keys';
@@ -18,24 +17,16 @@ export type IdeasKeys = Keys<typeof ideasKeys>;
 export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
 
 export type IdeaReactingDisabledReason =
-  | 'project_inactive'
-  | 'not_ideation'
-  | 'reacting_disabled'
-  | 'reacting_dislike_disabled'
-  | 'reacting_like_limited_max_reached'
-  | 'reacting_dislike_limited_max_reached'
   | 'idea_not_in_current_phase'
-  | PermissionsDisabledReason;
+  | ProjectReactingDisabledReason;
 
 export type IdeaCommentingDisabledReason =
   | 'idea_not_in_current_phase'
-  | CommentingDisabledReason;
+  | ProjectCommentingDisabledReason;
 
 export type IdeaVotingDisabledReason =
-  | 'project_inactive'
-  | 'not_voting'
   | 'idea_not_in_current_phase'
-  | PermissionsDisabledReason;
+  | ProjectVotingDisabledReason;
 
 export type Sort =
   | 'random'
@@ -99,7 +90,7 @@ export interface IIdeaData {
     created_at: string;
     updated_at: string;
     published_at: string;
-    action_descriptor: {
+    action_descriptors: {
       reacting_idea: ReactingIdeaActionDescriptor & {
         up: ActionDescriptorFutureEnabled<IdeaReactingDisabledReason>;
         down: ActionDescriptorFutureEnabled<IdeaReactingDisabledReason>;
@@ -224,4 +215,14 @@ export interface IQueryParameters {
   feedback_needed?: boolean;
   filter_can_moderate?: boolean;
   basket_id?: string;
+}
+
+export interface IIdeaApprovals {
+  data: {
+    type: 'idea_approvals';
+    attributes: {
+      approved: number;
+      not_approved: number;
+    };
+  };
 }

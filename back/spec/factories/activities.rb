@@ -12,6 +12,33 @@ FactoryBot.define do
       action { 'published' }
     end
 
+    factory :idea_created_activity do
+      association :item, factory: :idea
+      action { 'created' }
+    end
+
+    factory :idea_changed_activity do
+      action { 'changed' }
+    end
+
+    factory :idea_deleted_activity do
+      association :item, factory: :idea
+      action { 'deleted' }
+      payload do
+        {
+          idea: {
+            id: SecureRandom.uuid,
+            title_multiloc: { 'en' => 'title' },
+            body_multiloc: { 'en' => 'body' }
+          }
+        }
+      end
+    end
+
+    factory :idea_changed_status_activity do
+      action { 'changed_status' }
+    end
+
     factory :changed_title_activity do
       action { 'changed_title' }
       payload do
@@ -81,6 +108,83 @@ FactoryBot.define do
     factory :admin_rights_given_activity do
       association :item, factory: :admin
       action { 'admin_rights_given' }
+    end
+
+    factory :project_created_activity do
+      association :item, factory: :project
+      action { 'created' }
+    end
+
+    factory :project_changed_activity do
+      association :item, factory: :project
+      action { 'changed' }
+    end
+
+    factory :project_deleted_activity do
+      association :item, factory: :project
+      action { 'deleted' }
+      payload do
+        {
+          project: {
+            id: SecureRandom.uuid,
+            title_multiloc: { 'en' => 'title' },
+            body_multiloc: { 'en' => 'body' }
+          }
+        }
+      end
+    end
+
+    factory :project_published_activity do
+      association :item, factory: :project
+      action { 'published' }
+    end
+
+    factory :phase_created_activity do
+      association :item, factory: :phase
+      action { 'created' }
+    end
+
+    factory :phase_changed_activity do
+      association :item, factory: :phase
+      action { 'changed' }
+    end
+
+    factory :phase_deleted_activity do
+      association :item, factory: :phase
+      action { 'deleted' }
+      payload do
+        {
+          phase: {
+            id: SecureRandom.uuid,
+            title_multiloc: { 'en' => 'title' },
+            body_multiloc: { 'en' => 'body' }
+          }
+        }
+      end
+    end
+
+    factory :project_folder_created_activity do
+      association :item, factory: :project_folder
+      action { 'created' }
+    end
+
+    factory :project_folder_changed_activity do
+      association :item, factory: :project_folder
+      action { 'changed' }
+    end
+
+    factory :project_folder_deleted_activity do
+      association :item, factory: :project_folder
+      action { 'deleted' }
+      payload do
+        {
+          project_folder: {
+            id: SecureRandom.uuid,
+            title_multiloc: { 'en' => 'title' },
+            body_multiloc: { 'en' => 'body' }
+          }
+        }
+      end
     end
   end
 end

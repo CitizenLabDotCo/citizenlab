@@ -95,15 +95,6 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.seeInitiative',
     defaultMessage: 'See initiative',
   },
-  user404NotFound: {
-    id: 'app.containers.UsersShowPage.user404NotFound',
-    defaultMessage:
-      "We couldn't find this user's profile. If it was here before, it may have been deleted.",
-  },
-  goBackToPreviousPage: {
-    id: 'app.containers.UsersShowPage.goBackToPreviousPage',
-    defaultMessage: 'Go back to the previous page',
-  },
   loadMoreComments: {
     id: 'app.containers.UsersShowPage.loadMoreComments',
     defaultMessage: 'Load more comments',
@@ -116,9 +107,9 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.memberSince',
     defaultMessage: 'Member since {date}',
   },
-  metaTitle: {
-    id: 'app.containers.UsersShowPage.metaTitle',
-    defaultMessage: 'Profile page of {firstName} {lastName} | CitizenLab',
+  metaTitle1: {
+    id: 'app.containers.UsersShowPage.metaTitle1',
+    defaultMessage: 'Profile page of {firstName} {lastName} | {orgName}',
   },
   userShowPageMetaDescription: {
     id: 'app.containers.UsersShowPage.userShowPageMetaDescription',

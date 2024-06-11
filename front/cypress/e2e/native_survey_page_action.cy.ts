@@ -79,7 +79,7 @@ describe('Native survey project page actions', () => {
       cy.get('#e2e-cta-button').find('button').click({ force: true });
       cy.url().should(
         'include',
-        `/projects/${projectSlugWithOneOpenEndedPhase}/ideas/new`
+        `/projects/${projectSlugWithOneOpenEndedPhase}/surveys/new`
       );
 
       // Action as admin user
@@ -89,7 +89,7 @@ describe('Native survey project page actions', () => {
       cy.get('#e2e-cta-button').find('button').click({ force: true });
       cy.url().should(
         'include',
-        `/projects/${projectSlugWithOneOpenEndedPhase}/ideas/new`
+        `/projects/${projectSlugWithOneOpenEndedPhase}/surveys/new`
       );
     });
 
@@ -116,7 +116,7 @@ describe('Native survey project page actions', () => {
       cy.get('#e2e-idea-button').first().click();
       cy.url().should(
         'include',
-        `/projects/${projectSlugWithOneOpenEndedPhase}/ideas/new`
+        `/projects/${projectSlugWithOneOpenEndedPhase}/surveys/new`
       );
     });
   });

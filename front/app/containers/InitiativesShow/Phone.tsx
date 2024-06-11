@@ -44,7 +44,7 @@ import {
 
 const padding = '32px';
 
-const Container = styled.main`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
 
@@ -83,7 +83,6 @@ const StyledDropdownMap = styled(DropdownMap)`
 
 interface Props {
   initiativeId: string;
-  className?: string;
   translateButtonClicked: boolean;
   onScrollToOfficialFeedback: () => void;
   onTranslateInitiative: () => void;
@@ -91,7 +90,6 @@ interface Props {
 }
 
 const Phone = ({
-  className,
   initiativeId,
   translateButtonClicked,
   onScrollToOfficialFeedback,
@@ -135,7 +133,7 @@ const Phone = ({
   );
 
   return (
-    <Container className={className}>
+    <Container>
       {showCosponsorShipReminder && (
         <CosponsorShipReminder initiativeId={initiativeId} />
       )}

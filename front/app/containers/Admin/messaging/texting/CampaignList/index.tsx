@@ -64,7 +64,7 @@ const TextingCampaignsList = () => {
             <FormattedMessage {...messages.noTextingCampaignsHeader} />
           </NoCampaignsHeader>
           <Button
-            buttonStyle="cl-blue"
+            buttonStyle="admin-dark"
             icon="plus-circle"
             linkTo="/admin/messaging/texting/new"
             id="e2e-add-text-campaign-button"
@@ -80,7 +80,7 @@ const TextingCampaignsList = () => {
     <Box background={colors.white} p="40px">
       <ButtonWrapper>
         <Button
-          buttonStyle="cl-blue"
+          buttonStyle="admin-dark"
           icon="plus-circle"
           linkTo="/admin/messaging/texting/new"
           id="e2e-add-text-campaign-button"

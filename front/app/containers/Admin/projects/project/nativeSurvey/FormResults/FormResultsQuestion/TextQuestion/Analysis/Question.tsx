@@ -33,7 +33,6 @@ const Question = ({
 
   const largeSummariesEnabled = useFeatureFlag({
     name: 'large_summaries',
-    onlyCheckAllowed: true,
   });
 
   const { data } = useAnalysisQuestion({ analysisId, id: questionId });
@@ -60,7 +59,7 @@ const Question = ({
 
   const refreshDisabled =
     missingInputsCount === 0 ||
-    (largeSummariesEnabled && filteredInputCount > 30);
+    (!largeSummariesEnabled && filteredInputCount > 30);
 
   if (!question || !answer) {
     return <Spinner />;
@@ -113,7 +112,7 @@ const Question = ({
             />
           </Button>
           <Button
-            buttonStyle="secondary"
+            buttonStyle="secondary-outlined"
             icon="eye"
             linkTo={`/admin/projects/${projectId}/analysis/${analysisId}?${stringify(
               { ...convertFilterValuesToString(filters), phase_id: phaseId }

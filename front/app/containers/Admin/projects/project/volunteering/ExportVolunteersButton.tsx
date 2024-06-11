@@ -30,7 +30,7 @@ const ExportVolunteersButton = ({ phaseId, className }: Props) => {
 
   return (
     <Button
-      buttonStyle="secondary"
+      buttonStyle="secondary-outlined"
       icon="download"
       onClick={handleExportVolunteers}
       disabled={noCauses}

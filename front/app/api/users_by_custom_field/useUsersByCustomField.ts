@@ -21,9 +21,9 @@ const fetchUsersByCustomField = ({
   });
 
 const useUsersByCustomField = ({
-  enabled,
+  enabled = true,
   ...queryParameters
-}: ICustomFieldParams & { id: string; enabled: boolean }) => {
+}: ICustomFieldParams & { id: string; enabled?: boolean }) => {
   return useQuery<
     IUsersByCustomField,
     CLErrors,

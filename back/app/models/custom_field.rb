@@ -85,7 +85,6 @@ class CustomField < ApplicationRecord
   before_validation :sanitize_description_multiloc
   after_create(if: :domicile?) { Area.recreate_custom_field_options }
 
-  scope :with_resource_type, ->(resource_type) { where(resource_type: resource_type) }
   scope :registration, -> { where(resource_type: 'User') }
   scope :enabled, -> { where(enabled: true) }
   scope :disabled, -> { where(enabled: false) }
@@ -242,13 +241,27 @@ class CustomField < ApplicationRecord
     return if options.none?(&:other)
 
     other_field_key = "#{key}_other"
+    title_multiloc = MultilocService.new.i18n_to_multiloc(
+      'custom_fields.ideas.other_text_field.title',
+      locales: CL2_SUPPORTED_LOCALES
+    )
+
+    # Replace {other_option} in the title string with the title of the other option
+    other_option = options.detect { |o| o[:other] == true }
+    replace_string = '{other_option}'
+    replaced_title_multiloc = {}
+    title_multiloc.each do |locale, title|
+      replaced_title_multiloc[locale] = if other_option.title_multiloc[locale.to_s]
+        title.gsub(/#{replace_string}/, other_option.title_multiloc[locale.to_s]) if other_option.title_multiloc[locale.to_s]
+      else
+        title
+      end
+    end
+
     CustomField.new(
       key: other_field_key,
       input_type: 'text',
-      title_multiloc: MultilocService.new.i18n_to_multiloc(
-        'custom_fields.ideas.other.title',
-        locales: CL2_SUPPORTED_LOCALES
-      ),
+      title_multiloc: replaced_title_multiloc,
       required: true,
       enabled: true
     )
@@ -283,12 +296,24 @@ class CustomField < ApplicationRecord
   end
 
   def ordered_options
-    return [] unless options.any?
-
-    if random_option_ordering
+    @ordered_options ||= if random_option_ordering
       options.shuffle.sort_by { |o| o.other ? 1 : 0 }
     else
       options.order(:ordering)
+    end
+  end
+
+  def linear_scale_print_description(locale)
+    return nil unless linear_scale?
+
+    min_label = "1#{minimum_label_multiloc[locale].present? ? " (#{minimum_label_multiloc[locale]})" : ''}"
+    max_label = maximum.to_s + (maximum_label_multiloc[locale].present? ? " (#{maximum_label_multiloc[locale]})" : '')
+    I18n.with_locale(locale) do
+      I18n.t(
+        'form_builder.pdf_export.linear_scale_print_description',
+        min_label: min_label,
+        max_label: max_label
+      )
     end
   end
 

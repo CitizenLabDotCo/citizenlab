@@ -10,8 +10,8 @@ import {
   DropdownListItem,
   defaultCardStyle,
   colors,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import moment from 'moment';
 import { useLocation, useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -183,9 +183,8 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
               </Text>
             </Button>
             {participationRequirementsMessage && (
-              <Tippy
+              <Tooltip
                 disabled={false}
-                interactive={true}
                 placement="bottom"
                 content={
                   <PermissionTooltipMessage permissions={permissions?.data} />
@@ -216,7 +215,7 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
                     </Box>
                   </Button>
                 </Box>
-              </Tippy>
+              </Tooltip>
             )}
           </Box>
         </Box>
@@ -274,7 +273,11 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
             >
               {formatMessage(messages.deletePhaseButtonText)}
             </Button>
-            <Button buttonStyle="secondary" width="auto" onClick={closeModal}>
+            <Button
+              buttonStyle="secondary-outlined"
+              width="auto"
+              onClick={closeModal}
+            >
               {formatMessage(messages.cancelDeletePhaseText)}
             </Button>
           </Box>

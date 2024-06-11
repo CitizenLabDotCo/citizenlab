@@ -2,6 +2,7 @@ sr-Latn:
   email_campaigns:
     campaign_type_description:
       "manual": Zvanične poruke
+      "manual_project_participants": Official messages to project participants
       "admin_rights_received": Dodela administratorskih prava
       "comment_deleted_by_admin": Brisanje mog komentara
       "comment_marked_as_spam": Izveštaj o spam komentaru
@@ -559,6 +560,7 @@ sr-Latn:
         admins: 'За администраторе'
         admins_and_managers: 'За администраторе и менаџере'
         managers: 'Менаџерима'
+        project_participants: 'To project participants'
         registered_users: 'За регистроване кориснике'
       recipient_segment:
         admins: 'Админс'

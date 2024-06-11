@@ -22,11 +22,11 @@ import messages from './messages';
 import AuthProviders from './steps/AuthProviders';
 import BuiltInFields from './steps/BuiltInFields';
 import ChangeEmail from './steps/ChangeEmail';
-import ClaveUnicaEmail from './steps/ClaveUnicaEmail';
 import CustomFields from './steps/CustomFields';
 import EmailAndPassword from './steps/EmailAndPassword';
 import EmailAndPasswordSignUp from './steps/EmailAndPasswordSignUp';
 import EmailConfirmation from './steps/EmailConfirmation';
+import EmaillessSsoEmail from './steps/EmaillessSsoEmail';
 import Invitation from './steps/Invitation';
 import LightFlowStart from './steps/LightFlowStart';
 import Onboarding from './steps/Onboarding';
@@ -63,8 +63,8 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'sign-up:custom-fields': messages.completeYourProfile,
   'sign-up:onboarding': messages.whatAreYouInterestedIn,
   'sign-up:invite': messages.signUp,
-  'clave-unica:email': messages.signUp,
-  'clave-unica:email-confirmation': messages.confirmYourEmail,
+  'emailless-sso:email': messages.signUp,
+  'emailless-sso:email-confirmation': messages.confirmYourEmail,
 
   // light flow
   'light-flow:email': messages.beforeYouParticipate,
@@ -166,7 +166,7 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
   const closable =
     currentStep !== 'closed' &&
     currentStep !== 'success' &&
-    currentStep !== 'clave-unica:email';
+    currentStep !== 'emailless-sso:email';
 
   const {
     context: { action },
@@ -301,8 +301,8 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             onSubmit={transition(currentStep, 'SUBMIT')}
           />
         )}
-        {currentStep === 'clave-unica:email' && (
-          <ClaveUnicaEmail
+        {currentStep === 'emailless-sso:email' && (
+          <EmaillessSsoEmail
             loading={loading}
             setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}
@@ -373,7 +373,7 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
         {(currentStep === 'sign-up:email-confirmation' ||
           currentStep === 'light-flow:email-confirmation' ||
           currentStep === 'missing-data:email-confirmation' ||
-          currentStep === 'clave-unica:email-confirmation') && (
+          currentStep === 'emailless-sso:email-confirmation') && (
           <EmailConfirmation
             state={state}
             loading={loading}

@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
+import { Box, Text, colors, Tooltip } from '@citizenlab/cl2-component-library';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -51,7 +50,7 @@ const Esri = () => {
         <Text color="coolGrey700">
           {formatMessage(messages.esriIntegrationDescription)}
         </Text>
-        <Tippy
+        <Tooltip
           content={<FormattedMessage {...messages.esriDisabled} />}
           disabled={isEsriEnabled}
           placement="top"
@@ -69,7 +68,7 @@ const Esri = () => {
               {formatMessage(messages.esriIntegrationButton)}
             </Button>
           </div>
-        </Tippy>
+        </Tooltip>
       </Box>
     </Box>
   );

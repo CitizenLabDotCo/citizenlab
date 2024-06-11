@@ -16,11 +16,13 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  deliveries_count :integer          default(0), not null
+#  context_id       :uuid
 #
 # Indexes
 #
-#  index_email_campaigns_campaigns_on_author_id  (author_id)
-#  index_email_campaigns_campaigns_on_type       (type)
+#  index_email_campaigns_campaigns_on_author_id   (author_id)
+#  index_email_campaigns_campaigns_on_context_id  (context_id)
+#  index_email_campaigns_campaigns_on_type        (type)
 #
 # Foreign Keys
 #
@@ -60,7 +62,7 @@ module EmailCampaigns
           project_folder_id: folder.id,
           project_folder_title_multiloc: folder.title_multiloc,
           project_folder_projects_count: folder.projects.count,
-          project_folder_url: admin_project_folder_url(folder.id, locale: recipient.locale)
+          project_folder_url: admin_project_folder_url(folder.id, locale: Locale.new(recipient.locale))
         }
       }]
     end

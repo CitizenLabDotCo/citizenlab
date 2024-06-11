@@ -160,4 +160,38 @@ describe IdNemlogIn::NemlogInOmniauth do
       })
     end
   end
+
+  context 'when handling birthyear' do
+    context 'when birthyear field is configured' do
+      before do
+        configuration = AppConfiguration.instance
+        settings = configuration.settings
+        settings['verification']['verification_methods'].first['birthyear_custom_field_key'] = 'birthyear'
+        configuration.save!
+      end
+
+      it 'stores the birthyear in the custom field' do
+        get "/auth/nemlog_in?token=#{token}&pathname=/some-page"
+        follow_redirect!
+
+        expect(user.reload.custom_field_values['birthyear']).to eq(1944)
+      end
+    end
+
+    context 'when birthyear field is not configured' do
+      before do
+        configuration = AppConfiguration.instance
+        settings = configuration.settings
+        settings['verification']['verification_methods'].delete('birthyear_custom_field_key')
+        configuration.save!
+      end
+
+      it 'stores the birthyear in the custom field' do
+        get "/auth/nemlog_in?token=#{token}&pathname=/some-page"
+        follow_redirect!
+
+        expect(user.reload.custom_field_values['birthyear']).to be_nil
+      end
+    end
+  end
 end

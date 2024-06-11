@@ -43,6 +43,8 @@ type TextAlign =
   | 'initial'
   | 'inherit';
 
+type WordBreak = 'normal' | 'break-all' | 'keep-all' | 'break-word';
+
 export type TextProps = {
   variant?: Variant;
   color?: Color;
@@ -54,6 +56,7 @@ export type TextProps = {
   textOverflow?: TextOverflow;
   whiteSpace?: WhiteSpace;
   textAlign?: TextAlign;
+  wordBreak?: WordBreak;
 } & BoxMarginProps &
   BoxPaddingProps &
   BoxPositionProps &
@@ -78,6 +81,7 @@ const StyledText = styled(Box)<BoxProps & TextProps>`
     textOverflow,
     whiteSpace,
     textAlign,
+    wordBreak,
     theme,
   }: TextProps & { theme: MainThemeProps }) => css`
     color: ${color ? theme.colors[color] : colors.textPrimary};
@@ -86,6 +90,7 @@ const StyledText = styled(Box)<BoxProps & TextProps>`
     text-decoration: ${textDecoration ? textDecoration : 'none'};
     text-overflow: ${textOverflow ? textOverflow : 'clip'};
     white-space: ${whiteSpace ? whiteSpace : 'normal'};
+    word-break: ${wordBreak ? wordBreak : 'normal'};
     ${textAlign ? `text-align: ${textAlign};` : ''}
     ${variant === 'bodyL'
       ? `

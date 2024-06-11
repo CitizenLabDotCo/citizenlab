@@ -8,8 +8,8 @@ import {
   Text,
   Icon,
   ListItem,
-  Checkbox,
   Spinner,
+  CheckboxWithLabel,
 } from '@citizenlab/cl2-component-library';
 import { useQueryClient } from '@tanstack/react-query';
 import { isEqual, omit, uniq } from 'lodash-es';
@@ -138,14 +138,6 @@ const Tags = () => {
       uniq(tags.data.map((tag) => tag.attributes.tag_type))
     );
 
-  const toggleTagContainerClick = (id: string) => {
-    updateSearchParams({ tag_ids: [id] });
-    queryClient.invalidateQueries(inputsKeys.lists());
-    trackEventByName(tracks.tagFilterUsed.name, {
-      extra: { tagId: id },
-    });
-  };
-
   const toggleТаgCheckboxClick = (id: string) => {
     const nonNullSelectedTags = selectedTags?.filter((tagId) => tagId !== null);
     if (!selectedTags?.includes(id)) {
@@ -249,47 +241,36 @@ const Tags = () => {
           <TagContainer
             id={`tag-${tag.id}`}
             key={tag.id}
-            tabIndex={0}
             onClick={() => {
-              toggleTagContainerClick(tag.id);
+              toggleТаgCheckboxClick(tag.id);
             }}
             className={selectedTags?.includes(tag.id) ? 'selected' : ''}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                toggleTagContainerClick(tag.id);
-              }
-            }}
             data-cy="e2e-analysis-tag-container"
           >
             <Box
-              position="absolute"
-              top="20px"
               onClick={(e) => {
                 e.stopPropagation();
               }}
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
             >
-              <Checkbox
+              <CheckboxWithLabel
                 checked={!!selectedTags?.includes(tag.id)}
                 onChange={() => {
                   toggleТаgCheckboxClick(tag.id);
                 }}
                 size="20px"
+                label={
+                  <Tag
+                    name={tag.attributes.name}
+                    tagType={tag.attributes.tag_type}
+                  />
+                }
               />
+              <TagActions tag={tag} />
             </Box>
             <Box ml={'28px'}>
-              <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-              >
-                <Tag
-                  name={tag.attributes.name}
-                  tagType={tag.attributes.tag_type}
-                />
-                <Box display="flex">
-                  <TagActions tag={tag} />
-                </Box>
-              </Box>
               <TagCount
                 count={tag.attributes.total_input_count}
                 totalCount={inputsTotal}

@@ -77,6 +77,12 @@
             "minItems": 1,
             "default": ["en"]
           },
+          "population": {
+            "title": "Population",
+            "description": "Number of inhabitants in the territory. Leave empty if not applicable.",
+            "type": ["integer", "null"],
+            "minimum": 0
+          },
           "weglot_api_key": {
             "title": "Weglot API key",
             "description": "Set the API key of Weglot to enable automatic page translations.",
@@ -334,7 +340,7 @@
         "description": "Allow users to register with an email and password.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["minimum_length", "phone", "enable_signup"],
+        "required-settings": ["minimum_length", "enable_signup"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
@@ -351,21 +357,6 @@
             "minimum": 5,
             "maximum": 72,
             "default": 8
-          },
-          "phone": {
-            "title": "Phone",
-            "description": "Allow users to register with a phone number. This option is not advised, please check with development team before enabling this field.",
-            "type": "boolean",
-            "default": false
-          },
-          "phone_email_pattern": {
-            "title": "Phone Number Format",
-            "description": "Specify how phone numbers should be stored in the database (needs to be in email format - e.g., 'phone+__PHONE__@test.com' stores the phone number as 'phone+32478637483@test.com'.",
-            "type": "string",
-            "format": "email",
-            "default": "phone+__PHONE__@test.com",
-            "pattern": "^.*__PHONE__.*@.*$",
-            "private": true
           }
         }
       },
@@ -917,18 +908,6 @@
         }
       },
 
-      "volunteering": {
-        "type": "object",
-        "title": "Volunteering",
-        "description": "Allow volunteering.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
       "workshops": {
         "title": "Workshops",
         "type": "object",
@@ -1020,58 +999,10 @@
         }
       },
 
-      "ideaflow_social_sharing": {
-        "type": "object",
-        "title": "Share Ideas on Social Media",
-        "description":  "After posting an idea, users receive a pop-up to share their idea on social media.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "initiativeflow_social_sharing": {
-        "type": "object",
-        "title": "Share Proposals on Social Media",
-        "description": "After posting a proposal, users receive a pop-up to share their proposal on social media.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
       "widgets": {
         "type": "object",
         "title": "Widgets",
         "description":  "Admins can generate platform widgets to embed on external websites.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "manual_emailing": {
-        "type": "object",
-        "title": "Manual Emails",
-        "description":  "Admin and project managers can email users through the platform.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "automated_emailing_control": {
-        "type": "object",
-        "title": "Automated Emails",
-        "description":  "Admin can set and control automated e-mail campaigns and notifications.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1138,18 +1069,6 @@
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
-      "idea_custom_copy": {
-        "type": "object",
-        "title": "Idea Custom Copy",
-        "description": "Allows the changing of the word `idea` as the default term of input.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false}
         }
       },
@@ -1346,13 +1265,25 @@
 
       "import_printed_forms": {
         "type": "object",
-        "title": "Import printed forms",
-        "description": "Enables the importing from handwritten idea and surveys on printed forms.",
+        "title": "Form Sync (fka import printed forms)",
+        "description": "Enables the importing of PDF files from handwritten ideas and surveys on printed forms.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "input_importer": {
+        "type": "object",
+        "title": "Input importer",
+        "description": "Enables the importing of Excel (XLSX) files with ideas and surveys.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
         }
       },
 
@@ -1414,6 +1345,30 @@
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
         }
+      },
+
+      "multi_language_platform": {
+        "type": "object",
+        "title": "Multi-language platform",
+        "description": "Enables the ability to add multiple languages on the platform.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "management_feed": {
+        "type": "object",
+        "title": "Management Feed",
+        "description": "Experimental feature: A minimal list of selected actions performed by admins or managers in the last 30 days. Not all actions are included.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {
@@ -1444,7 +1399,8 @@
 
     "large_summaries": ["analysis"],
     "ask_a_question": ["analysis"],
-    "advanced_autotagging": ["analysis"]
+    "advanced_autotagging": ["analysis"],
+    "import_printed_forms": ["input_importer"]
   },
   "definitions": {
     "multiloc_string": {

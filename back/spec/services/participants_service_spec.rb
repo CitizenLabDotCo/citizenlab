@@ -6,25 +6,31 @@ describe ParticipantsService do
   let(:service) { described_class.new }
 
   describe 'participants' do
+    before_all do
+      Analytics::PopulateDimensionsService.populate_types
+    end
+
     it 'returns participants across the whole platform at any time' do
       participants = create_list(:user, 5)
       pp1, pp2, pp3, pp4, pp5 = participants
       others = create_list(:user, 3)
 
+      idea = nil
+
       travel_to Time.now - 100.days do
-        create(:published_activity, user: pp1)
+        idea = create(:idea, author: pp1)
       end
       travel_to Time.now - 6.days do
-        create(:activity, item: create(:comment), action: 'created', user: pp2)
+        create(:comment, author: pp2, post: idea)
       end
       travel_to Time.now - 2.days do
-        create(:activity, item: create(:comment), action: 'created', user: pp3)
-        create(:activity, item: create(:idea), action: 'created', user: others.first)
+        create(:comment, author: pp3, post: idea)
+        create(:idea, author: others.first, publication_status: 'draft')
       end
-      create(:activity, item: create(:idea), action: 'published', user: pp4)
-      create(:activity, item: create(:poll_response), action: 'created', user: pp5)
+      create(:idea, author: pp4)
+      create(:poll_response, user: pp5)
 
-      expect(service.participants.map(&:id)).to match_array participants.map(&:id)
+      expect(service.participants.map(&:dimension_user_id)).to match_array participants.map(&:id)
     end
 
     it 'returns participants across the whole platform since a given date' do
@@ -32,22 +38,133 @@ describe ParticipantsService do
       pp1, pp2, pp3, pp4 = participants
       create_list(:user, 3)
 
+      idea = nil
+
       travel_to Time.now - 100.days do
-        create(:published_activity, user: pp1)
+        idea = create(:idea, author: pp1)
       end
       travel_to Time.now - 6.days do
-        create(:activity, item: create(:comment), action: 'created', user: pp2)
+        create(:comment, post: idea, author: pp2)
       end
       travel_to Time.now - 2.days do
-        create(:activity, item: create(:comment), action: 'created', user: pp3)
+        create(:comment, post: idea, author: pp3)
       end
-      create(:activity, item: create(:comment), action: 'created', user: pp4)
+      create(:comment, post: idea, author: pp4)
 
-      expect(service.participants(since: (Time.now - 6.days)).map(&:id)).to match_array [pp2.id, pp3.id, pp4.id]
+      expect(service.participants(since: (Time.now - 6.days)).map(&:dimension_user_id)).to match_array [pp2.id, pp3.id, pp4.id]
+    end
+  end
+
+  describe 'project_participants_count' do
+    before_all do
+      Analytics::PopulateDimensionsService.populate_types
+    end
+
+    it 'correctly deduplicates users' do
+      project = create(:project)
+      user = create(:user)
+
+      # Create a bunch of ideas and comments with users (4 participants)
+      idea1 = create(:idea, project: project, author: user) # 1
+      idea2 = create(:idea, project: project) # 2
+      create(:comment, post: idea1) # 3
+      create(:idea, project: project) # 4
+      create(:comment, post: idea2, author: user)
+
+      expect(service.project_participants_count(project)).to eq 4
+    end
+
+    it 'correctly deduplicates anonymous users' do
+      project = create(:project)
+      user = create(:user)
+
+      idea = create(:idea, project: project, author: user, anonymous: true)
+      create(:idea, project: project, author: user, anonymous: true)
+      create(:comment, post: idea, author: user, anonymous: true)
+
+      expect(service.project_participants_count(project)).to eq 1
+    end
+
+    it 'counts ideas without a user_id or author_hash as separate participants' do
+      project = create(:project)
+      create(:idea, project: project, anonymous: false, author: nil)
+      create(:idea, project: project, anonymous: false, author: nil)
+
+      expect(service.project_participants_count(project)).to eq 2
+    end
+
+    it 'caches the result for 1 day' do
+      project = create(:project)
+      create(:idea, project: project)
+      expect(service.project_participants_count(project)).to eq 1
+
+      create(:idea, project: project)
+      expect(service.project_participants_count(project)).to eq 1
+      expect(service.project_participants_count_uncached(project)).to eq 2
+    end
+
+    it 'returns the count of participants' do
+      project = create(:project)
+      pp1, pp2, pp3, pp4 = create_list(:user, 4)
+
+      # Create a bunch of ideas and comments with users (4 participants)
+      idea1 = create(:idea, project: project, author: pp1) # 1
+      idea2 = create(:idea, project: project, author: pp2) # 2
+      create(:comment, post: idea1, author: pp3) # 3
+      create(:idea, project: project) # 4
+      create(:comment, post: idea2, author: pp1)
+
+      # Create two ideas and a comment, anonymous, but all for the same user (1 participant)
+      idea3 = create(:idea, project: project, author: pp4, anonymous: true)
+      create(:idea, project: project, author: pp4, anonymous: true)
+      create(:comment, post: idea3, author: pp4, anonymous: true)
+
+      # Create another anonymous idea for another user (1 participant)
+      create(:idea, project: project, anonymous: true)
+
+      # Add two ideas, not anonymous but no user_id or author_hash (2 participants)
+      create(:idea, project: project, anonymous: false, author: nil)
+      create(:idea, project: project, anonymous: false, author: nil)
+
+      expect(service.project_participants_count(project)).to eq 8
+    end
+
+    it 'returns total project participant count including anonymous posts & everyone surveys' do
+      project = create(:project)
+      pp1, pp2, pp3, pp4, pp5 = create_list(:user, 5)
+
+      # Normal participation +3
+      idea1 = create(:idea, project: project, author: pp1)
+      idea2 = create(:idea, project: project, author: pp2)
+      create(:idea, project: project, author: pp3)
+      create(:comment, post: idea1, author: pp3)
+      create(:comment, post: idea2, author: pp3)
+      create(:comment, post: idea2, author: pp2)
+      expect(service.project_participants_count_uncached(project)).to eq 3
+
+      # Anonymous & participated already +2
+      create(:idea, project: project, author: pp2, anonymous: true)
+      create(:comment, post: idea1, author: pp3, anonymous: true)
+      expect(service.project_participants_count_uncached(project)).to eq 5
+
+      # Only participated anonymously +2
+      create(:idea, project: project, author: pp4, anonymous: true)
+      create(:comment, post: idea1, author: pp4, anonymous: true)
+      create(:comment, post: idea1, author: pp5, anonymous: true)
+      expect(service.project_participants_count_uncached(project)).to eq 7
+
+      # 'everyone' surveys +2
+      create(:native_survey_response, project: project, author: nil, title_multiloc: { 'en' => 'title' }, body_multiloc: { 'en' => 'body' })
+      create(:native_survey_response, project: project, author: nil, title_multiloc: { 'en' => 'title' }, body_multiloc: { 'en' => 'body' })
+      expect(service.project_participants_count_uncached(project)).to eq 9
     end
   end
 
   describe 'folder_participants_count' do
+    before_all do
+      Analytics::PopulateDimensionsService.populate_types
+    end
+
     it 'returns the count of participants' do
       projects = create_list(:project, 2)
       folder = create(:project_folder, projects: projects)
@@ -90,45 +207,6 @@ describe ParticipantsService do
       create(:comment, post: idea, author: pp4)
 
       expect(service.projects_participants([project]).map(&:id)).to match_array participants.map(&:id)
-    end
-
-    it 'returns correctly cached total project participant count including anonymous posts & everyone surveys' do
-      project = create(:project)
-      pp1, pp2, pp3, pp4, pp5 = create_list(:user, 5)
-
-      # Normal participation - +3
-      idea1 = create(:idea, project: project, author: pp1)
-      idea2 = create(:idea, project: project, author: pp2)
-      create(:idea, project: project, author: pp3)
-      create(:comment, post: idea1, author: pp3)
-      create(:comment, post: idea2, author: pp3)
-      create(:comment, post: idea2, author: pp2)
-      expect(service.project_participants_count(project)).to eq 3
-
-      # Anonymous & participated already +0
-      create(:idea, project: project, author: pp2, anonymous: true)
-      create(:comment, post: idea1, author: pp3, anonymous: true)
-      expect(service.project_participants_count(project)).to eq 3
-      travel_to Time.now + 1.day do
-        expect(service.project_participants_count(project)).to eq 3
-      end
-
-      # Only participated anonymously +2
-      create(:idea, project: project, author: pp4, anonymous: true)
-      create(:comment, post: idea1, author: pp4, anonymous: true)
-      create(:comment, post: idea1, author: pp5, anonymous: true)
-      expect(service.project_participants_count(project)).to eq 3
-      travel_to Time.now + 2.days do
-        expect(service.project_participants_count(project)).to eq 5
-      end
-
-      # 'everyone' surveys +2
-      create(:native_survey_response, project: project, author: nil, title_multiloc: { 'en' => 'title' }, body_multiloc: { 'en' => 'body' })
-      create(:native_survey_response, project: project, author: nil, title_multiloc: { 'en' => 'title' }, body_multiloc: { 'en' => 'body' })
-      expect(service.project_participants_count(project)).to eq 5
-      travel_to Time.now + 3.days do
-        expect(service.project_participants_count(project)).to eq 7
-      end
     end
 
     it 'returns participants of a poll' do
@@ -190,6 +268,56 @@ describe ParticipantsService do
 
       expect(service.projects_participants([project], actions: %i[posting voting]).map(&:id)).to match_array [pp1.id, pp4.id]
     end
+
+    it 'returns only participants for comment_reacting' do
+      project = create(:project)
+      create(:project)
+      participants = create_list(:user, 4)
+      pp1, pp2, pp3, pp4 = participants
+      other = create(:user)
+
+      i = create(:idea, project: project, author: pp1)
+      c = create(:comment, post: i, author: pp2)
+      create(:reaction, reactable: i, user: pp3)
+      create(:reaction, reactable: c, user: pp4)
+      create(:idea, author: other)
+
+      expect(service.projects_participants([project], actions: [:comment_reacting]).map(&:id)).to match_array [pp4.id]
+    end
+
+    it 'returns only participants for commenting' do
+      project = create(:single_phase_budgeting_project)
+      create(:project)
+      participants = create_list(:user, 4)
+      pp1, pp2, pp3, pp4 = participants
+      other = create(:user)
+
+      i = create(:idea, project: project, author: pp1, phases: project.phases)
+      create(:comment, post: i, author: pp2)
+      create(:reaction, reactable: i, user: pp3)
+      create(:basket, ideas: [i], phase: project.phases.first, user: pp4)
+      create(:idea, author: other)
+
+      expect(service.projects_participants([project], actions: [:commenting]).map(&:id)).to match_array [pp2.id]
+    end
+
+    it 'returns event attendees' do
+      project = create(:project)
+      event = create(:event, project: project)
+      attendee1 = create(:event_attendance, event: event).attendee
+      attendee2 = create(:event_attendance, event: event).attendee
+
+      expect(service.projects_participants([project]).map(&:id)).to match_array [attendee1.id, attendee2.id]
+    end
+
+    it 'returns followers' do
+      project = create(:project)
+      follower1 = create(:follower, followable: project).user
+      idea = create(:idea, project: project, author: follower1)
+      follower2 = create(:follower, followable: idea).user
+
+      expect(service.projects_participants([project]).map(&:id)).to match_array [follower1.id, follower2.id]
+    end
   end
 
   describe 'topics_participants' do
@@ -207,22 +335,6 @@ describe ParticipantsService do
 
       expect(service.topics_participants([t1, t2]).map(&:id)).to match_array participants.map(&:id)
     end
-
-    it 'returns only participants for specific actions' do
-      project = create(:project)
-      create(:project)
-      participants = create_list(:user, 4)
-      pp1, pp2, pp3, pp4 = participants
-      other = create(:user)
-
-      i = create(:idea, project: project, author: pp1)
-      c = create(:comment, post: i, author: pp2)
-      create(:reaction, reactable: i, user: pp3)
-      create(:reaction, reactable: c, user: pp4)
-      create(:idea, author: other)
-
-      expect(service.projects_participants([project], actions: [:comment_reacting]).map(&:id)).to match_array [pp4.id]
-    end
   end
 
   describe 'idea_statuses_participants' do
@@ -237,92 +349,6 @@ describe ParticipantsService do
       create(:comment, post: i1, author: pp3)
 
       expect(service.idea_statuses_participants([s1, s2]).map(&:id)).to match_array participants.map(&:id)
-    end
-
-    it 'returns only participants for specific actions' do
-      project = create(:single_phase_budgeting_project)
-      create(:project)
-      participants = create_list(:user, 4)
-      pp1, pp2, pp3, pp4 = participants
-      other = create(:user)
-
-      i = create(:idea, project: project, author: pp1, phases: project.phases)
-      create(:comment, post: i, author: pp2)
-      create(:reaction, reactable: i, user: pp3)
-      create(:basket, ideas: [i], phase: project.phases.first, user: pp4)
-      create(:idea, author: other)
-
-      expect(service.projects_participants([project], actions: [:commenting]).map(&:id)).to match_array [pp2.id]
-    end
-  end
-
-  describe 'filter_engaging_activities' do
-    it 'does not filter out likes or dislikes' do
-      idea_liked_activity = create(:idea_liked_activity)
-      idea_disliked_activity = create(:idea_disliked_activity)
-      initiative_liked_activity =
-        create(:activity, action: 'initiative_liked', item: create(:reaction2, :for_initiative, :up))
-      initiative_disliked_activity =
-        create(:activity, action: 'initiative_disliked', item: create(:reaction2, :for_initiative, :down))
-
-      expect(service.filter_engaging_activities(Activity.all))
-        .to match_array [
-          idea_liked_activity,
-          idea_disliked_activity,
-          initiative_liked_activity,
-          initiative_disliked_activity
-        ]
-    end
-
-    it 'does not filter out publishing an idea' do
-      idea_published_activity = create(:idea_published_activity)
-      expect(service.filter_engaging_activities(Activity.all)).to eq [idea_published_activity]
-    end
-
-    it 'does not filter out publishing an initiative' do
-      initiative_published_activity = create(:initiative_published_activity)
-      expect(service.filter_engaging_activities(Activity.all)).to eq [initiative_published_activity]
-    end
-
-    it 'filters out an idea changed title activity' do
-      create(:changed_title_activity)
-      expect(service.filter_engaging_activities(Activity.all)).to be_empty
-    end
-  end
-
-  describe 'with_engagement_scores' do
-    it 'gives idea publishing a score of 5' do
-      activity = create(:published_activity)
-      expect(service.with_engagement_scores(Activity.where(id: activity.id)).first.score).to eq 5
-    end
-
-    it 'gives comment creation a score of 3' do
-      activity = create(:comment_created_activity)
-      expect(service.with_engagement_scores(Activity.where(id: activity.id)).first.score).to eq 3
-    end
-
-    it 'gives idea reacting a score of 1' do
-      like_activity = create(:idea_liked_activity)
-      dislike_activity = create(:idea_disliked_activity)
-      expect(service.with_engagement_scores(Activity.where(id: like_activity.id)).first.score).to eq 1
-      expect(service.with_engagement_scores(Activity.where(id: dislike_activity.id)).first.score).to eq 1
-    end
-
-    it 'gives comment reactions a score of 1' do
-      like_activity = create(:comment_liked_activity)
-      expect(service.with_engagement_scores(Activity.where(id: like_activity.id)).first.score).to eq 1
-    end
-
-    it 'returns 0 for non-engaging activities' do
-      activity = create(:changed_body_activity)
-      expect(service.with_engagement_scores(Activity.where(id: activity.id)).first.score).to eq 0
-    end
-
-    it 'allows adding other select fields to the query' do
-      activity = create(:published_activity)
-      scope = service.with_engagement_scores(Activity.where(id: activity.id).select(:user_id))
-      expect(scope.first.user_id).to eq activity.user_id
-      expect(scope.first.score).to be_present
     end
   end
 end

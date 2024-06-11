@@ -2,6 +2,7 @@
 
 module Verification
   module VerificationMethod
+    # It allows to migrate from one provider to another. See how it's overridden.
     def name_for_hashing
       name
     end

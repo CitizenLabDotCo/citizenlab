@@ -40,6 +40,11 @@ const AdminProjectsProjectIndex = () => {
           active={pathname.includes(`/admin/projects/${projectId}/traffic`)}
         />
         <Tab
+          label={formatMessage(messages.messagingTab)}
+          url={`/admin/projects/${projectId}/messaging`}
+          active={pathname.includes(`/admin/projects/${projectId}/messaging`)}
+        />
+        <Tab
           label={formatMessage(messages.eventsTab)}
           url={`/admin/projects/${projectId}/events`}
           active={pathname.includes(`/admin/projects/${projectId}/events`)}

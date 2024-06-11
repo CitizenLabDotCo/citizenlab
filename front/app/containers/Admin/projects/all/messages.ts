@@ -47,7 +47,37 @@ export default defineMessages({
     defaultMessage: 'Only admins can create project folders.',
   },
   onlyAdminsCanCreateProjects: {
-    id: 'app.containers.AdminPage.projects.all.onlyAdminsCanCreateProjects',
-    defaultMessage: 'Only admins and folder moderators can create projects.',
+    id: 'app.containers.AdminPage.projects.all.onlyAdminsCanCreateProjects1',
+    defaultMessage: 'Only admins and folder managers can create projects.',
+  },
+  all: {
+    id: 'app.containers.AdminPage.projects.all.all',
+    defaultMessage: 'All',
+  },
+  yourProjects: {
+    id: 'app.containers.AdminPage.projects.all.yourProjects',
+    defaultMessage: 'Your projects',
+  },
+  active: {
+    id: 'app.containers.AdminPage.projects.all.active',
+    defaultMessage: 'Active',
+  },
+  searchProjects: {
+    id: 'app.containers.AdminPage.projects.all.searchProjects',
+    defaultMessage: 'Search projects',
+  },
+  noProjectsFound: {
+    id: 'app.containers.AdminPage.projects.all.noProjects',
+    defaultMessage: 'No projects found.',
+  },
+  moderatedProjectsEmpty: {
+    id: 'app.containers.AdminPage.projects.all.moderatedProjectsEmpty',
+    defaultMessage:
+      'Projects of which you are an assigned Project Manager will appear here.',
+  },
+  homepageWarning: {
+    id: 'app.containers.AdminPage.projects.all.homepageWarning',
+    defaultMessage:
+      'Customize your homepage display: admins can arrange projects and folders here to set the order on the homepage.',
   },
 });

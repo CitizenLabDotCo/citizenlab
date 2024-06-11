@@ -38,9 +38,8 @@ describe 'db/seeds.rb' do
       expect(StaticPage.count).to be > 3
       expect(IdeaStatus.count).to be > 0
       expect(Group.count).to be > 0
-      expect(CustomField.with_resource_type('User').count).to be > 0
+      expect(CustomField.registration.count).to be > 0
       expect(CustomFieldOption.count).to be > 0
-      # expect(CustomField.with_resource_type('CustomForm').count).to be > 0
       expect(Invite.count).to be > 0
       # expect(IdIdCardLookup::IdCard.count).to be 10
       expect(EmailCampaigns::UnsubscriptionToken.count).to be > 0

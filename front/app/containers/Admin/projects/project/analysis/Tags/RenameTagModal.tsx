@@ -69,7 +69,7 @@ const RenameTag = ({
           <Box display="flex" justifyContent="flex-end" mt="40px" gap="24px">
             <Button
               onClick={closeRenameModal}
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               type="button"
             >
               {formatMessage(messages.renameTagModalCancel)}

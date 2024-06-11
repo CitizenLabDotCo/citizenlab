@@ -16,11 +16,13 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  deliveries_count :integer          default(0), not null
+#  context_id       :uuid
 #
 # Indexes
 #
-#  index_email_campaigns_campaigns_on_author_id  (author_id)
-#  index_email_campaigns_campaigns_on_type       (type)
+#  index_email_campaigns_campaigns_on_author_id   (author_id)
+#  index_email_campaigns_campaigns_on_context_id  (context_id)
+#  index_email_campaigns_campaigns_on_type        (type)
 #
 # Foreign Keys
 #
@@ -78,7 +80,7 @@ module EmailCampaigns
           phase_description_multiloc: notification.phase.description_multiloc,
           phase_start_at: notification.phase.start_at.iso8601,
           phase_end_at: notification.phase.end_at&.iso8601,
-          phase_url: Frontend::UrlService.new.model_to_url(notification.phase, locale: recipient.locale),
+          phase_url: Frontend::UrlService.new.model_to_url(notification.phase, locale: Locale.new(recipient.locale)),
           project_title_multiloc: notification.project.title_multiloc,
           project_description_preview_multiloc: notification.project.description_preview_multiloc
         },

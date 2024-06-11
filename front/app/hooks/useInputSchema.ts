@@ -1,7 +1,5 @@
 import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 
-import { isNilOrError } from 'utils/helperUtils';
-
 import useAppConfigurationLocales from './useAppConfigurationLocales';
 import useLocale from './useLocale';
 
@@ -11,7 +9,11 @@ interface Props {
   inputId?: string | null;
 }
 const useInputSchema = ({ projectId, phaseId, inputId }: Props) => {
-  const { data: ideaJsonFormSchema, isError } = useIdeaJsonFormSchema({
+  const {
+    data: ideaJsonFormSchema,
+    isError,
+    ...otherAttributes
+  } = useIdeaJsonFormSchema({
     projectId,
     phaseId,
     inputId,
@@ -20,20 +22,18 @@ const useInputSchema = ({ projectId, phaseId, inputId }: Props) => {
   const locales = useAppConfigurationLocales();
 
   const schema =
-    (!isNilOrError(locale) &&
-      ideaJsonFormSchema?.data.attributes.json_schema_multiloc[locale]) ||
-    (!isNilOrError(locales) &&
+    ideaJsonFormSchema?.data.attributes.json_schema_multiloc[locale] ||
+    (locales &&
       ideaJsonFormSchema?.data.attributes.json_schema_multiloc[locales[0]]) ||
     null;
 
   const uiSchema =
-    (!isNilOrError(locale) &&
-      ideaJsonFormSchema?.data.attributes.ui_schema_multiloc[locale]) ||
-    (!isNilOrError(locales) &&
+    ideaJsonFormSchema?.data.attributes.ui_schema_multiloc[locale] ||
+    (locales &&
       ideaJsonFormSchema?.data.attributes.ui_schema_multiloc[locales[0]]) ||
     null;
 
-  return { schema, uiSchema, inputSchemaError: isError };
+  return { schema, uiSchema, inputSchemaError: isError, ...otherAttributes };
 };
 
 export default useInputSchema;

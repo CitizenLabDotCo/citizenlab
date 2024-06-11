@@ -30,7 +30,8 @@ resource 'Projects' do
 
       parameter :areas, 'Filter by areas (AND)', required: false
       parameter :publication_statuses, 'Return only projects with the specified publication statuses (i.e. given an array of publication statuses); returns all projects by default', required: false
-      parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
+      parameter :filter_can_moderate, 'Filter out the projects the current_user is not allowed to moderate. False by default', required: false
+      parameter :filter_user_is_moderator_of, 'Filter out the projects the given user is moderator of (user id)', required: false
       parameter :filter_ids, 'Filter out only projects with the given list of IDs', required: false
       parameter :folder, 'Filter by folder (project folder id)', required: false
 
@@ -120,13 +121,31 @@ resource 'Projects' do
         assert_status 200
         expect(json_response[:data].size).to eq 4
       end
+
+      example 'List projects a specific user can moderate', document: false do
+        moderator = create(
+          :user,
+          roles: [
+            { type: 'project_moderator', project_id: @projects[0].id },
+            { type: 'project_moderator', project_id: @projects[1].id }
+          ]
+        )
+
+        do_request filter_user_is_moderator_of: moderator.id
+        assert_status 200
+        expect(json_response[:data].pluck(:id)).to match_array [@projects[0].id, @projects[1].id]
+      end
     end
 
     get 'web_api/v1/projects/:id' do
       let(:id) { @projects.first.id }
 
+      before do
+        Analytics::PopulateDimensionsService.populate_types
+      end
+
       example 'Get one project by id' do
-        PermissionsService.new.update_all_permissions
+        Permissions::PermissionsUpdateService.new.update_all_permissions
         do_request
         assert_status 200
 
@@ -135,8 +154,8 @@ resource 'Projects' do
         expect(json_response.dig(:data, :attributes)).to include(
           slug: @projects.first.slug,
           timeline_active: nil,
-          action_descriptor: {
-            posting_idea: { enabled: false, disabled_reason: 'project_inactive', future_enabled: nil },
+          action_descriptors: {
+            posting_idea: { enabled: false, disabled_reason: 'project_inactive', future_enabled_at: nil },
             commenting_idea: { enabled: false, disabled_reason: 'project_inactive' },
             reacting_idea: {
               enabled: false,
@@ -445,7 +464,7 @@ resource 'Projects' do
     get 'web_api/v1/projects/:id/as_xlsx' do
       let(:project) { create(:project) }
       let(:project_form) { create(:custom_form, :with_default_fields, participation_context: project) }
-      let!(:extra_idea_field) { create(:custom_field_extra_custom_form, resource: project_form) }
+      let!(:extra_idea_field) { create(:custom_field, resource: project_form) }
       let(:ideation_phase) do
         create(
           :phase,
@@ -648,6 +667,172 @@ resource 'Projects' do
     end
   end
 
+  get 'web_api/v1/projects/:id/votes_by_user_xlsx' do
+    let(:phase1) { create(:single_voting_phase, start_at: Time.now - 18.days, end_at: Time.now - 17.days) }
+    let(:phase2) { create(:multiple_voting_phase, start_at: Time.now - 14.days, end_at: Time.now - 13.days) }
+    let(:phase3) { create(:budgeting_phase, start_at: Time.now - 11.days, end_at: Time.now - 10.days) }
+    let(:project) { create(:project, phases: [phase1, phase2, phase3]) }
+    let(:id) { project.id }
+
+    context 'as a regular user' do
+      before { header_token_for(create(:user)) }
+
+      example_request '[Unauthorized] Get xlsx of voters in voting phases', document: false do
+        expect(status).to eq 401
+      end
+    end
+
+    context 'as an admin' do
+      before do
+        @admin = create(:admin)
+        header_token_for(@admin)
+      end
+
+      example_request 'Get xlsx of voters in voting phases' do
+        expect(status).to eq 200
+        expect(response_headers['Content-Type']).to include('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        expect(response_headers['Content-Disposition']).to include('votes_by_user.xlsx')
+      end
+
+      example 'Get xlsx of voters successfully translates column headers', document: false do
+        fixtures = YAML.load_file(Rails.root.join('spec/fixtures/locales/nl-NL.yml'))
+        dutch_column_headers = fixtures['nl']['xlsx_export']['column_headers']
+        @admin.update!(locale: 'nl-NL')
+
+        do_request
+        expect(status).to eq 200
+
+        workbook = RubyXL::Parser.parse_buffer(response_body)
+        header_row1 = workbook.worksheets[0][0].cells.map(&:value)
+        header_row2 = workbook.worksheets[1][0].cells.map(&:value)
+        header_row3 = workbook.worksheets[2][0].cells.map(&:value)
+
+        expect(header_row1).to match_array([dutch_column_headers['submitted_at']])
+        expect(header_row2).to match_array([dutch_column_headers['submitted_at']])
+        expect(header_row3).to match_array([dutch_column_headers['submitted_at']])
+      end
+    end
+
+    context 'as a project moderator' do
+      before do
+        header 'Content-Type', 'application/json'
+        @user = create(:user, roles: [{ type: 'project_moderator', project_id: project.id }])
+        header_token_for @user
+      end
+
+      example_request 'Get xlsx of voters in voting phases of project the user moderates' do
+        expect(status).to eq 200
+        expect(response_headers['Content-Type']).to include('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        expect(response_headers['Content-Disposition']).to include('votes_by_user.xlsx')
+      end
+
+      example '[Unauthorized] Get xlsx of voters in voting phases of project the user does NOT moderate', document: false do
+        do_request(id: create(:project).id)
+        expect(status).to eq 401
+      end
+    end
+  end
+
+  get 'web_api/v1/projects/:id/votes_by_input_xlsx' do
+    let(:phase1) { create(:single_voting_phase, start_at: Time.now - 18.days, end_at: Time.now - 17.days) }
+    let(:phase2) { create(:multiple_voting_phase, start_at: Time.now - 14.days, end_at: Time.now - 13.days) }
+    let(:phase3) { create(:budgeting_phase, start_at: Time.now - 11.days, end_at: Time.now - 10.days) }
+    let(:project) { create(:project, phases: [phase1, phase2, phase3]) }
+    let(:id) { project.id }
+
+    context 'as a regular user' do
+      before { header_token_for(create(:user)) }
+
+      example_request '[Unauthorized] Get xlsx of voting results in voting phases', document: false do
+        expect(status).to eq 401
+      end
+    end
+
+    context 'as an admin' do
+      before do
+        @admin = create(:admin)
+        header_token_for(@admin)
+      end
+
+      example_request 'Get xlsx of voting results in voting phases' do
+        expect(status).to eq 200
+        expect(response_headers['Content-Type']).to include('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        expect(response_headers['Content-Disposition']).to include('votes_by_input.xlsx')
+      end
+
+      example 'Get xlsx of voters successfully translates column headers', document: false do
+        fixtures = YAML.load_file(Rails.root.join('spec/fixtures/locales/fr-FR.yml'))
+        french_column_headers = fixtures['fr']['xlsx_export']['column_headers']
+        @admin.update!(locale: 'fr-FR')
+
+        do_request
+        expect(status).to eq 200
+
+        workbook = RubyXL::Parser.parse_buffer(response_body)
+        header_row1 = workbook.worksheets[0][0].cells.map(&:value)
+        header_row2 = workbook.worksheets[1][0].cells.map(&:value)
+        header_row3 = workbook.worksheets[2][0].cells.map(&:value)
+
+        expected_first_columns = [
+          french_column_headers['input_id'],
+          french_column_headers['title'],
+          french_column_headers['description']
+        ]
+
+        expected_last_columns = [
+          french_column_headers['input_url'],
+          french_column_headers['attachments'],
+          french_column_headers['tags'],
+          french_column_headers['latitude'],
+          french_column_headers['longitude'],
+          french_column_headers['location'],
+          french_column_headers['project'],
+          french_column_headers['status'],
+          french_column_headers['author_fullname'],
+          french_column_headers['author_email'],
+          french_column_headers['author_id'],
+          french_column_headers['published_at']
+        ]
+
+        expect(header_row1).to match_array(
+          expected_first_columns + [french_column_headers['votes_count']] + expected_last_columns
+        )
+        expect(header_row2).to match_array(
+          expected_first_columns +
+          [french_column_headers['votes_count'], french_column_headers['participants']] +
+          expected_last_columns
+        )
+        expect(header_row3).to match_array(
+          expected_first_columns +
+          [
+            "#{french_column_headers['picks']} / #{french_column_headers['participants']}",
+            french_column_headers['cost']
+          ] +
+          expected_last_columns
+        )
+      end
+    end
+
+    context 'as a project moderator' do
+      before do
+        header 'Content-Type', 'application/json'
+        @user = create(:user, roles: [{ type: 'project_moderator', project_id: project.id }])
+        header_token_for @user
+      end
+
+      example_request 'Get xlsx of voting results in voting phases of project the user moderates' do
+        expect(status).to eq 200
+        expect(response_headers['Content-Type']).to include('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        expect(response_headers['Content-Disposition']).to include('votes_by_input.xlsx')
+      end
+
+      example '[Unauthorized] Get xlsx of voters in voting phases of project the user does NOT moderate', document: false do
+        do_request(id: create(:project).id)
+        expect(status).to eq 401
+      end
+    end
+  end
+
   get 'web_api/v1/projects' do
     context 'when moderator' do
       before do
@@ -797,13 +982,14 @@ resource 'Projects' do
         let(:id) { project.id }
         let!(:idea) { create(:idea, project: project, phases: project.phases) }
 
-        example 'Download phase inputs without private user data', document: false do
+        example 'Download phase inputs WITH private user data', document: false do
           phase = project.phases.first
-          expected_params = [[idea], project.phases.first, false]
+          expected_params = [[idea], project.phases.first, { view_private_attributes: true }]
           allow(XlsxExport::InputSheetGenerator).to receive(:new).and_return(XlsxExport::InputSheetGenerator.new(*expected_params))
           do_request
           expect(XlsxExport::InputSheetGenerator).to have_received(:new).with(*expected_params)
           assert_status 200
+
           expect(xlsx_contents(response_body)).to match([
             {
               sheet_name: phase.title_multiloc['en'],
@@ -817,6 +1003,9 @@ resource 'Projects' do
                 'Longitude',
                 'Location',
                 'Proposed Budget',
+                'Author name',
+                'Author email',
+                'Author ID',
                 'Submitted at',
                 'Published at',
                 'Comments',
@@ -824,7 +1013,9 @@ resource 'Projects' do
                 'Dislikes',
                 'URL',
                 'Project',
-                'Status'
+                'Status',
+                'Assignee',
+                'Assignee email'
               ],
               rows: [
                 [
@@ -837,6 +1028,9 @@ resource 'Projects' do
                   idea.location_point.coordinates.first,
                   idea.location_description,
                   idea.proposed_budget,
+                  idea.author_name,
+                  idea.author.email,
+                  idea.author_id,
                   an_instance_of(DateTime), # created_at
                   an_instance_of(DateTime), # published_at
                   0,
@@ -844,7 +1038,9 @@ resource 'Projects' do
                   0,
                   "http://example.org/ideas/#{idea.slug}",
                   project.title_multiloc['en'],
-                  idea.idea_status.title_multiloc['en']
+                  idea.idea_status.title_multiloc['en'],
+                  nil,
+                  nil
                 ]
               ]
             }

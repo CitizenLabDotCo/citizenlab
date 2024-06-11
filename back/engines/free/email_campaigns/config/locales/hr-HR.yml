@@ -2,6 +2,7 @@ hr:
   email_campaigns:
     campaign_type_description:
       "manual": Službene poruke
+      "manual_project_participants": Službene poruke sudionicima projekta
       "admin_rights_received": Dodjela administratorskih prava
       "comment_deleted_by_admin": Brisanje mog komentara
       "comment_marked_as_spam": Izvješće o neželjenim komentarima
@@ -559,6 +560,7 @@ hr:
         admins: 'Adminima'
         admins_and_managers: 'Administratorima i upraviteljima'
         managers: 'Menadžerima'
+        project_participants: 'Sudionicima projekta'
         registered_users: 'Registriranim korisnicima'
       recipient_segment:
         admins: 'Administratori'

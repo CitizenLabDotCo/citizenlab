@@ -31,13 +31,13 @@ module MultiTenancy
               maximum_admins_number: 2,
               maximum_moderators_number: 2,
               additional_admins_number: 1,
-              additional_moderators_number: 1
+              additional_moderators_number: 1,
+              population: 27_500
             },
             password_login: {
               allowed: true,
               enabled: true,
               enable_signup: true,
-              phone: false,
               minimum_length: 8
             },
             facebook_login: {
@@ -69,6 +69,10 @@ module MultiTenancy
               client_id: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_CLIENT_ID'),
               logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
               login_mechanism_name: 'Azure AD B2C'
+            },
+            criipto_login: {
+              allowed: true,
+              enabled: true
             },
             franceconnect_login: {
               allowed: true,
@@ -161,31 +165,11 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            idea_custom_copy: {
-              enabled: true,
-              allowed: true
-            },
             widgets: {
               enabled: true,
               allowed: true
             },
             admin_project_templates: {
-              enabled: true,
-              allowed: true
-            },
-            ideaflow_social_sharing: {
-              enabled: true,
-              allowed: true
-            },
-            initiativeflow_social_sharing: {
-              enabled: true,
-              allowed: true
-            },
-            manual_emailing: {
-              enabled: true,
-              allowed: true
-            },
-            automated_emailing_control: {
               enabled: true,
               allowed: true
             },
@@ -370,10 +354,6 @@ module MultiTenancy
                 }
               ]
             },
-            volunteering: {
-              enabled: true,
-              allowed: true
-            },
             project_folders: {
               enabled: true,
               allowed: true
@@ -465,6 +445,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            input_importer: {
+              enabled: true,
+              allowed: true
+            },
             import_printed_forms: {
               enabled: true,
               allowed: true
@@ -486,6 +470,14 @@ module MultiTenancy
               allowed: true
             },
             advanced_autotagging: {
+              enabled: true,
+              allowed: true
+            },
+            multi_language_platform: {
+              enabled: true,
+              allowed: true
+            },
+            management_feed: {
               enabled: true,
               allowed: true
             }

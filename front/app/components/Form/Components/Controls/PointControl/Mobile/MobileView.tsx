@@ -14,6 +14,8 @@ import EsriMap from 'components/EsriMap';
 import { parseLayers } from 'components/EsriMap/utils';
 import { Option } from 'components/UI/LocationInput';
 
+import { sanitizeForClassname } from 'utils/JSONFormUtils';
+
 import ErrorDisplay from '../../../ErrorDisplay';
 import LocationTextInput from '../components/LocationTextInput';
 import MapOverlay from '../components/MapOverlay';
@@ -35,6 +37,7 @@ const MobileView = ({
   mapView,
   handlePointChange,
   didBlur,
+  id,
   ...props
 }: Props & ControlProps) => {
   const { data, path, errors } = props;
@@ -105,7 +108,12 @@ const MobileView = ({
           />
         </Box>
       </Box>
-      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
+      <ErrorDisplay
+        inputId={sanitizeForClassname(id)}
+        ajvErrors={errors}
+        fieldPath={path}
+        didBlur={didBlur}
+      />
       {showFullscreenMapInput && (
         <FullscreenMapInput
           setShowFullscreenMap={setShowFullscreenMap}

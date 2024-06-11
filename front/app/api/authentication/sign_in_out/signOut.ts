@@ -34,6 +34,10 @@ export default async function signOut() {
         clHistory.push('/');
       }
 
+      /*
+        TODO: Could probably be removed now that we have the Unauthorized component
+        that renders if the user is not authenticated
+      */
       if (pathname && endsWith(pathname, '/ideas/new')) {
         clHistory.push(pathname.split('/ideas/new')[0] as RouteType);
       }

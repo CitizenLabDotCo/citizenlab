@@ -1,22 +1,31 @@
 import React from 'react';
 
-import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  colors,
+  stylingConsts,
+  Text,
+  Title,
+} from '@citizenlab/cl2-component-library';
+import saveAs from 'file-saver';
 import moment from 'moment';
-import { WrappedComponentProps } from 'react-intl';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { IEventData } from 'api/events/types';
 import useDeleteEvent from 'api/events/useDeleteEvent';
 import useEvents from 'api/events/useEvents';
+import { exportEventAttendees } from 'api/events/util';
+
+import useLocalize from 'hooks/useLocalize';
 
 import { List, Row, HeadRow } from 'components/admin/ResourceList';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import T from 'components/T';
 import Button from 'components/UI/Button';
 import Warning from 'components/UI/Warning';
 
-import { injectIntl, FormattedMessage, useIntl } from 'utils/cl-intl';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { isNilOrError } from 'utils/helperUtils';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { requestBlob } from 'utils/requestBlob';
 
 import messages from './messages';
 
@@ -33,12 +42,10 @@ const StyledList = styled(List)`
   margin-top: 30px;
 `;
 
-const AdminProjectEventsIndex = ({
-  intl,
-  params,
-}: WithRouterProps & WrappedComponentProps) => {
+const AdminProjectEventsIndex = () => {
+  const { projectId } = useParams() as { projectId: string };
+  const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const { projectId } = params;
   const { data: events } = useEvents({
     projectIds: [projectId],
     pageSize: 1000,
@@ -51,12 +58,26 @@ const AdminProjectEventsIndex = ({
     (eventId: string) => (event: React.FormEvent<any>) => {
       event.preventDefault();
 
-      if (
-        window.confirm(intl.formatMessage(messages.deleteConfirmationModal))
-      ) {
+      if (window.confirm(formatMessage(messages.deleteConfirmationModal))) {
         deleteEvent(eventId);
       }
     };
+
+  const handleAttendeesExport = async (event: IEventData) => {
+    try {
+      const blob = await requestBlob(
+        exportEventAttendees(event.id),
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      );
+
+      saveAs(
+        blob,
+        `attendees-export-for-${localize(event.attributes.title_multiloc)}.xlsx`
+      );
+    } catch {
+      // Do nothing
+    }
+  };
 
   return (
     <Box mb="40px" p="44px">
@@ -69,7 +90,7 @@ const AdminProjectEventsIndex = ({
         </SectionDescription>
         <ListWrapper className="e2e-projects-events">
           <AddButton
-            buttonStyle="cl-blue"
+            buttonStyle="admin-dark"
             icon="plus-circle"
             linkTo={`/admin/projects/${projectId}/events/new`}
           >
@@ -108,7 +129,7 @@ const AdminProjectEventsIndex = ({
             </Warning>
           </Box>
 
-          {!isNilOrError(events) && events.data.length > 0 && (
+          {events && events?.data.length > 0 && (
             <StyledList>
               <>
                 <HeadRow>
@@ -125,14 +146,30 @@ const AdminProjectEventsIndex = ({
                   return (
                     <Row key={event.id}>
                       <div className="expand">
-                        <h1>
-                          <T value={event.attributes.title_multiloc} />
-                        </h1>
+                        <h1>{localize(event.attributes.title_multiloc)}</h1>
                         <p>{event.attributes.address_1}</p>
                         <p>
                           {startAt} → {endAt}
                         </p>
                       </div>
+                      <Box>
+                        <Title
+                          variant="h6"
+                          color="primary"
+                          fontSize="xl"
+                          p="0px"
+                          m="0px"
+                        >
+                          {event.attributes.attendees_count}
+                        </Title>
+                        <Text m="0px">
+                          {event.attributes.attendees_count === 1 ? (
+                            <FormattedMessage {...messages.attendee} />
+                          ) : (
+                            <FormattedMessage {...messages.attendees} />
+                          )}
+                        </Text>
+                      </Box>
                       <Button
                         buttonStyle="text"
                         icon="delete"
@@ -142,7 +179,15 @@ const AdminProjectEventsIndex = ({
                         <FormattedMessage {...messages.deleteButtonLabel} />
                       </Button>
                       <Button
-                        buttonStyle="secondary"
+                        buttonStyle="secondary-outlined"
+                        disabled={event.attributes.attendees_count === 0}
+                        icon="download"
+                        onClick={() => handleAttendeesExport(event)}
+                      >
+                        <FormattedMessage {...messages.exportAttendees} />
+                      </Button>
+                      <Button
+                        buttonStyle="secondary-outlined"
                         icon="edit"
                         linkTo={`/admin/projects/${projectId}/events/${event.id}`}
                       >
@@ -160,4 +205,4 @@ const AdminProjectEventsIndex = ({
   );
 };
 
-export default withRouter(injectIntl(AdminProjectEventsIndex));
+export default AdminProjectEventsIndex;

@@ -39,7 +39,7 @@ const TopBar = ({ project, event }: Props) => {
 
   return (
     <Bar>
-      <Box mb="40px" display="flex" width="100%" justifyContent="space-between">
+      <Box display="flex" width="100%" justifyContent="space-between">
         <GoBackButtonSolid
           text={formatMessage(messages.goBack)}
           onClick={() => {
@@ -51,7 +51,7 @@ const TopBar = ({ project, event }: Props) => {
         />
         {canModerate && (
           <Button
-            buttonStyle="secondary"
+            buttonStyle="secondary-outlined"
             m="0px"
             icon="edit"
             px="8px"

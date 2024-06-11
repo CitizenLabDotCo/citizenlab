@@ -8,7 +8,7 @@ export type ImportedIdeasKeys = Keys<typeof importedIdeasKeys>;
 export type ImportedIdeaMetadataKeys = Keys<typeof importedIdeaMetadataKeys>;
 
 export interface QueryParams {
-  projectId: string;
+  projectId?: string;
   phaseId?: string;
 }
 
@@ -38,9 +38,9 @@ export interface ImportedIdeaMetadataResponse {
 }
 
 export interface CreateOfflineIdeasParams {
-  projectId: string;
-  email: string;
+  phaseId: string;
   locale: SupportedLocale;
+  email?: string;
   first_name?: string;
   last_name?: string;
 }

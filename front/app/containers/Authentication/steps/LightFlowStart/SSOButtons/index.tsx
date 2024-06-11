@@ -35,6 +35,9 @@ const SSOButtons = (props: Props) => {
   const hoplrLoginEnabled = useFeatureFlag({
     name: 'hoplr_login',
   });
+  const criiptoLoginEnabled = useFeatureFlag({
+    name: 'criipto_login',
+  });
 
   if (
     !googleLoginEnabled &&
@@ -43,7 +46,8 @@ const SSOButtons = (props: Props) => {
     !azureB2cProviderName &&
     !franceconnectLoginEnabled &&
     !claveUnicaLoginEnabled &&
-    !hoplrLoginEnabled
+    !hoplrLoginEnabled &&
+    !criiptoLoginEnabled
   ) {
     if (passwordLoginEnabled) {
       return null;

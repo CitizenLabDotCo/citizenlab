@@ -1,39 +1,34 @@
 import React from 'react';
 
-import useMachineTranslationByCommentId from 'modules/commercial/machine_translations/api/useMachineTranslationByCommentId';
-import { SupportedLocale } from 'typings';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
 
 import { CommentText } from 'components/PostShowComponents/Comments/Comment/CommentBody';
+
+import useTranslation from '../../hooks/useTranslation';
 
 interface Props {
   translateButtonClicked: boolean;
   commentContent: string;
-  locale: SupportedLocale;
   commentId: string;
 }
 
 const PostShowTranslatedCommentBody = ({
   translateButtonClicked,
   commentContent,
-  locale,
   commentId,
 }: Props) => {
-  const isMachineTranslationsEnabled = useFeatureFlag({
-    name: 'machine_translations',
-  });
-  const { data: translation } = useMachineTranslationByCommentId({
-    commentId,
-    machine_translation: {
-      locale_to: locale,
-      attribute_name: 'body_multiloc',
-    },
-    enabled: isMachineTranslationsEnabled,
+  const locale = useLocale();
+
+  const translation = useTranslation({
+    context: 'comment',
+    id: commentId,
+    localeTo: locale,
+    attributeName: 'body_multiloc',
+    machineTranslationButtonClicked: translateButtonClicked || false,
   });
   const showTranslatedContent = translateButtonClicked && translation;
   const content = showTranslatedContent
-    ? translation.data.attributes.translation.replace(
+    ? translation.attributes.translation.replace(
         /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
         '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
       )

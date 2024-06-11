@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
-import styled from 'styled-components';
+import { Box } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
 import { PublicationStatus } from 'api/projects/types';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import EmptyContainer from './components/EmptyContainer';
@@ -20,15 +22,6 @@ import tracks from './tracks';
 import { getAvailableTabs, getCurrentTab } from './utils';
 
 import { PublicationTab, Props as BaseProps } from '.';
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const StyledTopbar = styled(Topbar)`
-  margin-bottom: 30px;
-`;
 
 interface Props extends BaseProps {
   statusCounts: IStatusCountsAll;
@@ -66,6 +59,7 @@ const ProjectAndFolderCardsInner = ({
   currentlyWorkingOnText,
 }: Props) => {
   const [currentTab, setCurrentTab] = useState<PublicationTab | null>(null);
+  const { formatMessage } = useIntl();
 
   useEffect(() => {
     if (currentTab) return;
@@ -126,22 +120,29 @@ const ProjectAndFolderCardsInner = ({
     !isNilOrError(adminPublications) && adminPublications.length > 0;
 
   return (
-    <Container id="e2e-projects-container">
-      <StyledTopbar
-        showTitle={showTitle}
-        showSearch={showSearch}
-        showFilters={showFilters}
-        currentTab={currentTab}
-        statusCounts={statusCounts}
-        noAdminPublicationsAtAll={noAdminPublicationsAtAll}
-        availableTabs={availableTabs}
-        hasPublications={hasPublications}
-        onChangeTopics={handleChangeTopics}
-        onChangeAreas={handleChangeAreas}
-        onChangeSearch={handleChangeSearch}
-        onChangeTab={onChangeTab}
-        currentlyWorkingOnText={currentlyWorkingOnText}
-      />
+    <Box id="e2e-projects-container" display="flex" flexDirection="column">
+      <ScreenReaderOnly aria-live="assertive">
+        {formatMessage(messages.a11y_projectsHaveChanged1, {
+          numberOfFilteredResults: adminPublications.length,
+        })}
+      </ScreenReaderOnly>
+      <Box mb="30px">
+        <Topbar
+          showTitle={showTitle}
+          showSearch={showSearch}
+          showFilters={showFilters}
+          currentTab={currentTab}
+          statusCounts={statusCounts}
+          noAdminPublicationsAtAll={noAdminPublicationsAtAll}
+          availableTabs={availableTabs}
+          hasPublications={hasPublications}
+          onChangeTopics={handleChangeTopics}
+          onChangeAreas={handleChangeAreas}
+          onChangeSearch={handleChangeSearch}
+          onChangeTab={onChangeTab}
+          currentlyWorkingOnText={currentlyWorkingOnText}
+        />
+      </Box>
 
       {loadingInitial && <LoadingBox />}
 
@@ -172,7 +173,7 @@ const ProjectAndFolderCardsInner = ({
       {!loadingInitial && hasPublications && hasMore && (
         <Footer loadingMore={!!loadingMore} onShowMore={showMore} />
       )}
-    </Container>
+    </Box>
   );
 };
 

@@ -2,6 +2,7 @@ fi:
   email_campaigns:
     campaign_type_description:
       "manual": Viralliset viestit
+      "manual_project_participants": Viralliset viestit projektin osallistujille
       "admin_rights_received": Järjestelmänvalvojan oikeudet saatu
       "comment_deleted_by_admin": Kommenttini poisto
       "comment_marked_as_spam": Kommentoi roskapostiraportti
@@ -559,6 +560,7 @@ fi:
         admins: 'järjestelmänvalvojille'
         admins_and_managers: 'Ylläpitäjille ja johtajille'
         managers: 'Johtajille'
+        project_participants: 'Projektin osallistujille'
         registered_users: 'Rekisteröityneille käyttäjille'
       recipient_segment:
         admins: 'Järjestelmänvalvojat'

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Title } from '@citizenlab/cl2-component-library';
+import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import { useParams } from 'react-router-dom';
 
@@ -12,6 +12,7 @@ import useProjectBySlug from 'api/projects/useProjectBySlug';
 import HorizontalScroll from 'components/HorizontalScroll';
 
 import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 
 import EventPreviewCard from './EventPreviewCard';
 import messages from './messages';
@@ -22,6 +23,7 @@ type EventPreviewsProps = {
 
 const EventPreviews = ({ projectId }: EventPreviewsProps) => {
   const { formatMessage } = useIntl();
+  const isTablet = useBreakpoint('tablet');
 
   // project related
   const params = useParams<{ slug: string }>();
@@ -55,9 +57,31 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
           {formatMessage(messages.eventPreviewTimelineTitle)}
         </Title>
         <HorizontalScroll>
-          {events.data.map((event) => (
-            <EventPreviewCard key={event.id} event={event} />
-          ))}
+          <ul
+            style={{ display: 'flex', listStyleType: 'none', padding: '0px' }}
+          >
+            {events.data.map((event) => (
+              <li
+                key={event.id}
+                style={{
+                  minWidth: isTablet ? '300px' : '340px',
+                }}
+                tabIndex={0}
+                onClick={() => {
+                  clHistory.push(`/events/${event.id}`, { scrollToTop: true });
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    clHistory.push(`/events/${event.id}`, {
+                      scrollToTop: true,
+                    });
+                  }
+                }}
+              >
+                <EventPreviewCard event={event} />
+              </li>
+            ))}
+          </ul>
         </HorizontalScroll>
       </>
     );

@@ -177,6 +177,15 @@ describe ActivitiesService do
         expect { service.create_periodic_activities(now: now) }
           .not_to have_enqueued_job(LogActivityJob)
       end
+
+      it 'does not log an activity when a the voting phase finished' do
+        create(:activity, item: basket.phase, action: 'ended')
+        create(:baskets_idea, idea: create(:idea), basket: basket, created_at: updated_at, updated_at: updated_at)
+        now = updated_at + 1.day
+        basket.phase.update!(start_at: (now - 4.days), end_at: (now - 2.days))
+        expect { service.create_periodic_activities(now: now) }
+          .not_to(have_enqueued_job(LogActivityJob))
+      end
     end
 
     describe '#create_survey_not_submitted_activities' do
@@ -201,6 +210,14 @@ describe ActivitiesService do
         now = updated_at + 5.hours
         expect { service.create_periodic_activities(now: now) }
           .not_to have_enqueued_job(LogActivityJob)
+      end
+
+      it 'does not log an activity when a the survey phase finished' do
+        create(:activity, item: idea.creation_phase, action: 'ended')
+        now = updated_at + 1.day
+        idea.creation_phase.update!(start_at: (now - 4.days), end_at: (now - 2.days))
+        expect { service.create_periodic_activities(now: now) }
+          .not_to(have_enqueued_job(LogActivityJob))
       end
     end
 

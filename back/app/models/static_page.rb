@@ -36,6 +36,9 @@
 #
 class StaticPage < ApplicationRecord
   CODES = %w[about terms-and-conditions privacy-policy faq proposals custom].freeze
+
+  slug from: proc { |page| page.title_multiloc.values.find(&:present?) }
+
   enum projects_filter_type: { no_filter: 'no_filter', areas: 'areas', topics: 'topics' }
 
   has_one :nav_bar_item, dependent: :destroy
@@ -52,7 +55,6 @@ class StaticPage < ApplicationRecord
   accepts_nested_attributes_for :text_images
 
   before_validation :set_code, on: :create
-  before_validation :generate_slug, on: :create
 
   before_validation :strip_title
   before_validation :sanitize_top_info_section_multiloc
@@ -62,7 +64,6 @@ class StaticPage < ApplicationRecord
   before_destroy :confirm_is_custom, prepend: true
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
-  validates :slug, presence: true, uniqueness: true
   validates :code, inclusion: { in: CODES }
   validates :code, uniqueness: true, unless: :custom?
 
@@ -141,10 +142,6 @@ class StaticPage < ApplicationRecord
 
   def set_code
     self.code ||= 'custom'
-  end
-
-  def generate_slug
-    self.slug ||= SlugService.new.generate_slug self, title_multiloc.values.first
   end
 
   def strip_title

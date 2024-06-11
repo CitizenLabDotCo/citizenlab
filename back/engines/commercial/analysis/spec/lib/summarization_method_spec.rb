@@ -43,32 +43,28 @@ RSpec.describe Analysis::SummarizationMethod do
   end
 
   describe 'OnePassLLM summarization' do
-    it 'works' do
-      analysis = create(:analysis, main_custom_field: create(
+    let(:analysis) do
+      create(:analysis, main_custom_field: create(
         :custom_field,
         :for_custom_form,
         code: 'title_multiloc',
         key: 'title_multiloc'
       ))
-
-      summarization_task = create(
-        :summarization_task,
-        analysis: analysis,
-        state: 'queued',
-        summary: create(:summary, summary: nil, summarization_method: 'one_pass_llm', insight_attributes: { analysis: analysis, filters: { comments_from: 5 } })
-      )
-      summary = summarization_task.summary
-      inputs = with_options project: summarization_task.analysis.project do
+    end
+    let(:summary) { create(:summary, summary: nil, summarization_method: 'one_pass_llm', insight_attributes: { analysis: analysis, filters: { comments_from: 5 } }) }
+    let(:summarization_task) { create(:summarization_task, analysis: analysis, state: 'queued', summary: summary) }
+    let(:inputs) do
+      with_options project: analysis.project do
         [
           create(:idea, comments_count: 0),
           create(:idea, comments_count: 5),
           create(:idea, comments_count: 10)
         ]
       end
+    end
 
-      mock_llm = instance_double(Analysis::LLM::GPT4Turbo)
+    it 'works' do
       plan = Analysis::SummarizationMethod::OnePassLLM.new(summary).generate_plan
-
       expect(plan).to have_attributes({
         summarization_method_class: Analysis::SummarizationMethod::OnePassLLM,
         llm: kind_of(Analysis::LLM::Base),
@@ -76,13 +72,24 @@ RSpec.describe Analysis::SummarizationMethod do
         include_id: true,
         shorten_labels: false
       })
-      plan.llm = mock_llm
 
+      mock_llm = instance_double(Analysis::LLM::GPT4Turbo)
+      plan.llm = mock_llm
       expect(mock_llm).to receive(:chat_async).with(kind_of(String)) do |prompt, &block|
         expect(prompt).to include(inputs[2].id)
         block.call 'Complete'
         block.call ' summary'
       end
+
+      mock_locale = instance_double(Locale)
+      expect(Locale)
+        .to receive(:monolingual)
+        .and_return(mock_locale)
+      expect(mock_locale).to receive(:language_copy).and_return('High Valyrian')
+      expect_any_instance_of(Analysis::LLM::Prompt)
+        .to receive(:fetch)
+        .with('summarization', project_title: kind_of(String), inputs_text: kind_of(String), language: 'High Valyrian')
+        .and_call_original
 
       expect { plan.summarization_method_class.new(summary).execute(plan) }
         .to change { summarization_task.summary.summary }.from(nil).to('Complete summary')

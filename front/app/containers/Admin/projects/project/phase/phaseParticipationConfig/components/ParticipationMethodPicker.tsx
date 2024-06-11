@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   IconTooltip,
@@ -8,8 +8,8 @@ import {
   Icon,
   Title,
   colors,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import styled from 'styled-components';
 
 import { IPhase, ParticipationMethod } from 'api/phases/types';
@@ -81,9 +81,6 @@ const ParticipationMethodPicker = ({
   const nativeSurveysEnabled = useFeatureFlag({
     name: 'native_surveys',
   });
-  const volunteeringEnabled = useFeatureFlag({
-    name: 'volunteering',
-  });
 
   const changeMethod = (newMethod?: ParticipationMethod) => {
     const method = newMethod || methodToChangeTo;
@@ -110,6 +107,11 @@ const ParticipationMethodPicker = ({
       changeMethod(method);
     }
   };
+
+  useEffect(() => {
+    setSelectedMethod(participation_method);
+    setShowSurveyOptions(participation_method === 'native_survey');
+  }, [participation_method]);
 
   return (
     <>
@@ -166,16 +168,14 @@ const ParticipationMethodPicker = ({
               selected={selectedMethod === 'information'}
             />
 
-            {volunteeringEnabled && (
-              <ParticipationMethodChoice
-                key="volunteering"
-                title={formatMessage(messages2.volunteeringTitle)}
-                subtitle={formatMessage(messages2.volunteeringDescription)}
-                onClick={(event) => handleMethodSelect(event, 'volunteering')}
-                image={volunteeringImage}
-                selected={selectedMethod === 'volunteering'}
-              />
-            )}
+            <ParticipationMethodChoice
+              key="volunteering"
+              title={formatMessage(messages2.volunteeringTitle)}
+              subtitle={formatMessage(messages2.volunteeringDescription)}
+              onClick={(event) => handleMethodSelect(event, 'volunteering')}
+              image={volunteeringImage}
+              selected={selectedMethod === 'volunteering'}
+            />
 
             {documentAnnotationAllowed && (
               <Box position="relative">
@@ -200,7 +200,7 @@ const ParticipationMethodPicker = ({
                     top="20%"
                     left="50%"
                   >
-                    <Tippy
+                    <Tooltip
                       maxWidth="250px"
                       placement="bottom"
                       content={formatMessage(
@@ -219,7 +219,7 @@ const ParticipationMethodPicker = ({
                           {formatMessage(messages2.addOn)}
                         </Box>
                       </Badge>
-                    </Tippy>
+                    </Tooltip>
                   </Box>
                 )}
               </Box>
@@ -314,7 +314,7 @@ const ParticipationMethodPicker = ({
             alignItems="center"
           >
             <Button
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               width="100%"
               onClick={closeModal}
               mr="16px"

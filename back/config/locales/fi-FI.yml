@@ -1,4 +1,38 @@
 fi:
+  locales:
+    en: Englanti
+    ar-MA: arabia (Marokko)
+    ar-SA: arabia (Saudi-Arabia)
+    ca-ES: katalaani
+    cy-GB: Walesin
+    da-DK: Tanskan kieli
+    de-DE: Saksan kieli
+    el-GR: kreikkalainen
+    en-CA: englanti (Kanada)
+    en-GB: englanti (UK)
+    en-IE: englanti (Irlanti)
+    es-CL: espanja (Chile)
+    es-ES: espanja (Espanja)
+    fi-FI: Suomalainen
+    fr-BE: ranska (Belgia)
+    fr-FR: Ranskan kieli
+    hr-HR: Kroatia
+    hu-HU: Unkarin kieli
+    it-IT: italialainen
+    kl-GL: grönlantilainen
+    lb-LU: luxemburgilainen
+    lv-LV: Latvialainen
+    mi: maori
+    nb-NO: norja (bokmål)
+    nl-BE: hollanti (Belgia)
+    nl-NL: Hollannin kieli
+    pl-PL: Kiillottaa
+    pt-BR: portugali (Brasilia)
+    ro-RO: romanialainen
+    sr-Latn: serbia (latinalainen)
+    sr-SP: serbia (kyrillinen)
+    sv-SE: Ruotsin kieli
+    tr-TR: turkkilainen
   symbols:
     outside: jossain muualla
   idea_statuses:
@@ -148,8 +182,8 @@ fi:
       section3:
         title: Yksityiskohdat
         description:
-      other:
-        title: Koska valitsit "muu", mitä ajattelet?
+      other_text_field:
+        title: Jos valitsit{other_option}, mitä ajattelet?
   custom_forms:
     categories:
       main_content:
@@ -200,29 +234,40 @@ fi:
       subject: '%{organizationName}: Palauta salasanasi'
       title_reset_your_password: 'Valitse uusi salasana'
   xlsx_export:
+    anonymous: 'Nimetön'
     column_headers:
-      input_id: 'ID'
-      latitude: 'Leveysaste'
-      longitude: 'Pituusaste'
-      author_fullname: 'Tekijän nimi'
-      author_email: 'Tekijän sähköpostiosoite'
-      author_id: 'Tekijän tunnus'
-      budget: 'Budjetti'
-      created_at: 'Lähetetty klo'
-      published_at: 'Julkaistu klo'
-      comments_count: 'Kommentit'
-      likes_count: 'Tykkää'
-      dislikes_count: 'Ei pidä'
-      picks: 'Poimintoja'
-      participants: 'Osallistujat'
-      votes_count: 'Äänet'
-      input_url: 'URL-osoite'
-      project: 'Projekti'
-      status: 'Tila'
       assignee_fullname: 'Valtuutettu'
       assignee_email: 'Valtuutetun sähköpostiosoite'
+      attachments: 'Liitteet'
+      author_email: 'Tekijän sähköpostiosoite'
+      author_fullname: 'Tekijän nimi'
+      author_id: 'Tekijän tunnus'
+      budget: 'Budjetti'
+      comments_count: 'Kommentit'
+      cost: 'Kustannus'
+      created_at: 'Lähetetty klo'
+      description: 'Kuvaus'
+      dislikes_count: 'Ei pidä'
+      email: 'Sähköposti'
+      first_name: 'Etunimet)'
       image_url: 'Kuvan URL-osoite'
-    anonymous: 'Nimetön'
+      input_id: 'ID'
+      input_url: 'URL-osoite'
+      last_name: 'Sukunimi'
+      latitude: 'Leveysaste'
+      likes_count: 'Tykkää'
+      location: 'Sijainti'
+      longitude: 'Pituusaste'
+      participants: 'Osallistujat'
+      picks: 'Poimintoja'
+      project: 'Projekti'
+      published_at: 'Julkaistu klo'
+      registration_completed_at: 'Ilmoittautuminen päättynyt klo'
+      status: 'Tila'
+      submitted_at: 'Lähetetty klo'
+      tags: 'Tunnisteet'
+      title: 'Otsikko'
+      votes_count: 'Äänet'
   form_builder:
     default_select_field:
       title: 'Kysymyksesi'
@@ -248,6 +293,7 @@ fi:
       instructions: 'Ohjeet'
       write_as_clearly: 'Kirjoita <b>selkeästi</b> niin kuin voit – nämä lomakkeet voidaan skannata'
       write_in_language: 'Kirjoita vastauksesi samalla kielellä kuin tämä lomake'
+      linear_scale_print_description: 'Kirjoita vain numero väliltä %{min_label} ja %{max_label}'
   project_copy:
     title_suffix: 'Kopio'
   confirmations_mailer:

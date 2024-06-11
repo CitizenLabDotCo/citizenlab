@@ -1,4 +1,38 @@
 "nb-NO":
+  locales:
+    en: Engelsk
+    ar-MA: Arabisk (Marokko)
+    ar-SA: Arabisk (Saudi-Arabia)
+    ca-ES: katalansk
+    cy-GB: walisisk
+    da-DK: dansk
+    de-DE: tysk
+    el-GR: gresk
+    en-CA: Engelsk (Canada)
+    en-GB: engelsk (Storbritannia)
+    en-IE: Engelsk (Irland)
+    es-CL: spansk (Chile)
+    es-ES: Spansk (Spania)
+    fi-FI: finsk
+    fr-BE: fransk (Belgia)
+    fr-FR: fransk
+    hr-HR: Kroatisk
+    hu-HU: ungarsk
+    it-IT: italiensk
+    kl-GL: Grønlandsk
+    lb-LU: luxemburgsk
+    lv-LV: latvisk
+    mi: Maori
+    nb-NO: norsk (bokmål)
+    nl-BE: Nederlandsk (Belgia)
+    nl-NL: nederlandsk
+    pl-PL: Pusse
+    pt-BR: Portugisisk (Brasil)
+    ro-RO: rumensk
+    sr-Latn: serbisk (latinsk)
+    sr-SP: serbisk (kyrillisk)
+    sv-SE: svensk
+    tr-TR: tyrkisk
   symbols:
     outside: annet sted
   idea_statuses:
@@ -148,8 +182,8 @@
       section3:
         title: Detaljer
         description:
-      other:
-        title: Siden du valgte "annet", hva tenker du på?
+      other_text_field:
+        title: Hvis du valgte '{other_option}', hva tenker du på?
   custom_forms:
     categories:
       main_content:
@@ -200,29 +234,40 @@
       subject: '%{organizationName}: tilbakestill passordet ditt'
       title_reset_your_password: 'Velg et nytt passord'
   xlsx_export:
+    anonymous: 'Anonym'
     column_headers:
-      input_id: 'ID'
-      latitude: 'Breddegrad'
-      longitude: 'Lengdegrad'
-      author_fullname: 'Forfatterens navn'
-      author_email: 'Forfatterens e-postadresse'
-      author_id: 'Forfatterens ID'
-      budget: 'Budsjett'
-      created_at: 'Innsendt'
-      published_at: 'Publisert'
-      comments_count: 'Kommentarer'
-      likes_count: 'Liker'
-      dislikes_count: 'Misliker'
-      picks: 'Valg'
-      participants: 'Deltakere'
-      votes_count: 'Stemmer'
-      input_url: 'URL-adresse'
-      project: 'Prosjekt'
-      status: 'Status'
       assignee_fullname: 'Anvist til'
       assignee_email: 'Oppdragstakerens e-postadresse'
+      attachments: 'Vedlegg'
+      author_email: 'Forfatterens e-postadresse'
+      author_fullname: 'Forfatterens navn'
+      author_id: 'Forfatterens ID'
+      budget: 'Budsjett'
+      comments_count: 'Kommentarer'
+      cost: 'Koste'
+      created_at: 'Innsendt'
+      description: 'Beskrivelse'
+      dislikes_count: 'Misliker'
+      email: 'E-post'
+      first_name: 'Fornavn)'
       image_url: 'Bilde-URL'
-    anonymous: 'Anonym'
+      input_id: 'ID'
+      input_url: 'URL-adresse'
+      last_name: 'Etternavn'
+      latitude: 'Breddegrad'
+      likes_count: 'Liker'
+      location: 'plassering'
+      longitude: 'Lengdegrad'
+      participants: 'Deltakere'
+      picks: 'Valg'
+      project: 'Prosjekt'
+      published_at: 'Publisert'
+      registration_completed_at: 'Påmelding fullført kl'
+      status: 'Status'
+      submitted_at: 'Innlevert kl'
+      tags: 'Tagger'
+      title: 'Tittel'
+      votes_count: 'Stemmer'
   form_builder:
     default_select_field:
       title: 'Ditt spørsmål'
@@ -248,6 +293,7 @@
       instructions: 'Bruksanvisning'
       write_as_clearly: 'Skriv så tydelig <b>du kan</b> disse skjemaene kan bli skannet'
       write_in_language: 'Skriv svarene dine på samme språk som dette skjemaet'
+      linear_scale_print_description: 'Skriv kun et tall mellom %{min_label} og %{max_label}'
   project_copy:
     title_suffix: 'Kopi'
   confirmations_mailer:

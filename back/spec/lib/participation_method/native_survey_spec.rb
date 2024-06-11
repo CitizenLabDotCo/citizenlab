@@ -7,32 +7,33 @@ RSpec.describe ParticipationMethod::NativeSurvey do
 
   let(:phase) { create(:native_survey_phase) }
 
-  describe '#assign_slug' do
+  describe '#generate_slug' do
     let(:input) { create(:input, slug: nil, project: phase.project, creation_phase: phase) }
 
     before { create(:idea_status_proposed) }
 
-    describe '#assign_defaults_for_phase' do
-      let(:phase) { build(:native_survey_phase) }
+    it 'sets and persists the id as the slug of the input' do
+      expect(input.slug).to eq input.id
 
-      it 'sets the limits posting to max one' do
-        participation_method.assign_defaults_for_phase
-        expect(phase.posting_method).to eq 'limited'
-        expect(phase.posting_limited_max).to eq 1
-      end
+      input.update_column :slug, nil
+      input.reload
+      expect(participation_method.generate_slug(input)).to eq input.id
+    end
+  end
 
-      it 'does not change the ideas_order' do
-        expect do
-          participation_method.assign_defaults_for_phase
-        end.not_to change(phase, :ideas_order)
-      end
+  describe '#assign_defaults_for_phase' do
+    let(:phase) { build(:native_survey_phase) }
+
+    it 'sets the limits posting to max one' do
+      participation_method.assign_defaults_for_phase
+      expect(phase.posting_method).to eq 'limited'
+      expect(phase.posting_limited_max).to eq 1
     end
 
-    it 'sets and persists the id as the slug of the input' do
-      input.update_column :slug, nil
-      participation_method.assign_slug(input)
-      input.reload
-      expect(input.slug).to eq input.id
+    it 'does not change the ideas_order' do
+      expect do
+        participation_method.assign_defaults_for_phase
+      end.not_to change(phase, :ideas_order)
     end
   end
 
@@ -220,6 +221,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   its(:supports_reacting?) { is_expected.to be false }
   its(:supports_status?) { is_expected.to be false }
   its(:supports_assignment?) { is_expected.to be false }
+  its(:supports_permitted_by_everyone?) { is_expected.to be true }
   its(:return_disabled_actions?) { is_expected.to be true }
   its(:additional_export_columns) { is_expected.to eq [] }
 end

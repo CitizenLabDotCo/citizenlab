@@ -28,7 +28,7 @@ module IdFranceconnect
         locale: AppConfiguration.instance.closest_locale_to('fr-FR'),
         remote_avatar_url: auth.info['image']
       }.tap do |attrs|
-        custom_fields = CustomField.with_resource_type('User').enabled.pluck(:code)
+        custom_fields = CustomField.registration.enabled.pluck(:code)
         if custom_fields.include?('birthyear')
           birthdate = auth.extra.raw_info.birthdate
           attrs[:birthyear] = Date.parse(birthdate).year if birthdate.present?
@@ -96,7 +96,7 @@ module IdFranceconnect
     end
 
     def updateable_user_attrs
-      %i[first_name last_name birthyear gender remote_avatar_url]
+      super + %i[first_name last_name birthyear gender remote_avatar_url]
     end
 
     # To make this method return false and so to reproduce merging error, you need:
