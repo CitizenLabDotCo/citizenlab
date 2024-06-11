@@ -4,12 +4,11 @@ import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-
 import { apiPathReport, reportsData } from './__mocks__/_mockServer';
 import useCopyReport from './useCopyReport';
 
 const reportData = reportsData[0];
-const apiCopyPath = `${apiPathReport  }/copy`;
+const apiCopyPath = `${apiPathReport}/copy`;
 
 const server = setupServer(
   rest.post(apiCopyPath, (_req, res, ctx) => {

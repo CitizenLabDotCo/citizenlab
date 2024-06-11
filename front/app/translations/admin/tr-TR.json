@@ -1030,7 +1030,6 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.finished": "Bitti",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.planned": "Planlanmış",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publishedProjects": "Yayınlanmış projeler",
-  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.stale": "Bayat",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "Bu widget için veriler eksik. Raporu kaydedebilmek için yeniden yapılandırın veya silin.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "Bu projede uygun bir aşama bulunamamıştır",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noPhaseSelected": "Seçili faz yok. Lütfen önce bir faz seçin.",

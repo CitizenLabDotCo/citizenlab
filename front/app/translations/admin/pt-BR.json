@@ -1030,7 +1030,6 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.finished": "Terminado",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.planned": "Planejado",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publishedProjects": "Projetos publicados",
-  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.stale": "Velhos",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "Os dados desse widget estão faltando. Reconfigure-o ou exclua-o para que você possa salvar o relatório.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "Não foram encontradas fases apropriadas neste projeto",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noPhaseSelected": "Nenhuma fase foi selecionada. Selecione uma fase primeiro.",
