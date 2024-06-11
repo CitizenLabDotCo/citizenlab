@@ -33,5 +33,6 @@ export const Default: Story = {
     ),
     isOpenByDefault: false,
     children: 'Content for the section.',
+    width: '800px',
   },
 };
