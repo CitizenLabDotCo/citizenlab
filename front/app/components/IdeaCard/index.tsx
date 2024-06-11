@@ -37,7 +37,6 @@ import Interactions from './Interactions';
 export interface Props {
   ideaId: string;
   phaseId?: string | null;
-  className?: string;
   hideImage?: boolean;
   hideImagePlaceholder?: boolean;
   hideIdeaStatus?: boolean;
@@ -75,11 +74,10 @@ interface IdeaCardProps extends Props {
 const IdeaCard = ({
   idea,
   phaseId,
-  className,
   hideImage = false,
   hideImagePlaceholder = false,
   hideIdeaStatus = false,
-  showFollowButton,
+  showFollowButton = false,
 }: IdeaCardProps) => {
   const { data: ideaImage } = useIdeaImage(
     idea.data.id,
@@ -135,7 +133,7 @@ const IdeaCard = ({
 
   return (
     <Container
-      className={`e2e-card e2e-idea-card ${className ?? ''}`.trim()}
+      className="e2e-card e2e-idea-card"
       id={idea.data.id}
       to={`/ideas/${slug}?go_back=true`}
       onClick={handleClick}
