@@ -61,7 +61,7 @@ const UsersHeader = memo(({ title, subtitle }: Props) => {
           linkTo="/admin/dashboard/users"
           text={<FormattedMessage {...messages.userInsights} />}
           icon="chart-bar"
-          buttonStyle="secondary"
+          buttonStyle="secondary-outlined"
         />
       </FirstRow>
       {subtitle && <FormattedMessage tagName="h2" {...subtitle} />}

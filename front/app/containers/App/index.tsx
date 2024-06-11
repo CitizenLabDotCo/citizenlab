@@ -62,7 +62,9 @@ interface Props {
 const locale$ = localeStream().observable;
 
 const App = ({ children }: Props) => {
+  const isSmallerThanTablet = useBreakpoint('tablet');
   const location = useLocation();
+
   const { mutate: signOutAndDeleteAccount } = useDeleteSelf();
   const [isAppInitialized, setIsAppInitialized] = useState(false);
   const [previousPathname, setPreviousPathname] = useState<RouteType | null>(
@@ -256,7 +258,7 @@ const App = ({ children }: Props) => {
   const isIdeaEditPage = isPage('idea_edit', location.pathname);
   const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
   const isEventPage = isPage('event_page', location.pathname);
-  const isSmallerThanTablet = useBreakpoint('tablet');
+  const isNativeSurveyPage = isPage('native_survey', location.pathname);
 
   const theme = getTheme(appConfiguration);
   const showFooter =
@@ -264,7 +266,8 @@ const App = ({ children }: Props) => {
     !isIdeaFormPage &&
     !isInitiativeFormPage &&
     !isIdeaEditPage &&
-    !isInitiativeEditPage;
+    !isInitiativeEditPage &&
+    !isNativeSurveyPage;
   const { pathname } = removeLocale(location.pathname);
   const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
   const disableScroll = fullscreenModalEnabled && signUpInModalOpened;
@@ -283,6 +286,8 @@ const App = ({ children }: Props) => {
     }
 
     // citizen
+    if (isNativeSurveyPage) return false;
+
     if (isSmallerThanTablet) {
       if (
         isEventPage ||

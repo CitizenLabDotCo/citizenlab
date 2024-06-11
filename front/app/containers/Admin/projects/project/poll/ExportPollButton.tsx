@@ -62,7 +62,7 @@ class ExportPollButton extends React.PureComponent<
     const { exporting } = this.state;
     return (
       <Button
-        buttonStyle="secondary"
+        buttonStyle="secondary-outlined"
         icon="download"
         onClick={this.handleExportPollResults}
         processing={exporting}

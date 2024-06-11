@@ -21,7 +21,7 @@ import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
 import messages from './messages';
 import { Props } from './typings';
 
-const isSupportedField = (userField: IUserCustomFieldData) => {
+export const isSupportedField = (userField: IUserCustomFieldData) => {
   const { input_type, code } = userField.attributes;
 
   if (input_type === 'number' && code === 'birthyear') return true;

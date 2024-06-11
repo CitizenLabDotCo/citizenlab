@@ -5,8 +5,8 @@ import {
   Button,
   colors,
   stylingConsts,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import { useParams } from 'react-router-dom';
 import { CLErrors } from 'typings';
 
@@ -282,9 +282,8 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
         justifyContent="flex-end"
       >
         {ideaId && (
-          <Tippy
+          <Tooltip
             disabled={!disabledReason}
-            interactive={true}
             placement="top"
             content={disabledReason || <></>}
           >
@@ -300,7 +299,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
                 <FormattedMessage {...messages.approve} />
               </Button>
             </div>
-          </Tippy>
+          </Tooltip>
         )}
       </Box>
     </>

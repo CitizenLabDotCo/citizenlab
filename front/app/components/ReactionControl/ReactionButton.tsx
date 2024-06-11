@@ -7,8 +7,8 @@ import {
   isRtl,
   Icon,
   IconNames,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import { lighten } from 'polished';
 import { FormattedDate } from 'react-intl';
 import styled, { keyframes } from 'styled-components';
@@ -432,7 +432,7 @@ const ReactionButton = ({
     );
 
     return (
-      <Tippy
+      <Tooltip
         placement="top"
         theme="dark"
         disabled={disabledReason === null}
@@ -453,7 +453,6 @@ const ReactionButton = ({
             }[buttonReactionMode],
             buttonReactionModeEnabled ? 'enabled' : '',
           ].join(' ')}
-          aria-disabled={!buttonEnabled}
         >
           <ReactionIconContainer
             styleType={styleType}
@@ -487,10 +486,14 @@ const ReactionButton = ({
             {reactionsCount}
           </ReactionCount>
           {disabledReason && (
-            <ScreenReaderOnly>{disabledMessage}</ScreenReaderOnly>
+            // Adding a dot as a hack to make the screen reader read the message with the correct pause after the previous text. Ideally all messages should have a dot at the end.
+            <ScreenReaderOnly>
+              {`. `}
+              {disabledMessage}
+            </ScreenReaderOnly>
           )}
         </Button>
-      </Tippy>
+      </Tooltip>
     );
   }
 

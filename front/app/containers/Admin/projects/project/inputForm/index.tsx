@@ -84,7 +84,7 @@ export const IdeaForm = () => {
           {inputImporterEnabled && (
             <Button
               mr="8px"
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               icon="download"
               onClick={downloadExampleXlsxFile}
             >

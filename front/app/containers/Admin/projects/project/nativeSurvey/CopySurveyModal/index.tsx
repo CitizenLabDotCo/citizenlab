@@ -101,7 +101,7 @@ const CopySurveyModal = ({
             {formatMessage(messages.cancel)}
           </Button>
           <Button
-            buttonStyle="cl-blue"
+            buttonStyle="admin-dark"
             disabled={!phaseId}
             onClick={() => {
               const url = `${editFormLink}?copy_from=${phaseId}` as RouteType;

@@ -89,7 +89,12 @@ const ImageControl = ({
         onAdd={handleUploadOnAdd}
         onRemove={handleUploadOnRemove}
       />
-      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
+      <ErrorDisplay
+        inputId={sanitizeForClassname(id)}
+        ajvErrors={errors}
+        fieldPath={path}
+        didBlur={didBlur}
+      />
     </Box>
   );
 };

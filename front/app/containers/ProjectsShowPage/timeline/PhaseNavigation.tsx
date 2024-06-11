@@ -1,7 +1,11 @@
 import React, { memo, useCallback, useMemo } from 'react';
 
-import { Button, colors, isRtl } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
+import {
+  Button,
+  colors,
+  isRtl,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 import { findIndex } from 'lodash-es';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -55,7 +59,7 @@ const NextPhaseButton = styled(Button)`
 
 interface Props {
   projectId: string;
-  buttonStyle?: 'secondary' | 'white';
+  buttonStyle?: 'secondary-outlined' | 'white';
   className?: string;
 }
 
@@ -135,16 +139,15 @@ const PhaseNavigation = memo<Props>(({ projectId, buttonStyle, className }) => {
 
   if (phases && phases.data.length > 1) {
     const navButtonSize = '34px';
-    const navButtonStyle = buttonStyle || 'secondary';
+    const navButtonStyle = buttonStyle || 'secondary-outlined';
     const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
     const currentPhase = getCurrentPhase(phases.data);
     const currentPhaseId = currentPhase ? currentPhase.id : null;
 
     return (
       <Container className={`e2e-timeline-phase-navigation ${className || ''}`}>
-        <Tippy
+        <Tooltip
           disabled={selectedPhaseId === phases.data[0].id}
-          interactive={false}
           placement="bottom"
           content={formatMessage(messages.previousPhase)}
           theme="translucent"
@@ -165,11 +168,10 @@ const PhaseNavigation = memo<Props>(({ projectId, buttonStyle, className }) => {
               className="e2e-previous-phase"
             />
           </div>
-        </Tippy>
+        </Tooltip>
         {currentPhaseId && (
-          <Tippy
+          <Tooltip
             disabled={selectedPhaseId === currentPhaseId}
-            interactive={false}
             placement="bottom"
             content={formatMessage(messages.currentPhase)}
             theme="translucent"
@@ -191,11 +193,10 @@ const PhaseNavigation = memo<Props>(({ projectId, buttonStyle, className }) => {
                 className="e2e-current-phase"
               />
             </div>
-          </Tippy>
+          </Tooltip>
         )}
-        <Tippy
+        <Tooltip
           disabled={selectedPhaseId === phases.data[phases.data.length - 1].id}
-          interactive={false}
           placement="bottom"
           content={formatMessage(messages.nextPhase)}
           theme="translucent"
@@ -218,7 +219,7 @@ const PhaseNavigation = memo<Props>(({ projectId, buttonStyle, className }) => {
               className="e2e-next-phase"
             />
           </div>
-        </Tippy>
+        </Tooltip>
       </Container>
     );
   }

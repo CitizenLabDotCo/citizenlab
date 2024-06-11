@@ -4,6 +4,12 @@ import reportsKeys from './keys';
 
 export type ReportsKeys = Keys<typeof reportsKeys>;
 
+export interface ReportsParams {
+  search?: string;
+  owner_id?: string;
+  service?: boolean;
+}
+
 type EditingReportEnabled = {
   enabled: true;
   disabled_reason: null;

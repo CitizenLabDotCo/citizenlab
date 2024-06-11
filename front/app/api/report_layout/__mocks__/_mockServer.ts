@@ -456,7 +456,7 @@ export const reportLayout: ReportLayoutResponse = {
         },
         z8auwNuI0h: {
           type: {
-            resolvedName: 'ActiveUsersWidget',
+            resolvedName: 'ParticipantsWidget',
           },
           nodes: [],
           props: {

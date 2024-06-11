@@ -9,12 +9,11 @@ import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 import useLocale from 'hooks/useLocale';
 
 import Editor from 'containers/Admin/reporting/components/ReportBuilder/Editor';
-import ActiveUsersWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/ActiveUsersWidget';
-import CommentsByTimeWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/CommentsByTimeWidget';
+import { WIDGET_TITLES } from 'containers/Admin/reporting/components/ReportBuilder/Widgets';
 import DemographicsWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/DemographicsWidget';
 import { INPUT_TYPES } from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/DemographicsWidget/Settings';
-import PostsByTimeWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/PostsByTimeWidget';
-import ReactionsByTimeWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/ReactionsByTimeWidget';
+import ParticipantsWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/ParticipantsWidget';
+import ParticipationWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/ParticipationWidget';
 import { MAX_REPORT_WIDTH } from 'containers/Admin/reporting/constants';
 import { ReportContextProvider } from 'containers/Admin/reporting/context/ReportContext';
 
@@ -51,7 +50,7 @@ const ParticipationReportPreview = ({
       <Box maxWidth={MAX_REPORT_WIDTH} w="100%">
         <Editor isPreview={true}>
           <ContentBuilderFrame key={`${startAt} + ${endAt}`}>
-            <ActiveUsersWidget
+            <ParticipantsWidget
               startAt={startAt}
               endAt={endAt}
               projectId={projectId}
@@ -75,25 +74,18 @@ const ParticipationReportPreview = ({
 
             {hasIdeationPhase && (
               <Element is="div" canvas>
-                <PostsByTimeWidget
+                <ParticipationWidget
                   startAt={startAt}
                   endAt={endAt}
                   projectId={projectId}
-                  title={{ [locale]: formatMessage(messages.inputs) }}
-                />
-                <WhiteSpace />
-                <CommentsByTimeWidget
-                  startAt={startAt}
-                  endAt={endAt}
-                  projectId={projectId}
-                  title={{ [locale]: formatMessage(messages.comments) }}
-                />
-                <WhiteSpace />
-                <ReactionsByTimeWidget
-                  startAt={startAt}
-                  endAt={endAt}
-                  projectId={projectId}
-                  title={{ [locale]: formatMessage(messages.reactions) }}
+                  title={{
+                    [locale]: formatMessage(WIDGET_TITLES.ParticipationWidget),
+                  }}
+                  participationTypes={{
+                    comments: true,
+                    votes: false,
+                    inputs: true,
+                  }}
                 />
               </Element>
             )}
