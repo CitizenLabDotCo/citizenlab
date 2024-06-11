@@ -1,9 +1,9 @@
 const locales = ['en'];
 
 const messages = locales.reduce(
-  (acc, lang) => ({
+  async (acc, lang) => ({
     ...acc,
-    [lang]: import(`../app/translations/${lang}.json`), // whatever the relative path to your messages json is
+    [lang]: await import(`../app/translations/${lang}.json`), // whatever the relative path to your messages json is
   }),
   {}
 );
