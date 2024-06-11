@@ -1030,7 +1030,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.finished": "Finished",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.planned": "Planned",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publishedProjects": "Published projects",
-  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.stale": "Stale",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.stale": "Μπαγιάτικο",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "The data for this widget is missing. Reconfigure or delete it to be able to save the report.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "Δεν βρέθηκαν κατάλληλες φάσεις σε αυτό το έργο",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noPhaseSelected": "Δεν έχει επιλεγεί φάση. Παρακαλώ επιλέξτε πρώτα μια φάση.",
