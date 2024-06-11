@@ -3,7 +3,7 @@ const locales = ['en'];
 const messages = locales.reduce(
   (acc, lang) => ({
     ...acc,
-    [lang]: require(`../app/translations/${lang}.json`), // whatever the relative path to your messages json is
+    [lang]: import(`../app/translations/${lang}.json`), // whatever the relative path to your messages json is
   }),
   {}
 );

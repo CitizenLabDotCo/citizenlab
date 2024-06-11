@@ -11,7 +11,7 @@
   "main": "app/component-library/dist/index.js",
   "module": "app/component-library/dist/cl2-component-library.esm.js",
   "scripts": {
-    "extract-intl": "tsc --skipLibCheck app/containers/App/constants && babel-node --presets @babel/env -- ./internals/scripts/extract-intl.js",
+    "extract-intl": "tsc --skipLibCheck app/containers/App/constants2 && babel-node --presets @babel/env -- ./internals/scripts/extract-intl.js",
     "prebuild": "npm run build:clean",
     "build": "cross-env NODE_ENV=production NODE_OPTIONS='--max-old-space-size=4096' webpack --config internals/webpack/webpack.config.js --color",
     "build:clean": "rimraf ./build",
@@ -160,7 +160,9 @@
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^9.0.2",
     "@sentry/webpack-plugin": "^1.18.8",
+    "@storybook/builder-vite": "^8.1.6",
     "@storybook/react": "^8.1.6",
+    "@storybook/react-vite": "^8.1.6",
     "@storybook/react-webpack5": "^8.1.6",
     "@tanstack/react-query-devtools": "^4.22.4",
     "@testing-library/jest-dom": "^5.16.5",

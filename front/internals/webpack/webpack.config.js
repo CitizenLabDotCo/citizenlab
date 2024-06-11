@@ -29,7 +29,7 @@ dotenv.config({
 const argv = require('yargs').argv;
 const appLocalesMomentPairs = require(path.join(
   process.cwd(),
-  'app/containers/App/constants'
+  'app/containers/App/constants2'
 )).appLocalesMomentPairs;
 const API_HOST = process.env.API_HOST || 'localhost';
 const API_PORT = process.env.API_PORT || 4000;
@@ -57,8 +57,8 @@ const config = {
   devtool: isDev
     ? 'eval-cheap-module-source-map'
     : !isTestBuild
-    ? 'hidden-source-map'
-    : false,
+      ? 'hidden-source-map'
+      : false,
 
   devServer: {
     port: 3000,
@@ -169,21 +169,21 @@ const config = {
 
     // remove all moment locales except 'en' and the ones defined in appLocalesMomentPairs
     !isDev &&
-      new MomentLocalesPlugin({
-        localesToKeep: [...new Set(Object.values(appLocalesMomentPairs))],
-      }),
+    new MomentLocalesPlugin({
+      localesToKeep: [...new Set(Object.values(appLocalesMomentPairs))],
+    }),
 
     !isDev &&
-      new MomentTimezoneDataPlugin({
-        startYear: 2014,
-        endYear: currentYear + 8,
-      }),
+    new MomentTimezoneDataPlugin({
+      startYear: 2014,
+      endYear: currentYear + 8,
+    }),
 
     sourceMapToSentry &&
-      new SentryCliPlugin({
-        include: path.join(process.cwd(), 'build'),
-        release: process.env.CIRCLE_BUILD_NUM,
-      }),
+    new SentryCliPlugin({
+      include: path.join(process.cwd(), 'build'),
+      release: process.env.CIRCLE_BUILD_NUM,
+    }),
 
     new CopyPlugin({
       patterns: [{ from: './security.txt', to: '.well-known/security.txt' }],
