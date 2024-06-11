@@ -8,8 +8,8 @@ import {
   colors,
   Toggle,
   IconTooltip,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import { SupportedLocale } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -131,8 +131,7 @@ const UserFieldSelection = ({
     permission.attributes.permitted_by === 'everyone_confirmed_email';
 
   return (
-    <Tippy
-      interactive={true}
+    <Tooltip
       placement={'bottom'}
       disabled={permissionsCustomFieldsEnabled}
       theme={'dark'}
@@ -283,7 +282,7 @@ const UserFieldSelection = ({
           )}
         </Box>
       </Box>
-    </Tippy>
+    </Tooltip>
   );
 };
 

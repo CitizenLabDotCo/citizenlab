@@ -11,8 +11,8 @@ import {
   Spinner,
   colors,
   TooltipContentWrapper,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import { saveAs } from 'file-saver';
 import { useParams } from 'react-router-dom';
 
@@ -177,7 +177,7 @@ const Forms = () => {
                 }}
               />
             </Box>
-            <Tippy
+            <Tooltip
               disabled={inputImporterEnabled}
               content={
                 <TooltipContentWrapper tippytheme="light">
@@ -190,7 +190,7 @@ const Forms = () => {
                   linkTo={inputImporterLink}
                   icon="page"
                   iconSize="20px"
-                  buttonStyle="secondary"
+                  buttonStyle="secondary-outlined"
                   width="auto"
                   mr="8px"
                   disabled={!inputImporterEnabled}
@@ -198,12 +198,12 @@ const Forms = () => {
                   {formatMessage(messages.importInputs)}
                 </Button>
               </Box>
-            </Tippy>
+            </Tooltip>
             <Button
               linkTo={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`}
               icon="eye"
               iconSize="20px"
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               width="auto"
               openLinkInNewTab
               mr="8px"
@@ -213,7 +213,7 @@ const Forms = () => {
             <Button
               icon="edit"
               iconSize="20px"
-              buttonStyle="cl-blue"
+              buttonStyle="admin-dark"
               width="auto"
               onClick={() => {
                 haveSubmissionsComeIn
@@ -384,7 +384,7 @@ const Forms = () => {
               {formatMessage(messages.confirmDeleteButtonText)}
             </Button>
             <Button
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               width="auto"
               onClick={closeDeleteModal}
             >

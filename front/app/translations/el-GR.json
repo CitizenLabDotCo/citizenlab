@@ -2055,6 +2055,7 @@
   "app.utils.errors.default.ajv_error_minItems": "Πρέπει να περιλαμβάνει τουλάχιστον {limit, plural, one {# στοιχείο} other {# στοιχεία}}",
   "app.utils.errors.default.ajv_error_number_any": "Παρακαλούμε συμπληρώστε έναν έγκυρο αριθμό",
   "app.utils.errors.default.ajv_error_politician_required": "Παρακαλούμε συμπληρώστε αν είστε πολιτικός",
+  "app.utils.errors.default.ajv_error_required3": "Το πεδίο είναι υποχρεωτικό: \"{fieldName}\"",
   "app.utils.errors.default.ajv_error_type": "Δεν μπορεί να είναι κενό",
   "app.utils.errors.default.api_error_accepted": "Πρέπει να γίνει αποδεκτό",
   "app.utils.errors.default.api_error_blank": "Δεν μπορεί να είναι κενό",

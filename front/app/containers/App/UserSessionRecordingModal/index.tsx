@@ -70,7 +70,7 @@ const UserSessionRecordingModal = () => {
         <Text fontSize="l">{formatMessage(messages.modalDescription3)}</Text>
 
         <Box display="flex" justifyContent="flex-end" gap="16px" mt="48px">
-          <Button buttonStyle="secondary" onClick={onClose}>
+          <Button buttonStyle="secondary-outlined" onClick={onClose}>
             {formatMessage(messages.reject)}
           </Button>
           <Button buttonStyle="primary" onClick={onAccept}>

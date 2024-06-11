@@ -2055,6 +2055,7 @@
   "app.utils.errors.default.ajv_error_minItems": "Sisältää vähintään {limit, plural, one {# kohde} other {# kohdetta}}",
   "app.utils.errors.default.ajv_error_number_any": "Täytä kelvollinen numero",
   "app.utils.errors.default.ajv_error_politician_required": "Täytä, oletko poliitikko",
+  "app.utils.errors.default.ajv_error_required3": "Kenttä on pakollinen: \"{fieldName}\"",
   "app.utils.errors.default.ajv_error_type": "Ei voi olla tyhjä",
   "app.utils.errors.default.api_error_accepted": "On hyväksyttävä",
   "app.utils.errors.default.api_error_blank": "Ei voi olla tyhjä",

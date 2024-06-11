@@ -4,8 +4,8 @@ import {
   Box,
   fontSizes,
   defaultCardStyle,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -187,9 +187,8 @@ const PollForm = ({
             )
           )}
         </PollContainer>
-        <Tippy
+        <Tooltip
           disabled={!actionDisabledAndNotFixable}
-          interactive={true}
           placement="bottom"
           content={disabledMessage && formatMessage(disabledMessage)}
         >
@@ -205,7 +204,7 @@ const PollForm = ({
               <FormattedMessage {...messages.sendAnswer} />
             </Button>
           </div>
-        </Tippy>
+        </Tooltip>
       </>
     );
   }
