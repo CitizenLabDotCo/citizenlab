@@ -9,7 +9,7 @@ import messages from '../../messages';
 const NewCampaignButton = () => {
   return (
     <Button
-      buttonStyle="admin-dark"
+      buttonStyle="cl-blue"
       icon="plus-circle"
       linkTo="/admin/messaging/emails/custom/new"
     >

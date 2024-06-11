@@ -72,7 +72,7 @@ const TemplateTab = ({ filetypeError, handleFileInputOnChange }: Props) => {
         <Text fontSize="base">
           <Box display="flex" justifyContent="space-between">
             <DownloadButton
-              buttonStyle="secondary-outlined"
+              buttonStyle="secondary"
               icon="download"
               onClick={downloadExampleFile}
             >

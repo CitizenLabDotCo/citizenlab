@@ -12,7 +12,7 @@ const NewCampaignButton = () => {
   const { projectId } = useParams();
   return (
     <Button
-      buttonStyle="admin-dark"
+      buttonStyle="cl-blue"
       icon="plus-circle"
       linkTo={`/admin/projects/${projectId}/messaging/new`}
     >

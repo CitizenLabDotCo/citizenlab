@@ -191,7 +191,7 @@ const SortableProjectTopicList = memo(
               </Content>
               <ButtonsWrapper>
                 <Button
-                  buttonStyle="secondary-outlined"
+                  buttonStyle="secondary"
                   onClick={closeSendConfirmationModal}
                 >
                   <FormattedMessage {...messages.cancel} />

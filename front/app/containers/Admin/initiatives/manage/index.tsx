@@ -43,7 +43,7 @@ const InitiativesManagePage = () => {
         <Box ml="60px">
           <Button
             id="e2e-new-proposal"
-            buttonStyle="admin-dark"
+            buttonStyle="cl-blue"
             icon="initiatives"
             linkTo={`/initiatives/new`}
             text={<FormattedMessage {...messages.addNewProposal} />}

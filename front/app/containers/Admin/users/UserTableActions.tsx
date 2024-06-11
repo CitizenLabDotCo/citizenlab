@@ -377,7 +377,7 @@ const UserTableActions = ({
                   footer={
                     <DropdownFooterButton
                       className="e2e-dropdown-submit"
-                      buttonStyle="admin-dark"
+                      buttonStyle="cl-blue"
                       onClick={addUsersToGroups}
                       processing={processing}
                       fullWidth={true}

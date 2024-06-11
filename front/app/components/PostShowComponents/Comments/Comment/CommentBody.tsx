@@ -215,7 +215,7 @@ const CommentBody = ({
               apiErrors.body_multiloc[locale] && (
                 <Error apiErrors={apiErrors.body_multiloc[locale]} />
               )}
-            <Button buttonStyle="secondary-outlined" onClick={cancelEditing}>
+            <Button buttonStyle="secondary" onClick={cancelEditing}>
               <FormattedMessage {...messages.cancelCommentEdit} />
             </Button>
             <Button

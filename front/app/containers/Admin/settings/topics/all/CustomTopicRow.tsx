@@ -92,7 +92,7 @@ const CustomTopicRow = (props: Props) => {
 
         <Button
           linkTo={`/admin/settings/topics/${topic.id}/edit`}
-          buttonStyle="secondary-outlined"
+          buttonStyle="secondary"
           icon="edit"
           id="e2e-custom-topic-edit-button"
         >

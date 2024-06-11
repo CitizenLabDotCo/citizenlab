@@ -112,7 +112,7 @@ const Question = ({
             />
           </Button>
           <Button
-            buttonStyle="secondary-outlined"
+            buttonStyle="secondary"
             icon="eye"
             linkTo={`/admin/projects/${projectId}/analysis/${analysisId}?${stringify(
               { ...convertFilterValuesToString(filters), phase_id: phaseId }

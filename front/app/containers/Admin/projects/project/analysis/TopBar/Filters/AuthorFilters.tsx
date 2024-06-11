@@ -87,9 +87,7 @@ const AuthorFilters = () => {
       </Text>
       <Box display="flex" gap="12px" flexWrap="wrap">
         <Button
-          buttonStyle={
-            !selectedGenderOptions ? 'admin-dark' : 'secondary-outlined'
-          }
+          buttonStyle={!selectedGenderOptions ? 'admin-dark' : 'secondary'}
           onClick={() =>
             updateSearchParams({
               [genderUrlQueryParamKey]: undefined,
@@ -106,7 +104,7 @@ const AuthorFilters = () => {
             buttonStyle={
               selectedGenderOptions?.includes(option.attributes.key)
                 ? 'admin-dark'
-                : 'secondary-outlined'
+                : 'secondary'
             }
             onClick={() => {
               updateSearchParams({
@@ -132,9 +130,7 @@ const AuthorFilters = () => {
       </Text>
       <Box display="flex" gap="12px" flexWrap="wrap">
         <Button
-          buttonStyle={
-            !selectedDomicileOptions ? 'admin-dark' : 'secondary-outlined'
-          }
+          buttonStyle={!selectedDomicileOptions ? 'admin-dark' : 'secondary'}
           onClick={() =>
             updateSearchParams({
               [domicileUrlQueryParamKey]: undefined,
@@ -151,7 +147,7 @@ const AuthorFilters = () => {
             buttonStyle={
               selectedDomicileOptions?.includes(option.attributes.key)
                 ? 'admin-dark'
-                : 'secondary-outlined'
+                : 'secondary'
             }
             onClick={() => {
               updateSearchParams({

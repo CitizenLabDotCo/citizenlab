@@ -314,7 +314,7 @@ const ParticipationMethodPicker = ({
             alignItems="center"
           >
             <Button
-              buttonStyle="secondary-outlined"
+              buttonStyle="secondary"
               width="100%"
               onClick={closeModal}
               mr="16px"

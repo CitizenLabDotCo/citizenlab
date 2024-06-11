@@ -150,10 +150,7 @@ const InternalCommentsMoreActions = ({
         }
       >
         <ButtonsWrapper>
-          <CancelButton
-            buttonStyle="secondary-outlined"
-            onClick={closeDeleteModal}
-          >
+          <CancelButton buttonStyle="secondary" onClick={closeDeleteModal}>
             <FormattedMessage
               {...commentsMessages.commentDeletionCancelButton}
             />

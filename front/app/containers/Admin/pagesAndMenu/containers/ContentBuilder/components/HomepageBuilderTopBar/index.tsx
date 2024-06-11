@@ -86,7 +86,7 @@ const BuilderTopBar = ({
         />
         <Button
           id="e2e-view-project-button"
-          buttonStyle="secondary-outlined"
+          buttonStyle="secondary"
           icon="eye"
           mx="20px"
           linkTo={`/`}

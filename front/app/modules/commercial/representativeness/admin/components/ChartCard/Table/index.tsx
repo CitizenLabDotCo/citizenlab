@@ -50,7 +50,7 @@ const TableWrapper = ({
 
       {showModalButton && (
         <Button
-          buttonStyle="secondary-outlined"
+          buttonStyle="secondary"
           width="160px"
           ml="40px"
           mt="36px"

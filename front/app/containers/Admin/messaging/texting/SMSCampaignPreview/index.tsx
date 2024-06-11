@@ -220,7 +220,7 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
         <ButtonContainer>
           <Button
             onClick={goBackToCampaignView}
-            buttonStyle="secondary-outlined"
+            buttonStyle="secondary"
             text={'Edit'}
           />
           <Button
@@ -297,7 +297,7 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
             width="100%"
           >
             <StyledModalButton
-              buttonStyle="secondary-outlined"
+              buttonStyle="secondary"
               onClick={closeSendConfirmationModal}
             >
               Cancel
@@ -339,7 +339,7 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
             width="100%"
           >
             <StyledModalButton
-              buttonStyle="secondary-outlined"
+              buttonStyle="secondary"
               onClick={closeDeleteModal}
             >
               Cancel

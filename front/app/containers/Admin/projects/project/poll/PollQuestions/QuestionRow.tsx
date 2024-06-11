@@ -79,7 +79,7 @@ const QuestionRow = ({
     <Button
       className="e2e-edit-options"
       onClick={onEdit}
-      buttonStyle="secondary-outlined"
+      buttonStyle="secondary"
       icon="edit"
     >
       <FormattedMessage {...messages.editPollQuestion} />

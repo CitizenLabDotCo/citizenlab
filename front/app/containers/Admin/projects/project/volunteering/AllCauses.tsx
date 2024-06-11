@@ -103,11 +103,7 @@ const AllCauses = ({ phaseId, projectId }: Props) => {
   return (
     <Container>
       <ButtonWrapper>
-        <Button
-          buttonStyle="admin-dark"
-          icon="plus-circle"
-          linkTo={newCauseLink}
-        >
+        <Button buttonStyle="cl-blue" icon="plus-circle" linkTo={newCauseLink}>
           <FormattedMessage {...messages.addCauseButton} />
         </Button>
       </ButtonWrapper>
@@ -142,7 +138,7 @@ const AllCauses = ({ phaseId, projectId }: Props) => {
                 <Button
                   linkTo={`/admin/projects/${projectId}/phases/${phaseId}/volunteering/causes/${cause.id}`}
                   icon="edit"
-                  buttonStyle="secondary-outlined"
+                  buttonStyle="secondary"
                 >
                   <FormattedMessage {...messages.editButtonLabel} />
                 </Button>

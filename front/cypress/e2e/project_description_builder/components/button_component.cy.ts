@@ -56,7 +56,7 @@ describe('Project description builder Button component', () => {
     cy.get('#style-primary').click({ force: true });
     cy.get('#e2e-button').get('button').should('have.class', 'primary');
     cy.get('#style-secondary').click({ force: true });
-    cy.get('#e2e-button').get('a').should('have.class', 'secondary-outlined');
+    cy.get('#e2e-button').get('a').should('have.class', 'secondary');
 
     // Change alignment
     cy.get('#e2e-button')

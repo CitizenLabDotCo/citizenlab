@@ -137,7 +137,7 @@ const FormBuilderTopBar = ({
         </Box>
         {printedFormsEnabled && (
           <Button
-            buttonStyle="secondary-outlined"
+            buttonStyle="secondary"
             icon="download"
             mr="20px"
             onClick={builderConfig.onDownloadPDF}
@@ -146,7 +146,7 @@ const FormBuilderTopBar = ({
           </Button>
         )}
         <Button
-          buttonStyle="secondary-outlined"
+          buttonStyle="secondary"
           icon="eye"
           mr="20px"
           disabled={!project}
@@ -183,7 +183,7 @@ const FormBuilderTopBar = ({
             alignItems="center"
           >
             <Button
-              buttonStyle="secondary-outlined"
+              buttonStyle="secondary"
               width="100%"
               onClick={closeModal}
               mr="16px"

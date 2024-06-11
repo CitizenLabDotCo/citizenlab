@@ -148,7 +148,7 @@ const FolderPermissions = () => {
             </Box>
             <Button
               text={formatMessage(messages.addFolderManager)}
-              buttonStyle="admin-dark"
+              buttonStyle="cl-blue"
               icon="plus-circle"
               padding="10px 16px"
               onClick={handleAddClick}

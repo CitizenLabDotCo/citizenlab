@@ -88,7 +88,7 @@ export default (props: Props) => (
     <NoPostDescription>
       <FormattedMessage {...messages.resetInputFiltersDescription} />
     </NoPostDescription>
-    <Button buttonStyle="admin-dark" onClick={props.handleSeeAll}>
+    <Button buttonStyle="cl-blue" onClick={props.handleSeeAll}>
       <FormattedMessage {...messages.resetFiltersButton} />
     </Button>
   </NoPostPage>

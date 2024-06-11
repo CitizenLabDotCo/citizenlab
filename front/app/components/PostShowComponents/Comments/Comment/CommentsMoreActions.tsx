@@ -197,10 +197,7 @@ const CommentsMoreActions = ({
           />
         ) : (
           <ButtonsWrapper>
-            <CancelButton
-              buttonStyle="secondary-outlined"
-              onClick={closeDeleteModal}
-            >
+            <CancelButton buttonStyle="secondary" onClick={closeDeleteModal}>
               <FormattedMessage {...messages.commentDeletionCancelButton} />
             </CancelButton>
             <AcceptButton

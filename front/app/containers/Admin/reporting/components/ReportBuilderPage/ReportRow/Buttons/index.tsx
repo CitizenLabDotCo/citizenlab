@@ -70,7 +70,7 @@ const Buttons = ({ reportId, showDuplicate = true }: Props) => {
         >
           <BaseButton
             icon="copy"
-            buttonStyle="secondary-outlined"
+            buttonStyle="secondary"
             processing={isDuplicating}
             disabled={isLoading || !canEdit}
             onClick={() => duplicateReport({ id: reportId })}
@@ -86,7 +86,7 @@ const Buttons = ({ reportId, showDuplicate = true }: Props) => {
       >
         <BaseButton
           icon="edit"
-          buttonStyle="secondary-outlined"
+          buttonStyle="secondary"
           disabled={isLoading || !canEdit}
           linkTo={`/admin/reporting/report-builder/${reportId}/editor`}
         >

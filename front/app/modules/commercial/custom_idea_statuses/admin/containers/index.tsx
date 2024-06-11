@@ -125,7 +125,7 @@ const IdeaStatuses = () => {
         </SectionDescription>
         <ButtonWrapper>
           <Button
-            buttonStyle="admin-dark"
+            buttonStyle="cl-blue"
             icon="plus-circle"
             linkTo="/admin/settings/statuses/new"
           >
@@ -165,7 +165,7 @@ const IdeaStatuses = () => {
 
             <Button
               linkTo={`/admin/settings/statuses/${defaultStatus.id}`}
-              buttonStyle="secondary-outlined"
+              buttonStyle="secondary"
               icon="edit"
             >
               <FormattedMessage {...messages.editButtonLabel} />
@@ -223,7 +223,7 @@ const IdeaStatuses = () => {
                     </Tooltip>
                     <Button
                       linkTo={`/admin/settings/statuses/${ideaStatus.id}`}
-                      buttonStyle="secondary-outlined"
+                      buttonStyle="secondary"
                       icon="edit"
                     >
                       <FormattedMessage {...messages.editButtonLabel} />

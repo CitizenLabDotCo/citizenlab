@@ -29,7 +29,7 @@ const ImportButtons = ({ onClickPDFImport, onClickExcelImport }: Props) => {
   return (
     <Box>
       <Button
-        buttonStyle="secondary-outlined"
+        buttonStyle="secondary"
         onClick={() => setDropdownOpened((opened) => !opened)}
         icon="page"
       >

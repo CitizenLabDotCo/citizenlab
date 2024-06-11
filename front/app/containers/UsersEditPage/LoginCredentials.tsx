@@ -34,7 +34,7 @@ const LoginCredentials = ({ user }: PasswordChangeProps) => {
           scrollToTop
           width="auto"
           justifyWrapper="left"
-          buttonStyle="secondary-outlined"
+          buttonStyle="secondary"
           icon="email"
         >
           <FormattedMessage {...messages.changeEmail} />
@@ -44,7 +44,7 @@ const LoginCredentials = ({ user }: PasswordChangeProps) => {
           scrollToTop
           width="auto"
           justifyWrapper="left"
-          buttonStyle="secondary-outlined"
+          buttonStyle="secondary"
           icon="lock"
         >
           <FormattedMessage {...passwordChangeButtonText} />

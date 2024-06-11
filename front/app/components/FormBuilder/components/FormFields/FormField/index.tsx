@@ -371,11 +371,7 @@ export const FormField = ({
             >
               {formatMessage(messages.confirmDeleteFieldWithLogicButtonText)}
             </Button>
-            <Button
-              buttonStyle="secondary-outlined"
-              width="auto"
-              onClick={closeModal}
-            >
+            <Button buttonStyle="secondary" width="auto" onClick={closeModal}>
               {formatMessage(messages.cancelDeleteButtonText)}
             </Button>
           </Box>

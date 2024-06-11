@@ -50,7 +50,7 @@ export default class ExportSurveyButton extends React.PureComponent<
     const { exporting } = this.state;
     return (
       <Button
-        buttonStyle="secondary-outlined"
+        buttonStyle="secondary"
         icon="download"
         onClick={this.handleExportSurveyResults}
         processing={exporting}

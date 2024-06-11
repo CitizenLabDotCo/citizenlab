@@ -171,7 +171,7 @@ const VerificationFormOostendeRrn = memo<Props & WrappedComponentProps>(
             </SubmitButton>
             <CancelButton
               onClick={onCancelButtonClicked}
-              buttonStyle="secondary-outlined"
+              buttonStyle="secondary"
             >
               <FormattedMessage {...messages.cancel} />
             </CancelButton>

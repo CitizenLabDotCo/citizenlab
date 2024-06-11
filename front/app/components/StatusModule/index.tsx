@@ -139,7 +139,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
         {basket && basketStatus === 'hasSubmitted' && (
           <Box display={isSmallerThanPhone ? 'block' : 'flex'}>
             <Button
-              buttonStyle="secondary-outlined"
+              buttonStyle="secondary"
               bgColor="white"
               bgHoverColor="white"
               borderColor={colors.grey400}

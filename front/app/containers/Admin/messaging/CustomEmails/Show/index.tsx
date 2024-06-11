@@ -216,7 +216,7 @@ const Show = () => {
             <Buttons>
               <Button
                 linkTo={`/admin/messaging/emails/custom/${campaign.data.id}/edit`}
-                buttonStyle="secondary-outlined"
+                buttonStyle="secondary"
               >
                 <FormattedMessage {...messages.editButtonLabel} />
               </Button>
@@ -333,7 +333,7 @@ const Show = () => {
             </SendNowWarning>
             <ButtonsWrapper>
               <Button
-                buttonStyle="secondary-outlined"
+                buttonStyle="secondary"
                 linkTo={`/admin/messaging/emails/custom/${campaign.data.id}/edit`}
               >
                 <FormattedMessage {...messages.changeRecipientsButton} />

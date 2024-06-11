@@ -97,7 +97,7 @@ const NavbarItemRow = ({
       <Box display="flex" alignItems="flex-end">
         {showEditButton && (
           <Button
-            buttonStyle="secondary-outlined"
+            buttonStyle="secondary"
             icon="edit"
             onClick={handleOnClickEditButton}
             ml="10px"
@@ -112,7 +112,7 @@ const NavbarItemRow = ({
         {viewButtonLink && (
           <Link to={viewButtonLink} target="_blank">
             <Button
-              buttonStyle="secondary-outlined"
+              buttonStyle="secondary"
               icon="eye"
               ml="10px"
               className="intercom-admin-pages-menu-view-button"
@@ -124,7 +124,7 @@ const NavbarItemRow = ({
 
         {!isDefaultPage && onClickDeleteButton && (
           <Button
-            buttonStyle="secondary-outlined"
+            buttonStyle="secondary"
             icon="delete"
             onClick={handleOnClickDeleteButton}
             ml="10px"
@@ -138,7 +138,7 @@ const NavbarItemRow = ({
           <Button
             // no icon on add and remove buttons, so specify height to match the others
             height="44px"
-            buttonStyle="secondary-outlined"
+            buttonStyle="secondary"
             onClick={handleOnClickAddButton}
             disabled={addButtonDisabled}
             ml="10px"
@@ -151,7 +151,7 @@ const NavbarItemRow = ({
         {showRemoveButton && (
           <Button
             height="44px"
-            buttonStyle="secondary-outlined"
+            buttonStyle="secondary"
             onClick={handleOnClickRemoveButton}
             ml="10px"
             className="intercom-admin-pages-menu-remove-from-navbar-button"

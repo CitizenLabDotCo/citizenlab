@@ -190,7 +190,7 @@ const Forms = () => {
                   linkTo={inputImporterLink}
                   icon="page"
                   iconSize="20px"
-                  buttonStyle="secondary-outlined"
+                  buttonStyle="secondary"
                   width="auto"
                   mr="8px"
                   disabled={!inputImporterEnabled}
@@ -203,7 +203,7 @@ const Forms = () => {
               linkTo={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`}
               icon="eye"
               iconSize="20px"
-              buttonStyle="secondary-outlined"
+              buttonStyle="secondary"
               width="auto"
               openLinkInNewTab
               mr="8px"
@@ -213,7 +213,7 @@ const Forms = () => {
             <Button
               icon="edit"
               iconSize="20px"
-              buttonStyle="admin-dark"
+              buttonStyle="cl-blue"
               width="auto"
               onClick={() => {
                 haveSubmissionsComeIn
@@ -384,7 +384,7 @@ const Forms = () => {
               {formatMessage(messages.confirmDeleteButtonText)}
             </Button>
             <Button
-              buttonStyle="secondary-outlined"
+              buttonStyle="secondary"
               width="auto"
               onClick={closeDeleteModal}
             >

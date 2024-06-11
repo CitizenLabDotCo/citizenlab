@@ -185,7 +185,7 @@ const BinModal = ({ open, bins, onClose, onSave }: Props) => {
         <Button
           icon="plus-circle"
           mt="16px"
-          buttonStyle="secondary-outlined"
+          buttonStyle="secondary"
           data-testid="add-new-bin-button"
           onClick={handleAddBin}
         >

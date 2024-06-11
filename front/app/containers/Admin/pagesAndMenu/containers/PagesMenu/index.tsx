@@ -18,7 +18,7 @@ const PagesMenu = ({ intl: { formatMessage } }: WrappedComponentProps) => {
       subtitle={formatMessage(messages.pageSubtitle)}
       rightSideCTA={
         <Button
-          buttonStyle="admin-dark"
+          buttonStyle="cl-blue"
           icon="plus-circle"
           id="create-custom-page"
           linkTo={'/admin/pages-menu/pages/new'}

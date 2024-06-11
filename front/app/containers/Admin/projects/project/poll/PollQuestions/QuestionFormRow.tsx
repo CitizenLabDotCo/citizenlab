@@ -91,7 +91,7 @@ const QuestionFormRow = ({
       </Button>
       <Button
         className="e2e-form-question-cancel"
-        buttonStyle="secondary-outlined"
+        buttonStyle="secondary"
         onClick={onCancel}
       >
         <FormattedMessage {...messages.cancelFormQuestion} />

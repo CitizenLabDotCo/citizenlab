@@ -62,7 +62,7 @@ const AdminProjectIdeas = () => {
                 width="auto"
                 linkTo={`/admin/projects/${projectId}/phases/${phaseId}/input-importer`}
                 icon="page"
-                buttonStyle="secondary-outlined"
+                buttonStyle="secondary"
               >
                 <FormattedMessage {...ownMessages.importInputs} />
               </Button>

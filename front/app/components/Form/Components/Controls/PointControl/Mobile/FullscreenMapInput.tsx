@@ -185,7 +185,7 @@ const FullscreenMapInput = memo<Props>(
                 >
                   <Button
                     icon="arrow-left"
-                    buttonStyle="secondary-outlined"
+                    buttonStyle="secondary"
                     onClick={handleBack}
                   >
                     {formatMessage(messages.back)}

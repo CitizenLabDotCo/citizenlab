@@ -51,11 +51,7 @@ const Analyses = ({
         <Divider />
         <Text>{formatMessage(messages.noInsights)}</Text>
         <Box display="flex">
-          <Button
-            linkTo={projectLink}
-            buttonStyle="secondary-outlined"
-            openLinkInNewTab
-          >
+          <Button linkTo={projectLink} buttonStyle="secondary" openLinkInNewTab>
             {formatMessage(messages.openProject)}
           </Button>
         </Box>

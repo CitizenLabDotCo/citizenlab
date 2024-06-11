@@ -77,7 +77,7 @@ const PhaseEmailSettingsModal = ({
         >
           {formatMessage(isEnabled ? messages.turnOff : messages.turnOn)}
         </Button>
-        <Button buttonStyle="secondary-outlined" onClick={close} w="100%">
+        <Button buttonStyle="secondary" onClick={close} w="100%">
           {formatMessage(messages.cancel)}
         </Button>
       </Box>

@@ -92,8 +92,7 @@ class WidgetCode extends PureComponent<Props & DataProps, State> {
         />
         <Button
           onClick={this.copy(this.snippetRef)}
-          buttonStyle={'admin-dark'}
-          bgColor={this.state.copied ? colors.success : colors.primary}
+          buttonStyle={this.state.copied ? 'success' : 'admin-dark'}
         >
           {this.state.copied ? (
             <FormattedMessage {...messages.copied} />

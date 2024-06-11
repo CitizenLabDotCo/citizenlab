@@ -238,7 +238,7 @@ const OptionList = ({
                   <Button
                     icon="plus-circle"
                     type="button"
-                    buttonStyle="secondary-outlined"
+                    buttonStyle="secondary"
                     data-cy="e2e-add-answer"
                     onClick={() => handleAddOption(options, name)}
                     text={addButtonLabel}

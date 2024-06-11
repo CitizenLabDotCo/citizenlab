@@ -118,7 +118,7 @@ export default class SubmitWrapper extends PureComponent<Props> {
   };
 
   render() {
-    const style = this.props.buttonStyle || 'admin-dark';
+    const style = this.props.buttonStyle || 'cl-blue';
     const secondaryButtonStyle =
       this.props.secondaryButtonStyle || 'primary-outlined';
 

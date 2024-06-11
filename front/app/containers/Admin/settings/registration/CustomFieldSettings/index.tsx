@@ -227,7 +227,7 @@ const CustomFieldSettings = () => {
                         <Button
                           className={`e2e-custom-field-edit-btn e2e-${field.attributes.title_multiloc['en-GB']}`}
                           linkTo={`/admin/settings/registration/custom-fields/${field.id}/field-settings`}
-                          buttonStyle="secondary-outlined"
+                          buttonStyle="secondary"
                           icon="edit"
                         >
                           <FormattedMessage
@@ -244,7 +244,7 @@ const CustomFieldSettings = () => {
         </SortableList>
       </Box>
       <Button
-        buttonStyle="admin-dark"
+        buttonStyle="cl-blue"
         icon="plus-circle"
         linkTo="/admin/settings/registration/custom-fields/new"
       >

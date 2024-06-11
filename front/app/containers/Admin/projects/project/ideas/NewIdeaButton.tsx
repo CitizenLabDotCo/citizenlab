@@ -27,7 +27,7 @@ const NewIdeaButton = ({ linkTo, inputTerm }: Props) => {
   return (
     <Button
       id="e2e-new-idea"
-      buttonStyle="admin-dark"
+      buttonStyle="cl-blue"
       icon="plus"
       linkTo={linkTo}
       onClick={() => {

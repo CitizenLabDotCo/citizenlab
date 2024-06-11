@@ -36,7 +36,7 @@ const QuitModal = ({ open, onCloseModal, onGoBack }: Props) => {
           alignItems="center"
         >
           <Button
-            buttonStyle="secondary-outlined"
+            buttonStyle="secondary"
             width="auto"
             mr="16px"
             onClick={onCloseModal}

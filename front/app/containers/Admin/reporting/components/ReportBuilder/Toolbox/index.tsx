@@ -149,9 +149,7 @@ const ReportBuilderToolbox = ({
             <Button
               id="e2e-report-builder-widgets-tab"
               onClick={() => setSelectedTab('widgets')}
-              buttonStyle={
-                selectedTab === 'widgets' ? 'text' : 'secondary-outlined'
-              }
+              buttonStyle={selectedTab === 'widgets' ? 'text' : 'secondary'}
             >
               {formatMessage(messages.widgets)}
             </Button>
@@ -164,7 +162,7 @@ const ReportBuilderToolbox = ({
                 setSelectedTab('ai');
                 trackEventByName(tracks.openReportBuilderAITab.name);
               }}
-              buttonStyle={selectedTab === 'ai' ? 'text' : 'secondary-outlined'}
+              buttonStyle={selectedTab === 'ai' ? 'text' : 'secondary'}
             >
               {formatMessage(messages.ai)}
             </Button>

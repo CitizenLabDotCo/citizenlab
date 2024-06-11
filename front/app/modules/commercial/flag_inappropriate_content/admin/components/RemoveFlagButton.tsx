@@ -21,7 +21,7 @@ const RemoveFlagButton = ({
     return (
       <Button
         icon="alert-octagon-off"
-        buttonStyle="admin-dark"
+        buttonStyle="cl-blue"
         processing={processing}
         onClick={onRemoveFlags}
       >

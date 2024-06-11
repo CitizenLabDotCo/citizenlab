@@ -78,7 +78,7 @@ const WarningModal = ({
           justifyContent="space-between"
           gap="16px"
         >
-          <Button buttonStyle="secondary-outlined" onClick={onClose}>
+          <Button buttonStyle="secondary" onClick={onClose}>
             <FormattedMessage {...messages.cancel} />
           </Button>
           <Button onClick={onConfirm} processing={isLoading}>

@@ -113,7 +113,7 @@ const TerminologyConfig = ({
           <Button
             processing={isLoading}
             onClick={save}
-            buttonStyle="admin-dark"
+            buttonStyle="cl-blue"
             type="submit"
           >
             {formatMessage(messages.saveButton)}

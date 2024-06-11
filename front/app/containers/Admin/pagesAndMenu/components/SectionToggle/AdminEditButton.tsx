@@ -17,7 +17,7 @@ interface Props {
 const AdminEditButton = ({ onClick, testId }: Props) => {
   return (
     <Button
-      buttonStyle="secondary-outlined"
+      buttonStyle="secondary"
       icon="edit"
       onClick={onClick}
       data-cy={

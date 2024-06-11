@@ -218,7 +218,7 @@ const PollAdminForm = ({ phaseId, pollQuestions }: Props) => {
       {!newQuestionTitle && !editingOptionsId && (
         <Button
           className="e2e-add-question-btn"
-          buttonStyle="admin-dark"
+          buttonStyle="cl-blue"
           icon="plus-circle"
           onClick={startNewQuestion}
         >

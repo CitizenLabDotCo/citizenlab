@@ -104,7 +104,7 @@ const SmartGroupType: FC<SmartGroupTypeProps> = ({
       <Step2Button
         disabled={!isSmartGroupsEnabled}
         className="e2e-create-rules-group-button"
-        buttonStyle="admin-dark"
+        buttonStyle="cl-blue"
         onClick={onClick('rules')}
       >
         <FormattedMessage {...adminUsersMessages.step1CreateButtonSmart} />

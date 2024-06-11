@@ -127,7 +127,7 @@ const EmptyState = () => {
           </Box>
           <Button
             mr="8px"
-            buttonStyle="secondary-outlined"
+            buttonStyle="secondary"
             icon="download"
             onClick={downloadExampleXlsxFile}
           >

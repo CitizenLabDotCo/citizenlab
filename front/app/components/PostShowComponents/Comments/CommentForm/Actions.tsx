@@ -83,7 +83,7 @@ const Actions = ({
     <Box display="flex">
       <Button
         disabled={processing}
-        buttonStyle="secondary-outlined"
+        buttonStyle="secondary"
         padding={smallerThanTablet ? '6px 12px' : undefined}
         mr="8px"
         onClick={onCancel}

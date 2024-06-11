@@ -190,7 +190,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       {showSeeIdeasButton ? (
         <SeeIdeasButton
           id="e2e-project-see-ideas-button"
-          buttonStyle="secondary-outlined"
+          buttonStyle="secondary"
           onClick={() => {
             scrollToElementWithId('project-ideas');
           }}
@@ -210,7 +210,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       ) : showEventsCTAButton ? (
         <Button
           id="e2e-project-see-events-button"
-          buttonStyle="secondary-outlined"
+          buttonStyle="secondary"
           onClick={() => {
             scrollToElement({ id: 'project-events' });
           }}

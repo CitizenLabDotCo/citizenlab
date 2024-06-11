@@ -335,7 +335,7 @@ const MapLayerConfig = memo<Props & WrappedComponentProps>(
             </Button>
 
             <CancelButton
-              buttonStyle="secondary-outlined"
+              buttonStyle="secondary"
               onClick={handleOnCancel}
               disabled={processing}
             >

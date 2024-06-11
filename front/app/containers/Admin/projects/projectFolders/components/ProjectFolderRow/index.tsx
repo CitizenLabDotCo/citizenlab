@@ -133,7 +133,7 @@ const ProjectFolderRow = memo<Props>(
                     ] || ''
                   }`}
                   linkTo={`/admin/projects/folders/${publication.relationships.publication.data.id}`}
-                  buttonStyle="secondary-outlined"
+                  buttonStyle="secondary"
                   icon="edit"
                   disabled={
                     isBeingDeleted ||

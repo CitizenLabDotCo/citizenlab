@@ -412,7 +412,7 @@ const ProjectTemplatePreview = memo<Props>(
                 <CopyLinkButton
                   onClick={copyLink}
                   icon="link"
-                  buttonStyle="secondary-outlined"
+                  buttonStyle="secondary"
                 >
                   <FormattedMessage {...messages.copyLink} />
                 </CopyLinkButton>

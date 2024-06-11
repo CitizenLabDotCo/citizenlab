@@ -131,7 +131,7 @@ const OptionFormRow = ({
 
       <Button
         className="e2e-form-option-cancel"
-        buttonStyle="secondary-outlined"
+        buttonStyle="secondary"
         onClick={closeRow}
       >
         <FormattedMessage {...messages.cancelOption} />

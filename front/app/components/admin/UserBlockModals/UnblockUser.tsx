@@ -50,7 +50,7 @@ const UnblockUserModal = ({ open, setClose, user, returnFocusRef }: Props) => {
       <Button mb="20px" data-testid="unblockBtn" onClick={handleOnClick}>
         {formatMessage(messages.unblockActionConfirmation)}
       </Button>
-      <Button buttonStyle="secondary-outlined" onClick={setClose}>
+      <Button buttonStyle="secondary" onClick={setClose}>
         {formatMessage(messages.cancel)}
       </Button>
     </Modal>

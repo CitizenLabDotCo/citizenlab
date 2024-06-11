@@ -137,7 +137,7 @@ const WebMapUpload = ({ mapConfigId, setView }: Props) => {
 
       <Box display="flex" flexWrap="wrap" gap="12px" mt="16px">
         <Button
-          buttonStyle="secondary-outlined"
+          buttonStyle="secondary"
           onClick={() => {
             setView('main');
           }}
