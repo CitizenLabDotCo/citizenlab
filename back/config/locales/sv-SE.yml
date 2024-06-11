@@ -1,4 +1,38 @@
 sv:
+  locales:
+    en: Engelska
+    ar-MA: Arabiska (Marocko)
+    ar-SA: Arabiska (Saudiarabien)
+    ca-ES: Katalanska
+    cy-GB: Welsh
+    da-DK: Dansk
+    de-DE: Tysk
+    el-GR: Grekiska
+    en-CA: Engelska (Kanada)
+    en-GB: Engelska (UK)
+    en-IE: Engelska (Irland)
+    es-CL: Spanska (Chile)
+    es-ES: Spanska (Spanien)
+    fi-FI: Finska
+    fr-BE: Franska (Belgien)
+    fr-FR: Franska
+    hr-HR: Kroatiska
+    hu-HU: Ungerska
+    it-IT: Italienska
+    kl-GL: Grönländska
+    lb-LU: Luxemburgska
+    lv-LV: Lettiska
+    mi: Maori
+    nb-NO: Norska (Bokmål)
+    nl-BE: Nederländska (Belgien)
+    nl-NL: Holländska
+    pl-PL: Polsk
+    pt-BR: Portugisiska (Brasilien)
+    ro-RO: rumänska
+    sr-Latn: Serbiska (latin)
+    sr-SP: Serbiska (kyrilliska)
+    sv-SE: Svenska
+    tr-TR: Turkiska
   symbols:
     outside: någon annanstans
   idea_statuses:
@@ -148,8 +182,8 @@ sv:
       section3:
         title: Detaljer
         description:
-      other:
-        title: Eftersom du valde "annat", vad tänker du på?
+      other_text_field:
+        title: Om du valde "{other_option}", vad tänker du då på?
   custom_forms:
     categories:
       main_content:
@@ -200,29 +234,40 @@ sv:
       subject: '%{organizationName}: Återställ ditt lösenord'
       title_reset_your_password: 'Välj ett nytt lösenord'
   xlsx_export:
+    anonymous: 'Anonymt'
     column_headers:
-      input_id: 'ID'
-      latitude: 'Latitud'
-      longitude: 'Longitud'
-      author_fullname: 'Författarens namn'
-      author_email: 'Författarens e-postadress'
-      author_id: 'Författar-ID'
-      budget: 'Budget'
-      created_at: 'Skickades in'
-      published_at: 'Publicerades'
-      comments_count: 'Kommentarer'
-      likes_count: 'Gillar'
-      dislikes_count: 'Ogillar'
-      picks: 'Val'
-      participants: 'Deltagare'
-      votes_count: 'Röster'
-      input_url: 'Webbadress'
-      project: 'Projekt'
-      status: 'Status'
       assignee_fullname: 'Tilldelad person'
       assignee_email: 'Mottagarens e-postadress'
+      attachments: 'Bilagor'
+      author_email: 'Författarens e-postadress'
+      author_fullname: 'Författarens namn'
+      author_id: 'Författar-ID'
+      budget: 'Budget'
+      comments_count: 'Kommentarer'
+      cost: 'Kostnad'
+      created_at: 'Skickades in'
+      description: 'Beskrivning'
+      dislikes_count: 'Ogillar'
+      email: 'E-post'
+      first_name: 'Förnamn(en)'
       image_url: 'URL för bild'
-    anonymous: 'Anonymt'
+      input_id: 'ID'
+      input_url: 'Webbadress'
+      last_name: 'Efternamn'
+      latitude: 'Latitud'
+      likes_count: 'Gillar'
+      location: 'Plats'
+      longitude: 'Longitud'
+      participants: 'Deltagare'
+      picks: 'Val'
+      project: 'Projekt'
+      published_at: 'Publicerades'
+      registration_completed_at: 'Registrering sker på'
+      status: 'Status'
+      submitted_at: 'Inlämnad på'
+      tags: 'Etiketter'
+      title: 'Titel'
+      votes_count: 'Röster'
   form_builder:
     default_select_field:
       title: 'Din fråga'
@@ -248,6 +293,7 @@ sv:
       instructions: 'Instruktioner'
       write_as_clearly: 'Skriv så <b>tydligt</b> som möjligt - dessa formulär kan komma att skannas'
       write_in_language: 'Skriv dina svar på samma språk som detta formulär'
+      linear_scale_print_description: 'Ange endast ett nummer mellan %{min_label} och %{max_label}'
   project_copy:
     title_suffix: 'Kopia'
   confirmations_mailer:

@@ -29,9 +29,6 @@ import IdOostendeRrnConfiguration from './commercial/id_oostende_rrn';
 import idViennaSamlConfiguration from './commercial/id_vienna_saml';
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import impactTrackingConfiguration from './commercial/impact_tracking';
-import insightsConfiguration, {
-  insightsRouteTypes,
-} from './commercial/insights';
 import intercomConfiguration from './commercial/intercom';
 import machineTranslationsConfiguration from './commercial/machine_translations';
 import matomoConfiguration from './commercial/matomo';
@@ -55,7 +52,6 @@ export type moduleRouteTypes =
   | analyticsRouteTypes
   | bulkIdeaImportRouteTypes
   | customIdeaStatusesRouteTypes
-  | insightsRouteTypes
   | moderationRouteTypes
   | descriptionBuilderRouteTypes
   | representativenessRouteTypes
@@ -145,9 +141,6 @@ export default loadModules([
   },
   {
     configuration: widgetsConfiguration,
-  },
-  {
-    configuration: insightsConfiguration,
   },
   {
     configuration: analyticsConfiguration,

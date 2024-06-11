@@ -20,7 +20,8 @@ resource 'AdminPublication' do
 
   context 'when admin' do
     before do
-      admin_header_token
+      @admin = create(:admin)
+      header_token_for(@admin)
     end
 
     # the name of this variable shouldn't be `folder`
@@ -40,6 +41,9 @@ resource 'AdminPublication' do
       parameter :folder, 'Filter by folder (project folder id)', required: false
       parameter :remove_not_allowed_parents, 'Filter out folders which contain only projects that are not visible to the user', required: false
       parameter :only_projects, 'Include projects only (no folders)', required: false
+      parameter :filter_can_moderate, 'Filter out the projects the current_user is not allowed to moderate. False by default', required: false
+      parameter :filter_is_moderator_of, 'Filter out the publications the current_user is not moderator of. False by default', required: false
+      parameter :filter_user_is_moderator_of, 'Filter out the publications the given user is moderator of (user id)', required: false
 
       example_request 'List all admin publications' do
         expect(status).to eq(200)
@@ -80,6 +84,59 @@ resource 'AdminPublication' do
         expect(json_response[:data].size).to eq 8
         expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 8
         expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 0
+      end
+
+      example 'List publications admin can moderate', document: false do
+        do_request filter_can_moderate: true
+        json_response = json_parse(response_body)
+        assert_status 200
+        expect(json_response[:data].size).to eq 10
+      end
+
+      example 'List publications a specific user can moderate', document: false do
+        moderated_folder = create(:project_folder, projects: [projects[0], projects[1]])
+        moderator = create(
+          :user,
+          roles: [
+            { type: 'project_moderator', project_id: projects[0].id },
+            { type: 'project_moderator', project_id: projects[1].id },
+            { type: 'project_folder_moderator', project_folder_id: moderated_folder.id }
+          ]
+        )
+
+        do_request filter_user_is_moderator_of: moderator.id
+        assert_status 200
+        expect(publication_ids).to match_array [projects[0].id, projects[1].id, moderated_folder.id]
+      end
+
+      context 'when admin is moderator of publications' do
+        before do
+          @moderated_project1 = published_projects[0]
+          @moderated_project2 = published_projects[1]
+          @moderated_folder1 = create(:project_folder, projects: [@moderated_project1])
+          @moderated_folder2 = create(:project_folder)
+          @admin.roles += [
+            { type: 'project_moderator', project_id: @moderated_project1.id },
+            { type: 'project_moderator', project_id: @moderated_project2.id },
+            { type: 'project_folder_moderator', project_folder_id: @moderated_folder1.id },
+            { type: 'project_folder_moderator', project_folder_id: @moderated_folder2.id }
+          ]
+          @admin.save!
+        end
+
+        example 'List publications admin is moderator of', document: false do
+          do_request filter_is_moderator_of: true
+          assert_status 200
+          expect(publication_ids).to match_array [
+            @moderated_project1.id, @moderated_project2.id, @moderated_folder1.id, @moderated_folder2.id
+          ]
+        end
+
+        example 'List only projects admin is moderator of', document: false do
+          do_request(filter_is_moderator_of: true, only_projects: true)
+          assert_status 200
+          expect(publication_ids).to match_array [@moderated_project1.id, @moderated_project2.id]
+        end
       end
 
       ProjectsFilteringService::HOMEPAGE_FILTER_PARAMS.each do |filter_param|
@@ -143,6 +200,61 @@ resource 'AdminPublication' do
             do_request(filter_param => ['any id'])
             expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :id) }).not_to include custom_folder.id
           end
+        end
+      end
+
+      context 'with specific publication orderings at different depths' do
+        before do
+          # Purposefully use orderings that don't reflect creation order, to avoid corect ordering due to creation order
+          #
+          # Modelling the structure:
+          # P1 (project)
+          # F1 (folder)
+          # P2 (project)
+          # F2 (folder)
+          #  .. P3-f2 (project)
+          #  .. P4-f2 (project)
+          #  .. P5-f2 (project)
+          # P6 (project)
+          # P7 (project)
+          # P8 (project)
+
+          projects[7].update!(title_multiloc: { en: 'P1' })
+          projects[7].admin_publication.insert_at(0)
+          empty_draft_folder.update!(title_multiloc: { en: 'F1' })
+          empty_draft_folder.admin_publication.insert_at(1)
+          projects[5].update!(title_multiloc: { en: 'P2' })
+          projects[5].admin_publication.insert_at(2)
+          custom_folder.update!(title_multiloc: { en: 'F2' })
+          custom_folder.admin_publication.insert_at(3)
+          projects[1].update!(title_multiloc: { en: 'P3-f2' })
+          projects[1].admin_publication.insert_at(0)
+          projects[0].update!(title_multiloc: { en: 'P4-f2' })
+          projects[0].admin_publication.insert_at(1)
+          projects[2].update!(title_multiloc: { en: 'P5-f2' })
+          projects[2].admin_publication.insert_at(2)
+          projects[6].update!(title_multiloc: { en: 'P6' })
+          projects[6].admin_publication.insert_at(4)
+          projects[4].update!(title_multiloc: { en: 'P7' })
+          projects[4].admin_publication.insert_at(5)
+          projects[3].update!(title_multiloc: { en: 'P8' })
+          projects[3].admin_publication.insert_at(6)
+        end
+
+        example 'List all root-level admin publications is ordered correctly', document: false do
+          do_request(depth: 0)
+          expect(status).to eq(200)
+          json_response = json_parse(response_body)
+          expect(json_response[:data].map { |d| d.dig(:attributes, :publication_title_multiloc, :en) })
+            .to eq(%w[P1 F1 P2 F2 P6 P7 P8])
+        end
+
+        example 'List only project publications maintains a flattened nested ordering', document: false do
+          do_request(only_projects: 'true')
+          expect(status).to eq(200)
+          json_response = json_parse(response_body)
+          expect(json_response[:data].map { |d| d.dig(:attributes, :publication_title_multiloc, :en) })
+            .to eq(%w[P1 P2 P3-f2 P4-f2 P5-f2 P6 P7 P8])
         end
       end
     end
@@ -427,16 +539,84 @@ resource 'AdminPublication' do
     end
   end
 
+  context 'when project moderator' do
+    get 'web_api/v1/admin_publications' do
+      with_options scope: :page do
+        parameter :number, 'Page number'
+        parameter :size, 'Number of projects per page'
+      end
+      parameter :topics, 'Filter by topics (AND)', required: false
+      parameter :areas, 'Filter by areas (AND)', required: false
+      parameter :depth, 'Filter by depth', required: false
+      parameter :search, 'Search text of title, description, preview, and slug', required: false
+      parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default (OR)', required: false
+      parameter :folder, 'Filter by folder (project folder id)', required: false
+      parameter :remove_not_allowed_parents, 'Filter out folders which contain only projects that are not visible to the user', required: false
+      parameter :only_projects, 'Include projects only (no folders)', required: false
+      parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
+      parameter :filter_is_moderator_of, 'Filter out the publications the user is not moderator of. False by default', required: false
+
+      before do
+        @moderator = create(:project_moderator, projects: [published_projects[0], published_projects[1]])
+        header_token_for(@moderator)
+      end
+
+      example 'List only the projects the current user is moderator of' do
+        do_request(filter_is_moderator_of: true, only_projects: true)
+        json_response = json_parse(response_body)
+        assert_status 200
+        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) })
+          .to match_array [published_projects[0].id, published_projects[1].id]
+      end
+    end
+  end
+
   context 'when project folder moderator' do
-    let(:folder) { create(:project_folder) }
+    # We can't use :folder as will collide with param :folder
+    let(:project_folder) { create(:project_folder) }
 
     before do
-      header_token_for create(:project_folder_moderator, project_folders: [folder])
-
       @projects = %w[published published draft draft published archived archived published]
-        .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps, parent_id: folder.admin_publication.id }) }
+        .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps, parent_id: project_folder.admin_publication.id }) }
       @folder = create(:project_folder, projects: @projects.take(3))
       @empty_draft_folder = create(:project_folder, admin_publication_attributes: { publication_status: 'draft' })
+      @moderator = create(:project_folder_moderator, project_folders: [project_folder, @folder])
+
+      @folder.projects.each do |project|
+        @moderator.update!(roles: @moderator.roles += [{ type: 'project_moderator', project_id: project.id }])
+      end
+
+      header_token_for(@moderator)
+    end
+
+    get 'web_api/v1/admin_publications' do
+      with_options scope: :page do
+        parameter :number, 'Page number'
+        parameter :size, 'Number of projects per page'
+      end
+      parameter :topics, 'Filter by topics (AND)', required: false
+      parameter :areas, 'Filter by areas (AND)', required: false
+      parameter :depth, 'Filter by depth', required: false
+      parameter :search, 'Search text of title, description, preview, and slug', required: false
+      parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default (OR)', required: false
+      parameter :folder, 'Filter by folder (project folder id)', required: false
+      parameter :remove_not_allowed_parents, 'Filter out folders which contain only projects that are not visible to the user', required: false
+      parameter :only_projects, 'Include projects only (no folders)', required: false
+      parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
+      parameter :filter_is_moderator_of, 'Filter out the publications the user is not moderator of. False by default', required: false
+
+      example 'List publications user is moderator of', document: false do
+        do_request filter_is_moderator_of: true
+        assert_status 200
+        expect(publication_ids).to match_array [project_folder.id, @folder.id, @folder.projects.pluck(:id)].flatten
+      end
+
+      example 'List only projects user is moderator of' do
+        do_request(filter_is_moderator_of: true, only_projects: true)
+        assert_status 200
+        expect(publication_ids).to match_array @folder.projects.pluck(:id)
+      end
     end
 
     patch 'web_api/v1/admin_publications/:id/reorder' do
@@ -446,14 +626,14 @@ resource 'AdminPublication' do
 
       describe do
         # getting the first publication, which should have ordering = 0
-        let(:publication) { folder.admin_publication.children.first }
+        let(:publication) { project_folder.admin_publication.children.first }
         let(:id) { publication.id }
         let(:publication_ordering) { 0 }
 
         let(:ordering) { 1 }
 
         # getting the second publication, which should have ordering = 1
-        let(:second_publication) { folder.admin_publication.children.second }
+        let(:second_publication) { project_folder.admin_publication.children.second }
         let(:second_publication_ordering) { 1 }
 
         example 'Reorder an admin publication' do

@@ -7,7 +7,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { Locale, Multiloc } from 'typings';
+import { SupportedLocale, Multiloc } from 'typings';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
@@ -45,7 +45,7 @@ const LabelText = styled.span`
 
 export interface Props extends Omit<TextAreaProps, 'value' | 'onChange'> {
   valueMultiloc: Multiloc | null | undefined;
-  onChange: (value: Multiloc, locale: Locale) => void;
+  onChange: (value: Multiloc, locale: SupportedLocale) => void;
   labelTextElement?: JSX.Element;
 }
 
@@ -60,7 +60,9 @@ const TextAreaMultilocWithLocaleSwitcher = memo<Props>((props) => {
     ...textAreaProps
   } = props;
 
-  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
+  const [selectedLocale, setSelectedLocale] = useState<SupportedLocale | null>(
+    null
+  );
 
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
@@ -70,7 +72,7 @@ const TextAreaMultilocWithLocaleSwitcher = memo<Props>((props) => {
   }, [locale]);
 
   const handleValueOnChange = useCallback(
-    (value: string, locale: Locale) => {
+    (value: string, locale: SupportedLocale) => {
       const newValueMultiloc = {
         ...(valueMultiloc || {}),
         [locale]: value,
@@ -82,7 +84,7 @@ const TextAreaMultilocWithLocaleSwitcher = memo<Props>((props) => {
   );
 
   const handleOnSelectedLocaleChange = useCallback(
-    (newSelectedLocale: Locale) => {
+    (newSelectedLocale: SupportedLocale) => {
       setSelectedLocale(newSelectedLocale);
     },
     []

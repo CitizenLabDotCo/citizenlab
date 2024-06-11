@@ -2,6 +2,7 @@ de:
   email_campaigns:
     campaign_type_description:
       "manual": Offizielle Mitteilungen
+      "manual_project_participants": E-Mails an Projektteilnehmende
       "admin_rights_received": Admin-Rechte erhalten
       "comment_deleted_by_admin": Löschung eines Kommentars
       "comment_marked_as_spam": Kommentar wird als Spam markiert
@@ -434,8 +435,8 @@ de:
       today_by_author: "Heute von %{author}"
       yesterday_by_author: "Gestern von %{author}"
       x_days_ago_by_author: "Vor %{x} Tagen von %{author}"
-      trending_ideas: "Aktuelle Ideen"
-      trending_ideas_text: "Möchten Sie wissen, was auf der Plattform passiert ist? Hier sind die drei aktuellsten Ideen und was die Leute darüber sagen."
+      trending_ideas: "Beliebte Beiträge"
+      trending_ideas_text: "Möchten Sie wissen, was auf der Plattform passiert ist? Hier sind die drei beliebtesten Beiträge und was die Leute darüber sagen."
       no_notifications: "Keine Benachrichtigungen"
       one_notification: "1 Benachrichtigung"
       multiple_notifications: "%{notifCount} Benachrichtigungen"
@@ -559,6 +560,7 @@ de:
         admins: 'An Admins'
         admins_and_managers: 'An Admins & Manager*innen'
         managers: 'An Manager*innen'
+        project_participants: 'An Projektteilnehmende'
         registered_users: 'An registrierte Nutzer*innen'
       recipient_segment:
         admins: 'Admins'

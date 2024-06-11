@@ -25,6 +25,7 @@ const SSOButtons = (props: Props) => {
   const googleLoginEnabled = useFeatureFlag({ name: 'google_login' });
   const facebookLoginEnabled = useFeatureFlag({ name: 'facebook_login' });
   const azureAdLoginEnabled = useFeatureFlag({ name: 'azure_ad_login' });
+  const azureB2cProviderName = useFeatureFlag({ name: 'azure_ad_b2c_login' });
   const franceconnectLoginEnabled = useFeatureFlag({
     name: 'franceconnect_login',
   });
@@ -34,14 +35,19 @@ const SSOButtons = (props: Props) => {
   const hoplrLoginEnabled = useFeatureFlag({
     name: 'hoplr_login',
   });
+  const criiptoLoginEnabled = useFeatureFlag({
+    name: 'criipto_login',
+  });
 
   if (
     !googleLoginEnabled &&
     !facebookLoginEnabled &&
     !azureAdLoginEnabled &&
+    !azureB2cProviderName &&
     !franceconnectLoginEnabled &&
     !claveUnicaLoginEnabled &&
-    !hoplrLoginEnabled
+    !hoplrLoginEnabled &&
+    !criiptoLoginEnabled
   ) {
     if (passwordLoginEnabled) {
       return null;
@@ -70,6 +76,9 @@ const SSOButtons = (props: Props) => {
         )}
         {azureAdLoginEnabled && (
           <SSOButton ssoProvider="azureactivedirectory" {...props} />
+        )}
+        {azureB2cProviderName && (
+          <SSOButton ssoProvider="azureactivedirectory_b2c" {...props} />
         )}
       </Box>
     </>

@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 
 import { StatusLabel, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { PublicationStatus } from 'api/projects/types';
 
@@ -12,6 +13,14 @@ interface Props {
   publicationStatus: PublicationStatus;
 }
 
+const StyledStatusLabel = styled(StatusLabel)`
+  padding-left: 4px;
+  padding-right: 4px;
+  height: 20px;
+  font-weight: bold;
+  font-size: 10px;
+`;
+
 const PublicationStatusLabel = memo<Props>(({ publicationStatus }) => {
   if (publicationStatus !== 'published') {
     const publicationStatusColor = {
@@ -20,7 +29,7 @@ const PublicationStatusLabel = memo<Props>(({ publicationStatus }) => {
     }[publicationStatus];
 
     return (
-      <StatusLabel
+      <StyledStatusLabel
         text={<FormattedMessage {...messages[publicationStatus]} />}
         backgroundColor={publicationStatusColor}
       />

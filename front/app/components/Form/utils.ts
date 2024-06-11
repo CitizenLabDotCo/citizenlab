@@ -1,4 +1,4 @@
-import { Layout, JsonSchema7 } from '@jsonforms/core';
+import { Layout, JsonSchema7, createAjv } from '@jsonforms/core';
 import Ajv from 'ajv';
 import { isEmpty, forOwn } from 'lodash-es';
 
@@ -34,6 +34,24 @@ export const getFormSchemaAndData = (
   const visibleElements: string[] = [];
 
   iterateSchema(uiSchema, uiSchema, (element, parentSchema) => {
+    // If saving a draft response, we only want to validate the answers
+    // against pages up to and including the latest completed page.
+    if (
+      data?.latest_complete_page >= 0 &&
+      data?.publication_status === 'draft'
+    ) {
+      // Get the index of the current page we're iterating in the uiSchema.
+      const indexCurrentElement = uiSchema?.elements?.findIndex(
+        (page) => page?.options?.id === parentSchema?.options?.id
+      );
+
+      // If the index of the current page is greater than the latest completed page
+      // we don't want to include it in our validation check.
+      if (indexCurrentElement > data?.latest_complete_page) {
+        return;
+      }
+    }
+
     const key: string = element.scope.split('/').pop();
     const isPageVisible = isVisible(
       parentSchema,
@@ -42,6 +60,7 @@ export const getFormSchemaAndData = (
       ajv,
       uiSchema?.elements as PageType[]
     );
+
     const isElementVisible = isVisible(element, data, '', ajv);
     const showInData =
       parentSchema.type === 'Page'
@@ -104,3 +123,10 @@ export function getOtherControlKey(scope: string = ''): string | undefined {
 
   return undefined;
 }
+
+export const customAjv = createAjv({
+  useDefaults: 'empty',
+  removeAdditional: true,
+});
+// The image key word is used for the image choice option
+customAjv.addKeyword('image');

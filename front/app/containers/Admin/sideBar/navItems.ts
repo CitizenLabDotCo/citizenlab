@@ -54,13 +54,13 @@ const navItems: NavItem[] = [
     link: '/admin/messaging',
     iconName: 'messages',
     message: 'messaging',
-    featureNames: ['manual_emailing', 'automated_emailing_control', 'texting'],
   },
   {
     name: 'reporting',
-    link: `/admin/reporting`,
+    link: `/admin/reporting/report-builder`,
     iconName: 'reports',
     message: 'reporting',
+    featureNames: ['report_builder'],
   },
   {
     name: 'tools',

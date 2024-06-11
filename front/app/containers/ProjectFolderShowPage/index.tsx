@@ -23,7 +23,6 @@ import VerticalCenterer from 'components/VerticalCenterer';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
-import { isNilOrError } from 'utils/helperUtils';
 import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
 
 import messages from './messages';
@@ -32,27 +31,6 @@ import ProjectFolderHeader from './ProjectFolderHeader';
 import ProjectFolderProjectCards from './ProjectFolderProjectCards';
 import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
 import { maxPageWidth } from './styles';
-
-const Container = styled.main`
-  flex: 1 0 auto;
-  height: 100%;
-  min-height: calc(
-    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
-  );
-  display: flex;
-  flex-direction: column;
-  background: #fff;
-
-  ${media.tablet`
-    background: ${colors.background};
-  `}
-
-  ${media.tablet`
-    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
-    props
-  ) => props.theme.mobileTopBarHeight}px);
-  `}
-`;
 
 const StyledContentContainer = styled(ContentContainer)`
   padding-top: 30px;
@@ -122,15 +100,16 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
   const { data: authUser } = useAuthUser();
   const isSmallerThanSmallDesktop = useBreakpoint('smallDesktop');
 
-  const userCanEditFolder =
-    !isNilOrError(authUser) &&
-    userModeratesFolder(authUser.data, projectFolder.id);
+  const userCanEditFolder = userModeratesFolder(
+    authUser?.data,
+    projectFolder.id
+  );
 
   return (
-    <Container id="e2e-folder-page">
+    <>
       <StyledContentContainer maxWidth={maxPageWidth}>
         <Box display="flex" width="100%">
-          <Box ml="auto" display="flex" mb="24px">
+          <Box ml="auto" display="flex">
             {userCanEditFolder && (
               <Box
                 display="flex"
@@ -141,7 +120,7 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
                 <Button
                   icon="edit"
                   linkTo={`/admin/projects/folders/${projectFolder.id}/settings`}
-                  buttonStyle="secondary"
+                  buttonStyle="secondary-outlined"
                   padding="6px 12px"
                 >
                   <FormattedMessage {...messages.editFolder} />
@@ -158,28 +137,33 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
                 w="auto"
                 py="6px"
                 iconSize="20px"
+                toolTipType="projectOrFolder"
               />
             </Box>
           </Box>
         </Box>
-        <ProjectFolderHeader projectFolder={projectFolder} />
-        {!isSmallerThanSmallDesktop ? (
-          <Content>
-            <StyledProjectFolderDescription projectFolder={projectFolder} />
-            <StyledProjectFolderProjectCards folderId={projectFolder.id} />
-          </Content>
-        ) : (
-          <StyledProjectFolderDescription projectFolder={projectFolder} />
-        )}
       </StyledContentContainer>
-      {isSmallerThanSmallDesktop && (
-        <CardsWrapper>
-          <ContentContainer maxWidth={maxPageWidth}>
-            <StyledProjectFolderProjectCards folderId={projectFolder.id} />
-          </ContentContainer>
-        </CardsWrapper>
-      )}
-    </Container>
+      <main id="e2e-folder-page">
+        <StyledContentContainer maxWidth={maxPageWidth}>
+          <ProjectFolderHeader projectFolder={projectFolder} />
+          {!isSmallerThanSmallDesktop ? (
+            <Content>
+              <StyledProjectFolderDescription projectFolder={projectFolder} />
+              <StyledProjectFolderProjectCards folderId={projectFolder.id} />
+            </Content>
+          ) : (
+            <StyledProjectFolderDescription projectFolder={projectFolder} />
+          )}
+        </StyledContentContainer>
+        {isSmallerThanSmallDesktop && (
+          <CardsWrapper>
+            <ContentContainer maxWidth={maxPageWidth}>
+              <StyledProjectFolderProjectCards folderId={projectFolder.id} />
+            </ContentContainer>
+          </CardsWrapper>
+        )}
+      </main>
+    </>
   );
 };
 

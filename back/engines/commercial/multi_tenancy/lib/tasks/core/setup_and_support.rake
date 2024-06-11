@@ -82,7 +82,7 @@ namespace :setup_and_support do
   desc 'Copy manual email campaigns from one platform to another'
   task :copy_manual_campaigns, %i[from_host to_host] => [:environment] do |_t, args|
     campaigns = Apartment::Tenant.switch(args[:from_host].tr('.', '_')) do
-      EmailCampaigns::Campaign.where(type: 'EmailCampaigns::Campaigns::Manual').map do |c|
+      EmailCampaigns::Campaign.manual.map do |c|
         { 'type' => c.type, 'author_ref' => nil, 'enabled' => c.enabled, 'sender' => 'organization',
           'subject_multiloc' => c.subject_multiloc, 'body_multiloc' => c.body_multiloc, 'created_at' => c.created_at.to_s, 'updated_at' => c.updated_at.to_s }
       end
@@ -245,13 +245,22 @@ namespace :setup_and_support do
     end
   end
 
-  desc 'Delete users and reactions'
-  task :delete_users_reactions, %i[host url] => [:environment] do |_t, args|
+  desc 'Delete spam users (from email list) and their contributions'
+  task :delete_users_participation, %i[host url] => [:environment] do |_t, args|
     emails = open(args[:url]).readlines.map(&:strip)
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       users = User.where email: emails
+      Initiative.where(author: users).destroy_all
+      Idea.where(author: users).destroy_all
       Reaction.where(user: users).destroy_all
-      users.destroy_all
+      Comment.where(author: users).destroy_all
+      Basket.where(user: users).destroy_all
+      service = SideFxUserService.new
+      users.each do |user|
+        service.before_destroy(user, nil)
+        user.destroy!
+        service.after_destroy(user, nil)
+      end
     end
   end
 

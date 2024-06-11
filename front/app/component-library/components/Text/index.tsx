@@ -19,6 +19,7 @@ import Box, {
   BoxDisplayProps,
   BoxOverflowProps,
   BoxVisibilityProps,
+  BoxProps,
 } from '../Box';
 
 type Variant = 'bodyL' | 'bodyM' | 'bodyS' | 'bodyXs';
@@ -42,6 +43,8 @@ type TextAlign =
   | 'initial'
   | 'inherit';
 
+type WordBreak = 'normal' | 'break-all' | 'keep-all' | 'break-word';
+
 export type TextProps = {
   variant?: Variant;
   color?: Color;
@@ -53,6 +56,7 @@ export type TextProps = {
   textOverflow?: TextOverflow;
   whiteSpace?: WhiteSpace;
   textAlign?: TextAlign;
+  wordBreak?: WordBreak;
 } & BoxMarginProps &
   BoxPaddingProps &
   BoxPositionProps &
@@ -64,7 +68,7 @@ export type TextProps = {
   BoxVisibilityProps &
   React.HTMLAttributes<HTMLParagraphElement>;
 
-const StyledText = styled(Box)`
+const StyledText = styled(Box)<BoxProps & TextProps>`
   line-height: 1.5;
   ${isRtl`direction: rtl;`}
   ${({
@@ -77,6 +81,7 @@ const StyledText = styled(Box)`
     textOverflow,
     whiteSpace,
     textAlign,
+    wordBreak,
     theme,
   }: TextProps & { theme: MainThemeProps }) => css`
     color: ${color ? theme.colors[color] : colors.textPrimary};
@@ -85,6 +90,7 @@ const StyledText = styled(Box)`
     text-decoration: ${textDecoration ? textDecoration : 'none'};
     text-overflow: ${textOverflow ? textOverflow : 'clip'};
     white-space: ${whiteSpace ? whiteSpace : 'normal'};
+    word-break: ${wordBreak ? wordBreak : 'normal'};
     ${textAlign ? `text-align: ${textAlign};` : ''}
     ${variant === 'bodyL'
       ? `

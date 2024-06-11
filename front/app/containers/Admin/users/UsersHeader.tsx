@@ -46,7 +46,7 @@ export const TextAndButtons = styled.div`
 
 interface Props {
   title: Record<string, string>;
-  subtitle: Record<string, string>;
+  subtitle?: Record<string, string>;
 }
 
 const UsersHeader = memo(({ title, subtitle }: Props) => {
@@ -61,10 +61,10 @@ const UsersHeader = memo(({ title, subtitle }: Props) => {
           linkTo="/admin/dashboard/users"
           text={<FormattedMessage {...messages.userInsights} />}
           icon="chart-bar"
-          buttonStyle="secondary"
+          buttonStyle="secondary-outlined"
         />
       </FirstRow>
-      <FormattedMessage tagName="h2" {...subtitle} />
+      {subtitle && <FormattedMessage tagName="h2" {...subtitle} />}
     </TitleWrapper>
   );
 });

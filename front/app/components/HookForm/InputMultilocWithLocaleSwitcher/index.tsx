@@ -6,7 +6,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { Controller, useFormContext, FieldError } from 'react-hook-form';
-import { CLError, Locale, RHFErrors } from 'typings';
+import { CLError, SupportedLocale, RHFErrors } from 'typings';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
@@ -33,7 +33,7 @@ const InputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
     return null;
   }
 
-  const defaultValue: Partial<Record<Locale, any>> = locales.reduce(
+  const defaultValue: Partial<Record<SupportedLocale, any>> = locales.reduce(
     (acc, curr) => ((acc[curr] = ''), acc),
     {}
   );
@@ -42,7 +42,7 @@ const InputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
   const errors = get(formContextErrors, name) as RHFErrors;
 
   const validationError = Object.values(
-    (errors as Record<Locale, FieldError> | undefined) || {}
+    (errors as Record<SupportedLocale, FieldError> | undefined) || {}
   )[0]?.message;
 
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item

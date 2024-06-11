@@ -2,8 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
-
-import { queryClient } from '../../utils/cl-react-query/queryClient';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 import ideasKeys from './keys';
 import { IIdea, IdeasKeys } from './types';

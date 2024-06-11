@@ -37,3 +37,7 @@ storybook-static/*
 .vscode/*
 
 cypress.env
+
+# Rollup generated output
+.rollup.cache
+dist

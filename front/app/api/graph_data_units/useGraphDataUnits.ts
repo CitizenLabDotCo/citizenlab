@@ -4,7 +4,7 @@ import { useLocation, useSearchParams } from 'react-router-dom';
 import useGraphDataUnitsPublished from 'api/graph_data_units/useGraphDataUnitsPublished';
 
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
-import { REPORT_BUILDER, EDITOR } from 'containers/Admin/reporting/routes';
+import { reportingEnumRoutes } from 'containers/Admin/reporting/routes';
 
 import { BaseResponseData } from 'utils/cl-react-query/fetcher';
 import { isPage } from 'utils/helperUtils';
@@ -31,8 +31,8 @@ const checkIfLiveDataShouldBeShown = ({
 
   const isReportBuilder =
     isAdminPage &&
-    pathname.includes(REPORT_BUILDER) &&
-    pathname.endsWith(EDITOR);
+    pathname.includes(reportingEnumRoutes.reportBuilder) &&
+    pathname.endsWith(reportingEnumRoutes.editor);
 
   if (isReportBuilder) {
     // If we're in the report builder,
@@ -73,27 +73,32 @@ const useGraphDataUnits = <Response extends BaseResponseData>(
     hasPreviewParam: search.get('preview') === 'true',
   });
 
-  const { data: dataLive, error: errorLive } = useGraphDataUnitsLive<Response>(
-    parameters,
-    {
-      enabled: enabled && showLiveData,
-      onSuccess,
-    }
-  );
+  const {
+    data: dataLive,
+    error: errorLive,
+    isLoading: isLoadingLive,
+  } = useGraphDataUnitsLive<Response>(parameters, {
+    enabled: enabled && showLiveData,
+    onSuccess,
+  });
 
-  const { data: dataPublished, error: errorPublished } =
-    useGraphDataUnitsPublished<Response>(
-      {
-        reportId,
-        graphId,
-      },
-      { enabled: enabled && !showLiveData }
-    );
+  const {
+    data: dataPublished,
+    error: errorPublished,
+    isLoading: isLoadingPublished,
+  } = useGraphDataUnitsPublished<Response>(
+    {
+      reportId,
+      graphId,
+    },
+    { enabled: enabled && !showLiveData }
+  );
 
   const data = showLiveData ? dataLive : dataPublished;
   const error = showLiveData ? errorLive : errorPublished;
+  const isLoading = showLiveData ? isLoadingLive : isLoadingPublished;
 
-  return { data, error };
+  return { data, error, isLoading };
 };
 
 export default useGraphDataUnits;

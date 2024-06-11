@@ -6,14 +6,22 @@ class OmniauthCallbackController < ApplicationController
   skip_after_action :verify_authorized
 
   def create
+    # Rails.logger.warn("Auth extra raw info JSON: #{request.env['omniauth.auth'].extra['raw_info'].to_h.to_json}")
     auth_provider = request.env.dig('omniauth.auth', 'provider')
     auth_method = authentication_service.method_by_provider(auth_provider)
     verification_method = get_verification_method(auth_provider)
 
     if auth_method && verification_method
-      auth_or_verification_callback(verify: verification_method, authver_method: auth_method)
+      # If token is present, the user is already logged in, which means they try to verify not authenticate.
+      if request.env['omniauth.params']['token'].present? && auth_method.verification_prioritized?
+        # We need it only for providers that support both auth and ver except FC.
+        # For FC, we never verify, only authenticate (even when user clicks "verify"). Not sure why.
+        verification_callback(verification_method)
+      else
+        auth_callback(verify: true, authver_method: auth_method)
+      end
     elsif auth_method
-      auth_callback(verify: verification_method, authver_method: auth_method)
+      auth_callback(verify: false, authver_method: auth_method)
     elsif verification_method
       verification_callback(verification_method)
     else
@@ -35,19 +43,14 @@ class OmniauthCallbackController < ApplicationController
 
   private
 
-  # Only methods that support both verification and authentication use it.
-  def auth_or_verification_callback(verify:, authver_method:)
-    # If token is present, the user is already logged in, which means they try to verify not authenticate.
-    if request.env['omniauth.params']['token'].present? && authver_method.verification_prioritized?
-      # We need it only for providers that support both auth and ver except FC.
-      # For FC, we never verify, only authenticate (even when user clicks "verify").
-      verification_callback(verify)
-      # Apart from verification, we also create an identity to be able to authenticate with this provider.
-      auth = request.env['omniauth.auth']
-      @identity = Identity.find_or_build_with_omniauth(auth, authver_method)
-      @identity.update(user: @user) unless @identity.user
-    else
-      auth_callback(verify: verify, authver_method: authver_method)
+  def find_existing_user(authver_method, auth, user_attrs, verify:)
+    user = User.find_by_cimail(user_attrs.fetch(:email)) if user_attrs.key?(:email) # some providers (emailless) don't return email
+    return user if user
+
+    if verify # only for verification methods
+      uid = authver_method.profile_to_uid(auth)
+      verification = Verification::VerificationService.new.verifications_by_uid(uid, authver_method).first
+      verification&.user
     end
   end
 
@@ -58,10 +61,7 @@ class OmniauthCallbackController < ApplicationController
     user_attrs = authver_method.profile_to_user_attrs(auth)
 
     @identity = Identity.find_or_build_with_omniauth(auth, authver_method)
-
-    @user = @identity.user
-    @user = User.find_by_cimail(user_attrs.fetch(:email)) if @user.nil? && user_attrs.key?(:email) # some providers (ClaveUnica) don't return email
-
+    @user = @identity.user || find_existing_user(authver_method, auth, user_attrs, verify: verify)
     @user = authentication_service.prevent_user_account_hijacking @user
 
     # https://github.com/CitizenLabDotCo/citizenlab/pull/3055#discussion_r1019061643
@@ -88,7 +88,7 @@ class OmniauthCallbackController < ApplicationController
           failure
           return
         end
-        @user.assign_attributes(user_attrs.merge(invite_status: 'accepted'))
+        UserService.assign_params_in_accept_invite(@user, user_attrs)
         ActiveRecord::Base.transaction do
           SideFxInviteService.new.before_accept @invite
           @user.save!
@@ -112,18 +112,19 @@ class OmniauthCallbackController < ApplicationController
       end
 
       set_auth_cookie(provider: provider)
-      handle_verification(auth, @user) if verify
+      handle_sso_verification(auth, @user) if verify
 
     else # New user
-      @user = User.new(user_attrs)
-      @user.locale = selected_locale(omniauth_params) if selected_locale(omniauth_params)
+      confirm = authver_method.email_confirmed?(auth)
+      locale = selected_locale(omniauth_params)
+      @user = UserService.build_in_sso(user_attrs, confirm, locale)
 
       @user.identities << @identity
       begin
         @user.save!
         SideFxUserService.new.after_create(@user, nil)
         set_auth_cookie(provider: provider)
-        handle_verification(auth, @user) if verify
+        handle_sso_verification(auth, @user) if verify
         signup_success_redirect
       rescue ActiveRecord::RecordInvalid => e
         Rails.logger.info "Social signup failed: #{e.message}"
@@ -140,12 +141,12 @@ class OmniauthCallbackController < ApplicationController
   # NOTE: sso_flow params corrected as sometimes an sso user may start from signin but actually signup and vice versa
   def signin_success_redirect
     request.env['omniauth.params']['sso_flow'] = 'signin' if request.env['omniauth.params']['sso_flow']
-    redirect_to(add_uri_params(Frontend::UrlService.new.signin_success_url(locale: @user.locale), request.env['omniauth.params']))
+    redirect_to(add_uri_params(Frontend::UrlService.new.signin_success_url(locale: Locale.new(@user.locale)), request.env['omniauth.params']))
   end
 
   def signup_success_redirect
     request.env['omniauth.params']['sso_flow'] = 'signup' if request.env['omniauth.params']['sso_flow']
-    redirect_to(add_uri_params(Frontend::UrlService.new.signup_success_url(locale: @user.locale), request.env['omniauth.params']))
+    redirect_to(add_uri_params(Frontend::UrlService.new.signup_success_url(locale: Locale.new(@user.locale)), request.env['omniauth.params']))
   end
 
   def add_uri_params(uri, params = {})
@@ -183,21 +184,11 @@ class OmniauthCallbackController < ApplicationController
   # @param [OmniauthMethods::Base] authver_method
   # @param [User] user
   def update_user!(auth, user, authver_method)
-    return if authver_method.updateable_user_attrs.empty?
-
     attrs = authver_method.updateable_user_attrs
-    update_hash = authver_method.profile_to_user_attrs(auth).slice(*attrs).compact
-    update_hash.delete(:remote_avatar_url) if user.avatar.present? # don't overwrite avatar if already present
-    user.confirm! if authver_method.email_confirmed?(auth) # confirm user email if not already confirmed
-
-    if authver_method.overwrite_user_attrs?
-      user.update_merging_custom_fields!(update_hash)
-    else
-      update_hash.each_pair do |attr, value|
-        user.assign_attributes(attr => value) unless user.attribute_present?(attr)
-      end
-      user.save!
-    end
+    user_params = authver_method.profile_to_user_attrs(auth).slice(*attrs).compact
+    user_params.delete(:remote_avatar_url) if user.avatar.present? # don't overwrite avatar if already present
+    confirm_user = authver_method.email_confirmed?(auth)
+    UserService.update_in_sso!(user, user_params, confirm_user)
   end
 
   # Return locale if a locale can be parsed from pathname which matches an app locale
@@ -212,6 +203,13 @@ class OmniauthCallbackController < ApplicationController
 
   def get_verification_method(_provider)
     nil
+  end
+
+  # In some cases, it may be fine not to verify during SSO.
+  def handle_sso_verification(auth, user)
+    handle_verification(auth, user)
+  rescue Verification::VerificationService::NotEntitledError
+    # ignore
   end
 
   def handle_verification(_auth, _user)

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FormEvent } from 'react';
 
 import { IconTooltip, Box, Button } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -27,12 +27,11 @@ import Input from 'components/HookForm/Input';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Select from 'components/HookForm/Select';
 import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
-import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
+import UserCustomFieldsForm from 'components/UserCustomFields';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 import messages from './messages';
@@ -46,8 +45,6 @@ const InputContainer = styled.div`
   display: flex;
   flex-direction: row;
 `;
-
-type ExtraFormDataKey = 'custom_field_values';
 
 type FormValues = {
   first_name?: string;
@@ -66,12 +63,10 @@ const ProfileForm = () => {
   const { data: authUser } = useAuthUser();
   const { data: lockedAttributes } = useUserLockedAttributes();
   const { formatMessage } = useIntl();
-  const [extraFormData, setExtraFormData] = useState<{
-    [field in ExtraFormDataKey]?: Record<string, any>;
-  }>({});
+  const [extraFormData, setExtraFormData] = useState<Record<string, any>>({});
 
   const schema = object({
-    first_name: string().when('last_name', ([last_name], schema) => {
+    first_name: string().when('last_name', (last_name, schema) => {
       return last_name
         ? schema.required(formatMessage(messages.provideFirstNameIfLastName))
         : schema;
@@ -122,7 +117,10 @@ const ProfileForm = () => {
     label: appLocalePairs[locale],
   }));
 
-  const handleDisclaimer = () => {
+  const handleDisclaimer = (event: FormEvent) => {
+    // Prevent page from reloading
+    event.preventDefault();
+
     if (
       methods.formState.dirtyFields.avatar &&
       methods.getValues('avatar') &&
@@ -145,21 +143,12 @@ const ProfileForm = () => {
 
   const onFormSubmit = async (formValues: FormValues) => {
     const avatar = formValues.avatar ? formValues.avatar[0].base64 : null;
-    // Add custom fields values to form
-    const newFormValues = Object.entries(extraFormData).reduce(
-      (acc, [key, extraFormDataConfiguration]) => {
-        return {
-          ...acc,
-          [key]: extraFormDataConfiguration?.formData,
-        };
-      },
-      formValues
-    );
 
-    eventEmitter.emit('customFieldsSubmitEvent');
-    Object.values(extraFormData).forEach((configuration) => {
-      configuration?.submit?.();
-    });
+    // Add custom fields values to form
+    const newFormValues = {
+      custom_field_values: extraFormData,
+      ...formValues,
+    };
 
     try {
       await updateUser({ userId: authUser.data.id, ...newFormValues, avatar });
@@ -175,23 +164,10 @@ const ProfileForm = () => {
     ? []
     : lockedAttributes.data.map((field) => field.attributes.name);
 
-  const handleCustomFieldsChange = ({
-    key,
-    formData,
-  }: {
-    key: ExtraFormDataKey;
-    formData: Record<string, any>;
-  }) => {
-    setExtraFormData({
-      ...extraFormData,
-      [key]: { ...(extraFormData?.[key] ?? {}), formData },
-    });
-  };
-
   return (
     <FormSection>
       <FormProvider {...methods}>
-        <form>
+        <form onSubmit={handleDisclaimer}>
           <FormSectionTitle
             message={messages.h1}
             subtitleMessage={messages.h1sub}
@@ -272,21 +248,16 @@ const ProfileForm = () => {
               label={formatMessage(messages.language)}
             />
           </SectionField>
+          <UserCustomFieldsForm
+            authenticationContext={GLOBAL_CONTEXT}
+            onChange={setExtraFormData}
+          />
+          <Box display="flex">
+            <Button processing={methods.formState.isSubmitting}>
+              {formatMessage(messages.submit)}
+            </Button>
+          </Box>
         </form>
-        <UserCustomFieldsForm
-          authUser={authUser.data}
-          authenticationContext={GLOBAL_CONTEXT}
-          onChange={handleCustomFieldsChange}
-        />
-        <Box display="flex">
-          <Button
-            type="submit"
-            processing={methods.formState.isSubmitting}
-            onClick={handleDisclaimer}
-          >
-            {formatMessage(messages.submit)}
-          </Button>
-        </Box>
       </FormProvider>
       <ContentUploadDisclaimer
         isDisclaimerOpened={isDisclaimerOpened}

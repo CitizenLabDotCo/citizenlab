@@ -93,10 +93,16 @@ export const themeColors = {
   green500: '#04884C', // formerly clGreen
   green400: '#32B67A',
   green100: '#e4f7ef', // formerly clGreenSuccessBackground
+
+  /**
+   * Orange
+   */
+  orange100: '#FFECE6',
+  orange500: '#FF672F', // formerly adminOrangeIcons
+
   /**
    * Other
    */
-  orange: '#FF672F', // formerly adminOrangeIcons
   brown: '#8C680D', // formerly draftYellow
 };
 
@@ -129,6 +135,8 @@ export const colors = {
 export type Color =
   | keyof typeof colors
   | 'tenantPrimary'
+  | 'tenantPrimaryLighten75'
+  | 'tenantPrimaryLighten95'
   | 'tenantSecondary'
   | 'tenantText';
 
@@ -248,6 +256,7 @@ export const stylingConsts = {
   pageWidth: 1150,
   textWidth: 720,
   borderRadius: '3px',
+  border: `1px solid ${colors.divider}`,
 };
 
 type StylingConstsType = {
@@ -447,6 +456,14 @@ export function getTheme(tenant: any = null): MainThemeProps {
       tenantPrimary: core ? core.color_main : '#ef0071',
       tenantSecondary: core ? core.color_secondary : '#000000',
       tenantText: core ? core.color_text : '#333333',
+      // tenantPrimary variants to use for lightened/darkened variants
+      // instead of using Polished library functions directly.
+      tenantPrimaryLighten75: core
+        ? transparentize(0.75, core.color_main)
+        : transparentize(0.75, '#ef0071'),
+      tenantPrimaryLighten95: core
+        ? transparentize(0.95, core.color_main)
+        : transparentize(0.95, '#ef0071'),
     },
     fontFamily,
     fontSizes,

@@ -483,7 +483,7 @@ describe('Survey question widget', () => {
         cy.get('#e2e-group-mode-select').select('survey_question');
         cy.get('.e2e-question-select select')
           .eq(1)
-          .select('4. Question: linear_scale');
+          .select('3. Question: linear_scale');
 
         const ensureCorrectGrouping = () => {
           cy.get('svg.e2e-progress-bar').should('have.length', 5);

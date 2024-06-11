@@ -146,6 +146,22 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.exportSelectedInitiatives',
     defaultMessage: 'Export selected initiatives (.xslx)',
   },
+  exportVotesByUser: {
+    id: 'app.components.admin.PostManager.exportVotesByUser',
+    defaultMessage: 'Export votes by user (.xslx)',
+  },
+  votesByUserExportFileName: {
+    id: 'app.components.admin.PostManager.votesByUserExportFileName',
+    defaultMessage: 'votes_by_user',
+  },
+  exportVotesByInput: {
+    id: 'app.components.admin.PostManager.exportVotesByInput',
+    defaultMessage: 'Export votes by input (.xslx)',
+  },
+  votesByInputExportFileName: {
+    id: 'app.components.admin.PostManager.votesByInputExportFileName',
+    defaultMessage: 'votes_by_input',
+  },
   initiativesExportFileName: {
     id: 'app.components.admin.PostManager.initiativesExportFileName',
     defaultMessage: 'proposals',

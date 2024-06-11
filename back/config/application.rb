@@ -79,7 +79,7 @@ module Cl2Back
       # with the form post. But it's sent if redirect is used instead of form post (all other SSO providers).
       # When the cookie is not sent, the nonce verification fails.
 
-      sso_providers_with_form_post = %w[azureactivedirectory nemlog_in]
+      sso_providers_with_form_post = %w[azureactivedirectory nemlog_in azureactivedirectory_b2c]
       return if sso_providers_with_form_post.any? { request.path.starts_with?("/auth/#{_1}") }
 
       :lax

@@ -88,11 +88,11 @@ describe('Landing page - signed in', () => {
     cy.apiSignup(firstName, lastName, email, password).then((user) => {
       userId = user.body.data.id;
       cy.setLoginCookie(email, password);
-      cy.goToLandingPage();
     });
   });
 
   it('shows correct content', () => {
+    cy.goToLandingPage();
     // shows the "complete your profile" header by default
     cy.get('.e2e-signed-in-header');
     cy.get(

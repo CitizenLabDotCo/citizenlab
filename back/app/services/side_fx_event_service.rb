@@ -30,4 +30,8 @@ class SideFxEventService
       payload: { event: serialized_event }
     )
   end
+
+  def after_attendees_xlsx(event, current_user)
+    LogActivityJob.perform_later(event, 'exported_attendees', current_user, Time.now.to_i)
+  end
 end

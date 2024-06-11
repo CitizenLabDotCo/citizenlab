@@ -1,4 +1,38 @@
 de:
+  locales:
+    en: Englisch
+    ar-MA: Arabisch (Marokko)
+    ar-SA: Arabisch (Saudi-Arabien)
+    ca-ES: Katalanisch
+    cy-GB: Walisisch
+    da-DK: Dänisch
+    de-DE: Deutsch
+    el-GR: Griechisch
+    en-CA: Englisch (Kanada)
+    en-GB: Englisch (UK)
+    en-IE: Englisch (Irland)
+    es-CL: Spanisch (Chile)
+    es-ES: Spanisch (Spanien)
+    fi-FI: Finnisch
+    fr-BE: Französisch (Belgien)
+    fr-FR: Französisch
+    hr-HR: Kroatisch
+    hu-HU: Ungarisch
+    it-IT: Italienisch
+    kl-GL: Grönländisch
+    lb-LU: Luxemburgisch
+    lv-LV: Lettisch
+    mi: Maori
+    nb-NO: Norwegisch (Bokmål)
+    nl-BE: Niederländisch (Belgien)
+    nl-NL: Niederländisch
+    pl-PL: Polnisch
+    pt-BR: Portugiesisch (Brasilien)
+    ro-RO: Rumänisch
+    sr-Latn: Serbisch (Latein)
+    sr-SP: Serbisch (Kyrillisch)
+    sv-SE: Schwedisch
+    tr-TR: Türkisch
   symbols:
     outside: Anderer Ort
   idea_statuses:
@@ -148,13 +182,13 @@ de:
       section3:
         title: Details
         description:
-      other:
-        title: '"Sonstiges" erläutern'
+      other_text_field:
+        title: '"{other_option}" erläutern'
   custom_forms:
     categories:
       main_content:
         idea:
-          title: Was ist Ihre Idee?
+          title: Was ist Ihr Beitrag?
         question:
           title: Was ist Ihre Frage?
         contribution:
@@ -200,29 +234,40 @@ de:
       subject: '%{organizationName}: Ihr Passwort zurücksetzen'
       title_reset_your_password: 'Wählen Sie ein neues Passwort'
   xlsx_export:
+    anonymous: 'Anonym'
     column_headers:
-      input_id: 'ID'
-      latitude: 'Breitengrad'
-      longitude: 'Längengrad'
-      author_fullname: 'Name des Autors / der Autorin'
-      author_email: 'E-Mail-Adresse des Autors / der Autorin'
-      author_id: 'ID des Autors / der Autorin'
-      budget: 'Budget'
-      created_at: 'Eingereicht am'
-      published_at: 'Veröffentlicht am'
-      comments_count: 'Kommentare'
-      likes_count: 'Likes'
-      dislikes_count: 'Dislikes'
-      picks: 'Auswahl'
-      participants: 'Teilnehmende'
-      votes_count: 'Stimmen'
-      input_url: 'URL'
-      project: '{orgName, select, München {Bezirke} other {Projekte}}'
-      status: 'Status'
       assignee_fullname: 'Zugewiesen an'
       assignee_email: 'E-Mail-Adresse des Empfängers / der Empfängerin'
+      attachments: 'Anhänge'
+      author_email: 'E-Mail-Adresse des Autors / der Autorin'
+      author_fullname: 'Name des Autors / der Autorin'
+      author_id: 'ID des Autors / der Autorin'
+      budget: 'Budget'
+      comments_count: 'Kommentare'
+      cost: 'Kosten'
+      created_at: 'Eingereicht am'
+      description: 'Beschreibung'
+      dislikes_count: 'Dislikes'
+      email: 'E-Mail'
+      first_name: 'Vorname(n)'
       image_url: 'Bild-URL'
-    anonymous: 'Anonym'
+      input_id: 'ID'
+      input_url: 'URL'
+      last_name: 'Familienname'
+      latitude: 'Breitengrad'
+      likes_count: 'Likes'
+      location: 'Ort'
+      longitude: 'Längengrad'
+      participants: 'Teilnehmende'
+      picks: 'Auswahl'
+      project: '{orgName, select, München {Bezirke} other {Projekte}}'
+      published_at: 'Veröffentlicht am'
+      registration_completed_at: 'Registrierung abgeschlossen am'
+      status: 'Status'
+      submitted_at: 'Eingereicht am'
+      tags: 'Themen-Tags'
+      title: 'Titel'
+      votes_count: 'Stimmen'
   form_builder:
     default_select_field:
       title: 'Frage'
@@ -230,7 +275,7 @@ de:
       option2: 'Option 2'
     form_end_page:
       title: 'Danke fürs Mitmachen'
-      description: "Bitte übermitteln Sie Ihre Antworten, indem Sie unten auf 'Senden' klicken."
+      description: "Antworten übermitteln, indem Sie unten auf \"Einreichen\" klicken."
     pdf_export:
       personal_data: 'Persönliche Daten'
       personal_data_explanation_ideation: "Wir werden Ihren Beitrag an die Online-Beteiligungsplattform von %{organizationName} weiterleiten. Wenn Sie möchten, dass Ihr Name als Autor*in dieses Beitrags angezeigt wird und Sie Aktualisierungen zu Ihrem Beitrag per E-Mail erhalten, füllen Sie bitte die folgenden Felder auf dieser Seite aus und wir erstellen ein Konto für Sie. Ihre E-Mail ist nicht öffentlich und wird nur von %{organizationName} verwendet. Wenn Sie anonym bleiben möchten oder nicht damit einverstanden sind, dass wir Ihre persönlichen Daten auf diese Weise verwenden, können Sie die Felder leer lassen."
@@ -248,6 +293,7 @@ de:
       instructions: 'Anleitung'
       write_as_clearly: 'Schreiben Sie so <b>deutlich</b> wie möglich - diese Formulare werden gescannt'
       write_in_language: 'Schreiben Sie Ihre Antworten bitte in der gleichen Sprache wie dieses Formular'
+      linear_scale_print_description: 'Bitte schreiben Sie nur eine Zahl zwischen %{min_label} und %{max_label}'
   project_copy:
     title_suffix: 'Kopie'
   confirmations_mailer:

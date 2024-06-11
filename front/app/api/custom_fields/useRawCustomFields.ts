@@ -14,12 +14,14 @@ type Params = {
   projectId?: string;
   phaseId?: string;
   inputTypes?: ICustomFieldInputType[];
+  copy?: boolean;
 };
 
 export const fetchCustomFields = ({
   projectId,
   phaseId,
   inputTypes,
+  copy,
 }: Params) => {
   const apiEndpoint = phaseId
     ? `admin/phases/${phaseId}/custom_fields`
@@ -30,18 +32,25 @@ export const fetchCustomFields = ({
     action: 'get',
     queryParams: {
       input_types: inputTypes,
+      copy,
     },
   });
 };
 
-const useRawCustomFields = ({ projectId, phaseId, inputTypes }: Params) => {
+const useRawCustomFields = ({
+  projectId,
+  phaseId,
+  inputTypes,
+  copy,
+}: Params) => {
   return useQuery<ICustomFields, CLErrors, ICustomFields, CustomFieldsKeys>({
     queryKey: customFieldsKeys.list({
       projectId,
       phaseId,
       inputTypes,
+      copy,
     }),
-    queryFn: () => fetchCustomFields({ projectId, phaseId, inputTypes }),
+    queryFn: () => fetchCustomFields({ projectId, phaseId, inputTypes, copy }),
     enabled: !!(projectId ?? phaseId),
   });
 };

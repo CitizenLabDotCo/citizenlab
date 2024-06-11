@@ -105,6 +105,13 @@ describe ProfanityService do
       it "exists for #{lang}" do
         expect(Rails.root.join("config/blocked_words/#{lang}.txt").exist?).to be true
       end
+
+      it "has no entries with spaces for #{lang}" do
+        words = Rails.root.join("config/blocked_words/#{lang}.txt").readlines.map(&:strip)
+        words.each do |word|
+          expect(word).not_to include ' '
+        end
+      end
     end
   end
 

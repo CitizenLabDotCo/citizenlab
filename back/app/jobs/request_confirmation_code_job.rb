@@ -8,9 +8,6 @@ class RequestConfirmationCodeJob < ApplicationJob
   def run(user, new_email: nil)
     @user = user
     raise 'User confirmation is disabled.' if !AppConfiguration.instance.feature_activated?('user_confirmation')
-    if !user.registered_with_email? && (!new_email || PhoneService.new.encoded_phone_or_email?(new_email) != :email)
-      raise 'Confirmation is currently working for emails only.'
-    end
 
     LogActivityJob.perform_later(user, 'requested_confirmation_code', user, Time.now.to_i, payload: { new_email: new_email })
     if new_email

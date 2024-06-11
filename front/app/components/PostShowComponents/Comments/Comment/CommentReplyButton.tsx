@@ -111,7 +111,7 @@ const CommentReplyButton = ({
 
     if (idea) {
       const actionDescriptor =
-        idea.attributes.action_descriptor.commenting_idea;
+        idea.attributes.action_descriptors.commenting_idea;
 
       if (actionDescriptor.enabled) {
         reply();
@@ -149,7 +149,7 @@ const CommentReplyButton = ({
   };
 
   const ideaCommentingDisabledReason =
-    idea?.attributes.action_descriptor.commenting_idea.disabled_reason;
+    idea?.attributes.action_descriptors.commenting_idea.disabled_reason;
 
   const isCommentDeleted = comment.attributes.publication_status === 'deleted';
   const disabled =

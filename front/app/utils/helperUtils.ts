@@ -1,5 +1,5 @@
 import { trim, isUndefined } from 'lodash-es';
-import { Locale, Multiloc, GraphqlLocale } from 'typings';
+import { SupportedLocale, Multiloc, GraphqlLocale } from 'typings';
 
 import { locales } from 'containers/App/constants';
 
@@ -79,7 +79,7 @@ export function isPage(pageKey: pageKeys, pathName: string) {
     case 'initiative_edit':
       return pathnameWithoutLocale.startsWith('/initiatives/edit/');
     case 'native_survey':
-      return pathnameWithoutLocale.endsWith('/survey');
+      return pathnameWithoutLocale.endsWith('/surveys/new');
     case 'sign_in':
       return pathnameWithoutLocale.startsWith('/sign-in');
     case 'sign_up':
@@ -135,7 +135,7 @@ export function stripHtmlTags(str: string | null | undefined) {
 }
 
 // e.g. 'en-GB' -> 'enGb'
-export function convertToGraphqlLocale(locale: Locale) {
+export function convertToGraphqlLocale(locale: SupportedLocale) {
   const newLocale = locale.replace('-', '');
   const length = newLocale.length - 1;
   return (newLocale.substring(0, length) +

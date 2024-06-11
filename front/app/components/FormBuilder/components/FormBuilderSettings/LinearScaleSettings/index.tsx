@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import RangeInput from './RangeInput';
 import ScaleLabelInput from './ScaleLabelsInput';
@@ -10,9 +10,9 @@ interface Props {
   maximumName: string;
   minimumLabelName: string;
   maximumLabelName: string;
-  onSelectedLocaleChange?: (locale: Locale) => void;
-  locales: Locale[];
-  platformLocale: Locale;
+  onSelectedLocaleChange?: (locale: SupportedLocale) => void;
+  locales: SupportedLocale[];
+  platformLocale: SupportedLocale;
 }
 
 const LinearScaleSettings = ({

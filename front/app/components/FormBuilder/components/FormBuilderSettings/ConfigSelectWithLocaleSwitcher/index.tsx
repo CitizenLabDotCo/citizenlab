@@ -17,7 +17,7 @@ import {
   useFormContext,
   useWatch,
 } from 'react-hook-form';
-import { Locale, CLError, RHFErrors } from 'typings';
+import { SupportedLocale, CLError, RHFErrors } from 'typings';
 
 import { useCustomFieldOptionImages } from 'api/content_field_option_images/useCustomFieldOptionImage';
 import { ICustomFieldInputType, IOptionsType } from 'api/custom_fields/types';
@@ -38,10 +38,10 @@ import SelectFieldOption, { OptionImageType } from './SelectFieldOption';
 
 interface Props {
   name: string;
-  onSelectedLocaleChange?: (locale: Locale) => void;
-  locales: Locale[];
+  onSelectedLocaleChange?: (locale: SupportedLocale) => void;
+  locales: SupportedLocale[];
   allowDeletingAllOptions?: boolean;
-  platformLocale: Locale;
+  platformLocale: SupportedLocale;
   inputType: ICustomFieldInputType;
 }
 
@@ -58,7 +58,7 @@ const ConfigSelectWithLocaleSwitcher = ({
     formState: { errors: formContextErrors },
     trigger,
   } = useFormContext();
-  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(
+  const [selectedLocale, setSelectedLocale] = useState<SupportedLocale | null>(
     platformLocale
   );
   const { formatMessage } = useIntl();
@@ -103,7 +103,7 @@ const ConfigSelectWithLocaleSwitcher = ({
   }, [platformLocale, onSelectedLocaleChange]);
 
   const handleOnSelectedLocaleChange = useCallback(
-    (newSelectedLocale: Locale) => {
+    (newSelectedLocale: SupportedLocale) => {
       setSelectedLocale(newSelectedLocale);
       onSelectedLocaleChange?.(newSelectedLocale);
     },
@@ -291,7 +291,7 @@ const ConfigSelectWithLocaleSwitcher = ({
                 </DndProvider>
                 <Button
                   icon="plus-circle"
-                  buttonStyle="secondary"
+                  buttonStyle="secondary-outlined"
                   data-cy="e2e-add-answer"
                   onClick={addOption}
                   text={formatMessage(messages.addAnswer)}

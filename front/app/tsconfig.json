@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    // "strict": true,
     "baseUrl": "./",
     "mapRoot": "./",
     "target": "esnext",
@@ -13,7 +14,6 @@
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
-    "declaration": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "skipLibCheck": true,

@@ -11,7 +11,11 @@ export const formatCountValue = (count: number): string => {
 
 export const getConversionRate = (from: number, to: number) => {
   if (to <= 0) return `0%`;
-  return `${Math.min(100, roundPercentage(from, to))}%`;
+  return `${calculateConversionRate(from, to)}%`;
+};
+
+export const calculateConversionRate = (from: number, to: number) => {
+  return Math.min(100, roundPercentage(from, to));
 };
 
 const formatSerieChange = (serieChange: number) => {

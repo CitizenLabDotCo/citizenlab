@@ -1,19 +1,15 @@
 import React, { FormEvent } from 'react';
 
-import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
-import { isString } from 'lodash-es';
 import { parse } from 'qs';
-import { adopt } from 'react-adopt';
 import { Helmet } from 'react-helmet';
 import { WrappedComponentProps } from 'react-intl';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-import { CLError } from 'typings';
+import { CLError, FormatMessage } from 'typings';
 
+import { IAppConfiguration } from 'api/app_configuration/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import resetPassword from 'api/authentication/reset_password/resetPassword';
 
-import { PasswordResetSuccess } from 'containers/PasswordReset/PasswordResetSuccess';
+import PasswordResetSuccess from 'containers/PasswordReset/PasswordResetSuccess';
 
 import {
   StyledContentContainer,
@@ -29,20 +25,16 @@ import PasswordInput, {
   hasPasswordMinimumLength,
 } from 'components/UI/PasswordInput';
 
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
-import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 
-interface DataProps {
-  tenant: GetAppConfigurationChildProps;
+interface Props {
+  appConfig: IAppConfiguration | undefined;
+  formatMessage: FormatMessage;
 }
-
-interface InputProps {}
-
-interface Props extends InputProps, DataProps {}
 
 interface IApiErrors {
   token?: CLError[];
@@ -61,16 +53,13 @@ type State = {
   apiErrors: IApiErrors | null;
 };
 
-class PasswordReset extends React.PureComponent<
-  Props & WrappedComponentProps,
-  State
-> {
+class PasswordReset extends React.PureComponent<Props, State> {
   passwordInputElement: HTMLInputElement | null;
 
   constructor(props: Props & WrappedComponentProps) {
     super(props);
     const query = parse(clHistory.location.search, { ignoreQueryPrefix: true });
-    const token = isString(query.token) ? query.token : null;
+    const token = typeof query.token === 'string' ? query.token : null;
     this.state = {
       token,
       password: null,
@@ -87,7 +76,7 @@ class PasswordReset extends React.PureComponent<
   componentDidMount() {
     const { token } = this.state;
 
-    if (!isString(token)) {
+    if (typeof token !== 'string') {
       clHistory.push('/');
     } else if (this.passwordInputElement) {
       this.passwordInputElement.focus();
@@ -95,14 +84,14 @@ class PasswordReset extends React.PureComponent<
   }
 
   hasPasswordMinimumLengthError = () => {
-    const { tenant } = this.props;
+    const { appConfig } = this.props;
     const { password } = this.state;
 
     return typeof password === 'string'
       ? hasPasswordMinimumLength(
           password,
-          !isNilOrError(tenant)
-            ? tenant.attributes.settings.password_login?.minimum_length
+          appConfig
+            ? appConfig.data.attributes.settings.password_login?.minimum_length
             : undefined
         )
       : true;
@@ -180,7 +169,7 @@ class PasswordReset extends React.PureComponent<
   };
 
   render() {
-    const { formatMessage } = this.props.intl;
+    const { formatMessage } = this.props;
     const { password, processing, success, apiErrors, minimumLengthError } =
       this.state;
     const helmetTitle = formatMessage(messages.helmetTitle);
@@ -189,76 +178,69 @@ class PasswordReset extends React.PureComponent<
     const passwordPlaceholder = formatMessage(messages.passwordPlaceholder);
     const updatePassword = formatMessage(messages.updatePassword);
 
-    return success ? (
-      <PasswordResetSuccess />
-    ) : (
-      <Box
-        width="100%"
-        minHeight={`calc(100vh - ${
-          stylingConsts.menuHeight + stylingConsts.footerHeight
-        }px)`}
-      >
+    return (
+      <>
         <Helmet
           title={helmetTitle}
           meta={[{ name: 'description', content: helmetDescription }]}
         />
-
         <main>
           <StyledContentContainer>
-            <Title>{title}</Title>
+            {success ? (
+              <PasswordResetSuccess />
+            ) : (
+              <>
+                <Title>{title}</Title>
 
-            <Form onSubmit={this.handleOnSubmit}>
-              <LabelContainer>
-                <FormLabel
-                  width="max-content"
-                  margin-right="5px"
-                  labelMessage={messages.passwordLabel}
-                  htmlFor="password"
-                />
-                <StyledPasswordIconTooltip />
-              </LabelContainer>
-              <PasswordInput
-                id="password"
-                autocomplete="new-password"
-                password={password}
-                placeholder={passwordPlaceholder}
-                onChange={this.handlePasswordOnChange}
-                setRef={this.handlePasswordInputSetRef}
-                errors={{ minimumLengthError }}
-              />
-              {apiErrors &&
-                Object.keys(apiErrors).map((errorField: ApiErrorFieldName) => (
-                  <Error
-                    key={errorField}
-                    apiErrors={apiErrors[errorField]}
-                    fieldName={errorField}
+                <Form onSubmit={this.handleOnSubmit}>
+                  <LabelContainer>
+                    <FormLabel
+                      width="max-content"
+                      margin-right="5px"
+                      labelMessage={messages.passwordLabel}
+                      htmlFor="password"
+                    />
+                    <StyledPasswordIconTooltip />
+                  </LabelContainer>
+                  <PasswordInput
+                    id="password"
+                    autocomplete="new-password"
+                    password={password}
+                    placeholder={passwordPlaceholder}
+                    onChange={this.handlePasswordOnChange}
+                    setRef={this.handlePasswordInputSetRef}
+                    errors={{ minimumLengthError }}
                   />
-                ))}
+                  {apiErrors &&
+                    Object.keys(apiErrors).map(
+                      (errorField: ApiErrorFieldName) => (
+                        <Error
+                          key={errorField}
+                          apiErrors={apiErrors[errorField]}
+                          fieldName={errorField}
+                        />
+                      )
+                    )}
 
-              <StyledButton
-                size="m"
-                processing={processing}
-                text={updatePassword}
-                onClick={this.handleOnSubmit}
-              />
-            </Form>
+                  <StyledButton
+                    size="m"
+                    processing={processing}
+                    text={updatePassword}
+                    onClick={this.handleOnSubmit}
+                  />
+                </Form>
+              </>
+            )}
           </StyledContentContainer>
         </main>
-      </Box>
+      </>
     );
   }
 }
 
-const PasswordResetWithHocs = injectIntl(PasswordReset);
+export default () => {
+  const { data: appConfig } = useAppConfiguration();
+  const { formatMessage } = useIntl();
 
-const Data = adopt({
-  tenant: <GetAppConfiguration />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data>
-    {(dataProps: DataProps) => (
-      <PasswordResetWithHocs {...inputProps} {...dataProps} />
-    )}
-  </Data>
-);
+  return <PasswordReset appConfig={appConfig} formatMessage={formatMessage} />;
+};

@@ -116,6 +116,7 @@ export default function ({
         barSize={8}
         margin={{ bottom: 0 }}
         ref={innerRef}
+        accessibilityLayer
       >
         <XAxis hide type="number" />
         <YAxis width={0} type="category" dataKey="name" />

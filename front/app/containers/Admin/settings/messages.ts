@@ -167,4 +167,17 @@ export default defineMessages({
     defaultMessage:
       'Select the areas that will be shown to users to follow after registration',
   },
+  population: {
+    id: 'app.containers.AdminPage.SettingsPage.population',
+    defaultMessage: 'Population',
+  },
+  populationTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.populationTooltip',
+    defaultMessage:
+      'The total number of inhabitants on your territory. This is used to calculate the participation rate. Leave empty if not applicable.',
+  },
+  populationMinError: {
+    id: 'app.containers.AdminPage.SettingsPage.populationMinError',
+    defaultMessage: 'Population must be a positive number.',
+  },
 });

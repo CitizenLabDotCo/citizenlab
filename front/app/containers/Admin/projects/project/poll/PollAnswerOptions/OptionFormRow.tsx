@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
-import { Multiloc, Locale } from 'typings';
+import { Multiloc, SupportedLocale } from 'typings';
 
 import useAddPollOption from 'api/poll_options/useAddPollOption';
 import useUpdatePollOption from 'api/poll_options/useUpdatePollOption';
@@ -41,7 +41,9 @@ const OptionFormRow = ({
   const { mutate: updatePollOption } = useUpdatePollOption();
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
-  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
+  const [selectedLocale, setSelectedLocale] = useState<SupportedLocale | null>(
+    null
+  );
   const [newTitleMultiloc, setNewTitleMultiloc] = useState<Multiloc>(
     titleMultiloc || {}
   );
@@ -59,7 +61,7 @@ const OptionFormRow = ({
     }
   }, [titleMultiloc, optionId, prevOptionId]);
 
-  const onSelectedLocaleChange = (selectedLocale: Locale) => {
+  const onSelectedLocaleChange = (selectedLocale: SupportedLocale) => {
     setSelectedLocale(selectedLocale);
   };
 
@@ -129,7 +131,7 @@ const OptionFormRow = ({
 
       <Button
         className="e2e-form-option-cancel"
-        buttonStyle="secondary"
+        buttonStyle="secondary-outlined"
         onClick={closeRow}
       >
         <FormattedMessage {...messages.cancelOption} />

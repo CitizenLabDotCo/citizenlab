@@ -8,17 +8,19 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import { importedIdeasKeys } from './keys';
 import { QueryParams, ImportedIdeasKeys } from './types';
 
-const fetchImportedIdeas = ({ projectId, phaseId }: QueryParams) =>
+const fetchImportedIdeas = ({ phaseId }: QueryParams) =>
   fetcher<IIdeas>({
-    path: phaseId
-      ? `/phases/${phaseId}/import_ideas/draft_ideas`
-      : `/projects/${projectId}/import_ideas/draft_ideas`,
+    path: `/phases/${phaseId}/importer/draft_records/idea`,
     action: 'get',
   });
-const useImportedIdeas = (queryParams: QueryParams) => {
+const useImportedIdeas = (
+  queryParams: QueryParams,
+  { pollingEnabled }: { pollingEnabled?: boolean } = {}
+) => {
   return useQuery<IIdeas, CLErrors, IIdeas, ImportedIdeasKeys>({
     queryKey: importedIdeasKeys.list(queryParams),
     queryFn: () => fetchImportedIdeas(queryParams),
+    refetchInterval: pollingEnabled ? 5000 : false,
   });
 };
 

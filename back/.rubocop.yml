@@ -44,6 +44,9 @@ Style/SymbolProc:
   Exclude:
     - "db/migrate/**/*"
 
+Style/FormatStringToken:
+  Enabled: false
+
 Style/NumericPredicate:
   # Turned off because `something == 0` and `something.zero?`
   # are not the same if `something` is not a number.

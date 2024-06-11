@@ -230,3 +230,8 @@ RspecApiDocumentation.configure do |config|
   config.html_embedded_css_file = 'doc/style.css'
   config.configurations_dir = Pathname.new(ENV['CONFIGURATIONS_DIR']) if ENV['CONFIGURATIONS_DIR']
 end
+
+# Speed up specs
+silence_warnings do
+  BCrypt::Engine::DEFAULT_COST = BCrypt::Engine::MIN_COST
+end

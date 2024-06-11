@@ -2,8 +2,12 @@ import React from 'react';
 
 import Point from '@arcgis/core/geometry/Point';
 import MapView from '@arcgis/core/views/MapView';
-import { Box, Button, colors } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
+import {
+  Box,
+  Button,
+  colors,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IMapConfig } from 'api/map_config/types';
@@ -58,7 +62,7 @@ const ResetMapViewButton = ({ mapConfig, mapView }: Props) => {
         w="36px"
         background={colors.white}
       >
-        <Tippy
+        <Tooltip
           maxWidth="250px"
           placement="right"
           content={formatMessage(messages.goToDefaultMapView)}
@@ -77,7 +81,7 @@ const ResetMapViewButton = ({ mapConfig, mapView }: Props) => {
               aria-label={formatMessage(messages.goToDefaultMapView)}
             />
           </div>
-        </Tippy>
+        </Tooltip>
       </Box>
     </Box>
   );

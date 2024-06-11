@@ -15,8 +15,8 @@ export default defineMessages({
     defaultMessage: 'Create a report',
   },
   createReportModalTitle: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalTitle',
-    defaultMessage: 'Create a project report',
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalTitle2',
+    defaultMessage: 'Create a report',
   },
   createReportModalInputLabel: {
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel',
@@ -33,6 +33,10 @@ export default defineMessages({
   projectTemplate: {
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.projectTemplate',
     defaultMessage: 'Start with a project template',
+  },
+  platformTemplate: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.platformTemplate',
+    defaultMessage: 'Start with a platform template',
   },
   shareReportTitle: {
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.shareReportTitle',

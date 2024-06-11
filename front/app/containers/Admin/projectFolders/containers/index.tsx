@@ -17,8 +17,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isAdmin } from 'utils/permissions/roles';
 
-// Localisation
-
 import messages from './messages';
 
 const TopContainer = styled.div`
@@ -69,7 +67,7 @@ const AdminProjectFolderEdition = () => {
     ],
   };
 
-  if (isAdmin({ data: authUser.data })) {
+  if (isAdmin(authUser)) {
     tabbedProps = {
       ...tabbedProps,
       tabs: tabbedProps.tabs.concat({
@@ -85,7 +83,7 @@ const AdminProjectFolderEdition = () => {
       <TopContainer>
         <GoBackButton onClick={goBack} />
         <Button
-          buttonStyle="cl-blue"
+          buttonStyle="admin-dark"
           icon="eye"
           id="to-projectFolder"
           linkTo={`/folders/${projectFolder.data.attributes.slug}`}

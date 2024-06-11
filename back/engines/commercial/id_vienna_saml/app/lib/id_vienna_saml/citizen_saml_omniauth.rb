@@ -58,16 +58,6 @@ module IdViennaSaml
       env['omniauth.strategy'].options.merge!(metadata)
     end
 
-    # @return [Array<Symbol>] Returns a list of attributes that can be updated from the auth response hash
-    def updateable_user_attrs
-      %i[first_name last_name]
-    end
-
-    # @return [Boolean] If existing user attributes should be overwritten
-    def overwrite_user_attrs?
-      false
-    end
-
     # Removes the response object because it produces a Stacklevel too deep error when converting to JSON
     # @param [OmniAuth::AuthHash] auth
     # @return [Hash] The filtered hash that will be persisted in the database

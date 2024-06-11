@@ -377,6 +377,39 @@ export const icons = {
       <path fill="none" d="M0 0h140.87v163.324H0z" />
     </Svg>
   ),
+  // Shortened version (only "ID") of https://seeklogo.com/vector-logo/461433/mitid
+  mitid: (props: IconPropsWithoutName) => (
+    <Svg
+      className={`cl-icon ${props.className ? props.className : ''}`}
+      viewBox="640 0 640 333.63934"
+      fill-rule="evenodd"
+      clip-rule="evenodd"
+      stroke-linejoin="round"
+      stroke-miterlimit="1.414"
+      aria-label="MitID logo"
+      {...props}
+    >
+      <defs id="defs8" />
+      <path
+        fill="#0060e6"
+        fillOpacity="1"
+        stroke="none"
+        strokeWidth="20.9836"
+        d="m 1089.0492,4.1967213 c 134.2951,0 190.9508,73.4426227 190.9508,163.6721287 0,90.22951 -56.6557,163.67213 -190.9508,163.67213 h -54.5574 V 4.1967213 Z"
+        id="path352"
+        clipPath="none"
+      />
+      <path
+        id="path350"
+        clipPath="none"
+        fill="#0060e6"
+        fillOpacity="1"
+        stroke="none"
+        strokeWidth="20.9836"
+        d="M 847.73828 0 C 803.67276 0 768 35.672751 768 79.738281 C 768 123.80381 803.67276 159.47461 847.73828 159.47461 C 891.80382 159.47461 927.47461 123.80381 927.47461 79.738281 C 927.47461 35.672751 891.80382 0 847.73828 0 z M 847.73828 188.85156 C 774.29573 188.85156 713.44226 230.81981 705.04883 331.54102 L 992.52539 331.54102 C 984.13196 230.81981 923.2792 188.85156 847.73828 188.85156 z "
+      />
+    </Svg>
+  ),
   comment: (props: IconPropsWithoutName) => (
     <Svg
       className={`cl-icon ${props.className ? props.className : ''}`}

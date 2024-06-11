@@ -215,7 +215,7 @@ const CommentBody = ({
               apiErrors.body_multiloc[locale] && (
                 <Error apiErrors={apiErrors.body_multiloc[locale]} />
               )}
-            <Button buttonStyle="secondary" onClick={cancelEditing}>
+            <Button buttonStyle="secondary-outlined" onClick={cancelEditing}>
               <FormattedMessage {...messages.cancelCommentEdit} />
             </Button>
             <Button
@@ -238,7 +238,6 @@ const CommentBody = ({
                 id="app.components.PostShowComponents.CommentBody.translation"
                 translateButtonClicked={translateButtonClicked}
                 commentContent={commentContent}
-                locale={locale}
                 commentId={commentId}
               >
                 {(outletComponents) =>

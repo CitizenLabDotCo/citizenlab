@@ -1,14 +1,16 @@
-import React, { memo } from 'react';
+import React, { memo, KeyboardEvent, useRef } from 'react';
 
 import {
   fontSizes,
   media,
   Icon,
   useBreakpoint,
+  IconNames,
 } from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+import { ITab } from 'typings';
 
 import useEventsByUserId from 'api/events/useEventsByUserId';
 import useAuthUser from 'api/me/useAuthUser';
@@ -19,7 +21,7 @@ import { IUserData } from 'api/users/types';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { ScreenReaderOnly } from 'utils/a11y';
-import { FormattedMessage } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
@@ -110,8 +112,18 @@ interface Props {
   user: IUserData;
 }
 
+interface TabData
+  extends Omit<ITab, 'name' | 'url' | 'feature' | 'statusLabel' | 'active'> {
+  path: 'submissions' | 'comments' | 'following' | 'events';
+  className?: string;
+  icon: IconNames;
+  active: boolean;
+}
+
 const UserNavbar = memo<Props>(({ user }) => {
   const { data: ideasCount } = useUserIdeasCount({ userId: user.id });
+  const tabsRef = useRef({});
+  const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('phone');
   const { pathname } = useLocation();
   const { data: commentsCount } = useUserCommentsCount({
@@ -127,137 +139,97 @@ const UserNavbar = memo<Props>(({ user }) => {
   });
   const showFollowingTab = isFollowingEnabled && authUser?.data?.id === user.id;
 
+  const followingTab: TabData = {
+    label: formatMessage(messages.followingWithCount, {
+      followingCount: authUser?.data.attributes.followings_count || 0,
+    }),
+    active: pathname.endsWith('following'),
+    path: 'following',
+    icon: 'notification-outline',
+    className: 'e2e-following-tab',
+  };
+  const eventsTab: TabData = {
+    label: formatMessage(messages.eventsWithCount, {
+      eventsCount: eventsCount || 0,
+    }),
+    active: pathname.endsWith('events'),
+    path: 'events',
+    icon: 'calendar',
+    className: 'e2e-events-nav',
+  };
+
+  const tabs: TabData[] = [
+    {
+      label: formatMessage(messages.postsWithCount, {
+        ideasCount: ideasCount?.data.attributes.count || 0,
+      }),
+      active: pathname.endsWith('submissions'),
+      path: 'submissions',
+      icon: 'idea',
+    },
+    {
+      label: formatMessage(messages.commentsWithCount, {
+        commentsCount: commentsCount?.data.attributes.count || 0,
+      }),
+      active: pathname.endsWith('comments'),
+      path: 'comments',
+      icon: 'comments',
+      className: 'e2e-comment-section-nav',
+    },
+    ...(showFollowingTab ? [followingTab] : []),
+    ...(showEventTab ? [eventsTab] : []),
+  ];
+
+  const handleKeyDownTab = (
+    { key }: KeyboardEvent<HTMLButtonElement>,
+    path: string
+  ) => {
+    if (key !== 'ArrowLeft' && key !== 'ArrowRight') return;
+
+    const currentTabIndex = tabs.findIndex((tabData) => tabData.path === path);
+    let nextTabIndex: number;
+
+    if (key === 'ArrowLeft') {
+      nextTabIndex =
+        currentTabIndex === 0 ? tabs.length - 1 : currentTabIndex - 1;
+    } else {
+      nextTabIndex =
+        currentTabIndex === tabs.length - 1 ? 0 : currentTabIndex + 1;
+    }
+    const nextTab = tabs[nextTabIndex];
+
+    clHistory.push(`/profile/${user.attributes.slug}/${nextTab.path}`);
+    tabsRef.current[nextTab.path].focus();
+  };
+
   return (
     <UserNavbarWrapper role="tablist">
-      <UserNavbarButton
-        onMouseDown={removeFocusAfterMouseClick}
-        onClick={() =>
-          clHistory.push(`/profile/${user.attributes.slug}/submissions`)
-        }
-        className={pathname.endsWith('submissions') ? 'active' : ''}
-        role="tab"
-        aria-selected={pathname.endsWith('submissions')}
-      >
-        <Border aria-hidden />
-        <TabIcon name="idea" ariaHidden />
-        {!isSmallerThanPhone && (
-          <FormattedMessage
-            {...messages.postsWithCount}
-            values={{ ideasCount: ideasCount?.data.attributes.count || '0' }}
-          />
-        )}
-        {isSmallerThanPhone && (
-          <ScreenReaderOnly>
-            <FormattedMessage
-              {...messages.postsWithCount}
-              values={{ ideasCount: ideasCount?.data.attributes.count || '0' }}
-            />
-          </ScreenReaderOnly>
-        )}
-        {isSmallerThanPhone && (
-          <ScreenReaderOnly>
-            <FormattedMessage
-              {...messages.postsWithCount}
-              values={{ ideasCount: ideasCount?.data.attributes.count || '0' }}
-            />
-          </ScreenReaderOnly>
-        )}
-      </UserNavbarButton>
-      <UserNavbarButton
-        onMouseDown={removeFocusAfterMouseClick}
-        onClick={() =>
-          clHistory.push(`/profile/${user.attributes.slug}/comments`)
-        }
-        className={`e2e-comment-section-nav ${
-          pathname.endsWith('comments') ? 'active' : ''
-        }`}
-        role="tab"
-        aria-selected={pathname.endsWith('comments')}
-      >
-        <Border aria-hidden />
-        <TabIcon name="comments" ariaHidden />
-        {!isSmallerThanPhone && (
-          <FormattedMessage
-            {...messages.commentsWithCount}
-            values={{
-              commentsCount: commentsCount?.data.attributes.count || '0',
-            }}
-          />
-        )}
-        {isSmallerThanPhone && (
-          <ScreenReaderOnly>
-            <FormattedMessage
-              {...messages.commentsWithCount}
-              values={{
-                commentsCount: commentsCount?.data.attributes.count || '0',
-              }}
-            />
-          </ScreenReaderOnly>
-        )}
-      </UserNavbarButton>
-      {showFollowingTab && (
+      {tabs.map((tab) => (
         <UserNavbarButton
+          key={tab.path}
           onMouseDown={removeFocusAfterMouseClick}
           onClick={() =>
-            clHistory.push(`/profile/${user.attributes.slug}/following`)
+            clHistory.push(`/profile/${user.attributes.slug}/${tab.path}`)
           }
-          className={pathname.endsWith('following') ? 'active' : ''}
+          className={`${tab.className || ''} ${tab.active ? 'active' : ''}`}
           role="tab"
-          aria-selected={pathname.endsWith('following')}
-          data-cy="e2e-following-tab"
+          aria-selected={tab.active}
+          data-cy={tab.className}
+          // Allow tabbing to active tab. The other tabs can be accessed with the arrow keys.
+          tabIndex={tab.active ? 0 : -1}
+          onKeyDown={(event) => handleKeyDownTab(event, tab.path)}
+          ref={(el) => el && (tabsRef.current[tab.path] = el)}
+          aria-controls={`tab-${tab.path}`}
         >
           <Border aria-hidden />
-          <TabIcon name="notification-outline" ariaHidden />
-          {!isSmallerThanPhone && (
-            <FormattedMessage
-              {...messages.followingWithCount}
-              values={{
-                followingCount: authUser?.data.attributes.followings_count,
-              }}
-            />
-          )}
-          {isSmallerThanPhone && (
-            <ScreenReaderOnly>
-              <FormattedMessage
-                {...messages.followingWithCount}
-                values={{
-                  followingCount: authUser?.data.attributes.followings_count,
-                }}
-              />
-            </ScreenReaderOnly>
+          <TabIcon name={tab.icon} ariaHidden />
+          {isSmallerThanPhone ? (
+            <ScreenReaderOnly>{tab.label}</ScreenReaderOnly>
+          ) : (
+            tab.label
           )}
         </UserNavbarButton>
-      )}
-      {showEventTab && (
-        <UserNavbarButton
-          onMouseDown={removeFocusAfterMouseClick}
-          onClick={() =>
-            clHistory.push(`/profile/${user.attributes.slug}/events`)
-          }
-          className={`e2e-events-nav ${
-            pathname.endsWith('events') ? 'active' : ''
-          }`}
-          role="tab"
-          aria-selected={pathname.endsWith('events')}
-        >
-          <Border aria-hidden />
-          <TabIcon name="calendar" ariaHidden />
-          {!isSmallerThanPhone && (
-            <FormattedMessage
-              {...messages.eventsWithCount}
-              values={{ eventsCount: eventsCount || '0' }}
-            />
-          )}
-          {isSmallerThanPhone && (
-            <ScreenReaderOnly>
-              <FormattedMessage
-                {...messages.eventsWithCount}
-                values={{ eventsCount: eventsCount || '0' }}
-              />
-            </ScreenReaderOnly>
-          )}
-        </UserNavbarButton>
-      )}
+      ))}
     </UserNavbarWrapper>
   );
 });

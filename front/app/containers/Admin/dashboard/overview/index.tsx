@@ -1,17 +1,15 @@
 import React, { useState, useCallback, useMemo } from 'react';
 
-import { Title } from '@citizenlab/cl2-component-library';
+import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import moment, { Moment } from 'moment';
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
-import { activeUsersByTimeXlsxEndpoint } from 'api/active_users_by_time/util';
 import useAuthUser from 'api/me/useAuthUser';
-import { PublicationStatus } from 'api/projects/types';
 
 import CommentsByTimeCard from 'components/admin/GraphCards/CommentsByTimeCard';
+import ParticipantsCard from 'components/admin/GraphCards/ParticipantsCard';
 import PostByTimeCard from 'components/admin/GraphCards/PostsByTimeCard';
 import ReactionsByTimeCard from 'components/admin/GraphCards/ReactionsByTimeCard';
-import RegistrationsByTimeCard from 'components/admin/GraphCards/RegistrationsByTimeCard';
+import RegistrationsCard from 'components/admin/GraphCards/RegistrationsCard';
 import { GraphsContainer, Column } from 'components/admin/GraphWrappers';
 import { IResolution } from 'components/admin/ResolutionControl';
 import Outlet from 'components/Outlet';
@@ -24,19 +22,15 @@ import messages from '../messages';
 import tracks from '../tracks';
 
 import ChartFilters from './ChartFilters';
-import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
 import { getSensibleResolution } from './getSensibleResolution';
 import overviewMessages from './messages';
 
-interface DataProps {
-  projects: GetProjectsChildProps;
-}
-
 export type IResource = 'ideas' | 'comments' | 'reactions';
 
-const OverviewDashboard = ({ projects }: DataProps) => {
+const OverviewDashboard = () => {
+  const isSmallerThanSmallDesktop = useBreakpoint('smallDesktop');
   const { data: user } = useAuthUser();
   const { formatMessage } = useIntl();
 
@@ -107,7 +101,6 @@ const OverviewDashboard = ({ projects }: DataProps) => {
     setCurrentResourceByProject(option.value);
   }, []);
 
-  if (isNilOrError(projects)) return null;
   if (isNilOrError(user)) return null;
 
   const startAt = startAtMoment && startAtMoment.toISOString();
@@ -136,24 +129,23 @@ const OverviewDashboard = ({ projects }: DataProps) => {
       />
       <GraphsContainer>
         <Column>
-          <RegistrationsByTimeCard
+          <RegistrationsCard
             projectId={currentProjectFilter}
             startAtMoment={startAtMoment}
             endAtMoment={endAtMoment}
             resolution={resolution}
+            layout={isSmallerThanSmallDesktop ? 'narrow' : 'wide'}
+            hideRegistrationRate
           />
         </Column>
         <Column>
-          <BarChartActiveUsersByTime
-            graphUnit="users"
-            graphUnitMessageKey="activeUsers"
-            graphTitle={formatMessage(messages.activeUsersByTimeTitle)}
-            xlsxEndpoint={activeUsersByTimeXlsxEndpoint}
-            infoMessage={formatMessage(
-              messages.numberOfActiveParticipantsDescription
-            )}
-            className="e2e-users-by-time-cumulative-chart fullWidth"
-            {...legacyProps}
+          <ParticipantsCard
+            projectId={currentProjectFilter}
+            startAtMoment={startAtMoment}
+            endAtMoment={endAtMoment}
+            resolution={resolution}
+            layout={isSmallerThanSmallDesktop ? 'narrow' : 'wide'}
+            hideParticipationRate
           />
         </Column>
         <Title
@@ -263,14 +255,4 @@ const OverviewDashboard = ({ projects }: DataProps) => {
   );
 };
 
-const publicationStatuses: PublicationStatus[] = [
-  'draft',
-  'published',
-  'archived',
-];
-
-export default () => (
-  <GetProjects publicationStatuses={publicationStatuses} canModerate={true}>
-    {(projects) => <OverviewDashboard projects={projects} />}
-  </GetProjects>
-);
+export default OverviewDashboard;

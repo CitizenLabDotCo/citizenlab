@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
-import { Multiloc, Locale } from 'typings';
+import { Multiloc, SupportedLocale } from 'typings';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
@@ -29,7 +29,9 @@ const QuestionFormRow = ({
 }: Props) => {
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
-  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
+  const [selectedLocale, setSelectedLocale] = useState<SupportedLocale | null>(
+    null
+  );
 
   useEffect(() => {
     if (!isNilOrError(locale)) {
@@ -37,11 +39,14 @@ const QuestionFormRow = ({
     }
   }, [locale]);
 
-  const onChangeLocale = (selectedLocale: Locale) => {
+  const onChangeLocale = (selectedLocale: SupportedLocale) => {
     setSelectedLocale(selectedLocale);
   };
 
-  const onChangeTitle = (value: string, locale: Locale | undefined) => {
+  const onChangeTitle = (
+    value: string,
+    locale: SupportedLocale | undefined
+  ) => {
     if (locale) {
       const newTitleMultiloc = {
         ...titleMultiloc,
@@ -86,7 +91,7 @@ const QuestionFormRow = ({
       </Button>
       <Button
         className="e2e-form-question-cancel"
-        buttonStyle="secondary"
+        buttonStyle="secondary-outlined"
         onClick={onCancel}
       >
         <FormattedMessage {...messages.cancelFormQuestion} />

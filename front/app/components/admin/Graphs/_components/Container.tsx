@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { debounce, isEqual } from 'lodash-es';
-import { useResizeDetector } from 'react-resize-detector';
 import { ResponsiveContainer } from 'recharts';
 import { Percentage } from 'typings';
 
@@ -65,16 +64,6 @@ const Container = ({
     [graphDimensions, onUpdateGraphDimensions]
   );
 
-  const { ref: resizeRef } = useResizeDetector({ onResize: handleResize });
-
-  const handleRef = (ref: React.RefObject<HTMLDivElement>) => {
-    if (ref === null) return;
-    const node = ref.current;
-    if (node === null) return;
-
-    resizeRef.current = node;
-  };
-
   const rightLegend = legend?.position?.includes('right');
   const maintainGraphSize = !!legend?.maintainGraphSize;
 
@@ -103,7 +92,7 @@ const Container = ({
       <ResponsiveContainer
         width={parsedWidth}
         height={parsedHeight}
-        ref={handleRef}
+        onResize={handleResize}
       >
         {children}
       </ResponsiveContainer>

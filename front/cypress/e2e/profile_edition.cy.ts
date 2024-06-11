@@ -17,15 +17,31 @@ describe('profile edition', () => {
     cy.visit('/profile/edit');
     cy.acceptCookies();
   });
+
+  function saveChanges() {
+    cy.get('button[type="submit"]').contains('Save changes').click();
+    cy.wait('@saveUser');
+    cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
+  }
+
   it('lets user edit their profile', () => {
     cy.intercept(`**/users/${userId}`).as('saveUser');
     cy.get('input[type="file"]').attachFile('icon.png');
     cy.get('#first_name').clear().type('John');
     cy.get('#last_name').clear().type('Doe');
-    cy.get('button[type="submit"]').contains('Save changes').click();
-    cy.wait('@saveUser');
-    cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
+    saveChanges();
   });
+
+  it('lets user change their first name when last name is empty', () => {
+    cy.intercept(`**/users/${userId}`).as('saveUser');
+    cy.get('#last_name').clear();
+    saveChanges();
+
+    cy.reload(); // important to reproduce the bug
+    cy.get('#first_name').clear().type('Lackland');
+    saveChanges();
+  });
+
   after(() => {
     cy.apiRemoveUser(userId);
   });

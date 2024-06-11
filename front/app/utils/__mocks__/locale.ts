@@ -1,13 +1,13 @@
-import { Locale } from '@citizenlab/cl2-component-library';
 import { includes } from 'lodash-es';
+import { SupportedLocale } from 'typings';
 
 import { locales } from 'containers/App/constants';
 
-export const getLocale = (): Locale => 'en-GB';
+export const getLocale = (): SupportedLocale => 'en-GB';
 
 export function setPathnameLocale(
   pathname: string,
-  locale: Locale,
+  locale: SupportedLocale,
   search?: string
 ) {
   return `/${locale}${pathname}${search || ''}`;

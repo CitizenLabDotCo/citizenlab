@@ -4,7 +4,7 @@ import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { Locale } from 'typings';
+import { SupportedLocale } from 'typings';
 
 import useProjectById from 'api/projects/useProjectById';
 
@@ -21,7 +21,8 @@ import Editor from '../../components/Editor';
 
 export const FullScreenPreview = () => {
   const [search] = useSearchParams();
-  const selectedLocale = (search.get('selected_locale') as Locale) || undefined;
+  const selectedLocale =
+    (search.get('selected_locale') as SupportedLocale) || undefined;
   const localize = useLocalize();
 
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();

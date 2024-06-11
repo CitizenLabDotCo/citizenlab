@@ -163,6 +163,11 @@ module.exports = {
             message:
               "Import React testing library exports from 'utils/testUtils/rtl' instead",
           },
+          {
+            name: '@tippyjs/react',
+            message:
+              "Import Tooltip from component library instead of directly from '@tippyjs/react'",
+          },
         ],
       },
     ],
@@ -218,6 +223,7 @@ module.exports = {
     ],
   },
   ignorePatterns: [
+    '.rollup.config.cjs',
     '.eslintrc.js',
     'internals',
     'server',

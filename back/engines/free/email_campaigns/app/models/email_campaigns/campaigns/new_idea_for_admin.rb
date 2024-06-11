@@ -16,11 +16,13 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  deliveries_count :integer          default(0), not null
+#  context_id       :uuid
 #
 # Indexes
 #
-#  index_email_campaigns_campaigns_on_author_id  (author_id)
-#  index_email_campaigns_campaigns_on_type       (type)
+#  index_email_campaigns_campaigns_on_author_id   (author_id)
+#  index_email_campaigns_campaigns_on_context_id  (context_id)
+#  index_email_campaigns_campaigns_on_type        (type)
 #
 # Foreign Keys
 #
@@ -88,7 +90,7 @@ module EmailCampaigns
           post_published_at: idea.published_at.iso8601,
           post_title_multiloc: idea.title_multiloc,
           post_author_name: idea.author_name,
-          post_url: Frontend::UrlService.new.model_to_url(idea, locale: recipient.locale)
+          post_url: Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient.locale))
         }
       }]
     end

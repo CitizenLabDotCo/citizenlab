@@ -4,7 +4,8 @@ class BasketPolicy < ApplicationPolicy
   def create?
     user&.active? &&
       (record.user_id == user.id) &&
-      ProjectPolicy.new(user, record.phase&.project).show? &&
+      record.phase &&
+      ProjectPolicy.new(user, record.phase.project).show? &&
       check_voting_allowed(record, user)
   end
 
@@ -28,7 +29,7 @@ class BasketPolicy < ApplicationPolicy
   private
 
   def check_voting_allowed(basket, user)
-    pcs = ParticipationPermissionsService.new
-    !pcs.voting_disabled_reason_for_phase pcs.get_current_phase(basket.phase.project), user
+    current_phase = TimelineService.new.current_phase_not_archived basket.phase.project
+    !Permissions::PhasePermissionsService.new.denied_reason_for_action 'voting', user, current_phase
   end
 end

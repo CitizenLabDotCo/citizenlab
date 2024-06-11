@@ -26,7 +26,6 @@ const VisitorsCard = ({
   const graphRef = useRef();
 
   const { currentResolution, stats, timeSeries, xlsxData } = useVisitors({
-    projectId,
     startAtMoment,
     endAtMoment,
     resolution,
@@ -35,6 +34,9 @@ const VisitorsCard = ({
   const cardTitle = formatMessage(messages.visitors);
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
+
+  const shownTimeseries = projectId ? null : timeSeries;
+  const shownStats = projectId ? undefined : stats;
 
   return (
     <GraphCard
@@ -46,23 +48,18 @@ const VisitorsCard = ({
         xlsx: isNilOrError(xlsxData) ? undefined : { data: xlsxData },
         startAt,
         endAt,
-        currentProjectFilter: projectId,
         resolution: currentResolution,
       }}
     >
       <Box px="20px" width="100%" display="flex" flexDirection="row">
         <Box display="flex" flexDirection="row">
-          <VisitorStats
-            stats={stats}
-            projectId={projectId}
-            resolution={currentResolution}
-          />
+          <VisitorStats stats={shownStats} resolution={currentResolution} />
         </Box>
 
         <Box flexGrow={1} display="flex" justifyContent="flex-end">
           <Box pt="8px" width="95%" maxWidth="800px" height="250px">
             <Chart
-              timeSeries={timeSeries}
+              timeSeries={shownTimeseries}
               startAtMoment={startAtMoment}
               endAtMoment={endAtMoment}
               resolution={currentResolution}

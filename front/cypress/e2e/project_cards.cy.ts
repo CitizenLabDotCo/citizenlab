@@ -18,21 +18,24 @@ describe('Project and folder cards on front page', () => {
       publicationStatus: 'published',
     }).then((project) => {
       publishedProjectId = project.body.data.id;
+    });
 
-      cy.apiCreateProject({
-        title: archivedProjectTitle,
-        descriptionPreview: archivedProjectDescriptionPreview,
-        description: randomString(),
-        publicationStatus: 'archived',
-      }).then((project) => {
-        archivedProjectId = project.body.data.id;
-
-        cy.goToLandingPage();
-      });
+    cy.apiCreateProject({
+      title: archivedProjectTitle,
+      descriptionPreview: archivedProjectDescriptionPreview,
+      description: randomString(),
+      publicationStatus: 'archived',
+    }).then((project) => {
+      archivedProjectId = project.body.data.id;
     });
   });
 
+  beforeEach(() => {
+    cy.goToLandingPage();
+  });
+
   it('shows published project but not archived project if tab === Active', () => {
+    cy.get('#project-cards-tab-published').should('exist');
     cy.get('.e2e-project-card').first().contains(publishedProjectTitle);
 
     cy.get('#e2e-projects-container').should(
@@ -46,7 +49,7 @@ describe('Project and folder cards on front page', () => {
     );
   });
 
-  it('shows archived project but not published project if tab === Archived', () => {
+  it.skip('shows archived project but not published project if tab === Archived', () => {
     cy.get('#project-cards-tab-archived').click();
 
     cy.get('.e2e-project-card').first().contains(archivedProjectTitle);

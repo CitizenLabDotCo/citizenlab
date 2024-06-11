@@ -62,9 +62,9 @@ export const sharedSteps = (
       },
 
       // When the user returns from SSO
-      RESUME_FLOW_AFTER_SSO: async (enterClaveUnicaEmail: boolean) => {
-        if (enterClaveUnicaEmail) {
-          setCurrentStep('clave-unica:email');
+      RESUME_FLOW_AFTER_SSO: async (enterSsoNoEmailEmail: boolean) => {
+        if (enterSsoNoEmailEmail) {
+          setCurrentStep('emailless-sso:email');
           return;
         }
 
@@ -189,8 +189,8 @@ export const sharedSteps = (
         setCurrentStep('verification-only');
       },
 
-      REOPEN_CLAVE_UNICA: () => {
-        setCurrentStep('clave-unica:email');
+      REOPEN_EMAILLESS_SSO: () => {
+        setCurrentStep('emailless-sso:email');
       },
 
       TRIGGER_VERIFICATION_ERROR: (error_code?: VerificationError) => {

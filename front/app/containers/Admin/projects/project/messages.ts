@@ -133,10 +133,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.shareInformation',
     defaultMessage: 'Share information',
   },
-  shareInformationDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.shareInformationDescription',
-    defaultMessage: 'Provide information to participants.',
-  },
   inputAndFeedback: {
     id: 'app.containers.AdminPage.ProjectEdit.inputAndFeedback',
     defaultMessage: 'Collect input and feedback',
@@ -577,5 +573,21 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.lockedTooltip',
     defaultMessage:
       'This is not included in your current plan. Reach out to your Government Success Manager or admin to unlock it.',
+  },
+  trafficTab: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.trafficTab',
+    defaultMessage: 'Traffic',
+  },
+  timelineTab: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.timelineTab',
+    defaultMessage: 'Timeline',
+  },
+  participationTab: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.participationTab',
+    defaultMessage: 'Participants',
+  },
+  messagingTab: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.messagingTab',
+    defaultMessage: 'Messaging',
   },
 });

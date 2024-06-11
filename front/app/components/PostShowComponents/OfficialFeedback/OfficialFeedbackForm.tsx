@@ -9,7 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { forOwn, isEmpty } from 'lodash-es';
 import styled from 'styled-components';
-import { Multiloc, Locale } from 'typings';
+import { Multiloc, SupportedLocale } from 'typings';
 
 import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_official_feedback/types';
 import useAddIdeaOfficialFeedback from 'api/idea_official_feedback/useAddIdeaOfficialFeedback';
@@ -119,7 +119,9 @@ const OfficialFeedbackForm = ({
   const { mutate: updateInitiativeOfficialFeedback } =
     useUpdateInitiativeOfficialFeedback();
 
-  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
+  const [selectedLocale, setSelectedLocale] = useState<SupportedLocale | null>(
+    null
+  );
   const [formValues, setFormValues] = useState<OfficialFeedbackFormValues>({
     bodyMultiloc: {},
     authorMultiloc: {},
@@ -170,11 +172,14 @@ const OfficialFeedbackForm = ({
     );
   }, [locale, formType, feedback, getEmptyFormValues]);
 
-  const handleOnLocaleChange = (locale: Locale) => {
+  const handleOnLocaleChange = (locale: SupportedLocale) => {
     setSelectedLocale(locale);
   };
 
-  const handleBodyOnChange = (body: string, locale: Locale | undefined) => {
+  const handleBodyOnChange = (
+    body: string,
+    locale: SupportedLocale | undefined
+  ) => {
     if (locale) {
       setError(false);
       setSuccess(false);
@@ -188,7 +193,10 @@ const OfficialFeedbackForm = ({
     }
   };
 
-  const handleAuthorOnChange = (author: string, locale: Locale | undefined) => {
+  const handleAuthorOnChange = (
+    author: string,
+    locale: SupportedLocale | undefined
+  ) => {
     if (locale) {
       setError(false);
       setSuccess(false);
@@ -420,7 +428,7 @@ const OfficialFeedbackForm = ({
 
           {onClose && (
             <CancelButton
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               onClick={onClose}
               textColor={formType === 'edit' ? colors.primary : colors.error}
             >

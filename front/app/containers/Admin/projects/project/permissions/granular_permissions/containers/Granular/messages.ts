@@ -77,9 +77,9 @@ export default defineMessages({
     defaultMessage: 'Phase ',
   },
   userFieldsSelectionDescription: {
-    id: 'app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription3',
+    id: 'app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription',
     defaultMessage:
-      'Responses to demographic questions will get stored in user profiles. Questions will only be asked to users who have not answered them before. Answers to these questions will also be accessible via the participation data export, which is accessible to both moderators and admins.',
+      'Responses to demographic questions will get stored in user profiles. Questions will only be asked to users who have not answered them before. Answers to these questions will also be accessible via the participation data export, which is accessible to both project managers and admins.',
   },
   selectUserGroups: {
     id: 'app.containers.AdminPage.groups.permissions.selectUserGroups',
@@ -194,9 +194,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.option1',
     defaultMessage: 'Option 1',
   },
-  onlyAdmins: {
-    id: 'app.containers.AdminPage.groups.permissions.onlyAdmins',
-    defaultMessage: 'Only admins can change this setting.',
+  onlyAdminsCreateQuestion: {
+    id: 'app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion',
+    defaultMessage: 'Only admins can create a new question.',
   },
   premiumUsersOnly: {
     id: 'app.containers.AdminPage.groups.permissions.premiumUsersOnly',

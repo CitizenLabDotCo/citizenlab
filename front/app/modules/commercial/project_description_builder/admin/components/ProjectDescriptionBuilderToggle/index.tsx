@@ -11,7 +11,7 @@ import useProjectDescriptionBuilderLayout from 'modules/commercial/project_descr
 import { WrappedComponentProps } from 'react-intl';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
-import { Locale, Multiloc } from 'typings';
+import { SupportedLocale, Multiloc } from 'typings';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -27,7 +27,7 @@ import messages from '../../messages';
 
 type ProjectDescriptionBuilderToggleProps = {
   valueMultiloc: Multiloc | undefined | null;
-  onChange: (description_multiloc: Multiloc, _locale: Locale) => void;
+  onChange: (description_multiloc: Multiloc, _locale: SupportedLocale) => void;
   label: string;
   labelTooltipText: string;
   onMount: () => void;

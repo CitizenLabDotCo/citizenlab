@@ -13,6 +13,10 @@ resource 'Reports' do
   craftjs_json_param_desc = 'The craftjs layout configuration.'
 
   get 'web_api/v1/reports' do
+    parameter :owner_id, 'Filter reports by owner id(s).', required: false
+    parameter :search, 'Search reports by name.', required: false
+    parameter :service, 'Filter only the reports from super admins or non-super admins.', required: false
+
     let_it_be(:reports) { create_list(:report, 3) }
 
     describe 'when authorized' do
@@ -24,6 +28,65 @@ resource 'Reports' do
 
         # Layouts are not included when getting a collection of records.
         expect(json_response_body[:included]).to be_nil
+      end
+
+      example 'Search reports by owner' do
+        report = reports.first
+        owner_id = report.owner_id
+
+        do_request(owner_id: owner_id)
+        assert_status 200
+
+        expect(response_ids).to match [report.id]
+      end
+
+      example 'Search reports by owners' do
+        expected_reports = reports.take(2)
+        owner_ids = expected_reports.pluck(:owner_id)
+
+        do_request(owner_id: owner_ids)
+
+        assert_status 200
+        expect(response_ids).to match_array(expected_reports.pluck(:id))
+      end
+
+      example 'Search by name' do
+        report = create(:report, name: 'lemon opera sky')
+        query = 'lem sky' # prefix search is enabled
+
+        do_request(search: query)
+
+        assert_status 200
+        expect(response_ids).to match [report.id]
+      end
+
+      example 'Search by name (no results)' do
+        query = 'opera sky'
+
+        do_request(search: query)
+
+        assert_status 200
+        expect(response_data).to be_empty
+      end
+
+      example 'Get only the reports from super admins (service reports)' do
+        super_admin = create(:super_admin)
+        service_report = create(:report, owner: super_admin)
+
+        do_request(service: true)
+
+        assert_status 200
+        expect(response_ids).to match [service_report.id]
+      end
+
+      example 'Get only the reports from non-super admins' do
+        super_admin = create(:super_admin)
+        _service_report = create(:report, owner: super_admin)
+
+        do_request(service: false)
+
+        assert_status 200
+        expect(response_ids).to match_array(reports.pluck(:id))
       end
     end
 
@@ -46,7 +109,7 @@ resource 'Reports' do
           id: report.id,
           type: 'report',
           attributes: {
-            action_descriptor: {
+            action_descriptors: {
               editing_report: {
                 enabled: true,
                 disabled_reason: nil
@@ -55,7 +118,7 @@ resource 'Reports' do
             name: report.name,
             created_at: report.created_at.iso8601(3),
             updated_at: report.updated_at.iso8601(3),
-            visible: true
+            visible: false
           },
           relationships: {
             layout: { data: { id: layout.id, type: 'content_builder_layout' } },
@@ -73,6 +136,140 @@ resource 'Reports' do
           type: 'content_builder_layout',
           attributes: hash_including(enabled: true, code: 'report', craftjs_json: {})
         )
+      end
+    end
+
+    include_examples 'not authorized to visitors'
+    include_examples 'not authorized to normal users'
+  end
+
+  post 'web_api/v1/reports/:id/copy' do
+    route_description <<~DESC
+      Copy a report by ID. The owner of the new report will be the current user.
+      
+      Note on copying phase reports: Report copies are never associated with a phase,
+      even if the source report is a phase report. It follows that:
+      - The new report is not published (`visible = false`).
+      - Graph data units are not copied over. They only make sense in the context of a
+        report that can be published.
+    DESC
+
+    let_it_be(:report) { create(:report) }
+    let(:id) { report.id }
+
+    describe 'when authorized' do
+      let(:current_user) { create(:admin) }
+
+      before { header_token_for current_user }
+
+      example_request 'Copy a report by id' do
+        assert_status 201
+
+        clone = ReportBuilder::Report.find(response_data[:id])
+        expect(clone.name).to eq("#{report.name} (1)")
+        expect(clone.owner_id).to eq(current_user.id)
+        expect(clone.phase_id).to be_nil
+        expect(clone.visible).to be(false)
+        expect(clone.layout.craftjs_json).to eq(report.layout.craftjs_json)
+      end
+
+      context 'when the report is a phase report with graph data units' do
+        let!(:report) do
+          create(:published_graph_data_unit).report.tap do |report|
+            report.visible = true
+            expect(report.phase_id).not_to be_nil
+          end
+        end
+
+        example 'Copy the report without the graph data units and phase association', document: false do
+          expect { do_request }.not_to change(ReportBuilder::PublishedGraphDataUnit, :count)
+
+          clone = ReportBuilder::Report.find(response_data[:id])
+          expect(clone.published_graph_data_units).to be_empty
+          expect(clone.phase_id).to be_nil
+        end
+      end
+
+      context 'when the report contains images' do
+        let!(:report) { create(:report, :with_image) }
+
+        # @return [void]
+        def clear_data_codes(craftjs_json)
+          ContentBuilder::LayoutImageService.new.image_elements(craftjs_json).each do |img_elt|
+            img_elt['dataCode'] = nil
+          end
+        end
+
+        example 'Copy the report and its images', document: false do
+          expect { do_request }.to change(ContentBuilder::LayoutImage, :count).by(1)
+
+          craftjs_json_orig = report.layout.craftjs_json
+          craftjs_json_copy = ContentBuilder::Layout
+            .find_by(content_buildable_id: response_data[:id])
+            .craftjs_json
+
+          clear_data_codes(craftjs_json_orig)
+          clear_data_codes(craftjs_json_copy)
+
+          expect(craftjs_json_copy).to eq(craftjs_json_orig)
+        end
+      end
+
+      context 'when the report contains references to itself (its own id)' do
+        let!(:report) do
+          create(:report) do |report|
+            report.layout.update!(craftjs_json: {
+              'ROOT' => {
+                'type' => 'div',
+                'nodes' => ['QoSo5wgDlQ'],
+                'props' => { 'id' => 'e2e-content-builder-frame' },
+                'custom' => {},
+                'hidden' => false,
+                'isCanvas' => true,
+                'displayName' => 'div',
+                'linkedNodes' => {}
+              },
+              'QoSo5wgDlQ' => {
+                'type' => { 'resolvedName' => 'DummyAboutReportWidget' },
+                'nodes' => [],
+                'props' => { 'reportId' => report.id },
+                'custom' => {},
+                'hidden' => false,
+                'parent' => 'ROOT',
+                'isCanvas' => false,
+                'displayName' => 'DummyAboutReportWidget',
+                'linkedNodes' => {}
+              }
+            })
+          end
+        end
+
+        example 'Copy the report and update the references', document: false do
+          # sanity check
+          expect(report.layout.craftjs_json.to_json).to include(report.id)
+
+          do_request
+
+          clone = ReportBuilder::Report.find(response_data[:id])
+          expect(clone.layout.craftjs_json.to_json).not_to include(report.id)
+          expect(clone.layout.craftjs_json.to_json).to include(clone.id)
+        end
+      end
+
+      context 'when called multiple times' do
+        example 'Create a report copy with a unique name' do
+          do_request
+
+          assert_status 201
+          copy1 = ReportBuilder::Report.find(response_data[:id])
+          expect(copy1.name).to eq("#{report.name} (1)")
+
+          do_request
+
+          assert_status 201
+          copy2 = ReportBuilder::Report.find(response_data[:id])
+          expect(copy2.name).to eq("#{report.name} (2)")
+        end
       end
     end
 
@@ -106,7 +303,7 @@ resource 'Reports' do
           id: be_a(String),
           type: 'report',
           attributes: {
-            action_descriptor: {
+            action_descriptors: {
               editing_report: {
                 enabled: true,
                 disabled_reason: nil
@@ -241,11 +438,14 @@ resource 'Reports' do
       end
 
       describe 'updating the visibility of a report' do
+        # only phase reports can be visible
+        before { report.update!(phase: create(:phase)) }
+
         example 'Visibility successfully updates by report id' do
-          expect(report.reload.visible).to be(true)
-          do_request(report: { visible: false })
-          assert_status 200
           expect(report.reload.visible).to be(false)
+          do_request(report: { visible: true })
+          assert_status 200
+          expect(report.reload.visible).to be(true)
         end
       end
 

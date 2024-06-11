@@ -14,6 +14,51 @@ RSpec.describe ContentBuilder::Layout do
     its(:updated_at) { is_expected.to be_nil }
   end
 
+  describe 'with_widget_type scope' do
+    before_all do
+      _non_matching_layout = create(:layout, craftjs_json: {
+        'ROOT' => { 'type' => 'div' },
+        'node-1' => { 'type' => { 'resolvedName' => 'NotQueried' } }
+      })
+    end
+
+    let_it_be(:layout1) do
+      create(:layout, craftjs_json: {
+        'ROOT' => { 'type' => 'div' },
+        'node-1' => { 'type' => { 'resolvedName' => 'Widget1' } },
+        'node-2' => { 'type' => { 'resolvedName' => 'Widget2' } },
+        'node-3' => { 'type' => { 'resolvedName' => 'Widget2' } }
+      })
+    end
+
+    let_it_be(:layout2) do
+      create(:layout, craftjs_json: {
+        'ROOT' => { 'type' => 'div' },
+        'node-1' => { 'type' => { 'resolvedName' => 'Widget1' } },
+        'node-2' => { 'type' => { 'resolvedName' => 'Widget3' } }
+      })
+    end
+
+    it 'returns all the layouts that contain the specified widget type' do
+      expect(described_class.with_widget_type('Widget1'))
+        .to match_array([layout1, layout2])
+    end
+
+    it 'does not duplicate layouts that contain multiple instances of the widget type' do
+      expect(described_class.with_widget_type('Widget2'))
+        .to match_array([layout1])
+    end
+
+    it 'returns all the layouts that contain the specified widget types' do
+      expect(described_class.with_widget_type('Widget2', 'Widget3'))
+        .to match_array([layout1, layout2])
+    end
+
+    it 'returns an empty array when no layout contains the specified widget type' do
+      expect(described_class.with_widget_type('Widget4')).to be_empty
+    end
+  end
+
   describe '#valid?' do
     it 'returns false when code is not present' do
       layout = build(:layout, code: nil)
@@ -71,6 +116,29 @@ RSpec.describe ContentBuilder::Layout do
       it 'raises NameError' do
         expect { layout.content_buildable }.to raise_error NameError
       end
+    end
+  end
+
+  describe '#duplicate!' do
+    it 'creates a copy of the layout' do
+      layout = create(
+        :layout,
+        code: 'layout-1',
+        craftjs_json: craftjson_with_iframe_url('https://www.example.com')
+      )
+
+      layout_copy = layout.duplicate!
+
+      expect(layout_copy).to be_instance_of(described_class)
+      expect(layout_copy.content_buildable).to be_nil
+      expect(layout_copy.code).to eq(layout.code)
+      expect(layout_copy.enabled).to eq(layout.enabled)
+      expect(layout_copy.craftjs_json).to eq(layout.craftjs_json)
+    end
+
+    it 'copies the images associated with the layout' do
+      layout = create(:layout, :with_image)
+      expect { layout.duplicate! }.to change(ContentBuilder::LayoutImage, :count).by(1)
     end
   end
 
