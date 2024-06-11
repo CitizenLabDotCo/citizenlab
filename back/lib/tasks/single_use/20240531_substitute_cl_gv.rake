@@ -53,6 +53,7 @@ namespace :gv_transition do
 end
 
 def rake_20240531_substitute_gv(str)
+  # rubocop:disable Style/RegexpLiteral, Style/RedundantRegexpEscape, Style/StringConcatenation
   substitutions = {
     'citizenLabAddress2022' => 'govocalAddress2022',
     'citizenlabExpert' => 'govocalExpert',
@@ -79,6 +80,7 @@ def rake_20240531_substitute_gv(str)
       substitutions[/#{regex_before}ЦитизенЛаб#{regex_after}/i] = "#{char_before}Go Vocal#{char_after}"
     end
   end
+  # rubocop:enable Style/RegexpLiteral, Style/RedundantRegexpEscape, Style/StringConcatenation
   substitutions.each do |old_v, new_v|
     str = str.gsub(old_v, new_v)
   end

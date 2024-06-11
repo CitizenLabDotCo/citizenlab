@@ -16,14 +16,14 @@ describe 'rake substitute_cl_gv' do
         'https://community.citizenlab.co',
         '{citizenLabLink} is committed to',
         'хттпс://суппорт.цитизенлаб.цо/артицлес/1771605'
-
-     ].each do |original|
+      ].each do |original|
         expect(rake_20240531_substitute_gv(original)).to eq(original)
       end
 
+      # rubocop:disable Style/StringLiterals
       {
         'citizenLabAddress2022' => 'govocalAddress2022',
-        'citizenlabExpert' => 'govocalExpert', 
+        'citizenlabExpert' => 'govocalExpert',
         'Log into the CitizenLab platform of {tenantName} | CitizenLab' => 'Log into the Go Vocal platform of {tenantName} | Go Vocal',
         'datos de CitizenLab. Configurará todas' => 'datos de Go Vocal. Configurará todas',
         'CitizenLab lähetti' => 'Go Vocal lähetti',
@@ -70,6 +70,7 @@ describe 'rake substitute_cl_gv' do
       }.each do |old_v, new_v|
         expect(rake_20240531_substitute_gv(old_v)).to eq(new_v)
       end
+      # rubocop:enable Style/StringLiterals
     end
   end
 end
