@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
+import { Box, Button, Tooltip } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
@@ -84,7 +83,7 @@ const SummarizeButton = () => {
     : undefined;
 
   return (
-    <Tippy
+    <Tooltip
       content={<p>{tooltipContent}</p>}
       placement="auto-start"
       zIndex={99999}
@@ -106,7 +105,7 @@ const SummarizeButton = () => {
           {formatMessage(messages.summarize)}
         </Button>
       </Box>
-    </Tippy>
+    </Tooltip>
   );
 };
 

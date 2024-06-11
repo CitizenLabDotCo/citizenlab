@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import Tippy from '@tippyjs/react';
+import { Tooltip } from '@citizenlab/cl2-component-library';
 import { stringify } from 'qs';
 import styled from 'styled-components';
 
@@ -158,9 +158,8 @@ const IdeaButton = memo<Props>(
 
     return (
       <Container id={id} className={className || ''}>
-        <Tippy
+        <Tooltip
           disabled={!tippyEnabled}
-          interactive={true}
           placement="bottom"
           content={
             tippyEnabled ? (
@@ -187,7 +186,6 @@ const IdeaButton = memo<Props>(
               aria-describedby="tooltip-content"
               onClick={onClick}
               disabled={!enabled}
-              ariaDisabled={false}
               id="e2e-idea-button"
             >
               {isNativeSurvey ? (
@@ -206,7 +204,7 @@ const IdeaButton = memo<Props>(
               )}
             </Button>
           </ButtonWrapper>
-        </Tippy>
+        </Tooltip>
       </Container>
     );
   }

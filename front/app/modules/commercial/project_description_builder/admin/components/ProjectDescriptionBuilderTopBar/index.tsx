@@ -106,7 +106,7 @@ const ProjectDescriptionBuilderTopBar = ({
         />
         <Button
           id="e2e-view-project-button"
-          buttonStyle="secondary"
+          buttonStyle="secondary-outlined"
           icon="eye"
           mx="20px"
           disabled={!project}

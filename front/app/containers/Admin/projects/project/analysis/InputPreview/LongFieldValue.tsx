@@ -69,7 +69,7 @@ const FilterToggleButton = ({ customFieldId, value }) => {
   return (
     <Button
       onClick={handleToggleFilterOption(customFieldId, value)}
-      buttonStyle="secondary"
+      buttonStyle="secondary-outlined"
       size="s"
       margin="0"
       padding="1px"

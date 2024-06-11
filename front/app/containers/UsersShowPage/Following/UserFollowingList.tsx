@@ -118,7 +118,7 @@ const UserFollowingList = ({ value }: Props) => {
       {hasNextPage && (
         <Button
           onClick={() => fetchNextPage()}
-          buttonStyle="secondary"
+          buttonStyle="secondary-outlined"
           text={<FormattedMessage {...messages.loadMore} />}
           processing={isFetchingNextPage}
           icon="refresh"
