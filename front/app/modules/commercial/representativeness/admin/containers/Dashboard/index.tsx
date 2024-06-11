@@ -6,8 +6,6 @@ import useAuthUser from 'api/me/useAuthUser';
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import { trackEventByName } from 'utils/analytics';
 import { isAdmin } from 'utils/permissions/roles';
 
@@ -39,7 +37,7 @@ const RepresentativenessDashboard = () => {
     setCurrentProjectFilter(value);
   };
 
-  if (!userCustomFields || !authUser || !isAdmin(authUser)) {
+  if (!userCustomFields || !isAdmin(authUser)) {
     return null;
   }
 
@@ -67,16 +65,4 @@ const RepresentativenessDashboard = () => {
   );
 };
 
-const RepresentativenessDashboardFeatureFlagWrapper = () => {
-  const representativenessActive = useFeatureFlag({
-    name: 'representativeness',
-  });
-
-  if (!representativenessActive) {
-    return null;
-  }
-
-  return <RepresentativenessDashboard />;
-};
-
-export default RepresentativenessDashboardFeatureFlagWrapper;
+export default RepresentativenessDashboard;

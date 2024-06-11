@@ -210,7 +210,6 @@ export interface IAppConfigurationSettings {
   disable_user_bios?: AppConfigurationFeature;
   texting?: AppConfigurationFeature;
   project_description_builder?: AppConfigurationFeature;
-  representativeness?: AppConfigurationFeature;
   remove_vendor_branding?: AppConfigurationFeature;
   native_surveys?: AppConfigurationFeature;
   analytics?: AppConfigurationFeature;
