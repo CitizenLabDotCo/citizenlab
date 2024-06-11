@@ -1,7 +1,5 @@
-import { PathParams, RestRequest } from 'msw';
-
 export const findResponseByQuery = <Responses extends Record<string, any>>(
-  req: RestRequest<never, PathParams<string>>,
+  req: any,
   responses: Responses
 ): Responses[keyof Responses] | undefined => {
   const params = new URL(req.url.toString()).search;

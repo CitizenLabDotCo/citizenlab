@@ -66,6 +66,7 @@ export const WithNumberValues: Story = {
       value: 3,
       label: 'Option 1',
     },
+    onChange: () => {},
   },
 };
 
