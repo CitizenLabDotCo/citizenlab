@@ -10,7 +10,7 @@ const apiPath = '*notifications/mark_all_read';
 
 const server = setupServer(
   http.post(apiPath, () => {
-    return HttpResponse.json(null, { status: 200 });
+    return HttpResponse.json({ data: {} }, { status: 200 });
   })
 );
 
