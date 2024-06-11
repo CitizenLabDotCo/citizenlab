@@ -80,6 +80,19 @@ describe 'Rack::Attack' do
     end
   end
 
+  it 'does not block a whitelisted IP' do
+    freeze_time do
+      10.times do
+        post(
+          '/web_api/v1/user_token',
+          params: '{ "auth": { "INSERT": "a12@b.com", "password": "test123456" } }',
+          headers: { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => ENV.fetch('RACK_ATTACK_SAFELIST_IP') }
+        )
+      end
+      expect(status).to eq(404) # Not found
+    end
+  end
+
   it 'limits account creation requests from same IP to 10 in 20 seconds' do
     # enable user signup via password first
     settings = AppConfiguration.instance.settings
