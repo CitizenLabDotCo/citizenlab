@@ -76,7 +76,7 @@ hr:
       "link_terms_conditions": "Uvjeti korištenja"
       "link_unsubscribe": "Odjavi se"
       "powered_by": "Omogućava"
-      "statement": "Ovaj e-mail Vam je poslao CitizenLab u ime %{organizationName}, jer ste registrirani korisnik na platformi %{organizationLink}. Možete da %{unsubscribeLink} ako ubuduće ne želite primati ove e-poruke."
+      "statement": "Ovaj e-mail Vam je poslao Go Vocal u ime %{organizationName}, jer ste registrirani korisnik na platformi %{organizationLink}. Možete da %{unsubscribeLink} ako ubuduće ne želite primati ove e-poruke."
       "unsubscribe_text": "odjavi se"
     follow:
       "unfollow_here": "Primili ste ovu obavijest zbog stavke koju pratite. <a href=\"%{unfollow_url}\">Ovdje ga možete prestati pratiti.</a>"
