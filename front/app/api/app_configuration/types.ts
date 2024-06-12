@@ -134,7 +134,6 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
     url?: string;
   };
-  admin_project_templates?: AppConfigurationFeature;
   maps?: AppConfigurationMapSettings;
   initiatives: ProposalsSettings;
   initiative_review?: AppConfigurationFeature;
