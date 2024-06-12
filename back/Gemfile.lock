@@ -1264,6 +1264,7 @@ DEPENDENCIES
   combine_pdf (~> 1.0.26)
   content_builder!
   counter_culture (~> 3.5)
+  csv
   custom_idea_statuses!
   custom_maps!
   dalli (~> 3.2.8)
