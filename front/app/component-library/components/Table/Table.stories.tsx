@@ -14,6 +14,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
+    width: '800px',
     children: (
       <>
         <Thead>
@@ -49,6 +50,7 @@ export const WithInnerBorders: Story = {
 
 export const WithSortableAndTooltipIcons: Story = {
   args: {
+    width: '800px',
     children: (
       <>
         <Thead>
@@ -76,6 +78,7 @@ export const WithSortableAndTooltipIcons: Story = {
 
 export const WithTrBackgrounds: Story = {
   args: {
+    width: '800px',
     children: (
       <>
         <Thead>
