@@ -81,12 +81,15 @@ describe 'Rack::Attack' do
   end
 
   it 'does not block a whitelisted IP' do
+    stub_const 'ENV', ENV.to_h.merge('RACK_ATTACK_SAFELIST_IP' => '1.2.3.4')
+    load Rails.root.join('config/initializers/rack_attack.rb')
+
     freeze_time do
       50.times do
         post(
           '/web_api/v1/user_token',
           params: '{ "auth": { "INSERT": "a12@b.com", "password": "test123456" } }',
-          headers: { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => ENV.fetch('RACK_ATTACK_SAFELIST_IP') }
+          headers: { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.4' }
         )
       end
       expect(status).to eq(404) # Not found
