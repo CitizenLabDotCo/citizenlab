@@ -82,7 +82,7 @@ describe 'Rack::Attack' do
 
   it 'does not block a whitelisted IP' do
     freeze_time do
-      10.times do
+      50.times do
         post(
           '/web_api/v1/user_token',
           params: '{ "auth": { "INSERT": "a12@b.com", "password": "test123456" } }',
