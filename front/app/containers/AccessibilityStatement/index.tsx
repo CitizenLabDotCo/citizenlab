@@ -133,7 +133,7 @@ const AccessibilityStatement = () => {
                       <li>
                         {formatMessage(messages.postalAddress)}{' '}
                         <address>
-                          {formatMessage(messages.citizenLabAddress2022)}
+                          {formatMessage(messages.govocalAddress2022)}
                         </address>
                       </li>
                     </ul>

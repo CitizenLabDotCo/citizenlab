@@ -939,7 +939,6 @@
   "app.containers.AccessibilityStatement.assesmentText2022": "L'accessibilità di questo sito è stata valutata da un soggetto esterno non coinvolto nel processo di progettazione e sviluppo. La conformità del suddetto {demoPlatformLink} può essere identificata su questo {statusPageLink}.",
   "app.containers.AccessibilityStatement.changePreferencesButtonText": "puoi cambiare le tue preferenze",
   "app.containers.AccessibilityStatement.changePreferencesText": "In qualsiasi momento, {changePreferencesButton}.",
-  "app.containers.AccessibilityStatement.citizenLabAddress2022": "Boulevard Pachéco 34, 1000 Brussels, Belgium",
   "app.containers.AccessibilityStatement.compatibilityTitle2022": "Compatibilità con la tecnologia assistiva",
   "app.containers.AccessibilityStatement.conformanceExceptions": "Eccezioni di conformità",
   "app.containers.AccessibilityStatement.conformanceStatus": "Stato di conformità",

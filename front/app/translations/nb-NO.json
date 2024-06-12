@@ -939,7 +939,6 @@
   "app.containers.AccessibilityStatement.assesmentText2022": "Tilgjengeligheten for denne siden ble evaluert av en ekstern aktør som ikke har vært involvert i design og utviklingsprosessen. Etterretteligheten til den tidligere nevnte {demoPlatformLink} kan verifiseres på denne {statusPageLink}.",
   "app.containers.AccessibilityStatement.changePreferencesButtonText": "du kan endre preferansene dine",
   "app.containers.AccessibilityStatement.changePreferencesText": "Til en hver tid, {changePreferencesButton}.",
-  "app.containers.AccessibilityStatement.citizenLabAddress2022": "Boulevard Pachéco 34, 1000 Brussels, Belgium",
   "app.containers.AccessibilityStatement.compatibilityTitle2022": "Kompatibilitet med nettlesere og hjelpemiddelteknologi",
   "app.containers.AccessibilityStatement.conformanceExceptions": "Unntak for samsvar",
   "app.containers.AccessibilityStatement.conformanceStatus": "Samsvar status",

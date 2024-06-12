@@ -63,7 +63,6 @@
   "app.components.ConfirmationModal.disabled": "Devre dışı",
   "app.components.ConfirmationModal.enabled": "Etkin",
   "app.components.ConfirmationModal.whenTurnedOnUsersWillHaveToConfirm": "Etkinleştirildiğinde, yeni kullanıcıların kayıtlarını tamamlamak için e-posta yoluyla aldıkları 4 haneli bir kodla e-posta adreslerini onaylamaları gerekir.",
-  "app.components.ProjectTemplatePreview.citizenlabExpert": "CitizenLab uzmanı",
   "app.components.ProjectTemplatePreview.close": "Kapat",
   "app.components.ProjectTemplatePreview.createProject": "Proje oluştur",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "'{templateTitle}' şablonunu temel alan bir proje oluşturun",

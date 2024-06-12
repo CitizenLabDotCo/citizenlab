@@ -939,7 +939,6 @@
   "app.containers.AccessibilityStatement.assesmentText2022": "Bu sitenin erişilebilirliği, tasarım ve geliştirme sürecine dahil olmayan harici bir kuruluş tarafından değerlendirilmiştir. Daha önce bahsedilen {demoPlatformLink} adresinin uygunluğu bu {statusPageLink} üzerinde tanımlanabilir.",
   "app.containers.AccessibilityStatement.changePreferencesButtonText": "tercihlerinizi değiştirebilirsiniz",
   "app.containers.AccessibilityStatement.changePreferencesText": "İstediğiniz zaman {changePreferencesButton}.",
-  "app.containers.AccessibilityStatement.citizenLabAddress2022": "Boulevard Pachéco 34, 1000 Brüksel, Belçika",
   "app.containers.AccessibilityStatement.compatibilityTitle2022": "Yardımcı teknoloji ile uyumluluk",
   "app.containers.AccessibilityStatement.conformanceExceptions": "Uyumluluk istisnaları",
   "app.containers.AccessibilityStatement.conformanceStatus": "Uyumluluk durumu",

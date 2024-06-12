@@ -38,7 +38,7 @@ class Tenant < ApplicationRecord
 
   scope :deleted, -> { where.not(deleted_at: nil) }
   scope :not_deleted, -> { where(deleted_at: nil) }
-  scope :creation_finalized, -> { not_deleted.where.not(creation_finalized_at: nil) }
+  scope :creation_finalized, -> { not_deleted.where.not(creation_finalized_at: nil) } # Use safe_switch_each instead
   scope :churned, -> { with_lifecycle('churned') }
   scope :with_lifecycle, lambda { |lifecycle|
     ids = AppConfiguration
@@ -71,6 +71,17 @@ class Tenant < ApplicationRecord
       ordered_tenants = tenant_lifecycles.sort_by { |tenant| priority_order.index(tenant[:lifecycle_stage]) }
       ordered_ids = ordered_tenants.pluck(:id)
       tenants.sort_by { |tenant| ordered_ids.index(tenant[:id]) }
+    end
+
+    def safe_switch_each(scope: nil)
+      scope ||= not_deleted.where.not(creation_finalized_at: nil)
+      prioritize(scope).each do |tenant|
+        next if !Tenant.exists?(id: tenant.id)
+
+        tenant.switch do
+          yield tenant
+        end
+      end
     end
   end
 
