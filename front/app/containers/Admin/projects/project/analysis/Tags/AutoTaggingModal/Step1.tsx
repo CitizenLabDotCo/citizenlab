@@ -94,7 +94,6 @@ const AutoTagOption = ({
       onClick={isDisabled || isLoading ? undefined : () => onSelect()}
       isDisabled={isDisabled || isLoading}
     >
-      {' '}
       <Tooltip
         content={
           <p>{formatMessage(messages.advancedAutotaggingUpsellMessage)}</p>
@@ -102,57 +101,59 @@ const AutoTagOption = ({
         zIndex={9999999}
         disabled={!isDisabled}
       >
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          mb="8px"
-        >
-          <Box w="32px">
-            <Tag tagType={tagType} name="&nbsp;" />
+        <>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            mb="8px"
+          >
+            <Box w="32px">
+              <Tag tagType={tagType} name="&nbsp;" />
+            </Box>
+            {isRecommended && (
+              <Box
+                bgColor={colors.success}
+                py="4px"
+                px="8px"
+                borderRadius={stylingConsts.borderRadius}
+                display="flex"
+                gap="4px"
+                alignItems="center"
+              >
+                <Icon
+                  name="stars"
+                  fill={colors.white}
+                  width="16px"
+                  height="16px"
+                />
+                <Text color="white" m="0px" fontSize="s">
+                  {formatMessage(messages.recommended)}
+                </Text>
+              </Box>
+            )}
+            {isDisabled && <Icon name="lock" />}
           </Box>
-          {isRecommended && (
-            <Box
-              bgColor={colors.success}
-              py="4px"
-              px="8px"
-              borderRadius={stylingConsts.borderRadius}
-              display="flex"
-              gap="4px"
-              alignItems="center"
-            >
-              <Icon
-                name="stars"
-                fill={colors.white}
-                width="16px"
-                height="16px"
-              />
-              <Text color="white" m="0px" fontSize="s">
-                {formatMessage(messages.recommended)}
-              </Text>
-            </Box>
-          )}
-          {isDisabled && <Icon name="lock" />}
-        </Box>
-        <Box
-          display="flex"
-          justifyContent="flex-start"
-          alignItems="center"
-          gap="6px"
-        >
-          <Title variant="h6" m="0px">
-            {title}
-          </Title>
-          {isLoading && (
-            <Box mx="16px">
-              <Spinner size="24px" />
-            </Box>
-          )}
-          {tooltip && <IconTooltip content={tooltip} icon="info-outline" />}
-        </Box>
-        <Text mt="12px" mb="0px">
-          {children}
-        </Text>
+          <Box
+            display="flex"
+            justifyContent="flex-start"
+            alignItems="center"
+            gap="6px"
+          >
+            <Title variant="h6" m="0px">
+              {title}
+            </Title>
+            {isLoading && (
+              <Box mx="16px">
+                <Spinner size="24px" />
+              </Box>
+            )}
+            {tooltip && <IconTooltip content={tooltip} icon="info-outline" />}
+          </Box>
+          <Text mt="12px" mb="0px">
+            {children}
+          </Text>
+        </>
       </Tooltip>
     </AutoTagMethodContainer>
   );
