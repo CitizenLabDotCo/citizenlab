@@ -4,7 +4,7 @@ describe 'rake substitute_cl_gv' do
   before { load_rake_tasks_if_not_loaded }
 
   describe 'rake_20240531_substitute_gv' do
-    it 'works or something' do
+    it 'makes the desired substitutions from Citizenlab to Go Vocal' do
       [
         'test Go Vocal text',
         'citizenlab.co/citizenlab-test',
@@ -28,6 +28,7 @@ describe 'rake substitute_cl_gv' do
         'datos de CitizenLab. Configurará todas' => 'datos de Go Vocal. Configurará todas',
         'CitizenLab lähetti' => 'Go Vocal lähetti',
         '<p>Citizenlab ha' => '<p>Go Vocal ha',
+        '<p>CitizenLab no se hace responsable en modo alguno de los mensajes enviado' => '<p>Go Vocal no se hace responsable en modo alguno de los mensajes enviado',
         '<p> CitizenLab’s platform' => '<p> Go Vocal’s platform',
         '<p>CitizenLab, Kullanıcıları' => '<p>Go Vocal, Kullanıcıları',
         'durch CitizenLab.</p>' => 'durch Go Vocal.</p>',
