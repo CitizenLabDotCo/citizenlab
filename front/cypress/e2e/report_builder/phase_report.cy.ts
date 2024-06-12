@@ -176,8 +176,8 @@ describe('Phase report', () => {
 
         addTextWidget();
 
-        // Add posts by time widget
-        cy.get('#e2e-draggable-posts-by-time-widget').dragAndDrop(
+        // Add participation
+        cy.get('#e2e-draggable-participation-widget').dragAndDrop(
           '#e2e-content-builder-frame',
           {
             position: 'inside',
@@ -204,9 +204,8 @@ describe('Phase report', () => {
         reportShouldBeVisible();
 
         // Make sure widget is also there
-        cy.get('.recharts-surface:first').trigger('mouseover');
+        cy.get('.e2e-participation-widget').should('exist');
         cy.contains('New Widget Title').should('exist');
-        cy.contains('Total : 1').should('exist');
 
         // Make sure report is visible for logged out users
         cy.logout();
@@ -214,9 +213,8 @@ describe('Phase report', () => {
         reportShouldBeVisible();
 
         // Make sure widget is also there
-        cy.get('.recharts-surface:first').trigger('mouseover');
+        cy.get('.e2e-participation-widget').should('exist');
         cy.contains('New Widget Title').should('exist');
-        cy.contains('Total : 1').should('exist');
 
         // Clean up
         cy.apiRemoveReportBuilder(reportId);

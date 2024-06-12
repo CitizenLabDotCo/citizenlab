@@ -58,6 +58,12 @@ const CharCount = styled.div<{ inputSize?: InputSize }>`
   }
 `;
 
+const StyledInput = styled.input`
+  &::placeholder {
+    color: ${colors.coolGrey600};
+  }
+`;
+
 export interface InputProps {
   ariaLabel?: string;
   id?: string;
@@ -173,7 +179,7 @@ class Input extends PureComponent<InputProps> {
           </Label>
         )}
 
-        <input
+        <StyledInput
           aria-label={ariaLabel}
           id={id}
           className={`

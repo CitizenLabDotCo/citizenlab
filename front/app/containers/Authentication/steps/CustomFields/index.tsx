@@ -1,4 +1,4 @@
-import React, { useEffect, FormEvent } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
@@ -13,13 +13,12 @@ import {
   SetError,
 } from 'containers/Authentication/typings';
 
+import FormWrapper from 'components/Form/Components/FormWrapper';
 import Button from 'components/UI/Button';
-import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
+import UserCustomFieldsForm from 'components/UserCustomFields';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
-import eventEmitter from 'utils/eventEmitter';
-import { isNilOrError } from 'utils/helperUtils';
 
 import tracks from '../../tracks';
 
@@ -29,7 +28,7 @@ interface Props {
   authenticationData: AuthenticationData;
   loading: boolean;
   setError: SetError;
-  onSubmit: (id: string, formData: Record<string, any>) => void;
+  onSubmit: (id: string, formData: Record<string, any>) => Promise<void>;
   onSkip: () => void;
 }
 
@@ -47,20 +46,17 @@ const CustomFields = ({
   );
   const smallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
+  const [formData, setFormData] = useState<Record<string, any>>({});
 
   useEffect(() => {
     trackEventByName(tracks.signUpCustomFieldsStepEntered);
   }, []);
 
-  if (isNilOrError(authUser) || isNilOrError(userCustomFieldsSchema)) {
+  if (!authUser || !userCustomFieldsSchema) {
     return null;
   }
 
-  const handleSubmit = async ({
-    formData,
-  }: {
-    formData: Record<string, any>;
-  }) => {
+  const handleSubmit = async () => {
     try {
       await onSubmit(authUser.data.id, formData);
     } catch (e) {
@@ -68,12 +64,8 @@ const CustomFields = ({
     }
   };
 
-  const handleOnSubmitButtonClick = (event: FormEvent) => {
-    event.preventDefault();
-    eventEmitter.emit('customFieldsSubmitEvent');
-  };
-
-  if (isNilOrError(locale)) return null;
+  const uiSchema =
+    userCustomFieldsSchema.data.attributes?.ui_schema_multiloc[locale];
 
   return (
     <Box
@@ -81,42 +73,43 @@ const CustomFields = ({
       pb={smallerThanPhone ? '14px' : '28px'}
       id="e2e-signup-custom-fields-container"
     >
-      <UserCustomFieldsForm
-        authUser={authUser.data}
-        authenticationContext={authenticationData.context}
-        onSubmit={handleSubmit}
-      />
-
-      <Box
-        display="flex"
-        flexDirection={smallerThanPhone ? 'column' : undefined}
-        alignItems={smallerThanPhone ? 'stretch' : 'center'}
-        justifyContent={smallerThanPhone ? 'center' : 'space-between'}
-      >
-        <Button
-          id="e2e-signup-custom-fields-submit-btn"
-          processing={loading}
-          disabled={loading}
-          text={formatMessage(messages.continue)}
-          onClick={handleOnSubmitButtonClick}
+      <FormWrapper formId={uiSchema?.options?.formId}>
+        <UserCustomFieldsForm
+          authenticationContext={authenticationData.context}
+          onChange={setFormData}
         />
 
-        {!hasRequiredFields(userCustomFieldsSchema, locale) && (
+        <Box
+          display="flex"
+          flexDirection={smallerThanPhone ? 'column' : undefined}
+          alignItems={smallerThanPhone ? 'stretch' : 'center'}
+          justifyContent={smallerThanPhone ? 'center' : 'space-between'}
+        >
           <Button
-            id="e2e-signup-custom-fields-skip-btn"
-            buttonStyle="text"
-            padding="0"
-            textDecoration="underline"
-            textDecorationHover="underline"
+            id="e2e-signup-custom-fields-submit-btn"
             processing={loading}
-            onClick={onSkip}
-            mt={smallerThanPhone ? '20px' : undefined}
-            mb={smallerThanPhone ? '16px' : undefined}
-          >
-            {formatMessage(messages.skip)}
-          </Button>
-        )}
-      </Box>
+            disabled={loading}
+            text={formatMessage(messages.continue)}
+            onClick={handleSubmit}
+          />
+
+          {!hasRequiredFields(userCustomFieldsSchema, locale) && (
+            <Button
+              id="e2e-signup-custom-fields-skip-btn"
+              buttonStyle="text"
+              padding="0"
+              textDecoration="underline"
+              textDecorationHover="underline"
+              processing={loading}
+              onClick={onSkip}
+              mt={smallerThanPhone ? '20px' : undefined}
+              mb={smallerThanPhone ? '16px' : undefined}
+            >
+              {formatMessage(messages.skip)}
+            </Button>
+          )}
+        </Box>
+      </FormWrapper>
     </Box>
   );
 };

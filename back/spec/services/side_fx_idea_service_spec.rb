@@ -7,6 +7,22 @@ describe SideFxIdeaService do
   let(:user) { create(:user) }
 
   describe 'after_create' do
+    it "logs a 'created' action activity job" do
+      idea = create(:idea, author: user)
+
+      expect { service.after_create(idea, user) }
+        .to enqueue_job(LogActivityJob)
+        .with(
+          idea,
+          'created',
+          user,
+          idea.created_at.to_i,
+          project_id: idea.project_id,
+          payload: { idea: service.send(:serialize_idea, idea) }
+        )
+        .exactly(1).times
+    end
+
     it "logs a 'published' action job when publication_state is published" do
       idea = create(:idea, publication_status: 'published', author: user)
 
@@ -21,6 +37,7 @@ describe SideFxIdeaService do
       idea = create(:idea, publication_status: 'draft')
       expect { service.after_create(idea, user) }
         .not_to enqueue_job(LogActivityJob)
+        .with(idea, 'published', any_args)
     end
 
     it 'creates a follower' do
@@ -49,9 +66,42 @@ describe SideFxIdeaService do
 
     it "logs a 'changed' action job when the idea has changed" do
       idea = create(:idea)
+      old_title_multiloc = idea.title_multiloc
+
       idea.update!(title_multiloc: { en: 'something else' })
       expect { service.after_update(idea, user) }
-        .to enqueue_job(LogActivityJob).with(idea, 'changed', any_args).exactly(1).times
+        .to enqueue_job(LogActivityJob).with(
+          idea,
+          'changed',
+          user,
+          idea.updated_at.to_i,
+          payload: {
+            change: { title_multiloc: [old_title_multiloc, { en: 'something else' }] },
+            idea: service.send(:serialize_idea, idea)
+          },
+          project_id: idea.project_id
+        ).exactly(1).times
+        .and enqueue_job(Seo::ScrapeFacebookJob).exactly(1).times
+    end
+
+    it "logs changes to location_point in 'changed' action payload" do
+      idea = create(:idea)
+      old_location_point = idea.location_point_geojson
+
+      idea.update!(location_point_geojson: { 'type' => 'Point', 'coordinates' => [42.42, 42.42] })
+
+      expect { service.after_update(idea, user) }
+        .to enqueue_job(LogActivityJob).with(
+          idea,
+          'changed',
+          user,
+          idea.updated_at.to_i,
+          payload: {
+            change: { location_point: [old_location_point, { type: 'Point', coordinates: [42.42, 42.42] }] },
+            idea: service.send(:serialize_idea, idea)
+          },
+          project_id: idea.project_id
+        ).exactly(1).times
         .and enqueue_job(Seo::ScrapeFacebookJob).exactly(1).times
     end
 

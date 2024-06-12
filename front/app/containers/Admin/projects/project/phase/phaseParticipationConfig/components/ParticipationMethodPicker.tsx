@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   IconTooltip,
@@ -8,8 +8,8 @@ import {
   Icon,
   Title,
   colors,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import styled from 'styled-components';
 
 import { IPhase, ParticipationMethod } from 'api/phases/types';
@@ -108,6 +108,11 @@ const ParticipationMethodPicker = ({
     }
   };
 
+  useEffect(() => {
+    setSelectedMethod(participation_method);
+    setShowSurveyOptions(participation_method === 'native_survey');
+  }, [participation_method]);
+
   return (
     <>
       <SectionField>
@@ -195,7 +200,7 @@ const ParticipationMethodPicker = ({
                     top="20%"
                     left="50%"
                   >
-                    <Tippy
+                    <Tooltip
                       maxWidth="250px"
                       placement="bottom"
                       content={formatMessage(
@@ -214,7 +219,7 @@ const ParticipationMethodPicker = ({
                           {formatMessage(messages2.addOn)}
                         </Box>
                       </Badge>
-                    </Tippy>
+                    </Tooltip>
                   </Box>
                 )}
               </Box>
@@ -309,7 +314,7 @@ const ParticipationMethodPicker = ({
             alignItems="center"
           >
             <Button
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               width="100%"
               onClick={closeModal}
               mr="16px"

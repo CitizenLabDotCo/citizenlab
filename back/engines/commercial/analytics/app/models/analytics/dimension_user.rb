@@ -7,6 +7,7 @@
 #  id            :uuid             primary key
 #  role          :text
 #  invite_status :string
+#  has_visits    :boolean
 #
 module Analytics
   class DimensionUser < Analytics::ApplicationRecordView

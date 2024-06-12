@@ -20,6 +20,8 @@ import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
+
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -83,10 +85,10 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
           </Warning>
         </Box>
       )}
-      <Title variant="h2" style={{ fontWeight: 500 }}>
+      <ProjectPageSectionTitle>
         {config?.getStatusTitle &&
           formatMessage(config.getStatusHeader(basketStatus))}
-      </Title>
+      </ProjectPageSectionTitle>
       <Box
         mb="16px"
         p="20px"
@@ -137,7 +139,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
         {basket && basketStatus === 'hasSubmitted' && (
           <Box display={isSmallerThanPhone ? 'block' : 'flex'}>
             <Button
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               bgColor="white"
               bgHoverColor="white"
               borderColor={colors.grey400}

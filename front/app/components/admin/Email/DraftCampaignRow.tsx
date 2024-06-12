@@ -45,7 +45,7 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
         </Title>
         <Box display="flex" alignItems="center" gap="12px">
           <StatusLabel
-            backgroundColor={colors.orange}
+            backgroundColor={colors.orange500}
             text={<FormattedMessage {...messages.draft} />}
           />
           {/* Only display project name in the global messaging tab */}
@@ -59,7 +59,7 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
       </Box>
 
       <Box minWidth="220px" display="flex" justifyContent="flex-end">
-        <Button linkTo={editLink} buttonStyle="secondary" icon="edit">
+        <Button linkTo={editLink} buttonStyle="secondary-outlined" icon="edit">
           <FormattedMessage {...messages.manageButtonLabel} />
         </Button>
       </Box>

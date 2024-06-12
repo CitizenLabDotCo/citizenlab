@@ -7,7 +7,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 interface Parameters {
   attributeName: 'body_multiloc' | 'title_multiloc';
-  localeTo?: SupportedLocale;
+  localeTo: SupportedLocale;
   id: string;
   context: 'idea' | 'initiative' | 'comment';
   machineTranslationButtonClicked: boolean;
@@ -33,6 +33,7 @@ export default function useTranslation({
     enabled:
       machineTranslationButtonClicked &&
       isMachineTranslationsEnabled &&
+      localeTo &&
       context === 'initiative',
   });
   const { data: ideaTranslation } = useMachineTranslationByIdeaId({
@@ -44,6 +45,7 @@ export default function useTranslation({
     enabled:
       machineTranslationButtonClicked &&
       isMachineTranslationsEnabled &&
+      localeTo &&
       context === 'idea',
   });
   const { data: commentTranslation } = useMachineTranslationByCommentId({
@@ -55,6 +57,7 @@ export default function useTranslation({
     enabled:
       machineTranslationButtonClicked &&
       isMachineTranslationsEnabled &&
+      localeTo &&
       context === 'comment',
   });
 

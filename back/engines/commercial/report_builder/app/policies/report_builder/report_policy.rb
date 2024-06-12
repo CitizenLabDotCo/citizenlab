@@ -79,7 +79,7 @@ module ReportBuilder
     alias destroy? write?
 
     def access_to_data?
-      ReportBuilder::PermissionsService.new.editing_disabled_reason_for_report(record, user).blank?
+      ReportBuilder::Permissions::ReportPermissionsService.new.editing_disabled_reason_for_report(record, user).blank?
     end
 
     def phase_public_and_accessible?

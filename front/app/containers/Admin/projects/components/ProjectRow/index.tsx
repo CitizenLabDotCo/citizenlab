@@ -188,7 +188,7 @@ const ProjectRow = ({
                   onClick={action.handler(
                     publication.relationships.publication.data.id
                   )}
-                  buttonStyle="secondary"
+                  buttonStyle="secondary-outlined"
                   icon={action.icon}
                   processing={action.processing}
                 >

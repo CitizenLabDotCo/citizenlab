@@ -12,10 +12,10 @@ class WebApi::V1::InternalCommentsController < ApplicationController
     root_comments = policy_scope(InternalComment)
       .where(post_type: @post_type, post_id: @post_id)
       .where(parent: nil)
-      .includes(*include_attrs)
 
     root_comments = sort_comments root_comments
     root_comments = paginate root_comments
+    root_comments = root_comments.includes(*include_attrs)
 
     fully_expanded_root_comments = InternalComment.where(id: root_comments)
       .where('children_count <= ?', FULLY_EXPAND_THRESHOLD)

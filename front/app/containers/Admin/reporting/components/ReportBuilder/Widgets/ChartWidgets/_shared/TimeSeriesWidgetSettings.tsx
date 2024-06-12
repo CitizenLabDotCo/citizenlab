@@ -15,18 +15,18 @@ import {
   ProjectInput,
 } from './ChartWidgetSettings';
 
-const TimeSeriesWidgetSettings = () => {
+const TimeSeriesWidgetSettings = ({ resetComparePeriod = false }) => {
   return (
     <Box>
       <TitleInput />
-      <DateRangeInput />
+      <DateRangeInput resetComparePeriod={resetComparePeriod} />
       <ResolutionInput />
       <ProjectInput />
     </Box>
   );
 };
 
-const ResolutionInput = () => {
+export const ResolutionInput = () => {
   const {
     actions: { setProp },
     resolution,

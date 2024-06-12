@@ -20,6 +20,7 @@ export type IAppConfigurationSettingsCore = {
   allowed: boolean;
   enabled: boolean;
   locales: SupportedLocale[];
+  population: number | null;
   weglot_api_key: string | null;
   timezone: string;
   organization_name: Multiloc;
@@ -239,6 +240,7 @@ export interface IAppConfigurationSettings {
   user_session_recording?: AppConfigurationFeature;
   user_avatars?: AppConfigurationFeature;
   multi_language_platform?: AppConfigurationFeature;
+  management_feed?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

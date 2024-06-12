@@ -1,4 +1,38 @@
 "nb-NO":
+  locales:
+    en: Engelsk
+    ar-MA: Arabisk (Marokko)
+    ar-SA: Arabisk (Saudi-Arabia)
+    ca-ES: katalansk
+    cy-GB: walisisk
+    da-DK: dansk
+    de-DE: tysk
+    el-GR: gresk
+    en-CA: Engelsk (Canada)
+    en-GB: engelsk (Storbritannia)
+    en-IE: Engelsk (Irland)
+    es-CL: spansk (Chile)
+    es-ES: Spansk (Spania)
+    fi-FI: finsk
+    fr-BE: fransk (Belgia)
+    fr-FR: fransk
+    hr-HR: Kroatisk
+    hu-HU: ungarsk
+    it-IT: italiensk
+    kl-GL: Grønlandsk
+    lb-LU: luxemburgsk
+    lv-LV: latvisk
+    mi: Maori
+    nb-NO: norsk (bokmål)
+    nl-BE: Nederlandsk (Belgia)
+    nl-NL: nederlandsk
+    pl-PL: Pusse
+    pt-BR: Portugisisk (Brasil)
+    ro-RO: rumensk
+    sr-Latn: serbisk (latinsk)
+    sr-SP: serbisk (kyrillisk)
+    sv-SE: svensk
+    tr-TR: tyrkisk
   symbols:
     outside: annet sted
   idea_statuses:
@@ -200,36 +234,40 @@
       subject: '%{organizationName}: tilbakestill passordet ditt'
       title_reset_your_password: 'Velg et nytt passord'
   xlsx_export:
+    anonymous: 'Anonym'
     column_headers:
-      input_id: 'ID'
-      latitude: 'Breddegrad'
-      longitude: 'Lengdegrad'
-      location: 'plassering'
-      author_fullname: 'Forfatterens navn'
-      author_email: 'Forfatterens e-postadresse'
-      author_id: 'Forfatterens ID'
-      attachments: 'Vedlegg'
-      budget: 'Budsjett'
-      cost: 'Koste'
-      created_at: 'Innsendt'
-      submitted_at: 'Innlevert kl'
-      published_at: 'Publisert'
-      comments_count: 'Kommentarer'
-      likes_count: 'Liker'
-      dislikes_count: 'Misliker'
-      picks: 'Valg'
-      participants: 'Deltakere'
-      votes_count: 'Stemmer'
-      input_url: 'URL-adresse'
-      tags: 'Tagger'
-      project: 'Prosjekt'
-      status: 'Status'
       assignee_fullname: 'Anvist til'
       assignee_email: 'Oppdragstakerens e-postadresse'
-      image_url: 'Bilde-URL'
-      title: 'Tittel'
+      attachments: 'Vedlegg'
+      author_email: 'Forfatterens e-postadresse'
+      author_fullname: 'Forfatterens navn'
+      author_id: 'Forfatterens ID'
+      budget: 'Budsjett'
+      comments_count: 'Kommentarer'
+      cost: 'Koste'
+      created_at: 'Innsendt'
       description: 'Beskrivelse'
-    anonymous: 'Anonym'
+      dislikes_count: 'Misliker'
+      email: 'E-post'
+      first_name: 'Fornavn)'
+      image_url: 'Bilde-URL'
+      input_id: 'ID'
+      input_url: 'URL-adresse'
+      last_name: 'Etternavn'
+      latitude: 'Breddegrad'
+      likes_count: 'Liker'
+      location: 'plassering'
+      longitude: 'Lengdegrad'
+      participants: 'Deltakere'
+      picks: 'Valg'
+      project: 'Prosjekt'
+      published_at: 'Publisert'
+      registration_completed_at: 'Påmelding fullført kl'
+      status: 'Status'
+      submitted_at: 'Innlevert kl'
+      tags: 'Tagger'
+      title: 'Tittel'
+      votes_count: 'Stemmer'
   form_builder:
     default_select_field:
       title: 'Ditt spørsmål'

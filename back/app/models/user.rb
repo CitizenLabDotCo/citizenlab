@@ -52,6 +52,7 @@ class User < ApplicationRecord
   include UserRoles
   include UserGroups
   include UserConfirmation
+  include UserPasswordValidations
   include PgSearch::Model
 
   GENDERS = %w[male female unspecified].freeze
@@ -133,6 +134,7 @@ class User < ApplicationRecord
   end)
 
   has_many :ideas, -> { order(:project_id) }, foreign_key: :author_id, dependent: :nullify
+  has_many :idea_imports, class_name: 'BulkImportIdeas::IdeaImport', foreign_key: :import_user_id, dependent: :nullify
   has_many :initiatives, foreign_key: :author_id, dependent: :nullify
   has_many :assigned_initiatives, class_name: 'Initiative', foreign_key: :assignee_id, dependent: :nullify
   has_many :comments, foreign_key: :author_id, dependent: :nullify
@@ -178,29 +180,19 @@ class User < ApplicationRecord
   # NOTE: All validation except for required
   validates :custom_field_values, json: {
     schema: -> { CustomFieldService.new.fields_to_json_schema_ignore_required(CustomField.registration) }
-  }, on: :form_submission, if: :custom_field_values_changed?
-
-  validates :password, length: { maximum: 72 }, allow_nil: true
-  # Custom validation is required to deal with the
-  # dynamic nature of the minimum password length.
-  validate :validate_minimum_password_length
-  validate :validate_password_not_common
+  }, on: :form_submission, if: :custom_field_values_changed? # only called if `save` is called w/ `context: :form_submission`
 
   validates :onboarding, json: { schema: -> { User.onboarding_json_schema } }
 
   validate :validate_not_duplicate_email
   validate :validate_not_duplicate_new_email
-  validate :validate_can_update_email, on: :form_submission
+  validate :validate_can_update_email, on: :form_submission # only called if `save` is called w/ `context: :form_submission`
   validate :validate_email_domains_blacklist
 
   before_destroy :remove_initiated_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
   has_many :unread_notifications, -> { where read_at: nil }, class_name: 'Notification', foreign_key: :recipient_id
   has_many :initiator_notifications, class_name: 'Notification', foreign_key: :initiating_user_id, dependent: :nullify
-
-  scope :not_project_folder_moderator, lambda { |*project_folder_ids|
-    where.not(id: project_folder_moderator(*project_folder_ids))
-  }
 
   scope :not_invited, -> { where.not(invite_status: 'pending').or(where(invite_status: nil)) }
   scope :registered, -> { where.not(registration_completed_at: nil) }
@@ -221,7 +213,9 @@ class User < ApplicationRecord
     {
       sub: id,
       roles: compacted_roles,
-      exp: token_lifetime.from_now.to_i
+      exp: token_lifetime.from_now.to_i,
+      cluster: CL2_CLUSTER,
+      tenant: Tenant.current.id
     }
   end
 
@@ -253,8 +247,8 @@ class User < ApplicationRecord
   end
 
   def anon_last_name
-    # Generate a numeric last name based on email in the format of '123456'
-    name_key = email || unique_code
+    # Generate a numeric last name in the format of '123456'
+    name_key = email || unique_code || id
     (name_key.sum**2).to_s[0, 6]
   end
 
@@ -372,31 +366,6 @@ class User < ApplicationRecord
     errors.add(:email, :domain_blacklisted, value: domain) if EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
   end
 
-  def validate_minimum_password_length
-    return unless password && password.size < password_min_length
-
-    errors.add(
-      :password,
-      :too_short,
-      message: 'The chosen password is shorter than the minimum required character length',
-      count: password_min_length
-    )
-  end
-
-  def password_min_length
-    AppConfiguration.instance.settings('password_login', 'minimum_length') || 0
-  end
-
-  def validate_password_not_common
-    return unless password && CommonPassword.check(password)
-
-    errors.add(
-      :password,
-      :too_common,
-      message: 'The chosen password matched with our common password blacklist'
-    )
-  end
-
   def remove_initiated_notifications
     initiator_notifications.each do |notification|
       unless notification.update initiating_user: nil
@@ -421,4 +390,3 @@ end
 User.include(IdeaAssignment::Extensions::User)
 User.include(ReportBuilder::Patches::User)
 User.include(Verification::Patches::User)
-User.prepend(MultiTenancy::Patches::User)

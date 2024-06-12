@@ -1,7 +1,7 @@
 module XlsxExport
   class ProjectIdeasVotesGenerator < Generator
     def generate_project_ideas_votes_xlsx(project)
-      phases = project.phases.where(participation_method: 'voting').includes([:ideas])
+      phases = project.phases.where(participation_method: 'voting')
       phases_to_titles = add_suffix_to_duplicate_titles(phases) # avoid ArgumentError due to duplicate sheet names
 
       pa = Axlsx::Package.new
@@ -18,7 +18,7 @@ module XlsxExport
 
     def generate_phase_ideas_votes_sheet(workbook, sheet_name, phase)
       url_service = Frontend::UrlService.new
-      ideas = phase.ideas
+      ideas = phase.ideas.includes(:author, :idea_status, :topics, :idea_files, :project, :ideas_phases, [baskets_ideas: :basket])
       t_scope = 'xlsx_export.column_headers'
 
       columns = [
@@ -51,7 +51,7 @@ module XlsxExport
 
     def votes_column(translation_scope, phase)
       { header: I18n.t('votes_count', scope: translation_scope),
-        f: ->(i) { i.ideas_phases.find_by(phase: phase).votes_count },
+        f: ->(i) { i.ideas_phases.find { |ideas_phase| ideas_phase[:phase_id] == phase.id }.votes_count },
         skip_sanitization: true }
     end
 
@@ -61,17 +61,22 @@ module XlsxExport
 
     def picks_column(translation_scope, phase)
       { header: "#{I18n.t('picks', scope: translation_scope)} / #{I18n.t('participants', scope: translation_scope)}",
-        f: picks_lamda(phase),
+        f: picks_lambda(phase),
         skip_sanitization: true }
     end
 
     def participants_column(translation_scope, phase)
-      { header: I18n.t('participants', scope: translation_scope), f: picks_lamda(phase), skip_sanitization: true }
+      { header: I18n.t('participants', scope: translation_scope), f: picks_lambda(phase), skip_sanitization: true }
     end
 
-    def picks_lamda(phase)
-      # We want the n of times each idea was selected (by a unique user), not the total votes or budget allocated to each idea (ideas_phase.votes_count)
-      ->(i) { i.baskets_ideas.joins(:basket).where(basket: { phase_id: phase.id }).where.not(basket: { submitted_at: nil }).size }
+    def picks_lambda(phase)
+      # We want the n of times each idea was selected (by a unique user), not the total votes or budget allocated
+      # to each idea (ideas_phase.votes_count)
+      lambda { |i|
+        i.baskets_ideas.select do |baskets_idea|
+          baskets_idea.basket[:phase_id] == phase.id && baskets_idea.basket[:submitted_at].present?
+        end.size
+      }
     end
   end
 end

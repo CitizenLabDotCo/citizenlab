@@ -1,4 +1,38 @@
 lb:
+  locales:
+    en: Englesch
+    ar-MA: Arabesch (Marokko)
+    ar-SA: Arabesch (Saudi Arabien)
+    ca-ES: katalanesch
+    cy-GB: Waliser
+    da-DK: Dänesch
+    de-DE: Däitsch
+    el-GR: Griichesch
+    en-CA: Englesch (Kanada)
+    en-GB: Englesch (UK)
+    en-IE: Englesch (Irland)
+    es-CL: Spuenesch (Chile)
+    es-ES: Spuenesch (Spuenien)
+    fi-FI: Finnesch
+    fr-BE: Franséisch (Belsch)
+    fr-FR: Franséisch
+    hr-HR: Kroatesch
+    hu-HU: Ungaresch
+    it-IT: Italienesch
+    kl-GL: grönlännesch
+    lb-LU: lëtzebuergesch
+    lv-LV: Lettesch
+    mi: maoresch
+    nb-NO: Norwegesch (Bokmål)
+    nl-BE: Hollännesch (Belsch)
+    nl-NL: Hollänesch
+    pl-PL: Polnesch
+    pt-BR: Portugisesch (Brasilien)
+    ro-RO: Rumänesch
+    sr-Latn: Serbesch (Latäin)
+    sr-SP: Serbesch (Kyrillesch)
+    sv-SE: Schweedesch
+    tr-TR: tierkesch
   symbols:
     outside: anzwousch anescht
   idea_statuses:
@@ -200,36 +234,40 @@ lb:
       subject: '%{organizationName}: Äert Passwuert zerécksetzen'
       title_reset_your_password: 'Wielt en neit Passwuert'
   xlsx_export:
+    anonymous: 'Anonym'
     column_headers:
-      input_id: 'ID'
-      latitude: 'Héicht'
-      longitude: 'Längt'
-      location: 'Location'
-      author_fullname: 'Numm vum Auteur'
-      author_email: 'E-Mail vum Auteur'
-      author_id: 'ID vum Auteur'
-      attachments: 'Uschlëss'
-      budget: 'Budget'
-      cost: 'Käschten'
-      created_at: 'Agereecht bei'
-      submitted_at: 'Erlaabt am'
-      published_at: 'Verëffentlecht bei'
-      comments_count: 'Kommentaren'
-      likes_count: 'Gefällt'
-      dislikes_count: 'Net gär'
-      picks: 'Wielt'
-      participants: 'Participanten'
-      votes_count: 'Stëmmen'
-      input_url: 'URL'
-      tags: 'Tags'
-      project: 'Projet'
-      status: 'Status'
       assignee_fullname: 'Mandataire'
       assignee_email: 'E-Mail vum Beoptragten'
-      image_url: 'Bild URL'
-      title: 'Titel'
+      attachments: 'Uschlëss'
+      author_email: 'E-Mail vum Auteur'
+      author_fullname: 'Numm vum Auteur'
+      author_id: 'ID vum Auteur'
+      budget: 'Budget'
+      comments_count: 'Kommentaren'
+      cost: 'Käschten'
+      created_at: 'Agereecht bei'
       description: 'Beschreiwung'
-    anonymous: 'Anonym'
+      dislikes_count: 'Net gär'
+      email: 'E-Mail'
+      first_name: 'Virnumm (en)'
+      image_url: 'Bild URL'
+      input_id: 'ID'
+      input_url: 'URL'
+      last_name: 'Familljennumm'
+      latitude: 'Héicht'
+      likes_count: 'Gefällt'
+      location: 'Location'
+      longitude: 'Längt'
+      participants: 'Participanten'
+      picks: 'Wielt'
+      project: 'Projet'
+      published_at: 'Verëffentlecht bei'
+      registration_completed_at: 'Aschreiwung ofgeschloss um'
+      status: 'Status'
+      submitted_at: 'Erlaabt am'
+      tags: 'Tags'
+      title: 'Titel'
+      votes_count: 'Stëmmen'
   form_builder:
     default_select_field:
       title: 'Är Fro'

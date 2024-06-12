@@ -32,11 +32,6 @@ class ActivitiesService
       .select(:item_id)
 
     starting_phases.where.not(id: excluded_phases).each do |phase|
-      if phase.ends_before?(now + 1.day)
-        raise "Invalid phase started event would have been generated for phase\
-               #{phase.id} with now=#{now} and last_time=#{last_time}"
-      end
-
       LogActivityJob.perform_later(phase, 'started', nil, start_date.to_time)
     end
   end

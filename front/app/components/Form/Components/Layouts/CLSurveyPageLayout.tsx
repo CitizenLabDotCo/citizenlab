@@ -2,9 +2,9 @@ import React, { memo, useState, useEffect, useContext, useRef } from 'react';
 
 import {
   Box,
+  colors,
   Title,
   useBreakpoint,
-  media,
 } from '@citizenlab/cl2-component-library';
 import { LayoutProps, RankedTester, rankWith } from '@jsonforms/core';
 import {
@@ -12,18 +12,11 @@ import {
   withJsonFormsLayoutProps,
   useJsonForms,
 } from '@jsonforms/react';
-import { useSearchParams, useParams } from 'react-router-dom';
-import styled, { useTheme } from 'styled-components';
+import { useSearchParams } from 'react-router-dom';
+import { useTheme } from 'styled-components';
 
-import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
-import useProjectBySlug from 'api/projects/useProjectBySlug';
 
-import useLocalize from 'hooks/useLocalize';
-
-import SurveyHeading from 'containers/IdeasNewPage/IdeasNewSurveyForm/SurveyHeading';
-
-import { customAjv } from 'components/Form';
 import {
   getSanitizedFormData,
   getPageSchema,
@@ -34,13 +27,11 @@ import {
   getFormCompletionPercentage,
 } from 'components/Form/Components/Layouts/utils';
 import { FormContext } from 'components/Form/contexts';
-import { FormSection } from 'components/UI/FormComponents';
+import { customAjv } from 'components/Form/utils';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import {
   extractElementsByOtherOptionLogic,
@@ -50,17 +41,6 @@ import {
 
 import messages from './messages';
 import PageControlButtons from './PageControlButtons';
-
-const StyledFormSection = styled(FormSection)`
-  max-width: 100%;
-  width: 100%;
-  padding: 24px;
-  flex-direction: column;
-  ${media.phone`
-    padding: 16px;
-  `}
-  box-shadow: none;
-`;
 
 // Handling survey pages in here. The more things that we have added to it,
 // the more it has become a survey page layout. It also becomes extremely hard to understand
@@ -80,7 +60,6 @@ const CLSurveyPageLayout = memo(
     const { formatMessage } = useIntl();
     const [currentStep, setCurrentStep] = useState<number>(0);
     const [isLoading, setIsLoading] = useState(false);
-    const localize = useLocalize();
 
     // We can cast types because the tester made sure we only get correct values
     const pageTypeElements = (uischema as PageCategorization)
@@ -95,23 +74,12 @@ const CLSurveyPageLayout = memo(
     const dataCyValue = showSubmit ? 'e2e-submit-form' : 'e2e-next-page';
     const hasPreviousPage = currentStep !== 0;
     const pagesRef = useRef<HTMLDivElement>(null);
-    const [hasScrollBars, setHasScrollBars] = useState(false);
     const [queryParams] = useSearchParams();
     const phaseId = queryParams.get('phase_id') || undefined;
     const { data: phase } = usePhase(phaseId);
     const allowAnonymousPosting =
       phase?.data.attributes.allow_anonymous_participation;
-    const { slug } = useParams();
-    const { data: project } = useProjectBySlug(slug);
-    const { data: authUser } = useAuthUser();
-    const userIsModerator =
-      !isNilOrError(authUser) &&
-      canModerateProject(project?.data.id, { data: authUser.data });
     const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
-
-    // TODO: Readd Focuson after solving UI issue
-    const surveyHeadingRef = useRef<HTMLDivElement>(null);
-    const pageControlButtonsRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
       // We can cast types because the tester made sure we only get correct values
@@ -141,14 +109,6 @@ const CLSurveyPageLayout = memo(
         setScrollToError(false);
       }
     }, [scrollToError]);
-
-    useEffect(() => {
-      if (pagesRef.current) {
-        const isScrollBarVisible =
-          pagesRef.current.scrollHeight > pagesRef.current.clientHeight;
-        setHasScrollBars(isScrollBarVisible);
-      }
-    }, [currentStep]);
 
     useEffect(() => {
       if (currentStep === uiPages.length - 1) {
@@ -246,65 +206,17 @@ const CLSurveyPageLayout = memo(
       scrollToTop();
     };
 
-    if (!project) {
-      return null;
-    }
-
-    const getFormContainerHeight = () => {
-      // TODO: Simplify the styling in CLSurveyPageLayout.
-      // Difficult to make changes to the layout due to the complex styling.
-      if (hasScrollBars) {
-        return 'fit-content';
-      } else if (isSmallerThanPhone) {
-        return ''; // Returning 100% on mobile results in odd UI behavior
-      }
-      return '100%';
-    };
-
     return (
       <>
-        <Box
-          width="100%"
-          height="100%"
-          maxWidth="700px"
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-          pt={isSmallerThanPhone ? '' : '82px'}
-          pb={isSmallerThanPhone ? '' : '72px'}
-        >
-          <SurveyHeading
-            project={project.data}
-            titleText={localize(
-              phase?.data.attributes.native_survey_title_multiloc
-            )}
-            canUserEditProject={userIsModerator}
-            loggedIn={!isNilOrError(authUser)}
-            percentageAnswered={percentageAnswered}
-            ref={surveyHeadingRef}
-          />
-
+        <Box display="flex" flexDirection="column" height="100%">
           {allowAnonymousPosting && (
-            <Box
-              w="100%"
-              px={isSmallerThanPhone ? '16px' : '24px'}
-              mt={isSmallerThanPhone ? '64px' : '12px'}
-            >
+            <Box w="100%" px={isSmallerThanPhone ? '16px' : '24px'} mt="12px">
               <Warning icon="shield-checkered">
                 {formatMessage(messages.anonymousSurveyMessage)}
               </Warning>
             </Box>
           )}
-          <Box
-            display="flex"
-            flex="1"
-            height="100%"
-            pt={isSmallerThanPhone ? '28px' : '8px'}
-            overflowY="auto"
-            w="100%"
-            ref={pagesRef}
-          >
+          <Box h="100%" display="flex" ref={pagesRef}>
             {uiPages.map((page, index) => {
               const pageElements = extractElementsByOtherOptionLogic(
                 page,
@@ -312,27 +224,21 @@ const CLSurveyPageLayout = memo(
               );
               return (
                 currentStep === index && (
-                  <StyledFormSection key={index}>
-                    <Box
-                      display="flex"
-                      justifyContent="center"
-                      h={getFormContainerHeight()}
-                      flexDirection="column"
-                      pt={isSmallerThanPhone ? '60px' : ''}
-                      pb={isSmallerThanPhone ? '160px' : ''}
-                    >
+                  <Box key={index} p="24px" w="100%">
+                    <Box display="flex" flexDirection="column">
                       {page.options.title && (
                         <Title
-                          variant="h2"
-                          mt="0"
-                          mb="24px"
+                          as="h1"
+                          variant={isSmallerThanPhone ? 'h2' : 'h1'}
+                          m="0"
+                          mb="8px"
                           color="tenantPrimary"
                         >
                           {page.options.title}
                         </Title>
                       )}
                       {page.options.description && (
-                        <Box mb={pageElements.length >= 1 ? '48px' : '28px'}>
+                        <Box mb="48px">
                           <QuillEditedContent
                             fontWeight={400}
                             textColor={theme.colors.tenantText}
@@ -353,7 +259,6 @@ const CLSurveyPageLayout = memo(
 
                         return (
                           <Box
-                            width="100%"
                             mb={hasOtherFieldBelow ? undefined : '28px'}
                             key={index}
                           >
@@ -369,10 +274,35 @@ const CLSurveyPageLayout = memo(
                         );
                       })}
                     </Box>
-                  </StyledFormSection>
+                  </Box>
                 )
               );
             })}
+          </Box>
+        </Box>
+        {/*
+          TODO:
+          We should move the footer (progress bar and navigation buttons) into IdeasNewSurveyForm/index.tsx
+          if possible. It doesn't belong here as it's not part of the form fields layout. This would also allow us
+          to put the progress bar back on top of the form (as part of the survey header) without
+          the scroll bar of the form fields interfering with it. This in turn would allow us to improve
+          the form progress UX for screen readers. Our current stance is that it makes more sense to get a
+          progress update before entering a new page, rather than after leaving it.
+        */}
+        <Box
+          maxWidth="700px"
+          w="100%"
+          position="fixed"
+          bottom={isSmallerThanPhone ? '0' : '40px'}
+          zIndex="1010"
+        >
+          <Box background={colors.background}>
+            <Box
+              w={`${percentageAnswered}%`}
+              h="4px"
+              background={theme.colors.tenantSecondary}
+              style={{ transition: 'width 0.3s ease-in-out' }}
+            />
           </Box>
           <PageControlButtons
             handleNextAndSubmit={handleNextAndSubmit}
@@ -382,7 +312,6 @@ const CLSurveyPageLayout = memo(
             isLoading={isLoading}
             showSubmit={showSubmit}
             dataCyValue={dataCyValue}
-            ref={pageControlButtonsRef}
           />
         </Box>
       </>

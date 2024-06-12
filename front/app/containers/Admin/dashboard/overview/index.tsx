@@ -1,14 +1,15 @@
 import React, { useState, useCallback, useMemo } from 'react';
 
-import { Title } from '@citizenlab/cl2-component-library';
+import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import moment, { Moment } from 'moment';
 
 import useAuthUser from 'api/me/useAuthUser';
 
 import CommentsByTimeCard from 'components/admin/GraphCards/CommentsByTimeCard';
+import ParticipantsCard from 'components/admin/GraphCards/ParticipantsCard';
 import PostByTimeCard from 'components/admin/GraphCards/PostsByTimeCard';
 import ReactionsByTimeCard from 'components/admin/GraphCards/ReactionsByTimeCard';
-import RegistrationsByTimeCard from 'components/admin/GraphCards/RegistrationsByTimeCard';
+import RegistrationsCard from 'components/admin/GraphCards/RegistrationsCard';
 import { GraphsContainer, Column } from 'components/admin/GraphWrappers';
 import { IResolution } from 'components/admin/ResolutionControl';
 import Outlet from 'components/Outlet';
@@ -21,7 +22,6 @@ import messages from '../messages';
 import tracks from '../tracks';
 
 import ChartFilters from './ChartFilters';
-import ParticipantsCard from './charts/ParticipantsCard';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
 import { getSensibleResolution } from './getSensibleResolution';
@@ -30,6 +30,7 @@ import overviewMessages from './messages';
 export type IResource = 'ideas' | 'comments' | 'reactions';
 
 const OverviewDashboard = () => {
+  const isSmallerThanSmallDesktop = useBreakpoint('smallDesktop');
   const { data: user } = useAuthUser();
   const { formatMessage } = useIntl();
 
@@ -128,11 +129,13 @@ const OverviewDashboard = () => {
       />
       <GraphsContainer>
         <Column>
-          <RegistrationsByTimeCard
+          <RegistrationsCard
             projectId={currentProjectFilter}
             startAtMoment={startAtMoment}
             endAtMoment={endAtMoment}
             resolution={resolution}
+            layout={isSmallerThanSmallDesktop ? 'narrow' : 'wide'}
+            hideRegistrationRate
           />
         </Column>
         <Column>
@@ -141,6 +144,8 @@ const OverviewDashboard = () => {
             startAtMoment={startAtMoment}
             endAtMoment={endAtMoment}
             resolution={resolution}
+            layout={isSmallerThanSmallDesktop ? 'narrow' : 'wide'}
+            hideParticipationRate
           />
         </Column>
         <Title

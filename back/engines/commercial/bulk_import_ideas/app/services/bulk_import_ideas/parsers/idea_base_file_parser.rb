@@ -168,7 +168,7 @@ module BulkImportIdeas::Parsers
 
     def process_field_value(field, form_fields)
       if %w[select multiselect multiselect_image].include?(field[:input_type]) && field[:value]
-        values = field[:value].is_a?(Array) ? field[:value] : field[:value].split(';')
+        values = field[:value].is_a?(Array) ? field[:value] : field[:value].to_s.split(';')
         if values.count > 0
           options = values.map do |value|
             option = form_fields.find { |f| f[:parent_key] == field[:key] && f[:name] == value.strip }
@@ -178,6 +178,8 @@ module BulkImportIdeas::Parsers
         end
       elsif %w[number linear_scale].include?(field[:input_type]) && field[:value].present?
         field[:value] = field[:value].to_i
+      else
+        field[:value] = field[:value].to_s
       end
 
       field

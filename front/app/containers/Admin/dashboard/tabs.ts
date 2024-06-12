@@ -41,8 +41,19 @@ const MODERATION_TAB: TabRoute = {
   url: '/admin/dashboard/moderation',
 };
 
+const MANAGEMENT_FEED_TAB: TabRoute = {
+  message: messages.managementFeed,
+  name: 'management_feed',
+  url: '/admin/dashboard/management-feed',
+};
+
 export const getAdminTabs = (
-  { visitorsEnabled, representativenessEnabled, moderationEnabled },
+  {
+    visitorsEnabled,
+    representativenessEnabled,
+    moderationEnabled,
+    managementFeedEnabled,
+  },
   formatMessage: FormatMessage
 ) => {
   const tabs = [...BASE_ADMIN_TABS];
@@ -57,6 +68,10 @@ export const getAdminTabs = (
 
   if (moderationEnabled) {
     tabs.push(MODERATION_TAB);
+  }
+
+  if (managementFeedEnabled) {
+    tabs.push(MANAGEMENT_FEED_TAB);
   }
 
   return translateTabs(tabs, formatMessage);

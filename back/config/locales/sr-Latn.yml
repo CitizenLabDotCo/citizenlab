@@ -1,4 +1,38 @@
 sr-Latn:
+  locales:
+    en: English
+    ar-MA: Arabic (Morocco)
+    ar-SA: Arabic (Saudi Arabia)
+    ca-ES: Catalan
+    cy-GB: Welsh
+    da-DK: Danish
+    de-DE: German
+    el-GR: Greek
+    en-CA: English (Canada)
+    en-GB: English (UK)
+    en-IE: English (Ireland)
+    es-CL: Spanish (Chile)
+    es-ES: Spanish (Spain)
+    fi-FI: Finnish
+    fr-BE: French (Belgium)
+    fr-FR: French
+    hr-HR: Croatian
+    hu-HU: Hungarian
+    it-IT: Italian
+    kl-GL: Greenlandic
+    lb-LU: Luxembourgish
+    lv-LV: Latvian
+    mi: Maori
+    nb-NO: Norwegian (Bokmål)
+    nl-BE: Dutch (Belgium)
+    nl-NL: Dutch
+    pl-PL: Polish
+    pt-BR: Portuguese (Brazil)
+    ro-RO: Romanian
+    sr-Latn: Serbian (Latin)
+    sr-SP: Serbian (Cyrillic)
+    sv-SE: Swedish
+    tr-TR: Turkish
   symbols:
     outside: negde drugde
   idea_statuses:
@@ -200,36 +234,40 @@ sr-Latn:
       subject: '%{organizationName}: Resetujte lozinku'
       title_reset_your_password: 'Izaberite novu lozinku'
   xlsx_export:
+    anonymous: 'Анонимоус'
     column_headers:
-      input_id: 'ID'
-      latitude: 'Geografska širina'
-      longitude: 'Geografska dužina'
-      location: 'Location'
-      author_fullname: 'Ime autora'
-      author_email: 'E-pošta autora'
-      author_id: 'ID autora'
-      attachments: 'Attachments'
-      budget: 'Budžet'
-      cost: 'Cost'
-      created_at: 'Predato u'
-      submitted_at: 'Submitted at'
-      published_at: 'Objavljeno u'
-      comments_count: 'Komentari'
-      likes_count: 'Свиђа'
-      dislikes_count: 'Не свиђа ми се'
-      picks: 'Picks'
-      participants: 'Participants'
-      votes_count: 'Votes'
-      input_url: 'URL'
-      tags: 'Tags'
-      project: 'Projekat'
-      status: 'Status'
       assignee_fullname: 'Dodeljeni korisnik'
       assignee_email: 'E-pošta dodeljenog korisnika'
-      image_url: 'Image URL'
-      title: 'Title'
+      attachments: 'Attachments'
+      author_email: 'E-pošta autora'
+      author_fullname: 'Ime autora'
+      author_id: 'ID autora'
+      budget: 'Budžet'
+      comments_count: 'Komentari'
+      cost: 'Cost'
+      created_at: 'Predato u'
       description: 'Description'
-    anonymous: 'Анонимоус'
+      dislikes_count: 'Не свиђа ми се'
+      email: 'Email'
+      first_name: 'First name(s)'
+      image_url: 'Image URL'
+      input_id: 'ID'
+      input_url: 'URL'
+      last_name: 'Last name'
+      latitude: 'Geografska širina'
+      likes_count: 'Свиђа'
+      location: 'Location'
+      longitude: 'Geografska dužina'
+      participants: 'Participants'
+      picks: 'Picks'
+      project: 'Projekat'
+      published_at: 'Objavljeno u'
+      registration_completed_at: 'Registration completed at'
+      status: 'Status'
+      submitted_at: 'Submitted at'
+      tags: 'Tags'
+      title: 'Title'
+      votes_count: 'Votes'
   form_builder:
     default_select_field:
       title: 'Vaše pitanje'

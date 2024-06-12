@@ -1,4 +1,6 @@
 en:
+  locales:
+    fr-FR: French
   symbols:
     outside: somewhere else
   nav_bar_items:
@@ -78,29 +80,40 @@ en:
   user:
     anon_first_name: "User"
   xlsx_export:
-    anonymous: "Anonymous"
+    anonymous: 'Anonymous'
     column_headers:
-      input_id: 'ID'
-      latitude: 'Latitude'
-      longitude: 'Longitude'
-      author_fullname: 'Author name'
-      author_email: 'Author email'
-      author_id: 'Author ID'
-      budget: 'Budget'
-      created_at: 'Submitted at'
-      published_at: 'Published at'
-      comments_count: 'Comments'
-      likes_count: 'Likes'
-      dislikes_count: 'Dislikes'
-      picks: 'Picks'
-      participants: 'Participants'
-      votes_count: 'Votes'
-      input_url: 'URL'
-      project: 'Project'
-      status: 'Status'
       assignee_fullname: 'Assignee'
       assignee_email: 'Assignee email'
+      attachments: 'Attachments'
+      author_email: 'Author email'
+      author_fullname: 'Author name'
+      author_id: 'Author ID'
+      budget: 'Budget'
+      comments_count: 'Comments'
+      cost: 'Cost'
+      created_at: 'Submitted at'
+      description: 'Description'
+      dislikes_count: 'Dislikes'
+      email: 'Email'
+      first_name: 'First name(s)'
       image_url: 'Image URL'
+      input_id: 'ID'
+      input_url: 'URL'
+      last_name: 'Last name'
+      latitude: 'Latitude'
+      likes_count: 'Likes'
+      location: 'Location'
+      longitude: 'Longitude' 
+      participants: 'Participants'
+      picks: 'Picks'
+      project: 'Project'
+      published_at: 'Published at'
+      registration_completed_at: 'Registration completed at'
+      status: 'Status'
+      submitted_at: 'Submitted at'
+      tags: 'Tags'
+      title: 'Title'
+      votes_count: 'Votes'
   voting_method:
     default_voting_term_singular: vote
     default_voting_term_plural: votes

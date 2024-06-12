@@ -171,5 +171,56 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
       expect(idea_rows[0][:custom_field_values][:text_field]).to eq 'First text field'
       expect(idea_rows[0][:custom_field_values][:text_field2]).to eq 'Second text field'
     end
+
+    it 'correctly parses the rows of a real xlsx file and converts to idea_rows' do
+      base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/import.xlsx').read
+      file = service.send(:upload_source_file, "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{base_64_content}")
+      parsed_rows = service.parse_rows(file)
+      expect(parsed_rows.count).to eq 2
+      expect(parsed_rows[0]).to include(
+        :title_multiloc => { :en => 'Another idea from xlsx' },
+        :body_multiloc => { :en => 'And some bigger description here' },
+        :location_description => 'Oxford',
+        :custom_field_values => { :text_field => 'Some custom text here' }
+      )
+      expect(parsed_rows[1]).to include(
+        :title_multiloc => { :en => 'One more idea from xlsx' },
+        :body_multiloc => { :en => 'And another description here' },
+        :location_description => 'Cambridge',
+        :custom_field_values => {}
+      )
+    end
+
+    it 'processes select fields with integer values' do
+      create(
+        :custom_field_select,
+        resource: custom_form,
+        key: 'select_integer',
+        title_multiloc: { 'en' => 'Select integer field' },
+        options: [create(:custom_field_option, key: '2', title_multiloc: { 'en' => '2' })]
+      )
+      xlsx_ideas_array = [
+        {
+          pdf_pages: [1],
+          fields: {
+            'Select integer field' => 2
+          }
+        }
+      ]
+      idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file)
+      expect(idea_rows.count).to eq 1
+      expect(idea_rows[0][:custom_field_values][:select_integer]).to eq '2'
+    end
+
+    it 'text fields return text values if xlsx values are integers or floats' do
+      xlsx_ideas_array = [
+        { pdf_pages: [1], fields: { 'Text field' => 2 } },
+        { pdf_pages: [1], fields: { 'Text field' => 2.2 } }
+      ]
+      idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file)
+      expect(idea_rows.count).to eq 2
+      expect(idea_rows[0][:custom_field_values][:text_field]).to eq '2'
+      expect(idea_rows[1][:custom_field_values][:text_field]).to eq '2.2'
+    end
   end
 end

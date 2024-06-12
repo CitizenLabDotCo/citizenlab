@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, ReactNode, AriaRole } from 'react';
 
 import {
   Box,
@@ -32,8 +32,8 @@ const StyledContainer = styled(Box)`
 `;
 
 interface Props {
-  children: React.ReactNode;
-  containerRole?: string; // If the scrollable container needs a specific role, pass it in
+  children: ReactNode;
+  containerRole?: AriaRole; // If the scrollable container needs a specific role, pass it in
 }
 
 /*
@@ -44,7 +44,6 @@ const HorizontalScroll = ({ children, containerRole }: Props) => {
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
   const containerRef = React.useRef<HTMLDivElement>(null);
-
   // Used to determine when the scroll buttons should be disabled (E.g. At scroll end, disable the right button)
   const [atScrollStart, setAtScrollStart] = useState(true);
   const [atScrollEnd, setAtScrollEnd] = useState(false);

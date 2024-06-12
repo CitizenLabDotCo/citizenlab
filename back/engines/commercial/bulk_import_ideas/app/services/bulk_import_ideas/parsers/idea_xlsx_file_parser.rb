@@ -14,9 +14,11 @@ module BulkImportIdeas::Parsers
       files = create_files file_content
 
       job_ids = []
+      job_first_idea_index = 2 # First row is the header
       files.each do |file|
-        job = BulkImportIdeas::IdeaImportJob.perform_later('xlsx', [file], @import_user, @locale, @phase, @personal_data_enabled)
+        job = BulkImportIdeas::IdeaImportJob.perform_later('xlsx', [file], @import_user, @locale, @phase, @personal_data_enabled, job_first_idea_index)
         job_ids << job.job_id
+        job_first_idea_index += MAX_ROWS_PER_XLSX
       end
 
       job_ids
@@ -50,7 +52,7 @@ module BulkImportIdeas::Parsers
     # Merge the form fields that generated the input xlsx sheet and the import values into a single array
     def merge_idea_with_form_fields(idea)
       merged_idea = []
-      form_fields = import_form_data[:fields]
+      form_fields = import_form_data[:fields].deep_dup
       form_fields.each do |form_field|
         idea.each do |idea_field|
           if form_field[:name] == idea_field[:name] && (form_field[:type] == 'field')

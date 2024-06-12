@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  eventsPageTitle: {
-    id: 'app.containers.eventspage.eventsPageTitle',
-    defaultMessage: 'Events',
+  eventsPageTitle1: {
+    id: 'app.containers.eventspage.eventsPageTitle1',
+    defaultMessage: 'Events | {orgName}',
   },
   eventsPageDescription: {
     id: 'app.containers.eventspage.eventsPageDescription',
@@ -38,5 +38,10 @@ export default defineMessages({
   events: {
     id: 'app.containers.eventspage.events',
     defaultMessage: 'Events',
+  },
+  a11y_eventsHaveChanged1: {
+    id: 'app.containers.SearchInput.a11y_eventsHaveChanged1',
+    defaultMessage:
+      '{numberOfEvents, plural, =0 {# events have loaded} one {# event has loaded} other {# events have loaded}}.',
   },
 });

@@ -7,12 +7,10 @@ module BulkImportIdeas
   class WebApi::V1::PhaseUsersController < ApplicationController
     before_action :authorize_project, only: %i[create_user]
 
+    # called when approving individual inputs
     def create_user
       user = User.new
-      user.assign_attributes user_params(user)
-      if user.email.blank?
-        user.unique_code = SecureRandom.uuid
-      end
+      UserService.build_in_input_importer(user_params(user), user)
 
       if user.save
         render json: ::WebApi::V1::UserSerializer.new(

@@ -108,7 +108,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
                     <EditButton
                       icon="edit"
                       linkTo={adminProjectsProjectPath(project.data.id)}
-                      buttonStyle="secondary"
+                      buttonStyle="secondary-outlined"
                       padding="6px 12px"
                     >
                       {formatMessage(messages.editProject)}

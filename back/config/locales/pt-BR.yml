@@ -1,4 +1,38 @@
 pt:
+  locales:
+    en: Inglês
+    ar-MA: Árabe (Marrocos)
+    ar-SA: Árabe (Arábia Saudita)
+    ca-ES: Catalão
+    cy-GB: Galês
+    da-DK: Dinamarquês
+    de-DE: Alemão
+    el-GR: Grego
+    en-CA: Inglês (Canadá)
+    en-GB: Inglês (Reino Unido)
+    en-IE: Inglês (Irlanda)
+    es-CL: Espanhol (Chile)
+    es-ES: Espanhol (Espanha)
+    fi-FI: Finlandês
+    fr-BE: Francês (Bélgica)
+    fr-FR: Francês
+    hr-HR: Croata
+    hu-HU: Húngaro
+    it-IT: Italiano
+    kl-GL: Groenlandês
+    lb-LU: Luxemburguês
+    lv-LV: Letão
+    mi: Maori
+    nb-NO: Norueguês (Bokmål)
+    nl-BE: Holandês (Bélgica)
+    nl-NL: Holandês
+    pl-PL: Polonês
+    pt-BR: Português (Brasil)
+    ro-RO: Romeno
+    sr-Latn: Sérvio (latim)
+    sr-SP: Sérvio (cirílico)
+    sv-SE: Sueco
+    tr-TR: Turco
   symbols:
     outside: em outro lugar
   idea_statuses:
@@ -200,36 +234,40 @@ pt:
       subject: '%{organizationName}: Redefina sua senha'
       title_reset_your_password: 'Alterar senha'
   xlsx_export:
+    anonymous: 'Anônimo'
     column_headers:
-      input_id: 'ID'
-      latitude: 'Latitude'
-      longitude: 'Longitude'
-      location: 'Localização'
-      author_fullname: 'Nome do autor'
-      author_email: 'E-mail do autor'
-      author_id: 'Identificação do autor'
-      attachments: 'Anexos'
-      budget: 'Orçamento'
-      cost: 'Custo'
-      created_at: 'Submetido em'
-      submitted_at: 'Enviado em'
-      published_at: 'Publicado em'
-      comments_count: 'Comentários'
-      likes_count: 'Curtidas'
-      dislikes_count: 'Não curtidas'
-      picks: 'Escolhas'
-      participants: 'Participantes'
-      votes_count: 'Votos'
-      input_url: 'URL'
-      tags: 'Tags'
-      project: 'Projeto'
-      status: 'Status'
       assignee_fullname: 'Atribuído'
       assignee_email: 'E-mail do assinante'
-      image_url: 'imagem URL'
-      title: 'Título'
+      attachments: 'Anexos'
+      author_email: 'E-mail do autor'
+      author_fullname: 'Nome do autor'
+      author_id: 'Identificação do autor'
+      budget: 'Orçamento'
+      comments_count: 'Comentários'
+      cost: 'Custo'
+      created_at: 'Submetido em'
       description: 'Descrição'
-    anonymous: 'Anônimo'
+      dislikes_count: 'Não curtidas'
+      email: 'E-mail'
+      first_name: 'Nome(s) próprio(s)'
+      image_url: 'imagem URL'
+      input_id: 'ID'
+      input_url: 'URL'
+      last_name: 'Sobrenome'
+      latitude: 'Latitude'
+      likes_count: 'Curtidas'
+      location: 'Localização'
+      longitude: 'Longitude'
+      participants: 'Participantes'
+      picks: 'Escolhas'
+      project: 'Projeto'
+      published_at: 'Publicado em'
+      registration_completed_at: 'Registro concluído em'
+      status: 'Status'
+      submitted_at: 'Enviado em'
+      tags: 'Tags'
+      title: 'Título'
+      votes_count: 'Votos'
   form_builder:
     default_select_field:
       title: 'Sua pergunta'

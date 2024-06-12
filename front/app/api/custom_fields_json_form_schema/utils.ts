@@ -6,7 +6,6 @@ export const hasRequiredFields = (
   schemaResponse: SchemaResponse,
   locale: SupportedLocale
 ) => {
-  const { json_schema_multiloc } = schemaResponse.data.attributes;
-
-  return !!json_schema_multiloc[locale]?.required;
+  return !!schemaResponse.data.attributes?.json_schema_multiloc[locale]
+    ?.required;
 };

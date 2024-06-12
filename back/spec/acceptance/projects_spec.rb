@@ -145,7 +145,7 @@ resource 'Projects' do
       end
 
       example 'Get one project by id' do
-        PermissionsService.new.update_all_permissions
+        Permissions::PermissionsUpdateService.new.update_all_permissions
         do_request
         assert_status 200
 
@@ -154,8 +154,8 @@ resource 'Projects' do
         expect(json_response.dig(:data, :attributes)).to include(
           slug: @projects.first.slug,
           timeline_active: nil,
-          action_descriptor: {
-            posting_idea: { enabled: false, disabled_reason: 'project_inactive', future_enabled: nil },
+          action_descriptors: {
+            posting_idea: { enabled: false, disabled_reason: 'project_inactive', future_enabled_at: nil },
             commenting_idea: { enabled: false, disabled_reason: 'project_inactive' },
             reacting_idea: {
               enabled: false,
@@ -670,7 +670,8 @@ resource 'Projects' do
   get 'web_api/v1/projects/:id/votes_by_user_xlsx' do
     let(:phase1) { create(:single_voting_phase, start_at: Time.now - 18.days, end_at: Time.now - 17.days) }
     let(:phase2) { create(:multiple_voting_phase, start_at: Time.now - 14.days, end_at: Time.now - 13.days) }
-    let(:project) { create(:project, phases: [phase1, phase2]) }
+    let(:phase3) { create(:budgeting_phase, start_at: Time.now - 11.days, end_at: Time.now - 10.days) }
+    let(:project) { create(:project, phases: [phase1, phase2, phase3]) }
     let(:id) { project.id }
 
     context 'as a regular user' do
@@ -682,12 +683,33 @@ resource 'Projects' do
     end
 
     context 'as an admin' do
-      before { admin_header_token }
+      before do
+        @admin = create(:admin)
+        header_token_for(@admin)
+      end
 
       example_request 'Get xlsx of voters in voting phases' do
         expect(status).to eq 200
         expect(response_headers['Content-Type']).to include('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         expect(response_headers['Content-Disposition']).to include('votes_by_user.xlsx')
+      end
+
+      example 'Get xlsx of voters successfully translates column headers', document: false do
+        fixtures = YAML.load_file(Rails.root.join('spec/fixtures/locales/nl-NL.yml'))
+        dutch_column_headers = fixtures['nl']['xlsx_export']['column_headers']
+        @admin.update!(locale: 'nl-NL')
+
+        do_request
+        expect(status).to eq 200
+
+        workbook = RubyXL::Parser.parse_buffer(response_body)
+        header_row1 = workbook.worksheets[0][0].cells.map(&:value)
+        header_row2 = workbook.worksheets[1][0].cells.map(&:value)
+        header_row3 = workbook.worksheets[2][0].cells.map(&:value)
+
+        expect(header_row1).to match_array([dutch_column_headers['submitted_at']])
+        expect(header_row2).to match_array([dutch_column_headers['submitted_at']])
+        expect(header_row3).to match_array([dutch_column_headers['submitted_at']])
       end
     end
 
@@ -714,7 +736,8 @@ resource 'Projects' do
   get 'web_api/v1/projects/:id/votes_by_input_xlsx' do
     let(:phase1) { create(:single_voting_phase, start_at: Time.now - 18.days, end_at: Time.now - 17.days) }
     let(:phase2) { create(:multiple_voting_phase, start_at: Time.now - 14.days, end_at: Time.now - 13.days) }
-    let(:project) { create(:project, phases: [phase1, phase2]) }
+    let(:phase3) { create(:budgeting_phase, start_at: Time.now - 11.days, end_at: Time.now - 10.days) }
+    let(:project) { create(:project, phases: [phase1, phase2, phase3]) }
     let(:id) { project.id }
 
     context 'as a regular user' do
@@ -726,12 +749,67 @@ resource 'Projects' do
     end
 
     context 'as an admin' do
-      before { admin_header_token }
+      before do
+        @admin = create(:admin)
+        header_token_for(@admin)
+      end
 
       example_request 'Get xlsx of voting results in voting phases' do
         expect(status).to eq 200
         expect(response_headers['Content-Type']).to include('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         expect(response_headers['Content-Disposition']).to include('votes_by_input.xlsx')
+      end
+
+      example 'Get xlsx of voters successfully translates column headers', document: false do
+        fixtures = YAML.load_file(Rails.root.join('spec/fixtures/locales/fr-FR.yml'))
+        french_column_headers = fixtures['fr']['xlsx_export']['column_headers']
+        @admin.update!(locale: 'fr-FR')
+
+        do_request
+        expect(status).to eq 200
+
+        workbook = RubyXL::Parser.parse_buffer(response_body)
+        header_row1 = workbook.worksheets[0][0].cells.map(&:value)
+        header_row2 = workbook.worksheets[1][0].cells.map(&:value)
+        header_row3 = workbook.worksheets[2][0].cells.map(&:value)
+
+        expected_first_columns = [
+          french_column_headers['input_id'],
+          french_column_headers['title'],
+          french_column_headers['description']
+        ]
+
+        expected_last_columns = [
+          french_column_headers['input_url'],
+          french_column_headers['attachments'],
+          french_column_headers['tags'],
+          french_column_headers['latitude'],
+          french_column_headers['longitude'],
+          french_column_headers['location'],
+          french_column_headers['project'],
+          french_column_headers['status'],
+          french_column_headers['author_fullname'],
+          french_column_headers['author_email'],
+          french_column_headers['author_id'],
+          french_column_headers['published_at']
+        ]
+
+        expect(header_row1).to match_array(
+          expected_first_columns + [french_column_headers['votes_count']] + expected_last_columns
+        )
+        expect(header_row2).to match_array(
+          expected_first_columns +
+          [french_column_headers['votes_count'], french_column_headers['participants']] +
+          expected_last_columns
+        )
+        expect(header_row3).to match_array(
+          expected_first_columns +
+          [
+            "#{french_column_headers['picks']} / #{french_column_headers['participants']}",
+            french_column_headers['cost']
+          ] +
+          expected_last_columns
+        )
       end
     end
 

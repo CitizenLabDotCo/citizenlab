@@ -313,7 +313,7 @@ const InternalChildCommentForm = ({
                 <CancelButton
                   disabled={processing}
                   onClick={onCancel}
-                  buttonStyle="secondary"
+                  buttonStyle="secondary-outlined"
                   padding={smallerThanTablet ? '6px 12px' : undefined}
                 >
                   <FormattedMessage {...commentsMessages.cancel} />

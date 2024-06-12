@@ -77,6 +77,12 @@
             "minItems": 1,
             "default": ["en"]
           },
+          "population": {
+            "title": "Population",
+            "description": "Number of inhabitants in the territory. Leave empty if not applicable.",
+            "type": ["integer", "null"],
+            "minimum": 0
+          },
           "weglot_api_key": {
             "title": "Weglot API key",
             "description": "Set the API key of Weglot to enable automatic page translations.",
@@ -1345,6 +1351,18 @@
         "type": "object",
         "title": "Multi-language platform",
         "description": "Enables the ability to add multiple languages on the platform.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "management_feed": {
+        "type": "object",
+        "title": "Management Feed",
+        "description": "Experimental feature: A minimal list of selected actions performed by admins or managers in the last 30 days. Not all actions are included.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

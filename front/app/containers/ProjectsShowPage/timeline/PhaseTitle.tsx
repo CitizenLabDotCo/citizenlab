@@ -72,7 +72,7 @@ const HeaderTitleWrapper = styled.div`
   `}
 `;
 
-const HeaderTitle = styled.h2`
+const HeaderTitle = styled.h3`
   color: ${colors.textSecondary};
   font-size: ${fontSizes.l + 1}px;
   line-height: normal;

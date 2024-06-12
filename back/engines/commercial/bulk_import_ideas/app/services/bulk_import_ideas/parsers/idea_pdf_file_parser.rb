@@ -23,9 +23,11 @@ module BulkImportIdeas::Parsers
       files = create_files file_content
 
       job_ids = []
+      job_first_idea_index = 1
       files.each_slice(IDEAS_PER_JOB) do |sliced_files|
-        job = BulkImportIdeas::IdeaImportJob.perform_later('pdf', sliced_files, @import_user, @locale, @phase, @personal_data_enabled)
+        job = BulkImportIdeas::IdeaImportJob.perform_later('pdf', sliced_files, @import_user, @locale, @phase, @personal_data_enabled, job_first_idea_index)
         job_ids << job.job_id
+        job_first_idea_index += IDEAS_PER_JOB
       end
 
       job_ids
@@ -108,7 +110,7 @@ module BulkImportIdeas::Parsers
     # @param [Array<Hash>] idea_fields - comes from IdeaBaseFileParser#structure_raw_fields
     def merge_idea_with_form_fields(idea_fields)
       merged_fields = []
-      form_fields = import_form_data[:fields] # Array<Hash> comes from IdeaPdfFormExporter#add_to_importer_fields
+      form_fields = import_form_data[:fields].deep_dup # Array<Hash> comes from IdeaPdfFormExporter#add_to_importer_fields
       form_fields.each do |form_field|
         idea_fields.each do |idea_field|
           if form_field[:name] == idea_field[:name] || form_field[:description] == idea_field[:name]

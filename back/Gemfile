@@ -84,7 +84,7 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 # gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-gem 'pundit', '~> 2.3.0'
+gem 'pundit', '~> 2.3.2'
 gem 'active_model_serializers', '~> 0.10.12'
 
 gem 'jwt', '~> 2.8.1'
@@ -92,7 +92,7 @@ gem 'que', '~> 2.3.0'
 gem 'que-web', '~> 0.10.0'
 
 gem 'activerecord-import', '~> 1.6'
-gem 'json-schema', '~> 4.0'
+gem 'json-schema', '~> 4.3'
 gem 'activerecord-postgis-adapter', '~> 8.0'
 
 gem 'carrierwave', '~> 3.0.7'
@@ -103,7 +103,7 @@ gem 'api-pagination', '~> 5.0.0'
 gem 'kaminari', '~> 1.2'
 gem 'rails-i18n', '~> 7.0.9'
 
-gem 'awesome_nested_set', '~> 3.5.0'
+gem 'awesome_nested_set', '~> 3.6.0'
 gem 'axlsx', '3.0.0.pre' # write xlsx files
 gem 'rubyXL', '~> 3.4.27' # read xlsx files. Has issues with writing files https://github.com/CitizenLabDotCo/citizenlab/pull/7834
 gem 'counter_culture', '~> 3.5'

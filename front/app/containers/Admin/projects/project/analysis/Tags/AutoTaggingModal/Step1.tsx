@@ -11,8 +11,8 @@ import {
   Label,
   Radio,
   stylingConsts,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import { isEmpty } from 'lodash-es';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -32,7 +32,6 @@ import Tag from '../Tag';
 
 const AutoTagMethodContainer = styled.div<{ isDisabled: boolean }>`
   background-color: ${colors.grey100};
-  width: 30%;
   border-radius: 3px;
   padding: 16px;
   ${({ isDisabled }) =>
@@ -90,70 +89,73 @@ const AutoTagOption = ({
 }) => {
   const { formatMessage } = useIntl();
   return (
-    <Tippy
-      content={
-        <p>{formatMessage(messages.advancedAutotaggingUpsellMessage)}</p>
-      }
-      zIndex={9999999}
-      disabled={!isDisabled}
-    >
-      <AutoTagMethodContainer
-        onClick={isDisabled || isLoading ? undefined : () => onSelect()}
-        isDisabled={isDisabled || isLoading}
+    <Box w="30%">
+      <Tooltip
+        content={
+          <p>{formatMessage(messages.advancedAutotaggingUpsellMessage)}</p>
+        }
+        zIndex={9999999}
+        disabled={!isDisabled}
       >
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          mb="8px"
+        <AutoTagMethodContainer
+          onClick={isDisabled || isLoading ? undefined : () => onSelect()}
+          isDisabled={isDisabled || isLoading}
+          tabIndex={0}
         >
-          <Box w="32px">
-            <Tag tagType={tagType} name="&nbsp;" />
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            mb="8px"
+          >
+            <Box w="32px">
+              <Tag tagType={tagType} name="&nbsp;" />
+            </Box>
+            {isRecommended && (
+              <Box
+                bgColor={colors.success}
+                py="4px"
+                px="8px"
+                borderRadius={stylingConsts.borderRadius}
+                display="flex"
+                gap="4px"
+                alignItems="center"
+              >
+                <Icon
+                  name="stars"
+                  fill={colors.white}
+                  width="16px"
+                  height="16px"
+                />
+                <Text color="white" m="0px" fontSize="s">
+                  {formatMessage(messages.recommended)}
+                </Text>
+              </Box>
+            )}
+            {isDisabled && <Icon name="lock" />}
           </Box>
-          {isRecommended && (
-            <Box
-              bgColor={colors.success}
-              py="4px"
-              px="8px"
-              borderRadius={stylingConsts.borderRadius}
-              display="flex"
-              gap="4px"
-              alignItems="center"
-            >
-              <Icon
-                name="stars"
-                fill={colors.white}
-                width="16px"
-                height="16px"
-              />
-              <Text color="white" m="0px" fontSize="s">
-                {formatMessage(messages.recommended)}
-              </Text>
-            </Box>
-          )}
-          {isDisabled && <Icon name="lock" />}
-        </Box>
-        <Box
-          display="flex"
-          justifyContent="flex-start"
-          alignItems="center"
-          gap="6px"
-        >
-          <Title variant="h6" m="0px">
-            {title}
-          </Title>
-          {isLoading && (
-            <Box mx="16px">
-              <Spinner size="24px" />
-            </Box>
-          )}
-          {tooltip && <IconTooltip content={tooltip} icon="info-outline" />}
-        </Box>
-        <Text mt="12px" mb="0px">
-          {children}
-        </Text>
-      </AutoTagMethodContainer>
-    </Tippy>
+          <Box
+            display="flex"
+            justifyContent="flex-start"
+            alignItems="center"
+            gap="6px"
+          >
+            <Title variant="h6" m="0px">
+              {title}
+            </Title>
+            {isLoading && (
+              <Box mx="16px">
+                <Spinner size="24px" />
+              </Box>
+            )}
+            {tooltip && <IconTooltip content={tooltip} icon="info-outline" />}
+          </Box>
+          <Text mt="12px" mb="0px">
+            {children}
+          </Text>
+        </AutoTagMethodContainer>
+      </Tooltip>
+    </Box>
   );
 };
 

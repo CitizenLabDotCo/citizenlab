@@ -3,15 +3,21 @@
 class SideFxPhaseService
   include SideFxHelper
 
-  attr_writer :permissions_service
+  attr_writer :permissions_update_service
 
   def before_create(phase, user); end
 
   def after_create(phase, user)
     phase.update!(description_multiloc: TextImageService.new.swap_data_images_multiloc(phase.description_multiloc, field: :description_multiloc, imageable: phase))
-    LogActivityJob.perform_later(phase, 'created', user, phase.created_at.to_i)
+    LogActivityJob.perform_later(
+      phase,
+      'created',
+      user,
+      phase.created_at.to_i,
+      payload: { phase: clean_time_attributes(phase.attributes) }
+    )
 
-    permissions_service.update_permissions_for_scope(phase)
+    permissions_update_service.update_permissions_for_scope(phase)
 
     Surveys::WebhookManagerJob.perform_later(
       'participation_context_created',
@@ -32,22 +38,32 @@ class SideFxPhaseService
   end
 
   def after_update(phase, user)
-    LogActivityJob.perform_later(phase, 'changed', user, phase.updated_at.to_i)
+    change = phase.saved_changes
+    payload = { phase: clean_time_attributes(phase.attributes) }
+    payload[:change] = sanitize_change(change) if change.present?
 
-    permissions_service.update_permissions_for_scope(phase)
+    LogActivityJob.perform_later(
+      phase,
+      'changed',
+      user,
+      phase.updated_at.to_i,
+      payload: payload
+    )
+
+    permissions_update_service.update_permissions_for_scope(phase)
 
     %i[
       description_multiloc voting_method voting_max_votes_per_idea voting_max_total voting_min_total
       posting_enabled posting_method posting_limited_max commenting_enabled reacting_enabled
       reacting_like_method reacting_like_limited_max reacting_dislike_enabled presentation_mode participation_method
     ].each do |attribute|
-      if phase.send "#{attribute}_previously_changed?"
+      if phase.send :"#{attribute}_previously_changed?"
         LogActivityJob.perform_later(
           phase,
           "changed_#{attribute}",
           user,
           phase.updated_at.to_i,
-          payload: { change: phase.send("#{attribute}_previous_change") }
+          payload: { change: phase.send(:"#{attribute}_previous_change") }
         )
       end
     end
@@ -76,10 +92,12 @@ class SideFxPhaseService
 
   def after_destroy(frozen_phase, user)
     serialized_phase = clean_time_attributes(frozen_phase.attributes)
+
     LogActivityJob.perform_later(
       encode_frozen_resource(frozen_phase), 'deleted',
       user, Time.now.to_i,
-      payload: { phase: serialized_phase }
+      payload: { phase: serialized_phase },
+      project_id: frozen_phase&.project&.id
     )
   end
 
@@ -91,7 +109,7 @@ class SideFxPhaseService
 
   private
 
-  def permissions_service
-    @permissions_service ||= PermissionsService.new
+  def permissions_update_service
+    @permissions_update_service ||= Permissions::PermissionsUpdateService.new
   end
 end

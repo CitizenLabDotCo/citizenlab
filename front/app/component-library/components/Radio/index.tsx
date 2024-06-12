@@ -2,7 +2,7 @@ import React, { FormEvent, useState } from 'react';
 
 import { get } from 'lodash-es';
 import { hideVisually } from 'polished';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
 import {
   fontSizes,
@@ -17,7 +17,7 @@ const HiddenRadio = styled.input.attrs({ type: 'radio' })`
   ${hideVisually()};
 `;
 
-const CustomRadio = styled.div`
+const CustomRadio = styled.div<{ borderColor: string | undefined }>`
   flex: 0 0 20px;
   width: 20px;
   height: 20px;
@@ -30,7 +30,9 @@ const CustomRadio = styled.div`
   position: relative;
   background: #fff;
   border-radius: 50%;
-  border: solid 1px ${colors.grey500};
+  border: ${({ borderColor }) =>
+    borderColor ? `solid 1px ${borderColor}` : `solid 1px ${colors.grey500}`};
+  border: ;
   transition: all 120ms ease-out;
 
   ${isRtl`
@@ -103,6 +105,7 @@ export type Props = {
   onChange?: (arg: any) => void;
   currentValue?: any;
   value: any;
+  usePrimaryBorder?: boolean;
   /**
    * Name should be a string that is the same for all radios of the same radio group and unique for each radio group.
    * E.g. if you have a poll with two questions and each question has four answers/radios,
@@ -129,9 +132,11 @@ const Radio = ({
   label,
   className,
   isRequired,
+  usePrimaryBorder = false,
   onChange: _onChange,
   ...rest
 }: Props) => {
+  const theme = useTheme();
   const [inputFocused, setInputFocused] = useState(false);
 
   const handleOnChange = (event: FormEvent) => {
@@ -183,6 +188,7 @@ const Radio = ({
             ${checked ? 'checked' : ''}
             ${disabled ? 'disabled' : 'enabled'}
             circle`}
+        borderColor={usePrimaryBorder ? theme.colors.tenantPrimary : undefined}
       >
         {checked && (
           <Checked aria-hidden color={buttonColor || colors.success} />
