@@ -77,7 +77,7 @@
       "link_terms_conditions": "Vilkår og betingelser"
       "link_unsubscribe": "Meld av"
       "powered_by": "Levert av"
-      "statement": "CitizenLab har sendt deg denne e-posten på vegne av %{organizationName}, fordi du er en registrert bruker hos %{organizationLink}. Du kan %{unsubscribeLink} hvis du ikke vil motta disse e-postene i fremtiden."
+      "statement": "Go Vocal har sendt deg denne e-posten på vegne av %{organizationName}, fordi du er en registrert bruker hos %{organizationLink}. Du kan %{unsubscribeLink} hvis du ikke vil motta disse e-postene i fremtiden."
       "unsubscribe_text": "meld av"
     follow:
       "unfollow_here": "Du har mottatt dette varselet på grunn av et element du følger. <a href=\"%{unfollow_url}\">Du kan slutte å følge den her.</a>"
