@@ -181,7 +181,11 @@ const PlatformTemplateContent = ({ startDate, endDate }: Props) => {
       {supportedEnabledFields.map((field) => (
         <Element is={Container} canvas key={field.id}>
           <DemographicsWidget
-            title={field.attributes.title_multiloc}
+            title={
+              field.attributes.code === 'birthyear'
+                ? toMultiloc(messages.age)
+                : field.attributes.title_multiloc
+            }
             {...dateRange}
             customFieldId={field.id}
           />
