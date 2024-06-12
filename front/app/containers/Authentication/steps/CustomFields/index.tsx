@@ -64,9 +64,8 @@ const CustomFields = ({
     }
   };
 
-  const { ui_schema_multiloc } = userCustomFieldsSchema.data.attributes;
-
-  const uiSchema = ui_schema_multiloc[locale];
+  const uiSchema =
+    userCustomFieldsSchema.data.attributes?.ui_schema_multiloc[locale];
 
   return (
     <Box
