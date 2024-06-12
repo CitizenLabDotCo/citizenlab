@@ -77,7 +77,7 @@ fi:
       "link_terms_conditions": "käyttöehdot"
       "link_unsubscribe": "Lopeta tilaus"
       "powered_by": "Voimanlähteenä"
-      "statement": "CitizenLab lähetti sinulle tämän sähköpostin käyttäjän %{organizationName}puolesta, koska olet %{organizationLink}rekisteröity käyttäjä. Voit %{unsubscribeLink} , jos et halua saada näitä sähköposteja jatkossa."
+      "statement": "Go Vocal lähetti sinulle tämän sähköpostin käyttäjän %{organizationName}puolesta, koska olet %{organizationLink}rekisteröity käyttäjä. Voit %{unsubscribeLink} , jos et halua saada näitä sähköposteja jatkossa."
       "unsubscribe_text": "Lopeta tilaus"
     follow:
       "unfollow_here": "Sait tämän ilmoituksen seuraamasi kohteen takia. <a href=\"%{unfollow_url}\">Voit lopettaa sen seuraamisen täällä.</a>"

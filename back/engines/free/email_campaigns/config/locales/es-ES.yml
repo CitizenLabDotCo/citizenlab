@@ -77,7 +77,7 @@ es:
       "link_terms_conditions": "Términos & Condiciones"
       "link_unsubscribe": "Cancelar la suscripción"
       "powered_by": "Impulsado por"
-      "statement": "Este email le fue enviado por CitizenLab en nombre de %{organizationName}, porque eres usuario registrado de %{organizationLink}. Puedes %{unsubscribeLink} si no deseas recibir estos emails en el futuro."
+      "statement": "Este email le fue enviado por Go Vocal en nombre de %{organizationName}, porque eres usuario registrado de %{organizationLink}. Puedes %{unsubscribeLink} si no deseas recibir estos emails en el futuro."
       "unsubscribe_text": "cancelar la suscripción"
     follow:
       "unfollow_here": "Has recibido esta notificación debido a un artículo que sigues. <a href=\"%{unfollow_url}\">Puedes dejar de seguirlo aquí.</a>"
