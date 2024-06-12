@@ -590,6 +590,7 @@
   "app.containers.Admin.PagesAndMenu.topInfoSaveAndEnableButton": "Save and enable top info section",
   "app.containers.Admin.PagesAndMenu.topInfoSaveButton": "Save top info section",
   "app.containers.Admin.PagesAndMenu.viewButton": "View",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.age": "Age",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.community": "Community",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.executiveSummary": "Executive summary",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Top-level inclusion indicators",
