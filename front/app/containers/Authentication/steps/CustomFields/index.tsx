@@ -14,6 +14,7 @@ import {
 } from 'containers/Authentication/typings';
 
 import FormWrapper from 'components/Form/Components/FormWrapper';
+import { isValidData, customAjv } from 'components/Form/utils';
 import Button from 'components/UI/Button';
 import UserCustomFieldsForm from 'components/UserCustomFields';
 
@@ -47,25 +48,37 @@ const CustomFields = ({
   const smallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
   const [formData, setFormData] = useState<Record<string, any>>({});
+  const [showAllErrors, setShowAllErrors] = useState(false);
 
   useEffect(() => {
     trackEventByName(tracks.signUpCustomFieldsStepEntered);
   }, []);
 
-  if (!authUser || !userCustomFieldsSchema) {
+  const schema =
+    userCustomFieldsSchema?.data.attributes?.json_schema_multiloc[locale];
+  const uiSchema =
+    userCustomFieldsSchema?.data.attributes?.ui_schema_multiloc[locale];
+
+  if (!authUser || !userCustomFieldsSchema || !schema || !uiSchema) {
     return null;
   }
 
   const handleSubmit = async () => {
-    try {
-      await onSubmit(authUser.data.id, formData);
-    } catch (e) {
-      setError('unknown');
+    if (!isValidData(schema, uiSchema, formData, customAjv)) {
+      setShowAllErrors(true);
+    } else {
+      try {
+        await onSubmit(authUser.data.id, formData);
+      } catch (e) {
+        setError('unknown');
+      }
     }
   };
 
-  const uiSchema =
-    userCustomFieldsSchema.data.attributes?.ui_schema_multiloc[locale];
+  const formHasRequiredFields = hasRequiredFields(
+    userCustomFieldsSchema,
+    locale
+  );
 
   return (
     <Box
@@ -76,6 +89,8 @@ const CustomFields = ({
       <FormWrapper formId={uiSchema?.options?.formId}>
         <UserCustomFieldsForm
           authenticationContext={authenticationData.context}
+          showAllErrors={showAllErrors}
+          setShowAllErrors={setShowAllErrors}
           onChange={setFormData}
         />
 
@@ -93,7 +108,7 @@ const CustomFields = ({
             onClick={handleSubmit}
           />
 
-          {!hasRequiredFields(userCustomFieldsSchema, locale) && (
+          {!formHasRequiredFields && (
             <Button
               id="e2e-signup-custom-fields-skip-btn"
               buttonStyle="text"
