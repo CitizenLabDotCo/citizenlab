@@ -102,7 +102,7 @@ ro:
       "link_terms_conditions": "Termeni și condiții"
       "link_unsubscribe": "Dezabonare"
       "powered_by": "Cu sprijinul"
-      "statement": "Acest e-mail v-a fost trimis de CitizenLab în numele %{organizationName}, deoarece sunteți un utilizator înregistrat al %{organizationLink}. Puteți %{unsubscribeLink} dacă nu doriți să primiți aceste e-mailuri în viitor."
+      "statement": "Acest e-mail v-a fost trimis de Go Vocal în numele %{organizationName}, deoarece sunteți un utilizator înregistrat al %{organizationLink}. Puteți %{unsubscribeLink} dacă nu doriți să primiți aceste e-mailuri în viitor."
       "unsubscribe_text": "Dezabonare"
     comment_deleted_by_admin:
       reason: 'Motivul pentru care comentariul dvs. a fost șters:'
