@@ -9,7 +9,7 @@ module MultiTenancy
 
       ADMIN_1_ATTRS = {
         id: '386d255e-2ff1-4192-8e50-b3022576be50',
-        email: 'admin@citizenlab.co',
+        email: 'admin@govocal.com',
         password: 'democracy2.0',
         roles: [{ type: 'admin' }],
         locale: 'en'
@@ -22,14 +22,14 @@ module MultiTenancy
 
       MODERATOR_ATTRS = {
         id: '61caabce-f7e5-4804-b9df-36d7d7d73e4d',
-        email: 'moderator@citizenlab.co',
+        email: 'moderator@govocal.com',
         password: 'democracy2.0',
         roles: []
       }.freeze
 
       USER_ATTRS = {
         id: '546335a3-33b9-471c-a18a-d5b58ebf173a',
-        email: 'user@citizenlab.co',
+        email: 'user@govocal.com',
         password: 'democracy2.0',
         roles: []
       }.freeze

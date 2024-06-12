@@ -12,7 +12,7 @@ module BulkImportIdeas::Exporters
       columns = {
         locale_first_name_label => 'Bill',
         locale_last_name_label => 'Test',
-        locale_email_label => 'bill@citizenlab.co',
+        locale_email_label => 'bill@govocal.com',
         locale_permission_label => 'X',
         locale_published_label => '18-07-2022'
       }

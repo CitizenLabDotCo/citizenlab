@@ -35,8 +35,7 @@ module MultiTenancy
           configure_timeline_for(project)
           configure_events_for(project)
 
-          ([User.find_by(email: 'moderator@citizenlab.co')] + User.where.not(email: %w[admin@citizenlab.co
-            user@citizenlab.co]).shuffle.take(rand(5))).each do |some_moderator|
+          ([User.find_by(email: 'moderator@govocal.com')] + User.where.not(email: %w[admin@govocal.com user@govocal.com]).shuffle.take(rand(5))).each do |some_moderator|
             some_moderator.add_role 'project_moderator', project_id: project.id
             some_moderator.save!
           end

@@ -18,7 +18,7 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
             'nl-BE' => 'Mirakelgem'
           },
           signup_helper_text: {
-            en: 'If you don\'t want to register, use hello@citizenlab.co/democrazy as email/password'
+            en: 'If you don\'t want to register, use hello@govocal.com/democrazy as email/password'
           },
           maximum_admins_number: 2,
           maximum_moderators_number: 2,
@@ -375,12 +375,12 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
         roles: [{ type: 'admin' }],
         first_name: 'Citizen',
         last_name: 'Lab',
-        email: 'hello@citizenlab.co',
+        email: 'hello@govocal.com',
         password: 'democrazy',
         locale: tenant.configuration.settings('core', 'locales')&.first || 'en',
         registration_completed_at: Time.zone.now
       )
-      admin = User.find_by(email: 'admin@citizenlab.co')
+      admin = User.find_by(email: 'admin@govocal.com')
       UserService.update_in_tenant_template!(admin) if admin
       Analytics::PopulateDimensionsService.run
     end
