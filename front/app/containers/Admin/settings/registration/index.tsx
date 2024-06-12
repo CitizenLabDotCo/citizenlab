@@ -48,6 +48,9 @@ const SettingsRegistrationTab = () => {
     isLoading: isFormSubmitting,
     isSuccess: isFormSaved,
   } = useUpdateAppConfiguration();
+  const emailConfirmPermissionEnabled = useFeatureFlag({
+    name: 'permission_option_email_confirmation',
+  });
 
   // Creating another instance to update follow preferences separately
   const { mutate: updateFollowPreferences } = useUpdateAppConfiguration();
@@ -177,10 +180,12 @@ const SettingsRegistrationTab = () => {
                 latestAppConfigSettings.core.custom_fields_signup_helper_text
               }
             />
-            <ToggleUserConfirmation
-              onChange={handleUserConfirmationToggleChange}
-              isEnabled={userConfirmationToggleIsEnabled}
-            />
+            {!emailConfirmPermissionEnabled && (
+              <ToggleUserConfirmation
+                onChange={handleUserConfirmationToggleChange}
+                isEnabled={userConfirmationToggleIsEnabled}
+              />
+            )}
             <SubmitWrapper
               loading={isFormSubmitting}
               status={getSubmitState({

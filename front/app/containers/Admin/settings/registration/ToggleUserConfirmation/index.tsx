@@ -9,8 +9,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import { SubSectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -41,17 +39,9 @@ type Props = {
 };
 
 const ToggleUserConfirmation = ({ isEnabled, onChange }: Props) => {
-  const emailConfirmPermissionEnabled = useFeatureFlag({
-    name: 'permission_option_email_confirmation',
-  });
-
   const handleChange = () => {
     onChange(!isEnabled);
   };
-
-  if (emailConfirmPermissionEnabled) {
-    return null;
-  }
 
   return (
     <Box mb="35px">
