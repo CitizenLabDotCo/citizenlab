@@ -68,6 +68,7 @@
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Crie um projeto baseado no modelo '{templateTitle}'",
   "app.components.ProjectTemplatePreview.goBack": "Voltar",
   "app.components.ProjectTemplatePreview.goBackTo": "Volte para o {goBackLink}.",
+  "app.components.ProjectTemplatePreview.govocalExpert": "Especialista em voz",
   "app.components.ProjectTemplatePreview.infoboxLine1": "Você quer usar este modelo para o seu projeto de participação?",
   "app.components.ProjectTemplatePreview.infoboxLine2": "Entre em contato com a pessoa responsável da administração da sua cidade ou entre em contato com {link}.",
   "app.components.ProjectTemplatePreview.projectFolder": "Pasta de projetos",

@@ -68,6 +68,7 @@
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Izveidot projektu, pamatojoties uz veidni '{templateTitle}'",
   "app.components.ProjectTemplatePreview.goBack": "Atgriezties",
   "app.components.ProjectTemplatePreview.goBackTo": "Atgriezties atpakaļ uz {goBackLink}.",
+  "app.components.ProjectTemplatePreview.govocalExpert": "Go Vokālais eksperts",
   "app.components.ProjectTemplatePreview.infoboxLine1": "Vai vēlaties izmantot šo veidni savam līdzdalības projektam?",
   "app.components.ProjectTemplatePreview.infoboxLine2": "Sazinieties ar atbildīgo personu jūsu pilsētas administrācijā vai sazinieties ar {link}.",
   "app.components.ProjectTemplatePreview.projectFolder": "Projekta mape",

@@ -68,6 +68,7 @@
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Create a project based on the template '{templateTitle}'",
   "app.components.ProjectTemplatePreview.goBack": "Go back",
   "app.components.ProjectTemplatePreview.goBackTo": "Go back to the {goBackLink}.",
+  "app.components.ProjectTemplatePreview.govocalExpert": "Go Vocal expert",
   "app.components.ProjectTemplatePreview.infoboxLine1": "Want to use this template for your participation project?",
   "app.components.ProjectTemplatePreview.infoboxLine2": "Reach out to the responsible person in your city administration, or contact a {link}.",
   "app.components.ProjectTemplatePreview.projectFolder": "Project folder",

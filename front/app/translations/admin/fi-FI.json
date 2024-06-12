@@ -68,6 +68,7 @@
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Luo projekti mallin{templateTitle}perusteella",
   "app.components.ProjectTemplatePreview.goBack": "Mene takaisin",
   "app.components.ProjectTemplatePreview.goBackTo": "Palaa kohtaan {goBackLink}.",
+  "app.components.ProjectTemplatePreview.govocalExpert": "Mene lauluasiantuntijaksi",
   "app.components.ProjectTemplatePreview.infoboxLine1": "Haluatko käyttää tätä mallia osallistumisprojektissasi?",
   "app.components.ProjectTemplatePreview.infoboxLine2": "Ota yhteyttä kaupungin hallinnon vastuuhenkilöön tai ota yhteyttä numeroon {link}.",
   "app.components.ProjectTemplatePreview.projectFolder": "Projektikansio",

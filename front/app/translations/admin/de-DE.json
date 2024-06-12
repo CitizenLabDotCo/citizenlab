@@ -68,6 +68,7 @@
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Erstellen Sie ein Projekt basierend auf der Vorlage '{templateTitle}'",
   "app.components.ProjectTemplatePreview.goBack": "Zurück",
   "app.components.ProjectTemplatePreview.goBackTo": "﻿Gehen Sie zurück zum {goBackLink}.",
+  "app.components.ProjectTemplatePreview.govocalExpert": "Go Vocal Experte",
   "app.components.ProjectTemplatePreview.infoboxLine1": "Möchtest du diese Vorlage für ein Beteiligungsprojekt verwenden?",
   "app.components.ProjectTemplatePreview.infoboxLine2": "Wenden Sie sich an die zuständige Person in Ihrer Stadtverwaltung oder an einen {link}.",
   "app.components.ProjectTemplatePreview.projectFolder": "Projekt-Ordner",

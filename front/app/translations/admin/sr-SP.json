@@ -68,6 +68,7 @@
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Креирајте пројекат на основу шаблона '{templateTitle}'",
   "app.components.ProjectTemplatePreview.goBack": "Повратак назад",
   "app.components.ProjectTemplatePreview.goBackTo": "Вратите се на {goBackLink}.",
+  "app.components.ProjectTemplatePreview.govocalExpert": "Go Vocal expert",
   "app.components.ProjectTemplatePreview.infoboxLine1": "Желите да користите овај шаблон за свој пројекат учешћа?",
   "app.components.ProjectTemplatePreview.infoboxLine2": "Обратите се одговорном лицу у вашој градској управи или контактирајте {link}.",
   "app.components.ProjectTemplatePreview.projectFolder": "Фасцикла пројекта",

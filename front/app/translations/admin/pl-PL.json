@@ -68,6 +68,7 @@
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Stwórz projekt w oparciu o szablon \"{templateTitle}\"",
   "app.components.ProjectTemplatePreview.goBack": "Wróć",
   "app.components.ProjectTemplatePreview.goBackTo": "Wróć do {goBackLink}.",
+  "app.components.ProjectTemplatePreview.govocalExpert": "Zostań ekspertem wokalnym",
   "app.components.ProjectTemplatePreview.infoboxLine1": "Czy chcesz skorzystać z tego szablonu w swoim projekcie?",
   "app.components.ProjectTemplatePreview.infoboxLine2": "Skontaktuj się z osobą odpowiedzialną w administracji miasta lub skontaktuj się z {link}.",
   "app.components.ProjectTemplatePreview.projectFolder": "Folder projektu",

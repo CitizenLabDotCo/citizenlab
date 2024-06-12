@@ -948,6 +948,7 @@
   "app.containers.AccessibilityStatement.exception_1": "Nasze cyfrowe platformy partycypacji ułatwiają użytkownikom umieszczanie treści generowanych przez osoby prywatne i organizacje. Możliwe jest, że pliki PDF, obrazy lub inne typy plików, w tym multimedialne, są umieszczane na platformie jako załączniki lub dodawane do pól tekstowych przez użytkowników platformy. Dokumenty te mogą nie być w pełni dostępne.",
   "app.containers.AccessibilityStatement.feedbackProcessIntro": "Opinia na temat dostępności strony jest dla nas bardzo ważna. Prosimy o kontakt z nami w jeden z poniższych sposobów:",
   "app.containers.AccessibilityStatement.feedbackProcessTitle": "Proces przekazywania informacji zwrotnych",
+  "app.containers.AccessibilityStatement.govocalAddress2022": "Boulevard Pachéco 34, 1000 Bruksela, Belgia",
   "app.containers.AccessibilityStatement.intro2022": "{citizenLabLink} jest zaangażowana w zapewnienie platformy, która jest dostępna dla wszystkich użytkowników, niezależnie od technologii lub umiejętności. Aktualne standardy dostępności są przestrzegane w naszych bieżących pracach, aby zmaksymalizować dostępność i użyteczność naszych platform dla wszystkich użytkowników.",
   "app.containers.AccessibilityStatement.mapviewIdeas": "Widok mapy",
   "app.containers.AccessibilityStatement.mapviewIdeasException": "Projekty mają możliwość wyświetlania wkładu użytkowników w formie mapy, który nie jest dostępny. Zawsze jednak dostępny jest alternatywny widok listy, który jest dostępny.",

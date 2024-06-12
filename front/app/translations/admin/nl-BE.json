@@ -68,6 +68,7 @@
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Maak een project aan op basis van het sjabloon '{templateTitle}'",
   "app.components.ProjectTemplatePreview.goBack": "Ga terug",
   "app.components.ProjectTemplatePreview.goBackTo": "Ga terug naar de {goBackLink}.",
+  "app.components.ProjectTemplatePreview.govocalExpert": "Go Vocal expert",
   "app.components.ProjectTemplatePreview.infoboxLine1": "Wil je dit sjabloon gebruiken voor jouw participatieproject?",
   "app.components.ProjectTemplatePreview.infoboxLine2": "Neem contact op met de verantwoordelijke binnen je organisatie, of contacteer een {link}.",
   "app.components.ProjectTemplatePreview.projectFolder": "Projectmap",

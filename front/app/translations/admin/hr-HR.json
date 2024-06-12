@@ -68,6 +68,7 @@
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Kreirajte projekt na temelju predloška '{templateTitle}'",
   "app.components.ProjectTemplatePreview.goBack": "Idi natrag",
   "app.components.ProjectTemplatePreview.goBackTo": "Povratak na {goBackLink}.",
+  "app.components.ProjectTemplatePreview.govocalExpert": "Budite stručnjak za glasove",
   "app.components.ProjectTemplatePreview.infoboxLine1": "Želite li koristiti ovaj predložak za svoj projekt?",
   "app.components.ProjectTemplatePreview.infoboxLine2": "Obratite se odgovornoj osobi u svojoj gradskoj upravi ili kontaktirajte {link}.",
   "app.components.ProjectTemplatePreview.projectFolder": "Mapa projekta",
