@@ -80,8 +80,6 @@ const Settings = () => {
     });
   };
 
-  toMultiloc(platformTemplateMessages.age); // TODO
-
   const processedUserFields = userFields?.data
     .filter(isSupportedField)
     .map((field) => {
