@@ -134,10 +134,10 @@ describe('Idea reacting permissions', () => {
       const email = randomEmail();
       const password = randomString();
 
-      // Go to an idea of a project that doesn't require verification
-      // and try to reaction
-      cy.visit('ideas/very-new-idea');
-      cy.get('.e2e-ideacard-like-button').click();
+      // Go to an ideation project that doesn't require verification
+      // and try to react
+      cy.visit('/projects/an-idea-bring-it-to-your-council');
+      cy.get('.e2e-ideacard-like-button').first().click();
 
       // Sign up flow
       cy.get('#e2e-authentication-modal');
