@@ -133,7 +133,9 @@ const PlatformTemplateContent = ({ startDate, endDate }: Props) => {
     });
   };
 
-  const supportedFields = userFields.data.filter(isSupportedField);
+  const supportedEnabledFields = userFields.data
+    .filter(isSupportedField)
+    .filter((field) => field.attributes.enabled);
 
   return (
     <Element id="platform-report-template" is={Box} canvas>
@@ -176,7 +178,7 @@ const PlatformTemplateContent = ({ startDate, endDate }: Props) => {
         )}
       />
       <WhiteSpace size="small" />
-      {supportedFields.map((field) => (
+      {supportedEnabledFields.map((field) => (
         <Element is={Container} canvas key={field.id}>
           <DemographicsWidget
             title={field.attributes.title_multiloc}
