@@ -183,7 +183,7 @@ sv:
         title: Detaljer
         description:
       other_text_field:
-        title: Om du valde "{other_option}", vad tänker du då på?
+        title: If you picked '{other_option}', what are you thinking of?
   custom_forms:
     categories:
       main_content:
