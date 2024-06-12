@@ -76,7 +76,7 @@ lv:
       "link_terms_conditions": "Noteikumi un nosacījumi"
       "link_unsubscribe": "Atteikties"
       "powered_by": "Darbību nodrošina"
-      "statement": "Šo e-pastu jums nosūtīja CitizenLab %{organizationName} vārdā, jo jūs esat %{organizationLink} reģistrēts lietotājs. Jūs varat %{unsubscribeLink}, ja nevēlaties turpmāk saņemt šos e-pastus."
+      "statement": "Šo e-pastu jums nosūtīja Go Vocal %{organizationName} vārdā, jo jūs esat %{organizationLink} reģistrēts lietotājs. Jūs varat %{unsubscribeLink}, ja nevēlaties turpmāk saņemt šos e-pastus."
       "unsubscribe_text": "atteikties"
     follow:
       "unfollow_here": "Jūs esat saņēmis šo paziņojumu, jo jums ir sekots līdzi. <a href=\"%{unfollow_url}\">Jūs varat to atcelt šeit.</a>"
