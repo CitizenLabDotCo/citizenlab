@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-class CreateTextingCampaigns < ActiveRecord::Migration[6.1]
+class RemoveTextingCampaigns < ActiveRecord::Migration[7.0]
   def change
-    create_table :texting_campaigns, id: :uuid do |t|
+    drop_table :texting_campaigns, id: :uuid do |t|
       t.string :phone_numbers, array: true, default: [], null: false
       t.text :message, null: false
       t.datetime :sent_at

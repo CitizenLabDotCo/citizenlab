@@ -390,7 +390,6 @@ ALTER TABLE IF EXISTS ONLY public.id_id_card_lookup_id_cards DROP CONSTRAINT IF 
 ALTER TABLE IF EXISTS ONLY public.users DROP CONSTRAINT IF EXISTS users_pkey;
 ALTER TABLE IF EXISTS ONLY public.user_custom_fields_representativeness_ref_distributions DROP CONSTRAINT IF EXISTS user_custom_fields_representativeness_ref_distributions_pkey;
 ALTER TABLE IF EXISTS ONLY public.topics DROP CONSTRAINT IF EXISTS topics_pkey;
-ALTER TABLE IF EXISTS ONLY public.texting_campaigns DROP CONSTRAINT IF EXISTS texting_campaigns_pkey;
 ALTER TABLE IF EXISTS ONLY public.text_images DROP CONSTRAINT IF EXISTS text_images_pkey;
 ALTER TABLE IF EXISTS ONLY public.tenants DROP CONSTRAINT IF EXISTS tenants_pkey;
 ALTER TABLE IF EXISTS ONLY public.surveys_responses DROP CONSTRAINT IF EXISTS surveys_responses_pkey;
@@ -506,7 +505,6 @@ DROP TABLE IF EXISTS public.verification_verifications;
 DROP TABLE IF EXISTS public.user_custom_fields_representativeness_ref_distributions;
 DROP VIEW IF EXISTS public.union_posts;
 DROP TABLE IF EXISTS public.topics;
-DROP TABLE IF EXISTS public.texting_campaigns;
 DROP TABLE IF EXISTS public.text_images;
 DROP TABLE IF EXISTS public.tenants;
 DROP TABLE IF EXISTS public.surveys_responses;
@@ -3288,21 +3286,6 @@ CREATE TABLE public.text_images (
 
 
 --
--- Name: texting_campaigns; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.texting_campaigns (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    phone_numbers character varying[] DEFAULT '{}'::character varying[] NOT NULL,
-    message text NOT NULL,
-    sent_at timestamp without time zone,
-    status character varying NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
 -- Name: topics; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4271,14 +4254,6 @@ ALTER TABLE ONLY public.tenants
 
 ALTER TABLE ONLY public.text_images
     ADD CONSTRAINT text_images_pkey PRIMARY KEY (id);
-
-
---
--- Name: texting_campaigns texting_campaigns_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.texting_campaigns
-    ADD CONSTRAINT texting_campaigns_pkey PRIMARY KEY (id);
 
 
 --
@@ -7515,6 +7490,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240508133950'),
 ('20240510103700'),
 ('20240516113700'),
-('20240606112752');
+('20240606112752'),
+('20240612134240');
 
 
