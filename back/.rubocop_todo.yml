@@ -295,6 +295,7 @@ RSpec/DescribeClass:
     - 'engines/commercial/multi_tenancy/spec/db/seedfile_spec.rb'
     - 'engines/commercial/multi_tenancy/spec/tasks/email_campaigns_task_spec.rb'
     - 'engines/commercial/multi_tenancy/spec/tasks/invalid_data_checker_task_spec.rb'
+    - 'spec/tasks/single_use/*.ignore.rb'
 
 # Offense count: 139
 # This cop supports safe autocorrection (--autocorrect).
@@ -395,7 +396,7 @@ RSpec/PendingWithoutReason:
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: EnforcedStyle.
 # SupportedStyles: not_to, be_invalid
-RSpec/Rails/NegationBeValid:
+RSpecRails/NegationBeValid:
   Enabled: false
 
 # Offense count: 4
@@ -449,10 +450,7 @@ RSpec/SpecFilePathFormat:
 # Include: **/*_spec*rb*, **/spec/**/*
 RSpec/SpecFilePathSuffix:
   Exclude:
-    - 'spec/tasks/single_use/add_missing_locales_task_spec.ignore.rb'
-    - 'spec/tasks/single_use/continuous_project_migration_service_spec.ignore.rb'
-    - 'spec/tasks/single_use/migrate_homepage_craftjson_task_spec.ignore.rb'
-    - 'spec/tasks/single_use/move_ideation_custom_forms_to_project_spec.ignore.rb'
+    - 'spec/tasks/single_use/*.ignore.rb'
 
 # Offense count: 65
 RSpec/StubbedMock:

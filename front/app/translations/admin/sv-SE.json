@@ -63,7 +63,6 @@
   "app.components.ConfirmationModal.disabled": "Inaktiverad",
   "app.components.ConfirmationModal.enabled": "Aktiverad",
   "app.components.ConfirmationModal.whenTurnedOnUsersWillHaveToConfirm": "När den är aktiverad måste nya användare bekräfta sin e-postadress med en fyrsiffrig kod som de får via e-post för att slutföra sin registrering.",
-  "app.components.ProjectTemplatePreview.citizenlabExpert": "CitizenLab-expert",
   "app.components.ProjectTemplatePreview.close": "Stäng",
   "app.components.ProjectTemplatePreview.createProject": "Skapa projekt",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Skapa ett projekt baserat på mallen {templateTitle}",

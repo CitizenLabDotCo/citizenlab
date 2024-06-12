@@ -63,7 +63,6 @@
   "app.components.ConfirmationModal.disabled": "Desativado",
   "app.components.ConfirmationModal.enabled": "Ativado",
   "app.components.ConfirmationModal.whenTurnedOnUsersWillHaveToConfirm": "Quando logado, os novos usuários terão de confirmar o seu endereço de e-mail com um código de 4 dígitos que receberam por e-mail, para completar o seu registo.",
-  "app.components.ProjectTemplatePreview.citizenlabExpert": "Especialista do CitizenLab",
   "app.components.ProjectTemplatePreview.close": "Fechar",
   "app.components.ProjectTemplatePreview.createProject": "Criar um projeto",
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Crie um projeto baseado no modelo '{templateTitle}'",
