@@ -25,6 +25,8 @@ import messages from './messages';
 */
 
 interface Props {
+  showAllErrors: boolean;
+  setShowAllErrors: (showAllErrors: boolean) => void;
   onChange: (formData: Record<string, any>) => void;
 }
 
@@ -42,6 +44,8 @@ const UserCustomFieldsForm = ({
   authUser,
   schema,
   uiSchema,
+  showAllErrors,
+  setShowAllErrors,
   onChange,
 }: InnerProps) => {
   const locale = useLocale();
@@ -75,6 +79,8 @@ const UserCustomFieldsForm = ({
         uiSchema={uiSchema}
         getAjvErrorMessage={getAjvErrorMessage}
         locale={locale}
+        showAllErrors={showAllErrors}
+        setShowAllErrors={setShowAllErrors}
         onChange={(data) => {
           data && onChange?.(data);
         }}
