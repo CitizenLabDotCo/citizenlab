@@ -2119,7 +2119,7 @@
   "app.utils.votingMethodUtils.numberOfVotes": "{numberOfVotes} {numberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}}",
   "app.utils.votingMethodUtils.results": "Ergebnisse",
   "app.utils.votingMethodUtils.singleVotingEnded": "Die Abstimmung wurde am <b>{endDate} geschlossen.</b> Die Teilnehmenden konnten <b> für Optionen {maxVotes} abstimmen.</b>",
-  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Wählen Sie Ihre bevorzugten Optionen, indem Sie auf \"Abstimmen\" klicken",
+  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Wählen Sie Ihre bevorzugten Optionen, indem Sie auf \"Auswählen\" klicken",
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": "Sie haben <b>{totalVotes} Stimmen</b>, die Sie den Optionen zuweisen können.",
   "app.utils.votingMethodUtils.singleVotingOnceYouAreDone": "Wenn Sie fertig sind, klicken Sie auf \"Senden\", um Ihre Stimme abzugeben.",
   "app.utils.votingMethodUtils.singleVotingOneVoteEnded": "Die Abstimmung wurde am  <b>{endDate} geschlossen.</b> Die Teilnehmenden konnten <b>für 1 Option abstimmen.</b>",
