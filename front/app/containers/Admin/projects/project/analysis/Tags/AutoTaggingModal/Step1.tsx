@@ -90,16 +90,17 @@ const AutoTagOption = ({
 }) => {
   const { formatMessage } = useIntl();
   return (
-    <Tooltip
-      content={
-        <p>{formatMessage(messages.advancedAutotaggingUpsellMessage)}</p>
-      }
-      zIndex={9999999}
-      disabled={!isDisabled}
+    <AutoTagMethodContainer
+      onClick={isDisabled || isLoading ? undefined : () => onSelect()}
+      isDisabled={isDisabled || isLoading}
     >
-      <AutoTagMethodContainer
-        onClick={isDisabled || isLoading ? undefined : () => onSelect()}
-        isDisabled={isDisabled || isLoading}
+      {' '}
+      <Tooltip
+        content={
+          <p>{formatMessage(messages.advancedAutotaggingUpsellMessage)}</p>
+        }
+        zIndex={9999999}
+        disabled={!isDisabled}
       >
         <Box
           display="flex"
@@ -152,8 +153,8 @@ const AutoTagOption = ({
         <Text mt="12px" mb="0px">
           {children}
         </Text>
-      </AutoTagMethodContainer>
-    </Tooltip>
+      </Tooltip>
+    </AutoTagMethodContainer>
   );
 };
 
