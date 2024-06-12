@@ -76,7 +76,7 @@ tr:
       "link_terms_conditions": "Hüküm ve Koşullar"
       "link_unsubscribe": "Abonelikten ayrıl"
       "powered_by": "Destekleyen"
-      "statement": "Bu e-posta %{organizationName} adına CitizenLab tarafından kayıtlı bir %{organizationLink} kullanıcısı olduğunuz için gönderilmiştir. Bu e-postaları almaya devam etmek istemiyorsanız %{unsubscribeLink}."
+      "statement": "Bu e-posta %{organizationName} adına Go Vocal tarafından kayıtlı bir %{organizationLink} kullanıcısı olduğunuz için gönderilmiştir. Bu e-postaları almaya devam etmek istemiyorsanız %{unsubscribeLink}."
       "unsubscribe_text": "abonelikten ayrılabilirsiniz"
     follow:
       "unfollow_here": "Takip ettiğiniz bir öğe nedeniyle bu bildirimi aldınız. <a href=\"%{unfollow_url}\">Buradan takibi bırakabilirsiniz.</a>"
