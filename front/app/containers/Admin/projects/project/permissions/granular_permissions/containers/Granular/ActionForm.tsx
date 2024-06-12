@@ -50,8 +50,9 @@ const ActionForm = ({
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const { data: groups } = useGroups({});
-  const emailConfirmPermissionEnabled = useFeatureFlag({
+  const emailConfirmPermissionAllowed = useFeatureFlag({
     name: 'permission_option_email_confirmation',
+    onlyCheckAllowed: true,
   });
 
   const groupsOptions = () => {
@@ -128,7 +129,7 @@ const ActionForm = ({
                 selected={permittedBy === 'everyone'}
               />
             )}
-            {emailConfirmPermissionEnabled && (
+            {emailConfirmPermissionAllowed && (
               <CardButton
                 id="e2e-permission-email-confirmed-users"
                 iconName="email"
