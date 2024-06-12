@@ -9,7 +9,6 @@ import { IOption, UploadFile, Multiloc } from 'typings';
 import { string, object, mixed } from 'yup';
 
 import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
-import useCustomFieldsSchema from 'api/custom_fields_json_form_schema/useCustomFieldsSchema';
 import useAuthUser from 'api/me/useAuthUser';
 import onboardingCampaignsKeys from 'api/onboarding_campaigns/keys';
 import useUserLockedAttributes from 'api/user_locked_attributes/useUserLockedAttributes';
@@ -17,13 +16,11 @@ import useUpdateUser from 'api/users/useUpdateUser';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useLocale from 'hooks/useLocale';
 
 import { appLocalePairs } from 'containers/App/constants';
 
 import { SectionField } from 'components/admin/Section';
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
-import { isValidData, customAjv } from 'components/Form/utils';
 import Feedback from 'components/HookForm/Feedback';
 import ImagesDropzone from 'components/HookForm/ImagesDropzone';
 import Input from 'components/HookForm/Input';
@@ -68,8 +65,6 @@ const ProfileForm = () => {
   const { formatMessage } = useIntl();
   const [extraFormData, setExtraFormData] = useState<Record<string, any>>({});
   const [showAllErrors, setShowAllErrors] = useState(false);
-  const { data: userCustomFieldsSchema } =
-    useCustomFieldsSchema(GLOBAL_CONTEXT);
 
   const schema = object({
     first_name: string().when('last_name', (last_name, schema) => {
@@ -116,18 +111,7 @@ const ProfileForm = () => {
     }
   }, [authUser, methods, userAvatarsEnabled]);
 
-  const locale = useLocale();
-
   if (!authUser || !tenantLocales) return null;
-
-  const customFieldsSchema =
-    userCustomFieldsSchema?.data.attributes?.json_schema_multiloc[locale];
-  const uiSchema =
-    userCustomFieldsSchema?.data.attributes?.ui_schema_multiloc[locale];
-
-  if (!customFieldsSchema || !uiSchema) {
-    return null;
-  }
 
   const localeOptions: IOption[] = tenantLocales.map((locale) => ({
     value: locale,
@@ -160,12 +144,6 @@ const ProfileForm = () => {
 
   const onFormSubmit = async (formValues: FormValues) => {
     const avatar = formValues.avatar ? formValues.avatar[0].base64 : null;
-
-    // Validate custom fields
-    if (!isValidData(customFieldsSchema, uiSchema, extraFormData, customAjv)) {
-      setShowAllErrors(true);
-      return;
-    }
 
     // Add custom fields values to form
     const newFormValues = {
