@@ -126,8 +126,8 @@ const AccessibilityStatement = () => {
                     <ul>
                       <li>
                         {formatMessage(messages.email)}{' '}
-                        <a href="mailto:support@citizenlab.co">
-                          support@citizenlab.co
+                        <a href="mailto:support@govocal.com">
+                          support@govocal.com
                         </a>
                       </li>
                       <li>
