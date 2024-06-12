@@ -480,6 +480,10 @@ module MultiTenancy
             management_feed: {
               enabled: true,
               allowed: true
+            },
+            remove_vendor_branding: {
+              enabled: false,
+              allowed: true
             }
           })
         )

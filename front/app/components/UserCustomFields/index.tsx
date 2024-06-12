@@ -25,6 +25,8 @@ import messages from './messages';
 */
 
 interface Props {
+  showAllErrors: boolean;
+  setShowAllErrors: (showAllErrors: boolean) => void;
   onChange: (formData: Record<string, any>) => void;
 }
 
@@ -42,6 +44,8 @@ const UserCustomFieldsForm = ({
   authUser,
   schema,
   uiSchema,
+  showAllErrors,
+  setShowAllErrors,
   onChange,
 }: InnerProps) => {
   const locale = useLocale();
@@ -75,6 +79,8 @@ const UserCustomFieldsForm = ({
         uiSchema={uiSchema}
         getAjvErrorMessage={getAjvErrorMessage}
         locale={locale}
+        showAllErrors={showAllErrors}
+        setShowAllErrors={setShowAllErrors}
         onChange={(data) => {
           data && onChange?.(data);
         }}
@@ -95,11 +101,10 @@ const UserCustomFieldsFormWrapper = ({
 
   if (!authUser || !userCustomFieldsSchema) return null;
 
-  const { json_schema_multiloc, ui_schema_multiloc } =
-    userCustomFieldsSchema.data.attributes;
-
-  const schema = json_schema_multiloc[locale];
-  const uiSchema = ui_schema_multiloc[locale];
+  const schema =
+    userCustomFieldsSchema.data.attributes?.json_schema_multiloc[locale];
+  const uiSchema =
+    userCustomFieldsSchema.data.attributes?.ui_schema_multiloc[locale];
 
   if (!schema || !uiSchema) return null;
 
