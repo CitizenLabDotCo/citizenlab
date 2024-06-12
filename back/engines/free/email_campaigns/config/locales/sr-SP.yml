@@ -76,7 +76,7 @@ sr-Cyrl:
       "link_terms_conditions": "Услови коришћења"
       "link_unsubscribe": "Одјавите се"
       "powered_by": "Покреће га"
-      "statement": "Овај е-маил вам је послао CitizenLab у име %{organizationName}, јер сте регистровани корисник %{organizationLink}. Можете %{unsubscribeLink} ако не желите да примате ове е-поруке у будућности."
+      "statement": "Овај е-маил вам је послао Go Vocal у име %{organizationName}, јер сте регистровани корисник %{organizationLink}. Можете %{unsubscribeLink} ако не желите да примате ове е-поруке у будућности."
       "unsubscribe_text": "одјавите се"
     follow:
       "unfollow_here": "Примили сте ово обавештење због ставке коју пратите. <a href=\"%{unfollow_url}\">Можете га опозвати овде.</a>"
