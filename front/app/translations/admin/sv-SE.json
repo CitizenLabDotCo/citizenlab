@@ -68,7 +68,7 @@
   "app.components.ProjectTemplatePreview.createProjectBasedOn": "Skapa ett projekt baserat på mallen {templateTitle}",
   "app.components.ProjectTemplatePreview.goBack": "Gå tillbaka",
   "app.components.ProjectTemplatePreview.goBackTo": "Gå tillbaka till {goBackLink}.",
-  "app.components.ProjectTemplatePreview.govocalExpert": "Go Vocal-expert",
+  "app.components.ProjectTemplatePreview.govocalExpert": "CitizenLab-expert",
   "app.components.ProjectTemplatePreview.infoboxLine1": "Vill du använda den här mallen för ditt deltagandeprojekt?",
   "app.components.ProjectTemplatePreview.infoboxLine2": "Kontakta den ansvariga personen i din stadsförvaltning eller kontakta en {link}.",
   "app.components.ProjectTemplatePreview.projectFolder": "Projektmapp",
