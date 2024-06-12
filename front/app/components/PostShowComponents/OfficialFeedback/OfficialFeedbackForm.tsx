@@ -428,7 +428,7 @@ const OfficialFeedbackForm = ({
 
           {onClose && (
             <CancelButton
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               onClick={onClose}
               textColor={formType === 'edit' ? colors.primary : colors.error}
             >

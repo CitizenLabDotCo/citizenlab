@@ -144,7 +144,7 @@ const GeoJsonImportButton = memo<Props>(({ mapConfig, className }) => {
           <div>
             <StyledButton
               icon="upload-file"
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               disabled={geoJsonImportDisabled}
               processing={isLoading}
             >

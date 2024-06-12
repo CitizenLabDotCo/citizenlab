@@ -1,4 +1,4 @@
-import React, { useEffect, FormEvent } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
@@ -13,13 +13,13 @@ import {
   SetError,
 } from 'containers/Authentication/typings';
 
+import FormWrapper from 'components/Form/Components/FormWrapper';
+import { isValidData, customAjv } from 'components/Form/utils';
 import Button from 'components/UI/Button';
-import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
+import UserCustomFieldsForm from 'components/UserCustomFields';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
-import eventEmitter from 'utils/eventEmitter';
-import { isNilOrError } from 'utils/helperUtils';
 
 import tracks from '../../tracks';
 
@@ -47,33 +47,38 @@ const CustomFields = ({
   );
   const smallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
+  const [formData, setFormData] = useState<Record<string, any>>({});
+  const [showAllErrors, setShowAllErrors] = useState(false);
 
   useEffect(() => {
     trackEventByName(tracks.signUpCustomFieldsStepEntered);
   }, []);
 
-  if (isNilOrError(authUser) || isNilOrError(userCustomFieldsSchema)) {
+  const schema =
+    userCustomFieldsSchema?.data.attributes?.json_schema_multiloc[locale];
+  const uiSchema =
+    userCustomFieldsSchema?.data.attributes?.ui_schema_multiloc[locale];
+
+  if (!authUser || !userCustomFieldsSchema || !schema || !uiSchema) {
     return null;
   }
 
-  const handleSubmit = async ({
-    formData,
-  }: {
-    formData: Record<string, any>;
-  }) => {
-    try {
-      await onSubmit(authUser.data.id, formData);
-    } catch (e) {
-      setError('unknown');
+  const handleSubmit = async () => {
+    if (!isValidData(schema, uiSchema, formData, customAjv)) {
+      setShowAllErrors(true);
+    } else {
+      try {
+        await onSubmit(authUser.data.id, formData);
+      } catch (e) {
+        setError('unknown');
+      }
     }
   };
 
-  const handleOnSubmitButtonClick = (event: FormEvent) => {
-    event.preventDefault();
-    eventEmitter.emit('customFieldsSubmitEvent');
-  };
-
-  if (isNilOrError(locale)) return null;
+  const formHasRequiredFields = hasRequiredFields(
+    userCustomFieldsSchema,
+    locale
+  );
 
   return (
     <Box
@@ -81,42 +86,45 @@ const CustomFields = ({
       pb={smallerThanPhone ? '14px' : '28px'}
       id="e2e-signup-custom-fields-container"
     >
-      <UserCustomFieldsForm
-        authUser={authUser.data}
-        authenticationContext={authenticationData.context}
-        onSubmit={handleSubmit}
-      />
-
-      <Box
-        display="flex"
-        flexDirection={smallerThanPhone ? 'column' : undefined}
-        alignItems={smallerThanPhone ? 'stretch' : 'center'}
-        justifyContent={smallerThanPhone ? 'center' : 'space-between'}
-      >
-        <Button
-          id="e2e-signup-custom-fields-submit-btn"
-          processing={loading}
-          disabled={loading}
-          text={formatMessage(messages.continue)}
-          onClick={handleOnSubmitButtonClick}
+      <FormWrapper formId={uiSchema?.options?.formId}>
+        <UserCustomFieldsForm
+          authenticationContext={authenticationData.context}
+          showAllErrors={showAllErrors}
+          setShowAllErrors={setShowAllErrors}
+          onChange={setFormData}
         />
 
-        {!hasRequiredFields(userCustomFieldsSchema, locale) && (
+        <Box
+          display="flex"
+          flexDirection={smallerThanPhone ? 'column' : undefined}
+          alignItems={smallerThanPhone ? 'stretch' : 'center'}
+          justifyContent={smallerThanPhone ? 'center' : 'space-between'}
+        >
           <Button
-            id="e2e-signup-custom-fields-skip-btn"
-            buttonStyle="text"
-            padding="0"
-            textDecoration="underline"
-            textDecorationHover="underline"
+            id="e2e-signup-custom-fields-submit-btn"
             processing={loading}
-            onClick={onSkip}
-            mt={smallerThanPhone ? '20px' : undefined}
-            mb={smallerThanPhone ? '16px' : undefined}
-          >
-            {formatMessage(messages.skip)}
-          </Button>
-        )}
-      </Box>
+            disabled={loading}
+            text={formatMessage(messages.continue)}
+            onClick={handleSubmit}
+          />
+
+          {!formHasRequiredFields && (
+            <Button
+              id="e2e-signup-custom-fields-skip-btn"
+              buttonStyle="text"
+              padding="0"
+              textDecoration="underline"
+              textDecorationHover="underline"
+              processing={loading}
+              onClick={onSkip}
+              mt={smallerThanPhone ? '20px' : undefined}
+              mb={smallerThanPhone ? '16px' : undefined}
+            >
+              {formatMessage(messages.skip)}
+            </Button>
+          )}
+        </Box>
+      </FormWrapper>
     </Box>
   );
 };

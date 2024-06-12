@@ -97,7 +97,7 @@ export const SelectionScreen = ({
             ml="20px"
             mb="20px"
             icon="plus-circle"
-            buttonStyle="secondary"
+            buttonStyle="secondary-outlined"
             onClick={() => {
               setShowAddFieldPage(true);
             }}

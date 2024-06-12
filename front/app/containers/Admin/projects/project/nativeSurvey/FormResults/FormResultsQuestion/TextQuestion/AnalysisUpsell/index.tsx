@@ -53,7 +53,7 @@ const AnalysisUpsell = () => {
         placement="auto-start"
       >
         <Box display="flex" w="auto">
-          <Button buttonStyle="secondary" icon="lock">
+          <Button buttonStyle="secondary-outlined" icon="lock">
             {formatMessage(messages.button)}
           </Button>
         </Box>

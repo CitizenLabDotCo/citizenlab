@@ -191,7 +191,7 @@ const VerificationFormCOW = memo<Props & WrappedComponentProps>(
             </SubmitButton>
             <CancelButton
               onClick={onCancelButtonClicked}
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
             >
               <FormattedMessage {...messages.cancel} />
             </CancelButton>

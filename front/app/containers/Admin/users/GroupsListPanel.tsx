@@ -237,7 +237,7 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
             onClick={handleCreateGroup}
             padding="8px"
             borderRadius="50%"
-            buttonStyle="secondary"
+            buttonStyle="secondary-outlined"
             bgColor={rgba(colors.primary, 0.08)}
             bgHoverColor={rgba(colors.primary, 0.15)}
           />

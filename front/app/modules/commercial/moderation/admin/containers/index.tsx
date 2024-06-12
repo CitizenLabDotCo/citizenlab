@@ -436,7 +436,7 @@ const Moderation = () => {
                   (selectedTab === 'read' || selectedTab === 'unread') && (
                     <MarkAsButton
                       icon={moderationStatus === 'unread' ? 'eye' : 'eye-off'}
-                      buttonStyle="cl-blue"
+                      buttonStyle="admin-dark"
                       processing={processing}
                       onClick={markAs}
                     >
