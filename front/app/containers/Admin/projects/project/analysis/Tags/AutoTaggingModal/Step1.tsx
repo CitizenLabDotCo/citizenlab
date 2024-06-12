@@ -32,7 +32,6 @@ import Tag from '../Tag';
 
 const AutoTagMethodContainer = styled.div<{ isDisabled: boolean }>`
   background-color: ${colors.grey100};
-  width: 30%;
   border-radius: 3px;
   padding: 16px;
   ${({ isDisabled }) =>
@@ -90,10 +89,7 @@ const AutoTagOption = ({
 }) => {
   const { formatMessage } = useIntl();
   return (
-    <AutoTagMethodContainer
-      onClick={isDisabled || isLoading ? undefined : () => onSelect()}
-      isDisabled={isDisabled || isLoading}
-    >
+    <Box w="30%">
       <Tooltip
         content={
           <p>{formatMessage(messages.advancedAutotaggingUpsellMessage)}</p>
@@ -101,7 +97,11 @@ const AutoTagOption = ({
         zIndex={9999999}
         disabled={!isDisabled}
       >
-        <>
+        <AutoTagMethodContainer
+          onClick={isDisabled || isLoading ? undefined : () => onSelect()}
+          isDisabled={isDisabled || isLoading}
+          tabIndex={0}
+        >
           <Box
             display="flex"
             justifyContent="space-between"
@@ -153,9 +153,9 @@ const AutoTagOption = ({
           <Text mt="12px" mb="0px">
             {children}
           </Text>
-        </>
+        </AutoTagMethodContainer>
       </Tooltip>
-    </AutoTagMethodContainer>
+    </Box>
   );
 };
 
