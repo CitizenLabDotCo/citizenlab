@@ -26,7 +26,8 @@ const ContentBuilderFrame = memo(
           });
         }
       }
-    }, [actions, editorData, onLoadImages]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [editorData]);
 
     return (
       <Frame>
