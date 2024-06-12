@@ -145,10 +145,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            representativeness: {
-              enabled: true,
-              allowed: true
-            },
             bulk_import_ideas: {
               enabled: true,
               allowed: true

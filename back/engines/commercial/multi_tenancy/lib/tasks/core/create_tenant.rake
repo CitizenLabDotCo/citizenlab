@@ -58,10 +58,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: true,
           allowed: true
         },
-        representativeness: {
-          enabled: true,
-          allowed: true
-        },
         custom_idea_statuses: {
           enabled: true,
           allowed: true
