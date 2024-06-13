@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  tabInputStatuses: {
-    id: 'app.containers.Admin.ideas.tabInputStatuses',
-    defaultMessage: 'Input statuses',
-  },
   fieldTitle: {
     id: 'app.containers.admin.ideaStatuses.form.fieldTitle',
     defaultMessage: 'Status Name',
