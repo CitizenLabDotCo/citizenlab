@@ -322,18 +322,6 @@
         }
       },
 
-      "project_visibility": {
-        "type": "object",
-        "title": "Project Visibility",
-        "description": "Admin can make projects visible only to certain groups of users (e.g., admin only, smart groups).",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true },
-          "enabled": { "type": "boolean", "default": true }
-        }
-      },
-
       "password_login": {
         "type": "object",
         "title": "Password Login",
@@ -932,18 +920,6 @@
         }
       },
 
-      "admin_project_templates": {
-        "type": "object",
-        "title": "Project Templates",
-        "description":  "Enable the template library for admin to create new projects.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
       "custom_accessibility_statement_link": {
         "type": "object",
         "title": "Custom A11y Statement Link",
@@ -1119,30 +1095,6 @@
         }
       },
 
-      "representativeness": {
-        "type": "object",
-        "title": "Representativeness",
-        "description": "Enables the representativeness dashboard.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
-      "native_surveys": {
-        "type": "object",
-        "title": "Allow in-platform surveys",
-        "description":  "",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true },
-          "enabled": { "type": "boolean", "default": true }
-        }
-      },
-
       "input_form_mapping_question": {
         "type": "object",
         "title": "Mapping question used in in-platform surveys",
@@ -1159,18 +1111,6 @@
         "type": "object",
         "title": "Seat based billing",
         "description":  "Enables seat-based billing.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
-      "visitors_dashboard": {
-        "type": "object",
-        "title": "Visitors dashboard",
-        "description": "Enabled the visitors dashboard. Don't turn this on unless you know what you're doing.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

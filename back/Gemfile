@@ -18,6 +18,7 @@ gem 'puma', '~> 6.4.2'
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.20'
+gem 'csv', '~> 3.3.0'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -78,6 +79,7 @@ group :test do
 
   # Adds rspec matchers and helpers for testing html structure and styling.
   gem 'capybara', '~> 3.40'
+  gem 'rspec-html-matchers', '~> 0.10'
   # gem 'bullet'
 end
 
@@ -205,7 +207,6 @@ commercial_engines = [
   'remove_vendor_branding',
   'report_builder',
   'smart_groups',
-  'texting',
   'user_custom_fields',
 
   # ID verification engines.
