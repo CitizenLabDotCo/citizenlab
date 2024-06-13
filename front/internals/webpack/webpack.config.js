@@ -29,7 +29,7 @@ dotenv.config({
 const argv = require('yargs').argv;
 const appLocalesMomentPairs = require(path.join(
   process.cwd(),
-  'app/containers/App/constants2'
+  'app/containers/App/constants-commonjs'
 )).appLocalesMomentPairs;
 const API_HOST = process.env.API_HOST || 'localhost';
 const API_PORT = process.env.API_PORT || 4000;
