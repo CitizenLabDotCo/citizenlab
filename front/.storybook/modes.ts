@@ -1,3 +1,11 @@
+import { MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';
+
+const stripPx = (str: any, attr: 'width' | 'height') => {
+  if (typeof str?.[attr] !== 'string') throw new Error('');
+
+  return Number(str?.[attr].replace('px', ''));
+}
+
 export const allModes = {
   default: {
     viewport: {
@@ -7,14 +15,15 @@ export const allModes = {
 
   tablet: {
     viewport: {
-      width: 1000
+      width: stripPx(MINIMAL_VIEWPORTS.tablet?.styles, 'width'),
+      height: stripPx(MINIMAL_VIEWPORTS.tablet?.styles, 'height')
     }
   },
 
   mobile: {
     viewport: {
-      width: 500,
-      height: 1000
+      width: stripPx(MINIMAL_VIEWPORTS.mobile2?.styles, 'width'),
+      height: stripPx(MINIMAL_VIEWPORTS.mobile2?.styles, 'height'),
     }
   }
 };
