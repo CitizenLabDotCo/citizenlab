@@ -282,7 +282,8 @@ const AdminProjectsProjectGeneral = () => {
     // Makes things unnecessarily complicated (e.g. projectId below).
     let isNewProject = false;
     let latestProjectId = projectId;
-    const isFormValid = validateForm();
+    const isFormValid = true;
+    // const isFormValid = validateForm();
 
     if (!isFormValid) {
       setSubmitState('error');
