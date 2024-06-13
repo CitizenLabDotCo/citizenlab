@@ -40,6 +40,7 @@ const config: StorybookConfig = {
     // This upgrade has breaking changes so those need to be dealt with first.
     // 'storybook-addon-react-router-v6',
     'storybook-react-intl',
+    '@storybook/addon-viewport'
   ],
   framework: '@storybook/react-vite',
   core: {

@@ -6,6 +6,7 @@ import mockServer from './mockServer';
 import { reactIntl } from './reactIntl';
 import { MemoryRouter } from 'react-router-dom';
 import { allModes } from './modes';
+import { INITIAL_VIEWPORTS, MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';
 
 initialize();
 
@@ -31,6 +32,10 @@ const preview: Preview = {
       },
       disableSnapshot: true,
     },
+    viewport: {
+      ...INITIAL_VIEWPORTS,
+      ...MINIMAL_VIEWPORTS
+    }
   },
   decorators: [mswDecorator, routerDecorator, contexts],
   globals: {
