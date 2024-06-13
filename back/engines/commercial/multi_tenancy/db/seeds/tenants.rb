@@ -392,10 +392,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            analytics: {
-              enabled: true,
-              allowed: true
-            },
             visitors_dashboard: {
               enabled: true,
               allowed: true
