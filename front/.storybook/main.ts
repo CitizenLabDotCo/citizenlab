@@ -65,6 +65,10 @@ const config: StorybookConfig = {
       },
       define: {
         'process.env': process.env
+      },
+      build: {
+        sourcemap: false,
+        target: ['es2020'],
       }
     });
   },
