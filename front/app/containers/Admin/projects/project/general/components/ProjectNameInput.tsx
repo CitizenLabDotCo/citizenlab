@@ -6,9 +6,10 @@ import { Multiloc, CLErrors } from 'typings';
 import { IUpdatedProjectProperties } from 'api/projects/types';
 
 import { SubSectionTitle } from 'components/admin/Section';
-import Error from 'components/UI/Error';
+import ErrorPOC from 'components/UI/ErrorPOC';
+import { dedupApiErrors } from 'components/UI/ErrorPOC/utils';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
@@ -27,6 +28,27 @@ const ProjectNameInput = ({
   apiErrors,
   handleTitleMultilocOnChange,
 }: Props) => {
+  const { formatMessage } = useIntl();
+  const dedupedErrors = dedupApiErrors(apiErrors.title_multiloc);
+  const errorMessages = dedupedErrors.map((error) => {
+    if (!error) {
+      return {
+        error: formatMessage(messages.genericErrorMessage),
+      };
+    }
+
+    switch (error.error) {
+      case 'blank':
+        return {
+          error: formatMessage(messages.blankTitleError),
+        };
+      default:
+        return {
+          error: formatMessage(messages.genericErrorMessage),
+        };
+    }
+  });
+
   return (
     <StyledSectionField>
       <SubSectionTitle>
@@ -43,7 +65,7 @@ const ProjectNameInput = ({
         onChange={handleTitleMultilocOnChange}
         errorMultiloc={titleError}
       />
-      <Error fieldName="title_multiloc" apiErrors={apiErrors.title_multiloc} />
+      <ErrorPOC errors={errorMessages} />
     </StyledSectionField>
   );
 };
