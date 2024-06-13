@@ -169,10 +169,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            admin_project_templates: {
-              enabled: true,
-              allowed: true
-            },
             granular_permissions: {
               enabled: true,
               allowed: true
