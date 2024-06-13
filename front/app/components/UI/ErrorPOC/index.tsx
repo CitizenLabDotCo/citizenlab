@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  colors,
+  fontSizes,
+  Box,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 const ErrorMessageText = styled.div`
@@ -44,36 +49,42 @@ const ErrorContainer = styled.div<{ showBackground: boolean }>`
 interface ErrorProps {
   errors?: { error: string }[];
   text?: string | JSX.Element | null;
-  fieldLabel?: string;
   showIcon?: boolean;
   showBackground?: boolean;
+  marginTop?: string;
+  marginBottom?: string;
 }
 
 const ErrorPOC: React.FC<ErrorProps> = ({
   errors,
   text,
-  fieldLabel,
   showIcon = true,
   showBackground = true,
+  marginTop = '3px',
+  marginBottom = '0px',
 }) => {
-  if (!errors && !text) return null;
+  if ((!errors || errors.length === 0) && !text) return null;
 
   return (
-    <ErrorContainer showBackground={showBackground}>
-      {showIcon && <ErrorIcon name="alert-circle" />}
-      <ErrorMessageText>
-        {text && <>{text}</>}
-        {errors && errors.length > 0 && (
-          <ul>
-            {errors.map((err, index) => (
-              <li key={index}>
-                {fieldLabel ? `${fieldLabel}: ${err.error}` : err.error}
-              </li>
+    <Box marginTop={marginTop} marginBottom={marginBottom}>
+      <ErrorContainer showBackground={showBackground}>
+        {showIcon && <ErrorIcon name="alert-circle" />}
+        <ErrorMessageText>
+          {text && <>{text}</>}
+          {errors &&
+            errors.length > 0 &&
+            (errors.length === 1 ? (
+              <p>{errors[0].error}</p>
+            ) : (
+              <ul>
+                {errors.map((err, index) => (
+                  <li key={index}>{err.error}</li>
+                ))}
+              </ul>
             ))}
-          </ul>
-        )}
-      </ErrorMessageText>
-    </ErrorContainer>
+        </ErrorMessageText>
+      </ErrorContainer>
+    </Box>
   );
 };
 
