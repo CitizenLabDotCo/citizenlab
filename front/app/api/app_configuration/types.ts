@@ -205,7 +205,6 @@ export interface IAppConfigurationSettings {
     api_key: string;
   };
   disable_user_bios?: AppConfigurationFeature;
-  texting?: AppConfigurationFeature;
   project_description_builder?: AppConfigurationFeature;
   remove_vendor_branding?: AppConfigurationFeature;
   user_confirmation?: AppConfigurationFeature;
