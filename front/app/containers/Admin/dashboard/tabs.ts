@@ -22,17 +22,16 @@ const BASE_ADMIN_TABS: TabRoute[] = [
     name: 'users',
   },
   {
+    message: messages.tabVisitors,
+    name: 'visitors',
+    url: '/admin/dashboard/visitors',
+  },
+  {
     message: messages.tabRepresentativeness,
     name: 'representativeness',
     url: '/admin/dashboard/representation',
   },
 ];
-
-const VISITORS_TAB: TabRoute = {
-  message: messages.tabVisitors,
-  name: 'visitors',
-  url: '/admin/dashboard/visitors',
-};
 
 const MODERATION_TAB: TabRoute = {
   message: messages.feed,
@@ -47,14 +46,10 @@ const MANAGEMENT_FEED_TAB: TabRoute = {
 };
 
 export const getAdminTabs = (
-  { visitorsEnabled, moderationEnabled, managementFeedEnabled },
+  { moderationEnabled, managementFeedEnabled },
   formatMessage: FormatMessage
 ) => {
   const tabs = [...BASE_ADMIN_TABS];
-
-  if (visitorsEnabled) {
-    tabs.push(VISITORS_TAB);
-  }
 
   if (moderationEnabled) {
     tabs.push(MODERATION_TAB);
