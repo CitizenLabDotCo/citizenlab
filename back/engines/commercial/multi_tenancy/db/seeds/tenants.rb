@@ -145,10 +145,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            representativeness: {
-              enabled: true,
-              allowed: true
-            },
             bulk_import_ideas: {
               enabled: true,
               allowed: true
@@ -166,10 +162,6 @@ module MultiTenancy
               allowed: true
             },
             widgets: {
-              enabled: true,
-              allowed: true
-            },
-            admin_project_templates: {
               enabled: true,
               allowed: true
             },
@@ -370,27 +362,11 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            project_visibility: {
-              enabled: true,
-              allowed: true
-            },
             disable_disliking: {
               enabled: true,
               allowed: true
             },
-            native_surveys: {
-              enabled: true,
-              allowed: true
-            },
             input_form_mapping_question: {
-              enabled: true,
-              allowed: true
-            },
-            analytics: {
-              enabled: true,
-              allowed: true
-            },
-            visitors_dashboard: {
               enabled: true,
               allowed: true
             },
@@ -473,6 +449,10 @@ module MultiTenancy
             },
             management_feed: {
               enabled: true,
+              allowed: true
+            },
+            remove_vendor_branding: {
+              enabled: false,
               allowed: true
             }
           })

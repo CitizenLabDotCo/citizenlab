@@ -470,7 +470,7 @@ export const createEsriGeoJsonLayers = (
     });
 
     // All features in a layer will have the same geometry, so we can just check the first feature
-    const geometryType = layer.geojson?.features[0].geometry?.type;
+    const geometryType = layer.geojson?.features?.[0]?.geometry?.type;
 
     if (geometryType === 'Polygon') {
       // All features in a layer will have the same symbology, so we can just check the first feature
