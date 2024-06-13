@@ -98,7 +98,7 @@ export const isValidData = (
   uiSchema: Layout | PageCategorization,
   data: FormData,
   ajv: Ajv,
-  isSurvey: boolean
+  isSurvey = false
 ) => {
   if (!data) return false;
 

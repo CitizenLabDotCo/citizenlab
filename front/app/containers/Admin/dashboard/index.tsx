@@ -19,7 +19,6 @@ export const DashboardsPage = memo(() => {
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
 
-  const visitorsEnabled = useFeatureFlag({ name: 'analytics' });
   const representativenessEnabled = useFeatureFlag({
     name: 'representativeness',
   });
@@ -32,7 +31,6 @@ export const DashboardsPage = memo(() => {
 
   const tabs = getAdminTabs(
     {
-      visitorsEnabled,
       representativenessEnabled,
       moderationEnabled,
       managementFeedEnabled,
