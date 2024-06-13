@@ -211,7 +211,6 @@ export interface IAppConfigurationSettings {
   project_description_builder?: AppConfigurationFeature;
   representativeness?: AppConfigurationFeature;
   remove_vendor_branding?: AppConfigurationFeature;
-  native_surveys?: AppConfigurationFeature;
   visitors_dashboard?: AppConfigurationFeature;
   user_confirmation?: AppConfigurationFeature;
   permission_option_email_confirmation?: AppConfigurationFeature;
