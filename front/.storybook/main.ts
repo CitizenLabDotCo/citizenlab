@@ -65,6 +65,10 @@ const config: StorybookConfig = {
       },
       define: {
         'process.env': process.env
+      },
+      build: {
+        minify: false,
+        sourcemap: false
       }
     });
   },
