@@ -165,10 +165,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            admin_project_templates: {
-              enabled: true,
-              allowed: true
-            },
             granular_permissions: {
               enabled: true,
               allowed: true
@@ -366,10 +362,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            project_visibility: {
-              enabled: true,
-              allowed: true
-            },
             disable_disliking: {
               enabled: true,
               allowed: true
@@ -379,10 +371,6 @@ module MultiTenancy
               allowed: true,
               from_number: '+12345678912',
               monthly_sms_segments_limit: 100_000
-            },
-            native_surveys: {
-              enabled: true,
-              allowed: true
             },
             input_form_mapping_question: {
               enabled: true,
@@ -471,6 +459,10 @@ module MultiTenancy
             },
             management_feed: {
               enabled: true,
+              allowed: true
+            },
+            remove_vendor_branding: {
+              enabled: false,
               allowed: true
             }
           })

@@ -134,7 +134,6 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
     url?: string;
   };
-  admin_project_templates?: AppConfigurationFeature;
   maps?: AppConfigurationMapSettings;
   initiatives: ProposalsSettings;
   initiative_review?: AppConfigurationFeature;
@@ -173,9 +172,7 @@ export interface IAppConfigurationSettings {
   moderation?: AppConfigurationFeature;
   flag_inappropriate_content?: AppConfigurationFeature;
   disable_disliking?: AppConfigurationFeature;
-  project_visibility?: AppConfigurationFeature;
   project_management?: AppConfigurationFeature;
-  idea_assignment?: AppConfigurationFeature;
   blocking_profanity?: AppConfigurationFeature;
   anonymous_participation?: AppConfigurationFeature;
   custom_idea_statuses?: AppConfigurationFeature;
@@ -211,7 +208,6 @@ export interface IAppConfigurationSettings {
   texting?: AppConfigurationFeature;
   project_description_builder?: AppConfigurationFeature;
   remove_vendor_branding?: AppConfigurationFeature;
-  native_surveys?: AppConfigurationFeature;
   visitors_dashboard?: AppConfigurationFeature;
   user_confirmation?: AppConfigurationFeature;
   permission_option_email_confirmation?: AppConfigurationFeature;

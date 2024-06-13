@@ -188,10 +188,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: true,
           allowed: true
         },
-        admin_project_templates: {
-          enabled: true,
-          allowed: true
-        },
         verification: {
           enabled: true,
           allowed: true,
@@ -254,10 +250,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: true,
           allowed: true
         },
-        project_visibility: {
-          enabled: true,
-          allowed: true
-        },
         moderation: {
           enabled: true,
           allowed: true
@@ -275,10 +267,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           allowed: true,
           from_number: '+12345678912',
           monthly_sms_segments_limit: 100_000
-        },
-        native_surveys: {
-          enabled: true,
-          allowed: true
         },
         visitors_dashboard: {
           enabled: true,
