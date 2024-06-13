@@ -675,7 +675,7 @@ jobs:
           paths:
             - /root/.npm
           key: v2-npm-cache-{{ checksum "package-lock.json" }}
-      - run: npm run chromatic NODE_OPTIONS=--max_old_space_size=8192
+      - run: npm run chromatic
 
   # E2E TESTS
   e2e-tests:
