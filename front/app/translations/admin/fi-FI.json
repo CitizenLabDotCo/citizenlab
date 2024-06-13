@@ -574,7 +574,7 @@
   "app.containers.Admin.PagesAndMenu.heroBannerError": "Sankaribanneria ei voitu tallentaa",
   "app.containers.Admin.PagesAndMenu.heroBannerMessageSuccess": "Sankaribanneri tallennettu",
   "app.containers.Admin.PagesAndMenu.heroBannerSaveButton": "Tallenna sankaribanneri",
-  "app.containers.Admin.PagesAndMenu.homeTitle": "Koti",
+  "app.containers.Admin.PagesAndMenu.homeTitle": "Etusivu",
   "app.containers.Admin.PagesAndMenu.missingOneLocaleError": "Tarjoa sisältöä vähintään yhdelle kielelle",
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": "Sivut ja valikko | {orgName}",
   "app.containers.Admin.PagesAndMenu.removeButton": "Poista navigointipalkista",
