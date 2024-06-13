@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-namespace :cl2_back do # rubocop:disable Metrics/BlockLength
+namespace :cl2_back do
   desc 'Create a tenant with given host and optional template'
   task :create_tenant, %i[host template locales] => [:environment] do |_t, args|
     host = args[:host] || raise("Please provide the 'host' arg")
