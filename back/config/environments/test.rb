@@ -10,6 +10,11 @@ require 'active_support/core_ext/integer/time'
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+  # [] => Cross-origin requests are NOT allowed from any origin.
+  # ['*'] => Cross-origin requests from any origin are allowed.
+  # ['http://some-domain.com', 'https://other-domain.com'] => Cross-origin requests are allowed from specified origins.
+  config.allowed_cors_origins = []
+
   # Turn false under Spring and add config.action_view.cache_template_loading = true.
   config.cache_classes = false
 

@@ -696,7 +696,6 @@ Style/CollectionCompact:
 Style/FetchEnvVar:
   Exclude:
     - 'config/initializers/bunny.rb'
-    - 'engines/commercial/texting/app/services/texting/sms/providers/twilio.rb'
     - 'engines/free/surveys/spec/acceptance/typeform_events_spec.rb'
 
 # Offense count: 2618

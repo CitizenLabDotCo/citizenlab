@@ -65,10 +65,11 @@ def rake_20240531_substitute_gv(str)
     'www.citizenlab.co' => 'www.govocal.com',
     'Anspachlaan 65' => 'Pachecolaan 34',
     'суппорт@цитизенлаб.цо' => 'support@govocal.com',
-    /citizenlab ([^n][^v])/i => 'Go Vocal \1', # Do not match "Citizenlab NV"
+    /citizenlab (?!nv)/i => 'Go Vocal \1', # Do not match "Citizenlab NV"
     / citizenlab/i => ' Go Vocal',
-    /ЦитизенЛаб ([^n][^v])/i => 'Go Vocal \1', # Do not match "Citizenlab NV"
-    / ЦитизенЛаб/i => ' Go Vocal'
+    /ЦитизенЛаб (?!nv)/i => 'Go Vocal \1', # Do not match "ЦитизенЛаб NV"
+    / ЦитизенЛаб/i => ' Go Vocal',
+    /go vocal nv/i => 'CitizenLab NV'
   }
   allowed_chars_before = '>'
   allowed_chars_after = ".,:<'`"

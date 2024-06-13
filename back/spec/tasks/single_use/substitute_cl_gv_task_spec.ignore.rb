@@ -4,10 +4,11 @@ describe 'rake substitute_cl_gv' do
   before { load_rake_tasks_if_not_loaded }
 
   describe 'rake_20240531_substitute_gv' do
-    it 'works or something' do
+    it 'makes the desired substitutions from Citizenlab to Go Vocal' do
       [
         'test Go Vocal text',
         'citizenlab.co/citizenlab-test',
+        '<li>\n<strong>Name and legal form:</strong> CitizenLab NV </li>\n<li>',
         'https://citizenlabco.typeform.com/to/z7baRP?source={url}',
         'https://support.citizenlab.co/fr/articles/8512834-utilisez-les-donnees-de-citizenlab-dans-powerbi',
         'https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
@@ -28,6 +29,7 @@ describe 'rake substitute_cl_gv' do
         'datos de CitizenLab. Configurará todas' => 'datos de Go Vocal. Configurará todas',
         'CitizenLab lähetti' => 'Go Vocal lähetti',
         '<p>Citizenlab ha' => '<p>Go Vocal ha',
+        '<p>CitizenLab no se hace responsable en modo alguno de los mensajes enviado' => '<p>Go Vocal no se hace responsable en modo alguno de los mensajes enviado',
         '<p> CitizenLab’s platform' => '<p> Go Vocal’s platform',
         '<p>CitizenLab, Kullanıcıları' => '<p>Go Vocal, Kullanıcıları',
         'durch CitizenLab.</p>' => 'durch Go Vocal.</p>',
@@ -40,6 +42,7 @@ describe 'rake substitute_cl_gv' do
         '<a href="mailto:support@citizenlab.co" target="_blank">Contactez-nous</a>' => '<a href="mailto:support@govocal.com" target="_blank">Contactez-nous</a>',
         'volgend e-mailadres: hello@citizenlab.co.</p>' => 'volgend e-mailadres: hello@govocal.com.</p>',
         'The citizenlab address is: <p>CitizenLab NV - Anspachlaan 65 - 1000 Brussels - Belgium</p>' => 'The Go Vocal address is: <p>CitizenLab NV - Pachecolaan 34 - 1000 Brussels - Belgium</p>',
+        'Go Vocal NV' => 'CitizenLab NV',
         'citizenlab.co/citizenlab-test' => 'citizenlab.co/citizenlab-test',
         "(<a href=\"https://www.citizenlab.co/en\" target=\"_blank\">CitizenLab</a>," => "(<a href=\"https://www.govocal.com/en\" target=\"_blank\">Go Vocal</a>,",
         "(<a href=\"https://www.citizenlab.co/en\" target=\"_blank\">CitizenLab,</a>" => "(<a href=\"https://www.govocal.com/en\" target=\"_blank\">Go Vocal</a>,",
