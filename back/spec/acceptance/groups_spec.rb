@@ -14,7 +14,7 @@ resource 'Groups' do
 
   context 'when authenticated' do
     before do
-      @user = create(:admin, email: 'hello@citizenlab.co')
+      @user = create(:admin)
       header_token_for @user
     end
 

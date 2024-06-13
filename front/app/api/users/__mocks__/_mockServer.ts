@@ -10,8 +10,8 @@ export const usersData: IUserData[] = [
     type: 'user',
     attributes: {
       first_name: 'Test',
-      last_name: 'Citizenlab',
-      slug: 'test-citizenlab',
+      last_name: 'Go Vocal',
+      slug: 'test-govocal',
       locale: 'en',
       avatar: {
         small: null,
@@ -25,7 +25,7 @@ export const usersData: IUserData[] = [
       invite_status: null,
       created_at: '2018-11-26T15:41:19.782Z',
       updated_at: '2018-11-26T15:41:19.782Z',
-      email: 'test@citizenlab.co',
+      email: 'test@govocal.com',
       confirmation_required: false,
       custom_field_values: {
         birthyear: 1990,
