@@ -268,10 +268,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           from_number: '+12345678912',
           monthly_sms_segments_limit: 100_000
         },
-        visitors_dashboard: {
-          enabled: true,
-          allowed: true
-        },
         report_builder: {
           enabled: true,
           allowed: true
