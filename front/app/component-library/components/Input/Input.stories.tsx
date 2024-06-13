@@ -13,9 +13,6 @@ const meta = {
       </div>
     );
   },
-  parameters: {
-    layout: 'centered',
-  },
 } satisfies Meta<typeof Input>;
 
 export default meta;

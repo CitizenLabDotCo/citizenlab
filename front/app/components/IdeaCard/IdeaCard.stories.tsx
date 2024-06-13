@@ -38,7 +38,6 @@ const meta = {
   title: 'Cards/IdeaCard',
   component: IdeaCard,
   parameters: {
-    layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
 } satisfies Meta<typeof IdeaCard>;

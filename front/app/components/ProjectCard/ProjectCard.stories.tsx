@@ -12,7 +12,6 @@ const meta = {
     </div>
   ),
   parameters: {
-    layout: 'centered',
     chromatic: { disableSnapshot: false },
   },
 } satisfies Meta<typeof ProjectCard>;
