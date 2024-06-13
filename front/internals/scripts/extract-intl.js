@@ -13,7 +13,7 @@ const {
 } = require('./helpers/promisify');
 const animateProgress = require('./helpers/progress');
 const addCheckmark = require('./helpers/checkmark');
-const constants = require('../../app/containers/App/constants2');
+const constants = require('../../app/containers/App/constants2.js');
 const locales = Object.keys(constants.appLocalePairs);
 const newLine = () => process.stdout.write('\n');
 let progress;
