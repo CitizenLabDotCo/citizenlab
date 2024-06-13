@@ -5,7 +5,7 @@ import ProjectCard from '.';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
-  title: 'Example/ProjectCard',
+  title: 'Cards/ProjectCard',
   render: (props) => (
     <div style={{ width: '700px' }}>
       <ProjectCard {...props} />

@@ -5,7 +5,7 @@ import InitiativeCard from '.';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
-  title: 'Example/InitiativeCard',
+  title: 'Cards/InitiativeCard',
   render: (props) => (
     <div style={{ width: '400px', height: '300px' }}>
       <InitiativeCard {...props} />

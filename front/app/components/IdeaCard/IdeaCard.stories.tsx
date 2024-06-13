@@ -29,7 +29,7 @@ const IdeaCards = (props: Props) => {
 };
 
 const meta = {
-  title: 'Example/IdeaCard',
+  title: 'Cards/IdeaCard',
   component: IdeaCard,
   parameters: {
     layout: 'centered',
