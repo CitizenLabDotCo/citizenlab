@@ -2,12 +2,10 @@ import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import useAuthUser from 'api/me/useAuthUser';
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 import { trackEventByName } from 'utils/analytics';
-import { isAdmin } from 'utils/permissions/roles';
 
 import ChartFilters from '../../components/ChartFilters';
 
@@ -21,8 +19,6 @@ const hasAnyReferenceData = (userCustomFields: IUserCustomFieldData[]) =>
   userCustomFields.some(hasReferenceData);
 
 const RepresentativenessDashboard = () => {
-  const { data: authUser } = useAuthUser();
-
   const { data: userCustomFields } = useUserCustomFields({
     inputTypes: ['select', 'number'],
   });
@@ -37,7 +33,7 @@ const RepresentativenessDashboard = () => {
     setCurrentProjectFilter(value);
   };
 
-  if (!userCustomFields || !isAdmin(authUser)) {
+  if (!userCustomFields) {
     return null;
   }
 
