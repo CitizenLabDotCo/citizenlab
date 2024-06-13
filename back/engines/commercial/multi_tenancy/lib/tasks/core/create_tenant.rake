@@ -2,7 +2,7 @@
 
 namespace :cl2_back do # rubocop:disable Metrics/BlockLength
   desc 'Create a tenant with given host and optional template'
-  task :create_tenant, %i[host template locales] => [:environment] do |_t, args| # rubocop:disable Metrics/BlockLength
+  task :create_tenant, %i[host template locales] => [:environment] do |_t, args|
     host = args[:host] || raise("Please provide the 'host' arg")
     tenant_template = args[:template] || 'e2etests_template'
     Tenant.find_by(host: host)&.destroy!
