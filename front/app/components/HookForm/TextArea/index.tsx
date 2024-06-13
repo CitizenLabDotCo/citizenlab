@@ -3,7 +3,8 @@ import React from 'react';
 import { Controller, get, useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
 
-import Error, { TFieldName } from 'components/UI/Error';
+// import Error, { TFieldName } from 'components/UI/Error';
+import ErrorPOC from 'components/UI/ErrorPOC';
 import TextareaComponent, {
   Props as TextAreaProps,
 } from 'components/UI/TextArea';
@@ -44,7 +45,7 @@ const TextArea = ({ name, ...rest }: Props) => {
           />
         )}
       />
-      {validationError && (
+      {/* {validationError && (
         <Error
           marginTop="8px"
           marginBottom="8px"
@@ -60,6 +61,12 @@ const TextArea = ({ name, ...rest }: Props) => {
           marginBottom="8px"
           scrollIntoView={false}
         />
+      )} */}
+      {validationError && (
+        <ErrorPOC marginTop="8px" marginBottom="8px" text={validationError} />
+      )}
+      {apiError && (
+        <ErrorPOC errors={apiError} marginTop="8px" marginBottom="8px" />
       )}
     </>
   );

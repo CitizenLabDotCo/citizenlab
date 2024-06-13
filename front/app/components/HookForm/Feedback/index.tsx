@@ -7,11 +7,17 @@ import { CLError, RHFErrors } from 'typings';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-import Error, {
+// import Error, {
+//   findErrorMessage,
+//   getApiErrorValues,
+//   TFieldName,
+// } from 'components/UI/Error';
+import {
   findErrorMessage,
   getApiErrorValues,
   TFieldName,
 } from 'components/UI/Error';
+import ErrorPOC from 'components/UI/ErrorPOC';
 
 import { useIntl } from 'utils/cl-intl';
 import { scrollToElement } from 'utils/scroll';
@@ -105,7 +111,7 @@ const Feedback = ({ successMessage, onlyShowErrors }: FeedbackProps) => {
             />
           )}
           {errorMessageIsShown && (
-            <Error
+            <ErrorPOC
               marginBottom="12px"
               text={
                 <>
