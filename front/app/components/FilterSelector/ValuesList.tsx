@@ -210,7 +210,7 @@ const ValuesList = ({
 
   return (
     <Dropdown
-      id={baseID}
+      id={baseID} // Used for aria expanded and aria controls
       width={width}
       mobileWidth={mobileWidth}
       maxHeight={maxHeight}
@@ -223,6 +223,9 @@ const ValuesList = ({
       opened={opened}
       onClickOutside={handleOnClickOutside}
       content={
+        // The id is used for aria-labelledby on the group which defines
+        // the accessible name for the group. The role group identifies the
+        // group container for the list items.
         <Box role="group" aria-labelledby={`id-${name}`}>
           {/* When a user opens the dropdown, we move focus to this  invisible button.
             This is needed to make sure that the keyboard navigation using the up
