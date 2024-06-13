@@ -90,8 +90,8 @@ export default defineMessages({
     id: 'app.containers.AccessibilityStatement.postalAddress',
     defaultMessage: 'Postal address:',
   },
-  citizenLabAddress2022: {
-    id: 'app.containers.AccessibilityStatement.citizenLabAddress2022',
+  govocalAddress2022: {
+    id: 'app.containers.AccessibilityStatement.govocalAddress2022',
     defaultMessage: 'Boulevard Pachéco 34, 1000 Brussels, Belgium',
   },
   responsiveness: {

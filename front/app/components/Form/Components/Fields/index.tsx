@@ -21,7 +21,7 @@ import { selectRenderers } from './formConfig';
 interface Props {
   data: FormData;
   apiErrors?: CLErrors;
-  showAllErrors?: boolean;
+  showAllErrors: boolean;
   setShowAllErrors?: (showAllErrors: boolean) => void;
   schema: JsonSchema7;
   uiSchema: Layout;
