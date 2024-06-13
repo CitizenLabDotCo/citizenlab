@@ -7,7 +7,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 const meta = {
   title: 'Cards/InitiativeCard',
   render: (props) => (
-    <div style={{ width: '400px', height: '300px' }}>
+    <div style={{ width: '400px', height: '300px', padding: '8px' }}>
       <InitiativeCard {...props} />
     </div>
   ),
