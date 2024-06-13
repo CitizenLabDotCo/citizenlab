@@ -1,4 +1,10 @@
-import React, { useRef, useEffect, KeyboardEvent, FormEvent } from 'react';
+import React, {
+  useRef,
+  useEffect,
+  KeyboardEvent,
+  FormEvent,
+  useState,
+} from 'react';
 
 import {
   Dropdown,
@@ -159,7 +165,8 @@ const ValuesList = ({
   onClickOutside,
 }: Props) => {
   const tabsRef = useRef({});
-  const [focusedIndex, setFocusedIndex] = React.useState(0);
+  const invisibleRef = useRef<HTMLButtonElement | null>(null);
+  const [focusedIndex, setFocusedIndex] = useState(-1);
 
   const handleOnToggleCheckbox =
     (entry: Value) => (_event: React.ChangeEvent) => {
@@ -167,8 +174,8 @@ const ValuesList = ({
     };
 
   useEffect(() => {
-    if (opened && Object.keys(tabsRef.current).length > 0) {
-      tabsRef.current[0].focus();
+    if (opened && invisibleRef.current) {
+      invisibleRef.current.focus();
     }
   }, [opened]);
 
@@ -179,7 +186,6 @@ const ValuesList = ({
         (event.key === 'ArrowUp' || event.key === 'ArrowDown')
       ) {
         event.preventDefault();
-
         const totalItems = values.length;
         let nextIndex = 0;
         if (event.key === 'ArrowUp') {
@@ -194,7 +200,6 @@ const ValuesList = ({
         (event.type === 'keydown' && event.code === 'Space')
       ) {
         event.preventDefault();
-
         onChange(entry.value);
       }
     };
@@ -205,7 +210,7 @@ const ValuesList = ({
 
   return (
     <Dropdown
-      id={baseID} // Used for aria expanded and aria controls
+      id={baseID}
       width={width}
       mobileWidth={mobileWidth}
       maxHeight={maxHeight}
@@ -218,10 +223,30 @@ const ValuesList = ({
       opened={opened}
       onClickOutside={handleOnClickOutside}
       content={
-        // The id is used for aria-labelledby on the group which defines
-        // the accessible name for the group. The role group identifies the
-        // group container for the list items.
         <Box role="group" aria-labelledby={`id-${name}`}>
+          {/* When a user opens the dropdown, we move focus to this  invisible button.
+            This is needed to make sure that the keyboard navigation using the up
+            and down arrow keys works without interfering with the behavior if the
+            user opens the dropdown using a mouse click.
+          */}
+          <button
+            ref={invisibleRef}
+            tabIndex={0}
+            style={{
+              position: 'absolute',
+              width: 0,
+              height: 0,
+              overflow: 'hidden',
+              opacity: 0,
+            }}
+            onKeyDown={(event) => {
+              if (event.key === 'ArrowDown') {
+                event.preventDefault();
+                setFocusedIndex(0);
+                tabsRef.current[0].focus();
+              }
+            }}
+          />
           <List
             className="e2e-sort-items"
             aria-multiselectable={multipleSelectionAllowed}
@@ -270,13 +295,13 @@ const ValuesList = ({
                     aria-selected={checked}
                     key={entry.value}
                     onMouseDown={removeFocusAfterMouseClick}
+                    onKeyDown={handleOnSelectSingleValue(entry)}
                     className={classNames}
                     onClick={(event) => {
                       event.preventDefault();
 
                       onChange(entry.value);
                     }}
-                    onKeyDown={handleOnSelectSingleValue(entry)}
                     tabIndex={-1}
                     ref={(el) => el && (tabsRef.current[index] = el)}
                   >
