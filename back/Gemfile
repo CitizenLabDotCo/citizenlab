@@ -78,6 +78,7 @@ group :test do
 
   # Adds rspec matchers and helpers for testing html structure and styling.
   gem 'capybara', '~> 3.40'
+  gem 'rspec-html-matchers', '~> 0.10'
   # gem 'bullet'
 end
 
