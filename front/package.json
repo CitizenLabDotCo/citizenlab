@@ -11,7 +11,7 @@
   "main": "app/component-library/dist/index.js",
   "module": "app/component-library/dist/cl2-component-library.esm.js",
   "scripts": {
-    "extract-intl": "tsc --skipLibCheck app/containers/App/constants2.js && babel-node --presets @babel/env -- ./internals/scripts/extract-intl.js",
+    "extract-intl": "tsc --skipLibCheck app/containers/App/constants && babel-node --presets @babel/env -- ./internals/scripts/extract-intl.js",
     "prebuild": "npm run build:clean",
     "build": "cross-env NODE_ENV=production NODE_OPTIONS='--max-old-space-size=4096' webpack --config internals/webpack/webpack.config.js --color",
     "build:clean": "rimraf ./build",
