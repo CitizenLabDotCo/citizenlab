@@ -205,7 +205,6 @@ commercial_engines = [
   'remove_vendor_branding',
   'report_builder',
   'smart_groups',
-  'texting',
   'user_custom_fields',
 
   # ID verification engines.
