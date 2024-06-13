@@ -2,7 +2,7 @@
 
 namespace :cl2_back do # rubocop:disable Metrics/BlockLength
   desc 'Create a tenant with given host and optional template'
-  task :create_tenant, %i[host template locales] => [:environment] do |_t, args| # rubocop:disable Metrics/BlockLength
+  task :create_tenant, %i[host template locales] => [:environment] do |_t, args|
     host = args[:host] || raise("Please provide the 'host' arg")
     tenant_template = args[:template] || 'e2etests_template'
     Tenant.find_by(host: host)&.destroy!
@@ -55,10 +55,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           allowed: true
         },
         anonymous_participation: {
-          enabled: true,
-          allowed: true
-        },
-        representativeness: {
           enabled: true,
           allowed: true
         },
@@ -192,10 +188,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: true,
           allowed: true
         },
-        admin_project_templates: {
-          enabled: true,
-          allowed: true
-        },
         verification: {
           enabled: true,
           allowed: true,
@@ -258,10 +250,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: true,
           allowed: true
         },
-        project_visibility: {
-          enabled: true,
-          allowed: true
-        },
         moderation: {
           enabled: true,
           allowed: true
@@ -279,18 +267,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           allowed: true,
           from_number: '+12345678912',
           monthly_sms_segments_limit: 100_000
-        },
-        native_surveys: {
-          enabled: true,
-          allowed: true
-        },
-        analytics: {
-          enabled: true,
-          allowed: true
-        },
-        visitors_dashboard: {
-          enabled: true,
-          allowed: true
         },
         report_builder: {
           enabled: true,

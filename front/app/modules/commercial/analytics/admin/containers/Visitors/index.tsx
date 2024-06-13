@@ -4,12 +4,6 @@ import moment from 'moment';
 
 import { Query } from 'api/analytics/types';
 import useAnalytics from 'api/analytics/useAnalytics';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useAuthUser from 'api/me/useAuthUser';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
-import { isAdmin } from 'utils/permissions/roles';
 
 import VisitorsOverview from './VisitorsOverview';
 
@@ -36,33 +30,14 @@ const query: Query = {
 };
 
 const Visitors = () => {
-  const { data: appConfig } = useAppConfiguration();
-  const { data: authUser } = useAuthUser();
+  const { data: analytics } = useAnalytics<Response>(query, undefined, true);
 
-  const { data: analytics } = useAnalytics<Response>(
-    query,
-    undefined,
-    authUser ? isAdmin(authUser) : false
-  );
-  const visitorsDashboardEnabled = useFeatureFlag({
-    name: 'visitors_dashboard',
-  });
-
-  if (
-    !visitorsDashboardEnabled ||
-    !appConfig ||
-    !analytics ||
-    !authUser ||
-    !isAdmin(authUser)
-  ) {
+  if (!analytics) {
     return null;
   }
 
   const [countData] = analytics.data.attributes;
-  if (!countData) return null;
-
   const firstDate = countData.first_dimension_date_created_date;
-
   const uniqueVisitorDataDate =
     typeof firstDate === 'string' ? moment(firstDate) : undefined;
 
