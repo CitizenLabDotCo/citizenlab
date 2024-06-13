@@ -521,7 +521,6 @@
   "app.containers.Admin.emails.toAllUsers": "Θέλετε να στείλετε αυτό το μήνυμα ηλεκτρονικού ταχυδρομείου σε όλους τους εγγεγραμμένους χρήστες;",
   "app.containers.Admin.emails.viewExample": "Προβολή",
   "app.containers.Admin.ideas.import": "Εισαγωγή",
-  "app.containers.Admin.ideas.tabInputStatuses": "Καταστάσεις εισόδου",
   "app.containers.Admin.initiatives.addNewProposal": "Προσθήκη πρότασης",
   "app.containers.Admin.initiatives.cosponsors": "Συνυπογράφοντες",
   "app.containers.Admin.initiatives.cosponsorsNumberLabel": "Αριθμός συνυποστηρικτών",

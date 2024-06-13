@@ -727,7 +727,6 @@
   "app.containers.Admin.emails.toAllUsers": "Wil je deze e-mail naar alle gebruikers sturen?",
   "app.containers.Admin.emails.viewExample": "Bekijk",
   "app.containers.Admin.ideas.import": "Importeren",
-  "app.containers.Admin.ideas.tabInputStatuses": "Input statussen",
   "app.containers.Admin.initiatives.addNewProposal": "Een voorstel toevoegen",
   "app.containers.Admin.initiatives.cosponsors": "Ondersteuners",
   "app.containers.Admin.initiatives.cosponsorsNumberLabel": "Aantal ondersteuners",

@@ -727,7 +727,6 @@
   "app.containers.Admin.emails.toAllUsers": "هل ترغب في إرسال هذه الرسالة الإلكترونية إلى جميع المستخدمين؟",
   "app.containers.Admin.emails.viewExample": "منظر",
   "app.containers.Admin.ideas.import": "استيراد",
-  "app.containers.Admin.ideas.tabInputStatuses": "حالات الإدخال",
   "app.containers.Admin.initiatives.addNewProposal": "إضافة مقترح",
   "app.containers.Admin.initiatives.cosponsors": "الرعاة",
   "app.containers.Admin.initiatives.cosponsorsNumberLabel": "عدد المشاركين في الرعاية",

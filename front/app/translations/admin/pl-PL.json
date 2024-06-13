@@ -727,7 +727,6 @@
   "app.containers.Admin.emails.toAllUsers": "Czy chcesz wysłać tę wiadomość do wszystkich użytkowników?",
   "app.containers.Admin.emails.viewExample": "Zobacz",
   "app.containers.Admin.ideas.import": "Import",
-  "app.containers.Admin.ideas.tabInputStatuses": "Statusy wejścia",
   "app.containers.Admin.initiatives.addNewProposal": "Dodaj propozycję",
   "app.containers.Admin.initiatives.cosponsors": "Współsponsorzy",
   "app.containers.Admin.initiatives.cosponsorsNumberLabel": "Liczba współwnioskodawców",

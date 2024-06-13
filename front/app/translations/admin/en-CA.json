@@ -727,7 +727,6 @@
   "app.containers.Admin.emails.toAllUsers": "Do you want to send this email to all registered users?",
   "app.containers.Admin.emails.viewExample": "View",
   "app.containers.Admin.ideas.import": "Import",
-  "app.containers.Admin.ideas.tabInputStatuses": "Input statuses",
   "app.containers.Admin.initiatives.addNewProposal": "Add a proposal",
   "app.containers.Admin.initiatives.cosponsors": "Cosponsors",
   "app.containers.Admin.initiatives.cosponsorsNumberLabel": "Number of cosponsors",
