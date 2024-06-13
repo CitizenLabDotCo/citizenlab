@@ -17,11 +17,16 @@ const IdeaCards = (props: Props) => {
   const smallerThanPhone = useBreakpoint('phone');
 
   return (
-    <Box w="100%" maxWidth="1166px" display="flex" flexDirection="row">
-      <Box margin="10px" width={smallerThanPhone ? '100%' : 'calc(50% - 20px)'}>
+    <Box
+      w="100%"
+      maxWidth="1166px"
+      display="flex"
+      flexDirection={smallerThanPhone ? 'column' : 'row'}
+    >
+      <Box p="10px" width={smallerThanPhone ? '100%' : '50%'}>
         <IdeaCard {...props} />
       </Box>
-      <Box margin="10px" width={smallerThanPhone ? '100%' : 'calc(50% - 20px)'}>
+      <Box p="10px" width={smallerThanPhone ? '100%' : '50%'}>
         <IdeaCard {...props} />
       </Box>
     </Box>
