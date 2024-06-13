@@ -91,6 +91,8 @@ class AppConfiguration < ApplicationRecord
   end
 
   class << self
+    include Scientist
+
     # We prevent the direct instantiation of AppConfiguration, because it is a singleton.
     private :new
 
@@ -108,7 +110,10 @@ class AppConfiguration < ApplicationRecord
     )
 
     def instance
-      @instance ||= first!
+      science 'app_configuration' do |experiment|
+        experiment.use { first! }
+        experiment.try { @instance ||= first! }
+      end
     end
 
     def reset_instance
