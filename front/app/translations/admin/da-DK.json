@@ -589,6 +589,7 @@
   "app.containers.Admin.PagesAndMenu.topInfoSaveAndEnableButton": "Gem og aktiver øverste info-afsnit",
   "app.containers.Admin.PagesAndMenu.topInfoSaveButton": "Gem øverste info-afsnit",
   "app.containers.Admin.PagesAndMenu.viewButton": "Se",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.age": "Alder",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.community": "Fællesskabet",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.executiveSummary": "Sammenfatning",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Inklusionsindikatorer på højeste niveau",
