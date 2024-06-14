@@ -589,6 +589,7 @@
   "app.containers.Admin.PagesAndMenu.topInfoSaveAndEnableButton": "Сачувајте и омогућите одељак са главним информацијама",
   "app.containers.Admin.PagesAndMenu.topInfoSaveButton": "Сачувајте топ инфо одељак",
   "app.containers.Admin.PagesAndMenu.viewButton": "Поглед",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.age": "Age",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.community": "Community",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.executiveSummary": "Executive summary",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Top-level inclusion indicators",

@@ -49,7 +49,7 @@ export const isModerator = (user?: IUser | null | undefined | Error) => {
 };
 
 /*
-  A super admin is an admin with @citizenlab.co email address.
+  A super admin is an admin with @govocal.com email address.
   In the frontend, it doesn't have a significant meaning at the time of writing (18/1/'21).
   It does not exist in the roles value of an authUser.
   super_admin can be the highest_role value though.

@@ -589,6 +589,7 @@
   "app.containers.Admin.PagesAndMenu.topInfoSaveAndEnableButton": "Enregistrer et activer la section d'information supérieure",
   "app.containers.Admin.PagesAndMenu.topInfoSaveButton": "Sauvegarder la section d'information supérieure",
   "app.containers.Admin.PagesAndMenu.viewButton": "Voir",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.age": "Age",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.community": "Communauté",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.executiveSummary": "Résumé",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Indicateurs d'inclusion",

@@ -20,7 +20,7 @@ export const mockAuthUserData: IUserData = {
     first_name: 'Sylvester',
     no_name: false,
     no_password: false,
-    email: 'admin@citizenlab.co',
+    email: 'admin@govocal.com',
     custom_field_values: {},
     avatar: { small: null, medium: null, large: null },
     // Don't put to 0

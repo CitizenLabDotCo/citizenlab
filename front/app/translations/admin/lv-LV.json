@@ -589,6 +589,7 @@
   "app.containers.Admin.PagesAndMenu.topInfoSaveAndEnableButton": "Saglabāt un iespējot augšējo informācijas sadaļu",
   "app.containers.Admin.PagesAndMenu.topInfoSaveButton": "Saglabāt augšējo informācijas sadaļu",
   "app.containers.Admin.PagesAndMenu.viewButton": "Skatīt",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.age": "Vecums",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.community": "Kopiena",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.executiveSummary": "Kopsavilkums",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Augstākā līmeņa iekļaušanas rādītāji",

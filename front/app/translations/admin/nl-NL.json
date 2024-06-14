@@ -589,6 +589,7 @@
   "app.containers.Admin.PagesAndMenu.topInfoSaveAndEnableButton": "Opslaan en bovenste infosectie opslaan",
   "app.containers.Admin.PagesAndMenu.topInfoSaveButton": "Bovenste infosectie opslaan",
   "app.containers.Admin.PagesAndMenu.viewButton": "Toon",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.age": "Leeftijd",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.community": "Gemeenschap",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.executiveSummary": "Samenvatting",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Hoogste niveau inclusie-indicatoren",

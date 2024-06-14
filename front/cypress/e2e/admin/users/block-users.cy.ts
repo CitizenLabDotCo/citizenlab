@@ -1,7 +1,7 @@
 describe('Block user', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
-    cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
       const adminJwt = response.body.jwt;
       cy.request({
         headers: {
@@ -27,7 +27,7 @@ describe('Block user', () => {
   it('Block from User Manager', () => {
     cy.get('.e2e-user-table')
       .find('.e2e-user-table-row')
-      .not(':contains("admin@citizenlab.co")')
+      .not(':contains("admin@govocal.com")')
       .first()
       .find('.e2e-more-actions')
       .click();
@@ -62,7 +62,7 @@ describe('Block user', () => {
   it('Unblock from User Manager', () => {
     cy.get('.e2e-user-table')
       .find('.e2e-user-table-row')
-      .not(':contains("admin@citizenlab.co")')
+      .not(':contains("admin@govocal.com")')
       .first()
       .find('.e2e-more-actions')
       .click();
@@ -88,7 +88,7 @@ describe('Block user', () => {
     // Go to user profile by clicking on the first user in the table
     cy.get('.e2e-user-table')
       .find('.e2e-user-table-row')
-      .not(':contains("admin@citizenlab.co")')
+      .not(':contains("admin@govocal.com")')
       .first()
       .find('td')
       .eq(1)
@@ -124,7 +124,7 @@ describe('Block user', () => {
     // Go to user profile by clicking on the first user in the table
     cy.get('.e2e-user-table')
       .find('.e2e-user-table-row')
-      .not(':contains("admin@citizenlab.co")')
+      .not(':contains("admin@govocal.com")')
       .first()
       .find('td')
       .eq(1)

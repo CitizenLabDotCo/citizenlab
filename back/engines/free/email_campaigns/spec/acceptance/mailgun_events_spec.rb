@@ -70,7 +70,7 @@ resource 'Mailgun Events' do
 
     context '[error] for a non-matching signature' do
       before do
-        allow(ENV).to receive(:fetch).with('MAILGUN_API_KEY', any_args).and_return('somefakekey')
+        stub_const('ENV', ENV.to_h.merge('MAILGUN_API_KEY' => 'somefakekey'))
       end
 
       let!(:signature) { 'Ryqqw2p75aFnseL8kjPRgu' }

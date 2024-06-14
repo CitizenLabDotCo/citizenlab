@@ -10,10 +10,26 @@ RSpec.describe Tenant do
   end
 
   describe '#switch!' do
-    it 'switches successfully into the tenant' do
-      tenant = create(:tenant, host: 'unused.hostname.com')
+    let_it_be(:other_tenant) { create(:tenant, name: 'other-tenant') }
+
+    around do |example|
+      tenant = described_class.current
+      example.run
       tenant.switch!
-      expect(described_class.current).to eq(tenant)
+    end
+
+    it 'resets the app configuration' do
+      expect(AppConfiguration.instance.name).to eq('test-tenant')
+      expect(AppConfiguration).to receive(:reset_instance).once.and_call_original
+
+      other_tenant.switch!
+
+      expect(AppConfiguration.instance.name).to eq('other-tenant')
+    end
+
+    it 'switches successfully into the tenant' do
+      other_tenant.switch!
+      expect(described_class.current).to eq(other_tenant)
     end
 
     it 'fails when the tenant is not persisted' do
@@ -23,10 +39,21 @@ RSpec.describe Tenant do
   end
 
   describe '#switch' do
+    let_it_be(:other_tenant) { create(:tenant, name: 'other-tenant') }
+
+    it '...' do
+      expect(AppConfiguration.instance.name).to eq('test-tenant')
+
+      other_tenant.switch do
+        expect(AppConfiguration.instance.name).to eq('other-tenant')
+      end
+
+      expect(AppConfiguration.instance.name).to eq('test-tenant')
+    end
+
     it 'runs the block in the tenant context' do
-      tenant = create(:tenant, host: 'unused.hostname.com')
-      current_tenant = tenant.switch { described_class.current }
-      expect(current_tenant).to eq(tenant)
+      current_tenant = other_tenant.switch { described_class.current }
+      expect(current_tenant).to eq(other_tenant)
     end
 
     it 'fails if the tenant is not persisted' do
