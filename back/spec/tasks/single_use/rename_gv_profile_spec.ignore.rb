@@ -5,7 +5,7 @@ describe 'gv_transition:rename_profile rake task' do
 
   after { Rake::Task['gv_transition:rename_profile'].reenable }
 
-  it 'updates the participation context of the custom form to the project' do
+  it 'updates the first name of default moderators to Go Vocal' do
     ['test1.govocal.com', 'test2.govocal.com'].each do |host|
       create(:test_tenant, host: host)
     end
