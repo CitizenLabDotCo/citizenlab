@@ -117,7 +117,7 @@ class AppConfiguration < ApplicationRecord
           @instance ||= first!
         end
 
-        experiment.clean { |value| value.attributes }
+        experiment.clean(&:attributes)
 
         experiment.context({
           execution_stack: caller,
