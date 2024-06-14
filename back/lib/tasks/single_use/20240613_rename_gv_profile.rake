@@ -9,7 +9,7 @@ namespace :gv_transition do
           old_v = moderator.first_name
           new_v = 'Go Vocal'
           moderator.first_name = new_v
-          # moderator.remote_avatar_url = 'https://res.cloudinary.com/citizenlab-assets/image/upload/v1623680000/govocal-logo.png'
+          moderator.remote_avatar_url = 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/gv_admin_avatar.png'
           if moderator.save
             reporter.add_change(
               old_v,
