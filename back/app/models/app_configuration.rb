@@ -113,13 +113,11 @@ class AppConfiguration < ApplicationRecord
       science 'app_configuration' do |experiment|
         experiment.use { first! }
         experiment.try do
-          @instance ||= first!
           @instance_caller ||= caller
+          @instance ||= first!
         end
 
-        experiment.clean do |value|
-          value.is_a?(AppConfiguration) ? value.attributes : value
-        end
+        experiment.clean { |value| value.attributes }
 
         experiment.context({
           execution_stack: caller,
