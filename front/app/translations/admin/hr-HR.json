@@ -589,6 +589,7 @@
   "app.containers.Admin.PagesAndMenu.topInfoSaveAndEnableButton": "Spremi i omogući gornji odjeljak s informacijama",
   "app.containers.Admin.PagesAndMenu.topInfoSaveButton": "Spremi odjeljak s informacijama na vrhu",
   "app.containers.Admin.PagesAndMenu.viewButton": "Prikaz",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.age": "Dob",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.community": "Zajednica",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.executiveSummary": "Izvršni sažetak",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Indikatori uključenosti najviše razine",

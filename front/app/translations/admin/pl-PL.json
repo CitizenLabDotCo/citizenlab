@@ -589,6 +589,7 @@
   "app.containers.Admin.PagesAndMenu.topInfoSaveAndEnableButton": "Zapisz i włącz sekcję Top info",
   "app.containers.Admin.PagesAndMenu.topInfoSaveButton": "Zapisz górną sekcję informacyjną",
   "app.containers.Admin.PagesAndMenu.viewButton": "Widok",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.age": "Wiek",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.community": "Wspólnota",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.executiveSummary": "Streszczenie",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Wskaźniki włączenia na najwyższym poziomie",

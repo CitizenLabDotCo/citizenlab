@@ -589,6 +589,7 @@
   "app.containers.Admin.PagesAndMenu.topInfoSaveAndEnableButton": "Salvar e ativar informação de sessão do topo da página",
   "app.containers.Admin.PagesAndMenu.topInfoSaveButton": "Salvar seção de informação",
   "app.containers.Admin.PagesAndMenu.viewButton": "Visão",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.age": "Idade",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.community": "Comunidade",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.executiveSummary": "Resumo executivo",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Indicadores de inclusão de nível superior",

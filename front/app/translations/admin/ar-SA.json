@@ -589,6 +589,7 @@
   "app.containers.Admin.PagesAndMenu.topInfoSaveAndEnableButton": "حفظ قسم المعلومات العلوي وتمكينه",
   "app.containers.Admin.PagesAndMenu.topInfoSaveButton": "حفظ قسم المعلومات العلوي",
   "app.containers.Admin.PagesAndMenu.viewButton": "عرض",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.age": "عمر",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.community": "مجتمع",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.executiveSummary": "ملخص تنفيذي",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "مؤشرات الإدماج ذات المستوى الأعلى",

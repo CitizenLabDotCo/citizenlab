@@ -20,7 +20,7 @@ describe('/admin/users/ page', () => {
       .should('have.length', 1);
     cy.get('.e2e-user-table')
       .find('.e2e-user-table-row')
-      .contains('admin@citizenlab.co');
+      .contains('admin@govocal.com');
     cy.get('.e2e-user-table')
       .find('.e2e-user-table-row')
       .contains('Sylvester Kalinoski');

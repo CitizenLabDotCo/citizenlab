@@ -1,6 +1,6 @@
 # Impact Tracking
 
-The impact tracking engine and its corresponding front-end module, track impact by measuring engagement in a privacy-friendly way. These metrics are not exposed in the product, but are used for CitizenLab's internal impact reporting. For this purpose, the numbers need to be highly accurate, but can lack detail.
+The impact tracking engine and its corresponding front-end module, track impact by measuring engagement in a privacy-friendly way. These metrics are not exposed in the product, but are used for Go Vocal's internal impact reporting. For this purpose, the numbers need to be highly accurate, but can lack detail.
 
 ## Session tracking
 
@@ -24,4 +24,4 @@ Since there are relatively little IP addresses and user agents, given the stored
 
 ### How is the stored data used?
 
-The session table is (currently) not used or displayed anywhere in the product, but used for CitizenLab's internal impact reporting. For CitizenLab staff, it's accessible through the internal Metabase. 
+The session table is (currently) not used or displayed anywhere in the product, but used for Go Vocal's internal impact reporting. For Go Vocal staff, it's accessible through the internal Metabase. 

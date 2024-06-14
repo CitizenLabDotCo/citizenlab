@@ -589,6 +589,7 @@
   "app.containers.Admin.PagesAndMenu.topInfoSaveAndEnableButton": "Lagre og aktiver den øvre informasjonsdelen",
   "app.containers.Admin.PagesAndMenu.topInfoSaveButton": "Lagre den øvre informasjonsseksjonen",
   "app.containers.Admin.PagesAndMenu.viewButton": "Vis",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.age": "Alder",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.community": "Samfunnet",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.executiveSummary": "Kortfattet sammendrag",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Inkluderingsindikatorer på toppnivå",

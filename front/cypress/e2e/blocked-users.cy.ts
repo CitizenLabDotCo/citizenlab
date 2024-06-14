@@ -10,7 +10,7 @@ describe('Blocked user', () => {
   before(() => {
     cy.apiSignup(firstName, lastName, email, password).then((response) => {
       userId = response.body.data.id;
-      cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+      cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
         const adminJwt = response.body.jwt;
         cy.request({
           headers: {
