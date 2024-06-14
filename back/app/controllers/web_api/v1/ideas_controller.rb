@@ -119,9 +119,15 @@ class WebApi::V1::IdeasController < ApplicationController
     render_show Idea.find_by!(slug: params[:slug])
   end
 
-  # Return a single draft idea for a phase - for native survey autosave
+  # return a single draft idea for this user for this phase
+  # returns an empty idea if none found
+  # used only in native survey autosave
   def draft_by_phase
-    render_show Idea.find_by!(creation_phase_id: params[:phase_id], author: current_user, publication_status: 'draft')
+    phase = Phase.find(params[:phase_id])
+    draft_idea =
+      (current_user && Idea.find_by(creation_phase_id: params[:phase_id], author: current_user, publication_status: 'draft')) ||
+      Idea.new(project: phase.project, author: current_user, publication_status: 'draft')
+    render_show draft_idea, check_auth: false
   end
 
   #   Normal users always post in an active phase. They should never provide a phase id.
@@ -244,8 +250,8 @@ class WebApi::V1::IdeasController < ApplicationController
 
   private
 
-  def render_show(input)
-    authorize input
+  def render_show(input, check_auth: true)
+    authorize input if check_auth
     render json: WebApi::V1::IdeaSerializer.new(
       input,
       params: jsonapi_serializer_params,

@@ -79,7 +79,7 @@ class IdeaPolicy < ApplicationPolicy
   private
 
   def owner?
-    record.author_id == user.id
+    user && record.author_id == user.id
   end
 end
 
