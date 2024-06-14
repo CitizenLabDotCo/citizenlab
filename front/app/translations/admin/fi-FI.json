@@ -589,6 +589,7 @@
   "app.containers.Admin.PagesAndMenu.topInfoSaveAndEnableButton": "Tallenna ja ota käyttöön tärkeimmät tiedot -osio",
   "app.containers.Admin.PagesAndMenu.topInfoSaveButton": "Tallenna tärkeimmät tiedot -osio",
   "app.containers.Admin.PagesAndMenu.viewButton": "Näytä",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.age": "Ikä",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.community": "Yhteisö",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.executiveSummary": "Tiivistelmä",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Huipputason osallistamisindikaattorit",
