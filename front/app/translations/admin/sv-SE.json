@@ -589,6 +589,7 @@
   "app.containers.Admin.PagesAndMenu.topInfoSaveAndEnableButton": "Salvați și activați secțiunea de informații de sus",
   "app.containers.Admin.PagesAndMenu.topInfoSaveButton": "Spara övre informationsavsnitt",
   "app.containers.Admin.PagesAndMenu.viewButton": "Vy",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.age": "Ålder",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.community": "Gemenskap",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.executiveSummary": "Sammanfattning",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Indikatorer för inkludering på högsta nivå",
