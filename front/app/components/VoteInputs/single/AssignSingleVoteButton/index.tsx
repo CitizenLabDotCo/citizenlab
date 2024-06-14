@@ -141,7 +141,7 @@ const AssignSingleVoteButton = ({
       <div>
         <Button
           buttonStyle={ideaInBasket ? 'primary' : buttonStyle}
-          bgColor={ideaInBasket ? colors.success : colors.teal}
+          bgColor={ideaInBasket ? colors.success : undefined}
           borderColor={ideaInBasket ? colors.success : undefined}
           disabled={!!disabledButtonExplanation}
           processing={isProcessing}
