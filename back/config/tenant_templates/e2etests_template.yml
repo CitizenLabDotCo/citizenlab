@@ -287,7 +287,7 @@ models:
       static_page_ref: *faq-page
   user:
   - &admin
-    email: admin@citizenlab.co
+    email: admin@govocal.com
     first_name: Sylvester
     last_name: Kalinoski
     locale: en
@@ -304,7 +304,7 @@ models:
     created_at: '2018-03-28 13:34:57'
     updated_at: '2018-03-28 13:39:17'
   - &moderator
-    email: moderator@citizenlab.co
+    email: moderator@govocal.com
     first_name: Angeline
     last_name: Ankunding
     locale: en
@@ -319,7 +319,7 @@ models:
     registration_completed_at: '2018-03-28 13:35:02'
     updated_at: '2018-03-28 13:35:02'
   - &mortal1
-    email: mortal@citizenlab.co
+    email: mortal@govocal.com
     first_name: Casey
     last_name: Luettgen
     locale: en
@@ -335,7 +335,7 @@ models:
     registration_completed_at: '2018-03-28 13:34:57'
     updated_at: '2018-03-28 13:34:57'
   - &charlie
-    email: charlie+mortal@citizenlab.co
+    email: charlie+mortal@govocal.com
     first_name: Chalie
     last_name: Charles
     locale: fr-BE
@@ -15956,8 +15956,8 @@ models:
       duration: 100
       pages_visited: 1
       returning_visitor: false
-      referrer_name: 'citizenlab.co'
-      referrer_url: 'https://www.citizenlab.co/a_page'
+      referrer_name: 'govocal.com'
+      referrer_url: 'https://www.govocal.com/a_page'
       matomo_visit_id: 101
       matomo_last_action_time: 2022-09-01 09:16:00 UTC
     - visitor_id: XX1
@@ -15968,8 +15968,8 @@ models:
       duration: 200
       pages_visited: 2
       returning_visitor: false
-      referrer_name: 'citizenlab.co'
-      referrer_url: 'https://www.citizenlab.co/another_page'
+      referrer_name: 'govocal.com'
+      referrer_url: 'https://www.govocal.com/another_page'
       matomo_visit_id: 102
       matomo_last_action_time: 2022-09-01 17:25:00 UTC
     - visitor_id: XX3
