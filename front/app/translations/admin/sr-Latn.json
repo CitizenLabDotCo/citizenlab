@@ -589,6 +589,7 @@
   "app.containers.Admin.PagesAndMenu.topInfoSaveAndEnableButton": "Sačuvaj i omogući gornju sekciju sa informacijama",
   "app.containers.Admin.PagesAndMenu.topInfoSaveButton": "Sačuvaj odeljak za informacije na vrhu",
   "app.containers.Admin.PagesAndMenu.viewButton": "Prikaz",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.age": "Age",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.community": "Community",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.executiveSummary": "Executive summary",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Top-level inclusion indicators",
