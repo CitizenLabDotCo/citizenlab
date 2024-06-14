@@ -589,6 +589,7 @@
   "app.containers.Admin.PagesAndMenu.topInfoSaveAndEnableButton": "Oberen Infobereich speichern und aktivieren",
   "app.containers.Admin.PagesAndMenu.topInfoSaveButton": "Oberen Infobereich speichern",
   "app.containers.Admin.PagesAndMenu.viewButton": "Anzeigen",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.age": "Alter",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.community": "Community",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.executiveSummary": "Zusammenfassung",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Top-Level-Indikatoren für Inklusion",

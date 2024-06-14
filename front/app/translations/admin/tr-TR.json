@@ -589,6 +589,7 @@
   "app.containers.Admin.PagesAndMenu.topInfoSaveAndEnableButton": "Üst bilgi bölümünü kaydedin ve etkinleştirin",
   "app.containers.Admin.PagesAndMenu.topInfoSaveButton": "Üst bilgi bölümünü kaydet",
   "app.containers.Admin.PagesAndMenu.viewButton": "Göster",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.age": "Yaş",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.community": "Topluluk",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.executiveSummary": "Yönetici özeti",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Üst düzey kapsayıcılık göstergeleri",
