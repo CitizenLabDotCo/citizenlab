@@ -79,17 +79,15 @@ describe('Admin: ideation analysis', () => {
 
     // Shows insights
     cy.get('[data-cy="e2e-analysis-summary"]').should('exist');
-  });
 
-  it('searches inputs correctly', () => {
+    // Searches inputs correctly
     cy.get('[data-cy="e2e-analysis-input-item"]').should('have.length', 3);
     cy.get('#search-input').type('first');
     cy.get('[data-cy="e2e-analysis-input-item"]').should('have.length', 1);
     cy.get('#search-input').clear();
     cy.get('[data-cy="e2e-analysis-input-item"]').should('have.length', 3);
-  });
 
-  it('previews input correctly', () => {
+    // Previews input correctly
     cy.get('[data-cy="e2e-analysis-input-preview"]').should(
       'contain',
       'My first idea'
@@ -99,9 +97,9 @@ describe('Admin: ideation analysis', () => {
       'contain',
       'My third idea'
     );
-  });
 
-  it('works with manual tags', () => {
+    // Works with manual tags.
+
     // Has two tags by default e2e-analysis-tag
     cy.get('[data-cy="e2e-analysis-tag-container"]').should('have.length', 2);
 

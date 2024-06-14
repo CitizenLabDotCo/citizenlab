@@ -50,10 +50,6 @@ describe('Multiple voting project', () => {
                 userId = (response as any).body.data.id;
               }
             );
-            cy.setLoginCookie(email, password);
-            cy.visit(`/en/projects/${projectSlug}`);
-            cy.acceptCookies();
-            cy.wait(1000);
           });
       });
     });
@@ -61,6 +57,9 @@ describe('Multiple voting project', () => {
 
   beforeEach(() => {
     cy.setLoginCookie(email, password);
+    cy.visit(`/en/projects/${projectSlug}`);
+    cy.acceptCookies();
+    cy.wait(1000);
   });
 
   after(() => {
@@ -69,15 +68,10 @@ describe('Multiple voting project', () => {
     cy.apiRemoveUser(userId);
   });
 
-  it('shows the idea cards', () => {
-    cy.get('#e2e-ideas-container');
-  });
+  it('can allocate and submit the votes to ideas ', () => {
+    cy.get('#e2e-ideas-container'); // shows the idea cards
+    cy.get('.e2e-filter-selector-button').should('not.exist'); // hides the idea sorting options
 
-  it('hides the idea sorting options', () => {
-    cy.get('.e2e-filter-selector-button').should('not.exist');
-  });
-
-  it('can allocate the votes to ideas and show how many votes are left', () => {
     cy.contains('Cast your vote');
     cy.contains('How to vote');
     cy.contains('5 / 5');
@@ -99,7 +93,7 @@ describe('Multiple voting project', () => {
       .should('exist')
       .should('not.have.class', 'disabled');
 
-    cy.contains('4 / 5');
+    cy.contains('4 / 5'); // show how many votes are left
 
     cy.get('#e2e-ideas-container')
       .find('.e2e-vote-plus button')
@@ -108,9 +102,8 @@ describe('Multiple voting project', () => {
     cy.contains('3 / 5');
 
     cy.wait(1000);
-  });
 
-  it('can submit the votes', () => {
+    // can submit the votes
     cy.intercept(`**/baskets/**`).as('basketRequest');
     cy.visit(`/en/projects/${projectSlug}`);
     cy.wait('@basketRequest');
