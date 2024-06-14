@@ -182,8 +182,12 @@ describe('Survey question widget', () => {
   describe('global report builder', () => {
     it('works for multiselect question', () => {
       cy.setAdminLoginCookie();
+      cy.apiRemoveReportBuilder(currentReportId);
+      currentReportId = undefined;
+
       cy.apiCreateReportBuilder().then((report) => {
         const reportId = report.body.data.id;
+        currentReportId = reportId;
 
         cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
 
