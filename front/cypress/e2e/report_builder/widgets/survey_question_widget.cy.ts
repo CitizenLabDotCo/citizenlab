@@ -12,7 +12,7 @@ let surveySchema: IIdeaJsonFormSchemas;
 
 let informationPhaseId: string;
 
-let currentReportId: string;
+let currentReportId: string | undefined;
 
 const locations = [
   [4.349371842575076, 50.85428103529364],
@@ -268,6 +268,9 @@ describe('Survey question widget', () => {
 
     it('works for linear scale', () => {
       cy.setAdminLoginCookie();
+      cy.apiRemoveReportBuilder(currentReportId);
+      currentReportId = undefined;
+
       cy.apiCreateReportBuilder(informationPhaseId).then((report) => {
         const reportId = report.body.data.id;
         currentReportId = reportId;
@@ -347,6 +350,7 @@ describe('Survey question widget', () => {
     it('works for image question', () => {
       cy.setAdminLoginCookie();
       cy.apiRemoveReportBuilder(currentReportId);
+      currentReportId = undefined;
 
       cy.apiCreateReportBuilder(informationPhaseId).then((report) => {
         const reportId = report.body.data.id;
@@ -418,6 +422,7 @@ describe('Survey question widget', () => {
     it('works for point question', () => {
       cy.setAdminLoginCookie();
       cy.apiRemoveReportBuilder(currentReportId);
+      currentReportId = undefined;
 
       cy.apiCreateReportBuilder(informationPhaseId).then((report) => {
         const reportId = report.body.data.id;
@@ -462,6 +467,7 @@ describe('Survey question widget', () => {
     it('allows slicing multiselect by linear scale', () => {
       cy.setAdminLoginCookie();
       cy.apiRemoveReportBuilder(currentReportId);
+      currentReportId = undefined;
 
       cy.apiCreateReportBuilder(informationPhaseId).then((report) => {
         const reportId = report.body.data.id;
@@ -532,6 +538,7 @@ describe('Survey question widget', () => {
     it('has correct color scheme', () => {
       cy.setAdminLoginCookie();
       cy.apiRemoveReportBuilder(currentReportId);
+      currentReportId = undefined;
 
       cy.apiCreateReportBuilder(informationPhaseId).then((report) => {
         const reportId = report.body.data.id;
@@ -592,6 +599,7 @@ describe('Survey question widget', () => {
 
     it('removes last report', () => {
       cy.apiRemoveReportBuilder(currentReportId);
+      currentReportId = undefined;
     });
 
     // https://www.notion.so/citizenlab/Add-more-e2e-tests-47e6e8567e8b4ba2b60ed81834c32456

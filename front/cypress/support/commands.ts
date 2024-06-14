@@ -1454,7 +1454,9 @@ function removeReport(reportId: string, jwt: any) {
   });
 }
 
-function apiRemoveReportBuilder(reportId: string, jwt?: any) {
+function apiRemoveReportBuilder(reportId?: string, jwt?: any) {
+  if (!reportId) return;
+
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
