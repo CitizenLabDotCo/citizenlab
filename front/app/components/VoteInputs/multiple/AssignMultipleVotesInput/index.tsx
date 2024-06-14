@@ -275,6 +275,7 @@ const AssignMultipleVotesInput = ({
           icon="vote-ballot"
           width="100%"
           onClick={onAdd}
+          bgColor="green"
         >
           {formatMessage(messages.select)}
         </Button>
