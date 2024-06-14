@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { API_PATH } from 'containers/App/constants';
 
@@ -8,8 +8,8 @@ export const apiPath = `${API_PATH}/reports/:id/layout`;
 export const apiPathUpdate = `${API_PATH}/reports/:id`;
 
 const endpoints = {
-  'GET reports/:id/layout': rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(reportLayout));
+  'GET reports/:id/layout': http.get(apiPath, () => {
+    return HttpResponse.json(reportLayout, { status: 200 });
   }),
 };
 
@@ -478,8 +478,8 @@ export const reportLayout: ReportLayoutResponse = {
   },
 };
 
-export const surveyReportHandler = rest.get(apiPath, (_req, res, ctx) => {
-  return res(ctx.status(200), ctx.json(surveyReportLayout));
+export const surveyReportHandler = http.get(apiPath, () => {
+  return HttpResponse.json(surveyReportLayout, { status: 200 });
 });
 
 const surveyReportLayout: ReportLayoutResponse = {

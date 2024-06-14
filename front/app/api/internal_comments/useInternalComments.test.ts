@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
@@ -20,8 +20,11 @@ describe('useInternalComments', () => {
 
   it('returns data correctly with ideaId', async () => {
     server.use(
-      rest.get(ideaPath, (_req, res, ctx) => {
-        return res(ctx.status(200), ctx.json({ data: commentsData, links }));
+      http.get(ideaPath, () => {
+        return HttpResponse.json(
+          { data: commentsData, links },
+          { status: 200 }
+        );
       })
     );
     const { result, waitFor } = renderHook(
@@ -41,8 +44,11 @@ describe('useInternalComments', () => {
 
   it('returns data correctly with initiativeId', async () => {
     server.use(
-      rest.get(initiativePath, (_req, res, ctx) => {
-        return res(ctx.status(200), ctx.json({ data: commentsData, links }));
+      http.get(initiativePath, () => {
+        return HttpResponse.json(
+          { data: commentsData, links },
+          { status: 200 }
+        );
       })
     );
     const { result, waitFor } = renderHook(
@@ -66,8 +72,11 @@ describe('useInternalComments', () => {
 
   it('returns data correctly with userId', async () => {
     server.use(
-      rest.get(userPath, (_req, res, ctx) => {
-        return res(ctx.status(200), ctx.json({ data: commentsData, links }));
+      http.get(userPath, () => {
+        return HttpResponse.json(
+          { data: commentsData, links },
+          { status: 200 }
+        );
       })
     );
     const { result, waitFor } = renderHook(
@@ -87,8 +96,11 @@ describe('useInternalComments', () => {
 
   it('returns data correctly with parentId', async () => {
     server.use(
-      rest.get(childrenPath, (_req, res, ctx) => {
-        return res(ctx.status(200), ctx.json({ data: commentsData, links }));
+      http.get(childrenPath, () => {
+        return HttpResponse.json(
+          { data: commentsData, links },
+          { status: 200 }
+        );
       })
     );
     const { result, waitFor } = renderHook(
@@ -108,8 +120,8 @@ describe('useInternalComments', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(ideaPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(ideaPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

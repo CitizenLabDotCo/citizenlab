@@ -5,9 +5,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 const meta = {
   title: 'Components/Button',
   component: Button,
-  parameters: {
-    layout: 'centered',
-  },
 } satisfies Meta<typeof Button>;
 
 export default meta;
@@ -45,13 +42,6 @@ export const PrimaryInverse = {
 export const SecondaryOutlined = {
   args: {
     buttonStyle: 'secondary-outlined',
-    children: 'Button',
-  },
-};
-
-export const Success = {
-  args: {
-    buttonStyle: 'success',
     children: 'Button',
   },
 };

@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { IUserData } from 'api/users/types';
 
@@ -32,16 +32,13 @@ export const mockAuthUserData: IUserData = {
 };
 
 const endpoints = {
-  'GET users/me': rest.get('/web_api/v1/users/me', (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: mockAuthUserData }));
+  'GET users/me': http.get('/web_api/v1/users/me', () => {
+    return HttpResponse.json({ data: mockAuthUserData }, { status: 200 });
   }),
 };
 
-export const loggedOutHandler = rest.get(
-  '/web_api/v1/users/me',
-  (_req, res, ctx) => {
-    return res(ctx.status(401));
-  }
-);
+export const loggedOutHandler = http.get('/web_api/v1/users/me', () => {
+  return HttpResponse.json(null, { status: 401 });
+});
 
 export default endpoints;
