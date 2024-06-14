@@ -77,7 +77,7 @@ ca:
       "link_terms_conditions": "Termes i Condicions"
       "link_unsubscribe": "Cancel·la la subscripció"
       "powered_by": "Impulsat per"
-      "statement": "CitizenLab us ha enviat aquest correu electrònic en nom de %{organizationName}, perquè sou un usuari registrat de %{organizationLink}. Podeu %{unsubscribeLink} si no voleu rebre aquests correus electrònics en el futur."
+      "statement": "Go Vocal us ha enviat aquest correu electrònic en nom de %{organizationName}, perquè sou un usuari registrat de %{organizationLink}. Podeu %{unsubscribeLink} si no voleu rebre aquests correus electrònics en el futur."
       "unsubscribe_text": "donar-se de baixa"
     follow:
       "unfollow_here": "Heu rebut aquesta notificació a causa d'un element que seguiu. <a href=\"%{unfollow_url}\">Pots deixar de seguir-lo aquí.</a>"

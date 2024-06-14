@@ -37,6 +37,7 @@ module.exports = {
   modulePathIgnorePatterns: ['.*__mocks__.*'],
   testEnvironmentOptions: {
     url: 'https://demo.stg.citizenlab.co/en/',
+    customExportConditions: [''],
   },
   resolver: `${__dirname}/internals/jest/resolver.js`,
 };

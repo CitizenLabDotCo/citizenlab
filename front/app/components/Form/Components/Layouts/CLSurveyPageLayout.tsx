@@ -17,7 +17,6 @@ import { useTheme } from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
 
-import { customAjv } from 'components/Form';
 import {
   getSanitizedFormData,
   getPageSchema,
@@ -28,6 +27,7 @@ import {
   getFormCompletionPercentage,
 } from 'components/Form/Components/Layouts/utils';
 import { FormContext } from 'components/Form/contexts';
+import { customAjv } from 'components/Form/utils';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';
 

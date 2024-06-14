@@ -66,12 +66,10 @@ RSpec.describe ReportBuilder::Queries::Projects do
       expect(result[:periods].count).to eq(2)
       expect(result[:periods][@project1.id]).to eq({
         'start_at' => Date.new(2021, 2, 1),
-        'last_phase_start_at' => Date.new(2021, 2, 1),
         'end_at' => Date.new(2021, 3, 1)
       })
       expect(result[:periods][@project2.id]).to eq({
         'start_at' => Date.new(2021, 2, 1),
-        'last_phase_start_at' => Date.new(2021, 3, 2),
         'end_at' => nil
       })
     end

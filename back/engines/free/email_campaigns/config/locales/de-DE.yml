@@ -77,7 +77,7 @@ de:
       "link_terms_conditions": "Nutzungsbedingungen"
       "link_unsubscribe": "Abbestellen"
       "powered_by": "Ermöglicht durch"
-      "statement": "Diese E-Mail wurde Ihnen von CitizenLab im Namen von %{organizationName} zugesandt, da Sie ein*e registrierte*r Nutzer*in von %{organizationLink} sind. Hier können Sie diese und andere E-Mails %{unsubscribeLink}, wenn Sie in Zukunft keine Benachrichtigungen mehr erhalten möchten."
+      "statement": "Diese E-Mail wurde Ihnen von Go Vocal im Namen von %{organizationName} zugesandt, da Sie ein*e registrierte*r Nutzer*in von %{organizationLink} sind. Hier können Sie diese und andere E-Mails %{unsubscribeLink}, wenn Sie in Zukunft keine Benachrichtigungen mehr erhalten möchten."
       "unsubscribe_text": "abbestellen"
     follow:
       "unfollow_here": "Sie haben diese Benachrichtigung wegen eines Elementes erhalten, dem Sie folgen. <a href=\"%{unfollow_url}\">Sie können hier aufhören diesem zu folgen.</a>"

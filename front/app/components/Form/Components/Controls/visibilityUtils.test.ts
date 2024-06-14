@@ -1,6 +1,6 @@
 import { RuleEffect } from '@jsonforms/core';
 
-import { customAjv } from 'components/Form';
+import { customAjv } from 'components/Form/utils';
 
 import { ExtendedUISchema, isVisible } from './visibilityUtils';
 

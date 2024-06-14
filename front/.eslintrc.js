@@ -227,6 +227,6 @@ module.exports = {
     '.eslintrc.js',
     'internals',
     'server',
-    'app/containers/App/constants.js',
+    'app/containers/App/constants-commonjs.js',
   ],
 };

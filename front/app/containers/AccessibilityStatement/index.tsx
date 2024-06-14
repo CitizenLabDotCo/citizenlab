@@ -45,11 +45,11 @@ const AccessibilityStatement = () => {
                         values={{
                           citizenLabLink: (
                             <a
-                              href="https://www.citizenlab.co/"
+                              href="https://www.govocal.com/"
                               target="_blank"
                               rel="noreferrer"
                             >
-                              CitizenLab
+                              Go Vocal
                             </a>
                           ),
                         }}
@@ -126,14 +126,14 @@ const AccessibilityStatement = () => {
                     <ul>
                       <li>
                         {formatMessage(messages.email)}{' '}
-                        <a href="mailto:support@citizenlab.co">
-                          support@citizenlab.co
+                        <a href="mailto:support@govocal.com">
+                          support@govocal.com
                         </a>
                       </li>
                       <li>
                         {formatMessage(messages.postalAddress)}{' '}
                         <address>
-                          {formatMessage(messages.citizenLabAddress2022)}
+                          {formatMessage(messages.govocalAddress2022)}
                         </address>
                       </li>
                     </ul>

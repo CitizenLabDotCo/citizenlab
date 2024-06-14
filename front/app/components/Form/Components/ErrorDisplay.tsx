@@ -132,7 +132,6 @@ interface Props {
 const ErrorDisplay = ({ fieldPath, ajvErrors, didBlur, inputId }: Props) => {
   // shows ajv errors
   // shows apiErrors whenever present, along ajv errors.
-
   const { getApiErrorMessage, showAllErrors } = useContext(FormContext);
 
   const fieldName = getFieldNameFromPath(fieldPath);
