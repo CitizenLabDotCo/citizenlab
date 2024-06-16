@@ -4,7 +4,7 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Multiloc, UploadFile } from 'typings';
-import { mixed, object } from 'yup';
+import { object } from 'yup';
 
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 
@@ -16,10 +16,8 @@ import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWi
 import Button from 'components/UI/Button';
 
 import { useIntl } from 'utils/cl-intl';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
-import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
 import messages from './messages';
 
@@ -45,13 +43,14 @@ const CauseForm = ({ onSubmit, defaultValues, imageUrl }: PageFormProps) => {
   const { formatMessage } = useIntl();
   const { width, containerRef } = useContainerWidthAndHeight();
   const schema = object({
-    title_multiloc: validateAtLeastOneLocale(
-      formatMessage(messages.emptyTitleErrorMessage)
-    ),
-    description_multiloc: validateAtLeastOneLocale(
-      formatMessage(messages.emptyDescriptionErrorMessage)
-    ),
-    image: mixed().nullable(),
+    // Commented out to test API errors
+    // title_multiloc: validateAtLeastOneLocale(
+    //   formatMessage(messages.emptyTitleErrorMessage)
+    // ),
+    // description_multiloc: validateAtLeastOneLocale(
+    //   formatMessage(messages.emptyDescriptionErrorMessage)
+    // ),
+    // image: mixed().nullable(),
   });
 
   const methods = useForm({
@@ -79,7 +78,21 @@ const CauseForm = ({ onSubmit, defaultValues, imageUrl }: PageFormProps) => {
         : null;
       await onSubmit({ ...formValues, image });
     } catch (error) {
-      handleHookFormSubmissionError(error, methods.setError);
+      Object.keys(error.errors).forEach((key) => {
+        const errorValue = error.errors[key][0];
+
+        switch (errorValue.error) {
+          case 'blank':
+            methods.setError(key, {
+              error: formatMessage(messages.blankVolunteeringTitleError),
+            });
+            break;
+          default:
+            methods.setError(key, {
+              error: formatMessage(messages.genericErrorMessage),
+            });
+        }
+      });
     }
   };
 
