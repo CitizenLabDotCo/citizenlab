@@ -3,20 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { Text, Title, Box } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { useFormContext } from 'react-hook-form';
-import { CLError, RHFErrors } from 'typings';
+import { RHFErrors } from 'typings';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
-// import Error, {
-//   findErrorMessage,
-//   getApiErrorValues,
-//   TFieldName,
-// } from 'components/UI/Error';
-import {
-  findErrorMessage,
-  getApiErrorValues,
-  TFieldName,
-} from 'components/UI/Error';
 import ErrorPOC from 'components/UI/ErrorPOC';
 
 import { useIntl } from 'utils/cl-intl';
@@ -33,7 +21,6 @@ type FeedbackProps = {
 const Feedback = ({ successMessage, onlyShowErrors }: FeedbackProps) => {
   const { formatMessage } = useIntl();
   const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(true);
-  const { data: appConfiguration } = useAppConfiguration();
 
   const {
     formState: {
@@ -69,17 +56,9 @@ const Feedback = ({ successMessage, onlyShowErrors }: FeedbackProps) => {
           message: String(standardFieldError),
         });
       } else if (apiError) {
-        const apiErrorMessage = findErrorMessage(
-          field as TFieldName,
-          String(apiError)
-        );
-
-        const values = getApiErrorValues(errors as CLError, appConfiguration);
         errorMessages.push({
           field,
-          message: apiErrorMessage
-            ? formatMessage(apiErrorMessage, values)
-            : '',
+          message: apiError,
         });
       } else if (multilocFieldFirstError) {
         errorMessages.push({
