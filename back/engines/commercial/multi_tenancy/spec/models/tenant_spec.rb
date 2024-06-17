@@ -18,13 +18,15 @@ RSpec.describe Tenant do
       tenant.switch!
     end
 
-    it 'resets the app configuration' do
+    it 'updates the current tenant and app configuration' do
       expect(AppConfiguration.instance.name).to eq('test-tenant')
-      expect(AppConfiguration).to receive(:reset_instance).once.and_call_original
+
+      expect(Current).to receive(:reset_tenant).once.and_call_original
 
       other_tenant.switch!
 
       expect(AppConfiguration.instance.name).to eq('other-tenant')
+      expect(Tenant.current).to eq(other_tenant)
     end
 
     it 'switches successfully into the tenant' do
