@@ -142,7 +142,7 @@ export default defineMessages({
       'Unfortunately, you cannot vote on this proposal. Read why in {link}.',
   },
   guidelinesLinkText: {
-    id: 'app.containers.InitiativesIndexPage.guidelinesLinkText',
+    id: 'app.containers.InitiativesShow.VoteControl.guidelinesLinkText',
     defaultMessage: 'our guidelines',
   },
   a11y_timeLeft: {
