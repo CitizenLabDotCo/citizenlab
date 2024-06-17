@@ -251,7 +251,7 @@ class WebApi::V1::IdeasController < ApplicationController
   private
 
   def render_show(input, check_auth: true)
-    authorize input if check_auth
+    authorize input if check_auth # we should usually check auth, except when we're returning an empty draft idea
     render json: WebApi::V1::IdeaSerializer.new(
       input,
       params: jsonapi_serializer_params,
