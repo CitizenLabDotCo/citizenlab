@@ -718,7 +718,7 @@ jobs:
           cd ../e2e
           docker-compose run --name cypress_run front npm run cypress:run -- --config baseUrl=http://e2e.front:3000 --spec cypress/e2e/about_page.cy.ts
       # Uncomment to save XML reports
-          docker-compose run --name cypress_run front npm run cypress:run -- --reporter junit --reporter-options "mochaFile=reports/cypress.xml,toConsole=true" --config baseUrl=http://e2e.front:3000 --spec cypress/e2e/about_page.cy.ts
+          # docker-compose run --name cypress_run front npm run cypress:run -- --reporter junit --reporter-options "mochaFile=reports/cypress.xml,toConsole=true" --config baseUrl=http://e2e.front:3000 --spec cypress/e2e/about_page.cy.ts
       # We run cypress tests in container, so we need to copy the results out.
       # ToDo: fix it. Reporting doesn't work atm.
        - run: |
