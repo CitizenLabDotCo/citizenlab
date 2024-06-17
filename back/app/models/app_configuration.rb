@@ -110,17 +110,7 @@ class AppConfiguration < ApplicationRecord
     )
 
     def instance
-      science 'app_configuration' do |experiment|
-        experiment.use { first! }
-        experiment.try { Current.app_configuration }
-
-        experiment.clean(&:attributes)
-
-        experiment.context({
-          execution_stack: caller,
-          tenant_schema: Apartment::Tenant.current
-        })
-      end
+      Current.app_configuration
     end
   end
 
