@@ -144,6 +144,9 @@ const FirstTagAssistance = ({ tagId, onHide }: Props) => {
       zIndex={1000000000000000}
       theme="light"
       visible={visible}
+      // Changing the acnhor element clashes with the tooltip accessibility features
+      // so for this particular case we are disabling the onHidden callback to solve it
+      onHidden={() => {}}
     />
   );
 };

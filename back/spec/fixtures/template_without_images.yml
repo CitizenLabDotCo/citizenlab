@@ -1913,12 +1913,12 @@ models:
     rules: []
   - &14
     title_multiloc:
-      nl-BE: Citizenlab Heroes
+      nl-BE: Go Vocal Heroes
     created_at: 2019-01-29 12:37:44 UTC
     updated_at: 2019-01-29 12:37:44 UTC
     membership_type: rules
     rules:
-    - value: "@citizenlab.co"
+    - value: "@govocal.com"
       ruleType: email
       predicate: ends_on
   groups_project:

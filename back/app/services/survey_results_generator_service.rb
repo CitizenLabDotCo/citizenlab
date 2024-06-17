@@ -140,7 +140,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     elsif %w[multiselect multiselect_image].include? field.input_type
       %{
           jsonb_array_elements(
-            CASE WHEN jsonb_path_exists(#{table}.custom_field_values, '$ ? (exists (@.#{field.key}))')
+            CASE WHEN jsonb_path_exists(#{table}.custom_field_values, '$ ? (exists (@."#{field.key}"))')
               THEN #{table}.custom_field_values->'#{field.key}'
               ELSE '[null]'::jsonb END
           ) as #{as}

@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-# This service is invoked by cl2-admin/lib/admin_api.rb#project_template_export and it seems we need to require CSV.
-require 'csv'
-
 class AnonymizeUserService
   def initialize
     # CSV files are generated from Google Sheets found in this Google Drive folder:

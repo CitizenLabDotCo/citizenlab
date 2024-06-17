@@ -52,4 +52,8 @@ export default defineMessages({
     defaultMessage:
       'The following section provides an overview of publicly visible projects that overlap with the selected time range, the most used methods in these projects, and metrics concerning the total amount of participation.',
   },
+  age: {
+    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.age',
+    defaultMessage: 'Age',
+  },
 });
