@@ -1,157 +1,29 @@
-import { test, expect, Page, BrowserContext } from '@playwright/test';
+import { test as base, expect } from '@playwright/test';
 
-const homepageMinimalData = {
-  ROOT: {
-    type: 'div',
-    isCanvas: true,
-    props: { id: 'e2e-content-builder-frame' },
-    displayName: 'div',
-    custom: {},
-    hidden: false,
-    nodes: ['j_8F37ESLH', 'RUeJQobA8i'],
-    linkedNodes: {},
+import { Homepage } from './fixtures/homepage';
+import { User } from './fixtures/user';
+
+const test = base.extend<{ user: User; homepage: Homepage }>({
+  user: async ({ page, context }, use) => {
+    const user = new User(page, context);
+    await use(user);
   },
-  RUeJQobA8i: {
-    type: { resolvedName: 'Projects' },
-    isCanvas: false,
-    props: { currentlyWorkingOnText: { en: '' } },
-    displayName: 'Projects',
-    custom: {
-      title: {
-        id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitle',
-        defaultMessage: 'Projects',
-      },
-      noPointerEvents: true,
-      noDelete: true,
-    },
-    parent: 'ROOT',
-    hidden: false,
-    nodes: [],
-    linkedNodes: {},
+  homepage: async ({ page }, use) => {
+    const homepage = new Homepage(page);
+    await use(homepage);
   },
-  j_8F37ESLH: {
-    type: { resolvedName: 'HomepageBanner' },
-    isCanvas: false,
-    props: {
-      homepageSettings: {
-        banner_layout: 'full_width_banner_layout',
-        banner_avatars_enabled: true,
-        banner_cta_signed_in_url: 'https://www.google.com',
-        banner_cta_signed_in_type: 'no_button',
-        banner_cta_signed_out_url: '',
-        banner_cta_signed_out_type: 'sign_up_button',
-        banner_signed_in_header_multiloc: { en: '' },
-        banner_signed_out_header_multiloc: { en: '' },
-        banner_cta_signed_in_text_multiloc: { en: '' },
-        banner_cta_signed_out_text_multiloc: { en: '' },
-        banner_signed_out_subheader_multiloc: { en: '' },
-        banner_signed_in_header_overlay_color: '#0A5159',
-        banner_signed_out_header_overlay_color: '#0A5159',
-        banner_signed_in_header_overlay_opacity: 90,
-        banner_signed_out_header_overlay_opacity: 90,
-      },
-      image: {},
-      errors: [],
-      hasError: false,
-    },
-    displayName: 'HomepageBanner',
-    custom: {
-      title: {
-        id: 'app.containers.admin.ContentBuilder.homepage.homepageBanner',
-        defaultMessage: 'Homepage banner',
-      },
-      noPointerEvents: true,
-      noDelete: true,
-    },
-    parent: 'ROOT',
-    hidden: false,
-    nodes: [],
-    linkedNodes: {},
-  },
-};
-
-async function apiLogin(page: Page, email: string, password: string) {
-  return (async () => {
-    const response = await page.request.post('/web_api/v1/user_token', {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      data: {
-        auth: {
-          email,
-          password,
-          remember_me: false,
-        },
-      },
-    });
-    return response;
-  })();
-}
-
-async function apiUpdateHomepageLayout({
-  page,
-  craftjs_json,
-}: {
-  page: Page;
-  craftjs_json: Record<string, any>;
-}) {
-  return (async () => {
-    const response = await apiLogin(
-      page,
-      'admin@citizenlab.co',
-      'democracy2.0'
-    );
-
-    const responseBody = await response.json();
-    const adminJwt = responseBody.jwt;
-
-    return (async () => {
-      await page.request.post(
-        `web_api/v1/home_pages/content_builder_layouts/homepage/upsert`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${adminJwt}`,
-          },
-          data: {
-            content_builder_layout: {
-              enabled: true,
-              craftjs_json,
-            },
-          },
-        }
-      );
-    })();
-  })();
-}
-
-const addAdminCookie = async (page: Page, context: BrowserContext) => {
-  const response = await (
-    await apiLogin(page, 'admin@citizenlab.co', 'democracy2.0')
-  ).json();
-  await context.addCookies([
-    { name: 'cl2_jwt', value: response.jwt, path: '/', domain: 'localhost' },
-  ]);
-};
-
-const removeAdminCookie = async (context: BrowserContext) => {
-  await context.clearCookies({ name: 'cl2_jwt' });
-};
+});
 
 test.describe('Homepage builder', () => {
-  test.beforeEach(async ({ page, context }) => {
-    await addAdminCookie(page, context);
-    await apiUpdateHomepageLayout({
-      page,
-      craftjs_json: homepageMinimalData,
-    });
-  });
-
   test('updates and delete homepage builder content correctly', async ({
     page,
-    context,
+    user,
+    homepage,
   }) => {
+    await homepage.updateMinimalHomepage();
+
     // go to admin page
+    await user.loginAsAdmin();
     await page.goto('/admin/pages-menu/');
 
     // go to page with homepage builder
@@ -190,7 +62,7 @@ test.describe('Homepage builder', () => {
     await page.locator('#e2e-content-builder-topbar-save').click();
     await page.waitForResponse(/homepage\/upsert/);
 
-    await removeAdminCookie(context);
+    await user.logout();
 
     await page.goto(`/`);
     await expect(page.locator('#e2e-two-column')).toBeVisible();
@@ -205,7 +77,7 @@ test.describe('Homepage builder', () => {
     await expect(page.locator('[data-cy="e2e-events"]')).toBeVisible();
     await expect(page.locator('[data-cy="e2e-proposals"]')).toBeVisible();
 
-    await addAdminCookie(page, context);
+    await user.loginAsAdmin();
     // go to admin page
     await page.goto('/admin/pages-menu/');
 
