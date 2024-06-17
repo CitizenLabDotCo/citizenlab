@@ -2433,7 +2433,7 @@
   "app.containers.ContentBuilder.homepage.sign_up_button": "Registreren",
   "app.containers.ContentBuilder.homepage.signedInDescription": "Zo zien geregistreerde gebruikers de banner.",
   "app.containers.ContentBuilder.homepage.signedOutDescription": "Zo zien bezoekers die niet geregistreerd zijn op het platform de banner.",
-  "app.containers.ContentBuilder.homepage.twoRowBannerTooltip": "Deze banner is vooral handig bij afbeeldingen die niet goed werken met tekst uit de titel, ondertitel of knop. Deze items worden onder de banner geschoven. Meer informatie over het aanbevolen gebruik van afbeeldingen kun je vinden op onze {link}.",
+  "app.containers.ContentBuilder.homepage.twoRowBannerTooltip1": "Deze banner is vooral handig bij afbeeldingen die niet goed werken met tekst uit de titel, ondertitel of knop. Deze items worden onder de banner geschoven. Meer informatie over het aanbevolen gebruik van afbeeldingen kun je vinden op onze {link}.",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "kennisbank",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "Twee rijen",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabel": "Embed hoogte (pixels)",
