@@ -2433,7 +2433,7 @@
   "app.containers.ContentBuilder.homepage.sign_up_button": "Региструјте се",
   "app.containers.ContentBuilder.homepage.signedInDescription": "Овако регистровани корисници виде банер.",
   "app.containers.ContentBuilder.homepage.signedOutDescription": "Овако виде банер посетиоци који нису регистровани на платформи.",
-  "app.containers.ContentBuilder.homepage.twoRowBannerTooltip": "Овај банер је посебно користан за слике које не функционишу добро са текстом из наслова, поднаслова или дугмета. Ове ставке ће бити гурнуте испод банера. Више информација о препорученој употреби слике можете пронаћи на нашем {link}.",
+  "app.containers.ContentBuilder.homepage.twoRowBannerTooltip1": "This banner is in particular useful with images that don't work well with text from the title, subtitle or button. These items will be pushed below the banner. More info on the recommended image usage can be found on our {link}.",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "база знања",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "Два реда",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabel": "Висина уградње (пиксели)",
