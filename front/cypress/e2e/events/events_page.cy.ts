@@ -71,7 +71,7 @@ describe('All events page', () => {
 
     // Confirm filters work
     cy.get('#e2e-current-and-upcoming-events').within(() => {
-      cy.get('#e2e-event-card').should('exist');
+      cy.get('.e2e-event-card').should('exist');
       cy.contains(emailTitle).should('exist');
     });
 
