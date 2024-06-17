@@ -2433,7 +2433,7 @@
   "app.containers.ContentBuilder.homepage.sign_up_button": "Registrér dig",
   "app.containers.ContentBuilder.homepage.signedInDescription": "Det er sådan, registrerede brugere ser banneret.",
   "app.containers.ContentBuilder.homepage.signedOutDescription": "Det er sådan, besøgende, der ikke er registreret på platformen, ser banneret.",
-  "app.containers.ContentBuilder.homepage.twoRowBannerTooltip": "Dette banner er især nyttigt med billeder, der ikke fungerer godt sammen med tekst fra titlen, undertitlen eller knappen. Disse elementer vil blive flyttet under banneret. Du kan finde flere oplysninger om den anbefalede billedanvendelse på vores {link}.",
+  "app.containers.ContentBuilder.homepage.twoRowBannerTooltip1": "Dette banner er især nyttigt med billeder, der ikke fungerer godt sammen med tekst fra titlen, undertitlen eller knappen. Disse elementer vil blive skubbet under banneret. Du kan finde flere oplysninger om den anbefalede billedanvendelse på vores {link}.",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "vidensbase",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "To rækker",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabel": "Indlejringshøjde (pixel)",
