@@ -28,7 +28,11 @@ const TenantLogo = () => {
 
     if (tenantLogo) {
       return (
-        <Link to="/" onlyActiveOnIndex={true}>
+        <Link
+          to="/"
+          onlyActiveOnIndex={true}
+          aria-label={formatMessage(messages.logoAltText)}
+        >
           <Logo src={tenantLogo} alt={formatMessage(messages.logoAltText)} />
         </Link>
       );

@@ -148,7 +148,7 @@ const Sidebar = ({ authUser }: Props) => {
       <Outlet id="app.containers.Admin.sideBar.navItems" onData={handleData} />
       <MenuInner id="sidebar">
         <Box w="100%">
-          <Link to="/">
+          <Link to="/" aria-label={formatMessage(messages.toPlatform)}>
             <Box
               height={
                 isPagesAndMenuPage ? `${stylingConsts.menuHeight}px` : '60px'
