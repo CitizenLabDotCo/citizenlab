@@ -156,12 +156,6 @@ class Tenant < ApplicationRecord
     find_by!(host: host_name).switch!
   end
 
-  def self.switch_each
-    find_each do |tenant|
-      tenant.switch { yield(tenant) }
-    end
-  end
-
   def changed_lifecycle_stage?
     return false unless settings_previously_changed?
 
