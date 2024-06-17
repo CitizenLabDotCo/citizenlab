@@ -2433,7 +2433,7 @@
   "app.containers.ContentBuilder.homepage.sign_up_button": "Inscrever-se",
   "app.containers.ContentBuilder.homepage.signedInDescription": "É assim que os usuários cadastrados veem o banner.",
   "app.containers.ContentBuilder.homepage.signedOutDescription": "É assim que os visitantes que não estão cadastrados na plataforma veem o banner.",
-  "app.containers.ContentBuilder.homepage.twoRowBannerTooltip": "Esse banner é particularmente útil para imagens que não funcionam bem com o texto do título, subtítulo ou botão. Esses itens serão colocados abaixo do banner. Mais informações sobre o uso recomendado de imagens podem ser encontradas em nosso site {link}.",
+  "app.containers.ContentBuilder.homepage.twoRowBannerTooltip1": "Esse banner é particularmente útil com imagens que não funcionam bem com o texto do título, subtítulo ou botão. Esses itens serão colocados abaixo do banner. Mais informações sobre o uso recomendado de imagens podem ser encontradas em nosso site {link}.",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "Base de conhecimento",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "Duas linhas",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabel": "Altura de incorporação (pixels)",
