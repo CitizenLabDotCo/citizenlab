@@ -162,7 +162,7 @@ const Radio = ({
       {...rest}
     >
       <HiddenRadio
-        id={uuid ?? id}
+        id={id ?? uuid}
         type="radio"
         name={name}
         value={value}
@@ -186,7 +186,7 @@ const Radio = ({
       </CustomRadio>
       {label && (
         <Label
-          htmlFor={uuid ?? id}
+          htmlFor={id ?? uuid}
           className={`
           ${className || ''}
           text
