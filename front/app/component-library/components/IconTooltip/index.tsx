@@ -1,11 +1,10 @@
-import React, { memo, ReactChild, FC } from 'react';
+import React, { memo, ReactChild, FC, useState } from 'react';
 
+import { uuid4 } from '@sentry/utils';
 import { darken } from 'polished';
 import styled from 'styled-components';
 import { Placement } from 'tippy.js';
 
-import Tooltip from '../Tooltip';
-import Icon, { IconNames } from '../Icon';
 import { colors } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 import Box, {
@@ -16,6 +15,8 @@ import Box, {
   BoxDisplayProps,
   BoxZIndexProps,
 } from '../Box';
+import Icon, { IconNames } from '../Icon';
+import Tooltip from '../Tooltip';
 
 export const ContentWrapper = styled.div<{ tippytheme: 'light' | undefined }>`
   padding: 5px;
@@ -94,13 +95,15 @@ const IconTooltip: FC<Props> = memo<Props>(
     transform,
     ...rest
   }) => {
+    const [uniqueId] = useState(() => uuid4());
+
     return (
       <Tooltip
         placement={placement || 'right-end'}
         theme={theme || ''}
         maxWidth={maxTooltipWidth || 350}
         content={
-          <ContentWrapper id="tooltip-content" tippytheme={theme}>
+          <ContentWrapper id={`tooltip-content-${uniqueId}`} tippytheme={theme}>
             {content}
           </ContentWrapper>
         }
@@ -108,7 +111,7 @@ const IconTooltip: FC<Props> = memo<Props>(
         <Box
           as="button"
           className={`${className || ''} tooltip-icon`}
-          aria-describedby="tooltip-content"
+          aria-describedby={`tooltip-content-${uniqueId}`}
           data-testid={testEnv('tooltip-icon-button')}
           p="0px"
           type="button"

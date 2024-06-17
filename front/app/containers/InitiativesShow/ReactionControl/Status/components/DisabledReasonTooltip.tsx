@@ -77,7 +77,7 @@ const disabledMessages: {
 
 const DisabledReasonTooltip = ({ disabledReason }: Props) => {
   return (
-    <TooltipContent id="tooltip-content" className="e2e-disabled-tooltip">
+    <TooltipContent className="e2e-disabled-tooltip">
       <TooltipContentIcon name="lock" ariaHidden />
       <TooltipContentText>
         <FormattedMessage {...disabledMessages[disabledReason]} />

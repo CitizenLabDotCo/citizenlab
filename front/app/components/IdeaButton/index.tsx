@@ -177,7 +177,9 @@ const IdeaButton = memo<Props>(
           >
             <Button
               {...buttonContainerProps}
-              aria-describedby="tooltip-content"
+              aria-describedby={
+                tippyEnabled ? 'tooltip-content-idea-button' : undefined
+              }
               onClick={onClick}
               disabled={!enabled}
             >
