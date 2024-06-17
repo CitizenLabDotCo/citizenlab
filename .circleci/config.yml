@@ -681,7 +681,7 @@ jobs:
   e2e-tests:
     docker:
       - image: cimg/base:2021.03
-    parallelism: 1
+    parallelism: 3
     working_directory: ~/citizenlab
     resource_class: medium+
     steps:
@@ -717,7 +717,7 @@ jobs:
           COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
           echo $COMMA_SEPARATED_TESTFILES
           cd ../e2e
-          docker-compose run --name cypress_run front npm run cypress:run -- --reporter junit --reporter-options "mochaFile=../front/reports/cypress.xml" --config baseUrl=http://e2e.front:3000 --spec cypress/e2e/about_page.cy.ts
+          docker-compose run --name cypress_run front npm run cypress:run -- --reporter junit --reporter-options "mochaFile=../front/reports/cypress.xml" --config baseUrl=http://e2e.front:3000 --spec ${COMMA_SEPARATED_TESTFILES}
       # We run cypress tests in container, so we need to copy the results out.
       - run: |
           mkdir -p front/reports
