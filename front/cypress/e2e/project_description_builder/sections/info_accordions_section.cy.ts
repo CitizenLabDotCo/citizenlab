@@ -54,7 +54,7 @@ describe('Project description builder Info & Accordions section', () => {
     cy.get('.ql-editor').type('Edited text.', { force: true });
 
     // Edit an accordion component
-    cy.get('#e2e-accordion').click({ force: true });
+    cy.get('.e2e-accordion').click({ force: true });
     cy.get('#default-open-toggle').should('exist');
     cy.get('#default-open-toggle').click({ force: true });
     cy.get('.ql-editor').click({ force: true });

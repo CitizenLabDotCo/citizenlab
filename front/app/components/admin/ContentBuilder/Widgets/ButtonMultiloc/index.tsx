@@ -72,7 +72,7 @@ const Button = ({ text, url, type, alignment }: ButtonProps) => {
         <ButtonComponent
           linkTo={url}
           openLinkInNewTab={openInNewTab}
-          id="e2e-button"
+          className="e2e-button"
           width={alignment === 'fullWidth' ? '100%' : 'auto'}
           buttonStyle={type}
         >

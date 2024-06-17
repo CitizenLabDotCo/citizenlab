@@ -16,7 +16,7 @@ const ImageTextCards: UserComponent = () => {
 
   return (
     <Element
-      id="image-text-cards"
+      className="image-text-cards"
       is={Box}
       canvas
       style={{
