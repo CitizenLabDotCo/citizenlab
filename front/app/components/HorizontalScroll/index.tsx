@@ -118,7 +118,7 @@ const HorizontalScroll = ({ children, containerRole }: Props) => {
           icon={theme.isRtl ? 'chevron-left' : 'chevron-right'}
           buttonStyle="text"
           p="0px"
-          id="e2e-event-previews-scroll-right"
+          className="e2e-event-previews-scroll-right"
         />
       </Box>
     </Box>
