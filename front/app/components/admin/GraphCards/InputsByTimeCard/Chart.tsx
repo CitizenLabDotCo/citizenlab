@@ -8,7 +8,7 @@ import { toThreeLetterMonth } from 'utils/dateUtils';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 import { generateEmptyData } from './generateEmptyData';
-import { TimeSeries } from './usePostsByTime/typings';
+import { TimeSeries } from './useInputsByTime/typings';
 
 type Props = Dates &
   Resolution & {
