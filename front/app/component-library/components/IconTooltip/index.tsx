@@ -95,7 +95,7 @@ const IconTooltip: FC<Props> = memo<Props>(
     transform,
     ...rest
   }) => {
-    const uniqueId = useInstanceId();
+    const uuid = useInstanceId();
 
     return (
       <Tooltip
@@ -103,7 +103,7 @@ const IconTooltip: FC<Props> = memo<Props>(
         theme={theme || ''}
         maxWidth={maxTooltipWidth || 350}
         content={
-          <ContentWrapper id={`tooltip-content-${uniqueId}`} tippytheme={theme}>
+          <ContentWrapper id={`tooltip-content-${uuid}`} tippytheme={theme}>
             {content}
           </ContentWrapper>
         }
@@ -111,7 +111,7 @@ const IconTooltip: FC<Props> = memo<Props>(
         <Box
           as="button"
           className={`${className || ''} tooltip-icon`}
-          aria-describedby={`tooltip-content-${uniqueId}`}
+          aria-describedby={`tooltip-content-${uuid}`}
           data-testid={testEnv('tooltip-icon-button')}
           p="0px"
           type="button"

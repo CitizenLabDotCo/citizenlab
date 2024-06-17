@@ -112,7 +112,7 @@ const Accordion = ({
   ...rest
 }: AccordionProps) => {
   const [isExpanded, setIsExpanded] = useState(isOpenByDefault);
-  const id = useInstanceId();
+  const uuid = useInstanceId();
 
   useEffect(() => {
     setIsExpanded(isOpenByDefault);
@@ -129,8 +129,8 @@ const Accordion = ({
         as="button"
         padding="0"
         aria-expanded={isExpanded}
-        aria-controls={`collapsed-section-${id}`}
-        id={`accordion-title-${id}`}
+        aria-controls={`collapsed-section-${uuid}`}
+        id={`accordion-title-${uuid}`}
         className={isExpanded ? 'expanded' : 'collapsed'}
         onClick={handleChange}
       >
@@ -146,9 +146,9 @@ const Accordion = ({
         classNames={`expanded`}
       >
         <CollapseContainer
-          id={`collapsed-section-${id}`}
+          id={`collapsed-section-${uuid}`}
           role="region"
-          aria-labelledby={`accordion-title-${id}`}
+          aria-labelledby={`accordion-title-${uuid}`}
           aria-live="polite"
           transitionHeight={transitionHeightPx}
           timeout={timeoutMilliseconds}

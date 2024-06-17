@@ -23,13 +23,13 @@ interface Props {
 
 const SlugInput = ({ previewUrl, showWarningMessage, slug }: Props) => {
   const { formatMessage } = useIntl();
-  const id = useInstanceId();
+  const uuid = useInstanceId();
 
   return (
     <>
       <Box display="flex" alignItems="center">
         <Box mr="5px">
-          <Label htmlFor={`slug-input-${id}`}>
+          <Label htmlFor={`slug-input-${uuid}`}>
             {formatMessage(messages.urlSlugLabel)}
           </Label>
         </Box>
@@ -38,7 +38,7 @@ const SlugInput = ({ previewUrl, showWarningMessage, slug }: Props) => {
           <IconTooltip content={formatMessage(messages.slugTooltip)} />
         </Box>
       </Box>
-      <Input id={`slug-input-${id}`} type="text" name="slug" value={slug} />
+      <Input id={`slug-input-${uuid}`} type="text" name="slug" value={slug} />
       {previewUrl && (
         <Text mb={showWarningMessage ? '16px' : '0'}>
           <i>
