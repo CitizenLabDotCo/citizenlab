@@ -8,9 +8,9 @@ describe('Azure Active Directory B2C Authentication', () => {
     cy.apiGetAppConfiguration().then((response) => {
       existingAzureSettings =
         response.body.data.attributes.settings.azure_ad_b2c_login;
-    });
-    cy.apiUpdateAppConfiguration({
-      settings: { azure_ad_b2c_login: { enabled: true, allowed: true } },
+      cy.apiUpdateAppConfiguration({
+        settings: { azure_ad_b2c_login: { enabled: true, allowed: true } },
+      });
     });
   });
 
