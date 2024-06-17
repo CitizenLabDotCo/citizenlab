@@ -716,7 +716,8 @@ jobs:
           COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
           echo $COMMA_SEPARATED_TESTFILES
           cd ../e2e
-          docker-compose run --name cypress_run front npm run cypress:run -- --reporter junit --reporter-options "mochaFile=results/my-test-output.xml" --config baseUrl=http://e2e.front:3000 --spec cypress/e2e/about_page.cy.ts
+          mkdir -p front/reports
+          docker-compose run --name cypress_run front npm run cypress:run -- --reporter junit --reporter-options "mochaFile=front/reports/cypress.xml" --config baseUrl=http://e2e.front:3000 --spec cypress/e2e/about_page.cy.ts
       # Uncomment to save XML reports
       # docker-compose run --name cypress_run front npm run cypress:run -- --reporter junit --reporter-options "mochaFile=reports/cypress.xml,toConsole=true" --config baseUrl=http://e2e.front:3000 --spec ${COMMA_SEPARATED_TESTFILES}
       # We run cypress tests in container, so we need to copy the results out.
