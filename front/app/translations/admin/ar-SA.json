@@ -2433,7 +2433,6 @@
   "app.containers.ContentBuilder.homepage.sign_up_button": "اشتراك",
   "app.containers.ContentBuilder.homepage.signedInDescription": "هذه هي الطريقة التي يرى بها المستخدمون المسجلون اللافتة.",
   "app.containers.ContentBuilder.homepage.signedOutDescription": "هذه هي الطريقة التي يرى بها الزوار غير المسجلين في المنصة اللافتة.",
-  "app.containers.ContentBuilder.homepage.twoRowBannerTooltip": "يعتبر هذا الشعار مفيدًا بشكل خاص للصور التي لا تعمل بشكل جيد مع النص من العنوان أو العنوان الفرعي أو الزر. سيتم دفع هذه العناصر أسفل الشعار. يمكن العثور على مزيد من المعلومات حول استخدام الصورة الموصى به على موقعنا {link}.",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "قاعدة المعرفة",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "صفين",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabel": "ارتفاع التضمين (بكسل)",

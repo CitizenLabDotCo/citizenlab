@@ -2433,7 +2433,6 @@
   "app.containers.ContentBuilder.homepage.sign_up_button": "Melde deg på",
   "app.containers.ContentBuilder.homepage.signedInDescription": "Dette er hvordan registrerte brukere ser banneret.",
   "app.containers.ContentBuilder.homepage.signedOutDescription": "Slik ser besøkende som ikke er registrert på plattformen banneret.",
-  "app.containers.ContentBuilder.homepage.twoRowBannerTooltip": "Dette banneret er spesielt nyttig for bilder som ikke fungerer godt med tekst fra tittelen, underteksten eller knappen. Disse elementene vil bli skjøvet under banneret. Mer informasjon om anbefalt bildebruk finner du på vår {link}.",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "kunnskapsbase",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "To rader",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabel": "Innebyggingshøyde (piksler)",
