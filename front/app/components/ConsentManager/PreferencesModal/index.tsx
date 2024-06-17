@@ -63,8 +63,12 @@ const PreferencesModal = ({
           preferences={preferences}
         />
       ) : (
-        <ContentContainer role="dialog" aria-modal>
-          <Title variant="h5" as="h1">
+        <ContentContainer
+          role="dialog"
+          aria-modal
+          aria-labelledby="consent-manager-preferences-title"
+        >
+          <Title variant="h5" as="h1" id="consent-manager-preferences-title">
             <FormattedMessage {...messages.confirmation} />
           </Title>
         </ContentContainer>
