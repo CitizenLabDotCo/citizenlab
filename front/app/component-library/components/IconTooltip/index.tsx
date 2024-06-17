@@ -1,10 +1,10 @@
-import React, { memo, ReactChild, FC, useState } from 'react';
+import React, { memo, ReactChild, FC } from 'react';
 
-import { uuid4 } from '@sentry/utils';
 import { darken } from 'polished';
 import styled from 'styled-components';
 import { Placement } from 'tippy.js';
 
+import useInstanceId from '../../hooks/useInstanceId';
 import { colors } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 import Box, {
@@ -95,7 +95,7 @@ const IconTooltip: FC<Props> = memo<Props>(
     transform,
     ...rest
   }) => {
-    const [uniqueId] = useState(() => uuid4());
+    const uniqueId = useInstanceId();
 
     return (
       <Tooltip
