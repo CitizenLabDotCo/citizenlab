@@ -87,7 +87,7 @@ class Project < ApplicationRecord
   validates :description_preview_multiloc, multiloc: { presence: false }
   validates :visible_to, presence: true, inclusion: { in: VISIBLE_TOS }
   validates :internal_role, inclusion: { in: INTERNAL_ROLES, allow_nil: true }
-  validate :admin_publication_must_exist
+  validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template } # Parked - validate publications: validate :admin_publication_must_exist
 
   pg_search_scope :search_by_all,
     against: %i[title_multiloc description_multiloc description_preview_multiloc slug],
