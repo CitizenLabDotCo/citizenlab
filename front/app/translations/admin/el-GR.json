@@ -2433,7 +2433,7 @@
   "app.containers.ContentBuilder.homepage.sign_up_button": "Sign up",
   "app.containers.ContentBuilder.homepage.signedInDescription": "This is how registered users see the banner.",
   "app.containers.ContentBuilder.homepage.signedOutDescription": "This is how visitors that are not registered on the platform see the banner.",
-  "app.containers.ContentBuilder.homepage.twoRowBannerTooltip": "This banner is in particular useful which images that don’t work well with text from the title, subtitle or button. These items will be pushed below the banner. More info on the recommended image usage can be found on our {link}.",
+  "app.containers.ContentBuilder.homepage.twoRowBannerTooltip1": "Αυτό το πανό είναι ιδιαίτερα χρήσιμο με εικόνες που δεν λειτουργούν καλά με το κείμενο του τίτλου, του υπότιτλου ή του κουμπιού. Αυτά τα στοιχεία θα προωθηθούν κάτω από το πανό. Περισσότερες πληροφορίες σχετικά με τη συνιστώμενη χρήση εικόνων μπορείτε να βρείτε στο {link}.",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "knowledge base",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "Two rows",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabel": "Embed height (pixels)",
