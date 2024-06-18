@@ -2536,6 +2536,7 @@
   "app.containers.admin.ideaStatuses.all.inputStatusDeleteButtonTooltip": "Les états actuellement attribués à une contribution ne peuvent pas être supprimés. Vous pouvez supprimer/modifier le statut des contributions existantes dans l'onglet {manageTab}.",
   "app.containers.admin.ideaStatuses.all.lockedStatusTooltip": "Ce statut ne peut être ni supprimé ni déplacé.",
   "app.containers.admin.ideaStatuses.all.manage": "Gérer",
+  "app.containers.admin.ideaStatuses.all.pricingPlanUpgrade": "La configuration des statuts d'entrée personnalisés n'est pas incluse dans votre plan actuel. Adressez-vous à votre Government Success Manager ou à votre administrateur pour la débloquer.",
   "app.containers.admin.ideaStatuses.all.subtitleInputStatuses1": "Gérez les différents statuts pouvant être attribués aux contributions des participants au sein d'un projet. Ces statuts sont visibles publiquement et aident à tenir les participants informés.",
   "app.containers.admin.ideaStatuses.all.titleIdeaStatuses1": "Modifier les statuts des contributions",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeDescription": "Sélectionnés pour la mise en œuvre ou les prochaines étapes",
