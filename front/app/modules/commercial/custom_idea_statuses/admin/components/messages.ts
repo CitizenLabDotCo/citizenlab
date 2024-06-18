@@ -90,11 +90,6 @@ export default defineMessages({
     id: 'app.containers.admin.ideaStatuses.all.editButtonLabel',
     defaultMessage: 'Edit',
   },
-  pricingPlanUpgrade: {
-    id: 'app.containers.admin.ideaStatuses.all.pricingPlanUpgrade',
-    defaultMessage:
-      'Configuring custom input statuses is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
-  },
   deleteButtonLabel: {
     id: 'app.containers.admin.ideaStatuses.all.deleteButtonLabel',
     defaultMessage: 'Delete',
