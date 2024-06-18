@@ -90,7 +90,7 @@ describe MultiTenancy::Templates::TenantSerializer do
         tenant.switch do
           MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
         end
-      end.to raise_error
+      end.to raise_error(NoMethodError) # Error class subject to change
     end
 
     it 'can deal with missing authors' do

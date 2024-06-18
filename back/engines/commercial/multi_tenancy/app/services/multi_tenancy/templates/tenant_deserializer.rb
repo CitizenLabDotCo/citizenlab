@@ -208,13 +208,13 @@ module MultiTenancy
         end
       end
 
-      def preserve_ordering(model)
+      def preserve_ordering(model, &block)
         if model.try(:in_list?)
-          model.class.acts_as_list_no_update { yield }
-        elsif model.class == Project # Support nested admin publications
-          AdminPublication.acts_as_list_no_update { yield }
+          model.class.acts_as_list_no_update(&block)
+        elsif model.class.instance_of?(Project) # Support nested admin publications
+          AdminPublication.acts_as_list_no_update(&block)
         else
-          yield
+          block.call
         end
       end
 
