@@ -135,8 +135,8 @@ describe('Verification modal', () => {
       );
 
       // button should now be disabled
-      cy.get('#e2e-idea-button > button').should('exist');
-      cy.get('#e2e-idea-button > button').should(
+      cy.get('.e2e-idea-button > div > button').should('exist');
+      cy.get('.e2e-idea-button > div > button').should(
         'have.attr',
         'aria-disabled',
         'true'
