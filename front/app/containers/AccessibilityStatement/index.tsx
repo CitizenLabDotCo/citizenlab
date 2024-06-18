@@ -3,6 +3,8 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { Helmet } from 'react-helmet';
 
+import useLocale from 'hooks/useLocale';
+
 import {
   Container,
   StyledContentContainer,
@@ -19,6 +21,8 @@ import messages from './messages';
 
 const AccessibilityStatement = () => {
   const { formatMessage } = useIntl();
+  const locale = useLocale();
+  const isLocaleFrench = locale === 'fr-FR';
 
   return (
     <>
@@ -145,62 +149,67 @@ const AccessibilityStatement = () => {
                       </li>
                     </ul>
                     <p>{formatMessage(messages.responsiveness)}</p>
-
-                    <h3>{formatMessage(messages.defenderOfRights)}</h3>
-                    <p>{formatMessage(messages.accessibilityDefect)}</p>
-                    <p>{formatMessage(messages.severalMeans)}</p>
-                    <ul>
-                      <li>
-                        <a
-                          href={formatMessage(messages.contactFormLink)}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          {formatMessage(messages.contactForm)}
-                        </a>
-                      </li>
-                      <li>
-                        <FormattedMessage
-                          {...messages.withContactInfo}
-                          values={{
-                            listOfDelegatesLinkText: (
+                    <>
+                      {isLocaleFrench && (
+                        <>
+                          <h3>{formatMessage(messages.defenderOfRights)}</h3>
+                          <p>{formatMessage(messages.accessibilityDefect)}</p>
+                          <p>{formatMessage(messages.severalMeans)}</p>
+                          <ul>
+                            <li>
                               <a
-                                href={formatMessage(
-                                  messages.listOfDelegatesLink
-                                )}
+                                href={formatMessage(messages.contactFormLink)}
                                 target="_blank"
                                 rel="noreferrer"
                               >
-                                <FormattedMessage
-                                  {...messages.listOfDelegatesLinkText}
-                                />
+                                {formatMessage(messages.contactForm)}
                               </a>
-                            ),
-                          }}
-                        />
-                      </li>
-                      <li>{formatMessage(messages.telephoneNumber)}</li>
-                      <li>
-                        <FormattedMessage
-                          {...messages.postalAddressFr}
-                          values={{
-                            administrationDirectoryLinkText: (
-                              <a
-                                href={formatMessage(
-                                  messages.administrationDirectoryLink
-                                )}
-                                target="_blank"
-                                rel="noreferrer"
-                              >
-                                <FormattedMessage
-                                  {...messages.administrationDirectoryLinkText}
-                                />
-                              </a>
-                            ),
-                          }}
-                        />
-                      </li>
-                    </ul>
+                            </li>
+                            <li>
+                              <FormattedMessage
+                                {...messages.withContactInfo}
+                                values={{
+                                  listOfDelegatesLinkText: (
+                                    <a
+                                      href={formatMessage(
+                                        messages.listOfDelegatesLink
+                                      )}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                    >
+                                      <FormattedMessage
+                                        {...messages.listOfDelegatesLinkText}
+                                      />
+                                    </a>
+                                  ),
+                                }}
+                              />
+                            </li>
+                            <li>{formatMessage(messages.telephoneNumber)}</li>
+                            <li>
+                              <FormattedMessage
+                                {...messages.postalAddressFr}
+                                values={{
+                                  administrationDirectoryLinkText: (
+                                    <a
+                                      href={formatMessage(
+                                        messages.administrationDirectoryLink
+                                      )}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                    >
+                                      <FormattedMessage
+                                        {...messages.administrationDirectoryLinkText}
+                                      />
+                                    </a>
+                                  ),
+                                }}
+                              />
+                            </li>
+                          </ul>
+                        </>
+                      )}
+                    </>
                   </QuillEditedContent>
                 </Box>
               </Fragment>
