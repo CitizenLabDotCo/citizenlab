@@ -8,7 +8,6 @@ import {
 import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
-import useDeleteIdeaStatus from 'api/idea_statuses/useDeleteIdeaStatus';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import useUpdateIdeaStatus from 'api/idea_statuses/useUpdateIdeaStatus';
 
@@ -43,14 +42,6 @@ const Buttons = styled.div`
   align-items: center;
 `;
 
-const DummyButton = styled(Button)`
-  margin-right: 10px;
-`;
-
-const DeleteButton = styled(Button)`
-  margin-right: 10px;
-`;
-
 const ColorLabel = styled.span`
   width: 24px;
   height: 24px;
@@ -73,7 +64,6 @@ const StyledIconTooltip = styled(IconTooltip)`
 const IdeaStatuses = () => {
   const { data: ideaStatuses, isLoading } = useIdeaStatuses();
   const { mutate: updateIdeaStatus } = useUpdateIdeaStatus();
-  const { mutate: deleteIdeaStatus } = useDeleteIdeaStatus();
   const customIdeaStatusesAllowed = useFeatureFlag({
     name: 'custom_idea_statuses',
     onlyCheckAllowed: true,
@@ -85,10 +75,6 @@ const IdeaStatuses = () => {
 
   const isRequired = (ideaStatus: IIdeaStatusData) => {
     return ideaStatus === defaultStatus;
-  };
-
-  const handleDelete = (id: string) => () => {
-    deleteIdeaStatus(id);
   };
 
   const isDeletable = (ideaStatus: IIdeaStatusData) => {
