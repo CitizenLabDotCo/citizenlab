@@ -31,6 +31,11 @@ const TenantLogo = () => {
         <Link
           to="/"
           onlyActiveOnIndex={true}
+          /* The aria-label here is used when there is no clear
+           * 'text-like' element as a child of the Link component,
+           * making it unclear for screen readers what the link point to.
+           * https://stackoverflow.com/a/53765144/7237112
+           */
           aria-label={formatMessage(messages.logoAltText)}
         >
           <Logo src={tenantLogo} alt={formatMessage(messages.logoAltText)} />

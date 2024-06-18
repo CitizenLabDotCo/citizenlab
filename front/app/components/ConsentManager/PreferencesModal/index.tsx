@@ -66,6 +66,9 @@ const PreferencesModal = ({
         <ContentContainer
           role="dialog"
           aria-modal
+          // aria-labelledby helps screen readers find
+          // the title of the dialog
+          // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/dialog_role
           aria-labelledby="consent-manager-preferences-title"
         >
           <Title variant="h5" as="h1" id="consent-manager-preferences-title">

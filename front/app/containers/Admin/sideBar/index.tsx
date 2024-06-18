@@ -148,6 +148,11 @@ const Sidebar = ({ authUser }: Props) => {
       <Outlet id="app.containers.Admin.sideBar.navItems" onData={handleData} />
       <MenuInner id="sidebar">
         <Box w="100%">
+          {/* The aria-label here is used when there is no clear
+           * 'text-like' element as a child of the Link component,
+           * making it unclear for screen readers what the link point to.
+           * https://stackoverflow.com/a/53765144/7237112
+           */}
           <Link to="/" aria-label={formatMessage(messages.toPlatform)}>
             <Box
               height={
