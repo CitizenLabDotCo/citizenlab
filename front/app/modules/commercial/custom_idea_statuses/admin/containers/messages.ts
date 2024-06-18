@@ -5,10 +5,6 @@ export default defineMessages({
     id: 'app.containers.admin.ideaStatuses.all.deleteButtonLabel',
     defaultMessage: 'Delete',
   },
-  editButtonLabel: {
-    id: 'app.containers.admin.ideaStatuses.all.editButtonLabel',
-    defaultMessage: 'Edit',
-  },
   addIdeaStatus: {
     id: 'app.containers.admin.ideaStatuses.all.addIdeaStatus',
     defaultMessage: 'Add status',
