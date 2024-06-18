@@ -63,7 +63,3 @@ export const LoggedOut: Story = {
     }),
   },
 };
-
-export const LoggedIn: Story = {
-  args: { ...LoggedOut.args },
-};
