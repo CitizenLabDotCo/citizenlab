@@ -36,7 +36,7 @@ module MultiTenancy
         users = User.where('invite_status IS NULL OR invite_status != ?', 'pending')
 
         {
-          AdminPublication => serialize_admin_publications(AdminPublication.where(publication_type: 'ProjectFolders::Folder')),  
+          AdminPublication => serialize_admin_publications(AdminPublication.where(publication_type: 'ProjectFolders::Folder')),
           Area => serialize_records(Area),
           AreasProject => serialize_records(AreasProject),
           AreasStaticPage => serialize_records(AreasStaticPage),

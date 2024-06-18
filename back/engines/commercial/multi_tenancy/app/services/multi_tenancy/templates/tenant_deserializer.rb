@@ -82,6 +82,8 @@ module MultiTenancy
             begin
               if model.try(:in_list?)
                 model.class.acts_as_list_no_update { save_model(model, validate) }
+              elsif model.class == Project
+                AdminPublication.acts_as_list_no_update { save_model(model, validate) }
               else
                 save_model(model, validate)
               end
