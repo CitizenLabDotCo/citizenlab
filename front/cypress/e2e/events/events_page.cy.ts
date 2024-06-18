@@ -54,8 +54,10 @@ describe('All events page', () => {
 
     // Select filters
     cy.get('.e2e-project-filter-selector').should('exist');
-    cy.get('.e2e-project-filter-selector').click();
-    cy.get('.e2e-project-filter-selector').should('contain', projectTitle);
+    cy.get('.e2e-project-filter-selector').first().click();
+    cy.get('.e2e-project-filter-selector')
+      .first()
+      .should('contain', projectTitle);
     cy.contains(projectTitle).click({ force: true });
 
     cy.get('#e2e-event-date-filter').should('exist');
