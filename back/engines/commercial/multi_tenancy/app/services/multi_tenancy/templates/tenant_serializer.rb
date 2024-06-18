@@ -36,7 +36,7 @@ module MultiTenancy
         users = User.where('invite_status IS NULL OR invite_status != ?', 'pending')
 
         {
-          AdminPublication => serialize_admin_publications(AdminPublication), # Parked - validate publications: serialize_admin_publications(AdminPublication.where(parent_id: nil)),
+          AdminPublication => serialize_admin_publications(AdminPublication.where(parent_id: nil)),
           Area => serialize_records(Area),
           AreasProject => serialize_records(AreasProject),
           AreasStaticPage => serialize_records(AreasStaticPage),
@@ -153,6 +153,10 @@ module MultiTenancy
         # the database, so serialized users don't hold references to CustomField.
         if ref_dependencies_graph.key?(User) && ref_dependencies_graph.key?(CustomField)
           ref_dependencies_graph[User] << CustomField
+        end
+
+        if ref_dependencies_graph.key?(Project) && ref_dependencies_graph.key?(ProjectFolders::Folder)
+          ref_dependencies_graph[Project] << ProjectFolders::Folder
         end
 
         each_node = ->(&b) { ref_dependencies_graph.each_key(&b) }

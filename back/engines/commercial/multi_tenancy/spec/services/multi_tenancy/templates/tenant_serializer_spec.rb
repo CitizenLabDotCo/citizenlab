@@ -50,20 +50,20 @@ describe MultiTenancy::Templates::TenantSerializer do
       expect(home_attributes['title_multiloc']).to be_blank
     end
 
-    it 'can deal with projects without admin publication' do
-      # The changes introduced by ticket CL-793 can be
-      # reverted once the issue with projects losing their
-      # admin publications is solved.
+    # it 'can deal with projects without admin publication' do
+    #   # The changes introduced by ticket CL-793 can be
+    #   # reverted once the issue with projects losing their
+    #   # admin publications is solved.
 
-      project = create(:project)
-      project.admin_publication.delete
-      expect(project.reload).to be_present
+    #   project = create(:project)
+    #   project.admin_publication.delete
+    #   expect(project.reload).to be_present
 
-      template = tenant_serializer.run(deserializer_format: true)
+    #   template = tenant_serializer.run(deserializer_format: true)
 
-      expect(template['models']).to be_present
-      expect(template.dig('models', 'project', 0, 'admin_publication_attributes')).to be_nil
-    end
+    #   expect(template['models']).to be_present
+    #   expect(template.dig('models', 'project', 0, 'admin_publication_attributes')).to be_nil
+    # end
 
     it 'can deal with missing authors' do
       idea = create(:idea, author: nil)
