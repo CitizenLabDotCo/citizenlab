@@ -164,7 +164,7 @@
     "@storybook/builder-vite": "^8.1.6",
     "@storybook/react": "^8.1.6",
     "@storybook/react-vite": "^8.1.6",
-    "@storybook/react-webpack5": "^8.1.8",
+    "@storybook/react-webpack5": "^8.1.9",
     "@tanstack/react-query-devtools": "^4.22.4",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^12.1.5",
