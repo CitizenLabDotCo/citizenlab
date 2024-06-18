@@ -19,7 +19,7 @@ const Footer = ({ idea, hideIdeaStatus, participationMethod }: Props) => {
   if (!project) return null;
 
   const commentingEnabled =
-    project.data.attributes.action_descriptor.commenting_idea.enabled;
+    project.data.attributes.action_descriptors.commenting_idea.enabled;
   const ideaHasComments = idea.attributes.comments_count > 0;
   const showCommentCount = commentingEnabled || ideaHasComments;
 

@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Analytics - FactParticipations' do
-  explanation 'Queries to summarise participations/active users.'
+  explanation 'Queries to summarise participations.'
 
   before do
     header 'Content-Type', 'application/json'

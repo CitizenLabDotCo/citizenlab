@@ -1,7 +1,12 @@
 import React from 'react';
 
-import { Box, Text, Button, colors } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
+import {
+  Box,
+  Text,
+  Button,
+  colors,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
@@ -78,7 +83,7 @@ export const SelectionScreen = ({
             </Box>
           ))}
       </Box>
-      <Tippy
+      <Tooltip
         zIndex={9999999}
         disabled={userIsAdmin}
         content={
@@ -92,7 +97,7 @@ export const SelectionScreen = ({
             ml="20px"
             mb="20px"
             icon="plus-circle"
-            buttonStyle="secondary"
+            buttonStyle="secondary-outlined"
             onClick={() => {
               setShowAddFieldPage(true);
             }}
@@ -102,7 +107,7 @@ export const SelectionScreen = ({
             <FormattedMessage {...messages.createANewQuestion} />
           </Button>
         </Box>
-      </Tippy>
+      </Tooltip>
     </>
   );
 };

@@ -28,7 +28,7 @@ const LaunchModal = ({ onClose }: LaunchModalProps) => {
       id="e2e-analysis-launch-modal"
     >
       <Box display="flex" gap="16px" alignItems="center">
-        <Icon name="stars" fill={colors.orange} width="40px" height="40px" />
+        <Icon name="stars" fill={colors.orange500} width="40px" height="40px" />
         <Title>{formatMessage(messages.title)}</Title>
       </Box>
       <Box>

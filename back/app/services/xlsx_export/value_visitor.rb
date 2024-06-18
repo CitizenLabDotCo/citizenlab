@@ -52,6 +52,10 @@ module XlsxExport
       option_titles.join(VALUE_SEPARATOR)
     end
 
+    def visit_multiselect_image(field)
+      visit_multiselect(field)
+    end
+
     def visit_checkbox(_field)
       '' # Not supported yet. Field type not used in native surveys, nor in idea forms.
     end

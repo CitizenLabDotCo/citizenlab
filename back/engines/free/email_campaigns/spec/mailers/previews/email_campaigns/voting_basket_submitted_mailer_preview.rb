@@ -10,7 +10,7 @@ module EmailCampaigns
       command = {
         recipient: recipient_user,
         event_payload: {
-          project_url: Frontend::UrlService.new.model_to_url(project, locale: recipient_user.locale),
+          project_url: Frontend::UrlService.new.model_to_url(project, locale: Locale.new(recipient_user.locale)),
           voted_ideas: EmailCampaigns::PayloadFormatterService.new.format_ideas_list(ideas, recipient_user)
         }
       }

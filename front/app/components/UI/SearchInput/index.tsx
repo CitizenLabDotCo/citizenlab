@@ -55,7 +55,7 @@ const SearchInputWrapper = ({
       setInputRef={setInputRef}
     />
     <ScreenReaderOnly aria-live="assertive">
-      {formatMessage(messages.a11y_searchResultsHaveChanged, {
+      {formatMessage(messages.a11y_searchResultsHaveChanged1, {
         numberOfSearchResults: a11y_numberOfSearchResults,
       })}
     </ScreenReaderOnly>

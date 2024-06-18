@@ -12,7 +12,7 @@ RSpec.describe EmailCampaigns::NativeSurveyNotSubmittedMailer do
       {
         recipient: recipient,
         event_payload: {
-          survey_url: Frontend::UrlService.new.model_to_url(idea.project, locale: recipient.locale),
+          survey_url: Frontend::UrlService.new.model_to_url(idea.project, locale: Locale.new(recipient.locale)),
           phase_title_multiloc: idea.creation_phase.title_multiloc,
           phase_end_at: idea.creation_phase.end_at
         }
@@ -50,7 +50,7 @@ RSpec.describe EmailCampaigns::NativeSurveyNotSubmittedMailer do
     end
 
     it "displays 'Resume your survey response' button with a link" do
-      project_url = Frontend::UrlService.new.model_to_url(phase.project, locale: recipient.locale)
+      project_url = Frontend::UrlService.new.model_to_url(phase.project, locale: Locale.new(recipient.locale))
       expect(mail.body.encoded).to match project_url
       expect(mail.body.encoded).to match 'Resume your survey response'
     end

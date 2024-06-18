@@ -14,7 +14,7 @@ type Story = StoryObj<typeof meta>;
 
 const image = {
   src: imageFile,
-  alt: 'Citizenlab logo',
+  alt: 'Go Vocal logo',
 };
 
 export const Default: Story = {

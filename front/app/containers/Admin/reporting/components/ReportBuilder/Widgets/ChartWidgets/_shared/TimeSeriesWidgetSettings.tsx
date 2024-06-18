@@ -14,13 +14,12 @@ import {
   DateRangeInput,
   ProjectInput,
 } from './ChartWidgetSettings';
-import { Props } from './typings';
 
-const TimeSeriesWidgetSettings = ({ onChangeDateRange }: Props) => {
+const TimeSeriesWidgetSettings = ({ resetComparePeriod = false }) => {
   return (
     <Box>
       <TitleInput />
-      <DateRangeInput onChangeDateRange={onChangeDateRange} />
+      <DateRangeInput resetComparePeriod={resetComparePeriod} />
       <ResolutionInput />
       <ProjectInput />
     </Box>

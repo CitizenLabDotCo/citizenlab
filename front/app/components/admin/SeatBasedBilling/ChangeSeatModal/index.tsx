@@ -56,6 +56,12 @@ interface Props {
   isChangingToNormalUser: boolean;
   closeModal: () => void;
   changeRoles: (user: IUserData, changeToNormalUser: boolean) => void;
+  /**
+   * Optional ref to return focus on close.
+   * By default, focus returns to the control that opened the modal.
+   * Use this ref if you want to return focus to another ref.
+   */
+  returnFocusRef?: React.RefObject<HTMLElement>;
 }
 
 const ChangeSeatModal = ({
@@ -64,6 +70,7 @@ const ChangeSeatModal = ({
   userToChangeSeat,
   changeRoles,
   isChangingToNormalUser,
+  returnFocusRef,
 }: Props) => {
   const [showSuccess, setShowSuccess] = useState(false);
   const isUserToChangeSeatAdmin = isAdmin({ data: userToChangeSeat });
@@ -107,7 +114,12 @@ const ChangeSeatModal = ({
   };
 
   return (
-    <Modal opened={showModal} close={resetModal} header={header}>
+    <Modal
+      opened={showModal}
+      close={resetModal}
+      header={header}
+      returnFocusRef={returnFocusRef}
+    >
       {showSuccess ? (
         <SeatSetSuccess
           closeModal={resetModal}

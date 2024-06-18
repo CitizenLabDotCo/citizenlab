@@ -28,6 +28,7 @@ const InitiativesShowPage = lazy(
   () => import('containers/InitiativesShowPage')
 );
 const IdeasNewPage = lazy(() => import('containers/IdeasNewPage'));
+const IdeasNewSurveyPage = lazy(() => import('containers/IdeasNewSurveyPage'));
 const ProjectsIndexPage = lazy(() => import('containers/ProjectsIndexPage'));
 const ProjectsShowPage = lazy(() => import('containers/ProjectsShowPage'));
 const ProjectFolderShowPage = lazy(
@@ -88,6 +89,7 @@ export enum citizenRoutes {
   initiativesSlug = `initiatives/:slug`,
   projects = 'projects',
   projectIdeaNew = `projects/:slug/ideas/new`,
+  projectSurveyNew = `projects/:slug/surveys/new`,
   projectSlug = `projects/:slug`,
   phaseNumber = ':phaseNumber',
   folders = 'folders',
@@ -293,6 +295,14 @@ export default function createRoutes() {
           element: (
             <PageLoading>
               <IdeasNewPage />
+            </PageLoading>
+          ),
+        },
+        {
+          path: citizenRoutes.projectSurveyNew,
+          element: (
+            <PageLoading>
+              <IdeasNewSurveyPage />
             </PageLoading>
           ),
         },

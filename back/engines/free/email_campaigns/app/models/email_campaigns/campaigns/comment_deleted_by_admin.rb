@@ -59,7 +59,7 @@ module EmailCampaigns
           reason_code: notification.reason_code,
           other_reason: notification.other_reason,
           post_type: notification.post_type,
-          post_url: Frontend::UrlService.new.model_to_url(notification.post, locale: recipient.locale)
+          post_url: Frontend::UrlService.new.model_to_url(notification.post, locale: Locale.new(recipient.locale))
         }
       }]
     end

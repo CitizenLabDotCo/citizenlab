@@ -13,7 +13,7 @@ import clHistory from 'utils/cl-router/history';
 export interface RedirectToIdeaFormParams {
   projectSlug: string;
   latLng?: GeoJSON.Point | null;
-  phaseId?: string;
+  phaseId: string;
   authUser?: IUser;
 }
 
@@ -25,13 +25,11 @@ export const redirectToIdeaForm =
     // and the effort to add them in is too large at this time. So we're temporarily
     // handling this case here.
     const { data: project } = await fetchProjectBySlug({ slug: projectSlug });
-    const { data: phase } = phaseId
-      ? await fetchPhase({ phaseId })
-      : { data: undefined };
+    const { data: phase } = await fetchPhase({ phaseId });
 
     const { disabledReason } = getIdeaPostingRules({
       project,
-      phase: phase || undefined,
+      phase,
       authUser,
     });
 
@@ -42,7 +40,10 @@ export const redirectToIdeaForm =
         : {};
       clHistory.push(
         {
-          pathname: `/projects/${projectSlug}/ideas/new`,
+          pathname:
+            phase.attributes.participation_method === 'native_survey'
+              ? `/projects/${project.attributes.slug}/surveys/new`
+              : `/projects/${project.attributes.slug}/ideas/new`,
           search: stringify(
             {
               ...positionParams,

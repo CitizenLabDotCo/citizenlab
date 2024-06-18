@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
+import { Box, Text, colors, Tooltip } from '@citizenlab/cl2-component-library';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -50,7 +49,7 @@ const PowerBI = () => {
         <Text color="coolGrey700">
           {formatMessage(messages.powerBIDescription)}
         </Text>
-        <Tippy
+        <Tooltip
           content={<FormattedMessage {...messages.powerBIDisabled} />}
           disabled={isPowerBIEnabled}
           placement="top"
@@ -71,7 +70,7 @@ const PowerBI = () => {
               {formatMessage(messages.powerBIDownloadTemplates)}
             </Button>
           </div>
-        </Tippy>
+        </Tooltip>
       </Box>
     </Box>
   );

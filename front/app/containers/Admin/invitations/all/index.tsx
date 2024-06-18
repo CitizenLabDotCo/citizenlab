@@ -121,7 +121,7 @@ const InvitesTable = () => {
           a11y_numberOfSearchResults={invites.data.length}
         />
         <Button
-          buttonStyle="cl-blue"
+          buttonStyle="admin-dark"
           icon="download"
           onClick={handleInvitesExport}
           processing={exporting}

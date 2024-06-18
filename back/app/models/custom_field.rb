@@ -308,11 +308,13 @@ class CustomField < ApplicationRecord
 
     min_label = "1#{minimum_label_multiloc[locale].present? ? " (#{minimum_label_multiloc[locale]})" : ''}"
     max_label = maximum.to_s + (maximum_label_multiloc[locale].present? ? " (#{maximum_label_multiloc[locale]})" : '')
-    I18n.t(
-      'form_builder.pdf_export.linear_scale_print_description',
-      min_label: min_label,
-      max_label: max_label
-    )
+    I18n.with_locale(locale) do
+      I18n.t(
+        'form_builder.pdf_export.linear_scale_print_description',
+        min_label: min_label,
+        max_label: max_label
+      )
+    end
   end
 
   private

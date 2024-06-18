@@ -5,9 +5,8 @@ import {
   Image,
   Title,
   Text,
-  colors,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
 import styled from 'styled-components';
 
@@ -55,7 +54,7 @@ const EmptyState = ({ onOpenModal }: Props) => {
           <Text>
             <FormattedMessage {...messages.customizeReport} />
           </Text>
-          <Tippy
+          <Tooltip
             maxWidth="250px"
             placement="right-start"
             content={<FormattedMessage {...sharedMessages.contactToAccess} />}
@@ -64,17 +63,16 @@ const EmptyState = ({ onOpenModal }: Props) => {
           >
             <div>
               <Button
-                mt="8px"
-                py="6px"
-                bgColor={colors.primary}
                 onClick={onOpenModal}
+                icon="plus-circle"
+                buttonStyle="admin-dark"
                 disabled={!isReportBuilderAllowed}
                 id="e2e-create-report-button"
               >
                 <FormattedMessage {...messages.emptyStateButtonText} />
               </Button>
             </div>
-          </Tippy>
+          </Tooltip>
         </Box>
       </Box>
     </Box>

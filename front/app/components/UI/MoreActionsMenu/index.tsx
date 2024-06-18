@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef } from 'react';
 
 import {
   Box,
@@ -8,8 +8,8 @@ import {
   colors,
   fontSizes,
   media,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import styled from 'styled-components';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -119,103 +119,105 @@ export interface Props {
   onClick?: (event: React.MouseEvent) => void;
 }
 
-const MoreActionsMenu = (props: Props) => {
-  const {
-    actions,
-    showLabel = true,
-    color,
-    labelAndTitle = <FormattedMessage {...messages.showMoreActions} />,
-    className,
-    id,
-    onClick,
-  } = props;
-  const [visible, setVisible] = useState(false);
+const MoreActionsMenu = forwardRef<HTMLButtonElement, Props>(
+  (props, moreActionsButtonRef) => {
+    const {
+      actions,
+      showLabel = true,
+      color,
+      labelAndTitle = <FormattedMessage {...messages.showMoreActions} />,
+      className,
+      id,
+      onClick,
+    } = props;
+    const [visible, setVisible] = useState(false);
 
-  const hide = () => {
-    setVisible(false);
-  };
-
-  const toggleMenu = (event: React.MouseEvent) => {
-    onClick && onClick(event);
-    event.preventDefault();
-    setVisible((current) => !current);
-  };
-
-  const handleListItemOnClick =
-    (handler: (event: React.MouseEvent) => Promise<any> | void) =>
-    async (event: React.MouseEvent) => {
-      event.preventDefault();
-      await handler(event);
-      hide();
+    const hide = () => {
+      setVisible(false);
     };
 
-  if (actions.length === 0) {
-    return <Box width="25px" />; // to keep other elements in the row in the same place as when there is actions menu
-  }
+    const toggleMenu = (event: React.MouseEvent) => {
+      onClick && onClick(event);
+      event.preventDefault();
+      setVisible((current) => !current);
+    };
 
-  return (
-    <Container className={className || ''}>
-      <Tippy
-        placement="bottom"
-        interactive={true}
-        duration={[200, 0]}
-        visible={visible}
-        onClickOutside={hide}
-        content={
-          <List className="e2e-more-actions-list">
-            {actions.map((action, index) => {
-              const { handler, label, icon, name, isLoading } = action;
+    const handleListItemOnClick =
+      (handler: (event: React.MouseEvent) => Promise<any> | void) =>
+      async (event: React.MouseEvent) => {
+        event.preventDefault();
+        await handler(event);
+        hide();
+      };
 
-              return (
-                <ListItem
-                  key={index}
-                  onMouseDown={removeFocusAfterMouseClick}
-                  onClick={handleListItemOnClick(handler)}
-                  className={name ? `e2e-action-${name}` : undefined}
-                >
-                  {label}
-                  {icon && !isLoading && (
-                    <Box
-                      width="20px"
-                      height="20px"
-                      display="flex"
-                      alignItems="center"
-                      ml="12px"
-                    >
-                      <Icon name={icon} fill="white" />
-                    </Box>
-                  )}
-                  {isLoading && (
-                    <Box ml="12px">
-                      <Spinner color="white" size="20px" />
-                    </Box>
-                  )}
-                </ListItem>
-              );
-            })}
-          </List>
-        }
-      >
-        <MoreOptionsButton
-          onMouseDown={removeFocusAfterMouseClick}
-          onClick={toggleMenu}
-          aria-expanded={visible}
-          id={id}
-          data-cy={props['data-cy']}
-          className="e2e-more-actions"
-          data-testid="moreOptionsButton"
+    if (actions.length === 0) {
+      return <Box width="25px" />; // to keep other elements in the row in the same place as when there is actions menu
+    }
+
+    return (
+      <Container className={className || ''}>
+        <Tooltip
+          placement="bottom"
+          duration={[200, 0]}
+          visible={visible}
+          onClickOutside={hide}
+          content={
+            <List className="e2e-more-actions-list">
+              {actions.map((action, index) => {
+                const { handler, label, icon, name, isLoading } = action;
+
+                return (
+                  <ListItem
+                    key={index}
+                    onMouseDown={removeFocusAfterMouseClick}
+                    onClick={handleListItemOnClick(handler)}
+                    className={name ? `e2e-action-${name}` : undefined}
+                  >
+                    {label}
+                    {icon && !isLoading && (
+                      <Box
+                        width="20px"
+                        height="20px"
+                        display="flex"
+                        alignItems="center"
+                        ml="12px"
+                      >
+                        <Icon name={icon} fill="white" />
+                      </Box>
+                    )}
+                    {isLoading && (
+                      <Box ml="12px">
+                        <Spinner color="white" size="20px" />
+                      </Box>
+                    )}
+                  </ListItem>
+                );
+              })}
+            </List>
+          }
         >
-          <MoreOptionsIcon
-            title={labelAndTitle}
-            name="dots-horizontal"
-            color={color}
-            ariaHidden={!showLabel}
-          />
-          {showLabel && <MoreOptionsLabel>{labelAndTitle}</MoreOptionsLabel>}
-        </MoreOptionsButton>
-      </Tippy>
-    </Container>
-  );
-};
+          <MoreOptionsButton
+            ref={moreActionsButtonRef}
+            onMouseDown={removeFocusAfterMouseClick}
+            onClick={toggleMenu}
+            aria-expanded={visible}
+            id={id}
+            data-cy={props['data-cy']}
+            className="e2e-more-actions"
+            data-testid="moreOptionsButton"
+          >
+            <MoreOptionsIcon
+              title={labelAndTitle}
+              name="dots-horizontal"
+              color={color}
+              ariaHidden={!showLabel}
+            />
+            {showLabel && <MoreOptionsLabel>{labelAndTitle}</MoreOptionsLabel>}
+          </MoreOptionsButton>
+        </Tooltip>
+      </Container>
+    );
+  }
+);
 
 export default MoreActionsMenu;

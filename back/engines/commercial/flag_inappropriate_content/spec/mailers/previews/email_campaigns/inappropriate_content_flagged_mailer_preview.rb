@@ -13,7 +13,7 @@ module EmailCampaigns
           flag_automatically_detected: automatically_detected?,
           flaggable_type: flaggable.class.name,
           flaggable_author_name: UserDisplayNameService.new(AppConfiguration.instance, recipient_user).display_name!(flaggable.author),
-          flaggable_url: Frontend::UrlService.new.model_to_url(flaggable, locale: recipient_user.locale),
+          flaggable_url: Frontend::UrlService.new.model_to_url(flaggable, locale: Locale.new(recipient_user.locale)),
           flaggable_title_multiloc: flaggable.title_multiloc,
           flaggable_body_multiloc: flaggable.body_multiloc
         }

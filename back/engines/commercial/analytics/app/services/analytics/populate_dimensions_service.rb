@@ -10,19 +10,6 @@ module Analytics
         populate_referrer_types
       end
 
-      def create_dates(from, to)
-        (from..to).each do |date|
-          Analytics::DimensionDate.create!(
-            date: date,
-            week: date.beginning_of_week.to_date,
-            month: "#{date.year}-#{date.strftime('%m')}",
-            year: date.year
-          )
-        rescue ActiveRecord::RecordNotUnique
-          # Ignore any that already exist
-        end
-      end
-
       def populate_types
         types = [
           { name: 'idea', parent: 'post' },
@@ -41,13 +28,9 @@ module Analytics
         ]
 
         current_types = Analytics::DimensionType.all.as_json(only: %i[name parent])
+        return if current_types.to_set == types.as_json.to_set
 
-        return unless current_types & types != types
-
-        Analytics::DimensionType.transaction do
-          Analytics::DimensionType.delete_all
-          Analytics::DimensionType.insert_all(types)
-        end
+        Analytics::DimensionType.insert_all(types)
       end
 
       private
@@ -75,13 +58,31 @@ module Analytics
         create_dates(from, to)
       end
 
-      def populate_locales
-        locales = AppConfiguration.instance.settings('core', 'locales')
-        locales.each do |locale_name|
-          next if Analytics::DimensionLocale.exists?(name: locale_name)
-
-          Analytics::DimensionLocale.create!(name: locale_name)
+      def create_dates(from, to)
+        insert_dates = (from..to).map do |date|
+          {
+            date: date,
+            week: date.beginning_of_week.to_date,
+            month: "#{date.year}-#{date.strftime('%m')}",
+            year: date.year
+          }
         end
+        if insert_dates.present?
+          insert_dates.each_slice(200) do |dates|
+            Analytics::DimensionDate.insert_all(dates)
+          end
+        end
+      end
+
+      def populate_locales
+        locales = AppConfiguration.instance.settings('core', 'locales').map do |locale_name|
+          { name: locale_name }
+        end
+
+        current_locales = Analytics::DimensionLocale.all.as_json(only: %i[name])
+        return if current_locales.to_set == locales.as_json.to_set
+
+        Analytics::DimensionLocale.insert_all(locales)
       end
 
       def populate_referrer_types
@@ -92,11 +93,11 @@ module Analytics
           { key: 'campaigns', name: 'Campaigns' },
           { key: 'direct', name: 'Direct Entry' }
         ]
-        types.each do |type|
-          next if Analytics::DimensionReferrerType.exists?(key: type[:key])
 
-          Analytics::DimensionReferrerType.create!(key: type[:key], name: type[:name])
-        end
+        current_types = Analytics::DimensionReferrerType.all.as_json(only: %i[key name])
+        return if current_types.to_set == types.as_json.to_set
+
+        Analytics::DimensionReferrerType.insert_all(types)
       end
     end
   end

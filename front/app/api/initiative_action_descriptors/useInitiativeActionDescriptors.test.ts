@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
@@ -12,18 +12,24 @@ const initiativesActionDescriptorsData = {
   data: {
     type: 'initiatives',
     attributes: {
-      posting_initiative: { disabled_reason: 'not_signed_in', enabled: false },
-      commenting_initiative: {
-        disabled_reason: 'not_signed_in',
+      posting_initiative: {
+        disabled_reason: 'user_not_signed_in',
         enabled: false,
       },
-      reacting_initiative: { disabled_reason: 'not_signed_in', enabled: false },
+      commenting_initiative: {
+        disabled_reason: 'user_not_signed_in',
+        enabled: false,
+      },
+      reacting_initiative: {
+        disabled_reason: 'user_not_signed_in',
+        enabled: false,
+      },
       comment_reacting_initiative: {
-        disabled_reason: 'not_signed_in',
+        disabled_reason: 'user_not_signed_in',
         enabled: false,
       },
       cancelling_initiative_reactions: {
-        disabled_reason: 'not_signed_in',
+        disabled_reason: 'user_not_signed_in',
         enabled: false,
       },
     },
@@ -31,10 +37,10 @@ const initiativesActionDescriptorsData = {
 };
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({ data: initiativesActionDescriptorsData })
+  http.get(apiPath, () => {
+    return HttpResponse.json(
+      { data: initiativesActionDescriptorsData },
+      { status: 200 }
     );
   })
 );
@@ -61,8 +67,8 @@ describe('useInitiativeActionDescriptors', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

@@ -14,8 +14,8 @@ import {
   colors,
   fontSizes,
   isRtl,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import { darken, rgba } from 'polished';
 import styled, { css } from 'styled-components';
 
@@ -403,8 +403,7 @@ const Timeline = ({
                     breakpoint={phasesBreakpoint}
                     last
                   >
-                    <Tippy
-                      interactive={true}
+                    <Tooltip
                       visible={tooltipVisible}
                       placement="bottom-start"
                       content={
@@ -434,7 +433,7 @@ const Timeline = ({
                           <FormattedMessage {...messages.newPhase} />
                         </ScreenReaderOnly>
                       </PhaseBar>
-                    </Tippy>
+                    </Tooltip>
                   </PhaseContainer>
                 </Box>
               )}

@@ -17,9 +17,9 @@ FactoryBot.define do
     end
 
     factory :report_layout, class: 'ContentBuilder::Layout' do
-      content_buildable { association(:report, layout: instance) }
       code { 'report' }
       enabled { true }
+      content_buildable { association(:report, layout: instance) }
     end
 
     trait :with_image do

@@ -6,6 +6,7 @@ import moment, { Moment } from 'moment';
 import { IOption, Multiloc } from 'typings';
 
 import DateRangePicker from 'components/admin/DateRangePicker';
+import { getComparedTimeRange } from 'components/admin/GraphCards/_utils/query';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { useIntl } from 'utils/cl-intl';
@@ -13,8 +14,6 @@ import { useIntl } from 'utils/cl-intl';
 import ProjectFilter from '../../_shared/ProjectFilter';
 import messages from '../messages';
 import { ChartWidgetProps } from '../typings';
-
-import { Props } from './typings';
 
 const ChartWidgetSettings = () => {
   return (
@@ -59,18 +58,24 @@ export const TitleInput = () => {
   );
 };
 
-export const DateRangeInput = ({ onChangeDateRange }: Props) => {
+export const DateRangeInput = ({ resetComparePeriod = false }) => {
   const { formatMessage } = useIntl();
   const {
     actions: { setProp },
     startAtMoment,
     endAtMoment,
+    compareStartAt,
+    compareEndAt,
   } = useNode((node) => ({
     startAtMoment: node.data.props.startAt
       ? moment(node.data.props.startAt)
       : null,
     endAtMoment: node.data.props.endAt ? moment(node.data.props.endAt) : null,
+    compareStartAt: node.data.props.compareStartAt,
+    compareEndAt: node.data.props.compareEndAt,
   }));
+
+  const comparePreviousPeriod = !!compareStartAt && !!compareEndAt;
 
   const handleChangeTimeRange = ({
     startDate,
@@ -80,11 +85,32 @@ export const DateRangeInput = ({ onChangeDateRange }: Props) => {
     endDate: Moment | null;
   }) => {
     setProp((props: ChartWidgetProps) => {
-      props.startAt = startDate?.format('YYYY-MM-DDTHH:mm:ss.sss');
-      props.endAt = endDate?.format('YYYY-MM-DDTHH:mm:ss.sss');
+      props.startAt = startDate?.format('YYYY-MM-DD');
+      props.endAt = endDate?.format('YYYY-MM-DD');
     });
 
-    onChangeDateRange?.({ startDate, endDate });
+    if (resetComparePeriod) {
+      if (startDate && endDate) {
+        if (comparePreviousPeriod) {
+          const { compare_start_at, compare_end_at } = getComparedTimeRange(
+            startDate,
+            endDate
+          );
+
+          setProp((props) => {
+            props.compareStartAt = compare_start_at;
+            props.compareEndAt = compare_end_at;
+          });
+        }
+      } else {
+        // Make sure that we always reset compared date range
+        // if the main date range is not fully set
+        setProp((props) => {
+          props.compareStartAt = undefined;
+          props.compareEndAt = undefined;
+        });
+      }
+    }
   };
 
   return (

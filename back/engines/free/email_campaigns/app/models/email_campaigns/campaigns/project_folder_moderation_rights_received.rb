@@ -62,7 +62,7 @@ module EmailCampaigns
           project_folder_id: folder.id,
           project_folder_title_multiloc: folder.title_multiloc,
           project_folder_projects_count: folder.projects.count,
-          project_folder_url: admin_project_folder_url(folder.id, locale: recipient.locale)
+          project_folder_url: admin_project_folder_url(folder.id, locale: Locale.new(recipient.locale))
         }
       }]
     end

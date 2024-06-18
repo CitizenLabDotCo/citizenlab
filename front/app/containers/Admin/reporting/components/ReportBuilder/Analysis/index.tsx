@@ -1,7 +1,12 @@
 import React, { useCallback, useState } from 'react';
 
-import { Box, Button, Title, Text } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
+import {
+  Box,
+  Button,
+  Title,
+  Text,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
 import usePhase from 'api/phases/usePhase';
@@ -70,13 +75,13 @@ const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
         <Box p="12px">
           <Title variant="h3">{formatMessage(messages.upsellTitle)}</Title>
           <Text>{formatMessage(messages.upsellDescription)}</Text>
-          <Tippy content={<p>{formatMessage(messages.upsellTooltip)}</p>}>
+          <Tooltip content={<p>{formatMessage(messages.upsellTooltip)}</p>}>
             <Box>
               <Button disabled icon="lock">
                 {formatMessage(messages.upsellButton)}
               </Button>
             </Box>
-          </Tippy>
+          </Tooltip>
         </Box>
       )}
       {isAnalysisEnabled && (

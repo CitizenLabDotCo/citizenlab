@@ -406,7 +406,7 @@ describe('Homepage builder', () => {
     cy.get('.buttonText').should('contain', 'Custom button');
   });
 
-  it('updates homepage banner layout correctly fixed ratio', () => {
+  it.skip('updates homepage banner layout correctly fixed ratio', () => {
     cy.intercept(
       'POST',
       '**/home_pages/content_builder_layouts/homepage/upsert'

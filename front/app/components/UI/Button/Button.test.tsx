@@ -36,6 +36,6 @@ describe('Button', () => {
     );
     expect(screen.getByText('Test')).toBeInTheDocument();
     expect(screen.queryByRole('link')).not.toBeInTheDocument();
-    expect(screen.getByRole('button')).toBeDisabled();
+    expect(screen.getByRole('button')).toHaveAttribute('aria-disabled', 'true');
   });
 });

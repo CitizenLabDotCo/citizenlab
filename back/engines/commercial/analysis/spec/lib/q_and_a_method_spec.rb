@@ -86,7 +86,7 @@ RSpec.describe Analysis::QAndAMethod do
       expect(Locale)
         .to receive(:monolingual)
         .and_return(mock_locale)
-      expect(mock_locale).to receive(:language).and_return('High Valyrian')
+      expect(mock_locale).to receive(:language_copy).and_return('High Valyrian')
       expect_any_instance_of(Analysis::LLM::Prompt)
         .to receive(:fetch)
         .with('q_and_a', project_title: kind_of(String), question: kind_of(String), inputs_text: kind_of(String), language: 'High Valyrian')

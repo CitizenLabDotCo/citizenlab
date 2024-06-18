@@ -6,8 +6,8 @@ import {
   IconTooltip,
   colors,
   fontSizes,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import { WrappedComponentProps } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -211,7 +211,7 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
                           <LayerName>{layerTitle}</LayerName>
                           <Buttons>
                             {mapLayer.type === 'CustomMaps::GeojsonLayer' && (
-                              <Tippy
+                              <Tooltip
                                 placement="bottom"
                                 content={
                                   <FormattedMessage {...messages.edit} />
@@ -228,12 +228,12 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
                                     onClick={toggleLayerConfig(mapLayer.id)}
                                   />
                                 </div>
-                              </Tippy>
+                              </Tooltip>
                             )}
 
                             <Spacer />
 
-                            <Tippy
+                            <Tooltip
                               placement="bottom"
                               content={
                                 <FormattedMessage {...messages.remove} />
@@ -251,7 +251,7 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
                                   onClick={removeLayer(mapLayer.id)}
                                 />
                               </div>
-                            </Tippy>
+                            </Tooltip>
                           </Buttons>
                         </ListItem>
                       </SortableRow>
@@ -273,7 +273,7 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
                 </LayerName>
                 <Buttons>
                   <Spacer />
-                  <Tippy
+                  <Tooltip
                     placement="bottom"
                     content={<FormattedMessage {...messages.remove} />}
                     hideOnClick={false}
@@ -288,7 +288,7 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
                         onClick={removeWebMap}
                       />
                     </div>
-                  </Tippy>
+                  </Tooltip>
                 </Buttons>
               </ListItem>
             </Box>

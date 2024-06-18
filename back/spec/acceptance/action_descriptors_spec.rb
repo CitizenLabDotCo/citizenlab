@@ -41,7 +41,7 @@ resource 'ActionDescriptors' do
                 },
                 commenting_initiative: {
                   enabled: false,
-                  disabled_reason: 'not_in_group'
+                  disabled_reason: 'user_not_in_group'
                 },
                 reacting_initiative: {
                   enabled: true,
@@ -53,7 +53,7 @@ resource 'ActionDescriptors' do
                 },
                 comment_reacting_initiative: {
                   enabled: false,
-                  disabled_reason: 'not_in_group'
+                  disabled_reason: 'user_not_in_group'
                 }
               }
             }

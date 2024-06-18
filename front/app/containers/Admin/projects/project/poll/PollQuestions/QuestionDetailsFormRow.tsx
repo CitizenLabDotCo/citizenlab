@@ -133,7 +133,7 @@ const QuestionDetailsFormRow = ({ question, onCancelOptionEditing }: Props) => {
         <Button
           className="e2e-collapse-option-form"
           onClick={onCancelOptionEditing}
-          buttonStyle="secondary"
+          buttonStyle="secondary-outlined"
         >
           <FormattedMessage {...messages.cancelEditAnswerOptions} />
         </Button>

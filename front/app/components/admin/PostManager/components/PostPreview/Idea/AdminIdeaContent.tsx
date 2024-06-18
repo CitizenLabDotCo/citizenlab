@@ -212,7 +212,7 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
           // We open in a new tab not lose state of the input manager
           openLinkInNewTab
           icon="eye"
-          buttonStyle="secondary"
+          buttonStyle="secondary-outlined"
         >
           <FormattedMessage {...messages.view} />
         </Button>

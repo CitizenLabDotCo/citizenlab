@@ -68,13 +68,12 @@ module EmailCampaigns
     end
 
     def generate_commands(recipient:, activity:)
-      locale = recipient.locale
       project = activity.item.project
       [{
         event_payload: {
           project_title_multiloc: project.title_multiloc,
           project_ideas_count: project.ideas_count,
-          project_url: Frontend::UrlService.new.model_to_url(project, locale: locale),
+          project_url: Frontend::UrlService.new.model_to_url(project, locale: Locale.new(recipient.locale)),
           unfollow_url: Frontend::UrlService.new.unfollow_url(Follower.new(user: recipient))
         }
       }]

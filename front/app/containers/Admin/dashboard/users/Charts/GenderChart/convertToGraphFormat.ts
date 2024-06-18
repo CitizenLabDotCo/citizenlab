@@ -1,34 +1,18 @@
 import { FormatMessage } from 'typings';
 
-import { GenderOption } from 'api/graph_data_units/responseTypes/_deprecated';
-
 import messages from 'containers/Admin/dashboard/messages';
 
 import { roundPercentages } from 'utils/math';
 
 import { GenderSerie } from './typings';
 
-interface GraphData {
-  data: {
-    attributes: {
-      [key: string]: number;
-    };
-  };
-}
-
-const genderOptions: GenderOption[] = [
-  'male',
-  'female',
-  'unspecified',
-  '_blank',
-];
+const genderOptions = ['male', 'female', 'unspecified', '_blank'];
 
 const convertToGraphFormat = (
-  data: GraphData | undefined,
+  users: Record<string, number> | undefined,
   formatMessage: FormatMessage
 ): GenderSerie | null => {
-  if (!data) return null;
-  const users = data.data.attributes;
+  if (!users) return null;
 
   const percentages = roundPercentages(
     genderOptions.map((gender) => users[gender])

@@ -10,11 +10,12 @@ export type ResolvedName =
   | 'DemographicsWidget'
   | 'GenderWidget'
   | 'AgeWidget'
-  | 'ActiveUsersWidget'
-  | 'PostsByTimeWidget'
-  | 'CommentsByTimeWidget'
+  | 'ParticipantsWidget'
   | 'ReactionsByTimeWidget'
-  | 'RegistrationsWidget';
+  | 'RegistrationsWidget'
+  | 'MethodsUsedWidget'
+  | 'ParticipationWidget'
+  | 'ProjectsWidget';
 
 export interface BaseParams {
   resolved_name: ResolvedName;
@@ -28,13 +29,12 @@ export type ParametersLive =
   | VisitorsParams
   | VisitorsTrafficSourcesParams
   | DemographicsParams
-  | GenderParams
-  | AgeParams
-  | ActiveUsersParams
-  | PostsByTimeParams
-  | CommentsByTimeParams
+  | ParticipantsParams
   | ReactionsByTimeParams
-  | RegistrationsParams;
+  | RegistrationsParams
+  | MethodsUsedParams
+  | ParticipationParams
+  | ProjectsParams;
 
 export type GroupMode = 'user_field' | 'survey_question';
 
@@ -50,10 +50,13 @@ export interface SurveyQuestionResultParams extends BaseParams {
   props: SurveyQuestionResultProps;
 }
 
-export interface AnalyticsProps {
-  project_id?: string | undefined;
+interface DateProps {
   start_at?: string | null | undefined;
   end_at?: string | null;
+}
+
+export interface AnalyticsProps extends DateProps {
+  project_id?: string | undefined;
   resolution?: IResolution;
 }
 
@@ -89,20 +92,16 @@ export interface VisitorsParams extends BaseParams {
   props: VisitorsProps;
 }
 
-export interface VisitorsTrafficSourcesProps {
+export interface VisitorsTrafficSourcesProps extends DateProps {
   project_id?: string;
-  start_at?: string | null | undefined;
-  end_at?: string | null;
 }
 export interface VisitorsTrafficSourcesParams extends BaseParams {
   resolved_name: 'VisitorsTrafficSourcesWidget';
   props: VisitorsTrafficSourcesProps;
 }
 
-export interface BaseDemographicsProps {
+interface BaseDemographicsProps extends DateProps {
   project_id?: string;
-  start_at?: string | null | undefined;
-  end_at?: string | null;
   group_id?: string | null;
 }
 
@@ -115,31 +114,11 @@ export interface DemographicsParams extends BaseParams {
   props: DemographicsProps;
 }
 
-export interface GenderParams extends BaseParams {
-  resolved_name: 'GenderWidget';
-  props: BaseDemographicsProps;
-}
+export interface ParticipantsProps extends AnalyticsProps, CompareProps {}
 
-export interface AgeParams extends BaseParams {
-  resolved_name: 'AgeWidget';
-  props: BaseDemographicsProps;
-}
-
-export interface ActiveUsersProps extends AnalyticsProps, CompareProps {}
-
-export interface ActiveUsersParams extends BaseParams {
-  resolved_name: 'ActiveUsersWidget';
-  props: ActiveUsersProps;
-}
-
-export interface PostsByTimeParams extends BaseParams {
-  resolved_name: 'PostsByTimeWidget';
-  props: AnalyticsProps;
-}
-
-export interface CommentsByTimeParams extends BaseParams {
-  resolved_name: 'CommentsByTimeWidget';
-  props: AnalyticsProps;
+export interface ParticipantsParams extends BaseParams {
+  resolved_name: 'ParticipantsWidget';
+  props: ParticipantsProps;
 }
 
 export interface ReactionsByTimeParams extends BaseParams {
@@ -154,6 +133,29 @@ export interface RegistrationsProps
 interface RegistrationsParams {
   resolved_name: 'RegistrationsWidget';
   props: RegistrationsProps;
+}
+
+export interface MethodsUsedProps extends DateProps, CompareProps {}
+
+interface MethodsUsedParams extends BaseParams {
+  resolved_name: 'MethodsUsedWidget';
+  props: MethodsUsedProps;
+}
+
+export type ParticipationType = 'inputs' | 'comments' | 'votes';
+
+export interface ParticipationProps extends AnalyticsProps, CompareProps {}
+
+interface ParticipationParams extends BaseParams {
+  resolved_name: 'ParticipationWidget';
+  props: ParticipationProps;
+}
+
+export interface ProjectsProps extends DateProps {}
+
+interface ProjectsParams extends BaseParams {
+  resolved_name: 'ProjectsWidget';
+  props: ProjectsProps;
 }
 
 // published

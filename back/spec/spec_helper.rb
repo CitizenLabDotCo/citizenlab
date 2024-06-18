@@ -9,6 +9,7 @@ require 'rspec-parameterized'
 require 'webmock/rspec'
 
 WebMock.allow_net_connect!
+CitizenLab::Scientist::Experiment.raise_on_mismatches = true
 
 if ActiveRecord::Type::Boolean.new.cast(ENV.fetch('COVERAGE', nil))
   require 'simplecov'

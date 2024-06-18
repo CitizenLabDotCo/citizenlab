@@ -138,7 +138,11 @@ const IdeasWidget = () => {
           width={methods.getValues('width') || 300}
           height={methods.getValues('height') || 400}
         />
-        <Button onClick={handleShowCodeClick} buttonStyle="cl-blue" icon="code">
+        <Button
+          onClick={handleShowCodeClick}
+          buttonStyle="admin-dark"
+          icon="code"
+        >
           <FormattedMessage {...messages.exportHtmlCodeButton} />
         </Button>
       </WidgetPreviewWrapper>

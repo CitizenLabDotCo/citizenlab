@@ -10,8 +10,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
-import { WrappedComponentProps } from 'react-intl';
 import { useParams, useSearchParams } from 'react-router-dom';
+import { RouteType } from 'routes';
 import { object, boolean, array, string, number } from 'yup';
 
 import {
@@ -62,16 +62,18 @@ type FormEditProps = {
   phaseId?: string;
   builderConfig: FormBuilderConfig;
   totalSubmissions: number;
-} & WrappedComponentProps;
+  viewFormLink: RouteType;
+};
 
-export const FormEdit = ({
-  intl: { formatMessage },
+const FormEdit = ({
   defaultValues,
   phaseId,
   projectId,
   builderConfig,
   totalSubmissions,
+  viewFormLink,
 }: FormEditProps) => {
+  const { formatMessage } = useIntl();
   const [selectedField, setSelectedField] = useState<
     IFlatCustomFieldWithIndex | undefined
   >(undefined);
@@ -286,111 +288,111 @@ export const FormEdit = ({
     return null;
   };
 
-  if (!isNilOrError(builderConfig)) {
-    return (
-      <Box
-        display="flex"
-        flexDirection="column"
-        w="100%"
-        zIndex="10000"
-        position="fixed"
-        bgColor={colors.background}
-        h="100vh"
-      >
-        <HelmetIntl title={messages.helmetTitle} />
-        <FocusOn>
-          <FormProvider {...methods}>
-            <form onSubmit={handleSubmit(onFormSubmit)}>
-              <FormBuilderTopBar
-                isSubmitting={isSubmitting}
-                builderConfig={builderConfig}
-              />
-              <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
-                <Box width="210px">
-                  <FormBuilderToolbox
-                    onAddField={onAddField}
-                    builderConfig={builderConfig}
-                    move={move}
-                  />
-                </Box>
-                <Box
-                  flex="1.8"
-                  border="1px solid #ccc"
-                  overflowY="auto"
-                  zIndex="2"
-                  margin="0px"
-                  paddingBottom="100px"
-                  height={`calc(100vh - ${stylingConsts.menuHeight}px)`}
-                  px="30px"
-                >
-                  <Box mt="16px">
-                    {hasErrors && (
-                      <Box mb="16px">
-                        <Error
-                          marginTop="8px"
-                          marginBottom="8px"
-                          text={formatMessage(messages.errorMessage)}
-                          scrollIntoView={false}
-                        />
-                      </Box>
-                    )}
-
-                    <Feedback
-                      successMessage={formatMessage(formSavedSuccessMessage)}
-                      onlyShowErrors
-                    />
-                    {showSuccessMessage && (
-                      <SuccessFeedback
-                        successMessage={formatMessage(formSavedSuccessMessage)}
-                        closeSuccessMessage={closeSuccessMessage}
-                      />
-                    )}
-                    {showWarnings()}
-                    <Box
-                      borderRadius="3px"
-                      boxShadow="0px 2px 4px rgba(0, 0, 0, 0.2)"
-                      bgColor="white"
-                      minHeight="300px"
-                    >
-                      <FormFields
-                        onEditField={setSelectedField}
-                        selectedFieldId={selectedField?.id}
-                        handleDragEnd={reorderFields}
-                        builderConfig={builderConfig}
-                        closeSettings={closeSettings}
-                      />
-                    </Box>
-                  </Box>
-                </Box>
-                <Box flex={!isNilOrError(selectedField) ? '1' : '0'}>
-                  {!isNilOrError(selectedField) && (
-                    <Box>
-                      <FormBuilderSettings
-                        key={selectedField.id}
-                        field={selectedField}
-                        closeSettings={closeSettings}
-                        builderConfig={builderConfig}
+  return (
+    <Box
+      display="flex"
+      flexDirection="column"
+      w="100%"
+      zIndex="10000"
+      position="fixed"
+      bgColor={colors.background}
+      h="100vh"
+    >
+      <HelmetIntl title={messages.helmetTitle} />
+      <FocusOn>
+        <FormProvider {...methods}>
+          <form onSubmit={handleSubmit(onFormSubmit)}>
+            <FormBuilderTopBar
+              isSubmitting={isSubmitting}
+              builderConfig={builderConfig}
+              viewFormLink={viewFormLink}
+            />
+            <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
+              <Box width="210px">
+                <FormBuilderToolbox
+                  onAddField={onAddField}
+                  builderConfig={builderConfig}
+                  move={move}
+                />
+              </Box>
+              <Box
+                flex="1.8"
+                border="1px solid #ccc"
+                overflowY="auto"
+                zIndex="2"
+                margin="0px"
+                paddingBottom="100px"
+                height={`calc(100vh - ${stylingConsts.menuHeight}px)`}
+                px="30px"
+              >
+                <Box mt="16px">
+                  {hasErrors && (
+                    <Box mb="16px">
+                      <Error
+                        marginTop="8px"
+                        marginBottom="8px"
+                        text={formatMessage(messages.errorMessage)}
+                        scrollIntoView={false}
                       />
                     </Box>
                   )}
+
+                  <Feedback
+                    successMessage={formatMessage(formSavedSuccessMessage)}
+                    onlyShowErrors
+                  />
+                  {showSuccessMessage && (
+                    <SuccessFeedback
+                      successMessage={formatMessage(formSavedSuccessMessage)}
+                      closeSuccessMessage={closeSuccessMessage}
+                    />
+                  )}
+                  {showWarnings()}
+                  <Box
+                    borderRadius="3px"
+                    boxShadow="0px 2px 4px rgba(0, 0, 0, 0.2)"
+                    bgColor="white"
+                    minHeight="300px"
+                  >
+                    <FormFields
+                      onEditField={setSelectedField}
+                      selectedFieldId={selectedField?.id}
+                      handleDragEnd={reorderFields}
+                      builderConfig={builderConfig}
+                      closeSettings={closeSettings}
+                    />
+                  </Box>
                 </Box>
               </Box>
-            </form>
-          </FormProvider>
-        </FocusOn>
-      </Box>
-    );
-  }
-
-  return null;
+              <Box flex={!isNilOrError(selectedField) ? '1' : '0'}>
+                {!isNilOrError(selectedField) && (
+                  <Box>
+                    <FormBuilderSettings
+                      key={selectedField.id}
+                      field={selectedField}
+                      closeSettings={closeSettings}
+                      builderConfig={builderConfig}
+                    />
+                  </Box>
+                )}
+              </Box>
+            </Box>
+          </form>
+        </FormProvider>
+      </FocusOn>
+    </Box>
+  );
 };
 
 type FormBuilderPageProps = {
   builderConfig: FormBuilderConfig;
+  viewFormLink: RouteType;
 };
 
-const FormBuilderPage = ({ builderConfig }: FormBuilderPageProps) => {
-  const intl = useIntl();
+const FormBuilderPage = ({
+  builderConfig,
+  viewFormLink,
+}: FormBuilderPageProps) => {
   const modalPortalElement = document.getElementById('modal-portal');
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -409,12 +411,12 @@ const FormBuilderPage = ({ builderConfig }: FormBuilderPageProps) => {
   return modalPortalElement
     ? createPortal(
         <FormEdit
-          intl={intl}
           defaultValues={{ customFields: formCustomFields }}
           phaseId={phaseId}
           projectId={projectId}
           builderConfig={builderConfig}
           totalSubmissions={submissionCount.data.attributes.totalSubmissions}
+          viewFormLink={viewFormLink}
         />,
         modalPortalElement
       )

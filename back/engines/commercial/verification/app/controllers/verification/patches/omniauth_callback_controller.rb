@@ -26,7 +26,7 @@ module Verification
               handle_verification(auth, @user)
               update_user!(auth, @user, verification_method)
               url = add_uri_params(
-                Frontend::UrlService.new.verification_success_url(locale: @user.locale, pathname: omniauth_params['pathname']),
+                Frontend::UrlService.new.verification_success_url(locale: Locale.new(@user.locale), pathname: omniauth_params['pathname']),
                 omniauth_params.merge(verification_success: true).except('pathname')
               )
               redirect_to url

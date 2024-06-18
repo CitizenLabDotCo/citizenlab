@@ -1,7 +1,8 @@
+import { CLError } from 'typings';
+
 import { Keys } from 'utils/cl-react-query/types';
 
 import backgroundJobsKeys from './keys';
-import { CLError } from 'typings';
 
 export type BackgroundJobsKeys = Keys<typeof backgroundJobsKeys>;
 

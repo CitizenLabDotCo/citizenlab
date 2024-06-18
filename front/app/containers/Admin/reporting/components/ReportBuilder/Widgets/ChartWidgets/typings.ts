@@ -4,7 +4,7 @@ import { IResolution } from 'components/admin/ResolutionControl';
 
 export interface ChartWidgetProps {
   title?: Multiloc;
-  projectId: string | undefined;
+  projectId?: string | undefined;
   startAt?: string;
   endAt?: string | null;
 }

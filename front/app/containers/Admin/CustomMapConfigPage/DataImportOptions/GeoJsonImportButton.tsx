@@ -1,6 +1,6 @@
 import React, { memo, useState } from 'react';
 
-import Tippy from '@tippyjs/react';
+import { Tooltip } from '@citizenlab/cl2-component-library';
 import flatten from 'geojson-flatten';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -133,7 +133,7 @@ const GeoJsonImportButton = memo<Props>(({ mapConfig, className }) => {
       />
 
       <ButtonContainer>
-        <Tippy
+        <Tooltip
           maxWidth="250px"
           placement="top"
           content={formatMessage(messages.geojsonRemoveEsriTooltip)}
@@ -144,7 +144,7 @@ const GeoJsonImportButton = memo<Props>(({ mapConfig, className }) => {
           <div>
             <StyledButton
               icon="upload-file"
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               disabled={geoJsonImportDisabled}
               processing={isLoading}
             >
@@ -152,7 +152,7 @@ const GeoJsonImportButton = memo<Props>(({ mapConfig, className }) => {
               <FormattedMessage {...messages.import} />
             </StyledButton>
           </div>
-        </Tippy>
+        </Tooltip>
       </ButtonContainer>
 
       {importError && (

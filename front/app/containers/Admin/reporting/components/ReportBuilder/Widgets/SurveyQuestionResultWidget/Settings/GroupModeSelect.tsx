@@ -8,8 +8,8 @@ import {
   Label,
   IconTooltip,
   TooltipContentWrapper,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 
 import { GroupMode } from 'api/graph_data_units/requestTypes';
 
@@ -62,8 +62,7 @@ const GroupModeSelect = ({ mode, onChange }: Props) => {
             <span>{label}</span>
             <IconTooltip content={groupModeTooltip} placement="auto" />
           </Label>
-          <Tippy
-            interactive={true}
+          <Tooltip
             placement="bottom" // not to block label tooltip icon
             theme={''}
             maxWidth={350}
@@ -77,7 +76,7 @@ const GroupModeSelect = ({ mode, onChange }: Props) => {
               <select disabled />
               <SelectIcon name="lock" ariaHidden className="disabled" />
             </SelectWrapper>
-          </Tippy>
+          </Tooltip>
         </div>
       )}
     </Box>
