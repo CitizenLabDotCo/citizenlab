@@ -2536,6 +2536,7 @@
   "app.containers.admin.ideaStatuses.all.inputStatusDeleteButtonTooltip": "Status, der i øjeblikket er tildelt deltagerinput, kan ikke slettes. Du kan fjerne/ændre status fra eksisterende input i fanen {manageTab}.",
   "app.containers.admin.ideaStatuses.all.lockedStatusTooltip": "Denne status kan ikke slettes eller flyttes.",
   "app.containers.admin.ideaStatuses.all.manage": "Administrere",
+  "app.containers.admin.ideaStatuses.all.pricingPlanUpgrade": "Konfiguration af brugerdefinerede inputstatusser er ikke inkluderet i din nuværende plan. Tal med din Government Success Manager eller administrator for at låse det op.",
   "app.containers.admin.ideaStatuses.all.subtitleInputStatuses1": "Administrer den status, der kan tildeles deltagerinput i et projekt. Statussen er offentligt synlig og hjælper med at holde deltagerne informeret.",
   "app.containers.admin.ideaStatuses.all.titleIdeaStatuses1": "Rediger inputstatusser",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeDescription": "Valgt til implementering eller næste trin",
