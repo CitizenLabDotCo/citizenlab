@@ -39,6 +39,9 @@ message(
   `<a href="https://epic.citizenlab.co/ci-e2e?citizenlab_branch=${danger.github.pr.head.ref}">Run the e2e tests</a>`
 );
 
+// Link to trigger chromatic tests
+message(``);
+
 // Link to translations checker
 message(
   `<a href="https://epic.citizenlab.co/translations/${danger.github.pr.head.ref.replace(
