@@ -28,14 +28,14 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-    actionTimeout: 0,
+    // actionTimeout: 0,
   },
 
-  timeout: 0,
+  // timeout: 0,
 
-  expect: {
-    timeout: 0,
-  },
+  // expect: {
+  //   timeout: 0,
+  // },
 
   /* Configure projects for major browsers */
   projects: [
