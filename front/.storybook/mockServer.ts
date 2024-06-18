@@ -40,6 +40,9 @@ import surveyResultsEndpoints from '../app/api/survey_results/__mocks__/_mockSer
 // graph data units mock data
 import graphDataUnitsEndpoints from '../app/api/graph_data_units/__mocks__/_mockServer';
 
+// onboarding campaign mock data
+import onboardingCampaignEndpoints from '../app/api/onboarding_campaigns/__mocks__/_mockServer';
+
 const endpoints = {
   ...appConfigurationEndpoints,
   ...usersMeEndpoints,
@@ -71,6 +74,8 @@ const endpoints = {
   ...surveyResultsEndpoints,
 
   ...graphDataUnitsEndpoints,
+
+  ...onboardingCampaignEndpoints
 };
 
 export default endpoints;
