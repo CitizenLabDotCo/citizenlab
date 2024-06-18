@@ -182,7 +182,7 @@ const PoweredByText = styled.span`
 `;
 
 const GoVocalLink = styled.a`
-  width: 120px;
+  width: 140px;
   display: flex;
   align-items: center;
   justify-content: center;

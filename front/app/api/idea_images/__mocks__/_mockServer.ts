@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { getOrigin } from 'utils/storybook/getOrigin';
 
@@ -43,14 +43,11 @@ export const apiPathImage = '/web_api/v1/ideas/:ideaId/images/:imageId';
 export const apiPathImages = '/web_api/v1/ideas/:ideaId/images';
 
 const endpoints = {
-  'GET ideas/:ideaId/images/:imageId': rest.get(
-    apiPathImage,
-    (_req, res, ctx) => {
-      return res(ctx.status(200), ctx.json({ data: ideaImagesData[0] }));
-    }
-  ),
-  'GET ideas/:ideaId/images': rest.get(apiPathImages, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: ideaImagesData }));
+  'GET ideas/:ideaId/images/:imageId': http.get(apiPathImage, () => {
+    return HttpResponse.json({ data: ideaImagesData[0] }, { status: 200 });
+  }),
+  'GET ideas/:ideaId/images': http.get(apiPathImages, () => {
+    return HttpResponse.json({ data: ideaImagesData }, { status: 200 });
   }),
 };
 

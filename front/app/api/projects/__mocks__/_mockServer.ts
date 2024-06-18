@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { IProjects, IProjectData, IProject } from '../types';
 
@@ -402,19 +402,19 @@ export const apiPathBySlug = '/web_api/v1/projects/by_slug/:slug';
 export const apiPathAll = '/web_api/v1/projects';
 
 const endpoints = {
-  'GET projects/:id': rest.get(apiPathById, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: project1 }));
+  'GET projects/:id': http.get(apiPathById, () => {
+    return HttpResponse.json({ data: project1 }, { status: 200 });
   }),
-  'GET projects/by_slug/:slug': rest.get(apiPathBySlug, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: project2 }));
+  'GET projects/by_slug/:slug': http.get(apiPathBySlug, () => {
+    return HttpResponse.json({ data: project2 }, { status: 200 });
   }),
-  'GET projects': rest.get(apiPathAll, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(projects));
+  'GET projects': http.get(apiPathAll, () => {
+    return HttpResponse.json(projects, { status: 200 });
   }),
 };
 
-export const votingProjectHandler = rest.get(apiPathById, (_req, res, ctx) => {
-  return res(ctx.status(200), ctx.json(votingProject));
+export const votingProjectHandler = http.get(apiPathById, () => {
+  return HttpResponse.json(votingProject, { status: 200 });
 });
 
 export default endpoints;

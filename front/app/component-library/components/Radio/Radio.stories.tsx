@@ -5,9 +5,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 const meta = {
   title: 'Components/Radio',
   component: Radio,
-  parameters: {
-    layout: 'centered',
-  },
 } satisfies Meta<typeof Radio>;
 
 export default meta;
