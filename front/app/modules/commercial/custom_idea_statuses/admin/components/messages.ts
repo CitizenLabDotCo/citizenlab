@@ -95,4 +95,8 @@ export default defineMessages({
     defaultMessage:
       'Configuring custom input statuses is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
   },
+  deleteButtonLabel: {
+    id: 'app.containers.admin.ideaStatuses.all.deleteButtonLabel',
+    defaultMessage: 'Delete',
+  },
 });

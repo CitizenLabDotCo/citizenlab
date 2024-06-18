@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  deleteButtonLabel: {
-    id: 'app.containers.admin.ideaStatuses.all.deleteButtonLabel',
-    defaultMessage: 'Delete',
-  },
   addIdeaStatus: {
     id: 'app.containers.admin.ideaStatuses.all.addIdeaStatus',
     defaultMessage: 'Add status',

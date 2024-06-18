@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 
 import {
-  colors,
   IconTooltip,
   Spinner,
   Tooltip,
@@ -34,6 +33,7 @@ import Warning from 'components/UI/Warning';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
+import DeleteStatusButton from '../components/DeleteStatusButton';
 import EditStatusButton from '../components/EditStatusButton';
 
 import messages from './messages';
@@ -168,11 +168,10 @@ const IdeaStatuses = () => {
             <T value={defaultStatus.attributes.title_multiloc} />
           </FlexTextCell>
           <Buttons>
-            <Tooltip
-              placement="top"
-              theme="light"
-              disabled={false}
-              content={
+            <DeleteStatusButton
+              tooltipDisabled={false}
+              buttonDisabled
+              tooltipContent={
                 customIdeaStatusesAllowed ? (
                   <FormattedMessage
                     {...messages.defaultStatusDeleteButtonTooltip}
@@ -181,13 +180,8 @@ const IdeaStatuses = () => {
                   <FormattedMessage {...messages.pricingPlanUpgrade} />
                 )
               }
-              trigger="mouseenter"
-            >
-              <DummyButton buttonStyle="text" disabled={true} icon="delete">
-                <FormattedMessage {...messages.deleteButtonLabel} />
-              </DummyButton>
-            </Tooltip>
-
+              ideaStatusId={defaultStatus.id}
+            />
             <EditStatusButton
               tooltipDisabled={customIdeaStatusesAllowed}
               buttonDisabled={!customIdeaStatusesAllowed}
@@ -217,11 +211,10 @@ const IdeaStatuses = () => {
                   </FlexTextCell>
                   <Buttons>
                     {customIdeaStatusesAllowed ? (
-                      <Tooltip
-                        placement="top"
-                        theme="light"
-                        disabled={isDeletable(ideaStatus)}
-                        content={
+                      <DeleteStatusButton
+                        tooltipDisabled={isDeletable(ideaStatus)}
+                        buttonDisabled={!isDeletable(ideaStatus)}
+                        tooltipContent={
                           <FormattedMessage
                             {...messages.inputStatusDeleteButtonTooltip}
                             values={{
@@ -233,40 +226,17 @@ const IdeaStatuses = () => {
                             }}
                           />
                         }
-                        trigger="mouseenter"
-                      >
-                        <DeleteButton
-                          onClick={handleDelete(ideaStatus.id)}
-                          buttonStyle="text"
-                          disabled={!isDeletable(ideaStatus)}
-                          icon="delete"
-                          iconHoverColor={colors.red600}
-                          textHoverColor={colors.red600}
-                        >
-                          <FormattedMessage {...messages.deleteButtonLabel} />
-                        </DeleteButton>
-                      </Tooltip>
+                        ideaStatusId={ideaStatus.id}
+                      />
                     ) : (
-                      <Tooltip
-                        placement="top"
-                        theme="light"
-                        disabled={false}
-                        content={
+                      <DeleteStatusButton
+                        tooltipDisabled={false}
+                        buttonDisabled
+                        tooltipContent={
                           <FormattedMessage {...messages.pricingPlanUpgrade} />
                         }
-                        trigger="mouseenter"
-                      >
-                        <DeleteButton
-                          onClick={handleDelete(ideaStatus.id)}
-                          buttonStyle="text"
-                          disabled={true}
-                          icon="delete"
-                          iconHoverColor={colors.red600}
-                          textHoverColor={colors.red600}
-                        >
-                          <FormattedMessage {...messages.deleteButtonLabel} />
-                        </DeleteButton>
-                      </Tooltip>
+                        ideaStatusId={ideaStatus.id}
+                      />
                     )}
                     <EditStatusButton
                       tooltipDisabled={customIdeaStatusesAllowed}

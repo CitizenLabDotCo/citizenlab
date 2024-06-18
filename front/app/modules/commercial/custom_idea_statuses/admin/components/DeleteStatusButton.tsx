@@ -1,7 +1,12 @@
 import React from 'react';
 
-import { Tooltip, TooltipProps } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
+import {
+  Tooltip,
+  TooltipProps,
+  colors,
+} from '@citizenlab/cl2-component-library';
+
+import useDeleteIdeaStatus from 'api/idea_statuses/useDeleteIdeaStatus';
 
 import Button from 'components/UI/Button';
 
@@ -13,15 +18,17 @@ interface Props {
   tooltipDisabled: TooltipProps['disabled'];
   buttonDisabled: boolean;
   tooltipContent: TooltipProps['content'];
-  linkTo: RouteType;
+  ideaStatusId: string;
 }
 
-const EditStatusButton = ({
+const DeleteStatusButton = ({
   tooltipDisabled,
   buttonDisabled,
   tooltipContent,
-  linkTo,
+  ideaStatusId,
 }: Props) => {
+  const { mutate: deleteIdeaStatus } = useDeleteIdeaStatus();
+
   return (
     <Tooltip
       placement="top"
@@ -31,15 +38,17 @@ const EditStatusButton = ({
       trigger="mouseenter"
     >
       <Button
-        linkTo={linkTo}
-        buttonStyle="secondary-outlined"
-        icon="edit"
+        onClick={() => deleteIdeaStatus(ideaStatusId)}
+        buttonStyle="text"
         disabled={buttonDisabled}
+        icon="delete"
+        iconHoverColor={colors.red600}
+        textHoverColor={colors.red600}
       >
-        <FormattedMessage {...messages.editButtonLabel} />
+        <FormattedMessage {...messages.deleteButtonLabel} />
       </Button>
     </Tooltip>
   );
 };
 
-export default EditStatusButton;
+export default DeleteStatusButton;
