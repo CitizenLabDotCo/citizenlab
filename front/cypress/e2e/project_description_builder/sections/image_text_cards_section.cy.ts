@@ -86,11 +86,11 @@ describe('Project description builder Image Text Cards section', () => {
       `/admin/project-description-builder/projects/${projectId}/description`
     );
 
-    cy.get('.e2e-two-column').click('top');
+    cy.get('.e2e-two-column').first().click('top');
     cy.get('#e2e-delete-button').click();
-    cy.get('.e2e-two-column').click('top');
+    cy.get('.e2e-two-column').first().click('top');
     cy.get('#e2e-delete-button').click();
-    cy.get('.e2e-two-column').click('top');
+    cy.get('.e2e-two-column').first().click('top');
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
