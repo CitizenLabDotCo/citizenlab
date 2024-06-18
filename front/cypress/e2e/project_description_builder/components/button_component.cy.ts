@@ -50,7 +50,7 @@ describe('Project description builder Button component', () => {
     cy.get('#e2e-button-text-input').clear().type('New Button Title');
 
     // Input URL
-    cy.get('.e2e-button-url-input').clear().type('https://www.google.com');
+    cy.get('#e2e-button-url-input').clear().type('https://www.google.com');
 
     // Change style
     cy.get('#style-primary').click({ force: true });
