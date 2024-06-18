@@ -182,8 +182,8 @@ RSpec.configure do |config|
   end
   # rubocop:enable RSpec/BeforeAfterAll
 
-  config.before do
-    Apartment::Tenant.switch!('example_org') # Switch into the default tenant
+  config.after do
+    Apartment::Tenant.switch!('example_org')
   end
 
   config.around(:each, use_transactional_fixtures: false) do |example|

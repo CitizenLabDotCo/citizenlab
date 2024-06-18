@@ -26,7 +26,7 @@ RSpec.describe Tenant do
       other_tenant.switch!
 
       expect(AppConfiguration.instance.name).to eq('other-tenant')
-      expect(Tenant.current).to eq(other_tenant)
+      expect(described_class.current).to eq(other_tenant)
     end
 
     it 'switches successfully into the tenant' do
