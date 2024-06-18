@@ -186,7 +186,14 @@ RSpec.configure do |config|
     Apartment::Tenant.switch!('example_org')
   end
 
-  config.after { Current.reset_tenant }
+  config.after do
+    # We invalidate the cached tenant and app_configuration after each test to prevent
+    # state from leaking between tests. However, it could still occur in some edge cases,
+    # such as when an after(:context) hook accesses the tenant or app_configuration. This
+    # is unlikely to happen in practice, and if it does, it should be resolved by
+    # rewriting the test or the hook.
+    Current.reset_tenant
+  end
 
   config.around(:each, use_transactional_fixtures: false) do |example|
     initial_use_transactional_tests = use_transactional_tests
