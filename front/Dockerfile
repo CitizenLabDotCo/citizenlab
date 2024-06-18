@@ -5,6 +5,8 @@ WORKDIR /
 # Install jq for version parsing
 RUN apt-get update && apt-get install -y jq curl
 
+RUN npx -y playwright@1.44.1 install --with-deps
+
 # Change the working directory to /front
 WORKDIR /front
 
