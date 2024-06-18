@@ -656,8 +656,7 @@ const Button = (props: Props) => {
       textColor={textColor}
       textHoverColor={textHoverColor}
       textDisabledColor={textDisabledColor}
-      // bgColor={bgColor}
-      bgColor="purple"
+      bgColor={bgColor}
       bgHoverColor={bgHoverColor}
       bgDisabledColor={bgDisabledColor}
       borderColor={borderColor}
