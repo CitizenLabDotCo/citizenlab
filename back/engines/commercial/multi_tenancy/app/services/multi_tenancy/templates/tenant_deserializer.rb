@@ -80,7 +80,7 @@ module MultiTenancy
             model.skip_image_presence = true if SKIP_IMAGE_PRESENCE_VALIDATION.include?(model_class.name)
 
             begin
-              preserve_ordering { save_model(model, validate) }
+              preserve_ordering(model) { save_model(model, validate) }
 
               # Only upload attributes that are strings are copied verbatim using
               # `update_columns` to bypass the CarrierWave uploader.
@@ -208,7 +208,7 @@ module MultiTenancy
         end
       end
 
-      def preserve_ordering
+      def preserve_ordering(model)
         if model.try(:in_list?)
           model.class.acts_as_list_no_update { yield }
         elsif model.class == Project # Support nested admin publications

@@ -224,10 +224,6 @@ class Project < ApplicationRecord
     end
   end
 
-  def set_admin_publication
-    self.admin_publication_attributes = {} unless admin_publication
-  end
-
   def remove_notifications
     notifications.each do |notification|
       notification.destroy! unless notification.update(project: nil)
