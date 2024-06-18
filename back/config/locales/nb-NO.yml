@@ -183,7 +183,7 @@
         title: Detaljer
         description:
       other_text_field:
-        title: Why did you pick 'other'?
+        title: Hvis du valgte '{other_option}', hva tenker du på?
   custom_forms:
     categories:
       main_content:
