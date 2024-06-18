@@ -72,7 +72,14 @@ const AccessibilityStatement = () => {
                       />
                     </p>
                     <h2>{formatMessage(messages.conformanceStatus)}</h2>
-                    <p>WCAG 2.1 AA</p>
+                    {/* TODO:
+                      Change to correct standard after getting the certificate.
+                    */}
+                    <p>{formatMessage(messages.websiteConformsTo)}</p>
+                    <ul>
+                      <li>WCAG 2.2 AA</li>
+                      <li>RGAA v4.1</li>
+                    </ul>
                     <h2>{formatMessage(messages.conformanceExceptions)}</h2>
                     <p>
                       {formatMessage(messages.contentConformanceExceptions)}
@@ -138,6 +145,62 @@ const AccessibilityStatement = () => {
                       </li>
                     </ul>
                     <p>{formatMessage(messages.responsiveness)}</p>
+
+                    <h3>{formatMessage(messages.defenderOfRights)}</h3>
+                    <p>{formatMessage(messages.accessibilityDefect)}</p>
+                    <p>{formatMessage(messages.severalMeans)}</p>
+                    <ul>
+                      <li>
+                        <a
+                          href={formatMessage(messages.contactFormLink)}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {formatMessage(messages.contactForm)}
+                        </a>
+                      </li>
+                      <li>
+                        <FormattedMessage
+                          {...messages.withContactInfo}
+                          values={{
+                            listOfDelegatesLinkText: (
+                              <a
+                                href={formatMessage(
+                                  messages.listOfDelegatesLink
+                                )}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                <FormattedMessage
+                                  {...messages.listOfDelegatesLinkText}
+                                />
+                              </a>
+                            ),
+                          }}
+                        />
+                      </li>
+                      <li>{formatMessage(messages.telephoneNumber)}</li>
+                      <li>
+                        <FormattedMessage
+                          {...messages.postalAddressFr}
+                          values={{
+                            administrationDirectoryLinkText: (
+                              <a
+                                href={formatMessage(
+                                  messages.administrationDirectoryLink
+                                )}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                <FormattedMessage
+                                  {...messages.administrationDirectoryLinkText}
+                                />
+                              </a>
+                            ),
+                          }}
+                        />
+                      </li>
+                    </ul>
                   </QuillEditedContent>
                 </Box>
               </Fragment>

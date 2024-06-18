@@ -27,6 +27,11 @@ export default defineMessages({
     id: 'app.containers.AccessibilityStatement.conformanceStatus',
     defaultMessage: 'Conformance status',
   },
+  websiteConformsTo: {
+    id: 'app.containers.AccessibilityStatement.websiteConformsTo',
+    defaultMessage:
+      'Our website conforms to the following accessibility standards:',
+  },
   contentConformanceExceptions: {
     id: 'app.containers.AccessibilityStatement.contentConformanceExceptions',
     defaultMessage:
@@ -154,5 +159,56 @@ export default defineMessages({
     id: 'app.containers.AccessibilityStatement.screenReaderSearchResultsException',
     defaultMessage:
       'Screen reader users may experience difficulties when using the search function. The number of search results may not be reported consistently.',
+  },
+  defenderOfRights: {
+    id: 'app.containers.AccessibilityStatement.defenderOfRights',
+    defaultMessage: 'Defender of rights',
+  },
+  accessibilityDefect: {
+    id: 'app.containers.AccessibilityStatement.accessibilityDefect',
+    defaultMessage:
+      'If you notice an accessibility defect preventing you from accessing content or functionality of the site, you notify us and you are unable to obtain a rapid response from us, you have the right to send your grievances or a request for referral to the Defender of Rights.',
+  },
+  severalMeans: {
+    id: 'app.containers.AccessibilityStatement.severalMeans',
+    defaultMessage: 'Several means are at your disposal:',
+  },
+  contactForm: {
+    id: 'app.containers.AccessibilityStatement.contactForm',
+    defaultMessage: 'Contact form',
+  },
+  contactFormLink: {
+    id: 'app.containers.AccessibilityStatement.contactFormLink',
+    defaultMessage: 'https://www.defenseurdesdroits.fr/nous-contacter-355',
+  },
+  listOfDelegatesLinkText: {
+    id: 'app.containers.AccessibilityStatement.listOfDelegatesLinkText',
+    defaultMessage: 'List of delegates near you',
+  },
+  listOfDelegatesLink: {
+    id: 'app.containers.AccessibilityStatement.listOfDelegatesLink',
+    defaultMessage: 'https://www.defenseurdesdroits.fr/carte-des-delegues',
+  },
+  withContactInfo: {
+    id: 'app.containers.AccessibilityStatement.withContactInfo',
+    defaultMessage:
+      '{listOfDelegatesLinkText} with their direct contact information',
+  },
+  telephoneNumber: {
+    id: 'app.containers.AccessibilityStatement.telephoneNumber',
+    defaultMessage: 'A telephone number: 09 69 39 00 00',
+  },
+  postalAddressFr: {
+    id: 'app.containers.AccessibilityStatement.postalAddressFr',
+    defaultMessage: 'A postal address in the {administrationDirectoryLinkText}',
+  },
+  administrationDirectoryLink: {
+    id: 'app.containers.AccessibilityStatement.administrationDirectoryLink',
+    defaultMessage:
+      'https://lannuaire.service-public.fr/autorites-independantes/autorite-administrative-independante_195381',
+  },
+  administrationDirectoryLinkText: {
+    id: 'app.containers.AccessibilityStatement.administrationDirectoryLinkText',
+    defaultMessage: 'administration directory',
   },
 });
