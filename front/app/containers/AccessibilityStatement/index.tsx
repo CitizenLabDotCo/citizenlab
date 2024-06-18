@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import { Helmet } from 'react-helmet';
+import styled from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
 
@@ -19,12 +20,12 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-const sectionStyle = {
-  marginBottom: '2rem',
-  padding: '1rem',
-  border: `1px solid ${colors.divider}`,
-  borderRadius: '8px',
-};
+const Section = styled.div`
+  margin-bottom: 2rem;
+  padding: 1rem;
+  border: 1px solid ${colors.divider};
+  border-radius: 8px;
+`;
 
 const AccessibilityStatement = () => {
   const { formatMessage } = useIntl();
@@ -82,16 +83,16 @@ const AccessibilityStatement = () => {
                         }}
                       />
                     </p>
-                    <div style={sectionStyle}>
+                    <Section>
                       <h2>{formatMessage(messages.conformanceStatus)}</h2>
                       <p>{formatMessage(messages.websiteConformsTo)}</p>
                       <ul>
                         <li>WCAG 2.2 AA</li>
                         <li>RGAA v4.1</li>
                       </ul>
-                    </div>
+                    </Section>
 
-                    <div style={sectionStyle}>
+                    <Section>
                       <h2>{formatMessage(messages.conformanceExceptions)}</h2>
                       <p>
                         {formatMessage(messages.contentConformanceExceptions)}
@@ -104,9 +105,9 @@ const AccessibilityStatement = () => {
                       <p>{formatMessage(messages.exception_1)}</p>
                       <h3>{formatMessage(messages.workshops)}</h3>
                       <p>{formatMessage(messages.onlineWorkshopsException)}</p>
-                    </div>
+                    </Section>
 
-                    <div style={sectionStyle}>
+                    <Section>
                       <h2>{formatMessage(messages.compatibilityTitle)}</h2>
                       <p>{formatMessage(messages.screenReaderBugWarning)}</p>
                       <h4>
@@ -117,9 +118,9 @@ const AccessibilityStatement = () => {
                           messages.screenReaderSearchResultsException
                         )}
                       </p>
-                    </div>
+                    </Section>
 
-                    <div style={sectionStyle}>
+                    <Section>
                       <h2>{formatMessage(messages.assesmentMethodsTitle)}</h2>
                       <p>
                         <FormattedMessage
@@ -146,14 +147,14 @@ const AccessibilityStatement = () => {
                           }}
                         />
                       </p>
-                    </div>
+                    </Section>
 
-                    <div style={sectionStyle}>
+                    <Section>
                       <h2>{formatMessage(messages.publicationDate)}</h2>
                       <p>{formatMessage(messages.publicationDateIntro)}</p>
-                    </div>
+                    </Section>
 
-                    <div style={sectionStyle}>
+                    <Section>
                       <h2>{formatMessage(messages.multiYearPlanTitle)}</h2>
                       <h3>{formatMessage(messages.introduction)}</h3>
                       <p>{formatMessage(messages.introductionContent)}</p>
@@ -185,11 +186,11 @@ const AccessibilityStatement = () => {
                         <li>{formatMessage(messages.monitoringPoint2)}</li>
                         <li>{formatMessage(messages.monitoringPoint3)}</li>
                       </ul>
-                    </div>
+                    </Section>
 
                     <>
                       {isLocaleFrench && (
-                        <div style={sectionStyle}>
+                        <Section>
                           <h3>{formatMessage(messages.defenderOfRights)}</h3>
                           <p>{formatMessage(messages.accessibilityDefect)}</p>
                           <p>{formatMessage(messages.severalMeans)}</p>
@@ -245,11 +246,11 @@ const AccessibilityStatement = () => {
                               />
                             </li>
                           </ul>
-                        </div>
+                        </Section>
                       )}
                     </>
 
-                    <div style={sectionStyle}>
+                    <Section>
                       <h2>{formatMessage(messages.feedbackProcessTitle)}</h2>
                       <p>{formatMessage(messages.feedbackProcessIntro)}</p>
                       <ul>
@@ -267,7 +268,7 @@ const AccessibilityStatement = () => {
                         </li>
                       </ul>
                       <p>{formatMessage(messages.responsiveness)}</p>
-                    </div>
+                    </Section>
                   </QuillEditedContent>
                 </Box>
               </Fragment>
