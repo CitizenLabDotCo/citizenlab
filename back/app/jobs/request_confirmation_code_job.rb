@@ -34,7 +34,7 @@ class RequestConfirmationCodeJob < ApplicationJob
   end
 
   def deliver_confirmation_code!(user)
-    ConfirmationsMailer.with(user: user).send_confirmation_code.deliver_now if user.email.present?
+    ConfirmationsMailer.with(user: user).send_confirmation_code.deliver_now if user.email.present? || user.new_email.present?
     user.update!(email_confirmation_code_sent_at: Time.zone.now)
   end
 
