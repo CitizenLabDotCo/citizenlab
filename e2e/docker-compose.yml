@@ -27,6 +27,7 @@ services:
       POSTGRES_HOST: e2e-postgres
       OVERRIDE_HOST: "e2e.front"
       ASSET_HOST_URI: "http://e2e.front:3000" # it's proxied to `API_HOST: e2e-web` by webpack server
+      WEB_CONCURRENCY: 3
 
   rabbitmq:
     container_name: e2e-rabbit
