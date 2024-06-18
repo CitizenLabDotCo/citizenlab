@@ -711,12 +711,8 @@ jobs:
           # https://discuss.circleci.com/t/cannot-communicate-with-docker-container/27253/2
           docker-compose run front curl --retry 2 --retry-delay 5 --retry-connrefused -v http://e2e.front:3000
       - run: |
-          cd front
-          TESTFILES=$(circleci tests glob "playwright/**/*.spec.ts" | circleci tests split  --split-by=timings)
-          COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
-          echo $COMMA_SEPARATED_TESTFILES
-          cd ../e2e
-          docker-compose run --name playwright_run front npm run playwright -- --config baseUrl=http://e2e.front:3000 --spec ${COMMA_SEPARATED_TESTFILES}
+          cd e2e
+          docker-compose run --name playwright_run front npm run playwright
       # Uncomment to save XML reports
       # docker-compose run --name cypress_run front npm run cypress:run -- --reporter junit --reporter-options "mochaFile=reports/cypress.xml,toConsole=true" --config baseUrl=http://e2e.front:3000 --spec ${COMMA_SEPARATED_TESTFILES}
       # We run cypress tests in container, so we need to copy the results out.
