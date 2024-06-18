@@ -183,7 +183,7 @@ ar-MA:
         title: تفاصيل
         description:
       other_text_field:
-        title: Why did you pick 'other'?
+        title: إذا اخترت '{other_option}'، ما الذي تفكر فيه؟
   custom_forms:
     categories:
       main_content:
