@@ -11,8 +11,6 @@ export type ResolvedName =
   | 'GenderWidget'
   | 'AgeWidget'
   | 'ParticipantsWidget'
-  | 'PostsByTimeWidget'
-  | 'CommentsByTimeWidget'
   | 'ReactionsByTimeWidget'
   | 'RegistrationsWidget'
   | 'MethodsUsedWidget'
@@ -31,11 +29,7 @@ export type ParametersLive =
   | VisitorsParams
   | VisitorsTrafficSourcesParams
   | DemographicsParams
-  | GenderParams
-  | AgeParams
   | ParticipantsParams
-  | PostsByTimeParams
-  | CommentsByTimeParams
   | ReactionsByTimeParams
   | RegistrationsParams
   | MethodsUsedParams
@@ -106,7 +100,7 @@ export interface VisitorsTrafficSourcesParams extends BaseParams {
   props: VisitorsTrafficSourcesProps;
 }
 
-export interface BaseDemographicsProps extends DateProps {
+interface BaseDemographicsProps extends DateProps {
   project_id?: string;
   group_id?: string | null;
 }
@@ -120,31 +114,11 @@ export interface DemographicsParams extends BaseParams {
   props: DemographicsProps;
 }
 
-export interface GenderParams extends BaseParams {
-  resolved_name: 'GenderWidget';
-  props: BaseDemographicsProps;
-}
-
-export interface AgeParams extends BaseParams {
-  resolved_name: 'AgeWidget';
-  props: BaseDemographicsProps;
-}
-
 export interface ParticipantsProps extends AnalyticsProps, CompareProps {}
 
 export interface ParticipantsParams extends BaseParams {
   resolved_name: 'ParticipantsWidget';
   props: ParticipantsProps;
-}
-
-export interface PostsByTimeParams extends BaseParams {
-  resolved_name: 'PostsByTimeWidget';
-  props: AnalyticsProps;
-}
-
-export interface CommentsByTimeParams extends BaseParams {
-  resolved_name: 'CommentsByTimeWidget';
-  props: AnalyticsProps;
 }
 
 export interface ReactionsByTimeParams extends BaseParams {

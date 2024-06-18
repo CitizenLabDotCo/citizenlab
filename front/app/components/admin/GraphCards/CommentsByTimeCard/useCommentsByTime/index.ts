@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 
-import { useCommentsByTimeLive } from 'api/graph_data_units';
+import { useParticipationLive } from 'api/graph_data_units';
 
 import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
 
@@ -18,7 +18,7 @@ export default function useCommentsByTime({
   resolution,
 }: QueryParameters) {
   const [currentResolution, setCurrentResolution] = useState(resolution);
-  const { data: analytics } = useCommentsByTimeLive(
+  const { data: analytics } = useParticipationLive(
     {
       project_id: projectId,
       start_at: momentToIsoDate(startAtMoment),
@@ -36,11 +36,10 @@ export default function useCommentsByTime({
     () =>
       analytics?.data
         ? parseTimeSeries(
-            analytics.data.attributes[0],
+            analytics.data.attributes[1],
             startAtMoment,
             endAtMoment,
-            currentResolution,
-            analytics.data.attributes[1]
+            currentResolution
           )
         : null,
     [analytics?.data, startAtMoment, endAtMoment, currentResolution]
