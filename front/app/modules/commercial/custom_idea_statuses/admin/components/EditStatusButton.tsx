@@ -16,7 +16,7 @@ interface Props {
   linkTo: RouteType;
 }
 
-const EditButton = ({
+const EditStatusButton = ({
   tooltipDisabled,
   buttonDisabled,
   tooltipContent: content,
@@ -42,4 +42,4 @@ const EditButton = ({
   );
 };
 
-export default EditButton;
+export default EditStatusButton;

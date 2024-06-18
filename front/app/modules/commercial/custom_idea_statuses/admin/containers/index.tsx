@@ -34,7 +34,7 @@ import Warning from 'components/UI/Warning';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-import EditButton from '../components/EditButton';
+import EditStatusButton from '../components/EditStatusButton';
 
 import messages from './messages';
 
@@ -188,7 +188,7 @@ const IdeaStatuses = () => {
               </DummyButton>
             </Tooltip>
 
-            <EditButton
+            <EditStatusButton
               tooltipDisabled={customIdeaStatusesAllowed}
               buttonDisabled={!customIdeaStatusesAllowed}
               tooltipContent={
@@ -268,7 +268,7 @@ const IdeaStatuses = () => {
                         </DeleteButton>
                       </Tooltip>
                     )}
-                    <EditButton
+                    <EditStatusButton
                       tooltipDisabled={customIdeaStatusesAllowed}
                       buttonDisabled={!customIdeaStatusesAllowed}
                       tooltipContent={
