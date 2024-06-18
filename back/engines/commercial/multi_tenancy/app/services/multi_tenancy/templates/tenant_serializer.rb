@@ -36,7 +36,7 @@ module MultiTenancy
         users = User.where('invite_status IS NULL OR invite_status != ?', 'pending')
 
         {
-          AdminPublication => serialize_admin_publications(AdminPublication.where(parent_id: nil)),
+          AdminPublication => serialize_admin_publications(AdminPublication.where(publication_type: 'ProjectFolders::Folder')),  
           Area => serialize_records(Area),
           AreasProject => serialize_records(AreasProject),
           AreasStaticPage => serialize_records(AreasStaticPage),
@@ -155,8 +155,12 @@ module MultiTenancy
           ref_dependencies_graph[User] << CustomField
         end
 
-        if ref_dependencies_graph.key?(Project) && ref_dependencies_graph.key?(ProjectFolders::Folder)
-          ref_dependencies_graph[Project] << ProjectFolders::Folder
+        if ref_dependencies_graph.key?(AdminPublication)
+          ref_dependencies_graph[AdminPublication].delete Project
+        end
+
+        if ref_dependencies_graph.key?(Project) && ref_dependencies_graph.key?(AdminPublication)
+          ref_dependencies_graph[Project] << AdminPublication
         end
 
         each_node = ->(&b) { ref_dependencies_graph.each_key(&b) }

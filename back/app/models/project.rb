@@ -64,7 +64,7 @@ class Project < ApplicationRecord
   has_many :followers, as: :followable, dependent: :destroy
 
   before_validation :sanitize_description_multiloc, if: :description_multiloc
-  before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
+  # before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
   before_validation :set_visible_to, on: :create
   before_validation :strip_title
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)

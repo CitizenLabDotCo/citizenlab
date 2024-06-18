@@ -15,7 +15,6 @@ module MultiTenancy
           visible_to
         ]
 
-        # Parked - validate publications:
         attribute(:admin_publication_attributes, nested: true) do |project|
           publication = project.admin_publication
           {

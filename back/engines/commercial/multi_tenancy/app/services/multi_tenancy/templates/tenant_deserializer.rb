@@ -141,7 +141,11 @@ module MultiTenancy
           elsif field_name.end_with?('_ref')
             ref_suffix = field_name.end_with?('_attributes_ref') ? '_attributes_ref' : '_ref' # linking attribute refs
             if field_value
-              id, ref_class = obj_to_id_and_class.fetch(field_value)
+              begin
+                id, ref_class = obj_to_id_and_class.fetch(field_value)
+              rescue KeyError
+                byebug
+              end
               new_attributes[field_name.chomp(ref_suffix)] = ref_class.find(id)
             end
 
