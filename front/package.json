@@ -29,7 +29,7 @@
     "test:ci": "jest --ci --reporters=default --reporters=jest-junit -w 3 --coverage --coverageReporters=text-summary --",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --spec 'cypress/e2e/**/*.ts' --browser chrome",
-    "playwright": "npm install playwright && playwright test",
+    "playwright": "npx install playwright && playwright test",
     "playwright:ui": "playwright test --ui",
     "majestic": "majestic --port 4231",
     "find-unused-messages": "node internals/scripts/find-unused-messages.js",
