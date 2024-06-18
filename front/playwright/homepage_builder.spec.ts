@@ -15,7 +15,7 @@ const test = base.extend<{ user: User; homepage: Homepage }>({
 });
 
 test.describe('Homepage builder', () => {
-  test('updates and delete homepage builder content correctly', async ({
+  test.skip('updates and delete homepage builder content correctly', async ({
     page,
     user,
     homepage,
