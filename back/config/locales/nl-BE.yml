@@ -183,7 +183,7 @@ nl-BE:
         title: Details
         description:
       other_text_field:
-        title: Why did you pick 'other'?
+        title: Als je '{other_option}' hebt geselecteerd, typ dan je antwoord.
   custom_forms:
     categories:
       main_content:
