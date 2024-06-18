@@ -154,6 +154,8 @@ const IdeaStatuses = () => {
             <T value={defaultStatus.attributes.title_multiloc} />
           </FlexTextCell>
           <Buttons>
+            {/* This DeleteStatusButton is a dummy button. The default status can never be deleted, 
+            so it's always disabled. */}
             <DeleteStatusButton
               tooltipDisabled={false}
               buttonDisabled
