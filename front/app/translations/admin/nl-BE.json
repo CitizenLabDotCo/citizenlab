@@ -2536,6 +2536,7 @@
   "app.containers.admin.ideaStatuses.all.inputStatusDeleteButtonTooltip": "Statussen die momenteel aan een bijdrage zijn toegewezen, kunnen niet worden verwijderd. Je kunt de status van bestaande bijdragen verwijderen / wijzigen op het tabblad {manageTab}.",
   "app.containers.admin.ideaStatuses.all.lockedStatusTooltip": "Deze status kan niet worden verwijderd of verplaatst.",
   "app.containers.admin.ideaStatuses.all.manage": "Beheren",
+  "app.containers.admin.ideaStatuses.all.pricingPlanUpgrade": "Het configureren van aangepaste invoerstatussen is niet inbegrepen in je huidige plan. Praat met je Government Success Manager of admin om dit vrij te geven.",
   "app.containers.admin.ideaStatuses.all.subtitleInputStatuses1": "Beheer de status die kan worden toegekend aan de bijdragen van deelnemers binnen een project. De status is openbaar zichtbaar en helpt om deelnemers op de hoogte te houden.",
   "app.containers.admin.ideaStatuses.all.titleIdeaStatuses1": "Bewerk input statussen",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeDescription": "Geselecteerd voor implementatie of volgende stappen",
