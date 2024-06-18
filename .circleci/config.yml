@@ -53,6 +53,10 @@ parameters:
   e2e:
     type: boolean
     default: false
+  
+  e2e-playwright:
+    type: boolean
+    default: false
 
   templates:
     type: boolean
@@ -1100,7 +1104,7 @@ workflows:
 
   # OTHER
   manually-e2e-playwright:
-    when: << pipeline.parameters.e2e >>
+    when: << pipeline.parameters.e2e-playwright >>
     jobs:
       - e2e-playwright:
           context:
