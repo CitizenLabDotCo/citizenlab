@@ -54,7 +54,7 @@ export class User {
         name: 'cl2_jwt',
         value: response.jwt,
         path: '/',
-        domain: 'localhost',
+        domain: process.env.CI ? 'e2e.front' : 'localhost',
       },
     ]);
   }
@@ -66,7 +66,7 @@ export class User {
         name: 'cl2_jwt',
         value: response.jwt,
         path: '/',
-        domain: 'localhost',
+        domain: process.env.CI ? 'e2e.front' : 'localhost',
       },
     ]);
   }
