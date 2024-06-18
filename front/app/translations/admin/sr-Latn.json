@@ -2536,6 +2536,7 @@
   "app.containers.admin.ideaStatuses.all.inputStatusDeleteButtonTooltip": "Statusi koji su trenutno dodeljeni unosima ne mogu se izbrisati. Možete ukloniti/promeniti status sa postojećih unosa na kartici {manageTab}.",
   "app.containers.admin.ideaStatuses.all.lockedStatusTooltip": "Ovaj status nije moguće izbrisati ili premestiti.",
   "app.containers.admin.ideaStatuses.all.manage": "Upravljajte",
+  "app.containers.admin.ideaStatuses.all.pricingPlanUpgrade": "Configuring custom input statuses is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.",
   "app.containers.admin.ideaStatuses.all.subtitleInputStatuses1": "Управљајте статусом који се може доделити уносу учесника у оквиру пројекта. Статус је јавно видљив и помаже у информисању учесника.",
   "app.containers.admin.ideaStatuses.all.titleIdeaStatuses1": "Измените статусе уноса",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeDescription": "Odabrano za realizaciju ili sledeće korake",
