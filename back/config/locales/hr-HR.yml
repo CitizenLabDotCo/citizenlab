@@ -183,7 +183,7 @@ hr:
         title: Pojedinosti
         description:
       other_text_field:
-        title: Why did you pick 'other'?
+        title: Ako ste odabrali '{other_option}', na što mislite?
   custom_forms:
     categories:
       main_content:
