@@ -80,13 +80,7 @@ module MultiTenancy
             model.skip_image_presence = true if SKIP_IMAGE_PRESENCE_VALIDATION.include?(model_class.name)
 
             begin
-              if model.try(:in_list?)
-                model.class.acts_as_list_no_update { save_model(model, validate) }
-              elsif model.class == Project
-                AdminPublication.acts_as_list_no_update { save_model(model, validate) }
-              else
-                save_model(model, validate)
-              end
+              preserve_ordering { save_model(model, validate) }
 
               # Only upload attributes that are strings are copied verbatim using
               # `update_columns` to bypass the CarrierWave uploader.
@@ -143,11 +137,7 @@ module MultiTenancy
           elsif field_name.end_with?('_ref')
             ref_suffix = field_name.end_with?('_attributes_ref') ? '_attributes_ref' : '_ref' # linking attribute refs
             if field_value
-              begin
-                id, ref_class = obj_to_id_and_class.fetch(field_value)
-              rescue KeyError
-                byebug
-              end
+              id, ref_class = obj_to_id_and_class.fetch(field_value)
               new_attributes[field_name.chomp(ref_suffix)] = ref_class.find(id)
             end
 
@@ -215,6 +205,16 @@ module MultiTenancy
           # generation of templates remains within the 3 hours execution
           # limit of CircleCI.
           model.update!(image_assignments)
+        end
+      end
+
+      def preserve_ordering
+        if model.try(:in_list?)
+          model.class.acts_as_list_no_update { yield }
+        elsif model.class == Project # Support nested admin publications
+          AdminPublication.acts_as_list_no_update { yield }
+        else
+          yield
         end
       end
 
