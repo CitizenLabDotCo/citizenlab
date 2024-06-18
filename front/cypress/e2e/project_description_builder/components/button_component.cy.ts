@@ -47,7 +47,7 @@ describe('Project description builder Button component', () => {
     });
 
     // Change button text
-    cy.get('.e2e-button-text-input').clear().type('New Button Title');
+    cy.get('#e2e-button-text-input').clear().type('New Button Title');
 
     // Input URL
     cy.get('.e2e-button-url-input').clear().type('https://www.google.com');
