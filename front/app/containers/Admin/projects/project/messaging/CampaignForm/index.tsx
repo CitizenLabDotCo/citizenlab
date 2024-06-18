@@ -7,9 +7,9 @@ import {
   fontSizes,
   Label,
   Text,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
-import Tippy from '@tippyjs/react';
 import { useForm, FormProvider } from 'react-hook-form';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
@@ -165,7 +165,7 @@ const CampaignForm = ({
                 {...messages.allParticipants}
                 values={{
                   participants: (
-                    <Tippy
+                    <Tooltip
                       maxWidth={280}
                       content={
                         <FormattedMessage
@@ -183,7 +183,7 @@ const CampaignForm = ({
                           <FormattedMessage {...messages.participants} />
                         </Text>
                       </Box>
-                    </Tippy>
+                    </Tooltip>
                   ),
                 }}
               />

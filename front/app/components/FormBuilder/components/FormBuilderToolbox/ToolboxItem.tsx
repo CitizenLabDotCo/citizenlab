@@ -7,8 +7,8 @@ import {
   Text,
   Badge,
   colors,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import styled from 'styled-components';
 
 import { ICustomFieldInputType } from 'api/custom_fields/types';
@@ -70,8 +70,7 @@ const ToolboxItem = ({
   }
 
   return (
-    <Tippy
-      interactive={true}
+    <Tooltip
       placement={'left-start'}
       disabled={!disabled || !disabledTooltipMessage}
       theme={'dark'}
@@ -118,8 +117,7 @@ const ToolboxItem = ({
             {label}
           </Text>
           {showAIUpsell && (
-            <Tippy
-              interactive={true}
+            <Tooltip
               placement="bottom"
               theme={'dark'}
               content={
@@ -139,12 +137,12 @@ const ToolboxItem = ({
                   {formatMessage(messages.ai)}
                 </Badge>
               </Box>
-            </Tippy>
+            </Tooltip>
           )}
           {!disabled && <AddIcon />}
         </StyledBox>
       </Box>
-    </Tippy>
+    </Tooltip>
   );
 };
 

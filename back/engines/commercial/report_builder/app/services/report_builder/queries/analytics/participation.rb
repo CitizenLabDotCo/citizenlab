@@ -71,7 +71,7 @@ module ReportBuilder
           filters: {
             **date_filter('dimension_date_created', compare_start_at, compare_end_at),
             **project_filter('dimension_project_id', project_id),
-            'dimension_type.name': %w[idea initiative],
+            'dimension_type.name': 'idea',
             publication_status: 'published'
           },
           aggregations: {

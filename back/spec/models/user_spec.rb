@@ -765,7 +765,7 @@ RSpec.describe User do
   end
 
   describe 'super_admin?' do
-    it 'returns true for admins with various citizenlab email variations' do
+    it 'returns true for admins with various Go Vocal and Citizenlab email variations' do
       users = [
         build_stubbed(:admin, email: 'hello@citizenlab.co'),
         build_stubbed(:admin, email: 'hello+admin@citizenLab.co'),
@@ -776,30 +776,41 @@ RSpec.describe User do
         build_stubbed(:admin, email: 'breek.nou.mijn.klomp@citizenlab.NL'),
         build_stubbed(:admin, email: 'bigger@citizenlab.us'),
         build_stubbed(:admin, email: 'magdalena@citizenlab.cl'),
-        build_stubbed(:admin, email: 'hello+admin@CITIZENLAB.UK')
+        build_stubbed(:admin, email: 'hello+admin@CITIZENLAB.UK'),
+        build_stubbed(:admin, email: 'hello@govocal.com'),
+        build_stubbed(:admin, email: 'hello+admin@govocal.com'),
+        build_stubbed(:admin, email: 'hello@govocal.eu'),
+        build_stubbed(:admin, email: 'moderator+admin@govocal.be'),
+        build_stubbed(:admin, email: 'cheese.lover@Govocal.ch'),
+        build_stubbed(:admin, email: 'Fritz+Wurst@Govocal.de'),
+        build_stubbed(:admin, email: 'breek.nou.mijn.klomp@govocal.NL'),
+        build_stubbed(:admin, email: 'bigger@govocal.us'),
+        build_stubbed(:admin, email: 'magdalena@govocal.cl'),
+        build_stubbed(:admin, email: 'hello+admin@GOVOCAL.UK')
       ]
 
       expect(users).to all be_super_admin
     end
 
-    it 'returns false for non-citizenlab emails' do
+    it 'returns false for non-Go Vocal emails' do
       strangers = [
         build_stubbed(:admin, email: 'hello@citizenlab.com'),
         build_stubbed(:admin, email: 'citizenlab.co@gmail.com'),
+        build_stubbed(:admin, email: 'govocal.com@gmail.com'),
         build_stubbed(:admin)
       ]
       expect(strangers).not_to include(be_super_admin)
     end
 
     it 'returns false for non-admins' do
-      user = build_stubbed(:user, email: 'hello@citizenlab.co')
+      user = build_stubbed(:user, email: 'hello@govocal.com')
       expect(user).not_to be_super_admin
     end
   end
 
   describe 'highest_role' do
     it 'correctly returns the highest role the user posesses' do
-      expect(build_stubbed(:admin, email: 'hello@citizenlab.co').highest_role).to eq :super_admin
+      expect(build_stubbed(:admin, email: 'hello@govocal.com').highest_role).to eq :super_admin
       expect(build_stubbed(:admin).highest_role).to eq :admin
       expect(build_stubbed(:user).highest_role).to eq :user
     end
@@ -1287,11 +1298,11 @@ RSpec.describe User do
         expect(described_class.billed_admins).to match_array([admin])
       end
 
-      it 'does not return citizenlab admins' do
+      it 'does not return Go Vocal admins' do
         create(:user)
-        create(:admin, email: 'test@citizenlab.co')
-        non_cl_admin = create(:admin)
-        expect(described_class.billed_admins).to match_array([non_cl_admin])
+        create(:admin, email: 'test@govocal.com')
+        non_gv_admin = create(:admin)
+        expect(described_class.billed_admins).to match_array([non_gv_admin])
       end
 
       it 'does not return project and folder moderators' do
@@ -1318,9 +1329,9 @@ RSpec.describe User do
         expect(described_class.billed_moderators).to match_array([project_moderator, folder_moderator])
       end
 
-      it 'does not return citizenlab moderators' do
+      it 'does not return Go Vocal moderators' do
         create(:user)
-        create(:project_moderator, email: 'test@citizenlab.eu')
+        create(:project_moderator, email: 'test@govocal.eu')
         non_cl_project_moderator = create(:project_moderator)
         expect(described_class.billed_moderators).to match_array([non_cl_project_moderator])
       end
@@ -1351,7 +1362,7 @@ RSpec.describe User do
       [
         create(:user),
         create(:admin),
-        create(:project_moderator, email: 'hello@citizenlab.co')
+        create(:project_moderator, email: 'hello@govocal.com')
       ]
     end
 

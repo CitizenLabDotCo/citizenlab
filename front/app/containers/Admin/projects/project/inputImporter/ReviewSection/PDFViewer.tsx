@@ -7,7 +7,7 @@ import 'react-pdf/dist/Page/AnnotationLayer.css';
 
 import { getJwt } from 'utils/auth/jwt';
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.mjs`;
 
 interface Props {
   currentPageIndex: number;

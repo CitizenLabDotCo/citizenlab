@@ -9,8 +9,8 @@ import {
   fontSizes,
   defaultStyles,
   isRtl,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import { debounce } from 'lodash-es';
 import Quill, { Sources, QuillOptionsStatic, RangeStatic } from 'quill';
 import BlotFormatter from 'quill-blot-formatter';
@@ -777,10 +777,9 @@ const QuillEditor = memo<Props>(
                 aria-label={formatMessage(messages.italic)}
               />
               {withCTAButton ? (
-                <Tippy
+                <Tooltip
                   placement="bottom"
                   theme="light"
-                  interactive={true}
                   visible={isButtonsMenuVisible}
                   onClickOutside={hideButtonsMenu}
                   duration={[200, 0]}
@@ -821,7 +820,7 @@ const QuillEditor = memo<Props>(
                       />
                     </svg>
                   </button>
-                </Tippy>
+                </Tooltip>
               ) : (
                 <button
                   className="ql-link"

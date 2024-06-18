@@ -4,8 +4,8 @@ import {
   colors,
   IconTooltip,
   Spinner,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
@@ -125,7 +125,7 @@ const IdeaStatuses = () => {
         </SectionDescription>
         <ButtonWrapper>
           <Button
-            buttonStyle="cl-blue"
+            buttonStyle="admin-dark"
             icon="plus-circle"
             linkTo="/admin/settings/statuses/new"
           >
@@ -145,7 +145,7 @@ const IdeaStatuses = () => {
             <T value={defaultStatus.attributes.title_multiloc} />
           </FlexTextCell>
           <Buttons>
-            <Tippy
+            <Tooltip
               placement="top"
               theme="light"
               disabled={false}
@@ -161,11 +161,11 @@ const IdeaStatuses = () => {
                   <FormattedMessage {...messages.deleteButtonLabel} />
                 </DummyButton>
               </div>
-            </Tippy>
+            </Tooltip>
 
             <Button
               linkTo={`/admin/settings/statuses/${defaultStatus.id}`}
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               icon="edit"
             >
               <FormattedMessage {...messages.editButtonLabel} />
@@ -190,7 +190,7 @@ const IdeaStatuses = () => {
                     <T value={ideaStatus.attributes.title_multiloc} />
                   </FlexTextCell>
                   <Buttons>
-                    <Tippy
+                    <Tooltip
                       placement="top"
                       theme="light"
                       disabled={isDeletable(ideaStatus)}
@@ -220,10 +220,10 @@ const IdeaStatuses = () => {
                           <FormattedMessage {...messages.deleteButtonLabel} />
                         </DeleteButton>
                       </div>
-                    </Tippy>
+                    </Tooltip>
                     <Button
                       linkTo={`/admin/settings/statuses/${ideaStatus.id}`}
-                      buttonStyle="secondary"
+                      buttonStyle="secondary-outlined"
                       icon="edit"
                     >
                       <FormattedMessage {...messages.editButtonLabel} />

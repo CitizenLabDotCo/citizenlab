@@ -28,7 +28,7 @@ import messages from './messages';
 type ButtonProps = {
   text: Multiloc;
   url: RouteType;
-  type: 'primary' | 'secondary';
+  type: 'primary' | 'secondary-outlined';
   alignment: string;
 };
 
@@ -156,7 +156,7 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
         currentValue={type}
         id="style-secondary"
         name="buttonStyle"
-        value="secondary"
+        value="secondary-outlined"
         label={
           <Box
             borderRadius="4px"

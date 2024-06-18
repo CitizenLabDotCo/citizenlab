@@ -155,14 +155,31 @@ Rails.application.config.middleware.insert_after ActionDispatch::Session::Cookie
 # https://github.com/rails-on-services/apartment/tree/2.11.0#callbacks
 require 'apartment/adapters/abstract_adapter'
 
-module Apartment
-  module Adapters
-    class AbstractAdapter
-      set_callback :switch, :after do |object|
-        # It's not always correct. E.g. it's `public` tracking errors by sentry-rails gem in controllers.
-        # But still extremely useful for errors in background jobs, rake tasks, and the console.
-        Sentry.set_tags(switched_tenant: ::Tenant.schema_name_to_host(object.current)) if defined?(Sentry)
-      end
-    end
+# Registering +switch+ callbacks
+Apartment::Adapters::AbstractAdapter.set_callback :switch, :before do
+  # Invalidate the +AppConfiguration+ instance when switching tenants.
+  AppConfiguration.reset_instance
+end
+
+Apartment::Adapters::AbstractAdapter.set_callback :switch, :after do |object|
+  # It's not always correct. E.g. it's `public` tracking errors by sentry-rails gem in controllers.
+  # But still extremely useful for errors in background jobs, rake tasks, and the console.
+  Sentry.set_tags(switched_tenant: Tenant.schema_name_to_host(object.current)) if defined?(Sentry)
+end
+
+# Patching +PostgresqlSchemaAdapter+ to invalidate the +AppConfiguration+ instance when
+# the tenant connection is reset (e.i. when calling `Apartment::Tenant.reset`).
+#
+# We patch `Apartment::Adapters::PostgresqlSchemaAdapterPatch` instead of
+# `Apartment::Adapters::AbstractAdapter` because the `PostgresqlSchemaAdapterPatch`
+# overrides the `reset` method of `AbstractAdapter` without calling `super`. Therefore,
+# patching `AbstractAdapter` would not have any effect.
+module Apartment::Adapters::PostgresqlSchemaAdapterPatch
+  def reset
+    AppConfiguration.reset_instance
+    super
   end
 end
+
+require 'apartment/adapters/postgresql_adapter'
+Apartment::Adapters::PostgresqlSchemaAdapter.prepend(Apartment::Adapters::PostgresqlSchemaAdapterPatch)

@@ -612,27 +612,45 @@ resource 'Ideas' do
       context 'Idea authored by another user' do
         let!(:idea) { create(:idea, project: phase.project, phases: [phase], creation_phase: phase, publication_status: 'draft') }
 
-        example '[error] No draft ideas for current user', document: false do
+        example '[empty idea] No draft ideas for current user', document: false do
           do_request
-          expect(status).to eq 404
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :id)).to be_nil
         end
       end
 
       context 'Idea is not draft' do
         let!(:idea) { create(:idea, project: phase.project, phases: [phase], creation_phase: phase, author: @user) }
 
-        example '[error] No draft ideas', document: false do
+        example '[empty idea] No draft ideas', document: false do
           do_request
-          expect(status).to eq 404
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :id)).to be_nil
         end
       end
 
       context 'Idea is not native survey' do
         let!(:idea) { create(:idea, project: phase.project, phases: [phase], author: @user, publication_status: 'draft') }
 
-        example '[error] No native survey idea found', document: false do
+        example '[empty idea] No native survey idea found', document: false do
           do_request
-          expect(status).to eq 404
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :id)).to be_nil
+        end
+      end
+
+      context 'User is not logged in' do
+        let!(:idea) { create(:idea, project: phase.project, phases: [phase], author: @user, publication_status: 'draft') }
+
+        example '[empty idea] User not logged in', document: false do
+          header 'Authorization', nil
+          do_request
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :id)).to be_nil
         end
       end
     end

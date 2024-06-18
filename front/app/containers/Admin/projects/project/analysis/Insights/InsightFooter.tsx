@@ -1,7 +1,12 @@
 import React from 'react';
 
-import { Box, colors, Text, Icon } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
+import {
+  Box,
+  colors,
+  Text,
+  Icon,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
@@ -82,7 +87,7 @@ const InsightFooter = ({
       pr="16px"
       mb="20px"
     >
-      <Tippy
+      <Tooltip
         content={formatMessage(messages.tooltipTextLimit)}
         disabled={largeSummariesEnabled}
       >
@@ -108,10 +113,10 @@ const InsightFooter = ({
             {filteredInputCount} / {totalInputCount}
           </Text>
         </Box>
-      </Tippy>
+      </Tooltip>
 
       {mainCustomFieldId && additionalCustomFieldIds?.length > 0 && (
-        <Tippy
+        <Tooltip
           zIndex={99999}
           content={
             <Box p="12px">
@@ -148,7 +153,7 @@ const InsightFooter = ({
               {`${additionalCustomFieldIds.length + 1}`}
             </Text>
           </Box>
-        </Tippy>
+        </Tooltip>
       )}
 
       {generatedAt && (

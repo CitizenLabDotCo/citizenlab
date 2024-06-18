@@ -6,8 +6,8 @@ import {
   Title,
   Text,
   CheckboxWithLabel,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 
 import CloseIconButton from 'components/UI/CloseIconButton';
 
@@ -121,7 +121,7 @@ const FirstTagAssistance = ({ tagId, onHide }: Props) => {
   if (!anchorElement) return null;
 
   return (
-    <Tippy
+    <Tooltip
       content={
         <Box p="16px" position="relative">
           <Box position="absolute" top="5px" right="5px">
@@ -144,7 +144,9 @@ const FirstTagAssistance = ({ tagId, onHide }: Props) => {
       zIndex={1000000000000000}
       theme="light"
       visible={visible}
-      interactive
+      // Changing the acnhor element clashes with the tooltip accessibility features
+      // so for this particular case we are disabling the onHidden callback to solve it
+      onHidden={() => {}}
     />
   );
 };

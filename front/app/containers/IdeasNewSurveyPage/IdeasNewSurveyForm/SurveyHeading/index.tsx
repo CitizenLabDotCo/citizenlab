@@ -139,7 +139,11 @@ const SurveyHeading = ({ titleText }: Props) => {
             alignItems="center"
             gap="20px"
           >
-            <Button buttonStyle="secondary" width="100%" onClick={closeModal}>
+            <Button
+              buttonStyle="secondary-outlined"
+              width="100%"
+              onClick={closeModal}
+            >
               <FormattedMessage {...messages.cancelLeaveSurveyButtonText} />
             </Button>
             <Button

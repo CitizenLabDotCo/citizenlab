@@ -109,8 +109,8 @@ export default defineMessages({
     defaultMessage: 'This field expects a number',
   },
   ajv_error_required: {
-    id: 'app.utils.errors.default.ajv_error_required',
-    defaultMessage: 'This field is required',
+    id: 'app.utils.errors.default.ajv_error_required3',
+    defaultMessage: 'Field is required: "{fieldName}"',
   },
   ajv_error_invalid: {
     id: 'app.utils.errors.default.ajv_error_invalid',

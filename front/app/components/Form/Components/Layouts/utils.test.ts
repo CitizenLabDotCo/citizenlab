@@ -1,6 +1,5 @@
 import { RuleEffect } from '@jsonforms/core';
 
-import { customAjv } from 'components/Form';
 import {
   getFilteredDataForUserPath,
   getPageSchema,
@@ -8,6 +7,7 @@ import {
   PageType,
   getFormCompletionPercentage,
 } from 'components/Form/Components/Layouts/utils';
+import { customAjv } from 'components/Form/utils';
 
 describe('getPageSchema', () => {
   it('should return the page schema from a schema with many pages', () => {

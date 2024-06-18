@@ -7,8 +7,8 @@ import {
   Title,
   Button,
   colors,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -48,16 +48,16 @@ const AnalysisUpsell = () => {
         </Text>
       </ul>
 
-      <Tippy
+      <Tooltip
         content={<p>{formatMessage(messages.upsellMessage)}</p>}
         placement="auto-start"
       >
         <Box display="flex" w="auto">
-          <Button buttonStyle="secondary" icon="lock">
+          <Button buttonStyle="secondary-outlined" icon="lock">
             {formatMessage(messages.button)}
           </Button>
         </Box>
-      </Tippy>
+      </Tooltip>
     </Box>
   );
 };

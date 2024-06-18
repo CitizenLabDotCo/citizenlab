@@ -365,7 +365,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
             {!success ? (
               <>
                 <CreateProjectButton
-                  buttonStyle="secondary"
+                  buttonStyle="secondary-outlined"
                   onClick={onCreateProject}
                   processing={processing}
                 >
@@ -381,7 +381,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
                 )}
               </>
             ) : (
-              <CloseButton buttonStyle="secondary" onClick={onClose}>
+              <CloseButton buttonStyle="secondary-outlined" onClick={onClose}>
                 <FormattedMessage {...messages.close} />
               </CloseButton>
             )}

@@ -266,9 +266,8 @@ export default defineMessages({
     defaultMessage: 'The issue title must be less than {limit} characters long',
   },
   ajv_error_issue_title_multiloc_minLength: {
-    id: 'app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_minLength2',
-    defaultMessage:
-      'The comment title must be more than {limit} characters long',
+    id: 'app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_minLength',
+    defaultMessage: 'The issue title must be more than {limit} characters long',
   },
   ajv_error_issue_body_multiloc_maxLength: {
     id: 'app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_maxLength',
@@ -297,9 +296,9 @@ export default defineMessages({
       'The option description must be less than {limit} characters long',
   },
   ajv_error_option_body_multiloc_minLength: {
-    id: 'app.containers.IdeasNewPage.ajv_error_option_body_multiloc_minLength',
+    id: 'app.containers.IdeasNewPage.ajv_error_option_body_multiloc_minLength1',
     defaultMessage:
-      'The issue description must be more than {limit} characters long',
+      'The option description must be more than {limit} characters long',
   },
   ajv_error_number_required: {
     id: 'app.containers.IdeasNewPage.ajv_error_number_required',

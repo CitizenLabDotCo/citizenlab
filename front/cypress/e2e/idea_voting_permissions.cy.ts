@@ -14,7 +14,7 @@ describe('Idea reacting permissions', () => {
       cy.location('pathname').should('eq', '/en/projects/verified-ideation');
       cy.get('#e2e-ideas-container');
       cy.wait(1000);
-      cy.get('.e2e-ideacard-like-button').click();
+      cy.get('.e2e-ideacard-like-button').click({ force: true });
 
       // sign up modal check
       cy.get('#e2e-authentication-modal').should('exist');
@@ -78,7 +78,7 @@ describe('Idea reacting permissions', () => {
       cy.visit('projects/verified-ideation');
       cy.get('#e2e-ideas-container');
       cy.wait(1000);
-      cy.get('.e2e-ideacard-like-button').click();
+      cy.get('.e2e-ideacard-like-button').click({ force: true });
       cy.get('#e2e-verification-wizard-root');
     });
 
@@ -134,12 +134,10 @@ describe('Idea reacting permissions', () => {
       const email = randomEmail();
       const password = randomString();
 
-      // Go to an idea of a project that doesn't require verification
+      // Go to an ideation project that doesn't require verification
       // and try to react
-      cy.visit('ideas/very-new-idea');
-      cy.get('.e2e-ideacard-like-button').should('exist');
-      cy.wait(1000);
-      cy.get('.e2e-ideacard-like-button').click();
+      cy.visit('/projects/an-idea-bring-it-to-your-council');
+      cy.get('.e2e-ideacard-like-button').first().click();
 
       // Sign up flow
       cy.get('#e2e-authentication-modal');

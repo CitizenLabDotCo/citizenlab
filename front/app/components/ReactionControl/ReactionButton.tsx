@@ -7,8 +7,8 @@ import {
   isRtl,
   Icon,
   IconNames,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import { lighten } from 'polished';
 import { FormattedDate } from 'react-intl';
 import styled, { keyframes } from 'styled-components';
@@ -407,7 +407,7 @@ const ReactionButton = ({
     );
 
     return (
-      <Tippy
+      <Tooltip
         placement="top"
         theme="dark"
         disabled={disabledReason === null}
@@ -428,7 +428,6 @@ const ReactionButton = ({
             }[buttonReactionMode],
             buttonReactionModeEnabled ? 'enabled' : '',
           ].join(' ')}
-          aria-disabled={!buttonEnabled}
         >
           <ReactionIconContainer
             styleType={styleType}
@@ -469,7 +468,7 @@ const ReactionButton = ({
             </ScreenReaderOnly>
           )}
         </Button>
-      </Tippy>
+      </Tooltip>
     );
   }
 
