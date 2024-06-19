@@ -112,23 +112,22 @@ class AppConfiguration < ApplicationRecord
     def instance
       science 'app_configuration' do |experiment|
         experiment.use { first! }
-        experiment.try do
-          @instance_caller ||= caller
-          @instance ||= first!
+        experiment.try { Current.app_configuration }
+
+        experiment.compare_errors do |control, candidate|
+          next true if control.instance_of?(candidate.class) && control.message == candidate.message
+          next true if control.instance_of?(ActiveRecord::RecordNotFound) && candidate.instance_of?(ActiveRecord::RecordNotFound)
+
+          false
         end
 
         experiment.clean(&:attributes)
 
         experiment.context({
           execution_stack: caller,
-          tenant_schema: Apartment::Tenant.current,
-          instance_caller: @instance_caller
+          tenant_schema: Apartment::Tenant.current
         })
       end
-    end
-
-    def reset_instance
-      @instance = @instance_caller = nil
     end
   end
 
