@@ -116,7 +116,7 @@ class AppConfiguration < ApplicationRecord
 
         experiment.compare_errors do |control, candidate|
           next true if control.instance_of?(candidate.class) && control.message == candidate.message
-          next true if control.instance_of?(RecordNotFound) && candidate.instance_of?(RecordNotFound)
+          next true if control.instance_of?(ActiveRecord::RecordNotFound) && candidate.instance_of?(ActiveRecord::RecordNotFound)
 
           false
         end
