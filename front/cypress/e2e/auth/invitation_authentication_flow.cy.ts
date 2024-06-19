@@ -1,7 +1,7 @@
 import { randomString, randomEmail } from '../../support/commands';
 
 function getInvites() {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -16,7 +16,7 @@ function getInvites() {
 }
 
 function deleteInvites() {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy

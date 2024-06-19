@@ -7,8 +7,8 @@ import styled from 'styled-components';
 
 import { InitiativeDisabledReason } from 'api/initiative_action_descriptors/types';
 
-import { FormattedMessage } from 'utils/cl-intl';
-import globalMessages from 'utils/messages';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 
 import messages from '../../messages';
 
@@ -67,7 +67,7 @@ const disabledMessages: {
   [key in InitiativeDisabledReason]: MessageDescriptor | undefined;
 } = {
   user_not_permitted: messages.votingNotPermitted,
-  user_not_in_group: globalMessages.notInGroup,
+  user_not_in_group: messages.votingNotPermitted,
   user_blocked: messages.votingNotPermitted,
   user_not_signed_in: undefined,
   user_not_active: undefined,
@@ -76,11 +76,22 @@ const disabledMessages: {
 };
 
 const DisabledReasonTooltip = ({ disabledReason }: Props) => {
+  const { formatMessage } = useIntl();
+
   return (
     <TooltipContent id="tooltip-content" className="e2e-disabled-tooltip">
       <TooltipContentIcon name="lock" ariaHidden />
       <TooltipContentText>
-        <FormattedMessage {...disabledMessages[disabledReason]} />
+        <FormattedMessage
+          {...disabledMessages[disabledReason]}
+          values={{
+            link: (
+              <Link to="/pages/faq" target="_blank">
+                {formatMessage(messages.guidelinesLinkText)}
+              </Link>
+            ),
+          }}
+        />
       </TooltipContentText>
     </TooltipContent>
   );

@@ -30,7 +30,7 @@ describe.skip('Impact tracking: Session tracking', () => {
     cy.intercept('PATCH', '**/web_api/v1/sessions/current/upgrade').as(
       'upgradeSession'
     );
-    cy.login('mortal@citizenlab.co', 'democracy2.0');
+    cy.login('mortal@govocal.com', 'democracy2.0');
     cy.wait('@upgradeSession').then((interception) => {
       expect(interception.response?.statusCode).to.be.oneOf([200, 204]);
     });

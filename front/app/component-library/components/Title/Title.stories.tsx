@@ -5,9 +5,6 @@ import Title from './';
 const meta = {
   title: 'Components/Title',
   component: Title,
-  parameters: {
-    layout: 'centered',
-  },
 } satisfies Meta<typeof Title>;
 
 export default meta;

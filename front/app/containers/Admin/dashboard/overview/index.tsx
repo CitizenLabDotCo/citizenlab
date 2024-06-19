@@ -6,8 +6,8 @@ import moment, { Moment } from 'moment';
 import useAuthUser from 'api/me/useAuthUser';
 
 import CommentsByTimeCard from 'components/admin/GraphCards/CommentsByTimeCard';
+import InputsByTimeCard from 'components/admin/GraphCards/InputsByTimeCard';
 import ParticipantsCard from 'components/admin/GraphCards/ParticipantsCard';
-import PostByTimeCard from 'components/admin/GraphCards/PostsByTimeCard';
 import ReactionsByTimeCard from 'components/admin/GraphCards/ReactionsByTimeCard';
 import RegistrationsCard from 'components/admin/GraphCards/RegistrationsCard';
 import { GraphsContainer, Column } from 'components/admin/GraphWrappers';
@@ -166,7 +166,7 @@ const OverviewDashboard = () => {
             endAtMoment={endAtMoment}
             resolution={resolution}
           />
-          <PostByTimeCard
+          <InputsByTimeCard
             projectId={currentProjectFilter}
             startAtMoment={startAtMoment}
             endAtMoment={endAtMoment}

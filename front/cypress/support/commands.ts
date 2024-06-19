@@ -190,11 +190,11 @@ function setLoginCookie(email: string, password: string) {
 }
 
 function setAdminLoginCookie() {
-  cy.setLoginCookie('admin@citizenlab.co', 'democracy2.0');
+  cy.setLoginCookie('admin@govocal.com', 'democracy2.0');
 }
 
 function setModeratorLoginCookie() {
-  cy.setLoginCookie('moderator@citizenlab.co', 'democracy2.0');
+  cy.setLoginCookie('moderator@govocal.com', 'democracy2.0');
 }
 
 function setConsentCookie() {
@@ -289,7 +289,7 @@ function apiCreateAdmin(
   IMPORTANT: at the time of writing, this does not increase additional_admins_number in appConfig correctly,
   so it's important to remove admins after creating them in order to not influence other tests.
   */
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -371,7 +371,7 @@ function apiUpdateUserCustomFields(
 }
 
 function apiRemoveUser(userId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -386,7 +386,7 @@ function apiRemoveUser(userId: string) {
 }
 
 function apiGetUsersCount() {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -401,7 +401,7 @@ function apiGetUsersCount() {
 }
 
 function apiGetSeats() {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -416,7 +416,7 @@ function apiGetSeats() {
 }
 
 function apiGetAppConfiguration() {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -437,7 +437,7 @@ function apiCreateModeratorForProject(
   password: string,
   projectId: string
 ) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -488,7 +488,7 @@ function getIdeaById(ideaId: string) {
 }
 
 function getProjectBySlug(projectSlug: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -503,7 +503,7 @@ function getProjectBySlug(projectSlug: string) {
 }
 
 function getProjectById(projectId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -538,7 +538,7 @@ function getInitiativeStatuses() {
 }
 
 function getAuthUser() {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -563,7 +563,7 @@ function getArea(areaId: string) {
 }
 
 function getUserBySlug(userSlug: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -633,14 +633,14 @@ function apiCreateIdea({
     return doRequest(jwt);
   }
 
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
     return doRequest(adminJwt);
   });
 }
 
 function apiRemoveIdea(ideaId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -681,7 +681,7 @@ function apiCreateInitiative({
     };
   }
 
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     adminJwt = response.body.jwt;
 
     return cy.request({
@@ -713,7 +713,7 @@ function apiCreateInitiative({
 }
 
 function apiRemoveInitiative(initiativeId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -781,7 +781,7 @@ function apiCreateOfficialFeedbackForIdea(
   officialFeedbackContent: string,
   officialFeedbackAuthor: string
 ) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -833,34 +833,32 @@ function apiAddComment(
       },
     });
   } else {
-    return cy
-      .apiLogin('admin@citizenlab.co', 'democracy2.0')
-      .then((response) => {
-        const adminJwt = response.body.jwt;
+    return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+      const adminJwt = response.body.jwt;
 
-        return cy.request({
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${adminJwt}`,
-          },
-          method: 'POST',
-          url: `web_api/v1/${postType}s/${postId}/comments`,
-          body: {
-            comment: {
-              body_multiloc: {
-                en: commentContent,
-                'nl-BE': commentContent,
-              },
-              parent_id: commentParentId,
+      return cy.request({
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`,
+        },
+        method: 'POST',
+        url: `web_api/v1/${postType}s/${postId}/comments`,
+        body: {
+          comment: {
+            body_multiloc: {
+              en: commentContent,
+              'nl-BE': commentContent,
             },
+            parent_id: commentParentId,
           },
-        });
+        },
       });
+    });
   }
 }
 
 function apiRemoveComment(commentId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -894,7 +892,7 @@ function apiCreateProject({
   assigneeId?: string;
   visibleTo?: IProjectAttributes['visible_to'];
 }) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -949,7 +947,7 @@ function apiEditProject({
   votingMaxTotal?: number;
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
 }) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1003,7 +1001,7 @@ function apiCreateFolder({
   publicationStatus?: 'draft' | 'published' | 'archived';
   projectIds?: string[];
 }) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     cy.request({
@@ -1037,7 +1035,7 @@ function apiCreateFolder({
 }
 
 function apiAddProjectsToFolder(projectIds: string[], folderId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     projectIds.map((projectId) => {
@@ -1054,7 +1052,7 @@ function apiAddProjectsToFolder(projectIds: string[], folderId: string) {
   });
 }
 function apiRemoveProject(projectId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1069,7 +1067,7 @@ function apiRemoveProject(projectId: string) {
 }
 
 function apiRemovePhase(phaseId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1084,7 +1082,7 @@ function apiRemovePhase(phaseId: string) {
 }
 
 function apiRemoveFolder(folderId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1099,7 +1097,7 @@ function apiRemoveFolder(folderId: string) {
 }
 
 function apiCreateCustomPage(title: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1125,7 +1123,7 @@ function apiCreateCustomPage(title: string) {
   });
 }
 function apiRemoveCustomPage(customPageId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1144,7 +1142,7 @@ function apiAddPoll(
   questions: { title: string; type: 'single_option' | 'multiple_options' }[],
   options: string[][]
 ) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     questions.forEach((question, index) => {
@@ -1219,7 +1217,7 @@ function apiCreatePhase({
   nativeSurveyButtonMultiloc?: Multiloc;
   nativeSurveyTitleMultiloc?: Multiloc;
 }) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1264,7 +1262,7 @@ function apiCreateCustomField(
   required: boolean,
   input_type = 'text'
 ) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1290,7 +1288,7 @@ function apiCreateCustomField(
 }
 
 function apiCreateCustomFieldOption(optionName: string, customFieldId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1311,7 +1309,7 @@ function apiCreateCustomFieldOption(optionName: string, customFieldId: string) {
 }
 
 function apiRemoveCustomField(fieldId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1360,7 +1358,7 @@ function apiCreateEvent({
   includeLocation?: boolean;
   onlineLink?: string;
 }) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1402,7 +1400,7 @@ function apiEnableProjectDescriptionBuilder({
 }: {
   projectId: string;
 }) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1422,7 +1420,7 @@ function apiEnableProjectDescriptionBuilder({
 }
 
 function apiCreateReportBuilder(phaseId?: string, visible: boolean = true) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1454,8 +1452,10 @@ function removeReport(reportId: string, jwt: any) {
   });
 }
 
-function apiRemoveReportBuilder(reportId: string, jwt?: any) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+function apiRemoveReportBuilder(reportId?: string, jwt?: any) {
+  if (!reportId) return;
+
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return removeReport(reportId, jwt || adminJwt);
@@ -1463,7 +1463,7 @@ function apiRemoveReportBuilder(reportId: string, jwt?: any) {
 }
 
 function apiRemoveAllReports() {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy
@@ -1504,7 +1504,7 @@ function apiSetPhasePermission({
   permissionBody,
   action,
 }: ApiSetPermissionTypeProps) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1520,7 +1520,7 @@ function apiSetPhasePermission({
 }
 
 function apiGetPhasePermission({ phaseId, action }: ApiSetPermissionTypeProps) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1539,7 +1539,7 @@ function apiSetPermissionCustomField(
   action: IPhasePermissionAction,
   custom_field_id: string
 ) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1560,7 +1560,7 @@ function apiSetPermissionCustomField(
 function apiUpdateAppConfiguration(
   updatedAttributes: IUpdatedAppConfigurationProperties
 ) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1589,7 +1589,7 @@ function apiUpdateHomepageLayout({
 }: {
   craftjs_json: Record<string, any>;
 }) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1613,7 +1613,7 @@ function apiCreateSmartGroupCustomField(
   customFieldId: string,
   customFieldOptionId: string
 ) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1646,7 +1646,7 @@ function apiCreateSmartGroupCustomField(
 }
 
 function apiRemoveSmartGroup(smartGroupId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1706,7 +1706,7 @@ function apiCreateSurveyQuestions(
   inputTypes: ICustomFieldInputType[],
   imageId?: string
 ) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1768,7 +1768,7 @@ function apiCreateSurveyResponse(
     return makeRequest(jwt);
   } else {
     return cy
-      .apiLogin(email || 'admin@citizenlab.co', password || 'democracy2.0')
+      .apiLogin(email || 'admin@govocal.com', password || 'democracy2.0')
       .then((response) => {
         const jwt = response.body.jwt;
         return makeRequest(jwt);
@@ -1777,7 +1777,7 @@ function apiCreateSurveyResponse(
 }
 
 function uploadSurveyImageQuestionImage(base64: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1795,7 +1795,7 @@ function uploadSurveyImageQuestionImage(base64: string) {
 }
 
 function apiGetSurveySchema(phaseId: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1810,7 +1810,7 @@ function apiGetSurveySchema(phaseId: string) {
 }
 
 function uploadProjectFolderImage(folderId: string, base64: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({
@@ -1828,7 +1828,7 @@ function uploadProjectFolderImage(folderId: string, base64: string) {
 }
 
 function uploadProjectImage(projectId: string, base64: string) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
     return cy.request({

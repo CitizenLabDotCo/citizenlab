@@ -5,16 +5,9 @@ module MultiTenancy
     module ApplicationController
       def self.prepended(base)
         base.class_eval do
-          before_action :set_current_tenant
           before_action :set_sentry_context
           rescue_from Apartment::TenantNotFound, with: :tenant_not_found
         end
-      end
-
-      def set_current_tenant
-        Current.tenant = Tenant.current
-      rescue ActiveRecord::RecordNotFound
-        # Ignored
       end
 
       def set_sentry_context
