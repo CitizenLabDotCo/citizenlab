@@ -2432,6 +2432,7 @@
   "app.containers.ContentBuilder.homepage.sign_up_button": "S'inscrire",
   "app.containers.ContentBuilder.homepage.signedInDescription": "Configuration de la bannière pour les utilisateurs connectés.",
   "app.containers.ContentBuilder.homepage.signedOutDescription": "C'est ainsi que les visiteurs qui ne sont pas inscrits sur la plateforme voient la bannière.",
+  "app.containers.ContentBuilder.homepage.twoRowBannerTooltip1": "Cette bannière est particulièrement adaptée lorsque l'image ne s'accorde pas bien avec le texte du titre ou du sous-titre, ou avec le bouton. Ces éléments seront placés sous la bannière. Consultez nos recommandations sur l'utilisation des images sur notre {link}.",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "base de connaissances",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "Bannière en deux rangées",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabel": "Hauteur du contenu (pixels)",
