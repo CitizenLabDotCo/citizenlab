@@ -1225,6 +1225,7 @@ PLATFORMS
   aarch64-linux
   arm64-darwin-21
   x86_64-darwin-21
+  x86_64-darwin-23
   x86_64-linux
 
 DEPENDENCIES
@@ -1316,7 +1317,7 @@ DEPENDENCIES
   omniauth_openid_connect (~> 0.7.1)
   onboarding!
   order_as_specified
-  pg
+  pg (~> 1.5.6)
   pg_search (~> 2.3.5)
   polls!
   posthog_integration!
@@ -1386,4 +1387,4 @@ RUBY VERSION
    ruby 3.3.1p55
 
 BUNDLED WITH
-   2.4.20
+   2.5.9
