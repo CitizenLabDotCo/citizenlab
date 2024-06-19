@@ -112,23 +112,15 @@ class AppConfiguration < ApplicationRecord
     def instance
       science 'app_configuration' do |experiment|
         experiment.use { first! }
-        experiment.try do
-          @instance_caller ||= caller
-          @instance ||= first!
-        end
+        experiment.try { Current.app_configuration }
 
         experiment.clean(&:attributes)
 
         experiment.context({
           execution_stack: caller,
-          tenant_schema: Apartment::Tenant.current,
-          instance_caller: @instance_caller
+          tenant_schema: Apartment::Tenant.current
         })
       end
-    end
-
-    def reset_instance
-      @instance = @instance_caller = nil
     end
   end
 

@@ -157,8 +157,7 @@ require 'apartment/adapters/abstract_adapter'
 
 # Registering +switch+ callbacks
 Apartment::Adapters::AbstractAdapter.set_callback :switch, :before do
-  # Invalidate the +AppConfiguration+ instance when switching tenants.
-  AppConfiguration.reset_instance
+  Current.reset_tenant # invalidate cached tenant and app_configuration
 end
 
 Apartment::Adapters::AbstractAdapter.set_callback :switch, :after do |object|
@@ -167,8 +166,9 @@ Apartment::Adapters::AbstractAdapter.set_callback :switch, :after do |object|
   Sentry.set_tags(switched_tenant: Tenant.schema_name_to_host(object.current)) if defined?(Sentry)
 end
 
-# Patching +PostgresqlSchemaAdapter+ to invalidate the +AppConfiguration+ instance when
-# the tenant connection is reset (e.i. when calling `Apartment::Tenant.reset`).
+# Patching +PostgresqlSchemaAdapter+ to invalidate the current +AppConfiguration+ and
+# +Tenant+ when the tenant connection is reset (e.i. when calling
+# `Apartment::Tenant.reset`).
 #
 # We patch `Apartment::Adapters::PostgresqlSchemaAdapterPatch` instead of
 # `Apartment::Adapters::AbstractAdapter` because the `PostgresqlSchemaAdapterPatch`
@@ -176,7 +176,7 @@ end
 # patching `AbstractAdapter` would not have any effect.
 module Apartment::Adapters::PostgresqlSchemaAdapterPatch
   def reset
-    AppConfiguration.reset_instance
+    Current.reset_tenant
     super
   end
 end
