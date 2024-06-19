@@ -2432,6 +2432,7 @@
   "app.containers.ContentBuilder.homepage.sign_up_button": "Sign up",
   "app.containers.ContentBuilder.homepage.signedInDescription": "This is how registered users see the banner.",
   "app.containers.ContentBuilder.homepage.signedOutDescription": "This is how visitors that are not registered on the platform see the banner.",
+  "app.containers.ContentBuilder.homepage.twoRowBannerTooltip1": "This banner is in particular useful with images that don't work well with text from the title, subtitle or button. These items will be pushed below the banner. More info on the recommended image usage can be found on our {link}.",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "knowledge base",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "Two rows",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabel": "Embed height (pixels)",
