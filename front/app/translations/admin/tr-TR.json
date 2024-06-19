@@ -2432,7 +2432,6 @@
   "app.containers.ContentBuilder.homepage.sign_up_button": "Kaydolun",
   "app.containers.ContentBuilder.homepage.signedInDescription": "Kayıtlı kullanıcılar banner'ı bu şekilde görür.",
   "app.containers.ContentBuilder.homepage.signedOutDescription": "Platforma kayıtlı olmayan ziyaretçiler banner'ı bu şekilde görür.",
-  "app.containers.ContentBuilder.homepage.twoRowBannerTooltip": "Bu banner özellikle başlık, altyazı veya düğmedeki metinle iyi çalışmayan görüntüler için kullanışlıdır. Bu öğeler banner'ın altına itilecektir. Önerilen resim kullanımı hakkında daha fazla bilgiyi {link}adresimizde bulabilirsiniz.",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "BİLGİ TABANI",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "İki sıra",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabel": "Gömme yüksekliği (piksel)",

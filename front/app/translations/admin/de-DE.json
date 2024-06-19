@@ -2432,7 +2432,6 @@
   "app.containers.ContentBuilder.homepage.sign_up_button": "Registrieren",
   "app.containers.ContentBuilder.homepage.signedInDescription": "So sehen registrierte Nutzer*innen das Banner.",
   "app.containers.ContentBuilder.homepage.signedOutDescription": "So sehen Besucher*innen, die nicht auf der Plattform registriert sind, das Banner.",
-  "app.containers.ContentBuilder.homepage.twoRowBannerTooltip": "Dieser Banner ist vor allem bei Bildern nützlich, die nicht gut mit dem Text des Titels, des Untertitels oder des Buttons harmonieren. Diese Elemente werden unterhalb des Banners eingefügt. Weitere Informationen über die empfohlene Verwendung von Bildern finden Sie in unserer {link}.",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "Wissensdatenbank",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "Zwei Zeilen",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabel": "Höhe einbetten (Pixel)",

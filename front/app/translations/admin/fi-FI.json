@@ -2432,7 +2432,6 @@
   "app.containers.ContentBuilder.homepage.sign_up_button": "Kirjaudu",
   "app.containers.ContentBuilder.homepage.signedInDescription": "Näin rekisteröityneet käyttäjät näkevät bannerin.",
   "app.containers.ContentBuilder.homepage.signedOutDescription": "Näin bannerin näkevät vierailijat, jotka eivät ole rekisteröityneet alustalle.",
-  "app.containers.ContentBuilder.homepage.twoRowBannerTooltip": "Tämä banneri on erityisen hyödyllinen niissä kuvissa, jotka eivät toimi hyvin otsikon, alaotsikon tai painikkeen tekstin kanssa. Nämä kohteet työnnetään bannerin alle. Lisätietoja suositellusta kuvien käytöstä löytyy osoitteesta {link}.",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "tietopohja",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "Kaksi riviä",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabel": "Upotuskorkeus (pikseliä)",
