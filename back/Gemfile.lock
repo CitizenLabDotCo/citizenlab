@@ -803,6 +803,7 @@ GEM
     mustache (1.1.1)
     mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
+    mutex_m (0.2.0)
     nanoid (2.0.0)
     net-http (0.4.1)
       uri
@@ -817,6 +818,7 @@ GEM
       net-protocol
     netrc (0.11.0)
     nio4r (2.7.3)
+    nkf (0.1.3)
     nlpcloud (1.0.45)
       rest-client (~> 2.1)
     nokogiri (1.16.5-aarch64-linux)
@@ -1307,6 +1309,8 @@ DEPENDENCIES
   mjml-rails (~> 4.11)
   moderation!
   multi_tenancy!
+  mutex_m
+  nkf
   nokogiri (~> 1.16.5)
   okcomputer
   omniauth (~> 1.9.1)
