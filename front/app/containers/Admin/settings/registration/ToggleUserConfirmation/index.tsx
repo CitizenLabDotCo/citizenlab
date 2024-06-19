@@ -9,6 +9,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { SubSectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -39,6 +41,10 @@ type Props = {
 };
 
 const ToggleUserConfirmation = ({ isEnabled, onChange }: Props) => {
+  const emailConfirmPermissionEnabled = useFeatureFlag({
+    name: 'permission_option_email_confirmation',
+  });
+
   const handleChange = () => {
     onChange(!isEnabled);
   };
@@ -60,6 +66,8 @@ const ToggleUserConfirmation = ({ isEnabled, onChange }: Props) => {
           checked={isEnabled}
           onChange={handleChange}
           labelTextColor={colors.primary}
+          // User confirmation cannot be turned off when email confirmation in a phase is enabled
+          disabled={emailConfirmPermissionEnabled}
         />
         {isEnabled ? (
           <FormattedMessage {...messages.enabled} />
