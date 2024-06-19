@@ -128,6 +128,10 @@ const ActionForm = ({
                 selected={permittedBy === 'everyone'}
               />
             )}
+            {/* 
+              Light registration via email confirmation can only work properly if 
+              user confirmation is enabled.
+            */}
             {userConfirmationEnabled && (
               <CardButton
                 id="e2e-permission-email-confirmed-users"
