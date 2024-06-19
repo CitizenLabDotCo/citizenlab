@@ -12,6 +12,7 @@ const defaultProps: Props = {
     organization_name: { en: orgNameEN, 'nl-NL': orgNameNL },
     locales: ['en' as const, 'nl-NL' as const],
     organization_site: 'https://mywebsite.com',
+    population: 12500,
   },
 };
 
@@ -39,6 +40,7 @@ describe('Form', () => {
       locales: ['en', 'nl-NL'],
       organization_name: { en: orgNameEN, 'nl-NL': newOrgNameNl },
       organization_site: 'https://mywebsite.com',
+      population: 12500,
     });
     expect(screen.getByTestId('feedbackSuccessMessage')).toBeInTheDocument();
   });
@@ -50,6 +52,7 @@ describe('Form', () => {
         organization_name: { en: '', 'nl-NL': '' },
         locales: [],
         organization_site: 'invalid URL',
+        population: -5,
       },
     };
     render(<Form {...props} />);
@@ -58,7 +61,7 @@ describe('Form', () => {
     const submitButton = screen.getByRole('button', { name: 'Save' });
     await user.click(submitButton);
 
-    expect(screen.getAllByTestId('error-message')).toHaveLength(4);
+    expect(screen.getAllByTestId('error-message')).toHaveLength(5);
     expect(screen.getByTestId('feedbackErrorMessage')).toBeInTheDocument();
     expect(props.onSubmit).not.toHaveBeenCalled();
   });

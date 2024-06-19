@@ -16,7 +16,7 @@ interface Props {
   inputId?: string;
   value: IUserData | null;
   inputValue?: string;
-  placeholder: string;
+  placeholder?: string;
   options: Option[];
   components?: { Option: FC };
   getOptionLabel: (option: Option) => any;
@@ -32,7 +32,7 @@ const BaseUserSelect = ({
   inputId,
   value,
   inputValue,
-  placeholder,
+  placeholder = '',
   options,
   components,
   getOptionLabel,

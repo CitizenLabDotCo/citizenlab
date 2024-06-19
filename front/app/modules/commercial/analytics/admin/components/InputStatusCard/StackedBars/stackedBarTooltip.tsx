@@ -8,12 +8,11 @@ import TooltipOutline from 'components/admin/Graphs/_components/TooltipOutline';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
-import { StackedBarsRow } from '../usePostsFeedback/typings';
 
 export const stackedBarTooltip =
   (
     stackIndex: number | undefined,
-    [statusRow]: [StackedBarsRow],
+    [statusRow]: [Record<string, number>],
     stackedBarColumns: string[],
     percentages: number[],
     labels: string[]

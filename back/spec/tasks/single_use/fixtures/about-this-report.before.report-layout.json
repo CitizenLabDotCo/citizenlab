@@ -1,0 +1,102 @@
+{
+  "ROOT": {
+    "type": "div",
+    "nodes": [
+      "3h-Eizw2cD"
+    ],
+    "props": {
+      "id": "e2e-content-builder-frame"
+    },
+    "custom": {},
+    "hidden": false,
+    "isCanvas": true,
+    "displayName": "div",
+    "linkedNodes": {}
+  },
+  "3h-Eizw2cD": {
+    "type": {
+      "resolvedName": "AboutReportWidget"
+    },
+    "nodes": [],
+    "props": {
+      "reportId": "68a4aa72-8538-47ea-bbb3-04ab1cd1e286"
+    },
+    "custom": {},
+    "hidden": false,
+    "parent": "ROOT",
+    "isCanvas": false,
+    "displayName": "AboutReportWidget",
+    "linkedNodes": {
+      "about-text": "U7ecmS1hsI",
+      "about-title": "PoSwoa3Fx5"
+    }
+  },
+  "PoSwoa3Fx5": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "nodes": [
+      "x8jJUeZx0K"
+    ],
+    "props": {},
+    "custom": {},
+    "hidden": false,
+    "parent": "3h-Eizw2cD",
+    "isCanvas": true,
+    "displayName": "Container",
+    "linkedNodes": {}
+  },
+  "U7ecmS1hsI": {
+    "type": {
+      "resolvedName": "Container"
+    },
+    "nodes": [
+      "dpDtvSimWx"
+    ],
+    "props": {},
+    "custom": {},
+    "hidden": false,
+    "parent": "3h-Eizw2cD",
+    "isCanvas": true,
+    "displayName": "Container",
+    "linkedNodes": {}
+  },
+  "dpDtvSimWx": {
+    "type": {
+      "resolvedName": "TextMultiloc"
+    },
+    "nodes": [],
+    "props": {
+      "text": {
+        "en": "<p>marker-about-text</p>",
+        "fr-BE": "<p>marker-about-text</p>" ,
+        "nl-BE": "<p>marker-about-text</p>"
+      }
+    },
+    "custom": {},
+    "hidden": false,
+    "parent": "U7ecmS1hsI",
+    "isCanvas": false,
+    "displayName": "TextMultiloc",
+    "linkedNodes": {}
+  },
+  "x8jJUeZx0K": {
+    "type": {
+      "resolvedName": "TextMultiloc"
+    },
+    "nodes": [],
+    "props": {
+      "text": {
+        "en": "<h2>marker-about-title</h2>",
+        "fr-BE": "<h2>about-this-report</h2>",
+        "nl-BE": "<h2>about-this-report</h2>"
+      }
+    },
+    "custom": {},
+    "hidden": false,
+    "parent": "PoSwoa3Fx5",
+    "isCanvas": false,
+    "displayName": "TextMultiloc",
+    "linkedNodes": {}
+  }
+}

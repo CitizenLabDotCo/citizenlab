@@ -21,7 +21,6 @@ Rails.application.routes.draw do
         resources :followers, only: [:create]
       end
       concern :post do
-        resources :activities, only: [:index]
         resources :comments, shallow: true,
           concerns: %i[reactable spam_reportable],
           defaults: { reactable: 'Comment', spam_reportable: 'Comment' } do
@@ -48,6 +47,8 @@ Rails.application.routes.draw do
       end
 
       concerns :permissionable # for the global permission scope (with parent_param = nil)
+
+      resources :activities, only: [:index]
 
       resources :ideas,
         concerns: %i[reactable spam_reportable post followable permissionable],
@@ -79,6 +80,8 @@ Rails.application.routes.draw do
         get :allowed_transitions, on: :member
         patch :accept_cosponsorship_invite, on: :member
       end
+
+      resources :background_jobs, only: %i[index]
 
       resources :idea_statuses, only: %i[index show]
       resources :initiative_statuses, only: %i[index show]
@@ -184,6 +187,8 @@ Rails.application.routes.draw do
         post 'copy', on: :member
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
         get :as_xlsx, on: :member, action: 'index_xlsx'
+        get :votes_by_user_xlsx, on: :member, action: 'votes_by_user_xlsx'
+        get :votes_by_input_xlsx, on: :member, action: 'votes_by_input_xlsx'
       end
 
       resources :projects_allowed_input_topics, only: %i[show create destroy] do

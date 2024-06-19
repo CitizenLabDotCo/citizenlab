@@ -35,7 +35,6 @@ const Summary = ({
 
   const largeSummariesEnabled = useFeatureFlag({
     name: 'large_summaries',
-    onlyCheckAllowed: true,
   });
 
   const { projectId, phaseId } = useParams() as {
@@ -62,7 +61,7 @@ const Summary = ({
 
   const refreshDisabled =
     missingInputsCount === 0 ||
-    (largeSummariesEnabled && filteredInputCount > 30);
+    (!largeSummariesEnabled && filteredInputCount > 30);
 
   return (
     <>
@@ -116,7 +115,7 @@ const Summary = ({
           </Button>
           <Button
             id="e2e-explore-summary"
-            buttonStyle="secondary"
+            buttonStyle="secondary-outlined"
             icon="eye"
             linkTo={`/admin/projects/${projectId}/analysis/${analysisId}?${stringify(
               { ...convertFilterValuesToString(filters), phase_id: phaseId }

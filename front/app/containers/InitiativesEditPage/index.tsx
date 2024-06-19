@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { Spinner, media } from '@citizenlab/cl2-component-library';
+import { Box, Spinner, colors, media } from '@citizenlab/cl2-component-library';
 import { PreviousPathnameContext } from 'context';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -16,6 +16,7 @@ import useLocale from 'hooks/useLocale';
 
 import PageLayout from 'components/InitiativeForm/PageLayout';
 import PageNotFound from 'components/PageNotFound';
+import GoBackButton from 'components/UI/GoBackButton';
 import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
 
@@ -55,10 +56,7 @@ const InitiativesEditPage = ({ initiative }: Props) => {
 
   useEffect(() => {
     const isPrivilegedUser =
-      authUser &&
-      (isAdmin({ data: authUser.data }) ||
-        !isRegularUser({ data: authUser.data }) ||
-        isSuperAdmin({ data: authUser.data }));
+      isAdmin(authUser) || !isRegularUser(authUser) || isSuperAdmin(authUser);
 
     if (!isPrivilegedUser && authUser === null) {
       clHistory.replace(previousPathName || '/sign-up');
@@ -77,18 +75,24 @@ const InitiativesEditPage = ({ initiative }: Props) => {
   return (
     <>
       <InitiativesEditMeta />
-      <PageLayout
-        isAdmin={isAdmin(authUser)}
-        className="e2e-initiative-edit-page"
-      >
-        <StyledInitiativesEditFormWrapper
-          locale={locale}
-          initiative={initiative.data}
-          initiativeImage={initiativeImages?.data[0]}
-          onPublished={onPublished}
-          initiativeFiles={initiativeFiles}
+      <Box background={colors.background} p="32px" pb="0">
+        <GoBackButton
+          onClick={() => {
+            clHistory.goBack();
+          }}
         />
-      </PageLayout>
+      </Box>
+      <main>
+        <PageLayout className="e2e-initiative-edit-page">
+          <StyledInitiativesEditFormWrapper
+            locale={locale}
+            initiative={initiative.data}
+            initiativeImage={initiativeImages?.data[0]}
+            onPublished={onPublished}
+            initiativeFiles={initiativeFiles}
+          />
+        </PageLayout>
+      </main>
     </>
   );
 };

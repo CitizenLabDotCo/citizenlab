@@ -32,7 +32,7 @@ export const fetchCustomFields = ({
     action: 'get',
     queryParams: {
       input_types: inputTypes,
-      copy: copy,
+      copy,
     },
   });
 };

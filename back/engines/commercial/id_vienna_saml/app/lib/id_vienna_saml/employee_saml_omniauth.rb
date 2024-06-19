@@ -55,7 +55,7 @@ module IdViennaSaml
 
     # @return [Array<Symbol>] Returns a list of attributes that can be updated from the auth response hash
     def updateable_user_attrs
-      %i[first_name last_name]
+      super + %i[first_name last_name]
     end
 
     # Removes the response object because it produces a Stacklevel too deep error when converting to JSON

@@ -36,7 +36,7 @@ const UsersEditPageMeta = ({ authUser }: Props) => {
   }
 
   const { location } = window;
-  const usersEditPageIndexTitle = formatMessage(messages.metaTitle, {
+  const usersEditPageIndexTitle = formatMessage(messages.metaTitle1, {
     firstName,
     lastName,
   });

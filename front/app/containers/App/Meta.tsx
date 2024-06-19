@@ -49,8 +49,8 @@ const Meta = () => {
       tenant.data.attributes.settings.facebook_login.app_id;
 
     const metaTitleMultiLoc = tenant.data.attributes.settings.core.meta_title;
-    let metaTitle = localize(metaTitleMultiLoc);
-    metaTitle = metaTitle || formatMessage(messages.metaTitle);
+    const metaTitle =
+      localize(metaTitleMultiLoc) || formatMessage(messages.metaTitle1);
 
     const metaDescriptionMultiLoc =
       tenant.data.attributes.settings.core.meta_description;

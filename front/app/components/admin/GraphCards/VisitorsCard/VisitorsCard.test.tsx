@@ -50,13 +50,10 @@ describe('<VisitorsCard />', () => {
   const resolution = 'month';
 
   it('renders graph', () => {
-    const projectId = undefined;
-
     const { container } = render(
       <VisitorsCard
         startAtMoment={startAtMoment}
         endAtMoment={endAtMoment}
-        projectId={projectId}
         resolution={resolution}
       />
     );
@@ -67,13 +64,10 @@ describe('<VisitorsCard />', () => {
   });
 
   it('renders visit duration and pageviews', () => {
-    const projectId = undefined;
-
     render(
       <VisitorsCard
         startAtMoment={startAtMoment}
         endAtMoment={endAtMoment}
-        projectId={projectId}
         resolution={resolution}
       />
     );
@@ -85,32 +79,14 @@ describe('<VisitorsCard />', () => {
   });
 
   it('does not render tooltips for duration and pageviews if project filter not active', () => {
-    const projectId = undefined;
-
     const { container } = render(
       <VisitorsCard
         startAtMoment={startAtMoment}
         endAtMoment={endAtMoment}
-        projectId={projectId}
         resolution={resolution}
       />
     );
 
     expect(container.querySelectorAll('.tooltip-icon')).toHaveLength(3);
-  });
-
-  it('renders tooltips for duration and pageviews if project filter active', () => {
-    const projectId = '1111';
-
-    const { container } = render(
-      <VisitorsCard
-        startAtMoment={startAtMoment}
-        endAtMoment={endAtMoment}
-        projectId={projectId}
-        resolution={resolution}
-      />
-    );
-
-    expect(container.querySelectorAll('.tooltip-icon')).toHaveLength(5);
   });
 });

@@ -2,6 +2,7 @@ el:
   email_campaigns:
     campaign_type_description:
       "manual": Επίσημα μηνύματα
+      "manual_project_participants": Επίσημα μηνύματα προς τους συμμετέχοντες στο έργο
       "admin_rights_received": Δικαιώματα διαχειριστή
       "comment_deleted_by_admin": Διαγράψτε το σχόλιό μου
       "comment_marked_as_spam": Σχόλιο spam αναφορά
@@ -76,7 +77,7 @@ el:
       "link_terms_conditions": "Όροι & Προϋποθέσεις"
       "link_unsubscribe": "Διαγραφή"
       "powered_by": "Υποστηρίζεται από"
-      "statement": "Αυτό το μήνυμα ηλεκτρονικού ταχυδρομείου σας εστάλη από το CitizenLab για λογαριασμό του %{organizationName}, επειδή είστε εγγεγραμμένος χρήστης του %{organizationLink}. Μπορείτε να %{unsubscribeLink} αν δεν θέλετε να λαμβάνετε αυτά τα μηνύματα στο μέλλον."
+      "statement": "Αυτό το μήνυμα ηλεκτρονικού ταχυδρομείου σας εστάλη από το Go Vocal για λογαριασμό του %{organizationName}, επειδή είστε εγγεγραμμένος χρήστης του %{organizationLink}. Μπορείτε να %{unsubscribeLink} αν δεν θέλετε να λαμβάνετε αυτά τα μηνύματα στο μέλλον."
       "unsubscribe_text": "διαγραφή"
     follow:
       "unfollow_here": "Λάβατε αυτή την ειδοποίηση εξαιτίας ενός στοιχείου που ακολουθείτε. <a href=\"%{unfollow_url}\">Μπορείτε να το ακυρώσετε εδώ.</a>"
@@ -559,6 +560,7 @@ el:
         admins: 'Προς τους διαχειριστές'
         admins_and_managers: 'Προς διαχειριστές & διευθυντές'
         managers: 'Προς τους διαχειριστές'
+        project_participants: 'Για τους συμμετέχοντες στο έργο'
         registered_users: 'Για εγγεγραμμένους χρήστες'
       recipient_segment:
         admins: 'Διαχειριστές'

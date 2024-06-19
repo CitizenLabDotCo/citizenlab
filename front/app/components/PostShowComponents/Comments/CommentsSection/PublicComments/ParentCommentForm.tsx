@@ -19,6 +19,7 @@ import Avatar from 'components/Avatar';
 import ErrorMessage from 'components/PostShowComponents/Comments/CommentForm/ErrorMessage';
 import TextArea from 'components/PostShowComponents/Comments/CommentForm/TextArea';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import clickOutside from 'utils/containers/clickOutside';
@@ -104,6 +105,7 @@ const ParentCommentForm = ({
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
   const [inputValue, setInputValue] = useState('');
   const [focused, setFocused] = useState(false);
+  const [isCommentCancelled, setIsCommentCancelled] = useState(false);
   const [hasApiError, setHasApiError] = useState(false);
   const [profanityApiError, setProfanityApiError] = useState(false);
   const [postAnonymously, setPostAnonymously] = useState(false);
@@ -129,6 +131,7 @@ const ParentCommentForm = ({
   };
 
   const onFocus = () => {
+    setIsCommentCancelled(false);
     trackEventByName(tracks.focusParentCommentEditor, {
       extra: {
         postId: ideaId || initiativeId,
@@ -324,6 +327,11 @@ const ParentCommentForm = ({
             onFocus={onFocus}
             getTextAreaRef={setRef}
           />
+          {isCommentCancelled && (
+            <ScreenReaderOnly aria-live="polite">
+              {formatMessage(messages.a11y_cancelledPostingComment)}
+            </ScreenReaderOnly>
+          )}
           <Actions
             processing={processing}
             focused={focused}
@@ -333,7 +341,10 @@ const ParentCommentForm = ({
             submitButtonClassName="e2e-submit-parentcomment"
             togglePostAnonymously={setPostAnonymously}
             onSubmit={onSubmit}
-            onCancel={close}
+            onCancel={() => {
+              setIsCommentCancelled(true);
+              close();
+            }}
           />
         </Form>
       </FormContainer>

@@ -148,10 +148,10 @@ def object_from_template(classname, attributes)
   when 'Project', 'Event'
     nil
   when 'CustomField'
-    CustomField.with_resource_type('User').where(code: attributes['code']).first
+    CustomField.registration.where(code: attributes['code']).first
   when 'CustomFieldOption'
     CustomFieldOption.where(key: attributes['key'],
-      custom_field: CustomField.with_resource_type('User').where(code: attributes['custom_field_ref']['code'])).first
+      custom_field: CustomField.registration.where(code: attributes['custom_field_ref']['code'])).first
   end
 end
 

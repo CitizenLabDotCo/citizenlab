@@ -47,8 +47,8 @@ export default defineMessages({
     defaultMessage: 'Only admins can create project folders.',
   },
   onlyAdminsCanCreateProjects: {
-    id: 'app.containers.AdminPage.projects.all.onlyAdminsCanCreateProjects',
-    defaultMessage: 'Only admins and folder moderators can create projects.',
+    id: 'app.containers.AdminPage.projects.all.onlyAdminsCanCreateProjects1',
+    defaultMessage: 'Only admins and folder managers can create projects.',
   },
   all: {
     id: 'app.containers.AdminPage.projects.all.all',
@@ -73,7 +73,7 @@ export default defineMessages({
   moderatedProjectsEmpty: {
     id: 'app.containers.AdminPage.projects.all.moderatedProjectsEmpty',
     defaultMessage:
-      'Projects where you are a Project Manager will appear here.',
+      'Projects of which you are an assigned Project Manager will appear here.',
   },
   homepageWarning: {
     id: 'app.containers.AdminPage.projects.all.homepageWarning',

@@ -1,0 +1,89 @@
+import { defineMessages } from 'react-intl';
+
+export default defineMessages({
+  title: {
+    id: 'app.Admin.ManagementFeed.title',
+    defaultMessage: 'Management feed',
+  },
+  date: {
+    id: 'app.Admin.ManagementFeed.date',
+    defaultMessage: 'Date',
+  },
+  user: {
+    id: 'app.Admin.ManagementFeed.user',
+    defaultMessage: 'User',
+  },
+  item: {
+    id: 'app.Admin.ManagementFeed.item',
+    defaultMessage: 'Item',
+  },
+  action: {
+    id: 'app.Admin.ManagementFeed.action',
+    defaultMessage: 'Action',
+  },
+  changed: {
+    id: 'app.Admin.ManagementFeed.changed',
+    defaultMessage: 'Modified',
+  },
+  deleted: {
+    id: 'app.Admin.ManagementFeed.deleted',
+    defaultMessage: 'Deleted',
+  },
+  created: {
+    id: 'app.Admin.ManagementFeed.created',
+    defaultMessage: 'Created',
+  },
+  project: {
+    id: 'app.Admin.ManagementFeed.project',
+    defaultMessage: 'Project',
+  },
+  phase: {
+    id: 'app.Admin.ManagementFeed.phase',
+    defaultMessage: 'Phase',
+  },
+  folder: {
+    id: 'app.Admin.ManagementFeed.folder',
+    defaultMessage: 'Folder',
+  },
+  idea: {
+    id: 'app.Admin.ManagementFeed.idea',
+    defaultMessage: 'Idea',
+  },
+  userPlaceholder: {
+    id: 'app.Admin.ManagementFeed.userPlaceholder',
+    defaultMessage: 'Select a user',
+  },
+  viewDetails: {
+    id: 'app.Admin.ManagementFeed.viewDetails',
+    defaultMessage: 'View details',
+  },
+  key: {
+    id: 'app.Admin.ManagementFeed.key',
+    defaultMessage: 'Key',
+  },
+  value: {
+    id: 'app.Admin.ManagementFeed.value',
+    defaultMessage: 'Value',
+  },
+  before: {
+    id: 'app.Admin.ManagementFeed.before',
+    defaultMessage: 'Before',
+  },
+  after: {
+    id: 'app.Admin.ManagementFeed.after',
+    defaultMessage: 'After',
+  },
+  warning: {
+    id: 'app.Admin.ManagementFeed.warning',
+    defaultMessage:
+      'Experimental feature: A minimal list of selected actions performed by admins or managers in the last 30 days. Not all actions are included.',
+  },
+  in: {
+    id: 'app.Admin.ManagementFeed.in',
+    defaultMessage: 'in project {project}',
+  },
+  noActivityFound: {
+    id: 'app.Admin.ManagementFeed.noActivityFound',
+    defaultMessage: 'No activity found',
+  },
+});

@@ -25,7 +25,7 @@ RSpec.shared_examples 'internal_comment_campaign_generate_commands' do
     ).to eq(notification.internal_comment.body)
     expect(
       command.dig(:event_payload, :internal_comment_url)
-    ).to eq(Frontend::UrlService.new.model_to_url(notification.internal_comment, locale: recipient.locale))
+    ).to eq(Frontend::UrlService.new.model_to_url(notification.internal_comment, locale: Locale.new(recipient.locale)))
     expect(
       command.dig(:event_payload, :post_title_multiloc)
     ).to eq(notification.post.title_multiloc)

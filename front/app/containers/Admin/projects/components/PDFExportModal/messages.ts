@@ -2,37 +2,51 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   exportAsPDF: {
-    id: 'app.containers.Admin.projects.all.exportAsPDF',
-    defaultMessage: 'Export as pdf',
+    id: 'app.containers.Admin.projects.all.exportAsPDF1',
+    defaultMessage: 'Download PDF form',
+  },
+  notes: {
+    id: 'app.containers.Admin.projects.all.notes',
+    defaultMessage: 'Notes',
   },
   askPersonalData: {
     id: 'app.containers.Admin.projects.all.askPersonalData',
     defaultMessage: 'Ask personal data',
   },
   clickExportToPDFIdeaForm: {
-    id: 'app.containers.Admin.projects.all.clickExportToPDFIdeaForm2',
+    id: 'app.containers.Admin.projects.all.clickExportToPDFIdeaForm',
     defaultMessage:
-      "Click 'Export as pdf' below to download a pdf version of the input form. Be aware that at the moment the Images, File Upload, Tags and Linear Scale fields are not supported for the pdf version.",
+      'Questions not currently supported: Images, Tags and File Upload.',
   },
   clickExportToPDFSurvey: {
-    id: 'app.containers.Admin.projects.all.clickExportToPDFSurvey3',
+    id: 'app.containers.Admin.projects.all.clickExportToPDFSurvey',
     defaultMessage:
-      "Click 'Export as pdf' below to download a pdf version of the survey. Be aware that at the moment the Location Answer, Linear Scale and File Upload fields are not supported for the pdf version.",
+      'Questions not currently supported: Location and File Upload.',
   },
   itIsAlsoPossibleIdeation: {
-    id: 'app.containers.Admin.projects.all.itIsAlsoPossible',
+    id: 'app.containers.Admin.projects.all.itIsAlsoPossible1',
     defaultMessage:
-      "It is also possible to upload the filled-out input forms back to the platform. Our Offline Input Importer will automatically detect the handwriting on the forms. This makes combining online and offline participation a lot easier. To open the Offline Input Importer, go to the 'Input manager' tab of this project, and click 'Add offline inputs'.",
+      "You can combine online and offline responses. To upload offline responses, go to the 'Input manager' tab of this project, and click 'Import'.",
   },
   itIsAlsoPossibleSurvey: {
-    id: 'app.containers.Admin.projects.all.itIsAlsoPossibleSurvey',
+    id: 'app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1',
     defaultMessage:
-      "It is also possible to upload the filled-out surveys back to the platform. Our Offline Input Importer will automatically detect the handwriting on the forms. This makes combining online and offline participation a lot easier. To open the Offline Input Importer, go to the 'Survey' tab of this project, and click 'Add offline inputs'.",
+      "You can combine online and offline responses. To upload offline responses, go to the 'Survey' tab of this project, and click 'Import'.",
+  },
+  notIncludedInYourPlan: {
+    id: 'app.containers.Admin.projects.all.notIncludedInYourPlan',
+    defaultMessage:
+      'However, this is not included in your current plan. Reach out to your Government Success Manager or admin to unlock it.',
+  },
+  logicNotInPDF: {
+    id: 'app.containers.Admin.projects.all.logicNotInPDF',
+    defaultMessage:
+      'Survey logic will not be reflected in the downloaded PDF. Paper respondents will see all survey questions.',
   },
   personalDataExplanation: {
-    id: 'app.containers.Admin.projects.all.personalDataExplanation',
+    id: 'app.containers.Admin.projects.all.personalDataExplanation2',
     defaultMessage:
-      "To ask people for their name, email, and consent to automatically create an account for them, tick the checkbox below. If you don't check this box, or if the user does not consent to having an account created, the input will be treated as anonymous.",
+      'Check the box below, if you want your downloaded PDF to contain name, last name, and email fields. Upon upload of the paper form, we will use that user data, to auto-generate an account for the offline survey respondent.',
   },
   phase: {
     id: 'app.containers.Admin.projects.all.PDFExportModal.phase',

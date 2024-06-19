@@ -9,10 +9,6 @@ const CreateProjectFromTemplate = React.lazy(
   () => import('./admin/containers/CreateProjectFromTemplate')
 );
 const Tab = React.lazy(() => import('./admin/components/Tab'));
-const ProjectTemplatePreviewAdminWithEventWrapper = React.lazy(
-  () => import('./admin/containers/ProjectTemplatePreviewAdminWithEventWrapper')
-);
-const FeatureFlag = React.lazy(() => import('components/FeatureFlag'));
 
 const CitizenTemplatePreviewComponent = React.lazy(
   () => import('./citizen/containers/ProjectTemplatePreviewCitizen')
@@ -65,28 +61,13 @@ const configuration: ModuleConfiguration = {
     ],
   },
   outlets: {
-    'app.containers.Admin.projects.all.container': (props) => {
-      return (
-        <FeatureFlag name="admin_project_templates">
-          <ProjectTemplatePreviewAdminWithEventWrapper
-            onRender={props.onRender}
-          />
-        </FeatureFlag>
-      );
-    },
     'app.containers.Admin.projects.all.createProject': (props) => (
-      <FeatureFlag name="admin_project_templates">
-        <RenderOnSelectedTabValue selectedTabValue={props.selectedTabValue}>
-          <CreateProjectFromTemplate />
-        </RenderOnSelectedTabValue>
-      </FeatureFlag>
+      <RenderOnSelectedTabValue selectedTabValue={props.selectedTabValue}>
+        <CreateProjectFromTemplate />
+      </RenderOnSelectedTabValue>
     ),
     'app.containers.Admin.projects.all.createProject.tabs': (props) => {
-      return (
-        <FeatureFlag name="admin_project_templates">
-          <Tab {...props} />
-        </FeatureFlag>
-      );
+      return <Tab {...props} />;
     },
   },
 };

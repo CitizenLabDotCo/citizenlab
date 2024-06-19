@@ -20,9 +20,9 @@ describe 'db/seeds.rb' do
       # projects to have seed data that works out of the box with cl2-back
       expect(Tenant.current.id).to eq 'c72c5211-8e03-470b-9564-04ec0a8c322b'
       expect(User.count).to be > 0
-      expect(User.find_by(email: 'admin@citizenlab.co').id).to eq '386d255e-2ff1-4192-8e50-b3022576be50'
-      expect(User.find_by(email: 'moderator@citizenlab.co').id).to eq '61caabce-f7e5-4804-b9df-36d7d7d73e4d'
-      expect(User.find_by(email: 'user@citizenlab.co').id).to eq '546335a3-33b9-471c-a18a-d5b58ebf173a'
+      expect(User.find_by(email: 'admin@govocal.com').id).to eq '386d255e-2ff1-4192-8e50-b3022576be50'
+      expect(User.find_by(email: 'moderator@govocal.com').id).to eq '61caabce-f7e5-4804-b9df-36d7d7d73e4d'
+      expect(User.find_by(email: 'user@govocal.com').id).to eq '546335a3-33b9-471c-a18a-d5b58ebf173a'
       expect(Topic.count).to be > 0
       expect(Area.count).to be > 0
       expect(Project.count).to be > 0
@@ -38,9 +38,8 @@ describe 'db/seeds.rb' do
       expect(StaticPage.count).to be > 3
       expect(IdeaStatus.count).to be > 0
       expect(Group.count).to be > 0
-      expect(CustomField.with_resource_type('User').count).to be > 0
+      expect(CustomField.registration.count).to be > 0
       expect(CustomFieldOption.count).to be > 0
-      # expect(CustomField.with_resource_type('CustomForm').count).to be > 0
       expect(Invite.count).to be > 0
       # expect(IdIdCardLookup::IdCard.count).to be 10
       expect(EmailCampaigns::UnsubscriptionToken.count).to be > 0
@@ -64,7 +63,7 @@ describe 'db/seeds.rb' do
       load Rails.root.join('db/seeds.rb')
       expect(Tenant.current.id).to eq '07ff8088-cc78-4307-9a1c-ebb6fb836f96'
       expect(User.count).to be 1
-      expect(User.find_by(email: 'admin@citizenlab.co').id).to eq 'e0d698fc-5969-439f-9fe6-e74fe82b567a'
+      expect(User.find_by(email: 'admin@govocal.com').id).to eq 'e0d698fc-5969-439f-9fe6-e74fe82b567a'
       expect(Topic.count).to be > 0
       expect(IdeaStatus.count).to be > 0
       expect(Area.count).to be 0

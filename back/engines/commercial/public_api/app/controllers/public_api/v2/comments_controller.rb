@@ -10,7 +10,7 @@ module PublicApi
 
     def index
       comments = post_type ? Comment.where(post_type: post_type) : Comment.all
-      list_items(comments.includes([:post]), V2::CommentSerializer)
+      list_items(comments, V2::CommentSerializer, includes: [:post])
     end
 
     def show

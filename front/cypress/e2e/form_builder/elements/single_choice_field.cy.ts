@@ -53,7 +53,7 @@ describe('Form builder single choice field', () => {
     cy.get('#e2e-title-multiloc').type('Question title', { force: true });
     cy.get('#e2e-option-input-0').type('Option 1', { force: true });
     cy.contains('Save').click();
-    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.contains('Question title').should('exist');
     cy.contains('Option 1').should('exist');
     cy.contains('Survey').should('exist');
@@ -75,7 +75,7 @@ describe('Form builder single choice field', () => {
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
     cy.get('#e2e-option-input-0').type('Car', { force: true });
     cy.contains('Save').click();
-    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.contains(questionTitle).should('exist');
     cy.contains(otherText).click({ force: true });
     cy.contains('Survey').should('exist');
@@ -90,7 +90,7 @@ describe('Form builder single choice field', () => {
       'eq',
       `${
         Cypress.config().baseUrl
-      }/en/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`
+      }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
     );
 
     cy.get('[id^="properties"]')

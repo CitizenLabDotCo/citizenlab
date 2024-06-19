@@ -6,9 +6,9 @@ import {
   Spinner,
   stylingConsts,
   Title,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { InfiniteData } from '@tanstack/react-query';
-import Tippy from '@tippyjs/react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -23,7 +23,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import NavigationTabs from 'components/admin/NavigationTabs';
 import Tab from 'components/admin/NavigationTabs/Tab';
-import Outlet from 'components/Outlet';
 import Button from 'components/UI/Button';
 import SearchInput from 'components/UI/SearchInput';
 
@@ -37,12 +36,6 @@ import SortableProjectList from './Lists/SortableProjectList';
 import messages from './messages';
 
 const Container = styled.div``;
-
-const CreateAndEditProjectsContainer = styled.div`
-  &.hidden {
-    display: none;
-  }
-`;
 
 const ListsContainer = styled.div`
   min-height: 80vh;
@@ -92,6 +85,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
   const [search, setSearch] = useState<string>('');
   const { data: authUser } = useAuthUser();
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
+
   const userIsAdmin = isAdmin(authUser);
 
   const userIsFolderModerator =
@@ -100,7 +94,6 @@ const AdminProjectsList = memo(({ className }: Props) => {
       isProjectFolderModerator(authUser.data)) ??
     false;
   const userCanCreateProject = userIsAdmin || userIsFolderModerator;
-  const [containerOutletRendered, setContainerOutletRendered] = useState(false);
 
   const { data: moderatedAdminPublications } = useAdminPublications({
     publicationStatusFilter: ['published', 'draft', 'archived'],
@@ -143,10 +136,6 @@ const AdminProjectsList = memo(({ className }: Props) => {
     }
   }, [userIsAdmin]);
 
-  const handleContainerOutletOnRender = (hasRendered: boolean) => {
-    setContainerOutletRendered(hasRendered);
-  };
-
   const { pathname } = useLocation();
 
   const activeTab = getActiveTab(pathname);
@@ -166,9 +155,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
 
   return (
     <Container className={className}>
-      <CreateAndEditProjectsContainer
-        className={containerOutletRendered ? 'hidden' : ''}
-      >
+      <Box>
         <Box display="flex" justifyContent="space-between" mb="24px">
           <Box>
             <Title color="primary">
@@ -182,7 +169,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
             alignItems="center"
           >
             {isProjectFoldersEnabled && (
-              <Tippy
+              <Tooltip
                 content={
                   <FormattedMessage {...messages.onlyAdminsCanCreateFolders} />
                 }
@@ -199,9 +186,9 @@ const AdminProjectsList = memo(({ className }: Props) => {
                     <FormattedMessage {...messages.createProjectFolder} />
                   </Button>
                 </Box>
-              </Tippy>
+              </Tooltip>
             )}
-            <Tippy
+            <Tooltip
               content={
                 <FormattedMessage {...messages.onlyAdminsCanCreateProjects} />
               }
@@ -218,7 +205,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
                   <FormattedMessage {...messages.newProject} />
                 </Button>
               </Box>
-            </Tippy>
+            </Tooltip>
           </Box>
         </Box>
         <Box my="24px" w="fit-content">
@@ -302,11 +289,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
             )}
           </Suspense>
         </ListsContainer>
-      </CreateAndEditProjectsContainer>
-      <Outlet
-        id="app.containers.Admin.projects.all.container"
-        onRender={handleContainerOutletOnRender}
-      />
+      </Box>
     </Container>
   );
 });

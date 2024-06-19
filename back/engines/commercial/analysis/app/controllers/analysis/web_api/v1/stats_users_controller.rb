@@ -21,7 +21,7 @@ module Analysis
         end
 
         def authors_by_domicile
-          domicile_field = CustomField.with_resource_type('User').find_by!(code: 'domicile')
+          domicile_field = CustomField.registration.find_by!(code: 'domicile')
 
           users_count_by_option_id = UserCustomFields::FieldValueCounter.counts_by_field_option(
             find_users, domicile_field, by: :option_id

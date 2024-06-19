@@ -1,49 +1,129 @@
-import { parseTimeSeries } from './parse';
+import { VisitorsResponse } from 'api/graph_data_units/responseTypes/VisitorsWidget';
 
-const testData = [
-  {
-    count: 1,
-    count_visitor_id: 1,
-    'dimension_date_first_action.month': '2022-10',
-    first_dimension_date_first_action_date: '2022-10-11',
-  },
-  {
-    count: 2,
-    count_visitor_id: 1,
-    'dimension_date_first_action.month': '2022-11',
-    first_dimension_date_first_action_date: '2022-11-25',
-  },
-  {
-    count: 1,
-    count_visitor_id: 1,
-    'dimension_date_first_action.month': '2023-06',
-    first_dimension_date_first_action_date: '2023-06-01',
-  },
-  {
-    count: 2,
-    count_visitor_id: 2,
-    'dimension_date_first_action.month': '2023-09',
-    first_dimension_date_first_action_date: '2023-09-26',
-  },
-];
+import { parseStats } from './parse';
 
-const expected = [
-  { visitors: 1, visits: 1, date: '2022-10-01' },
-  { visitors: 1, visits: 2, date: '2022-11-01' },
-  { date: '2022-12-01', visitors: 0, visits: 0 },
-  { date: '2023-01-01', visitors: 0, visits: 0 },
-  { date: '2023-02-01', visitors: 0, visits: 0 },
-  { date: '2023-03-01', visitors: 0, visits: 0 },
-  { date: '2023-04-01', visitors: 0, visits: 0 },
-  { date: '2023-05-01', visitors: 0, visits: 0 },
-  { visitors: 1, visits: 1, date: '2023-06-01' },
-  { date: '2023-07-01', visitors: 0, visits: 0 },
-  { date: '2023-08-01', visitors: 0, visits: 0 },
-  { visitors: 2, visits: 2, date: '2023-09-01' },
-];
+describe('parseStats', () => {
+  it('works when everything is missing', () => {
+    const attributes: VisitorsResponse['data']['attributes'] = [
+      [],
+      [],
+      [],
+      undefined,
+      undefined,
+    ];
 
-describe('parseTimeSeries', () => {
-  it('should work', () => {
-    expect(parseTimeSeries(testData, null, null, 'month')).toEqual(expected);
+    const result = parseStats(attributes);
+
+    expect(result).toEqual({
+      visitors: {
+        value: 0,
+        delta: undefined,
+      },
+      visits: {
+        value: 0,
+        delta: undefined,
+      },
+      visitDuration: {
+        value: '00:00:00',
+        delta: undefined,
+      },
+      pageViews: {
+        value: '0',
+        delta: undefined,
+      },
+    });
+  });
+
+  it('works for current period', () => {
+    const attributes: VisitorsResponse['data']['attributes'] = [
+      [],
+      [{ count: 10, count_monthly_user_hash: 5 }],
+      [{ avg_duration: '100', avg_pages_visited: '7' }],
+      undefined,
+      undefined,
+    ];
+
+    const result = parseStats(attributes);
+
+    expect(result).toEqual({
+      visitors: {
+        value: 5,
+        delta: undefined,
+      },
+      visits: {
+        value: 10,
+        delta: undefined,
+      },
+      visitDuration: {
+        value: '00:01:40',
+        delta: undefined,
+      },
+      pageViews: {
+        value: '7',
+        delta: undefined,
+      },
+    });
+  });
+
+  it('works with compared period', () => {
+    const attributes: VisitorsResponse['data']['attributes'] = [
+      [],
+      [{ count: 10, count_monthly_user_hash: 5 }],
+      [{ avg_duration: '200', avg_pages_visited: '7' }],
+      [{ count: 4, count_monthly_user_hash: 3 }],
+      [{ avg_duration: '90', avg_pages_visited: '5' }],
+    ];
+
+    const result = parseStats(attributes);
+
+    expect(result).toEqual({
+      visitors: {
+        value: 5,
+        delta: 2,
+      },
+      visits: {
+        value: 10,
+        delta: 6,
+      },
+      visitDuration: {
+        value: '00:03:20',
+        delta: '00:01:50',
+      },
+      pageViews: {
+        value: '7',
+        delta: '2',
+      },
+    });
+  });
+
+  it('works if avg_duration and avg_pages_visited deltas are negative', () => {
+    const attributes: VisitorsResponse['data']['attributes'] = [
+      [],
+      [{ count: 4, count_monthly_user_hash: 3 }],
+      [{ avg_duration: '90', avg_pages_visited: '5' }],
+      [{ count: 10, count_monthly_user_hash: 5 }],
+      [{ avg_duration: '200', avg_pages_visited: '7' }],
+    ];
+
+    const result = parseStats(attributes);
+
+    expect(result).toEqual({
+      visitors: {
+        value: 3,
+        delta: -2,
+      },
+      visits: {
+        value: 4,
+        delta: -6,
+      },
+      visitDuration: {
+        value: '00:01:30',
+        delta: '-00:01:50',
+      },
+      pageViews: {
+        value: '5',
+        delta: '-2',
+      },
+    });
   });
 });

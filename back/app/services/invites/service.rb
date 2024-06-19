@@ -56,7 +56,7 @@ class Invites::Service
   private
 
   def custom_field_schema
-    @custom_field_schema ||= CustomFieldService.new.fields_to_json_schema(CustomField.with_resource_type('User'))
+    @custom_field_schema ||= CustomFieldService.new.fields_to_json_schema(CustomField.registration)
   end
 
   # @return [Array<String>]

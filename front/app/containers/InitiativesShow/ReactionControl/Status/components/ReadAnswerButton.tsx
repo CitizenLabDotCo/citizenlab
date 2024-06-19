@@ -15,7 +15,7 @@ const ReadAnswerButton = ({ onClick }: Props) => {
     <Button
       icon="survey-long-answer-2"
       iconSize="20px"
-      buttonStyle="secondary"
+      buttonStyle="primary-outlined"
       onClick={onClick}
     >
       <FormattedMessage {...messages.readAnswer} />

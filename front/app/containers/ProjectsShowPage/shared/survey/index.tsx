@@ -4,10 +4,11 @@ import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { TSurveyService } from 'api/phases/types';
-import { IProjectData, SurveyDisabledReason } from 'api/projects/types';
+import { IProjectData, ProjectSurveyDisabledReason } from 'api/projects/types';
 
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import globalMessages from 'utils/messages';
@@ -41,15 +42,19 @@ interface Props {
   className?: string;
 }
 
-const disabledMessages: { [key in SurveyDisabledReason]: MessageDescriptor } = {
+const disabledMessages: {
+  [key in ProjectSurveyDisabledReason]: MessageDescriptor;
+} = {
   project_inactive: messages.surveyDisabledProjectInactive,
-  not_active: messages.surveyDisabledNotActiveUser,
-  not_verified: messages.surveyDisabledNotVerified,
-  missing_data: messages.surveyDisabledNotActiveUser,
-  not_signed_in: messages.surveyDisabledMaybeNotPermitted,
-  not_in_group: globalMessages.notInGroup,
-  not_permitted: messages.surveyDisabledNotPermitted,
+  project_not_visible: messages.surveyDisabledNotPermitted,
   not_survey: messages.surveyDisabledNotActivePhase,
+  user_not_active: messages.surveyDisabledNotActiveUser,
+  user_not_verified: messages.surveyDisabledNotVerified,
+  user_missing_requirements: messages.surveyDisabledNotActiveUser,
+  user_not_signed_in: messages.surveyDisabledMaybeNotPermitted,
+  user_not_in_group: globalMessages.notInGroup,
+  user_not_permitted: messages.surveyDisabledNotPermitted,
+  user_blocked: messages.surveyDisabledNotPermitted,
 };
 
 const Survey = ({
@@ -61,7 +66,7 @@ const Survey = ({
 }: Props) => {
   const { data: authUser } = useAuthUser();
   const { enabled, disabled_reason } =
-    project.attributes.action_descriptor.taking_survey;
+    project.attributes.action_descriptors.taking_survey;
   const email =
     !isNilOrError(authUser) && authUser.data.attributes.email
       ? authUser.data.attributes.email
@@ -82,6 +87,10 @@ const Survey = ({
         <ProjectPageSectionTitle>
           <FormattedMessage {...messages.survey} />
         </ProjectPageSectionTitle>
+
+        <ScreenReaderOnly>
+          <FormattedMessage {...messages.embeddedSurveyScreenReaderWarning} />
+        </ScreenReaderOnly>
 
         {surveyService === 'typeform' && (
           <TypeformSurvey

@@ -6,11 +6,11 @@ module PublicApi
 
     def index
       projects = ProjectsFinder.new(
-        Project.includes([:project_images, :map_config, { admin_publication: :parent }]).order(created_at: :desc),
+        Project.order(created_at: :desc),
         **finder_params
       ).execute
 
-      list_items(projects, V2::ProjectSerializer)
+      list_items(projects, V2::ProjectSerializer, includes: [:project_images, :map_config, { admin_publication: :parent }])
     end
 
     def show

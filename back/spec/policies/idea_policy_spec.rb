@@ -105,8 +105,8 @@ describe IdeaPolicy do
 
     context 'when there is a posting idea disabled reason' do
       before do
-        allow_any_instance_of(ParticipationPermissionsService)
-          .to receive(:posting_idea_disabled_reason_for_project).and_return(disabled_reason)
+        allow_any_instance_of(Permissions::ProjectPermissionsService)
+          .to receive(:denied_reason_for_action).and_return(disabled_reason)
       end
 
       described_class::EXCLUDED_REASONS_FOR_UPDATE.each do |disabled_reason|
@@ -145,8 +145,8 @@ describe IdeaPolicy do
         end
       end
 
-      context "when the disabled reason is not excluded for update: 'not_ideation'" do
-        let(:disabled_reason) { 'not_ideation' }
+      context "when the disabled reason is not excluded for update: 'posting_not_supported'" do
+        let(:disabled_reason) { 'posting_not_supported' }
 
         context 'for an admin' do
           let(:user) { create(:admin) }

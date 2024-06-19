@@ -2,7 +2,6 @@
 
 require 'uri'
 
-# TODO: JS - Can we change the names in the typeform webhooks?
 module Surveys
   class TypeformWebhookManager
     # @param [Typeform::Api] tf_api

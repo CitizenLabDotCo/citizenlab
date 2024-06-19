@@ -124,8 +124,12 @@ const ProjectRow = ({
           </RowContentInner>
           <Box display="flex" gap="4px" alignItems="stretch">
             {parentPublication && showParent && (
-              <Box display="flex" gap="4px" alignItems="center" mr="4px"
-              color={colors.textSecondary}  
+              <Box
+                display="flex"
+                gap="4px"
+                alignItems="center"
+                mr="4px"
+                color={colors.textSecondary}
               >
                 <Icon
                   name="folder-solid"
@@ -184,7 +188,7 @@ const ProjectRow = ({
                   onClick={action.handler(
                     publication.relationships.publication.data.id
                   )}
-                  buttonStyle="secondary"
+                  buttonStyle="secondary-outlined"
                   icon={action.icon}
                   processing={action.processing}
                 >

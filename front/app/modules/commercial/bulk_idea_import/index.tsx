@@ -27,6 +27,8 @@ const configuration: ModuleConfiguration = {
   outlets: {
     'app.containers.Admin.ideas.tabs': (props) => {
       return (
+        // TODO: remove both the feature flag and the tab
+        // https://www.notion.so/citizenlab/Remove-old-import-tab-and-feature-flag-07d1dfbca0b34f52883675c5804a6fbe
         <FeatureFlag name="bulk_import_ideas">
           <Tab {...props} />
         </FeatureFlag>

@@ -84,4 +84,13 @@ RSpec.describe Project do
       expect(project.projects_allowed_input_topics.create(topic: project.allowed_input_topics.first)).not_to be_valid
     end
   end
+
+  describe 'generate_slug' do
+    let(:project) { build(:project, slug: nil) }
+
+    it 'generates a slug based on the first non-empty locale' do
+      project.update!(title_multiloc: { 'en' => 'my project', 'nl-BE' => 'mijn project', 'fr-BE' => 'mon projet' })
+      expect(project.slug).to eq 'my-project'
+    end
+  end
 end

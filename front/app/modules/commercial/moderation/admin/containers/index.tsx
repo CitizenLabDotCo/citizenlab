@@ -23,6 +23,7 @@ import { IModerationData, TModeratableType } from 'api/moderations/types';
 import useModerations from 'api/moderations/useModerations';
 import useUpdateModerationStatus from 'api/moderations/useUpdateModerationStatus';
 
+import ProjectSelector from 'components/admin/ProjectSelector';
 import { PageTitle } from 'components/admin/Section';
 import Outlet from 'components/Outlet';
 import Pagination from 'components/Pagination';
@@ -40,7 +41,6 @@ import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
 import ModerationRow from './ModerationRow';
-import SelectProject from './SelectProject';
 import SelectType from './SelectType';
 import tracks from './tracks';
 
@@ -424,7 +424,8 @@ const Moderation = () => {
                   selectedTypes={selectedTypes}
                   onChange={handleOnModeratableTypesChange}
                 />
-                <SelectProject
+                <ProjectSelector
+                  title={formatMessage(messages.project)}
                   selectedProjectIds={selectedProjectIds}
                   onChange={handleOnProjectIdsChange}
                 />
@@ -435,7 +436,7 @@ const Moderation = () => {
                   (selectedTab === 'read' || selectedTab === 'unread') && (
                     <MarkAsButton
                       icon={moderationStatus === 'unread' ? 'eye' : 'eye-off'}
-                      buttonStyle="cl-blue"
+                      buttonStyle="admin-dark"
                       processing={processing}
                       onClick={markAs}
                     >

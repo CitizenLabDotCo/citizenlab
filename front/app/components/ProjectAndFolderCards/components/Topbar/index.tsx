@@ -7,7 +7,6 @@ import {
   fontSizes,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { WrappedComponentProps } from 'react-intl';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
@@ -22,7 +21,7 @@ import useLocalize from 'hooks/useLocalize';
 import SearchInput from 'components/UI/SearchInput';
 
 import { ScreenReaderOnly } from 'utils/a11y';
-import { injectIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -60,17 +59,12 @@ const Title = styled.h2<{ hasPublications: boolean }>`
 const Container = styled.div<{ showFilters: boolean }>`
   width: 100%;
   display: flex;
-  flex-direction: row-reverse;
   justify-content: ${({ showFilters }) =>
     showFilters ? 'space-between' : 'start'};
   border-bottom: 1px solid #d1d1d1;
 
   ${isRtl`
     flex-direction: row-reverse;
-  `}
-
-  ${media.phone`
-    flex-direction: row;
   `}
 `;
 
@@ -150,9 +144,8 @@ const Header = ({
   onChangeAreas,
   onChangeTab,
   onChangeSearch,
-  intl: { formatMessage },
   currentlyWorkingOnText,
-}: Props & WrappedComponentProps) => {
+}: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   const isSmallerThanPhone = useBreakpoint('phone');
   const isSmallerThanTablet = useBreakpoint('tablet');
@@ -165,6 +158,7 @@ const Header = ({
   const [searchInputRef, setSearchInputRef] = useState<HTMLInputElement | null>(
     null
   );
+  const { formatMessage } = useIntl();
 
   useEffect(() => {
     const focusSearch = searchParams.get('focusSearch');
@@ -243,6 +237,15 @@ const Header = ({
       )}
 
       <Container showFilters={shouldShowAreaAndTagFilters}>
+        {showTabs && (
+          <Tabs
+            currentTab={currentTab}
+            statusCounts={statusCounts}
+            availableTabs={availableTabs}
+            onChangeTab={onChangeTab}
+          />
+        )}
+
         {shouldShowAreaAndTagFilters && (
           <DesktopFilters>
             {showFiltersLabel && (
@@ -257,15 +260,6 @@ const Header = ({
               onChangeAreas={handleOnChangeAreas}
             />
           </DesktopFilters>
-        )}
-
-        {showTabs && (
-          <Tabs
-            currentTab={currentTab}
-            statusCounts={statusCounts}
-            availableTabs={availableTabs}
-            onChangeTab={onChangeTab}
-          />
         )}
       </Container>
 
@@ -285,4 +279,4 @@ const Header = ({
   );
 };
 
-export default injectIntl(Header);
+export default Header;

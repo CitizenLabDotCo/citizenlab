@@ -1,25 +1,32 @@
+// Props
 import {
-  AgeProps,
+  ParticipantsProps,
   AnalyticsProps,
-  GenderProps,
   MostReactedIdeasProps,
   SingleIdeaProps,
   SurveyQuestionResultProps,
+  VisitorsProps,
   VisitorsTrafficSourcesProps,
+  DemographicsProps,
+  RegistrationsProps,
+  MethodsUsedProps,
+  ParticipationProps,
+  ProjectsProps,
 } from './requestTypes';
-import {
-  ActiveUsersResponse,
-  CommentsByTimeResponse,
-  MostReactedIdeasResponse,
-  PostsByTimeResponse,
-  ReactionsByTimeResponse,
-  SingleIdeaResponse,
-  SurveyQuestionResultResponse,
-  UsersByAgeResponse,
-  UsersByGenderResponse,
-  VisitorsResponse,
-  VisitorsTrafficSourcesResponse,
-} from './responseTypes';
+// Response types
+import { DemographicsResponse } from './responseTypes/DemographicsWidget';
+import { MethodsUsedResponse } from './responseTypes/MethodsUsedWidget';
+import { MostReactedIdeasResponse } from './responseTypes/MostReactedIdeasWidget';
+import { ParticipantsResponse } from './responseTypes/ParticipantsWidget';
+import { ParticipationResponse } from './responseTypes/ParticipationWidget';
+import { ProjectsResponse } from './responseTypes/ProjectsWidget';
+import { ReactionsByTimeResponse } from './responseTypes/ReactionsByTimeWidget';
+import { RegistrationsResponse } from './responseTypes/RegistrationsWidget';
+import { SingleIdeaResponse } from './responseTypes/SingleIdeaWidget';
+import { SurveyQuestionResultResponse } from './responseTypes/SurveyQuestionResultWidget';
+import { VisitorsTrafficSourcesResponse } from './responseTypes/VisitorsTrafficSourcesWidget';
+import { VisitorsResponse } from './responseTypes/VisitorsWidget';
+// Hooks
 import useGraphDataUnits from './useGraphDataUnits';
 import useGraphDataUnitsLive from './useGraphDataUnitsLive';
 
@@ -57,7 +64,7 @@ export const useSingleIdea = (
 };
 
 export const useVisitors = (
-  props: AnalyticsProps,
+  props: VisitorsProps,
   { onSuccess }: { onSuccess?: () => void }
 ) => {
   return useGraphDataUnits<VisitorsResponse>(
@@ -66,6 +73,21 @@ export const useVisitors = (
       props,
     },
     { onSuccess }
+  );
+};
+
+export const useVisitorsLive = (
+  props: VisitorsProps,
+  { onSuccess }: { onSuccess?: () => void }
+) => {
+  return useGraphDataUnitsLive<VisitorsResponse>(
+    {
+      resolved_name: 'VisitorsWidget',
+      props,
+    },
+    {
+      onSuccess,
+    }
   );
 };
 
@@ -87,87 +109,46 @@ export const useVisitorsTrafficSourcesLive = (
   });
 };
 
-export const useUsersByGender = (props: GenderProps) => {
-  return useGraphDataUnits<UsersByGenderResponse>({
-    resolved_name: 'GenderWidget',
+export const useDemographics = ({
+  custom_field_id,
+  ...props
+}: DemographicsProps) => {
+  return useGraphDataUnits<DemographicsResponse>(
+    {
+      resolved_name: 'DemographicsWidget',
+      props: { custom_field_id, ...props },
+    },
+    { enabled: !!custom_field_id }
+  );
+};
+
+export const useDemographicsLive = (props: DemographicsProps) => {
+  return useGraphDataUnitsLive<DemographicsResponse>({
+    resolved_name: 'DemographicsWidget',
     props,
   });
 };
 
-export const useUsersByGenderLive = (props: GenderProps) => {
-  return useGraphDataUnitsLive<UsersByGenderResponse>({
-    resolved_name: 'GenderWidget',
-    props,
-  });
-};
-
-export const useUsersByAge = (props: AgeProps) => {
-  return useGraphDataUnits<UsersByAgeResponse>({
-    resolved_name: 'AgeWidget',
-    props,
-  });
-};
-
-export const useUsersByAgeLive = (props: AgeProps) => {
-  return useGraphDataUnitsLive<UsersByAgeResponse>({
-    resolved_name: 'AgeWidget',
-    props,
-  });
-};
-
-export const useActiveUsers = (
-  props: AnalyticsProps,
+export const useParticipants = (
+  props: ParticipantsProps,
   { onSuccess }: { onSuccess?: () => void }
 ) => {
-  return useGraphDataUnits<ActiveUsersResponse>(
+  return useGraphDataUnits<ParticipantsResponse>(
     {
-      resolved_name: 'ActiveUsersWidget',
+      resolved_name: 'ParticipantsWidget',
       props,
     },
     { onSuccess }
   );
 };
 
-export const usePostsByTime = (props: AnalyticsProps) => {
-  return useGraphDataUnits<PostsByTimeResponse>({
-    resolved_name: 'PostsByTimeWidget',
-    props,
-  });
-};
-
-export const usePostsByTimeLive = (
-  props: AnalyticsProps,
+export const useParticipantsLive = (
+  props: ParticipantsProps,
   { onSuccess }: { onSuccess?: () => void }
 ) => {
-  return useGraphDataUnitsLive<PostsByTimeResponse>(
+  return useGraphDataUnitsLive<ParticipantsResponse>(
     {
-      resolved_name: 'PostsByTimeWidget',
-      props,
-    },
-    { onSuccess }
-  );
-};
-
-export const useCommentsByTime = (
-  props: AnalyticsProps,
-  { onSuccess }: { onSuccess?: () => void }
-) => {
-  return useGraphDataUnits<CommentsByTimeResponse>(
-    {
-      resolved_name: 'CommentsByTimeWidget',
-      props,
-    },
-    { onSuccess }
-  );
-};
-
-export const useCommentsByTimeLive = (
-  props: AnalyticsProps,
-  { onSuccess }: { onSuccess?: () => void }
-) => {
-  return useGraphDataUnitsLive<CommentsByTimeResponse>(
-    {
-      resolved_name: 'CommentsByTimeWidget',
+      resolved_name: 'ParticipantsWidget',
       props,
     },
     { onSuccess }
@@ -192,4 +173,70 @@ export const useReactionsByTimeLive = (
     },
     { onSuccess }
   );
+};
+
+export const useRegistrations = (
+  props: RegistrationsProps,
+  { onSuccess }: { onSuccess?: () => void }
+) => {
+  return useGraphDataUnits<RegistrationsResponse>(
+    {
+      resolved_name: 'RegistrationsWidget',
+      props,
+    },
+    { onSuccess }
+  );
+};
+
+export const useRegistrationsLive = (
+  props: RegistrationsProps,
+  { onSuccess }: { onSuccess?: () => void }
+) => {
+  return useGraphDataUnitsLive<RegistrationsResponse>(
+    {
+      resolved_name: 'RegistrationsWidget',
+      props,
+    },
+    { onSuccess }
+  );
+};
+
+export const useMethodsUsed = (props: MethodsUsedProps = {}) => {
+  return useGraphDataUnits<MethodsUsedResponse>({
+    resolved_name: 'MethodsUsedWidget',
+    props,
+  });
+};
+
+export const useParticipation = (
+  props: ParticipationProps = {},
+  { onSuccess }: { onSuccess?: () => void }
+) => {
+  return useGraphDataUnits<ParticipationResponse>(
+    {
+      resolved_name: 'ParticipationWidget',
+      props,
+    },
+    { onSuccess }
+  );
+};
+
+export const useParticipationLive = (
+  props: ParticipationProps = {},
+  { onSuccess }: { onSuccess?: () => void }
+) => {
+  return useGraphDataUnitsLive<ParticipationResponse>(
+    {
+      resolved_name: 'ParticipationWidget',
+      props,
+    },
+    { onSuccess }
+  );
+};
+
+export const useProjects = (props: ProjectsProps = {}) => {
+  return useGraphDataUnits<ProjectsResponse>({
+    resolved_name: 'ProjectsWidget',
+    props,
+  });
 };

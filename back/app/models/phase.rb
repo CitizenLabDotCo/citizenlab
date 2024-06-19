@@ -200,13 +200,6 @@ class Phase < ApplicationRecord
     self
   end
 
-  def last_phase?
-    phases = Phase.where(project_id: project_id)
-    return true if phases.blank?
-
-    start_at.present? && start_at >= phases.maximum(:start_at)
-  end
-
   def previous_phase_end_at_updated?
     @previous_phase_end_at_updated || false
   end
@@ -284,7 +277,7 @@ class Phase < ApplicationRecord
   end
 
   def validate_end_at
-    return if end_at.present? || last_phase?
+    return if end_at.present? || TimelineService.new.last_phase?(self)
 
     errors.add(:end_at, message: 'cannot be blank unless it is the last phase')
   end

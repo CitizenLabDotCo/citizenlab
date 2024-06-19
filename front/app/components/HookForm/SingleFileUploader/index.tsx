@@ -14,9 +14,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 export interface Props {
   name: string;
+  accept?: string;
 }
 
-const SingleFileUploader = ({ name }: Props) => {
+const SingleFileUploader = ({ name, accept }: Props) => {
   const {
     setValue,
     formState: { errors },
@@ -45,6 +46,7 @@ const SingleFileUploader = ({ name }: Props) => {
                       setValue(name, file);
                       trigger(name);
                     }}
+                    accept={accept}
                   />
                 </Box>
               )}

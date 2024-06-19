@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, KeyboardEvent } from 'react';
 
 import {
   Box,
@@ -20,8 +20,8 @@ import {
 } from 'lodash-es';
 import styled from 'styled-components';
 
-import Title from './title';
-import ValuesList from './valuesList';
+import Title from './Title';
+import ValuesList from './ValuesList';
 
 const Container = styled(Box)`
   display: inline-block;
@@ -157,7 +157,7 @@ const FilterSelector = ({
     return newTitle;
   };
 
-  const toggleExpanded = () => {
+  const toggleValuesList = () => {
     setOpened((current) => !current);
   };
 
@@ -196,6 +196,13 @@ const FilterSelector = ({
     title
   );
 
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'ArrowDown' && !opened) {
+      event.preventDefault();
+      toggleValuesList();
+    }
+  };
+
   return (
     <Container
       id={id}
@@ -203,28 +210,39 @@ const FilterSelector = ({
         last ? 'last' : ''
       }`}
     >
-      {filterSelectorStyle === 'button' ? (
-        <Button
-          height={isPhoneOrSmaller ? '32px' : '36px'}
-          borderRadius="24px"
-          onClick={toggleExpanded}
-          minWidth={minWidth ? minWidth : undefined}
-        >
-          <Box display="flex" gap="8px">
-            {currentTitle}
-            <Icon fill={colors.white} name={'chevron-down'} />
-          </Box>
-        </Button>
-      ) : (
-        <Title
-          key={baseID}
-          title={currentTitle}
-          opened={opened}
-          onClick={toggleExpanded}
-          baseID={baseID}
-          textColor={textColor}
-        />
-      )}
+      <Box id={`id-${name}`}>
+        {/* The id is used for aria-labelledby on the group
+         which defines the accessible name for the group */}
+        {filterSelectorStyle === 'button' ? (
+          <Button
+            height={isPhoneOrSmaller ? '32px' : '36px'}
+            borderRadius="24px"
+            onClick={toggleValuesList}
+            minWidth={minWidth ? minWidth : undefined}
+            onKeyDown={handleKeyDown}
+            ariaExpanded={opened}
+            aria-controls={baseID}
+          >
+            <Box display="flex" gap="8px">
+              {currentTitle}
+              <Icon
+                fill={colors.white}
+                name={opened ? 'chevron-up' : 'chevron-down'}
+              />
+            </Box>
+          </Button>
+        ) : (
+          <Title
+            key={baseID}
+            title={currentTitle}
+            opened={opened}
+            onClick={toggleValuesList}
+            baseID={baseID}
+            textColor={textColor}
+            handleKeyDown={handleKeyDown}
+          />
+        )}
+      </Box>
       <ValuesList
         title={currentTitle}
         opened={opened}

@@ -120,15 +120,14 @@ const UsersTable = ({
         {process.env.NODE_ENV === 'development' && notCitizenlabMember && (
           <Warning>
             <span>
-              <b>@citizenlab.co</b> email addresses are not included as admins &
-              managers.
+              <b>@govocal.com & @citizenlab.co</b> email addresses are not
+              included as admins & managers.
             </span>
           </Warning>
         )}
         <Table mt="20px">
           <Thead>
             <Tr>
-              <Th />
               <Th />
               <SortableTh
                 sortDirection={
@@ -144,20 +143,28 @@ const UsersTable = ({
               >
                 <FormattedMessage {...messages.name} />
               </SortableTh>
+              <Th>
+                <Uppercase>
+                  <FormattedMessage {...messages.role} />
+                </Uppercase>
+              </Th>
               <SortableTh
                 sortDirection={
-                  sort === 'email'
+                  sort === 'last_active_at'
                     ? 'descending'
-                    : sort === '-email'
+                    : sort === '-last_active_at'
                     ? 'ascending'
                     : undefined
                 }
                 onClick={handleSortingOnChange(
-                  sort === 'email' ? '-email' : 'email'
+                  sort === 'last_active_at'
+                    ? '-last_active_at'
+                    : 'last_active_at'
                 )}
               >
-                <FormattedMessage {...messages.email} />
+                <FormattedMessage {...messages.lastActive} />
               </SortableTh>
+
               <SortableTh
                 sortDirection={
                   sort === 'created_at'
@@ -170,13 +177,9 @@ const UsersTable = ({
                   sort === 'created_at' ? '-created_at' : 'created_at'
                 )}
               >
-                <FormattedMessage {...messages.since} />
+                <FormattedMessage {...messages.joined} />
               </SortableTh>
-              <Th>
-                <Uppercase>
-                  <FormattedMessage {...messages.status} />
-                </Uppercase>
-              </Th>
+
               <Th>
                 <Uppercase>
                   <FormattedMessage tagName="div" {...messages.options} />

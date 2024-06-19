@@ -12,7 +12,8 @@ export interface QuerySchema {
     | 'registration'
     | 'event'
     | 'project_status'
-    | 'email_delivery';
+    | 'email_delivery'
+    | 'session';
   filters?: {
     [k: string]:
       | string

@@ -31,13 +31,13 @@ module MultiTenancy
               maximum_admins_number: 2,
               maximum_moderators_number: 2,
               additional_admins_number: 1,
-              additional_moderators_number: 1
+              additional_moderators_number: 1,
+              population: 27_500
             },
             password_login: {
               allowed: true,
               enabled: true,
               enable_signup: true,
-              phone: false,
               minimum_length: 8
             },
             facebook_login: {
@@ -145,10 +145,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            representativeness: {
-              enabled: true,
-              allowed: true
-            },
             bulk_import_ideas: {
               enabled: true,
               allowed: true
@@ -166,10 +162,6 @@ module MultiTenancy
               allowed: true
             },
             widgets: {
-              enabled: true,
-              allowed: true
-            },
-            admin_project_templates: {
               enabled: true,
               allowed: true
             },
@@ -370,33 +362,11 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            project_visibility: {
-              enabled: true,
-              allowed: true
-            },
             disable_disliking: {
               enabled: true,
               allowed: true
             },
-            texting: {
-              enabled: true,
-              allowed: true,
-              from_number: '+12345678912',
-              monthly_sms_segments_limit: 100_000
-            },
-            native_surveys: {
-              enabled: true,
-              allowed: true
-            },
             input_form_mapping_question: {
-              enabled: true,
-              allowed: true
-            },
-            analytics: {
-              enabled: true,
-              allowed: true
-            },
-            visitors_dashboard: {
               enabled: true,
               allowed: true
             },
@@ -445,6 +415,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            input_importer: {
+              enabled: true,
+              allowed: true
+            },
             import_printed_forms: {
               enabled: true,
               allowed: true
@@ -471,6 +445,14 @@ module MultiTenancy
             },
             multi_language_platform: {
               enabled: true,
+              allowed: true
+            },
+            management_feed: {
+              enabled: true,
+              allowed: true
+            },
+            remove_vendor_branding: {
+              enabled: false,
               allowed: true
             }
           })

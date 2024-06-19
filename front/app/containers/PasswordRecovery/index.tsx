@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Success, Box, stylingConsts } from '@citizenlab/cl2-component-library';
+import { Success } from '@citizenlab/cl2-component-library';
 import { Helmet } from 'react-helmet';
 import { WrappedComponentProps } from 'react-intl';
 
@@ -124,12 +124,7 @@ class PasswordRecovery extends React.PureComponent<
     }
 
     return (
-      <Box
-        width="100%"
-        minHeight={`calc(100vh - ${
-          stylingConsts.menuHeight + stylingConsts.footerHeight
-        }px)`}
-      >
+      <>
         <Helmet
           title={helmetTitle}
           meta={[{ name: 'description', content: helmetDescription }]}
@@ -137,9 +132,7 @@ class PasswordRecovery extends React.PureComponent<
         <main>
           <StyledContentContainer>
             <Title style={{ marginBottom: '15px' }}>{title}</Title>
-
             <Subtitle>{subtitle}</Subtitle>
-
             <Form onSubmit={this.handleOnSubmit}>
               <FormLabel htmlFor="email" labelMessage={messages.emailLabel} />
               <StyledInput
@@ -168,7 +161,7 @@ class PasswordRecovery extends React.PureComponent<
             </Form>
           </StyledContentContainer>
         </main>
-      </Box>
+      </>
     );
   }
 }

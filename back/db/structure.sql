@@ -299,6 +299,7 @@ DROP INDEX IF EXISTS public.index_email_campaigns_deliveries_on_campaign_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_consents_on_user_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_consents_on_campaign_type_and_user_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_on_type;
+DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_on_context_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_on_author_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_groups_on_group_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_groups_on_campaign_id;
@@ -389,7 +390,6 @@ ALTER TABLE IF EXISTS ONLY public.id_id_card_lookup_id_cards DROP CONSTRAINT IF 
 ALTER TABLE IF EXISTS ONLY public.users DROP CONSTRAINT IF EXISTS users_pkey;
 ALTER TABLE IF EXISTS ONLY public.user_custom_fields_representativeness_ref_distributions DROP CONSTRAINT IF EXISTS user_custom_fields_representativeness_ref_distributions_pkey;
 ALTER TABLE IF EXISTS ONLY public.topics DROP CONSTRAINT IF EXISTS topics_pkey;
-ALTER TABLE IF EXISTS ONLY public.texting_campaigns DROP CONSTRAINT IF EXISTS texting_campaigns_pkey;
 ALTER TABLE IF EXISTS ONLY public.text_images DROP CONSTRAINT IF EXISTS text_images_pkey;
 ALTER TABLE IF EXISTS ONLY public.tenants DROP CONSTRAINT IF EXISTS tenants_pkey;
 ALTER TABLE IF EXISTS ONLY public.surveys_responses DROP CONSTRAINT IF EXISTS surveys_responses_pkey;
@@ -505,7 +505,6 @@ DROP TABLE IF EXISTS public.verification_verifications;
 DROP TABLE IF EXISTS public.user_custom_fields_representativeness_ref_distributions;
 DROP VIEW IF EXISTS public.union_posts;
 DROP TABLE IF EXISTS public.topics;
-DROP TABLE IF EXISTS public.texting_campaigns;
 DROP TABLE IF EXISTS public.text_images;
 DROP TABLE IF EXISTS public.tenants;
 DROP TABLE IF EXISTS public.surveys_responses;
@@ -547,7 +546,6 @@ DROP TABLE IF EXISTS public.initiatives_topics;
 DROP VIEW IF EXISTS public.initiative_initiative_statuses;
 DROP TABLE IF EXISTS public.initiative_images;
 DROP TABLE IF EXISTS public.initiative_files;
-DROP TABLE IF EXISTS public.impact_tracking_sessions;
 DROP TABLE IF EXISTS public.impact_tracking_salts;
 DROP TABLE IF EXISTS public.identities;
 DROP TABLE IF EXISTS public.ideas_topics;
@@ -571,6 +569,7 @@ DROP TABLE IF EXISTS public.email_campaigns_consents;
 DROP TABLE IF EXISTS public.email_campaigns_campaigns_groups;
 DROP TABLE IF EXISTS public.email_campaigns_campaign_email_commands;
 DROP TABLE IF EXISTS public.custom_forms;
+DROP TABLE IF EXISTS public.custom_fields;
 DROP TABLE IF EXISTS public.custom_field_options;
 DROP TABLE IF EXISTS public.custom_field_option_images;
 DROP TABLE IF EXISTS public.cosponsors_initiatives;
@@ -586,7 +585,8 @@ DROP TABLE IF EXISTS public.areas_ideas;
 DROP TABLE IF EXISTS public.areas;
 DROP TABLE IF EXISTS public.ar_internal_metadata;
 DROP TABLE IF EXISTS public.app_configurations;
-DROP TABLE IF EXISTS public.analytics_fact_visits;
+DROP VIEW IF EXISTS public.analytics_fact_sessions;
+DROP TABLE IF EXISTS public.impact_tracking_sessions;
 DROP VIEW IF EXISTS public.analytics_fact_registrations;
 DROP TABLE IF EXISTS public.invites;
 DROP VIEW IF EXISTS public.analytics_fact_project_statuses;
@@ -611,9 +611,8 @@ DROP VIEW IF EXISTS public.analytics_fact_email_deliveries;
 DROP TABLE IF EXISTS public.email_campaigns_deliveries;
 DROP TABLE IF EXISTS public.email_campaigns_campaigns;
 DROP VIEW IF EXISTS public.analytics_dimension_users;
-DROP VIEW IF EXISTS public.analytics_dimension_user_custom_field_values;
 DROP TABLE IF EXISTS public.users;
-DROP TABLE IF EXISTS public.custom_fields;
+DROP TABLE IF EXISTS public.analytics_fact_visits;
 DROP TABLE IF EXISTS public.analytics_dimension_types;
 DROP VIEW IF EXISTS public.analytics_dimension_statuses;
 DROP TABLE IF EXISTS public.initiative_statuses;
@@ -1280,33 +1279,23 @@ CREATE TABLE public.analytics_dimension_types (
 
 
 --
--- Name: custom_fields; Type: TABLE; Schema: public; Owner: -
+-- Name: analytics_fact_visits; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.custom_fields (
+CREATE TABLE public.analytics_fact_visits (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    resource_type character varying,
-    key character varying,
-    input_type character varying,
-    title_multiloc jsonb DEFAULT '{}'::jsonb,
-    description_multiloc jsonb DEFAULT '{}'::jsonb,
-    required boolean DEFAULT false,
-    ordering integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    enabled boolean DEFAULT true NOT NULL,
-    code character varying,
-    resource_id uuid,
-    hidden boolean DEFAULT false NOT NULL,
-    maximum integer,
-    minimum_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    maximum_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    logic jsonb DEFAULT '{}'::jsonb NOT NULL,
-    answer_visible_to character varying,
-    select_count_enabled boolean DEFAULT false NOT NULL,
-    maximum_select_count integer,
-    minimum_select_count integer,
-    random_option_ordering boolean DEFAULT false NOT NULL
+    visitor_id character varying NOT NULL,
+    dimension_user_id uuid,
+    dimension_referrer_type_id uuid NOT NULL,
+    dimension_date_first_action_id date NOT NULL,
+    dimension_date_last_action_id date NOT NULL,
+    duration integer NOT NULL,
+    pages_visited integer NOT NULL,
+    returning_visitor boolean DEFAULT false NOT NULL,
+    referrer_name character varying,
+    referrer_url character varying,
+    matomo_visit_id integer NOT NULL,
+    matomo_last_action_time timestamp without time zone NOT NULL
 );
 
 
@@ -1344,24 +1333,9 @@ CREATE TABLE public.users (
     new_email character varying,
     followings_count integer DEFAULT 0 NOT NULL,
     onboarding jsonb DEFAULT '{}'::jsonb NOT NULL,
-    unique_code character varying
+    unique_code character varying,
+    last_active_at timestamp(6) without time zone
 );
-
-
---
--- Name: analytics_dimension_user_custom_field_values; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.analytics_dimension_user_custom_field_values AS
- SELECT DISTINCT u.id AS dimension_user_id,
-    cf.key,
-    cf.value
-   FROM ((public.users u
-     LEFT JOIN LATERAL ( SELECT custom_fields.key,
-            (u.custom_field_values ->> (custom_fields.key)::text) AS value
-           FROM public.custom_fields
-          WHERE ((custom_fields.resource_type)::text = 'User'::text)) cf ON (true))
-     LEFT JOIN LATERAL ( SELECT jsonb_object_keys(u.custom_field_values) AS key) cfv ON (true));
 
 
 --
@@ -1369,10 +1343,13 @@ CREATE VIEW public.analytics_dimension_user_custom_field_values AS
 --
 
 CREATE VIEW public.analytics_dimension_users AS
- SELECT users.id,
-    COALESCE(((users.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role,
-    users.invite_status
-   FROM public.users;
+ SELECT u.id,
+    COALESCE(((u.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role,
+    u.invite_status,
+    (users_with_visits.dimension_user_id IS NOT NULL) AS has_visits
+   FROM (public.users u
+     LEFT JOIN ( SELECT DISTINCT analytics_fact_visits.dimension_user_id
+           FROM public.analytics_fact_visits) users_with_visits ON ((users_with_visits.dimension_user_id = u.id)));
 
 
 --
@@ -1391,7 +1368,8 @@ CREATE TABLE public.email_campaigns_campaigns (
     body_multiloc jsonb DEFAULT '{}'::jsonb,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    deliveries_count integer DEFAULT 0 NOT NULL
+    deliveries_count integer DEFAULT 0 NOT NULL,
+    context_id uuid
 );
 
 
@@ -1983,24 +1961,30 @@ CREATE VIEW public.analytics_fact_registrations AS
 
 
 --
--- Name: analytics_fact_visits; Type: TABLE; Schema: public; Owner: -
+-- Name: impact_tracking_sessions; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.analytics_fact_visits (
+CREATE TABLE public.impact_tracking_sessions (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    visitor_id character varying NOT NULL,
-    dimension_user_id uuid,
-    dimension_referrer_type_id uuid NOT NULL,
-    dimension_date_first_action_id date NOT NULL,
-    dimension_date_last_action_id date NOT NULL,
-    duration integer NOT NULL,
-    pages_visited integer NOT NULL,
-    returning_visitor boolean DEFAULT false NOT NULL,
-    referrer_name character varying,
-    referrer_url character varying,
-    matomo_visit_id integer NOT NULL,
-    matomo_last_action_time timestamp without time zone NOT NULL
+    monthly_user_hash character varying NOT NULL,
+    highest_role character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    user_id uuid
 );
+
+
+--
+-- Name: analytics_fact_sessions; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.analytics_fact_sessions AS
+ SELECT impact_tracking_sessions.id,
+    impact_tracking_sessions.monthly_user_hash,
+    (impact_tracking_sessions.created_at)::date AS dimension_date_created_id,
+    (impact_tracking_sessions.updated_at)::date AS dimension_date_updated_id,
+    impact_tracking_sessions.user_id AS dimension_user_id
+   FROM public.impact_tracking_sessions;
 
 
 --
@@ -2208,6 +2192,37 @@ CREATE TABLE public.custom_field_options (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     other boolean DEFAULT false NOT NULL
+);
+
+
+--
+-- Name: custom_fields; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.custom_fields (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    resource_type character varying,
+    key character varying,
+    input_type character varying,
+    title_multiloc jsonb DEFAULT '{}'::jsonb,
+    description_multiloc jsonb DEFAULT '{}'::jsonb,
+    required boolean DEFAULT false,
+    ordering integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    enabled boolean DEFAULT true NOT NULL,
+    code character varying,
+    resource_id uuid,
+    hidden boolean DEFAULT false NOT NULL,
+    maximum integer,
+    minimum_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    maximum_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    logic jsonb DEFAULT '{}'::jsonb NOT NULL,
+    answer_visible_to character varying,
+    select_count_enabled boolean DEFAULT false NOT NULL,
+    maximum_select_count integer,
+    minimum_select_count integer,
+    random_option_ordering boolean DEFAULT false NOT NULL
 );
 
 
@@ -2546,20 +2561,6 @@ CREATE TABLE public.impact_tracking_salts (
     salt character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: impact_tracking_sessions; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.impact_tracking_sessions (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    monthly_user_hash character varying NOT NULL,
-    highest_role character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    user_id uuid
 );
 
 
@@ -3281,21 +3282,6 @@ CREATE TABLE public.text_images (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     text_reference character varying NOT NULL
-);
-
-
---
--- Name: texting_campaigns; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.texting_campaigns (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    phone_numbers character varying[] DEFAULT '{}'::character varying[] NOT NULL,
-    message text NOT NULL,
-    sent_at timestamp without time zone,
-    status character varying NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -4271,14 +4257,6 @@ ALTER TABLE ONLY public.text_images
 
 
 --
--- Name: texting_campaigns texting_campaigns_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.texting_campaigns
-    ADD CONSTRAINT texting_campaigns_pkey PRIMARY KEY (id);
-
-
---
 -- Name: topics topics_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4914,6 +4892,13 @@ CREATE INDEX index_email_campaigns_campaigns_groups_on_group_id ON public.email_
 --
 
 CREATE INDEX index_email_campaigns_campaigns_on_author_id ON public.email_campaigns_campaigns USING btree (author_id);
+
+
+--
+-- Name: index_email_campaigns_campaigns_on_context_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_email_campaigns_campaigns_on_context_id ON public.email_campaigns_campaigns USING btree (context_id);
 
 
 --
@@ -5851,7 +5836,7 @@ CREATE INDEX index_report_builder_reports_on_owner_id ON public.report_builder_r
 -- Name: index_report_builder_reports_on_phase_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_report_builder_reports_on_phase_id ON public.report_builder_reports USING btree (phase_id);
+CREATE UNIQUE INDEX index_report_builder_reports_on_phase_id ON public.report_builder_reports USING btree (phase_id);
 
 
 --
@@ -7497,6 +7482,15 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240328141200'),
 ('20240409150000'),
 ('20240417064819'),
-('20240417150820');
+('20240417150820'),
+('20240418081854'),
+('20240419100508'),
+('20240504212048'),
+('20240508124400'),
+('20240508133950'),
+('20240510103700'),
+('20240516113700'),
+('20240606112752'),
+('20240612134240');
 
 

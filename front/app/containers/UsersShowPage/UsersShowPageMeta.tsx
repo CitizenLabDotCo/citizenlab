@@ -46,7 +46,7 @@ const UsersShowPageMeta = ({ user }: Props) => {
     return null;
   }
 
-  const usersShowPageIndexTitle = formatMessage(messages.metaTitle, {
+  const usersShowPageIndexTitle = formatMessage(messages.metaTitle1, {
     firstName,
     lastName,
   });

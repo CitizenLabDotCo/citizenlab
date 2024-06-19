@@ -6,7 +6,8 @@ import { CommentsSort } from 'api/comments/types';
 
 import FilterSelector from 'components/FilterSelector';
 
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import messages from '../../messages';
 
@@ -21,6 +22,8 @@ const CommentSorting = ({
   selectedCommentSort,
   className,
 }: Props) => {
+  const { formatMessage } = useIntl();
+
   const handleOnChange = (selectedValue: [CommentsSort]) => {
     onChange(selectedValue[0]);
   };
@@ -47,6 +50,14 @@ const CommentSorting = ({
 
   return (
     <Box className={className}>
+      <ScreenReaderOnly aria-live="assertive">
+        <FormattedMessage
+          {...messages.a11y_commentsHaveChanged}
+          values={{
+            sortOder: formatMessage(sortOptionsMessages[selectedCommentSort]),
+          }}
+        />
+      </ScreenReaderOnly>
       <FilterSelector
         id="e2e-comments-sort-filter"
         title={<FormattedMessage {...messages.commentsSortTitle} />}

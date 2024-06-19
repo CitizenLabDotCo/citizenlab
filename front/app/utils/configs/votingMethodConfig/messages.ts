@@ -154,13 +154,13 @@ export default defineMessages({
       'You have a total of <b>{totalVotes} {voteTerm} to distribute between {optionCount} options</b>.',
   },
   cumulativeVotingInstructionsPreferredOptions: {
-    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsPreferredOptions',
-    defaultMessage: 'Select your preferred options by tapping on “Vote”.',
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsPreferredOptions2',
+    defaultMessage: 'Select your preferred options by tapping on "Select".',
   },
   cumulativeVotingInstructionsMaxVotesPerIdea: {
-    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxVotesPerIdea',
+    id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxVotesPerIdea2',
     defaultMessage:
-      'You can add a maximum number of {maxVotes} votes per option.',
+      'You can add a maximum number of {maxVotes} {voteTerm} per option.',
   },
   cumulativeVotingInstructionsOnceYouAreDone: {
     id: 'app.utils.votingMethodUtils.cumulativeVotingInstructionsOnceYouAreDone',

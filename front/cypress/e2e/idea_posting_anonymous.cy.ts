@@ -50,7 +50,7 @@ describe('Timeline ideation with anonymous participation allowed', () => {
     cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
 
     // set to anonymous
-    cy.get('#e2e-post-anonymously-checkbox').click();
+    cy.get('[data-testid="e2e-post-idea-anonymously-checkbox"]').click();
     cy.get('#e2e-continue-anonymous-participation-btn').click();
 
     // save the form
@@ -77,7 +77,7 @@ describe('Timeline ideation with anonymous participation allowed', () => {
     cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
 
     // set to anonymous
-    cy.get('#e2e-post-anonymously-checkbox').click();
+    cy.get('[data-testid="e2e-post-idea-anonymously-checkbox"]').click();
     cy.get('#e2e-continue-anonymous-participation-btn').click();
 
     // save the form

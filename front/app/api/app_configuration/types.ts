@@ -20,6 +20,7 @@ export type IAppConfigurationSettingsCore = {
   allowed: boolean;
   enabled: boolean;
   locales: SupportedLocale[];
+  population: number | null;
   weglot_api_key: string | null;
   timezone: string;
   organization_name: Multiloc;
@@ -81,9 +82,7 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     enabled: boolean;
     enable_signup: boolean;
-    phone?: boolean;
     minimum_length?: number;
-    phone_email_pattern?: string;
   };
   facebook_login?: {
     allowed: boolean;
@@ -135,7 +134,6 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
     url?: string;
   };
-  admin_project_templates?: AppConfigurationFeature;
   maps?: AppConfigurationMapSettings;
   initiatives: ProposalsSettings;
   initiative_review?: AppConfigurationFeature;
@@ -174,9 +172,7 @@ export interface IAppConfigurationSettings {
   moderation?: AppConfigurationFeature;
   flag_inappropriate_content?: AppConfigurationFeature;
   disable_disliking?: AppConfigurationFeature;
-  project_visibility?: AppConfigurationFeature;
   project_management?: AppConfigurationFeature;
-  idea_assignment?: AppConfigurationFeature;
   blocking_profanity?: AppConfigurationFeature;
   anonymous_participation?: AppConfigurationFeature;
   custom_idea_statuses?: AppConfigurationFeature;
@@ -209,13 +205,8 @@ export interface IAppConfigurationSettings {
     api_key: string;
   };
   disable_user_bios?: AppConfigurationFeature;
-  texting?: AppConfigurationFeature;
   project_description_builder?: AppConfigurationFeature;
-  representativeness?: AppConfigurationFeature;
   remove_vendor_branding?: AppConfigurationFeature;
-  native_surveys?: AppConfigurationFeature;
-  analytics?: AppConfigurationFeature;
-  visitors_dashboard?: AppConfigurationFeature;
   user_confirmation?: AppConfigurationFeature;
   permission_option_email_confirmation?: AppConfigurationFeature;
   permissions_custom_fields?: AppConfigurationFeature;
@@ -237,9 +228,11 @@ export interface IAppConfigurationSettings {
   ask_a_question?: AppConfigurationFeature;
   advanced_autotagging?: AppConfigurationFeature;
   import_printed_forms?: AppConfigurationFeature;
+  input_importer?: AppConfigurationFeature;
   user_session_recording?: AppConfigurationFeature;
   user_avatars?: AppConfigurationFeature;
   multi_language_platform?: AppConfigurationFeature;
+  management_feed?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

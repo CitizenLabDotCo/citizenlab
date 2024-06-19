@@ -43,19 +43,35 @@ export default () => ({
     },
     {
       path: userShowPageRoutes.submissions,
-      element: <Submissions />,
+      element: (
+        <div role="tabpanel" aria-labelledby="tab-submissions" tabIndex={0}>
+          <Submissions />
+        </div>
+      ),
     },
     {
       path: userShowPageRoutes.comments,
-      element: <UserComments />,
+      element: (
+        <div role="tabpanel" aria-labelledby="tab-comments" tabIndex={0}>
+          <UserComments />
+        </div>
+      ),
     },
     {
       path: userShowPageRoutes.following,
-      element: <Following />,
+      element: (
+        <div role="tabpanel" aria-labelledby="tab-following" tabIndex={0}>
+          <Following />
+        </div>
+      ),
     },
     {
       path: userShowPageRoutes.events,
-      element: <UserEvents />,
+      element: (
+        <div role="tabpanel" aria-labelledby="tab-events" tabIndex={0}>
+          <UserEvents />
+        </div>
+      ),
     },
   ],
 });

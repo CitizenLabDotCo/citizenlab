@@ -57,6 +57,8 @@ class Idea < ApplicationRecord
   include AnonymousParticipation
   extend OrderAsSpecified
 
+  slug from: proc { |idea| idea.participation_method_on_creation.generate_slug(idea) }
+
   belongs_to :project, touch: true
   belongs_to :creation_phase, class_name: 'Phase', optional: true
   belongs_to :idea_status, optional: true
@@ -119,7 +121,6 @@ class Idea < ApplicationRecord
     before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
 
-  after_create :assign_slug
   after_update :fix_comments_count_on_projects
 
   pg_search_scope :search_by_all,
@@ -150,8 +151,9 @@ class Idea < ApplicationRecord
   }
 
   scope :activity_after, lambda { |time_ago|
-    left_joins(:comments, :reactions)
+    ideas = left_joins(:comments, :reactions)
       .where('ideas.updated_at >= ? OR comments.updated_at >= ? OR reactions.created_at >= ?', time_ago, time_ago, time_ago)
+    where(id: ideas)
   }
 
   scope :feedback_needed, lambda {
@@ -217,12 +219,6 @@ class Idea < ApplicationRecord
 
   def validate_built_in_fields?
     !draft? && participation_method_on_creation.validate_built_in_fields?
-  end
-
-  def assign_slug
-    return if slug # Slugs never change.
-
-    participation_method_on_creation.assign_slug self
   end
 
   def assign_defaults

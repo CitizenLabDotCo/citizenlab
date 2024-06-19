@@ -23,15 +23,21 @@ import VerticalCenterer from 'components/VerticalCenterer';
 
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 
-import Container from './components/Container';
 import DesktopTopBar from './components/DesktopTopBar';
 import EventDescription from './components/EventDescription';
 import InformationColumnDesktop from './components/InformationColumnDesktop';
 import InformationSectionMobile from './components/InformationSectionMobile';
 import MobileTopBar from './components/MobileTopBar';
 import ProjectLink from './components/ProjectLink';
+import { pageContentMaxWidth } from './styleConstants';
 
 const InnerContainer = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: ${pageContentMaxWidth}px;
   min-height: calc(
     100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
   );
@@ -94,15 +100,15 @@ const EventsShowPage = () => {
 
   return (
     <>
-      {isSmallerThanTablet && (
+      {isSmallerThanTablet ? (
         <MobileTopBar projectId={event.data.relationships.project.data.id} />
+      ) : (
+        <Box p="32px" pb="0">
+          <DesktopTopBar event={event.data} project={project.data} />
+        </Box>
       )}
-      <Container>
+      <main>
         <InnerContainer>
-          {!isSmallerThanTablet && (
-            <DesktopTopBar event={event.data} project={project.data} />
-          )}
-
           <Box display="flex" id="e2e-idea-show-page-content">
             <Box flex="1 1 100%">
               <Title id="e2e-event-title" variant="h1">
@@ -126,7 +132,7 @@ const EventsShowPage = () => {
             )}
           </Box>
         </InnerContainer>
-      </Container>
+      </main>
     </>
   );
 };

@@ -17,14 +17,27 @@ interface Props {
   onChange: (questionId?: string) => void;
 }
 
+const NOT_QUESTIONS = new Set(['page', 'section']);
+
 const generateOptions = (
   questions: ICustomFields,
   filterQuestion: Props['filterQuestion'],
   localize: Localize
 ) => {
+  const fieldNumbers = questions.data
+    .filter((question) => !NOT_QUESTIONS.has(question.attributes.input_type))
+    .sort((a, b) => a.attributes.ordering - b.attributes.ordering)
+    .reduce(
+      (acc, question, index) => ({
+        ...acc,
+        [question.id]: index + 1,
+      }),
+      {} as Record<string, number>
+    );
+
   const options = questions.data.filter(filterQuestion).map((question) => ({
     value: question.id,
-    label: `${question.attributes.ordering + 1}. ${localize(
+    label: `${fieldNumbers[question.id]}. ${localize(
       question.attributes.title_multiloc
     )}`,
   }));

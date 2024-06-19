@@ -29,7 +29,7 @@ const AssignSingleVoteBox = memo(({ ideaId, phase }: Props) => {
   const { data: basket } = useBasket(
     phase.relationships?.user_basket?.data?.id
   );
-  const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
+  const actionDescriptor = idea?.data.attributes.action_descriptors.voting;
   const { voting_max_total } = phase.attributes;
 
   if (!actionDescriptor) return null;

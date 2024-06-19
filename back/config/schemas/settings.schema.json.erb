@@ -77,6 +77,12 @@
             "minItems": 1,
             "default": ["en"]
           },
+          "population": {
+            "title": "Population",
+            "description": "Number of inhabitants in the territory. Leave empty if not applicable.",
+            "type": ["integer", "null"],
+            "minimum": 0
+          },
           "weglot_api_key": {
             "title": "Weglot API key",
             "description": "Set the API key of Weglot to enable automatic page translations.",
@@ -127,7 +133,7 @@
           },
           "custom_onboarding_link": {
             "title": "Header Banner CTA Link",
-            "description": "Web location that the CTA button links to. This should be a relative link on the platform starting with (e.g., platform.citizenlab.co/initiatives should be inputted here as /initiatives).",
+            "description": "Web location that the CTA button links to. This should be a relative link on the platform starting with (e.g., platform.govocal.com/initiatives should be inputted here as /initiatives).",
             "type": "string",
             "pattern": "^$|^/.*$",
             "private": true
@@ -316,25 +322,13 @@
         }
       },
 
-      "project_visibility": {
-        "type": "object",
-        "title": "Project Visibility",
-        "description": "Admin can make projects visible only to certain groups of users (e.g., admin only, smart groups).",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true },
-          "enabled": { "type": "boolean", "default": true }
-        }
-      },
-
       "password_login": {
         "type": "object",
         "title": "Password Login",
         "description": "Allow users to register with an email and password.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["minimum_length", "phone", "enable_signup"],
+        "required-settings": ["minimum_length", "enable_signup"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
@@ -351,21 +345,6 @@
             "minimum": 5,
             "maximum": 72,
             "default": 8
-          },
-          "phone": {
-            "title": "Phone",
-            "description": "Allow users to register with a phone number. This option is not advised, please check with development team before enabling this field.",
-            "type": "boolean",
-            "default": false
-          },
-          "phone_email_pattern": {
-            "title": "Phone Number Format",
-            "description": "Specify how phone numbers should be stored in the database (needs to be in email format - e.g., 'phone+__PHONE__@test.com' stores the phone number as 'phone+32478637483@test.com'.",
-            "type": "string",
-            "format": "email",
-            "default": "phone+__PHONE__@test.com",
-            "pattern": "^.*__PHONE__.*@.*$",
-            "private": true
           }
         }
       },
@@ -941,18 +920,6 @@
         }
       },
 
-      "admin_project_templates": {
-        "type": "object",
-        "title": "Project Templates",
-        "description":  "Enable the template library for admin to create new projects.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
       "custom_accessibility_statement_link": {
         "type": "object",
         "title": "Custom A11y Statement Link",
@@ -1128,30 +1095,6 @@
         }
       },
 
-      "representativeness": {
-        "type": "object",
-        "title": "Representativeness",
-        "description": "Enables the representativeness dashboard.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
-      "native_surveys": {
-        "type": "object",
-        "title": "Allow in-platform surveys",
-        "description":  "",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true },
-          "enabled": { "type": "boolean", "default": true }
-        }
-      },
-
       "input_form_mapping_question": {
         "type": "object",
         "title": "Mapping question used in in-platform surveys",
@@ -1168,18 +1111,6 @@
         "type": "object",
         "title": "Seat based billing",
         "description":  "Enables seat-based billing.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
-      "visitors_dashboard": {
-        "type": "object",
-        "title": "Visitors dashboard",
-        "description": "Enabled the visitors dashboard. Don't turn this on unless you know what you're doing.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1274,13 +1205,25 @@
 
       "import_printed_forms": {
         "type": "object",
-        "title": "Import printed forms",
-        "description": "Enables the importing from handwritten idea and surveys on printed forms.",
+        "title": "Form Sync (fka import printed forms)",
+        "description": "Enables the importing of PDF files from handwritten ideas and surveys on printed forms.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "input_importer": {
+        "type": "object",
+        "title": "Input importer",
+        "description": "Enables the importing of Excel (XLSX) files with ideas and surveys.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
         }
       },
 
@@ -1354,6 +1297,18 @@
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
         }
+      },
+
+      "management_feed": {
+        "type": "object",
+        "title": "Management Feed",
+        "description": "Experimental feature: A minimal list of selected actions performed by admins or managers in the last 30 days. Not all actions are included.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {
@@ -1384,7 +1339,8 @@
 
     "large_summaries": ["analysis"],
     "ask_a_question": ["analysis"],
-    "advanced_autotagging": ["analysis"]
+    "advanced_autotagging": ["analysis"],
+    "import_printed_forms": ["input_importer"]
   },
   "definitions": {
     "multiloc_string": {

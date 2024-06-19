@@ -18,10 +18,14 @@ import useCampaign from 'api/campaigns/useCampaign';
 import useSendCampaign from 'api/campaigns/useSendCampaign';
 import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
 import { isDraft } from 'api/campaigns/util';
-import useAuthUser from 'api/me/useAuthUser';
+import useProjectById from 'api/projects/useProjectById';
+import useUserById from 'api/users/useUserById';
 
 import useLocalize from 'hooks/useLocalize';
 
+import DraftCampaignDetails from 'components/admin/Email/DraftCampaignDetails';
+import SentCampaignDetails from 'components/admin/Email/SentCampaignDetails';
+import Stamp from 'components/admin/Email/Stamp';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
@@ -29,27 +33,11 @@ import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 import { getFullName } from 'utils/textUtils';
 
 import messages from '../../messages';
-
-import DraftCampaignDetails from './DraftCampaignDetails';
-import SentCampaignDetails from './SentCampaignDetails';
-import Stamp from './Stamp';
-
-const PageHeader = styled.div`
-  display: flex;
-  margin-bottom: 20px;
-`;
-
-const CampaignHeader = styled.div`
-  display: flex;
-  padding: 20px 0;
-  border-top: 1px solid #d8d8d8;
-  border-bottom: 1px solid #d8d8d8;
-  margin-bottom: 20px;
-`;
 
 const StampIcon = styled(Stamp)`
   margin-right: 20px;
@@ -71,17 +59,6 @@ const SendTestEmailButton = styled.button`
   text-decoration: underline;
   font-size: ${fontSizes.base}px;
   cursor: pointer;
-`;
-const StyledButtonContainer = styled.div`
-  margin-bottom: 30px;
-  display: flex;
-  align-items: center;
-`;
-
-const PageTitleWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  margin-right: auto;
 `;
 
 const Buttons = styled.div`
@@ -113,10 +90,6 @@ const ButtonsWrapper = styled.div`
   }
 `;
 
-const ModalContainer = styled.div`
-  padding: 30px;
-`;
-
 const SendNowWarning = styled.div`
   font-size: ${fontSizes.base}px;
   margin-bottom: 30px;
@@ -125,9 +98,15 @@ const SendNowWarning = styled.div`
 const Show = () => {
   const { campaignId } = useParams() as { campaignId: string };
 
-  const { data: user } = useAuthUser();
   const { data: tenant } = useAppConfiguration();
   const { data: campaign } = useCampaign(campaignId);
+  const { data: project } = useProjectById(
+    campaign?.data.attributes.context_id
+  );
+
+  const { data: sender } = useUserById(
+    campaign?.data.relationships.author.data.id
+  );
 
   const {
     mutate: sendCampaign,
@@ -145,7 +124,10 @@ const Show = () => {
     useState(false);
 
   const handleSend = (noGroupsSelected: boolean) => () => {
-    if (noGroupsSelected) {
+    if (
+      noGroupsSelected &&
+      campaign?.data.attributes.campaign_name === 'manual'
+    ) {
       openSendConfirmationModal();
     } else {
       sendCampaign(campaignId);
@@ -176,9 +158,9 @@ const Show = () => {
   const getSenderName = (senderType: string) => {
     let senderName: string | null = null;
 
-    if (senderType === 'author' && !isNilOrError(user)) {
-      senderName = getFullName(user.data);
-    } else if (senderType === 'organization' && !isNilOrError(tenant)) {
+    if (senderType === 'author' && sender) {
+      senderName = getFullName(sender.data);
+    } else if (senderType === 'organization' && tenant) {
       senderName = localize(
         tenant?.data.attributes.settings.core.organization_name
       );
@@ -213,8 +195,8 @@ const Show = () => {
 
     return (
       <Box background={colors.white} p="40px" id="e2e-custom-email-container">
-        <PageHeader>
-          <PageTitleWrapper>
+        <Box display="flex" mb="20px">
+          <Box display="flex" alignItems="center" mr="auto">
             <Title mr="12px">
               <T value={campaign.data.attributes.subject_multiloc} />
             </Title>
@@ -229,12 +211,12 @@ const Show = () => {
                 text={<FormattedMessage {...messages.sent} />}
               />
             )}
-          </PageTitleWrapper>
+          </Box>
           {isDraft(campaign.data) && (
             <Buttons>
               <Button
                 linkTo={`/admin/messaging/emails/custom/${campaign.data.id}/edit`}
-                buttonStyle="secondary"
+                buttonStyle="secondary-outlined"
               >
                 <FormattedMessage {...messages.editButtonLabel} />
               </Button>
@@ -250,13 +232,19 @@ const Show = () => {
               </Button>
             </Buttons>
           )}
-        </PageHeader>
+        </Box>
         {apiSendErrors && (
           <Box mb="8px">
             <Error apiErrors={apiSendErrors.errors['base']} />
           </Box>
         )}
-        <CampaignHeader>
+        <Box
+          display="flex"
+          p="20px 0"
+          borderTop={`1px solid ${colors.borderLight}`}
+          borderBottom={`1px solid ${colors.borderLight}`}
+          marginBottom="20px"
+        >
           <StampIcon />
           <FromTo>
             <div>
@@ -271,11 +259,25 @@ const Show = () => {
                 <FormattedMessage {...messages.campaignTo} />
                 &nbsp;
               </FromToHeader>
-              {noGroupsSelected && (
-                <GroupLink onClick={handleGroupLinkClick()}>
-                  {formatMessage(messages.allUsers)}
-                </GroupLink>
-              )}
+              {campaign.data.attributes.campaign_name ===
+                'manual_project_participants' &&
+                project && (
+                  <span>
+                    <FormattedMessage {...messages.allParticipantsInProject} />{' '}
+                    <Link
+                      to={`/admin/projects/${project.data.id}`}
+                      target="_blank"
+                    >
+                      {localize(project?.data.attributes.title_multiloc)}
+                    </Link>
+                  </span>
+                )}
+              {noGroupsSelected &&
+                campaign.data.attributes.campaign_name === 'manual' && (
+                  <GroupLink onClick={handleGroupLinkClick()}>
+                    {formatMessage(messages.allUsers)}
+                  </GroupLink>
+                )}
               {groupIds.map((groupId, index) => (
                 <GetGroup key={groupId} id={groupId}>
                   {(group) => {
@@ -300,7 +302,7 @@ const Show = () => {
             </div>
           </FromTo>
           {isDraft(campaign.data) && (
-            <StyledButtonContainer>
+            <Box mb="30px" display="flex" alignItems="center">
               <SendTestEmailButton onClick={handleSendTestEmail}>
                 <FormattedMessage {...messages.sendTestEmailButton} />
               </SendTestEmailButton>
@@ -310,12 +312,12 @@ const Show = () => {
                   <FormattedMessage {...messages.sendTestEmailTooltip} />
                 }
               />
-            </StyledButtonContainer>
+            </Box>
           )}
-        </CampaignHeader>
+        </Box>
 
         {isDraft(campaign.data) ? (
-          <DraftCampaignDetails campaignId={campaign.data.id} />
+          <DraftCampaignDetails campaign={campaign.data} />
         ) : (
           <SentCampaignDetails campaignId={campaign.data.id} />
         )}
@@ -325,13 +327,13 @@ const Show = () => {
           close={closeSendConfirmationModal}
           header={<FormattedMessage {...messages.confirmSendHeader} />}
         >
-          <ModalContainer>
+          <Box p="30px">
             <SendNowWarning>
               <FormattedMessage {...messages.toAllUsers} />
             </SendNowWarning>
             <ButtonsWrapper>
               <Button
-                buttonStyle="secondary"
+                buttonStyle="secondary-outlined"
                 linkTo={`/admin/messaging/emails/custom/${campaign.data.id}/edit`}
               >
                 <FormattedMessage {...messages.changeRecipientsButton} />
@@ -347,7 +349,7 @@ const Show = () => {
                 <FormattedMessage {...messages.sendNowButton} />
               </Button>
             </ButtonsWrapper>
-          </ModalContainer>
+          </Box>
         </Modal>
       </Box>
     );

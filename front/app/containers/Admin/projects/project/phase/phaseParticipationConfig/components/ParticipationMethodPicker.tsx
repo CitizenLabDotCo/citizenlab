@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   IconTooltip,
@@ -8,8 +8,8 @@ import {
   Icon,
   Title,
   colors,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import styled from 'styled-components';
 
 import { IPhase, ParticipationMethod } from 'api/phases/types';
@@ -78,9 +78,6 @@ const ParticipationMethodPicker = ({
   const pollsEnabled = useFeatureFlag({
     name: 'polls',
   });
-  const nativeSurveysEnabled = useFeatureFlag({
-    name: 'native_surveys',
-  });
 
   const changeMethod = (newMethod?: ParticipationMethod) => {
     const method = newMethod || methodToChangeTo;
@@ -107,6 +104,11 @@ const ParticipationMethodPicker = ({
       changeMethod(method);
     }
   };
+
+  useEffect(() => {
+    setSelectedMethod(participation_method);
+    setShowSurveyOptions(participation_method === 'native_survey');
+  }, [participation_method]);
 
   return (
     <>
@@ -195,7 +197,7 @@ const ParticipationMethodPicker = ({
                     top="20%"
                     left="50%"
                   >
-                    <Tippy
+                    <Tooltip
                       maxWidth="250px"
                       placement="bottom"
                       content={formatMessage(
@@ -214,7 +216,7 @@ const ParticipationMethodPicker = ({
                           {formatMessage(messages2.addOn)}
                         </Box>
                       </Badge>
-                    </Tippy>
+                    </Tooltip>
                   </Box>
                 )}
               </Box>
@@ -228,34 +230,32 @@ const ParticipationMethodPicker = ({
                   </SubSectionTitle>
                 </Box>
 
-                {nativeSurveysEnabled && (
-                  <ParticipationMethodChoice
-                    onClick={(event) =>
-                      handleMethodSelect(event, 'native_survey')
-                    }
-                    title={formatMessage(messages2.survey)}
-                    selected={selectedMethod === 'native_survey'}
-                  >
-                    <>
-                      <LeftAlignedList>
-                        <li>
-                          <FormattedMessage {...messages2.aiPoweredInsights} />
-                        </li>
-                        <li>
-                          <FormattedMessage {...messages2.manyQuestionTypes} />
-                        </li>
-                        <li>
-                          <FormattedMessage {...messages2.logic} />
-                        </li>
-                        <li>
-                          <FormattedMessage
-                            {...messages2.linkWithReportBuilder}
-                          />
-                        </li>
-                      </LeftAlignedList>
-                    </>
-                  </ParticipationMethodChoice>
-                )}
+                <ParticipationMethodChoice
+                  onClick={(event) =>
+                    handleMethodSelect(event, 'native_survey')
+                  }
+                  title={formatMessage(messages2.survey)}
+                  selected={selectedMethod === 'native_survey'}
+                >
+                  <>
+                    <LeftAlignedList>
+                      <li>
+                        <FormattedMessage {...messages2.aiPoweredInsights} />
+                      </li>
+                      <li>
+                        <FormattedMessage {...messages2.manyQuestionTypes} />
+                      </li>
+                      <li>
+                        <FormattedMessage {...messages2.logic} />
+                      </li>
+                      <li>
+                        <FormattedMessage
+                          {...messages2.linkWithReportBuilder}
+                        />
+                      </li>
+                    </LeftAlignedList>
+                  </>
+                </ParticipationMethodChoice>
 
                 {pollsEnabled && (
                   <ParticipationMethodChoice
@@ -309,7 +309,7 @@ const ParticipationMethodPicker = ({
             alignItems="center"
           >
             <Button
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               width="100%"
               onClick={closeModal}
               mr="16px"

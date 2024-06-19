@@ -116,7 +116,7 @@ describe('Timeline project with poll phase', () => {
   });
 });
 
-describe('poll submission for non-active users', () => {
+describe('poll submission for users who have not met all the registration requirements', () => {
   const firstName = randomString();
   const lastName = randomString();
   const email = randomEmail();
@@ -136,7 +136,7 @@ describe('poll submission for non-active users', () => {
     });
   });
 
-  it("doesn't let non-active users submit a poll response", () => {
+  it("doesn't let users missing registration requirements submit a poll response", () => {
     cy.setLoginCookie(email, password);
     cy.visit('/projects/the-big-poll');
     cy.get('.e2e-timeline-project-poll-container')

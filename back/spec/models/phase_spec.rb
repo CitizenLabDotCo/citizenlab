@@ -318,23 +318,6 @@ RSpec.describe Phase do
     end
   end
 
-  describe '#last_phase?' do
-    let(:project) { create(:project_with_phases) }
-
-    it 'returns true for the last phase in a project' do
-      old_last_phase = project.phases.last
-      expect(old_last_phase.last_phase?).to be true
-
-      new_last_phase = create(:phase, project: project, start_at: (old_last_phase.end_at + 1.day).to_s)
-      expect(new_last_phase.last_phase?).to be true
-      expect(old_last_phase.last_phase?).to be false
-    end
-
-    it 'returns false for any other phase' do
-      expect(project.phases.first.last_phase?).to be false
-    end
-  end
-
   describe '#validate_end_at' do
     let(:project) { create(:project_with_phases) }
 
@@ -355,6 +338,12 @@ RSpec.describe Phase do
       phase = create(:phase, project: project, end_at: nil)
       expect(phase).to be_valid
       expect(project.reload.phases.count).to eq 1
+    end
+
+    it 'allows decreasing the start date of a phase with no end date' do
+      phase = create(:phase, start_at: Time.zone.today, end_at: nil)
+      phase.start_at -= 1.day
+      expect(phase).to be_valid
     end
   end
 
@@ -424,6 +413,12 @@ RSpec.describe Phase do
         expect(old_last_phase.reload.end_at).to be_nil
         expect(project.phases.count).to eq 5
       end
+    end
+
+    it 'allows increasing the start date of a phase with no end date' do
+      phase = create(:phase, start_at: Time.zone.today, end_at: nil)
+      phase.start_at += 1.day
+      expect(phase).to be_valid
     end
   end
 

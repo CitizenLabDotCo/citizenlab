@@ -15,6 +15,7 @@ export interface ICampaignData {
   id: string;
   type: string;
   attributes: {
+    context_id?: string;
     campaign_name: CampaignName;
     campaign_description_multiloc: Multiloc;
     // Only undefined for invite_received?
@@ -37,6 +38,16 @@ export interface ICampaignData {
     schedule: any;
     // Undefined for campaigns that are not scheduled
     schedule_multiloc?: Multiloc;
+    delivery_stats?: {
+      sent: number;
+      bounced: number;
+      failed: number;
+      accepted: number;
+      delivered: number;
+      opened: number;
+      clicked: number;
+      total: number;
+    };
   };
   relationships: {
     author: {
@@ -135,6 +146,7 @@ type AdminModeratorCampaignName =
 
 export type CampaignName =
   | 'manual'
+  | 'manual_project_participants'
   | 'invite_received'
   | 'invite_reminder'
   | RegisterUserCampaignName
@@ -154,4 +166,5 @@ export interface CampaignAdd {
   sender: string;
   reply_to?: string;
   group_ids?: string[];
+  context_id?: string;
 }

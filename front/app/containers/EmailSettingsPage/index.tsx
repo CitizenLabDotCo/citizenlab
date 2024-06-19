@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { colors } from '@citizenlab/cl2-component-library';
+import { Title, colors } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
@@ -9,26 +9,18 @@ import useUpdateCampaignConsents from 'api/campaign_consents/useUpdateCampaignCo
 
 import CampaignConsentForm from 'components/CampaignConsentForm';
 
+import { FormattedMessage } from 'utils/cl-intl';
+
 import InitialUnsubscribeFeedback from './InitialUnsubscribeFeedback';
+import messages from './messages';
 
 const Container = styled.div`
-  width: 100%;
-  height: calc(100vh - 78px - 78px);
   background-color: ${colors.background};
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 30px;
-  padding-bottom: 50px;
-  overflow-x: hidden;
-`;
-
-const StyledInitialFeedback = styled(InitialUnsubscribeFeedback)`
-  flex-grow: 1;
-`;
-
-const StyledCampaignConsentForm = styled(CampaignConsentForm)`
-  flex-grow: 1;
+  padding-top: 32px;
+  padding-bottom: 52px;
 `;
 
 const EmailSettingPage = () => {
@@ -78,24 +70,32 @@ const EmailSettingPage = () => {
   }, [unsubscriptionToken, updateCampaignConsents, campaignId]);
 
   return (
-    <Container id="e2e-email-settings-page">
-      <div>
-        {initialUnsubscribeStatus && initialUnsubscribeStatus !== 'hidden' && (
-          <StyledInitialFeedback
-            className="e2e-unsubscribe-status"
-            status={initialUnsubscribeStatus}
-            unsubscribedCampaignMultiloc={unsubscribedCampaignMultiloc}
-          />
-        )}
-        {initialUnsubscribeStatus && initialUnsubscribeStatus !== 'loading' && (
-          <StyledCampaignConsentForm
-            trackEventName="Unsubcribed from unsubscribe link flow"
-            runOnSave={closeInitialUnsubscribe}
-            unsubscriptionToken={unsubscriptionToken}
-          />
-        )}
-      </div>
-    </Container>
+    <main id="e2e-email-settings-page">
+      <Container>
+        <Title mb="24px">
+          <FormattedMessage {...messages.emailSettings} />
+        </Title>
+        {/* Wrapping with a div is needed for these to have the same width */}
+        <div>
+          {initialUnsubscribeStatus &&
+            initialUnsubscribeStatus !== 'hidden' && (
+              <InitialUnsubscribeFeedback
+                className="e2e-unsubscribe-status"
+                status={initialUnsubscribeStatus}
+                unsubscribedCampaignMultiloc={unsubscribedCampaignMultiloc}
+              />
+            )}
+          {initialUnsubscribeStatus &&
+            initialUnsubscribeStatus !== 'loading' && (
+              <CampaignConsentForm
+                trackEventName="Unsubcribed from unsubscribe link flow"
+                runOnSave={closeInitialUnsubscribe}
+                unsubscriptionToken={unsubscriptionToken}
+              />
+            )}
+        </div>
+      </Container>
+    </main>
   );
 };
 

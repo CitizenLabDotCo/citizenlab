@@ -101,7 +101,7 @@ describe Analysis::InputToText do
       )
       expect(service.execute(input)).to eq({
         'What\'s your favourite option?' => 'Other',
-        "Since you picked 'other', what are you thinking of?" => 'Because none of the above'
+        "If you picked 'Other', what are you thinking of?" => 'Because none of the above'
       })
     end
   end

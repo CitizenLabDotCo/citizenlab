@@ -12,8 +12,6 @@ import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 
-import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
-
 import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import messages from 'components/admin/ContentBuilder/Widgets/IframeMultiloc/messages';
 import Error from 'components/UI/Error';
@@ -30,7 +28,6 @@ export interface Props {
 
 const IframeMultiloc = ({ url, height, title }: Props) => {
   const localize = useLocalize();
-  const componentDefaultPadding = useReportDefaultPadding();
 
   return (
     <Box
@@ -38,7 +35,6 @@ const IframeMultiloc = ({ url, height, title }: Props) => {
       minHeight="26px"
       maxWidth="1200px"
       margin="0 auto"
-      px={componentDefaultPadding}
     >
       {url && (
         <iframe

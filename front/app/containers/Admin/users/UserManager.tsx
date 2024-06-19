@@ -25,6 +25,7 @@ interface Props {
   onlyBlocked?: IQueryParameters['only_blocked'];
   deleteUsersFromGroup?: (userIds: string[]) => void;
   canModerate?: IQueryParameters['can_moderate'];
+  canAdmin?: IQueryParameters['can_admin'];
   notCitizenlabMember?: IQueryParameters['not_citizenlab_member'];
   includeInactive?: IQueryParameters['include_inactive'];
 }
@@ -43,6 +44,7 @@ const UserManager = ({
   deleteUsersFromGroup,
   includeInactive,
   canModerate,
+  canAdmin,
   onlyBlocked,
 }: Props) => {
   const [sort, setSort] = useState<IQueryParameters['sort']>('-created_at');
@@ -64,6 +66,7 @@ const UserManager = ({
     sort,
     pageNumber,
     not_citizenlab_member: notCitizenlabMember,
+    can_admin: canAdmin,
   });
 
   useEffect(() => {

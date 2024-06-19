@@ -75,17 +75,7 @@ module Analysis
 
     def prompt(project, inputs_text)
       project_title = MultilocService.new.t(project.title_multiloc)
-      @prompt = <<~GPT_PROMPT
-        At the end of this message is a list of form responses filled out by respondents in the context of an online participation project titled '#{project_title}'. The responses are separated by lines.
-        
-        Your only goal is to answer the following question about these responses, as accurately and as quantified as possible: "#{question.question}"
-        
-        You can refer to individual responses within the question where relevant as example, by adding their ID between square brackets. E.g. [52247442-b9a9-4a74-a6a1-898e9d6e2da7].
-        
-        Write your answer to the question in the same language as the question itself.
-        
-        #{inputs_text}
-      GPT_PROMPT
+      LLM::Prompt.new.fetch('q_and_a', project_title: project_title, question: question.question, inputs_text: inputs_text, language: Locale.monolingual&.language_copy)
     end
   end
 end

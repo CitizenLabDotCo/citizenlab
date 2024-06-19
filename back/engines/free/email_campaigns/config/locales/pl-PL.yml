@@ -2,6 +2,7 @@ pl:
   email_campaigns:
     campaign_type_description:
       "manual": Oficjalne wiadomości
+      "manual_project_participants": Oficjalne wiadomości dla uczestników projektu
       "admin_rights_received": Przyznanie uprawnień administratora
       "comment_deleted_by_admin": Usunięcie mojego komentarza
       "comment_marked_as_spam": Raport dot. komentarzy oznaczonych jako spam
@@ -76,7 +77,7 @@ pl:
       "link_terms_conditions": "Regulamin"
       "link_unsubscribe": "Wypisz mnie z subskrypcji"
       "powered_by": "Wspierane przez"
-      "statement": "Ten e-mail został wysłany do Ciebie przez CitizenLab w imieniu %{organizationName}, ponieważ jesteś zarejestrowanym użytkownikiem %{organizationLink}. Możesz %{unsubscribeLink} jeśli nie chcesz otrzymywać tych e-maili w przyszłości."
+      "statement": "Ten e-mail został wysłany do Ciebie przez Go Vocal w imieniu %{organizationName}, ponieważ jesteś zarejestrowanym użytkownikiem %{organizationLink}. Możesz %{unsubscribeLink} jeśli nie chcesz otrzymywać tych e-maili w przyszłości."
       "unsubscribe_text": "zrezygnować z subskrybcji"
     follow:
       "unfollow_here": "Otrzymałeś to powiadomienie z powodu elementu, który obserwujesz. <a href=\"%{unfollow_url}\">Możesz przestać go obserwować tutaj.</a>"
@@ -559,6 +560,7 @@ pl:
         admins: 'Do administratorów'
         admins_and_managers: 'Do administratorów i menedżerów'
         managers: 'Do kierowników'
+        project_participants: 'Do uczestników projektu'
         registered_users: 'Dla zarejestrowanych użytkowników'
       recipient_segment:
         admins: 'Administratorzy'

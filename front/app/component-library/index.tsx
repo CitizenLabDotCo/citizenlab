@@ -23,6 +23,7 @@ import Button, {
 } from './components/Button';
 import CardButton from './components/CardButton';
 import Checkbox from './components/Checkbox';
+import CheckboxWithLabel from './components/CheckboxWithLabel';
 import ColorPickerInput, {
   Props as ColorPickerInputProps,
 } from './components/ColorPickerInput';
@@ -67,6 +68,7 @@ import {
 import Text, { TextProps } from './components/Text';
 import Title, { TitleProps } from './components/Title';
 import Toggle from './components/Toggle';
+import Tooltip, { TooltipProps } from './components/Tooltip';
 import useBreakpoint from './hooks/useBreakpoint';
 import useWindowSize from './hooks/useWindowSize';
 import {
@@ -125,6 +127,7 @@ export type {
   ButtonContainerProps,
   ButtonProps,
   ButtonStyles,
+  TooltipProps,
 };
 
 export {
@@ -178,6 +181,7 @@ export {
   Th,
   Tfoot,
   Checkbox,
+  CheckboxWithLabel,
   Box,
   useWindowSize,
   useBreakpoint,
@@ -186,4 +190,5 @@ export {
   Text,
   Title,
   ListItem,
+  Tooltip,
 };

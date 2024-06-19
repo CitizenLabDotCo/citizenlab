@@ -1,17 +1,17 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-import { ideasData } from './__mocks__/useAddOfflineIdeas';
+import { ideasData } from './__mocks__/useImportedIdeas';
 import useImportedIdeas from './useImportedIdeas';
 
-const apiPath = '*ideas';
+const apiPath = '*phases/:phaseId/importer/draft_records/idea';
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: ideasData }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: ideasData }, { status: 200 });
   })
 );
 
@@ -21,7 +21,7 @@ describe('useImportedIdeas', () => {
 
   it('returns data correctly', async () => {
     const { result, waitFor } = renderHook(
-      () => useImportedIdeas({ projectId: '1' }),
+      () => useImportedIdeas({ phaseId: '1' }),
       {
         wrapper: createQueryClientWrapper(),
       }

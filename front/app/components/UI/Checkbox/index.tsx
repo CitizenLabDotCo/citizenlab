@@ -42,6 +42,7 @@ const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
 const StyledCheckbox = styled.div<{
   checkedOrIndeterminate: boolean;
   size: string;
+  selectedBorderColor?: string;
 }>`
   width: ${({ size }) => parseInt(size, 10)}px;
   height: ${({ size }) => parseInt(size, 10)}px;
@@ -51,8 +52,10 @@ const StyledCheckbox = styled.div<{
   align-items: center;
   border-radius: ${(props) => props.theme.borderRadius};
   border: solid 1px
-    ${({ checkedOrIndeterminate }) =>
-      checkedOrIndeterminate ? colors.success : colors.grey600};
+    ${({ checkedOrIndeterminate, selectedBorderColor }) =>
+      checkedOrIndeterminate
+        ? selectedBorderColor || colors.success
+        : colors.coolGrey600};
   background: ${({ checkedOrIndeterminate }) =>
     checkedOrIndeterminate ? colors.success : '#fff'};
   transition: all 120ms ease-out;
@@ -84,8 +87,11 @@ type Props = DefaultProps & {
   label?: string | JSX.Element | null;
   id?: string;
   name?: string;
+  checkBoxTabIndex?: number;
+  selectedBorderColor?: string;
 };
 
+/** @deprecated Use CheckboxWithLabel or Checkbox from component-library instead. */
 export default class Checkbox extends PureComponent<Props> {
   static defaultProps: DefaultProps = {
     size: '22px',
@@ -104,18 +110,26 @@ export default class Checkbox extends PureComponent<Props> {
       indeterminate,
       onChange,
       name,
+      checkBoxTabIndex,
+      selectedBorderColor,
     } = this.props;
     const hasLabel = !!label;
 
     if (size && isBoolean(disabled) && isBoolean(indeterminate)) {
       return (
-        <Label id={id} className={className || ''} disabled={disabled}>
+        <Label
+          id={id}
+          className={className || ''}
+          disabled={disabled}
+          role="checkbox"
+          aria-checked={checked}
+        >
           <CheckboxContainer hasLabel={hasLabel}>
             <HiddenCheckbox
               onChange={onChange}
               checked={checked}
               disabled={disabled}
-              tabIndex={0}
+              tabIndex={checkBoxTabIndex}
               name={name}
             />
             <StyledCheckbox
@@ -124,6 +138,7 @@ export default class Checkbox extends PureComponent<Props> {
               className={`${checked ? 'checked' : ''} ${
                 disabled ? 'disabled' : 'enabled'
               } e2e-checkbox`}
+              selectedBorderColor={selectedBorderColor}
             >
               {checked && <CheckMarkIcon ariaHidden name="check" size={size} />}
               {indeterminate && (

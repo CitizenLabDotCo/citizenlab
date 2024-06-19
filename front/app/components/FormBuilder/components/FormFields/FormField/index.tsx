@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 import {
   Box,
@@ -67,6 +67,7 @@ export const FormField = ({
     trigger,
     setValue,
   } = useFormContext();
+  const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
   const { formatMessage } = useIntl();
   const lockedAttributes = field?.constraints?.locks;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -242,7 +243,7 @@ export const FormField = ({
   };
 
   const actions = [
-    ...(field.input_type !== groupingType
+    ...(field.input_type !== groupingType && !field.code // Do not copy built-in fields
       ? [
           {
             handler: async (event: React.MouseEvent) => {
@@ -335,11 +336,16 @@ export const FormField = ({
               actions={actions}
               onClick={(event) => event.stopPropagation()}
               data-cy="e2e-more-field-actions"
+              ref={moreActionsButtonRef}
             />
           </Box>
         </FlexibleRow>
       </FormFieldsContainer>
-      <Modal opened={showDeleteModal} close={closeModal}>
+      <Modal
+        opened={showDeleteModal}
+        close={closeModal}
+        returnFocusRef={moreActionsButtonRef}
+      >
         <Box display="flex" flexDirection="column" width="100%" p="20px">
           <Box mb="40px">
             <Title variant="h3" color="primary">
@@ -365,7 +371,11 @@ export const FormField = ({
             >
               {formatMessage(messages.confirmDeleteFieldWithLogicButtonText)}
             </Button>
-            <Button buttonStyle="secondary" width="auto" onClick={closeModal}>
+            <Button
+              buttonStyle="secondary-outlined"
+              width="auto"
+              onClick={closeModal}
+            >
               {formatMessage(messages.cancelDeleteButtonText)}
             </Button>
           </Box>

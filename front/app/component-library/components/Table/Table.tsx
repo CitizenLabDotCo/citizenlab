@@ -11,6 +11,7 @@ import Box, { BoxProps } from '../Box';
 interface InnerBorders {
   headerCells?: boolean;
   bodyRows?: boolean;
+  bodyCells?: boolean;
 }
 
 const StyledBox = styled(Box)<{ innerBorders?: InnerBorders }>`
@@ -24,9 +25,8 @@ const StyledBox = styled(Box)<{ innerBorders?: InnerBorders }>`
   }
 
   ${({ innerBorders }) =>
-    !innerBorders?.headerCells
-      ? ''
-      : `
+    innerBorders?.headerCells
+      ? `
     thead > tr > th {
       border-right: 1px solid ${colors.grey200};
     }
@@ -34,20 +34,34 @@ const StyledBox = styled(Box)<{ innerBorders?: InnerBorders }>`
     thead > tr > th:last-child {
       border-right: none;
     }
-  `}
+  `
+      : ''}
 
   ${({ innerBorders }) =>
-    !innerBorders?.bodyRows
-      ? ''
-      : `
-    tbody > tr > td {
-      border-bottom: 1px solid ${colors.grey200};
-    }
+    innerBorders?.bodyRows
+      ? `
+      tbody > tr > td {
+        border-bottom: 1px solid ${colors.grey200};
+      }
+  
+      tbody > tr:last-child > td {
+        border-bottom: none;
+      }
+    `
+      : ''}
 
-    tbody > tr:last-child > td {
-      border-bottom: none;
-    }
-  `}
+  ${({ innerBorders }) =>
+    innerBorders?.bodyCells
+      ? `
+      tbody > tr > td {
+        border-right: 1px solid ${colors.grey200};
+      }
+  
+      tbody > tr > td:last-child {
+        border-right: none;
+      }
+    `
+      : ''}
 `;
 
 export interface Props extends BoxProps {

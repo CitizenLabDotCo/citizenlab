@@ -38,7 +38,6 @@ describe('Native survey permissions', () => {
 
                     // Create project with active native survey phase
                     cy.apiCreateProject({
-                      type: 'timeline',
                       title: randomString(),
                       descriptionPreview: randomString(),
                       description: randomString(),
@@ -63,7 +62,6 @@ describe('Native survey permissions', () => {
 
                         // Set permission to smart group
                         cy.apiSetPhasePermission({
-                          projectId,
                           phaseId,
                           action: 'posting_idea',
                           permissionBody: {
@@ -116,10 +114,11 @@ describe('Native survey permissions', () => {
       cy.get('#lastName').type(lastName);
       cy.get('#email').type(email);
       cy.get('#password').type(password);
-      cy.get('#termsAndConditionsAccepted .e2e-checkbox')
+      cy.get('[data-testid="termsAndConditionsAccepted"] .e2e-checkbox')
+
         .click()
         .should('have.class', 'checked');
-      cy.get('#privacyPolicyAccepted .e2e-checkbox')
+      cy.get('[data-testid="privacyPolicyAccepted"] .e2e-checkbox')
         .click()
         .should('have.class', 'checked');
       cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);
@@ -149,7 +148,7 @@ describe('Native survey permissions', () => {
       cy.wait(5000);
       cy.location('pathname').should(
         'eq',
-        `/en/projects/${projectSlug}/ideas/new`
+        `/en/projects/${projectSlug}/surveys/new`
       );
     });
 
@@ -170,10 +169,10 @@ describe('Native survey permissions', () => {
       cy.get('#lastName').type(lastName);
       cy.get('#email').type(email);
       cy.get('#password').type(password);
-      cy.get('#termsAndConditionsAccepted .e2e-checkbox')
+      cy.get('[data-testid="termsAndConditionsAccepted"] .e2e-checkbox')
         .click()
         .should('have.class', 'checked');
-      cy.get('#privacyPolicyAccepted .e2e-checkbox')
+      cy.get('[data-testid="privacyPolicyAccepted"] .e2e-checkbox')
         .click()
         .should('have.class', 'checked');
       cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);
@@ -200,7 +199,9 @@ describe('Native survey permissions', () => {
 
       // Expect button to be disabled
       cy.wait(5000);
-      cy.get('#e2e-cta-button').find('button').should('be.disabled');
+      cy.get('#e2e-cta-button')
+        .find('button')
+        .should('have.attr', 'aria-disabled', 'true');
     });
 
     // it('lets you participate if you exit flow after confirming email, but then return', () => {

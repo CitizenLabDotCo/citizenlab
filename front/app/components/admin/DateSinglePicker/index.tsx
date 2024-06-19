@@ -1,6 +1,11 @@
 import React from 'react';
+import 'react-datepicker/dist/react-datepicker.css';
 
-import { colors, fontSizes } from '@citizenlab/cl2-component-library';
+import {
+  colors,
+  fontSizes,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 import DatePicker from 'react-datepicker';
 import styled from 'styled-components';
 
@@ -14,6 +19,25 @@ const Container = styled.div`
   align-items: center;
   border-radius: ${(props) => props.theme.borderRadius};
   border: solid 1px ${colors.borderDark};
+
+  /*
+    Added to ensure the color contrast required to meet WCAG AA standards.
+  */
+  .react-datepicker__day--today {
+    background-color: ${colors.white};
+    color: ${colors.black};
+    border: 1px solid ${colors.black};
+    border-radius: ${stylingConsts.borderRadius};
+  }
+
+  /*
+    If today's date is 20/5 and you go back to the previous month, 20/4 receives the "...keyboard-selected" class,
+    also resulting in the default light-blue background that the "...today" class receives.
+    No border is needed here because on focus, the browser adds a border
+  */
+  .react-datepicker__day--keyboard-selected {
+    background-color: ${colors.white};
+  }
 
   input {
     width: 100%;

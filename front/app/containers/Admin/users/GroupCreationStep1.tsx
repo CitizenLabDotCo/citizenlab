@@ -115,7 +115,7 @@ const GroupCreationStep1 = memo(
           </GroupDescription>
           <Step2Button
             className="e2e-create-normal-group-button"
-            buttonStyle="cl-blue"
+            buttonStyle="admin-dark"
             onClick={createStep2Handler('manual')}
           >
             <FormattedMessage {...messages.step1CreateButtonNormal} />

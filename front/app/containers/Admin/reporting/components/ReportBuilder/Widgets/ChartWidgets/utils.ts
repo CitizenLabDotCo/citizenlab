@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import { AgeSerie } from 'containers/Admin/dashboard/users/Charts/AgeChart/typings';
 import { GenderSerie } from 'containers/Admin/dashboard/users/Charts/GenderChart/typings';
 
@@ -21,4 +23,12 @@ export const formatLargeNumber = (value: number) => {
   } else {
     return value.toString();
   }
+};
+
+export const getDaysInRange = (
+  startAt?: string | null,
+  endAt?: string | null
+) => {
+  if (!(startAt && endAt)) return undefined;
+  return moment(endAt).diff(moment(startAt), 'days');
 };

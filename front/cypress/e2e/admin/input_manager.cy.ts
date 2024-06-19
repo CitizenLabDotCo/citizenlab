@@ -215,7 +215,7 @@ describe('Input manager', () => {
               // click on title of first idea
               cy.get('.e2e-idea-manager-idea-title')
                 .first()
-                .click()
+                .click({ force: true })
                 .then(() => {
                   // check if the modal popped out and has the idea in it
                   cy.get('#e2e-modal-container').should('exist');

@@ -2,6 +2,7 @@ lb:
   email_campaigns:
     campaign_type_description:
       "manual": Offiziell Noriichten
+      "manual_project_participants": Offiziell Messagen un de Projet Participanten
       "admin_rights_received": Administratorrechter kritt
       "comment_deleted_by_admin": Mäi Kommentar läschen
       "comment_marked_as_spam": Kommentéiert de Bericht vum Spam
@@ -76,7 +77,7 @@ lb:
       "link_terms_conditions": "Geschäftsbedéngungen"
       "link_unsubscribe": "Ofmellen"
       "powered_by": "Ënnerstëtzt vun"
-      "statement": "Dës E-Mail gouf Iech vu CitizenLab am Numm vun %{organizationName} geschéckt, well Dir e registréierten Notzer vun %{organizationLink} sidd. Dir kënnt Iech %{unsubscribeLink}, wann Dir an Zukunft dës E-Mailen net méi kréie wëllt."
+      "statement": "Dës E-Mail gouf Iech vu Go Vocal am Numm vun %{organizationName} geschéckt, well Dir e registréierten Notzer vun %{organizationLink} sidd. Dir kënnt Iech %{unsubscribeLink}, wann Dir an Zukunft dës E-Mailen net méi kréie wëllt."
       "unsubscribe_text": "ofmellen"
     follow:
       "unfollow_here": "Dir hutt dës Notifikatioun kritt wéinst engem Artikel deen Dir verfollegt. <a href=\"%{unfollow_url}\">Dir kënnt et hei ofschléissen.</a>"
@@ -559,6 +560,7 @@ lb:
         admins: 'An den Admins'
         admins_and_managers: 'Fir Administrateuren & Manager'
         managers: 'Zu Manager'
+        project_participants: 'Zu Projet Participanten'
         registered_users: 'Fir registréiert Benotzer'
       recipient_segment:
         admins: 'Administrateuren'

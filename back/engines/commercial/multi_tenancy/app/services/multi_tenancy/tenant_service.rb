@@ -57,7 +57,7 @@ module MultiTenancy
     def finalize_creation(tenant)
       tenant.switch do
         EmailCampaigns::AssureCampaignsService.new.assure_campaigns # fix campaigns
-        PermissionsService.new.update_all_permissions # fix permissions
+        Permissions::PermissionsUpdateService.new.update_all_permissions # fix permissions
         TrackTenantJob.perform_later tenant
       end
 

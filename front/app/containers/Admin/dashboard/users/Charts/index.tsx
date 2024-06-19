@@ -52,6 +52,7 @@ const RegistrationFieldsToGraphs = ({
                   endAt={endAt}
                   currentGroupFilter={currentGroupFilter}
                   currentGroupFilterLabel={currentGroupFilterLabel}
+                  customFieldId={field.id}
                 />
               </Box>
             );
@@ -67,6 +68,7 @@ const RegistrationFieldsToGraphs = ({
                   endAt={endAt}
                   currentGroupFilter={currentGroupFilter}
                   currentGroupFilterLabel={currentGroupFilterLabel}
+                  customFieldId={field.id}
                 />
               </Box>
             );
@@ -80,6 +82,7 @@ const RegistrationFieldsToGraphs = ({
                 endAt={endAt}
                 currentGroupFilter={currentGroupFilter}
                 currentGroupFilterLabel={currentGroupFilterLabel}
+                customFieldId={field.id}
               />
             );
           }

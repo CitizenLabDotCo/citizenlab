@@ -4,7 +4,7 @@ import {
   Accordion,
   Box,
   Button,
-  Checkbox,
+  CheckboxWithLabel,
 } from '@citizenlab/cl2-component-library';
 
 import {
@@ -217,7 +217,7 @@ const CampaignConsentForm = ({
                     consented,
                     campaign_type_description,
                   }: CampaignConsentChild) => (
-                    <Checkbox
+                    <CheckboxWithLabel
                       key={id}
                       size="20px"
                       mb="12px"

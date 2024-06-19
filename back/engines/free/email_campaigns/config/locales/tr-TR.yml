@@ -2,6 +2,7 @@ tr:
   email_campaigns:
     campaign_type_description:
       "manual": Resmi mesajlar
+      "manual_project_participants": Proje katılımcılarına resmi mesajlar
       "admin_rights_received": Yönetici hakları alındı
       "comment_deleted_by_admin": Yorumumun silinmesi
       "comment_marked_as_spam": Yorumun spam olarak bildirilmesi
@@ -76,7 +77,7 @@ tr:
       "link_terms_conditions": "Hüküm ve Koşullar"
       "link_unsubscribe": "Abonelikten ayrıl"
       "powered_by": "Destekleyen"
-      "statement": "Bu e-posta %{organizationName} adına CitizenLab tarafından kayıtlı bir %{organizationLink} kullanıcısı olduğunuz için gönderilmiştir. Bu e-postaları almaya devam etmek istemiyorsanız %{unsubscribeLink}."
+      "statement": "Bu e-posta %{organizationName} adına Go Vocal tarafından kayıtlı bir %{organizationLink} kullanıcısı olduğunuz için gönderilmiştir. Bu e-postaları almaya devam etmek istemiyorsanız %{unsubscribeLink}."
       "unsubscribe_text": "abonelikten ayrılabilirsiniz"
     follow:
       "unfollow_here": "Takip ettiğiniz bir öğe nedeniyle bu bildirimi aldınız. <a href=\"%{unfollow_url}\">Buradan takibi bırakabilirsiniz.</a>"
@@ -559,6 +560,7 @@ tr:
         admins: 'Yöneticilere'
         admins_and_managers: 'Yöneticilere ve müdürlere'
         managers: 'Yöneticilere'
+        project_participants: 'Proje katılımcılarına'
         registered_users: 'Kayıtlı kullanıcılara'
       recipient_segment:
         admins: 'Yöneticiler'

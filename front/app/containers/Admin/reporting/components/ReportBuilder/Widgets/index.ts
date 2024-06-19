@@ -3,21 +3,24 @@ import whiteSpaceMessages from 'components/admin/ContentBuilder/Widgets/WhiteSpa
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
-import AboutReportWidget, { aboutReportTitle } from './AboutReportWidget';
-import ActiveUsersWidget, {
-  activeUsersTitle,
-} from './ChartWidgets/ActiveUsersWidget';
-import AgeWidget, { ageTitle } from './ChartWidgets/AgeWidget';
-import CommentsByTimeWidget, {
-  commentsByTimeTitle,
-} from './ChartWidgets/CommentsByTimeWidget';
-import GenderWidget, { genderTitle } from './ChartWidgets/GenderWidget';
-import PostsByTimeWidget, {
-  postsByTimeTitle,
-} from './ChartWidgets/PostsByTimeWidget';
 import ReactionsByTimeWidget, {
   reactionsByTimeTitle,
-} from './ChartWidgets/ReactionsByTimeWidget';
+} from './ChartWidgets/_deprecated/ReactionsByTimeWidget';
+import DemographicsWidget, {
+  demographicsTitle,
+} from './ChartWidgets/DemographicsWidget';
+import MethodsUsedWidget, {
+  methodsUsedTitle,
+} from './ChartWidgets/MethodsUsedWidget';
+import ParticipantsWidget, {
+  participantsTitle,
+} from './ChartWidgets/ParticipantsWidget';
+import ParticipationWidget, {
+  participationTitle,
+} from './ChartWidgets/ParticipationWidget';
+import RegistrationsWidget, {
+  registrationsTitle,
+} from './ChartWidgets/RegistrationsWidget';
 import VisitorsTrafficSourcesWidget, {
   visitorsTrafficSourcesTitle,
 } from './ChartWidgets/VisitorsTrafficSourcesWidget';
@@ -27,6 +30,7 @@ import ImageMultiloc, { imageMultilocTitle } from './ImageMultiloc';
 import MostReactedIdeasWidget, {
   mostReactedIdeasTitle,
 } from './MostReactedIdeasWidget';
+import ProjectsWidget, { projectsTitle } from './ProjectsWidget';
 import SingleIdeaWidget, { singleIdeaTitle } from './SingleIdeaWidget';
 import SurveyQuestionResultWidget, {
   surveyQuestionResultTitle,
@@ -39,19 +43,24 @@ export const WIDGETS = {
   TextMultiloc,
   ImageMultiloc,
   WhiteSpace,
-  AboutReportWidget,
   SurveyQuestionResultWidget,
   VisitorsWidget,
   VisitorsTrafficSourcesWidget,
-  AgeWidget,
-  GenderWidget,
-  ActiveUsersWidget,
   MostReactedIdeasWidget,
   SingleIdeaWidget,
-  PostsByTimeWidget,
-  CommentsByTimeWidget,
-  ReactionsByTimeWidget,
+  DemographicsWidget,
   IframeMultiloc,
+  RegistrationsWidget,
+  MethodsUsedWidget,
+  ParticipationWidget,
+  ProjectsWidget,
+  ParticipantsWidget,
+
+  // RENAMED (TODO rename in migration)
+  ActiveUsersWidget: ParticipantsWidget,
+
+  // DEPRECATED
+  ReactionsByTimeWidget,
 };
 
 type WidgetName = keyof typeof WIDGETS;
@@ -61,19 +70,24 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   TextMultiloc: textMultilocTitle,
   TwoColumn: twoColumnTitle,
   ImageMultiloc: imageMultilocTitle,
-  AboutReportWidget: aboutReportTitle,
   SurveyQuestionResultWidget: surveyQuestionResultTitle,
   MostReactedIdeasWidget: mostReactedIdeasTitle,
   SingleIdeaWidget: singleIdeaTitle,
   VisitorsWidget: visitorsTitle,
   VisitorsTrafficSourcesWidget: visitorsTrafficSourcesTitle,
-  AgeWidget: ageTitle,
-  GenderWidget: genderTitle,
-  ActiveUsersWidget: activeUsersTitle,
-  PostsByTimeWidget: postsByTimeTitle,
-  CommentsByTimeWidget: commentsByTimeTitle,
-  ReactionsByTimeWidget: reactionsByTimeTitle,
+  DemographicsWidget: demographicsTitle,
   IframeMultiloc: iframeMultilocTitle,
+  RegistrationsWidget: registrationsTitle,
+  MethodsUsedWidget: methodsUsedTitle,
+  ParticipationWidget: participationTitle,
+  ProjectsWidget: projectsTitle,
+  ParticipantsWidget: participantsTitle,
+
+  // RENAMED (TODO rename in migration)
+  ActiveUsersWidget: participantsTitle,
+
+  // DEPRECATED
+  ReactionsByTimeWidget: reactionsByTimeTitle,
 };
 
 const WIDGETS_WITH_CHILDREN = new Set<string>([
@@ -85,16 +99,21 @@ export const hasChildren = (nodeName: string) => {
 };
 
 const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
-  'ActiveUsersWidget',
-  'AgeWidget',
-  'CommentsByTimeWidget',
-  'GenderWidget',
-  'PostsByTimeWidget',
-  'ReactionsByTimeWidget',
   'VisitorsTrafficSourcesWidget',
   'VisitorsWidget',
   'SurveyQuestionResultWidget',
+  'DemographicsWidget',
   'IframeMultiloc',
+  'RegistrationsWidget',
+  'MethodsUsedWidget',
+  'ParticipationWidget',
+  'ParticipantsWidget',
+
+  // RENAMED (TODO rename in migration)
+  'ActiveUsersWidget',
+
+  // DEPRECATED
+  'ReactionsByTimeWidget',
 ] satisfies WidgetName[]);
 
 export const hasNoPointerEvents = (nodeName: string) => {

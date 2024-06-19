@@ -42,7 +42,7 @@ resource 'Phase level Custom Fields' do
     let(:phase) { project.phases.first }
     let(:phase_id) { phase.id }
     let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
-    let!(:custom_field) { create(:custom_field_extra_custom_form, resource: custom_form) }
+    let!(:custom_field) { create(:custom_field, resource: custom_form) }
 
     before do
       phase.update!(input_term: 'question')
@@ -121,7 +121,7 @@ resource 'Phase level Custom Fields' do
     let(:project) { create(:project_with_active_native_survey_phase) }
     let(:phase_id) { project.phases.first.id }
     let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
-    let!(:custom_field) { create(:custom_field_extra_custom_form, resource: custom_form) }
+    let!(:custom_field) { create(:custom_field, resource: custom_form) }
 
     get 'web_api/v1/phases/:phase_id/custom_fields/json_forms_schema' do
       example_request 'Get the jsonforms.io json schema and ui schema for the custom fields' do

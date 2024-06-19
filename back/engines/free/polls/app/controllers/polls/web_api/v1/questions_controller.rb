@@ -11,9 +11,9 @@ module Polls
         def index
           @questions = policy_scope(Question)
             .where(phase: @phase)
-            .includes(:options)
             .order(:ordering)
           @questions = paginate @questions
+          @questions = @questions.includes(:options)
 
           render json: linked_json(
             @questions,

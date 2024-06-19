@@ -1,8 +1,3 @@
-/*
- * This component is invisible to screen readers, if you ever need to show it to
- * screen readers, please adapt inner content to be intelligible before removing aria-hidden prop
- */
-
 import React, { memo } from 'react';
 
 import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
@@ -15,8 +10,13 @@ import useUserById from 'api/users/useUserById';
 
 import FeatureFlag from 'components/FeatureFlag';
 
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
+import { getFullName } from 'utils/textUtils';
+
+import messages from './messages';
 
 export const Container = styled.div<{ size: number }>`
   flex: 0 0 ${({ size }) => size}px;
@@ -116,7 +116,6 @@ export interface Props {
   moderator?: boolean | null;
   addVerificationBadge?: boolean | null;
   padding?: number;
-  hideIfNoAvatar?: boolean;
   authorHash?: string;
 }
 
@@ -141,6 +140,12 @@ const Avatar = memo(
     if (isLinkToProfile && hasValidProfileLink) {
       return (
         <Link to={profileLink} scrollToTop>
+          <ScreenReaderOnly>
+            <FormattedMessage
+              {...messages.titleForAccessibility}
+              values={{ fullName: getFullName(user.data) }}
+            />
+          </ScreenReaderOnly>
           <AvatarInner
             userId={userId}
             isLinkToProfile={isLinkToProfile}
@@ -166,7 +171,6 @@ const AvatarInner = ({
   className,
   addVerificationBadge,
   userId,
-  hideIfNoAvatar,
   authorHash,
   ...props
 }: Props) => {
@@ -220,7 +224,7 @@ const AvatarInner = ({
 
   return (
     <Container aria-hidden className={className} size={containerSize}>
-      {avatarSrc && (
+      {avatarSrc ? (
         <AvatarImage
           className={`avatarImage ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
           src={avatarSrc}
@@ -232,9 +236,7 @@ const AvatarInner = ({
           bgColor={bgColor}
           padding={paddingValue}
         />
-      )}
-
-      {!avatarSrc && !hideIfNoAvatar && (
+      ) : (
         <AvatarIcon
           className={`avatarIcon ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
           name="user-circle"

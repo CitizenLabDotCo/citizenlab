@@ -10,9 +10,9 @@ module ParticipationMethod
       # Default is to do nothing.
     end
 
-    def assign_slug(input)
+    def generate_slug(input)
       # Input is not created in this participation method,
-      # so the default is to do nothing.
+      # so the default is to return nothing.
     end
 
     def assign_defaults(input)
@@ -24,6 +24,10 @@ module ParticipationMethod
     end
 
     def default_fields(_custom_form)
+      []
+    end
+
+    def allowed_extra_field_input_types
       []
     end
 
@@ -122,6 +126,10 @@ module ParticipationMethod
     end
 
     def supports_survey_form?
+      false
+    end
+
+    def supports_permitted_by_everyone?
       false
     end
 

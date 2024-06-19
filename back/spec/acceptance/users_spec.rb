@@ -123,8 +123,6 @@ resource 'Users' do
           'allowed' => true,
           'enabled' => true,
           'enable_signup' => true,
-          'phone' => true,
-          'phone_email_pattern' => 'phone+__PHONE__@test.com',
           'minimum_length' => 6
         }
         AppConfiguration.instance.update!(settings: settings)
@@ -192,8 +190,7 @@ resource 'Users' do
               'enabled' => true,
               'allowed' => true,
               'enable_signup' => true,
-              'minimum_length' => 5,
-              'phone' => false
+              'minimum_length' => 5
             }
             AppConfiguration.instance.update! settings: settings
           end
@@ -216,8 +213,7 @@ resource 'Users' do
               'enabled' => true,
               'allowed' => true,
               'enable_signup' => true,
-              'minimum_length' => 5,
-              'phone' => false
+              'minimum_length' => 5
             }
             AppConfiguration.instance.update! settings: settings
           end
@@ -258,41 +254,6 @@ resource 'Users' do
           example '[error] Registering a user with case insensitive email duplicate', document: false do
             do_request
             assert_status 422
-          end
-        end
-
-        context 'with phone password_login turned on' do
-          before do
-            settings = AppConfiguration.instance.settings
-            settings['password_login'] = {
-              'allowed' => true,
-              'enabled' => true,
-              'enable_signup' => true,
-              'phone' => true,
-              'phone_email_pattern' => 'phone+__PHONE__@test.com',
-              'minimum_length' => 6
-            }
-            AppConfiguration.instance.update!(settings: settings)
-          end
-
-          describe 'email registration' do
-            let(:email) { 'someone@citizenlab.co' }
-
-            example 'Register with email when an email is passed', document: false do
-              do_request
-              assert_status 201
-              expect(User.find_by(email: email)).to be_present
-            end
-          end
-
-          describe 'phone registration' do
-            let(:email) { '+32 487 36 58 98' }
-
-            example 'Registers a user with a phone number in the email when a phone number is passed', document: false do
-              do_request
-              assert_status 201
-              expect(User.find_by(email: 'phone+32487365898@test.com')).to be_present
-            end
           end
         end
       end
@@ -384,7 +345,7 @@ resource 'Users' do
         parameter :group, 'Filter by group_id', required: false
         parameter :can_moderate_project, 'Filter by users (and admins) who can moderate the project (by id)', required: false
         parameter :can_moderate, 'Return only admins and moderators', required: false
-        parameter :can_admin, 'Return only admins', required: false
+        parameter :can_admin, 'Return only admins if value is true, only non-admins if value is false', required: false
         parameter :blocked, 'Return only blocked users', required: false
 
         example_request 'List all users' do
@@ -442,6 +403,66 @@ resource 'Users' do
 
           sorted_last_names = User.pluck(:last_name).sort
           expect(json_response[:data].map { |u| u.dig(:attributes, :last_name) }).to eq sorted_last_names
+        end
+
+        example 'List all users sorted by last_active_at' do
+          User.all.each_with_index do |user, i|
+            user.update!(last_active_at: Time.now - i.days)
+          end
+
+          do_request sort: 'last_active_at'
+
+          assert_status 200
+          json_response = json_parse(response_body)
+
+          sorted_by_last_active_at_emails = User.order(:last_active_at).pluck(:email)
+          expect(json_response[:data].map { |u| u.dig(:attributes, :email) }).to eq sorted_by_last_active_at_emails
+        end
+
+        example 'List all users sorted by last_active_at lists nil values first', document: false do
+          User.all.each_with_index do |user, i|
+            user.update!(last_active_at: Time.now - i.days)
+          end
+
+          inactive_user = User.last
+          inactive_user.update!(last_active_at: nil)
+
+          do_request sort: 'last_active_at'
+
+          assert_status 200
+          json_response = json_parse(response_body)
+
+          expect(json_response[:data].map { |u| u.dig(:attributes, :email) }.first).to eq inactive_user.email
+        end
+
+        example 'List all users sorted by -last_active_at' do
+          User.all.each_with_index do |user, i|
+            user.update!(last_active_at: Time.now - i.days)
+          end
+
+          do_request sort: '-last_active_at'
+
+          assert_status 200
+          json_response = json_parse(response_body)
+
+          sorted_by_last_active_at_emails = User.order(last_active_at: :desc).pluck(:email)
+          expect(json_response[:data].map { |u| u.dig(:attributes, :email) }).to eq sorted_by_last_active_at_emails
+        end
+
+        example 'List all users sorted by -last_active_at lists nil values last', document: false do
+          User.all.each_with_index do |user, i|
+            user.update!(last_active_at: Time.now - i.days)
+          end
+
+          inactive_user = User.first
+          inactive_user.update!(last_active_at: nil)
+
+          do_request sort: '-last_active_at'
+
+          assert_status 200
+          json_response = json_parse(response_body)
+
+          expect(json_response[:data].map { |u| u.dig(:attributes, :email) }.last).to eq inactive_user.email
         end
 
         example 'List all users in group' do
@@ -568,6 +589,19 @@ resource 'Users' do
           do_request(can_moderate: true)
           json_response = json_parse(response_body)
           expect(json_response[:data].pluck(:id)).to match_array [a.id, m1.id, m2.id, @user.id]
+        end
+
+        example 'List all moderators who are not admins' do
+          p = create(:project)
+          m1 = create(:project_moderator, projects: [p])
+          m2 = create(:project_moderator)
+          f = create(:project_folder_moderator, project_folders: [create(:project_folder)])
+          create(:admin, roles: [{ type: 'admin' }, { type: 'project_moderator', project_id: p.id }])
+          create(:user)
+
+          do_request(can_moderate: true, can_admin: false)
+          json_response = json_parse(response_body)
+          expect(json_response[:data].pluck(:id)).to match_array [m1.id, m2.id, f.id]
         end
 
         example 'List all admins' do
@@ -1023,13 +1057,33 @@ resource 'Users' do
 
             example_request '[error] is not allowed' do
               expect(@user.reload.email).not_to eq(email)
+              assert_status 422
+            end
+
+            context 'when email was empty' do # see User#allows_empty_email?
+              before { @user.update_columns(email: nil) }
+
+              example_request 'is allowed' do
+                expect(@user.reload.email).to eq(email)
+                assert_status 200
+              end
+            end
+
+            context 'when new_email was set properly' do
+              before { @user.update!(new_email: email) }
+
+              example_request 'is allowed' do
+                expect(@user.reload.email).to eq(email)
+                assert_status 200
+              end
             end
           end
 
           context 'when the user_confirmation module is not active' do
             example_request 'is allowed' do
-              json_response = json_parse(response_body)
+              expect(@user.reload.email).to eq(email)
               assert_status 200
+              json_response = json_parse(response_body)
               expect(json_response.dig(:data, :attributes, :email)).to eq(email)
             end
           end

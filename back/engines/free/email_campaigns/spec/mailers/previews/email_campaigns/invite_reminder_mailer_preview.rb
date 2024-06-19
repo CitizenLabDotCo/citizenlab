@@ -17,7 +17,7 @@ module EmailCampaigns
           invitee_last_name: recipient_user.last_name,
           invite_text: '<p>Would you like to join our awesome platform?</p>',
           invite_created_at: 50.hours.ago,
-          activate_invite_url: Frontend::UrlService.new.invite_url(token, locale: recipient_user.locale)
+          activate_invite_url: Frontend::UrlService.new.invite_url(token, locale: Locale.new(recipient_user.locale))
         }
       }
       campaign = EmailCampaigns::Campaigns::InviteReminder.first

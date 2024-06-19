@@ -12,6 +12,8 @@ let surveySchema: IIdeaJsonFormSchemas;
 
 let informationPhaseId: string;
 
+let currentReportId: string | undefined;
+
 const locations = [
   [4.349371842575076, 50.85428103529364],
   [4.369558682598269, 50.85155093085792],
@@ -180,8 +182,12 @@ describe('Survey question widget', () => {
   describe('global report builder', () => {
     it('works for multiselect question', () => {
       cy.setAdminLoginCookie();
+      cy.apiRemoveReportBuilder(currentReportId);
+      currentReportId = undefined;
+
       cy.apiCreateReportBuilder().then((report) => {
         const reportId = report.body.data.id;
+        currentReportId = reportId;
 
         cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
 
@@ -266,8 +272,12 @@ describe('Survey question widget', () => {
 
     it('works for linear scale', () => {
       cy.setAdminLoginCookie();
+      cy.apiRemoveReportBuilder(currentReportId);
+      currentReportId = undefined;
+
       cy.apiCreateReportBuilder(informationPhaseId).then((report) => {
         const reportId = report.body.data.id;
+        currentReportId = reportId;
 
         cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
 
@@ -338,15 +348,17 @@ describe('Survey question widget', () => {
         // Reload page and check if values are still correct
         cy.reload();
         ensureCorrectGrouping();
-
-        cy.apiRemoveReportBuilder(reportId);
       });
     });
 
     it('works for image question', () => {
       cy.setAdminLoginCookie();
+      cy.apiRemoveReportBuilder(currentReportId);
+      currentReportId = undefined;
+
       cy.apiCreateReportBuilder(informationPhaseId).then((report) => {
         const reportId = report.body.data.id;
+        currentReportId = reportId;
 
         cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
 
@@ -413,8 +425,12 @@ describe('Survey question widget', () => {
 
     it('works for point question', () => {
       cy.setAdminLoginCookie();
+      cy.apiRemoveReportBuilder(currentReportId);
+      currentReportId = undefined;
+
       cy.apiCreateReportBuilder(informationPhaseId).then((report) => {
         const reportId = report.body.data.id;
+        currentReportId = reportId;
 
         cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
 
@@ -449,15 +465,17 @@ describe('Survey question widget', () => {
         // Check if it's visible in the frontend
         cy.visit(`/projects/${projectSlug}`);
         cy.get('div.esri-view-root').contains('Responses');
-
-        cy.apiRemoveReportBuilder(reportId);
       });
     });
 
     it('allows slicing multiselect by linear scale', () => {
       cy.setAdminLoginCookie();
+      cy.apiRemoveReportBuilder(currentReportId);
+      currentReportId = undefined;
+
       cy.apiCreateReportBuilder(informationPhaseId).then((report) => {
         const reportId = report.body.data.id;
+        currentReportId = reportId;
 
         cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
 
@@ -483,7 +501,7 @@ describe('Survey question widget', () => {
         cy.get('#e2e-group-mode-select').select('survey_question');
         cy.get('.e2e-question-select select')
           .eq(1)
-          .select('4. Question: linear_scale');
+          .select('3. Question: linear_scale');
 
         const ensureCorrectGrouping = () => {
           cy.get('svg.e2e-progress-bar').should('have.length', 5);
@@ -518,15 +536,17 @@ describe('Survey question widget', () => {
         // Reload page and check if values are still correct
         cy.reload();
         ensureCorrectGrouping();
-
-        cy.apiRemoveReportBuilder(reportId);
       });
     });
 
     it('has correct color scheme', () => {
       cy.setAdminLoginCookie();
+      cy.apiRemoveReportBuilder(currentReportId);
+      currentReportId = undefined;
+
       cy.apiCreateReportBuilder(informationPhaseId).then((report) => {
         const reportId = report.body.data.id;
+        currentReportId = reportId;
 
         cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
 
@@ -578,9 +598,12 @@ describe('Survey question widget', () => {
         // Reload page and check if values are still correct
         cy.reload();
         ensureCorrectGrouping();
-
-        cy.apiRemoveReportBuilder(reportId);
       });
+    });
+
+    it('removes last report', () => {
+      cy.apiRemoveReportBuilder(currentReportId);
+      currentReportId = undefined;
     });
 
     // https://www.notion.so/citizenlab/Add-more-e2e-tests-47e6e8567e8b4ba2b60ed81834c32456

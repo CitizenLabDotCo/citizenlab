@@ -17,7 +17,7 @@ const ProjectsMeta = () => {
   const { formatMessage } = useIntl();
   const tenantLocales = useAppConfigurationLocales();
   const { location } = window;
-  const projectsIndexTitle = formatMessage(messages.metaTitle);
+  const projectsIndexTitle = formatMessage(messages.metaTitle1);
   const projectsIndexDescription = formatMessage(messages.metaDescription);
 
   return (

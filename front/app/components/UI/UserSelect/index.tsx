@@ -11,9 +11,9 @@ import { optionIsUser } from './utils';
 
 interface Props {
   selectedUserId: string | null;
-  placeholder: string;
-  id: string;
-  inputId: string;
+  placeholder?: string;
+  id?: string;
+  inputId?: string;
   // Exclude users that can moderate the project from selectable users.
   // We pass the projectId here.
   isNotProjectModeratorOfProjectId?: string;

@@ -1,4 +1,38 @@
 ach:
+  locales:
+    en: crwdns2344850:0crwdne2344850:0
+    ar-MA: crwdns2344852:0crwdne2344852:0
+    ar-SA: crwdns2344854:0crwdne2344854:0
+    ca-ES: crwdns2344856:0crwdne2344856:0
+    cy-GB: crwdns2344858:0crwdne2344858:0
+    da-DK: crwdns2344860:0crwdne2344860:0
+    de-DE: crwdns2344862:0crwdne2344862:0
+    el-GR: crwdns2344864:0crwdne2344864:0
+    en-CA: crwdns2344866:0crwdne2344866:0
+    en-GB: crwdns2344868:0crwdne2344868:0
+    en-IE: crwdns2344870:0crwdne2344870:0
+    es-CL: crwdns2344872:0crwdne2344872:0
+    es-ES: crwdns2344874:0crwdne2344874:0
+    fi-FI: crwdns2344876:0crwdne2344876:0
+    fr-BE: crwdns2344878:0crwdne2344878:0
+    fr-FR: crwdns2344880:0crwdne2344880:0
+    hr-HR: crwdns2344882:0crwdne2344882:0
+    hu-HU: crwdns2344884:0crwdne2344884:0
+    it-IT: crwdns2344886:0crwdne2344886:0
+    kl-GL: crwdns2344888:0crwdne2344888:0
+    lb-LU: crwdns2344890:0crwdne2344890:0
+    lv-LV: crwdns2344892:0crwdne2344892:0
+    mi: crwdns2344894:0crwdne2344894:0
+    nb-NO: crwdns2344896:0crwdne2344896:0
+    nl-BE: crwdns2344898:0crwdne2344898:0
+    nl-NL: crwdns2344900:0crwdne2344900:0
+    pl-PL: crwdns2344902:0crwdne2344902:0
+    pt-BR: crwdns2344904:0crwdne2344904:0
+    ro-RO: crwdns2344906:0crwdne2344906:0
+    sr-Latn: crwdns2344908:0crwdne2344908:0
+    sr-SP: crwdns2344910:0crwdne2344910:0
+    sv-SE: crwdns2344912:0crwdne2344912:0
+    tr-TR: crwdns2344914:0crwdne2344914:0
   symbols:
     outside: crwdns207702:0crwdne207702:0
   idea_statuses:
@@ -148,8 +182,8 @@ ach:
       section3:
         title: crwdns207902:0crwdne207902:0
         description: crwdns207904:0crwdne207904:0
-      other:
-        title: crwdns1667598:0crwdne1667598:0
+      other_text_field:
+        title: crwdns2158534:0{other_option}crwdne2158534:0
   custom_forms:
     categories:
       main_content:
@@ -200,29 +234,40 @@ ach:
       subject: 'crwdns207954:0%{organizationName}crwdne207954:0'
       title_reset_your_password: 'crwdns207956:0crwdne207956:0'
   xlsx_export:
+    anonymous: 'crwdns604497:0crwdne604497:0'
     column_headers:
-      input_id: 'crwdns207958:0crwdne207958:0'
-      latitude: 'crwdns207960:0crwdne207960:0'
-      longitude: 'crwdns207962:0crwdne207962:0'
-      author_fullname: 'crwdns207964:0crwdne207964:0'
-      author_email: 'crwdns207966:0crwdne207966:0'
-      author_id: 'crwdns207968:0crwdne207968:0'
-      budget: 'crwdns207970:0crwdne207970:0'
-      created_at: 'crwdns207972:0crwdne207972:0'
-      published_at: 'crwdns207974:0crwdne207974:0'
-      comments_count: 'crwdns207976:0crwdne207976:0'
-      likes_count: 'crwdns703335:0crwdne703335:0'
-      dislikes_count: 'crwdns703337:0crwdne703337:0'
-      picks: 'crwdns777771:0crwdne777771:0'
-      participants: 'crwdns777773:0crwdne777773:0'
-      votes_count: 'crwdns777775:0crwdne777775:0'
-      input_url: 'crwdns207984:0crwdne207984:0'
-      project: 'crwdns207986:0crwdne207986:0'
-      status: 'crwdns207988:0crwdne207988:0'
       assignee_fullname: 'crwdns207990:0crwdne207990:0'
       assignee_email: 'crwdns207992:0crwdne207992:0'
+      attachments: 'crwdns2201786:0crwdne2201786:0'
+      author_email: 'crwdns207966:0crwdne207966:0'
+      author_fullname: 'crwdns207964:0crwdne207964:0'
+      author_id: 'crwdns207968:0crwdne207968:0'
+      budget: 'crwdns207970:0crwdne207970:0'
+      comments_count: 'crwdns207976:0crwdne207976:0'
+      cost: 'crwdns2201788:0crwdne2201788:0'
+      created_at: 'crwdns207972:0crwdne207972:0'
+      description: 'crwdns2201796:0crwdne2201796:0'
+      dislikes_count: 'crwdns703337:0crwdne703337:0'
+      email: 'crwdns2289938:0crwdne2289938:0'
+      first_name: 'crwdns2289940:0crwdne2289940:0'
       image_url: 'crwdns1160092:0crwdne1160092:0'
-    anonymous: 'crwdns604497:0crwdne604497:0'
+      input_id: 'crwdns207958:0crwdne207958:0'
+      input_url: 'crwdns207984:0crwdne207984:0'
+      last_name: 'crwdns2289942:0crwdne2289942:0'
+      latitude: 'crwdns207960:0crwdne207960:0'
+      likes_count: 'crwdns703335:0crwdne703335:0'
+      location: 'crwdns2201784:0crwdne2201784:0'
+      longitude: 'crwdns207962:0crwdne207962:0'
+      participants: 'crwdns777773:0crwdne777773:0'
+      picks: 'crwdns777771:0crwdne777771:0'
+      project: 'crwdns207986:0crwdne207986:0'
+      published_at: 'crwdns207974:0crwdne207974:0'
+      registration_completed_at: 'crwdns2289944:0crwdne2289944:0'
+      status: 'crwdns207988:0crwdne207988:0'
+      submitted_at: 'crwdns2201790:0crwdne2201790:0'
+      tags: 'crwdns2201792:0crwdne2201792:0'
+      title: 'crwdns2201794:0crwdne2201794:0'
+      votes_count: 'crwdns777775:0crwdne777775:0'
   form_builder:
     default_select_field:
       title: 'crwdns207994:0crwdne207994:0'
@@ -248,6 +293,7 @@ ach:
       instructions: 'crwdns1160120:0crwdne1160120:0'
       write_as_clearly: 'crwdns1160122:0crwdne1160122:0'
       write_in_language: 'crwdns1160124:0crwdne1160124:0'
+      linear_scale_print_description: 'crwdns2158536:0%{min_label}crwdnd2158536:0%{max_label}crwdne2158536:0'
   project_copy:
     title_suffix: 'crwdns208004:0crwdne208004:0'
   confirmations_mailer:

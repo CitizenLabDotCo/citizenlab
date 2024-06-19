@@ -14,7 +14,7 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer do
           post_id: idea.id,
           post_title_multiloc: idea.title_multiloc,
           post_body_multiloc: idea.body_multiloc,
-          post_url: Frontend::UrlService.new.model_to_url(idea, locale: recipient.locale),
+          post_url: Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient.locale)),
           post_images: idea.idea_images.map do |image|
             {
               ordering: image.ordering,
@@ -46,7 +46,7 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer do
     end
 
     it 'assigns go to idea CTA' do
-      idea_url = Frontend::UrlService.new.model_to_url(idea, locale: recipient.locale)
+      idea_url = Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient.locale))
       expect(mail.body.encoded).to match(idea_url)
     end
   end

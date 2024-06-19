@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Badge, colors, Button } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
 
 import { ITopicData } from 'api/topics/types';
 import useUpdateTopic from 'api/topics/useUpdateTopic';
@@ -19,12 +20,14 @@ interface Props {
 const UpdateOnboardingTopic = ({ topic }: Props) => {
   const { mutate: updateTopic, isLoading, error } = useUpdateTopic();
   const { formatMessage } = useIntl();
-  const color = topic.attributes.include_in_onboarding
-    ? colors.success
-    : colors.coolGrey300;
+  const theme = useTheme();
   const iconName = topic.attributes.include_in_onboarding
     ? 'check-circle'
     : 'plus-circle';
+  const topicButtonContentColor = topic.attributes.include_in_onboarding
+    ? colors.white
+    : theme.colors.tenantPrimary;
+  const className = topic.attributes.include_in_onboarding ? 'inverse' : '';
 
   const onClick = () => {
     updateTopic({
@@ -35,15 +38,20 @@ const UpdateOnboardingTopic = ({ topic }: Props) => {
 
   return (
     <>
-      <Badge color={color} onClick={onClick}>
+      <Badge
+        color={theme.colors.tenantPrimary}
+        className={className}
+        onClick={onClick}
+      >
         <Button
           buttonStyle="text"
           icon={iconName}
-          iconColor={color}
           iconPos="right"
           padding="0px"
           my="0px"
           processing={isLoading}
+          textColor={topicButtonContentColor}
+          iconColor={topicButtonContentColor}
         >
           <T value={topic.attributes.title_multiloc} />
         </Button>

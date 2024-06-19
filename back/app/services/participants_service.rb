@@ -88,15 +88,22 @@ class ParticipantsService
   # @param project[Project]
   # @return[ActiveRecord::Relation] List of users that participated in the project
   def project_participants(project)
-    participant_ids = Rails.cache.fetch("#{project.cache_key}/participant_ids", expires_in: 1.day) do
+    is_active = TimelineService.new.timeline_active(project) == :present
+    expires_in = is_active ? 1.hour : 1.day
+
+    participant_ids = Rails.cache.fetch("#{project.cache_key}/participant_ids", expires_in: expires_in) do
       projects_participants([project]).pluck(:id)
     end
+
     User.where(id: participant_ids)
   end
 
   # Returns the total count of all project participants including anonymous posts - cached
   def project_participants_count(project)
-    Rails.cache.fetch("#{project.cache_key}/participant_count", expires_in: 1.day) do
+    is_active = TimelineService.new.timeline_active(project) == :present
+    expires_in = is_active ? 1.hour : 1.day
+
+    Rails.cache.fetch("#{project.cache_key}/participant_count", expires_in: expires_in) do
       project_participants_count_uncached(project)
     end
   end

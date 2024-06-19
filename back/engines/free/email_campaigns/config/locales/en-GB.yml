@@ -2,6 +2,7 @@ en-GB:
   email_campaigns:
     campaign_type_description:
       "manual": Official messages
+      "manual_project_participants": Official messages to project participants
       "admin_rights_received": Admin rights received
       "comment_deleted_by_admin": Deletion of my comment
       "comment_marked_as_spam": Comment spam report
@@ -76,7 +77,7 @@ en-GB:
       "link_terms_conditions": "Terms & Conditions"
       "link_unsubscribe": "Unsubscribe"
       "powered_by": "Powered by"
-      "statement": "This e-mail was sent to you by CitizenLab on behalf of %{organizationName}, because you are a registered user of %{organizationLink}. You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
+      "statement": "This e-mail was sent to you by Go Vocal on behalf of %{organizationName}, because you are a registered user of %{organizationLink}. You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
       "unsubscribe_text": "unsubscribe"
     follow:
       "unfollow_here": "You have received this notification because of an item that you follow. <a href=\"%{unfollow_url}\">You can unfollow it here.</a>"
@@ -559,6 +560,7 @@ en-GB:
         admins: 'To admins'
         admins_and_managers: 'To admins & managers'
         managers: 'To managers'
+        project_participants: 'To project participants'
         registered_users: 'To registered users'
       recipient_segment:
         admins: 'Admins'

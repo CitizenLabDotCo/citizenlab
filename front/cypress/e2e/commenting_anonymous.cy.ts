@@ -61,8 +61,10 @@ describe('Idea with anonymous commenting allowed', () => {
     cy.visit(`/ideas/${ideaSlug}`);
     cy.get('#submit-comment').should('exist');
     cy.get('#submit-comment').click().type('Anonymous comment body');
-    cy.get('#e2e-anonymous-comment-checkbox').should('exist');
-    cy.get('#e2e-anonymous-comment-checkbox').click();
+    cy.get('[data-testid="e2e-post-comment-anonymously-checkbox"]').should(
+      'exist'
+    );
+    cy.get('[data-testid="e2e-post-comment-anonymously-checkbox"]').click();
     cy.get('.e2e-submit-parentcomment').click();
 
     // confirm anonymous participation
@@ -77,8 +79,10 @@ describe('Idea with anonymous commenting allowed', () => {
     cy.visit(`/ideas/${ideaSlug}`);
     cy.get('#submit-comment').should('exist');
     cy.get('#submit-comment').click().type('Anonymous comment body');
-    cy.get('#e2e-anonymous-comment-checkbox').should('exist');
-    cy.get('#e2e-anonymous-comment-checkbox').click();
+    cy.get('[data-testid="e2e-post-comment-anonymously-checkbox"]').should(
+      'exist'
+    );
+    cy.get('[data-testid="e2e-post-comment-anonymously-checkbox"]').click();
     cy.get('.e2e-submit-parentcomment').click();
 
     // confirm anonymous participation

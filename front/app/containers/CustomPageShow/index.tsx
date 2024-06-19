@@ -78,21 +78,16 @@ const CustomPageShow = () => {
   const { slug } = useParams() as {
     slug: string;
   };
-  const { data: appConfiguration, isLoading: isLoadingAppConfiguration } =
-    useAppConfiguration();
+  const { data: appConfiguration } = useAppConfiguration();
   const localize = useLocalize();
-  const {
-    data: page,
-    isError,
-    isLoading: isLoadingPage,
-  } = useCustomPageBySlug(slug);
+  const { data: page, isError } = useCustomPageBySlug(slug);
   const proposalsEnabled = useFeatureFlag({ name: 'initiatives' });
   const { data: remotePageFiles } = usePageFiles(
     page ? page.data.id : undefined
   );
 
   // when neither have loaded
-  if (isLoadingAppConfiguration || isLoadingPage) {
+  if (!appConfiguration || !page) {
     return null;
   }
 
@@ -112,54 +107,56 @@ const CustomPageShow = () => {
     appConfiguration?.data.attributes.settings.core.organization_name
   );
   return (
-    <Container className={`e2e-page-${slug}`}>
+    <>
       <Helmet
         title={`${localize(
           pageAttributes.title_multiloc
         )} | ${localizedOrgName}`}
       />
-      {pageAttributes.banner_enabled ? (
-        <Box background="#fff" width="100%">
-          <CustomPageHeader pageData={page.data} />
-        </Box>
-      ) : (
-        <NoBannerContainer>
-          {/* show page text title if the banner is disabled */}
-          <PageTitle>{localize(pageAttributes.title_multiloc)}</PageTitle>
-          <Box zIndex="40000">
-            <AdminCustomPageEditButton pageId={page.data.id} />
-          </Box>
-        </NoBannerContainer>
-      )}
-      <Content>
-        <Fragment
-          name={
-            !isNilOrError(page) ? `pages/${page && page.data.id}/content` : ''
-          }
-        />
-        {pageAttributes.top_info_section_enabled && (
-          <InfoSection
-            multilocContent={pageAttributes.top_info_section_multiloc}
-          />
-        )}
-        {pageAttributes.files_section_enabled &&
-          !isNilOrError(remotePageFiles) &&
-          remotePageFiles.data.length > 0 && (
-            <AttachmentsContainer
-              topInfoSectionEnabled={pageAttributes.top_info_section_enabled}
-            >
-              <FileAttachments files={remotePageFiles.data} />
-            </AttachmentsContainer>
+      <main className={`e2e-page-${slug}`}>
+        <Container>
+          {pageAttributes.banner_enabled ? (
+            <Box background="#fff" width="100%">
+              <CustomPageHeader pageData={page.data} />
+            </Box>
+          ) : (
+            <NoBannerContainer>
+              {/* show page text title if the banner is disabled */}
+              <PageTitle>{localize(pageAttributes.title_multiloc)}</PageTitle>
+              <Box zIndex="40000">
+                <AdminCustomPageEditButton pageId={page.data.id} />
+              </Box>
+            </NoBannerContainer>
           )}
-        <CustomPageProjectsAndEvents page={page.data} />
-        {pageAttributes.bottom_info_section_enabled &&
-          pageAttributes.bottom_info_section_multiloc && (
-            <InfoSection
-              multilocContent={pageAttributes.bottom_info_section_multiloc}
-            />
-          )}
-      </Content>
-    </Container>
+          <Content>
+            <Fragment name={`pages/${page.data.id}/content`} />
+            {pageAttributes.top_info_section_enabled && (
+              <InfoSection
+                multilocContent={pageAttributes.top_info_section_multiloc}
+              />
+            )}
+            {pageAttributes.files_section_enabled &&
+              !isNilOrError(remotePageFiles) &&
+              remotePageFiles.data.length > 0 && (
+                <AttachmentsContainer
+                  topInfoSectionEnabled={
+                    pageAttributes.top_info_section_enabled
+                  }
+                >
+                  <FileAttachments files={remotePageFiles.data} />
+                </AttachmentsContainer>
+              )}
+            <CustomPageProjectsAndEvents page={page.data} />
+            {pageAttributes.bottom_info_section_enabled &&
+              pageAttributes.bottom_info_section_multiloc && (
+                <InfoSection
+                  multilocContent={pageAttributes.bottom_info_section_multiloc}
+                />
+              )}
+          </Content>
+        </Container>
+      </main>
+    </>
   );
 };
 

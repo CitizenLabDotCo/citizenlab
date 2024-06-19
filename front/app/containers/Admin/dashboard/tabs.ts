@@ -21,19 +21,17 @@ const BASE_ADMIN_TABS: TabRoute[] = [
     url: '/admin/dashboard/users',
     name: 'users',
   },
+  {
+    message: messages.tabVisitors,
+    name: 'visitors',
+    url: '/admin/dashboard/visitors',
+  },
+  {
+    message: messages.tabRepresentativeness,
+    name: 'representativeness',
+    url: '/admin/dashboard/representation',
+  },
 ];
-
-const VISITORS_TAB: TabRoute = {
-  message: messages.tabVisitors,
-  name: 'visitors',
-  url: '/admin/dashboard/visitors',
-};
-
-const REPRESENTATIVENESS_TAB: TabRoute = {
-  message: messages.tabRepresentativeness,
-  name: 'representativeness',
-  url: '/admin/dashboard/representation',
-};
 
 const MODERATION_TAB: TabRoute = {
   message: messages.feed,
@@ -41,22 +39,24 @@ const MODERATION_TAB: TabRoute = {
   url: '/admin/dashboard/moderation',
 };
 
+const MANAGEMENT_FEED_TAB: TabRoute = {
+  message: messages.managementFeed,
+  name: 'management_feed',
+  url: '/admin/dashboard/management-feed',
+};
+
 export const getAdminTabs = (
-  { visitorsEnabled, representativenessEnabled, moderationEnabled },
+  { moderationEnabled, managementFeedEnabled },
   formatMessage: FormatMessage
 ) => {
   const tabs = [...BASE_ADMIN_TABS];
 
-  if (visitorsEnabled) {
-    tabs.push(VISITORS_TAB);
-  }
-
-  if (representativenessEnabled) {
-    tabs.push(REPRESENTATIVENESS_TAB);
-  }
-
   if (moderationEnabled) {
     tabs.push(MODERATION_TAB);
+  }
+
+  if (managementFeedEnabled) {
+    tabs.push(MANAGEMENT_FEED_TAB);
   }
 
   return translateTabs(tabs, formatMessage);

@@ -19,7 +19,10 @@ end
 class Rack::Attack
   # After https://github.com/rack/rack-attack/blob/master/docs/example_configuration.md
 
-  # Uses cache from environment config file.
+  # Whitelist an IP, which we are using for prerendering
+  if (safe_ip = ENV.fetch('RACK_ATTACK_SAFELIST_IP', nil))
+    safelist_ip(safe_ip)
+  end
 
   # For all requests.
   throttle('req/ip', limit: 1000, period: 3.minutes) do |req|
@@ -130,6 +133,13 @@ class Rack::Attack
       rescue JWT::DecodeError
         # do nothing
       end
+    end
+  end
+
+  # Machine translations by IP.
+  throttle('translate/id', limit: 10, period: 20.seconds) do |req|
+    if %r{/web_api/v1/.+/machine_translation}.match?(req.path)
+      req.remote_ip
     end
   end
 end

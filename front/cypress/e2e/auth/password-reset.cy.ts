@@ -18,7 +18,7 @@ describe('password reset', () => {
     cy.get('.e2e-success-reset').should('exist');
   });
   it('is successful if the email does exist', () => {
-    tryReset('admin@citizenlab.co');
+    tryReset('admin@govocal.com');
     cy.get('.e2e-input-error').should('not.exist');
     cy.get('.e2e-success-reset').should('exist');
   });

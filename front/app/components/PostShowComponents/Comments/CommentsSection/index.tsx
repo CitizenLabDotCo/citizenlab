@@ -66,7 +66,7 @@ const CommentsSection = ({
   const publicCommentCount = post.data.attributes.comments_count;
   const internalCommentCount = post.data.attributes.internal_comments_count;
   const commenting_idea =
-    idea?.data.attributes.action_descriptor.commenting_idea;
+    idea?.data.attributes.action_descriptors.commenting_idea;
   const commentingEnabled =
     postType === 'idea'
       ? commenting_idea?.enabled

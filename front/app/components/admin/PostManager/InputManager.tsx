@@ -1,4 +1,4 @@
-import React, { ChangeEvent, Suspense, lazy, useEffect, useState } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -14,6 +14,7 @@ import { IProjectData } from 'api/projects/types';
 import useTopics from 'api/topics/useTopics';
 
 import Outlet from 'components/Outlet';
+import SearchInput from 'components/UI/SearchInput';
 
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { isNilOrError } from 'utils/helperUtils';
@@ -33,7 +34,6 @@ import {
   PreviewMode,
   Sticky,
   StyledExportMenu,
-  StyledInput,
   ThreeColumns,
   TopActionBar,
 } from '.';
@@ -240,11 +240,11 @@ const InputManager = ({
     setQueryParameters({ ...queryParameters, 'page[number]': pageNumber });
   };
 
-  const onChangeSearchTerm = (event: ChangeEvent<HTMLInputElement>) => {
+  const onChangeSearchTerm = (value: string | null) => {
     setQueryParameters({
       ...queryParameters,
       'page[number]': 1,
-      search: event.target.value,
+      search: value || undefined,
     });
   };
 
@@ -294,7 +294,11 @@ const InputManager = ({
             project={selectedProjectId}
             queryParameters={queryParameters}
           />
-          <StyledInput icon="search" onChange={onChangeSearchTerm} />
+          <SearchInput
+            debounce={1500}
+            onChange={onChangeSearchTerm}
+            a11y_numberOfSearchResults={ideas?.data.length}
+          />
         </MiddleColumnTop>
       </ThreeColumns>
       <ThreeColumns>

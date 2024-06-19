@@ -213,7 +213,7 @@ class WebApi::V1::InitiativesController < ApplicationController
   end
 
   def serialization_options_for(initiatives)
-    default_params = jsonapi_serializer_params(pcs: ParticipationPermissionsService.new)
+    default_params = jsonapi_serializer_params
 
     if current_user
       reactions = current_user.reactions.where(

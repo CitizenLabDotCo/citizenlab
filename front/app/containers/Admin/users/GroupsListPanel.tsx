@@ -189,14 +189,23 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
         </GroupName>
         <MembersCount>{usersCount?.data.attributes.count}</MembersCount>
       </MenuLink>
-      <MenuLink to="/admin/users/admins-managers">
+      <MenuLink to="/admin/users/admins">
         <GroupName>
-          <FormattedMessage {...messages.adminsAndManagers} />
+          <FormattedMessage {...messages.admins} />
         </GroupName>
         {usersCount && (
-          <MembersCount data-cy="e2e-admin-and-moderator-count">
-            {usersCount.data.attributes.administrators_count +
-              usersCount.data.attributes.moderators_count}
+          <MembersCount data-cy="e2e-admin-count">
+            {usersCount.data.attributes.administrators_count}
+          </MembersCount>
+        )}
+      </MenuLink>
+      <MenuLink to="/admin/users/moderators">
+        <GroupName>
+          <FormattedMessage {...messages.managers} />
+        </GroupName>
+        {usersCount && (
+          <MembersCount data-cy="e2e-moderator-count">
+            {usersCount.data.attributes.moderators_count}
           </MembersCount>
         )}
       </MenuLink>
@@ -228,7 +237,7 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
             onClick={handleCreateGroup}
             padding="8px"
             borderRadius="50%"
-            buttonStyle="secondary"
+            buttonStyle="secondary-outlined"
             bgColor={rgba(colors.primary, 0.08)}
             bgHoverColor={rgba(colors.primary, 0.15)}
           />

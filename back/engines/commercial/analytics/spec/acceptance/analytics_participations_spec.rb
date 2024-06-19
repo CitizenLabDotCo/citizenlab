@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Analytics - FactParticipations' do
-  explanation 'Queries to summarise participations/active users.'
+  explanation 'Queries to summarise participations.'
 
   before do
     header 'Content-Type', 'application/json'
@@ -72,60 +72,6 @@ resource 'Analytics - FactParticipations' do
       })
       assert_status 200
       expect(response_data[:attributes]).to match_array([{ count: 1 }])
-    end
-
-    context 'when querying custom fields' do
-      before { create(:custom_field, key: :gender, resource_type: 'User') }
-
-      example 'filter participants by gender and group by month' do
-        do_request({
-          query: {
-            fact: 'participation',
-            groups: 'dimension_date_created.month',
-            filters: {
-              'dimension_user.role': ['citizen', 'admin', nil],
-              'dimension_user_custom_field_values.key': 'gender',
-              'dimension_user_custom_field_values.value': 'female'
-            },
-            aggregations: {
-              'dimension_user_custom_field_values.dimension_user_id': 'count', # we count participants, not participations
-              'dimension_date_created.date': 'first'
-            }
-          }
-        })
-        assert_status 200
-        expect(response_data[:attributes].length).to eq(1)
-        expect(response_data[:attributes].first).to include(
-          count_dimension_user_custom_field_values_dimension_user_id: 2,
-          'dimension_date_created.month': '2022-10'
-        )
-      end
-
-      example 'group participations by gender' do
-        nil_gender_user = create(:user)
-        create(:initiative, created_at: Date.new(2023, 11, 1), author: nil_gender_user)
-
-        do_request({
-          query: {
-            fact: 'participation',
-            groups: 'dimension_user_custom_field_values.value',
-            filters: {
-              'dimension_user_custom_field_values.key': 'gender'
-            },
-            aggregations: {
-              all: 'count'
-            }
-          }
-        })
-        expect(json_response_body).to have_key(:data)
-        assert_status 200
-        expect(response_data[:attributes]).to match_array([
-          { 'dimension_user_custom_field_values.value': nil,      count: 1 },
-          { 'dimension_user_custom_field_values.value': 'female', count: 2 },
-          { 'dimension_user_custom_field_values.value': 'unspecified', count: 1 },
-          { 'dimension_user_custom_field_values.value': 'male', count: 1 }
-        ])
-      end
     end
 
     example 'filter participations by project' do

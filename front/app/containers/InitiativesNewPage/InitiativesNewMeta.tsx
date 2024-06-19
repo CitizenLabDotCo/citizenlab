@@ -17,8 +17,8 @@ const InitiativesNewMeta = () => {
   const { formatMessage } = useIntl();
   const tenantLocales = useAppConfigurationLocales();
   const { location } = window;
-  const initiativesIndexTitle = formatMessage(messages.metaTitle);
-  const initiativesIndexDescription = formatMessage(messages.metaDescription);
+  const initiativesIndexTitle = formatMessage(messages.metaTitle1);
+  const initiativesIndexDescription = formatMessage(messages.metaDescription1);
 
   return (
     <Helmet>

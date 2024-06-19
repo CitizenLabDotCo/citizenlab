@@ -62,14 +62,16 @@ interface Props {
 const locale$ = localeStream().observable;
 
 const App = ({ children }: Props) => {
+  const isSmallerThanTablet = useBreakpoint('tablet');
   const location = useLocation();
+
   const { mutate: signOutAndDeleteAccount } = useDeleteSelf();
   const [isAppInitialized, setIsAppInitialized] = useState(false);
   const [previousPathname, setPreviousPathname] = useState<RouteType | null>(
     null
   );
   const { data: appConfiguration } = useAppConfiguration();
-  const { data: authUser, isLoading } = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const appContainerClassName =
     isAdmin(authUser) || isProjectModerator(authUser) ? 'admin-user-view' : '';
   const [
@@ -256,7 +258,7 @@ const App = ({ children }: Props) => {
   const isIdeaEditPage = isPage('idea_edit', location.pathname);
   const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
   const isEventPage = isPage('event_page', location.pathname);
-  const isSmallerThanTablet = useBreakpoint('tablet');
+  const isNativeSurveyPage = isPage('native_survey', location.pathname);
 
   const theme = getTheme(appConfiguration);
   const showFooter =
@@ -264,11 +266,12 @@ const App = ({ children }: Props) => {
     !isIdeaFormPage &&
     !isInitiativeFormPage &&
     !isIdeaEditPage &&
-    !isInitiativeEditPage;
+    !isInitiativeEditPage &&
+    !isNativeSurveyPage;
   const { pathname } = removeLocale(location.pathname);
   const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
   const disableScroll = fullscreenModalEnabled && signUpInModalOpened;
-  const isAuthenticationPending = !authUser && isLoading;
+  const isAuthenticationPending = authUser === undefined;
   const canAccessRoute = usePermission({
     item: {
       type: 'route',
@@ -283,6 +286,8 @@ const App = ({ children }: Props) => {
     }
 
     // citizen
+    if (isNativeSurveyPage) return false;
+
     if (isSmallerThanTablet) {
       if (
         isEventPage ||
@@ -309,90 +314,86 @@ const App = ({ children }: Props) => {
           <Spinner />
         </Box>
       )}
-      {appConfiguration && (
-        <PreviousPathnameContext.Provider value={previousPathname}>
-          <ThemeProvider
-            theme={{ ...theme, isRtl: !!locale?.startsWith('ar') }}
+      <PreviousPathnameContext.Provider value={previousPathname}>
+        <ThemeProvider theme={{ ...theme, isRtl: !!locale?.startsWith('ar') }}>
+          <GlobalStyle />
+          <Box
+            className={appContainerClassName}
+            display="flex"
+            flexDirection="column"
+            alignItems="stretch"
+            position="relative"
+            background={colors.white}
+            /* When the fullscreen modal is enabled on a platform and
+             * is currently open, we want to disable scrolling on the
+             * app sitting below it (CL-1101).
+             * For instance, with a fullscreen modal, we want to
+             * be able to disable scrolling on the page behind the modal
+             */
+            overflow={disableScroll ? 'hidden' : undefined}
+            minHeight="100vh"
           >
-            <GlobalStyle />
-            <Box
-              className={appContainerClassName}
-              display="flex"
-              flexDirection="column"
-              alignItems="stretch"
-              position="relative"
-              background={colors.white}
-              /* When the fullscreen modal is enabled on a platform and
-               * is currently open, we want to disable scrolling on the
-               * app sitting below it (CL-1101).
-               * For instance, with a fullscreen modal, we want to
-               * be able to disable scrolling on the page behind the modal
-               */
-              overflow={disableScroll ? 'hidden' : undefined}
-              minHeight="100vh"
-            >
-              <Meta />
-              <UserSessionRecordingModal />
+            <Meta />
+            <UserSessionRecordingModal />
+            <ErrorBoundary>
+              <Suspense fallback={null}>
+                <UserDeletedModal
+                  modalOpened={userDeletedSuccessfullyModalOpened}
+                  closeUserDeletedModal={closeUserDeletedModal}
+                  userSuccessfullyDeleted={userSuccessfullyDeleted}
+                />
+              </Suspense>
+            </ErrorBoundary>
+            <ErrorBoundary>
+              <Authentication setModalOpen={setSignUpInModalOpened} />
+            </ErrorBoundary>
+            <ErrorBoundary>
+              <div id="modal-portal" />
+            </ErrorBoundary>
+            <ErrorBoundary>
+              <div id="topbar-portal" />
+            </ErrorBoundary>
+            <ErrorBoundary>
+              <Suspense fallback={null}>
+                <ConsentManager />
+              </Suspense>
+            </ErrorBoundary>
+            {showFrontOfficeNavbar() && (
               <ErrorBoundary>
-                <Suspense fallback={null}>
-                  <UserDeletedModal
-                    modalOpened={userDeletedSuccessfullyModalOpened}
-                    closeUserDeletedModal={closeUserDeletedModal}
-                    userSuccessfullyDeleted={userSuccessfullyDeleted}
-                  />
-                </Suspense>
+                <MainHeader />
               </ErrorBoundary>
-              <ErrorBoundary>
-                <Authentication setModalOpen={setSignUpInModalOpened} />
-              </ErrorBoundary>
-              <ErrorBoundary>
-                <div id="modal-portal" />
-              </ErrorBoundary>
-              <ErrorBoundary>
-                <div id="topbar-portal" />
-              </ErrorBoundary>
-              <ErrorBoundary>
-                <Suspense fallback={null}>
-                  <ConsentManager />
-                </Suspense>
-              </ErrorBoundary>
-              {showFrontOfficeNavbar() && (
-                <ErrorBoundary>
-                  <MainHeader />
-                </ErrorBoundary>
-              )}
-              {!isAuthenticationPending && (
-                <Box
-                  display="flex"
-                  flexDirection="column"
-                  alignItems="stretch"
-                  flex="1"
-                  overflowY="auto"
-                  pt={
-                    showFrontOfficeNavbar()
-                      ? `${stylingConsts.menuHeight}px`
-                      : undefined
-                  }
-                >
-                  {canAccessRoute ? (
-                    <ErrorBoundary>{children}</ErrorBoundary>
-                  ) : (
-                    <Navigate to="/" />
-                  )}
-                </Box>
-              )}
-              {showFooter && (
-                <Suspense fallback={null}>
-                  <PlatformFooter />
-                </Suspense>
-              )}
-              <ErrorBoundary>
-                <div id="mobile-nav-portal" />
-              </ErrorBoundary>
-            </Box>
-          </ThemeProvider>
-        </PreviousPathnameContext.Provider>
-      )}
+            )}
+            {!isAuthenticationPending && (
+              <Box
+                display="flex"
+                flexDirection="column"
+                alignItems="stretch"
+                flex="1"
+                overflowY="auto"
+                pt={
+                  showFrontOfficeNavbar()
+                    ? `${stylingConsts.menuHeight}px`
+                    : undefined
+                }
+              >
+                {canAccessRoute ? (
+                  <ErrorBoundary>{children}</ErrorBoundary>
+                ) : (
+                  <Navigate to="/" />
+                )}
+              </Box>
+            )}
+            {showFooter && (
+              <Suspense fallback={null}>
+                <PlatformFooter />
+              </Suspense>
+            )}
+            <ErrorBoundary>
+              <div id="mobile-nav-portal" />
+            </ErrorBoundary>
+          </Box>
+        </ThemeProvider>
+      </PreviousPathnameContext.Provider>
     </>
   );
 };

@@ -1,4 +1,4 @@
-import { VisitorsTrafficSourcesResponse } from 'api/graph_data_units/responseTypes';
+import { VisitorsTrafficSourcesResponse } from 'api/graph_data_units/responseTypes/VisitorsTrafficSourcesWidget';
 
 import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 

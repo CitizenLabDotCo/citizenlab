@@ -1,5 +1,5 @@
 import { IPhaseData } from 'api/phases/types';
-import { IProjectData, PostingDisabledReason } from 'api/projects/types';
+import { IProjectData, ProjectPostingDisabledReason } from 'api/projects/types';
 import { IUserData } from 'api/users/types';
 
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -46,7 +46,6 @@ export type IIdeaPostingDisabledReason =
   | 'postingLimitedMaxReached'
   | 'projectInactive'
   | 'notActivePhase'
-  | 'maybeNotPermitted'
   | 'futureEnabled'
   | 'notInGroup';
 
@@ -58,7 +57,7 @@ export type AuthenticationRequirements =
   | 'complete_registration';
 
 const ideaPostingDisabledReason = (
-  backendReason: PostingDisabledReason | null,
+  backendReason: ProjectPostingDisabledReason | null,
   signedIn: boolean,
   futureEnabled: string | null
 ): {
@@ -66,17 +65,17 @@ const ideaPostingDisabledReason = (
   authenticationRequirements: AuthenticationRequirements | null;
 } => {
   switch (backendReason) {
-    case 'missing_data':
+    case 'user_missing_requirements':
       return {
         disabledReason: null,
         authenticationRequirements: 'complete_registration',
       };
-    case 'not_in_group':
+    case 'user_not_in_group':
       return {
         disabledReason: 'notInGroup',
         authenticationRequirements: null,
       };
-    case 'not_verified':
+    case 'user_not_verified':
       return signedIn
         ? {
             disabledReason: null,
@@ -86,7 +85,7 @@ const ideaPostingDisabledReason = (
             disabledReason: null,
             authenticationRequirements: 'sign_in_up_and_verify',
           };
-    case 'not_signed_in':
+    case 'user_not_signed_in':
       return {
         disabledReason: null,
         authenticationRequirements: 'sign_in_up',
@@ -108,12 +107,12 @@ const ideaPostingDisabledReason = (
         disabledReason: 'postingLimitedMaxReached',
         authenticationRequirements: null,
       };
-    case 'not_permitted':
+    case 'user_not_permitted' || 'user_blocked':
       return {
-        disabledReason: signedIn ? 'notPermitted' : 'maybeNotPermitted',
+        disabledReason: 'notPermitted',
         authenticationRequirements: null,
       };
-    case 'not_active':
+    case 'user_not_active':
       return {
         disabledReason: null,
         authenticationRequirements: 'complete_registration',
@@ -145,8 +144,8 @@ export const getIdeaPostingRules = ({
   const signedIn = !!authUser;
 
   if (project) {
-    const { disabled_reason, future_enabled, enabled } =
-      project.attributes.action_descriptor.posting_idea;
+    const { disabled_reason, future_enabled_at, enabled } =
+      project.attributes.action_descriptors.posting_idea;
 
     if (signedIn && canModerateProject(project.id, { data: authUser })) {
       return {
@@ -159,13 +158,13 @@ export const getIdeaPostingRules = ({
 
     // timeline
     if (phase) {
-      // not an enabled ideation phase
+      // not an enabled ideation or native survey phase
       if (
         !(
           (phase.attributes.participation_method === 'ideation' ||
             phase.attributes.participation_method === 'native_survey') &&
           phase.attributes.posting_enabled &&
-          disabled_reason !== 'not_ideation'
+          disabled_reason !== 'posting_not_supported'
         )
       ) {
         return {
@@ -202,7 +201,7 @@ export const getIdeaPostingRules = ({
     }
 
     const { disabledReason, authenticationRequirements } =
-      ideaPostingDisabledReason(disabled_reason, signedIn, future_enabled);
+      ideaPostingDisabledReason(disabled_reason, signedIn, future_enabled_at);
 
     if (authenticationRequirements) {
       return {

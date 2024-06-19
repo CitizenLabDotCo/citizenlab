@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { parse } from 'qs';
 import { useLocation } from 'react-router-dom';
 import { ILocationInfo } from 'typings';
@@ -11,11 +12,11 @@ import useLocale from 'hooks/useLocale';
 
 import PageLayout from 'components/InitiativeForm/PageLayout';
 import PageNotFound from 'components/PageNotFound';
+import GoBackButton from 'components/UI/GoBackButton';
 
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import { reverseGeocode } from 'utils/locationTools';
-import { isAdmin } from 'utils/permissions/roles';
 
 import InitiativesNewFormWrapper from './InitiativesNewFormWrapper';
 import InitiativesNewMeta from './InitiativesNewMeta';
@@ -67,9 +68,18 @@ const InitiativesNewPage = () => {
   return (
     <>
       <InitiativesNewMeta />
-      <PageLayout isAdmin={isAdmin(authUser)}>
-        <InitiativesNewFormWrapper locationInfo={locationInfo} />
-      </PageLayout>
+      <Box background={colors.background} p="32px" pb="0">
+        <GoBackButton
+          onClick={() => {
+            clHistory.goBack();
+          }}
+        />
+      </Box>
+      <main>
+        <PageLayout>
+          <InitiativesNewFormWrapper locationInfo={locationInfo} />
+        </PageLayout>
+      </main>
     </>
   );
 };

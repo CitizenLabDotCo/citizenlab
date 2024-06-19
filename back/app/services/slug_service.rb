@@ -7,7 +7,7 @@ class SlugService
     slug = slugify(string)
     indexed_slug = nil
     i = 0
-    while record.class.find_by(slug: indexed_slug || slug)
+    while record&.class&.find_by(slug: indexed_slug || slug)
       i += 1
       indexed_slug = [slug, '-', i].join
     end

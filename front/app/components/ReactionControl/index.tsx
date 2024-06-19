@@ -17,9 +17,12 @@ import { getLatestRelevantPhase } from 'api/phases/utils';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
+import messages from './messages';
 import ReactionButton from './ReactionButton';
 import ScreenReaderContent from './ScreenReaderContent';
 
@@ -47,13 +50,11 @@ interface Props {
     disabled_reason?: IdeaReactingDisabledReason
   ) => void;
   setRef?: (element: HTMLDivElement) => void;
-  ariaHidden?: boolean;
   className?: string;
   styleType: TStyleType;
 }
 
 const ReactionControl = ({
-  ariaHidden = false,
   ideaId,
   size,
   className,
@@ -63,6 +64,8 @@ const ReactionControl = ({
   const [reactingAnimation, setReactingAnimation] = useState<
     'up' | 'down' | null
   >(null);
+  const { formatMessage } = useIntl();
+  const [screenReaderMessage, setScreenReaderMessage] = useState<string>('');
   const { data: idea } = useIdeaById(ideaId);
   const { mutate: addReaction, isLoading: addReactionIsLoading } =
     useAddIdeaReaction();
@@ -77,6 +80,26 @@ const ReactionControl = ({
   const reactionId =
     authUser && idea?.data?.relationships?.user_reaction?.data?.id;
   const myReactionMode = reactionId ? reactionData?.data.attributes.mode : null;
+
+  const setScreenReaderCancelReactionMessage = useCallback(
+    (reactionMode: TReactionMode) => {
+      const messageKey =
+        reactionMode === 'up'
+          ? messages.cancelLikeSuccess
+          : messages.cancelDislikeSuccess;
+      setScreenReaderMessage(formatMessage(messageKey));
+    },
+    [formatMessage]
+  );
+
+  const setScreenReaderReactionSuccessMessage = useCallback(
+    (reactionMode: TReactionMode) => {
+      const messageKey =
+        reactionMode === 'up' ? messages.likeSuccess : messages.dislikeSuccess;
+      setScreenReaderMessage(formatMessage(messageKey));
+    },
+    [formatMessage]
+  );
 
   const castReaction = useCallback(
     (reactionMode: 'up' | 'down') => {
@@ -94,6 +117,7 @@ const ReactionControl = ({
                 {
                   onSuccess: () => {
                     setReactingAnimation(null);
+                    setScreenReaderReactionSuccessMessage(reactionMode);
                   },
                 }
               );
@@ -109,6 +133,7 @@ const ReactionControl = ({
           {
             onSuccess: () => {
               setReactingAnimation(null);
+              setScreenReaderCancelReactionMessage(reactionMode);
             },
           }
         );
@@ -121,19 +146,29 @@ const ReactionControl = ({
           {
             onSuccess: () => {
               setReactingAnimation(null);
+              setScreenReaderReactionSuccessMessage(reactionMode);
             },
           }
         );
       }
     },
-    [authUser, addReaction, deleteReaction, ideaId, myReactionMode, reactionId]
+    [
+      authUser,
+      ideaId,
+      reactionId,
+      myReactionMode,
+      deleteReaction,
+      addReaction,
+      setScreenReaderReactionSuccessMessage,
+      setScreenReaderCancelReactionMessage,
+    ]
   );
 
   if (!idea) return null;
 
   const ideaAttributes = idea.data.attributes;
   const reactingActionDescriptor =
-    ideaAttributes.action_descriptor.reacting_idea;
+    ideaAttributes.action_descriptors.reacting_idea;
   const cancellingEnabled = reactingActionDescriptor.cancelling_enabled;
 
   // participationContext
@@ -237,14 +272,12 @@ const ReactionControl = ({
         ]
           .filter((item) => item)
           .join(' ')}
-        aria-hidden={ariaHidden}
       >
         <ReactionButton
           buttonReactionMode="up"
           userReactionMode={myReactionMode}
           onClick={onClickLike}
           className={reactingAnimation === 'up' ? 'reactionClick' : ''}
-          ariaHidden={ariaHidden}
           styleType={styleType}
           size={size}
           iconName="vote-up"
@@ -258,7 +291,6 @@ const ReactionControl = ({
             userReactionMode={myReactionMode}
             onClick={onClickDislike}
             className={reactingAnimation === 'down' ? 'reactionClick' : ''}
-            ariaHidden={ariaHidden}
             styleType={styleType}
             size={size}
             iconName="vote-down"
@@ -266,6 +298,9 @@ const ReactionControl = ({
             ideaId={idea.data.id}
           />
         )}
+        <ScreenReaderOnly aria-live="polite">
+          {screenReaderMessage}
+        </ScreenReaderOnly>
       </Container>
     </>
   );

@@ -56,9 +56,6 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.projects.all.createProject.tabs': {
     onData: (data: InsertConfigurationOptions<ITabItem>) => void;
   };
-  'app.containers.Admin.projects.all.container': {
-    onRender: (hasRendered: boolean) => void;
-  };
   'app.containers.Admin.projects.edit.description.projectDescriptionBuilder': {
     onMount: () => void;
     valueMultiloc: Multiloc | null | undefined;
@@ -122,9 +119,6 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.project.edit.permissions.moderatorRights': {
     projectId: string;
     children: OutletRenderProps;
-  };
-  'app.containers.Admin.settings.tabs': {
-    onData: (data: InsertConfigurationOptions<ITab>) => void;
   };
   'app.containers.Admin.initiatives.tabs': ITabsOutlet;
   'app.containers.Admin.ideas.tabs': ITabsOutlet;

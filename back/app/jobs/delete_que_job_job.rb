@@ -2,7 +2,7 @@
 
 class DeleteQueJobJob < ApplicationJob
   def run(job_id)
-    QueJob.find(job_id).destroy
+    QueJob.by_job_id!(job_id).destroy
   rescue ActiveRecord::RecordNotFound
     # The job was already deleted, nothing to do.
   end

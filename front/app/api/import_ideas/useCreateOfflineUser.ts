@@ -10,11 +10,11 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import { CreateOfflineIdeasParams } from './types';
 
 export const createOfflineUser = async ({
-  projectId,
+  phaseId,
   ...requestBody
 }: CreateOfflineIdeasParams) =>
   fetcher<IUser>({
-    path: `/projects/${projectId}/create_user`,
+    path: `/phases/${phaseId}/importer/create_user`,
     action: 'post',
     body: { user: { ...requestBody } },
   });

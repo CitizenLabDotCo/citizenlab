@@ -1,16 +1,15 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
+import { MessageDescriptor } from 'react-intl';
 
 import { IIdea, IdeaCommentingDisabledReason } from 'api/ideas/types';
-import useAuthUser from 'api/me/useAuthUser';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 import globalMessages from 'utils/messages';
 
 import messages from '../../messages';
@@ -21,11 +20,10 @@ interface Props {
 }
 
 const CommentingIdeaDisabled = ({ phaseId, idea }: Props) => {
-  const { data: authUser } = useAuthUser();
   const {
     enabled: commentingEnabled,
     disabled_reason: commentingDisabledReason,
-  } = idea.data.attributes.action_descriptor.commenting_idea;
+  } = idea.data.attributes.action_descriptors.commenting_idea;
 
   const signUpIn = (flow: 'signin' | 'signup') => {
     if (!phaseId) return;
@@ -48,43 +46,25 @@ const CommentingIdeaDisabled = ({ phaseId, idea }: Props) => {
     signUpIn('signup');
   };
 
-  const calculateMessageDescriptor = (
-    commentingEnabled: boolean,
-    commentingDisabledReason: IdeaCommentingDisabledReason | null
-  ) => {
-    const isLoggedIn = !isNilOrError(authUser);
-
-    if (commentingEnabled) {
-      return null;
-    } else if (commentingDisabledReason === 'not_in_group') {
-      return globalMessages.notInGroup;
-    } else if (commentingDisabledReason === 'project_inactive') {
-      return messages.commentingDisabledInactiveProject;
-    } else if (commentingDisabledReason === 'commenting_disabled') {
-      return messages.commentingDisabledProject;
-    } else if (commentingDisabledReason === 'idea_not_in_current_phase') {
-      return messages.commentingDisabledInCurrentPhase;
-    } else if (isLoggedIn && commentingDisabledReason === 'not_verified') {
-      return messages.commentingDisabledUnverified;
-    } else if (isLoggedIn && commentingDisabledReason === 'not_permitted') {
-      return messages.commentingDisabledProject;
-    } else if (
-      (isLoggedIn && commentingDisabledReason === 'not_active') ||
-      commentingDisabledReason === 'missing_data'
-    ) {
-      return messages.completeProfileToComment;
-    } else if (!isLoggedIn) {
-      return messages.commentingMaybeNotPermitted;
-    }
-    return messages.signInToComment;
+  const disabledMessages: {
+    [key in IdeaCommentingDisabledReason]?: MessageDescriptor | undefined;
+  } = {
+    project_inactive: messages.commentingDisabledInactiveProject,
+    commenting_disabled: messages.commentingDisabledProject,
+    user_not_permitted: messages.commentingDisabledProject,
+    user_not_verified: messages.commentingDisabledUnverified,
+    user_not_in_group: globalMessages.notInGroup,
+    user_blocked: messages.commentingDisabledProject,
+    user_not_active: messages.completeProfileToComment,
+    user_not_signed_in: messages.signInToComment,
+    user_missing_requirements: messages.completeProfileToComment,
+    idea_not_in_current_phase: messages.commentingDisabledInCurrentPhase,
   };
 
-  const messageDescriptor = calculateMessageDescriptor(
-    commentingEnabled,
-    commentingDisabledReason
-  );
+  const message =
+    commentingDisabledReason && disabledMessages[commentingDisabledReason];
 
-  if (!messageDescriptor) return null;
+  if (commentingEnabled || !message) return null;
 
   return (
     /*
@@ -95,7 +75,7 @@ const CommentingIdeaDisabled = ({ phaseId, idea }: Props) => {
     <Box mb="24px">
       <Warning className="e2e-commenting-disabled">
         <FormattedMessage
-          {...messageDescriptor}
+          {...message}
           values={{
             signUpLink: (
               <button onClick={signUp}>

@@ -72,7 +72,6 @@ RSpec.configure do |config|
   config.include ActiveSupport::Testing::TimeHelpers
   config.include ApiAuthenticationHelper
   config.include ApiHelper
-  config.include AppConfigurationHelper
   config.include Base64Helper
   config.include GeneralHelper
   config.include RakeHelper

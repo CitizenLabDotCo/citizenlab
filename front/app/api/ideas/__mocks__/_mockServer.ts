@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { API_PATH } from 'containers/App/constants';
 
@@ -37,7 +37,7 @@ export const ideaData: IIdeaData[] = [
       proposed_budget: 45,
       baskets_count: 0,
       votes_count: 0,
-      action_descriptor: {
+      action_descriptors: {
         reacting_idea: {
           enabled: true,
           disabled_reason: null,
@@ -45,28 +45,28 @@ export const ideaData: IIdeaData[] = [
           up: {
             enabled: true,
             disabled_reason: null,
-            future_enabled: null,
+            future_enabled_at: null,
           },
           down: {
             enabled: true,
             disabled_reason: null,
-            future_enabled: null,
+            future_enabled_at: null,
           },
         },
         commenting_idea: {
           enabled: false,
-          disabled_reason: 'not_permitted',
-          future_enabled: null,
+          disabled_reason: 'user_not_permitted',
+          future_enabled_at: null,
         },
         comment_reacting_idea: {
           enabled: true,
           disabled_reason: null,
-          future_enabled: null,
+          future_enabled_at: null,
         },
         voting: {
           enabled: false,
-          disabled_reason: 'not_permitted',
-          future_enabled: null,
+          disabled_reason: 'user_not_permitted',
+          future_enabled_at: null,
         },
       },
       anonymous: false,
@@ -149,7 +149,7 @@ export const ideaData: IIdeaData[] = [
       proposed_budget: 45,
       votes_count: 0,
       baskets_count: 0,
-      action_descriptor: {
+      action_descriptors: {
         reacting_idea: {
           enabled: true,
           disabled_reason: null,
@@ -157,28 +157,28 @@ export const ideaData: IIdeaData[] = [
           up: {
             enabled: true,
             disabled_reason: null,
-            future_enabled: null,
+            future_enabled_at: null,
           },
           down: {
             enabled: true,
             disabled_reason: null,
-            future_enabled: null,
+            future_enabled_at: null,
           },
         },
         commenting_idea: {
           enabled: false,
-          disabled_reason: 'not_permitted',
-          future_enabled: null,
+          disabled_reason: 'user_not_permitted',
+          future_enabled_at: null,
         },
         comment_reacting_idea: {
           enabled: true,
           disabled_reason: null,
-          future_enabled: null,
+          future_enabled_at: null,
         },
         voting: {
           enabled: false,
-          disabled_reason: 'not_permitted',
-          future_enabled: null,
+          disabled_reason: 'user_not_permitted',
+          future_enabled_at: null,
         },
       },
       anonymous: false,
@@ -266,36 +266,36 @@ const votingIdea = {
       anonymous: false,
       author_hash: '5d78eb7936e_d99f2f3b7518aeddde3d45d78eb7936ed99f2f3b75',
       author_name: 'Citizenlab Hermansen',
-      action_descriptor: {
+      action_descriptors: {
         commenting_idea: {
           enabled: true,
           disabled_reason: null,
-          future_enabled: null,
+          future_enabled_at: null,
         },
         reacting_idea: {
           enabled: false,
-          disabled_reason: 'not_ideation',
+          disabled_reason: 'reacting_not_supported',
           cancelling_enabled: false,
           up: {
             enabled: false,
-            disabled_reason: 'not_ideation',
-            future_enabled: null,
+            disabled_reason: 'reacting_not_supported',
+            future_enabled_at: null,
           },
           down: {
             enabled: false,
-            disabled_reason: 'not_ideation',
-            future_enabled: null,
+            disabled_reason: 'reacting_not_supported',
+            future_enabled_at: null,
           },
         },
         comment_reacting_idea: {
           enabled: true,
           disabled_reason: null,
-          future_enabled: null,
+          future_enabled_at: null,
         },
         voting: {
           enabled: true,
           disabled_reason: null,
-          future_enabled: null,
+          future_enabled_at: null,
         },
       },
     },
@@ -353,19 +353,19 @@ const votingIdea = {
 };
 
 const endpoints = {
-  'GET ideas': rest.get(apiPathIdeas, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: ideaData }));
+  'GET ideas': http.get(apiPathIdeas, () => {
+    return HttpResponse.json({ data: ideaData }, { status: 200 });
   }),
-  'GET ideas/:id': rest.get(apiPathById, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: ideaData[0] }));
+  'GET ideas/:id': http.get(apiPathById, () => {
+    return HttpResponse.json({ data: ideaData[0] }, { status: 200 });
   }),
-  'GET ideas/by_slug/:slug': rest.get(apiPathBySlug, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: ideaData[0] }));
+  'GET ideas/by_slug/:slug': http.get(apiPathBySlug, () => {
+    return HttpResponse.json({ data: ideaData[0] }, { status: 200 });
   }),
 };
 
-export const votingIdeaHandler = rest.get(apiPathById, (_req, res, ctx) => {
-  return res(ctx.status(200), ctx.json(votingIdea));
+export const votingIdeaHandler = http.get(apiPathById, () => {
+  return HttpResponse.json(votingIdea, { status: 200 });
 });
 
 export default endpoints;

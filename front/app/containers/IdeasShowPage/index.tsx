@@ -18,6 +18,7 @@ import { getCurrentPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
 import IdeasShow from 'containers/IdeasShow';
+import IdeaMeta from 'containers/IdeasShow/components/IdeaMeta';
 import ProjectCTABar from 'containers/ProjectsShowPage/ProjectCTABar';
 
 import PageNotFound from 'components/PageNotFound';
@@ -26,6 +27,7 @@ import VerticalCenterer from 'components/VerticalCenterer';
 
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 
+import DesktopTopBar from './DesktopTopBar';
 import IdeaShowPageTopBar from './IdeaShowPageTopBar';
 
 const StyledIdeaShowPageTopBar = styled(IdeaShowPageTopBar)`
@@ -95,34 +97,43 @@ const IdeasShowPage = () => {
   const showCTABarAtTopOfPage = !isSmallerThanTablet && showCTABar;
 
   return (
-    <VotingContext projectId={project.data.id}>
-      <Box
-        background={colors.white}
-        pt={showCTABarAtTopOfPage ? `${stylingConsts.menuHeight}px` : undefined}
-      >
-        {isSmallerThanTablet && (
-          <StyledIdeaShowPageTopBar
-            projectId={idea.data.relationships.project.data.id}
-            ideaId={idea.data.id}
-            phase={phase}
-          />
-        )}
-        <StyledIdeasShow
-          ideaId={idea.data.id}
-          projectId={idea.data.relationships.project.data.id}
-          compact={isSmallerThanTablet}
-        />
-      </Box>
-      {showCTABar && (
+    <>
+      <IdeaMeta ideaId={idea.data.id} />
+      <VotingContext projectId={project.data.id}>
         <Box
-          position="fixed"
-          bottom={isSmallerThanTablet ? '0px' : undefined} // Show CTA at bottom of screen on mobile
-          width="100vw"
+          background={colors.white}
+          pt={
+            showCTABarAtTopOfPage ? `${stylingConsts.menuHeight}px` : undefined
+          }
         >
-          <ProjectCTABar projectId={project.data.id} />
+          {isSmallerThanTablet ? (
+            <StyledIdeaShowPageTopBar
+              projectId={idea.data.relationships.project.data.id}
+              ideaId={idea.data.id}
+              phase={phase}
+            />
+          ) : (
+            <DesktopTopBar project={project.data} />
+          )}
+          <main id="e2e-idea-show">
+            <StyledIdeasShow
+              ideaId={idea.data.id}
+              projectId={idea.data.relationships.project.data.id}
+              compact={isSmallerThanTablet}
+            />
+          </main>
         </Box>
-      )}
-    </VotingContext>
+        {showCTABar && (
+          <Box
+            position="fixed"
+            bottom={isSmallerThanTablet ? '0px' : undefined} // Show CTA at bottom of screen on mobile
+            width="100vw"
+          >
+            <ProjectCTABar projectId={project.data.id} />
+          </Box>
+        )}
+      </VotingContext>
+    </>
   );
 };
 
