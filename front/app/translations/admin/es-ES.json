@@ -2533,6 +2533,7 @@
   "app.containers.admin.ideaStatuses.all.inputStatusDeleteButtonTooltip": "No se pueden borrar los estados actualmente asignados a una entrada. Puede eliminar/cambiar el estado de las entradas existentes en la pestaña {manageTab} .",
   "app.containers.admin.ideaStatuses.all.lockedStatusTooltip": "Este estado no puede ser eliminado o movido.",
   "app.containers.admin.ideaStatuses.all.manage": "Administrar",
+  "app.containers.admin.ideaStatuses.all.pricingPlanUpgrade": "Configurar estados de entrada personalizados no está incluido en tu plan actual. Habla con tu Gestor de Éxito Gubernamental o con el administrador para desbloquearlo.",
   "app.containers.admin.ideaStatuses.all.subtitleInputStatuses1": "Gestiona el estado que se puede asignar a las aportaciones de los participantes en un proyecto. El estado es visible públicamente y ayuda a mantener informados a los participantes.",
   "app.containers.admin.ideaStatuses.all.titleIdeaStatuses1": "Editar estados de entrada",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeDescription": "Seleccionado para implementación o para siguientes pasos",

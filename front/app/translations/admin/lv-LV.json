@@ -2533,6 +2533,7 @@
   "app.containers.admin.ideaStatuses.all.inputStatusDeleteButtonTooltip": "Dalībnieka ievades datiem šobrīd piešķirtos statusus nav iespējams dzēst. Jūs varat dzēst/mainīt statusu esošajiem ievades datiem cilnē {manageTab}.",
   "app.containers.admin.ideaStatuses.all.lockedStatusTooltip": "Šo statusu nevar dzēst vai pārvietot.",
   "app.containers.admin.ideaStatuses.all.manage": "Rediģēt",
+  "app.containers.admin.ideaStatuses.all.pricingPlanUpgrade": "Pašreizējā plānā nav iekļauta pielāgotu ievades statusu konfigurēšana. Lai to atbloķētu, sazinieties ar savu valdības veiksmes menedžeri vai administratoru.",
   "app.containers.admin.ideaStatuses.all.subtitleInputStatuses1": "Pārvaldiet statusu, ko var piešķirt dalībnieka ievaddatiem projektā. Statuss ir publiski redzams un palīdz informēt dalībniekus.",
   "app.containers.admin.ideaStatuses.all.titleIdeaStatuses1": "Ievades statusu rediģēšana",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeDescription": "Izvēlēts īstenošanai vai turpmākajiem soļiem",

@@ -2533,6 +2533,7 @@
   "app.containers.admin.ideaStatuses.all.inputStatusDeleteButtonTooltip": "Statuser som for øyeblikket er tilordnet til deltakeroppføringer kan ikke slettes. Du kan fjerne/endre statusen fra den eksisterende oppføringen i fanen {manageTab}.",
   "app.containers.admin.ideaStatuses.all.lockedStatusTooltip": "Denne statusen kan ikke slettes eller flyttes.",
   "app.containers.admin.ideaStatuses.all.manage": "Rediger",
+  "app.containers.admin.ideaStatuses.all.pricingPlanUpgrade": "Konfigurering av egendefinerte inndatastatuser er ikke inkludert i din nåværende plan. Snakk med Government Success Manager eller administrator for å låse den opp.",
   "app.containers.admin.ideaStatuses.all.subtitleInputStatuses1": "Administrer statusen som kan tildeles deltakerinnspill i et prosjekt. Statusen er offentlig synlig og bidrar til å holde deltakerne informert.",
   "app.containers.admin.ideaStatuses.all.titleIdeaStatuses1": "Rediger inndatastatuser",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeDescription": "Valgt for implementering eller neste trinn",

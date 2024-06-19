@@ -2533,6 +2533,7 @@
   "app.containers.admin.ideaStatuses.all.inputStatusDeleteButtonTooltip": "Statusar som för närvarande är tilldelade indata från deltagare kan inte tas bort. Du kan ta bort/ändra status från befintliga indata på fliken {manageTab}.",
   "app.containers.admin.ideaStatuses.all.lockedStatusTooltip": "Den här statusen kan inte tas bort eller flyttas.",
   "app.containers.admin.ideaStatuses.all.manage": "Redigera",
+  "app.containers.admin.ideaStatuses.all.pricingPlanUpgrade": "Konfigurering av anpassade inmatningsstatusar ingår inte i din nuvarande plan. Prata med din Government Success Manager eller administratör för att låsa upp det.",
   "app.containers.admin.ideaStatuses.all.subtitleInputStatuses1": "Hantera den status som kan tilldelas deltagarnas bidrag inom ett projekt. Statusen är offentligt synlig och hjälper till att hålla deltagarna informerade.",
   "app.containers.admin.ideaStatuses.all.titleIdeaStatuses1": "Redigera status för inmatning",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeDescription": "Vald för implementering eller nästa steg",

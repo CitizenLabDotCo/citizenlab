@@ -2533,6 +2533,7 @@
   "app.containers.admin.ideaStatuses.all.inputStatusDeleteButtonTooltip": "Statystyki aktualnie przypisane do danej inicjatywy nie mogą zostać usunięte. Możesz usunąć/zmienić stan dla istniejących inicjatyw w zakładce {manageTab}.",
   "app.containers.admin.ideaStatuses.all.lockedStatusTooltip": "Status ten nie może być usunięty ani przeniesiony.",
   "app.containers.admin.ideaStatuses.all.manage": "Zarządzaj",
+  "app.containers.admin.ideaStatuses.all.pricingPlanUpgrade": "Konfigurowanie niestandardowych statusów wprowadzania danych nie jest uwzględnione w Twoim bieżącym planie. Porozmawiaj ze swoim Government Success Managerem lub administratorem, aby ją odblokować.",
   "app.containers.admin.ideaStatuses.all.subtitleInputStatuses1": "Zarządzaj statusem, który można przypisać do wkładu uczestników w ramach projektu. Status jest widoczny publicznie i pomaga w informowaniu uczestników.",
   "app.containers.admin.ideaStatuses.all.titleIdeaStatuses1": "Edytuj statusy wejściowe",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeDescription": "Wybrane do realizacji lub następnego etapu",
