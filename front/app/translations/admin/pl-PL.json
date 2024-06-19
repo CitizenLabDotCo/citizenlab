@@ -2432,7 +2432,7 @@
   "app.containers.ContentBuilder.homepage.sign_up_button": "Zarejestruj się",
   "app.containers.ContentBuilder.homepage.signedInDescription": "W ten sposób zarejestrowani użytkownicy widzą baner.",
   "app.containers.ContentBuilder.homepage.signedOutDescription": "W ten sposób odwiedzający, którzy nie są zarejestrowani na platformie, widzą baner.",
-  "app.containers.ContentBuilder.homepage.twoRowBannerTooltip": "Baner ten jest szczególnie przydatny w przypadku obrazów, które nie współgrają dobrze z tekstem tytułu, podtytułu lub przycisku. Elementy te zostaną przesunięte poniżej banera. Więcej informacji na temat zalecanego użycia obrazów można znaleźć na naszej stronie {link}.",
+  "app.containers.ContentBuilder.homepage.twoRowBannerTooltip1": "Baner ten jest szczególnie przydatny w przypadku obrazów, które nie współgrają dobrze z tekstem tytułu, podtytułu lub przycisku. Elementy te zostaną przesunięte poniżej banera. Więcej informacji na temat zalecanego użycia obrazów można znaleźć na naszej stronie {link}.",
   "app.containers.ContentBuilder.homepage.twoRowBannerTooltipLink": "baza wiedzy",
   "app.containers.ContentBuilder.homepage.twoRowLayout": "Dwa rzędy",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeHeightLabel": "Wysokość osadzenia (piksele)",
